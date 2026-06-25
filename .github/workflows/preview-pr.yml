@@ -302,7 +302,7 @@ jobs:
       needs.preview-label-gate.outputs.pr_number != '' &&
       needs.preview-label-gate.outputs.is_same_repo == 'true' &&
       needs.detect.outputs.resources_only_sync != 'true' &&
-      needs.head-branch-gate.outputs.should_run == 'true' &&
+      needs.preview-label-gate.outputs.head_branch_should_run == 'true' &&
       (
         github.event_name == 'workflow_dispatch' ||
         github.event.action != 'labeled' ||
@@ -311,10 +311,8 @@ jobs:
     needs:
       - detect
       - preview-label-gate
-      - head-branch-gate
-      - detect-synchronize-type
       - detect-backend-changes
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: Publish preview progress comment
         uses: actions/github-script@v8
@@ -436,20 +434,20 @@ jobs:
   deploy-frontend:
     name: "Frontend Preview"
     # Single frontend deployment that runs early, in parallel with the backend
-    # deploy. The backend URL is resolved deterministically by
-    # resolve-backend-state (templated preview URL or the shared API), so the
-    # frontend never waits for the Cloud Run deploy to finish.
-    needs: [detect, preview-label-gate, head-branch-gate, resolve-backend-state, deploy-ledger]
+    # deploy. The backend URL is resolved deterministically by the deploy-ledger
+    # job (templated preview URL or the shared API), so the frontend never waits
+    # for the Cloud Run deploy to finish.
+    needs: [detect, preview-label-gate, deploy-ledger]
     if: |-
       always() &&
       needs.detect.result == 'success' &&
-      needs.resolve-backend-state.result == 'success' &&
+      needs.deploy-ledger.result == 'success' &&
       needs.preview-label-gate.outputs.is_same_repo == 'true' &&
-      needs.head-branch-gate.outputs.should_run == 'true' &&
+      needs.preview-label-gate.outputs.head_branch_should_run == 'true' &&
       needs.deploy-ledger.outputs.frontend_deployed != 'true' &&
       (
         needs.detect.outputs.frontend_changed == 'true' ||
-        needs.resolve-backend-state.outputs.has_backend_preview == 'true'
+        needs.deploy-ledger.outputs.has_backend_preview == 'true'
       )
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
@@ -471,20 +469,20 @@ jobs:
           pr_number: ${{ needs.preview-label-gate.outputs.pr_number }}
           additional_meta_json: |
             {
-              "previewMode": "${{ needs.resolve-backend-state.outputs.has_backend_preview == 'true' && 'backend-preview' || 'standard' }}",
-              "backendPreviewUrl": "${{ needs.resolve-backend-state.outputs.has_backend_preview == 'true' && needs.resolve-backend-state.outputs.backend_url || '' }}"
+              "previewMode": "${{ needs.deploy-ledger.outputs.has_backend_preview == 'true' && 'backend-preview' || 'standard' }}",
+              "backendPreviewUrl": "${{ needs.deploy-ledger.outputs.has_backend_preview == 'true' && needs.deploy-ledger.outputs.target_backend_url || '' }}"
             }
           build_env_json: |
             {
               "ENVIRONMENT": "preview",
-              "BACKEND_URL": "${{ needs.resolve-backend-state.outputs.backend_url }}",
+              "BACKEND_URL": "${{ needs.deploy-ledger.outputs.target_backend_url }}",
               "RESOURCES_URL": "https://r.namefi.dev",
               "DOCS_URL": "https://docs.namefi.dev"
             }
           runtime_env_json: |
             {
               "ENVIRONMENT": "preview",
-              "BACKEND_URL": "${{ needs.resolve-backend-state.outputs.backend_url }}",
+              "BACKEND_URL": "${{ needs.deploy-ledger.outputs.target_backend_url }}",
               "RESOURCES_URL": "https://r.namefi.dev",
               "DOCS_URL": "https://docs.namefi.dev"
             }
@@ -595,16 +593,20 @@ jobs:
           vercel_project_id: ${{ secrets.VERCEL_ASTRA_API_CLIENT_DOCS_PROJECT_ID }}
           vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
 
-  resolve-backend-state:
-    name: Resolve Backend State
-    # Resolves whether this PR gets a preview backend and the URL the frontend
-    # should target — WITHOUT waiting for the Cloud Run deploy to finish. The
-    # preview backend is published as a Cloud Run tagged revision (tag
-    # `pr-<number>`), whose tagged URL is just the persistent service host with a
-    # `pr-<number>---` prefix, so it is fully deterministic ahead of deploy.
-    needs: [preview-label-gate, head-branch-gate, detect-backend-changes]
-    if: needs.preview-label-gate.outputs.pr_number != '' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+  deploy-ledger:
+    name: Resolve Backend State & Deploy Ledger
+    # Merged job. Step 1 resolves whether this PR gets a preview backend and the
+    # deterministic URL the frontend should target (the preview backend is a
+    # Cloud Run tagged revision `pr-<number>`, whose URL is the persistent host
+    # with a `pr-<number>---` prefix — known ahead of the deploy, no lookup).
+    # Step 2 reads the per-PR deploy-ledger comment so a later label-triggered
+    # run skips surfaces already deployed at the current head SHA (frontend is
+    # keyed by SHA *and* its backend target so a shared→preview-backend switch
+    # still redeploys). The ledger is written once per run by the Preview
+    # Summary job (single writer, no races).
+    needs: [preview-label-gate, detect-backend-changes]
+    if: needs.preview-label-gate.outputs.pr_number != '' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.preview-label-gate.outputs.head_branch_should_run == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     env:
       # Persistent Cloud Run host of the namefi-astra-backend-preview service.
       # Tagged preview URLs are `https://pr-<number>---<this host>`.
@@ -612,11 +614,21 @@ jobs:
       # Shared backend used when this PR has no preview backend.
       SHARED_BACKEND_URL: https://api.namefi.dev
     outputs:
-      has_backend_preview: ${{ steps.url.outputs.has_backend_preview }}
-      backend_url: ${{ steps.url.outputs.backend_url }}
+      has_backend_preview: ${{ steps.state.outputs.has_backend_preview }}
+      target_backend_url: ${{ steps.state.outputs.target_backend_url }}
+      frontend_deployed: ${{ steps.ledger.outputs.frontend_deployed }}
+      backend_deployed: ${{ steps.ledger.outputs.backend_deployed }}
+      park_deployed: ${{ steps.ledger.outputs.park_deployed }}
+      resources_deployed: ${{ steps.ledger.outputs.resources_deployed }}
+      docs_deployed: ${{ steps.ledger.outputs.docs_deployed }}
+      frontend_url: ${{ steps.ledger.outputs.frontend_url }}
+      backend_url: ${{ steps.ledger.outputs.backend_url }}
+      park_url: ${{ steps.ledger.outputs.park_url }}
+      resources_url: ${{ steps.ledger.outputs.resources_url }}
+      docs_url: ${{ steps.ledger.outputs.docs_url }}
     steps:
       - name: Resolve backend URL
-        id: url
+        id: state
         env:
           SHOULD_RUN: ${{ needs.preview-label-gate.outputs.should_run }}
           HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes }}
@@ -631,42 +643,19 @@ jobs:
           # Run lookup, so the frontend can deploy in parallel with the backend.
           if [[ "$SHOULD_RUN" == "true" && "$HAS_BACKEND_CHANGES" == "true" ]]; then
             echo "has_backend_preview=true" >> "$GITHUB_OUTPUT"
-            echo "backend_url=https://pr-${PR_NUMBER}---${BACKEND_PREVIEW_HOST}" >> "$GITHUB_OUTPUT"
+            echo "target_backend_url=https://pr-${PR_NUMBER}---${BACKEND_PREVIEW_HOST}" >> "$GITHUB_OUTPUT"
           else
             echo "has_backend_preview=false" >> "$GITHUB_OUTPUT"
-            echo "backend_url=${SHARED_BACKEND_URL}" >> "$GITHUB_OUTPUT"
+            echo "target_backend_url=${SHARED_BACKEND_URL}" >> "$GITHUB_OUTPUT"
           fi
 
-  deploy-ledger:
-    name: Read Deploy Ledger
-    # Reads the per-PR deploy-ledger comment to learn which surfaces were
-    # already successfully deployed at the CURRENT head SHA, so a later
-    # label-triggered run does not redeploy surfaces that are already up to
-    # date. The ledger is written once per run by publish-preview-results
-    # (single writer, no races). Frontend is keyed by SHA *and* its backend
-    # target so a shared→preview-backend switch still redeploys.
-    needs: [preview-label-gate, head-branch-gate, resolve-backend-state]
-    if: needs.preview-label-gate.outputs.pr_number != '' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
-    outputs:
-      frontend_deployed: ${{ steps.ledger.outputs.frontend_deployed }}
-      backend_deployed: ${{ steps.ledger.outputs.backend_deployed }}
-      park_deployed: ${{ steps.ledger.outputs.park_deployed }}
-      resources_deployed: ${{ steps.ledger.outputs.resources_deployed }}
-      docs_deployed: ${{ steps.ledger.outputs.docs_deployed }}
-      frontend_url: ${{ steps.ledger.outputs.frontend_url }}
-      backend_url: ${{ steps.ledger.outputs.backend_url }}
-      park_url: ${{ steps.ledger.outputs.park_url }}
-      resources_url: ${{ steps.ledger.outputs.resources_url }}
-      docs_url: ${{ steps.ledger.outputs.docs_url }}
-    steps:
       - name: Read deploy ledger
         id: ledger
         uses: actions/github-script@v8
         env:
           PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
           HEAD_SHA: ${{ needs.preview-label-gate.outputs.head_sha }}
-          BACKEND_URL: ${{ needs.resolve-backend-state.outputs.backend_url }}
+          BACKEND_URL: ${{ steps.state.outputs.target_backend_url }}
           IS_FORCE_PREVIEW: ${{ needs.preview-label-gate.outputs.is_force_preview }}
         with:
           script: |
@@ -735,7 +724,7 @@ jobs:
 
   preview-label-gate:
     name: Check Backend Preview Label
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     outputs:
       should_run: ${{ steps.check-label.outputs.should_run }}
       is_force_preview: ${{ steps.check-label.outputs.is_force_preview }}
@@ -748,6 +737,7 @@ jobs:
       park_preview: ${{ steps.check-label.outputs.park_preview }}
       resources_preview: ${{ steps.check-label.outputs.resources_preview }}
       docs_preview: ${{ steps.check-label.outputs.docs_preview }}
+      head_branch_should_run: ${{ steps.head-branch.outputs.should_run }}
     steps:
       - name: Check preview label
         id: check-label
@@ -927,19 +917,13 @@ jobs:
 
           emit_surface_targets "$HAS_FORCE_PREVIEW_LABEL"
 
-  head-branch-gate:
-    name: Check Preview Branch
-    needs: preview-label-gate
-    timeout-minutes: 2
-    if: needs.preview-label-gate.outputs.pr_number != ''
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
-    outputs:
-      should_run: ${{ steps.gate.outputs.should_run }}
-    steps:
+      # Folded-in head-branch gate (formerly the head-branch-gate job): previews
+      # are suppressed on protected / opt-out branches. Exposed to other jobs as
+      # the head_branch_should_run output.
       - name: Evaluate head branch
-        id: gate
+        id: head-branch
         env:
-          HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
+          HEAD_REF: ${{ steps.check-label.outputs.head_ref }}
         shell: bash
         run: |
           set -euo pipefail
@@ -953,15 +937,21 @@ jobs:
               ;;
           esac
 
-  detect-synchronize-type:
-    name: Resolve Compare Base
-    needs: [preview-label-gate, head-branch-gate]
-    if: needs.preview-label-gate.outputs.should_run == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+  detect-backend-changes:
+    name: Resolve Compare Base & Backend Changes
+    timeout-minutes: 2
+    # Merged job: a single full checkout serves both the compare-base resolution
+    # and the backend turbo-diff (they were previously two sequential jobs that
+    # each did the same fetch-depth:0 checkout).
+    needs: [preview-label-gate]
+    if: needs.preview-label-gate.outputs.should_run == 'true' && needs.preview-label-gate.outputs.head_branch_should_run == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     outputs:
       is_new_commit: ${{ steps.detect-type.outputs.is_new_commit }}
       is_force_push: ${{ steps.detect-type.outputs.is_force_push }}
       comparison_sha: ${{ steps.detect-type.outputs.comparison_sha }}
+      has-backend-changes: ${{ steps.check.outputs.has-backend-changes }}
+      backend-changed: ${{ steps.check.outputs.backend-changed }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -1029,16 +1019,6 @@ jobs:
             } >> "$GITHUB_OUTPUT"
           fi
 
-  detect-backend-changes:
-    name: Check Backend Changes
-    timeout-minutes: 2
-    needs: [preview-label-gate, head-branch-gate, detect-synchronize-type]
-    if: needs.preview-label-gate.outputs.should_run == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
-    outputs:
-      has-backend-changes: ${{ steps.check.outputs.has-backend-changes }}
-      backend-changed: ${{ steps.check.outputs.backend-changed }}
-    steps:
       - name: Check if preview is unconditional
         id: preview-mode
         shell: bash
@@ -1053,20 +1033,12 @@ jobs:
             echo "reason=change detection required" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Checkout repository
-        if: steps.preview-mode.outputs.skip-detection != 'true'
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
-          fetch-depth: 0
-          filter: blob:none
-
       - name: Detect Turbo changes
         id: turbo-changes
         if: steps.preview-mode.outputs.skip-detection != 'true'
         uses: ./.github/actions/detect-turbo-changes
         with:
-          base-ref: ${{ needs.detect-synchronize-type.outputs.comparison_sha }}
+          base-ref: ${{ steps.detect-type.outputs.comparison_sha }}
           head-ref: ${{ needs.preview-label-gate.outputs.head_sha }}
           packages: "@namefi-astra/backend"
           fallback-files: |
@@ -1391,10 +1363,7 @@ jobs:
       - deploy-resources
       - deploy-api-client-docs
       - preview-label-gate
-      - head-branch-gate
-      - detect-synchronize-type
       - detect-backend-changes
-      - resolve-backend-state
       - build-backend
       - prepare-database
       - deploy-preview
@@ -1424,19 +1393,19 @@ jobs:
           DOCS_REQUESTED: ${{ needs.preview-label-gate.outputs.docs_preview || 'false' }}
           PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
           HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
-          HEAD_BRANCH_ALLOWED: ${{ needs.head-branch-gate.outputs.should_run }}
-          IS_NEW_COMMIT: ${{ needs.detect-synchronize-type.outputs.is_new_commit }}
-          IS_FORCE_PUSH: ${{ needs.detect-synchronize-type.outputs.is_force_push }}
-          COMPARISON_SHA: ${{ needs.detect-synchronize-type.outputs.comparison_sha }}
+          HEAD_BRANCH_ALLOWED: ${{ needs.preview-label-gate.outputs.head_branch_should_run }}
+          IS_NEW_COMMIT: ${{ needs.detect-backend-changes.outputs.is_new_commit }}
+          IS_FORCE_PUSH: ${{ needs.detect-backend-changes.outputs.is_force_push }}
+          COMPARISON_SHA: ${{ needs.detect-backend-changes.outputs.comparison_sha }}
           HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes }}
           BACKEND_CHANGED: ${{ needs.detect-backend-changes.outputs.backend-changed }}
           BACKEND_PREVIEW_URL: ${{ needs.deploy-preview.outputs.revision_tag_url }}
-          HAS_BACKEND_PREVIEW: ${{ needs.resolve-backend-state.outputs.has_backend_preview }}
+          HAS_BACKEND_PREVIEW: ${{ needs.deploy-ledger.outputs.has_backend_preview }}
           PREVIEW_LABEL_GATE_RESULT: ${{ needs.preview-label-gate.result }}
-          HEAD_BRANCH_GATE_RESULT: ${{ needs.head-branch-gate.result }}
-          DETECT_SYNC_TYPE_RESULT: ${{ needs.detect-synchronize-type.result }}
+          HEAD_BRANCH_GATE_RESULT: ${{ needs.preview-label-gate.result }}
+          DETECT_SYNC_TYPE_RESULT: ${{ needs.detect-backend-changes.result }}
           DETECT_BACKEND_CHANGES_RESULT: ${{ needs.detect-backend-changes.result }}
-          RESOLVE_BACKEND_STATE_RESULT: ${{ needs.resolve-backend-state.result }}
+          RESOLVE_BACKEND_STATE_RESULT: ${{ needs.deploy-ledger.result }}
           BUILD_BACKEND_RESULT: ${{ needs.build-backend.result }}
           PREPARE_DATABASE_RESULT: ${{ needs.prepare-database.result }}
           DEPLOY_PREVIEW_RESULT: ${{ needs.deploy-preview.result }}
@@ -1550,7 +1519,7 @@ jobs:
           needs.preview-label-gate.outputs.pr_number != '' &&
           needs.preview-label-gate.outputs.is_same_repo == 'true' &&
           needs.detect.outputs.resources_only_sync != 'true' &&
-          needs.head-branch-gate.outputs.should_run == 'true' &&
+          needs.preview-label-gate.outputs.head_branch_should_run == 'true' &&
           (
             github.event_name == 'workflow_dispatch' ||
             github.event.action != 'labeled' ||
@@ -1569,7 +1538,7 @@ jobs:
           RESOURCES_REQUESTED: ${{ needs.preview-label-gate.outputs.resources_preview || 'false' }}
           DOCS_REQUESTED: ${{ needs.preview-label-gate.outputs.docs_preview || 'false' }}
           HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes || 'false' }}
-          HAS_BACKEND_PREVIEW: ${{ needs.resolve-backend-state.outputs.has_backend_preview || 'false' }}
+          HAS_BACKEND_PREVIEW: ${{ needs.deploy-ledger.outputs.has_backend_preview || 'false' }}
           FRONTEND_RESULT: ${{ needs.deploy-frontend.result }}
           FRONTEND_URL: ${{ needs.deploy-frontend.outputs.deployment_url }}
           PARK_RESULT: ${{ needs.deploy-park.result }}
@@ -1825,7 +1794,7 @@ jobs:
           needs.preview-label-gate.outputs.pr_number != '' &&
           needs.preview-label-gate.outputs.is_same_repo == 'true' &&
           needs.detect.outputs.resources_only_sync != 'true' &&
-          needs.head-branch-gate.outputs.should_run == 'true' &&
+          needs.preview-label-gate.outputs.head_branch_should_run == 'true' &&
           (
             github.event_name == 'workflow_dispatch' ||
             github.event.action != 'labeled' ||
@@ -1835,7 +1804,7 @@ jobs:
         env:
           PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
           HEAD_SHA: ${{ needs.preview-label-gate.outputs.head_sha }}
-          BACKEND_URL: ${{ needs.resolve-backend-state.outputs.backend_url }}
+          BACKEND_URL: ${{ needs.deploy-ledger.outputs.target_backend_url }}
           FRONTEND_RESULT: ${{ needs.deploy-frontend.result }}
           PARK_RESULT: ${{ needs.deploy-park.result }}
           RESOURCES_RESULT: ${{ needs.deploy-resources.result }}
