@@ -490,6 +490,46 @@ jobs:
           vercel_project_id: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
           vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
 
+  frontend-preview-dev-backend-context:
+    name: "Frontend Preview (Dev Backend)"
+    needs: [deploy-frontend]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror unified frontend preview result
+        env:
+          FRONTEND_RESULT: ${{ needs.deploy-frontend.result }}
+        run: |
+          case "$FRONTEND_RESULT" in
+            success|skipped)
+              echo "Unified Frontend Preview completed with result: $FRONTEND_RESULT"
+              ;;
+            *)
+              echo "Unified Frontend Preview did not pass: $FRONTEND_RESULT" >&2
+              exit 1
+              ;;
+          esac
+
+  frontend-preview-preview-backend-context:
+    name: "Frontend Preview (Preview Backend)"
+    needs: [deploy-frontend]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror unified frontend preview result
+        env:
+          FRONTEND_RESULT: ${{ needs.deploy-frontend.result }}
+        run: |
+          case "$FRONTEND_RESULT" in
+            success|skipped)
+              echo "Unified Frontend Preview completed with result: $FRONTEND_RESULT"
+              ;;
+            *)
+              echo "Unified Frontend Preview did not pass: $FRONTEND_RESULT" >&2
+              exit 1
+              ;;
+          esac
+
   deploy-park:
     name: Deploy Park Preview
     needs: [detect, preview-label-gate, deploy-ledger]
