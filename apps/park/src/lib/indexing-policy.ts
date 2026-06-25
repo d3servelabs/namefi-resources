@@ -15,19 +15,62 @@ export function bareHost(host: string | null | undefined): string {
   return normalized.split(':')[0] ?? '';
 }
 
+export function normalizeParkDomainParam(
+  value: string | null | undefined,
+): string {
+  const trimmed = value?.trim();
+  if (!trimmed) return '';
+  const unwrapped =
+    trimmed.startsWith('<') && trimmed.endsWith('>')
+      ? trimmed.slice(1, -1)
+      : trimmed;
+  return bareHost(unwrapped);
+}
+
 export function isIndexableParkHost(host: string | null | undefined): boolean {
   return INDEXABLE_PARK_ROOT_HOSTS.has(bareHost(host));
+}
+
+function effectiveIndexableHost(options: {
+  host: string | null | undefined;
+  domainOverride?: string | null | undefined;
+}): string {
+  const overrideHost = normalizeParkDomainParam(options.domainOverride);
+  return isIndexableParkHost(overrideHost)
+    ? overrideHost
+    : bareHost(options.host);
+}
+
+function isAllowedRootSearch(options: {
+  search?: string | null | undefined;
+  domainOverride?: string | null | undefined;
+}): boolean {
+  const search = options.search?.trim();
+  if (!search) return true;
+
+  const overrideHost = normalizeParkDomainParam(options.domainOverride);
+  if (!isIndexableParkHost(overrideHost)) return false;
+
+  const params = new URLSearchParams(
+    search.startsWith('?') ? search.slice(1) : search,
+  );
+  const entries = Array.from(params.entries());
+  if (entries.length !== 1) return false;
+
+  const [key, value] = entries[0] ?? [];
+  return key === 'domain' && normalizeParkDomainParam(value) === overrideHost;
 }
 
 export function isIndexableParkRoot(options: {
   host: string | null | undefined;
   pathname: string | null | undefined;
   search?: string | null | undefined;
+  domainOverride?: string | null | undefined;
 }): boolean {
   return (
-    isIndexableParkHost(options.host) &&
+    isIndexableParkHost(effectiveIndexableHost(options)) &&
     (options.pathname?.trim() || '/') === '/' &&
-    !options.search?.trim()
+    isAllowedRootSearch(options)
   );
 }
 
@@ -35,14 +78,16 @@ export function shouldNoindexParkRequest(options: {
   host: string | null | undefined;
   pathname: string | null | undefined;
   search?: string | null | undefined;
+  domainOverride?: string | null | undefined;
 }): boolean {
   return !isIndexableParkRoot(options);
 }
 
 export function buildParkCanonicalUrl(
   host: string | null | undefined,
+  domainOverride?: string | null | undefined,
 ): string | null {
-  const normalizedHost = bareHost(host);
+  const normalizedHost = effectiveIndexableHost({ host, domainOverride });
   if (!isIndexableParkHost(normalizedHost)) return null;
   return `https://${normalizedHost}/`;
 }

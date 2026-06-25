@@ -11,6 +11,7 @@ export type ParkFaqItem = {
 export type ParkStructuredDataOptions = {
   canonicalUrl: string;
   domainName: string;
+  title: string;
   description: string;
   imageUrl?: string | null;
   marketplaceLinks: readonly ParkStructuredDataMarketplace[];
@@ -124,7 +125,7 @@ export function buildParkStructuredData(
         '@type': 'WebPage',
         '@id': `${options.canonicalUrl}#webpage`,
         url: options.canonicalUrl,
-        name: `${options.domainName} - parked domain for sale`,
+        name: options.title,
         description: options.description,
         isPartOf: {
           '@type': 'WebSite',

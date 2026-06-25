@@ -4,6 +4,7 @@ import {
   buildParkCanonicalUrl,
   isIndexableParkHost,
   isIndexableParkRoot,
+  normalizeParkDomainParam,
   shouldNoindexParkRequest,
 } from './indexing-policy';
 
@@ -12,6 +13,11 @@ describe('park indexing policy', () => {
     expect(bareHost('30003.CLICK:443')).toBe('30003.click');
     expect(bareHost('30003.click.')).toBe('30003.click');
     expect(bareHost('[::1]:3003')).toBe('::1');
+  });
+
+  it('normalizes domain query params for local convenience URLs', () => {
+    expect(normalizeParkDomainParam('<30003.CLICK>')).toBe('30003.click');
+    expect(normalizeParkDomainParam('30003.click:443')).toBe('30003.click');
   });
 
   it('allowlists only the 30003.click apex host', () => {
@@ -29,9 +35,33 @@ describe('park indexing policy', () => {
     ).toBe(false);
     expect(
       isIndexableParkRoot({
-        host: '30003.click',
+        host: 'localhost',
         pathname: '/',
         search: '?domain=example.com',
+      }),
+    ).toBe(false);
+    expect(
+      isIndexableParkRoot({
+        host: 'localhost',
+        pathname: '/',
+        search: '?domain=30003.click',
+        domainOverride: '30003.click',
+      }),
+    ).toBe(true);
+    expect(
+      isIndexableParkRoot({
+        host: 'localhost',
+        pathname: '/',
+        search: '?domain=%3C30003.click%3E',
+        domainOverride: '<30003.click>',
+      }),
+    ).toBe(true);
+    expect(
+      isIndexableParkRoot({
+        host: 'localhost',
+        pathname: '/',
+        search: '?domain=30003.click&utm_source=test',
+        domainOverride: '30003.click',
       }),
     ).toBe(false);
     expect(isIndexableParkRoot({ host: 'example.com', pathname: '/' })).toBe(
@@ -53,10 +83,21 @@ describe('park indexing policy', () => {
         search: '?utm_source=test',
       }),
     ).toBe(true);
+    expect(
+      shouldNoindexParkRequest({
+        host: 'localhost',
+        pathname: '/',
+        search: '?domain=30003.click',
+        domainOverride: '30003.click',
+      }),
+    ).toBe(false);
   });
 
   it('builds canonical URLs only for allowlisted park roots', () => {
     expect(buildParkCanonicalUrl('30003.click')).toBe('https://30003.click/');
+    expect(buildParkCanonicalUrl('localhost', '30003.click')).toBe(
+      'https://30003.click/',
+    );
     expect(buildParkCanonicalUrl('www.30003.click')).toBeNull();
   });
 });

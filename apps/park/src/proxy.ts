@@ -30,6 +30,7 @@ export function proxy(request: NextRequest) {
     host: request.headers.get('x-original-host') ?? request.headers.get('host'),
     pathname: request.nextUrl.pathname,
     search: request.nextUrl.search,
+    domainOverride: request.nextUrl.searchParams.get('domain'),
   });
 
   if (request.method !== 'GET' && request.method !== 'HEAD') {

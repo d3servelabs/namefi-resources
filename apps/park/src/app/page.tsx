@@ -22,6 +22,7 @@ import { getDomainQueryParam } from '@/lib/request';
 import {
   buildParkCanonicalUrl,
   isIndexableParkRoot,
+  normalizeParkDomainParam,
 } from '@/lib/indexing-policy';
 import {
   countDomainsByOwner,
@@ -85,6 +86,8 @@ const DEFAULT_METADATA_TITLE = 'Namefi Park';
 const DEFAULT_METADATA_DESCRIPTION =
   'Namefi Park provides a simple landing page for parked domains with marketplace links, AI previews, and ownership details.';
 const METADATA_DESCRIPTION_MAX_LENGTH = 180;
+const NAMEFI_REGISTRAR_VALUE_PROP =
+  'ICANN Accredited Registrar tokenizing internet domain names for trading, DeFi and future of Internet.';
 const MARKETPLACE_META = {
   manage: {
     label: 'Manage on Namefi',
@@ -489,14 +492,26 @@ interface ParkPageSearchParams {
 function coerceSearchParam(value?: string | string[]): string | null {
   if (Array.isArray(value)) {
     const match = value.find((item) => Boolean(item?.trim()));
-    return match ? match.trim().toLowerCase() : null;
+    const normalized = normalizeParkDomainParam(match);
+    return normalized || null;
   }
-  const sanitized = value?.trim();
-  return sanitized ? sanitized.toLowerCase() : null;
+  const normalized = normalizeParkDomainParam(value);
+  return normalized || null;
 }
 
-function hasSearchParams(searchParams?: ParkPageSearchParams): boolean {
-  return Object.values(searchParams ?? {}).some((value) => value !== undefined);
+function serializeSearchParams(searchParams?: ParkPageSearchParams): string {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(searchParams ?? {})) {
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        if (item !== undefined) params.append(key, item);
+      }
+      continue;
+    }
+    if (value !== undefined) params.append(key, value);
+  }
+  const serialized = params.toString();
+  return serialized ? `?${serialized}` : '';
 }
 
 function getDisplayDomainName(
@@ -512,7 +527,7 @@ function getDisplayDomainName(
 }
 
 function buildMetadataTitle(domainName: string): string {
-  return `${domainName} - Parked domain for sale | Namefi`;
+  return `${domainName} is parked with Namefi: ${NAMEFI_REGISTRAR_VALUE_PROP}`;
 }
 
 function buildMetadataDescription(
@@ -562,15 +577,16 @@ export async function generateMetadata({
   searchParams?: Promise<ParkPageSearchParams>;
 }): Promise<Metadata> {
   const resolvedSearchParams = await searchParams;
-  const requestHasSearchParams = hasSearchParams(resolvedSearchParams);
+  const requestSearch = serializeSearchParams(resolvedSearchParams);
   const domainFromQuery = coerceSearchParam(resolvedSearchParams?.domain);
   const actualHost = await getActualRequestHost();
   const host = await getRequestHost(domainFromQuery);
-  const canonicalUrl = buildParkCanonicalUrl(actualHost);
+  const canonicalUrl = buildParkCanonicalUrl(actualHost, domainFromQuery);
   const isIndexable = isIndexableParkRoot({
     host: actualHost,
     pathname: '/',
-    search: requestHasSearchParams ? '?' : '',
+    search: requestSearch,
+    domainOverride: domainFromQuery,
   });
 
   if (!isIndexable || !canonicalUrl) {
@@ -636,7 +652,7 @@ export default async function ParkPage({
   searchParams?: Promise<ParkPageSearchParams>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const requestHasSearchParams = hasSearchParams(resolvedSearchParams);
+  const requestSearch = serializeSearchParams(resolvedSearchParams);
   const domainFromQuery = coerceSearchParam(resolvedSearchParams?.domain);
   const actualHost = await getActualRequestHost();
   const host = await getRequestHost(domainFromQuery);
@@ -690,13 +706,14 @@ export default async function ParkPage({
     .filter(Boolean)
     .filter((value, index, self) => self.indexOf(value) === index)
     .slice(0, 12);
-  const canonicalUrl = buildParkCanonicalUrl(actualHost);
+  const canonicalUrl = buildParkCanonicalUrl(actualHost, domainFromQuery);
   const shouldIndexCurrentPage = Boolean(
     canonicalUrl &&
       isIndexableParkRoot({
         host: actualHost,
         pathname: '/',
-        search: requestHasSearchParams ? '?' : '',
+        search: requestSearch,
+        domainOverride: domainFromQuery,
       }),
   );
   const domainName = getDisplayDomainName(
@@ -711,6 +728,7 @@ export default async function ParkPage({
       ? buildParkStructuredData({
           canonicalUrl,
           domainName,
+          title: buildMetadataTitle(domainName),
           description,
           imageUrl: aiPreview?.url,
           marketplaceLinks,
@@ -818,7 +836,10 @@ export default async function ParkPage({
                         ))}
                       </div>
                     ) : null}
-                    <p className="mx-auto max-w-[44rem] text-balance text-[1.02rem] leading-[1.8] font-semibold text-foreground/90 sm:text-[1.2rem] lg:mx-0">
+                    <p
+                      data-testid="park.ai-generated-description"
+                      className="mx-auto max-w-[44rem] text-balance text-[1.02rem] leading-[1.8] font-semibold text-foreground/90 sm:text-[1.2rem] lg:mx-0"
+                    >
                       {description}
                     </p>
                     <p className="mx-auto max-w-[44rem] text-[0.9rem] leading-[1.65] text-foreground/63 italic sm:text-[0.98rem] lg:mx-0">
