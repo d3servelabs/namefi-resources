@@ -40,7 +40,7 @@ The discipline here is saying no. The fastest way to lose money flipping is to f
 
 Sourcing tells you what's available; appraisal tells you what it's worth, and the two together define your margin. Domain valuation is genuinely hard because domains are not commodities — there is no ticker price for "a five-letter `.com`," and the same name can be worthless to one buyer and strategically essential to another.
 
-A defensible number comes from [comparable sales](/en/glossary/comparable-sales/), the strength and [liquidity](/en/glossary/domain-liquidity/) of the [extension](/en/tld/com/), the directness of the buyer use case, and any existing value like traffic or age — not from an automated appraisal tool you treat as gospel. Misjudge this and you overpay on the way in or underprice on the way out, and either error eats the whole trade. Our guide to [how to value a domain name](/en/blog/how-to-value-a-domain-name/) breaks down the inputs and the common traps.
+A defensible number comes from [comparable sales](/en/glossary/comparable-sales/), the strength and [liquidity](/en/glossary/domain-liquidity/) of the extension, the directness of the buyer use case, and any existing value like traffic or age — not from an automated appraisal tool you treat as gospel. Misjudge this and you overpay on the way in or underprice on the way out, and either error eats the whole trade. Our guide to [how to value a domain name](/en/blog/how-to-value-a-domain-name/) breaks down the inputs and the common traps.
 
 ## Name: understanding what makes a domain valuable
 

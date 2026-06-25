@@ -66,7 +66,7 @@ Half of not overpaying is valuing the name correctly going in, and an auction gi
 
 **Count the unique bidders, not the bid count.** Two determined people can run a name up through dozens of bids; that's a duel, not a market. Many distinct bidders signals broad demand and a probable floor. A price set by one rival chasing you shows their appetite, not the market's.
 
-**Sanity-check against [comparable sales](/en/glossary/comparable-sales/).** A live auction price is one noisy data point. Before you decide a number is "fair because someone else bid it," anchor on what genuinely similar names (same kind of word, same [extension](/en/tld/com/), same buyer use case) have actually sold for. The fundamentals in [how to find domains to flip](/en/blog/how-to-find-domains-to-flip/) apply directly to appraising what's on the block.
+**Sanity-check against [comparable sales](/en/glossary/comparable-sales/).** A live auction price is one noisy data point. Before you decide a number is "fair because someone else bid it," anchor on what genuinely similar names (same kind of word, same extension, same buyer use case) have actually sold for. The fundamentals in [how to find domains to flip](/en/blog/how-to-find-domains-to-flip/) apply directly to appraising what's on the block.
 
 **Separate the name from the metrics.** Expiry auctions love to show age, backlinks, and traffic, and these can be real value or recycled spam, manipulated link profiles, and traffic that evaporates the moment the old content goes down. Treat impressive metrics as a reason to dig, not a reason to bid. Resale value to a real [end user](/en/glossary/end-user/) usually rests on the string itself, not on a [SEO](/en/glossary/seo/) history you can't fully verify.
 
