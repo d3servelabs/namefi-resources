@@ -42,6 +42,7 @@ function effectiveIndexableHost(options: {
 }
 
 function isAllowedRootSearch(options: {
+  host: string | null | undefined;
   search?: string | null | undefined;
   domainOverride?: string | null | undefined;
 }): boolean {
@@ -58,7 +59,11 @@ function isAllowedRootSearch(options: {
   if (entries.length !== 1) return false;
 
   const [key, value] = entries[0] ?? [];
-  return key === 'domain' && normalizeParkDomainParam(value) === overrideHost;
+  return (
+    key === 'domain' &&
+    normalizeParkDomainParam(value) === overrideHost &&
+    !isIndexableParkHost(options.host)
+  );
 }
 
 export function isIndexableParkRoot(options: {

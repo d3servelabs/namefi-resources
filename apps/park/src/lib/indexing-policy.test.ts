@@ -64,6 +64,14 @@ describe('park indexing policy', () => {
         domainOverride: '30003.click',
       }),
     ).toBe(false);
+    expect(
+      isIndexableParkRoot({
+        host: '30003.click',
+        pathname: '/',
+        search: '?domain=30003.click',
+        domainOverride: '30003.click',
+      }),
+    ).toBe(false);
     expect(isIndexableParkRoot({ host: 'example.com', pathname: '/' })).toBe(
       false,
     );
@@ -91,6 +99,14 @@ describe('park indexing policy', () => {
         domainOverride: '30003.click',
       }),
     ).toBe(false);
+    expect(
+      shouldNoindexParkRequest({
+        host: '30003.click',
+        pathname: '/',
+        search: '?domain=30003.click',
+        domainOverride: '30003.click',
+      }),
+    ).toBe(true);
   });
 
   it('builds canonical URLs only for allowlisted park roots', () => {

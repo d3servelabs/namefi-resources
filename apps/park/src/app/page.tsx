@@ -571,6 +571,10 @@ function jsonLdScriptContent(value: Record<string, unknown>): string {
   return JSON.stringify(value).replace(/</g, '\\u003c');
 }
 
+function getCanonicalHost(canonicalUrl: string): string {
+  return new URL(canonicalUrl).hostname;
+}
+
 export async function generateMetadata({
   searchParams,
 }: {
@@ -580,7 +584,6 @@ export async function generateMetadata({
   const requestSearch = serializeSearchParams(resolvedSearchParams);
   const domainFromQuery = coerceSearchParam(resolvedSearchParams?.domain);
   const actualHost = await getActualRequestHost();
-  const host = await getRequestHost(domainFromQuery);
   const canonicalUrl = buildParkCanonicalUrl(actualHost, domainFromQuery);
   const isIndexable = isIndexableParkRoot({
     host: actualHost,
@@ -593,7 +596,7 @@ export async function generateMetadata({
     return noindexMetadata();
   }
 
-  const data = await loadPageData(host);
+  const data = await loadPageData(getCanonicalHost(canonicalUrl));
   if (data.type !== 'park_page') {
     return noindexMetadata();
   }
@@ -655,7 +658,20 @@ export default async function ParkPage({
   const requestSearch = serializeSearchParams(resolvedSearchParams);
   const domainFromQuery = coerceSearchParam(resolvedSearchParams?.domain);
   const actualHost = await getActualRequestHost();
-  const host = await getRequestHost(domainFromQuery);
+  const canonicalUrl = buildParkCanonicalUrl(actualHost, domainFromQuery);
+  const shouldIndexCurrentPage = Boolean(
+    canonicalUrl &&
+      isIndexableParkRoot({
+        host: actualHost,
+        pathname: '/',
+        search: requestSearch,
+        domainOverride: domainFromQuery,
+      }),
+  );
+  const host =
+    shouldIndexCurrentPage && canonicalUrl
+      ? getCanonicalHost(canonicalUrl)
+      : await getRequestHost(domainFromQuery);
   const data = await loadPageData(host);
   if (data.type === 'redirect_url') {
     redirect(data.redirectUrl);
@@ -706,16 +722,6 @@ export default async function ParkPage({
     .filter(Boolean)
     .filter((value, index, self) => self.indexOf(value) === index)
     .slice(0, 12);
-  const canonicalUrl = buildParkCanonicalUrl(actualHost, domainFromQuery);
-  const shouldIndexCurrentPage = Boolean(
-    canonicalUrl &&
-      isIndexableParkRoot({
-        host: actualHost,
-        pathname: '/',
-        search: requestSearch,
-        domainOverride: domainFromQuery,
-      }),
-  );
   const domainName = getDisplayDomainName(
     data.domainDocument,
     data.logicalHost,
