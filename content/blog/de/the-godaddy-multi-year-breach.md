@@ -9,7 +9,7 @@ description: 'Zwischen 2020 und 2022 lebte eine einzelne Bedrohungsakteurgruppe 
 keywords: ['godaddy einbruch', 'godaddy datenpanne', 'managed wordpress breach', 'registrar sicherheit', 'domain sicherheit', 'mehrjähriger einbruch', 'cpanel malware', 'website redirect angriff', 'ssl private key offenlegung', 'sftp passwort breach', 'sec 10-k cybersicherheit', 'registrar konzentrationsrisiko', 'single point of failure']
 ---
 
-Ein Domain-Registrar ist das langweiligste Unternehmen, von dem man jemals vollständig abhängig sein wird.
+Ein Domain-[Registrar](/de/glossary/registrar/) ist das langweiligste Unternehmen, von dem man jemals vollständig abhängig sein wird.
 
 Man bezahlt es einmal im Jahr. Man meldet sich vielleicht zweimal an. Und im Gegenzug hält es das eine, was das eigene Unternehmen erreichbar macht: das Recht zu sagen „dieser Name zeigt hierhin." E-Mail, Website, Login, Zahlungen — jeder digitale Faden, den man besitzt, läuft durch denjenigen, der die DNS der eigenen Domain kontrolliert. Die meisten Menschen denken nach dem Checkout nie wieder an dieses Unternehmen.
 

@@ -21,7 +21,7 @@ Cela dit, l'équipe d'ingénierie de Namefi analyse les pannes mondiales comme c
 
 ## Ce qui s'est réellement passé chez AWS — sans jargon
 
-Chaque application et site web a besoin d'un moyen de « chercher » où se connecter. Cet annuaire d'Internet s'appelle le DNS — abréviation de Domain Name System (Système de Noms de Domaine). Le 20 octobre, un problème de nommage au sein d'AWS a fait que certains ordinateurs ne pouvaient pas trouver un service de base de données AWS clé par son nom. Si l'annuaire ne peut pas fournir la bonne entrée au bon moment, même des systèmes en bonne santé ne peuvent pas communiquer entre eux.
+Chaque application et site web a besoin d'un moyen de « chercher » où se connecter. Cet annuaire d'Internet s'appelle le [DNS](/fr/glossary/dns/) — abréviation de Domain Name System (Système de Noms de Domaine). Le 20 octobre, un problème de nommage au sein d'AWS a fait que certains ordinateurs ne pouvaient pas trouver un service de base de données AWS clé par son nom. Si l'annuaire ne peut pas fournir la bonne entrée au bon moment, même des systèmes en bonne santé ne peuvent pas communiquer entre eux.
 
 AWS a résolu le problème immédiat de nommage en quelques heures, puis a passé le reste de la journée à résorber les retards accumulés et à ramener les systèmes à la normale. En fin d'après-midi (heure du Pacifique), AWS a déclaré que tout fonctionnait à nouveau normalement, bien que certains services aient mis plus de temps à rattraper leur retard.
 

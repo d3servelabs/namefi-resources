@@ -10,7 +10,7 @@ ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['ccTLD-Marktanteil', 'Länderdomains', '.cn', '.de', '.uk', '.tk', '.io', 'Domain-Statistiken', 'Registry-Daten', 'namefi']
 ---
 
-Wenn die meisten Menschen an das Internet denken, denken sie an `.com`. Und in nackten Zahlen ausgedrückt ist `.com` mit rund 160 Millionen verwalteten Namen immer noch die größte Top-Level-Domain der Welt. Aber `.com` ist eine gTLD – eine *generische* Top-Level-Domain. Richtet man den Blick jedoch auf **länderspezifische TLDs (ccTLDs)** – die aus zwei Buchstaben bestehenden Endungen, die Nationen und Territorien gemäß [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) zugewiesen werden –, wird das Bild wesentlich interessanter und weitaus weniger vorhersehbar.
+Wenn die meisten Menschen an das Internet denken, denken sie an `.com`. Und in nackten Zahlen ausgedrückt ist `.com` mit rund 160 Millionen verwalteten Namen immer noch die größte [Top-Level-Domain](/de/glossary/tld/) der Welt. Aber `.com` ist eine [gTLD](/de/glossary/gtld/) – eine *generische* Top-Level-Domain. Richtet man den Blick jedoch auf **länderspezifische TLDs (ccTLDs)** – die aus zwei Buchstaben bestehenden Endungen, die Nationen und Territorien gemäß [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) zugewiesen werden –, wird das Bild wesentlich interessanter und weitaus weniger vorhersehbar.
 
 Dieser Beitrag zeigt auf, welche ccTLDs nach Registrierungsvolumen führend sind, warum die Spitzenreiter nicht diejenigen sind, die man vielleicht erwarten würde, und was diese Zahlen darüber verraten, wie das Internet in verschiedenen Teilen der Welt *tatsächlich genutzt* wird.
 
@@ -18,7 +18,7 @@ Dieser Beitrag zeigt auf, welche ccTLDs nach Registrierungsvolumen führend sind
 
 Öffentliche Registry-Daten (von Betreibern, die Zählungen veröffentlichen, sowie Aggregator-Snapshots wie der [DNIB Q1 2026 Domain Name Industry Brief](https://www.dnib.com/articles/the-domain-name-industry-brief-q1-2026#:~:text=The%20top%2010%20ccTLDs%2C%20as%20of%20March%2031%2C%202026%2C%20were%20.cn%2C%20.de%2C%20.uk%2C%20.ru%2C%20.nl%2C%20.br%2C%20.fr%2C%20.au%2C%20.in%20and%20.eu.) und die [.de-Statistiken der DENIC](https://www.denic.de/en/products/statistics-about-de/)) ordnen die Spitzengruppe der ccTLDs in etwa dieser Reihenfolge ein:
 
-- **.cn (China)** – im Bereich von rund 20 Millionen Namen. An den meisten Tagen die größte ccTLD.
+- **.cn (China)** – im Bereich von rund 20 Millionen Namen. An den meisten Tagen die größte [ccTLD](/de/glossary/cctld/).
 - **.de (Deutschland)** – etwa 17 Millionen. Verwaltet von der DENIC; im Jahresvergleich bemerkenswert stabil.
 - **.uk (Vereinigtes Königreich)** – etwa 10 Millionen für `.uk` und `.co.uk` zusammen.
 - **.nl (Niederlande)** – etwa 6 Millionen. Überdimensional groß für ein Land mit 17 Millionen Einwohnern.
@@ -43,22 +43,22 @@ Das ist der wichtigste Grund, warum der ccTLD-Marktanteil ungewohnt aussieht. De
 
 Mehrere ccTLDs kleinerer Länder werden eher wie generische Endungen betrieben, und die meisten ihrer Registrierungen stammen aus dem Ausland.
 
-- **.io** (Britisches Territorium im Indischen Ozean) – beliebt bei Tech-Start-ups wegen des Wortspiels „Input/Output“.
-- **.tv** (Tuvalu) – an Medien- und Streaming-Marken verpachtet.
-- **.co** (Kolumbien) – wird weltweit als Alternative zu `.com` vermarktet.
-- **.me** (Montenegro) – spielerisch als Pronomen einsetzbar, beliebt für persönliche Websites.
-- **.ai** (Anguilla) – kürzlich durch den KI-Boom explodiert.
+- **[.io](/de/tld/io/)** (Britisches Territorium im Indischen Ozean) – beliebt bei Tech-Start-ups wegen des Wortspiels „Input/Output“.
+- **[.tv](/de/tld/tv/)** (Tuvalu) – an Medien- und Streaming-Marken verpachtet.
+- **[.co](/de/tld/co/)** (Kolumbien) – wird weltweit als Alternative zu `.com` vermarktet.
+- **[.me](/de/tld/me/)** (Montenegro) – spielerisch als Pronomen einsetzbar, beliebt für persönliche Websites.
+- **[.ai](/de/tld/ai/)** (Anguilla) – kürzlich durch den KI-Boom explodiert.
 - **.tk** (Tokelau) – historisch bedingt durch Programme für kostenlose Registrierungen aufgebläht, die mittlerweile [eingestellt wurden](https://en.wikipedia.org/wiki/.tk).
 
 Diese Zonen können sehr hohe Volumenzahlen aufweisen, aber das Volumen spiegelt die *weltweite Markennachfrage* wider und nicht die Bevölkerungszahl oder Wirtschaftsleistung im zugewiesenen Land. Tuvalu hat etwa 11.000 Einwohner und eine der am meisten beachteten ccTLDs der Welt.
 
 ### Kostenlose Registrierungen verzerren die Tabelle
 
-Den Großteil der 2010er Jahre bot Freenom kostenlose Registrierungen für `.tk`, `.ml`, `.ga`, `.cf` und `.gq` an. Zu Spitzenzeiten soll allein `.tk` mehr Registrierungen gehabt haben als `.de`. Branchenbeobachter wiesen durchgehend darauf hin, dass die meisten dieser Namen entweder ungenutzt blieben oder aktiv für Phishing missbraucht wurden. Nach [ICANN-Verfahren und Registry-Übernahmen](https://www.icann.org/en/system/files/files/proposed-renewal-tk-redelegation-12sep23-en.pdf) stellte Freenom neue Registrierungen ein, und der scheinbare Marktanteil löste sich in Luft auf. Die Lektion: Registrierungs*volumen* und Registrierungs*wert* sind zwei unterschiedliche Kennzahlen.
+Den Großteil der 2010er Jahre bot Freenom kostenlose Registrierungen für `.tk`, `.ml`, `.ga`, `.cf` und `.gq` an. Zu Spitzenzeiten soll allein `.tk` mehr Registrierungen gehabt haben als `.de`. Branchenbeobachter wiesen durchgehend darauf hin, dass die meisten dieser Namen entweder ungenutzt blieben oder aktiv für [Phishing](/de/glossary/phishing/) missbraucht wurden. Nach [ICANN-Verfahren und Registry-Übernahmen](https://www.icann.org/en/system/files/files/proposed-renewal-tk-redelegation-12sep23-en.pdf) stellte Freenom neue Registrierungen ein, und der scheinbare Marktanteil löste sich in Luft auf. Die Lektion: Registrierungs*volumen* und Registrierungs*wert* sind zwei unterschiedliche Kennzahlen.
 
 ### Beschränkte ccTLDs bleiben absichtlich klein
 
-Einige ccTLDs haben Berechtigungsregeln – man benötigt eine lokale Adresse, ein lokales Unternehmen oder einen nationalen Personalausweis. `.jp` und `.no` fallen genau in diese Kategorie: Die JPRS verlangt für `.jp` eine ständige Postanschrift in Japan, und Norid erfordert für `.no` den Nachweis einer norwegischen Identität oder Organisationszugehörigkeit sowie eine norwegische Postanschrift. `.fi` ist ein nützliches Gegenbeispiel: Traficom erlaubt es mittlerweile Unternehmen, Organisationen und Privatpersonen, unabhängig von ihrem Wohnsitz Domains zu registrieren. Beschränkte Zonen werden beim reinen Volumen niemals mit vollständig offenen Zonen konkurrieren können, aber die dort existierenden Namen sind oft außergewöhnlich „sauber“: niedrige Missbrauchsraten, geringe Parking-Raten und hohe Verlängerungsraten. Wenn Sie nach einer Registry suchen, deren Volumenzahlen Sie tatsächlich vertrauen können, sind beschränkte ccTLDs ein guter Anhaltspunkt.
+Einige ccTLDs haben Berechtigungsregeln – man benötigt eine lokale Adresse, ein lokales Unternehmen oder einen nationalen Personalausweis. `.jp` und `.no` fallen genau in diese Kategorie: Die JPRS verlangt für `.jp` eine ständige Postanschrift in Japan, und Norid erfordert für `.no` den Nachweis einer norwegischen Identität oder Organisationszugehörigkeit sowie eine norwegische Postanschrift. `.fi` ist ein nützliches Gegenbeispiel: Traficom erlaubt es mittlerweile Unternehmen, Organisationen und Privatpersonen, unabhängig von ihrem Wohnsitz Domains zu registrieren. Beschränkte Zonen werden beim reinen Volumen niemals mit vollständig offenen Zonen konkurrieren können, aber die dort existierenden Namen sind oft außergewöhnlich „sauber“: niedrige Missbrauchsraten, geringe Parking-Raten und hohe Verlängerungsraten. Wenn Sie nach einer [Registry](/de/glossary/registry/) suchen, deren Volumenzahlen Sie tatsächlich vertrauen können, sind beschränkte ccTLDs ein guter Anhaltspunkt.
 
 ## Volumen vs. Wert: Was die Zahlen aussagen und was nicht
 
@@ -81,7 +81,7 @@ Für Entwickler und Gründer ergeben sich folgende praktische Erkenntnisse:
 
 ## Wie Namefi darüber denkt
 
-Bei Namefi leiten wir Registrierungen über mehrere Registrar-Backends für viele der oben genannten ccTLDs weiter, einschließlich der beschränkten Domains mit Berechtigungsprüfungen. Da wir den Eigentumsnachweis On-Chain tokenisieren, anstatt uns auf die Kontrollen auf Kontoebene eines einzelnen Registrars zu verlassen, wird die Wahl der Endung zu einer Routing-Entscheidung anstelle eines Lock-in-Effekts. Möchten Sie mit `.io` starten und dieselbe Markenidentität später für einen lokalen Markt auf `.de` übertragen? Das ist ein Transfer-Workflow, für den wir gemacht sind, kein langwieriges Migrationsprojekt.
+Bei Namefi leiten wir Registrierungen über mehrere [Registrar](/de/glossary/registrar/)-Backends für viele der oben genannten ccTLDs weiter, einschließlich der beschränkten Domains mit Berechtigungsprüfungen. Da wir den Eigentumsnachweis [On-Chain](/de/glossary/on-chain/) tokenisieren, anstatt uns auf die Kontrollen auf Kontoebene eines einzelnen Registrars zu verlassen, wird die Wahl der Endung zu einer Routing-Entscheidung anstelle eines Lock-in-Effekts. Möchten Sie mit `.io` starten und dieselbe Markenidentität später für einen lokalen Markt auf `.de` übertragen? Das ist ein Transfer-Workflow, für den wir gemacht sind, kein langwieriges Migrationsprojekt.
 
 Der tiefere Sinn: Beim ccTLD-Marktanteil geht es um *Vertrauenssignale* im offenen Internet. Die Namen, die Menschen registrieren, zeigen Ihnen, welche Endungen sich in welchen Märkten natürlich anfühlen. Und diese vertrauten Endungen sind nicht immer diejenigen, die in den Volumen-Tabellen ganz oben stehen.
 

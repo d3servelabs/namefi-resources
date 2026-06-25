@@ -93,7 +93,7 @@ Es gibt nichts umsonst (There is no free lunch). Die verschiedenen ZK-Varianten 
 
 ## Wie Namefi darüber denkt
 
-Bei Prozessen rund um den Domain-Besitz ist die interessanteste Anwendung von ZK der Beweis, dass man einen Namen besitzt, ohne preiszugeben, *welchen* Namen. Eigentumsnachweise gegenüber einer On-Chain-Registry können mit sehr ausgereiften Tools (Groth16, PLONK) als rechnerisches ZK umgesetzt werden, und genau darauf laufen heutige Produktionssysteme. Für sensiblere Abläufe – etwa den Beweis, dass eine Domain zu einer *Gruppe* vertrauenswürdiger Entitäten gehört, ohne zu verraten, zu welcher – könnten statistische oder perfekte ZK-Verfahren auf eingeschränkten Aussagen relevant werden. Das Ziel dieses Beitrags ist es, diese Kompromisse greifbar zu machen: Wählen Sie aus, was Sie wirklich brauchen, und notieren Sie sich die Annahmen, die Sie damit in Kauf nehmen.
+Bei Prozessen rund um den Domain-Besitz ist die interessanteste Anwendung von ZK der Beweis, dass man einen Namen besitzt, ohne preiszugeben, *welchen* Namen. Eigentumsnachweise gegenüber einer [On-Chain](/de/glossary/on-chain/)-[Registry](/de/glossary/registry/) können mit sehr ausgereiften Tools (Groth16, PLONK) als rechnerisches ZK umgesetzt werden, und genau darauf laufen heutige Produktionssysteme. Für sensiblere Abläufe – etwa den Beweis, dass eine Domain zu einer *Gruppe* vertrauenswürdiger Entitäten gehört, ohne zu verraten, zu welcher – könnten statistische oder perfekte ZK-Verfahren auf eingeschränkten Aussagen relevant werden. Das Ziel dieses Beitrags ist es, diese Kompromisse greifbar zu machen: Wählen Sie aus, was Sie wirklich brauchen, und notieren Sie sich die Annahmen, die Sie damit in Kauf nehmen.
 
 ## Quellen und weiterführende Literatur
 

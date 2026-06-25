@@ -9,13 +9,13 @@ description: 'Cómo la startup de tarjetas cripto Monaco se rebautizó como Cryp
 keywords: ['mona.co', 'crypto.com', 'dominio crypto.com', 'monaco mco', 'matt blaze crypto.com', 'kris marszalek', 'actualización de dominio', 'dominio premium', 'dominio de categoría', 'adquisición de dominio', 'rebranding cripto', 'dominio de coincidencia exacta', 'branding']
 ---
 
-Durante sus primeros años, una de las marcas más agresivas del mundo cripto vivía en una dirección discretamente ingeniosa: **Mona.co** — la empresa "Monaco," escrita a través de un dominio y un TLD de código de país, al estilo de bit.ly o goo.gl, que convertían un `.ly` o `.gl` en parte de la palabra.
+Durante sus primeros años, una de las marcas más agresivas del mundo cripto vivía en una dirección discretamente ingeniosa: **Mona.co** — la empresa "Monaco," escrita a través de un dominio y un [TLD](/es/glossary/tld/) de código de país, al estilo de bit.ly o goo.gl, que convertían un `.ly` o `.gl` en parte de la palabra.
 
-El nombre era un juego de palabras, y uno bueno. La startup, fundada en Hong Kong en 2016, estaba construyendo una tarjeta Visa y una billetera para gastar criptomonedas. "Monaco" evocaba riqueza, lujo, la Riviera — y el `.co` permitía a la marca tener una URL corta y memorable mientras el equipo esperaba ver hasta dónde podía llegar la idea. Mona.co decía el nombre de la empresa. No decía la categoría.
+El nombre era un juego de palabras, y uno bueno. La startup, fundada en Hong Kong en 2016, estaba construyendo una tarjeta Visa y una [billetera](/es/glossary/wallet/) para gastar criptomonedas. "Monaco" evocaba riqueza, lujo, la Riviera — y el `.co` permitía a la marca tener una URL corta y memorable mientras el equipo esperaba ver hasta dónde podía llegar la idea. Mona.co decía el nombre de la empresa. No decía la categoría.
 
 Ese era el vacío. Monaco no intentaba ser una empresa de tarjetas de lujo. Intentaba ser *el* lugar donde la gente corriente tocara la criptomoneda por primera vez. Y la palabra única que nombraba a toda esa categoría —la palabra que cada titular, cada regulador, cada recién llegado ya usaba— no era "Monaco". Era **crypto**.
 
-El dominio de coincidencia exacta para esa ambición era Crypto.com. Y había pertenecido, desde 1993, a un hombre que pasó 25 años negándose a venderlo: el criptógrafo Matt Blaze.
+El [dominio de coincidencia exacta](/es/glossary/exact-match-domain/) para esa ambición era Crypto.com. Y había pertenecido, desde 1993, a un hombre que pasó 25 años negándose a venderlo: el criptógrafo Matt Blaze.
 
 En julio de 2018, eso finalmente cambió. Monaco compró Crypto.com en un acuerdo que nunca hizo público —pero que expertos dijeron a The Verge podría valer hasta **[$10 millones](https://techcrunch.com/2018/07/05/crypto-com-mco/#:~:text=Experts%20told%20The%20Verge%20that%20Crypto.com%20could%20have%20attracted%20as%20much%20as%20%2410%20million)**— y se rebautizó de arriba a abajo como Crypto.com.
 
@@ -104,13 +104,13 @@ El dominio principal de una empresa aparece en lugares que el equipo de marketin
 - En los resultados de búsqueda y la barra del navegador —donde "crypto.com" es algo que un recién llegado podría escribir *antes* de conocer ninguna marca.
 - En cada recomendación de boca en boca: "solo ve a crypto punto com".
 
-Cada una de esas repeticiones o añade fricción o la elimina. Mona.co requería un pequeño acto de traducción —*Monaco, escrito con el .co*— y no le decía nada a un principiante sobre la categoría. Crypto.com eliminaba la traducción por completo y precargaba la categoría en el nombre. Para una empresa cuya estrategia completa era ser la rampa de acceso predeterminada para personas que no sabían nada del espacio, esa precarga *era* el producto.
+Cada una de esas repeticiones o añade fricción o la elimina. Mona.co requería un pequeño acto de traducción —*Monaco, escrito con el [.co](/es/tld/co/)*— y no le decía nada a un principiante sobre la categoría. Crypto.com eliminaba la traducción por completo y precargaba la categoría en el nombre. Para una empresa cuya estrategia completa era ser la rampa de acceso predeterminada para personas que no sabían nada del espacio, esa precarga *era* el producto.
 
 El dominio no construyó la marca de Crypto.com. Pero una vez que Crypto.com fue la dirección, cada mención futura de la categoría —en titulares, en conversaciones, en la búsqueda angustiada de alguien que acaba de escuchar hablar de Bitcoin en una cena— tenía la posibilidad de aterrizar en la puerta principal de la empresa en lugar de en la de otro.
 
 ## Lo que los fundadores deberían aprender del Caso 20
 
-La conclusión fácil —"compra el .com que define la categoría"— es la lección equivocada, porque casi ningún fundador *puede* hacerlo. Crypto.com existió durante 25 años y fue imposible de comprar durante 24 de ellos. Las lecciones útiles son más precisas:
+La conclusión fácil —"compra el [.com](/es/tld/com/) que define la categoría"— es la lección equivocada, porque casi ningún fundador *puede* hacerlo. Crypto.com existió durante 25 años y fue imposible de comprar durante 24 de ellos. Las lecciones útiles son más precisas:
 
 1. **Un dominio con un truco de marca inteligente es una buena rampa de acceso.** Mona.co hizo un trabajo genuino: corto, premium, memorable, barato en comparación con la coincidencia exacta. Un juego de palabras con `.co` o un dominio con modificador es un punto de partida razonable, no un fracaso.
 2. **Conoce la diferencia entre tu nombre y tu categoría.** La mayoría de las actualizaciones de dominio cambian un nombre descriptivo por el nombre de marca. La actualización más rara y poderosa cambia la marca por el nombre de la *categoría* —pero solo es rentable si tienes la intención de ser el predeterminado, no una boutique.

@@ -21,7 +21,7 @@ En términos generales, las plataformas se dividen en tres grupos:
 
 1. **Servicios de tokenización orientados al propietario.** Traes un dominio ICANN real (o registras uno) y la plataforma lo tokeniza. Ejemplos: **Namefi, 3DNS**.
 2. **Capas de protocolo e infraestructura orientada a registros.** La plataforma desarrolla estándares, contratos inteligentes o asociaciones con registros sobre los cuales construyen otras plataformas (y registradores). Ejemplos: **Doma Protocol, D3 Global Inc**.
-3. **Herramientas especializadas de venta y liquidez.** Subastas, fraccionalización, préstamos: se construyen sobre dominios tokenizados en lugar de producirlos. Ejemplos: **GBM** (subastas), **Doma Prime** (liquidez), **Domora** (enfocada en la fraccionalización).
+3. **Herramientas especializadas de venta y [liquidez](/es/glossary/domain-liquidity/).** Subastas, fraccionalización, préstamos: se construyen sobre dominios tokenizados en lugar de producirlos. Ejemplos: **GBM** (subastas), **Doma Prime** (liquidez), **Domora** (enfocada en la fraccionalización).
 
 Estas categorías se superponen. Algunas plataformas abarcan más de una. Pero "¿en qué grupo se sitúa esta plataforma?" es la primera pregunta que debes hacerte.
 
@@ -31,11 +31,11 @@ Estas categorías se superponen. Algunas plataformas abarcan más de una. Pero "
 
 ### Namefi
 
-**Ideal para:** propietarios que desean un `.com`/`.xyz`/`.io` real [tokenizado](/es/glossary/tokenize/) en Ethereum o Base, con amplio soporte en mercados de NFT y préstamos [DeFi](/en/glossary/defi/), y una gestión de DNS que no se sienta como un paso atrás en comparación con Cloudflare.
+**Ideal para:** propietarios que desean un `.com`/`.xyz`/`.io` real [tokenizado](/es/glossary/tokenize/) en [Ethereum](/es/glossary/ethereum/) o Base, con amplio soporte en mercados de NFT y préstamos [DeFi](/es/glossary/defi/), y una gestión de DNS que no se sienta como un paso atrás en comparación con Cloudflare.
 
-**Aspectos destacados:** dominios reconocidos por la [ICANN](/es/glossary/icann/) en múltiples [TLDs](/en/glossary/tld/), propiedad on-chain a través de [NFTs](/es/glossary/nft/) estándar ([ERC-721](/en/glossary/erc-721/), para que las billeteras, los mercados y las herramientas on-chain simplemente funcionen), gestión completa de DNS incluyendo [DNSSEC](/en/glossary/dnssec/), un [mercado](/es/glossary/marketplace/) integrado en la aplicación e integraciones con pagos on-chain ([x402](/en/glossary/x402/)). Multicadena. Autocustodia desde el primer día.
+**Aspectos destacados:** dominios reconocidos por la [ICANN](/es/glossary/icann/) en múltiples [TLDs](/es/glossary/tld/), propiedad [on-chain](/es/glossary/on-chain/) a través de [NFTs](/es/glossary/nft/) estándar ([ERC-721](/es/glossary/erc-721/), para que las billeteras, los mercados y las herramientas on-chain simplemente funcionen), gestión completa de DNS incluyendo [DNSSEC](/es/glossary/dnssec/), un [mercado](/es/glossary/marketplace/) integrado en la aplicación e integraciones con pagos on-chain ([x402](/es/glossary/x402/)). Multicadena. Autocustodia desde el primer día.
 
-**Menos adecuada para:** personas que buscan un TLD completamente nuevo que aún no poseen, o personas que solo desean un nombre nativo de Web3 como `name.eth`.
+**Menos adecuada para:** personas que buscan un TLD completamente nuevo que aún no poseen, o personas que solo desean un nombre nativo de [Web3](/es/glossary/web3/) como `name.eth`.
 
 ### Doma Protocol
 
@@ -79,7 +79,7 @@ Estas categorías se superponen. Algunas plataformas abarcan más de una. Pero "
 
 ### GBM (GBM Auctions)
 
-**Ideal para:** la venta de dominios tokenizados a través de mecánicas de subasta de "pujar para ganar" (bid to earn).
+**Ideal para:** la venta de dominios tokenizados a través de mecánicas de [subasta](/es/glossary/auction/) de "pujar para ganar" (bid to earn).
 
 **Aspectos destacados:** infraestructura de subastas, no una plataforma de tokenización en sí. A menudo se utiliza en combinación con una de las anteriores para gestionar la fase de venta.
 
@@ -92,13 +92,13 @@ Estas categorías se superponen. Algunas plataformas abarcan más de una. Pero "
 Al decidir entre plataformas, las páginas de marketing no te dirán cuál es la adecuada. Estas preguntas sí lo harán:
 
 - **Cobertura de TLD.** ¿Admite la plataforma los TLD específicos que te interesan (`.com`, `.io`, `.xyz`, `.art`, ccTLDs como `.de`/`.uk`)?
-- **Cobertura de cadenas.** ¿Mainnet de Ethereum, Base, Polygon, otras? ¿Dónde vive el NFT? ¿Dónde se paga el gas?
+- **Cobertura de cadenas.** ¿Mainnet de Ethereum, Base, Polygon, otras? ¿Dónde vive el NFT? ¿Dónde se paga el [gas](/es/glossary/gas/)?
 - **Estándares de NFT.** ¿ERC-721 estándar? Esto es importante para la compatibilidad con mercados (OpenSea, Blur, Magic Eden, etc.) y préstamos on-chain.
 - **Gestión de DNS.** ¿Puedes gestionar el DNS dentro de la plataforma? ¿Usar servidores de nombres externos (Cloudflare, Route53)? ¿Soporta DNSSEC?
-- **Préstamos / Colateralización.** ¿Puedes pedir prestado usando el dominio tokenizado como garantía en mercados monetarios existentes, o solo dentro de un silo específico de la plataforma?
+- **Préstamos / Colateralización.** ¿Puedes pedir prestado usando el [dominio tokenizado](/es/glossary/tokenized-domain/) como garantía en mercados monetarios existentes, o solo dentro de un silo específico de la plataforma?
 - **Compatibilidad con mercados.** ¿Mostrarán Blur, OpenSea, etc. tu anuncio, o solo será visible dentro del propio mercado de la plataforma?
-- **Modelo de custodia.** ¿Autocustodia (tu billetera, tus llaves, tu responsabilidad) o custodia de la plataforma? Ambas tienen ventajas y desventajas.
-- **Proceso de renovación.** ¿Quién paga al registrador? ¿Cómo se factura la renovación anual? ¿Qué pasa si dejas de pagar?
+- **Modelo de custodia.** ¿Autocustodia (tu [billetera](/es/glossary/wallet/), tus llaves, tu responsabilidad) o custodia de la plataforma? Ambas tienen ventajas y desventajas.
+- **Proceso de renovación.** ¿Quién paga al [registrador](/es/glossary/registrar/)? ¿Cómo se factura la renovación anual? ¿Qué pasa si dejas de pagar?
 - **Vía de salida.** Si alguna vez deseas *destokenizar* y volver a una configuración de registrador tradicional, ¿puedes hacerlo?
 - **Tarifas (Fees).** Tarifa de acuñación (mint), tarifa del mercado, tarifa de transferencia, tarifa de renovación, gas. Súmalas para tu escenario específico antes de comprometerte.
 
@@ -117,7 +117,7 @@ Si la documentación de una plataforma no aclara alguno de estos puntos, eso en 
 | Fraccionalización / copropiedad de nombres premium | Domora |
 | Puente de DNS entre Web2↔Web3 | WebUnited |
 | Infraestructura de ventas estilo subasta | GBM |
-| Identidad puramente on-chain (ej., `name.eth`) — *categoría diferente* | [ENS](/en/glossary/ens/), [Unstoppable Domains](https://unstoppabledomains.com), [Freename](https://freename.io) |
+| Identidad puramente on-chain (ej., `name.eth`) — *categoría diferente* | [ENS](/es/glossary/ens/), [Unstoppable Domains](https://unstoppabledomains.com), [Freename](https://freename.io) |
 
 La última fila es importante: **los nombres de identidad on-chain como `.eth` son una categoría hermana, no un dominio ICANN tokenizado.** Son útiles para cosas diferentes. Consulta [Dominio Tokenizado vs Dominio Web3](/es/blog/tokenized-domain-vs-web3-domain/) para ver ese desglose.
 

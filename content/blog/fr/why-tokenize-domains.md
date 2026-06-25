@@ -31,7 +31,7 @@ Cela ne se contente pas de réduire les coûts (des frais de courtage élevés �
 
 ## 💡 Que signifie réellement « Tokeniser » ?
 
-Tokeniser signifie simplement :
+[Tokeniser](/fr/glossary/tokenize/) signifie simplement :
 
 > Représenter un actif du monde réel (comme un domaine) sous forme de token – le rendant transférable, composable et programmable.
 
@@ -48,7 +48,7 @@ Cela apporte une nouvelle flexibilité et utilité à la propriété de domaine.
 
 ## 🌉 Relier les Actifs Réels au Monde On-Chain
 
-En tokenisant les domaines, Namefi agit comme un **pont** entre l'infrastructure [DNS](/fr/glossary/dns/) traditionnelle et les protocoles blockchain ouverts :
+En tokenisant les domaines, Namefi agit comme un **pont** entre l'infrastructure [DNS](/fr/glossary/dns/) traditionnelle et les protocoles [blockchain](/fr/glossary/blockchain/) ouverts :
 
 | Système Traditionnel       | Monde On-Chain                         |
 |--------------------------|----------------------------------------|
@@ -84,7 +84,7 @@ Avec Namefi :
 - Vous le gérez avec votre propre [portefeuille](/fr/glossary/wallet/) – pas un compte hébergé
 - Bien que toujours soumis aux règles DNS du monde réel (renouvellements, utilisation légale), votre **contrôle est sécurisé cryptographiquement**
 
-> Il ne s'agit pas de "domaines permanents et sans censure" – il s'agit d'une *propriété plus claire et centrée sur l'utilisateur*.
+> Il ne s'agit pas de "domaines permanents et [sans censure](/fr/glossary/censorship-free/)" – il s'agit d'une *propriété plus claire et centrée sur l'utilisateur*.
 
 ### ✅ 3. Débloquer de Nouveaux Cas d'Utilisation
 

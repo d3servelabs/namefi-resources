@@ -9,11 +9,11 @@ description: 'Im Juli 2024 verwandelte eine Registrar-Migration von Google Domai
 keywords: ['squarespace domain hijack', 'google domains migration', 'defi dns hijack', 'compound finance hijack', 'celer network hijack', 'wallet drainer', 'inferno drainer', 'domain security', 'registrar migration', 'mfa multi-factor authentication', 'oauth account takeover', 'dns hijacking', 'crypto phishing']
 ---
 
-Im Juli 2024 war das Gefährlichste an der Website eines Krypto-Projekts kein Smart-Contract-Fehler und kein durchgesickerter privater Schlüssel. Es war der Registrar, dem die Domain gehörte.
+Im Juli 2024 war das Gefährlichste an der Website eines Krypto-Projekts kein Smart-Contract-Fehler und kein durchgesickerter privater Schlüssel. Es war der [Registrar](/de/glossary/registrar/), dem die Domain gehörte.
 
-Über mehrere Tage in jenem Monat landeten Nutzer, die eine vertraute Adresse in ihren Browser eingaben – die offizielle Website eines Kreditprotokolls, dem sie vertrauten, einer Brücke, die sie hundertmal benutzt hatten – genau dort, wo sie es erwarteten: auf einer Seite, die exakt richtig aussah, und sahen dann zu, wie ihre Wallets geleert wurden. Gehackt wurde im üblichen Sinne nichts. Niemand hatte ein Passwort geknackt oder eine Seed-Phrase abgefischt. Die Angreifer waren schlicht durch die Eingangstür der *Domain* selbst spaziert, weil diese Tür während eines Firmenumzugs ungesperrt geblieben war, den die meisten dieser Projekte gar nicht bemerkt hatten.
+Über mehrere Tage in jenem Monat landeten Nutzer, die eine vertraute Adresse in ihren Browser eingaben – die offizielle Website eines Kreditprotokolls, dem sie vertrauten, einer Brücke, die sie hundertmal benutzt hatten – genau dort, wo sie es erwarteten: auf einer Seite, die exakt richtig aussah, und sahen dann zu, wie ihre Wallets geleert wurden. Gehackt wurde im üblichen Sinne nichts. Niemand hatte ein Passwort geknackt oder eine [Seed-Phrase](/de/glossary/seed-phrase/) abgefischt. Die Angreifer waren schlicht durch die Eingangstür der *Domain* selbst spaziert, weil diese Tür während eines Firmenumzugs ungesperrt geblieben war, den die meisten dieser Projekte gar nicht bemerkt hatten.
 
-Der Umzug war die Migration von Google Domains zu Squarespace. Die offene Tür waren die Standard-Authentifizierungseinstellungen von Squarespace. Das Ergebnis war eine koordinierte Welle von DNS-Hijacks gegen Krypto- und DeFi-Projekte, die – so ein Forscher – Milliarden von Dollar an Vermögenswerten kontrollierten.
+Der Umzug war die Migration von Google Domains zu Squarespace. Die offene Tür waren die Standard-Authentifizierungseinstellungen von Squarespace. Das Ergebnis war eine koordinierte Welle von [DNS](/de/glossary/dns/)-Hijacks gegen Krypto- und [DeFi](/de/glossary/defi/)-Projekte, die – so ein Forscher – Milliarden von Dollar an Vermögenswerten kontrollierten.
 
 ## Wie eine Registrar-Migration eine Massenangriffsfläche schuf
 
@@ -39,7 +39,7 @@ Die Liste der bestätigten Opfer las sich wie ein Aufmarsch des Ökosystems. Zu 
 
 Die Grausamkeit eines Domain-Hijacks besteht darin, dass er jede Gewohnheit unterläuft, auf die Nutzer trainiert wurden. Überprüfen Sie die URL. Stellen Sie sicher, dass es die echte Seite ist. Achten Sie auf das Schlosssymbol. All dieser Rat setzt voraus, dass die Domain noch dorthin zeigt, wo sie soll. Wenn der Angreifer die DNS der Domain kontrolliert, ist die URL *echt* – es ist die genuine Adresse des Projekts – und sie löst zum Server des Angreifers auf. Das Schloss ist grün. Die Adressleiste lügt nicht. Die Seite ist eine Falle.
 
-Deshalb passen Wallet-Drainer-Kits wie Inferno so gut zu DNS-Hijacking. Der Drainer muss kein Passwort stehlen; er braucht das Opfer dazu, eine *Wallet zu verbinden und zu unterzeichnen*. Und ein Nutzer, der die echte Domain seines Kreditprotokolls aufgerufen hat, hat keinen Grund zu zögern, bevor er eine Transaktion genehmigt. Die Phishing-Seite erbt das gesamte Vertrauen, das die legitime Domain über Jahre aufgebaut hat.
+Deshalb passen Wallet-Drainer-Kits wie Inferno so gut zu [DNS-Hijacking](/de/glossary/dns-hijacking/). Der Drainer muss kein Passwort stehlen; er braucht das Opfer dazu, eine *Wallet zu verbinden und zu unterzeichnen*. Und ein Nutzer, der die echte Domain seines Kreditprotokolls aufgerufen hat, hat keinen Grund zu zögern, bevor er eine Transaktion genehmigt. Die [Phishing](/de/glossary/phishing/)-Seite erbt das gesamte Vertrauen, das die legitime Domain über Jahre aufgebaut hat.
 
 Wie schlimm hätte es werden können? Die Zahl, die das Ausmaß verdeutlichte, war nicht die Anzahl der bestätigten Diebstähle, sondern die Anzahl der *exponierten* Projekte. Blockaid's Analyse, von Decrypt berichtet, war unmissverständlich: [rund 228 DeFi-Protokoll-Frontends sind noch immer gefährdet](https://decrypt.co/239524/220-defi-protocols-risk-squarespace-dns-hijack#:~:text=roughly%20228%20DeFi%20protocol%20front%20ends%20are%20still%20at%20risk), weil jedes einzelne hinter derselben Schwachstelle der migrierten Konten saß. Die tatsächlichen Hijacks waren nur eine Stichprobe. Die Angriffsfläche war die gesamte Krypto-Gemeinschaft, die die Google-zu-Squarespace-Migration mitgemacht hatte.
 
@@ -65,11 +65,11 @@ Der unmittelbare Abhilferat war für alle noch auf einem migrierten Konto gleich
 
 ## Was dies über Registrar-Sicherheit und MFA lehrt
 
-Die Squarespace-Hijacks sind nicht wirklich eine Geschichte über die Fehlkonfiguration eines einzelnen Unternehmens. Sie sind eine Geschichte darüber, wo Domain-Kontrolle tatsächlich angesiedelt ist, und wie fragil die Schicht oberhalb der Blockchain bleibt.
+Die Squarespace-Hijacks sind nicht wirklich eine Geschichte über die Fehlkonfiguration eines einzelnen Unternehmens. Sie sind eine Geschichte darüber, wo Domain-Kontrolle tatsächlich angesiedelt ist, und wie fragil die Schicht oberhalb der [Blockchain](/de/glossary/blockchain/) bleibt.
 
 Einige Lektionen verallgemeinern sich weit über Juli 2024 hinaus:
 
-1. **Das Registrar-Konto ist die eigentliche Vertrauenswurzel – nicht der Smart Contract.** Keines der betroffenen Protokolle hatte einen Contract-Fehler. Ihr On-Chain-Code war in Ordnung. Die Angreifer haben die *Domain* übernommen, und die Domain ist das, was Nutzer eingeben, dem sie vertrauen und mit dem sie ihre Wallets verbinden. Ein Projekt kann on-chain makellos sein und seine Nutzer trotzdem einem Angreifer ausliefern, wenn seine DNS-Steuerungsebene schwach ist.
+1. **Das Registrar-Konto ist die eigentliche Vertrauenswurzel – nicht der Smart Contract.** Keines der betroffenen Protokolle hatte einen Contract-Fehler. Ihr [On-Chain](/de/glossary/on-chain/)-Code war in Ordnung. Die Angreifer haben die *Domain* übernommen, und die Domain ist das, was Nutzer eingeben, dem sie vertrauen und mit dem sie ihre Wallets verbinden. Ein Projekt kann on-chain makellos sein und seine Nutzer trotzdem einem Angreifer ausliefern, wenn seine DNS-Steuerungsebene schwach ist.
 
 2. **MFA ist nur dann ein Schutz, wenn sie Migrationen überlebt.** Das schmerzliche Detail hier ist, dass MFA nicht unter einem Angriff versagt hat – sie wurde *vor* dem Angriff als Migrationserleichterung entfernt. Behandeln Sie den MFA-Status als etwas, das nach jedem Kontoumzug, jeder Übertragung oder jedem Anbieterwechsel erneut überprüft werden muss, nicht als etwas, das man einmal einrichtet und vergisst.
 

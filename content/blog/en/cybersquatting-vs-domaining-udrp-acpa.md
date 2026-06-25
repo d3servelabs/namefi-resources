@@ -73,7 +73,7 @@ An RDNH finding awards the domain owner no money, but it is a formal, public reb
 Most of staying safe is decided before you spend a dollar. A handful of habits keep a portfolio defensible:
 
 - **Buy words, not brands.** Generic, descriptive, and invented names are the safe inventory. If a name has value only because a specific company exists, skip it. When you are unsure whether a name reads as a brand, that uncertainty is itself a signal to pass.
-- **Run a trademark check before you buy.** A quick search of the relevant registry on the exact string and obvious typo variants catches most problems. It matters most on the [aftermarket](/en/glossary/marketplace/), where you inherit the prior [registrant](/en/glossary/registrant/)'s history along with the name.
+- **Run a trademark check before you buy.** A quick search of the relevant registry on the exact string and obvious typo variants catches most problems. It matters most on the [aftermarket](/en/glossary/aftermarket/), where you inherit the prior [registrant](/en/glossary/registrant/)'s history along with the name.
 - **Keep records, and keep parking clean.** Save your registration date and reasoning, since bad faith generally must exist at registration. Avoid PPC ads that compete with any trademark owner, which can turn a generic name into evidence of bad-faith use.
 - **Handle inbound offers carefully.** If a brand approaches you, do not demand a number framed around *their* need for the name. That framing is easily recast as "registered primarily to sell to the trademark owner."
 

@@ -72,7 +72,7 @@ Les mécanismes pour vendre le nom une fois que vous l'avez évalué sont les m�
 
 Les domaines courts et numériques sont ce qui se rapproche le plus d'une marchandise fongible dans le monde des noms de domaine — petits, paraissant interchangeables, fréquemment échangés au-delà des frontières. Cette liquidité est aussi ce qui rend le transfert anxiogène : un roulement élevé, des acheteurs internationaux, et des noms qui sont souvent des infrastructures en service signifient que le blocage classique (qui transfère en premier) se produit dans presque chaque transaction. C'est le même point de friction que pour tout [échange de domaines](/fr/glossary/domain-trading/), mais à une fréquence plus élevée.
 
-C'est le fossé que [Namefi](https://namefi.io) est conçu pour combler : la propriété tokenisée facilite la vérification et le transfert du contrôle d'un vrai domaine ICANN, avec une continuité DNS pour que le nom continue de se résoudre pendant le transfert. Pour un marché qui évolue aussi vite, moins de friction dans le règlement signifie que davantage de vos transactions se concluent réellement.
+C'est le fossé que [Namefi](https://namefi.io) est conçu pour combler : la propriété tokenisée facilite la vérification et le transfert du contrôle d'un vrai domaine [ICANN](/fr/glossary/icann/), avec une continuité DNS pour que le nom continue de se résoudre pendant le transfert. Pour un marché qui évolue aussi vite, moins de friction dans le règlement signifie que davantage de vos transactions se concluent réellement.
 
 ## Avertissement amical (À lire !)
 

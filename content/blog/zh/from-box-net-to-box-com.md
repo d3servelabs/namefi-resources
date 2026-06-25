@@ -11,11 +11,11 @@ keywords: ['box.net', 'box.com', 'box 域名', 'aaron levie', 'dylan smith', 'di
 
 在 Box 成为价值数十亿美元的企业软件公司之前，它曾栖身于一个略显逊色的网络地址：**Box.net**。
 
-这个名字是一种变通，而非蓄意为之。[Box.com 的创意最早可追溯到 2003 年，由南加州大学商科学生 Aaron Levie 提出](https://en.wikipedia.org/wiki/Box_(company)#:~:text=The%20idea%20for%20Box.com%20started%20in%202003%20with%20Aaron%20Levie)，但那个干净利落的精确匹配域名——Box.com——早已被他人注册。于是，这家后来成为 [Box, Inc.（前身为 Box.net）](https://en.wikipedia.org/wiki/Box_(company)#:~:text=Box%2C%20Inc.%20(formerly%20Box.net)) 的公司，做了无数初创企业在 .com 被占后的相同选择：退而求次，在 Box.net 上线，先把产品做出来再说。
+这个名字是一种变通，而非蓄意为之。[Box.com 的创意最早可追溯到 2003 年，由南加州大学商科学生 Aaron Levie 提出](https://en.wikipedia.org/wiki/Box_(company)#:~:text=The%20idea%20for%20Box.com%20started%20in%202003%20with%20Aaron%20Levie)，但那个干净利落的精确匹配域名——Box.com——早已被他人注册。于是，这家后来成为 [Box, Inc.（前身为 Box.net）](https://en.wikipedia.org/wiki/Box_(company)#:~:text=Box%2C%20Inc.%20(formerly%20Box.net)) 的公司，做了无数初创企业在 [.com](/zh/tld/com/) 被占后的相同选择：退而求次，在 Box.net 上线，先把产品做出来再说。
 
 为何选 "Box.net"？因为 Box.com 属于别人——具体而言，属于专门经营溢价域名的 Digimedia 公司，该公司由一位曾经的西瓜农场主创立。用户们*以为* Box 拥有的那个完全匹配域名，其实一直躺在某位域名投资者的资产组合里，遥不可及，直到 Box 积累了足够的资金和充分的理由去把它买回来。
 
-在最早期，.net 运作良好。[2005 年，Levie 从学校退学，全职投身 Box，与多年老友兼联合创始人 Dylan Smith 并肩奋斗](https://en.wikipedia.org/wiki/Box_(company)#:~:text=In%202005%2C%20Levie%20dropped%20out%20of%20school%20to%20work%20on%20Box%20full-time%20with%20long-time%20friend%20and%20cofounder%20Dylan%20Smith)，[Levie 和 Smith 后来又迎来了联合创始人 Jeff Queisser 和 Sam Ghods](https://en.wikipedia.org/wiki/Box_(company)#:~:text=Levie%20and%20Smith%20were%20joined%20by%20cofounders%20Jeff%20Queisser%20and%20Sam%20Ghods)。商业模式简单明了，面向消费者提供存储服务：[用户每月支付 2.99 美元，我们提供 1GB 存储空间](https://nira.com/box-history/#:~:text=People%20would%20pay%20us%20%242.99%20a%20month%2C%20we%E2%80%99d%20give%20them%201GB%20of%20storage)，Levie 后来如此描述。这个描述性强、且可获取的域名，对早期产品而言完全够用。
+在最早期，[.net](/zh/tld/net/) 运作良好。[2005 年，Levie 从学校退学，全职投身 Box，与多年老友兼联合创始人 Dylan Smith 并肩奋斗](https://en.wikipedia.org/wiki/Box_(company)#:~:text=In%202005%2C%20Levie%20dropped%20out%20of%20school%20to%20work%20on%20Box%20full-time%20with%20long-time%20friend%20and%20cofounder%20Dylan%20Smith)，[Levie 和 Smith 后来又迎来了联合创始人 Jeff Queisser 和 Sam Ghods](https://en.wikipedia.org/wiki/Box_(company)#:~:text=Levie%20and%20Smith%20were%20joined%20by%20cofounders%20Jeff%20Queisser%20and%20Sam%20Ghods)。商业模式简单明了，面向消费者提供存储服务：[用户每月支付 2.99 美元，我们提供 1GB 存储空间](https://nira.com/box-history/#:~:text=People%20would%20pay%20us%20%242.99%20a%20month%2C%20we%E2%80%99d%20give%20them%201GB%20of%20storage)，Levie 后来如此描述。这个描述性强、且可获取的域名，对早期产品而言完全够用。
 
 2011 年，Box 终于买下了 **Box.com**。Domain Name Wire 报道称，[文件共享服务 Box.net 从 Digimedia 的 Scott Day 手中购得 Box.com 域名](https://domainnamewire.com/2012/03/25/really-cool-guys-at-digimedia-sold-box-com-for-about-1-million/#:~:text=file%20sharing%20service%20Box.net%20bought%20the%20Box.com%20domain%20name%20from%20Scott%20Day%20at%20Digimedia)，[成交价在 90 万至 99.9 万美元之间](https://domainnamewire.com/2012/03/25/really-cool-guys-at-digimedia-sold-box-com-for-about-1-million/#:~:text=the%20company%20bought%20the%20domain%20for%20between%20%24900%2C000%20and%20%24999%2C000)。
 
@@ -87,7 +87,7 @@ Box.net 与 Box.com 之差，不过三个字符。但从战略层面看，这是
 | 隐隐让人怀疑"这真的是官方吗？" | 对企业采购方而言默认可信 |
 | 容易误输成 Box.com，跳转到别处 | 用户已经在猜的地址，就指向你 |
 
-这与众多域名升级案例中反复出现的规律如出一辙：早期地址只是*凑合*，而顶级地址才能真正*占领*心智。不同的顶级域名——.net、.io、.co——或描述性修饰词，在完全匹配的 .com 被占用或无力承担时，是完全合理的起跑方式。一旦品牌足够强大、公司也有了足够资本，升级到正统版本自然水到渠成。
+这与众多域名升级案例中反复出现的规律如出一辙：早期地址只是*凑合*，而顶级地址才能真正*占领*心智。不同的顶级域名——.net、[.io](/zh/tld/io/)、[.co](/zh/tld/co/)——或描述性修饰词，在完全匹配的 .com 被占用或无力承担时，是完全合理的起跑方式。一旦品牌足够强大、公司也有了足够资本，升级到正统版本自然水到渠成。
 
 对 Box 而言，.net 从来都不是它的目标。它不过是公司 2005 年负担得起的那个地址，之所以一直将就着用，只因为 Box.com 背后的那个价格标签是当年靠扑克赢款起家的初创公司无法承受的。
 
@@ -136,7 +136,7 @@ Box 的故事，从本质上讲是一个转移与估值的问题。
 
 战略层面的决定从未真正存疑——一家叫 Box 的公司当然应该拥有 Box.com。真正困难的是围绕这项资产展开的一切：识别出 .com 属于某个溢价资产组合；就一个没有公开可比案例的单词域名达成定价共识；在接近七位数报价的基础上还要[做好花更多钱的准备](https://domainnamewire.com/2012/03/25/really-cool-guys-at-digimedia-sold-box-com-for-about-1-million/#:~:text=Levie%20was%20prepared%20to%20spend%20more%20for%20the%20domain%20if%20he%20had%20to)；以及在不中断 10 万家企业正在使用的实时服务的前提下完成控制权的干净交接。漫长岁月流逝，不是因为*决策*本身有多难，而是因为*执行*——为溢价资产定价并完成转移——有多复杂。
 
-[Namefi](https://namefi.io) 的核心理念，正是让域名像互联网原生资产那样运作。代币化所有权能让域名控制权的核实、转移和接入现代工作流变得更加简便，同时保持与 DNS 的兼容性——将此类交易中最棘手的环节（证明谁真正控制着溢价域名、达成价值共识、安全完成转移）变得更接近一笔干净、可审计的交易。
+[Namefi](https://namefi.io) 的核心理念，正是让域名像互联网原生资产那样运作。代币化所有权能让域名控制权的核实、转移和接入现代工作流变得更加简便，同时保持与 [DNS](/zh/glossary/dns/) 的兼容性——将此类交易中最棘手的环节（证明谁真正控制着[溢价域名](/zh/glossary/premium-domain/)、达成价值共识、安全完成转移）变得更接近一笔干净、可审计的交易。
 
 Box.com 如今看似必然，是因为 Box 成长为了庞然大物。但这个教训在达到那种规模之前很久便已成立：当一个名字要承载整个业务——尤其是向大型企业要求信任的业务——完全匹配的 .com 就不是装饰品。它是值得花费近 100 万美元、甚至愿意花更多，才最终拿对的那块品牌基石。
 

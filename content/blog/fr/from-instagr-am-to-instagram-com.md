@@ -13,7 +13,7 @@ Avant qu'Instagram ne devienne une plateforme à un milliard d'utilisateurs, un 
 
 Cette adresse n'était pas une faute de frappe et pas une astuce de redirection. C'était un *domain hack* — un nom de domaine dans lequel l'extension elle-même complète le mot. Wikipedia définit précisément la forme : un domain hack est [un nom de domaine qui suggère un mot, une phrase ou un nom lorsqu'on concatène deux niveaux adjacents ou plus de ce domaine](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=a%20domain%20name%20that%20suggests%20a%20word%2C%20phrase%2C%20or%20name), et il cite celui d'Instagram comme un cas d'école : [instagr.am utilise le ccTLD .am (Arménie) pour épeler le nom du service de partage de photos « Instagram »](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=instagr.am%20makes%20use%20of%20the%20ccTLD%20.am%20%28Armenia%29%20to%20spell%20the%20name).
 
-Relisez cela. Pour épeler son propre nom de marque, une application photo de San Francisco a emprunté le domaine de premier niveau géographique de l'**Arménie**, un pays situé à environ 11 000 kilomètres. Le « am » d'Instagram vivait, techniquement, à Erevan.
+Relisez cela. Pour épeler son propre nom de marque, une application photo de San Francisco a emprunté le [domaine de premier niveau](/fr/glossary/tld/) géographique de l'**Arménie**, un pays situé à environ 11 000 kilomètres. Le « am » d'Instagram vivait, techniquement, à Erevan.
 
 Pour une toute petite startup se lançant dans un App Store très concurrencé, le hack était un cadeau. Il était court, il était exact, il se lisait comme un seul mot, et — point crucial — il était *disponible* quand l'adresse évidente, Instagram.com, ne l'était pas.
 
@@ -37,7 +37,7 @@ Pour comprendre pourquoi instagr.am était si attrayant, il faut comprendre ce q
 
 Pour une startup de 2010, l'attrait était évident :
 
-- **C'était exact.** « instagr » + « .am » se lit comme la marque complète, sans rien d'autre à expliquer — le saint Graal d'un lancement sans financement.
+- **C'était exact.** « instagr » + « [.am](/fr/tld/am/) » se lit comme la marque complète, sans rien d'autre à expliquer — le saint Graal d'un lancement sans financement.
 - **C'était court et partageable.** Une application photo vit ou meurt selon la facilité avec laquelle un lien circule. instagr.am était assez court pour être imprimé, envoyé par SMS et tweeté.
 - **C'était disponible immédiatement.** Instagram.com était déjà détenu par quelqu'un d'autre, et une toute nouvelle application n'avait ni l'argent ni le levier pour le récupérer dès le premier jour.
 
@@ -49,7 +49,7 @@ Le problème est ce qu'une fondation empruntée coûte une fois qu'on n'est plus
 
 Un domain hack construit sur un code de pays comporte un ensemble silencieux de dépendances qu'un simple `.com` n'a pas.
 
-Premièrement, **vous êtes un invité dans l'espace de noms de quelqu'un d'autre.** Les politiques, les tarifs et la stabilité du `.am` sont fixés par le registre d'Arménie, pas par vous. C'est bien jusqu'à ce que votre marque vaille des milliards et que votre adresse réponde à un registre à l'autre bout du monde.
+Premièrement, **vous êtes un invité dans l'espace de noms de quelqu'un d'autre.** Les politiques, les tarifs et la stabilité du `.am` sont fixés par le [registre](/fr/glossary/registry/) d'Arménie, pas par vous. C'est bien jusqu'à ce que votre marque vaille des milliards et que votre adresse réponde à un registre à l'autre bout du monde.
 
 Deuxièmement, **le hack peut se lire comme une faute de frappe.** « instagr.am » ressemble, pour un utilisateur peu attentif, à « instagram » mal tapé. Les gens suppriment le point, supposent `.com` et tapent « instagram.com » par réflexe — ce qui signifie que chaque partage fuit du trafic vers celui qui possède l'adresse évidente.
 
@@ -117,7 +117,7 @@ Le hack n'a pas construit la croissance d'Instagram — les filtres, le timing e
 La conclusion facile — « n'utilisez jamais un domain hack » — est fausse. Le hack était *bon*. Les leçons les plus utiles portent sur la façon d'en utiliser un sans se laisser piéger par lui :
 
 1. **Un domain hack est une excellente porte d'entrée de lancement.** instagr.am était exact, court, partageable et disponible quand le `.com` ne l'était pas. Pour un lancement avant financement, c'est un vrai avantage, pas un échec.
-2. **Sachez ce que vous empruntez.** Un hack ccTLD signifie qu'un registre étranger fixe vos politiques et vos tarifs. C'est bien à petite échelle et c'est une responsabilité une fois que votre marque a de la valeur. Traitez le hack comme une [URL secondaire](https://www.domaingravity.com/instagr.am-Instagram.com.htm#:~:text=secondary%20URLs), pas le domicile permanent.
+2. **Sachez ce que vous empruntez.** Un hack [ccTLD](/fr/glossary/cctld/) signifie qu'un registre étranger fixe vos politiques et vos tarifs. C'est bien à petite échelle et c'est une responsabilité une fois que votre marque a de la valeur. Traitez le hack comme une [URL secondaire](https://www.domaingravity.com/instagr.am-Instagram.com.htm#:~:text=secondary%20URLs), pas le domicile permanent.
 3. **Sécurisez le `.com` canonique tôt — pendant qu'il peut encore devenir celui dont les gens se souviennent.** Instagram a acheté Instagram.com dans ses premiers mois, pas après être devenue célèbre. La fenêtre pour rendre le nom propre canonique est étroite.
 4. **Budgétisez pour la transaction, pas seulement pour le prix.** L'appel stratégique est évident ; la propriété propre ne l'est pas. Instagram a payé 100 000 $ et s'est *quand même* retrouvée dans un litige de propriété de plusieurs années sur qui avait l'autorité pour vendre.
 

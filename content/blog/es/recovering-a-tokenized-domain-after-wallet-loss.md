@@ -19,7 +19,7 @@ Esta publicación explica, con honestidad, cuáles son realmente tus opciones, y
 
 ## Primero, la verdad incómoda
 
-La pérdida de claves criptográficas no es como perder la contraseña de un registrador. No hay un enlace de "olvidé mi contraseña" que te envíe un correo electrónico. Si has perdido la frase semilla, has perdido la billetera, y nadie —ni Namefi, ni Ethereum, ni nadie— puede recuperar la clave privada por ti. Ese es el precio que conlleva la autocustodia.
+La pérdida de claves criptográficas no es como perder la contraseña de un registrador. No hay un enlace de "olvidé mi contraseña" que te envíe un correo electrónico. Si has perdido la frase semilla, has perdido la billetera, y nadie —ni Namefi, ni [Ethereum](/es/glossary/ethereum/), ni nadie— puede recuperar la [clave privada](/es/glossary/private-key/) por ti. Ese es el precio que conlleva la autocustodia.
 
 La buena noticia: **existen vías de recuperación a nivel de plataforma** además de la capa criptográfica. Los dominios tokenizados tienen un lado fuera de la cadena (*off-chain*, como el registrador / registro DNS) que las plataformas a veces pueden usar para ayudar, dependiendo de la situación.
 
@@ -31,11 +31,11 @@ Por lo tanto: **la prevención es la estrategia de recuperación.** Hablemos de 
 
 ## Prevención: Configura la capacidad de recuperación *antes* de necesitarla
 
-Haz esto *antes* de tokenizar, o justo después.
+Haz esto *antes* de [tokenizar](/es/glossary/tokenize/), o justo después.
 
 ### 1. Anota tu frase semilla. Dos veces. En papel. O en acero.
 
-La mayor fuente de pérdida permanente son las [frases semilla](/en/glossary/seed-phrase/) que se guardaron en un solo lugar y ese lugar ahora ha desaparecido.
+La mayor fuente de pérdida permanente son las [frases semilla](/es/glossary/seed-phrase/) que se guardaron en un solo lugar y ese lugar ahora ha desaparecido.
 
 - Escribe las 12 o 24 palabras en papel. Dos veces. En ubicaciones físicas diferentes. (La [especificación BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) define la lista de palabras que usan la mayoría de las billeteras).
 - Para carteras de mayor valor, usa una placa de respaldo de metal. El fuego y el agua no la destruirán.
@@ -43,7 +43,7 @@ La mayor fuente de pérdida permanente son las [frases semilla](/en/glossary/see
 
 ### 2. Usa una billetera de hardware para el almacenamiento
 
-La billetera que usas para *interactuar* con las aplicaciones puede ser una billetera caliente o *hot wallet* (MetaMask, Rabby). La billetera que *almacena* el NFT del dominio a largo plazo debe ser una [**billetera de hardware**](/en/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone, etc.). Transfiere el NFT a ella después de acuñarlo (*minting*).
+La billetera que usas para *interactuar* con las aplicaciones puede ser una billetera caliente o *hot wallet* (MetaMask, Rabby). La billetera que *almacena* el NFT del dominio a largo plazo debe ser una [**billetera de hardware**](/es/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone, etc.). Transfiere el NFT a ella después de acuñarlo (*minting*).
 
 ### 3. Considera una multifirma (multisig) para dominios de alto valor
 
@@ -83,8 +83,8 @@ Transfiere el NFT a una nueva billetera *ahora mismo*, mientras el dispositivo a
 
 Esta es la situación difícil. Criptográficamente, el NFT ahora es inaccesible. Opciones:
 
-1. **Recuperación del lado de la plataforma.** Si la plataforma (por ejemplo, Namefi) tiene una identidad vinculada a tu correo electrónico de registro y KYC (cuando corresponda), es posible que puedas demostrar que eres el registrante y solicitar una remediación gestionada por la plataforma. Esto **no está garantizado**, requiere verificación de identidad y, por lo general, solo se aplica bajo condiciones específicas. Contacta a soporte inmediatamente: cuanto más esperes, más difícil será.
-2. **Apelaciones de registro / registrador.** Al ser un dominio real de la [ICANN](/es/glossary/icann/), el registro subyacente todavía existe. Los [registradores](/es/glossary/registrar/) tienen procesos para probar la propiedad (historial [WHOIS / RDAP](/en/glossary/whois/), registros de facturación, identificación gubernamental). Estos son lentos, requieren mucho papeleo y no son seguros, pero existen.
+1. **Recuperación del lado de la plataforma.** Si la plataforma (por ejemplo, Namefi) tiene una identidad vinculada a tu correo electrónico de registro y KYC (cuando corresponda), es posible que puedas demostrar que eres el [registrante](/es/glossary/registrant/) y solicitar una remediación gestionada por la plataforma. Esto **no está garantizado**, requiere verificación de identidad y, por lo general, solo se aplica bajo condiciones específicas. Contacta a soporte inmediatamente: cuanto más esperes, más difícil será.
+2. **Apelaciones de registro / registrador.** Al ser un dominio real de la [ICANN](/es/glossary/icann/), el registro subyacente todavía existe. Los [registradores](/es/glossary/registrar/) tienen procesos para probar la propiedad (historial [WHOIS / RDAP](/es/glossary/whois/), registros de facturación, identificación gubernamental). Estos son lentos, requieren mucho papeleo y no son seguros, pero existen.
 3. **Vía legal.** Para dominios de alto valor mantenidos en un contexto corporativo o patrimonial, hay abogados y empresas de recuperación que se especializan en esto. Es costoso, lento y depende del caso.
 
 Lo que nadie puede hacer: usar fuerza bruta para descifrar la clave privada. No confíes en nadie que afirme poder hacerlo.

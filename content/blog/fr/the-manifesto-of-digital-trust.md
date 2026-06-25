@@ -11,7 +11,7 @@ description: Une déclaration de vision de D3Serve — pourquoi la numérisation
 keywords: ['confiance numérique', 'D3Serve', 'blockchain', 'web3', 'contrats intelligents', 'cryptographie', 'consensus', 'manifeste', 'vision', 'numérisation de la confiance', 'confiance de groupe', 'automatisation']
 ---
 
-Chez **D3Serve**, nous nous consacrons à la construction de la *confiance numérique* en tirant parti de la blockchain et d'autres technologies avancées.
+Chez **D3Serve**, nous nous consacrons à la construction de la *confiance numérique* en tirant parti de la [blockchain](/fr/glossary/blockchain/) et d'autres technologies avancées.
 
 Nous sommes convaincus que l'avenir recèle d'immenses améliorations en matière de productivité et une version supérieure du monde, rendues possibles par la numérisation de la confiance.
 

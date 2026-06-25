@@ -67,7 +67,7 @@ Une plateforme ou un service où les noms de domaine sont vendus par le biais d'
 ### **Service d'Entiercement (Escrow Service)**
 Un service tiers de confiance utilisé pour faciliter l'échange sécurisé d'argent et de propriété de domaine lors d'une vente de domaine. L'acheteur paie le service d'entiercement, et une fois le domaine transféré, les fonds sont libérés au vendeur.
 
-**Services Populaires**: Escrow.com (recommandé par l'ICANN), PayPal, Dan.com
+**Services Populaires**: Escrow.com (recommandé par l'[ICANN](/fr/glossary/icann/)), PayPal, Dan.com
 
 ---
 
@@ -89,12 +89,12 @@ Un individu ou une entreprise qui achète des noms de domaine en vrac et les rev
 ## **⚙️ Termes Techniques**
 
 ### **TLD (Domaine de Premier Niveau)**
-La partie d'un nom de domaine qui vient après le dernier point (par exemple, .com, .org, .net, .ai, etc.). Le choix du TLD peut affecter la valeur et la perception d'un nom de domaine.
+La partie d'un nom de domaine qui vient après le dernier point (par exemple, [.com](/fr/tld/com/), [.org](/fr/tld/org/), [.net](/fr/tld/net/), [.ai](/fr/tld/ai/), etc.). Le choix du TLD peut affecter la valeur et la perception d'un nom de domaine.
 
 **Catégories**:
-- **TLD Génériques**: .com, .org, .net, .info
-- **TLD de Codes de Pays**: .us, .uk, .de, .cn
-- **Nouveaux TLDs**: .ai, .io, .tech, .shop
+- **TLD Génériques**: .com, .org, .net, [.info](/fr/tld/info/)
+- **TLD de Codes de Pays**: [.us](/fr/tld/us/), .uk, .de, .cn
+- **Nouveaux TLDs**: .ai, [.io](/fr/tld/io/), [.tech](/fr/tld/tech/), [.shop](/fr/tld/shop/)
 
 ### **Sous-domaine**
 Un domaine qui fait partie d'un domaine plus grand. Par exemple, "blog.example.com" est un sous-domaine de "example.com". Les sous-domaines peuvent être utilisés pour organiser différentes sections d'un site web.
@@ -107,13 +107,13 @@ Le système qui traduit les noms de domaine lisibles par l'homme en adresses IP 
 **Fonction**: Convertit `namefi.io` en `192.168.1.1` pour la communication du navigateur
 
 ### **WHOIS**
-Un protocole utilisé pour interroger des bases de données qui stockent des informations sur les noms de domaine enregistrés. WHOIS fournit des détails tels que le propriétaire du domaine, les dates d'enregistrement et les informations de contact.
+Un protocole utilisé pour interroger des bases de données qui stockent des informations sur les noms de domaine enregistrés. [WHOIS](/fr/glossary/whois/) fournit des détails tels que le propriétaire du domaine, les dates d'enregistrement et les informations de contact.
 
 **Informations Fournies**:
 - Détails du propriétaire du domaine
 - Dates d'enregistrement et d'expiration
 - Serveurs de noms
-- Informations du registraire
+- Informations du [registraire](/fr/glossary/registrar/)
 
 ---
 
@@ -168,7 +168,7 @@ La pratique de l'enregistrement et de la détention d'un domaine sans le dévelo
 ## **📈 Perspectives du Marché**
 
 ### **Catégories à Forte Valeur**
-- **Technologie**: Termes liés à l'IA, à la blockchain, à la fintech
+- **Technologie**: Termes liés à l'IA, à la [blockchain](/fr/glossary/blockchain/), à la fintech
 - **Santé**: Médical, bien-être, pharmaceutique
 - **Finance**: Bancaire, investissement, cryptomonnaie
 - **E-commerce**: Shopping, vente au détail, marché

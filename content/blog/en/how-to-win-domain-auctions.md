@@ -26,7 +26,7 @@ In practice you'll meet three flavors of platform:
 
 - **GoDaddy Auctions**, the highest-volume expiry market, fed by names dropping out of the largest [registrar](/en/glossary/registrar/) on earth. Most listings are expired names on a public timer.
 - **NameJet** (and the closely related Snapnames), which run as backorder-plus-auction services. You place a [backorder](/en/blog/domain-backorders-and-drop-catching/) on a pending-delete name; if more than one person wants it, it goes to a private auction among the backorderers.
-- **Sedo**, more about owner-listed inventory than expiry. Sedo is an American domain [aftermarket](/en/glossary/marketplace/) company that [introduced domain name auctions](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions) in 2006, and remains a primary venue for seller-initiated and brokered sales.
+- **Sedo**, more about owner-listed inventory than expiry. Sedo is an American domain aftermarket company that [introduced domain name auctions](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions) in 2006, and remains a primary venue for seller-initiated and brokered sales.
 
 The supply differs, but the bidding mechanics are nearly identical. Learn them once and you can bid anywhere.
 

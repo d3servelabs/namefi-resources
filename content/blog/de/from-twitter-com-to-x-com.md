@@ -21,7 +21,7 @@ Im Juli 2023, neun Monate nach dem Kauf des Unternehmens [für 44 Milliarden Dol
 
 Am Anfang gab es kein Domain-Problem zu lösen.
 
-Als Twitter 2006 an den Start ging, hatte es etwas, das die meisten Startups in dieser Reihe jahrelang und für Millionen Dollar gejagt hatten: die Exact-Match-.com, die zu seinem Namen passte. Twitter.com *war* Twitter. Der blaue Vogel, das Verb „to tweet", die @-Antwort, der Hashtag – ein ganzes Vokabular wuchs auf einer Adresse, die keiner Erklärung bedurfte. Der Großteil seines Lebens war Twitter das Gegenbeispiel zu jeder „Kauf dein Exact-Match"-Lektion, denn es musste es nie tun.
+Als Twitter 2006 an den Start ging, hatte es etwas, das die meisten Startups in dieser Reihe jahrelang und für Millionen Dollar gejagt hatten: die Exact-Match-[.com](/de/tld/com/), die zu seinem Namen passte. Twitter.com *war* Twitter. Der blaue Vogel, das Verb „to tweet", die @-Antwort, der Hashtag – ein ganzes Vokabular wuchs auf einer Adresse, die keiner Erklärung bedurfte. Der Großteil seines Lebens war Twitter das Gegenbeispiel zu jeder „Kauf dein Exact-Match"-Lektion, denn es musste es nie tun.
 
 Das ist der Unterschied in diesem Fall. Der Druck, die Domain zu ändern, kam nicht davon, dass das Produkt seinen Namen überwachsen hatte – so wie „Motors" für Tesla oder „Cab" für Uber zu eng wurde. Er kam von einem neuen Eigentümer, der bereits einen anderen Namen im Sinn hatte – und seit sehr langer Zeit darauf gewartet hatte.
 

@@ -24,8 +24,8 @@ keywords: ['哪里出售域名', '最佳域名交易市场', 'afternic vs sedo',
 
 - **覆盖范围。** 有多少买家能看到你的挂牌信息，以及通过多少合作渠道。一个能将你的域名分发到其他注册商的平台，能让那些在你从未访问过的网站上进行结账时搜索的人看到你的域名。
 - **费用。** 域名售出时平台收取的佣金，以及任何挂牌费或交易费。这个比例从销售额的大约十分之一到某些渠道的五分之一不等——而且标明的费率通常取决于买家是直接访问还是通过合作伙伴访问。
-- **快速过户。** 交接过程是否自动化。任何销售中的摩擦点都在于[过户](/zh/glossary/cross-registrar-transfer/)——即将[授权码](/en/glossary/auth-code/)交给买家，并在注册商之间转移域名。大型网络现在已将此过程自动化，使得付款和过户几乎可以即时完成。
-- **结算。** 资金和域名如何实际交换，而双方都不会受损。传统方式是[托管](/zh/glossary/escrow/)；在链上，则是通过智能合约。无论哪种方式，这都是信任建立或破灭的关键环节。
+- **快速过户。** 交接过程是否自动化。任何销售中的摩擦点都在于[过户](/zh/glossary/cross-registrar-transfer/)——即将[授权码](/zh/glossary/auth-code/)交给买家，并在注册商之间转移域名。大型网络现在已将此过程自动化，使得付款和过户几乎可以即时完成。
+- **结算。** 资金和域名如何实际交换，而双方都不会受损。传统方式是[托管](/zh/glossary/escrow/)；在链上，则是通过[智能合约](/zh/glossary/smart-contract/)。无论哪种方式，这都是信任建立或破灭的关键环节。
 
 牢记这四点，各个市场的特点就一目了然了。
 
@@ -59,7 +59,7 @@ Sedo 是另一个重量级玩家，也是根基最深的一个。维基百科将
 
 这类市场的覆盖范围较小，且尚处于早期阶段，因此还不能完全替代在 Afternic 上的挂牌。但对于结算风险是主要担忧的高价值域名来说，这是一个真正的替代方案，也是行业未来发展方向的一部分。我们在[代币化市场如何取代托管](/zh/blog/how-tokenized-marketplaces-replace-escrow/)中追溯了这一发展轨迹，并在[代币化域名的税务与会计问题](/zh/blog/tax-and-accounting-questions-for-tokenized-domains/)中探讨了相关的税务问题。
 
-[Namefi](https://namefi.io) 是这一类别中的一个选择。代币化的所有权使得一个真实的 ICANN 域名的控制权更易于验证和转移，并保证了 DNS 的连续性，确保域名在交接过程中能够持续正常解析——不会出现交易中途网站宕机的黑暗时刻。它不适合用来交易价值 200 美元的手动注册域名，而是为你可能需要花一周时间紧张地给托管代理发邮件的那种交易准备的平台。
+[Namefi](https://namefi.io) 是这一类别中的一个选择。代币化的所有权使得一个真实的 [ICANN](/zh/glossary/icann/) 域名的控制权更易于验证和转移，并保证了 DNS 的连续性，确保域名在交接过程中能够持续正常解析——不会出现交易中途网站宕机的黑暗时刻。它不适合用来交易价值 200 美元的手动注册域名，而是为你可能需要花一周时间紧张地给托管代理发邮件的那种交易准备的平台。
 
 ## 如何同时在多个平台挂牌
 
@@ -77,7 +77,7 @@ Sedo 是另一个重量级玩家，也是根基最深的一个。维基百科将
 
 ## 关于不同后缀域名在哪卖的简要说明
 
-平台的选择与[后缀](/en/glossary/tld/)有关。大众市场的覆盖网络主要针对 [.com](/zh/tld/com/) 和那些热门的替代品——[.io](/zh/tld/io/)、[.ai](/zh/tld/ai/)、[.co](/zh/tld/co/)、[.xyz](/zh/tld/xyz/)、[.app](/zh/tld/app/)——它们的分销网络也主要在这些领域找到买家。一个利基市场或新的 ccTLD 可能通过专业论坛或直接销售比通过通用市场更容易出手，原因很简单，因为买家聚集在别处。关于后缀如何影响价值和流动性，请参阅[为什么 .io 域名价格昂贵](/zh/blog/why-are-io-domains-expensive/)以及[按注册量划分的 ccTLD 市场份额](/zh/blog/cctld-market-share-by-registration-volume/)中的注册量概览。
+平台的选择与[后缀](/zh/glossary/tld/)有关。大众市场的覆盖网络主要针对 [.com](/zh/tld/com/) 和那些热门的替代品——[.io](/zh/tld/io/)、[.ai](/zh/tld/ai/)、[.co](/zh/tld/co/)、[.xyz](/zh/tld/xyz/)、[.app](/zh/tld/app/)——它们的分销网络也主要在这些领域找到买家。一个利基市场或新的 [ccTLD](/zh/glossary/cctld/) 可能通过专业论坛或直接销售比通过通用市场更容易出手，原因很简单，因为买家聚集在别处。关于后缀如何影响价值和[流动性](/zh/glossary/domain-liquidity/)，请参阅[为什么 .io 域名价格昂贵](/zh/blog/why-are-io-domains-expensive/)以及[按注册量划分的 ccTLD 市场份额](/zh/blog/cctld-market-share-by-registration-volume/)中的注册量概览。
 
 并且，请保持我们在核心文章中提到的现实主义态度。那些头条上的重量级交易——2019 年 Voice.com 以 [30,000,000 美元](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Voice.com)成交，2010 年 Sex.com 以 [13,000,000 美元](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Sex.com)成交——都出现在一个明确[仅限于纯域名现金交易](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=This%20list%20is%20limited%20to%20pure%20domain%20name%20and%20cash%2Donly%20sales)且金额在 300 万美元以上的名单上。这些并不是你在市场上挂牌时要竞争的目标。平台本身并不能创造域名的价值；它只是决定了有多少合适的买家能看到它。
 

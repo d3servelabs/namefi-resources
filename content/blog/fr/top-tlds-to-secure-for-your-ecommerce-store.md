@@ -26,7 +26,7 @@ Trois critères doivent guider la décision. Premièrement, **confiance et conve
 
 ### 2. [.shop](/fr/tld/shop) — conçu pour le commerce
 
-`.shop` est un TLD générique créé spécifiquement pour le commerce, [délégué en 2016](https://www.iana.org/domains/root/db/shop.html) et géré par GMO Registry, qui a remporté les droits lors d'une vente aux enchères de l'ICANN. Il est ouvert à tous les déposants sans règles d'éligibilité particulières ([Accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/shop)). Le mot-clé intégré dans l'extension signifie instantanément « c'est un endroit où acheter », ce qui en fait un choix naturel pour une vitrine ou un microsite de campagne.
+`.shop` est un TLD générique créé spécifiquement pour le commerce, [délégué en 2016](https://www.iana.org/domains/root/db/shop.html) et géré par GMO Registry, qui a remporté les droits lors d'une vente aux enchères de l'[ICANN](/fr/glossary/icann/). Il est ouvert à tous les déposants sans règles d'éligibilité particulières ([Accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/shop)). Le mot-clé intégré dans l'extension signifie instantanément « c'est un endroit où acheter », ce qui en fait un choix naturel pour une vitrine ou un microsite de campagne.
 
 ### 3. [.store](/fr/tld/store) — un signal commercial clair
 
@@ -68,7 +68,7 @@ Au-delà des extensions, envisagez les **fautes de frappe les plus courantes** d
 
 ## Enregistrez vos domaines e-commerce chez Namefi
 
-[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité par l'ICANN conçu précisément pour ce type de portefeuille. Vous pouvez rechercher et enregistrer vos extensions commerciales côte à côte avec une tarification transparente, configurer rapidement le DNS pour que votre vitrine et vos redirections soient mises en ligne sans délai, et tout gérer depuis un seul tableau de bord. Namefi prend également en charge la tokenisation Web3, de sorte que les domaines éligibles peuvent être détenus sous forme de NFT — utile si vous souhaitez une propriété on-chain, des transferts programmables, ou traiter un domaine premium comme un actif négociable. Que vous sécurisiez un seul `.com` ou un ensemble défensif complet, [Namefi](https://namefi.io) simplifie la protection de votre marque.
+[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité par l'ICANN conçu précisément pour ce type de portefeuille. Vous pouvez rechercher et enregistrer vos extensions commerciales côte à côte avec une tarification transparente, configurer rapidement le DNS pour que votre vitrine et vos redirections soient mises en ligne sans délai, et tout gérer depuis un seul tableau de bord. Namefi prend également en charge la tokenisation [Web3](/fr/glossary/web3/), de sorte que les domaines éligibles peuvent être détenus sous forme de NFT — utile si vous souhaitez une propriété [on-chain](/fr/glossary/on-chain/), des transferts programmables, ou traiter un [domaine premium](/fr/glossary/premium-domain/) comme un actif négociable. Que vous sécurisiez un seul `.com` ou un ensemble défensif complet, [Namefi](https://namefi.io) simplifie la protection de votre marque.
 
 ## Foire aux questions
 

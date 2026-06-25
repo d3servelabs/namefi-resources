@@ -13,7 +13,7 @@ Cuando escribes el nombre de un sitio web en un navegador, estás confiando en q
 
 El primero es el **DNS** — la guía telefónica de internet — que convierte un nombre como `myetherwallet.com` en una dirección IP numérica. El segundo es **BGP**, el Border Gateway Protocol, que decide qué camino físico siguen tus paquetes para llegar a esa dirección. Casi nadie piensa en ninguno de ellos. Simplemente funcionan, miles de millones de veces al día, en silencio.
 
-La mañana del **24 de abril de 2018**, ambos mintieron al mismo tiempo. Durante unas dos horas, cualquiera que escribiera `myetherwallet.com` y omitiera una advertencia del navegador era enviado a un clon de phishing que corría en un servidor muy lejos de donde creía estar yendo. Para cuando se corrigió el enrutamiento, los atacantes habían drenado aproximadamente **$150,000 en Ethereum** de las billeteras de usuarios reales.
+La mañana del **24 de abril de 2018**, ambos mintieron al mismo tiempo. Durante unas dos horas, cualquiera que escribiera `myetherwallet.com` y omitiera una advertencia del navegador era enviado a un clon de [phishing](/es/glossary/phishing/) que corría en un servidor muy lejos de donde creía estar yendo. Para cuando se corrigió el enrutamiento, los atacantes habían drenado aproximadamente **$150,000 en [Ethereum](/es/glossary/ethereum/)** de las billeteras de usuarios reales.
 
 Lo que hace de este incidente un ejemplo permanente en los programas de estudio de seguridad no es la cifra en dólares — los robos de criptomonedas posteriores la han superado con creces. Es el *mecanismo*. Los atacantes nunca entraron en los servidores de MyEtherWallet. Nunca adivinaron una contraseña. Atacaron el **camino**, no el edificio — secuestrando la capa de enrutamiento de internet para envenenar el propio DNS.
 
@@ -27,7 +27,7 @@ Aquí está el problema. BGP es, por diseño, un sistema basado en la confianza.
 
 En otras palabras: cuando un operador de red se levanta y anuncia al mundo "el tráfico para *estas* direcciones IP debe pasar por *mí*," el resto de internet históricamente simplemente lo ha creído. Existe un mecanismo de desempate de ruta más específica incorporado en BGP — si dos redes reclaman las mismas direcciones, gana la que anuncia el bloque *más estrecho* y específico. Ese mecanismo de desempate es exactamente la palanca que un atacante acciona.
 
-Así que la superficie de ataque de cualquier dominio es mayor que su registrador, mayor que su proveedor de DNS y mayor que su proveedor de alojamiento web. Incluye todo el tejido de enrutamiento global que lleva tu consulta DNS al lugar correcto. MyEtherWallet lo aprendió de la manera más dura.
+Así que la superficie de ataque de cualquier dominio es mayor que su [registrador](/es/glossary/registrar/), mayor que su proveedor de DNS y mayor que su proveedor de alojamiento web. Incluye todo el tejido de enrutamiento global que lleva tu consulta DNS al lugar correcto. MyEtherWallet lo aprendió de la manera más dura.
 
 ## Lo que los usuarios perdieron el 24 de abril de 2018
 
@@ -91,7 +91,7 @@ Algunas conclusiones duraderas:
 
 ![Ilustración colorida de propiedad de dominio verificable y resistente a manipulaciones — una tarjeta de dominio asegurada por un escudo verde, un token Namefi verde y continuidad DNS](../../assets/the-myetherwallet-bgp-dns-attack-03-namefi-angle.jpg)
 
-El ataque a MyEtherWallet es un recordatorio claro de que un dominio no es una sola cosa que "posees" — es una pila de relaciones de confianza, cualquier capa de las cuales puede ser subvertida: el registro, el registrador, el proveedor de DNS y el tejido de enrutamiento global que entrega las consultas a ese proveedor.
+El ataque a MyEtherWallet es un recordatorio claro de que un dominio no es una sola cosa que "posees" — es una pila de relaciones de confianza, cualquier capa de las cuales puede ser subvertida: el [registro](/es/glossary/registry/), el registrador, el proveedor de DNS y el tejido de enrutamiento global que entrega las consultas a ese proveedor.
 
 [Namefi](https://namefi.io) está construido para hacer que la capa de *propiedad* de esa pila sea verificable y resistente a manipulaciones. La propiedad tokenizada de dominios significa que el control de un dominio puede ser probado criptográficamente y transferido de una manera auditable, en lugar de descansar únicamente en una contraseña de cuenta en un único proveedor — manteniéndose al mismo tiempo compatible con el DNS. Por sí solo, no soluciona BGP; nada en la capa de propiedad reescribe cómo internet enruta los paquetes. Pero ataca la misma enfermedad subyacente que este incidente expuso: **demasiada confianza crítica de internet es implícita, no verificable y reversible por quien pueda falsificar el mensaje correcto.**
 

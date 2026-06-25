@@ -14,7 +14,7 @@ Der traditionelle Ablauf beim Verkauf einer `.com`-Domain sieht in etwa so aus:
 1. Listing bei [Sedo](https://sedo.com/), [Afternic](https://www.afternic.com/) oder Dan.com.
 2. Verhandeln.
 3. Einrichten eines [Treuhandkontos (Escrow)](/de/glossary/escrow/) bei [Escrow.com](https://www.escrow.com/) oder ähnlichen Anbietern. Der Käufer überweist das Geld.
-4. Der Verkäufer entsperrt die Domain und stellt den [Auth-Code](/en/glossary/auth-code/) zur Verfügung.
+4. Der Verkäufer entsperrt die Domain und stellt den [Auth-Code](/de/glossary/auth-code/) zur Verfügung.
 5. Der Käufer leitet einen [Cross-Registrar-Transfer](/de/glossary/cross-registrar-transfer/) bei seinem [Registrar](/de/glossary/registrar/) ein.
 6. 5–7 Tage warten, bis der [ICANN](/de/glossary/icann/)-Transfer abgeschlossen ist.
 7. Bestätigung des Transfers; der Treuhanddienst gibt die Gelder frei.
@@ -32,7 +32,7 @@ Der Verkauf tokenisierter Domains komprimiert das Ganze in eine einzige Transakt
 2. Der Käufer bezahlt. Das [NFT](/de/glossary/nft/) wandert in das [Wallet](/de/glossary/wallet/) des Käufers. Der Eintrag aufseiten des [Registrars](/de/glossary/registrar/) wird von der Plattform synchron gehalten.
 3. Fertig.
 
-Das war's. Zwei Schritte. Kein [Auth-Code](/en/glossary/auth-code/), kein [Treuhanddienst (Escrow)](/de/glossary/escrow/), keine 5-tägige Registrar-Sperre, keine „Ich habe das Geld überwiesen, jetzt vertraue ich dir“-Lücke.
+Das war's. Zwei Schritte. Kein [Auth-Code](/de/glossary/auth-code/), kein [Treuhanddienst (Escrow)](/de/glossary/escrow/), keine 5-tägige Registrar-Sperre, keine „Ich habe das Geld überwiesen, jetzt vertraue ich dir“-Lücke.
 
 Das funktioniert, weil das **NFT der kanonische Eigentumsnachweis ist** und [On-Chain](/de/glossary/on-chain/)-Transaktionen [atomar](/de/glossary/atomic-transfer/) sind: Zahlung und Vermögensübertragung finden im selben Block statt, oder keines von beiden passiert.
 
@@ -44,7 +44,7 @@ Das funktioniert, weil das **NFT der kanonische Eigentumsnachweis ist** und [On-
 
 Gleiches Konzept, andere Oberfläche. Marktplätze nehmen nach wie vor eine Provision und kuratieren die Angebote. Die große Änderung: Tokenisierte Angebote können auf **mehreren Marktplätzen gleichzeitig** erscheinen, da es sich um Standard-NFTs handelt. Sie listen die Domain einmal auf der Plattform, von der sie stammt; OpenSea/Blur aggregieren sie möglicherweise automatisch.
 
-Das ist eine bedeutende Liquiditätsverbesserung gegenüber der klassischen Domain-Welt, in der Sedo und Afternic geschlossene Ökosysteme (Walled Gardens) betrieben.
+Das ist eine bedeutende [Liquidität](/de/glossary/domain-liquidity/)sverbesserung gegenüber der klassischen Domain-Welt, in der Sedo und Afternic geschlossene Ökosysteme (Walled Gardens) betrieben.
 
 ### Escrow.com
 
@@ -66,7 +66,7 @@ Es gibt eine damit zusammenhängende Regel – die 60-tägige Sperrfrist (Cooldo
 
 ### Banküberweisungen und Bankverzögerungen
 
-**Ersetzt durch Zahlungen mit Krypto und [Stablecoins](/en/glossary/stablecoin/).** USDC, ETH und andere On-Chain-Zahlungen werden in Sekunden abgewickelt. Banküberweisungen dauern Tage. Am deutlichsten ist der Unterschied bei internationalen Verkäufen.
+**Ersetzt durch Zahlungen mit Krypto und [Stablecoins](/de/glossary/stablecoin/).** USDC, ETH und andere On-Chain-Zahlungen werden in Sekunden abgewickelt. Banküberweisungen dauern Tage. Am deutlichsten ist der Unterschied bei internationalen Verkäufen.
 
 ### „Ich vertraue darauf, dass die andere Person ihren Teil erfüllt“
 
@@ -84,7 +84,7 @@ Sie senden nun ein NFT an eine Wallet-Adresse. Wenn der Käufer Ihnen eine falsc
 
 ### Smart-Contract-Risiko
 
-Der Smart Contract des Marktplatzes ist das neue „Treuhandkonto“. Wenn er einen Fehler hat, können seltsame Dinge passieren. Aus diesem Grund sind geprüfte (audited), praxiserprobte Marktplätze wichtig. Seien Sie nicht der Erste, der einen brandneuen Vertrag für einen hochwertigen Verkauf nutzt.
+Der [Smart Contract](/de/glossary/smart-contract/) des Marktplatzes ist das neue „Treuhandkonto“. Wenn er einen Fehler hat, können seltsame Dinge passieren. Aus diesem Grund sind geprüfte (audited), praxiserprobte Marktplätze wichtig. Seien Sie nicht der Erste, der einen brandneuen Vertrag für einen hochwertigen Verkauf nutzt.
 
 ### Front-Running und MEV
 
@@ -107,7 +107,7 @@ Ein in Krypto bezahlter Verkauf stellt in einigen Rechtsordnungen ein anderes st
 ## Was dies für Käufer bedeutet
 
 - **Geschwindigkeit.** Verkäufe werden in Minuten abgewickelt, nicht in Tagen.
-- **Niedrigere Gebühren.** Keine Provision für Treuhanddienste. Marktplatz- und Gas-Kosten sind in der Regel viel niedriger als 3–6 %.
+- **Niedrigere Gebühren.** Keine Provision für Treuhanddienste. Marktplatz- und [Gas](/de/glossary/gas/)-Kosten sind in der Regel viel niedriger als 3–6 %.
 - **Direktes Eigentum.** Das NFT ist sofort und ohne Wartezeit in Ihrem Wallet.
 - **Verifizierung.** Sie können die On-Chain-Historie vor dem Kauf überprüfen – wann die Domain gemintet wurde, frühere Transfers, frühere Listings.
 
@@ -144,7 +144,7 @@ Sobald sich Käufer und Verkäufer an die atomare Abwicklung gewöhnt haben, fü
 
 - Bessere domainspezifische Suche und Filterung auf NFT-Marktplätzen.
 - Bessere Bewertungstools für heterogene Assets.
-- Breitere TLD-Abdeckung über Tokenisierungsplattformen hinweg.
+- Breitere [TLD](/de/glossary/tld/)-Abdeckung über Tokenisierungsplattformen hinweg.
 - Stabile, gut geprüfte Smart Contracts, die keine öffentlichkeitswirksamen Zwischenfälle verursacht haben.
 
 All dies ist in Arbeit und verbessert sich von Jahr zu Jahr zusehends.

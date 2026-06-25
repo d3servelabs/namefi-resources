@@ -11,9 +11,9 @@ keywords: ['détournement domaine squarespace', 'migration google domains', 'dé
 
 En juillet 2024, la chose la plus dangereuse sur le site web d'un projet crypto n'était pas un bug de contrat intelligent ni une clé privée divulguée. C'était le registrar qui détenait le domaine.
 
-Pendant quelques jours ce mois-là, les utilisateurs qui saisissaient une adresse familière dans leur navigateur — le site officiel d'un protocole de prêt de confiance, un bridge utilisé des centaines de fois — atterrissaient exactement là où ils s'attendaient, sur une page qui semblait parfaitement normale, avant de voir leurs portefeuilles se vider. Rien n'avait été piraté au sens habituel du terme. Personne n'avait deviné un mot de passe ni hameçonné une phrase de récupération. Les attaquants avaient simplement pénétré par la porte d'entrée du *domaine* lui-même, parce que cette porte avait été laissée ouverte lors d'un déménagement d'entreprise que la plupart de ces projets n'avaient jamais remarqué.
+Pendant quelques jours ce mois-là, les utilisateurs qui saisissaient une adresse familière dans leur navigateur — le site officiel d'un protocole de prêt de confiance, un bridge utilisé des centaines de fois — atterrissaient exactement là où ils s'attendaient, sur une page qui semblait parfaitement normale, avant de voir leurs portefeuilles se vider. Rien n'avait été piraté au sens habituel du terme. Personne n'avait deviné un mot de passe ni hameçonné une [phrase de récupération](/fr/glossary/seed-phrase/). Les attaquants avaient simplement pénétré par la porte d'entrée du *domaine* lui-même, parce que cette porte avait été laissée ouverte lors d'un déménagement d'entreprise que la plupart de ces projets n'avaient jamais remarqué.
 
-Ce déménagement, c'était la migration de Google Domains vers Squarespace. La porte ouverte, c'était les paramètres d'authentification par défaut de Squarespace. Et le résultat fut une vague coordonnée de détournements DNS visant des projets crypto et DeFi contrôlant, selon les termes d'un chercheur, des milliards de dollars d'actifs.
+Ce déménagement, c'était la migration de Google Domains vers Squarespace. La porte ouverte, c'était les paramètres d'authentification par défaut de Squarespace. Et le résultat fut une vague coordonnée de détournements [DNS](/fr/glossary/dns/) visant des projets crypto et [DeFi](/fr/glossary/defi/) contrôlant, selon les termes d'un chercheur, des milliards de dollars d'actifs.
 
 ## Comment une migration de registrar a créé une surface d'attaque massive
 
@@ -65,11 +65,11 @@ Le conseil de remédiation immédiat était le même pour tous ceux qui utilisai
 
 ## Ce que cela enseigne sur la sécurité des registrars et l'AMF
 
-Les détournements sur Squarespace ne sont pas vraiment l'histoire d'une mauvaise configuration d'une seule entreprise. C'est l'histoire de l'endroit où réside réellement le contrôle d'un domaine, et à quel point la couche au-dessus de la blockchain reste fragile.
+Les détournements sur Squarespace ne sont pas vraiment l'histoire d'une mauvaise configuration d'une seule entreprise. C'est l'histoire de l'endroit où réside réellement le contrôle d'un domaine, et à quel point la couche au-dessus de la [blockchain](/fr/glossary/blockchain/) reste fragile.
 
 Quelques enseignements se généralisent bien au-delà de juillet 2024 :
 
-1. **Le compte registrar est la vraie racine de confiance — pas le contrat intelligent.** Aucun des protocoles touchés n'avait de bug de contrat. Leur code on-chain était correct. Les attaquants ont pris le *domaine*, et le domaine est ce que les utilisateurs saisissent, font confiance, et connectent leurs portefeuilles. Un projet peut être irréprochable on-chain et quand même livrer ses utilisateurs à un attaquant si son plan de contrôle DNS est défaillant.
+1. **Le compte registrar est la vraie racine de confiance — pas le contrat intelligent.** Aucun des protocoles touchés n'avait de bug de contrat. Leur code [on-chain](/fr/glossary/on-chain/) était correct. Les attaquants ont pris le *domaine*, et le domaine est ce que les utilisateurs saisissent, font confiance, et connectent leurs portefeuilles. Un projet peut être irréprochable on-chain et quand même livrer ses utilisateurs à un attaquant si son plan de contrôle DNS est défaillant.
 
 2. **L'AMF n'est une protection que si elle survit aux migrations.** Le détail douloureux ici est que l'AMF n'a pas échoué sous l'attaque — elle a été *supprimée* avant l'attaque, comme commodité de migration. Traitez le statut de l'AMF comme quelque chose à re-vérifier après chaque déplacement de compte, transfert ou changement de fournisseur, et non comme quelque chose que l'on configure une fois pour toutes.
 

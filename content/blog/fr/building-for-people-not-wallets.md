@@ -30,11 +30,11 @@ Ce pivot a finalement fait de Privy la fondation de produits comme friend.tech, 
 
 ## Cartographier la frontière de l’utilisabilité
 
-Henri voit l’évolution de l’utilisabilité dans la crypto comme un parcours en plusieurs phases. Les premières années étaient dominées par des barrières techniques : clés privées, frais de gas, connecteurs de wallets fragmentés.
+Henri voit l’évolution de l’utilisabilité dans la crypto comme un parcours en plusieurs phases. Les premières années étaient dominées par des barrières techniques : clés privées, frais de [gas](/fr/glossary/gas/), connecteurs de wallets fragmentés.
 
 D’ici 2025, il estime que ces obstacles ont largement été résolus — ou du moins maîtrisés. Les frais de gas sont devenus gérables. La création et la récupération de wallets se sont simplifiées. Le dernier goulot d’étranglement, selon lui, concerne les *on-ramps* — le processus permettant aux utilisateurs ordinaires d’entrer dans la crypto de manière intuitive et sécurisée.
 
-Une fois les utilisateurs entrés dans l'écosystème, l’étape suivante consiste à leur fournir des outils financiers utiles : des wallets générateurs de rendement, des paiements fluides, et des applications basées sur les stablecoins qui combinent la familiarité du Web2 avec la puissance du Web3.
+Une fois les utilisateurs entrés dans l'écosystème, l’étape suivante consiste à leur fournir des outils financiers utiles : des wallets générateurs de rendement, des paiements fluides, et des applications basées sur les stablecoins qui combinent la familiarité du Web2 avec la puissance du [Web3](/fr/glossary/web3/).
 
 Pour Henri, la mission ne consiste plus seulement à réduire les frictions — mais à transformer la crypto en une infrastructure que les gens utilisent sans même s’en rendre compte.
 

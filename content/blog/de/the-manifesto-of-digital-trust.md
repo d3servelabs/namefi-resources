@@ -11,7 +11,7 @@ description: Ein Visionsdokument von D3Serve – warum die Digitalisierung von V
 keywords: ['digitales Vertrauen', 'D3Serve', 'Blockchain', 'Web3', 'Smart Contracts', 'Kryptografie', 'Konsens', 'Manifest', 'Vision', 'Vertrauensdigitalisierung', 'Gruppenvertrauen', 'Automatisierung']
 ---
 
-Bei **D3Serve** widmen wir uns dem Aufbau von *digitalem Vertrauen*, indem wir Blockchain und andere fortschrittliche Technologien nutzen.
+Bei **D3Serve** widmen wir uns dem Aufbau von *digitalem Vertrauen*, indem wir [Blockchain](/de/glossary/blockchain/) und andere fortschrittliche Technologien nutzen.
 
 Wir sind überzeugt, dass die Zukunft enorme Produktivitätsverbesserungen und eine bessere Version der Welt bereithält, ermöglicht durch die Digitalisierung von Vertrauen.
 

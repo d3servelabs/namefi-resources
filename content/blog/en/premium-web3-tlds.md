@@ -53,7 +53,7 @@ If your goal is a premium asset that is *also* Web3-ready, tokenizing a real ext
 | Usable as DeFi collateral | Yes | Yes |
 | Universal Web2 + Web3 reach | No | Yes |
 
-The "premium" in *[premium domain](/en/glossary/premium-domain/)* has always come from scarcity, brand strength, and decades of universal support. A short, memorable `.com` or a category-defining `.ai` carries that value precisely *because* the whole internet already recognizes it. [Tokenizing](/en/glossary/tokenize/) it keeps every bit of that value and adds wallet-native ownership and on-chain [composability](/en/glossary/defi/)—without inheriting the resolution and compatibility problems of names that live only on-chain.
+The "premium" in *[premium domain](/en/glossary/premium-domain/)* has always come from scarcity, brand strength, and decades of universal support. A short, memorable `.com` or a category-defining `.ai` carries that value precisely *because* the whole internet already recognizes it. [Tokenizing](/en/glossary/tokenize/) it keeps every bit of that value and adds wallet-native ownership and on-chain [composability](/en/glossary/composability/)—without inheriting the resolution and compatibility problems of names that live only on-chain.
 
 You don't have to choose sides, either. Many owners hold a tokenized `.com` for their real product *and* an [`.eth`](/en/tld/eth/) name as a wallet identity. They do different jobs. (See [Tokenized Domain vs Web3 Domain](/en/blog/tokenized-domain-vs-web3-domain/) for the full breakdown.)
 

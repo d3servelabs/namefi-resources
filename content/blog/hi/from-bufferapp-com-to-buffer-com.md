@@ -111,7 +111,7 @@ Premium domains एक unglamorous कारण से मायने रखत
 
 ## Case 19 से founders को क्या सीखना चाहिए
 
-आसान निष्कर्ष — "हमेशा लॉन्च से पहले अपना exact-match .com खरीद लो" — गलत है, क्योंकि Buffer सचमुच नहीं कर सकता था; डोमेन 1997 से registered था। अधिक उपयोगी सबक modifiers, timing, और negotiate करने के तरीके के बारे में हैं:
+आसान निष्कर्ष — "हमेशा लॉन्च से पहले अपना exact-match [.com](/hi/tld/com/) खरीद लो" — गलत है, क्योंकि Buffer सचमुच नहीं कर सकता था; डोमेन 1997 से registered था। अधिक उपयोगी सबक modifiers, timing, और negotiate करने के तरीके के बारे में हैं:
 
 1. **एक modifier एक ठीक on-ramp है।** "App" ने Buffer को Buffer.com के किसी और के portfolio में रहते हुए अपने असली नाम से लॉन्च करने दिया। BufferApp.com पर launch करना विफलता नहीं था; यह शुरू करने का एक उचित तरीका था बिना उस डोमेन के इंतजार किए जो कभी free न हो।
 2. **उस क्षण पर नजर रखें जब modifier leak करना शुरू करे।** संकेत ego नहीं था — यह था कि [अधिक से अधिक लोग सोचने लगे कि buffer.com हमारा डोमेन है](https://buffer.com/resources/acquired-buffer-com/#:~:text=more%20and%20more%20people%20thought%20that%20buffer.com%20was%20our%20domain)। जब दुनिया पहले से ही साफ नाम का अनुमान लगा रही है, तो upgrade अपनी लागत खुद निकाल लेता है।
@@ -128,7 +128,7 @@ transparency theater के नीचे, Buffer की कहानी एक t
 
 रणनीतिक निर्णय कभी संदिग्ध नहीं था — *बेशक* Buffer कहलाने वाला प्रोडक्ट Buffer.com पर होना चाहिए था। कठिन हिस्सा asset के चारों ओर की हर चीज थी: 1997 में registered एक डोमेन के लंबे समय के मालिक को खोजना, सौदा करने के लिए पर्याप्त भरोसा बनाना, बिना किसी सार्वजनिक तुलना के कीमत पर सहमत होना, और live product को बाधित किए बिना control को साफ-साफ transfer करना। उस काम में [624 दिन](https://buffer.com/resources/acquired-buffer-com/#:~:text=624%20days) लगे — और यहाँ तक कि एक कंपनी जो अपना balance sheet print करती है, कीमत बताने में असमर्थ रही, क्योंकि domain deals की friction-heavy, trust-dependent प्रकृति value का इतना हिस्सा opaque रखती है।
 
-[Namefi](https://namefi.io) इस विचार के आधार पर बना है कि domains को internet-native assets की तरह व्यवहार करना चाहिए। Tokenized ownership domain control को verify, transfer, और modern workflows में integrate करना आसान बना सकता है जबकि DNS के साथ compatible रहे — इस तरह के deal के slow, trust-heavy हिस्से (यह confirm करना कि कौन क्या owns करता है, terms पर सहमत होना, और asset को safely move करना) को एक clean, auditable transaction के करीब कुछ में बदल सकता है। एक ऐसी दुनिया जहाँ ownership और transfer on-chain provable हैं, वह एक ऐसी दुनिया है जहाँ 624-दिन का अभियान burner emails, printed bank statements, और दो साल के धैर्य पर निर्भर नहीं करना पड़ता।
+[Namefi](https://namefi.io) इस विचार के आधार पर बना है कि domains को internet-native assets की तरह व्यवहार करना चाहिए। Tokenized ownership domain control को verify, transfer, और modern workflows में integrate करना आसान बना सकता है जबकि [DNS](/hi/glossary/dns/) के साथ compatible रहे — इस तरह के deal के slow, trust-heavy हिस्से (यह confirm करना कि कौन क्या owns करता है, terms पर सहमत होना, और asset को safely move करना) को एक clean, auditable transaction के करीब कुछ में बदल सकता है। एक ऐसी दुनिया जहाँ ownership और transfer on-chain provable हैं, वह एक ऐसी दुनिया है जहाँ 624-दिन का अभियान burner emails, printed bank statements, और दो साल के धैर्य पर निर्भर नहीं करना पड़ता।
 
 Buffer.com अब obvious लगता है क्योंकि Buffer बड़ा हो गया। लेकिन सबक बिल्कुल शुरुआत में उतरता है: जब एक नाम business को carry करने वाला है, तो domain decoration नहीं है। यह आपके audience को किसी अजनबी के पते पर leak करने और उस एक शब्द को own करने के बीच का अंतर है जिसे हर कोई पहले से ही टाइप करता है।
 

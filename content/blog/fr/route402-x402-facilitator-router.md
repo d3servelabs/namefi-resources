@@ -15,7 +15,7 @@ Route402 vous permet d'intégrer [x402](https://www.x402.org/) une seule fois, p
 
 ## x402, en termes simples
 
-x402 définit un processus d'échange (handshake) standard pour les requêtes payantes. Il offre aux clients et aux facilitateurs une structure commune pour les flux de vérification et de règlement (verify and settle), vous évitant ainsi d'avoir à créer du code de liaison sur mesure pour chaque fournisseur.
+[x402](/fr/glossary/x402/) définit un processus d'échange (handshake) standard pour les requêtes payantes. Il offre aux clients et aux facilitateurs une structure commune pour les flux de vérification et de règlement (verify and settle), vous évitant ainsi d'avoir à créer du code de liaison sur mesure pour chaque fournisseur.
 
 Cette standardisation est une excellente chose. Les vraies difficultés commencent lorsque vous devez gérer plusieurs facilitateurs, réseaux ou environnements.
 

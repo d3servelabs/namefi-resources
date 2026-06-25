@@ -27,4 +27,4 @@ Technisch gesehen fungiert UCP als eine [Abstraktionsschicht](https://www.strata
 
 Der Schritt ist ein deutlicher Warnschuss vor den Bug von [Amazon](http://amazon.com), das zunehmend rechtlich gegen KI-Suchmaschinen wie [Perplexity](http://perplexity.ai) vorgeht, weil diese dessen Produktdaten scrapen. Durch die Schaffung eines offenen Standards, bei dem sich Händler freiwillig dafür entscheiden, von Agenten ausgelesen und verkauft zu werden, bildet Google eine „Koalition der Willigen“ – und bietet Einzelhändlern im Wesentlichen einen Weg, Amazons „Walled Garden“ zu umgehen und direkt über die weltweit beliebtesten KI-Modelle zu verkaufen.
 
-Vorerst wird UCP mit ausgewählten Partnern in den USA eingeführt, aber die Botschaft ist klar: Die Ära von SEO neigt sich dem Ende zu; die Ära der AEO (Agent Engine Optimization) hat begonnen.
+Vorerst wird UCP mit ausgewählten Partnern in den USA eingeführt, aber die Botschaft ist klar: Die Ära von [SEO](/de/glossary/seo/) neigt sich dem Ende zu; die Ära der AEO (Agent Engine Optimization) hat begonnen.

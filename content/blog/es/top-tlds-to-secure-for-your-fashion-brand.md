@@ -10,13 +10,13 @@ description: 'Una guía práctica sobre los 10 TLD principales que debes asegura
 keywords: ['TLDs para marca de moda', 'nombres de dominio para marcas de moda', 'mejores TLDs para venta minorista', 'registro defensivo de dominios', 'dominios de protección de marca', 'dominio .fashion', 'dominio .boutique', 'dominio .shop', 'dominio .store', 'dominios de ecommerce de moda', 'protección contra typosquatting', 'protección de dominio de marca registrada']
 ---
 
-Una marca de moda vive y muere por su nombre. La misma palabra que aparece en la etiqueta tejida dentro de una chaqueta también debe funcionar como escaparate, como nombre de usuario en Instagram, como URL de un catálogo mayorista y como dominio de correo electrónico. Por eso asegurar el conjunto correcto de **TLDs para tu marca de moda** no es un ejercicio de vanidad, sino protección de marca. Cada dominio de nivel superior que dejas sin registrar es una oportunidad para que un falsificador, un typosquatter o un competidor se aproveche de tu reputación.
+Una marca de moda vive y muere por su nombre. La misma palabra que aparece en la etiqueta tejida dentro de una chaqueta también debe funcionar como escaparate, como nombre de usuario en Instagram, como URL de un catálogo mayorista y como dominio de correo electrónico. Por eso asegurar el conjunto correcto de **TLDs para tu marca de moda** no es un ejercicio de vanidad, sino protección de marca. Cada [dominio de nivel superior](/es/glossary/tld/) que dejas sin registrar es una oportunidad para que un falsificador, un typosquatter o un competidor se aproveche de tu reputación.
 
 La moda también es una de las categorías más falsificadas en internet, lo que convierte la capa de dominios en parte de tu perímetro defensivo. Tener tu nombre en las extensiones más relevantes te permite mantener un sitio de comercio electrónico limpio, crear micrositios para submarcas o colecciones cápsulas, y redirigir el tráfico mal escrito hacia ti en lugar de a una tienda de imitaciones. A continuación explicamos cómo pensarlo, las diez extensiones que vale la pena priorizar y cómo registrarlas.
 
 ## Cómo elegir TLDs para tu marca de moda
 
-Tres criterios deben guiar tu lista. **Brandabilidad**: ¿la extensión se lee de forma natural con tu nombre y señala lo que haces (`tumarca.shop` dice "compra aquí" al instante)? **Intención de compra**: ¿se asocia con el comercio y el descubrimiento, donde los compradores y los motores de búsqueda esperan encontrar una tienda? **Cobertura defensiva**: incluso las extensiones que nunca usarás activamente vale la pena tener si son baratas, populares y fáciles de que un actor malintencionado use contra tu marca registrada.
+Tres criterios deben guiar tu lista. **Brandabilidad**: ¿la extensión se lee de forma natural con tu nombre y señala lo que haces (`tumarca.shop` dice "compra aquí" al instante)? **Intención de compra**: ¿se asocia con el comercio y el descubrimiento, donde los compradores y los motores de búsqueda esperan encontrar una tienda? **Cobertura defensiva**: incluso las extensiones que nunca usarás activamente vale la pena tener si son baratas, populares y fáciles de que un actor malintencionado use contra tu [marca registrada](/es/glossary/trademark/).
 
 No necesitas cientos de dominios. Necesitas el `.com` canónico, un pequeño grupo de extensiones orientadas al comercio que realmente usarás, y un anillo defensivo alrededor de los errores tipográficos y objetivos de abuso más evidentes.
 
@@ -44,7 +44,7 @@ No necesitas cientos de dominios. Necesitas el `.com` canónico, un pequeño gru
 
 ### 6. .co — la alternativa corta y premium
 
-[.co](/es/tld/co) es el dominio de código de país de Colombia, gestionado por el [Ministerio de Tecnologías de la Información y las Comunicaciones (MinTIC)](https://www.iana.org/domains/root/db/co.html) de Colombia con operaciones técnicas a cargo de CentralNic, pero se comercializa y usa globalmente como un sustituto corto de "company" (empresa) o "commerce" (comercio). Muchas startups de moda adoptan `.co` cuando el `.com` no está disponible. El registro está abierto en todo el mundo; dado que es un ccTLD operado bajo una autoridad nacional, revisa los términos del registro antes de utilizarlo como tu único escaparate.
+[.co](/es/tld/co) es el dominio de código de país de Colombia, gestionado por el [Ministerio de Tecnologías de la Información y las Comunicaciones (MinTIC)](https://www.iana.org/domains/root/db/co.html) de Colombia con operaciones técnicas a cargo de CentralNic, pero se comercializa y usa globalmente como un sustituto corto de "company" (empresa) o "commerce" (comercio). Muchas startups de moda adoptan `.co` cuando el `.com` no está disponible. El [registro](/es/glossary/registry/) está abierto en todo el mundo; dado que es un [ccTLD](/es/glossary/cctld/) operado bajo una autoridad nacional, revisa los términos del registro antes de utilizarlo como tu único escaparate.
 
 ### 7. .fashion — relevancia que define la categoría
 
@@ -70,11 +70,11 @@ En primer lugar, **cubre los errores tipográficos y homoglifos más comunes** d
 
 En segundo lugar, **conserva las extensiones genéricas de alto riesgo** aunque nunca construyas nada en ellas. `.shop`, `.store` y `.online` son baratas en comparación con el coste de una disputa de marca registrada o un escaparate de falsificaciones que lleva tu nombre. Registrarlas tú mismo es casi siempre más económico que recuperarlas después.
 
-En tercer lugar, **documenta y consolida**. Mantén todos los registros bajo una sola cuenta con datos de contacto coherentes, activa la renovación automática para que nada caduque y activa los bloqueos del registrador. Para las marcas que operan en Web3, tener el nombre como dominio tokenizado (un NFT) te proporciona un registro de propiedad portátil y verificable junto con el registro DNS convencional. Si tu marca registrada está inscrita, también puedes calificar para la [Cámara de Compensación de Marcas de ICANN](https://www.icann.org/resources/pages/tmch-2014-04-04-en), que desbloquea registros prioritarios en el período Sunrise y avisos de reclamaciones de marca en nuevos TLDs.
+En tercer lugar, **documenta y consolida**. Mantén todos los registros bajo una sola cuenta con datos de contacto coherentes, activa la renovación automática para que nada caduque y activa los bloqueos del [registrador](/es/glossary/registrar/). Para las marcas que operan en [Web3](/es/glossary/web3/), tener el nombre como [dominio tokenizado](/es/glossary/tokenized-domain/) (un NFT) te proporciona un registro de propiedad portátil y verificable junto con el registro DNS convencional. Si tu marca registrada está inscrita, también puedes calificar para la [Cámara de Compensación de Marcas de ICANN](https://www.icann.org/resources/pages/tmch-2014-04-04-en), que desbloquea registros prioritarios en el período Sunrise y avisos de reclamaciones de marca en nuevos TLDs.
 
 ## Registra los dominios de tu marca de moda en Namefi
 
-[Namefi](https://namefi.io) es un registrador acreditado por ICANN creado para simplificar la protección de marca en múltiples extensiones. Puedes buscar y registrar tu nombre en las extensiones anteriores desde una sola cuenta, con precios transparentes y sin extras sorpresa, y luego gestionar todo —renovaciones, bloqueos y DNS— desde un único panel de control.
+[Namefi](https://namefi.io) es un [registrador acreditado por ICANN](/es/glossary/accredited-registrar/) creado para simplificar la protección de marca en múltiples extensiones. Puedes buscar y registrar tu nombre en las extensiones anteriores desde una sola cuenta, con precios transparentes y sin extras sorpresa, y luego gestionar todo —renovaciones, bloqueos y DNS— desde un único panel de control.
 
 Namefi también ofrece DNS rápido y fiable para que tu escaparate y los sitios de campaña resuelvan rápidamente, más tokenización opcional en Web3 que te permite tener un dominio como NFT para una propiedad portátil y verificable. Tanto si estás lanzando tu primera colección cápsula como si defiendes una casa consolidada, puedes asegurar tu `.com` principal y tu anillo defensivo en un solo lugar.
 
@@ -90,7 +90,7 @@ No hay un número fijo, pero un núcleo práctico es tu `.com` más un puñado d
 
 ### ¿Alguna de estas extensiones está restringida a empresas del sector de la moda?
 
-No. A pesar de sus nombres, `.fashion`, `.boutique`, `.style` y las extensiones minoristas como `.shop` y `.store` están abiertas a todos los solicitantes sin ningún requisito de membresía sectorial, según sus registros de delegación en la IANA. El único matiz es `.co`, un ccTLD operado bajo la autoridad nacional de Colombia; está disponible globalmente, pero revisa los términos del registro antes de convertirlo en tu único escaparate.
+No. A pesar de sus nombres, `.fashion`, `.boutique`, `.style` y las extensiones minoristas como `.shop` y `.store` están abiertas a todos los solicitantes sin ningún requisito de membresía sectorial, según sus registros de delegación en la [IANA](/es/glossary/iana/). El único matiz es `.co`, un ccTLD operado bajo la autoridad nacional de Colombia; está disponible globalmente, pero revisa los términos del registro antes de convertirlo en tu único escaparate.
 
 ### ¿Debería registrar también el mismo nombre como dominio tokenizado (Web3)?
 

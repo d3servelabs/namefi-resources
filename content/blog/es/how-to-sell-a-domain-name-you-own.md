@@ -21,13 +21,13 @@ Esta guía es para el propietario normal de un dominio que tiene un nombre que y
 Si solo recuerdas un flujo, que sea este:
 
 1. Decide si el dominio tiene un comprador creíble.
-2. Fija el precio basándote en ventas comparables, no en la esperanza.
+2. Fija el precio basándote en [ventas comparables](/es/glossary/comparable-sales/), no en la esperanza.
 3. Comprueba los riesgos legales, de transferencia, de caducidad y de DNS antes de ofrecerlo.
 4. Elige tu vía de venta: *inbound* (entrante), *outbound* (saliente) o ambas.
 5. Usa [Namefi Outbound](https://namefi.io/outbound) para investigar posibles compradores, enfoques de venta, contactos públicos cuando estén disponibles y borradores editables para el primer mensaje.
 6. Envía mensajes cortos y específicos únicamente a personas a las que realmente les pueda importar.
 7. Negocia por escrito: precio, división de comisiones, método de transferencia, activos incluidos y plazos.
-8. Cierra el trato a través de un flujo de pago seguro o un servicio de depósito en garantía (*escrow*), transfiere el dominio y guarda los registros.
+8. Cierra el trato a través de un flujo de pago seguro o un servicio de depósito en garantía (*[escrow](/es/glossary/escrow/)*), transfiere el dominio y guarda los registros.
 
 La transferencia es el último paso. La idoneidad del comprador es el primero.
 
@@ -52,13 +52,13 @@ Si puedes, puede que valga la pena vender el dominio de forma activa. Si no pued
 
 Revisa también los aspectos incómodos desde el principio:
 
-- ¿Se parece el dominio de forma confusa a la marca registrada de otra persona?
+- ¿Se parece el dominio de forma confusa a la [marca registrada](/es/glossary/trademark/) de otra persona?
 - ¿Lo registraste principalmente por la marca de una empresa específica?
 - ¿El sitio web actual, la página de *parking* o el contenido de los anuncios están creando confusión?
 - ¿El dominio está a punto de caducar?
 - ¿Está bloqueado para su transferencia porque ha sido registrado o transferido recientemente?
 
-El riesgo de marca registrada no es un detalle menor. Según la [UDRP de la ICANN](https://www.icann.org/resources/pages/policy-2024-02-21-en), el demandante debe demostrar similitud confusa, falta de derechos o intereses legítimos, y registro y uso de mala fe. Un ejemplo que la ICANN cita como evidencia de mala fe es adquirir un dominio principalmente para venderlo al propietario de la marca registrada o a un competidor por más de los costos de bolsillo documentados. Si eso suena incómodamente parecido a tu plan, haz una pausa y habla con un abogado antes de ofrecérselo a nadie.
+El riesgo de marca registrada no es un detalle menor. Según la [UDRP de la ICANN](https://www.icann.org/resources/pages/policy-2024-02-21-en), el demandante debe demostrar similitud confusa, falta de derechos o intereses legítimos, y registro y uso de [mala fe](/es/glossary/bad-faith/). Un ejemplo que la ICANN cita como evidencia de mala fe es adquirir un dominio principalmente para venderlo al propietario de la marca registrada o a un competidor por más de los costos de bolsillo documentados. Si eso suena incómodamente parecido a tu plan, haz una pausa y habla con un abogado antes de ofrecérselo a nadie.
 
 Esta no es una razón para entrar en pánico. Es una razón para vender nombres limpios de formas limpias.
 
@@ -70,7 +70,7 @@ Aun así, un precio defendible suele provenir de cinco factores:
 
 | Factor | Qué revisar |
 | --- | --- |
-| Ventas comparables | Ventas recientes con similar longitud, cantidad de palabras, categoría y TLD |
+| Ventas comparables | Ventas recientes con similar longitud, cantidad de palabras, categoría y [TLD](/es/glossary/tld/) |
 | Fuerza del TLD | Si la extensión es líquida a nivel global o útil principalmente en un nicho |
 | Caso de uso del comprador | Cómo el nombre ayuda directamente a una empresa, campaña, producto o categoría real |
 | Valor existente | Tráfico, enlaces entrantes (*backlinks*), ingresos, antigüedad, historial limpio o activos desarrollados |
@@ -88,7 +88,7 @@ Luego elige el estilo de fijación de precios:
 
 - **Precio fijo / comprar ahora:** ideal cuando quieres rapidez y menos idas y venidas.
 - **Hacer oferta:** ideal cuando el dominio es inusual o el valor para el comprador varía ampliamente.
-- **Subasta:** ideal cuando hay una demanda visible de múltiples compradores.
+- **[Subasta](/es/glossary/auction/):** ideal cuando hay una demanda visible de múltiples compradores.
 - **Negociación privada:** ideal cuando el grupo de compradores es pequeño y estratégico.
 
 Cuanto más importante sea el dominio, más crucial será conocer tu cifra mínima de abandono antes de que llegue la primera respuesta. La negociación es mucho más tranquila cuando no te estás inventando el precio a la mitad de la misma.
@@ -99,7 +99,7 @@ Haz esta parte antes de contactar con nadie. Te ahorrará correos electrónicos 
 
 ### Confirma el control
 
-Asegúrate de que puedes iniciar sesión en la cuenta del [registrador](/es/glossary/registrar/), acceder al correo electrónico del registrante/administrador y demostrar que controlas el dominio. Si el dominio pertenece a una empresa, confirma quién tiene autoridad para venderlo.
+Asegúrate de que puedes iniciar sesión en la cuenta del [registrador](/es/glossary/registrar/), acceder al correo electrónico del [registrante](/es/glossary/registrant/)/administrador y demostrar que controlas el dominio. Si el dominio pertenece a una empresa, confirma quién tiene autoridad para venderlo.
 
 ### Comprueba la caducidad
 
@@ -107,7 +107,7 @@ Si el dominio está a punto de caducar, renuévalo antes de hacer contactos seri
 
 ### Comprueba el estado de transferencia
 
-La ICANN explica que los registradores pueden denegar las transferencias en ciertos casos, como cuando un dominio está en estado de bloqueo, dentro de los 60 días posteriores al registro inicial o dentro de los 60 días posteriores a una transferencia anterior. También necesitarás un [código AuthInfo/auth](/en/glossary/auth-code/) para muchas transferencias entre registradores, y la ICANN estipula que los registradores deben permitirte crear uno o proporcionártelo en un plazo de cinco días calendario desde la solicitud.
+La [ICANN](/es/glossary/icann/) explica que los registradores pueden denegar las transferencias en ciertos casos, como cuando un dominio está en estado de bloqueo, dentro de los 60 días posteriores al registro inicial o dentro de los 60 días posteriores a una transferencia anterior. También necesitarás un [código AuthInfo/auth](/es/glossary/auth-code/) para muchas transferencias entre registradores, y la ICANN estipula que los registradores deben permitirte crear uno o proporcionártelo en un plazo de cinco días calendario desde la solicitud.
 
 Eso no significa que cada venta tenga que esperar. Si el comprador está dispuesto a recibir el dominio en el registrador actual, es posible hacer un *push* (transferencia de cuenta en el mismo registrador) o un cambio de titularidad. Pero necesitas conocer la vía de transferencia antes de prometer una fecha de cierre.
 
@@ -252,7 +252,7 @@ Ten cuidado con las estafas. La [FTC](https://consumer.ftc.gov/articles/how-avoi
 
 No hagas clic en enlaces de *escrow* de un comprador asumiendo que son reales. Escribe tú mismo la URL del servicio de *escrow* o de pago. Confirma la transacción dentro de tu propia cuenta. No transfieras el dominio hasta que la plataforma de pago indique que los fondos están asegurados.
 
-Para una transferencia entre registradores, el vendedor generalmente desbloquea el dominio y proporciona el código de autorización (AuthInfo), y luego el comprador inicia la transferencia en el registrador receptor. Para un *push* en el mismo registrador, ambas partes usan cuentas en el registrador actual. Escrow.com señala que un *push* en el mismo registrador puede ser útil cuando un bloqueo de transferencia de 60 días de la ICANN impide un movimiento entre registradores.
+Para una transferencia entre registradores, el vendedor generalmente desbloquea el dominio y proporciona el código de autorización (AuthInfo), y luego el comprador inicia la transferencia en el registrador receptor. Para un *push* en el mismo registrador, ambas partes usan cuentas en el registrador actual. Escrow.com señala que un *push* en el mismo registrador puede ser útil cuando un [bloqueo de transferencia](/es/glossary/transfer-lock/) de 60 días de la ICANN impide un movimiento entre registradores.
 
 Después del cierre:
 
@@ -268,7 +268,7 @@ En los EE. UU., el IRS trata las ventas de activos bajo normas fiscales que depe
 
 Si tu dominio es un [dominio tokenizado](/es/blog/what-are-tokenized-domains/), la mecánica de cierre puede ser diferente.
 
-En una venta tradicional, el *escrow* existe porque el pago y la transferencia en el registrador ocurren en pasos separados. En una venta de dominio tokenizado, la propiedad puede estar representada por un [NFT](/es/glossary/nft/) y transferirse a través de una transacción [*on-chain* (en cadena)](/es/glossary/on-chain/). Eso puede comprimir la liquidación, pero no elimina todos los riesgos. Todavía necesitas que haya una idoneidad del comprador, una postura legal limpia, seguridad en la billetera, registros de impuestos y una comprensión clara de lo que el comprador espera recibir.
+En una venta tradicional, el *escrow* existe porque el pago y la transferencia en el registrador ocurren en pasos separados. En una venta de dominio tokenizado, la propiedad puede estar representada por un [NFT](/es/glossary/nft/) y transferirse a través de una transacción [*on-chain* (en cadena)](/es/glossary/on-chain/). Eso puede comprimir la liquidación, pero no elimina todos los riesgos. Todavía necesitas que haya una idoneidad del comprador, una postura legal limpia, seguridad en la [billetera](/es/glossary/wallet/), registros de impuestos y una comprensión clara de lo que el comprador espera recibir.
 
 Para más información sobre cómo las ventas tokenizadas cambian la mecánica del *escrow*, lee [De la publicación a la liquidación: cómo los mercados tokenizados reemplazan al depósito en garantía](/es/blog/how-tokenized-marketplaces-replace-escrow/).
 

@@ -22,7 +22,7 @@ El blog con publicaciones más constantes de la industria. Elliot es un inversor
 
 ### Konstantinos Zournas — [OnlineDomain.com](https://onlinedomain.com/)
 
-Konstantinos publica con frecuencia desde una perspectiva europea y basada en datos. Es fuerte en los cambios de políticas de registros/registradores, movimientos de ccTLD y grandes ventas públicas. A menudo es el primero en sacar a la luz historias que pasan desapercibidas para los blogs centrados en EE. UU.
+Konstantinos publica con frecuencia desde una perspectiva europea y basada en datos. Es fuerte en los cambios de políticas de registros/registradores, movimientos de [ccTLD](/es/glossary/cctld/) y grandes ventas públicas. A menudo es el primero en sacar a la luz historias que pasan desapercibidas para los blogs centrados en EE. UU.
 
 ### Rick Schwartz — [RicksBlog.com](https://www.ricksblog.com/)
 

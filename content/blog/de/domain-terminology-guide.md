@@ -55,7 +55,7 @@ Ein fester Preis, zu dem ein Domainname für den sofortigen Kauf gelistet ist. A
 Die Strategie, die Domain-Investoren anwenden, um ihre Domainnamen zu bepreisen. Dies kann die Preisgestaltung einer Domain für den schnellen Verkauf, die Festlegung eines hohen Preises für Verhandlungen oder die Verwendung von BIN-Preisen zur Förderung von Sofortkäufen umfassen.
 
 **Strategien**:
-- **Schnellverkauf**: Preis 20-30% unter Marktwert für schnelle Liquidität
+- **Schnellverkauf**: Preis 20-30% unter Marktwert für schnelle [Liquidität](/de/glossary/domain-liquidity/)
 - **Verhandlung**: Hohen Anfangspreis mit Verhandlungsspielraum festlegen
 - **Premium-Positionierung**: Für Prestigedomains einen Marktprämienpreis festlegen
 
@@ -67,7 +67,7 @@ Eine Plattform oder ein Dienst, bei dem Domainnamen durch kompetitive Gebote ver
 ### **Treuhanddienst (Escrow Service)**
 Ein vertrauenswürdiger Drittanbieterdienst, der den sicheren Austausch von Geld und Domainbesitz während eines Domainverkaufs erleichtert. Der Käufer zahlt an den Treuhanddienst, und sobald die Domain übertragen wurde, werden die Gelder an den Verkäufer freigegeben.
 
-**Beliebte Dienste**: Escrow.com (von ICANN empfohlen), PayPal, Dan.com
+**Beliebte Dienste**: Escrow.com (von [ICANN](/de/glossary/icann/) empfohlen), PayPal, Dan.com
 
 ---
 
@@ -89,12 +89,12 @@ Eine Einzelperson oder ein Unternehmen, das Domainnamen in großen Mengen kauft 
 ## **⚙️ Technische Begriffe**
 
 ### **TLD (Top-Level-Domain)**
-Der Teil eines Domainnamens, der nach dem letzten Punkt kommt (z.B. .com, .org, .net, .ai, etc.). Die Wahl der TLD kann den Wert und die Wahrnehmung eines Domainnamens beeinflussen.
+Der Teil eines Domainnamens, der nach dem letzten Punkt kommt (z.B. [.com](/de/tld/com/), [.org](/de/tld/org/), [.net](/de/tld/net/), [.ai](/de/tld/ai/), etc.). Die Wahl der TLD kann den Wert und die Wahrnehmung eines Domainnamens beeinflussen.
 
 **Kategorien**:
-- **Generische TLDs**: .com, .org, .net, .info
-- **Länderspezifische TLDs**: .us, .uk, .de, .cn
-- **Neue TLDs**: .ai, .io, .tech, .shop
+- **Generische TLDs**: .com, .org, .net, [.info](/de/tld/info/)
+- **Länderspezifische TLDs**: [.us](/de/tld/us/), .uk, .de, .cn
+- **Neue TLDs**: .ai, [.io](/de/tld/io/), [.tech](/de/tld/tech/), [.shop](/de/tld/shop/)
 
 ### **Subdomain**
 Eine Domain, die Teil einer größeren Domain ist. Zum Beispiel ist "blog.example.com" eine Subdomain von "example.com". Subdomains können verwendet werden, um verschiedene Abschnitte einer Website zu organisieren.
@@ -107,13 +107,13 @@ Das System, das menschenlesbare Domainnamen in IP-Adressen übersetzt, die Compu
 **Funktion**: Konvertiert `namefi.io` in `192.168.1.1` für die Browserkommunikation
 
 ### **WHOIS**
-Ein Protokoll zur Abfrage von Datenbanken, die Informationen über registrierte Domainnamen speichern. WHOIS liefert Details wie den Domaininhaber, Registrierungsdaten und Kontaktinformationen.
+Ein Protokoll zur Abfrage von Datenbanken, die Informationen über registrierte Domainnamen speichern. [WHOIS](/de/glossary/whois/) liefert Details wie den Domaininhaber, Registrierungsdaten und Kontaktinformationen.
 
 **Bereitgestellte Informationen**:
 - Details zum Domaininhaber
 - Registrierungs- und Ablaufdaten
 - Nameserver
-- Registrar-Informationen
+- [Registrar](/de/glossary/registrar/)-Informationen
 
 ---
 
@@ -168,7 +168,7 @@ Die Praxis, eine Domain zu registrieren und zu halten, ohne sie zu einer Website
 ## **📈 Markteinblicke**
 
 ### **Hochwertige Kategorien**
-- **Technologie**: KI, Blockchain, Fintech-Begriffe
+- **Technologie**: KI, [Blockchain](/de/glossary/blockchain/), Fintech-Begriffe
 - **Gesundheit**: Medizin, Wellness, Pharmazeutika
 - **Finanzen**: Bankwesen, Investitionen, Kryptowährung
 - **E-Commerce**: Shopping, Einzelhandel, Marktplatz
@@ -186,7 +186,7 @@ Die Praxis, eine Domain zu registrieren und zu halten, ohne sie zu einer Website
 
 Bereit, Ihre Reise im Domain-Investment zu starten oder Ihren perfekten Domainnamen zu sichern?
 
-**[Namefi](https://namefi.io)** ist Ihr vertrauenswürdiger ICANN-akkreditierter Registrar und bietet:
+**[Namefi](https://namefi.io)** ist Ihr vertrauenswürdiger [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/) und bietet:
 
 - **Wettbewerbsfähige Preise**: Beste Tarife für alle wichtigen TLDs
 - **Professionelle Tools**: Portfolio-Verwaltung und Analysen

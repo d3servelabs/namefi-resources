@@ -11,7 +11,7 @@ keywords: ['hack sushiswap miso', 'ataque cadena de suministro miso', 'aristok3'
 
 La mayoría de los ataques fuerzan una puerta. Este entró por la principal.
 
-En septiembre de 2021, las personas que gestionaban la plataforma de lanzamiento MISO de SushiSwap no cayeron en un phishing, no perdieron una clave privada ni publicaron un contrato inteligente defectuoso. Hicieron algo mucho más ordinario: confiaron en un colaborador. Un contratista anónimo con acceso de escritura al código introdujo su propia dirección de billetera en el front-end de la subasta, la subió al repositorio y dejó que el proceso de despliegue hiciera el resto. Cuando se liquidó una única subasta de NFT, aproximadamente **864,8 ETH — cerca de $3 millones** — fluyeron no hacia el proyecto que realizaba la venta, sino hacia el desarrollador que había reescrito silenciosamente el destino del dinero.
+En septiembre de 2021, las personas que gestionaban la plataforma de lanzamiento MISO de SushiSwap no cayeron en un phishing, no perdieron una [clave privada](/es/glossary/private-key/) ni publicaron un [contrato inteligente](/es/glossary/smart-contract/) defectuoso. Hicieron algo mucho más ordinario: confiaron en un colaborador. Un contratista anónimo con acceso de escritura al código introdujo su propia dirección de [billetera](/es/glossary/wallet/) en el front-end de la [subasta](/es/glossary/auction/), la subió al repositorio y dejó que el proceso de despliegue hiciera el resto. Cuando se liquidó una única subasta de NFT, aproximadamente **864,8 ETH — cerca de $3 millones** — fluyeron no hacia el proyecto que realizaba la venta, sino hacia el desarrollador que había reescrito silenciosamente el destino del dinero.
 
 Sin exploit. Sin zero-day. Solo una línea de código que nadie verificó dos veces, firmada por alguien que se suponía formaba parte del equipo.
 
@@ -19,7 +19,7 @@ Este es el episodio 15 de Domain Mayday. Es una historia sobre contratos intelig
 
 ## La confianza que depositas en el código de una plataforma de lanzamiento
 
-Una plataforma de lanzamiento DeFi como MISO — Minimal Initial SushiSwap Offering — existe para hacer una cosa bien: tomar dinero de un grupo de desconocidos y dirigirlo hacia un proyecto que lleva a cabo una venta de tokens o NFT. Para ello, combina contratos inteligentes auditados on-chain con un front-end web off-chain. Los usuarios interactúan con el front-end. El front-end le indica a su billetera qué transacción firmar.
+Una plataforma de lanzamiento [DeFi](/es/glossary/defi/) como MISO — Minimal Initial SushiSwap Offering — existe para hacer una cosa bien: tomar dinero de un grupo de desconocidos y dirigirlo hacia un proyecto que lleva a cabo una venta de tokens o NFT. Para ello, combina contratos inteligentes auditados [on-chain](/es/glossary/on-chain/) con un front-end web off-chain. Los usuarios interactúan con el front-end. El front-end le indica a su billetera qué transacción firmar.
 
 Esa juntura es el punto vulnerable. La gente se obsesiona con la capa de contratos inteligentes porque ahí es donde viven las auditorías, las recompensas por errores y los titulares. Pero el front-end — el JavaScript que decide *a qué dirección* paga una subasta — es simplemente código en un repositorio, desplegado por un pipeline, editado por quien tenga acceso de escritura. Puedes auditar la caja fuerte todo lo que quieras; si un atacante interno puede cambiar el cartel que dice "deposita el dinero aquí", la caja fuerte nunca entra en juego.
 
@@ -79,7 +79,7 @@ El hilo conductor: la integridad de *quién tiene permitido hacer un cambio* y *
 
 ![Ilustración colorida de propiedad verificable y resistente a la manipulación — asegurada por un escudo verde, un token verde de Namefi y continuidad](../../assets/the-sushiswap-miso-insider-attack-03-namefi-angle.jpg)
 
-MISO perdió dinero porque el *destino del valor* podía ser reescrito silenciosamente por alguien en quien el sistema confiaba, y nadie verificó el cambio antes de que entrara en producción. Ese modo de fallo no es exclusivo de las plataformas de lanzamiento DeFi. Tiene la misma forma que un dominio cuya propiedad o registros DNS pueden ser alterados silenciosamente por quien tenga el acceso correcto — una cuenta de registrador, un panel interno, un contratista con credenciales.
+MISO perdió dinero porque el *destino del valor* podía ser reescrito silenciosamente por alguien en quien el sistema confiaba, y nadie verificó el cambio antes de que entrara en producción. Ese modo de fallo no es exclusivo de las plataformas de lanzamiento DeFi. Tiene la misma forma que un dominio cuya propiedad o registros DNS pueden ser alterados silenciosamente por quien tenga el acceso correcto — una cuenta de [registrador](/es/glossary/registrar/), un panel interno, un contratista con credenciales.
 
 Un dominio es uno de los ajustes de "destino" más importantes de internet. Sus registros DNS deciden adónde van realmente tu tráfico, tu correo electrónico y tus usuarios. Si alguien puede cambiarlos — un atacante interno o una cuenta comprometida — sin un registro verificable de forma independiente y a prueba de manipulaciones de quién cambió qué, tienes el problema de MISO con ropa distinta: la cerradura está bien, pero el cartel de la puerta puede ser intercambiado.
 

@@ -45,7 +45,7 @@ keywords: ['ctrip.com', 'trip.com', 'إعادة تسمية ctrip', 'trip.com gro
 
 بعدها الدومين مرّ بدورة طويلة من الموت والبعث. بعد ما Cendant استحوذت على Galileo، [أغلقت Trip.com في 2003](https://finance.yahoo.com/news/trip-com-nearly-quarter-century-063018580.html#:~:text=shut%20down%20Trip.com%20in%202003) — أول موت للعلامة التجارية. في 2009، [أحيت Orbitz Worldwide علامة Trip.com](https://finance.yahoo.com/news/trip-com-nearly-quarter-century-063018580.html#:~:text=Orbitz%20Worldwide) كموقع بحث مقارن، قبل ما تموت تاني. Gogobot في النهاية اشترت الرابط من Expedia بسعر غير معلن و[غيّرت اسمها لتصبح Trip.com](https://finance.yahoo.com/news/trip-com-nearly-quarter-century-063018580.html#:~:text=Gogobot%20then%20rebranded%20to%20become%20Trip.com). وأخيرًا، [Ctrip استحوذت على Gogobot التي أصبحت Trip.com في 2017](https://finance.yahoo.com/news/trip-com-nearly-quarter-century-063018580.html#:~:text=Ctrip%20acquired%20Gogobot-turned%20Trip.com%20in%202017).
 
-دومين بدأ بـ 5,000 دولار في 1998 كان، بحلول 2000، مضمّنًا في صفقة استحواذ بـ 214.4 مليون دولار. صمد أمام ثلاثة ملّاك مختلفين وعمليتي إغلاق. كلمة "Trip" زائد ".com" كانت ببساطة ذات قيمة عالية جدًا في السياحة لتفضل مدفونة — وشركة صينية تطارد السوق العالمي كانت بالظبط النوع من المشتري اللي عنده الدافع لتشغيلها أخيرًا للأبد.
+دومين بدأ بـ 5,000 دولار في 1998 كان، بحلول 2000، مضمّنًا في صفقة استحواذ بـ 214.4 مليون دولار. صمد أمام ثلاثة ملّاك مختلفين وعمليتي إغلاق. كلمة "Trip" زائد "[.com](/ar/tld/com/)" كانت ببساطة ذات قيمة عالية جدًا في السياحة لتفضل مدفونة — وشركة صينية تطارد السوق العالمي كانت بالظبط النوع من المشتري اللي عنده الدافع لتشغيلها أخيرًا للأبد.
 
 ## الأسعار كانت مختلفة في الزمن ده
 

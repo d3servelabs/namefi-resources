@@ -28,7 +28,7 @@ Voici maintenant la nuance, car « opter pour » fait beaucoup de travail dans c
 
 ## Origines : deux accidents caribéens et de l'océan Indien
 
-Aucune de ces extensions n'a été conçue pour les startups. Toutes deux sont des **domaines de premier niveau de code pays (ccTLD)** qui ont été adoptés pour ce que leurs lettres se trouvent à signifier.
+Aucune de ces extensions n'a été conçue pour les startups. Toutes deux sont des **domaines de premier niveau de code pays ([ccTLD](/fr/glossary/cctld/))** qui ont été adoptés pour ce que leurs lettres se trouvent à signifier.
 
 - **`.ai`** est le ccTLD d'**Anguilla**, un territoire britannique d'outre-mer dans les Caraïbes orientales, délégué en 1995. Il est devenu courant lorsque « AI » est devenu l'abréviation de l'intelligence artificielle, et que les entreprises ont voulu intégrer cette signification dans leur URL.
 - **`.io`** est le ccTLD du **Territoire britannique de l'océan Indien**. Les développeurs le lisent comme **I/O** (entrée/sortie), un concept informatique fondamental, et il est devenu le badge de facto du monde moderne de la tech et du SaaS.
@@ -51,7 +51,7 @@ Google maintient une liste de ccTLD qu'il traite comme **génériques** (gccTLD)
 
 C'est là que les deux divergent nettement. Les prix exacts varient selon les registraires et évoluent avec le temps, alors considérez ce qui suit comme indicatif plutôt que comme un devis.
 
-- **`.ai` est l'option premium.** Il s'enregistre généralement dans une fourchette allant de quelques dizaines à quelques centaines de dollars par an, et le registre exige habituellement un **enregistrement minimum de deux ans**, donc votre première facture est plus élevée. Les prix de gros `.ai` ont encore augmenté début 2026, poursuivant une tendance à la hausse portée par la demande de l'ère IA. L'autre côté de la médaille : ce coût agit comme un filtre, donc les noms `.ai` courts et identifiables restent plus disponibles qu'on ne le penserait pour une extension aussi convoitée.
+- **`.ai` est l'option premium.** Il s'enregistre généralement dans une fourchette allant de quelques dizaines à quelques centaines de dollars par an, et le [registre](/fr/glossary/registry/) exige habituellement un **enregistrement minimum de deux ans**, donc votre première facture est plus élevée. Les prix de gros `.ai` ont encore augmenté début 2026, poursuivant une tendance à la hausse portée par la demande de l'ère IA. L'autre côté de la médaille : ce coût agit comme un filtre, donc les noms `.ai` courts et identifiables restent plus disponibles qu'on ne le penserait pour une extension aussi convoitée.
 - **`.io` est mi-premium.** Il coûte plus que les extensions historiques comme `.com` ou `.net`, mais généralement moins que `.ai`, et sans minimum multi-années. Parce qu'il est une référence pour les startups depuis plus d'une décennie, les meilleurs noms `.io` en un seul mot sont très sollicités, bien que des combinaisons ingénieuses et des « domain hacks » (comme `rad.io` ou `stud.io`) soient encore trouvables.
 
 **Verdict tarifs :** `.io` est généralement l'entrée moins chère et moins engageante. `.ai` coûte plus cher, mais cette prime fait partie de son signal.
@@ -78,8 +78,8 @@ Parce que `.io` appartient au Territoire britannique de l'océan Indien, son sta
 Ce que cela ne signifie **pas** :
 
 - `.io` **n'est pas** en cours de suppression maintenant, et aucune date d'arrêt n'existe. Les domaines `.io` existants continuent de fonctionner normalement.
-- Même dans la lecture la plus stricte des règles de retrait de l'IANA, la suppression d'un ccTLD est un **processus de plusieurs années** (couramment cité comme au moins cinq ans, potentiellement plus) qui ne commencerait que *si* `IO` était retiré de l'ISO 3166-1.
-- Il existe un précédent de survie : `.su` (l'ex-Union soviétique) reste dans la zone racine des décennies après la dissolution de l'URSS. Les issues vont de la continuation totale à une suppression progressive longue, et aucune décision finale n'a été prise.
+- Même dans la lecture la plus stricte des règles de retrait de l'[IANA](/fr/glossary/iana/), la suppression d'un ccTLD est un **processus de plusieurs années** (couramment cité comme au moins cinq ans, potentiellement plus) qui ne commencerait que *si* `IO` était retiré de l'ISO 3166-1.
+- Il existe un précédent de survie : `.su` (l'ex-Union soviétique) reste dans la [zone racine](/fr/glossary/root-zone/) des décennies après la dissolution de l'URSS. Les issues vont de la continuation totale à une suppression progressive longue, et aucune décision finale n'a été prise.
 
 **À retenir concrètement :** Si vous choisissez un domaine pour une marque que vous avez l'intention de faire fonctionner pendant une décennie ou plus, tenez compte de cette incertitude. Pour la plupart des produits, `.io` est parfaitement sûr pour un avenir prévisible, mais c'est une considération réelle que `.ai` ne porte tout simplement pas aujourd'hui.
 
@@ -110,7 +110,7 @@ Ce que cela ne signifie **pas** :
 
 ## Choisissez `.io` si…
 
-- Vous créez de la tech générale : SaaS, API, outils pour développeurs, infrastructure, ou un produit crypto/Web3.
+- Vous créez de la tech générale : SaaS, API, outils pour développeurs, infrastructure, ou un produit crypto/[Web3](/fr/glossary/web3/).
 - Vous voulez un signal tech reconnu et neutre en termes de verticale, sans vous cataloguer comme « IA uniquement ».
 - Vous préférez un coût initial moins élevé et un enregistrement standard d'un an.
 - Vous êtes à l'aise avec l'incertitude de souveraineté à long horizon, ou vous prévoyez également de sécuriser un `.com` / `.ai` correspondant comme couverture.
@@ -123,7 +123,7 @@ Quelle que soit votre décision, la question suivante est de savoir comment vous
 
 ## Achetez et tokenisez votre `.ai` ou `.io` chez Namefi
 
-Une fois décidé, [Namefi](https://namefi.io) peut l'enregistrer pour vous. En tant que registraire accrédité ICANN, nous gérons à la fois `.ai` et `.io` comme tout registraire traditionnel, avec une différence : votre domaine peut être **tokenisé**, vous donnant une propriété on-chain, des transferts plus faciles et une intégration avec les outils Web3, sans renoncer au DNS normal et à l'hébergement de site web.
+Une fois décidé, [Namefi](https://namefi.io) peut l'enregistrer pour vous. En tant que registraire accrédité [ICANN](/fr/glossary/icann/), nous gérons à la fois `.ai` et `.io` comme tout registraire traditionnel, avec une différence : votre domaine peut être **tokenisé**, vous donnant une propriété [on-chain](/fr/glossary/on-chain/), des transferts plus faciles et une intégration avec les outils Web3, sans renoncer au DNS normal et à l'hébergement de site web.
 
 Choisissez l'extension qui correspond à votre marque, sécurisez-la avant que quelqu'un d'autre ne le fasse, et possédez-la selon vos conditions.
 
@@ -146,7 +146,7 @@ Pas maintenant, et il n'y a aucune date d'arrêt. Le transfert de souveraineté 
 `.ai` est généralement plus cher. Il coûte habituellement plus cher par an que `.io` et nécessite souvent un enregistrement minimum de deux ans, tandis que `.io` est mi-premium avec une option standard d'un an. Les prix exacts varient selon les registraires et évoluent avec le temps.
 
 ### Puis-je enregistrer à la fois `.ai` et `.io` ?
-Oui, et de nombreuses startups le font. Posséder les deux vous permet de protéger votre marque sur les deux extensions que votre audience est la plus susceptible de taper, et vous pouvez rediriger l'une vers l'autre. Chez [Namefi](https://namefi.io), vous pouvez enregistrer et tokeniser les deux.
+Oui, et de nombreuses startups le font. Posséder les deux vous permet de protéger votre marque sur les deux extensions que votre audience est la plus susceptible de taper, et vous pouvez rediriger l'une vers l'autre. Chez [Namefi](https://namefi.io), vous pouvez enregistrer et [tokeniser](/fr/glossary/tokenize/) les deux.
 
 ### Que signifie tokeniser un domaine `.ai` ou `.io` ?
 La tokenisation ajoute un jeton de propriété on-chain à votre vrai domaine ICANN, afin que vous puissiez le transférer et le gérer avec la sécurité et la flexibilité du Web3, tout en conservant le DNS standard et l'hébergement. En savoir plus dans [Que sont les domaines tokenisés ?](/fr/blog/what-are-tokenized-domains/).

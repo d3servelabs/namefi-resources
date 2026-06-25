@@ -10,7 +10,7 @@ ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg
 keywords: ['dns over https', 'doh', 'dns split horizon', 'dns entreprise', 'dot', 'dns chiffré', 'dns interne', 'résolution de nom', 'namefi']
 ---
 
-Pendant la majeure partie de l'histoire d'Internet, les requêtes DNS ont transité en clair sur le port 53. Toute personne sur le chemin réseau pouvait les lire, les journaliser et les modifier. C'était un problème de confidentialité que l'IETF a fini par résoudre avec deux alternatives chiffrées : [DNS over TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) en 2016 et [DNS over HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484) en 2018.
+Pendant la majeure partie de l'histoire d'Internet, les requêtes [DNS](/fr/glossary/dns/) ont transité en clair sur le port 53. Toute personne sur le chemin réseau pouvait les lire, les journaliser et les modifier. C'était un problème de confidentialité que l'IETF a fini par résoudre avec deux alternatives chiffrées : [DNS over TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) en 2016 et [DNS over HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484) en 2018.
 
 Le DoH en particulier a changé la donne, car il dissimule le DNS *à l'intérieur* d'un flux HTTPS classique. Pour un observateur du réseau, une requête DoH semble identique à n'importe quelle autre connexion TLS vers un serveur de contenu. C'est excellent pour les utilisateurs naviguant sur un réseau de café hostile. C'est beaucoup moins bien pour une équipe informatique d'entreprise qui a besoin de voir—et de diriger—chaque requête DNS qui traverse son périmètre.
 

@@ -37,7 +37,7 @@ Instagram 脱胎于一次产品转型。Kevin Systrom 和 Mike Krieger 原本在
 
 对于 2010 年的初创公司来说，这种吸引力显而易见：
 
-- **精准无误。** "instagr" + ".am" 读起来就是完整的品牌名，无需任何额外解释——这是未获融资的发布阶段的理想选择。
+- **精准无误。** "instagr" + "[.am](/zh/tld/am/)" 读起来就是完整的品牌名，无需任何额外解释——这是未获融资的发布阶段的理想选择。
 - **简短易传播。** 图片应用的生死取决于链接的传播难易程度。instagr.am 简洁到可以印在名片上、通过短信发送、用于推文。
 - **即时可用。** Instagram.com 已被他人持有，一个全新的应用既没有资金也没有筹码在第一天就将其夺回。
 
@@ -65,7 +65,7 @@ Instagram 脱胎于一次产品转型。Kevin Systrom 和 Mike Krieger 原本在
 
 但请将时钟拨回 2011 年 1 月。Instagram 才诞生几个月。它拥有一款大热应用和一台频繁崩溃的服务器，但没有收入、团队规模极小，在一个图片应用每周层出不穷又迅速消亡的市场中，前景远非板上钉钉。在这种背景下，当你*已经*在 instagr.am 上拥有一个正常运作的地址时，花 10 万美元现金购买一个域名，是一个真实的资金分配决策，而非显而易见的选择。
 
-而且这笔交易本身并不简单。关于后来一场 Facebook 诉讼的报道揭示，卖家是一名中国注册人；[购买通过 Sedo 处理，相关合同副本作为证据提交](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=The%20purchase%20was%20processed%20by%20Sedo%2C%20according%20to%20a%20copy%20of%20the%20deal)。多年后，这笔交易又生出枝节：正如一篇报道所描述的，[Murong 的母亲和姐妹们在中国起诉了她和 Instagram，声称她没有出售该域名的授权](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=Murong%27s%20mother%20and%20sisters%20are%20suing%20her%20and%20Instagram%20in%20China)。Instagram 买下了自己的名字——却依然陷入了关于真正所有权的诉讼。
+而且这笔交易本身并不简单。关于后来一场 Facebook 诉讼的报道揭示，卖家是一名中国[注册人](/zh/glossary/registrant/)；[购买通过 Sedo 处理，相关合同副本作为证据提交](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=The%20purchase%20was%20processed%20by%20Sedo%2C%20according%20to%20a%20copy%20of%20the%20deal)。多年后，这笔交易又生出枝节：正如一篇报道所描述的，[Murong 的母亲和姐妹们在中国起诉了她和 Instagram，声称她没有出售该域名的授权](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=Murong%27s%20mother%20and%20sisters%20are%20suing%20her%20and%20Instagram%20in%20China)。Instagram 买下了自己的名字——却依然陷入了关于真正所有权的诉讼。
 
 这就是几乎每一个优质域名故事背后不那么光鲜的真相：战略判断（"我们应该拥有 Instagram.com"）是容易的部分。证明权属清晰并安全转移资产，才是困难的部分。
 
@@ -117,7 +117,7 @@ instagr.am 和 Instagram.com 之间相差一个点和两个字母。从战略层
 那个简单的结论——"永远不要使用域名技巧"——是错误的。这个技巧*是好的*。更有用的经验是关于如何使用它而不被它困住：
 
 1. **域名技巧是极好的发布前门。** instagr.am 精准、简短、易传播，而且在 `.com` 不可用的时候是可以获得的。对于发布前融资的阶段来说，这是真正的优势，而不是失败。
-2. **清楚地知道你在借什么。** ccTLD 技巧意味着外国注册机构制定你的政策和定价。在小规模时这没问题，一旦品牌有了价值就是负债。将技巧域名视为[辅助网址](https://www.domaingravity.com/instagr.am-Instagram.com.htm#:~:text=secondary%20URLs)，而不是永久的家。
+2. **清楚地知道你在借什么。** [ccTLD](/zh/glossary/cctld/) 技巧意味着外国注册机构制定你的政策和定价。在小规模时这没问题，一旦品牌有了价值就是负债。将技巧域名视为[辅助网址](https://www.domaingravity.com/instagr.am-Instagram.com.htm#:~:text=secondary%20URLs)，而不是永久的家。
 3. **尽早锁定权威 `.com`——趁着它还能成为世界记住的那个。** Instagram 在最初几个月内就买下了 Instagram.com，而不是成名之后。让简洁名称成为权威名称的窗口期是短暂的。
 4. **为整个交易过程做预算，不只是价格本身。** 战略决策是显而易见的；清晰的所有权不是。Instagram 支付了 10 万美元，*依然*陷入了多年的所有权争议，争论谁有权出售这个域名。
 
@@ -129,7 +129,7 @@ instagr.am 和 Instagram.com 之间相差一个点和两个字母。从战略层
 
 这个案例，本质上是一个穿着品牌外衣的转让与所有权问题。
 
-没有人质疑一家叫 Instagram 的公司应该拥有 Instagram.com。困难的部分是围绕这个资产的一切：将精确匹配的 `.com` 从一个停放它的第三方手中夺回，就价格达成一致，通过市场完成干净的控制权转移，以及——多年后——当[卖家的亲属对该交易提出异议](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=Murong%27s%20mother%20and%20sisters%20are%20suing%20her%20and%20Instagram%20in%20China)时，还要捍卫真正拥有授权出售的人是谁。一笔 10 万美元的收购演变成了一长串的权属问题。
+没有人质疑一家叫 Instagram 的公司应该拥有 Instagram.com。困难的部分是围绕这个资产的一切：将精确匹配的 `.com` 从一个停放它的第三方手中夺回，就价格达成一致，通过[市场](/zh/glossary/marketplace/)完成干净的控制权转移，以及——多年后——当[卖家的亲属对该交易提出异议](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=Murong%27s%20mother%20and%20sisters%20are%20suing%20her%20and%20Instagram%20in%20China)时，还要捍卫真正拥有授权出售的人是谁。一笔 10 万美元的收购演变成了一长串的权属问题。
 
 [Namefi](https://namefi.io) 的建立理念是：域名应该像互联网原生资产一样运作。代币化所有权可以让域名控制权更易于验证、转让，并集成到现代工作流中，同时与 DNS 保持兼容——将此类交易中最混乱的部分（证明谁真正拥有一个名称、就价值达成共识，以及安全转移而无需多年的纸质记录）转变为更接近于干净、可审计的交易。
 

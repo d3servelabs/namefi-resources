@@ -9,7 +9,7 @@ description: 'Entre 2020 y 2022, un único grupo de actores maliciosos habitó d
 keywords: ['brecha godaddy', 'filtración de datos godaddy', 'brecha managed wordpress', 'seguridad de registradores', 'seguridad de dominios', 'brecha plurianual', 'malware cpanel', 'ataque de redirección de sitios web', 'exposición de clave privada ssl', 'brecha de contraseña sftp', 'ciberseguridad sec 10-k', 'riesgo de concentración de registradores', 'punto único de falla']
 ---
 
-Un registrador de dominios es la empresa más aburrida de la que jamás dependerás completamente.
+Un [registrador](/es/glossary/registrar/) de dominios es la empresa más aburrida de la que jamás dependerás completamente.
 
 Le pagas una vez al año. Inicias sesión quizás dos veces. Y a cambio, guarda la única cosa que hace que tu negocio sea accesible: el derecho de decir "este nombre apunta aquí." Correo electrónico, sitio web, inicio de sesión, pagos — cada hilo digital que posees pasa a través de quien controla el DNS de tu dominio. La mayoría de las personas nunca vuelve a pensar en esa empresa después de hacer la compra.
 
@@ -51,7 +51,7 @@ La brecha de Managed WordPress de 2021 es el incidente con el daño más claro y
 
 Hasta 1,2 millones de clientes activos e inactivos de Managed WordPress tuvieron expuestas su dirección de correo electrónico y número de cliente. Peor aún, [la contraseña original de administrador de WordPress que se configuró en el momento del aprovisionamiento quedó expuesta](https://www.bleepingcomputer.com/news/security/godaddy-data-breach-hits-12-million-managed-wordpress-customers/#:~:text=The%20original%20WordPress%20Admin%20password%20that%20was%20set%20at%20the%20time%20of%20provisioning%20was%20exposed) — la llave maestra de esas instalaciones de WordPress. Para los clientes activos, los nombres de usuario y contraseñas de sFTP y base de datos quedaron expuestos, las credenciales que permiten cargar archivos y leer la base de datos directamente. Y para el subconjunto más sensible, [la clave privada SSL quedó expuesta](https://www.bleepingcomputer.com/news/security/godaddy-data-breach-hits-12-million-managed-wordpress-customers/#:~:text=For%20a%20subset%20of%20active%20customers%2C%20the%20SSL%20private%20key%20was%20exposed) — el secreto criptográfico que prueba que un sitio es realmente sí mismo.
 
-Suma todo eso y tienes un kit de peor caso posible. La contraseña de administrador te da acceso al sitio. El acceso a sFTP y a la base de datos te permite alterarlo a nivel de archivos y datos. Y la clave privada SSL — como señaló Wordfence en su [análisis de la brecha](https://www.wordfence.com/blog/2021/11/godaddy-breach-plaintext-passwords/) — podría permitir a un atacante suplantar a un sitio o descifrar su tráfico. Un registrador que se supone que debe anclar la confianza había entregado en cambio a un intruso los materiales para falsificarla.
+Suma todo eso y tienes un kit de peor caso posible. La contraseña de administrador te da acceso al sitio. El acceso a sFTP y a la base de datos te permite alterarlo a nivel de archivos y datos. Y la [clave privada](/es/glossary/private-key/) SSL — como señaló Wordfence en su [análisis de la brecha](https://www.wordfence.com/blog/2021/11/godaddy-breach-plaintext-passwords/) — podría permitir a un atacante suplantar a un sitio o descifrar su tráfico. Un registrador que se supone que debe anclar la confianza había entregado en cambio a un intruso los materiales para falsificarla.
 
 | Qué se filtró | Quién fue afectado | Qué desbloquea |
 | --- | --- | --- |

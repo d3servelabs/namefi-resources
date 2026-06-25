@@ -11,7 +11,7 @@ keywords: ['sushiswap miso hack', 'attaque supply chain miso', 'aristok3', 'jay 
 
 La plupart des attaques forcent une porte. Celle-ci est entrée par la façade.
 
-En septembre 2021, les responsables du launchpad MISO de SushiSwap n'ont pas été victimes de phishing, n'ont pas perdu une clé privée et n'ont pas livré un smart contract défectueux. Ils ont fait quelque chose de bien plus ordinaire : ils ont fait confiance à un contributeur. Un prestataire anonyme disposant d'un accès commit au code a substitué sa propre adresse de portefeuille dans le front-end de la vente aux enchères, l'a poussé, et a laissé le pipeline de déploiement faire le reste. Lorsqu'une seule vente aux enchères de NFT s'est conclue, environ **864,8 ETH — soit environ 3 millions de dollars** — ont afflué non vers le projet qui organisait la vente, mais vers le développeur qui avait discrètement réécrit la destination des fonds.
+En septembre 2021, les responsables du launchpad MISO de SushiSwap n'ont pas été victimes de phishing, n'ont pas perdu une clé privée et n'ont pas livré un [smart contract](/fr/glossary/smart-contract/) défectueux. Ils ont fait quelque chose de bien plus ordinaire : ils ont fait confiance à un contributeur. Un prestataire anonyme disposant d'un accès commit au code a substitué sa propre adresse de [portefeuille](/fr/glossary/wallet/) dans le front-end de la vente aux enchères, l'a poussé, et a laissé le pipeline de déploiement faire le reste. Lorsqu'une seule vente aux enchères de NFT s'est conclue, environ **864,8 ETH — soit environ 3 millions de dollars** — ont afflué non vers le projet qui organisait la vente, mais vers le développeur qui avait discrètement réécrit la destination des fonds.
 
 Aucun exploit. Aucune faille zero-day. Juste une ligne de code que personne n'a vérifiée, signée par quelqu'un qui était censé faire partie de l'équipe.
 
@@ -19,7 +19,7 @@ Voici l'épisode 15 de Domain Mayday. C'est une histoire qui ne touche aux smart
 
 ## La confiance accordée au code d'un launchpad
 
-Un launchpad DeFi comme MISO — Minimal Initial SushiSwap Offering — existe pour faire une seule chose efficacement : collecter des fonds auprès d'une foule d'inconnus et les acheminer vers un projet organisant une vente de tokens ou de NFT. Pour y parvenir, il assemble des smart contracts audités on-chain et un front-end web off-chain. Les utilisateurs interagissent avec le front-end. Le front-end indique à leur portefeuille quelle transaction signer.
+Un launchpad [DeFi](/fr/glossary/defi/) comme MISO — Minimal Initial SushiSwap Offering — existe pour faire une seule chose efficacement : collecter des fonds auprès d'une foule d'inconnus et les acheminer vers un projet organisant une vente de tokens ou de NFT. Pour y parvenir, il assemble des smart contracts audités [on-chain](/fr/glossary/on-chain/) et un front-end web off-chain. Les utilisateurs interagissent avec le front-end. Le front-end indique à leur portefeuille quelle transaction signer.
 
 Cette jonction est le ventre mou du système. Les gens obsèdent sur la couche des smart contracts parce que c'est là que vivent les audits, les programmes de bug bounty et les gros titres. Mais le front-end — le JavaScript qui décide *quelle adresse* une vente aux enchères paie — n'est qu'un code dans un dépôt, déployé par un pipeline, modifiable par quiconque dispose d'un accès en écriture. Auditez le coffre-fort autant que vous le souhaitez ; si un initié peut changer le panneau qui dit « déposez l'argent ici », le coffre-fort n'entre jamais en jeu.
 

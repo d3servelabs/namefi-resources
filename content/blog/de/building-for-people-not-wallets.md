@@ -30,11 +30,11 @@ Dieser Wandel machte Privy schließlich zur Grundlage für Produkte wie friend.t
 
 ## Die neue Grenze der Usability
 
-Henri sieht die Entwicklung der Benutzerfreundlichkeit im Kryptobereich als eine Reise in mehreren Phasen. Die frühen Jahre waren von technischen Hindernissen geprägt: Private Keys, Gas Fees und fragmentierte Wallet-Connectoren.
+Henri sieht die Entwicklung der Benutzerfreundlichkeit im Kryptobereich als eine Reise in mehreren Phasen. Die frühen Jahre waren von technischen Hindernissen geprägt: Private Keys, [Gas](/de/glossary/gas/) Fees und fragmentierte [Wallet](/de/glossary/wallet/)-Connectoren.
 
 Bis 2025, glaubt er, seien diese Probleme weitgehend gelöst – oder zumindest gezähmt. Gasgebühren sind handhabbar. Wallet-Erstellung und Wiederherstellung sind deutlich reibungsloser. Das verbleibende Nadelöhr ist seiner Ansicht nach der **On-Ramp-Prozess** – also der sichere und intuitive Einstieg für alltägliche Nutzer.
 
-Sobald Nutzer leicht in das Ökosystem eintreten können, folgt der nächste Schritt: sie mit nützlichen Finanzwerkzeugen auszustatten — ertragsgenerierenden Wallets, nahtlosen Zahlungen und Stablecoin-basierten Anwendungen, die Web2-Vertrautheit mit Web3-Fähigkeiten verbinden.
+Sobald Nutzer leicht in das Ökosystem eintreten können, folgt der nächste Schritt: sie mit nützlichen Finanzwerkzeugen auszustatten — ertragsgenerierenden Wallets, nahtlosen Zahlungen und [Stablecoin](/de/glossary/stablecoin/)-basierten Anwendungen, die Web2-Vertrautheit mit [Web3](/de/glossary/web3/)-Fähigkeiten verbinden.
 
 Für Henri geht es nun nicht mehr nur darum, Reibung zu reduzieren — sondern darum, Krypto zu einer **unsichtbaren Infrastruktur** zu machen, die Menschen ganz selbstverständlich nutzen.
 

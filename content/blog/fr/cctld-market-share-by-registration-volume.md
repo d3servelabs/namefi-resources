@@ -10,13 +10,13 @@ ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['part de marché cctld', 'domaines nationaux', '.cn', '.de', '.uk', '.tk', '.io', 'statistiques de domaines', 'données de registre', 'namefi']
 ---
 
-Quand la plupart des gens s'imaginent Internet, ils pensent au `.com`. Et en chiffres absolus, le `.com` reste le plus grand domaine de premier niveau de la planète, avec environ 160 millions de noms sous gestion. Mais le `.com` est un gTLD — un domaine de premier niveau *générique*. Changez de perspective pour regarder les **TLD nationaux (ccTLD)** — les suffixes à deux lettres attribués aux nations et territoires selon la norme [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) — et le tableau devient beaucoup plus intéressant, et beaucoup moins prévisible.
+Quand la plupart des gens s'imaginent Internet, ils pensent au `.com`. Et en chiffres absolus, le `.com` reste le plus grand [domaine de premier niveau](/fr/glossary/tld/) de la planète, avec environ 160 millions de noms sous gestion. Mais le `.com` est un [gTLD](/fr/glossary/gtld/) — un domaine de premier niveau *générique*. Changez de perspective pour regarder les **TLD nationaux (ccTLD)** — les suffixes à deux lettres attribués aux nations et territoires selon la norme [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) — et le tableau devient beaucoup plus intéressant, et beaucoup moins prévisible.
 
 Cet article examine quels ccTLD dominent en termes de volume d'enregistrement, pourquoi les leaders ne sont pas ceux que l'on pourrait croire, et ce que ces chiffres révèlent sur la façon dont Internet est *réellement utilisé* dans différentes parties du monde.
 
 ## Les leaders, par ordre approximatif
 
-Les données publiques des registres (provenant des opérateurs qui publient leurs décomptes, ainsi que des aperçus d'agrégateurs comme le [Domain Name Industry Brief T1 2026 du DNIB](https://www.dnib.com/articles/the-domain-name-industry-brief-q1-2026#:~:text=The%20top%2010%20ccTLDs%2C%20as%20of%20March%2031%2C%202026%2C%20were%20.cn%2C%20.de%2C%20.uk%2C%20.ru%2C%20.nl%2C%20.br%2C%20.fr%2C%20.au%2C%20.in%20and%20.eu.) et les [statistiques .de du DENIC](https://www.denic.de/en/products/statistics-about-de/)) classent le peloton de tête des ccTLD à peu près dans cet ordre :
+Les données publiques des registres (provenant des opérateurs qui publient leurs décomptes, ainsi que des aperçus d'agrégateurs comme le [Domain Name Industry Brief T1 2026 du DNIB](https://www.dnib.com/articles/the-domain-name-industry-brief-q1-2026#:~:text=The%20top%2010%20ccTLDs%2C%20as%20of%20March%2031%2C%202026%2C%20were%20.cn%2C%20.de%2C%20.uk%2C%20.ru%2C%20.nl%2C%20.br%2C%20.fr%2C%20.au%2C%20.in%20and%20.eu.) et les [statistiques .de du DENIC](https://www.denic.de/en/products/statistics-about-de/)) classent le peloton de tête des [ccTLD](/fr/glossary/cctld/) à peu près dans cet ordre :
 
 - **.cn (Chine)** — aux alentours de 20 millions de noms. Le plus grand ccTLD la plupart du temps.
 - **.de (Allemagne)** — environ 17 millions. Géré par le DENIC ; remarquablement stable d'année en année.
@@ -43,11 +43,11 @@ C'est la principale raison pour laquelle les parts de marché des ccTLD peuvent 
 
 Plusieurs ccTLD de petits pays sont exploités davantage comme des extensions génériques, et la majorité de leurs enregistrements proviennent de l'extérieur de leurs frontières.
 
-- **.io** (Territoire britannique de l'océan Indien) — adoré par les startups technologiques pour le jeu de mots « input/output » (entrée/sortie).
-- **.tv** (Tuvalu) — loué aux marques de médias et de streaming.
-- **.co** (Colombie) — commercialisé à l'échelle mondiale comme une alternative au `.com`.
-- **.me** (Monténégro) — joue sur le pronom anglais « me » (moi), très prisé pour les sites personnels.
-- **.ai** (Anguilla) — a récemment explosé grâce à l'essor de l'IA.
+- **[.io](/fr/tld/io/)** (Territoire britannique de l'océan Indien) — adoré par les startups technologiques pour le jeu de mots « input/output » (entrée/sortie).
+- **[.tv](/fr/tld/tv/)** (Tuvalu) — loué aux marques de médias et de streaming.
+- **[.co](/fr/tld/co/)** (Colombie) — commercialisé à l'échelle mondiale comme une alternative au `.com`.
+- **[.me](/fr/tld/me/)** (Monténégro) — joue sur le pronom anglais « me » (moi), très prisé pour les sites personnels.
+- **[.ai](/fr/tld/ai/)** (Anguilla) — a récemment explosé grâce à l'essor de l'IA.
 - **.tk** (Tokelau) — historiquement gonflé par des programmes d'enregistrement gratuit, [interrompus](https://en.wikipedia.org/wiki/.tk) depuis.
 
 Ces zones peuvent afficher des volumes très importants, mais ces chiffres reflètent *la demande mondiale de création de marque*, et non la population ou l'activité économique du pays qui y est associé. Les Tuvalu comptent environ 11 000 habitants, mais possèdent l'un des ccTLD les plus en vue au monde.
@@ -60,7 +60,7 @@ Pendant la majeure partie des années 2010, Freenom a proposé des enregistremen
 
 Certains ccTLD ont des règles d'éligibilité : il faut une adresse locale, une entreprise locale, ou une pièce d'identité nationale. Le `.jp` et le `.no` entrent parfaitement dans cette catégorie : le JPRS exige une adresse postale permanente au Japon pour le `.jp`, tandis que Norid requiert une identité norvégienne ou une éligibilité organisationnelle, en plus d'une adresse postale en Norvège pour le `.no`. Le `.fi` est un contre-exemple intéressant : Traficom autorise désormais les entreprises, les organisations et les particuliers à s'enregistrer, quel que soit leur lieu de domicile. 
 
-Les zones restreintes ne pourront jamais rivaliser en volume brut avec les zones totalement ouvertes, mais les noms qui y figurent sont souvent d'une propreté exceptionnelle : de faibles taux d'abus, de faibles taux de parking, et des taux de renouvellement élevés. Si vous cherchez un registre dont vous pouvez réellement faire confiance aux chiffres de volume, les ccTLD restreints sont un excellent indicateur.
+Les zones restreintes ne pourront jamais rivaliser en volume brut avec les zones totalement ouvertes, mais les noms qui y figurent sont souvent d'une propreté exceptionnelle : de faibles taux d'abus, de faibles taux de parking, et des taux de renouvellement élevés. Si vous cherchez un [registre](/fr/glossary/registry/) dont vous pouvez réellement faire confiance aux chiffres de volume, les ccTLD restreints sont un excellent indicateur.
 
 ## Volume contre valeur : ce que les chiffres vous disent et ne vous disent pas
 
@@ -83,7 +83,7 @@ Pour les créateurs, voici les points pratiques à retenir :
 
 ## La vision de Namefi
 
-Chez Namefi, nous acheminons les enregistrements via de multiples infrastructures de bureaux d'enregistrement à travers un grand nombre des ccTLD mentionnés ci-dessus, y compris les plus restreints qui imposent des contrôles d'éligibilité. Puisque nous tokenisons l'enregistrement de propriété *on-chain* plutôt que de nous fier aux contrôles de compte d'un seul bureau d'enregistrement, le choix de l'extension devient une décision de routage et non une décision d'enfermement propriétaire (lock-in). Vous souhaitez commencer sur le `.io` et déplacer plus tard la même identité de marque vers le `.de` pour un marché local ? C'est un processus de transfert que nous sommes conçus pour gérer, pas un projet de migration complexe.
+Chez Namefi, nous acheminons les enregistrements via de multiples infrastructures de bureaux d'enregistrement à travers un grand nombre des ccTLD mentionnés ci-dessus, y compris les plus restreints qui imposent des contrôles d'éligibilité. Puisque nous tokenisons l'enregistrement de propriété *[on-chain](/fr/glossary/on-chain/)* plutôt que de nous fier aux contrôles de compte d'un seul bureau d'enregistrement, le choix de l'extension devient une décision de routage et non une décision d'enfermement propriétaire (lock-in). Vous souhaitez commencer sur le `.io` et déplacer plus tard la même identité de marque vers le `.de` pour un marché local ? C'est un processus de transfert que nous sommes conçus pour gérer, pas un projet de migration complexe.
 
 Le message essentiel : la part de marché des ccTLD est une histoire de *signaux de confiance* sur l'Internet ouvert. Les noms que les gens enregistrent vous indiquent quelles extensions semblent naturelles sur quels marchés. Et ces extensions naturelles ne sont pas toujours celles que les classements par volume placent en tête.
 
