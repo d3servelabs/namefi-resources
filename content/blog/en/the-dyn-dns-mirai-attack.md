@@ -23,7 +23,7 @@ This is **Domain Mayday EP08** — the day insecure smart-cameras took down the 
 
 ## DNS: the internet's phone book, and Dyn's place in it
 
-Every time you type a domain name, your computer has to translate it into a numeric IP address before it can connect to anything. That translation is the job of DNS, the [Domain Name System](/en/glossary/dns/). It is the lookup layer between the human-friendly name and the machine the name points to.
+Every time you type a domain name, your computer has to translate it into a numeric [IP address](/en/glossary/ip-address/) before it can connect to anything. That translation is the job of DNS, the [Domain Name System](/en/glossary/dns/). It is the lookup layer between the human-friendly name and the machine the name points to.
 
 Dyn was one of the big managed providers of that lookup service. When a site outsourced its DNS to Dyn, Dyn's nameservers became the authoritative source for "where does this domain live?" The Register put the dependency plainly during the attack: by blasting Dyn offline, the public DNS resolvers run by Google and ISPs were [unable to contact Dyn to lookup hostnames for netizens, preventing people from accessing sites using Dyn for DNS](https://www.theregister.com/2016/10/21/dns_devastation_as_dyn_dies_under_denialofservice_attack/#:~:text=unable%20to%20contact%20Dyn%20to%20lookup%20hostnames).
 

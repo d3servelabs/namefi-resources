@@ -107,7 +107,7 @@ A company's core domain shows up in places the marketing team never directly con
 - In search results, browser bars, and word-of-mouth recommendations between travelers.
 - In the stock ticker, the investor decks, and the corporate name itself.
 
-Every one of those repetitions either adds friction or removes it. Ctrip.com made each international mention slightly harder to spell, slightly more foreign, slightly more "a Chinese site." Trip.com made each mention an ordinary English word a traveler in any of those 13 languages could absorb without thinking. Multiply that across hundreds of millions of users and every market Ctrip wanted to enter, and a premium domain stops looking like a vanity purchase and starts looking like a permanent reduction in the drag on global growth.
+Every one of those repetitions either adds friction or removes it. Ctrip.com made each international mention slightly harder to spell, slightly more foreign, slightly more "a Chinese site." Trip.com made each mention an ordinary English word a traveler in any of those 13 languages could absorb without thinking. Multiply that across hundreds of millions of users and every market Ctrip wanted to enter, and a [premium domain](/en/glossary/premium-domain/) stops looking like a vanity purchase and starts looking like a permanent reduction in the drag on global growth.
 
 ## What founders should learn from Case 5
 

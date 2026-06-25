@@ -22,8 +22,8 @@ This post is our honest attempt to lay out who's good at what. We obviously work
 Roughly, the platforms fall into three camps:
 
 1. **Owner-facing tokenization services.** You bring a real ICANN domain (or register one) and the platform tokenizes it. Examples: **Namefi, 3DNS**.
-2. **Protocol layers and registry-facing infrastructure.** The platform builds standards, smart contracts, or registry partnerships that other platforms (and registrars) build on top of. Examples: **Doma Protocol, D3 Global Inc**.
-3. **Specialized sale and liquidity tooling.** Auctions, fractionalization, lending — built on top of tokenized domains rather than producing them. Examples: **GBM** (auctions), **Doma Prime** (liquidity), **Domora** (fractionalization-focused).
+2. **Protocol layers and [registry](/en/glossary/registry/)-facing infrastructure.** The platform builds standards, smart contracts, or registry partnerships that other platforms (and registrars) build on top of. Examples: **Doma Protocol, D3 Global Inc**.
+3. **Specialized sale and [liquidity](/en/glossary/domain-liquidity/) tooling.** Auctions, fractionalization, lending — built on top of tokenized domains rather than producing them. Examples: **GBM** (auctions), **Doma Prime** (liquidity), **Domora** (fractionalization-focused).
 
 These categories overlap. Some platforms span more than one. But "what camp does this platform sit in?" is the first question to ask.
 
@@ -33,7 +33,7 @@ These categories overlap. Some platforms span more than one. But "what camp does
 
 ### Namefi
 
-**Best for:** owners who want a real `.com`/`.xyz`/`.io` [tokenized](/en/glossary/tokenize/) on Ethereum or Base, with broad NFT-marketplace and [DeFi](/en/glossary/defi/)-lending support, and DNS management that doesn't feel like a step backward from Cloudflare.
+**Best for:** owners who want a real `.com`/`.xyz`/`.io` [tokenized](/en/glossary/tokenize/) on [Ethereum](/en/glossary/ethereum/) or Base, with broad NFT-marketplace and [DeFi](/en/glossary/defi/)-lending support, and DNS management that doesn't feel like a step backward from Cloudflare.
 
 **Notable:** [ICANN](/en/glossary/icann/)-recognized domains across many [TLDs](/en/glossary/tld/), [on-chain](/en/glossary/on-chain/) ownership via standard [NFTs](/en/glossary/nft/) ([ERC-721](/en/glossary/erc-721/), so wallets, marketplaces, and on-chain tooling Just Work), full DNS management including [DNSSEC](/en/glossary/dnssec/), an in-app [marketplace](/en/glossary/marketplace/), and integrations with on-chain payments ([x402](/en/glossary/x402/)). Multi-chain. Self-custody from day one.
 
@@ -97,7 +97,7 @@ When you're deciding between platforms, the marketing pages won't tell you which
 - **Chain coverage.** Ethereum mainnet, Base, Polygon, others? Where does the NFT live? Where is [gas](/en/glossary/gas/) paid?
 - **NFT standards.** Standard ERC-721? That matters for marketplace compatibility (OpenSea, Blur, Magic Eden, etc.) and on-chain lending.
 - **DNS management.** Can you manage DNS in-platform? Use external nameservers (Cloudflare, Route53)? DNSSEC supported?
-- **Lending / collateralization.** Can you borrow against the tokenized domain on existing money markets, or only inside a platform-specific silo?
+- **Lending / collateralization.** Can you borrow against the [tokenized domain](/en/glossary/tokenized-domain/) on existing money markets, or only inside a platform-specific silo?
 - **Marketplace compatibility.** Will Blur, OpenSea, etc. show the listing, or is it only visible inside the platform's own marketplace?
 - **Custody model.** Self-custody (your [wallet](/en/glossary/wallet/), your keys, your problem) or platform-custodied? Both have trade-offs.
 - **Renewal flow.** Who pays the [registrar](/en/glossary/registrar/)? How is annual renewal billed? What happens if you stop paying?

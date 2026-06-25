@@ -16,7 +16,7 @@ keywords: ['top TLDs for e-commerce', 'best domain extensions for online store',
 
 For an online retailer, a domain name is not just an address — it is a storefront, a trust signal, and a brand asset all at once. Securing the right **top-level domains (TLDs) for your e-commerce store** is one of the cheapest forms of brand protection you can buy. When you own the extensions that customers and bad actors are most likely to type, you control where your traffic goes and you deny that real estate to anyone who might misuse it.
 
-That last point matters more than most merchants realize. Lookalike storefronts on alternate extensions are a common vector for phishing and counterfeit-goods scams: a fraudster registers your brand on a retail-flavored TLD you skipped, spins up a convincing checkout page, and harvests payment details from your shoppers. Securing a handful of high-intent extensions up front — alongside your primary [`.com`](/en/tld/com) — closes those gaps before someone else opens them.
+That last point matters more than most merchants realize. Lookalike storefronts on alternate extensions are a common vector for [phishing](/en/glossary/phishing/) and counterfeit-goods scams: a fraudster registers your brand on a retail-flavored TLD you skipped, spins up a convincing checkout page, and harvests payment details from your shoppers. Securing a handful of high-intent extensions up front — alongside your primary [`.com`](/en/tld/com) — closes those gaps before someone else opens them.
 
 ## How to choose TLDs for your online store
 
@@ -30,7 +30,7 @@ Three criteria should drive the decision. First, **trust and conversion**: shopp
 
 ### 2. [.shop](/en/tld/shop) — built for retail
 
-`.shop` is a generic TLD purpose-built for commerce, [delegated in 2016](https://www.iana.org/domains/root/db/shop.html) and operated by GMO Registry, which won the rights at an ICANN auction. It is open to all registrants with no special eligibility rules ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/shop)). The keyword-in-the-extension reads instantly as "this is a place to buy," which makes it a natural fit for a storefront or a campaign microsite.
+`.shop` is a generic TLD purpose-built for commerce, [delegated in 2016](https://www.iana.org/domains/root/db/shop.html) and operated by GMO Registry, which won the rights at an [ICANN](/en/glossary/icann/) [auction](/en/glossary/auction/). It is open to all registrants with no special eligibility rules ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/shop)). The keyword-in-the-extension reads instantly as "this is a place to buy," which makes it a natural fit for a storefront or a campaign microsite.
 
 ### 3. [.store](/en/tld/store) — a clear commercial signal
 
@@ -68,11 +68,11 @@ Three criteria should drive the decision. First, **trust and conversion**: shopp
 
 A defensive portfolio is not about owning hundreds of names; it is about owning the few that matter. Start with the **exact-match brand string** across your highest-priority retail extensions — typically `.com`, `.shop`, and `.store` — and redirect the ones you do not actively use to your canonical store so the equity flows back to one place. From there, layer in the extensions most likely to be abused: short lookalikes like `.co` (one character from `.com`) and high-intent commercial strings like `.shopping` and `.deals`.
 
-Beyond extensions, consider the **most common typos** of your brand on your primary `.com`, plus obvious plural or singular variants. Set every defensive name to redirect with a permanent (301) redirect, enable registrar-level transfer locks, and keep auto-renewal on so a lapse never opens a door. Treat this as a living list: revisit it whenever you launch a new product line, enter a new market, or rebrand.
+Beyond extensions, consider the **most common typos** of your brand on your primary `.com`, plus obvious plural or singular variants. Set every defensive name to redirect with a permanent (301) redirect, enable [registrar](/en/glossary/registrar/)-level transfer locks, and keep auto-renewal on so a lapse never opens a door. Treat this as a living list: revisit it whenever you launch a new product line, enter a new market, or rebrand.
 
 ## Register your e-commerce domains at Namefi
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar built for exactly this kind of portfolio. You can search and register your retail extensions side by side with transparent pricing, configure DNS quickly so your storefront and redirects go live without delay, and manage everything from one dashboard. Namefi also supports Web3 tokenization, so eligible domains can be held as NFTs — useful if you want on-chain ownership, programmable transfers, or to treat a premium domain as a tradable asset. Whether you are securing a single `.com` or a full defensive set, [Namefi](https://namefi.io) makes locking down your brand straightforward.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) built for exactly this kind of portfolio. You can search and register your retail extensions side by side with transparent pricing, configure DNS quickly so your storefront and redirects go live without delay, and manage everything from one dashboard. Namefi also supports [Web3](/en/glossary/web3/) tokenization, so eligible domains can be held as NFTs — useful if you want [on-chain](/en/glossary/on-chain/) ownership, programmable transfers, or to treat a [premium domain](/en/glossary/premium-domain/) as a tradable asset. Whether you are securing a single `.com` or a full defensive set, [Namefi](https://namefi.io) makes locking down your brand straightforward.
 
 ## Frequently asked questions
 

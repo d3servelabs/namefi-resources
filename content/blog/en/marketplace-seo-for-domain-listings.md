@@ -58,7 +58,7 @@ This is genuine, if small-scale, [SEO](/en/glossary/seo/): you're matching suppl
 
 ![Editorial illustration of domain-name cards funneling into labeled category bins with one highlighted card landing in its correct matching bin](../../assets/marketplace-seo-for-domain-listings-03-categories.jpg)
 
-After search, the second way buyers find names is by filtering — and that runs on the structured fields you set: category, length, price band, and [extension](/en/tld/com/). These are easy to fill in carelessly and expensive to get wrong: a miscategorized name never appears in the filtered views where its buyer is looking.
+After search, the second way buyers find names is by filtering — and that runs on the structured fields you set: category, length, price band, and extension. These are easy to fill in carelessly and expensive to get wrong: a miscategorized name never appears in the filtered views where its buyer is looking.
 
 - **Pick the category your buyer would pick.** A buyer shopping for a tech name filters to tech. If your `.ai` name is filed under "general," the AI founders browsing the [.ai](/en/tld/ai/) category never see it. Match the category to the most likely buyer, not to the most flattering label.
 - **Let the extension do its own filtering work.** Buyers self-select by [TLD](/en/glossary/tld/) constantly — startups gravitating to [.io](/en/tld/io/) and [.ai](/en/tld/ai/), local and creative projects to [.co](/en/tld/co/) and [.xyz](/en/tld/xyz/), app makers to [.app](/en/tld/app/). The extension you bought partly determines which filtered audience you can reach, which is one more reason extension choice is an acquisition decision, not an afterthought.

@@ -12,7 +12,7 @@ description: A clear explainer on xStocks—tokenized stocks (tokenized equities
 keywords: ['xStocks', 'what are xStocks', 'what is xStocks', 'xStocks crypto', 'tokenized stocks', 'tokenized equities', 'was sind xStocks', 'xStocks是什么', '什么是xstocks', 'que son los xStocks', 'unterschied xStocks traditionelle Aktien', 'Backed Finance', 'Kraken xStocks', 'Bybit xStocks', 'Solana tokenized stocks', 'on-chain equities', 'tokenization of real-world assets', 'RWA tokenization', 'tokenized domains', 'domain tokenization', 'Namefi']
 ---
 
-You may have seen the word **xStocks** on a crypto exchange, in a trading app, or in a headline about "stocks on the blockchain," and wondered what it actually means. Is an xStock a real share? A crypto coin? A bet on a stock price? And what does any of it have to do with domains?
+You may have seen the word **xStocks** on a crypto exchange, in a trading app, or in a headline about "stocks on the [blockchain](/en/glossary/blockchain/)," and wondered what it actually means. Is an xStock a real share? A crypto coin? A bet on a stock price? And what does any of it have to do with domains?
 
 This article answers the **"what"** directly: what xStocks *are*, how they *work*, who *issues* them, how they *differ* from traditional stocks, the *risks* to understand—and why this matters to anyone watching the broader **real-world-asset (RWA) tokenization** trend that [tokenized domains](/en/blog/what-are-tokenized-domains/) are also part of.
 
@@ -26,7 +26,7 @@ An **xStock** is a token on a public blockchain that tracks the price of a singl
 
 In plain terms:
 
-> An xStock is a crypto token that mirrors the economic value of one share (e.g. `AAPLx` tracks Apple, `TSLAx` tracks Tesla), lives in a self-custodial wallet, and trades on crypto exchanges and decentralized protocols—largely outside traditional market hours.
+> An xStock is a crypto token that mirrors the economic value of one share (e.g. `AAPLx` tracks Apple, `TSLAx` tracks Tesla), lives in a self-custodial [wallet](/en/glossary/wallet/), and trades on crypto exchanges and decentralized protocols—largely outside traditional market hours.
 
 xStocks are issued by **Backed Assets (a Backed Finance entity)** and run primarily on the **Solana** blockchain as standard SPL tokens. They are distributed through the **xStocks Alliance**—a group that includes exchanges and protocols such as **Kraken**, **Bybit**, and Solana DeFi venues like **Raydium**, **Jupiter**, and **Kamino**. In late 2025, Kraken announced it would **acquire Backed**, the company behind xStocks.
 
@@ -38,8 +38,8 @@ The mechanics are simpler than the marketing sometimes makes them sound:
 
 1. **A real share is custodied.** For each xStock token in circulation, the issuer is meant to hold one corresponding real share (or ETF unit) with a regulated custodian—so the supply is collateralized 1:1.
 2. **A token is minted on-chain.** That holding is represented as a token (e.g. `AAPLx`) on Solana, which you can hold in a self-custodial wallet like Phantom or Solflare.
-3. **It trades nearly around the clock.** Because it's an on-chain token, an xStock can be bought, sold, and moved **24/5** on exchanges—and effectively 24/7 on DeFi protocols—rather than only during the underlying stock market's open hours.
-4. **It plugs into DeFi.** xStocks are *composable*: they can be supplied as collateral, paired in liquidity pools, or used in other on-chain strategies, the same way other crypto tokens are.
+3. **It trades nearly around the clock.** Because it's an [on-chain](/en/glossary/on-chain/) token, an xStock can be bought, sold, and moved **24/5** on exchanges—and effectively 24/7 on DeFi protocols—rather than only during the underlying stock market's open hours.
+4. **It plugs into DeFi.** xStocks are *composable*: they can be supplied as [collateral](/en/glossary/collateral/), paired in liquidity pools, or used in other on-chain strategies, the same way other crypto tokens are.
 
 On **dividends**: xStocks do not pay cash dividends to your wallet. Instead, the issuer reinvests the dividend value into the underlying position and adjusts the token so its value reflects the distribution—an economic pass-through rather than a cash payout.
 
@@ -87,13 +87,13 @@ Here's the connection. xStocks aren't a domain story—but they *are* a vivid ex
 The pattern is identical across asset classes. Take something traditionally illiquid and locked inside a specialized system—**equities** behind brokerages, **domains** behind registrars—and give it a synchronized on-chain representation. Suddenly that asset becomes:
 
 - **Wallet-native** — you hold it yourself instead of inside a hosted account.
-- **Transferable in seconds** — no multi-day settlement or escrow ceremony.
+- **Transferable in seconds** — no multi-day settlement or [escrow](/en/glossary/escrow/) ceremony.
 - **Composable** — usable as collateral, in marketplaces, in [DeFi](/en/glossary/defi/).
 - **Globally accessible** — tradable across borders, around the clock.
 
-That's exactly what a [tokenized domain](/en/blog/what-are-tokenized-domains/) is: a real, ICANN-recognized domain (like `example.com`) whose ownership *also* lives as an NFT in your wallet, kept in sync with the DNS registry. The same mechanics that let an xStock settle in under a second can let a premium `.com` change hands—or be pledged as collateral—just as fast.
+That's exactly what a [tokenized domain](/en/blog/what-are-tokenized-domains/) is: a real, [ICANN](/en/glossary/icann/)-recognized domain (like `example.com`) whose ownership *also* lives as an NFT in your wallet, kept in sync with the DNS [registry](/en/glossary/registry/). The same mechanics that let an xStock settle in under a second can let a premium `.com` change hands—or be pledged as collateral—just as fast.
 
-If you want to see what that unlocks for domains specifically, we've mapped it out in [Tokenized Domain Use Cases in 2026](/en/blog/tokenized-domain-use-cases-2026/): collateralized lending, fractional ownership, on-chain marketplaces, leasing, and more. xStocks show the broader market validating the *model*; tokenized domains apply that model to one of the internet's oldest and most valuable asset classes.
+If you want to see what that unlocks for domains specifically, we've mapped it out in [Tokenized Domain Use Cases in 2026](/en/blog/tokenized-domain-use-cases-2026/): collateralized lending, [fractional ownership](/en/glossary/fractional-ownership/), on-chain marketplaces, [leasing](/en/glossary/leasing/), and more. xStocks show the broader market validating the *model*; tokenized domains apply that model to one of the internet's oldest and most valuable asset classes.
 
 One important difference worth keeping straight: an xStock is a token that *tracks* an off-chain share you don't directly own, whereas a Namefi-tokenized domain *is* the real domain—the on-chain token and the registry record are two synchronized layers of the **same** asset, not a tracker of something held elsewhere.
 
@@ -111,7 +111,7 @@ One important difference worth keeping straight: an xStock is a token that *trac
 
 **Worin liegt der Unterschied zwischen xStocks und traditionellen Aktien? (How do xStocks differ from traditional stocks?)** A traditional stock is legal ownership of a share, with voting rights, cash dividends, and broker/clearinghouse settlement during market hours. An xStock is a token that tracks a share's value: no voting rights, dividends reflected in token value rather than paid as cash, self-custodied in a wallet, settled on-chain near-instantly, and exposed to issuer and custody risk.
 
-**Are xStocks the same as crypto?** xStocks are crypto *tokens*, but unlike Bitcoin or a stablecoin they track an individual equity's price. (For how dollar-pegged tokens differ, see [What Are Stablecoins?](/en/blog/what-are-stablecoins/).)
+**Are xStocks the same as crypto?** xStocks are crypto *tokens*, but unlike Bitcoin or a [stablecoin](/en/glossary/stablecoin/) they track an individual equity's price. (For how dollar-pegged tokens differ, see [What Are Stablecoins?](/en/blog/what-are-stablecoins/).)
 
 **Who issues xStocks?** Backed (Backed Finance), distributed via the xStocks Alliance including Kraken and Bybit; Kraken announced plans to acquire Backed in 2025.
 

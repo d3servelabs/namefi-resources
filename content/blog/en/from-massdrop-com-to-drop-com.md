@@ -21,7 +21,7 @@ For that first audience, Massdrop.com was perfect. It named the move.
 
 But the company underneath the name kept changing. By 2019, Massdrop was no longer just a coordinator of bulk orders. It was designing its own keyboards and headphones, running a real commerce platform, and preparing to ship to new markets. The "Mass" — the word that made the model legible on day one — had started to describe a smaller, older company than the one it had become.
 
-So in April 2019, Massdrop did what a surprising number of growing companies eventually do: it dropped half its name. It became simply **Drop**, and it moved to the exact-match domain it had quietly secured ahead of time — **Drop.com**, a premium one-word [.com](/en/tld/com/) that had once carried an [asking price of $800,000](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=the%20asking%20price%20for%20Drop.com%20was%20%24800%2C000).
+So in April 2019, Massdrop did what a surprising number of growing companies eventually do: it dropped half its name. It became simply **Drop**, and it moved to the [exact-match domain](/en/glossary/exact-match-domain/) it had quietly secured ahead of time — **Drop.com**, a premium one-word [.com](/en/tld/com/) that had once carried an [asking price of $800,000](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=the%20asking%20price%20for%20Drop.com%20was%20%24800%2C000).
 
 ## 2012–2019: the "Mass" that did real work
 

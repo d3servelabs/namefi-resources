@@ -17,13 +17,13 @@ Before Dropbox was a verb for "put it in the cloud," it lived at a slightly long
 
 The name was a workaround, not a choice. When Drew Houston filed Dropbox's Y Combinator application — the canonical [YC W07](https://www.ycombinator.com/library/6S-on-starting-and-scaling-dropbox-yc-w07) Winter 2007 batch — the company's web address was already [http://www.getdropbox.com/](https://finance.yahoo.com/news/heres-paperwork-drew-houston-filed-112526277.html#:~:text=http%3A%2F%2Fwww.getdropbox.com%2F), and that's where he hosted the demo and the installer. The application even pointed reviewers to a [screencast on getdropbox.com](https://finance.yahoo.com/news/heres-paperwork-drew-houston-filed-112526277.html#:~:text=getdropbox.com) and a downloadable build at the same domain.
 
-Why "Get"? Because Dropbox.com was taken. The exact-match domain everyone *assumed* the company owned was sitting in someone else's account, parked, and — for years — out of reach. So Dropbox did what countless startups do when the clean [.com](/en/tld/com/) is gone: it bolted a verb onto the front and shipped.
+Why "Get"? Because Dropbox.com was taken. The [exact-match domain](/en/glossary/exact-match-domain/) everyone *assumed* the company owned was sitting in someone else's account, parked, and — for years — out of reach. So Dropbox did what countless startups do when the clean [.com](/en/tld/com/) is gone: it bolted a verb onto the front and shipped.
 
 For its earliest, fast-growing era, that worked. The product idea came from Houston's now-famous frustration on the [Chinatown bus from Boston to New York](https://finance.yahoo.com/news/had-no-idea-become-drew-163000802.html#:~:text=Chinatown%20bus%2C%20forgot%20my%20thumb%20drive), where he forgot his thumb drive and decided he never wanted that problem again. The fix was a folder that synced everywhere — and a domain that, "Get" or not, told you exactly what to do.
 
 Then, in October 2009, Dropbox finally bought **Dropbox.com**. The owner [took $300,000 in cash](https://domainnamewire.com/2018/09/19/dropbox-domain-name/#:~:text=He%20took%20%24300%2C000%20in%20cash) — over an offer that could have been stock instead.
 
-This is the story of how a startup launched on a descriptive domain, fought a squatter and a trademark tangle to get the exact match, and learned that the most expensive part of a domain upgrade is rarely the deciding — it's the transferring.
+This is the story of how a startup launched on a descriptive domain, fought a squatter and a [trademark](/en/glossary/trademark/) tangle to get the exact match, and learned that the most expensive part of a domain upgrade is rarely the deciding — it's the transferring.
 
 ## 2007: the descriptive domain that shipped a product
 
@@ -125,7 +125,7 @@ The easy takeaway — "buy your exact-match .com on day one" — is the wrong on
 
 1. **A workaround domain is fine to launch on.** GetDropbox.com carried a viral demo, a YC batch, a Series A, and three million users. A "Get," "The," or "App" modifier isn't a failure — it's a reasonable on-ramp when the clean match is unavailable.
 2. **Watch for the moment the workaround starts costing you.** The signal to upgrade wasn't aesthetic. It was traffic leaking to Dropbox.com, beta requests landing in a stranger's inbox, and competitor ads on the address users assumed was yours.
-3. **Treat the exact-match domain as infrastructure, and expect the transfer to be the hard part.** Deciding to drop "Get" was easy. Champagne, years of "no," Whois privacy, a parking page, and a trademark suit were the actual cost.
+3. **Treat the exact-match domain as infrastructure, and expect the transfer to be the hard part.** Deciding to drop "Get" was easy. Champagne, years of "no," [Whois privacy](/en/glossary/whois-privacy/), a parking page, and a trademark suit were the actual cost.
 4. **Secure the domain before consolidating the identity.** Dropbox renamed Evenflow to Dropbox, Inc. *the same month* it got Dropbox.com — because the corporate identity can change in an afternoon, but the domain can take a lawsuit.
 
 The domain upgrade didn't make Dropbox win. Product, timing, the viral demo, and execution mattered far more. But Dropbox.com made the company's name, product, and address finally agree with each other — and stopped the brand from leaking traffic to its own competitors.

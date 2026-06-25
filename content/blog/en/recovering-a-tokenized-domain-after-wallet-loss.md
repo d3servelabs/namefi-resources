@@ -23,7 +23,7 @@ This post explains, honestly, what your options actually look like — and how t
 
 ## The Uncomfortable Truth First
 
-Cryptographic key loss is not like losing a registrar password. There is no "forgot password" link that sends you an email. If you have lost the seed phrase, you have lost the wallet, and no one — not Namefi, not Ethereum, not anyone — can recover the private key for you. That's the trade-off self-custody comes with.
+Cryptographic key loss is not like losing a registrar password. There is no "forgot password" link that sends you an email. If you have lost the seed phrase, you have lost the wallet, and no one — not Namefi, not [Ethereum](/en/glossary/ethereum/), not anyone — can recover the [private key](/en/glossary/private-key/) for you. That's the trade-off self-custody comes with.
 
 The good news: **platform-level recovery paths exist** in addition to the cryptographic layer. Tokenized domains have an off-chain side (the registrar / DNS record) that platforms can sometimes use to help, depending on the situation.
 
@@ -35,7 +35,7 @@ So: **prevention is the recovery strategy.** Let's talk about both.
 
 ## Prevention: Set Up Recoverability *Before* You Need It
 
-Do these *before* you tokenize, or right after.
+Do these *before* you [tokenize](/en/glossary/tokenize/), or right after.
 
 ### 1. Write down your seed phrase. Twice. On paper. Or steel.
 
@@ -47,7 +47,7 @@ The single biggest source of permanent loss is [seed phrases](/en/glossary/seed-
 
 ### 2. Use a hardware wallet for storage
 
-The wallet you use to *interact* with apps can be a hot wallet (MetaMask, Rabby). The wallet that *holds* the domain NFT long-term should be a [**hardware wallet**](/en/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone, etc.). Move the NFT to it after minting.
+The wallet you use to *interact* with apps can be a hot wallet (MetaMask, Rabby). The wallet that *holds* the domain NFT long-term should be a [**hardware wallet**](/en/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone, etc.). Move the NFT to it after [minting](/en/glossary/minting/).
 
 ### 3. Consider a multisig for high-value domains
 
@@ -87,7 +87,7 @@ Move the NFT to a new wallet *right now*, while the device still works. Then re-
 
 This is the hard one. Cryptographically, the NFT is now inaccessible. Options:
 
-1. **Platform-side recovery.** If the platform (e.g., Namefi) has an account-bound identity tied to your registration email and KYC (where applicable), you may be able to prove you are the registrant and request a platform-managed remediation. This is **not guaranteed**, requires identity verification, and typically only applies under specific conditions. Contact support immediately — the longer you wait, the harder it gets.
+1. **Platform-side recovery.** If the platform (e.g., Namefi) has an account-bound identity tied to your registration email and KYC (where applicable), you may be able to prove you are the [registrant](/en/glossary/registrant/) and request a platform-managed remediation. This is **not guaranteed**, requires identity verification, and typically only applies under specific conditions. Contact support immediately — the longer you wait, the harder it gets.
 2. **Registry / registrar appeals.** As a real [ICANN](/en/glossary/icann/) domain, the underlying registration record still exists. [Registrars](/en/glossary/registrar/) have processes for proving ownership ([WHOIS / RDAP](/en/glossary/whois/) history, billing records, government ID). These are slow, paperwork-heavy, and not a sure thing — but they exist.
 3. **Legal route.** For high-value domains held in a corporate or estate context, lawyers and recovery firms specialize in this. Expensive, slow, and case-dependent.
 

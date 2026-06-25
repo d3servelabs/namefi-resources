@@ -11,7 +11,7 @@ description: "UDRP explained for domain owners and investors: the three elements
 keywords: ['udrp', 'what is udrp', 'udrp process', 'udrp policy', 'udrp complaint', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'domain dispute', 'domain name dispute', 'cybersquatting', 'reverse domain name hijacking', 'bad faith registration', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'trademark domain dispute', 'domain investor legal', 'respond to udrp complaint']
 ---
 
-If you own domain names long enough, you will eventually hear about the UDRP — usually because someone is threatening to use it against you, or because you are wondering whether a name in your portfolio is safe to hold. For domain investors, understanding the UDRP is not optional. It is the single most common way a domain you registered can be taken away from you without a courtroom.
+If you own domain names long enough, you will eventually hear about the [UDRP](/en/glossary/udrp/) — usually because someone is threatening to use it against you, or because you are wondering whether a name in your portfolio is safe to hold. For domain investors, understanding the UDRP is not optional. It is the single most common way a domain you registered can be taken away from you without a courtroom.
 
 This guide explains what the UDRP is, when it applies, what a complainant actually has to prove, how the process works, and how owners of valuable names can both avoid and respond to a complaint.
 
@@ -19,21 +19,21 @@ This guide explains what the UDRP is, when it applies, what a complainant actual
 
 ## What Is the UDRP?
 
-The **UDRP** — the **Uniform Domain-Name Dispute-Resolution Policy** (in German, **UDRP-Verfahren**) — is a policy created by [ICANN](/en/glossary/icann/) in 1999 to resolve disputes over domain names that allegedly infringe someone's trademark. Every accredited registrar requires you to agree to the UDRP when you register a domain. That agreement is why a private arbitration panel, rather than a national court, can order your domain transferred away.
+The **UDRP** — the **Uniform Domain-Name Dispute-Resolution Policy** (in German, **UDRP-Verfahren**) — is a policy created by [ICANN](/en/glossary/icann/) in 1999 to resolve disputes over domain names that allegedly infringe someone's [trademark](/en/glossary/trademark/). Every accredited registrar requires you to agree to the UDRP when you register a domain. That agreement is why a private arbitration panel, rather than a national court, can order your domain transferred away.
 
-The UDRP exists to deal with **cybersquatting**: registering a domain that matches someone else's brand in order to profit from it. It is deliberately narrow. It is not a tool for resolving every disagreement about who "deserves" a name. It targets bad-faith registration of trademark-infringing domains, and nothing more.
+The UDRP exists to deal with **[cybersquatting](/en/glossary/cybersquatting/)**: registering a domain that matches someone else's brand in order to profit from it. It is deliberately narrow. It is not a tool for resolving every disagreement about who "deserves" a name. It targets bad-faith registration of trademark-infringing domains, and nothing more.
 
 The UDRP applies to all generic top-level domains (`.com`, `.net`, `.org`, and the newer gTLDs) and to country-code TLDs whose operators have voluntarily adopted it. Many ccTLDs run their own separate dispute policies instead.
 
 ## The Three Elements a Complainant Must Prove
 
-A UDRP complaint does not succeed just because a brand owner is unhappy. The complainant must prove **all three** of the following elements. If even one fails, the complaint is denied and the domain stays with its registrant.
+A UDRP complaint does not succeed just because a brand owner is unhappy. The complainant must prove **all three** of the following elements. If even one fails, the complaint is denied and the domain stays with its [registrant](/en/glossary/registrant/).
 
 1. **Identical or confusingly similar.** The domain is identical or confusingly similar to a trademark or service mark in which the complainant has rights. In practice this first element functions mostly as a standing requirement — it confirms the complainant actually owns a relevant mark.
 
 2. **No rights or legitimate interests.** The registrant has no rights or legitimate interests in the domain. Once the complainant makes a credible case here, the burden effectively shifts to the registrant to show a legitimate interest — for example, that they are using the name for a genuine business, a descriptive term, or non-commercial speech.
 
-3. **Registered *and* used in bad faith.** The domain was both **registered in bad faith and is being used in bad faith.** This conjunctive "and" is the most important word in the entire policy for domain investors. A name registered years before a complainant's trademark even existed generally cannot have been registered in bad faith — you cannot target a brand that did not yet exist.
+3. **Registered *and* used in bad faith.** The domain was both **registered in [bad faith](/en/glossary/bad-faith/) and is being used in bad faith.** This conjunctive "and" is the most important word in the entire policy for domain investors. A name registered years before a complainant's trademark even existed generally cannot have been registered in bad faith — you cannot target a brand that did not yet exist.
 
 That third element is where most defensible portfolios survive. The UDRP recognizes specific bad-faith patterns: registering a name primarily to sell it to the trademark owner at an inflated price, registering to block the brand from owning its own name (as part of a pattern), registering to disrupt a competitor, or using the name to attract traffic by creating confusion with the mark.
 
@@ -45,7 +45,7 @@ The process is administrative arbitration, not litigation. It is conducted almos
 
 1. **Filing.** The complainant files with an ICANN-approved dispute-resolution provider. The two main ones are the [World Intellectual Property Organization (WIPO)](https://www.wipo.int/amc/en/domains/guide/) — the largest provider — and **FORUM** (formerly the National Arbitration Forum).
 
-2. **Notification and lock.** The registrar locks the domain so it cannot be transferred or changed during the dispute, and the registrant (respondent) is formally notified.
+2. **Notification and lock.** The [registrar](/en/glossary/registrar/) locks the domain so it cannot be transferred or changed during the dispute, and the registrant (respondent) is formally notified.
 
 3. **Response.** The respondent typically has **20 days** to file a response defending their rights to the name. Missing this deadline is one of the most common ways registrants lose names they could have kept.
 
@@ -105,7 +105,7 @@ It is also worth understanding that a UDRP transfer is a different problem from 
 
 For high-value names, a UDRP complaint is an existential risk — and it is one reason provenance and clear records matter so much when you [sell a domain you own](/en/blog/how-to-sell-a-domain-name-you-own/). A clean registration history and a legitimate-use story are assets that protect the name's value.
 
-This is also where [tokenized domains](/en/blog/what-are-tokenized-domains/) fit into the picture. Tokenization changes *who provably controls* a name and creates a durable, on-chain record of ownership and transfers — useful provenance if a registration date or chain of custody is ever questioned. It does **not**, however, place a domain outside the UDRP: the underlying name still lives in the DNS under an accredited registrar, and the UDRP still applies. Tokenization strengthens your evidence and your control; it does not exempt you from trademark law.
+This is also where [tokenized domains](/en/blog/what-are-tokenized-domains/) fit into the picture. Tokenization changes *who provably controls* a name and creates a durable, [on-chain](/en/glossary/on-chain/) record of ownership and transfers — useful provenance if a registration date or chain of custody is ever questioned. It does **not**, however, place a domain outside the UDRP: the underlying name still lives in the DNS under an accredited registrar, and the UDRP still applies. Tokenization strengthens your evidence and your control; it does not exempt you from trademark law.
 
 [Namefi](https://namefi.io) tokenizes the registrant relationship while keeping the domain fully ICANN-compliant, so owners get on-chain provenance and self-custody without stepping outside the system that the UDRP governs. The goal is simple: own valuable names with stronger records and cleaner control, while staying squarely within the rules.
 
@@ -130,7 +130,7 @@ The URS (Uniform Rapid Suspension) is faster and cheaper but applies only to new
 Yes. If a complainant abuses the process to try to take a legitimately held name, a panel can find Reverse Domain Name Hijacking (RDNH) — a formal, public finding that the complaint was brought in bad faith.
 
 ### Does tokenizing a domain protect it from the UDRP?
-No. Tokenization improves provenance, control, and self-custody, but the underlying domain still operates under an ICANN-accredited registrar, so the UDRP still applies. Tokenization can strengthen your evidence; it does not exempt a name from trademark law.
+No. Tokenization improves provenance, control, and self-custody, but the underlying domain still operates under an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), so the UDRP still applies. Tokenization can strengthen your evidence; it does not exempt a name from trademark law.
 
 ---
 

@@ -26,7 +26,7 @@ Founded by Andrew Allemann in 2005. The closest thing the domain industry has to
 
 ### TheDomains — [thedomains.com](https://thedomains.com/)
 
-Long-running blog originally founded by Mike Berkens (one of the largest domain portfolio holders in the industry) and now edited primarily by Raymond Hackney. Mix of news, analysis, and opinion. Strong on policy stories — [UDRP](/en/glossary/udrp/) cases, registry contract changes, ICANN moves.
+Long-running blog originally founded by Mike Berkens (one of the largest [domain portfolio](/en/glossary/domain-portfolio/) holders in the industry) and now edited primarily by Raymond Hackney. Mix of news, analysis, and opinion. Strong on policy stories — [UDRP](/en/glossary/udrp/) cases, registry contract changes, ICANN moves.
 
 ### DomainGang — [domaingang.com](https://domaingang.com/)
 
@@ -38,7 +38,7 @@ Both [OnlineDomain](https://onlinedomain.com/) and [DomainInvesting](https://dom
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
-Not strictly a domain investor publication — CircleID covers the broader [DNS](/en/glossary/dns/), ICANN, internet-governance, and infrastructure beat. But if you care about the *policy* layer (registry contracts, new gTLD rounds, [WHOIS](/en/glossary/whois/) regulation, [DNSSEC](/en/glossary/dnssec/)), CircleID is where the substantive writing happens, and the bylines include many of the same names that show up at ICANN meetings.
+Not strictly a domain investor publication — CircleID covers the broader [DNS](/en/glossary/dns/), ICANN, internet-governance, and infrastructure beat. But if you care about the *policy* layer (registry contracts, [new gTLD](/en/glossary/new-gtld/) rounds, [WHOIS](/en/glossary/whois/) regulation, [DNSSEC](/en/glossary/dnssec/)), CircleID is where the substantive writing happens, and the bylines include many of the same names that show up at ICANN meetings.
 
 ## Sales data and reference sites
 

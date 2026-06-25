@@ -57,7 +57,7 @@ A fixed price at which a domain name is listed for immediate purchase. Instead o
 The strategy used by domain investors to price their domain names. This may include pricing a domain for quick sale, setting a high price for negotiation, or using BIN pricing to encourage instant purchases.
 
 **Strategies**:
-- **Quick Sale**: Price 20-30% below market value for fast liquidity
+- **Quick Sale**: Price 20-30% below market value for fast [liquidity](/en/glossary/domain-liquidity/)
 - **Negotiation**: Set high initial price with room for bargaining
 - **Premium Positioning**: Price at market premium for prestige domains
 
@@ -95,7 +95,7 @@ The part of a domain name that comes after the last dot (e.g., [.com](/en/tld/co
 
 **Categories**:
 - **Generic TLDs**: .com, .org, .net, [.info](/en/tld/info/)
-- **Country Code TLDs**: .us, .uk, .de, .cn
+- **Country Code TLDs**: [.us](/en/tld/us/), .uk, .de, .cn
 - **New TLDs**: .ai, [.io](/en/tld/io/), [.tech](/en/tld/tech/), [.shop](/en/tld/shop/)
 
 ### **Subdomain**
@@ -170,7 +170,7 @@ The practice of registering and holding onto a domain without developing it into
 ## **📈 Market Insights**
 
 ### **High-Value Categories**
-- **Technology**: AI, blockchain, fintech terms
+- **Technology**: AI, [blockchain](/en/glossary/blockchain/), fintech terms
 - **Health**: Medical, wellness, pharmaceutical
 - **Finance**: Banking, investment, cryptocurrency
 - **E-commerce**: Shopping, retail, marketplace
@@ -188,7 +188,7 @@ The practice of registering and holding onto a domain without developing it into
 
 Ready to start your domain investing journey or secure your perfect domain name?
 
-**[Namefi](https://namefi.io)** is your trusted ICANN-accredited registrar offering:
+**[Namefi](https://namefi.io)** is your trusted [ICANN-accredited registrar](/en/glossary/accredited-registrar/) offering:
 
 - **Competitive Pricing**: Best rates for all major TLDs
 - **Professional Tools**: Portfolio management and analytics

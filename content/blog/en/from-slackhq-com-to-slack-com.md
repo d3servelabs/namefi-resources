@@ -15,7 +15,7 @@ keywords: ['slackhq.com', 'slack.com', 'slack domain name', 'domain upgrade', 's
 
 Before Slack was a verb for "message me at work," it was a quieter thing with a longer address: **SlackHQ.com**.
 
-The "HQ" was not a branding flourish. It was a workaround. When Stewart Butterfield's team turned an internal chat tool into a product, the exact-match domain — Slack.com — already belonged to someone else. So did the @Slack handle on Twitter, which [a software engineer from Holland, Michigan](https://www.cnbc.com/2020/12/04/meet-matt-slack-who-owns-twitter-handle-slack-like-the-tech-company.html#:~:text=a%20software%20engineer%20from%20Holland%2C%20Michigan) named Matt Slack had grabbed years earlier. A young company that wanted to be called "Slack" had to settle, at first, for "Slack, headquarters edition."
+The "HQ" was not a branding flourish. It was a workaround. When Stewart Butterfield's team turned an internal chat tool into a product, the [exact-match domain](/en/glossary/exact-match-domain/) — Slack.com — already belonged to someone else. So did the @Slack handle on Twitter, which [a software engineer from Holland, Michigan](https://www.cnbc.com/2020/12/04/meet-matt-slack-who-owns-twitter-handle-slack-like-the-tech-company.html#:~:text=a%20software%20engineer%20from%20Holland%2C%20Michigan) named Matt Slack had grabbed years earlier. A young company that wanted to be called "Slack" had to settle, at first, for "Slack, headquarters edition."
 
 That gap between the name a company wants and the name it can get is one of the most common — and most underrated — problems in startup branding. The product was already called Slack. The world just couldn't reach it at Slack.com yet.
 

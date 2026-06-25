@@ -17,7 +17,7 @@ For its first thirteen years, the most valuable car company of the next decade l
 
 The name was honest. When the company was incorporated in 2003, it made cars, and only cars. "Tesla Motors" described exactly what it was, and TeslaMotors.com described exactly where to find it. The extra word did real work: it told you this was an automaker named after Nikola Tesla, not a battery startup, not an electricity utility, not the domain some other "Tesla" had been sitting on since the early days of the web.
 
-Because someone else *had* been sitting on Tesla.com. The exact-match domain belonged to Stuart Grossman, a Silicon Valley engineer who had held it long before an electric-car company existed, and who had already [defended it in a UDRP dispute](https://electrek.co/2016/02/18/tesla-motors-domain-tesla-com/) brought by a different company called Tesla Industries. Tesla Motors could not simply ask for the name. It had to buy it, and the owner was in no hurry to sell.
+Because someone else *had* been sitting on Tesla.com. The [exact-match domain](/en/glossary/exact-match-domain/) belonged to Stuart Grossman, a Silicon Valley engineer who had held it long before an electric-car company existed, and who had already [defended it in a UDRP dispute](https://electrek.co/2016/02/18/tesla-motors-domain-tesla-com/) brought by a different company called Tesla Industries. Tesla Motors could not simply ask for the name. It had to buy it, and the owner was in no hurry to sell.
 
 So for over a decade, the company built one of the most recognizable brands on earth on a domain that wasn't quite its brand.
 
@@ -59,7 +59,7 @@ The reason it took ten years is that the owner didn't need to sell.
 
 Stuart Grossman had held Tesla.com for years, through at least one ownership challenge, and had no commercial project riding on it. That is the hardest kind of counterparty in a domain negotiation: not a flipper looking for a quick exit, but a long-term holder who can comfortably say "no" indefinitely. There is no leverage against someone who isn't trying to win.
 
-What eventually moved the deal was not pressure but fatigue. Grossman described the domain as more liability than asset by the end — at one point [a wave of spam went out using tesla.com as the faked originating address](https://jamesnames.com/2021/08/case-study-why-musk-acquired-tesla-com-for-11-million/), the kind of headache a dormant premium domain can quietly generate. As he put it in a 2016 interview, he realized he would never use the name productively and [it was becoming a burden](https://electrek.co/2016/02/18/tesla-motors-domain-tesla-com/).
+What eventually moved the deal was not pressure but fatigue. Grossman described the domain as more liability than asset by the end — at one point [a wave of spam went out using tesla.com as the faked originating address](https://jamesnames.com/2021/08/case-study-why-musk-acquired-tesla-com-for-11-million/), the kind of headache a dormant [premium domain](/en/glossary/premium-domain/) can quietly generate. As he put it in a 2016 interview, he realized he would never use the name productively and [it was becoming a burden](https://electrek.co/2016/02/18/tesla-motors-domain-tesla-com/).
 
 That is the unglamorous reality behind most blockbuster domain sales. The buyer has a strategic need and a deadline-shaped ambition. The seller has time. The price is whatever closes the gap between "I don't have to sell" and "this is finally worth the trouble." For Tesla, closing that gap cost $11 million and the better part of a decade.
 

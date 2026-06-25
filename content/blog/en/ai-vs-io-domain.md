@@ -32,7 +32,7 @@ Now the nuance, because "lean toward" is doing a lot of work in those two senten
 
 Neither extension was designed for startups. Both are **country code [top-level domains](/en/glossary/tld/) (ccTLDs)** that got adopted for what their letters happen to spell.
 
-- **`.ai`** is the ccTLD for **Anguilla**, a British Overseas Territory in the Eastern Caribbean, delegated in 1995. It went mainstream when "AI" became shorthand for artificial intelligence, and companies wanted that meaning baked into the URL.
+- **`.ai`** is the [ccTLD](/en/glossary/cctld/) for **Anguilla**, a British Overseas Territory in the Eastern Caribbean, delegated in 1995. It went mainstream when "AI" became shorthand for artificial intelligence, and companies wanted that meaning baked into the URL.
 - **`.io`** is the ccTLD for the **British Indian Ocean Territory**. Developers read it as **I/O** (input/output), a core computing concept, and it became the de facto badge of the modern tech and SaaS world.
 
 The pattern is the same as `.tv` (Tuvalu) or `.co` (Colombia): a national domain that the global market repurposed for its acronym.
@@ -53,7 +53,7 @@ Google maintains a list of ccTLDs it treats as **generic** (gccTLDs) because the
 
 This is where the two diverge sharply. Exact prices vary by [registrar](/en/glossary/registrar/) and change over time, so treat the following as directional rather than a quote.
 
-- **`.ai` is the premium option.** It typically registers in the higher tens to low hundreds of dollars per year, and the registry usually requires a **minimum two-year registration**, so your first invoice is larger. Wholesale `.ai` pricing rose again in early 2026, continuing an upward trend driven by AI-era demand. The flip side: that cost acts as a filter, so short, brandable `.ai` names remain more available than you'd expect for such a hot extension.
+- **`.ai` is the premium option.** It typically registers in the higher tens to low hundreds of dollars per year, and the [registry](/en/glossary/registry/) usually requires a **minimum two-year registration**, so your first invoice is larger. Wholesale `.ai` pricing rose again in early 2026, continuing an upward trend driven by AI-era demand. The flip side: that cost acts as a filter, so short, brandable `.ai` names remain more available than you'd expect for such a hot extension.
 - **`.io` is mid-premium.** It costs more than legacy extensions like `.com` or `.net`, but generally less than `.ai`, and without the multi-year minimum. Because it's been a startup standard for over a decade, the best one-word `.io` names are heavily picked over, though clever combinations and "domain hacks" (like `rad.io` or `stud.io`) are still findable.
 
 **Pricing verdict:** `.io` is usually the cheaper, lower-commitment entry. `.ai` costs more, but that premium is part of its signal.
@@ -80,8 +80,8 @@ Because `.io` belongs to the British Indian Ocean Territory, its status is tied 
 What this does **not** mean:
 
 - `.io` is **not** being deleted now, and no shutdown date exists. Existing `.io` domains continue to work normally.
-- Even under the strictest reading of IANA's retirement rules, removing a ccTLD is a **multi-year process** (commonly cited as at least five years, potentially longer) that would only begin *if* `IO` were removed from ISO 3166-1.
-- There is precedent for survival: `.su` (the former Soviet Union) remains in the root zone decades after the USSR dissolved. Outcomes range from full continuation to a long phase-out, and no final decision has been made.
+- Even under the strictest reading of [IANA](/en/glossary/iana/)'s retirement rules, removing a ccTLD is a **multi-year process** (commonly cited as at least five years, potentially longer) that would only begin *if* `IO` were removed from ISO 3166-1.
+- There is precedent for survival: `.su` (the former Soviet Union) remains in the [root zone](/en/glossary/root-zone/) decades after the USSR dissolved. Outcomes range from full continuation to a long phase-out, and no final decision has been made.
 
 **Practical takeaway:** If you're choosing a domain for a brand you intend to run for a decade or more, factor this uncertainty in. For most products, `.io` is perfectly safe for the foreseeable future, but it's a real consideration that `.ai` simply doesn't carry today.
 
@@ -148,7 +148,7 @@ Not now, and there's no shutdown date. The 2024–2025 sovereignty transfer of t
 `.ai` is typically more expensive. It usually costs more per year than `.io` and often requires a minimum two-year registration, while `.io` is mid-premium with a standard one-year option. Exact prices vary by registrar and change over time.
 
 ### Can I register both `.ai` and `.io`?
-Yes, and many startups do. Owning both lets you protect your brand across the two extensions your audience is most likely to type, and you can redirect one to the other. At [Namefi](https://namefi.io) you can register and tokenize both.
+Yes, and many startups do. Owning both lets you protect your brand across the two extensions your audience is most likely to type, and you can redirect one to the other. At [Namefi](https://namefi.io) you can register and [tokenize](/en/glossary/tokenize/) both.
 
 ### What does it mean to tokenize a `.ai` or `.io` domain?
 Tokenizing adds an on-chain ownership token to your real ICANN domain, so you can transfer and manage it with the security and flexibility of Web3 while keeping standard DNS and hosting. Learn more in [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains/).

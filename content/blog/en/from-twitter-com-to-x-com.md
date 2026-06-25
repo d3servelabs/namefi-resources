@@ -19,7 +19,7 @@ For seventeen years, Twitter lived at exactly the address you'd expect: **Twitte
 
 Then the owner changed, and so did the destination.
 
-In July 2023, nine months after buying the company [for $44bn](https://www.aljazeera.com/news/2023/7/23/elon-musk-says-he-will-change-twitters-blue-bird-logo-to-an-x#:~:text=Musk%20bought%20the%20social%20media%20platform%20for%20%2444bn%20last%20year), Musk did something no other founder in this series did: he threw away a perfectly good exact-match domain and replaced it with a one-letter brand he had been carrying around, personally, for 24 years. Twitter became **X**, and the website began the long migration to **X.com** — a domain whose history is older than Twitter itself.
+In July 2023, nine months after buying the company [for $44bn](https://www.aljazeera.com/news/2023/7/23/elon-musk-says-he-will-change-twitters-blue-bird-logo-to-an-x#:~:text=Musk%20bought%20the%20social%20media%20platform%20for%20%2444bn%20last%20year), Musk did something no other founder in this series did: he threw away a perfectly good [exact-match domain](/en/glossary/exact-match-domain/) and replaced it with a one-letter brand he had been carrying around, personally, for 24 years. Twitter became **X**, and the website began the long migration to **X.com** — a domain whose history is older than Twitter itself.
 
 ## Twitter.com: the rare startup that launched on its own name
 

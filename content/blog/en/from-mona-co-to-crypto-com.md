@@ -19,7 +19,7 @@ The name was a pun, and a good one. The startup, founded in Hong Kong in 2016, w
 
 That was the gap. Monaco wasn't trying to be a luxury card company. It was trying to be *the* place ordinary people touched cryptocurrency for the first time. And the single word that named that entire category — the word every headline, every regulator, every newcomer already used — wasn't "Monaco." It was **crypto**.
 
-The exact-match domain for that ambition was Crypto.com. And it had belonged, since 1993, to a man who spent 25 years refusing to sell it: the cryptographer Matt Blaze.
+The [exact-match domain](/en/glossary/exact-match-domain/) for that ambition was Crypto.com. And it had belonged, since 1993, to a man who spent 25 years refusing to sell it: the cryptographer Matt Blaze.
 
 In July 2018, that finally changed. Monaco bought Crypto.com in a deal it never priced publicly — but which experts told The Verge could be worth as much as **[$10 million](https://techcrunch.com/2018/07/05/crypto-com-mco/#:~:text=Experts%20told%20The%20Verge%20that%20Crypto.com%20could%20have%20attracted%20as%20much%20as%20%2410%20million)** — and rebranded itself, top to bottom, as Crypto.com.
 

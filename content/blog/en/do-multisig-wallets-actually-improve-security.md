@@ -18,11 +18,11 @@ That reputation is well earned, but only against a *specific* threat model. Mult
 
 ## What multisig is, very briefly
 
-In a 2-of-3 multisig, three private keys exist; any two of them must sign a transaction for it to execute [on-chain](/en/glossary/on-chain/). The wallet itself is a [smart contract](/en/glossary/smart-contract/) (in the Ethereum / EVM world) or a native multisig output type (in Bitcoin via [P2SH/P2WSH](https://en.bitcoin.it/wiki/BIP_0016)). The contract verifies the signatures and then forwards the transaction.
+In a 2-of-3 multisig, three private keys exist; any two of them must sign a transaction for it to execute [on-chain](/en/glossary/on-chain/). The wallet itself is a [smart contract](/en/glossary/smart-contract/) (in the [Ethereum](/en/glossary/ethereum/) / EVM world) or a native multisig output type (in Bitcoin via [P2SH/P2WSH](https://en.bitcoin.it/wiki/BIP_0016)). The contract verifies the signatures and then forwards the transaction.
 
 The most widely used implementation in EVM ecosystems is [Safe](https://safe.global/) (formerly Gnosis Safe). On Solana, [Squads](https://squads.so/) plays the same role. Bitcoin has a long history of native multisig support, often combined with hardware wallets through [PSBT workflows](https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki).
 
-Threshold-signature schemes (TSS, FROST, MPC) achieve a similar outcome with a single on-chain key—each signer holds a *share* of the private key and they sign jointly without ever reconstructing it. From a threat-model perspective most of the points below apply equally to both, with a few caveats noted later.
+Threshold-signature schemes (TSS, FROST, MPC) achieve a similar outcome with a single on-chain key—each signer holds a *share* of the [private key](/en/glossary/private-key/) and they sign jointly without ever reconstructing it. From a threat-model perspective most of the points below apply equally to both, with a few caveats noted later.
 
 ## What multisig defeats (the good news)
 
@@ -42,7 +42,7 @@ In an M-of-N setup with N > M, losing one key is not catastrophic. The remaining
 
 ### Phishing the user
 
-Many wallet phishing attacks (fake airdrop sites, malicious token approvals, drainer contracts) rely on the user signing a malicious transaction in a single browser session. A multisig adds a confirmation step at a different surface—a coordinating UI like Safe's, or a hardware approval on multiple devices—which gives the user another moment to notice that they are signing something they did not intend.
+Many wallet [phishing](/en/glossary/phishing/) attacks (fake airdrop sites, malicious token approvals, drainer contracts) rely on the user signing a malicious transaction in a single browser session. A multisig adds a confirmation step at a different surface—a coordinating UI like Safe's, or a hardware approval on multiple devices—which gives the user another moment to notice that they are signing something they did not intend.
 
 ## What multisig does *not* defeat (the uncomfortable part)
 
@@ -110,7 +110,7 @@ This is more discipline than most teams realize at the outset. The good news is 
 
 ## How this connects to domains
 
-Naming is one of the strongest analogies to multisig in the off-chain world. A domain controlled by a single [registrar](/en/glossary/registrar/) account behind a single password is a single-key wallet. A domain protected by registrar lock + registry lock + 2FA at the DNS provider + multiple authoritative providers is, structurally, a multisig: multiple independent factors must each be compromised before the name moves.
+Naming is one of the strongest analogies to multisig in the off-chain world. A domain controlled by a single [registrar](/en/glossary/registrar/) account behind a single password is a single-key wallet. A domain protected by registrar lock + [registry lock](/en/glossary/registry-lock/) + 2FA at the DNS provider + multiple authoritative providers is, structurally, a multisig: multiple independent factors must each be compromised before the name moves.
 
 Namefi takes this further by representing ownership as an on-chain record that can be held in a multisig wallet directly. The same threshold scheme that protects a treasury can now protect the *DNS control plane*—so a single phished individual cannot lose the company's domain any more than they can drain the treasury alone. The threat model upgrade is the same in both worlds: replace "trust one credential" with "compromise M of N independent factors."
 

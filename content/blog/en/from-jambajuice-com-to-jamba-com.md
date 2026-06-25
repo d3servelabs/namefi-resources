@@ -21,7 +21,7 @@ Then, in 2019, after almost three decades of explaining itself, the company drop
 
 The reasoning was that "Juice" had stopped describing the business — and started shrinking it. The chain now sold bowls, plant-based bites, and boosts, not just blended drinks, and the word "juice" had quietly turned into a liability in a more sugar-conscious era.
 
-But here's the detail that makes this case different from almost every other story in this series: **Jamba didn't have to buy its exact-match domain.** Unlike Tesla, which paid $11 million for [Tesla.com](/en/blog/from-teslamotors-com-to-tesla-com/), or Uber, which traded equity for [Uber.com](/en/blog/from-ubercab-com-to-uber-com/), Jamba had quietly owned **Jamba.com for decades** — the snapshot record shows the site live and reading [Welcome to Jamba.com](http://web.archive.org/web/19990125090358/http://jamba.com:80/) back in January 1999. When the rebrand came, the hardest, most expensive part of a name change was already done.
+But here's the detail that makes this case different from almost every other story in this series: **Jamba didn't have to buy its [exact-match domain](/en/glossary/exact-match-domain/).** Unlike Tesla, which paid $11 million for [Tesla.com](/en/blog/from-teslamotors-com-to-tesla-com/), or Uber, which traded equity for [Uber.com](/en/blog/from-ubercab-com-to-uber-com/), Jamba had quietly owned **Jamba.com for decades** — the snapshot record shows the site live and reading [Welcome to Jamba.com](http://web.archive.org/web/19990125090358/http://jamba.com:80/) back in January 1999. When the rebrand came, the hardest, most expensive part of a name change was already done.
 
 ## 1990–1995: the Juice Club that became Jamba Juice
 

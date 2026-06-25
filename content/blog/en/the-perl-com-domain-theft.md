@@ -15,7 +15,7 @@ keywords: ['perl.com', 'perl.com domain theft', 'domain hijacking', 'domain thef
 
 Some domains are infrastructure that happens to look like a name. **perl.com** is one of them. It is not a marketing asset or a brand someone built last year — it is a piece of internet furniture that the Perl programming community has lived around since the early days of the web, the canonical front door to documentation, articles, and the language's public face.
 
-So when, on the morning of January 27, 2021, that front door suddenly belonged to someone else, it was not a clever brand play or a negotiated sale. It was a theft. The domain had been quietly pried out of its rightful owner's control months earlier, bounced through registrars, and pointed at an IP address with a history of distributing malware. The community's own network operators put it bluntly: ["The perl.com domain was hijacked this morning, and is currently pointing to a parking site."](https://log.perl.org/2021/01/perlcom-hijacked.html#:~:text=The%20perl.com%20domain%20was%20hijacked%20this%20morning%2C%20and%20is%20currently%20pointing%20to%20a%20parking%20site.)
+So when, on the morning of January 27, 2021, that front door suddenly belonged to someone else, it was not a clever brand play or a negotiated sale. It was a theft. The domain had been quietly pried out of its rightful owner's control months earlier, bounced through registrars, and pointed at an [IP address](/en/glossary/ip-address/) with a history of distributing malware. The community's own network operators put it bluntly: ["The perl.com domain was hijacked this morning, and is currently pointing to a parking site."](https://log.perl.org/2021/01/perlcom-hijacked.html#:~:text=The%20perl.com%20domain%20was%20hijacked%20this%20morning%2C%20and%20is%20currently%20pointing%20to%20a%20parking%20site.)
 
 This is the story of EP19 in our Domain Mayday series: how a thirty-year-old community domain was stolen without anyone breaking a single server, and what it took to get it back.
 
@@ -65,7 +65,7 @@ And then they tried to cash out. With the name freshly relocated, ["the unauthor
 
 ## The recovery: weeks of paperwork to undo paperwork
 
-The same machinery that let the theft happen — registrars, registries, and ownership records — was also the only path back. There was no server to re-secure and no patch to deploy. Someone had to *prove*, through the registrar and registry chain, that Tom Christiansen was the real owner and the new "owner" was a fraud.
+The same machinery that let the theft happen — registrars, registries, and ownership records — was also the only path back. There was no server to re-secure and no patch to deploy. Someone had to *prove*, through the registrar and [registry](/en/glossary/registry/) chain, that Tom Christiansen was the real owner and the new "owner" was a fraud.
 
 That work started within days. By January 30, the Perl NOC reported that ["Network Solutions is working with Tom Christiansen, the rightful registrant, on the recovery of the Perl.com domain."](https://log.perl.org/2021/01/perlcom-hijacked.html#:~:text=Network%20Solutions%20is%20working%20with%20Tom%20Christiansen%2C%20the%20rightful%20registrant%2C%20on%20the%20recovery%20of%20the%20Perl.com%20domain.) The push ["ultimately led to the restoration of the domain to its previous owner, Tom Christiansen, in early February."](https://www.theregister.com/2021/03/02/perl_domain_theft/#:~:text=restoration%20of%20the%20domain%20to%20its%20previous%20owner%2C%20Tom%20Christiansen%2C%20in%20early%20February.)
 
@@ -83,7 +83,7 @@ The perl.com theft is so instructive precisely because nothing exotic happened. 
 
 3. **Long-held domains are soft targets.** A name registered in the early 90s and renewed on autopilot for thirty years tends to accumulate stale contact info, a single point of human failure, and an owner who isn't watching the [WHOIS](/en/glossary/whois/) record daily. Quiet stability is exactly what lets a September compromise go unnoticed until January.
 
-4. **The transfer rules cut both ways.** The 60-day post-update transfer lock that is supposed to *protect* owners became the attacker's waiting room. Patience plus laundering across registrars and borders turned a quick fix into a multi-party, multi-week recovery.
+4. **The transfer rules cut both ways.** The 60-day post-update [transfer lock](/en/glossary/transfer-lock/) that is supposed to *protect* owners became the attacker's waiting room. Patience plus laundering across registrars and borders turned a quick fix into a multi-party, multi-week recovery.
 
 5. **Recovery is slower than theft.** Stealing the name took a forged document. Getting it back took registrars, a registry, the rightful owner's evidence, and then weeks of rebuilding reputation with blocklists and resolvers. Theft is one transaction; restitution is many.
 

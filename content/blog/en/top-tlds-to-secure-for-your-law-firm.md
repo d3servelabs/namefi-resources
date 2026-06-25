@@ -16,11 +16,11 @@ keywords: ['tlds for law firms', 'best domains for lawyers', '.law domain', 'is 
 
 For a law firm, a domain name is more than an address — it is a trust signal. Clients judge credibility in seconds, and a clean, professional domain on a recognized extension does quiet work that a brochure cannot. Securing the right set of **TLDs for your law firm** protects the names that matter most: your firm, your partners, and the practice areas you want to rank for.
 
-There is also a defensive dimension. If you only register [`.com`](/en/tld/com), nothing stops a competitor, a disgruntled party, or a typosquatter from grabbing the same name on [`.net`](/en/tld/net), [`.law`](/en/tld/law), or a misspelling. Buying a handful of relevant extensions up front is far cheaper than litigating a cybersquatting dispute later, and it keeps your brand consistent across the web.
+There is also a defensive dimension. If you only register [`.com`](/en/tld/com), nothing stops a competitor, a disgruntled party, or a typosquatter from grabbing the same name on [`.net`](/en/tld/net), [`.law`](/en/tld/law), or a misspelling. Buying a handful of relevant extensions up front is far cheaper than litigating a [cybersquatting](/en/glossary/cybersquatting/) dispute later, and it keeps your brand consistent across the web.
 
 ## How to choose TLDs for your law firm
 
-Three criteria matter most. First, **trust signals**: extensions like `.com` and the legal-themed TLDs carry instant professional weight. Second, **restricted "verified" TLDs**: among the legal extensions, only `.law` actually gates registration behind proof of legal credentials, which is a feature — it signals to clients that the registrant was vetted. Despite being marketed to lawyers, [`.esq`](/en/tld/esq) is openly available with no registry-level credential check, as are [`.legal`](/en/tld/legal), [`.attorney`](/en/tld/attorney), and [`.lawyer`](/en/tld/lawyer). Third, **defensive coverage**: register the obvious variants and partner names so no one else can. You do not need every extension on the internet; you need the few your clients and competitors would actually look for.
+Three criteria matter most. First, **trust signals**: extensions like `.com` and the legal-themed TLDs carry instant professional weight. Second, **restricted "verified" TLDs**: among the legal extensions, only `.law` actually gates registration behind proof of legal credentials, which is a feature — it signals to clients that the [registrant](/en/glossary/registrant/) was vetted. Despite being marketed to lawyers, [`.esq`](/en/tld/esq) is openly available with no [registry](/en/glossary/registry/)-level credential check, as are [`.legal`](/en/tld/legal), [`.attorney`](/en/tld/attorney), and [`.lawyer`](/en/tld/lawyer). Third, **defensive coverage**: register the obvious variants and partner names so no one else can. You do not need every extension on the internet; you need the few your clients and competitors would actually look for.
 
 ## The top 10 TLDs to secure for your law firm
 
@@ -68,13 +68,13 @@ Three criteria matter most. First, **trust signals**: extensions like `.com` and
 
 Defensive registration is about denying easy targets to bad actors. Start with your exact firm name across the legacy trio (`.com`, `.net`, `.org`), then add the legal-themed extensions you qualify for or want to control. Layer in the obvious typo and plural variants of your primary domain, plus key partner surnames if your firm is named after them.
 
-You will not — and should not — buy every extension in existence. Focus on the names a confused client might type and the ones a competitor or impersonator would most plausibly grab. Set every defensive domain to auto-renew and forward it to your primary site so the protection never quietly expires. The goal is a tight perimeter, not a sprawling, unmanaged portfolio.
+You will not — and should not — buy every extension in existence. Focus on the names a confused client might type and the ones a competitor or impersonator would most plausibly grab. Set every defensive domain to [auto-renew](/en/glossary/domain-renewal/) and forward it to your primary site so the protection never quietly expires. The goal is a tight perimeter, not a sprawling, unmanaged portfolio.
 
 ## Register your law firm domains at Namefi
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar built for exactly this kind of multi-domain strategy. You get transparent pricing with no surprise upsells, fast and reliable DNS so your sites resolve quickly, and one dashboard to manage your whole portfolio and its renewals.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) built for exactly this kind of multi-domain strategy. You get transparent pricing with no surprise upsells, fast and reliable DNS so your sites resolve quickly, and one dashboard to manage your whole portfolio and its renewals.
 
-Namefi also supports Web3 domain tokenization, letting you hold eligible domains as NFTs — useful if your firm advises on digital assets or wants verifiable, transferable on-chain ownership of its names. Whether you are securing a single `.com` or a full defensive set, you can register and manage your law firm's domains in one place.
+Namefi also supports [Web3](/en/glossary/web3/) domain tokenization, letting you hold eligible domains as NFTs — useful if your firm advises on digital assets or wants verifiable, transferable [on-chain](/en/glossary/on-chain/) ownership of its names. Whether you are securing a single `.com` or a full defensive set, you can register and manage your law firm's domains in one place.
 
 ## Frequently asked questions
 

@@ -23,7 +23,7 @@ Cisco Talos named it **DNSpionage**. It is one of the cleanest demonstrations on
 
 To understand why DNSpionage rattled governments, you have to remember what DNS actually does.
 
-Every time you send mail to a ministry, log into a corporate VPN, or load a webmail page, your device first asks DNS a question: *what IP address is this name?* Whatever DNS answers, you trust. Your mail client connects there. Your VPN authenticates there. Your browser hands over the session there. DNS is the address book of the entire internet, and almost nothing checks whether the address book has been edited.
+Every time you send mail to a ministry, log into a corporate VPN, or load a webmail page, your device first asks DNS a question: *what [IP address](/en/glossary/ip-address/) is this name?* Whatever DNS answers, you trust. Your mail client connects there. Your VPN authenticates there. Your browser hands over the session there. DNS is the address book of the entire internet, and almost nothing checks whether the address book has been edited.
 
 That is the property DNSpionage exploited. If you can change the record — not break the encryption, not crack the password file, just change the *pointer* — you can stand invisibly between a target and the services they trust. Email flows through you. VPN logins flow through you. And because the victim's own domain name still appears in the browser bar, nothing looks wrong.
 
@@ -80,7 +80,7 @@ It then ordered four actions, on a 10-day clock — and they read like a direct 
 3. **Add multi-factor authentication** to all DNS admin accounts — so a stolen password alone is no longer the master key.
 4. **Monitor Certificate Transparency logs** — watch for certificates issued for your domains that you never requested.
 
-That fourth item is the tell. CISA was not only telling agencies to lock the door; it was telling them to watch the public certificate ledgers for evidence that someone had already used a copy of the key. DNSpionage had turned Certificate Transparency from a niche PKI feature into a frontline detection tool for nation-state DNS hijacking.
+That fourth item is the tell. CISA was not only telling agencies to lock the door; it was telling them to watch the public certificate ledgers for evidence that someone had already used a copy of the key. DNSpionage had turned Certificate Transparency from a niche PKI feature into a frontline detection tool for nation-state [DNS hijacking](/en/glossary/dns-hijacking/).
 
 Krebs captured the unusualness of the moment plainly: "[the U.S. Department of Homeland Security issued a rare emergency directive ordering all U.S. federal civilian agencies to secure the login credentials for their Internet domain records](https://krebsonsecurity.com/2019/02/a-deep-dive-on-the-recent-widespread-dns-hijacking-attacks/#:~:text=issued%20a%20rare%20emergency%20directive%20ordering%20all%20U.S.%20federal%20civilian%20agencies)."
 

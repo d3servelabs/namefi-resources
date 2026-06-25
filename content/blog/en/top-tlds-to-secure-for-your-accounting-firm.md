@@ -30,7 +30,7 @@ The [.com](/en/tld/com) extension remains the default expectation for any busine
 
 ### 2. .cpa — the gold-standard trust signal (restricted)
 
-The [.cpa](https://www.iana.org/domains/root/db/cpa.html) extension is the most credible domain an accounting firm can hold — and it is also the most restricted. It is administered in association with the American Institute of CPAs (AICPA), whose technology affiliate CPA.com runs the registry. Eligibility is limited to licensed CPA firms and individual CPAs: per [CPA.com's official .cpa program](https://register.domains.cpa/faqs/), you must hold a CPA firm license issued by a state board of accountancy or an individual CPA license, with availability currently limited to firms based in the United States, Canada, and Ireland. Because licensure is validated at purchase and at every renewal, a [.cpa](/en/tld/cpa) address proves to clients that your firm has been verified — a guarantee no open TLD can offer.
+The [.cpa](https://www.iana.org/domains/root/db/cpa.html) extension is the most credible domain an accounting firm can hold — and it is also the most restricted. It is administered in association with the American Institute of CPAs (AICPA), whose technology affiliate CPA.com runs the [registry](/en/glossary/registry/). Eligibility is limited to licensed CPA firms and individual CPAs: per [CPA.com's official .cpa program](https://register.domains.cpa/faqs/), you must hold a CPA firm license issued by a state board of accountancy or an individual CPA license, with availability currently limited to firms based in the United States, Canada, and Ireland. Because licensure is validated at purchase and at every renewal, a [.cpa](/en/tld/cpa) address proves to clients that your firm has been verified — a guarantee no open TLD can offer.
 
 ### 3. .tax — clear, descriptive, and topical
 
@@ -68,11 +68,11 @@ The [.info](/en/tld/info) extension, operated by Identity Digital under an [ICAN
 
 A defensive registration strategy means owning the domains most likely to be misused before someone else does. Start by securing your exact firm name across the highest-impact extensions — .com first, then the verified .cpa if you qualify, followed by .net and .org. Next, register obvious variations: common misspellings, the plural and singular forms of industry TLDs (.accountant and .accountants), and any abbreviations clients use for your firm.
 
-You do not need to register hundreds of permutations. Focus on the extensions where impersonation would most damage client trust or where a phishing site could plausibly fool someone into sharing financial data. Point every defensive domain to your flagship site with a permanent redirect so they reinforce, rather than dilute, your brand. Review the list annually and let go of any that no longer serve a purpose.
+You do not need to register hundreds of permutations. Focus on the extensions where impersonation would most damage client trust or where a [phishing](/en/glossary/phishing/) site could plausibly fool someone into sharing financial data. Point every defensive domain to your flagship site with a permanent redirect so they reinforce, rather than dilute, your brand. Review the list annually and let go of any that no longer serve a purpose.
 
 ## Register your accounting firm domains at Namefi
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar built for professionals who want clarity and control over their domain portfolio. You get transparent pricing with no surprise renewal markups, fast DNS so your sites and email resolve reliably, and a single dashboard to manage every extension your firm holds. Namefi also supports Web3 domain tokenization, letting you hold eligible domains as NFTs for portable, verifiable ownership — a forward-looking option as digital identity evolves. Consolidate your flagship, industry, and defensive registrations in one place and keep your firm's brand secure.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) built for professionals who want clarity and control over their [domain portfolio](/en/glossary/domain-portfolio/). You get transparent pricing with no surprise renewal markups, fast DNS so your sites and email resolve reliably, and a single dashboard to manage every extension your firm holds. Namefi also supports [Web3](/en/glossary/web3/) domain tokenization, letting you hold eligible domains as NFTs for portable, verifiable ownership — a forward-looking option as digital identity evolves. Consolidate your flagship, industry, and defensive registrations in one place and keep your firm's brand secure.
 
 ## Frequently asked questions
 
@@ -90,4 +90,4 @@ There is no fixed number, but most firms are well served by a small portfolio: a
 
 ### What is a Web3 or tokenized domain?
 
-A tokenized domain is a traditional domain whose ownership is represented as an NFT on a blockchain, making ownership portable and verifiable on-chain. Namefi supports this option for eligible TLDs, which can be useful for firms exploring digital-identity and decentralized-web initiatives while keeping their conventional DNS working as normal.
+A [tokenized domain](/en/glossary/tokenized-domain/) is a traditional domain whose ownership is represented as an NFT on a [blockchain](/en/glossary/blockchain/), making ownership portable and verifiable [on-chain](/en/glossary/on-chain/). Namefi supports this option for eligible TLDs, which can be useful for firms exploring digital-identity and decentralized-web initiatives while keeping their conventional DNS working as normal.

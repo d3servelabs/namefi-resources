@@ -27,9 +27,9 @@ This is a Domain Mayday case about the part of your infrastructure you probably 
 
 For a global carrier, the website is not a brochure. It is the cash register, the check-in desk, and the call center, all keyed to one string of text: `malaysiaairlines.com`.
 
-Every booking, every loyalty login, every "manage my flight" link in every confirmation email resolves through that domain. When a passenger in Kuala Lumpur or London types it in, an invisible chain fires: the browser asks the [Domain Name System (DNS)](/en/glossary/dns/) "where does malaysiaairlines.com live?", DNS answers with an IP address, and the browser connects. The airline's brand, its revenue, and its customers' trust all ride on that one lookup returning the *right* answer.
+Every booking, every loyalty login, every "manage my flight" link in every confirmation email resolves through that domain. When a passenger in Kuala Lumpur or London types it in, an invisible chain fires: the browser asks the [Domain Name System (DNS)](/en/glossary/dns/) "where does malaysiaairlines.com live?", DNS answers with an [IP address](/en/glossary/ip-address/), and the browser connects. The airline's brand, its revenue, and its customers' trust all ride on that one lookup returning the *right* answer.
 
-DNS is the internet's address book. It is also, for most organizations, the least-watched door in the building. You can spend millions hardening your servers, encrypting your databases, and training your staff against phishing — and none of it matters if someone can quietly change the line in the address book that says where your name points. Redirect the address, and you have redirected the company, without ever breaking into the building.
+DNS is the internet's address book. It is also, for most organizations, the least-watched door in the building. You can spend millions hardening your servers, encrypting your databases, and training your staff against [phishing](/en/glossary/phishing/) — and none of it matters if someone can quietly change the line in the address book that says where your name points. Redirect the address, and you have redirected the company, without ever breaking into the building.
 
 That is exactly what happened.
 
@@ -77,7 +77,7 @@ The Malaysia Airlines hijack is a textbook lesson precisely because *nothing was
 
 2. **A DNS hijack needs no breach of you.** Attackers redirected the address book, not the building. Defenses that watch your servers, your code, and your network can miss an attack that happens entirely at the naming layer.
 
-3. **Lock the records that can move your name.** Registry Lock and registrar-level locks exist specifically to stop unauthorized changes to your DNS and nameserver records — they add a manual, out-of-band step before anyone can repoint your domain. For a high-value domain, they are not optional.
+3. **Lock the records that can move your name.** [Registry Lock](/en/glossary/registry-lock/) and registrar-level locks exist specifically to stop unauthorized changes to your DNS and [nameserver](/en/glossary/nameserver/) records — they add a manual, out-of-band step before anyone can repoint your domain. For a high-value domain, they are not optional.
 
 4. **Reach for [DNSSEC](/en/glossary/dnssec/) and 2FA at the registrar.** Strong authentication on the registrar account and DNSSEC signing on the zone raise the cost of exactly the silent record-swap that defaced Malaysia Airlines.
 

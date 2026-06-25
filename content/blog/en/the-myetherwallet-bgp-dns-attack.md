@@ -15,9 +15,9 @@ keywords: ['myetherwallet', 'bgp hijack', 'dns hijacking', 'amazon route 53', 'r
 
 When you type a website's name into a browser, you are trusting two invisible systems to be honest with you.
 
-The first is **DNS** — the phone book of the internet — which turns a name like `myetherwallet.com` into a numeric IP address. The second is **BGP**, the Border Gateway Protocol, which decides which physical path your packets take to reach that address. Almost nobody thinks about either one. They just work, billions of times a day, silently.
+The first is **DNS** — the phone book of the internet — which turns a name like `myetherwallet.com` into a numeric [IP address](/en/glossary/ip-address/). The second is **BGP**, the Border Gateway Protocol, which decides which physical path your packets take to reach that address. Almost nobody thinks about either one. They just work, billions of times a day, silently.
 
-On the morning of **April 24, 2018**, both of them lied at the same time. For about two hours, anyone who typed `myetherwallet.com` and clicked past one browser warning was handed to a phishing clone running on a server far from where they thought they were going. By the time the routing was corrected, the attackers had drained roughly **$150,000 in Ethereum** from real users' [wallets](/en/glossary/wallet/).
+On the morning of **April 24, 2018**, both of them lied at the same time. For about two hours, anyone who typed `myetherwallet.com` and clicked past one browser warning was handed to a [phishing](/en/glossary/phishing/) clone running on a server far from where they thought they were going. By the time the routing was corrected, the attackers had drained roughly **$150,000 in [Ethereum](/en/glossary/ethereum/)** from real users' [wallets](/en/glossary/wallet/).
 
 What makes this incident a permanent fixture in security curricula is not the dollar amount — crypto thefts have since dwarfed it. It is the *mechanism*. The attackers never broke into MyEtherWallet's servers. They never guessed a password. They attacked the **road**, not the building — by hijacking the internet's routing layer to poison DNS itself.
 
@@ -95,7 +95,7 @@ A few durable takeaways:
 
 ![Colorful illustration of verifiable, tamper-resistant domain ownership — a domain card secured by a green shield, a green Namefi token, and DNS continuity](../../assets/the-myetherwallet-bgp-dns-attack-03-namefi-angle.jpg)
 
-The MyEtherWallet attack is a sharp reminder that a domain is not a single thing you "own" — it is a stack of trust relationships, any layer of which can be subverted: the registry, the registrar, the DNS provider, and the global routing fabric that delivers queries to that provider.
+The MyEtherWallet attack is a sharp reminder that a domain is not a single thing you "own" — it is a stack of trust relationships, any layer of which can be subverted: the [registry](/en/glossary/registry/), the registrar, the DNS provider, and the global routing fabric that delivers queries to that provider.
 
 [Namefi](https://namefi.io) is built around making the *ownership* layer of that stack verifiable and tamper-resistant. [Tokenized domain ownership](/en/blog/what-are-tokenized-domains/) means control of a domain can be cryptographically proven and transferred in a way that is auditable, rather than resting solely on an account password at a single provider — while still staying compatible with DNS. It does not, on its own, fix BGP; nothing at the ownership layer rewrites how the internet routes packets. But it attacks the same underlying disease this incident exposed: **too much critical internet trust is implicit, unverifiable, and reversible by whoever can spoof the right message.**
 

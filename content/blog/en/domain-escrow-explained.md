@@ -65,7 +65,7 @@ For more on the threat landscape, see [how domain hijacking actually happens](/e
 The escrow model has been the standard in domains for two decades, and it works. But it carries real costs:
 
 - **Fees.** A percentage of the sale price goes to the escrow service — money that comes out of the deal.
-- **Time.** Between funding, the registrar transfer, and the ICANN clearing window, a sale can take a week or more.
+- **Time.** Between funding, the registrar transfer, and the [ICANN](/en/glossary/icann/) clearing window, a sale can take a week or more.
 - **Manual steps.** Auth codes, unlocks, transfer confirmations — each is a place for a mistake or a delay.
 - **You still trust a third party.** Escrow moves trust from "the other person" to "the escrow company." That's a big improvement, but it's not zero trust. The escrow company holds your money for the duration of the deal.
 
@@ -77,7 +77,7 @@ These trade-offs were simply the price of safety — until a different settlemen
 
 When a domain is [tokenized](/en/blog/what-are-tokenized-domains/), ownership is represented by an [on-chain](/en/glossary/on-chain/) token (an NFT) rather than only a registrar database entry. That changes what's possible at settlement.
 
-A [smart contract](/en/glossary/smart-contract/) is code that runs on a blockchain and executes automatically when its conditions are met. Crucially, an on-chain transaction is **atomic**: payment and asset transfer happen in the *same* transaction, in the same block — or neither happens at all. There is no in-between state where one side has moved and the other hasn't.
+A [smart contract](/en/glossary/smart-contract/) is code that runs on a [blockchain](/en/glossary/blockchain/) and executes automatically when its conditions are met. Crucially, an on-chain transaction is **atomic**: payment and asset transfer happen in the *same* transaction, in the same block — or neither happens at all. There is no in-between state where one side has moved and the other hasn't.
 
 That property does exactly what escrow was invented to do, without a third party holding anything:
 
@@ -96,7 +96,7 @@ This isn't risk-free — it just moves the risks. Instead of trusting an escrow 
 It depends on what you're transacting:
 
 - **Buying or selling a traditional, non-tokenized domain between strangers?** Yes — use a reputable escrow service. The fees are worth it, and skipping escrow is how people get defrauded.
-- **Transacting a tokenized domain on a [marketplace](/en/glossary/marketplace/)?** Atomic on-chain settlement already gives you escrow's core guarantee. Your focus shifts to verifying the contract and the recipient address.
+- **Transacting a [tokenized domain](/en/glossary/tokenized-domain/) on a [marketplace](/en/glossary/marketplace/)?** Atomic on-chain settlement already gives you escrow's core guarantee. Your focus shifts to verifying the contract and the recipient address.
 
 Namefi works with tokenized domains so that buying and selling can settle on-chain — getting you the safety escrow provides without the wait or the percentage. If you want to see how it works in practice, head to [namefi.io](https://namefi.io).
 
