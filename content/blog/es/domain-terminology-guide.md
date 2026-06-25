@@ -65,9 +65,9 @@ Una plataforma o servicio donde los nombres de dominio se venden a través de of
 **Plataformas Populares**: GoDaddy Auctions, NameJet, Sedo Auctions, SnapNames
 
 ### **Servicio de Fideicomiso (Escrow Service)**
-Un servicio de terceros de confianza utilizado para facilitar el intercambio seguro de dinero y la propiedad del dominio durante una venta de dominio. El comprador paga al servicio de fideicomiso y, una vez que el dominio se transfiere, los fondos se liberan al vendedor.
+Un servicio de terceros de confianza utilizado para facilitar el intercambio seguro de dinero y la propiedad del dominio durante una venta de dominio. El comprador paga al servicio de [fideicomiso](/es/glossary/escrow/) y, una vez que el dominio se transfiere, los fondos se liberan al vendedor.
 
-**Servicios Populares**: [Escrow](/es/glossary/escrow/).com (recomendado por [ICANN](/es/glossary/icann/)), PayPal, Dan.com
+**Servicios Populares**: Escrow.com (recomendado por [ICANN](/es/glossary/icann/)), PayPal, Dan.com
 
 ---
 

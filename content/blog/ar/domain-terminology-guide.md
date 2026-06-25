@@ -65,9 +65,9 @@ keywords: ["مصطلحات النطاقات","الاستثمار في النطا
 **المنصات الشائعة**: GoDaddy Auctions, NameJet, Sedo Auctions, SnapNames
 
 ### **خدمة الضمان (Escrow Service)**
-خدمة طرف ثالث موثوق بها تُستخدم لتسهيل التبادل الآمن للمال و[ملكية النطاق](/ar/glossary/domain-ownership/) خلال عملية بيع النطاق. يدفع المشتري لخدمة الضمان، وبمجرد نقل النطاق، يتم تحرير الأموال للبائع.
+خدمة طرف ثالث موثوق بها تُستخدم لتسهيل التبادل الآمن للمال و[ملكية النطاق](/ar/glossary/domain-ownership/) خلال عملية بيع النطاق. يدفع المشتري لخدمة [الضمان](/ar/glossary/escrow/)، وبمجرد نقل النطاق، يتم تحرير الأموال للبائع.
 
-**الخدمات الشائعة**: [Escrow](/ar/glossary/escrow/).com (موصى به من قبل [ICANN](/ar/glossary/icann/)), PayPal, Dan.com
+**الخدمات الشائعة**: Escrow.com (موصى به من قبل [ICANN](/ar/glossary/icann/)), PayPal, Dan.com
 
 ---
 
