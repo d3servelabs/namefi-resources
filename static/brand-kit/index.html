@@ -1623,21 +1623,107 @@
         }
 
         function hydrateDownloadSelectors() {
+          const downloadAssets = {
+            'namefi-logotype': {
+              label: 'primary Namefi logotype',
+              files: {
+                svg: 'namefi-logotype.svg',
+                png: 'namefi-logotype.png',
+                jpg: 'namefi-logotype.jpg',
+                webp: 'namefi-logotype.webp',
+              },
+            },
+            'namefi-logotype-mono': {
+              label: 'mono Namefi logotype',
+              files: {
+                svg: 'namefi-logotype-mono.svg',
+                png: 'namefi-logotype-mono.png',
+                jpg: 'namefi-logotype-mono.jpg',
+                webp: 'namefi-logotype-mono.webp',
+              },
+            },
+            'namefi-compact': {
+              label: 'compact Namefi mark',
+              files: {
+                svg: 'namefi-compact.svg',
+                png: 'namefi-compact.png',
+                jpg: 'namefi-compact.jpg',
+                webp: 'namefi-compact.webp',
+              },
+            },
+            'namefi-lottie-wordmark': {
+              label: 'Lottie final wordmark',
+              files: {
+                svg: 'namefi-lottie-wordmark.svg',
+                png: 'namefi-lottie-wordmark.png',
+                jpg: 'namefi-lottie-wordmark.jpg',
+                webp: 'namefi-lottie-wordmark.webp',
+              },
+            },
+            'namefi-compact-white': {
+              label: 'white compact mark',
+              files: {
+                svg: 'namefi-compact-white.svg',
+                png: 'namefi-compact-white.png',
+                jpg: 'namefi-compact-white.jpg',
+                webp: 'namefi-compact-white.webp',
+              },
+            },
+            'namefi-compact-black': {
+              label: 'black compact mark',
+              files: {
+                svg: 'namefi-compact-black.svg',
+                png: 'namefi-compact-black.png',
+                jpg: 'namefi-compact-black.jpg',
+                webp: 'namefi-compact-black.webp',
+              },
+            },
+            'namefi-logotype-mono-green': {
+              label: 'green mono wordmark',
+              files: {
+                svg: 'namefi-logotype-mono-green.svg',
+                png: 'namefi-logotype-mono-green.png',
+                jpg: 'namefi-logotype-mono-green.jpg',
+                webp: 'namefi-logotype-mono-green.webp',
+              },
+            },
+            'namefi-logotype-mono-ink': {
+              label: 'ink mono wordmark',
+              files: {
+                svg: 'namefi-logotype-mono-ink.svg',
+                png: 'namefi-logotype-mono-ink.png',
+                jpg: 'namefi-logotype-mono-ink.jpg',
+                webp: 'namefi-logotype-mono-ink.webp',
+              },
+            },
+            'namefi-logotype-mono-white': {
+              label: 'white mono wordmark',
+              files: {
+                svg: 'namefi-logotype-mono-white.svg',
+                png: 'namefi-logotype-mono-white.png',
+                jpg: 'namefi-logotype-mono-white.jpg',
+                webp: 'namefi-logotype-mono-white.webp',
+              },
+            },
+          };
+
           document.querySelectorAll('[data-download-base]').forEach((button) => {
             const controls = button.closest('.asset-actions');
             const select = controls?.querySelector('.format-select');
             if (!select) return;
 
-            const base = button.dataset.downloadBase;
-            const label = button.dataset.downloadLabel || base;
+            const asset = downloadAssets[button.dataset.downloadBase];
+            if (!asset) return;
+
             const update = () => {
               const format = select.value;
+              const filename = asset.files[format];
+              if (!filename) return;
               const upper = format.toUpperCase();
-              const filename = `${base}.${format}`;
               button.href = `/r/blog-assets/brand-kit/${filename}`;
               button.download = filename;
               button.title = `Download ${upper}`;
-              button.setAttribute('aria-label', `Download ${label} ${upper}`);
+              button.setAttribute('aria-label', `Download ${asset.label} ${upper}`);
             };
 
             select.addEventListener('change', update);
