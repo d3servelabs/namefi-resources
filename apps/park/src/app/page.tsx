@@ -530,7 +530,7 @@ function buildMetadataTitle(domainName: string): string {
   return `${domainName} is parked with Namefi: ${NAMEFI_REGISTRAR_VALUE_PROP}`;
 }
 
-function buildMetadataDescription(
+function buildParkDescription(
   document: DomainDocument | null | undefined,
   domainName: string,
 ): string {
@@ -538,6 +538,14 @@ function buildMetadataDescription(
     document?.explain ??
     `${domainName} is a parked domain available through Namefi. Explore ownership details, expiration, domain highlights, and marketplace links.`;
   const normalized = source.replace(/\s+/g, ' ').trim();
+  return normalized;
+}
+
+function buildMetadataDescription(
+  document: DomainDocument | null | undefined,
+  domainName: string,
+): string {
+  const normalized = buildParkDescription(document, domainName);
   if (normalized.length <= METADATA_DESCRIPTION_MAX_LENGTH) {
     return normalized;
   }
@@ -704,9 +712,6 @@ export default async function ParkPage({
   );
   const instantBuyTokenId = normalizeTokenId(data.domainDocument.tokenId);
   const chainExplorerUrl = buildChainExplorerUrl(data.domainDocument);
-  const description =
-    data.domainDocument.explain ??
-    'This domain is parked with Namefi. Explore ownership details and marketplace listings.';
   const aiDisclaimer =
     'Powered by Namefi AI™ (beta), could be inaccurate, not financial/trade advice. DYOR.';
 
@@ -726,6 +731,7 @@ export default async function ParkPage({
     data.domainDocument,
     data.logicalHost,
   );
+  const description = buildParkDescription(data.domainDocument, domainName);
   const faqItems = shouldIndexCurrentPage
     ? buildParkFaqItems({ domainName, marketplaceLinks })
     : [];
