@@ -18,7 +18,7 @@ Launched during [ICANN's](/en/glossary/icann/) expansion of the internet's [doma
 Because it is a **restricted Brand TLD**, it is not available for public registration. Instead, it serves as a prime example of how major organizations use custom TLDs to enhance digital security and brand identity.
 
 *   **Registry Operator:** Imara IP Co. Limited (affiliated with AKDN).
-*   **Type:** Generic Top-Level Domain (gTLD) - Brand Category.
+*   **Type:** [Generic Top-Level Domain](/en/glossary/gtld/) (gTLD) - Brand Category.
 *   **Status:** Active / Restricted.
 
 For more technical details on the delegation, you can view the [IANA Delegation Record for .akdn](https://www.iana.org/domains/root/db/akdn.html).
@@ -53,7 +53,7 @@ While you cannot register a .akdn domain unless you are part of the Aga Khan Dev
 
 Here are the advantages of a closed Brand TLD:
 
-*   **Unquestionable Trust:** There is zero risk of phishing or cybersquatting. If a domain ends in .akdn, the user knows 100% it belongs to the official organization.
+*   **Unquestionable Trust:** There is zero risk of [phishing](/en/glossary/phishing/) or [cybersquatting](/en/glossary/cybersquatting/). If a domain ends in .akdn, the user knows 100% it belongs to the official organization.
 *   **Total Control:** The registry sets the rules. They do not have to compete for keywords or worry about availability—they own the entire list.
 *   **Security:** By restricting who can register a domain, the organization reduces vulnerabilities associated with third-party registrars or hijacked subdomains.
 *   **Branding Prestige:** Owning a TLD signals a high level of technological sophistication and organizational maturity.
@@ -66,7 +66,7 @@ At **Namefi**, we make [domain ownership](/en/glossary/domain-ownership/) easier
 
 **Why register with Namefi?**
 *   **ICANN Accredited:** We are a fully compliant and trusted [registrar](/en/glossary/registrar/).
-*   **Web3 Integration:** We allow you to ["tokenize"](/en/glossary/tokenize/) your domain, effectively bridging the gap between traditional Web2 DNS and Web3 blockchain assets.
+*   **Web3 Integration:** We allow you to ["tokenize"](/en/glossary/tokenize/) your domain, effectively bridging the gap between traditional Web2 DNS and Web3 [blockchain](/en/glossary/blockchain/) assets.
 *   **Bulk Search & Management:** Perfect for investors and developers managing large portfolios.
 
 Don't leave your brand identity to chance. Secure your perfect domain name today.

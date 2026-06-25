@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. Registrars offer WHOIS privacy on .biz like other gTLDs, and the registry supports DNSSEC for cryptographically signed DNS, so you can harden your zone against tampering.'
 ---
 
-The **.biz** domain is one of the internet's original business-focused web addresses. A phonetic spelling of the first syllable of "business," it was created specifically to give commercial entities a home when their preferred **.com** name was already gone. More than two decades on, **.biz** remains an open, globally available gTLD with a clear, self-explanatory meaning: this is a place of business.
+The **.biz** domain is one of the internet's original business-focused web addresses. A phonetic spelling of the first syllable of "business," it was created specifically to give commercial entities a home when their preferred **.com** name was already gone. More than two decades on, **.biz** remains an open, globally available [gTLD](/en/glossary/gtld/) with a clear, self-explanatory meaning: this is a place of business.
 
 For founders, small businesses, and B2B brands hunting for a short, available name, **.biz** is one of the most direct alternatives to a crowded **.com** namespace. This guide covers what the suffix is, who runs it, who can register one, how it compares to the mainstream options, and the reputation trade-offs worth knowing before you buy.
 
@@ -38,7 +38,7 @@ For founders, small businesses, and B2B brands hunting for a short, available na
 
 ## What is .biz?
 
-**.biz** is a [generic top-level domain](/en/blog/what-is-a-tld) introduced in 2001. Because it is a gTLD rather than a country-code TLD, it carries no geographic association — [Google](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) treats it as a generic suffix that targets a global audience, so registering a **.biz** does not lock your site to any single country the way a ccTLD can.
+**.biz** is a [generic top-level domain](/en/blog/what-is-a-tld) introduced in 2001. Because it is a gTLD rather than a country-code TLD, it carries no geographic association — [Google](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) treats it as a generic suffix that targets a global audience, so registering a **.biz** does not lock your site to any single country the way a [ccTLD](/en/glossary/cctld/) can.
 
 The name is deliberately phonetic. "Biz" reads instantly as "business" in English and is widely understood beyond it, which is the entire point of the extension: the suffix itself tells visitors what kind of site they are looking at. You can verify its root-zone status on the [IANA .biz database entry](https://www.iana.org/domains/root/db/biz.html), the authoritative record for any delegated TLD.
 
@@ -60,7 +60,7 @@ In 2020, GoDaddy acquired NeuStar's registry business, and **.biz** has been ope
 - **Defensive registrations** — brands that already own the **.com** registering the **.biz** to protect their name and prevent lookalikes.
 - **Domain investors** — buyers acquiring short, dictionary, or keyword **.biz** names for resale or to [tokenize on-chain](/en/blog/what-are-tokenized-domains).
 
-**Who it's not ideal for:** non-commercial projects (personal blogs, hobby sites, nonprofits where **.org** fits better), and brands whose **.com** is readily available and affordable — in that case the **.com** almost always wins on default recognition.
+**Who it's not ideal for:** non-commercial projects (personal blogs, hobby sites, nonprofits where [**.org**](/en/tld/org/) fits better), and brands whose **.com** is readily available and affordable — in that case the **.com** almost always wins on default recognition.
 
 ## Notable sites using .biz
 
@@ -94,7 +94,7 @@ Be honest with yourself about the trade-offs. The biggest is **default recall**:
 
 **Registration restrictions: open to all, with a business-use expectation.** There is no credential, license, trademark, or local-presence requirement to register a **.biz** domain — anyone, anywhere in the world can buy one through an accredited [registrar](/en/glossary/registrar). The one condition baked into the namespace from day one is that names are intended for **bona fide business or commercial use** rather than purely personal or speculative purposes. Historically this was backed by the RDRP dispute process, so in principle a registration can be challenged if it is plainly non-commercial; in everyday practice, enforcement is light and the suffix functions as an open TLD.
 
-Standard gTLD rules apply: names run 1–63 characters, internationalized domain names (IDNs) are supported, and trademark protections (including ICANN's Trademark Clearinghouse during sunrise periods for new launches) apply as with any gTLD. On the administrative side, **.biz** supports [DNSSEC](/en/glossary/dnssec) for signed DNS, registrars offer WHOIS privacy, and the usual transfer, renewal, and redemption-grace-period lifecycle applies. The authoritative rules live in the [ICANN .biz Registry Agreement](https://www.icann.org/en/registry-agreements/details/biz), which governs the operator's obligations.
+Standard gTLD rules apply: names run 1–63 characters, internationalized domain names (IDNs) are supported, and trademark protections (including ICANN's [Trademark Clearinghouse](/en/glossary/tmch/) during sunrise periods for new launches) apply as with any gTLD. On the administrative side, **.biz** supports [DNSSEC](/en/glossary/dnssec) for signed DNS, registrars offer [WHOIS privacy](/en/glossary/whois-privacy/), and the usual transfer, renewal, and redemption-grace-period lifecycle applies. The authoritative rules live in the [ICANN .biz Registry Agreement](https://www.icann.org/en/registry-agreements/details/biz), which governs the operator's obligations.
 
 ## .biz pricing and value
 
@@ -116,7 +116,7 @@ The practical impact for a legitimate business is small and fully manageable. To
 2. **Choose** the **.biz** result (and grab the matching **.com** or other extensions if you want them).
 3. **Register** and complete checkout to secure the name.
 
-Namefi combines an ICANN-accredited [registrar](/en/glossary/registrar) with Web3 capabilities: transparent pricing, fast DNS management, and the option to [tokenize your domain](/en/blog/why-tokenize-domains) for easier transfer and liquidity. [Register your .biz domain at Namefi](https://namefi.io).
+Namefi combines an ICANN-accredited [registrar](/en/glossary/registrar) with [Web3](/en/glossary/web3/) capabilities: transparent pricing, fast DNS management, and the option to [tokenize your domain](/en/blog/why-tokenize-domains) for easier transfer and [liquidity](/en/glossary/domain-liquidity/). [Register your .biz domain at Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

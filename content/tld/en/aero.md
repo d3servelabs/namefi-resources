@@ -30,7 +30,7 @@ Because .aero is strictly reserved for the aviation industry, its usage is highl
 
 While many airlines maintain a .com presence for general consumer ticket sales, the .aero extension is frequently used for corporate identity, industry-specific infrastructure, and governing bodies.
 
-*   **SITA (sita.aero):** The registry manager itself uses the TLD, showcasing its central role in aviation IT.
+*   **SITA (sita.aero):** The [registry](/en/glossary/registry/) manager itself uses the TLD, showcasing its central role in aviation IT.
 *   **World Air Sports Federation (fai.aero):** The Fédération Aéronautique Internationale, the world governing body for air sports, relies on this TLD.
 *   **KTM (ktm.aero):** Various regional airlines and logistics companies utilize the extension to signify their operational focus.
 *   **Aviation Safety Agencies:** Various national and international safety groups utilize the domain to disseminate critical regulatory information.
@@ -42,7 +42,7 @@ If you qualify for this exclusive domain, securing a .aero address offers distin
 *   **Instant Credibility and Trust:** Because the domain requires validation of an Aviation Community ID, users visiting a .aero site immediately know the entity is legitimate. It creates a "clean" neighborhood free of cybersquatters and scammers.
 *   **Premium Availability:** Since the domain is restricted to a specific industry, the pool of registered names is smaller. This means you are much more likely to find short, memorable, and keyword-rich domain names (e.g., `jets.aero` or `cargo.aero`) compared to the saturated .com market.
 *   **Industry Branding:** It clearly categorizes your business. A startup with a .aero address is instantly recognized as an aviation technology player, which is vital for B2B relationships and investors.
-*   **Future-Proofing:** As the aviation industry digitizes—moving toward blockchain integration for supply chains and ticketing—holding a specialized domain positions your brand at the forefront of this technological shift.
+*   **Future-Proofing:** As the aviation industry digitizes—moving toward [blockchain](/en/glossary/blockchain/) integration for supply chains and ticketing—holding a specialized domain positions your brand at the forefront of this technological shift.
 
 ## **Register Your .aero Domain at Namefi**
 

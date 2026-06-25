@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. As an open gTLD, .club registrations support standard registrar WHOIS privacy services and DNSSEC signing. Availability of each depends on the registrar you choose rather than registry policy.'
 ---
 
-The **.club domain** is a generic top-level domain built for one idea: belonging. Where most extensions describe what a site sells or where it lives, `.club` describes who it gathers — members, subscribers, fans, teammates, and communities. That makes it one of the more semantically expressive new gTLDs, and a natural fit for membership businesses and Web3 groups alike.
+The **.club domain** is a generic top-level domain built for one idea: belonging. Where most extensions describe what a site sells or where it lives, `.club` describes who it gathers — members, subscribers, fans, teammates, and communities. That makes it one of the more semantically expressive new gTLDs, and a natural fit for membership businesses and [Web3](/en/glossary/web3/) groups alike.
 
 Because the word "club" carries the same meaning across English, French, Spanish, German, and many other languages, the suffix reads clearly to a global audience. This page covers what `.club` is, who runs it, who actually uses it, how it is perceived, and what to weigh before you register one.
 
@@ -44,9 +44,9 @@ For search engines, this matters in a practical way. Because `.club` is a generi
 
 ## History of .club
 
-`.club` was one of the most anticipated names of the first new gTLD wave. The original applicant, .CLUB Domains, LLC, won the string at private auction in 2013 after raising several million dollars from a group of investors, then opened general availability on May 7, 2014. It quickly became one of the highest-volume new gTLDs by registrations, helped by aggressive marketing toward subscription and membership brands.
+`.club` was one of the most anticipated names of the first new gTLD wave. The original applicant, .CLUB Domains, LLC, won the string at private [auction](/en/glossary/auction/) in 2013 after raising several million dollars from a group of investors, then opened general availability on May 7, 2014. It quickly became one of the highest-volume new gTLDs by registrations, helped by aggressive marketing toward subscription and membership brands.
 
-In 2021, GoDaddy Registry acquired .CLUB Domains, LLC along with several other extensions, and operation moved to its subsidiary [Registry Services, LLC](https://registry.godaddy/). The transfer of the registry to its current operator is reflected in the IANA record, dated August 2021. The extension has remained one of the more durable community-oriented gTLDs through that consolidation.
+In 2021, GoDaddy Registry acquired .CLUB Domains, LLC along with several other extensions, and operation moved to its subsidiary [Registry Services, LLC](https://registry.godaddy/). The transfer of the registry to its current operator is reflected in the [IANA](/en/glossary/iana/) record, dated August 2021. The extension has remained one of the more durable community-oriented gTLDs through that consolidation.
 
 ## How people use .club
 
@@ -95,7 +95,7 @@ Pick [.com](/en/tld/com) when you want the universal default and the exact name 
 
 **Registration restrictions: open to all.** `.club` is an unrestricted gTLD. There is no membership test, professional credential, community-eligibility check, or local-presence requirement — any person or organization worldwide can register an available `.club` name on a first-come, first-served basis. This is different from gated extensions such as `.law` (bar membership) or `.realtor` (NAR membership).
 
-Standard new-gTLD rules apply: trademark holders could claim names during the original sunrise period, and ongoing Trademark Clearinghouse claims notices apply at registration. The extension supports internationalized domain names (IDNs), DNSSEC signing, and registrar-provided WHOIS privacy, and follows ICANN's standard transfer, renewal, and redemption-grace lifecycle. For the authoritative rules, see the [ICANN Registry Agreement for .club](https://www.icann.org/en/registry-agreements/details/club) and the registry operator [Registry Services, LLC](https://registry.godaddy/).
+Standard new-gTLD rules apply: [trademark](/en/glossary/trademark/) holders could claim names during the original sunrise period, and ongoing [Trademark Clearinghouse](/en/glossary/tmch/) claims notices apply at registration. The extension supports internationalized domain names (IDNs), DNSSEC signing, and registrar-provided [WHOIS privacy](/en/glossary/whois-privacy/), and follows ICANN's standard transfer, renewal, and redemption-grace lifecycle. For the authoritative rules, see the [ICANN Registry Agreement for .club](https://www.icann.org/en/registry-agreements/details/club) and the registry operator [Registry Services, LLC](https://registry.godaddy/).
 
 ## .club pricing and value
 
@@ -103,7 +103,7 @@ Standard new-gTLD rules apply: trademark holders could claim names during the or
 
 First, **first-year and renewal pricing usually differ.** Promotional first-year rates are common on community extensions, while the standard renewal rate is what you actually pay year after year — always check the renewal before committing to a name you intend to keep.
 
-Second, **premium-tier names exist.** The registry classifies certain short, generic, or high-demand strings (for example one-word or category names) as premium, carrying higher registration and sometimes higher renewal fees set by the registry rather than the registrar. The bulk of `.club` names price at the standard tier. Aftermarket value, as with any TLD, depends on length, brandability, and keyword strength.
+Second, **premium-tier names exist.** The registry classifies certain short, generic, or high-demand strings (for example one-word or category names) as premium, carrying higher registration and sometimes higher renewal fees set by the registry rather than the registrar. The bulk of `.club` names price at the standard tier. [Aftermarket](/en/glossary/aftermarket/) value, as with any TLD, depends on length, brandability, and keyword strength.
 
 ## Reputation and email deliverability
 
@@ -119,7 +119,7 @@ On email, newer generic suffixes including `.club` have at times drawn slightly 
 
 1. Search your desired name to check `.club` availability.
 2. Choose the exact `.club` name (and consider a defensive `.com`).
-3. Register and configure DNS — or [tokenize](/en/glossary/tokenize) it for on-chain ownership.
+3. Register and configure DNS — or [tokenize](/en/glossary/tokenize/) it for [on-chain](/en/glossary/on-chain/) ownership.
 
 [Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited [registrar](/en/glossary/registrar) with transparent pricing, fast DNS, and optional Web3 [tokenization](/en/blog/what-are-tokenized-domains), so you can hold a `.club` name as a traditional domain or as an on-chain asset.
 

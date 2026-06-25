@@ -18,9 +18,9 @@ faqs:
     answer: 'It can be a strong fit. The word directly names the industry, so a .estate address reads as on-topic and exact-match. For a large agency that prizes maximum familiarity and resale value, a matching .com may still be the safer default.'
 ---
 
-The **.estate domain** is a descriptive generic top-level domain (gTLD) aimed squarely at the property world: real estate agents, brokerages, property managers, developers, and estate-planning firms. Where a neutral suffix says nothing about what you do, `.estate` puts the industry directly in the web address, turning the domain itself into a plain-language statement of business.
+The **.estate domain** is a descriptive [generic top-level domain](/en/glossary/gtld/) (gTLD) aimed squarely at the property world: real estate agents, brokerages, property managers, developers, and estate-planning firms. Where a neutral suffix says nothing about what you do, `.estate` puts the industry directly in the web address, turning the domain itself into a plain-language statement of business.
 
-For agents, founders, and marketing managers weighing a niche extension over a crowded `.com`, the practical questions are: who runs this suffix, who actually uses it, and is it worth registering? This page answers all three with verifiable registry facts and an honest look at the trade-offs.
+For agents, founders, and marketing managers weighing a niche extension over a crowded `.com`, the practical questions are: who runs this suffix, who actually uses it, and is it worth registering? This page answers all three with verifiable [registry](/en/glossary/registry/) facts and an honest look at the trade-offs.
 
 ## .estate at a glance
 
@@ -46,7 +46,7 @@ As a generic gTLD, `.estate` is **not tied to any country** and carries no geogr
 
 `.estate` was part of the first waves of the 2012 New gTLD Program to reach the internet root, with delegation recorded in late 2013 and general availability following in 2014. It originally launched within the Donuts portfolio, the operator that applied for and rolled out one of the largest collections of word-based gTLDs, many of them industry verticals like `.estate`.
 
-Over the following years the operating entity consolidated under **Binky Moon, LLC**, the registry-operator subsidiary that today holds the contracts for a large share of Identity Digital's portfolio. (Identity Digital is the rebranded successor to Donuts following its merger with Afilias.) So while registrar-facing branding usually says "Identity Digital," the contracted registry operator of record for `.estate` is Binky Moon, LLC — the name you will see on the IANA entry and the ICANN registry agreement.
+Over the following years the operating entity consolidated under **Binky Moon, LLC**, the registry-operator subsidiary that today holds the contracts for a large share of Identity Digital's portfolio. (Identity Digital is the rebranded successor to Donuts following its merger with Afilias.) So while registrar-facing branding usually says "Identity Digital," the contracted registry operator of record for `.estate` is Binky Moon, LLC — the name you will see on the [IANA](/en/glossary/iana/) entry and the ICANN registry agreement.
 
 Adoption has been steady rather than explosive. `.estate` sits among Identity Digital's industry-vertical gTLDs — recognizable to real estate and property buyers without the headline volumes of mainstream suffixes. Registration counts fluctuate with promotions and renewals, so treat any single figure with caution.
 
@@ -75,7 +75,7 @@ Real, specific niches where `.estate` fits naturally:
 | Restrictions | Open to all | Open to all | Open to all | Open to all |
 | Recognition | Moderate | Moderate | Moderate | Universal |
 
-Pick `.estate` when you want the address itself to say "property" and an exact-match name is available. Related vertical suffixes like `.realty` and `.properties` send a similar signal — choose by which word matches your brand best — while [.com](/en/tld/com) remains the default when maximum familiarity and resale liquidity outweigh a descriptive suffix. Broad, flexible alternatives like [.online](/en/tld/online) or [.site](/en/tld/site) work if you would rather not pin the brand to one industry.
+Pick `.estate` when you want the address itself to say "property" and an exact-match name is available. Related vertical suffixes like `.realty` and `.properties` send a similar signal — choose by which word matches your brand best — while [.com](/en/tld/com) remains the default when maximum familiarity and resale [liquidity](/en/glossary/domain-liquidity/) outweigh a descriptive suffix. Broad, flexible alternatives like [.online](/en/tld/online) or [.site](/en/tld/site) work if you would rather not pin the brand to one industry.
 
 ## Why choose .estate?
 
@@ -97,7 +97,7 @@ Be honest with yourself about the trade-offs:
 
 **Registration restrictions: none.** `.estate` is an open generic gTLD with no eligibility gate — you do not need a real estate license, a brokerage affiliation, or any credential. Any individual or organization worldwide can register an available `.estate` name on a first-come, first-served basis. This is unlike credential-gated industry suffixes such as `.realtor`, which requires membership in the National Association of Realtors; `.estate` imposes no such requirement.
 
-Standard new-gTLD policies apply. Trademark holders could claim matching names during the original Sunrise period, and ICANN's Trademark Clearinghouse Claims notices apply to flagged strings. Names follow common length and IDN rules, and DNSSEC is supported for registrants who want signed zones. WHOIS privacy availability, transfer, renewal, and redemption-grace handling are set by your [registrar](/en/glossary/registrar) within the registry's framework. The authoritative rules live in the [ICANN Registry Agreement for .estate](https://www.icann.org/en/registry-agreements/details/estate) and the operator's policies at [Identity Digital](https://identity.digital/).
+Standard new-gTLD policies apply. [Trademark](/en/glossary/trademark/) holders could claim matching names during the original Sunrise period, and ICANN's [Trademark Clearinghouse](/en/glossary/tmch/) Claims notices apply to flagged strings. Names follow common length and IDN rules, and [DNSSEC](/en/glossary/dnssec/) is supported for registrants who want signed zones. [WHOIS privacy](/en/glossary/whois-privacy/) availability, transfer, renewal, and redemption-grace handling are set by your [registrar](/en/glossary/registrar) within the registry's framework. The authoritative rules live in the [ICANN Registry Agreement for .estate](https://www.icann.org/en/registry-agreements/details/estate) and the operator's policies at [Identity Digital](https://identity.digital/).
 
 ## .estate pricing and value
 
@@ -115,14 +115,14 @@ For email deliverability, the suffix itself is rarely the deciding factor. What 
 
 - **Lead with the brand or location, let the suffix do the framing:** `riverside.estate` or `lumen.estate` reads as a property brand far more than `lumenrealty.com` would.
 - **Avoid redundancy:** you rarely need "realty," "properties," or "homes" in front of `.estate` — the suffix already places you in the industry.
-- **Use it for a domain hack where it fits:** location and surname names ("[town].estate", "[family].estate") can read cleanly as an exact-match address.
+- **Use it for a [domain hack](/en/glossary/domain-hack/) where it fits:** location and surname names ("[town].estate", "[family].estate") can read cleanly as an exact-match address.
 - **Test it out loud:** because it is a real word, "[name] dot estate" should sound natural when spoken — say it before you buy it.
 
 ## How to register a .estate domain at Namefi
 
 1. Search your desired name on [Namefi](https://namefi.io) to check availability and whether it is a standard or premium `.estate` string.
 2. Choose the exact name that matches your brand or location, keeping it short and clear.
-3. Complete registration and configure DNS — Namefi offers transparent pricing, fast DNS, and optional Web3 tokenization for owners who want on-chain control of their domain.
+3. Complete registration and configure DNS — Namefi offers transparent pricing, fast DNS, and optional [Web3](/en/glossary/web3/) tokenization for owners who want [on-chain](/en/glossary/on-chain/) control of their domain.
 
 Ready to claim your name? Start at [Namefi](https://namefi.io).
 

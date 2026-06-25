@@ -19,12 +19,12 @@ For domain investors and developers interested in the **[Web3](/en/glossary/web3
 
 ## **How People Are Using .alfaromeo**
 
-Because .alfaromeo is a "closed" registry intended primarily for the brand owner and its affiliates, its usage is highly strategic and focused on corporate identity rather than public registration.
+Because .alfaromeo is a "closed" [registry](/en/glossary/registry/) intended primarily for the brand owner and its affiliates, its usage is highly strategic and focused on corporate identity rather than public registration.
 
 *   **Official Brand Presence:** The primary use is hosting official regional websites and campaign landing pages that require immediate trust.
 *   **Dealer Networks:** It creates a verified ecosystem where authorized dealerships might utilize subdomains to prove their legitimacy to customers.
 *   **Product Launches:** Marketing teams use specific product names combined with the TLD (e.g., `stelvio.alfaromeo`) for immersive digital brochures.
-*   **Internal Infrastructure:** Corporations often use these TLDs for secure back-end employee portals and intranets, reducing the risk of phishing attacks.
+*   **Internal Infrastructure:** Corporations often use these TLDs for secure back-end employee portals and intranets, reducing the risk of [phishing](/en/glossary/phishing/) attacks.
 
 ## **Notable Entities Using .alfaromeo**
 
@@ -40,18 +40,18 @@ As a proprietary extension, the entities using this TLD are exclusively within t
 
 While public registration is restricted, understanding the *value proposition* of such a TLD is essential for anyone analyzing domain trends or considering a **Brand TLD** strategy for their own enterprise.
 
-*   **Unmatched Trust & Security:** A .alfaromeo link guarantees the user is interacting with the official brand. There is zero risk of cybersquatting or phishing on the root domain because the registry is closed.
+*   **Unmatched Trust & Security:** A .alfaromeo link guarantees the user is interacting with the official brand. There is zero risk of [cybersquatting](/en/glossary/cybersquatting/) or phishing on the root domain because the registry is closed.
 *   **Premium SEO Relevance:** Search engines recognize the exact match of the TLD with the brand name, signaling high authority for automotive and luxury queries.
 *   **Brand Protection:** By owning the entire registry, the company eliminates the need to buy defensive domains (like `alfaromeo-cars.net` or `alfaromeo-official.com`), saving costs in the long run.
 *   **Short and Memorable URLs:** It allows for clean, concise marketing URLs without the clutter of slashes and subdirectories found in traditional domain structures.
 
 ## **Register Your .alfaromeo Domain at Namefi**
 
-Are you looking to secure a premium domain name for your automotive business, portfolio, or next Web3 project? While .alfaromeo is exclusive to the brand, **Namefi** offers access to millions of other premium TLDs and the ability to mint them as NFTs for seamless trading and management.
+Are you looking to secure a [premium domain](/en/glossary/premium-domain/) name for your automotive business, portfolio, or next Web3 project? While .alfaromeo is exclusive to the brand, **Namefi** offers access to millions of other premium TLDs and the ability to mint them as NFTs for seamless trading and management.
 
 At Namefi, we bridge the gap between Web2 and Web3.
 *   **ICANN-Accredited:** We are a fully compliant and trusted [registrar](/en/glossary/registrar/).
-*   **Tokenized Assets:** Your domains are minted on the blockchain, giving you true ownership and ease of transfer.
+*   **Tokenized Assets:** Your domains are minted on the [blockchain](/en/glossary/blockchain/), giving you true ownership and ease of transfer.
 *   **[DeFi](/en/glossary/defi/) Ready:** Use your domain assets within the decentralized finance ecosystem.
 
 Whether you are looking for automotive-themed domains like `.car`, `.auto`, or looking to invest in the next big keyword, start your search with us.

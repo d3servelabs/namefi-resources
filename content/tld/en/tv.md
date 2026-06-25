@@ -18,7 +18,7 @@ faqs:
     answer: 'Pure linguistic coincidence. "TV" is Tuvalu''s ISO country code and the universal abbreviation for "television." Tuvalu leaned into that overlap, licensing the namespace globally, which is why streaming and video brands gravitate to it.'
 ---
 
-The **.tv** domain is the textbook example of a small nation turning a two-letter coincidence into a global brand. Officially the ccTLD for **Tuvalu**, a tiny Pacific island nation, it has been marketed and adopted worldwide as the natural home of **television**, **video**, and **live streaming** — because "tv" reads instantly as the medium itself. For broadcasters, streamers, and video-first brands, **.tv** is often the most evocative extension on the market.
+The **.tv** domain is the textbook example of a small nation turning a two-letter coincidence into a global brand. Officially the [ccTLD](/en/glossary/cctld/) for **Tuvalu**, a tiny Pacific island nation, it has been marketed and adopted worldwide as the natural home of **television**, **video**, and **live streaming** — because "tv" reads instantly as the medium itself. For broadcasters, streamers, and video-first brands, **.tv** is often the most evocative extension on the market.
 
 This guide covers what .tv really is, who runs it (the backend operator changed in 2021), who can register one, how it is priced, and how it is perceived for SEO and email — so you can decide whether it fits your brand.
 
@@ -79,7 +79,7 @@ These cases show .tv being trusted not as a fallback, but as a deliberate, on-br
 | Availability of short names | Moderate (many premium) | Very poor | Moderate | Excellent |
 | Typical price tier | Mid-to-high | Low-to-mid | High | Low |
 
-Choose **.com** when you can get the exact name — it remains the trust default. Reach for **.tv** when your brand is built around video, broadcast, or live content and you want a suffix that says so at a glance. Pick **[.io](/en/tld/io/)** for developer- and infrastructure-focused tech brands, and **[.xyz](/en/tld/xyz/)** for generic or Web3-native projects where a fresh, neutral suffix is an advantage.
+Choose **.com** when you can get the exact name — it remains the trust default. Reach for **.tv** when your brand is built around video, broadcast, or live content and you want a suffix that says so at a glance. Pick **[.io](/en/tld/io/)** for developer- and infrastructure-focused tech brands, and **[.xyz](/en/tld/xyz/)** for generic or [Web3](/en/glossary/web3/)-native projects where a fresh, neutral suffix is an advantage.
 
 ## Why choose .tv?
 
@@ -106,7 +106,7 @@ Standard practices apply: many short, generic, or high-demand names are classifi
 
 - **Premium names are common.** The registry classifies a large share of short, dictionary, or high-demand .tv names as **premium**, carrying higher registration and sometimes higher renewal fees.
 - **First-year vs. renewal pricing differ.** As with most TLDs, an introductory first-year rate is not the renewal rate; always check the standard renewal before committing a brand.
-- **What drives cost.** Name length and desirability, premium classification, and registry wholesale pricing are the main factors. Aftermarket resale values for top short or media-relevant .tv names can be substantial.
+- **What drives cost.** Name length and desirability, premium classification, and registry [wholesale pricing](/en/glossary/wholesale-pricing/) are the main factors. [Aftermarket](/en/glossary/aftermarket/) resale values for top short or media-relevant .tv names can be substantial.
 
 For exact, current figures, check live pricing at registration time — this page intentionally quotes no numbers.
 
@@ -129,7 +129,7 @@ For email deliverability, the suffix itself is rarely the deciding factor — mo
 2. **Choose** an available name (and check whether it is classified as premium).
 3. **Register** and configure DNS.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar that bridges Web2 and Web3, with transparent pricing, fast DNS management, and the option to hold your name as a tokenized domain for easier transfer and provable ownership.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and Web3, with transparent pricing, fast DNS management, and the option to hold your name as a [tokenized domain](/en/glossary/tokenized-domain/) for easier transfer and provable ownership.
 
 ## Frequently asked questions
 

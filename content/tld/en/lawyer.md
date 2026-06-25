@@ -18,7 +18,7 @@ faqs:
     answer: 'Both target legal professionals, but .law (operated by GoDaddy Registry) restricts registration to verified licensed practitioners, while .lawyer is open to anyone. .lawyer is therefore easier to obtain but carries no built-in proof of credentials.'
 ---
 
-The **.lawyer domain** is a generic top-level domain (gTLD) built for the legal profession — individual attorneys, law firms, legal marketers, and anyone who wants a web address that says, plainly, what they do. Unlike the credential-gated `.law` extension, `.lawyer` is an **open gTLD**: anyone can register one on a first-come, first-served basis, with no bar membership or license verification at the point of sale.
+The **.lawyer domain** is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the legal profession — individual attorneys, law firms, legal marketers, and anyone who wants a web address that says, plainly, what they do. Unlike the credential-gated `.law` extension, `.lawyer` is an **open gTLD**: anyone can register one on a first-come, first-served basis, with no bar membership or license verification at the point of sale.
 
 That openness is the most important thing to understand before buying one. It makes `.lawyer` easy to acquire and broadly available, but it also means the suffix itself is not proof that the owner is a licensed legal professional.
 
@@ -36,13 +36,13 @@ That openness is the most important thing to understand before buying one. It ma
 
 ## What is .lawyer?
 
-`.lawyer` is one of hundreds of new generic top-level domains introduced under ICANN's 2012 new-gTLD program, the expansion that took the domain name system far beyond `.com`, `.net`, and `.org`. It is an English-language, profession-descriptive suffix: the word on the right of the dot tells a visitor exactly what kind of business sits behind the address.
+`.lawyer` is one of hundreds of new generic top-level domains introduced under ICANN's 2012 new-gTLD program, the expansion that took the [domain name system](/en/glossary/dns/) far beyond `.com`, `.net`, and `.org`. It is an English-language, profession-descriptive suffix: the word on the right of the dot tells a visitor exactly what kind of business sits behind the address.
 
 According to the [IANA root zone database entry for .lawyer](https://www.iana.org/domains/root/db/lawyer.html), the TLD is a generic top-level domain delegated in 2014. As a generic suffix — not a country-code TLD like `.uk` — it is **not tied to any geography**. Google treats new gTLDs such as `.lawyer` as generic, with no geo-targeting baked in, so a `.lawyer` site can rank globally just like a `.com`. For the basics of how suffixes work, see [what a TLD is](/en/blog/what-is-a-tld).
 
 ## History of .lawyer
 
-`.lawyer` went live for general availability in 2014 through the registry portfolio then operated by Donuts Inc. That portfolio later merged with Afilias and rebranded as **Identity Digital** in 2022, which is why the registry-of-record on the IANA entry appears as Dog Beach, LLC — one of the holding entities Identity Digital uses across its stable of TLDs.
+`.lawyer` went live for general availability in 2014 through the registry portfolio then operated by Donuts Inc. That portfolio later merged with Afilias and rebranded as **Identity Digital** in 2022, which is why the registry-of-record on the [IANA](/en/glossary/iana/) entry appears as Dog Beach, LLC — one of the holding entities Identity Digital uses across its stable of TLDs.
 
 `.lawyer` arrived alongside a small family of legal suffixes — `.attorney`, `.law`, and the Spanish-language `.abogado` — that gave the legal sector its own corner of the namespace. Adoption has been steady rather than explosive: legal extensions occupy a focused professional niche, valued for clarity and relevance more than for raw registration volume.
 
@@ -88,9 +88,9 @@ Pick `.lawyer` (or its near-twin `.attorney`) when you want a clear, profession-
 
 ## Who can register a .lawyer domain?
 
-**Registration restrictions: open to all.** `.lawyer` has **no eligibility gate** — no bar membership, law license, or professional credential is required to register, and names are sold first-come, first-served. This is the defining contrast with `.law`, where the registry uses an independent verification agency to confirm that registrants are qualified, licensed legal professionals before granting the name.
+**Registration restrictions: open to all.** `.lawyer` has **no eligibility gate** — no bar membership, law license, or professional credential is required to register, and names are sold first-come, first-served. This is the defining contrast with `.law`, where the registry uses an independent verification agency to confirm that [registrant](/en/glossary/registrant/)s are qualified, licensed legal professionals before granting the name.
 
-A common point of confusion: some registrars collect an "accrediting body" contact field if you intend to advertise regulated legal services on a `.lawyer` site, but this is a service-disclosure detail, not a barrier to registration — the domain remains available to anyone. Standard administrative rules apply: names may be 1–63 characters using letters, digits, and hyphens (not in the 3rd–4th position together), IDNs are supported, DNSSEC is available, and WHOIS privacy is generally offered by registrars. Trademark holders should note the usual sunrise/TMCH protections at launch and the ongoing [UDRP](/en/glossary/udrp) dispute process. Authoritative policy is maintained by Dog Beach, LLC under Identity Digital; the ICANN-accredited [registrar](/en/glossary/registrar) you buy through implements those rules. For the official policy chain, start from the [IANA root entry](https://www.iana.org/domains/root/db/lawyer.html) and [ICANN](/en/glossary/icann) records.
+A common point of confusion: some registrars collect an "accrediting body" contact field if you intend to advertise regulated legal services on a `.lawyer` site, but this is a service-disclosure detail, not a barrier to registration — the domain remains available to anyone. Standard administrative rules apply: names may be 1–63 characters using letters, digits, and hyphens (not in the 3rd–4th position together), IDNs are supported, DNSSEC is available, and [WHOIS privacy](/en/glossary/whois-privacy/) is generally offered by registrars. [Trademark](/en/glossary/trademark/) holders should note the usual sunrise/TMCH protections at launch and the ongoing [UDRP](/en/glossary/udrp) dispute process. Authoritative policy is maintained by Dog Beach, LLC under Identity Digital; the ICANN-accredited [registrar](/en/glossary/registrar) you buy through implements those rules. For the official policy chain, start from the [IANA root entry](https://www.iana.org/domains/root/db/lawyer.html) and [ICANN](/en/glossary/icann) records.
 
 ## .lawyer pricing and value
 
@@ -116,7 +116,7 @@ The strongest `.lawyer` names read as a complete phrase across the dot. `injury.
 2. **Choose** the available option that best fits your brand, and add it to your cart.
 3. **Register** and complete checkout; your domain is provisioned and ready to point at your site.
 
-As an ICANN-accredited registrar, Namefi offers transparent pricing, fast DNS configuration, and optional Web3 tokenization so you can hold your domain as an on-chain asset. No credential verification is needed to register `.lawyer`.
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), Namefi offers transparent pricing, fast DNS configuration, and optional [Web3](/en/glossary/web3/) tokenization so you can hold your domain as an on-chain asset. No credential verification is needed to register `.lawyer`.
 
 ## Frequently asked questions
 

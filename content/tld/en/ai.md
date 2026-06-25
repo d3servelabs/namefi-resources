@@ -20,7 +20,7 @@ faqs:
     answer: 'The Anguilla registry sets the policy: .ai domains register and renew in terms of two to ten years, not the single-year cycle common to .com. This raises the upfront cost but reduces the risk of accidentally losing a name to a missed one-year renewal.'
 ---
 
-The **.ai** domain is the rare extension whose two letters are also one of the most valuable acronyms on the internet. Technically it is the country-code top-level domain (ccTLD) for Anguilla, a British Overseas Territory in the Eastern Caribbean. In practice it has become the default address for the artificial-intelligence industry, from frontier model labs to indie AI tools.
+The **.ai** domain is the rare extension whose two letters are also one of the most valuable acronyms on the internet. Technically it is the [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for Anguilla, a British Overseas Territory in the Eastern Caribbean. In practice it has become the default address for the artificial-intelligence industry, from frontier model labs to indie AI tools.
 
 This page covers what .ai really is, who runs it, the registration rules that make it different from .com, how it affects SEO and email trust, and how it compares with alternatives like [.io](/en/tld/io/) so you can decide whether it fits your project.
 
@@ -38,7 +38,7 @@ This page covers what .ai really is, who runs it, the registration rules that ma
 
 ## What is .ai?
 
-.ai is the [ccTLD](/en/glossary/tld/) assigned to Anguilla. The two letters "AI" are simply Anguilla's ISO 3166-1 country code — the same coincidence that turned .io (Indian Ocean Territory) and .tv (Tuvalu) into tech favorites. The extension was delegated in 1995, decades before the modern AI boom, as confirmed by the [IANA root-zone record for .ai](https://www.iana.org/domains/root/db/ai.html).
+.ai is the ccTLD assigned to Anguilla. The two letters "AI" are simply Anguilla's ISO 3166-1 country code — the same coincidence that turned .io (Indian Ocean Territory) and [.tv](/en/tld/tv/) (Tuvalu) into tech favorites. The extension was delegated in 1995, decades before the modern AI boom, as confirmed by the [IANA root-zone record for .ai](https://www.iana.org/domains/root/db/ai.html).
 
 What makes .ai unusual is how search engines treat it. Although it is officially a ccTLD, [Google does not geo-target it to Anguilla](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites). Google maintains a list of ccTLDs it treats as generic ("gccTLDs"), and .ai is one of them. That means a .ai site can rank worldwide rather than being nudged toward Caribbean audiences — a key reason global AI companies are comfortable building their primary brand on it.
 
@@ -92,7 +92,7 @@ Pick **.ai** when artificial intelligence *is* your product and you want the mea
 ## Things to consider
 
 - **Two-year minimum term:** you cannot register or renew for a single year, raising the entry cost.
-- **Premium pricing:** .ai consistently costs more than .com or .net, both at registration and renewal.
+- **Premium pricing:** .ai consistently costs more than .com or [.net](/en/tld/net/), both at registration and renewal.
 - **Niche meaning:** if your product is not actually AI-related, the extension can confuse visitors or feel like a stretch.
 - **Hype-cycle risk:** branding tightly to "AI" ties your identity to a fast-moving trend.
 
@@ -100,7 +100,7 @@ Pick **.ai** when artificial intelligence *is* your product and you want the mea
 
 **Registration restrictions: open to all.** There is no local-presence, citizenship, or credential requirement to register a .ai domain — anyone worldwide can register one through an accredited [registrar](/en/glossary/registrar/). The defining rule is the **two-year minimum term**: .ai names register and renew in increments of two to ten years rather than the one-year cycle common elsewhere.
 
-Names use standard ASCII characters (a–z, 0–9, and hyphens, not at the start or end), with limited support for internationalized domain names. The registry supports [DNSSEC](/en/glossary/dnssec/) for cryptographic integrity, and modern WHOIS/RDAP lookups are provided through the registry. Authoritative policy and registration rules are published by the Anguilla registry at the official site, [nic.ai](https://nic.ai/). Because .ai is a ccTLD, it is not governed by an [ICANN](/en/glossary/icann/) registry agreement; Anguilla sets its own policy.
+Names use standard ASCII characters (a–z, 0–9, and hyphens, not at the start or end), with limited support for internationalized domain names. The registry supports [DNSSEC](/en/glossary/dnssec/) for cryptographic integrity, and modern [WHOIS](/en/glossary/whois/)/RDAP lookups are provided through the registry. Authoritative policy and registration rules are published by the Anguilla registry at the official site, [nic.ai](https://nic.ai/). Because .ai is a ccTLD, it is not governed by an [ICANN](/en/glossary/icann/) registry agreement; Anguilla sets its own policy.
 
 ## .ai pricing and value
 
@@ -114,7 +114,7 @@ That said, no TLD guarantees inbox placement. As with any domain, deliverability
 
 ## Branding and naming tips
 
-The most powerful .ai pattern is the **domain hack**, where the extension completes a word or phrase — `fin.ai`, `scale.ai`, or any `verb.ai` / `noun.ai` that reads naturally. Aim for short, pronounceable names; the value of .ai is partly that it lets you own a concise, meaningful URL.
+The most powerful .ai pattern is the **[domain hack](/en/glossary/domain-hack/)**, where the extension completes a word or phrase — `fin.ai`, `scale.ai`, or any `verb.ai` / `noun.ai` that reads naturally. Aim for short, pronounceable names; the value of .ai is partly that it lets you own a concise, meaningful URL.
 
 Watch two pitfalls. First, people may mishear "dot A-I" as "dot AI the word" — say it as letters when speaking aloud. Second, avoid hyphens and numbers, which undercut the clean, premium feel that makes .ai worth its price.
 
@@ -124,7 +124,7 @@ Watch two pitfalls. First, people may mishear "dot A-I" as "dot AI the word" —
 2. **Choose** the registration term (remember the two-year minimum) and review whether the name is standard or premium.
 3. **Register** and complete checkout.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar that also supports Web3 tokenized domains, so your .ai can be managed as an on-chain [NFT](/en/glossary/nft/) for easier transfer and verifiable ownership — see [what are tokenized domains](/en/blog/what-are-tokenized-domains/). You get transparent pricing, reliable DNS, and optional tokenization in one place.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that also supports [Web3](/en/glossary/web3/) tokenized domains, so your .ai can be managed as an [on-chain](/en/glossary/on-chain/) [NFT](/en/glossary/nft/) for easier transfer and verifiable ownership — see [what are tokenized domains](/en/blog/what-are-tokenized-domains/). You get transparent pricing, reliable DNS, and optional tokenization in one place.
 
 ## Frequently asked questions
 
@@ -142,7 +142,7 @@ It suits artificial-intelligence startups, machine-learning products, AI agents,
 
 ### Who owns and operates the .ai registry?
 
-The Government of Anguilla holds the IANA delegation for .ai. Since January 2025 the technical registry back-end is operated by Identity Digital. Each individual .ai domain you register, however, is owned by you, the registrant.
+The Government of Anguilla holds the [IANA](/en/glossary/iana/) delegation for .ai. Since January 2025 the technical registry back-end is operated by Identity Digital. Each individual .ai domain you register, however, is owned by you, the [registrant](/en/glossary/registrant/).
 
 ### Why is the minimum .ai registration two years?
 

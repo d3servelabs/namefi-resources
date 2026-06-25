@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. As a CentralNic-backed Radix TLD, .online supports DNSSEC for cryptographic DNS integrity, and most registrars including Namefi offer WHOIS privacy so your personal contact details are not published publicly.'
 ---
 
-The **.online domain** is one of the most literal extensions on the internet: the suffix itself is the word "online," instantly signaling that a site lives on the web. It is an open, unrestricted new generic top-level domain (gTLD) operated by Radix, and anyone in the world can register an available name. For founders, freelancers, and brands whose first choice is gone in legacy extensions, **.online** is a clear, broadly understood alternative.
+The **.online domain** is one of the most literal extensions on the internet: the suffix itself is the word "online," instantly signaling that a site lives on the web. It is an open, unrestricted new [generic top-level domain](/en/glossary/gtld/) (gTLD) operated by Radix, and anyone in the world can register an available name. For founders, freelancers, and brands whose first choice is gone in legacy extensions, **.online** is a clear, broadly understood alternative.
 
 This guide covers what .online is, who runs it, how it performs for SEO and email, and the real trade-offs to weigh before you register.
 
@@ -46,7 +46,7 @@ You can confirm the delegation details on the official [IANA root-zone entry for
 
 ## History of .online
 
-.online was delegated to the root zone in 2015 as part of [ICANN's New gTLD Program](https://newgtlds.icann.org/en/about/program), the expansion that introduced hundreds of new extensions beyond the original handful. After early rights consolidation in the industry, [Radix](https://radix.website/) emerged as the registry operator and has run it since launch, with technical registry services provided by CentralNic.
+.online was delegated to the [root zone](/en/glossary/root-zone/) in 2015 as part of [ICANN's New gTLD Program](https://newgtlds.icann.org/en/about/program), the expansion that introduced hundreds of new extensions beyond the original handful. After early rights consolidation in the industry, [Radix](https://radix.website/) emerged as the registry operator and has run it since launch, with technical registry services provided by CentralNic.
 
 Among new gTLDs, .online has been one of the higher-volume extensions, consistently sitting in the upper tier by registration count. Its most cited milestone is a landmark secondary-market sale: in 2017 Radix announced that **casino.online** changed hands for **$201,250**, which it described as the largest single-domain sale recorded among new gTLDs at the time. The transaction, brokered via Sedo, is documented in [Radix's own announcement](https://radix.website/radix-announces-largest-new-gtld-sale-with-casino-online) and signaled that exact-match keyword names on .online could command premium prices.
 
@@ -90,14 +90,14 @@ Pick **.com** when you can get the exact name and want maximum default recogniti
 
 - **Lower default recognition.** Some users still assume "the .com" by habit and may mistype the address.
 - **Pricing structure differs.** Like many new gTLDs, first-year and renewal pricing can differ, and standout keyword names may be classified as premium (see below).
-- **Confusion with neighbors.** It sits close in meaning to .site, .net, and .com, so reinforce the full domain in marketing to avoid drift.
+- **Confusion with neighbors.** It sits close in meaning to .site, [.net](/en/tld/net/), and .com, so reinforce the full domain in marketing to avoid drift.
 - **Defensive costs.** Brands often still register the matching .com to protect against confusion, which adds to total cost.
 
 ## Who can register a .online domain?
 
 **Registration restrictions: open to all.** .online is an unrestricted generic TLD. There is no credential gate (unlike `.law` or `.cpa`), no community eligibility requirement, and no local-presence rule. Any individual or organization worldwide can register an available .online name on a first-come, first-served basis.
 
-Standard gTLD policies apply: there was a sunrise period at launch for trademark holders, and the [Trademark Clearinghouse](https://newgtlds.icann.org/en/about/trademark-clearinghouse) continues to support rights-protection notices. Names support internationalized characters (IDNs), DNSSEC can be enabled for cryptographic DNS integrity, and most registrars including Namefi offer WHOIS privacy. Transfer, renewal, and redemption-grace handling follow standard ICANN gTLD lifecycle rules. The binding terms are set out in the [ICANN Registry Agreement for .online](https://www.icann.org/en/registry-agreements/details/online) and Radix's published [registry policies](https://radix.website/policies).
+Standard gTLD policies apply: there was a sunrise period at launch for trademark holders, and the [Trademark Clearinghouse](https://newgtlds.icann.org/en/about/trademark-clearinghouse) continues to support rights-protection notices. Names support internationalized characters (IDNs), DNSSEC can be enabled for cryptographic DNS integrity, and most registrars including Namefi offer [WHOIS privacy](/en/glossary/whois-privacy/). Transfer, renewal, and redemption-grace handling follow standard ICANN gTLD lifecycle rules. The binding terms are set out in the [ICANN Registry Agreement for .online](https://www.icann.org/en/registry-agreements/details/online) and Radix's published [registry policies](https://radix.website/policies).
 
 ## .online pricing and value
 
@@ -120,7 +120,7 @@ New gTLDs as a class have at times attracted extra scrutiny from spam filters, b
 2. **Choose** the exact name, reviewing both the first-year and renewal terms.
 3. **Register** and complete checkout, then point your DNS records to start using the domain.
 
-As an ICANN-accredited registrar, Namefi offers transparent pricing, fast DNS management, and the option to **tokenize** your domain into a transferable on-chain asset — useful if you later want to trade or hold it as Web3 property. Start at [Namefi](https://namefi.io).
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), Namefi offers transparent pricing, fast DNS management, and the option to **[tokenize](/en/glossary/tokenize/)** your domain into a transferable on-chain asset — useful if you later want to trade or hold it as [Web3](/en/glossary/web3/) property. Start at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

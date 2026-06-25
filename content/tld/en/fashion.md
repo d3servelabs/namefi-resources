@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. As an open gTLD under ICANN policy, .fashion registrations support WHOIS privacy/redaction through most registrars, so personal contact details are not exposed in public WHOIS lookups.'
 ---
 
-The **.fashion domain** is a generic top-level domain (gTLD) built for the style industry — clothing labels, independent designers, stylists, modeling agencies, fashion media, and apparel retailers. Where a generic extension says nothing about what a site does, a name like `summer.fashion` or `studio.fashion` puts the category in the address itself. For a sector that lives on identity and first impressions, that legibility is the whole pitch.
+The **.fashion domain** is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the style industry — clothing labels, independent designers, stylists, modeling agencies, fashion media, and apparel retailers. Where a generic extension says nothing about what a site does, a name like `summer.fashion` or `studio.fashion` puts the category in the address itself. For a sector that lives on identity and first impressions, that legibility is the whole pitch.
 
 This page covers what .fashion is, who runs it, who can register it, how it tends to be used, and the honest trade-offs to weigh before you buy.
 
@@ -38,7 +38,7 @@ This page covers what .fashion is, who runs it, who can register it, how it tend
 
 ## What is .fashion?
 
-.fashion is a **generic top-level domain**, part of the new gTLD program that ICANN opened in 2012 to expand the namespace beyond legacy extensions like .com, .net, and .org. Unlike a country-code TLD such as `.fr` or `.it`, it carries no geographic meaning and is not tied to any nation. The string is plain English: the word "fashion" appears after the dot, so the domain reads as a complete phrase — `vintage.fashion`, `mens.fashion`, `slow.fashion`.
+.fashion is a **generic top-level domain**, part of the new gTLD program that [ICANN](/en/glossary/icann/) opened in 2012 to expand the namespace beyond legacy extensions like .com, .net, and .org. Unlike a country-code TLD such as `.fr` or `.it`, it carries no geographic meaning and is not tied to any nation. The string is plain English: the word "fashion" appears after the dot, so the domain reads as a complete phrase — `vintage.fashion`, `mens.fashion`, `slow.fashion`.
 
 Because it is a generic extension, Google does **not** geo-target .fashion to any country. The [IANA root-zone entry for .fashion](https://www.iana.org/domains/root/db/fashion.html) lists it as a global gTLD, and Google's documentation classifies new gTLDs as generic — meaning a .fashion site competes worldwide on the same footing as a .com, with no regional ranking advantage or disadvantage from the extension itself.
 
@@ -66,7 +66,7 @@ The extension works best when the second-level name and the suffix combine into 
 
 ## Notable sites using .fashion
 
-.fashion is used mainly by independent labels, designers, and campaign microsites rather than by household-name luxury houses, most of which sit on long-established .com domains. Rather than name a specific site that may change hands or lapse, it is more honest to describe the real pattern: the typical .fashion registrant is a small-to-mid apparel brand, a stylist, or an editorial project that wants the category embedded in its address. If you are evaluating the extension, judge it on how cleanly your chosen word reads before the dot, not on a marquee reference site.
+.fashion is used mainly by independent labels, designers, and campaign microsites rather than by household-name luxury houses, most of which sit on long-established .com domains. Rather than name a specific site that may change hands or lapse, it is more honest to describe the real pattern: the typical .fashion [registrant](/en/glossary/registrant/) is a small-to-mid apparel brand, a stylist, or an editorial project that wants the category embedded in its address. If you are evaluating the extension, judge it on how cleanly your chosen word reads before the dot, not on a marquee reference site.
 
 ## .fashion vs other domains
 
@@ -98,7 +98,7 @@ Pick **.com** when you want the most universally trusted, familiar address and t
 
 **Registration restrictions: open to all.** .fashion is an unrestricted generic TLD. There is no credential requirement, no industry-membership check, and no local-presence rule — you do **not** need to work in fashion to register one. Names are allotted first-come, first-served, like .com.
 
-A few standard registry rules still apply. Most two-character labels and certain reserved or premium strings are held back by the registry and are not openly available. Standard ICANN trademark protections governed a sunrise period at launch, and the Trademark Clearinghouse still underpins claims notices. Length and IDN rules follow normal gTLD conventions, and registrations support **DNSSEC** and **WHOIS privacy/redaction** through most registrars. Transfer, renewal, and redemption-grace behavior follow ICANN's standard gTLD lifecycle.
+A few standard registry rules still apply. Most two-character labels and certain reserved or premium strings are held back by the registry and are not openly available. Standard ICANN trademark protections governed a sunrise period at launch, and the [Trademark Clearinghouse](/en/glossary/tmch/) still underpins claims notices. Length and IDN rules follow normal gTLD conventions, and registrations support **[DNSSEC](/en/glossary/dnssec/)** and **[WHOIS privacy](/en/glossary/whois-privacy/)/redaction** through most registrars. Transfer, renewal, and redemption-grace behavior follow ICANN's standard gTLD lifecycle.
 
 The authoritative source for the rules governing this extension is its [ICANN Registry Agreement for .fashion](https://www.icann.org/en/registry-agreements/details/fashion), which sets out the operator's obligations, reserved names, and policy commitments.
 
@@ -126,7 +126,7 @@ For email, deliverability depends far more on your **authentication and sending 
 2. **Choose** the name that reads best — confirm whether it is a standard or premium registration, and check the renewal price.
 3. **Register** and complete checkout, then point DNS at your site or store.
 
-Namefi is an ICANN-accredited registrar with transparent pricing and fast DNS management, and it also supports Web3 domain tokenization for owners who want on-chain control of their names.
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing and fast DNS management, and it also supports Web3 domain tokenization for owners who want on-chain control of their names.
 
 ## Frequently asked questions
 

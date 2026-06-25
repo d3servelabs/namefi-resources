@@ -58,7 +58,7 @@ While many global giants protect their intellectual property by registering thei
 Choosing the right [domain extension](/en/blog/what-is-a-tld/) is critical for your brand's digital strategy. Here is why .africa is a compelling choice for investors and businesses alike:
 
 *   **Geographic Authority and Trust:** Using .africa immediately signals to your audience that your business is relevant to the continent. It builds trust with local consumers who prefer engaging with regionally committed brands.
-*   **Superior Availability:** Compared to the overcrowded [.com](/en/tld/com/) or [.net](/en/tld/net/) spaces, .africa is relatively new. This means there is a much higher chance of securing short, memorable, and premium keyword domain names that would otherwise be unavailable or prohibitively expensive.
+*   **Superior Availability:** Compared to the overcrowded [.com](/en/tld/com/) or [.net](/en/tld/net/) spaces, .africa is relatively new. This means there is a much higher chance of securing short, memorable, and premium [keyword domain](/en/glossary/keyword-domain/) names that would otherwise be unavailable or prohibitively expensive.
 *   **SEO Benefits:** For businesses targeting the African market, using this TLD can send strong signals to search engines regarding your geographic relevance, potentially helping you rank higher in local search results.
 *   **Unified Branding:** It eliminates the administrative nightmare and cost of registering separate domains for every African country you operate in. One domain covers the entire continent.
 *   **Investment Potential:** As the African digital economy grows, the value of premium .africa domains is expected to rise. Securing a strong name now is a strategic move for domain investors.

@@ -36,7 +36,7 @@ That literalness is both its strength and its limit. This page covers what .webs
 
 ## What is .website?
 
-.website is a **generic top-level domain (gTLD)** introduced during ICANN's New gTLD Program, which expanded the domain name system far beyond the legacy set of .com, .net, and .org. Unlike a country-code TLD such as .io or .ai, .website carries no national association and is not geo-targeted by search engines. It is a plain dictionary word, so it works in any market and any language.
+.website is a **[generic top-level domain](/en/glossary/gtld/) (gTLD)** introduced during [ICANN](/en/glossary/icann/)'s New gTLD Program, which expanded the domain name system far beyond the legacy set of .com, [.net](/en/tld/net/), and [.org](/en/tld/org/). Unlike a country-code TLD such as .io or .ai, .website carries no national association and is not geo-targeted by search engines. It is a plain dictionary word, so it works in any market and any language.
 
 The word "website" itself is the whole pitch. Where suffixes like .io or .xyz require explanation, .website is self-evident — a non-technical visitor instantly understands that the address points to a web presence. That makes it one of the most descriptive options in the entire namespace.
 
@@ -44,7 +44,7 @@ For the authoritative record, see the [IANA root-zone entry for .website](https:
 
 ## History of .website
 
-.website was delegated to the root zone in 2014, in the first wave of new gTLDs. It was originally operated by DotWebsite Inc., then moved to Radix FZC in 2021, and is today run by **Radix Technologies Inc.** Radix is one of the most prominent new-gTLD operators, founded in 2012 by entrepreneurs Bhavin and Divyank Turakhia, and runs a well-known portfolio that also includes [.site](/en/tld/site), [.online](/en/tld/online), [.store](/en/tld/store), and [.tech](/en/tld/tech).
+.website was delegated to the [root zone](/en/glossary/root-zone/) in 2014, in the first wave of new gTLDs. It was originally operated by DotWebsite Inc., then moved to Radix FZC in 2021, and is today run by **Radix Technologies Inc.** Radix is one of the most prominent new-gTLD operators, founded in 2012 by entrepreneurs Bhavin and Divyank Turakhia, and runs a well-known portfolio that also includes [.site](/en/tld/site), [.online](/en/tld/online), [.store](/en/tld/store), and [.tech](/en/tld/tech).
 
 Because it is a common English word rather than a niche term, .website has seen steady, broad adoption among small businesses, freelancers, and individuals — the audience that benefits most from an instantly legible address — rather than a single headline industry. Radix has historically released a meaningful share of short, dictionary-word names in premium pricing tiers, which is typical of the descriptive new gTLDs.
 
@@ -93,9 +93,9 @@ Pick **.website** when you want the most literal, plain-language address and you
 
 A few administrative notes:
 
-- **Sunrise and trademark protection.** Like other new gTLDs, .website ran an ICANN-mandated sunrise period for validated trademark holders before general availability; brand owners can also use the Trademark Clearinghouse for ongoing protection.
+- **Sunrise and trademark protection.** Like other new gTLDs, .website ran an ICANN-mandated sunrise period for validated [trademark](/en/glossary/trademark/) holders before general availability; brand owners can also use the [Trademark Clearinghouse](/en/glossary/tmch/) for ongoing protection.
 - **Length and IDN.** Standard label length rules apply, and the registry supports internationalized domain names for non-Latin scripts.
-- **Admin facts.** DNSSEC is supported, and WHOIS privacy is generally available through registrars subject to applicable policy. Transfer, renewal, and redemption-grace handling follow standard ICANN gTLD lifecycle rules. The governing terms ultimately sit in the [ICANN Registry Agreement for .website](https://www.icann.org/en/registry-agreements/details/website).
+- **Admin facts.** DNSSEC is supported, and [WHOIS privacy](/en/glossary/whois-privacy/) is generally available through registrars subject to applicable policy. Transfer, renewal, and redemption-grace handling follow standard ICANN gTLD lifecycle rules. The governing terms ultimately sit in the [ICANN Registry Agreement for .website](https://www.icann.org/en/registry-agreements/details/website).
 
 ## .website pricing and value
 
@@ -117,7 +117,7 @@ The winning pattern is **brand + website**: a name where the suffix completes th
 2. **Choose** the exact label and confirm whether it is a standard or premium-tier name.
 3. **Register** and complete checkout, then manage DNS from your dashboard.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar with transparent pricing, fast DNS, and optional Web3 tokenization so you can hold your domain as an on-chain asset. Search your .website name today and claim a clear, self-describing address.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing, fast DNS, and optional [Web3](/en/glossary/web3/) tokenization so you can hold your domain as an on-chain asset. Search your .website name today and claim a clear, self-describing address.
 
 ## Frequently asked questions
 

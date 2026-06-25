@@ -20,7 +20,7 @@ faqs:
     answer: 'It is generally fine. As an established gTLD it is not broadly blocklisted, but any newer extension can draw slightly more scrutiny from spam filters than .com. Authenticate mail with SPF, DKIM, and DMARC and warm up a new sending domain gradually.'
 ---
 
-The **.blog domain** is one of the few extensions that explains itself: the moment a reader sees it, they know the site publishes content. For writers, journalists, marketers, and companies running a news or insights hub, that clarity is the whole point of buying it. It is an open generic top-level domain (gTLD) operated by the company behind WordPress, which gives it unusual credibility in the publishing world.
+The **.blog domain** is one of the few extensions that explains itself: the moment a reader sees it, they know the site publishes content. For writers, journalists, marketers, and companies running a news or insights hub, that clarity is the whole point of buying it. It is an open [generic top-level domain](/en/glossary/gtld/) (gTLD) operated by the company behind WordPress, which gives it unusual credibility in the publishing world.
 
 This page covers what .blog is, who runs it, who can register it, how its pricing works, and how it is perceived for email and SEO — so you can decide whether it fits your project.
 
@@ -45,11 +45,11 @@ The extension is unusual among new gTLDs because its registry operator is a reco
 
 ## History of .blog
 
-.blog was delegated in 2016 after Automattic — the parent company of WordPress.com — acquired the rights to operate it. The registry is formally held by a subsidiary, Knock Knock WHOIS There, LLC, which ICANN requires to operate at arm's length from the registrar business.
+.blog was delegated in 2016 after Automattic — the parent company of WordPress.com — acquired the rights to operate it. The registry is formally held by a subsidiary, Knock Knock WHOIS There, LLC, which [ICANN](/en/glossary/icann/) requires to operate at arm's length from the registrar business.
 
 Key milestones:
 
-- **2016** — Sunrise for trademark holders began in August, followed by a landrush phase, with general availability opening on 21 November 2016.
+- **2016** — Sunrise for [trademark](/en/glossary/trademark/) holders began in August, followed by a landrush phase, with general availability opening on 21 November 2016.
 - **2019** — The registry moved its back-end technical provider to CentralNic, having previously used Nominet, as reported by industry outlets such as [Domain Name Wire](https://domainnamewire.com/).
 - **Ongoing** — Adoption has grown into the hundreds of thousands of registrations, spread across personal, corporate, and news publishing.
 
@@ -101,7 +101,7 @@ Choose .com when you want the most familiar, resale-friendly address. Choose **.
 
 **Registration restrictions: open to all.** There is no credential, membership, local-presence, or community requirement. You do not need to operate a blog, use WordPress, or prove any qualification — anyone worldwide can register an available .blog name.
 
-The TLD supports internationalized domain names (IDNs) and DNSSEC for signed, tamper-evident DNS. A trademark Sunrise phase ran at launch; today, brand owners can rely on the Trademark Clearinghouse for ongoing protections. Standard ICANN lifecycle rules apply, including the 60-day transfer lock after registration or registrar transfer and the redemption grace period for expired names. Because .blog is a gTLD, its rules are governed by an ICANN Registry Agreement, and the authoritative operator record is the [IANA root-zone entry for .blog](https://www.iana.org/domains/root/db/blog.html). WHOIS privacy is offered through registrars rather than mandated by the registry.
+The TLD supports internationalized domain names (IDNs) and DNSSEC for signed, tamper-evident DNS. A trademark Sunrise phase ran at launch; today, brand owners can rely on the [Trademark Clearinghouse](/en/glossary/tmch/) for ongoing protections. Standard ICANN lifecycle rules apply, including the 60-day [transfer lock](/en/glossary/transfer-lock/) after registration or registrar transfer and the redemption [grace period](/en/glossary/grace-period/) for expired names. Because .blog is a gTLD, its rules are governed by an ICANN Registry Agreement, and the authoritative operator record is the [IANA root-zone entry for .blog](https://www.iana.org/domains/root/db/blog.html). [WHOIS privacy](/en/glossary/whois-privacy/) is offered through registrars rather than mandated by the registry.
 
 ## .blog pricing and value
 
@@ -111,7 +111,7 @@ As with virtually all gTLDs, first-year and renewal pricing differ, and the regi
 
 ## Reputation and email deliverability
 
-.blog reads as a legitimate, purpose-built publishing extension rather than a bargain-bin suffix, which works in its favor for trust. As an established gTLD it is not broadly blocklisted. That said, any extension outside the .com/.net core can attract marginally more scrutiny from aggressive spam filters, particularly for a brand-new sending domain with no reputation history.
+.blog reads as a legitimate, purpose-built publishing extension rather than a bargain-bin suffix, which works in its favor for trust. As an established gTLD it is not broadly blocklisted. That said, any extension outside the .com/[.net](/en/tld/net/) core can attract marginally more scrutiny from aggressive spam filters, particularly for a brand-new sending domain with no reputation history.
 
 The fix is standard email hygiene, not avoiding the suffix: publish SPF, DKIM, and DMARC records, send from a consistent domain, and warm up a new sender by gradually increasing volume. A correctly authenticated .blog domain delivers mail reliably.
 
@@ -128,7 +128,7 @@ The fix is standard email hygiene, not avoiding the suffix: publish SPF, DKIM, a
 2. Choose the .blog result (watch for premium pricing on short names).
 3. Complete registration with transparent pricing and fast DNS setup.
 
-As an ICANN-accredited registrar, Namefi also lets you tokenize your domain for Web3 use, bridging traditional registration and on-chain ownership.
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), Namefi also lets you [tokenize](/en/glossary/tokenize/) your domain for [Web3](/en/glossary/web3/) use, bridging traditional registration and on-chain ownership.
 
 ## Frequently asked questions
 

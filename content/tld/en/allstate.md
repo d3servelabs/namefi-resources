@@ -13,7 +13,7 @@ keywords: ['.allstate domains', '.allstate TLD', 'top-level domain', 'what is .a
 
 The **.allstate** extension is a specialized type of [Top-Level Domain (TLD)](/en/glossary/tld/) known as a **Brand TLD** (or "dot brand"). Unlike open extensions like [.com](/en/tld/com/) or [.net](/en/tld/net/), which are available for general public registration, .allstate was created specifically for the **Allstate Insurance Company**.
 
-Introduced during [ICANN’s New gTLD Program](https://newgtlds.icann.org/en/about/program), this domain extension allows the corporation to create a trusted, dedicated digital environment. By owning the entire registry, Allstate ensures that every domain ending in `.allstate` is an authentic property of the company, providing a high level of security against phishing and brand impersonation.
+Introduced during [ICANN’s New gTLD Program](https://newgtlds.icann.org/en/about/program), this domain extension allows the corporation to create a trusted, dedicated digital environment. By owning the entire [registry](/en/glossary/registry/), Allstate ensures that every domain ending in `.allstate` is an authentic property of the company, providing a high level of security against [phishing](/en/glossary/phishing/) and brand impersonation.
 
 While most internet users are familiar with Country Code TLDs (ccTLDs like .uk or .ca) or generic TLDs (gTLDs like [.org](/en/tld/org/)), .allstate represents the evolution of corporate digital identity, moving away from shared spaces to a wholly-owned digital ecosystem.
 
@@ -43,7 +43,7 @@ While you cannot register a `.allstate` domain unless you are an administrator f
 
 The advantages of a dedicated or industry-specific TLD include:
 
-*   **Unmatched Trust:** A closed or highly regulated TLD eliminates the risk of cybersquatting. Users trust the domain implies a verified identity.
+*   **Unmatched Trust:** A closed or highly regulated TLD eliminates the risk of [cybersquatting](/en/glossary/cybersquatting/). Users trust the domain implies a verified identity.
 *   **SEO Relevance:** Search engines increasingly understand the semantic value of TLDs. A domain that exactly matches the brand or industry can improve click-through rates (CTR).
 *   **Security:** With full control over the registry, the organization can implement stricter security protocols (such as mandatory [DNSSEC](/en/glossary/dnssec/)) across all domains in the namespace.
 *   **Short and Memorable:** Without the overcrowding of .com, a specialized TLD offers access to premium, single-word domain names (e.g., `pay.allstate` vs. `allstate-payment-portal.com`).
@@ -55,8 +55,8 @@ Are you inspired by the security and branding power of the .allstate TLD? While 
 Whether you are looking for industry-specific domains like **.insurance**, **.finance**, or **[.xyz](/en/tld/xyz/)**, or building a portfolio of investment-grade domains, Namefi creates a bridge between traditional Web2 DNS and the [Web3](/en/glossary/web3/) future.
 
 **Why Register with Namefi?**
-*   **Tokenized Domains:** We treat domains as real-world assets (RWA), allowing you to mint them as NFTs for easier trading and liquidity.
-*   **Seamless Web3 Integration:** Connect your [wallet](/en/glossary/wallet/) and manage your DNS records with the security of blockchain technology.
+*   **Tokenized Domains:** We treat domains as real-world assets (RWA), allowing you to mint them as NFTs for easier trading and [liquidity](/en/glossary/domain-liquidity/).
+*   **Seamless Web3 Integration:** Connect your [wallet](/en/glossary/wallet/) and manage your DNS records with the security of [blockchain](/en/glossary/blockchain/) technology.
 *   **Instant Transfers:** Say goodbye to long [escrow](/en/glossary/escrow/) periods. With Namefi, transferring [domain ownership](/en/glossary/domain-ownership/) is as fast as sending a token.
 
 Don't wait for the perfect name to disappear. Secure your brand's future today.

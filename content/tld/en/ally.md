@@ -49,7 +49,7 @@ Selecting the right domain extension is about more than just availability; it is
 
 Ready to position your brand as a trusted partner and leader in your community? Securing your **.ally** domain is the first step toward building a digital identity rooted in collaboration and trust.
 
-At **Namefi**, we make domain registration effortless and future-proof. Whether you are a Web2 business looking for a catchy URL or a Web3 developer looking to mint a **tokenized domain**, our platform bridges the gap.
+At **Namefi**, we make domain registration effortless and future-proof. Whether you are a Web2 business looking for a catchy URL or a Web3 developer looking to mint a **[tokenized domain](/en/glossary/tokenized-domain/)**, our platform bridges the gap.
 
 *   **Seamless Integration:** Manage your domains with traditional ease or via blockchain wallets.
 *   **Transparent Pricing:** No hidden fees, just great domains.

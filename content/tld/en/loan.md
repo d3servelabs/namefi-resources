@@ -36,7 +36,7 @@ In short, **.loan is a real, open domain extension that anyone in the world can 
 
 ## What is .loan?
 
-The .loan string is a **dictionary-word new gTLD** introduced through ICANN's New gTLD Program, the expansion that added hundreds of word-based extensions to the root zone from 2013 onward. Unlike a [country-code TLD](/en/glossary/tld/) such as .uk or .de, .loan carries no geographic meaning and is not tied to any nation. You can confirm its delegation and sponsoring organization in the official [IANA root-zone entry for .loan](https://www.iana.org/domains/root/db/loan.html).
+The .loan string is a **dictionary-word [new gTLD](/en/glossary/new-gtld/)** introduced through ICANN's New gTLD Program, the expansion that added hundreds of word-based extensions to the [root zone](/en/glossary/root-zone/) from 2013 onward. Unlike a [country-code TLD](/en/glossary/tld/) such as .uk or .de, .loan carries no geographic meaning and is not tied to any nation. You can confirm its delegation and sponsoring organization in the official [IANA root-zone entry for .loan](https://www.iana.org/domains/root/db/loan.html).
 
 Because it is a generic gTLD, Google treats .loan as a **non-geo-targeted, generic extension** — the same way it treats .com or .net. Google's documentation on [how new gTLDs are handled in Search](https://developers.google.com/search/blog/2015/07/google-search-and-new-gtlds) confirms that new word-based extensions get no automatic ranking advantage or penalty simply for the string after the dot. What you do with the domain — content, links, security, and trust signals — is what matters.
 
@@ -97,7 +97,7 @@ Be honest with yourself about the trade-offs before committing:
 
 **Registration restrictions: open to all.** The .loan TLD is an **unrestricted, open generic extension**. There is no credential gate (unlike, say, [.cpa](/en/tld/cpa/) for accountants or [.law](/en/tld/law/) for licensed attorneys), no community-eligibility requirement, and no local-presence rule. Any individual or organization worldwide can register an available .loan name on a first-come, first-served basis.
 
-Standard ICANN-program protections still apply: registered trademark holders could use the **Trademark Clearinghouse** sunrise and claims mechanisms at launch, and ordinary length and [IDN](/en/glossary/tld/) rules apply to the label. On the administrative side, .loan supports **DNSSEC** for cryptographically signed DNS, WHOIS records are subject to the registry's privacy and redaction practices, and the usual gTLD lifecycle — transfer locks, renewal windows, and a redemption grace period after expiry — is in force. For the authoritative rules governing the extension, see the [ICANN Registry Agreement for .loan](https://www.icann.org/en/registry-agreements/details/loan).
+Standard ICANN-program protections still apply: registered [trademark](/en/glossary/trademark/) holders could use the [Trademark Clearinghouse](/en/glossary/tmch/) sunrise and claims mechanisms at launch, and ordinary length and [IDN](/en/glossary/tld/) rules apply to the label. On the administrative side, .loan supports **DNSSEC** for cryptographically signed DNS, [WHOIS](/en/glossary/whois/) records are subject to the registry's privacy and redaction practices, and the usual gTLD lifecycle — transfer locks, renewal windows, and a redemption [grace period](/en/glossary/grace-period/) after expiry — is in force. For the authoritative rules governing the extension, see the [ICANN Registry Agreement for .loan](https://www.icann.org/en/registry-agreements/details/loan).
 
 ## .loan pricing and value
 
@@ -105,11 +105,11 @@ This page does not quote prices, but the **pricing dynamics** are important beca
 
 * **First-year vs renewal pricing differ.** Introductory pricing can be a fraction of the standard rate, and **renewals are typically much higher** than the promotional first year. Always check the renewal cost before you buy.
 * **Premium-tier names exist.** Short, high-demand strings (single dictionary words, common loan types) may be classified as **premium** by the registry and carry both a higher purchase price and a higher recurring renewal.
-* **What drives cost.** Registry wholesale pricing, premium classification, and any registrar margin determine the final figure. The low headline price is also exactly what attracts bulk abusive registration, which feeds the reputation issue below.
+* **What drives cost.** Registry [wholesale pricing](/en/glossary/wholesale-pricing/), premium classification, and any registrar margin determine the final figure. The low headline price is also exactly what attracts bulk abusive registration, which feeds the reputation issue below.
 
 ## Reputation and email deliverability
 
-This deserves a frank discussion. **.loan has a notably poor security reputation.** Because the names are so cheap, the extension has been repeatedly cited among the new gTLDs most exploited by spammers and fraudsters, who register them in large batches for phishing, malware, and scam campaigns before abandoning them. ICANN's own [Statistical Analysis of DNS Abuse in gTLDs](https://www.icann.org/en/system/files/files/sadag-final-09aug17-en.pdf) documented dramatically higher spam rates in low-cost new gTLDs compared with legacy extensions, and ongoing industry [domain-reputation reporting from the Spamhaus Project](https://www.spamhaus.org/reputation-statistics/) continues to track abuse concentration in cheap TLDs.
+This deserves a frank discussion. **.loan has a notably poor security reputation.** Because the names are so cheap, the extension has been repeatedly cited among the new gTLDs most exploited by spammers and fraudsters, who register them in large batches for [phishing](/en/glossary/phishing/), malware, and scam campaigns before abandoning them. ICANN's own [Statistical Analysis of DNS Abuse in gTLDs](https://www.icann.org/en/system/files/files/sadag-final-09aug17-en.pdf) documented dramatically higher spam rates in low-cost new gTLDs compared with legacy extensions, and ongoing industry [domain-reputation reporting from the Spamhaus Project](https://www.spamhaus.org/reputation-statistics/) continues to track abuse concentration in cheap TLDs.
 
 The practical consequences:
 
@@ -131,7 +131,7 @@ The practical consequences:
 2. **Choose** the exact name (and consider grabbing a matching [.com](/en/tld/com/) for trust).
 3. **Register** and configure DNS, then enable DNSSEC and email authentication.
 
-[Namefi](https://namefi.io) is an **ICANN-accredited registrar** with transparent pricing, fast DNS management, and optional **Web3 tokenization** that lets eligible domains be represented as on-chain assets. Search, register, and manage your .loan domain in one place — no opaque add-ons.
+[Namefi](https://namefi.io) is an **[ICANN-accredited registrar](/en/glossary/accredited-registrar/)** with transparent pricing, fast DNS management, and optional **[Web3](/en/glossary/web3/) tokenization** that lets eligible domains be represented as [on-chain](/en/glossary/on-chain/) assets. Search, register, and manage your .loan domain in one place — no opaque add-ons.
 
 ## Frequently asked questions
 

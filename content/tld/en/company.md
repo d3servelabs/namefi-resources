@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. As a modern Identity Digital gTLD, .company supports DNSSEC for cryptographic DNS integrity, and registrars including Namefi offer WHOIS privacy so personal contact details are not exposed in public WHOIS records.'
 ---
 
-The **.company** domain is one of the internet's broadest business-oriented suffixes: a generic top-level domain (gTLD) that any individual or organization can register, with no proof of incorporation required. If you run a business and the exact .com you want is taken, parked, or priced out of reach, **.company** offers a descriptive, self-explanatory alternative that says what you are right in the address bar.
+The **.company** domain is one of the internet's broadest business-oriented suffixes: a [generic top-level domain](/en/glossary/gtld/) (gTLD) that any individual or organization can register, with no proof of incorporation required. If you run a business and the exact .com you want is taken, parked, or priced out of reach, **.company** offers a descriptive, self-explanatory alternative that says what you are right in the address bar.
 
 Because it is open and generic rather than tied to a country or a gated profession, .company appeals to startups, consultancies, holding entities, and brand-protection teams alike.
 
@@ -44,7 +44,7 @@ The **.company** domain is a generic top-level domain introduced under [ICANN's 
 
 ## History of .company
 
-The .company string was applied for during the 2012 new gTLD round and delegated to the DNS root in December 2013, making it one of the earlier business-themed extensions to reach general availability. Its underlying ICANN [Registry Agreement](https://www.icann.org/en/registry-agreements/details/company) is dated 7 November 2013.
+The .company string was applied for during the 2012 [new gTLD](/en/glossary/new-gtld/) round and delegated to the DNS root in December 2013, making it one of the earlier business-themed extensions to reach general availability. Its underlying ICANN [Registry Agreement](https://www.icann.org/en/registry-agreements/details/company) is dated 7 November 2013.
 
 The operator history mirrors a major industry consolidation. The TLD was originally launched by Donuts Inc., the company behind the largest portfolio of new gTLDs. Donuts later moved its hundreds of strings under a single contracting entity, **Binky Moon, LLC**, and the broader business rebranded as **Identity Digital** after merging with Afilias. Today .company is one of more than 200 generic gTLDs Identity Digital runs through Binky Moon, which gives it the stability of a large, established registry rather than a single-purpose startup operator.
 
@@ -79,7 +79,7 @@ Pick **.com** when you can get the exact name and want maximum default recall. C
 ## Why choose .company?
 
 - **Self-describing:** the suffix instantly frames the site as a business, reinforcing what your brand does.
-- **Open and unrestricted:** no incorporation papers, trademark, or local presence to prove — register and go.
+- **Open and unrestricted:** no incorporation papers, [trademark](/en/glossary/trademark/), or local presence to prove — register and go.
 - **Short-name availability:** clean, one-word names that are long gone in .com are often still open here.
 - **Established registry:** run by Identity Digital through Binky Moon, a large operator with modern infrastructure and DNSSEC support.
 - **SEO-neutral:** Google handles it like any generic gTLD, so you're not starting at a disadvantage.
@@ -88,16 +88,16 @@ Pick **.com** when you can get the exact name and want maximum default recall. C
 
 Be honest with yourself about the trade-offs:
 
-- **Default-to-.com habit:** many users still type `.com` from memory, so you may lose some direct type-in traffic.
+- **Default-to-.com habit:** many users still type `.com` from memory, so you may lose some direct [type-in traffic](/en/glossary/type-in-traffic/).
 - **Length:** "company" is seven letters, making the full address longer than a snappy three-letter suffix.
 - **Premium pricing on some names:** the most desirable keyword names are often classified as premium and cost more.
 - **Brand-protection overhead:** if you adopt .company, you may also want the matching .com to avoid confusion or impersonation.
 
 ## Who can register a .company domain?
 
-**Registration restrictions: open to all.** The .company TLD has no eligibility gate. Unlike credential-locked suffixes such as .law or .cpa, or local-presence ccTLDs, there is no requirement to be an incorporated company, hold a trademark, or reside anywhere specific. Anyone — an individual, a startup, or a multinational — can register an available name on a first-come, first-served basis.
+**Registration restrictions: open to all.** The .company TLD has no eligibility gate. Unlike credential-locked suffixes such as [.law](/en/tld/law/) or [.cpa](/en/tld/cpa/), or local-presence ccTLDs, there is no requirement to be an incorporated company, hold a trademark, or reside anywhere specific. Anyone — an individual, a startup, or a multinational — can register an available name on a first-come, first-served basis.
 
-Standard ICANN gTLD rules apply: a sunrise period gave trademark holders early access during launch, and registered marks can still be protected through the Trademark Clearinghouse. Names support internationalized domain name (IDN) characters and DNSSEC for DNS integrity, and registrars including Namefi offer WHOIS privacy to keep personal contact details out of public records. Transfers, renewals, and a redemption grace period for recently expired names follow the standard ICANN gTLD lifecycle. The authoritative rules are set out in the operator's [ICANN Registry Agreement for .company](https://www.icann.org/en/registry-agreements/details/company).
+Standard ICANN gTLD rules apply: a sunrise period gave trademark holders early access during launch, and registered marks can still be protected through the [Trademark Clearinghouse](/en/glossary/tmch/). Names support internationalized domain name (IDN) characters and DNSSEC for DNS integrity, and registrars including Namefi offer [WHOIS privacy](/en/glossary/whois-privacy/) to keep personal contact details out of public records. Transfers, renewals, and a redemption [grace period](/en/glossary/grace-period/) for recently expired names follow the standard ICANN gTLD lifecycle. The authoritative rules are set out in the operator's [ICANN Registry Agreement for .company](https://www.icann.org/en/registry-agreements/details/company).
 
 ## .company pricing and value
 
@@ -117,7 +117,7 @@ The natural pattern is to move the word "company" out of your name and into the 
 2. **Choose** the term length and review the standard renewal price, not just the first-year rate.
 3. **Register** and configure DNS — Namefi provides fast DNS, DNSSEC, and WHOIS privacy.
 
-As an ICANN-accredited registrar with transparent pricing, [Namefi](https://namefi.io) also lets you tokenize your domain as a Web3 asset for true on-chain ownership. Search your `.company` name and register it in minutes.
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing, [Namefi](https://namefi.io) also lets you [tokenize](/en/glossary/tokenize/) your domain as a [Web3](/en/glossary/web3/) asset for true on-chain ownership. Search your `.company` name and register it in minutes.
 
 ## Frequently asked questions
 

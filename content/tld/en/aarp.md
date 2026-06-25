@@ -10,9 +10,9 @@ description: "Discover the purpose of the .aarp Top-Level Domain. Learn how this
 
 ## **What is .aarp?**
 
-The **.aarp** extension is a specialized generic [Top-Level Domain](/en/glossary/tld/) (gTLD) classified specifically as a "Brand TLD." Unlike open domains such as [.com](/en/tld/com/) or [.net](/en/tld/net/) which are available for public registration, **.aarp** is a restricted registry delegated exclusively to AARP (formerly the American Association of Retired Persons).
+The **.aarp** extension is a specialized generic [Top-Level Domain](/en/glossary/tld/) (gTLD) classified specifically as a "Brand TLD." Unlike open domains such as [.com](/en/tld/com/) or [.net](/en/tld/net/) which are available for public registration, **.aarp** is a restricted [registry](/en/glossary/registry/) delegated exclusively to AARP (formerly the American Association of Retired Persons).
 
-Launched during the [ICANN](/en/glossary/icann/) New gTLD Program, the primary purpose of this domain is to create a secure, authenticated, and trusted digital namespace for the organization and its millions of members. It serves as a digital stamp of authenticity, ensuring that any website ending in `.aarp` is officially sanctioned by the organization. As internet security becomes paramount in 2025, TLDs like this are essential for protecting users from phishing and brand impersonation.
+Launched during the [ICANN](/en/glossary/icann/) [New gTLD](/en/glossary/new-gtld/) Program, the primary purpose of this domain is to create a secure, authenticated, and trusted digital namespace for the organization and its millions of members. It serves as a digital stamp of authenticity, ensuring that any website ending in `.aarp` is officially sanctioned by the organization. As internet security becomes paramount in 2025, TLDs like this are essential for protecting users from [phishing](/en/glossary/phishing/) and brand impersonation.
 
 ## **How People Are Using .aarp**
 

@@ -18,7 +18,7 @@ faqs:
     answer: 'The .cc registry is operated by eNIC Cocos (Keeling) Islands Pty. Ltd. (doing business as Island Internet Services), a wholly owned subsidiary of Verisign. The IANA root-zone database lists eNIC / Island Internet Services as the sponsoring organization and registry manager.'
 ---
 
-The **.cc** domain is one of the internet's most enduring "borrowed" country codes — a national namespace that grew into a short, brandable, global extension. Officially the ccTLD for the **Cocos (Keeling) Islands**, a tiny Australian territory in the Indian Ocean, .cc has been marketed worldwide for decades as a flexible stand-in for ".com." The string "cc" is endlessly interpretable — **commercial company**, **creative commons**, **carbon copy**, or simply a clean pair of matching initials — which makes it a favorite for memorable names and clever domain hacks.
+The **.cc** domain is one of the internet's most enduring "borrowed" country codes — a national namespace that grew into a short, brandable, global extension. Officially the [ccTLD](/en/glossary/cctld/) for the **Cocos (Keeling) Islands**, a tiny Australian territory in the Indian Ocean, .cc has been marketed worldwide for decades as a flexible stand-in for ".com." The string "cc" is endlessly interpretable — **commercial company**, **creative commons**, **carbon copy**, or simply a clean pair of matching initials — which makes it a favorite for memorable names and clever [domain hacks](/en/glossary/domain-hack/).
 
 This guide covers what .cc really is, who runs it, who can register one, how it is priced, and how it is perceived for SEO and email — so you can decide whether it fits your brand.
 
@@ -105,7 +105,7 @@ Standard practices apply: names follow conventional length and character rules, 
 
 - **Premium names exist.** The registry classifies many short, dictionary, or high-demand .cc names as **premium**, carrying higher registration and sometimes higher renewal fees.
 - **First-year vs. renewal pricing differ.** As with most TLDs, an introductory first-year rate is not the renewal rate; always check the standard renewal before committing a brand.
-- **What drives cost.** Name length and desirability, premium classification, and registry wholesale pricing are the main factors. Aftermarket resale values for short, brandable .cc names — especially two- and three-character or dictionary words — can be substantial.
+- **What drives cost.** Name length and desirability, premium classification, and registry [wholesale pricing](/en/glossary/wholesale-pricing/) are the main factors. [Aftermarket](/en/glossary/aftermarket/) resale values for short, brandable .cc names — especially two- and three-character or dictionary words — can be substantial.
 
 For exact, current figures, check live pricing at registration time — this page intentionally quotes no numbers.
 
@@ -128,7 +128,7 @@ For email deliverability, the suffix itself is rarely the deciding factor — mo
 2. **Choose** an available name (and check whether it is classified as premium).
 3. **Register** and configure DNS.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar that bridges Web2 and [Web3](/en/glossary/web3/), with transparent pricing, fast DNS management, and the option to hold your name as a tokenized domain for easier transfer and provable ownership.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and [Web3](/en/glossary/web3/), with transparent pricing, fast DNS management, and the option to hold your name as a [tokenized domain](/en/glossary/tokenized-domain/) for easier transfer and provable ownership.
 
 ## Frequently asked questions
 

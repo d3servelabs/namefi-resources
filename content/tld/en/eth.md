@@ -18,7 +18,7 @@ faqs:
     answer: 'The ENS .eth registrar charges annual rent by name length: roughly 5 USD per year for names of five or more characters, about 160 USD for four-character names, and about 640 USD for three-character names, paid in ETH. Shorter names are deliberately priced higher because they are scarce and in high demand.'
 ---
 
-The **.eth name** is one of the best-known identifiers in Web3, but it is widely misunderstood. Despite the dot-suffix, **.eth is not an ICANN domain and not part of the DNS**. It is a name issued by the [Ethereum Name Service (ENS)](https://ens.domains), a set of smart contracts living on the Ethereum blockchain. There is no IANA root-zone entry for .eth and no ICANN registry agreement, because ENS exists entirely outside that system.
+The **.eth name** is one of the best-known identifiers in Web3, but it is widely misunderstood. Despite the dot-suffix, **.eth is not an [ICANN](/en/glossary/icann/) domain and not part of the DNS**. It is a name issued by the [Ethereum Name Service (ENS)](https://ens.domains), a set of [smart contracts](/en/glossary/smart-contract/) living on the [Ethereum](/en/glossary/ethereum/) blockchain. There is no IANA root-zone entry for .eth and no ICANN registry agreement, because ENS exists entirely outside that system.
 
 If you are deciding whether a .eth name fits your project, the key is to understand what it actually is: a blockchain-native name, held as an NFT, that mainly labels Ethereum addresses and decentralized content. It complements a conventional domain rather than replacing it.
 
@@ -46,7 +46,7 @@ This is the critical distinction from a normal top-level domain. A .com or .xyz 
 
 ENS launched on **May 4, 2017**, proposed by Nick Johnson and built with support from the Ethereum Foundation. The original system distributed names via Vickrey auctions and initially restricted registrations to names of seven characters or longer.
 
-In **May 2019** ENS migrated to the "permanent registrar" still in use today, replacing the auction model with length-based annual pricing and making .eth names tradable ERC-721 NFTs. In **November 2021** ENS decentralized governance by launching the **ENS DAO** and ENS token, so registration revenue now flows to the DAO treasury rather than a private registry. Short and dictionary .eth names have changed hands for large sums on NFT marketplaces, though specific sale figures vary and should be checked against on-chain records before being quoted.
+In **May 2019** ENS migrated to the "permanent registrar" still in use today, replacing the [auction](/en/glossary/auction/) model with length-based annual pricing and making .eth names tradable ERC-721 NFTs. In **November 2021** ENS decentralized governance by launching the **ENS DAO** and ENS token, so registration revenue now flows to the DAO treasury rather than a private registry. Short and dictionary .eth names have changed hands for large sums on NFT marketplaces, though specific sale figures vary and should be checked against on-chain records before being quoted.
 
 ## How people use .eth
 
@@ -55,7 +55,7 @@ A .eth name is used very differently from a website domain. Real, common uses in
 - **Human-readable wallet addresses** — replacing a 42-character `0x…` address with `alice.eth` when sending or receiving ETH and tokens.
 - **Web3 identity / usernames** — a single name reused as a login or profile across wallets, dApps, and crypto-social apps.
 - **DAO and protocol branding** — teams using a `name.eth` as their on-chain identity and treasury label.
-- **Decentralized content** — pointing a name at an IPFS content hash so it can serve a censorship-resistant site through a Web3 gateway.
+- **Decentralized content** — pointing a name at an [IPFS](/en/glossary/ipfs/) content hash so it can serve a censorship-resistant site through a Web3 gateway.
 - **Subname issuance** — projects handing out `you.project.eth` subnames to members.
 
 **Who it's not ideal for:** anyone who needs a conventional, universally reachable website. If your goal is a marketing site, a business email address, or anything a non-crypto visitor must reach by typing it into Chrome or Safari, a .eth name is the wrong tool — you want a DNS domain such as [.com](/en/tld/com), [.io](/en/tld/io), [.ai](/en/tld/ai), or [.app](/en/tld/app).
@@ -80,11 +80,11 @@ Pick **.eth** when you want a blockchain-native identity for a wallet, DAO, or o
 - **True self-custody** — a correctly held .eth name lives in your wallet as an NFT; there is no registrar account that can be socially engineered into transferring it.
 - **Native Ethereum integration** — wallets and dApps resolve .eth names automatically, turning a cryptic address into something you can read and verify.
 - **Permissionless** — anyone can register one in minutes with a wallet and some ETH; no application, credential, or approval.
-- **Composability** — because it is a standard ERC-721 NFT, a .eth name can be traded, listed, lent, or used as collateral wherever NFTs are supported.
+- **[Composability](/en/glossary/composability/)** — because it is a standard ERC-721 NFT, a .eth name can be traded, listed, lent, or used as [collateral](/en/glossary/collateral/) wherever NFTs are supported.
 
 ## Things to consider
 
-The trade-offs are real and worth stating plainly. A .eth name **does not resolve in ordinary browsers** without a Web3 resolver, browser extension, or gateway service, so it cannot serve as a normal website address. Ownership is **rented, not permanent** — you pay annual rent in ETH, and a lapsed name can be lost after its grace period. You also bear **self-custody risk**: lose your wallet's keys and you lose control of the name, with no support desk to recover it. Finally, registration and renewal cost **gas** on top of rent, and short names are expensive by design.
+The trade-offs are real and worth stating plainly. A .eth name **does not resolve in ordinary browsers** without a Web3 resolver, browser extension, or gateway service, so it cannot serve as a normal website address. Ownership is **rented, not permanent** — you pay annual rent in ETH, and a lapsed name can be lost after its [grace period](/en/glossary/grace-period/). You also bear **self-custody risk**: lose your wallet's keys and you lose control of the name, with no support desk to recover it. Finally, registration and renewal cost **gas** on top of rent, and short names are expensive by design.
 
 ## Who can register a .eth name?
 
@@ -109,7 +109,7 @@ A .eth name reads as unmistakably crypto-native, which is an asset for a wallet,
 Namefi is an [ICANN-accredited registrar](https://namefi.io) that also supports Web3 and tokenized domains, which makes it a natural home base for builders who live in both worlds:
 
 1. **Secure your brand in DNS** — register the conventional domain your audience will actually type, such as a [.com](/en/tld/com), [.xyz](/en/tld/xyz), or [.dev](/en/tld/dev) name, with transparent pricing.
-2. **Tokenize for Web3 ownership** — turn that DNS domain into an on-chain NFT asset on Namefi, getting NFT-grade self-custody and transferability similar to what makes .eth appealing, while keeping a name that still resolves in every browser.
+2. **[Tokenize](/en/glossary/tokenize/) for Web3 ownership** — turn that DNS domain into an on-chain NFT asset on Namefi, getting NFT-grade self-custody and transferability similar to what makes .eth appealing, while keeping a name that still resolves in every browser.
 3. **Pair it with your .eth identity** — use a .eth name as your Ethereum-native handle alongside the Namefi-managed domain that serves your real website and email.
 
 [Namefi](https://namefi.io) bridges Web2 and Web3 so you get the best of both: real DNS reachability plus blockchain-native ownership.

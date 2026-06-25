@@ -93,7 +93,7 @@ Pick .com when trust and instinctive credibility matter most; pick [.xyz](/en/tl
 
 **Registration restrictions: open to all.** .sbs is an unrestricted generic TLD — there is no credential, professional-membership, community, or local-presence requirement. Any individual or organization worldwide can register a .sbs name through an accredited [registrar](/en/glossary/registrar).
 
-A trademark **sunrise period** ran ahead of general availability in 2021, so the land-rush phase is long over; today registrations are handled on a first-come, first-served basis. The extension supports internationalized domain names (IDNs) and [DNSSEC](/en/glossary/dnssec), and WHOIS privacy is available through most registrars. Standard ICANN lifecycle rules apply — including the auto-renew grace, redemption-grace, and pending-delete periods — so a lapsed name is not immediately re-available. The binding rules are set out in the [ICANN Registry Agreement for .sbs](https://www.icann.org/en/registry-agreements/details/sbs) and ShortDot's [domain registration terms](https://shortdot.bond/terms-and-conditions-for-domain-registration).
+A trademark **sunrise period** ran ahead of general availability in 2021, so the land-rush phase is long over; today registrations are handled on a first-come, first-served basis. The extension supports internationalized domain names (IDNs) and [DNSSEC](/en/glossary/dnssec), and [WHOIS privacy](/en/glossary/whois-privacy/) is available through most registrars. Standard ICANN lifecycle rules apply — including the [auto-renew](/en/glossary/domain-renewal/) grace, redemption-grace, and pending-delete periods — so a lapsed name is not immediately re-available. The binding rules are set out in the [ICANN Registry Agreement for .sbs](https://www.icann.org/en/registry-agreements/details/sbs) and ShortDot's [domain registration terms](https://shortdot.bond/terms-and-conditions-for-domain-registration).
 
 ## .sbs pricing and value
 
@@ -118,7 +118,7 @@ Practically, that means some spam filters, security tools, and cautious users ap
 2. **Choose** the exact name and review the term.
 3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you truly own, with easier transfers and added security — all with transparent pricing and fast DNS.
+[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and [Web3](/en/glossary/web3/). Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a [blockchain](/en/glossary/blockchain/) asset you truly own, with easier transfers and added security — all with transparent pricing and fast DNS.
 
 ## Frequently asked questions
 

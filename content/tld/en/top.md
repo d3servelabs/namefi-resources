@@ -38,7 +38,7 @@ That popularity comes with a complicated reputation. This page covers what .top 
 
 ## What is .top?
 
-The .top domain is a [new gTLD](/en/glossary/tld) introduced under [ICANN](/en/glossary/icann)'s New gTLD Program, the initiative that expanded the domain name system far beyond legacy extensions like .com, .net, and .org. Unlike a country-code TLD such as .uk or .de, .top is a **generic** extension with no geographic meaning, so it is available to registrants worldwide.
+The .top domain is a [new gTLD](/en/glossary/tld) introduced under [ICANN](/en/glossary/icann)'s New gTLD Program, the initiative that expanded the domain name system far beyond legacy extensions like .com, [.net](/en/tld/net/), and [.org](/en/tld/org/). Unlike a country-code TLD such as .uk or .de, .top is a **generic** extension with no geographic meaning, so it is available to registrants worldwide.
 
 The string itself is the everyday English word "top." That semantic association with rankings, quality, and being "at the top" is the suffix's main branding hook, and it reads cleanly in many markets — including across Asia, where .top saw especially strong early adoption.
 
@@ -46,7 +46,7 @@ For search, this matters: Google treats new gTLDs like .top as ordinary generic 
 
 ## History of .top
 
-ICANN delegated .top to the root zone in 2014, with general availability opening in November of that year. The registry priced the extension aggressively from the start, and growth was rapid: .top quickly became one of the highest-volume new gTLDs by total registrations, frequently appearing near the top of new-gTLD zone-size rankings throughout the late 2010s and into the 2020s.
+ICANN delegated .top to the [root zone](/en/glossary/root-zone/) in 2014, with general availability opening in November of that year. The registry priced the extension aggressively from the start, and growth was rapid: .top quickly became one of the highest-volume new gTLDs by total registrations, frequently appearing near the top of new-gTLD zone-size rankings throughout the late 2010s and into the 2020s.
 
 That scale has been a double-edged sword. The same low prices and easy, unrestricted registration that fueled adoption also attracted abuse. In 2024, security researchers and ICANN flagged .top as a heavily abused namespace (covered in the reputation section below), making its history as much about volume management as about brand-building. Beyond aggregate registration counts, the registry does not publish independently verified milestone figures, so we avoid quoting specific sales or counts here.
 
@@ -64,7 +64,7 @@ Real, common use cases for .top include:
 
 ## Notable sites using .top
 
-.top is dominated by long-tail small businesses, marketers, and personal projects rather than household-name flagship sites, so its most honest description is a high-volume, broadly distributed namespace rather than one anchored by famous brands. Major companies typically register .top defensively (to protect a trademark) and keep their primary presence on legacy extensions. Rather than name a specific marquee site — which would risk fabricating an example — the realistic picture is millions of independent ranking sites, regional businesses, redirects, and investor-held names. Treat any "famous .top site" claim with skepticism unless you can verify it directly.
+.top is dominated by long-tail small businesses, marketers, and personal projects rather than household-name flagship sites, so its most honest description is a high-volume, broadly distributed namespace rather than one anchored by famous brands. Major companies typically register .top defensively (to protect a [trademark](/en/glossary/trademark/)) and keep their primary presence on legacy extensions. Rather than name a specific marquee site — which would risk fabricating an example — the realistic picture is millions of independent ranking sites, regional businesses, redirects, and investor-held names. Treat any "famous .top site" claim with skepticism unless you can verify it directly.
 
 ## .top vs other domains
 
@@ -97,7 +97,7 @@ Choose **.com** when trust and recognition matter most and you can find or affor
 
 **Registration restrictions: open to all.** There are no eligibility requirements for .top — no local-presence rule, no credential, no community membership, and no trademark prerequisite for general registration. Anyone, anywhere can register an available .top name on a first-come, first-served basis.
 
-Standard new-gTLD mechanics apply: trademark holders could use the Trademark Clearinghouse during the original Sunrise period, IDNs are supported, and ordinary length rules apply. Administratively, .top supports [DNSSEC](/en/glossary/dnssec), most registrars offer WHOIS privacy, and the namespace follows the usual ICANN registrar transfer, renewal, and redemption-grace lifecycle. For the binding rules and operator obligations — including the DNS-abuse requirements that have been enforced against this registry — see the official [ICANN Registry Agreement for .top](https://www.icann.org/en/registry-agreements/details/top).
+Standard new-gTLD mechanics apply: [trademark](/en/glossary/trademark/) holders could use the [Trademark Clearinghouse](/en/glossary/tmch/) during the original Sunrise period, IDNs are supported, and ordinary length rules apply. Administratively, .top supports [DNSSEC](/en/glossary/dnssec), most registrars offer [WHOIS privacy](/en/glossary/whois-privacy/), and the namespace follows the usual ICANN registrar transfer, renewal, and redemption-grace lifecycle. For the binding rules and operator obligations — including the DNS-abuse requirements that have been enforced against this registry — see the official [ICANN Registry Agreement for .top](https://www.icann.org/en/registry-agreements/details/top).
 
 ## .top pricing and value
 
@@ -111,7 +111,7 @@ Because prices, promotions, and premium tiers change constantly, we list no figu
 
 ## Reputation and email deliverability
 
-This is the single most important section for a .top buyer. The suffix has a **documented abuse problem**. An Interisle Consulting study found .top to be one of the most common TLDs in phishing during 2023–2024, and in July 2024 ICANN issued a public breach notice to the registry for failing to act adequately on DNS-abuse reports — reporting summarized in [KrebsOnSecurity's coverage of the .top breach notice](https://krebsonsecurity.com/2024/07/phish-friendly-domain-registry-top-put-on-notice/).
+This is the single most important section for a .top buyer. The suffix has a **documented abuse problem**. An Interisle Consulting study found .top to be one of the most common TLDs in [phishing](/en/glossary/phishing/) during 2023–2024, and in July 2024 ICANN issued a public breach notice to the registry for failing to act adequately on DNS-abuse reports — reporting summarized in [KrebsOnSecurity's coverage of the .top breach notice](https://krebsonsecurity.com/2024/07/phish-friendly-domain-registry-top-put-on-notice/).
 
 Practically, this means some spam filters, reputation services, and security tools may score a brand-new .top domain more cautiously than a .com. It does **not** mean a .top site cannot succeed or rank — Google evaluates the page, not the TLD — but you should plan mitigation: warm up email sending gradually, configure SPF, DKIM, and DMARC correctly, keep your content clean, and monitor blocklists. If pristine deliverability is mission-critical (e.g. transactional email for a financial product), a less abuse-associated extension may be the safer default.
 
@@ -128,7 +128,7 @@ Practically, this means some spam filters, reputation services, and security too
 2. Choose the .top name (and any defensive variants) you want.
 3. Complete registration and configure DNS.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar with transparent pricing, fast DNS, and optional Web3 [tokenization](/en/glossary/tokenize) — so a .top domain can be represented as an on-chain asset and managed from your wallet. No specific prices are quoted here; see current rates at checkout.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing, fast DNS, and optional [Web3](/en/glossary/web3/) [tokenization](/en/glossary/tokenize) — so a .top domain can be represented as an on-chain asset and managed from your [wallet](/en/glossary/wallet/). No specific prices are quoted here; see current rates at checkout.
 
 ## Frequently asked questions
 

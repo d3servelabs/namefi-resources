@@ -20,7 +20,7 @@ faqs:
     answer: 'The .realtor registry is operated by Real Estate Domains LLC, which is also the sole registrar. It runs the TLD under the direction of the National Association of REALTORS, which sponsors the extension and controls eligibility.'
 ---
 
-The **.realtor** domain is a restricted top-level domain (TLD) reserved for members of organized real estate. Unlike open extensions that anyone can buy, a `.realtor` name is a credential in itself: it can only be licensed by members of the National Association of REALTORS® (NAR), the Canadian Real Estate Association (CREA), and their affiliated members in good standing. For an agent or brokerage, that exclusivity is the whole point — the suffix tells clients you belong to a recognized professional body.
+The **.realtor** domain is a restricted [top-level domain](/en/glossary/tld/) (TLD) reserved for members of organized real estate. Unlike open extensions that anyone can buy, a `.realtor` name is a credential in itself: it can only be licensed by members of the National Association of REALTORS® (NAR), the Canadian Real Estate Association (CREA), and their affiliated members in good standing. For an agent or brokerage, that exclusivity is the whole point — the suffix tells clients you belong to a recognized professional body.
 
 This page explains who is eligible, who runs the registry, how the licensing model differs from normal domain ownership, and whether a `.realtor` address is worth it. Because the eligibility rules are strict and enforced, getting them right matters more here than for almost any other suffix.
 
@@ -39,7 +39,7 @@ This page explains who is eligible, who runs the registry, how the licensing mod
 
 ## What is .realtor?
 
-"REALTOR®" is not a generic word for a real-estate agent — it is a registered trademark of the National Association of REALTORS®, applied only to members who subscribe to NAR's Code of Ethics. The `.realtor` domain extends that trademark into the domain namespace, so the suffix carries the same membership meaning a real address. That is what separates it from generic real-estate suffixes.
+"REALTOR®" is not a generic word for a real-estate agent — it is a registered [trademark](/en/glossary/trademark/) of the National Association of REALTORS®, applied only to members who subscribe to NAR's Code of Ethics. The `.realtor` domain extends that trademark into the domain namespace, so the suffix carries the same membership meaning a real address. That is what separates it from generic real-estate suffixes.
 
 `.realtor` is a **generic** new gTLD, not a country-code extension, but it functions as a sponsored, community-restricted TLD: NAR sponsors it and controls who may use it. According to its [IANA root-zone entry](https://www.iana.org/domains/root/db/realtor.html), it was delegated to the DNS root in 2014 under ICANN's New gTLD Program. Because it is generic rather than geographic, Google does not tie it to any single country. As [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) explains, many newer gTLDs are treated as generic and carry no built-in country signal — so a `.realtor` site can rank and target markets like a `.com`, even though it spans the US and Canadian membership bases.
 
@@ -106,7 +106,7 @@ Choose `.com` when broad familiarity and resale value matter most and you do not
 
 Crucially, **NAR determines eligibility at its sole discretion** — it decides who qualifies as an affiliate and which `.realtor` names a member may license. Anyone who does not meet the criteria may not license a `.realtor` domain, and losing membership in good standing can affect the license.
 
-Two points further distinguish `.realtor`. First, it is a **license, not ownership**: the agreement states you do not "own" the domain, and Real Estate Domains LLC remains the registered holder while you hold a licensee's usage rights. Second, registration runs through the operator's `.realtor` system rather than the open registrar market. The registry supports **DNSSEC**, and WHOIS, transfer, and renewal behavior follow the operator's and NAR's policies rather than generic gTLD defaults. The authoritative rules are the [ICANN .realtor Registry Agreement](https://www.icann.org/en/registry-agreements/details/realtor) and NAR's license terms.
+Two points further distinguish `.realtor`. First, it is a **license, not ownership**: the agreement states you do not "own" the domain, and Real Estate Domains LLC remains the registered holder while you hold a licensee's usage rights. Second, registration runs through the operator's `.realtor` system rather than the open registrar market. The registry supports **DNSSEC**, and [WHOIS](/en/glossary/whois/), transfer, and renewal behavior follow the operator's and NAR's policies rather than generic gTLD defaults. The authoritative rules are the [ICANN .realtor Registry Agreement](https://www.icann.org/en/registry-agreements/details/realtor) and NAR's license terms.
 
 ## .realtor pricing and value
 
@@ -137,7 +137,7 @@ As always, deliverability depends far more on configuration than on the suffix. 
 2. **Choose** the exact `.realtor` name that fits you, your team, or your brokerage.
 3. **Register** and configure DNS — fast, reliable DNS management comes built in.
 
-Note that `.realtor` is a membership-gated TLD administered by its sponsor, so eligibility verification is part of the process. [Namefi](https://namefi.io) is an ICANN-accredited registrar with transparent pricing that also supports Web3 tokenization for eligible domains. [Explore domains and register at Namefi](https://namefi.io).
+Note that `.realtor` is a membership-gated TLD administered by its sponsor, so eligibility verification is part of the process. [Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing that also supports [Web3](/en/glossary/web3/) tokenization for eligible domains. [Explore domains and register at Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

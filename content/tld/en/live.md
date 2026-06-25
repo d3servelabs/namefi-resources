@@ -20,7 +20,7 @@ faqs:
     answer: 'The .live top-level domain was delegated to the DNS root in June 2015 as part of ICANN New gTLD Program and reached general availability later that year. It is now operated by Identity Digital, the registry formerly known as Donuts.'
 ---
 
-The **.live** domain is a generic top-level domain (gTLD) built around a single, instantly understood idea: something is happening right now. Where a country-code suffix signals geography, .live signals action and immediacy, which makes it a natural fit for streamers, broadcasters, event pages, and any project where the call to "watch now" is the point. This page explains what .live is, who runs it, who uses it, the rules, and how it compares with the alternatives.
+The **.live** domain is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built around a single, instantly understood idea: something is happening right now. Where a country-code suffix signals geography, .live signals action and immediacy, which makes it a natural fit for streamers, broadcasters, event pages, and any project where the call to "watch now" is the point. This page explains what .live is, who runs it, who uses it, the rules, and how it compares with the alternatives.
 
 Because "live" is a common English word with the same meaning across most of the world, the suffix doubles as part of the message rather than just a technical address: `concert.live` or `news.live` reads as a phrase, not a URL.
 
@@ -38,7 +38,7 @@ Because "live" is a common English word with the same meaning across most of the
 
 ## What is .live?
 
-The .live domain is a generic top-level domain introduced under [ICANN's New gTLD Program](https://newgtlds.icann.org/en/), the expansion that took the domain name system far beyond the original handful of suffixes like .com and .org. Unlike a country-code TLD such as .uk or .de, .live carries no geographic meaning, so Google treats it as a generic, non-geotargeted extension. You can read the authoritative root-zone record on the [IANA .live database entry](https://www.iana.org/domains/root/db/live.html).
+The .live domain is a generic top-level domain introduced under [ICANN's New gTLD Program](https://newgtlds.icann.org/en/), the expansion that took the domain name system far beyond the original handful of suffixes like .com and [.org](/en/tld/org/). Unlike a country-code TLD such as .uk or .de, .live carries no geographic meaning, so Google treats it as a generic, non-geotargeted extension. You can read the authoritative root-zone record on the [IANA](/en/glossary/iana/) [.live database entry](https://www.iana.org/domains/root/db/live.html).
 
 In practical terms, "generic and non-geotargeted" means a .live site is not automatically associated with any single country in search results. That helps if your audience is global — a livestream has no borders — and is neutral if your audience is local, since you would lean on content and local signals for regional relevance.
 
@@ -81,8 +81,8 @@ Choose **.com** when broad credibility and the exact-match name matter more than
 ## Why choose .live?
 
 - **Built-in meaning.** The suffix completes a phrase — `town-hall.live`, `q-and-a.live` — so the whole name communicates purpose at a glance.
-- **Availability.** Because the .com landscape is heavily registered, short, keyword-rich names are far easier to find on .live, often without aftermarket prices.
-- **Memorability for events.** A clean `event.live` is easier to print on a poster or say aloud than a long platform subdomain.
+- **Availability.** Because the .com landscape is heavily registered, short, keyword-rich names are far easier to find on .live, often without [aftermarket](/en/glossary/aftermarket/) prices.
+- **Memorability for events.** A clean `event.live` is easier to print on a poster or say aloud than a long platform [subdomain](/en/glossary/subdomain/).
 - **Neutral, global footprint.** As a non-geotargeted gTLD, it works for an international audience without tying your brand to one country.
 
 ## Things to consider
@@ -94,9 +94,9 @@ Choose **.com** when broad credibility and the exact-match name matter more than
 
 ## Who can register a .live domain?
 
-**Registration restrictions: none.** The .live domain is an open generic TLD. There is no credential, license, membership, or local-presence requirement — any person or organization anywhere can register an available .live name on a first-come, first-served basis. Unlike gated suffixes such as .law (bar membership) or .realtor (NAR membership), .live is fully open.
+**Registration restrictions: none.** The .live domain is an open generic TLD. There is no credential, license, membership, or local-presence requirement — any person or organization anywhere can register an available .live name on a first-come, first-served basis. Unlike gated suffixes such as [.law](/en/tld/law/) (bar membership) or [.realtor](/en/tld/realtor/) (NAR membership), .live is fully open.
 
-Standard new-gTLD rules apply: a sunrise period gave trademark holders early access at launch, names follow normal length and label rules, and internationalized domain names (IDNs) are supported. The registry supports **DNSSEC**, and WHOIS privacy is generally available depending on your registrar. Transfer, renewal, and redemption-grace behavior follow ICANN's standard gTLD lifecycle. The authoritative rules come from the registry: see [Identity Digital's policies](https://www.identity.digital/policies), including the acceptable-use policy that applies across its TLDs.
+Standard new-gTLD rules apply: a sunrise period gave [trademark](/en/glossary/trademark/) holders early access at launch, names follow normal length and label rules, and internationalized domain names (IDNs) are supported. The registry supports **DNSSEC**, and [WHOIS privacy](/en/glossary/whois-privacy/) is generally available depending on your registrar. Transfer, renewal, and redemption-grace behavior follow ICANN's standard gTLD lifecycle. The authoritative rules come from the registry: see [Identity Digital's policies](https://www.identity.digital/policies), including the acceptable-use policy that applies across its TLDs.
 
 ## .live pricing and value
 
@@ -118,7 +118,7 @@ The strongest .live names are domain "hacks" where the suffix finishes the thoug
 2. **Choose** the best available `name.live`, reviewing both the registration and renewal terms.
 3. **Register** and configure DNS to point at your stream, landing page, or platform.
 
-Namefi is an ICANN-accredited registrar with transparent pricing and fast DNS, and it also supports Web3 tokenized domains — so you can hold, manage, and transfer your .live name as an on-chain asset if you choose. [Register your .live domain at Namefi](https://namefi.io).
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing and fast DNS, and it also supports [Web3](/en/glossary/web3/) tokenized domains — so you can hold, manage, and transfer your .live name as an on-chain asset if you choose. [Register your .live domain at Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

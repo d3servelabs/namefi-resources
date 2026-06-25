@@ -18,7 +18,7 @@ faqs:
     answer: 'Yes. The word "deals" is exactly what bargain-hunting shoppers search for, so the suffix describes the offer in the name itself. It is a natural fit for coupon directories, daily-deal sites, and seasonal sale landing pages.'
 ---
 
-The **.deals domain** is a descriptive new generic top-level domain (gTLD) built around one of the most commercially loaded words on the internet: *deals*. For coupon sites, discount aggregators, flash-sale pages, and any brand that wants an address shoppers instantly understand, .deals puts the value proposition right in the name. Instead of bolting "savings" onto a forgettable string, you can register something like `summer.deals` or `brand.deals` and tell visitors exactly what they will find.
+The **.deals domain** is a descriptive new [generic top-level domain](/en/glossary/gtld/) (gTLD) built around one of the most commercially loaded words on the internet: *deals*. For coupon sites, discount aggregators, flash-sale pages, and any brand that wants an address shoppers instantly understand, .deals puts the value proposition right in the name. Instead of bolting "savings" onto a forgettable string, you can register something like `summer.deals` or `brand.deals` and tell visitors exactly what they will find.
 
 This page explains what .deals is, who runs it, how people use it, and the real trade-offs to weigh before you register one.
 
@@ -38,7 +38,7 @@ This page explains what .deals is, who runs it, how people use it, and the real 
 
 .deals is a **generic, non-sponsored gTLD** that entered the DNS root during ICANN's 2012 new-gTLD expansion. The word is a dictionary term in English, so the suffix carries an obvious meaning to a global audience: bargains, discounts, and offers. It is not tied to any country or community, which means it functions as a worldwide commercial extension rather than a regional one.
 
-For search engines, that generic status matters. Google does not geo-target .deals to any particular country — unlike a ccTLD such as `.de` or `.uk` — so a .deals site can rank globally without being boxed into one market. Google's own guidance is that new gTLDs are treated like any other generic domain for ranking purposes; the suffix neither helps nor hurts on its own. You can confirm the root-zone delegation in the official [IANA root database entry for .deals](https://www.iana.org/domains/root/db/deals.html).
+For search engines, that generic status matters. Google does not geo-target .deals to any particular country — unlike a [ccTLD](/en/glossary/cctld/) such as `.de` or `.uk` — so a .deals site can rank globally without being boxed into one market. Google's own guidance is that new gTLDs are treated like any other generic domain for ranking purposes; the suffix neither helps nor hurts on its own. You can confirm the root-zone delegation in the official [IANA root database entry for .deals](https://www.iana.org/domains/root/db/deals.html).
 
 ## History of .deals
 
@@ -78,7 +78,7 @@ Pick **.deals** when the offer *is* the product — coupons, promo codes, flash 
 
 - **The name explains itself.** "Deals" is exactly what bargain-hunters type and search for, so a `something.deals` address communicates intent before a visitor reads a single word of copy.
 - **Strong exact-match potential.** Short, memorable left-of-dot words (`hot.deals`, `daily.deals`) read as natural phrases, which is hard to achieve on a crowded [.com](/en/tld/com).
-- **Globally generic.** No country targeting and no eligibility gate, so it works for any market and any registrant.
+- **Globally generic.** No country targeting and no eligibility gate, so it works for any market and any [registrant](/en/glossary/registrant/).
 - **Part of a coherent family.** Sitting alongside `.coupons`, `.sale`, and `.discount` under the same operator makes it easy to build a tidy set of campaign domains.
 
 ## Things to consider
@@ -90,13 +90,13 @@ Pick **.deals** when the offer *is* the product — coupons, promo codes, flash 
 
 ## Who can register a .deals domain?
 
-**Registration restrictions: open to all.** .deals is a non-sponsored, unrestricted gTLD. There is no credential, membership, trademark, or local-presence requirement — any individual or organization can register an available .deals name through an ICANN-accredited registrar.
+**Registration restrictions: open to all.** .deals is a non-sponsored, unrestricted gTLD. There is no credential, membership, [trademark](/en/glossary/trademark/), or local-presence requirement — any individual or organization can register an available .deals name through an [ICANN-accredited registrar](/en/glossary/accredited-registrar/).
 
 A few administrative facts worth knowing:
 
-- **Sunrise/trademark:** like all new gTLDs, .deals went through an ICANN-mandated sunrise period giving trademark holders (via the Trademark Clearinghouse) first claim on matching names. That period is long closed; registration is now first-come, first-served, and the Trademark Claims notice service protects matched marks.
+- **Sunrise/trademark:** like all new gTLDs, .deals went through an ICANN-mandated sunrise period giving trademark holders (via the [Trademark Clearinghouse](/en/glossary/tmch/)) first claim on matching names. That period is long closed; registration is now first-come, first-served, and the Trademark Claims notice service protects matched marks.
 - **Length and IDN rules:** standard label rules apply (3–63 characters), and the registry supports internationalized domain names for non-Latin scripts.
-- **Admin behavior:** DNSSEC is supported, WHOIS privacy is offered by most registrars, and the suffix follows the standard ICANN gТLD lifecycle for transfers, renewals, and the redemption grace period after expiry.
+- **Admin behavior:** DNSSEC is supported, [WHOIS privacy](/en/glossary/whois-privacy/) is offered by most registrars, and the suffix follows the standard ICANN gТLD lifecycle for transfers, renewals, and the redemption [grace period](/en/glossary/grace-period/) after expiry.
 
 The governing rules live in the **ICANN Registry Agreement** for the string — see the official [.deals registry agreement details on ICANN](https://www.icann.org/en/registry-agreements/details/deals) for the authoritative operator and policy record.
 
@@ -118,7 +118,7 @@ In practice, deliverability is governed far more by your sending hygiene than by
 
 ## Branding and naming tips
 
-- **Lean into the domain hack.** The strongest .deals names treat the dot as a word break: `daily.deals`, `hot.deals`, `travel.deals`, `brand.deals`. Aim for a two-word phrase that reads naturally.
+- **Lean into the [domain hack](/en/glossary/domain-hack/).** The strongest .deals names treat the dot as a word break: `daily.deals`, `hot.deals`, `travel.deals`, `brand.deals`. Aim for a two-word phrase that reads naturally.
 - **Keep the left label short and concrete.** A category or brand word works best; long or abstract phrases dilute the punch.
 - **Mind the plural.** It is *deals*, not *deal* — make sure your marketing, logo, and verbal mentions consistently say "dot deals" so people type the right thing.
 - **Pair it with your main brand.** Using `yourbrand.deals` for a promotions hub keeps campaigns memorable while your primary site stays on its core domain.
@@ -127,9 +127,9 @@ In practice, deliverability is governed far more by your sending hygiene than by
 
 1. **Search** for the name you want on [Namefi](https://namefi.io) to check availability across the suffix.
 2. **Choose** the exact `*.deals` string that best matches your campaign or brand.
-3. **Register** and configure DNS — Namefi offers transparent pricing, fast DNS setup, and the option to tokenize eligible domains for Web3 ownership.
+3. **Register** and configure DNS — Namefi offers transparent pricing, fast DNS setup, and the option to [tokenize](/en/glossary/tokenize/) eligible domains for [Web3](/en/glossary/web3/) ownership.
 
-Namefi is an ICANN-accredited registrar, so your .deals domain is a standard, fully portable registration you can transfer or manage like any other. [Start your search on Namefi](https://namefi.io).
+Namefi is an ICANN-accredited registrar, so your .deals domain is a standard, fully portable registration you can transfer or manage like any other. Start your search on [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

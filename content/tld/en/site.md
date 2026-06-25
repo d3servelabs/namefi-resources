@@ -18,7 +18,7 @@ faqs:
     answer: 'Low-cost open new gTLDs, including .site, have seen some abuse, so a few aggressive spam filters score unknown new-gTLD senders more cautiously. A properly configured domain with SPF, DKIM, and DMARC and a warmed-up sending reputation delivers reliably.'
 ---
 
-The **.site** domain is one of the most literal extensions on the internet: the word "site" is shorthand for "website" in English and is recognized in many other languages, so a .site address tells visitors exactly what they are looking at. It is a generic top-level domain (gTLD) launched under ICANN's New gTLD Program, open to anyone, anywhere, with no eligibility hoops.
+The **.site** domain is one of the most literal extensions on the internet: the word "site" is shorthand for "website" in English and is recognized in many other languages, so a .site address tells visitors exactly what they are looking at. It is a [generic top-level domain](/en/glossary/gtld/) (gTLD) launched under ICANN's [New gTLD](/en/glossary/new-gtld/) Program, open to anyone, anywhere, with no eligibility hoops.
 
 For founders, indie developers, and brand owners who find their ideal name already taken on .com, .site is a practical, descriptive alternative that keeps the address short and self-explanatory. This page covers who runs it, how it is used, its SEO and email-deliverability profile, and what to weigh before you register.
 
@@ -36,13 +36,13 @@ For founders, indie developers, and brand owners who find their ideal name alrea
 
 ## What is .site?
 
-.site is a generic top-level domain delegated to the DNS root in 2015 as part of [ICANN's New gTLD Program](https://newgtlds.icann.org/), the 2012-round expansion that added hundreds of new endings to the namespace. Unlike a country-code TLD such as .io or .de, .site has no geographic meaning — it is fully generic and globally targeted.
+.site is a generic top-level domain delegated to the DNS root in 2015 as part of [ICANN's New gTLD Program](https://newgtlds.icann.org/), the 2012-round expansion that added hundreds of new endings to the namespace. Unlike a country-code TLD such as [.io](/en/tld/io/) or .de, .site has no geographic meaning — it is fully generic and globally targeted.
 
-That distinction matters for international projects. According to [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites), generic new TLDs like .site are treated as global by default, so a .site site is not geo-locked to any single country the way a ccTLD often is. The [IANA root-zone record for .site](https://www.iana.org/domains/root/db/site.html) lists Radix as the current operator and shows its delegation history.
+That distinction matters for international projects. According to [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites), generic new TLDs like .site are treated as global by default, so a .site site is not geo-locked to any single country the way a [ccTLD](/en/glossary/cctld/) often is. The [IANA root-zone record for .site](https://www.iana.org/domains/root/db/site.html) lists Radix as the current operator and shows its delegation history.
 
 ## History of .site
 
-.site was delegated in 2015 and opened to general registration the same year through the registry now operated by Radix, a company that runs a portfolio of word-based new gTLDs including .online, .store, .tech, and .fun. Because "site" is such a universal web term, the extension drew steady demand from its launch rather than relying on a single niche.
+.site was delegated in 2015 and opened to general registration the same year through the registry now operated by Radix, a company that runs a portfolio of word-based new gTLDs including .online, .store, .tech, and [.fun](/en/tld/fun/). Because "site" is such a universal web term, the extension drew steady demand from its launch rather than relying on a single niche.
 
 Adoption grew quickly enough that the registry reported the namespace passing one million registrations in February 2019. It has remained one of the more widely registered new gTLDs since. Radix has reported that the large majority of .site registrations come from small and medium businesses, concentrated in ecommerce and information-technology use — a profile consistent with the extension's plain "this is a website" framing.
 
@@ -54,7 +54,7 @@ Adoption grew quickly enough that the registry reported the namespace passing on
 - **Portfolios and personal pages** — designers, writers, and freelancers using a `firstnamelastname.site` pattern.
 - **Landing pages and microsites** — single-purpose campaign, product, or event pages where the URL just needs to read as "a website."
 - **Documentation and project sites** — developers spinning up a public page for an open-source tool or side project.
-- **Brand-defensive registrations** — companies securing the .site version of a trademark alongside their primary domain.
+- **Brand-defensive registrations** — companies securing the .site version of a [trademark](/en/glossary/trademark/) alongside their primary domain.
 
 **Who it's not ideal for:** large enterprises whose audience expects a .com flagship, or projects that want a country-specific signal (a ccTLD fits better there). If you are building an explicitly tech- or app-branded product, a more specialized ending like [.app](/en/tld/app), [.dev](/en/tld/dev), or [.tech](/en/tld/tech) may communicate the category more sharply.
 
@@ -87,9 +87,9 @@ Choose [.com](/en/tld/com) when maximum familiarity matters and the name is affo
 
 ## Who can register a .site domain?
 
-**Registration restrictions: open to all.** .site has no eligibility requirements — there is no credential gate (unlike .law or .cpa), no membership requirement, and no local-presence rule. Any individual or organization worldwide can register an available .site name on a first-come, first-served basis.
+**Registration restrictions: open to all.** .site has no eligibility requirements — there is no credential gate (unlike [.law](/en/tld/law/) or [.cpa](/en/tld/cpa/)), no membership requirement, and no local-presence rule. Any individual or organization worldwide can register an available .site name on a first-come, first-served basis.
 
-Standard new-gTLD safeguards still apply. During launch, a Sunrise period gave trademark holders (via the Trademark Clearinghouse) first opportunity to claim matching names, and the usual reserved- and premium-name lists apply. Names follow standard length rules, and the registry supports IDNs for non-Latin scripts. On the administrative side, DNSSEC is supported, WHOIS privacy is generally available through registrars, and transfers, renewals, and redemption-grace handling follow ICANN's standard gTLD lifecycle. The authoritative rules live in the [.site ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/site) and the [Radix registry policies](https://radix.website/policies).
+Standard new-gTLD safeguards still apply. During launch, a Sunrise period gave trademark holders (via the [Trademark Clearinghouse](/en/glossary/tmch/)) first opportunity to claim matching names, and the usual reserved- and premium-name lists apply. Names follow standard length rules, and the registry supports IDNs for non-Latin scripts. On the administrative side, DNSSEC is supported, [WHOIS privacy](/en/glossary/whois-privacy/) is generally available through registrars, and transfers, renewals, and redemption-grace handling follow ICANN's standard gTLD lifecycle. The authoritative rules live in the [.site ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/site) and the [Radix registry policies](https://radix.website/policies).
 
 ## .site pricing and value
 
@@ -113,7 +113,7 @@ The appeal of .site is its literalness, so lean into it: pair a descriptive word
 2. **Choose** the exact .site name you want, noting whether it is a standard or premium registration.
 3. **Register** and complete checkout, then manage DNS from your dashboard.
 
-Namefi is an ICANN-accredited registrar that also supports Web3 tokenization, so a .site domain can optionally be managed as an on-chain asset alongside conventional DNS. You get transparent pricing and fast DNS management. [Search for your .site domain at Namefi](https://namefi.io) to get started.
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that also supports [Web3](/en/glossary/web3/) tokenization, so a .site domain can optionally be managed as an on-chain asset alongside conventional DNS. You get transparent pricing and fast DNS management. [Search for your .site domain at Namefi](https://namefi.io) to get started.
 
 ## Frequently asked questions
 

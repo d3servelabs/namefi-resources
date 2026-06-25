@@ -10,7 +10,7 @@ description: Learn about the .abarth TLD, its uses, advantages, and how to regis
 
 ## **What is .abarth?**
 
-The .abarth [Top-Level Domain](/en/glossary/tld/) (TLD) is a brand gTLD, representing the iconic Italian automobile marque, Abarth. Abarth, originally Abarth & C., is known for its high-performance vehicles and racing heritage. This TLD provides a dedicated online space for the Abarth brand, its community, and related content. While relatively new, the .abarth TLD is intended to serve as a hub for Abarth enthusiasts, owners, and the company itself, showcasing products, news, events, and fostering brand engagement.
+The .abarth [Top-Level Domain](/en/glossary/tld/) (TLD) is a brand [gTLD](/en/glossary/gtld/), representing the iconic Italian automobile marque, Abarth. Abarth, originally Abarth & C., is known for its high-performance vehicles and racing heritage. This TLD provides a dedicated online space for the Abarth brand, its community, and related content. While relatively new, the .abarth TLD is intended to serve as a hub for Abarth enthusiasts, owners, and the company itself, showcasing products, news, events, and fostering brand engagement.
 
 ## **How People Are Using .abarth**
 

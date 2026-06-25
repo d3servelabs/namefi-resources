@@ -15,7 +15,7 @@ The **.adac** [Top-Level Domain](/en/glossary/tld/) (TLD) is a specialized "Bran
 
 Introduced during the expansion of the internet's namespace by **[ICANN](https://www.icann.org/)** (Internet Corporation for Assigned Names and Numbers), the .adac TLD was designed to centralize the diverse services offered by the club—ranging from roadside assistance to insurance and travel—under a unified, authentic digital banner.
 
-For domain investors and tech enthusiasts, .adac represents the evolution of the internet towards **verified digital identity**. In an era where phishing and domain spoofing are rampant, a closed Brand TLD like .adac signals to the user that they are interacting with a verified entity. While currently restricted primarily to the organization's use, observing how major entities utilize such TLDs provides valuable insight into the future of **[domain investing](https://namefi.io)** and corporate digital strategy.
+For domain investors and tech enthusiasts, .adac represents the evolution of the internet towards **verified digital identity**. In an era where [phishing](/en/glossary/phishing/) and domain spoofing are rampant, a closed Brand TLD like .adac signals to the user that they are interacting with a verified entity. While currently restricted primarily to the organization's use, observing how major entities utilize such TLDs provides valuable insight into the future of **[domain investing](https://namefi.io)** and corporate digital strategy.
 
 ## **How People Are Using .adac**
 
@@ -43,7 +43,7 @@ While .adac is exclusive to the association, understanding its advantages highli
 *   **Unmatched Trust and Security:** A domain ending in .adac acts as a seal of approval. Users know immediately that the site is official and not a fraudulent copycat.
 *   **SEO Authority:** Search engines value relevance. For queries related to German automotive services, mobility, and travel safety, the semantic relevance of the TLD reinforces the content's authority.
 *   **Branding Clarity:** It eliminates the need for long, hyphenated domain names (e.g., `adac-insurance-services.com` can simply become `insurance.adac`).
-*   **Control:** The registry owner has complete control over who registers domains, effectively eliminating cybersquatting within that namespace.
+*   **Control:** The [registry](/en/glossary/registry/) owner has complete control over who registers domains, effectively eliminating [cybersquatting](/en/glossary/cybersquatting/) within that namespace.
 
 ## **Register Your .adac Domain at Namefi**
 
@@ -51,7 +51,7 @@ Are you interested in the world of specialized TLDs, domain investment, and [Web
 
 While the .adac registry is currently restricted to the ADAC organization, the world of domains is vast. At **Namefi**, we specialize in helping you secure high-value domains and **[tokenized Web3 domains](https://namefi.io)** that offer similar benefits of trust, brevity, and branding power.
 
-Whether you are looking for available brandable domains, new gTLDs that fit your niche (like .auto, .car, or [.club](/en/tld/club/)), or want to [tokenize](/en/glossary/tokenize/) your existing portfolio for easier trading on the blockchain, Namefi is your premier partner.
+Whether you are looking for available brandable domains, new gTLDs that fit your niche (like .auto, .car, or [.club](/en/tld/club/)), or want to [tokenize](/en/glossary/tokenize/) your existing portfolio for easier trading on the [blockchain](/en/glossary/blockchain/), Namefi is your premier partner.
 
 **Why use Namefi?**
 *   **[ICANN](/en/glossary/icann/)-Accredited** [Registrar](/en/glossary/registrar/).

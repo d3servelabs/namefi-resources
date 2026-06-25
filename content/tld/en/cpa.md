@@ -18,7 +18,7 @@ faqs:
     answer: 'Eligibility is re-checked at each renewal. If you can no longer demonstrate a valid CPA license or firm license, you may be unable to renew the domain, since the registry validates eligibility on an ongoing basis rather than only at first purchase.'
 ---
 
-The **.cpa domain** is one of the internet's few truly restricted extensions: a credential-gated top-level domain reserved for licensed Certified Public Accountants and CPA firms. Unlike open suffixes that anyone can buy, .cpa is administered in association with the American Institute of CPAs (AICPA) and operated by CPA.com, and every registrant's license is verified before a name is issued. For accounting professionals, that verification is the entire point — a .cpa address tells clients, at a glance, that the firm behind it is a real, licensed CPA practice.
+The **.cpa domain** is one of the internet's few truly restricted extensions: a credential-gated [top-level domain](/en/glossary/tld/) reserved for licensed Certified Public Accountants and CPA firms. Unlike open suffixes that anyone can buy, .cpa is administered in association with the American Institute of CPAs (AICPA) and operated by CPA.com, and every [registrant](/en/glossary/registrant/)'s license is verified before a name is issued. For accounting professionals, that verification is the entire point — a .cpa address tells clients, at a glance, that the firm behind it is a real, licensed CPA practice.
 
 This page explains what .cpa is, exactly who can register it, how the eligibility checks work, and where it fits relative to mainstream alternatives like [.com](/en/tld/com) and accounting-adjacent niche options.
 
@@ -36,9 +36,9 @@ This page explains what .cpa is, exactly who can register it, how the eligibilit
 
 ## What is .cpa?
 
-.cpa is a **new generic top-level domain (gTLD)** delegated under ICANN's new gTLD program, but it belongs to the restricted, profession-specific category rather than the open commercial one. The AICPA was awarded the .cpa TLD by ICANN in 2019, and CPA.com — the AICPA's business and technology arm — administers and manages it. You can confirm the delegation and sponsoring organization on the [IANA root-zone entry for .cpa](https://www.iana.org/domains/root/db/cpa.html), and the operator's own program lives at [register.domains.cpa](https://register.domains.cpa/).
+.cpa is a **new [generic top-level domain](/en/glossary/gtld/) (gTLD)** delegated under ICANN's new gTLD program, but it belongs to the restricted, profession-specific category rather than the open commercial one. The AICPA was awarded the .cpa TLD by ICANN in 2019, and CPA.com — the AICPA's business and technology arm — administers and manages it. You can confirm the delegation and sponsoring organization on the [IANA root-zone entry for .cpa](https://www.iana.org/domains/root/db/cpa.html), and the operator's own program lives at [register.domains.cpa](https://register.domains.cpa/).
 
-Because it is a generic (not country-code) TLD, Google treats .cpa as a generic extension with no built-in geo-targeting. As [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites) explains, generic TLDs are not tied to a single country for ranking purposes, so a .cpa name does not signal "US-only" the way a ccTLD would. The defining characteristic is the restriction itself: most extensions sell to whoever pays, but .cpa sells only to whoever can prove a CPA credential, which makes the suffix function less like a marketing label and more like a verifiable badge.
+Because it is a generic (not country-code) TLD, Google treats .cpa as a generic extension with no built-in geo-targeting. As [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites) explains, generic TLDs are not tied to a single country for ranking purposes, so a .cpa name does not signal "US-only" the way a [ccTLD](/en/glossary/cctld/) would. The defining characteristic is the restriction itself: most extensions sell to whoever pays, but .cpa sells only to whoever can prove a CPA credential, which makes the suffix function less like a marketing label and more like a verifiable badge.
 
 ## History of .cpa
 
@@ -56,7 +56,7 @@ The use cases are narrow by design, which is exactly why they are strong:
 
 - **Firm homepages** that signal a verified, licensed practice (e.g. `yourfirm.cpa`).
 - **Trusted email** — a `name@firm.cpa` address is hard for impersonators to spoof because they cannot obtain a matching .cpa domain.
-- **Client portals and secure document exchange**, where a recognizable, restricted domain reduces phishing risk.
+- **Client portals and secure document exchange**, where a recognizable, restricted domain reduces [phishing](/en/glossary/phishing/) risk.
 - **Individual practitioner sites** for sole proprietors and partners who hold a personal CPA license.
 
 **Who it's *not* ideal for:** anyone who is not a licensed CPA or CPA firm — bookkeepers, tax preparers without a CPA credential, accounting software vendors, fintech startups, or international accountants outside the eligible jurisdictions. For those audiences, an open extension is the realistic choice.
@@ -118,7 +118,7 @@ The verification covers both your CPA credential and your identity, so applicant
 2. **Confirm eligibility** — have your CPA or CPA firm license details ready, since the registry verifies them before issuing the name.
 3. **Choose and register**, then complete the verification step required for this restricted TLD.
 
-Namefi is an ICANN-accredited [registrar](/en/glossary/registrar) with transparent pricing, fast [DNS](/en/glossary/dns) management, and optional Web3 domain tokenization — so once your verified .cpa name is live, you can manage it the same way you would any other domain.
+Namefi is an ICANN-accredited [registrar](/en/glossary/registrar) with transparent pricing, fast [DNS](/en/glossary/dns) management, and optional [Web3](/en/glossary/web3/) domain tokenization — so once your verified .cpa name is live, you can manage it the same way you would any other domain.
 
 ## Frequently asked questions
 

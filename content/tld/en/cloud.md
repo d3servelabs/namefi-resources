@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. The .cloud registry supports DNSSEC for cryptographically signed DNS, and WHOIS privacy is offered through registrars rather than the registry, so availability depends on the registrar you choose.'
 ---
 
-The **.cloud domain** is a generic top-level domain (gTLD) built for the era of cloud computing, SaaS, and distributed infrastructure. For founders shipping a developer tool, teams naming a platform, or providers who want a web address that says exactly what they do, **what .cloud offers** is a short, descriptive, globally available extension with an unmistakable technical meaning.
+The **.cloud domain** is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the era of cloud computing, SaaS, and distributed infrastructure. For founders shipping a developer tool, teams naming a platform, or providers who want a web address that says exactly what they do, **what .cloud offers** is a short, descriptive, globally available extension with an unmistakable technical meaning.
 
 Unlike a country-code suffix, .cloud is open worldwide and carries no geographic baggage — which is part of why it has become a familiar sight on status pages, product subdomains, and infrastructure brands.
 
@@ -40,11 +40,11 @@ Unlike a country-code suffix, .cloud is open worldwide and carries no geographic
 
 The word "cloud" is the defining metaphor of modern computing — shorthand for services delivered over the internet rather than from a box under your desk. The **.cloud TLD** turns that metaphor into a web address, letting a brand signal at a glance that it lives in cloud, hosting, or distributed-infrastructure territory.
 
-.cloud is a **generic gTLD**, not a country-code TLD. That distinction matters for international projects: per [Google Search Central's guidance on generic TLDs](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), generic extensions like .cloud are not tied to any single country and are treated as global by default, so you can target audiences anywhere without the geo-targeting constraints that come with a ccTLD. You can verify its delegation details in the [IANA root-zone entry for .cloud](https://www.iana.org/domains/root/db/cloud.html).
+.cloud is a **generic gTLD**, not a country-code TLD. That distinction matters for international projects: per [Google Search Central's guidance on generic TLDs](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), generic extensions like .cloud are not tied to any single country and are treated as global by default, so you can target audiences anywhere without the geo-targeting constraints that come with a [ccTLD](/en/glossary/cctld/). You can verify its delegation details in the [IANA root-zone entry for .cloud](https://www.iana.org/domains/root/db/cloud.html).
 
 ## History of .cloud
 
-.cloud was awarded through ICANN's New gTLD Program and **delegated to the DNS root zone in 2015**, with [Aruba PEC S.p.A.](https://www.aruba.it/) — a subsidiary of Aruba S.p.A., one of Europe's largest hosting and cloud providers — securing the registry after a private auction among applicants. The registry kicked off the launch with a "Pioneers" program that highlighted early adopters in the cloud-services space.
+.cloud was awarded through ICANN's New gTLD Program and **delegated to the DNS [root zone](/en/glossary/root-zone/) in 2015**, with [Aruba PEC S.p.A.](https://www.aruba.it/) — a subsidiary of Aruba S.p.A., one of Europe's largest hosting and cloud providers — securing the registry after a private [auction](/en/glossary/auction/) among applicants. The registry kicked off the launch with a "Pioneers" program that highlighted early adopters in the cloud-services space.
 
 Aruba running the registry is itself a meaningful detail: the operator is a working cloud and hosting company, not a pure domain speculator, which has shaped how the extension is positioned toward genuine cloud and technology use rather than generic resale. Adoption has trended steadily as SaaS and infrastructure naming has matured and the supply of short, unregistered .com equivalents has thinned.
 
@@ -92,7 +92,7 @@ Pick **.com** when broad recognition outranks descriptiveness. Choose **.cloud**
 
 **Registration restrictions: open to all.** There is no credential, membership, industry, or local-presence requirement. Any person or organization worldwide can register an available .cloud name on a first-come, first-served basis. Names must be **3 to 63 characters**, using letters a–z, digits 0–9, and hyphens (which cannot begin or end the name).
 
-Standard trademark protections apply: the extension launched with an ICANN-mandated sunrise period, and ongoing Trademark Clearinghouse claims and UDRP-based dispute resolution remain available to rights holders. Administratively, the registry **supports DNSSEC**; WHOIS privacy is provided at the registrar level rather than by the registry; and transfer, renewal, and redemption-grace behavior follows standard ICANN gTLD policy. The governing rules are set out in the [ICANN Registry Agreement for .cloud](https://www.icann.org/en/registry-agreements/details/cloud).
+Standard [trademark](/en/glossary/trademark/) protections apply: the extension launched with an ICANN-mandated sunrise period, and ongoing [Trademark Clearinghouse](/en/glossary/tmch/) claims and [UDRP](/en/glossary/udrp/)-based dispute resolution remain available to rights holders. Administratively, the registry **supports DNSSEC**; [WHOIS privacy](/en/glossary/whois-privacy/) is provided at the registrar level rather than by the registry; and transfer, renewal, and redemption-grace behavior follows standard ICANN gTLD policy. The governing rules are set out in the [ICANN Registry Agreement for .cloud](https://www.icann.org/en/registry-agreements/details/cloud).
 
 ## .cloud pricing and value
 
@@ -112,7 +112,7 @@ Standard trademark protections apply: the extension launched with an ICANN-manda
 2. **Choose** an available .cloud name (and grab the matching .com defensively if it's open).
 3. **Register** and configure DNS in minutes.
 
-As an ICANN-accredited registrar, [Namefi](https://namefi.io) offers transparent pricing, fast DNS, and optional Web3 tokenization so you can hold your domain as an on-chain asset. Search your .cloud name and register it in a few steps.
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), [Namefi](https://namefi.io) offers transparent pricing, fast DNS, and optional [Web3](/en/glossary/web3/) tokenization so you can hold your domain as an on-chain asset. Search your .cloud name and register it in a few steps.
 
 ## Frequently asked questions
 

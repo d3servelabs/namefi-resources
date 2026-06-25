@@ -11,11 +11,11 @@ keywords: [".ad domains", ".ad TLD", ".ad top-level domain", "what is .ad", "why
 
 ## **What is .ad?**
 
-The **.ad** domain extension is the **country code [Top-Level Domain](/en/glossary/tld/) (ccTLD)** for the **Principality of Andorra**, a small, sovereign landlocked microstate on the Iberian Peninsula, bordered by France and Spain. Managed by [Andorra Telecom](https://www.andorratelecom.ad/), this extension was originally created to serve the local population and businesses of Andorra.
+The **.ad** domain extension is the **country code [Top-Level Domain](/en/glossary/tld/) ([ccTLD](/en/glossary/cctld/))** for the **Principality of Andorra**, a small, sovereign landlocked microstate on the Iberian Peninsula, bordered by France and Spain. Managed by [Andorra Telecom](https://www.andorratelecom.ad/), this extension was originally created to serve the local population and businesses of Andorra.
 
 However, in the world of the internet, **.ad** holds a unique and powerful position due to its linguistic association. It is globally recognized as the standard abbreviation for **"Advertisement"** or **"Advertising."**
 
-For years, the registry maintained strict restrictions, limiting registration primarily to entities with a physical presence or trademark in Andorra. However, recent liberalization efforts have made it more accessible to the global community, transforming it from a strictly local domain into a highly sought-after asset for marketing agencies, ad-tech platforms, and creative brands.
+For years, the [registry](/en/glossary/registry/) maintained strict restrictions, limiting registration primarily to entities with a physical presence or [trademark](/en/glossary/trademark/) in Andorra. However, recent liberalization efforts have made it more accessible to the global community, transforming it from a strictly local domain into a highly sought-after asset for marketing agencies, ad-tech platforms, and creative brands.
 
 According to the [Internet Assigned Numbers Authority (IANA)](https://www.iana.org/domains/root/db/ad.html), the domain has been active since 1996, but its relevance has surged in the 2020s as digital advertising dominates the global economy.
 

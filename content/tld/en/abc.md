@@ -35,7 +35,7 @@ The **.abc** [Top-Level Domain](/en/glossary/tld/) (TLD) represents one of the m
 
 While legacy TLDs like [`.com`](/en/tld/com/) or `.net` have been the standard for decades, the introduction of [New gTLDs (Generic Top-Level Domains)](https://newgtlds.icann.org/en/about/program) has opened the door for more creative and specific extensions. The .abc TLD falls into a unique category of "generic" domains that offer immense versatility. It serves as a symbol for basics, foundations, and starting points.
 
-In the context of **domain investing** and the evolving **[Web3](/en/glossary/web3/)** landscape, unique strings like .abc are increasingly viewed as high-value digital assets. Whether utilized on traditional DNS or explored through alternative blockchain naming roots, .abc signifies simplicity.
+In the context of **domain investing** and the evolving **[Web3](/en/glossary/web3/)** landscape, unique strings like .abc are increasingly viewed as high-value digital assets. Whether utilized on traditional DNS or explored through alternative [blockchain](/en/glossary/blockchain/) naming roots, .abc signifies simplicity.
 
 ## **How People Are Using .abc**
 
@@ -49,7 +49,7 @@ The versatility of the .abc extension allows it to be adopted across various ind
 
 ## **Notable Entities Using .abc**
 
-While usage of new gTLDs is still growing compared to the `.com` giant, the concept of "ABC" in domaining has been popularized by some of the world's largest entities.
+While usage of new gTLDs is still growing compared to the `.com` giant, the concept of "ABC" in [domaining](/en/glossary/domaining/) has been popularized by some of the world's largest entities.
 
 *   **Alphabet Inc. (Google):** Perhaps the most famous utilization of the "ABC" concept is by Google’s parent company, Alphabet. While they famously utilize `abc.xyz`, their branding strategy validated the immense power of the "ABC" string, driving interest in the specific `.abc` extension among investors.
 *   **ABC News/Media:** Various broadcasting corporations around the globe share the acronym ABC. As digital rights evolve, owning the exact match `.abc` domain becomes a defensive branding asset for major media outlets.
@@ -63,7 +63,7 @@ Choosing the right extension is critical for your digital identity. Here is why 
 *   **Memorable Branding:** In an era of short attention spans, a domain ending in .abc is catchy and rhythmic.
 *   **Availability:** Unlike .com, where most short names were registered in the 90s, .abc offers a higher chance of securing a short, premium keyword (e.g., `fitness.abc` vs. `fitness.com`).
 *   **Semantic Meaning:** It immediately conveys a message of "fundamentals" and "ease of use," which is excellent for marketing conversion rates.
-*   **Investment Potential:** As the digital real estate market expands into tokenized domains, short 3-letter TLDs retain high value and liquidity.
+*   **Investment Potential:** As the digital real estate market expands into tokenized domains, short 3-letter TLDs retain high value and [liquidity](/en/glossary/domain-liquidity/).
 
 ## **Register Your .abc Domain at Namefi**
 

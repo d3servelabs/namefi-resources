@@ -38,15 +38,15 @@ Unlike country-code suffixes tied to a specific nation, **.world** is geographic
 
 ## What is .world?
 
-The **.world** suffix is a generic top-level domain (gTLD) introduced through ICANN's New gTLD Program, the initiative that expanded the domain name system far beyond the original handful of extensions like .com and .org. Its meaning is self-evident in English and widely understood in many other languages, which gives it instant semantic value: a .world address signals scope, openness, and a global audience.
+The **.world** suffix is a [generic top-level domain](/en/glossary/gtld/) (gTLD) introduced through [ICANN](/en/glossary/icann/)'s New gTLD Program, the initiative that expanded the [domain name system](/en/glossary/dns/) far beyond the original handful of extensions like .com and .org. Its meaning is self-evident in English and widely understood in many other languages, which gives it instant semantic value: a .world address signals scope, openness, and a global audience.
 
 Crucially for site owners, Google treats **.world** as a generic, non-geographic extension. It is not tied to any country and is not used for geo-targeting in [Google Search Central's documentation on generic top-level domains](https://developers.google.com/search/docs/specialty/international/locale-specific-urls). In practice, that means choosing .world neither helps nor hurts your search rankings on its own — your content, links, and overall site quality do the real work. You can verify the suffix's official root-zone record on the [IANA delegation page for .world](https://www.iana.org/domains/root/db/world.html).
 
 ## History of .world
 
-The **.world** domain was delegated to the internet root zone in 2014, during the first wave of new gTLDs. It was originally launched by Donuts Inc., a company that secured hundreds of generic extensions in that round. Through a series of industry consolidations, Donuts merged with Afilias and rebranded as **Identity Digital**, which now operates the technical registry through its subsidiary **Binky Moon, LLC** — the entity named on the official IANA and ICANN records.
+The **.world** domain was delegated to the internet [root zone](/en/glossary/root-zone/) in 2014, during the first wave of new gTLDs. It was originally launched by Donuts Inc., a company that secured hundreds of generic extensions in that round. Through a series of industry consolidations, Donuts merged with Afilias and rebranded as **Identity Digital**, which now operates the technical registry through its subsidiary **Binky Moon, LLC** — the entity named on the official [IANA](/en/glossary/iana/) and ICANN records.
 
-Since launch, .world has been adopted by a broad mix of global businesses, media outlets, and community projects. As a non-restricted, semantically rich extension, it has accumulated hundreds of thousands of registrations, placing it among the more successful generic gTLDs in Identity Digital's large portfolio of word-based suffixes (which also includes names like .life, .live, and .news).
+Since launch, .world has been adopted by a broad mix of global businesses, media outlets, and community projects. As a non-restricted, semantically rich extension, it has accumulated hundreds of thousands of registrations, placing it among the more successful generic gTLDs in Identity Digital's large portfolio of word-based suffixes (which also includes names like .life, [.live](/en/tld/live/), and .news).
 
 ## How people use .world
 
@@ -59,7 +59,7 @@ Real, specific niches where **.world** fits naturally:
 - **Events and conferences** — summits and expos that gather an international audience.
 - **Domain hacks** — pairing a brand name with "world" when the matching .com is unavailable or costly.
 
-**Who it's not ideal for:** strictly local businesses (a neighborhood cafe or regional service often reads better on a ccTLD or .com), and anyone who needs the absolute default-trust that a plain .com still carries with the most conservative, non-technical audiences.
+**Who it's not ideal for:** strictly local businesses (a neighborhood cafe or regional service often reads better on a [ccTLD](/en/glossary/cctld/) or .com), and anyone who needs the absolute default-trust that a plain .com still carries with the most conservative, non-technical audiences.
 
 ## Notable sites using .world
 
@@ -95,9 +95,9 @@ Pick **.com** when default familiarity matters most and the name is available. C
 
 ## Who can register a .world domain?
 
-**Registration restrictions: open to all.** The **.world** domain has no eligibility requirements. You do not need to prove a location, profession, trademark, or community affiliation — any individual or organization worldwide can register an available name on a first-come, first-served basis.
+**Registration restrictions: open to all.** The **.world** domain has no eligibility requirements. You do not need to prove a location, profession, [trademark](/en/glossary/trademark/), or community affiliation — any individual or organization worldwide can register an available name on a first-come, first-served basis.
 
-During the original 2014 launch, .world went through standard sunrise and landrush phases that let trademark holders and early adopters claim names first; the suffix has long since been in general availability. Trademark owners can still protect their marks across new gTLDs through ICANN's Trademark Clearinghouse. Standard administrative rules apply: names follow the usual length and character conventions, IDNs are supported by many registrars, **DNSSEC** is available, and most registrars offer **WHOIS privacy** along with normal transfer, renewal, and redemption-grace handling. The authoritative rules for the suffix live in the [ICANN Registry Agreement for .world](https://www.icann.org/en/registry-agreements/details/world).
+During the original 2014 launch, .world went through standard sunrise and landrush phases that let trademark holders and early adopters claim names first; the suffix has long since been in general availability. Trademark owners can still protect their marks across new gTLDs through ICANN's [Trademark Clearinghouse](/en/glossary/tmch/). Standard administrative rules apply: names follow the usual length and character conventions, IDNs are supported by many registrars, **DNSSEC** is available, and most registrars offer **[WHOIS privacy](/en/glossary/whois-privacy/)** along with normal transfer, renewal, and redemption-grace handling. The authoritative rules for the suffix live in the [ICANN Registry Agreement for .world](https://www.icann.org/en/registry-agreements/details/world).
 
 ## .world pricing and value
 
@@ -119,7 +119,7 @@ The best **.world** names treat the suffix as the final word of a phrase: pick a
 2. **Choose** the exact name you want and review its details, including any premium designation.
 3. **Register** and complete checkout with transparent pricing and no surprises.
 
-Namefi is an ICANN-accredited registrar that also supports Web3 tokenized domains, giving you fast DNS management and the option to tokenize your domain for on-chain ownership. Start your search at [Namefi](https://namefi.io).
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that also supports [Web3](/en/glossary/web3/) tokenized domains, giving you fast DNS management and the option to [tokenize](/en/glossary/tokenize/) your domain for [on-chain](/en/glossary/on-chain/) ownership. Start your search at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

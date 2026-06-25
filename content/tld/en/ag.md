@@ -37,7 +37,7 @@ While many domains are held privately for brand protection, several high-profile
 
 *   **Volkswagen:** The automotive giant has utilized `volkswagen.ag` for corporate communications, aligning with its status as an *Aktiengesellschaft*.
 *   **Mercedes-Benz:** Similarly, `mercedes-benz.ag` is often secured to protect the corporate identity of the group.
-*   **Siemens:** Major industrial manufacturing companies secure their exact corporate match to prevent phishing and maintain brand authority.
+*   **Siemens:** Major industrial manufacturing companies secure their exact corporate match to prevent [phishing](/en/glossary/phishing/) and maintain brand authority.
 *   **Süddeutsche Zeitung:** One of Germany's largest daily newspapers uses `sz-magazin.ag` for specific digital properties.
 
 *Note: Many of these domains are used for corporate reporting sites or redirected to primary [.com](/en/tld/com/) or .de domains to capture traffic.*
@@ -50,7 +50,7 @@ If you are debating which extension to choose for your next project, .ag offers 
 *   **Short and Memorable:** Two-letter domains are snappy and easy to type.
 *   **Keyword Relevance:** If you are in the **Ag**riculture sector or the Silver market, this TLD acts as a built-in keyword, potentially aiding in niche SEO efforts.
 *   **Availability:** While premium one-word .com domains are often taken or prohibitively expensive, you may find excellent, short brandable names available in the .ag namespace.
-*   **Safe and Stable:** The registry is well-established, ensuring a stable environment for your digital identity.
+*   **Safe and Stable:** The [registry](/en/glossary/registry/) is well-established, ensuring a stable environment for your digital identity.
 
 ## **Register Your .ag Domain at Namefi**
 

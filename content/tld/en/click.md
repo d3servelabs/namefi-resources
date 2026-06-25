@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. The .click registry supports internationalized domain names, so you can register names using non-Latin scripts. Standard labels allow 1 to 63 characters using letters, numbers, and hyphens.'
 ---
 
-The **.click domain** turns the most universal action on the web into a web address. As a generic, unrestricted new gTLD, it reads as an instruction the moment someone sees it, which is why marketers, link-builders, and creators reach for it when they want a name that does something rather than just sits there. If you are weighing whether **.click** belongs in your stack, this page covers who runs it, who can register, how it is priced, how it is perceived, and where it fits against the alternatives.
+The **.click domain** turns the most universal action on the web into a web address. As a generic, unrestricted [new gTLD](/en/glossary/new-gtld/), it reads as an instruction the moment someone sees it, which is why marketers, link-builders, and creators reach for it when they want a name that does something rather than just sits there. If you are weighing whether **.click** belongs in your stack, this page covers who runs it, who can register, how it is priced, how it is perceived, and where it fits against the alternatives.
 
 ## .click at a glance
 
@@ -36,15 +36,15 @@ The **.click domain** turns the most universal action on the web into a web addr
 
 ## What is .click?
 
-**.click** is a generic top-level domain (gTLD) introduced through ICANN's New gTLD Program, the 2012-onward expansion that added hundreds of new suffixes beyond legacy extensions like [.com](/en/tld/com) and [.net](/en/tld/net). The string was applied for to capture the single most common interaction on the internet: the click — a mouse press, a screen tap, or, fittingly, a camera shutter.
+**.click** is a [generic top-level domain](/en/glossary/gtld/) (gTLD) introduced through ICANN's New gTLD Program, the 2012-onward expansion that added hundreds of new suffixes beyond legacy extensions like [.com](/en/tld/com) and [.net](/en/tld/net). The string was applied for to capture the single most common interaction on the internet: the click — a mouse press, a screen tap, or, fittingly, a camera shutter.
 
 Because it is a generic gTLD and not a country-code, **.click** carries no geographic meaning. Google does not geo-target it to any region; it is treated as a global, generic extension. Per [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites), new gTLDs are handled like any other generic domain for search, so the suffix neither helps nor hurts rankings on its own. You can confirm the delegation and operator details on the [IANA root-zone record for .click](https://www.iana.org/domains/root/db/click.html).
 
 ## History of .click
 
-.click was delegated to the DNS root zone on 2014-08-15, one of the earlier strings to launch in the New gTLD Program. It was originally operated by Uniregistry, Corp., the registry founded by domain investor Frank Schilling, which built a portfolio of action- and keyword-oriented extensions.
+.click was delegated to the DNS [root zone](/en/glossary/root-zone/) on 2014-08-15, one of the earlier strings to launch in the New gTLD Program. It was originally operated by Uniregistry, Corp., the registry founded by domain investor Frank Schilling, which built a portfolio of action- and keyword-oriented extensions.
 
-In 2020, GoDaddy [acquired Uniregistry's registrar, marketplace, and domain portfolio](https://www.prnewswire.com/news-releases/godaddy-acquires-uniregistrys-registrar-marketplace--portfolio-301003011.html), but the registry business followed a separate path. Per the IANA record, the .click registry was transferred to **Internet Naming Co.** on 2022-11-16, which is the operator of record today. Throughout these transitions the suffix has kept its open, no-restriction policy, which has made it a steady choice for marketing and short-link use rather than for marquee corporate homepages.
+In 2020, GoDaddy [acquired Uniregistry's registrar, marketplace, and domain portfolio](https://www.prnewswire.com/news-releases/godaddy-acquires-uniregistrys-registrar-marketplace--portfolio-301003011.html), but the registry business followed a separate path. Per the [IANA](/en/glossary/iana/) record, the .click registry was transferred to **Internet Naming Co.** on 2022-11-16, which is the operator of record today. Throughout these transitions the suffix has kept its open, no-restriction policy, which has made it a steady choice for marketing and short-link use rather than for marquee corporate homepages.
 
 ## How people use .click
 
@@ -86,7 +86,7 @@ Pick [.com](/en/tld/com) when you want the most trusted, default-recall extensio
 
 **Registration restrictions: open to all.** There is no eligibility gate — no trademark, credential, profession, or local-presence requirement. Anyone, anywhere can register an available **.click** name on a first-come, first-served basis.
 
-On the rules and admin side: standard labels allow 1 to 63 characters using letters (a–z), numbers (0–9), and hyphens, with hyphens not permitted in the third and fourth positions simultaneously (the standard IDN-prefix rule). The registry supports internationalized domain names (IDN) and DNSSEC, and names can be registered for terms of 1 to 10 years. Like other New gTLD Program strings, **.click** launched with an ICANN-mandated Sunrise period giving trademark holders first opportunity to secure matching names. The suffix is governed by an [ICANN Registry Agreement for .click](https://www.icann.org/en/registry-agreements/details/click), the authoritative source for its operating rules.
+On the rules and admin side: standard labels allow 1 to 63 characters using letters (a–z), numbers (0–9), and hyphens, with hyphens not permitted in the third and fourth positions simultaneously (the standard IDN-prefix rule). The registry supports internationalized domain names (IDN) and DNSSEC, and names can be registered for terms of 1 to 10 years. Like other New gTLD Program strings, **.click** launched with an ICANN-mandated Sunrise period giving [trademark](/en/glossary/trademark/) holders first opportunity to secure matching names. The suffix is governed by an [ICANN Registry Agreement for .click](https://www.icann.org/en/registry-agreements/details/click), the authoritative source for its operating rules.
 
 ## .click pricing and value
 
@@ -106,7 +106,7 @@ The strongest **.click** names are domain hacks where the suffix completes a phr
 2. Choose the **.click** name (and a defensive [.com](/en/tld/com) if you want one).
 3. Complete registration and configure DNS.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar with transparent pricing and fast DNS, and it also lets you tokenize eligible domains as on-chain assets for true Web3 ownership — bridging conventional registration and tokenized domains in one place.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing and fast DNS, and it also lets you [tokenize](/en/glossary/tokenize/) eligible domains as [on-chain](/en/glossary/on-chain/) assets for true [Web3](/en/glossary/web3/) ownership — bridging conventional registration and tokenized domains in one place.
 
 ## Frequently asked questions
 

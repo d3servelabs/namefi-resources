@@ -13,7 +13,7 @@ keywords: ['.alsace domains', '.alsace TLD', '.alsace top-level domain', 'what i
 
 The **.alsace** extension is a geographic [Top-Level Domain (GeoTLD)](/en/glossary/tld/) dedicated specifically to the Alsace region of France. Unlike generic extensions like [.com](/en/tld/com/) or [.net](/en/tld/net/), or country codes like .fr, .alsace falls under the category of "new gTLDs" designed to highlight regional identity, culture, and economic activity.
 
-Launched in 2015, this TLD was created to foster a distinct digital ecosystem for individuals, companies, and organizations linked to the Alsace territory. It is managed by the Région Grand Est with technical operations often supported by [AFNIC](https://www.afnic.fr/en/), the same registry that manages the .fr domain.
+Launched in 2015, this TLD was created to foster a distinct digital ecosystem for individuals, companies, and organizations linked to the Alsace territory. It is managed by the Région Grand Est with technical operations often supported by [AFNIC](https://www.afnic.fr/en/), the same [registry](/en/glossary/registry/) that manages the .fr domain.
 
 The primary purpose of .alsace is to allow entities to showcase their "Alsatian identity" online. It serves as a digital label of origin, instantly communicating to visitors that the website is connected to the linguistic, cultural, or economic landscape of this famous European region. You can learn more about the delegation of this TLD on the [ICANN wiki](https://icannwiki.org/.alsace).
 
@@ -50,7 +50,7 @@ Choosing a .alsace domain offers distinct advantages over a crowded .com or a ge
 
 Whether you are a winemaker looking to [tokenize](/en/glossary/tokenize/) your vintage assets or a startup establishing a local presence in Strasbourg, the .alsace domain is your gateway to a distinct digital identity.
 
-At **Namefi**, we make registering your domain simple, secure, and future-proof. As an [ICANN](/en/glossary/icann/)-accredited [registrar](/en/glossary/registrar/), we bridge the gap between traditional Web2 domains and the [Web3](/en/glossary/web3/) ecosystem. When you register with us, you aren't just buying a URL; you are securing an asset that can be easily managed via blockchain technology if you choose, offering unparalleled ownership and transfer fluidity.
+At **Namefi**, we make registering your domain simple, secure, and future-proof. As an [ICANN](/en/glossary/icann/)-accredited [registrar](/en/glossary/registrar/), we bridge the gap between traditional Web2 domains and the [Web3](/en/glossary/web3/) ecosystem. When you register with us, you aren't just buying a URL; you are securing an asset that can be easily managed via [blockchain](/en/glossary/blockchain/) technology if you choose, offering unparalleled ownership and transfer fluidity.
 
 **Ready to claim your piece of Alsace online?**
 

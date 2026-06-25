@@ -18,7 +18,7 @@ faqs:
     answer: 'Real estate agencies, brokers, property managers, listing portals, and developers who want a clear, on-topic name. It suits anyone whose preferred .com is taken, and who wants a short, descriptive address without the membership gate that .realtor imposes.'
 ---
 
-The **.realty** domain is an open generic top-level domain built for the property world: agencies, brokers, listing portals, property managers, and developers who want a web address that says exactly what they do. If your ideal `.com` is taken or priced out of reach, a `.realty` name lets you keep a short, descriptive brand while signaling your niche in a single word.
+The **.realty** domain is an open [generic top-level domain](/en/glossary/gtld/) built for the property world: agencies, brokers, listing portals, property managers, and developers who want a web address that says exactly what they do. If your ideal `.com` is taken or priced out of reach, a `.realty` name lets you keep a short, descriptive brand while signaling your niche in a single word.
 
 Crucially, `.realty` is open to everyone. It is often confused with [.realtor](https://en.wikipedia.org/wiki/.realtor), which is gated behind trade-association membership — but `.realty` carries no such restriction, which makes it the more flexible choice for most real estate businesses.
 
@@ -38,7 +38,7 @@ Crucially, `.realty` is open to everyone. It is often confused with [.realtor](h
 
 The word "realty" is a long-standing English term for real property — land and the buildings on it — so the suffix reads instantly as "real estate" to an English-speaking audience. It is a **generic** top-level domain, not a country-code or geographic one, which means [Google](https://developers.google.com/search/docs/specialty/international/locale-adult) treats it as global rather than tied to any single country for geo-targeting. There is no built-in SEO advantage or penalty for choosing it; it behaves like any other generic ending in search.
 
-You can confirm the delegation and current operator on the authoritative [IANA root-zone record for .realty](https://www.iana.org/domains/root/db/realty.html), which lists the sponsoring organization, technical backend, and WHOIS server (`whois.nic.realty`).
+You can confirm the delegation and current operator on the authoritative [IANA root-zone record for .realty](https://www.iana.org/domains/root/db/realty.html), which lists the sponsoring organization, technical backend, and [WHOIS](/en/glossary/whois/) server (`whois.nic.realty`).
 
 ## History of .realty
 
@@ -92,7 +92,7 @@ Pick `.realty` when you want a clear real estate signal without joining a trade 
 
 **Registration restrictions: open to all.** There is no credential, license, local-presence, or community requirement. Any individual, business, or organization may register a `.realty` domain — including people who rent, lease, sell, or simply work adjacent to property. This is the defining contrast with `.realtor`, which is limited to members of the National Association of Realtors or the Canadian Real Estate Association and enforces specific naming rules.
 
-Standard new gTLD practices apply: a sunrise period gave trademark holders early access at launch, and trademark claims are handled through ICANN's Trademark Clearinghouse. Names follow ordinary length rules, internationalized domain names (IDNs) are supported, and DNSSEC is available for registrants who want cryptographic integrity for their DNS. WHOIS privacy, transfer, renewal, and redemption-grace behavior follow the operator's policies and your registrar's settings. Because `.realty` is a gTLD, it is governed by an [ICANN Registry Agreement for .realty](https://www.icann.org/en/registry-agreements/details/realty), the authoritative source for the binding rules; the [IANA record](https://www.iana.org/domains/root/db/realty.html) lists the current operator and technical contacts.
+Standard new gTLD practices apply: a sunrise period gave [trademark](/en/glossary/trademark/) holders early access at launch, and trademark claims are handled through ICANN's [Trademark Clearinghouse](/en/glossary/tmch/). Names follow ordinary length rules, internationalized domain names (IDNs) are supported, and DNSSEC is available for registrants who want cryptographic integrity for their DNS. [WHOIS privacy](/en/glossary/whois-privacy/), transfer, renewal, and redemption-grace behavior follow the operator's policies and your registrar's settings. Because `.realty` is a gTLD, it is governed by an [ICANN Registry Agreement for .realty](https://www.icann.org/en/registry-agreements/details/realty), the authoritative source for the binding rules; the [IANA record](https://www.iana.org/domains/root/db/realty.html) lists the current operator and technical contacts.
 
 ## .realty pricing and value
 
@@ -112,7 +112,7 @@ The strongest `.realty` names treat the suffix as the second half of a phrase: `
 2. **Choose** an available label, checking whether it is flagged premium and reviewing the renewal rate.
 3. **Register** and configure DNS, with DNSSEC available if you want it.
 
-As an ICANN-accredited registrar, [Namefi](https://namefi.io) offers transparent pricing, fast DNS, and the option to tokenize your domain as a Web3 asset — bridging traditional registration with on-chain ownership. Start your search at [Namefi](https://namefi.io).
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), [Namefi](https://namefi.io) offers transparent pricing, fast DNS, and the option to [tokenize](/en/glossary/tokenize/) your domain as a [Web3](/en/glossary/web3/) asset — bridging traditional registration with [on-chain](/en/glossary/on-chain/) ownership. Start your search at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

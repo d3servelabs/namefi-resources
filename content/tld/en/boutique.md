@@ -18,7 +18,7 @@ faqs:
     answer: 'It can be, for a small curated catalog where the word "boutique" reinforces the brand. For a large general marketplace, broader suffixes like .shop or .store usually read better, since "boutique" implies a narrow, selective range of products.'
 ---
 
-The **.boutique domain** is a descriptive new generic top-level domain (gTLD) aimed at small, curated brands: independent fashion labels, lifestyle shops, design studios, and any business that wants its web address to signal taste, selectivity, and a hand-picked range. Where a generic suffix says nothing, `.boutique` carries built-in meaning, turning the address itself into part of the brand story.
+The **.boutique domain** is a descriptive new [generic top-level domain](/en/glossary/gtld/) (gTLD) aimed at small, curated brands: independent fashion labels, lifestyle shops, design studios, and any business that wants its web address to signal taste, selectivity, and a hand-picked range. Where a generic suffix says nothing, `.boutique` carries built-in meaning, turning the address itself into part of the brand story.
 
 For founders, indie retailers, and marketing managers weighing a niche extension, the core questions are: who actually runs this suffix, who uses it, and is it worth registering over a mainstream alternative? This page answers all three, with verifiable registry facts and an honest look at the trade-offs.
 
@@ -36,7 +36,7 @@ For founders, indie retailers, and marketing managers weighing a niche extension
 
 ## What is .boutique?
 
-`.boutique` is a dictionary-word gTLD delegated to the internet root in 2014 as part of ICANN's New gTLD Program, the expansion that introduced hundreds of word-based suffixes alongside the legacy set like `.com` and `.net`. The string is the French and English word *boutique* — originally a small shop selling fashionable, specialized goods, and now a widely understood label for any small, selective, high-touch business ("a boutique agency", "a boutique hotel").
+`.boutique` is a dictionary-word gTLD delegated to the internet root in 2014 as part of ICANN's [New gTLD](/en/glossary/new-gtld/) Program, the expansion that introduced hundreds of word-based suffixes alongside the legacy set like `.com` and `.net`. The string is the French and English word *boutique* — originally a small shop selling fashionable, specialized goods, and now a widely understood label for any small, selective, high-touch business ("a boutique agency", "a boutique hotel").
 
 That semantic clarity is the suffix's whole value proposition. The word travels well across English, French, and many other languages, and it instantly frames the site as small-scale and curated rather than mass-market.
 
@@ -75,7 +75,7 @@ Real, specific niches where `.boutique` fits naturally:
 | Restrictions | Open to all | Open to all | Open to all | Open to all |
 | Recognition | Moderate | High | High | Universal |
 
-Pick `.boutique` when "small and curated" is the message you want the address itself to send. Choose [.shop](/en/tld/shop) or [.store](/en/tld/store) for broader e-commerce where you do not want to imply a limited range, and default to [.com](/en/tld/com) when maximum familiarity and resale liquidity matter more than a descriptive suffix.
+Pick `.boutique` when "small and curated" is the message you want the address itself to send. Choose [.shop](/en/tld/shop) or [.store](/en/tld/store) for broader e-commerce where you do not want to imply a limited range, and default to [.com](/en/tld/com) when maximum familiarity and resale [liquidity](/en/glossary/domain-liquidity/) matter more than a descriptive suffix.
 
 ## Why choose .boutique?
 
@@ -97,7 +97,7 @@ Be honest with yourself about the trade-offs:
 
 **Registration restrictions: none.** `.boutique` is an open generic gTLD with no eligibility gate — you do not need to own a retail business, sell physical products, or hold any credential. Any individual or organization worldwide can register an available `.boutique` name on a first-come, first-served basis.
 
-Standard new-gTLD policies apply. Trademark holders could claim matching names during the original Sunrise period, and ICANN's Trademark Clearinghouse Claims notices apply to flagged strings. Names generally follow common length and IDN rules, and DNSSEC is supported for registrants who want signed zones. WHOIS privacy availability, transfer, renewal, and redemption-grace handling are set by your registrar within the registry's framework. The authoritative rules live in the [ICANN Registry Agreement for .boutique](https://www.icann.org/en/registry-agreements/details/boutique) and the operator's policies at [Identity Digital](https://identity.digital/).
+Standard new-gTLD policies apply. [Trademark](/en/glossary/trademark/) holders could claim matching names during the original Sunrise period, and ICANN's [Trademark Clearinghouse](/en/glossary/tmch/) Claims notices apply to flagged strings. Names generally follow common length and IDN rules, and DNSSEC is supported for registrants who want signed zones. [WHOIS privacy](/en/glossary/whois-privacy/) availability, transfer, renewal, and redemption-grace handling are set by your registrar within the registry's framework. The authoritative rules live in the [ICANN Registry Agreement for .boutique](https://www.icann.org/en/registry-agreements/details/boutique) and the operator's policies at [Identity Digital](https://identity.digital/).
 
 ## .boutique pricing and value
 
@@ -122,7 +122,7 @@ For email deliverability, the suffix itself is rarely the deciding factor. What 
 
 1. Search your desired name on [Namefi](https://namefi.io) to check availability and whether it is a standard or premium `.boutique` string.
 2. Choose the exact name that matches your brand, keeping it short and clear.
-3. Complete registration and configure DNS — Namefi offers transparent pricing, fast DNS, and optional Web3 tokenization for owners who want on-chain control of their domain.
+3. Complete registration and configure DNS — Namefi offers transparent pricing, fast DNS, and optional [Web3](/en/glossary/web3/) tokenization for owners who want on-chain control of their domain.
 
 Ready to claim your name? Start at [Namefi](https://namefi.io).
 
