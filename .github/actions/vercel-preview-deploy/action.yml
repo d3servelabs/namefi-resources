@@ -172,6 +172,9 @@ runs:
         while IFS= read -r entry; do
           KEY=$(jq -r '.key' <<<"$entry")
           VALUE=$(jq -r '.value | tostring' <<<"$entry")
+          if [[ -z "$VALUE" || "$VALUE" == "null" ]]; then
+            continue
+          fi
           CMD+=(--meta "${KEY}=${VALUE}")
         done < <(jq -c 'to_entries[]?' <<<"$ADDITIONAL_META_JSON")
 
