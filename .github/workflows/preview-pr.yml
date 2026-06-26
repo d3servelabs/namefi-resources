@@ -30,6 +30,9 @@ permissions:
   contents: read
   issues: write
   pull-requests: write
+  # Read-only: the summary job reads this run's per-job start/finish times to
+  # report deploy timing + a chronological Gantt in the PR comment.
+  actions: read
 
 env:
   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
@@ -1825,6 +1828,126 @@ jobs:
               backendRow,
             ];
 
+            // Deploy timing + a chronological Gantt of the per-surface deploy
+            // jobs (parallel bars overlap on the axis; serial work stacks).
+            // Best-effort: any failure here must never break the surface
+            // status comment, so it is wrapped in try/catch.
+            let timingLines = [];
+            try {
+              const run = (
+                await github.rest.actions.getWorkflowRun({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: context.runId,
+                })
+              ).data;
+              const triggeredMs = Date.parse(run.run_started_at);
+              const jobs = await github.paginate(
+                github.rest.actions.listJobsForWorkflowRun,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: context.runId,
+                  per_page: 100,
+                },
+              );
+              const jobByName = new Map(jobs.map((job) => [job.name, job]));
+              // [job name, Gantt/table label, produces a ready preview URL].
+              // Backend build/db are intermediate steps shown on the timeline
+              // but they are not themselves a "preview ready" milestone.
+              const surfaceJobs = [
+                ['Frontend Preview', 'Frontend', true],
+                ['Deploy Park Preview', 'Park', true],
+                ['Deploy Resources Preview', 'Resources', true],
+                ['Deploy Docs Preview', 'Docs', true],
+                ['Build Backend Image', 'Backend build', false],
+                ['Prepare Preview DB', 'Backend db', false],
+                ['Deploy Backend Preview', 'Backend deploy', true],
+              ];
+              const fmtClock = (ms) =>
+                `${new Date(ms).toISOString().replace('T', ' ').slice(0, 19)} UTC`;
+              const fmtDur = (ms) => {
+                if (ms == null) return '—';
+                const s = Math.round(ms / 1000);
+                return s < 60
+                  ? `${s}s`
+                  : `${Math.floor(s / 60)}m${String(s % 60).padStart(2, '0')}s`;
+              };
+              const timingRows = [];
+              const ganttTasks = [];
+              let firstReadyMs = null;
+              let lastReadyMs = null;
+              // Track whether any attempted (non-skipped) surface job failed, so
+              // we never claim "All previews ready" when one did not succeed.
+              let anyFailed = false;
+              for (const [jobName, label, countsAsReady] of surfaceJobs) {
+                const job = jobByName.get(jobName);
+                if (!job || !job.started_at || job.conclusion === 'skipped') {
+                  continue;
+                }
+                const startMs = Date.parse(job.started_at);
+                const endMs = job.completed_at
+                  ? Date.parse(job.completed_at)
+                  : null;
+                const durMs = endMs == null ? null : endMs - startMs;
+                const ok = job.conclusion === 'success';
+                if (!ok) {
+                  anyFailed = true;
+                }
+                if (ok && endMs != null && countsAsReady) {
+                  if (firstReadyMs == null || endMs < firstReadyMs) {
+                    firstReadyMs = endMs;
+                  }
+                  if (lastReadyMs == null || endMs > lastReadyMs) {
+                    lastReadyMs = endMs;
+                  }
+                }
+                timingRows.push(
+                  `| ${label} | ${ok ? '🟢' : '🔴'} | +${fmtDur(startMs - triggeredMs)} | ${fmtDur(durMs)} |`,
+                );
+                // Guarantee a visible bar even for sub-second jobs.
+                const barEndMs = Math.max(endMs ?? startMs, startMs + 1000);
+                ganttTasks.push(
+                  `    ${label} (${fmtDur(durMs)}) :${ok ? '' : 'crit, '}${startMs}, ${barEndMs}`,
+                );
+              }
+              if (timingRows.length > 0) {
+                timingLines = [
+                  '',
+                  '### ⏱ Deploy timing',
+                  '',
+                  `- Triggered: \`${fmtClock(triggeredMs)}\``,
+                  ...(firstReadyMs != null
+                    ? [
+                        `- First preview ready: \`${fmtClock(firstReadyMs)}\` (+${fmtDur(firstReadyMs - triggeredMs)} after trigger)`,
+                      ]
+                    : []),
+                  ...(lastReadyMs != null
+                    ? [
+                        anyFailed
+                          ? `- Last preview ready: \`${fmtClock(lastReadyMs)}\` (+${fmtDur(lastReadyMs - triggeredMs)} after trigger) — some surfaces failed; see table below`
+                          : `- All previews ready: \`${fmtClock(lastReadyMs)}\` (+${fmtDur(lastReadyMs - triggeredMs)} after trigger)`,
+                      ]
+                    : []),
+                  '',
+                  '| Surface | Result | Started (after trigger) | Duration |',
+                  '|---|---|---|---|',
+                  ...timingRows,
+                  '',
+                  '```mermaid',
+                  'gantt',
+                  '    title Preview deploy timeline (parallel work overlaps)',
+                  '    dateFormat x',
+                  '    axisFormat %H:%M:%S',
+                  '    section Deploys',
+                  ...ganttTasks,
+                  '```',
+                ];
+              }
+            } catch (error) {
+              core.warning(`Deploy timing section skipped: ${error.message}`);
+            }
+
             const body = [
               marker,
               '### Preview Surfaces',
@@ -1836,6 +1959,7 @@ jobs:
               '| Surface | Status | Links | Notes |',
               '|---|---|---|---|',
               ...rows,
+              ...timingLines,
             ].join('\n');
 
             const comments = await github.paginate(github.rest.issues.listComments, {

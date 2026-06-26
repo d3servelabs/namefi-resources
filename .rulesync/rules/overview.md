@@ -141,9 +141,8 @@ bun run db:studio    # Open Drizzle Studio
 
 ### Vercel Preview Builds
 
-- **Preview builds are on-demand**: Automated Vercel preview build triggers are turned off. Do not assume a push or PR update will create a preview deployment.
-- **Trigger only when needed**: If a preview deployment is needed for review or validation, explicitly trigger it on Vercel/GitHub. Use your judgment about whether it is absolutely necessary; most changes do not need one.
-- **Time the preview build**: When you finish composing a PR and trigger a Vercel preview deployment, record the elapsed time from when you trigger it until it is ready for eyeball inspection, and report that duration to the user.
+- **Preview builds are on-demand (opt-in by label)**: Previews are not created automatically on push. To request one, add the `preview-backend` label (or a per-surface label) — see "PR Labels" in the `git` rule for the full label model. Use your judgment about whether a preview is needed; most changes do not need one.
+- **The workflow times itself**: The `Preview PR` workflow posts a PR comment with a Deploy timing section (trigger → first/all previews ready, a per-surface duration table, and a mermaid Gantt of the deploy jobs). You do not need to hand-time the build and report the duration yourself.
 
 ### Git & Version Control
 

@@ -129,9 +129,8 @@ bun run db:studio    # Open Drizzle Studio
 
 ### Vercel Preview Builds
 
-- **Preview builds are on-demand**: Automated Vercel preview build triggers are turned off. Do not assume a push or PR update will create a preview deployment.
-- **Trigger only when needed**: If a preview deployment is needed for review or validation, explicitly trigger it on Vercel/GitHub. Use your judgment about whether it is absolutely necessary; most changes do not need one.
-- **Time the preview build**: When you finish composing a PR and trigger a Vercel preview deployment, record the elapsed time from when you trigger it until it is ready for eyeball inspection, and report that duration to the user.
+- **Preview builds are on-demand (opt-in by label)**: Previews are not created automatically on push. To request one, add the `preview-backend` label (or a per-surface label) — see "PR Labels" in the `git` rule for the full label model. Use your judgment about whether a preview is needed; most changes do not need one.
+- **The workflow times itself**: The `Preview PR` workflow posts a PR comment with a Deploy timing section (trigger → first/all previews ready, a per-surface duration table, and a mermaid Gantt of the deploy jobs). You do not need to hand-time the build and report the duration yourself.
 
 ### Git & Version Control
 
@@ -914,10 +913,56 @@ Based on official Cursor documentation and community forum research (as of Jan 2
 Based on the current staged git changes, please summarize them as a branch name and a `git commit` message. Please format message as plaintext with proper handle of newline to be copy and used in terminal. Output in markdown for easy copy-and-paste.
 
 ## PR Labels
-- If the PR needs a fully functional preview deployment for testing, add the label `preview`.
-  - `preview` will allow the preview deployment to be created automatically. But it will still validate if it's needed in the first place.
-  - If you want to force a preview deployment, add the label `force-preview`.
-    - `force-preview` will force the preview deployment to be created, regardless of whether it's needed or not.
+
+### Preview deployments — pick the surface, the workflow scopes the rest
+
+Previews are **opt-in by label**, and there is **no plain `preview` label** (it
+was renamed). Add the label for the surface you need; the `Preview PR` workflow
+then inspects the diff and deploys only what actually changed for that surface —
+you do not size the build yourself.
+
+- **`preview-backend`** — the general full-app preview, and what the old
+  `preview` label became. Deploys the **frontend** preview, and **when the
+  backend changed** also spins up an **isolated backend** (Cloud Run) with its
+  own **database branch** and points the frontend at it. If the backend did not
+  change, the frontend preview just runs against the shared **Dev** backend. Use
+  this for almost any "give me a working URL to click through" review.
+- **`preview-park` / `preview-resources` / `preview-docs`** — deploy a preview of
+  *that* app only (Park / Resources / API-client Docs). These surfaces are rarely
+  what a reviewer wants, so each needs its own opt-in label, and they do **not**
+  bring up a backend.
+- **`force-preview`** — the escape hatch: force **all** surfaces (frontend,
+  isolated backend + DB, park, resources, docs) regardless of change detection.
+  Reach for it only when change detection is demonstrably wrong (e.g. a
+  dependency edge it cannot see) — not "to be safe".
+
+You usually add just **one** label, and for app review that label is
+**`preview-backend`**.
+
+### Forcing a full preview without a label (ad-hoc run)
+
+The exact equivalent of the `force-preview` label, runnable on demand against any
+PR:
+
+```bash
+# Force every preview surface for a PR (same effect as the force-preview label):
+gh workflow run preview-pr.yml --ref <base-branch> \
+  -f pr_number=<PR_NUMBER> -f force_preview=true
+
+# Example — force a full preview for PR #4920 (base branch main):
+gh workflow run preview-pr.yml --ref main -f pr_number=4920 -f force_preview=true
+```
+
+Tip: from the PR branch, `gh pr view --json number,baseRefName` gives you both
+values.
+
+### The workflow reports its own timing
+
+When a preview runs, the `Preview PR` workflow posts/updates a PR comment with a
+**Deploy timing** section — time from trigger to first preview ready and to all
+previews ready, a per-surface duration table, and a **mermaid Gantt** of the
+deploy jobs (so parallel vs serial work is obvious). You do **not** need to
+hand-time a preview build and report the duration yourself.
 
 # i18n & RTL: write layouts that flip, not break
 
