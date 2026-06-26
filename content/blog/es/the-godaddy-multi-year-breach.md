@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Entre 2020 y 2022, un único grupo de actores maliciosos habitó dentro de la infraestructura de GoDaddy — robando código fuente, exponiendo a 1,2 millones de clientes de Managed WordPress y redirigiendo intermitentemente sitios web de clientes a destinos maliciosos. Un análisis profundo sobre el riesgo de concentración en registradores y lo que enseña acerca de los puntos únicos de falla.'
 keywords: ['brecha godaddy', 'filtración de datos godaddy', 'brecha managed wordpress', 'seguridad de registradores', 'seguridad de dominios', 'brecha plurianual', 'malware cpanel', 'ataque de redirección de sitios web', 'exposición de clave privada ssl', 'brecha de contraseña sftp', 'ciberseguridad sec 10-k', 'riesgo de concentración de registradores', 'punto único de falla']
+relatedArticles:
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-dnspionage-campaign/
+  - /es/blog/the-lenovo-com-dns-hijack/
+  - /es/blog/the-badgerdao-frontend-attack/
+  - /es/blog/the-icann-spear-phishing-breach/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
+  - /es/glossary/tld/
 ---
 
 Un [registrador](/es/glossary/registrar/) de dominios es la empresa más aburrida de la que jamás dependerás completamente.

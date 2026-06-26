@@ -10,6 +10,24 @@ also_known_as: ['Search Engine Results Page']
 level: 1
 sources:
   - https://developers.google.com/search/docs/fundamentals/seo-starter-guide
+relatedArticles:
+  - /ar/blog/marketplace-seo-for-domain-listings/
+  - /ar/blog/marketing-your-domains-for-sale/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/domain-authority/
+  - /ar/glossary/exact-match-domain/
+  - /ar/glossary/anchor-text/
+  - /ar/glossary/tld-seo/
+  - /ar/glossary/tld/
 ---
 
 **SERP** (المعروفة بـ Search Engine Results Page — صفحة نتائج محرك البحث) هي القائمة المرتَّبة من الصفحات اللي يعرضها محرك بحث زي Google لما حد يكتب استعلامًا — الساحة التي تتنافس فيها كل دومين في نهاية المطاف للحصول على حركة الزوار الطبيعية. كل موضع في SERP بيتحدد بمئات الإشارات: مدى صلة الصفحة وسرعة الموقع وملاءمته للجوال ومعايير E-E-A-T (الخبرة والتخصص والسلطة والموثوقية)، وبشكل محوري، [سلطة الدومين](/ar/glossary/domain-authority/) المتراكمة وعدد الروابط الواردة عالية الجودة. الدومين اللي بيظهر بانتظام في أول ثلاثة نتائج لكلمات مفتاحية ذات نية شراء عالية قد يساوي أضعاف مضاعفة مقارنةً بواحد مدفون في الصفحة الثانية، وده سبب كون قيمة [SEO](/ar/glossary/seo/) مكوّنًا أساسيًا في تقييم الدومين — خاصةً لـ [الدومينات المطابقة التامة](/ar/glossary/exact-match-domain/) التي يعكس اسمها عبارة بحث متداولة.

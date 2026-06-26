@@ -12,6 +12,24 @@ format: explainer
 description: "एक डोमेन की कम होलसेल/रीसेलर कीमत और कहीं ऊंची एंड-यूजर कीमत क्यों होती है, यह अंतर कितना बड़ा होता है, और आपकी बिक्री पर कौन-सा दाम लागू होता है।"
 ogImage: ../../assets/end-user-vs-reseller-domain-pricing-og.jpg
 keywords: ['एंड-यूजर बनाम रीसेलर डोमेन कीमत', 'होलसेल डोमेन कीमत', 'रिटेल डोमेन कीमत', 'डोमेन कीमत का अंतर', 'मेरा डोमेन कितने का है', 'एंड यूजर को डोमेन बेचना', 'डोमेन रीसेलर कीमत', 'डोमेन होलसेल मूल्य', 'डोमेन फ्लिपिंग मार्जिन', 'डोमेन आफ्टरमार्केट प्राइसिंग', 'डोमेन होलसेल बेचना', 'एंड यूजर डोमेन खरीदार', 'तुलनीय डोमेन बिक्री', 'डोमेन प्राइसिंग रणनीति', 'एक डोमेन के दो दाम']
+relatedArticles:
+  - /hi/blog/how-to-value-a-domain-name/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/how-to-read-comparable-domain-sales/
+  - /hi/blog/working-with-domain-brokers/
+  - /hi/blog/domain-appraisal-tools-compared/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
 ---
 
 दो अनुभवी डोमेनर्स से पूछिए कि कोई नाम कितने का है, और आपको ऐसे दो जवाब मिल सकते हैं जिनमें दस गुने का फर्क हो — और दोनों सही हो सकते हैं। यह लापरवाही नहीं है। यह इस कारोबार का सबसे अहम प्राइसिंग सच है: एक ही डोमेन के एक ही पल में दो जायज़ दाम होते हैं, और कौन-सा लागू होगा यह पूरी तरह इस पर निर्भर करता है कि खरीद कौन रहा है। इसे चूक गए, तो या तो आप कोई नाम उसकी असल कीमत के एक छोटे-से हिस्से पर लुटा बैठेंगे, या फिर ऐसे दाम का इंतज़ार करते हुए हमेशा उसे पकड़े बैठे रहेंगे जो आपकी श्रेणी में कोई नहीं देगा।

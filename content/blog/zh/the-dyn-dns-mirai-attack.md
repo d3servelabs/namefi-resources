@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2016 年 10 月 21 日，由 Mirai 物联网僵尸网络发动的 DDoS 攻击以三波浪潮猛击 DNS 服务商 Dyn，导致 Twitter、Netflix、Reddit、Spotify、GitHub、Airbnb 和 PayPal 数小时无法访问——这是一个关于 DNS 服务商集中化风险的域名危机案例。'
 keywords: ['dyn dns 攻击', 'mirai 僵尸网络', '2016年10月21日ddos', 'dns ddos 攻击', '物联网僵尸网络', 'dns 服务商中断', '域名安全', 'dns 单点故障', 'dyn ddos 2016', 'mirai 恶意软件', '2016年互联网中断', 'dns 冗余', '被黑物联网摄像头']
+relatedArticles:
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-curve-finance-dns-hijack/
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-myetherwallet-bgp-dns-attack/
+  - /zh/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/dns/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 2016 年 10 月的一个周五，在短短几个小时内，互联网突然忘记了如何找到自己。

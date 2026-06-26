@@ -9,6 +9,24 @@ keywords: ['redemption period', 'RGP', 'redemption grace period', 'expired domai
 level: 1
 sources:
   - https://www.icann.org/resources/pages/errp-2013-02-28-en
+relatedArticles:
+  - /en/blog/expired-domains-and-the-drop-cycle/
+  - /en/blog/when-to-drop-a-domain/
+  - /en/blog/domain-backorders-and-drop-catching/
+  - /en/blog/how-to-find-domains-to-flip/
+  - /en/blog/domain-portfolio-management/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/grace-period/
+  - /en/glossary/registry/
+  - /en/glossary/registrant/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
 ---
 
 The **redemption period** (formally the Redemption Grace Period, RGP) is a roughly 30-day window after a domain has fully lapsed — past its [grace period](/en/glossary/grace-period/) — during which the original [registrant](/en/glossary/registrant/) can still recover it, but only by paying a steep **redemption fee** on top of the [renewal](/en/glossary/domain-renewal/) cost. During RGP the name is removed from the zone (the site goes dark) but not yet released. If it is not redeemed, the domain moves to [pending delete](/en/glossary/pending-delete/) and then drops. The redemption period is a [registry](/en/glossary/registry/)-level safety net in the traditional system; the lesson for any valuable name — tokenized or not — is to renew well before [expiration](/en/glossary/domain-expiration/).

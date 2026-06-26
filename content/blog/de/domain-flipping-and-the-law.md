@@ -12,6 +12,24 @@ format: explainer
 description: "Die rechtliche Landschaft, die jeder Domain-Flipper kennen muss: Markengrundlagen, UDRP und ACPA, Treuhand beim Abschluss, Schutz vor Hijacking und wie Sie Verkaufsbetrug umgehen."
 ogImage: ../../assets/domain-flipping-and-the-law-og.jpg
 keywords: ['domain-flipping recht', 'ist domain-flipping legal', 'cybersquatting', 'UDRP', 'ACPA', 'markenrecht domains', 'domain-streit', 'reverse domain name hijacking', 'domain-flipping betrug', 'domain-treuhand', 'domain-hijacking', 'bösgläubige domain-registrierung', 'domaining recht', 'domain-streitigkeiten', 'wie man domains legal flippt']
+relatedArticles:
+  - /de/blog/domain-flipping/
+  - /de/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /de/blog/avoiding-domain-sale-scams/
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Domains zu flippen ist legal. Die falschen Domains zu flippen kostet Sie den Namen, das Geld, das Sie dafür bezahlt haben, und manchmal noch ein fünfstelliges Urteil obendrauf. Der Unterschied zwischen diesen beiden Ausgängen ist kein Glück. Es ist ein kleines Stück Recht, das Sie an einem Nachmittag lernen können, plus eine Handvoll betrieblicher Gewohnheiten, die Ihr Portfolio sauber halten und verhindern, dass Ihre Deals an der Türschwelle ausgeraubt werden.

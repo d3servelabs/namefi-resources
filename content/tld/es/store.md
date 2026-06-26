@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el poder del dominio .store para tu ecommerce. Aprende qué es, sus ventajas para tiendas online y cómo registrar el tuyo en Namefi hoy mismo.'
 keywords: ['.store domains', '.store TLD', '.store top-level domain', 'what is .store', 'why choose .store', 'what is the .store domain', 'why choose the .store domain', 'comprar dominio .store', 'dominios para ecommerce', 'tienda online', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'registro de dominios web3', 'nombres de dominio para tiendas']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 En el vasto mundo digital actual, elegir el nombre de dominio correcto es tan crucial como elegir la ubicación física adecuada para un negocio tradicional. Si estás planeando vender productos o servicios en línea, la extensión de tu dominio dice mucho sobre quién eres. Aquí es donde entra en juego el dominio **.store**, una extensión moderna diseñada específicamente para el comercio electrónico.

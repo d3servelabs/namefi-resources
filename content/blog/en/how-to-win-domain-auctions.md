@@ -12,6 +12,24 @@ format: guide
 description: "How aftermarket domain auctions actually work — proxy bids, sniping, hard maxes, reading demand, and dodging the overpay and shill traps."
 ogImage: ../../assets/how-to-win-domain-auctions-og.jpg
 keywords: ['domain auctions', 'how to win domain auctions', 'domain auction strategy', 'GoDaddy Auctions', 'NameJet', 'Sedo auctions', 'proxy bidding', 'auction sniping', 'expired domain auctions', 'shill bidding', 'winner''s curse domains', 'buy expired domains', 'domain aftermarket', 'drop catching auction', 'avoid overpaying domains']
+relatedArticles:
+  - /en/blog/domain-flipping/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+  - /en/blog/how-to-read-comparable-domain-sales/
+  - /en/blog/domain-backorders-and-drop-catching/
+  - /en/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
 ---
 
 Most of the good names you'll ever want to buy are already taken, and a large share of them eventually pass through an [auction](/en/glossary/auction/). When a registration lapses, when a domainer liquidates, when a registrar captures a dropping name with no [backorder](/en/glossary/backorder/) behind it, the name lands on an auction block and goes to the highest bidder. If you flip domains, you will spend real money in these rooms, and the difference between a profitable acquisition and a dead name in your account is mostly discipline at the moment of bidding.

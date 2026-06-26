@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف قوة نطاق .club في بناء المجتمعات والعلامات التجارية. تعرف على مزاياه، استخداماته، وكيفية تسجيله وربطه بتقنيات الويب 3 عبر Namefi."
 keywords: [".club domains", ".club TLD", "top-level domain", "what is .club", "why choose .club", "what is the .club domain", "why choose the .club domain", "نطاق club", "تسجيل نطاق", "استثمار النطاقات", "نطاقات الويب 3", "Namefi", "شراء دومين", "نطاقات البلوك تشين", "tokenized domain"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .club؟**

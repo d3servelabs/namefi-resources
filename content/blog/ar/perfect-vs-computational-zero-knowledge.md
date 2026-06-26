@@ -8,6 +8,24 @@ draft: false
 description: 'تأتي إثباتات المعرفة الصفرية في ثلاثة أنواع - مثالية، وإحصائية، وحسابية - والفرق بينها أكثر أهمية مما تعترف به معظم النقاشات الهندسية. يشرح هذا المقال كل نوع بلغة بسيطة، ولماذا يُعد تقريبًا كل نظام معرفة صفرية (ZK) إنتاجي في عام 2026 نظامًا حسابيًا، وما هي فوائد وتكاليف ذلك.'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg
 keywords: ['إثبات المعرفة الصفرية', 'معرفة صفرية مثالية', 'معرفة صفرية حسابية', 'zk snark', 'zk stark', 'التشفير', 'محاكي', 'مخطط الالتزام', 'namefi']
+relatedArticles:
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/working-with-domain-brokers/
+  - /ar/blog/how-to-win-domain-auctions/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/onchain-domain-custody-and-recovery/
+relatedTopics:
+  - /ar/topics/web3-foundations/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
+  - /ar/glossary/registry/
 ---
 
 عندما يتحدث العاملون في مجال التشفير عن "إثباتات المعرفة الصفرية" (zero-knowledge proofs)، فإنهم يقصدون دائمًا تقريبًا شيئًا واحدًا محددًا: تقنية SNARK أو STARK التي تثبت أن عملية حسابية معينة قد تم تنفيذها بشكل صحيح، دون الكشف عن المدخلات. هذا النموذج الذهني جيد لمعظم النقاشات الهندسية. ولكنه يخفي تمييزًا يصبح مهمًا في اللحظة التي تحاول فيها التفكير فيما *تضمنه الحماية الأمنية فعليًا*.

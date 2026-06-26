@@ -12,6 +12,24 @@ format: guide
 description: "Gestiona tus dominios como inventario: registra el coste de adquisición, vigila la tasa de venta, controla el lastre de las renovaciones, poda los perdedores y mantén las cuentas en orden."
 ogImage: ../../assets/domain-portfolio-management-og.jpg
 keywords: ['gestión de cartera de dominios', 'cartera de dominios', 'gestionar cartera de dominios', 'tasa de venta de dominios', 'costes de renovación de dominios', 'cuándo soltar un dominio', 'coste de adquisición de dominios', 'seguimiento de inventario de dominios', 'negocio de inversión en dominios', 'lastre de renovaciones de dominios', 'podar una cartera de dominios', 'coste de mantenimiento de dominios', 'hoja de cálculo de domaining', 'hoja de cálculo de cartera de dominios', 'contabilidad para inversores en dominios']
+relatedArticles:
+  - /es/blog/domain-renewal-costs-and-sell-through-rate/
+  - /es/blog/when-to-drop-a-domain/
+  - /es/blog/domain-flipping/
+  - /es/blog/taxes-and-accounting-for-domain-investors/
+  - /es/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Los primeros diez dominios se sienten como una colección. Recuerdas por qué compraste cada uno, lo que pagaste y, más o menos, lo que esperas obtener. En algún punto alrededor del nombre número cien, esa memoria deja de funcionar. Ya no puedes mantener la cartera entera en la cabeza, los correos de renovación llegan en tandas que no reconoces y empiezas a pagar por conservar nombres que habías olvidado que tenías. Ese es el momento en que el flipping deja de ser una serie de operaciones ingeniosas y se convierte en gestión de inventario.

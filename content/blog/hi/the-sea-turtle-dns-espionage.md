@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '"Sea Turtle" — 2019 में Cisco Talos द्वारा उजागर किया गया एक राज्य-प्रायोजित अभियान — ने रजिस्ट्रारों, रजिस्ट्रियों और DNS प्रदाताओं से समझौता करके DNS को हाईजैक किया, सरकारों, मंत्रालयों और ऊर्जा कंपनियों को हमलावरों के सर्वरों पर पुनर्निर्देशित किया, वैध प्रमाणपत्र जाली बनाए और यहाँ तक कि एक राष्ट्रीय TLD रजिस्ट्री का उल्लंघन किया।'
 keywords: ['sea turtle dns hijacking', 'cisco talos sea turtle', 'dns hijacking attack', 'state-sponsored dns attack', 'registry compromise', 'registrar compromise', 'dns espionage campaign', 'lets encrypt mitm certificate', 'netnod compromise', 'ics-forth greece ccTLD', 'cisa emergency directive 19-01', 'dns security', 'domain ownership security', 'nation state cyberattack']
+relatedArticles:
+  - /hi/blog/the-dnspionage-campaign/
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-myetherwallet-bgp-dns-attack/
+  - /hi/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/dns/
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
 ---
 
 अधिकांश साइबर हमले किसी लक्ष्य के *अंदर* घुसने की कोशिश करते हैं। Sea Turtle अभियान ने कुछ अधिक शांत और कहीं अधिक खतरनाक काम किया: इसने उस **नक्शे** को तोड़ा जो पूरे इंटरनेट को बताता है कि लक्ष्य कहाँ रहता है।

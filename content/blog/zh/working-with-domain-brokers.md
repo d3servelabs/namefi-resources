@@ -12,6 +12,24 @@ format: explainer
 description: '域名经纪人何时值得你的佣金、优秀经纪人究竟做了什么、买方经纪与卖方经纪的区别、典型佣金结构，以及如何识别真正的专业经纪人。'
 ogImage: ../../assets/working-with-domain-brokers-og.jpg
 keywords: ['域名经纪人', '域名经纪', '如何与域名经纪人合作', '域名经纪人佣金', '通过经纪人出售域名', '买方经纪域名', '卖方经纪域名', '入站域名经纪人', '出站域名经纪人', '何时使用域名经纪人', '筛选域名经纪人', '域名经纪费用', '最佳域名经纪人', '域名收购经纪人', '聘请域名经纪人']
+relatedArticles:
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/inbound-vs-outbound-domain-sales/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 你手里大多数的域名，应该自己出手。挂出来、定个价、回复询盘、走托管结案。为一个 $400 的域名找经纪人，不过是让陌生人从你本可独吞的钱里分走一份。但有一类交易，经纪人不再是纯粹的成本，而是决定能否成交的关键变量——搞清楚这个临界点在哪，本身就是一项技能。这是我们[域名倒卖](/zh/blog/domain-flipping/)系列的经纪人专题，处于整体卖域名支柱——[如何通过出售域名盈利](/zh/blog/how-to-sell-domains-for-profit/)——的下一层。本文涵盖：何时该把域名交给经纪人、优秀经纪人真正在做什么、买方经纪与卖方经纪的区别、佣金长什么样，以及如何辨别一个真正的经纪人和只想拿到你挂牌权的骗子。

@@ -12,6 +12,24 @@ format: guide
 description: "डोमेन फ़्लिपिंग असल में क्या है — सस्ते नाम खरीदना और महंगे बेचना — और इस कारोबार के पीछे की कौशल-शृंखला, सोर्सिंग और मूल्यांकन से लेकर बिक्री तक।"
 ogImage: ../../assets/domain-flipping-og.jpg
 keywords: ['डोमेन फ़्लिपिंग', 'डोमेन कैसे फ़्लिप करें', 'मुनाफ़े के लिए डोमेन फ़्लिपिंग', 'शुरुआती लोगों के लिए डोमेन फ़्लिपिंग', 'डोमेन खरीदें और बेचें', 'डोमेन निवेश', 'डोमेन से पैसे कमाएँ', 'डोमेन फ़्लिपिंग गाइड', 'डोमेन का मूल्यांकन कैसे करें', 'फ़्लिप करने के लिए डोमेन खोजें', 'डोमेन पोर्टफोलियो', 'डोमेन रीसेलर', 'क्या डोमेन फ़्लिपिंग कानूनी है', 'डोमेन आफ्टरमार्केट']
+relatedArticles:
+  - /hi/blog/domain-renewal-costs-and-sell-through-rate/
+  - /hi/blog/how-to-sell-domains-for-profit/
+  - /hi/blog/when-to-drop-a-domain/
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+  - /hi/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 व्यापार का सबसे पुराना मंत्र यही है: सस्ता खरीदो, महंगा बेचो। कुछ डॉलर में एक डोमेन नेम रजिस्टर या हासिल कर लो, ऐसे किसी को ढूँढो जिसे उसकी ज़रूरत आपसे ज़्यादा हो, और जो आपने चुकाया उसका कई गुना दाम लेकर बेच दो। जब सही तरीके से किया जाए, तो यह बहुत आसान लगता है — सस्ते में खरीदा गया एक चतुर नाम, और कुछ महीनों बाद पाँच अंकों का चेक। यह कहानी सच है। पर यह बस झलकियों का संकलन भी है।

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez l'extension de domaine .world : une portée internationale pour votre marque. Explorez ses avantages, ses cas d'usage et comment l'enregistrer dès aujourd'hui sur Namefi."
 keywords: ['.world domain', '.world TLD', '.world top-level domain', 'what is .world', 'why choose .world', 'what is the .world domain', 'why choose the .world domain', 'achat nom de domaine', 'investissement domaine', 'nom de domaine web3', 'domaine tokenisé', 'extension globale', 'identité numérique', 'Namefi', 'blockchain domains']
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/ai-vs-io-domain/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le domaine .world ?**

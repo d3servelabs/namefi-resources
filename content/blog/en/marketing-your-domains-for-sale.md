@@ -12,6 +12,24 @@ format: guide
 description: "How to market domains for sale: parking pages, for-sale landers, and listing SEO that put the right name in front of the right buyer."
 ogImage: ../../assets/marketing-your-domains-for-sale-og.jpg
 keywords: ['marketing domains for sale', 'how to market a domain', 'domain for sale landing page', 'domain parking', 'sell a parked domain', 'domain sales lander', 'domain marketplace listing', 'domain listing SEO', 'how to advertise a domain for sale', 'inbound vs outbound domain sales', 'domain for sale page', 'get buyers for domains', 'domain marketing channels', 'domain investing marketing']
+relatedArticles:
+  - /en/blog/domain-for-sale-landing-pages/
+  - /en/blog/marketplace-seo-for-domain-listings/
+  - /en/blog/inbound-vs-outbound-domain-sales/
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/domain-parking-and-monetization/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 You can own the perfect name and still never sell it. Appraisal tells you what a domain is worth; marketing is what closes the gap between that number and a buyer who has never heard of you. Most names in a flipper's portfolio don't sell because nobody who needs them ever finds out they're available. The fix is rarely a louder pitch. It's putting the name where the right buyer is already looking.

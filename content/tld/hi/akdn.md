@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'जानें .akdn TLD के बारे में सब कुछ। यह किसके लिए है, इसके फायदे क्या हैं और आप Namefi के माध्यम से इस प्रतिष्ठित डोमेन एक्सटेंशन को कैसे सुरक्षित कर सकते हैं।'
 keywords: ['.akdn domains', '.akdn TLD', 'top-level domain', 'what is .akdn', 'why choose .akdn', 'what is the .akdn domain', 'why choose the .akdn domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'web3 domains', 'buy .akdn domain', 'Aga Khan Development Network domain', 'niche TLDs', 'digital identity']
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/top-tlds-to-secure-for-your-saas/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 डिजिटल दुनिया में एक सही डोमेन नाम चुनना आपकी ऑनलाइन पहचान को परिभाषित करने का सबसे महत्वपूर्ण कदम है। इंटरनेट के विस्तार के साथ, पारंपरिक `.com` या `.net` के अलावा अब कई विशेष **Top-Level Domains (TLDs)** उपलब्ध हैं। इनमें से एक विशिष्ट और प्रतिष्ठित एक्सटेंशन है **.akdn**। यदि आप एक ऐसी पहचान की तलाश में हैं जो विश्वसनीयता, विकास और समुदाय का प्रतिनिधित्व करती हो, तो यह लेख आपके लिए है।

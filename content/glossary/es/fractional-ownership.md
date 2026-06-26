@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es la propiedad fraccionada y cómo se aplica a los dominios valiosos?
 keywords: ["propiedad fraccionada","propiedad compartida","fraccionamiento de dominio","accesibilidad","tokenización"]
+relatedArticles:
+  - /es/blog/tokenized-domain-use-cases-2026/
+  - /es/blog/why-tokenize-domains/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/what-are-xstocks/
+  - /es/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-security/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/revenue-sharing/
+  - /es/glossary/premium-domain/
+  - /es/glossary/web3/
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
 ---
 
 

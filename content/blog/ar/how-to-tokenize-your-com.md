@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "دليل عملي وخطوة بخطوة لتحويل نطاق تملكه بالفعل إلى توكن — الأهلية، المحافظ، الرسوم، الوقت، وما يجب توقعه في كل شاشة. كُتب لمالكي النطاقات، وليس لخبراء البروتوكولات."
 keywords: ['كيفية تحويل النطاق إلى توكن', 'كيفية تحويل نطاق .com إلى توكن', 'تحويل نطاقي إلى توكن', 'تحويل نطاق حالي إلى توكن', 'تحويل النطاق إلى توكن خطوة بخطوة', 'دليل تعليمي لتحويل النطاق إلى توكن', 'دليل تحويل نطاق .com إلى توكن', 'تحويل نطاق .xyz إلى توكن', 'تحويل نطاق .io إلى توكن', 'تحويل توكن namefi', 'كيفية عمل نطاق NFT', 'نقل النطاق إلى NFT', 'نطاق إلى NFT', 'عملية تحويل النطاق إلى توكن', 'إعداد النطاق المحول إلى توكن', 'تحويل نطاق ICANN إلى توكن']
+relatedArticles:
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/dns-on-tokenized-domains/
+  - /ar/blog/how-tokenized-marketplaces-replace-escrow/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/tokenize-your-com/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 إذن أنت تمتلك نطاقاً — ربما `mybrand.com`، أو ربما مجموعة من أسماء `.xyz` — وقررت أنك تريد **تحويله إلى توكن (tokenize)**. سيأخذك هذا الدليل عبر ما يحدث فعلياً، شاشة بشاشة، لتتمكن من التخطيط للوقت، والمال، وصلاحيات الوصول التي ستحتاجها قبل البدء.

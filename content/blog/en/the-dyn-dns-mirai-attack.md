@@ -11,6 +11,24 @@ seriesOrder: 11
 format: case-study
 description: 'On October 21, 2016, a DDoS attack powered by the Mirai IoT botnet hit DNS provider Dyn in three waves, knocking Twitter, Netflix, Reddit, Spotify, GitHub, Airbnb and PayPal offline for hours — a Domain Mayday case study in DNS provider concentration.'
 keywords: ['dyn dns attack', 'mirai botnet', 'october 21 2016 ddos', 'dns ddos attack', 'iot botnet', 'dns provider outage', 'domain security', 'dns single point of failure', 'dyn ddos 2016', 'mirai malware', 'internet outage 2016', 'dns redundancy', 'hacked iot cameras']
+relatedArticles:
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-curve-finance-dns-hijack/
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-myetherwallet-bgp-dns-attack/
+  - /en/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/dns/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 For a few hours on a Friday in October 2016, the internet forgot how to find itself.

@@ -12,6 +12,24 @@ format: explainer
 description: "إمتى بينتهي الدومينينج الشرعي وإمتى بيبدأ احتلال النطاقات: اختبار الـ UDRP بتلات أجزاء، والـ ACPA، والخطف العكسي للنطاقات، وإزاي تفضل في الأمان."
 ogImage: ../../assets/cybersquatting-vs-domaining-udrp-acpa-og.jpg
 keywords: ['احتلال النطاقات', 'احتلال النطاقات في مقابل الدومينينج', 'udrp', 'اختبار UDRP بتلات أجزاء', 'acpa', 'قانون حماية المستهلك من احتلال النطاقات', 'الخطف العكسي لأسماء النطاقات', 'rdnh', 'تسجيل النطاقات بنية سيئة', 'هل تجارة النطاقات قانونية', 'نزاع نطاق على علامة تجارية', 'تسوية منازعات النطاقات', 'الدومينينج الشرعي', 'wipo udrp', 'الاستثمار القانوني في النطاقات']
+relatedArticles:
+  - /ar/blog/what-is-udrp/
+  - /ar/blog/domain-flipping-and-the-law/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/hand-registering-domains-to-flip/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 شخصين بيسجلوا نطاق علشان يبيعوه تاني. واحد بيشتري `solarpanels.com`، وده مجرد تعبير قاموسي عادي ممكن أي حد في المجال يحبه. والتاني بيشتري `nike-running-shoes.net`، وده اسم مش موجود أصلاً غير لأن Nike موجودة. نفس النشاط على السطح، بس موقفين قانونيين مختلفين تماماً. الأول ده [دومينينج](/ar/glossary/domaining/) عادي. والتاني ده [احتلال نطاقات](/ar/glossary/cybersquatting/)، وفيه نظامين متبنيين كويس مصممين علشان ياخدوا الاسم ده من الشخص اللي سجّله.

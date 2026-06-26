@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '探索 .cloud 域名的优势及其对科技企业、SaaS 平台和现代品牌的价值。了解为何 .cloud 是展示创新与连接性的最佳选择，并立即在 Namefi 注册您的专属域名。'
 keywords: ['.cloud domains', '.cloud TLD', 'top-level domain', 'what is .cloud', 'why choose .cloud', 'what is the .cloud domain', 'why choose the .cloud domain', 'cloud computing domains', 'SaaS domains', 'domain investing', 'blockchain domains', 'tokenized domain', 'technology branding', 'Namefi', 'Web3 domains']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .cloud？**

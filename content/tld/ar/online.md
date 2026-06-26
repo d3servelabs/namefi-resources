@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما يخص نطاق .online، ومميزاته للشركات والأفراد، ولماذا يعتبر بديلاً قوياً لنطاق .com. احجز اسم نطاقك المميز الآن وابدأ رحلتك الرقمية."
 keywords: [".online domains", ".online TLD", "top-level domain", "what is .online", "why choose .online", "what is the .online domain", "why choose the .online domain", "domain investing", "blockchain domains", "tokenized domains", "buy .online domain", "Web3 domains", "new gTLD", "حجز نطاق", "استثمار النطاقات"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 يعد اختيار اسم النطاق (Domain Name) المناسب خطوة حاسمة في بناء هوية رقمية قوية. مع اكتظاظ النطاقات التقليدية مثل `.com`، أصبح من الصعب العثور على أسماء قصيرة ومميزة. هنا يأتي دور نطاقات المستوى الأعلى العامة الجديدة (new gTLDs)، وعلى رأسها نطاق **.online**.

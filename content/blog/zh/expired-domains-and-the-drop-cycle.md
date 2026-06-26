@@ -12,6 +12,24 @@ format: explainer
 description: "域名是如何过期并掉落的：宽限期、30 天的赎回窗口、5 天的待删除、最终释放——以及掉落的域名会在哪些地方浮现，供翻转者捕获。"
 ogImage: ../../assets/expired-domains-and-the-drop-cycle-og.jpg
 keywords: ['过期域名', '域名掉落周期', '域名生命周期', '赎回宽限期', '待删除', '域名抢注', '过期域名', '域名如何过期', '掉落域名', '域名狙击', '购买过期域名', '域名赎回期', '域名何时掉落', '域名预订单', '寻找可翻转的域名']
+relatedArticles:
+  - /zh/blog/domain-backorders-and-drop-catching/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/how-to-win-domain-auctions/
+  - /zh/blog/hand-registering-domains-to-flip/
+  - /zh/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 大多数人以为，一个失效的域名会在过期次日就凭空消失，第二天一早便重新回到公开市场。事实并非如此。无人续费的域名会经历一段固定的、长达数周的持有状态序列——每个阶段都有自己的规则，规定谁能找回它、以何种代价找回——之后[注册局](/zh/glossary/registry/)才会最终把它释放回可注册的池子。这最后的释放就是"[掉落](/zh/glossary/pending-delete/)"，而在域名落地那一刻立即抢注它是一种公认的做法：正如维基百科所说，[域名抢注（domain drop catching），也称域名狙击（domain sniping），是指在注册失效后、过期之后立即抢注该域名的做法](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=is%20the%20practice%20of%20registering%20a%20domain%20name%20once%20registration%20has%20lapsed%2C%20immediately%20after%20expiry)。

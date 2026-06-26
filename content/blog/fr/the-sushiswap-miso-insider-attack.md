@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "En septembre 2021, un prestataire anonyme a glissé sa propre adresse de portefeuille dans le front-end du launchpad MISO de SushiSwap via un commit malveillant, détournant 864,8 ETH (~3 M$) de la vente aux enchères Jay Pegs Auto Mart. Un deep-dive Domain Mayday sur les chaînes d'approvisionnement logicielles, la confiance accordée aux front-ends, et ce que cela enseigne sur la propriété vérifiable."
 keywords: ['sushiswap miso hack', 'attaque supply chain miso', 'aristok3', 'jay pegs auto mart', 'attaque front-end defi', '864.8 eth', 'chaîne d approvisionnement logicielle', 'commit malveillant', 'menace interne', 'auctionwallet', 'joseph delong', 'sécurité chaîne web', 'sécurité des domaines']
+relatedArticles:
+  - /fr/blog/the-badgerdao-frontend-attack/
+  - /fr/blog/the-curve-finance-dns-hijack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /fr/blog/the-myetherwallet-bgp-dns-attack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
+  - /fr/glossary/tld/
 ---
 
 La plupart des attaques forcent une porte. Celle-ci est entrée par la façade.

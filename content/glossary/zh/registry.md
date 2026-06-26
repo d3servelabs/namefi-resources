@@ -13,6 +13,24 @@ sources:
   - https://www.iana.org/domains/root/db
   - https://www.icann.org/en/registry-agreements
   - https://www.icann.org/resources/pages/gtld-registry-agreement-2013-01-25-en
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 **注册局**（也称*注册局运营商*）是负责运营某个 [TLD](/zh/glossary/tld/) 权威数据库的组织——记录该后缀下每一个已注册域名，维护将这些名称映射到[域名服务器](/zh/glossary/nameserver/)的区域文件，并发布使 [DNS](/zh/glossary/dns/) 查询正常运转所需的数据。注册局位于域名供应链的顶端，处于[注册商](/zh/glossary/registrar/)和[注册人](/zh/glossary/registrant/)之上。

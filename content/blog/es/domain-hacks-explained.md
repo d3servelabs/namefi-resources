@@ -12,6 +12,24 @@ format: explainer
 description: "Qué es un domain hack, por qué las marcas y los flippers valoran tanto estos dominios cortos e ingeniosos, los riesgos de ccTLD que esconden y cómo tasar uno."
 ogImage: ../../assets/domain-hacks-explained-og.jpg
 keywords: ['domain hack', 'domain hacks', 'qué es un domain hack', 'nombres de dominio ingeniosos', 'del.icio.us', 'dominio bit.ly', 'domain hack ccTLD', 'nombres de dominio cortos', 'dominios con marca', 'ejemplos de domain hack', 'youtu.be', 'instagr.am', 'goo.gl', 'incautación de vb.ly']
+relatedArticles:
+  - /es/blog/how-tld-affects-domain-value/
+  - /es/blog/what-makes-a-domain-valuable/
+  - /es/blog/from-del-icio-us-to-delicious-com/
+  - /es/blog/how-to-value-a-domain-name/
+  - /es/blog/domain-flipping/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Hay un tipo de dirección web que no se lee tanto como se *descifra*. Ves las letras, ves los puntos, y de pronto toda la cadena encaja en una sola palabra que corre de un lado a otro de la puntuación. La más famosa que se haya creado fue `del.icio.us`. Léela despacio y se desarma en pedazos; léela rápido y simplemente dice "delicious" (delicioso).

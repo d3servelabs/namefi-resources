@@ -18,6 +18,24 @@ faqs:
     answer: 'Often yes. As a niche new gTLD, .properties usually carries higher standard and renewal pricing than .com, and many sought-after real estate keywords are classified as premium names with elevated fees.'
   - question: 'Does .properties support WHOIS privacy and DNSSEC?'
     answer: 'Yes. Registrations are managed through ICANN-accredited registrars that typically offer WHOIS privacy, and the registry supports DNSSEC for cryptographically signed DNS, so you get the same security posture as other Identity Digital TLDs.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.properties domain** is a descriptive web extension built for the real estate world — listings, brokerages, property management firms, and investment portfolios. Where a generic suffix forces you to qualify your name (`acme-realty.com`), `.properties` lets the address itself say what the site is about: `downtown.properties` or `coastal.properties`. The result reads like a complete phrase rather than a brand bolted onto a generic suffix.

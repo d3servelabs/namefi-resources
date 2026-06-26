@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que la propriété fractionnée et comment s'applique-t-elle aux domaines de valeur ?
 keywords: ["propriété fractionnée","propriété partagée","fractionnement de domaine","accessibilité","tokenisation"]
+relatedArticles:
+  - /fr/blog/tokenized-domain-use-cases-2026/
+  - /fr/blog/why-tokenize-domains/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/what-are-xstocks/
+  - /fr/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-security/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/revenue-sharing/
+  - /fr/glossary/premium-domain/
+  - /fr/glossary/web3/
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
 ---
 
 

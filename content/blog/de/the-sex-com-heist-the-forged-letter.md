@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Im Jahr 1995 stahl ein Betrüger namens Stephen Cohen sex.com vom rechtmäßigen Eigentümer Gary Kremen mit einem einzigen gefälschten Brief an Network Solutions. Der jahrelange Kampf um die Rückgabe endete mit einem Urteil über 65 Millionen Dollar, einem Flüchtigen in Mexiko und einem wegweisenden Urteil, das Domains als Eigentum einstuft.'
 keywords: ['sex.com', 'Domain-Diebstahl', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'gefälschter Brief', 'Domain-Hijacking', 'Sharon Dimmick Brief', 'Domain-Sicherheit', 'Domain als Eigentum', '65-Millionen-Dollar-Urteil', 'Domain-Transfer-Betrug', 'Domain Mayday']
+relatedArticles:
+  - /de/blog/the-panix-com-domain-hijack/
+  - /de/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /de/blog/from-twitter-com-to-x-com/
+  - /de/blog/the-perl-com-domain-theft/
+  - /de/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Im Jahr 1995 wechselte die wertvollste Adresse im Internet aufgrund eines einzigen Blattes Papier den Besitzer.

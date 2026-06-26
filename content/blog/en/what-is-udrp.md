@@ -9,6 +9,24 @@ cluster: domain-basics
 format: explainer
 description: "UDRP explained for domain owners and investors: the three elements a complainant must prove, the process and timeline, outcomes, UDRP vs URS vs court, and how to respond."
 keywords: ['udrp', 'what is udrp', 'udrp process', 'udrp policy', 'udrp complaint', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'domain dispute', 'domain name dispute', 'cybersquatting', 'reverse domain name hijacking', 'bad faith registration', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'trademark domain dispute', 'domain investor legal', 'respond to udrp complaint']
+relatedArticles:
+  - /en/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/domain-flipping-and-the-law/
+  - /en/blog/domain-flipping/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/domain-basics/
+  - /en/topics/domain-security/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 If you own domain names long enough, you will eventually hear about the [UDRP](/en/glossary/udrp/) — usually because someone is threatening to use it against you, or because you are wondering whether a name in your portfolio is safe to hold. For domain investors, understanding the UDRP is not optional. It is the single most common way a domain you registered can be taken away from you without a courtroom.

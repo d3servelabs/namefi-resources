@@ -6,6 +6,24 @@ tags: ['tld']
 authors: ['namefiteam']
 draft: false
 description: Learn about the .abarth TLD, its uses, advantages, and how to register your .abarth domain with Namefi. Secure your unique online identity today!
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
+  - /en/glossary/registry/
 ---
 
 ## **What is .abarth?**

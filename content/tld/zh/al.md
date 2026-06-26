@@ -24,6 +24,24 @@ keywords:
   - creative domain names
   - short domain names
   - Web3 domain management
+relatedArticles:
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-makes-a-domain-valuable/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/registry/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
 ---
 
 ## **什么是 .al?**

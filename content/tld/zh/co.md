@@ -16,6 +16,24 @@ faqs:
     answer: '理想 .com 已被注册或价格过高的初创公司、企业和创始人。"co" 字符串自然读作 "company（公司）"、"corporation（企业）" 或 "Colorado（科罗拉多）"，是面向全球业务的简洁、易于品牌化的次选。'
   - question: '.co 和 .com 是一回事吗？'
     answer: '不是。它们是由不同运营商运营的独立顶级域名。风险在于，凭记忆输入您地址的访客可能会在结尾多加一个 "m"，从而误入 .com，因此这两个后缀在口头交流和手动输入时容易被混淆。'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 **.co** 域名是国家代码扩展名突破国界束缚的最成功范例之一。它在官方层面是**哥伦比亚**的 ccTLD，却被全球营销并采用，作为 ".com" 的简短、易于品牌化的替身——"co" 一眼就读作 **company（公司）**、**corporation（企业）**，或干脆是 ".com" 的简化版。对于发现心仪 **.com** 已被注册的创始人来说，**.co** 往往是他们第一个想到的地方。

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el potencial del dominio .abc: una extensión simple, memorable y fundamental. Aprende por qué es ideal para educación, startups y el ecosistema Web3.'
 keywords: ['.abc domains', 'dominios .abc', 'TLD .abc', 'top-level domain', 'what is .abc', 'que es el dominio .abc', 'why choose .abc', 'por que elegir .abc', 'what is the .abc domain', 'why choose the .abc domain', 'investing in domains', 'inversión en dominios', 'blockchain domains', 'tokenized domains', 'Namefi']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/premium-web3-tlds/
+  - /es/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registrar/
+  - /es/glossary/web3/
 ---
 
 ## **¿Qué es .abc?**

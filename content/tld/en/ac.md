@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Discover the hidden value of the .ac domain. From academic prestige to creative branding, learn why the .ac TLD is a smart choice for your next project. Register with Namefi today.'
 keywords: ['.ac domains', '.ac TLD', 'top-level domain .ac', 'what is .ac', 'why choose .ac', 'what is the .ac domain', 'why choose the .ac domain', 'Ascension Island domain', 'academic domains', 'domain investing', 'blockchain domains', 'tokenized domains', 'accounting domains', 'short link domains', 'Web3 domains']
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/domain-hacks-explained/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/web3/
 ---
 
 ## **What is .ac?**

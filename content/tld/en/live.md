@@ -18,6 +18,24 @@ faqs:
     answer: 'A .live domain can send and receive email reliably when you authenticate it properly with SPF, DKIM, and DMARC and warm it up gradually. As a newer suffix it carries less default trust than .com, so correct configuration matters more than the extension itself.'
   - question: 'When was the .live domain launched?'
     answer: 'The .live top-level domain was delegated to the DNS root in June 2015 as part of ICANN New gTLD Program and reached general availability later that year. It is now operated by Identity Digital, the registry formerly known as Donuts.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.live** domain is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built around a single, instantly understood idea: something is happening right now. Where a country-code suffix signals geography, .live signals action and immediacy, which makes it a natural fit for streamers, broadcasters, event pages, and any project where the call to "watch now" is the point. This page explains what .live is, who runs it, who uses it, the rules, and how it compares with the alternatives.

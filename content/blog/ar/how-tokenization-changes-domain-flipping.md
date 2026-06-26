@@ -12,6 +12,24 @@ format: explainer
 description: "إزاي نقل النطاق على البلوكتشين بيعيد تشكيل تجارته — ملكية مؤكدة وتسوية ذرية ونقل قابل للبرمجة، مقابل سوق ما بعد التسجيل البطيء بتاع جهات التسجيل."
 ogImage: ../../assets/how-tokenization-changes-domain-flipping-og.jpg
 keywords: ['تجارة النطاقات المرمّزة', 'تجارة النطاقات على البلوكتشين', 'تداول النطاقات المرمّزة', 'تجارة نطاقات NFT', 'التسوية الذرية للنطاقات', 'بيع النطاقات كـ NFT', 'سوق النطاقات المرمّزة', 'تجارة النطاقات في web3', 'نطاق ERC-721', 'نقل النطاق على البلوكتشين', 'حفظ النطاقات المرمّزة', 'ملكية نطاق قابلة للبرمجة', 'بديل ضمان النطاقات', 'تداول النطاقات على البلوكتشين', 'إعادة بيع النطاقات المرمّزة']
+relatedArticles:
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/onchain-domain-flipping/
+  - /ar/blog/onchain-domain-custody-and-recovery/
+  - /ar/blog/selling-domains-as-nfts/
+  - /ar/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 أغلب الشغل في [تجارة النطاقات](/ar/blog/domain-flipping/) مالوش أي علاقة بالاسم نفسه. إنت بتدوّر عليه، وتقيّمه، وتحميه، وتلاقي مشتري — وبعدين توصل للجزء اللي محدش بيحبه: إنك تنقل الأصل فعلاً وتتقبض من غير ما حد من الطرفين يتنصب عليه. خطوة التسوية دي بطيئة ويدوية ومبنية على الثقة بين ناس غُرَبا عن بعض. الترميز هو التغيير اللي بيعيد كتابة دي.

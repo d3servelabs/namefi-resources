@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'कैसे एक 2011 के पेट स्टार्टअप ने "Mr. Chewy" नाम से MrChewy.com पर शुरुआत की, "Mr." हटाकर Chewy.com पर आ गए, और क्यों यह एक-शब्द डोमेन अपग्रेड चुपचाप उस ब्रांड का हिस्सा बन गई जिसे PetSmart ने $3.35 अरब में खरीदा।'
 keywords: ['mrchewy.com', 'chewy.com', 'chewy domain name', 'mr chewy', 'domain upgrade', 'ryan cohen', 'michael day', 'frank schilling', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'pet ecommerce']
+relatedArticles:
+  - /hi/blog/from-urbancompass-com-to-compass-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-massdrop-com-to-drop-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
 ---
 
 इससे पहले कि Chewy पेट ई-कॉमर्स की ग्राहक-सेवा का किंवदंती बनता — हस्तलिखित कार्ड्स, शोक-संवेदना के फूल, और $3.35 अरब के एग्जिट से पहले — उसका एक थोड़ा सा प्यारा और सतर्क नाम था। वह था **Mr. Chewy**, और वह रहता था **MrChewy.com** पर।

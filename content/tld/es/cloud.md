@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el poder del dominio .cloud para tu negocio tecnológico. Conoce sus ventajas, casos de uso y cómo registrar tu dominio tokenizado en Namefi.'
 keywords: ['.cloud', 'dominios .cloud', 'TLD', 'top-level domain', 'qué es .cloud', 'por qué elegir .cloud', 'qué es el dominio .cloud', 'por qué elegir el dominio .cloud', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'Namefi', 'SaaS', 'computación en la nube', 'registro de dominios']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 En la era digital actual, la "nube" ya no es solo un concepto meteorológico; es la columna vertebral de Internet. Para las empresas modernas, desarrolladores y startups, elegir el nombre de dominio correcto es crucial para definir su identidad en línea. Aquí es donde entra en juego el dominio de nivel superior (TLD) **.cloud**.

@@ -10,6 +10,24 @@ also_known_as: ['Verrou du bureau d''enregistrement']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
+relatedArticles:
+  - /fr/blog/the-panix-com-domain-hijack/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/avoiding-domain-sale-scams/
+  - /fr/blog/working-with-domain-brokers/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/domain-hijacking/
+  - /fr/glossary/cross-registrar-transfer/
+  - /fr/glossary/epp/
+  - /fr/glossary/registry-lock/
 ---
 
 Le **verrou de transfert** (aussi appelé *verrou du bureau d'enregistrement* ; statut EPP `clientTransferProhibited`) est un indicateur défini par votre [bureau d'enregistrement](/fr/glossary/registrar/) qui empêche un domaine d'être déplacé vers un autre bureau d'enregistrement sans être préalablement délibérément déverrouillé. Lorsque le verrou est activé, toute tentative d'initier un [transfert inter-bureaux](/fr/glossary/cross-registrar-transfer/) est rejetée avant de pouvoir aboutir, même si le demandeur dispose du [code d'autorisation](/fr/glossary/auth-code/). C'est l'une des défenses les plus simples et les plus efficaces contre le [détournement de domaine](/fr/glossary/domain-hijacking/) : un voleur qui a compromis votre compte ne peut pas transférer silencieusement l'actif tant que le verrou est actif. La bonne pratique consiste à maintenir le verrou de transfert activé en permanence et à ne le retirer que pendant la brève fenêtre nécessaire pour finaliser un transfert légitime.

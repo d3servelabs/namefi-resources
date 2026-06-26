@@ -12,6 +12,24 @@ format: guide
 description: "Por qué el formato del anuncio y el primer número deciden la venta de tu dominio: anclaje, no decir nunca el precio primero, escalonado de precios y compra inmediata vs. hacer una oferta."
 ogImage: ../../assets/domain-pricing-psychology-buy-now-vs-make-offer-og.jpg
 keywords: ['psicología del precio de dominios', 'compra inmediata vs hacer una oferta', 'anclaje de precios de dominios', 'cómo poner precio a un dominio', 'negociación del precio de un dominio', 'hacer una oferta por un dominio', 'compra inmediata de dominio', 'escalonado de precios de dominios', 'formato del anuncio de un dominio', 'quién dice el precio primero', 'tácticas de negociación de dominios', 'precios psicológicos en dominios', 'precio de dominio para usuario final', 'psicología de la venta de dominios']
+relatedArticles:
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/working-with-domain-brokers/
+  - /es/blog/inbound-vs-outbound-domain-sales/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
 ---
 
 El número que pones en tu anuncio trabaja más de lo que crees. Dos revendedores pueden tener el mismo nombre, anunciarlo en el mismo mercado y marcharse con precios que difieren en un orden de magnitud, no porque uno negociara con más dureza, sino porque uno entendió que la *forma* en que se presenta un precio moldea lo que un comprador estará dispuesto a pagar. Poner precio a un dominio es en parte aritmética, pero sobre todo psicología.

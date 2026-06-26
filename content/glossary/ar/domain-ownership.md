@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ماذا تعني ملكية النطاق عند ترميزها؟
 keywords: ["ملكية النطاق","نطاق NFT","مسجل نطاقات","حضانة","ملكية المحفظة"]
+relatedArticles:
+  - /ar/blog/why-tokenize-domains/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /ar/blog/the-sea-turtle-dns-espionage/
+  - /ar/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/web3/
+  - /ar/glossary/tokenize/
+  - /ar/glossary/dns/
+  - /ar/glossary/on-chain/
 ---
 
 

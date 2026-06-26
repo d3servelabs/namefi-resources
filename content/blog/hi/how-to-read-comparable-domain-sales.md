@@ -12,6 +12,24 @@ format: guide
 description: "किसी डोमेन की कीमत तय करने के लिए NameBio जैसी बिक्री हिस्ट्री का इस्तेमाल कैसे करें: असली तुलनात्मक बिक्री ढूँढना, TLD, लंबाई और कीवर्ड के हिसाब से समायोजन करना, और चेरी-पिकिंग से बचना।"
 ogImage: ../../assets/how-to-read-comparable-domain-sales-og.jpg
 keywords: ['तुलनात्मक डोमेन बिक्री', 'डोमेन comps', 'डोमेन comps कैसे पढ़ें', 'NameBio', 'डोमेन बिक्री हिस्ट्री', 'डोमेन मूल्यांकन comps', 'डोमेन कीमत तुलना', 'डोमेन की कीमत कैसे तय करें', 'डोमेन अप्रेजल तुलनात्मक बिक्री', 'डोमेन बिक्री डेटा', 'तुलनात्मक डोमेन ढूँढना', 'डोमेन comp समायोजन', 'domaining comps', 'डोमेन कीमत डेटा']
+relatedArticles:
+  - /hi/blog/how-to-value-a-domain-name/
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+  - /hi/blog/domain-appraisal-tools-compared/
+  - /hi/blog/what-makes-a-domain-valuable/
+  - /hi/blog/domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 किसी रियल-एस्टेट अप्रेजर से पूछिए कि एक घर की कीमत क्या है, और वे अंदाज़ा नहीं लगाते। वे आस-पास हाल ही में बिके मिलते-जुलते घरों की कीमतें निकालते हैं और वहीं से समायोजन करते हैं। [डोमेन अप्रेजल](/hi/glossary/domain-appraisal/) भी ठीक इसी तरह काम करता है, और "हाल की आस-पास की बिक्री" का समतुल्य है पुरानी डोमेन बिक्री का सार्वजनिक रिकॉर्ड: यानी comps। इन्हें पढ़ना सीख लीजिए और आप किसी भी नाम पर लगाई गई लगभग हर कीमत का बचाव कर सकते हैं। इन्हें लापरवाही से पढ़िए और आप खुद को ऐसी संख्या पर मना लेंगे जिस पर बाज़ार ने कभी सहमति ही नहीं जताई।

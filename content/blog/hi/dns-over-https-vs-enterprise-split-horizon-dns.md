@@ -8,6 +8,24 @@ draft: false
 description: 'DNS over HTTPS (DoH), HTTPS के अंदर DNS क्वेरीज़ को एन्क्रिप्ट करके यूज़र की प्राइवेसी की रक्षा करता है। एंटरप्राइज़ स्प्लिट-होराइज़न DNS (Enterprise split-horizon DNS) नेटवर्क पर इन क्वेरीज़ को देखे जा सकने पर निर्भर करता है। इन दोनों के बीच का टकराव यह बदल रहा है कि कैसे कॉर्पोरेट नेटवर्क, ब्राउज़र और ऑपरेटिंग सिस्टम नेम रिज़ॉल्यूशन को संभालते हैं।'
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg
 keywords: ['dns over https', 'doh', 'split horizon dns', 'एंटरप्राइज़ dns', 'dot', 'एन्क्रिप्टेड dns', 'आंतरिक dns', 'नेम रिज़ॉल्यूशन', 'namefi']
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/the-myetherwallet-bgp-dns-attack/
+  - /hi/blog/the-dnspionage-campaign/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/dns/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 इंटरनेट के ज़्यादातर इतिहास में, [DNS](/hi/glossary/dns/) क्वेरीज़ पोर्ट 53 पर क्लियरटेक्स्ट (cleartext) में यात्रा करती थीं। नेटवर्क पाथ पर मौजूद कोई भी व्यक्ति उन्हें पढ़ सकता था, लॉग कर सकता था और उनमें बदलाव कर सकता था। यह प्राइवेसी की एक बड़ी समस्या थी जिसे IETF ने आखिरकार दो एन्क्रिप्टेड विकल्पों के साथ सुलझाया: 2016 में [DNS over TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) और 2018 में [DNS over HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484)।

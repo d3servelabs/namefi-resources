@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 一份通俗易懂的托管与域名托管指南——什么是托管账户、域名出售中托管的逐步运作流程、为何托管对防范欺诈至关重要、传统托管服务与现代通证化方案的对比，以及智能合约如何通过链上原子结算取代传统托管。
 keywords: ['域名托管', '什么是托管', '托管账户', '托管含义', '托管如何运作', '域名托管服务', 'escrow.com 替代方案', '安全购买域名', '安全出售域名', '授权码', 'EPP码', '注册商转移', '托管费用', '安全域名交易', '域名买卖欺诈', '通证化域名托管', '智能合约托管', '原子结算', '链上域名买卖', '如何避免域名欺诈']
+relatedArticles:
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/avoiding-domain-sale-scams/
+  - /zh/blog/how-tokenized-marketplaces-replace-escrow/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /zh/topics/domain-basics/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
+  - /zh/glossary/tld/
 ---
 
 如果你曾在陌生人之间买卖过贵重物品——一辆汽车、一套房子、或者价值五位数的 `.com` 域名——你一定遇到过同样的问题：买家不想在收到货物之前付款，卖家也不想在收到货款之前交货。总要有一方先行，而先行就意味着要信任对方。

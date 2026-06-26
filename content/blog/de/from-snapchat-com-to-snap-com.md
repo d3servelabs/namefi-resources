@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Snapchat Snap.com still und leise von Idealab für angeblich 5 Millionen Dollar kaufte – im Jahr 2014 – und dann im September 2016 sich in Snap Inc. umbenannte, „ein Kameraunternehmen", und die kurze Exact-Match-Domain eine Identität tragen ließ, die größer war als jede einzelne App.'
 keywords: ['snapchat.com', 'snap.com', 'snap inc', 'snap domainname', 'domain-upgrade', 'startup-naming', 'markennamensgebung', 'premium-domain', 'domain-strategie', 'snapchat rebrand', 'kameraunternehmen', 'idealab snap.com', 'domain-akquisition', 'kategorie-definierende domain']
+relatedArticles:
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-teslamotors-com-to-tesla-com/
+  - /de/blog/from-ctrip-com-to-trip-com/
+  - /de/blog/from-massdrop-com-to-drop-com/
+  - /de/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
 ---
 
 Bevor Snap Inc. ein börsennotiertes „Kameraunternehmen" war, war es eine einzige App mit einem wörtlichen, selbsterklärenden Namen: **Snapchat**. Das Produkt sagte Ihnen, was es tat. Man machte einen Snap, chattete, und der Snap verschwand. Der Name und das Verb waren ein und dasselbe.

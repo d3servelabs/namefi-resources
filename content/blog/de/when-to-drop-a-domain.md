@@ -12,6 +12,24 @@ format: guide
 description: "Wie man entscheidet, wann man eine Domain auslaufen lässt: Verlängerungskosten gegen realistische Verkaufschancen, die Sunk-Cost-Falle und die Signale, dass sich ein Name nie verkaufen wird."
 ogImage: ../../assets/when-to-drop-a-domain-og.jpg
 keywords: ['wann eine Domain fallen lassen', 'eine Domain auslaufen lassen', 'Domain-Verlierer abstoßen', 'Domain-Verlängerungsentscheidung', 'Domain Sunk Cost', 'sollte ich eine Domain verlängern', 'Domain-Portfolio ausmisten', 'einen Domainnamen fallen lassen', 'Domain-Haltekosten', 'Domain-Verkaufsquote', 'Verluste beim Domaining', 'eine Domain auslaufen lassen', 'Domain-Verlängerungskosten', 'Fehler beim Domain-Investing', 'Domain-Portfolio ausdünnen']
+relatedArticles:
+  - /de/blog/domain-portfolio-management/
+  - /de/blog/domain-renewal-costs-and-sell-through-rate/
+  - /de/blog/domain-flipping/
+  - /de/blog/hand-registering-domains-to-flip/
+  - /de/blog/working-with-domain-brokers/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Jede Domain, die du besitzt, schickt dir einmal im Jahr denselben Brief: verlängern oder verlieren. Bei deinen Gewinnern ist das ein leichtes Ja. Die schweren Entscheidungen betreffen die Namen in der Mitte und am unteren Ende deines Portfolios — jene, die du mit einer These registriert hast, die sich nicht ausgezahlt hat, die Impulskäufe, die „Beinahe“-Namen, die durch drei Verlängerungszyklen unverkauft liegen geblieben sind. Zu entscheiden, welche man gehen lässt, ist eine der unglamourösesten und zugleich profitabelsten Fähigkeiten beim Flipping, denn Geld, das man bei totem Lagerbestand spart, fließt direkt in dein Ergebnis.

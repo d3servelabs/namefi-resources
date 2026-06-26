@@ -12,6 +12,24 @@ format: comparison
 description: "OpenSea, Seaport-basierte und Domain-native Onchain-Marktplätze im Vergleich nach Gebühren, Reichweite und Verwahrung – welcher Handelsplatz zu welchem Verkauf einer tokenisierten Domain passt."
 ogImage: ../../assets/onchain-domain-marketplaces-compared-og.jpg
 keywords: ['Onchain-Domain-Marktplatz', 'Marktplatz für tokenisierte Domains', 'Domain-NFT verkaufen', 'OpenSea Domain', 'Seaport-Protokoll', 'NFT-Marktplatz-Gebühren', 'Domain-Flipping Web3', 'wo tokenisierte Domains verkaufen', 'OpenSea vs Blur', 'atomarer NFT-Verkauf', 'ERC-721 Domain', 'Vergleich Domain-NFT-Marktplätze', 'Namefi-Marktplatz', 'Domain-Verkauf in Eigenverwahrung', 'Onchain-Domain-Handel']
+relatedArticles:
+  - /de/blog/selling-domains-as-nfts/
+  - /de/blog/onchain-domain-flipping/
+  - /de/blog/tokenize-your-com-to-flip-it/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Wenn du eine [tokenisierte Domain](/de/blog/what-are-tokenized-domains/) flippst – einen echten ICANN-Namen mit einem [On-Chain](/de/glossary/on-chain/)-Eigentumstoken obendrauf – hast du eine Wahl, die dir die klassische Domain-Welt nie geboten hat. Du kannst den Namen als [NFT (Non-Fungible Token)](/de/glossary/nft/) auf einem allgemeinen Krypto-Marktplatz listen, ihn über einen [Seaport](/de/glossary/smart-contract/)-basierten Handelsplatz ohne Verwahrung durch Dritte verkaufen oder eine Domain-native Plattform nutzen, die genau für dieses Asset gebaut wurde. Jeder Weg bewegt denselben Token, aber die Gebühren, die Reichweite und das Verwahrmodell unterscheiden sich so deutlich, dass die falsche Wahl dich einen Käufer oder einen Teil deiner Marge kosten kann.

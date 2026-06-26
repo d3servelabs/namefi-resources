@@ -16,6 +16,24 @@ faqs:
     answer: 'Google treats new gTLDs like .realty the same as legacy endings such as .com, with no inherent ranking penalty or boost. Rankings come from content, links, and user experience. A descriptive ending like .realty can lift click-through by signaling the niche.'
   - question: 'Who should register a .realty domain?'
     answer: 'Real estate agencies, brokers, property managers, listing portals, and developers who want a clear, on-topic name. It suits anyone whose preferred .com is taken, and who wants a short, descriptive address without the membership gate that .realtor imposes.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.realty** domain is an open [generic top-level domain](/en/glossary/gtld/) built for the property world: agencies, brokers, listing portals, property managers, and developers who want a web address that says exactly what they do. If your ideal `.com` is taken or priced out of reach, a `.realty` name lets you keep a short, descriptive brand while signaling your niche in a single word.

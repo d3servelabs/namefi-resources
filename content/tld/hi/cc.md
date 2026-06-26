@@ -16,6 +16,24 @@ faqs:
     answer: 'आधिकारिक रूप से "cc" Cocos (Keeling) Islands के लिए ISO कंट्री कोड है। व्यवहार में इसे लचीले ढंग से "commercial company," "creative commons," "carbon copy," या केवल मिलते-जुलते आद्याक्षरों की एक यादगार जोड़ी के रूप में पढ़ा जाता है, जो ठीक यही कारण है कि यह एक छोटे, ब्रांडेबल एक्सटेंशन के रूप में लोकप्रिय है।'
   - question: '.cc डोमेन को कौन संचालित करता है?'
     answer: '.cc रजिस्ट्री eNIC Cocos (Keeling) Islands Pty. Ltd. (Island Internet Services के रूप में व्यवसाय करते हुए) द्वारा संचालित है, जो Verisign की एक पूर्ण स्वामित्व वाली सहायक कंपनी है। IANA रूट-ज़ोन डेटाबेस eNIC / Island Internet Services को प्रायोजक संगठन और रजिस्ट्री प्रबंधक के रूप में सूचीबद्ध करता है।'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/why-are-io-domains-expensive/
+  - /hi/blog/domain-hacks-explained/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 **.cc** डोमेन इंटरनेट के सबसे स्थायी "उधार लिए गए" कंट्री कोड में से एक है — एक राष्ट्रीय नेमस्पेस जो एक छोटे, ब्रांडेबल, वैश्विक एक्सटेंशन में विकसित हुआ। आधिकारिक रूप से **Cocos (Keeling) Islands** के लिए ccTLD, हिंद महासागर में एक छोटा ऑस्ट्रेलियाई क्षेत्र, .cc को विश्वभर में दशकों से ".com" के एक लचीले विकल्प के रूप में प्रचारित किया गया है। "cc" स्ट्रिंग अनंत रूप से व्याख्या योग्य है — **commercial company**, **creative commons**, **carbon copy**, या केवल मिलते-जुलते आद्याक्षरों की एक साफ जोड़ी — जो इसे यादगार नामों और चतुर [डोमेन हैक](/hi/glossary/domain-hack/) के लिए एक पसंदीदा बनाती है।

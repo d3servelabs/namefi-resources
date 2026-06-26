@@ -6,6 +6,24 @@ tags: ["faq"]
 authors: ["namefiteam"]
 description: 本文解释了为什么应该将传统域名代币化上链，并强调了更清晰的所有权、金融可组合性以及更自由、更快速的交易等优势。
 keywords: ["域名代币化","区块链域名","NFT 域名","链上域名","域名所有权","去中心化域名","域名交易","web3 域名","智能合约","域名可组合性","DNS 代币化","数字资产"]
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/tokenized-domain-use-cases-2026/
+  - /zh/blog/how-tokenized-marketplaces-replace-escrow/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/web3-foundations/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
+  - /zh/glossary/tld/
 ---
 
 

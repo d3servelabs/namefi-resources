@@ -12,6 +12,24 @@ format: explainer
 description: "Wie Verwahrung bei Onchain-Domains wirklich funktioniert: Wallets, Multisig, Seed-Phrase-Risiko und das Wiederherstellen einer tokenisierten Domain nach Wallet-Verlust."
 ogImage: ../../assets/onchain-domain-custody-and-recovery-og.jpg
 keywords: ['Onchain-Domain-Verwahrung', 'Wallet für tokenisierte Domains', 'tokenisierte Domain wiederherstellen', 'Domain-Wiederherstellung nach Wallet-Verlust', 'Seed-Phrase-Risiko', 'Multisig-Domain-Verwahrung', 'Sicherheit von NFT-Domains', 'Hardware-Wallet für Domains', 'Selbstverwahrung von Domains', 'privater Schlüssel einer Domain', 'Eigentum an tokenisierten Domains', 'ERC-721-Domain', 'Onchain-Domain-Flipping', 'Wallet-Backup für Domains', 'Social-Recovery-Wallet']
+relatedArticles:
+  - /de/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/onchain-domain-flipping/
+  - /de/blog/selling-domains-as-nfts/
+  - /de/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Wenn Sie eine klassische Domain flippen, ist die Verwahrung das Problem von jemand anderem. Der Name liegt in einem [Registrar](/de/glossary/registrar/)-Konto, und wenn Sie das Passwort vergessen, warten ein Reset-Link und eine Support-Warteschlange auf Sie. Verlagern Sie eine Domain [On-Chain](/de/glossary/on-chain/), verschwindet dieses Sicherheitsnetz. Der Token *ist* die Urkunde, und die Schlüssel zu Ihrer [Wallet](/de/glossary/wallet/) sind das Einzige, was zwischen Ihnen und dem Vermögenswert steht. Dieser Wandel ist die größte mentale Umstellung für jeden, der aus dem klassischen [Aftermarket](/de/glossary/domain-trading/) ins Onchain-Flipping kommt.

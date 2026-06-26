@@ -16,6 +16,24 @@ faqs:
     answer: '.xyz 域名适合初创企业、Web3 和加密货币项目、开发者，以及心仪的 .com 已被注册的任何人。由于它不带任何行业含义，几乎可作为任何寻求简短、可用名称的项目的空白品牌载体。'
   - question: '为什么 .xyz 有垃圾邮件的声誉？'
     answer: '其低廉的价格和开放注册吸引了大量批量注册和滥用注册，安全追踪机构也将 .xyz 列为恶意活动较多的后缀之一。但该顶级域名本身是合法的，声誉取决于单个域名及其使用方式。'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 **.xyz 域名**是 2014 年后时代最广泛使用的新通用顶级域名（gTLD）之一，也是公认最知名的 .com 替代方案。这个由字母表末三个字母组成的后缀不带任何固有行业含义，因此成为任何品牌、项目或个人网站的真正空白画布。

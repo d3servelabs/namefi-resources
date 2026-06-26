@@ -12,6 +12,24 @@ format: guide
 description: "How to find still-available domains worth a registration fee: wordlists, TLD permutations, brandable patterns, and the filters that beat impulse buys."
 ogImage: ../../assets/hand-registering-domains-to-flip-og.jpg
 keywords: ['hand registering domains', 'hand registered domains', 'available domains to flip', 'find available domains', 'brandable domain names', 'domain wordlists', 'register domains to sell', 'cheap domains to flip', 'how to find domains to register', 'domain name ideas to sell', 'domain flipping for beginners', 'TLD permutations', 'available .com domains', 'speculative domain registration', 'domaining hand reg']
+relatedArticles:
+  - /en/blog/domain-flipping/
+  - /en/blog/when-to-drop-a-domain/
+  - /en/blog/how-to-find-domains-to-flip/
+  - /en/blog/domain-renewal-costs-and-sell-through-rate/
+  - /en/blog/domain-portfolio-management/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Hand-registering is the cheapest way into domain flipping and the easiest way to waste money in it. You type a name into a registrar, it comes back available, you pay the registration fee, and now you own a brand-new domain nobody has ever wanted. That last part is the trap. There are [359.8 million domain names](https://en.wikipedia.org/wiki/Domain_name#:~:text=359.8%20million%20domain%20names%20had%20been%20registered) already registered as of the end of 2023, and the universe of *unregistered* strings is effectively infinite. A name being available tells you almost nothing about whether it's worth owning. Usually it means the opposite.

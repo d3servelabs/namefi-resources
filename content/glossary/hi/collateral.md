@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: कोलैटरल क्या है और DeFi में डोमेन कैसे कोलैटरल के रूप में काम कर सकते हैं?
 keywords: ["कोलैटरल","सुरक्षा","उधार देना","उधार लेना","डोमेन कोलैटरल","DeFi"]
+relatedArticles:
+  - /hi/blog/tokenized-domain-use-cases-2026/
+  - /hi/blog/what-are-xstocks/
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/what-are-stablecoins/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/web3-foundations/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tokenized-domain/
+  - /hi/glossary/web3/
+  - /hi/glossary/lending-protocol/
+  - /hi/glossary/tokenize/
+  - /hi/glossary/defi/
 ---
 
 

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'En septembre 2015, un ancien employé de Google a acheté google.com via Google Domains pour 12 dollars et a détenu le contrôle administratif du domaine le plus précieux au monde pendant environ une minute. L''histoire de Sanmay Ved, la prime de 6 006,13 dollars, et ce qu''une minute de propriété révèle sur celui qui contrôle vraiment un domaine.'
 keywords: ['domaine google.com', 'sanmay ved', 'bug google domains', 'sécurité des domaines', 'qui possède google.com', 'détournement de domaine', 'accès webmaster tools', 'programme de récompense google', 'récompense 6006.13', 'vulnérabilité enregistrement domaine', 'contrôle domaine', 'sécurité dns', 'vérification propriété domaine']
+relatedArticles:
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-lenovo-com-dns-hijack/
+  - /fr/blog/the-sex-com-heist-the-forged-letter/
+  - /fr/blog/the-2024-squarespace-defi-domain-hijacks/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
 ---
 
 Pendant environ une minute dans la nuit du 29 septembre 2015, l'adresse la plus précieuse d'internet n'appartenait pas à Google.

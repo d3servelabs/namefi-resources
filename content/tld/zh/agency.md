@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .agency 顶级域名：专为代理机构、事务所和服务公司打造的专业域名后缀。探索其品牌优势、SEO 价值，以及为何它成为数字营销和 Web3 企业的首选。在 Namefi 立即注册。'
 keywords: ['.agency domains', '.agency TLD', 'top-level domain', 'what is .agency', 'why choose .agency', 'what is the .agency domain', 'why choose the .agency domain', '顶级域名', '域名投资', '数字营销域名', 'Web3 domains', 'tokenized domain', 'blockchain domains', 'creative agency domain', 'service business domain']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在拥挤的数字世界中，拥有一个能够清晰传达业务性质的域名至关重要。对于提供专业服务的企业来说，传统的 `.com` 往往已经饱和，难以注册到简短心仪的名字。这就是 **.agency** 顶级域名（TLD）大放异彩的地方。

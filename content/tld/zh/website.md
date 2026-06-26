@@ -24,6 +24,24 @@ keywords:
   - Web3 domains
   - new gTLD
   - 域名注册
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在选择完美的域名时，互联网世界早已不再局限于传统的 ".com" 或 "[.net](/zh/tld/net/)"。随着数字景观的不断扩展，新的通用顶级域名（New gTLD）为个人和企业提供了更多的选择与创造力。其中，**.website** 作为一个直观、通用且极具潜力的后缀，正受到越来越多用户的青睐。

@@ -8,6 +8,24 @@ draft: false
 description: "Le DNS over HTTPS (DoH) protège la confidentialité des utilisateurs en chiffrant les requêtes DNS dans le protocole HTTPS. Le DNS split-horizon d'entreprise repose sur la capacité du réseau à voir ces requêtes. La collision entre les deux redéfinit la façon dont les réseaux d'entreprise, les navigateurs et les systèmes d'exploitation gèrent la résolution de noms."
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg
 keywords: ['dns over https', 'doh', 'dns split horizon', 'dns entreprise', 'dot', 'dns chiffré', 'dns interne', 'résolution de nom', 'namefi']
+relatedArticles:
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/the-myetherwallet-bgp-dns-attack/
+  - /fr/blog/the-dnspionage-campaign/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/dns/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Pendant la majeure partie de l'histoire d'Internet, les requêtes [DNS](/fr/glossary/dns/) ont transité en clair sur le port 53. Toute personne sur le chemin réseau pouvait les lire, les journaliser et les modifier. C'était un problème de confidentialité que l'IETF a fini par résoudre avec deux alternatives chiffrées : [DNS over TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) en 2016 et [DNS over HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484) en 2018.

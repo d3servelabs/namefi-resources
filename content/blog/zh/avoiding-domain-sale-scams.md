@@ -12,6 +12,24 @@ format: guide
 description: '常见域名出售诈骗手段——虚假托管、虚假买家、超额付款退款诈骗、先转移后付款——以及让交易全程安全的防范习惯。'
 ogImage: ../../assets/avoiding-domain-sale-scams-og.jpg
 keywords: ['域名出售诈骗', '避免域名诈骗', '虚假托管网站', '假冒托管', '域名买家诈骗', '超额付款诈骗', '拒付欺诈', '先转移后付款', '安全出售域名', '域名托管', '域名销售欺诈', '假冒域名经纪人', '域名转移诈骗', '安全域名交易', '域名投资者安全']
+relatedArticles:
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/working-with-domain-brokers/
+  - /zh/blog/domain-flipping-and-the-law/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
 ---
 
 [域名投资](/zh/blog/domain-flipping/)的收益，在域名成功出售的那一刻才能兑现。而那恰恰也是骗子现身的时刻。一个公开出售中的域名，对所有愿意冒充买家、经纪人或托管公司的人来说，都是一张敞开的邀请函。域名投资者可能犯下的最昂贵的错误，不是买错了域名，而是把一个好域名交错了人。

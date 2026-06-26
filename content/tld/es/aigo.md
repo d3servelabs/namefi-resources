@@ -23,6 +23,24 @@ keywords:
   - artificial intelligence domains
   - tech startup branding
   - buy .aigo domain
+relatedArticles:
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
+  - /es/glossary/dns/
 ---
 
 El panorama digital está en constante evolución y, con él, la forma en que nos identificamos en internet. Elegir el nombre de dominio adecuado es el primer paso crítico para establecer una presencia en línea sólida. En este contexto, surge el [TLD](/es/glossary/tld/) **.aigo**, una extensión que está captando la atención de inversores, desarrolladores y empresas tecnológicas.

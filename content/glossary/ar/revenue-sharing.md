@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هي مشاركة الإيرادات وكيف يمكن تطبيقها على تحقيق دخل من الدومينات؟
 keywords: ["مشاركة الإيرادات","دخل سلبي","تحقيق دخل من الدومين","توزيع الأرباح","العقود الذكية"]
+relatedArticles:
+  - /ar/blog/domain-parking-and-monetization/
+  - /ar/blog/why-tokenize-domains/
+  - /ar/blog/domain-escrow-explained/
+  - /ar/blog/from-thefacebook-com-to-facebook-com/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-investor-field-guide/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/smart-contract/
+  - /ar/glossary/tokenized-domain/
+  - /ar/glossary/tokenize/
+  - /ar/glossary/fractional-ownership/
+  - /ar/glossary/leasing/
 ---
 
 

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre todo sobre el dominio .app: la extensión segura y perfecta para desarrolladores y aplicaciones. Aprende sus ventajas y regístralo hoy en Namefi.'
 keywords: ['.app domains', 'dominios .app', 'TLD .app', 'top-level domain .app', 'what is .app', 'qué es el dominio .app', 'why choose .app', 'por qué elegir el dominio .app', 'what is the .app domain', 'why choose the .app domain', 'domain investing', 'inversión en dominios', 'blockchain domains', 'tokenized domains', 'seguridad web https']
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/ai-vs-io-domain/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .app?**

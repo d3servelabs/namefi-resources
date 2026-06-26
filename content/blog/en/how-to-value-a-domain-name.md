@@ -12,6 +12,24 @@ format: guide
 description: "How to appraise a domain name: the value factors, what appraisal tools get wrong, how to read comparable sales, and the end-user vs reseller spread."
 ogImage: ../../assets/how-to-value-a-domain-name-og.jpg
 keywords: ['how to value a domain name', 'domain appraisal', 'what is my domain worth', 'domain valuation', 'domain value calculator', 'appraise a domain', 'domain comparable sales', 'domain pricing', 'end-user vs reseller price', 'how much is my domain worth', 'domain name value', 'domain appraisal tools', 'comparable domain sales', 'domain value estimate']
+relatedArticles:
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+  - /en/blog/domain-appraisal-tools-compared/
+  - /en/blog/how-to-read-comparable-domain-sales/
+  - /en/blog/what-makes-a-domain-valuable/
+  - /en/blog/domain-flipping/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Sooner or later, everyone who owns a domain asks the same question: *what is my domain worth?* It's the first question a new flipper asks about an asset they just bought, and the last one they ask before they list it. It feels like it should have a clean, lookup-table answer — type the name in, get a number.

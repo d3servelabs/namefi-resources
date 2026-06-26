@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: ".ai vs. .io für Ihr Startup? Herkunft, Google-SEO-Behandlung, Preise, Markensignale und die .io-Chagos-Frage im Vergleich – plus ein klarer Entscheidungsleitfaden und FAQ."
 keywords: ["ai vs io tld", "io vs ai domain", "ai oder io domain", "io vs ai domain endung", "ai vs io domain endung", ".ai vs .io", "ai oder io tld", "ai vs io domain", "io oder ai domain", ".ai vs .io domain", "ai domain vs io domain", "beste domain für ki startup", "beste domain für tech startup", "ai tld", "io tld", "domain endung für startup", "ccTLD für tech", "gccTLD seo", "io domain chagos", "io domain zukunft", "ai domain preise", "io domain preise", "domain branding", "domain endung wählen", "tokenisierte domain"]
+relatedArticles:
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/how-tld-affects-domain-value/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Sie haben den Namen. Jetzt hängen Sie an den letzten zwei Zeichen fest: Soll es `yourbrand.ai` oder `yourbrand.io` sein? Beide sind kurz, beide signalisieren „Tech", und beide haben ihre winzigen Inselursprünge hinter sich gelassen, um zu Startup-Favoriten zu werden. Aber sie senden unterschiedliche Signale, kosten unterschiedlich viel und tragen unterschiedliche langfristige Fragen mit sich.

@@ -9,6 +9,24 @@ keywords: ['موزّع', 'موزّع دومينات', 'مُسجِّل بعلام
 level: 1
 sources:
   - https://www.icann.org/resources/pages/what-2012-02-25-en
+relatedArticles:
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/where-to-sell-domains-marketplaces-compared/
+  - /ar/blog/domain-terminology-guide/
+  - /ar/blog/the-syrian-electronic-army-nyt-hijack/
+  - /ar/blog/the-panix-com-domain-hijack/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-security/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/registry/
+  - /ar/glossary/icann/
+  - /ar/glossary/accredited-registrar/
+  - /ar/glossary/web3/
 ---
 
 **الموزّع** هو شركة أو فرد بيبيع تسجيلات الدومينات للعملاء النهائيين من غير ما يمتلك اعتمادًا خاصًا من [ICANN](/ar/glossary/icann/) — بدل كده، بيشتغل تحت مظلة [مُسجِّل](/ar/glossary/registrar/) مرخَّص وبيمرّر الطلبات عبر أنظمته. الموزّعون منتشرون جدًا في صناعة الدومينات: مزودو الاستضافة ومنشئو المواقع والمُسجِّلون المتخصصون غالبًا بيشتغلوا بالطريقة دي، مقدّمين واجهات ببراندينج خاص مدعومة بـ [مُسجِّل معتمد](/ar/glossary/accredited-registrar/) كبير زي GoDaddy أو Tucows أو Enom. الترتيب ده بيسمح للموزّع بالوصول للعملاء من غير تكلفة وعبء امتثال اعتماد ICANN، بينما المُسجِّل الأساسي بيحتفظ بالعلاقة التعاقدية مع [السجل](/ar/glossary/registry/) ويدير الخط التقني. من منظور المشتري، التجربة مطابقة، لكن معرفة إذا كنت بتتعامل مع موزّع أو مُسجِّل مباشر مهم وقت تقييم مسارات الدعم أو خيارات الترحيل.

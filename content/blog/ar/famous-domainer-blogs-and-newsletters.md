@@ -8,6 +8,24 @@ draft: false
 description: 'قائمة منتقاة لأبرز مستثمري النطاقات والوسطاء والمتداولين الأفراد الذين تستحق مدوناتهم ونشراتهم الإخبارية وحساباتهم على سبستاك (Substack) القراءة في عام 2026 — بماذا يُعرف كل منهم، وكيف يتكاملون معًا.'
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg
 keywords: ['مدونات مستثمري النطاقات', 'مدونات استثمار النطاقات', 'إليوت سيلفر', 'ريك شوارتز', 'مورغان لينتون', 'كونستانتينوس زورناس', 'مايك مان', 'جيمي زوخ', 'domainshane', 'نشرة إخبارية للنطاقات', 'سبستاك للنطاقات']
+relatedArticles:
+  - /ar/blog/domain-industry-media/
+  - /ar/blog/top-domain-trader-forums/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/working-with-domain-brokers/
+  - /ar/blog/domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-investor-field-guide/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
 ---
 
 إذا كانت [المنتديات](/blog/top-domain-trader-forums) هي المكان الذي *يتجادل* فيه مجتمع النطاقات، فإن المدونات الفردية للمستثمرين هي المكان الذي *يفكر فيه المجتمع بصوت عالٍ*. تحدث معظم التحليلات المدروسة وطويلة الأمد في هذه الصناعة — مثل مراجعات ما بعد البيع، وانتقادات سياسات مسجلي النطاقات، وقراءات السوق — في عدد قليل من المدونات الشخصية التي استمرت في العمل لمدة خمسة عشر أو عشرين عامًا.

@@ -6,6 +6,24 @@ tags: ["faq"]
 authors: ["namefiteam"]
 description: اسم النطاق هو أساس وجودك على الإنترنت.
 keywords: ["اسم النطاق","نظام أسماء النطاقات","عنوان IP","عنوان الويب","أساسيات الإنترنت","تسجيل النطاق","عنوان الموقع","URL","Namefi"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/what-is-udrp/
+  - /ar/blog/domain-terminology-guide/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/domain-basics/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-investor-field-guide/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
 ---
 
 

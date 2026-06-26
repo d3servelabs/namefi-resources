@@ -12,6 +12,24 @@ format: comparison
 description: "How flipping ENS .eth names differs from flipping traditional DNS domains: ownership, liquidity, renewal, gas, and what each is good for."
 ogImage: ../../assets/ens-vs-dns-domain-flipping-og.jpg
 keywords: ['ENS vs DNS', 'flipping ENS domains', 'ENS domain flipping', '.eth domain investing', 'flipping .eth names', 'ENS vs traditional domains', 'on-chain domain flipping', 'NFT domain liquidity', 'ENS renewal fees', 'ERC-721 domains', 'web3 domain flipping', 'sell ENS on OpenSea', 'ENS expiry grace period', 'tokenized domain flipping', 'ENS gas fees']
+relatedArticles:
+  - /en/blog/onchain-domain-flipping/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/onchain-domain-marketplaces-compared/
+  - /en/blog/selling-domains-as-nfts/
+  - /en/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 If you flip domains, you have probably watched the [ENS](/en/glossary/ens/) market from the sidelines and wondered whether it is the same game with a new coat of paint. It isn't. Flipping a `.eth` name and flipping a traditional `.com` rhyme — buy a good string cheap, sell it to someone who needs it more — but almost everything underneath is different: who can see your ownership, how a sale settles, what you pay to hold the name, and what "owning" it even means. This post walks the real differences so you can decide where your time and capital actually belong.

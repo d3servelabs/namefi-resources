@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .click. تعرف على استخداماته، ميزاته، وكيف يمكن أن يعزز استراتيجيتك الرقمية. سجل نطاقك اليوم مع Namefi."
 keywords: [".click domains", ".click TLD", "top-level domain", "what is .click", "why choose .click", "what is the .click domain", "why choose the .click domain", "domain investing", "blockchain domains", "tokenized domain", "نطاقات .click", "شراء نطاق", "استثمار النطاقات", "نطاق المستوى الأعلى", "تسجيل دومين"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 في عالم الإنترنت المتسارع، يعد اختيار اسم النطاق (Domain Name) الصحيح خطوة حاسمة لنجاح أي مشروع رقمي. بينما تظل النطاقات التقليدية مثل .com شائعة، برزت نطاقات المستوى الأعلى العامة الجديدة (New gTLDs) لتقدم فرصاً إبداعية وتسويقية هائلة. واحد من أكثر هذه النطاقات ديناميكية وتميزاً هو **نطاق .click**.

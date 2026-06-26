@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'كيف أصبحت شركة Facebook, Inc. هي Meta في أكتوبر 2021، ولماذا كان Meta.com أصلاً أصلاً مرتبطاً بزوكربيرج يُعيد التوجيه من محرك بحث علمي، وكيف اشترت صفقة منفصلة بـ60 مليون دولار اسم "Meta" من بنك في ساو فولز — بينما احتفظ تطبيق Facebook بنطاق Facebook.com.'
 keywords: ['facebook.com', 'meta.com', 'إعادة تسمية ميتا', 'تغيير اسم فيسبوك إلى ميتا', 'meta.org', 'مبادرة تشان زوكربيرج ميتا', 'مجموعة ميتا المالية', 'beige key llc', 'تحول الميتافيرس', 'استحواذ النطاق', 'إعادة تسمية الشركة', 'نطاق مميز', 'استراتيجية النطاق', 'إعادة تسمية الشركة الأم']
+relatedArticles:
+  - /ar/blog/from-snapchat-com-to-snap-com/
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-ctrip-com-to-trip-com/
+  - /ar/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 معظم قصص إعادة التسمية في هذه السلسلة بتبدأ بشركة بقت أكبر من اسمها. لكن الحالة السابعة معكوسة تماماً: شركة ضخمة لدرجة إن اسمها بقى فعلاً في اللغة اليومية وصداعاً للجهات التنظيمية ومصطلحاً شعبياً — قررت إنها محتاجة *اسم جديد* رغم كل ده، اسم أكبر بما يكفي ليحتوي مستقبلاً ما اتبنيش بعد.

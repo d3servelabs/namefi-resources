@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'जनवरी 2005 में, panix.com — न्यू यॉर्क के सबसे पुराने व्यावसायिक ISP का डोमेन — को चुराए गए क्रेडिट कार्ड का उपयोग करके ऑस्ट्रेलिया के एक रजिस्ट्रार को धोखाधड़ी से ट्रांसफर कर दिया गया, जिससे वेब और ईमेल कई दिनों के लिए ऑफलाइन हो गए। उस दौर के ऑटो-अप्रूव इंटर-रजिस्ट्रार ट्रांसफर नियमों ने इसे संभव बनाया, और इसकी सफाई ने डोमेन-ट्रांसफर नीति को नया रूप दिया।'
 keywords: ['panix.com', 'panix domain hijack', 'domain hijacking', 'inter-registrar transfer', 'Melbourne IT', 'Dotster', 'Fibranet', 'ICANN transfer policy', 'registrar lock', 'clientTransferProhibited', 'domain security', 'DNS hijacking', 'EPP auth code']
+relatedArticles:
+  - /hi/blog/the-lenovo-com-dns-hijack/
+  - /hi/blog/the-perl-com-domain-theft/
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-sex-com-heist-the-forged-letter/
+  - /hi/blog/the-syrian-electronic-army-nyt-hijack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/registry/
 ---
 
 पंद्रह से अधिक वर्षों तक, संयुक्त राज्य अमेरिका के सबसे पुराने व्यावसायिक इंटरनेट प्रदाताओं में से एक एक ही पते पर रहा: **panix.com**। फिर, जनवरी 2005 में एक लंबी छुट्टी के सप्ताहांत के दौरान, किसी ने उसे छीन लिया।

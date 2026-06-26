@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.investopedia.com/terms/b/broker.asp
   - https://www.sedo.com/
+relatedArticles:
+  - /en/blog/working-with-domain-brokers/
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/domain-pricing-psychology-buy-now-vs-make-offer/
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/domain-terminology-guide/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/end-user/
+  - /en/glossary/aftermarket/
+  - /en/glossary/domain-trading/
+  - /en/glossary/escrow/
+  - /en/glossary/registrar/
 ---
 
 A **domain broker** is a professional intermediary who facilitates the sale of a domain name between a seller and a buyer, typically earning a commission — commonly 10–20% of the final sale price — in exchange for prospecting buyers, conducting outreach, negotiating price, and coordinating the transaction through [escrow](/en/glossary/escrow/). Brokers are especially valuable for high-value assets where direct outreach to an unknown seller would feel adversarial, or when a buyer wants a name that isn't publicly listed for sale. Both inbound brokerage (selling a name a client owns) and acquisition brokerage (finding a name a client wants to buy) are common services. Reputable brokerage firms include Sedo, Media Options, and GoDaddy's brokerage team, all of which leverage large databases of recent [aftermarket](/en/glossary/aftermarket/) transactions. Because a broker's outreach often involves identifying the [end user](/en/glossary/end-user/) willing to pay retail, brokered [domain trading](/en/glossary/domain-trading/) frequently achieves the highest prices in the market.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في أغسطس 2022، العقود الذكية لـ Curve Finance اتلمستش — لكن المهاجمين خطفوا دومين curve.fi من عند الـ registrar، عملوا نسخة مزيفة من الموقع، وسرقوا حوالي $570K من المستخدمين. تحليل عميق للهجوم على الواجهة الأمامية لمشروع DeFi، وإيه اللي بيعلمنا إياه عن أمان الدومينات.'
 keywords: ['اختطاف dns لـ curve finance', 'curve.fi hijack', 'اختطاف dns في defi', 'اختراق iwantmyname', 'اختراق nameserver', 'wallet drainer', 'هجوم على واجهة defi', 'أمان الدومينات', 'أمان dns', 'تصيد احتيالي في العملات الرقمية', 'هجوم موقع مستنسخ', 'اختراق حساب registrar', 'domain mayday']
+relatedArticles:
+  - /ar/blog/the-badgerdao-frontend-attack/
+  - /ar/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /ar/blog/the-bitcoin-org-dns-hijack/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/tld/
 ---
 
 العقود الذكية كانت بخير.

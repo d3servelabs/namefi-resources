@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .dev هو نطاق Google الآمن للمطورين ومشاريع التطوير. اكتشف لماذا هو الخيار الأول للمبرمجين وشركات التكنولوجيا وفرق التطوير.
 keywords: ["tld", "نطاق .dev", "مطورون", "مشاريع تطوير", "شركات التكنولوجيا", "برمجة", "HTTPS", "Google"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/ai-vs-io-domain/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو .dev؟**

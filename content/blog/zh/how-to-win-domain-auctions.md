@@ -12,6 +12,24 @@ format: guide
 description: "二级市场域名拍卖到底是怎么运作的——代理出价、狙击式出价、硬上限、判读真实需求，以及如何躲开自我溢价和托儿陷阱。"
 ogImage: ../../assets/how-to-win-domain-auctions-og.jpg
 keywords: ['域名拍卖', '如何赢得域名拍卖', '域名拍卖策略', 'GoDaddy Auctions', 'NameJet', 'Sedo 拍卖', '代理出价', '狙击式出价', '过期域名拍卖', '托儿出价', '赢家诅咒域名', '购买过期域名', '域名二级市场', '抢注拍卖', '避免域名溢价']
+relatedArticles:
+  - /zh/blog/domain-flipping/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/how-to-read-comparable-domain-sales/
+  - /zh/blog/domain-backorders-and-drop-catching/
+  - /zh/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
 ---
 
 你最想买到的好域名，大多早已名花有主，而其中很大一部分最终都会经过一场[拍卖](/zh/glossary/auction/)。当一个注册到期失效、当一位域名投资人清仓、当注册商捕获了一个背后无人[预订单](/zh/glossary/backorder/)的掉落域名时，这个域名就会被摆上拍卖台，归出价最高者所有。如果你做域名翻转，你就会在这些拍卖场里花掉实打实的真金白银，而一笔盈利的收购与一个躺在你账户里的死域名之间的差别，主要就在于你出价那一刻的纪律性。

@@ -8,6 +8,24 @@ draft: false
 description: 'Zero-Knowledge-Beweise gibt es in drei Varianten – perfekt, statistisch und rechnerisch – und der Unterschied ist wichtiger, als in den meisten technischen Diskussionen zugegeben wird. Dieser Beitrag erklärt jede Variante in einfacher Sprache, warum fast jedes ZK-Produktionssystem im Jahr 2026 rechnerischer Natur ist und welche Vor- und Nachteile dies mit sich bringt.'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg
 keywords: ['Zero-Knowledge-Beweis', 'perfektes Zero-Knowledge', 'rechnerisches Zero-Knowledge', 'ZK-SNARK', 'ZK-STARK', 'Kryptographie', 'Simulator', 'Commitment-Verfahren', 'Namefi']
+relatedArticles:
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/working-with-domain-brokers/
+  - /de/blog/how-to-win-domain-auctions/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/onchain-domain-custody-and-recovery/
+relatedTopics:
+  - /de/topics/web3-foundations/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
+  - /de/glossary/registry/
 ---
 
 Wenn man in der Krypto-Branche von „Zero-Knowledge-Beweisen“ spricht, meint man fast immer eine ganz bestimmte Sache: einen SNARK oder STARK, der beweist, dass eine Berechnung korrekt durchgeführt wurde, ohne die Eingabedaten preiszugeben. Dieses mentale Modell ist für die meisten technischen Diskussionen völlig ausreichend. Es verbirgt jedoch eine Unterscheidung, die in dem Moment wichtig wird, in dem man darüber nachdenkt, *was die Sicherheit eigentlich garantiert*.

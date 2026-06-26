@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Una guía en lenguaje sencillo sobre el escrow y el escrow de dominios: qué es una cuenta escrow, qué significa escrow, cómo funciona paso a paso en la venta de un dominio, por qué importa para evitar fraudes, los servicios de escrow tradicionales frente al enfoque moderno, y cómo los contratos inteligentes pueden reemplazar el escrow con liquidación atómica en cadena."
 keywords: ['cuenta escrow', 'que es una cuenta escrow', 'qué es una cuenta escrow', 'cuenta de depósito escrow', 'escrow significado', 'cuenta de escrow', 'qué es escrow', 'que es escrow', 'cuentas escrow', 'depósito en garantía', 'cómo funciona el escrow', 'escrow de dominios', 'servicio de escrow', 'comprar un dominio de forma segura', 'vender un dominio de forma segura', 'código de autorización', 'transferencia de dominio', 'comisiones de escrow', 'evitar fraude en dominios', 'escrow significa', 'cuenta de depósito en garantía', 'contrato inteligente escrow', 'liquidación atómica', 'dominio tokenizado']
+relatedArticles:
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/avoiding-domain-sale-scams/
+  - /es/blog/how-tokenized-marketplaces-replace-escrow/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /es/topics/domain-basics/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
+  - /es/glossary/tld/
 ---
 
 Si alguna vez has comprado o vendido algo caro entre desconocidos — un coche, una casa, un `.com` de cinco cifras — te has topado con el mismo problema: el comprador no quiere pagar antes de recibir la cosa, y el vendedor no quiere entregar la cosa antes de recibir el pago. Alguien tiene que ir primero, e ir primero significa confiar en la otra persona.

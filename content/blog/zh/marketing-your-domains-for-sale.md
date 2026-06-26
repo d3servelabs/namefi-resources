@@ -12,6 +12,24 @@ format: guide
 description: '如何营销出售中的域名：停放页、出售落地页以及提升列表曝光度的 SEO 策略，帮你把合适的域名呈现给合适的买家。'
 ogImage: ../../assets/marketing-your-domains-for-sale-og.jpg
 keywords: ['域名出售营销', '如何推广域名', '域名出售落地页', '域名停放', '停放域名出售', '域名销售落地页', '域名市场列表', '域名列表 SEO', '如何宣传出售域名', '域名销售入站与外拓', '域名出售页面', '吸引域名买家', '域名营销渠道', '域名投资营销']
+relatedArticles:
+  - /zh/blog/domain-for-sale-landing-pages/
+  - /zh/blog/marketplace-seo-for-domain-listings/
+  - /zh/blog/inbound-vs-outbound-domain-sales/
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/domain-parking-and-monetization/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 你可以拥有一个完美的域名，却始终卖不出去。估值告诉你一个域名值多少钱；营销则是弥合这个数字与那个从未听说过你的买家之间距离的关键。大多数投资组合中的域名之所以卖不掉，是因为真正需要它们的人根本不知道这些域名在出售。问题的解法很少是"喊得更响"，而是把域名放到目标买家已经在看的地方。

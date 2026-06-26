@@ -9,6 +9,24 @@ cluster: choosing-a-tld
 format: comparison
 description: ".ai vs .io for your startup? Compare origins, Google SEO treatment, pricing, branding signals, and the .io Chagos question, plus a clear decision guide and FAQ."
 keywords: ["ai vs io tld", "io vs ai domain", "ai or io domain", "io vs ai domain extension", "ai vs io domain extension", ".ai vs .io", "ai or io tld", "ai vs io domain", "io or ai domain", ".ai vs .io domain", "ai domain vs io domain", "best domain for ai startup", "best domain for tech startup", "ai tld", "io tld", "domain extension for startup", "ccTLD for tech", "gccTLD seo", "io domain chagos", "io domain future", "ai domain pricing", "io domain pricing", "domain branding", "choosing a domain extension", "tokenized domain"]
+relatedArticles:
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/how-tld-affects-domain-value/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 You've got the name. Now you're stuck on the last two characters: should it be `yourbrand.ai` or `yourbrand.io`? Both are short, both scream "tech," and both have escaped their tiny-island origins to become startup favorites. But they send different signals, cost different amounts, and carry different long-term questions.

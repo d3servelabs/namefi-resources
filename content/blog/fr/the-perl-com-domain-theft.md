@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Fin janvier 2021, perl.com — la maison historique de la communauté de programmation Perl — a été volé via une compromission de compte chez un registrar, transféré à travers la Chine, pointé vers une adresse IP liée à des logiciels malveillants, et mis en vente à 190 000 $. Voici comment cela s''est produit, comment le domaine a été récupéré, et ce que cela nous enseigne sur la sécurité des comptes registrar.'
 keywords: ['perl.com', 'vol du domaine perl.com', 'détournement de domaine', 'vol de domaine', 'compromission de compte registrar', 'ingénierie sociale', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'détournement DNS', 'sécurité des domaines', 'prise de contrôle de compte', 'BizCN']
+relatedArticles:
+  - /fr/blog/the-panix-com-domain-hijack/
+  - /fr/blog/the-lenovo-com-dns-hijack/
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/tld/
 ---
 
 Certains domaines sont des infrastructures qui ressemblent à des noms. **perl.com** en fait partie. Ce n'est pas un actif marketing ni une marque créée l'an dernier — c'est un meuble d'internet autour duquel la communauté de programmation Perl vit depuis les débuts du web, la porte d'entrée canonique vers la documentation, les articles et le visage public du langage.

@@ -16,6 +16,24 @@ faqs:
     answer: '.xyz डोमेन स्टार्टअप, Web3 और क्रिप्टो प्रोजेक्ट, डेवलपर्स, और उन लोगों के लिए उपयुक्त है जिनका पसंदीदा .com उपलब्ध नहीं है। क्योंकि इसका कोई उद्योग-विशिष्ट अर्थ नहीं है, यह लगभग किसी भी उद्यम के लिए एक ब्लैंक-स्लेट ब्रांड के रूप में काम करता है जो एक छोटा, उपलब्ध नाम चाहता है।'
   - question: '.xyz की स्पैम के लिए प्रतिष्ठा क्यों है?'
     answer: 'इसकी कम कीमत और ओपन रजिस्ट्रेशन ने बल्क और दुर्भावनापूर्ण रजिस्ट्रेशन को आकर्षित किया है, और सुरक्षा ट्रैकर्स ने .xyz को उच्च दुर्भावनापूर्ण मात्रा वाले एक्सटेंशन में चिह्नित किया है। TLD स्वयं वैध है; प्रतिष्ठा व्यक्तिगत डोमेन और उसके उपयोग पर निर्भर करती है।'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/top-tlds-to-secure-for-your-saas/
+  - /hi/blog/ai-vs-io-domain/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 **.xyz डोमेन** 2014 के बाद के युग के सबसे व्यापक रूप से अपनाए गए नए जेनेरिक टॉप-लेवल डोमेन (gTLDs) में से एक है, और .com के बाद सबसे जाना-पहचाना विकल्प है। इसका तीन-अक्षर वाला, वर्णमाला के अंत का नाम किसी विशेष उद्योग से जुड़ा नहीं है, जो इसे किसी भी ब्रांड, प्रोजेक्ट, या व्यक्तिगत साइट के लिए एक सच्चा ब्लैंक कैनवास बनाता है।

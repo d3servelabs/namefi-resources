@@ -9,6 +9,24 @@ keywords: ['ERC-20', 'Fungibler Token', 'Token-Standard', 'Stablecoin', 'Ethereu
 level: 1
 sources:
   - https://eips.ethereum.org/EIPS/eip-20
+relatedArticles:
+  - /de/blog/the-badgerdao-frontend-attack/
+  - /de/blog/onchain-domain-flipping/
+  - /de/blog/selling-domains-as-nfts/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/ethereum/
+  - /de/glossary/erc-721/
+  - /de/glossary/stablecoin/
+  - /de/glossary/wallet/
+  - /de/glossary/web3/
 ---
 
 **ERC-20** ist der [Ethereum](/de/glossary/ethereum/) Improvement Proposal, der eine Standardschnittstelle für fungible Token definiert – jede Einheit ist identisch und austauschbar, genau wie Dollar auf einem Bankkonto. Jeder Vertrag, der die Funktionen `transfer`, `approve` und `allowance` von ERC-20 implementiert, ist automatisch mit Wallets, Börsen und DeFi-Protokollen kompatibel, ohne individuelle Integration. [Stablecoins](/de/glossary/stablecoin/) wie USDC und USDT sind ERC-20-Token, ebenso wie die meisten Governance- und Utility-Token. ERC-20 steht in starkem Kontrast zu [ERC-721](/de/glossary/erc-721/): Ein ERC-721-Token ist nicht-fungibel – jeder besitzt eine eindeutige ID, die einen bestimmten Vermögenswert repräsentiert, wie einen spezifischen Domainnamen.

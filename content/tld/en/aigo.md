@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Discover the potential of the .aigo domain extension. Learn what .aigo is, why it's perfect for AI and tech innovators, and how to register yours with Namefi."
 keywords: [".aigo domains", ".aigo TLD", "top-level domain", "what is .aigo", "why choose .aigo", "what is the .aigo domain", "why choose the .aigo domain", "domain investing", "blockchain domains", "tokenized domain", "AI domain names", "tech branding", "buy .aigo domain", "Namefi domains", "new gTLD"]
+relatedArticles:
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
+  - /en/glossary/dns/
 ---
 
 ## **What is .aigo?**

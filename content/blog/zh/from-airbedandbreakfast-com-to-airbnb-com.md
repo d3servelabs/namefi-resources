@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Airbnb 于 2008 年以"AirBed & Breakfast"的名义在 AirBedAndBreakfast.com 上线，2009 年缩短为 Airbnb.com，摆脱了字面意义上的"气垫床"标签，成就了可规模化的全球品牌。'
 keywords: ['airbedandbreakfast.com', 'airbnb.com', 'airbnb域名', 'airbnb品牌重塑', 'airbed and breakfast', '域名升级', '初创公司命名', '品牌命名', '高端域名', '域名策略', 'airbnb历史', 'y combinator airbnb', '公司品牌重塑']
+relatedArticles:
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+  - /zh/blog/from-ctrip-com-to-trip-com/
+  - /zh/blog/from-mrchewy-com-to-chewy-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 在 Airbnb 成为一个动词、一家上市公司、全球旅行方式的代名词之前，它曾是一个极度字面化的提案：**AirBed & Breakfast**，托管于 **AirBedAndBreakfast.com**。

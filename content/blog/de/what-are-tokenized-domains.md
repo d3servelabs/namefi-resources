@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Eine leicht verständliche Einführung in tokenisierte Domains und Domain-Tokenisierung – was es bedeutet, eine Domain zu tokenisieren, wie dies funktioniert und wie sich eine tokenisierte Domain von traditionellen Domains und reinen Blockchain-Namen wie ENS unterscheidet."
 keywords: ['tokenisierte Domain', 'tokenisierte Domains', 'Domain tokenisieren', 'Domains tokenisieren', 'Domain-Tokenisierung', 'Tokenisierung einer Domain', 'Tokenisierung von Domains', 'Domainnamen-Tokenisierung', 'wie man eine Domain tokenisiert', 'was ist eine tokenisierte Domain', 'was sind tokenisierte Domains', 'NFT-Domains', 'NFT-Domain', 'On-Chain-Domains', 'On-Chain-Domain', 'Blockchain-Domains', 'Blockchain-Domain', 'DNS', 'ICANN-Domains', 'Web3-Domains', 'Web3-Domain', 'Domain-NFT', 'Domain als NFT', 'namefi', 'Domain-Eigentum', 'Domain-Asset-Tokenisierung', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', 'tokenisierte Domain vs ENS', 'tokenisierte Domain vs Web3-Domain', 'ICANN-Domain vs Web3-Domain', 'Plattformen für tokenisierte Domains vergleichen']
+relatedArticles:
+  - /de/blog/premium-web3-tlds/
+  - /de/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /de/blog/tokenized-domain-vs-web3-domain/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Vielleicht haben Sie schon einmal Begriffe wie „tokenisierte Domain“, „eine Domain tokenisieren“ oder „Domain-Tokenisierung“ gehört und sich gefragt, was sie eigentlich bedeuten. Ist eine tokenisierte Domain eine neue Art von Domain? Ein reiner [Blockchain](/de/glossary/blockchain/)-Name? Ein Ersatz für `.com`? Und was bedeutet es überhaupt, eine Domain zu *tokenisieren*?

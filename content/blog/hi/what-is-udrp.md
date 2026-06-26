@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "डोमेन मालिकों और निवेशकों के लिए UDRP की व्याख्या: वे तीन तत्व जो एक शिकायतकर्ता को साबित करने होते हैं, प्रक्रिया और समयसीमा, परिणाम, UDRP बनाम URS बनाम अदालत, और कैसे जवाब दें।"
 keywords: ['udrp', 'udrp क्या है', 'udrp प्रक्रिया', 'udrp नीति', 'udrp शिकायत', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'डोमेन विवाद', 'डोमेन नाम विवाद', 'साइबरस्क्वाटिंग', 'रिवर्स डोमेन नाम हाइजैकिंग', 'बुरे इरादे से पंजीकरण', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'ट्रेडमार्क डोमेन विवाद', 'डोमेन निवेशक कानूनी', 'udrp शिकायत का जवाब दें']
+relatedArticles:
+  - /hi/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/domain-flipping-and-the-law/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /hi/topics/domain-basics/
+  - /hi/topics/domain-security/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 यदि आप काफी समय से डोमेन नामों के मालिक हैं, तो अंततः आप [UDRP](/hi/glossary/udrp/) के बारे में सुनेंगे — आमतौर पर तब, जब कोई इसे आपके खिलाफ उपयोग करने की धमकी दे रहा हो, या जब आप सोच रहे हों कि आपके पोर्टफोलियो में कोई नाम सुरक्षित रखने योग्य है या नहीं। डोमेन निवेशकों के लिए UDRP को समझना वैकल्पिक नहीं है। यह वह एकमात्र सबसे सामान्य तरीका है जिससे आपके द्वारा पंजीकृत डोमेन को बिना किसी अदालती कार्यवाही के आपसे लिया जा सकता है।

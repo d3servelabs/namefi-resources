@@ -12,6 +12,24 @@ format: guide
 description: "获取倒卖域名的四种货源方式——手动注册、过期删除、拍卖和二级市场——以及每个渠道各自的风险与价格特征。"
 ogImage: ../../assets/how-to-find-domains-to-flip-og.jpg
 keywords: ['如何找到值得倒卖的域名', '值得倒卖的域名', '域名货源', '寻找倒卖域名', '手动注册域名', '过期域名', '域名捕获', '域名拍卖', '域名二级市场', '买域名转售', '便宜的倒卖域名', '域名投资入门', '在哪里买倒卖域名', '域名抢注', '最值得倒卖的域名']
+relatedArticles:
+  - /zh/blog/domain-flipping/
+  - /zh/blog/hand-registering-domains-to-flip/
+  - /zh/blog/expired-domains-and-the-drop-cycle/
+  - /zh/blog/how-to-win-domain-auctions/
+  - /zh/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 域名倒卖的一切都从你买进什么开始。你可以是出色的谈判高手、敏锐的估价行家，但如果你进了一个没人想要的名字，这些本领就无从施展。货源是这一行真正的第一项技能，也是大多数新手颠倒着做的一项——他们先爱上一个名字，然后才去找买家。

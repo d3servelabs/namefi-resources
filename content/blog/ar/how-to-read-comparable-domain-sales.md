@@ -12,6 +12,24 @@ format: guide
 description: "إزاي تستخدم سجل المبيعات على طريقة NameBio عشان تسعّر دومين: تلاقي الدومينات المشابهة الحقيقية، وتعدّل حسب الـTLD والطول والكلمة المفتاحية، وتتجنب فخّ انتقاء الأمثلة اللي تعجبك."
 ogImage: ../../assets/how-to-read-comparable-domain-sales-og.jpg
 keywords: ['مبيعات الدومينات المشابهة', 'comps الدومينات', 'إزاي تقرا comps الدومينات', 'NameBio', 'سجل مبيعات الدومينات', 'comps تقييم الدومينات', 'مقارنة أسعار الدومينات', 'إزاي تسعّر دومين', 'الدومينات المشابهة في التقييم', 'بيانات مبيعات الدومينات', 'تلاقي دومينات مشابهة', 'تعديل comps الدومين', 'comps الدومينينج', 'بيانات تسعير الدومينات']
+relatedArticles:
+  - /ar/blog/how-to-value-a-domain-name/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/domain-appraisal-tools-compared/
+  - /ar/blog/what-makes-a-domain-valuable/
+  - /ar/blog/domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 اسأل أي مُثمّن عقارات بيت بيسوى كام، مش هيخمّن. هيطلّع بيوت شبهه قريبة منه اتباعت قريّب بكام، ويبني تقديره من هناك. [تقييم النطاق](/ar/glossary/domain-appraisal/) بيشتغل بنفس الطريقة بالظبط، والمكافئ لـ"المبيعات القريبة الأخيرة" هو السجل العام لمبيعات الدومينات اللي حصلت قبل كده: الـcomps. اتعلّم تقراها، وتقدر تدافع عن أي سعر تقريباً تحطه على أي اسم. اقراها بإهمال، وهتقنع نفسك برقم السوق نفسه ماوافقش عليه أبداً.

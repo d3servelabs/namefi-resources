@@ -11,6 +11,24 @@ seriesOrder: 10
 format: case-study
 description: 'In late 2018, Cisco Talos disclosed DNSpionage — a campaign later tied to Iranian interests that rewrote government DNS records, rerouted email and VPN traffic to attacker servers, and minted valid TLS certificates to stay invisible. It helped trigger the first emergency directive of its kind from the US government.'
 keywords: ['dnspionage', 'dns hijacking', 'dns redirection', 'cisco talos', 'cisa emergency directive 19-01', 'sea turtle dns', 'iran dns hijacking', 'fireeye dns hijacking', 'lets encrypt certificate abuse', 'dns security', 'domain security', 'nation state cyber espionage', 'mitigate dns infrastructure tampering']
+relatedArticles:
+  - /en/blog/the-sea-turtle-dns-espionage/
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-myetherwallet-bgp-dns-attack/
+  - /en/blog/the-badgerdao-frontend-attack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/dns/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
 ---
 
 Most domain disasters are about who *owns* a name. This one was about who *controls* it — and for a few months in late 2018, the answer for dozens of government domains across the Middle East was: not the governments.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Discover the .aco TLD! Learn why this unique domain extension is gaining traction for businesses, healthcare, and Web3 portfolios. Secure your .aco at Namefi.'
 keywords: ['.aco domains', '.aco TLD', 'top-level domain .aco', 'what is .aco', 'why choose .aco', 'what is the .aco domain', 'why choose the .aco domain', 'buy .aco domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'healthcare domains', 'brand protection', 'new gTLD']
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .aco?**

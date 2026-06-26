@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج معرفته عن نطاق .abb المستوى الأعلى (TLD). تعرف على أهميته، استخداماته في عالم الأعمال والتكنولوجيا، وكيفية البدء في رحلة تسجيل النطاقات مع Namefi.'
 keywords: ['.abb domains', 'TLD', 'top-level domain', 'what is .abb', 'why choose .abb', 'what is the .abb domain', 'why choose the .abb domain', 'شراء نطاق .abb', 'نطاقات البلوك تشين', 'استثمار النطاقات', 'domain investing', 'blockchain', 'tokenized domain', 'Web3 domains', 'تسجيل النطاقات']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/premium-web3-tlds/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
+  - /ar/glossary/web3/
 ---
 
 في عالم الإنترنت المتوسع باستمرار، يعد اختيار "نطاق المستوى الأعلى" ([TLD](/ar/glossary/tld/)) المناسب أمراً بالغ الأهمية لتحديد هويتك الرقمية. أحد هذه النطاقات التي تثير الفضول هو **.abb**. سواء كنت مستثمراً في النطاقات، أو مطوراً، أو صاحب عمل، فإن فهم طبيعة هذا النطاق وأبعاده يمكن أن يمنحك رؤية أعمق حول كيفية عمل النطاقات المؤسسية والعلامات التجارية الكبرى.

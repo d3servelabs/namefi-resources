@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Massdrop 花了七年时间打造了一个发烧友团购社区，随后于 2019 年更名为 Drop——在更名前悄悄收购了高端域名 Drop.com（要价曾高达 80 万美元）。本文探讨为何舍弃"Mass"至关重要。'
 keywords: ['massdrop.com', 'drop.com', 'drop 域名', 'massdrop 更名', '域名升级', '团购', '机械键盘', '发烧友社区', '创业命名', '品牌命名', '高端域名', '域名策略', '精确匹配域名', '社区电商']
+relatedArticles:
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-urbancompass-com-to-compass-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+  - /zh/blog/from-snapchat-com-to-snap-com/
+  - /zh/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 在最初的七年里，互联网上最受爱好者喜爱的社区之一，居住在一个能精准描述自身业务的地址：**Massdrop.com**。

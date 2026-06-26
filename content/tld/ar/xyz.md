@@ -16,6 +16,24 @@ faqs:
     answer: 'دومين .xyz مناسب للشركات الناشئة، ومشاريع Web3 والكريبتو، والمطورين، وأي حد الـ .com المفضل ليه اتاخد. لأنه مش مرتبط بصناعة معينة، بيشتغل كعلامة تجارية مفتوحة لأي مشروع بيدور على اسم قصير ومتاح.'
   - question: 'ليه .xyz عنده سمعة في السبام؟'
     answer: 'أسعاره المنخفضة والتسجيل المفتوح جذبوا تسجيلات جماعية وإساءة استخدام، ومتتبعو الأمن صنّفوا .xyz من بين النطاقات ذات الحجم العالي من النشاط الضار. النطاق نفسه شرعي؛ والسمعة بتعتمد على الدومين الفردي وطريقة استخدامه.'
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+  - /ar/blog/ai-vs-io-domain/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 **دومين .xyz** هو واحد من أكتر النطاقات العامة الجديدة (gTLDs) انتشارًا في مرحلة ما بعد 2014، وممكن نقول إنه أشهر بديل لـ .com. اسمه المكوّن من تلات حروف — آخر حروف الأبجدية — مش مرتبط بصناعة بعينها، وده اللي بيخليه لوحة فارغة حقيقية لأي علامة تجارية أو مشروع أو موقع شخصي.

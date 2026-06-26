@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://www.cloudflare.com/learning/dns/what-is-a-dns-resolver/
+relatedArticles:
+  - /ar/blog/dns-over-https-vs-enterprise-split-horizon-dns/
+  - /ar/blog/the-dyn-dns-mirai-attack/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+  - /ar/blog/tokenized-domain-vs-web3-domain/
+  - /ar/blog/premium-web3-tlds/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/urs/
+  - /ar/glossary/registry/
+  - /ar/glossary/registrar/
 ---
 
 **محلّل DNS** (أو *المحلّل التكراري*) هو الخادم اللي جهازك بيسأله كل ما محتاج يحوّل نطاق لـ[عنوان IP](/ar/glossary/ip-address/). المحلّلات العامة زي `1.1.1.1` (Cloudflare) و`8.8.8.8` (Google) بتعمل الشغل الصعب: بتبدأ من [منطقة الجذر](/ar/glossary/root-zone/)، وبتستفسر للأسفل في هيكل [DNS (نظام أسماء النطاقات)](/ar/glossary/dns/) لـ[خوادم الأسماء](/ar/glossary/nameserver/) الموثوقة للنطاق، وبعدين بتخزّن الإجابة في الكاش لمدة [TTL](/ar/glossary/ttl/) بتاعتها. الجزء ده من DNS هو اللي بيخلي "اكتب اسم، توصل للموقع" يحصل بسرعة. المحلّلات بتقرأ بيانات DNS العامة بس — معهاش أي تصوّر عن مين *يملك* النطاق، وده السبب اللي بيخلي طبقة الملكية القائمة على [المحفظة](/ar/glossary/wallet/) للنطاق المُرمَّز غير مرئية للـ resolution ومش بتغيّر أي حاجة في طريقة حل الأسماء.

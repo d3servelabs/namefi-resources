@@ -12,6 +12,24 @@ format: faq
 description: "How domain investors handle taxes: inventory vs. capital assets, cost basis, when income is recognized, and expensing renewals. Educational, not advice."
 ogImage: ../../assets/taxes-and-accounting-for-domain-investors-og.jpg
 keywords: ['domain investing taxes', 'domain flipping taxes', 'domain cost basis', 'are domains capital assets', 'domain dealer vs investor', 'domain inventory tax', 'section 197 intangible domain', 'capital gains on domain sale', 'expensing domain renewals', 'domain holding period tax', 'how are domain sales taxed', 'domain portfolio accounting', 'domain investor tax questions', 'ordinary income vs capital gains domains']
+relatedArticles:
+  - /en/blog/domain-portfolio-management/
+  - /en/blog/domain-renewal-costs-and-sell-through-rate/
+  - /en/blog/domain-flipping/
+  - /en/blog/when-to-drop-a-domain/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
 ---
 
 > **Read this first.** This post is **not** tax, accounting, legal, or financial advice. We are not your CPA, and we have no idea what jurisdiction you're in or how your activity is structured. Treat everything below as a *list of questions and concepts to bring to a real professional*, not a position you can rely on. The full disclaimer is at the bottom, and it applies with extra force here.

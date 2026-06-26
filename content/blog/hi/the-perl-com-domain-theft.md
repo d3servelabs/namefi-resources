@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'जनवरी 2021 के अंत में, perl.com — Perl प्रोग्रामिंग कम्युनिटी का दशकों पुराना घर — एक रजिस्ट्रार-स्तर के अकाउंट से समझौते के ज़रिए चोरी हुआ, चीन के रास्ते ट्रांसफर हुआ, मैलवेयर से जुड़े IP पर इंगित किया गया, और $190,000 में बिक्री के लिए सूचीबद्ध हुआ। यहाँ बताया गया है कि यह कैसे हुआ, इसे कैसे वापस पाया गया, और यह रजिस्ट्रार अकाउंट सुरक्षा के बारे में क्या सिखाता है।'
 keywords: ['perl.com', 'perl.com डोमेन चोरी', 'डोमेन हाईजैकिंग', 'डोमेन थेफ्ट', 'रजिस्ट्रार अकाउंट समझौता', 'सोशल इंजीनियरिंग', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'DNS हाईजैक', 'डोमेन सुरक्षा', 'अकाउंट टेकओवर', 'BizCN']
+relatedArticles:
+  - /hi/blog/the-panix-com-domain-hijack/
+  - /hi/blog/the-lenovo-com-dns-hijack/
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/tld/
 ---
 
 कुछ डोमेन ऐसे इंफ्रास्ट्रक्चर होते हैं जो बस एक नाम की तरह दिखते हैं। **perl.com** उनमें से एक है। यह कोई मार्केटिंग एसेट या कोई ऐसा ब्रांड नहीं है जिसे किसी ने पिछले साल बनाया हो — यह इंटरनेट फर्नीचर का एक टुकड़ा है जिसके इर्द-गिर्द Perl प्रोग्रामिंग कम्युनिटी वेब के शुरुआती दिनों से रहती आई है, दस्तावेज़ीकरण, लेखों और भाषा के सार्वजनिक चेहरे का एकमात्र प्रमुख द्वार।

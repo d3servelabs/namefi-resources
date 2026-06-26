@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .space : un TLD créatif et polyvalent pour les startups, artistes et passionnés. Apprenez pourquoi choisir .space pour votre identité numérique."
 keywords: [".space domains", ".space TLD", ".space top-level domain", "what is .space", "why choose .space", "what is the .space domain", "why choose the .space domain", "enregistrement de domaine", "investissement de domaine", "nom de domaine web3", "domaine tokenisé", "blockchain domains", "identité numérique", "nouveaux gTLD", "acheter un nom de domaine"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Le paysage numérique est en constante expansion, et le choix de la bonne extension de domaine (TLD) est crucial pour définir votre identité en ligne. Si les extensions traditionnelles comme le .com sont souvent saturées, de nouvelles alternatives offrent des opportunités de branding uniques. L'une des plus polyvalentes et créatives est le **.space**.

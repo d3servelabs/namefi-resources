@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.investopedia.com/terms/r/reserveprice.asp
   - https://www.sedo.com/
+relatedArticles:
+  - /ar/blog/how-to-win-domain-auctions/
+  - /ar/blog/working-with-domain-brokers/
+  - /ar/blog/domain-pricing-psychology-buy-now-vs-make-offer/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/domain-broker/
+  - /ar/glossary/make-offer/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
 ---
 
 **السعر الاحتياطي** هو الحد الأدنى السري لسعر البيع اللي يحدده بائع النطاق، واللي دونه لا عطاء [مزاد](/ar/glossary/auction/) ولا عرض تفاوضي بيتحوّل لصفقة مكتملة. في مزاد النطاقات، لو أُغلق المزاد بأقل من السعر الاحتياطي، الاسم مش بيُسلَّم لأعلى مزايد — ببساطة بيبقى غير مباع. معظم منصات المزادات الكبيرة (GoDaddy Auctions وSedo وNameJet) بتسمح للبائعين بتحديد سعر احتياطي مخفي، فالمزايدون بيشوفوا العطاء الحالي بس مش إذا كان وصل للحد الأدنى. سعر احتياطي مرتفع أوي مقارنةً بقيمة السوق بيؤدي لعدم بيع متكرر ويآكل المصداقية؛ وسعر احتياطي منخفض أوي بيخاطر بترك فلوس على الطاولة. في قوائم [تقديم عرض](/ar/glossary/make-offer/) الخاصة، السعر الاحتياطي بيشتغل كرقم الانسحاب الداخلي للبائع أثناء التفاوض، وغالباً بيتشارك مع [وسيط النطاقات](/ar/glossary/domain-broker/) بس مش بيُكشف للمشتري.

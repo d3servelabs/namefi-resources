@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre cómo las stablecoins cierran la brecha entre el dinero fiat tradicional y las criptomonedas, ofreciendo estabilidad para las transacciones Web3 y la inversión en dominios.'
 keywords: ['qué son las stablecoins', 'definición de stablecoin', 'USDT vs USDC', 'volatilidad cripto', 'pagos web3', 'dominios blockchain', 'finanzas descentralizadas', 'colateralizado por fiat', 'comprar dominios con cripto', 'namefi']
+relatedArticles:
+  - /es/blog/what-are-xstocks/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+  - /es/blog/how-to-value-a-domain-name/
+relatedTopics:
+  - /es/topics/web3-foundations/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/web3/
+  - /es/glossary/dns/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
 ---
 
 En el vertiginoso y a menudo turbulento mundo de las criptomonedas, los precios pueden oscilar drásticamente en cuestión de minutos. Bitcoin y [Ethereum](/es/glossary/ethereum/) pueden ser el motor del ecosistema, pero su volatilidad dificulta su uso para transacciones cotidianas, liquidaciones comerciales o la fijación de precios de activos del mundo real. Aquí entran las **stablecoins** (monedas estables): el puente crucial entre la estabilidad de la moneda fiat tradicional y la innovación tecnológica de la [blockchain](/es/glossary/blockchain/).

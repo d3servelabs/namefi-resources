@@ -12,6 +12,24 @@ format: guide
 description: "Wie Aftermarket-Domain-Auktionen wirklich funktionieren — Proxy-Gebote, Sniping, harte Höchstgrenzen, das Lesen echter Nachfrage und das Umgehen der Überzahlungs- und Shill-Fallen."
 ogImage: ../../assets/how-to-win-domain-auctions-og.jpg
 keywords: ['Domain-Auktionen', 'Domain-Auktionen gewinnen', 'Domain-Auktionsstrategie', 'GoDaddy Auctions', 'NameJet', 'Sedo-Auktionen', 'Proxy-Gebote', 'Auction Sniping', 'Auktionen abgelaufener Domains', 'Shill-Bidding', 'Fluch des Gewinners bei Domains', 'abgelaufene Domains kaufen', 'Domain-Aftermarket', 'Drop-Catching-Auktion', 'Überzahlen bei Domains vermeiden']
+relatedArticles:
+  - /de/blog/domain-flipping/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+  - /de/blog/how-to-read-comparable-domain-sales/
+  - /de/blog/domain-backorders-and-drop-catching/
+  - /de/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
 ---
 
 Die meisten guten Namen, die du jemals kaufen willst, sind bereits vergeben, und ein großer Teil von ihnen läuft irgendwann über eine [Auktion](/de/glossary/auction/). Wenn eine Registrierung ausläuft, wenn ein Domainer liquidiert, wenn ein Registrar einen droppenden Namen ohne dahinterstehenden [Backorder](/de/glossary/backorder/) abfängt, landet der Name auf dem Auktionsblock und geht an den Höchstbietenden. Wenn du Domains flippst, wirst du in diesen Räumen echtes Geld ausgeben, und der Unterschied zwischen einer profitablen Akquisition und einem toten Namen in deinem Konto liegt vor allem in der Disziplin im Moment des Bietens.

@@ -24,6 +24,24 @@ keywords:
   - 'blockchain domains'
   - 'tokenized domain'
   - 'Web3 domains'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/top-tlds-to-secure-for-your-real-estate-business/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .aero？**

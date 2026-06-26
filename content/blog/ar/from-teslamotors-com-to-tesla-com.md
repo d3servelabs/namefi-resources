@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'كيف أمضت Tesla أكتر من عقد ودفعت 11 مليون دولار عشان تنقل من TeslaMotors.com لـ Tesla.com بالظبط — وإزاي جاءت الترقية دي قُبيل ما الشركة شالت كلمة "Motors" من اسمها.'
 keywords: ['teslamotors.com', 'tesla.com', 'اسم دومين تسلا', 'ترقية الدومين', 'دومين إيلون ماسك', 'دومين مطابق تمام', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'دومين بريميوم', 'استراتيجية الدومين', 'إعادة تسمية تسلا', 'تغيير اسم تسلا موتورز', 'الاستحواذ على الدومين', 'دومين يحدد الفئة']
+relatedArticles:
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-snapchat-com-to-snap-com/
+  - /ar/blog/from-urbancompass-com-to-compass-com/
+  - /ar/blog/from-massdrop-com-to-drop-com/
+  - /ar/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 في أول تلتاشر سنة من عمرها، أكبر شركة سيارات في العقد اللي جه كانت عايشة على عنوان فيه حاجة مش مكتملة: **TeslaMotors.com**.

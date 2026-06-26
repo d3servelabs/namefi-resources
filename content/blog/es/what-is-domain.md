@@ -6,6 +6,24 @@ tags: ["faq"]
 authors: ["namefiteam"]
 description: Un nombre de dominio es la base de su presencia en línea.
 keywords: ["nombre de dominio","DNS","Sistema de Nombres de Dominio","dirección IP","dirección web","conceptos básicos de internet","registro de dominio","dirección de sitio web","URL","Namefi"]
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/what-is-udrp/
+  - /es/blog/domain-terminology-guide/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/domain-basics/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-investor-field-guide/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
 ---
 
 

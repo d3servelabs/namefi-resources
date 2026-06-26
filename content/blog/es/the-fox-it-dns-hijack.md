@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'En septiembre de 2017, atacantes iniciaron sesión en el registrador de dominios externo de la firma de seguridad holandesa Fox-IT, modificaron su DNS, obtuvieron fraudulentamente un certificado TLS y ejecutaron un ataque de intermediario de 10 horas sobre el tráfico de clientes — hasta que Fox-IT lo detectó y publicó uno de los análisis post-mortem más transparentes de la industria.'
 keywords: ['secuestro dns fox-it', 'fox-it ataque intermediario', 'incidente fox-it 2017', 'secuestro dns', 'compromiso cuenta registrador', 'certificado ssl fraudulento', 'ataque man-in-the-middle', 'seguridad registrador de dominios', 'autenticación dos factores dns', 'dnssec', 'registry lock', 'seguridad de dominios', 'ncc group fox-it']
+relatedArticles:
+  - /es/blog/the-dnspionage-campaign/
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-lenovo-com-dns-hijack/
+  - /es/blog/the-badgerdao-frontend-attack/
+  - /es/blog/the-myetherwallet-bgp-dns-attack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
 ---
 
 Lo peculiar de un ataque de intermediario es que, mientras ocurre, todo parece normal.

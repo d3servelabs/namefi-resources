@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Establish your digital presence in the UAE capital with the .abudhabi TLD. Learn about its benefits, SEO advantages, and how to register with Namefi."
 keywords: [".abudhabi domains", ".abudhabi TLD", "top-level domain", "what is .abudhabi", "why choose .abudhabi", "what is the .abudhabi domain", "why choose the .abudhabi domain", "Abu Dhabi domain registration", "UAE digital identity", "Geo-TLD Abu Dhabi", "Middle East business domains", "domain investing UAE", "tokenized domain assets", "blockchain domains Abu Dhabi", "local SEO Abu Dhabi"]
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .abudhabi?**

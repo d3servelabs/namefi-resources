@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre todo sobre el dominio de nivel superior .ads: qué es, quiénes lo utilizan y por qué es la extensión perfecta para agencias, expertos en marketing e inversores de dominios en la era Web3.'
 keywords: ['.ads domains', '.ads TLD', 'top-level domain', 'what is .ads', 'why choose .ads', 'what is the .ads domain', 'why choose the .ads domain', 'comprar dominio .ads', 'inversión en dominios', 'dominios tokenizados', 'Namefi', 'marketing digital', 'adtech', 'dominios blockchain', 'publicidad online']
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
+  - /es/glossary/registrar/
+  - /es/glossary/registry/
 ---
 
 En el vasto universo de internet, elegir el nombre de dominio correcto es crucial para definir la identidad digital de una marca. Con la saturación de los dominios tradicionales, las nuevas extensiones genéricas de nivel superior (new gTLDs) han abierto un abanico de posibilidades. Una de las más relevantes para el sector del marketing y la tecnología publicitaria es el **[TLD](/es/glossary/tld/) .ads**.

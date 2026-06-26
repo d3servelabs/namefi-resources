@@ -6,6 +6,24 @@ tags: ["faq"]
 authors: ["namefiteam"]
 description: Ein Domainname ist die Grundlage Ihrer Online-Präsenz.
 keywords: ["Domainname","DNS","Domain Name System","IP-Adresse","Webadresse","Internet-Grundlagen","Domainregistrierung","Website-Adresse","URL","Namefi"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/what-is-udrp/
+  - /de/blog/domain-terminology-guide/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /de/topics/domain-basics/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-investor-field-guide/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
 ---
 
 

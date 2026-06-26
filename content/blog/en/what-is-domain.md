@@ -9,6 +9,24 @@ cluster: domain-basics
 format: explainer
 description: A domain name is the foundation of your online presence.
 keywords: ['domain name', 'DNS', 'Domain Name System', 'IP address', 'web address', 'internet basics', 'domain registration', 'website address', 'URL', 'namefi']
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/what-is-udrp/
+  - /en/blog/domain-terminology-guide/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/domain-basics/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-investor-field-guide/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
 ---
 
 ## **What is a Domain Name?**

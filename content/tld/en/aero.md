@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Discover the power of the .aero TLD—the exclusive domain for the aviation industry. Learn about eligibility, benefits, and how this restricted extension builds immediate trust."
 keywords: [".aero domains", "TLD", "top-level domain", "what is .aero", "why choose .aero", "what is the .aero domain", "why choose the .aero domain", "aviation domains", "restricted TLD", "SITA registry", "domain investing", "blockchain domains", "tokenized domain", "aerospace web address", "airline branding"]
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
 ---
 
 ## **What is .aero?**

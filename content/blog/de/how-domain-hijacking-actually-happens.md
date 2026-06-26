@@ -8,6 +8,24 @@ draft: false
 description: 'Ein praktischer Leitfaden zu den fünf Wegen, wie Angreifer Domains in der realen Welt tatsächlich übernehmen – Social Engineering, Kompromittierung des Registrar-Kontos, Übernahme des DNS-Anbieters, NS-Hijacking und Rückforderung abgelaufener Domains – sowie die spezifischen Kontrollmechanismen, die jeden einzelnen blockieren.'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
 keywords: ['Domain-Hijacking', 'Domain-Sicherheit', 'Registrar-Lock', 'Transfer-Lock', 'DNSSEC', 'Zwei-Faktor-Authentifizierung', 'Social Engineering', 'Dangling DNS', 'Namefi']
+relatedArticles:
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-badgerdao-frontend-attack/
+  - /de/blog/the-lenovo-com-dns-hijack/
+  - /de/blog/the-perl-com-domain-theft/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
 ---
 
 „[Domain-Hijacking](/de/glossary/domain-hijacking/)“ (Domain-Entführung) ist einer dieser Begriffe, die dramatisch klingen, aber je nach Ablauf sehr unterschiedliche Dinge bedeuten können. Ein durch eine [Phishing](/de/glossary/phishing/)-E-Mail übernommenes [Registrar](/de/glossary/registrar/)-Konto ist ein Hijack. Ein stillschweigend bei einem [DNS](/de/glossary/dns/)-Anbieter ausgetauschter [Nameserver](/de/glossary/nameserver/)-Eintrag ist ein Hijack. Eine abgelaufene Domain, die sich jemand anderes schnappt und neu ausrichtet, ist in gewissem Sinne ebenfalls ein Hijack.

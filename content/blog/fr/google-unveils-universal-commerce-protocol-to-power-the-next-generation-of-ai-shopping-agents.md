@@ -7,6 +7,24 @@ authors: ["namefiteam"]
 draft: false
 description: "L'UCP est le pari de Google pour propulser le commerce natif aux agents, permettant aux assistants IA de faire des achats et de payer à travers le web ouvert."
 keywords: ["Universal Commerce Protocol", "UCP", 'Google UCP', "agents d'achat IA", "commerce propulsé par l'IA", 'commerce agentique', 'protocole e-commerce IA', 'commerce conversationnel', 'paiement IA', 'futur du e-commerce', 'shopping par agents', 'standards de commerce ouverts', 'Google AI', 'Gemini AI', "Optimisation pour les Moteurs d'Agents"]
+relatedArticles:
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/from-mona-co-to-crypto-com/
+  - /fr/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /fr/topics/web3-foundations/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/ai-agent/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 # Google dévoile le « Universal Commerce Protocol » pour propulser la prochaine génération d'agents d'achat IA

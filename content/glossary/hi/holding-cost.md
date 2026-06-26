@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.investopedia.com/terms/c/carrying-costs.asp
   - https://www.namebio.com/
+relatedArticles:
+  - /hi/blog/domain-renewal-costs-and-sell-through-rate/
+  - /hi/blog/when-to-drop-a-domain/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/domain-portfolio-management/
+  - /hi/blog/taxes-and-accounting-for-domain-investors/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/sell-through-rate/
+  - /hi/glossary/domain-portfolio/
+  - /hi/glossary/tld/
+  - /hi/glossary/registry/
 ---
 
 **होल्डिंग कॉस्ट** (या *कैरीइंग कॉस्ट*) वह आवर्ती शुल्क है जो एक निवेशक किसी डोमेन का स्वामित्व बनाए रखने के लिए बिक्री की प्रतीक्षा करते हुए चुकाता है — सबसे प्रत्यक्ष रूप से [रजिस्ट्रार](/hi/glossary/registrar/) द्वारा लिया जाने वाला वार्षिक [डोमेन रिन्यूअल](/hi/glossary/domain-renewal/) शुल्क, जो एक मानक .com के लिए लगभग $10–15 प्रति वर्ष प्रति नाम होता है। हजारों नामों के एक बड़े [डोमेन पोर्टफोलियो](/hi/glossary/domain-portfolio/) के लिए, होल्डिंग लागत एक महत्वपूर्ण वार्षिक व्यय बन जाती है जो रिटर्न को क्षरित करती है यदि नाम नहीं बिकते। इसलिए [डोमेनिंग](/hi/glossary/domaining/) का अर्थशास्त्र यह माँग करता है कि एक निवेशक ईमानदारी से आकलन करे कि किसी नाम की यथार्थवादी बिक्री कीमत — और उचित समय सीमा में बिकने की संभावना — निरंतर नवीनीकरण को उचित ठहराती है या नहीं। कम [सेल-थ्रू रेट](/hi/glossary/sell-through-rate/) वाले कमजोर नामों को अनिश्चित काल तक नवीनीकृत करने के बजाय छोड़ देना चाहिए। उच्च नवीनीकरण लागत वाले प्रीमियम नामों (कुछ ccTLD या प्रीमियम रजिस्ट्री लेबल सालाना सैकड़ों डॉलर चार्ज करते हैं) के लिए और भी कड़े रिटर्न विश्लेषण की आवश्यकता होती है।

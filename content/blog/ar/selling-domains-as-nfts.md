@@ -12,6 +12,24 @@ format: guide
 description: "إزاي بيع دومين كـ NFT بيشتغل: ميكانيكا العرض للبيع، Seaport و OpenSea، البيع الخاص المحصور على مشتري معين، الإتاوات، ومصايد الغاز والنصب."
 ogImage: ../../assets/selling-domains-as-nfts-og.jpg
 keywords: ['بيع دومين كـ NFT', 'دومين NFT', 'بيع دومين مرمز', 'سيولة دومينات على السلسلة', 'عرض دومين NFT على OpenSea', 'بروتوكول Seaport', 'عرض محصور على مشتري', 'عرض NFT خاص', 'إتاوات NFT للدومينات', 'دومين ERC-721', 'تحويل ذري للدومين', 'بيع دومين مرمز', 'رسوم الغاز في بيع NFT', 'نصب دومينات NFT', 'تقليب الدومينات على السلسلة']
+relatedArticles:
+  - /ar/blog/onchain-domain-marketplaces-compared/
+  - /ar/blog/onchain-domain-flipping/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
+  - /ar/glossary/tld/
 ---
 
 بيع الدومين بالطريقة التقليدية فيه مشكلة ثقة متبنية فيه من الأساس. البايع مش عايز يبعت التحويل قبل ما الفلوس توصل؛ والمشتري مش عايز يحوّل فلوس قبل ما الاسم يظهر في حسابه. صناعة [الضمان (Escrow)](/ar/glossary/escrow/) كلها موجودة عشان تقف بين رد الفعلين دول. بيع الدومين كـ [NFT (رمز غير قابل للاستبدال)](/ar/glossary/nft/) بيعيد ترتيب المواجهة دي. لما ملكية دومين ICANN حقيقي تبقى كمان رمز [على السلسلة (On-chain)](/ar/glossary/on-chain/)، الاسم بيبقى حاجة تقدر تعرضها للبيع، وتسعّرها، وتسلّمها جوه نفس المعاملة اللي بتحرّك الفلوس — من غير وسيط ماسك الأصل في الساعات المظلمة اللي بين الدفع والتحويل.

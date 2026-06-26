@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist Mietkauf und wie kann er auf den Domain-Erwerb angewendet werden?
 keywords: ["Mietkauf","schrittweiser Eigentumserwerb","Zahlungspläne","Domain-Erwerb","Smart Contracts"]
+relatedArticles:
+  - /de/blog/taxes-and-accounting-for-domain-investors/
+  - /de/blog/why-tokenize-domains/
+  - /de/blog/domain-parking-and-monetization/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/onchain-domain-flipping/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/lease-to-own/
+  - /de/glossary/domain-ownership/
+  - /de/glossary/domain-financing/
+  - /de/glossary/premium-domain/
+  - /de/glossary/smart-contract/
 ---
 
 

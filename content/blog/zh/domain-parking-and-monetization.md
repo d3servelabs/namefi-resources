@@ -12,6 +12,24 @@ format: explainer
 description: "什么是域名停放、停放域名如何通过广告和联盟获得收入、为何现代停放本质上是一个销售渠道，以及它究竟值不值得去做。"
 ogImage: ../../assets/domain-parking-and-monetization-og.jpg
 keywords: ['域名停放', '停放域名', '停放域名变现', '域名停放收益', '停放域名广告', '按点击付费域名', '直输流量', '域名变现', '域名出售页面', '停放页面', '域名投资', '域名倒卖', '从闲置域名赚钱', '停放域名联盟', '域名停放值不值']
+relatedArticles:
+  - /zh/blog/marketing-your-domains-for-sale/
+  - /zh/blog/domain-for-sale-landing-pages/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/inbound-vs-outbound-domain-sales/
+  - /zh/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 你手里打算转卖的域名，默认是一项死资产。它躺在账户里，每年消耗续费费用，却在你等待买家的过程中毫无作为。域名停放就是让这个闲置名称至少做点事——要么向偶然访问的访客展示广告，要么更实用地告诉世界：这个名称正在出售。

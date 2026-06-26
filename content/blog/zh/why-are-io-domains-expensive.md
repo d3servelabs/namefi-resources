@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "为什么 .io 域名这么贵？本文详细解析注册局批发定价、科技创业公司的强劲需求、短域名的稀缺性、续费成本，以及新出现的查戈斯主权争议。"
 keywords: ['为什么io域名贵', '为什么.io域名贵', 'io域名贵', 'io域名为什么贵', '.io域名为什么这么贵', '为什么用io域名', 'io域名适合创业公司', 'io域名价格', 'io域名费用', 'io域名续费费用', 'io域名值得买吗', 'io对比com', 'io域名对比ai域名', 'io域名价格', 'io域名为什么更贵', 'io域名定价解析', '我应该买io域名吗', 'io国家顶级域名', '查戈斯io域名', '购买io域名']
+relatedArticles:
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/domain-flipping/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 如果你最近查过 `.io` 域名的价格，可能会倒吸一口凉气——你并不孤单。与普通的 `.com` 或某些更便宜的新后缀相比，`.io` 无论是注册还是每年续费，都稳居高价区间。

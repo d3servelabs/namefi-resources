@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .abb : son origine, ses avantages pour l'identité numérique et son utilisation. Sécurisez votre nom de domaine avec Namefi."
 keywords: [".abb domains", "TLD .abb", "top-level domain", "qu'est-ce que le .abb", "pourquoi choisir .abb", "domaine .abb", "investissement nom de domaine", "blockchain domains", "nom de domaine tokenisé", "Web3 domains", "acheter domaine .abb", "registre domaine abb", "définition domaine .abb"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/premium-web3-tlds/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
+  - /fr/glossary/web3/
 ---
 
 ## **Qu'est-ce que le .abb ?**

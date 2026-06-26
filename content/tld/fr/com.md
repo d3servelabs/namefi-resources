@@ -16,6 +16,24 @@ faqs:
     answer: "Presque toute entreprise, marque ou projet souhaitant l'adresse la plus universellement reconnue et fiable, en particulier les entreprises qui s'adressent à un public mondial ou grand public, et toute personne qui protège une marque sur le long terme."
   - question: 'Pourquoi les bons domaines .com sont-ils si difficiles à trouver ?'
     answer: "Avec plus de 160 millions de noms .com enregistrés, l'offre de noms courts, de dictionnaire et correspondant exactement à une marque est en grande partie épuisée. La plupart des noms .com premium sont déjà détenus et ne sont donc disponibles que sur le marché secondaire."
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/what-makes-a-domain-valuable/
+  - /fr/blog/ai-vs-io-domain/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Le **domaine .com** est ce qui se rapproche le plus d'une adresse par défaut sur Internet. Abréviation de « commercial », c'est le domaine générique de premier niveau original qui, par des décennies d'omniprésence, est devenu le suffixe que les gens associent naturellement à un site web. Pour la plupart des entreprises et des marques, **qu'est-ce que le .com** se résume à une seule chose : c'est l'adresse que les utilisateurs attendent, saisissent et considèrent comme fiable sans même y réfléchir.

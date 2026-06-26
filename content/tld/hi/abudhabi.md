@@ -23,6 +23,24 @@ keywords:
   - blockchain domains
   - tokenized domain
   - Namefi domain registrar
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 ## **.abudhabi क्या है? (What is .abudhabi?)**

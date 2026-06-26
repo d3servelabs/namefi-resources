@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'कैसे Facebook ने TheFacebook.com छोड़ा, $200K में Facebook.com खरीदा, बाद में FB.com के लिए $8.5M चुकाए, और डोमेन अपग्रेड को ब्रांड इन्फ्रास्ट्रक्चर में बदल दिया।'
 keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'facebook domain name', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'facebook history', 'domain acquisition', 'company rebrand', 'category-defining domain']
+relatedArticles:
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-slackhq-com-to-slack-com/
+  - /hi/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 इससे पहले कि Facebook इंटरनेट की डिफ़ॉल्ट क्रियाओं में से एक बने, वह एक संकीर्ण, अधिक शाब्दिक चीज़ थी: **TheFacebook.com**।

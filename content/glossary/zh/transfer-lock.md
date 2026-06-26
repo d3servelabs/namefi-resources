@@ -10,6 +10,24 @@ also_known_as: ['注册商锁定']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
+relatedArticles:
+  - /zh/blog/the-panix-com-domain-hijack/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/avoiding-domain-sale-scams/
+  - /zh/blog/working-with-domain-brokers/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/domain-hijacking/
+  - /zh/glossary/cross-registrar-transfer/
+  - /zh/glossary/epp/
+  - /zh/glossary/registry-lock/
 ---
 
 **转移锁定**（Transfer Lock，也称注册商锁定；EPP 状态码 `clientTransferProhibited`）是由[注册商](/zh/glossary/registrar/)设置的一个标志，阻止域名在未明确解锁的情况下被转移至其他注册商。锁定生效时，任何发起[跨注册商转移](/zh/glossary/cross-registrar-transfer/)的尝试在进行之前即会被拒绝，即便请求方持有[授权码](/zh/glossary/auth-code/)也不例外。这是防范[域名劫持](/zh/glossary/domain-hijacking/)最简单也最有效的手段之一：只要锁定处于激活状态，即便攻击者已控制你的账户，也无法悄悄将资产转移出去。最佳实践是始终保持转移锁定开启，仅在完成合法转移所需的短暂窗口期内临时解除。

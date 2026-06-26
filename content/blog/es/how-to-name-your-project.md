@@ -8,6 +8,24 @@ draft: false
 description: "Una guía práctica y respaldada por investigación para fundadores que nombran un proyecto, producto o empresa: verifica la legalidad, hazlo fácil de pronunciar, genera candidatos sólidos, compruébalo en diferentes culturas y realiza las búsquedas que importan antes de comprometerte."
 ogImage: ../../assets/how-to-name-your-project-og.jpg
 keywords: ['cómo nombrar tu startup', 'cómo nombrar tu proyecto', 'cómo nombrar una empresa', 'nombrar un producto', 'ideas de nombres de marca', 'elegir un nombre de negocio', 'selección de nombre de dominio', 'búsqueda de marcas registradas', 'dominio con marca', 'branding para startups', 'nombre de marca pronunciable', 'fluidez de procesamiento', 'guía de naming de marca', 'elegir un nombre para tu proyecto', 'verificar disponibilidad de dominio']
+relatedArticles:
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/from-del-icio-us-to-delicious-com/
+  - /es/blog/what-makes-a-domain-valuable/
+  - /es/blog/how-to-value-a-domain-name/
+  - /es/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /es/topics/domain-basics/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 Elegir el nombre es la primera decisión de producto que la mayoría de los fundadores toman mal.

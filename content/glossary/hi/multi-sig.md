@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: मल्टी-सिग क्या है और यह डोमेन सुरक्षा को कैसे बढ़ाता है?
 keywords: ["मल्टी-सिग","मल्टीसिग","कई हस्ताक्षर","बढ़ी हुई सुरक्षा","साझा कस्टडी"]
+relatedArticles:
+  - /hi/blog/do-multisig-wallets-actually-improve-security/
+  - /hi/blog/onchain-domain-custody-and-recovery/
+  - /hi/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /hi/blog/how-domain-hijacking-actually-happens/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/wallet/
+  - /hi/glossary/private-key/
+  - /hi/glossary/tokenized-domain/
 ---
 
 

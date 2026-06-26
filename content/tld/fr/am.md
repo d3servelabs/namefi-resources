@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez l'extension .am : du code pays de l'Arménie aux jeux de mots créatifs. Apprenez pourquoi c'est un choix stratégique pour votre domaine."
 keywords: [".am domains", "TLD .am", "top-level domain .am", "what is .am", "why choose .am", "what is the .am domain", "why choose the .am domain", "domaine am", "extension internet am", "achat nom de domaine", "investissement domaine", "blockchain domain", "tokenized domain", "jeu de mots domaine", "création site web", "Namefi", "nom de domaine arménie"]
+relatedArticles:
+  - /fr/blog/domain-hacks-explained/
+  - /fr/blog/from-instagr-am-to-instagram-com/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le .am ?**

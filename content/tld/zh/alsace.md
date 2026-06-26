@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .alsace 域名：法国阿尔萨斯地区的专属数字身份。探索其在品牌塑造、本地 SEO 和域名投资中的价值，以及如何在 Namefi 进行注册。'
 keywords: ['.alsace domains', '.alsace TLD', 'top-level domain', 'what is .alsace', 'why choose .alsace', 'what is the .alsace domain', 'why choose the .alsace domain', 'Alsace region domains', 'GeoTLD investment', 'domain investing', 'blockchain domains', 'tokenized domains', 'Namefi', 'local business SEO', 'European domains']
+relatedArticles:
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/web3/
 ---
 
 在数字时代，域名不仅仅是一个网址，它是品牌的数字门面。随着互联网名称与数字地址分配机构（[ICANN](/zh/glossary/icann/)）推出新的通用顶级域名（new gTLDs），企业和个人有了更多个性化的选择。其中，地理顶级域名（GeoTLD）因其独特的地域标识属性而备受关注。

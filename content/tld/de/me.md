@@ -16,6 +16,24 @@ faqs:
     answer: 'Privatpersonen, die eine persönliche Marke, ein Portfolio oder eine Lebenslauf-Seite aufbauen, und alle, die einen Domain-Hack gestalten, bei dem sich der Name als Phrase liest, die auf „me" endet – etwa about.me oder „call.me". Sie liest sich sofort als das englische Pronomen, was sie warm und persönlich macht.'
   - question: 'Ist .me eine gute Domain für eine persönliche Website?'
     answer: 'Ja. .me ist wohl die persönlichste Mainstream-Endung. Da „me" das Pronomen der ersten Person ist, fühlt sich „yourname.me" oder „hire.me" wie eine direkte Einladung an, weshalb sie ein Favorit für Portfolios, Bios und individuelle Marken ist.'
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/domain-hacks-explained/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Die **.me**-Domain ist eines der klarsten Beispiele für eine Länderendung, die als globale [Marke](/de/glossary/trademark/) ein zweites Leben fand. Offiziell die ccTLD für **Montenegro**, wurde sie weltweit als die **persönlichste** Endung des Internets vermarktet und übernommen – denn „me" ist das englische Pronomen der ersten Person, sodass sich „yourname.me" sofort als *du* liest. Für Privatpersonen, die ein Portfolio, eine Lebenslauf-Seite oder eine Bio-Seite aufbauen – und für alle, die einen cleveren **[Domain-Hack](/de/glossary/domain-hack/)** gestalten, der mit „me" vervollständigt wird –, ist sie oft die erste Anlaufstelle.

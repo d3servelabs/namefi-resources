@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'قصة شركة ناشئة في مجال مستلزمات الحيوانات الأليفة أطلقت عام 2011 باسم "Mr. Chewy" على MrChewy.com، ثم حذفت كلمة "Mr." لتصبح Chewy على النطاق المطابق Chewy.com — وكيف أصبح هذا الترقية بكلمة واحدة جزءًا من علامة تجارية استحوذت عليها PetSmart مقابل 3.35 مليار دولار.'
 keywords: ['mrchewy.com', 'chewy.com', 'chewy domain name', 'mr chewy', 'domain upgrade', 'ryan cohen', 'michael day', 'frank schilling', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'pet ecommerce']
+relatedArticles:
+  - /ar/blog/from-urbancompass-com-to-compass-com/
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-massdrop-com-to-drop-com/
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
 ---
 
 قبل أن تصبح Chewy أسطورة خدمة العملاء في مجال التجارة الإلكترونية لمستلزمات الحيوانات الأليفة — قبل البطاقات المكتوبة بخط اليد، وباقات الزهور في لحظات الحزن، والخروج بصفقة بـ 3.35 مليار دولار — كان اسمها أكثر دفئًا وتحفظًا بعض الشيء. كانت تُعرف بـ **Mr. Chewy**، وكان عنوانها **MrChewy.com**.

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: किसी डोमेन या संपत्ति को टोकनाइज़ करने का क्या अर्थ है?
 keywords: ["टोकनाइज़","टोकनाइजेशन","एनएफटी","डिजिटल संपत्ति","ऑन-चेन संपत्ति"]
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+  - /hi/blog/tokenized-domain-use-cases-2026/
+  - /hi/blog/ens-vs-unstoppable-vs-tokenized-dns/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/dns/
+  - /hi/glossary/composability/
+  - /hi/glossary/smart-contract/
+  - /hi/glossary/tokenized-domain/
+  - /hi/glossary/web3/
 ---
 
 

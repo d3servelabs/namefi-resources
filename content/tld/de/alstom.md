@@ -24,6 +24,24 @@ keywords:
   - rail transport domains
   - new gTLD
   - domain name registration
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/registry/
+  - /de/glossary/web3/
 ---
 
 ## **Was ist .alstom?**

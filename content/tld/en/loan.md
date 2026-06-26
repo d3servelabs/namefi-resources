@@ -16,6 +16,24 @@ faqs:
     answer: 'The .loan registry is legitimate and ICANN-accredited, but the extension has a high rate of spam and phishing because the names are very cheap and bought in bulk. A specific .loan site can be perfectly safe; treat unknown .loan links with the same caution you would any unfamiliar domain.'
   - question: 'Who should register a .loan domain?'
     answer: 'A .loan domain suits lenders, mortgage brokers, loan-comparison sites, and fintech projects that want an exact-match, descriptive name. It works best as a campaign or product domain paired with a .com, rather than as the sole brand for a regulated financial institution.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 A **.loan domain** is a web address that ends in **.loan** instead of a familiar extension like **.com** or **.net**. The part after the final dot is called a [top-level domain](/en/glossary/tld/) (TLD), and **.loan** is a **new generic top-level domain (gTLD)** built around a single, self-explanatory English word: *loan*. It tells visitors at a glance that a site is about lending, borrowing, or finance.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "以通俗易懂的语言梳理代币化域名所有者常问的税务和会计问题（非专业建议），涵盖成本基准、销售、持有期、商业与个人用途、赠与及遗产等。请带上这些问题咨询真正的专业人士。"
 keywords: ['NFT域名税务', '代币化域名成本基准', '代币化域名会计处理', '代币化域名资本利得', '出售代币化域名纳税', 'NFT域名资本利得', '域名NFT会计处理', '域名作为资产的税务', '赠与代币化域名纳税', '代币化域名遗产', '代币化域名业务支出', '域名代币化税务问题', '美国NFT域名税务', '加密域名税务']
+relatedArticles:
+  - /zh/blog/taxes-and-accounting-for-domain-investors/
+  - /zh/blog/how-tokenized-marketplaces-replace-escrow/
+  - /zh/blog/tokenized-domain-use-cases-2026/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/tokenize-your-com/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 > **请先阅读：** 本文**不构成**税务、会计、法律或财务建议。我们不是您的注册会计师（CPA），也不是您的律师，更不知道您身处哪个司法管辖区。这只是一份旨在提交给真正专业人士的*问题清单*。请将其作为准备资料，而不是可依赖的最终立场。完整的免责声明在文章底部，且*尤为*适用于本文。

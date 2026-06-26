@@ -24,6 +24,24 @@ keywords:
   - Namefi
   - Web3 domains
   - 在线教育品牌
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 随着在线教育和专业培训行业的蓬勃发展，选择一个能够精准传达品牌权威性的域名变得至关重要。`.academy` 顶级域名（TLD）正是为此而生。对于致力于分享知识、提供课程或建立学习社区的企业和个人来说，它是一个极具吸引力的选择。

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .active، النطاق المثالي للياقة البدنية، الرياضة، ونمط الحياة النشط. تعرف على كيفية تسجيله عبر Namefi."
 keywords: [".active domains", ".active TLD", "top-level domain", "what is .active", "why choose .active", "what is the .active domain", "why choose the .active domain", "domain investing", "blockchain domains", "tokenized domain", "شراء نطاق active", "نطاقات رياضية", "استثمار النطاقات", "Web3 domains", "Namefi"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 في عالم الإنترنت المتنامي باستمرار، أصبح اختيار اسم النطاق (Domain Name) المناسب أكثر أهمية من أي وقت مضى. مع ظهور مئات النطاقات الجديدة عالية المستوى (new gTLDs)، لم يعد الأفراد والشركات مقيدين بالخيارات التقليدية مثل `.com` أو `.net`.

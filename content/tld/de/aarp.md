@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .aarp Top-Level-Domain: Einblicke in diese exklusive TLD, ihre Bedeutung für Vertrauen im Netz und wie Sie Ihre perfekte Domain bei Namefi finden."
 keywords: [".aarp domains", ".aarp TLD", "top-level domain", "was ist .aarp", "warum .aarp wählen", "was ist die .aarp domain", "warum die .aarp domain wählen", "domain investing", "blockchain domains", "tokenized domain", "Marken-TLD", "AARP Organisation", "sichere domains", "exklusive TLD", "Namefi"]
+relatedArticles:
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 ## **Was ist .aarp?**

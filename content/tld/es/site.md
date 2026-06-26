@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre qué es el dominio .site, sus ventajas para tu marca y por qué es una alternativa ideal al .com. Asegura tu identidad digital hoy con Namefi.'
 keywords: ['.site domains', '.site TLD', 'top-level domain', 'what is .site', 'why choose .site', 'what is the .site domain', 'why choose the .site domain', 'comprar dominio .site', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'registro de dominios', 'identidad digital', 'dominios web3', 'estrategia seo']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 En el vasto universo de internet, elegir el nombre correcto es crucial, pero elegir la extensión correcta (TLD) es igual de importante. Mientras que las opciones clásicas se saturan, nuevas alternativas han surgido para ofrecer frescura y disponibilidad. Una de las más destacadas es la extensión **.site**.

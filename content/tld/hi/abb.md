@@ -24,6 +24,24 @@ keywords:
   - 'technology domains'
   - 'brand TLD'
   - 'Namefi domain registration'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/premium-web3-tlds/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
+  - /hi/glossary/web3/
 ---
 
 ## **.abb क्या है?**

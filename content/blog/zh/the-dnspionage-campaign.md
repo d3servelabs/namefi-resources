@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2018 年底，Cisco Talos 披露了 DNSpionage——一场后来被证实与伊朗利益相关的行动。攻击者篡改政府 DNS 记录，将电子邮件和 VPN 流量重定向至攻击者服务器，并申请有效的 TLS 证书以掩人耳目。这场行动促使美国政府发布了有史以来第一份同类紧急指令。'
 keywords: ['dnspionage', 'dns劫持', 'dns重定向', 'cisco talos', 'cisa紧急指令19-01', 'sea turtle dns', '伊朗dns劫持', 'fireeye dns劫持', 'lets encrypt证书滥用', 'dns安全', '域名安全', '国家级网络间谍', '缓解dns基础设施篡改']
+relatedArticles:
+  - /zh/blog/the-sea-turtle-dns-espionage/
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-myetherwallet-bgp-dns-attack/
+  - /zh/blog/the-badgerdao-frontend-attack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/dns/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
 ---
 
 大多数域名灾难的核心是：谁*拥有*某个名字。而这次行动的核心是：谁*控制*它——在 2018 年底的数个月里，中东数十个政府域名的控制权答案是：并非这些政府本身。

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '.ac डोमेन एक्सटेंशन (TLD) के बारे में सब कुछ जानें। समझें कि यह अकादमिक, व्यवसायों और टेक स्टार्टअप्स के लिए एक बेहतरीन विकल्प क्यों है और Namefi पर इसे कैसे रजिस्टर करें।'
 keywords: ['.ac domains', '.ac TLD', 'top-level domain', 'what is .ac', 'why choose .ac', 'what is the .ac domain', 'why choose the .ac domain', 'buy .ac domain', 'domain investment', 'tokenized domain', 'blockchain domains', 'domain registrar India', 'Ascension Island domain', 'academic domains', 'Namefi domains']
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/domain-hacks-explained/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/web3/
 ---
 
 एक सही डोमेन नाम चुनना आपकी डिजिटल पहचान बनाने की दिशा में पहला और सबसे महत्वपूर्ण कदम है। जबकि [.com](/hi/tld/com/) और .org जैसे पारंपरिक डोमेन बहुत लोकप्रिय हैं, कई नए और विशिष्ट टॉप-लेवल डोमेन (TLDs) अब व्यवसायों और व्यक्तियों के लिए बेहतरीन विकल्प बनकर उभर रहे हैं। ऐसा ही एक शक्तिशाली और बहुमुखी [TLD](/hi/glossary/tld/) है **.ac**।

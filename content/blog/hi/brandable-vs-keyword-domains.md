@@ -12,6 +12,24 @@ format: comparison
 description: "ब्रांडेबल गढ़े हुए नाम बनाम एग्ज़ैक्ट-मैच कीवर्ड डोमेन: हर एक को कौन खरीदता है, कौन ज़्यादा भरोसेमंद ढंग से दोबारा बिकता है, और ट्रेडमार्क का वह पहलू जो हर फ़्लिपर को पता होना चाहिए।"
 ogImage: ../../assets/brandable-vs-keyword-domains-og.jpg
 keywords: ['ब्रांडेबल डोमेन', 'कीवर्ड डोमेन', 'एग्ज़ैक्ट मैच डोमेन', 'ब्रांडेबल बनाम कीवर्ड डोमेन', 'गढ़े हुए डोमेन नाम', 'जेनरिक डोमेन नाम', 'डोमेन निवेश', 'डोमेन फ़्लिपिंग', 'कौन से डोमेन बेहतर बिकते हैं', 'टाइप-इन ट्रैफ़िक', 'डोमेन ट्रेडमार्क', 'वर्णनात्मक डोमेन नाम', 'डोमेन पुनर्विक्रय मूल्य', 'स्टार्टअप डोमेन नाम', 'डोमेन नाम रणनीति']
+relatedArticles:
+  - /hi/blog/domain-flipping/
+  - /hi/blog/what-makes-a-domain-valuable/
+  - /hi/blog/hand-registering-domains-to-flip/
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+  - /hi/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 एक ही हफ़्ते में दो डोमेन आपके इनबॉक्स में आते हैं। एक `Stripe` जैसा है: एक छोटा, गढ़ा हुआ शब्द जिसका तब तक कोई मतलब नहीं होता जब तक कोई कंपनी उसमें मायने न भर दे। दूसरा `CarInsurance` है: ठीक उसी चीज़ का सीधा-सा वर्णन जो खरीदार बेचता है। दोनों पैसा कमा सकते हैं। पर वे यह काम बिल्कुल अलग तरीकों से करते हैं, बिल्कुल अलग खरीदारों को बिकते हैं, और बिल्कुल अलग जोखिम साथ लाते हैं। जब आपको एक खरीदना चाहिए था और आपने दूसरा खरीद लिया — यह उन सबसे आम तरीकों में से एक है जिनसे फ़्लिपर अपना रिन्यूअल बजट बर्बाद करते हैं।

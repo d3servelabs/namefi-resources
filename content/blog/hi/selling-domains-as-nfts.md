@@ -12,6 +12,24 @@ format: guide
 description: "किसी डोमेन को NFT के रूप में बेचना कैसे काम करता है: लिस्टिंग की कार्यप्रणाली, Seaport और OpenSea, खरीदार-प्रतिबंधित निजी बिक्री, रॉयल्टी, और गैस तथा घोटाले के जाल।"
 ogImage: ../../assets/selling-domains-as-nfts-og.jpg
 keywords: ['डोमेन को NFT के रूप में बेचें', 'डोमेन NFT', 'टोकनाइज़्ड डोमेन बिक्री', 'ऑन-चेन डोमेन लिक्विडिटी', 'OpenSea पर डोमेन NFT लिस्ट करें', 'Seaport प्रोटोकॉल', 'खरीदार-प्रतिबंधित लिस्टिंग', 'निजी NFT लिस्टिंग', 'NFT रॉयल्टी डोमेन', 'ERC-721 डोमेन', 'एटॉमिक ट्रांसफर डोमेन', 'टोकनाइज़्ड डोमेन बेचें', 'NFT बिक्री पर गैस शुल्क', 'NFT डोमेन घोटाले', 'डोमेन फ़्लिपिंग ऑन-चेन']
+relatedArticles:
+  - /hi/blog/onchain-domain-marketplaces-compared/
+  - /hi/blog/onchain-domain-flipping/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
+  - /hi/glossary/tld/
 ---
 
 पारंपरिक डोमेन बिक्री में एक भरोसे की समस्या जन्म से ही जुड़ी होती है। विक्रेता पैसे आने से पहले ट्रांसफर नहीं करना चाहता; खरीदार नाम अपने खाते में दिखने से पहले फंड भेजना नहीं चाहता। पूरा [एस्क्रो](/hi/glossary/escrow/) उद्योग इन्हीं दो प्रवृत्तियों के बीच खड़े रहने के लिए मौजूद है। किसी डोमेन को [NFT (नॉन-फंजीबल टोकन)](/hi/glossary/nft/) के रूप में बेचना इस गतिरोध को नए सिरे से व्यवस्थित कर देता है। जब किसी असली ICANN डोमेन का स्वामित्व एक [ऑन-चेन](/hi/glossary/on-chain/) टोकन भी हो, तो वह नाम एक ऐसी चीज़ बन जाता है जिसे आप उसी लेनदेन के भीतर लिस्ट कर सकते हैं, उसकी कीमत तय कर सकते हैं, और सौंप सकते हैं जिसमें पैसा भी चलता है — भुगतान और ट्रांसफर के बीच की उन अँधेरी घड़ियों में परिसंपत्ति को थामे रखने वाला कोई बिचौलिया नहीं।

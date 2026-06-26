@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: NFT क्या है और इसका डोमेन टोकनाइज़ेशन से क्या संबंध है?
 keywords: ["NFT","नॉन-फंजीबल टोकन","ब्लॉकचेन","अद्वितीय संपत्ति","डोमेन NFT"]
+relatedArticles:
+  - /hi/blog/selling-domains-as-nfts/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/tokenized-domain-use-cases-2026/
+  - /hi/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/blockchain/
+  - /hi/glossary/erc-721/
+  - /hi/glossary/web3/
+  - /hi/glossary/dns/
+  - /hi/glossary/erc-20/
 ---
 
 एक **NFT (नॉन-फंजीबल टोकन)** एक अद्वितीय डिजिटल संपत्ति है जो एक [ब्लॉकचेन](/hi/glossary/blockchain/) पर मौजूद होती है, जो एक विशिष्ट आइटम के स्वामित्व का प्रतिनिधित्व करती है जिसे दोहराया या प्रतिस्थापित नहीं किया जा सकता। क्रिप्टोकरेंसी के विपरीत, जो फंजीबल होती हैं (एक बिटकॉइन दूसरे बिटकॉइन के बराबर होता है), प्रत्येक NFT में अलग-अलग गुण और मेटाडेटा होते हैं। Namefi के संदर्भ में, डोमेन को NFT में परिवर्तित किया जाता है, जिससे वे स्वामित्व के क्रिप्टोग्राफिक प्रमाण के साथ व्यापार योग्य डिजिटल संपत्ति बन जाते हैं। यह डोमेन को [वॉलेट](/hi/glossary/wallet/) में संग्रहीत करने, बिना बिचौलियों के तुरंत स्थानांतरित करने, और अन्य [Web3](/hi/glossary/web3/) प्रोटोकॉल के साथ एकीकृत करने की अनुमति देता है, जबकि उनकी विशिष्टता और सत्यापन योग्य स्वामित्व इतिहास को बनाए रखता है।

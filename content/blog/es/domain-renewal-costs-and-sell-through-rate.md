@@ -12,6 +12,24 @@ format: analysis
 description: "La economía honesta del domaining: el lastre de las renovaciones, la tasa de venta como regla práctica y por qué una sola buena venta tiene que financiar muchos años de renovaciones."
 ogImage: ../../assets/domain-renewal-costs-and-sell-through-rate-og.jpg
 keywords: ['costo de renovación de dominios', 'tasa de venta de dominios', 'economía de la reventa de dominios', 'costo de mantenimiento de dominios', 'tarifas de renovación de dominios', 'cuentas de rentabilidad del domaining', 'costo de una cartera de dominios', '¿es rentable la reventa de dominios?', 'lastre de renovación de dominios', 'costo base de dominios', 'rendimiento de la inversión en dominios', 'cuánto cuesta renovar un dominio', 'precio de renovación de .com', 'costo de mantener un dominio']
+relatedArticles:
+  - /es/blog/domain-portfolio-management/
+  - /es/blog/when-to-drop-a-domain/
+  - /es/blog/domain-flipping/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+  - /es/blog/working-with-domain-brokers/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Cada dominio que tienes te envía una factura una vez al año. Ese único hecho es la gravedad bajo la que vive todo inversor de dominios, y es justo la parte que las historias de éxito omiten. Una venta de cinco cifras da para un gran titular. Los doscientos nombres que no se vendieron, generando en silencio una tarifa de renovación cada uno cada doce meses, nunca llegan a la historia.

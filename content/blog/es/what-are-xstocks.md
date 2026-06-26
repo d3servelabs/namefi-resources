@@ -6,6 +6,24 @@ tags: ["faq","domains","tokenization"]
 authors: ["namefiteam"]
 description: Descubre cómo los xStocks están revolucionando las finanzas y por qué los domainers que utilizan la tokenización a través de Namefi están en una posición única para liderar este cambio digital.
 keywords: ["xStocks","acciones tokenizadas","valores tokenizados","inversión de dominios","tokenización de dominios","Namefi","acciones blockchain","propiedad fraccionada","finanzas web3","trading de activos digitales","activos tokenizados Solana","acciones cripto","valores on-chain","tokenización de activos del mundo real","nombres de dominio tokenizados"]
+relatedArticles:
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/onchain-domain-flipping/
+  - /es/blog/tokenize-your-com-to-flip-it/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/web3-foundations/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
+  - /es/glossary/tld/
 ---
 
 

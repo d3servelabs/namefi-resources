@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .loan 是一种专为金融服务、贷款机构和个人金融平台设计的域名扩展。了解其目的、用途和优势。
 keywords: ["顶级域", "loan域名", "金融服务", "贷款", "金融科技", "信贷"]
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 

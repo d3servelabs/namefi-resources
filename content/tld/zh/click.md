@@ -24,6 +24,24 @@ keywords:
   - 'digital identity'
   - 'link shortener domain'
   - 'Namefi'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .click？**

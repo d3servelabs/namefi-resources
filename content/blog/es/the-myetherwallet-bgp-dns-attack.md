@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'El 24 de abril de 2018, unos atacantes secuestraron el enrutamiento de internet de Amazon Route 53, envenenaron las respuestas DNS de myetherwallet.com y sirvieron un clon de phishing con un certificado autofirmado, drenando aproximadamente $150,000 en Ethereum. Un análisis en profundidad de por qué el DNS depende de una capa de enrutamiento que confía por defecto.'
 keywords: ['myetherwallet', 'bgp hijack', 'secuestro dns', 'amazon route 53', 'route 53 hijack', 'seguridad dns', 'seguridad enrutamiento bgp', 'phishing ethereum', 'certificado autofirmado', 'enet as10297', 'rpki roa', 'phishing billetera crypto', 'seguridad de dominios']
+relatedArticles:
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-curve-finance-dns-hijack/
+  - /es/blog/the-bitcoin-org-dns-hijack/
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/dns/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Cuando escribes el nombre de un sitio web en un navegador, estás confiando en que dos sistemas invisibles sean honestos contigo.

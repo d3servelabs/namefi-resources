@@ -12,6 +12,24 @@ format: explainer
 description: "Warum eine Buchstabenfolge Tausende wert ist und eine fast identische nichts: Länge, echte Wörter, der .com-Aufschlag, Absicht und Markentauglichkeit."
 ogImage: ../../assets/what-makes-a-domain-valuable-og.jpg
 keywords: ['was macht eine Domain wertvoll', 'Wertfaktoren von Domains', 'was macht einen guten Domainnamen aus', 'Wert eines Domainnamens', 'warum sind Domains teuer', 'kurze Domainnamen', 'Keyword-Domains', 'brandable Domains', 'com-Aufschlag', 'Wert der Domain-Endung', 'Domains mit kommerzieller Absicht', 'einprägsame Domainnamen', 'Grundlagen des Domain-Investings', 'wie Domains bewertet werden', 'Premium-Domainnamen']
+relatedArticles:
+  - /de/blog/how-to-value-a-domain-name/
+  - /de/blog/domain-flipping/
+  - /de/blog/how-tld-affects-domain-value/
+  - /de/blog/how-to-read-comparable-domain-sales/
+  - /de/blog/brandable-vs-keyword-domains/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Zwei Domains können sich um einen einzigen Buchstaben unterscheiden und im Preis um das Tausendfache auseinanderliegen. `cars.com` ist ein Vermögenswert, den jeder kennt; `carz.net` ist eine Verlängerungsrechnung. Gleiche Länge, dieselbe ungefähre Idee, völlig unterschiedlicher Wert. Sobald du erklären kannst, *warum*, fühlt sich Domain-Investing nicht länger nach Glück an, sondern danach, einen Markt lesen zu können.

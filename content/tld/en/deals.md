@@ -16,6 +16,24 @@ faqs:
     answer: 'It suits coupon and discount sites, deal aggregators, flash-sale and clearance pages, affiliate marketers, and brands that want a memorable address for a promotions or savings microsite separate from their main domain.'
   - question: 'Is .deals good for an e-commerce or coupon site?'
     answer: 'Yes. The word "deals" is exactly what bargain-hunting shoppers search for, so the suffix describes the offer in the name itself. It is a natural fit for coupon directories, daily-deal sites, and seasonal sale landing pages.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.deals domain** is a descriptive new [generic top-level domain](/en/glossary/gtld/) (gTLD) built around one of the most commercially loaded words on the internet: *deals*. For coupon sites, discount aggregators, flash-sale pages, and any brand that wants an address shoppers instantly understand, .deals puts the value proposition right in the name. Instead of bolting "savings" onto a forgettable string, you can register something like `summer.deals` or `brand.deals` and tell visitors exactly what they will find.

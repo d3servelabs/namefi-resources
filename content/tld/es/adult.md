@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre qué es el dominio .adult, sus ventajas para la industria del entretenimiento y cómo mejora tu branding. Registra tu dominio seguro hoy con Namefi.'
 keywords: ['.adult domains', '.adult TLD', 'top-level domain .adult', 'what is .adult', 'why choose .adult', 'what is the .adult domain', 'why choose the .adult domain', 'dominios para adultos', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'registro de dominios', 'protección de marca', 'SEO para adultos', 'seguridad web']
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 ## **¿Qué es .adult?**

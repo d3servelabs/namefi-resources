@@ -11,6 +11,24 @@ seriesOrder: 11
 format: case-study
 description: 'How the pioneering social-bookmarking site launched in 2003 as the famous domain hack "del.icio.us," why those dots became a permanent tax on every mention, and how Yahoo moved it to the cleaner Delicious.com in 2008.'
 keywords: ['del.icio.us', 'delicious.com', 'delicious domain name', 'domain hack', 'joshua schachter', 'social bookmarking', 'yahoo delicious', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'ccTLD domain hack', 'category-defining domain']
+relatedArticles:
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-mona-co-to-crypto-com/
+  - /en/blog/from-ctrip-com-to-trip-com/
+  - /en/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
 ---
 
 For about five years, one of the most influential sites of the Web 2.0 era lived at an address you almost couldn't say out loud: **del.icio.us**.

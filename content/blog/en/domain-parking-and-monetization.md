@@ -12,6 +12,24 @@ format: explainer
 description: "What domain parking is, how parked names earn ad and affiliate revenue, why modern parking is a sales channel, and when it is actually worth it."
 ogImage: ../../assets/domain-parking-and-monetization-og.jpg
 keywords: ['domain parking', 'park a domain', 'monetize a parked domain', 'domain parking revenue', 'parked domain ads', 'pay per click domains', 'type-in traffic', 'domain monetization', 'domain for sale page', 'parking page', 'domain investing', 'domain flipping', 'earn money from unused domains', 'parked domain affiliate', 'is domain parking worth it']
+relatedArticles:
+  - /en/blog/marketing-your-domains-for-sale/
+  - /en/blog/domain-for-sale-landing-pages/
+  - /en/blog/domain-flipping/
+  - /en/blog/inbound-vs-outbound-domain-sales/
+  - /en/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 A domain you're holding to flip is, by default, a dead asset. It sits in your account, it costs you a renewal fee every year, and it does nothing while you wait for the right buyer. Parking is the practice of making that idle name do at least a little work — either by showing ads to whoever stumbles onto it, or, more usefully, by telling the world the name is for sale.

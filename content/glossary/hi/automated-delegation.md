@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: स्वचालित डेलिगेशन क्या है और स्मार्ट कॉन्ट्रैक्ट्स डोमेन नियंत्रण का प्रबंधन कैसे करते हैं?
 keywords: ["स्वचालित डेलिगेशन","स्मार्ट कॉन्ट्रैक्ट्स","डोमेन प्रबंधन","प्रोग्रामेबल नियंत्रण","ऑटोमेशन"]
+relatedArticles:
+  - /hi/blog/the-curve-finance-dns-hijack/
+  - /hi/blog/tokenized-domain-use-cases-2026/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/the-2024-squarespace-defi-domain-hijacks/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-security/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/smart-contract/
+  - /hi/glossary/leasing/
+  - /hi/glossary/dns/
+  - /hi/glossary/registrar/
+  - /hi/glossary/tokenize/
 ---
 
 **स्वचालित डेलिगेशन** पूर्वनिर्धारित नियमों या शर्तों के आधार पर डोमेन नियंत्रण और डेलिगेशन को स्वचालित रूप से प्रबंधित करने के लिए [स्मार्ट कॉन्ट्रैक्ट्स](/hi/glossary/smart-contract/) का उपयोग करना संदर्भित करता है। पारंपरिक डोमेन डेलिगेशन को नेमसर्वर या [DNS](/hi/glossary/dns/) सेटिंग्स बदलने के लिए मैन्युअल हस्तक्षेप की आवश्यकता होती है। [टोकनाइज्ड](/hi/glossary/tokenize/) डोमेन के साथ, [स्मार्ट कॉन्ट्रैक्ट्स](/hi/glossary/smart-contract/) भुगतान स्थिति, समय-आधारित शर्तों या शासन निर्णयों जैसे कारकों के आधार पर नियंत्रण को स्वचालित रूप से डेलिगेट कर सकते हैं। उदाहरण के लिए, यदि लीज का भुगतान बंद हो जाता है, तो एक [लीज्ड](/hi/glossary/leasing/) डोमेन स्वचालित रूप से मालिक को नियंत्रण वापस कर सकता है, या एक [DAO](/hi/glossary/dao/)-स्वामित्व वाला डोमेन सामुदायिक वोटों के आधार पर अपनी कॉन्फ़िगरेशन को स्वचालित रूप से अपडेट कर सकता है। यह ऑटोमेशन मैन्युअल ओवरहेड को कम करता है, मानवीय त्रुटि को समाप्त करता है, और परिष्कृत डोमेन प्रबंधन रणनीतियों को सक्षम बनाता है जो बिना बिचौलियों के मज़बूती से निष्पादित होती हैं।

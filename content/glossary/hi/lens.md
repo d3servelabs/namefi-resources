@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: लेंस प्रोटोकॉल क्या है और यह सोशल आइडेंटिटी के लिए डोमेन का उपयोग कैसे करता है?
 keywords: ["लेंस","लेंस प्रोटोकॉल","विकेन्द्रीकृत सोशल","NFT प्रोफाइल","सोशल ग्राफ़","Web3 आइडेंटिटी"]
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/cctld-market-share-by-registration-volume/
+  - /hi/blog/avoiding-domain-sale-scams/
+  - /hi/blog/tokenized-domain-use-cases-2026/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/web3/
+  - /hi/glossary/farcaster/
+  - /hi/glossary/blockchain/
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
 ---
 
 

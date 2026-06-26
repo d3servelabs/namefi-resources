@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre qué es el dominio .online, sus ventajas para el branding y SEO, y por qué es la alternativa moderna ideal al .com. Registra el tuyo en Namefi hoy.'
 keywords: ['.online domains', 'TLD', 'top-level domain', 'what is .online', 'why choose .online', 'what is the .online domain', 'why choose the .online domain', 'dominios .online', 'comprar dominio .online', 'inversión en dominios', 'blockchain domains', 'dominios tokenizados', 'gTLD', 'registro de dominios web3', 'estrategia de dominios']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 En el vasto universo de internet, elegir el nombre de dominio adecuado es el primer paso crucial para establecer una identidad digital sólida. Con la saturación de las extensiones tradicionales, han surgido nuevas alternativas que ofrecen frescura y disponibilidad. Una de las más destacadas y de mayor crecimiento es el dominio **.online**.

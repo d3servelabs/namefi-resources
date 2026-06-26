@@ -12,6 +12,24 @@ format: guide
 description: "Le guide complet pour vendre des noms de domaine : ventes entrantes ou sortantes, format de prix, où mettre en vente, quand recourir à un courtier et comment conclure la transaction en toute sécurité."
 ogImage: ../../assets/how-to-sell-domains-for-profit-og.jpg
 keywords: ['comment vendre des noms de domaine avec profit', 'vendre un nom de domaine', 'guide de vente de domaines', 'ventes de domaines entrantes ou sortantes', 'tarification des domaines', 'où vendre des domaines', 'places de marché de domaines', 'courtier en domaines', 'séquestre de domaine', 'achat immédiat ou faire une offre', 'vendre des domaines en ligne', 'marché secondaire des domaines', 'conclure une vente de domaine', 'prospection de vente de domaines', 'revendre un domaine']
+relatedArticles:
+  - /fr/blog/inbound-vs-outbound-domain-sales/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/working-with-domain-brokers/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Un domaine que vous ne pouvez pas vendre n'est qu'une facture de renouvellement affublée d'un nom astucieux. Bien acheter et évaluer honnêtement sont des compétences en amont ; c'est ici que l'argent arrive vraiment. L'essentiel du profit dans le flipping se gagne ou se perd à l'étape de la vente, car un nom médiocre bien vendu l'emporte sur un excellent nom que personne ne peut trouver. Voici le pilier « vente » de notre guide sur le [domain flipping](/fr/blog/domain-flipping/) — tout le parcours qui mène de « je possède ce nom » à « les fonds sont arrivés ». Nous aborderons les deux façons dont les acheteurs vous trouvent, comment définir un format de prix, où mettre en vente, quand un courtier mérite sa commission et comment conclure sans se faire arnaquer. Pour une liste de contrôle étape par étape d'une vente unique, associez ceci à [comment vendre un nom de domaine que vous possédez](/fr/blog/how-to-sell-a-domain-name-you-own/).

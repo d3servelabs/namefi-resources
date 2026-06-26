@@ -6,6 +6,24 @@ tags: ['tld', '域名注册', '品牌建设', 'abb']
 authors: ['namefiteam']
 draft: false
 description: '深入探索 .abb 顶级域名的独特价值。了解其在提升品牌信任度、SEO 优化及简短易记方面的优势，并立即在 Namefi 锁定您的理想域名。'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/premium-web3-tlds/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
+  - /zh/glossary/web3/
 ---
 
 ## **什么是 .abb？**

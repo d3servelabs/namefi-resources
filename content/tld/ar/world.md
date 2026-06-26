@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق .world وكيف يمكن أن يساعد في توسيع نطاق علامتك التجارية عالمياً. تعرف على مزايا الحجز عبر Namefi.'
 keywords: ['.world domains', 'TLD', 'top-level domain', 'what is .world', 'why choose .world', 'what is the .world domain', 'why choose the .world domain', 'نطاق .world', 'حجز دومين world', 'domain investing', 'tokenized domain', 'blockchain domains', 'شراء نطاق', 'استثمار النطاقات', 'Namefi']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/ai-vs-io-domain/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 في عالم الإنترنت المتوسع باستمرار، أصبح العثور على اسم نطاق (Domain Name) يعبر بدقة عن رؤيتك العالمية أمراً بالغ الأهمية. بينما تزدحم النطاقات التقليدية مثل `.com` و`.net`، تبرز نطاقات المستوى الأعلى الجديدة (New gTLDs) لتقدم فرصاً إبداعية هائلة. واحد من أكثر هذه النطاقات تميزاً وشمولية هو نطاق **.world**.

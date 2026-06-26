@@ -18,6 +18,24 @@ faqs:
     answer: 'The registry operator is Knock Knock WHOIS There, LLC, a subsidiary of Automattic, the company behind WordPress.com. The TLD was delegated in 2016 and reached general availability in November of that year. CentralNic provides the back-end registry services.'
   - question: 'Is .blog good for email deliverability?'
     answer: 'It is generally fine. As an established gTLD it is not broadly blocklisted, but any newer extension can draw slightly more scrutiny from spam filters than .com. Authenticate mail with SPF, DKIM, and DMARC and warm up a new sending domain gradually.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.blog domain** is one of the few extensions that explains itself: the moment a reader sees it, they know the site publishes content. For writers, journalists, marketers, and companies running a news or insights hub, that clarity is the whole point of buying it. It is an open [generic top-level domain](/en/glossary/gtld/) (gTLD) operated by the company behind WordPress, which gives it unusual credibility in the publishing world.

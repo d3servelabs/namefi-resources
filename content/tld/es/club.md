@@ -24,6 +24,24 @@ keywords:
   - blockchain domains
   - dominios tokenizados
   - Namefi
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .club?**

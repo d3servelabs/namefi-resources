@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 深入解析 .accenture 顶级域名：这是一个专属的品牌 TLD，代表了企业数字身份的新高度。了解其背后的品牌战略以及如何在 Namefi 开启您的域名投资之旅。
 keywords: ['.accenture domains', '.accenture TLD', 'top-level domain', 'what is .accenture', 'why choose .accenture', 'what is the .accenture domain', 'why choose the .accenture domain', 'domain investing', 'blockchain', 'tokenized domain', 'brand TLD', 'corporate identity', 'Web3 domains', 'Namefi', 'digital assets']
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .accenture？**

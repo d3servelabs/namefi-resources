@@ -12,6 +12,24 @@ format: explainer
 description: '域名的被动销售与主动销售：各自的适用场景、付出与回报的权衡，以及如何同时运营两条线而不被当成垃圾邮件发送者。'
 ogImage: ../../assets/inbound-vs-outbound-domain-sales-og.jpg
 keywords: ['被动销售 vs 主动销售 域名', '域名被动销售', '域名主动销售', '域名销售开发', '冷外联 域名', '向终端用户卖域名', '域名着陆页', '域名市场挂单', '域名售出率', '如何卖域名', '域名转卖', '域名二级市场', '终端用户买家', '域名主动销售策略', '域名被动销售策略']
+relatedArticles:
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/marketing-your-domains-for-sale/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 域名的成交只有两种方式：要么买家找到你，要么你找到买家。这就是全部路径。被动销售（Inbound），是买家在浏览器里直接输入你的域名，看到在售页面，然后主动联系；主动销售（Outbound），是你发现哪家公司显然需要你手里这个名字，然后主动写信过去。定价方式、市场选择、托管结算——所有其他销售环节，都在你确定自己在打哪场仗之后才有意义。

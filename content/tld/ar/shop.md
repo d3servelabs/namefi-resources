@@ -18,6 +18,24 @@ faqs:
     answer: 'أيوه. كلمة "shop" مفهومة في كل مكان في العالم وبتوصل فوراً نية التسوق، وده السبب اللي خلى علامات زي Netflix و MrBeast تشغل متاجر منتجاتهم عليه. الفضاء الواسع من الأسماء الجديدة بيخلي الأسماء القصيرة والمطابقة لكلمات التجزئة أسهل في التسجيل.'
   - question: 'هل .shop بيدعم خصوصية WHOIS و DNSSEC؟'
     answer: 'أيوه. .shop بيدعم DNSSEC على مستوى السجل، ومعظم المسجلين بيقدموا خصوصية WHOIS مجانية تخفي بيانات الاتصال الشخصية في السجلات العامة. توفر الخصوصية بيعتمد على المسجل اللي اخترته مش على السجل نفسه.'
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/ai-vs-io-domain/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 دومين **.shop** هو واحد من أكثر الامتدادات وضوحاً على الإنترنت: اللاحقة نفسها هي دعوة للتصرف. بينما الأسماء العامة بتخلي الزوار يخمنوا، أي اسم بيخلص بـ `.shop` بيقولهم قبل ما يضغطوا إن المكان ده للتصفح والشراء. الوضوح ده هو السبب اللي خلى تجار التجزئة والعلامات التجارية المباشرة للمستهلك والمبدعين يتبنوه كعنوان مخصص للبيع أونلاين.

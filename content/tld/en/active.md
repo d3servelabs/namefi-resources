@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Unlock the power of movement with the .active TLD. Perfect for fitness brands, lifestyle apps, and energetic startups. Learn more about .active domains here.'
 keywords: ['.active domains', '.active TLD', 'top-level domain', 'what is .active', 'why choose .active', 'what is the .active domain', 'why choose the .active domain', 'buy .active domain', 'fitness domain names', 'lifestyle TLD', 'domain investing', 'blockchain domains', 'tokenized domain', 'sports branding', 'Namefi']
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .active?**

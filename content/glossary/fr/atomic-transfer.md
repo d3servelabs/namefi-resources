@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce qu'un transfert atomique et comment assure-t-il la sécurité des transactions de domaine ?
 keywords: ["transfert atomique","transaction blockchain","tout ou rien","échange sécurisé","contrat intelligent"]
+relatedArticles:
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/selling-domains-as-nfts/
+  - /fr/blog/domain-escrow-explained/
+  - /fr/blog/how-tokenized-marketplaces-replace-escrow/
+  - /fr/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/tokenize-your-com/
+relatedGlossary:
+  - /fr/glossary/tokenized-domain/
+  - /fr/glossary/registrar/
+  - /fr/glossary/tokenize/
+  - /fr/glossary/blockchain/
+  - /fr/glossary/web3/
 ---
 
 

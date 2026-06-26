@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是 NFT 市场，它们如何促进域名交易？
 keywords: ["市场","OpenSea","Blur","NFT 交易","域名市场","二级市场"]
+relatedArticles:
+  - /zh/blog/onchain-domain-marketplaces-compared/
+  - /zh/blog/how-tokenized-marketplaces-replace-escrow/
+  - /zh/blog/where-to-sell-domains-marketplaces-compared/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/marketplace-seo-for-domain-listings/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/web3/
+  - /zh/glossary/tokenized-domain/
+  - /zh/glossary/smart-contract/
+  - /zh/glossary/domain-liquidity/
+  - /zh/glossary/escrow/
 ---
 
 OpenSea 和 Blur 等**市场**是用户可以购买、出售和交易 [NFT](/zh/glossary/nft/)（包括代币化域名）的平台。这些平台提供用户友好的界面，用于发现资产、提出报价和完成交易，同时连接用户的 [钱包](/zh/glossary/wallet/)。Sedo 或 Afternic 等传统域名市场需要中心化的 [托管](/zh/glossary/escrow/) 和手动转移过程，而 NFT 市场通过 [智能合约](/zh/glossary/smart-contract/) 实现即时、无需信任的交易。当域名被代币化为 NFT 时，它们可以访问整个 NFT 生态系统，受益于改进的[流动性](/zh/glossary/domain-liquidity/)、透明的价格历史记录以及与服务全球数百万用户的更广泛的 [Web3](/zh/glossary/web3/) 基础设施的集成。

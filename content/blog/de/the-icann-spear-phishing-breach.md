@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Ende 2014 gab ICANN – die Organisation, die das Domain-Name-System des Internets koordiniert – zu, dass eine Spear-Phishing-E-Mail, die die eigene Domain vortäuschte, Zugangsdaten von Mitarbeitern abgegriffen und Angreifern administrativen Zugriff auf das Centralized Zone Data System verschafft hatte. Eine tiefgehende Domain-Mayday-Analyse, wie die DNS-Autorität selbst Opfer eines Phishing-Angriffs wurde, was offengelegt wurde und warum das noch immer relevant ist.'
 keywords: ['icann breach', 'icann spear phishing', 'czds', 'centralized zone data system', 'dns-sicherheit', 'domain-sicherheit', 'spear-phishing-angriff', 'credential phishing', 'zonendateien', 'iana', 'salted password hashes', 'domain name system einbruch', 'icann 2014 hack']
+relatedArticles:
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-myetherwallet-bgp-dns-attack/
+  - /de/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /de/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
 ---
 
 Es gibt eine ganz besondere Art von Schlagzeile, die die gesamte Sicherheitsbranche innehalten lässt. Nicht „wieder ein Einzelhändler gehackt", nicht „wieder ein Startup mit undichter Datenbank" — sondern der Tag, an dem die Institution, der alle anderen vertrauen, zugibt, dass sie auf die denkbar gewöhnlichste Weise gehackt wurde.

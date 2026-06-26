@@ -12,6 +12,24 @@ format: guide
 description: "Warum der Listing-Modus und die erste Zahl über deinen Domain-Verkauf entscheiden: Ankereffekt, niemals den Preis zuerst nennen, schrittweises Nachgeben und Sofortkauf vs. Preisverhandlung."
 ogImage: ../../assets/domain-pricing-psychology-buy-now-vs-make-offer-og.jpg
 keywords: ['Preispsychologie bei Domains', 'Sofortkauf vs. Preisverhandlung', 'Ankereffekt bei Domains', 'wie man eine Domain bepreist', 'Preisverhandlung für Domains', 'Make Offer Domain', 'Buy It Now Domain', 'schrittweises Preisnachgeben bei Domains', 'Domain-Listing-Format', 'wer nennt den Preis zuerst', 'Verhandlungstaktiken für Domains', 'Charm-Pricing bei Domains', 'Endnutzer-Domainpreis', 'Verkaufspsychologie bei Domains']
+relatedArticles:
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/working-with-domain-brokers/
+  - /de/blog/inbound-vs-outbound-domain-sales/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
 ---
 
 Die Zahl in deinem Listing leistet mehr Arbeit, als du denkst. Zwei Flipper können denselben Namen besitzen, ihn auf demselben Marktplatz einstellen und mit Preisen davongehen, die sich um eine Größenordnung unterscheiden – nicht, weil der eine härter verhandelt hat, sondern weil der eine verstanden hat, dass die *Art*, wie ein Preis präsentiert wird, beeinflusst, was ein Käufer zu zahlen bereit ist. Eine Domain zu bepreisen ist zum Teil Arithmetik, größtenteils aber Psychologie.

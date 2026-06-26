@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.fincen.gov/resources/statutes-regulations/guidance
   - https://www.investopedia.com/terms/a/aml.asp
+relatedArticles:
+  - /de/blog/from-mona-co-to-crypto-com/
+  - /de/blog/what-are-stablecoins/
+  - /de/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /de/blog/choosing-a-domain-tokenization-platform/
+  - /de/blog/the-manifesto-of-digital-trust/
+relatedTopics:
+  - /de/topics/web3-foundations/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/kyc/
+  - /de/glossary/stablecoin/
+  - /de/glossary/icann/
+  - /de/glossary/smart-contract/
+  - /de/glossary/web3/
 ---
 
 **AML** (*Anti-Money-Laundering*, Geldwäschebekämpfung) umfasst die laufende Transaktionsüberwachung und Meldepflicht, die regulierte Finanz- und Kryptodienste einsetzen, um illegale Gelder zu erkennen und zu verhindern – dabei werden Aktivitäten gegen Sanktionslisten abgeglichen und ungewöhnliche Muster an Behörden wie FinCEN in den USA gemeldet. Während [KYC](/de/glossary/kyc/) beim Onboarding überprüft, wer ein Nutzer ist, beobachtet AML, was dieser anschließend tut. Im Kryptobereich können regulierte [Stablecoin](/de/glossary/stablecoin/)-Emittenten und Verwahrungsdienste [Custodial-Ownership](/de/glossary/custodial-ownership/)-Konten einfrieren oder auf eine Schwarzliste setzen, die diese Compliance-Prüfungen nicht bestehen, während nicht-verwahrende Protokolle im Allgemeinen keine Partei haben, die dies durchsetzen kann.

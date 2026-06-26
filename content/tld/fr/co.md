@@ -16,6 +16,24 @@ faqs:
     answer: "Les startups, les entreprises et les fondateurs dont le .com idéal est pris ou trop coûteux. La chaîne « co » se lit naturellement comme « company », « corporation » ou « Colorado », ce qui en fait un second choix net et brandable pour les projets mondiaux."
   - question: 'Le .co est-il identique au .com ?'
     answer: "Non. Ce sont des TLD distincts gérés par des opérateurs différents. Le risque est que les visiteurs qui saisissent votre adresse de mémoire ajoutent le « m » final et atterrissent sur le .com à la place, de sorte que les suffixes peuvent être confondus à l'oral et dans le trafic saisi."
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/how-tld-affects-domain-value/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Le domaine **.co** est l'un des exemples les plus réussis d'une extension nationale qui s'est affranchie de ses frontières. Officiellement le ccTLD de la **Colombie**, il a été commercialisé et adopté dans le monde entier comme un substitut court et brandable à « .com » — où « co » se lit instantanément comme **company**, **corporation**, ou simplement comme un « .com » raccourci. Pour les fondateurs qui trouvent leur **.com** de rêve déjà pris, le **.co** est souvent le premier endroit où ils cherchent.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Instagram 如何在 2010 年借助域名创意"instagr.am"——利用亚美尼亚的 .am 国家顶级域名拼出自己的品牌名——随后花费 10 万美元迁移到 Instagram.com，以及这个聪明的 ccTLD 技巧给创业者带来的经验教训。'
 keywords: ['instagr.am', 'instagram.com', 'Instagram 域名', '域名创意', 'ccTLD 域名技巧', '.am 亚美尼亚域名', 'kevin systrom', 'mike krieger', '域名升级', '创业命名', '品牌命名', '优质域名', '域名策略', 'Instagram 历史']
+relatedArticles:
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-discordapp-com-to-discord-com/
+  - /zh/blog/from-mona-co-to-crypto-com/
+  - /zh/blog/from-slackhq-com-to-slack-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
 ---
 
 在 Instagram 成为拥有十亿用户的平台、成为"拍照"的代名词、成为 Facebook 有史以来最具价值的收购之一之前，它有一个同时也是一件巧妙工程作品的名字：**instagr.am**。

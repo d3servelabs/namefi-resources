@@ -12,6 +12,24 @@ format: explainer
 description: "Ce qu'est un domain hack, pourquoi les marques et les revendeurs convoitent ces noms courts et astucieux, les risques liés aux ccTLD qui se cachent derrière, et comment en estimer la valeur."
 ogImage: ../../assets/domain-hacks-explained-og.jpg
 keywords: ['domain hack', 'domain hacks', 'qu''est-ce qu''un domain hack', 'noms de domaine astucieux', 'del.icio.us', 'domaine bit.ly', 'domain hack ccTLD', 'noms de domaine courts', 'domaines de marque', 'exemples de domain hack', 'youtu.be', 'instagr.am', 'goo.gl', 'saisie vb.ly']
+relatedArticles:
+  - /fr/blog/how-tld-affects-domain-value/
+  - /fr/blog/what-makes-a-domain-valuable/
+  - /fr/blog/from-del-icio-us-to-delicious-com/
+  - /fr/blog/how-to-value-a-domain-name/
+  - /fr/blog/domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Il existe un type d'adresse web qu'on ne lit pas vraiment : on la *décode*. On voit les lettres, on voit les points, puis toute la chaîne se recompose d'un coup en un seul mot qui court tout droit par-dessus la ponctuation. La plus célèbre jamais créée fut `del.icio.us`. Lisez-la lentement et elle se désagrège en morceaux ; lisez-la d'un trait et elle dit simplement « delicious » (« délicieux »).

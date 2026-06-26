@@ -9,6 +9,24 @@ keywords: ['टाइपोस्क्वैटिंग', 'टाइपो ड
 level: 1
 sources:
   - https://www.cloudflare.com/learning/ssl/what-is-typosquatting/
+relatedArticles:
+  - /hi/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/what-is-udrp/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/cybersquatting/
+  - /hi/glossary/dns/
+  - /hi/glossary/phishing/
+  - /hi/glossary/registrar/
+  - /hi/glossary/trademark/
 ---
 
 **टाइपोस्क्वैटिंग** (Typosquatting, जिसे URL हाइजैकिंग भी कहते हैं) [साइबरस्क्वैटिंग](/hi/glossary/cybersquatting/) का एक विशिष्ट रूप है जिसमें कोई पंजीयक किसी उच्च-ट्रैफ़िक डोमेन की सामान्य गलत वर्तनियाँ, स्थानांतरण, या लगभग-समरूप वर्णों को पंजीकृत करता है — उदाहरण के लिए, एक अक्षर बदलकर, एक हाइफन जोड़कर, या किसी वर्ण को दिखने में समान वर्ण से बदलकर — ताकि उन उपयोगकर्ताओं के [टाइप-इन ट्रैफ़िक](/hi/glossary/type-in-traffic/) को पकड़ा जा सके जो इच्छित पते को गलत टाइप करते हैं। पकड़े गए विज़िटरों को फिर pay-per-click विज्ञापनों के माध्यम से मुद्रीकृत किया जाता है, किसी प्रतिस्पर्धी सेवा पर पुनर्निर्देशित किया जाता है, या क्रेडेंशियल एकत्र करने के लिए डिज़ाइन किए गए [फ़िशिंग](/hi/glossary/phishing/) पृष्ठ पर निर्देशित किया जाता है। ट्रेडमार्क वाले ब्रांड नामों की अधिकांश टाइपोस्क्वैटिंग [UDRP](/hi/glossary/udrp/) या अमेरिकी [ACPA](/hi/glossary/acpa/) के तहत कार्रवाई योग्य है, जो दोनों भ्रामक रूप से समान पंजीकरणों को कवर करते हैं। किसी टाइपोस्क्वैटेड डोमेन को टोकनाइज़ करने से उसका कानूनी जोखिम नहीं बदलता; ऑन-चेन डोमेन सेवाएं वास्तविक DNS पंजीकरणों पर निर्मित हैं, जो मानक विवाद तंत्रों के अधीन रहती हैं। चतुर ब्रांड मालिक रक्षात्मक रूप से अपनी सामान्य टाइपो को पंजीकृत करते हैं और उन्हें कैनोनिकल डोमेन पर इंगित करते हैं।

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'सितंबर 2021 में, Bitcoin.org — छद्म नाम से चलाए जाने वाले Cobra के नेतृत्व में Bitcoin का दीर्घकालिक सूचनात्मक घर — DNS स्तर पर हाईजैक किया गया और एक नकली "अपना Bitcoin दोगुना करें" गिवअवे में बदल दिया गया, जिससे साइट ऑफलाइन होने से पहले धोखेबाजों ने लगभग $17,000 कमाए। एक Domain Mayday गहन विश्लेषण: क्या हुआ, कैसे हुआ, और यह DNS पर निर्भर क्रिप्टो-नेटिव साइटों के बारे में क्या सिखाता है।'
 keywords: ['bitcoin.org', 'bitcoin.org hack', 'dns hijack', 'domain hijacking', 'double your bitcoin scam', 'crypto giveaway scam', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'dns security', 'domain security', 'nameserver hijack', 'whois change attack']
+relatedArticles:
+  - /hi/blog/the-curve-finance-dns-hijack/
+  - /hi/blog/the-lenovo-com-dns-hijack/
+  - /hi/blog/the-myetherwallet-bgp-dns-attack/
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/dns/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/registry/
 ---
 
 एक दशक से भी अधिक समय से, यदि आप "Bitcoin क्या है और इसे सुरक्षित तरीके से कैसे उपयोग करें" का स्पष्ट, तटस्थ उत्तर चाहते थे, तो इंटरनेट आपको एक पते पर भेजता था: **Bitcoin.org**।

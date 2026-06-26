@@ -24,6 +24,24 @@ keywords:
   - 'corporate domain strategy'
   - 'buy professional domains'
   - 'Namefi domain registration'
+relatedArticles:
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 ## **.accenture क्या है?**

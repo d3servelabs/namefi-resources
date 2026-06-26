@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في ديسمبر 2021، اخترق المهاجمون حساب Cloudflare الخاص بـ BadgerDAO وحقنوا سكريبتًا خبيثًا في واجهة الموقع الأمامية. العقود الذكية المُدققة لم تُمسّ — لكن ~120 مليون دولار خرجت من الباب عبر موافقات المحافظ التي وقّعها المستخدمون دون أن يعلموا. تحليل معمّق لماذا الموقع الإلكتروني جزء من نطاق أمانك.'
 keywords: ['اختراق badgerdao', 'هجوم الواجهة الأمامية لـ badgerdao', 'اختراق مفتاح api في cloudflare', 'هجوم السكريبت المُدرج', 'أمان الواجهة الأمامية لـ web3', 'تصيد الجليد', 'هجوم increaseAllowance', 'استغلال موافقة التوكن', 'أمان dns والدومين', 'استغلال cloudflare workers', 'أمان defi', 'هجوم سلسلة التوريد لـ web3', 'تلاعب الموقع', 'أمان الدومين']
+relatedArticles:
+  - /ar/blog/the-curve-finance-dns-hijack/
+  - /ar/blog/the-sushiswap-miso-insider-attack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /ar/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/web3/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
 ---
 
 كان التدقيق نظيفًا. العقود كانت سليمة. والفلوس راحت على أي حال.

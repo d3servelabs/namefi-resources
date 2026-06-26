@@ -12,6 +12,24 @@ format: guide
 description: "إزاي تبني صفحة هبوط ''معروض للبيع'' بتحوّل الزائر لمشتري: سعر واضح أو طريق واضح لتقديم عرض، إشارات ثقة حقيقية، وطريقة سلسة للشراء أو تقديم عرض."
 ogImage: ../../assets/domain-for-sale-landing-pages-og.jpg
 keywords: ['صفحة هبوط نطاق معروض للبيع', 'صفحة نطاق معروض للبيع', 'بيع نطاق', 'صفحة هبوط النطاق', 'صفحة معروض للبيع', 'صفحة مبيعات النطاق', 'اشتري الآن نطاق', 'قدّم عرض على نطاق', 'صفحة ركن النطاق', 'سعر النطاق', 'صفحة هبوط نطاق بتحوّل الزائر', 'إزاي تبيع نطاق', 'ضمان النطاق', 'معدل تحويل النطاق', 'إشارات ثقة النطاق']
+relatedArticles:
+  - /ar/blog/marketing-your-domains-for-sale/
+  - /ar/blog/domain-parking-and-monetization/
+  - /ar/blog/how-to-sell-domains-for-profit/
+  - /ar/blog/working-with-domain-brokers/
+  - /ar/blog/marketplace-seo-for-domain-listings/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 المشتري اللي عايز اسمك نادراً ما بييجي من خلال التسويق بتاعك. هو بيكتب الاسم في المتصفح علشان يشوف إذا كان متاخد ولا لأ، النطاق بيتحلّ، وصفحة بتفتح. أي حاجة مكتوبة في الصفحة دي هي العرض بتاعك كله. لو الصفحة دي هي الصفحة الافتراضية بتاعة [المُسجِّل](/ar/glossary/registrar/)، أو صفحة ركن محشورة بالإعلانات، أو ولا حاجة خالص، يبقى انت لسه ضيّعت الزائر الوحيد اللي كان مقتنع أصلاً إن الاسم مهم. صفحة الهبوط ''معروض للبيع'' هي الواجهة على أثمن زيارة هتوصلك في حياتك: ناس لقوك لمّا كتبوا بالظبط الحاجة اللي بتبيعها.

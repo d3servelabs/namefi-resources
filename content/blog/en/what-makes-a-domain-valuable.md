@@ -12,6 +12,24 @@ format: explainer
 description: "Why one string of letters is worth thousands and a near-identical one is worth nothing: length, real words, the .com premium, intent, and brandability."
 ogImage: ../../assets/what-makes-a-domain-valuable-og.jpg
 keywords: ['what makes a domain valuable', 'domain value factors', 'what makes a good domain name', 'domain name value', 'why are domains expensive', 'short domain names', 'keyword domains', 'brandable domains', 'com premium', 'domain extension value', 'commercial intent domains', 'memorable domain names', 'domain investing fundamentals', 'how domains are valued', 'premium domain names']
+relatedArticles:
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/domain-flipping/
+  - /en/blog/how-tld-affects-domain-value/
+  - /en/blog/how-to-read-comparable-domain-sales/
+  - /en/blog/brandable-vs-keyword-domains/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Two domains can be one letter apart and a thousand times apart in price. `cars.com` is a household asset; `carz.net` is a renewal bill. Same length, same rough idea, wildly different worth. Once you can explain *why*, most of domain investing stops feeling like luck and starts feeling like reading a market.

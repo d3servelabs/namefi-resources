@@ -12,6 +12,24 @@ format: guide
 description: "How selling a domain as an NFT works: listing mechanics, Seaport and OpenSea, buyer-restricted private sales, royalties, and gas and scam traps."
 ogImage: ../../assets/selling-domains-as-nfts-og.jpg
 keywords: ['sell domain as NFT', 'domain NFT', 'tokenized domain sale', 'onchain domain liquidity', 'list domain NFT OpenSea', 'Seaport protocol', 'buyer restricted listing', 'private NFT listing', 'NFT royalties domains', 'ERC-721 domain', 'atomic transfer domain', 'sell tokenized domain', 'gas fees NFT sale', 'NFT domain scams', 'domain flipping onchain']
+relatedArticles:
+  - /en/blog/onchain-domain-marketplaces-compared/
+  - /en/blog/onchain-domain-flipping/
+  - /en/blog/tokenize-your-com-to-flip-it/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
+  - /en/glossary/tld/
 ---
 
 A traditional domain sale has a trust problem baked into it. The seller doesn't want to push the transfer before the money lands; the buyer doesn't want to wire funds before the name shows up in their account. The whole [escrow](/en/glossary/escrow/) industry exists to stand between those two reflexes. Selling a domain as an [NFT](/en/glossary/nft/) rearranges that standoff. When ownership of a real ICANN domain is also an [on-chain](/en/glossary/on-chain/) token, the name becomes a thing you can list, price, and hand over inside the same transaction that moves the money — no middleman holding the asset in the dark hours between payment and transfer.

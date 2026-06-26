@@ -12,6 +12,24 @@ format: explainer
 description: "إمتى الوسيط بيستاهل نسبته فعلاً، وإيه اللي الوسيط الكويس بيعمله بالظبط، والفرق بين السمسرة الواردة والصادرة، والعمولات المعتادة، وإزاي تتأكد منه قبل ما تتعامل معاه."
 ogImage: ../../assets/working-with-domain-brokers-og.jpg
 keywords: ['وسيط النطاقات', 'سمسرة النطاقات', 'إزاي تشتغل مع وسيط نطاقات', 'عمولة وسيط النطاقات', 'بيع نطاق عن طريق وسيط', 'وسيط جهة الشراء للنطاقات', 'وسيط جهة البيع للنطاقات', 'وسيط النطاقات الوارد', 'وسيط النطاقات الصادر', 'إمتى تستخدم وسيط نطاقات', 'تتأكد من وسيط النطاقات', 'رسوم وسيط النطاقات', 'أحسن وسطاء النطاقات', 'وسيط شراء النطاقات', 'تعيين وسيط نطاقات']
+relatedArticles:
+  - /ar/blog/how-to-sell-domains-for-profit/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/inbound-vs-outbound-domain-sales/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 معظم الأسماء اللي بتعمل عليها flip، المفروض تبيعها بنفسك. تعرضها، تحط لها سعر، ترد على اللي بيتواصل معاك، وتقفل الصفقة عن طريق الضمان. الوسيط على اسم بـ400 دولار مجرد غريب بياخد نسبة من فلوس كنت ممكن تحتفظ بيها. لكن فيه فئة من الصفقات الوسيط فيها بيبقى مش عبء، بل الفرق بين إن الصفقة تتم ولا تقف في نص الطريق، ومعرفة فين الفئة دي بتبدأ هي مهارة قائمة بذاتها. ده فصل الوسطاء في سلسلتنا عن [تقليب النطاقات](/ar/blog/domain-flipping/)، وهو بيقع مستوى واحد تحت ركيزة البيع، [إزاي تبيع النطاقات وتكسب منها](/ar/blog/how-to-sell-domains-for-profit/). هنا هنغطي إمتى تسلّم اسم لوسيط، وإيه اللي الوسيط الكويس بيعمله فعلاً، والفرق بين سمسرة جهة البيع وجهة الشراء، والعمولات بتبقى عاملة إزاي، وإزاي تفرّق بين وسيط حقيقي وحد بس عايز يحط إيده على القائمة بتاعتك.

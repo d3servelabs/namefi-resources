@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'كيف أسّس إيلون ماسك X.com سنة 1999، وخسره حين استولى PayPal على اسمه القديم، واسترده سنة 2017 لقيمته العاطفية، وفي النهاية نقل عليه شبكة تواصل اجتماعي بـ44 مليار دولار — فأصبح Twitter.com يُعيد التوجيه إلى X.com.'
 keywords: ['twitter.com', 'x.com', 'إعادة تسمية تويتر إلى x', 'إيلون ماسك x.com', 'تاريخ x.com', 'نطاق paypal x.com', 'تغيير اسم تويتر إلى x', 'إعادة توجيه النطاق', 'ترقية النطاق', 'نطاق بحرف واحد', 'تطبيق كل شيء', 'تسمية العلامة التجارية', 'نطاق مميز']
+relatedArticles:
+  - /ar/blog/from-mona-co-to-crypto-com/
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-ctrip-com-to-trip-com/
+  - /ar/blog/from-snapchat-com-to-snap-com/
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 معظم قصص ترقية النطاقات بتسير في خط مستقيم: شركة بتبدأ باسم وصفي، بتكبر، وبتشتري النطاق الدقيق المطابق. **Twitter.com إلى X.com** أغرب من كده. دي رحلة ذهاب وإياب. النطاق المقصود — **X.com** — كان هو *الأول* في القصة، إيلون ماسك سجّله سنة 1999، وخسره لـPayPal بعد سنة، واشتراه تاني بعد عشرين سنة بدافع من النوستالجيا بس، وفي الآخر ربطه بشبكة تواصل اجتماعي عالمية سنة 2023.

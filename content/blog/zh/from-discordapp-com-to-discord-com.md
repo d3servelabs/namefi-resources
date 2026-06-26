@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Discord 于 2015 年在 DiscordApp.com 上线，原因是 Discord.com 已被他人注册。多年后，公司悄然买下这个裸词域名，并于 2020 年将 discord.com 设为主站——一方面是为了品牌整洁，另一方面也是因为"discordapp.com"与"discord.com"并存的局面为钓鱼者和恶意软件团伙提供了可乘之机。'
 keywords: ['discordapp.com', 'discord.com', 'Discord 域名', '域名升级', 'Jason Citron', 'Discord 历史', 'cdn.discordapp.com', 'Discord 钓鱼', '初创公司命名', '品牌命名', '优质域名', '域名策略', '域名迁移']
+relatedArticles:
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-slackhq-com-to-slack-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+  - /zh/blog/from-box-net-to-box-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 在 Discord 成为一个动词（"上服务器"）之前，它曾住在一个略长的地址上：**DiscordApp.com**。

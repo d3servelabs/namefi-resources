@@ -12,6 +12,24 @@ format: guide
 description: "La guía completa para vender dominios: tráfico entrante frente a saliente, formato de precio, dónde publicar, cuándo recurrir a un bróker y cómo cerrar la venta de forma segura."
 ogImage: ../../assets/how-to-sell-domains-for-profit-og.jpg
 keywords: ['cómo vender dominios con ganancia', 'vender un nombre de dominio', 'guía para vender dominios', 'ventas de dominios entrantes frente a salientes', 'fijación de precios de dominios', 'dónde vender dominios', 'mercados de dominios', 'bróker de dominios', 'depósito en garantía de dominios', 'compra inmediata frente a hacer oferta', 'vender dominios en línea', 'mercado secundario de dominios', 'cerrar una venta de dominio', 'prospección de ventas de dominios', 'revender un dominio']
+relatedArticles:
+  - /es/blog/inbound-vs-outbound-domain-sales/
+  - /es/blog/domain-flipping/
+  - /es/blog/working-with-domain-brokers/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Un dominio que no puedes vender no es más que una factura de renovación con un nombre ingenioso encima. Comprar bien y tasar con honestidad son destrezas previas; esta es la que de verdad hace que el dinero llegue. La mayor parte de la ganancia al revender dominios se gana o se pierde en la etapa de venta, porque un nombre mediocre bien vendido le gana a un gran nombre que nadie encuentra. Este es el pilar de venta de nuestra guía sobre el [flipping de dominios](/es/blog/domain-flipping/): el arco completo que va de "soy dueño de este nombre" a "los fondos ya están acreditados". Veremos las dos vías por las que los compradores te encuentran, cómo elegir un formato de precio, dónde publicar, cuándo un bróker se gana su comisión y cómo cerrar sin que te estafen. Para una lista de verificación paso a paso de una venta concreta, combina esto con [cómo vender un nombre de dominio que posees](/es/blog/how-to-sell-a-domain-name-you-own/).

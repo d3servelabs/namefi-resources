@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'वर्ष 2014 के अंत में, ICANN — वह संस्था जो इंटरनेट डोमेन नाम प्रणाली का समन्वय करती है — ने स्वीकार किया कि उसके अपने डोमेन की नकल करके भेजे गए एक स्पियर-फिशिंग ईमेल ने स्टाफ की साख चुरा ली और हमलावरों को सेंट्रलाइज्ड ज़ोन डेटा सिस्टम तक प्रशासनिक पहुँच दे दी। Domain Mayday की यह गहरी पड़ताल बताती है कि DNS प्राधिकरण को कैसे फिश किया गया, क्या उजागर हुआ, और यह अभी भी क्यों महत्वपूर्ण है।'
 keywords: ['icann breach', 'icann spear phishing', 'czds', 'centralized zone data system', 'dns security', 'domain security', 'spear phishing attack', 'credential phishing', 'zone files', 'iana', 'salted password hashes', 'domain name system breach', 'icann 2014 hack']
+relatedArticles:
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-myetherwallet-bgp-dns-attack/
+  - /hi/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /hi/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/registry/
 ---
 
 एक विशेष प्रकार की सुर्खी होती है जो पूरे सुरक्षा उद्योग को ठिठका देती है। न "एक और रिटेलर का डेटा चोरी," न "एक और स्टार्टअप का डेटाबेस लीक" — बल्कि वह दिन जब वह संस्था, जिस पर बाकी सब *भरोसा* करते हैं, यह स्वीकार करती है कि उसे सबसे सामान्य तरीके से हैक किया गया।

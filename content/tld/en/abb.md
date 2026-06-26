@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Explore the .abb TLD, a domain extension synonymous with technological leadership. Learn about its origins, usage, and value for domain investors.'
 keywords: ['.abb domains', 'TLD', 'top-level domain', 'what is .abb', 'why choose .abb', 'what is the .abb domain', 'why choose the .abb domain', 'domain investing .abb', 'blockchain domains', 'tokenized domain', 'industrial domains', 'brand TLD', 'Web3 domains', 'Namefi']
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/premium-web3-tlds/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
+  - /en/glossary/web3/
 ---
 
 ## **What is .abb?**

@@ -9,6 +9,24 @@ keywords: ['período de gracia', 'período de gracia de renovación automática'
 level: 1
 sources:
   - https://www.icann.org/resources/pages/errp-2013-02-28-en
+relatedArticles:
+  - /es/blog/expired-domains-and-the-drop-cycle/
+  - /es/blog/domain-backorders-and-drop-catching/
+  - /es/blog/when-to-drop-a-domain/
+  - /es/blog/hand-registering-domains-to-flip/
+  - /es/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
+  - /es/glossary/redemption-period/
+  - /es/glossary/registrant/
 ---
 
 El **período de gracia** es la ventana corta — a menudo unos 30–45 días, establecida por cada [TLD](/es/glossary/tld/) — inmediatamente después de que un dominio [expira](/es/glossary/domain-expiration/), durante la cual el [registrante](/es/glossary/registrant/) aún puede [renovarlo](/es/glossary/domain-renewal/) al precio ordinario, sin penalización. Es la primera y más económica de las redes de seguridad posteriores a la expiración; si se pierde, el nombre cae en el mucho más costoso [período de redención](/es/glossary/redemption-period/). La duración exacta y si el sitio permanece activo durante la gracia varían según el [registrador](/es/glossary/registrar/) y el registro, por lo que nunca deben confiarse como estrategia de renovación. El período de gracia rige solo el registro subyacente — es independiente de cualquier capa de propiedad, incluido el registro en una [billetera](/es/glossary/wallet/) tokenizada, que se encuentre sobre el nombre. *Fuente(s): Política de Recuperación de Registros Expirados de ICANN.*

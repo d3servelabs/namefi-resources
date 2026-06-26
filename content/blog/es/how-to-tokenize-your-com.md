@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Un recorrido práctico paso a paso para tokenizar un dominio que ya posees: elegibilidad, billeteras, tarifas, tiempo y qué esperar en cada pantalla. Escrito para propietarios, no para nerds de protocolos."
 keywords: ['cómo tokenizar un dominio', 'cómo tokenizar un .com', 'tokenizar mi dominio', 'tokenizar un dominio existente', 'tokenizar un dominio paso a paso', 'tutorial de tokenización de dominios', 'guía para tokenizar .com', 'tokenizar .xyz', 'tokenizar .io', 'tokenizar con namefi', 'cómo hacer un dominio NFT', 'transferir dominio a NFT', 'dominio a NFT', 'proceso de tokenización de dominios', 'configuración de dominio tokenizado', 'tokenizar dominio ICANN']
+relatedArticles:
+  - /es/blog/tokenize-your-com-to-flip-it/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/dns-on-tokenized-domains/
+  - /es/blog/how-tokenized-marketplaces-replace-escrow/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/tokenize-your-com/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Así que posees un dominio —tal vez `mybrand.com`, tal vez un portafolio de nombres `.xyz`— y has decidido que quieres **tokenizarlo**. Esta guía detalla lo que realmente sucede, pantalla por pantalla, para que puedas planificar el tiempo, el dinero y el acceso que necesitarás antes de empezar.

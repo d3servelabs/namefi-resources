@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: आंशिक स्वामित्व क्या है और यह मूल्यवान डोमेन पर कैसे लागू होता है?
 keywords: ["आंशिक स्वामित्व","साझा स्वामित्व","डोमेन फ्रैक्शनाइजेशन","पहुँच","टोकनाइजेशन"]
+relatedArticles:
+  - /hi/blog/tokenized-domain-use-cases-2026/
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/what-are-xstocks/
+  - /hi/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-security/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/revenue-sharing/
+  - /hi/glossary/premium-domain/
+  - /hi/glossary/web3/
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
 ---
 
 

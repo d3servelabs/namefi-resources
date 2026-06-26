@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "En août 2022, les smart contracts de Curve Finance étaient intacts — mais des attaquants ont détourné le domaine curve.fi au niveau du registrar, cloné le site et siphonné environ 570 000 $ aux utilisateurs. Une analyse approfondie de l'attaque DNS sur une interface DeFi, et ce qu'elle nous enseigne sur la sécurité des noms de domaine."
 keywords: ['détournement dns curve finance', 'hijack curve.fi', 'dns hijacking defi', 'compromission iwantmyname', 'compromission nameserver', 'wallet drainer', 'attaque front-end defi', 'sécurité des domaines', 'sécurité dns', 'phishing crypto', 'attaque site cloné', 'compromission compte registrar', 'domain mayday']
+relatedArticles:
+  - /fr/blog/the-badgerdao-frontend-attack/
+  - /fr/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /fr/blog/the-bitcoin-org-dns-hijack/
+  - /fr/blog/the-myetherwallet-bgp-dns-attack/
+  - /fr/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
+  - /fr/glossary/tld/
 ---
 
 Les smart contracts étaient intacts.

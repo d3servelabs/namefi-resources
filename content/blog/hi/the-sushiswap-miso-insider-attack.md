@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'सितंबर 2021 में एक अज्ञात ठेकेदार ने एक दुर्भावनापूर्ण कमिट के ज़रिए SushiSwap के MISO लॉन्चपैड फ्रंट-एंड में अपना वॉलेट पता डाल दिया, जिससे Jay Pegs Auto Mart नीलामी से 864.8 ETH (~$3M) डायवर्ट हो गए। Domain Mayday की गहन पड़ताल — कोड सप्लाई चेन, फ्रंट-एंड ट्रस्ट, और सत्यापन योग्य स्वामित्व के बारे में महत्वपूर्ण सबक।'
 keywords: ['sushiswap miso hack', 'miso supply chain attack', 'aristok3', 'jay pegs auto mart', 'defi front-end attack', '864.8 eth', 'software supply chain', 'malicious commit', 'insider threat', 'auctionwallet', 'joseph delong', 'web supply chain security', 'domain security']
+relatedArticles:
+  - /hi/blog/the-badgerdao-frontend-attack/
+  - /hi/blog/the-curve-finance-dns-hijack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /hi/blog/the-myetherwallet-bgp-dns-attack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
+  - /hi/glossary/tld/
 ---
 
 अधिकांश हमले दरवाज़ा तोड़कर घुसते हैं। यह हमला सामने के दरवाज़े से चला आया।

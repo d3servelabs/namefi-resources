@@ -12,6 +12,24 @@ format: analysis
 description: "Comment l''extension après le point fait bouger le prix d''un domaine : la prime du .com, le contexte des .io/.ai/.co, et le risque réglementaire et géopolitique propre aux ccTLD."
 ogImage: ../../assets/how-tld-affects-domain-value-og.jpg
 keywords: ['comment le tld influence la valeur d''un domaine', 'tld et valeur de domaine', 'prime du com', 'valeur .com vs ccTLD', 'est-ce que l''extension compte', 'valeur domaine io', 'valeur domaine ai', 'valeur domaine co', 'risque ccTLD', 'tarification des extensions de domaine', 'valeur tld flipping', 'meilleur tld pour la revente', 'comparaison des extensions de domaine', 'risque géopolitique ccTLD', 'choisir un tld']
+relatedArticles:
+  - /fr/blog/what-makes-a-domain-valuable/
+  - /fr/blog/domain-hacks-explained/
+  - /fr/blog/how-to-value-a-domain-name/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Prenez une bonne suite de lettres et fixez-en le prix sur trois extensions : vous obtenez trois chiffres différents, parfois à un ordre de grandeur d'écart. Le mot n'a pas changé. C'est la partie après le point qui a changé. Pour un flipper, l'extension n'est pas un détail que l'on ajoute à la fin d'une évaluation. C'est l'un des plus grands leviers à eux seuls sur ce que vaut un nom et sur la facilité avec laquelle il se vend.

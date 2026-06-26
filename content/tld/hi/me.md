@@ -16,6 +16,24 @@ faqs:
     answer: 'व्यक्ति जो एक व्यक्तिगत ब्रांड, पोर्टफोलियो, या रिज़्यूमे साइट बना रहे हैं, और कोई भी जो एक डोमेन हैक गढ़ रहा है जहाँ नाम "me" में समाप्त होने वाले एक वाक्यांश के रूप में पढ़ा जाता है — जैसे about.me या "call.me"। यह तुरंत अंग्रेज़ी सर्वनाम के रूप में पढ़ा जाता है, जो इसे गर्मजोशी भरा और व्यक्तिगत बनाता है।'
   - question: 'क्या .me एक व्यक्तिगत वेबसाइट के लिए एक अच्छा डोमेन है?'
     answer: 'हाँ। .me यकीनन सबसे व्यक्तिगत मुख्यधारा एक्सटेंशन है। क्योंकि "me" प्रथम-पुरुष सर्वनाम है, "yourname.me" या "hire.me" एक सीधे निमंत्रण जैसा महसूस होता है, यही कारण है कि यह पोर्टफोलियो, बायो, और व्यक्तिगत ब्रांडों के लिए एक पसंदीदा है।'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/domain-hacks-explained/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 **.me** डोमेन एक कंट्री-कोड एक्सटेंशन के सबसे स्पष्ट उदाहरणों में से एक है जिसे एक वैश्विक ब्रांड के रूप में एक दूसरा जीवन मिला। आधिकारिक रूप से **मोंटेनेग्रो** के लिए ccTLD, इसे विश्वभर में इंटरनेट के सबसे **व्यक्तिगत** एक्सटेंशन के रूप में प्रचारित और अपनाया गया है — क्योंकि "me" अंग्रेज़ी प्रथम-पुरुष सर्वनाम है, "yourname.me" तुरंत *आप* के रूप में पढ़ा जाता है। एक पोर्टफोलियो, एक रिज़्यूमे साइट, या एक बायो पेज बना रहे व्यक्तियों के लिए — और किसी भी ऐसे व्यक्ति के लिए जो "me" के साथ पूरा होने वाला एक चतुर **[डोमेन हैक](/hi/glossary/domain-hack/)** गढ़ रहा है — यह अक्सर पहली जगह होती है जहाँ वे देखते हैं।

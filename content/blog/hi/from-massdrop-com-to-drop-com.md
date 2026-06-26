@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'कैसे Massdrop ने सात साल तक एक उत्साही ग्रुप-बाय कम्युनिटी बनाई, फिर 2019 में Drop के रूप में रीब्रांड किया — रीनेम से पहले ही प्रीमियम Drop.com डोमेन (जिसकी कभी $800,000 की मांगी कीमत थी) चुपचाप हासिल की, और क्यों "Mass" हटाना जरूरी था।'
 keywords: ['massdrop.com', 'drop.com', 'drop domain name', 'massdrop rebrand', 'domain upgrade', 'group buying', 'mechanical keyboards', 'audiophile community', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'exact match domain', 'community commerce']
+relatedArticles:
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-urbancompass-com-to-compass-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+  - /hi/blog/from-snapchat-com-to-snap-com/
+  - /hi/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 अपने पहले सात वर्षों तक, इंटरनेट की सबसे प्रिय उत्साही कम्युनिटीज में से एक उस पते पर रहती थी जो बताता था कि वह क्या करती है: **Massdrop.com**।

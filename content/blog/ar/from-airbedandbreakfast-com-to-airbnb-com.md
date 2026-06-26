@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'إزاي Airbnb انطلقت سنة 2008 باسم AirBed & Breakfast على AirBedAndBreakfast.com، وبعدين اختصرت لـ Airbnb.com في 2009 عشان تهرب من اسم المرتبة الهوائية الحرفي وتبقى علامة تجارية عالمية قادرة على التوسع.'
 keywords: ['airbedandbreakfast.com', 'airbnb.com', 'دومين airbnb', 'ريبراند airbnb', 'airbed and breakfast', 'ترقية دومين', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'دومين بريميوم', 'استراتيجية الدومين', 'تاريخ airbnb', 'y combinator airbnb', 'ريبراند الشركة']
+relatedArticles:
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-massdrop-com-to-drop-com/
+  - /ar/blog/from-ctrip-com-to-trip-com/
+  - /ar/blog/from-mrchewy-com-to-chewy-com/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 قبل ما Airbnb تبقى فعل في القاموس، وشركة مدرجة في البورصة، وجزء أساسي من طريقة السفر في العالم كله — كانت مجرد فكرة حرفية جداً: **AirBed & Breakfast**، ساكنة على **AirBedAndBreakfast.com**.

@@ -11,6 +11,24 @@ seriesOrder: 13
 format: case-study
 description: 'Between 2020 and 2022, a single threat actor group lived inside GoDaddy''s infrastructure — stealing source code, exposing 1.2 million Managed WordPress customers, and intermittently redirecting customer websites to malicious sites. A deep-dive on registrar concentration risk and what it teaches about single points of failure.'
 keywords: ['godaddy breach', 'godaddy data breach', 'managed wordpress breach', 'registrar security', 'domain security', 'multi-year breach', 'cpanel malware', 'website redirect attack', 'ssl private key exposure', 'sftp password breach', 'sec 10-k cybersecurity', 'registrar concentration risk', 'single point of failure']
+relatedArticles:
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-dnspionage-campaign/
+  - /en/blog/the-lenovo-com-dns-hijack/
+  - /en/blog/the-badgerdao-frontend-attack/
+  - /en/blog/the-icann-spear-phishing-breach/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
+  - /en/glossary/tld/
 ---
 
 A domain [registrar](/en/glossary/registrar/) is the most boring company you will ever depend on completely.

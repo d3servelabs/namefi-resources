@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .cloud : l'extension idéale pour l'innovation, le SaaS et la tech. Apprenez ses avantages et enregistrez-le dès aujourd'hui sur Namefi."
 keywords: ['.cloud domains', '.cloud TLD', '.cloud top-level domain', 'what is .cloud', 'why choose .cloud', 'what is the .cloud domain', 'why choose the .cloud domain', 'investir dans les domaines', 'domaines blockchain', 'domaines tokenisés', 'cloud computing', 'SaaS', 'startups tech', 'transformation numérique', 'Namefi']
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le .cloud ?**

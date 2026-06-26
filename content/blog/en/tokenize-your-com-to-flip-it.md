@@ -12,6 +12,24 @@ format: guide
 description: "A Namefi walkthrough: bring a .com on-chain, keep DNS resolving, and flip it as an NFT with atomic settlement instead of an escrow standoff."
 ogImage: ../../assets/tokenize-your-com-to-flip-it-og.jpg
 keywords: ['tokenize a .com to flip it', 'tokenize your com', 'flip tokenized domains', 'sell a domain as an NFT', 'tokenized .com flipping', 'on-chain domain flipping', 'atomic domain settlement', 'tokenized domain marketplace', 'DNS continuity tokenized domain', 'how to tokenize a domain to sell', 'namefi tokenize and sell', 'wallet-held .com', 'ERC-721 domain', 'tokenized domain liquidity', 'flip a com domain on-chain']
+relatedArticles:
+  - /en/blog/onchain-domain-flipping/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/selling-domains-as-nfts/
+  - /en/blog/onchain-domain-marketplaces-compared/
+  - /en/blog/domain-flipping/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 Most flips of a `.com` end the same nervous way: the buyer doesn't want to pay before the name moves, the seller doesn't want to move the name before getting paid, and an [escrow](/en/glossary/escrow/) agent stands in the middle holding the money while a registrar transfer clears over days. That standoff is the friction tax on every high-value sale. Tokenizing the `.com` first changes the shape of the whole trade: the name becomes a token you hold in a [wallet](/en/glossary/wallet/), and the sale becomes a single on-chain swap instead of a multi-day, multi-party handoff.

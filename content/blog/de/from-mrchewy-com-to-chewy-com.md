@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie ein Haustier-Startup im Jahr 2011 unter dem Namen „Mr. Chewy" auf MrChewy.com startete, das „Mr." ablegte, um als Chewy auf der exakt passenden Chewy.com zu agieren – und warum dieses einzige Wort im Domain-Upgrade still und leise Teil einer Marke wurde, die PetSmart für 3,35 Milliarden Dollar kaufte.'
 keywords: ['mrchewy.com', 'chewy.com', 'chewy domain name', 'mr chewy', 'domain upgrade', 'ryan cohen', 'michael day', 'frank schilling', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'pet ecommerce']
+relatedArticles:
+  - /de/blog/from-urbancompass-com-to-compass-com/
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-massdrop-com-to-drop-com/
+  - /de/blog/from-bufferapp-com-to-buffer-com/
+  - /de/blog/from-teslamotors-com-to-tesla-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/best-tlds-by-industry/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
 ---
 
 Bevor Chewy zur Legende im Kundenservice des Haustier-E-Commerce wurde – bevor die handgeschriebenen Karten, die Kondolenzblumen und der 3,35-Milliarden-Dollar-Exit – trug es einen etwas liebenswürdigeren, vorsichtigeren Namen. Es hieß **Mr. Chewy** und war unter **MrChewy.com** zu finden.

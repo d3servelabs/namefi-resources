@@ -6,6 +6,24 @@ tags: ["partners"]
 authors: ["namefiteam"]
 description: BlockEden.xyz Web3 स्केलेबिलिटी और विश्वसनीयता के लिए बनाया गया एक डेवलपर-फर्स्ट इन्फ्रास्ट्रक्चर प्लेटफॉर्म है।
 keywords: ["पार्टनर", "BlockEden", "Web3 इन्फ्रास्ट्रक्चर", "स्केलेबिलिटी", "विश्वसनीयता", "RPC नोड्स", "इंडेक्सर्स", "एनालिटिक्स APIs", "Aptos", "Sui", "Solana", "EVM", "Namefi", "डोमेन टोकनाइजेशन", "NFTs"]
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/choosing-a-domain-tokenization-platform/
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/onchain-domain-marketplaces-compared/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/web3/
+  - /hi/glossary/dns/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
 ---
 
 ## **Namefi इकोसिस्टम में BlockEden.xyz का परिचय**

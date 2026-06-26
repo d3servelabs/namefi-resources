@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'El 15 de julio de 2020, unos atacantes se introdujeron por teléfono en Twitter, secuestraron las cuentas verificadas de Obama, Biden, Musk, Gates, Apple y Uber, y ejecutaron una estafa de duplicación de Bitcoin que les reportó unos 118.000 dólares. Un análisis en profundidad de cómo se robó el control de una identidad en línea y qué nos enseña sobre ser dueño de un nombre.'
 keywords: ['hackeo de twitter 2020', 'estafa bitcoin twitter', 'graham ivan clark', 'vishing', 'phishing telefónico dirigido', 'ingeniería social', 'apropiación de cuentas', 'seguridad de identidad en línea', 'secuestro de cuentas verificadas', 'herramienta de administración de twitter', 'herramienta de agente', 'riesgo interno', 'seguridad de dominios', 'informe ny dfs twitter']
+relatedArticles:
+  - /es/blog/the-bitcoin-org-dns-hijack/
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /es/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /es/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Durante unas pocas horas en una tarde de miércoles, las voces más confiables de internet comenzaron a decir todas lo mismo: envíame Bitcoin y te devolveré el doble.

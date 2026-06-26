@@ -13,6 +13,24 @@ sources:
   - https://www.iana.org/domains/root/db
   - https://www.icann.org/en/registry-agreements
   - https://www.icann.org/resources/pages/gtld-registry-agreement-2013-01-25-en
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/how-tld-affects-domain-value/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 **السجل** (أو *مشغّل السجل*) هو المنظمة اللي بتشغّل قاعدة البيانات الموثوقة لـ[TLD](/ar/glossary/tld/) — بتسجّل كل نطاق متسجّل تحت هذا الامتداد، وبتحافظ على ملف المنطقة اللي بيربط الأسماء بـ[خوادم الأسماء](/ar/glossary/nameserver/)، وبتنشر البيانات اللي بتخلي الاستعلامات عبر [DNS](/ar/glossary/dns/) تشتغل. السجلات بتقع في قمة سلسلة إمداد أسماء النطاقات، فوق [مسجلي النطاقات](/ar/glossary/registrar/) وفوق [المسجّلين](/ar/glossary/registrant/).

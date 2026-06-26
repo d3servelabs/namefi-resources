@@ -12,6 +12,24 @@ format: analysis
 description: '域名投资的真实经济逻辑：续期拖累、售出率经验法则，以及为什么一笔好的成交必须能养活多年的续期账单。'
 ogImage: ../../assets/domain-renewal-costs-and-sell-through-rate-og.jpg
 keywords: ['域名续期成本', '域名售出率', '域名翻转经济学', '域名持有成本', '域名续期费用', '域名投资盈利计算', '域名投资组合成本', '域名翻转是否盈利', '续期拖累', '域名成本基础', '域名投资回报', '.com续期价格', '域名持有成本']
+relatedArticles:
+  - /zh/blog/domain-portfolio-management/
+  - /zh/blog/when-to-drop-a-domain/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/working-with-domain-brokers/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 你持有的每一个域名，每年都会向你发来一张账单。这个事实是每一位域名投资者都必须面对的引力，也是那些成功故事里永远缺席的部分。五位数的成交价可以登上头条，而那两百个没有成交的域名，每隔十二个月悄悄扣走一笔续期费，从来不会出现在故事里。

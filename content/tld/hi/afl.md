@@ -24,6 +24,24 @@ keywords:
   - Namefi domains
   - web3 domains
   - digital identity
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /hi/blog/premium-web3-tlds/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 ## **.afl क्या है?**

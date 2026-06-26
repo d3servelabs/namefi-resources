@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'كيف اخترقت حملة "Sea Turtle" المدعومة من دولة، والتي كشف عنها Cisco Talos في 2019، نظام DNS عن طريق اختراق جهات تسجيل النطاقات والسجلات ومزودي DNS — لتحويل حركة الحكومات والوزارات وشركات الطاقة نحو خوادم المهاجمين، وتزوير شهادات صالحة، بل والتسلل إلى سجل نطاق وطني.'
 keywords: ['اختراق dns sea turtle', 'cisco talos sea turtle', 'هجوم اختطاف dns', 'هجوم dns برعاية دولة', 'اختراق السجل', 'اختراق جهة التسجيل', 'حملة تجسس dns', 'شهادة mitm lets encrypt', 'اختراق netnod', 'ics-forth greece ccTLD', 'توجيه طارئ cisa 19-01', 'أمان dns', 'أمان ملكية النطاق', 'هجوم إلكتروني من دولة قومية']
+relatedArticles:
+  - /ar/blog/the-dnspionage-campaign/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+  - /ar/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
 ---
 
 معظم الهجمات الإلكترونية بتحاول تتسلل *للداخل* بتاع الهدف. حملة Sea Turtle عملت حاجة أهدى من كده وأخطر بكتير: اخترقت **الخريطة** اللي بتقول للإنترنت كله فين الهدف ده موجود.

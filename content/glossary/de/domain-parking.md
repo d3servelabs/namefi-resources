@@ -10,6 +10,24 @@ also_known_as: ['Geparkte Domain']
 level: 1
 sources:
   - https://www.namebio.com/
+relatedArticles:
+  - /de/blog/domain-parking-and-monetization/
+  - /de/blog/marketing-your-domains-for-sale/
+  - /de/blog/domain-for-sale-landing-pages/
+  - /de/blog/domain-terminology-guide/
+  - /de/blog/marketplace-seo-for-domain-listings/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/domain-landing-page/
+  - /de/glossary/ppc/
+  - /de/glossary/type-in-traffic/
+  - /de/glossary/aftermarket/
+  - /de/glossary/icann/
 ---
 
 **Domain-Parking** bezeichnet die Praxis, eine unentwickelte Domain (eine *geparkte Domain*) auf eine Seite zu verweisen, die Pay-per-Click-Anzeigen, eine Suchleiste oder einen Verkaufshinweis anzeigt, statt einer vollwertigen Website. Eigentümer parken Namen, um Einnahmen zu erzielen, während sie einen Vermögenswert halten, den sie verkaufen, entwickeln oder schlicht behalten möchten – und machen aus einer untätigen Registrierung so einen passiven Einkommensstrom. Die Einnahmen hängen stark vom [Type-in-Traffic](/de/glossary/type-in-traffic/) ab: Besuchern, die direkt zur URL navigieren, statt über eine Suchmaschine zu kommen. Ein Parking-Dienst teilt typischerweise die [PPC](/de/glossary/ppc/)-Anzeigeneinnahmen mit dem Eigentümer und zeigt möglicherweise auch eine [Domain-Landingpage](/de/glossary/domain-landing-page/) an, die interessierte Käufer auf den [Aftermarket](/de/glossary/aftermarket/) leitet.

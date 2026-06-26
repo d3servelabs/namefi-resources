@@ -16,6 +16,24 @@ faqs:
     answer: 'It suits anyone who wants a short, literal web address when the matching .com is taken or expensive: small businesses, portfolios, landing pages, side projects, and campaign microsites. Because the word "site" simply means website, it is broadly understood and easy to remember.'
   - question: 'Is .site associated with spam?'
     answer: 'Low-cost open new gTLDs, including .site, have seen some abuse, so a few aggressive spam filters score unknown new-gTLD senders more cautiously. A properly configured domain with SPF, DKIM, and DMARC and a warmed-up sending reputation delivers reliably.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.site** domain is one of the most literal extensions on the internet: the word "site" is shorthand for "website" in English and is recognized in many other languages, so a .site address tells visitors exactly what they are looking at. It is a [generic top-level domain](/en/glossary/gtld/) (gTLD) launched under ICANN's [New gTLD](/en/glossary/new-gtld/) Program, open to anyone, anywhere, with no eligibility hoops.

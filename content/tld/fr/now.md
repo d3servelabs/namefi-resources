@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .now : un TLD puissant pour l'immédiateté, l'action et le web en temps réel. Apprenez pourquoi et comment l'enregistrer sur Namefi."
 keywords: [".now domains", "TLD", "top-level domain", "what is .now", "why choose .now", "what is the .now domain", "why choose the .now domain", "qu'est-ce que le .now", "pourquoi choisir le .now", "domain investing", "blockchain domains", "tokenized domain", "investir nom de domaine", "achat domaine .now", "Web3 domains"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le .now ?**

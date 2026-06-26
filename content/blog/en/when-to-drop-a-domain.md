@@ -12,6 +12,24 @@ format: guide
 description: "How to decide when to let a domain expire: renewal cost vs realistic resale odds, the sunk-cost trap, and the signals a name will never sell."
 ogImage: ../../assets/when-to-drop-a-domain-og.jpg
 keywords: ['when to drop a domain', 'let a domain expire', 'cut domain losers', 'domain renewal decision', 'domain sunk cost', 'should I renew a domain', 'domain portfolio pruning', 'drop a domain name', 'domain holding cost', 'domain sell-through rate', 'domaining losses', 'expire a domain', 'domain renewal cost', 'domain investing mistakes', 'prune domain portfolio']
+relatedArticles:
+  - /en/blog/domain-portfolio-management/
+  - /en/blog/domain-renewal-costs-and-sell-through-rate/
+  - /en/blog/domain-flipping/
+  - /en/blog/hand-registering-domains-to-flip/
+  - /en/blog/working-with-domain-brokers/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Every domain you own sends you the same letter once a year: renew or lose it. For your winners that's an easy yes. The hard decisions are the names in the middle and the bottom of your portfolio — the ones you registered with a thesis that hasn't paid off, the impulse buys, the "almost" names that have sat unsold through three renewal cycles. Deciding which to let go is one of the least glamorous and most profitable skills in flipping, because money saved on dead inventory goes straight to your bottom line.

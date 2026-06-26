@@ -18,6 +18,24 @@ faqs:
     answer: 'حكومة أنغيلا عندها التفويض من IANA لـ .ai. من يناير 2025، الجانب التقني بيديره Identity Digital. لكن كل نطاق .ai بتسجّله بيبقى ملكك أنت.'
   - question: 'ليه الحد الأدنى لتسجيل .ai سنتين؟'
     answer: 'ده قرار سجل أنغيلا: نطاقات .ai بتتسجّل وتتجدد بفترات من سنتين لعشر سنين، مش السنة الواحدة المعتادة في .com. ده بيرفع التكلفة الأولية، لكن بيقلل خطر فقدان الاسم بسبب نسيان تجديد سنوي.'
+relatedArticles:
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/how-tld-affects-domain-value/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 نطاق **.ai** هو امتداد نادر حروفه الاتنين بيمثّلوا في نفس الوقت واحد من أهم المختصرات على الإنترنت. من ناحية تقنية، ده رمز نطاق الدولة (ccTLD) لأنغيلا، وهي إقليم بريطاني ما وراء البحار في شرق البحر الكاريبي. لكن في الواقع العملي، أصبح العنوان الافتراضي لصناعة الذكاء الاصطناعي، من مختبرات النماذج الكبرى لحد أصغر أدوات AI الفردية.

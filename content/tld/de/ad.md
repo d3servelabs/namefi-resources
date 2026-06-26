@@ -24,6 +24,24 @@ keywords:
   - werbung domain hacks
   - marketing tld
   - namefi
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 ## **Was ist .ad?**

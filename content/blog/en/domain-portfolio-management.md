@@ -12,6 +12,24 @@ format: guide
 description: "Run your domains like inventory: track cost basis, watch sell-through rate, control renewal drag, prune losers, and keep the books clean."
 ogImage: ../../assets/domain-portfolio-management-og.jpg
 keywords: ['domain portfolio management', 'domain portfolio', 'manage domain portfolio', 'sell-through rate domains', 'domain renewal costs', 'when to drop a domain', 'domain cost basis', 'domain inventory tracking', 'domain investing business', 'domain renewal drag', 'pruning a domain portfolio', 'domain holding cost', 'domaining spreadsheet', 'domain portfolio spreadsheet', 'domain investor accounting']
+relatedArticles:
+  - /en/blog/domain-renewal-costs-and-sell-through-rate/
+  - /en/blog/when-to-drop-a-domain/
+  - /en/blog/domain-flipping/
+  - /en/blog/taxes-and-accounting-for-domain-investors/
+  - /en/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 The first ten domains feel like a collection. You remember why you bought each one, what you paid, and roughly what you hope to get. Somewhere around the hundredth name, that memory stops working. You can no longer hold the portfolio in your head, the renewal emails arrive in clumps you don't recognize, and you start paying to keep names you'd forgotten you owned. That is the moment flipping stops being a series of clever trades and becomes inventory management.

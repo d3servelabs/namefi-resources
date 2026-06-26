@@ -24,6 +24,24 @@ keywords:
   - technology domains
   - Web3 domains
   - new gTLD
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/top-tlds-to-secure-for-your-saas/
+  - /hi/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 टेक्नोलॉजी की दुनिया तेजी से बदल रही है, और इसी के साथ बदल रहा है इंटरनेट पर अपनी पहचान बनाने का तरीका। यदि आप एक डेवलपर हैं, एक टेक स्टार्टअप चला रहे हैं, या वेब3 ([Web3](/hi/glossary/web3/)) के क्षेत्र में कुछ नया कर रहे हैं, तो एक ऐसा डोमेन नाम चुनना महत्वपूर्ण है जो आपके काम को दर्शाता हो। यहीं पर **.tech** TLD (Top-Level Domain) एक गेम-चेंजर साबित होता है।

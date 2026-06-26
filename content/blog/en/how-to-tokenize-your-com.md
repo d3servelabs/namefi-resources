@@ -11,6 +11,24 @@ seriesOrder: 1
 format: guide
 description: A practical, step-by-step walkthrough for tokenizing a domain you already own — eligibility, wallets, fees, time, and what to expect on each screen. Written for owners, not protocol nerds.
 keywords: ['how to tokenize a domain', 'how to tokenize a .com', 'tokenize my domain', 'tokenize an existing domain', 'tokenize a domain step by step', 'domain tokenization tutorial', 'tokenize .com guide', 'tokenize .xyz', 'tokenize .io', 'namefi tokenize', 'NFT domain how to', 'transfer domain to NFT', 'domain to NFT', 'domain tokenization process', 'tokenized domain setup', 'tokenize ICANN domain']
+relatedArticles:
+  - /en/blog/tokenize-your-com-to-flip-it/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/dns-on-tokenized-domains/
+  - /en/blog/how-tokenized-marketplaces-replace-escrow/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/tokenize-your-com/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 So you own a domain — maybe `mybrand.com`, maybe a portfolio of `.xyz` names — and you've decided you want to **tokenize** it. This guide walks through what actually happens, screen by screen, so you can plan the time, money, and access you'll need before you start.

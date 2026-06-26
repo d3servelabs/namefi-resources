@@ -24,6 +24,24 @@ keywords:
   - gTLD educativo
   - blockchain education domains
   - identidad digital educativa
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .academy?**

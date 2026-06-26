@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是原子传输？它如何确保安全的域名交易？
 keywords: ["原子传输","区块链交易","全有或全无","安全交换","智能合约"]
+relatedArticles:
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/selling-domains-as-nfts/
+  - /zh/blog/domain-escrow-explained/
+  - /zh/blog/how-tokenized-marketplaces-replace-escrow/
+  - /zh/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/tokenized-domain/
+  - /zh/glossary/registrar/
+  - /zh/glossary/tokenize/
+  - /zh/glossary/blockchain/
+  - /zh/glossary/web3/
 ---
 
 

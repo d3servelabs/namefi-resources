@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el propósito, la historia y el valor del TLD .agakhan. Conoce por qué esta extensión exclusiva es sinónimo de confianza, filantropía y desarrollo global.'
 keywords: ['.agakhan domains', 'dominio .agakhan', 'qué es el dominio .agakhan', 'why choose .agakhan', 'top-level domain', 'TLD .agakhan', 'comprar dominio .agakhan', 'registro de dominios', 'inversión en dominios', 'blockchain domains', 'Namefi', 'dominios tokenizados', 'identidad digital', 'AKDN dominios', 'Aga Khan TLD']
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
+  - /es/glossary/registrar/
 ---
 
 ## **¿Qué es .agakhan?**

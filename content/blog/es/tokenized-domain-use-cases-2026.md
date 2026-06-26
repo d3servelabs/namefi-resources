@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Un recorrido neutral en cuanto a plataformas sobre para qué se están utilizando realmente los dominios tokenizados en 2026: préstamos DeFi, arrendamientos, propiedad fraccionada, identidad de agentes de IA y los casos de uso que aún no terminan de aterrizar."
 keywords: ['casos de uso de dominios tokenizados', 'DomainFi', 'préstamos con dominios tokenizados', 'garantía de dominio tokenizado', 'arrendar dominio tokenizado', 'propiedad fraccionada de dominios', 'dominio de agente de IA', 'DeFi de dominios', 'mercado de dominios tokenizados', 'aplicaciones de dominios tokenizados', 'casos de uso de dominios NFT', 'por qué tokenizar un dominio en 2026', 'uso de dominios on-chain', 'ejemplos de dominios tokenizados']
+relatedArticles:
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/how-tokenized-marketplaces-replace-escrow/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/tokenize-your-com/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
 ---
 
 Es tentador hablar de los dominios tokenizados como una *tecnología*. Resulta más útil hablar de ellos como un conjunto de *cosas que puedes hacer con ellos* que no podrías hacer fácilmente con un dominio tradicional alojado en un registrador. Esta publicación es un recorrido por esos casos de uso: qué es real hoy, qué está emergiendo y qué sigue siendo principalmente una presentación de diapositivas.

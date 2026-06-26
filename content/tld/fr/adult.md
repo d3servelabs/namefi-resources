@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .adult : une extension spécialisée pour l'industrie du divertissement. Sécurisez votre marque et profitez de l'intégration Web3 avec Namefi."
 keywords: [".adult domains", ".adult TLD", "top-level domain", "what is .adult", "why choose .adult", "what is the .adult domain", "why choose the .adult domain", "investir nom de domaine", "blockchain domains", "tokenized domain", "protection de marque", "domaine divertissement", "SEO adulte", "Namefi", "registre internet"]
+relatedArticles:
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Le paysage d'Internet a considérablement évolué depuis l'époque où les seules options viables étaient le [.com](/fr/tld/com/) ou le .net. Avec l'introduction de nouvelles extensions génériques de premier niveau (gTLD), le web est devenu plus catégorisé et spécifique. L'une de ces extensions, destinée à une industrie massive et spécifique, est le **.adult**.

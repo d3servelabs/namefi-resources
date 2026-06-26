@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "بروتوكول UCP هو رهان جوجل لتمكين التجارة المعتمدة على الوكلاء، مما يتيح لمساعدي الذكاء الاصطناعي التسوق وإتمام عمليات الدفع عبر الويب المفتوح."
 keywords: ['بروتوكول التجارة العالمي', 'UCP', 'جوجل UCP', 'وكلاء التسوق بالذكاء الاصطناعي', 'التجارة المدعومة بالذكاء الاصطناعي', 'التجارة الوكيلة', 'بروتوكول التجارة الإلكترونية بالذكاء الاصطناعي', 'التجارة المحادثية', 'الدفع عبر الذكاء الاصطناعي', 'مستقبل التجارة الإلكترونية', 'التسوق القائم على الوكلاء', 'معايير التجارة المفتوحة', 'جوجل للذكاء الاصطناعي', 'Gemini AI', 'تحسين محركات الوكلاء']
+relatedArticles:
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/from-mona-co-to-crypto-com/
+  - /ar/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /ar/topics/web3-foundations/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
+  - /ar/glossary/ai-agent/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 # جوجل تكشف عن "بروتوكول التجارة العالمي" لتمكين الجيل القادم من وكلاء التسوق القائمين على الذكاء الاصطناعي

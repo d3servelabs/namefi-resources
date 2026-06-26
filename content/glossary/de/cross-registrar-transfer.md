@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was sind Cross-Registrar-Transfers und wie vereinfacht die Tokenisierung den Prozess?
 keywords: ["Cross-Registrar-Transfer","Registrar-Transfer","Domain-Migration","Transferprozess","Tokenisierung"]
+relatedArticles:
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/how-tokenized-marketplaces-replace-escrow/
+  - /de/blog/how-to-tokenize-your-com/
+  - /de/blog/domain-flipping-and-the-law/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/auth-code/
+  - /de/glossary/web3/
 ---
 
 Der **Cross-Registrar-Transfer** ist der Prozess, eine Domain von einem [Registrar](/de/glossary/registrar/) zu einem anderen zu verschieben, was traditionell Authentifizierungscodes, Wartezeiten und Koordination zwischen den [Registraren](/de/glossary/registrar/) erfordert. Dieser Prozess kann Tage oder Wochen dauern und Gebühren von beiden [Registraren](/de/glossary/registrar/) mit sich bringen. Bei [tokenisierten](/de/glossary/tokenize/) Domains kann, während die zugrunde liegende [DNS](/de/glossary/dns/)-Registrierung möglicherweise weiterhin traditionelle Transferprozesse erfordert, der Eigentumstoken sofort zwischen [Wallets](/de/glossary/wallet/) übertragen werden. Diese Trennung ermöglicht sofortigen Handel und Eigentümerwechsel auf Token-Ebene, während das [DNS](/de/glossary/dns/)-Management separat gehandhabt werden kann. Fortgeschrittene Tokenisierungsmodelle könnten Cross-Registrar-Transfers sogar über [Smart Contracts](/de/glossary/smart-contract/) automatisieren, was die Komplexität und den Zeitaufwand für die Verschiebung von Domains zwischen verschiedenen Dienstleistern erheblich reduziert.

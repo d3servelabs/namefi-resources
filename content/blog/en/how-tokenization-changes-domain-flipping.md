@@ -12,6 +12,24 @@ format: explainer
 description: "How bringing a domain on-chain reshapes flipping — verified ownership, atomic settlement, and programmable transfer vs the slow registrar aftermarket."
 ogImage: ../../assets/how-tokenization-changes-domain-flipping-og.jpg
 keywords: ['tokenized domain flipping', 'on-chain domain flipping', 'flip tokenized domains', 'domain NFT flipping', 'atomic domain settlement', 'sell domains as NFTs', 'tokenized domain marketplace', 'domain flipping web3', 'ERC-721 domain', 'on-chain domain transfer', 'tokenized domain custody', 'programmable domain ownership', 'domain escrow alternative', 'flip domains on-chain', 'tokenized domain resale']
+relatedArticles:
+  - /en/blog/tokenize-your-com-to-flip-it/
+  - /en/blog/onchain-domain-flipping/
+  - /en/blog/onchain-domain-custody-and-recovery/
+  - /en/blog/selling-domains-as-nfts/
+  - /en/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 Most of the work in [domain flipping](/en/blog/domain-flipping/) has nothing to do with the name. You source it, appraise it, protect it, and find a buyer — and then you hit the part nobody enjoys: actually moving the asset and getting paid without one side getting burned. That settlement step is slow, manual, and built on trust between strangers. Tokenization is the change that rewrites it.

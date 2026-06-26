@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .click : une extension dynamique idéale pour l'action et le marketing. Apprenez ses avantages et comment l'enregistrer sur Namefi."
 keywords: [".click domains", ".click TLD", "top-level domain .click", "what is .click", "why choose .click", "what is the .click domain", "why choose the .click domain", "investir nom de domaine", "domaines blockchain", "tokenized domain", "web3 domains", "domaine pour photographe", "lien marketing", "call to action domain", "achat domaine web3"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le domaine .click ?**

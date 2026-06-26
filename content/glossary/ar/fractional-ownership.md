@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هي الملكية الجزئية وكيف تنطبق على النطاقات القيمة؟
 keywords: ["ملكية جزئية","ملكية مشتركة","تجزئة النطاق","إمكانية الوصول","ترميز"]
+relatedArticles:
+  - /ar/blog/tokenized-domain-use-cases-2026/
+  - /ar/blog/why-tokenize-domains/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/what-are-xstocks/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-security/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/revenue-sharing/
+  - /ar/glossary/premium-domain/
+  - /ar/glossary/web3/
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
 ---
 
 

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout ce qu'il faut savoir sur l'extension .adac : son origine, ses avantages pour le secteur automobile et comment elle renforce la confiance numérique."
 keywords: [".adac domains", "domaine .adac", "TLD .adac", "top-level domain", "qu'est-ce que .adac", "pourquoi choisir .adac", "what is the .adac domain", "why choose the .adac domain", "investissement domaine", "blockchain domaines", "domaines tokenisés", "web3 domaines", "achat nom de domaine", "adac domain registration", "brand TLD"]
+relatedArticles:
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/premium-web3-tlds/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 ## **Qu'est-ce que le .adac ?**

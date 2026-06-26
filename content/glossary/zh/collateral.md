@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是抵押品？域名如何在DeFi中充当抵押品？
 keywords: ["抵押品","安全","借贷","借款","域名抵押品","DeFi"]
+relatedArticles:
+  - /zh/blog/tokenized-domain-use-cases-2026/
+  - /zh/blog/what-are-xstocks/
+  - /zh/blog/why-tokenize-domains/
+  - /zh/blog/what-are-stablecoins/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/web3-foundations/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tokenized-domain/
+  - /zh/glossary/web3/
+  - /zh/glossary/lending-protocol/
+  - /zh/glossary/tokenize/
+  - /zh/glossary/defi/
 ---
 
 

@@ -18,6 +18,24 @@ faqs:
     answer: 'Yes. At five characters it keeps full URLs compact, and the word implies navigation, so branded short links like go.click read naturally. Many marketers use it precisely for this purpose.'
   - question: 'Does .click support internationalized domain names?'
     answer: 'Yes. The .click registry supports internationalized domain names, so you can register names using non-Latin scripts. Standard labels allow 1 to 63 characters using letters, numbers, and hyphens.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.click domain** turns the most universal action on the web into a web address. As a generic, unrestricted [new gTLD](/en/glossary/new-gtld/), it reads as an instruction the moment someone sees it, which is why marketers, link-builders, and creators reach for it when they want a name that does something rather than just sits there. If you are weighing whether **.click** belongs in your stack, this page covers who runs it, who can register, how it is priced, how it is perceived, and where it fits against the alternatives.

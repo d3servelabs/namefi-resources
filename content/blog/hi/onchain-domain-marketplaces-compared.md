@@ -12,6 +12,24 @@ format: comparison
 description: "OpenSea, Seaport-आधारित और डोमेन-नेटिव ऑनचेन मार्केटप्लेस की फीस, पहुँच और कस्टडी पर तुलना — कौन-सा वेन्यू किस टोकनाइज़्ड-डोमेन बिक्री के लिए सही है।"
 ogImage: ../../assets/onchain-domain-marketplaces-compared-og.jpg
 keywords: ['ऑनचेन डोमेन मार्केटप्लेस', 'टोकनाइज़्ड डोमेन मार्केटप्लेस', 'डोमेन NFT बेचना', 'OpenSea डोमेन', 'Seaport प्रोटोकॉल', 'NFT मार्केटप्लेस फीस', 'डोमेन फ्लिपिंग web3', 'टोकनाइज़्ड डोमेन कहाँ बेचें', 'OpenSea बनाम Blur', 'एटॉमिक NFT बिक्री', 'ERC-721 डोमेन', 'डोमेन NFT मार्केटप्लेस तुलना', 'Namefi मार्केटप्लेस', 'सेल्फ-कस्टडी डोमेन बिक्री', 'ऑनचेन डोमेन ट्रेडिंग']
+relatedArticles:
+  - /hi/blog/selling-domains-as-nfts/
+  - /hi/blog/onchain-domain-flipping/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 जब आप किसी [टोकनाइज़्ड डोमेन](/hi/blog/what-are-tokenized-domains/) को फ्लिप करते हैं — यानी एक असली ICANN नाम जिसके ऊपर [ऑन-चेन](/hi/glossary/on-chain/) स्वामित्व टोकन बैठा होता है — तो आपके पास एक ऐसा विकल्प होता है जो पारंपरिक डोमेन दुनिया ने कभी नहीं दिया। आप उस नाम को किसी सामान्य क्रिप्टो मार्केटप्लेस पर [NFT (नॉन-फंजीबल टोकन)](/hi/glossary/nft/) के रूप में लिस्ट कर सकते हैं, उसे किसी [Seaport](/hi/glossary/smart-contract/)-आधारित वेन्यू के ज़रिए बिना किसी तीसरे-पक्ष की कस्टडी के बेच सकते हैं, या ठीक इसी संपत्ति के लिए बने डोमेन-नेटिव प्लेटफॉर्म का इस्तेमाल कर सकते हैं। हर रास्ता उसी टोकन को आगे बढ़ाता है, लेकिन फीस, पहुँच और कस्टडी मॉडल इतने अलग होते हैं कि गलत चुनाव आपको एक खरीदार या आपके मार्जिन का एक बड़ा हिस्सा गँवा सकता है।

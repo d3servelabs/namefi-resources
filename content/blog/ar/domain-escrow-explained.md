@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: دليل مبسط عن الضمان (Escrow) وضمان الدومينات — إيه هو حساب الضمان، وإزاي بيشتغل خطوة بخطوة في بيع الدومين، وليه مهم لتفادي الاحتيال، والفرق بين خدمات الضمان التقليدية والطريقة الحديثة القائمة على التوكنات، وإزاي العقود الذكية تقدر تحل محل الضمان بالتسوية الفورية على البلوكتشين.
 keywords: ['domain escrow', 'ضمان الدومين', 'حساب الضمان', 'إيه هو الضمان', 'إزاي بيشتغل الضمان', 'خدمة ضمان الدومين', 'بديل escrow.com', 'شراء دومين بأمان', 'بيع دومين بأمان', 'auth code', 'EPP code', 'نقل الدومين', 'رسوم الضمان', 'صفقة دومين آمنة', 'احتيال بيع الدومين', 'ضمان الدومين بالتوكن', 'عقد ذكي للضمان', 'تسوية فورية', 'بيع دومين على البلوكتشين', 'إزاي تتجنب احتيال الدومين']
+relatedArticles:
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/avoiding-domain-sale-scams/
+  - /ar/blog/how-tokenized-marketplaces-replace-escrow/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /ar/topics/domain-basics/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
+  - /ar/glossary/tld/
 ---
 
 لو اشتريت أو بعت حاجة غالية مع حد ما بتعرفوش — عربية، شقة، أو دومين `.com` بخمسة أرقام — كمان متقابلتش بنفس المشكلة: المشتري مش عايز يدفع قبل ما يستلم، والبائع مش عايز يسلّم قبل ما يتقابض. لازم حد يبدأ، واللي بيبدأ بيبقى محتاج يثق في التاني.

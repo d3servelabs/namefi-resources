@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.investopedia.com/terms/c/carrying-costs.asp
   - https://www.namebio.com/
+relatedArticles:
+  - /de/blog/domain-renewal-costs-and-sell-through-rate/
+  - /de/blog/when-to-drop-a-domain/
+  - /de/blog/domain-flipping/
+  - /de/blog/domain-portfolio-management/
+  - /de/blog/taxes-and-accounting-for-domain-investors/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/sell-through-rate/
+  - /de/glossary/domain-portfolio/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
 ---
 
 **Haltekosten** (oder *Tragekosten*) sind die Summe der wiederkehrenden Gebühren, die ein Investor allein für die Beibehaltung des Eigentums an einer Domain zahlt, während er auf einen Verkauf wartet – vor allem die jährliche [Domain-Verlängerungs](/de/glossary/domain-renewal/)gebühr des Registrars, die für eine Standard-.com etwa 10–15 $ pro Jahr und Name beträgt. Bei einem großen [Domain-Portfolio](/de/glossary/domain-portfolio/) mit Tausenden von Namen summieren sich die Haltekosten zu einer erheblichen jährlichen Ausgabe, die die Rendite schmälert, wenn Namen nicht verkauft werden. Die Ökonomie des Domainings verlangt daher, dass ein Investor ehrlich abwägt, ob der realistische Verkaufspreis eines Namens – und seine Wahrscheinlichkeit, innerhalb eines vernünftigen Zeitrahmens zu verkaufen – eine weitere Verlängerung rechtfertigt. Schwache Namen mit geringem [Verkaufsquote](/de/glossary/sell-through-rate/)-Potenzial sollten fallen gelassen statt unbegrenzt verlängert werden. Premium-Namen mit höheren Verlängerungskosten (manche ccTLD- oder Premium-Registry-Labels berechnen jährlich Hunderte von Dollar) erfordern noch strengere Renditanalyse.

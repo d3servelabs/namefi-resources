@@ -10,6 +10,24 @@ also_known_as: ['स्थायी रीडायरेक्ट']
 level: 1
 sources:
   - https://developers.google.com/search/docs/crawling-indexing/301-redirects
+relatedArticles:
+  - /hi/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /hi/blog/from-twitter-com-to-x-com/
+  - /hi/blog/from-facebook-com-to-meta-com/
+  - /hi/blog/top-tlds-to-secure-for-your-saas/
+  - /hi/blog/from-ctrip-com-to-trip-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/domain-forwarding/
+  - /hi/glossary/anchor-text/
+  - /hi/glossary/domain-authority/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
 ---
 
 **301 रीडायरेक्ट** (जिसे *स्थायी रीडायरेक्ट* भी कहते हैं) एक HTTP रिस्पॉन्स कोड है जो ब्राउज़र और सर्च इंजन को संकेत देता है कि कोई रिसोर्स स्थायी रूप से एक नए URL पर चला गया है, और भविष्य के सभी अनुरोध नए गंतव्य पर जाने चाहिए। "301" इसे अस्थायी 302 रीडायरेक्ट से अलग करता है: 301 के साथ, Google रैंकिंग सिग्नल — जिनमें लिंक इक्विटी और [एंकर टेक्स्ट](/hi/glossary/anchor-text/) शामिल हैं — को पुराने URL से नए URL पर समेकित करता है, जिससे यह [SEO](/hi/glossary/seo/) मूल्य खोए बिना [डोमेन फॉरवर्डिंग](/hi/glossary/domain-forwarding/) का मानक तंत्र बन जाता है। व्यवहार में, इसका मतलब है कि एक डोमेन निवेशक मजबूत [डोमेन अथॉरिटी](/hi/glossary/domain-authority/) वाला एक पुराना डोमेन खरीद सकता है और उसे किसी लक्ष्य साइट की ओर इंगित कर सकता है, जिससे उस संचित लिंक इक्विटी का अधिकांश हिस्सा गंतव्य तक पहुँच जाता है। यह हस्तांतरण तत्काल नहीं होता — Google आमतौर पर कई हफ्तों में सिग्नल समेकित करता है — और हमेशा 100% नहीं होता, इसलिए 301 मूल्यवान हैं लेकिन सम्पूर्ण इक्विटी हस्तांतरण नहीं हैं।

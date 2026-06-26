@@ -8,6 +8,24 @@ draft: false
 description: '2026 年值得一读的独立域名投资者、经纪人和交易员的博客、新闻通讯与 Substack 精选列表——了解他们的知名领域及相互之间的联系。'
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg
 keywords: ['域名投资者博客', '域名投资博客', 'elliot silver', 'rick schwartz', 'morgan linton', 'konstantinos zournas', 'mike mann', 'jamie zoch', 'domainshane', '域名新闻通讯', '域名 substack']
+relatedArticles:
+  - /zh/blog/domain-industry-media/
+  - /zh/blog/top-domain-trader-forums/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/working-with-domain-brokers/
+  - /zh/blog/domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-investor-field-guide/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
 ---
 
 如果说[论坛](/blog/top-domain-trader-forums)是域名社区*争论*的地方，那么独立域名投资者的博客就是社区*大声思考*的阵地。业内大多数长期的、经过深思熟虑的分析——包括销售复盘、[注册商](/zh/glossary/registrar/)政策批评、市场解读——都发生在少数几个已经运营了十五或二十年的个人博客上。

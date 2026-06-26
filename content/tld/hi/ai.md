@@ -18,6 +18,24 @@ faqs:
     answer: 'Anguilla सरकार के पास .ai के लिए IANA डेलिगेशन है। जनवरी 2025 से तकनीकी रजिस्ट्री बैक-एंड Identity Digital द्वारा संचालित है। आप जो प्रत्येक .ai डोमेन रजिस्टर करते हैं वह आप, रजिस्ट्रेंट के स्वामित्व में होता है।'
   - question: '.ai रजिस्ट्रेशन की न्यूनतम अवधि दो वर्ष क्यों है?'
     answer: 'Anguilla रजिस्ट्री यह नीति निर्धारित करती है: .ai डोमेन दो से दस वर्षों की अवधि में रजिस्टर और नवीनीकृत होते हैं, .com के एक-वर्षीय चक्र में नहीं। इससे अग्रिम लागत बढ़ती है लेकिन एक-वर्षीय नवीनीकरण चूकने से नाम खोने का जोखिम कम होता है।'
+relatedArticles:
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/why-are-io-domains-expensive/
+  - /hi/blog/how-tld-affects-domain-value/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 **.ai** डोमेन एक दुर्लभ एक्सटेंशन है जिसके दो अक्षर इंटरनेट पर सबसे मूल्यवान संक्षिप्त नामों में से एक हैं। तकनीकी रूप से यह Anguilla का कंट्री-कोड टॉप-लेवल डोमेन (ccTLD) है — पूर्वी कैरिबियन में एक ब्रिटिश ओवरसीज़ टेरिटरी। व्यावहारिक रूप से यह आर्टिफिशियल इंटेलिजेंस उद्योग का डिफ़ॉल्ट पता बन गया है, अग्रणी मॉडल लैब्स से लेकर स्वतंत्र AI टूल्स तक।

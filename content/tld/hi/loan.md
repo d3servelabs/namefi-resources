@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .loan वित्तीय सेवाओं, उधार देने वाली संस्थाओं और व्यक्तिगत वित्त प्लेटफॉर्मों के लिए डिज़ाइन किया गया एक विशेष डोमेन एक्सटेंशन है। इसके उद्देश्य, उपयोग और लाभों के बारे में जानें।
 keywords: ["टीएलडी", "लोन डोमेन", "वित्तीय सेवाएँ", "उधार", "फिनटेक", "ऋण"]
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 

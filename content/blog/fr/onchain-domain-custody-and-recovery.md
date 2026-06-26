@@ -12,6 +12,24 @@ format: explainer
 description: "Comment fonctionne réellement la conservation des domaines onchain : portefeuilles, multisignature, risque lié à la phrase secrète et récupération d''un domaine tokenisé après la perte d''un portefeuille."
 ogImage: ../../assets/onchain-domain-custody-and-recovery-og.jpg
 keywords: ['conservation domaine onchain', 'portefeuille domaine tokenisé', 'récupérer domaine tokenisé', 'récupération domaine après perte de portefeuille', 'risque phrase secrète', 'conservation domaine multisignature', 'sécurité domaine NFT', 'portefeuille matériel domaine', 'auto-conservation domaine', 'clé privée domaine', 'propriété domaine tokenisé', 'domaine ERC-721', 'flipping domaine onchain', 'sauvegarde portefeuille domaine', 'portefeuille à récupération sociale']
+relatedArticles:
+  - /fr/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/onchain-domain-flipping/
+  - /fr/blog/selling-domains-as-nfts/
+  - /fr/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Quand vous flippez un domaine traditionnel, la conservation est le problème de quelqu'un d'autre. Le nom vit dans un compte chez un [bureau d'enregistrement](/fr/glossary/registrar/), et si vous oubliez le mot de passe, un lien de réinitialisation et une file d'attente du support vous attendent. Faites passer un domaine [on-chain](/fr/glossary/on-chain/) et ce filet de sécurité disparaît. Le jeton *est* le titre de propriété, et les clés de votre [portefeuille](/fr/glossary/wallet/) sont la seule chose qui se dresse entre vous et l'actif. Ce basculement est le plus grand ajustement mental pour quiconque arrive au flipping onchain depuis le [marché secondaire](/fr/glossary/domain-trading/) traditionnel.

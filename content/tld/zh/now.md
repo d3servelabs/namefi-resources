@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入解析 .now 顶级域名（TLD）的独特价值。了解为何 .now 域名是实时服务、新闻媒体及即时行动品牌的最佳选择，以及如何在 Namefi 轻松注册并利用 Web3 技术管理您的域名。'
 keywords: ['.now domains', '.now TLD', 'top-level domain', 'what is .now', 'why choose .now', 'what is the .now domain', 'why choose the .now domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'Web3 domains', 'real-time branding', 'buy .now domain', 'new gTLD', 'Namefi']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在数字时代，速度就是一切。"现在"（Now）这个词蕴含着巨大的力量——它代表着即时性、行动和紧迫感。随着互联网域名的不断演变，企业和个人不再局限于传统的 `.com` 或 `.net`。

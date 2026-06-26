@@ -18,6 +18,24 @@ faqs:
     answer: 'Sie trägt eine gemischte Reputation. Günstige Aktionen zogen in der Vergangenheit einige minderwertige und Spam-Registrierungen an, sodass einige aggressive Filter sie genauer prüfen. Eine echte Website, korrekte E-Mail-Authentifizierung und gute Versandgewohnheiten lösen dies für seriöse Unternehmen.'
   - question: 'Unterstützt .biz WHOIS-Datenschutz und DNSSEC?'
     answer: 'Ja. Registrare bieten WHOIS-Datenschutz für .biz wie bei anderen gTLDs an, und die Registry unterstützt DNSSEC für kryptografisch signiertes DNS, sodass Sie Ihre Zone gegen Manipulationen härten können.'
+relatedArticles:
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Die **.biz**-Domain ist eine der ursprünglichen geschäftsorientierten Webadressen des Internets. Als phonetische Schreibweise der ersten Silbe von „business" wurde sie eigens geschaffen, um kommerziellen Akteuren ein Zuhause zu geben, wenn ihr bevorzugter **.com**-Name bereits vergeben war. Mehr als zwei Jahrzehnte später bleibt **.biz** eine offene, weltweit verfügbare gTLD mit einer klaren, selbsterklärenden Bedeutung: Hier ist ein Geschäftssitz.

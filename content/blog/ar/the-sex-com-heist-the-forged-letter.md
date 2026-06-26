@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في 1995، نصّاب اسمه Stephen Cohen سرق sex.com من صاحبه الحقيقي Gary Kremen بخطاب مزوّر واحد بعتهولهم في Network Solutions. المعركة اللي دامت سنين انتهت بحكم بـ65 مليون دولار، ومتهم هرب لـ المكسيك، وحكم تاريخي اعتبر الدومينات ملكية خاصة.'
 keywords: ['sex.com', 'سرقة الدومين', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'خطاب مزوّر', 'اختطاف الدومين', 'خطاب Sharon Dimmick', 'أمان الدومين', 'الدومين كملكية', 'حكم 65 مليون دولار', 'احتيال نقل الدومين', 'Domain Mayday']
+relatedArticles:
+  - /ar/blog/the-panix-com-domain-hijack/
+  - /ar/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /ar/blog/from-twitter-com-to-x-com/
+  - /ar/blog/the-perl-com-domain-theft/
+  - /ar/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 في 1995، أغلى عنوان على الإنترنت غيّر صاحبه بسبب ورقة واحدة.

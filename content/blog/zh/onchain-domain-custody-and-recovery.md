@@ -12,6 +12,24 @@ format: explainer
 description: "链上域名的托管究竟如何运作：钱包、多重签名、助记词风险，以及钱包丢失后如何找回一个代币化域名。"
 ogImage: ../../assets/onchain-domain-custody-and-recovery-og.jpg
 keywords: ['链上域名托管', '代币化域名钱包', '找回代币化域名', '钱包丢失域名找回', '助记词风险', '多重签名域名托管', 'NFT 域名安全', '硬件钱包域名', '自主托管域名', '域名私钥', '代币化域名所有权', 'ERC-721 域名', '链上域名倒卖', '域名钱包备份', '社交恢复钱包']
+relatedArticles:
+  - /zh/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/onchain-domain-flipping/
+  - /zh/blog/selling-domains-as-nfts/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 当你倒卖一个传统域名时，托管是别人的问题。这个名字存放在某个[注册商](/zh/glossary/registrar/)账户里，如果你忘了密码，那里有一个重置链接和一支客服队伍在等着你。把域名搬上[链](/zh/glossary/on-chain/)，这张安全网就消失了。代币*就是*那张地契，而你[钱包](/zh/glossary/wallet/)的密钥是横在你和这项资产之间的唯一屏障。对于任何从传统[二级市场](/zh/glossary/domain-trading/)转向链上倒卖的人来说，这一转变是最大的一次心智调整。

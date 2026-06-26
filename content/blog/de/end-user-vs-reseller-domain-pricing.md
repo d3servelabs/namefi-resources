@@ -12,6 +12,24 @@ format: explainer
 description: "Warum eine Domain einen niedrigen Großhandels-/Reseller-Preis und einen viel höheren Endnutzerpreis hat, wie groß die Spanne ist und welche Zahl für deinen Verkauf gilt."
 ogImage: ../../assets/end-user-vs-reseller-domain-pricing-og.jpg
 keywords: ['Endnutzer- vs. Reseller-Domainpreis', 'Großhandelspreis für Domains', 'Einzelhandelspreis für Domains', 'Preisspanne bei Domains', 'wie viel ist meine Domain wert', 'Domain an Endnutzer verkaufen', 'Reseller-Preis für Domains', 'Großhandelswert einer Domain', 'Marge beim Domain-Flipping', 'Aftermarket-Preisgestaltung für Domains', 'Domain im Großhandel verkaufen', 'Endnutzer als Domainkäufer', 'vergleichbare Domainverkäufe', 'Preisstrategie für Domains', 'zwei Preise für eine Domain']
+relatedArticles:
+  - /de/blog/how-to-value-a-domain-name/
+  - /de/blog/domain-flipping/
+  - /de/blog/how-to-read-comparable-domain-sales/
+  - /de/blog/working-with-domain-brokers/
+  - /de/blog/domain-appraisal-tools-compared/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
 ---
 
 Frag zwei erfahrene Domainer, was ein Name wert ist, und du bekommst womöglich zwei Antworten, die um den Faktor zehn auseinanderliegen – und beide können richtig sein. Das ist keine Nachlässigkeit. Es ist die wichtigste Preis-Tatsache in diesem Geschäft überhaupt: Dieselbe Domain hat im selben Moment zwei legitime Preise, und welcher gilt, hängt einzig davon ab, wer kauft. Übersiehst du das, verschenkst du einen Namen für einen Bruchteil seines Werts oder sitzt ewig darauf und wartest auf eine Zahl, die in deinem Kanal niemand zahlt.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Jamba Juice 29 Jahre lang das Wort „Juice" erklären musste, warum die Kette es 2019 ablegte und einfach „Jamba" wurde – und der stille Vorteil, den fast niemand bemerkte: Das Unternehmen besaß Jamba.com bereits seit den 1990er-Jahren.'
 keywords: ['jambajuice.com', 'jamba.com', 'jamba juice domain name', 'jamba rebrand', 'domain upgrade', 'jamba juice name change', 'kirk perron', 'focus brands jamba', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'category-defining domain']
+relatedArticles:
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-massdrop-com-to-drop-com/
+  - /de/blog/from-urbancompass-com-to-compass-com/
+  - /de/blog/from-teslamotors-com-to-tesla-com/
+  - /de/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Neunundzwanzig Jahre lang verriet eine der bekanntesten Smoothie-Ketten Amerikas schon im Namen, was sie verkaufte: **Jamba Juice**, zu finden unter **JambaJuice.com**.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Tout savoir sur le domaine .abbvie. Découvrez ce qu'est cette extension exclusive, ses avantages pour la marque et comment sécuriser votre propre domaine avec Namefi."
 keywords: [".abbvie", "domaines .abbvie", "TLD .abbvie", "top-level domain .abbvie", "qu'est-ce que .abbvie", "pourquoi choisir .abbvie", "qu'est-ce que le domaine .abbvie", "pourquoi choisir le domaine .abbvie", "investir dans les domaines", "domaine tokenisé", "blockchain domains", "extension internet", "achat nom de domaine", "brand TLD", "ICANN"]
+relatedArticles:
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 ## **Qu'est-ce que .abbvie ?**

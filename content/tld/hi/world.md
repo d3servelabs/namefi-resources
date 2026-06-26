@@ -24,6 +24,24 @@ keywords:
   - 'Namefi domain registration'
   - 'new gTLD'
   - 'Web3 domains'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/ai-vs-io-domain/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 ## **.world क्या है?**

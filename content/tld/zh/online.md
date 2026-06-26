@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .online 顶级域名（TLD）的优势与应用。无论是企业数字化转型还是个人品牌展示，.online 都是绝佳选择。立即在 Namefi 注册，体验 Web3 时代的域名管理。'
 keywords: ['.online domains', '.online TLD', 'top-level domain', 'what is .online', 'why choose .online', 'what is the .online domain', 'why choose the .online domain', 'domain investing', 'blockchain domains', 'tokenized domain', '.online域名注册', '购买.online域名', 'Web3 domains', 'new gTLD', 'Namefi']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在当今拥挤的数字世界中，寻找一个简短、易记且富有意义的域名变得越来越具有挑战性。随着传统的 .com 域名资源日益枯竭，新的通用顶级域名（New gTLDs）应运而生，为互联网带来了新的活力。其中，**.online** 凭借其直观的含义和广泛的适用性，迅速成为了全球最受欢迎的新顶级域名之一。

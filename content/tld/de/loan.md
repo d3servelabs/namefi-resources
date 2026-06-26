@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .loan ist eine spezialisierte Domainendung für Finanzdienstleistungen, Kreditinstitute und persönliche Finanzplattformen. Entdecken Sie ihren Zweck, ihre Anwendungen und Vorteile.
 keywords: ["tld", "loan domain", "finanzdienstleistungen", "kreditvergabe", "fintech", "darlehen"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 

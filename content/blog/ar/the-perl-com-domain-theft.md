@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في آخر يناير 2021، اتسرق perl.com — بيت مجتمع Perl البرمجي اللي عمره عقود — عن طريق اختراق حساب في موقع التسجيل، واتنقل لبرا من الصين، واتوجه لـ IP مرتبط ببرامج خبيثة، واتعرض للبيع بـ 190,000 دولار. دي حكاية إزاي حصل ده، وإزاي اتاسترد، وإيه اللي بيعلمنا إياه عن أمان حسابات التسجيل.'
 keywords: ['perl.com', 'سرقة دومين perl.com', 'اختطاف دومين', 'سرقة دومين', 'اختراق حساب تسجيل', 'هندسة اجتماعية', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'اختطاف DNS', 'أمان الدومين', 'استيلاء على حساب', 'BizCN']
+relatedArticles:
+  - /ar/blog/the-panix-com-domain-hijack/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/tld/
 ---
 
 في الدنيا في دومينات هي في الحقيقة بنية تحتية بتعمل في صورة اسم. **perl.com** واحدة منهم. مش مجرد أصل تسويقي أو براند اتعمل السنة اللي فاتت — ده قطعة من أثاث الإنترنت اللي مجتمع Perl البرمجي عايش حواليها من بداية الويب، الباب الأمامي الأساسي للتوثيق والمقالات والواجهة العامة للغة.

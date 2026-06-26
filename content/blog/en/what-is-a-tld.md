@@ -9,6 +9,24 @@ cluster: choosing-a-tld
 format: explainer
 description: A TLD is the part of a domain after the last dot, like .com or .io. Learn what a TLD is, the types (gTLD, ccTLD, sponsored, new gTLD, IDN), and how to choose one.
 keywords: ['tld', 'tld meaning', 'what is a tld', 'what is a top level domain', 'top-level domain', 'tld def', 'tld definition', 'que es un tld', "qu'est-ce qu'un tld", 'types of tld', 'gtld vs cctld', 'tld examples', 'what is a domain extension', 'domain extension', 'gTLD', 'ccTLD', 'sponsored TLD', 'new gTLD', 'IDN TLD', 'ICANN', 'IANA', 'domain registry', 'domain registrar', 'choosing a TLD', 'popular TLDs', 'namefi']
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 ## What Is a TLD?

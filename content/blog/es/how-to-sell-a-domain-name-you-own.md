@@ -8,6 +8,24 @@ draft: false
 description: "Una lista de verificación práctica enfocada en el vendedor para valorar un dominio, encontrar posibles compradores, gestionar el contacto, evitar estafas y cerrar la transferencia de forma segura."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png
 keywords: ['cómo vender un nombre de dominio', 'vender nombre de dominio', 'lista de verificación para vender dominios', 'valoración de dominios', 'depósito en garantía para venta de dominios', 'transferencia de dominios', 'ventas salientes de dominios', 'encontrar compradores de dominios', 'negociación de dominios', 'vender un dominio propio', 'Namefi Outbound', 'mercado secundario de dominios', 'proceso de venta de dominios', 'contacto para venta de dominios', 'guía para vendedores de dominios']
+relatedArticles:
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/working-with-domain-brokers/
+  - /es/blog/inbound-vs-outbound-domain-sales/
+  - /es/blog/domain-flipping/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Ser dueño de un dominio es la parte fácil. Venderlo es donde comienza el verdadero trabajo.

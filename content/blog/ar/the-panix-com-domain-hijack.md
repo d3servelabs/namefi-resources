@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في يناير 2005، تم نقل نطاق panix.com — الخاص بأقدم مزود إنترنت تجاري في نيويورك — بشكل احتيالي إلى جهة تسجيل في أستراليا باستخدام بطاقات ائتمان مسروقة، مما أوقف الويب والبريد الإلكتروني لأيام. قواعد النقل التلقائي بين جهات التسجيل في تلك الحقبة كانت هي التي أتاحت ذلك، وأعادت عملية الإصلاح رسم سياسة نقل النطاقات.'
 keywords: ['panix.com', 'اختطاف نطاق panix', 'اختطاف النطاقات', 'النقل بين جهات التسجيل', 'Melbourne IT', 'Dotster', 'Fibranet', 'سياسة نقل ICANN', 'قفل جهة التسجيل', 'clientTransferProhibited', 'أمان النطاقات', 'اختطاف DNS', 'رمز EPP auth']
+relatedArticles:
+  - /ar/blog/the-lenovo-com-dns-hijack/
+  - /ar/blog/the-perl-com-domain-theft/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-sex-com-heist-the-forged-letter/
+  - /ar/blog/the-syrian-electronic-army-nyt-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
 ---
 
 لأكثر من خمس عشرة سنة، كان أحد أقدم مزودي الإنترنت التجاريين في الولايات المتحدة يعيش في عنوان واحد: **panix.com**. وبعدين، خلال عطلة نهاية أسبوع طويلة في يناير 2005، حد سرقه.

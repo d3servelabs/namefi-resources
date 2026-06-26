@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '.now TLD आपके ब्रांड को तत्काल पहचान और आधुनिकता देता है। जानें कि .now डोमेन आपके ऑनलाइन व्यवसाय, रियल-टाइम सेवाओं और SEO के लिए क्यों बेहतरीन विकल्प है।'
 keywords: ['.now domains', 'TLD', 'top-level domain', 'what is .now', 'why choose .now', 'what is the .now domain', 'why choose the .now domain', 'domain investing', 'blockchain', 'tokenized domain', 'buy .now domain', 'real-time domains', 'new gTLD', 'creative domain names', 'Namefi']
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /hi/blog/why-are-io-domains-expensive/
+  - /hi/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 इंटरनेट की दुनिया तेजी से बदल रही है, और इस बदलाव के साथ ही डोमेन चुनने के तरीके भी बदल रहे हैं। एक सही डोमेन एक्सटेंशन (TLD) आपके ब्रांड की पहचान बना सकता है। आज हम एक ऐसे ही रोमांचक और आधुनिक TLD, **.now** के बारे में बात करेंगे, जो तात्कालिकता (urgency) और 'अभी' के महत्व को दर्शाता है।

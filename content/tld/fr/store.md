@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout sur le TLD .store : l'extension idéale pour le e-commerce. Analysez ses avantages, son usage et enregistrez votre domaine dès aujourd'hui."
 keywords: [".store domains", ".store TLD", "top-level domain", "what is .store", "why choose .store", "what is the .store domain", "why choose the .store domain", "domaine .store", "extension e-commerce", "boutique en ligne", "investissement domaine", "domaines tokenisés", "blockchain", "Namefi", "achat nom de domaine"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Pour toute entreprise vendant des produits ou des services en ligne, le choix du nom de domaine est la première étape critique vers le succès. Alors que le marché numérique devient de plus en plus saturé, se démarquer avec une adresse web pertinente est essentiel. C'est ici qu'intervient l'extension **.store**.

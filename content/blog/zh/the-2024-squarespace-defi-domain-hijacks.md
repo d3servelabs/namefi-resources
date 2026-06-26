@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2024年7月，Google Domains 向 Squarespace 的注册商迁移，将薄弱的默认身份验证变成了大规模攻击面。攻击者劫持了 Compound Finance、Celer Network、Pendle、Unstoppable Domains 等加密货币和 DeFi 项目的域名，将其指向钱包耗尽型钓鱼网站。本文揭示"无缝"迁移如何创造了数百扇敞开的大门，以及这一事件对注册商安全和多因素认证的深刻启示。'
 keywords: ['squarespace域名劫持', 'google domains迁移', 'defi dns劫持', 'compound finance劫持', 'celer network劫持', '钱包耗尽攻击', 'inferno drainer', '域名安全', '注册商迁移', 'mfa多因素认证', 'oauth账户接管', 'dns劫持', '加密货币钓鱼']
+relatedArticles:
+  - /zh/blog/the-curve-finance-dns-hijack/
+  - /zh/blog/the-badgerdao-frontend-attack/
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/tld/
 ---
 
 2024年7月，对于加密货币项目网站而言，最危险的事情并非[智能合约](/zh/glossary/smart-contract/)漏洞，也不是泄露的[私钥](/zh/glossary/private-key/)，而是持有其域名的[注册商](/zh/glossary/registrar/)。

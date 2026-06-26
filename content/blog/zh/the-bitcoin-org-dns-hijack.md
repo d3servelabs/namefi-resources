@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2021年9月，Bitcoin.org——由化名运营者 Cobra 管理、长期作为比特币信息门户的网站——在 DNS 层遭到劫持，被改造成虚假的"比特币翻倍赠送"骗局。在网站被下线之前，骗子敛财约 17,000 美元。本文深入剖析事件经过、攻击手法，以及此次事件对即便是加密原生网站依赖 DNS 这一问题的深刻警示。'
 keywords: ['bitcoin.org', 'bitcoin.org 被黑', 'dns劫持', '域名劫持', '比特币翻倍骗局', '加密货币赠品诈骗', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'dns安全', '域名安全', '域名服务器劫持', 'whois变更攻击']
+relatedArticles:
+  - /zh/blog/the-curve-finance-dns-hijack/
+  - /zh/blog/the-lenovo-com-dns-hijack/
+  - /zh/blog/the-myetherwallet-bgp-dns-attack/
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/dns/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
 ---
 
 十余年来，每当有人想寻找关于"什么是比特币以及如何安全使用它"的权威、中立解答时，互联网都会把他们引向同一个地址：**Bitcoin.org**。

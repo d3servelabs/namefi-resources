@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 深入了解 .alstom 顶级域名。探索这一独特的品牌顶级域名（Brand TLD）如何代表着信任与创新，以及它在域名投资和企业品牌保护中的重要意义。
 keywords: ['.alstom domains', '.alstom TLD', 'top-level domain', 'what is .alstom', 'why choose .alstom', 'what is the .alstom domain', 'why choose the .alstom domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'Alstom brand', 'corporate TLD', '.alstom 域名', '品牌顶级域名', 'Web3 domains']
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/registry/
+  - /zh/glossary/web3/
 ---
 
 ## **什么是 .alstom？**

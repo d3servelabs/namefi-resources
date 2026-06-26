@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .agakhan 顶级域名（TLD）：它代表了什么，有哪些独特优势，以及为何品牌顶级域名在数字身份中至关重要。立即在 Namefi 探索您的域名机会。'
 keywords: ['.agakhan domains', '.agakhan TLD', 'top-level domain', 'what is .agakhan', 'why choose .agakhan', 'what is the .agakhan domain', 'why choose the .agakhan domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'digital identity', 'brand TLD', 'Namefi', 'web3 domains', 'Aga Khan domain']
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
+  - /zh/glossary/registrar/
 ---
 
 ## **什么是 .agakhan?**

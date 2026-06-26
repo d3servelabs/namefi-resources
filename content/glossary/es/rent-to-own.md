@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es el alquiler con opción a compra y cómo se aplica a la adquisición de dominios?
 keywords: ["alquiler con opción a compra","propiedad gradual","planes de pago","adquisición de dominio","contratos inteligentes"]
+relatedArticles:
+  - /es/blog/taxes-and-accounting-for-domain-investors/
+  - /es/blog/why-tokenize-domains/
+  - /es/blog/domain-parking-and-monetization/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/onchain-domain-flipping/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/lease-to-own/
+  - /es/glossary/domain-ownership/
+  - /es/glossary/domain-financing/
+  - /es/glossary/premium-domain/
+  - /es/glossary/smart-contract/
 ---
 
 

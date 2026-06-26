@@ -12,6 +12,24 @@ format: guide
 description: "如何为域名估值：影响价值的因素、估值工具会在哪里出错、如何解读可比销售数据，以及终端用户价与经销商价之间的差距。"
 ogImage: ../../assets/how-to-value-a-domain-name-og.jpg
 keywords: ['如何为域名估值', '域名评估', '我的域名值多少钱', '域名估值', '域名价值计算器', '为域名估值', '域名可比销售', '域名定价', '终端用户价 vs 经销商价', '我的域名值多少', '域名价值', '域名评估工具', '可比域名销售', '域名价值估算']
+relatedArticles:
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/domain-appraisal-tools-compared/
+  - /zh/blog/how-to-read-comparable-domain-sales/
+  - /zh/blog/what-makes-a-domain-valuable/
+  - /zh/blog/domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 每一个拥有域名的人迟早都会问同一个问题：*我的域名值多少钱？* 这是新手翻转者拿到一个刚买入的资产后问的第一个问题，也是他们挂牌出售前问的最后一个问题。它听起来似乎应该有一个干净利落、查表即得的答案——输入名字，得到一个数字。

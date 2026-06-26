@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .allfinanz 顶级域名（TLD）。探索其在综合金融服务领域的独特含义，了解它如何提升品牌信任度，以及如何在 Namefi 注册这一独特的金融域名。'
 keywords: ['.allfinanz', '.allfinanz domains', '.allfinanz TLD', 'top-level domain', 'what is .allfinanz', 'why choose .allfinanz', 'what is the .allfinanz domain', 'why choose the .allfinanz domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'financial domains', 'fintech TLD', 'comprehensive finance', 'Namefi']
+relatedArticles:
+  - /zh/blog/choosing-a-domain-tokenization-platform/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/new-gtld/
+  - /zh/glossary/registry/
 ---
 
 在数字时代，选择正确的域名后缀（TLD）对于建立品牌权威至关重要，尤其是在竞争激烈的金融行业。除了常见的 .com 或 .finance 之外，还有一个极具专业深度的选择——**.allfinanz**。

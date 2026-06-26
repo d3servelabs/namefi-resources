@@ -8,6 +8,24 @@ draft: false
 description: '实战解析现实世界中攻击者接管域名的五种方式——社会工程学、注册商账户入侵、DNS 提供商接管、NS 劫持和过期域名抢注——以及阻断这些攻击的具体控制措施。'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
 keywords: ['域名劫持', '域名安全', '注册商锁定', '转移锁定', 'dnssec', '双因素认证', '社会工程学', '悬空 DNS', 'namefi']
+relatedArticles:
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-badgerdao-frontend-attack/
+  - /zh/blog/the-lenovo-com-dns-hijack/
+  - /zh/blog/the-perl-com-domain-theft/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
 ---
 
 “[域名劫持](/zh/glossary/domain-hijacking/)”这个词听起来惊心动魄，但根据发生方式的不同，它的实际含义却大相径庭。通过钓鱼邮件接管[注册商](/zh/glossary/registrar/)账户是一种劫持；在 [DNS](/zh/glossary/dns/) 提供商处悄悄篡改名称服务器（Nameserver）记录是一种劫持；过期域名被他人抢注并重新指向，从某种意义上来说，同样属于劫持。

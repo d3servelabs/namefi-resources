@@ -9,6 +9,24 @@ keywords: ['cybersquatting', 'bad faith', 'domain dispute', 'trademark infringem
 level: 1
 sources:
   - https://www.wipo.int/amc/en/domains/
+relatedArticles:
+  - /hi/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /hi/blog/what-is-udrp/
+  - /hi/blog/domain-flipping-and-the-law/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/inbound-vs-outbound-domain-sales/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/trademark/
+  - /hi/glossary/bad-faith/
+  - /hi/glossary/acpa/
+  - /hi/glossary/typosquatting/
+  - /hi/glossary/dns/
 ---
 
 **साइबरस्क्वैटिंग** किसी ऐसे डोमेन नाम को पंजीकृत करने की प्रथा है जो किसी अन्य के [ट्रेडमार्क](/hi/glossary/trademark/) के समान या भ्रमित करने वाले ढंग से समान है, लाभ कमाने के इरादे से — नाम को ब्रांड को वापस बेचकर, प्रतिस्पर्धी विज्ञापन दिखाकर, या उपभोक्ता भ्रम का शोषण करके। यह [UDRP](/hi/glossary/udrp/) के पीछे की केंद्रीय अवधारणा है, जिसके लिए एक शिकायतकर्ता को तीन बातें सिद्ध करनी होती हैं: डोमेन उनके चिह्न से मेल खाता है, [रजिस्ट्रेंट](/hi/glossary/registrant/) के पास कोई वैध अधिकार नहीं है, और डोमेन [बुरे इरादे](/hi/glossary/bad-faith/) से पंजीकृत किया गया है और उपयोग किया जा रहा है। अमेरिका में, [ACPA](/hi/glossary/acpa/) संघीय न्यायालय क्षेत्राधिकार और प्रति डोमेन $100,000 तक के वैधानिक हर्जाने को जोड़ता है। एक संबंधित प्रथा, [टाइपोस्क्वैटिंग](/hi/glossary/typosquatting/), प्रसिद्ध नामों की गलत वर्तनियों को लक्षित करती है। किसी साइबरस्क्वैट किए गए डोमेन को [ब्लॉकचेन](/hi/glossary/blockchain/) पर टोकनाइज़ करना कोई कानूनी आश्रय प्रदान नहीं करता: UDRP पैनल और अदालतें टोकन स्वामित्व की परवाह किए बिना अंतर्निहित DNS पंजीकरण के हस्तांतरण का आदेश दे सकती हैं और देती हैं। रजिस्ट्रेंट को किसी सक्रिय ब्रांड से मिलते-जुलते नाम का अधिग्रहण करने से पहले एक प्रशंसनीय, सद्भावनापूर्ण कारण प्रदर्शित करने में सक्षम होना चाहिए।

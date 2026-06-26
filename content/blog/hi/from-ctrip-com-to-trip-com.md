@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'कैसे Ctrip, चीन की सबसे बड़ी ऑनलाइन ट्रैवल एजेंसी, ने 2017 में Gogobot नामक एक स्टार्टअप से प्रीमियम Trip.com डोमेन हासिल किया, उसके इर्द-गिर्द अपना वैश्विक ब्रांड फिर से बनाया, और 2019 में अंतरराष्ट्रीय विस्तार के लिए पूरी मूल कंपनी का नाम बदलकर Trip.com Group कर दिया।'
 keywords: ['ctrip.com', 'trip.com', 'ctrip रीब्रांड', 'trip.com group', 'trip.com डोमेन', 'डोमेन अपग्रेड', 'चीनी ब्रांड वैश्विक विस्तार', 'gogobot trip.com', 'james liang ctrip', 'प्रीमियम ट्रैवल डोमेन', 'स्टार्टअप नामकरण', 'ब्रांड नामकरण', 'डोमेन अधिग्रहण']
+relatedArticles:
+  - /hi/blog/from-snapchat-com-to-snap-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-mona-co-to-crypto-com/
+  - /hi/blog/from-urbancompass-com-to-compass-com/
+  - /hi/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
 ---
 
 लगभग बीस वर्षों तक, दुनिया की सबसे बड़ी ऑनलाइन ट्रैवल कंपनी एक ऐसे नाम से जानी जाती थी जो एक देश में बखूबी काम करता था, लेकिन बाकी जगहों पर शायद ही कहीं: **Ctrip.com**।

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "نظرة عملية على كيفية استمرار عمل نظام أسماء النطاقات (DNS) العادي - خوادم الأسماء، A/AAAA، MX، TXT، DNSSEC، CAA - بعد ترميز نطاق ICANN الخاص بك. ما الذي يتغير، وما الذي لا يتغير، وإلى أين توجه مزود DNS الحالي الخاص بك."
 keywords: ['نظام DNS للنطاق المرمز', 'DNSSEC لنطاق NFT', 'خوادم أسماء النطاق المرمز', 'البريد الإلكتروني للنطاق المرمز', 'سجلات MX لنطاق NFT', 'سجلات CAA للنطاق المرمز', 'إدارة DNS للنطاق المرمز', 'نظام DNS للنطاق على السلسلة', 'MX لنطاق NFT', 'DNSSEC لنطاق NFT', 'Cloudflare للنطاق المرمز', 'Route53 للنطاق المرمز', 'كيف يعمل DNS مع الترميز', 'تحليل النطاق المرمز']
+relatedArticles:
+  - /ar/blog/how-to-tokenize-your-com/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/how-tokenized-marketplaces-replace-escrow/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/tokenize-your-com/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/tld/
 ---
 
 مصدر قلق شائع حول [ترميز](/ar/glossary/tokenize/) النطاق (Tokenizing): *"هل سيظل موقع الويب الخاص بي يعمل؟ هل سيظل بريدي الإلكتروني يعمل؟ هل سأضطر إلى تعلم بنية DNS جديدة بالكامل؟"*

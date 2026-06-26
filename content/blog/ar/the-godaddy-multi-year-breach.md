@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'بين عامَي 2020 و2022، استوطنت مجموعة قراصنة متمرسة داخل بنية تحتية GoDaddy — سرقت الكود المصدري، وكشفت بيانات 1.2 مليون عميل من خدمة Managed WordPress، وأعادت توجيه مواقع العملاء إلى مواقع خبيثة. تحليل معمق في مخاطر الاعتماد على مزود واحد، وما يعلمنا إياه عن نقاط الإخفاق الفردية.'
 keywords: ['اختراق godaddy', 'خرق بيانات godaddy', 'اختراق managed wordpress', 'أمان شركة التسجيل', 'أمان النطاقات', 'اختراق متعدد السنوات', 'برمجيات خبيثة cpanel', 'هجوم إعادة توجيه المواقع', 'تسريب مفتاح ssl الخاص', 'خرق كلمة مرور sftp', 'الإفصاح الأمني sec 10-k', 'مخاطر تركز شركات التسجيل', 'نقطة إخفاق فردية']
+relatedArticles:
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-dnspionage-campaign/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+  - /ar/blog/the-badgerdao-frontend-attack/
+  - /ar/blog/the-icann-spear-phishing-breach/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/tld/
 ---
 
 شركة تسجيل النطاقات هي أكثر الشركات مللاً في حياتك — وفي نفس الوقت تعتمد عليها اعتماداً كاملاً.

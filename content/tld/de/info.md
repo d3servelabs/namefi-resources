@@ -24,6 +24,24 @@ keywords:
   - identity digital
   - web3 domains
   - .info domain bedeutung
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-law-firm/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .info?**

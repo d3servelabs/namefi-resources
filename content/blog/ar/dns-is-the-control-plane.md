@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "نظرة من منظور مسجلي النطاقات وعمليات DNS حول حادثة AWS في 20 أكتوبر 2025، كيف يعمل نظام DNS فعلياً، لماذا انتشر هذا الفشل على نطاق واسع، وما الذي يمكن لفرق الإنترنت المرنة فعله حيال ذلك."
 keywords: ['نظام أسماء النطاقات', 'انقطاع aws', 'مستوى التحكم', 'dynamodb', 'us-east-1', 'التخزين المؤقت لنظام dns', 'مرونة السحابة', 'dns متعدد التواقيع', 'الاستجابة للحوادث']
+relatedArticles:
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-dyn-dns-mirai-attack/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 [![](../../assets/dns-is-the-control-plane.png)](../../assets/dns-is-the-control-plane.png)

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "以平台中立的视角，带您全面了解2026年通证化域名的实际应用——DeFi借贷、租赁、碎片化所有权、AI代理身份，以及那些尚未完全落地的应用场景。"
 keywords: ['通证化域名应用场景', 'DomainFi', '通证化域名借贷', '通证化域名抵押', '租赁通证化域名', '域名碎片化所有权', 'AI代理域名', '域名DeFi', '通证化域名市场', '通证化域名应用', 'NFT域名应用场景', '2026年为何通证化域名', '域名链上使用', '通证化域名案例']
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/how-tokenized-marketplaces-replace-escrow/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/tokenize-your-com/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
 ---
 
 谈论通证化（Tokenized）域名时，人们很容易将其视为一种*技术*。但更有价值的视角是将其看作一系列*你可以用它做的事情*，而这些事情是你使用普通注册商托管的域名难以轻易做到的。本文将带您了解这些应用场景——哪些在今天是切实可行的，哪些正在兴起，又有哪些主要还停留在PPT阶段。

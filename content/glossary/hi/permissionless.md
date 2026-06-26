@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ब्लॉकचेन और डोमेन प्रबंधन में अनुमति-रहित का क्या अर्थ है?
 keywords: ["अनुमति-रहित","विकेन्द्रीकृत","सेंसरशिप-प्रतिरोधी","खुली पहुँच","ब्लॉकचेन"]
+relatedArticles:
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/tokenized-domain-use-cases-2026/
+  - /hi/blog/the-curve-finance-dns-hijack/
+  - /hi/blog/what-are-stablecoins/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-security/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/web3/
+  - /hi/glossary/registrar/
+  - /hi/glossary/tokenized-domain/
+  - /hi/glossary/blockchain/
+  - /hi/glossary/tokenize/
 ---
 
 

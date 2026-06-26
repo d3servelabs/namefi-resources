@@ -12,6 +12,24 @@ format: comparison
 description: "Afternic vs Sedo vs Dan vs onchain marketplaces compared on reach, fees, and fast transfer — plus how to list one name across several at once."
 ogImage: ../../assets/where-to-sell-domains-marketplaces-compared-og.jpg
 keywords: ['where to sell domains', 'best domain marketplaces', 'afternic vs sedo', 'sell domain on afternic', 'sell domain on sedo', 'dan.com shut down', 'domain fast transfer', 'domain marketplace fees', 'list domains for sale', 'tokenized domain marketplace', 'sell domains online', 'domain aftermarket', 'where to list a domain', 'best place to sell a domain name']
+relatedArticles:
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/selling-domains-as-nfts/
+  - /en/blog/domain-flipping/
+  - /en/blog/working-with-domain-brokers/
+  - /en/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 A listing is not a sale, but a listing in the wrong place is a guaranteed non-sale. Once you've decided to sell — covered in our [how to sell domains for profit](/en/blog/how-to-sell-domains-for-profit/) pillar, part of the broader [domain flipping](/en/blog/domain-flipping/) guide — the next question is purely practical: which venue do you list on? The answer is rarely "one of them." Most working domainers list the same name in several places at once, because each marketplace reaches a different slice of buyers. This piece compares the major venues on the four things that actually decide a sale: reach, fees, fast transfer, and how the name changes hands once someone clicks buy.

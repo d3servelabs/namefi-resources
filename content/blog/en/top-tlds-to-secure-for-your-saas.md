@@ -12,6 +12,24 @@ format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-saas-og.jpg
 description: 'The top 10 TLDs to secure for your SaaS — from .com and .io to .app and .ai — with defensive registration tips and authoritative registry facts.'
 keywords: ['top TLDs for SaaS', 'best domain extensions for SaaS', 'TLDs to secure for startup', 'defensive domain registration', '.io for SaaS', '.ai domain', '.app domain HTTPS', '.dev domain', 'SaaS domain strategy', 'brand protection domains', 'which TLD to choose', 'register SaaS domains']
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/top-tlds-to-secure-for-your-law-firm/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 When you launch a SaaS product, your domain is more than an address — it is the surface your users, your API clients, and your search rankings all attach to. Choosing the right [top-level domain](/en/tld/com) (TLD) is the first decision, but for any product you intend to grow, it is rarely the only registration you should make. Securing several TLDs around your brand protects you from typo-squatters, lookalike [phishing](/en/glossary/phishing/) pages, and competitors quietly parking the extension you forgot.

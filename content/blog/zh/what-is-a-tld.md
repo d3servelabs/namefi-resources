@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: TLD 是域名中最后一个点之后的部分，例如 .com 或 .io。了解什么是 TLD、各种类型（gTLD、ccTLD、赞助型、新通用顶级域、IDN），以及如何选择合适的顶级域名。
 keywords: ['tld', 'tld meaning', 'what is a tld', 'what is a top level domain', 'top-level domain', 'tld def', 'tld definition', 'que es un tld', "qu'est-ce qu'un tld", 'types of tld', 'gtld vs cctld', 'tld examples', 'what is a domain extension', 'domain extension', 'gTLD', 'ccTLD', 'sponsored TLD', 'new gTLD', 'IDN TLD', 'ICANN', 'IANA', 'domain registry', 'domain registrar', 'choosing a TLD', 'popular TLDs', 'namefi']
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## 什么是 TLD？

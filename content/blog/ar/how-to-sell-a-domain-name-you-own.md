@@ -8,6 +8,24 @@ draft: false
 description: "قائمة مرجعية عملية تضع البائع في المقام الأول لتسعير النطاق، والعثور على المشترين المحتملين، والتعامل مع استراتيجيات التواصل، وتجنب الاحتيال، وإتمام عملية النقل بأمان."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png
 keywords: ['كيفية بيع اسم نطاق', 'بيع اسم النطاق', 'قائمة مرجعية لبيع النطاقات', 'تقييم النطاقات', 'حساب ضمان بيع النطاقات', 'نقل النطاق', 'التواصل الخارجي لمبيعات النطاقات', 'العثور على مشتري النطاقات', 'التفاوض على النطاقات', 'بيع نطاق تمتلكه', 'Namefi Outbound', 'سوق النطاقات الثانوية', 'عملية بيع النطاق', 'التواصل لمبيعات النطاقات', 'دليل بائع النطاقات']
+relatedArticles:
+  - /ar/blog/how-to-sell-domains-for-profit/
+  - /ar/blog/working-with-domain-brokers/
+  - /ar/blog/inbound-vs-outbound-domain-sales/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 امتلاك اسم نطاق هو الجزء السهل. أما بيعه فهو حيث يبدأ العمل الحقيقي.

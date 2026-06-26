@@ -11,6 +11,24 @@ seriesOrder: 4
 format: case-study
 description: 'How Dropbox launched on GetDropbox.com because Dropbox.com was taken, fought a trademark and squatting battle, and finally bought the exact-match Dropbox.com for a reported $300,000 in cash.'
 keywords: ['getdropbox.com', 'dropbox.com', 'dropbox domain name', 'drew houston', 'y combinator dropbox', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'exact match domain', 'domain acquisition', 'evenflow dropbox']
+relatedArticles:
+  - /en/blog/from-box-net-to-box-com/
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+  - /en/blog/from-teslamotors-com-to-tesla-com/
+  - /en/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 Before Dropbox was a verb for "put it in the cloud," it lived at a slightly longer address: **GetDropbox.com**.

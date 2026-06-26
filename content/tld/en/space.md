@@ -18,6 +18,24 @@ faqs:
     answer: 'Yes, when configured correctly. .space is a legitimate Radix-operated gTLD, but as a lower-cost new gTLD it sees abuse, so set up SPF, DKIM, and DMARC and warm up your sending domain to keep messages out of spam folders.'
   - question: 'Does .space support DNSSEC and WHOIS privacy?'
     answer: 'Yes. The .space registry supports DNSSEC for signed, tamper-resistant DNS, and most registrars including Namefi offer WHOIS privacy to keep your personal contact details out of the public directory.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.space domain** is one of the most literal, brandable new generic top-level domains ([gTLDs](/en/glossary/gtld/)) on the market: a short, evocative word that works equally well for a SaaS startup, a designer's portfolio, a coworking brand, or an actual aerospace project. Operated by the [registry](/en/glossary/registry/) Radix, it launched in the first wave of ICANN's gTLD expansion and has become a familiar alternative for anyone whose ideal `.com` is taken or priced out of reach.

@@ -16,6 +16,24 @@ faqs:
     answer: 'स्टार्टअप, कंपनियाँ और संस्थापक जिनका आदर्श .com लिया जा चुका है या बहुत महंगा है। "co" स्ट्रिंग स्वाभाविक रूप से "company," "corporation," या "Colorado" के रूप में पढ़ी जाती है, जो इसे वैश्विक उद्यमों के लिए एक स्वच्छ, ब्रांडेबल दूसरा विकल्प बनाती है।'
   - question: 'क्या .co वही है जो .com है?'
     answer: 'नहीं। ये अलग-अलग TLD हैं जो अलग-अलग ऑपरेटरों द्वारा चलाए जाते हैं। जोखिम यह है कि जो आगंतुक आपका पता स्मृति से टाइप करते हैं वे अंत में "m" जोड़ सकते हैं और इसके बजाय .com पर पहुँच सकते हैं, इसलिए बातचीत और टाइप किए गए ट्रैफ़िक में प्रत्ययों के बीच भ्रम हो सकता है।'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/why-are-io-domains-expensive/
+  - /hi/blog/how-tld-affects-domain-value/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 **.co** डोमेन एक कंट्री-कोड एक्सटेंशन के सबसे सफल उदाहरणों में से एक है जो अपनी सीमाओं से मुक्त हो गया। आधिकारिक रूप से **कोलंबिया** के लिए ccTLD, इसे विश्वभर में ".com" के एक छोटे, ब्रांडेबल विकल्प के रूप में प्रचारित और अपनाया गया है — जहाँ "co" तुरंत **company**, **corporation**, या केवल एक संक्षिप्त ".com" के रूप में पढ़ा जाता है। उन संस्थापकों के लिए जिनका सपनों वाला **.com** लिया जा चुका है, **.co** अक्सर पहली जगह होती है जहाँ वे देखते हैं।

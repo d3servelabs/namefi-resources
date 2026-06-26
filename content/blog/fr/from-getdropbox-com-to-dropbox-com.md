@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Comment Dropbox a lancé son service sur GetDropbox.com parce que Dropbox.com était pris, a mené une bataille de marque et de cybersquattage, et a finalement acheté le domaine exact Dropbox.com pour la somme rapportée de 300 000 dollars en espèces."
 keywords: ['getdropbox.com', 'dropbox.com', 'nom de domaine dropbox', 'drew houston', 'y combinator dropbox', 'mise à niveau de domaine', 'nommage de startup', 'nommage de marque', 'domaine premium', 'stratégie de domaine', 'domaine exact match', 'acquisition de domaine', 'evenflow dropbox']
+relatedArticles:
+  - /fr/blog/from-box-net-to-box-com/
+  - /fr/blog/from-ubercab-com-to-uber-com/
+  - /fr/blog/from-bufferapp-com-to-buffer-com/
+  - /fr/blog/from-teslamotors-com-to-tesla-com/
+  - /fr/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Avant que Dropbox ne devienne un verbe synonyme de « mettre dans le cloud », le service vivait à une adresse un peu plus longue : **GetDropbox.com**.

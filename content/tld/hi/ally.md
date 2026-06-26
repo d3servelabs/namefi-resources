@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '.ally डोमेन एक्सटेंशन भागीदारी, समुदाय और सहयोग का प्रतीक है। जानें कि यह व्यवसायों, निवेशकों और Web3 प्रोजेक्ट्स के लिए क्यों सही है और इसे Namefi पर कैसे सुरक्षित करें।'
 keywords: ['.ally domains', '.ally TLD', 'top-level domain', 'what is .ally', 'why choose .ally', 'what is the .ally domain', 'why choose the .ally domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'web3 domains', 'buy .ally domain', 'digital identity', 'brand alliances', 'new gtld']
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/from-thefacebook-com-to-facebook-com/
+  - /hi/blog/ai-vs-io-domain/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
 ---
 
 ## **.ally क्या है?**

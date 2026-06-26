@@ -16,6 +16,24 @@ faqs:
     answer: '官方上 "cc" 是科科斯（基林）群岛的 ISO 国家代码。在实践中，它被灵活解读为 "commercial company（商业公司）"、"creative commons（知识共享）"、"carbon copy（抄送）"，或干脆是一对易记的相同首字母，这正是它作为简短、易于品牌化扩展名广受欢迎的原因。'
   - question: '谁运营 .cc 域名？'
     answer: '.cc 注册局由 eNIC Cocos (Keeling) Islands Pty. Ltd.（以 Island Internet Services 名义经营）运营，它是 Verisign 的全资子公司。IANA 根区数据库将 eNIC / Island Internet Services 列为发起组织和注册局管理者。'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/domain-hacks-explained/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 **.cc** 域名是互联网上最经久不衰的"借用"国家代码之一——一个成长为简短、易于品牌化的全球扩展名的国家命名空间。它在官方层面是印度洋上的澳大利亚小型领地**科科斯（基林）群岛（Cocos (Keeling) Islands）**的 ccTLD，数十年来一直被全球营销为 ".com" 的灵活替身。"cc" 这一字符串解读空间无限——**commercial company（商业公司）**、**creative commons（知识共享）**、**carbon copy（抄送）**，或干脆是一对利落的相同首字母——这使它成为易记名称和巧妙域名拼接的宠儿。

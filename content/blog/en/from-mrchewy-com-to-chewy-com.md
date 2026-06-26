@@ -11,6 +11,24 @@ seriesOrder: 18
 format: case-study
 description: 'How a 2011 pet startup launched as "Mr. Chewy" on MrChewy.com, dropped the "Mr." to become Chewy on the exact-match Chewy.com, and why that one-word domain upgrade quietly became part of a brand PetSmart bought for $3.35 billion.'
 keywords: ['mrchewy.com', 'chewy.com', 'chewy domain name', 'mr chewy', 'domain upgrade', 'ryan cohen', 'michael day', 'frank schilling', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'pet ecommerce']
+relatedArticles:
+  - /en/blog/from-urbancompass-com-to-compass-com/
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-massdrop-com-to-drop-com/
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+  - /en/blog/from-teslamotors-com-to-tesla-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
 ---
 
 Before Chewy was the customer-service legend of pet e-commerce — before the handwritten cards, the condolence flowers, and the $3.35 billion exit — it had a slightly cuddlier, more cautious name. It was **Mr. Chewy**, and it lived at **MrChewy.com**.

@@ -24,6 +24,24 @@ keywords:
   - 'kreative domains'
   - 'namefi'
   - 'neue domainendungen'
+relatedArticles:
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/brandable-vs-keyword-domains/
+  - /de/blog/ai-vs-io-domain/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
 ---
 
 Die Wahl der richtigen Domain-Endung (Top-Level Domain oder [TLD](/de/glossary/tld/)) ist einer der wichtigsten Schritte beim Aufbau einer Online-Präsenz. In einer Welt, in der traditionelle Endungen wie `.com` oder `.de` oft überlaufen sind, suchen Innovatoren nach frischen Alternativen. Hier kommt **.able** ins Spiel – eine Endung, die Kreativität, Fähigkeit und Modernität ausstrahlt.

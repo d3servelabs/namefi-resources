@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Discover the power of the .alsace TLD for regional branding and SEO. Learn why businesses, investors, and Web3 developers are choosing .alsace at Namefi.'
 keywords: ['.alsace domains', '.alsace TLD', '.alsace top-level domain', 'what is .alsace', 'why choose .alsace', 'what is the .alsace domain', 'why choose the .alsace domain', 'register .alsace domain', 'Alsace regional domain', 'French GeoTLD', 'domain investing', 'tokenized domains', 'Web3 domains', 'Alsace business domains', 'blockchain domain registration']
+relatedArticles:
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/web3/
 ---
 
 ## **What is .alsace?**

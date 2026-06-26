@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Cómo Facebook abandonó TheFacebook.com, compró Facebook.com por $200K, luego pagó $8,5 millones por FB.com y convirtió las mejoras de dominio en infraestructura de marca.'
 keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'nombre de dominio de facebook', 'mejora de dominio', 'naming de startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'historia de facebook', 'adquisición de dominio', 'rebranding de empresa', 'dominio que define una categoría']
+relatedArticles:
+  - /es/blog/from-ubercab-com-to-uber-com/
+  - /es/blog/from-teslamotors-com-to-tesla-com/
+  - /es/blog/from-bufferapp-com-to-buffer-com/
+  - /es/blog/from-slackhq-com-to-slack-com/
+  - /es/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/name-change-game-change/
+  - /es/series/best-tlds-by-industry/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Antes de que Facebook se convirtiera en uno de los verbos predeterminados de internet, era algo más acotado y más literal: **TheFacebook.com**.

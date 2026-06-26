@@ -16,6 +16,24 @@ faqs:
     answer: 'Licensed CPA firms and individual CPAs who want a verified, profession-specific web and email identity. It suits practices that value anti-impersonation security and a credential signal more than a short, generic name.'
   - question: 'What happens to my .cpa domain if my CPA license lapses?'
     answer: 'Eligibility is re-checked at each renewal. If you can no longer demonstrate a valid CPA license or firm license, you may be unable to renew the domain, since the registry validates eligibility on an ongoing basis rather than only at first purchase.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-law-firm/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 The **.cpa domain** is one of the internet's few truly restricted extensions: a credential-gated [top-level domain](/en/glossary/tld/) reserved for licensed Certified Public Accountants and CPA firms. Unlike open suffixes that anyone can buy, .cpa is administered in association with the American Institute of CPAs (AICPA) and operated by CPA.com, and every [registrant](/en/glossary/registrant/)'s license is verified before a name is issued. For accounting professionals, that verification is the entire point — a .cpa address tells clients, at a glance, that the firm behind it is a real, licensed CPA practice.

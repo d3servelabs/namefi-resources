@@ -24,6 +24,24 @@ keywords:
   - 'firmen domain registrieren'
   - 'web3 domains'
   - 'corporate identity tld'
+relatedArticles:
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/ai-vs-io-domain/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/registry/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
 ---
 
 ## **Was ist .ag?**

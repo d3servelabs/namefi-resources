@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "面向域名持有者和投资者的UDRP详解：投诉方必须证明的三要素、流程与时间线、裁决结果、UDRP与URS及法院诉讼的区别，以及如何应对投诉。"
 keywords: ['udrp', '什么是udrp', 'udrp流程', 'udrp政策', 'udrp投诉', 'udrp verfahren', 'udrp-verfahren', '统一域名争议解决政策', '域名争议', '域名纠纷', '网络抢注', '反向域名劫持', '恶意注册', 'icann udrp', 'wipo', 'urs', '统一快速暂停', '商标域名争议', '域名投资法律', '应对udrp投诉']
+relatedArticles:
+  - /zh/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/domain-flipping-and-the-law/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /zh/topics/domain-basics/
+  - /zh/topics/domain-security/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 如果你持有域名的时间足够长，最终都会听到[UDRP](/zh/glossary/udrp/)这个词——通常是因为有人威胁要用它来对付你，或者你在思考自己投资组合中的某个域名是否安全。对于域名投资者而言，了解UDRP不是可选项，而是必修课。它是你注册的域名在不经过法庭的情况下被剥夺的最常见方式。

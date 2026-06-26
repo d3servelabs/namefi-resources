@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'El 27 de agosto de 2013, el Ejército Electrónico Sirio realizó un ataque de phishing a un revendedor de Melbourne IT, reescribió los registros DNS de nytimes.com y los dominios de Twitter, y dejó al New York Times fuera de línea durante horas. Un análisis profundo de cómo el eslabón débil de la cadena de registradores se convirtió en el punto de falla de un periódico — y qué habrían cambiado los bloqueos de registro.'
 keywords: ['hackeo de nytimes.com', 'ejército electrónico sirio', 'melbourne it', 'secuestro de dns', 'secuestro de dominio', 'seguridad de registrador', 'phishing de revendedor', 'bloqueo de registro', 'registros dns', 'ataque de servidor de nombres de dominio', 'dns de twitter 2013', 'seguridad de dominios', 'serverupdateprohibited']
+relatedArticles:
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-lenovo-com-dns-hijack/
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-panix-com-domain-hijack/
+  - /es/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/tld/
 ---
 
 El nombre de dominio de un periódico es su puerta de entrada. Cuando escribes `nytimes.com`, estás confiando en una cadena invisible — un registro de dominios, un [registrador](/es/glossary/registrar/), y a veces un [revendedor](/es/glossary/reseller/) por debajo de ese registrador — para que te dirija a la redacción real y a ningún otro lugar. En un día normal nunca piensas en esa cadena. El 27 de agosto de 2013, se rompió, y millones de lectores se acercaron a la puerta de entrada de *The New York Times* para encontrar que había sido reemplazada por la de otra persona.

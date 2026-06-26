@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Warum sind .io-Domains so teuer? Eine klare Aufschlüsselung der Großhandelspreise der Registry, der Nachfrage von Startups und Techunternehmen, der Knappheit kurzer Namen, der Verlängerungskosten und der neuen Frage zur Chagos-Souveränität."
 keywords: ['warum sind io domains teuer', 'warum sind .io domains teuer', 'io domain teuer', 'warum io domains teuer', 'warum sind .io domains so teuer', 'warum .io domain nutzen', 'io domain für startups', 'io domain preis', 'io domain kosten', 'io domain verlängerungskosten', 'lohnen sich io domains', 'io vs com', 'io vs ai domain', 'kosten io domain', 'warum io domains mehr kosten', 'io domain preise erklärt', 'soll ich eine io domain kaufen', 'io ccTLD', 'Chagos io domain', 'io domain kaufen']
+relatedArticles:
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/how-tld-affects-domain-value/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/domain-flipping/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Wer in letzter Zeit den Preis einer `.io`-Domain nachgeschlagen hat und zusammengezuckt ist, ist damit nicht allein. Im Vergleich zu einer einfachen `.com` oder einer der günstigeren neueren Endungen landet `.io` konsequent in der Premiumklasse – sowohl bei der Registrierung als auch, noch schmerzhafter, bei der jährlichen Verlängerung.

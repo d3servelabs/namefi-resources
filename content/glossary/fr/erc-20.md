@@ -9,6 +9,24 @@ keywords: ['ERC-20', 'jeton fongible', 'norme de jeton', 'stablecoin', 'jeton et
 level: 1
 sources:
   - https://eips.ethereum.org/EIPS/eip-20
+relatedArticles:
+  - /fr/blog/the-badgerdao-frontend-attack/
+  - /fr/blog/onchain-domain-flipping/
+  - /fr/blog/selling-domains-as-nfts/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/ethereum/
+  - /fr/glossary/erc-721/
+  - /fr/glossary/stablecoin/
+  - /fr/glossary/wallet/
+  - /fr/glossary/web3/
 ---
 
 L'**ERC-20** est la proposition d'amélioration d'[Ethereum](/fr/glossary/ethereum/) qui définit une interface standard pour les jetons fongibles — chaque unité est identique et interchangeable, tout comme les dollars dans un compte bancaire. Tout contrat implémentant les fonctions `transfer`, `approve` et `allowance` de l'ERC-20 est automatiquement compatible avec les portefeuilles, les plateformes d'échange et les protocoles DeFi sans intégration personnalisée. Les [stablecoins](/fr/glossary/stablecoin/) comme USDC et USDT sont des jetons ERC-20, tout comme la plupart des jetons de gouvernance et d'utilité. L'ERC-20 contraste fortement avec l'[ERC-721](/fr/glossary/erc-721/) : un jeton ERC-721 est non fongible — chacun possède un identifiant unique représentant un actif distinct, comme un nom de domaine spécifique.

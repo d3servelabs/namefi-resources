@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .loan هو امتداد نطاق متخصص مصمم للخدمات المالية، مؤسسات الإقراض، ومنصات التمويل الشخصي. اكتشف هدفه، استخداماته، وفوائده.
 keywords: ["نطاق المستوى الأعلى", "نطاق loan", "خدمات مالية", "إقراض", "فينتك", "قرض"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 

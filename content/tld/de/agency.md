@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .agency Domain: Perfekt für Dienstleister und Kreative. Entdecken Sie Vorteile, Verfügbarkeit und wie Sie Ihre Domain bei Namefi sichern."
 keywords: ['.agency domains', '.agency TLD', '.agency top-level domain', 'what is .agency', 'why choose .agency', 'what is the .agency domain', 'why choose the .agency domain', 'was ist .agency', 'warum .agency wählen', 'domain investing', 'blockchain domains', 'tokenized domains', 'Werbeagentur Domain', 'Marketing Agentur', 'Dienstleister Domains']
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .agency?**

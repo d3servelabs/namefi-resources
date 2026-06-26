@@ -10,6 +10,24 @@ also_known_as: ['World Intellectual Property Organization']
 level: 1
 sources:
   - https://www.wipo.int/amc/en/domains/
+relatedArticles:
+  - /ar/blog/what-is-udrp/
+  - /ar/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /ar/blog/domain-flipping-and-the-law/
+  - /ar/blog/from-instagr-am-to-instagram-com/
+  - /ar/blog/how-to-name-your-project/
+relatedTopics:
+  - /ar/topics/domain-basics/
+  - /ar/topics/domain-security/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/icann/
+  - /ar/glossary/trademark/
+  - /ar/glossary/bad-faith/
+  - /ar/glossary/tld/
+  - /ar/glossary/cybersquatting/
 ---
 
 **WIPO** (المعروفة بـ World Intellectual Property Organization — المنظمة العالمية للملكية الفكرية) هي وكالة الأمم المتحدة المسؤولة عن سياسة الملكية الفكرية العالمية، ومركز التحكيم والوساطة التابع لها هو أكثر مزودي تسوية نزاعات [UDRP](/ar/glossary/udrp/) الخاصة بأسماء الدومينات نشاطًا في العالم. لما يعتقد صاحب [علامة تجارية](/ar/glossary/trademark/) إن دومينًا سُجِّل بنية سيئة للاستفادة من براندهم — وهو ما يُعرف بـ [الاستغلال الإلكتروني](/ar/glossary/cybersquatting/) — يقدر يقدّم شكوى UDRP لمركز WIPO بدلًا من الدخول في دعاوى قضائية مكلفة. WIPO بيعيّن محكّمين مستقلين أو ثلاثة لمراجعة مذكرات مكتوبة من الطرفين وإصدار قرار ملزم، عادةً في غضون 45–60 يومًا، يمكن أن يؤدي لنقل الدومين أو إلغائه. WIPO بيتعامل مع آلاف القضايا سنويًا عبر طيف واسع من الـ gTLDs ولاحقات الدول.

@@ -12,6 +12,24 @@ format: explainer
 description: "डोमेन हैक क्या होता है, ब्रांड और फ्लिपर इन चतुर छोटे डोमेन को इतना क्यों महत्व देते हैं, इनके पीछे छिपे ccTLD जोखिम, और किसी एक का मूल्य कैसे आँकें।"
 ogImage: ../../assets/domain-hacks-explained-og.jpg
 keywords: ['डोमेन हैक', 'डोमेन हैक्स', 'डोमेन हैक क्या है', 'चतुर डोमेन नाम', 'del.icio.us', 'bit.ly डोमेन', 'ccTLD डोमेन हैक', 'छोटे डोमेन नाम', 'ब्रांडेबल डोमेन', 'डोमेन हैक उदाहरण', 'youtu.be', 'instagr.am', 'goo.gl', 'vb.ly ज़ब्ती']
+relatedArticles:
+  - /hi/blog/how-tld-affects-domain-value/
+  - /hi/blog/what-makes-a-domain-valuable/
+  - /hi/blog/from-del-icio-us-to-delicious-com/
+  - /hi/blog/how-to-value-a-domain-name/
+  - /hi/blog/domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 एक ऐसा वेब पता होता है जिसे आप पढ़ते नहीं, बल्कि *डिकोड* करते हैं। आप अक्षर देखते हैं, डॉट देखते हैं, और फिर पूरी स्ट्रिंग अचानक एक ही शब्द में बदल जाती है जो विराम-चिह्नों के आर-पार सीधा चला जाता है। अब तक बना सबसे मशहूर उदाहरण था `del.icio.us`। इसे धीरे-धीरे पढ़ें तो यह टुकड़ों में बिखर जाता है; तेज़ी से पढ़ें तो यह बस "delicious" कहता है।

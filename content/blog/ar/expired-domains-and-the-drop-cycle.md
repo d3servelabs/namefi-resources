@@ -12,6 +12,24 @@ format: explainer
 description: "إزاي بينتهي النطاق وبيسقط: فترة السماح، نافذة الاسترداد بتاعت الـ30 يوم، الـ5 أيام انتظار قبل الحذف، وبعدها الإطلاق — وفين الأسماء اللي بتسقط دي بتظهر للناس اللي بتاجر فيها."
 ogImage: ../../assets/expired-domains-and-the-drop-cycle-og.jpg
 keywords: ['النطاقات المنتهية', 'دورة سقوط النطاقات', 'دورة حياة النطاق', 'فترة السماح للاسترداد', 'الانتظار قبل الحذف', 'اصطياد النطاقات الساقطة', 'أسماء النطاقات المنتهية', 'إزاي بتنتهي النطاقات', 'النطاقات الساقطة', 'قنص النطاقات', 'شراء النطاقات المنتهية', 'فترة استرداد النطاق', 'إمتى بتسقط النطاقات', 'حجز النطاق المسبق', 'دور على نطاقات تتاجر فيها']
+relatedArticles:
+  - /ar/blog/domain-backorders-and-drop-catching/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/how-to-win-domain-auctions/
+  - /ar/blog/hand-registering-domains-to-flip/
+  - /ar/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 أغلب الناس فاكرة إن النطاق اللي بيخلص بيختفي ببساطة في اليوم اللي بعد انتهائه، ويرجع تاني للسوق المفتوح الصبح اللي بعده على طول. بس ده مش بيحصل. الاسم اللي محدش بيجدده بيعدّي على سلسلة ثابتة من حالات الحجز اللي بتاخد أسابيع — كل حالة ليها قواعدها الخاصة عن مين يقدر يسترجعه وبكام — قبل ما [السجل](/ar/glossary/registry/) في الآخر يطلّقه ويرجّعه للمجموعة المتاحة. الإطلاق الأخير ده اسمه "[السقوط](/ar/glossary/pending-delete/)"، وتسجيل الاسم في اللحظة اللي بيقع فيها ده ممارسة معروفة: زي ما ويكيبيديا بتقول، [اصطياد النطاقات الساقطة، المعروف كمان بقنص النطاقات، هو ممارسة تسجيل اسم النطاق بمجرد انتهاء صلاحية تسجيله، فور انتهائه مباشرة](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=is%20the%20practice%20of%20registering%20a%20domain%20name%20once%20registration%20has%20lapsed%2C%20immediately%20after%20expiry).

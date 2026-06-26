@@ -12,6 +12,24 @@ sources:
   - https://web3.foundation/about/
   - https://en.wikipedia.org/wiki/Web3
   - https://www.wired.com/story/web3-blockchain-decentralization-explained/
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/onchain-domain-custody-and-recovery/
+  - /de/blog/the-badgerdao-frontend-attack/
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
+  - /de/glossary/tld/
 ---
 
 **Web3** (auch *Web 3.0* geschrieben) ist ein vorgeschlagenes Paradigma für das Internet, bei dem die Kerninfrastruktur auf öffentlichen [Blockchain](/de/glossary/blockchain/)-Netzwerken betrieben wird. Teilnehmer können dabei ihre Daten, digitalen Assets und Online-Identitäten durch kryptografische Schlüssel besitzen und kontrollieren – anstatt auf Konten zu setzen, die von zentralisierten Plattformen verwaltet werden.

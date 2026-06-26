@@ -16,6 +16,24 @@ faqs:
     answer: 'Streamers, video creators, broadcasters, and any brand built around television, film, or live content. The "tv" string reads instantly as "television," making it a natural, memorable home for channels, shows, and media projects.'
   - question: 'Why is the .tv domain associated with television?'
     answer: 'Pure linguistic coincidence. "TV" is Tuvalu''s ISO country code and the universal abbreviation for "television." Tuvalu leaned into that overlap, licensing the namespace globally, which is why streaming and video brands gravitate to it.'
+relatedArticles:
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/domain-hacks-explained/
+  - /en/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.tv** domain is the textbook example of a small nation turning a two-letter coincidence into a global brand. Officially the [ccTLD](/en/glossary/cctld/) for **Tuvalu**, a tiny Pacific island nation, it has been marketed and adopted worldwide as the natural home of **television**, **video**, and **live streaming** — because "tv" reads instantly as the medium itself. For broadcasters, streamers, and video-first brands, **.tv** is often the most evocative extension on the market.

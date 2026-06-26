@@ -9,6 +9,24 @@ keywords: ['DeFi', 'finance décentralisée', 'prêt', 'emprunt', 'collatéral',
 level: 1
 sources:
   - https://ethereum.org/en/defi/
+relatedArticles:
+  - /fr/blog/tokenized-domain-use-cases-2026/
+  - /fr/blog/what-are-xstocks/
+  - /fr/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /fr/blog/what-are-stablecoins/
+  - /fr/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/web3-foundations/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/lending-protocol/
+  - /fr/glossary/collateral/
+  - /fr/glossary/tokenized-domain/
+  - /fr/glossary/on-chain/
+  - /fr/glossary/smart-contract/
 ---
 
 **DeFi (Finance Décentralisée)** est la vaste catégorie de services financiers — prêt, emprunt, échange, produits dérivés, gestion d'actifs — construits sur des blockchains publiques via des [smart contracts](/fr/glossary/smart-contract/), sans intermédiaires traditionnels comme les banques ou les courtiers. Parmi les exemples : Aave, Compound, Uniswap, MakerDAO et bien d'autres. Le DeFi est important pour les [domaines tokenisés](/fr/blog/what-are-tokenized-domains/) car, une fois qu'un domaine est représenté sous forme de [NFT (Jeton Non Fongible)](/fr/glossary/nft/), il peut être utilisé comme [collatéral](/fr/glossary/collateral/) dans des [protocoles de prêt](/fr/glossary/lending-protocol/) compatibles NFT, échangé sur des marchés décentralisés, ou combiné avec tout autre primitive on-chain. La contrepartie : les positions DeFi sont publiques, souvent non-dépositaires, et l'utilisateur est responsable de la gestion des risques — les liquidations sont automatiques. Voir [Use Cases for Tokenized Domains in 2026](/fr/blog/tokenized-domain-use-cases-2026/) pour comprendre comment le prêt et d'autres modèles DeFi s'appliquent spécifiquement aux domaines. Référence : [expliquant DeFi d'Ethereum.org](https://ethereum.org/en/defi/).

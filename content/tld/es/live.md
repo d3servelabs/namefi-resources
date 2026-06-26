@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Descubre el poder del dominio .live para streaming, eventos y marcas en tiempo real. Aprende sus ventajas y cómo registrarlo fácilmente en Namefi."
 keywords: [".live domains", ".live TLD", "top-level domain", "what is .live", "why choose .live", "what is the .live domain", "why choose the .live domain", "qué es .live", "por qué elegir .live", "comprar dominio .live", "registro de dominios", "dominios para streaming", "inversión en dominios", "dominios tokenizados", "blockchain domains"]
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 El mundo digital avanza hacia la inmediatez. En una era dominada por el streaming, las noticias de última hora y la interacción en tiempo real, la elección de un nombre de dominio que refleje dinamismo es crucial. Aquí es donde entra en juego el dominio **.live**.

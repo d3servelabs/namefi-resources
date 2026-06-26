@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Descubre qué es el dominio .abbvie, un TLD exclusivo de marca. Analizamos su propósito, seguridad y el impacto de los dominios personalizados en la era digital."
 keywords: [".abbvie", "dominios .abbvie", "TLD .abbvie", "top-level domain .abbvie", "qué es el dominio .abbvie", "por qué elegir el dominio .abbvie", "inversión en dominios", "dominios de marca", "blockchain domains", "dominios tokenizados", "registro de dominios", "ICANN gTLD", "seguridad web", "namefi", "comprar dominios web3"]
+relatedArticles:
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 ## **¿Qué es .abbvie?**

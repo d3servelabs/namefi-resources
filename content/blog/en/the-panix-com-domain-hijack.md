@@ -11,6 +11,24 @@ seriesOrder: 18
 format: case-study
 description: 'In January 2005, panix.com — the domain of New York''s oldest commercial ISP — was fraudulently transferred to a registrar in Australia using stolen credit cards, knocking web and email offline for days. The auto-approve inter-registrar transfer rules of the era made it possible, and the cleanup reshaped domain-transfer policy.'
 keywords: ['panix.com', 'panix domain hijack', 'domain hijacking', 'inter-registrar transfer', 'Melbourne IT', 'Dotster', 'Fibranet', 'ICANN transfer policy', 'registrar lock', 'clientTransferProhibited', 'domain security', 'DNS hijacking', 'EPP auth code']
+relatedArticles:
+  - /en/blog/the-lenovo-com-dns-hijack/
+  - /en/blog/the-perl-com-domain-theft/
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-sex-com-heist-the-forged-letter/
+  - /en/blog/the-syrian-electronic-army-nyt-hijack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
 ---
 
 For more than fifteen years, one of the oldest commercial internet providers in the United States lived at a single address: **panix.com**. Then, over a long holiday weekend in January 2005, someone took it.

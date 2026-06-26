@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist SEO und wie beeinflusst die Domain-Tokenisierung die Suchmaschinenoptimierung?
 keywords: ["SEO","Suchmaschinenoptimierung","Domainwert","Suchrankings","digitales Marketing"]
+relatedArticles:
+  - /de/blog/marketplace-seo-for-domain-listings/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/brandable-vs-keyword-domains/
+  - /de/blog/how-to-value-a-domain-name/
+  - /de/blog/marketing-your-domains-for-sale/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/premium-domain/
+  - /de/glossary/tld-seo/
+  - /de/glossary/tld/
+  - /de/glossary/serp/
+  - /de/glossary/exact-match-domain/
 ---
 
 

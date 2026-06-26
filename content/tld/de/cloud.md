@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Entdecken Sie die Vorteile der .cloud-Domain für Ihr Business. Erfahren Sie mehr über Nutzungsmöglichkeiten und registrieren Sie Ihre .cloud-Domain bei Namefi."
 keywords: [".cloud domains", ".cloud TLD", "top-level domain .cloud", "was ist .cloud", "warum .cloud wählen", "was ist die .cloud domain", "warum die .cloud domain wählen", "cloud domain kaufen", "domain investing", "blockchain domains", "tokenisierte domains", "web3 domains", "SaaS domains", "cloud computing trends", "neue gTLDs"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-saas/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 In der heutigen digitalen Landschaft ist die Wahl der richtigen Domainendung (Top-Level-Domain oder TLD) fast so wichtig wie der Markenname selbst. Während traditionelle Endungen wie .com oder .de nach wie vor beliebt sind, gewinnen spezifische und moderne Endungen immer mehr an Bedeutung. Eine der prominentesten unter den "neuen gTLDs" ist **.cloud**.

@@ -12,6 +12,24 @@ format: analysis
 description: "Por qué los compradores chinos valoran los dominios .com cortos, de cuatro letras y numéricos como una clase de activo aparte: pinyin, primas por ausencia de vocales y el 8 de la suerte frente al 4 de la mala suerte."
 ogImage: ../../assets/short-llll-and-numeric-domains-chinese-market-og.jpg
 keywords: ['dominios premium chinos', 'dominios numéricos', 'LLLL.com', 'dominios de cuatro letras', 'dominios chip', 'nombres de dominio cortos', 'dominios con el número 8 de la suerte', 'número 4 de la mala suerte', 'dominios pinyin', 'dominios NNNN', 'mercado chino de dominios', 'valor de dominios numéricos', 'dominios sin vocales', 'reventa de dominios china', 'dominios .com cortos']
+relatedArticles:
+  - /es/blog/what-makes-a-domain-valuable/
+  - /es/blog/how-tld-affects-domain-value/
+  - /es/blog/domain-flipping/
+  - /es/blog/how-to-read-comparable-domain-sales/
+  - /es/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Para un revendedor occidental, `xqjz.com` parece ruido de teclado y `5808.com` parece un número de teléfono. Para un comprador chino, el primero podría ser una marca limpia de cuatro letras compatible con el pinyin, y el segundo una cadena que lleva escrito "prosperar" dos veces. Esa desconexión es precisamente el quid de la cuestión. Una categoría de dominios que a un mercado le parece carente de valor es valorada por otro como una clase de activo, y los revendedores que aprendieron a leer ese segundo mercado fueron testigos de uno de los mayores eventos de revalorización que el [mercado secundario](/es/glossary/aftermarket/) haya visto jamás.

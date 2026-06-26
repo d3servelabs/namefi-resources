@@ -12,6 +12,24 @@ format: explainer
 description: "إزاي بيشتغل حفظ النطاقات على السلسلة فعلاً: المحافظ، التوقيع المتعدد، خطر العبارة الأولية، وإزاي تسترجع نطاق متحوّل لرمز بعد ضياع المحفظة."
 ogImage: ../../assets/onchain-domain-custody-and-recovery-og.jpg
 keywords: ['حفظ النطاقات على السلسلة', 'محفظة النطاق المتحوّل لرمز', 'استرجاع نطاق متحوّل لرمز', 'استعادة النطاق بعد ضياع المحفظة', 'خطر العبارة الأولية', 'حفظ النطاق بالتوقيع المتعدد', 'أمان نطاق NFT', 'محفظة أجهزة للنطاق', 'الحفظ الذاتي للنطاق', 'المفتاح الخاص للنطاق', 'ملكية النطاق المتحوّل لرمز', 'نطاق ERC-721', 'تداول النطاقات على السلسلة', 'نسخة احتياطية لمحفظة النطاق', 'محفظة الاسترداد الاجتماعي']
+relatedArticles:
+  - /ar/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/onchain-domain-flipping/
+  - /ar/blog/selling-domains-as-nfts/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 لما بتعمل فليب لنطاق تقليدي، الحفظ بقى مشكلة حد تاني. الاسم بيعيش في حساب عند [المُسجِّل](/ar/glossary/registrar/)، ولو نسيت الباسوورد فيه لينك لإعادة التعيين وفريق دعم مستنيك. انقل النطاق [على السلسلة](/ar/glossary/on-chain/) وشبكة الأمان دي بتختفي. الرمز *هو* سند الملكية، ومفاتيح [محفظتك](/ar/glossary/wallet/) هي الحاجة الوحيدة اللي واقفة بينك وبين الأصل. التحوّل ده هو أكبر تعديل ذهني محتاجه أي حد جاي للفليب على السلسلة من سوق [التداول التقليدي](/ar/glossary/domain-trading/).

@@ -12,6 +12,24 @@ format: guide
 description: "链上域名翻转的运作方式——把 ENS 与代币化域名当作钱包持有、像 NFT 一样具备流动性的资产来交易，以及它与注册商翻转有何不同。"
 ogImage: ../../assets/onchain-domain-flipping-og.jpg
 keywords: ['链上域名翻转', '翻转 ENS 域名', '代币化域名翻转', '交易代币化域名', '域名 NFT 翻转', '翻转 web3 域名', 'ENS 域名投资', 'NFT 域名市场', '把域名作为 NFT 出售', '链上域名交易', 'ERC-721 域名', '钱包持有域名', '原子化域名结算', '代币化域名流动性', 'web3 域名翻转']
+relatedArticles:
+  - /zh/blog/tokenize-your-com-to-flip-it/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/selling-domains-as-nfts/
+  - /zh/blog/onchain-domain-marketplaces-compared/
+  - /zh/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 域名翻转有一套熟悉的套路：低价买入一个名字，找到需要它的买家，再高价卖出。这门生意的经典版本要经过[注册商](/zh/glossary/registrar/)、二级市场以及一个在转移完成前替双方保管资金的托管代理。链上域名翻转是同样的低买高卖直觉，只不过搬到了[区块链](/zh/glossary/blockchain/)上——在那里，名字本身就是一枚你持有在[钱包](/zh/glossary/wallet/)里的代币，可以像任何其他 [NFT](/zh/glossary/nft/) 一样被交易。

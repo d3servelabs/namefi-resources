@@ -12,6 +12,24 @@ format: guide
 description: "Cómo lograr que un anuncio de dominio aparezca: títulos, palabras clave y categorías en Afternic y Sedo, además de la visibilidad que atrae al comprador adecuado."
 ogImage: ../../assets/marketplace-seo-for-domain-listings-og.jpg
 keywords: ['SEO de marketplaces', 'SEO de anuncios de dominios', 'cómo publicar un dominio en Afternic', 'cómo publicar un dominio en Sedo', 'título de anuncio de dominio', 'palabras clave de anuncio de dominio', 'categorías de marketplace de dominios', 'lograr que aparezca un anuncio de dominio', 'anuncio en el mercado secundario de dominios', 'vender un dominio en línea', 'optimización de anuncios de dominios', 'visibilidad de búsqueda de dominios', 'cómo encuentran los compradores los dominios', 'red de revendedores de dominios']
+relatedArticles:
+  - /es/blog/marketing-your-domains-for-sale/
+  - /es/blog/inbound-vs-outbound-domain-sales/
+  - /es/blog/domain-for-sale-landing-pages/
+  - /es/blog/domain-flipping/
+  - /es/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/best-tlds-by-industry/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
 ---
 
 Un anuncio que nadie ve equivale a no tener anuncio. Puedes ponerle el precio perfecto a un nombre y redactar una página de venta impecable, pero si tu anuncio nunca aparece cuando el comprador adecuado hace su búsqueda, la operación ni siquiera empieza. La mayor parte de la demanda entrante de este negocio pasa por un puñado de marketplaces, y dentro de ellos tu nombre compite con millones de otros por lo mismo y escaso: la atención de un comprador en el momento en que está buscando.

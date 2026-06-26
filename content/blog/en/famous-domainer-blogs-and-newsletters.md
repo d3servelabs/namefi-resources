@@ -12,6 +12,24 @@ format: roundup
 description: A curated list of the individual domainers, brokers, and traders whose blogs, newsletters, and Substacks are worth reading in 2026 — what each one is known for, and how they fit together.
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg
 keywords: ['domainer blogs', 'domain investing blogs', 'elliot silver', 'rick schwartz', 'morgan linton', 'konstantinos zournas', 'mike mann', 'jamie zoch', 'domainshane', 'domain newsletter', 'domain substack']
+relatedArticles:
+  - /en/blog/domain-industry-media/
+  - /en/blog/top-domain-trader-forums/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/working-with-domain-brokers/
+  - /en/blog/domain-flipping/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-investor-field-guide/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
 ---
 
 If [forums](/blog/top-domain-trader-forums) are where the domain community *argues*, individual domainer blogs are where the community *thinks out loud*. Most of the long-running, considered analysis in the industry — sale post-mortems, [registrar](/en/glossary/registrar/)-policy critiques, market reads — happens on a small number of personal blogs that have been running for fifteen or twenty years.

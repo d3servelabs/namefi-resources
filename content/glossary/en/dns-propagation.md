@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.cloudflare.com/learning/dns/glossary/time-to-live-ttl/
   - https://datatracker.ietf.org/doc/html/rfc1035
+relatedArticles:
+  - /en/blog/the-curve-finance-dns-hijack/
+  - /en/blog/the-malaysia-airlines-dns-hijack/
+  - /en/blog/the-perl-com-domain-theft/
+  - /en/blog/dns-on-tokenized-domains/
+  - /en/blog/from-twitter-com-to-x-com/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/dns/
+  - /en/glossary/ttl/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
 ---
 
 **DNS propagation** is the lag between making a [DNS](/en/glossary/dns/) change and that change being visible everywhere on the internet. It happens because [resolvers](/en/glossary/dns-resolver/) around the world cache the old answer until its [TTL](/en/glossary/ttl/) expires, so a new [record](/en/glossary/dns-record-types/) or [nameserver](/en/glossary/nameserver/) update rolls out gradually rather than instantly — anywhere from minutes to a couple of days. There is no global "DNS" to update at once; propagation is just caches timing out. The practical fix is to lower the TTL ahead of a planned change.

@@ -12,6 +12,24 @@ format: explainer
 description: "Por qué una cadena de letras vale miles y otra casi idéntica no vale nada: longitud, palabras reales, la prima del .com, intención y capacidad de marca."
 ogImage: ../../assets/what-makes-a-domain-valuable-og.jpg
 keywords: ['qué hace valioso un dominio', 'factores de valor de un dominio', 'qué hace bueno a un nombre de dominio', 'valor de un nombre de dominio', 'por qué son caros los dominios', 'nombres de dominio cortos', 'dominios de palabra clave', 'dominios de marca', 'prima del com', 'valor de la extensión de dominio', 'dominios con intención comercial', 'nombres de dominio memorables', 'fundamentos de la inversión en dominios', 'cómo se valoran los dominios', 'nombres de dominio premium']
+relatedArticles:
+  - /es/blog/how-to-value-a-domain-name/
+  - /es/blog/domain-flipping/
+  - /es/blog/how-tld-affects-domain-value/
+  - /es/blog/how-to-read-comparable-domain-sales/
+  - /es/blog/brandable-vs-keyword-domains/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Dos dominios pueden diferir en una sola letra y en mil veces el precio. `cars.com` es un activo de primer orden; `carz.net` es una factura de renovación. La misma longitud, la misma idea aproximada, valores radicalmente distintos. Una vez que sabes explicar *por qué*, la mayor parte de la inversión en dominios deja de parecer suerte y empieza a parecer la lectura de un mercado.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Dropbox 因为 Dropbox.com 已被注册，只能在 GetDropbox.com 上起步，随后经历了商标维权与域名抢注的漫长拉锯，最终以据报道 30 万美元现金买下了精准匹配域名 Dropbox.com。'
 keywords: ['getdropbox.com', 'dropbox.com', 'dropbox域名', 'drew houston', 'y combinator dropbox', '域名升级', '创业命名', '品牌命名', '高端域名', '域名策略', '精准匹配域名', '域名收购', 'evenflow dropbox']
+relatedArticles:
+  - /zh/blog/from-box-net-to-box-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+  - /zh/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 在 Dropbox 成为"把文件扔到云端"这一动词之前，它曾住在一个稍长的地址上：**GetDropbox.com**。

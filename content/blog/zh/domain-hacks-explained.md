@@ -12,6 +12,24 @@ format: explainer
 description: "什么是域名创意拼接，为什么品牌方和域名玩家偏爱这类巧妙的短域名，它们背后的 ccTLD 风险，以及如何为它估值。"
 ogImage: ../../assets/domain-hacks-explained-og.jpg
 keywords: ['域名创意拼接', 'domain hack', '什么是域名创意拼接', '巧妙的域名', 'del.icio.us', 'bit.ly 域名', 'ccTLD 创意拼接', '短域名', '可作品牌的域名', '域名创意拼接案例', 'youtu.be', 'instagr.am', 'goo.gl', 'vb.ly 被查封']
+relatedArticles:
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/what-makes-a-domain-valuable/
+  - /zh/blog/from-del-icio-us-to-delicious-com/
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 有一类网址你不是用来"读"的，而是用来*破译*的。你看到那些字母，看到那些小数点，然后整串字符突然合拢成一个横跨标点、一气呵成的单词。史上最著名的例子是 `del.icio.us`。慢慢读，它会拆成几块零碎的部分；快读一遍，它念出来就是 "delicious"（美味的）。

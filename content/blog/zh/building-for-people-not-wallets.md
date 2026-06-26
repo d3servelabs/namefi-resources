@@ -6,6 +6,24 @@ tags: ['partners']
 authors: ['namefiteam']
 draft: false
 description: 一场关于 Henri Stern 构建 Privy 的深度对话，探讨其在可用性、客户驱动的产品开发，以及从加密复杂性转向以人为本设计的旅程。
+relatedArticles:
+  - /zh/blog/from-mona-co-to-crypto-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-del-icio-us-to-delicious-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/web3-foundations/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/web3/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
 ---
 
 作者：Namefi 的 Victor Zhou — 2025 年 10 月

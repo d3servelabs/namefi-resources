@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Comment Slack a lancé son service sur SlackHQ.com parce que quelqu'un d'autre possédait Slack.com, a payé 60 000 $ (selon les rapports) pour acquérir le domaine exact, a supprimé le « HQ » — et pourquoi @SlackHQ survit encore aujourd'hui sur les réseaux sociaux."
 keywords: ['slackhq.com', 'slack.com', 'nom de domaine slack', 'mise à niveau de domaine', 'stewart butterfield', 'tiny speck', 'domaine exact match', 'naming startup', 'naming de marque', 'domaine premium', 'stratégie de domaine', 'histoire de slack', 'acquisition de domaine', 'domaine de référence']
+relatedArticles:
+  - /fr/blog/from-bufferapp-com-to-buffer-com/
+  - /fr/blog/from-discordapp-com-to-discord-com/
+  - /fr/blog/from-ubercab-com-to-uber-com/
+  - /fr/blog/from-teslamotors-com-to-tesla-com/
+  - /fr/blog/from-box-net-to-box-com/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
 ---
 
 Avant que Slack ne devienne un verbe synonyme de « envoie-moi un message au bureau », c'était une chose plus discrète avec une adresse plus longue : **SlackHQ.com**.

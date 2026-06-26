@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Comment « Sea Turtle », une campagne parrainée par un État révélée par Cisco Talos en 2019, a détourné le DNS en compromettant des bureaux d''enregistrement, des registres et des fournisseurs DNS — redirigeant gouvernements, ministères et entreprises énergétiques vers des serveurs contrôlés par les attaquants, forgeant des certificats valides, et allant jusqu''à s''introduire dans un registre national de TLD.'
 keywords: ['détournement dns sea turtle', 'cisco talos sea turtle', 'attaque de détournement dns', 'attaque dns parrainée par un état', 'compromission de registre', 'compromission de bureau d enregistrement', 'campagne d espionnage dns', 'certificat mitm lets encrypt', 'compromission netnod', 'ics-forth grèce ccTLD', 'directive d urgence cisa 19-01', 'sécurité dns', 'sécurité de la propriété de domaine', 'cyberattaque d état nation']
+relatedArticles:
+  - /fr/blog/the-dnspionage-campaign/
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-myetherwallet-bgp-dns-attack/
+  - /fr/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/dns/
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
 ---
 
 La plupart des cyberattaques cherchent à s'introduire *dans* une cible. La campagne Sea Turtle a fait quelque chose de plus discret et bien plus dangereux : elle s'est introduite dans la **carte** qui indique à l'ensemble d'internet où réside la cible.

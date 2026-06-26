@@ -12,6 +12,24 @@ format: explainer
 description: "Cómo funciona realmente la custodia de los dominios en cadena: billeteras, multifirma, riesgo de la frase semilla y cómo recuperar un dominio tokenizado tras perder la billetera."
 ogImage: ../../assets/onchain-domain-custody-and-recovery-og.jpg
 keywords: ['custodia de dominio en cadena', 'billetera de dominio tokenizado', 'recuperar dominio tokenizado', 'recuperación de dominio por pérdida de billetera', 'riesgo de frase semilla', 'custodia de dominio con multifirma', 'seguridad de dominio NFT', 'billetera de hardware para dominio', 'autocustodia de dominio', 'clave privada de dominio', 'propiedad de dominio tokenizado', 'dominio ERC-721', 'flipping de dominios en cadena', 'copia de seguridad de billetera de dominio', 'billetera de recuperación social']
+relatedArticles:
+  - /es/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/onchain-domain-flipping/
+  - /es/blog/selling-domains-as-nfts/
+  - /es/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Cuando haces flipping de un dominio tradicional, la custodia es problema de otra persona. El nombre vive en una cuenta de [registrador](/es/glossary/registrar/) y, si olvidas la contraseña, hay un enlace de restablecimiento y una cola de soporte esperándote. Lleva un dominio [en cadena](/es/glossary/on-chain/) y esa red de seguridad desaparece. El token *es* la escritura, y las claves de tu [billetera](/es/glossary/wallet/) son lo único que se interpone entre tú y el activo. Ese cambio es el mayor ajuste mental para cualquiera que llegue al flipping en cadena desde el [mercado secundario](/es/glossary/domain-trading/) tradicional.

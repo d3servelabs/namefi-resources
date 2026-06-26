@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .af-Domain: Von ihrer Herkunft als ccTLD für Afghanistan bis hin zu ihrer Beliebtheit für kreative Domain-Hacks und modernes Branding. Sichern Sie sich jetzt Ihre .af-Adresse."
 keywords: [".af domains", ".af TLD", "top-level domain", "was ist .af", "warum .af wählen", "was ist die .af domain", "warum die .af domain wählen", "domain investing", "blockchain domains", "tokenized domain", "domain hacks", "afghanistan domain", "kreative domains", "web3 domains", "namefi"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-investor-field-guide/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
 ---
 
 Die Wahl der richtigen Domain-Endung (Top-Level-Domain oder [TLD](/de/glossary/tld/)) ist einer der ersten und wichtigsten Schritte beim Aufbau einer Online-Präsenz. Während `.com` und `.de` die Klassiker sind, suchen moderne Unternehmen und Kreative oft nach kürzeren, prägnanteren Alternativen. Hier kommt die **.af TLD** ins Spiel – eine Endung, die eine faszinierende Doppelrolle zwischen nationaler Identität und globaler Internetkultur spielt.

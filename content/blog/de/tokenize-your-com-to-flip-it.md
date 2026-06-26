@@ -12,6 +12,24 @@ format: guide
 description: "Ein Namefi-Walkthrough: bringe eine .com on-chain, halte das DNS am Auflösen und flippe sie als NFT mit atomarer Abwicklung statt einer Treuhand-Pattsituation."
 ogImage: ../../assets/tokenize-your-com-to-flip-it-og.jpg
 keywords: ['eine .com tokenisieren, um sie zu flippen', 'deine com tokenisieren', 'tokenisierte Domains flippen', 'eine Domain als NFT verkaufen', 'tokenisiertes .com-Flipping', 'On-Chain-Domain-Flipping', 'atomare Domain-Abwicklung', 'Marktplatz für tokenisierte Domains', 'DNS-Kontinuität tokenisierte Domain', 'wie man eine Domain zum Verkauf tokenisiert', 'mit Namefi tokenisieren und verkaufen', 'im Wallet gehaltene .com', 'ERC-721-Domain', 'Liquidität tokenisierter Domains', 'eine com-Domain on-chain flippen']
+relatedArticles:
+  - /de/blog/onchain-domain-flipping/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/selling-domains-as-nfts/
+  - /de/blog/onchain-domain-marketplaces-compared/
+  - /de/blog/domain-flipping/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Die meisten Flips einer `.com` enden auf die gleiche nervöse Weise: Der Käufer will nicht zahlen, bevor der Name übertragen wird, der Verkäufer will den Namen nicht übertragen, bevor er bezahlt wurde, und ein [Treuhand](/de/glossary/escrow/)-Agent steht in der Mitte und hält das Geld, während eine Registrar-Übertragung tagelang abgewickelt wird. Diese Pattsituation ist die Reibungssteuer auf jeden hochwertigen Verkauf. Die `.com` zuerst zu tokenisieren verändert die ganze Form des Geschäfts: Der Name wird zu einem Token, das du in einem [Wallet](/de/glossary/wallet/) hältst, und der Verkauf wird zu einem einzigen On-Chain-Tausch statt zu einer mehrtägigen Übergabe zwischen mehreren Parteien.

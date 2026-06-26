@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Explore the .accenture top-level domain. Understand the strategy behind Brand TLDs, why corporations use them, and how to find your own perfect domain at Namefi."
 keywords: [".accenture domains", ".accenture TLD", "top-level domain", "what is .accenture", "why choose .accenture", "what is the .accenture domain", "why choose the .accenture domain", "brand TLD", "domain investing", "blockchain domains", "tokenized domains", "corporate digital identity", "exclusive TLDs", "Accenture domain strategy", "Web3 domains"]
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 ## **What is .accenture?**

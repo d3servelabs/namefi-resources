@@ -16,6 +16,24 @@ faqs:
     answer: 'الأفراد اللي بيبنوا علامة شخصية أو محفظة أعمال أو موقع سيرة ذاتية، وأي حد بيصمّم دومين هاك حيث الاسم بيُقرأ كعبارة بتنتهي بـ "me" — زي about.me أو "call.me". بيُقرأ على طول كضمير المتكلّم بالإنجليزي، وده بيخليه دافي وشخصي.'
   - question: 'هل .me دومين كويس لموقع شخصي؟'
     answer: 'أيوه. .me يمكن يكون أكتر امتداد سائد شخصية. لأن "me" هو ضمير المتكلّم، "yourname.me" أو "hire.me" بيحسّ كأنه دعوة مباشرة، وده ليه هو مفضّل لمحافظ الأعمال والسير الذاتية والعلامات الفردية.'
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/domain-hacks-explained/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 دومين **.me** هو واحد من أوضح أمثلة امتداد رمز الدولة اللي لقى حياة تانية كعلامة تجارية عالمية. هو رسمياً ccTLD لـ **الجبل الأسود (Montenegro)**، بس اتسوّق واتبنى حول العالم كأكتر امتداد **شخصي** على الإنترنت — لأن "me" هو ضمير المتكلّم بالإنجليزي، فـ "yourname.me" بتُقرأ على طول كـ *أنت*. للأفراد اللي بيبنوا محفظة أعمال أو موقع سيرة ذاتية أو صفحة سيرة شخصية — ولأي حد بيصمّم **دومين هاك** ذكي بيكمّل بـ "me" — هو عادةً أول مكان بيبصّوا فيه.

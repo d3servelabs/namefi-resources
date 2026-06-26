@@ -8,6 +8,24 @@ draft: false
 description: 'डोमेन नाम उद्योग को पत्रकारिता के रूप में कवर करने वाले न्यूज़ आउटलेट्स, सेल्स डेटा साइट्स और पॉडकास्ट के लिए एक गाइड — DomainNameWire, DNJournal, TheDomains, NameBio, DomainSherpa, CircleID, और बहुत कुछ।'
 ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['डोमेन इंडस्ट्री न्यूज़', 'डोमेन नेम मीडिया', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'icann news']
+relatedArticles:
+  - /hi/blog/famous-domainer-blogs-and-newsletters/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/top-domain-trader-forums/
+  - /hi/blog/how-to-value-a-domain-name/
+  - /hi/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-investor-field-guide/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 यदि [व्यक्तिगत डोमेनर ब्लॉग](/blog/famous-domainer-blogs-and-newsletters) व्यक्तिगत आवाज़ें हैं, तो *डोमेन इंडस्ट्री मीडिया* वे आउटलेट हैं जो न्यूज़ रूम की तरह अधिक काम करते हैं — कभी-कभी एक व्यक्ति वाले न्यूज़ रूम, लेकिन एक ट्रेडर की डायरी के बजाय पत्रकारिता के संपादकीय दृष्टिकोण के साथ। वे सौदों (deals), नीतियों, रजिस्ट्री/[रजिस्ट्रार](/hi/glossary/registrar/) के कदमों, ICANN और कभी-कभार होने वाले ड्रामे को कवर करते हैं, और वे ऐसे स्रोत हैं जिनका अन्य लोग हवाला (quote) देते हैं।

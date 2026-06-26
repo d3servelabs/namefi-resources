@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: نطاقات .eth هي أسماء قائمة على البلوك تشين تحل محل عناوين المحافظ المعقدة بأسماء قابلة للقراءة البشرية. تعرف على كيفية تحويل ENS لهوية Web3 والملكية الرقمية.
 keywords: ["نطاق المستوى الأعلى", "نطاق eth", "هوية web3", "بلوك تشين", "ENS", "نطاق لامركزي", "نطاق nft"]
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /ar/blog/premium-web3-tlds/
+  - /ar/blog/ens-vs-dns-domain-flipping/
+  - /ar/blog/onchain-domain-flipping/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 

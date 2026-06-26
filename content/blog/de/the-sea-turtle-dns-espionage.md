@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie „Sea Turtle", eine 2019 von Cisco Talos aufgedeckte staatlich geförderte Kampagne, DNS durch die Kompromittierung von Registraren, Registries und DNS-Anbietern kaperte – Regierungen, Ministerien und Energieunternehmen auf Angreifer-Server umleitete, gültige Zertifikate fälschte und sogar eine nationale TLD-Registry kompromittierte.'
 keywords: ['sea turtle dns-hijacking', 'cisco talos sea turtle', 'dns-hijacking-angriff', 'staatlich geförderter dns-angriff', 'registry-kompromittierung', 'registrar-kompromittierung', 'dns-spionagekampagne', 'lets encrypt mitm-zertifikat', 'netnod kompromittierung', 'ics-forth griechenland ccTLD', 'cisa-notfalldirektive 19-01', 'dns-sicherheit', 'domain-eigentümerschaft sicherheit', 'nationalstaatlicher cyberangriff']
+relatedArticles:
+  - /de/blog/the-dnspionage-campaign/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-myetherwallet-bgp-dns-attack/
+  - /de/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/dns/
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
 ---
 
 Die meisten Cyberangriffe versuchen, in ein Ziel *einzubrechen*. Die Sea-Turtle-Kampagne tat etwas Stilleres und weitaus Gefährlicheres: Sie brach in die **Karte** ein, die dem gesamten Internet mitteilt, wo das Ziel zu finden ist.

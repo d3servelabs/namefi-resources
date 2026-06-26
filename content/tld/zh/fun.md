@@ -24,6 +24,24 @@ keywords:
   - tokenized domain
   - Web3 domains
   - 娱乐域名
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在竞争激烈的数字世界中，选择一个正确的域名对于品牌形象至关重要。虽然 .com 仍然是黄金标准，但随着优质资源的枯竭，许多创新者开始转向更具描述性和个性化的新顶级域名（New gTLD）。其中，**.fun** 作为一个充满活力和积极情绪的后缀，正在迅速获得全球用户的青睐。

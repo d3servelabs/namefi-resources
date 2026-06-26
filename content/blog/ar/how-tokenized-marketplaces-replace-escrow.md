@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "كيف تتيح أسواق النطاقات المرمزة للمشترين والبائعين إجراء التسويات فورياً على السلسلة (on-chain) - بدون الحاجة إلى خدمات الضمان (escrow)، أو رموز المصادقة، أو فترة قفل المسجل التي تستغرق خمسة أيام. تعرّف على ما يحل محل كل جزء من العملية التقليدية، والمخاطر التي تنتقل إلى طبقات أخرى."
 keywords: ['سوق النطاقات عبر البلوكتشين', 'نقل النطاق الفوري', 'سوق النطاقات المرمزة', 'بديل ضمان النطاقات', 'بيع النطاقات بدون حساب ضمان', 'بيع النطاقات بالعملات الرقمية', 'عملية بيع النطاقات المرمزة', 'بيع نطاق مرمز', 'شراء نطاق مرمز', 'بيع النطاقات على السلسلة', 'تسوية النطاقات كرموز غير قابلة للاستبدال', 'سوق النطاقات 2026', 'سيولة النطاقات المرمزة']
+relatedArticles:
+  - /ar/blog/domain-escrow-explained/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/tokenize-your-com/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 تبدو العملية التقليدية لبيع نطاق `.com` على النحو التالي تقريباً:

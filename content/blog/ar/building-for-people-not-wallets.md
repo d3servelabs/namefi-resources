@@ -6,6 +6,24 @@ tags: ['partners']
 authors: ['namefiteam']
 draft: false
 description: استكشاف قائم على الحوار لرحلة هنري ستيرن في بناء Privy، مع التركيز على قابلية الاستخدام، وتطوير المنتجات بقيادة العملاء، والتحول من تعقيد التشفير إلى تصميم يتمحور حول الإنسان.
+relatedArticles:
+  - /ar/blog/from-mona-co-to-crypto-com/
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-del-icio-us-to-delicious-com/
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/web3-foundations/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/web3/
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
 ---
 
 بقلم فيكتور زو من Namefi — أكتوبر 2025

@@ -12,6 +12,24 @@ format: explainer
 description: "Vente de domaines entrante vs sortante : quand chacune fonctionne, le compromis entre effort et rendement, et comment mener les deux sans que votre démarchage ressemble à du spam."
 ogImage: ../../assets/inbound-vs-outbound-domain-sales-og.jpg
 keywords: ['vente de domaines entrante vs sortante', 'vente de domaines entrante', 'vente de domaines sortante', 'démarchage de vente de domaines', 'prospection à froid de domaines', 'vendre des domaines à des utilisateurs finaux', 'page d''atterrissage de domaine', 'annonce sur une place de marché de domaines', 'taux de vente de domaines', 'comment vendre des domaines', 'domain flipping', 'marché secondaire des domaines', 'acheteur final de domaine', 'stratégie de vente sortante de domaines', 'stratégie de vente entrante de domaines']
+relatedArticles:
+  - /fr/blog/how-to-sell-domains-for-profit/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/marketing-your-domains-for-sale/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Il n'existe que deux façons pour qu'un domaine se vende. Soit l'acheteur vous trouve, soit vous trouvez l'acheteur. Voilà toute la carte. La vente entrante, c'est l'acheteur qui tape votre nom dans un navigateur, tombe sur une page « à vendre » et vous contacte. La vente sortante, c'est vous qui repérez l'entreprise qui a manifestement besoin du nom et qui lui écrivez en premier. Tout le reste de la vente — format de prix, choix de la place de marché, séquestre — découle de celui de ces deux jeux auquel vous jouez réellement.

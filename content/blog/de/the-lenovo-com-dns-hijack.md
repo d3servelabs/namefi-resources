@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Am 25. Februar 2015 kaperte Lizard Squad Lenovo.com durch einen Angriff auf den Registrar Webnic, leitete die Domain des weltgrößten PC-Herstellers auf eine Webcam-Diashow um und fing E-Mails ab – nur wenige Tage nach dem Superfish-Skandal. Eine Domain-Mayday-Analyse darüber, warum der Registrar Ihr eigentlicher Sicherheitsperimeter ist.'
 keywords: ['lenovo.com dns hijack', 'lizard squad', 'webnic registrar', 'web commerce communications', 'dns-hijacking', 'superfish', 'domain-registrar-sicherheit', 'registrar-kompromittierung', 'epp auth code', 'e-mail-abfangen', 'google vietnam hijack', 'domain-sicherheit', 'registrar lock']
+relatedArticles:
+  - /de/blog/the-malaysia-airlines-dns-hijack/
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-panix-com-domain-hijack/
+  - /de/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/tld/
 ---
 
 Am Morgen des 25. Februar 2015 führte der meistgeklickte Link im Internet für den weltgrößten PC-Hersteller auf eine Diashow von gelangweilten Teenagern, die in ihre Webcams starrten – untermalt von einem Song aus *High School Musical*. Niemand hatte auch nur einen einzigen Lenovo-Server gehackt. Niemand hatte ein Lenovo-Passwort gestohlen. Die Angreifer berührten weder das Gebäude, das Netzwerk noch die Website selbst.

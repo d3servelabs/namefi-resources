@@ -12,6 +12,24 @@ format: guide
 description: '把域名当库存来经营：追踪成本基准、关注售出率、控制续期拖累、剔除烂仓，同时保持账目清晰。'
 ogImage: ../../assets/domain-portfolio-management-og.jpg
 keywords: ['域名投资组合管理', '域名投资组合', '管理域名投资组合', '域名售出率', '域名续期费用', '何时放弃域名', '域名成本基准', '域名库存追踪', '域名投资业务', '域名续期拖累', '清理域名投资组合', '域名持有成本', '域名管理表格', '域名投资组合电子表格', '域名投资者记账']
+relatedArticles:
+  - /zh/blog/domain-renewal-costs-and-sell-through-rate/
+  - /zh/blog/when-to-drop-a-domain/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/taxes-and-accounting-for-domain-investors/
+  - /zh/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 前十个域名感觉像一批收藏品。你还记得每一个买来的原因、付出的价格，以及大致期望卖出的数字。然而大约到了第一百个域名，这种记忆就开始失效。你再也无法在脑海中装下整个[域名投资组合](/zh/glossary/domain-portfolio/)，续期邮件一批批涌来却认不出是哪些名字，你开始为那些已经忘记自己买过的域名付续期费。到了这个时候，域名翻转就不再是一系列精明的买卖，而变成了库存管理。

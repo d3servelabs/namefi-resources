@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "امتداد النطاق TLD هو الجزء اللي بيجي بعد آخر نقطة في اسم النطاق، زي .com أو .io. اتعلم إيه هو الـ TLD وأنواعه (gTLD وccTLD والممول والـ gTLD الجديد والـ IDN) وإزاي تختار المناسب."
 keywords: ['tld', 'tld meaning', 'what is a tld', 'what is a top level domain', 'top-level domain', 'tld def', 'tld definition', 'que es un tld', "qu'est-ce qu'un tld", 'types of tld', 'gtld vs cctld', 'tld examples', 'what is a domain extension', 'domain extension', 'gTLD', 'ccTLD', 'sponsored TLD', 'new gTLD', 'IDN TLD', 'ICANN', 'IANA', 'domain registry', 'domain registrar', 'choosing a TLD', 'popular TLDs', 'namefi']
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## ما هو الـ TLD؟

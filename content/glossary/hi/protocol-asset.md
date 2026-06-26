@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: प्रोटोकॉल एसेट क्या हैं और टोकनाइज्ड डोमेन प्रोटोकॉल एसेट के रूप में कैसे कार्य करते हैं?
 keywords: ["प्रोटोकॉल एसेट","ब्लॉकचेन प्रोटोकॉल","बुनियादी ढाँचा एसेट","नेटवर्क एसेट","यूटिलिटी टोकन"]
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/the-curve-finance-dns-hijack/
+  - /hi/blog/what-are-xstocks/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/web3-foundations/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/web3/
+  - /hi/glossary/composability/
+  - /hi/glossary/collateral/
+  - /hi/glossary/icann/
+  - /hi/glossary/tokenize/
 ---
 
 एक **प्रोटोकॉल एसेट** एक डिजिटल एसेट है जो ब्लॉकचेन प्रोटोकॉल या विकेन्द्रीकृत प्रणाली के भीतर एक मूलभूत बिल्डिंग ब्लॉक या बुनियादी ढाँचे के घटक के रूप में कार्य करता है। इन एसेट्स में अक्सर साधारण मूल्य भंडारण से परे उपयोगिता होती है, जो ऐसी कार्यक्षमता प्रदान करते हैं जिस पर अन्य एप्लिकेशन और सेवाएँ निर्मित हो सकती हैं। [टोकनाइज्ड](/hi/glossary/tokenize/) डोमेन [Web3](/hi/glossary/web3/) एप्लिकेशन के लिए पहचान परतें, नेमस्पेस सिस्टम और एकीकरण बिंदु के रूप में कार्य करके प्रोटोकॉल एसेट के रूप में कार्य करते हैं। वे व्यापक पारिस्थितिकी तंत्र को उपयोगिता प्रदान करते हैं जबकि अन्य प्रोटोकॉल के साथ [कंपोज़ेबल](/hi/glossary/composability/) होते हैं। उदाहरण के लिए, एक टोकनाइज्ड डोमेन DeFi में [संपार्श्विक](/hi/glossary/collateral/) के रूप में, सामाजिक प्रोटोकॉल में पहचान के रूप में, और [वॉलेट](/hi/glossary/wallet/) सिस्टम में नामकरण के रूप में कार्य कर सकता है - जिससे यह एक बहु-कार्यात्मक प्रोटोकॉल एसेट बन जाता है।

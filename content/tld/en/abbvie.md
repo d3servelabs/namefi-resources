@@ -24,6 +24,24 @@ keywords:
   - 'secure corporate domains'
   - 'AbbVie digital identity'
   - 'ICANN new gTLD'
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .abbvie?**

@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://ethereum.org/en/developers/docs/accounts/
   - https://www.cloudflare.com/learning/ssl/how-does-public-key-encryption-work/
+relatedArticles:
+  - /fr/blog/onchain-domain-custody-and-recovery/
+  - /fr/blog/the-badgerdao-frontend-attack/
+  - /fr/blog/do-multisig-wallets-actually-improve-security/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/public-key/
+  - /fr/glossary/wallet/
+  - /fr/glossary/web3/
+  - /fr/glossary/registrar/
+  - /fr/glossary/blockchain/
 ---
 
 Une **clé privée** est le nombre secret — 256 bits sur la plupart des blockchains — qui contrôle un compte : elle produit les signatures numériques qui autorisent chaque transaction depuis l'adresse, et elle ne doit jamais quitter votre contrôle. Si vous la perdez, vous perdez vos actifs définitivement ; si vous l'exposez, n'importe qui peut vider votre [portefeuille](/fr/glossary/wallet/). La plupart des utilisateurs ne manipulent jamais directement la clé brute, la protégeant plutôt via une [phrase de récupération](/fr/glossary/seed-phrase/) — un mémo lisible par l'humain qui la régénère de façon déterministe. Son homologue, la [clé publique](/fr/glossary/public-key/), en est dérivée et peut être partagée librement sans risque.

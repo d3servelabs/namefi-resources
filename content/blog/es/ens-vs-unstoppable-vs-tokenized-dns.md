@@ -12,6 +12,24 @@ format: comparison
 description: "ENS vs Unstoppable Domains vs DNS de ICANN tokenizado, comparados según su resolución en navegadores, las renovaciones y quién controla realmente el nombre."
 ogImage: ../../assets/ens-vs-unstoppable-vs-tokenized-dns-og.jpg
 keywords: ['ENS vs Unstoppable Domains', 'ENS vs dominios tokenizados', 'Unstoppable Domains vs ENS', 'comparación de dominios web3', 'dominios DNS tokenizados', 'flipping de dominios ENS', 'dominios .eth', 'dominios .crypto', 'los dominios web3 resuelven en navegadores', 'tarifas de renovación de ENS', 'Unstoppable Domains sin renovación', 'ICANN vs dominios web3', 'quién controla un dominio web3', 'dominio tokenizado vs dominio web3', 'dominios NFT comparados']
+relatedArticles:
+  - /es/blog/onchain-domain-flipping/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/ens-vs-dns-domain-flipping/
+  - /es/blog/onchain-domain-marketplaces-compared/
+  - /es/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Si estás haciendo flipping de nombres on-chain, la primera decisión es qué tipo de "nombre on-chain" estás negociando siquiera. Las tres categorías que la mayoría de la gente mete en el mismo saco no son el mismo activo, y las diferencias deciden si el nombre resuelve en un navegador, si deberás pagar una renovación el año que viene y quién lo controla realmente. Esta guía compara las tres de tú a tú: [ENS](/es/glossary/ens/) (`.eth`), [Unstoppable Domains](https://unstoppabledomains.com) (`.crypto`, `.x`, `.nft`) y dominios [DNS](/es/glossary/dns/) reales de ICANN tokenizados (los nombres `.com`/`.io`/`.xyz` que puedes [tokenizar](/es/glossary/tokenize/) en [Namefi](https://namefi.io)).

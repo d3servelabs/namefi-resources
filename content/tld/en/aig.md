@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Discover the .aig TLD, the emerging domain choice for Artificial Intelligence and Generative tech. Learn why .aig is the smart choice for your next innovative project."
 keywords: [".aig domains", ".aig TLD", "top-level domain .aig", "what is .aig", "why choose .aig", "what is the .aig domain", "why choose the .aig domain", "artificial intelligence domains", "blockchain domains", "tokenized domains", "generative AI domains", "tech startup branding", "domain investing", "Web3 domains", "AI gaming"]
+relatedArticles:
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/premium-web3-tlds/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
 ---
 
 ## **What is .aig?**

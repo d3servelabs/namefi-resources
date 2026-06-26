@@ -9,6 +9,24 @@ keywords: ['akkreditierter Registrar', 'RAA', 'ICANN-Akkreditierung', 'gTLD', 'R
 level: 1
 sources:
   - https://www.icann.org/en/accredited-registrars
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-is-udrp/
+  - /de/blog/domain-backorders-and-drop-catching/
+  - /de/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /de/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/best-tlds-by-industry/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/tld/
+  - /de/glossary/reseller/
 ---
 
 Ein **ICANN-akkreditierter Registrar** ist ein Unternehmen, das einen Registrar-Akkreditierungsvertrag (RAA) mit [ICANN](/de/glossary/icann/) abgeschlossen hat und dadurch das vertragliche Recht erhält, Domains in generischen Top-Level-Domains direkt über die für jede TLD zuständige [Registry](/de/glossary/registry/) zu registrieren. Die Akkreditierung setzt das Erfüllen finanzieller, technischer und betrieblicher Standards voraus – darunter die Hinterlegung von Kundendaten im Treuhandverfahren, die Einhaltung von WHOIS-Pflichten sowie die Beachtung von Transfer- und Streitbeilegungsrichtlinien – und muss regelmäßig erneuert werden. Nur akkreditierte Registrare können als Erstpartei über [EPP](/de/glossary/epp/) mit Registries kommunizieren; Unternehmen ohne Akkreditierung müssen über einen akkreditierten Partner weiterverkaufen und werden daher als [Reseller](/de/glossary/reseller/) bezeichnet. Der Unterschied ist für Domain-Inhaber relevant: Ein akkreditierter Registrar trägt direkte vertragliche Verpflichtungen gegenüber ICANN, was eine Schutzebene für Verbraucher bietet, die reine Wiederverkäufer möglicherweise nicht eigenständig gewährleisten.

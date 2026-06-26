@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist ein atomarer Transfer und wie gewährleistet er sichere Domain-Transaktionen?
 keywords: ["atomarer Transfer","Blockchain-Transaktion","Alles-oder-Nichts","sicherer Austausch","Smart Contract"]
+relatedArticles:
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/selling-domains-as-nfts/
+  - /de/blog/domain-escrow-explained/
+  - /de/blog/how-tokenized-marketplaces-replace-escrow/
+  - /de/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/tokenized-domain/
+  - /de/glossary/registrar/
+  - /de/glossary/tokenize/
+  - /de/glossary/blockchain/
+  - /de/glossary/web3/
 ---
 
 

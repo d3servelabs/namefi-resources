@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Comment Tesla a mis plus d'une décennie et un montant rapporté de 11 millions de dollars pour passer de TeslaMotors.com au domaine exact Tesla.com, et pourquoi cette mise à niveau est arrivée juste avant que l'entreprise supprime « Motors » de son nom."
 keywords: ['teslamotors.com', 'tesla.com', 'nom de domaine tesla', 'mise à niveau de domaine', 'domaine elon musk', 'domaine exact match', 'naming startup', 'naming de marque', 'domaine premium', 'stratégie de domaine', 'rebranding tesla', 'changement de nom tesla motors', 'acquisition de domaine', 'domaine qui définit une catégorie']
+relatedArticles:
+  - /fr/blog/from-ubercab-com-to-uber-com/
+  - /fr/blog/from-snapchat-com-to-snap-com/
+  - /fr/blog/from-urbancompass-com-to-compass-com/
+  - /fr/blog/from-massdrop-com-to-drop-com/
+  - /fr/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Pendant ses treize premières années, la société automobile la plus précieuse de la décennie suivante vivait à une adresse légèrement maladroite : **TeslaMotors.com**.

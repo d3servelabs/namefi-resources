@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Instagram ने 2010 में instagr.am डोमेन हैक पर कैसे लॉन्च किया — अपना नाम स्पेल करने के लिए आर्मेनिया के .am ccTLD का उपयोग करते हुए — फिर Instagram.com पर एकीकृत होने के लिए $100,000 चुकाए, और एक चतुर ccTLD हैक के समझौते संस्थापकों को क्या सिखाते हैं।'
 keywords: ['instagr.am', 'instagram.com', 'instagram domain name', 'domain hack', 'ccTLD domain hack', '.am armenia domain', 'kevin systrom', 'mike krieger', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'instagram history']
+relatedArticles:
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-discordapp-com-to-discord-com/
+  - /hi/blog/from-mona-co-to-crypto-com/
+  - /hi/blog/from-slackhq-com-to-slack-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
 ---
 
 इससे पहले कि Instagram एक अरब उपयोगकर्ताओं का प्लेटफ़ॉर्म, तस्वीरें लेने की क्रिया, और फेसबुक द्वारा खरीदे गए सबसे मूल्यवान ऐप्स में से एक बने, उसका एक ऐसा नाम था जो चतुर इंजीनियरिंग का भी एक टुकड़ा था: **instagr.am**।

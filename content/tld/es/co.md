@@ -16,6 +16,24 @@ faqs:
     answer: 'Startups, empresas y fundadores cuyo .com ideal está tomado o resulta demasiado caro. La cadena "co" se lee de forma natural como "company", "corporation" o "Colorado", lo que la convierte en una segunda opción limpia y con buen potencial de marca para proyectos globales.'
   - question: '¿Es .co lo mismo que .com?'
     answer: 'No. Son TLD distintos gestionados por operadores diferentes. El riesgo es que los visitantes que escriben tu dirección de memoria añadan la "m" final y lleguen al .com en su lugar, por lo que los sufijos pueden confundirse en la conversación y en el tráfico tecleado.'
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/how-tld-affects-domain-value/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 El dominio **.co** es uno de los ejemplos más exitosos de una extensión de código de país que rompió sus fronteras. Oficialmente el ccTLD de **Colombia**, se ha comercializado y adoptado en todo el mundo como un sustituto corto y con buen potencial de marca para ".com" — donde "co" se lee al instante como **company**, **corporation** o, sencillamente, un ".com" recortado. Para los fundadores que descubren que su **.com** soñado está tomado, **.co** suele ser el primer lugar donde buscan.

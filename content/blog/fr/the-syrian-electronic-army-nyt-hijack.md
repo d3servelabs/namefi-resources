@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Le 27 août 2013, l'Armée électronique syrienne a hameçonné un revendeur de Melbourne IT, réécrit les enregistrements DNS de nytimes.com et des domaines de Twitter, et mis le New York Times hors ligne pendant des heures. Une analyse approfondie de la façon dont un maillon faible dans la chaîne des registraires est devenu la faille d'entrée d'un grand journal — et ce qu'un verrouillage au niveau du registre aurait changé."
 keywords: ['piratage nytimes.com', 'armée électronique syrienne', 'melbourne it', 'détournement dns', 'hijacking de domaine', 'sécurité registraire', 'phishing revendeur', 'verrouillage registre', 'enregistrements dns', 'attaque serveur de noms de domaine', 'dns twitter 2013', 'sécurité des noms de domaine', 'serverupdateprohibited']
+relatedArticles:
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-lenovo-com-dns-hijack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-panix-com-domain-hijack/
+  - /fr/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/tld/
 ---
 
 Le nom de domaine d'un journal est sa porte d'entrée. Lorsque vous tapez `nytimes.com`, vous faites confiance à une chaîne invisible — un registre de domaines, un [registraire](/fr/glossary/registrar/), parfois un [revendeur](/fr/glossary/reseller/) en dessous de ce registraire — pour vous diriger vers la vraie salle de rédaction et nulle part ailleurs. En temps normal, vous ne pensez jamais à cette chaîne. Le 27 août 2013, elle a rompu, et des millions de lecteurs se sont retrouvés devant la porte d'entrée du *New York Times* pour découvrir qu'elle avait été remplacée par celle de quelqu'un d'autre.

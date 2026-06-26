@@ -9,6 +9,24 @@ keywords: ['domain financing', 'installment', 'payment plan', 'domain acquisitio
 level: 1
 sources:
   - https://www.namebio.com/
+relatedArticles:
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/marketing-your-domains-for-sale/
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/working-with-domain-brokers/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/lease-to-own/
+  - /en/glossary/rent-to-own/
+  - /en/glossary/domain-broker/
+  - /en/glossary/icann/
+  - /en/glossary/escrow/
 ---
 
 **Domain financing** (or *installment purchasing*) lets a buyer spread the cost of a domain over multiple payments rather than paying the full sum at closing. Sellers benefit from reaching buyers who could not afford the lump-sum price, widening the pool of potential acquirers for premium names; buyers benefit from preserving cash flow while securing a valuable asset immediately. Structures range from simple two-part splits to multi-year plans resembling [lease-to-own](/en/glossary/lease-to-own/) arrangements, and most high-value deals run through a [domain broker](/en/glossary/domain-broker/) who negotiates terms and routes payments through [escrow](/en/glossary/escrow/) to protect both sides. Intermediaries like [rent-to-own](/en/glossary/rent-to-own/) platforms and Afternic's Dan.com have popularized standardized installment templates.

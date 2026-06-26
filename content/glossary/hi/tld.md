@@ -13,6 +13,24 @@ sources:
   - https://www.icann.org/en/beginners-guide-to-new-generic-top-level-domains
   - https://www.rfc-editor.org/rfc/rfc1591
   - https://developers.google.com/search/docs/crawling-indexing/url-structure#top-level-domains
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/how-tld-affects-domain-value/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
 ---
 
 **TLD** (*top-level domain*), जिसे **टॉप-लेवल डोमेन** भी कहा जाता है, एक पूरी तरह से योग्य डोमेन नाम में सबसे दाईं ओर का लेबल है — वह खंड जो अंतिम डॉट के बाद आता है। `www.example.com` में TLD `.com` है; `bbc.co.uk` में यह `.uk` है। TLD [DNS](/hi/glossary/dns/) पदानुक्रम के शीर्ष पर स्थित हैं और वह आधार हैं जिस पर हर अन्य डोमेन नाम बनाया जाता है।

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout sur l'extension .airbus : une plongée dans les domaines de marque (Brand TLDs), leurs avantages pour la sécurité et comment Namefi révolutionne l'investissement de domaines."
 keywords: [".airbus domains", ".airbus TLD", "top-level domain .airbus", "what is .airbus", "why choose .airbus", "what is the .airbus domain", "why choose the .airbus domain", "investir nom de domaine", "domaines tokenisés", "blockchain domains", "Web3 domains", "achat nom de domaine .airbus", "extension internet airbus", "domain investing", "Namefi"]
+relatedArticles:
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/ai-vs-io-domain/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Les extensions de domaine ([TLD](/fr/glossary/tld/)) ont considérablement évolué depuis les débuts d'Internet. Au-delà des classiques `.com` ou `.org`, nous voyons aujourd'hui l'essor des **Brand TLDs** (TLD de marque). L'un des exemples les plus fascinants de cette catégorie est le **.airbus**.

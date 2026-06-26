@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Erfahren Sie alles über die .active Top-Level-Domain. Entdecken Sie, warum diese Endung perfekt für Fitness, Tech und dynamische Marken ist und wie Sie sie bei Namefi registrieren.'
 keywords: ['.active domains', '.active TLD', 'top-level domain', 'was ist .active', 'warum .active wählen', 'was ist die .active domain', 'warum die .active domain wählen', 'domain investieren', 'blockchain domains', 'tokenisierte domains', 'fitness domains', 'lifestyle domains', 'tech domains', 'web3 domains', 'domain registrierung']
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 ## **Was ist .active?**

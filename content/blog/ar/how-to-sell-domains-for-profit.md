@@ -12,6 +12,24 @@ format: guide
 description: "الدليل الكامل من الألف للياء لبيع النطاقات: الوارد مقابل الصادر، صيغة التسعير، فين تعرض النطاق، إمتى تستعين بوسيط، وإزاي تقفل الصفقة بأمان."
 ogImage: ../../assets/how-to-sell-domains-for-profit-og.jpg
 keywords: ['إزاي تبيع النطاقات وتكسب منها', 'بيع اسم نطاق', 'دليل بيع النطاقات', 'البيع الوارد مقابل الصادر للنطاقات', 'تسعير النطاقات', 'فين تبيع النطاقات', 'أسواق النطاقات', 'وسيط نطاقات', 'ضمان النطاقات', 'اشتري الآن مقابل قدم عرض', 'بيع النطاقات أونلاين', 'السوق الثانوي للنطاقات', 'إقفال صفقة بيع نطاق', 'التواصل لبيع النطاقات', 'بيع نطاق بربح']
+relatedArticles:
+  - /ar/blog/inbound-vs-outbound-domain-sales/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/working-with-domain-brokers/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 النطاق اللي مش قادر تبيعه مجرد فاتورة تجديد عليها اسم ظريف. الشراء الكويس والتقييم بأمانة مهارات في الأول، بس دي المرحلة اللي الفلوس بتوصل فيها فعلاً. أغلب الربح في تجارة النطاقات بيتكسب أو بيضيع في مرحلة البيع، لأن اسم عادي اتباع كويس بيكسب اسم عظيم محدش لاقيه. دي ركيزة البيع في دليلنا عن [تجارة النطاقات](/ar/blog/domain-flipping/) — الرحلة الكاملة من "أنا بأملك الاسم ده" لـ"الفلوس وصلت". هنغطي الطريقتين اللي المشتري بيوصل بيهم ليك، إزاي تحدد صيغة السعر، فين تعرض، إمتى الوسيط يستاهل نسبته، وإزاي تقفل الصفقة من غير ما حد ينصب عليك. وعشان تاخد قايمة خطوة بخطوة لبيعة واحدة، اقرا ده مع [إزاي تبيع اسم نطاق بتملكه](/ar/blog/how-to-sell-a-domain-name-you-own/).

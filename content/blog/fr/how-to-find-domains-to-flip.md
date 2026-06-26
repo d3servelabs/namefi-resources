@@ -12,6 +12,24 @@ format: guide
 description: "Les quatre façons de s''approvisionner en domaines à revendre — l''enregistrement manuel, les expirations, les enchères et le marché secondaire — et le profil de risque et de prix de chaque canal."
 ogImage: ../../assets/how-to-find-domains-to-flip-og.jpg
 keywords: ['comment trouver des domaines à revendre', 'domaines à revendre', 's''approvisionner en domaines', 'trouver des domaines à revendre', 'enregistrer un domaine manuellement', 'domaines expirés', 'drop catching', 'enchères de domaines', 'marché secondaire des domaines', 'acheter des domaines pour revendre', 'domaines pas chers à revendre', 'investissement de domaines pour débutants', 'où acheter des domaines à revendre', 'précommandes de domaines', 'meilleurs domaines à revendre']
+relatedArticles:
+  - /fr/blog/domain-flipping/
+  - /fr/blog/hand-registering-domains-to-flip/
+  - /fr/blog/expired-domains-and-the-drop-cycle/
+  - /fr/blog/how-to-win-domain-auctions/
+  - /fr/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Tout, dans la revente, commence par ce que vous achetez. Vous pouvez être un négociateur brillant et un évaluateur affûté, mais si vous avez déniché un nom dont personne ne veut, ces compétences n'ont rien sur quoi s'appuyer. L'approvisionnement est la première vraie compétence du métier, et c'est celle que la plupart des débutants prennent à l'envers : ils tombent amoureux d'un nom d'abord et cherchent un acheteur ensuite.

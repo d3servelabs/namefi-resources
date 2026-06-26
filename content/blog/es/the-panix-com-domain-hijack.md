@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'En enero de 2005, panix.com — el dominio del proveedor de internet comercial más antiguo de Nueva York — fue transferido de forma fraudulenta a un registrador en Australia mediante tarjetas de crédito robadas, dejando el sitio web y el correo electrónico fuera de servicio durante días. Las reglas de transferencia entre registradores con aprobación automática de la época lo hicieron posible, y la resolución del caso reformó la política de transferencia de dominios.'
 keywords: ['panix.com', 'secuestro de dominio panix', 'secuestro de dominio', 'transferencia entre registradores', 'Melbourne IT', 'Dotster', 'Fibranet', 'política de transferencia ICANN', 'bloqueo de registrador', 'clientTransferProhibited', 'seguridad de dominios', 'secuestro DNS', 'código de autorización EPP']
+relatedArticles:
+  - /es/blog/the-lenovo-com-dns-hijack/
+  - /es/blog/the-perl-com-domain-theft/
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-sex-com-heist-the-forged-letter/
+  - /es/blog/the-syrian-electronic-army-nyt-hijack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
 ---
 
 Durante más de quince años, uno de los proveedores de internet comerciales más antiguos de Estados Unidos vivió en una sola dirección: **panix.com**. Luego, durante un largo fin de semana festivo en enero de 2005, alguien se la llevó.

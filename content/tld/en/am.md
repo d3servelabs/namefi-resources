@@ -24,6 +24,24 @@ keywords:
   - 'asset management domains'
   - 'radio station domains'
   - 'tech startup branding'
+relatedArticles:
+  - /en/blog/domain-hacks-explained/
+  - /en/blog/from-instagr-am-to-instagram-com/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
+  - /en/glossary/dns/
 ---
 
 ## **What is .am?**

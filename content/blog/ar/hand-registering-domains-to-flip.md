@@ -12,6 +12,24 @@ format: guide
 description: "إزاي تلاقي نطاقات لسه متاحة وتستاهل رسوم التسجيل: قوايم الكلمات، وتباديل الـTLD، والأنماط القابلة للعلامة التجارية، والفلاتر اللي بتغلب الشرا العاطفي."
 ogImage: ../../assets/hand-registering-domains-to-flip-og.jpg
 keywords: ['تسجيل النطاقات يدويًا', 'النطاقات المسجلة يدويًا', 'نطاقات متاحة للبيع', 'إيجاد النطاقات المتاحة', 'أسماء نطاقات قابلة للعلامة التجارية', 'قوايم كلمات النطاقات', 'تسجيل نطاقات عشان تبيعها', 'نطاقات رخيصة للبيع', 'إزاي تلاقي نطاقات تسجلها', 'أفكار أسماء نطاقات للبيع', 'تجارة النطاقات للمبتدئين', 'تباديل الـTLD', 'نطاقات .com متاحة', 'تسجيل النطاقات المضارِب', 'تسجيل النطاقات يدويًا في التجارة']
+relatedArticles:
+  - /ar/blog/domain-flipping/
+  - /ar/blog/when-to-drop-a-domain/
+  - /ar/blog/how-to-find-domains-to-flip/
+  - /ar/blog/domain-renewal-costs-and-sell-through-rate/
+  - /ar/blog/domain-portfolio-management/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 التسجيل اليدوي هو أرخص طريقة تدخل بيها مجال تجارة النطاقات، وفي نفس الوقت أسهل طريقة تضيّع بيها فلوسك فيه. بتكتب اسم في المُسجِّل، يطلعلك إنه متاح، تدفع رسوم التسجيل، وكده بقى عندك نطاق جديد لِسّه مفيش حد اتمنّاه في حياته. الجزء الأخير ده هو الفخ. فيه [359.8 مليون اسم نطاق](https://en.wikipedia.org/wiki/Domain_name#:~:text=359.8%20million%20domain%20names%20had%20been%20registered) متسجلين بالفعل لحد آخر سنة 2023، وعالم السلاسل النصية اللي *مش متسجلة* عمليًا مالوش نهاية. كون الاسم متاح ده بيقولّك حاجة تقريبًا صفر عن إنه يستاهل تمتلكه ولا لأ. وغالبًا بيعني العكس.

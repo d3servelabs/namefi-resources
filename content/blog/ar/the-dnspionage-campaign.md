@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في أواخر 2018، كشفت Cisco Talos عن حملة DNSpionage — حملة مرتبطة بمصالح إيرانية أعادت كتابة سجلات DNS الحكومية، وحوّلت مسار الإيميل وحركة VPN لسيرفرات المهاجمين، وولّدت شهادات TLS حقيقية عشان تفضل مخفية. وكانت السبب في أول توجيه طارئ من نوعه تُصدره الحكومة الأمريكية.'
 keywords: ['dnspionage', 'اختطاف dns', 'إعادة توجيه dns', 'cisco talos', 'توجيه cisa الطارئ 19-01', 'sea turtle dns', 'اختطاف dns إيراني', 'fireeye اختطاف dns', 'إساءة استخدام شهادة lets encrypt', 'أمن dns', 'أمن النطاقات', 'تجسس سيبراني على مستوى الدول', 'التخفيف من التلاعب بالبنية التحتية لـ dns']
+relatedArticles:
+  - /ar/blog/the-sea-turtle-dns-espionage/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+  - /ar/blog/the-badgerdao-frontend-attack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
 ---
 
 معظم كوارث النطاقات بتتكلم عن مين *يملك* الاسم. الحادثة دي كانت عن مين *يتحكم* فيه — ولمدة شهور في أواخر 2018، الإجابة بالنسبة لعشرات النطاقات الحكومية في الشرق الأوسط كانت: مش الحكومات.

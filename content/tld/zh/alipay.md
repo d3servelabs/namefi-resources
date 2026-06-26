@@ -24,6 +24,24 @@ keywords:
   - 'alipay registry'
   - '.alipay 域名'
   - 'Web3 domain registration'
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/registry/
 ---
 
 ## **什么是 .alipay？**

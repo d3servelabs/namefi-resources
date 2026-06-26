@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: Un guide en langage clair sur le séquestre et le séquestre de domaine — ce qu'est un compte séquestre, comment fonctionne le séquestre étape par étape dans une vente de domaine, pourquoi c'est important pour éviter la fraude, les services de séquestre traditionnels par rapport à l'approche tokenisée moderne, et comment les contrats intelligents peuvent remplacer le séquestre par un règlement atomique en chaîne.
 keywords: ['séquestre de domaine', 'qu''est-ce que le séquestre', 'compte séquestre', 'signification séquestre', 'comment fonctionne le séquestre', 'service de séquestre de domaine', 'alternative escrow.com', 'acheter un domaine en toute sécurité', 'vendre un domaine en toute sécurité', 'code auth', 'code EPP', 'transfert de registrar', 'frais de séquestre', 'transaction de domaine sécurisée', 'fraude à la vente de domaine', 'séquestre de domaine tokenisé', 'séquestre par contrat intelligent', 'règlement atomique', 'vente de domaine en chaîne', 'comment éviter la fraude de domaine']
+relatedArticles:
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/avoiding-domain-sale-scams/
+  - /fr/blog/how-tokenized-marketplaces-replace-escrow/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /fr/topics/domain-basics/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
+  - /fr/glossary/tld/
 ---
 
 Si vous avez déjà acheté ou vendu quelque chose de coûteux entre inconnus — une voiture, une maison, un `.com` valant plusieurs dizaines de milliers d'euros — vous vous êtes heurté au même problème : l'acheteur ne veut pas payer avant d'avoir reçu la chose, et le vendeur ne veut pas remettre la chose avant d'avoir été payé. Quelqu'un doit faire le premier pas, et faire le premier pas signifie faire confiance à l'autre personne.

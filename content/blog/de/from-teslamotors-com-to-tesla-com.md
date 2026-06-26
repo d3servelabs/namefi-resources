@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Tesla über ein Jahrzehnt und angeblich 11 Mio. $ benötigte, um von TeslaMotors.com zur exakt passenden Tesla.com zu wechseln – und warum das Domain-Upgrade kurz vor der Umbenennung des Unternehmens eintraf.'
 keywords: ['teslamotors.com', 'tesla.com', 'tesla domain name', 'domain upgrade', 'elon musk domain', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'tesla rebrand', 'tesla motors name change', 'domain acquisition', 'category-defining domain']
+relatedArticles:
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-snapchat-com-to-snap-com/
+  - /de/blog/from-urbancompass-com-to-compass-com/
+  - /de/blog/from-massdrop-com-to-drop-com/
+  - /de/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 In seinen ersten dreizehn Jahren war das wertvollste Autounternehmen des nächsten Jahrzehnts unter einer etwas unbeholfenen Adresse erreichbar: **TeslaMotors.com**.

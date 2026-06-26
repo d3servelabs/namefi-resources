@@ -16,6 +16,24 @@ faqs:
     answer: '.net suits technology, infrastructure, networking, and community projects, and anyone whose preferred .com is taken. Because it is a trusted legacy extension, it is a strong fallback when the matching .com is unavailable or too expensive to acquire.'
   - question: 'Is .net better than .com?'
     answer: '.com remains the default users expect, so it generally wins for mainstream brands. .net is the closest trusted alternative and often has better availability for short names. Many companies register both to protect the brand and redirect one to the other.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.net domain** is one of the founding extensions of the internet, created in 1985 in the same wave as .com, .org, .edu, and .gov. The name is short for "network," and the suffix was originally meant for the organizations that ran internet infrastructure itself. Today it is fully open, broadly trusted, and one of the most widely registered top-level domains in the world.

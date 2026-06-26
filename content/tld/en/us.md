@@ -16,6 +16,24 @@ faqs:
     answer: 'The .us namespace is overseen by the US Department of Commerce through the NTIA. The current registry operator is Registry Services, LLC, a GoDaddy Registry company, which took over from Neustar around 2020. IANA lists Registry Services, LLC as the manager.'
   - question: 'What is the .us Nexus Requirement?'
     answer: 'The Nexus Requirement is the eligibility rule that limits .us to parties with a genuine connection to the United States. It covers US citizens and residents, entities organized in the US, and foreign organizations that maintain a bona fide US presence such as a regular operation or activity.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/domain-hacks-explained/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.us** domain is the official [country-code Top-Level Domain](/en/glossary/cctld/) (ccTLD) for the **United States** — and one of the very first ccTLDs ever delegated. Where extensions like [.co](/en/tld/co/) are marketed as borderless ".com" substitutes, .us is deliberately the opposite: a namespace tied to American identity, governed under US federal policy, and reserved for registrants with a genuine US presence. For a business, brand, or organization that wants to say "we are American" in its web address, .us is the most literal way to do it.

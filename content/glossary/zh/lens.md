@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是Lens Protocol？它如何利用域名实现社交身份？
 keywords: ["Lens","Lens Protocol","去中心化社交","NFT资料","社交图谱","Web3身份"]
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/why-tokenize-domains/
+  - /zh/blog/cctld-market-share-by-registration-volume/
+  - /zh/blog/avoiding-domain-sale-scams/
+  - /zh/blog/tokenized-domain-use-cases-2026/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/web3/
+  - /zh/glossary/farcaster/
+  - /zh/glossary/blockchain/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
 ---
 
 

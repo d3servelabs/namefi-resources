@@ -12,6 +12,24 @@ format: roundup
 description: A guide to the news outlets, sales-data sites, and podcasts that cover the domain name industry as journalism — DomainNameWire, DNJournal, TheDomains, NameBio, DomainSherpa, CircleID, and more.
 ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['domain industry news', 'domain name media', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'icann news']
+relatedArticles:
+  - /en/blog/famous-domainer-blogs-and-newsletters/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/top-domain-trader-forums/
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-investor-field-guide/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 If [individual domainer blogs](/blog/famous-domainer-blogs-and-newsletters) are personal voices, *domain industry media* are the outlets that operate more like newsrooms — sometimes one-person newsrooms, but with the editorial posture of journalism rather than a trader's diary. They cover deals, policy, registry/[registrar](/en/glossary/registrar/) moves, [ICANN](/en/glossary/icann/), and the occasional drama, and they are the sources other people quote.

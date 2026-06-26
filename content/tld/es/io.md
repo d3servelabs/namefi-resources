@@ -16,6 +16,24 @@ faqs:
     answer: 'Startups de software, productos SaaS, herramientas para desarrolladores, proyectos de código abierto, servicios de API, estudios de juegos de navegador, y equipos de Web3 o blockchain que quieran un nombre que se lea como Entrada/Salida y señale un enfoque tecnológico.'
   - question: '¿Va a desaparecer el dominio .io por el acuerdo de soberanía sobre las Chagos?'
     answer: 'No es un hecho establecido. A partir de 2026, .io está completamente operativo. Cualquier retirada requeriría primero que cambiara el código de país ISO, y luego seguiría una transición de varios años en la IANA, por lo que es una situación a seguir de cerca antes que motivo de pánico.'
+relatedArticles:
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 El **dominio .io** es técnicamente una extensión de código de país para un remoto territorio del Océano Índico, pero en la práctica se ha convertido en el hogar no oficial de las startups de software, las herramientas para desarrolladores y los proyectos [Web3](/es/glossary/web3/). Para la mayoría de los compradores, el **significado del dominio .io** no tiene nada que ver con la geografía, sino con la lectura que los ingenieros hacen de "io": como **Entrada/Salida (Input/Output)**, uno de los conceptos más fundamentales de la informática.

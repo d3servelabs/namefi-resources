@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 将域名或资产代币化意味着什么？
 keywords: ["代币化","通证化","NFT","数字资产","链上资产"]
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/why-tokenize-domains/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+  - /zh/blog/tokenized-domain-use-cases-2026/
+  - /zh/blog/ens-vs-unstoppable-vs-tokenized-dns/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/dns/
+  - /zh/glossary/composability/
+  - /zh/glossary/smart-contract/
+  - /zh/glossary/tokenized-domain/
+  - /zh/glossary/web3/
 ---
 
 

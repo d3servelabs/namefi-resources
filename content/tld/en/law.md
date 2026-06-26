@@ -16,6 +16,24 @@ faqs:
     answer: 'Practicing lawyers, law firms, law schools, and bar associations that want a verified, profession-specific web and email identity. It suits practices that value a credibility signal and anti-impersonation security over a short generic name.'
   - question: 'What happens to my .law domain if I lose my license to practice?'
     answer: 'Eligibility must be maintained for the life of the registration, not just at purchase. A lawyer with inactive, suspended, or non-practicing status who is no longer authorized to provide legal services may fail re-verification and be unable to keep or renew the domain.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-law-firm/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.law domain** is one of the internet's genuinely restricted extensions: a credential-gated top-level domain reserved for the legal profession. Unlike open suffixes that anyone can buy, .law is sold only to people and organizations that can prove they are qualified to practice or regulate law — licensed lawyers, law firms, law schools, and legal regulators. Every [registrant](/en/glossary/registrant/)'s credentials are validated before a name is issued and re-checked over time. For the legal community, that verification is the entire point: a .law address tells prospective clients, at a glance, that there is a real, licensed practitioner or firm behind it.

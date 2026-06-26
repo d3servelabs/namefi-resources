@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .eth डोमेन ब्लॉकचेन-आधारित नाम हैं जो जटिल वॉलेट पतों को मानव-पठनीय नामों से बदलते हैं। जानें कि ENS Web3 पहचान और डिजिटल स्वामित्व को कैसे बदल रहा है।
 keywords: ["टीएलडी", "ईटीएच डोमेन", "Web3 पहचान", "ब्लॉकचेन", "ENS", "विकेन्द्रीकृत डोमेन", "NFT डोमेन"]
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /hi/blog/premium-web3-tlds/
+  - /hi/blog/ens-vs-dns-domain-flipping/
+  - /hi/blog/onchain-domain-flipping/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 

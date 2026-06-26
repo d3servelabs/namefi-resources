@@ -24,6 +24,24 @@ keywords:
   - 'seguridad web'
   - 'registro de dominios'
   - 'Namefi'
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/registrar/
+  - /es/glossary/registry/
 ---
 
 En el vasto universo de internet, la elección de un dominio es mucho más que una simple dirección web; es una declaración de identidad, seguridad y propósito. Hoy analizaremos un dominio de nivel superior ([TLD](/es/glossary/tld/)) muy particular que resuena con fuerza en el mundo del comercio electrónico y las tecnologías financieras: el **.alipay**.

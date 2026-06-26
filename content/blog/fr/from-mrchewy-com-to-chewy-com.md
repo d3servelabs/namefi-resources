@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Comment une startup animalière fondée en 2011 sous le nom « Mr. Chewy » sur MrChewy.com a abandonné le « Mr. » pour devenir Chewy sur le domaine exact-match Chewy.com, et pourquoi cette mise à niveau d'un seul mot est discrètement devenue un élément clé d'une marque rachetée par PetSmart pour 3,35 milliards de dollars."
 keywords: ['mrchewy.com', 'chewy.com', 'nom de domaine chewy', 'mr chewy', 'mise à niveau de domaine', 'ryan cohen', 'michael day', 'frank schilling', 'domaine exact match', 'naming startup', 'naming de marque', 'domaine premium', 'stratégie de domaine', 'e-commerce animalier']
+relatedArticles:
+  - /fr/blog/from-urbancompass-com-to-compass-com/
+  - /fr/blog/from-ubercab-com-to-uber-com/
+  - /fr/blog/from-massdrop-com-to-drop-com/
+  - /fr/blog/from-bufferapp-com-to-buffer-com/
+  - /fr/blog/from-teslamotors-com-to-tesla-com/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
 ---
 
 Avant que Chewy ne devienne la légende du service client dans le e-commerce animalier — avant les cartes manuscrites, les fleurs de condoléances et la sortie à 3,35 milliards de dollars — la marque portait un nom légèrement plus attachant et plus prudent. Elle s'appelait **Mr. Chewy**, et elle était hébergée sur **MrChewy.com**.

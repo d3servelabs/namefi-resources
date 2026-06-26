@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "شرح شامل لسياسة UDRP لأصحاب أسماء النطاقات والمستثمرين: العناصر الثلاثة اللي لازم يُثبتها المدّعي، وإجراءات العملية والجدول الزمني، والنتائج المحتملة، والفرق بين UDRP وURS والتقاضي في المحاكم، وكيف ترد على شكوى."
 keywords: ['udrp', 'ما هي udrp', 'إجراءات udrp', 'سياسة udrp', 'شكوى udrp', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'نزاع اسم نطاق', 'نزاع أسماء نطاقات', 'cybersquatting', 'اختطاف أسماء نطاقات عكسي', 'تسجيل بنية سيئة', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'نزاع نطاق علامة تجارية', 'قانوني لمستثمري النطاقات', 'الرد على شكوى udrp']
+relatedArticles:
+  - /ar/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/domain-flipping-and-the-law/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/domain-basics/
+  - /ar/topics/domain-security/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 لو امتلكت أسماء نطاقات لفترة كافية، في الغالب هتسمع عن [UDRP](/ar/glossary/udrp/) في يوم من الأيام — عادةً لأن حد بيهددك باستخدامها ضدك، أو لأنك بتتساءل إذا كان اسم في محفظتك آمن للاحتفاظ بيه. بالنسبة لمستثمري النطاقات، فهم سياسة UDRP مش خيار — ده أكتر طريقة شائعة ممكن تخلي النطاق اللي سجلته يُنتزع منك من غير ما تروح محكمة.

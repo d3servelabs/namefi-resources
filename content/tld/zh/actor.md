@@ -23,6 +23,24 @@ keywords:
   - '个人品牌域名'
   - '演艺作品集'
   - '数字身份'
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/choosing-a-domain-tokenization-platform/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/new-gtld/
+  - /zh/glossary/registry/
 ---
 
 对于身处竞争激烈的娱乐行业的专业人士来说，在网络上脱颖而出与在试镜室中给选角导演留下深刻印象同样重要。一个独特、易记且专业的网址是现代艺人数字名片的核心。这正是 **.actor** 顶级域名（TLD）发挥作用的地方。

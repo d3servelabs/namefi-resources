@@ -12,6 +12,24 @@ format: guide
 description: "Cómo encontrar dominios todavía disponibles que valgan la tarifa de registro: listas de palabras, permutaciones de TLD, patrones de marca y los filtros que vencen a las compras impulsivas."
 ogImage: ../../assets/hand-registering-domains-to-flip-og.jpg
 keywords: ['registrar dominios a mano', 'dominios registrados a mano', 'dominios disponibles para revender', 'encontrar dominios disponibles', 'nombres de dominio con marca', 'listas de palabras para dominios', 'registrar dominios para vender', 'dominios baratos para revender', 'cómo encontrar dominios para registrar', 'ideas de nombres de dominio para vender', 'reventa de dominios para principiantes', 'permutaciones de TLD', 'dominios .com disponibles', 'registro especulativo de dominios', 'hand reg en domaining']
+relatedArticles:
+  - /es/blog/domain-flipping/
+  - /es/blog/when-to-drop-a-domain/
+  - /es/blog/how-to-find-domains-to-flip/
+  - /es/blog/domain-renewal-costs-and-sell-through-rate/
+  - /es/blog/domain-portfolio-management/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Registrar dominios a mano es la forma más barata de entrar en la reventa de dominios y la manera más fácil de tirar el dinero en ella. Escribes un nombre en un registrador, vuelve como disponible, pagas la tarifa de registro y ahora eres dueño de un dominio recién creado que nadie ha querido jamás. Esa última parte es la trampa. Ya hay [359,8 millones de nombres de dominio](https://en.wikipedia.org/wiki/Domain_name#:~:text=359.8%20million%20domain%20names%20had%20been%20registered) registrados a finales de 2023, y el universo de cadenas *sin registrar* es, a efectos prácticos, infinito. Que un nombre esté disponible no te dice casi nada sobre si vale la pena tenerlo. Por lo general, significa lo contrario.

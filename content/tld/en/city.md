@@ -18,6 +18,24 @@ faqs:
     answer: 'Yes, when the name reads naturally. A domain like yourtown.city or coffee.city signals local relevance at a glance. It works best for businesses, guides, and services tied to a specific place rather than global brands.'
   - question: 'Does .city support WHOIS privacy and DNSSEC?'
     answer: 'Yes. Most registrars offer free WHOIS privacy on .city, and the registry supports DNSSEC for cryptographic protection of DNS records. Availability of each depends on your chosen registrar.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-investor-field-guide/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.city domain** is one of the clearest descriptive web addresses available: it pairs any name with the literal word "city," producing addresses that read like a label. For local businesses, tourism boards, community projects, and city guides, it turns a domain into a tagline. If the exact .com you want is taken, a name like `yourtown.city` can be more memorable than a hyphenated alternative.

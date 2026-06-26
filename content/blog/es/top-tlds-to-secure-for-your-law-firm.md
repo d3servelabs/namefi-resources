@@ -8,6 +8,24 @@ draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: 'Los 10 principales TLDs que debes asegurar para tu firma de abogados, incluyendo por qué .law es el único TLD legal restringido a abogados verificados (mientras que .esq, .legal, .attorney y .lawyer son abiertos), además de una estrategia defensiva.'
 keywords: ['tlds para firmas de abogados', 'mejores dominios para abogados', 'dominio .law', 'es .esq restringido', 'extensiones de dominio legal', 'registro defensivo de dominios', 'nombres de dominio para abogados', 'branding de firma legal', 'TLDs legales restringidos', 'registrar dominios para firma de abogados']
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Para una firma de abogados, un nombre de dominio es más que una dirección — es una señal de confianza. Los clientes juzgan la credibilidad en segundos, y un dominio limpio y profesional con una extensión reconocida hace un trabajo silencioso que un folleto no puede hacer. Asegurar el conjunto correcto de **TLDs para tu firma de abogados** protege los nombres que más importan: tu firma, tus socios y las áreas de práctica en las que deseas posicionarte.

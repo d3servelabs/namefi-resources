@@ -26,6 +26,24 @@ keywords:
   - 'sTLD meaning'
   - 'airline website domain'
   - 'Namefi domain registration'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /hi/blog/top-tlds-to-secure-for-your-real-estate-business/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
 ---
 
 विमानन उद्योग (Aviation Industry) दुनिया के सबसे गतिशील और विशिष्ट क्षेत्रों में से एक है। जब बात ऑनलाइन पहचान की आती है, तो इस उद्योग को एक ऐसे डोमेन की आवश्यकता होती है जो इसकी विश्वसनीयता और विशिष्टता को दर्शा सके। यहीं पर **.aero** [TLD](/hi/glossary/tld/) (Top-Level Domain) महत्वपूर्ण भूमिका निभाता है।

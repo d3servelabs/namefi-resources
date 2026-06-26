@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2020年7月15日，攻击者通过电话诈骗入侵Twitter，劫持了奥巴马、拜登、马斯克、盖茨、苹果和Uber等认证账户，实施比特币翻倍骗局——最终骗取约11.8万美元。深度解析网络身份是如何被盗取的，以及这一事件对"拥有一个名字"的启示。'
 keywords: ['2020年推特黑客事件', '推特比特币诈骗', 'graham ivan clark', '语音钓鱼', '电话鱼叉式网络钓鱼', '社会工程学', '账户劫持', '网络身份安全', '认证账户劫持', '推特管理员工具', 'agent tool', '内部风险', '域名安全', '纽约金融服务局推特报告']
+relatedArticles:
+  - /zh/blog/the-bitcoin-org-dns-hijack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /zh/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /zh/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 在某个星期三的下午，有几个小时里，互联网上最受信任的声音都开始说同一件事：把比特币发给我，我会双倍奉还。

@@ -12,6 +12,24 @@ format: comparison
 description: "ENS、Unstoppable Domains 与代币化 ICANN DNS 域名的对比，从浏览器可解析性、续费，以及谁真正掌控域名三个维度展开。"
 ogImage: ../../assets/ens-vs-unstoppable-vs-tokenized-dns-og.jpg
 keywords: ['ENS 与 Unstoppable Domains 对比', 'ENS 与代币化域名对比', 'Unstoppable Domains 与 ENS 对比', 'web3 域名对比', '代币化 DNS 域名', 'ENS 域名翻转', '.eth 域名', '.crypto 域名', 'web3 域名能否在浏览器中解析', 'ENS 续费费用', 'Unstoppable Domains 免续费', 'ICANN 与 web3 域名对比', '谁掌控 web3 域名', '代币化域名与 web3 域名对比', 'NFT 域名对比']
+relatedArticles:
+  - /zh/blog/onchain-domain-flipping/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/ens-vs-dns-domain-flipping/
+  - /zh/blog/onchain-domain-marketplaces-compared/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 如果你在链上翻转域名，第一个要做的决定就是：你交易的究竟是哪一种"链上域名"。大多数人把三类东西混为一谈，但它们并不是同一种资产，而这些差异决定了域名能否在浏览器中解析、明年你是否要交续费、以及谁真正掌控这个域名。本文将这三者逐一对比：[ENS](/zh/glossary/ens/)（`.eth`）、[Unstoppable Domains](https://unstoppabledomains.com)（`.crypto`、`.x`、`.nft`），以及代币化的真实 ICANN [DNS](/zh/glossary/dns/) 域名（也就是你可以在 [Namefi](https://namefi.io) 上[代币化](/zh/glossary/tokenize/)的 `.com`/`.io`/`.xyz` 域名）。

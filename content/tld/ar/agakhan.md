@@ -24,6 +24,24 @@ keywords:
   - 'premium domains'
   - 'Web3 domains'
   - 'Namefi domain registrar'
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
+  - /ar/glossary/registrar/
 ---
 
 ## **ما هو نطاق .agakhan؟**

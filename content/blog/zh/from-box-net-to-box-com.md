@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Box 于 2005 年在 Box.net 上线，因为 Box.com 已被他人占用；随后从消费级存储转型为企业级市场，并于 2011 年向 Digimedia 支付近 100 万美元买下完全匹配的 Box.com——这次从 .net 到 .com 的升级，恰好发生在公司正式更名为"Box"的时刻。'
 keywords: ['box.net', 'box.com', 'box 域名', 'aaron levie', 'dylan smith', 'digimedia', 'scott day', '域名升级', '初创公司命名', '品牌命名', '溢价域名', '完全匹配域名', 'net 转 com']
+relatedArticles:
+  - /zh/blog/from-getdropbox-com-to-dropbox-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
 ---
 
 在 Box 成为价值数十亿美元的企业软件公司之前，它曾栖身于一个略显逊色的网络地址：**Box.net**。

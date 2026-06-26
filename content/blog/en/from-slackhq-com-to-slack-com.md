@@ -11,6 +11,24 @@ seriesOrder: 5
 format: case-study
 description: 'How Slack launched on SlackHQ.com because someone else had Slack.com, paid a reported $60,000 to buy the exact-match domain, dropped the "HQ" — and why @SlackHQ still survives on social to this day.'
 keywords: ['slackhq.com', 'slack.com', 'slack domain name', 'domain upgrade', 'stewart butterfield', 'tiny speck', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'slack history', 'domain acquisition', 'category-defining domain']
+relatedArticles:
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+  - /en/blog/from-discordapp-com-to-discord-com/
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-teslamotors-com-to-tesla-com/
+  - /en/blog/from-box-net-to-box-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
 ---
 
 Before Slack was a verb for "message me at work," it was a quieter thing with a longer address: **SlackHQ.com**.

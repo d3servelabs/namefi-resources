@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre qué es el TLD .tech, sus ventajas para empresas tecnológicas y startups, y por qué es la elección ideal para tu identidad digital. Regístralo en Namefi.'
 keywords: ['.tech domains', 'dominio .tech', 'TLD .tech', 'top-level domain', 'what is .tech', 'why choose .tech', 'qué es el dominio .tech', 'por qué elegir el dominio .tech', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'registro de dominios', 'nombres para startups', 'Web3 domains']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+  - /es/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 En el vasto universo de internet, elegir el nombre de dominio correcto es tan crucial como elegir el nombre de tu empresa. Mientras que el `.com` ha sido el rey indiscutible durante décadas, la saturación del mercado ha dado paso a nuevas extensiones más específicas y relevantes. Entre ellas, el **.tech** se ha posicionado como la opción predilecta para el ecosistema de la innovación.

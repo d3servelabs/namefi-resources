@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .am. تعرف على مميزاته للمحطات الإذاعية، والشركات الناشئة، وكيفية الاستفادة منه في الاستثمار بالنطاقات عبر Namefi.'
 keywords: ['.am domains', 'نطاق .am', '.am TLD', 'top-level domain .am', 'what is .am', 'why choose .am', 'what is the .am domain', 'why choose the .am domain', 'shiraa nitaq .am', 'domain investing', 'blockchain domains', 'tokenized domain', 'Armenia domain', 'radio domains', 'buy .am domain']
+relatedArticles:
+  - /ar/blog/domain-hacks-explained/
+  - /ar/blog/from-instagr-am-to-instagram-com/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/dns/
 ---
 
 في عالم الإنترنت المتسارع، يعد اختيار اسم النطاق (Domain Name) الصحيح خطوة حاسمة لنجاح أي مشروع رقمي. بينما يظل نطاق [.com](/ar/tld/com/) هو الأشهر، تكتسب نطاقات رموز الدول (ccTLDs) التي لها استخدامات إبداعية، مثل نطاق **.am**، شعبية هائلة بين الشركات الناشئة والمبدعين.

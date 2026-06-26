@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '1995 में स्टीफन कोहेन नामक एक धोखेबाज ने Network Solutions को एक जाली पत्र भेजकर Gary Kremen से sex.com चुरा लिया। इसे वापस पाने की लंबी लड़ाई $65 मिलियन के फैसले, मेक्सिको में एक भगोड़े और इस ऐतिहासिक फैसले पर समाप्त हुई कि डोमेन संपत्ति है।'
 keywords: ['sex.com', 'domain theft', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'forged letter', 'domain hijacking', 'Sharon Dimmick letter', 'domain security', 'domain as property', '$65 million judgment', 'domain transfer fraud', 'Domain Mayday']
+relatedArticles:
+  - /hi/blog/the-panix-com-domain-hijack/
+  - /hi/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /hi/blog/from-twitter-com-to-x-com/
+  - /hi/blog/the-perl-com-domain-theft/
+  - /hi/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 1995 में, इंटरनेट का सबसे मूल्यवान पता एक कागज के टुकड़े की वजह से हाथ बदल गया।

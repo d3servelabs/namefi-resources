@@ -12,6 +12,24 @@ format: guide
 description: "What domain flipping really is — buying names low and selling high — and the stack of skills behind the trade, from sourcing and appraisal to selling."
 ogImage: ../../assets/domain-flipping-og.jpg
 keywords: ['domain flipping', 'how to flip domains', 'flipping domains for profit', 'domain flipping for beginners', 'buy and sell domains', 'domain investing', 'make money with domains', 'domain flipping guide', 'how to value a domain', 'find domains to flip', 'domain portfolio', 'domain reseller', 'is domain flipping legal', 'domain aftermarket']
+relatedArticles:
+  - /en/blog/domain-renewal-costs-and-sell-through-rate/
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/when-to-drop-a-domain/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+  - /en/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 The pitch is the oldest one in commerce: buy low, sell high. Register or acquire a domain name for a few dollars, find someone who needs it more than you do, and sell it for many multiples of what you paid. Done well, it looks effortless — a clever name bought cheap, a five-figure check months later. That story is real. It is also the highlight reel.

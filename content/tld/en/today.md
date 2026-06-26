@@ -18,6 +18,24 @@ faqs:
     answer: 'Yes. The suffix reads as a full English word that signals freshness and immediacy, which fits news, events, and daily-update brands well. It also leaves more short, exact-match names available than legacy extensions like .com.'
   - question: 'Does .today support WHOIS privacy and DNSSEC?'
     answer: 'Yes. As an Identity Digital gTLD, .today supports DNSSEC at the registry level, and most registrars including Namefi offer free WHOIS privacy to mask personal contact details in public records.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.today domain** is a new [generic top-level domain](/en/glossary/gtld/) (gTLD) built around one of the most action-oriented words in English. Where a legacy suffix simply ends an address, ".today" finishes a thought — `deals.today`, `events.today`, `launch.today` — turning the domain itself into a promise of fresh, time-sensitive content.

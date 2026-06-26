@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Discover the .airtel Top-Level Domain: a specialized TLD for the telecom giant. Learn about Brand TLDs, their security benefits, and the future of domain naming.'
 keywords: ['.airtel domains', '.airtel TLD', 'top-level domain', 'what is .airtel', 'why choose .airtel', 'what is the .airtel domain', 'why choose the .airtel domain', 'Bharti Airtel domain', 'brand TLD', 'domain investing', 'blockchain domains', 'tokenized domain', 'new gTLD', 'telecom domains', 'Web3 domains']
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .airtel?**

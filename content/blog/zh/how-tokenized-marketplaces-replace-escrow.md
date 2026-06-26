@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '代币化域名市场如何让买卖双方在链上实现原子化结算——无需担保服务、无需授权码、也无需等待5天的注册商锁定。传统流程的各个环节被什么取代，以及哪些风险转移到了其他层面。'
 keywords: ['域名市场 区块链', '原子化域名转移', '代币化域名市场', '取代域名担保', '无担保域名销售', '加密货币域名销售', '代币化域名销售流程', '出售代币化域名', '购买代币化域名', '链上域名销售', '域名 NFT 结算', '2026 域名市场', '代币化域名流动性']
+relatedArticles:
+  - /zh/blog/domain-escrow-explained/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/tokenize-your-com/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 出售一个 `.com` 域名的传统流程大致如下：

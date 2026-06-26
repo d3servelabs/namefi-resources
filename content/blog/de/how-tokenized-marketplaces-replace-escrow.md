@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Marktplätze für tokenisierte Domains es Käufern und Verkäufern ermöglichen, atomar On-Chain abzuwickeln – ohne Treuhanddienst, ohne Auth-Codes, ohne fünftägige Registrar-Sperre. Was jeden Teil des traditionellen Ablaufs ersetzt und welche Risiken sich auf andere Ebenen verlagern.'
 keywords: ['Domain-Marktplatz Blockchain', 'atomarer Domain-Transfer', 'Marktplatz für tokenisierte Domains', 'Domain-Treuhand ersetzen', 'Domain-Verkauf ohne Treuhand', 'Domain-Verkauf Krypto', 'Verkaufsprozess für tokenisierte Domains', 'tokenisierte Domain verkaufen', 'tokenisierte Domain kaufen', 'On-Chain Domain-Verkauf', 'Domain NFT-Abwicklung', 'Domain-Marktplatz 2026', 'Liquidität für tokenisierte Domains']
+relatedArticles:
+  - /de/blog/domain-escrow-explained/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/tokenize-your-com-to-flip-it/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/tokenize-your-com/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
 ---
 
 Der traditionelle Ablauf beim Verkauf einer `.com`-Domain sieht in etwa so aus:

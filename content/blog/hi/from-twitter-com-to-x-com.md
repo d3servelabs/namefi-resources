@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'कैसे Elon Musk ने 1999 में X.com बनाया, PayPal द्वारा उनका पुराना नाम लेने पर इसे खो दिया, 2017 में भावनात्मक कारणों से इसे वापस खरीदा, और अंततः एक $44 बिलियन के सोशल नेटवर्क को इस पर स्थानांतरित किया — जिससे Twitter.com X.com पर रीडायरेक्ट होने लगा।'
 keywords: ['twitter.com', 'x.com', 'twitter rebrand x', 'elon musk x.com', 'x.com history', 'paypal x.com domain', 'twitter to x name change', 'domain redirect', 'domain upgrade', 'single letter domain', 'everything app', 'brand naming', 'premium domain']
+relatedArticles:
+  - /hi/blog/from-mona-co-to-crypto-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-ctrip-com-to-trip-com/
+  - /hi/blog/from-snapchat-com-to-snap-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 अधिकांश डोमेन-अपग्रेड की कहानियाँ सीधी रेखा में चलती हैं: एक कंपनी वर्णनात्मक नाम से शुरू होती है, बढ़ती है, और अंततः सटीक-मिलान वाला क्लीन डोमेन खरीद लेती है। **Twitter.com से X.com** की कहानी इससे कहीं अधिक अजीब है। यह एक गोलाकार यात्रा है। गंतव्य डोमेन — **X.com** — इस कहानी का *पहला* डोमेन था, जिसे Elon Musk ने 1999 में रजिस्टर किया, एक साल बाद PayPal को खो दिया, दो दशक बाद केवल पुरानी यादों के लिए वापस खरीदा, और अंततः 2023 में एक वैश्विक सोशल नेटवर्क पर लगाया।

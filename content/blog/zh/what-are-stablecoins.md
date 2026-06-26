@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '了解稳定币如何连接传统法币与加密货币，为 Web3 交易和域名投资提供稳定性。'
 keywords: ['什么是稳定币', '稳定币定义', 'USDT vs USDC', '加密货币波动性', 'web3 支付', '区块链域名', '去中心化金融', '法币抵押', '用加密货币购买域名', 'namefi']
+relatedArticles:
+  - /zh/blog/what-are-xstocks/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/how-to-value-a-domain-name/
+relatedTopics:
+  - /zh/topics/web3-foundations/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/web3/
+  - /zh/glossary/dns/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
 ---
 
 在快节奏且往往动荡的加密货币世界中，价格可能在几分钟内剧烈波动。虽然比特币和[以太坊](/zh/glossary/ethereum/)驱动着整个生态系统，但它们的波动性使得它们难以用于日常交易、商业结算或为现实资产定价。于是，**[稳定币](/zh/glossary/stablecoin/)（Stablecoins）** 应运而生——它是连接传统法币的稳定性与[区块链](/zh/glossary/blockchain/)技术创新的关键桥梁。

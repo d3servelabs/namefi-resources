@@ -13,6 +13,24 @@ sources:
   - https://www.iana.org/domains/root/db
   - https://www.icann.org/en/registry-agreements
   - https://www.icann.org/resources/pages/gtld-registry-agreement-2013-01-25-en
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/how-tld-affects-domain-value/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
 ---
 
 Eine **Registry** (auch *Registry-Betreiber* genannt) ist die Organisation, die die maßgebliche Datenbank für eine [TLD](/de/glossary/tld/) betreibt — sie erfasst jede unter dieser Endung registrierte Domain, pflegt die Zonendatei, die diese Namen auf [Nameserver](/de/glossary/nameserver/) abbildet, und veröffentlicht die Daten, die Abfragen über den [DNS](/de/glossary/dns/) ermöglichen. Registries stehen an der Spitze der Domain-Lieferkette, oberhalb von [Registraren](/de/glossary/registrar/) und [Registranten](/de/glossary/registrant/).

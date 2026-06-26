@@ -11,6 +11,24 @@ seriesOrder: 21
 format: case-study
 description: 'In 1995 a con man named Stephen Cohen stole sex.com from rightful owner Gary Kremen with a single forged letter to Network Solutions. The years-long fight to win it back ended in a $65 million judgment, a fugitive in Mexico, and a landmark ruling that domains are property.'
 keywords: ['sex.com', 'domain theft', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'forged letter', 'domain hijacking', 'Sharon Dimmick letter', 'domain security', 'domain as property', '$65 million judgment', 'domain transfer fraud', 'Domain Mayday']
+relatedArticles:
+  - /en/blog/the-panix-com-domain-hijack/
+  - /en/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /en/blog/from-twitter-com-to-x-com/
+  - /en/blog/the-perl-com-domain-theft/
+  - /en/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 In 1995, the most valuable address on the internet changed hands because of a single sheet of paper.

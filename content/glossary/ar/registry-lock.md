@@ -9,6 +9,24 @@ keywords: ['قفل السجل', 'قفل الدومين', 'قفل الأمان ا
 level: 1
 sources:
   - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
+relatedArticles:
+  - /ar/blog/the-syrian-electronic-army-nyt-hijack/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-sea-turtle-dns-espionage/
+  - /ar/blog/how-domain-hijacking-actually-happens/
+  - /ar/blog/the-malaysia-airlines-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
+  - /ar/glossary/domain-hijacking/
+  - /ar/glossary/transfer-lock/
 ---
 
 **قفل السجل** هو خدمة أمان مميزة يقدمها [السجل](/ar/glossary/registry/) وبيضع فيها الدومين في حالة لا يمكن فيها معالجة أي تعديل — بما فيه تغيير خوادم الأسماء أو النقل أو الحذف — عبر قناة EPP الآلية المعتادة. بدل كده، أي تغيير بيحتاج عملية تحقق يدوية خارج النطاق تشمل مكالمات هاتفية أو رموز تشفيرية أو فحص هوية شخصي بين المُسجِّل والسجل. ده مختلف عن [قفل النقل](/ar/glossary/transfer-lock/) الأكثر شيوعًا، اللي يتحكم فيه [المُسجِّل](/ar/glossary/registrar/) ويقدر يغيّره في أنظمته الخاصة؛ قفل السجل بيرفع الحماية لمستوى السجل، مما بيجعل التعديلات غير المصرَّح بها صعبة للغاية حتى لو المهاجم وصل للحساب بالكامل عند المُسجِّل. بيُستخدم في الغالب من المؤسسات المالية والعلامات التجارية الكبرى ومشغّلي البنية التحتية الحيوية لحماية الدومينات عالية القيمة من [اختطاف الدومين](/ar/glossary/domain-hijacking/).

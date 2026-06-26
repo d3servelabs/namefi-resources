@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Un aperçu pratique de la façon dont le DNS classique — serveurs de noms, A/AAAA, MX, TXT, DNSSEC, CAA — continue de fonctionner après avoir tokenisé un domaine ICANN. Ce qui change, ce qui ne change pas, et où pointer votre fournisseur DNS existant."
 keywords: ['DNS domaine tokenisé', 'DNSSEC domaine NFT', 'serveurs de noms domaine tokenisé', 'e-mail domaine tokenisé', 'enregistrements MX domaine NFT', 'enregistrements CAA domaine tokenisé', 'gestion DNS domaine tokenisé', 'DNS domaine on-chain', 'MX domaine NFT', 'DNSSEC domaine NFT', 'Cloudflare domaine tokenisé', 'Route53 domaine tokenisé', 'fonctionnement DNS tokenisé', 'résolution domaine tokenisé']
+relatedArticles:
+  - /fr/blog/how-to-tokenize-your-com/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/tokenize-your-com-to-flip-it/
+  - /fr/blog/how-tokenized-marketplaces-replace-escrow/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/tokenize-your-com/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/dns/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/tld/
 ---
 
 Une inquiétude courante lors de la tokenisation d'un domaine : *"Mon site web fonctionnera-t-il toujours ? Mes e-mails fonctionneront-ils toujours ? Vais-je devoir apprendre toute une nouvelle pile DNS ?"*

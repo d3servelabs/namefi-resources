@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'إزاي Facebook تخلّت عن TheFacebook.com، واشترت Facebook.com بـ200 ألف دولار، وبعدين دفعت 8.5 مليون دولار لـFB.com، وحوّلت ترقية الدومين لبنية تحتية للعلامة التجارية.'
 keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'facebook domain name', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'facebook history', 'domain acquisition', 'company rebrand', 'category-defining domain']
+relatedArticles:
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-slackhq-com-to-slack-com/
+  - /ar/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 قبل ما Facebook تبقى فعل من أفعال الإنترنت الأساسية، كانت حاجة أضيق وأكثر حرفية: **TheFacebook.com**.

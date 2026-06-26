@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Urban Compass 2012 als New Yorker Miet-App auf UrbanCompass.com startete, im Februar 2015 „Urban" aus dem Namen strich und zur exakten Domain Compass.com wechselte – einer Domain, die 2013 für 1 Million US-Dollar versteigert wurde – genau zu dem Zeitpunkt, als das Unternehmen die nationale Expansion anging.'
 keywords: ['urbancompass.com', 'compass.com', 'compass domainname', 'domain-upgrade', 'urban compass rebranding', 'robert reffkin', 'ori allon', 'startup-naming', 'markennamensgebung', 'premium-domain', 'domain-strategie', 'compass immobilien', 'immobilien-startup', 'exact-match-domain']
+relatedArticles:
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-massdrop-com-to-drop-com/
+  - /de/blog/from-teslamotors-com-to-tesla-com/
+  - /de/blog/from-mrchewy-com-to-chewy-com/
+  - /de/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Bevor Compass zum größten Wohnimmobilienmakler in den Vereinigten Staaten wurde, war es etwas Konkreteres und Lokaleres: **UrbanCompass.com**, eine App zum Finden von Mietwohnungen in New York City.

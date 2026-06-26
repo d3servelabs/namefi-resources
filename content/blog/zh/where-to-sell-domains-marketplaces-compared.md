@@ -12,6 +12,24 @@ format: comparison
 description: "Afternic vs Sedo vs Dan vs 链上市场全面对比：覆盖范围、手续费与极速转移，以及如何同时在多个平台挂牌同一个域名。"
 ogImage: ../../assets/where-to-sell-domains-marketplaces-compared-og.jpg
 keywords: ['在哪里出售域名', '最佳域名市场', 'afternic vs sedo', '在afternic出售域名', '在sedo出售域名', 'dan.com关闭', '域名极速转移', '域名市场手续费', '域名挂牌出售', '代币化域名市场', '在线出售域名', '域名二级市场', '在哪里挂牌域名', '出售域名的最佳平台']
+relatedArticles:
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/selling-domains-as-nfts/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/working-with-domain-brokers/
+  - /zh/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 挂牌不等于成交，但在错误的地方挂牌，则必然一无所获。一旦你决定出售——详见我们的[如何出售域名获利](/zh/blog/how-to-sell-domains-for-profit/)主篇，以及更宏观的[域名投资](/zh/blog/domain-flipping/)指南——接下来的问题纯属实操：选哪个平台？答案很少是"只选一个"。大多数有经验的域名投资者会把同一个域名同时挂在多个平台，因为每个市场触达的买家群体各不相同。本文从实际决定成交的四个维度，对主流平台逐一比较：覆盖范围、手续费、极速转移，以及域名易手时的结算方式。

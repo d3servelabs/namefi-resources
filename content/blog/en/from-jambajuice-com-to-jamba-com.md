@@ -11,6 +11,24 @@ seriesOrder: 15
 format: case-study
 description: 'How Jamba Juice spent 29 years explaining itself with the word "Juice," why it dropped that word in 2019 to become simply "Jamba," and the quiet advantage almost no one noticed: the company had owned the exact-match Jamba.com since the 1990s.'
 keywords: ['jambajuice.com', 'jamba.com', 'jamba juice domain name', 'jamba rebrand', 'domain upgrade', 'jamba juice name change', 'kirk perron', 'focus brands jamba', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'category-defining domain']
+relatedArticles:
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-massdrop-com-to-drop-com/
+  - /en/blog/from-urbancompass-com-to-compass-com/
+  - /en/blog/from-teslamotors-com-to-tesla-com/
+  - /en/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 For twenty-nine years, one of America's best-known smoothie chains told you what it sold right there in its name: **Jamba Juice**, living at **JambaJuice.com**.

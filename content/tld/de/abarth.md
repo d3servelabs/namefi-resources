@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Alles über die exklusive .abarth Domain. Erfahren Sie, was diese Top-Level-Domain für die Automobilwelt bedeutet, ihre Vorteile und wie Namefi die Domain-Registrierung revolutioniert."
 keywords: [".abarth domains", ".abarth TLD", "top-level domain", "was ist .abarth", "warum .abarth wählen", "was ist die .abarth domain", "warum die .abarth domain wählen", "Abarth Automarke", "Marken-TLD", "Domain-Investition", "Blockchain Domains", "Tokenisierte Domains", "Web3 Integration", "digitale Markenführung", "exklusive Domains"]
+relatedArticles:
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/top-tlds-to-secure-for-your-saas/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
+  - /de/glossary/registry/
 ---
 
 ## **Was ist .abarth?**

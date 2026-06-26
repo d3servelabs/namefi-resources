@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "هل أنت ممثل أو تعمل في مجال الفن؟ اكتشف لماذا يعتبر نطاق .actor الخيار الأمثل لبناء هويتك الرقمية وكيفية تسجيله واستثماره عبر منصة Namefi."
 keywords: [".actor domains", ".actor TLD", "top-level domain .actor", "what is .actor", "why choose .actor", "what is the .actor domain", "why choose the .actor domain", "acting portfolio", "entertainment industry domains", "personal branding for actors", "domain investing", "blockchain domains", "tokenized domains", "Web3 domains", "digital identity"]
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/new-gtld/
+  - /ar/glossary/registry/
 ---
 
 في عالم الفن والترفيه، يعتبر الاسم والهوية الشخصية كل شيء. سواء كنت ممثلاً صاعداً، أو فناناً صوتياً، أو تدير وكالة لاكتشاف المواهب، فإن امتلاك حضور رقمي قوي هو مفتاح النجاح. هنا يأتي دور نطاق المستوى الأعلى (TLD) **.actor**، الذي صُمم خصيصاً ليضعك في دائرة الضوء.

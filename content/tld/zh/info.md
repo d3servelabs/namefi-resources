@@ -23,6 +23,24 @@ keywords:
   - '.info 域名注册'
   - '通用顶级域名'
   - 'Namefi domain registration'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-law-firm/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .info？**

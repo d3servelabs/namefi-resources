@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "对主流域名代币化平台进行客观、全面的横向对比——深入探讨每个平台的实际优势、重叠与差异点，并指导您如何根据域名的预期用途选择最适合的平台。"
 keywords: ['域名代币化平台', 'Doma 替代方案', 'D3 Global Inc 替代方案', '3DNS 替代方案', '域名代币化对比', 'Namefi 对比 Doma', 'Namefi 对比 D3 Global Inc', 'Namefi 对比 3DNS', '最佳域名代币化', 'Namefi 评测', 'Doma Protocol 评测', 'D3 Global Inc 评测', '3DNS 评测', '选择域名代币化', '域名代币化比较']
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/onchain-domain-marketplaces-compared/
+  - /zh/blog/tokenized-domain-use-cases-2026/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 如果您在 2026 年正在寻找域名代币化平台，您可能会关注到以下几个名字：[Namefi](https://namefi.io)、[Doma Protocol](https://doma.xyz)、D3 Global Inc（也写作 [D3.inc](https://d3.inc) 或 D3 Inc）、3DNS、[Domora](https://domora.com)、[WebUnited](https://webunited.com) 以及 [GBM](https://gbm.auction)。它们的主页上都写着“代币化域名”（Tokenized domains），但它们的功能其实不尽相同。

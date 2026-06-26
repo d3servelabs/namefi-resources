@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .dev डेवलपर्स और डेवलपमेंट प्रोजेक्ट्स के लिए Google का सुरक्षित डोमेन है। जानें कि यह प्रोग्रामर, टेक कंपनियों और डेवलपमेंट टीमों के लिए सबसे अच्छा विकल्प क्यों है।
 keywords: ["tld", ".dev डोमेन", "डेवलपर्स", "डेवलपमेंट प्रोजेक्ट्स", "टेक कंपनियां", "प्रोग्रामिंग", "HTTPS", "Google"]
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/top-tlds-to-secure-for-your-saas/
+  - /hi/blog/why-are-io-domains-expensive/
+  - /hi/blog/ai-vs-io-domain/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 ## **.dev क्या है?**

@@ -12,6 +12,24 @@ format: analysis
 description: "إزاي الامتداد اللي بعد النقطة بيحرّك سعر النطاق: علاوة الـ .com، وسياق الـ .io/.ai/.co، ومخاطر السياسات والجغرافيا السياسية ورا نطاقات الدول."
 ogImage: ../../assets/how-tld-affects-domain-value-og.jpg
 keywords: ['إزاي الـ tld بيأثر على قيمة النطاق', 'الـ tld وقيمة النطاق', 'علاوة الـ com', 'قيمة .com مقابل ccTLD', 'هل الامتداد بيفرق', 'قيمة نطاق io', 'قيمة نطاق ai', 'قيمة نطاق co', 'مخاطر ccTLD', 'تسعير امتداد النطاق', 'قيمة الـ tld في تجارة النطاقات', 'أفضل tld لإعادة البيع', 'مقارنة امتدادات النطاقات', 'مخاطر ccTLD الجغرافية السياسية', 'اختيار الـ tld']
+relatedArticles:
+  - /ar/blog/what-makes-a-domain-valuable/
+  - /ar/blog/domain-hacks-explained/
+  - /ar/blog/how-to-value-a-domain-name/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 خُد سلسلة حروف حلوة وحُط لها سعر على تلات امتدادات، هتطلع لك بتلات أرقام مختلفة، وساعات الفرق بينهم بيكون درجة قدر كاملة. الكلمة ما اتغيرتش. اللي اتغير هو الجزء اللي بعد النقطة. بالنسبة لتاجر النطاقات، الامتداد مش تفصيلة بتزوّدها في آخر التقييم. ده واحد من أكبر العوامل لوحده اللي بتحدد قيمة الاسم وسهولة بيعه.

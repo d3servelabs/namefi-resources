@@ -12,6 +12,24 @@ format: explainer
 description: "Why a domain has a low wholesale/reseller price and a much higher end-user price, how big the spread is, and which number applies to your sale."
 ogImage: ../../assets/end-user-vs-reseller-domain-pricing-og.jpg
 keywords: ['end-user vs reseller domain price', 'wholesale domain price', 'retail domain price', 'domain price spread', 'how much is my domain worth', 'sell domain to end user', 'domain reseller price', 'domain wholesale value', 'domain flipping margin', 'domain aftermarket pricing', 'sell domain wholesale', 'end user domain buyer', 'domain comparable sales', 'domain pricing strategy', 'two prices for a domain']
+relatedArticles:
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/domain-flipping/
+  - /en/blog/how-to-read-comparable-domain-sales/
+  - /en/blog/working-with-domain-brokers/
+  - /en/blog/domain-appraisal-tools-compared/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
 ---
 
 Ask two experienced domainers what a name is worth and you can get two answers that are off by a factor of ten, and both can be right. That isn't sloppiness. It's the single most important pricing fact in this business: the same domain has two legitimate prices at the same moment, and which one applies depends entirely on who is buying. Miss that, and you'll either give a name away for a fraction of its value or sit on it forever waiting for a number nobody in your lane will pay.

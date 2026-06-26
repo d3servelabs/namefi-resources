@@ -18,6 +18,24 @@ faqs:
     answer: 'It suits law firms, solo practitioners, legal-tech startups, legal marketers, and even non-lawyer legal services that want a clear, available, legal-signaling name. It is especially useful when the matching .com is taken, expensive, or less self-explanatory.'
   - question: 'Who operates the .legal registry?'
     answer: 'The .legal registry is operated by Binky Moon, LLC, a subsidiary of Identity Digital (formerly Donuts), under an ICANN registry agreement. The TLD was delegated to the DNS root zone in November 2014.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-law-firm/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.legal** domain is a [new generic top-level domain](/en/glossary/new-gtld/) (new gTLD) built around one of the most recognizable words in professional services. For law firms, legal-tech companies, and anyone publishing legal information, it offers a web address that announces its subject before a visitor reads a single line. If the matching `.com` is taken or generic, a `.legal` name is one of the most direct ways to claim a descriptive, on-brand presence.

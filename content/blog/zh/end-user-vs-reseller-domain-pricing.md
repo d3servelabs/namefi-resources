@@ -12,6 +12,24 @@ format: explainer
 description: "为什么同一个域名既有一个偏低的批发/经销商价、又有一个高得多的终端用户价，两者之间的差价有多大，以及你这笔交易该套用哪个数字。"
 ogImage: ../../assets/end-user-vs-reseller-domain-pricing-og.jpg
 keywords: ['终端用户价与经销商价', '域名批发价', '域名零售价', '域名差价', '我的域名值多少钱', '把域名卖给终端用户', '域名经销商价', '域名批发价值', '域名翻转利润', '域名二级市场定价', '批发出售域名', '终端用户买家', '域名可比销售', '域名定价策略', '一个域名两个价格']
+relatedArticles:
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/how-to-read-comparable-domain-sales/
+  - /zh/blog/working-with-domain-brokers/
+  - /zh/blog/domain-appraisal-tools-compared/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 问两位资深域名玩家某个名字值多少钱，你可能得到相差十倍的两个答案，而且两个都对。这不是马虎，而是这一行最重要的一条定价事实：同一个域名在同一时刻就是有两个合理的价格，到底套用哪一个，完全取决于买家是谁。看不透这一点，你要么以远低于价值的折扣把名字送了出去，要么死守着它，永远等着一个本就没人会在你这个赛道里出的数字。

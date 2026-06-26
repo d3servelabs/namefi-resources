@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://www.icann.org/resources/pages/tlds-2012-02-25-en
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/from-ctrip-com-to-trip-com/
+  - /en/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
+  - /en/glossary/subdomain/
+  - /en/glossary/registrant/
 ---
 
 A **second-level domain (SLD)** is the label immediately to the left of the [TLD](/en/glossary/tld/) — the `example` in `example.com`. It is the part you actually register through a [registrar](/en/glossary/registrar/), and combined with the TLD it forms the registrable name that the [registry](/en/glossary/registry/) records against a [registrant](/en/glossary/registrant/). Everything to the left of the SLD — `www`, `blog`, `app` — is a [subdomain](/en/glossary/subdomain/) you control yourself; everything to the right is the public suffix.

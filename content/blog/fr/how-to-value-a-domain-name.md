@@ -12,6 +12,24 @@ format: guide
 description: "Comment évaluer un nom de domaine : les facteurs de valeur, ce que les outils d''évaluation ratent, comment lire les ventes comparables et l''écart entre prix utilisateur final et prix revendeur."
 ogImage: ../../assets/how-to-value-a-domain-name-og.jpg
 keywords: ['comment estimer la valeur d''un nom de domaine', 'évaluation de domaine', 'combien vaut mon domaine', 'valorisation de domaine', 'calculateur de valeur de domaine', 'estimer un domaine', 'ventes comparables de domaines', 'tarification de domaine', 'prix utilisateur final vs revendeur', 'combien vaut mon nom de domaine', 'valeur d''un nom de domaine', 'outils d''évaluation de domaine', 'ventes de domaines comparables', 'estimation de valeur de domaine']
+relatedArticles:
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+  - /fr/blog/domain-appraisal-tools-compared/
+  - /fr/blog/how-to-read-comparable-domain-sales/
+  - /fr/blog/what-makes-a-domain-valuable/
+  - /fr/blog/domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Tôt ou tard, toute personne qui possède un domaine se pose la même question : *combien vaut mon domaine ?* C'est la première question qu'un nouveau revendeur se pose à propos d'un actif qu'il vient d'acheter, et la dernière qu'il se pose avant de le mettre en vente. On a l'impression qu'il devrait exister une réponse toute faite, tirée d'une table de correspondance — vous tapez le nom, vous obtenez un chiffre.

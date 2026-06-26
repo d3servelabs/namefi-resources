@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '携程如何在 2017 年从一家名为 Gogobot 的初创公司收购高价值域名 Trip.com，围绕这一品牌重塑全球形象，并于 2019 年将整个母公司更名为 Trip.com Group，以推进国际化扩张。'
 keywords: ['ctrip.com', 'trip.com', '携程品牌重塑', 'trip.com集团', 'trip.com域名', '域名升级', '中国品牌全球扩张', 'gogobot trip.com', '梁建章 携程', '高价值旅游域名', '初创公司命名', '品牌命名', '域名收购']
+relatedArticles:
+  - /zh/blog/from-snapchat-com-to-snap-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-mona-co-to-crypto-com/
+  - /zh/blog/from-urbancompass-com-to-compass-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 将近二十年来，全球最大的在线旅游公司一直使用着一个在中国行之有效、却几乎无法在其他地方通行的名字：**Ctrip.com**。

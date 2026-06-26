@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Im September 2015 kaufte ein ehemaliger Google-Mitarbeiter google.com über Google Domains für 12 Dollar und hatte etwa eine Minute lang die administrative Kontrolle über die wertvollste Domain der Welt. Die Geschichte von Sanmay Ved, dem 6.006,13-Dollar-Kopfgeld und was eine Minute Eigentumsrecht darüber verrät, wer wirklich eine Domain kontrolliert.'
 keywords: ['google.com Domain', 'sanmay ved', 'Google Domains Bug', 'Domain-Sicherheit', 'wem gehört google.com', 'Domain-Hijacking', 'Webmaster-Tools-Zugang', 'Google Bug Bounty', '6006.13 Belohnung', 'Domain-Registrierungs-Sicherheitslücke', 'Domain-Kontrolle', 'DNS-Sicherheit', 'Domain-Eigentumsverifizierung']
+relatedArticles:
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-lenovo-com-dns-hijack/
+  - /de/blog/the-sex-com-heist-the-forged-letter/
+  - /de/blog/the-2024-squarespace-defi-domain-hijacks/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
 ---
 
 Für etwa eine Minute in der Nacht des 29. September 2015 gehörte die wertvollste Adresse im Internet nicht Google.

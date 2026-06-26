@@ -10,6 +10,24 @@ format: guide
 description: "A practical, research-backed guide for founders naming a project, product, or company: clear it legally, make it easy to say, generate strong candidates, check it across cultures, and run the searches that matter before you commit."
 ogImage: ../../assets/how-to-name-your-project-og.jpg
 keywords: ['how to name your startup', 'how to name your project', 'how to name a company', 'naming a product', 'brand name ideas', 'choosing a business name', 'domain name selection', 'trademark search', 'brandable domain', 'startup branding', 'pronounceable brand name', 'processing fluency', 'brand naming guide', 'pick a name for your project', 'check domain availability']
+relatedArticles:
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/from-del-icio-us-to-delicious-com/
+  - /en/blog/what-makes-a-domain-valuable/
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /en/topics/domain-basics/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
 ---
 
 Naming is the first product decision most founders get wrong.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .aaa : son utilisation exclusive par l'American Automobile Association, ses avantages en matière de sécurité et comment Namefi révolutionne la gestion de domaines."
 keywords: [".aaa domains", ".aaa TLD", "top-level domain .aaa", "what is .aaa", "why choose .aaa", "what is the .aaa domain", "why choose the .aaa domain", "domain investing", "blockchain domains", "tokenized domain", "brand TLD", "American Automobile Association domain", "extension de domaine .aaa", "achat nom de domaine web3"]
+relatedArticles:
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/ai-vs-io-domain/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 ## **Qu'est-ce que le .aaa ?**

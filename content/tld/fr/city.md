@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .city est le domaine pour les entreprises locales, les services municipaux et les sites web axés sur la ville. Parfait pour établir une présence locale.
 keywords: ["tld", "domaine .city", "entreprise locale", "services municipaux", "sites web de ville", "présence locale"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-investor-field-guide/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que .city ?**

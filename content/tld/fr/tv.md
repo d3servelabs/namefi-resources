@@ -16,6 +16,24 @@ faqs:
     answer: "Les streamers, les créateurs de vidéos, les diffuseurs et toute marque construite autour de la télévision, du cinéma ou du contenu en direct. La chaîne « tv » se lit instantanément comme « télévision », ce qui en fait un foyer naturel et mémorable pour les chaînes, les émissions et les projets médias."
   - question: 'Pourquoi le domaine .tv est-il associé à la télévision ?'
     answer: "Pure coïncidence linguistique. « TV » est le code pays ISO de Tuvalu et l'abréviation universelle de « télévision ». Tuvalu a exploité ce recoupement en concédant l'espace de noms à l'échelle mondiale, ce qui explique pourquoi les marques de streaming et de vidéo gravitent autour."
+relatedArticles:
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/domain-hacks-explained/
+  - /fr/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Le domaine **.tv** est l'exemple type d'une petite nation transformant une coïncidence de deux lettres en marque mondiale. Officiellement le ccTLD de **Tuvalu**, un minuscule État insulaire du Pacifique, il a été commercialisé et adopté dans le monde entier comme le foyer naturel de la **télévision**, de la **vidéo** et du **streaming en direct** — parce que « tv » se lit instantanément comme le médium lui-même. Pour les diffuseurs, les streamers et les marques axées sur la vidéo, le **.tv** est souvent l'extension la plus évocatrice du marché.

@@ -18,6 +18,24 @@ faqs:
     answer: 'Yes. Because the word store appears in the address, the extension signals a transactional, shop-first destination before a visitor clicks. Many brands also use it as a dedicated merchandise hub alongside a primary corporate site.'
   - question: 'Does .store support WHOIS privacy and DNSSEC?'
     answer: 'Yes. As a modern new gTLD, .store supports DNSSEC for cryptographic DNS integrity, and most registrars including Namefi offer WHOIS privacy to keep your personal contact details out of public records.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.store** domain is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built for one job: signaling that a website sells things. Where a neutral suffix tells visitors nothing about a site's purpose, a .store address puts the word *store* directly in the URL, so shoppers and search engines know they are looking at a place to buy before they even click.

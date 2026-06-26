@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 一份清晰的 2026 年高端 Web3 顶级域名指南——"Web3 TLD"的真正含义、为什么像 .com、.ai 和 .io 这样的代币化 ICANN 扩展优于纯区块链名称，以及哪些域名扩展最具价值。
 keywords: ['高端web3顶级域名', '高端web3 tld', 'web3顶级域名', 'web3 tld', '高端web3域名', '最佳web3域名', 'web3域名扩展', 'web3域名', '代币化域名扩展', '高端域名扩展', '最有价值域名扩展', '代币化tld', '代币化域名', 'ICANN顶级域名', '区块链顶级域名', 'NFT域名', '高端.com', '高端.ai', '高端.io', '高端.xyz', '2026最佳域名扩展', '加密货币tld', 'web3命名', '域名tld投资', 'namefi']
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/tokenized-domain-vs-web3-domain/
+  - /zh/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/onchain-domain-flipping/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
 ---
 
 搜索"高端 [Web3](/zh/glossary/web3/) TLD"，你会发现两种截然不同的产品顶着同一个标签。一种是**纯区块链名称**，如 `.eth` 或 `.crypto`，存在于全球 [DNS](/zh/glossary/dns/) 根之外。另一种是**真实的、ICANN 认可的扩展**（`.com`、`.ai`、`.io`、`.xyz`），已在[链上](/zh/glossary/on-chain/)进行*代币化*，既表现得像 Web3 资产，又能在地球上的每个浏览器中正常解析。

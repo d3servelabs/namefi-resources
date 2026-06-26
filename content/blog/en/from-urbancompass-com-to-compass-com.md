@@ -11,6 +11,24 @@ seriesOrder: 20
 format: case-study
 description: 'How Urban Compass launched in 2012 as a New York rental app on UrbanCompass.com, dropped "Urban" in its February 2015 rebrand, and upgraded to the exact-match Compass.com — a domain that had been listed at auction for $1 million — right as it set out to go national.'
 keywords: ['urbancompass.com', 'compass.com', 'compass domain name', 'domain upgrade', 'urban compass rebrand', 'robert reffkin', 'ori allon', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'compass real estate', 'real estate startup', 'exact match domain']
+relatedArticles:
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-massdrop-com-to-drop-com/
+  - /en/blog/from-teslamotors-com-to-tesla-com/
+  - /en/blog/from-mrchewy-com-to-chewy-com/
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Before Compass became the largest residential brokerage in the United States, it was a more literal, more local thing: **UrbanCompass.com**, an app for finding an apartment to rent in New York City.

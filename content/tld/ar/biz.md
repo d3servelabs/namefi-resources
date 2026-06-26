@@ -18,6 +18,24 @@ faqs:
     answer: 'بيحمل سمعة مختلطة. العروض الرخيصة جذبت تاريخياً بعض التسجيلات منخفضة الجودة والإسبام، فشوية فلاتر صارمة بتدقّق فيه أكتر. موقع حقيقي ومصادقة إيميل صح وعادات إرسال كويسة بيحلّوا ده للأعمال الشرعية.'
   - question: 'هل .biz بيدعم خصوصية WHOIS و DNSSEC؟'
     answer: 'أيوه. المسجّلين بيقدّموا خصوصية WHOIS على .biz زي باقي gTLDs، والسجل بيدعم DNSSEC لـ DNS موقّع تشفيرياً، فتقدر تحصّن منطقتك ضد العبث.'
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 دومين **.biz** هو واحد من عناوين الويب الأصلية الموجّهة للأعمال على الإنترنت. تهجئة صوتية للمقطع الأول من كلمة "business"، اتعمل خصيصاً عشان يدّي الكيانات التجارية بيت لما الاسم اللي بيفضّلوه في **.com** يكون راح خلاص. بعد أكتر من عقدين، **.biz** لسه gTLD مفتوح ومتاح عالمياً بمعنى واضح وبيشرح نفسه: ده مكان أعمال.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Descubre el potencial del TLD .today: una extensión moderna para noticias, eventos y ofertas. Aprende por qué es la elección perfecta para la inmediatez."
 keywords: [".today domains", ".today TLD", ".today top-level domain", "what is .today", "why choose .today", "what is the .today domain", "why choose the .today domain", "dominios .today", "comprar dominio .today", "registro de dominios", "domain investing", "blockchain domains", "tokenized domains", "Namefi", "dominios web3"]
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/ai-vs-io-domain/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .today?**

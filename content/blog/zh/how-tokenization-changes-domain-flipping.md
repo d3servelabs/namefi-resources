@@ -12,6 +12,24 @@ format: explainer
 description: "把域名搬上链如何重塑翻转——可验证的所有权、原子结算和可编程的转移，对比缓慢的注册商二级市场。"
 ogImage: ../../assets/how-tokenization-changes-domain-flipping-og.jpg
 keywords: ['代币化域名翻转', '链上域名翻转', '翻转代币化域名', '域名 NFT 翻转', '原子域名结算', '以 NFT 形式出售域名', '代币化域名市场', '域名翻转 web3', 'ERC-721 域名', '链上域名转移', '代币化域名托管', '可编程域名所有权', '域名托管替代方案', '链上翻转域名', '代币化域名转售']
+relatedArticles:
+  - /zh/blog/tokenize-your-com-to-flip-it/
+  - /zh/blog/onchain-domain-flipping/
+  - /zh/blog/onchain-domain-custody-and-recovery/
+  - /zh/blog/selling-domains-as-nfts/
+  - /zh/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 [域名翻转](/zh/blog/domain-flipping/)的大部分工作其实跟域名本身无关。你要选品、估价、保护它，再找到买家——然后你撞上了没人喜欢的那一步：真正把资产转移过去并拿到钱，同时让双方都不吃亏。这个结算环节缓慢、手动，建立在陌生人之间的信任之上。代币化正是改写它的那股力量。

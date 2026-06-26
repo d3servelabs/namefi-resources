@@ -8,6 +8,24 @@ draft: false
 description: 'एक नज़र इस बात पर कि दुनिया भर में किन कंट्री-कोड टॉप-लेवल डोमेन (ccTLDs) के पास रजिस्ट्रेशन का सबसे बड़ा हिस्सा है, क्यों इसके लीडर्स लोगों की उम्मीदों से अलग हैं, और वॉल्यूम के आंकड़े हमें इंटरनेट के वास्तविक उपयोग के बारे में क्या बताते हैं।'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['ccTLD मार्केट शेयर', 'कंट्री कोड डोमेन', '.cn', '.de', '.uk', '.tk', '.io', 'डोमेन सांख्यिकी', 'रजिस्ट्री डेटा', 'namefi']
+relatedArticles:
+  - /hi/blog/how-tld-affects-domain-value/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/why-are-io-domains-expensive/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 जब ज़्यादातर लोग इंटरनेट के बारे में सोचते हैं, तो वे `.com` की कल्पना करते हैं। और यदि कच्चे आंकड़ों (raw numbers) की बात करें, तो लगभग 160 मिलियन (16 करोड़) डोमेन नामों के प्रबंधन के साथ `.com` आज भी दुनिया का सबसे बड़ा [टॉप-लेवल डोमेन](/hi/glossary/tld/) है। लेकिन `.com` एक [gTLD](/hi/glossary/gtld/) है—यानी एक *जेनेरिक* (generic) टॉप-लेवल डोमेन। अगर हम अपना ध्यान **कंट्री-कोड TLDs (ccTLDs)** की ओर ले जाएं—जो [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) के तहत राष्ट्रों और क्षेत्रों को दिए गए दो-अक्षरों वाले प्रत्यय (suffixes) हैं—तो तस्वीर बहुत अधिक दिलचस्प और कम अनुमानित (less predictable) हो जाती है।

@@ -12,6 +12,24 @@ format: faq
 description: '域名投资者如何处理税务：库存资产与资本资产的区别、成本基础的计算、收入确认时点，以及续期费用的扣除方式。本文仅供教育参考，不构成专业建议。'
 ogImage: ../../assets/taxes-and-accounting-for-domain-investors-og.jpg
 keywords: ['域名投资税务', '域名转售税务', '域名成本基础', '域名是否属于资本资产', '域名经销商与投资者', '域名库存税', '第197条无形资产域名', '域名销售资本收益', '域名续期费用扣除', '域名持有期税务', '域名销售如何征税', '域名投资组合会计', '域名投资者税务问题', '普通收入与资本收益域名']
+relatedArticles:
+  - /zh/blog/domain-portfolio-management/
+  - /zh/blog/domain-renewal-costs-and-sell-through-rate/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/when-to-drop-a-domain/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 > **请先阅读本提示。** 本文**不**构成税务、会计、法律或财务建议。我们不是您的注册会计师，也不了解您所在的司法管辖区及活动结构。请将以下内容视为*向专业人士咨询时可以提出的问题和概念清单*，而非可以依赖的确定性结论。文末附有完整免责声明，此处尤为适用。

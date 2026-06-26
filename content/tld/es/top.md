@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre todo sobre el dominio .top: su significado, ventajas para tu marca y por qué es una excelente opción. Registra tu .top hoy mismo en Namefi.'
 keywords: ['.top domains', '.top TLD', 'top-level domain', 'what is .top', 'why choose .top', 'qué es el dominio .top', 'por qué elegir el dominio .top', 'comprar dominio .top', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'registro de dominios web3', 'estrategia SEO dominios', 'ventajas dominio .top', 'Namefi']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 Los dominios de nivel superior (TLD, por sus siglas en inglés) son una parte crucial de la identidad digital de cualquier proyecto. Mientras que el `.com` ha sido el rey indiscutible durante décadas, la saturación del mercado ha dado paso a nuevas y emocionantes extensiones conocidas como "nuevos gTLD". Entre ellos, el dominio **.top** ha surgido como una de las opciones más populares y versátiles a nivel mundial.

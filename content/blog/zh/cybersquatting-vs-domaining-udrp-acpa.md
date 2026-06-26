@@ -12,6 +12,24 @@ format: explainer
 description: '合法域名投资与网络抢注之间的边界在哪里：UDRP 三要素测试、ACPA、反向域名劫持，以及如何保持合规。'
 ogImage: ../../assets/cybersquatting-vs-domaining-udrp-acpa-og.jpg
 keywords: ['网络抢注', '网络抢注与域名投资', 'udrp', 'udrp三要素测试', 'acpa', '反网络抢注消费者保护法', '反向域名劫持', 'rdnh', '恶意域名注册', '域名倒卖是否合法', '商标域名争议', '域名争议解决', '合法域名投资', 'wipo udrp', '域名投资合法性']
+relatedArticles:
+  - /zh/blog/what-is-udrp/
+  - /zh/blog/domain-flipping-and-the-law/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/hand-registering-domains-to-flip/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 同样是注册域名转售，两个人的法律处境却截然不同。一个人买下 `solarpanels.com`，这是业内任何人都可能需要的普通词组；另一个人买下 `nike-running-shoes.net`，这个字符串之所以有价值，完全是因为 Nike 的存在。表面上做的是同一件事，法律定性却大相径庭。前者是普通的[域名投资](/zh/glossary/domaining/)，后者是[网络抢注](/zh/glossary/cybersquatting/)——而且有两套成熟的机制专门用来把这类域名从注册人手中夺走。

@@ -12,6 +12,24 @@ format: guide
 description: "Comment créer une page de vente de domaine qui convertit : un prix clair ou un chemin pour faire une offre, de vrais signaux de confiance, et une façon fluide d''acheter ou de négocier."
 ogImage: ../../assets/domain-for-sale-landing-pages-og.jpg
 keywords: ['page de vente de domaine', 'domain for sale page', 'vendre un domaine', 'landing page de domaine', 'lander à vendre', 'page de vente de domaine', 'achat immédiat domaine', 'faire une offre domaine', 'page de parking de domaine', 'prix du domaine', 'landing page de domaine qui convertit', 'comment vendre un domaine', 'séquestre de domaine', 'taux de conversion domaine', 'signaux de confiance domaine']
+relatedArticles:
+  - /fr/blog/marketing-your-domains-for-sale/
+  - /fr/blog/domain-parking-and-monetization/
+  - /fr/blog/how-to-sell-domains-for-profit/
+  - /fr/blog/working-with-domain-brokers/
+  - /fr/blog/marketplace-seo-for-domain-listings/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
 ---
 
 Un acheteur qui veut votre nom arrive rarement via votre marketing. Il tape le nom dans un navigateur pour voir s'il est disponible, le domaine se résout, et une page se charge. Ce que dit cette page constitue votre pitch dans son intégralité. Si c'est la page par défaut d'un [Bureau d'enregistrement](/fr/glossary/registrar/), une page de parking bourrée de publicités, ou rien du tout, vous venez de perdre le seul visiteur qui était déjà convaincu que ce nom avait de la valeur. La page de vente de domaine est la vitrine du trafic le plus précieux que vous recevrez jamais : des personnes qui vous ont trouvé en tapant exactement ce que vous vendez.

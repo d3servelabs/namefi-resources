@@ -9,6 +9,24 @@ keywords: ['accredited registrar', 'RAA', 'ICANN accreditation', 'gTLD', 'regist
 level: 1
 sources:
   - https://www.icann.org/en/accredited-registrars
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-is-udrp/
+  - /hi/blog/domain-backorders-and-drop-catching/
+  - /hi/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /hi/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/tld/
+  - /hi/glossary/reseller/
 ---
 
 एक **ICANN-मान्यताप्राप्त रजिस्ट्रार** वह कंपनी है जिसने [ICANN](/hi/glossary/icann/) के साथ रजिस्ट्रार मान्यता समझौते (RAA) पर हस्ताक्षर किए हैं, जिससे उसे प्रत्येक TLD के लिए जिम्मेदार [रजिस्ट्री](/hi/glossary/registry/) के माध्यम से सीधे जेनेरिक टॉप-लेवल डोमेन में डोमेन पंजीकृत करने का संविदात्मक अधिकार मिलता है। मान्यता प्राप्त करने के लिए वित्तीय, तकनीकी और परिचालन मानकों को पूरा करना आवश्यक है — जिसमें ग्राहक डेटा का [एस्क्रो](/hi/glossary/escrow/), WHOIS दायित्वों का अनुपालन, और हस्तांतरण एवं विवाद नीतियों का पालन शामिल है — और रजिस्ट्रारों को समय-समय पर मान्यता नवीनीकृत करनी होती है। केवल मान्यताप्राप्त रजिस्ट्रार ही प्रथम-पक्ष के रूप में [EPP](/hi/glossary/epp/) के माध्यम से रजिस्ट्री के साथ बातचीत कर सकते हैं; बिना मान्यता वाली कंपनियों को किसी मान्यताप्राप्त भागीदार के माध्यम से पुनर्विक्रय करना होता है और इसलिए उन्हें [रिसेलर](/hi/glossary/reseller/) कहा जाता है। यह अंतर डोमेन मालिकों के लिए महत्वपूर्ण है: एक मान्यताप्राप्त रजिस्ट्रार का ICANN के प्रति सीधा संविदात्मक दायित्व होता है, जो उपभोक्ता सुरक्षा की एक परत प्रदान करता है जो पास-थ्रू रिसेलर स्वतंत्र रूप से नहीं दे सकते।

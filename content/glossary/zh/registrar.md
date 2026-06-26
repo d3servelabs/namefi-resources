@@ -14,6 +14,24 @@ sources:
 aliasesByLocale:
   zh: ['注册服务商']
   de: ['Registrierungsdienst']
+relatedArticles:
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/the-panix-com-domain-hijack/
+  - /zh/blog/what-is-udrp/
+relatedTopics:
+  - /zh/topics/domain-basics/
+  - /zh/topics/domain-security/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 **注册商**是经 [ICANN](/zh/glossary/icann/) 认证的机构，获授权代表公众在一个或多个顶级域中注册域名，负责管理域名购买者与运营相关域名权威数据库的[注册局](/zh/glossary/registry/)之间的关系。

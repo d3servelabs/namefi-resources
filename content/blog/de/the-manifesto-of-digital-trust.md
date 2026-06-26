@@ -9,6 +9,24 @@ authors: ['namefiteam']
 draft: false
 description: Ein Visionsdokument von D3Serve – warum die Digitalisierung von Vertrauen, ähnlich wie die Digitalisierung von Informationen zuvor, einen Produktivitätssprung, verlustfreie Präzision, geringere Kosten und Automatisierung verspricht.
 keywords: ['digitales Vertrauen', 'D3Serve', 'Blockchain', 'Web3', 'Smart Contracts', 'Kryptografie', 'Konsens', 'Manifest', 'Vision', 'Vertrauensdigitalisierung', 'Gruppenvertrauen', 'Automatisierung']
+relatedArticles:
+  - /de/blog/onchain-domain-custody-and-recovery/
+  - /de/blog/the-sushiswap-miso-insider-attack/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/recovering-a-tokenized-domain-after-wallet-loss/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-security/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/icann/
+  - /de/glossary/web3/
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
 ---
 
 Bei **D3Serve** widmen wir uns dem Aufbau von *digitalem Vertrauen*, indem wir [Blockchain](/de/glossary/blockchain/) und andere fortschrittliche Technologien nutzen.

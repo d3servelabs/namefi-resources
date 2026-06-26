@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .online-TLD: Ihre Bedeutung, Vorteile für SEO und Branding sowie Verfügbarkeit. Registrieren Sie Ihre .online-Domain noch heute bei Namefi."
 keywords: [".online domains", ".online TLD", "top-level domain", "was ist .online", "warum .online wählen", "was ist die .online domain", "warum die .online domain wählen", "domain investing", "blockchain domains", "tokenized domain", "neue gTLD", "domain registrierung", "web3 domains", "günstige domains", "markenschutz domain"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .online?**

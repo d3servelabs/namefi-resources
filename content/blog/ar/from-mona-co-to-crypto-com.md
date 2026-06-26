@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'قصة شركة Monaco الناشئة لبطاقات الكريبتو وكيف أعادت تسمية نفسها لتصبح Crypto.com في 2018 بعد شرائها للدومين الأسطوري — المسجَّل منذ 1993 من قِبَل المشفِّر Matt Blaze الذي رفض البيع لمدة 25 سنة — في صفقة قدَّر الخبراء قيمتها بما يصل إلى 10 ملايين دولار.'
 keywords: ['mona.co', 'crypto.com', 'دومين crypto.com', 'monaco mco', 'matt blaze crypto.com', 'kris marszalek', 'ترقية الدومين', 'دومين مميز', 'دومين الفئة', 'شراء دومين', 'إعادة تسمية كريبتو', 'دومين المطابقة الدقيقة', 'العلامة التجارية']
+relatedArticles:
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
+  - /ar/blog/from-ctrip-com-to-trip-com/
+  - /ar/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 في أولى سنواتها، كانت إحدى أجرأ العلامات التجارية في عالم الكريبتو تعيش على عنوان ذكي وهادئ: **Mona.co** — الشركة "موناكو" مكتوبة عبر دومين ونطاق دولة، بنفس الطريقة اللي استخدمتها bit.ly أو goo.gl لتحويل `.ly` أو `.gl` لجزء من الاسم.

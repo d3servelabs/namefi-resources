@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في 15 يوليو 2020، تمكّن مهاجمون من اختراق تويتر عن طريق مكالمة تليفونية، واستولوا على حسابات موثّقة لأوباما وبايدن وماسك وجيتس وآبل وأوبر، ونفّذوا عملية احتيال بالبيتكوين جمعوا فيها نحو 118 ألف دولار. تحليل معمّق لكيفية سرقة هوية رقمية، وما يمكن تعلّمه عن امتلاك اسم على الإنترنت.'
 keywords: ['اختراق تويتر 2020', 'احتيال بيتكوين تويتر', 'جراهام إيفان كلارك', 'vishing', 'التصيد الصوتي', 'الهندسة الاجتماعية', 'الاستيلاء على الحسابات', 'أمن الهوية الرقمية', 'اختطاف الحسابات الموثّقة', 'أداة إدارة تويتر', 'agent tool', 'مخاطر داخلية', 'أمن النطاقات', 'تقرير ny dfs تويتر']
+relatedArticles:
+  - /ar/blog/the-bitcoin-org-dns-hijack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /ar/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /ar/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 لساعات قليلة في ظهيرة أحد أيام الأربعاء، بدأت أكثر الأصوات موثوقية على الإنترنت كلها تقول الشيء ذاته: أرسل لي بيتكوين وهأبعتهولك ضعف.

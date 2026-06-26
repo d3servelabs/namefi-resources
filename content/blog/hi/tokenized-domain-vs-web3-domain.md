@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "टोकनाइज़्ड ICANN डोमेन (जैसे टोकनाइज़्ड .com) और Web3-नेटिव नाम (जैसे name.eth, name.crypto) की एक स्पष्ट और व्यावहारिक तुलना। दोनों कहाँ काम आते हैं? दोनों में क्या समानताएँ हैं? बहुत से लोग दोनों को क्यों रखते हैं?"
 keywords: ['टोकनाइज़्ड डोमेन बनाम वेब3 डोमेन', 'tokenized domain vs ENS', 'ICANN डोमेन बनाम ENS', '.com बनाम .eth', 'टोकनाइज़्ड .com बनाम .crypto', 'tokenized domain vs unstoppable', 'web3 डोमेन तुलना', 'ENS बनाम टोकनाइज़्ड डोमेन', 'NFT डोमेन बनाम ENS', 'web3 नेमिंग', 'ऑन-चेन नेमिंग में अंतर', 'ब्राउज़र सपोर्ट web3 डोमेन', 'web3 डोमेन रिज़ॉल्यूशन']
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /hi/blog/premium-web3-tlds/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
 ---
 
 रोज़ाना पूछा जाने वाला एक वाज़िब सवाल: *"मेरे पास पहले से ही एक `.eth` नाम (या `.crypto`, या `.x`) है। मैं अपने `.com` को [टोकनाइज़](/hi/glossary/tokenize/) क्यों करूँ? क्या ये दोनों एक ही चीज़ नहीं हैं?"*

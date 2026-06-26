@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Que sont les transferts inter-registrar et comment la tokénisation simplifie-t-elle le processus ?
 keywords: ["transfert inter-registrar","transfert registrar","migration de domaine","processus de transfert","tokénisation"]
+relatedArticles:
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/how-tokenized-marketplaces-replace-escrow/
+  - /fr/blog/how-to-tokenize-your-com/
+  - /fr/blog/domain-flipping-and-the-law/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/tokenize-your-com/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/auth-code/
+  - /fr/glossary/web3/
 ---
 
 Le **transfert inter-registrar** est le processus de déplacement d'un domaine d'un [registrar](/fr/glossary/registrar/) à un autre, nécessitant traditionnellement des codes d'authentification, des périodes d'attente et une coordination entre les [registrars](/fr/glossary/registrar/). Ce processus peut prendre des jours ou des semaines et peut entraîner des frais de la part des deux [registrars](/fr/glossary/registrar/). Avec les domaines [tokénisés](/fr/glossary/tokenize/), bien que l'enregistrement [DNS](/fr/glossary/dns/) sous-jacent puisse toujours nécessiter des processus de transfert traditionnels, le jeton de propriété peut être transféré instantanément entre les [portefeuilles](/fr/glossary/wallet/). Cette séparation permet des échanges immédiats et des changements de propriété au niveau du jeton, tandis que la gestion [DNS](/fr/glossary/dns/) peut être gérée séparément. Des modèles de tokénisation avancés pourraient même automatiser les transferts inter-registrar via des [contrats intelligents](/fr/glossary/smart-contract/), réduisant considérablement la complexité et le temps nécessaires pour déplacer les domaines entre différents fournisseurs de services.

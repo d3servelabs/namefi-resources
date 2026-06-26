@@ -12,6 +12,24 @@ format: guide
 description: '为什么挂单方式和第一个报价决定了域名最终售价：锚定效应、永不先报价、价格阶梯，以及一口价与议价的选择逻辑。'
 ogImage: ../../assets/domain-pricing-psychology-buy-now-vs-make-offer-og.jpg
 keywords: ['域名定价心理学', '一口价与议价', '域名锚定效应', '如何给域名定价', '域名价格谈判', '议价域名', '一口价域名', '域名价格阶梯', '域名挂单方式', '谁先报价', '域名谈判技巧', '魅力定价域名', '终端用户域名价格', '域名销售心理学']
+relatedArticles:
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/working-with-domain-brokers/
+  - /zh/blog/inbound-vs-outbound-domain-sales/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
 ---
 
 你挂单上的那个数字，所发挥的作用远超你的想象。两位投资者持有同一个域名，在同一个交易平台上挂出，最终成交价却可能相差一个数量级——原因并非其中一方谈判更努力，而是其中一方明白：*价格的呈现方式*本身就左右着买家愿意支付的金额。域名定价，三分靠算术，七分靠心理。

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'कैसे क्रिप्टो-कार्ड स्टार्टअप Monaco ने 2018 में Crypto.com डोमेन खरीदकर खुद को Crypto.com के रूप में रीब्रांड किया — वह डोमेन जो 1993 में क्रिप्टोग्राफर Matt Blaze ने रजिस्टर किया था और जिसे उन्होंने 25 साल तक बेचने से इनकार किया — एक ऐसे सौदे में जिसकी कीमत विशेषज्ञों ने $10 मिलियन तक आंकी।'
 keywords: ['mona.co', 'crypto.com', 'crypto.com डोमेन', 'monaco mco', 'matt blaze crypto.com', 'kris marszalek', 'डोमेन अपग्रेड', 'प्रीमियम डोमेन', 'कैटेगरी डोमेन', 'डोमेन अधिग्रहण', 'क्रिप्टो रीब्रांड', 'एग्जैक्ट मैच डोमेन', 'ब्रांडिंग']
+relatedArticles:
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+  - /hi/blog/from-ctrip-com-to-trip-com/
+  - /hi/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 अपने पहले कुछ वर्षों में, क्रिप्टो की दुनिया के सबसे आक्रामक ब्रांडों में से एक एक चतुर और शांत पते पर रहता था: **Mona.co** — कंपनी "Monaco," एक डोमेन और एक कंट्री-कोड [TLD](/hi/glossary/tld/) में लिखा हुआ, ठीक वैसे जैसे bit.ly या goo.gl ने `.ly` या `.gl` को शब्द का हिस्सा बना दिया था।

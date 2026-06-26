@@ -12,6 +12,24 @@ format: explainer
 description: "Venta de dominios inbound vs. outbound: cuándo funciona cada una, el equilibrio entre esfuerzo y retorno, y cómo ejecutar ambas sin que tus mensajes parezcan spam."
 ogImage: ../../assets/inbound-vs-outbound-domain-sales-og.jpg
 keywords: ['venta de dominios inbound vs outbound', 'venta de dominios inbound', 'venta de dominios outbound', 'prospección para venta de dominios', 'prospección en frío de dominios', 'vender dominios a usuarios finales', 'página de aterrizaje de dominio', 'listado en marketplace de dominios', 'tasa de venta de dominios', 'cómo vender dominios', 'domain flipping', 'mercado secundario de dominios', 'comprador usuario final de dominios', 'estrategia outbound de dominios', 'estrategia inbound de dominios']
+relatedArticles:
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/domain-flipping/
+  - /es/blog/marketing-your-domains-for-sale/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Solo hay dos formas en que un dominio se vende alguna vez. O el comprador te encuentra a ti, o tú encuentras al comprador. Ese es todo el mapa. Inbound es el comprador escribiendo tu nombre en un navegador, llegando a una página de "en venta" y poniéndose en contacto. Outbound eres tú detectando la empresa que evidentemente necesita el nombre y escribiéndole primero. Todo lo demás en la venta —el formato de precio, la elección del marketplace, el depósito en garantía— queda corriente abajo de cuál de estos dos juegos estás jugando en realidad.

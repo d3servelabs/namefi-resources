@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.namebio.com/
   - https://www.investopedia.com/terms/c/comparables.asp
+relatedArticles:
+  - /hi/blog/how-to-read-comparable-domain-sales/
+  - /hi/blog/appraising-onchain-domains/
+  - /hi/blog/how-to-value-a-domain-name/
+  - /hi/blog/domain-appraisal-tools-compared/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/domain-appraisal/
+  - /hi/glossary/tld/
+  - /hi/glossary/aftermarket/
+  - /hi/glossary/keyword-domain/
+  - /hi/glossary/icann/
 ---
 
 **तुलनात्मक बिक्री** — या *Comps* — उन डोमेन के ऐतिहासिक बिक्री मूल्य हैं जो मूल्यांकन किए जा रहे नाम से काफी मिलते-जुलते हैं, और ये किसी भी [डोमेन अप्रेजल](/hi/glossary/domain-appraisal/) में सबसे विश्वसनीय इनपुट हैं। कोई तुलना तब सबसे उपयोगी होती है जब वह TLD, लंबाई, शब्द संख्या, कीवर्ड श्रेणी और बिक्री की अनुमानित आयु पर मेल खाती हो; पिछले वर्ष $80,000 में बिका तीन-अक्षर का [.com](/hi/tld/com/), पाँच साल पुरानी चार-शब्द वाली [.net](/hi/tld/net/) की बिक्री से कहीं अधिक मजबूत संकेत देता है। NameBio जैसे डेटाबेस लाखों [आफ्टरमार्केट](/hi/glossary/aftermarket/) लेनदेन एकत्र करते हैं, और DNJournal जैसे प्लेटफॉर्म साप्ताहिक बिक्री रिपोर्ट प्रकाशित करते हैं। चूँकि सभी डोमेन बिक्रियाँ प्रकट नहीं होतीं, इसलिए तुलनात्मक बिक्री हमेशा एक आंशिक नमूने का प्रतिनिधित्व करती हैं — पूरी बाजार की तस्वीर नहीं।

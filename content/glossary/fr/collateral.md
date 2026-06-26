@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que le collatéral et comment les domaines peuvent-ils servir de collatéral en DeFi ?
 keywords: ["collatéral","sécurité","prêt","emprunt","collatéral de domaine","DeFi"]
+relatedArticles:
+  - /fr/blog/tokenized-domain-use-cases-2026/
+  - /fr/blog/what-are-xstocks/
+  - /fr/blog/why-tokenize-domains/
+  - /fr/blog/what-are-stablecoins/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/web3-foundations/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tokenized-domain/
+  - /fr/glossary/web3/
+  - /fr/glossary/lending-protocol/
+  - /fr/glossary/tokenize/
+  - /fr/glossary/defi/
 ---
 
 

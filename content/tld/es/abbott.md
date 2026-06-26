@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre todo sobre el dominio de nivel superior .abbott. Analizamos su propósito, exclusividad y cómo los "Brand TLDs" transforman la identidad digital. Aprende más con Namefi.'
 keywords: ['.abbott domains', 'TLD', 'top-level domain', 'qué es .abbott', 'por qué elegir .abbott', 'what is the .abbott domain', 'why choose the .abbott domain', 'registro de dominios', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'Abbott Laboratories', 'gTLD de marca', 'seguridad en dominios', 'ICANN']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .abbott?**

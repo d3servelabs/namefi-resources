@@ -8,6 +8,24 @@ draft: false
 description: 'Ein Leitfaden zu den Nachrichtenportalen, Verkaufsdaten-Websites und Podcasts, die die Domainnamen-Branche journalistisch abdecken — DomainNameWire, DNJournal, TheDomains, NameBio, DomainSherpa, CircleID und mehr.'
 ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['domain branchennews', 'domainnamen medien', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'icann news']
+relatedArticles:
+  - /de/blog/famous-domainer-blogs-and-newsletters/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/top-domain-trader-forums/
+  - /de/blog/how-to-value-a-domain-name/
+  - /de/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-investor-field-guide/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Wenn [individuelle Domainer-Blogs](/blog/famous-domainer-blogs-and-newsletters) persönliche Stimmen sind, dann sind *Medien der Domain-Branche* die Plattformen, die eher wie Nachrichtenredaktionen arbeiten — manchmal Ein-Personen-Redaktionen, aber mit der redaktionellen Haltung von Journalismus statt eines Händler-Tagebuchs. Sie berichten über Deals, Richtlinien, Schritte von Registrierungsstellen (Registries)/Registraren, [ICANN](/de/glossary/icann/) und das gelegentliche Drama, und sie sind die Quellen, die andere zitieren.

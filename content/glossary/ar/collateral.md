@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو الضمان وكيف يمكن للنطاقات أن تكون بمثابة ضمان في التمويل اللامركزي (DeFi)؟
 keywords: ["ضمان","تأمين","إقراض","اقتراض","ضمان النطاق","DeFi"]
+relatedArticles:
+  - /ar/blog/tokenized-domain-use-cases-2026/
+  - /ar/blog/what-are-xstocks/
+  - /ar/blog/why-tokenize-domains/
+  - /ar/blog/what-are-stablecoins/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/web3-foundations/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tokenized-domain/
+  - /ar/glossary/web3/
+  - /ar/glossary/lending-protocol/
+  - /ar/glossary/tokenize/
+  - /ar/glossary/defi/
 ---
 
 

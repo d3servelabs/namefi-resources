@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Alles über die .net TLD: Erfahren Sie, warum diese Endung für Netzwerke und Tech-Firmen steht und wie Sie Ihre .net-Domain sicher bei Namefi registrieren."
 keywords: [".net domains", ".net TLD", "top-level domain", "was ist .net", "warum .net wählen", "was ist die .net domain", "warum die .net domain wählen", "domain investieren", "blockchain domains", "tokenisierte domains", "gTLD", "netzwerk domains", "domain registrierung", "internet infrastruktur", "web3 domains"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Die Wahl der richtigen Domainendung ist einer der ersten und wichtigsten Schritte beim Aufbau einer Online-Präsenz. Während **.com** oft als der Goldstandard gilt, gibt es einen anderen Giganten in der Welt der Domains, der seit den Anfängen des Internets Bestand hat: **.net**.

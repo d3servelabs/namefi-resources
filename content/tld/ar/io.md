@@ -16,6 +16,24 @@ faqs:
     answer: 'الشركات الناشئة في البرمجيات، ومنتجات SaaS، وأدوات المطورين، والمشاريع مفتوحة المصدر، وخدمات API، واستوديوهات ألعاب المتصفح، وفرق Web3 أو البلوكتشين اللي عايزة اسم بيقرأ كـ Input/Output وبيدل على اهتمام تكنولوجي.'
   - question: 'هل دومين .io هيختفي بسبب اتفاقية سيادة جزر تشاجوس؟'
     answer: 'مش موضوع محسوم. اعتبارًا من 2026، .io شغال بشكل كامل. أي تقاعد محتمل هيستلزم تغيير رمز الدولة في ISO الأول، وبعدين هيتبعه انتقال IANA بيستغرق سنين، يعني الموضوع محتاج متابعة مش هلع.'
+relatedArticles:
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 دومين **.io** هو من الناحية التقنية امتداد رمز دولة لمنطقة نائية في المحيط الهندي، بس في الواقع بقى البيت غير الرسمي للشركات الناشئة في البرمجيات وأدوات المطورين ومشاريع [Web3](/ar/glossary/web3/). بالنسبة لمعظم الناس، **معنى دومين .io** مش له علاقة بالجغرافيا خالص، وعنده علاقة بكل شيء بطريقة قراءة "io" عند المهندسين: يعني **Input/Output** — واحدة من أهم المفاهيم الأساسية في عالم الكمبيوتر.

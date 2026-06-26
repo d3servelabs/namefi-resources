@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'قصة إزاي Dropbox انطلقت على GetDropbox.com لأن Dropbox.com كانت مش متاحة، وخاضت معركة قانونية ضد محتكر الدومين، واشترت الدومين الأصلي Dropbox.com بـ 300 ألف دولار كاش.'
 keywords: ['getdropbox.com', 'dropbox.com', 'دومين dropbox', 'drew houston', 'y combinator dropbox', 'ترقية الدومين', 'تسمية الشركات الناشئة', 'تسمية البراند', 'دومين متميز', 'استراتيجية الدومين', 'دومين مطابق', 'شراء الدومين', 'evenflow dropbox']
+relatedArticles:
+  - /ar/blog/from-box-net-to-box-com/
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
+  - /ar/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 قبل ما Dropbox يبقى فعل بنستخدمه يعني "حطه في الكلاود"، كان عايش على عنوان أطول بشوية: **GetDropbox.com**.

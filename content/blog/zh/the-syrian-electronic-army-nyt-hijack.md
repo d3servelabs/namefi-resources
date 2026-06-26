@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2013年8月27日，叙利亚电子军通过钓鱼攻击墨尔本IT的一家经销商，篡改了nytimes.com和Twitter旗下域名的DNS记录，导致《纽约时报》网站数小时无法访问。本文深度剖析注册商链条的薄弱环节如何成为一家报纸的"前门"失守之源——以及注册表锁定机制本可带来怎样的改变。'
 keywords: ['nytimes.com 黑客攻击', '叙利亚电子军', '墨尔本IT', 'DNS劫持', '域名劫持', '注册商安全', '经销商钓鱼攻击', '注册表锁定', 'DNS记录', '域名服务器攻击', 'Twitter DNS 2013', '域名安全', 'serverUpdateProhibited']
+relatedArticles:
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-lenovo-com-dns-hijack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-panix-com-domain-hijack/
+  - /zh/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/tld/
 ---
 
 对于一家报纸来说，域名就是它的"前门"。当你输入 `nytimes.com` 时，你正在信任一条无形的链条——域名注册表、[注册商](/zh/glossary/registrar/)，有时还有注册商旗下的[经销商](/zh/glossary/reseller/)——将你引向真正的编辑部，而不是其他地方。在正常的日子里，你永远不会去想这条链条。但在2013年8月27日，它断裂了，数百万读者走到*《纽约时报》*的"前门"，却发现它已被换成了别人的。

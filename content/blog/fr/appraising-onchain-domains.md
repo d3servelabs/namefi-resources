@@ -12,6 +12,24 @@ format: analysis
 description: "Comment évaluer les domaines ENS et tokenisés à partir des comps onchain, du raisonnement floor-versus-premium et des facteurs de club ENS — et pourquoi cela diffère du DNS."
 ogImage: ../../assets/appraising-onchain-domains-og.jpg
 keywords: ['évaluer les domaines ENS', 'valorisation de domaine ENS', 'évaluation de domaine tokenisé', 'comps onchain', 'ventes comparables de domaines', 'comps NameBio', 'floor price ENS', 'ENS 999 club', 'ENS 10k club', 'comment valoriser un nom ENS', 'valeur de domaine tokenisé', 'évaluation de domaine web3', 'valeur de domaine ERC-721', 'historique de ventes onchain', 'floor versus premium de domaine']
+relatedArticles:
+  - /fr/blog/onchain-domain-flipping/
+  - /fr/blog/how-to-read-comparable-domain-sales/
+  - /fr/blog/domain-appraisal-tools-compared/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/tokenize-your-com/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 L''évaluation est la compétence qui détermine si un flip rapporte de l''argent. Le sourcing vous dit ce qui est à vendre et la vente transforme un nom en chèque, mais le chiffre du milieu — ce qu''un nom vaut réellement — c''est là que réside la marge. C''est vrai pour un `.com` et c''est vrai onchain, sauf que le monde onchain vous offre quelque chose que l''aftermarket [DNS](/fr/glossary/dns/) n''a jamais pu donner : un registre public et horodaté de presque toutes les ventes. Voici le chapitre évaluation du playbook plus large du [domain flipping](/fr/blog/domain-flipping/), centré sur les deux actifs que vous tradez dans le [domain flipping onchain](/fr/blog/onchain-domain-flipping/) — les noms [ENS](/fr/glossary/ens/) et les domaines ICANN tokenisés.

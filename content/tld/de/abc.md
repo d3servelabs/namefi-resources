@@ -24,6 +24,24 @@ keywords:
   - domain namen kaufen
   - alphabet domain
   - namefi
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/premium-web3-tlds/
+  - /de/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registrar/
+  - /de/glossary/web3/
 ---
 
 ## **Was ist .abc?**

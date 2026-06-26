@@ -12,6 +12,24 @@ format: guide
 description: "Gérez vos domaines comme un stock : suivez le coût de revient, surveillez le taux de vente, maîtrisez les frais de renouvellement, élaguez les perdants et tenez une comptabilité rigoureuse."
 ogImage: ../../assets/domain-portfolio-management-og.jpg
 keywords: ['gestion de portefeuille de domaines', 'portefeuille de domaines', 'gérer un portefeuille de domaines', 'taux de vente domaines', 'coûts de renouvellement de domaines', 'quand abandonner un domaine', 'coût de revient d''un domaine', 'suivi d''inventaire de domaines', 'business d''investissement en domaines', 'frais de portage renouvellement domaine', 'élagage d''un portefeuille de domaines', 'coût de détention de domaine', 'tableur domaining', 'tableur portefeuille de domaines', 'comptabilité investisseur domaines']
+relatedArticles:
+  - /fr/blog/domain-renewal-costs-and-sell-through-rate/
+  - /fr/blog/when-to-drop-a-domain/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/taxes-and-accounting-for-domain-investors/
+  - /fr/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Les dix premiers domaines ressemblent à une collection. Vous vous souvenez pourquoi vous avez acheté chacun, ce que vous avez payé, et à peu près ce que vous espérez en tirer. Quelque part autour du centième nom, cette mémoire lâche. Vous ne pouvez plus tenir le portefeuille dans votre tête, les e-mails de renouvellement arrivent en rafales que vous ne reconnaissez plus, et vous commencez à payer pour des noms que vous aviez oubliés. C'est à ce moment que le flipping cesse d'être une série de transactions habiles pour devenir de la gestion de stock.

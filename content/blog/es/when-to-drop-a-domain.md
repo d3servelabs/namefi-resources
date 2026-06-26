@@ -12,6 +12,24 @@ format: guide
 description: "Cómo decidir cuándo dejar caducar un dominio: el costo de renovación frente a las probabilidades reales de reventa, la trampa del costo hundido y las señales de que un nombre nunca se venderá."
 ogImage: ../../assets/when-to-drop-a-domain-og.jpg
 keywords: ['cuándo soltar un dominio', 'dejar caducar un dominio', 'cortar dominios perdedores', 'decisión de renovación de dominio', 'costo hundido de dominio', 'debería renovar un dominio', 'depuración de cartera de dominios', 'soltar un nombre de dominio', 'costo de mantenimiento de dominio', 'tasa de venta de dominios', 'pérdidas en domaining', 'caducar un dominio', 'costo de renovación de dominio', 'errores al invertir en dominios', 'depurar cartera de dominios']
+relatedArticles:
+  - /es/blog/domain-portfolio-management/
+  - /es/blog/domain-renewal-costs-and-sell-through-rate/
+  - /es/blog/domain-flipping/
+  - /es/blog/hand-registering-domains-to-flip/
+  - /es/blog/working-with-domain-brokers/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Cada dominio que posees te envía la misma carta una vez al año: renueva o piérdelo. Para tus ganadores, ese es un sí fácil. Las decisiones difíciles son los nombres del medio y del fondo de tu cartera: los que registraste con una tesis que no rindió frutos, las compras impulsivas, los nombres "casi buenos" que llevan tres ciclos de renovación sin venderse. Decidir cuáles soltar es una de las habilidades menos glamorosas y más rentables de la reventa, porque el dinero ahorrado en inventario muerto va directo a tu margen.

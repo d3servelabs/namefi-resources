@@ -12,6 +12,24 @@ format: guide
 description: "डोमेन को एक्सपायर कब होने दें — यह कैसे तय करें: नवीकरण लागत बनाम वास्तविक पुनर्विक्रय संभावना, डूबी लागत का जाल, और वे संकेत जो बताते हैं कि कोई नाम कभी नहीं बिकेगा।"
 ogImage: ../../assets/when-to-drop-a-domain-og.jpg
 keywords: ['डोमेन कब छोड़ें', 'डोमेन एक्सपायर होने देना', 'डोमेन घाटे काटना', 'डोमेन नवीकरण निर्णय', 'डोमेन संक कॉस्ट', 'क्या मुझे डोमेन रिन्यू करना चाहिए', 'डोमेन पोर्टफोलियो छंटाई', 'डोमेन नाम छोड़ना', 'डोमेन होल्डिंग कॉस्ट', 'डोमेन सेल-थ्रू रेट', 'डोमेनिंग घाटे', 'डोमेन एक्सपायर करना', 'डोमेन नवीकरण लागत', 'डोमेन निवेश की गलतियाँ', 'डोमेन पोर्टफोलियो प्रूनिंग']
+relatedArticles:
+  - /hi/blog/domain-portfolio-management/
+  - /hi/blog/domain-renewal-costs-and-sell-through-rate/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/hand-registering-domains-to-flip/
+  - /hi/blog/working-with-domain-brokers/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 आपके पास जितने भी डोमेन हैं, हर एक साल में एक ही सवाल लेकर आता है: रिन्यू करें या जाने दें। जो नाम अच्छा प्रदर्शन कर रहे हैं, उनके लिए जवाब आसान है — हाँ। मुश्किल फैसले वे हैं जो पोर्टफोलियो के बीच और निचले हिस्से में हैं — जिन्हें आपने किसी सोच के साथ रजिस्टर किया था जो अभी तक काम नहीं आई, आवेग में खरीदे हुए नाम, वे "लगभग सही" नाम जो तीन नवीकरण चक्रों से बिके नहीं। यह तय करना कि किसे जाने दें — यह फ्लिपिंग का सबसे कम चमकदार लेकिन सबसे ज़्यादा मुनाफेदार कौशल है, क्योंकि बेकार इन्वेंटरी पर बचाया पैसा सीधे आपके मुनाफे में जाता है।

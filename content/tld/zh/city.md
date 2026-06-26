@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .city 是专为本地企业、市政服务和城市主题网站设计的域名。非常适合建立本地影响力。
 keywords: ["tld", ".city 域名", "本地企业", "市政服务", "城市网站", "本地影响力"]
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-investor-field-guide/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .city？**

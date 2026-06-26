@@ -18,6 +18,24 @@ faqs:
     answer: "Il porte une réputation mitigée. Les promotions bon marché ont historiquement attiré quelques enregistrements de faible qualité et de spam, de sorte que quelques filtres agressifs l'examinent de plus près. Un vrai site, une authentification de messagerie correcte et de bonnes habitudes d'envoi règlent cela pour les entreprises légitimes."
   - question: 'Le .biz prend-il en charge la confidentialité WHOIS et le DNSSEC ?'
     answer: "Oui. Les bureaux d'enregistrement proposent la confidentialité WHOIS sur le .biz comme sur les autres gTLD, et le registre prend en charge le DNSSEC pour un DNS cryptographiquement signé, ce qui vous permet de durcir votre zone contre la falsification."
+relatedArticles:
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Le domaine **.biz** est l'une des adresses web professionnelles originelles d'Internet. Orthographe phonétique de la première syllabe de « business », il a été créé spécifiquement pour offrir aux entités commerciales un foyer lorsque leur nom **.com** préféré avait déjà disparu. Plus de deux décennies plus tard, le **.biz** reste un gTLD ouvert, disponible dans le monde entier, au sens clair et explicite : ceci est un lieu d'affaires.

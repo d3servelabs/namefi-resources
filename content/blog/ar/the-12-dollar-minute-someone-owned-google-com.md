@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في سبتمبر 2015، موظف سابق في Google اشترى google.com من خلال Google Domains بـ 12 دولار، وامتلك السيطرة الإدارية على أثمن نطاق في العالم لمدة دقيقة تقريباً. قصة سانماي فيد، ومكافأة الـ 6,006.13 دولار، وما تكشفه دقيقة واحدة من الملكية عن مَن يتحكم فعلاً في النطاق.'
 keywords: ['نطاق google.com', 'سانماي فيد', 'خلل Google Domains', 'أمان النطاقات', 'مَن يملك google.com', 'اختطاف النطاق', 'وصول webmaster tools', 'مكافأة أخطاء Google', 'مكافأة 6006.13', 'ثغرة تسجيل النطاق', 'التحكم في النطاق', 'أمان DNS', 'التحقق من ملكية النطاق']
+relatedArticles:
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+  - /ar/blog/the-sex-com-heist-the-forged-letter/
+  - /ar/blog/the-2024-squarespace-defi-domain-hijacks/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
 ---
 
 لمدة دقيقة واحدة تقريباً في ليلة 29 سبتمبر 2015، لم يكن أشهر عنوان على الإنترنت ملكاً لـ Google.

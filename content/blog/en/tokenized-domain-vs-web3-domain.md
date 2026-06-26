@@ -9,6 +9,24 @@ cluster: domain-tokenization
 format: comparison
 description: A clear, practical comparison of tokenized ICANN domains (like a tokenized .com) and Web3-native names (like name.eth, name.crypto). When does each one work? Where do they overlap? Why do many people hold both?
 keywords: ['tokenized domain vs web3 domain', 'tokenized domain vs ENS', 'ICANN domain vs ENS', '.com vs .eth', 'tokenized .com vs .crypto', 'tokenized domain vs unstoppable', 'web3 domain comparison', 'ENS vs tokenized domain', 'NFT domain vs ENS', 'web3 naming', 'on-chain naming difference', 'browser support web3 domain', 'web3 domain resolution']
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /en/blog/premium-web3-tlds/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
 ---
 
 A reasonable question, asked daily: *"I already have a `.eth` name (or `.crypto`, or `.x`). Why would I [tokenize](/en/glossary/tokenize/) my `.com`? Aren't they the same thing?"*

@@ -8,6 +8,24 @@ draft: false
 description: '零知识证明分为三种类型——完美、统计和计算。这一区别比大多数工程讨论中所承认的更为重要。本文用通俗易懂的语言解释了每种类型，说明了为什么2026年几乎所有生产环境中的ZK系统都是计算零知识证明，以及这种选择带来了什么优势与代价。'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg
 keywords: ['零知识证明', '完美零知识证明', '计算零知识证明', 'zk snark', 'zk stark', '密码学', '模拟器', '承诺方案', 'namefi']
+relatedArticles:
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/working-with-domain-brokers/
+  - /zh/blog/how-to-win-domain-auctions/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/onchain-domain-custody-and-recovery/
+relatedTopics:
+  - /zh/topics/web3-foundations/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
+  - /zh/glossary/registry/
 ---
 
 在加密领域，当人们谈论“零知识证明”时，他们几乎总是指代同一种具体事物：用来证明某项计算被正确执行且不泄露输入的 SNARK 或 STARK。这种思维模型对于大多数工程对话来说已经足够了。但它掩盖了一个重要的区别，当你试图推理*安全性实际保证了什么*时，这个区别就会变得至关重要。

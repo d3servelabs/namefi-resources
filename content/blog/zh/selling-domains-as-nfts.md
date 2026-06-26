@@ -12,6 +12,24 @@ format: guide
 description: "将域名作为 NFT 出售是如何运作的：上架机制、Seaport 与 OpenSea、限定买家的私下成交、版税，以及 gas 费与诈骗陷阱。"
 ogImage: ../../assets/selling-domains-as-nfts-og.jpg
 keywords: ['将域名作为 NFT 出售', '域名 NFT', '代币化域名出售', '链上域名流动性', '在 OpenSea 上架域名 NFT', 'Seaport 协议', '限定买家上架', '私下 NFT 上架', 'NFT 版税 域名', 'ERC-721 域名', '原子转移 域名', '出售代币化域名', 'NFT 出售 gas 费', 'NFT 域名诈骗', '链上域名倒卖']
+relatedArticles:
+  - /zh/blog/onchain-domain-marketplaces-compared/
+  - /zh/blog/onchain-domain-flipping/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
+  - /zh/glossary/tld/
 ---
 
 传统的域名交易从一开始就内置了一个信任难题。卖家不愿在收到钱之前就推送转移；买家也不愿在域名进入自己账户之前就把钱汇出去。整个[托管](/zh/glossary/escrow/)行业之所以存在，就是为了在这两种本能反应之间充当中间人。将域名作为 [NFT（非同质化代币）](/zh/glossary/nft/)出售，则重新排布了这场僵局。当一个真实 ICANN 域名的所有权同时也是一个[链上 (On-chain)](/zh/glossary/on-chain/) 代币时，这个域名就成了你可以在同一笔转移资金的交易中上架、定价并交付的东西——不再需要中间人在付款与转移之间那段黑暗时刻替你保管资产。

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Tout savoir sur le domaine .abbott : une extension exclusive dédiée à la santé et l'innovation. Découvrez son usage, sa sécurité et comment enregistrer votre domaine."
 keywords: [".abbott domains", ".abbott TLD", "top-level domain .abbott", "what is .abbott", "why choose .abbott", "what is the .abbott domain", "why choose the .abbott domain", "domaine santé", "extension internet abbott", "tokenized domain", "blockchain domains", "domain investing", "achat nom de domaine", "registraire web3", "sécurité domaine marque"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le .abbott ?**

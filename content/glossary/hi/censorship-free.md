@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: डोमेन स्वामित्व और प्रबंधन के लिए सेंसरशिप-मुक्त का क्या अर्थ है?
 keywords: ["सेंसरशिप-मुक्त","सेंसरशिप प्रतिरोध","विकेन्द्रीकृत","स्वतंत्रता","अजेय"]
+relatedArticles:
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/onchain-domain-flipping/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/onchain-domain-custody-and-recovery/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/domain-ownership/
+  - /hi/glossary/blockchain/
+  - /hi/glossary/web3/
 ---
 
 **सेंसरशिप-मुक्त** उन प्रणालियों को संदर्भित करता है जो अधिकारियों या मध्यस्थों द्वारा पहुंच, ट्रांसफर या उपयोग को प्रतिबंधित करने के प्रयासों का विरोध करती हैं। पारंपरिक [डोमेन स्वामित्व](/hi/glossary/domain-ownership/) [रजिस्ट्रार](/hi/glossary/registrar/) नीतियों, सरकारी जब्ती, या पेमेंट प्रोसेसर प्रतिबंधों के माध्यम से सेंसरशिप के अधीन हो सकता है। विकेन्द्रीकृत ब्लॉकचेन पर [टोकनाइज़्ड](/hi/glossary/tokenize/) डोमेन अधिक सेंसरशिप-प्रतिरोधी होते हैं क्योंकि स्वामित्व कॉर्पोरेट नीतियों के बजाय क्रिप्टोग्राफी द्वारा सुरक्षित होता है। जबकि अंतर्निहित [DNS](/hi/glossary/dns/) सिस्टम अभी भी विनियमन के अधीन हो सकता है, स्वामित्व टोकन को केंद्रीकृत अधिकारियों की अनुमति के बिना ट्रांसफर और रखा जा सकता है। यह यूज़र्स को अपने डिजिटल एसेट्स के मनमाने ढंग से जब्ती या प्रतिबंध के खिलाफ अधिक नियंत्रण और सुरक्षा प्रदान करता है।

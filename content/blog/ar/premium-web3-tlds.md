@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: دليل واضح لعام 2026 حول امتدادات Web3 المميزة — ما المقصود فعلاً بـ "امتداد Web3"، ولماذا تتفوق امتدادات ICANN المُرمَّزة زي .com و.ai و.io على الأسماء الموجودة على البلوكتشين بس، وأي امتدادات نطاقات تحمل أعلى قيمة.
 keywords: ['امتداد web3 مميز', 'امتدادات web3 مميزة', 'امتداد web3', 'امتدادات web3', 'نطاقات web3 مميزة', 'أفضل نطاقات web3', 'امتدادات نطاقات web3', 'نطاق web3', 'نطاقات web3', 'امتدادات نطاقات مُرمَّزة', 'امتدادات نطاقات مميزة', 'أكثر امتدادات النطاقات قيمة', 'امتداد مُرمَّز', 'نطاقات مُرمَّزة', 'امتداد ICANN', 'امتداد بلوكتشين', 'نطاق NFT', '.com مميز', '.ai مميز', '.io مميز', '.xyz مميز', 'أفضل امتدادات النطاقات 2026', 'امتداد كريبتو', 'تسمية web3', 'استثمار امتداد نطاق', 'namefi']
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/tokenized-domain-vs-web3-domain/
+  - /ar/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/onchain-domain-flipping/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
 ---
 
 لو بحثت عن "امتداد [Web3](/ar/glossary/web3/) مميز"، هتلاقي حاجتين مختلفتين تمامًا بيتكلموا عنهم بنفس الكلام. الأول هو **اسم على البلوكتشين بس** زي `.eth` أو `.crypto` اللي بيعيش خارج جذر [نظام أسماء النطاقات](/ar/glossary/dns/) (DNS) العالمي. والتاني هو **امتداد ICANN حقيقي ومعترف بيه** (زي `.com` و`.ai` و`.io` و`.xyz`) اتعملتله عملية *ترميز* [على السلسلة](/ar/glossary/on-chain/) عشان يتصرف زي أصل Web3 وفي نفس الوقت يشتغل على كل المتصفحات اللي في الدنيا.

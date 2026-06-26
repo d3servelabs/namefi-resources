@@ -18,6 +18,24 @@ faqs:
     answer: 'A .world address can send and receive email like any domain. Deliverability depends on proper SPF, DKIM, and DMARC setup and your sending reputation, not the TLD itself. New gTLDs occasionally face stricter filtering, so authenticate your domain and warm it up gradually.'
   - question: 'Does .world support WHOIS privacy and DNSSEC?'
     answer: 'Yes. As an Identity Digital gTLD, .world supports DNSSEC for registries that enable it, and most registrars offer WHOIS privacy to mask personal contact details in public records, subject to ICANN and registrar policy.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.world domain** is one of the most literal extensions on the internet: it says exactly what many brands want to project — global reach. As an open generic top-level domain, it lets any person, company, or organization stake out a name that reads as borderless, making it a natural fit for international ventures, communities, and ideas that aim to travel.

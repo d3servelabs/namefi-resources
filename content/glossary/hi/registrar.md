@@ -14,6 +14,24 @@ sources:
 aliasesByLocale:
   zh: ['注册服务商']
   de: ['Registrierungsdienst']
+relatedArticles:
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/the-panix-com-domain-hijack/
+  - /hi/blog/what-is-udrp/
+relatedTopics:
+  - /hi/topics/domain-basics/
+  - /hi/topics/domain-security/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 एक **रजिस्ट्रार** एक [ICANN](/hi/glossary/icann/)-मान्यता प्राप्त संगठन है जो जनता की ओर से एक या अधिक टॉप-लेवल डोमेन में डोमेन नाम पंजीकृत करने के लिए अधिकृत है, और उन डोमेन के लिए प्राधिकृत डेटाबेस संचालित करने वाली [रजिस्ट्री](/hi/glossary/registry/) और डोमेन खरीदारों के बीच संबंध प्रबंधित करता है।

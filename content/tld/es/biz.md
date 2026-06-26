@@ -18,6 +18,24 @@ faqs:
     answer: 'Carga una reputación mixta. Las promociones baratas históricamente atrajeron algunos registros de baja calidad y spam, por lo que unos pocos filtros agresivos lo examinan con más detalle. Un sitio real, una autenticación de correo adecuada y buenos hábitos de envío resuelven esto para los negocios legítimos.'
   - question: '¿Admite .biz privacidad WHOIS y DNSSEC?'
     answer: 'Sí. Los registradores ofrecen privacidad WHOIS en .biz como en otros gTLD, y el registro admite DNSSEC para un DNS firmado criptográficamente, de modo que puedes reforzar tu zona contra manipulaciones.'
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 El dominio **.biz** es una de las direcciones web originales de internet enfocadas en los negocios. Una grafía fonética de la primera sílaba de "business", se creó específicamente para dar a las entidades comerciales un hogar cuando su nombre **.com** preferido ya no estaba disponible. Más de dos décadas después, **.biz** sigue siendo un gTLD abierto y disponible a nivel global con un significado claro y autoexplicativo: este es un lugar de negocios.

@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.investopedia.com/terms/r/reserveprice.asp
   - https://www.sedo.com/
+relatedArticles:
+  - /hi/blog/how-to-win-domain-auctions/
+  - /hi/blog/working-with-domain-brokers/
+  - /hi/blog/domain-pricing-psychology-buy-now-vs-make-offer/
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+  - /hi/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/domain-broker/
+  - /hi/glossary/make-offer/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
 ---
 
 एक **रिज़र्व प्राइस** वह गोपनीय न्यूनतम बिक्री कीमत है जो एक डोमेन विक्रेता द्वारा निर्धारित की जाती है, जिसके नीचे कोई भी [नीलामी](/hi/glossary/auction/) बोली या बातचीत में प्रस्ताव किसी पूर्ण लेनदेन में नहीं बदलेगा। एक डोमेन नीलामी में, यदि बोली रिज़र्व के नीचे बंद होती है, तो नाम उच्चतम बोली लगाने वाले को नहीं दिया जाता — यह बस अनबिका रहता है। अधिकांश प्रमुख नीलामी प्लेटफॉर्म (GoDaddy Auctions, Sedo, NameJet) विक्रेताओं को एक छिपा हुआ रिज़र्व सेट करने देते हैं, इसलिए बोली लगाने वाले वर्तमान बोली देख सकते हैं लेकिन यह नहीं कि वह फ्लोर को पूरा करती है या नहीं। बाजार मूल्य के मुकाबले बहुत अधिक निर्धारित रिज़र्व बार-बार बिना बिक्री का कारण बनता है और विश्वसनीयता को नुकसान पहुँचाता है; बहुत कम सेट किया गया रिज़र्व मेज पर पैसे छोड़ने का जोखिम उठाता है। निजी [मेक-ऑफर](/hi/glossary/make-offer/) लिस्टिंग में, रिज़र्व बातचीत के दौरान विक्रेता की आंतरिक वॉक-अवे संख्या के रूप में कार्य करता है, जो अक्सर एक [डोमेन ब्रोकर](/hi/glossary/domain-broker/) को बताई जाती है लेकिन खरीदार को नहीं।

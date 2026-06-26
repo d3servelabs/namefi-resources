@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'دليلك الشامل حول نطاق .abarth: اكتشف مزايا هذا الامتداد الرقمي الحصري، علاقته بعالم السيارات، وكيفية تعزيز هويتك الرقمية من خلال Namefi.'
 keywords: ['.abarth', 'نطاقات .abarth', 'نطاق المستوى الأعلى .abarth', 'ما هو .abarth', 'لماذا تختار .abarth', 'ما هو نطاق .abarth', 'لماذا تختار نطاق .abarth', 'استثمار النطاقات', 'نطاقات البلوكشين', 'نطاقات الويب 3', 'شراء دومين .abarth', 'حجز دومين', 'نطاقات السيارات']
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/registry/
 ---
 
 في عالم يتسارع فيه التطور الرقمي، أصبح اختيار اسم النطاق (Domain Name) الصحيح يشبه اختيار السيارة المثالية؛ يجب أن تكون سريعة، موثوقة، وتعبر عن هويتك بوضوح. أحد النطاقات التي تثير الفضول في عالم الإنترنت هو نطاق **.abarth**.

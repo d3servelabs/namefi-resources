@@ -6,6 +6,24 @@ tags: ["partners"]
 authors: ["namefiteam"]
 description: BlockEden.xyz هي منصة بنية تحتية تركز على المطورين، مصممة لتلبية متطلبات قابلية التوسع والموثوقية في Web3.
 keywords: ["شركاء", "BlockEden", "بنية تحتية Web3", "قابلية التوسع", "موثوقية", "عقد RPC", "مؤشرون", "واجهات برمجة تطبيقات تحليلية", "Aptos", "Sui", "Solana", "EVM", "Namefi", "ترميز النطاق", "NFTs"]
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/choosing-a-domain-tokenization-platform/
+  - /ar/blog/why-tokenize-domains/
+  - /ar/blog/onchain-domain-marketplaces-compared/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/web3/
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
 ---
 
 ## **تقديم BlockEden.xyz إلى نظام Namefi البيئي**

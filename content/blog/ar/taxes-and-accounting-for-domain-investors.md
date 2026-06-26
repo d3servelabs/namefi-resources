@@ -12,6 +12,24 @@ format: faq
 description: "إزاي مستثمري النطاقات بيتعاملوا مع الضرائب: المخزون مقابل الأصول الرأسمالية، أساس التكلفة، إمتى بيتحسب الدخل، وخصم تكاليف التجديد. محتوى تعليمي، مش استشارة."
 ogImage: ../../assets/taxes-and-accounting-for-domain-investors-og.jpg
 keywords: ['ضرائب الاستثمار في النطاقات', 'ضرائب تقليب النطاقات', 'أساس تكلفة النطاق', 'هل النطاقات أصول رأسمالية', 'تاجر النطاقات مقابل المستثمر', 'ضريبة مخزون النطاقات', 'الأصول غير الملموسة بند 197 للنطاق', 'الأرباح الرأسمالية على بيع النطاق', 'خصم تكاليف تجديد النطاق', 'فترة الاحتفاظ بالنطاق والضريبة', 'إزاي بتتفرض الضريبة على بيع النطاقات', 'محاسبة محفظة النطاقات', 'أسئلة ضريبية لمستثمر النطاقات', 'الدخل العادي مقابل الأرباح الرأسمالية للنطاقات']
+relatedArticles:
+  - /ar/blog/domain-portfolio-management/
+  - /ar/blog/domain-renewal-costs-and-sell-through-rate/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/when-to-drop-a-domain/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 > **اقرا ده الأول.** البوست ده **مش** استشارة ضريبية ولا محاسبية ولا قانونية ولا مالية. إحنا مش المحاسب القانوني بتاعك، ومعندناش أي فكرة عن الولاية القضائية اللي إنت فيها ولا إزاي نشاطك متظبط. اعتبر كل اللي تحت ده *قايمة أسئلة ومفاهيم تاخدها لمحترف حقيقي*، مش موقف تقدر تعتمد عليه. الإخلاء الكامل للمسؤولية في الآخر، وهو هنا بينطبق بقوة أكبر.

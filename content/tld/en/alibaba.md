@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: Explore the .alibaba TLD, a dedicated brand domain that represents security and authority in e-commerce. Learn how it impacts domain investing and digital identity.
 keywords: ['alibaba domains', '.alibaba TLD', 'top-level domain', 'what is .alibaba', 'why choose .alibaba', 'what is the .alibaba domain', 'why choose the .alibaba domain', 'brand TLD', 'domain investing', 'blockchain domains', 'tokenized domain', 'ecommerce domains', 'digital identity', 'Namefi', 'Web3 domains']
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
+  - /en/glossary/web3/
 ---
 
 ## **What is .alibaba?**

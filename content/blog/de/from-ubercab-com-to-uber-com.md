@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie eine Unterlassungsaufforderung im Jahr 2010 UberCab dazu zwang, „Cab" zu streichen, wie Uber Uber.com von Universal Music für 2 % Eigenkapital im Wert von 107.000 USD erwarb und warum dieses Domain-Upgrade zu einem der folgenreichsten Deals in der Startup-Geschichte wurde.'
 keywords: ['ubercab.com', 'uber.com', 'uber domainname', 'domain-upgrade', 'ubercab unterlassungsaufforderung', 'universal music uber domain', 'startup-naming', 'markennamensgebung', 'premium-domain', 'domain-strategie', 'uber-geschichte', 'eigenkapital für domain', 'domain-akquisition', 'kategoriedefinierender domainname']
+relatedArticles:
+  - /de/blog/from-urbancompass-com-to-compass-com/
+  - /de/blog/from-massdrop-com-to-drop-com/
+  - /de/blog/from-bufferapp-com-to-buffer-com/
+  - /de/blog/from-teslamotors-com-to-tesla-com/
+  - /de/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
 ---
 
 Bevor „Uber" zu einem Verb, einem Logistikimperium und einem Synonym für eine gesamte Kategorie von On-Demand-Diensten wurde, war es etwas Wörtlicheres, Vorsichtigeres: **UberCab.com**.

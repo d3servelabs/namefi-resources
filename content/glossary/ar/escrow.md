@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو الضمان وكيف توفر العقود الذكية ضماناً لا يحتاج إلى ثقة للدومينات؟
 keywords: ["الضمان","طرف ثالث موثوق به","ضمان العقد الذكي","عديم الثقة","معاملات آمنة"]
+relatedArticles:
+  - /ar/blog/domain-escrow-explained/
+  - /ar/blog/how-tokenized-marketplaces-replace-escrow/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/selling-domains-as-nfts/
+  - /ar/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/domain-broker/
+  - /ar/glossary/marketplace/
+  - /ar/glossary/domain-financing/
+  - /ar/glossary/lease-to-own/
 ---
 
 

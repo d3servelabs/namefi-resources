@@ -16,6 +16,24 @@ faqs:
     answer: '正在打造个人品牌、作品集或简历网站的个人，以及任何想要构造一个以 "me" 结尾的短语式域名拼接（如 about.me 或 "call.me"）的人。它一眼就读作英语人称代词，温暖而个人化。'
   - question: '.me 是适合个人网站的好域名吗？'
     answer: '是的。.me 可以说是最个人化的主流扩展名。由于 "me" 是第一人称代词，"yourname.me" 或 "hire.me" 给人一种直接邀请的感觉，这正是它深受作品集、个人简介和个人品牌青睐的原因。'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/domain-hacks-explained/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 **.me** 域名是国家代码扩展名以全球品牌身份获得第二次生命的最清晰范例之一。它在官方层面是**黑山（Montenegro）**的 ccTLD，却被全球营销并采用，作为互联网上最具**个人色彩**的扩展名——因为 "me" 是英语的第一人称代词，"yourname.me" 一眼就读作*你*。对于正在打造作品集、简历网站或个人简介页的个人——以及任何想要构造一个巧妙的、以 "me" 收尾的**域名拼接（domain hack）**的人——它往往是他们第一个想到的地方。

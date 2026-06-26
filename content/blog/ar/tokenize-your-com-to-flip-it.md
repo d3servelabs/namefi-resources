@@ -12,6 +12,24 @@ format: guide
 description: "شرح عملي من Namefi: انقل الـ.com بتاعك على السلسلة، خلّي الـDNS شغّال زي ما هو، وقلّبه كـNFT بتسوية ذرّية بدل وقفة الضمان الطويلة."
 ogImage: ../../assets/tokenize-your-com-to-flip-it-og.jpg
 keywords: ['رمّز الـcom عشان تقلّبه', 'رمّز الـcom بتاعك', 'تقليب الدومينات المرمّزة', 'بيع دومين كـNFT', 'تقليب الـcom المرمّز', 'تقليب الدومينات على السلسلة', 'تسوية ذرّية للدومين', 'سوق الدومينات المرمّزة', 'استمرارية DNS للدومين المرمّز', 'إزاي ترمّز دومين عشان تبيعه', 'رمّز وبيع مع namefi', 'دومين com في المحفظة', 'دومين ERC-721', 'سيولة الدومين المرمّز', 'تقليب دومين com على السلسلة']
+relatedArticles:
+  - /ar/blog/onchain-domain-flipping/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/selling-domains-as-nfts/
+  - /ar/blog/onchain-domain-marketplaces-compared/
+  - /ar/blog/domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 أغلب عمليات تقليب الـ`.com` بتنتهي بنفس التوتر: المشتري مش عايز يدفع قبل ما الاسم يتنقل، والبائع مش عايز ينقل الاسم قبل ما ياخد فلوسه، ووكيل [الضمان (Escrow)](/ar/glossary/escrow/) واقف في النص ماسك الفلوس لحد ما عملية النقل عند المُسجِّل تخلص على مدى أيام. الوقفة دي هي ضريبة الاحتكاك على كل بيعة غالية. لما ترمّز الـ`.com` الأول بتغيّر شكل الصفقة كلها: الاسم بيبقى توكن إنت ماسكه في [محفظة](/ar/glossary/wallet/)، والبيعة بتبقى مبادلة واحدة على السلسلة بدل تسليم وتسلّم بياخد أيام بين أطراف كتير.

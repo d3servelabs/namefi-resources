@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Comment le site pionnier de partage de favoris a été lancé en 2003 sous le célèbre hack de domaine « del.icio.us », pourquoi ces points sont devenus une taxe permanente sur chaque mention, et comment Yahoo l'a migré vers le plus simple Delicious.com en 2008."
 keywords: ['del.icio.us', 'delicious.com', 'nom de domaine delicious', 'hack de domaine', 'joshua schachter', 'bookmarking social', 'yahoo delicious', 'mise à niveau de domaine', 'nommage startup', 'nommage de marque', 'domaine premium', 'stratégie de domaine', 'hack de domaine ccTLD', 'domaine définissant une catégorie']
+relatedArticles:
+  - /fr/blog/from-bufferapp-com-to-buffer-com/
+  - /fr/blog/from-ubercab-com-to-uber-com/
+  - /fr/blog/from-mona-co-to-crypto-com/
+  - /fr/blog/from-ctrip-com-to-trip-com/
+  - /fr/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
 ---
 
 Pendant environ cinq ans, l'un des sites les plus influents de l'ère Web 2.0 a vécu à une adresse qu'on ne pouvait presque pas dire à voix haute : **del.icio.us**.

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: क्रिप्टोग्राफिक सुरक्षा क्या है और यह टोकनाइज्ड डोमेन को कैसे सुरक्षित करती है?
 keywords: ["क्रिप्टोग्राफिक सुरक्षा","एन्क्रिप्शन","निजी कुंजियाँ","डिजिटल हस्ताक्षर","ब्लॉकचेन सुरक्षा"]
+relatedArticles:
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-2020-twitter-bitcoin-account-takeover/
+  - /hi/blog/the-dnspionage-campaign/
+  - /hi/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /hi/blog/the-icann-spear-phishing-breach/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/web3/
+  - /hi/glossary/domain-ownership/
+  - /hi/glossary/private-key/
+  - /hi/glossary/blockchain/
 ---
 
 **क्रिप्टोग्राफिक सुरक्षा** उन सुरक्षा विधियों को संदर्भित करती है जो डेटा को सुरक्षित करने और प्रामाणिकता सत्यापित करने के लिए गणितीय एल्गोरिदम का उपयोग करती हैं। [ब्लॉकचेन](/hi/glossary/blockchain/) और [टोकनाइज्ड](/hi/glossary/tokenize/) डोमेन में, क्रिप्टोग्राफिक सुरक्षा में डिजिटल हस्ताक्षर शामिल हैं जो स्वामित्व साबित करते हैं, हैश फ़ंक्शन जो डेटा की अखंडता सुनिश्चित करते हैं, और एन्क्रिप्शन जो निजी कुंजियों की सुरक्षा करता है। जब आप एक टोकनाइज्ड डोमेन के मालिक होते हैं, तो आपका स्वामित्व क्रिप्टोग्राफिक प्रमाणों द्वारा सुरक्षित होता है जिनकी वर्तमान तकनीक से जालसाजी करना या हैक करना लगभग असंभव है। यह पारंपरिक [डोमेन स्वामित्व](/hi/glossary/domain-ownership/) की तुलना में अधिक मजबूत सुरक्षा प्रदान करता है, जो पासवर्ड-संरक्षित [रजिस्ट्रार](/hi/glossary/registrar/) खातों पर निर्भर करता है जिन्हें सोशल इंजीनियरिंग, डेटा उल्लंघनों या कमजोर प्रमाणीकरण प्रणालियों के माध्यम से समझौता किया जा सकता है।

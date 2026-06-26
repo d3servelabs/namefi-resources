@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: टोकनाइज्ड होने पर डोमेन स्वामित्व का क्या अर्थ है?
 keywords: ["डोमेन स्वामित्व","NFT डोमेन","रजिस्ट्रार","कस्टोडियल","वॉलेट स्वामित्व"]
+relatedArticles:
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /hi/blog/the-sea-turtle-dns-espionage/
+  - /hi/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/web3/
+  - /hi/glossary/tokenize/
+  - /hi/glossary/dns/
+  - /hi/glossary/on-chain/
 ---
 
 

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le potentiel du TLD .aig pour votre projet. Apprenez pourquoi cette extension est prisée par les secteurs de l'IA et de la Tech. Enregistrez le vôtre sur Namefi."
 keywords: [".aig domains", ".aig TLD", "top-level domain", "what is .aig", "why choose .aig", "what is the .aig domain", "why choose the .aig domain", "domaine investissement", "blockchain domains", "tokenized domain", "nom de domaine IA", "achat domaine .aig", "Web3 domains", "future of domains", "tech domains"]
+relatedArticles:
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/premium-web3-tlds/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
 ---
 
 Le paysage numérique est en constante évolution, et choisir la bonne extension de domaine ([TLD](/fr/glossary/tld/)) est crucial pour définir l'identité de votre marque. Alors que nous naviguons dans une ère dominée par l'intelligence artificielle et le [Web3](/fr/glossary/web3/) en 2025, de nouvelles extensions captent l'attention des investisseurs et des développeurs. L'une d'entre elles est le **.aig**.

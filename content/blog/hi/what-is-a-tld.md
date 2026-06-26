@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "TLD डोमेन के अंतिम डॉट के बाद का हिस्सा है, जैसे .com या .io। जानें TLD क्या है, इसके प्रकार (gTLD, ccTLD, sponsored, new gTLD, IDN), और सही TLD कैसे चुनें।"
 keywords: ['tld', 'tld का अर्थ', 'tld क्या है', 'टॉप लेवल डोमेन क्या है', 'top-level domain', 'tld परिभाषा', 'tld definition', 'que es un tld', "qu'est-ce qu'un tld", 'tld के प्रकार', 'gtld vs cctld', 'tld उदाहरण', 'डोमेन एक्सटेंशन क्या है', 'domain extension', 'gTLD', 'ccTLD', 'sponsored TLD', 'new gTLD', 'IDN TLD', 'ICANN', 'IANA', 'domain registry', 'domain registrar', 'TLD कैसे चुनें', 'लोकप्रिय TLD', 'namefi']
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/top-tlds-to-secure-for-your-saas/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 ## TLD क्या है?

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "La UDRP explicada para propietarios e inversores de dominios: los tres elementos que debe probar el reclamante, el proceso y los plazos, los resultados posibles, UDRP vs URS vs tribunales, y cómo responder."
 keywords: ['udrp', 'qué es la udrp', 'proceso udrp', 'política udrp', 'reclamación udrp', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'disputa de dominio', 'disputa por nombre de dominio', 'ciberocupación', 'secuestro inverso de nombre de dominio', 'registro de mala fe', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'disputa de dominio por marca registrada', 'inversor de dominios legal', 'responder a una reclamación udrp']
+relatedArticles:
+  - /es/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/domain-flipping-and-the-law/
+  - /es/blog/domain-flipping/
+  - /es/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /es/topics/domain-basics/
+  - /es/topics/domain-security/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Si posees nombres de dominio durante suficiente tiempo, tarde o temprano oirás hablar de la [UDRP](/es/glossary/udrp/) — por lo general porque alguien amenaza con utilizarla en tu contra, o porque te preguntas si algún nombre de tu cartera es seguro de mantener. Para los inversores en dominios, entender la UDRP no es opcional. Es el mecanismo más habitual por el que un dominio que registraste puede serte arrebatado sin necesidad de un tribunal.

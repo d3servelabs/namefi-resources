@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Eine Perspektive aus Sicht von Registrar/DNS-Betrieb auf den AWS-Vorfall vom 20. Oktober 2025, wie DNS tatsächlich funktioniert, warum sich dieser Fehler so weit verbreitete und was resiliente Internet-Teams dagegen tun können."
 keywords: ['DNS', 'AWS-Ausfall', 'Control Plane', 'DynamoDB', 'us-east-1', 'DNS-Caching', 'Cloud-Resilienz', 'Multi-Signer DNS', 'Incident Response']
+relatedArticles:
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-dyn-dns-mirai-attack/
+  - /de/blog/the-myetherwallet-bgp-dns-attack/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 [![](../../assets/dns-is-the-control-plane.png)](../../assets/dns-is-the-control-plane.png)

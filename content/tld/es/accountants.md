@@ -24,6 +24,24 @@ keywords:
   - Namefi
   - registro de dominios web3
   - identidad digital corporativa
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/top-tlds-to-secure-for-your-law-firm/
+  - /es/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 En el competitivo mundo de las finanzas y la contabilidad, la confianza y la claridad lo son todo. A medida que el espacio digital se satura, encontrar un nombre de dominio `.com` corto y relevante se ha vuelto cada vez más difícil. Aquí es donde entran en juego los nuevos dominios genéricos de nivel superior (new gTLDs), ofreciendo especificidad y profesionalismo. Uno de los más destacados para el sector financiero es el TLD **.accountants**.

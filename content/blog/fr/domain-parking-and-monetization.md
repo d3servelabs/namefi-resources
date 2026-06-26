@@ -12,6 +12,24 @@ format: explainer
 description: "Ce qu''est le parking de domaines, comment les noms garés génèrent des revenus publicitaires et d''affiliation, pourquoi le parking moderne est un canal de vente, et quand cela en vaut vraiment la peine."
 ogImage: ../../assets/domain-parking-and-monetization-og.jpg
 keywords: ['parking de domaine', 'garer un domaine', 'monétiser un domaine garé', 'revenus de parking de domaine', 'publicités sur domaine garé', 'domaines pay per click', 'trafic en saisie directe', 'monétisation de domaine', 'page domaine à vendre', 'page de parking', 'investissement en noms de domaine', 'revente de domaines', 'gagner de l''argent avec des domaines inutilisés', 'affiliation domaine garé', 'le parking de domaine en vaut-il la peine']
+relatedArticles:
+  - /fr/blog/marketing-your-domains-for-sale/
+  - /fr/blog/domain-for-sale-landing-pages/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/inbound-vs-outbound-domain-sales/
+  - /fr/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Un domaine que vous détenez en vue de le revendre est, par défaut, un actif mort. Il stagne dans votre compte, vous coûte des frais de renouvellement chaque année, et ne fait rien pendant que vous attendez le bon acheteur. Le parking, c'est la pratique qui consiste à faire travailler ce nom inactif, ne serait-ce qu'un peu — soit en affichant des publicités à quiconque y atterrit, soit, et c'est plus utile, en signalant au monde entier que le nom est à vendre.

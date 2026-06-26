@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '探索 .world 域名的无限潜力！本文深入分析 .world 顶级域名的优势、适用场景及成功案例。了解为何全球化企业与 Web3 创新者纷纷选择 .world，并立即在 Namefi 开启您的域名注册之旅。'
 keywords: ['.world domains', '.world TLD', '.world top-level domain', 'what is .world', 'why choose .world', 'what is the .world domain', 'why choose the .world domain', 'buy .world domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'global branding', 'new gTLD', 'Web3 domains', 'Namefi']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .world 域名？**

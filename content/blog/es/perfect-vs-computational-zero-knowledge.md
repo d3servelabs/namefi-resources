@@ -8,6 +8,24 @@ draft: false
 description: 'Las pruebas de conocimiento cero vienen en tres variantes: perfectas, estadísticas y computacionales, y la diferencia importa más de lo que admiten la mayoría de las discusiones de ingeniería. Esta publicación explica cada una en un lenguaje sencillo, por qué casi todos los sistemas ZK de producción en 2026 son computacionales, y lo que esto aporta y cuesta.'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg
 keywords: ['prueba de conocimiento cero', 'conocimiento cero perfecto', 'conocimiento cero computacional', 'zk snark', 'zk stark', 'criptografía', 'simulador', 'esquema de compromiso', 'namefi']
+relatedArticles:
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/working-with-domain-brokers/
+  - /es/blog/how-to-win-domain-auctions/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/onchain-domain-custody-and-recovery/
+relatedTopics:
+  - /es/topics/web3-foundations/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
+  - /es/glossary/registry/
 ---
 
 Cuando las personas en el mundo cripto hablan de "pruebas de conocimiento cero" (zero-knowledge proofs), casi siempre se refieren a una cosa específica: un SNARK o STARK que prueba que algún cálculo se realizó correctamente, sin revelar los datos de entrada (inputs). Ese modelo mental está bien para la mayoría de las conversaciones de ingeniería. Oculta una distinción que se vuelve importante en el momento en que intentas razonar sobre *lo que la seguridad realmente garantiza*.

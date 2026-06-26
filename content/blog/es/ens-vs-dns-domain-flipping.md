@@ -12,6 +12,24 @@ format: comparison
 description: "En qué se diferencia revender nombres .eth de ENS frente a revender dominios DNS tradicionales: propiedad, liquidez, renovación, gas y para qué sirve cada uno."
 ogImage: ../../assets/ens-vs-dns-domain-flipping-og.jpg
 keywords: ['ENS vs DNS', 'revender dominios ENS', 'flipping de dominios ENS', 'inversión en dominios .eth', 'revender nombres .eth', 'ENS vs dominios tradicionales', 'flipping de dominios on-chain', 'liquidez de dominios NFT', 'tarifas de renovación de ENS', 'dominios ERC-721', 'flipping de dominios web3', 'vender ENS en OpenSea', 'periodo de gracia de expiración de ENS', 'flipping de dominios tokenizados', 'tarifas de gas de ENS']
+relatedArticles:
+  - /es/blog/onchain-domain-flipping/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/onchain-domain-marketplaces-compared/
+  - /es/blog/selling-domains-as-nfts/
+  - /es/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/tokenize-your-com/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Si revendes dominios, probablemente has observado el mercado de [ENS](/es/glossary/ens/) desde la barrera y te has preguntado si es el mismo juego con una nueva capa de pintura. No lo es. Revender un nombre `.eth` y revender un `.com` tradicional riman —compra barato un buen string, véndeselo a quien lo necesite más—, pero casi todo lo que hay debajo es distinto: quién puede ver tu propiedad, cómo se liquida una venta, qué pagas por conservar el nombre y qué significa siquiera "poseerlo". Este artículo recorre las diferencias reales para que decidas dónde pertenecen de verdad tu tiempo y tu capital.

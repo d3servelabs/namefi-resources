@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'كيف أطلق إنستجرام في 2010 على نطاق instagr.am — مستعيرًا الامتداد الأرميني .am ليكمل اسمه — ثم دفع 100,000 دولار للانتقال إلى Instagram.com، وما تعلمه المؤسسون من تجربة الذكاء الإبداعي في اختيار الامتدادات الجغرافية.'
 keywords: ['instagr.am', 'instagram.com', 'اسم نطاق إنستجرام', 'domain hack', 'نطاق ccTLD', '.am نطاق أرمينيا', 'kevin systrom', 'mike krieger', 'ترقية النطاق', 'تسمية الشركات الناشئة', 'تسمية العلامات التجارية', 'نطاق مميز', 'استراتيجية النطاقات', 'تاريخ إنستجرام']
+relatedArticles:
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-discordapp-com-to-discord-com/
+  - /ar/blog/from-mona-co-to-crypto-com/
+  - /ar/blog/from-slackhq-com-to-slack-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
 ---
 
 قبل أن يصبح إنستجرام منصة يستخدمها مليار شخص، وفعلًا يُستخدم للتعبير عن التصوير، وأحد أغلى التطبيقات اللي اشترتها فيسبوك في تاريخها — كان اسمه في حد ذاته إنجازًا هندسيًا ذكيًا: **instagr.am**.

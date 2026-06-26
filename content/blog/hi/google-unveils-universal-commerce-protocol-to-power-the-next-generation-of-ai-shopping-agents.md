@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "UCP एजेंट-नेटिव कॉमर्स को संचालित करने की Google की पहल है, जो AI सहायकों को पूरे ओपन वेब पर खरीदारी और चेकआउट करने की सुविधा देती है।"
 keywords: ["Universal Commerce Protocol", "UCP", "Google UCP", "AI shopping agents", "AI-powered commerce", "agentic commerce", "AI ecommerce protocol", "conversational commerce", "AI checkout", "future of ecommerce", "agent-based shopping", "open commerce standards", "Google AI", "Gemini AI", "Agent Engine Optimization"]
+relatedArticles:
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /hi/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /hi/blog/from-mona-co-to-crypto-com/
+  - /hi/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /hi/topics/web3-foundations/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
+  - /hi/glossary/ai-agent/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 # Google ने AI शॉपिंग एजेंट्स की अगली पीढ़ी को सशक्त बनाने के लिए ‘Universal Commerce Protocol’ का अनावरण किया

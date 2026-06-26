@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Comment Elon Musk a fondé X.com en 1999, l''a perdu quand PayPal a repris son ancien nom, l''a racheté en 2017 par attachement sentimental, et a finalement migré un réseau social à 44 milliards de dollars dessus — faisant rediriger Twitter.com vers X.com.'
 keywords: ['twitter.com', 'x.com', 'twitter rebrand x', 'elon musk x.com', 'historique x.com', 'domaine paypal x.com', 'changement de nom twitter vers x', 'redirection de domaine', 'mise à niveau de domaine', 'domaine à une lettre', 'everything app', 'naming de marque', 'domaine premium']
+relatedArticles:
+  - /fr/blog/from-mona-co-to-crypto-com/
+  - /fr/blog/from-ubercab-com-to-uber-com/
+  - /fr/blog/from-ctrip-com-to-trip-com/
+  - /fr/blog/from-snapchat-com-to-snap-com/
+  - /fr/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 La plupart des récits de migration de domaine suivent une ligne droite : une entreprise démarre avec un nom descriptif, grandit, puis rachète l'exact-match propre. **Twitter.com vers X.com**, c'est bien plus étrange que ça. C'est un aller-retour. Le domaine de destination — **X.com** — était le *premier* domaine de l'histoire, enregistré par Elon Musk en 1999, perdu au profit de PayPal un an plus tard, racheté deux décennies après pour de pures raisons nostalgiques, et finalement greffé sur un réseau social mondial en 2023.

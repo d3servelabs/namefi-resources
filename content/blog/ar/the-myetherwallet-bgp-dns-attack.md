@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في 24 أبريل 2018، اخترق المهاجمون التوجيه على الإنترنت الخاص بـ Amazon Route 53، ودسّوا إجابات DNS مسمومة لـ myetherwallet.com، وأداروا موقعًا مزيفًا بشهادة موقّعة ذاتيًا — فسرقوا ما يقارب 150 ألف دولار من الإيثر. غوص عميق في أسباب اعتماد DNS على طبقة توجيه تثق بكل شيء افتراضيًا.'
 keywords: ['myetherwallet', 'bgp hijack', 'dns hijacking', 'amazon route 53', 'route 53 hijack', 'dns security', 'bgp routing security', 'ethereum phishing', 'self-signed certificate', 'enet as10297', 'rpki roa', 'crypto wallet phishing', 'domain security']
+relatedArticles:
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-curve-finance-dns-hijack/
+  - /ar/blog/the-bitcoin-org-dns-hijack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 لما بتكتب اسم موقع في المتصفح، بتكون بتثق في منظومتين غير مرئيتين إنهم يكونوا صادقين معاك.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Tout savoir sur le domaine de premier niveau .abarth. Découvrez l''histoire, les avantages et l''utilisation de cette extension exclusive liée à l''automobile et au branding.'
 keywords: ['.abarth', 'domaines .abarth', 'TLD .abarth', 'qu''est-ce que .abarth', 'pourquoi choisir .abarth', 'investissement domaine', 'domaines tokenisés', 'blockchain', 'Web3 domains', 'extension abarth', 'domaine automobile', 'nouveaux gTLD', 'nom de domaine marque', 'enregistrement domaine', 'Namefi']
+relatedArticles:
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
+  - /fr/glossary/registry/
 ---
 
 Dans le monde en constante expansion d'Internet, les noms de domaine ont évolué bien au-delà des classiques `.com` ou `.fr`. Aujourd'hui, les extensions de domaine ([TLD](/fr/glossary/tld/)) peuvent représenter des secteurs spécifiques, des technologies ou même des marques emblématiques. L'une de ces extensions fascinantes est le **.abarth**.

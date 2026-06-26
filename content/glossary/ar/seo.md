@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو تحسين محركات البحث (SEO) وكيف يؤثر ترميز النطاقات على تحسين محركات البحث؟
 keywords: ["SEO","تحسين محركات البحث","قيمة النطاق","تصنيفات البحث","التسويق الرقمي"]
+relatedArticles:
+  - /ar/blog/marketplace-seo-for-domain-listings/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/brandable-vs-keyword-domains/
+  - /ar/blog/how-to-value-a-domain-name/
+  - /ar/blog/marketing-your-domains-for-sale/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/premium-domain/
+  - /ar/glossary/tld-seo/
+  - /ar/glossary/tld/
+  - /ar/glossary/serp/
+  - /ar/glossary/exact-match-domain/
 ---
 
 

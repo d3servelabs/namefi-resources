@@ -8,6 +8,24 @@ draft: false
 description: "संस्थापकों के लिए एक व्यावहारिक, शोध-आधारित गाइड जो किसी प्रोजेक्ट, उत्पाद या कंपनी का नाम रखने में मदद करती है: कानूनी रूप से मंजूरी लें, बोलने में आसान बनाएं, मजबूत उम्मीदवार तैयार करें, संस्कृतियों में जाँचें, और प्रतिबद्ध होने से पहले ज़रूरी खोजें चलाएं।"
 ogImage: ../../assets/how-to-name-your-project-og.jpg
 keywords: ['अपने स्टार्टअप का नाम कैसे रखें', 'अपने प्रोजेक्ट का नाम कैसे रखें', 'कंपनी का नाम कैसे रखें', 'उत्पाद का नाम देना', 'ब्रांड नाम के विचार', 'व्यावसायिक नाम चुनना', 'डोमेन नाम चयन', 'ट्रेडमार्क खोज', 'ब्रांडेबल डोमेन', 'स्टार्टअप ब्रांडिंग', 'उच्चारण योग्य ब्रांड नाम', 'प्रोसेसिंग फ्लुएंसी', 'ब्रांड नामकरण गाइड', 'अपने प्रोजेक्ट के लिए नाम चुनें', 'डोमेन उपलब्धता जाँचें']
+relatedArticles:
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/from-del-icio-us-to-delicious-com/
+  - /hi/blog/what-makes-a-domain-valuable/
+  - /hi/blog/how-to-value-a-domain-name/
+  - /hi/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /hi/topics/domain-basics/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
 ---
 
 नामकरण वह पहला उत्पाद-संबंधी निर्णय है जिसे अधिकांश संस्थापक गलत करते हैं।

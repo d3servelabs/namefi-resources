@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Facebook, Inc. im Oktober 2021 zu Meta wurde, warum Meta.com bereits ein Zuckerberg-verbundenes Asset war, das von einer wissenschaftlichen Suchmaschine weiterleitete, und wie ein separater 60-Millionen-Dollar-Deal den Namen „Meta" von einer Bank in Sioux Falls kaufte – während die Facebook-App Facebook.com behielt.'
 keywords: ['facebook.com', 'meta.com', 'meta rebrand', 'facebook meta namensänderung', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', 'metaverse pivot', 'domain-akquisition', 'unternehmens-rebrand', 'premium-domain', 'domain-strategie', 'muttergesellschaft umbenennung']
+relatedArticles:
+  - /de/blog/from-snapchat-com-to-snap-com/
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-bufferapp-com-to-buffer-com/
+  - /de/blog/from-ctrip-com-to-trip-com/
+  - /de/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Die meisten Rebrands in dieser Serie beginnen damit, dass ein Unternehmen aus seinem Namen herauswächst. Fall 7 ist das Gegenteil: Ein Unternehmen, das so groß war, dass es bereits zu einem Verb, einem Kopfzerbrechen für Regulierungsbehörden und einem Alltagsbegriff geworden war – und dennoch entschied, dass es einen *neuen* Namen brauchte, einen, der groß genug war, um eine Zukunft zu tragen, die es noch nicht aufgebaut hatte.

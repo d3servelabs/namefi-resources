@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .akdn، استخداماته، وأهميته في عالم النطاقات الرقمية. تعرف على كيفية تعزيز حضورك الرقمي مع خدمات Namefi المتطورة."
 keywords: ['نطاق .akdn', 'نطاقات المستوى الأعلى', 'تسجيل نطاق .akdn', 'شراء نطاق', 'استثمار النطاقات', 'ما هو نطاق .akdn', 'لماذا تختار .akdn', 'نطاقات البلوك تشين', 'Namefi', 'نطاقات الويب 3', 'مجال .akdn', '.akdn domains', 'brand tld', 'tokenized domains', 'digital identity']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 في عالم الإنترنت المتوسع باستمرار، يعد اختيار "نطاق المستوى الأعلى" ([TLD](/ar/glossary/tld/)) المناسب خطوة حاسمة لتحديد هويتك الرقمية. بينما يعرف الجميع النطاقات التقليدية مثل `.com` أو `.org`، تبرز نطاقات متخصصة وفريدة من نوعها تقدم قيمة استثنائية من حيث العلامة التجارية والمصداقية، ومن بينها نطاق **.akdn**. في هذا المقال، سنستكشف ماهية هذا النطاق، ولماذا يحمل وزناً كبيراً في العالم الرقمي.

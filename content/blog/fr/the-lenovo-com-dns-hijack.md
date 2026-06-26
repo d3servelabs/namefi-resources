@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Le 25 février 2015, Lizard Squad a détourné Lenovo.com en compromettant le bureau d'enregistrement Webnic, redirigeant le domaine du plus grand fabricant de PC au monde vers un diaporama de webcam et interceptant ses e-mails — quelques jours après le scandale Superfish. Une analyse approfondie de Domain Mayday sur les raisons pour lesquelles le bureau d'enregistrement est votre véritable périmètre de sécurité."
 keywords: ['détournement dns lenovo.com', 'lizard squad', 'webnic registrar', 'web commerce communications', 'dns hijacking', 'superfish', 'sécurité bureau enregistrement domaine', 'compromission registrar', 'epp auth code', 'interception email', 'détournement google vietnam', 'sécurité domaine', 'registrar lock']
+relatedArticles:
+  - /fr/blog/the-malaysia-airlines-dns-hijack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-panix-com-domain-hijack/
+  - /fr/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/tld/
 ---
 
 Le matin du 25 février 2015, le lien le plus cliqué sur Internet pour le plus grand fabricant de PC au monde pointait vers un diaporama d'adolescents ennuyés fixant leurs webcams, sur fond de musique de *High School Musical*. Personne n'avait piraté un seul serveur Lenovo. Personne n'avait volé un seul mot de passe Lenovo. Les attaquants n'ont jamais mis les pieds dans le bâtiment, sur le réseau ni sur le site Web lui-même.

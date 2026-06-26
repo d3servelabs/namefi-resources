@@ -18,6 +18,24 @@ faqs:
     answer: 'It can be. The word "style" reads clearly and signals fashion, beauty, and design intent, and short on-brand names are far easier to find than in .com. The trade-off is lower public familiarity than legacy extensions.'
   - question: 'Does .style support WHOIS privacy and DNSSEC?'
     answer: 'Yes. As a standard Identity Digital generic TLD, .style supports DNSSEC, and most registrars including Namefi offer WHOIS privacy so personal contact details are not published publicly.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.style** domain is an open [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the world of fashion, beauty, design, and lifestyle. Where a legacy suffix like .com says nothing about what a site does, **.style** puts the theme right in the address — a clear signal that the brand behind it cares about aesthetics, trends, and self-expression.

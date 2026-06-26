@@ -11,6 +11,24 @@ seriesOrder: 2
 format: case-study
 description: A registrar/DNS‑operations perspective on the October 20, 2025 AWS incident, how DNS actually works, why this failure propagated so widely, and what resilient internet teams can do about it.
 keywords: ['dns', 'aws outage', 'control plane', 'dynamodb', 'us-east-1', 'dns caching', 'cloud resilience', 'multi-signer dns', 'incident response']
+relatedArticles:
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-dyn-dns-mirai-attack/
+  - /en/blog/the-myetherwallet-bgp-dns-attack/
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 [![](../../assets/dns-is-the-control-plane.png)](../../assets/dns-is-the-control-plane.png)

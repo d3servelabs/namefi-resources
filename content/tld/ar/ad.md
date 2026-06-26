@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج معرفته عن نطاق .ad، من استخدامه للشركات في أندورا إلى تميزه لوكالات الإعلان. تعرف على كيفية تسجيله عبر Namefi."
 keywords: [".ad domains", "نطاق .ad", "TLD", "top-level domain", "what is .ad", "why choose .ad", "what is the .ad domain", "why choose the .ad domain", "buy .ad domain", "Andorra domain", "advertising domains", "domain investing", "blockchain domains", "tokenized domain", "شراء دومين ad", "نطاقات الإعلانات"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 في عالم الإنترنت المتسارع، يعد اختيار اسم النطاق (Domain Name) الصحيح خطوة حاسمة لنجاح أي مشروع رقمي. بينما تزدحم النطاقات التقليدية مثل .com، تبرز نطاقات فريدة ومميزة توفر فرصاً ذهبية للإبداع والتميز. أحد هذه النطاقات هو **.ad**.

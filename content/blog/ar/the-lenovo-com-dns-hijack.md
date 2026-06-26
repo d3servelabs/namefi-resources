@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في 25 فبراير 2015، اختطف Lizard Squad نطاق Lenovo.com عن طريق اختراق شركة التسجيل Webnic، وحوّل موقع أكبر شركة لصناعة أجهزة الكمبيوتر في العالم لعرض صور ويب كاميرا واعترض بريدها الإلكتروني — وده حصل بعد فضيحة Superfish بأيام قليلة. دراسة معمقة في Domain Mayday تكشف ليه شركة التسجيل هي الخط الدفاعي الحقيقي.'
 keywords: ['اختطاف DNS لـ lenovo.com', 'lizard squad', 'webnic registrar', 'web commerce communications', 'اختطاف DNS', 'superfish', 'أمان مُسجِّل النطاقات', 'اختراق المُسجِّل', 'epp auth code', 'اعتراض البريد الإلكتروني', 'اختطاف google vietnam', 'أمان النطاقات', 'registrar lock']
+relatedArticles:
+  - /ar/blog/the-malaysia-airlines-dns-hijack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-panix-com-domain-hijack/
+  - /ar/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/tld/
 ---
 
 في صباح يوم 25 فبراير 2015، الرابط الأكثر نقرًا على الإنترنت لأكبر شركة لصناعة أجهزة الكمبيوتر في العالم كان بيوصّل المستخدمين لعرض صور شباب زهقانين بيبصوا في ويب كاميراتهم، على إيقاع أغنية من فيلم *High School Musical*. محدش اخترق أي سيرفر من سيرفرات Lenovo. محدش سرق أي كلمة مرور من Lenovo. المهاجمون ما لمسوش المبنى، ولا الشبكة، ولا الموقع نفسه.

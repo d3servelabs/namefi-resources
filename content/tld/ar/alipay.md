@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .alipay، واستخداماته في التكنولوجيا المالية، ولماذا تعتبر نطاقات العلامات التجارية (Brand TLDs) مستقبل الاستثمار الرقمي."
 keywords: [".alipay domains", "TLD", "top-level domain", "what is .alipay", "why choose .alipay", "what is the .alipay domain", "why choose the .alipay domain", "نطاق .alipay", "شراء نطاق", "استثمار النطاقات", "domain investing", "blockchain domains", "fintech domains", "tokenized domain", "Alipay TLD"]
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
+  - /ar/glossary/registry/
 ---
 
 ## **ما هو نطاق .alipay؟**

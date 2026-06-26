@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Cuáles son los diferentes tipos de subastas utilizadas para la venta de dominios?
 keywords: ["subasta","subasta holandesa","subasta inglesa","subasta dinámica","descubrimiento de precios","venta de dominios"]
+relatedArticles:
+  - /es/blog/how-to-win-domain-auctions/
+  - /es/blog/domain-terminology-guide/
+  - /es/blog/how-to-find-domains-to-flip/
+  - /es/blog/ens-vs-dns-domain-flipping/
+  - /es/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/reserve-price/
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/registry/
+  - /es/glossary/icann/
 ---
 
 

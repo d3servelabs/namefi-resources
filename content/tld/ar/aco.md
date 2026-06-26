@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .aco، استخداماته، ومزاياه الفريدة. تعلم كيف يمكنك حجز وإدارة نطاقك بتقنية البلوك تشين عبر Namefi.'
 keywords: ['.aco domain', 'what is .aco', 'why choose .aco', 'register .aco domain', 'buy .aco domain', 'what is the .aco domain', 'why choose the .aco domain', 'blockchain domains', 'tokenized domain', 'domain investing', 'Web3 domains', 'نطاق .aco', 'شراء دومين', 'استثمار النطاقات', 'Namefi']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 في عالم الإنترنت المتسارع، يعد اختيار اسم النطاق (Domain Name) الصحيح هو الخطوة الأولى والأكثر أهمية لبناء هوية رقمية قوية. مع تزايد عدد النطاقات التقليدية المحجوزة، يتجه المستثمرون والشركات نحو نطاقات المستوى الأعلى (TLDs) الجديدة والفريدة. اليوم، نسلط الضوء على نطاق **.aco**، وهو خيار متميز قد يحمل فرصاً واعدة للعلامات التجارية والمستثمرين في مجال النطاقات المرمزة (Tokenized Domains).

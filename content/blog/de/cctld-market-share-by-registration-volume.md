@@ -8,6 +8,24 @@ draft: false
 description: 'Ein Blick darauf, welche länderspezifischen Top-Level-Domains den weltweit größten Anteil an Registrierungen verzeichnen, warum die Spitzenreiter von den Erwartungen der meisten abweichen und was die Volumenzahlen darüber aussagen, wie das Internet tatsächlich genutzt wird.'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['ccTLD-Marktanteil', 'Länderdomains', '.cn', '.de', '.uk', '.tk', '.io', 'Domain-Statistiken', 'Registry-Daten', 'namefi']
+relatedArticles:
+  - /de/blog/how-tld-affects-domain-value/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/best-tlds-by-industry/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Wenn die meisten Menschen an das Internet denken, denken sie an `.com`. Und in nackten Zahlen ausgedrückt ist `.com` mit rund 160 Millionen verwalteten Namen immer noch die größte [Top-Level-Domain](/de/glossary/tld/) der Welt. Aber `.com` ist eine [gTLD](/de/glossary/gtld/) – eine *generische* Top-Level-Domain. Richtet man den Blick jedoch auf **länderspezifische TLDs (ccTLDs)** – die aus zwei Buchstaben bestehenden Endungen, die Nationen und Territorien gemäß [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) zugewiesen werden –, wird das Bild wesentlich interessanter und weitaus weniger vorhersehbar.

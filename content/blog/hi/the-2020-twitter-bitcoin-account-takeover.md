@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '15 जुलाई 2020 को, हमलावरों ने फोन के जरिए Twitter में घुसपैठ की, Obama, Biden, Musk, Gates, Apple और Uber के वेरिफाइड अकाउंट्स को हाईजैक किया, और एक Bitcoin दोगुना करने का घोटाला चलाया — जिससे लगभग $118,000 की कमाई हुई। एक ऑनलाइन पहचान के नियंत्रण की चोरी पर गहरी पड़ताल, और यह किसी नाम के स्वामित्व के बारे में क्या सिखाता है।'
 keywords: ['2020 twitter hack', 'twitter bitcoin scam', 'graham ivan clark', 'vishing', 'phone spear phishing', 'social engineering', 'account takeover', 'online identity security', 'verified account hijacking', 'twitter admin tool', 'agent tool', 'insider risk', 'domain security', 'ny dfs twitter report']
+relatedArticles:
+  - /hi/blog/the-bitcoin-org-dns-hijack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /hi/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /hi/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 एक बुधवार की दोपहर कुछ घंटों के लिए, इंटरनेट पर सबसे भरोसेमंद आवाजें सभी एक ही बात कहने लगीं: मुझे Bitcoin भेजो, और मैं तुम्हें दोगुना लौटाऊंगा।

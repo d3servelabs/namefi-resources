@@ -8,6 +8,24 @@ draft: false
 description: 'वास्तविक दुनिया में हमलावर कैसे डोमेन पर कब्ज़ा करते हैं, इसके 5 तरीकों—सोशल इंजीनियरिंग, रजिस्ट्रार अकाउंट कॉम्प्रोमाइज, DNS प्रोवाइडर टेकओवर, NS हाईजैक, और एक्सपायर्ड-डोमेन रिक्लेमेशन—और उन्हें रोकने वाले विशिष्ट सुरक्षा उपायों का एक व्यावहारिक विवरण।'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
 keywords: ['domain hijacking', 'domain security', 'registrar lock', 'transfer lock', 'dnssec', 'two factor authentication', 'social engineering', 'dangling dns', 'namefi']
+relatedArticles:
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-badgerdao-frontend-attack/
+  - /hi/blog/the-lenovo-com-dns-hijack/
+  - /hi/blog/the-perl-com-domain-theft/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/registry/
 ---
 
 "डोमेन हाईजैकिंग" (Domain hijacking) एक ऐसा वाक्यांश है जो सुनने में काफी नाटकीय लगता है, लेकिन यह कैसे होता है, इसके आधार पर इसके कई अलग-अलग मतलब हो सकते हैं। [फ़िशिंग](/hi/glossary/phishing/) ईमेल के ज़रिए [रजिस्ट्रार](/hi/glossary/registrar/) अकाउंट पर कब्ज़ा करना एक हाईजैक है। [DNS](/hi/glossary/dns/) प्रोवाइडर पर चुपके से [नेमसर्वर](/hi/glossary/nameserver/) रिकॉर्ड बदल देना भी हाईजैक है। कोई एक्सपायर हो चुका डोमेन जिसे कोई और कब्ज़ा कर ले और री-पॉइंट कर दे, तो एक तरह से यह भी हाईजैक ही है।

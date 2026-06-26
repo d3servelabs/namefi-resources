@@ -13,6 +13,24 @@ sources:
   - https://www.icann.org/en/beginners-guide-to-new-generic-top-level-domains
   - https://www.rfc-editor.org/rfc/rfc1591
   - https://developers.google.com/search/docs/crawling-indexing/url-structure#top-level-domains
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/how-tld-affects-domain-value/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 **TLD** (*نطاق المستوى الأعلى*)، أو **Top-Level Domain** بالإنجليزية، هو التسمية الأقصى يمينًا في اسم النطاق المؤهَّل بالكامل — الجزء اللي بيجي بعد آخر نقطة. في `www.example.com`، الـ TLD هو `.com`؛ وفي `bbc.co.uk`، هو `.uk`. TLDs بتقع في قمة هرم [DNS](/ar/glossary/dns/) وهي الأساس اللي كل اسم نطاق آخر مبني عليه.

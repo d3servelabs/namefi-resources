@@ -12,6 +12,24 @@ format: guide
 description: "So baust du eine Verkaufs-Landingpage für deine Domain, die konvertiert: ein klarer Preis oder Angebotsweg, echte Vertrauenssignale und ein reibungsloser Weg zum Kauf oder Angebot."
 ogImage: ../../assets/domain-for-sale-landing-pages-og.jpg
 keywords: ['Domain-Verkaufs-Landingpage', 'Domain-Verkaufsseite', 'Domain verkaufen', 'Domain-Landingpage', 'Verkaufs-Lander', 'Domain-Verkaufsseite', 'Buy-now-Domain', 'Angebot-abgeben-Domain', 'Domain-Parking-Seite', 'Domain-Preis', 'Domain-Landingpage, die konvertiert', 'wie man eine Domain verkauft', 'Domain-Treuhand', 'Domain-Konversionsrate', 'Domain-Vertrauenssignale']
+relatedArticles:
+  - /de/blog/marketing-your-domains-for-sale/
+  - /de/blog/domain-parking-and-monetization/
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/working-with-domain-brokers/
+  - /de/blog/marketplace-seo-for-domain-listings/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
 ---
 
 Ein Käufer, der deinen Namen will, kommt selten über dein Marketing. Er tippt den Namen in den Browser, um zu sehen, ob er vergeben ist, die Domain löst auf, und eine Seite lädt. Was auch immer diese Seite sagt, ist dein gesamter Pitch. Wenn es eine Standardseite des [Registrars](/de/glossary/registrar/) ist, eine mit Werbung vollgestopfte Parking-Seite oder schlicht gar nichts, hast du gerade den einen Besucher verloren, der bereits überzeugt war, dass der Name eine Rolle spielt. Die Verkaufs-Landingpage ist das Schaufenster für den wertvollsten Traffic, den du je bekommen wirst: Menschen, die dich gefunden haben, indem sie genau das eingetippt haben, was du verkaufst.

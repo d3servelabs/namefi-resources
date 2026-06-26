@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .tech 顶级域名及其在科技界的崛起。探索为何初创企业和开发者选择 .tech 来定义品牌，并了解如何在 Namefi 轻松注册和管理您的 Web3 就绪域名。'
 keywords: ['.tech domains', '.tech TLD', 'top-level domain', 'what is .tech', 'why choose .tech', 'what is the .tech domain', 'why choose the .tech domain', '科技域名', '域名投资', '区块链域名', 'Web3 domains', 'tokenized domain', '初创公司域名', '域名注册', '新通用顶级域名']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+  - /zh/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .tech？**

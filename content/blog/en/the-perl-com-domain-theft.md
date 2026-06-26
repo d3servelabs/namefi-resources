@@ -11,6 +11,24 @@ seriesOrder: 19
 format: case-study
 description: 'In late January 2021, perl.com — a decades-old home of the Perl programming community — was stolen via a registrar-level account compromise, transferred through China, pointed at a malware-linked IP, and listed for $190,000. Here is how it happened, how it was recovered, and what it teaches about registrar account security.'
 keywords: ['perl.com', 'perl.com domain theft', 'domain hijacking', 'domain theft', 'registrar account compromise', 'social engineering', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'DNS hijack', 'domain security', 'account takeover', 'BizCN']
+relatedArticles:
+  - /en/blog/the-panix-com-domain-hijack/
+  - /en/blog/the-lenovo-com-dns-hijack/
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/tld/
 ---
 
 Some domains are infrastructure that happens to look like a name. **perl.com** is one of them. It is not a marketing asset or a brand someone built last year — it is a piece of internet furniture that the Perl programming community has lived around since the early days of the web, the canonical front door to documentation, articles, and the language's public face.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما يخص نطاق المستوى الأعلى .accenture. دليل شامل حول استخداماته، فوائده للعلامة التجارية، وعلاقته بالاستثمار في النطاقات وتقنيات Web3 عبر Namefi.'
 keywords: ['.accenture domains', 'نطاق .accenture', 'top-level domain', 'TLD', 'what is .accenture', 'ما هو نطاق .accenture', 'why choose .accenture', 'لماذا تختار نطاق .accenture', 'what is the .accenture domain', 'why choose the .accenture domain', 'accenture domain investing', 'blockchain domains', 'tokenized domain', 'نطاقات الويب 3', 'شراء نطاق']
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .accenture؟**

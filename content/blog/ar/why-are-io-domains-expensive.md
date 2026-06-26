@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "ليه دومينات .io غالية؟ شرح واضح لتسعير الجملة من السجل، والطلب الشديد من الشركات الناشئة، وندرة الأسماء القصيرة، وتكاليف التجديد، وسؤال السيادة الجديد على جزر شاغوس."
 keywords: ['ليه دومينات io غالية', 'سبب غلاء دومينات io', 'دومين io غالي', 'سعر دومين io', 'تكلفة دومين io', 'تكلفة تجديد دومين io', 'هل دومين io يستاهل', 'io مقابل com', 'io مقابل ai دومين', 'تكلفة دومين io', 'ليه دومينات io أغلى', 'شرح تسعير دومين io', 'هل أشتري دومين io', 'io ccTLD', 'جزر شاغوس دومين io', 'شراء دومين io']
+relatedArticles:
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/how-tld-affects-domain-value/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/domain-flipping/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 لو بحثت مؤخرًا عن سعر دومين `.io` وصُدمت، فأنت مش لوحدك. مقارنةً بـ `.com` العادي أو بعض الامتدادات الجديدة الأرخص، دايمًا بتلاقي `.io` في الفئة الفاخرة — سواء وقت التسجيل أو، والأوجع من كده، وقت التجديد كل سنة.

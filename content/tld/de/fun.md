@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Entdecken Sie die Vorteile der .fun Domain. Ideal für Unterhaltung, Spiele und kreative Marken. Jetzt bei Namefi registrieren und Online-Präsenz stärken!'
 keywords: ['.fun domains', '.fun TLD', '.fun top-level domain', 'what is .fun', 'why choose .fun', 'what is the .fun domain', 'why choose the .fun domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'gaming domains', 'entertainment TLD', 'kreative webseiten', 'web3 domains', 'Namefi registrar']
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /de/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .fun?**

@@ -24,6 +24,24 @@ keywords:
   - Web3 domains
   - digital identity
   - Namefi domains
+relatedArticles:
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/web3/
 ---
 
 डिजिटल दुनिया में एक मजबूत पहचान बनाना किसी भी व्यवसाय के लिए महत्वपूर्ण है। जैसे-जैसे इंटरनेट का विस्तार हो रहा है, नए टॉप-लेवल डोमेन (TLDs) सामने आ रहे हैं जो विशिष्ट उद्योगों और ब्रांडों को परिभाषित करते हैं। इनमें से एक विशेष और प्रतिष्ठित डोमेन एक्सटेंशन **.alfaromeo** है।

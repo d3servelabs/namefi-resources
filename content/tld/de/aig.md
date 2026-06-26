@@ -24,6 +24,24 @@ keywords:
   - neue gTLD
   - domain registrierung
   - Namefi
+relatedArticles:
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/premium-web3-tlds/
+  - /de/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/registry/
 ---
 
 In der sich rasant entwickelnden digitalen Landschaft ist die Wahl des richtigen Domainnamens entscheidender denn je. Während klassische Endungen wie [.com](/de/tld/com/) oder .de oft überlaufen sind, eröffnen neue Top-Level-Domains (TLDs) spannende Möglichkeiten für Branding und Identität. Eine dieser aufstrebenden Endungen, die besonders in der Tech- und [Web3](/de/glossary/web3/)-Community für Aufsehen sorgt, ist **.aig**.

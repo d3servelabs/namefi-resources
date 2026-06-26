@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2022 年 8 月，Curve Finance 的智能合约完好无损——但攻击者在注册商层面劫持了 curve.fi 域名，克隆了网站，从用户处盗取约 57 万美元。深度解析针对 DeFi 前端的 DNS 攻击，以及它对域名安全的警示。'
 keywords: ['curve finance dns 劫持', 'curve.fi 劫持', 'dns 劫持 defi', 'iwantmyname 被入侵', '域名服务器被入侵', '钱包盗币', 'defi 前端攻击', '域名安全', 'dns 安全', '加密钓鱼', '克隆网站攻击', '注册商账户入侵', '域名告急']
+relatedArticles:
+  - /zh/blog/the-badgerdao-frontend-attack/
+  - /zh/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /zh/blog/the-bitcoin-org-dns-hijack/
+  - /zh/blog/the-myetherwallet-bgp-dns-attack/
+  - /zh/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/tld/
 ---
 
 智能合约完好无损。

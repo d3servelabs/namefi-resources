@@ -6,6 +6,24 @@ tags: ["faq","domains"]
 authors: ["namefiteam"]
 description: أتقن الاستثمار في النطاقات من خلال دليلنا الشامل لمصطلحات النطاقات الأساسية. من المفاهيم الأساسية إلى استراتيجيات التداول المتقدمة، تعلم لغة محترفي النطاقات.
 keywords: ["مصطلحات النطاقات","الاستثمار في النطاقات","أسماء النطاقات","تداول النطاقات","معجم النطاقات","نطاق المستوى الأعلى","مسجل النطاقات","مزاد النطاقات","محفظة النطاقات","تقييم النطاقات","النطاقات المميزة","قلب النطاقات"]
+relatedArticles:
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/how-to-value-a-domain-name/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /ar/topics/domain-basics/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 

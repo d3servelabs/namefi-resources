@@ -12,6 +12,24 @@ format: comparison
 description: "Noms inventés brandables ou domaines mot-clé en correspondance exacte : qui achète chacun, lequel se revend le plus sûrement, et l''angle marque déposée que tout flipper devrait connaître."
 ogImage: ../../assets/brandable-vs-keyword-domains-og.jpg
 keywords: ['domaines brandables', 'domaines mot-clé', 'domaines en correspondance exacte', 'domaines brandables ou mot-clé', 'noms de domaine inventés', 'noms de domaine génériques', 'investissement dans les domaines', 'domain flipping', 'quels domaines se vendent le mieux', 'trafic en saisie directe', 'marque déposée de domaine', 'noms de domaine descriptifs', 'valeur de revente d''un domaine', 'noms de domaine pour startups', 'stratégie de nom de domaine']
+relatedArticles:
+  - /fr/blog/domain-flipping/
+  - /fr/blog/what-makes-a-domain-valuable/
+  - /fr/blog/hand-registering-domains-to-flip/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+  - /fr/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Deux domaines atterrissent dans votre boîte de réception la même semaine. L'un est du style `Stripe` : un mot court et inventé qui ne veut rien dire tant qu'une entreprise ne lui a pas donné un sens. L'autre est `CarInsurance` : une description toute simple de ce que vend exactement l'acheteur. Les deux peuvent rapporter de l'argent. Mais ils le font de façons complètement différentes, se vendent à des acheteurs complètement différents et comportent des risques complètement différents. Acheter l'un quand vous auriez dû acheter l'autre est l'une des manières les plus courantes pour un flipper de gaspiller son budget de renouvellement.

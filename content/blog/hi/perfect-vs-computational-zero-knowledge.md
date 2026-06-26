@@ -8,6 +8,24 @@ draft: false
 description: 'ज़ीरो-नॉलेज प्रूफ़ तीन प्रकार के होते हैं—परफेक्ट, स्टैटिस्टिकल और कंप्यूटेशनल—और यह अंतर अधिकांश इंजीनियरिंग चर्चाओं की तुलना में कहीं अधिक मायने रखता है। यह पोस्ट सरल भाषा में प्रत्येक प्रकार को समझाती है कि क्यों 2026 में लगभग हर प्रोडक्शन ZK सिस्टम कंप्यूटेशनल है, और इसके क्या फायदे और नुकसान हैं।'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg
 keywords: ['ज़ीरो नॉलेज प्रूफ़', 'परफेक्ट ज़ीरो नॉलेज', 'कंप्यूटेशनल ज़ीरो नॉलेज', 'zk snark', 'zk stark', 'क्रिप्टोग्राफी', 'सिम्युलेटर', 'कमिटमेंट स्कीम', 'namefi']
+relatedArticles:
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/working-with-domain-brokers/
+  - /hi/blog/how-to-win-domain-auctions/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/onchain-domain-custody-and-recovery/
+relatedTopics:
+  - /hi/topics/web3-foundations/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
+  - /hi/glossary/registry/
 ---
 
 जब क्रिप्टो क्षेत्र में लोग "ज़ीरो-नॉलेज प्रूफ़" (zero-knowledge proofs) की बात करते हैं, तो उनका मतलब लगभग हमेशा एक विशिष्ट चीज़ से होता है: एक SNARK या STARK जो यह साबित करता है कि कोई संगणना (computation) सही ढंग से की गई थी, वह भी इनपुट को उजागर किए बिना। अधिकांश इंजीनियरिंग चर्चाओं के लिए यह मानसिक मॉडल ठीक है। लेकिन यह एक ऐसे अंतर को छिपा देता है जो उस क्षण महत्वपूर्ण हो जाता है जब आप इस बारे में विचार करने का प्रयास करते हैं कि *वास्तव में सुरक्षा किस चीज़ की गारंटी देती है*।

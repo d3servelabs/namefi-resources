@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Descubre todo sobre el dominio .afamilycompany: su origen como TLD de marca, su importancia para la identidad corporativa y cómo los activos digitales están evolucionando."
 keywords: [".afamilycompany domains", ".afamilycompany TLD", "top-level domain", "what is .afamilycompany", "why choose .afamilycompany", "what is the .afamilycompany domain", "why choose the .afamilycompany domain", "domain investing", "blockchain domains", "tokenized domain", "SC Johnson domain", "brand TLD", "corporate identity domains", "web3 domains", "dominios de marca"]
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/premium-web3-tlds/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
 ---
 
 ## **¿Qué es .afamilycompany?**

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2015年2月25日，Lizard Squad（蜥蜴小队）通过入侵注册商 Webnic，劫持了 Lenovo.com，将全球最大PC制造商的域名重定向到一段网络摄像头幻灯片，并拦截其邮件——此事发生在 Superfish 丑闻曝光后的数天之内。这是一篇关于注册商才是真正安全边界的深度解析。'
 keywords: ['lenovo.com DNS劫持', '蜥蜴小队', 'Lizard Squad', 'webnic注册商', 'Web Commerce Communications', 'DNS劫持', 'Superfish', '域名注册商安全', '注册商入侵', 'EPP授权码', '邮件拦截', '谷歌越南域名劫持', '域名安全', '注册商锁定']
+relatedArticles:
+  - /zh/blog/the-malaysia-airlines-dns-hijack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-panix-com-domain-hijack/
+  - /zh/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/tld/
 ---
 
 2015年2月25日上午，全球最大PC制造商点击量最高的链接，指向了一段无聊青少年对着摄像头发呆的幻灯片，配乐来自《歌舞青春》中的歌曲。没有人入侵了联想的任何一台服务器，没有人盗取了任何联想密码，攻击者从未触碰联想的建筑、网络或网站本身。

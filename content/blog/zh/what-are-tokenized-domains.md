@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '简明易懂地介绍代币化域名和域名代币化——代币化域名意味着什么，域名代币化如何运作，以及代币化域名与传统域名和仅限区块链的名称（如 ENS）有何不同。'
 keywords: ['代币化域名', '代币化一个域名', '代币化多个域名', '将一个域名代币化', '将多个域名代币化', '域名代币化', '域名的代币化', '一个域名的代币化', '域名名称代币化', '如何代币化域名', '什么是代币化域名', '代币化域名是什么', 'NFT 域名', '链上域名', '区块链域名', 'DNS', 'ICANN 域名', 'web3 域名', '域名 NFT', '作为 NFT 的域名', 'namefi', '域名所有权', '域名资产代币化', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', '代币化域名 vs ENS', '代币化域名 vs web3 域名', 'ICANN 域名 vs web3 域名', '比较代币化域名平台']
+relatedArticles:
+  - /zh/blog/premium-web3-tlds/
+  - /zh/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /zh/blog/tokenized-domain-vs-web3-domain/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 您可能听说过“代币化域名（tokenized domain）”、“将域名代币化（tokenize a domain）”或“域名代币化（domain tokenization）”等词，并想知道它们究竟意味着什么。代币化域名是一种新型域名吗？是一个仅存在于[区块链](/zh/glossary/blockchain/)上的名称吗？是 `.com` 的替代品吗？首先，将一个域名*代币化*到底意味着什么？

@@ -6,6 +6,24 @@ tags: ["faq","domains","tokenization"]
 authors: ["namefiteam"]
 description: اكتشف كيف تُحدث xStocks ثورة في عالم التمويل ولماذا يتمتع أصحاب النطاقات الذين يستخدمون الترميز عبر Namefi بموقع فريد لقيادة هذا التحول الرقمي.
 keywords: ["xStocks","الأسهم المرمزة","الأسهم الرمزية","الاستثمار في النطاقات","ترميز النطاقات","Namefi","أسهم البلوكتشين","الملكية المجزأة","تمويل الويب3","تداول الأصول الرقمية","أصول سولانا المرمزة","أسهم العملات المشفرة","الأسهم على السلسلة","ترميز أصول العالم الحقيقي","أسماء النطاقات المرمزة"]
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/onchain-domain-flipping/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/web3-foundations/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
+  - /ar/glossary/tld/
 ---
 
 

@@ -16,6 +16,24 @@ faqs:
     answer: 'सॉफ्टवेयर स्टार्टअप्स, SaaS उत्पाद, डेवलपर टूल्स, ओपन-सोर्स प्रोजेक्ट्स, API सेवाएँ, ब्राउज़र गेम स्टूडियो, और Web3 या ब्लॉकचेन टीमें जो Input/Output के रूप में पढ़े जाने वाले नाम और तकनीकी फ़ोकस का संकेत चाहती हैं।'
   - question: 'क्या Chagos संप्रभुता समझौते के कारण .io डोमेन समाप्त हो जाएगा?'
     answer: 'यह निश्चित नहीं है। 2026 तक .io पूरी तरह से चालू है। किसी भी सेवानिवृत्ति के लिए पहले ISO कंट्री कोड को बदलना होगा और फिर बहु-वर्षीय IANA ट्रांजिशन का पालन करना होगा, इसलिए यह एक ऐसी स्थिति है जिसे घबराने की बजाय निगरानी में रखना चाहिए।'
+relatedArticles:
+  - /hi/blog/why-are-io-domains-expensive/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 **.io डोमेन** तकनीकी रूप से एक दूरस्थ हिंद महासागर क्षेत्र के लिए एक कंट्री-कोड एक्सटेंशन है, लेकिन व्यवहार में यह सॉफ्टवेयर स्टार्टअप्स, डेवलपर टूल्स और [Web3](/hi/glossary/web3/) प्रोजेक्ट्स का अनौपचारिक घर बन गया है। अधिकांश खरीदारों के लिए, **.io डोमेन का अर्थ** भूगोल से नहीं बल्कि इस बात से है कि "io" इंजीनियरों को कैसा लगता है: **Input/Output** के रूप में — कंप्यूटिंग की सबसे मौलिक अवधारणाओं में से एक।

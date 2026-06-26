@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'कैसे Box ने 2005 में Box.net पर शुरुआत की क्योंकि Box.com पहले से ली गई थी, उपभोक्ता स्टोरेज से एंटरप्राइज़ की ओर पिवट किया, और 2011 में Digimedia को करीब $1 मिलियन देकर एग्जैक्ट-मैच Box.com खरीदी — एक .net-से-.com अपग्रेड जो तब हुआ जब कंपनी सीधे "Box" बन गई।'
 keywords: ['box.net', 'box.com', 'box domain name', 'aaron levie', 'dylan smith', 'digimedia', 'scott day', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'exact match domain', 'net to com']
+relatedArticles:
+  - /hi/blog/from-getdropbox-com-to-dropbox-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
 ---
 
 इससे पहले कि Box अरबों डॉलर की एंटरप्राइज़ सॉफ़्टवेयर कंपनी बनती, वह थोड़े कम आधिकारिक पते पर रहती थी: **Box.net**।

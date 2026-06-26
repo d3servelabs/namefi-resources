@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .site. تعرف على استخداماته، مزاياه، وكيفية الاستفادة منه في استثمار النطاقات والويب 3 مع Namefi.'
 keywords: ['.site domains', '.site TLD', 'top-level domain', 'what is .site', 'why choose .site', 'what is the .site domain', 'why choose the .site domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'Web3 domains', 'buy .site domain', 'new gTLD', 'شراء نطاق', 'استثمار الدومينات']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .site؟**

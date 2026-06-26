@@ -12,6 +12,24 @@ format: explainer
 description: "Cuándo se gana su comisión un corredor de dominios, qué hacen realmente los buenos corredores, la diferencia entre corretaje de entrada y de salida, las comisiones habituales y cómo evaluar a uno."
 ogImage: ../../assets/working-with-domain-brokers-og.jpg
 keywords: ['corredor de dominios', 'corretaje de dominios', 'cómo trabajar con un corredor de dominios', 'comisión de corredor de dominios', 'vender dominio con corredor', 'corredor del comprador de dominios', 'corredor del vendedor de dominios', 'corredor de dominios de entrada', 'corredor de dominios de salida', 'cuándo usar un corredor de dominios', 'evaluar a un corredor de dominios', 'tarifas de corredor de dominios', 'mejores corredores de dominios', 'corredor de adquisición de dominios', 'contratar a un corredor de dominios']
+relatedArticles:
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+  - /es/blog/domain-flipping/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/inbound-vs-outbound-domain-sales/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 La mayoría de los nombres que revendes deberías venderlos tú mismo. Lo publicas, fijas un precio, respondes a las consultas que llegan y cierras con un depósito en garantía. Un corredor en un nombre de 400 dólares es un desconocido que se queda con una parte del dinero que podrías haber conservado. Pero existe una franja de operaciones en la que un corredor deja de ser un gasto y pasa a ser la diferencia entre una venta y un punto muerto, y saber dónde empieza esa franja es una habilidad en sí misma. Este es el capítulo sobre corredores de nuestra serie de [reventa de dominios](/es/blog/domain-flipping/), y se sitúa un nivel por debajo del pilar de venta, [cómo vender dominios con beneficio](/es/blog/how-to-sell-domains-for-profit/). Aquí veremos cuándo conviene entregar un nombre a un corredor, qué hace realmente uno bueno, la diferencia entre el corretaje del lado del comprador y del lado del vendedor, cómo son las comisiones y cómo distinguir a un corredor de verdad de alguien que solo quiere quedarse con tu anuncio.

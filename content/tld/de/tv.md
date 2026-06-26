@@ -16,6 +16,24 @@ faqs:
     answer: 'Streamer, Video-Creator, Sender und jede Marke, die rund um Fernsehen, Film oder Live-Inhalte aufgebaut ist. Die Zeichenfolge „tv" liest sich sofort als „Television" und macht sie zu einer natürlichen, einprägsamen Heimat für Kanäle, Shows und Medienprojekte.'
   - question: 'Warum ist die .tv-Domain mit dem Fernsehen verbunden?'
     answer: 'Reiner sprachlicher Zufall. „TV" ist Tuvalus ISO-Ländercode und die universelle Abkürzung für „Television". Tuvalu nutzte diese Überschneidung und lizenzierte den Namensraum weltweit, weshalb sich Streaming- und Videomarken zu ihr hingezogen fühlen.'
+relatedArticles:
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/domain-hacks-explained/
+  - /de/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Die **.tv**-Domain ist das Musterbeispiel dafür, wie eine kleine Nation einen Zweibuchstaben-Zufall in eine globale Marke verwandelt. Offiziell die ccTLD für **Tuvalu**, einen winzigen pazifischen Inselstaat, wurde sie weltweit als die natürliche Heimat von **Fernsehen**, **Video** und **Live-Streaming** vermarktet und übernommen – denn „tv" liest sich sofort als das Medium selbst. Für Sender, Streamer und videozentrierte Marken ist **.tv** oft die ausdrucksstärkste Endung auf dem Markt.

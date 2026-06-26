@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .academy Domain: Ideal für Bildung, Kurse und Coaching. Sichern Sie sich Ihre digitale Identität jetzt bei Namefi."
 keywords: [".academy domains", ".academy TLD", ".academy top-level domain", "was ist .academy", "warum .academy wählen", "was ist die .academy domain", "warum die .academy domain wählen", "Bildungs-Domain", "Online-Kurs Domain", "domain investing", "blockchain domains", "tokenized domains", "Web3 domains", "Namefi", "Domain Registrierung"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .academy?**

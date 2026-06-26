@@ -12,6 +12,24 @@ format: explainer
 description: "Inbound- vs. Outbound-Domainverkauf: wann was funktioniert, das Verhältnis von Aufwand und Ertrag und wie du beides betreibst, ohne dass deine Ansprache wie Spam wirkt."
 ogImage: ../../assets/inbound-vs-outbound-domain-sales-og.jpg
 keywords: ['inbound vs outbound domainverkauf', 'inbound domainverkauf', 'outbound domainverkauf', 'domain sales outreach', 'cold outreach domains', 'domains an endnutzer verkaufen', 'domain landingpage', 'domain marketplace listing', 'domain verkaufsquote', 'domains verkaufen', 'domain flipping', 'domain aftermarket', 'endnutzer als domainkäufer', 'domain outbound strategie', 'domain inbound strategie']
+relatedArticles:
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/domain-flipping/
+  - /de/blog/marketing-your-domains-for-sale/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Eine Domain verkauft sich immer nur auf zwei Wegen. Entweder der Käufer findet dich, oder du findest den Käufer. Das ist die ganze Landkarte. Inbound heißt: Der Käufer tippt deinen Namen in den Browser, landet auf einer Verkaufsseite und meldet sich. Outbound heißt: Du erkennst das Unternehmen, das den Namen offensichtlich braucht, und schreibst es zuerst an. Alles andere beim Verkauf — Preisformat, Wahl des Marktplatzes, Treuhand — folgt nachgelagert daraus, welches dieser beiden Spiele du gerade tatsächlich spielst.

@@ -24,6 +24,24 @@ keywords:
   - registre accenture
   - identité numérique
   - web3 domains
+relatedArticles:
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que .accenture ?**

@@ -6,6 +6,24 @@ tags: ['tld', 'branding', 'domain-names', 'web3']
 authors: ['namefiteam']
 draft: false
 description: "Discover the creative power of the .able domain extension. Learn how this versatile TLD boosts branding for startups, developers, and creatives. Secure yours at Namefi."
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/brandable-vs-keyword-domains/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
 ---
 
 ## **What is .able?**

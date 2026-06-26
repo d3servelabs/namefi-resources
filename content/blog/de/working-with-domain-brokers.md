@@ -12,6 +12,24 @@ format: explainer
 description: "Wann ein Domain-Broker seine Provision verdient, was gute Broker tatsächlich leisten, Inbound- vs. Outbound-Brokerage, übliche Provisionen und wie man einen Broker prüft."
 ogImage: ../../assets/working-with-domain-brokers-og.jpg
 keywords: ['Domain-Broker', 'Domain-Brokerage', 'wie man mit einem Domain-Broker zusammenarbeitet', 'Domain-Broker Provision', 'Domain mit Broker verkaufen', 'Käufer-Broker Domains', 'Verkäufer-Broker Domains', 'Inbound-Domain-Broker', 'Outbound-Domain-Broker', 'wann einen Domain-Broker nutzen', 'Domain-Broker prüfen', 'Domain-Broker Gebühren', 'beste Domain-Broker', 'Domain-Akquisitions-Broker', 'Domain-Broker beauftragen']
+relatedArticles:
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+  - /de/blog/domain-flipping/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/inbound-vs-outbound-domain-sales/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Die meisten Namen, die du flippst, solltest du selbst verkaufen. Inseriere ihn, setze einen Preis, beantworte die Anfragen, schließe über die Treuhand ab. Ein Broker bei einem 400-Dollar-Namen ist ein Fremder, der sich einen Anteil an Geld nimmt, das du hättest behalten können. Doch es gibt einen Bereich von Deals, in dem ein Broker aufhört, Overhead zu sein, und anfängt, den Unterschied zwischen einem Verkauf und einer Pattsituation auszumachen — und zu wissen, wo dieser Bereich beginnt, ist eine eigene Fähigkeit. Dies ist das Broker-Kapitel unserer Serie [Domain-Flipping: Wie man Domains mit Gewinn kauft und verkauft](/de/blog/domain-flipping/), und es sitzt eine Ebene unter der Verkaufssäule [Domains gewinnbringend verkaufen](/de/blog/how-to-sell-domains-for-profit/). Hier behandeln wir, wann man einen Namen an einen Broker übergibt, was ein guter Broker tatsächlich leistet, den Unterschied zwischen Buy-Side- und Sell-Side-Brokerage, wie Provisionen aussehen und wie man einen echten Broker von jemandem unterscheidet, der nur dein Listing will.

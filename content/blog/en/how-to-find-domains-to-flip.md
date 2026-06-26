@@ -12,6 +12,24 @@ format: guide
 description: "The four ways to source domains to flip — hand-registration, expired drops, auctions, and the aftermarket — and each channel's risk and price profile."
 ogImage: ../../assets/how-to-find-domains-to-flip-og.jpg
 keywords: ['how to find domains to flip', 'domains to flip', 'sourcing domains', 'find domains to flip', 'hand register domains', 'expired domains', 'drop catching', 'domain auctions', 'domain aftermarket', 'buy domains to resell', 'cheap domains to flip', 'domain investing for beginners', 'where to buy domains to flip', 'domain backorders', 'best domains to flip']
+relatedArticles:
+  - /en/blog/domain-flipping/
+  - /en/blog/hand-registering-domains-to-flip/
+  - /en/blog/expired-domains-and-the-drop-cycle/
+  - /en/blog/how-to-win-domain-auctions/
+  - /en/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Everything in flipping starts with what you buy. You can be a brilliant negotiator and a sharp appraiser, but if you sourced a name nobody wants, those skills have nothing to work with. Sourcing is the first real skill in the trade, and it's the one most beginners get backwards — they fall in love with a name first and look for a buyer second.

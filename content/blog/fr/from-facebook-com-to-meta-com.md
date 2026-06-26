@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Comment Facebook, Inc. est devenu Meta en octobre 2021, pourquoi Meta.com était déjà un actif lié à Zuckerberg renvoyant vers un moteur de recherche scientifique, et comment un accord séparé à 60 M$ a permis d'acquérir le nom « Meta » auprès d'une banque de Sioux Falls — tandis que l'application Facebook conservait Facebook.com."
 keywords: ['facebook.com', 'meta.com', 'rebranding meta', 'changement de nom facebook meta', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', 'pivot métavers', 'acquisition de domaine', 'rebranding entreprise', 'domaine premium', 'stratégie de domaine', 'renommage société mère']
+relatedArticles:
+  - /fr/blog/from-snapchat-com-to-snap-com/
+  - /fr/blog/from-ubercab-com-to-uber-com/
+  - /fr/blog/from-bufferapp-com-to-buffer-com/
+  - /fr/blog/from-ctrip-com-to-trip-com/
+  - /fr/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 La plupart des rebranding de cette série commencent par une entreprise qui dépasse son nom. Le cas 7 est l'inverse : une entreprise si grande qu'elle était devenue un verbe, le cauchemar des régulateurs et un mot connu de tous — qui décide quand même qu'elle a besoin d'un *nouveau* nom, suffisamment grand pour contenir un avenir qu'elle n'avait pas encore construit.

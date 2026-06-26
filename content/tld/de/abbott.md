@@ -24,6 +24,24 @@ keywords:
   - web3 domains
   - abbott laboratories domain
   - neue gTLDs
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .abbott?**

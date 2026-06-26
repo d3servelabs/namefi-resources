@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .alstom : un TLD de marque synonyme d'innovation et de confiance. Explorez ses avantages et son utilisation dans l'univers numérique."
 keywords: [".alstom domains", "TLD", "top-level domain", "what is .alstom", "why choose .alstom", "what is the .alstom domain", "why choose the .alstom domain", "domaine .alstom", "acheter domaine .alstom", "domain investing", "blockchain domains", "tokenized domain", "marque alstom", "brand TLD", "nom de domaine entreprise"]
+relatedArticles:
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
+  - /fr/glossary/web3/
 ---
 
 ## **Qu'est-ce que .alstom ?**

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre todo sobre el dominio .website: su versatilidad, alta disponibilidad y ventajas SEO. Aprende por qué es ideal para invertir y regístralo hoy en Namefi.'
 keywords: ['.website domains', '.website TLD', 'top-level domain', 'qué es el dominio .website', 'por qué elegir .website', 'comprar dominio .website', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'registro de dominios', 'Namefi', 'disponibilidad de dominios', 'alternativas al .com', 'web3 domains', 'estrategia de dominios']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/how-tld-affects-domain-value/
+  - /es/blog/ai-vs-io-domain/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es el dominio .website?**

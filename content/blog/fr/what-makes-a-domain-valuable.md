@@ -12,6 +12,24 @@ format: explainer
 description: "Pourquoi une suite de lettres vaut des milliers d''euros et une autre presque identique ne vaut rien : la longueur, les vrais mots, la prime du .com, l''intention et le potentiel de marque."
 ogImage: ../../assets/what-makes-a-domain-valuable-og.jpg
 keywords: ['ce qui donne de la valeur à un domaine', 'facteurs de valeur d''un domaine', 'ce qui fait un bon nom de domaine', 'valeur d''un nom de domaine', 'pourquoi les domaines sont chers', 'noms de domaine courts', 'domaines à mots-clés', 'domaines de marque', 'prime du com', 'valeur de l''extension de domaine', 'domaines à intention commerciale', 'noms de domaine mémorables', 'fondamentaux de l''investissement dans les domaines', 'comment les domaines sont évalués', 'noms de domaine premium']
+relatedArticles:
+  - /fr/blog/how-to-value-a-domain-name/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/how-tld-affects-domain-value/
+  - /fr/blog/how-to-read-comparable-domain-sales/
+  - /fr/blog/brandable-vs-keyword-domains/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Deux domaines peuvent ne différer que d'une seule lettre et coûter mille fois plus cher l'un que l'autre. `cars.com` est un actif que tout le monde connaît ; `carz.net` n'est qu'une facture de renouvellement. Même longueur, même idée générale, valeurs radicalement différentes. Une fois que vous savez expliquer *pourquoi*, l'investissement dans les domaines cesse en grande partie de ressembler à un coup de chance pour devenir une lecture du marché.

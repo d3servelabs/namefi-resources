@@ -18,6 +18,24 @@ faqs:
     answer: 'It has real traction in Web3: pump.fun, a major Solana token-launch platform, is the most prominent example. The word reads as community-driven and approachable, which fits memecoin and dApp branding, though it carries no special technical features over other suffixes.'
   - question: 'Does .fun support WHOIS privacy and DNSSEC?'
     answer: 'Yes. The .fun registry supports DNSSEC, and most registrars offer WHOIS privacy so your personal contact details are not published publicly. Availability of privacy depends on your registrar and applicable law.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.fun domain** is one of the more expressive choices in the modern domain landscape: a short, readable word that tells visitors a site is playful or entertaining before they even click. It is a [generic top-level domain](/en/glossary/gtld/) (gTLD) from [ICANN](/en/glossary/icann/)'s [new gTLD](/en/glossary/new-gtld/) program, open to anyone, and it has found a genuine home with game studios, event organizers, creative side-projects, and high-traffic Web3 platforms.

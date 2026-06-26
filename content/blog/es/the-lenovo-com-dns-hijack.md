@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'El 25 de febrero de 2015, Lizard Squad secuestró Lenovo.com comprometiendo al registrador Webnic, redirigiendo el dominio del mayor fabricante de PC del mundo hacia una presentación de diapositivas de webcam e interceptando su correo electrónico, días después del escándalo de Superfish. Un análisis en profundidad de Domain Mayday sobre por qué el registrador es tu verdadero perímetro de seguridad.'
 keywords: ['secuestro dns lenovo.com', 'lizard squad', 'registrador webnic', 'web commerce communications', 'secuestro dns', 'superfish', 'seguridad registrador de dominios', 'compromiso de registrador', 'código auth epp', 'interceptación de correo electrónico', 'secuestro google vietnam', 'seguridad de dominios', 'bloqueo de registrador']
+relatedArticles:
+  - /es/blog/the-malaysia-airlines-dns-hijack/
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-panix-com-domain-hijack/
+  - /es/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/tld/
 ---
 
 La mañana del 25 de febrero de 2015, el enlace más visitado en internet para el mayor fabricante de PC del mundo apuntaba a una presentación de diapositivas de adolescentes aburridos mirando fijamente sus webcams, acompañada de una canción de *High School Musical*. Nadie había pirateado ni un solo servidor de Lenovo. Nadie había robado ninguna contraseña de Lenovo. Los atacantes nunca tocaron el edificio, la red ni el sitio web en sí.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Una introducción en lenguaje sencillo a los dominios tokenizados y a la tokenización de dominios: qué significa tokenizar un dominio, cómo funciona la tokenización de dominios y en qué se diferencia un dominio tokenizado de los dominios tradicionales y de los nombres exclusivos de blockchain como ENS."
 keywords: ['dominio tokenizado', 'dominios tokenizados', 'tokenizar un dominio', 'tokenizar dominios', 'tokenizar dominio', 'tokenizando un dominio', 'tokenizando dominios', 'tokenización de dominios', 'tokenización de un dominio', 'tokenización de nombres de dominio', 'cómo tokenizar un dominio', 'qué es un dominio tokenizado', 'qué son los dominios tokenizados', 'dominios NFT', 'dominio NFT', 'dominios on-chain', 'dominio on-chain', 'dominios blockchain', 'dominio blockchain', 'DNS', 'dominios ICANN', 'dominios web3', 'dominio web3', 'NFT de dominio', 'dominio como NFT', 'namefi', 'propiedad de dominio', 'tokenización de activos de dominio', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', 'dominio tokenizado vs ENS', 'dominio tokenizado vs dominio web3', 'dominio ICANN vs dominio web3', 'comparar plataformas de dominios tokenizados']
+relatedArticles:
+  - /es/blog/premium-web3-tlds/
+  - /es/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /es/blog/tokenized-domain-vs-web3-domain/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Es posible que hayas escuchado frases como "dominio tokenizado", "tokenizar un dominio" o "tokenización de dominios" y te hayas preguntado qué significan realmente. ¿Es un dominio tokenizado un nuevo tipo de dominio? ¿Un nombre exclusivo de [blockchain](/es/glossary/blockchain/)? ¿Un reemplazo para `.com`? Y, en primer lugar, ¿qué significa *tokenizar* un dominio?

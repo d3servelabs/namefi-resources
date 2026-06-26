@@ -8,6 +8,24 @@ draft: false
 description: '在加密领域，多重签名钱包被广泛视为默认的安全托管模式，但“它们真的能提升安全性吗？”这个问题的答案完全取决于威胁模型。本文将详细探讨多签能防范什么、不能防范什么，以及在哪些情况下它会让事情变得更糟。'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['多签钱包', '多重签名', 'safe 钱包', 'gnosis safe', '密钥管理', '自我托管', '门限签名', '社交恢复', 'namefi']
+relatedArticles:
+  - /zh/blog/onchain-domain-custody-and-recovery/
+  - /zh/blog/the-badgerdao-frontend-attack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-curve-finance-dns-hijack/
+  - /zh/blog/the-sushiswap-miso-insider-attack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/tld/
 ---
 
 [多重签名](/zh/glossary/multi-sig/)[钱包](/zh/glossary/wallet/)（Multisignature wallets，即在交易生效前必须有 N 个密钥中的 M 个进行签名的钱包）通常被视为单密钥热钱包理所当然的升级版。在 DAO（去中心化自治组织）、交易所和成熟的加密原生公司中，大多数资金库设置都采用了某种形式的多签方案（如 Safe、Squads、Multisig.js 或门限签名变体）。

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "टोकनाइज़्ड डोमेन के मालिकों द्वारा आमतौर पर पूछे जाने वाले टैक्स और अकाउंटिंग सवालों (कॉस्ट बेसिस, बिक्री, होल्डिंग पीरियड, बिज़नेस बनाम पर्सनल, गिफ़्टिंग, एस्टेट्स) का एक गैर-सलाहकार, सरल भाषा वाला सर्वेक्षण। इन सवालों को किसी असली पेशेवर के सामने रखें।"
 keywords: ['NFT डोमेन टैक्स', 'टोकनाइज़्ड डोमेन कॉस्ट बेसिस', 'टोकनाइज़्ड डोमेन अकाउंटिंग', 'टोकनाइज़्ड डोमेन कैपिटल गेन्स', 'टोकनाइज़्ड डोमेन बेचने पर टैक्स', 'NFT डोमेन कैपिटल गेन्स', 'डोमेन NFT अकाउंटिंग', 'डोमेन संपत्ति के रूप में टैक्स', 'गिफ़्ट टोकनाइज़्ड डोमेन टैक्स', 'एस्टेट टोकनाइज़्ड डोमेन', 'टोकनाइज़्ड डोमेन बिज़नेस खर्च', 'डोमेन टोकनाइज़ेशन टैक्स सवाल', 'टैक्स NFT डोमेन US', 'क्रिप्टो डोमेन टैक्स']
+relatedArticles:
+  - /hi/blog/taxes-and-accounting-for-domain-investors/
+  - /hi/blog/how-tokenized-marketplaces-replace-escrow/
+  - /hi/blog/tokenized-domain-use-cases-2026/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/tokenize-your-com/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
 ---
 
 > **सबसे पहले इसे पढ़ें।** यह पोस्ट टैक्स, अकाउंटिंग, कानूनी या वित्तीय सलाह **नहीं** है। हम आपके CPA नहीं हैं, हम आपके वकील नहीं हैं, और हमें इस बात का कोई अंदाज़ा नहीं है कि आप किस अधिकार क्षेत्र (jurisdiction) में हैं। यह किसी असली पेशेवर के पास ले जाने के लिए *सवालों की एक सूची* है। इसे तैयारी के लिए एक शीट के रूप में इस्तेमाल करें, न कि निर्भर रहने वाले किसी आधार के रूप में। पूरा अस्वीकरण (disclaimer) नीचे दिया गया है और यह *विशेष रूप से* इस पोस्ट पर लागू होता है।

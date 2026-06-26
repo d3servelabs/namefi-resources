@@ -11,6 +11,24 @@ seriesOrder: 17
 format: case-study
 description: 'On April 24, 2018, attackers hijacked the internet routing for Amazon Route 53, poisoned DNS answers for myetherwallet.com, and served a phishing clone behind a self-signed certificate — draining roughly $150,000 in Ethereum. A Domain Mayday deep-dive into why DNS rides on a routing layer that trusts by default.'
 keywords: ['myetherwallet', 'bgp hijack', 'dns hijacking', 'amazon route 53', 'route 53 hijack', 'dns security', 'bgp routing security', 'ethereum phishing', 'self-signed certificate', 'enet as10297', 'rpki roa', 'crypto wallet phishing', 'domain security']
+relatedArticles:
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-curve-finance-dns-hijack/
+  - /en/blog/the-bitcoin-org-dns-hijack/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/dns/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 When you type a website's name into a browser, you are trusting two invisible systems to be honest with you.

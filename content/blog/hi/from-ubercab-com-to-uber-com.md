@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2010 में एक cease-and-desist ने UberCab को "Cab" हटाने पर मजबूर किया, Uber ने Universal Music से Uber.com को 2% इक्विटी (तब $107,000 मूल्य) के बदले खरीदा, और यह डोमेन अपग्रेड स्टार्टअप इतिहास के सबसे महत्वपूर्ण ट्रेड में से एक कैसे बना।'
 keywords: ['ubercab.com', 'uber.com', 'uber domain name', 'domain upgrade', 'ubercab cease and desist', 'universal music uber domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'uber history', 'equity for domain', 'domain acquisition', 'category-defining domain']
+relatedArticles:
+  - /hi/blog/from-urbancompass-com-to-compass-com/
+  - /hi/blog/from-massdrop-com-to-drop-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+  - /hi/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
 ---
 
 इससे पहले कि "Uber" एक क्रिया, एक लॉजिस्टिक्स साम्राज्य, और ऑन-डिमांड सेवाओं की एक पूरी श्रेणी का पर्याय बने, यह एक अधिक शाब्दिक, अधिक सतर्क चीज़ थी: **UberCab.com**।

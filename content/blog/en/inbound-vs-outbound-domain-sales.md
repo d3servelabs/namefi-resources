@@ -12,6 +12,24 @@ format: explainer
 description: "Inbound vs outbound domain sales: when each works, the effort-and-return tradeoff, and how to run both without your outreach reading as spam."
 ogImage: ../../assets/inbound-vs-outbound-domain-sales-og.jpg
 keywords: ['inbound vs outbound domain sales', 'inbound domain sales', 'outbound domain sales', 'domain sales outreach', 'cold outreach domains', 'sell domains to end users', 'domain landing page', 'domain marketplace listing', 'domain sell-through rate', 'how to sell domains', 'domain flipping', 'domain aftermarket', 'end user domain buyer', 'domain outbound strategy', 'domain inbound strategy']
+relatedArticles:
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/domain-flipping/
+  - /en/blog/marketing-your-domains-for-sale/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 There are only two ways a domain ever sells. Either the buyer finds you, or you find the buyer. That's the whole map. Inbound is the buyer typing your name into a browser, hitting a for-sale page, and reaching out. Outbound is you spotting the company that obviously needs the name and writing to them first. Everything else in selling — pricing format, marketplace choice, escrow — sits downstream of which of these two games you're actually playing.

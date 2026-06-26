@@ -12,6 +12,24 @@ format: explainer
 description: "ليه الدومين بيكون ليه سعر جملة/موزّع منخفض وسعر مستخدم نهائي أعلى بكتير، وقد إيه الفرق بينهم، وأنهي رقم فيهم بينطبق على بيعتك."
 ogImage: ../../assets/end-user-vs-reseller-domain-pricing-og.jpg
 keywords: ['سعر المستخدم النهائي مقابل سعر الموزّع للدومين', 'سعر جملة الدومين', 'سعر تجزئة الدومين', 'الفرق في سعر الدومين', 'دوميني بكام', 'بيع دومين لمستخدم نهائي', 'سعر موزّع الدومين', 'قيمة الجملة للدومين', 'هامش ربح تقليب الدومينات', 'تسعير السوق الثانوي للدومينات', 'بيع دومين بسعر الجملة', 'مشتري الدومين النهائي', 'مبيعات الدومينات المماثلة', 'استراتيجية تسعير الدومين', 'سعرين للدومين الواحد']
+relatedArticles:
+  - /ar/blog/how-to-value-a-domain-name/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/how-to-read-comparable-domain-sales/
+  - /ar/blog/working-with-domain-brokers/
+  - /ar/blog/domain-appraisal-tools-compared/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 اسأل اتنين من تجار الدومينات المخضرمين الاسم ده يساوي كام، ممكن تطلع منهم بإجابتين بينهم فرق عشر أضعاف، والاتنين ممكن يكونوا صح. ده مش إهمال. دي أهم حقيقة في موضوع التسعير في الشغلانة دي: نفس الدومين ليه سعرين شرعيين في نفس اللحظة، وأنهي واحد فيهم بينطبق بيعتمد بالكامل على مين اللي بيشتري. لو فوّتّ دي، يا إما هتدّي الاسم ببلاش بجزء بسيط من قيمته، يا إما هتفضل قاعد عليه للأبد مستني رقم محدش في مسارك هيدفعه.

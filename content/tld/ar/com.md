@@ -16,6 +16,24 @@ faqs:
     answer: 'تقريباً أي شركة أو علامة تجارية أو مشروع بيدور على أكتر عنوان موثوق ومعروف في العالم، خصوصاً الشركات اللي بتخدم جمهور عالمي أو مستهلكين سائدين، وأي حد عايز يحمي علامته التجارية على المدى البعيد.'
   - question: 'ليه الدومينات الحلوة في .com صعبة الإيجاد؟'
     answer: 'مع أكتر من 160 مليون اسم .com مسجّل، العرض من الأسماء القصيرة وكلمات القاموس والأسماء المطابقة للعلامات التجارية اتخلص في معظمه. أغلب أسماء .com المميزة مملوكة، فالكتير منها متاح بس في السوق الثانوي.'
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/what-makes-a-domain-valuable/
+  - /ar/blog/ai-vs-io-domain/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 دومين **.com** هو أقرب حاجة عندنا على الإنترنت لعنوان افتراضي. اختصار لـ "commercial" (تجاري)، وده هو أول امتداد عام (gTLD) اتعمل على الإطلاق، واللي بعد عقود من الانتشار الواسع بقى هو اللاحقة اللي الناس بتفترضها أوتوماتيك لما بتسمع أي اسم موقع. لمعظم الشركات والعلامات التجارية، **إيه هو .com** بيتلخص في حاجة واحدة: هو العنوان اللي المستخدمين بيتوقعوه وبيكتبوه وبيثقوا فيه من غير ما يفكروا.

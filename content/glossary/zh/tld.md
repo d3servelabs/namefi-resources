@@ -13,6 +13,24 @@ sources:
   - https://www.icann.org/en/beginners-guide-to-new-generic-top-level-domains
   - https://www.rfc-editor.org/rfc/rfc1591
   - https://developers.google.com/search/docs/crawling-indexing/url-structure#top-level-domains
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 **TLD**（*top-level domain*，顶级域名），也称**顶级域名**，是完全限定域名中最右侧的标签——即最后一个点之后的部分。在 `www.example.com` 中，TLD 是 `.com`；在 `bbc.co.uk` 中，TLD 是 `.uk`。TLD 处于 [DNS](/zh/glossary/dns/) 层次结构的顶端，是所有其他域名的基础。

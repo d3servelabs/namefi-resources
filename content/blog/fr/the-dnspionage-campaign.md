@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Fin 2018, Cisco Talos a révélé DNSpionage — une campagne liée à des intérêts iraniens qui a réécrit des enregistrements DNS gouvernementaux, redirigé le trafic e-mail et VPN vers des serveurs attaquants, et émis des certificats TLS valides pour rester invisible. Elle a déclenché la première directive d''urgence de ce type de la part du gouvernement américain.'
 keywords: ['dnspionage', 'détournement dns', 'redirection dns', 'cisco talos', 'directive urgence cisa 19-01', 'sea turtle dns', 'détournement dns iran', 'fireeye détournement dns', 'abus certificat lets encrypt', 'sécurité dns', 'sécurité des domaines', 'cyber-espionnage état-nation', 'atténuer la falsification infrastructure dns']
+relatedArticles:
+  - /fr/blog/the-sea-turtle-dns-espionage/
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-myetherwallet-bgp-dns-attack/
+  - /fr/blog/the-badgerdao-frontend-attack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/dns/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
 ---
 
 La plupart des catastrophes liées aux domaines portent sur qui *possède* un nom. Celle-ci portait sur qui le *contrôle* — et pendant quelques mois à la fin de 2018, la réponse pour des dizaines de domaines gouvernementaux au Moyen-Orient était : pas les gouvernements.

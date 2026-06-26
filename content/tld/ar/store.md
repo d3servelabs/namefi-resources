@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'هل تخطط لإطلاق متجر إلكتروني؟ اكتشف لماذا يعتبر نطاق .store الخيار الأفضل للتجارة الإلكترونية، وكيف يساعدك في تعزيز علامتك التجارية وزيادة المبيعات.'
 keywords: ['.store domains', '.store TLD', 'top-level domain', 'what is .store', 'why choose .store', 'what is the .store domain', 'why choose the .store domain', 'نطاق .store', 'حجز دومين store', 'نطاقات التجارة الإلكترونية', 'ecommerce domains', 'tokenized domain', 'domain investing', 'blockchain domains', 'شراء نطاق للمتجر', 'Web3 domains']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 في عالم التجارة الإلكترونية المتسارع، يعد اختيار الاسم المناسب لموقعك الإلكتروني الخطوة الأولى والأكثر أهمية نحو النجاح. مع ازدحام النطاقات التقليدية مثل `.com`، أصبح من الصعب العثور على اسم قصير ومميز. هنا يأتي دور نطاق **.store**، الذي صُمم خصيصاً ليخبر العالم بوضوح: "هذا مكان للبيع والشراء".

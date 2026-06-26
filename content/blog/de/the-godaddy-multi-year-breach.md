@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Zwischen 2020 und 2022 lebte eine einzelne Bedrohungsakteurgruppe in GoDaddys Infrastruktur – sie stahl Quellcode, legte die Daten von 1,2 Millionen Managed-WordPress-Kunden offen und leitete Kundenwebseiten zeitweise auf bösartige Seiten um. Eine eingehende Analyse des Konzentrationsrisikos bei Registraren und was sie über einzelne Fehlerquellen lehrt.'
 keywords: ['godaddy einbruch', 'godaddy datenpanne', 'managed wordpress breach', 'registrar sicherheit', 'domain sicherheit', 'mehrjähriger einbruch', 'cpanel malware', 'website redirect angriff', 'ssl private key offenlegung', 'sftp passwort breach', 'sec 10-k cybersicherheit', 'registrar konzentrationsrisiko', 'single point of failure']
+relatedArticles:
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-dnspionage-campaign/
+  - /de/blog/the-lenovo-com-dns-hijack/
+  - /de/blog/the-badgerdao-frontend-attack/
+  - /de/blog/the-icann-spear-phishing-breach/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
+  - /de/glossary/tld/
 ---
 
 Ein Domain-[Registrar](/de/glossary/registrar/) ist das langweiligste Unternehmen, von dem man jemals vollständig abhängig sein wird.

@@ -12,6 +12,24 @@ format: guide
 description: "Wie der Verkauf einer Domain als NFT funktioniert: Listing-Mechanik, Seaport und OpenSea, käuferbeschränkte private Verkäufe, Tantiemen sowie Gas- und Betrugsfallen."
 ogImage: ../../assets/selling-domains-as-nfts-og.jpg
 keywords: ['Domain als NFT verkaufen', 'Domain-NFT', 'Verkauf tokenisierter Domains', 'Onchain-Domain-Liquidität', 'Domain-NFT auf OpenSea listen', 'Seaport-Protokoll', 'käuferbeschränktes Listing', 'privates NFT-Listing', 'NFT-Tantiemen Domains', 'ERC-721-Domain', 'atomarer Domain-Transfer', 'tokenisierte Domain verkaufen', 'Gasgebühren NFT-Verkauf', 'NFT-Domain-Betrug', 'Onchain-Domain-Flipping']
+relatedArticles:
+  - /de/blog/onchain-domain-marketplaces-compared/
+  - /de/blog/onchain-domain-flipping/
+  - /de/blog/tokenize-your-com-to-flip-it/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
+  - /de/glossary/tld/
 ---
 
 Ein klassischer Domain-Verkauf hat ein eingebautes Vertrauensproblem. Der Verkäufer möchte den Transfer nicht anstoßen, bevor das Geld eingetroffen ist; der Käufer möchte keine Mittel überweisen, bevor der Name in seinem Konto auftaucht. Die gesamte [Treuhand](/de/glossary/escrow/)-Branche existiert, um zwischen diesen beiden Reflexen zu stehen. Eine Domain als [NFT](/de/glossary/nft/) zu verkaufen ordnet diese Pattsituation neu. Wenn das Eigentum an einer echten ICANN-Domain zugleich ein [On-Chain](/de/glossary/on-chain/)-Token ist, wird der Name zu etwas, das du listen, bepreisen und innerhalb derselben Transaktion übergeben kannst, die auch das Geld bewegt — kein Mittelsmann, der den Vermögenswert in den dunklen Stunden zwischen Zahlung und Transfer hält.

@@ -12,6 +12,24 @@ format: guide
 description: "आपकी लिस्टिंग का तरीका और पहला नंबर ही डोमेन की बिक्री तय करते हैं: एंकरिंग, पहले कीमत न बताना, प्राइस लैडरिंग, और बाय-नाउ बनाम मेक-ऑफर।"
 ogImage: ../../assets/domain-pricing-psychology-buy-now-vs-make-offer-og.jpg
 keywords: ['डोमेन प्राइसिंग साइकोलॉजी', 'बाय नाउ बनाम मेक ऑफर', 'डोमेन एंकरिंग', 'डोमेन की कीमत कैसे तय करें', 'डोमेन कीमत मोलभाव', 'मेक ऑफर डोमेन', 'बाय इट नाउ डोमेन', 'डोमेन प्राइस लैडरिंग', 'डोमेन लिस्टिंग फॉर्मेट', 'पहले कीमत कौन बताता है', 'डोमेन मोलभाव की रणनीतियाँ', 'डोमेन चार्म प्राइसिंग', 'एंड यूज़र डोमेन कीमत', 'डोमेन बिक्री मनोविज्ञान']
+relatedArticles:
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+  - /hi/blog/how-to-sell-domains-for-profit/
+  - /hi/blog/working-with-domain-brokers/
+  - /hi/blog/inbound-vs-outbound-domain-sales/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
 ---
 
 आपकी लिस्टिंग पर दिखने वाला नंबर आपकी सोच से कहीं ज़्यादा काम करता है। दो फ्लिपर एक ही डोमेन के मालिक हो सकते हैं, एक ही मार्केटप्लेस पर लिस्ट कर सकते हैं, और फिर भी उन्हें मिलने वाली कीमतों में ज़मीन-आसमान का फ़र्क हो सकता है — इसलिए नहीं कि एक ने ज़्यादा मेहनत से मोलभाव किया, बल्कि इसलिए कि एक को समझ था कि कीमत *कैसे पेश की जाती है*, यही तय करता है कि खरीदार कितना देगा। डोमेन की प्राइसिंग आधी गणित है, और ज़्यादातर मनोविज्ञान।

@@ -8,6 +8,24 @@ draft: false
 description: 'Multisignatur-Wallets werden in der Kryptowelt weithin als der Standard für sichere Verwahrung angesehen, aber die Antwort auf die Frage "Verbessern sie wirklich die Sicherheit?" hängt vollständig vom Bedrohungsmodell ab. Dieser Artikel erläutert, was Multisig abwehrt, was nicht und wo es die Situation sogar verschlimmern kann.'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['Multisig-Wallet', 'Multisignatur', 'Safe Wallet', 'Gnosis Safe', 'Schlüsselverwaltung', 'Self-Custody', 'Threshold-Signatur', 'Social Recovery', 'Namefi']
+relatedArticles:
+  - /de/blog/onchain-domain-custody-and-recovery/
+  - /de/blog/the-badgerdao-frontend-attack/
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-curve-finance-dns-hijack/
+  - /de/blog/the-sushiswap-miso-insider-attack/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
+  - /de/glossary/tld/
 ---
 
 Multisignatur-Wallets – Wallets, bei denen M von N Schlüsseln signieren müssen, bevor eine Transaktion gültig ist – werden in der Regel als das offensichtliche Upgrade einer Single-Key Hot [Wallet](/de/glossary/wallet/) präsentiert. Die meisten Treasury-Setups in DAOs, Börsen und ernsthaften Krypto-Unternehmen laufen über irgendeine Form von Multisig (Safe, Squads, Multisig.js, Threshold-Signatur-Varianten).

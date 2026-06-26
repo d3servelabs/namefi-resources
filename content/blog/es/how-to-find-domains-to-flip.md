@@ -12,6 +12,24 @@ format: guide
 description: "Las cuatro formas de conseguir dominios para revender —registro manual, caídas de dominios vencidos, subastas y el mercado secundario— y el perfil de riesgo y precio de cada canal."
 ogImage: ../../assets/how-to-find-domains-to-flip-og.jpg
 keywords: ['cómo encontrar dominios para revender', 'dominios para revender', 'abastecimiento de dominios', 'encontrar dominios para revender', 'registro manual de dominios', 'dominios vencidos', 'drop catching', 'subastas de dominios', 'mercado secundario de dominios', 'comprar dominios para revender', 'dominios baratos para revender', 'inversión en dominios para principiantes', 'dónde comprar dominios para revender', 'pedidos anticipados de dominios', 'mejores dominios para revender']
+relatedArticles:
+  - /es/blog/domain-flipping/
+  - /es/blog/hand-registering-domains-to-flip/
+  - /es/blog/expired-domains-and-the-drop-cycle/
+  - /es/blog/how-to-win-domain-auctions/
+  - /es/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Todo en la reventa empieza por lo que compras. Puedes ser un negociador brillante y un tasador agudo, pero si conseguiste un nombre que nadie quiere, esas habilidades no tienen con qué trabajar. El abastecimiento es la primera habilidad real del oficio, y es la que la mayoría de los principiantes hace al revés: primero se enamoran de un nombre y solo después buscan un comprador.

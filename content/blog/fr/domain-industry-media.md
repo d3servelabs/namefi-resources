@@ -8,6 +8,24 @@ draft: false
 description: "Un guide des médias d'actualités, des sites de données de ventes et des podcasts qui couvrent l'industrie des noms de domaine avec une approche journalistique — DomainNameWire, DNJournal, TheDomains, NameBio, DomainSherpa, CircleID, et plus encore."
 ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['actualités des noms de domaine', 'médias des noms de domaine', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'actualités icann']
+relatedArticles:
+  - /fr/blog/famous-domainer-blogs-and-newsletters/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/top-domain-trader-forums/
+  - /fr/blog/how-to-value-a-domain-name/
+  - /fr/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-investor-field-guide/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Si les [blogs individuels de domainers](/blog/famous-domainer-blogs-and-newsletters) représentent des voix personnelles, *les médias de l'industrie des noms de domaine* sont les organes qui fonctionnent davantage comme des salles de rédaction — parfois des rédactions d'une seule personne, mais avec une posture éditoriale journalistique plutôt que celle d'un journal de trader. Ils couvrent les transactions, les politiques, les mouvements des registres et des bureaux d'enregistrement (registrars), l'[ICANN](/fr/glossary/icann/) et les drames occasionnels ; ce sont d'ailleurs les sources que les autres finissent par citer.

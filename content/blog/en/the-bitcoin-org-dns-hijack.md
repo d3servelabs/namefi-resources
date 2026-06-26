@@ -11,6 +11,24 @@ seriesOrder: 8
 format: case-study
 description: 'In September 2021, Bitcoin.org — the long-time informational home of Bitcoin run by the pseudonymous operator Cobra — was hijacked at the DNS layer and turned into a fake "double your Bitcoin" giveaway, netting scammers around $17,000 before the site was pulled offline. A Domain Mayday deep-dive into what happened, how, and what it teaches about even crypto-native sites depending on DNS.'
 keywords: ['bitcoin.org', 'bitcoin.org hack', 'dns hijack', 'domain hijacking', 'double your bitcoin scam', 'crypto giveaway scam', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'dns security', 'domain security', 'nameserver hijack', 'whois change attack']
+relatedArticles:
+  - /en/blog/the-curve-finance-dns-hijack/
+  - /en/blog/the-lenovo-com-dns-hijack/
+  - /en/blog/the-myetherwallet-bgp-dns-attack/
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/dns/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
 ---
 
 For more than a decade, if you wanted the plain, vendor-neutral answer to "what is Bitcoin and how do I use it safely," the internet sent you to one address: **Bitcoin.org**.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "从域名注册商/DNS 运营角度深度解析 2025 年 10 月 20 日 AWS 事故，探讨 DNS 的实际工作原理、此次故障广泛传播的原因，以及弹性互联网团队的应对之策。"
 keywords: ['dns', 'aws 宕机', '控制平面', 'dynamodb', 'us-east-1', 'dns 缓存', '云韧性', '多签名 dns', '事故响应']
+relatedArticles:
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-dyn-dns-mirai-attack/
+  - /zh/blog/the-myetherwallet-bgp-dns-attack/
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 [![](../../assets/dns-is-the-control-plane.png)](../../assets/dns-is-the-control-plane.png)

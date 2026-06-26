@@ -12,6 +12,24 @@ format: explainer
 description: "अक्षरों की एक लड़ी हज़ारों की क्यों होती है जबकि लगभग वैसी ही दूसरी लड़ी की कोई कीमत नहीं: लंबाई, असली शब्द, .com का प्रीमियम, इरादा और ब्रांडेबिलिटी।"
 ogImage: ../../assets/what-makes-a-domain-valuable-og.jpg
 keywords: ['डोमेन को मूल्यवान क्या बनाता है', 'डोमेन मूल्य के कारक', 'अच्छा डोमेन नेम क्या बनाता है', 'डोमेन नेम का मूल्य', 'डोमेन महंगे क्यों होते हैं', 'छोटे डोमेन नेम', 'कीवर्ड डोमेन', 'ब्रांडेबल डोमेन', 'com प्रीमियम', 'डोमेन एक्सटेंशन का मूल्य', 'कमर्शियल इंटेंट डोमेन', 'यादगार डोमेन नेम', 'डोमेन इन्वेस्टिंग की बुनियाद', 'डोमेन का मूल्यांकन कैसे होता है', 'प्रीमियम डोमेन नेम']
+relatedArticles:
+  - /hi/blog/how-to-value-a-domain-name/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/how-tld-affects-domain-value/
+  - /hi/blog/how-to-read-comparable-domain-sales/
+  - /hi/blog/brandable-vs-keyword-domains/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 दो डोमेन एक अक्षर के फ़र्क पर हो सकते हैं और दाम में हज़ार गुना दूर। `cars.com` एक घर-घर पहचानी जाने वाली संपत्ति है; `carz.net` एक रिन्यूअल बिल है। एक जैसी लंबाई, लगभग एक जैसा विचार, पर मूल्य में ज़मीन-आसमान का फ़र्क। एक बार जब आप समझा पाएं कि *क्यों*, तो डोमेन इन्वेस्टिंग का ज़्यादातर हिस्सा किस्मत जैसा लगना बंद कर देता है और एक बाज़ार को पढ़ने जैसा लगने लगता है।

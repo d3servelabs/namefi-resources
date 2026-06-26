@@ -12,6 +12,24 @@ format: explainer
 description: "ऑन-चेन डोमेन के लिए कस्टडी वास्तव में कैसे काम करती है: वॉलेट, मल्टीसिग, सीड-फ्रेज़ जोखिम, और वॉलेट खोने के बाद एक टोकनाइज़्ड डोमेन की रिकवरी।"
 ogImage: ../../assets/onchain-domain-custody-and-recovery-og.jpg
 keywords: ['ऑन-चेन डोमेन कस्टडी', 'टोकनाइज़्ड डोमेन वॉलेट', 'टोकनाइज़्ड डोमेन रिकवर करना', 'वॉलेट खोने पर डोमेन रिकवरी', 'सीड फ्रेज़ जोखिम', 'मल्टीसिग डोमेन कस्टडी', 'NFT डोमेन सुरक्षा', 'हार्डवेयर वॉलेट डोमेन', 'सेल्फ-कस्टडी डोमेन', 'डोमेन प्राइवेट की', 'टोकनाइज़्ड डोमेन स्वामित्व', 'ERC-721 डोमेन', 'ऑन-चेन डोमेन फ़्लिपिंग', 'डोमेन वॉलेट बैकअप', 'सोशल रिकवरी वॉलेट']
+relatedArticles:
+  - /hi/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/onchain-domain-flipping/
+  - /hi/blog/selling-domains-as-nfts/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 जब आप एक पारंपरिक डोमेन फ़्लिप करते हैं, तो कस्टडी किसी और की समस्या होती है। नाम एक [रजिस्ट्रार](/hi/glossary/registrar/) अकाउंट में रहता है, और यदि आप पासवर्ड भूल जाते हैं तो आपके लिए एक रीसेट लिंक और एक सपोर्ट कतार इंतज़ार कर रही होती है। किसी डोमेन को [ऑन-चेन](/hi/glossary/on-chain/) ले जाएँ और वह सुरक्षा जाल गायब हो जाता है। टोकन *ही* मालिकाना दस्तावेज़ है, और आपके [वॉलेट](/hi/glossary/wallet/) की कीज़ ही एकमात्र चीज़ हैं जो आपके और उस एसेट के बीच खड़ी हैं। यह बदलाव किसी भी ऐसे व्यक्ति के लिए सबसे बड़ा मानसिक समायोजन है जो पारंपरिक [आफ़्टरमार्केट](/hi/glossary/domain-trading/) से ऑन-चेन फ़्लिपिंग की ओर आ रहा है।

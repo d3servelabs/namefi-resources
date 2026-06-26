@@ -16,6 +16,24 @@ faqs:
     answer: 'The entire .dev TLD is on the browsers'' HSTS preload list, so Chrome, Firefox, Safari, and Edge refuse to load any .dev site over plain HTTP. Every .dev domain must serve a valid TLS certificate, which is free through providers like Let''s Encrypt.'
   - question: 'Who should register a .dev domain?'
     answer: 'Software engineers, dev tooling and API products, open-source projects, technical blogs, and engineering teams who want a name that instantly signals a developer audience and enforces a secure, HTTPS-only setup by default.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.dev** domain is a [generic top-level domain](/en/glossary/gtld/) run by Google's registry and aimed squarely at the developer world: engineers, dev-tooling companies, open-source maintainers, and technical teams. What makes it unusual among extensions is a hard security rule baked into the TLD itself: every .dev site must be served over HTTPS, with no exceptions. That single property has shaped who adopts it and how.

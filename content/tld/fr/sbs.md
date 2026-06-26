@@ -5,6 +5,24 @@ language: fr
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .sbs signifie "side by side" (côte à côte) et est parfait pour les projets collaboratifs, les partenariats et les activités secondaires.
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-investor-field-guide/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 

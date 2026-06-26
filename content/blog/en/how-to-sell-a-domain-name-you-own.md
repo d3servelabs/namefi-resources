@@ -12,6 +12,24 @@ format: guide
 description: "A practical, seller-first checklist for pricing a domain, finding likely buyers, handling outreach, avoiding scams, and closing the transfer safely."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png
 keywords: ['how to sell a domain name', 'sell domain name', 'domain selling checklist', 'domain valuation', 'domain sale escrow', 'domain transfer', 'domain outbound sales', 'find domain buyers', 'domain negotiation', 'sell a domain you own', 'Namefi Outbound', 'domain aftermarket', 'domain sale process', 'domain sales outreach', 'domain seller guide']
+relatedArticles:
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/working-with-domain-brokers/
+  - /en/blog/inbound-vs-outbound-domain-sales/
+  - /en/blog/domain-flipping/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 Owning a domain is the easy part. Selling it is where the real work starts.

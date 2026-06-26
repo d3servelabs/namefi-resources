@@ -13,6 +13,24 @@ sources:
   - https://www.icann.org/en/beginners-guide-to-new-generic-top-level-domains
   - https://www.rfc-editor.org/rfc/rfc1591
   - https://developers.google.com/search/docs/crawling-indexing/url-structure#top-level-domains
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/how-tld-affects-domain-value/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 **TLD** (*top-level domain*, dominio de nivel superior), también llamado **Dominio de nivel superior**, es la etiqueta más a la derecha de un nombre de dominio completamente cualificado — el segmento que sigue al último punto. En `www.example.com`, el TLD es `.com`; en `bbc.co.uk`, es `.uk`. Los TLDs se sitúan en el vértice de la jerarquía del [DNS](/es/glossary/dns/) y son la base sobre la que se construye cualquier otro nombre de dominio.

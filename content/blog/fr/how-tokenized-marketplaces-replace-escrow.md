@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Comment les places de marché de noms de domaine tokénisés permettent aux acheteurs et aux vendeurs de régler leurs transactions de manière atomique sur la chaîne — pas de service de séquestre, pas de codes d'autorisation, pas de verrouillage de cinq jours du bureau d'enregistrement. Ce qui remplace chaque élément du processus traditionnel, et quels risques se déplacent vers d'autres niveaux."
 keywords: ['place de marché de domaines blockchain', 'transfert de domaine atomique', 'place de marché de domaines tokénisés', 'remplacer séquestre de domaine', 'vente de domaine sans séquestre', 'vente de domaine crypto', 'processus de vente de domaine tokénisé', 'vendre domaine tokénisé', 'acheter domaine tokénisé', 'vente de domaine on-chain', 'règlement NFT de domaine', 'place de marché de domaines 2026', 'liquidité de domaine tokénisé']
+relatedArticles:
+  - /fr/blog/domain-escrow-explained/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/tokenize-your-com-to-flip-it/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/tokenize-your-com/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
 ---
 
 Le processus traditionnel de vente d'un `.com` ressemble à peu près à ceci :

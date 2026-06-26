@@ -12,6 +12,24 @@ format: explainer
 description: "Qué son las reservas anticipadas y la captura de caídas de dominios, cómo los servicios compiten por hacerse con un nombre en el instante en que se libera y cuándo vale la pena pagar por una reserva anticipada."
 ogImage: ../../assets/domain-backorders-and-drop-catching-og.jpg
 keywords: ['reserva anticipada de dominio', 'captura de caídas', 'cómo reservar un dominio por anticipado', 'capturar dominios que expiran', 'DropCatch', 'SnapNames', 'NameJet', 'Park.io', 'reserva anticipada Dynadot', 'servicio de captura de caídas de dominios', 'período de gracia de redención', 'dominio en eliminación pendiente', 'cuándo caen los dominios', 'subasta de dominios expirados', 'cómo conseguir un dominio registrado']
+relatedArticles:
+  - /es/blog/expired-domains-and-the-drop-cycle/
+  - /es/blog/how-to-win-domain-auctions/
+  - /es/blog/when-to-drop-a-domain/
+  - /es/blog/domain-flipping/
+  - /es/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/tokenize-your-com/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Un nombre que quieres ya está registrado. El dueño actual no lo vende, no responde y, por lo que puedes ver, ni siquiera lo usa. Así que haces lo único que te queda: esperas a que se olvide de renovarlo. En el momento en que esa inscripción caduca y el nombre vuelve al fondo abierto, quieres ser tú quien esté allí para hacerse con él.

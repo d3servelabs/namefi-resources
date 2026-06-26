@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Urban Compass ने 2012 में UrbanCompass.com पर एक न्यूयॉर्क रेंटल ऐप के रूप में शुरुआत की, फरवरी 2015 में रीब्रांडिंग के दौरान "Urban" को हटाया, और Compass.com — एक डोमेन जो नीलामी में $1 मिलियन में सूचीबद्ध था — को अपग्रेड किया, ठीक उस वक्त जब कंपनी राष्ट्रीय स्तर पर जाने की तैयारी कर रही थी।'
 keywords: ['urbancompass.com', 'compass.com', 'compass domain name', 'domain upgrade', 'urban compass rebrand', 'robert reffkin', 'ori allon', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'compass real estate', 'real estate startup', 'exact match domain']
+relatedArticles:
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-massdrop-com-to-drop-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+  - /hi/blog/from-mrchewy-com-to-chewy-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 इससे पहले कि Compass संयुक्त राज्य अमेरिका का सबसे बड़ा आवासीय ब्रोकरेज बनता, वह एक अधिक शाब्दिक और स्थानीय चीज़ थी: **UrbanCompass.com**, न्यूयॉर्क सिटी में किराए पर अपार्टमेंट खोजने का एक ऐप।

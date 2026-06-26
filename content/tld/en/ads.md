@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Discover the potential of the .ads domain extension for agencies, marketers, and ad-tech. Learn why .ads is the ultimate choice for digital advertising.'
 keywords: ['.ads domains', '.ads TLD', 'top-level domain', 'what is .ads', 'why choose .ads', 'what is the .ads domain', 'why choose the .ads domain', 'advertising domains', 'marketing domain names', 'digital marketing TLD', 'buy .ads domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'adtech domains']
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
 ---
 
 ## **What is .ads?**

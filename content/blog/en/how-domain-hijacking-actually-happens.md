@@ -12,6 +12,24 @@ format: case-study
 description: A practical walk-through of the five ways attackers actually take over domains in the real world—social engineering, registrar account compromise, DNS provider takeover, NS hijacks, and expired-domain reclamation—and the specific controls that block each one.
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
 keywords: ['domain hijacking', 'domain security', 'registrar lock', 'transfer lock', 'dnssec', 'two factor authentication', 'social engineering', 'dangling dns', 'namefi']
+relatedArticles:
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-badgerdao-frontend-attack/
+  - /en/blog/the-lenovo-com-dns-hijack/
+  - /en/blog/the-perl-com-domain-theft/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
 ---
 
 "[Domain hijacking](/en/glossary/domain-hijacking/)" is one of those phrases that sounds dramatic but means very different things depending on how it happens. A [registrar](/en/glossary/registrar/) account taken over by a [phishing](/en/glossary/phishing/) email is a hijack. A [nameserver](/en/glossary/nameserver/) record quietly swapped at a [DNS](/en/glossary/dns/) provider is a hijack. An expired domain that someone else grabs and re-points is, in a sense, also a hijack.

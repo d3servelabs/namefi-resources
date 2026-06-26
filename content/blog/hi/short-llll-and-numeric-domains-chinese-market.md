@@ -12,6 +12,24 @@ format: analysis
 description: "क्यों चीनी ख़रीदार छोटे, चार-अक्षर वाले और न्यूमेरिक .com डोमेन को एक अलग एसेट क्लास की तरह आँकते हैं — पिनयिन, बिना-स्वर वाला प्रीमियम, और शुभ 8 बनाम अशुभ 4।"
 ogImage: ../../assets/short-llll-and-numeric-domains-chinese-market-og.jpg
 keywords: ['चीनी प्रीमियम डोमेन', 'न्यूमेरिक डोमेन', 'LLLL.com', 'चार अक्षर वाले डोमेन', 'चिप डोमेन', 'छोटे डोमेन नाम', 'शुभ अंक 8 वाले डोमेन', 'अशुभ अंक 4', 'पिनयिन डोमेन', 'NNNN डोमेन', 'चीनी डोमेन बाज़ार', 'न्यूमेरिक डोमेन की कीमत', 'बिना स्वर वाले डोमेन', 'डोमेन फ़्लिपिंग चीन', 'छोटे com डोमेन']
+relatedArticles:
+  - /hi/blog/what-makes-a-domain-valuable/
+  - /hi/blog/how-tld-affects-domain-value/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/how-to-read-comparable-domain-sales/
+  - /hi/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 किसी पश्चिमी फ़्लिपर को `xqjz.com` कीबोर्ड पर यूँ ही टाइप हुए शोर जैसा और `5808.com` किसी फ़ोन नंबर जैसा दिखता है। किसी चीनी ख़रीदार को पहला नाम एक साफ़-सुथरा, पिनयिन के अनुकूल चार-अक्षर वाला ब्रांड लग सकता है और दूसरा एक ऐसा स्ट्रिंग जो दो बार "समृद्धि" का भाव लिए हुए है। यही असमानता पूरी बात की जड़ है। डोमेन की जो श्रेणी एक बाज़ार को बेकार लगती है, उसी को दूसरा बाज़ार एक एसेट क्लास की तरह आँकता है, और जिन फ़्लिपरों ने उस दूसरे बाज़ार को पढ़ना सीख लिया, उन्होंने [आफ्टरमार्केट](/hi/glossary/aftermarket/) की अब तक की सबसे बड़ी री-प्राइसिंग घटनाओं में से एक को पकड़ लिया।

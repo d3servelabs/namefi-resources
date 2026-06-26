@@ -12,6 +12,24 @@ format: guide
 description: "Die vier Wege, um Domains zum Flippen zu beschaffen — Handregistrierung, abgelaufene Drops, Auktionen und der Aftermarket — und das Risiko- und Preisprofil jedes Kanals."
 ogImage: ../../assets/how-to-find-domains-to-flip-og.jpg
 keywords: ['Domains zum Flippen finden', 'Domains zum Flippen', 'Domains beschaffen', 'Flip-Domains finden', 'Domains handregistrieren', 'abgelaufene Domains', 'Drop Catching', 'Domain-Auktionen', 'Domain-Aftermarket', 'Domains zum Weiterverkauf kaufen', 'günstige Domains zum Flippen', 'Domain-Investing für Anfänger', 'wo Domains zum Flippen kaufen', 'Domain-Backorders', 'beste Domains zum Flippen']
+relatedArticles:
+  - /de/blog/domain-flipping/
+  - /de/blog/hand-registering-domains-to-flip/
+  - /de/blog/expired-domains-and-the-drop-cycle/
+  - /de/blog/how-to-win-domain-auctions/
+  - /de/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Beim Flippen beginnt alles mit dem, was du kaufst. Du kannst ein brillanter Verhandler und ein scharfsinniger Bewerter sein — aber wenn du einen Namen beschafft hast, den niemand haben will, haben diese Fähigkeiten keine Grundlage. Die Beschaffung ist die erste echte Fertigkeit in diesem Geschäft, und sie ist die, bei der die meisten Anfänger die Reihenfolge umdrehen: Sie verlieben sich zuerst in einen Namen und suchen erst danach nach einem Käufer.

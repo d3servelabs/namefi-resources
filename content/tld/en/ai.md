@@ -18,6 +18,24 @@ faqs:
     answer: 'The Government of Anguilla holds the IANA delegation for .ai. Since January 2025 the technical registry back-end is operated by Identity Digital. Each individual .ai domain you register is owned by you, the registrant.'
   - question: 'Why is the minimum .ai registration two years?'
     answer: 'The Anguilla registry sets the policy: .ai domains register and renew in terms of two to ten years, not the single-year cycle common to .com. This raises the upfront cost but reduces the risk of accidentally losing a name to a missed one-year renewal.'
+relatedArticles:
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/how-tld-affects-domain-value/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 The **.ai** domain is the rare extension whose two letters are also one of the most valuable acronyms on the internet. Technically it is the [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for Anguilla, a British Overseas Territory in the Eastern Caribbean. In practice it has become the default address for the artificial-intelligence industry, from frontier model labs to indie AI tools.

@@ -18,6 +18,24 @@ faqs:
     answer: '安圭拉政府持有 .ai 的 IANA 授权。自 2025 年 1 月起，技术注册后端由 Identity Digital 运营。您注册的每个 .ai 域名归您（注册人）所有。'
   - question: '为什么 .ai 最短注册期为两年？'
     answer: '安圭拉注册局制定了这一政策：.ai 域名以两年至十年为期注册和续期，而非其他地方常见的一年周期。这提高了前期成本，但降低了因错过一年续期而丢失域名的风险。'
+relatedArticles:
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 **.ai** 域名是少数两个字母同时也是互联网上最有价值缩写之一的后缀。从技术层面而言，它是安圭拉（东加勒比海英国海外领地）的国家代码顶级域名（ccTLD）。而在实践中，它已成为人工智能行业的默认地址，从前沿模型实验室到独立 AI 工具，无处不在。

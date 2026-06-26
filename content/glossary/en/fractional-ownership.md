@@ -9,6 +9,24 @@ keywords: ['fractional ownership', 'shared ownership', 'domain fractionalization
 level: 1
 sources:
   - https://www.investopedia.com/terms/f/fractionalownership.asp
+relatedArticles:
+  - /en/blog/tokenized-domain-use-cases-2026/
+  - /en/blog/why-tokenize-domains/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/what-are-xstocks/
+  - /en/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-security/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/revenue-sharing/
+  - /en/glossary/premium-domain/
+  - /en/glossary/web3/
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
 ---
 
 **Fractional ownership** allows multiple parties to own shares of a single asset, making expensive assets more accessible to smaller investors. In real estate, this might involve multiple investors owning portions of a property. For domains, fractional ownership enables multiple people to collectively own valuable domains that might be too expensive for individual purchase. A [premium domain](/en/glossary/premium-domain/) like `ai.com` could be fractionalized into tokens representing ownership shares, allowing investors to buy portions and share in potential appreciation or [revenue](/en/glossary/revenue-sharing/). This democratizes access to high-value digital real estate while enabling domain owners to partially monetize their assets without selling completely.

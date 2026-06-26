@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Ein allgemeiner, nicht beratender Überblick über die Steuer- und Buchhaltungsfragen, die Eigentümer von tokenisierten Domains häufig stellen – Anschaffungskosten, Verkäufe, Haltedauer, geschäftlich vs. privat, Schenkungen, Nachlässe. Besprechen Sie diese Fragen mit einem echten Fachexperten."
 keywords: ['NFT Domain Steuern', 'tokenisierte Domain Anschaffungskosten', 'tokenisierte Domain Buchhaltung', 'tokenisierte Domain Kapitalerträge', 'Verkauf tokenisierte Domain Steuern', 'NFT Domain Kapitalerträge', 'Domain NFT Buchhaltung', 'Domain als Wirtschaftsgut Steuer', 'Schenkung tokenisierte Domain Steuer', 'Nachlass tokenisierte Domain', 'tokenisierte Domain Betriebsausgabe', 'Domain Tokenisierung Steuerfragen', 'Steuer NFT Domain US', 'Krypto Domain Steuer']
+relatedArticles:
+  - /de/blog/taxes-and-accounting-for-domain-investors/
+  - /de/blog/how-tokenized-marketplaces-replace-escrow/
+  - /de/blog/tokenized-domain-use-cases-2026/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/tokenize-your-com/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
 ---
 
 > **Bitte zuerst lesen.** Dieser Beitrag ist **keine** Steuer-, Buchhaltungs-, Rechts- oder Finanzberatung. Wir sind weder Ihr Wirtschaftsprüfer (CPA) noch Ihr Anwalt, und wir haben keine Ahnung, in welcher Gerichtsbarkeit Sie sich befinden. Dies ist eine *Liste von Fragen*, die Sie einem echten Fachexperten stellen können. Nutzen Sie sie als Vorbereitungsbogen, nicht als verbindliche Grundlage. Der vollständige Haftungsausschluss befindet sich am Ende und gilt *insbesondere* für diesen Beitrag.

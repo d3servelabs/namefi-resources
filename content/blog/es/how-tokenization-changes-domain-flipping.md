@@ -12,6 +12,24 @@ format: explainer
 description: "Cómo llevar un dominio a la cadena redefine el flipping: propiedad verificable, liquidación atómica y transferencia programable frente al lento mercado secundario de los registradores."
 ogImage: ../../assets/how-tokenization-changes-domain-flipping-og.jpg
 keywords: ['flipping de dominios tokenizados', 'flipping de dominios on-chain', 'revender dominios tokenizados', 'flipping de dominios NFT', 'liquidación atómica de dominios', 'vender dominios como NFT', 'mercado de dominios tokenizados', 'flipping de dominios web3', 'dominio ERC-721', 'transferencia de dominios on-chain', 'custodia de dominios tokenizados', 'propiedad programable de dominios', 'alternativa al depósito en garantía de dominios', 'flipping de dominios en la cadena', 'reventa de dominios tokenizados']
+relatedArticles:
+  - /es/blog/tokenize-your-com-to-flip-it/
+  - /es/blog/onchain-domain-flipping/
+  - /es/blog/onchain-domain-custody-and-recovery/
+  - /es/blog/selling-domains-as-nfts/
+  - /es/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/tokenize-your-com/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Casi todo el trabajo del [flipping de dominios](/es/blog/domain-flipping/) no tiene nada que ver con el nombre en sí. Lo localizas, lo tasas, lo proteges y le buscas un comprador, y entonces llegas a la parte que nadie disfruta: mover el activo de verdad y cobrar sin que ninguna de las partes salga perjudicada. Ese paso de liquidación es lento, manual y se sostiene sobre la confianza entre desconocidos. La tokenización es el cambio que lo reescribe.

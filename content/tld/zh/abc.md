@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入解析 .abc 顶级域名 (TLD) 的价值。了解其含义、独特优势以及在教育和初创领域的应用。立即通过 Namefi 注册，开启您的 Web3 域名资产化之旅。'
 keywords: ['.abc domains', '.abc TLD', 'top-level domain', 'what is .abc', 'why choose .abc', 'what is the .abc domain', 'why choose the .abc domain', '.abc 域名', '域名投资', '区块链域名', 'tokenized domains', 'Web3 domains', '购买域名', '教育域名', 'Namefi']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/premium-web3-tlds/
+  - /zh/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registrar/
+  - /zh/glossary/web3/
 ---
 
 ## **什么是 .abc？**

@@ -9,6 +9,24 @@ cluster: web3-foundations
 format: explainer
 description: A multi-tenant router that lets you integrate x402 once and route requests by policy and live signals, without pushing routing logic into your app.
 keywords: ['Route402', 'x402', 'payments routing', 'facilitator router', 'multi-tenant payments', 'RBAC', 'credential encryption', 'capability routing', 'sticky settlement', 'payments infrastructure', 'YAML routing rules']
+relatedArticles:
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+  - /en/blog/from-discordapp-com-to-discord-com/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/from-urbancompass-com-to-compass-com/
+relatedTopics:
+  - /en/topics/web3-foundations/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/x402/
 ---
 
 ## The short version

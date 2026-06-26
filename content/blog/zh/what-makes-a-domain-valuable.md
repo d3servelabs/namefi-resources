@@ -12,6 +12,24 @@ format: explainer
 description: "为什么一串字母值几千美元，而几乎一模一样的另一串却分文不值：长度、真实词汇、.com 溢价、意图和品牌潜力。"
 ogImage: ../../assets/what-makes-a-domain-valuable-og.jpg
 keywords: ['是什么让域名值钱', '域名价值因素', '什么样的域名才算好域名', '域名价值', '为什么域名这么贵', '短域名', '关键词域名', '品牌型域名', 'com 溢价', '域名后缀价值', '商业意图域名', '易记的域名', '域名投资基础', '域名如何估值', '高级域名']
+relatedArticles:
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/how-to-read-comparable-domain-sales/
+  - /zh/blog/brandable-vs-keyword-domains/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 两个域名可能只差一个字母，价格却相差上千倍。`cars.com` 是家喻户晓的资产；`carz.net` 只是一张续费账单。长度相同，大致意思也相同，价值却天差地别。一旦你能解释清楚*为什么*，域名投资的大部分就不再像碰运气，而开始像在解读一个市场。

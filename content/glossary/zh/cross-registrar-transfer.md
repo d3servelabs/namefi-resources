@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是跨注册商转移？代币化如何简化此过程？
 keywords: ["跨注册商转移","注册商转移","域名迁移","转移过程","代币化"]
+relatedArticles:
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/how-tokenized-marketplaces-replace-escrow/
+  - /zh/blog/how-to-tokenize-your-com/
+  - /zh/blog/domain-flipping-and-the-law/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/auth-code/
+  - /zh/glossary/web3/
 ---
 
 **跨注册商转移** 是将域名从一个 [注册商](/zh/glossary/registrar/) 转移到另一个 [注册商](/zh/glossary/registrar/) 的过程，传统上需要授权码、等待期以及 [注册商](/zh/glossary/registrar/) 之间的协调。此过程可能需要数天或数周，并可能涉及来自两个 [注册商](/zh/glossary/registrar/) 的费用。对于 [代币化](/zh/glossary/tokenize/) 的域名，虽然底层的 [DNS](/zh/glossary/dns/) 注册可能仍需要传统的转移流程，但所有权代币可以在 [钱包](/zh/glossary/wallet/) 之间即时转移。这种分离允许在代币层面进行即时交易和所有权变更，而 [DNS](/zh/glossary/dns/) 管理可以单独处理。先进的代币化模型甚至可以通过 [智能合约](/zh/glossary/smart-contract/) 自动化跨注册商转移，从而显著降低在不同服务提供商之间移动域名的复杂性和所需时间。

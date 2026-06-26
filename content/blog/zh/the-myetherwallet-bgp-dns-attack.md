@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2018 年 4 月 24 日，攻击者劫持了 Amazon Route 53 的互联网路由，篡改了 myetherwallet.com 的 DNS 应答，并在自签名证书背后架设了一个钓鱼克隆站，最终盗走约 15 万美元的以太币。这是一篇"域名告急"深度分析文章，探讨为何 DNS 依托于一个默认信任的路由层之上。'
 keywords: ['myetherwallet', 'bgp 劫持', 'dns 劫持', 'amazon route 53', 'route 53 劫持', 'dns 安全', 'bgp 路由安全', '以太坊钓鱼', '自签名证书', 'enet as10297', 'rpki roa', '加密钱包钓鱼', '域名安全']
+relatedArticles:
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-curve-finance-dns-hijack/
+  - /zh/blog/the-bitcoin-org-dns-hijack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/dns/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 当你在浏览器中输入一个网站名称时，你正在信任两个看不见的系统对你诚实。

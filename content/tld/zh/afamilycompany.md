@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .afamilycompany 顶级域名（TLD）。探索其作为品牌顶级域名的独特价值、背后的家族企业精神以及如何在 Namefi 注册和管理您的域名资产。'
 keywords: ['.afamilycompany domains', '.afamilycompany TLD', 'top-level domain', 'what is .afamilycompany', 'why choose .afamilycompany', 'what is the .afamilycompany domain', 'why choose the .afamilycompany domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'family business branding', 'SC Johnson domain', 'Web3 domains', 'buy .afamilycompany domain', 'secure family domain']
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/premium-web3-tlds/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/new-gtld/
 ---
 
 在数字时代，域名不仅仅是一个网址，它是品牌身份的核心组成部分。随着 [ICANN（互联网名称与数字地址分配机构）](https://www.icann.org/zh) 推出新通用顶级域名（new gTLD）计划，互联网迎来了更加多样化和个性化的选择。其中，**.afamilycompany** 是一个极具特色且充满信任感的顶级域名。

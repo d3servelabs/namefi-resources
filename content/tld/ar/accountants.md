@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف لماذا يعد نطاق .accountants الخيار الأمثل للمحترفين الماليين وشركات المحاسبة. تعرف على مزاياه وكيفية تسجيله بسهولة عبر Namefi لتعزيز حضورك الرقمي."
 keywords: [".accountants domains", ".accountants TLD", "top-level domain", "what is .accountants", "why choose .accountants", "what is the .accountants domain", "why choose the .accountants domain", "نطاق accountants", "تسجيل نطاق محاسبة", "domain investing", "blockchain domains", "tokenized domain", "accounting firm website", "financial domain names", "نطاقات ويب 3"]
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/top-tlds-to-secure-for-your-law-firm/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .accountants؟**

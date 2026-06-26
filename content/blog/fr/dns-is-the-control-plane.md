@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Une perspective axée sur les opérations DNS et registrar concernant l'incident AWS du 20 octobre 2025, le fonctionnement réel du DNS, les raisons de la propagation de cette panne, et ce que les équipes internet résilientes peuvent faire."
 keywords: ['dns', 'panne aws', 'plan de contrôle', 'dynamodb', 'us-east-1', 'mise en cache dns', 'résilience cloud', 'dns multi-signataire', 'réponse aux incidents']
+relatedArticles:
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-dyn-dns-mirai-attack/
+  - /fr/blog/the-myetherwallet-bgp-dns-attack/
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 [![](../../assets/dns-is-the-control-plane.png)](../../assets/dns-is-the-control-plane.png)

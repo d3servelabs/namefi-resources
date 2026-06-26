@@ -12,6 +12,24 @@ format: guide
 description: "如何找到仍可注册、且值得花一笔注册费的域名：词表、TLD 排列组合、可塑造品牌的命名套路，以及那些能让你战胜冲动消费的筛选标准。"
 ogImage: ../../assets/hand-registering-domains-to-flip-og.jpg
 keywords: ['手工注册域名', '手工注册的域名', '可翻转的可注册域名', '查找可注册域名', '品牌型域名', '域名词表', '注册域名转售', '便宜可翻转的域名', '如何找到可注册的域名', '可转售的域名创意', '域名翻转入门', 'TLD 排列组合', '可注册的 .com 域名', '投机性域名注册', 'domaining 手工注册']
+relatedArticles:
+  - /zh/blog/domain-flipping/
+  - /zh/blog/when-to-drop-a-domain/
+  - /zh/blog/how-to-find-domains-to-flip/
+  - /zh/blog/domain-renewal-costs-and-sell-through-rate/
+  - /zh/blog/domain-portfolio-management/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 手工注册是进入域名翻转最便宜的入口，也是在其中最容易把钱浪费掉的方式。你在注册商那里输入一个名字，它显示「可注册」，你付了注册费，于是现在你拥有了一个全新的、从来没有人想要过的域名。最后那一点正是陷阱所在。截至 2023 年底，已经有 [3.598 亿个域名](https://en.wikipedia.org/wiki/Domain_name#:~:text=359.8%20million%20domain%20names%20had%20been%20registered) 被注册，而*尚未注册*的字符串组合在数量上几乎是无穷的。一个名字「可注册」，几乎说明不了它是否值得拥有。通常它说明的恰恰相反。

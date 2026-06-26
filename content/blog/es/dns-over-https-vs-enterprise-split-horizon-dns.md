@@ -8,6 +8,24 @@ draft: false
 description: 'DNS sobre HTTPS (DoH) protege la privacidad del usuario encriptando las consultas DNS dentro de HTTPS. El DNS empresarial de horizonte dividido depende de que la red pueda ver esas consultas. La colisión entre ambos está redefiniendo cómo las redes corporativas, navegadores y sistemas operativos manejan la resolución de nombres.'
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg
 keywords: ['dns sobre https', 'doh', 'dns de horizonte dividido', 'dns empresarial', 'dot', 'dns cifrado', 'dns interno', 'resolución de nombres', 'namefi']
+relatedArticles:
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/the-myetherwallet-bgp-dns-attack/
+  - /es/blog/the-dnspionage-campaign/
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/dns/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Durante la mayor parte de la historia de Internet, las consultas [DNS](/es/glossary/dns/) viajaron en texto plano a través del puerto 53. Cualquiera en la ruta de la red podía leerlas, registrarlas y modificarlas. Ese era un problema de privacidad que el IETF finalmente abordó con dos alternativas encriptadas (cifradas): [DNS sobre TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) en 2016 y [DNS sobre HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484) en 2018.

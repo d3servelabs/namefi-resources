@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: Eine TLD ist der Teil einer Domain nach dem letzten Punkt, wie .com oder .io. Erfahren Sie, was eine TLD ist, welche Typen es gibt (gTLD, ccTLD, Sponsored, neue gTLD, IDN) und wie Sie die richtige wählen.
 keywords: ['tld', 'tld bedeutung', 'was ist eine tld', 'was ist eine top-level-domain', 'top-level-domain', 'tld definition', 'tld def', 'tld erklärung', 'tld typen', 'gtld vs cctld', 'tld beispiele', 'was ist eine domain-endung', 'domain-endung', 'gTLD', 'ccTLD', 'sponsored TLD', 'neue gTLD', 'IDN TLD', 'ICANN', 'IANA', 'domain registry', 'domain registrar', 'tld auswählen', 'beliebte TLDs', 'namefi']
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/top-tlds-to-secure-for-your-saas/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## Was ist eine TLD?

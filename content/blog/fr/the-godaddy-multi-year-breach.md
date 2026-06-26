@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Entre 2020 et 2022, un seul groupe de menaces a vécu à l'intérieur de l'infrastructure de GoDaddy — volant du code source, exposant 1,2 million de clients Managed WordPress, et redirigeant par intermittence des sites clients vers des destinations malveillantes. Une analyse approfondie du risque de concentration chez les registraires et des leçons sur les points uniques de défaillance."
 keywords: ['violation godaddy', 'fuite de données godaddy', 'violation managed wordpress', 'sécurité registraire', 'sécurité domaine', 'violation pluriannuelle', 'malware cpanel', 'attaque de redirection de site', 'exposition clé privée ssl', 'violation mot de passe sftp', 'cybersécurité sec 10-k', 'risque de concentration registraire', 'point unique de défaillance']
+relatedArticles:
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-dnspionage-campaign/
+  - /fr/blog/the-lenovo-com-dns-hijack/
+  - /fr/blog/the-badgerdao-frontend-attack/
+  - /fr/blog/the-icann-spear-phishing-breach/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
+  - /fr/glossary/tld/
 ---
 
 Un [registraire](/fr/glossary/registrar/) de noms de domaine est l'entreprise la plus ennuyeuse dont vous dépendrez entièrement.

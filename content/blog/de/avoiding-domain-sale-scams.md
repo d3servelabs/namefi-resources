@@ -12,6 +12,24 @@ format: guide
 description: "Die gängigen Betrugsmaschen beim Domainverkauf – gefälschte Treuhand, falsche Käufer, Rückbuchungen nach Überzahlung, Transfer vor Zahlung – und die Gewohnheiten, die deine Verkäufe sicher halten."
 ogImage: ../../assets/avoiding-domain-sale-scams-og.jpg
 keywords: ['Betrug beim Domainverkauf', 'Domainbetrug vermeiden', 'gefälschte Treuhand-Website', 'Fake-Escrow', 'Käuferbetrug bei Domains', 'Überzahlungsbetrug', 'Rückbuchungsbetrug', 'Transfer vor Zahlung', 'Domain sicher verkaufen', 'Domain-Treuhand', 'Betrug beim Domainverkauf', 'gefälschter Domain-Broker', 'Domain-Transfer-Betrug', 'sichere Domain-Transaktion', 'Sicherheit für Domainer']
+relatedArticles:
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/working-with-domain-brokers/
+  - /de/blog/domain-flipping-and-the-law/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
 ---
 
 Das Geld beim [Domain-Flipping](/de/blog/domain-flipping/) wird verdient, wenn ein Name endlich verkauft wird. Genau dann tauchen auch die Betrüger auf. Ein aktives Verkaufsangebot ist eine offene Einladung an jeden, der bereit ist, sich als Käufer, Broker oder Treuhandfirma auszugeben. Der teuerste Fehler, den ein Flipper machen kann, ist nicht, den falschen Namen zu kaufen. Es ist, einen guten Namen der falschen Person zu übergeben.

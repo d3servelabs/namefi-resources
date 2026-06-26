@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.investopedia.com/terms/s/secondarymarket.asp
   - https://www.namebio.com/
+relatedArticles:
+  - /zh/blog/how-to-find-domains-to-flip/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/expired-domains-and-the-drop-cycle/
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/domain-appraisal-tools-compared/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/premium-domain/
+  - /zh/glossary/domain-broker/
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/short-domain/
 ---
 
 **二级市场**（亦称*次级市场*）是已注册域名在持有者之间买卖的场所，有别于直接向[注册商](/zh/glossary/registrar/)注册全新名称的一级市场。大多数令人印象深刻的短名称或含关键词的域名早已被人抢注，因此二级市场是它们实际易手的地方——通过交易平台、[域名经纪人](/zh/glossary/domain-broker/)、[拍卖](/zh/glossary/auction/)或私下交易达成，通常经由[托管](/zh/glossary/escrow/)结算。成交价格从几美元到八位数不等，视[溢价域名](/zh/glossary/premium-domain/)的稀缺程度而定。

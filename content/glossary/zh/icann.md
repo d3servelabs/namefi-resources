@@ -14,6 +14,24 @@ sources:
   - https://www.iana.org/about
   - https://www.icann.org/en/history/iana-stewardship-transition
   - https://en.wikipedia.org/wiki/ICANN
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-is-udrp/
+  - /zh/blog/the-icann-spear-phishing-breach/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/the-panix-com-domain-hijack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 **ICANN（互联网名称与数字地址分配机构）**，即 Internet Corporation for Assigned Names and Numbers，是一家依据加利福尼亚州法律于 1998 年注册的非营利性多利益相关方组织。它负责协调使全球互联网作为统一网络运行所需的技术政策和数据库。具体而言，ICANN 管理 [IP 地址](/zh/glossary/ip-address/)的分配、[DNS](/zh/glossary/dns/) 名称的指派以及协议标识符的分发——这些任务统称为 [IANA 职能](/zh/glossary/iana/)。缺乏这种协调，全球 [DNS](/zh/glossary/dns/) 将会碎片化，导致网络地址无法跨网络解析。

@@ -12,6 +12,24 @@ format: guide
 description: "域名翻转究竟是什么——低价买入、高价卖出——以及这门生意背后的整套技能：从寻货、估值到出售。"
 ogImage: ../../assets/domain-flipping-og.jpg
 keywords: ['域名翻转', '如何翻转域名', '翻转域名赚利润', '域名翻转入门', '低买高卖域名', '域名投资', '靠域名赚钱', '域名翻转指南', '如何给域名估值', '寻找可翻转的域名', '域名组合', '域名转售商', '域名翻转合法吗', '域名二级市场']
+relatedArticles:
+  - /zh/blog/domain-renewal-costs-and-sell-through-rate/
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/when-to-drop-a-domain/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 这套说辞是商业史上最古老的一条：低买高卖。花几美元注册或收购一个域名，找到一个比你更需要它的人，再以你买入价的数倍卖出。做得漂亮时，它看起来毫不费力——一个聪明的名字便宜买进，几个月后换来一张五位数的支票。这样的故事是真实的。但它也只是高光集锦。

@@ -6,6 +6,24 @@ tags: ["faq","domains"]
 authors: ["namefiteam"]
 description: डोमेन निवेश में महारत हासिल करें हमारी व्यापक डोमेन शब्दावली गाइड के साथ। बुनियादी अवधारणाओं से लेकर उन्नत ट्रेडिंग रणनीतियों तक, डोमेन पेशेवरों की भाषा सीखें।
 keywords: ["डोमेन शब्दावली","डोमेन निवेश","डोमेन नाम","डोमेन ट्रेडिंग","डोमेन शब्दावली","टीएलडी","रजिस्ट्रार","डोमेन नीलामी","डोमेन पोर्टफोलियो","डोमेन मूल्यांकन","प्रीमियम डोमेन","डोमेन फ्लिपिंग"]
+relatedArticles:
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/how-to-value-a-domain-name/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /hi/topics/domain-basics/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 

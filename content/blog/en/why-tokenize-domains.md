@@ -9,6 +9,24 @@ cluster: domain-tokenization
 format: opinion
 description: This article explains why traditional domains should be tokenized on-chain and highlights the benefits such as clearer ownership, financial composability, and freer, faster trading.
 keywords: ['domain tokenization', 'blockchain domains', 'NFT domains', 'on-chain domains', 'domain ownership', 'decentralized domains', 'domain trading', 'web3 domains', 'smart contracts', 'domain composability', 'DNS tokenization', 'digital assets']
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/tokenized-domain-use-cases-2026/
+  - /en/blog/how-tokenized-marketplaces-replace-escrow/
+  - /en/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/web3-foundations/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
+  - /en/glossary/tld/
 ---
 
 You might wonder: traditional domains can already be registered, used, and traded—why would Namefi want to put them "on-chain"? What value does tokenizing a domain really bring?

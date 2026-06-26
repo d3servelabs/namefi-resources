@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "دليلك الشامل حول نطاق .net: تاريخه، استخداماته، ولماذا يعد من أكثر النطاقات موثوقية عالمياً. ابدأ رحلتك الرقمية وسجّل نطاقك اليوم مع Namefi."
 keywords: [".net domains", ".net TLD", "top-level domain", "what is .net", "why choose .net", "what is the .net domain", "why choose the .net domain", "نطاقات .net", "ما هو نطاق .net", "لماذا تختار .net", "نطاق المستوى الأعلى", "استثمار النطاقات", "نطاقات البلوك تشين", "domain investing", "tokenized domains"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .net؟**

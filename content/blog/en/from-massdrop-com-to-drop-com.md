@@ -11,6 +11,24 @@ seriesOrder: 16
 format: case-study
 description: 'How Massdrop spent seven years building an enthusiast group-buying community, then rebranded to Drop in 2019 — quietly acquiring the premium Drop.com domain (asking price once $800,000) before the rename, and why dropping "Mass" mattered.'
 keywords: ['massdrop.com', 'drop.com', 'drop domain name', 'massdrop rebrand', 'domain upgrade', 'group buying', 'mechanical keyboards', 'audiophile community', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'exact match domain', 'community commerce']
+relatedArticles:
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-urbancompass-com-to-compass-com/
+  - /en/blog/from-teslamotors-com-to-tesla-com/
+  - /en/blog/from-snapchat-com-to-snap-com/
+  - /en/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 For its first seven years, one of the internet's most beloved enthusiast communities lived at an address that explained exactly what it did: **Massdrop.com**.

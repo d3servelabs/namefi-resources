@@ -18,6 +18,24 @@ faqs:
     answer: 'Abogado is the Spanish word for lawyer or attorney. The .abogado extension is the Spanish-language counterpart to the English .law and .attorney domains, aimed at practitioners serving Hispanic and Latin American audiences.'
   - question: 'Does .abogado support WHOIS privacy?'
     answer: 'Generally no. Because eligibility depends on verified identity, the registry requires the qualified lawyer or legal institution name to appear in the registration record, so standard WHOIS/RDAP privacy redaction is typically not available.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-law-firm/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.abogado** domain is one of the few top-level domains where you cannot simply buy a name — you have to prove you are a lawyer first. "Abogado" is the Spanish word for *lawyer* or *attorney*, and the extension is the Spanish-language sibling of restricted legal TLDs like [.law](/en/tld/law) and [.attorney](/en/tld/attorney). For verified attorneys and firms serving Hispanic and Latin American clients, a .abogado address is a built-in trust badge: the suffix itself certifies that a real legal regulator has the [registrant](/en/glossary/registrant/) on record.

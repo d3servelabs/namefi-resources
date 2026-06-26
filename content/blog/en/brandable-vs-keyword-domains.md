@@ -12,6 +12,24 @@ format: comparison
 description: "Brandable invented names vs exact-match keyword domains: who buys each, which resells more reliably, and the trademark angle every flipper should know."
 ogImage: ../../assets/brandable-vs-keyword-domains-og.jpg
 keywords: ['brandable domains', 'keyword domains', 'exact match domains', 'brandable vs keyword domains', 'invented domain names', 'generic domain names', 'domain investing', 'domain flipping', 'which domains sell better', 'type-in traffic', 'domain trademark', 'descriptive domain names', 'domain resale value', 'startup domain names', 'domain name strategy']
+relatedArticles:
+  - /en/blog/domain-flipping/
+  - /en/blog/what-makes-a-domain-valuable/
+  - /en/blog/hand-registering-domains-to-flip/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+  - /en/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Two domains land in your inbox the same week. One is `Stripe`-style: a short, invented word that means nothing until a company pours meaning into it. The other is `CarInsurance`: a plain description of exactly what the buyer sells. Both can make money. They make it in completely different ways, sell to completely different buyers, and carry completely different risks. Buying one when you should have bought the other is one of the most common ways flippers waste a renewal budget.

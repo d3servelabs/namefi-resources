@@ -12,6 +12,24 @@ format: faq
 description: "Wie Domain-Investoren mit Steuern umgehen: Vorratsvermögen vs. Kapitalvermögen, Anschaffungskosten, wann Einkünfte anfallen und die Absetzbarkeit von Verlängerungen. Bildungsinhalt, keine Beratung."
 ogImage: ../../assets/taxes-and-accounting-for-domain-investors-og.jpg
 keywords: ['Domain-Investoren Steuern', 'Domain-Flipping Steuern', 'Anschaffungskosten Domain', 'sind Domains Kapitalvermögen', 'Domain-Händler vs. Investor', 'Domain-Vorratsvermögen Steuer', 'immaterielles Wirtschaftsgut Domain Abschreibung', 'Kapitalgewinn Domain-Verkauf', 'Domain-Verlängerungen steuerlich absetzen', 'Domain-Haltedauer steuerliche Behandlung', 'wie wird ein Domain-Verkauf besteuert', 'Domain-Portfolio Buchhaltung', 'Steuerfragen Domain-Investor', 'gewöhnliche Einkünfte vs. Kapitalgewinn Domains']
+relatedArticles:
+  - /de/blog/domain-portfolio-management/
+  - /de/blog/domain-renewal-costs-and-sell-through-rate/
+  - /de/blog/domain-flipping/
+  - /de/blog/when-to-drop-a-domain/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
 ---
 
 > **Lies das zuerst.** Dieser Beitrag ist **keine** Steuer-, Buchhaltungs-, Rechts- oder Finanzberatung. Wir sind nicht dein Steuerberater, und wir haben keine Ahnung, in welcher Rechtsordnung du dich befindest oder wie deine Tätigkeit strukturiert ist. Behandle alles, was unten steht, als eine *Liste von Fragen und Konzepten, die du einem echten Fachmann vorlegen solltest*, nicht als eine Position, auf die du dich verlassen kannst. Der vollständige Haftungsausschluss steht ganz unten, und er gilt hier mit besonderer Wucht.

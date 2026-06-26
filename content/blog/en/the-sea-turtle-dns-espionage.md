@@ -11,6 +11,24 @@ seriesOrder: 20
 format: case-study
 description: 'How "Sea Turtle," a state-sponsored campaign disclosed by Cisco Talos in 2019, hijacked DNS by compromising registrars, registries, and DNS providers — redirecting governments, ministries, and energy firms to attacker servers, forging valid certificates, and even breaching a national TLD registry.'
 keywords: ['sea turtle dns hijacking', 'cisco talos sea turtle', 'dns hijacking attack', 'state-sponsored dns attack', 'registry compromise', 'registrar compromise', 'dns espionage campaign', 'lets encrypt mitm certificate', 'netnod compromise', 'ics-forth greece ccTLD', 'cisa emergency directive 19-01', 'dns security', 'domain ownership security', 'nation state cyberattack']
+relatedArticles:
+  - /en/blog/the-dnspionage-campaign/
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-myetherwallet-bgp-dns-attack/
+  - /en/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/dns/
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
 ---
 
 Most cyberattacks try to break *into* a target. The Sea Turtle campaign did something quieter and far more dangerous: it broke into the **map** that tells the entire internet where the target lives.

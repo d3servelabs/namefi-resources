@@ -12,6 +12,24 @@ format: explainer
 description: "يعني إيه حيلة النطاق، وليه البراندات والمضاربين بيدوروا على النطاقات القصيرة الذكية دي، وإيه مخاطر الـ ccTLD اللي وراها، وإزاي تحدّد قيمتها."
 ogImage: ../../assets/domain-hacks-explained-og.jpg
 keywords: ['حيلة النطاق', 'حيل النطاقات', 'يعني إيه حيلة النطاق', 'أسماء نطاقات ذكية', 'del.icio.us', 'نطاق bit.ly', 'حيلة نطاق ccTLD', 'أسماء نطاقات قصيرة', 'نطاقات قابلة للبراند', 'أمثلة على حيل النطاقات', 'youtu.be', 'instagr.am', 'goo.gl', 'مصادرة vb.ly']
+relatedArticles:
+  - /ar/blog/how-tld-affects-domain-value/
+  - /ar/blog/what-makes-a-domain-valuable/
+  - /ar/blog/from-del-icio-us-to-delicious-com/
+  - /ar/blog/how-to-value-a-domain-name/
+  - /ar/blog/domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 في نوع من عناوين الويب إنت مش بتقراه قد ما بتـ*فكّه*. بتبصّ عَ الحروف، بتشوف النقط، وبعدين السلسلة كلها بتتلمّ في كلمة واحدة ماشية على طول عبر علامات الترقيم. أشهر واحدة اتعملت في حياتها كانت `del.icio.us`. اقراها بالراحة هتتفكّك لحتت؛ اقراها بسرعة هتلاقيها بتقول "delicious" (لذيذ).

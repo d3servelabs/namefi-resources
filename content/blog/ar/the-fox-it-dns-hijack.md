@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في سبتمبر 2017، اخترق مهاجمون حساب مسجّل النطاقات الخارجي لشركة Fox-IT الهولندية للأمن السيبراني، وغيّروا إعدادات DNS، وحصلوا بالاحتيال على شهادة TLS، ونفّذوا هجوم رجل-في-المنتصف لمدة 10 ساعات على مرور بيانات العملاء — لحين اكتشفت Fox-IT الأمر ونشرت واحداً من أكثر تقارير ما بعد الحادث شفافيةً في تاريخ الصناعة.'
 keywords: ['اختطاف dns لـ fox-it', 'هجوم رجل في المنتصف fox-it', 'حادثة fox-it 2017', 'اختطاف dns', 'اختراق حساب مسجّل النطاقات', 'شهادة ssl مزوّرة', 'هجوم رجل في المنتصف', 'أمان مسجّل النطاقات', 'المصادقة الثنائية لـ dns', 'dnssec', 'قفل السجل', 'أمان النطاقات', 'ncc group fox-it']
+relatedArticles:
+  - /ar/blog/the-dnspionage-campaign/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+  - /ar/blog/the-badgerdao-frontend-attack/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
 ---
 
 الشيء المميّز في هجوم رجل-في-المنتصف إنه وهو بيحصل، كل حاجة بتبان عادية تماماً.

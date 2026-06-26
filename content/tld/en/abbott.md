@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Everything you need to know about the .abbott TLD. Explore the purpose of this exclusive domain, its use cases in healthcare, and the benefits of Brand TLDs."
 keywords: [".abbott domains", ".abbott TLD", "top-level domain", "what is .abbott", "why choose .abbott", "what is the .abbott domain", "why choose the .abbott domain", "brand TLDs", "healthcare domain names", "restricted top-level domains", "Abbott Laboratories domain", "domain investing", "blockchain domains", "tokenized domain", "Namefi"]
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 ## **What is .abbott?**

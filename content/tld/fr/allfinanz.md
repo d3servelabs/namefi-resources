@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .allfinanz, une extension puissante pour le secteur financier. Apprenez ses avantages, son usage et comment l'enregistrer avec Namefi."
 keywords: ['.allfinanz domains', '.allfinanz TLD', 'top-level domain .allfinanz', 'what is .allfinanz', 'why choose .allfinanz', 'what is the .allfinanz domain', 'why choose the .allfinanz domain', 'investir domaine internet', 'domaine finance', 'blockchain domains', 'tokenized domain', 'gestion de patrimoine', 'bancassurance', 'web3 finance', 'achat nom de domaine']
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
+  - /fr/glossary/registry/
 ---
 
 Dans le monde en constante évolution des noms de domaine, choisir la bonne extension (TLD) est crucial pour définir votre identité numérique. Alors que les extensions classiques comme le .com ou le .net restent populaires, de nouveaux gTLD (domaines génériques de premier niveau) émergent pour offrir plus de spécificité et de pertinence sectorielle.

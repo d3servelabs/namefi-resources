@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://moz.com/learn/seo/domain
   - https://www.namebio.com/
+relatedArticles:
+  - /ar/blog/brandable-vs-keyword-domains/
+  - /ar/blog/from-airbedandbreakfast-com-to-airbnb-com/
+  - /ar/blog/what-makes-a-domain-valuable/
+  - /ar/blog/domain-hacks-explained/
+  - /ar/blog/how-to-name-your-project/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/exact-match-domain/
+  - /ar/glossary/domain-appraisal/
+  - /ar/glossary/tld/
+  - /ar/glossary/premium-domain/
+  - /ar/glossary/dns/
 ---
 
 **النطاق القابل للتبرند** هو اسم بيتاختار عشان سهل تذكره وصوته وشكله الجميل، مش عشان كلمة مفتاحية حرفية — تخيّل كلمات مخترعة زي Zoom أو Spotify أو Canva، اللي مالهاش تعريف في القاموس لكنها مميزة على طول. على عكس [النطاق المطابق للبحث](/ar/glossary/exact-match-domain/)، الاسم القابل للتبرند مش بيحاول يتصدر نتائج البحث بمطابقة استعلام معيّن؛ بدل كده بيخلق هوية جديدة تقدر الشركة تكبر معاها وتملكها بشكل حصري. النطاقات القابلة للتبرند غالباً بتبقى قصيرة (مقطع أو مقطعين)، وسهلة التهجي بعد سماعها مرة واحدة، وخالية من الشرطات والأرقام. المستثمرون في هذه الفئة بيعتمدوا كتير على خدمات [تقييم النطاق](/ar/glossary/domain-appraisal/) ومنصات زي Brandpa أو Squadhelp اللي بتنتقي الأسماء على أساس معايير لغوية وجمالية. لأن الأسماء القابلة للتبرند بتستمد قيمتها من الخيال مش من البيانات، بتبقى أصعب في التسعير من الأصول القائمة على كلمات مفتاحية، لكن لمّا بتوقع مع المشتري الصح ممكن تتحوّل لـ[نطاق متميز](/ar/glossary/premium-domain/) بسعر مرتفع.

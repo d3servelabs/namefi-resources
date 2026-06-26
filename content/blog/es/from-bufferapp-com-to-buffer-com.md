@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Cómo Buffer lanzó en 2010 desde BufferApp.com porque Buffer.com estaba ocupado, luego pasó 624 días adquiriendo el dominio exacto —llegando incluso a mostrarle al vendedor su saldo bancario— y por qué una empresa famosa por la transparencia radical guardó silencio sobre el único número que todos querían saber: el precio.'
 keywords: ['bufferapp.com', 'buffer.com', 'nombre de dominio buffer', 'mejora de dominio', 'joel gascoigne', 'transparencia buffer', 'dominio de coincidencia exacta', 'nomenclatura de startups', 'branding de marca', 'dominio premium', 'estrategia de dominio', 'historia de buffer', 'adquisición de dominio', 'dominio que define la categoría']
+relatedArticles:
+  - /es/blog/from-ubercab-com-to-uber-com/
+  - /es/blog/from-slackhq-com-to-slack-com/
+  - /es/blog/from-discordapp-com-to-discord-com/
+  - /es/blog/from-mona-co-to-crypto-com/
+  - /es/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/name-change-game-change/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
 ---
 
 Antes de ser la herramienta de redes sociales que configuras y olvidas, Buffer respondía a un nombre más largo: **BufferApp.com**.

@@ -12,6 +12,24 @@ format: explainer
 description: "Por qué un dominio tiene un precio mayorista/de revendedor bajo y un precio para el usuario final mucho más alto, cuán grande es la brecha y qué cifra aplica a tu venta."
 ogImage: ../../assets/end-user-vs-reseller-domain-pricing-og.jpg
 keywords: ['precio de dominio usuario final vs revendedor', 'precio mayorista de dominio', 'precio minorista de dominio', 'brecha de precio de dominio', 'cuánto vale mi dominio', 'vender dominio a usuario final', 'precio de dominio de revendedor', 'valor mayorista de dominio', 'margen de domain flipping', 'precios en el mercado secundario de dominios', 'vender dominio al por mayor', 'comprador final de dominio', 'ventas comparables de dominios', 'estrategia de precios de dominios', 'dos precios para un dominio']
+relatedArticles:
+  - /es/blog/how-to-value-a-domain-name/
+  - /es/blog/domain-flipping/
+  - /es/blog/how-to-read-comparable-domain-sales/
+  - /es/blog/working-with-domain-brokers/
+  - /es/blog/domain-appraisal-tools-compared/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 Pregunta a dos domainers con experiencia cuánto vale un nombre y puedes obtener dos respuestas que difieren por un factor de diez, y ambas pueden ser correctas. Eso no es descuido. Es el dato de precios más importante de este negocio: el mismo dominio tiene dos precios legítimos en el mismo instante, y cuál aplica depende por completo de quién está comprando. Si lo pasas por alto, o bien regalarás un nombre por una fracción de su valor o te quedarás sentado sobre él para siempre esperando una cifra que nadie en tu carril va a pagar.

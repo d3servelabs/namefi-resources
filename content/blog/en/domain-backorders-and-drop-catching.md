@@ -12,6 +12,24 @@ format: explainer
 description: "What domain backorders and drop-catching are, how services race to grab a name the instant it releases, and when a backorder is worth paying for."
 ogImage: ../../assets/domain-backorders-and-drop-catching-og.jpg
 keywords: ['domain backorder', 'drop catching', 'how to backorder a domain', 'catch expiring domains', 'DropCatch', 'SnapNames', 'NameJet', 'Park.io', 'Dynadot backorder', 'domain drop catching service', 'redemption grace period', 'pending delete domain', 'when do domains drop', 'expired domain auction', 'how to get a registered domain']
+relatedArticles:
+  - /en/blog/expired-domains-and-the-drop-cycle/
+  - /en/blog/how-to-win-domain-auctions/
+  - /en/blog/when-to-drop-a-domain/
+  - /en/blog/domain-flipping/
+  - /en/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 A name you want is already taken. The current owner isn't selling, isn't answering, and as far as you can tell isn't even using it. So you do the only thing left: you wait for them to forget to renew it. The moment that registration lapses and the name falls back into the open pool, you want to be the one standing there to grab it.

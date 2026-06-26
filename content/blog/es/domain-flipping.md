@@ -12,6 +12,24 @@ format: guide
 description: "Qué es realmente la reventa de dominios — comprar nombres baratos y venderlos caros — y el conjunto de habilidades detrás del negocio, desde la búsqueda y la tasación hasta la venta."
 ogImage: ../../assets/domain-flipping-og.jpg
 keywords: ['reventa de dominios', 'cómo revender dominios', 'revender dominios con ganancias', 'reventa de dominios para principiantes', 'comprar y vender dominios', 'inversión en dominios', 'ganar dinero con dominios', 'guía de reventa de dominios', 'cómo valorar un dominio', 'encontrar dominios para revender', 'cartera de dominios', 'revendedor de dominios', 'es legal la reventa de dominios', 'mercado secundario de dominios']
+relatedArticles:
+  - /es/blog/domain-renewal-costs-and-sell-through-rate/
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/when-to-drop-a-domain/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+  - /es/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 El argumento de venta es el más antiguo del comercio: comprar barato, vender caro. Registra o adquiere un nombre de dominio por unos pocos dólares, encuentra a alguien que lo necesite más que tú y véndelo por muchas veces lo que pagaste. Bien hecho, parece no costar esfuerzo: un nombre ingenioso comprado barato, un cheque de cinco cifras meses después. Esa historia es real. También es el resumen de lo más destacado.

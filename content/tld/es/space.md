@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Descubre el potencial del dominio .space: una extensión versátil para creativos, startups y proyectos Web3. Aprende por qué elegirlo y regístralo en Namefi."
 keywords: [".space domains", "TLD .space", "top-level domain .space", "qué es .space", "por qué elegir .space", "qué es el dominio .space", "por qué elegir el dominio .space", "inversión en dominios", "dominios tokenizados", "dominios blockchain", "registrar dominio .space", "disponibilidad de dominios cortos", "nuevos gTLD", "identidad digital", "Namefi"]
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .space?**

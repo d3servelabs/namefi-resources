@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .alsace TLD: Die perfekte Domain für Unternehmen und Kultur im Elsass. Entdecken Sie Vorteile, SEO-Chancen und Registrierung bei Namefi."
 keywords: ['.alsace domains', '.alsace TLD', 'top-level domain', 'was ist .alsace', 'warum .alsace wählen', 'was ist die .alsace domain', 'warum die .alsace domain wählen', 'Elsass Domain registrieren', 'GeoTLD Elsass', 'lokale SEO Domains', 'Domain Investment', 'Blockchain Domains', 'Namefi', 'Web3 Domains', 'digitale Identität Elsass']
+relatedArticles:
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/web3/
 ---
 
 ## **Was ist .alsace?**

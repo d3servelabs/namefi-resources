@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://developers.google.com/search/docs/fundamentals/seo-starter-guide
   - https://moz.com/learn/seo/backlinks
+relatedArticles:
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/expired-domains-and-the-drop-cycle/
+  - /hi/blog/how-to-win-domain-auctions/
+  - /hi/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/domain-authority/
+  - /hi/glossary/anchor-text/
+  - /hi/glossary/serp/
+  - /hi/glossary/tld/
+  - /hi/glossary/aftermarket/
 ---
 
 एक **बैकलिंक** (या *इनबाउंड लिंक*) किसी अन्य वेबसाइट का वह हाइपरलिंक है जो आपकी साइट की ओर इशारा करता है। बैकलिंक [डोमेन अथॉरिटी](/hi/glossary/domain-authority/) के प्राथमिक चालक हैं: सर्च इंजन प्रत्येक को विश्वास का एक वोट मानते हैं, इसलिए जो डोमेन कई उच्च-गुणवत्ता वाले लिंक अर्जित करता है वह [SERP](/hi/glossary/serp/) पर बेहतर रैंक करता है। सभी लिंक समान भार नहीं रखते — किसी उच्च-ट्रैफिक, विषयगत रूप से प्रासंगिक समाचार आउटलेट का एक लिंक अस्पष्ट निर्देशिकाओं के सैकड़ों लिंकों से अधिक वजनदार हो सकता है — और एक लिंक का [एंकर टेक्स्ट](/hi/glossary/anchor-text/) सर्च इंजन को संकेत देता है कि गंतव्य किस बारे में है। चूँकि एक मजबूत बैकलिंक प्रोफ़ाइल वर्षों में जमा होती है, इसलिए एक पुराना डोमेन जिसके पास पहले से यह प्रोफ़ाइल है, [आफ्टरमार्केट](/hi/glossary/aftermarket/) में महत्वपूर्ण प्रीमियम की माँग कर सकता है।

@@ -18,6 +18,24 @@ faqs:
     answer: 'No. Unlike .law or .cpa, .attorney does not verify professional credentials. It is open to all registrants, so the suffix signals a legal focus but does not guarantee the owner is a licensed attorney.'
   - question: 'Who operates the .attorney registry?'
     answer: 'The .attorney registry is operated by Dog Beach, LLC, a subsidiary of Identity Digital (formerly Donuts), under an ICANN registry agreement. The TLD was delegated to the DNS root zone in 2014.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-law-firm/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.attorney** domain is a new [generic top-level domain](/en/glossary/gtld/) ([new gTLD](/en/glossary/new-gtld/)) created specifically for the legal profession. For lawyers, law firms, and legal-service businesses, it offers a self-explanatory web address that says exactly what the site is about before a visitor reads a single word. If you practice law and the matching `.com` is taken or generic, a `.attorney` name is one of the clearest ways to claim a descriptive, on-brand presence.

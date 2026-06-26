@@ -16,6 +16,24 @@ faqs:
     answer: 'The .xyz domain suits startups, Web3 and crypto projects, developers, and anyone whose preferred .com is taken. Because it carries no industry meaning, it works as a blank-slate brand for almost any venture seeking a short, available name.'
   - question: 'Why does .xyz have a reputation for spam?'
     answer: 'Its low pricing and open registration have attracted bulk and abusive registrations, and security trackers have flagged .xyz among extensions with high malicious volume. The TLD itself is legitimate; reputation depends on the individual domain and how it is used.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.xyz domain** is one of the most widely adopted new [generic top-level domains](/en/glossary/gtld/) (gTLDs) of the post-2014 era, and arguably the best-known alternative to .com. Its three-letter, end-of-the-alphabet name carries no built-in industry meaning, which makes it a true blank canvas for any brand, project, or personal site.

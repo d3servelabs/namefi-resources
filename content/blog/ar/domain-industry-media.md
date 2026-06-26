@@ -8,6 +8,24 @@ draft: false
 description: 'دليل إلى المنافذ الإخبارية، ومواقع بيانات المبيعات، والبودكاست التي تغطي صناعة أسماء النطاقات كصحافة — DomainNameWire، DNJournal، TheDomains، NameBio، DomainSherpa، CircleID، وغيرها.'
 ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['أخبار صناعة النطاقات', 'وسائل إعلام أسماء النطاقات', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'أخبار icann']
+relatedArticles:
+  - /ar/blog/famous-domainer-blogs-and-newsletters/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/top-domain-trader-forums/
+  - /ar/blog/how-to-value-a-domain-name/
+  - /ar/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-investor-field-guide/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 إذا كانت [مدونات مستثمري النطاقات الفردية](/blog/famous-domainer-blogs-and-newsletters) تمثل أصواتاً شخصية، فإن *وسائل إعلام صناعة النطاقات* هي المنافذ التي تعمل بشكل أقرب إلى غرف الأخبار — أحياناً تكون غرف أخبار يديرها شخص واحد، ولكن بموقف تحريري صحفي بدلاً من يوميات متداول. فهي تغطي الصفقات، والسياسات، وتحركات السجلات/المسجلين، و[ICANN](/ar/glossary/icann/)، والدراما العرضية، وهي المصادر التي يقتبس منها الآخرون.

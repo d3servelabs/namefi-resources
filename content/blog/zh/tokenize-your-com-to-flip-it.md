@@ -12,6 +12,24 @@ format: guide
 description: "Namefi 实操指南：把一个 .com 上链、保持 DNS 正常解析，并以 NFT 形式原子结算来完成倒卖，而不是陷入第三方担保的僵局。"
 ogImage: ../../assets/tokenize-your-com-to-flip-it-og.jpg
 keywords: ['代币化 .com 来倒卖', '代币化你的 com', '倒卖代币化域名', '把域名作为 NFT 出售', '代币化 .com 倒卖', '链上域名倒卖', '原子域名结算', '代币化域名市场', '代币化域名的 DNS 连续性', '如何代币化域名来出售', 'Namefi 代币化并出售', '钱包持有的 .com', 'ERC-721 域名', '代币化域名流动性', '链上倒卖 com 域名']
+relatedArticles:
+  - /zh/blog/onchain-domain-flipping/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/selling-domains-as-nfts/
+  - /zh/blog/onchain-domain-marketplaces-compared/
+  - /zh/blog/domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 大多数 `.com` 的倒卖最后都以同样紧张的方式收场：买家不想在域名转移前付款，卖家不想在收到钱之前转移域名，于是一个[托管](/zh/glossary/escrow/)代理夹在中间替双方保管资金，而注册商之间的转移要花好几天才能完成。这个僵局就是每一笔高价交易都要缴的"摩擦税"。先把 `.com` 代币化会彻底改变整笔交易的形态：域名变成你持有在[钱包](/zh/glossary/wallet/)里的一枚代币，出售也从一场跨越数天、涉及多方的交接，变成一次链上的单笔互换。

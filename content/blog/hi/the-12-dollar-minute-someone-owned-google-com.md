@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'सितंबर 2015 में, Google के एक पूर्व कर्मचारी ने Google Domains के ज़रिए google.com को $12 में खरीद लिया और लगभग एक मिनट तक दुनिया के सबसे मूल्यवान डोमेन का प्रशासनिक नियंत्रण हासिल किया। Sanmay Ved की कहानी, $6,006.13 का बाउंटी पुरस्कार, और यह एक मिनट की मालिकी हमें डोमेन नियंत्रण के बारे में क्या बताती है।'
 keywords: ['google.com domain', 'sanmay ved', 'google domains bug', 'domain security', 'who owns google.com', 'domain hijacking', 'webmaster tools access', 'google bug bounty', '6006.13 reward', 'domain registration vulnerability', 'domain control', 'dns security', 'domain ownership verification']
+relatedArticles:
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-lenovo-com-dns-hijack/
+  - /hi/blog/the-sex-com-heist-the-forged-letter/
+  - /hi/blog/the-2024-squarespace-defi-domain-hijacks/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/registry/
 ---
 
 29 सितंबर 2015 की रात, लगभग एक मिनट के लिए, इंटरनेट का सबसे मूल्यवान पता Google का नहीं था।

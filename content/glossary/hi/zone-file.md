@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1035
   - https://www.cloudflare.com/learning/dns/glossary/dns-zone/
+relatedArticles:
+  - /hi/blog/how-domain-hijacking-actually-happens/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/dns-on-tokenized-domains/
+  - /hi/blog/the-dnspionage-campaign/
+  - /hi/blog/the-icann-spear-phishing-breach/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
 ---
 
 एक **ज़ोन फ़ाइल** किसी डोमेन के आधिकारिक [नेमसर्वर](/hi/glossary/nameserver/) पर वह टेक्स्ट फ़ाइल है जिसमें उसके सभी [DNS रिकॉर्ड](/hi/glossary/dns-record-types/) होते हैं — A, MX, TXT और अन्य एंट्री जो डोमेन के व्यवहार को परिभाषित करती हैं। एक **ग्लू रिकॉर्ड** एक विशेष मामला है: जब किसी डोमेन के नेमसर्वर उसी डोमेन के *अंदर* रहते हैं (जैसे `ns1.example.com` जो `example.com` को सर्व करता है), तो पैरेंट [रजिस्ट्री](/hi/glossary/registry/) को चिकन-एंड-एग लुकअप से बचने के लिए पैरेंट ज़ोन में नेमसर्वर का [IP एड्रेस](/hi/glossary/ip-address/) सीधे प्रकाशित करना होता है। ज़ोन फ़ाइल संपादित करना ही वह तरीका है जिससे आप डोमेन का [DNS](/hi/glossary/dns/) कॉन्फ़िगर करते हैं। यह संचालन डेटा है, स्वामित्व से अलग — जो ठीक वही है जो एक टोकनाइज़्ड डोमेन [वॉलेट](/hi/glossary/wallet/)-नियंत्रित परत में ले जाता है।

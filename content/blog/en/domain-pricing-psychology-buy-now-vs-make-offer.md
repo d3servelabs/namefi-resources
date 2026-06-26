@@ -12,6 +12,24 @@ format: guide
 description: "Why the listing mode and the first number decide your domain sale: anchoring, never naming the price first, price laddering, and buy-now vs make-offer."
 ogImage: ../../assets/domain-pricing-psychology-buy-now-vs-make-offer-og.jpg
 keywords: ['domain pricing psychology', 'buy now vs make offer', 'domain anchoring', 'how to price a domain', 'domain price negotiation', 'make offer domain', 'buy it now domain', 'price laddering domains', 'domain listing format', 'who names the price first', 'domain negotiation tactics', 'charm pricing domains', 'end user domain price', 'domain sale psychology']
+relatedArticles:
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/working-with-domain-brokers/
+  - /en/blog/inbound-vs-outbound-domain-sales/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
 ---
 
 The number on your listing is doing more work than you think. Two flippers can own the same name, list it on the same marketplace, and walk away with prices that differ by an order of magnitude — not because one negotiated harder, but because one understood that the *way* a price is presented shapes what a buyer will pay. Pricing a domain is part arithmetic, mostly psychology.

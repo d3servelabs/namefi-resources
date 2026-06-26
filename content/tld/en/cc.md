@@ -16,6 +16,24 @@ faqs:
     answer: 'Officially "cc" is the ISO country code for the Cocos (Keeling) Islands. In practice it is read flexibly as "commercial company," "creative commons," "carbon copy," or simply a memorable pair of matching initials, which is exactly why it is popular as a short, brandable extension.'
   - question: 'Who operates the .cc domain?'
     answer: 'The .cc registry is operated by eNIC Cocos (Keeling) Islands Pty. Ltd. (doing business as Island Internet Services), a wholly owned subsidiary of Verisign. The IANA root-zone database lists eNIC / Island Internet Services as the sponsoring organization and registry manager.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/domain-hacks-explained/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.cc** domain is one of the internet's most enduring "borrowed" country codes — a national namespace that grew into a short, brandable, global extension. Officially the [ccTLD](/en/glossary/cctld/) for the **Cocos (Keeling) Islands**, a tiny Australian territory in the Indian Ocean, .cc has been marketed worldwide for decades as a flexible stand-in for ".com." The string "cc" is endlessly interpretable — **commercial company**, **creative commons**, **carbon copy**, or simply a clean pair of matching initials — which makes it a favorite for memorable names and clever [domain hacks](/en/glossary/domain-hack/).

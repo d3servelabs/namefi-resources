@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .alipay, symbole de confiance dans la fintech. Apprenez ses avantages, ses usages et comment enregistrer votre domaine avec Namefi."
 keywords: [".alipay domains", ".alipay TLD", "top-level domain", "what is .alipay", "why choose .alipay", "what is the .alipay domain", "why choose the .alipay domain", "qu'est-ce que le domaine .alipay", "pourquoi choisir le domaine .alipay", "domaine investissement", "blockchain domains", "tokenized domain", "fintech domains", "paiement numérique", "Ant Group domain"]
+relatedArticles:
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
 ---
 
 Le paysage des domaines Internet évolue rapidement. Au-delà des classiques `.com` ou `.org`, de nouvelles extensions spécifiques à des industries ou des marques redéfinissent notre navigation sur le Web. Parmi elles, le **.alipay** se distingue comme une extension puissante, synonyme de sécurité financière et d'innovation numérique.

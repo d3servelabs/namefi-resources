@@ -16,6 +16,24 @@ faqs:
     answer: 'The .sbs extension itself is legitimate and ICANN-accredited, but it has been listed among the more abused new gTLDs by Spamhaus. The extension does not make a site dangerous; judge each individual site on its own merits and verify before clicking unexpected links.'
   - question: 'Who should register a .sbs domain?'
     answer: 'It suits side businesses, community and social-cause projects, collaborations, and low-cost experiments where the "side by side" or "side business" reading fits. It is a weaker choice for a flagship brand, payment site, or anything that depends heavily on email deliverability.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/domain-flipping/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-investor-field-guide/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.sbs domain** is a short, open generic top-level domain that anyone in the world can register. Operated by the registry [ShortDot SA](https://shortdot.bond/) and most often read as **"side by side,"** it positions itself for community projects, social causes, and side ventures. This page explains what .sbs really is, where it came from, who uses it, and the honest trade-offs — including its reputation among spam filters — so you can decide whether it fits your project.

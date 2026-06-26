@@ -8,6 +8,24 @@ draft: false
 description: "一份面向创始人的实用、有研究支撑的命名指南，涵盖法律核查、易读易记、候选名称生成、跨文化审查，以及在正式决定前必须完成的所有关键搜索。"
 ogImage: ../../assets/how-to-name-your-project-og.jpg
 keywords: ['如何为创业公司命名', '如何为项目命名', '如何为公司取名', '产品命名', '品牌名称创意', '选择企业名称', '域名选择', '商标检索', '品牌化域名', '创业品牌', '易读品牌名', '处理流畅性', '品牌命名指南', '为项目选名', '查询域名可用性']
+relatedArticles:
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/from-del-icio-us-to-delicious-com/
+  - /zh/blog/what-makes-a-domain-valuable/
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /zh/topics/domain-basics/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 命名，是大多数创始人在最初就会犯错的第一个产品决策。

@@ -12,6 +12,24 @@ format: analysis
 description: "点号后面的那串后缀如何撬动域名价格：.com 的溢价、.io/.ai/.co 各自的定位，以及 ccTLD 背后隐藏的政策与地缘政治风险。"
 ogImage: ../../assets/how-tld-affects-domain-value-og.jpg
 keywords: ['顶级域名如何影响域名价值', 'TLD 与域名价值', 'com 溢价', '.com 与 ccTLD 价值对比', '后缀是否重要', 'io 域名价值', 'ai 域名价值', 'co 域名价值', 'ccTLD 风险', '域名后缀定价', 'TLD 价值翻转', '最适合转售的 TLD', '域名后缀对比', 'ccTLD 地缘政治风险', '选择 TLD']
+relatedArticles:
+  - /zh/blog/what-makes-a-domain-valuable/
+  - /zh/blog/domain-hacks-explained/
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 把一串好字母放到三种不同后缀下分别定价，你会得到三个截然不同的数字，有时甚至相差一个数量级。词没变，变的只是点号后面那部分。对域名翻转者来说，后缀绝不是估值收尾时随手补上的细节。它是决定一个域名值多少钱、以及它有多容易卖出去的最大单一杠杆之一。

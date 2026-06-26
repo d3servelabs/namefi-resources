@@ -12,6 +12,24 @@ format: guide
 description: "Cómo funciona vender un dominio como NFT: mecánica de publicación, Seaport y OpenSea, ventas privadas restringidas al comprador, regalías y las trampas de gas y estafas."
 ogImage: ../../assets/selling-domains-as-nfts-og.jpg
 keywords: ['vender dominio como NFT', 'NFT de dominio', 'venta de dominio tokenizado', 'liquidez de dominios en cadena', 'publicar NFT de dominio en OpenSea', 'protocolo Seaport', 'publicación restringida al comprador', 'publicación privada de NFT', 'regalías de NFT de dominios', 'dominio ERC-721', 'transferencia atómica de dominio', 'vender dominio tokenizado', 'comisiones de gas en venta de NFT', 'estafas con NFT de dominios', 'domain flipping en cadena']
+relatedArticles:
+  - /es/blog/onchain-domain-marketplaces-compared/
+  - /es/blog/onchain-domain-flipping/
+  - /es/blog/tokenize-your-com-to-flip-it/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/tokenize-your-com/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
+  - /es/glossary/tld/
 ---
 
 Una venta de dominio tradicional lleva incorporado un problema de confianza. El vendedor no quiere ejecutar la transferencia antes de que llegue el dinero; el comprador no quiere enviar los fondos antes de que el nombre aparezca en su cuenta. Toda la industria del [depósito en garantía](/es/glossary/escrow/) existe para colocarse entre esos dos reflejos. Vender un dominio como [NFT](/es/glossary/nft/) reorganiza ese punto muerto. Cuando la propiedad de un dominio ICANN real es también un token [en cadena](/es/glossary/on-chain/), el nombre se convierte en algo que puedes publicar, valorar y entregar dentro de la misma transacción que mueve el dinero — sin un intermediario que custodie el activo en las horas oscuras entre el pago y la transferencia.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Ein praktischer Blick darauf, wie reguläres DNS – Nameserver, A/AAAA, MX, TXT, DNSSEC, CAA – nach der Tokenisierung einer ICANN-Domain weiterhin funktioniert. Was sich ändert, was nicht und worauf Sie Ihren bestehenden DNS-Anbieter verweisen sollten."
 keywords: ['DNS tokenisierte Domain', 'DNSSEC NFT-Domain', 'tokenisierte Domain Nameserver', 'tokenisierte Domain E-Mail', 'MX-Einträge NFT-Domain', 'CAA-Einträge tokenisierte Domain', 'tokenisierte Domain DNS-Verwaltung', 'On-Chain-Domain DNS', 'NFT-Domain MX', 'NFT-Domain DNSSEC', 'tokenisierte Domain Cloudflare', 'tokenisierte Domain Route53', 'wie DNS tokenisiert funktioniert', 'tokenisierte Domain Auflösung']
+relatedArticles:
+  - /de/blog/how-to-tokenize-your-com/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/tokenize-your-com-to-flip-it/
+  - /de/blog/how-tokenized-marketplaces-replace-escrow/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/tokenize-your-com/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/dns/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/tld/
 ---
 
 Eine häufige Sorge bei der [Tokenisierung](/de/glossary/tokenize/) einer Domain: *"Wird meine Website weiterhin funktionieren? Wird meine E-Mail noch funktionieren? Muss ich einen komplett neuen DNS-Stack erlernen?"*

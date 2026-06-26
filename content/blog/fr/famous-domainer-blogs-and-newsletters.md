@@ -8,6 +8,24 @@ draft: false
 description: "Une liste soigneusement sélectionnée de domainers, courtiers et traders individuels dont les blogs, newsletters et Substacks valent la peine d'être lus en 2026 — ce pour quoi chacun est connu, et comment ils s'articulent."
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg
 keywords: ['blogs de domainers', "blogs sur l'investissement de domaines", 'elliot silver', 'rick schwartz', 'morgan linton', 'konstantinos zournas', 'mike mann', 'jamie zoch', 'domainshane', 'newsletter domaine', 'substack domaine']
+relatedArticles:
+  - /fr/blog/domain-industry-media/
+  - /fr/blog/top-domain-trader-forums/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/working-with-domain-brokers/
+  - /fr/blog/domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-investor-field-guide/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
 ---
 
 Si les [forums](/blog/top-domain-trader-forums) sont les lieux où la communauté des noms de domaine *débat*, les blogs individuels de domainers sont ceux où la communauté *pense tout haut*. La plupart des analyses approfondies et de longue date du secteur — bilans de ventes, critiques des politiques des bureaux d'enregistrement (registrars), lectures du marché — se trouvent sur un petit nombre de blogs personnels qui existent depuis quinze ou vingt ans.

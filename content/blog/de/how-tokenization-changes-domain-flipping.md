@@ -12,6 +12,24 @@ format: explainer
 description: "Wie das On-Chain-Bringen einer Domain das Flipping umgestaltet — verifiziertes Eigentum, atomare Abwicklung und programmierbare Übertragung gegenüber dem trägen Registrar-Aftermarket."
 ogImage: ../../assets/how-tokenization-changes-domain-flipping-og.jpg
 keywords: ['tokenisiertes Domain-Flipping', 'On-Chain-Domain-Flipping', 'tokenisierte Domains flippen', 'Domain-NFT-Flipping', 'atomare Domain-Abwicklung', 'Domains als NFTs verkaufen', 'Marktplatz für tokenisierte Domains', 'Domain-Flipping Web3', 'ERC-721-Domain', 'On-Chain-Domain-Übertragung', 'Verwahrung tokenisierter Domains', 'programmierbares Domain-Eigentum', 'Alternative zur Domain-Treuhand', 'Domains On-Chain flippen', 'Weiterverkauf tokenisierter Domains']
+relatedArticles:
+  - /de/blog/tokenize-your-com-to-flip-it/
+  - /de/blog/onchain-domain-flipping/
+  - /de/blog/onchain-domain-custody-and-recovery/
+  - /de/blog/selling-domains-as-nfts/
+  - /de/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Der Großteil der Arbeit beim [Domain-Flipping](/de/blog/domain-flipping/) hat nichts mit dem Namen selbst zu tun. Sie beschaffen ihn, bewerten ihn, schützen ihn und finden einen Käufer — und dann kommt der Teil, den niemand mag: den Vermögenswert tatsächlich zu übertragen und bezahlt zu werden, ohne dass eine Seite den Kürzeren zieht. Dieser Abwicklungsschritt ist langsam, manuell und auf Vertrauen zwischen Fremden gebaut. Die Tokenisierung ist die Veränderung, die ihn neu schreibt.

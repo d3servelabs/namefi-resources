@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما يخص نطاق .abogado، الخيار الأمثل للمحامين والمهنيين القانونيين. تعرف على كيفية تعزيز المصداقية الرقمية ولماذا يعد استثماراً ذكياً عبر Namefi."
 keywords: [".abogado domains", ".abogado TLD", "top-level domain", "what is .abogado", "why choose .abogado", "what is the .abogado domain", "why choose the .abogado domain", "legal domains", "lawyer domain name", "نطاقات المحامين", "شراء نطاق", "domain investing", "blockchain domains", "tokenized domain", "Namefi"]
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-law-firm/
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .abogado؟**

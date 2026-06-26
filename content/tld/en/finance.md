@@ -18,6 +18,24 @@ faqs:
     answer: 'The suffix itself carries no special trust or verification, and finance-themed names are a known target for phishing. Users still judge a site by HTTPS, brand consistency, and reputation, so pair a .finance domain with strong security and clear branding.'
   - question: 'Does .finance support WHOIS privacy and DNSSEC?'
     answer: 'Yes. As an Identity Digital gTLD, .finance supports DNSSEC for registrants who enable it, and most registrars including Namefi offer WHOIS privacy so personal contact details are not published publicly.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.finance domain** is one of the most literal addresses on the internet: it says exactly what the site is about. It is an open [generic top-level domain](/en/glossary/gtld/) (gTLD) aimed at banks, fintech companies, financial advisors, lenders, accountants, and anyone publishing money-related content. For a sector where clarity and credibility matter, a name like `yourbrand.finance` puts the industry right in the URL.

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ماذا يعني "بلا تصريح" في البلوكتشين وإدارة الدومينات؟
 keywords: ["بلا تصريح","لامركزي","مقاوم للرقابة","وصول مفتوح","بلوكتشين"]
+relatedArticles:
+  - /ar/blog/why-tokenize-domains/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/tokenized-domain-use-cases-2026/
+  - /ar/blog/the-curve-finance-dns-hijack/
+  - /ar/blog/what-are-stablecoins/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-security/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/web3/
+  - /ar/glossary/registrar/
+  - /ar/glossary/tokenized-domain/
+  - /ar/glossary/blockchain/
+  - /ar/glossary/tokenize/
 ---
 
 

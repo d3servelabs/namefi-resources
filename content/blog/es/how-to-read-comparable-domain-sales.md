@@ -12,6 +12,24 @@ format: guide
 description: "Cómo usar el historial de ventas estilo NameBio para ponerle precio a un dominio: encontrar comparables reales, ajustar por TLD, longitud y palabra clave, y evitar la selección sesgada de datos."
 ogImage: ../../assets/how-to-read-comparable-domain-sales-og.jpg
 keywords: ['ventas comparables de dominios', 'comps de dominios', 'cómo leer comps de dominios', 'NameBio', 'historial de ventas de dominios', 'comps de valoración de dominios', 'comparación de precios de dominios', 'cómo ponerle precio a un dominio', 'comparables de tasación de dominios', 'datos de ventas de dominios', 'encontrar dominios comparables', 'ajuste de comps de dominios', 'comps de domaining', 'datos de precios de dominios']
+relatedArticles:
+  - /es/blog/how-to-value-a-domain-name/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+  - /es/blog/domain-appraisal-tools-compared/
+  - /es/blog/what-makes-a-domain-valuable/
+  - /es/blog/domain-flipping/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Pregúntale a un tasador inmobiliario cuánto vale una casa y no adivinará. Buscará por cuánto se vendieron hace poco casas similares de la zona y ajustará a partir de ahí. La [tasación de dominios](/es/glossary/domain-appraisal/) funciona igual, y el equivalente a las "ventas recientes de la zona" es el registro público de ventas de dominios pasadas: los comps. Aprende a leerlos y podrás defender casi cualquier precio que le pongas a un nombre. Léelos sin cuidado y te convencerás de una cifra que el mercado nunca aceptó.

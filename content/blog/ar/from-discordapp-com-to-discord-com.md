@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'كيف انطلق Discord سنة 2015 على DiscordApp.com لأن Discord.com كانت محجوزة، ثم اشترى الاسم الصريح بهدوء، وفي 2020 جعل discord.com عنوانه الرئيسي — جزئيًا لنظافة العلامة التجارية، وجزئيًا لأن الانقسام بين "discordapp.com" و"discord.com" كان هدية للمحتالين ومنتشري البرامج الخبيثة.'
 keywords: ['discordapp.com', 'discord.com', 'اسم نطاق discord', 'ترقية النطاق', 'جيسون سيترون', 'تاريخ discord', 'cdn.discordapp.com', 'تصيد احتيالي discord', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'نطاق مميز', 'استراتيجية النطاق', 'ترحيل النطاق']
+relatedArticles:
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-slackhq-com-to-slack-com/
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-massdrop-com-to-drop-com/
+  - /ar/blog/from-box-net-to-box-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 قبل أن يصبح Discord فعلًا نستخدمه يوميًا حين نقول "انضم للسيرفر"، كان يعيش على عنوان أطول بقليل: **DiscordApp.com**.

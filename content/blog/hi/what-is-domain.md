@@ -6,6 +6,24 @@ tags: ["faq"]
 authors: ["namefiteam"]
 description: एक डोमेन नेम आपकी ऑनलाइन उपस्थिति की नींव है।
 keywords: ["डोमेन नेम","डीएनएस","डोमेन नेम सिस्टम","आईपी एड्रेस","वेब एड्रेस","इंटरनेट की बुनियादी बातें","डोमेन रजिस्ट्रेशन","वेबसाइट एड्रेस","यूआरएल","नेमफाई"]
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/what-is-udrp/
+  - /hi/blog/domain-terminology-guide/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /hi/topics/domain-basics/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-investor-field-guide/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
 ---
 
 

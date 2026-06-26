@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué significa la propiedad de dominio cuando está tokenizada?
 keywords: ["propiedad de dominio","dominio NFT","registrador","custodia","propiedad de billetera"]
+relatedArticles:
+  - /es/blog/why-tokenize-domains/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /es/blog/the-sea-turtle-dns-espionage/
+  - /es/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/web3/
+  - /es/glossary/tokenize/
+  - /es/glossary/dns/
+  - /es/glossary/on-chain/
 ---
 
 

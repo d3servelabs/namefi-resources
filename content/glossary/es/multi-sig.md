@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es la multifirma y cómo mejora la seguridad de los dominios?
 keywords: ["multifirma","multisig","múltiples firmas","seguridad mejorada","custodia compartida"]
+relatedArticles:
+  - /es/blog/do-multisig-wallets-actually-improve-security/
+  - /es/blog/onchain-domain-custody-and-recovery/
+  - /es/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /es/blog/how-domain-hijacking-actually-happens/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/wallet/
+  - /es/glossary/private-key/
+  - /es/glossary/tokenized-domain/
 ---
 
 

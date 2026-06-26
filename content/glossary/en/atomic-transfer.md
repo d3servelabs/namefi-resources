@@ -9,6 +9,24 @@ keywords: ['atomic transfer', 'blockchain transaction', 'all-or-nothing', 'secur
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/transactions/
+relatedArticles:
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/selling-domains-as-nfts/
+  - /en/blog/domain-escrow-explained/
+  - /en/blog/how-tokenized-marketplaces-replace-escrow/
+  - /en/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/tokenized-domain/
+  - /en/glossary/registrar/
+  - /en/glossary/tokenize/
+  - /en/glossary/blockchain/
+  - /en/glossary/web3/
 ---
 
 An **atomic transfer** is a transaction that either completes entirely or fails completely—there's no partial execution. The term "atomic" comes from the concept that the operation cannot be divided into smaller parts. In traditional domain transfers, the process often involves multiple steps across different systems, creating risks of partial completion or disputes. With tokenized domains, atomic transfers ensure that when you trade a domain [NFT](/en/glossary/nft/), the ownership change and any associated payments happen simultaneously within a single blockchain transaction. This eliminates counterparty risk and ensures that both parties receive what they agreed to exchange, or the entire transaction is reversed.

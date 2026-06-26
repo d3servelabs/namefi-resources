@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .city स्थानीय व्यवसायों, नगरपालिका सेवाओं और शहर-केंद्रित वेबसाइटों के लिए एक डोमेन है। यह स्थानीय उपस्थिति स्थापित करने के लिए एकदम सही है।
 keywords: ["tld", ".city डोमेन", "स्थानीय व्यवसाय", "नगरपालिका सेवाएं", "शहर की वेबसाइटें", "स्थानीय उपस्थिति"]
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-investor-field-guide/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 ## **.city क्या है?**

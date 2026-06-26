@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist Umsatzbeteiligung und wie kann sie auf die Domain-Monetarisierung angewendet werden?
 keywords: ["umsatzbeteiligung","passives Einkommen","Domain-Monetarisierung","Gewinnverteilung","Smart Contracts"]
+relatedArticles:
+  - /de/blog/domain-parking-and-monetization/
+  - /de/blog/why-tokenize-domains/
+  - /de/blog/domain-escrow-explained/
+  - /de/blog/from-thefacebook-com-to-facebook-com/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-investor-field-guide/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/smart-contract/
+  - /de/glossary/tokenized-domain/
+  - /de/glossary/tokenize/
+  - /de/glossary/fractional-ownership/
+  - /de/glossary/leasing/
 ---
 
 

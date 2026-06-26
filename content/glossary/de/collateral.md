@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist Sicherheit (Collateral) und wie können Domains als Sicherheit in DeFi dienen?
 keywords: ["Sicherheit","Collateral","Kreditvergabe","Kreditaufnahme","Domain-Sicherheit","DeFi"]
+relatedArticles:
+  - /de/blog/tokenized-domain-use-cases-2026/
+  - /de/blog/what-are-xstocks/
+  - /de/blog/why-tokenize-domains/
+  - /de/blog/what-are-stablecoins/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/web3-foundations/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tokenized-domain/
+  - /de/glossary/web3/
+  - /de/glossary/lending-protocol/
+  - /de/glossary/tokenize/
+  - /de/glossary/defi/
 ---
 
 

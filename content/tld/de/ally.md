@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Entdecken Sie die .ally Domain: Die perfekte TLD für Partnerschaften, Inklusion und Communitys. Erfahren Sie, warum Sie Ihre .ally Domain noch heute bei Namefi registrieren sollten.'
 keywords: ['.ally domains', '.ally TLD', 'top-level domain', 'was ist .ally', 'warum .ally wählen', 'was ist die .ally domain', 'warum die .ally domain wählen', 'domain investieren', 'blockchain domains', 'tokenisierte domains', 'web3 domains', 'neue gTLD', 'domainregistrierung', 'digitale identität', 'partnerschaft domains']
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/from-thefacebook-com-to-facebook-com/
+  - /de/blog/ai-vs-io-domain/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .ally?**

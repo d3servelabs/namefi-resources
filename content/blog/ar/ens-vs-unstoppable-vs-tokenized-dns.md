@@ -12,6 +12,24 @@ format: comparison
 description: "مقارنة بين ENS و Unstoppable Domains ونطاقات ICANN DNS المُرمَّزة، على أساس قابلية الفتح في المتصفح، والتجديدات، ومين اللي بيتحكم فعلاً في الاسم."
 ogImage: ../../assets/ens-vs-unstoppable-vs-tokenized-dns-og.jpg
 keywords: ['ENS مقابل Unstoppable Domains', 'ENS مقابل النطاقات المُرمَّزة', 'Unstoppable Domains مقابل ENS', 'مقارنة نطاقات web3', 'نطاقات DNS مُرمَّزة', 'بيع وشراء نطاقات ENS', 'نطاقات .eth', 'نطاقات .crypto', 'هل نطاقات web3 بتفتح في المتصفحات', 'رسوم تجديد ENS', 'Unstoppable Domains من غير تجديد', 'ICANN مقابل نطاقات web3', 'مين بيتحكم في نطاق web3', 'النطاق المُرمَّز مقابل نطاق web3', 'مقارنة نطاقات NFT']
+relatedArticles:
+  - /ar/blog/onchain-domain-flipping/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/ens-vs-dns-domain-flipping/
+  - /ar/blog/onchain-domain-marketplaces-compared/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 لو بتبيع وتشتري أسماء على السلسلة، أول قرار هو إنت بتتاجر في أي نوع من "الأسماء على السلسلة" أصلاً. التلات فئات اللي معظم الناس بتحطهم في سلة واحدة مش نفس الأصل، والفروق بينهم هي اللي بتحدد هل الاسم بيفتح في المتصفح، وهل هتدفع تجديد السنة الجاية، ومين اللي بيتحكم فيه فعلاً. الدليل ده بيقارن التلاتة وش لوش: [ENS (خدمة أسماء إيثريوم)](/ar/glossary/ens/) (`.eth`)، و[Unstoppable Domains](https://unstoppabledomains.com) (`.crypto` و`.x` و`.nft`)، ونطاقات [DNS](/ar/glossary/dns/) الحقيقية بتاعة ICANN المُرمَّزة (أسماء `.com`/`.io`/`.xyz` اللي تقدر [تُرمِّزها](/ar/glossary/tokenize/) على [Namefi](https://namefi.io)).

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le potentiel du domaine .abc. Apprenez pourquoi ce TLD simple et mémorable est idéal pour votre marque et comment l'enregistrer sur Namefi."
 keywords: [".abc domains", ".abc TLD", "top-level domain .abc", "what is .abc", "why choose .abc", "what is the .abc domain", "why choose the .abc domain", "domaine .abc", "extension .abc", "investissement nom de domaine", "blockchain domains", "tokenized domain", "acheter domaine .abc", "signification domaine .abc", "Web3 domains"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/premium-web3-tlds/
+  - /fr/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registrar/
+  - /fr/glossary/web3/
 ---
 
 Le choix d'un nom de domaine est l'une des premières et des plus importantes décisions que vous prendrez pour votre présence en ligne. Dans un monde numérique saturé, les extensions classiques ([.com](/fr/tld/com/), .net) offrent de moins en moins d'options courtes et percutantes. C'est ici que les nouveaux domaines de premier niveau (gTLD) entrent en jeu. Aujourd'hui, nous nous penchons sur une extension qui évoque la simplicité et les fondamentaux : **le .abc**.

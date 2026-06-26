@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'El 21 de octubre de 2016, un ataque DDoS impulsado por la botnet IoT Mirai golpeó al proveedor de DNS Dyn en tres oleadas, dejando fuera de línea durante horas a Twitter, Netflix, Reddit, Spotify, GitHub, Airbnb y PayPal — un caso de estudio sobre la concentración de proveedores DNS.'
 keywords: ['ataque dns dyn', 'botnet mirai', 'ddos 21 octubre 2016', 'ataque ddos dns', 'botnet iot', 'caída proveedor dns', 'seguridad de dominios', 'punto único de fallo dns', 'ddos dyn 2016', 'malware mirai', 'caída de internet 2016', 'redundancia dns', 'cámaras iot hackeadas']
+relatedArticles:
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-curve-finance-dns-hijack/
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-myetherwallet-bgp-dns-attack/
+  - /es/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/dns/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Durante unas pocas horas un viernes de octubre de 2016, internet olvidó cómo encontrarse a sí mismo.

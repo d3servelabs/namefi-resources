@@ -18,6 +18,24 @@ faqs:
     answer: 'The registry has long priced .top aggressively to drive registration volume, and many registrars run low first-year promotions. Renewal prices are usually higher than the first year, and short or dictionary names may carry premium pricing.'
   - question: 'Does .top have a spam reputation?'
     answer: 'Yes. Studies have ranked .top among the most common suffixes in phishing, and ICANN issued a DNS-abuse breach notice to the registry in 2024. A legitimate .top site can still perform well, but expect closer scrutiny from spam and security filters.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.top** domain is one of the largest and lowest-cost new generic top-level domains (gTLDs) on the internet, built around a single, globally understood English word that signals "best," "peak," or "number one." Because short, keyword-rich names are still readily available and cheap, .top has attracted millions of registrations — especially from founders, domain investors, and projects priced out of the crowded .com namespace.

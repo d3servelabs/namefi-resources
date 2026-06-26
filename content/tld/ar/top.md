@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .top. تعرف على مزاياه، استخداماته، وكيفية حجز اسم نطاق مميز عبر Namefi لتعزيز حضورك الرقمي واستثمارك في النطاقات."
 keywords: [".top domain", "نطاق .top", "TLD", "نطاق المستوى الأعلى", "what is .top", "ما هو نطاق .top", "why choose .top", "لماذا تختار نطاق .top", "buy .top domain", "شراء نطاق .top", "domain investing", "استثمار النطاقات", "blockchain domains", "نطاقات البلوك تشين", "tokenized domain", "نطاقات مرمزّة", "web3 domains", "نطاقات ويب 3", "cheap domains", "نطاقات رخيصة", "Namefi"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .top؟**

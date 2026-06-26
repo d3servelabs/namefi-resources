@@ -12,6 +12,24 @@ format: guide
 description: "Comment faire trouver une annonce de domaine : titres, mots-clés et catégories sur Afternic et Sedo, ainsi que la visibilité qui attire le bon acheteur."
 ogImage: ../../assets/marketplace-seo-for-domain-listings-og.jpg
 keywords: ['SEO marketplace', 'SEO annonce domaine', 'comment lister un domaine sur Afternic', 'comment lister un domaine sur Sedo', 'titre annonce domaine', 'mots-clés annonce domaine', 'catégories marketplace domaine', 'faire trouver une annonce de domaine', 'annonce marché secondaire domaine', 'vendre un domaine en ligne', 'optimisation annonce domaine', 'visibilité domaine dans les recherches', 'comment les acheteurs trouvent des domaines', 'réseau revendeurs domaine']
+relatedArticles:
+  - /fr/blog/marketing-your-domains-for-sale/
+  - /fr/blog/inbound-vs-outbound-domain-sales/
+  - /fr/blog/domain-for-sale-landing-pages/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
 ---
 
 Une annonce que personne ne voit équivaut à aucune annonce. Vous pouvez fixer un prix parfait et rédiger une belle page de mise en vente, mais si votre annonce n'apparaît jamais quand le bon acheteur fait une recherche, la transaction ne démarrera jamais. La majorité de la demande entrante dans ce métier transite par une poignée de marketplaces, et sur ces marketplaces votre nom est en concurrence avec des millions d'autres pour la même ressource rare : l'attention d'un acheteur au moment précis où il cherche.

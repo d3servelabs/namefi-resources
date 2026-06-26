@@ -16,6 +16,24 @@ faqs:
     answer: "L'espace de noms .us est supervisé par le Département du Commerce des États-Unis par l'intermédiaire de la NTIA. L'opérateur de registre actuel est Registry Services, LLC, une société de GoDaddy Registry, qui a repris à Neustar autour de 2020. L'IANA répertorie Registry Services, LLC comme gestionnaire."
   - question: "Qu'est-ce que l'exigence de lien (Nexus Requirement) du .us ?"
     answer: "L'exigence de lien (Nexus Requirement) est la règle d'éligibilité qui limite le .us aux parties ayant un lien authentique avec les États-Unis. Elle couvre les citoyens et résidents américains, les entités organisées aux États-Unis, et les organisations étrangères qui maintiennent une présence américaine de bonne foi telle qu'une activité ou une opération régulière."
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/domain-hacks-explained/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Le domaine **.us** est le domaine de premier niveau national (ccTLD) officiel des **États-Unis** — et l'un des tout premiers ccTLD jamais délégués. Là où des extensions comme le [.co](/fr/tld/co/) sont commercialisées comme des substituts « .com » sans frontières, le .us est délibérément l'opposé : un espace de noms lié à l'identité américaine, régi par la politique fédérale américaine, et réservé aux titulaires ayant une présence américaine authentique. Pour une entreprise, une marque ou une organisation qui veut dire « nous sommes américains » dans son adresse web, le .us est la manière la plus littérale de le faire.

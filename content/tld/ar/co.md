@@ -16,6 +16,24 @@ faqs:
     answer: 'الشركات الناشئة والشركات والمؤسسين اللي الـ .com المثالي بتاعهم محجوز أو غالي أوي. كلمة "co" بتُقرأ طبيعي كـ "company" أو "corporation" أو حتى "Colorado"، وده بيخليها اختيار تاني نضيف وقابل للتسمية التجارية للمشاريع العالمية.'
   - question: 'هل .co هو نفسه .com؟'
     answer: 'لأ. دول امتدادين منفصلين بيشغّلهم مشغّلين مختلفين. الخطر إن الزوار اللي بيكتبوا عنوانك من ذاكرتهم ممكن يضيفوا حرف الـ "m" في الآخر ويوصلوا للـ .com بدل موقعك، فاللاحقتين ممكن يتلخبطوا في الكلام والزيارات المكتوبة.'
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/how-tld-affects-domain-value/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 دومين **.co** هو واحد من أنجح أمثلة امتداد رمز الدولة اللي اتحرّر من حدوده. هو رسمياً ccTLD لـ **كولومبيا**، بس اتسوّق واتبنى حول العالم كبديل قصير وقابل للتسمية التجارية لـ ".com" — حيث "co" بتُقرأ على طول كـ **company** أو **corporation** أو ببساطة نسخة مقصوصة من ".com." بالنسبة للمؤسسين اللي بيلاقوا الـ **.com** اللي بيحلموا بيه محجوز، **.co** بيكون عادةً أول مكان بيبصّوا فيه.

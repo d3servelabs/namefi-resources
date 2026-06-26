@@ -12,6 +12,24 @@ format: explainer
 description: "Quand un courtier en domaines mérite sa commission, ce que font vraiment les bons courtiers, la différence entre courtage entrant et sortant, les commissions habituelles, et comment évaluer un courtier."
 ogImage: ../../assets/working-with-domain-brokers-og.jpg
 keywords: ['courtier en domaines', 'courtage de domaines', 'comment travailler avec un courtier en domaines', 'commission courtier domaine', 'vendre un domaine avec un courtier', 'courtier acheteur domaines', 'courtier vendeur domaines', 'courtier domaine entrant', 'courtier domaine sortant', 'quand utiliser un courtier en domaines', 'évaluer un courtier en domaines', 'frais courtier domaine', 'meilleurs courtiers en domaines', 'courtier acquisition domaine', 'engager un courtier en domaines']
+relatedArticles:
+  - /fr/blog/how-to-sell-domains-for-profit/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/inbound-vs-outbound-domain-sales/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 La plupart des noms que vous revendez, vous devriez les vendre vous-même. Publiez une annonce, fixez un prix, répondez aux demandes entrantes, finalisez en séquestre. Faire appel à un courtier pour un nom à 400 $ revient à laisser un inconnu prendre une part de l'argent que vous auriez pu garder. Mais il existe une catégorie de transactions où le courtier cesse d'être un coût pour devenir la différence entre une vente et une impasse — et savoir où se situe ce seuil est un art en soi. Voici le chapitre sur les courtiers de notre série sur le [domain flipping](/fr/blog/domain-flipping/), qui s'inscrit un niveau en dessous du pilier vente, [comment vendre des domaines pour en tirer profit](/fr/blog/how-to-sell-domains-for-profit/). Nous verrons ici quand confier un nom à un courtier, ce que fait réellement un bon courtier, la différence entre le courtage côté acheteur et côté vendeur, à quoi ressemblent les commissions, et comment distinguer un vrai courtier de quelqu'un qui ne veut que vous prendre votre annonce.
