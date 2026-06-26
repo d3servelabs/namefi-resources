@@ -1596,10 +1596,10 @@ jobs:
           needs.preview-label-gate.outputs.is_same_repo == 'true' &&
           needs.detect.outputs.resources_only_sync != 'true' &&
           needs.preview-label-gate.outputs.head_branch_should_run == 'true' &&
+          needs.preview-label-gate.outputs.should_run == 'true' &&
           (
             github.event_name == 'workflow_dispatch' ||
-            github.event.action != 'labeled' ||
-            needs.preview-label-gate.outputs.should_run == 'true'
+            github.event_name == 'pull_request'
           )
         uses: actions/github-script@v8
         env:
@@ -1609,7 +1609,7 @@ jobs:
           PARK_CHANGED: ${{ needs.detect.outputs.park_changed || 'false' }}
           RESOURCES_CHANGED: ${{ needs.detect.outputs.resources_changed || 'false' }}
           DOCS_CHANGED: ${{ needs.detect.outputs.docs_changed || 'false' }}
-          PREVIEW_REQUESTED: ${{ needs.preview-label-gate.outputs.should_run || 'false' }}
+          BACKEND_PREVIEW_REQUESTED: ${{ needs.preview-label-gate.outputs.backend_preview || 'false' }}
           PARK_REQUESTED: ${{ needs.preview-label-gate.outputs.park_preview || 'false' }}
           RESOURCES_REQUESTED: ${{ needs.preview-label-gate.outputs.resources_preview || 'false' }}
           DOCS_REQUESTED: ${{ needs.preview-label-gate.outputs.docs_preview || 'false' }}
@@ -1660,7 +1660,9 @@ jobs:
             const parkRequested = isTrue(process.env.PARK_REQUESTED);
             const resourcesRequested = isTrue(process.env.RESOURCES_REQUESTED);
             const docsRequested = isTrue(process.env.DOCS_REQUESTED);
-            const previewRequested = isTrue(process.env.PREVIEW_REQUESTED);
+            const backendPreviewRequested = isTrue(
+              process.env.BACKEND_PREVIEW_REQUESTED,
+            );
             const hasBackendChanges = isTrue(process.env.HAS_BACKEND_CHANGES);
             const hasBackendPreview = isTrue(process.env.HAS_BACKEND_PREVIEW);
 
@@ -1692,7 +1694,7 @@ jobs:
             const resourcesLedgerUrl = process.env.RESOURCES_LEDGER_URL || '';
             const docsLedgerUrl = process.env.DOCS_LEDGER_URL || '';
 
-            const backendAttempted = previewRequested && hasBackendChanges;
+            const backendAttempted = backendPreviewRequested && hasBackendChanges;
             const backendPreparationFailed =
               isFailure(buildBackendResult) || isFailure(prepareDatabaseResult);
 
@@ -1753,7 +1755,7 @@ jobs:
             }
 
             let backendRow;
-            if (!previewRequested) {
+            if (!backendPreviewRequested) {
               backendRow = row('Backend', '⚪ Not requested', [], 'Label-gated');
             } else if (backendAlready) {
               backendRow = row(
@@ -1871,10 +1873,10 @@ jobs:
           needs.preview-label-gate.outputs.is_same_repo == 'true' &&
           needs.detect.outputs.resources_only_sync != 'true' &&
           needs.preview-label-gate.outputs.head_branch_should_run == 'true' &&
+          needs.preview-label-gate.outputs.should_run == 'true' &&
           (
             github.event_name == 'workflow_dispatch' ||
-            github.event.action != 'labeled' ||
-            needs.preview-label-gate.outputs.should_run == 'true'
+            github.event_name == 'pull_request'
           )
         uses: actions/github-script@v8
         env:
