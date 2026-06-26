@@ -502,7 +502,7 @@ jobs:
   frontend-preview-dev-backend-context:
     name: "Frontend Preview (Dev Backend)"
     needs: [deploy-frontend]
-    if: !cancelled()
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - name: Mirror unified frontend preview result
@@ -522,7 +522,7 @@ jobs:
   frontend-preview-preview-backend-context:
     name: "Frontend Preview (Preview Backend)"
     needs: [deploy-frontend]
-    if: !cancelled()
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - name: Mirror unified frontend preview result
