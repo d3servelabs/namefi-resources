@@ -1,5 +1,5 @@
 ---
-title: "如何评估域名价值：一份实用估价指南"
+title: "如何为域名估值：一份实用的评估指南"
 date: '2026-06-20'
 language: zh
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
@@ -9,92 +9,92 @@ cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 7
 format: guide
-description: "如何为域名估价：价值影响因素、估价工具的误区、如何解读可比销售案例，以及终端用户与经销商之间的价差。"
+description: "如何为域名估值：影响价值的因素、估值工具会在哪里出错、如何解读可比销售数据，以及终端用户价与经销商价之间的差距。"
 ogImage: ../../assets/how-to-value-a-domain-name-og.jpg
-keywords: ['如何评估域名价值', '域名估价', '我的域名值多少钱', '域名估值', '域名价值计算器', '评估域名', '域名可比销售', '域名定价', '终端用户价格 vs 经销商价格', '我的域名值多少钱', '域名价值', '域名估价工具', '可比域名销售', '域名价值估算']
+keywords: ['如何为域名估值', '域名评估', '我的域名值多少钱', '域名估值', '域名价值计算器', '为域名估值', '域名可比销售', '域名定价', '终端用户价 vs 经销商价', '我的域名值多少', '域名价值', '域名评估工具', '可比域名销售', '域名价值估算']
 ---
 
-迟早，每个拥有域名的人都会问同一个问题：*我的域名值多少钱？* 这是新手域名投资者买下一个资产后问的第一个问题，也是他们在挂牌出售前问的最后一个问题。这个问题似乎应该有一个清晰、可查的答案——输入域名，得到一个数字。
+每一个拥有域名的人迟早都会问同一个问题：*我的域名值多少钱？* 这是新手翻转者拿到一个刚买入的资产后问的第一个问题，也是他们挂牌出售前问的最后一个问题。它听起来似乎应该有一个干净利落、查表即得的答案——输入名字，得到一个数字。
 
-但事实并非如此。坦率的答案可能让人不适，但一旦你接受了，就会感到释然：**一个域名的价值，就是[终端用户](/zh/glossary/end-user/)真正愿意支付的价格，其他一切都只是估算。** 工具给出的数字、可比的销售案例、你自己的直觉——这些都只是在尝试预测那笔唯一的真实交易。本指南将逐步介绍专业人士如何建立这种估算：驱动价值的因素、自动化工具的适用范围及其局限性、如何解读[可比销售案例](/zh/blog/how-to-read-comparable-domain-sales/)，以及为什么同一个域名可以有两个完全不同的价格。这是我们更广泛的[域名抢注交易](/zh/blog/domain-flipping/)指南中的估价支柱。
+事实并非如此。诚实的答案让人不太舒服，但一旦你接受它，反而会获得解脱：**一个域名的价值，等于[终端用户](/zh/glossary/end-user/)真正愿意为它支付的价格，其余一切都只是估算。** 工具给出的数字、一笔可比销售、你自己的直觉——这些都不过是对那一笔真实成交的预测。本指南将带你了解专业人士是如何构建这种估算的：驱动价值的因素、自动化工具擅长什么、又会在哪里失灵、如何解读[可比销售数据](/zh/blog/how-to-read-comparable-domain-sales/)，以及为什么同一个名字会有两个截然不同的价格。它是我们[域名翻转](/zh/blog/domain-flipping/)综合指南中的估值支柱篇。
 
-## 域名的“价值”到底意味着什么
+## 对域名而言，“价值”究竟意味着什么
 
-在探讨具体因素之前，先要明确一个框架。域名没有像股票价格那样内在的、机器可读的价值。没有一个中央交易所会报出 `yourname.com` 的价格是 4,200 美元。取而代之的是一个流动性差的私密市场，大多数大宗交易都是一对一谈判，而且许多交易从未被披露。
+在讨论因素之前，先把框架定下来。域名不像股票那样拥有内在的、机器可读的价值——股票有股价，域名却没有。不存在一个中央交易所为 `yourname.com` 报出 $4,200 的价格。真正存在的，是一个稀薄而私密的市场，其中大多数大额交易都是一对一谈判达成的，许多甚至从未被披露。
 
-这一点从公开记录本身就能看出来。维基百科的[最昂贵域名列表](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names)仅收录了[价值 300 万美元或以上的销售](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=most%20expensive%20domain%20name%20sales%2C%20with%20values%20of%20%243%20million)，并且[仅限于纯域名和纯现金交易](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=limited%20to%20pure%20domain%20name%20and%20cash%2Donly%20sales)——不包括网站内容或股权。所有低于这个门槛的，以及所有受保密协议约束的交易，都根本不在公共账本上。所以，“价值”永远是关于一个你尚未遇到的买家的、带有置信度权重的猜测。估价的工作就是让这个猜测更准确一些。
+你可以从公开记录本身看出这一点。维基百科的[最昂贵域名清单](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names)只收录[成交额达到 300 万美元及以上的销售](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=most%20expensive%20domain%20name%20sales%2C%20with%20values%20of%20%243%20million)，且[仅限于纯域名、纯现金的交易](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=limited%20to%20pure%20domain%20name%20and%20cash%2Donly%20sales)——不含网站内容，也不含股权。低于这个门槛的一切，以及每一笔被 NDA 包裹的交易，根本就不在公开账本上。因此，“价值”永远是一种带置信度权重的猜测，针对的是一个你尚未谋面的买家。估值这件事的工作，就是让这个猜测错得更少一点。
 
-## 真正影响域名价格的因素
+## 真正能撬动域名价格的因素
 
-![一台天平的编辑插图，一端托盘上放着代表长度、关键词和后缀的小抽象图标，另一端托盘上放着一叠硬币](../../assets/how-to-value-a-domain-name-01-value-factors.jpg)
+![一幅编辑风格的插画：一架天平，一端的盘子里放着代表长度、关键词和后缀的小型抽象图标，另一端的盘子里堆着一摞硬币](../../assets/how-to-value-a-domain-name-01-value-factors.jpg)
 
-无论是人工还是自动估价，衡量的基本上都是同样几个基本要素。内化这些要素，大多数域名的价值就能很快被归类。
+每一次估值，无论由人还是由机器完成，权衡的大致都是同一小撮基本要素。把它们内化于心，大多数名字就能很快各归其位。
 
-**长度。** 越短越好，几乎没有例外。字符越少，越容易记忆、输入、口述，也越容易印在名片上。单词和短双词域名位居前列；而长的、带连字符或数字填充的字符串则垫底。
+**长度。** 越短越好，几乎没有例外。字符越少，就越容易记忆、输入、念出，也越容易印在名片上。单词名和短的双词名居于顶端；冗长的、带连字符的、或塞了数字的字符串则垫底。
 
-**词语本身。** 这是影响价值最大的单一杠杆，它有三个检验标准。它是一个*真实*的词语或既定术语，而不是一堆胡乱拼凑的字母吗？它是否*被搜索*——它是否对应人们实际寻找的东西，背后有真实的商业需求？它是否能*清晰地口述*——你读出来后，别人不用你拼写就能准确访问吗？一个通过所有三项检验的域名（如 `cars`、`loans`、`cloud`）与一个一项都未通过的域名，属于完全不同的资产类别。
+**词本身。** 这是单项影响最大的杠杆，有三道测试。它是不是一个*真实*的词或一个既有的术语，而非生造出来的字母堆砌？它*被搜索*吗——它能否对应到人们真正会去查找的东西，背后有真实的商业需求？它能否被*干净地说出*——你能否把它念出来，让对方无需拼写就能准确找到它？一个三道测试全过的名字（`cars`、`loans`、`cloud`）与一个一道都过不了的名字，属于完全不同的资产类别。
 
-**后缀。** `.com` 仍然是衡量网络其余部分价值的默认标准。维基百科指出，它[是 *commercial*（商业）的缩写](https://en.wikipedia.org/wiki/.com#:~:text=it%20is%20short%20for%20commercial)，并[已发展成为最大的顶级域名](https://en.wikipedia.org/wiki/.com#:~:text=It%20has%20grown%20into%20the%20largest%20top%2Dlevel%20domain)，注册量大约有 1.6 亿。正是这种普遍性，使得 `.com` 域名通常比其他[顶级域名（TLD）](/zh/glossary/tld/)上的相同名称享有溢价——因为人们默认会假设它是 `.com`，并毫不犹豫地输入。其他后缀在特定情境下也可能非常有价值（比如开发者品牌使用 [`.io`](/zh/tld/io/)，人工智能公司使用 [`.ai`](/zh/tld/ai/)，或者初创公司选择 [`.co`](/zh/tld/co/) 作为备选），但 `.com` 与其他所有后缀之间的价差是实实在在的。我们在[顶级域名如何影响域名价值](/zh/blog/how-tld-affects-domain-value/)一文中详细分析了其中的机制。
+**后缀。** `.com` 仍然是整个网络用来对标的默认选项。维基百科指出它[是 *commercial* 的缩写](https://en.wikipedia.org/wiki/.com#:~:text=it%20is%20short%20for%20commercial)，并[已成长为最大的顶级域名](https://en.wikipedia.org/wiki/.com#:~:text=It%20has%20grown%20into%20the%20largest%20top%2Dlevel%20domain)，注册量约为 1.6 亿个。正是这种无处不在，使得一个 `.com` 通常会比同名但用其他 [TLD](/zh/glossary/tld/) 的域名要价更高的溢价——它是人们默认假定、不假思索就会输入的那一个。在合适的语境下，其他后缀也可能价值不菲（开发者品牌用 [`.io`](/zh/tld/io/)、AI 公司用 [`.ai`](/zh/tld/ai/)、初创公司退而求其次用 [`.co`](/zh/tld/co/)），但 `.com` 与其余一切之间的差价，是实打实的真金白银。我们在[顶级域名 (TLD) 如何影响域名价值](/zh/blog/how-tld-affects-domain-value/)中拆解了其中的机制。
 
-**关键词与商业意图。** 与交易相关的词语比与爱好相关的词语更有价值。`insurance`、`mortgage` 和 `casino` 等域名常年昂贵，因为每一次点击都可能为所有者转化为实际收入。一个域名越接近金钱交易的环节，终端用户就越愿意花钱拥有这个“前门”——这正是[搜索引擎优化（SEO）](/zh/glossary/seo/)价值与品牌价值重叠的地方。
+**关键词与商业意图。** 一个与交易挂钩的词，比一个与爱好挂钩的词更值钱。`insurance`、`mortgage` 和 `casino` 长年居高不下，是因为每一次点击都可能为持有者转化为真实的收入。一个名字离金钱易手的那一刻越近，终端用户就越愿意为拥有这扇“正门”而买单——这正是 [SEO（搜索引擎优化）](/zh/glossary/seo/) 价值与品牌价值相重叠的地方。
 
-**品牌化潜力。** 并非所有有价值的域名都是字典里的词。简短、易于发音的自创词（如 `Stripe`、`Zillow`，这类词可以干净利落地注册商标）之所以备受青睐，正是因为它们具有独特性和可拥有性。当没有可用或负担得起的完全匹配关键词域名时，品牌化潜力就是初创公司愿意为之付费的价值。
+**可品牌化程度。** 并非每个有价值的名字都是词典里的词。短小、易读、生造的名字（`Stripe`、`Zillow`，以及那种你可以干净地注册[商标](/zh/glossary/trademark/)的名字）之所以被珍视，恰恰是因为它们可被独占、辨识度高。当没有现成的精确匹配关键词名字、或买不起的时候，可品牌化程度就是一家初创公司愿意为之付费的价值。
 
-**后缀稳定性。** 这是一个更微妙的因素，域名投资者通常在吃亏后才学到：后缀的*持久性*也是价格的一部分。一个国家代码顶级域名（ccTLD）由一个国家管理，这引入了 `.com` 所不具备的风险——典型的例子就是查戈斯群岛主权移交后，`.io` 域名悬而未决的问题，我们在[为什么 .io 域名如此昂贵](/zh/blog/why-are-io-domains-expensive/)以及我们的[按注册量划分的 ccTLD 市场份额分析](/zh/blog/cctld-market-share-by-registration-volume/)中对此进行了探讨。定价时，要把国家因素考虑进去，而不仅仅是字母。
+**后缀的稳定性。** 还有一个更微妙的因素，是翻转者用惨痛代价学到的：后缀的*持久性*也是价格的一部分。国家代码 TLD 由某个国家治理，这就带来了 `.com` 所不具备的风险——眼下的典型例子，就是查戈斯群岛主权移交之后悬在 `.io` 头上的那个未决问题，我们在[为什么 .io 域名这么贵？](/zh/blog/why-are-io-domains-expensive/)以及[按注册量排名的 ccTLD 市场份额：谁真正主导了国家级命名空间？](/zh/blog/cctld-market-share-by-registration-volume/)中对此有所讨论。把这个国家的因素计入价格，而不只是计入那几个字母。
 
-## 自动化估价工具：用途何在，局限何在
+## 自动化估值工具：它们能做什么，又会在哪里失灵
 
-![一个小型圆形算法盒子吐出一枚价值不大的价格筹码的编辑插图，而边缘一个模糊的人影手持一枚大得多的价格筹码](../../assets/how-to-value-a-domain-name-02-tools-vs-buyer.jpg)
+![一幅编辑风格的插画：一个小巧的圆角算法盒子吐出一枚不大的价格标签，而画面边缘一个隐约的人形剪影手里拿着一枚大得多的价格标签](../../assets/how-to-value-a-domain-name-02-tools-vs-buyer.jpg)
 
-大多数人做的第一件事就是把域名粘贴到自动化估价工具中——比如 GoDaddy 的估值工具、Estibot 或众多“域名价值计算器”之一。这些工具确实有用，了解它们的工作原理很有帮助。GoDaddy 对其工具的描述很直白：其[算法使用专有的机器学习和真实市场销售数据来估算域名价值，为您提供可比较的域名销售案例](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=algorithm%20uses%20proprietary%20machine%20learning%20and%20real%20market%20sales%20data%20to%20estimate%20domain%20values)。换句话说，它会根据一个庞大的过往销售数据库和上面列出的相同基本要素来为你的域名打分。
+大多数人做的第一件事，就是把一个名字粘进自动化评估器——GoDaddy 的估值工具、Estibot，或者众多“域名价值计算器”中的某一个。它们确实有用，了解它们在做什么会很有帮助。GoDaddy 直白地描述了自己的工具：其[算法运用专有的机器学习和真实的市场销售数据来估算域名价值，并为你提供可比的域名销售记录](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=algorithm%20uses%20proprietary%20machine%20learning%20and%20real%20market%20sales%20data%20to%20estimate%20domain%20values)。换句话说，它把你的名字与一个庞大的历史销售数据库以及上文列出的那些基本要素进行打分比对。
 
-这使得自动化工具在一些特定工作上表现出色：快速筛选大量列表，初步判断一个域名的价值大概是四位数还是两位数，以及发现一些你可能自己找不到的可比销售案例。作为*第一道过滤器*，它们物有所值。
+这使得自动化工具在几项具体的活儿上表现不错：快速筛查一份很长的清单、对一个名字大致值四位数还是两位数做合理性核查，以及挖出一些你自己可能没找到的[可比成交价](/zh/glossary/comparable-sales/)。作为一道*初筛*，它们物有所值。
 
-但它们在最重要的一点上存在局限：**终端用户**。算法不知道某个特定地区的牙医迫切需要与他们城镇名称完全匹配的 `.com` 域名，也不知道一家资金充足的初创公司刚刚完成品牌重塑，并且在本季度就需要你的那个单词域名。它无法洞察意图、时机或战略契合度——这些人为因素能将一个 2,000 美元的域名变成一笔 40,000 美元的交易。根据行业经验，自动化估价最好被视为一个宽泛的、方向性的范围，而不是一个确切的价格；经验丰富的域名投资者经常看到实际成交价远高于或远低于机器给出的数字，两种情况都有。用工具来*框定*一个大致范围，而不是用它来*定价*。要进行各大主流工具的实际比较，了解各自的优劣，请参阅[域名估价工具比较](/zh/blog/domain-appraisal-tools-compared/)。
+它们失灵的地方，恰恰是最关键的那一点：**终端用户**。算法不知道某个特定地区的牙医正迫切想要他所在城镇的精确匹配 `.com`，也不知道某家拿到融资的初创公司刚刚改名、本季度就需要你那个单词名。它看不见意图、时机或战略契合度——正是这些人为因素，把一个 $2,000 的名字变成一笔 $40,000 的成交。作为行业经验法则，自动化估值最好被当作一个宽泛的、指示方向的区间，而非一个价格；经验丰富的翻转者经常看到真实成交远高于或远低于机器给出的数字，两个方向都有。用这个工具去给一个名字*框定区间*，永远不要用它来*定价*。想动手比较各大工具有何不同、各自最擅长什么，请看[域名估值工具比较：Estibot、GoDaddy 与现实](/zh/blog/domain-appraisal-tools-compared/)。
 
-## 可比销售案例：将价格锚定于现实
+## 可比销售：把价格锚定到现实
 
-![一个浅色网格的编辑插图，上面散布着大小不一的小点，代表过去的销售案例，其中一个带有强调色的目标标记通过细线与其最近的邻居相连](../../assets/how-to-value-a-domain-name-03-comps.jpg)
+![一幅编辑风格的插画：一张浅色网格上散布着大小不一的小点，代表过往的销售记录，其中一个用强调色标出的目标标记，通过几条细线连向它最邻近的点](../../assets/how-to-value-a-domain-name-03-comps.jpg)
 
-如果说自动化工具是第一道过滤器，那么可比销售案例（“comps”）则是专业人士实际锚定价格的方法。其逻辑与房地产估价师使用的相同：找出*相似*资产最近的售价，然后根据你的资产与它们的差异进行调整。
+如果说自动化工具是第一道筛子，那么可比销售（“comps”）才是专业人士真正用来锚定数字的方式。其逻辑与房地产评估师所用的如出一辙：找到*相似*资产近期的成交价，再针对你的资产有何不同进行调整。
 
-公开的销售记录是原始材料。NameBio 是标准参考——根据维基百科的域名二级市场概述，[根据 NameBio 的数据，2024 年共记录了 144,700 笔域名销售，总额达 1.85 亿美元](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)。你可以搜索与你的域名结构相似的名称——相同的长度等级、相同的关键词家族、相同的后缀——然后查看它们的成交价范围。
+公开销售记录是原材料。NameBio 是标准参考——据维基百科对域名二级市场的概述，[根据 NameBio 的数据，2024 年共记录到 144,700 笔域名销售，总额达 1.85 亿美元](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)。你去搜索结构上与你的名字相似的名字——同一长度档、同一关键词族、同一后缀——并读出它们成交价的分布区间。
 
-有两个注意事项可以保证可比案例分析的客观性。首先，**公开记录偏向于已披露的和中低端市场的交易。** 正如最昂贵域名列表所示，大型私下交易往往从未浮出水面，因此高端域名的可见可比案例系统性地偏少。其次，**没有两个域名是完全相同的**，所以每个可比案例都需要调整——`flowers.com` 不同于 `flowerz.net`，尽管一个简单的匹配可能会将它们配对。技巧在于调整，这就是为什么我们专门写了一篇关于[如何解读可比域名销售案例](/zh/blog/how-to-read-comparable-domain-sales/)而又不自欺欺人的指南。
+有两条警示能让 comps 保持诚实。第一，**公开记录偏向于已披露的、以及中低端市场。** 正如最昂贵清单所显示的，大额私下交易往往从不浮出水面，因此优质名字的可见 comps 在系统上就是稀薄的。第二，**没有任何两个域名是真正相同的**，所以每一个 comp 都需要调整——`flowers.com` 不等于 `flowerz.net`，尽管粗糙的匹配会把它们配成一对。功夫全在调整上，这也是我们为什么专门写了一篇指南，讲[如何解读可比域名销售数据（Comps）](/zh/blog/how-to-read-comparable-domain-sales/)而不至于自欺欺人。
 
-当你*确实*引用一个著名销售案例作为锚点时，在以此为据之前请先核实。那些头条数字很容易找到，也很容易弄错。公开披露的销售记录中，经核实的最高价是 Voice.com：正如维基百科列表所记录，它[在 2019 年以 30,000,000 美元的价格售出](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Voice.com)，CoinDesk 报道称这笔交易是 [Block.One 为 Voice.com 支付了 3000 万美元](https://www.coindesk.com/markets/2019/06/19/blockone-paid-30-million-for-a-domain#:~:text=Block.One%20paid%20%2430%20million%20for%20Voice.com)（买方），卖方是 MicroStrategy。同一列表上更早的锚点包括 [2010 年的 Sex.com，售价 13,000,000 美元](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Sex.com)和 [2001 年的 Hotels.com，售价 11,000,000 美元](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Hotels.com)。这些是异常值，不能作为普通域名的可比案例——但这类数据需要有来源依据，而不是凭记忆。
+当你*确实*要引用某笔著名成交作为锚点时，先核实再去依赖它。那些抢眼的数字很容易找到，也很容易搞错。在已公开披露的销售中，经过核实的最高纪录是 Voice.com：正如维基百科清单所记载，它[于 2019 年以 $30,000,000 成交](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Voice.com)，这笔交易被 [CoinDesk 报道为 Block.One 为 Voice.com 支付了 3000 万美元](https://www.coindesk.com/markets/2019/06/19/blockone-paid-30-million-for-a-domain#:~:text=Block.One%20paid%20%2430%20million%20for%20Voice.com)（买方），卖方是 MicroStrategy。同一份清单上更早的锚点还包括 [Sex.com 于 2010 年以 $13,000,000 成交](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Sex.com)，以及 [Hotels.com 于 2001 年以 $11,000,000 成交](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Hotels.com)。这些是异常值，而非普通名字的 comps——但它们正是那种需要一个来源、而非凭记忆引用的数字。
 
-## 终端用户价 vs. 经销商价：为什么一个域名有两个价格
+## 终端用户价 vs. 经销商价：为什么一个名字有两个数字
 
-这个概念比任何其他概念都更容易让新手域名投资者感到困惑，所以务必精确理解。同一个域名有两个合法但截然不同的价格，这取决于*谁是买家*：
+这个概念让新手翻转者犯迷糊的程度，超过其他任何一个，所以要把它讲精确。同一个域名有两个合理却差异极大的价格，取决于*谁在买*：
 
-- **终端用户价（零售价）** 是指将实际*使用*该域名的企业所支付的价格。他们不是为了转售而购买资产，而是为了购买公司的“前门”，他们会根据这样一个域名对*他们*的业务价值来定价。这是较高的那个价格。
-- **[经销商](/zh/glossary/reseller/)价（批发价）** 是指另一个投资者付给你的价格，他们知道自己之后需要转售以获利。他们是在购买库存，所以会把自己的利润、持有成本以及未售出的风险都计算在内。这是较低的那个价格。
+- **终端用户（零售）价**是那家将真正*使用*这个名字的企业所支付的价格。它们买的不是一个用来转卖的资产；它们买的是通往自己公司的正门，它们的定价依据是这样一个名字对*它们自己*的运营值多少钱。这是高的那个数字。
+- **[经销商](/zh/glossary/reseller/)（批发）价**是另一位投资者付给你的价格，他知道自己日后还得加价转卖出去。他买的是库存，所以会把自己的利润、持有成本、以及砸在手里卖不出去的风险都预先算进去。这是低的那个数字。
 
-两者之间的差距就是**价差**，这也是域名抢注交易的整个商业模式：以接近或等于批发价的价格买入，以零售价卖出。作为一个经验法则（而非固定定律），同一个域名的终端用户价格通常是批发价的数倍——这正是为什么一个经销商的可比案例和一个终端用户的可比案例，即使针对的是完全相同的字符串，看起来却像在描述两种不同的资产。从某种意义上说，它们确实如此：它们是在为两种不同的*买家*定价。当你进行估价时，总要问自己正在估算的是哪个价格。一个适合批发交易的价格对于终端用户销售来说是错误的，反之亦然。我们在[终端用户与经销商的域名定价](/zh/blog/end-user-vs-reseller-domain-pricing/)中深入探讨了全部机制，并在[如何出售你拥有的域名](/zh/blog/how-to-sell-a-domain-name-you-own/)中讨论了如何将价值转化为成交。
+两者之间的差距就是**价差**，而它正是翻转这门生意的全部商业模式：在批发价或接近批发价买入，按零售价卖出。作为一条实用的经验法则（而非固定定律），同一个名字的终端用户价通常是批发价的好几倍——这恰恰解释了为什么同一个字符串的经销商 comp 和终端用户 comp 看上去就像在描述两种不同的资产。从某种意义上说，它们确实如此：它们在为两类不同的*买家*定价。当你估值时，永远要问自己估的是哪个数字。一个适用于批发翻转的价格，放到终端用户销售上就是错的，反之亦然。我们在[最终用户价 vs. 经销商价：为什么一个域名有两个价格](/zh/blog/end-user-vs-reseller-domain-pricing/)中深入剖析了完整机制，并在[如何出售您拥有的域名：实用检查清单](/zh/blog/how-to-sell-a-domain-name-you-own/)中讲了如何把一个价值变成一笔成交的交易。
 
-## 常见的估价错误
+## 常见的估值错误
 
-大多数糟糕的估值都源于一小撮屡犯的错误：
+大多数糟糕的估值，都源自一份反复出现的“惯犯”短名单：
 
-**凭希望定价。** 最常见的错误：锚定于你找到的那个天价可比案例，而忽略了一百个普通的案例。Voice.com 卖了 3000 万美元；你那个双词的 `.net` 域名并不会因此就变成百万美元的域名。要根据可比案例的*分布*来定价，而不是顶端的那个梦想。
+**靠期望定价。** 最常见的错误：锚定在你找到的那一个高耸入云的 comp 上，而无视另外一百个平平无奇的。Voice.com 卖了 3000 万美元；你那个双词 `.net` 并没有因此就变成百万美元级别的名字。要对着 comps 的*分布*来定价，而不是对着分布顶端的那个梦。
 
-**忽略续费成本。** 域名不是一次性购买——它是一种订阅服务。你持有的每个域名每年都要花钱，而高级后缀或[注册局](/zh/glossary/registry/)分级定价的域名可能有高昂的续费费用。一个看起来“很棒的 500 美元交易”，如果每年持有成本为 90 美元，并且闲置了五年，那它就不是看起来那么划算了。每次估价都要减去持有成本。
+**忽略续费成本。** 域名不是一次性买断——它是一项订阅。你持有的每一个名字每年都在花钱，而优质后缀或[注册局](/zh/glossary/registry/)分级名字的续费可能相当昂贵。一笔“漂亮的 $500 翻转”，如果每年要花 $90 来持有、又压了五年货，那它就不是看上去的那个大赢家。把这份持有成本从每一次估值里净扣出来。
 
-**混淆流量与价值——以及没看到流量*就是*价值的时候。** 这个问题有两个方面。输入流量和现有的搜索排名可以带来真实的、可变现的价值——当 QuinStreet 以 [4970 万美元现金](https://www.globenewswire.com/news-release/2010/11/08/433738/12254/en/QuinStreet-Announces-Acquisition-of-CarInsurance-com-Inc.html#:~:text=for%20%2449.7%20million%20in%20cash)收购 CarInsurance.com 时，Domain Name Wire 报道称[其价值主要来自网站获得的自然流量以及这些流量如何转化为潜在客户](https://domainnamewire.com/2010/11/09/quinstreet-bought-carinsurance-com-for-the-organic-traffic/#:~:text=the%20value%20comes%20primarily%20from%20the%20organic%20traffic)。但请注意这意味着什么：到那时，你估价的是一个*业务*——流量、潜在客户、转化率——而不仅仅是一个*域名*。错误在于为一个光秃秃的、停放的域名定价时，*假装*它带有那些流量。如果价值在于访客，就评估访客并核实他们；如果价值在于域名本身，就评估域名。不要悄悄地为一样东西收费，却交付另一样东西。
+**把流量与价值混为一谈——又在流量*确实就是*价值时漏掉它。** 这一条是双刃剑。[直输流量](/zh/glossary/type-in-traffic/)和现有的搜索排名可能是真实的、可付费的价值——当 QuinStreet 以[现金 4970 万美元](https://www.globenewswire.com/news-release/2010/11/08/433738/12254/en/QuinStreet-Announces-Acquisition-of-CarInsurance-com-Inc.html#:~:text=for%20%2449.7%20million%20in%20cash)买下 CarInsurance.com 时，Domain Name Wire 报道称[其价值主要来自该网站获得的自然流量，以及这些流量如何转化为销售线索](https://domainnamewire.com/2010/11/09/quinstreet-bought-carinsurance-com-for-the-organic-traffic/#:~:text=the%20value%20comes%20primarily%20from%20the%20organic%20traffic)。但请注意这意味着什么：到了那一步，你估的是一门*生意*——流量、线索、转化——而不是一个*名字*。错误在于，把一个光秃秃的、停放着的域名*当作*它带着那些流量来定价。如果价值在访客身上，那就给访客估值并核实他们；如果价值在名字身上，那就给名字估值。别悄悄按其中一个收费、却交付另一个。
 
-## 知道价值之后：在交易完成时保护交易
+## 一旦知道了价值：在交割环节保护这笔交易
 
-估价回答了“多少钱”的问题。但它没有回答随之而来的更难的操作性问题：双方如何实际交易一个五位数或六位数的域名，而不会有一方受损？买方必须在真正控制资产之前汇款；卖方必须在确认收到款项之前放弃控制权。这种信任差距是高价值[域名交易](/zh/glossary/domain-trading/)风险所在之处，它独立于——并且发生在——确定正确价格之后。（我们已经从真实的品牌重塑案例中看到了这种差距，比如 [TeslaMotors.com 到 Tesla.com](/zh/blog/from-teslamotors-com-to-tesla-com/) 的收购。）
+估值回答的是“多少钱”。它回答不了随之而来的、更棘手的操作问题：双方究竟要如何交易一个五位数或六位数的名字，而不让其中一方受到伤害？买方必须在真正掌控资产之前先把钱打出去；卖方必须在确认收到钱之前先交出控制权。那道信任的鸿沟，正是高价值[域名交易](/zh/glossary/domain-trading/)变得危险的地方，它独立于——并且位于——把价格定对这件事的下游。（我们曾在真实的改名案例中目睹这道鸿沟上演，比如[从 TeslaMotors.com 到 Tesla.com：耗时十年、斥资 1100 万美元的域名升级之路](/zh/blog/from-teslamotors-com-to-tesla-com/)那笔收购。）
 
-这个差距正是 [Namefi](https://namefi.io) 旨在弥合的。将一个真实的 [ICANN](/zh/glossary/icann/) 域名代币化，可以使所有权更容易验证和转移，因此交易完成时的交接过程是可审计的，并且域名在变更过程中能够持续解析——估价告诉你数字，而一个干净的转移则在你们达成一致后保护了双方。诚实地评估域名价值；然后确保交易安全。
+这正是 [Namefi](https://namefi.io) 为弥合这道鸿沟而生的地方。把一个真实的 [ICANN](/zh/glossary/icann/) 域名代币化，会让所有权更易于验证和转移，于是交割环节的交接是可审计的，名字在整个变更过程中也能持续解析——估值告诉你那个数字，而一次干净的转移在你们就价格达成一致后保护双方。诚实地为名字估值；然后让这笔交易变得安全。
 
-## 资料来源与进一步阅读
+## 来源与延伸阅读
 
-- Wikipedia — [List of most expensive domain names](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=most%20expensive%20domain%20name%20sales%2C%20with%20values%20of%20%243%20million) (Voice.com $30M/2019, Sex.com $13M/2010, Hotels.com $11M/2001; $3M+ public, cash-only scope)
-- GlobeNewswire — [QuinStreet Announces Acquisition of CarInsurance.com, Inc.](https://www.globenewswire.com/news-release/2010/11/08/433738/12254/en/QuinStreet-Announces-Acquisition-of-CarInsurance-com-Inc.html#:~:text=for%20%2449.7%20million%20in%20cash) ($49.7M cash)
-- Domain Name Wire — [QuinStreet Bought CarInsurance.com for the Organic Traffic](https://domainnamewire.com/2010/11/09/quinstreet-bought-carinsurance-com-for-the-organic-traffic/#:~:text=the%20value%20comes%20primarily%20from%20the%20organic%20traffic)
-- CoinDesk — [Block.One Paid $30 Million for a Domain (Voice.com)](https://www.coindesk.com/markets/2019/06/19/blockone-paid-30-million-for-a-domain#:~:text=Block.One%20paid%20%2430%20million%20for%20Voice.com)
-- GoDaddy — [Domain Name Value & Appraisal: a domain valuation tool](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=algorithm%20uses%20proprietary%20machine%20learning%20and%20real%20market%20sales%20data%20to%20estimate%20domain%20values) (machine learning + real market sales data)
-- Wikipedia — [Domain aftermarket](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024) (NameBio 2024 sales volume)
-- Wikipedia — [.com](https://en.wikipedia.org/wiki/.com#:~:text=It%20has%20grown%20into%20the%20largest%20top%2Dlevel%20domain) (largest TLD; short for *commercial*)
+- 维基百科 — [最昂贵域名清单](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=most%20expensive%20domain%20name%20sales%2C%20with%20values%20of%20%243%20million)（Voice.com $30M/2019、Sex.com $13M/2010、Hotels.com $11M/2001；范围限 300 万美元以上、纯现金）
+- GlobeNewswire — [QuinStreet 宣布收购 CarInsurance.com, Inc.](https://www.globenewswire.com/news-release/2010/11/08/433738/12254/en/QuinStreet-Announces-Acquisition-of-CarInsurance-com-Inc.html#:~:text=for%20%2449.7%20million%20in%20cash)（现金 4970 万美元）
+- Domain Name Wire — [QuinStreet 为自然流量买下了 CarInsurance.com](https://domainnamewire.com/2010/11/09/quinstreet-bought-carinsurance-com-for-the-organic-traffic/#:~:text=the%20value%20comes%20primarily%20from%20the%20organic%20traffic)
+- CoinDesk — [Block.One 为一个域名支付了 3000 万美元（Voice.com）](https://www.coindesk.com/markets/2019/06/19/blockone-paid-30-million-for-a-domain#:~:text=Block.One%20paid%20%2430%20million%20for%20Voice.com)
+- GoDaddy — [域名价值与评估：一款域名估值工具](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=algorithm%20uses%20proprietary%20machine%20learning%20and%20real%20market%20sales%20data%20to%20estimate%20domain%20values)（机器学习 + 真实市场销售数据）
+- 维基百科 — [域名二级市场](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)（NameBio 2024 年销售量）
+- 维基百科 — [.com](https://en.wikipedia.org/wiki/.com#:~:text=It%20has%20grown%20into%20the%20largest%20top%2Dlevel%20domain)（最大的 TLD；*commercial* 的缩写）

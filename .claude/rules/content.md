@@ -32,6 +32,10 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
   script. There is no `translate-glossary` program — it was removed for implying a
   workflow we don't use. Use `content/termbase.json` as the reference for
   canonical per-locale titles + anchor text.
+- **Model:** run drafting and translation agents on the **latest Claude Sonnet**
+  (`claude-sonnet-4-6`), **not** Opus. Sonnet is sufficient for content/translation
+  work and far cheaper; large fan-outs on Opus burn the session/usage limit fast.
+  Reserve Opus for orchestration/judgement, not bulk content generation.
 - The translated **`title` is the canonical term** for that concept in that
   locale, reused site-wide — pick it deliberately. **zh titles are reviewed/signed
   off by the maintainer**; **`ar` uses modern Egyptian Arabic register** (not
