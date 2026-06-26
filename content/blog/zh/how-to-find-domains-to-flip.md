@@ -1,5 +1,5 @@
 ---
-title: '如何寻找可转售的域名：全渠道采购指南'
+title: "如何找到值得倒卖的域名：完整的货源渠道指南"
 date: '2026-06-21'
 language: zh
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
@@ -9,74 +9,74 @@ cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 2
 format: guide
-description: '采购可转售域名的四种方式：手动注册、过期抢注、域名拍卖和二级市场，以及各渠道的风险与价格分析。'
+description: "获取倒卖域名的四种货源方式——手动注册、过期删除、拍卖和二级市场——以及每个渠道各自的风险与价格特征。"
 ogImage: ../../assets/how-to-find-domains-to-flip-og.jpg
-keywords: ['如何寻找可转售域名', '可转售域名', '域名采购', '寻找可转售域名', '手动注册域名', '过期域名', '域名抢注', '域名拍卖', '域名二级市场', '购买域名用于转售', '便宜的可转售域名', '域名投资入门', '哪里购买可转售域名', '域名预订', '最适合转售的域名']
+keywords: ['如何找到值得倒卖的域名', '值得倒卖的域名', '域名货源', '寻找倒卖域名', '手动注册域名', '过期域名', '域名捕获', '域名拍卖', '域名二级市场', '买域名转售', '便宜的倒卖域名', '域名投资入门', '在哪里买倒卖域名', '域名抢注', '最值得倒卖的域名']
 ---
 
-域名转售的一切都始于你购买的域名。即使你是出色的谈判专家和敏锐的评估师，但如果你采购的域名无人问津，这些技能也无用武之地。采购是这行里第一项真正的技能，也是大多数新手容易搞反的一点——他们总是先爱上一个域名，然后再去寻找买家。
+域名倒卖的一切都从你买进什么开始。你可以是出色的谈判高手、敏锐的估价行家，但如果你进了一个没人想要的名字，这些本领就无从施展。货源是这一行真正的第一项技能，也是大多数新手颠倒着做的一项——他们先爱上一个名字，然后才去找买家。
 
-将域名收入囊中的方式有四种，每种方式的价格标签和风险状况都截然不同。手动注册一个全新的域名只需支付注册费，但要与近乎无限的供应量竞争。抢注一个即将过期的域名可能会带来现成的域名年龄或流量，但好的域名总是竞争激烈。拍卖会浮现出高质量的域名，但也会引发竞价战。而从二级市场的其他持有者手中购买，则是以成熟资产的价格获得一项成熟资产。本指南将逐一介绍这四种渠道，并以贯穿始终的一项纪律收尾：学会拒绝。这是我们更全面的[域名转售指南](/zh/blog/domain-flipping/)中关于采购的核心支柱。
+把域名收进你的资产组合有四种途径，每一种都对应着完全不同的价签和完全不同的风险特征。手动注册一个全新的名字，成本是一笔注册费，但要面对几乎无限的供给去竞争。捕获一个即将过期的名字，可能让你直接拿到现成的域龄或流量，但抢手的好货是有人争的。拍卖能筛出优质名字，却也招来竞价大战。而从其他持有人手中、在二级市场买入，则能让你拿到一个经过验证的资产——代价是经过验证的资产价格。本指南会把这四条途径走一遍，最后落到把它们串起来的那条纪律上：学会说不。这是我们更宏观的[域名倒卖](/zh/blog/domain-flipping/)指南中的货源支柱。
 
-## 各供应渠道概览
+## 货源渠道一览
 
-域名市场分为两部分。正如维基百科所述，[域名投机的一级市场涵盖了以前从未被注册过的新注册域名](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20primary%20market%20for%20domain%20name%20speculation%20covers%20newly%20registered%20domain%20names%20that%20have%20not%20been%20registered%20before)——这就是手动注册。另一半是[域名二级市场](/zh/glossary/marketplace/)，维基百科将其定义为[互联网域名的二次转售市场，有意向的买方通过出价或谈判的方式，收购一个已被注册的域名](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=is%20the%20secondary%20resale%20market%20for%20Internet%20domain%20names)——这涵盖了过期抢注、拍卖和直接收购。
+域名市场分为两半。正如维基百科所述，[域名投机的一级市场涵盖此前从未被注册过的、新注册的域名](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20primary%20market%20for%20domain%20name%20speculation%20covers%20newly%20registered%20domain%20names%20that%20have%20not%20been%20registered%20before)——这就是手动注册。另一半是[域名二级市场](/zh/glossary/marketplace/)，维基百科将其定义为[一个针对互联网域名的二级转售市场，有意获取某个已注册域名的一方在其中出价或协商价格](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=is%20the%20secondary%20resale%20market%20for%20Internet%20domain%20names)——它涵盖过期删除、拍卖和直接收购。
 
-大致按照从最便宜、风险最高到最昂贵、最安全排序，你的四个渠道分别是：手动注册、过期/掉落域名、拍卖和二级市场收购。价格越低，几乎总是意味着需要做更多的尽职调查，转售的机会也越渺茫；价格越高，通常意味着市场已经为你做了一些筛选，并将这些价值计入了价格中。
+如果大致从最便宜、风险最高，排到最贵、最稳妥，你的四个渠道依次是：手动注册、过期/删除的名字、拍卖，以及二级市场收购。更便宜几乎总是意味着更多的尽职调查和更薄的转售机会；更贵则通常意味着市场已经替你做了一部分甄别，并把它定进了价格里。
 
-## 手动注册：成本最低，转售最难
+## 手动注册：进价最低，最难卖出
 
-![Editorial illustration of a hand placing a coral price tag on one fresh blank name card in front of an endless wall of identical empty cards](../../assets/how-to-find-domains-to-flip-01-hand-registration.jpg)
+![编辑插画：一只手把珊瑚色的价签贴在一张全新空白名字卡上，身后是一整面望不到头、由一模一样的空白卡片组成的墙](../../assets/how-to-find-domains-to-flip-01-hand-registration.jpg)
 
-手动注册指的是创造一个全新的名称，并在[注册商](/zh/glossary/registrar/)处以标准费用进行新注册。这是每个人的起点，因为入场成本极低——维基百科指出，截至 2023 年，一个简单的 `.com` 域名[零售成本通常在每年约 $9.70 到约 $35 之间](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year)。
+手动注册指的是自己造一个全新的名字，并以标准费用在[注册商](/zh/glossary/registrar/)处全新注册。这是每个人起步的入口，因为入场成本极小——维基百科指出，截至 2023 年，一个简单的 `.com` [零售价格通常从每年约 $9.70 的低位到每年约 $35 不等](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year)。
 
-这种低价恰恰是个陷阱。当任何人都能以一个三明治的价钱注册一个域名时，可用字符串的供应实际上是无限的，而那些至今仍未被注册的域名，未被注册是有原因的：那些显而易见、有价值的早已在多年前被抢占。手动注册就像一场游戏，你需要找到“仍然可用”和“有人愿意为此付费”之间的小小交集——通常是一个新颖的双词品牌域名、一个紧跟最新趋势的名称，或是在像 [`.app`](/zh/tld/app/) 或 [`.io`](/zh/tld/io/) 这样库存尚未被挑完的较新[后缀](/zh/tld/xyz/)中的强力组合。
+正是这个低价构成了陷阱。当任何人都能用一个三明治的钱注册一个名字时，可注册字符串的供给实际上是无限的，而那些至今仍未被注册的名字，没被注册都是有原因的：那些显而易见、有价值的名字早在多年前就被抢走了。手动注册是一场寻找"仍可注册"与"真有人愿意付钱"之间那一小块交集的游戏——通常是一个全新的双词可作品牌的名字、一个搭上全新趋势的名字，或者在 [`.app`](/zh/tld/app/) 或 [`.io`](/zh/tld/io/) 这类较新后缀里、库存还没被挑光时的一个强组合。
 
-这里的纪律在于计算持有成本。你每持有一个手动注册的域名，每年都要支付续费，而你注册的大部分域名永远也卖不出去。只有当偶尔的销售收入能够轻松覆盖所有未售出域名的续费成本时，这个渠道才行得通。我们关于[手动注册可转售域名](/zh/blog/hand-registering-domains-to-flip/)的深度指南涵盖了战胜无限供应问题的模式，而[如何为你的项目命名](/zh/blog/how-to-name-your-project/)一文则提供了一个有用的视角，帮助你理解什么才真正具有品牌价值。
+持有成本的算账是这里的纪律。每个手动注册的名字，只要你持有，每一年都要付那笔费用，而你注册的大多数名字永远卖不出去。这个渠道能成立的唯一前提，是你偶尔的成交能从容覆盖所有卖不掉的名字的续费。我们关于[手动注册域名用于转售](/zh/blog/hand-registering-domains-to-flip/)的深度文章讲了那些能打赢无限供给难题的套路，而[如何为你的项目命名](/zh/blog/how-to-name-your-project/)则提供了一个有用的视角，看清什么名字真正读起来像个品牌。
 
-## 过期和掉落域名：购买域名年龄，继承潜在风险
+## 过期与删除的名字：买的是域龄，继承的是风险
 
-![Editorial illustration of a domain card moving along a timeline through grace-period gates and an hourglass, arriving with rings of age and traffic plus a warning triangle for inherited risk](../../assets/how-to-find-domains-to-flip-02-drop-lifecycle.jpg)
+![编辑插画：一张域名卡片沿时间线移动，穿过宽限期的一道道闸门和一个沙漏，带着域龄与流量的年轮抵达，同时附着一个表示继承风险的警告三角](../../assets/how-to-find-domains-to-flip-02-drop-lifecycle.jpg)
 
-当[注册人](/zh/glossary/registrant/)停止续费时，域名并不会立即恢复为可注册状态。它首先会经历一个固定的宽限期生命周期，而理解这个时间线正是掌握该渠道的全部技巧所在。过期之后有一个赎回窗口——根据维基百科，[赎回宽限期……允许注册人在域名过期后的若干天内将其赎回](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=The%20Redemption%20Grace%20Period)，这个期限[因顶级域名（TLD）而异，通常在 30 到 90 天左右](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=varies%20by%20TLD%2C%20and%20is%20usually%20around%2030%20to%2090%20days)。只有在那之后，在为期 [5 天的“待删除”阶段结束时，该域名才会从 ICANN 数据库中被删除](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=At%20the%20end%20of%20the%20%22pending%20delete%22%20phase%20of%205%20days%2C%20the%20domain%20will%20be%20dropped)，并再次变为可注册状态。
+当[注册人](/zh/glossary/registrant/)停止付费时，一个名字并不会立刻弹回可注册状态。它要先经过一套固定的宽限期生命周期，而看懂这条时间线正是这个渠道的全部技能所在。过期之后会有一段赎回窗口——据维基百科，[赎回宽限期……允许注册人在域名过期后的若干天内取回其域名](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=The%20Redemption%20Grace%20Period)，这个时长[因 TLD 而异，通常在 30 到 90 天左右](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=varies%20by%20TLD%2C%20and%20is%20usually%20around%2030%20to%2090%20days)。只有在那之后，在 [5 天的"待删除"阶段结束时，该域名才会从 ICANN 数据库中被删除](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=At%20the%20end%20of%20the%20%22pending%20delete%22%20phase%20of%205%20days%2C%20the%20domain%20will%20be%20dropped)，重新变为可注册。
 
-与手动注册相比，掉落域名的吸引力在于它可能自带历史：例如域名年龄、入站链接、残余的直接输入流量或已有的搜索权重。风险在于，你也会继承前任所有者的历史包袱——一个被垃圾邮件污染、卷入[商标](/zh/glossary/trademark/)纠纷或带有你不想关联的链接的域名。尽职调查不是可选项。检查历史记录（[WHOIS](/zh/glossary/whois/) 记录和历史快照）、检查商标风险，并且绝不要想当然地认为“老”就等于“好”。一个因为有问题而被放弃的域名，可能会永远砸在你手里。我们在[过期域名与掉落周期](/zh/blog/expired-domains-and-the-drop-cycle/)一文中详细介绍了完整的生命周期和尽职调查清单。
+相比手动注册，一个删除的名字之所以诱人，是因为它可能自带历史：先前的域龄、外部链接、残留的[直输流量](/zh/glossary/type-in-traffic/)，或现成的搜索权重。风险在于你同时也继承了前任所有者的包袱——一个被垃圾信息玷污的名字、缠在某个[商标](/zh/glossary/trademark/)里的名字，或带着你并不想与之沾边的链接的名字。尽职调查不是可选项。查历史（查 [WHOIS](/zh/glossary/whois/) 记录和存档快照），查商标风险，永远不要假设"老"就等于"好"。一个因为有毒而被删除的名字，是一个你可以永远留在手里（卖不出去）的名字。我们在[过期域名与删除周期详解](/zh/blog/expired-domains-and-the-drop-cycle/)中梳理了完整的生命周期和尽职调查清单。
 
-## 拍卖：让市场为你定价
+## 拍卖：市场替你定价
 
-![Editorial illustration of a domain card on an auction pedestal with multiple raised bidding paddles below and a rising stepped price line climbing to the right](../../assets/how-to-find-domains-to-flip-03-auction.jpg)
+![编辑插画：一张域名卡片立在拍卖台上，下方多支竞拍号牌高高举起，一条阶梯状的价格线一路向右攀升](../../assets/how-to-find-domains-to-flip-03-auction.jpg)
 
-一些最好的域名永远不会悄无声息地掉落——它们会被拍卖，要么由注册商出售其即将到期的库存，要么在二级市场平台上进行。[拍卖](/zh/glossary/auction/)是一个为你完成了最智能筛选的渠道：平台已经筛选出有明显需求的域名，而竞价则实时揭示了市场认为它们值多少钱。
+有些最好的名字从不会悄无声息地走过[删除](/zh/glossary/pending-delete/)流程——它们会被拍卖，要么由注册商出售自己即将过期的库存，要么放上二级市场平台。[拍卖](/zh/glossary/auction/)是一个替你完成最聪明筛选的渠道：平台已经把有可证需求的名字挑了出来，而竞价则实时揭示市场认为它们值多少钱。
 
-这种透明度也正是其成本所在。域名之所以会进入拍卖，其根本原因就是竞争——正如维基百科在谈到高需求掉落时指出的，[对于特别受欢迎的域名，通常会有多方等待其过期](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=For%20particularly%20popular%20domain%20names%2C%20there%20are%20often%20multiple%20parties%20anticipating%20the%20expiration)。当多个买家想要同一个域名时，价格会不断攀升，直到只剩下意愿最强的那个。赢得拍卖的纪律在于，在出价前设定一个硬性上限，并在价格超过时果断放弃。在这个渠道中，最快的亏钱方式就是让“赢得拍卖”取代“赚取利润”成为你的目标。我们关于[如何赢得域名拍卖](/zh/blog/how-to-win-domain-auctions/)的攻略涵盖了竞价策略，而[域名预订与抢注](/zh/blog/domain-backorders-and-drop-catching/)则解释了如何在一个域名进入公开拍卖前参与竞争。
+这份透明也正是代价。名字之所以一开始就被送去拍卖，原因正是竞争——正如维基百科谈到高需求的删除域名时所说，[对于特别热门的域名，往往有多方在等待其过期](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=For%20particularly%20popular%20domain%20names%2C%20there%20are%20often%20multiple%20parties%20anticipating%20the%20expiration)。当几个买家都想要同一个名字时，价格会一路攀升，直到只剩下最有动力的那一个，而能在拍卖中获胜的纪律，是在出价之前就设好一个硬上限，一旦越过就走开。在这个渠道里赔钱最快的方式，就是让"赢下这场拍卖"取代"赚到利润"成为目标。我们关于[如何在域名拍卖中获胜](/zh/blog/how-to-win-domain-auctions/)的攻略讲了出价策略，而[域名抢注与域名捕获](/zh/blog/domain-backorders-and-drop-catching/)则解释了如何在一个名字进入公开拍卖之前就去争抢它。
 
-## 二级市场收购：为确定性支付零售价
+## 二级市场收购：付零售价买一个确定的东西
 
-第四个渠道是直接从当前持有者手中购买一个已经注册的域名。这是最安全也是最昂贵的途径，因为你是在收购一项已知的资产，没有生命周期中的赌博成分——这个域名是真实存在的，背景干净，并且你可以在支付一分钱之前对其进行全面检查。大部分此类交易通过市场平台进行；正如维基百科所指出的，[交易由 Afternic 和 Sedo 等二级市场平台促成](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=Transactions%20are%20facilitated%20by%20aftermarket%20platforms%20such%20as%20Afternic%20and%20Sedo)，这些平台连接买卖双方并作为交易的中间人。
+第四个渠道是直接从当前持有人手中买下一个已经注册的名字。这是最稳妥也最贵的路线，因为你收购的是一个已知资产，没有生命周期的赌博——名字就在那里，干干净净，你在汇出一分钱之前可以充分查验它。这类交易大多通过市场进行；正如维基百科所述，[交易由 Afternic 和 Sedo 等二级市场平台促成](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=Transactions%20are%20facilitated%20by%20aftermarket%20platforms%20such%20as%20Afternic%20and%20Sedo)，它们对接买卖双方并居中撮合。
 
-二级市场规模巨大且流动性强。根据一项被广泛引用的统计，[据 NameBio 报道，2024 年记录在案的域名销售共有 144,700 笔，总额达 US$185 million](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)——而这还仅仅是公开披露的交易。转售你在二级市场购买的域名更加困难，恰恰是因为卖家已经获取了大部分的升值空间；你的利润必须来自于找到一个被其他投资者低估的域名，或者触及到卖家无法触及的最终用户。当交易达成时，通常通过中立的[托管](/zh/glossary/escrow/)流程来完成，这样任何一方都不必先行一步——我们在[域名托管详解](/zh/blog/domain-escrow-explained/)中解释了这一机制，以及在[如何出售你拥有的域名](/zh/blog/how-to-sell-a-domain-name-you-own/)中讲解了同一交易中卖方的操作。
+二级市场规模庞大、流动性强。据一项被广泛引用的统计，[根据 NameBio 的数据，2024 年共记录了 144,700 笔域名交易，总额达 1.85 亿美元](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)——而这还只是已披露的交易。倒卖一个你在二级市场买来的名字之所以更难，恰恰是因为卖家已经把大部分上涨空间收进了口袋；你的利润必须来自找到一个被另一位投资者定价过低的名字，或者触达一个卖家永远够不着的[终端用户](/zh/glossary/end-user/)。这里一旦成交，通常会通过一套中立的[托管](/zh/glossary/escrow/)流程结算，这样任何一方都不必先动手——我们在[域名托管详解](/zh/blog/domain-escrow-explained/)中解释了这套机制，并在[如何出售您拥有的域名](/zh/blog/how-to-sell-a-domain-name-you-own/)中讲了同一笔交易中卖方的那一面。
 
-## 战胜所有渠道的纪律：学会拒绝
+## 胜过一切渠道的那条纪律：说不
 
-这是任何采购渠道都无法为你做到的事。每个渠道都会很乐意卖给你一个域名，但没有一个会告诉你，是否真的会有人想要它。在采购中，唯一最有价值的习惯恰恰是那个不产生任何域名的习惯：对于那些不符合你筛选标准的域名，无论它们看起来多么巧妙或便宜，都要果断放弃。
+下面要说的，是任何货源渠道都无法替你做到的事。每一个渠道都乐于卖给你一个名字。没有一个渠道会告诉你，是否还会有别人想要它。货源中最有价值的习惯，恰恰是那个不产出任何域名的习惯：对那些通不过你筛选标准的名字掉头就走，无论它们看上去多聪明、多便宜。
 
-几个筛选标准就能完成大部分工作。这个域名是否存在一个*真实的、可以指明的买家*，还是你只是在凭空想象？大声说出来时，它听起来像一个清晰的词语或品牌，还是需要专门解释拼写？这个后缀的流动性是否足够好，以至于买家真的会在这里寻找域名？预期的转售价格能否在覆盖你的收购成本加上多年的续费后，还有足够的利润空间？任何一个不符合这些标准的域名，都只是一张伪装起来的续费账单。在购买前大致了解一个域名的价值是这项技能的评估部分——这在[如何为域名估值](/zh/blog/how-to-value-a-domain-name/)中有详细介绍——而将这两者结合起来，正是区分专业采购和业余收藏的关键。
+少数几个筛选标准就能完成大部分工作。这个名字有没有一个*真实、能说出名字来的买家*，还是你在想象一个？大声念出来时它读起来像个干净的词或品牌，还是需要先上一堂拼写课？这个后缀的流动性是否足够，让买家真的会去那里淘货？以及，可能的转售价格是否能覆盖你的收购成本加上多年续费，还留有余地？任何一项通不过的名字，都是一张披着戏服的续费账单。在买入之前大致知道一个名字值多少，是这项技能里估价的那一半——见[如何评估域名价值](/zh/blog/how-to-value-a-domain-name/)——两者合在一起，才是货源与单纯收藏的区别所在。
 
-在所有筛选标准之上，还有一条边界：法律红线。手动注册或抢注一个依赖他人商标的域名不是转售，而是一种法律责任，并且可能根据 [UDRP](/zh/glossary/udrp/) 被从你手中夺走。采购通用词、描述性词和自创词域名；无论那些与品牌相关的域名掉落价格多么便宜，都不要碰。
+还有一条边界凌驾于所有筛选标准之上：法律红线。手动注册或捕获一个倚靠他人商标的名字，那不是倒卖，而是一项负债，它可以依据 [UDRP](/zh/glossary/udrp/) 被从你手中夺走。去找通用的、描述性的、生造的名字；无论某个贴近品牌的名字删除时多便宜，都别去碰它。
 
-## Namefi 的视角
+## Namefi 视角
 
-采购决定了你买*什么*。每次转售的另一半工作，是在域名售出时干净利落地完成交割——证明你持有它，在交付过程中不让网站中断，并确保资金和资产能够同时易手。这种结算摩擦在优质采购所产生的高价值域名上表现得最为尖锐。这正是 [Namefi](https://namefi.io) 旨在缩小的差距：代币化的所有权使得对一个真实 [ICANN](/zh/glossary/icann/) 域名的控制权更易于验证和转移，并且具备 [DNS](/zh/glossary/dns/) 连续性，确保域名在交接过程中持续解析。做好采购，然后交易那些所有权可审计而非仅凭信任的域名。
+货源决定你*买什么*。每一次倒卖的另一半，是在卖出时把名字干净利落地转移过去——证明你确实持有它，在不让网站宕掉的前提下交付它，并相信钱款与资产是同时易手的。而这种结算摩擦，恰恰在好货源所产出的那些高价值名字上最为尖锐。这正是 [Namefi](https://namefi.io) 旨在收窄的那道鸿沟：代币化的所有权让一个真实的 [ICANN](/zh/glossary/icann/) 域名的控制权更易于验证和转移，并通过 [DNS](/zh/glossary/dns/) 的连续性让名字在交接过程中持续解析。把货源做好，然后在所有权可审计、而非靠信任的名字上交易。
 
-## 友情提醒（请阅读！）
+## 友情免责声明（请阅读！）
 
-> 我们不是律师、会计师、财务顾问或医生，**本文中的任何内容均不构成法律、财务、税务、会计、医疗或任何其他形式的专业建议。**我们撰写这些文章是为了自我学习，并为我们的客户提供便利。文中的信息可能已过时、具有地域特异性或完全错误。我们也会犯错。
->
-> 对于任何重要决策，**请咨询真正的专业人士（认真的！）**。或者如果这不符合你的风格，可以问问朋友、问问 Twitter、问问 Reddit、问问 AI 或问问通灵师。简而言之：**DOYR - Do Your Own Research（请自行研究）**。让我们一起学习，享受乐趣。
+> 我们不是律师、会计师、财务顾问，也不是医生，**本文中的任何内容都不构成法律、财务、税务、会计、医疗或任何其他形式的专业建议。** 我们写这些文章是为了教育我们自己，也是为了方便我们的客户。这里的信息可能已经过时、因地域而异，或者干脆就是错的。我们也会犯错。
 
-## 资料来源与延伸阅读
+> 对于任何重要的决定，**请咨询一位真正的专业人士（说真的！）**。如果那不合你的风格，那就问问朋友、问问 Twitter、问问 Reddit、问问 AI，或者问问算命先生。一句话：**DOYR——做你自己的研究（Do Your Own Research）**。让我们一起学习，享受乐趣。
 
-- 维基百科 — [域名投机（一级市场 = 新注册域名）](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20primary%20market%20for%20domain%20name%20speculation%20covers%20newly%20registered%20domain%20names%20that%20have%20not%20been%20registered%20before)
-- 维基百科 — [域名二级市场（定义；Afternic 和 Sedo；NameBio 2024 年销售额）](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)
-- 维基百科 — [域名抢注（赎回宽限期 30-90 天；5 天待删除期；热门域名掉落的竞争）](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=The%20Redemption%20Grace%20Period)
-- 维基百科 — [域名注册商（.com 零售价约 $9.70/年起）](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year)
+## 来源与延伸阅读
+
+- 维基百科 —— [域名投机（一级市场 = 新注册的名字）](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20primary%20market%20for%20domain%20name%20speculation%20covers%20newly%20registered%20domain%20names%20that%20have%20not%20been%20registered%20before)
+- 维基百科 —— [域名二级市场（定义；Afternic 和 Sedo；NameBio 2024 年交易量）](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)
+- 维基百科 —— [域名捕获（赎回宽限期 30–90 天；5 天待删除；热门删除域名的竞争）](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=The%20Redemption%20Grace%20Period)
+- 维基百科 —— [域名注册商（`.com` 零售价格从每年约 $9.70 起）](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year)

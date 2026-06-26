@@ -1,5 +1,5 @@
 ---
-title: '域名停放与持有期间的获利之道'
+title: "域名停放与持有期间的变现策略"
 date: '2026-06-21'
 language: zh
 tags: ['domains', 'domain-investing', 'domain-flipping', 'explainer']
@@ -9,76 +9,75 @@ cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 29
 format: explainer
-description: '什么是域名停放，停放的域名如何赚取广告和联盟收入，为什么现代域名停放是一种销售渠道，以及什么时候才真正值得这样做。'
+description: "什么是域名停放、停放域名如何通过广告和联盟获得收入、为何现代停放本质上是一个销售渠道，以及它究竟值不值得去做。"
 ogImage: ../../assets/domain-parking-and-monetization-og.jpg
-keywords: ['域名停放', '停放域名', '停放域名获利', '域名停放收入', '停放域名广告', '按点击付费域名', '直接输入流量', '域名变现', '域名出售页面', '停放页面', '域名投资', '域名交易', '闲置域名赚钱', '停放域名联盟营销', '域名停放值得吗']
+keywords: ['域名停放', '停放域名', '停放域名变现', '域名停放收益', '停放域名广告', '按点击付费域名', '直输流量', '域名变现', '域名出售页面', '停放页面', '域名投资', '域名倒卖', '从闲置域名赚钱', '停放域名联盟', '域名停放值不值']
 ---
 
-您为了交易而持有的域名，在默认情况下是一项闲置资产。它静静地躺在您的账户里，每年花费您的续费，而在您等待合适买家的过程中，它什么也不做。域名停放就是让这个闲置的域名至少做点工作的实践——要么向偶然访问它的人展示广告，要么更有用地，向世界宣告该域名正在出售。
+你手里打算转卖的域名，默认是一项死资产。它躺在账户里，每年消耗续费费用，却在你等待买家的过程中毫无作为。域名停放就是让这个闲置名称至少做点事——要么向偶然访问的访客展示广告，要么更实用地告诉世界：这个名称正在出售。
 
-本文将探讨域名停放可以完成的两项任务：传统任务，即从您不使用的域名中赚取广告和联盟收入；以及对域名交易者来说更为重要的现代任务——将停放页面转变为销售渠道，而不仅仅是广告牌。最后，我们还会坦诚地探讨，域名停放何时真正值得一试，又在何时只是可以忽略不计的零头。如果您是域名投资新手，[域名交易](/zh/blog/domain-flipping/)系列中心文章将为您介绍域名停放在整个行业中的位置。
+本文涵盖停放能做的两件事：一是传统用途——从你暂不使用的域名中赚取广告和联盟收益；二是对域名倒卖者而言更重要的现代用途——把停放页面变成销售渠道，而不仅仅是一块广告牌。最后，我们也会诚实地探讨：什么情况下停放值得折腾，什么情况下它不过是可以忽略的零头。如果你对域名投资还不熟悉，系列总览[域名倒卖](/zh/blog/domain-flipping/)解释了停放在整个域名交易体系中的位置。
 
-## 域名停放的真正含义
+## 域名停放究竟是什么
 
-“停放”有一个精确的定义。正如维基百科所述，[域名（顶级域名）停放指的是注册一个互联网域名，但该域名不与任何服务（如电子邮件或网站）相关联](https://en.wikipedia.org/wiki/Domain_parking#:~:text=is%20the%20registration%20of%20an%20Internet%20domain%20name%20without%20that%20domain%20being%20associated%20with%20any%20services)。简单来说：您拥有这个域名，但它背后没有真正的网站。问题在于，除了空白页面，我们应该展示什么。
+停放有明确的定义。维基百科指出，[域名（TLD）停放是指注册一个互联网域名，但该域名不与电子邮件或网站等任何服务相关联](https://en.wikipedia.org/wiki/Domain_parking#:~:text=is%20the%20registration%20of%20an%20Internet%20domain%20name%20without%20that%20domain%20being%20associated%20with%20any%20services)。说白了：你拥有这个名称，但背后没有真正的网站。问题在于：什么都不显示的话，到底应该显示什么？
 
-域名停放有两种形式。维基百科将其清晰地分为：[域名停放可分为获利性和非获利性](https://en.wikipedia.org/wiki/Domain_parking#:~:text=Domain%20parking%20can%20be%20classified%20as%20monetized%20and%20non%2Dmonetized)。获利性停放向访客展示广告并试图从中赚钱。非获利性停放则设置一个占位符——一个“正在建设中”或“即将上线”的页面，或者对于域名交易者来说，一个简洁的“此域名正在出售”的通知。大多数[注册商](/zh/glossary/registrar/)会在您注册且未指向别处的任何域名上放置一个默认的停放页面，这就是为什么那么多域名会解析到一个您从未要求的通用广告页面的原因。
+停放分两种。维基百科清晰地划分：[域名停放可分为货币化和非货币化两类](https://en.wikipedia.org/wiki/Domain_parking#:~:text=Domain%20parking%20can%20be%20classified%20as%20monetized%20and%20non%2Dmonetized)。货币化停放向访客展示广告并尝试从中获利。非货币化停放则放一个占位页——"建设中"或"即将上线"，或者对于域名倒卖者来说，一个简洁的"此域名待售"提示。大多数[注册商](/zh/glossary/registrar/)会在你注册却未指向其他地方的域名上自动挂上默认停放页，这就是为什么很多域名解析后会出现你从未主动设置的通用广告页。
 
-## 在持有期间赚取广告和联盟收入
+## 持有期间赚取广告和联盟收益
 
-![Editorial illustration of type-in visitors walking from a typed address bar into an ad-filled parked page while a few coins drop into a jar](../../assets/domain-parking-and-monetization-01-adrevenue.jpg)
+![编辑插图：直输访客从地址栏走进满是广告的停放页面，几枚硬币滴入罐中](../../assets/domain-parking-and-monetization-01-adrevenue.jpg)
 
-停放域名的传统原因是为了从点击中赚钱。其模式很简单：停放页面上充满了广告链接，当访客点击这些链接时，您就能获得分成。维基百科直接描述了其运作机制——[域名通常会解析到一个包含广告列表和链接的网页](https://en.wikipedia.org/wiki/Domain_parking#:~:text=will%20usually%20resolve%20to%20a%20web%20page%20containing%20advertising%20listings%20and%20links)，并且[通常根据链接被访问的次数向域名持有人支付报酬（例如按点击付费）](https://en.wikipedia.org/wiki/Domain_parking#:~:text=the%20domain%20holder%20is%20paid%20based%20on%20how%20many%20links%20have%20been%20visited)。
+停放域名的传统理由是赚点击收益。模式很简单：停放页面上塞满广告链接，访客点击后你分一杯羹。维基百科直接描述了这一机制——[域名通常会解析到一个包含广告列表和链接的网页](https://en.wikipedia.org/wiki/Domain_parking#:~:text=will%20usually%20resolve%20to%20a%20web%20page%20containing%20advertising%20listings%20and%20links)，而[域名持有者通常按访客点击链接的次数获得报酬（例如按点击付费）](https://en.wikipedia.org/wiki/Domain_parking#:~:text=the%20domain%20holder%20is%20paid%20based%20on%20how%20many%20links%20have%20been%20visited)。
 
-访客从哪里来？几乎完全来自**直接输入流量**——即人们直接在地址栏中输入一个可猜测的域名。维基百科的定义正是如此：[直接输入流量是一个历史术语，描述访客通过在网络浏览器的地址栏中直接输入 URL 来找到网站](https://en.wikipedia.org/wiki/Type-in_traffic#:~:text=is%20a%20term%20that%20historically%20describes%20visitors%20finding%20a%20website)。比如有人想要便宜的机票，不通过搜索引擎，直接输入 `cheapflights.com`，这就是直接输入流量——如果您恰好拥有这样一个描述性的域名，一个充满广告的停放页面就能悄悄地为他们创造收益。
+访客从哪里来？几乎全部来自**[直输流量](/zh/glossary/type-in-traffic/)**——即直接在地址栏输入一个可猜到的名称的用户。维基百科对此的定义正是如此：[直输流量是指访客通过直接在浏览器地址栏输入URL来找到网站](https://en.wikipedia.org/wiki/Type-in_traffic#:~:text=is%20a%20term%20that%20historically%20describes%20visitors%20finding%20a%20website)。想找廉价机票的人直接在地址栏输入 `cheapflights.com`，跳过搜索引擎——这就是直输流量。如果你恰好拥有这样一个描述性强的域名，满是广告的停放页面就能悄悄从他们身上变现。
 
-这种动态足以推动一整波投机热潮。据维基百科记载，[从停放域名中获取 PPC 收入的简易性，实际上造成了一种纯粹为了其直接输入流量而注册域名的局面](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20ease%20with%20which%20PPC%20revenue%20could%20be%20derived%20from%20parked%20domains)，并且[人们在搜索引擎中搜索的许多精确短语被注册的唯一目的就是为了投放 PPC 广告](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=Many%20of%20exact%20phrases%20that%20people%20were%20searching%20for)。大型注册商也内置了此功能：根据维基百科，[一些托管商如 GoDaddy 拥有自己的域名停放系统，并允许未使用的域名被停放，注册人可以获得一部分 PPC 收入分成](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=Some%20hosters%20such%20as%20Godaddy%20have%20their%20own%20domain%20parking%20systems)。
+这种动态足够强劲，曾引发一波投机浪潮。维基百科记载，[从停放域名中获得PPC收益的便利性，实际上造就了一种仅为直输流量而注册域名的局面](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20ease%20with%20which%20PPC%20revenue%20could%20be%20derived%20from%20parked%20domains)，而且[许多人们在搜索引擎里搜索的精确短语，都被注册下来，专门用于投放PPC广告](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=Many%20of%20exact%20phrases%20that%20people%20were%20searching%20for)。大型注册商甚至将其内置：据维基百科，[GoDaddy等部分主机商拥有自己的域名停放系统，允许闲置域名停放，注册人可以分享所赚取的PPC收益](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=Some%20hosters%20such%20as%20Godaddy%20have%20their%20own%20domain%20parking%20systems)。
 
-坦率地说，在今天：这种方式只有在那些已经有真实直接输入流量的域名上才能获得可观的回报，这实际上意味着那些简短、通用、词典级的域名，并且拥有一个人们会直接猜测的强大[后缀](/zh/tld/com/)。对于大多数域名交易者持有的品牌性、自创性或小众域名，停放收入与其说是收入，不如说是噪音。联盟停放（将页面指向相关零售商，赚取佣金而非纯粹的 PPC）在域名与明确的产品类别相对应时可能效果稍好，但同样的限制依然存在：没有流量，就没有收入。将您为出售而持有的域名所产生的任何收益视为对续费成本的微小抵消，而不是一项业务。决定哪些域名能获得流量的驱动因素，与我们在[是什么让域名有价值](/zh/blog/what-makes-a-domain-valuable/)一文中所讨论的因素相同。
+对今天的诚实评估是：这套逻辑只有在域名本身已有真实直输流量时才有意义——实际上，这意味着强后缀下、人们真的会直接猜测输入的短词、通用词、字典级域名。对于大多数倒卖者手持的品牌型、创造型或细分垂直域名而言，停放收益更接近于噪音而非收入。联盟停放（把页面指向相关零售商，赚佣金而非纯粹的PPC）在域名与某个明确产品类别高度对应时略好一些，但同样的约束依然成立：没有流量，就没有收益。把你待售域名产生的任何收益都当作续费成本的小额抵扣，而不是一门生意。哪些域名能获得这种流量，背后的逻辑与[是什么让一个域名有价值](/zh/blog/what-makes-a-domain-valuable/)中探讨的要素完全一致。
 
-## 现代域名停放是销售渠道，而非广告牌
+## 现代停放是销售渠道，不是广告牌
 
-![Editorial illustration of a crossed-out cluttered ad billboard beside a tidy for-sale storefront page with an offer button and inquiry form routing a buyer to a handshake](../../assets/domain-parking-and-monetization-02-saleschannel.jpg)
+![编辑插图：一块划了叉的杂乱广告牌旁，一个整洁的"待售"店面页面上有出价按钮和询盘表单，将买家引导至握手成交](../../assets/domain-parking-and-monetization-02-saleschannel.jpg)
 
-这是一个至关重要的转变。对于域名交易者来说，停放页面最有价值的功能不是从点击中赚取几分钱——而是宣告该域名正在出售，捕获意向，并引导买家达成交易。停放页面是您的域名访问量最大的界面，因为任何好奇到输入域名的人都会登陆到这里。将这个界面浪费在别人的广告上，而不是您自己的“待售”信息上，等于是将真正的钱丢在桌子上。
+重要的转变在这里。对于域名倒卖者来说，停放页面最有价值的事不是赚点击的几分钱——而是宣告该域名正在出售、捕捉买家兴趣、并将买家引向成交。停放页面是你域名最高频被访问的界面，因为任何好奇到输入这个名称的人都会落在这里。把这个界面浪费在别人的广告上，而不是你自己的"待售"信息上，才是真正把钱留在了桌上。
 
-一个以销售为导向的停放页面需要完成几个特定的任务。它要清楚地说明该域名可供出售。它要提供一种出价方式，或者更好的是，一个固定的“立即购买”价格，以便买家无需来回协商即可采取行动。并且它要捕获询盘——姓名、电子邮件、出价金额——这样，在凌晨 2 点到来的认真买家就不会流失。这本身就是一门学问，我们在[域名出售登陆页](/zh/blog/domain-for-sale-landing-pages/)中有详细介绍。将合适的买家引导至该页面的更广泛策略是本系列的核心支柱，即[营销待售域名](/zh/blog/marketing-your-domains-for-sale/)，而搜索方面——让您的列表可被找到——则是[域名列表的市场 SEO](/zh/blog/marketplace-seo-for-domain-listings/)，这依赖于与任何其他页面相同的 [SEO](/zh/glossary/seo/) 基础。
+一个以销售为导向的停放页面要做几件具体的事：清晰说明该域名可购买；提供出价方式，或者更好的是，给出固定一口价，让买家无需反复谈判就能直接行动；以及捕捉询盘信息——姓名、邮箱、出价金额——这样凌晨两点到达的认真买家也不会悄悄离开。这是一门独立的学问，在[域名出售着陆页](/zh/blog/domain-for-sale-landing-pages/)中有专门讲解。将合适买家引导至这个页面的完整打法，是系列主干文章[如何营销你的待售域名](/zh/blog/marketing-your-domains-for-sale/)；让你的列表被找到——即搜索端——则是[域名列表的市场SEO](/zh/blog/marketplace-seo-for-domain-listings/)，它依赖的是与任何其他页面相同的[SEO（搜索引擎优化）](/zh/glossary/seo/)基础。
 
-现在，大多数市场和停放服务商都免费提供此功能：列出一个域名，他们就会给您一个待售登陆页、一个报价表，通常还有一个连接到结账流程的“立即购买”流程。实际的做法是确保您持有的每个域名都指向一个待售页面，而不是一个通用的广告页面——这不花一分钱，却能将您唯一可控的界面变成一个在您睡觉时也能工作的销售代表。当收到报价时，交接通常通过中立的[托管](/zh/glossary/escrow/)流程进行，这样任何一方都无需先行动；我们在[域名托管服务详解](/zh/blog/domain-escrow-explained/)中详细介绍了这一点，而完成单笔销售的逐步流程则在[如何出售您拥有的域名](/zh/blog/how-to-sell-a-domain-name-you-own/)中。
+大多数市场平台和停放服务商现在都免费提供这一功能：上架一个域名，他们就给你一个待售落地页、一个出价表单，通常还有接入结账流程的一口价功能。实际操作中，确保你持有的每个域名都指向待售页面而非通用广告页——不需要任何成本，却能让你唯一掌控的界面变成一个夜以继日工作的销售代表。当询盘来临时，交接通常通过中立的[托管](/zh/glossary/escrow/)流程进行，让双方都不必先行冒险；我们在[域名托管详解](/zh/blog/domain-escrow-explained/)中详细说明了这一流程，单笔交易成交的逐步操作则在[如何出售你拥有的域名](/zh/blog/how-to-sell-a-domain-name-you-own/)中。
 
-有一个警告值得明确指出：待售页面是一个公开信号，对于那些与[商标](/zh/glossary/trademark/)沾边的域名，广播“给我出个价”可能被解读为恶意牟利的证据。这正是 [UDRP](/zh/glossary/udrp/) 所监管的界线，所以请将待售停放用于通用和品牌性域名。完整的框架在[什么是 UDRP](/zh/blog/what-is-udrp/) 中有介绍。
+有一点需要直言：待售页面是公开信号，对于与[商标](/zh/glossary/trademark/)存在交集的域名，公开"出价购买"可能被视为以牟利为目的的恶意行为的证据。这正是[UDRP (统一域名争议解决政策)](/zh/glossary/udrp/)所约束的边界，因此待售停放只适用于通用型和品牌型域名。完整的规则框架在[什么是UDRP](/zh/blog/what-is-udrp/)中。
 
-## 域名停放何时才真正值得
+## 停放究竟什么时候值得
 
-![Editorial illustration of a balance scale weighing a trickle of parking pennies and a recurring renewal calendar against one large star coin and trophy that outweigh them](../../assets/domain-parking-and-monetization-03-arithmetic.jpg)
+![编辑插图：一架天平，一侧放着停放零钱和周期性续费日历，另一侧放着一枚大星形金币和奖杯，后者更重](../../assets/domain-parking-and-monetization-03-arithmetic.jpg)
 
-域名停放成本低廉，因此人们很容易将其视为免费的收益而不再多想。更尖锐的问题是，您停放域名*为了*什么。
+停放成本低，于是很容易把它视为免费红利而懒得深想。更尖锐的问题是：你停放的目的是什么。
 
-**始终为了出售而停放。** 您投资组合中的每个域名都应该解析到一个待售页面。这不花一分钱，是停放所能做的杠杆效应最高的事情，也是买家能找到联系您的方式与买家放弃之间的区别。对于任何您打算交易的域名来说，这是不容商量的。
+**为销售而停放，始终如此。** 你投资组合中的每个域名都应该解析到一个待售页面。它不花钱，是停放能做的最高杠杆的事，也是买家能否找到联系你方式的关键区别。对于任何你打算转卖的域名，这一点没有商量余地。
 
-**极少为了广告收入而停放。** 只有在那些真正能吸引直接输入流量的域名上——简短、通用、易于猜测的字符串，并且使用像 [.com](/zh/tld/com/) 这样的流动性强的后缀，或像 [.co](/zh/tld/co/) 或 [.io](/zh/tld/io/) 这样的强大替代品——才有必要设置获利性停放。对于品牌性或自创的域名，广告收入几乎为零，而一个杂乱的广告页面实际上可能会伤害到您，因为它会让认真的买家认为这个域名只是另一个停放的垃圾域名，而不是一个有明确所有者愿意出售的资产。如有疑问，选择简洁的待售页面，而不是杂乱的广告页面。
+**为广告收益而停放，要谨慎。** 货币化停放只值得在真正能带来直输流量的域名上设置——即[.com](/zh/tld/com/)或[.co](/zh/tld/co/)、[.io](/zh/tld/io/)等强势后缀上的短词、通用词、可猜测字符串。对于品牌型或创造型域名，广告收益约等于零，而满是广告的页面实际上会伤害你——它会让认真的买家认为这不过是又一个停放垃圾域名，而不是有明确所有者愿意出售的资产。拿不准时，选择简洁的待售页面，而不是杂乱的广告页面。
 
-**算一笔账。** 停放收入，即便存在，也只是对您持有成本的抵消，而不是回报。根据维基百科，一个 [gTLD](/zh/glossary/gtld/) 的注册费用从[每年约 $9.70 的低价到每年约 $35](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year) 不等，而一个域名每个注册期最长可持有 [gTLD 域名的最长注册期为 10 年](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years)。将这个续订成本乘以您的投资组合，唯一能可靠覆盖它的就是偶尔的销售，而不是停放带来的零星收入。销售才是最终目的；停放充其量只是对等待期间的小额补贴——这也是为什么一次成功的退出可以资助多年续费的原因。Voice.com 的交易是这一原则的极端体现，据[注册局](/zh/glossary/registry/) SIDN 称，[区块链提供商 Block.one 支付了 3000 万美元购买了域名 voice.com](https://www.sidn.nl/en/news-and-blogs/voice-com-sold-for-usd-30-million#:~:text=blockchain%20provider%20Block.one%20paid%2030%20million%20US%20dollars%20for%20the%20domain%20name%20voice.com)。
+**算清楚这笔账。** 停放收益（如果有的话）是对持有成本的抵扣，而不是回报。根据维基百科，一个[gTLD（通用顶级域名）](/zh/glossary/gtld/)注册，[零售价通常从每年约9.70美元到约35美元不等](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year)——以简单`.com`为例，而每期注册最长可持续至[gTLD域名注册的最长期限为10年](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years)。把续费乘以整个投资组合，唯一可靠覆盖它的只有偶尔的一次出售，而不是停放收益的涓涓细流。出售才是目标；停放充其量是等待期间的小额补贴——正因如此，一次好的出售才能支撑多年的续费。Voice.com的交易就是这一原则的极端版本：据[注册局](/zh/glossary/registry/) SIDN，[区块链服务商Block.one以3000万美元收购了域名voice.com](https://www.sidn.nl/en/news-and-blogs/voice-com-sold-for-usd-30-million#:~:text=blockchain%20provider%20Block.one%20paid%2030%20million%20US%20dollars%20for%20the%20domain%20name%20voice.com)。
 
-如果您想了解除了停放页面之外，如何通过持有的域名获利的更广阔前景——[租赁](/zh/glossary/leasing/)、[先租后买](/zh/glossary/rent-to-own/)和[收入分成](/zh/glossary/revenue-sharing/)等安排都可以在不直接出售域名的情况下出租其价值——这些是值得了解的独立策略，但停放是基础：是每个持有的域名都应该做的最基本的事情。
+如果你想了解停放页面之外、变现持有域名的更广泛方式——[租赁](/zh/glossary/leasing/)、[先租后买](/zh/glossary/rent-to-own/)以及[收益分享](/zh/glossary/revenue-sharing/)安排都能在不出售的情况下释放域名价值——这些是值得了解的独立策略，但停放是底线：每个持有域名至少都应该做到这一点。
 
-## Namefi 的视角
+## Namefi 的角色
 
-一个待售停放页面的好坏，取决于买家点击“出价”后会发生什么。这正是大多数交易停滞不前的地方——卖家在收到付款前不愿转让，买家在收到域名前不愿付款，整个过程因相互猜疑而崩溃。页面捕获了意向；但交易的成败取决于结算环节。
+待售停放页面的价值，取决于买家点击"出价"之后发生什么。大多数交易就卡在这里——卖家不愿在收款前转移，买家不愿在获得域名前付款，整件事就这样在相互不信任中崩塌。页面捕获了兴趣；结算才是成败所在。
 
-这正是 [Namefi](https://namefi.io) 旨在弥合的差距。代币化所有权使得对真实 [ICANN](/zh/glossary/icann/) 域名的控制权更容易验证和转移，并且具有 [DNS](/zh/glossary/dns/) 连续性，因此停放的域名在整个交接过程中都能保持干净的解析。对于域名交易者来说，这意味着持有域名上的待售页面可以导向一个可审计且快速的转让，而不是紧张的手动交换——从而完成更多由您的停放页面开启的交易。
+这正是 [Namefi](https://namefi.io) 要填补的缺口。代币化所有权让真实 [ICANN](/zh/glossary/icann/) 域名的控制权验证与转移变得更加便捷，同时保持 [DNS](/zh/glossary/dns/) 连续性，使停放域名在整个交接过程中始终正常解析。对于域名倒卖者而言，这意味着持有域名上的待售页面可以通向一笔可审计、快速完成的转移——而不是一场紧张的手动操作——让你的停放页面发起的更多交易真正走向成交。
 
-## 友好免责声明（请阅读！）
+## 友情声明（请阅读！）
 
-> 我们不是律师、会计师、财务顾问或医生，**本文中的任何内容均不构成法律、财务、税务、会计、医疗或任何其他形式的专业建议。** 我们撰写这些文章是为了自我教育，并为我们的客户提供便利。此处的信息可能已过时、具有地域特异性，或者干脆就是错误的。我们也会犯错。
+> 我们不是律师、会计师、财务顾问，也不是医生，**本文中的任何内容均不构成法律、财务、税务、会计、医疗或任何其他专业建议。** 我们写这些文章是为了自我学习，也是为我们的用户提供参考。这里的信息可能已经过时、因地区而异，或者干脆就是有误的。我们也会犯错。
 >
-> 对于任何重要决定，**请咨询真正的专业人士（说真的！）**。或者，如果这不是您的风格，可以问问朋友、问问 Twitter、问问 Reddit、问问 AI 或问问通灵师。简而言之：**DOYR - Do Your Own Research（请自己做好研究）**。让我们一起学习，享受乐趣。
+> 对于任何重要决策，**请咨询真正的专业人士（认真的！）**。如果你不喜欢这样，也可以问朋友、问Twitter、问Reddit、问AI，或者问算命先生。总之：**DOYR——做你自己的研究**。让我们一起学习，享受其中的乐趣。
 
-## 来源及进一步阅读
+## 资料来源与延伸阅读
 
-- 维基百科 — [Domain parking (definition; monetized vs non-monetized; pay-per-click mechanics)](https://en.wikipedia.org/wiki/Domain_parking#:~:text=is%20the%20registration%20of%20an%20Internet%20domain%20name%20without%20that%20domain%20being%20associated%20with%20any%20services) (域名停放（定义；获利性与非获利性；按点击付费机制）)
-- 维基百科 — [Type-in traffic (definition)](https://en.wikipedia.org/wiki/Type-in_traffic#:~:text=is%20a%20term%20that%20historically%20describes%20visitors%20finding%20a%20website) (直接输入流量（定义）)
-- 维基百科 — [Domain name speculation (PPC revenue from parked domains; registrar parking systems)](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20ease%20with%20which%20PPC%20revenue%20could%20be%20derived%20from%20parked%20domains) (域名投机（来自停放域名的 PPC 收入；注册商停放系统）)
-- 维基百科 — [Domain name registrar (10-year max gTLD term; retail `.com` renewal pricing)](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years) (域名注册商（10 年最长 gTLD 期限；零售 `.com` 续订价格）)
-- SIDN — [Voice.com sold for USD 30 million (Block.one, 2019)](https://www.sidn.nl/en/news-and-blogs/voice-com-sold-for-usd-30-million#:~:text=blockchain%20provider%20Block.one%20paid%2030%20million%20US%20dollars%20for%20the%20domain%20name%20voice.com) (Voice.com 以 3000 万美元售出 (Block.one, 2019))
-</invoke>
+- Wikipedia — [域名停放（定义；货币化与非货币化；按点击付费机制）](https://en.wikipedia.org/wiki/Domain_parking#:~:text=is%20the%20registration%20of%20an%20Internet%20domain%20name%20without%20that%20domain%20being%20associated%20with%20any%20services)
+- Wikipedia — [直输流量（定义）](https://en.wikipedia.org/wiki/Type-in_traffic#:~:text=is%20a%20term%20that%20historically%20describes%20visitors%20finding%20a%20website)
+- Wikipedia — [域名投机（停放域名的PPC收益；注册商停放系统）](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20ease%20with%20which%20PPC%20revenue%20could%20be%20derived%20from%20parked%20domains)
+- Wikipedia — [域名注册商（gTLD最长10年期；.com零售续费定价）](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years)
+- SIDN — [Voice.com以3000万美元成交（Block.one，2019年）](https://www.sidn.nl/en/news-and-blogs/voice-com-sold-for-usd-30-million#:~:text=blockchain%20provider%20Block.one%20paid%2030%20million%20US%20dollars%20for%20the%20domain%20name%20voice.com)

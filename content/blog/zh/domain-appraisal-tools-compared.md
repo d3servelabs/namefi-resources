@@ -1,5 +1,5 @@
 ---
-title: "域名估值工具比较：Estibot、GoDaddy 与现实"
+title: "域名估价工具对比：Estibot vs GoDaddy vs 现实"
 date: '2026-06-21'
 language: zh
 tags: ['domains', 'domain-investing', 'domain-flipping', 'comparison']
@@ -9,93 +9,93 @@ cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 8
 format: comparison
-description: "Estibot 和 GoDaddy 等自动化域名估值工具的实际工作原理，它们的系统性盲点，以及如何将它们用作第一道筛选器。"
+description: "Estibot、GoDaddy 这类自动估价工具究竟是怎么运作的，它们在哪些地方会系统性地失准，以及如何把它们当作第一道筛选工具来用。"
 ogImage: ../../assets/domain-appraisal-tools-compared-og.jpg
-keywords: ['域名估值工具', 'Estibot vs GoDaddy', '域名价值计算器', '自动化域名估值', '域名估价工具', 'estibot 准确度', 'godaddy 域名估值', '我的域名值多少钱', '域名估值准确性', 'estibot 评测', '域名价值估算', '机器学习域名估值', '域名可比销售工具', '如何给域名估值', '域名倒卖工具']
+keywords: ['域名估价工具', 'estibot vs godaddy', '域名价值计算器', '自动域名估价', '域名估值工具', 'Estibot 准不准', 'GoDaddy 域名估价', '我的域名值多少钱', '域名估价准确度', 'Estibot 评测', '域名价值估算', '机器学习域名估值', '域名参考成交价工具', '如何给域名估价', '域名翻转工具']
 ---
 
-将一个域名粘贴到估值工具中，大约一秒钟你就能得到一个数字。这个数字看起来很权威——一个清晰的美元金额，通常下方还附有一系列可比销售案例。新手域名投资者会把这个数字当作最终答案。而经验丰富者则将其视为一场更长对话的开端。
+把一个域名粘贴进估价工具，大约一秒钟你就会得到一个数字。它看起来很权威——一个干净利落的美元数字，下面往往还附着一串[参考成交价](/zh/glossary/comparable-sales/)。新手翻转者把这个数字当成答案，老手则把它当成一场漫长得多的对话的开场白。
 
-Estibot 和 GoDaddy 的估值工具在其设计的目标上都表现出色，但在决定大多数真实销售的那个关键点上，却都表现不佳。本指南将解释这两种主流工具的实际工作原理，它们在哪些方面意见一致，又在哪些方面存在分歧，以及——最重要的部分——它们共有的、任何机器学习都无法修复的特定盲点。本文是我们估值核心文章 [如何评估域名价值](/zh/blog/how-to-value-a-domain-name/) 的补充，也是更广泛的[域名倒卖](/zh/blog/domain-flipping/)系列的一部分。
+Estibot 和 GoDaddy 的估价工具都很擅长它们被设计来做的事，却又在决定大多数真实成交的那一件事上糟糕得真切。这篇指南讲清楚两款主流工具到底如何运作、它们在哪里一致、在哪里分歧，以及——最关键的部分——它们共有的那个具体盲点，再多的机器学习也修不好。它是我们估价支柱文章[如何评估域名价值](/zh/blog/how-to-value-a-domain-name/)的配套读物，也是更宏观的[域名翻转](/zh/blog/domain-flipping/)系列的一部分。
 
-## 自动化估值工具的真实工作原理
+## 自动估价工具实际在做什么
 
-![Editorial illustration of a domain name card fed into a pattern-matching machine that compares it against a grid of past sale records](../../assets/domain-appraisal-tools-compared-01-pattern-match.jpg)
+![编辑插画：一张域名卡片被送进一台模式匹配机器，机器将它与一整面过往成交记录的网格逐一比对](../../assets/domain-appraisal-tools-compared-01-pattern-match.jpg)
 
-在底层，这两种主流工具都在做同样的事情：使用一个基于影响价格的基本因素训练出的模型，对照一个大型的过往销售数据库为你的域名打分。它们是模式匹配器，而不是预言家。
+掀开引擎盖，两款主流工具做的是同一件事：用一个基于影响价格的基本面训练出的模型，把你的域名拿去跟一个庞大的过往成交数据库打分。它们是模式匹配器，不是先知。
 
-GoDaddy 对其方法直言不讳。其估值工具的[算法使用专有的机器学习和真实市场销售数据来估算域名价值](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=algorithm%20uses%20proprietary%20machine%20learning%20and%20real%20market%20sales%20data%20to%20estimate%20domain%20values)，并且它将整个估值过程置于一个每个域名投资者都应该内化的框架中：[将域名的价值想象成在线房地产](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=Think%20of%20a%20domain%20name%27s%20value%20like%20online%20real%20estate)。这是正确的思维模型。一个房地产比价工具会找到与你的房子相似且最近售出的房屋，然后进行调整。域名估值工具对域名的处理方式也是如此。
+GoDaddy 对自己的配方很坦白。它的估价工具的[算法使用专有的机器学习和真实市场成交数据来估算域名价值](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=algorithm%20uses%20proprietary%20machine%20learning%20and%20real%20market%20sales%20data%20to%20estimate%20domain%20values)，而且它给整件事下的定义是每个翻转者都该牢记的：[把域名的价值想象成线上的房地产](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=Think%20of%20a%20domain%20name%27s%20value%20like%20online%20real%20estate)。这是正确的心智模型。一个房地产参考成交价工具会找出跟你的房子相似、近期成交的房屋，然后做调整。域名估价工具对域名做的是同一件事。
 
-Estibot 对其方法的描述则更为具体。它[依赖于一个统计推导模型，根据一百多个内部和外部域名属性来计算域名价值](https://www.estibot.com/methodology#:~:text=relies%20on%20a%20statistically%20derived%20model)，这些属性分为两类。[内部属性包括域名长度、后缀、词数、发音](https://www.estibot.com/methodology#:~:text=Internal%20attributes%20include%20domain%20length%2C%20extension%2C%20word%20count%2C%20pronunciation)——这些是你从域名本身就能读出的信息。[外部属性则指第三方数据，如域名的搜索热度、直接输入排名](https://www.estibot.com/methodology#:~:text=External%20attributes%20refer%20to%20third%20party%20data%20such%20as%20a%20domain%27s%20search%20popularity)——这些是围绕域名的需求信号。然后，模型进行比较：[特定域名的特征会与先前售出域名的特征进行比较，估值就基于这种比较](https://www.estibot.com/methodology#:~:text=are%20then%20compared%20to%20those%20of%20previously%20sold%20domain%20names)。
+Estibot 把方法讲得更细。它[依赖一个统计推导出的模型，基于一百多项内部与外部域名属性来计算域名的价值](https://www.estibot.com/methodology#:~:text=relies%20on%20a%20statistically%20derived%20model)，而这些属性分成两类。[内部属性包括域名长度、后缀、单词数、可读性](https://www.estibot.com/methodology#:~:text=Internal%20attributes%20include%20domain%20length%2C%20extension%2C%20word%20count%2C%20pronunciation)——这些都是你从域名本身就能读出来的东西。[外部属性指的是第三方数据，比如一个域名的搜索热度、直接输入排名](https://www.estibot.com/methodology#:~:text=External%20attributes%20refer%20to%20third%20party%20data%20such%20as%20a%20domain%27s%20search%20popularity)——也就是围绕这个域名的需求信号。然后模型做比对：[把某个特定域名的特征拿去跟此前已成交的域名做比较，估值就基于这一比较得出](https://www.estibot.com/methodology#:~:text=are%20then%20compared%20to%20those%20of%20previously%20sold%20domain%20names)。
 
-请注意，这两种方法论与任何人类估价师早已权衡的[价值因素](/zh/blog/how-to-value-a-domain-name/)是多么接近：长度、词语、[后缀](/zh/glossary/tld/)、关键词需求、品牌潜力。这些工具并没有发现什么秘密公式。它们只是将显而易见的公式自动化，并将其应用于一个比你手动搜索更大的销售数据库。
+请注意，这两套方法论跟任何人类估价师早就在掂量的[价值因素](/zh/blog/how-to-value-a-domain-name/)有多么贴合：长度、那个词、[后缀](/zh/glossary/tld/)、关键词需求、品牌化潜力。工具并没有发现什么秘密公式。它们只是把那个显而易见的公式自动化了，并拿去跑一个比你手动检索大得多的成交数据库。
 
-## Estibot 与 GoDaddy 的共同点
+## Estibot 和 GoDaddy 在哪里一致
 
-在基本面上，这两个工具很少有分歧，因为它们读取的是相同的信号。
+在基本面上，这两款工具很少打架，因为它们读取的是同一批信号。
 
-两者都看重简短性。GoDaddy 明确地说明了规则——[基本上，域名越短，价值越高](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=Basically%2C%20the%20shorter%20a%20domain%2C%20the%20higher%20the%20value)——而 Estibot 将长度列为核心的内部属性。两者都非常重视后缀，这就是为什么同一个字符串在 [`.com`](/zh/tld/com/) 和一个廉价[顶级域名](/zh/glossary/tld/)上的估值会大相径庭，以及为什么一个开发者域名使用 [`.io`](/zh/tld/io/) 或一个人工智能品牌使用 [`.ai`](/zh/tld/ai/) 的得分会与字典意义所暗示的不同。两者都考虑独特性；GoDaddy 表示该工具[将独特性（以及其他因素）纳入考量](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=factors%20uniqueness%20%28among%20other%20things%29%20into%20the%20equation)。而且，两者都以真实销售为锚点，而非凭感觉，这是它们做得最好的、也是最重要的一点。
+两者都奖励短。GoDaddy 把规则讲得直白——[基本上，域名越短，价值越高](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=Basically%2C%20the%20shorter%20a%20domain%2C%20the%20higher%20the%20value)——而 Estibot 把长度列为核心内部属性之一。两者都给后缀很高的权重，这也是为什么同一个字符串在 [`.com`](/zh/tld/com/) 和一个廉价 [TLD](/zh/glossary/tld/) 上会返回天差地别的数字，也是为什么一个开发者向的名字在 [`.io`](/zh/tld/io/) 上、或一个 AI 品牌在 [`.ai`](/zh/tld/ai/) 上，得分会和字典本身暗示的不一样。两者都把独特性纳入考量；GoDaddy 说它的工具[把独特性（以及其他因素）纳入了计算](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=factors%20uniqueness%20%28among%20other%20things%29%20into%20the%20equation)。而且两者都锚定在真实成交而非感觉上，这是它们做得好的最重要的一点。
 
-对于大多数域名投资者实际需要的工作——将一百个域名列表筛选为“值得进一步研究”和“放弃”——这种一致性正是你想要的。当两个工具都独立地认为一个域名有可能是四位数资产时，这是一个值得采取行动的真实信号。
+对大多数翻转者真正需要的工作——把一份一百个名字的清单分流成"值得细看"和"扔掉它"——这种一致正是你想要的。当两款工具各自独立地说某个名字很可能是一个四位数资产时，那就是一个值得据以行动的真实信号。
 
-## 它们的分歧之处
+## 它们在哪里分歧
 
-分歧之处更为细微，但它们能让你了解每个工具的偏见。
+分歧更安静，但能教会你一些关于每款工具偏向的东西。
 
-最大的实际差异在于数据库和权重。每个工具都使用自己的销售语料库进行训练，并调整自己的模型，因此即使*方向*一致，*数字*也会有所偏离。对于同一个域名，尤其是在边缘或不寻常的域名上，由于缺乏明确的可比案例作为锚点，一个工具给出的数字是另一个的几倍是很常见的情况。两者都不是“正确”的——它们只是两个模型给出的两个估算，而它们之间的差距本身就是信息。一个两个工具估价大致相同的域名，是市场已经定价过的域名。一个它们估价相差甚远的域名，是可比案例很少或相互矛盾的域名，这通常意味着*你*必须亲自进行真正的估值工作。
+最大的实际差异在于数据库和权重。每款工具都在自己的成交语料上训练、调自己的模型，所以即便*方向*一致，*数字*也会彼此漂移。对同一个名字，看到一款工具给出的数字是另一款好几倍，是常有的事，尤其是在那些只有寥寥几个干净参考成交价可供锚定的边缘或不寻常的名字上。哪一款都不"对"——它们是两个模型给出的两个估算，而两者之间的差距本身就是信息。两款工具大致一致的名字，是市场此前定过价的名字。两款工具相差悬殊的名字，是参考成交价稀薄或彼此矛盾的名字，这通常意味着*你*得自己去做真正的估价功课。
 
-第二个差异是它们在数字旁边呈现的内容。GoDaddy 倾向于向你展示[可比域名销售案例](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=providing%20you%20with%20comparable%20domain%20name%20sales)，这样你就可以根据具体的交易来核对估算——这很有用，因为可比案例比标题数字更重要。Estibot 则倾向于提供广泛的属性和外部需求数据（搜索热度、直接输入排名），这使其在标记具有真实流量或关键词吸引力的域名方面更强。如果你最关心的是自己解读可比案例，那是一个工具的强项；如果你关心的是关键词域名的需求信号，那是另一个工具的强项。
+第二个差异在于它们在数字旁边呈现什么。GoDaddy 偏向给你看[可比域名成交](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=providing%20you%20with%20comparable%20domain%20name%20sales)，好让你拿具名的成交去给那个估算做一次合理性检查——这很有用，因为参考成交价比那个头条数字更重要。Estibot 偏向属性的广度和外部需求数据（搜索热度、直接输入排名），这让它在标记那些背后有真实流量或关键词牵引力的名字上更强。如果你最在意自己读参考成交价，那是前一款的强项；如果你在意关键词类名字的需求信号，那是后一款的强项。
 
-这里的启示不是“用 Estibot”或“用 GoDaddy”。而是两者都用，将两个数字视为一个区间的两端，并关注它们*为什么*会产生分歧。
+结论不是"用 Estibot"或"用 GoDaddy"。而是两个都跑，把两个数字当成一个区间的两端，并且留意它们*为什么*会分歧。
 
-## 它们共有的盲点：终端用户
+## 它们共有的盲点：最终用户
 
-![Editorial illustration of a machine measuring a faceless crowd while one distinct end-user buyer it cannot see stands highlighted apart](../../assets/domain-appraisal-tools-compared-02-end-user.jpg)
+![编辑插画：一台机器在测量一群没有面孔的人群，而它看不见的那一个独特的最终用户买家被高亮标出、独自站在一旁](../../assets/domain-appraisal-tools-compared-02-end-user.jpg)
 
-这是任何估值工具都无法做到的事情，无论它吸收了多少销售数据。**它无法看到那个促成交易的唯一买家。**
+这里有一件任何估价工具都做不到的事，无论它吞下多少成交数据。**它看不见那个促成成交的唯一买家。**
 
-每一个自动化估值都是关于与你的域名相似的域名的*平均*市场状况的陈述。但域名不是卖给平均市场的。它们是在一个特定的时刻，出于一个模型无法知晓的特定原因，卖给一个特定的买家。一个地区的牙医想要他们城镇名称的完全匹配 [`.com`](/zh/tld/com/) 域名。一家获得融资的初创公司上个季度进行了品牌重塑，而*这个*季度就需要你的单字域名。一家公司正在悄悄防御一个觊觎同样字符串的竞争对手。所有这些——意图、时机、战略契合度、紧迫性——都不是任何模型能从域名本身读出的特征。这正是[终端用户定价与经销商定价](/zh/blog/end-user-vs-reseller-domain-pricing/)之间的差距，也正是利润所在。
+每一次自动估值，都是对像你这样的名字的*平均*市场所下的一个断言。但域名不卖给平均市场。它们卖给一个特定的买家，在一个特定的时刻，出于一个模型无从知晓的特定理由。一个想要本镇精确匹配 [`.com`](/zh/tld/com/) 的本地牙医。一家上个季度刚改名、*这个*季度就需要你那个单词名的拿到了融资的初创公司。一家正在悄悄防御一个盯上同一字符串的竞争对手的公司。这些——意图、时机、战略契合度、紧迫性——没有一项是任何模型能从名字上读出来的特征。这就是[最终用户价与经销商价](/zh/blog/end-user-vs-reseller-domain-pricing/)之间的鸿沟，而钱恰恰就在这里。
 
-这就是为什么一个自动化估值数字和一笔真实交易看起来可能像在描述不同的资产。工具将域名作为库存来定价；而[终端用户](/zh/glossary/end-user/)则将其作为通往其业务的大门来定价。作为一个经验法则——而非精确统计——域名投资者通常会看到真实的终端用户销售价格远高于机器估价，也经常看到批发交易的成交价低于机器估价。这种偏差是双向的，这恰恰说明了工具从一开始就没有对实际交易进行定价。它定价的是大众。而销售只关乎一个人。
+这就是为什么一个自动数字和一笔真实成交看上去像是在描述两份不同的资产。工具把名字当库存来定价；[终端用户](/zh/glossary/end-user/)把它当成通往自己业务的正门来定价。作为一条经验法则——不是一个测量出来的统计数字——翻转者经常看到真实的最终用户成交落在机器估算之上很远，也经常眼看着批发式翻转在它之下成交。偏离向两个方向都发生，这正是那个破绽：工具从一开始就根本没在给实际那笔交易定价。它定的是人群的价。而成交是一个人。
 
-这个盲点不是一个可以修补的 bug。它是结构性的。促成一笔五位数交易的信息——一个陌生人的路线图、预算和截止日期——不存在于任何销售数据库中，因此也不可能出现在任何基于这些数据训练的模型中。
+那个盲点不是一个可以打补丁修掉的 bug。它是结构性的。促成一笔五位数交易的信息——一个陌生人的路线图、预算和截止日期——不存在于任何成交数据库中，所以它也不可能存在于任何基于成交数据库训练出来的模型里。
 
-## 解读可比案例，而不仅仅是数字
+## 读参考成交价，而不只是那个数字
 
-![Editorial illustration of one large price tag set aside while a magnifying glass examines a row of comparable sale tags and their spread](../../assets/domain-appraisal-tools-compared-03-comps.jpg)
+![编辑插画：一个大大的价签被搁在一旁，一只放大镜正在审视一排可比成交价签及其分布](../../assets/domain-appraisal-tools-compared-03-comps.jpg)
 
-任何一个工具最有价值的输出通常都不是那个标题数字。而是它下面列出的可比销售案例。
+任何一款工具最有价值的产出，通常都不是那个头条数字。而是它下面的参考成交价。
 
-一个孤立的数字会诱使你固守于此。而可比案例则迫使你去做估价师的真正工作：找到与你的域名结构上相似的域名——相同的长度级别、相同的关键词家族、相同的后缀——并解读它们成交价的*范围*，然后进行调整。原始材料的规模是存在的；根据维基百科的域名[二级市场](/zh/glossary/aftermarket/)概述，[据 NameBio 称，2024 年共记录了 144,700 笔域名销售，总额达 1.85 亿美元](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)。这是一个很深的公开记录，也是这些工具汲取数据的源泉。
+一个孤零零的数字会引诱你锚定在它身上。参考成交价则逼你去做估价师真正的工作：找出在结构上跟你的名字相似的名字——同一长度档位、同一关键词家族、同一后缀——读出它们成交价的*分布*，然后做调整。这种原料是规模化存在的；据维基百科的域名[二级市场](/zh/glossary/aftermarket/)概述，[根据 NameBio，2024 年记录在案的域名成交达 144,700 笔，总额 1.85 亿美元](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)。那是一份很深的公开记录，也是工具汲取的同一口井。
 
-有两个注意事项可以保持这种方法的诚实性。公开记录倾向于已披露的中低端市场交易，因此高端域名的可比案例系统性地稀少——大型的私下交易通常永远不会浮出水面。而且，没有两个域名是完全相同的，所以每个可比案例都需要调整；一个天真的匹配会很乐意将 `flowers.com` 与 `flowerz.net` 配对，从而误导你。做好这一点本身就是一项技能，这就是为什么我们写了[如何解读可比域名销售案例](/zh/blog/how-to-read-comparable-domain-sales/)。工具为你提供了可比案例。正确解读它们则取决于你。
+两点提醒让这件事保持诚实。公开记录偏向已披露的、中低端市场的成交，所以高端名字的参考成交价系统性地稀薄——那些大额私下成交往往从不浮出水面。而且没有哪两个域名是真正相同的，所以每一个参考成交价都需要调整；一次天真的匹配会乐呵呵地把 `flowers.com` 跟 `flowerz.net` 配在一起，把你带偏。把这件事做好本身就是一门技能，这也是我们写下[如何解读可比域名销售数据](/zh/blog/how-to-read-comparable-domain-sales/)的原因。工具把参考成交价递到你手上。正确地读它，则要靠你自己。
 
-## 如何真正使用这些工具
+## 到底该怎么用这些工具
 
-综合来看，一个实用的工作流程就出来了：
+把以上拼起来，一套实用的工作流自然就浮现了：
 
-1.  **快速用两者进行筛选。** 将一个列表通过 Estibot 和 GoDaddy 运行一遍，将可能达到四位数以上的域名从噪音中分离出来。这是这些工具真正擅长的地方，也是它们在大多数时候提供的绝大部分价值。
-2.  **将两个数字视为一个范围，而不是一个价格。** 当它们一致时，相信其方向。当它们差异巨大时，这就是一个信号，表明可比案例很少，该域名需要人为判断。
-3.  **阅读可比案例，忽略标题数字。** 提取工具提供的具体销售案例，找到与你的域名结构最接近的那些，并根据[价格范围](/zh/blog/how-to-read-comparable-domain-sales/)建立你自己的估算。那个单一的数字是输出中最不可靠的部分。
-4.  **结合后缀的真实行为。** 模型对字母进行评分；它并不总是能评估一个 [ccTLD](/zh/glossary/cctld/) 的*持久性*，其[注册局](/zh/glossary/registry/)可能会施加限制，或者其国家地位可能处于变动之中。[顶级域名如何影响价值](/zh/blog/how-tld-affects-domain-value/)是一个基本要素，而不是一个脚注。
-5.  **永远不要向买家引用工具给出的数字作为事实。** 终端用户可以在十秒钟内运行同样的免费工具。依赖机器给出的数字会将你的价格上限限制在机器的想象力之内，并忽略了证明溢价的唯一因素——他们的需求。
+1. **用两个一起，快速分流。** 把一份清单跑过 Estibot 和 GoDaddy，把可能值四位数以上的名字从噪音里分出来。这是工具真正擅长的事，也是大多数日子里它最大的价值所在。
+2. **把两个数字当成一个区间，而非一个价格。** 在它们一致的地方，相信那个方向。在它们剧烈分歧的地方，那就是你的信号：参考成交价稀薄，这个名字需要人的判断。
+3. **读参考成交价，忽略头条数字。** 把工具呈现的具名成交拉出来，找出结构上跟你的名字最接近的那些，基于它们的[分布](/zh/blog/how-to-read-comparable-domain-sales/)建立你自己的估算。那个单一数字是整个产出里最不可靠的部分。
+4. **把后缀真实的表现叠加进去。** 模型给字母打分；它并不总能给一个 [ccTLD](/zh/glossary/cctld/) 的*持久性*定价——这种后缀的[注册局](/zh/glossary/registry/)可能施加限制，或其所属国家的地位正处于变动之中。[顶级域名如何影响域名价值](/zh/blog/how-tld-affects-domain-value/)是一个基本面，而非一个脚注。
+5. **永远不要把工具的数字当作事实报给买家。** 一个最终用户十秒钟就能跑同一个免费工具。靠那个机器数字，会把你的价格封顶在机器的想象力上，并且忽略了唯一能撑起溢价的那件事——他们的需求。
 
-一言以蔽之：将自动化估值工具用作*第一道筛选器，绝不奉为圭臬*。它们告诉你哪些域名值得你关注。但它们无法告诉你你的买家会支付多少钱，因为它们从未见过你的买家。
+一句话版本：把自动估价工具当作*第一道筛选，绝不当作圣经*。它们告诉你哪些名字值得你关注。它们没法告诉你你的买家会付多少钱，因为它们从没见过你的买家。
 
 ## 从一个数字到一笔成交
 
-一个好的估值——借助工具、核对可比案例、并根据终端用户进行调整——告诉你该要价多少。但这并不能让你收到钱。那是另一个问题，也是高价值[域名交易](/zh/glossary/domain-trading/)真正令人紧张的地方：买家不想在控制域名之前汇款，而卖家不想在钱到账之前交出域名。这种僵局发生在定价之后，也正是交易悄然失败的地方。我们在[如何出售你拥有的域名](/zh/blog/how-to-sell-a-domain-name-you-own/)中介绍了其中的机制，并在[域名托管服务解析](/zh/blog/domain-escrow-explained/)中介绍了中立第三方的工作流程。
+一份好的估价——工具辅助、参考成交价核对过、按最终用户调整过——告诉你该开多少价。它不会让你拿到钱。那是另一个问题，也正是高价值[域名交易](/zh/glossary/domain-trading/)真正开始紧张的地方：买家不想在控制住域名之前就电汇付款，卖家也不想在钱到账之前就放出域名。那种僵局发生在定价的下游，也是交易悄悄死掉的地方。我们在[如何出售您拥有的域名](/zh/blog/how-to-sell-a-domain-name-you-own/)里讲了其中的机制，并在[域名托管详解](/zh/blog/domain-escrow-explained/)里讲了中立第三方的工作流。
 
-这正是 [Namefi](https://namefi.io) 旨在缩小的差距。将一个真实的 [ICANN](/zh/glossary/icann/) 域名代币化，可以使所有权更容易验证和转移，因此交接过程是可审计的，并且域名在变更过程中能持续解析。用这些工具作为你的第一道筛选器来诚实地为域名定价——然后让交易本身变得安全。
+这正是 [Namefi](https://namefi.io) 着力去收窄的那道鸿沟。把一个真实的 [ICANN](/zh/glossary/icann/) 域名代币化，会让所有权更容易被验证和转移，于是交割时的交接是可审计的，而域名在易主过程中始终保持可解析。先用工具作为第一道筛选诚实地给名字定价——然后让交易本身变得安全。
 
-## 友情免责声明 (请阅读!)
+## 友情免责声明（请务必阅读！）
 
-> 我们不是律师、会计师、财务顾问或医生，**本文中的任何内容均不构成法律、财务、税务、会计、医疗或任何其他形式的专业建议。** 我们撰写这些文章是为了自我教育，并为我们的客户提供便利。此处的信息可能已过时、具有地域特异性或完全错误。我们也会犯错。
+> 我们不是律师、会计师、理财顾问，也不是医生，**本文中的任何内容都不构成法律、财务、税务、会计、医疗或任何其他形式的专业建议。** 我们写这些文章是为了自我学习，也是为了方便我们的客户。这里的信息可能已经过时、只适用于特定地区，或者干脆就是错的。我们也会犯错。
 >
-> 对于任何重要决定，**请咨询真正的专业人士（说真的！）**。或者如果那不是你的风格，问问朋友、问问 Twitter、问问 Reddit、问问 AI，或者问问通灵师。简而言之：**自己做好研究（DOYR - Do Your Own Research）**。让我们一起学习，享受乐趣。
+> 对于任何重要决定，**请务必咨询真正的专业人士（认真的！）**。或者如果你不喜欢那一套，那就问朋友、问 Twitter、问 Reddit、问 AI，或者问个算命的。一句话：**DOYR——做你自己的研究（Do Your Own Research）**。让我们一起学习，玩得开心。
 
-## 来源和进一步阅读
+## 来源与延伸阅读
 
-- GoDaddy — [Domain Name Value & Appraisal tool](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=algorithm%20uses%20proprietary%20machine%20learning%20and%20real%20market%20sales%20data%20to%20estimate%20domain%20values) (机器学习 + 真实市场销售数据；越短 = 价值越高；在线房地产框架；可比销售案例)
-- Estibot — [Methodology](https://www.estibot.com/methodology#:~:text=relies%20on%20a%20statistically%20derived%20model) (基于 100 多个内部/外部属性的统计推导模型，与先前售出的域名进行比较)
-- Wikipedia — [Domain aftermarket](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024) (NameBio 2024 年销售量)
+- GoDaddy——[域名价值与估价工具](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=algorithm%20uses%20proprietary%20machine%20learning%20and%20real%20market%20sales%20data%20to%20estimate%20domain%20values)（机器学习 + 真实市场成交数据；越短 = 价值越高；线上房地产的定义框架；可比成交）
+- Estibot——[方法论](https://www.estibot.com/methodology#:~:text=relies%20on%20a%20statistically%20derived%20model)（一个统计推导出的模型，覆盖 100 多项内部/外部属性，与此前已成交的域名比较）
+- 维基百科——[域名二级市场](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)（NameBio 2024 年成交量）
