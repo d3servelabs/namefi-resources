@@ -12,6 +12,24 @@ format: guide
 description: "आफ्टरमार्केट डोमेन नीलामी असल में कैसे काम करती हैं — प्रॉक्सी बिड, स्नाइपिंग, हार्ड मैक्स, माँग को पढ़ना, और ज़्यादा भुगतान व शिल बिड के जाल से बचना।"
 ogImage: ../../assets/how-to-win-domain-auctions-og.jpg
 keywords: ['डोमेन नीलामी', 'डोमेन नीलामी कैसे जीतें', 'डोमेन नीलामी रणनीति', 'GoDaddy Auctions', 'NameJet', 'Sedo नीलामी', 'प्रॉक्सी बिडिंग', 'नीलामी स्नाइपिंग', 'एक्सपायर्ड डोमेन नीलामी', 'शिल बिडिंग', 'विनर''स कर्स डोमेन', 'एक्सपायर्ड डोमेन खरीदें', 'डोमेन आफ्टरमार्केट', 'ड्रॉप कैचिंग नीलामी', 'डोमेन पर ज़्यादा भुगतान से बचें']
+relatedArticles:
+  - /hi/blog/domain-flipping/
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+  - /hi/blog/how-to-read-comparable-domain-sales/
+  - /hi/blog/domain-backorders-and-drop-catching/
+  - /hi/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/registry/
 ---
 
 जो भी अच्छे नाम आप कभी खरीदना चाहेंगे उनमें से ज़्यादातर पहले से ही ले लिए गए हैं, और उनका एक बड़ा हिस्सा आख़िरकार किसी [नीलामी (डच, इंग्लिश, डायनामिक)](/hi/glossary/auction/) से होकर गुज़रता है। जब कोई रजिस्ट्रेशन समाप्त हो जाता है, जब कोई डोमेनर अपना स्टॉक बेचता है, जब कोई रजिस्ट्रार किसी ड्रॉप होते नाम को बिना किसी [बैकऑर्डर (ड्रॉप-कैचिंग)](/hi/glossary/backorder/) के पकड़ लेता है, तो वह नाम नीलामी के मंच पर आ जाता है और सबसे ऊँची बोली लगाने वाले को मिल जाता है। अगर आप डोमेन फ़्लिप करते हैं, तो आप इन कमरों में असली पैसा ख़र्च करेंगे, और एक मुनाफ़े वाली ख़रीद तथा आपके अकाउंट में पड़े एक बेकार नाम के बीच का फ़र्क़ ज़्यादातर बोली लगाते वक़्त के अनुशासन पर निर्भर करता है।

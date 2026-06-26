@@ -11,6 +11,24 @@ seriesOrder: 5
 format: case-study
 description: 'On July 15, 2020, attackers phoned their way into Twitter, hijacked the verified accounts of Obama, Biden, Musk, Gates, Apple and Uber, and ran a Bitcoin doubling scam — netting about $118,000. A deep-dive on how control of an online identity was stolen, and what it teaches about owning a name.'
 keywords: ['2020 twitter hack', 'twitter bitcoin scam', 'graham ivan clark', 'vishing', 'phone spear phishing', 'social engineering', 'account takeover', 'online identity security', 'verified account hijacking', 'twitter admin tool', 'agent tool', 'insider risk', 'domain security', 'ny dfs twitter report']
+relatedArticles:
+  - /en/blog/the-bitcoin-org-dns-hijack/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /en/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /en/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 For a few hours on a Wednesday afternoon, the most trusted voices on the internet all started saying the same thing: send me Bitcoin, and I'll send you back double.

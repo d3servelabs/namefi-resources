@@ -16,6 +16,24 @@ faqs:
     answer: '.us नेमस्पेस की देखरेख US वाणिज्य विभाग NTIA के माध्यम से करता है। वर्तमान रजिस्ट्री ऑपरेटर Registry Services, LLC है, एक GoDaddy Registry कंपनी, जिसने 2020 के आसपास Neustar से कार्यभार संभाला। IANA Registry Services, LLC को प्रबंधक के रूप में सूचीबद्ध करता है।'
   - question: '.us Nexus आवश्यकता क्या है?'
     answer: 'Nexus आवश्यकता वह पात्रता नियम है जो .us को संयुक्त राज्य अमेरिका के साथ एक वास्तविक संबंध वाले पक्षों तक सीमित करता है। यह US नागरिकों और निवासियों, US में संगठित संस्थाओं, और उन विदेशी संगठनों को कवर करता है जो एक नियमित संचालन या गतिविधि जैसी वास्तविक US उपस्थिति बनाए रखते हैं।'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/domain-hacks-explained/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 **.us** डोमेन **संयुक्त राज्य अमेरिका** के लिए आधिकारिक कंट्री-कोड टॉप-लेवल डोमेन (ccTLD) है — और अब तक प्रत्यायोजित किए गए पहले ccTLD में से एक। जहाँ [.co](/hi/tld/co/) जैसे एक्सटेंशन को सीमाहीन ".com" विकल्पों के रूप में विपणन किया जाता है, .us जानबूझकर इसके विपरीत है: एक नेमस्पेस जो अमेरिकी पहचान से बंधा है, US संघीय नीति के तहत शासित है, और एक वास्तविक US उपस्थिति वाले पंजीयकों के लिए आरक्षित है। एक व्यवसाय, ब्रांड, या संगठन के लिए जो अपने वेब पते में "हम अमेरिकी हैं" कहना चाहता है, .us ऐसा करने का सबसे शाब्दिक तरीका है।

@@ -5,6 +5,24 @@ language: hi
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .sbs का अर्थ "साइड बाई साइड" है और यह सहयोगात्मक परियोजनाओं, साझेदारियों और साइड बिजनेस के लिए एकदम सही है।
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/why-are-io-domains-expensive/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-investor-field-guide/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 

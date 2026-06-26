@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Tout savoir sur l'extension de domaine .af : identité locale, opportunités de branding et avantages pour l'investissement de domaines. Enregistrez votre .af dès aujourd'hui."
 keywords: [".af domains", ".af TLD", "top-level domain .af", "domaine .af", "extension .af", "what is .af", "why choose .af", "qu'est-ce que le domaine .af", "pourquoi choisir le domaine .af", "acheter domaine .af", "domain investing", "blockchain domains", "tokenized domain", "Afghanistan domain", "Web3 domains"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-investor-field-guide/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
 ---
 
 ## **Qu'est-ce que le .af ?**

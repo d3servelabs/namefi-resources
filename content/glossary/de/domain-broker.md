@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.investopedia.com/terms/b/broker.asp
   - https://www.sedo.com/
+relatedArticles:
+  - /de/blog/working-with-domain-brokers/
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/domain-pricing-psychology-buy-now-vs-make-offer/
+  - /de/blog/how-to-value-a-domain-name/
+  - /de/blog/domain-terminology-guide/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/end-user/
+  - /de/glossary/aftermarket/
+  - /de/glossary/domain-trading/
+  - /de/glossary/escrow/
+  - /de/glossary/registrar/
 ---
 
 Ein **Domain-Broker** ist ein professioneller Vermittler, der den Verkauf eines Domainnamens zwischen einem Verkäufer und einem Käufer erleichtert und dabei in der Regel eine Provision – üblicherweise 10–20 % des endgültigen Verkaufspreises – erhält, als Gegenleistung für die Käufersuche, Kontaktaufnahme, Preisverhandlung und Koordination der Transaktion über [Treuhand](/de/glossary/escrow/). Broker sind besonders wertvoll bei hochwertigen Assets, bei denen eine direkte Kontaktaufnahme mit einem unbekannten Verkäufer konfrontativ wirken würde, oder wenn ein Käufer einen Namen möchte, der nicht öffentlich zum Verkauf steht. Sowohl eingehende Vermittlung (Verkauf eines Namens, den ein Auftraggeber besitzt) als auch Akquisitionsvermittlung (Suche nach einem Namen, den ein Auftraggeber kaufen möchte) sind gängige Dienstleistungen. Seriöse Brokerage-Firmen wie Sedo, Media Options und GoDaddys Brokerage-Team nutzen große Datenbanken aktueller [Aftermarket](/de/glossary/aftermarket/)-Transaktionen. Da die Kontaktaufnahme eines Brokers oft darauf abzielt, den [Endnutzer](/de/glossary/end-user/) zu finden, der bereit ist, den Einzelhandelspreis zu zahlen, erzielen durch Broker vermittelte [Domain-Händel](/de/glossary/domain-trading/) häufig die höchsten Marktpreise.

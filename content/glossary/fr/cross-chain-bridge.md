@@ -10,6 +10,24 @@ also_known_as: ['Pont']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/bridges/
+relatedArticles:
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/tokenize-your-com-to-flip-it/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/tokenized-domain-use-cases-2026/
+  - /fr/blog/tax-and-accounting-questions-for-tokenized-domains/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-security/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/tokenize-your-com/
+relatedGlossary:
+  - /fr/glossary/tokenized-domain/
+  - /fr/glossary/ethereum/
+  - /fr/glossary/web3/
+  - /fr/glossary/tokenize/
+  - /fr/glossary/registrar/
 ---
 
 Un **pont inter-chaînes** (aussi appelé *pont*) est un protocole qui verrouille un actif sur une [blockchain](/fr/glossary/blockchain/) et frappe un jeton représentatif sur une autre, permettant à la valeur et aux données de se déplacer entre des réseaux qui ne partagent aucun canal de communication natif. Le schéma le plus courant est « verrouiller et frapper » : vous déposez un jeton dans un contrat de pont sur la chaîne source, et un gardien ou un oracle décentralisé instruit un contrat correspondant sur la chaîne de destination pour émettre un équivalent enveloppé. Les ponts connectent le réseau principal [Ethereum](/fr/glossary/ethereum/) aux rollups de [couche 2](/fr/glossary/layer-2/) comme Optimism ou Base, et à des chaînes entièrement séparées comme Polygon ou Solana. Parce que les ponts détiennent de grands réserves d'actifs verrouillés, ils constituent des cibles d'attaque de grande valeur — plusieurs ont subi des exploits à neuf chiffres. Pour les domaines tokenisés, le pontage permet à un NFT émis sur Ethereum de se déplacer vers une couche 2 moins coûteuse pour des transferts à faible coût, puis de revenir au réseau principal pour être utilisé comme garantie DeFi.

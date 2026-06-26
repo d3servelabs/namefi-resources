@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "استعراض مبسط وغير استشاري للأسئلة الضريبية والمحاسبية التي يطرحها عادةً مالكو النطاقات المرمزة — أساس التكلفة، المبيعات، فترة الاحتفاظ، الاستخدام التجاري مقابل الشخصي، الإهداء، والتركات. اطرح هذه الأسئلة على محترف حقيقي."
 keywords: ['ضريبة نطاقات NFT', 'أساس تكلفة النطاقات المرمزة', 'محاسبة النطاقات المرمزة', 'أرباح رأسمالية للنطاقات المرمزة', 'ضريبة بيع نطاق مرمز', 'أرباح رأسمالية لنطاقات NFT', 'محاسبة NFT للنطاقات', 'ضريبة النطاق كأصل', 'ضريبة إهداء نطاق مرمز', 'تركة نطاق مرمز', 'مصروفات تجارية للنطاقات المرمزة', 'أسئلة ضريبية لترميز النطاقات', 'ضريبة نطاقات NFT في أمريكا', 'ضريبة نطاقات العملات المشفرة']
+relatedArticles:
+  - /ar/blog/taxes-and-accounting-for-domain-investors/
+  - /ar/blog/how-tokenized-marketplaces-replace-escrow/
+  - /ar/blog/tokenized-domain-use-cases-2026/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/tokenize-your-com/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 > **اقرأ هذا أولاً.** هذا المنشور **ليس** نصيحة ضريبية أو محاسبية أو قانونية أو مالية. نحن لسنا محاسبك القانوني المعتمد (CPA)، ولسنا محاميك، وليس لدينا أدنى فكرة عن الولاية القضائية التي تخضع لها. هذه *قائمة بالأسئلة* التي يجب طرحها على مستشار مهني حقيقي. استخدمها كورقة تحضيرية، وليس كموقف يمكنك الاعتماد عليه. إخلاء المسؤولية الكامل موجود في الأسفل وينطبق *بشكل خاص* على هذا المنشور.

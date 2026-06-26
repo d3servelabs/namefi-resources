@@ -12,6 +12,24 @@ format: explainer
 description: '每位域名投资者必备的法律知识：商标基础、UDRP 与 ACPA、交割时的托管机制、防劫持策略，以及如何识别并规避销售诈骗。'
 ogImage: ../../assets/domain-flipping-and-the-law-og.jpg
 keywords: ['域名倒卖法律', '域名倒卖合法吗', '网络抢注', 'UDRP', 'ACPA', '域名商标法', '域名争议', '反向域名劫持', '域名倒卖诈骗', '域名托管', '域名劫持', '恶意域名注册', '域名投资法律', '域名名称争议', '如何合法倒卖域名']
+relatedArticles:
+  - /zh/blog/domain-flipping/
+  - /zh/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /zh/blog/avoiding-domain-sale-scams/
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 域名倒卖是合法的。但倒卖错误的域名，轻则失去名称本身和购买成本，重则面临一笔五位数的判决。两种结局之间的差距不在于运气，而在于一套下午就能掌握的法律知识，以及几个让你的投资组合保持干净、交易不被中途劫走的操作习惯。

@@ -12,6 +12,24 @@ format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-ecommerce-store-og.jpg
 description: 'The top 10 TLDs to secure for your e-commerce store, from .com to .shop and .store, plus a defensive registration strategy to protect your retail brand.'
 keywords: ['top TLDs for e-commerce', 'best domain extensions for online store', 'ecommerce domain names', '.shop domain', '.store domain', 'defensive domain registration', 'retail TLDs', 'brand protection domains', 'typosquatting protection', 'domain extensions for retail', 'register ecommerce domains']
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 For an online retailer, a domain name is not just an address — it is a storefront, a trust signal, and a brand asset all at once. Securing the right **top-level domains (TLDs) for your e-commerce store** is one of the cheapest forms of brand protection you can buy. When you own the extensions that customers and bad actors are most likely to type, you control where your traffic goes and you deny that real estate to anyone who might misuse it.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف مميزات نطاق .live وكيف يعزز حضورك الرقمي في البث المباشر والفعاليات. تعرف على كيفية حجز نطاقك المميز وتملكه الحقيقي عبر Namefi."
 keywords: [".live domains", ".live TLD", "top-level domain", "what is .live", "why choose .live", "what is the .live domain", "why choose the .live domain", "buy .live domain", "domain investing", "blockchain domains", "tokenized domain", "نطاق live", "حجز دومين", "نطاقات الويب 3", "استثمار النطاقات"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .live؟**

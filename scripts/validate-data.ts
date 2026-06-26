@@ -9,6 +9,24 @@ type Locale = (typeof locales)[number];
 
 type Collection = 'blog' | 'tld' | 'partners' | 'glossary' | 'authors';
 
+const TOPIC_SLUGS = new Set([
+  'domain-tokenization',
+  'domain-basics',
+  'domain-security',
+  'choosing-a-tld',
+  'domain-investing',
+  'web3-foundations',
+]);
+
+const SERIES_SLUGS = new Set([
+  'domain-apocalypse',
+  'name-change-game-change',
+  'tokenize-your-com',
+  'best-tlds-by-industry',
+  'domain-investor-field-guide',
+  'domain-flipping-skills',
+]);
+
 type Issue = {
   file: string;
   message: string;
@@ -110,6 +128,95 @@ function asStringArray(value: unknown) {
   }
 
   return [];
+}
+
+function fileExistsForPath(value: string, locale: Locale) {
+  const match = value.match(/^\/([a-z]{2})\/(blog|glossary)\/([^/]+)\/$/);
+  if (!match) return false;
+  const [, pathLocale, collection, slug] = match;
+  if (pathLocale !== locale) return false;
+
+  const filePath = path.join(
+    DATA_ROOT,
+    collection,
+    locale,
+    `${slug}.md`,
+  );
+  return statSync(filePath, { throwIfNoEntry: false })?.isFile() ?? false;
+}
+
+function validateRelationshipArray({
+  data,
+  key,
+  locale,
+  relativePath,
+  errors,
+}: {
+  data: Record<string, unknown>;
+  key: 'relatedArticles' | 'relatedTopics' | 'relatedSeries' | 'relatedGlossary';
+  locale: Locale;
+  relativePath: string;
+  errors: Issue[];
+}) {
+  const values = asStringArray(data[key]);
+  const expectedCount =
+    key === 'relatedArticles' ? 5 : key === 'relatedGlossary' ? 5 : 2;
+
+  if (values.length !== expectedCount) {
+    errors.push({
+      file: relativePath,
+      message: `"${key}" must contain exactly ${expectedCount} same-locale path(s)`,
+    });
+    return;
+  }
+
+  for (const value of values) {
+    const localePrefix = `/${locale}/`;
+    if (!value.startsWith(localePrefix)) {
+      errors.push({
+        file: relativePath,
+        message: `"${key}" path must stay in the file locale (${locale}): ${value}`,
+      });
+      continue;
+    }
+
+    if (key === 'relatedArticles') {
+      if (!fileExistsForPath(value, locale) || !value.includes('/blog/')) {
+        errors.push({
+          file: relativePath,
+          message: `"${key}" path does not resolve to a ${locale} blog file: ${value}`,
+        });
+      }
+      continue;
+    }
+
+    if (key === 'relatedGlossary') {
+      if (!fileExistsForPath(value, locale) || !value.includes('/glossary/')) {
+        errors.push({
+          file: relativePath,
+          message: `"${key}" path does not resolve to a ${locale} glossary file: ${value}`,
+        });
+      }
+      continue;
+    }
+
+    const topicMatch = value.match(/^\/[a-z]{2}\/topics\/([^/]+)\/$/);
+    const seriesMatch = value.match(/^\/[a-z]{2}\/series\/([^/]+)\/$/);
+
+    if (key === 'relatedTopics' && !TOPIC_SLUGS.has(topicMatch?.[1] ?? '')) {
+      errors.push({
+        file: relativePath,
+        message: `"${key}" path uses an unknown topic slug: ${value}`,
+      });
+    }
+
+    if (key === 'relatedSeries' && !SERIES_SLUGS.has(seriesMatch?.[1] ?? '')) {
+      errors.push({
+        file: relativePath,
+        message: `"${key}" path uses an unknown series slug: ${value}`,
+      });
+    }
+  }
 }
 
 function validateDate(rawDate: unknown) {
@@ -262,6 +369,21 @@ function validateContentFile(
       warnings.push({
         file: relativePath,
         message: '"description" is empty; used for summaries/SEO',
+      });
+    }
+
+    for (const key of [
+      'relatedArticles',
+      'relatedTopics',
+      'relatedSeries',
+      'relatedGlossary',
+    ] as const) {
+      validateRelationshipArray({
+        data,
+        key,
+        locale: language,
+        relativePath,
+        errors,
       });
     }
   }

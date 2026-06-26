@@ -14,6 +14,24 @@ sources:
   - https://www.iana.org/about
   - https://www.icann.org/en/history/iana-stewardship-transition
   - https://en.wikipedia.org/wiki/ICANN
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-is-udrp/
+  - /de/blog/the-icann-spear-phishing-breach/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/the-panix-com-domain-hijack/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
 ---
 
 **ICANN (Internet Corporation for Assigned Names and Numbers)**, auch bekannt als **Internet Corporation for Assigned Names and Numbers**, ist eine gemeinnützige Multi-Stakeholder-Organisation, die 1998 nach kalifornischem Recht gegründet wurde. Sie ist verantwortlich für die Koordinierung der technischen Richtlinien und Datenbanken, die das globale Internet als ein einheitliches, zusammenhängendes Netz funktionieren lassen. Konkret verwaltet ICANN die Vergabe von [IP-Adressen](/de/glossary/ip-address/), die Zuweisung von [DNS](/de/glossary/dns/)-Namen sowie die Verteilung von Protokollkennungen — Aufgaben, die gemeinsam als [IANA-Funktionen](/de/glossary/iana/) bezeichnet werden. Ohne diese Koordinierung würde der globale [DNS](/de/glossary/dns/) fragmentieren und Web-Adressen zwischen Netzwerken unauflösbar machen.

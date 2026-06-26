@@ -16,6 +16,24 @@ faqs:
     answer: 'Fast jedes Unternehmen, jede Marke oder jedes Projekt, das die weltweit anerkannteste und vertrauenswürdigste Adresse wünscht – insbesondere Unternehmen, die ein globales oder breites Verbraucherpublikum bedienen, sowie alle, die eine Marke langfristig schützen möchten.'
   - question: 'Warum sind gute .com-Domains so schwer zu finden?'
     answer: 'Bei über 160 Millionen registrierten .com-Namen ist das Angebot an kurzen, lexikalischen und markengenauen Namen weitgehend erschöpft. Die meisten Premium-.com-Namen sind bereits vergeben, sodass sie häufig nur auf dem Sekundärmarkt verfügbar sind.'
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/what-makes-a-domain-valuable/
+  - /de/blog/ai-vs-io-domain/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Die **.com-Domain** ist das, was dem Internet am nächsten kommt an einem Standard. Als Abkürzung für „commercial" ist sie die ursprüngliche generische Top-Level-Domain, die durch jahrzehntelange Allgegenwart zur Endung wurde, die Menschen automatisch erwarten, wenn sie einen Website-Namen hören. Für die meisten Unternehmen und Marken lässt sich **was ist .com** auf eine Sache reduzieren: Es ist die Adresse, die Nutzer erwarten, eingeben und ohne Nachdenken vertrauen.

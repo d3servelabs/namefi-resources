@@ -24,6 +24,24 @@ keywords:
   - Afghanistan domain
   - Web3 domains
   - 域名投资
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-investor-field-guide/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 ## **.af 是什么？**

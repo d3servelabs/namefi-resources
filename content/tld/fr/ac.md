@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Tout savoir sur l'extension de domaine .ac : origines, usages pour les académies et la tech, et pourquoi l'enregistrer dès maintenant sur Namefi."
 keywords: [".ac domains", "domaines .ac", "TLD .ac", "top-level domain .ac", "what is .ac", "why choose .ac", "qu'est-ce que le domaine .ac", "pourquoi choisir le domaine .ac", "domaine internet ile ascension", "acheter un domaine .ac", "investir dans les domaines", "domaines tokenisés", "domaines blockchain", "registraire de domaine web3", "extension internet ac"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/domain-hacks-explained/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/web3/
 ---
 
 ## **Qu'est-ce que le .ac ?**

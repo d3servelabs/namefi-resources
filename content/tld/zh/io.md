@@ -16,6 +16,24 @@ faqs:
     answer: '软件初创公司、SaaS 产品、开发者工具、开源项目、API 服务、浏览器游戏工作室，以及希望以"输入/输出"之名彰显技术专注的 Web3 或区块链团队。'
   - question: '由于查戈斯主权协议，.io 域名会消失吗？'
     answer: '这并非确定事实。截至 2026 年，.io 运行完全正常。任何退役都需要先更改 ISO 国家代码，随后经历多年的 IANA 过渡期，因此这是一个需要持续关注而非恐慌的动态局势。'
+relatedArticles:
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 **.io 域名**从技术上说是分配给印度洋偏远领地的国家代码后缀，但在实践中，它已成为软件初创公司、开发者工具和 [Web3](/zh/glossary/web3/) 项目的非官方聚集地。对大多数购买者而言，**.io 域名的含义**与地理位置毫无关系，而是与"io"在工程师眼中的读法息息相关：即**输入/输出（Input/Output）**——计算机科学中最基础的概念之一。

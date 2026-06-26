@@ -12,6 +12,24 @@ format: guide
 description: "How to get a domain listing found: titles, keywords, and categories on Afternic and Sedo, plus the discoverability that lands the right buyer."
 ogImage: ../../assets/marketplace-seo-for-domain-listings-og.jpg
 keywords: ['marketplace SEO', 'domain listing SEO', 'how to list a domain on Afternic', 'how to list a domain on Sedo', 'domain listing title', 'domain listing keywords', 'domain marketplace categories', 'get a domain listing found', 'domain aftermarket listing', 'sell a domain online', 'domain listing optimization', 'domain search visibility', 'how buyers find domains', 'domain reseller network']
+relatedArticles:
+  - /en/blog/marketing-your-domains-for-sale/
+  - /en/blog/inbound-vs-outbound-domain-sales/
+  - /en/blog/domain-for-sale-landing-pages/
+  - /en/blog/domain-flipping/
+  - /en/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
 ---
 
 A listing nobody sees is the same as no listing at all. You can price a name perfectly and write a clean for-sale page, but if your listing never surfaces when the right buyer searches, the deal never starts. Most of the inbound demand in this business runs through a handful of marketplaces, and inside those marketplaces your name competes with millions of others for the same scarce thing: a buyer's attention at the moment they're looking.

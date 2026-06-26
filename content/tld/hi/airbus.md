@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '.airbus TLD विमानन और कॉर्पोरेट ब्रांडिंग की दुनिया में क्या महत्व रखता है? जानें कि यह डोमेन एक्सटेंशन कैसे काम करता है और Namefi के साथ अपनी डिजिटल पहचान कैसे सुरक्षित करें।'
 keywords: ['.airbus domains', '.airbus TLD', 'top-level domain', 'what is .airbus', 'why choose .airbus', 'what is the .airbus domain', 'why choose the .airbus domain', 'aviation domains', 'brand TLD', 'domain investing', 'blockchain domains', 'tokenized domain', 'Web3 domains', 'digital identity', 'Namefi']
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/ai-vs-io-domain/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 डिजिटल दुनिया में एक मजबूत पहचान बनाना किसी भी व्यवसाय या व्यक्ति के लिए महत्वपूर्ण है। इंटरनेट पर हजारों डोमेन एक्सटेंशन उपलब्ध हैं, लेकिन कुछ एक्सटेंशन अपनी विशिष्टता और विश्वसनीयता के लिए जाने जाते हैं। ऐसा ही एक एक्सटेंशन है **.airbus**।

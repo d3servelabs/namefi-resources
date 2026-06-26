@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Discover the purpose of the .akdn TLD, its role in the Aga Khan Development Network, and how exclusive Brand TLDs function in the domain industry."
 keywords: [".akdn domains", ".akdn TLD", "top-level domain", "what is .akdn", "why choose .akdn", "what is the .akdn domain", "why choose the .akdn domain", "Aga Khan Development Network", "brand TLD", "restricted domain registration", "domain investing", "blockchain domains", "tokenized domain", "ICANN new gTLDs", "non-profit domains"]
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .akdn?**

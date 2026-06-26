@@ -12,6 +12,24 @@ format: guide
 description: "The common domain-sale scams — fake escrow, fake buyers, overpayment chargebacks, transfer-before-payment — and the habits that keep your sales safe."
 ogImage: ../../assets/avoiding-domain-sale-scams-og.jpg
 keywords: ['domain sale scams', 'avoid domain scams', 'fake escrow site', 'bogus escrow', 'domain buyer scam', 'overpayment scam', 'chargeback fraud', 'transfer before payment', 'sell a domain safely', 'domain escrow', 'domain selling fraud', 'fake domain broker', 'domain transfer scam', 'safe domain transaction', 'domainer security']
+relatedArticles:
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/working-with-domain-brokers/
+  - /en/blog/domain-flipping-and-the-law/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
 ---
 
 The money in [domain flipping](/en/blog/domain-flipping/) is made when a name finally sells. That is also exactly when scammers show up. A live for-sale listing is an open invitation to anyone willing to impersonate a buyer, a broker, or an escrow company. The single most expensive mistake a flipper can make is not buying the wrong name. It's handing a good name to the wrong person.

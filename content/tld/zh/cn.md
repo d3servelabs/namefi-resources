@@ -19,6 +19,24 @@ faqs:
     answer: '.cn 是二级注册（如 example.cn），.com.cn 是在 .com.cn 这一类别下的三级注册，传统上面向企业。两者都由 CNNIC 管理、都需实名认证；.cn 更简短通用，.com.cn 则带有明确的企业属性。'
   - question: '.cn 域名支持中文吗？'
     answer: '支持。.cn 支持国际化域名（IDN），可以注册中文字符的域名。中国还拥有对应的中文国家顶级域名 .中国，于 2010 年正式纳入根区。'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/cctld-market-share-by-registration-volume/
+  - /zh/blog/what-is-domain/
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/domain-terminology-guide/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/registry/
 ---
 
 为面向中国市场的项目挑选域名时，后缀的选择往往决定了第一印象。**.cn** 作为中国的国家代码顶级域名（ccTLD），是中国本土身份最直接、最权威的数字标识。它由中国互联网络信息中心（CNNIC）运营，目前是全球注册量最大的国家顶级域名。

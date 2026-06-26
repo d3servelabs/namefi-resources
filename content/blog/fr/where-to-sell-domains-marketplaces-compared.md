@@ -12,6 +12,24 @@ format: comparison
 description: "Afternic vs Sedo vs Dan vs places de marché on-chain comparées sur la portée, les frais et le transfert rapide — et comment lister un même nom sur plusieurs à la fois."
 ogImage: ../../assets/where-to-sell-domains-marketplaces-compared-og.jpg
 keywords: ['où vendre des domaines', 'meilleures places de marché de domaines', 'afternic vs sedo', 'vendre un domaine sur afternic', 'vendre un domaine sur sedo', 'fermeture de dan.com', 'transfert rapide de domaine', 'frais des places de marché de domaines', 'lister des domaines à vendre', 'place de marché de domaines tokenisés', 'vendre des domaines en ligne', 'marché secondaire des domaines', 'où lister un domaine', 'meilleur endroit pour vendre un nom de domaine']
+relatedArticles:
+  - /fr/blog/how-to-sell-domains-for-profit/
+  - /fr/blog/selling-domains-as-nfts/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/working-with-domain-brokers/
+  - /fr/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Une annonce n''est pas une vente, mais une annonce au mauvais endroit est une non-vente garantie. Une fois que vous avez décidé de vendre — un sujet traité dans notre pilier [comment vendre des domaines de façon rentable](/fr/blog/how-to-sell-domains-for-profit/), qui fait partie du guide plus large sur le [flipping de domaines](/fr/blog/domain-flipping/) — la question suivante est purement pratique : sur quel site publier votre annonce ? La réponse est rarement « l''un d''entre eux ». La plupart des domaineurs en activité listent le même nom à plusieurs endroits à la fois, parce que chaque place de marché touche une part différente des acheteurs. Cet article compare les principaux sites sur les quatre critères qui décident réellement d''une vente : la portée, les frais, le transfert rapide et la façon dont le nom change de mains une fois que quelqu''un clique sur « acheter ».

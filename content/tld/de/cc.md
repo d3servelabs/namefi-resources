@@ -16,6 +16,24 @@ faqs:
     answer: 'Offiziell ist „cc" der ISO-Ländercode für die Kokosinseln (Keelinginseln). In der Praxis wird es flexibel als „commercial company", „creative commons", „carbon copy" oder schlicht als einprägsames Paar zusammenpassender Initialen gelesen, was genau der Grund ist, warum es als kurze, markenfähige Endung beliebt ist.'
   - question: 'Wer betreibt die .cc-Domain?'
     answer: 'Die .cc-Registry wird von eNIC Cocos (Keeling) Islands Pty. Ltd. (firmierend als Island Internet Services) betrieben, einer hundertprozentigen Tochtergesellschaft von Verisign. Die IANA-Root-Zone-Datenbank führt eNIC / Island Internet Services als Sponsororganisation und Registry-Manager auf.'
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/domain-hacks-explained/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/best-tlds-by-industry/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Die **.cc**-Domain ist einer der beständigsten „geliehenen" Ländercodes des Internets – ein nationaler Namensraum, der zu einer kurzen, markenfähigen, globalen Endung heranwuchs. Offiziell die ccTLD für die **Kokosinseln (Keelinginseln)**, ein winziges australisches Territorium im Indischen Ozean, wurde .cc jahrzehntelang weltweit als flexibler Ersatz für „.com" vermarktet. Die Zeichenfolge „cc" ist endlos interpretierbar – **commercial company**, **creative commons**, **carbon copy** oder schlicht ein sauberes Paar zusammenpassender Initialen –, was sie zu einem Favoriten für einprägsame Namen und clevere Domain-Hacks macht.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Cómo el pionero sitio de marcadores sociales se lanzó en 2003 con el famoso truco de dominio "del.icio.us", por qué esos puntos se convirtieron en un impuesto permanente sobre cada mención, y cómo Yahoo lo trasladó al más limpio Delicious.com en 2008.'
 keywords: ['del.icio.us', 'delicious.com', 'nombre de dominio delicious', 'truco de dominio', 'joshua schachter', 'marcadores sociales', 'yahoo delicious', 'actualización de dominio', 'nombres para startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'truco de dominio ccTLD', 'dominio que define una categoría']
+relatedArticles:
+  - /es/blog/from-bufferapp-com-to-buffer-com/
+  - /es/blog/from-ubercab-com-to-uber-com/
+  - /es/blog/from-mona-co-to-crypto-com/
+  - /es/blog/from-ctrip-com-to-trip-com/
+  - /es/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/name-change-game-change/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 Durante aproximadamente cinco años, uno de los sitios más influyentes de la era Web 2.0 vivió en una dirección que casi no podías pronunciar en voz alta: **del.icio.us**.

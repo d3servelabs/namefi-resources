@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'En septiembre de 2015, un exempleado de Google compró google.com a través de Google Domains por $12 y tuvo el control administrativo del dominio más valioso del mundo durante aproximadamente un minuto. La historia de Sanmay Ved, la recompensa de $6,006.13 y lo que un minuto de propiedad revela sobre quién controla realmente un dominio.'
 keywords: ['dominio google.com', 'sanmay ved', 'bug google domains', 'seguridad de dominios', 'quién posee google.com', 'secuestro de dominio', 'acceso a herramientas de webmaster', 'recompensa de errores de google', 'recompensa 6006.13', 'vulnerabilidad de registro de dominio', 'control de dominio', 'seguridad dns', 'verificación de propiedad de dominio']
+relatedArticles:
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-lenovo-com-dns-hijack/
+  - /es/blog/the-sex-com-heist-the-forged-letter/
+  - /es/blog/the-2024-squarespace-defi-domain-hijacks/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
 ---
 
 Durante aproximadamente un minuto en la noche del 29 de septiembre de 2015, la dirección más valiosa de internet no pertenecía a Google.

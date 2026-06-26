@@ -12,6 +12,24 @@ format: guide
 description: "Comment trouver des domaines encore disponibles qui valent leurs frais d''enregistrement : listes de mots, permutations de TLD, motifs « brandables » et les filtres qui battent l''achat impulsif."
 ogImage: ../../assets/hand-registering-domains-to-flip-og.jpg
 keywords: ['enregistrement de domaines à la main', 'domaines enregistrés à la main', 'domaines disponibles à revendre', 'trouver des domaines disponibles', 'noms de domaine brandables', 'listes de mots pour domaines', 'enregistrer des domaines à vendre', 'domaines pas chers à revendre', 'comment trouver des domaines à enregistrer', 'idées de noms de domaine à vendre', 'domain flipping pour débutants', 'permutations de TLD', 'domaines .com disponibles', 'enregistrement spéculatif de domaines', 'domaining hand reg']
+relatedArticles:
+  - /fr/blog/domain-flipping/
+  - /fr/blog/when-to-drop-a-domain/
+  - /fr/blog/how-to-find-domains-to-flip/
+  - /fr/blog/domain-renewal-costs-and-sell-through-rate/
+  - /fr/blog/domain-portfolio-management/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Enregistrer un domaine à la main est la porte d'entrée la moins chère vers le domain flipping, et le moyen le plus facile d'y perdre de l'argent. Vous tapez un nom chez un registraire, il revient comme disponible, vous payez les frais d'enregistrement, et vous voilà propriétaire d'un domaine tout neuf que personne n'a jamais voulu. C'est cette dernière partie qui est le piège. À la fin de 2023, on comptait déjà [359,8 millions de noms de domaine](https://en.wikipedia.org/wiki/Domain_name#:~:text=359.8%20million%20domain%20names%20had%20been%20registered) enregistrés, et l'univers des chaînes de caractères *non enregistrées* est pour ainsi dire infini. Le fait qu'un nom soit disponible ne vous dit presque rien sur la question de savoir s'il vaut la peine d'être détenu. Le plus souvent, cela signifie même le contraire.

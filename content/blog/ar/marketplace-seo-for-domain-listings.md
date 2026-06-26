@@ -12,6 +12,24 @@ format: guide
 description: "إزاي تخلّي قائمة بيع النطاق تتلاقى: العناوين والكلمات المفتاحية والتصنيفات على Afternic وSedo، وكمان قابلية الاكتشاف اللي بتوصّلك للمشتري الصح."
 ogImage: ../../assets/marketplace-seo-for-domain-listings-og.jpg
 keywords: ['marketplace SEO', 'سيو قوائم النطاقات', 'إزاي تدرج نطاق على Afternic', 'إزاي تدرج نطاق على Sedo', 'عنوان قائمة النطاق', 'كلمات مفتاحية لقائمة النطاق', 'تصنيفات ماركت بليس النطاقات', 'تخلّي قائمة النطاق تتلاقى', 'قائمة في سوق النطاقات الثانوي', 'بيع نطاق أونلاين', 'تحسين قائمة النطاق', 'ظهور النطاق في البحث', 'إزاي المشترين بيلاقوا النطاقات', 'شبكة إعادة بيع النطاقات']
+relatedArticles:
+  - /ar/blog/marketing-your-domains-for-sale/
+  - /ar/blog/inbound-vs-outbound-domain-sales/
+  - /ar/blog/domain-for-sale-landing-pages/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
 ---
 
 القائمة اللي محدش بيشوفها زيها زي مفيش قائمة خالص. ممكن تسعّر الاسم بشكل مظبوط جدًا وتكتب صفحة بيع نضيفة، بس لو قائمتك معندكش بتظهر لما المشتري الصح يدوّر، الصفقة مش هتبدأ أصلًا. أغلب الطلب الجاي في الشغلانة دي بيعدّي على شوية ماركت بليسز معدودين، وجوّه الماركت بليسز دي اسمك بيتنافس مع ملايين تانيين على نفس الحاجة النادرة: انتباه المشتري في اللحظة اللي بيدوّر فيها.

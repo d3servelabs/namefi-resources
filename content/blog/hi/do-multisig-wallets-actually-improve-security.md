@@ -8,6 +8,24 @@ draft: false
 description: 'मल्टीसिग्नेचर वॉलेट्स को क्रिप्टो में डिफ़ॉल्ट सुरक्षित कस्टडी पैटर्न माना जाता है, लेकिन "क्या वे वास्तव में सुरक्षा बढ़ाते हैं?" इसका उत्तर पूरी तरह से थ्रेट मॉडल पर निर्भर करता है। यह पोस्ट बताती है कि मल्टीसिग किन चीज़ों से बचाता है, किनसे नहीं, और यह कहाँ चीज़ों को बदतर बना सकता है।'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['मल्टीसिग वॉलेट', 'मल्टीसिग्नेचर', 'सेफ वॉलेट', 'गनोसिस सेफ', 'की मैनेजमेंट', 'सेल्फ कस्टडी', 'थ्रेसहोल्ड सिग्नेचर', 'सोशल रिकवरी', 'namefi']
+relatedArticles:
+  - /hi/blog/onchain-domain-custody-and-recovery/
+  - /hi/blog/the-badgerdao-frontend-attack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-curve-finance-dns-hijack/
+  - /hi/blog/the-sushiswap-miso-insider-attack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
+  - /hi/glossary/tld/
 ---
 
 मल्टीसिग्नेचर [वॉलेट](/hi/glossary/wallet/)्स (Multisignature wallets)—ऐसे वॉलेट्स जहां किसी ट्रांज़ैक्शन को मान्य होने से पहले M-of-N कीज़ (keys) का साइन करना आवश्यक होता है—को आमतौर पर सिंगल-की हॉट वॉलेट के एक स्पष्ट अपग्रेड के रूप में प्रस्तुत किया जाता है। DAO, एक्सचेंजों और गंभीर क्रिप्टो-नेटिव कंपनियों में अधिकांश ट्रेजरी सेटअप किसी न किसी प्रकार के मल्टीसिग (जैसे Safe, Squads, Multisig.js, थ्रेसहोल्ड-सिग्नेचर वेरिएंट) के माध्यम से संचालित होते हैं।

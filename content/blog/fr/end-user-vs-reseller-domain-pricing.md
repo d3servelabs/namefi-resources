@@ -12,6 +12,24 @@ format: explainer
 description: "Pourquoi un domaine a un prix de gros (revendeur) faible et un prix utilisateur final bien plus élevé, quelle est l''ampleur de l''écart, et quel chiffre s''applique à votre vente."
 ogImage: ../../assets/end-user-vs-reseller-domain-pricing-og.jpg
 keywords: ['prix domaine utilisateur final ou revendeur', 'prix de gros domaine', 'prix de détail domaine', 'écart de prix domaine', 'combien vaut mon domaine', 'vendre un domaine à un utilisateur final', 'prix revendeur domaine', 'valeur de gros domaine', 'marge revente de domaines', 'tarification marché secondaire domaine', 'vendre un domaine en gros', 'acheteur domaine utilisateur final', 'ventes comparables domaine', 'stratégie de tarification domaine', 'deux prix pour un domaine']
+relatedArticles:
+  - /fr/blog/how-to-value-a-domain-name/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/how-to-read-comparable-domain-sales/
+  - /fr/blog/working-with-domain-brokers/
+  - /fr/blog/domain-appraisal-tools-compared/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
 ---
 
 Demandez à deux investisseurs en domaines chevronnés ce que vaut un nom et vous pouvez obtenir deux réponses qui diffèrent d''un facteur dix, et toutes les deux peuvent être justes. Ce n''est pas de la négligence. C''est le fait de tarification le plus important de ce métier : un même domaine a deux prix légitimes au même instant, et celui qui s''applique dépend entièrement de qui achète. Passez à côté, et soit vous bradez un nom pour une fraction de sa valeur, soit vous restez assis dessus pour toujours en attendant un chiffre que personne dans votre couloir ne paiera.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el potencial del TLD .fun para marcas de entretenimiento, juegos y Web3. Aprende por qué registrar un dominio .fun en Namefi es una estrategia inteligente.'
 keywords: ['dominios .fun', 'dominio de nivel superior', 'TLD', 'qué es .fun', 'por qué elegir .fun', 'registro de dominios', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'Namefi', 'comprar dominio .fun', 'dominios web3', 'nombres para sitios de juegos', 'estrategia de dominios', 'nuevo gTLD']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 En el vasto universo de internet, elegir el nombre correcto es crucial, pero elegir la extensión adecuada (TLD) puede ser lo que defina la personalidad de tu marca. Mientras que las extensiones tradicionales siguen siendo populares, los nuevos dominios genéricos de nivel superior (new gTLDs) están abriendo puertas a la creatividad. Hoy analizaremos el **dominio .fun**, una extensión vibrante que está capturando la atención de industrias creativas y del ecosistema [Web3](/es/glossary/web3/).

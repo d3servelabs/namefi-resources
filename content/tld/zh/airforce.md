@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '想展示空军荣耀或服务于航空社区吗？深入了解 .airforce 顶级域名、它的用途以及如何在 Namefi 注册。立即锁定您的专属域名！'
 keywords: ['.airforce domains', '.airforce TLD', 'top-level domain airforce', 'what is .airforce', 'why choose .airforce', 'what is the .airforce domain', 'why choose the .airforce domain', '.airforce 域名', 'buy .airforce domain', 'air force community domains', 'aviation domains', 'tokenized domains', 'Web3 domains', 'military domains', 'domain investing airforce']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/web3/
 ---
 
 在广阔的数字天空中，选择一个能够精准传达身份和使命的域名至关重要。对于航空爱好者、退伍军人、现役军人家属以及相关支持组织来说，`.airforce` 是一个极具力量和象征意义的顶级域名（[TLD](/zh/glossary/tld/)）。

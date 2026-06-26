@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.namebio.com/
   - https://www.investopedia.com/terms/s/sell-through-rate.asp
+relatedArticles:
+  - /hi/blog/domain-renewal-costs-and-sell-through-rate/
+  - /hi/blog/domain-portfolio-management/
+  - /hi/blog/taxes-and-accounting-for-domain-investors/
+  - /hi/blog/when-to-drop-a-domain/
+  - /hi/blog/domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/holding-cost/
+  - /hi/glossary/domain-liquidity/
+  - /hi/glossary/domain-portfolio/
+  - /hi/glossary/tld/
+  - /hi/glossary/aftermarket/
 ---
 
 **सेल-थ्रू रेट** (STR) एक निर्धारित अवधि — आमतौर पर एक कैलेंडर वर्ष — में किसी [डोमेन पोर्टफोलियो](/hi/glossary/domain-portfolio/) के वास्तव में बिकने वाले नामों का प्रतिशत है, और यह किसी निवेशक के समग्र संग्रह की [डोमेन लिक्विडिटी](/hi/glossary/domain-liquidity/) का व्यावहारिक माप है। यहाँ तक कि बड़े और प्रतिष्ठित पोर्टफोलियो भी सालाना कुछ प्रतिशत से अधिक STR शायद ही हासिल करते हैं; एक अच्छी तरह से बनाए गए [.com](/hi/tld/com/) पोर्टफोलियो पर 2–3% सेल-थ्रू को स्वस्थ माना जाता है, जिसका मतलब है कि अधिकांश नामों को खरीदार मिलने से पहले वर्षों तक रखना पड़ता है। होल्डिंग लागत के मुकाबले कम STR यह संकेत देता है कि पोर्टफोलियो को छंटाई की जरूरत है — सीमांत नामों को उनके नवीनीकरण शुल्क रिटर्न को मिटाने से पहले छोड़ना। औसत बिक्री मूल्य और होल्डिंग अवधि के साथ STR ट्रैक करने से निवेशकों को [आफ्टरमार्केट](/hi/glossary/aftermarket/) में लगाई गई पूंजी पर वास्तविक रिटर्न की स्पष्ट तस्वीर मिलती है।

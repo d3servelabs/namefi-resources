@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'जुलाई 2024 में, Google Domains से Squarespace पर एक रजिस्ट्रार माइग्रेशन ने कमज़ोर डिफ़ॉल्ट प्रमाणीकरण को एक बड़े हमले की सतह में बदल दिया। हमलावरों ने क्रिप्टो और DeFi प्रोजेक्ट्स — Compound Finance, Celer Network, Pendle, Unstoppable Domains — के डोमेन हाईजैक कर लिए और उन्हें वॉलेट-ड्रेनर फ़िशिंग साइट्स पर री-डायरेक्ट कर दिया। जानें कैसे एक "सहज" माइग्रेशन ने सैकड़ों खुले दरवाज़े बना दिए, और रजिस्ट्रार सुरक्षा और MFA के बारे में इससे क्या सीखा जा सकता है।'
 keywords: ['squarespace domain hijack', 'google domains migration', 'defi dns hijack', 'compound finance hijack', 'celer network hijack', 'wallet drainer', 'inferno drainer', 'domain security', 'registrar migration', 'mfa multi-factor authentication', 'oauth account takeover', 'dns hijacking', 'crypto phishing']
+relatedArticles:
+  - /hi/blog/the-curve-finance-dns-hijack/
+  - /hi/blog/the-badgerdao-frontend-attack/
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
+  - /hi/glossary/tld/
 ---
 
 जुलाई 2024 में, किसी क्रिप्टो प्रोजेक्ट की वेबसाइट के लिए सबसे खतरनाक चीज़ कोई स्मार्ट-कॉन्ट्रैक्ट बग या कोई लीक हुई [प्राइवेट की](/hi/glossary/private-key/) नहीं थी। वह था वह [रजिस्ट्रार](/hi/glossary/registrar/) जिसके पास डोमेन की बागडोर थी।

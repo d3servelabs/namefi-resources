@@ -9,6 +9,24 @@ authors: ['namefiteam']
 draft: false
 description: D3Serve का एक दृष्टिकोण वक्तव्य — डिजिटल विश्वास को अपनाना, जैसे पहले सूचना का डिजिटलीकरण हुआ था, उसी प्रकार यह उत्पादकता में छलांग, हानि-रहित परिशुद्धता, कम लागत और स्वचालन का वादा करता है।
 keywords: ['डिजिटल विश्वास', 'D3Serve', 'blockchain', 'web3', 'स्मार्ट कॉन्ट्रैक्ट', 'क्रिप्टोग्राफी', 'सहमति', 'घोषणापत्र', 'दृष्टिकोण', 'विश्वास डिजिटलीकरण', 'समूह विश्वास', 'स्वचालन']
+relatedArticles:
+  - /hi/blog/onchain-domain-custody-and-recovery/
+  - /hi/blog/the-sushiswap-miso-insider-attack/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/recovering-a-tokenized-domain-after-wallet-loss/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-security/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
 ---
 
 **D3Serve** में, हम blockchain और अन्य उन्नत तकनीकों का उपयोग करके *डिजिटल विश्वास* बनाने के लिए समर्पित हैं।

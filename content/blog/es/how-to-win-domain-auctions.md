@@ -12,6 +12,24 @@ format: guide
 description: "Cómo funcionan realmente las subastas de dominios del mercado secundario: pujas proxy, sniping, máximos firmes, leer la demanda y esquivar las trampas de pagar de más y del shill bidding."
 ogImage: ../../assets/how-to-win-domain-auctions-og.jpg
 keywords: ['subastas de dominios', 'cómo ganar subastas de dominios', 'estrategia de subastas de dominios', 'GoDaddy Auctions', 'NameJet', 'subastas de Sedo', 'puja proxy', 'sniping de subastas', 'subastas de dominios caducados', 'shill bidding', 'maldición del ganador en dominios', 'comprar dominios caducados', 'mercado secundario de dominios', 'subasta de captura de caída', 'evitar pagar de más por dominios']
+relatedArticles:
+  - /es/blog/domain-flipping/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+  - /es/blog/how-to-read-comparable-domain-sales/
+  - /es/blog/domain-backorders-and-drop-catching/
+  - /es/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
 ---
 
 La mayoría de los buenos nombres que alguna vez querrás comprar ya están registrados, y una gran parte de ellos termina pasando, tarde o temprano, por una [subasta](/es/glossary/auction/). Cuando una registración caduca, cuando un domainer liquida su cartera, cuando un registrador captura un nombre en caída sin una [reserva anticipada](/es/glossary/backorder/) detrás, ese nombre acaba en el bloque de subasta y va a parar al mejor postor. Si revendes dominios, gastarás dinero real en estas salas, y la diferencia entre una adquisición rentable y un nombre muerto en tu cuenta es, sobre todo, disciplina en el momento de pujar.

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que le protocole Lens et comment utilise-t-il les domaines pour l'identité sociale ?
 keywords: ["Lens","Protocole Lens","réseau social décentralisé","profils NFT","graphe social","identité Web3"]
+relatedArticles:
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/why-tokenize-domains/
+  - /fr/blog/cctld-market-share-by-registration-volume/
+  - /fr/blog/avoiding-domain-sale-scams/
+  - /fr/blog/tokenized-domain-use-cases-2026/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/web3/
+  - /fr/glossary/farcaster/
+  - /fr/glossary/blockchain/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
 ---
 
 

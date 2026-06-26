@@ -9,6 +9,24 @@ format: opinion
 description: "Every country and every movement eventually hits a constitutional-crisis moment — who is legitimate, who is authoritative, who speaks at the center of the stage. For an online movement, that question lands on one asset: the main domain. Here is why it should belong to the DAO."
 ogImage: ../../assets/why-a-dao-should-control-the-main-domain-og.jpg
 keywords: ['dao governance', 'main domain', 'constitutional crisis', 'who speaks for the dao', 'ens dao', 'aave labs', 'wikipedia governance', 'ethereum classic', 'bitcoin.org', 'tokenized domains', 'digital sovereignty', 'brand control', 'decentralized governance', 'domain ownership', 'namefi']
+relatedArticles:
+  - /en/blog/from-mona-co-to-crypto-com/
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+  - /en/blog/from-del-icio-us-to-delicious-com/
+  - /en/blog/from-discordapp-com-to-discord-com/
+  - /en/blog/from-ctrip-com-to-trip-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
+  - /en/glossary/tld/
 ---
 
 By the Namefi Team — June 2026

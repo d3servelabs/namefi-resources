@@ -12,6 +12,24 @@ format: explainer
 description: "How custody really works for onchain domains: wallets, multisig, seed-phrase risk, and recovering a tokenized domain after wallet loss."
 ogImage: ../../assets/onchain-domain-custody-and-recovery-og.jpg
 keywords: ['onchain domain custody', 'tokenized domain wallet', 'recover tokenized domain', 'wallet loss domain recovery', 'seed phrase risk', 'multisig domain custody', 'NFT domain security', 'hardware wallet domain', 'self custody domain', 'domain private key', 'tokenized domain ownership', 'ERC-721 domain', 'onchain domain flipping', 'domain wallet backup', 'social recovery wallet']
+relatedArticles:
+  - /en/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/onchain-domain-flipping/
+  - /en/blog/selling-domains-as-nfts/
+  - /en/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 When you flip a traditional domain, custody is somebody else's problem. The name lives in a [registrar](/en/glossary/registrar/) account, and if you forget the password there's a reset link and a support queue waiting for you. Move a domain [on-chain](/en/glossary/on-chain/) and that safety net disappears. The token *is* the deed, and the keys to your [wallet](/en/glossary/wallet/) are the only thing standing between you and the asset. That shift is the single biggest mental adjustment for anyone coming to onchain flipping from the traditional [aftermarket](/en/glossary/domain-trading/).

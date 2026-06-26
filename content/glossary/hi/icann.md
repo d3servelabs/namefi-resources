@@ -14,6 +14,24 @@ sources:
   - https://www.iana.org/about
   - https://www.icann.org/en/history/iana-stewardship-transition
   - https://en.wikipedia.org/wiki/ICANN
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-is-udrp/
+  - /hi/blog/the-icann-spear-phishing-breach/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/the-panix-com-domain-hijack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
 ---
 
 **ICANN (Internet Corporation for Assigned Names and Numbers)**, जिसे **इंटरनेट कॉर्पोरेशन फॉर असाइन्ड नेम्स एंड नंबर्स** के नाम से भी जाना जाता है, एक गैर-लाभकारी, बहु-हितधारक संगठन है जिसे 1998 में कैलिफोर्निया कानून के तहत निगमित किया गया था। यह उन तकनीकी नीतियों और डेटाबेसों के समन्वय के लिए जिम्मेदार है जो वैश्विक इंटरनेट को एकल, एकीकृत नेटवर्क के रूप में कार्य करने देती हैं। विशेष रूप से, ICANN [IP पतों](/hi/glossary/ip-address/) के आवंटन, [DNS](/hi/glossary/dns/) नामों के असाइनमेंट और प्रोटोकॉल पहचानकर्ताओं के वितरण का प्रबंधन करता है — इन कार्यों को सामूहिक रूप से [IANA functions](/hi/glossary/iana/) कहा जाता है। इस समन्वय के बिना, वैश्विक [DNS](/hi/glossary/dns/) विखंडित हो जाएगा, जिससे नेटवर्क पर वेब पते अनिर्धार्य हो जाएंगे।

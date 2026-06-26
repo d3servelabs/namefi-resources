@@ -12,6 +12,24 @@ format: guide
 description: "如何利用 NameBio 这类成交历史来为域名定价：找到真正可比的案例，针对后缀、长度和关键词做调整，并避开挑樱桃式选择的陷阱。"
 ogImage: ../../assets/how-to-read-comparable-domain-sales-og.jpg
 keywords: ['参考成交价', '域名 comps', '如何解读域名 comps', 'NameBio', '域名成交历史', '域名估值参考案例', '域名价格比较', '如何给域名定价', '域名估值可比案例', '域名成交数据', '查找可比域名', '域名 comp 调整', '域名投资 comps', '域名定价数据']
+relatedArticles:
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/domain-appraisal-tools-compared/
+  - /zh/blog/what-makes-a-domain-valuable/
+  - /zh/blog/domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 问问房地产评估师一栋房子值多少钱，他们不会瞎猜。他们会调出附近同类房屋近期的成交价，再以此为基础做调整。[域名估值](/zh/glossary/domain-appraisal/)的逻辑完全一样，而"附近近期成交"在域名世界里的对应物，就是过往域名成交的公开记录：也就是参考成交价（comps）。学会解读它们，你几乎能为任何一个名字的报价提供有力支撑。读得马虎，你就会把自己说服到一个市场从未认可的数字上。

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: एटॉमिक ट्रांसफर क्या है और यह सुरक्षित डोमेन लेनदेन कैसे सुनिश्चित करता है?
 keywords: ["एटॉमिक ट्रांसफर","ब्लॉकचेन लेनदेन","सभी या कुछ भी नहीं","सुरक्षित विनिमय","स्मार्ट कॉन्ट्रैक्ट"]
+relatedArticles:
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/selling-domains-as-nfts/
+  - /hi/blog/domain-escrow-explained/
+  - /hi/blog/how-tokenized-marketplaces-replace-escrow/
+  - /hi/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/tokenized-domain/
+  - /hi/glossary/registrar/
+  - /hi/glossary/tokenize/
+  - /hi/glossary/blockchain/
+  - /hi/glossary/web3/
 ---
 
 

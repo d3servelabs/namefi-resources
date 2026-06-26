@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2017 年 9 月，攻击者登录了荷兰安全公司 Fox-IT 的第三方域名注册商，修改了其 DNS 记录，欺诈性地获取了一张 TLS 证书，并对客户流量实施了长达 10 小时的中间人攻击——直到 Fox-IT 发现并发布了行业内最透明的事后分析报告之一。'
 keywords: ['fox-it dns 劫持', 'fox-it 中间人攻击', 'fox-it 2017 事件', 'dns 劫持', '域名注册商账户入侵', '欺诈性 ssl 证书', '中间人攻击', '域名注册商安全', 'dns 双因素认证', 'dnssec', '注册局锁定', '域名安全', 'ncc group fox-it']
+relatedArticles:
+  - /zh/blog/the-dnspionage-campaign/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-lenovo-com-dns-hijack/
+  - /zh/blog/the-badgerdao-frontend-attack/
+  - /zh/blog/the-myetherwallet-bgp-dns-attack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
 ---
 
 中间人攻击的可怕之处在于：攻击发生时，一切看起来都毫无异样。

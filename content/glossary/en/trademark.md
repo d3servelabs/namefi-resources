@@ -9,6 +9,24 @@ keywords: ['trademark', 'brand protection', 'intellectual property', 'domain dis
 level: 1
 sources:
   - https://www.wipo.int/trademarks/en/
+relatedArticles:
+  - /en/blog/what-is-udrp/
+  - /en/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /en/blog/domain-flipping-and-the-law/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/how-to-name-your-project/
+relatedTopics:
+  - /en/topics/domain-basics/
+  - /en/topics/domain-security/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/icann/
+  - /en/glossary/cybersquatting/
+  - /en/glossary/tld/
+  - /en/glossary/tmch/
+  - /en/glossary/wipo/
 ---
 
 A **trademark** is a legally registered word, phrase, logo, or symbol that identifies the goods or services of one party and distinguishes them from others — and it sits at the center of most domain-name disputes. When a domain matches a protected mark and the [registrant](/en/glossary/registrant/) cannot show a legitimate interest, the trademark owner can pursue recovery through [UDRP](/en/glossary/udrp/) arbitration administered by bodies like [WIPO](/en/glossary/wipo/), through [cybersquatting](/en/glossary/cybersquatting/) claims, or via the US [ACPA](/en/glossary/acpa/). The [Trademark Clearinghouse](/en/glossary/tmch/) lets rights-holders pre-register with ICANN to receive early-warning notices when matching names are applied for in new gTLDs. Tokenization does not exempt a domain from trademark law: an NFT representing a domain is still subject to UDRP and ACPA proceedings, and a court or panel can order the underlying DNS registration transferred regardless of who holds the on-chain token. Domain investors and speculators should always run a trademark clearance search before acquiring a name that might correspond to an existing brand.

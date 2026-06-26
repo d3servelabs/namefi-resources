@@ -14,6 +14,24 @@ sources:
 aliasesByLocale:
   zh: ['注册服务商']
   de: ['Registrierungsdienst']
+relatedArticles:
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/the-panix-com-domain-hijack/
+  - /ar/blog/what-is-udrp/
+relatedTopics:
+  - /ar/topics/domain-basics/
+  - /ar/topics/domain-security/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 **المُسجِّل** هو منظمة معتمدة من [ICANN](/ar/glossary/icann/) مُخوَّلة بتسجيل أسماء النطاقات في نطاق TLD واحد أو أكثر نيابةً عن الجمهور، وتُدير العلاقة بين مشتري النطاقات و[السجل](/ar/glossary/registry/) الذي يشغّل قاعدة البيانات الموثوقة لتلك النطاقات.

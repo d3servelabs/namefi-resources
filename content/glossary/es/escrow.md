@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es el depósito en garantía y cómo los contratos inteligentes proporcionan un depósito en garantía sin confianza para los dominios?
 keywords: ["depósito en garantía","tercero de confianza","escrow de contrato inteligente","sin confianza","transacciones seguras"]
+relatedArticles:
+  - /es/blog/domain-escrow-explained/
+  - /es/blog/how-tokenized-marketplaces-replace-escrow/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/selling-domains-as-nfts/
+  - /es/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/tokenize-your-com/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/domain-broker/
+  - /es/glossary/marketplace/
+  - /es/glossary/domain-financing/
+  - /es/glossary/lease-to-own/
 ---
 
 

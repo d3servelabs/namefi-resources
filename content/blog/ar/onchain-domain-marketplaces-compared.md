@@ -12,6 +12,24 @@ format: comparison
 description: "مقارنة بين OpenSea والأسواق المبنية على Seaport والأسواق المتخصصة في النطاقات على السلسلة من حيث الرسوم والوصول والحفظ — أنهي مكان يناسب بيع كل نطاق مرمَّز."
 ogImage: ../../assets/onchain-domain-marketplaces-compared-og.jpg
 keywords: ['سوق نطاقات على السلسلة', 'سوق نطاقات مرمَّزة', 'بيع نطاق NFT', 'نطاق OpenSea', 'بروتوكول Seaport', 'رسوم سوق NFT', 'تقليب النطاقات web3', 'فين أبيع النطاقات المرمَّزة', 'OpenSea مقابل Blur', 'بيع NFT ذري', 'نطاق ERC-721', 'مقارنة أسواق نطاقات NFT', 'سوق Namefi', 'بيع نطاق بحفظ ذاتي', 'تداول النطاقات على السلسلة']
+relatedArticles:
+  - /ar/blog/selling-domains-as-nfts/
+  - /ar/blog/onchain-domain-flipping/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 لو بتقلِّب [نطاق مرمَّز](/ar/blog/what-are-tokenized-domains/) — يعني اسم ICANN حقيقي وفوقه رمز ملكية [على السلسلة (On-chain)](/ar/glossary/on-chain/) — يبقى قدامك اختيار عمره ما اتاح لك في عالم النطاقات التقليدي. تقدر تعرض الاسم كـ[NFT (رمز غير قابل للاستبدال)](/ar/glossary/nft/) على سوق كريبتو عام، أو تبيعه من خلال منصة مبنية على [Seaport](/ar/glossary/smart-contract/) من غير حفظ طرف تالت، أو تستخدم منصة متخصصة في النطاقات اتعملت بالظبط للأصل ده. كل طريق بينقل نفس الرمز، بس الرسوم والوصول ونموذج الحفظ مختلفين بدرجة كفاية إن اختيارك الغلط ممكن يكلّفك مشتري أو جزء من هامش ربحك.

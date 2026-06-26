@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Ein klarer, praxisorientierter Vergleich zwischen tokenisierten ICANN-Domains (wie einer tokenisierten .com) und nativen Web3-Namen (wie name.eth, name.crypto). Wann funktioniert was? Wo gibt es Überschneidungen? Warum besitzen viele Menschen beides?"
 keywords: ['tokenisierte domain vs web3 domain', 'tokenisierte domain vs ENS', 'ICANN domain vs ENS', '.com vs .eth', 'tokenisierte .com vs .crypto', 'tokenisierte domain vs unstoppable', 'web3 domain vergleich', 'ENS vs tokenisierte domain', 'NFT domain vs ENS', 'web3 naming', 'on-chain naming unterschied', 'browser unterstützung web3 domain', 'web3 domain auflösung']
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /de/blog/premium-web3-tlds/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
 ---
 
 Eine berechtigte Frage, die täglich gestellt wird: *„Ich habe bereits einen `.eth`-Namen (oder `.crypto`, oder `.x`). Warum sollte ich meine `.com` [tokenisieren](/de/glossary/tokenize/)? Ist das nicht dasselbe?“*

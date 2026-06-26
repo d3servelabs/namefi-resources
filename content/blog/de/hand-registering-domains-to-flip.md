@@ -12,6 +12,24 @@ format: guide
 description: "Wie Sie noch verfügbare Domains finden, die eine Registrierungsgebühr wert sind: Wortlisten, TLD-Permutationen, brandbare Muster und die Filter, die Impulskäufe schlagen."
 ogImage: ../../assets/hand-registering-domains-to-flip-og.jpg
 keywords: ['Domains handregistrieren', 'handregistrierte Domains', 'verfügbare Domains zum Flippen', 'verfügbare Domains finden', 'brandbare Domainnamen', 'Domain-Wortlisten', 'Domains zum Verkauf registrieren', 'günstige Domains zum Flippen', 'wie man Domains zum Registrieren findet', 'Ideen für Domainnamen zum Verkauf', 'Domain-Flipping für Anfänger', 'TLD-Permutationen', 'verfügbare .com-Domains', 'spekulative Domainregistrierung', 'Domaining Handregistrierung']
+relatedArticles:
+  - /de/blog/domain-flipping/
+  - /de/blog/when-to-drop-a-domain/
+  - /de/blog/how-to-find-domains-to-flip/
+  - /de/blog/domain-renewal-costs-and-sell-through-rate/
+  - /de/blog/domain-portfolio-management/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Handregistrieren ist der günstigste Einstieg ins Domain-Flipping und zugleich der einfachste Weg, dabei Geld zu verbrennen. Sie tippen einen Namen bei einem Registrar ein, er kommt als verfügbar zurück, Sie zahlen die Registrierungsgebühr — und schon besitzen Sie eine brandneue Domain, die noch nie jemand haben wollte. Genau dieser letzte Teil ist die Falle. Zum Ende des Jahres 2023 waren bereits [359,8 Millionen Domainnamen](https://en.wikipedia.org/wiki/Domain_name#:~:text=359.8%20million%20domain%20names%20had%20been%20registered) registriert, und das Universum der *nicht registrierten* Zeichenketten ist praktisch unendlich. Dass ein Name verfügbar ist, sagt fast nichts darüber aus, ob er es wert ist, besessen zu werden. Meistens bedeutet es das Gegenteil.

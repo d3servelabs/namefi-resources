@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es el arrendamiento de dominios y cómo la tokenización permite nuevos modelos de arrendamiento?
 keywords: ["arrendamiento","alquiler de dominios","ingresos pasivos","arrendamiento con contratos inteligentes","pagos automatizados"]
+relatedArticles:
+  - /es/blog/tokenized-domain-use-cases-2026/
+  - /es/blog/why-tokenize-domains/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /es/blog/domain-parking-and-monetization/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/smart-contract/
+  - /es/glossary/tokenized-domain/
+  - /es/glossary/automated-delegation/
+  - /es/glossary/tokenize/
+  - /es/glossary/icann/
 ---
 
 El **arrendamiento** en el contexto de los dominios se refiere a la concesión temporal de derechos de uso de un dominio mientras se conserva la propiedad. El arrendamiento de dominios tradicional implica acuerdos manuales y confianza entre las partes. Con los dominios tokenizados, el arrendamiento puede automatizarse a través de [contratos inteligentes](/es/glossary/smart-contract/) que gestionan los pagos, la aplicación de los términos y la reversión automática del control. Los propietarios de dominios pueden obtener ingresos pasivos al arrendar sus valiosos dominios a empresas o proyectos que los necesiten temporalmente. El arrendamiento basado en [contratos inteligentes](/es/glossary/smart-contract/) elimina la necesidad de intermediarios, reduce los costos y garantiza una ejecución transparente y automática de los términos del arrendamiento, creando nuevas fuentes de ingresos para los titulares de dominios al tiempo que proporciona acceso flexible para los arrendatarios.

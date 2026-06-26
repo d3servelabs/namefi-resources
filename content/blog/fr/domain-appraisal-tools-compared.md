@@ -12,6 +12,24 @@ format: comparison
 description: "Comment fonctionnent réellement les estimateurs automatiques de domaines comme Estibot et GoDaddy, où ils se trompent systématiquement, et comment les utiliser comme premier filtre."
 ogImage: ../../assets/domain-appraisal-tools-compared-og.jpg
 keywords: ["outils d'estimation de domaine", 'estibot vs godaddy', 'calculateur de valeur de domaine', 'estimation automatique de domaine', "outil d'évaluation de domaine", "fiabilité d'estibot", 'estimation de domaine godaddy', 'combien vaut mon domaine', "précision de l'estimation de domaine", 'avis estibot', 'estimation de la valeur d''un domaine', 'évaluation de domaine par apprentissage automatique', 'outil de ventes comparables de domaines', 'comment estimer un domaine', 'outils de domain flipping']
+relatedArticles:
+  - /fr/blog/how-to-value-a-domain-name/
+  - /fr/blog/how-to-read-comparable-domain-sales/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/what-makes-a-domain-valuable/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Collez un domaine dans un outil d'estimation et vous obtenez un chiffre en une seconde environ. Cela paraît faire autorité — un montant en dollars net, souvent accompagné d'une liste de [ventes comparables](/fr/glossary/comparable-sales/) en dessous. Les flippers débutants prennent ce chiffre pour la réponse. Les expérimentés le prennent pour la première ligne d'une conversation bien plus longue.

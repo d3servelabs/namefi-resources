@@ -8,6 +8,24 @@ draft: false
 description: '域名行业新闻媒体、销售数据网站和播客指南，涵盖 DomainNameWire、DNJournal、TheDomains、NameBio、DomainSherpa、CircleID 等优质行业信息源。'
 ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['域名行业新闻', '域名媒体', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'icann新闻']
+relatedArticles:
+  - /zh/blog/famous-domainer-blogs-and-newsletters/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/top-domain-trader-forums/
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-investor-field-guide/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 如果说[个人域名投资者博客](/blog/famous-domainer-blogs-and-newsletters)代表了个人的声音，那么*域名行业媒体*则更像是新闻机构——有时虽是“一人新闻室”，但它们秉持的是新闻报道的编辑立场，而非仅仅是交易者的日记。它们报道交易、政策、注册局/[注册商](/zh/glossary/registrar/)的动态、[ICANN](/zh/glossary/icann/) 资讯以及偶尔发生的行业风波，且往往是其他人引用的信息来源。

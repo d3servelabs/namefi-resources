@@ -11,6 +11,24 @@ seriesOrder: 13
 format: case-study
 description: 'How Facebook, Inc. became Meta in October 2021, why Meta.com was already a Zuckerberg-related asset forwarding from a science search engine, and how a separate $60M deal bought the "Meta" name from a Sioux Falls bank — while the Facebook app kept Facebook.com.'
 keywords: ['facebook.com', 'meta.com', 'meta rebrand', 'facebook meta name change', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', 'metaverse pivot', 'domain acquisition', 'company rebrand', 'premium domain', 'domain strategy', 'parent company rename']
+relatedArticles:
+  - /en/blog/from-snapchat-com-to-snap-com/
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+  - /en/blog/from-ctrip-com-to-trip-com/
+  - /en/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 Most rebrands in this series start with a company outgrowing a name. Case 7 is the opposite: a company so large it had already become a verb, a regulator's headache, and a household word — deciding it needed a *new* name anyway, one big enough to hold a future it hadn't built yet.

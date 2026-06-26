@@ -12,6 +12,24 @@ format: comparison
 description: "OpenSea, les places de marché basées sur Seaport et celles natives aux domaines, comparées sur les frais, la portée et la garde — quel lieu convient à quelle vente de domaine tokenisé."
 ogImage: ../../assets/onchain-domain-marketplaces-compared-og.jpg
 keywords: ['place de marché de domaines onchain', 'place de marché de domaines tokenisés', 'vendre un domaine NFT', 'domaine OpenSea', 'protocole Seaport', 'frais des places de marché NFT', 'flipping de domaines web3', 'où vendre des domaines tokenisés', 'OpenSea vs Blur', 'vente atomique de NFT', 'domaine ERC-721', 'comparaison des places de marché de domaines NFT', 'place de marché Namefi', 'vente de domaine en auto-garde', 'trading de domaines onchain']
+relatedArticles:
+  - /fr/blog/selling-domains-as-nfts/
+  - /fr/blog/onchain-domain-flipping/
+  - /fr/blog/tokenize-your-com-to-flip-it/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/tokenize-your-com/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Si vous faites du flipping avec un [domaine tokenisé](/fr/blog/what-are-tokenized-domains/) — un véritable nom ICANN coiffé d'un jeton de propriété [on-chain](/fr/glossary/on-chain/) — vous disposez d'un choix que le monde traditionnel des domaines ne vous a jamais offert. Vous pouvez mettre le nom en vente comme un [NFT](/fr/glossary/nft/) sur une place de marché crypto généraliste, le vendre via un lieu basé sur [Seaport](/fr/glossary/smart-contract/) sans garde par un tiers, ou utiliser une plateforme native aux domaines conçue précisément pour cet actif. Chaque voie déplace le même jeton, mais les frais, la portée et le modèle de garde diffèrent suffisamment pour qu'un mauvais choix vous coûte un acheteur ou une partie de votre marge.

@@ -8,6 +8,24 @@ draft: false
 description: "Un aperçu des domaines de premier niveau nationaux qui détiennent la plus grande part des enregistrements dans le monde, pourquoi les leaders diffèrent de ce à quoi la plupart s'attendent, et ce que les chiffres de volume nous disent sur la façon dont Internet est réellement utilisé."
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['part de marché cctld', 'domaines nationaux', '.cn', '.de', '.uk', '.tk', '.io', 'statistiques de domaines', 'données de registre', 'namefi']
+relatedArticles:
+  - /fr/blog/how-tld-affects-domain-value/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Quand la plupart des gens s'imaginent Internet, ils pensent au `.com`. Et en chiffres absolus, le `.com` reste le plus grand [domaine de premier niveau](/fr/glossary/tld/) de la planète, avec environ 160 millions de noms sous gestion. Mais le `.com` est un [gTLD](/fr/glossary/gtld/) — un domaine de premier niveau *générique*. Changez de perspective pour regarder les **TLD nationaux (ccTLD)** — les suffixes à deux lettres attribués aux nations et territoires selon la norme [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) — et le tableau devient beaucoup plus intéressant, et beaucoup moins prévisible.

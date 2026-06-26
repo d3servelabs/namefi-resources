@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو التحويل الذري وكيف يضمن معاملات النطاق الآمنة؟
 keywords: ["التحويل الذري","معاملة البلوكتشين","الكل أو لا شيء","تبادل آمن","عقد ذكي"]
+relatedArticles:
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/selling-domains-as-nfts/
+  - /ar/blog/domain-escrow-explained/
+  - /ar/blog/how-tokenized-marketplaces-replace-escrow/
+  - /ar/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/tokenized-domain/
+  - /ar/glossary/registrar/
+  - /ar/glossary/tokenize/
+  - /ar/glossary/blockchain/
+  - /ar/glossary/web3/
 ---
 
 

@@ -5,6 +5,24 @@ language: ar
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .sbs تعني "جنباً إلى جنب" وهي مثالية للمشاريع التعاونية والشراكات والأعمال الجانبية.
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-investor-field-guide/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 

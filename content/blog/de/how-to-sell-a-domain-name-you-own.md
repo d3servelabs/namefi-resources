@@ -8,6 +8,24 @@ draft: false
 description: "Eine praktische Checkliste aus Verkäufersicht für die Preisfindung einer Domain, das Finden potenzieller Käufer, die Kontaktaufnahme, die Vermeidung von Betrug und den sicheren Abschluss des Transfers."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png
 keywords: ['wie man einen domainnamen verkauft', 'domainnamen verkaufen', 'checkliste domainverkauf', 'domainbewertung', 'treuhandkonto domainverkauf', 'domaintransfer', 'outbound-domainverkäufe', 'domainkäufer finden', 'domainverhandlung', 'eigene domain verkaufen', 'Namefi Outbound', 'domain-zweitmarkt', 'domainverkaufsprozess', 'domainverkaufsansprache', 'leitfaden für domainverkäufer']
+relatedArticles:
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/working-with-domain-brokers/
+  - /de/blog/inbound-vs-outbound-domain-sales/
+  - /de/blog/domain-flipping/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Eine Domain zu besitzen, ist der einfache Teil. Sie zu verkaufen, da beginnt die eigentliche Arbeit.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Facebook, Inc. 如何在 2021 年 10 月更名为 Meta，Meta.com 为何早已是扎克伯格旗下资产并转向一个科学搜索引擎，以及另一笔 6000 万美元的交易如何从南达科他州一家银行手中买下"Meta"这个名称——而 Facebook 应用本身则继续使用 Facebook.com。'
 keywords: ['facebook.com', 'meta.com', 'meta 品牌重塑', 'facebook meta 更名', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', '元宇宙转型', '域名收购', '公司品牌重塑', '优质域名', '域名战略', '母公司更名']
+relatedArticles:
+  - /zh/blog/from-snapchat-com-to-snap-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-ctrip-com-to-trip-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 本系列中的大多数品牌重塑案例，都源于一家公司逐渐超越了自己的名字。第 7 个案例恰恰相反：这家公司规模如此之大，早已成为一个动词、一个监管机构的头疼来源、一个家喻户晓的词汇——却依然决定需要一个*新*名字，一个足以承载它尚未构建的未来的名字。

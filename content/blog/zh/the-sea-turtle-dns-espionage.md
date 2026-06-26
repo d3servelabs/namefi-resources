@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2019 年 Cisco Talos 披露的国家支持行动"海龟"，通过入侵域名注册商、注册局和 DNS 服务商来劫持 DNS，将政府机构、部委和能源企业的流量重定向至攻击者控制的服务器，伪造有效证书，甚至入侵了国家级顶级域名注册局。'
 keywords: ['海龟 DNS 劫持', 'cisco talos 海龟行动', 'DNS 劫持攻击', '国家支持 DNS 攻击', '注册局入侵', '注册商入侵', 'DNS 间谍活动', 'lets encrypt 中间人证书', 'netnod 入侵', 'ics-forth 希腊 ccTLD', 'cisa 紧急指令 19-01', 'DNS 安全', '域名所有权安全', '国家级网络攻击']
+relatedArticles:
+  - /zh/blog/the-dnspionage-campaign/
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-myetherwallet-bgp-dns-attack/
+  - /zh/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/dns/
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
 ---
 
 大多数网络攻击试图从外部*渗入*目标。而"海龟"行动所做的事情更为隐蔽，也危险得多：它入侵的是告诉整个互联网目标所在位置的那张**地图**。

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Airbnb ने 2008 में AirBed & Breakfast के रूप में AirBedAndBreakfast.com पर लॉन्च किया, फिर 2009 में Airbnb.com पर स्थानांतरित होकर सचमुच की एयर मैट्रेस वाली छवि से मुक्ति पाई और एक वैश्विक, स्केलेबल ब्रांड बन गया।'
 keywords: ['airbedandbreakfast.com', 'airbnb.com', 'airbnb domain name', 'airbnb rebrand', 'airbed and breakfast', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'airbnb history', 'y combinator airbnb', 'company rebrand']
+relatedArticles:
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-massdrop-com-to-drop-com/
+  - /hi/blog/from-ctrip-com-to-trip-com/
+  - /hi/blog/from-mrchewy-com-to-chewy-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 Airbnb के एक क्रिया, एक सार्वजनिक कंपनी और दुनिया के यात्रा करने के तरीके का एक अनिवार्य हिस्सा बनने से पहले, यह एक बेहद शाब्दिक प्रस्ताव था: एक **AirBed & Breakfast**, **AirBedAndBreakfast.com** पर जीवित।

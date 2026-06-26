@@ -8,6 +8,24 @@ draft: false
 description: 'Un recorrido práctico por las cinco formas en que los atacantes realmente se apoderan de los dominios en el mundo real (ingeniería social, compromiso de la cuenta del registrador, toma de control del proveedor de DNS, secuestros de NS y recuperación de dominios expirados) y los controles específicos que bloquean a cada una.'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
 keywords: ['secuestro de dominios', 'seguridad de dominios', 'bloqueo de registrador', 'bloqueo de transferencia', 'dnssec', 'autenticación de dos factores', 'ingeniería social', 'dns colgante', 'namefi']
+relatedArticles:
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-badgerdao-frontend-attack/
+  - /es/blog/the-lenovo-com-dns-hijack/
+  - /es/blog/the-perl-com-domain-theft/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
 ---
 
 El "secuestro de dominios" (*domain hijacking*) es una de esas frases que suena dramática pero que significa cosas muy diferentes dependiendo de cómo ocurra. Una cuenta de [registrador](/es/glossary/registrar/) tomada mediante un correo de *[phishing](/es/glossary/phishing/)* es un secuestro. Un registro de [servidor de nombres](/es/glossary/nameserver/) intercambiado silenciosamente en un proveedor de [DNS](/es/glossary/dns/) es un secuestro. Un dominio expirado que otra persona toma y redirecciona es, en cierto sentido, también un secuestro.

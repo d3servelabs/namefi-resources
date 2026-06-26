@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Discover the .ally TLD: The perfect domain for partnerships, communities, and inclusive brands. Learn why .ally is the future of collaborative digital identity."
 keywords: [".ally domains", ".ally TLD", "top-level domain", "what is .ally", "why choose .ally", "what is the .ally domain", "why choose the .ally domain", "domain investing", "blockchain domains", "tokenized domain", "Web3 identity", "community domains", "brand partnership", "digital ally", "buy .ally domain"]
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/from-thefacebook-com-to-facebook-com/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
 ---
 
 ## **What is .ally?**

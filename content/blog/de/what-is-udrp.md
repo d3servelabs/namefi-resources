@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "UDRP erklärt für Domain-Inhaber und -Investoren: die drei Elemente, die ein Beschwerdeführer beweisen muss, Ablauf und Zeitplan, mögliche Ergebnisse, UDRP vs. URS vs. Gericht sowie Hinweise zur Erwiderung."
 keywords: ['udrp', 'was ist udrp', 'udrp prozess', 'udrp richtlinie', 'udrp beschwerde', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'domain streit', 'domain name streit', 'cybersquatting', 'reverse domain name hijacking', 'bösgläubige registrierung', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'marken domain streit', 'domain investor rechtlich', 'udrp beschwerde beantworten']
+relatedArticles:
+  - /de/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/domain-flipping-and-the-law/
+  - /de/blog/domain-flipping/
+  - /de/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /de/topics/domain-basics/
+  - /de/topics/domain-security/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Wer Domain-Namen lange genug besitzt, wird früher oder später mit dem Begriff [UDRP](/de/glossary/udrp/) in Berührung kommen — meistens weil jemand damit droht, das Verfahren gegen einen einzuleiten, oder weil man sich fragt, ob ein Name im eigenen Portfolio sicher ist. Für Domain-Investoren ist das Verständnis des UDRP keine Option. Es ist das mit Abstand häufigste Mittel, mit dem eine registrierte Domain ohne Gerichtsverfahren entzogen werden kann.

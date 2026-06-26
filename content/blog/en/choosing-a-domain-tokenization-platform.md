@@ -9,6 +9,24 @@ cluster: domain-tokenization
 format: comparison
 description: An honest, side-by-side look at the major domain tokenization platforms — what each one is actually good at, where they overlap, where they don't, and how to pick the one that fits how you intend to use your domains.
 keywords: ['domain tokenization platforms', 'Doma alternative', 'D3 Global Inc alternative', '3DNS alternative', 'compare domain tokenization', 'Namefi vs Doma', 'Namefi vs D3 Global Inc', 'Namefi vs 3DNS', 'best domain tokenization', 'Namefi review', 'Doma Protocol review', 'D3 Global Inc review', '3DNS review', 'choose domain tokenization', 'domain tokenization comparison']
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/onchain-domain-marketplaces-compared/
+  - /en/blog/tokenized-domain-use-cases-2026/
+  - /en/blog/tokenize-your-com-to-flip-it/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
 ---
 
 If you're shopping for a domain tokenization platform in 2026, you're probably looking at a handful of names: [Namefi](https://namefi.io), [Doma Protocol](https://doma.xyz), D3 Global Inc (also written as [D3.inc](https://d3.inc) or D3 Inc), 3DNS, [Domora](https://domora.com), [WebUnited](https://webunited.com), and [GBM](https://gbm.auction). They all have "tokenized domains" on the homepage. They don't all do the same thing.

@@ -12,6 +12,24 @@ format: comparison
 description: "Afternic vs. Sedo vs. Dan vs. Onchain-Marktplätze im Vergleich nach Reichweite, Gebühren und Fast Transfer — plus, wie man einen Namen auf mehreren gleichzeitig listet."
 ogImage: ../../assets/where-to-sell-domains-marketplaces-compared-og.jpg
 keywords: ['wo Domains verkaufen', 'beste Domain-Marktplätze', 'Afternic vs Sedo', 'Domain auf Afternic verkaufen', 'Domain auf Sedo verkaufen', 'Dan.com eingestellt', 'Domain Fast Transfer', 'Domain-Marktplatz-Gebühren', 'Domains zum Verkauf anbieten', 'tokenisierter Domain-Marktplatz', 'Domains online verkaufen', 'Domain-Aftermarket', 'wo eine Domain listen', 'bester Ort, um einen Domainnamen zu verkaufen']
+relatedArticles:
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/selling-domains-as-nfts/
+  - /de/blog/domain-flipping/
+  - /de/blog/working-with-domain-brokers/
+  - /de/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/best-tlds-by-industry/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Ein Listing ist noch kein Verkauf, aber ein Listing am falschen Ort ist ein garantierter Nicht-Verkauf. Wenn Sie sich einmal zum Verkauf entschlossen haben — behandelt in unserem Pillar-Beitrag [wie man Domains gewinnbringend verkauft](/de/blog/how-to-sell-domains-for-profit/), Teil des umfassenderen Leitfadens zum [Domain-Flipping](/de/blog/domain-flipping/) —, lautet die nächste Frage rein praktisch: Auf welchem Marktplatz listen Sie? Die Antwort ist selten „auf einem davon". Die meisten erfahrenen Domainer listen denselben Namen gleichzeitig an mehreren Stellen, weil jeder Marktplatz ein anderes Segment von Käufern erreicht. Dieser Beitrag vergleicht die wichtigsten Marktplätze anhand der vier Dinge, die tatsächlich über einen Verkauf entscheiden: Reichweite, Gebühren, Fast Transfer und wie der Name den Besitzer wechselt, sobald jemand auf „Kaufen" klickt.

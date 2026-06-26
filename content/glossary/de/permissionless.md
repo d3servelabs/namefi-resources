@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was bedeutet "permissionless" in Blockchain und Domainverwaltung?
 keywords: ["permissionless","dezentralisiert","zensurresistent","offener Zugang","blockchain"]
+relatedArticles:
+  - /de/blog/why-tokenize-domains/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/tokenized-domain-use-cases-2026/
+  - /de/blog/the-curve-finance-dns-hijack/
+  - /de/blog/what-are-stablecoins/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-security/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/web3/
+  - /de/glossary/registrar/
+  - /de/glossary/tokenized-domain/
+  - /de/glossary/blockchain/
+  - /de/glossary/tokenize/
 ---
 
 

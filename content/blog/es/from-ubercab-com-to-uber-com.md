@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Cómo una orden de cese y desistimiento en 2010 obligó a UberCab a eliminar "Cab", cómo Uber compró Uber.com a Universal Music por el 2% de sus acciones (valoradas en solo $107 000), y por qué ese cambio de dominio se convirtió en uno de los intercambios más trascendentales en la historia de las startups.'
 keywords: ['ubercab.com', 'uber.com', 'nombre de dominio de uber', 'actualización de dominio', 'ubercab orden de cese y desistimiento', 'universal music dominio uber', 'naming de startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'historia de uber', 'acciones por dominio', 'adquisición de dominio', 'dominio que define una categoría']
+relatedArticles:
+  - /es/blog/from-urbancompass-com-to-compass-com/
+  - /es/blog/from-massdrop-com-to-drop-com/
+  - /es/blog/from-bufferapp-com-to-buffer-com/
+  - /es/blog/from-teslamotors-com-to-tesla-com/
+  - /es/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/name-change-game-change/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
 ---
 
 Antes de que "Uber" se convirtiera en un verbo, en un imperio logístico y en sinónimo de toda una categoría de servicios bajo demanda, era algo más literal y más cauteloso: **UberCab.com**.

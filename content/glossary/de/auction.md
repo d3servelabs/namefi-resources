@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Welche verschiedenen Auktionsarten werden für Domainverkäufe verwendet?
 keywords: ["Auktion","holländische Auktion","englische Auktion","dynamische Auktion","Preisfindung","Domainverkäufe"]
+relatedArticles:
+  - /de/blog/how-to-win-domain-auctions/
+  - /de/blog/domain-terminology-guide/
+  - /de/blog/how-to-find-domains-to-flip/
+  - /de/blog/ens-vs-dns-domain-flipping/
+  - /de/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/reserve-price/
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/registry/
+  - /de/glossary/icann/
 ---
 
 

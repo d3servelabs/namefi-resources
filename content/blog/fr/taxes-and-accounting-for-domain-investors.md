@@ -12,6 +12,24 @@ format: faq
 description: "Comment les investisseurs en noms de domaine gèrent leur fiscalité : stock vs. immobilisations, base de coût, quand le revenu est reconnu, et déduction des renouvellements. Éducatif, pas un conseil."
 ogImage: ../../assets/taxes-and-accounting-for-domain-investors-og.jpg
 keywords: ['fiscalité investissement domaines', 'impôts revente domaines', 'base de coût domaine', 'les domaines sont-ils des immobilisations', 'négociant vs investisseur domaines', 'stock de domaines impôts', 'article 197 immobilisation incorporelle domaine', 'plus-values cession domaine', 'déduction renouvellements domaines', 'durée de détention domaine fiscalité', 'comment sont taxées les ventes de domaines', 'comptabilité portefeuille domaines', 'questions fiscales investisseur domaines', 'revenus ordinaires vs plus-values domaines']
+relatedArticles:
+  - /fr/blog/domain-portfolio-management/
+  - /fr/blog/domain-renewal-costs-and-sell-through-rate/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/when-to-drop-a-domain/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
 ---
 
 > **À lire avant tout.** Cet article ne constitue **pas** un conseil fiscal, comptable, juridique ou financier. Nous ne sommes pas votre expert-comptable et nous ignorons tout de votre juridiction et de la structure de votre activité. Considérez l''ensemble de ce qui suit comme *une liste de questions et de concepts à soumettre à un vrai professionnel*, et non comme une position sur laquelle vous pouvez vous appuyer. L''avertissement complet figure en bas de page et s''applique avec une force particulière ici.

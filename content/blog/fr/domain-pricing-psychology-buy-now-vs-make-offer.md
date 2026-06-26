@@ -12,6 +12,24 @@ format: guide
 description: "Pourquoi le mode de mise en vente et le premier chiffre décident de votre vente de domaine : l''ancrage, ne jamais annoncer le prix en premier, le palier de prix, et achat immédiat vs faire une offre."
 ogImage: ../../assets/domain-pricing-psychology-buy-now-vs-make-offer-og.jpg
 keywords: ['psychologie du prix d''un domaine', 'achat immédiat vs faire une offre', 'ancrage de prix de domaine', 'comment fixer le prix d''un domaine', 'négociation de prix de domaine', 'faire une offre sur un domaine', 'achat immédiat de domaine', 'palier de prix de domaines', 'format de mise en vente de domaine', 'qui annonce le prix en premier', 'tactiques de négociation de domaine', 'prix psychologique de domaines', 'prix de domaine pour utilisateur final', 'psychologie de la vente de domaine']
+relatedArticles:
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+  - /fr/blog/how-to-sell-domains-for-profit/
+  - /fr/blog/working-with-domain-brokers/
+  - /fr/blog/inbound-vs-outbound-domain-sales/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
 ---
 
 Le chiffre affiché sur votre annonce travaille bien plus que vous ne le pensez. Deux revendeurs peuvent posséder le même nom, le mettre en vente sur la même place de marché, et repartir avec des prix qui diffèrent d'un ordre de grandeur — non pas parce que l'un a négocié plus dur, mais parce que l'un a compris que la *manière* dont un prix est présenté façonne ce qu'un acheteur acceptera de payer. Fixer le prix d'un domaine relève en partie de l'arithmétique, mais surtout de la psychologie.

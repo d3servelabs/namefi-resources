@@ -16,6 +16,24 @@ faqs:
     answer: 'A .eth name is an ERC-721 NFT, but ownership is a paid annual registration, not a one-time purchase. You must renew it each year by paying rent in ETH. If it expires, a 90-day grace period applies, after which it can be re-registered by anyone via a declining-price premium auction.'
   - question: 'Why are short .eth names so expensive to register?'
     answer: 'The ENS .eth registrar charges annual rent by name length: roughly 5 USD per year for names of five or more characters, about 160 USD for four-character names, and about 640 USD for three-character names, paid in ETH. Shorter names are deliberately priced higher because they are scarce and in high demand.'
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /en/blog/premium-web3-tlds/
+  - /en/blog/ens-vs-dns-domain-flipping/
+  - /en/blog/onchain-domain-flipping/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 The **.eth name** is one of the best-known identifiers in Web3, but it is widely misunderstood. Despite the dot-suffix, **.eth is not an [ICANN](/en/glossary/icann/) domain and not part of the DNS**. It is a name issued by the [Ethereum Name Service (ENS)](https://ens.domains), a set of [smart contracts](/en/glossary/smart-contract/) living on the [Ethereum](/en/glossary/ethereum/) blockchain. There is no IANA root-zone entry for .eth and no ICANN registry agreement, because ENS exists entirely outside that system.

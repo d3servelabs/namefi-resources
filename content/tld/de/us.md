@@ -16,6 +16,24 @@ faqs:
     answer: 'Der .us-Namensraum wird vom US-Handelsministerium über die NTIA beaufsichtigt. Der derzeitige Registry-Betreiber ist Registry Services, LLC, ein GoDaddy-Registry-Unternehmen, das um 2020 von Neustar übernahm. Die IANA führt Registry Services, LLC als Manager auf.'
   - question: 'Was ist das .us-Nexus-Erfordernis?'
     answer: 'Das Nexus-Erfordernis ist die Eignungsregel, die .us auf Parteien mit einer echten Verbindung zu den Vereinigten Staaten beschränkt. Es umfasst US-Bürger und -Einwohner, in den USA gegründete Einrichtungen und ausländische Organisationen, die eine echte US-Präsenz wie einen regelmäßigen Betrieb oder eine Aktivität unterhalten.'
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/domain-hacks-explained/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Die **.us**-Domain ist die offizielle länderspezifische Top-Level-Domain (ccTLD) für die **Vereinigten Staaten** – und eine der allerersten je delegierten ccTLDs. Während Endungen wie [.co](/de/tld/co/) als grenzenlose „.com"-Ersätze vermarktet werden, ist .us bewusst das Gegenteil: ein Namensraum, der an die amerikanische Identität gebunden ist, unter US-Bundespolitik verwaltet wird und Registranten mit einer echten US-Präsenz vorbehalten ist. Für ein Unternehmen, eine Marke oder eine Organisation, die in ihrer Webadresse „wir sind amerikanisch" sagen möchte, ist .us die wörtlichste Art, dies zu tun.

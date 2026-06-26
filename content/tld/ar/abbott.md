@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج معرفته عن نطاق المستوى الأعلى .abbott، استخداماته في القطاع الصحي، وكيفية الاستثمار في النطاقات المميزة عبر Namefi."
 keywords: [".abbott domains", ".abbott TLD", "top-level domain", "what is .abbott", "why choose .abbott", "what is the .abbott domain", "why choose the .abbott domain", "domain investing", "blockchain domains", "tokenized domain", "buy .abbott domain", "register .abbott", "Namefi domain registrar", "healthcare domains", "brand TLD strategy"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .abbott؟**

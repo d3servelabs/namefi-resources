@@ -6,6 +6,24 @@ tags: ['partners']
 authors: ['namefiteam']
 draft: false
 description: Privy के निर्माण के दौरान Henri Stern की यात्रा पर आधारित एक संवाद-प्रेरित विश्लेषण, जिसमें उपयोगिता, ग्राहक-नेतृत्व वाले उत्पाद विकास, और क्रिप्टो की जटिलता से मानव-केंद्रित डिजाइन की ओर बदलाव पर ध्यान केंद्रित किया गया है।
+relatedArticles:
+  - /hi/blog/from-mona-co-to-crypto-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-del-icio-us-to-delicious-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/web3-foundations/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/web3/
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
 ---
 
 By Victor Zhou, Namefi — अक्टूबर 2025

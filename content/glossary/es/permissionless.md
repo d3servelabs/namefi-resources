@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué significa "sin permiso" en la blockchain y la gestión de dominios?
 keywords: ["sin permiso","descentralizado","resistente a la censura","acceso abierto","blockchain"]
+relatedArticles:
+  - /es/blog/why-tokenize-domains/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/tokenized-domain-use-cases-2026/
+  - /es/blog/the-curve-finance-dns-hijack/
+  - /es/blog/what-are-stablecoins/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-security/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/web3/
+  - /es/glossary/registrar/
+  - /es/glossary/tokenized-domain/
+  - /es/glossary/blockchain/
+  - /es/glossary/tokenize/
 ---
 
 

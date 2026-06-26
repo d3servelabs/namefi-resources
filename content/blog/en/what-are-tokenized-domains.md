@@ -10,6 +10,24 @@ cluster: domain-tokenization
 format: explainer
 description: Tokenized domains explained in plain language. Learn what a tokenized domain is, how to tokenize a domain, how domain tokenization works, and how tokenized domain ownership differs from traditional domains and Web3 names like ENS.
 keywords: ['tokenized domains', 'tokenized domain', 'tokenize a domain', 'tokenize a domain name', 'tokenize domains', 'tokenize domain', 'tokenizing a domain', 'tokenizing domains', 'domain tokenization', 'tokenization of domains', 'tokenization of a domain', 'domain name tokenization', 'how to tokenize a domain', 'what is a tokenized domain', 'what are tokenized domains', 'tokenized domain ownership explained', 'domain ownership tokens', 'tokenized domain ownership', 'NFT domains', 'NFT domain', 'on-chain domains', 'on-chain domain', 'blockchain domains', 'blockchain domain', 'DNS', 'ICANN domains', 'web3 domains', 'web3 domain', 'domain NFT', 'domain as NFT', 'namefi', 'domain ownership', 'domain asset tokenization', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', 'tokenized domain vs ENS', 'tokenized domain vs web3 domain', 'ICANN domain vs web3 domain', 'compare tokenized domain platforms']
+relatedArticles:
+  - /en/blog/premium-web3-tlds/
+  - /en/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /en/blog/tokenized-domain-vs-web3-domain/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 **Tokenized domains** are regular, [ICANN](/en/glossary/icann/)-recognized domain names—like `mybrand.xyz` or `example.com`—whose ownership is *also* represented as a token on a [blockchain](/en/glossary/blockchain/), usually an [NFT](/en/glossary/nft/). The process of creating that token is called **domain tokenization**, and the act itself is what people mean when they say *tokenize a domain* or *tokenize a domain name*.

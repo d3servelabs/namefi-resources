@@ -12,6 +12,24 @@ format: guide
 description: "إزاي بيشتغل تداول النطاقات أونشين — المتاجرة في ENS والنطاقات المُرمَّزة كأصول محفوظة في المحفظة وسائلة زي الـ NFT، وإزاي بيختلف عن التداول عند المُسجِّل."
 ogImage: ../../assets/onchain-domain-flipping-og.jpg
 keywords: ['تداول النطاقات أونشين', 'تداول نطاقات ENS', 'تداول النطاقات المُرمَّزة', 'المتاجرة في النطاقات المُرمَّزة', 'تداول نطاقات NFT', 'تداول نطاقات web3', 'الاستثمار في نطاقات ENS', 'سوق نطاقات NFT', 'بيع النطاقات كـ NFT', 'تداول النطاقات أونشين', 'نطاقات ERC-721', 'النطاقات المحفوظة في المحفظة', 'التسوية الذرية للنطاقات', 'سيولة النطاقات المُرمَّزة', 'تداول نطاقات web3']
+relatedArticles:
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/selling-domains-as-nfts/
+  - /ar/blog/onchain-domain-marketplaces-compared/
+  - /ar/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 لتداول النطاقات شكل مألوف: تشتري اسم بسعر رخيص، تلاقي مشتري محتاجه، وتبيعه بسعر أعلى. النسخة الكلاسيكية من الصفقة دي بتمشي من خلال [المُسجِّلين](/ar/glossary/registrar/) وأسواق ما بعد البيع ووسيط ضمان بيمسك الفلوس لحد ما النقل يخلص. تداول النطاقات أونشين هو نفس الغريزة بتاعة "اشتري رخيص وبيع غالي" بس متنقلة على [البلوكتشين](/ar/glossary/blockchain/)، حيث الاسم نفسه بيبقى توكن بتمسكه في [محفظة](/ar/glossary/wallet/) وتقدر تتداوله زي أي [NFT (رمز غير قابل للاستبدال)](/ar/glossary/nft/) تاني.

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist Multi-Sig und wie verbessert es die Domain-Sicherheit?
 keywords: ["Multi-Sig","Multisig","mehrere Signaturen","verbesserte Sicherheit","geteilte Verwahrung"]
+relatedArticles:
+  - /de/blog/do-multisig-wallets-actually-improve-security/
+  - /de/blog/onchain-domain-custody-and-recovery/
+  - /de/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /de/blog/how-domain-hijacking-actually-happens/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/wallet/
+  - /de/glossary/private-key/
+  - /de/glossary/tokenized-domain/
 ---
 
 

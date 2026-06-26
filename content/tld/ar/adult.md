@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .adult، استخداماته في قطاع الترفيه، ومزايا اختياره لحماية علامتك التجارية. سجّل نطاقك اليوم مع Namefi."
 keywords: [".adult domains", "نطاقات .adult", "TLD", "top-level domain", "نطاق المستوى الأعلى", "what is .adult", "ما هو نطاق .adult", "why choose .adult", "لماذا تختار .adult", "what is the .adult domain", "why choose the .adult domain", "domain investing", "استثمار النطاقات", "blockchain domains", "tokenized domains", "نطاقات مرمزّة"]
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 ## **ما هو نطاق .adult؟**

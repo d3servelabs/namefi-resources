@@ -12,6 +12,24 @@ format: guide
 description: "Wie man eine Domain bewertet: die Wertfaktoren, was Bewertungstools falsch machen, wie man vergleichbare Verkäufe liest und die Spanne zwischen Endnutzer- und Reseller-Preis."
 ogImage: ../../assets/how-to-value-a-domain-name-og.jpg
 keywords: ['wie man eine Domain bewertet', 'Domain-Bewertung', 'was ist meine Domain wert', 'Domainwert ermitteln', 'Domainwert-Rechner', 'eine Domain schätzen', 'vergleichbare Domain-Verkäufe', 'Domain-Preisgestaltung', 'Endnutzer- vs. Reseller-Preis', 'wie viel ist meine Domain wert', 'Wert eines Domainnamens', 'Domain-Bewertungstools', 'vergleichbare Domain-Verkäufe', 'Domainwert-Schätzung']
+relatedArticles:
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+  - /de/blog/domain-appraisal-tools-compared/
+  - /de/blog/how-to-read-comparable-domain-sales/
+  - /de/blog/what-makes-a-domain-valuable/
+  - /de/blog/domain-flipping/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/best-tlds-by-industry/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Früher oder später stellt sich jeder, der eine Domain besitzt, dieselbe Frage: *Was ist meine Domain wert?* Es ist die erste Frage, die ein neuer Flipper zu einem gerade gekauften Asset stellt, und die letzte, bevor er es zum Verkauf anbietet. Man hat das Gefühl, es müsste eine saubere Antwort wie aus einer Nachschlagetabelle geben — Namen eintippen, Zahl bekommen.

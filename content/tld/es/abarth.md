@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre todo sobre el dominio .abarth, la extensión exclusiva para la marca del escorpión. Analizamos su valor, uso en la industria automotriz y potencial de inversión.'
 keywords: ['dominios .abarth', 'TLD', 'top-level domain', 'qué es .abarth', 'por qué elegir .abarth', 'qué es el dominio .abarth', 'inversión en dominios', 'blockchain', 'dominio tokenizado', 'registro de dominios', 'dominios de marca', 'Stellantis', 'identidad digital', 'Namefi']
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
+  - /es/glossary/registry/
 ---
 
 ## **¿Qué es .abarth?**

@@ -10,6 +10,24 @@ format: comparison
 description: DNS over HTTPS (DoH) protects user privacy by encrypting DNS queries inside HTTPS. Enterprise split-horizon DNS relies on the network being able to see those queries. The collision between the two is reshaping how corporate networks, browsers, and operating systems handle name resolution.
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg
 keywords: ['dns over https', 'doh', 'split horizon dns', 'enterprise dns', 'dot', 'encrypted dns', 'internal dns', 'name resolution', 'namefi']
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/the-myetherwallet-bgp-dns-attack/
+  - /en/blog/the-dnspionage-campaign/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/dns/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 For most of the internet's history, [DNS](/en/glossary/dns/) queries traveled in cleartext over port 53. Anyone on the network path could read them, log them, and modify them. That was a privacy problem the IETF eventually addressed with two encrypted alternatives: [DNS over TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) in 2016 and [DNS over HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484) in 2018.

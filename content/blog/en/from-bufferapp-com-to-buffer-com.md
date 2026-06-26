@@ -11,6 +11,24 @@ seriesOrder: 9
 format: case-study
 description: 'How Buffer launched in 2010 on BufferApp.com because Buffer.com was taken, then spent 624 days acquiring the exact-match domain — even showing the seller its bank balance — and why a company famous for radical transparency stayed quiet on the one number everyone wanted: the price.'
 keywords: ['bufferapp.com', 'buffer.com', 'buffer domain name', 'domain upgrade', 'joel gascoigne', 'buffer transparency', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'buffer history', 'domain acquisition', 'category-defining domain']
+relatedArticles:
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-slackhq-com-to-slack-com/
+  - /en/blog/from-discordapp-com-to-discord-com/
+  - /en/blog/from-mona-co-to-crypto-com/
+  - /en/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
 ---
 
 Before it was the social-media tool you set and forget, Buffer answered to a longer name: **BufferApp.com**.

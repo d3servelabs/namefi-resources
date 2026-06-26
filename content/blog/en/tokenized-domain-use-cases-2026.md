@@ -9,6 +9,24 @@ cluster: domain-tokenization
 format: opinion
 description: A platform-neutral tour of what tokenized domains are actually being used for in 2026 — DeFi lending, leasing, fractional ownership, AI agent identity, and the use cases that haven't quite landed yet.
 keywords: ['tokenized domain use cases', 'DomainFi', 'tokenized domain lending', 'tokenized domain collateral', 'lease tokenized domain', 'fractional domain ownership', 'AI agent domain', 'domain DeFi', 'tokenized domain marketplace', 'tokenized domain applications', 'NFT domain use cases', 'why tokenize domain 2026', 'domain on-chain use', 'tokenized domain examples']
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/how-tokenized-marketplaces-replace-escrow/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/tokenize-your-com/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
 ---
 
 It's tempting to talk about tokenized domains as a *technology*. It's more useful to talk about them as a set of *things you can do with them* that you couldn't easily do with a plain registrar-held domain. This post is a tour of those use cases — what's real today, what's emerging, and what's still mostly slide-deck.

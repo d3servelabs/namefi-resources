@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.namebio.com/
   - https://dnjournal.com/
+relatedArticles:
+  - /fr/blog/domain-flipping/
+  - /fr/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /fr/blog/domain-renewal-costs-and-sell-through-rate/
+  - /fr/blog/hand-registering-domains-to-flip/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-security/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/domain-portfolio/
+  - /fr/glossary/domain-trading/
+  - /fr/glossary/aftermarket/
+  - /fr/glossary/holding-cost/
 ---
 
 Le **domaining** est la pratique qui consiste à acquérir des noms de domaine en tant qu'actifs d'investissement — enregistrer des noms expirants à la main, en acheter sur le [marché secondaire](/fr/glossary/aftermarket/), et les revendre à profit via le [trading de domaines](/fr/glossary/domain-trading/). Les praticiens, appelés *domaineurs*, traitent les noms de domaine comme de l'immobilier numérique : la valeur d'un nom tient à sa pertinence en tant que mot-clé, à sa mémorabilité, à la solidité de l'extension et au moment de marché, plutôt qu'à une quelconque propriété physique intrinsèque. Les domaineurs sérieux construisent et gèrent un [portefeuille de domaines](/fr/glossary/domain-portfolio/) structuré, en suivant les échéances de renouvellement, les efforts de vente sortants et les ventes comparables pour maximiser les rendements. La pratique couvre aussi bien la capture de noms [.com](/fr/tld/com/) expirants aux enchères que l'acquisition de portefeuilles entiers auprès d'investisseurs qui se retirent.

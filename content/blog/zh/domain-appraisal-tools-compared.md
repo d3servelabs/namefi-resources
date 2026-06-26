@@ -12,6 +12,24 @@ format: comparison
 description: "Estibot、GoDaddy 这类自动估价工具究竟是怎么运作的，它们在哪些地方会系统性地失准，以及如何把它们当作第一道筛选工具来用。"
 ogImage: ../../assets/domain-appraisal-tools-compared-og.jpg
 keywords: ['域名估价工具', 'estibot vs godaddy', '域名价值计算器', '自动域名估价', '域名估值工具', 'Estibot 准不准', 'GoDaddy 域名估价', '我的域名值多少钱', '域名估价准确度', 'Estibot 评测', '域名价值估算', '机器学习域名估值', '域名参考成交价工具', '如何给域名估价', '域名翻转工具']
+relatedArticles:
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/how-to-read-comparable-domain-sales/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/what-makes-a-domain-valuable/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 把一个域名粘贴进估价工具，大约一秒钟你就会得到一个数字。它看起来很权威——一个干净利落的美元数字，下面往往还附着一串[参考成交价](/zh/glossary/comparable-sales/)。新手翻转者把这个数字当成答案，老手则把它当成一场漫长得多的对话的开场白。

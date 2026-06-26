@@ -8,6 +8,24 @@ draft: false
 description: "Les preuves à divulgation nulle se déclinent en trois catégories — parfaite, statistique et computationnelle — et la différence est bien plus importante que ne le laissent entendre la plupart des discussions d'ingénierie. Cet article explique chacune d'elles en termes simples, pourquoi presque tous les systèmes ZK en production en 2026 sont computationnels, et ce que cela implique en termes d'avantages et de coûts."
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg
 keywords: ["preuve à divulgation nulle", "divulgation nulle parfaite", "divulgation nulle computationnelle", "zk snark", "zk stark", "cryptographie", "simulateur", "schéma d'engagement", "namefi"]
+relatedArticles:
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/working-with-domain-brokers/
+  - /fr/blog/how-to-win-domain-auctions/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/onchain-domain-custody-and-recovery/
+relatedTopics:
+  - /fr/topics/web3-foundations/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
+  - /fr/glossary/registry/
 ---
 
 Quand les acteurs de la crypto parlent de "preuves à divulgation nulle de connaissance" (zero-knowledge proofs), ils font presque toujours référence à une chose précise : un SNARK ou un STARK qui prouve qu'un calcul a été effectué correctement, sans en révéler les entrées. Ce modèle mental convient à la plupart des discussions d'ingénierie. Il occulte cependant une distinction qui devient capitale dès que l'on essaie de raisonner sur *ce que la sécurité garantit réellement*.

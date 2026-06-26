@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "探索 .space 域名的无限潜力！它是创意人士、初创企业和自由职业者的理想选择。本文深入解析 .space 的优势、用途及注册指南。立即在 Namefi 保护您的创意空间，开启 Web3 时代的数字品牌之旅。"
 keywords: [".space domains", ".space TLD", "top-level domain", "what is .space", "why choose .space", "what is the .space domain", "why choose the .space domain", "buy .space domain", ".space 域名", "顶级域名", "域名投资", "Web3 domains", "tokenized domain", "creative portfolio domains", "tech startup domains"]
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在拥挤的数字世界中，寻找一个既简短又令人难忘的域名变得越来越具有挑战性。传统的 .com 域名往往资源紧缺，而新兴的顶级域名（gTLD）则为品牌和个人提供了全新的机遇。其中，**.space** 作为一个充满想象力和包容性的后缀，正迅速成为创意人士、初创公司和前瞻性企业的首选。

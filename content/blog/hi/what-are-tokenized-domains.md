@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "टोकनाइज़्ड डोमेन और डोमेन टोकनाइज़ेशन का एक सरल भाषा में परिचय - किसी डोमेन को टोकनाइज़ करने का क्या मतलब है, डोमेन टोकनाइज़ेशन कैसे काम करता है, और एक टोकनाइज़्ड डोमेन पारंपरिक डोमेन और ENS जैसे केवल-ब्लॉकचेन नामों से कैसे अलग है।"
 keywords: ['टोकनाइज़्ड डोमेन', 'टोकनाइज़्ड डोमेन्स', 'डोमेन टोकनाइज़ करें', 'डोमेन को टोकनाइज़ करें', 'डोमेन टोकनाइज़ेशन', 'डोमेन का टोकनाइज़ेशन', 'डोमेन नेम टोकनाइज़ेशन', 'डोमेन को टोकनाइज़ कैसे करें', 'टोकनाइज़्ड डोमेन क्या है', 'टोकनाइज़्ड डोमेन क्या हैं', 'NFT डोमेन', 'ऑन-चेन डोमेन', 'ब्लॉकचेन डोमेन', 'DNS', 'ICANN डोमेन', 'web3 डोमेन', 'डोमेन NFT', 'NFT के रूप में डोमेन', 'namefi', 'डोमेन स्वामित्व', 'डोमेन एसेट टोकनाइज़ेशन', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', 'टोकनाइज़्ड डोमेन बनाम ENS', 'टोकनाइज़्ड डोमेन बनाम web3 डोमेन', 'ICANN डोमेन बनाम web3 डोमेन', 'टोकनाइज़्ड डोमेन प्लेटफॉर्म्स की तुलना']
+relatedArticles:
+  - /hi/blog/premium-web3-tlds/
+  - /hi/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /hi/blog/tokenized-domain-vs-web3-domain/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 आपने "टोकनाइज़्ड डोमेन" (tokenized domain), "डोमेन को टोकनाइज़ करना" (tokenize a domain), या "डोमेन टोकनाइज़ेशन" (domain tokenization) जैसे शब्द सुने होंगे और सोचा होगा कि वास्तव में इनका क्या मतलब है। क्या टोकनाइज़्ड डोमेन किसी नए प्रकार का डोमेन है? क्या यह केवल-[ब्लॉकचेन](/hi/glossary/blockchain/) (blockchain-only) नाम है? क्या यह `.com` का विकल्प है? और सबसे अहम बात, किसी डोमेन को *टोकनाइज़* करने का आखिर क्या अर्थ है?

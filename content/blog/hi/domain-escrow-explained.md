@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: एस्क्रो और डोमेन एस्क्रो के लिए एक सरल गाइड — एस्क्रो खाता क्या होता है, डोमेन बिक्री में एस्क्रो चरण-दर-चरण कैसे काम करता है, धोखाधड़ी से बचने के लिए यह क्यों जरूरी है, पारंपरिक एस्क्रो सेवाएं बनाम आधुनिक टोकनाइज़्ड दृष्टिकोण, और स्मार्ट कॉन्ट्रैक्ट एस्क्रो को परमाणु ऑन-चेन सेटलमेंट से कैसे बदल सकते हैं।
 keywords: ['domain escrow', 'what is escrow', 'escrow account', 'escrow meaning', 'how does escrow work', 'domain escrow service', 'escrow.com alternative', 'buy a domain safely', 'sell a domain safely', 'auth code', 'EPP code', 'registrar transfer', 'escrow fees', 'safe domain transaction', 'domain sale fraud', 'tokenized domain escrow', 'smart contract escrow', 'atomic settlement', 'on-chain domain sale', 'how to avoid domain fraud']
+relatedArticles:
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/avoiding-domain-sale-scams/
+  - /hi/blog/how-tokenized-marketplaces-replace-escrow/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /hi/topics/domain-basics/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
+  - /hi/glossary/tld/
 ---
 
 यदि आपने कभी अजनबियों के बीच कोई महंगी चीज खरीदी या बेची है — एक कार, एक घर, एक पांच अंकों का मूल्य वाला `.com` — तो आप उसी समस्या से टकराए होंगे: खरीदार चीज मिलने से पहले भुगतान नहीं करना चाहता, और विक्रेता भुगतान मिलने से पहले चीज सौंपना नहीं चाहता। किसी एक को पहले कदम उठाना होगा, और पहले कदम उठाने का मतलब है दूसरे व्यक्ति पर भरोसा करना।

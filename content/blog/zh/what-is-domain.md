@@ -19,6 +19,24 @@ keywords:
   - 网址
   - URL
   - namefi
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/what-is-udrp/
+  - /zh/blog/domain-terminology-guide/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/domain-basics/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-investor-field-guide/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
 ---
 ## **什么是域名？**
 

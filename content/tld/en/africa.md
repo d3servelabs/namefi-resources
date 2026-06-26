@@ -24,6 +24,24 @@ keywords:
   - 'buy .africa domain'
   - 'African tech startup branding'
   - 'Namefi .africa registration'
+relatedArticles:
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
+  - /en/glossary/web3/
 ---
 
 ## **What is .africa?**

@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.namebio.com/
   - https://www.investopedia.com/terms/v/valuation.asp
+relatedArticles:
+  - /en/blog/how-to-read-comparable-domain-sales/
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/domain-appraisal-tools-compared/
+  - /en/blog/appraising-onchain-domains/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/brandable-domain/
+  - /en/glossary/comparable-sales/
+  - /en/glossary/premium-domain/
+  - /en/glossary/aftermarket/
 ---
 
 **Domain appraisal** (or *domain valuation*) is the process of estimating what a domain name would fetch on the open market. Appraisers weigh [comparable sales](/en/glossary/comparable-sales/) of similar names, keyword search volume and commercial intent, character count and pronounceability, TLD strength ([.com](/en/tld/com/) commands a significant premium over most alternatives), and current buyer demand in the [aftermarket](/en/glossary/aftermarket/). Automated tools like Estibot and GoDaddy's appraisal engine produce algorithmic estimates, but experienced brokers and investors often rely heavily on hand-curated comps and market feel. A strong [premium domain](/en/glossary/premium-domain/) backed by solid comps can justify a five- or six-figure ask, while a [brandable domain](/en/glossary/brandable-domain/) with no close comparables requires more subjective judgment.

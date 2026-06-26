@@ -12,6 +12,24 @@ format: guide
 description: "Las estafas más comunes en la venta de dominios —escrow falso, compradores falsos, devoluciones por sobrepago, transferir antes de cobrar— y los hábitos que mantienen tus ventas a salvo."
 ogImage: ../../assets/avoiding-domain-sale-scams-og.jpg
 keywords: ['estafas venta de dominios', 'evitar estafas de dominios', 'sitio de escrow falso', 'escrow fraudulento', 'estafa de comprador de dominios', 'estafa de sobrepago', 'fraude de chargeback', 'transferir antes de cobrar', 'vender un dominio de forma segura', 'escrow de dominios', 'fraude en la venta de dominios', 'corredor de dominios falso', 'estafa de transferencia de dominio', 'transacción segura de dominios', 'seguridad para domainers']
+relatedArticles:
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/working-with-domain-brokers/
+  - /es/blog/domain-flipping-and-the-law/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
 ---
 
 El dinero en la [reventa de dominios](/es/blog/domain-flipping/) se gana cuando un nombre por fin se vende. Y ese es justamente el momento en que aparecen los estafadores. Un anuncio de venta activo es una invitación abierta a cualquiera dispuesto a hacerse pasar por comprador, por corredor o por una empresa de escrow. El error más caro que puede cometer quien revende dominios no es comprar el nombre equivocado. Es entregarle un buen nombre a la persona equivocada.

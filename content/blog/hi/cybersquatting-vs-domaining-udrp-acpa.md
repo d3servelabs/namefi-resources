@@ -12,6 +12,24 @@ format: explainer
 description: 'वैध डोमेनिंग कहाँ समाप्त होती है और साइबरस्क्वैटिंग कहाँ शुरू होती है: UDRP का तीन-भाग परीक्षण, ACPA, रिवर्स डोमेन हाइजैकिंग, और सुरक्षित रहने के उपाय।'
 ogImage: ../../assets/cybersquatting-vs-domaining-udrp-acpa-og.jpg
 keywords: ['साइबरस्क्वैटिंग', 'साइबरस्क्वैटिंग बनाम डोमेनिंग', 'udrp', 'udrp तीन भाग परीक्षण', 'acpa', 'anticybersquatting consumer protection act', 'रिवर्स डोमेन नेम हाइजैकिंग', 'rdnh', 'बुरे इरादे से डोमेन पंजीकरण', 'क्या डोमेन फ्लिपिंग कानूनी है', 'ट्रेडमार्क डोमेन विवाद', 'डोमेन विवाद समाधान', 'वैध डोमेनिंग', 'wipo udrp', 'डोमेन निवेश कानूनी']
+relatedArticles:
+  - /hi/blog/what-is-udrp/
+  - /hi/blog/domain-flipping-and-the-law/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/hand-registering-domains-to-flip/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 दो लोग एक डोमेन दोबारा बेचने के लिए पंजीकृत करते हैं। एक `solarpanels.com` खरीदता है — एक सामान्य शब्दकोश वाक्यांश जो उद्योग का कोई भी व्यक्ति चाह सकता है। दूसरा `nike-running-shoes.net` खरीदता है — एक स्ट्रिंग जो केवल इसलिए अस्तित्व में है क्योंकि Nike है। ऊपर से एक ही गतिविधि, लेकिन दोनों की कानूनी स्थिति बिल्कुल अलग। पहला सामान्य [डोमेनिंग](/hi/glossary/domaining/) है। दूसरा [साइबरस्क्वैटिंग](/hi/glossary/cybersquatting/) है, और दो सुव्यवस्थित प्रणालियाँ हैं जो उस नाम को पंजीकरणकर्ता से छीनने के लिए बनाई गई हैं।

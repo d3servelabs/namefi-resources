@@ -12,6 +12,24 @@ format: guide
 description: "إزاي بتشتغل مزادات السوق الثانوي للدومينات فعليًا — المزايدة بالوكيل، والقنص في آخر ثانية، وتحديد سقف صارم، وقراءة الطلب الحقيقي، وإزاي تتجنب إنك تدفع زيادة أو حد يلعب بيك."
 ogImage: ../../assets/how-to-win-domain-auctions-og.jpg
 keywords: ['مزادات الدومينات', 'إزاي تكسب مزادات الدومينات', 'استراتيجية مزاد الدومين', 'GoDaddy Auctions', 'NameJet', 'مزادات Sedo', 'المزايدة بالوكيل', 'القنص في المزاد', 'مزادات الدومينات المنتهية', 'المزايدة الوهمية', 'لعنة الفائز في الدومينات', 'شراء الدومينات المنتهية', 'السوق الثانوي للدومينات', 'مزاد اصطياد الدومينات الساقطة', 'تجنب الدفع الزائد في الدومينات']
+relatedArticles:
+  - /ar/blog/domain-flipping/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/how-to-read-comparable-domain-sales/
+  - /ar/blog/domain-backorders-and-drop-catching/
+  - /ar/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
 ---
 
 أغلب الأسماء الحلوة اللي ممكن تحب تشتريها بتكون متسجلة قبل كده، وجزء كبير منها بيعدّي في الآخر على [مزاد](/ar/glossary/auction/). لما تسجيل بيخلص ولا حد بيجدّده، ولما مستثمر دومينات بيصفّي محفظته، ولما مُسجِّل بيمسك اسم بيسقط من غير [طلب حجز مسبق](/ar/glossary/backorder/) وراه، الاسم بيتحط على طاولة المزاد وبيروح لأعلى مزايد. لو شغلتك إنك تقلّب الدومينات، هتصرف فلوس حقيقية في القاعات دي، والفرق بين صفقة بتكسب فيها واسم ميّت قاعد في حسابك أغلبه انضباط في لحظة المزايدة.

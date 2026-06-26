@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .allstate : son origine, son utilité pour la sécurité de marque et ses avantages. Trouvez votre domaine idéal chez Namefi."
 keywords: ['.allstate domains', 'TLD .allstate', 'top-level domain', 'what is .allstate', 'why choose .allstate', 'what is the .allstate domain', 'why choose the .allstate domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'domaine de marque', 'sécurité domaine', 'Web3 domains']
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 ## **Qu'est-ce que .allstate ?**

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Tesla 如何花费十余年时间、据报道斥资 1100 万美元，从 TeslaMotors.com 迁移到精确匹配品牌的 Tesla.com，以及这次域名升级恰好发生在公司去掉"Motors"之前的深层逻辑。'
 keywords: ['teslamotors.com', 'tesla.com', 'tesla域名', '域名升级', 'elon musk域名', '精确匹配域名', '创业公司命名', '品牌命名', '高价域名', '域名策略', 'tesla品牌重塑', 'tesla motors更名', '域名收购', '品类定义域名']
+relatedArticles:
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-snapchat-com-to-snap-com/
+  - /zh/blog/from-urbancompass-com-to-compass-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+  - /zh/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 在最初的十三年里，下一个十年里最具价值的汽车公司，住在一个略显别扭的地址：**TeslaMotors.com**。

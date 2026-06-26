@@ -8,6 +8,24 @@ draft: false
 description: "Ein praxisnaher, forschungsgestützter Leitfaden für Gründer, die ein Projekt, ein Produkt oder ein Unternehmen benennen möchten: rechtliche Prüfung, leichte Aussprache, starke Kandidaten generieren, kulturelle Verträglichkeit sicherstellen und die entscheidenden Suchen durchführen, bevor Sie sich festlegen."
 ogImage: ../../assets/how-to-name-your-project-og.jpg
 keywords: ['wie man ein Startup benennt', 'wie man ein Projekt benennt', 'wie man ein Unternehmen benennt', 'Produkt benennen', 'Markenname-Ideen', 'Firmennamen wählen', 'Domain-Name-Auswahl', 'Markenrecherche', 'brandbare Domain', 'Startup-Branding', 'aussprechbarer Markenname', 'Verarbeitungsflüssigkeit', 'Leitfaden für Markennamen', 'Namen für Ihr Projekt finden', 'Domain-Verfügbarkeit prüfen']
+relatedArticles:
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/from-del-icio-us-to-delicious-com/
+  - /de/blog/what-makes-a-domain-valuable/
+  - /de/blog/how-to-value-a-domain-name/
+  - /de/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /de/topics/domain-basics/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
 ---
 
 Die Benennung ist die erste Produktentscheidung, die die meisten Gründer falsch treffen.

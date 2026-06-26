@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .org ist die vertrauenswürdige Domain für Non-Profit-Organisationen, NGOs und missionsgetriebene Organisationen. Erfahren Sie, warum sie die erste Wahl ist, um Glaubwürdigkeit und Vertrauen online aufzubauen.
 keywords: ["tld", "org domain", "non-profit", "ngo", "wohltätigkeit", "vertrauenswürdige domain"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /de/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 

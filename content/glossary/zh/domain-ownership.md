@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 域名代币化后，域名所有权意味着什么？
 keywords: ["域名所有权","NFT域名","注册商","托管","钱包所有权"]
+relatedArticles:
+  - /zh/blog/why-tokenize-domains/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /zh/blog/the-sea-turtle-dns-espionage/
+  - /zh/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/web3/
+  - /zh/glossary/tokenize/
+  - /zh/glossary/dns/
+  - /zh/glossary/on-chain/
 ---
 
 

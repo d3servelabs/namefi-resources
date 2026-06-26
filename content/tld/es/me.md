@@ -16,6 +16,24 @@ faqs:
     answer: 'Personas que construyen una marca personal, un portafolio o un sitio de currículum, y cualquiera que cree un domain hack donde el nombre se lea como una frase que termina en "me" — como about.me o "call.me". Se lee al instante como el pronombre inglés, lo que lo hace cálido y personal.'
   - question: '¿Es .me un buen dominio para un sitio web personal?'
     answer: 'Sí. .me es posiblemente la extensión convencional más personal. Como "me" es el pronombre de primera persona, "tunombre.me" o "hire.me" se siente como una invitación directa, y por eso es un favorito para portafolios, biografías y marcas individuales.'
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/domain-hacks-explained/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 El dominio **.me** es uno de los ejemplos más claros de una extensión de código de país que encontró una segunda vida como marca global. Oficialmente el ccTLD de **Montenegro**, se ha comercializado y adoptado en todo el mundo como la extensión más **personal** de internet — porque "me" es el pronombre inglés de primera persona, "tunombre.me" se lee al instante como *tú*. Para personas que construyen un portafolio, un sitio de currículum o una página de biografía — y para cualquiera que cree un ingenioso **domain hack** que se complete con "me" — suele ser el primer lugar donde buscan.

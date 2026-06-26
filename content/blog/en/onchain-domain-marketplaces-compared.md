@@ -12,6 +12,24 @@ format: comparison
 description: "OpenSea, Seaport-based, and domain-native onchain marketplaces compared on fees, reach, and custody — which venue fits which tokenized-domain sale."
 ogImage: ../../assets/onchain-domain-marketplaces-compared-og.jpg
 keywords: ['onchain domain marketplace', 'tokenized domain marketplace', 'sell domain NFT', 'OpenSea domain', 'Seaport protocol', 'NFT marketplace fees', 'domain flipping web3', 'where to sell tokenized domains', 'OpenSea vs Blur', 'atomic NFT sale', 'ERC-721 domain', 'domain NFT marketplace comparison', 'Namefi marketplace', 'self-custody domain sale', 'onchain domain trading']
+relatedArticles:
+  - /en/blog/selling-domains-as-nfts/
+  - /en/blog/onchain-domain-flipping/
+  - /en/blog/tokenize-your-com-to-flip-it/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 If you flip a [tokenized domain](/en/blog/what-are-tokenized-domains/) — a real ICANN name with an [on-chain](/en/glossary/on-chain/) ownership token on top — you have a choice the traditional domain world never gave you. You can list the name as an [NFT](/en/glossary/nft/) on a general crypto marketplace, sell it through a [Seaport](/en/glossary/smart-contract/)-based venue with no third-party custody, or use a domain-native platform built for exactly this asset. Each path moves the same token, but the fees, the reach, and the custody model are different enough that picking wrong can cost you a buyer or a chunk of your margin.

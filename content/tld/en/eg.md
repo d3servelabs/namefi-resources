@@ -18,6 +18,24 @@ faqs:
     answer: 'Most .eg registrations happen at the third level, beneath a second-level category label such as com.eg (commercial), org.eg (non-profits), gov.eg (government), edu.eg (education), ac.eg (academic), net.eg (networking), and mil.eg (military), among others.'
   - question: 'Is there an Arabic-script version of .eg?'
     answer: 'Yes. Egypt also has .مصر (romanized as "Misr," meaning Egypt in Arabic), an internationalized ccTLD delegated in April 2010 by ICANN and managed by the National Telecommunications Regulatory Authority (NTRA). It is a fully separate TLD from .eg.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.eg** domain is Egypt's official [country-code top-level domain](/en/glossary/cctld/), one of the oldest in the Arab world. Delegated in late 1990, it has served as the national internet namespace for Egyptian government portals, universities, major telecoms, and private enterprises for over three decades. Unlike many ccTLDs that have been repositioned as generic lifestyle domains, **.eg** has remained firmly rooted in its geographic identity — it signals Egypt, and Google treats it that way.

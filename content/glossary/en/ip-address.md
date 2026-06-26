@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc791
   - https://www.cloudflare.com/learning/dns/glossary/what-is-my-ip-address/
+relatedArticles:
+  - /en/blog/the-dnspionage-campaign/
+  - /en/blog/selling-domains-as-nfts/
+  - /en/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /en/blog/the-perl-com-domain-theft/
+  - /en/blog/the-sea-turtle-dns-espionage/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/web3/
 ---
 
 An **IP address** is the numeric label that identifies a device on a network — `93.184.216.34` in the older **IPv4** format, or a longer hexadecimal string like `2606:2800:220:1:248:1893:25c8:1946` in **IPv6**, which exists because the world ran out of IPv4 space. The whole point of the [DNS](/en/glossary/dns/) is to map a human-friendly domain to one of these addresses: an **A** [record](/en/glossary/dns-record-types/) points a name at an IPv4 address, an **AAAA** record at IPv6. Blocks of addresses are allocated through [IANA](/en/glossary/iana/) to regional registries. Domain tokenization operates a layer above all this — it changes who *owns* the name, not the addresses the name resolves to.

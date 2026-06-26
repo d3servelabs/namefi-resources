@@ -19,6 +19,24 @@ faqs:
     answer: 'Nein. Seit der DSGVO 2018 erfasst DENIC keinen Admin-C mehr. Eine deutsche Adresse ist für die Registrierung nicht erforderlich. Nur im Streitfall müssen Inhaber ohne Wohnsitz in Deutschland auf Verlangen einen Zustellungsbevollmächtigten mit deutscher Anschrift benennen.'
   - question: 'Unterstützt .de Umlaute und DNSSEC?'
     answer: 'Ja. .de unterstützt internationalisierte Domainnamen mit ä, ö, ü und ß sowie viele weitere Sonderzeichen. Außerdem kann jede .de-Domain per DNSSEC kryptografisch abgesichert werden, um Manipulationen bei der DNS-Auflösung zu verhindern.'
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/choosing-a-domain-tokenization-platform/
+  - /de/blog/from-del-icio-us-to-delicious-com/
+  - /de/blog/domain-terminology-guide/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Die **.de-Domain** ist die offizielle länderspezifische Top-Level-Domain (ccTLD) für Deutschland und eine der erfolgreichsten Domain-Endungen der Welt. Sie wird von der Genossenschaft DENIC eG mit Sitz in Frankfurt am Main verwaltet und zählt zu den größten ccTLDs überhaupt.

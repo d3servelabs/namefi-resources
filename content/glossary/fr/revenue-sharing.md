@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que le partage de revenus et comment peut-il s'appliquer à la monétisation de domaine ?
 keywords: ["partage de revenus","revenu passif","monétisation de domaine","distribution des bénéfices","contrats intelligents"]
+relatedArticles:
+  - /fr/blog/domain-parking-and-monetization/
+  - /fr/blog/why-tokenize-domains/
+  - /fr/blog/domain-escrow-explained/
+  - /fr/blog/from-thefacebook-com-to-facebook-com/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-investor-field-guide/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/smart-contract/
+  - /fr/glossary/tokenized-domain/
+  - /fr/glossary/tokenize/
+  - /fr/glossary/fractional-ownership/
+  - /fr/glossary/leasing/
 ---
 
 

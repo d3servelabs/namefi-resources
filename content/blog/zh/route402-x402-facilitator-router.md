@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "一款多租户路由器，让您只需一次集成 x402，即可根据策略和实时信号路由请求，而无需将路由逻辑强加于您的应用程序中。"
 keywords: ['Route402', 'x402', '支付路由', '服务商路由器', '多租户支付', 'RBAC', '凭据加密', '功能路由', '粘性结算', '支付基础设施', 'YAML 路由规则']
+relatedArticles:
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-discordapp-com-to-discord-com/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/from-urbancompass-com-to-compass-com/
+relatedTopics:
+  - /zh/topics/web3-foundations/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/x402/
 ---
 
 ## 简而言之

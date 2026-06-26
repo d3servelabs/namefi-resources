@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Cómo la startup de tarjetas cripto Monaco se rebautizó como Crypto.com en 2018 al adquirir el dominio ultra-premium Crypto.com —registrado en 1993 por el criptógrafo Matt Blaze, quien se negó a venderlo durante 25 años— en un acuerdo que los expertos valoraron en hasta $10 millones.'
 keywords: ['mona.co', 'crypto.com', 'dominio crypto.com', 'monaco mco', 'matt blaze crypto.com', 'kris marszalek', 'actualización de dominio', 'dominio premium', 'dominio de categoría', 'adquisición de dominio', 'rebranding cripto', 'dominio de coincidencia exacta', 'branding']
+relatedArticles:
+  - /es/blog/from-ubercab-com-to-uber-com/
+  - /es/blog/from-bufferapp-com-to-buffer-com/
+  - /es/blog/from-teslamotors-com-to-tesla-com/
+  - /es/blog/from-ctrip-com-to-trip-com/
+  - /es/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/name-change-game-change/
+  - /es/series/best-tlds-by-industry/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Durante sus primeros años, una de las marcas más agresivas del mundo cripto vivía en una dirección discretamente ingeniosa: **Mona.co** — la empresa "Monaco," escrita a través de un dominio y un [TLD](/es/glossary/tld/) de código de país, al estilo de bit.ly o goo.gl, que convertían un `.ly` o `.gl` en parte de la palabra.

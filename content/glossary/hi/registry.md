@@ -13,6 +13,24 @@ sources:
   - https://www.iana.org/domains/root/db
   - https://www.icann.org/en/registry-agreements
   - https://www.icann.org/resources/pages/gtld-registry-agreement-2013-01-25-en
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/how-tld-affects-domain-value/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
 ---
 
 एक **रजिस्ट्री** (जिसे *रजिस्ट्री ऑपरेटर* भी कहा जाता है) वह संगठन है जो किसी [TLD](/hi/glossary/tld/) के लिए आधिकारिक डेटाबेस संचालित करता है — उस एक्सटेंशन के अंतर्गत पंजीकृत प्रत्येक डोमेन को दर्ज करता है, उन नामों को [नेमसर्वर](/hi/glossary/nameserver/) से मैप करने वाली ज़ोन फ़ाइल बनाए रखता है, और वह डेटा प्रकाशित करता है जिससे [DNS](/hi/glossary/dns/) में क्वेरीज़ काम करती हैं। रजिस्ट्रियाँ डोमेन-नाम आपूर्ति श्रृंखला के शीर्ष पर होती हैं — [रजिस्ट्रारों](/hi/glossary/registrar/) और [रजिस्ट्रेंटों](/hi/glossary/registrant/) से ऊपर।

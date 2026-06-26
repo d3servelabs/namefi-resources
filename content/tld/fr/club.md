@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Le domaine .club est idéal pour bâtir une communauté ou une DAO. Découvrez ses avantages, son potentiel pour le Web3 et comment l'enregistrer sur Namefi."
 keywords: [".club domains", ".club TLD", ".club top-level domain", "what is .club", "why choose .club", "what is the .club domain", "why choose the .club domain", "acheter domaine .club", "domaine web3", "investissement domaine", "communauté en ligne", "DAO domain", "domaines tokenisés", "enregistrement nom de domaine", "gTLD .club"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le domaine .club ?**

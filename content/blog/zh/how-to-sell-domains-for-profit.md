@@ -12,6 +12,24 @@ format: guide
 description: "域名出售全流程攻略：被动接盘与主动询价、定价模式选择、挂牌平台对比、何时委托经纪人，以及如何安全完成交割。"
 ogImage: ../../assets/how-to-sell-domains-for-profit-og.jpg
 keywords: ['如何通过域名盈利', '出售域名', '域名出售指南', '被动接盘与主动询价域名销售', '域名定价', '在哪里出售域名', '域名交易市场', '域名经纪人', '域名托管', '一口价与议价', '在线出售域名', '域名二级市场', '域名交割', '域名外呼销售', '域名翻转']
+relatedArticles:
+  - /zh/blog/inbound-vs-outbound-domain-sales/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/working-with-domain-brokers/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 无法出售的域名，不过是一张挂着好听名字的续费账单。选筹眼光和估值能力是前置功夫；而真正把钱拿到手，靠的是这一关。域名翻转的盈亏，大多数都在出售环节决定——因为一个普通名字卖得好，胜过一个好名字没人找得到。本文是我们[域名翻转](/zh/blog/domain-flipping/)系列的出售篇，覆盖从"我拥有这个域名"到"款项已到账"的全流程。我们将介绍买家到来的两种路径、定价格式如何选择、在哪里挂牌、何时委托经纪人，以及如何安全完成交割。如需单笔销售的分步清单，可配合[如何出售你名下的域名](/zh/blog/how-to-sell-a-domain-name-you-own/)一同阅读。

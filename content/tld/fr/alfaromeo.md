@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout sur le domaine .alfaromeo : une extension exclusive dédiée à la marque légendaire. Comprendre son usage, ses avantages et l'avenir des TLDs de marque."
 keywords: [".alfaromeo domains", ".alfaromeo TLD", "top-level domain", "what is .alfaromeo", "why choose .alfaromeo", "what is the .alfaromeo domain", "why choose the .alfaromeo domain", "domain investing", "blockchain domains", "tokenized domain", "luxury car domains", "brand TLD", "automotive digital identity", "Stellantis domains", "Web3 domains"]
+relatedArticles:
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/web3/
 ---
 
 ## **Qu'est-ce que .alfaromeo ?**

@@ -12,6 +12,24 @@ format: analysis
 description: "اقتصاديات الدومينينج بصراحة: عبء التجديد، ومعدل البيع الفعلي كقاعدة تقريبية، وليه بيعة واحدة كويسة لازم تموّل سنين طويلة من التجديدات."
 ogImage: ../../assets/domain-renewal-costs-and-sell-through-rate-og.jpg
 keywords: ['تكلفة تجديد الدومين', 'معدل البيع الفعلي للدومينات', 'اقتصاديات تقليب الدومينات', 'تكلفة الاحتفاظ بالدومين', 'رسوم تجديد الدومين', 'حسابات أرباح الدومينينج', 'تكلفة محفظة النطاقات', 'هل تقليب الدومينات مربح', 'عبء تجديد الدومين', 'أساس التكلفة للدومينات', 'عوائد الاستثمار في الدومينات', 'بكام تجديد الدومينات', 'سعر تجديد .com', 'تكلفة الاحتفاظ بالدومين']
+relatedArticles:
+  - /ar/blog/domain-portfolio-management/
+  - /ar/blog/when-to-drop-a-domain/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/working-with-domain-brokers/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 كل دومين بتحتفظ بيه بيبعتلك فاتورة مرة في السنة. الحقيقة دي لوحدها هي الجاذبية اللي كل مستثمر دومينات عايش تحتها، وهي الجزء اللي قصص النجاح بتسيبه برّه. بيعة بخمسة أرقام بتعمل عنوان حلو. أما الميتين اسم اللي ما اتباعوش، وكل واحد فيهم بيسحب رسم تجديد كل اتناشر شهر في صمت، دول عمرهم ما بيدخلوا الحكاية.

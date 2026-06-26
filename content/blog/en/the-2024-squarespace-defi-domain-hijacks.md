@@ -11,6 +11,24 @@ seriesOrder: 6
 format: case-study
 description: 'In July 2024, a registrar migration from Google Domains to Squarespace turned weak default authentication into a mass attack surface. Attackers hijacked the domains of crypto and DeFi projects — Compound Finance, Celer Network, Pendle, Unstoppable Domains — and pointed them at wallet-drainer phishing sites. Here is how a "seamless" migration created hundreds of unlocked front doors, and what it teaches about registrar security and MFA.'
 keywords: ['squarespace domain hijack', 'google domains migration', 'defi dns hijack', 'compound finance hijack', 'celer network hijack', 'wallet drainer', 'inferno drainer', 'domain security', 'registrar migration', 'mfa multi-factor authentication', 'oauth account takeover', 'dns hijacking', 'crypto phishing']
+relatedArticles:
+  - /en/blog/the-curve-finance-dns-hijack/
+  - /en/blog/the-badgerdao-frontend-attack/
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
+  - /en/glossary/tld/
 ---
 
 In July 2024, the most dangerous thing about a crypto project's website was not a [smart-contract](/en/glossary/smart-contract/) bug or a leaked [private key](/en/glossary/private-key/). It was the [registrar](/en/glossary/registrar/) that owned the domain.

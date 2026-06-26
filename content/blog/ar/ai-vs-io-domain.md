@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: ".ai مقابل .io لشركتك الناشئة؟ قارن بين الأصول ومعاملة جوجل لـ SEO والأسعار والإشارات التسويقية وسؤال .io وجزر تشاغوس، مع دليل قرار واضح وأسئلة شائعة."
 keywords: ["ai vs io tld", "io vs ai domain", "ai or io domain", "io vs ai domain extension", "ai vs io domain extension", ".ai vs .io", "ai or io tld", "ai vs io domain", "io or ai domain", ".ai vs .io domain", "ai domain vs io domain", "best domain for ai startup", "best domain for tech startup", "ai tld", "io tld", "domain extension for startup", "ccTLD for tech", "gccTLD seo", "io domain chagos", "io domain future", "ai domain pricing", "io domain pricing", "domain branding", "choosing a domain extension", "tokenized domain"]
+relatedArticles:
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/how-tld-affects-domain-value/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 عندك الاسم. وهسه واقف مش عارف تختار بين آخر حرفين: `yourbrand.ai` ولا `yourbrand.io`؟ الاتنين قصيرين، والاتنين بيقولوا "تكنولوجيا" بصوت عالي، والاتنين خرجوا من جزر صغيرة لما محدش كان يتوقع ويبقوا الاختيار الأول للشركات الناشئة. بس كل واحد منهم بيبعت إشارة مختلفة، وبيتكلف فلوس مختلفة، وبيشيل تساؤلات مختلفة على المدى البعيد.

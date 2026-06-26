@@ -17,6 +17,24 @@ faqs:
     answer: 'Es ideal para abogados, bufetes y profesionales jurídicos de habla hispana que quieran una dirección web que comunique de inmediato su profesión. La extensión señala pertenencia a una comunidad verificada de juristas, lo que aporta confianza al cliente.'
   - question: '¿Es .abogado compatible con DNSSEC e IDN?'
     answer: 'Sí. El registro admite DNSSEC para firmar criptográficamente las zonas DNS y reforzar la seguridad, así como nombres de dominio internacionalizados (IDN). También se aplica un bloqueo de transferencia de 60 días tras el registro.'
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-law-firm/
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /es/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 El dominio **.abogado** es uno de los pocos sufijos de internet pensados específicamente para una profesión: la abogacía. "Abogado" significa exactamente eso en español, por lo que la extensión comunica de un vistazo quién está detrás del sitio. A diferencia de un .com genérico, un dominio .abogado pertenece a una comunidad verificada de juristas, lo que lo convierte en una señal de pertenencia profesional más que en una simple dirección web.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入解析 .allstate 顶级域名：了解其作为品牌顶级域名的独特价值、安全性及用途。探索如何在 Namefi 注册和管理类似的优质 Web3 域名。'
 keywords: ['.allstate', '.allstate domains', '.allstate TLD', 'top-level domain', 'what is .allstate', 'why choose .allstate', 'what is the .allstate domain', 'why choose the .allstate domain', '品牌顶级域名', '域名投资', '区块链域名', 'Namefi', 'Web3 domains', '保险行业域名', '通证化域名']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 ## **什么是 .allstate?**

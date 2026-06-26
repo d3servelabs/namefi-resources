@@ -14,6 +14,24 @@ sources:
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/the-myetherwallet-bgp-dns-attack/
+  - /zh/blog/dns-over-https-vs-enterprise-split-horizon-dns/
+  - /zh/blog/the-sea-turtle-dns-espionage/
+  - /zh/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/web3/
 ---
 
 **DNS**（即*域名系统*，Domain Name System，又称*域名系统*）是互联网的分布式、分层命名系统，负责将人类可读的域名——如 `example.com`——转换为网络设备用于在互联网上路由数据包的 [IP 地址](/zh/glossary/ip-address/)。没有 DNS，每位用户都需要记住所有想访问网站的数字地址。DNS 在 [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034) 和 [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035)（由 IETF 于 1987 年发布，至今仍是基础性标准）中定义，是互联网的核心协议之一。

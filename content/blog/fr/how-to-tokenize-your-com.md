@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Une marche à suivre pratique et détaillée pour tokéniser un domaine que vous possédez déjà : éligibilité, portefeuilles, frais, délais et ce à quoi s'attendre sur chaque écran. Rédigé pour les propriétaires, pas pour les nerds de protocoles."
 keywords: ['comment tokéniser un domaine', 'comment tokéniser un .com', 'tokéniser mon domaine', 'tokéniser un domaine existant', 'tokéniser un domaine étape par étape', 'tutoriel de tokénisation de domaine', 'guide tokéniser .com', 'tokéniser .xyz', 'tokéniser .io', 'tokéniser namefi', 'domaine NFT comment faire', 'transférer domaine vers NFT', 'domaine vers NFT', 'processus de tokénisation de domaine', 'configuration de domaine tokénisé', 'tokéniser domaine ICANN']
+relatedArticles:
+  - /fr/blog/tokenize-your-com-to-flip-it/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/dns-on-tokenized-domains/
+  - /fr/blog/how-tokenized-marketplaces-replace-escrow/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/tokenize-your-com/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Vous possédez donc un domaine — peut-être `mybrand.com`, ou peut-être un portefeuille de noms en `.xyz` — et vous avez décidé de le **tokéniser**. Ce guide explique ce qui se passe réellement, écran par écran, afin que vous puissiez anticiper le temps, l'argent et les accès dont vous aurez besoin avant de commencer.

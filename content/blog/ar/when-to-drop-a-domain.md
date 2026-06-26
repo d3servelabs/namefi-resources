@@ -12,6 +12,24 @@ format: guide
 description: "إزاي تقرر إمتى تسيب الدومين ينتهي: تكلفة التجديد مقابل فرص البيع الواقعية، فخ التكلفة الغارقة، والإشارات اللي بتقول إن الاسم ده مش هيتباع أبداً."
 ogImage: ../../assets/when-to-drop-a-domain-og.jpg
 keywords: ['إمتى تسيب الدومين', 'تخلّي الدومين ينتهي', 'تتخلّص من النطاقات الخسرانة', 'قرار تجديد الدومين', 'التكلفة الغارقة في الدومينات', 'أجدّد الدومين ولا لأ', 'تنقية محفظة الدومينات', 'تسيب اسم النطاق', 'تكلفة الاحتفاظ بالدومين', 'معدل البيع الفعلي للدومينات', 'خسائر الدومينينج', 'تنتهي صلاحية الدومين', 'تكلفة تجديد الدومين', 'أخطاء الاستثمار في الدومينات', 'تنقية محفظة النطاقات']
+relatedArticles:
+  - /ar/blog/domain-portfolio-management/
+  - /ar/blog/domain-renewal-costs-and-sell-through-rate/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/hand-registering-domains-to-flip/
+  - /ar/blog/working-with-domain-brokers/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 كل دومين بتملكه بيبعتلك نفس الجواب مرة كل سنة: جدّد أو هتخسره. بالنسبة للنطاقات الناجحة بتاعتك، دي موافقة سهلة. القرارات الصعبة هي الأسماء اللي في نص ولا آخر المحفظة — اللي سجّلتها على أساس فكرة ما اشتغلتش، وعمليات الشراء اللي اتعملت بالهبل، والأسماء "اللي تقريباً" اللي قعدت من غير ما تتباع على مدى ثلاث دورات تجديد. القرار بإن إيه اللي تسيبه يقع هو واحد من أقل المهارات بريقاً وأكترها ربحاً في التقليب، لإن الفلوس اللي بتوفّرها من المخزون الميت بتروح على طول لصافي أرباحك.

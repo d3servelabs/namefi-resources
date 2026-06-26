@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 区块链和域名管理中的“无许可”是什么意思？
 keywords: ["无许可","去中心化","抗审查","开放访问","区块链"]
+relatedArticles:
+  - /zh/blog/why-tokenize-domains/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/tokenized-domain-use-cases-2026/
+  - /zh/blog/the-curve-finance-dns-hijack/
+  - /zh/blog/what-are-stablecoins/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-security/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/web3/
+  - /zh/glossary/registrar/
+  - /zh/glossary/tokenized-domain/
+  - /zh/glossary/blockchain/
+  - /zh/glossary/tokenize/
 ---
 
 

@@ -12,6 +12,24 @@ format: guide
 description: "ليه طريقة العرض وأول رقم بيتكتب هما اللي بيحددوا بيعة النطاق بتاعتك: التثبيت، وإنك متقولش السعر الأول، وتدريج السعر، واشتري الآن مقابل تقديم عرض."
 ogImage: ../../assets/domain-pricing-psychology-buy-now-vs-make-offer-og.jpg
 keywords: ['سيكولوجية تسعير النطاقات', 'اشتري الآن مقابل تقديم عرض', 'تثبيت أسعار النطاقات', 'إزاي تسعّر نطاق', 'التفاوض على سعر النطاق', 'تقديم عرض على نطاق', 'اشتري الآن للنطاق', 'تدريج أسعار النطاقات', 'صيغة عرض النطاق', 'مين بيقول السعر الأول', 'تكتيكات التفاوض على النطاقات', 'التسعير الجذّاب للنطاقات', 'سعر النطاق للمستخدم النهائي', 'سيكولوجية بيع النطاقات']
+relatedArticles:
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/how-to-sell-domains-for-profit/
+  - /ar/blog/working-with-domain-brokers/
+  - /ar/blog/inbound-vs-outbound-domain-sales/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
 ---
 
 الرقم اللي كاتبه في إعلانك بيشتغل أكتر مما إنت فاكر بكتير. اتنين بيقلّبوا نطاقات ممكن يكون عندهم نفس الاسم، ويعرضوه في نفس السوق، وفي الآخر يمشي كل واحد بسعر يختلف عن التاني بمقدار خانة كاملة — مش لأن واحد فيهم فاوض بشراسة أكتر، لكن لأنه فهم إن *طريقة* تقديم السعر هي اللي بتشكّل المبلغ اللي المشتري هيدفعه. تسعير النطاق جزء منه حساب، وأغلبه سيكولوجية.

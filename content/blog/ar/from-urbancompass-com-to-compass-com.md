@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'كيف أطلقت Urban Compass في 2012 كتطبيق تأجير نيويوركي على UrbanCompass.com، ثم حذفت كلمة "Urban" في إعادة تسمية فبراير 2015، وترقّت إلى النطاق Compass.com المطابق تمامًا — الذي كان مدرجًا في مزاد بمليون دولار — في اللحظة التي قررت فيها التوسع على المستوى الوطني.'
 keywords: ['urbancompass.com', 'compass.com', 'اسم نطاق compass', 'ترقية النطاق', 'إعادة تسمية urban compass', 'robert reffkin', 'ori allon', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'نطاق متميز', 'استراتيجية النطاق', 'compass للعقارات', 'شركة عقارات ناشئة', 'نطاق مطابق تمامًا']
+relatedArticles:
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-massdrop-com-to-drop-com/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
+  - /ar/blog/from-mrchewy-com-to-chewy-com/
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 قبل أن تصبح Compass أكبر وكالة عقارات سكنية في الولايات المتحدة، كانت شيئًا أكثر تحديدًا وأكثر محليةً: **UrbanCompass.com**، تطبيق لإيجاد شقة للإيجار في مدينة نيويورك.

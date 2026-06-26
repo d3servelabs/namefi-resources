@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: Ein klarer Leitfaden 2026 zu Premium Web3 TLDs – was „Web3 TLD" wirklich bedeutet, warum tokenisierte ICANN-Endungen wie .com, .ai und .io rein blockchain-basierte Namen übertreffen und welche Domain-Endungen den höchsten Wert besitzen.
 keywords: ['premium web3 tld', 'premium web3 tlds', 'web3 tld', 'web3 tlds', 'premium web3 domains', 'best web3 domains', 'web3 domain extensions', 'web3 domain', 'web3 domains', 'tokenized domain extensions', 'premium domain extensions', 'most valuable domain extensions', 'tokenized tld', 'tokenized domains', 'ICANN tld', 'blockchain tld', 'NFT domain', 'premium .com', 'premium .ai', 'premium .io', 'premium .xyz', 'best domain extensions 2026', 'crypto tld', 'web3 naming', 'domain tld investment', 'namefi']
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/tokenized-domain-vs-web3-domain/
+  - /de/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/onchain-domain-flipping/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/best-tlds-by-industry/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
 ---
 
 Wer nach „Premium [Web3](/de/glossary/web3/) TLD" sucht, findet zwei völlig verschiedene Produkte unter demselben Label. Das eine ist ein **blockchain-nativer Name** wie `.eth` oder `.crypto`, der außerhalb des globalen [DNS](/de/glossary/dns/)-Roots existiert. Das andere ist eine **echte, ICANN-anerkannte Endung** (`.com`, `.ai`, `.io`, `.xyz`), die *[on-chain](/de/glossary/on-chain/) tokenisiert* wurde und sich dadurch wie ein Web3-Asset verhält – während sie gleichzeitig in jedem Browser der Welt auflöst.

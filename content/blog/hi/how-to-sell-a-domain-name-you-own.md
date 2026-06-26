@@ -8,6 +8,24 @@ draft: false
 description: "डोमेन की कीमत तय करने, संभावित खरीदारों को खोजने, आउटरीच संभालने, घोटालों से बचने और ट्रांसफर को सुरक्षित रूप से पूरा करने के लिए विक्रेताओं के लिए एक व्यावहारिक चेकलिस्ट।"
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png
 keywords: ['डोमेन नाम कैसे बेचें', 'डोमेन नाम बेचें', 'डोमेन सेलिंग चेकलिस्ट', 'डोमेन वैल्युएशन', 'डोमेन सेल एस्क्रो', 'डोमेन ट्रांसफर', 'डोमेन आउटबाउंड सेल्स', 'डोमेन खरीदार खोजें', 'डोमेन नेगोशिएशन', 'अपना डोमेन बेचें', 'Namefi Outbound', 'डोमेन आफ्टरमार्केट', 'डोमेन बिक्री प्रक्रिया', 'डोमेन सेल्स आउटरीच', 'डोमेन सेलर गाइड']
+relatedArticles:
+  - /hi/blog/how-to-sell-domains-for-profit/
+  - /hi/blog/working-with-domain-brokers/
+  - /hi/blog/inbound-vs-outbound-domain-sales/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 डोमेन का मालिक होना आसान हिस्सा है। इसे बेचना वह जगह है जहां असली काम शुरू होता है।

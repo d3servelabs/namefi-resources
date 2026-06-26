@@ -16,6 +16,24 @@ faqs:
     answer: 'Almost any business, brand, or project that wants the most universally recognized and trusted address, especially companies serving a global or mainstream consumer audience and anyone protecting a brand long term.'
   - question: 'Why are good .com domains so hard to find?'
     answer: 'With over 160 million .com names registered, the supply of short, dictionary, and exact-match brand names is largely exhausted. Most premium .com names are already owned, so many are only available on the secondary market.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/what-makes-a-domain-valuable/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 The **.com domain** is the closest thing the internet has to a default. Short for "commercial," it is the original [generic top-level domain](/en/glossary/gtld/) that, through decades of ubiquity, became the suffix people assume when they hear a website name. For most businesses and brands, **what is .com** really comes down to one thing: it is the address users expect, type, and trust without thinking.

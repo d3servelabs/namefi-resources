@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "¿.ai vs .io para tu startup? Compara orígenes, tratamiento SEO de Google, precios, señales de marca y la cuestión de Chagos con .io, además de una guía de decisión clara y preguntas frecuentes."
 keywords: ["ai vs io tld", "io vs ai dominio", "dominio ai o io", "io vs ai extensión de dominio", "ai vs io extensión de dominio", ".ai vs .io", "tld ai o io", "dominio ai vs io", "dominio io o ai", ".ai vs .io dominio", "dominio ai vs dominio io", "mejor dominio para startup de ia", "mejor dominio para startup tecnológica", "tld ai", "tld io", "extensión de dominio para startup", "ccTLD para tecnología", "gccTLD seo", "dominio io chagos", "futuro dominio io", "precio dominio ai", "precio dominio io", "marca de dominio", "elegir extensión de dominio", "dominio tokenizado"]
+relatedArticles:
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/how-tld-affects-domain-value/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Ya tienes el nombre. Ahora estás atascado en los últimos dos caracteres: ¿debería ser `tumarca.ai` o `tumarca.io`? Ambos son cortos, ambos gritan "tech," y ambos han escapado de sus humildes orígenes en pequeñas islas para convertirse en favoritos de las startups. Sin embargo, envían señales distintas, tienen precios diferentes y plantean preguntas a largo plazo muy distintas.

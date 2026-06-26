@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Entdecken Sie die .space Domain: Eine kreative TLD für Visionäre und Startups. Erfahren Sie alles über Vorteile, SEO und tokenisierte Domains bei Namefi."
 keywords: [".space", ".space domains", ".space TLD", "top-level domain", "was ist .space", "warum .space wählen", "was ist die .space domain", "warum die .space domain wählen", "domain investing", "blockchain domains", "tokenized domains", "web3 domains", "günstige domains kaufen", "creative domains", "Namefi"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .space?**

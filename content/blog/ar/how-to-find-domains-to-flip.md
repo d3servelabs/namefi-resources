@@ -12,6 +12,24 @@ format: guide
 description: "الأربع طرق اللي تجيب بيها دومينات تقلّبها — التسجيل اليدوي، والدومينات المنتهية، والمزادات، والسوق الثانوي — ووضع المخاطر والسعر لكل قناة منهم."
 ogImage: ../../assets/how-to-find-domains-to-flip-og.jpg
 keywords: ['إزاي تلاقي دومينات تقلّبها', 'دومينات للتقليب', 'توريد الدومينات', 'تلاقي دومينات للتقليب', 'تسجيل الدومينات يدويًا', 'الدومينات المنتهية', 'اصطياد الدومينات المحذوفة', 'مزادات الدومينات', 'السوق الثانوي للدومينات', 'شراء دومينات لإعادة بيعها', 'دومينات رخيصة للتقليب', 'الاستثمار في الدومينات للمبتدئين', 'منين تشتري دومينات للتقليب', 'طلبات الحجز المسبق للدومينات', 'أحسن دومينات للتقليب']
+relatedArticles:
+  - /ar/blog/domain-flipping/
+  - /ar/blog/hand-registering-domains-to-flip/
+  - /ar/blog/expired-domains-and-the-drop-cycle/
+  - /ar/blog/how-to-win-domain-auctions/
+  - /ar/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 كل حاجة في التقليب بتبدأ من اللي بتشتريه. ممكن تكون مفاوض عبقري ومُقيّم شاطر، بس لو وردّت اسم محدّش عايزه، المهارات دي مش هتلاقي حاجة تشتغل عليها. التوريد هو أول مهارة حقيقية في المجال، وهو اللي معظم المبتدئين بيعملوه بالمقلوب — بيقعوا في حب الاسم الأول، وبعدين يدوّروا على مشتري.

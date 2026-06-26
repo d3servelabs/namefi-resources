@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .city هو النطاق للأعمال التجارية المحلية، والخدمات البلدية، والمواقع الإلكترونية التي تركز على المدينة. مثالي لتأسيس حضور محلي.
 keywords: ["tld", "نطاق .city", "أعمال محلية", "خدمات بلدية", "مواقع مدن", "حضور محلي"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-investor-field-guide/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو .city؟**

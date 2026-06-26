@@ -18,6 +18,24 @@ faqs:
     answer: 'Not inherently. The .com extension still carries the strongest recognition and default recall. The .company TLD is a credible alternative when the .com is unavailable, especially for a clean, descriptive name, but most users still assume .com first when typing a brand from memory.'
   - question: 'Does .company support WHOIS privacy and DNSSEC?'
     answer: 'Yes. As a modern Identity Digital gTLD, .company supports DNSSEC for cryptographic DNS integrity, and registrars including Namefi offer WHOIS privacy so personal contact details are not exposed in public WHOIS records.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.company** domain is one of the internet's broadest business-oriented suffixes: a [generic top-level domain](/en/glossary/gtld/) (gTLD) that any individual or organization can register, with no proof of incorporation required. If you run a business and the exact .com you want is taken, parked, or priced out of reach, **.company** offers a descriptive, self-explanatory alternative that says what you are right in the address bar.

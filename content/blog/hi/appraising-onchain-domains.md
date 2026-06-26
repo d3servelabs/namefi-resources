@@ -12,6 +12,24 @@ format: analysis
 description: "ऑनचेन कॉम्प्स, फ्लोर-बनाम-प्रीमियम तर्क और ENS क्लब फैक्टर्स का उपयोग करके ENS और टोकनयुक्त डोमेन का मूल्यांकन कैसे करें — और यह DNS से अलग क्यों है।"
 ogImage: ../../assets/appraising-onchain-domains-og.jpg
 keywords: ['ENS डोमेन का मूल्यांकन', 'ENS डोमेन वैल्यूएशन', 'टोकनयुक्त डोमेन मूल्यांकन', 'ऑनचेन कॉम्प्स', 'डोमेन तुलनात्मक बिक्री', 'NameBio कॉम्प्स', 'ENS फ्लोर प्राइस', 'ENS 999 क्लब', 'ENS 10k क्लब', 'ENS नाम का मूल्य कैसे आँकें', 'टोकनयुक्त डोमेन मूल्य', 'web3 डोमेन मूल्यांकन', 'ERC-721 डोमेन मूल्य', 'ऑनचेन बिक्री इतिहास', 'डोमेन फ्लोर बनाम प्रीमियम']
+relatedArticles:
+  - /hi/blog/onchain-domain-flipping/
+  - /hi/blog/how-to-read-comparable-domain-sales/
+  - /hi/blog/domain-appraisal-tools-compared/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 मूल्यांकन वह कौशल है जो तय करता है कि कोई फ्लिप पैसा बनाएगा या नहीं। सोर्सिंग आपको बताती है कि बिक्री के लिए क्या उपलब्ध है और बेचना किसी नाम को चेक में बदल देता है, लेकिन बीच का नंबर — कोई नाम असल में कितने का है — यहीं पर मार्जिन छिपा होता है। यह बात किसी `.com` के लिए सच है और ऑनचेन भी सच है, सिवाय इसके कि ऑनचेन दुनिया आपको कुछ ऐसा देती है जो [DNS](/hi/glossary/dns/) आफ्टरमार्केट कभी नहीं दे सका: लगभग हर बिक्री का एक सार्वजनिक, टाइमस्टैम्प वाला रिकॉर्ड। यह व्यापक [डोमेन फ्लिपिंग](/hi/blog/domain-flipping/) प्लेबुक का मूल्यांकन वाला अध्याय है, जो उन दो परिसंपत्तियों पर केंद्रित है जिनका आप [ऑनचेन डोमेन फ्लिपिंग](/hi/blog/onchain-domain-flipping/) में व्यापार करते हैं — [ENS (एथेरियम नेम सर्विस)](/hi/glossary/ens/) नाम और टोकनयुक्त ICANN डोमेन।

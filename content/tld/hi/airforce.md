@@ -24,6 +24,24 @@ keywords:
   - 'tokenized domain assets'
   - 'Web3 domain registration'
   - 'Namefi domain registrar'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/web3/
 ---
 
 डिजिटल दुनिया में एक सही डोमेन नाम चुनना आपकी ऑनलाइन पहचान का आधार है। यदि आप एयरोस्पेस, विमानन (aviation), या वायु सेना समुदाय से जुड़े हैं, तो सामान्य `.com` या `.net` से आगे सोचने का समय आ गया है। आज हम **.airforce** टॉप-लेवल डोमेन ([TLD](/hi/glossary/tld/)) के बारे में विस्तार से बात करेंगे और जानेंगे कि यह आपके लिए एक बेहतरीन विकल्प क्यों हो सकता है।

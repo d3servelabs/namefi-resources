@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "深入了解 .app 顶级域名：首个强制要求 HTTPS 加密的 TLD。探索其优势、安全性及知名案例，并了解为何它是开发者和应用程序的最佳选择。立即在 Namefi 注册。"
 keywords: [".app domains", ".app TLD", "top-level domain", "what is .app", "why choose .app", "what is the .app domain", "why choose the .app domain", "app domain registration", "应用程序域名", "secure domains", "Google registry", "domain investing", "blockchain domains", "tokenized domain", "Namefi", "developer domains"]
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在这个移动互联网主导的时代，几乎每一项服务、每一个创意都有一个对应的“App”。对于开发者、初创公司和成熟企业来说，选择一个能够直观反映其产品属性的域名至关重要。这就是 **.app** 顶级域名（TLD）大放异彩的地方。

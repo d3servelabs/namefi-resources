@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: राजस्व-साझाकरण क्या है और यह डोमेन मुद्रीकरण पर कैसे लागू हो सकता है?
 keywords: ["राजस्व-साझाकरण","निष्क्रिय आय","डोमेन मुद्रीकरण","लाभ वितरण","स्मार्ट कॉन्ट्रैक्ट"]
+relatedArticles:
+  - /hi/blog/domain-parking-and-monetization/
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/domain-escrow-explained/
+  - /hi/blog/from-thefacebook-com-to-facebook-com/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-investor-field-guide/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/smart-contract/
+  - /hi/glossary/tokenized-domain/
+  - /hi/glossary/tokenize/
+  - /hi/glossary/fractional-ownership/
+  - /hi/glossary/leasing/
 ---
 
 

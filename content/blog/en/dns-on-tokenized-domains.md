@@ -11,6 +11,24 @@ seriesOrder: 2
 format: guide
 description: A practical look at how regular DNS — nameservers, A/AAAA, MX, TXT, DNSSEC, CAA — keeps working after you tokenize an ICANN domain. What changes, what doesn't, and where to point your existing DNS provider.
 keywords: ['DNS tokenized domain', 'DNSSEC NFT domain', 'tokenized domain nameservers', 'tokenized domain email', 'MX records NFT domain', 'CAA records tokenized domain', 'tokenized domain DNS management', 'on-chain domain DNS', 'NFT domain MX', 'NFT domain DNSSEC', 'tokenized domain Cloudflare', 'tokenized domain Route53', 'how DNS works tokenized', 'tokenized domain resolution']
+relatedArticles:
+  - /en/blog/how-to-tokenize-your-com/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/tokenize-your-com-to-flip-it/
+  - /en/blog/how-tokenized-marketplaces-replace-escrow/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/tokenize-your-com/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/dns/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/tld/
 ---
 
 A common worry about [tokenizing](/en/glossary/tokenize/) a domain: *"Will my website still work? Will my email still work? Will I have to learn a whole new DNS stack?"*

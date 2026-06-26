@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'إزاي Slack انطلق على SlackHQ.com لأن حد تاني كان ماسك Slack.com، ودفع 60 ألف دولار عشان يشتري الدومين الأصلي، وشال الـ"HQ" — وليه @SlackHQ لسه موجود على السوشيال ميديا لحد دلوقتي.'
 keywords: ['slackhq.com', 'slack.com', 'اسم دومين slack', 'ترقية دومين', 'ستيوارت باترفيلد', 'tiny speck', 'دومين مطابق تمام', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'دومين بريميوم', 'استراتيجية الدومين', 'تاريخ slack', 'شراء دومين', 'دومين يعرّف الفئة']
+relatedArticles:
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-discordapp-com-to-discord-com/
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
+  - /ar/blog/from-box-net-to-box-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
 ---
 
 قبل ما Slack تبقى فعل بمعنى "بعتلي رسالة على الشغل"، كانت حاجة أهدأ وعنوانها أطول: **SlackHQ.com**.

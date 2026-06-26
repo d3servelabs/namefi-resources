@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .site Top-Level-Domain: Ihre Bedeutung, Vorteile für SEO und Branding sowie Gründe, warum sie ideal für Ihr nächstes Projekt ist."
 keywords: ['.site domains', 'TLD', 'Top-Level-Domain', 'was ist .site', 'warum .site wählen', 'was ist die .site domain', 'warum die .site domain wählen', 'domain investieren', 'blockchain domains', 'tokenisierte domains', 'namefi', 'günstige domains kaufen', 'neue gTLD trends', 'webseite erstellen', 'markenschutz domains']
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Die Wahl der richtigen Domain-Endung ist oft der erste Schritt zum Erfolg im digitalen Raum. Während klassische Endungen wie .com oder .de oft überlaufen sind, bieten neue generische Top-Level-Domains (gTLDs) frische Möglichkeiten. Eine der beliebtesten und vielseitigsten unter ihnen ist die **.site**-Domain.

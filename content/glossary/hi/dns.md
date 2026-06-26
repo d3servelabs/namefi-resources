@@ -14,6 +14,24 @@ sources:
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/the-myetherwallet-bgp-dns-attack/
+  - /hi/blog/dns-over-https-vs-enterprise-split-horizon-dns/
+  - /hi/blog/the-sea-turtle-dns-espionage/
+  - /hi/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/web3/
 ---
 
 **DNS** (जिसे *डोमेन नेम सिस्टम* भी कहा जाता है) इंटरनेट की वितरित, पदानुक्रमिक नामकरण प्रणाली है जो मानव-पठनीय डोमेन नामों — जैसे `example.com` — को उन [IP पतों](/hi/glossary/ip-address/) में अनुवादित करती है जिनका उपयोग नेटवर्किंग उपकरण इंटरनेट पर पैकेट रूट करने के लिए करते हैं। DNS के बिना, प्रत्येक उपयोगकर्ता को उन हर साइट का संख्यात्मक पता याद रखना होता जिसे वे देखना चाहते हैं। [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034) और [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035) (IETF द्वारा 1987 में प्रकाशित और आज भी मौलिक) में परिभाषित, DNS इंटरनेट के मुख्य प्रोटोकॉल में से एक बना हुआ है।

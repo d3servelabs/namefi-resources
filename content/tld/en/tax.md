@@ -16,6 +16,24 @@ faqs:
     answer: 'It suits tax preparers, CPAs, enrolled agents, bookkeeping and accounting firms, tax-software products, and educational sites about taxation. It works well as an exact-match or descriptive name where the desired .com is taken or expensive. It is a poor fit for unrelated businesses, since the suffix strongly implies tax content.'
   - question: 'Is .tax a restricted or community domain?'
     answer: 'No. Despite the professional-sounding name, .tax is an unrestricted generic gTLD under a standard ICANN base registry agreement. Unlike .cpa, which requires CPA credentials, .tax has no eligibility gate, sunrise-only access, or membership verification. Trademark holders did get a sunrise period at launch.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.tax domain** is a topic-specific generic extension built for the world of taxation: preparers, accountants, bookkeepers, tax-software makers, and the educational sites that explain it all. The word *tax* is short, universally understood, and unambiguous, which makes the suffix one of the clearer professional alternatives to a crowded .com landscape.

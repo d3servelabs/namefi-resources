@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .website : une extension moderne, intuitive et disponible. Apprenez pourquoi c'est un choix stratégique pour votre site et comment l'enregistrer avec Namefi."
 keywords: [".website domains", ".website TLD", "top-level domain .website", "what is .website", "why choose .website", "what is the .website domain", "why choose the .website domain", "domaine .website", "extension .website", "acheter nom de domaine", "investissement domaine", "domaines tokenisés", "blockchain domains", "Namefi", "création site web"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/how-tld-affects-domain-value/
+  - /fr/blog/ai-vs-io-domain/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Dans le vaste univers d'Internet, choisir le bon nom de domaine est la première étape cruciale pour établir une identité numérique forte. Alors que les extensions classiques comme le .com sont souvent saturées, de nouvelles extensions génériques (new gTLDs) offrent des opportunités passionnantes. L'une des plus polyvalentes et des plus explicites est le **.website**.

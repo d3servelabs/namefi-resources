@@ -16,6 +16,24 @@ faqs:
     answer: 'Effectively only Amazon and its authorized entities, since .now is a brand-restricted TLD. If you want a short, action-oriented name, consider an open generic extension such as .io, .app, or .xyz instead.'
   - question: 'Is .now available for purchase anywhere?'
     answer: 'Not for the public. Because .now is a dotBrand controlled by Amazon, no accredited registrar can sell .now names to outside buyers, regardless of any listings you might see elsewhere.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.now domain** is one of the most misunderstood entries in the domain world. It looks like a punchy, action-ready extension perfect for marketing — but in reality it is a **closed brand TLD** operated by Amazon, and you cannot register a `.now` name no matter how badly you want `buy.now` or `act.now`. Understanding **what .now is** matters precisely because it is so often described incorrectly.

@@ -16,6 +16,24 @@ faqs:
     answer: 'الستريمرز وصنّاع الفيديو والمذيعين وأي علامة تجارية مبنية حوالين التلفزيون أو الفيلم أو المحتوى المباشر. كلمة "tv" بتُقرأ على طول كـ "television"، وده بيخليها بيت طبيعي وسهل التذكّر للقنوات والبرامج والمشاريع الإعلامية.'
   - question: 'ليه دومين .tv مرتبط بالتلفزيون؟'
     answer: 'مصادفة لغوية بحتة. "TV" هو رمز توفالو في ISO والاختصار العالمي لـ "television". توفالو اتكأت على التداخل ده، ورخّصت المساحة عالمياً، وده ليه علامات البث والفيديو بتنجذب لها.'
+relatedArticles:
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/domain-hacks-explained/
+  - /ar/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 دومين **.tv** هو المثال النموذجي لأمة صغيرة حوّلت مصادفة من حرفين لعلامة تجارية عالمية. هو رسمياً ccTLD لـ **توفالو**، أمة جزيرة صغيرة في المحيط الهادئ، بس اتسوّق واتبنى حول العالم كالبيت الطبيعي لـ **التلفزيون** و**الفيديو** و**البث المباشر** — لأن "tv" بتُقرأ على طول كالوسيط نفسه. للمذيعين والستريمرز والعلامات التجارية اللي الفيديو أولاً عندها، **.tv** عادةً هو أكتر امتداد موحٍ في السوق.

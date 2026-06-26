@@ -12,6 +12,24 @@ format: explainer
 description: "ليه سلسلة حروف بتسوى آلاف الدولارات وواحدة شبهها تقريبًا ما بتسواش حاجة: الطول، الكلمات الحقيقية، علاوة الـ.com، نية الشراء، والقابلية للتحوّل لبراند."
 ogImage: ../../assets/what-makes-a-domain-valuable-og.jpg
 keywords: ['إيه اللي بيخلّي اسم النطاق ليه قيمة', 'عوامل قيمة النطاق', 'إيه اللي بيعمل اسم نطاق كويس', 'قيمة اسم النطاق', 'ليه النطاقات غالية', 'أسماء النطاقات القصيرة', 'نطاقات الكلمات المفتاحية', 'نطاقات قابلة للتحوّل لبراند', 'علاوة الـcom', 'قيمة امتداد النطاق', 'نطاقات نية الشراء التجارية', 'أسماء نطاقات سهلة التذكّر', 'أساسيات الاستثمار في النطاقات', 'إزاي بيتحدد سعر النطاقات', 'أسماء النطاقات المميزة']
+relatedArticles:
+  - /ar/blog/how-to-value-a-domain-name/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/how-tld-affects-domain-value/
+  - /ar/blog/how-to-read-comparable-domain-sales/
+  - /ar/blog/brandable-vs-keyword-domains/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 ممكن نطاقين يبقى الفرق بينهم حرف واحد، والفرق في السعر يبقى ألف ضعف. `cars.com` أصل بيتورّث بين الشركات؛ `carz.net` فاتورة تجديد بس. نفس الطول، نفس الفكرة تقريبًا، وقيمة مختلفة تمامًا. أول ما تقدر تفسّر *ليه*، الاستثمار في النطاقات بيبطّل يبان حظ ويبدأ يبان قراية للسوق.

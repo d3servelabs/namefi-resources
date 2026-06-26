@@ -12,6 +12,24 @@ format: explainer
 description: "Cómo caduca y cae un dominio: período de gracia, la ventana de redención de 30 días, los 5 días de eliminación pendiente, la liberación — y dónde aparecen los nombres caídos para quienes los revenden."
 ogImage: ../../assets/expired-domains-and-the-drop-cycle-og.jpg
 keywords: ['dominios caducados', 'ciclo de caída de dominios', 'ciclo de vida de un dominio', 'período de gracia de redención', 'eliminación pendiente', 'captura de caída de dominios', 'nombres de dominio caducados', 'cómo caducan los dominios', 'dominios caídos', 'sniping de dominios', 'comprar dominios caducados', 'período de redención de dominios', 'cuándo caen los dominios', 'reserva anticipada de dominios', 'encontrar dominios para revender']
+relatedArticles:
+  - /es/blog/domain-backorders-and-drop-catching/
+  - /es/blog/domain-flipping/
+  - /es/blog/how-to-win-domain-auctions/
+  - /es/blog/hand-registering-domains-to-flip/
+  - /es/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 La mayoría supone que un dominio que vence simplemente desaparece al día siguiente de caducar, y vuelve al mercado abierto a la mañana siguiente. No es así. Un nombre que nadie renueva recorre una secuencia fija de varias semanas de estados de retención — cada uno con sus propias reglas sobre quién puede recuperarlo y a qué costo — antes de que el [registro](/es/glossary/registry/) finalmente lo libere de nuevo al fondo de nombres disponibles. Esa liberación final es "la [caída](/es/glossary/pending-delete/)", y registrar un nombre en el instante en que aterriza es una práctica reconocida: como lo expresa Wikipedia, [domain drop catching, also known as domain sniping, is the practice of registering a domain name once registration has lapsed, immediately after expiry](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=is%20the%20practice%20of%20registering%20a%20domain%20name%20once%20registration%20has%20lapsed%2C%20immediately%20after%20expiry).

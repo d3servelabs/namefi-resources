@@ -6,6 +6,24 @@ tags: ["faq","domains"]
 authors: ["namefiteam"]
 description: Domina la inversión en dominios con nuestra guía completa de terminología esencial de dominios. Desde conceptos básicos hasta estrategias de trading avanzadas, aprende el lenguaje de los profesionales de dominios.
 keywords: ["terminología de dominios","inversión de dominios","nombres de dominio","trading de dominios","glosario de dominios","TLD","registrador","subasta de dominios","cartera de dominios","valoración de dominios","dominios premium","flipping de dominios"]
+relatedArticles:
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/domain-flipping/
+  - /es/blog/how-to-value-a-domain-name/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /es/topics/domain-basics/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 

@@ -18,6 +18,24 @@ faqs:
     answer: 'All three are open e-commerce gTLDs. The word "shopping" frames the activity of browsing and buying rather than a single storefront, making it natural for marketplaces, aggregators, and review or deals sites. The right choice depends on which exact-match name you can secure.'
   - question: 'Does .shopping support DNSSEC and WHOIS privacy?'
     answer: 'Yes. The .shopping registry supports DNSSEC for cryptographic DNS integrity and internationalized domain names. WHOIS privacy is offered by most registrars, including Namefi, so personal contact details are not published in public records.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 If you sell products online, your web address is the first thing a customer reads. The **.shopping** domain is a [generic Top-Level Domain](/en/glossary/gtld/) (gTLD) built for exactly that moment: it names the activity of browsing and buying, and tells visitors and search engines what your site is for before they click. This page explains what .shopping is, who operates it, how it stacks up against the better-known .shop and .store, and what to weigh before you register.

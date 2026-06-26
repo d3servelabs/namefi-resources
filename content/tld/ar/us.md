@@ -16,6 +16,24 @@ faqs:
     answer: 'مساحة .us بتشرف عليها وزارة التجارة الأمريكية من خلال NTIA. المشغّل الحالي للسجل هو Registry Services, LLC، شركة تابعة لـ GoDaddy Registry، اللي استلمت من Neustar حوالي 2020. IANA بتدرج Registry Services, LLC كالمدير.'
   - question: 'إيه هو شرط الـ Nexus في .us؟'
     answer: 'شرط الـ Nexus هو قاعدة الأهلية اللي بتحصر .us في الأطراف اللي عندها ارتباط حقيقي بالولايات المتحدة. بيغطي المواطنين والمقيمين الأمريكان، والكيانات المنظّمة في أمريكا، والمنظمات الأجنبية اللي بتحافظ على تواجد أمريكي حقيقي زي عملية أو نشاط منتظم.'
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/domain-hacks-explained/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 دومين **.us** هو امتداد رمز الدولة الرسمي على المستوى الأعلى (ccTLD) لـ **الولايات المتحدة** — وواحد من أول الـ ccTLDs اللي اتفوّضت على الإطلاق. حيث امتدادات زي [.co](/ar/tld/co/) بتتسوّق كبدائل لـ ".com" بلا حدود، .us عن قصد العكس: مساحة مربوطة بالهوية الأمريكية، بتتحكم تحت سياسة فيدرالية أمريكية، ومحجوزة للمسجّلين اللي عندهم تواجد أمريكي حقيقي. للأعمال أو العلامات التجارية أو المنظمات اللي عايزة تقول "إحنا أمريكان" في عنوان الويب بتاعها، .us هو أكتر طريقة حرفية تعمل بيها كده.

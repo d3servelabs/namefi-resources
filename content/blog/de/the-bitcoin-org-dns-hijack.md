@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Im September 2021 wurde Bitcoin.org — die langjährige Informationsheimat von Bitcoin, betrieben vom pseudonymen Operator Cobra — auf der DNS-Ebene gekapert und in ein gefälschtes „Verdoppele deine Bitcoin"-Gewinnspiel verwandelt, das Betrügern rund 17.000 US-Dollar einbrachte, bevor die Seite offline genommen wurde. Eine Domain-Mayday-Analyse darüber, was passierte, wie es geschah und was es selbst für kryptonative Seiten über ihre Abhängigkeit von DNS lehrt.'
 keywords: ['bitcoin.org', 'bitcoin.org hack', 'dns-hijack', 'domain-hijacking', 'bitcoin verdoppeln betrug', 'krypto-gewinnspiel-betrug', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'dns-sicherheit', 'domain-sicherheit', 'nameserver-hijack', 'whois-änderungsangriff']
+relatedArticles:
+  - /de/blog/the-curve-finance-dns-hijack/
+  - /de/blog/the-lenovo-com-dns-hijack/
+  - /de/blog/the-myetherwallet-bgp-dns-attack/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/dns/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
 ---
 
 Mehr als ein Jahrzehnt lang gab es im Internet eine einzige Adresse, wenn man eine einfache, herstellerneutrale Antwort auf die Frage „Was ist Bitcoin und wie benutze ich es sicher?" suchte: **Bitcoin.org**.

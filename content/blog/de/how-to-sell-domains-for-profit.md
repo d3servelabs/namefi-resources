@@ -12,6 +12,24 @@ format: guide
 description: "Das komplette Playbook für den Domainverkauf: Inbound vs. Outbound, Preisformat, wo man inseriert, wann sich ein Broker lohnt und wie man den Deal sicher abschließt."
 ogImage: ../../assets/how-to-sell-domains-for-profit-og.jpg
 keywords: ['Domains gewinnbringend verkaufen', 'Domainnamen verkaufen', 'Anleitung zum Domainverkauf', 'Inbound vs. Outbound Domainverkauf', 'Domain-Preisgestaltung', 'wo Domains verkaufen', 'Domain-Marktplätze', 'Domain-Broker', 'Domain-Treuhand', 'Sofortkauf vs. Preisverhandlung', 'Domains online verkaufen', 'Domain-Aftermarket', 'Domainverkauf abschließen', 'Domainverkauf-Akquise', 'Domain flippen']
+relatedArticles:
+  - /de/blog/inbound-vs-outbound-domain-sales/
+  - /de/blog/domain-flipping/
+  - /de/blog/working-with-domain-brokers/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Eine Domain, die du nicht verkaufen kannst, ist nichts weiter als eine Verlängerungsrechnung mit einem cleveren Namen drauf. Gut einkaufen und ehrlich bewerten sind die vorgelagerten Fähigkeiten; verkaufen ist die, bei der das Geld tatsächlich ankommt. Der größte Teil des Gewinns beim Flippen wird in der Verkaufsphase gewonnen oder verloren, denn ein mittelmäßiger Name, der gut verkauft wird, schlägt einen großartigen Namen, den niemand findet. Dies ist die Verkaufssäule unseres Leitfadens zum [Domain-Flipping](/de/blog/domain-flipping/) — der gesamte Bogen von „Ich besitze diesen Namen" bis „Das Geld ist eingetroffen". Wir behandeln die zwei Wege, auf denen Käufer zu dir gelangen, wie du ein Preisformat festlegst, wo du inserierst, wann ein Broker seine Provision wert ist und wie du abschließt, ohne betrogen zu werden. Für eine Schritt-für-Schritt-Checkliste eines einzelnen Verkaufs kombiniere dies mit [So verkaufst du einen Domainnamen, der dir gehört](/de/blog/how-to-sell-a-domain-name-you-own/).

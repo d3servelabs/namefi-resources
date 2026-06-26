@@ -18,6 +18,24 @@ faqs:
     answer: 'معظم تسجيلات .eg بتحصل على المستوى الثالث، تحت لاحقة فئة من المستوى الثاني زي com.eg (تجاري) وorg.eg (غير ربحي) وgov.eg (حكومي) وedu.eg (تعليمي) وac.eg (أكاديمي) وnet.eg (شبكات) وmil.eg (عسكري)، وغيرها.'
   - question: 'هل في نسخة عربية من .eg؟'
     answer: 'نعم. مصر عندها أيضًا نطاق .مصر (نطق "مصر")، وهو نطاق وطني دولي بحروف عربية تم تفويضه في أبريل 2010 من ICANN وتديره هيئة تنظيم الاتصالات (NTRA). وهو نطاق مستقل تمامًا عن .eg.'
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 نطاق **.eg** هو النطاق الوطني الرسمي لجمهورية مصر العربية، وواحد من أقدم النطاقات في العالم العربي. تم تفويضه في أواخر عام 1990، وخدم لأكتر من ثلاثة عقود كفضاء اسمي للبوابات الحكومية والجامعات وشركات الاتصالات الكبرى والمؤسسات الخاصة. بخلاف كتير من النطاقات الوطنية اللي اتحولت لنطاقات أسلوب حياة عامة، فضل **.eg** راسخًا في هويته الجغرافية — هو بيدل على مصر، وجوجل بيتعامل معاه بالطريقة دي.

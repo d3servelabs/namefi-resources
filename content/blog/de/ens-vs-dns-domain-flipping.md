@@ -12,6 +12,24 @@ format: comparison
 description: "Wie sich das Flipping von ENS-.eth-Namen vom Flipping klassischer DNS-Domains unterscheidet: Eigentum, Liquidität, Verlängerung, Gas und wofür sich was jeweils eignet."
 ogImage: ../../assets/ens-vs-dns-domain-flipping-og.jpg
 keywords: ['ENS vs DNS', 'ENS-Domains flippen', 'ENS-Domain-Flipping', '.eth-Domain-Investing', '.eth-Namen flippen', 'ENS vs. klassische Domains', 'On-Chain-Domain-Flipping', 'NFT-Domain-Liquidität', 'ENS-Verlängerungsgebühren', 'ERC-721-Domains', 'Web3-Domain-Flipping', 'ENS auf OpenSea verkaufen', 'ENS-Ablauf-Schonfrist', 'tokenisiertes Domain-Flipping', 'ENS-Gas-Gebühren']
+relatedArticles:
+  - /de/blog/onchain-domain-flipping/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/onchain-domain-marketplaces-compared/
+  - /de/blog/selling-domains-as-nfts/
+  - /de/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Wenn du Domains flippst, hast du den [ENS](/de/glossary/ens/)-Markt wahrscheinlich schon von der Seitenlinie aus beobachtet und dich gefragt, ob es dasselbe Spiel mit einem neuen Anstrich ist. Ist es nicht. Einen `.eth`-Namen zu flippen und ein klassisches `.com` zu flippen reimen sich zwar — kauf günstig eine gute Zeichenfolge, verkauf sie an jemanden, der sie dringender braucht —, aber fast alles darunter ist anders: wer dein Eigentum sehen kann, wie ein Verkauf abgewickelt wird, was du fürs Halten des Namens zahlst und was „Eigentum" überhaupt bedeutet. Dieser Beitrag geht die echten Unterschiede durch, damit du entscheiden kannst, wo deine Zeit und dein Kapital tatsächlich gut aufgehoben sind.

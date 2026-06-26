@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Cómo Jamba Juice pasó 29 años explicándose con la palabra "Juice", por qué la eliminó en 2019 para convertirse simplemente en "Jamba", y la ventaja discreta que casi nadie notó: la empresa había sido dueña del dominio exacto Jamba.com desde los años 90.'
 keywords: ['jambajuice.com', 'jamba.com', 'nombre de dominio jamba juice', 'cambio de marca jamba', 'actualización de dominio', 'cambio de nombre jamba juice', 'kirk perron', 'focus brands jamba', 'dominio de coincidencia exacta', 'nombres para startups', 'nombre de marca', 'dominio premium', 'estrategia de dominios', 'dominio que define categoría']
+relatedArticles:
+  - /es/blog/from-ubercab-com-to-uber-com/
+  - /es/blog/from-massdrop-com-to-drop-com/
+  - /es/blog/from-urbancompass-com-to-compass-com/
+  - /es/blog/from-teslamotors-com-to-tesla-com/
+  - /es/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/name-change-game-change/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Durante veintinueve años, una de las cadenas de batidos más conocidas de Estados Unidos te decía lo que vendía directamente en su nombre: **Jamba Juice**, con domicilio en **JambaJuice.com**.

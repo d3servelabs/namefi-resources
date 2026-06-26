@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "دليلك الشامل حول نطاق .org: اكتشف معناه، تاريخه، ومزاياه الفريدة. تعرف على كيفية تسجيل نطاقك بآلية Web3 المتطورة عبر Namefi لبناء ثقة فورية مع جمهورك."
 keywords: [".org domains", "TLD", "top-level domain", "what is .org", "why choose .org", "what is the .org domain", "why choose the .org domain", "نطاق org", "حجز دومين", "نطاقات المستوى الأعلى", "استثمار النطاقات", "نطاقات البلوكشين", "توكنة النطاقات", "منظمات غير ربحية", "Namefi"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .org؟**

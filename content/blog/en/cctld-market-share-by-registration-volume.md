@@ -10,6 +10,24 @@ format: analysis
 description: A look at which country-code top-level domains command the largest share of registrations worldwide, why the leaders differ from what most people expect, and what the volume numbers tell us about how the internet is actually used.
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['cctld market share', 'country code domains', '.cn', '.de', '.uk', '.tk', '.io', 'domain statistics', 'registry data', 'namefi']
+relatedArticles:
+  - /en/blog/how-tld-affects-domain-value/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 When most people picture the internet, they picture `.com`. And in raw numbers, `.com` is still the largest [top-level domain](/en/glossary/tld/) on the planet, with roughly 160 million names under management. But `.com` is a [gTLD](/en/glossary/gtld/)—a *generic* top-level domain. Shift the lens to **country-code TLDs (ccTLDs)**—the two-letter suffixes assigned to nations and territories under [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)—and the picture gets much more interesting, and much less predictable.

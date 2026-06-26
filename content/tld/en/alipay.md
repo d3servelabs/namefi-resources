@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Discover the purpose behind the .alipay TLD. Learn how this unique Brand TLD enhances security in fintech and what it means for the future of domain investing."
 keywords: [".alipay domains", ".alipay TLD", "top-level domain", "what is .alipay", "why choose .alipay", "what is the .alipay domain", "why choose the .alipay domain", "fintech domains", "brand TLD", "Alibaba Group domains", "blockchain domains", "tokenized domains", "domain investing", "digital payment security", "Namefi"]
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
 ---
 
 ## **What is .alipay?**

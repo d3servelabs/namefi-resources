@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Elon Musk X.com 1999 aufbaute, sie verlor als PayPal seinen alten Namen übernahm, sie 2017 aus Nostalgie zurückkaufte und schließlich ein soziales Netzwerk mit 44 Milliarden Dollar Kaufpreis darauf umzog – sodass Twitter.com nun auf X.com weiterleitet.'
 keywords: ['twitter.com', 'x.com', 'twitter rebranding x', 'elon musk x.com', 'x.com geschichte', 'paypal x.com domain', 'twitter zu x namensänderung', 'domain-weiterleitung', 'domain-upgrade', 'ein-buchstaben-domain', 'everything app', 'markenbezeichnung', 'premium-domain']
+relatedArticles:
+  - /de/blog/from-mona-co-to-crypto-com/
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-ctrip-com-to-trip-com/
+  - /de/blog/from-snapchat-com-to-snap-com/
+  - /de/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Die meisten Domain-Upgrade-Geschichten verlaufen geradlinig: Ein Unternehmen startet mit einem beschreibenden Namen, wächst heran und kauft dann die saubere Exact-Match-Domain. **Twitter.com zu X.com** ist seltsamer als das. Es ist eine Hin- und Rückreise. Die Zieldomain – **X.com** – war die *erste* Domain in dieser Geschichte, 1999 von Elon Musk registriert, ein Jahr später an PayPal verloren, zwei Jahrzehnte danach aus purer Nostalgie zurückgekauft und schließlich 2023 auf ein globales soziales Netzwerk übertragen.

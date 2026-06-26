@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "¿Por qué los dominios .io son tan caros? Un desglose claro de los precios mayoristas del registro, la demanda de startups y tecnología, la escasez de nombres cortos, las renovaciones y la nueva pregunta sobre la soberanía de Chagos."
 keywords: ['por qué los dominios io son caros', 'por qué los dominios .io son caros', 'dominio io caro', 'por qué los dominios io son costosos', 'por qué los dominios .io son tan caros', 'para qué sirve el dominio .io', 'dominio io para startups', 'precio dominio io', 'costo dominio io', 'costo de renovación dominio io', 'vale la pena un dominio io', 'io vs com', 'dominio io vs ai', 'precio del dominio io', 'por qué los dominios io cuestan más', 'precios de dominios io explicados', 'debo comprar un dominio io', 'io ccTLD', 'Chagos dominio io', 'comprar dominio io']
+relatedArticles:
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/how-tld-affects-domain-value/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/domain-flipping/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 Si recientemente has buscado el precio de un dominio `.io` y te ha sorprendido, no eres el único. En comparación con un `.com` estándar o una de las extensiones más económicas, `.io` aterrizó consistentemente en el nivel premium, tanto para registrar como, de manera más dolorosa, para renovar cada año.

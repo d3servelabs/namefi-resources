@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Cómo "Sea Turtle", una campaña patrocinada por un Estado revelada por Cisco Talos en 2019, secuestró el DNS al comprometer registradores, registros y proveedores de DNS — redirigiendo a gobiernos, ministerios y empresas energéticas hacia servidores de los atacantes, falsificando certificados válidos e incluso vulnerando un registro nacional de TLD.'
 keywords: ['secuestro dns sea turtle', 'cisco talos sea turtle', 'ataque de secuestro dns', 'ataque dns patrocinado por estado', 'compromiso de registro', 'compromiso de registrador', 'campaña de espionaje dns', 'certificado mitm lets encrypt', 'compromiso netnod', 'ics-forth grecia ccTLD', 'directiva de emergencia cisa 19-01', 'seguridad dns', 'seguridad de propiedad de dominio', 'ciberataque de estado nación']
+relatedArticles:
+  - /es/blog/the-dnspionage-campaign/
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-myetherwallet-bgp-dns-attack/
+  - /es/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/dns/
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
 ---
 
 La mayoría de los ciberataques intentan entrar *en* un objetivo. La campaña Sea Turtle hizo algo más silencioso y mucho más peligroso: se infiltró en el **mapa** que le indica a todo internet dónde vive el objetivo.

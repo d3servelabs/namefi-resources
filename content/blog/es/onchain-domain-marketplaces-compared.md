@@ -12,6 +12,24 @@ format: comparison
 description: "OpenSea, los mercados basados en Seaport y los mercados nativos de dominios en cadena comparados por comisiones, alcance y custodia: qué plataforma se ajusta a cada venta de dominio tokenizado."
 ogImage: ../../assets/onchain-domain-marketplaces-compared-og.jpg
 keywords: ['mercado de dominios en cadena', 'mercado de dominios tokenizados', 'vender dominio NFT', 'dominio OpenSea', 'protocolo Seaport', 'comisiones de mercado NFT', 'flipping de dominios web3', 'dónde vender dominios tokenizados', 'OpenSea vs Blur', 'venta atómica de NFT', 'dominio ERC-721', 'comparación de mercados de dominios NFT', 'mercado Namefi', 'venta de dominio con autocustodia', 'comercio de dominios en cadena']
+relatedArticles:
+  - /es/blog/selling-domains-as-nfts/
+  - /es/blog/onchain-domain-flipping/
+  - /es/blog/tokenize-your-com-to-flip-it/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/tokenize-your-com/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Si haces flipping de un [dominio tokenizado](/es/blog/what-are-tokenized-domains/) —un nombre ICANN real con un token de propiedad [en cadena](/es/glossary/on-chain/) por encima— tienes una opción que el mundo tradicional de los dominios nunca te dio. Puedes publicar el nombre como un [NFT](/es/glossary/nft/) en un mercado de criptomonedas general, venderlo a través de una plataforma basada en [Seaport](/es/glossary/smart-contract/) sin custodia de terceros, o usar una plataforma nativa de dominios construida exactamente para este activo. Cada camino mueve el mismo token, pero las comisiones, el alcance y el modelo de custodia son lo bastante distintos como para que elegir mal pueda costarte un comprador o una parte de tu margen.

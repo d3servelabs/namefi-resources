@@ -12,6 +12,24 @@ format: explainer
 description: "How a domain expires and drops: grace period, the 30-day redemption window, 5-day pending delete, release — and where dropped names surface for flippers."
 ogImage: ../../assets/expired-domains-and-the-drop-cycle-og.jpg
 keywords: ['expired domains', 'domain drop cycle', 'domain life cycle', 'redemption grace period', 'pending delete', 'domain drop catching', 'expired domain names', 'how domains expire', 'dropped domains', 'domain sniping', 'buy expired domains', 'domain redemption period', 'when do domains drop', 'domain backorder', 'find domains to flip']
+relatedArticles:
+  - /en/blog/domain-backorders-and-drop-catching/
+  - /en/blog/domain-flipping/
+  - /en/blog/how-to-win-domain-auctions/
+  - /en/blog/hand-registering-domains-to-flip/
+  - /en/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Most people assume a domain that lapses simply vanishes the day after it expires, snapping back onto the open market the next morning. It doesn't. A name nobody renews runs through a fixed, multi-week sequence of holding states — each with its own rules about who can recover it and at what cost — before the [registry](/en/glossary/registry/) finally releases it back to the available pool. That final release is "the [drop](/en/glossary/pending-delete/)," and registering a name the instant it lands is a recognized practice: as Wikipedia puts it, [domain drop catching, also known as domain sniping, is the practice of registering a domain name once registration has lapsed, immediately after expiry](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=is%20the%20practice%20of%20registering%20a%20domain%20name%20once%20registration%20has%20lapsed%2C%20immediately%20after%20expiry).

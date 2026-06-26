@@ -12,6 +12,24 @@ format: analysis
 description: "إزاي تقيّم نطاقات ENS والنطاقات المُرمَّزة باستخدام المبيعات المشابهة أونشين، ومنطق السعر الأرضي مقابل العلاوة، وعوامل أندية ENS — وليه ده بيختلف عن الـ DNS."
 ogImage: ../../assets/appraising-onchain-domains-og.jpg
 keywords: ['تقييم نطاقات ENS', 'تقدير قيمة نطاق ENS', 'تقييم النطاقات المُرمَّزة', 'المبيعات المشابهة أونشين', 'مبيعات النطاقات المشابهة', 'مبيعات مشابهة على NameBio', 'السعر الأرضي لـ ENS', 'نادي ENS 999', 'نادي ENS 10k', 'إزاي تقيّم اسم ENS', 'قيمة النطاق المُرمَّز', 'تقييم نطاقات web3', 'قيمة نطاق ERC-721', 'تاريخ المبيعات أونشين', 'السعر الأرضي مقابل العلاوة للنطاقات']
+relatedArticles:
+  - /ar/blog/onchain-domain-flipping/
+  - /ar/blog/how-to-read-comparable-domain-sales/
+  - /ar/blog/domain-appraisal-tools-compared/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 التقييم هو المهارة اللي بتحدد إذا كانت عملية التقليب هتكسب فلوس ولا لأ. التوريد بيقول لك إيه المعروض للبيع، والبيع بيحوّل الاسم لشيك، لكن الرقم اللي في النص — اللي هو الاسم بيسوى كام فعلاً — هو المكان اللي فيه الربح. ده صحيح بالنسبة لنطاق `.com` وصحيح أونشين كمان، لكن مع فرق إن عالم الأونشين بيدّيك حاجة ما قدرش سوق [DNS](/ar/glossary/dns/) الثانوي يدّيهالك أبداً: سجل عام ومختوم بالوقت لكل عملية بيع تقريباً. ده فصل التقييم في دليل [تقليب الدومينات](/ar/blog/domain-flipping/) الأشمل، ومركّز على الأصلين اللي بتتاجر فيهم في [تداول النطاقات أونشين](/ar/blog/onchain-domain-flipping/) — أسماء [ENS (خدمة أسماء إيثريوم)](/ar/glossary/ens/) ونطاقات ICANN المُرمَّزة.

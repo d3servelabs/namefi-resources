@@ -11,6 +11,24 @@ authors:
   - namefiteam
 draft: false
 description: 探索 .abbvie 顶级域名的独特之处。作为艾伯维公司的专属品牌域名，它代表了极致的安全与信任。了解其背后的价值，并在 Namefi 开启您的域名注册之旅。
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 ## **什么是 .abbvie？**

@@ -8,6 +8,24 @@ draft: false
 description: "一份实用的、以卖家为中心的检查清单，涵盖域名定价、寻找潜在买家、处理外发推销、避免诈骗以及安全完成转移等环节。"
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png
 keywords: ['如何出售域名', '出售域名', '域名出售清单', '域名估值', '域名交易担保', '域名转移', '域名出站销售', '寻找域名买家', '域名谈判', '出售您拥有的域名', 'Namefi Outbound', '域名二级市场', '域名销售流程', '域名推销', '域名卖家指南']
+relatedArticles:
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/working-with-domain-brokers/
+  - /zh/blog/inbound-vs-outbound-domain-sales/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 拥有域名是容易的部分。出售域名才是真正挑战的开始。

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是多重签名以及它如何增强域名安全性？
 keywords: ["多重签名","multisig","多重签名","增强安全性","共享托管"]
+relatedArticles:
+  - /zh/blog/do-multisig-wallets-actually-improve-security/
+  - /zh/blog/onchain-domain-custody-and-recovery/
+  - /zh/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /zh/blog/how-domain-hijacking-actually-happens/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/wallet/
+  - /zh/glossary/private-key/
+  - /zh/glossary/tokenized-domain/
 ---
 
 

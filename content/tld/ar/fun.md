@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما يخص نطاق .fun، الخيار الأمثل للمواقع الترفيهية والألعاب. تعرف على كيفية تسجيل نطاقك عبر Namefi ومزايا الاستثمار في هذا الامتداد المميز.'
 keywords: ['.fun domains', '.fun TLD', 'top-level domain', 'what is .fun', 'why choose .fun', 'what is the .fun domain', 'why choose the .fun domain', 'نطاقات .fun', 'شراء نطاق', 'استثمار النطاقات', 'blockchain domains', 'tokenized domains', 'نطاقات الألعاب', 'web3 domains', 'Namefi']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 في عالم الإنترنت المتنامي، لم يعد اختيار اسم النطاق (Domain Name) مجرد عنوان لموقعك الإلكتروني، بل هو جزء لا يتجزأ من هويتك الرقمية وعلامتك التجارية. بينما يزدحم الفضاء الرقمي بالنطاقات التقليدية مثل `.com` و `.net`، ظهرت نطاقات جديدة تمنحك فرصة للتميز والإبداع. أحد أبرز هذه النطاقات هو **.fun**.

@@ -12,6 +12,24 @@ format: guide
 description: "إيه هو تقليب الدومينات بالظبط — تشتري أسماء بسعر رخيص وتبيعها بسعر أعلى — وإيه المهارات اللي ورا الشغلانة دي، من إنك تلاقي الأسماء لحد ما تقدّر قيمتها وتبيعها."
 ogImage: ../../assets/domain-flipping-og.jpg
 keywords: ['تقليب الدومينات', 'إزاي تقلّب الدومينات', 'تقليب الدومينات للربح', 'تقليب الدومينات للمبتدئين', 'شراء وبيع الدومينات', 'الاستثمار في النطاقات', 'اكسب فلوس من الدومينات', 'دليل تقليب الدومينات', 'إزاي تقيّم الدومين', 'إزاي تلاقي دومينات للتقليب', 'محفظة الدومينات', 'إعادة بيع الدومينات', 'هل تقليب الدومينات قانوني', 'السوق الثانوي للدومينات']
+relatedArticles:
+  - /ar/blog/domain-renewal-costs-and-sell-through-rate/
+  - /ar/blog/how-to-sell-domains-for-profit/
+  - /ar/blog/when-to-drop-a-domain/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 الفكرة دي أقدم فكرة في عالم التجارة: اشتري رخيص، وبيع غالي. سجّل أو اشترِ اسم دومين بكام دولار، دوّر على حد محتاجه أكتر منك، وبيعهوله بأضعاف اللي دفعته. لو عملتها صح، هتبان وكأنها سهلة — اسم ذكي اتشرى بسعر رخيص، وشيك بخمسة أرقام بعد شهور. الحكاية دي حقيقية. بس هي كمان أحسن اللقطات اللي بيتعرضوا بس.

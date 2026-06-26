@@ -12,6 +12,24 @@ format: comparison
 description: "ENS .eth नामों की फ़्लिपिंग पारंपरिक DNS डोमेन की फ़्लिपिंग से कैसे अलग है: स्वामित्व, तरलता, नवीनीकरण, गैस, और हर एक किस काम के लिए अच्छा है।"
 ogImage: ../../assets/ens-vs-dns-domain-flipping-og.jpg
 keywords: ['ENS बनाम DNS', 'ENS डोमेन फ़्लिपिंग', '.eth डोमेन निवेश', '.eth नाम फ़्लिप करना', 'ENS बनाम पारंपरिक डोमेन', 'ऑन-चेन डोमेन फ़्लिपिंग', 'NFT डोमेन तरलता', 'ENS नवीनीकरण शुल्क', 'ERC-721 डोमेन', 'web3 डोमेन फ़्लिपिंग', 'OpenSea पर ENS बेचना', 'ENS समाप्ति ग्रेस पीरियड', 'टोकनाइज़्ड डोमेन फ़्लिपिंग', 'ENS गैस शुल्क']
+relatedArticles:
+  - /hi/blog/onchain-domain-flipping/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/onchain-domain-marketplaces-compared/
+  - /hi/blog/selling-domains-as-nfts/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 अगर आप डोमेन फ़्लिप करते हैं, तो शायद आपने [ENS (एथेरियम नेम सर्विस)](/hi/glossary/ens/) बाज़ार को किनारे से देखा होगा और सोचा होगा कि क्या यह वही खेल है बस नई परत चढ़ी हुई। ऐसा नहीं है। किसी `.eth` नाम को फ़्लिप करना और पारंपरिक `.com` को फ़्लिप करना तुकबंदी करते हैं — एक अच्छी स्ट्रिंग सस्ते में खरीदो, उसे किसी ऐसे को बेचो जिसे इसकी ज़्यादा ज़रूरत है — लेकिन इसके नीचे की लगभग हर चीज़ अलग है: आपके स्वामित्व को कौन देख सकता है, कोई बिक्री कैसे निपटती है, नाम को रखने के लिए आप क्या चुकाते हैं, और इसका "मालिक होना" आख़िर मतलब क्या है। यह पोस्ट असली अंतरों पर चलती है ताकि आप तय कर सकें कि आपका समय और पूँजी असल में किसकी हकदार है।

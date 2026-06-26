@@ -16,6 +16,24 @@ faqs:
     answer: 'It suits real estate agents, brokerages, property developers, home builders, interior and home-improvement brands, and rental or listing platforms. The word "homes" is instantly understood, so the suffix works best when housing or property is central to your offering.'
   - question: 'Who operates the .homes registry?'
     answer: 'The .homes registry is operated by XYZ.COM LLC, the same company behind the .xyz domain. The extension was first delegated in 2014 under Dominion Enterprises and transferred to XYZ Registry in 2021.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.homes domain** is a descriptive new [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the housing world: real estate agents, brokerages, builders, property managers, and any brand whose business revolves around where people live. Where a generic suffix forces you to spell out your category in the name itself, a .homes address puts the category in the extension, so `austin.homes` or `coastal.homes` reads as a complete, self-explanatory phrase.

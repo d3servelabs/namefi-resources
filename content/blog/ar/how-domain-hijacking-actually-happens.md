@@ -8,6 +8,24 @@ draft: false
 description: 'استعراض عملي للطرق الخمس التي يستولي بها المهاجمون فعلياً على النطاقات في العالم الحقيقي — الهندسة الاجتماعية، واختراق حساب مسجل النطاق، والاستيلاء على مزود خدمة DNS، واختطاف خوادم الأسماء (NS)، واسترجاع النطاقات منتهية الصلاحية — والضوابط المحددة التي تتصدى لكل منها.'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
 keywords: ['اختطاف النطاقات', 'أمن النطاقات', 'قفل مسجل النطاق', 'قفل النقل', 'dnssec', 'المصادقة الثنائية', 'الهندسة الاجتماعية', 'dangling dns', 'namefi']
+relatedArticles:
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-badgerdao-frontend-attack/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+  - /ar/blog/the-perl-com-domain-theft/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
 ---
 
 مصطلح "[اختطاف النطاق](/ar/glossary/domain-hijacking/)" (Domain hijacking) هو أحد تلك العبارات التي تبدو درامية، لكنها تعني أشياء مختلفة تماماً بناءً على كيفية حدوثها. الاستيلاء على حساب مسجل النطاق عبر رسالة بريد إلكتروني تصيدية هو اختطاف. وتبديل سجل [خادم الأسماء](/ar/glossary/nameserver/) (nameserver) خلسةً لدى مزود خدمة [DNS](/ar/glossary/dns/) هو اختطاف. والنطاق منتهي الصلاحية الذي يستولي عليه شخص آخر ويعيد توجيهه يعتبر أيضاً، بمعنى ما، اختطافاً.

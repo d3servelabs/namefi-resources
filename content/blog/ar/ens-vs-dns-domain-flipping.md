@@ -12,6 +12,24 @@ format: comparison
 description: "إزاي بيع وشراء أسماء ENS بصيغة ‎.eth بيختلف عن النطاقات التقليدية بنظام DNS: الملكية، السيولة، التجديد، الغاز، وكل واحد فيهم بينفع لإيه."
 ogImage: ../../assets/ens-vs-dns-domain-flipping-og.jpg
 keywords: ['ENS مقابل DNS', 'تجارة نطاقات ENS', 'بيع وشراء نطاقات ENS', 'الاستثمار في نطاقات ‎.eth', 'تداول أسماء ‎.eth', 'ENS مقابل النطاقات التقليدية', 'تجارة النطاقات على السلسلة', 'سيولة نطاقات NFT', 'رسوم تجديد ENS', 'نطاقات ERC-721', 'تجارة نطاقات web3', 'بيع ENS على OpenSea', 'فترة سماح انتهاء ENS', 'تجارة النطاقات المُرمَّزة', 'رسوم غاز ENS']
+relatedArticles:
+  - /ar/blog/onchain-domain-flipping/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/onchain-domain-marketplaces-compared/
+  - /ar/blog/selling-domains-as-nfts/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 لو إنت بتشتغل في بيع وشراء النطاقات، أكيد بصيت على سوق [ENS (خدمة أسماء إيثريوم)](/ar/glossary/ens/) من بعيد وسألت نفسك هل دي نفس اللعبة بس بشكل جديد. الحقيقة لأ. بيع وشراء اسم بصيغة `.eth` وبيع وشراء `.com` تقليدي بيتشابهوا في الفكرة — تشتري سترينج كويس برخص وتبيعه لحد محتاجه أكتر منك — بس تقريبًا كل حاجة تحت السطح مختلفة: مين اللي يقدر يشوف ملكيتك، البيع بيتم إزاي، إنت بتدفع إيه عشان تحتفظ بالاسم، وحتى معنى إن إنت "تمتلكه" بيختلف. البوست ده بيمشي على الفروق الحقيقية عشان تقدر تقرر وقتك وفلوسك ينفع تحطهم فين بجد.

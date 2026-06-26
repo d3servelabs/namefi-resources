@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: डोमेन के संदर्भ में "ऑन-चेन" का क्या अर्थ है?
 keywords: ["ऑन-चेन","ब्लॉकचेन","स्मार्ट कॉन्ट्रैक्ट्स","डोमेन NFT","विकेन्द्रीकरण"]
+relatedArticles:
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/why-tokenize-domains/
+  - /hi/blog/the-curve-finance-dns-hijack/
+  - /hi/blog/what-are-xstocks/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/web3-foundations/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
+  - /hi/glossary/tokenize/
+  - /hi/glossary/blockchain/
 ---
 
 **ऑन-चेन** उन डेटा, एसेट या कार्यों को संदर्भित करता है जो सीधे एक सार्वजनिक [ब्लॉकचेन](/hi/glossary/blockchain/) पर दर्ज किए जाते हैं। जब एक डोमेन "ऑन-चेन" होता है, तो उसके स्वामित्व और प्रबंधन को [स्मार्ट कॉन्ट्रैक्ट](/hi/glossary/smart-contract/) के माध्यम से सत्यापित और हस्तांतरित किया जा सकता है—एक केंद्रीकृत [रजिस्ट्रार](/hi/glossary/registrar/) से अनुमोदन की आवश्यकता के बिना। Namefi डोमेन को [NFTs](/hi/glossary/nft/) में बदलने के लिए ऑन-चेन इंफ्रास्ट्रक्चर का उपयोग करता है, जिससे तत्काल, [परमिशनलेस](/hi/glossary/permissionless/) हस्तांतरण और अन्य विकेन्द्रीकृत प्रोटोकॉल के साथ एकीकरण सक्षम होता है। यह संरचना डोमेन धारकों को अधिक पारदर्शिता, प्रोग्रामेबिलिटी और नियंत्रण प्रदान करती है। जबकि अंतर्निहित डोमेन अभी भी पारंपरिक [DNS](/hi/glossary/dns/) में रहता है, इसका टोकनाइज़्ड प्रतिनिधित्व एक सुरक्षित और इंटरऑपरेबल एसेट के रूप में ऑन-चेन रहता है।

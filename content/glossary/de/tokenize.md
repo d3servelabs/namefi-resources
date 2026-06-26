@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was bedeutet es, eine Domain oder ein Asset zu tokenisieren?
 keywords: ["tokenisieren","tokenisierung","NFT","digitales Asset","On-Chain-Asset"]
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/why-tokenize-domains/
+  - /de/blog/tokenize-your-com-to-flip-it/
+  - /de/blog/tokenized-domain-use-cases-2026/
+  - /de/blog/ens-vs-unstoppable-vs-tokenized-dns/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/dns/
+  - /de/glossary/composability/
+  - /de/glossary/smart-contract/
+  - /de/glossary/tokenized-domain/
+  - /de/glossary/web3/
 ---
 
 

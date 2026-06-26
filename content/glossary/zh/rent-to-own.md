@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是先租后买以及它如何应用于域名获取？
 keywords: ["先租后买","渐进式所有权","分期付款计划","域名收购","智能合约"]
+relatedArticles:
+  - /zh/blog/taxes-and-accounting-for-domain-investors/
+  - /zh/blog/why-tokenize-domains/
+  - /zh/blog/domain-parking-and-monetization/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/onchain-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/lease-to-own/
+  - /zh/glossary/domain-ownership/
+  - /zh/glossary/domain-financing/
+  - /zh/glossary/premium-domain/
+  - /zh/glossary/smart-contract/
 ---
 
 

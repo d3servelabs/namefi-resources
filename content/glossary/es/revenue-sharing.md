@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es el reparto de ingresos y cómo se aplica a la monetización de dominios?
 keywords: ["reparto de ingresos","ingresos pasivos","monetización de dominios","distribución de beneficios","contratos inteligentes"]
+relatedArticles:
+  - /es/blog/domain-parking-and-monetization/
+  - /es/blog/why-tokenize-domains/
+  - /es/blog/domain-escrow-explained/
+  - /es/blog/from-thefacebook-com-to-facebook-com/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-investor-field-guide/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/smart-contract/
+  - /es/glossary/tokenized-domain/
+  - /es/glossary/tokenize/
+  - /es/glossary/fractional-ownership/
+  - /es/glossary/leasing/
 ---
 
 

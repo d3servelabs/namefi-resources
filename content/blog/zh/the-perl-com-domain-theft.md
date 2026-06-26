@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2021年1月下旬，拥有数十年历史的Perl编程社区门户 perl.com 遭到盗窃——攻击者通过入侵注册商账户，将域名经中国转移，指向一个与恶意软件相关的IP地址，并以19万美元挂牌出售。本文还原事件经过、记录域名找回过程，并深入探讨注册商账户安全的重要性。'
 keywords: ['perl.com', 'perl.com域名盗窃', '域名劫持', '域名盗窃', '注册商账户入侵', '社会工程学', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'DNS劫持', '域名安全', '账户接管', 'BizCN']
+relatedArticles:
+  - /zh/blog/the-panix-com-domain-hijack/
+  - /zh/blog/the-lenovo-com-dns-hijack/
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/tld/
 ---
 
 有些域名是基础设施，只是碰巧以名字的形式存在。**perl.com** 就是其中之一。它不是某个品牌去年打造的营销资产，而是互联网早期以来Perl编程社区赖以为家的一块网络门牌——承载着文档、文章以及这门语言公众形象的权威入口。

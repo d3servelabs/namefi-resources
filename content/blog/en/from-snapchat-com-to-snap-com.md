@@ -11,6 +11,24 @@ seriesOrder: 6
 format: case-study
 description: 'How Snapchat quietly bought Snap.com from Idealab for a reported $5M in 2014, then in September 2016 renamed itself Snap Inc., "a camera company," and let the short exact-match domain carry an identity bigger than any single app.'
 keywords: ['snapchat.com', 'snap.com', 'snap inc', 'snap domain name', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'snapchat rebrand', 'camera company', 'idealab snap.com', 'domain acquisition', 'category-defining domain']
+relatedArticles:
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-teslamotors-com-to-tesla-com/
+  - /en/blog/from-ctrip-com-to-trip-com/
+  - /en/blog/from-massdrop-com-to-drop-com/
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
 ---
 
 Before Snap Inc. was a publicly traded "camera company," it was a single app with a literal, self-explaining name: **Snapchat**. The product told you what it did. You took a snap, you chatted, the snap disappeared. The name and the verb were the same thing.

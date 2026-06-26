@@ -11,6 +11,24 @@ seriesOrder: 3
 format: case-study
 description: What actually happens if you lose access to the wallet that holds your tokenized domain — and the operational steps to reduce the chance of getting there in the first place. Backups, multisig, hardware wallets, social recovery, and the limits of what any platform can do.
 keywords: ['recover NFT domain', 'lost wallet domain', 'tokenized domain wallet lost', 'wallet recovery domain', 'NFT domain backup', 'tokenized domain hardware wallet', 'multisig tokenized domain', 'tokenized domain key recovery', 'lost seed phrase domain', 'NFT domain security', 'tokenized domain backup', 'domain key management', 'wallet loss recovery']
+relatedArticles:
+  - /en/blog/onchain-domain-custody-and-recovery/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/tokenize-your-com-to-flip-it/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-security/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
+  - /en/glossary/registry/
 ---
 
 Of all the things people don't think about before [tokenizing a domain](/en/blog/what-are-tokenized-domains/), **wallet loss recovery** is the biggest. Once a domain is tokenized, the [wallet](/en/glossary/wallet/) holding the [NFT](/en/glossary/nft/) is the source of truth for ownership. Lose the wallet, and you have a real problem.

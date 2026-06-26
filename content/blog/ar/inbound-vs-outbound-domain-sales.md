@@ -12,6 +12,24 @@ format: explainer
 description: "البيع الوارد مقابل الصادر للدومينات: إمتى كل واحد فيهم بينفع، الموازنة بين المجهود والعائد، وإزاي تشغّل الاتنين من غير ما رسايلك تبقى زي السبام."
 ogImage: ../../assets/inbound-vs-outbound-domain-sales-og.jpg
 keywords: ['البيع الوارد مقابل الصادر للدومينات', 'البيع الوارد للدومينات', 'البيع الصادر للدومينات', 'التواصل لبيع الدومينات', 'التواصل البارد للدومينات', 'بيع الدومينات للمستخدمين النهائيين', 'صفحة هبوط الدومين', 'إدراج الدومين في السوق', 'معدل بيع الدومينات', 'إزاي تبيع الدومينات', 'تقليب الدومينات', 'السوق الثانوي للدومينات', 'مشتري الدومين المستخدم النهائي', 'استراتيجية البيع الصادر للدومينات', 'استراتيجية البيع الوارد للدومينات']
+relatedArticles:
+  - /ar/blog/how-to-sell-domains-for-profit/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/marketing-your-domains-for-sale/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 في طريقتين بس أي دومين ممكن يتباع بيهم. يا إما المشتري يلاقيك، يا إما إنت اللي تلاقي المشتري. دي الخريطة كلها. البيع الوارد (Inbound) هو إن المشتري يكتب اسمك في المتصفح، يوصل لصفحة "معروض للبيع"، ويتواصل معاك. البيع الصادر (Outbound) هو إنك تشوف الشركة اللي واضح إنها محتاجة الاسم وتبعتلها إنت الأول. أي حاجة تانية في موضوع البيع — طريقة التسعير، اختيار السوق، خدمة الضمان — كلها بتيجي بعد ما تحدد إنت بتلعب أنهي لعبة من الاتنين دول.

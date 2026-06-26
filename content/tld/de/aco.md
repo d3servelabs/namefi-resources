@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: Entdecken Sie das Potenzial der .aco Domain. Erfahren Sie alles über die Bedeutung, SEO-Vorteile und wie Sie diese TLD bei Namefi registrieren können.
 keywords: ['.aco domains', 'TLD', 'top-level domain', 'was ist .aco', 'warum .aco wählen', 'was ist die .aco domain', 'warum die .aco domain wählen', 'domain investing', 'blockchain', 'tokenized domain', 'web3 domains', 'domain namen kaufen', 'nischen domains', 'markenschutz']
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 ## **Was ist .aco?**

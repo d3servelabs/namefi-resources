@@ -6,6 +6,24 @@ tags: ["faq","domains","tokenization"]
 authors: ["namefiteam"]
 description: जानें कि xStocks वित्त में कैसे क्रांति ला रहे हैं और क्यों Namefi के माध्यम से टोकनाइजेशन का उपयोग करने वाले डोमेनर इस डिजिटल बदलाव का नेतृत्व करने के लिए विशिष्ट रूप से तैयार हैं।
 keywords: ["xStocks","टोकनाइज्ड स्टॉक","टोकनाइज्ड इक्विटी","डोमेन निवेश","डोमेन टोकनाइजेशन","नेमफाई","ब्लॉकचेन स्टॉक","आंशिक स्वामित्व","वेब3 फाइनेंस","डिजिटल संपत्ति व्यापार","सोलाना टोकनाइज्ड एसेट्स","क्रिप्टो स्टॉक","ऑन-चेन इक्विटी","वास्तविक दुनिया की संपत्तियों का टोकनाइजेशन","टोकनाइज्ड डोमेन नाम"]
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/onchain-domain-flipping/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /hi/topics/web3-foundations/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
+  - /hi/glossary/tld/
 ---
 
 

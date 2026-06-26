@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Snapchat 如何悄然以据报道 500 万美元的价格从 Idealab 收购 Snap.com，随后在 2016 年 9 月更名为 Snap Inc.，自称"一家相机公司"，并让这个简短的精准匹配域名承载了远超单一应用的品牌身份。'
 keywords: ['snapchat.com', 'snap.com', 'snap inc', 'snap 域名', '域名升级', '初创公司命名', '品牌命名', '高价域名', '域名战略', 'snapchat 品牌重塑', '相机公司', 'idealab snap.com', '域名收购', '类别定义域名']
+relatedArticles:
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+  - /zh/blog/from-ctrip-com-to-trip-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
 ---
 
 在 Snap Inc. 成为一家公开上市的"相机公司"之前，它只是一款名副其实、自我描述的应用：**Snapchat**。产品的名字就告诉了你它能做什么。你拍一张 snap，进行聊天，snap 随即消失。应用名称和动作本身融为一体。

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .akdn : son origine, son utilisation par le Réseau Aga Khan et l'importance des TLD de marque. Enregistrez votre domaine idéal avec Namefi."
 keywords: [".akdn", "domaine .akdn", "TLD .akdn", "extension .akdn", "qu'est-ce que le .akdn", "pourquoi choisir .akdn", "investir nom de domaine", "achat nom de domaine", "domaines blockchain", "domaines tokenisés", "registraire de domaine", "Namefi", "top-level domain", "signification .akdn", "réseau aga khan"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Dans le monde vaste et en constante expansion d'Internet, les extensions de domaine (ou [TLD](/fr/glossary/tld/) pour *Top-Level Domains*) jouent un rôle crucial dans l'identité numérique. Si nous sommes tous habitués aux classiques `.com` ou `.org`, il existe des extensions plus spécifiques et prestigieuses, connues sous le nom de "Brand TLDs" (TLD de marque). L'un de ces exemples fascinants est le **.akdn**.

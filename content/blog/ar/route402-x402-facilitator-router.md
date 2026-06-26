@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "موجّه متعدد المستأجرين (multi-tenant) يتيح لك دمج x402 مرة واحدة وتوجيه الطلبات بناءً على السياسات والإشارات المباشرة، دون الحاجة إلى تضمين منطق التوجيه في تطبيقك."
 keywords: ['Route402', 'x402', 'توجيه المدفوعات', 'موجّه مسهّل', 'مدفوعات متعددة المستأجرين', 'RBAC', 'تشفير بيانات الاعتماد', 'توجيه القدرات', 'تسوية ثابتة', 'البنية التحتية للمدفوعات', 'قواعد توجيه YAML']
+relatedArticles:
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-discordapp-com-to-discord-com/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/from-urbancompass-com-to-compass-com/
+relatedTopics:
+  - /ar/topics/web3-foundations/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/x402/
 ---
 
 ## باختصار

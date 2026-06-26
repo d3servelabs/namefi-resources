@@ -12,6 +12,24 @@ format: explainer
 description: "Qué es el aparcamiento de dominios, cómo los nombres aparcados generan ingresos por publicidad y afiliación, por qué el aparcamiento moderno es un canal de venta y cuándo vale realmente la pena."
 ogImage: ../../assets/domain-parking-and-monetization-og.jpg
 keywords: ['aparcamiento de dominios', 'aparcar un dominio', 'monetizar un dominio aparcado', 'ingresos por aparcamiento de dominios', 'anuncios en dominios aparcados', 'dominios de pago por clic', 'tráfico directo', 'monetización de dominios', 'página de dominio en venta', 'página de aparcamiento', 'inversión en dominios', 'reventa de dominios', 'ganar dinero con dominios sin usar', 'afiliación en dominios aparcados', 'vale la pena aparcar dominios']
+relatedArticles:
+  - /es/blog/marketing-your-domains-for-sale/
+  - /es/blog/domain-for-sale-landing-pages/
+  - /es/blog/domain-flipping/
+  - /es/blog/inbound-vs-outbound-domain-sales/
+  - /es/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/best-tlds-by-industry/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Un dominio que conservas para revender es, por defecto, un activo muerto. Está ahí, en tu cuenta, te cuesta una cuota de renovación cada año y no hace nada mientras esperas al comprador adecuado. El aparcamiento es la práctica de hacer que ese nombre inactivo trabaje al menos un poco: ya sea mostrando anuncios a quien tropiece con él o, de forma más útil, anunciándole al mundo que el nombre está en venta.

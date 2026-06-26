@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'कैसे Snapchat ने 2014 में Idealab से Snap.com को कथित रूप से $5M में चुपचाप खरीदा, फिर सितंबर 2016 में खुद को Snap Inc., "एक कैमरा कंपनी" का नाम दिया और उस छोटे exact-match डोमेन को एक ऐसी पहचान का प्रवेश द्वार बनने दिया जो किसी एक ऐप से कहीं बड़ी थी।'
 keywords: ['snapchat.com', 'snap.com', 'snap inc', 'snap डोमेन नाम', 'डोमेन अपग्रेड', 'स्टार्टअप नामकरण', 'ब्रांड नामकरण', 'प्रीमियम डोमेन', 'डोमेन रणनीति', 'snapchat रीब्रांड', 'कैमरा कंपनी', 'idealab snap.com', 'डोमेन अधिग्रहण', 'कैटेगरी-परिभाषित डोमेन']
+relatedArticles:
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+  - /hi/blog/from-ctrip-com-to-trip-com/
+  - /hi/blog/from-massdrop-com-to-drop-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
 ---
 
 इससे पहले कि Snap Inc. एक सार्वजनिक रूप से कारोबार करने वाली "कैमरा कंपनी" बनती, वह एक अकेला ऐप था जिसका नाम सीधे-सादे तरीके से खुद को समझाता था: **Snapchat**। उत्पाद आपको बताता था कि वह क्या करता है। आप एक snap लेते थे, chat करते थे, और snap गायब हो जाता था। नाम और क्रिया एक ही थे।

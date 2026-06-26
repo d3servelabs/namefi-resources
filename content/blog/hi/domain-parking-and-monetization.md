@@ -12,6 +12,24 @@ format: explainer
 description: "डोमेन पार्किंग क्या है, पार्क किए गए नाम विज्ञापन और एफिलिएट राजस्व कैसे कमाते हैं, आधुनिक पार्किंग एक बिक्री चैनल क्यों है, और यह वास्तव में कब सार्थक होती है।"
 ogImage: ../../assets/domain-parking-and-monetization-og.jpg
 keywords: ['डोमेन पार्किंग', 'डोमेन पार्क करना', 'पार्क किए गए डोमेन से कमाई', 'डोमेन पार्किंग से आय', 'पार्क्ड डोमेन पर विज्ञापन', 'पे पर क्लिक डोमेन', 'टाइप-इन ट्रैफ़िक', 'डोमेन मोनेटाइज़ेशन', 'डोमेन बिक्री पेज', 'पार्किंग पेज', 'डोमेन इन्वेस्टिंग', 'डोमेन फ्लिपिंग', 'बेकार डोमेन से पैसे कमाएं', 'पार्क्ड डोमेन एफिलिएट', 'क्या डोमेन पार्किंग फायदेमंद है']
+relatedArticles:
+  - /hi/blog/marketing-your-domains-for-sale/
+  - /hi/blog/domain-for-sale-landing-pages/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/inbound-vs-outbound-domain-sales/
+  - /hi/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/best-tlds-by-industry/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 जो डोमेन आप फ्लिप करने के लिए होल्ड कर रहे हैं, वह डिफ़ॉल्ट रूप से एक निष्क्रिय संपत्ति है। वह आपके अकाउंट में पड़ा रहता है, हर साल रिन्यूअल फ़ीस लेता है, और सही खरीदार का इंतजार करते हुए कुछ नहीं करता। पार्किंग वह तरीका है जिससे इस खाली पड़े नाम को थोड़ा काम पर लगाया जाता है — या तो उस पर आने वाले किसी भी विज़िटर को विज्ञापन दिखाकर, या, ज़्यादा उपयोगी तरीके से, दुनिया को यह बताकर कि नाम बिकाऊ है।

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Im Dezember 2021 kompromittierten Angreifer das Cloudflare-Konto von BadgerDAO und schleusten ein bösartiges Skript in das Website-Frontend ein. Die auditierten Smart Contracts wurden nie berührt — und dennoch verschwanden rund 120 Millionen Dollar durch Wallet-Freigaben, die Nutzer unwissentlich unterzeichneten. Eine Tiefenanalyse darüber, warum die Website Teil Ihrer Sicherheitsoberfläche ist.'
 keywords: ['badgerdao hack', 'badgerdao frontend-angriff', 'cloudflare api-schlüssel kompromittierung', 'eingeschleustes skript angriff', 'web3 frontend-sicherheit', 'ice phishing', 'increaseAllowance angriff', 'token-freigabe exploit', 'dns und domain-sicherheit', 'cloudflare workers exploit', 'defi sicherheit', 'supply chain angriff web3', 'website-manipulation', 'domain-sicherheit']
+relatedArticles:
+  - /de/blog/the-curve-finance-dns-hijack/
+  - /de/blog/the-sushiswap-miso-insider-attack/
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /de/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/web3/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
 ---
 
 Das Audit war sauber. Die Contracts waren in Ordnung. Das Geld verschwand trotzdem.

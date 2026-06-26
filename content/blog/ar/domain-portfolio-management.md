@@ -12,6 +12,24 @@ format: guide
 description: "اتعامل مع نطاقاتك زي مخزون بيزنس: اتابع تكلفة الشراء، راقب معدل البيع الفعلي، اتحكم في عبء التجديد، اتخلص من الخاسرين، وخلّي الدفاتر نضيفة."
 ogImage: ../../assets/domain-portfolio-management-og.jpg
 keywords: ['إدارة محفظة النطاقات', 'محفظة النطاقات', 'إدارة محفظة نطاقات', 'معدل البيع الفعلي للنطاقات', 'تكاليف تجديد النطاقات', 'إمتى تتخلص من نطاق', 'تكلفة شراء النطاق', 'تتبع مخزون النطاقات', 'بيزنس الاستثمار في النطاقات', 'عبء تجديد النطاقات', 'تقليم محفظة النطاقات', 'تكلفة الاحتفاظ بالنطاق', 'شيت تجارة النطاقات', 'شيت محفظة النطاقات', 'محاسبة مستثمر النطاقات']
+relatedArticles:
+  - /ar/blog/domain-renewal-costs-and-sell-through-rate/
+  - /ar/blog/when-to-drop-a-domain/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/taxes-and-accounting-for-domain-investors/
+  - /ar/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 أول عشر نطاقات بتحس إنها مجرد مجموعة شخصية. بتفتكر ليه اشتريت كل واحد فيهم، ودفعت فيه كام، وتقريبًا متوقع تطلع منه بكام. لكن لما توصل لحوالي النطاق رقم مية، الذاكرة دي بتوقف عن الشغل. مبقاش تقدر تمسك المحفظة في دماغك، وإيميلات التجديد بتيجي على دفعات مش فاكر أصلًا إنها بتاعتك، وتبتدي تدفع علشان تحتفظ بأسماء كنت ناسي إنك أصلًا مالكها. دي اللحظة اللي فيها الـflipping بيبطل يكون سلسلة صفقات ذكية ويبقى إدارة مخزون.

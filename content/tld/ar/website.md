@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .website. تعرف على سبب كونه الخيار الأمثل لعنوان موقعك القادم، وكيفية حجزه بسهولة من خلال Namefi."
 keywords: [".website domains", ".website TLD", "top-level domain .website", "what is .website", "why choose .website", "what is the .website domain", "why choose the .website domain", "domain investing", "blockchain domains", "tokenized domain", "buy .website domain", "new gTLD", "شراء نطاق website", "استثمار النطاقات", "نطاقات الويب 3"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/how-tld-affects-domain-value/
+  - /ar/blog/ai-vs-io-domain/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 هل تبحث عن اسم نطاق (Domain) مثالي لمشروعك الجديد ولكنك تجد أن معظم الخيارات التقليدية مثل ".com" قد تم حجزها بالفعل؟ هنا يأتي دور نطاق **.website**. إنه أحد نطاقات المستوى الأعلى العامة (gTLD) الجديدة التي اكتسبت شعبية كبيرة بفضل بساطتها ووضوحها وتوافرها.

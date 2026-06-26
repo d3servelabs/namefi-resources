@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Ce qui se passe réellement si vous perdez l'accès au portefeuille qui détient votre domaine tokenisé — et les étapes opérationnelles pour réduire les risques d'en arriver là. Sauvegardes, multisig, portefeuilles matériels, récupération sociale, et les limites de ce qu'une plateforme peut faire."
 keywords: ['récupérer domaine NFT', 'domaine portefeuille perdu', 'portefeuille domaine tokenisé perdu', 'récupération portefeuille domaine', 'sauvegarde domaine NFT', 'portefeuille matériel domaine tokenisé', 'multisig domaine tokenisé', 'récupération clé domaine tokenisé', 'phrase de récupération domaine perdue', 'sécurité domaine NFT', 'sauvegarde domaine tokenisé', 'gestion clés domaine', 'récupération perte portefeuille']
+relatedArticles:
+  - /fr/blog/onchain-domain-custody-and-recovery/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/tokenize-your-com-to-flip-it/
+  - /fr/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-security/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
+  - /fr/glossary/registry/
 ---
 
 De toutes les choses auxquelles les gens ne pensent pas avant de [tokeniser un domaine](/fr/blog/what-are-tokenized-domains/), la **récupération en cas de perte de portefeuille** est la plus importante. Une fois qu'un domaine est tokenisé, le [portefeuille](/fr/glossary/wallet/) qui détient le [NFT](/fr/glossary/nft/) est la source de vérité de la propriété. Perdez le portefeuille, et vous avez un vrai problème.

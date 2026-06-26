@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج معرفته عن نطاق .cloud ومميزاته للشركات التقنية والمطورين. سجّل نطاقك الآن مع Namefi لدمج تقنيات الويب 3 وحماية استثمارك الرقمي.'
 keywords: ['.cloud domains', 'what is .cloud', 'why choose .cloud', 'top-level domain', 'gTLD', 'cloud computing domains', 'buy .cloud domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Namefi', 'نطاقات .cloud', 'ما هو نطاق .cloud', 'شراء نطاق', 'الاستثمار في النطاقات']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 في ظل التسارع الرقمي الهائل الذي يشهده العالم، أصبح اختيار اسم النطاق (Domain Name) المناسب أكثر من مجرد عنوان لموقعك الإلكتروني؛ إنه يعكس هوية مشروعك ورؤيته المستقبلية. برز نطاق **.cloud** كواحد من أكثر نطاقات المستوى الأعلى (TLDs) جاذبية، خاصة مع هيمنة "الحوسبة السحابية" على البنية التحتية للإنترنت الحديث.

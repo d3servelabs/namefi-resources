@@ -14,6 +14,24 @@ sources:
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+  - /ar/blog/dns-over-https-vs-enterprise-split-horizon-dns/
+  - /ar/blog/the-sea-turtle-dns-espionage/
+  - /ar/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/web3/
 ---
 
 **DNS** (أو *نظام أسماء النطاقات*) هو نظام التسمية الموزع الهرمي للإنترنت، الذي يترجم أسماء النطاقات المقروءة بشريًا — كـ`example.com` — إلى [عناوين IP](/ar/glossary/ip-address/) التي تستخدمها معدات الشبكات لتوجيه الحزم عبر الإنترنت. لولا DNS، لاضطر كل مستخدم إلى حفظ العناوين الرقمية لكل موقع يريد زيارته. ويظل DNS — المعرَّف في [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034) و[RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035) اللذين نشرهما IETF عام 1987 — أحد البروتوكولات الجوهرية للإنترنت حتى اليوم.

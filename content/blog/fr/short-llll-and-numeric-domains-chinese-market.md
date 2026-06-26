@@ -12,6 +12,24 @@ format: analysis
 description: "Pourquoi les acheteurs chinois valorisent les domaines .com courts, à quatre lettres et numériques comme une classe d''actifs à part entière — pinyin, prime sur l''absence de voyelles, et le 8 porte-bonheur face au 4 maléfique."
 ogImage: ../../assets/short-llll-and-numeric-domains-chinese-market-og.jpg
 keywords: ['domaines premium chinois', 'domaines numériques', 'LLLL.com', 'domaines à quatre lettres', 'domaines chip', 'noms de domaine courts', 'domaines au chiffre 8 porte-bonheur', 'chiffre 4 maléfique', 'domaines pinyin', 'domaines NNNN', 'marché chinois des domaines', 'valeur des domaines numériques', 'domaines sans voyelle', 'domain flipping en Chine', 'domaines .com courts']
+relatedArticles:
+  - /fr/blog/what-makes-a-domain-valuable/
+  - /fr/blog/how-tld-affects-domain-value/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/how-to-read-comparable-domain-sales/
+  - /fr/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Pour un flipper occidental, `xqjz.com` ressemble à un bruit de clavier et `5808.com` à un numéro de téléphone. Pour un acheteur chinois, le premier pourrait être une marque propre, à quatre lettres et conforme au pinyin, et le second une suite qui porte deux fois le mot « prospérer ». Ce décalage est précisément le sujet. Une catégorie de domaines qui paraît sans valeur à un marché est valorisée comme une classe d'actifs par un autre, et les flippers qui ont appris à lire ce second marché ont saisi l'un des plus grands événements de revalorisation que le [marché secondaire](/fr/glossary/aftermarket/) ait jamais connus.

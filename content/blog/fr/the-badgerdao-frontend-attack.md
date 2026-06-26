@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "En décembre 2021, des attaquants ont compromis le compte Cloudflare de BadgerDAO et injecté un seul script malveillant dans le front-end de son site web. Les contrats intelligents audités n'ont jamais été touchés — et pourtant, environ 120 millions de dollars sont partis via des approbations de portefeuilles signées à l'insu des utilisateurs. Une analyse approfondie expliquant pourquoi le site web fait partie de votre surface de sécurité."
 keywords: ['piratage badgerdao', 'attaque front-end badgerdao', 'compromission clé api cloudflare', 'attaque par script injecté', 'sécurité front-end web3', 'ice phishing', 'attaque increaseAllowance', 'exploit approbation de tokens', 'sécurité dns et domaine', 'exploit cloudflare workers', 'sécurité defi', 'attaque chaîne d approvisionnement web3', 'falsification de site web', 'sécurité des domaines']
+relatedArticles:
+  - /fr/blog/the-curve-finance-dns-hijack/
+  - /fr/blog/the-sushiswap-miso-insider-attack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /fr/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/web3/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
 ---
 
 L'audit était propre. Les contrats étaient en ordre. L'argent est parti quand même.

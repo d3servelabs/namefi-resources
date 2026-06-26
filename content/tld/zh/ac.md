@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 深入了解 .ac 域名的含义与优势。从学术机构到科技初创公司，探索为何 .ac 成为热门选择，并在 Namefi 立即注册您的专属域名。
 keywords: ['.ac domains', '.ac TLD', 'top-level domain', 'what is .ac', 'why choose .ac', 'what is the .ac domain', 'why choose the .ac domain', 'Ascension Island domain', 'academic domains', 'domain investing', 'blockchain domains', 'tokenized domain', 'web3 domains', 'educational branding', '.ac 域名注册']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/domain-hacks-explained/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/web3/
 ---
 
 在选择完美的域名时，许多个人和企业往往只关注传统的 [.com](/zh/tld/com/) 或 [.net](/zh/tld/net/)。然而，随着优质域名的资源日益紧缺，一些具有独特含义和简短字符的国家代码顶级域名（ccTLD）正在迅速崛起。**.ac** 域名就是其中一颗被低估的宝石。

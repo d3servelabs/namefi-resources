@@ -12,6 +12,24 @@ format: explainer
 description: "इनबाउंड बनाम आउटबाउंड डोमेन सेल्स: कब कौन-सा काम करता है, मेहनत और रिटर्न का संतुलन, और बिना स्पैम लगे दोनों को एक साथ कैसे चलाएँ।"
 ogImage: ../../assets/inbound-vs-outbound-domain-sales-og.jpg
 keywords: ['इनबाउंड बनाम आउटबाउंड डोमेन सेल्स', 'इनबाउंड डोमेन सेल्स', 'आउटबाउंड डोमेन सेल्स', 'डोमेन सेल्स आउटरीच', 'कोल्ड आउटरीच डोमेन', 'एंड यूजर को डोमेन बेचना', 'डोमेन लैंडिंग पेज', 'डोमेन मार्केटप्लेस लिस्टिंग', 'डोमेन सेल-थ्रू रेट', 'डोमेन कैसे बेचें', 'डोमेन फ्लिपिंग', 'डोमेन आफ्टरमार्केट', 'एंड यूजर डोमेन खरीदार', 'डोमेन आउटबाउंड रणनीति', 'डोमेन इनबाउंड रणनीति']
+relatedArticles:
+  - /hi/blog/how-to-sell-domains-for-profit/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/marketing-your-domains-for-sale/
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 डोमेन बिकने के केवल दो तरीके होते हैं। या तो खरीदार आपको ढूँढता है, या आप खरीदार को। बस यही पूरा नक्शा है। इनबाउंड में खरीदार आपका नाम ब्राउज़र में टाइप करता है, फॉर-सेल पेज पर पहुँचता है, और संपर्क करता है। आउटबाउंड में आप उस कंपनी को पहचानते हैं जिसे स्पष्ट रूप से वह नाम चाहिए जो आपके पास है, और पहले आप उन्हें लिखते हैं। बेचने की बाकी सब बातें — प्राइसिंग फॉर्मेट, मार्केटप्लेस का चुनाव, एस्क्रो — इन दोनों में से आप असल में कौन-सा खेल खेल रहे हैं, इस पर निर्भर करती हैं।

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '.adult डोमेन एक्सटेंशन, इसकी विशेषताओं और यह मनोरंजन उद्योग के लिए एक बेहतरीन विकल्प क्यों है, इसके बारे में सब कुछ जानें। Namefi के साथ अपना डोमेन आज ही सुरक्षित करें।'
 keywords: ['.adult domains', '.adult TLD', 'top-level domain', 'what is .adult', 'why choose .adult', 'what is the .adult domain', 'why choose the .adult domain', 'buy .adult domain', 'adult industry branding', 'domain investing', 'blockchain domains', 'tokenized domain', 'web3 domains', 'adult entertainment seo', 'secure adult domains']
+relatedArticles:
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 ## **.adult क्या है?**

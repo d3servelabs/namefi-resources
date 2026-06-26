@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .abudhabi Domain. Entdecken Sie die Vorteile dieser geografischen TLD für Unternehmen in den VAE und registrieren Sie Ihre Domain bei Namefi."
 keywords: [".abudhabi domains", ".abudhabi TLD", "top-level domain", "was ist .abudhabi", "warum .abudhabi wählen", "was ist die .abudhabi domain", "warum die .abudhabi domain wählen", "domain investing", "blockchain domains", "tokenized domains", "UAE business domains", "Abu Dhabi digital identity", "geoTLD", "Namefi", "Middle East domains"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 ## **Was ist .abudhabi?**

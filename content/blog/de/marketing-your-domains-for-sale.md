@@ -12,6 +12,24 @@ format: guide
 description: "Wie Sie Domains zum Verkauf vermarkten: Parking-Seiten, Verkaufs-Lander und Listing-SEO, die den richtigen Namen vor den richtigen Käufer bringen."
 ogImage: ../../assets/marketing-your-domains-for-sale-og.jpg
 keywords: ['domains zum verkauf vermarkten', 'wie man eine domain vermarktet', 'domain-verkaufs-landingpage', 'domain parking', 'geparkte domain verkaufen', 'domain-verkaufs-lander', 'domain-marktplatz-listing', 'domain-listing-seo', 'wie man eine domain zum verkauf bewirbt', 'inbound vs outbound domain-verkauf', 'domain-zum-verkauf-seite', 'käufer für domains finden', 'domain-marketing-kanäle', 'domain-investing marketing']
+relatedArticles:
+  - /de/blog/domain-for-sale-landing-pages/
+  - /de/blog/marketplace-seo-for-domain-listings/
+  - /de/blog/inbound-vs-outbound-domain-sales/
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/domain-parking-and-monetization/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Sie können den perfekten Namen besitzen und ihn trotzdem nie verkaufen. Die Bewertung sagt Ihnen, was eine Domain wert ist; das Marketing schließt die Lücke zwischen dieser Zahl und einem Käufer, der noch nie von Ihnen gehört hat. Die meisten Namen im Portfolio eines Flippers verkaufen sich nicht, weil niemand, der sie braucht, je erfährt, dass sie verfügbar sind. Die Lösung ist selten ein lauterer Pitch. Es geht darum, den Namen dorthin zu bringen, wo der richtige Käufer ohnehin schon sucht.

@@ -11,6 +11,24 @@ seriesOrder: 12
 format: case-study
 description: 'How Discord launched in 2015 on DiscordApp.com because Discord.com was taken, quietly bought the bare word, and in 2020 made discord.com its primary home — partly for brand cleanliness, partly because the "discordapp.com" vs "discord.com" split was a gift to phishers and malware crews.'
 keywords: ['discordapp.com', 'discord.com', 'discord domain name', 'domain upgrade', 'jason citron', 'discord history', 'cdn.discordapp.com', 'discord phishing', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'domain migration']
+relatedArticles:
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+  - /en/blog/from-slackhq-com-to-slack-com/
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-massdrop-com-to-drop-com/
+  - /en/blog/from-box-net-to-box-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 Before Discord was a verb for "hop on the server," it lived at a slightly longer address: **DiscordApp.com**.

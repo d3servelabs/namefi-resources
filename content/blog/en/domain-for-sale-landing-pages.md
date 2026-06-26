@@ -12,6 +12,24 @@ format: guide
 description: "How to build a domain for-sale landing page that converts: a clear price or offer path, real trust signals, and a frictionless way to buy or make an offer."
 ogImage: ../../assets/domain-for-sale-landing-pages-og.jpg
 keywords: ['domain for sale landing page', 'domain for sale page', 'sell a domain', 'domain landing page', 'for sale lander', 'domain sales page', 'buy now domain', 'make an offer domain', 'domain parking page', 'domain price', 'domain landing page that converts', 'how to sell a domain', 'domain escrow', 'domain conversion rate', 'domain trust signals']
+relatedArticles:
+  - /en/blog/marketing-your-domains-for-sale/
+  - /en/blog/domain-parking-and-monetization/
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/working-with-domain-brokers/
+  - /en/blog/marketplace-seo-for-domain-listings/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
 ---
 
 A buyer who wants your name rarely arrives through your marketing. They type the name into a browser to see if it's taken, the domain resolves, and a page loads. Whatever that page says is your entire pitch. If it's a [registrar](/en/glossary/registrar/) default, a parking page stuffed with ads, or nothing at all, you just lost the one visitor who was already convinced the name mattered. The for-sale landing page is the storefront on the most valuable traffic you'll ever get: people who found you by typing the exact thing you're selling.

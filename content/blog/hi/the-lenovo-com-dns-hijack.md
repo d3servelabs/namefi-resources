@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '25 फरवरी 2015 को, Lizard Squad ने रजिस्ट्रार Webnic से समझौता करके Lenovo.com को हाईजैक कर लिया — दुनिया के सबसे बड़े PC निर्माता के डोमेन को एक वेबकैम स्लाइडशो पर रिडायरेक्ट किया और उसका ईमेल इंटरसेप्ट किया — यह Superfish घोटाले के कुछ ही दिनों बाद हुआ। Domain Mayday की यह गहन पड़ताल बताती है कि आपका रजिस्ट्रार ही आपकी असली सुरक्षा परिधि है।'
 keywords: ['lenovo.com dns हाईजैक', 'lizard squad', 'webnic रजिस्ट्रार', 'web commerce communications', 'dns हाईजैकिंग', 'superfish', 'डोमेन रजिस्ट्रार सुरक्षा', 'रजिस्ट्रार समझौता', 'epp auth code', 'ईमेल इंटरसेप्शन', 'google vietnam हाईजैक', 'डोमेन सुरक्षा', 'रजिस्ट्रार लॉक']
+relatedArticles:
+  - /hi/blog/the-malaysia-airlines-dns-hijack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-panix-com-domain-hijack/
+  - /hi/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/tld/
 ---
 
 25 फरवरी 2015 की सुबह, दुनिया के सबसे बड़े PC निर्माता के लिए इंटरनेट पर सबसे ज़्यादा क्लिक होने वाला लिंक बोरे हुए किशोरों के वेबकैम में घूरने वाले स्लाइडशो पर पॉइंट कर रहा था — जिसमें *High School Musical* का एक गाना बज रहा था। किसी ने Lenovo का एक भी सर्वर हैक नहीं किया था। किसी ने Lenovo का कोई पासवर्ड नहीं चुराया था। हमलावरों ने इमारत, नेटवर्क या वेबसाइट को ज़रा भी नहीं छुआ था।

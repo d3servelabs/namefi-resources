@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.iana.org/domains/root/db
   - https://www.iso.org/iso-3166-country-codes.html
+relatedArticles:
+  - /de/blog/cctld-market-share-by-registration-volume/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/domain-hacks-explained/
+  - /de/blog/how-tld-affects-domain-value/
+  - /de/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Eine **ccTLD (Country-Code Top-Level-Domain)** ist eine zweistellige [TLD](/de/glossary/tld/), die einem Land oder Gebiet basierend auf der ISO-3166-Liste zugewiesen wird — `.uk`, `.de`, `.jp`, `.io` (Britisches Territorium im Indischen Ozean) und so weiter. Anders als eine [gTLD](/de/glossary/gtld/) wird eine ccTLD unter der Aufsicht des jeweiligen Landes verwaltet und nicht direkt durch einen [ICANN](/de/glossary/icann/)-Vertrag, weshalb jede ccTLD eigene Berechtigungs-, Preis- und Richtlinienregeln festlegt — einige erfordern einen lokalen Sitz, andere (wie `.io` oder `.co`) werden weltweit vergeben. Diese Regeln bestimmen auch, ob und wie eine ccTLD eine [On-Chain](/de/glossary/on-chain/)-Eigentumsschicht unterstützen kann: Eine [Registry](/de/glossary/registry/), die der Tokenisierung offen gegenübersteht, erleichtert es Namefi, eine Domain als [Wallet](/de/glossary/wallet/)-gesteuertes Asset darzustellen. *Quelle(n): IANA-Root-Datenbank; ISO-3166-Ländercodes.*

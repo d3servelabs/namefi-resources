@@ -6,6 +6,24 @@ tags: ['tld']
 authors: ['namefiteam']
 draft: false
 description: .sbs 代表「side by side」（並肩作戰），非常適合協作項目、合作夥伴關係和副業。
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-investor-field-guide/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什麼是 .sbs？**

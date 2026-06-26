@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .allfinanz TLD: Eine spezialisierte Domainendung für umfassende Finanzdienstleistungen. Entdecken Sie Vorteile, SEO-Potenzial und Registrierungsmöglichkeiten."
 keywords: [".allfinanz domains", ".allfinanz TLD", "top-level domain", "was ist .allfinanz", "warum .allfinanz wählen", "was ist die .allfinanz domain", "warum die .allfinanz domain wählen", "allfinanzkonzept online", "finanzdienstleister domains", "domain investieren", "blockchain domains", "tokenisierte domains", "deutsche vermögensberatung domain", "fintech domains", "web3 domain registrierung"]
+relatedArticles:
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/top-tlds-to-secure-for-your-law-firm/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registry/
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/web3/
 ---
 
 ## **Was ist .allfinanz?**

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "هل تفكر في إطلاق مدونة أو قسم أخبار؟ اكتشف لماذا يعد نطاق .blog الخيار الأمثل لتعزيز حضورك الرقمي وكيفية تسجيله بسهولة عبر Namefi."
 keywords: ['.blog domains', 'نطاقات .blog', 'TLD', 'top-level domain', 'what is .blog', 'why choose .blog', 'what is the .blog domain', 'why choose the .blog domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'نطاق المستوى الأعلى', 'استثمار النطاقات', 'نطاقات الويب 3', 'شراء دومين']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .blog؟**

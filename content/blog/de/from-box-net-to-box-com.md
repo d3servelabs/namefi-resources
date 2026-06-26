@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Box 2005 auf Box.net startete, weil Box.com vergeben war, vom Konsumenten-Speicher zum Unternehmensgeschäft pivotete und 2011 Digimedia knapp 1 Million US-Dollar für die exakt passende Box.com zahlte – ein .net-zu-.com-Upgrade, das genau dann erfolgte, als das Unternehmen schlicht „Box" wurde.'
 keywords: ['box.net', 'box.com', 'box domainname', 'aaron levie', 'dylan smith', 'digimedia', 'scott day', 'domain-upgrade', 'startup-naming', 'markenname', 'premium-domain', 'exact-match-domain', 'net zu com']
+relatedArticles:
+  - /de/blog/from-getdropbox-com-to-dropbox-com/
+  - /de/blog/from-teslamotors-com-to-tesla-com/
+  - /de/blog/from-bufferapp-com-to-buffer-com/
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
 ---
 
 Bevor Box ein milliardenschweres Unternehmenssoftware-Unternehmen war, lebte es unter einer etwas weniger eindrucksvollen Adresse: **Box.net**.

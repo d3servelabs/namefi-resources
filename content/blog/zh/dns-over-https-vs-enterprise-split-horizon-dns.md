@@ -8,6 +8,24 @@ draft: false
 description: '基于 HTTPS 的 DNS (DoH) 通过在 HTTPS 内部加密 DNS 查询来保护用户隐私。而企业水平分割 DNS 则依赖于网络能够查看到这些查询。这两者之间的冲突正在重塑企业网络、浏览器和操作系统处理名称解析的方式。'
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg
 keywords: ['基于 HTTPS 的 DNS', 'doh', '水平分割 DNS', '企业 DNS', 'dot', '加密 DNS', '内部 DNS', '名称解析', 'namefi']
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/the-myetherwallet-bgp-dns-attack/
+  - /zh/blog/the-dnspionage-campaign/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/dns/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 在互联网历史的大部分时间里，[DNS](/zh/glossary/dns/) 查询都是通过 53 端口以明文形式传输的。网络路径上的任何人都可以读取、记录甚至修改这些查询。这是一个隐私隐患，IETF 最终通过推出两种加密替代方案来解决这个问题：2016 年的 [DNS over TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) 和 2018 年的 [DNS over HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484)。

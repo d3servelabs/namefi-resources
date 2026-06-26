@@ -9,6 +9,24 @@ keywords: ['مسجل معتمد', 'RAA', 'اعتماد ICANN', 'gTLD', 'اتفا
 level: 1
 sources:
   - https://www.icann.org/en/accredited-registrars
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-is-udrp/
+  - /ar/blog/domain-backorders-and-drop-catching/
+  - /ar/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /ar/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/tld/
+  - /ar/glossary/reseller/
 ---
 
 **المسجِّل المعتمد من ICANN** هو شركة دخلت في اتفاقية اعتماد المسجلين (RAA) مع [ICANN](/ar/glossary/icann/)، وده بيمنحها الحق التعاقدي لتسجيل النطاقات في النطاقات العلوية العامة (gTLD) مباشرة من خلال [السجل](/ar/glossary/registry/) المسؤول عن كل TLD. الاعتماد بيشترط تحقيق معايير مالية وتقنية وتشغيلية — زي احتجاز بيانات العملاء في ضمان، والامتثال لالتزامات WHOIS، والالتزام بسياسات النقل وتسوية النزاعات — والمسجلون لازم يجددوا اعتمادهم بشكل دوري. بس المسجلون المعتمدون هم اللي يقدروا يتعاملوا مع السجلات عبر [EPP](/ar/glossary/epp/) كطرف أول؛ الشركات اللي مالهاش اعتماد لازم تبيع من خلال شريك معتمد وبالتالي بتتسمى [موزعين](/ar/glossary/reseller/). الفرق مهم لأصحاب النطاقات: المسجل المعتمد بيحمل التزامات تعاقدية مباشرة مع ICANN، وده بيوفر طبقة من حماية المستهلك ممكن الموزعون ما يقدروهاش بشكل مستقل.

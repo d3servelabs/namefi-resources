@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Facebook, Inc. अक्टूबर 2021 में Meta कैसे बना, Meta.com पहले से ही एक Zuckerberg-संबंधित एसेट क्यों था जो एक विज्ञान खोज इंजन से फॉरवर्ड हो रहा था, और एक अलग $60 मिलियन के सौदे ने एक South Dakota बैंक से "Meta" नाम कैसे खरीदा — जबकि Facebook ऐप ने Facebook.com बनाए रखा।'
 keywords: ['facebook.com', 'meta.com', 'meta rebrand', 'facebook meta name change', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', 'metaverse pivot', 'domain acquisition', 'company rebrand', 'premium domain', 'domain strategy', 'parent company rename']
+relatedArticles:
+  - /hi/blog/from-snapchat-com-to-snap-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-ctrip-com-to-trip-com/
+  - /hi/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 इस श्रृंखला के अधिकांश रिब्रांड किसी कंपनी के अपने नाम से बड़े हो जाने से शुरू होते हैं। Case 7 इसका उल्टा है: एक कंपनी इतनी बड़ी थी कि वह पहले से ही एक क्रिया, एक नियामक की परेशानी और एक घरेलू शब्द बन चुकी थी — फिर भी उसने तय किया कि उसे एक *नया* नाम चाहिए, जो उस भविष्य को समेटने के लिए काफी बड़ा हो जिसे उसने अभी तक बनाया नहीं था।

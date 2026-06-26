@@ -12,6 +12,24 @@ format: guide
 description: "एक Namefi वॉकथ्रू: किसी .com को ऑन-चेन लाएँ, DNS रिज़ॉल्व होते रहने दें, और एस्क्रो की रस्साकशी के बजाय एटॉमिक सेटलमेंट के साथ उसे एक NFT के रूप में फ्लिप करें।"
 ogImage: ../../assets/tokenize-your-com-to-flip-it-og.jpg
 keywords: ['किसी .com को फ्लिप करने के लिए टोकनाइज़ करें', 'अपने com को टोकनाइज़ करें', 'टोकनाइज़्ड डोमेन फ्लिप करें', 'किसी डोमेन को NFT के रूप में बेचें', 'टोकनाइज़्ड .com फ्लिपिंग', 'ऑन-चेन डोमेन फ्लिपिंग', 'एटॉमिक डोमेन सेटलमेंट', 'टोकनाइज़्ड डोमेन मार्केटप्लेस', 'टोकनाइज़्ड डोमेन में DNS निरंतरता', 'किसी डोमेन को बेचने के लिए कैसे टोकनाइज़ करें', 'namefi टोकनाइज़ और बेचें', 'वॉलेट में रखा .com', 'ERC-721 डोमेन', 'टोकनाइज़्ड डोमेन तरलता', 'किसी com डोमेन को ऑन-चेन फ्लिप करें']
+relatedArticles:
+  - /hi/blog/onchain-domain-flipping/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/selling-domains-as-nfts/
+  - /hi/blog/onchain-domain-marketplaces-compared/
+  - /hi/blog/domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 किसी `.com` के अधिकांश फ्लिप एक ही घबराहट भरे अंदाज़ में ख़त्म होते हैं: ख़रीदार नाम के हस्तांतरित होने से पहले भुगतान नहीं करना चाहता, विक्रेता भुगतान मिलने से पहले नाम हस्तांतरित नहीं करना चाहता, और बीच में एक [एस्क्रो](/hi/glossary/escrow/) एजेंट पैसा थामे खड़ा रहता है जबकि रजिस्ट्रार ट्रांसफर कई दिनों में पूरा होता है। यही गतिरोध हर उच्च-मूल्य बिक्री पर लगने वाला घर्षण-कर है। पहले `.com` को टोकनाइज़ कर देने से पूरे सौदे का स्वरूप ही बदल जाता है: नाम एक ऐसा टोकन बन जाता है जिसे आप किसी [वॉलेट](/hi/glossary/wallet/) में रखते हैं, और बिक्री कई दिनों, कई पक्षों वाले लेन-देन के बजाय एक अकेले ऑन-चेन स्वैप में बदल जाती है।

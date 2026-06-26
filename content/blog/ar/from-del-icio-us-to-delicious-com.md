@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'إزاي موقع الـ social bookmarking الرائد اتأسس عام 2003 باسم النطاق الشهير del.icio.us، وليه النقط دي بقت ضريبة دايمة على كل ذكر للموقع، وإزاي Yahoo نقلته لـ Delicious.com الأنظف عام 2008.'
 keywords: ['del.icio.us', 'delicious.com', 'اسم نطاق delicious', 'domain hack', 'جوشوا شاكتر', 'social bookmarking', 'yahoo delicious', 'ترقية النطاق', 'تسمية الشركات الناشئة', 'تسمية العلامات التجارية', 'نطاق مميز', 'استراتيجية النطاق', 'ccTLD domain hack', 'نطاق يُعرِّف فئة']
+relatedArticles:
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-mona-co-to-crypto-com/
+  - /ar/blog/from-ctrip-com-to-trip-com/
+  - /ar/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 لمدة خمس سنين تقريبًا، كان واحد من أكتر المواقع تأثيرًا في حقبة Web 2.0 موجود على عنوان بالكاد تقدر تقوله بصوت عالي: **del.icio.us**.

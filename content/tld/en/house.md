@@ -18,6 +18,24 @@ faqs:
     answer: 'Yes. The suffix reads as a complete word, so a name like a brokerage or a single-property site communicates the category instantly. It is best for residential and home-focused brands rather than commercial or land-only ventures.'
   - question: 'Does .house support WHOIS privacy and DNSSEC?'
     answer: 'Yes. As an Identity Digital (Binky Moon) gTLD, .house supports DNSSEC at the registry level, and most registrars including Namefi offer WHOIS privacy so your personal contact details are not published publicly.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The .house domain is an open generic top-level domain (gTLD) built around one of the most universal words in the English language. For real estate brokerages, home-improvement firms, property developers, interior designers, and even house-music labels, the .house suffix turns the extension itself into part of the message: the domain reads as a complete phrase, like *bright.house* or *open.house*. Because the word "house" is concrete and emotionally familiar, the TLD lends itself to descriptive, brandable names that tell a visitor exactly what to expect before the page even loads.

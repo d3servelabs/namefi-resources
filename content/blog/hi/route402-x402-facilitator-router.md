@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "एक मल्टी-टेनेंट राउटर जो आपको x402 को एक बार इंटीग्रेट करने और रूटिंग लॉजिक को आपके ऐप में धकेले बिना, पॉलिसी और लाइव सिग्नल्स द्वारा रिक्वेस्ट्स को रूट करने की सुविधा देता है।"
 keywords: ['Route402', 'x402', 'पेमेंट्स रूटिंग', 'फैसिलिटेटर राउटर', 'मल्टी-टेनेंट पेमेंट्स', 'RBAC', 'क्रेडेंशियल एन्क्रिप्शन', 'कैपेबिलिटी रूटिंग', 'स्टिकी सेटलमेंट', 'पेमेंट्स इंफ्रास्ट्रक्चर', 'YAML रूटिंग रूल्स']
+relatedArticles:
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-discordapp-com-to-discord-com/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/from-urbancompass-com-to-compass-com/
+relatedTopics:
+  - /hi/topics/web3-foundations/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/x402/
 ---
 
 ## संक्षेप में

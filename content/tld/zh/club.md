@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '探索 .club 顶级域名的优势，了解它为何是社群、DAO 和订阅服务的理想选择。在 Namefi 注册您的 .club 域名，体验无缝的 Web3 资产管理。'
 keywords: ['.club domains', '.club TLD', 'top-level domain', 'what is .club', 'why choose .club', 'what is the .club domain', 'why choose the .club domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'DAO domains', 'community building', 'Web3 domains', 'Namefi', 'buy .club domain']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .club 域名？**

@@ -24,6 +24,24 @@ keywords:
   - 'tokenized domain'
   - 'Namefi'
   - 'restricted TLD'
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /en/blog/premium-web3-tlds/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 ## **What is .afl?**

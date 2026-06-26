@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .ally 顶级域名（TLD）的独特价值。探索它如何帮助品牌展示合作伙伴关系、包容性及社区支持，并了解为何它是 Web3 和域名投资者的明智之选。'
 keywords: ['.ally domains', '.ally TLD', 'top-level domain', 'what is .ally', 'why choose .ally', 'what is the .ally domain', 'why choose the .ally domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'brand partnerships', 'inclusive branding', 'new gTLD investment']
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/from-thefacebook-com-to-facebook-com/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
 ---
 
 在数字时代，选择正确的域名后缀（[TLD](/zh/glossary/tld/)）不仅仅是为了获得一个网址，更是为了通过名字传达品牌的核心价值观。随着互联网的发展，传统的 `.com` 资源日益枯竭，新兴的顶级域名正如雨后春笋般涌现。今天，我们要介绍的是一个充满力量与温度的后缀——**.ally**。

@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.iana.org/domains/root
   - https://www.iana.org/domains/root/servers
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/premium-web3-tlds/
+  - /zh/blog/the-malaysia-airlines-dns-hijack/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/the-icann-spear-phishing-breach/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-security/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
 ---
 
 **根区域**是 [DNS（域名系统）](/zh/glossary/dns/) 层级的最顶端——包含每个 [TLD（顶级域名）](/zh/glossary/tld/) 及其权威[注册局](/zh/glossary/registry/) 服务器的主列表。它由**根服务器**提供服务，根服务器是一组分布在全球、以十三个命名地址可达的系统，其区域内容由 [IANA（互联网号码分配机构）](/zh/glossary/iana/) 维护。每个尚未被缓存的域名查询都从这里开始：[解析器](/zh/glossary/dns-resolver/) 询问根区域在哪里找到 `.com`，然后沿链向下追踪。根区域是互联网命名的锚点——代币化不会触及它，代币化只是在现有 DNS 之上添加由[钱包](/zh/glossary/wallet/) 控制的所有权层，而非替换根区域。

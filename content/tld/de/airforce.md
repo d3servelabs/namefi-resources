@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Entdecken Sie die .airforce TLD: Die perfekte Domain für Luftfahrt, Militär und Veteranen. Erfahren Sie alles über Vorteile und Registrierung bei Namefi.'
 keywords: ['.airforce domains', '.airforce TLD', '.airforce top-level domain', 'was ist .airforce', 'warum .airforce wählen', 'was ist die .airforce domain', 'warum die .airforce domain wählen', 'Luftwaffen Domain', 'Militär Webadresse', 'Luftfahrt Blog', 'Veteranen Webseite', 'Domain Investieren', 'Tokenisierte Domains', 'Web3 Domains', 'Luftfahrt Community']
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/web3/
 ---
 
 ## **Was ist .airforce?**

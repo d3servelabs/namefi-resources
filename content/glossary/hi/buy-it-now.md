@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.sedo.com/
   - https://www.namebio.com/
+relatedArticles:
+  - /hi/blog/domain-pricing-psychology-buy-now-vs-make-offer/
+  - /hi/blog/domain-for-sale-landing-pages/
+  - /hi/blog/how-to-sell-domains-for-profit/
+  - /hi/blog/how-to-win-domain-auctions/
+  - /hi/blog/inbound-vs-outbound-domain-sales/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/end-user/
+  - /hi/glossary/aftermarket/
+  - /hi/glossary/registrar/
+  - /hi/glossary/reserve-price/
+  - /hi/glossary/icann/
 ---
 
 **बाय इट नाउ** (**BIN**) किसी डोमेन लिस्टिंग पर एक निश्चित, तत्काल-खरीद मूल्य है: जो खरीदार निर्धारित राशि चुकाता है, वह बिना किसी बातचीत के बिक्री तुरंत पूरी करता है। यह [आफ्टरमार्केट](/hi/glossary/aftermarket/) पर बेचने का सबसे सरल तरीका है — कीमत पारदर्शी है और लेनदेन घर्षण-रहित है, जो वस्तु-स्तर के नामों और उन विक्रेताओं के लिए उपयुक्त है जो पहले से अपना लक्षित मूल्य जानते हैं। इसका नुकसान यह है कि एक निश्चित मूल्य पैसे छोड़ सकता है जब कोई [एंड यूजर](/hi/glossary/end-user/) अधिक चुकाने को तैयार होता; ऐसे मामलों के लिए विक्रेता [मेक-ऑफर](/hi/glossary/make-offer/) फ्लो का उपयोग करते हैं, और कई [मार्केटप्लेस](/hi/glossary/marketplace/) प्लेटफॉर्म दोनों को एक साथ प्रदर्शित करते हैं।

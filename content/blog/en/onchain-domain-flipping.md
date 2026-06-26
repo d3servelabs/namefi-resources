@@ -12,6 +12,24 @@ format: guide
 description: "How onchain domain flipping works — trading ENS and tokenized domains as wallet-held, NFT-liquid assets, and how it differs from registrar flipping."
 ogImage: ../../assets/onchain-domain-flipping-og.jpg
 keywords: ['onchain domain flipping', 'flipping ENS domains', 'tokenized domain flipping', 'trading tokenized domains', 'domain NFT flipping', 'flip web3 domains', 'ENS domain investing', 'NFT domain marketplace', 'sell domains as NFTs', 'onchain domain trading', 'ERC-721 domains', 'wallet-held domains', 'atomic domain settlement', 'tokenized domain liquidity', 'web3 domain flipping']
+relatedArticles:
+  - /en/blog/tokenize-your-com-to-flip-it/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/selling-domains-as-nfts/
+  - /en/blog/onchain-domain-marketplaces-compared/
+  - /en/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
 ---
 
 Domain flipping has a familiar shape: buy a name low, find a buyer who needs it, sell high. The classic version of that trade runs through [registrars](/en/glossary/registrar/), aftermarket marketplaces, and an escrow agent who holds the money while the transfer clears. Onchain domain flipping is the same buy-low-sell-high instinct moved onto a [blockchain](/en/glossary/blockchain/), where the name itself is a token you hold in a [wallet](/en/glossary/wallet/) and can trade like any other [NFT](/en/glossary/nft/).

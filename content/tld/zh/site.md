@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "探索 .site 顶级域名的潜力。了解其含义、SEO 价值以及为什么它是企业、开发者和 Web3 投资者的热门选择。立即在 Namefi 注册您的 .site 域名，开启数字资产新篇章。"
 keywords: [".site domains", ".site TLD", ".site top-level domain", "what is .site", "why choose .site", "what is the .site domain", "why choose the .site domain", "register .site domain", "domain investing", "blockchain domains", "tokenized domain", ".site域名含义", "购买.site域名", "Web3 domains", "Namefi"]
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在这个数字化飞速发展的时代，选择正确的域名后缀（TLD）对于建立强大的在线形象至关重要。虽然 .com 依然是老牌王者，但随着优质资源的枯竭，像 **.site** 这样的新通用顶级域名（New gTLD）正以其直观、通用和资源丰富的特点，迅速成为全球数百万用户的首选。

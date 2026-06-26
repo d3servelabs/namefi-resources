@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'अगस्त 2022 में, Curve Finance के स्मार्ट कॉन्ट्रैक्ट्स अछूते रहे — लेकिन हमलावरों ने curve.fi डोमेन को रजिस्ट्रार स्तर पर हाईजैक किया, साइट का क्लोन बनाया, और उपयोगकर्ताओं से लगभग $570K निकाल लिए। एक DeFi फ्रंट-एंड पर DNS हमले की गहराई से जांच, और यह डोमेन सुरक्षा के बारे में क्या सिखाता है।'
 keywords: ['curve finance dns hijack', 'curve.fi hijack', 'dns hijacking defi', 'iwantmyname compromise', 'nameserver compromise', 'wallet drainer', 'defi front-end attack', 'domain security', 'dns security', 'crypto phishing', 'cloned website attack', 'registrar account compromise', 'domain mayday']
+relatedArticles:
+  - /hi/blog/the-badgerdao-frontend-attack/
+  - /hi/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /hi/blog/the-bitcoin-org-dns-hijack/
+  - /hi/blog/the-myetherwallet-bgp-dns-attack/
+  - /hi/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
+  - /hi/glossary/tld/
 ---
 
 स्मार्ट कॉन्ट्रैक्ट्स बिल्कुल ठीक थे।

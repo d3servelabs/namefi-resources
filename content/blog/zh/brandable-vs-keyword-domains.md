@@ -12,6 +12,24 @@ format: comparison
 description: "品牌型自创名字 vs 精确匹配的关键词域名：各自的买家是谁、哪种转售更靠谱，以及每个翻转者都该懂的商标门道。"
 ogImage: ../../assets/brandable-vs-keyword-domains-og.jpg
 keywords: ['品牌型域名', '关键词域名', '精确匹配域名', '品牌型域名 vs 关键词域名', '自创域名', '通用词域名', '域名投资', '域名翻转', '哪种域名更好卖', '直输流量', '域名商标', '描述性域名', '域名转售价值', '初创公司域名', '域名命名策略']
+relatedArticles:
+  - /zh/blog/domain-flipping/
+  - /zh/blog/what-makes-a-domain-valuable/
+  - /zh/blog/hand-registering-domains-to-flip/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 同一周，两个域名落进了你的邮箱。一个是 `Stripe` 这种风格：一个简短的自创词，在某家公司往里灌注含义之前，它什么都不代表。另一个是 `CarInsurance`（车险）：对买家所卖的东西的一句大白话描述。两者都能赚钱，但赚钱的方式截然不同，卖给的是截然不同的买家，承担的也是截然不同的风险。在本该买另一个的时候买错了这一个，是翻转者浪费续费预算最常见的方式之一。

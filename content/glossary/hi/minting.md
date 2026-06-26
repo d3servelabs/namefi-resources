@@ -10,6 +10,24 @@ also_known_as: ['मिंट करना']
 level: 1
 sources:
   - https://ethereum.org/en/nft/
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/how-to-tokenize-your-com/
+  - /hi/blog/onchain-domain-custody-and-recovery/
+  - /hi/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-security/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/dns/
+  - /hi/glossary/registrar/
+  - /hi/glossary/tokenized-domain/
+  - /hi/glossary/web3/
+  - /hi/glossary/tokenize/
 ---
 
 **मिंटिंग** (Minting, जिसे मिंट करना भी कहते हैं) किसी [ब्लॉकचेन](/hi/glossary/blockchain/) पर एक नया टोकन रिकॉर्ड लिखने की क्रिया है — सिक्का ढालने के समान, सिवाय इसके कि "मिंट" एक [स्मार्ट कॉन्ट्रैक्ट](/hi/glossary/smart-contract/) फ़ंक्शन है जो कॉन्ट्रैक्ट की ऑन-चेन स्थिति में एक प्रविष्टि बनाता है और उसे एक मालिक पते को सौंपता है। डोमेन टोकनाइज़ेशन के लिए, मिंटिंग वह महत्वपूर्ण चरण है जहाँ एक वास्तविक DNS नाम ब्लॉकचेन-नेटिव एसेट बन जाता है: एक स्मार्ट कॉन्ट्रैक्ट `mint` को कॉल करता है, जिससे एक [ERC-721](/hi/glossary/erc-721/) [NFT](/hi/glossary/nft/) बनता है जिसकी टोकन ID एक विशिष्ट डोमेन से मैप होती है। उस क्षण से डोमेन को पीयर-टू-पीयर ट्रांसफर किया जा सकता है, NFT मार्केटप्लेस पर सूचीबद्ध किया जा सकता है, या पारंपरिक रजिस्ट्रार वर्कफ़्लो को छुए बिना DeFi में उपयोग किया जा सकता है। मिंटिंग के लिए गणना के लिए भुगतान करने हेतु [गैस](/hi/glossary/gas/) की आवश्यकता होती है, और [टोकनाइज़](/hi/glossary/tokenize/) प्रक्रिया में रजिस्ट्रार रिकॉर्ड को लॉक करना भी शामिल है ताकि ऑन-चेन मालिक DNS कॉन्फ़िगरेशन को नियंत्रित करे। एक बार मिंट हो जाने के बाद, NFT स्वामित्व का सत्य का स्रोत है; इसे बर्न (नष्ट) करना नियंत्रण को पारंपरिक पंजीकरण प्रणाली को वापस कर देता है।

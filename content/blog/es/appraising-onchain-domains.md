@@ -12,6 +12,24 @@ format: analysis
 description: "Cómo tasar dominios ENS y tokenizados usando comparables onchain, el razonamiento de piso frente a prima y los factores de club de ENS — y por qué difiere del DNS."
 ogImage: ../../assets/appraising-onchain-domains-og.jpg
 keywords: ['tasar dominios ENS', 'valoración de dominios ENS', 'tasación de dominios tokenizados', 'comparables onchain', 'ventas comparables de dominios', 'comparables de NameBio', 'precio de piso de ENS', 'club 999 de ENS', 'club 10k de ENS', 'cómo valorar un nombre ENS', 'valor de dominio tokenizado', 'tasación de dominios web3', 'valor de dominio ERC-721', 'historial de ventas onchain', 'piso frente a prima de dominios']
+relatedArticles:
+  - /es/blog/onchain-domain-flipping/
+  - /es/blog/how-to-read-comparable-domain-sales/
+  - /es/blog/domain-appraisal-tools-compared/
+  - /es/blog/domain-flipping/
+  - /es/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/tokenize-your-com/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 La tasación es la habilidad que decide si un flip gana dinero. El sourcing te dice qué está a la venta y la venta convierte un nombre en un cheque, pero el número que está en medio — lo que un nombre vale realmente — es donde reside el margen. Eso es cierto para un `.com` y lo es onchain, salvo que el mundo onchain te entrega algo que el mercado secundario del [DNS](/es/glossary/dns/) nunca pudo: un registro público y con marca de tiempo de casi todas las ventas. Este es el capítulo de tasación del manual más amplio de [flipping de dominios](/es/blog/domain-flipping/), centrado en los dos activos que comercias en el [flipping de dominios onchain](/es/blog/onchain-domain-flipping/) — nombres [ENS](/es/glossary/ens/) y dominios ICANN tokenizados.

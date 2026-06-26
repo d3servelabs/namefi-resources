@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'قصة شركة Box اللي انطلقت سنة 2005 على Box.net لأن Box.com كان محجوز، وبعد ما تحولت من التخزين للمستهلكين للشركات الكبيرة، دفعت سنة 2011 قرابة مليون دولار لـDigimedia عشان تاخد Box.com — ترقية من .net لـ.com جت في نفس الوقت اللي بقت فيه الشركة معروفة بـ"Box" فقط.'
 keywords: ['box.net', 'box.com', 'دومين box', 'aaron levie', 'dylan smith', 'digimedia', 'scott day', 'ترقية دومين', 'تسمية الشركات الناشئة', 'تسمية البراند', 'دومين بريميوم', 'دومين مطابق', 'net to com']
+relatedArticles:
+  - /ar/blog/from-getdropbox-com-to-dropbox-com/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
 ---
 
 قبل ما Box تبقى شركة برمجيات للمؤسسات تساوي مليارات، كانت عايشة على عنوان أقل هيبة شوية: **Box.net**.

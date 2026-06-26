@@ -8,6 +8,24 @@ draft: false
 description: 'Las billeteras multifirma suelen considerarse como el estándar predeterminado para la custodia segura en cripto, pero la respuesta a "¿realmente mejoran la seguridad?" depende por completo del modelo de amenazas. Esta publicación analiza lo que la multifirma logra evitar, lo que no, y en qué casos puede empeorar la situación.'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['billetera multifirma', 'multifirma', 'safe wallet', 'gnosis safe', 'gestión de claves', 'autocustodia', 'firma umbral', 'recuperación social', 'namefi']
+relatedArticles:
+  - /es/blog/onchain-domain-custody-and-recovery/
+  - /es/blog/the-badgerdao-frontend-attack/
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-curve-finance-dns-hijack/
+  - /es/blog/the-sushiswap-miso-insider-attack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
+  - /es/glossary/tld/
 ---
 
 Las billeteras [multifirma](/es/glossary/multi-sig/) (aquellas donde M de N claves deben firmar antes de que una transacción sea válida) generalmente se presentan como la mejora obvia respecto a una *hot wallet* de clave única. La mayoría de las configuraciones de tesorería en DAOs, *exchanges* y empresas serias nativas del sector cripto funcionan con alguna variante de multifirma (Safe, Squads, Multisig.js o variantes de firma umbral).

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في يوليو 2024، حوّلت عملية نقل نطاقات من Google Domains إلى Squarespace إعدادات المصادقة الضعيفة إلى ثغرة جماعية واسعة النطاق. استغل المهاجمون الثغرة واختطفوا نطاقات مشاريع كريبتو و DeFi كبرى — Compound Finance وCeler Network وPendle وUnstoppable Domains — وأعادوا توجيهها نحو مواقع تصيد لاستنزاف المحافظ. إليك كيف خلّفت عملية نقل "سلسة" مئات الأبواب الأمامية مفتوحة دون قفل، وما يمكننا تعلمه في مجال أمان مسجلي النطاقات والمصادقة الثنائية.'
 keywords: ['اختطاف نطاق Squarespace', 'هجرة Google Domains', 'اختطاف DNS في DeFi', 'اختطاف Compound Finance', 'اختطاف Celer Network', 'استنزاف المحفظة', 'Inferno drainer', 'أمان النطاقات', 'نقل مسجل النطاق', 'المصادقة الثنائية MFA', 'اختراق حساب OAuth', 'اختطاف DNS', 'تصيد العملات المشفرة']
+relatedArticles:
+  - /ar/blog/the-curve-finance-dns-hijack/
+  - /ar/blog/the-badgerdao-frontend-attack/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/tld/
 ---
 
 في يوليو 2024، لم يكن أخطر شيء على موقع مشروع كريبتو ثغرة في العقد الذكي أو مفتاحاً خاصاً مسرّباً. كان الخطر الحقيقي هو مسجّل النطاق الذي يمتلك الدومين.

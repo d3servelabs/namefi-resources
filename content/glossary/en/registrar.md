@@ -14,6 +14,24 @@ sources:
 aliasesByLocale:
   zh: ['注册服务商']
   de: ['Registrierungsdienst']
+relatedArticles:
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/the-panix-com-domain-hijack/
+  - /en/blog/what-is-udrp/
+relatedTopics:
+  - /en/topics/domain-basics/
+  - /en/topics/domain-security/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 A **registrar** is an [ICANN](/en/glossary/icann/)-accredited organization that is authorized to register domain names in one or more top-level domains on behalf of the public, managing the relationship between domain buyers and the [registry](/en/glossary/registry/) that operates the authoritative database for those domains.

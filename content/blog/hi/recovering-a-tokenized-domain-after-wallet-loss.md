@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "आपके टोकनाइज़्ड डोमेन को होल्ड करने वाले वॉलेट का एक्सेस खो जाने पर असल में क्या होता है — और सबसे पहले ऐसी स्थिति में पहुँचने की संभावना को कम करने के ऑपरेशनल कदम। बैकअप, मल्टीसिग, हार्डवेयर वॉलेट, सोशल रिकवरी, और कोई भी प्लेटफ़ॉर्म क्या कर सकता है, इसकी सीमाएँ।"
 keywords: ['NFT डोमेन रिकवर करें', 'खोया हुआ वॉलेट डोमेन', 'टोकनाइज़्ड डोमेन वॉलेट खो गया', 'वॉलेट रिकवरी डोमेन', 'NFT डोमेन बैकअप', 'टोकनाइज़्ड डोमेन हार्डवेयर वॉलेट', 'मल्टीसिग टोकनाइज़्ड डोमेन', 'टोकनाइज़्ड डोमेन की रिकवरी', 'खोया हुआ सीड फ़्रेज़ डोमेन', 'NFT डोमेन सुरक्षा', 'टोकनाइज़्ड डोमेन बैकअप', 'डोमेन की मैनेजमेंट', 'वॉलेट लॉस रिकवरी']
+relatedArticles:
+  - /hi/blog/onchain-domain-custody-and-recovery/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+  - /hi/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-security/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
+  - /hi/glossary/registry/
 ---
 
 [डोमेन को टोकनाइज़ करने](/hi/blog/what-are-tokenized-domains/) से पहले लोग जिन चीज़ों के बारे में नहीं सोचते हैं, उनमें **वॉलेट लॉस रिकवरी (वॉलेट खोने पर रिकवरी)** सबसे बड़ी चीज़ है। एक बार डोमेन टोकनाइज़ हो जाने पर, [NFT](/hi/glossary/nft/) को होल्ड करने वाला [वॉलेट](/hi/glossary/wallet/) ही ओनरशिप (स्वामित्व) का मुख्य आधार होता है। वॉलेट खो दें, और आपके लिए एक वास्तविक समस्या खड़ी हो जाएगी।

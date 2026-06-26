@@ -18,6 +18,24 @@ faqs:
     answer: '它的声誉褒贬不一。廉价促销在历史上吸引了一些低质量和垃圾注册，因此少数激进的过滤器会对它更加严格审查。一个真实的网站、正确的邮件认证和良好的发送习惯，足以为合法企业解决这一问题。'
   - question: '.biz 支持 WHOIS 隐私保护和 DNSSEC 吗？'
     answer: '支持。注册商像对待其他 gTLD 一样为 .biz 提供 WHOIS 隐私保护，注册局也支持 DNSSEC 以实现加密签名的 DNS，从而加固您的区域文件，抵御篡改。'
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 **.biz** 域名是互联网最初专注于商业的网址之一。它是 "business（商业）" 首音节的拟音拼写，专门为商业实体在心仪的 **.com** 名称已被注册时提供一个归宿。二十多年过去，**.biz** 仍是一个开放、全球可注册的 gTLD，含义清晰、不言自明：这是一个营商之地。

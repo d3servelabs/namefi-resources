@@ -16,6 +16,24 @@ faqs:
     answer: "Les particuliers qui construisent une marque personnelle, un portfolio ou un site CV, et toute personne qui conçoit un domain hack où le nom se lit comme une phrase se terminant par « me » — comme about.me ou « call.me ». Il se lit instantanément comme le pronom anglais, ce qui le rend chaleureux et personnel."
   - question: 'Le .me est-il un bon domaine pour un site web personnel ?'
     answer: "Oui. Le .me est sans doute l'extension grand public la plus personnelle. Parce que « me » est le pronom de la première personne, « votrenom.me » ou « hire.me » donne l'impression d'une invitation directe, ce qui en fait un favori pour les portfolios, les biographies et les marques individuelles."
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/domain-hacks-explained/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Le domaine **.me** est l'un des exemples les plus clairs d'une extension nationale qui a trouvé une seconde vie en tant que marque mondiale. Officiellement le ccTLD du **Monténégro**, il a été commercialisé et adopté dans le monde entier comme l'extension la plus **personnelle** d'Internet — parce que « me » est le pronom anglais de la première personne, « votrenom.me » se lit instantanément comme *vous*. Pour les particuliers qui construisent un portfolio, un site CV ou une page de bio — et pour toute personne qui conçoit un astucieux **domain hack** se complétant par « me » — c'est souvent le premier endroit où ils cherchent.

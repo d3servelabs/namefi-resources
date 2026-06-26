@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'A finales de 2014, ICANN —el organismo que coordina el sistema de nombres de dominio de Internet— admitió que un correo electrónico de spear-phishing que suplantaba su propio dominio había cosechado las credenciales del personal y otorgado a los atacantes acceso administrativo al Sistema Centralizado de Datos de Zona. Un análisis en profundidad de Domain Mayday sobre cómo la propia autoridad del DNS fue víctima de phishing, qué quedó expuesto y por qué sigue siendo relevante.'
 keywords: ['brecha de icann', 'spear phishing icann', 'czds', 'sistema centralizado de datos de zona', 'seguridad dns', 'seguridad de dominios', 'ataque de spear phishing', 'phishing de credenciales', 'archivos de zona', 'iana', 'hashes de contraseña con sal', 'brecha del sistema de nombres de dominio', 'hackeo icann 2014']
+relatedArticles:
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-myetherwallet-bgp-dns-attack/
+  - /es/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /es/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/icann/
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
 ---
 
 Existe un tipo especial de titular que hace que todo el sector de la seguridad se detenga. No "otra minorista comprometida", no "otra startup filtra una base de datos", sino el día en que la institución en la que todos los demás confían admite que fue hackeada de la manera más ordinaria posible.

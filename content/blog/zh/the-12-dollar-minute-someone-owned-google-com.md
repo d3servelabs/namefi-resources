@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2015年9月，一位前谷歌员工通过 Google Domains 以12美元买下了 google.com，并对全球最具价值的域名拥有了约一分钟的管理控制权。这是 Sanmay Ved 的故事，6006.13美元的漏洞奖励，以及这一分钟的所有权所揭示的：究竟谁真正控制着一个域名。'
 keywords: ['google.com域名', 'sanmay ved', 'google domains漏洞', '域名安全', '谁拥有google.com', '域名劫持', '网站管理员工具访问', 'google漏洞奖励', '6006.13奖励', '域名注册漏洞', '域名控制', 'dns安全', '域名所有权验证']
+relatedArticles:
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-lenovo-com-dns-hijack/
+  - /zh/blog/the-sex-com-heist-the-forged-letter/
+  - /zh/blog/the-2024-squarespace-defi-domain-hijacks/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
 ---
 
 2015年9月29日夜间，有大约一分钟的时间，互联网上最有价值的地址并不属于谷歌。

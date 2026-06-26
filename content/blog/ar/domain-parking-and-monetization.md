@@ -12,6 +12,24 @@ format: explainer
 description: "يعني إيه إيقاف الدومين، وإزاي الأسماء الموقوفة بتجيب فلوس من الإعلانات والأفيليت، وليه الإيقاف الحديث بقى قناة بيع، وإمتى بيستاهل فعلاً."
 ogImage: ../../assets/domain-parking-and-monetization-og.jpg
 keywords: ['إيقاف الدومين', 'إيقاف دومين', 'تحقيق الدخل من دومين موقوف', 'إيرادات إيقاف الدومين', 'إعلانات الدومين الموقوف', 'دومينات الدفع لكل نقرة', 'حركة الكتابة المباشرة', 'تحقيق الدخل من الدومين', 'صفحة دومين للبيع', 'صفحة الإيقاف', 'الاستثمار في الدومينات', 'تقليب الدومينات', 'اكسب فلوس من الدومينات اللي مش بتستخدمها', 'أفيليت الدومين الموقوف', 'هل إيقاف الدومين يستاهل']
+relatedArticles:
+  - /ar/blog/marketing-your-domains-for-sale/
+  - /ar/blog/domain-for-sale-landing-pages/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/inbound-vs-outbound-domain-sales/
+  - /ar/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 الدومين اللي ماسكه عشان تبيعه بعدين هو، بشكل افتراضي، أصل ميت. قاعد في حسابك، بيكلفك رسوم تجديد كل سنة، ومش بيعمل أي حاجة وانت مستني المشتري المناسب. الإيقاف هو إنك تخلي الاسم الخامل ده يشتغل ولو شوية — يا إما بإنه يعرض إعلانات لأي حد بيقع عليه بالصدفة، أو، وده الأنفع، بإنه يقول للدنيا كلها إن الاسم معروض للبيع.

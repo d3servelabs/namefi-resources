@@ -12,6 +12,24 @@ format: comparison
 description: "翻转 ENS 的 .eth 名称与翻转传统 DNS 域名有何不同：所有权、流动性、续费、Gas，以及各自适合做什么。"
 ogImage: ../../assets/ens-vs-dns-domain-flipping-og.jpg
 keywords: ['ENS vs DNS', '翻转 ENS 域名', 'ENS 域名翻转', '.eth 域名投资', '翻转 .eth 名称', 'ENS vs 传统域名', '链上域名翻转', 'NFT 域名流动性', 'ENS 续费费用', 'ERC-721 域名', 'web3 域名翻转', '在 OpenSea 上出售 ENS', 'ENS 到期宽限期', '代币化域名翻转', 'ENS Gas 费用']
+relatedArticles:
+  - /zh/blog/onchain-domain-flipping/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/onchain-domain-marketplaces-compared/
+  - /zh/blog/selling-domains-as-nfts/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 如果你做域名翻转，那你大概一直在场边观望 [ENS](/zh/glossary/ens/) 市场，并琢磨这是不是同一套玩法换了层新漆。其实不是。翻转一个 `.eth` 名称和翻转一个传统 `.com` 在韵脚上相似——便宜买进一个好字符串，卖给比你更需要它的人——但底层几乎处处不同：谁能看到你的所有权、一笔交易如何结算、你为持有这个名称要付出什么，乃至"拥有"它到底意味着什么。本文带你走一遍真正的差别，好让你判断你的时间和资金到底该投在哪里。

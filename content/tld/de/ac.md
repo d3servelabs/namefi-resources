@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .ac Top-Level-Domain: Ideal für akademische Zwecke, Tech-Startups und Unternehmen in Aachen. Jetzt bei Namefi registrieren."
 keywords: [".ac domains", ".ac TLD", ".ac top-level domain", "was ist .ac", "warum .ac wählen", "was ist die .ac domain", "warum die .ac domain wählen", "domain investieren", "blockchain domains", "tokenisierte domains", "ascension island domain", "akademische domains", "aachen domains", "namefi registrar", "web3 domains"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/domain-hacks-explained/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/web3/
 ---
 
 ## **Was ist .ac?**

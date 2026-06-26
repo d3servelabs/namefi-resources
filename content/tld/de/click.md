@@ -24,6 +24,24 @@ keywords:
   - 'Affiliate Marketing'
   - 'Kurz-URL Domains'
   - 'Digitale Identität'
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Die Wahl des richtigen Domainnamens ist entscheidend für den Erfolg Ihrer Online-Präsenz. In einer Welt, in der kurze und einprägsame .com-Adressen immer seltener werden, bieten neue generische Top-Level-Domains (gTLDs) spannende Alternativen. Eine besonders handlungsorientierte Endung ist die **.click TLD**.

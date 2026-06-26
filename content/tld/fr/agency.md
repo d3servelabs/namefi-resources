@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .agency : l'extension idéale pour établir votre autorité professionnelle. Avantages, usages et enregistrement Web3 avec Namefi."
 keywords: [".agency domains", ".agency TLD", "top-level domain", "what is .agency", "why choose .agency", "what is the .agency domain", "why choose the .agency domain", "achat nom de domaine", "investissement nom de domaine", "domaines tokenisés", "domaine blockchain", "agence marketing", "agence immobilière", "agence web", "Namefi"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Choisir le bon nom de domaine est la première étape cruciale pour établir une présence en ligne solide. Alors que le marché des domaines traditionnels comme le .com devient de plus en plus saturé, de nouvelles extensions (gTLD) offrent des opportunités uniques de branding. L'une des plus pertinentes pour les prestataires de services est le **.agency**.

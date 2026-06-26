@@ -18,6 +18,24 @@ faqs:
     answer: 'हाँ। "shop" शब्द वैश्विक स्तर पर समझा जाता है और तुरंत व्यावसायिक इरादा व्यक्त करता है, इसीलिए Netflix और MrBeast जैसे ब्रांड इस पर मर्चेंडाइज स्टोर चलाते हैं। बड़े, नए नामस्थान में छोटे, सटीक-मिलान वाले रिटेल नाम भी आसानी से प्राप्त किए जा सकते हैं।'
   - question: 'क्या .shop WHOIS प्राइवेसी और DNSSEC को सपोर्ट करता है?'
     answer: 'हाँ। .shop रजिस्ट्री स्तर पर DNSSEC को सपोर्ट करता है, और अधिकांश रजिस्ट्रार मुफ्त WHOIS प्राइवेसी प्रदान करते हैं जो सार्वजनिक रिकॉर्ड में व्यक्तिगत संपर्क विवरण छुपाती है। प्राइवेसी की उपलब्धता रजिस्ट्री के बजाय आपके रजिस्ट्रार पर निर्भर करती है।'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/ai-vs-io-domain/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 **.shop** डोमेन इंटरनेट के सबसे शाब्दिक एक्सटेंशनों में से एक है: यह प्रत्यय स्वयं एक कॉल टू एक्शन है। जहाँ एक सामान्य नाम आगंतुकों को अनुमान लगाने पर छोड़ देता है, वहीं `.shop` में समाप्त होने वाला नाम उन्हें क्लिक करने से पहले ही बता देता है कि यह ब्राउज़ करने और खरीदने की जगह है। यही स्पष्टता है जिसके कारण खुदरा विक्रेताओं, डायरेक्ट-टू-कंज्यूमर ब्रांडों और क्रिएटर्स ने इसे ऑनलाइन बिक्री के लिए एक उद्देश्य-निर्मित पते के रूप में अपनाया है।

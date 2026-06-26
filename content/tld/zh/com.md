@@ -16,6 +16,24 @@ faqs:
     answer: '几乎所有希望拥有最广泛认可和信任地址的企业、品牌或项目，尤其是面向全球或主流消费者的公司，以及任何希望长期保护品牌的人。'
   - question: '为什么好的 .com 域名这么难找？'
     answer: '全球已注册超过 1.6 亿个 .com 域名，简短、词典词和精确匹配品牌名的供应已基本耗尽。大多数优质 .com 域名已被持有，通常只能在二级市场上购得。'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/what-makes-a-domain-valuable/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 **.com 域名**是互联网最接近"默认选项"的存在。它是"commercial（商业）"的缩写，是最初的通用顶级域名。经过数十年的普及，它已成为人们听到网站名称时自然联想到的后缀。对于大多数企业和品牌而言，**什么是 .com** 其实归结为一件事：它是用户期待、输入并毫不犹豫信任的地址。

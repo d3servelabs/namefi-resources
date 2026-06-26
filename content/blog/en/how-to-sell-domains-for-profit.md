@@ -12,6 +12,24 @@ format: guide
 description: "The end-to-end playbook for selling domains: inbound vs outbound, pricing format, where to list, when to use a broker, and closing the deal safely."
 ogImage: ../../assets/how-to-sell-domains-for-profit-og.jpg
 keywords: ['how to sell domains for profit', 'sell a domain name', 'domain selling guide', 'inbound vs outbound domain sales', 'domain pricing', 'where to sell domains', 'domain marketplaces', 'domain broker', 'domain escrow', 'buy now vs make offer', 'sell domains online', 'domain aftermarket', 'closing a domain sale', 'domain sales outreach', 'flip a domain']
+relatedArticles:
+  - /en/blog/inbound-vs-outbound-domain-sales/
+  - /en/blog/domain-flipping/
+  - /en/blog/working-with-domain-brokers/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 A domain you can't sell is just a renewal bill with a clever name on it. Buying well and appraising honestly are upstream skills; this is the one where the money actually arrives. Most of the profit in flipping is made or lost at the selling stage, because a mediocre name sold well beats a great name nobody can find. This is the selling pillar of our guide to [domain flipping](/en/blog/domain-flipping/) — the end-to-end arc from "I own this name" to "the funds cleared." We'll cover the two ways buyers reach you, how to set a price format, where to list, when a broker earns their cut, and how to close without getting scammed. For a step-by-step checklist of a single sale, pair this with [how to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own/).

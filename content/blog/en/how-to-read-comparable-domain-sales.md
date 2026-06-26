@@ -12,6 +12,24 @@ format: guide
 description: "How to use NameBio-style sales history to price a domain: finding true comparables, adjusting for TLD, length and keyword, and avoiding cherry-picking."
 ogImage: ../../assets/how-to-read-comparable-domain-sales-og.jpg
 keywords: ['comparable domain sales', 'domain comps', 'how to read domain comps', 'NameBio', 'domain sales history', 'domain valuation comps', 'domain price comparison', 'how to price a domain', 'domain appraisal comparables', 'domain sales data', 'find comparable domains', 'domain comp adjustment', 'domaining comps', 'domain pricing data']
+relatedArticles:
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+  - /en/blog/domain-appraisal-tools-compared/
+  - /en/blog/what-makes-a-domain-valuable/
+  - /en/blog/domain-flipping/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Ask a real-estate appraiser what a house is worth and they don't guess. They pull what similar houses nearby recently sold for and adjust from there. [Domain appraisal](/en/glossary/domain-appraisal/) works the same way, and the equivalent of "recent nearby sales" is the public record of past domain sales: the comps. Learn to read them and you can defend almost any price you put on a name. Read them carelessly and you'll talk yourself into a number the market never agreed to.

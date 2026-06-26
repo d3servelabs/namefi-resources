@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .live : l'extension idéale pour le streaming et l'événementiel. Enregistrez votre .live sur Namefi avec des fonctionnalités Web3 et ICANN."
 keywords: [".live domains", "TLD", "top-level domain", "what is .live", "why choose .live", "what is the .live domain", "why choose the .live domain", "domaine .live", "domaines tokenisés", "investissement domaine", "blockchain domains", "Web3 domains", "live streaming", "création de contenu", "identité numérique"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le domaine .live ?**

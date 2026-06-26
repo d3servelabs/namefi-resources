@@ -12,6 +12,24 @@ format: guide
 description: "إزاي تسوّق نطاقاتك المعروضة للبيع: صفحات الإيقاف، صفحات الهبوط المخصصة للبيع، وتحسين ظهور الإعلان في البحث عشان تحطّ الاسم المناسب قدام المشتري المناسب."
 ogImage: ../../assets/marketing-your-domains-for-sale-og.jpg
 keywords: ['تسويق النطاقات المعروضة للبيع', 'إزاي تسوّق نطاق', 'صفحة هبوط لنطاق معروض للبيع', 'إيقاف النطاقات', 'بيع نطاق موقوف', 'صفحة هبوط لبيع النطاقات', 'إعلان النطاق في السوق', 'تحسين ظهور إعلان النطاق في البحث', 'إزاي تعلن عن نطاق للبيع', 'البيع الوارد مقابل البيع الصادر للنطاقات', 'صفحة نطاق معروض للبيع', 'تجيب مشترين للنطاقات', 'قنوات تسويق النطاقات', 'تسويق الاستثمار في النطاقات']
+relatedArticles:
+  - /ar/blog/domain-for-sale-landing-pages/
+  - /ar/blog/marketplace-seo-for-domain-listings/
+  - /ar/blog/inbound-vs-outbound-domain-sales/
+  - /ar/blog/how-to-sell-domains-for-profit/
+  - /ar/blog/domain-parking-and-monetization/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 ممكن تملك الاسم المثالي ومع ذلك ما تبيعهوش أبداً. التقييم بيقولك النطاق بيسوى كام؛ والتسويق هو اللي بيقفل الفجوة ما بين الرقم ده ومشتري عمره ما سمع عنك. أغلب الأسماء في محفظة المضارب ما بتتباعش لأن محدش محتاجها بيعرف أصلاً إنها متاحة. والحل نادراً ما بيكون إنك تزوّد صوت العرض. الحل إنك تحطّ الاسم في المكان اللي المشتري المناسب بيدوّر فيه أصلاً.

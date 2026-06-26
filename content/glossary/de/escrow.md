@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist Treuhand und wie bieten Smart Contracts eine vertrauenslose Treuhand für Domains?
 keywords: ["Treuhand","vertrauenswürdige dritte Partei","Smart Contract Treuhand","Trustless","sichere Transaktionen"]
+relatedArticles:
+  - /de/blog/domain-escrow-explained/
+  - /de/blog/how-tokenized-marketplaces-replace-escrow/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/selling-domains-as-nfts/
+  - /de/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/domain-broker/
+  - /de/glossary/marketplace/
+  - /de/glossary/domain-financing/
+  - /de/glossary/lease-to-own/
 ---
 
 

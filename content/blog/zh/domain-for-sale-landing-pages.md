@@ -12,6 +12,24 @@ format: guide
 description: "如何打造一个能真正促成交易的域名出售落地页：清晰的定价或出价路径、真实的信任信号，以及顺畅无阻的购买或报价方式。"
 ogImage: ../../assets/domain-for-sale-landing-pages-og.jpg
 keywords: ['域名出售落地页', '域名出售页面', '出售域名', '域名落地页', '出售引导页', '域名销售页面', '一口价域名', '域名报价', '域名停放页', '域名定价', '高转化域名落地页', '如何出售域名', '域名托管', '域名转化率', '域名信任信号']
+relatedArticles:
+  - /zh/blog/marketing-your-domains-for-sale/
+  - /zh/blog/domain-parking-and-monetization/
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/working-with-domain-brokers/
+  - /zh/blog/marketplace-seo-for-domain-listings/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 想买你域名的人，很少会通过你的主动营销找上门来。他们会直接在浏览器里输入这个域名，看看是否已被注册，域名解析，页面加载。这个页面上的内容，就是你唯一的销售话术。如果出现的是[注册商](/zh/glossary/registrar/)的默认页面、一个塞满广告的停放页，或者什么都没有，你就白白错过了这个已经对这个名字动心的访客。出售落地页，是你所能获得的最高质量流量的门面——来的都是精确输入你所卖内容的人。

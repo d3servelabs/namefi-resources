@@ -18,6 +18,24 @@ faqs:
     answer: 'A .club address can send and receive normal email, but newer generic extensions sometimes face stricter spam filtering. Proper SPF, DKIM, and DMARC setup plus a warmed sending domain matter far more than the suffix for reaching inboxes.'
   - question: 'Does .club support WHOIS privacy and DNSSEC?'
     answer: 'Yes. As an open gTLD, .club registrations support standard registrar WHOIS privacy services and DNSSEC signing. Availability of each depends on the registrar you choose rather than registry policy.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.club domain** is a generic top-level domain built for one idea: belonging. Where most extensions describe what a site sells or where it lives, `.club` describes who it gathers — members, subscribers, fans, teammates, and communities. That makes it one of the more semantically expressive new gTLDs, and a natural fit for membership businesses and [Web3](/en/glossary/web3/) groups alike.

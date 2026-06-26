@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout sur l'extension .abudhabi : un choix stratégique pour les entreprises et investisseurs ciblant les Émirats. Avantages, SEO et enregistrement."
 keywords: [".abudhabi domains", ".abudhabi TLD", "top-level domain", "what is .abudhabi", "why choose .abudhabi", "what is the .abudhabi domain", "why choose the .abudhabi domain", "investissement domaine", "blockchain domains", "tokenized domain", "domaine géographique", "entreprise Abu Dhabi", "domaine Émirats", "Web3 domains", "achat nom de domaine"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 ## **Qu'est-ce que .abudhabi ?**

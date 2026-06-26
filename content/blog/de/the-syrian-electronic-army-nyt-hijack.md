@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Am 27. August 2013 phishte die Syrische Elektronische Armee einen Melbourne-IT-Wiederverkäufer, überschrieb die DNS-Einträge von nytimes.com und Twitter-Domains und legte die New York Times für Stunden offline. Eine eingehende Analyse, wie ein schwaches Glied in der Registrar-Kette zum Versagen der Eingangstür einer Zeitung wurde – und was Registry Locks hätten verändern können.'
 keywords: ['nytimes.com-Hack', 'Syrische Elektronische Armee', 'melbourne it', 'DNS-Hijack', 'Domain-Hijacking', 'Registrar-Sicherheit', 'Wiederverkäufer-Phishing', 'Registry Lock', 'DNS-Einträge', 'Domain-Name-Server-Angriff', 'Twitter DNS 2013', 'Domain-Sicherheit', 'serverUpdateProhibited']
+relatedArticles:
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-lenovo-com-dns-hijack/
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-panix-com-domain-hijack/
+  - /de/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/tld/
 ---
 
 Der Domainname einer Zeitung ist ihre Eingangstür. Wenn Sie `nytimes.com` eingeben, vertrauen Sie einer unsichtbaren Kette — einem Domain-Registry, einem [Registrar](/de/glossary/registrar/), manchmal einem Wiederverkäufer unterhalb dieses Registrars — darauf, dass diese Sie zur echten Redaktion und nirgendwo sonst führt. An einem normalen Tag denken Sie nie an diese Kette. Am 27. August 2013 brach sie, und Millionen von Lesern traten an die Eingangstür der *New York Times* und fanden, dass diese gegen eine andere ausgetauscht worden war.

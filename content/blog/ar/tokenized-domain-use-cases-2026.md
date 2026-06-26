@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "جولة محايدة للمنصات حول الاستخدامات الفعلية للنطاقات المرمزة في عام 2026 — إقراض التمويل اللامركزي (DeFi)، والتأجير، والملكية الجزئية، وهوية وكلاء الذكاء الاصطناعي، وحالات الاستخدام التي لم تتبلور بشكل كامل بعد."
 keywords: ['حالات استخدام النطاقات المرمزة', 'DomainFi', 'إقراض النطاقات المرمزة', 'ضمان النطاقات المرمزة', 'تأجير النطاقات المرمزة', 'الملكية الجزئية للنطاقات', 'نطاق وكيل الذكاء الاصطناعي', 'تمويل لامركزي للنطاقات', 'سوق النطاقات المرمزة', 'تطبيقات النطاقات المرمزة', 'حالات استخدام نطاقات NFT', 'لماذا يتم ترميز النطاقات 2026', 'الاستخدام المباشر للنطاقات على السلسلة', 'أمثلة على النطاقات المرمزة']
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/how-tokenized-marketplaces-replace-escrow/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/tokenize-your-com/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
 ---
 
 من المغري التحدث عن النطاقات المرمزة (tokenized domains) كـ *تقنية*. لكن من المفيد أكثر التحدث عنها كمجموعة من *الأشياء التي يمكنك القيام بها باستخدامها* والتي لم يكن من السهل القيام بها بنطاق عادي محفوظ لدى مسجل النطاقات. هذا المقال هو جولة لاستعراض حالات الاستخدام هذه — ما هو حقيقي اليوم، وما هو ناشئ، وما لا يزال في الغالب مجرد أفكار نظرية.

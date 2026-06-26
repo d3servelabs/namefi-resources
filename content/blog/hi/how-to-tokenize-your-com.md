@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "आपके पहले से स्वामित्व वाले डोमेन को टोकनाइज़ करने के लिए एक व्यावहारिक, चरण-दर-चरण मार्गदर्शिका — पात्रता, वॉलेट, शुल्क, समय, और प्रत्येक स्क्रीन पर क्या अपेक्षा करें। यह प्रोटोकॉल नर्ड्स के लिए नहीं, बल्कि मालिकों के लिए लिखा गया है।"
 keywords: ['डोमेन को टोकनाइज़ कैसे करें', '.com को टोकनाइज़ कैसे करें', 'मेरा डोमेन टोकनाइज़ करें', 'मौजूदा डोमेन को टोकनाइज़ करें', 'डोमेन को चरण-दर-चरण टोकनाइज़ करें', 'डोमेन टोकनाइजेशन ट्यूटोरियल', '.com टोकनाइज़ गाइड', '.xyz टोकनाइज़ करें', '.io टोकनाइज़ करें', 'namefi टोकनाइज़', 'NFT डोमेन कैसे करें', 'डोमेन को NFT में ट्रांसफर करें', 'डोमेन से NFT', 'डोमेन टोकनाइजेशन प्रक्रिया', 'टोकनाइज़्ड डोमेन सेटअप', 'ICANN डोमेन टोकनाइज़ करें']
+relatedArticles:
+  - /hi/blog/tokenize-your-com-to-flip-it/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/dns-on-tokenized-domains/
+  - /hi/blog/how-tokenized-marketplaces-replace-escrow/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/tokenize-your-com/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 तो आपके पास एक डोमेन है — शायद `mybrand.com`, या शायद `.xyz` नामों का एक पोर्टफोलियो — और आपने इसे **टोकनाइज़** (tokenize) करने का फैसला किया है। यह मार्गदर्शिका आपको स्क्रीन-दर-स्क्रीन बताएगी कि वास्तव में क्या होता है, ताकि आप शुरू करने से पहले आवश्यक समय, पैसे और एक्सेस की योजना बना सकें।

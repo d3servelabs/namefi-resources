@@ -12,6 +12,24 @@ format: comparison
 description: "الأسماء المبتكرة القابلة للتبرند مقابل نطاقات الكلمات المفتاحية المطابِقة تمامًا: مين بيشتري كل نوع، وأنهي بيتباع تاني بشكل أضمن، وزاوية العلامة التجارية اللي لازم كل فليبر يبقى عارفها."
 ogImage: ../../assets/brandable-vs-keyword-domains-og.jpg
 keywords: ['النطاقات القابلة للتبرند', 'نطاقات الكلمات المفتاحية', 'النطاقات المطابِقة تمامًا', 'النطاقات القابلة للتبرند مقابل نطاقات الكلمات المفتاحية', 'أسماء النطاقات المبتكرة', 'أسماء النطاقات العامة', 'الاستثمار في النطاقات', 'تقليب النطاقات', 'أنهي نطاقات بتتباع أحسن', 'حركة الكتابة المباشرة', 'العلامة التجارية للنطاق', 'أسماء النطاقات الوصفية', 'قيمة إعادة بيع النطاق', 'أسماء نطاقات الشركات الناشئة', 'استراتيجية اسم النطاق']
+relatedArticles:
+  - /ar/blog/domain-flipping/
+  - /ar/blog/what-makes-a-domain-valuable/
+  - /ar/blog/hand-registering-domains-to-flip/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 نطاقين بيوصلوا لـ inbox بتاعك في نفس الأسبوع. واحد على طريقة `Stripe`: كلمة قصيرة ومبتكرة معناهاش حاجة لحد ما شركة تصب فيها معنى. والتاني زي `CarInsurance`: وصف بسيط بالظبط لإيه اللي المشتري بيبيعه. الاتنين ممكن يجيبوا فلوس. بس بيجيبوها بطرق مختلفة تمامًا، وبيتباعوا لمشترين مختلفين تمامًا، وشايلين مخاطر مختلفة تمامًا. إنك تشتري واحد وانت كان المفروض تشتري التاني ده واحد من أكتر الطرق الشائعة اللي بيهدر بيها الفليبرز ميزانية التجديد بتاعتهم.

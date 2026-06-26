@@ -24,6 +24,24 @@ keywords:
   - 'agtech domains'
   - 'domain investing'
   - 'blockchain domains'
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/registry/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
 ---
 
 ## **什么是 .ag？**

@@ -11,6 +11,24 @@ seriesOrder: 3
 format: explainer
 description: How tokenized-domain marketplaces let buyers and sellers settle atomically on-chain — no escrow service, no auth codes, no five-day registrar lock. What replaces each piece of the traditional flow, and what risks shift to other layers.
 keywords: ['domain marketplace blockchain', 'atomic domain transfer', 'tokenized domain marketplace', 'replace domain escrow', 'no escrow domain sale', 'domain sale crypto', 'tokenized domain sale process', 'sell tokenized domain', 'buy tokenized domain', 'on-chain domain sale', 'domain NFT settlement', 'domain marketplace 2026', 'tokenized domain liquidity']
+relatedArticles:
+  - /en/blog/domain-escrow-explained/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/tokenize-your-com-to-flip-it/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/tokenize-your-com/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
 ---
 
 The traditional flow for selling a `.com` looks something like this:

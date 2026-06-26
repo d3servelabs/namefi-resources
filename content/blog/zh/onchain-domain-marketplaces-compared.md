@@ -12,6 +12,24 @@ format: comparison
 description: "从费用、触达范围和托管模式三个维度，对比 OpenSea、基于 Seaport 的市场以及域名原生的链上市场——帮你判断每一笔代币化域名交易该选哪个场所。"
 ogImage: ../../assets/onchain-domain-marketplaces-compared-og.jpg
 keywords: ['链上域名市场', '代币化域名市场', '出售域名 NFT', 'OpenSea 域名', 'Seaport 协议', 'NFT 市场费用', 'web3 域名翻转', '在哪出售代币化域名', 'OpenSea vs Blur', '原子化 NFT 交易', 'ERC-721 域名', '域名 NFT 市场对比', 'Namefi 市场', '自托管域名交易', '链上域名交易']
+relatedArticles:
+  - /zh/blog/selling-domains-as-nfts/
+  - /zh/blog/onchain-domain-flipping/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 如果你翻转一个[代币化域名](/zh/blog/what-are-tokenized-domains/)——一个真正的 ICANN 名称，外加一层[链上](/zh/glossary/on-chain/)所有权代币——你就拥有了传统域名世界从未给过你的一种选择。你可以把这个名称作为 [NFT](/zh/glossary/nft/) 挂到通用加密市场上，可以通过基于 [Seaport](/zh/glossary/smart-contract/) 的、无第三方托管的场所出售它，也可以使用专为这类资产打造的域名原生平台。每条路径转移的都是同一个代币，但它们在费用、触达范围和托管模式上的差异大到足以让你选错时丢掉一个买家或损失一块利润。

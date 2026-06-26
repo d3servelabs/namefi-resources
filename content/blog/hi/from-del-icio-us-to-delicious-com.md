@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'इस लेख में जानें कि 2003 में प्रसिद्ध डोमेन हैक "del.icio.us" के रूप में लॉन्च हुई सोशल बुकमार्किंग साइट कैसे शुरू हुई, उन डॉट्स ने हर उल्लेख पर स्थायी कर क्यों लगाया, और Yahoo ने 2008 में इसे साफ-सुथरे Delicious.com पर कैसे स्थानांतरित किया।'
 keywords: ['del.icio.us', 'delicious.com', 'delicious domain name', 'domain hack', 'joshua schachter', 'social bookmarking', 'yahoo delicious', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'ccTLD domain hack', 'category-defining domain']
+relatedArticles:
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-mona-co-to-crypto-com/
+  - /hi/blog/from-ctrip-com-to-trip-com/
+  - /hi/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
 ---
 
 लगभग पाँच साल तक, Web 2.0 युग की सबसे प्रभावशाली साइटों में से एक एक ऐसे पते पर रहती थी जिसे आप ज़ोर से बोल भी नहीं सकते थे: **del.icio.us**।

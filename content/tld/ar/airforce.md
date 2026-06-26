@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما يخص نطاق .airforce. الخيار الأمثل للمؤسسات العسكرية، وعشاق الطيران، والشركات ذات الصلة. احرف كيف تحجز نطاقك المييز عبر Namefi.'
 keywords: ['.airforce domains', '.airforce TLD', 'top-level domain', 'what is .airforce', 'why choose .airforce', 'what is the .airforce domain', 'why choose the .airforce domain', 'buy domain name', 'domain investing', 'blockchain domains', 'tokenized domain', 'aviation website', 'military community domains', 'Namefi', 'web3 domains']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/web3/
 ---
 
 ## **ما هو نطاق .airforce؟**

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '.allstate डोमेन एक्सटेंशन (TLD) के बारे में सब कुछ जानें। समझें कि यह ब्रांड डोमेन कैसे काम करता है, इसका महत्व क्या है और डिजिटल दुनिया में डोमेन निवेश का भविष्य क्या है।'
 keywords: ['.allstate domains', '.allstate TLD', 'top-level domain', 'what is .allstate', 'why choose .allstate', 'what is the .allstate domain', 'why choose the .allstate domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Allstate brand TLD', 'insurance domains', 'Namefi domain registration', 'web3 domains', 'digital branding']
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 ## **.allstate क्या है?**

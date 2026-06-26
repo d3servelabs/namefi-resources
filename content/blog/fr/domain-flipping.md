@@ -12,6 +12,24 @@ format: guide
 description: "Ce qu''est vraiment le domain flipping — acheter des noms bas et les revendre haut — et la panoplie de compétences derrière ce métier, du sourcing à l''expertise jusqu''à la vente."
 ogImage: ../../assets/domain-flipping-og.jpg
 keywords: ['domain flipping', 'comment flipper des domaines', 'flipper des domaines pour le profit', 'domain flipping pour débutants', 'acheter et revendre des domaines', 'investissement en domaines', 'gagner de l''argent avec les domaines', 'guide du domain flipping', 'comment évaluer un domaine', 'trouver des domaines à flipper', 'portefeuille de domaines', 'revendeur de domaines', 'le domain flipping est-il légal', 'marché secondaire des domaines']
+relatedArticles:
+  - /fr/blog/domain-renewal-costs-and-sell-through-rate/
+  - /fr/blog/how-to-sell-domains-for-profit/
+  - /fr/blog/when-to-drop-a-domain/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+  - /fr/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 L''argument de vente est le plus vieux du commerce : acheter bas, vendre haut. Enregistrez ou acquérez un nom de domaine pour quelques dollars, trouvez quelqu''un qui en a plus besoin que vous, et revendez-le à plusieurs multiples de ce que vous avez payé. Bien menée, l''opération semble sans effort — un nom astucieux acheté pour pas cher, un chèque à cinq chiffres quelques mois plus tard. Cette histoire est réelle. Mais c''est aussi un montage des meilleurs moments.

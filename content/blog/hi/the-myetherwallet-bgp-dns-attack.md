@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '24 अप्रैल 2018 को, हमलावरों ने Amazon Route 53 के लिए इंटरनेट रूटिंग को हाईजैक किया, myetherwallet.com के DNS उत्तरों को जहरीला किया, और एक सेल्फ-साइन्ड सर्टिफिकेट के पीछे एक फिशिंग क्लोन परोसा — जिससे लगभग $150,000 का Ethereum निकाला गया। Domain Mayday की गहन पड़ताल — क्यों DNS एक ऐसी रूटिंग परत पर निर्भर है जो डिफ़ॉल्ट रूप से भरोसा करती है।'
 keywords: ['myetherwallet', 'bgp hijack', 'dns hijacking', 'amazon route 53', 'route 53 hijack', 'dns security', 'bgp routing security', 'ethereum phishing', 'self-signed certificate', 'enet as10297', 'rpki roa', 'crypto wallet phishing', 'domain security']
+relatedArticles:
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-curve-finance-dns-hijack/
+  - /hi/blog/the-bitcoin-org-dns-hijack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/dns/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 जब आप किसी वेबसाइट का नाम ब्राउज़र में टाइप करते हैं, तो आप दो अदृश्य प्रणालियों पर भरोसा कर रहे होते हैं कि वे आपके साथ ईमानदार रहेंगी।

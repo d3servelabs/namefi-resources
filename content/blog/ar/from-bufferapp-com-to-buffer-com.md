@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'كيف أطلقت Buffer في 2010 على BufferApp.com لأن Buffer.com كان محجوزاً، وكيف أمضت 624 يوماً تسعى لامتلاك الدومين المطابق — حتى أنها أرت البائع رصيدها البنكي — ولماذا شركة اشتهرت بالشفافية الكاملة التزمت الصمت أمام الرقم الوحيد اللي أراده الجميع: السعر.'
 keywords: ['bufferapp.com', 'buffer.com', 'اسم دومين buffer', 'ترقية الدومين', 'joel gascoigne', 'شفافية buffer', 'دومين مطابق تام', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'دومين بريميوم', 'استراتيجية الدومين', 'تاريخ buffer', 'الاستحواذ على الدومين', 'دومين يعرّف الفئة']
+relatedArticles:
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-slackhq-com-to-slack-com/
+  - /ar/blog/from-discordapp-com-to-discord-com/
+  - /ar/blog/from-mona-co-to-crypto-com/
+  - /ar/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
 ---
 
 قبل ما تبقى أداة السوشيال ميديا اللي تضبطها وتنساها، كانت Buffer بتعرّف نفسها باسم أطول: **BufferApp.com**.

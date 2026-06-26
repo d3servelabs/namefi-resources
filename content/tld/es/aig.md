@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el potencial del dominio .aig para proyectos de Inteligencia Artificial y Web3. Aprende por qué es la elección inteligente para tu identidad digital en Namefi.'
 keywords: ['.aig domains', 'TLD', 'top-level domain', 'what is .aig', 'why choose .aig', 'what is the .aig domain', 'why choose the .aig domain', 'dominio .aig', 'comprar dominio .aig', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'dominios inteligencia artificial', 'Web3 domains', 'registro de dominios']
+relatedArticles:
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/premium-web3-tlds/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/registrar/
+  - /es/glossary/registry/
 ---
 
 En el panorama digital actual, donde la **Inteligencia Artificial (IA)** y la **[Web3](/es/glossary/web3/)** están redefiniendo la forma en que interactuamos en internet, elegir el nombre de dominio correcto es más crucial que nunca. Mientras que extensiones clásicas como el `.com` están saturadas y el `.ai` ha visto un aumento masivo en precios y ocupación, surge una nueva oportunidad para innovadores y desarrolladores: el [TLD](/es/glossary/tld/) **.aig**.

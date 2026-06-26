@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 实用指南：在您将 ICANN 域名代币化后，常规 DNS（域名服务器、A/AAAA、MX、TXT、DNSSEC、CAA）如何继续运作。了解哪些发生了变化，哪些没有，以及如何设置您现有的 DNS 提供商。
 keywords: ['代币化域名 DNS', 'NFT 域名 DNSSEC', '代币化域名 域名服务器', '代币化域名 电子邮件', 'NFT 域名 MX 记录', '代币化域名 CAA 记录', '代币化域名 DNS 管理', '链上域名 DNS', 'NFT 域名 MX', '代币化域名 Cloudflare', '代币化域名 Route53', '代币化 DNS 如何工作', '代币化域名解析']
+relatedArticles:
+  - /zh/blog/how-to-tokenize-your-com/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+  - /zh/blog/how-tokenized-marketplaces-replace-escrow/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/tokenize-your-com/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/dns/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/tld/
 ---
 
 关于域名[代币化](/zh/glossary/tokenize/)，人们常有一个担忧：*“我的网站还能正常访问吗？我的电子邮箱还能继续使用吗？我需要学习一套全新的 DNS 技术栈吗？”*

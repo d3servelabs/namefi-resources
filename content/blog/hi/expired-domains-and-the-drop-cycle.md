@@ -12,6 +12,24 @@ format: explainer
 description: "एक डोमेन कैसे एक्सपायर होकर ड्रॉप होता है: ग्रेस पीरियड, 30-दिन की रिडेम्पशन विंडो, 5-दिन का पेंडिंग डिलीट, रिलीज़ — और फ्लिपर्स के लिए ड्रॉप हुए नाम कहाँ सामने आते हैं।"
 ogImage: ../../assets/expired-domains-and-the-drop-cycle-og.jpg
 keywords: ['एक्सपायर्ड डोमेन', 'डोमेन ड्रॉप साइकल', 'डोमेन लाइफ साइकल', 'रिडेम्पशन ग्रेस पीरियड', 'पेंडिंग डिलीट', 'डोमेन ड्रॉप कैचिंग', 'एक्सपायर्ड डोमेन नाम', 'डोमेन कैसे एक्सपायर होते हैं', 'ड्रॉप हुए डोमेन', 'डोमेन स्नाइपिंग', 'एक्सपायर्ड डोमेन खरीदें', 'डोमेन रिडेम्पशन पीरियड', 'डोमेन कब ड्रॉप होते हैं', 'डोमेन बैकऑर्डर', 'फ्लिप करने के लिए डोमेन खोजें']
+relatedArticles:
+  - /hi/blog/domain-backorders-and-drop-catching/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/how-to-win-domain-auctions/
+  - /hi/blog/hand-registering-domains-to-flip/
+  - /hi/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 ज़्यादातर लोग मानते हैं कि जो डोमेन लैप्स हो जाता है, वह एक्सपायर होने के अगले ही दिन गायब हो जाता है और अगली सुबह वापस खुले बाज़ार में आ जाता है। ऐसा नहीं होता। जिस नाम को कोई रिन्यू नहीं करता, वह कई हफ़्तों तक चलने वाले होल्डिंग स्टेट्स के एक तय क्रम से गुज़रता है — हर स्टेट के अपने नियम होते हैं कि उसे कौन और किस कीमत पर वापस पा सकता है — इससे पहले कि [रजिस्ट्री](/hi/glossary/registry/) उसे आख़िरकार वापस उपलब्ध पूल में छोड़ दे। वह आख़िरी रिलीज़ ही "[ड्रॉप](/hi/glossary/pending-delete/)" है, और किसी नाम के पूल में आते ही उसी पल उसे रजिस्टर कर लेना एक मान्यता-प्राप्त प्रथा है: जैसा कि विकिपीडिया कहता है, [डोमेन ड्रॉप कैचिंग, जिसे डोमेन स्नाइपिंग भी कहते हैं, किसी डोमेन नाम का रजिस्ट्रेशन लैप्स होते ही, एक्सपायरी के तुरंत बाद उसे रजिस्टर करने की प्रथा है](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=is%20the%20practice%20of%20registering%20a%20domain%20name%20once%20registration%20has%20lapsed%2C%20immediately%20after%20expiry)।

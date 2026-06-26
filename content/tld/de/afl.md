@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Alles über die .afl Domain: Eine exklusive TLD für den Australian Football. Erfahren Sie mehr über Vorteile, Nutzung und die Registrierung bei Namefi."
 keywords: [".afl domains", ".afl TLD", "top-level domain", "was ist .afl", "warum .afl wählen", "was ist die .afl domain", "warum die .afl domain wählen", "domain investing", "blockchain domains", "tokenized domain", "Australian Football League domain", "sport domains", "marken TLD", "Web3 domains", "digitale identität"]
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /de/blog/premium-web3-tlds/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .afl?**

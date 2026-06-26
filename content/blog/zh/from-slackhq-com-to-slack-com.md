@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Slack 当年因为 Slack.com 被他人占用，不得不以 SlackHQ.com 起步，随后花费 6 万美元收购精确匹配域名，摘掉"HQ"后缀——而 @SlackHQ 这个社交账号却沿用至今。'
 keywords: ['slackhq.com', 'slack.com', 'slack域名', '域名升级', 'stewart butterfield', 'tiny speck', '精确匹配域名', '创业命名', '品牌命名', '高价域名', '域名策略', 'slack历史', '域名收购', '品类定义域名']
+relatedArticles:
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-discordapp-com-to-discord-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+  - /zh/blog/from-box-net-to-box-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
 ---
 
 在 Slack 成为职场沟通动词之前，它有一个更长的网址：**SlackHQ.com**。

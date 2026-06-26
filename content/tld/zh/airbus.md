@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '探索 .airbus 顶级域名（TLD）的独特之处。了解这个品牌域名如何定义数字权威，以及其在域名投资和品牌保护中的重要意义。'
 keywords: ['.airbus', '.airbus domains', '.airbus TLD', 'top-level domain', 'what is .airbus', 'why choose .airbus', 'what is the .airbus domain', 'why choose the .airbus domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'brand TLD', 'Web3 domains', 'Airbus digital identity', 'buy domains']
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 ## **什么是 .airbus?**

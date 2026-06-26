@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '1995年，一个名叫斯蒂芬·科恩的骗子仅凭一封伪造信件发给 Network Solutions，便从合法所有者加里·克雷门手中盗走了 sex.com。追回域名的漫长斗争最终以6500万美元的判决、一名逃亡墨西哥的逃犯，以及一项确立域名为财产的里程碑式裁决画上句号。'
 keywords: ['sex.com', '域名盗窃', '斯蒂芬·科恩', '加里·克雷门', 'Kremen v. Cohen', 'Network Solutions', '伪造信件', '域名劫持', 'Sharon Dimmick 信件', '域名安全', '域名即财产', '6500万美元判决', '域名转让欺诈', 'Domain Mayday']
+relatedArticles:
+  - /zh/blog/the-panix-com-domain-hijack/
+  - /zh/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /zh/blog/from-twitter-com-to-x-com/
+  - /zh/blog/the-perl-com-domain-theft/
+  - /zh/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 1995年，互联网上最有价值的地址因一张纸而易主。

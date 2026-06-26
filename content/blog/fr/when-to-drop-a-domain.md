@@ -12,6 +12,24 @@ format: guide
 description: "Comment décider de laisser expirer un domaine : coût de renouvellement contre probabilité réaliste de revente, le piège du coût irrécupérable, et les signaux qu''un nom ne se vendra jamais."
 ogImage: ../../assets/when-to-drop-a-domain-og.jpg
 keywords: ['quand abandonner un domaine', 'laisser un domaine expirer', 'couper les domaines perdants', 'décision de renouvellement de domaine', 'coût irrécupérable domaine', 'devrais-je renouveler un domaine', 'élagage de portefeuille de domaines', 'abandonner un nom de domaine', 'coût de détention de domaine', 'taux de vente de domaine', 'pertes en domaining', 'faire expirer un domaine', 'coût de renouvellement de domaine', 'erreurs en investissement de domaines', 'élaguer un portefeuille de domaines']
+relatedArticles:
+  - /fr/blog/domain-portfolio-management/
+  - /fr/blog/domain-renewal-costs-and-sell-through-rate/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/hand-registering-domains-to-flip/
+  - /fr/blog/working-with-domain-brokers/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Chaque domaine que vous possédez vous envoie la même lettre une fois par an : renouvelez ou perdez-le. Pour vos gagnants, la réponse est un oui facile. Les décisions difficiles concernent les noms au milieu et en bas de votre portefeuille — ceux que vous avez enregistrés avec une thèse qui n'a pas porté ses fruits, les achats impulsifs, les noms « presque bons » qui sont restés invendus après trois cycles de renouvellement. Décider lesquels lâcher est l'une des compétences les moins glamour et les plus rentables du flipping, car l'argent économisé sur un inventaire mort va directement à votre résultat net.

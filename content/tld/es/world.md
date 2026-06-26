@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el potencial global del dominio .world. Aprende sus usos, ventajas SEO y por qué es ideal para marcas internacionales y proyectos Web3 en Namefi.'
 keywords: ['.world domains', 'dominios .world', 'TLD', 'top-level domain', 'what is .world', 'why choose .world', 'qué es el dominio .world', 'por qué elegir el dominio .world', 'investing in domains', 'blockchain domains', 'tokenized domain', 'registro de dominios', 'identidad digital', 'Web3 domains', 'global branding']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/ai-vs-io-domain/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registrar/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 En el vasto universo de internet, elegir la extensión de dominio correcta es crucial para definir la identidad de tu marca. Mientras que las extensiones tradicionales siguen siendo populares, los nuevos dominios de nivel superior (gTLDs) ofrecen oportunidades únicas para destacar. Uno de los más versátiles y ambiciosos es el **.world**.

@@ -6,6 +6,24 @@ tags: ["faq","domains","tokenization"]
 authors: ["namefiteam"]
 description: 探索 xStocks 如何彻底改变金融，以及为什么通过 Namefi 进行代币化的域名投资者在引领这场数字变革中处于独特地位。
 keywords: ["xStocks","代币化股票","代币化权益","域名投资","域名代币化","Namefi","区块链股票","碎片化所有权","web3 金融","数字资产交易","Solana 代币化资产","加密股票","链上权益","实物资产代币化","代币化域名"]
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/onchain-domain-flipping/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/web3-foundations/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
+  - /zh/glossary/tld/
 ---
 
 

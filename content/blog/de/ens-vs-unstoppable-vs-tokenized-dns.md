@@ -12,6 +12,24 @@ format: comparison
 description: "ENS vs. Unstoppable Domains vs. tokenisiertes ICANN-DNS, verglichen anhand der Auflösbarkeit im Browser, der Verlängerungen und der Frage, wer den Namen tatsächlich kontrolliert."
 ogImage: ../../assets/ens-vs-unstoppable-vs-tokenized-dns-og.jpg
 keywords: ['ENS vs. Unstoppable Domains', 'ENS vs. tokenisierte Domains', 'Unstoppable Domains vs. ENS', 'Web3-Domains im Vergleich', 'tokenisierte DNS-Domains', 'ENS Domain-Flipping', '.eth-Domains', '.crypto-Domains', 'lösen Web3-Domains im Browser auf', 'ENS-Verlängerungsgebühren', 'Unstoppable Domains ohne Verlängerung', 'ICANN vs. Web3-Domains', 'wer kontrolliert eine Web3-Domain', 'tokenisierte Domain vs. Web3-Domain', 'NFT-Domains im Vergleich']
+relatedArticles:
+  - /de/blog/onchain-domain-flipping/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/ens-vs-dns-domain-flipping/
+  - /de/blog/onchain-domain-marketplaces-compared/
+  - /de/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Wenn du Namen on-chain flippst, ist die erste Entscheidung, welche Art von „On-Chain-Name" du überhaupt handelst. Die drei Kategorien, die die meisten Leute in einen Topf werfen, sind nicht dasselbe Asset, und die Unterschiede entscheiden darüber, ob der Name in einem Browser auflöst, ob nächstes Jahr eine Verlängerung fällig wird und wer ihn tatsächlich kontrolliert. Dieser Leitfaden vergleicht die drei direkt miteinander: [ENS](/de/glossary/ens/) (`.eth`), [Unstoppable Domains](https://unstoppabledomains.com) (`.crypto`, `.x`, `.nft`) und tokenisierte echte ICANN-[DNS](/de/glossary/dns/)-Domains (die `.com`/`.io`/`.xyz`-Namen, die du auf [Namefi](https://namefi.io) [tokenisieren](/de/glossary/tokenize/) kannst).

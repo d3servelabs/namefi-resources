@@ -12,6 +12,24 @@ sources:
   - https://web3.foundation/about/
   - https://en.wikipedia.org/wiki/Web3
   - https://www.wired.com/story/web3-blockchain-decentralization-explained/
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/onchain-domain-custody-and-recovery/
+  - /hi/blog/the-badgerdao-frontend-attack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/icann/
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
+  - /hi/glossary/tld/
 ---
 
 **Web3** (जिसे *Web 3.0* भी लिखा जाता है) इंटरनेट के लिए एक प्रस्तावित प्रतिमान है जिसमें मूल आधारभूत संरचना सार्वजनिक [ब्लॉकचेन](/hi/glossary/blockchain/) नेटवर्क पर चलती है, जिससे भागीदार केंद्रीकृत प्लेटफार्मों द्वारा प्रबंधित खातों की बजाय क्रिप्टोग्राफिक कुंजियों के माध्यम से अपना डेटा, डिजिटल संपत्तियाँ और ऑनलाइन पहचान स्वयं नियंत्रित कर सकते हैं।

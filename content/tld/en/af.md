@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Discover the .af top-level domain. From its origins as the Afghanistan ccTLD to its popularity for creative domain hacks and branding, learn why .af is a smart choice."
 keywords: [".af domains", ".af TLD", "top-level domain", "what is .af", "why choose .af", "what is the .af domain", "why choose the .af domain", "Afghanistan domain", "domain hacks", "creative branding", "domain investing", "buy .af domain", "tokenized domains", "blockchain domains", "Namefi"]
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-investor-field-guide/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
 ---
 
 ## **What is .af?**

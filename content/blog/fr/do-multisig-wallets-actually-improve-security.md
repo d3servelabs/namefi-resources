@@ -8,6 +8,24 @@ draft: false
 description: "Les portefeuilles multisignatures sont largement considérés comme le modèle de conservation sécurisé par défaut dans les cryptomonnaies, mais la réponse à la question « améliorent-ils vraiment la sécurité ? » dépend entièrement du modèle de menace. Cet article explique ce que le multisig permet de contrer, ce qu'il ne peut pas faire, et dans quels cas il peut aggraver la situation."
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['portefeuille multisig', 'multisignature', 'portefeuille safe', 'gnosis safe', 'gestion des clés', 'auto-conservation', 'signature à seuil', 'récupération sociale', 'namefi']
+relatedArticles:
+  - /fr/blog/onchain-domain-custody-and-recovery/
+  - /fr/blog/the-badgerdao-frontend-attack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-curve-finance-dns-hijack/
+  - /fr/blog/the-sushiswap-miso-insider-attack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
+  - /fr/glossary/tld/
 ---
 
 Les portefeuilles multisignatures (multisig) — des portefeuilles où M clés sur N doivent signer pour qu'une transaction soit valide — sont généralement présentés comme l'évolution évidente par rapport à un *hot wallet* ([portefeuille](/fr/glossary/wallet/) chaud) à clé unique. La plupart des systèmes de trésorerie des DAO, des plateformes d'échange et des entreprises sérieuses du secteur crypto utilisent une forme ou une autre de multisig (Safe, Squads, Multisig.js, ou des variantes à signature à seuil).

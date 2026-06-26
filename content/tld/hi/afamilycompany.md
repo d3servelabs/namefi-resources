@@ -23,6 +23,24 @@ keywords:
   - 'digital identity for family business'
   - 'Web3 domain registration'
   - 'Namefi domain registrar'
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/premium-web3-tlds/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/top-tlds-to-secure-for-your-saas/
+  - /hi/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
+  - /hi/glossary/tokenized-domain/
 ---
 
 डिजिटल दुनिया में अपनी एक अलग पहचान बनाना किसी भी व्यवसाय के लिए महत्वपूर्ण है। जब बात पारिवारिक व्यवसायों (Family Businesses) की आती है, तो 'भरोसा' और 'विरासत' सबसे बड़ी पूंजी होती है। यहीं पर **.afamilycompany** टॉप-लेवल डोमेन (TLD) एक महत्वपूर्ण भूमिका निभाता है।

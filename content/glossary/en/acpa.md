@@ -10,6 +10,24 @@ also_known_as: ['Anticybersquatting Consumer Protection Act']
 level: 1
 sources:
   - https://www.law.cornell.edu/uscode/text/15/1125
+relatedArticles:
+  - /en/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /en/blog/domain-flipping-and-the-law/
+  - /en/blog/what-is-udrp/
+  - /en/blog/hand-registering-domains-to-flip/
+  - /en/blog/how-to-name-your-project/
+relatedTopics:
+  - /en/topics/domain-basics/
+  - /en/topics/domain-security/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/cybersquatting/
+  - /en/glossary/trademark/
+  - /en/glossary/bad-faith/
+  - /en/glossary/icann/
+  - /en/glossary/registrant/
 ---
 
 The **ACPA** (Anticybersquatting Consumer Protection Act), enacted in 1999 as part of the Lanham Act (15 U.S.C. § 1125(d)), gives US [trademark](/en/glossary/trademark/) owners the right to sue [cybersquatters](/en/glossary/cybersquatting/) in federal court rather than relying solely on the faster but contractually limited [UDRP](/en/glossary/udrp/). A plaintiff must show that the defendant registered, trafficked in, or used a domain that is identical or confusingly similar to a distinctive mark, with a [bad-faith](/en/glossary/bad-faith/) intent to profit. Courts assess bad faith using a nine-factor statutory test covering, among other things, the [registrant](/en/glossary/registrant/)'s prior use of the name, any offer to sell at a price above out-of-pocket costs, and the degree of similarity to the mark. Unique to the ACPA: in rem jurisdiction allows a trademark owner to sue the domain itself when the registrant is outside US personal jurisdiction, and statutory damages range from $1,000 to $100,000 per domain at the court's discretion.

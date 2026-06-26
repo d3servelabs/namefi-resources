@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .org : le symbole de confiance pour les organisations, les ONG et les projets open-source. Enregistrez votre .org dès aujourd'hui sur Namefi."
 keywords: [".org", "domaines", "TLD", "top-level domain", "domaine de premier niveau", "qu'est-ce que le .org", "pourquoi choisir .org", "définition domaine .org", "achat domaine .org", "investissement noms de domaine", "domaines blockchain", "domaines tokenisés", "web3", "domaine association", "organisation à but non lucratif"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le .org ?**

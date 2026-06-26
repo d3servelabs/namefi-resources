@@ -10,6 +10,24 @@ cluster: web3-foundations
 format: explainer
 description: A clear explainer on xStocks—tokenized stocks (tokenized equities) on Solana, issued by Backed Finance. Learn what xStocks are, how they work, how they differ from traditional stocks, the risks, and how they fit the broader real-world-asset (RWA) tokenization trend that tokenized domains are part of.
 keywords: ['xStocks', 'what are xStocks', 'what is xStocks', 'xStocks crypto', 'tokenized stocks', 'tokenized equities', 'was sind xStocks', 'xStocks是什么', '什么是xstocks', 'que son los xStocks', 'unterschied xStocks traditionelle Aktien', 'Backed Finance', 'Kraken xStocks', 'Bybit xStocks', 'Solana tokenized stocks', 'on-chain equities', 'tokenization of real-world assets', 'RWA tokenization', 'tokenized domains', 'domain tokenization', 'Namefi']
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/onchain-domain-flipping/
+  - /en/blog/tokenize-your-com-to-flip-it/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/web3-foundations/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
+  - /en/glossary/tld/
 ---
 
 You may have seen the word **xStocks** on a crypto exchange, in a trading app, or in a headline about "stocks on the [blockchain](/en/glossary/blockchain/)," and wondered what it actually means. Is an xStock a real share? A crypto coin? A bet on a stock price? And what does any of it have to do with domains?

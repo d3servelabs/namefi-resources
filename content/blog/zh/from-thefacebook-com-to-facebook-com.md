@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Facebook 如何放弃 TheFacebook.com，以 20 万美元购入 Facebook.com，后来又斥资 850 万美元收购 FB.com，并将域名升级转化为品牌基础设施。'
 keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'facebook 域名', '域名升级', '初创公司命名', '品牌命名', '高价域名', '域名策略', 'facebook 历史', '域名收购', '公司品牌重塑', '定义品类的域名']
+relatedArticles:
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-slackhq-com-to-slack-com/
+  - /zh/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 在 Facebook 成为互联网默认动词之前，它是一个更狭义、更字面意义上的存在：**TheFacebook.com**。

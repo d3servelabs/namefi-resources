@@ -12,6 +12,24 @@ format: guide
 description: "Un guide pas à pas Namefi : faire passer un .com on-chain, garder le DNS opérationnel et le flipper sous forme de NFT avec un règlement atomique plutôt qu''un bras de fer autour du séquestre."
 ogImage: ../../assets/tokenize-your-com-to-flip-it-og.jpg
 keywords: ['tokeniser un .com pour le flipper', 'tokeniser votre com', 'flipper des domaines tokenisés', 'vendre un domaine sous forme de NFT', 'flipping de .com tokenisé', 'flipping de domaines on-chain', 'règlement atomique de domaine', 'place de marché de domaines tokenisés', 'continuité DNS domaine tokenisé', 'comment tokeniser un domaine pour le vendre', 'tokeniser et vendre avec namefi', '.com détenu en portefeuille', 'domaine ERC-721', 'liquidité des domaines tokenisés', 'flipper un domaine com on-chain']
+relatedArticles:
+  - /fr/blog/onchain-domain-flipping/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/selling-domains-as-nfts/
+  - /fr/blog/onchain-domain-marketplaces-compared/
+  - /fr/blog/domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/tokenize-your-com/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 La plupart des flips d'un `.com` se terminent dans la même fébrilité : l'acheteur ne veut pas payer avant que le nom ne bouge, le vendeur ne veut pas transférer le nom avant d'être payé, et un agent de [séquestre](/fr/glossary/escrow/) se tient au milieu en gardant l'argent pendant qu'un transfert chez le registraire se finalise sur plusieurs jours. Ce bras de fer est la taxe de friction de chaque vente à forte valeur. Tokeniser d'abord le `.com` change la forme de toute la transaction : le nom devient un jeton que vous détenez dans un [portefeuille](/fr/glossary/wallet/), et la vente devient un unique échange on-chain plutôt qu'un transfert à plusieurs parties étalé sur plusieurs jours.

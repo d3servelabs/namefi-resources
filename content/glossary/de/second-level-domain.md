@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://www.icann.org/resources/pages/tlds-2012-02-25-en
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/from-ctrip-com-to-trip-com/
+  - /de/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/registry/
+  - /de/glossary/subdomain/
+  - /de/glossary/registrant/
 ---
 
 Eine **Second-Level-Domain (SLD)** ist das Label unmittelbar links von der [TLD](/de/glossary/tld/) — das `example` in `example.com`. Sie ist der Teil, den man tatsächlich über einen [Registrar](/de/glossary/registrar/) registriert, und zusammen mit der TLD bildet sie den registrierbaren Namen, den die [Registry](/de/glossary/registry/) einem [Registranten](/de/glossary/registrant/) zuordnet. Alles links von der SLD — `www`, `blog`, `app` — ist eine [Subdomain](/de/glossary/subdomain/), die man selbst konfiguriert; alles rechts ist die öffentliche Endung. Da das SLD+TLD-Paar die Eigentumseinheit darstellt, ist es genau das, was Namefi tokenisiert: Der registrierbare Name wird zu einem [Wallet](/de/glossary/wallet/)-gesteuerten Asset, während Subdomains Konfiguration darunter bleiben. *Quelle(n): RFC 1034; ICANN-TLD-Verzeichnis.*

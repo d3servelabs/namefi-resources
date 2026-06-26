@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Im Januar 2005 wurde panix.com – die Domain des ältesten kommerziellen ISPs New Yorks – mithilfe gestohlener Kreditkarten betrügerisch zu einem Registrar in Australien übertragen, wodurch Web und E-Mail tagelang ausfielen. Die damals geltenden Regeln zur automatischen Genehmigung von Registrar-Transfers machten dies möglich, und die Aufarbeitung formte die Domain-Transfer-Richtlinien grundlegend um.'
 keywords: ['panix.com', 'panix domain hijack', 'Domain-Entführung', 'inter-registrar transfer', 'Melbourne IT', 'Dotster', 'Fibranet', 'ICANN Transfer Policy', 'Registrar Lock', 'clientTransferProhibited', 'Domain-Sicherheit', 'DNS-Hijacking', 'EPP Auth-Code']
+relatedArticles:
+  - /de/blog/the-lenovo-com-dns-hijack/
+  - /de/blog/the-perl-com-domain-theft/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-sex-com-heist-the-forged-letter/
+  - /de/blog/the-syrian-electronic-army-nyt-hijack/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
 ---
 
 Mehr als fünfzehn Jahre lang lebte einer der ältesten kommerziellen Internetanbieter der Vereinigten Staaten unter einer einzigen Adresse: **panix.com**. Dann, über ein langes Feiertagswochenende im Januar 2005, wurde sie ihm weggenommen.

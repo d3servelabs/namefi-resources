@@ -8,6 +8,24 @@ draft: false
 description: 'نظرة على نطاقات المستوى الأعلى لرموز البلدان التي تستحوذ على الحصة الأكبر من التسجيلات حول العالم، ولماذا يختلف المتصدرون عما يتوقعه معظم الناس، وما تخبرنا به أرقام الحجم عن كيفية استخدام الإنترنت فعلياً.'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['حصة سوق ccTLD', 'نطاقات رموز البلدان', '.cn', '.de', '.uk', '.tk', '.io', 'إحصائيات النطاقات', 'بيانات السجل', 'namefi']
+relatedArticles:
+  - /ar/blog/how-tld-affects-domain-value/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 عندما يتخيل معظم الناس الإنترنت، فإنهم يتخيلون نطاق `.com`. وبلغة الأرقام المجردة، لا يزال `.com` هو أكبر نطاق مستوى أعلى على هذا الكوكب، مع ما يقرب من 160 مليون اسم تحت إدارته. لكن `.com` هو عبارة عن [gTLD](/ar/glossary/gtld/)، أي نطاق مستوى أعلى *عام*. عند تحويل التركيز نحو **نطاقات المستوى الأعلى لرموز البلدان (ccTLDs)** — وهي اللواحق المكونة من حرفين والمخصصة للدول والأقاليم بموجب معيار [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) — تصبح الصورة أكثر إثارة للاهتمام، وأقل قابلية للتوقع بكثير.

@@ -18,6 +18,24 @@ faqs:
     answer: 'It can be. Because the .com namespace is largely exhausted, .online often lets you register an exact-match keyword or brand name you could not get on .com. The trade-off is lower default recognition, so reinforce the full domain in your branding.'
   - question: 'Does .online support WHOIS privacy and DNSSEC?'
     answer: 'Yes. As a CentralNic-backed Radix TLD, .online supports DNSSEC for cryptographic DNS integrity, and most registrars including Namefi offer WHOIS privacy so your personal contact details are not published publicly.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.online domain** is one of the most literal extensions on the internet: the suffix itself is the word "online," instantly signaling that a site lives on the web. It is an open, unrestricted new [generic top-level domain](/en/glossary/gtld/) (gTLD) operated by Radix, and anyone in the world can register an available name. For founders, freelancers, and brands whose first choice is gone in legacy extensions, **.online** is a clear, broadly understood alternative.

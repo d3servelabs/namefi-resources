@@ -16,6 +16,24 @@ faqs:
     answer: 'It suits technology companies, startups, SaaS products, developers building portfolio sites, hackathons, and tech events that want a short, descriptive name when the .com equivalent is taken or expensive. It is less ideal for non-technical local businesses.'
   - question: 'Does .tech support WHOIS privacy and DNSSEC?'
     answer: 'Yes. The .tech registry supports DNSSEC for cryptographic DNS integrity, and most registrars offer WHOIS privacy that masks personal contact details in the public directory. Both are widely available, though privacy is provided by the registrar rather than the registry.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+  - /en/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.tech domain** is a [generic top-level domain](/en/glossary/gtld/) built explicitly for the technology world. Where a name like `acme.com` says nothing about what you do, `acme.tech` signals "we build technology" before a visitor reads a single line of copy. That descriptive clarity is the core reason startups, developers, and tech events reach for it.

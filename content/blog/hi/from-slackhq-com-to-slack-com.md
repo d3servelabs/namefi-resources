@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'कैसे Slack ने SlackHQ.com पर लॉन्च किया क्योंकि किसी और के पास Slack.com था, बताई गई $60,000 की कीमत पर exact-match डोमेन खरीदा, "HQ" हटाया — और आज भी @SlackHQ सोशल मीडिया पर क्यों जिंदा है।'
 keywords: ['slackhq.com', 'slack.com', 'slack domain name', 'domain upgrade', 'stewart butterfield', 'tiny speck', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'slack history', 'domain acquisition', 'category-defining domain']
+relatedArticles:
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-discordapp-com-to-discord-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+  - /hi/blog/from-box-net-to-box-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
 ---
 
 इससे पहले कि Slack काम पर "मुझे मैसेज करो" का पर्याय बनता, यह एक शांत, लंबे पते वाली चीज़ थी: **SlackHQ.com**।

@@ -12,6 +12,24 @@ format: explainer
 description: "什么是域名预订单和抢注，各类服务如何在域名释放的瞬间争相拿下它，以及在什么情况下一笔预订单才真正值得花钱。"
 ogImage: ../../assets/domain-backorders-and-drop-catching-og.jpg
 keywords: ['域名预订单', '域名抢注', '如何预订一个域名', '抢注过期域名', 'DropCatch', 'SnapNames', 'NameJet', 'Park.io', 'Dynadot 预订单', '域名抢注服务', '赎回宽限期', '待删除域名', '域名什么时候释放', '过期域名拍卖', '如何拿下一个已被注册的域名']
+relatedArticles:
+  - /zh/blog/expired-domains-and-the-drop-cycle/
+  - /zh/blog/how-to-win-domain-auctions/
+  - /zh/blog/when-to-drop-a-domain/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 你想要的某个名字已经被别人注册了。现任所有者不卖、不回应，而且就你所能判断的情况看，他甚至根本没在用它。于是你只剩下一条路可走：等他忘记续费。一旦那笔注册到期失效、名字重新落回开放池，你想成为那个守在原地一把抓住它的人。

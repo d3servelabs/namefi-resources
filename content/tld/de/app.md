@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Erfahren Sie alles über die .app Domain: Die sichere Wahl für Apps und Entwickler. Entdecken Sie Vorteile, SEO-Potenzial und wie Sie sie bei Namefi registrieren.'
 keywords: ['.app domains', '.app TLD', '.app top-level domain', 'was ist .app', 'warum .app wählen', 'was ist die .app domain', 'warum die .app domain wählen', 'domain investing', 'tokenisierte domains', 'blockchain domains', 'app entwickler', 'sichere domains', 'google registry', 'web3 domains', 'namefi']
+relatedArticles:
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/top-tlds-to-secure-for-your-saas/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/ai-vs-io-domain/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .app?**

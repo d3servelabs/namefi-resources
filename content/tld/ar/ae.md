@@ -19,6 +19,24 @@ faqs:
     answer: 'لا، لا تتيح إدارة نطاق .ae (aeDA) خدمة خصوصية أو إخفاء بيانات WHOIS لنطاقات .ae، وتنطبق هذه السياسة على جميع المسجِّلين دون استثناء.'
   - question: 'هل يدعم نطاق .ae الأحرف العربية؟'
     answer: 'يوجد نطاق مستقل بالأحرف العربية لدولة الإمارات وهو "امارات." (يُكتب تقنياً xn--mgbaam7a8h)، وكان من أوائل نطاقات الدول العربية المعتمدة. أما نطاق .ae نفسه فيُسجَّل بالأحرف اللاتينية والأرقام.'
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-investor-field-guide/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 عند بناء حضور رقمي يستهدف السوق الإماراتي، يُعدّ امتداد **.ae** الخيار الأكثر دلالة على الهوية المحلية والثقة. فهو رمز الدولة الرسمي لدولة الإمارات العربية المتحدة على الإنترنت، ويمنح موقعك إشارة فورية بأنك جزء من واحد من أسرع الاقتصادات الرقمية نمواً في الشرق الأوسط.

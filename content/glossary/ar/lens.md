@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو بروتوكول لينس وكيف يستخدم النطاقات للهوية الاجتماعية؟
 keywords: ["لينس","بروتوكول لينس","اجتماعي لامركزي","ملفات NFT الشخصية","الرسم البياني الاجتماعي","هوية الويب 3"]
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/why-tokenize-domains/
+  - /ar/blog/cctld-market-share-by-registration-volume/
+  - /ar/blog/avoiding-domain-sale-scams/
+  - /ar/blog/tokenized-domain-use-cases-2026/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/web3/
+  - /ar/glossary/farcaster/
+  - /ar/glossary/blockchain/
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
 ---
 
 

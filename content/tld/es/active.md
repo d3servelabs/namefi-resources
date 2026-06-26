@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Descubre el potencial del dominio .active para marcas dinámicas y estilos de vida. Aprende qué es, sus ventajas y por qué registrarlo hoy mismo en Namefi."
 keywords: [".active domains", ".active TLD", "top-level domain", "what is .active", "why choose .active", "what is the .active domain", "why choose the .active domain", "dominios .active", "comprar dominio .active", "inversión en dominios", "dominios tokenizados", "marca personal fitness", "registro de dominios web3", "identidad digital activa", "blockchain domains"]
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 ## **¿Qué es .active?**

@@ -11,6 +11,24 @@ seriesOrder: 12
 format: case-study
 description: 'In September 2017, attackers logged into Dutch security firm Fox-IT''s third-party domain registrar, changed its DNS, fraudulently obtained a TLS certificate, and ran a 10-hour man-in-the-middle on client traffic — until Fox-IT caught it and published one of the most transparent post-mortems in the industry.'
 keywords: ['fox-it dns hijack', 'fox-it man in the middle', 'fox-it incident 2017', 'dns hijacking', 'registrar account compromise', 'fraudulent ssl certificate', 'man-in-the-middle attack', 'domain registrar security', 'two-factor authentication dns', 'dnssec', 'registry lock', 'domain security', 'ncc group fox-it']
+relatedArticles:
+  - /en/blog/the-dnspionage-campaign/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-lenovo-com-dns-hijack/
+  - /en/blog/the-badgerdao-frontend-attack/
+  - /en/blog/the-myetherwallet-bgp-dns-attack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
 ---
 
 The thing about a man-in-the-middle attack is that, while it is happening, everything looks normal.

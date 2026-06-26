@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ماذا يعني ترميز دومين أو أصل؟
 keywords: ["ترميز","توكنايزيشن","NFT","أصل رقمي","أصل على السلسلة"]
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/why-tokenize-domains/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/tokenized-domain-use-cases-2026/
+  - /ar/blog/ens-vs-unstoppable-vs-tokenized-dns/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/composability/
+  - /ar/glossary/smart-contract/
+  - /ar/glossary/tokenized-domain/
+  - /ar/glossary/web3/
 ---
 
 

@@ -9,6 +9,24 @@ keywords: ['فترة السماح', 'فترة سماح التجديد التلق
 level: 1
 sources:
   - https://www.icann.org/resources/pages/errp-2013-02-28-en
+relatedArticles:
+  - /ar/blog/expired-domains-and-the-drop-cycle/
+  - /ar/blog/domain-backorders-and-drop-catching/
+  - /ar/blog/when-to-drop-a-domain/
+  - /ar/blog/hand-registering-domains-to-flip/
+  - /ar/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
+  - /ar/glossary/redemption-period/
+  - /ar/glossary/registrant/
 ---
 
 **فترة السماح** هي النافذة القصيرة — غالباً حوالي 30–45 يوم، وبتتحدد حسب [TLD (نطاق المستوى الأعلى)](/ar/glossary/tld/) — مباشرةً بعد ما النطاق [ينتهي](/ar/glossary/domain-expiration/)، وفيها [المسجَّل](/ar/glossary/registrant/) لسه يقدر [يجدده](/ar/glossary/domain-renewal/) بالسعر العادي من غير غرامة. هي أولى وأرخص شبكات الأمان بعد انتهاء الصلاحية؛ لو فاتتك، الاسم بيقع في [فترة الاسترداد](/ar/glossary/redemption-period/) اللي أغلى بكتير. المدد الدقيقة وإذا كان الموقع بيفضل شغال خلال فترة السماح بتتحدد حسب [مسجّل النطاقات](/ar/glossary/registrar/) والسجل، فعلشان كده ما تعتمدش عليها كاستراتيجية للتجديد. فترة السماح بتحكم التسجيل الأساسي بس — هي منفصلة عن أي طبقة ملكية، بما فيها سجل [المحفظة](/ar/glossary/wallet/) المُرمَّز اللي فوق الاسم.

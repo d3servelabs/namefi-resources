@@ -24,6 +24,24 @@ keywords:
   - web3 domains
   - crypto domains
   - digital identity
+relatedArticles:
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/why-are-io-domains-expensive/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
+  - /hi/glossary/dns/
 ---
 
 ## **.aigo क्या है? (What is .aigo?)**

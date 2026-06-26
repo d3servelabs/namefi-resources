@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Un TLD est la partie d'un domaine après le dernier point, comme .com ou .io. Découvrez ce qu'est un TLD, les types (gTLD, ccTLD, sponsorisé, nouveau gTLD, IDN) et comment en choisir un."
 keywords: ['tld', 'signification tld', 'qu est ce qu un tld', 'qu est-ce qu un domaine de premier niveau', 'domaine de premier niveau', 'définition tld', 'définition de tld', 'que es un tld', "qu'est-ce qu'un tld", 'types de tld', 'gtld vs cctld', 'exemples de tld', 'qu est-ce qu une extension de domaine', 'extension de domaine', 'gTLD', 'ccTLD', 'TLD sponsorisé', 'nouveau gTLD', 'IDN TLD', 'ICANN', 'IANA', 'registre de domaine', 'registrar de domaine', 'choisir un TLD', 'TLDs populaires', 'namefi']
+relatedArticles:
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## Qu'est-ce qu'un TLD ?

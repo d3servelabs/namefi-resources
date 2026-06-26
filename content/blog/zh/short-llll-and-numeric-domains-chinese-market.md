@@ -12,6 +12,24 @@ format: analysis
 description: "为什么中国买家把短域名、四字母域名和数字 .com 域名当成一个独立的资产类别来定价——拼音逻辑、无元音溢价，以及吉利的 8 与不吉利的 4。"
 ogImage: ../../assets/short-llll-and-numeric-domains-chinese-market-og.jpg
 keywords: ['中国溢价域名', '数字域名', 'LLLL.com', '四字母域名', 'CHIP 域名', '短域名', '吉利数字 8 域名', '不吉利数字 4', '拼音域名', 'NNNN 域名', '中国域名市场', '数字域名价值', '无元音域名', '中国域名翻转', '短 com 域名']
+relatedArticles:
+  - /zh/blog/what-makes-a-domain-valuable/
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/how-to-read-comparable-domain-sales/
+  - /zh/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 在一个西方域名翻转者眼里，`xqjz.com` 看起来就像键盘上敲出来的乱码，`5808.com` 看起来则像个电话号码。但在中国买家眼里，前者可能是一个拼音友好、干净利落的四字母品牌名，后者则是一串把"发财"念了两遍的数字。这种认知错位正是关键所在。一类在某个市场看来一文不值的域名，在另一个市场却被当成一个资产类别来定价，而那些学会读懂后一个市场的翻转者，赶上了[二级市场](/zh/glossary/aftermarket/)有史以来最大的一次重新定价浪潮。

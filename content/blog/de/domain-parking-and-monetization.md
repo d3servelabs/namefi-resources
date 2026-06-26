@@ -12,6 +12,24 @@ format: explainer
 description: "Was Domain-Parking ist, wie geparkte Namen Werbe- und Affiliate-Einnahmen erzielen, warum modernes Parking ein Vertriebskanal ist und wann es sich wirklich lohnt."
 ogImage: ../../assets/domain-parking-and-monetization-og.jpg
 keywords: ['Domain-Parking', 'Domain parken', 'geparkte Domain monetarisieren', 'Einnahmen aus Domain-Parking', 'Werbung auf geparkten Domains', 'Pay-per-Click-Domains', 'Type-in-Traffic', 'Domain-Monetarisierung', 'Verkaufsseite für Domains', 'Parkseite', 'Domain-Investing', 'Domain-Flipping', 'mit ungenutzten Domains Geld verdienen', 'Affiliate geparkte Domain', 'lohnt sich Domain-Parking']
+relatedArticles:
+  - /de/blog/marketing-your-domains-for-sale/
+  - /de/blog/domain-for-sale-landing-pages/
+  - /de/blog/domain-flipping/
+  - /de/blog/inbound-vs-outbound-domain-sales/
+  - /de/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/best-tlds-by-industry/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Eine Domain, die Sie zum Weiterverkauf halten, ist standardmäßig ein totes Asset. Sie liegt in Ihrem Konto, kostet Sie jedes Jahr eine Verlängerungsgebühr und tut nichts, während Sie auf den richtigen Käufer warten. Parking ist die Praxis, diesen brachliegenden Namen wenigstens ein bisschen arbeiten zu lassen — entweder, indem man jedem, der zufällig darauf stößt, Werbung zeigt, oder, sinnvoller, indem man der Welt mitteilt, dass der Name zum Verkauf steht.

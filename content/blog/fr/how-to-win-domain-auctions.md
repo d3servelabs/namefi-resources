@@ -12,6 +12,24 @@ format: guide
 description: "Comment fonctionnent réellement les enchères de domaines du marché secondaire — enchères par procuration, sniping, plafonds fermes, lecture de la demande, et comment éviter les pièges du surpaiement et des enchères fictives."
 ogImage: ../../assets/how-to-win-domain-auctions-og.jpg
 keywords: ['enchères de domaines', 'comment remporter des enchères de domaines', 'stratégie d''enchères de domaines', 'GoDaddy Auctions', 'NameJet', 'enchères Sedo', 'enchère par procuration', 'sniping d''enchères', 'enchères de domaines expirés', 'enchères fictives', 'malédiction du vainqueur domaines', 'acheter des domaines expirés', 'marché secondaire des domaines', 'enchère de drop catching', 'éviter de payer trop cher les domaines']
+relatedArticles:
+  - /fr/blog/domain-flipping/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+  - /fr/blog/how-to-read-comparable-domain-sales/
+  - /fr/blog/domain-backorders-and-drop-catching/
+  - /fr/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
 ---
 
 La plupart des bons noms que vous voudrez un jour acheter sont déjà pris, et une large part d'entre eux finit par passer par une [enchère](/fr/glossary/auction/). Quand un enregistrement expire, quand un domaineur liquide son stock, quand un bureau d'enregistrement capture un nom qui chute sans qu'aucun [backorder](/fr/glossary/backorder/) ne le couvre, le nom atterrit sur un billot d'enchère et part au plus offrant. Si vous faites du flipping de domaines, vous dépenserez de l'argent réel dans ces salles, et la différence entre une acquisition rentable et un nom mort dans votre compte tient surtout à la discipline au moment de l'enchère.

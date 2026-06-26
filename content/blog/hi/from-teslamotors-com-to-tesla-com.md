@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Tesla ने एक दशक से अधिक समय और कथित रूप से $11M खर्च करके TeslaMotors.com से exact-match Tesla.com पर कैसे स्थानांतरण किया, और यह डोमेन अपग्रेड कंपनी के "Motors" नाम हटाने से ठीक पहले क्यों आया।'
 keywords: ['teslamotors.com', 'tesla.com', 'tesla domain name', 'domain upgrade', 'elon musk domain', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'tesla rebrand', 'tesla motors name change', 'domain acquisition', 'category-defining domain']
+relatedArticles:
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-snapchat-com-to-snap-com/
+  - /hi/blog/from-urbancompass-com-to-compass-com/
+  - /hi/blog/from-massdrop-com-to-drop-com/
+  - /hi/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 अपने पहले तेरह वर्षों तक, अगले दशक की सबसे मूल्यवान कार कंपनी एक थोड़े अजीब पते पर रहती थी: **TeslaMotors.com**।

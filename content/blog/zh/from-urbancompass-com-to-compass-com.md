@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Urban Compass 于 2012 年以纽约租房应用的身份在 UrbanCompass.com 上线，2015 年 2 月完成品牌重塑并去掉"Urban"，同时升级为精确匹配域名 Compass.com——这个域名曾以 100 万美元的价格在拍卖市场挂牌——恰在公司开启全国扩张之际。'
 keywords: ['urbancompass.com', 'compass.com', 'compass 域名', '域名升级', 'urban compass 品牌重塑', 'robert reffkin', 'ori allon', '初创公司命名', '品牌命名', '溢价域名', '域名策略', 'compass 房产', '房产初创公司', '精确匹配域名']
+relatedArticles:
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+  - /zh/blog/from-mrchewy-com-to-chewy-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 在 Compass 成为美国最大的住宅经纪公司之前，它曾是一个更具象、更本地化的存在：**UrbanCompass.com**，一款帮助用户在纽约市寻找租赁公寓的应用。

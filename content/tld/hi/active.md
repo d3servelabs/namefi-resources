@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: ".active डोमेन एक गतिशील और ऊर्जावान ऑनलाइन पहचान के लिए बेहतरीन है। जानें कि यह फिटनेस, स्पोर्ट्स और लाइफस्टाइल ब्रांड्स के लिए क्यों सही है और Namefi पर इसे कैसे रजिस्टर करें।"
 keywords: [".active domains", ".active TLD", "top-level domain", "what is .active", "why choose .active", "what is the .active domain", "why choose the .active domain", "domain investing", "blockchain domains", "tokenized domain", "fitness domain name", "sports TLD", "lifestyle branding", "Namefi domain registration", "Web3 domains"]
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 ## **.active क्या है?**

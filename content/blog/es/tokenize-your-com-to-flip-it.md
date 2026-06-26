@@ -12,6 +12,24 @@ format: guide
 description: "Un recorrido con Namefi: lleva un .com a la cadena, mantén la resolución DNS funcionando y revéndelo como un NFT con liquidación atómica en lugar de un punto muerto con depósito en garantía."
 ogImage: ../../assets/tokenize-your-com-to-flip-it-og.jpg
 keywords: ['tokenizar un .com para revenderlo', 'tokeniza tu com', 'revender dominios tokenizados', 'vender un dominio como NFT', 'flipping de .com tokenizados', 'flipping de dominios en cadena', 'liquidación atómica de dominios', 'mercado de dominios tokenizados', 'continuidad DNS en dominio tokenizado', 'cómo tokenizar un dominio para venderlo', 'tokenizar y vender con namefi', 'punto com en una billetera', 'dominio ERC-721', 'liquidez de dominios tokenizados', 'revender un dominio com en cadena']
+relatedArticles:
+  - /es/blog/onchain-domain-flipping/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/selling-domains-as-nfts/
+  - /es/blog/onchain-domain-marketplaces-compared/
+  - /es/blog/domain-flipping/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/tokenize-your-com/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 La mayoría de las reventas de un `.com` terminan de la misma forma tensa: el comprador no quiere pagar antes de que el nombre se mueva, el vendedor no quiere mover el nombre antes de cobrar, y un agente de [depósito en garantía](/es/glossary/escrow/) se queda en medio reteniendo el dinero mientras una transferencia entre registradores se completa a lo largo de varios días. Ese punto muerto es el impuesto de fricción de toda venta de alto valor. Tokenizar el `.com` primero cambia la forma de toda la operación: el nombre se convierte en un token que guardas en una [billetera](/es/glossary/wallet/), y la venta se convierte en un único intercambio en cadena en lugar de un traspaso de varios días entre varias partes.

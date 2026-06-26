@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Un tour d'horizon en langage clair et sans valeur de conseil des questions fiscales et comptables que se posent souvent les propriétaires de domaines tokenisés : prix de revient, ventes, durée de détention, usage professionnel vs personnel, donations, successions. Soumettez ces questions à un vrai professionnel."
 keywords: ['fiscalité domaine NFT', 'prix de revient domaine tokenisé', 'comptabilité domaine tokenisé', 'plus-values domaine tokenisé', 'fiscalité vente domaine tokenisé', 'plus-values domaine NFT', 'comptabilité NFT domaine', 'fiscalité domaine comme actif', 'fiscalité donation domaine tokenisé', 'succession domaine tokenisé', 'dépense professionnelle domaine tokenisé', 'questions fiscales tokenisation domaine', 'fiscalité domaine NFT US', 'fiscalité domaine crypto']
+relatedArticles:
+  - /fr/blog/taxes-and-accounting-for-domain-investors/
+  - /fr/blog/how-tokenized-marketplaces-replace-escrow/
+  - /fr/blog/tokenized-domain-use-cases-2026/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/tokenize-your-com/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
 ---
 
 > **À lire en premier.** Cet article ne constitue **pas** un conseil fiscal, comptable, juridique ou financier. Nous ne sommes ni votre expert-comptable ni votre avocat, et nous ignorons de quelle juridiction vous dépendez. Il s'agit d'une *liste de questions* à soumettre à un véritable professionnel. Utilisez-la comme une fiche de préparation, et non comme une position sur laquelle vous reposer. L'avertissement complet se trouve en bas de page et s'applique *tout particulièrement* à cet article.

@@ -11,6 +11,24 @@ seriesOrder: 7
 format: case-study
 description: 'How a 2010 cease-and-desist forced UberCab to drop "Cab," how Uber bought Uber.com from Universal Music for 2% equity worth $107K, and why that domain upgrade became one of the most consequential trades in startup history.'
 keywords: ['ubercab.com', 'uber.com', 'uber domain name', 'domain upgrade', 'ubercab cease and desist', 'universal music uber domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'uber history', 'equity for domain', 'domain acquisition', 'category-defining domain']
+relatedArticles:
+  - /en/blog/from-urbancompass-com-to-compass-com/
+  - /en/blog/from-massdrop-com-to-drop-com/
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+  - /en/blog/from-teslamotors-com-to-tesla-com/
+  - /en/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
 ---
 
 Before "Uber" became a verb, a logistics empire, and a synonym for an entire category of on-demand services, it was a more literal, more cautious thing: **UberCab.com**.

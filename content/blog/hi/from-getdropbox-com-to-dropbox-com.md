@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'कैसे Dropbox ने GetDropbox.com पर लॉन्च किया क्योंकि Dropbox.com किसी और के पास था, ट्रेडमार्क और स्क्वाटिंग की लड़ाई लड़ी, और अंततः $300,000 नकद में Dropbox.com का एक्जैक्ट-मैच डोमेन खरीदा।'
 keywords: ['getdropbox.com', 'dropbox.com', 'dropbox domain name', 'drew houston', 'y combinator dropbox', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'exact match domain', 'domain acquisition', 'evenflow dropbox']
+relatedArticles:
+  - /hi/blog/from-box-net-to-box-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
+  - /hi/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 इससे पहले कि Dropbox "क्लाउड में डालो" का पर्याय बनता, वह एक थोड़े लंबे पते पर रहता था: **GetDropbox.com**।

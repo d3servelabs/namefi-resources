@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入解析 .afl 顶级域名：它的含义、澳大利亚橄榄球联盟的专属用途，以及它如何提升品牌信任度。了解如何在 Namefi 探索和管理 Web3 域名资产。'
 keywords: ['.afl domains', '.afl TLD', 'top-level domain', 'what is .afl', 'why choose .afl', 'what is the .afl domain', 'why choose the .afl domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'sports domains', 'brand protection', 'Web3 domains', 'Namefi', 'Australian Football League domain']
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /zh/blog/premium-web3-tlds/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .afl？**

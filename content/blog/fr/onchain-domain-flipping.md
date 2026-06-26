@@ -12,6 +12,24 @@ format: guide
 description: "Comment fonctionne le flipping de domaines onchain — trader des domaines ENS et tokenisés en tant qu'actifs détenus dans un portefeuille, liquides comme des NFT, et en quoi cela diffère du flipping via bureau d'enregistrement."
 ogImage: ../../assets/onchain-domain-flipping-og.jpg
 keywords: ['flipping de domaines onchain', 'flipper des domaines ENS', 'flipping de domaines tokenisés', 'trader des domaines tokenisés', 'flipping de domaines NFT', 'flipper des domaines web3', 'investissement dans les domaines ENS', 'place de marché de domaines NFT', 'vendre des domaines en tant que NFT', 'trading de domaines onchain', 'domaines ERC-721', 'domaines détenus en portefeuille', 'règlement atomique de domaine', 'liquidité des domaines tokenisés', 'flipping de domaines web3']
+relatedArticles:
+  - /fr/blog/tokenize-your-com-to-flip-it/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/selling-domains-as-nfts/
+  - /fr/blog/onchain-domain-marketplaces-compared/
+  - /fr/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/tokenize-your-com/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
 ---
 
 Le flipping de domaines a une forme familière : acheter un nom à bas prix, trouver un acheteur qui en a besoin, le vendre à prix élevé. La version classique de cet échange passe par des [bureaux d'enregistrement](/fr/glossary/registrar/), des places de marché secondaires et un agent de séquestre qui détient l'argent le temps que le transfert s'effectue. Le flipping de domaines onchain repose sur le même instinct « acheter bas, vendre haut », déplacé sur une [blockchain](/fr/glossary/blockchain/), où le nom lui-même est un jeton que vous détenez dans un [portefeuille](/fr/glossary/wallet/) et que vous pouvez trader comme n'importe quel autre [NFT](/fr/glossary/nft/).

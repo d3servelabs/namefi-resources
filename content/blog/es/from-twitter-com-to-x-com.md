@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Cómo Elon Musk fundó X.com en 1999, lo perdió cuando PayPal adoptó su antiguo nombre, lo recuperó en 2017 por valor sentimental, y finalmente migró una red social valorada en 44.000 millones de dólares hacia él, haciendo que Twitter.com redirigiera a X.com.'
 keywords: ['twitter.com', 'x.com', 'twitter rebrand x', 'elon musk x.com', 'historia x.com', 'paypal dominio x.com', 'twitter cambio de nombre a x', 'redireccion de dominio', 'mejora de dominio', 'dominio de una letra', 'aplicacion todo en uno', 'naming de marca', 'dominio premium']
+relatedArticles:
+  - /es/blog/from-mona-co-to-crypto-com/
+  - /es/blog/from-ubercab-com-to-uber-com/
+  - /es/blog/from-ctrip-com-to-trip-com/
+  - /es/blog/from-snapchat-com-to-snap-com/
+  - /es/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/name-change-game-change/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 La mayoría de las historias de mejora de dominios siguen una línea recta: una empresa comienza con un nombre descriptivo, crece y compra el exact-match limpio. **Twitter.com a X.com** es más extraña que eso. Es un viaje de ida y vuelta. El dominio de destino — **X.com** — fue el *primer* dominio de la historia, registrado por Elon Musk en 1999, perdido ante PayPal un año después, recuperado dos décadas más tarde por pura nostalgia, y finalmente anclado a una red social global en 2023.

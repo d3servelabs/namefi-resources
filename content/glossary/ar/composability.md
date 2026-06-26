@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هي قابلية التركيب وكيف تنطبق على النطاقات الرمزية؟
 keywords: ["قابلية التركيب","قابلية التشغيل البيني","وحدات بناء","DeFi","تكامل Web3"]
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/why-tokenize-domains/
+  - /ar/blog/tokenized-domain-use-cases-2026/
+  - /ar/blog/premium-web3-tlds/
+  - /ar/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/tokenize-your-com/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/web3/
+  - /ar/glossary/tokenized-domain/
+  - /ar/glossary/tokenize/
+  - /ar/glossary/collateral/
+  - /ar/glossary/lending-protocol/
 ---
 
 تشير **قابلية التركيب** إلى القدرة على دمج البروتوكولات أو التطبيقات أو الأصول المختلفة مثل وحدات البناء لإنشاء وظائف جديدة. في [Web3](/ar/glossary/web3/)، يمكن للأنظمة القابلة للتركيب أن تتكامل بسلاسة مع بعضها البعض دون الحاجة إلى شراكات مخصصة أو عمليات تكامل معقدة. النطاقات الرمزية على Namefi قابلة للتركيب بطبيعتها - يمكن استخدامها كـ[ضمان](/ar/glossary/collateral/) في [بروتوكولات الإقراض](/ar/glossary/lending-protocol/)، أو دمجها في أنظمة الهوية، أو دمجها مع [NFTs](/ar/glossary/nft/) أخرى، أو استخدامها في تطبيقات DeFi. تفتح هذه القابلية للتركيب حالات استخدام جديدة لم تكن ممكنة مع إدارة النطاقات التقليدية، حيث كانت النطاقات معزولة ضمن أنظمة [المسجلين](/ar/glossary/registrar/) ولم تتمكن من التفاعل بسهولة مع الخدمات الرقمية الأخرى.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Cómo Discord lanzó en 2015 en DiscordApp.com porque Discord.com estaba tomado, compró silenciosamente la palabra exacta y en 2020 convirtió discord.com en su hogar principal — en parte por limpieza de marca, en parte porque la división entre "discordapp.com" y "discord.com" era un regalo para los phishers y grupos de malware.'
 keywords: ['discordapp.com', 'discord.com', 'nombre de dominio discord', 'actualización de dominio', 'jason citron', 'historia de discord', 'cdn.discordapp.com', 'phishing discord', 'naming de startups', 'naming de marca', 'dominio premium', 'estrategia de dominios', 'migración de dominio']
+relatedArticles:
+  - /es/blog/from-bufferapp-com-to-buffer-com/
+  - /es/blog/from-slackhq-com-to-slack-com/
+  - /es/blog/from-ubercab-com-to-uber-com/
+  - /es/blog/from-massdrop-com-to-drop-com/
+  - /es/blog/from-box-net-to-box-com/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/name-change-game-change/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/web3/
 ---
 
 Antes de que Discord fuera un verbo para "únete al servidor", vivía en una dirección ligeramente más larga: **DiscordApp.com**.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .ads 顶级域名：专为广告行业、营销人员和创意机构打造的数字身份。探索其优势、应用场景，以及为何您应该立即在 Namefi 注册。'
 keywords: ['.ads domains', '.ads TLD', 'top-level domain', 'what is .ads', 'why choose .ads', 'what is the .ads domain', 'why choose the .ads domain', 'buy .ads domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'marketing domains', 'advertising TLD', 'ad tech domains', 'creative agency domains']
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/registrar/
+  - /zh/glossary/registry/
 ---
 
 在竞争激烈的数字营销世界中，一个简短、令人难忘且具有行业相关性的域名是成功的关键。随着互联网的发展，传统的 `.com` 域名资源日益枯竭，新兴的顶级域名（New gTLD）正在为企业提供全新的品牌塑造机会。

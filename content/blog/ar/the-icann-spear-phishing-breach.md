@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في أواخر 2014، اعترفت ICANN — الهيئة المسؤولة عن تنسيق نظام أسماء النطاقات على الإنترنت — بأن رسالة إيميل تصيد احتيالي موجَّه، منتحِلةً هوية نطاقها الرسمي، تمكنت من سرقة بيانات موظفيها ومنح المخترقين صلاحيات إدارية على نظام بيانات المنطقة المركزية (CZDS). تحقيق من Domain Mayday في كيف اتفشت سلطة DNS نفسها، وما الذي انكشف، ولماذا القصة لا تزال مهمة حتى اليوم.'
 keywords: ['اختراق icann', 'تصيد احتيالي موجه icann', 'czds', 'نظام بيانات المنطقة المركزية', 'أمن dns', 'أمن أسماء النطاقات', 'هجوم التصيد الموجه', 'سرقة بيانات اعتماد', 'ملفات المنطقة', 'iana', 'هاشات كلمات المرور المملَّحة', 'اختراق نظام أسماء النطاقات', 'اختراق icann 2014']
+relatedArticles:
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+  - /ar/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /ar/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
 ---
 
 ثمة نوع خاص من العناوين الإخبارية يجعل قطاع الأمن كله يتوقف لحظة. مش "متجر تاني اتخترق"، ولا "شركة ناشئة سرَّبت قاعدة بيانات" — ده اليوم اللي تعترف فيه المؤسسة اللي الكل بيثق فيها إنها اتاخدت بأبسط طريقة ممكنة.

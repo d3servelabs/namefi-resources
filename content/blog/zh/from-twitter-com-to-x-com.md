@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '埃隆·马斯克如何在 1999 年创建 X.com，在 PayPal 接管后失去这个名字，2017 年以情感价值将其买回，最终将一个价值 440 亿美元的社交网络迁移至此——让 Twitter.com 重定向到 X.com。'
 keywords: ['twitter.com', 'x.com', 'twitter改名x', '马斯克x.com', 'x.com历史', 'paypal x.com域名', 'twitter改名x', '域名重定向', '域名升级', '单字母域名', '万能应用', '品牌命名', '溢价域名']
+relatedArticles:
+  - /zh/blog/from-mona-co-to-crypto-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-ctrip-com-to-trip-com/
+  - /zh/blog/from-snapchat-com-to-snap-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 大多数域名升级故事都沿着一条直线推进：一家公司从一个描述性名称起步，逐渐壮大，最终购入简洁的[精确匹配域名](/zh/glossary/exact-match-domain/)。**Twitter.com 到 X.com** 的历程却比这奇特得多——这是一段来回之旅。故事的终点域名 **X.com**，恰恰也是故事的起点：1999 年由埃隆·马斯克注册，一年后拱手让给 PayPal，二十年后以纯粹的怀旧情怀将其买回，最终在 2023 年与一个全球社交网络合并。

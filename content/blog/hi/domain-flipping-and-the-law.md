@@ -12,6 +12,24 @@ format: explainer
 description: "हर डोमेन फ्लिपर को जानना चाहिए यह कानूनी परिदृश्य: ट्रेडमार्क की मूल बातें, UDRP और ACPA, बिक्री पर एस्क्रो, हाइजैकिंग से बचाव, और बिक्री घोटालों से दूर रहने के तरीके।"
 ogImage: ../../assets/domain-flipping-and-the-law-og.jpg
 keywords: ['डोमेन फ्लिपिंग कानूनी', 'क्या डोमेन फ्लिपिंग कानूनी है', 'साइबरस्क्वैटिंग', 'UDRP', 'ACPA', 'डोमेन ट्रेडमार्क कानून', 'डोमेन विवाद', 'रिवर्स डोमेन नाम हाइजैकिंग', 'डोमेन फ्लिपिंग घोटाले', 'डोमेन एस्क्रो', 'डोमेन हाइजैकिंग', 'बुरे इरादे से डोमेन पंजीकरण', 'डोमेनिंग कानून', 'डोमेन नाम विवाद', 'डोमेन कानूनी तरीके से कैसे फ्लिप करें']
+relatedArticles:
+  - /hi/blog/domain-flipping/
+  - /hi/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /hi/blog/avoiding-domain-sale-scams/
+  - /hi/blog/how-to-sell-domains-for-profit/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 डोमेन फ्लिप करना कानूनी है। गलत डोमेन फ्लिप करने पर आप न केवल वह नाम खो देंगे, बल्कि उसके लिए चुकाई गई रकम भी — और कभी-कभी पाँच अंकों का जुर्माना भी। इन दोनों परिणामों के बीच का अंतर किस्मत नहीं है। यह एक छोटा-सा कानूनी ढाँचा है, जिसे आप एक दोपहर में सीख सकते हैं, साथ ही कुछ व्यावहारिक आदतें जो आपके पोर्टफोलियो को सुरक्षित रखती हैं और सौदों को ठगी से बचाती हैं।

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "ما الذي يحدث فعلياً إذا فقدت إمكانية الوصول إلى المحفظة التي تحتوي على نطاقك المميز (tokenized domain) — والخطوات العملية لتقليل احتمالية حدوث ذلك في المقام الأول. النسخ الاحتياطية، المحافظ متعددة التوقيع (multisig)، محافظ الأجهزة، الاسترداد الاجتماعي، وحدود ما يمكن لأي منصة القيام به."
 keywords: ['استرداد نطاق NFT', 'نطاق محفظة مفقودة', 'فقدان محفظة النطاق المميز', 'استرداد محفظة النطاق', 'نسخة احتياطية لنطاق NFT', 'محفظة أجهزة للنطاق المميز', 'نطاق مميز متعدد التوقيع', 'استرداد مفتاح النطاق المميز', 'فقدان العبارة الأولية للنطاق', 'أمان نطاق NFT', 'نسخة احتياطية للنطاق المميز', 'إدارة مفاتيح النطاق', 'استرداد بعد فقدان المحفظة']
+relatedArticles:
+  - /ar/blog/onchain-domain-custody-and-recovery/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-security/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
+  - /ar/glossary/registry/
 ---
 
 من بين جميع الأشياء التي لا يفكر فيها الناس قبل [تحويل النطاق إلى رمز مميز (Tokenizing)](/ar/blog/what-are-tokenized-domains/)، فإن **استرداد المحفظة بعد فقدانها** هو الأمر الأهم. بمجرد تحويل النطاق إلى رمز مميز، تصبح [المحفظة](/ar/glossary/wallet/) التي تحتوي على رمز [NFT](/ar/glossary/nft/) هي المصدر الأساسي لإثبات الملكية. افقد المحفظة، وستواجه مشكلة حقيقية.

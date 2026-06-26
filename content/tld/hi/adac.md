@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'जानें .adac डोमेन एक्सटेंशन (TLD) के बारे में सब कुछ। इसकी विशेषताएं, उपयोग और यह कैसे डिजिटल ब्रांडिंग और डोमेन निवेश में महत्वपूर्ण है। Namefi पर आज ही एक्सप्लोर करें।'
 keywords: ['.adac domains', '.adac TLD', 'top-level domain', 'what is .adac', 'why choose .adac', 'what is the .adac domain', 'why choose the .adac domain', 'buy .adac domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'ADAC registry', 'Namefi domain registration', 'premium domains', 'digital identity']
+relatedArticles:
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/premium-web3-tlds/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 ## **.adac क्या है?**

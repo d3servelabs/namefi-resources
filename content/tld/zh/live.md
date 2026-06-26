@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '探索 .live 域名的独特价值。无论您是流媒体主播、新闻机构还是 Web3 开发者，了解 .live 如何提升您的品牌实时影响力。立即在 Namefi 注册并体验代币化域名的优势。'
 keywords: ['.live domains', '.live TLD', '.live top-level domain', 'what is .live', 'why choose .live', 'what is the .live domain', 'why choose the .live domain', 'domain investing', 'blockchain domains', 'tokenized domain', '直播域名', '实时互动', 'Web3 domains', 'Namefi', 'buy .live domain']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在数字世界中，域名的选择往往决定了用户对品牌的第一印象。随着互联网从静态页面向实时互动流媒体和去中心化网络（[Web3](/zh/glossary/web3/)）演变，传统的 `.com` 域名有时难以传达“即时”和“现场”的紧迫感。这就是 **.live** 顶级域名大放异彩的地方。

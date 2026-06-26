@@ -12,6 +12,24 @@ format: guide
 description: "Cómo construir una página de aterrizaje de venta de un dominio que convierta: un precio claro o una vía de oferta, señales de confianza reales y una forma sin fricciones de comprar o hacer una oferta."
 ogImage: ../../assets/domain-for-sale-landing-pages-og.jpg
 keywords: ['página de aterrizaje de dominio en venta', 'página de dominio en venta', 'vender un dominio', 'página de aterrizaje de dominio', 'lander de venta', 'página de ventas de dominio', 'dominio de compra inmediata', 'dominio de hacer una oferta', 'página de parking de dominio', 'precio del dominio', 'página de aterrizaje de dominio que convierte', 'cómo vender un dominio', 'depósito en garantía de dominio', 'tasa de conversión de dominio', 'señales de confianza del dominio']
+relatedArticles:
+  - /es/blog/marketing-your-domains-for-sale/
+  - /es/blog/domain-parking-and-monetization/
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/working-with-domain-brokers/
+  - /es/blog/marketplace-seo-for-domain-listings/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 Un comprador que quiere tu nombre rara vez llega a través de tu marketing. Escribe el nombre en un navegador para ver si está tomado, el dominio resuelve y se carga una página. Lo que sea que diga esa página es todo tu argumento de venta. Si es el valor predeterminado de un [registrador](/es/glossary/registrar/), una página de parking llena de anuncios o simplemente nada, acabas de perder al único visitante que ya estaba convencido de que el nombre importaba. La página de aterrizaje de venta es el escaparate sobre el tráfico más valioso que jamás conseguirás: personas que te encontraron escribiendo exactamente aquello que vendes.

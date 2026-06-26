@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Discover the power of the .airbus Top-Level Domain. Learn about its exclusive usage, brand authority in aviation, and how to secure premium domains with Namefi.'
 keywords: ['.airbus domains', '.airbus TLD', 'top-level domain', 'what is .airbus', 'why choose .airbus', 'what is the .airbus domain', 'why choose the .airbus domain', 'brand TLD', 'aviation domains', 'domain investing', 'blockchain', 'tokenized domain', 'corporate identity', 'Namefi Web3 domains', 'secure domain registration']
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .airbus?**

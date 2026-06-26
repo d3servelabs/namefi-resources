@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2014年底，ICANN——协调互联网域名系统的机构——承认，一封伪造其自身域名的鱼叉式钓鱼邮件窃取了员工凭证，攻击者由此获得了对集中区域数据系统（CZDS）的管理员访问权限。Domain Mayday深度解析：DNS权威机构本身是如何遭到钓鱼攻击的、哪些数据被暴露，以及这一事件至今仍有何警示意义。'
 keywords: ['icann泄露', 'icann鱼叉式钓鱼', 'czds', '集中区域数据系统', 'dns安全', '域名安全', '鱼叉式钓鱼攻击', '凭证钓鱼', '区域文件', 'iana', '加盐密码哈希', '域名系统泄露', 'icann 2014黑客攻击']
+relatedArticles:
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-myetherwallet-bgp-dns-attack/
+  - /zh/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /zh/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
 ---
 
 有一类新闻头条会让整个安全行业为之一震。不是"又一家零售商遭到入侵"，不是"又一家初创公司泄露数据库"——而是那个所有人都*信赖*的机构，承认自己以最平凡的方式被黑了。

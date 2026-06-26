@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج معرفته عن نطاق .abc، استخداماته، ومميزاته للشركات والأفراد. تعرف على كيفية حجز نطاقك المميز عبر منصة Namefi وكيفية الاستثمار في النطاقات."
 keywords: [".abc domains", ".abc TLD", "top-level domain", "what is .abc", "why choose .abc", "what is the .abc domain", "why choose the .abc domain", "حجز نطاق abc", "استثمار النطاقات", "web3 domains", "blockchain domains", "tokenized domain", "شراء دومين", "نطاقات المستوى الأعلى", "domain investing"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/premium-web3-tlds/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/web3/
 ---
 
 في عالم الإنترنت المتسارع، يعد اختيار اسم النطاق (Domain Name) الصحيح حجر الزاوية لأي مشروع ناجح. مع تزايد عدد المواقع الإلكترونية، أصبح البحث عن امتدادات مميزة وجذابة أمراً حتمياً. هنا يأتي دور **نطاق .abc**، الذي يمثل البساطة، الوضوح، والبدايات القوية. في هذا المقال، سنستعرض كل ما يخص هذا النطاق ولماذا قد يكون الخيار الأمثل لمشروعك القادم.

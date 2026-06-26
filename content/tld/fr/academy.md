@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Tout savoir sur l'extension .academy : le choix idéal pour l'éducation et la formation. Découvrez ses avantages et enregistrez le vôtre dès aujourd'hui sur Namefi."
 keywords: [".academy domains", ".academy TLD", "top-level domain", "what is .academy", "why choose .academy", "domaine .academy", "extension .academy", "qu'est-ce que le domaine .academy", "pourquoi choisir le domaine .academy", "investissement nom de domaine", "blockchain domains", "noms de domaine tokenisés", "formation en ligne", "education web3", "Namefi"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Dans le vaste univers d'Internet, choisir la bonne extension de domaine (TLD) est crucial pour définir votre identité numérique. Alors que le secteur de l'éducation en ligne et de la formation professionnelle connaît une croissance exponentielle, une extension se démarque particulièrement : le **.academy**.

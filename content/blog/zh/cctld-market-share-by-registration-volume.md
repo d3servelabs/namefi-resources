@@ -8,6 +8,24 @@ draft: false
 description: '带您一探究竟：全球哪些国家代码顶级域名拥有最大的注册份额，为何领先者的真实情况与常人预期大相径庭，以及这些注册量数据揭示了互联网在世界各地的真实使用情况。'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['ccTLD 市场份额', '国家代码域名', '.cn', '.de', '.uk', '.tk', '.io', '域名统计', '注册局数据', 'namefi']
+relatedArticles:
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 当大多数人想到互联网时，他们脑海中浮现的是 `.com`。单纯从数字来看，`.com` 依然是全球最大的[顶级域名](/zh/glossary/tld/)，管理着约 1.6 亿个域名。但 `.com` 是一个 [gTLD](/zh/glossary/gtld/)——即*通用*顶级域名（Generic Top-Level Domain）。如果我们将视角转向**国家代码顶级域名（ccTLD）**——即根据 [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) 分配给国家和地区的双字母后缀——情况就会变得非常有趣，且远超预期。

@@ -12,6 +12,24 @@ format: guide
 description: "إزاي تقيّم اسم نطاق: عوامل القيمة، الحاجات اللي بتغلط فيها أدوات التقييم، إزاي تقرا المبيعات المشابهة، والفرق بين سعر المستخدم النهائي وسعر الموزّع."
 ogImage: ../../assets/how-to-value-a-domain-name-og.jpg
 keywords: ['إزاي تقيّم اسم نطاق', 'تقييم النطاق', 'نطاقي بيساوي كام', 'تسعير النطاقات', 'حاسبة قيمة النطاق', 'تقدير سعر النطاق', 'المبيعات المشابهة للنطاقات', 'تسعير الدومين', 'سعر المستخدم النهائي مقابل الموزّع', 'الدومين بتاعي بيساوي كام', 'قيمة اسم النطاق', 'أدوات تقييم النطاقات', 'مبيعات نطاقات مشابهة', 'تقدير قيمة النطاق']
+relatedArticles:
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+  - /ar/blog/domain-appraisal-tools-compared/
+  - /ar/blog/how-to-read-comparable-domain-sales/
+  - /ar/blog/what-makes-a-domain-valuable/
+  - /ar/blog/domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 عاجلًا أو آجلًا، أي حد بيمتلك نطاق بيسأل نفس السؤال: *الدومين بتاعي بيساوي كام؟* ده أول سؤال بيسأله المستثمر الجديد عن أصل لسه شاريه، وآخر سؤال بيسأله قبل ما يعرضه للبيع. وبيحس إن المفروض يكون ليه إجابة جاهزة زي جدول بحث — تكتب الاسم، يطلعلك رقم.

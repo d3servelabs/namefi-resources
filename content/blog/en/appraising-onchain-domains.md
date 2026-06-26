@@ -12,6 +12,24 @@ format: analysis
 description: "How to appraise ENS and tokenized domains using onchain comps, floor-versus-premium reasoning, and ENS club factors — and why it differs from DNS."
 ogImage: ../../assets/appraising-onchain-domains-og.jpg
 keywords: ['appraise ENS domains', 'ENS domain valuation', 'tokenized domain appraisal', 'onchain comps', 'domain comparable sales', 'NameBio comps', 'ENS floor price', 'ENS 999 club', 'ENS 10k club', 'how to value an ENS name', 'tokenized domain value', 'web3 domain appraisal', 'ERC-721 domain value', 'onchain sales history', 'domain floor vs premium']
+relatedArticles:
+  - /en/blog/onchain-domain-flipping/
+  - /en/blog/how-to-read-comparable-domain-sales/
+  - /en/blog/domain-appraisal-tools-compared/
+  - /en/blog/domain-flipping/
+  - /en/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/tokenize-your-com/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Appraisal is the skill that decides whether a flip makes money. Sourcing tells you what's for sale and selling turns a name into a check, but the number in the middle — what a name is actually worth — is where the margin lives. That's true for a `.com` and it's true onchain, except the onchain world hands you something the [DNS](/en/glossary/dns/) aftermarket never could: a public, timestamped record of nearly every sale. This is the appraisal chapter of the broader [domain flipping](/en/blog/domain-flipping/) playbook, focused on the two assets you trade in [onchain domain flipping](/en/blog/onchain-domain-flipping/) — [ENS](/en/glossary/ens/) names and tokenized ICANN domains.

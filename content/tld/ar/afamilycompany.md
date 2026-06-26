@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج معرفته عن نطاق .afamilycompany، استخداماته، وأهميته في عالم النطاقات والاستثمار الرقمي، وكيفية البحث عن نطاقك المثالي عبر Namefi.'
 keywords: ['.afamilycompany domains', 'TLD', 'top-level domain', 'what is .afamilycompany', 'why choose .afamilycompany', 'what is the .afamilycompany domain', 'why choose the .afamilycompany domain', 'شراء نطاق .afamilycompany', 'نطاقات البلوكتشين', 'الاستثمار في النطاقات', 'نطاقات الويب 3', 'تسجيل النطاقات', 'Namefi', 'tokenized domain']
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/choosing-a-domain-tokenization-platform/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/ethereum/
 ---
 
 ## **ما هو النطاق .afamilycompany؟**

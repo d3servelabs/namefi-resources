@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Explore the .adult TLD: A specialized, secure domain for the entertainment industry. Learn about its branding benefits, availability, and how to register yours."
 keywords: [".adult domains", ".adult TLD", "top-level domain", "what is .adult", "why choose .adult", "what is the .adult domain", "why choose the .adult domain", "adult industry branding", "domain investing", "digital identity", "regulated content domains", "tokenized domain", "blockchain domains", "secure adult domains", "buy .adult domain"]
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .adult?**

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .tech : l'extension idéale pour les startups et développeurs. Apprenez pourquoi choisir ce TLD pour votre marque technologique avec Namefi."
 keywords: [".tech domains", "domaine .tech", "TLD .tech", "top-level domain", "qu'est-ce que le .tech", "pourquoi choisir .tech", "what is .tech", "why choose .tech", "investir nom de domaine", "domaines blockchain", "domaines tokenisés", "acheter domaine .tech", "startups tech", "Web3 domains", "Namefi"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+  - /fr/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Le monde numérique évolue à une vitesse fulgurante, et l'identité en ligne est devenue la pierre angulaire de toute entreprise moderne. Si les extensions classiques comme le .com restent populaires, elles sont souvent saturées. C'est ici qu'intervient le **.tech**, une extension de domaine puissante et spécifique qui redéfinit la manière dont le secteur technologique se présente sur le web.

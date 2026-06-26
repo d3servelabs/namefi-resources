@@ -9,6 +9,24 @@ cluster: domain-basics
 format: explainer
 description: A plain-English guide to escrow and domain escrow — what an escrow account is, how escrow works step by step in a domain sale, why it matters for avoiding fraud, traditional escrow services vs. the modern tokenized approach, and how smart contracts can replace escrow with atomic on-chain settlement.
 keywords: ['domain escrow', 'what is escrow', 'escrow account', 'escrow meaning', 'how does escrow work', 'domain escrow service', 'escrow.com alternative', 'buy a domain safely', 'sell a domain safely', 'auth code', 'EPP code', 'registrar transfer', 'escrow fees', 'safe domain transaction', 'domain sale fraud', 'tokenized domain escrow', 'smart contract escrow', 'atomic settlement', 'on-chain domain sale', 'how to avoid domain fraud']
+relatedArticles:
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/avoiding-domain-sale-scams/
+  - /en/blog/how-tokenized-marketplaces-replace-escrow/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /en/topics/domain-basics/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
+  - /en/glossary/tld/
 ---
 
 If you've ever bought or sold something expensive between strangers — a car, a house, a `.com` worth five figures — you've run into the same problem: the buyer doesn't want to pay before they get the thing, and the seller doesn't want to hand over the thing before they get paid. Somebody has to go first, and going first means trusting the other person.

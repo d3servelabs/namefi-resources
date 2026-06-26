@@ -18,6 +18,24 @@ faqs:
     answer: '适合。"shop"这个词在全球范围内广为人知，能即时传达商业意图，这也是 Netflix、MrBeast 等品牌将周边商店建在 .shop 上的原因。庞大的新命名空间也让简短的精准零售域名比在旧后缀上更容易获取。'
   - question: '.shop 支持 WHOIS 隐私保护和 DNSSEC 吗？'
     answer: '支持。.shop 在注册局层面支持 DNSSEC，大多数注册商提供免费的 WHOIS 隐私保护，可在公开记录中隐藏个人联系信息。隐私保护的可用性取决于您的注册商，而非注册局。'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 **.shop** 域名是互联网上最直白的后缀之一：后缀本身就是行动号召。普通域名让访客摸不着头脑，而以 `.shop` 结尾的域名在点击之前就已经告诉用户——这里可以浏览和购物。正是这种清晰性，让零售商、直面消费者品牌和内容创作者将其作为专为线上销售而生的网络地址。

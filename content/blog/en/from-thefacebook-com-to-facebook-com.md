@@ -11,6 +11,24 @@ seriesOrder: 1
 format: case-study
 description: 'How Facebook dropped TheFacebook.com, bought Facebook.com for $200K, later paid $8.5M for FB.com, and turned domain upgrades into brand infrastructure.'
 keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'facebook domain name', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'facebook history', 'domain acquisition', 'company rebrand', 'category-defining domain']
+relatedArticles:
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-teslamotors-com-to-tesla-com/
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+  - /en/blog/from-slackhq-com-to-slack-com/
+  - /en/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 Before Facebook became one of the default verbs of the internet, it was a narrower, more literal thing: **TheFacebook.com**.

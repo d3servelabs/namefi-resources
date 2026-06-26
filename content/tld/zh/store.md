@@ -24,6 +24,24 @@ keywords:
   - Web3 domains
   - tokenized domains
   - buy .store domain
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 对于任何希望在互联网上销售产品或服务的个人或企业来说，选择正确的域名至关重要。虽然 .com 依然是经典之选，但在电子商务蓬勃发展的今天，一个新的竞争者正在迅速崛起——这就是 **.store**。

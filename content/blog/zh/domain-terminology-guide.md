@@ -6,6 +6,24 @@ tags: ["faq","domains"]
 authors: ["namefiteam"]
 description: 掌握域名投资，请参考我们关于基本域名术语的综合指南。从基本概念到高级交易策略，学习域名专业人士的语言。
 keywords: ["域名术语","域名投资","域名","域名交易","域名词汇表","TLD","注册商","域名拍卖","域名组合","域名估值","高级域名","域名抢注"]
+relatedArticles:
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /zh/topics/domain-basics/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 

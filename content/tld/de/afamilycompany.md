@@ -24,6 +24,24 @@ keywords:
   - unternehmenswerte
   - web3 domains
   - familiäre markenführung
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/top-tlds-to-secure-for-your-saas/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registry/
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/web3/
 ---
 
 ## **Was ist .afamilycompany?**

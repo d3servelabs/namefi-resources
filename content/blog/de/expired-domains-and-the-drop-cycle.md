@@ -12,6 +12,24 @@ format: explainer
 description: "Wie eine Domain abläuft und droppt: Grace Period, das 30-tägige Redemption-Fenster, 5 Tage Pending Delete, Freigabe — und wo gedroppte Namen für Flipper auftauchen."
 ogImage: ../../assets/expired-domains-and-the-drop-cycle-og.jpg
 keywords: ['abgelaufene Domains', 'Domain-Drop-Zyklus', 'Domain-Lebenszyklus', 'Redemption Grace Period', 'Pending Delete', 'Domain Drop Catching', 'abgelaufene Domainnamen', 'wie Domains ablaufen', 'gedroppte Domains', 'Domain-Sniping', 'abgelaufene Domains kaufen', 'Domain Redemption Period', 'wann droppen Domains', 'Domain-Backorder', 'Domains zum Flippen finden']
+relatedArticles:
+  - /de/blog/domain-backorders-and-drop-catching/
+  - /de/blog/domain-flipping/
+  - /de/blog/how-to-win-domain-auctions/
+  - /de/blog/hand-registering-domains-to-flip/
+  - /de/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Die meisten Menschen nehmen an, dass eine Domain, deren Registrierung ausläuft, einfach am Tag nach dem Ablauf verschwindet und am nächsten Morgen wieder auf dem freien Markt landet. So ist es nicht. Ein Name, den niemand verlängert, durchläuft eine feste, mehrwöchige Abfolge von Haltezuständen — jeder mit eigenen Regeln dazu, wer ihn zurückholen kann und zu welchem Preis —, bevor die [Registry](/de/glossary/registry/) ihn schließlich wieder in den verfügbaren Pool freigibt. Diese endgültige Freigabe ist „der [Drop](/de/glossary/pending-delete/)", und einen Namen in dem Moment zu registrieren, in dem er landet, ist eine anerkannte Praxis: Wie Wikipedia es formuliert, ist [Domain Drop Catching, auch bekannt als Domain Sniping, die Praxis, einen Domainnamen zu registrieren, sobald die Registrierung abgelaufen ist, unmittelbar nach Ablauf](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=is%20the%20practice%20of%20registering%20a%20domain%20name%20once%20registration%20has%20lapsed%2C%20immediately%20after%20expiry).

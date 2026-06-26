@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Discord ने 2015 में DiscordApp.com पर शुरुआत कैसे की क्योंकि Discord.com किसी और के पास था, फिर धीरे-धीरे वह मूल शब्द खरीदा, और 2020 में discord.com को अपना प्राथमिक घर बनाया — आंशिक रूप से ब्रांड की स्वच्छता के लिए, और आंशिक रूप से इसलिए क्योंकि "discordapp.com" और "discord.com" का विभाजन फ़िशर्स और मालवेयर गिरोहों के लिए वरदान था।'
 keywords: ['discordapp.com', 'discord.com', 'discord domain name', 'domain upgrade', 'jason citron', 'discord history', 'cdn.discordapp.com', 'discord phishing', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'domain migration']
+relatedArticles:
+  - /hi/blog/from-bufferapp-com-to-buffer-com/
+  - /hi/blog/from-slackhq-com-to-slack-com/
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-massdrop-com-to-drop-com/
+  - /hi/blog/from-box-net-to-box-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 इससे पहले कि Discord एक क्रिया बने — "सर्वर पर आ जाओ" — यह थोड़े लंबे पते पर रहता था: **DiscordApp.com**।

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .academy. تعرف على استخداماته المثالية للمؤسسات التعليمية، مزاياه في العلامة التجارية، وكيفية حجزه بسهولة عبر Namefi.'
 keywords: ['.academy domains', '.academy TLD', 'top-level domain', 'what is .academy', 'why choose .academy', 'what is the .academy domain', 'why choose the .academy domain', 'نطاقات .academy', 'شراء نطاق تعليمي', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'educational domains', 'نطاقات البلوك تشين']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 في عصر التحول الرقمي، أصبح التعليم وتبادل المعرفة لا يقتصران على الفصول الدراسية التقليدية. مع ازدياد الطلب على الدورات التدريبية عبر الإنترنت والمنصات التعليمية المتخصصة، برزت الحاجة إلى عناوين ويب تعكس بدقة طبيعة هذه الخدمات. هنا يأتي دور نطاق **.academy**.

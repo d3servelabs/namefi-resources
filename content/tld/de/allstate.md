@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .allstate Top-Level-Domain: Einblicke in Brand-TLDs, Sicherheitsvorteile und warum exklusive Domain-Endungen die Zukunft der digitalen Identität prägen."
 keywords: ['.allstate domains', '.allstate TLD', 'top-level domain', 'was ist .allstate', 'warum .allstate wählen', 'was ist die .allstate domain', 'warum die .allstate domain wählen', 'domain investieren', 'blockchain domains', 'tokenisierte domains', 'Web3 domains', 'Allstate Marken-TLD', 'sichere domains', 'ICANN neue gTLDs', 'Namefi domain registrierung']
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 ## **Was ist .allstate?**

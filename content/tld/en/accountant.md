@@ -18,6 +18,24 @@ faqs:
     answer: 'No. They are two separate top-level domains. .accountant is singular and .accountants is plural; they have different registry operators and separate name inventories, so a name available on one may be taken or unavailable on the other.'
   - question: 'Who operates the .accountant registry?'
     answer: 'The ICANN Registry Agreement for .accountant is held by dot Accountant Limited, a Gibraltar entity from the Famous Four Media portfolio. Technical registry operations have since been run by Global Registry Services (GRS Domains).'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.accountant domain** is a niche new [generic top-level domain](/en/glossary/gtld/) (gTLD) built for one of the world's most established professions: accounting. It lets accountants, bookkeepers, tax advisers, and audit firms put their specialty directly in the web address — `yourname.accountant` — instead of competing for an ever-scarcer `.com`.

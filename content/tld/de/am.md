@@ -24,6 +24,24 @@ keywords:
   - 'Tokenized Domain'
   - 'Web3 Domains'
   - 'Namefi'
+relatedArticles:
+  - /de/blog/domain-hacks-explained/
+  - /de/blog/from-instagr-am-to-instagram-com/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/best-tlds-by-industry/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .am?**

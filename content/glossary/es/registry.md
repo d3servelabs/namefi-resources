@@ -13,6 +13,24 @@ sources:
   - https://www.iana.org/domains/root/db
   - https://www.icann.org/en/registry-agreements
   - https://www.icann.org/resources/pages/gtld-registry-agreement-2013-01-25-en
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/how-tld-affects-domain-value/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 Un **registro** (también llamado *operador de registro*) es la organización que opera la base de datos autoritativa de un [TLD](/es/glossary/tld/) — registrando cada dominio inscrito bajo esa extensión, manteniendo el archivo de zona que mapea esos nombres a los [servidores de nombres](/es/glossary/nameserver/), y publicando los datos que permiten que las consultas a través del [DNS](/es/glossary/dns/) funcionen. Los registros se sitúan en la cima de la cadena de suministro de nombres de dominio, por encima de los [registradores](/es/glossary/registrar/) y los [registrantes](/es/glossary/registrant/).

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el dominio .accountant: la extensión perfecta para contadores y firmas financieras. Potencia tu credibilidad y asegura tu marca online con Namefi.'
 keywords: ['.accountant domains', '.accountant TLD', '.accountant top-level domain', 'what is .accountant', 'why choose .accountant', 'what is the .accountant domain', 'why choose the .accountant domain', 'inversión en dominios', 'dominios tokenizados', 'blockchain', 'registro de dominios contabilidad', 'marketing para contadores', 'Namefi']
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 En el vasto mundo digital actual, la especificidad es clave para destacar. Para los profesionales de las finanzas y la contabilidad, tener una presencia en línea que transmita confianza y competencia desde el primer clic es vital. Aquí es donde entra en juego el dominio **.accountant**.

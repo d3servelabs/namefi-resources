@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: .abbvie TLD के बारे में विस्तृत जानकारी। जानें कि यह क्या है, इसका उपयोग कैसे होता है और डिजिटल ब्रांडिंग व डोमेन निवेश में इसका क्या महत्व है।
 keywords: ['.abbvie domains', '.abbvie TLD', 'top-level domain', 'what is .abbvie', 'why choose .abbvie', 'what is the .abbvie domain', 'why choose the .abbvie domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'pharma domains', 'new gTLD', 'brand TLD', 'AbbVie Inc domain', 'digital identity']
+relatedArticles:
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 ## **.abbvie क्या है?**

@@ -9,6 +9,24 @@ keywords: ['Domain-Weiterleitung', '301-Weiterleitung', 'URL-Weiterleitung', 'DN
 level: 1
 sources:
   - https://developers.google.com/search/docs/crawling-indexing/301-redirects
+relatedArticles:
+  - /de/blog/how-domain-hijacking-actually-happens/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-lenovo-com-dns-hijack/
+  - /de/blog/from-twitter-com-to-x-com/
+  - /de/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/301-redirect/
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
 ---
 
 **Domain-Weiterleitung** (auch URL-Weiterleitung oder 301-Weiterleitung genannt) ist eine Konfiguration, die jeden Besucher, der eine Domain aufruft, automatisch zu einer anderen Ziel-URL sendet. Die Variante mit der [301-Weiterleitung](/de/glossary/301-redirect/) signalisiert Suchmaschinen, dass der Umzug dauerhaft ist, und überträgt den Großteil der Link-Equity der ursprünglichen Domain auf das Ziel – was sie zur bevorzugten Wahl beim Konsolidieren von Marken oder Migrieren von Traffic macht. Die Weiterleitung wird entweder im Registrar-Kontrollpanel oder durch Setzen eines [DNS-Eintragstyps](/de/glossary/dns-record-types/), der auf einen Webserver mit der Weiterleitungsregel verweist, konfiguriert. Ein häufiger Anwendungsfall ist der Kauf einer passenden [Subdomain](/de/glossary/subdomain/) oder Tippfehler-Variante und deren Weiterleitung zur Hauptseite, um verirrten Traffic aufzufangen. Domain-Weiterleitung unterscheidet sich von vollständiger DNS-Delegation: Die Domain wird weiterhin über DNS aufgelöst, aber HTTP-Anweisungen leiten den Browser um.

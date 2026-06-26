@@ -6,6 +6,24 @@ tags: ['partners']
 authors: ['namefiteam']
 draft: false
 description: Une exploration guidée par la conversation du parcours d’Henri Stern dans la création de Privy, centrée sur l’utilisabilité, le développement produit dirigé par les clients, et la transition de la complexité crypto vers un design véritablement centré sur l’humain.
+relatedArticles:
+  - /fr/blog/from-mona-co-to-crypto-com/
+  - /fr/blog/from-bufferapp-com-to-buffer-com/
+  - /fr/blog/from-del-icio-us-to-delicious-com/
+  - /fr/blog/from-ubercab-com-to-uber-com/
+  - /fr/blog/from-massdrop-com-to-drop-com/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/web3-foundations/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/web3/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
 ---
 
 Par Victor Zhou de Namefi — Octobre 2025

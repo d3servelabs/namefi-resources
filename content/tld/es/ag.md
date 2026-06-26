@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el potencial del dominio .ag: ideal para empresas AG, agricultura y creatividad. Asegura tu identidad digital con Namefi y la tecnología blockchain.'
 keywords: ['.ag domains', 'dominios .ag', 'TLD .ag', 'top-level domain', 'qué es el dominio .ag', 'por qué elegir el dominio .ag', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'Namefi dominios', 'Aktiengesellschaft domains', 'dominios agricultura', 'registro de dominios .ag', 'comprar dominio .ag', 'ccTLD Antigua y Barbuda']
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/ai-vs-io-domain/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/registry/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
 ---
 
 ## **¿Qué es .ag?**

@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .dev es el dominio seguro de Google para desarrolladores y proyectos de desarrollo. Descubra por qué es la opción principal para programadores, empresas tecnológicas y equipos de desarrollo.
 keywords: ["tld", "dominio .dev", "desarrolladores", "proyectos de desarrollo", "empresas tecnológicas", "programación", "HTTPS", "Google"]
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/ai-vs-io-domain/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .dev?**

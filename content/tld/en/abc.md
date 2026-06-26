@@ -27,6 +27,24 @@ keywords:
   - short domain names
   - brand identity
   - Web3 naming
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/premium-web3-tlds/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registrar/
+  - /en/glossary/web3/
 ---
 
 ## **What is .abc?**

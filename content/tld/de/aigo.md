@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Erfahren Sie alles über die .aigo Top-Level-Domain: Ideal für KI, Tech und Web3. Entdecken Sie die Vorteile und sichern Sie sich Ihre Domain bei Namefi."
 keywords: [".aigo domains", ".aigo TLD", "top-level domain", "was ist .aigo", "warum .aigo wählen", "was ist die .aigo domain", "warum die .aigo domain wählen", "blockchain domains", "tokenisierte domains", "web3 domains", "domain investieren", "künstliche intelligenz domains", "tech startups domains", "namefi", "digitale identität"]
+relatedArticles:
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .aigo?**

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que la location-vente et comment peut-elle s'appliquer à l'acquisition de domaine ?
 keywords: ["location-vente","acquisition progressive","plans de paiement","acquisition de domaine","contrats intelligents"]
+relatedArticles:
+  - /fr/blog/taxes-and-accounting-for-domain-investors/
+  - /fr/blog/why-tokenize-domains/
+  - /fr/blog/domain-parking-and-monetization/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/onchain-domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/lease-to-own/
+  - /fr/glossary/domain-ownership/
+  - /fr/glossary/domain-financing/
+  - /fr/glossary/premium-domain/
+  - /fr/glossary/smart-contract/
 ---
 
 

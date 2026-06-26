@@ -12,6 +12,24 @@ format: guide
 description: "फ़्लिप करने के लिए डोमेन जुटाने के चार तरीके — हैंड-रजिस्ट्रेशन, एक्सपायर्ड ड्रॉप, नीलामी और आफ्टरमार्केट — और हर चैनल का जोखिम और कीमत का स्वरूप।"
 ogImage: ../../assets/how-to-find-domains-to-flip-og.jpg
 keywords: ['फ़्लिप करने के लिए डोमेन कैसे खोजें', 'फ़्लिप करने के लिए डोमेन', 'डोमेन सोर्सिंग', 'फ़्लिप करने के लिए डोमेन खोजें', 'डोमेन हैंड-रजिस्टर करें', 'एक्सपायर्ड डोमेन', 'ड्रॉप कैचिंग', 'डोमेन नीलामी', 'डोमेन आफ्टरमार्केट', 'रीसेल के लिए डोमेन खरीदें', 'फ़्लिप करने के लिए सस्ते डोमेन', 'शुरुआती लोगों के लिए डोमेन निवेश', 'फ़्लिप करने के लिए डोमेन कहाँ से खरीदें', 'डोमेन बैकऑर्डर', 'फ़्लिप करने के लिए सबसे अच्छे डोमेन']
+relatedArticles:
+  - /hi/blog/domain-flipping/
+  - /hi/blog/hand-registering-domains-to-flip/
+  - /hi/blog/expired-domains-and-the-drop-cycle/
+  - /hi/blog/how-to-win-domain-auctions/
+  - /hi/blog/when-to-drop-a-domain/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 फ़्लिपिंग में सब कुछ इस बात से शुरू होता है कि आप क्या खरीदते हैं। आप एक शानदार बातचीत करने वाले और तेज़ नज़र वाले मूल्यांकनकर्ता हो सकते हैं, लेकिन अगर आपने ऐसा नाम जुटाया जिसे कोई नहीं चाहता, तो इन कौशलों के पास काम करने को कुछ नहीं बचता। सोर्सिंग इस कारोबार का पहला असली कौशल है, और यही वह कौशल है जिसे ज़्यादातर शुरुआती लोग उलटा कर देते हैं — वे पहले किसी नाम से प्यार कर बैठते हैं और खरीदार बाद में ढूँढते हैं।

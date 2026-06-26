@@ -10,6 +10,24 @@ also_known_as: ['Permanent Redirect']
 level: 1
 sources:
   - https://developers.google.com/search/docs/crawling-indexing/301-redirects
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/from-twitter-com-to-x-com/
+  - /en/blog/from-facebook-com-to-meta-com/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+  - /en/blog/from-ctrip-com-to-trip-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/domain-forwarding/
+  - /en/glossary/anchor-text/
+  - /en/glossary/domain-authority/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
 ---
 
 A **301 redirect** (also called a *permanent redirect*) is an HTTP response code that signals to browsers and search engines that a resource has permanently moved to a new URL, and that all future requests should go to the new destination. The "301" distinguishes it from a temporary 302 redirect: with a 301, Google consolidates ranking signals — including link equity and [anchor text](/en/glossary/anchor-text/) — from the old URL to the new one, making it the standard mechanism for [domain forwarding](/en/glossary/domain-forwarding/) without sacrificing [SEO](/en/glossary/seo/) value. In practice, this means a domain investor can acquire an aged domain with strong [domain authority](/en/glossary/domain-authority/) and point it at a target site, passing much of that accumulated link equity through to the destination. The transfer is not immediate — Google typically consolidates signals over a period of weeks — and not always 100%, so 301s are valuable but not a perfect equity transplant.

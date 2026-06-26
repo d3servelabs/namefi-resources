@@ -18,6 +18,24 @@ faqs:
     answer: 'It can be. The keyword sits in the domain itself, which reinforces the brand at a glance. Many stores still pair it with a shorter brand domain and redirect, because shoppers and email tools are more familiar with .com.'
   - question: 'Does .fashion support WHOIS privacy?'
     answer: 'Yes. As an open gTLD under ICANN policy, .fashion registrations support WHOIS privacy/redaction through most registrars, so personal contact details are not exposed in public WHOIS lookups.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.fashion domain** is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the style industry — clothing labels, independent designers, stylists, modeling agencies, fashion media, and apparel retailers. Where a generic extension says nothing about what a site does, a name like `summer.fashion` or `studio.fashion` puts the category in the address itself. For a sector that lives on identity and first impressions, that legibility is the whole pitch.

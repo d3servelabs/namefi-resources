@@ -12,6 +12,24 @@ format: analysis
 description: "Wie man ENS- und tokenisierte Domains mit Onchain-Vergleichswerten, der Floor-gegen-Premium-Logik und ENS-Club-Faktoren bewertet – und warum sich das von DNS unterscheidet."
 ogImage: ../../assets/appraising-onchain-domains-og.jpg
 keywords: ['ENS-Domains bewerten', 'ENS-Domain-Bewertung', 'Bewertung tokenisierter Domains', 'Onchain-Vergleichswerte', 'vergleichbare Domain-Verkäufe', 'NameBio-Vergleichswerte', 'ENS-Floor-Preis', 'ENS 999 Club', 'ENS 10k Club', 'wie man einen ENS-Namen bewertet', 'Wert tokenisierter Domains', 'Web3-Domain-Bewertung', 'ERC-721-Domain-Wert', 'Onchain-Verkaufshistorie', 'Domain Floor gegen Premium']
+relatedArticles:
+  - /de/blog/onchain-domain-flipping/
+  - /de/blog/how-to-read-comparable-domain-sales/
+  - /de/blog/domain-appraisal-tools-compared/
+  - /de/blog/domain-flipping/
+  - /de/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Die Bewertung ist die Fähigkeit, die darüber entscheidet, ob ein Flip Geld einbringt. Die Beschaffung sagt dir, was zum Verkauf steht, und der Verkauf macht aus einem Namen einen Scheck, aber die Zahl dazwischen – was ein Name tatsächlich wert ist – ist der Ort, an dem die Marge steckt. Das gilt für eine `.com` und es gilt onchain, nur dass dir die Onchain-Welt etwas an die Hand gibt, das der [DNS](/de/glossary/dns/)-Aftermarket nie liefern konnte: ein öffentliches, mit Zeitstempel versehenes Verzeichnis nahezu jedes Verkaufs. Dies ist das Bewertungskapitel des umfassenderen [Domain-Flipping](/de/blog/domain-flipping/)-Playbooks, mit Fokus auf die beiden Assets, die du beim [Onchain-Domain-Flipping](/de/blog/onchain-domain-flipping/) handelst – [ENS (Ethereum Name Service)](/de/glossary/ens/)-Namen und tokenisierte ICANN-Domains.

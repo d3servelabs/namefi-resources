@@ -24,6 +24,24 @@ keywords:
   - 'new gTLD list'
   - 'brand TLDs'
   - 'premium domains'
+relatedArticles:
+  - /hi/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
+  - /hi/glossary/registrar/
 ---
 
 ## **.agakhan क्या है?**

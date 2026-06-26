@@ -12,6 +12,24 @@ format: guide
 description: '如何判断该让域名到期失效：续费成本与现实转售概率的权衡、沉没成本陷阱，以及一个域名永远卖不出去的信号。'
 ogImage: ../../assets/when-to-drop-a-domain-og.jpg
 keywords: ['何时放弃域名', '让域名到期', '域名止损', '域名续费决策', '域名沉没成本', '我该续费这个域名吗', '域名组合清仓', '放弃域名', '域名持有成本', '域名售出率', '域名投资亏损', '域名到期释放', '域名续费成本', '域名投资失误', '精简域名组合']
+relatedArticles:
+  - /zh/blog/domain-portfolio-management/
+  - /zh/blog/domain-renewal-costs-and-sell-through-rate/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/hand-registering-domains-to-flip/
+  - /zh/blog/working-with-domain-brokers/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 你持有的每一个域名，每年都会给你发同一封信：续费，或者失去它。对于表现好的域名，答案显而易见。难以抉择的是组合中段和末端的那些名字——当初的投资逻辑至今未能兑现的、冲动注册的、已经挂牌三个续费周期仍无人问津的"差一点"的名字。决定放弃哪些，是域名翻转中最不光鲜、却也最赚钱的技能之一，因为从死库存上省下来的钱，直接进入你的利润。

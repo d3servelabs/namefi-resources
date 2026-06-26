@@ -12,6 +12,24 @@ format: explainer
 description: "Wo legitimes Domaining endet und Cybersquatting beginnt: der dreiteilige UDRP-Test, der ACPA, Reverse Domain Hijacking und wie Sie auf der sicheren Seite bleiben."
 ogImage: ../../assets/cybersquatting-vs-domaining-udrp-acpa-og.jpg
 keywords: ['cybersquatting', 'cybersquatting vs domaining', 'udrp', 'dreiteiliger udrp-test', 'acpa', 'anticybersquatting consumer protection act', 'reverse domain name hijacking', 'rdnh', 'bösgläubige domain-registrierung', 'ist domain flipping legal', 'markenrechtlicher domain-streit', 'domain-streitbeilegung', 'legitimes domaining', 'wipo udrp', 'domain-investing recht']
+relatedArticles:
+  - /de/blog/what-is-udrp/
+  - /de/blog/domain-flipping-and-the-law/
+  - /de/blog/domain-flipping/
+  - /de/blog/hand-registering-domains-to-flip/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Zwei Menschen registrieren eine Domain, um sie weiterzuverkaufen. Der eine kauft `solarpanels.com`, eine schlichte Wörterbuch-Phrase, die jeder in der Branche haben möchte. Der andere kauft `nike-running-shoes.net`, eine Zeichenkette, die nur existiert, weil es Nike gibt. Oberflächlich dieselbe Tätigkeit, zwei völlig unterschiedliche rechtliche Positionen. Das Erste ist gewöhnliches [Domaining](/de/glossary/domaining/). Das Zweite ist [Cybersquatting](/de/glossary/cybersquatting/), und es gibt zwei gut konstruierte Systeme, die genau dazu entworfen wurden, der Person, die den Namen registriert hat, diesen wieder zu entziehen.

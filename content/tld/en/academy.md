@@ -18,6 +18,24 @@ faqs:
     answer: 'The .academy registry is operated by Binky Moon, LLC, a subsidiary in the Identity Digital portfolio (formerly Donuts). It was delegated in the root zone in December 2013 and reached general availability in March 2014 as part of ICANN new gTLD program.'
   - question: 'Does .academy support WHOIS privacy and DNSSEC?'
     answer: 'Yes. Because .academy has no special verification rules, most registrars offer WHOIS privacy on it like any standard gTLD, and the registry supports DNSSEC for cryptographic protection of DNS responses.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.academy domain** is one of the clearest "does-what-it-says" extensions on the internet: the suffix itself names the product. For anyone building a school, an online course, a coaching brand, or a corporate training hub, a .academy address tells visitors what they're getting before they read a word of copy. It is an open [generic top-level domain](/en/glossary/gtld/), so the only real question is whether the name fits your brand — not whether you qualify.

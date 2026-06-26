@@ -12,6 +12,24 @@ format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: 'The top 10 TLDs to secure for your law firm, including why .law is the only legal TLD restricted to verified attorneys (while .esq, .legal, .attorney, and .lawyer are open), plus a defensive strategy.'
 keywords: ['tlds for law firms', 'best domains for lawyers', '.law domain', 'is .esq restricted', 'legal domain extensions', 'defensive domain registration', 'attorney domain names', 'law firm branding', 'restricted legal TLDs', 'register law firm domains']
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 For a law firm, a domain name is more than an address — it is a trust signal. Clients judge credibility in seconds, and a clean, professional domain on a recognized extension does quiet work that a brochure cannot. Securing the right set of **TLDs for your law firm** protects the names that matter most: your firm, your partners, and the practice areas you want to rank for.

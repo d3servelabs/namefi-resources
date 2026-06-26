@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'قصة كيف أجبر إنذار قانوني سنة 2010 شركة UberCab على حذف كلمة "Cab"، وكيف اشترت Uber دومين Uber.com من Universal Music مقابل حصة 2% كانت تساوي 107 آلاف دولار، ولماذا كانت صفقة الدومين دي من أهم الصفقات في تاريخ الشركات الناشئة.'
 keywords: ['ubercab.com', 'uber.com', 'اسم دومين أوبر', 'ترقية الدومين', 'إنذار ubercab القانوني', 'universal music uber domain', 'تسمية الشركات الناشئة', 'العلامة التجارية', 'دومين مميز', 'استراتيجية الدومين', 'تاريخ أوبر', 'أسهم مقابل دومين', 'شراء دومين', 'دومين يعرّف تصنيفاً كاملاً']
+relatedArticles:
+  - /ar/blog/from-urbancompass-com-to-compass-com/
+  - /ar/blog/from-massdrop-com-to-drop-com/
+  - /ar/blog/from-bufferapp-com-to-buffer-com/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
+  - /ar/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
 ---
 
 قبل ما "Uber" تبقى فعلاً في اللغة، وإمبراطورية لوجستية، ومرادفاً لتصنيف كامل من الخدمات عند الطلب، كانت حاجة أكتر حرفية وأكتر حذراً: **UberCab.com**.

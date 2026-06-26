@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .site : polyvalent et intuitif. Apprenez ses avantages pour votre marque et comment l'enregistrer et le tokeniser via Namefi."
 keywords: ['.site domains', '.site TLD', '.site top-level domain', 'what is .site', 'why choose .site', 'what is the .site domain', 'why choose the .site domain', 'achat domaine .site', 'investir nom de domaine', 'blockchain domains', 'domaines tokenisés', 'web3 domains', 'disponibilité domaine', 'nouveaux gTLD', 'enregistrement domaine']
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Dans le paysage numérique en constante expansion, trouver le nom de domaine parfait en .com est devenu un défi majeur. C'est ici qu'interviennent les nouveaux domaines génériques de premier niveau (new gTLDs), offrant fraîcheur et disponibilité. Parmi eux, le **.site** s'est imposé comme l'un des choix les plus populaires et les plus polyvalents pour les entreprises, les développeurs et les créateurs.

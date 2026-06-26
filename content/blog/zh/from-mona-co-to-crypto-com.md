@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '加密货币卡初创公司 Monaco 于 2018 年收购了超级溢价域名 Crypto.com，完成品牌重塑。该域名由密码学家 Matt Blaze 于 1993 年注册，并拒绝出售长达 25 年，据专家估计交易金额高达 1000 万美元。'
 keywords: ['mona.co', 'crypto.com', 'crypto.com域名', 'monaco mco', 'matt blaze crypto.com', 'kris marszalek', '域名升级', '溢价域名', '品类域名', '域名收购', '加密货币品牌重塑', '精确匹配域名', '品牌建设']
+relatedArticles:
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+  - /zh/blog/from-ctrip-com-to-trip-com/
+  - /zh/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 在最初的几年里，加密货币领域最具攻击性的品牌之一，悄悄地藏身于一个颇具巧思的网址：**Mona.co** —— 公司名"Monaco"被拆分成域名和国家代码顶级域名的组合，就像 bit.ly 或 goo.gl 把 `.ly` 或 `.gl` 融入词语本身一样。

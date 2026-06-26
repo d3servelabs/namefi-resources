@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Im Juli 2024 verwandelte eine Registrar-Migration von Google Domains zu Squarespace schwache Standard-Authentifizierung in eine Massenangriffsfläche. Angreifer kaperten die Domains von Krypto- und DeFi-Projekten – Compound Finance, Celer Network, Pendle, Unstoppable Domains – und leiteten sie auf Wallet-Drainer-Phishing-Seiten um. So schuf eine „nahtlose" Migration hunderte ungesicherter Eingangstüren, und was das über Registrar-Sicherheit und MFA lehrt.'
 keywords: ['squarespace domain hijack', 'google domains migration', 'defi dns hijack', 'compound finance hijack', 'celer network hijack', 'wallet drainer', 'inferno drainer', 'domain security', 'registrar migration', 'mfa multi-factor authentication', 'oauth account takeover', 'dns hijacking', 'crypto phishing']
+relatedArticles:
+  - /de/blog/the-curve-finance-dns-hijack/
+  - /de/blog/the-badgerdao-frontend-attack/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
+  - /de/glossary/tld/
 ---
 
 Im Juli 2024 war das Gefährlichste an der Website eines Krypto-Projekts kein Smart-Contract-Fehler und kein durchgesickerter privater Schlüssel. Es war der [Registrar](/de/glossary/registrar/), dem die Domain gehörte.

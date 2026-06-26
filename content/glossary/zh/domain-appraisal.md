@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.namebio.com/
   - https://www.investopedia.com/terms/v/valuation.asp
+relatedArticles:
+  - /zh/blog/how-to-read-comparable-domain-sales/
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/domain-appraisal-tools-compared/
+  - /zh/blog/appraising-onchain-domains/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/brandable-domain/
+  - /zh/glossary/comparable-sales/
+  - /zh/glossary/premium-domain/
+  - /zh/glossary/aftermarket/
 ---
 
 **域名估值**（亦称*域名评估*）是估算某个域名在公开市场上能卖到多少钱的过程。估值人员综合考量多项因素：同类域名的[参考成交价](/zh/glossary/comparable-sales/)、关键词搜索量与商业意图、字符数及读音流畅度、后缀强度（[.com](/zh/tld/com/) 相较于大多数替代方案享有显著溢价），以及当前[二级市场](/zh/glossary/aftermarket/)的买家需求。Estibot、GoDaddy 估值工具等自动化工具能给出算法估算结果，但经验丰富的经纪人和投资者往往更依赖人工筛选的参考成交价和市场感知。有可靠参考成交价支撑的优质[溢价域名](/zh/glossary/premium-domain/)可以开出五位数乃至六位数的要价，而没有近似可比案例的[品牌型域名](/zh/glossary/brandable-domain/)则需要更多主观判断。

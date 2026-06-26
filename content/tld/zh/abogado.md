@@ -23,6 +23,24 @@ keywords:
   - tokenized domain
   - 律师域名
   - 西班牙语法律域名
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-law-firm/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /zh/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在当今数字化的法律服务市场中，拥有一个专业、权威且易于识别的在线身份至关重要。对于面向西班牙语市场的法律从业者而言，传统的 `.com` 或 `.net` 往往难以突显其职业身份。这就是 **.abogado** 顶级域名（TLD）大显身手的地方。

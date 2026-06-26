@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .today. تعرف على استخداماته، ميزاته، وكيفية حجزه الآن عبر Namefi لتعزيز حضورك الرقمي واستثمار النطاقات.'
 keywords: ['.today domains', 'TLD', 'top-level domain', 'what is .today', 'why choose .today', 'what is the .today domain', 'why choose the .today domain', 'شراء نطاق .today', 'معنى نطاق .today', 'domain investing', 'blockchain domains', 'tokenized domain', 'نطاقات الويب 3', 'استثمار النطاقات', 'Namefi']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/ai-vs-io-domain/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .today؟**

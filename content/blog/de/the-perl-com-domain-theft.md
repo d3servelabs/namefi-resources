@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Ende Januar 2021 wurde perl.com – das jahrzehntelange Zuhause der Perl-Programmier-Community – durch einen Registrar-Account-Kompromiss gestohlen, über China übertragen, auf eine mit Malware verbundene IP-Adresse gezeigt und für 190.000 Dollar angeboten. Hier erfahren Sie, wie es passierte, wie es wiederhergestellt wurde und was es über die Sicherheit von Registrar-Accounts lehrt.'
 keywords: ['perl.com', 'perl.com Domain-Diebstahl', 'Domain-Hijacking', 'Domain-Diebstahl', 'Registrar-Account-Kompromiss', 'Social Engineering', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'DNS-Hijack', 'Domain-Sicherheit', 'Account-Übernahme', 'BizCN']
+relatedArticles:
+  - /de/blog/the-panix-com-domain-hijack/
+  - /de/blog/the-lenovo-com-dns-hijack/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/tld/
 ---
 
 Manche Domains sind Infrastruktur, die zufällig wie ein Name aussieht. **perl.com** ist eine davon. Es ist kein Marketing-Asset oder eine Marke, die jemand letztes Jahr aufgebaut hat – es ist ein Stück Internet-Mobiliar, um das die Perl-Programmier-Community seit den frühen Tagen des Webs gelebt hat: die kanonische Eingangstür zu Dokumentation, Artikeln und dem öffentlichen Gesicht der Sprache.

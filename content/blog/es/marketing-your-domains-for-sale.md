@@ -12,6 +12,24 @@ format: guide
 description: "Cómo promocionar dominios para la venta: páginas de aparcamiento, landings de venta y SEO de anuncios que ponen el nombre adecuado frente al comprador adecuado."
 ogImage: ../../assets/marketing-your-domains-for-sale-og.jpg
 keywords: ['promocionar dominios para la venta', 'cómo promocionar un dominio', 'página de destino de dominio en venta', 'aparcamiento de dominios', 'vender un dominio aparcado', 'landing de venta de dominios', 'anuncio de dominio en marketplace', 'SEO de anuncios de dominio', 'cómo anunciar un dominio en venta', 'ventas inbound vs outbound de dominios', 'página de dominio en venta', 'conseguir compradores para dominios', 'canales de marketing de dominios', 'marketing de inversión en dominios']
+relatedArticles:
+  - /es/blog/domain-for-sale-landing-pages/
+  - /es/blog/marketplace-seo-for-domain-listings/
+  - /es/blog/inbound-vs-outbound-domain-sales/
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/domain-parking-and-monetization/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Puedes poseer el nombre perfecto y aun así no venderlo nunca. La tasación te dice cuánto vale un dominio; el marketing es lo que cierra la brecha entre esa cifra y un comprador que jamás ha oído hablar de ti. La mayoría de los nombres en la cartera de un revendedor no se venden porque nadie que los necesite llega a enterarse de que están disponibles. La solución rara vez es un discurso más ruidoso. Es poner el nombre donde el comprador adecuado ya está mirando.

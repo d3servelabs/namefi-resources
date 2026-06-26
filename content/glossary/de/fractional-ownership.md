@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist Teileigentum und wie trifft es auf wertvolle Domains zu?
 keywords: ["Teileigentum","gemeinsames Eigentum","Domain-Fragmentierung","Zugänglichkeit","Tokenisierung"]
+relatedArticles:
+  - /de/blog/tokenized-domain-use-cases-2026/
+  - /de/blog/why-tokenize-domains/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/what-are-xstocks/
+  - /de/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-security/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/revenue-sharing/
+  - /de/glossary/premium-domain/
+  - /de/glossary/web3/
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
 ---
 
 

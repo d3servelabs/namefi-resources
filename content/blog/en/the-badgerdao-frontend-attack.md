@@ -11,6 +11,24 @@ seriesOrder: 7
 format: case-study
 description: 'In December 2021, attackers compromised BadgerDAO''s Cloudflare account and injected one malicious script into its website front-end. The audited smart contracts were never touched — yet ~$120M walked out the door through wallet approvals users signed without knowing. A deep-dive on why the website is part of your security surface.'
 keywords: ['badgerdao hack', 'badgerdao front-end attack', 'cloudflare api key compromise', 'injected script attack', 'web3 front-end security', 'ice phishing', 'increaseAllowance attack', 'token approval exploit', 'dns and domain security', 'cloudflare workers exploit', 'defi security', 'supply chain attack web3', 'website tampering', 'domain security']
+relatedArticles:
+  - /en/blog/the-curve-finance-dns-hijack/
+  - /en/blog/the-sushiswap-miso-insider-attack/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /en/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/web3/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
 ---
 
 The audit was clean. The contracts were fine. The money left anyway.

@@ -9,6 +9,24 @@ cluster: choosing-a-tld
 format: explainer
 description: "Why are .io domains so expensive? A clear breakdown of registry wholesale pricing, startup and tech demand, short-name scarcity, renewals, and the new Chagos sovereignty question."
 keywords: ['why are io domains expensive', 'why are .io domains expensive', 'io domain expensive', 'why io domains expensive', 'why are .io domains so expensive', 'why use .io domain', 'io domain for startups', 'io domain price', 'io domain cost', 'io domain renewal cost', 'are io domains worth it', 'io vs com', 'io vs ai domain', 'cost of io domain', 'why io domains cost more', 'io domain pricing explained', 'should I buy an io domain', 'io ccTLD', 'Chagos io domain', 'buy io domain']
+relatedArticles:
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/how-tld-affects-domain-value/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/domain-flipping/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 If you have priced a `.io` domain lately and winced, you are not alone. Compared with a plain `.com` or one of the cheaper new extensions, `.io` consistently lands in the premium tier — both to register and, more painfully, to renew every year.

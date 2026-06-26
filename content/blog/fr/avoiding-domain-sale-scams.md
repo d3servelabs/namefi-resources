@@ -12,6 +12,24 @@ format: guide
 description: "Les arnaques courantes à la vente de domaines — faux séquestre, faux acheteurs, trop-perçus avec rétrofacturation, transfert avant paiement — et les bonnes habitudes qui sécurisent vos ventes."
 ogImage: ../../assets/avoiding-domain-sale-scams-og.jpg
 keywords: ['arnaques vente de domaine', 'éviter les arnaques de domaine', 'faux site de séquestre', 'séquestre frauduleux', 'arnaque acheteur de domaine', 'arnaque au trop-perçu', 'fraude à la rétrofacturation', 'transfert avant paiement', 'vendre un domaine en toute sécurité', 'séquestre de domaine', 'fraude à la vente de domaine', 'faux courtier en domaines', 'arnaque au transfert de domaine', 'transaction de domaine sécurisée', 'sécurité pour domainers']
+relatedArticles:
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/how-to-sell-domains-for-profit/
+  - /fr/blog/working-with-domain-brokers/
+  - /fr/blog/domain-flipping-and-the-law/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
 ---
 
 L'argent dans le [domain flipping](/fr/blog/domain-flipping/) se gagne au moment où un nom finit par se vendre. C'est aussi précisément le moment où les escrocs font leur apparition. Une annonce de mise en vente active est une invitation ouverte à quiconque est prêt à se faire passer pour un acheteur, un courtier ou une société de séquestre. L'erreur la plus coûteuse qu'un flipper puisse commettre n'est pas d'acheter le mauvais nom. C'est de remettre un bon nom à la mauvaise personne.

@@ -23,6 +23,24 @@ keywords:
   - domain investing
   - new gTLD
   - Namefi
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 在数字时代，域名的选择不仅仅是一个网址，更是品牌身份的重要组成部分。随着传统 .com 域名的资源日益枯竭，许多企业和创作者开始将目光投向更具创意和描述性的新通用顶级域名（New gTLD）。其中，**.today** 是一个极具活力且日益受欢迎的选择。

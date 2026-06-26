@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف ما هو نطاق .info ولماذا يعد خياراً ممتازاً للمواقع المعلوماتية والتجارية. تعرف على مزاياه، استخداماته، وكيفية حجزه الآن عبر Namefi."
 keywords: [".info domain", ".info TLD", "top-level domain", "what is .info", "why choose .info", "what is the .info domain", "why choose the .info domain", "buy .info domain", "شراء دومين info", "نطاق .info", "domain investing", "blockchain domains", "tokenized domain", "Namefi", "استثمار الدومينات", "Web3 domains"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-law-firm/
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 سواء كنت تطلق مدونة جديدة، أو موقعاً لشركة ناشئة، أو منصة تعليمية، فإن اختيار اسم النطاق (Domain Name) المناسب هو الخطوة الأولى والأكثر أهمية نحو النجاح الرقمي. في حين أن الجميع يعرف نطاق ".com"، إلا أن هناك بديلاً قوياً وموثوقاً يحظى بشعبية عالمية واسعة وهو نطاق **.info**.

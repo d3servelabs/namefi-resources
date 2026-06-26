@@ -24,6 +24,24 @@ keywords:
   - 'Australian Football League domains'
   - 'estrategia de dominios'
   - 'seguridad de marca'
+relatedArticles:
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /es/blog/premium-web3-tlds/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .afl?**

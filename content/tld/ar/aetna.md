@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما يخص نطاق .aetna واستخداماته كنطاق علامة تجارية. تعرف على كيفية تأثير النطاقات المخصصة على الثقة الرقمية وسجل نطاقك المثالي عبر Namefi اليوم."
 keywords: [".aetna", "domains", "TLD", "top-level domain", "what is .aetna", "why choose .aetna", "what is the .aetna domain", "why choose the .aetna domain", "domain investing", "blockchain domains", "tokenized domain", "نطاق aetna", "شراء نطاق", "نطاقات المستوى الأعلى", "استثمار النطاقات", "Namefi"]
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/registry/
 ---
 
 ## **ما هو نطاق .aetna؟**

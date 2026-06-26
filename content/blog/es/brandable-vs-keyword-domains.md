@@ -12,6 +12,24 @@ format: comparison
 description: "Nombres de marca inventados frente a dominios de palabras clave de coincidencia exacta: quién compra cada uno, cuál se revende de forma más fiable y el ángulo de marca registrada que todo revendedor debería conocer."
 ogImage: ../../assets/brandable-vs-keyword-domains-og.jpg
 keywords: ['dominios de marca', 'dominios de palabras clave', 'dominios de coincidencia exacta', 'dominios de marca vs palabras clave', 'nombres de dominio inventados', 'nombres de dominio genéricos', 'inversión en dominios', 'reventa de dominios', 'qué dominios se venden mejor', 'tráfico directo', 'marca registrada de dominios', 'nombres de dominio descriptivos', 'valor de reventa de dominios', 'nombres de dominio para startups', 'estrategia de nombres de dominio']
+relatedArticles:
+  - /es/blog/domain-flipping/
+  - /es/blog/what-makes-a-domain-valuable/
+  - /es/blog/hand-registering-domains-to-flip/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+  - /es/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/best-tlds-by-industry/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Dos dominios llegan a tu bandeja de entrada la misma semana. Uno es del estilo de `Stripe`: una palabra corta e inventada que no significa nada hasta que una empresa le vierte significado. El otro es `CarInsurance`: una descripción llana de exactamente lo que vende el comprador. Ambos pueden generar dinero. Lo hacen de maneras completamente distintas, se venden a compradores completamente distintos y conllevan riesgos completamente distintos. Comprar uno cuando deberías haber comprado el otro es una de las formas más habituales en que los revendedores malgastan su presupuesto de renovación.

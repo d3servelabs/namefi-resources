@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Quels sont les différents types d'enchères utilisés pour la vente de domaines ?
 keywords: ["enchère","enchère hollandaise","enchère anglaise","enchère dynamique","découverte de prix","vente de domaines"]
+relatedArticles:
+  - /fr/blog/how-to-win-domain-auctions/
+  - /fr/blog/domain-terminology-guide/
+  - /fr/blog/how-to-find-domains-to-flip/
+  - /fr/blog/ens-vs-dns-domain-flipping/
+  - /fr/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/reserve-price/
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
+  - /fr/glossary/icann/
 ---
 
 

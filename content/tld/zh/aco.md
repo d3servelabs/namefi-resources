@@ -24,6 +24,24 @@ keywords:
   - '医疗行业域名'
   - 'buy .aco domain'
   - 'Namefi 域名注册'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 在数字时代，选择正确的域名后缀（[TLD](/zh/glossary/tld/)）与选择品牌名称本身一样重要。随着 [.com](/zh/tld/com/) 和 [.net](/zh/tld/net/) 等传统域名的资源日益枯竭，新兴的顶级域名为企业和个人提供了全新的机会。今天，我们将深入探讨 **.aco** 顶级域名，这是一个在特定行业具有独特相关性，同时也因其简短特性而备受关注的域名后缀。

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是SEO？域名代币化如何影响搜索优化？
 keywords: ["SEO","搜索引擎优化","域名价值","搜索排名","数字营销"]
+relatedArticles:
+  - /zh/blog/marketplace-seo-for-domain-listings/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/brandable-vs-keyword-domains/
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/marketing-your-domains-for-sale/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/premium-domain/
+  - /zh/glossary/tld-seo/
+  - /zh/glossary/tld/
+  - /zh/glossary/serp/
+  - /zh/glossary/exact-match-domain/
 ---
 
 

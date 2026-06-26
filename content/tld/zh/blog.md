@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "深入了解 .blog 顶级域名：专为内容创作者和企业博客打造。探索其优势、使用案例，以及为何它是域名投资和 Web3 身份的明智选择。"
 keywords: [".blog domains", ".blog TLD", "top-level domain", "what is .blog", "why choose .blog", "what is the .blog domain", "why choose the .blog domain", "domain investing", "blockchain domains", "tokenized domain", "content creator domains", "blogging platform", "new gTLD", "Web3 domains", "Namefi"]
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .blog？**

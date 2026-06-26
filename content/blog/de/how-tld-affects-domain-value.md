@@ -12,6 +12,24 @@ format: analysis
 description: "Wie die Endung hinter dem Punkt den Preis einer Domain bewegt: der .com-Aufschlag, die Einordnung von .io/.ai/.co und das politische und geopolitische Risiko hinter ccTLDs."
 ogImage: ../../assets/how-tld-affects-domain-value-og.jpg
 keywords: ['wie die tld den domainwert beeinflusst', 'tld und domainwert', 'com-aufschlag', '.com vs ccTLD wert', 'spielt die endung eine rolle', 'io domain wert', 'ai domain wert', 'co domain wert', 'ccTLD risiko', 'preisgestaltung domainendung', 'tld wert flipping', 'beste tld zum weiterverkauf', 'vergleich domainendungen', 'ccTLD geopolitisches risiko', 'eine tld wählen']
+relatedArticles:
+  - /de/blog/what-makes-a-domain-valuable/
+  - /de/blog/domain-hacks-explained/
+  - /de/blog/how-to-value-a-domain-name/
+  - /de/blog/domain-flipping/
+  - /de/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 Nimm eine gute Buchstabenfolge und bepreise sie über drei Endungen hinweg, und du erhältst drei verschiedene Zahlen, manchmal um eine Größenordnung auseinander. Das Wort hat sich nicht geändert. Was hinter dem Punkt steht, schon. Für einen Flipper ist die Endung kein Detail, das man am Ende einer Bewertung obendrauf setzt. Sie ist einer der größten einzelnen Hebel dafür, was ein Name wert ist und wie leicht er sich verkauft.

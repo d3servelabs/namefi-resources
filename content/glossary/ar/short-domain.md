@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.namebio.com/
   - https://dnjournal.com/
+relatedArticles:
+  - /ar/blog/short-llll-and-numeric-domains-chinese-market/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/from-airbedandbreakfast-com-to-airbnb-com/
+  - /ar/blog/what-makes-a-domain-valuable/
+  - /ar/blog/domain-hacks-explained/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/brandable-domain/
+  - /ar/glossary/domain-appraisal/
+  - /ar/glossary/aftermarket/
+  - /ar/glossary/icann/
 ---
 
 **النطاقات القصيرة** — خاصةً تركيبات ثلاثة حروف (LLL) وأربعة حروف (LLLL)، إضافةً إلى الأسماء الرقمية بثلاثة أرقام (NNN) وأربعة أرقام (NNNN) — بتعتبر من أكثر الأصول قيمةً وثباتاً في استثمار النطاقات، بتُقدَّر فقط لإيجازها وسهولة كتابتها وتذكرها وتحويلها لبراند. كل تركيبات ثلاثة رموز في [.com](/ar/tld/com/) اتسجّلت من سنين، مما بيخليها متاحة فقط في [السوق الثانوي](/ar/glossary/aftermarket/)، غالباً بأسعار [نطاق متميز](/ar/glossary/premium-domain/). فئتا NNNN وNNN في .com بتستقطبان طلباً خاصاً من المشترين الصينيين، حيث التسلسلات الرقمية ليها دلالات ثقافية وصوتية، مما يخلق سوقاً فرعياً مميزاً بديناميكيات [تقييم نطاق](/ar/glossary/domain-appraisal/) خاصة به. رغم إن السلسلة القصيرة مش بتوفر معنى كلمة مفتاحية جاهز، قدرتها على التذكر ومرونتها كأساس [نطاق قابل للتبرند](/ar/glossary/brandable-domain/) بيخليها جذابة للشركات الناشئة والمؤسسات الكبيرة على حد سواء — شركات زي Zoom (zoom.com) وBox (box.com) بنت براندات عالمية على أسماء قصيرة.

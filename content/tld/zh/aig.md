@@ -24,6 +24,24 @@ keywords:
   - AI startups
   - Namefi
   - Web3 identity
+relatedArticles:
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/premium-web3-tlds/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/registry/
 ---
 
 随着人工智能（AI）技术的飞速发展，数字身份的选择也在不断演变。对于处于科技前沿的企业和开发者来说，选择一个既能代表身份又能适应未来趋势的域名至关重要。今天，我们将深入探讨一个备受关注的新兴顶级域名（[TLD](/zh/glossary/tld/)）—— **.aig**。

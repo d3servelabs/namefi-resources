@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Discover the power of the .adac TLD. Learn about its origins, its significance in the automotive world, and how it represents trust and security in the domain industry.'
 keywords: ['.adac domains', '.adac TLD', 'top-level domain', 'what is .adac', 'why choose .adac', 'what is the .adac domain', 'why choose the .adac domain', 'ADAC registry', 'automotive domains', 'domain investing', 'blockchain domains', 'tokenized domain', 'brand TLD', 'German internet domains', 'secure domains']
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/premium-web3-tlds/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .adac?**

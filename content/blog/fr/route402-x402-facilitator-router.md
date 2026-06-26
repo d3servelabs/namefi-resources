@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Un routeur multi-locataire qui vous permet d'intégrer x402 une seule fois et de diriger les requêtes selon des règles et des signaux en direct, sans injecter la logique de routage dans votre application."
 keywords: ['Route402', 'x402', 'routage des paiements', 'routeur de facilitateurs', 'paiements multi-locataires', 'RBAC', 'chiffrement des identifiants', 'routage par capacité', 'règlement persistant', 'infrastructure de paiement', 'règles de routage YAML']
+relatedArticles:
+  - /fr/blog/from-bufferapp-com-to-buffer-com/
+  - /fr/blog/from-discordapp-com-to-discord-com/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/from-urbancompass-com-to-compass-com/
+relatedTopics:
+  - /fr/topics/web3-foundations/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/x402/
 ---
 
 ## En bref

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج معرفته عن نطاق .af، من استخداماته الإبداعية (Domain Hacks) إلى أهميته للأعمال. تعرف على كيفية تسجيل نطاقك بسهولة وأمان عبر Namefi."
 keywords: [".af domains", "نطاقات af", "TLD", "top-level domain", "نطاق المستوى الأعلى", "what is .af", "why choose .af", "what is the .af domain", "why choose the .af domain", "ما هو نطاق .af", "لماذا تختار .af", "domain investing", "استثمار النطاقات", "blockchain domains", "tokenized domain", "af registry", "creative domains", "أفغانستان"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-investor-field-guide/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 يعد اختيار اسم النطاق (Domain Name) المناسب خطوة حاسمة لأي مشروع رقمي، سواء كان شركة ناشئة، مدونة شخصية، أو مشروعاً تجارياً محلياً. أحد النطاقات التي تكتسب اهتماماً فريداً في عالم الويب هو **.af**. في هذا المقال، سنستعرض تفاصيل هذا النطاق، ولماذا قد يكون الخيار الأمثل لمشروعك القادم.

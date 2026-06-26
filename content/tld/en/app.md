@@ -18,6 +18,24 @@ faqs:
     answer: 'Google Registry added the entire .app zone to the browser HSTS preload list before launch. Browsers therefore upgrade every .app request to HTTPS automatically, so the domain will not load without a valid TLS certificate. You cannot opt out.'
   - question: 'Does .app support WHOIS privacy?'
     answer: 'Yes. As a generic gTLD, .app supports standard registrar WHOIS privacy or proxy services, and most personal registrant data is already redacted in public WHOIS output under current ICANN policy.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.app** domain is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the one corner of the web everyone now lives in: software. Operated by Google Registry, it carries a clear, universally understood meaning, and it is best known for one defining rule: every .app site must be served over HTTPS. If you build mobile apps, web apps, or developer tools, a `.app` address tells visitors exactly what they are about to open before they click.

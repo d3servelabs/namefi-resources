@@ -18,6 +18,24 @@ faqs:
     answer: 'Usually yes. As a niche new gTLD it typically carries higher standard registration and renewal fees than .com, and the most desirable keyword names may be classified as premium with elevated recurring pricing set by the registry.'
   - question: 'Does .accountants support WHOIS privacy and DNSSEC?'
     answer: 'Yes. The registry supports DNSSEC for signed, tamper-resistant DNS, and registrars including Namefi offer WHOIS privacy so your personal contact details are not exposed in public records, subject to standard registrar policy.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/top-tlds-to-secure-for-your-law-firm/
+  - /en/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.accountants domain** is a descriptive new [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the accounting and financial-services world. Where a generic suffix like `.com` says nothing about what you do, a web address such as `clarity.accountants` or `riverside.accountants` states the profession before a visitor reads a single word of your homepage. That clarity is the whole pitch, and it is why CPAs, bookkeepers, tax preparers, and audit firms consider it.

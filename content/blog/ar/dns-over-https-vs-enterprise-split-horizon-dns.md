@@ -8,6 +8,24 @@ draft: false
 description: 'يحمي DNS عبر HTTPS (DoH) خصوصية المستخدم من خلال تشفير استعلامات DNS داخل HTTPS. بينما يعتمد Enterprise split-horizon DNS على قدرة الشبكة على رؤية تلك الاستعلامات. يعيد هذا التعارض بينهما تشكيل كيفية تعامل شبكات الشركات والمتصفحات وأنظمة التشغيل مع تحليل الأسماء.'
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg
 keywords: ['DNS عبر HTTPS', 'doh', 'split horizon dns', 'enterprise dns', 'dot', 'DNS مشفر', 'DNS داخلي', 'تحليل الأسماء', 'namefi']
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+  - /ar/blog/the-dnspionage-campaign/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 طوال معظم تاريخ الإنترنت، كانت استعلامات [DNS](/ar/glossary/dns/) تنتقل كنص صريح (cleartext) عبر المنفذ 53. وكان بإمكان أي شخص على مسار الشبكة قراءتها، وتسجيلها، وتعديلها. شكل هذا مشكلة تتعلق بالخصوصية عالجتها مجموعة هندسة شبكة الإنترنت (IETF) لاحقًا عبر بديلين مشفرين: [DNS عبر TLS (DoT، RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) في عام 2016، و[DNS عبر HTTPS (DoH، RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484) في عام 2018.

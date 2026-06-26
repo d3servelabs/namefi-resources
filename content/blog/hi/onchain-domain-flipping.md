@@ -12,6 +12,24 @@ format: guide
 description: "ऑनचेन डोमेन फ्लिपिंग कैसे काम करती है — ENS और टोकनाइज़्ड डोमेन का व्यापार वॉलेट में रखी, NFT-तरल संपत्तियों के रूप में, और यह रजिस्ट्रार फ्लिपिंग से कैसे अलग है।"
 ogImage: ../../assets/onchain-domain-flipping-og.jpg
 keywords: ['ऑनचेन डोमेन फ्लिपिंग', 'ENS डोमेन फ्लिप करना', 'टोकनाइज़्ड डोमेन फ्लिपिंग', 'टोकनाइज़्ड डोमेन का व्यापार', 'डोमेन NFT फ्लिपिंग', 'web3 डोमेन फ्लिप करें', 'ENS डोमेन निवेश', 'NFT डोमेन मार्केटप्लेस', 'डोमेन को NFT के रूप में बेचना', 'ऑनचेन डोमेन व्यापार', 'ERC-721 डोमेन', 'वॉलेट में रखे डोमेन', 'एटॉमिक डोमेन सेटलमेंट', 'टोकनाइज़्ड डोमेन तरलता', 'web3 डोमेन फ्लिपिंग']
+relatedArticles:
+  - /hi/blog/tokenize-your-com-to-flip-it/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/selling-domains-as-nfts/
+  - /hi/blog/onchain-domain-marketplaces-compared/
+  - /hi/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/web3/
 ---
 
 डोमेन फ्लिपिंग का एक परिचित ढाँचा होता है: किसी नाम को सस्ते में खरीदो, ऐसा खरीदार ढूँढो जिसे उसकी ज़रूरत हो, और महँगा बेच दो। इस व्यापार का पारंपरिक रूप [रजिस्ट्रार](/hi/glossary/registrar/), आफ़्टरमार्केट मार्केटप्लेस, और एक एस्क्रो एजेंट के ज़रिए चलता है जो हस्तांतरण पूरा होने तक पैसा अपने पास रखता है। ऑनचेन डोमेन फ्लिपिंग वही "सस्ते में खरीदो-महँगे में बेचो" वाली प्रवृत्ति है, बस उसे एक [ब्लॉकचेन](/hi/glossary/blockchain/) पर ले जाया गया है, जहाँ नाम स्वयं एक टोकन होता है जिसे आप एक [वॉलेट](/hi/glossary/wallet/) में रखते हैं और किसी भी अन्य [NFT (नॉन-फंजीबल टोकन)](/hi/glossary/nft/) की तरह व्यापार कर सकते हैं।

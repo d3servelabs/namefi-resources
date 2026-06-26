@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '.top 域名代表着“顶尖”与“卓越”，是全球最受欢迎的新通用顶级域名之一。本文将为您详细解析 .top 的含义、优势以及适用场景。立即在 Namefi 注册您的 .top 域名，开启顶尖品牌之旅。'
 keywords: ['.top domain', '.top TLD', 'top-level domain', 'what is .top', 'why choose .top', 'what is the .top domain', 'why choose the .top domain', 'buy .top domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'new gTLD', 'best domain for startups', 'Namefi .top registration']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .top？**

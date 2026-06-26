@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Erfahren Sie alles über die .website Domain: Vorteile, Verfügbarkeit und warum sie die ideale Wahl für Ihr Online-Projekt bei Namefi ist.'
 keywords: ['.website domains', '.website TLD', '.website top-level domain', 'was ist .website', 'warum .website wählen', 'was ist die .website domain', 'warum die .website domain wählen', 'Domain investieren', 'Blockchain Domains', 'tokenisierte Domains', 'günstige Domains kaufen', 'neue gTLDs', 'Web3 Domains', 'Domain Registrierung', 'Namefi']
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/how-tld-affects-domain-value/
+  - /de/blog/ai-vs-io-domain/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .website?**

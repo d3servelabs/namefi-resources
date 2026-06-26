@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1035
   - https://www.cloudflare.com/learning/dns/dns-records/
+relatedArticles:
+  - /ar/blog/dns-on-tokenized-domains/
+  - /ar/blog/how-domain-hijacking-actually-happens/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+  - /ar/blog/the-dnspionage-campaign/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
 ---
 
 **أنواع سجلات DNS** هي الإدخالات الفردية في منطقة النطاق اللي بتقول لـ[DNS (نظام أسماء النطاقات)](/ar/glossary/dns/) يبعت أنواع مختلفة من الزيارات على فين. الشائعة منهم هي **A** (بيربط اسم بـ[عنوان IP](/ar/glossary/ip-address/) من IPv4)، و**AAAA** (IPv6)، و**CNAME** (بيعمل اسم مستعار لاسم تاني)، و**MX** (بيوجّه البريد الإلكتروني)، و**TXT** (نص حر بيتستخدم لـ SPF وDKIM والتحقق من النطاق). السجلات دي بتنشرها [خوادم الأسماء](/ar/glossary/nameserver/) اللي بتفوّض النطاق ليها، وهي اللي بتخلي الموقع يشتغل والبريد يوصل فعلاً. ترميز النطاق مش بيمس الطبقة دي: السجلات بتفضل شغّالة بشكل طبيعي بينما الملكية والنقل بينتقلوا لطبقة [على السلسلة (On-chain)](/ar/glossary/on-chain/) يتحكم فيها بـ[محفظة](/ar/glossary/wallet/).

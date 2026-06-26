@@ -9,6 +9,24 @@ keywords: ['Seed-Phrase', 'Wiederherstellungsphrase', 'Mnemonic-Phrase', 'Wallet
 level: 1
 sources:
   - https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
+relatedArticles:
+  - /de/blog/onchain-domain-custody-and-recovery/
+  - /de/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /de/blog/do-multisig-wallets-actually-improve-security/
+  - /de/blog/selling-domains-as-nfts/
+  - /de/blog/the-badgerdao-frontend-attack/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/private-key/
+  - /de/glossary/web3/
+  - /de/glossary/wallet/
+  - /de/glossary/tokenized-domain/
+  - /de/glossary/tokenize/
 ---
 
 Eine **Seed-Phrase** – auch **Wiederherstellungsphrase** oder **Mnemonic-Phrase** genannt – ist eine menschenlesbare Liste von 12 oder 24 Wörtern, die den Master-Private-Key einer [Wallet](/de/glossary/wallet/) kodiert. Das Format ist durch [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) standardisiert und wird von den meisten modernen Wallets verwendet (MetaMask, Ledger, Trezor, Rabby, Coinbase Wallet usw.). Mit der Seed-Phrase können Sie die Wallet – und alle darin enthaltenen Assets, einschließlich [tokenisierter Domains](/de/blog/what-are-tokenized-domains/) – auf jedem kompatiblen Gerät wiederherstellen. Ohne sie bedeutet der Verlust des Gerätezugangs in der Regel dauerhaft verlorene Mittel, da es keine zentrale Instanz gibt, die ein „Passwort zurücksetzen" ausstellen kann. Best Practices: Schreiben Sie die Seed-Phrase auf Papier oder ein Metallbackup, bewahren Sie mindestens zwei Kopien an getrennten physischen Orten auf, und tippen Sie sie **niemals** in einen Computer, ein Cloud-Dokument, einen Passwort-Manager mit Cloud-Verbindung, einen Chat oder einen KI-Assistenten ein. Lesen Sie [Eine tokenisierte Domain nach Wallet-Verlust wiederherstellen](/de/blog/recovering-a-tokenized-domain-after-wallet-loss/) als vollständige Betriebsanleitung.

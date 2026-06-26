@@ -9,6 +9,24 @@ cluster: web3-foundations
 format: news
 description: UCP is Google’s bid to power agent-native commerce, letting AI assistants shop and check out across the open web.
 keywords: [‘Universal Commerce Protocol’, ‘UCP’, ‘Google UCP’, ‘AI shopping agents’, ‘AI-powered commerce’, ‘agentic commerce’, ‘AI ecommerce protocol’, ‘conversational commerce’, ‘AI checkout’, ‘future of ecommerce’, ‘agent-based shopping’, ‘open commerce standards’, ‘Google AI’, ‘Gemini AI’, ‘Agent Engine Optimization’]
+relatedArticles:
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/from-mona-co-to-crypto-com/
+  - /en/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /en/topics/web3-foundations/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/best-tlds-by-industry/
+relatedGlossary:
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/ai-agent/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 Google is officially declaring war on the "[link tax](https://ccianet.org/advocacy/link-taxes/)" of traditional e-commerce. Earlier this week at the [National Retail Federation (NRF)](https://nrf.com/) conference, the search giant announced the release of the [Universal Commerce Protocol (UCP)](https://ucp.dev/), an open-source standard designed to let AI agents—like Gemini and potentially others—handle the entire shopping lifecycle from discovery to checkout without ever leaving the chat interface.

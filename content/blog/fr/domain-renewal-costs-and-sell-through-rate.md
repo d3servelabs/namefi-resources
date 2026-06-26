@@ -12,6 +12,24 @@ format: analysis
 description: "L''économie honnête du domaining : le poids des renouvellements, le taux de vente comme règle empirique, et pourquoi une bonne vente doit financer plusieurs années de renouvellements."
 ogImage: ../../assets/domain-renewal-costs-and-sell-through-rate-og.jpg
 keywords: ['coût renouvellement domaine', 'taux de vente domaines', 'économie domain flipping', 'coût de détention domaine', 'frais renouvellement domaine', 'calcul rentabilité domaining', 'coût portefeuille domaines', 'domain flipping est-il rentable', 'poids renouvellement domaine', 'base de coût domaines', 'rendement investissement domaines', 'combien coûte renouveler un domaine', 'prix renouvellement .com', 'coût de possession domaine']
+relatedArticles:
+  - /fr/blog/domain-portfolio-management/
+  - /fr/blog/when-to-drop-a-domain/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+  - /fr/blog/working-with-domain-brokers/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Chaque domaine que vous détenez vous envoie une facture une fois par an. Ce simple fait est la pesanteur sous laquelle vit tout investisseur en noms de domaine — et c'est précisément la partie que les histoires à succès omettent. Une vente à cinq chiffres fait un beau titre. Les deux cents noms qui n'ont pas trouvé preneur, prélevant tranquillement leurs frais de renouvellement chaque mois pendant douze mois, n'entrent jamais dans le récit.

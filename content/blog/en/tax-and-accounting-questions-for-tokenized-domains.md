@@ -11,6 +11,24 @@ seriesOrder: 4
 format: faq
 description: A non-advice, plain-language survey of the tax and accounting questions tokenized domain owners commonly ask — cost basis, sales, holding period, business vs personal, gifting, estates. Bring these questions to a real professional.
 keywords: ['NFT domain tax', 'tokenized domain cost basis', 'tokenized domain accounting', 'tokenized domain capital gains', 'sell tokenized domain tax', 'NFT domain capital gains', 'domain NFT accounting', 'domain as asset tax', 'gift tokenized domain tax', 'estate tokenized domain', 'tokenized domain business expense', 'domain tokenization tax questions', 'tax NFT domain US', 'crypto domain tax']
+relatedArticles:
+  - /en/blog/taxes-and-accounting-for-domain-investors/
+  - /en/blog/how-tokenized-marketplaces-replace-escrow/
+  - /en/blog/tokenized-domain-use-cases-2026/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/tokenize-your-com/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
 ---
 
 > **Read this first.** This post is **not** tax, accounting, legal, or financial advice. We are not your CPA, we are not your lawyer, and we have no idea what jurisdiction you're in. This is a *list of questions* to bring to a real professional. Use it as a prep sheet, not as a position to rely on. The full disclaimer is at the bottom and applies *especially* to this post.

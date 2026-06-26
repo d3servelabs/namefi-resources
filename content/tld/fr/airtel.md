@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Découvrez tout sur l''extension .airtel, son importance stratégique pour la marque Airtel et comment Namefi révolutionne l''enregistrement de domaines avec le Web3.'
 keywords: ['.airtel', 'domaines .airtel', 'TLD .airtel', 'top-level domain', "qu'est-ce que .airtel", 'pourquoi choisir .airtel', 'quel est le domaine .airtel', 'pourquoi choisir le domaine .airtel', 'domaine de marque', 'investissement domaine', 'blockchain', 'domaine tokenisé', 'bharti airtel', 'web3']
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/ai-vs-io-domain/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 ## **Qu'est-ce que .airtel ?**

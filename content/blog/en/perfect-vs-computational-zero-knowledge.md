@@ -10,6 +10,24 @@ format: explainer
 description: Zero-knowledge proofs come in three flavors—perfect, statistical, and computational—and the difference matters more than most engineering discussions admit. This post explains each in plain language, why nearly every production ZK system in 2026 is computational, and what that buys and costs.
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg
 keywords: ['zero knowledge proof', 'perfect zero knowledge', 'computational zero knowledge', 'zk snark', 'zk stark', 'cryptography', 'simulator', 'commitment scheme', 'namefi']
+relatedArticles:
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/working-with-domain-brokers/
+  - /en/blog/how-to-win-domain-auctions/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/onchain-domain-custody-and-recovery/
+relatedTopics:
+  - /en/topics/web3-foundations/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/web3/
+  - /en/glossary/registry/
 ---
 
 When people in crypto talk about "zero-knowledge proofs," they almost always mean one specific thing: a SNARK or STARK that proves some computation was performed correctly, without revealing the inputs. That mental model is fine for most engineering conversations. It hides a distinction that becomes important the moment you try to reason about *what the security actually guarantees*.

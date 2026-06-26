@@ -14,6 +14,24 @@ sources:
 aliasesByLocale:
   zh: ['注册服务商']
   de: ['Registrierungsdienst']
+relatedArticles:
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/the-panix-com-domain-hijack/
+  - /fr/blog/what-is-udrp/
+relatedTopics:
+  - /fr/topics/domain-basics/
+  - /fr/topics/domain-security/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Un **bureau d'enregistrement** (aussi appelé registraire) est une organisation accréditée par l'[ICANN](/fr/glossary/icann/) autorisée à enregistrer des noms de domaine dans un ou plusieurs domaines de premier niveau au nom du public, gérant la relation entre les acheteurs de domaines et le [registre](/fr/glossary/registry/) qui exploite la base de données faisant autorité pour ces domaines.

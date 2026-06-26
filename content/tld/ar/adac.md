@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .adac. تعرف على استخداماته، ومزاياه لقطاع السيارات، وكيفية الاستفادة منه في الاستثمار في النطاقات عبر Namefi.'
 keywords: ['.adac domains', 'register .adac', 'buy .adac domain', 'what is .adac', 'why choose .adac', 'نطاقات .adac', 'domain investing', 'blockchain domains', 'tokenized domains', 'top-level domain', 'TLD investment', 'automotive domains', 'Web3 domains', 'why choose the .adac domain', 'Namefi domains']
+relatedArticles:
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/premium-web3-tlds/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 ## **ما هو نطاق .adac؟**

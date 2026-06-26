@@ -16,6 +16,24 @@ faqs:
     answer: '主播、视频创作者、广播机构，以及任何围绕电视、影视或直播内容打造的品牌。"tv" 字符串一眼就读作 "television（电视）"，是频道、节目和媒体项目自然、易记的家园。'
   - question: '为什么 .tv 域名与电视相关联？'
     answer: '纯粹是语言上的巧合。"TV" 既是图瓦卢的 ISO 国家代码，又是 "television（电视）" 的通用缩写。图瓦卢顺势利用了这一重叠，将该命名空间向全球授权，这正是流媒体和视频品牌青睐它的原因。'
+relatedArticles:
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/domain-hacks-explained/
+  - /zh/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 **.tv** 域名是一个小国将两字母巧合转化为全球品牌的教科书式案例。它在官方层面是太平洋岛国**图瓦卢（Tuvalu）**的 ccTLD，却被全球营销并采用，作为**电视**、**视频**和**直播**的天然家园——因为 "tv" 一眼就读作这一媒介本身。对于广播机构、主播和以视频为先的品牌而言，**.tv** 往往是市场上最具感染力的扩展名。

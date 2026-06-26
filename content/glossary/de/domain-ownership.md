@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was bedeutet Domain-Eigentum, wenn es tokenisiert ist?
 keywords: ["Domain-Eigentum","NFT-Domain","Registrar","Custodial","Wallet-Eigentum"]
+relatedArticles:
+  - /de/blog/why-tokenize-domains/
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /de/blog/the-sea-turtle-dns-espionage/
+  - /de/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/web3/
+  - /de/glossary/tokenize/
+  - /de/glossary/dns/
+  - /de/glossary/on-chain/
 ---
 
 

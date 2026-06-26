@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .net : crédibilité, histoire et avantages SEO. Apprenez pourquoi choisir cette extension pour votre projet Web3 ou tech chez Namefi."
 keywords: [".net domains", "domaine .net", "TLD", "top-level domain", "what is .net", "qu'est-ce que le .net", "why choose .net", "pourquoi choisir le .net", "what is the .net domain", "why choose the .net domain", "domain investing", "investissement de domaine", "blockchain domains", "tokenized domain", "web3 domains"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le .net ?**

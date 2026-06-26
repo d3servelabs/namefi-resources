@@ -18,6 +18,24 @@ faqs:
     answer: 'इसकी एक मिश्रित प्रतिष्ठा है। सस्ते प्रचारों ने ऐतिहासिक रूप से कुछ निम्न-गुणवत्ता और स्पैम पंजीकरणों को आकर्षित किया, इसलिए कुछ आक्रामक फिल्टर इसकी अधिक जाँच करते हैं। एक वास्तविक साइट, उचित ईमेल प्रमाणीकरण, और अच्छी भेजने की आदतें वैध व्यवसायों के लिए इसका समाधान करती हैं।'
   - question: 'क्या .biz WHOIS गोपनीयता और DNSSEC का समर्थन करता है?'
     answer: 'हाँ। रजिस्ट्रार अन्य gTLD की तरह .biz पर WHOIS गोपनीयता प्रदान करते हैं, और रजिस्ट्री क्रिप्टोग्राफिक रूप से हस्ताक्षरित DNS के लिए DNSSEC का समर्थन करती है, इसलिए आप अपने ज़ोन को छेड़छाड़ से सख़्त बना सकते हैं।'
+relatedArticles:
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 **.biz** डोमेन इंटरनेट के मूल व्यवसाय-केंद्रित वेब पतों में से एक है। "business" के पहले अक्षर की एक ध्वन्यात्मक वर्तनी, इसे विशेष रूप से वाणिज्यिक संस्थाओं को एक घर देने के लिए बनाया गया था जब उनका पसंदीदा **.com** नाम पहले से ही चला गया था। दो दशकों से अधिक समय बाद, **.biz** एक स्पष्ट, स्व-व्याख्यात्मक अर्थ के साथ एक खुला, वैश्विक रूप से उपलब्ध gTLD बना हुआ है: यह व्यवसाय का स्थान है।

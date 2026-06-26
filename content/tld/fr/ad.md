@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez tout ce qu'il faut savoir sur le domaine .ad : son origine andorrane, son potentiel pour le secteur de la publicité et ses avantages pour votre marque."
 keywords: [".ad domains", "domaine .ad", "TLD .ad", "top-level domain .ad", "what is .ad", "why choose .ad", "what is the .ad domain", "why choose the .ad domain", "acheter domaine .ad", "investissement domaine", "domaines tokenisés", "Web3 domains", "blockchain domains", "extension Andorre", "publicité en ligne"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 ## **Qu'est-ce que le .ad ?**

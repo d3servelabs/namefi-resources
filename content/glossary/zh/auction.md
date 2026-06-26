@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 域名销售中使用的不同类型拍卖有哪些？
 keywords: ["拍卖","荷兰式拍卖","英式拍卖","动态拍卖","价格发现","域名销售"]
+relatedArticles:
+  - /zh/blog/how-to-win-domain-auctions/
+  - /zh/blog/domain-terminology-guide/
+  - /zh/blog/how-to-find-domains-to-flip/
+  - /zh/blog/ens-vs-dns-domain-flipping/
+  - /zh/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/reserve-price/
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/registry/
+  - /zh/glossary/icann/
 ---
 
 

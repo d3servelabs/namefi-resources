@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解阿拉伯联合酋长国的 .ae 顶级域名。探索其对于拓展中东市场、提升 SEO 排名以及在域名投资与区块链领域的独特价值。'
 keywords: ['.ae domains', '.ae TLD', 'top-level domain', 'what is .ae', 'why choose .ae', 'what is the .ae domain', 'why choose the .ae domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'UAE business', 'Dubai startups', 'Middle East SEO', 'web3 domains', 'Namefi']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-investor-field-guide/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 ## **什么是 .ae？**

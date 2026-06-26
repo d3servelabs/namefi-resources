@@ -10,6 +10,24 @@ also_known_as: ['Extensible Provisioning Protocol']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc5730
+relatedArticles:
+  - /fr/blog/the-panix-com-domain-hijack/
+  - /fr/blog/the-lenovo-com-dns-hijack/
+  - /fr/blog/expired-domains-and-the-drop-cycle/
+  - /fr/blog/what-is-udrp/
+  - /fr/blog/domain-escrow-explained/
+relatedTopics:
+  - /fr/topics/domain-basics/
+  - /fr/topics/domain-security/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
+  - /fr/glossary/epp-status-codes/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
 ---
 
 L'**EPP** (Extensible Provisioning Protocol, aussi appelé *protocole de provisionnement extensible*) est le protocole de commandes XML défini dans la RFC 5730 qui régit la façon dont un [bureau d'enregistrement](/fr/glossary/registrar/) communique avec un [registre](/fr/glossary/registry/) pour créer, mettre à jour, transférer ou supprimer des enregistrements de domaine. Chaque fois qu'un bureau d'enregistrement enregistre un nouveau nom, le renouvelle ou initie un transfert, il envoie une commande EPP sur une session TCP sécurisée au serveur EPP du registre et reçoit une réponse structurée confirmant le succès ou signalant une erreur. Le protocole transporte également le [code d'autorisation](/fr/glossary/auth-code/) utilisé pour autoriser les transferts sortants et expose les [codes de statut EPP](/fr/glossary/epp-status-codes/) — tels que `clientTransferProhibited` ou `serverHold` — qui décrivent l'état actuel d'un domaine. Parce que l'EPP est étroitement contrôlé, l'accès est limité aux bureaux d'enregistrement accrédités ; les utilisateurs finaux n'interagissent jamais directement avec lui.

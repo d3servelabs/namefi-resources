@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق .aigo، وميزاته للشركات الناشئة في مجال الذكاء الاصطناعي والبلوكتشين، وكيفية حجزه بسهولة عبر Namefi.'
 keywords: ['.aigo domains', '.aigo TLD', 'top-level domain', 'what is .aigo', 'why choose .aigo', 'what is the .aigo domain', 'why choose the .aigo domain', 'domain investing', 'blockchain', 'tokenized domain', 'نطاقات .aigo', 'الاستثمار في النطاقات', 'نطاقات البلوكتشين', 'شراء نطاق .aigo']
+relatedArticles:
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/dns/
 ---
 
 في عالم يتسارع فيه التطور الرقمي، لم يعد اختيار اسم النطاق (Domain Name) مجرد خطوة تقنية، بل أصبح جزءاً جوهرياً من الهوية الرقمية للعلامة التجارية. مع ظهور تقنيات الويب 3 ([Web3](/ar/glossary/web3/)) والذكاء الاصطناعي، برزت امتدادات نطاقات جديدة تُلبي احتياجات المبتكرين.

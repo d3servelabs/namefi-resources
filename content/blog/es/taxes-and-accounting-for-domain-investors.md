@@ -12,6 +12,24 @@ format: faq
 description: "Cómo manejan los impuestos los inversores en dominios: inventario frente a activos de capital, base de costo, cuándo se reconoce el ingreso y cómo deducir renovaciones. Educativo, no asesoramiento."
 ogImage: ../../assets/taxes-and-accounting-for-domain-investors-og.jpg
 keywords: ['impuestos inversión en dominios', 'impuestos reventa de dominios', 'base de costo de dominios', 'son los dominios activos de capital', 'comerciante de dominios frente a inversor', 'impuesto sobre inventario de dominios', 'intangible de la sección 197 dominio', 'ganancias de capital por venta de dominio', 'deducción de renovaciones de dominios', 'período de tenencia de dominios impuesto', 'cómo se gravan las ventas de dominios', 'contabilidad de cartera de dominios', 'preguntas fiscales del inversor en dominios', 'ingreso ordinario frente a ganancias de capital dominios']
+relatedArticles:
+  - /es/blog/domain-portfolio-management/
+  - /es/blog/domain-renewal-costs-and-sell-through-rate/
+  - /es/blog/domain-flipping/
+  - /es/blog/when-to-drop-a-domain/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 > **Lee esto primero.** Esta publicación **no** es asesoramiento fiscal, contable, legal ni financiero. No somos tu contador, y no tenemos idea de en qué jurisdicción estás ni de cómo está estructurada tu actividad. Trata todo lo que sigue como una *lista de preguntas y conceptos para llevar a un profesional de verdad*, no como una posición en la que puedas apoyarte. El descargo de responsabilidad completo está al final, y aquí aplica con fuerza redoblada.

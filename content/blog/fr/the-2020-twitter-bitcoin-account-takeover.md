@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Le 15 juillet 2020, des attaquants ont infiltré Twitter par téléphone, détourné les comptes vérifiés d'Obama, Biden, Musk, Gates, Apple et Uber, et lancé une arnaque de doublement de Bitcoin — récoltant environ 118 000 dollars. Une analyse approfondie de la façon dont le contrôle d'une identité en ligne a été volé, et ce qu'elle enseigne sur la possession d'un nom."
 keywords: ['piratage twitter 2020', 'arnaque bitcoin twitter', 'graham ivan clark', 'vishing', 'hameçonnage vocal ciblé', 'ingénierie sociale', 'prise de contrôle de compte', 'sécurité de lidentité en ligne', 'détournement de compte vérifié', 'outil administrateur twitter', 'outil agent', 'risque interne', 'sécurité des domaines', 'rapport ny dfs twitter']
+relatedArticles:
+  - /fr/blog/the-bitcoin-org-dns-hijack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /fr/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /fr/blog/the-fox-it-dns-hijack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Pendant quelques heures, un mercredi après-midi, les voix les plus fiables d'Internet se sont toutes mises à dire la même chose : envoyez-moi des Bitcoin, et je vous en renverrai le double.

@@ -11,6 +11,24 @@ seriesOrder: 2
 format: case-study
 description: 'How Tesla spent over a decade and a reported $11M to move from TeslaMotors.com to the exact-match Tesla.com, and why the domain upgrade arrived right before the company dropped "Motors" from its name.'
 keywords: ['teslamotors.com', 'tesla.com', 'tesla domain name', 'domain upgrade', 'elon musk domain', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'tesla rebrand', 'tesla motors name change', 'domain acquisition', 'category-defining domain']
+relatedArticles:
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-snapchat-com-to-snap-com/
+  - /en/blog/from-urbancompass-com-to-compass-com/
+  - /en/blog/from-massdrop-com-to-drop-com/
+  - /en/blog/from-mona-co-to-crypto-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 For its first thirteen years, the most valuable car company of the next decade lived at a slightly awkward address: **TeslaMotors.com**.

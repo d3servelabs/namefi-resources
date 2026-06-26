@@ -12,6 +12,24 @@ format: explainer
 description: "Where legitimate domaining ends and cybersquatting begins: the UDRP three-part test, the ACPA, reverse domain hijacking, and how to stay safe."
 ogImage: ../../assets/cybersquatting-vs-domaining-udrp-acpa-og.jpg
 keywords: ['cybersquatting', 'cybersquatting vs domaining', 'udrp', 'udrp three part test', 'acpa', 'anticybersquatting consumer protection act', 'reverse domain name hijacking', 'rdnh', 'bad faith domain registration', 'is domain flipping legal', 'trademark domain dispute', 'domain dispute resolution', 'legitimate domaining', 'wipo udrp', 'domain investing legal']
+relatedArticles:
+  - /en/blog/what-is-udrp/
+  - /en/blog/domain-flipping-and-the-law/
+  - /en/blog/domain-flipping/
+  - /en/blog/hand-registering-domains-to-flip/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Two people register a domain to resell it. One buys `solarpanels.com`, a plain dictionary phrase anyone in the industry might want. The other buys `nike-running-shoes.net`, a string that exists only because Nike does. Same activity on the surface, two completely different legal positions. The first is ordinary [domaining](/en/glossary/domaining/). The second is [cybersquatting](/en/glossary/cybersquatting/), and there are two well-built systems designed to take that name away from the person who registered it.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre la historia, usos y ventajas del dominio .net. Aprende por qué es una opción confiable para tu negocio y regístralo fácilmente en Namefi.'
 keywords: ['.net domains', '.net TLD', 'top-level domain .net', 'what is .net', 'why choose .net', 'what is the .net domain', 'why choose the .net domain', 'dominios .net', 'comprar dominio .net', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'alternativa a .com', 'registro de dominios web3', 'namefi']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .net?**

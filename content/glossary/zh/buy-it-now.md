@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.sedo.com/
   - https://www.namebio.com/
+relatedArticles:
+  - /zh/blog/domain-pricing-psychology-buy-now-vs-make-offer/
+  - /zh/blog/domain-for-sale-landing-pages/
+  - /zh/blog/how-to-sell-domains-for-profit/
+  - /zh/blog/how-to-win-domain-auctions/
+  - /zh/blog/inbound-vs-outbound-domain-sales/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/end-user/
+  - /zh/glossary/aftermarket/
+  - /zh/glossary/registrar/
+  - /zh/glossary/reserve-price/
+  - /zh/glossary/icann/
 ---
 
 **一口价**（**BIN**）是域名挂牌上的固定即时购买价格：买家支付标明金额即立即完成交易，无需谈判。这是[二级市场](/zh/glossary/aftermarket/)最简单的销售方式——价格透明、交易无摩擦，适合大众化域名以及已明确目标价位的卖家。其权衡之处在于，当某个[终端用户](/zh/glossary/end-user/)愿意支付更高价格时，固定价格可能导致低价成交；在这种情况下，卖家会转而采用[议价](/zh/glossary/make-offer/)模式，许多[交易平台](/zh/glossary/marketplace/)也同时提供两种方式供卖家选择。

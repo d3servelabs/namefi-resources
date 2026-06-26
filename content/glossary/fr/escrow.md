@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que le séquestre et comment les contrats intelligents fournissent-ils un séquestre sans confiance pour les domaines ?
 keywords: ["séquestre","tiers de confiance","séquestre via contrat intelligent","sans confiance","transactions sécurisées"]
+relatedArticles:
+  - /fr/blog/domain-escrow-explained/
+  - /fr/blog/how-tokenized-marketplaces-replace-escrow/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/selling-domains-as-nfts/
+  - /fr/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /fr/topics/domain-tokenization/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/tokenize-your-com/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/domain-broker/
+  - /fr/glossary/marketplace/
+  - /fr/glossary/domain-financing/
+  - /fr/glossary/lease-to-own/
 ---
 
 

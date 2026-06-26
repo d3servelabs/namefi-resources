@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Entdecken Sie die Vorteile der .store TLD für Ihren Online-Shop. Erfahren Sie, warum sie perfekt für E-Commerce ist und registrieren Sie sie bei Namefi.'
 keywords: ['.store domains', '.store TLD', '.store top-level domain', 'was ist .store', 'warum .store wählen', 'was ist die .store domain', 'warum die .store domain wählen', 'domain investing', 'blockchain domains', 'tokenized domains', 'e-commerce domains', 'online shop domain name', 'Namefi registrar', 'digital asset domains', 'neue gTLD']
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .store?**

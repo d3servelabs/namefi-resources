@@ -11,6 +11,24 @@ seriesOrder: 23
 format: case-study
 description: 'On August 27, 2013, the Syrian Electronic Army phished a Melbourne IT reseller, rewrote the DNS records for nytimes.com and Twitter''s domains, and took the New York Times offline for hours. A deep dive into how a registrar-chain weak link became a newspaper''s front-door failure — and what registry locks would have changed.'
 keywords: ['nytimes.com hack', 'syrian electronic army', 'melbourne it', 'dns hijack', 'domain hijacking', 'registrar security', 'reseller phishing', 'registry lock', 'dns records', 'domain name server attack', 'twitter dns 2013', 'domain security', 'serverupdateprohibited']
+relatedArticles:
+  - /en/blog/the-fox-it-dns-hijack/
+  - /en/blog/the-lenovo-com-dns-hijack/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-panix-com-domain-hijack/
+  - /en/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/tld/
 ---
 
 A newspaper's domain name is its front door. When you type `nytimes.com`, you are trusting an invisible chain — a domain registry, a [registrar](/en/glossary/registrar/), sometimes a [reseller](/en/glossary/reseller/) underneath that registrar — to point you at the real newsroom and nowhere else. On a normal day you never think about that chain. On August 27, 2013, it broke, and millions of readers walked up to the front door of *The New York Times* to find it had been swapped for someone else's.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "مقارنة عملية وواضحة بين نطاقات ICANN المرمزة (مثل نطاق .com المرمز) وأسماء Web3 الأصلية (مثل name.eth و name.crypto). متى يعمل كل منهما؟ أين يتداخلان؟ ولماذا يمتلك الكثير من الأشخاص كليهما؟"
 keywords: ['النطاقات المرمزة مقابل نطاقات web3', 'النطاقات المرمزة مقابل ENS', 'نطاقات ICANN مقابل ENS', '.com مقابل .eth', 'نطاق .com المرمز مقابل .crypto', 'النطاقات المرمزة مقابل unstoppable', 'مقارنة نطاقات web3', 'ENS مقابل النطاقات المرمزة', 'نطاقات NFT مقابل ENS', 'تسمية web3', 'الفرق في التسمية على السلسلة', 'دعم المتصفح لنطاقات web3', 'تحليل نطاقات web3']
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /ar/blog/premium-web3-tlds/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/choosing-a-tld/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
 ---
 
 سؤال منطقي يُطرح يومياً: *"لدي بالفعل اسم `.eth` (أو `.crypto` أو `.x`). لماذا قد أقوم بـ [ترميز](/ar/glossary/tokenize/) نطاق `.com` الخاص بي؟ أليسا نفس الشيء؟"*

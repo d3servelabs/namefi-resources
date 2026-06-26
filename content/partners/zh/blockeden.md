@@ -6,6 +6,24 @@ tags: ["partners"]
 authors: ["namefiteam"]
 description: BlockEden.xyz 是一个面向开发者的基础设施平台，专为 Web3 的可扩展性和可靠性而构建。
 keywords: ["合作伙伴", "BlockEden", "Web3 基础设施", "可扩展性", "可靠性", "RPC 节点", "索引器", "分析 API", "Aptos", "Sui", "Solana", "EVM", "Namefi", "域名代币化", "NFTs"]
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/choosing-a-domain-tokenization-platform/
+  - /zh/blog/why-tokenize-domains/
+  - /zh/blog/onchain-domain-marketplaces-compared/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/web3/
+  - /zh/glossary/dns/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
 ---
 
 ## **向 Namefi 生态系统介绍 BlockEden.xyz**

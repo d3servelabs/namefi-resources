@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في سبتمبر 2021، اتعرض Bitcoin.org — البيت الإلكتروني التاريخي للبيتكوين اللي بيديره المشغّل المجهول Cobra — لاختراق على مستوى الـ DNS وتحوّل لعملية نصب "ضاعف بيتكوينك" المزيفة، وجمع المحتالون حوالي 17,000 دولار قبل ما الموقع يتوقف. غطاء تفصيلي من Domain Mayday عن اللي حصل، وإزاي، وإيه اللي بيعلّمنا إياه حتى لو المواقع المتعلقة بالكريبتو نفسها بتعتمد على DNS.'
 keywords: ['bitcoin.org', 'اختراق bitcoin.org', 'اختراق dns', 'اختراق النطاق', 'نصب ضاعف بيتكوين', 'نصب هدية كريبتو', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'أمان dns', 'أمان النطاقات', 'اختراق nameserver', 'هجوم تغيير whois']
+relatedArticles:
+  - /ar/blog/the-curve-finance-dns-hijack/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
 ---
 
 لأكتر من عقد من الزمن، لو حد أراد الإجابة الصريحة والمحايدة على سؤال "إيه هو البيتكوين وإزاي أستخدمه بأمان"، الإنترنت كانت بتبعته لعنوان واحد: **Bitcoin.org**.

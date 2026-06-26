@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'دليل شامل حول نطاق .airbus: تعرف على استخداماته، أهميته كعلامة تجارية رقمية في قطاع الطيران، وكيفية إدارة الأصول الرقمية والنطاقات عبر منصة Namefi.'
 keywords: ['.airbus domains', 'نطاقات .airbus', 'ما هو نطاق .airbus', 'لماذا تختار .airbus', 'Top-Level Domain', 'نطاق المستوى الأعلى', 'استثمار النطاقات', 'blockchain domains', 'tokenized domains', 'نطاقات الويب 3', 'شراء نطاق .airbus', 'what is the .airbus domain', 'why choose the .airbus domain', 'brand TLD', 'Airbus registry']
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/ai-vs-io-domain/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 ## **ما هو نطاق .airbus؟**

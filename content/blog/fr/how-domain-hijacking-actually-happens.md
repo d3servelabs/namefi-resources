@@ -8,6 +8,24 @@ draft: false
 description: "Un guide pratique sur les cinq véritables méthodes utilisées par les attaquants pour s'emparer de domaines dans le monde réel — ingénierie sociale, compromission de compte registrar, prise de contrôle du fournisseur DNS, piratage de serveurs de noms (NS) et récupération de domaines expirés — et les contrôles spécifiques qui bloquent chacune d'elles."
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
 keywords: ['piratage de domaine', 'sécurité de domaine', 'verrouillage registrar', 'verrouillage de transfert', 'dnssec', 'authentification à deux facteurs', 'ingénierie sociale', 'dangling dns', 'namefi']
+relatedArticles:
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-badgerdao-frontend-attack/
+  - /fr/blog/the-lenovo-com-dns-hijack/
+  - /fr/blog/the-perl-com-domain-theft/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
 ---
 
 Le terme « [piratage de domaine](/fr/glossary/domain-hijacking/) » (domain hijacking) est l'une de ces expressions qui semble dramatique, mais qui désigne des réalités très différentes selon la manière dont cela se produit. Un compte de bureau d'enregistrement (registrar) piraté via un e-mail d'hameçonnage est un piratage. Un enregistrement de [serveur de noms](/fr/glossary/nameserver/) discrètement modifié chez un fournisseur [DNS](/fr/glossary/dns/) est un piratage. Un domaine expiré que quelqu'un d'autre récupère et redirige est, dans un sens, également un piratage.

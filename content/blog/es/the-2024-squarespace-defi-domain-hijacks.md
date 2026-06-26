@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'En julio de 2024, una migración de registrador de Google Domains a Squarespace convirtió una autenticación predeterminada débil en una superficie de ataque masiva. Los atacantes secuestraron los dominios de proyectos cripto y DeFi — Compound Finance, Celer Network, Pendle, Unstoppable Domains — y los redirigieron a sitios de phishing que vaciaban carteras. Así es como una migración "sin fricciones" dejó cientos de puertas sin cerrar, y lo que eso nos enseña sobre la seguridad del registrador y el MFA.'
 keywords: ['secuestro de dominio squarespace', 'migración google domains', 'secuestro dns defi', 'secuestro compound finance', 'secuestro celer network', 'vaciador de carteras', 'inferno drainer', 'seguridad de dominios', 'migración de registrador', 'mfa autenticación multifactor', 'toma de cuenta oauth', 'secuestro dns', 'phishing cripto']
+relatedArticles:
+  - /es/blog/the-curve-finance-dns-hijack/
+  - /es/blog/the-badgerdao-frontend-attack/
+  - /es/blog/the-fox-it-dns-hijack/
+  - /es/blog/the-godaddy-multi-year-breach/
+  - /es/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
+  - /es/glossary/tld/
 ---
 
 En julio de 2024, lo más peligroso del sitio web de un proyecto cripto no era un error en el [contrato inteligente](/es/glossary/smart-contract/) ni una [clave privada](/es/glossary/private-key/) filtrada. Era el [registrador](/es/glossary/registrar/) que controlaba el dominio.

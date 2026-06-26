@@ -12,6 +12,24 @@ format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-real-estate-business-og.jpg
 description: 'The top 10 TLDs every realtor should secure for brand protection, including .realtor eligibility rules, defensive registration tips, and where to register.'
 keywords: ['tlds for realtors', 'real estate domain names', '.realtor domain', 'best domain extensions for real estate', 'defensive domain registration', 'realtor brand protection', 'real estate TLDs', '.realty domain', 'register real estate domains', 'domain extensions for agents']
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/top-tlds-to-secure-for-your-law-firm/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 Your name and your local brand are the two most valuable assets in real estate. When a buyer searches for "Jane Smith Realtor" or for the name of the neighborhood you farm, the domains tied to those terms should point to you — not to a competitor, a lookalike, or a parked page running ads. That is why securing more than one **TLD ([top-level domain](/en/glossary/tld/))** for your real estate business is one of the cheapest forms of brand insurance you can buy.

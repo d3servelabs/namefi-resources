@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre todo sobre el dominio .info: su historia, ventajas y por qué es ideal para sitios informativos. Registra tu dominio con la tecnología Web3 de Namefi.'
 keywords: ['.info domains', '.info TLD', 'top-level domain .info', 'what is .info', 'why choose .info', 'what is the .info domain', 'why choose the .info domain', 'comprar dominio .info', 'registro de dominios', 'dominios tokenizados', 'inversión en dominios', 'dominios blockchain', 'ventajas dominio info', 'gTLD', 'Identity Digital']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/top-tlds-to-secure-for-your-law-firm/
+  - /es/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .info?**

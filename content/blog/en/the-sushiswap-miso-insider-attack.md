@@ -11,6 +11,24 @@ seriesOrder: 22
 format: case-study
 description: 'In September 2021 an anonymous contractor slipped their own wallet address into SushiSwap''s MISO launchpad front-end via a malicious commit, diverting 864.8 ETH (~$3M) from the Jay Pegs Auto Mart auction. A Domain Mayday deep-dive on code supply chains, front-end trust, and what it teaches about verifiable ownership.'
 keywords: ['sushiswap miso hack', 'miso supply chain attack', 'aristok3', 'jay pegs auto mart', 'defi front-end attack', '864.8 eth', 'software supply chain', 'malicious commit', 'insider threat', 'auctionwallet', 'joseph delong', 'web supply chain security', 'domain security']
+relatedArticles:
+  - /en/blog/the-badgerdao-frontend-attack/
+  - /en/blog/the-curve-finance-dns-hijack/
+  - /en/blog/the-godaddy-multi-year-breach/
+  - /en/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /en/blog/the-myetherwallet-bgp-dns-attack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/web3/
+  - /en/glossary/tld/
 ---
 
 Most attacks force a door. This one walked in through the front.

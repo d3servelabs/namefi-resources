@@ -16,6 +16,24 @@ faqs:
     answer: 'Real estate agents, brokerages, property managers, developers, and estate-planning firms that want a descriptive, exact-match name. It also suits luxury or boutique property brands that want the address itself to signal the industry.'
   - question: 'Is .estate good for a real estate business?'
     answer: 'It can be a strong fit. The word directly names the industry, so a .estate address reads as on-topic and exact-match. For a large agency that prizes maximum familiarity and resale value, a matching .com may still be the safer default.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/from-urbancompass-com-to-compass-com/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.estate domain** is a descriptive [generic top-level domain](/en/glossary/gtld/) (gTLD) aimed squarely at the property world: real estate agents, brokerages, property managers, developers, and estate-planning firms. Where a neutral suffix says nothing about what you do, `.estate` puts the industry directly in the web address, turning the domain itself into a plain-language statement of business.

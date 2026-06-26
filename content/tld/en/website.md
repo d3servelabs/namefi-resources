@@ -16,6 +16,24 @@ faqs:
     answer: 'It suits startups, freelancers, creatives, bloggers, and small businesses that want a clear, self-describing address when the .com is taken. It is especially handy for a brand whose name plus "website" reads naturally, such as yourbrand.website.'
   - question: 'Is .website good for email deliverability?'
     answer: 'It can work, but newer and lower-cost gTLDs sometimes draw extra scrutiny from spam filters. With proper SPF, DKIM, and DMARC records and a warmed-up sending reputation, .website email is deliverable; many senders still prefer an established suffix for high-volume mail.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/how-tld-affects-domain-value/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 If you have ever struggled to explain a domain over the phone, **.website** has an obvious appeal: it spells out exactly what sits at the other end of the link. As a generic, unrestricted suffix, the .website domain is open to anyone and reads as plainly as a street sign — your-name dot website.

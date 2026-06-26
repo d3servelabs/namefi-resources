@@ -9,6 +9,24 @@ authors: ['namefiteam']
 draft: false
 description: D3Serve 的愿景宣言——阐述为何将信任数字化，正如此前信息的数字化一样，必将带来生产力的飞跃、无损的精确性、更低的成本以及高度的自动化。
 keywords: ['数字信任', 'D3Serve', '区块链', 'web3', '智能合约', '密码学', '共识机制', '宣言', '愿景', '信任数字化', '群体信任', '自动化']
+relatedArticles:
+  - /zh/blog/onchain-domain-custody-and-recovery/
+  - /zh/blog/the-sushiswap-miso-insider-attack/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/recovering-a-tokenized-domain-after-wallet-loss/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-security/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
 ---
 
 在 **D3Serve**，我们致力于借助[区块链](/zh/glossary/blockchain/)及其他前沿技术构建*数字信任*。

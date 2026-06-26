@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Comment Massdrop a passé sept ans à bâtir une communauté d'enthousiastes pratiquant l'achat groupé, avant de se rebaptiser Drop en 2019 — en acquérant discrètement le domaine premium Drop.com (dont le prix demandé était de 800 000 dollars) avant le changement de nom, et pourquoi abandonner « Mass » était si important."
 keywords: ['massdrop.com', 'drop.com', 'nom de domaine drop', 'rebranding massdrop', 'mise à niveau de domaine', 'achat groupé', 'claviers mécaniques', 'communauté audiophile', 'naming startup', 'naming de marque', 'domaine premium', 'stratégie de domaine', 'domaine exact match', 'commerce communautaire']
+relatedArticles:
+  - /fr/blog/from-ubercab-com-to-uber-com/
+  - /fr/blog/from-urbancompass-com-to-compass-com/
+  - /fr/blog/from-teslamotors-com-to-tesla-com/
+  - /fr/blog/from-snapchat-com-to-snap-com/
+  - /fr/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Pendant ses sept premières années, l'une des communautés d'enthousiastes les plus appréciées d'internet vivait à une adresse qui décrivait exactement ce qu'elle faisait : **Massdrop.com**.

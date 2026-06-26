@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Airbnb 2008 als AirBed & Breakfast auf AirBedAndBreakfast.com startete und sich 2009 zu Airbnb.com verkürzte, um dem wörtlichen Luftmatratzen-Namen zu entkommen und zu einer skalierbaren globalen Marke zu werden.'
 keywords: ['airbedandbreakfast.com', 'airbnb.com', 'airbnb domainname', 'airbnb rebranding', 'airbed and breakfast', 'domain-upgrade', 'startup-naming', 'markenname', 'premium-domain', 'domain-strategie', 'airbnb-geschichte', 'y combinator airbnb', 'unternehmens-rebranding']
+relatedArticles:
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-massdrop-com-to-drop-com/
+  - /de/blog/from-ctrip-com-to-trip-com/
+  - /de/blog/from-mrchewy-com-to-chewy-com/
+  - /de/blog/from-teslamotors-com-to-tesla-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/web3/
 ---
 
 Bevor Airbnb ein Verb, ein börsennotiertes Unternehmen und ein fester Bestandteil des weltweiten Reisens war, war es ein äußerst wörtliches Angebot: ein **AirBed & Breakfast**, beheimatet unter **AirBedAndBreakfast.com**.

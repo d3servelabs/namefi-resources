@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.iana.org/domains/root/db
   - https://www.iso.org/iso-3166-country-codes.html
+relatedArticles:
+  - /fr/blog/cctld-market-share-by-registration-volume/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/domain-hacks-explained/
+  - /fr/blog/how-tld-affects-domain-value/
+  - /fr/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Un **ccTLD (domaine de premier niveau à code pays)** est un [TLD](/fr/glossary/tld/) à deux lettres attribué à un pays ou territoire selon la liste ISO 3166 — `.uk`, `.de`, `.jp`, `.io` (Territoire britannique de l'océan Indien), et ainsi de suite. Contrairement à un [gTLD](/fr/glossary/gtld/), un ccTLD est administré sous l'autorité de son pays plutôt que directement par contrat avec l'[ICANN](/fr/glossary/icann/), de sorte que chacun fixe ses propres règles d'éligibilité, de tarification et de politique — certains exigent une présence locale, d'autres (comme `.io` ou `.co`) se vendent à l'échelle mondiale. Ces règles déterminent également si et comment un ccTLD peut prendre en charge une couche de propriété [on-chain](/fr/glossary/on-chain/) : un [registre](/fr/glossary/registry/) ouvert à la tokenisation facilite la représentation d'un domaine par Namefi en tant qu'actif contrôlé par [portefeuille](/fr/glossary/wallet/).

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: ".ai vs .io pour votre startup ? Comparez les origines, le traitement SEO par Google, les tarifs, les signaux de marque et la question Chagos liée à .io, avec un guide de décision clair et une FAQ."
 keywords: ["ai vs io tld", "io vs ai domaine", "domaine ai ou io", "extension de domaine io vs ai", "extension de domaine ai vs io", ".ai vs .io", "tld ai ou io", "domaine ai vs io", "domaine io ou ai", ".ai vs .io domaine", "domaine ai contre domaine io", "meilleur domaine pour startup ia", "meilleur domaine pour startup tech", "tld ai", "tld io", "extension de domaine pour startup", "ccTLD pour la tech", "gccTLD seo", "domaine io chagos", "avenir domaine io", "prix domaine ai", "prix domaine io", "image de marque domaine", "choisir une extension de domaine", "domaine tokenisé"]
+relatedArticles:
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/how-tld-affects-domain-value/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Vous avez trouvé le nom. Maintenant vous êtes bloqué sur les deux derniers caractères : faut-il opter pour `votrebrand.ai` ou `votrebrand.io` ? Les deux sont courts, les deux crient « tech », et tous deux ont échappé à leurs origines d'île minuscule pour devenir les favoris des startups. Mais ils envoient des signaux différents, ont des coûts différents et portent des questions à long terme différentes.

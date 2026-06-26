@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2010 年一纸停止令迫使 UberCab 去掉"Cab"，Uber 以 2% 股权（当时仅值 10.7 万美元）从环球音乐集团换得 Uber.com，这笔域名升级交易由此成为创业史上影响最深远的交易之一。'
 keywords: ['ubercab.com', 'uber.com', 'uber 域名', '域名升级', 'ubercab 停止令', '环球音乐 uber 域名', '创业公司命名', '品牌命名', '高价值域名', '域名策略', 'uber 历史', '股权换域名', '域名收购', '定义品类的域名']
+relatedArticles:
+  - /zh/blog/from-urbancompass-com-to-compass-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+  - /zh/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
 ---
 
 在"Uber"成为一个动词、一个物流帝国、一个按需服务品类的代名词之前，它是一个更字面、更谨慎的存在：**UberCab.com**。

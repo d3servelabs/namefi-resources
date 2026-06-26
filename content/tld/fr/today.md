@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez l'extension .today : idéale pour l'actualité, les promos et l'immédiateté. Apprenez pourquoi et comment l'enregistrer avec Namefi."
 keywords: [".today", "domaines .today", "TLD .today", "top-level domain .today", "what is .today", "why choose .today", "qu'est-ce que le domaine .today", "pourquoi choisir le domaine .today", "investissement domaine", "domaines tokenisés", "blockchain domains", "achat nom de domaine", "Web3 domains", "Namefi", "new gTLD"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/ai-vs-io-domain/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Le choix d'un nom de domaine est l'une des premières et des plus importantes décisions que vous prendrez pour votre présence en ligne. Alors que le marché des domaines traditionnels comme le .com devient de plus en plus saturé, de nouvelles extensions (gTLD) offrent des opportunités passionnantes pour se démarquer. L'une de ces extensions dynamiques est le **.today**.

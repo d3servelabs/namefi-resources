@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: Les domaines .eth sont des noms basés sur la blockchain qui remplacent les adresses de portefeuille complexes par des noms lisibles par l'homme. Découvrez comment ENS transforme l'identité Web3 et la propriété numérique.
 keywords: ["tld", "domaine eth", "identité web3", "blockchain", "ens", "domaine décentralisé", "domaine nft"]
+relatedArticles:
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /fr/blog/premium-web3-tlds/
+  - /fr/blog/ens-vs-dns-domain-flipping/
+  - /fr/blog/onchain-domain-flipping/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 

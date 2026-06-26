@@ -9,6 +9,24 @@ keywords: ['ENS', 'Servicio de Nombres de Ethereum', '.eth', 'nombre web3', 'nom
 level: 1
 sources:
   - https://docs.ens.domains/
+relatedArticles:
+  - /es/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/ens-vs-dns-domain-flipping/
+  - /es/blog/tokenized-domain-vs-web3-domain/
+  - /es/blog/onchain-domain-custody-and-recovery/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/dns/
+  - /es/glossary/registry/
+  - /es/glossary/ethereum/
+  - /es/glossary/web3/
+  - /es/glossary/smart-contract/
 ---
 
 **ENS (Servicio de Nombres de [Ethereum](/es/glossary/ethereum/))** es un sistema de nomenclatura descentralizado que mapea nombres legibles por humanos (como `vitalik.eth`) a direcciones de Ethereum, hashes de contenido y otros recursos. Los nombres ENS viven íntegramente en cadena y son gestionados por [contratos inteligentes](/es/glossary/smart-contract/) en Ethereum. No forman parte del [DNS](/es/glossary/dns/) tradicional y no se resuelven en navegadores estándar sin una pasarela de resolución o extensión de navegador. ENS es una categoría hermana de los **dominios ICANN tokenizados**: ENS optimiza para la identidad de billetera y los casos de uso nativos de cripto, mientras que los [dominios tokenizados](/es/blog/what-are-tokenized-domains/) mantienen tu `.com`/`.xyz`/`.io` real funcionando en toda la internet y añaden una capa de propiedad nativa de [billetera](/es/glossary/wallet/). Muchos usuarios tienen ambos — consulta [Dominio Tokenizado vs Dominio Web3](/es/blog/tokenized-domain-vs-web3-domain/) para una comparación lado a lado. Sitio oficial: [ens.domains](https://ens.domains).

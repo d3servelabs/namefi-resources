@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Descubre el potencial del dominio .click para potenciar tu marca y llamadas a la acción. Aprende sus ventajas y cómo registrarlo en Namefi."
 keywords: [".click domains", ".click TLD", "top-level domain", "what is .click", "why choose .click", "what is the .click domain", "why choose the .click domain", "comprar dominio .click", "registro de dominios", "inversión en dominios", "dominios web3", "dominios tokenizados", "marketing digital", "llamada a la acción", "identidad de marca"]
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .click?**

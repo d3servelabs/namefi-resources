@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "如果您失去了持有代币化域名的钱包访问权限，究竟会发生什么？以及如何通过操作步骤从一开始就降低这种情况发生的几率。本文将探讨备份、多签、硬件钱包、社交恢复，以及平台能力的极限。"
 keywords: ['找回 NFT 域名', '丢失钱包域名', '代币化域名钱包丢失', '钱包恢复域名', 'NFT 域名备份', '代币化域名硬件钱包', '多签代币化域名', '代币化域名密钥恢复', '丢失助记词域名', 'NFT 域名安全', '代币化域名备份', '域名密钥管理', '钱包丢失恢复']
+relatedArticles:
+  - /zh/blog/onchain-domain-custody-and-recovery/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/tokenize-your-com-to-flip-it/
+  - /zh/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-security/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
+  - /zh/glossary/registry/
 ---
 
 在[代币化域名](/zh/blog/what-are-tokenized-domains/)之前，人们最容易忽略的事情莫过于**钱包丢失恢复**。一旦域名被代币化，持有该 [NFT](/zh/glossary/nft/) 的[钱包](/zh/glossary/wallet/)就是所有权的唯一真实来源。如果丢失了钱包，您将面临真正的麻烦。

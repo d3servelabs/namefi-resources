@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Buffer 2010 mit BufferApp.com startete, weil Buffer.com bereits vergeben war, dann 624 Tage damit verbrachte, die exakt passende Domain zu erwerben – dabei dem Verkäufer sogar den eigenen Kontostand zeigte – und warum ein Unternehmen, das für radikale Transparenz bekannt ist, ausgerechnet bei der einen Zahl schwieg, die alle wissen wollten: dem Kaufpreis.'
 keywords: ['bufferapp.com', 'buffer.com', 'buffer domainname', 'domain-upgrade', 'joel gascoigne', 'buffer transparenz', 'exact-match-domain', 'startup-naming', 'markenname', 'premium-domain', 'domain-strategie', 'buffer-geschichte', 'domain-akquisition', 'kategoriendefinierende domain']
+relatedArticles:
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-slackhq-com-to-slack-com/
+  - /de/blog/from-discordapp-com-to-discord-com/
+  - /de/blog/from-mona-co-to-crypto-com/
+  - /de/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
 ---
 
 Bevor es das Social-Media-Tool war, das man einmal einrichtet und dann vergisst, hörte Buffer auf einen längeren Namen: **BufferApp.com**.

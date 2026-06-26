@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .online : une extension polyvalente et moderne. Apprenez pourquoi les entreprises et les investisseurs choisissent ce TLD pour leur identité numérique."
 keywords: ['.online domains', '.online TLD', 'top-level domain', 'what is .online', 'why choose .online', 'what is the .online domain', 'why choose the .online domain', 'domain investing', 'blockchain', 'tokenized domain', 'acheter domaine online', 'Web3 domains', 'investissement domaine', 'ICANN registrar', 'Namefi']
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le .online ?**

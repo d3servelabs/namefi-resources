@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو التوقيع المتعدد وكيف يعزز أمان الدومينات؟
 keywords: ["التوقيع المتعدد","multisig","توقيعات متعددة","أمان معزز","حضانة مشتركة"]
+relatedArticles:
+  - /ar/blog/do-multisig-wallets-actually-improve-security/
+  - /ar/blog/onchain-domain-custody-and-recovery/
+  - /ar/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /ar/blog/how-domain-hijacking-actually-happens/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/wallet/
+  - /ar/glossary/private-key/
+  - /ar/glossary/tokenized-domain/
 ---
 
 

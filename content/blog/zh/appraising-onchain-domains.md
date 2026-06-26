@@ -12,6 +12,24 @@ format: analysis
 description: "如何用链上参考成交、底价与溢价的推理框架以及 ENS 俱乐部因素来评估 ENS 与代币化域名——以及它为何与 DNS 不同。"
 ogImage: ../../assets/appraising-onchain-domains-og.jpg
 keywords: ['评估 ENS 域名', 'ENS 域名估值', '代币化域名评估', '链上参考成交', '域名参考成交', 'NameBio 参考成交', 'ENS 底价', 'ENS 999 俱乐部', 'ENS 10k 俱乐部', '如何给 ENS 名称估值', '代币化域名价值', 'web3 域名评估', 'ERC-721 域名价值', '链上成交记录', '域名底价与溢价']
+relatedArticles:
+  - /zh/blog/onchain-domain-flipping/
+  - /zh/blog/how-to-read-comparable-domain-sales/
+  - /zh/blog/domain-appraisal-tools-compared/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 评估是决定一次翻转能否赚钱的技能。寻源告诉你有什么在卖、出售把一个名称变成一张支票，而中间那个数字——一个名称究竟值多少——才是利润所在。这对一个 `.com` 成立，对链上也成立，只不过链上世界给了你一样 [DNS](/zh/glossary/dns/) 二级市场从来给不了的东西：一份几乎涵盖每一笔成交、公开且带时间戳的记录。这是更宏大的[域名翻转](/zh/blog/domain-flipping/)操作手册中的评估篇，聚焦于你在[链上域名翻转](/zh/blog/onchain-domain-flipping/)中交易的两类资产——[ENS（以太坊域名服务）](/zh/glossary/ens/)名称与代币化的 ICANN 域名。

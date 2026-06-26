@@ -23,6 +23,24 @@ keywords:
   - pharma domains
   - web3 domains
   - Namefi
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 In der sich ständig erweiternden Welt des Internets spielen Top-Level-Domains (TLDs) eine entscheidende Rolle für die Identität und Sicherheit von Marken. Während die meisten Nutzer mit Endungen wie [.com](/de/tld/com/) oder .de vertraut sind, gibt es spezialisierte Erweiterungen, die als "Brand TLDs" (Marken-TLDs) bekannt sind. Eine dieser spezifischen Endungen ist **.abbvie**.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .active 顶级域名：它代表活力、运动与行动。探索其在体育、健康及科技领域的应用优势，并了解如何在 Namefi 注册这一独特的 Web3 兼容域名。'
 keywords: ['.active domains', '.active TLD', 'top-level domain', 'what is .active', 'why choose .active', 'what is the .active domain', 'why choose the .active domain', 'active 域名', '购买 active 域名', '域名投资', 'Web3 域名', '区块链域名', '代币化域名', 'Namefi', '健身域名']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 ## **.active 是什么？**

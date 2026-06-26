@@ -16,6 +16,24 @@ faqs:
     answer: 'स्ट्रीमर, वीडियो निर्माता, प्रसारक, और कोई भी ब्रांड जो टेलीविज़न, फ़िल्म, या लाइव सामग्री के चारों ओर बना हो। "tv" स्ट्रिंग तुरंत "television" के रूप में पढ़ी जाती है, जो इसे चैनलों, शो, और मीडिया परियोजनाओं के लिए एक स्वाभाविक, यादगार घर बनाती है।'
   - question: '.tv डोमेन टेलीविज़न से क्यों जुड़ा है?'
     answer: 'विशुद्ध भाषाई संयोग। "TV" तुवालू का ISO कंट्री कोड है और "television" का सार्वभौमिक संक्षिप्त रूप। तुवालू ने उस ओवरलैप का लाभ उठाया, नेमस्पेस को वैश्विक रूप से लाइसेंस दिया, यही कारण है कि स्ट्रीमिंग और वीडियो ब्रांड इसकी ओर आकर्षित होते हैं।'
+relatedArticles:
+  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/why-are-io-domains-expensive/
+  - /hi/blog/domain-hacks-explained/
+  - /hi/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 **.tv** डोमेन एक छोटे राष्ट्र द्वारा दो-अक्षर के संयोग को एक वैश्विक ब्रांड में बदलने का पाठ्यपुस्तक उदाहरण है। आधिकारिक रूप से **तुवालू** के लिए ccTLD, एक छोटा प्रशांत द्वीप राष्ट्र, इसे विश्वभर में **टेलीविज़न**, **वीडियो**, और **लाइव स्ट्रीमिंग** के स्वाभाविक घर के रूप में प्रचारित और अपनाया गया है — क्योंकि "tv" तुरंत स्वयं माध्यम के रूप में पढ़ा जाता है। प्रसारकों, स्ट्रीमरों, और वीडियो-प्रथम ब्रांडों के लिए, **.tv** अक्सर बाज़ार पर सबसे प्रभावोत्पादक एक्सटेंशन होता है।

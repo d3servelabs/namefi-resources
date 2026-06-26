@@ -12,6 +12,24 @@ format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-startup-og.jpg
 description: 'Discover the top TLDs to secure for your startup, from .com to .ai, plus a defensive registration strategy to protect your brand from typosquatters.'
 keywords: ['top TLDs for startups', 'best domain extensions for startups', 'startup domain names', 'defensive domain registration', 'TLDs to secure', '.com vs .io', '.ai domain for startups', 'brand protection domains', 'tech startup domains', 'how to choose a TLD']
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 When you launch a company, your domain name is the front door to everything you build: your website, your email, your product, and your reputation. But securing a single domain is rarely enough. The smartest founders register the top TLDs for startups early, before a competitor, a typosquatter, or an opportunistic domain investor does it for them. A [top-level domain](/en/glossary/tld/) (TLD) is the suffix at the end of a web address, the part after the final dot, and choosing the right ones is a strategic decision, not an afterthought.

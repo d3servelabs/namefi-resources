@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Buffer ने 2010 में BufferApp.com पर शुरुआत की क्योंकि Buffer.com पहले से किसी और के पास था, फिर कंपनी ने 624 दिनों में exact-match डोमेन हासिल किया — यहाँ तक कि विक्रेता को अपना बैंक बैलेंस दिखाया — और क्यों radical transparency के लिए मशहूर कंपनी ने वह एकमात्र संख्या छुपाई जो सभी जानना चाहते थे: कीमत।'
 keywords: ['bufferapp.com', 'buffer.com', 'buffer domain name', 'domain upgrade', 'joel gascoigne', 'buffer transparency', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'buffer history', 'domain acquisition', 'category-defining domain']
+relatedArticles:
+  - /hi/blog/from-ubercab-com-to-uber-com/
+  - /hi/blog/from-slackhq-com-to-slack-com/
+  - /hi/blog/from-discordapp-com-to-discord-com/
+  - /hi/blog/from-mona-co-to-crypto-com/
+  - /hi/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/name-change-game-change/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/web3/
 ---
 
 सोशल-मीडिया टूल बनने से पहले, Buffer एक लंबे नाम से जाना जाता था: **BufferApp.com**।

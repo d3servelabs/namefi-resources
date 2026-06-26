@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'UCP 是 Google 致力于推动代理原生商务的举措，旨在让 AI 助手能够在开放网络上进行购物和结账。'
 keywords: ['通用商务协议', 'UCP', 'Google UCP', 'AI 购物代理', 'AI 驱动商务', '代理商务', 'AI 电商协议', '对话式商务', 'AI 结账', '电商未来', '基于代理的购物', '开放商务标准', 'Google AI', 'Gemini AI', '代理引擎优化']
+relatedArticles:
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /zh/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /zh/blog/from-mona-co-to-crypto-com/
+  - /zh/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /zh/topics/web3-foundations/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/ai-agent/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 # Google 推出“通用商务协议”，赋能下一代 AI 购物代理

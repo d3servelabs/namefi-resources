@@ -10,6 +10,24 @@ also_known_as: ['Pay-Per-Click']
 level: 1
 sources:
   - https://support.google.com/google-ads/answer/116495
+relatedArticles:
+  - /hi/blog/domain-parking-and-monetization/
+  - /hi/blog/marketing-your-domains-for-sale/
+  - /hi/blog/domain-renewal-costs-and-sell-through-rate/
+  - /hi/blog/what-is-udrp/
+  - /hi/blog/domain-for-sale-landing-pages/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/domain-parking/
+  - /hi/glossary/domain-landing-page/
+  - /hi/glossary/type-in-traffic/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
 ---
 
 **PPC (Pay-Per-Click)** एक विज्ञापन मॉडल है जिसमें एक विज्ञापन नेटवर्क प्रकाशक को हर बार एक विज़िटर द्वारा प्रदर्शित विज्ञापनों में से किसी एक पर क्लिक करने पर एक छोटा शुल्क देता है। डोमेन निवेशकों के लिए, PPC [डोमेन पार्किंग](/hi/glossary/domain-parking/) के पीछे प्राथमिक तंत्र है: एक पार्किंग सेवा पार्क किए गए पृष्ठ पर प्रासंगिक कीवर्ड विज्ञापन सिंडिकेट करती है और क्लिक राजस्व को डोमेन मालिक के साथ साझा करती है। कमाई सीधे [टाइप-इन-ट्रैफ़िक](/hi/glossary/type-in-traffic/) की मात्रा और कीवर्ड के वाणिज्यिक मूल्य के साथ स्केल होती है — loans.com जैसा डोमेन शब्दों के यादृच्छिक संयोजन की तुलना में प्रति क्लिक बहुत अधिक कमाएगा। [डोमेन लैंडिंग पेज](/hi/glossary/domain-landing-page/) पर एक अच्छी तरह से स्थापित विज्ञापन इकाई पोर्टफोलियो पर सार्थक निष्क्रिय रिटर्न उत्पन्न कर सकती है।

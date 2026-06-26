@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.investopedia.com/terms/m/markup.asp
   - https://www.namebio.com/
+relatedArticles:
+  - /zh/blog/end-user-vs-reseller-domain-pricing/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/how-to-value-a-domain-name/
+  - /zh/blog/domain-pricing-psychology-buy-now-vs-make-offer/
+  - /zh/blog/domain-renewal-costs-and-sell-through-rate/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh/glossary/end-user/
+  - /zh/glossary/wholesale-pricing/
+  - /zh/glossary/domain-broker/
+  - /zh/glossary/registrar/
+  - /zh/glossary/type-in-traffic/
 ---
 
 **零售定价**是[终端用户](/zh/glossary/end-user/)——打算实际使用域名的企业或个人——所支付的价格，通常是[批发定价](/zh/glossary/wholesale-pricing/)投资者底价的数倍。溢价的形成原因在于：终端用户能从域名中直接获得经济价值（品牌认知、类别权威性、直接导航流量），且没有转售计划；而投资者的收益只能来自未来的转售差价。在[二级市场](/zh/glossary/aftermarket/)中，触达零售买家是关键所在：能够找到并促成合适终端用户成交的[域名经纪人](/zh/glossary/domain-broker/)可以实现最高成交价，而向投资者社群出售则更快但收益更低。

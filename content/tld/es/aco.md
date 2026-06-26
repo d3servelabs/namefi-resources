@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre todo sobre el dominio .aco: su significado, ventajas para empresas y cómo esta extensión puede potenciar tu presencia digital. Regístralo hoy en Namefi.'
 keywords: ['.aco domains', 'dominio .aco', 'TLD .aco', 'top-level domain .aco', 'what is .aco', 'why choose .aco', 'qué es el dominio .aco', 'por qué elegir el dominio .aco', 'domain investing', 'blockchain domains', 'tokenized domain', 'comprar dominio .aco', 'registro de dominios', 'web3 domains', 'namefi .aco']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 En el vasto universo de internet, elegir la extensión de dominio adecuada es tan crucial como elegir el nombre de tu marca. Mientras que todos conocemos los clásicos [.com](/es/tld/com/) o [.net](/es/tld/net/), el panorama digital ha evolucionado para ofrecer extensiones más específicas, cortas y memorables. Hoy exploramos el **Top-Level Domain ([TLD](/es/glossary/tld/)) .aco**, una extensión intrigante que ofrece oportunidades únicas para nichos específicos e inversores de dominios modernos.

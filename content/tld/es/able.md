@@ -24,6 +24,24 @@ keywords:
   - branding creativo
   - registro de dominios
   - web3 domains
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/brandable-vs-keyword-domains/
+  - /es/blog/ai-vs-io-domain/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .able?**

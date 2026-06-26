@@ -24,6 +24,24 @@ keywords:
   - brand TLD
   - secure domains
   - Namefi domains
+relatedArticles:
+  - /hi/blog/what-is-a-tld/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /hi/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-tokenization/
+relatedSeries:
+  - /hi/series/best-tlds-by-industry/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/dns/
 ---
 
 डिजिटल दुनिया तेजी से विकसित हो रही है, और सही डोमेन नाम चुनना आपकी ऑनलाइन उपस्थिति के लिए सबसे महत्वपूर्ण निर्णयों में से एक है। आज हम **.abbott** टॉप-लेवल डोमेन ([TLD](/hi/glossary/tld/)) पर चर्चा करेंगे, जो स्वास्थ्य सेवा (Healthcare) और कॉर्पोरेट पहचान की दुनिया में एक विशिष्ट स्थान रखता है।

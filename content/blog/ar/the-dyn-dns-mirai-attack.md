@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في 21 أكتوبر 2016، ضرب هجوم DDoS بقوة بوت نت Mirai للأجهزة الذكية مزود DNS شركة Dyn في ثلاث موجات، وخلّى Twitter وNetflix وReddit وSpotify وGitHub وAirbnb وPayPal بره الخدمة لساعات — دراسة حالة Domain Mayday عن مخاطر الاعتماد على مزود DNS واحد.'
 keywords: ['هجوم dyn dns', 'بوت نت mirai', 'هجوم ddos 21 أكتوبر 2016', 'هجوم ddos على dns', 'بوت نت إنترنت الأشياء', 'انقطاع مزود dns', 'أمان النطاقات', 'نقطة فشل واحدة في dns', 'dyn ddos 2016', 'برنامج mirai الخبيث', 'انقطاع الإنترنت 2016', 'تكرار dns', 'كاميرات iot متهكرة']
+relatedArticles:
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-curve-finance-dns-hijack/
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-myetherwallet-bgp-dns-attack/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/dns/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 لساعات قليلة في يوم جمعة من أكتوبر 2016، الإنترنت نسي إزاي يلاقي نفسه.

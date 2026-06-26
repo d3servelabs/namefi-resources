@@ -10,6 +10,24 @@ draft: false
 format: opinion
 description: A vision statement of D3Serve — why digitizing trust, much like the digitization of information before it, promises a leap in productivity, loss-less precision, lower cost, and automation.
 keywords: ['digital trust', 'D3Serve', 'blockchain', 'web3', 'smart contracts', 'cryptography', 'consensus', 'manifesto', 'vision', 'trust digitization', 'group trust', 'automation']
+relatedArticles:
+  - /en/blog/onchain-domain-custody-and-recovery/
+  - /en/blog/the-sushiswap-miso-insider-attack/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/how-tokenization-changes-domain-flipping/
+  - /en/blog/recovering-a-tokenized-domain-after-wallet-loss/
+relatedTopics:
+  - /en/topics/domain-tokenization/
+  - /en/topics/domain-security/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/icann/
+  - /en/glossary/web3/
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
 ---
 
 At **D3Serve**, we are dedicated to building *digital trust* by leveraging [blockchain](/en/glossary/blockchain/) and other advanced technologies.

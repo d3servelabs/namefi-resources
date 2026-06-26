@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es la componibilidad y cómo se aplica a los dominios tokenizados?
 keywords: ["componibilidad","interoperabilidad","bloques de construcción","DeFi","integración Web3"]
+relatedArticles:
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/why-tokenize-domains/
+  - /es/blog/tokenized-domain-use-cases-2026/
+  - /es/blog/premium-web3-tlds/
+  - /es/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/tokenize-your-com/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/web3/
+  - /es/glossary/tokenized-domain/
+  - /es/glossary/tokenize/
+  - /es/glossary/collateral/
+  - /es/glossary/lending-protocol/
 ---
 
 La **componibilidad** se refiere a la capacidad de combinar diferentes protocolos, aplicaciones o activos como bloques de construcción para crear nuevas funcionalidades. En [Web3](/es/glossary/web3/), los sistemas componibles pueden integrarse sin problemas entre sí sin requerir asociaciones personalizadas o integraciones complejas. Los dominios tokenizados en Namefi son inherentemente componibles —pueden utilizarse como [colateral](/es/glossary/collateral/) en [protocolos de préstamo](/es/glossary/lending-protocol/), integrarse en sistemas de identidad, combinarse con otros [NFTs](/es/glossary/nft/), o utilizarse en aplicaciones DeFi. Esta componibilidad desbloquea nuevos casos de uso que no eran posibles con la gestión de dominios tradicional, donde los dominios estaban aislados dentro de los sistemas de [registro](/es/glossary/registrar/) y no podían interactuar fácilmente con otros servicios digitales.

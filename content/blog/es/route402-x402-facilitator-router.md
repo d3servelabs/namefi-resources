@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Un enrutador multiinquilino que le permite integrar x402 una vez y enrutar solicitudes según políticas y señales en vivo, sin tener que incluir la lógica de enrutamiento en su aplicación."
 keywords: ['Route402', 'x402', 'enrutamiento de pagos', 'enrutador de facilitadores', 'pagos multiinquilino', 'RBAC', 'cifrado de credenciales', 'enrutamiento por capacidades', 'liquidación persistente', 'infraestructura de pagos', 'reglas de enrutamiento YAML']
+relatedArticles:
+  - /es/blog/from-bufferapp-com-to-buffer-com/
+  - /es/blog/from-discordapp-com-to-discord-com/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/from-urbancompass-com-to-compass-com/
+relatedTopics:
+  - /es/topics/web3-foundations/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/name-change-game-change/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/x402/
 ---
 
 ## En resumen

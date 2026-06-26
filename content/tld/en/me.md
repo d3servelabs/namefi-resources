@@ -16,6 +16,24 @@ faqs:
     answer: 'Individuals building a personal brand, portfolio, or resume site, and anyone crafting a domain hack where the name reads as a phrase ending in "me" — such as about.me or "call.me." It reads instantly as the English pronoun, making it warm and personal.'
   - question: 'Is .me a good domain for a personal website?'
     answer: 'Yes. .me is arguably the most personal mainstream extension. Because "me" is the first-person pronoun, "yourname.me" or "hire.me" feels like a direct invitation, which is why it is a favorite for portfolios, bios, and individual brands.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/domain-hacks-explained/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 The **.me** domain is one of the clearest examples of a country-code extension that found a second life as a global brand. Officially the [ccTLD](/en/glossary/cctld/) for **Montenegro**, it has been marketed and adopted worldwide as the internet's most **personal** extension — because "me" is the English first-person pronoun, "yourname.me" reads instantly as *you*. For individuals building a portfolio, a resume site, or a bio page — and for anyone crafting a clever **[domain hack](/en/glossary/domain-hack/)** that completes with "me" — it is often the first place they look.

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是部分所有权？它如何适用于有价值的域名？
 keywords: ["部分所有权","共享所有权","域名分割","可访问性","代币化"]
+relatedArticles:
+  - /zh/blog/tokenized-domain-use-cases-2026/
+  - /zh/blog/why-tokenize-domains/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/what-are-xstocks/
+  - /zh/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-security/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/revenue-sharing/
+  - /zh/glossary/premium-domain/
+  - /zh/glossary/web3/
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
 ---
 
 

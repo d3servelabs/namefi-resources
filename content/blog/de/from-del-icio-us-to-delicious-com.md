@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie die wegweisende Social-Bookmarking-Website 2003 als berühmter Domain-Hack "del.icio.us" startete, warum diese Punkte zu einer dauerhaften Bürde für jede Erwähnung wurden und wie Yahoo sie 2008 zur saubereren Adresse Delicious.com verlegte.'
 keywords: ['del.icio.us', 'delicious.com', 'delicious domainname', 'domain hack', 'joshua schachter', 'social bookmarking', 'yahoo delicious', 'domain-upgrade', 'startup-naming', 'markennamenstrategie', 'premium domain', 'domain-strategie', 'ccTLD domain hack', 'kategoriedefinierender domain']
+relatedArticles:
+  - /de/blog/from-bufferapp-com-to-buffer-com/
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-mona-co-to-crypto-com/
+  - /de/blog/from-ctrip-com-to-trip-com/
+  - /de/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
 ---
 
 Etwa fünf Jahre lang war eine der einflussreichsten Websites der Web-2.0-Ära unter einer Adresse erreichbar, die man kaum laut aussprechen konnte: **del.icio.us**.

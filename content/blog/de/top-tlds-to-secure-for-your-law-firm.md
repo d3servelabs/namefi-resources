@@ -8,6 +8,24 @@ draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: 'Die Top 10 TLDs, die Sie für Ihre Kanzlei sichern sollten – einschließlich der Frage, warum .law die einzige juristische TLD ist, die auf verifizierte Anwälte beschränkt ist (während .esq, .legal, .attorney und .lawyer offen sind), plus eine Defensivstrategie.'
 keywords: ['TLDs für Kanzleien', 'beste Domains für Anwälte', '.law Domain', 'ist .esq eingeschränkt', 'juristische Domain-Endungen', 'defensive Domain-Registrierung', 'Anwalt Domain-Namen', 'Kanzlei-Branding', 'eingeschränkte juristische TLDs', 'Kanzlei-Domains registrieren']
+relatedArticles:
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/top-tlds-to-secure-for-your-real-estate-business/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Für eine Kanzlei ist ein Domainname mehr als eine Adresse – er ist ein Vertrauenssignal. Mandanten beurteilen Glaubwürdigkeit in Sekunden, und eine saubere, professionelle Domain auf einer anerkannten Endung leistet stille Arbeit, die eine Broschüre nicht leisten kann. Die richtigen **TLDs für Ihre Kanzlei** zu sichern, schützt die Namen, die am wichtigsten sind: Ihre Kanzlei, Ihre Partner und die Rechtsgebiete, für die Sie ranken möchten.

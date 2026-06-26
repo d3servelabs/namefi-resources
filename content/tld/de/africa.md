@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Entdecken Sie die .africa Domain: Eine digitale Identität für den gesamten Kontinent. Perfekt für panafrikanische Marken. Jetzt bei Namefi registrieren.'
 keywords: ['.africa domains', '.africa TLD', '.africa top-level domain', 'was ist .africa', 'warum .africa wählen', 'was ist die .africa domain', 'warum die .africa domain wählen', 'Afrika Domain registrieren', 'Domain Investing Afrika', 'Blockchain Domains', 'tokenisierte Domains', 'Web3 Domains', 'Namefi', 'digitale Identität Afrika', 'Markenschutz Afrika']
+relatedArticles:
+  - /de/blog/ai-vs-io-domain/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/why-are-io-domains-expensive/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registrar/
+  - /de/glossary/registry/
+  - /de/glossary/web3/
 ---
 
 ## **Was ist .africa?**

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Comment une mise en demeure en 2010 a forcé UberCab à supprimer « Cab », comment Uber a acheté Uber.com à Universal Music pour 2 % de son capital (soit 107 000 $), et pourquoi cet upgrade de domaine est devenu l'une des transactions les plus décisives de l'histoire des startups."
 keywords: ['ubercab.com', 'uber.com', 'nom de domaine uber', 'upgrade de domaine', 'ubercab mise en demeure', 'universal music domaine uber', 'naming startup', 'naming de marque', 'domaine premium', 'stratégie de domaine', 'histoire uber', 'équité contre domaine', 'acquisition de domaine', 'domaine catégorie']
+relatedArticles:
+  - /fr/blog/from-urbancompass-com-to-compass-com/
+  - /fr/blog/from-massdrop-com-to-drop-com/
+  - /fr/blog/from-bufferapp-com-to-buffer-com/
+  - /fr/blog/from-teslamotors-com-to-tesla-com/
+  - /fr/blog/from-snapchat-com-to-snap-com/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
 ---
 
 Avant qu'« Uber » ne devienne un verbe, un empire de la logistique et un synonyme d'une toute une catégorie de services à la demande, c'était quelque chose de plus littéral, de plus prudent : **UberCab.com**.

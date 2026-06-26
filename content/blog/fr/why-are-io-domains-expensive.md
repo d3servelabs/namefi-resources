@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Pourquoi les domaines .io sont-ils si chers ? Une explication claire sur la tarification de gros des registres, la demande des startups et des technologies, la rareté des noms courts, les renouvellements, et la nouvelle question de souveraineté sur les Chagos."
 keywords: ['pourquoi les domaines io sont chers', 'pourquoi les domaines .io sont chers', 'domaine io cher', 'pourquoi domaines io coûtent plus', 'pourquoi les domaines .io sont si chers', 'pourquoi utiliser un domaine .io', 'domaine io pour startups', 'prix domaine io', 'coût domaine io', 'coût renouvellement domaine io', 'les domaines io valent-ils le prix', 'io vs com', 'domaine io vs ai', 'coût domaine io', 'pourquoi domaines io plus chers', 'tarification domaines io expliquée', 'devrais-je acheter un domaine io', 'io ccTLD', 'Chagos domaine io', 'acheter domaine io']
+relatedArticles:
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/how-tld-affects-domain-value/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/domain-flipping/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Si vous avez récemment regardé le prix d'un domaine `.io` et que cela vous a fait tiquer, vous n'êtes pas seul. Par rapport à un simple `.com` ou à l'une des nouvelles extensions moins chères, `.io` se positionne constamment dans le segment premium — aussi bien à l'enregistrement qu'au renouvellement annuel, encore plus douloureux.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Ein plattformneutraler Überblick darüber, wofür tokenisierte Domains im Jahr 2026 tatsächlich genutzt werden – DeFi-Kredite, Leasing, Teilbesitz, KI-Agenten-Identitäten und die Anwendungsfälle, die sich noch nicht ganz durchgesetzt haben."
 keywords: ['Anwendungsfälle tokenisierte Domains', 'DomainFi', 'tokenisierte Domains Kreditvergabe', 'tokenisierte Domains Sicherheiten', 'tokenisierte Domain leasen', 'Domain-Teilbesitz', 'KI-Agenten Domain', 'Domain DeFi', 'Marktplatz für tokenisierte Domains', 'Anwendungen für tokenisierte Domains', 'NFT-Domain Anwendungsfälle', 'warum Domains tokenisieren 2026', 'Domain On-Chain-Nutzung', 'Beispiele für tokenisierte Domains']
+relatedArticles:
+  - /de/blog/what-are-tokenized-domains/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/how-tokenized-marketplaces-replace-escrow/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/tokenize-your-com/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/web3/
+  - /de/glossary/dns/
+  - /de/glossary/tld/
 ---
 
 Es ist verlockend, über tokenisierte Domains als reine *Technologie* zu sprechen. Viel nützlicher ist es jedoch, sie als eine Reihe von *Dingen zu betrachten, die man mit ihnen tun kann* – Dinge, die mit einer einfachen, bei einem Registrar verwalteten Domain nicht ohne Weiteres möglich wären. Dieser Beitrag ist ein Rundgang durch diese Anwendungsfälle – was heute Realität ist, was im Entstehen begriffen ist und was größtenteils noch reine Theorie (Slide-Deck) ist.

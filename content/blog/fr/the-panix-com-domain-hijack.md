@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "En janvier 2005, panix.com — le domaine du plus ancien FAI commercial de New York — a été transféré frauduleusement vers un registraire en Australie à l'aide de cartes de crédit volées, coupant le web et la messagerie pendant plusieurs jours. Les règles de transfert inter-registraires à approbation automatique de l'époque ont rendu la chose possible, et le nettoyage a reconfiguré la politique de transfert de domaine."
 keywords: ['panix.com', 'piratage domaine panix', 'détournement de domaine', 'transfert inter-registraire', 'Melbourne IT', 'Dotster', 'Fibranet', 'politique de transfert ICANN', 'verrou registraire', 'clientTransferProhibited', 'sécurité des domaines', 'détournement DNS', 'code auth EPP']
+relatedArticles:
+  - /fr/blog/the-lenovo-com-dns-hijack/
+  - /fr/blog/the-perl-com-domain-theft/
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-sex-com-heist-the-forged-letter/
+  - /fr/blog/the-syrian-electronic-army-nyt-hijack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
 ---
 
 Pendant plus de quinze ans, l'un des plus anciens fournisseurs d'accès à Internet commerciaux des États-Unis vivait à une seule adresse : **panix.com**. Puis, au cours d'un long week-end férié en janvier 2005, quelqu'un s'en est emparé.

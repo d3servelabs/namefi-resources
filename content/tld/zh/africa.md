@@ -24,6 +24,24 @@ keywords:
   - Web3 domains
   - brand protection
   - digital identity
+relatedArticles:
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/registry/
+  - /zh/glossary/web3/
 ---
 
 在这个数字互联的时代，选择正确的域名后缀（[TLD](/zh/glossary/tld/)）对于建立品牌身份至关重要。随着非洲数字经济的蓬勃发展，一个独特的顶级域名正在引起全球投资人和企业的关注——这就是 **.africa**。作为一个专业的域名注册商，[Namefi](https://namefi.io) 将带您深入了解这个充满活力的域名后缀。

@@ -12,6 +12,24 @@ format: explainer
 description: "Ce que sont les backorders de domaines et le drop-catching, comment les services se disputent un nom à l''instant où il se libère, et quand un backorder vaut la peine d''être payé."
 ogImage: ../../assets/domain-backorders-and-drop-catching-og.jpg
 keywords: ['backorder de domaine', 'drop catching', 'comment faire un backorder de domaine', 'attraper des domaines expirés', 'DropCatch', 'SnapNames', 'NameJet', 'Park.io', 'backorder Dynadot', 'service de drop catching de domaine', 'période de rachat', 'domaine en suppression en attente', 'quand les domaines tombent', 'enchère de domaine expiré', 'comment obtenir un domaine enregistré']
+relatedArticles:
+  - /fr/blog/expired-domains-and-the-drop-cycle/
+  - /fr/blog/how-to-win-domain-auctions/
+  - /fr/blog/when-to-drop-a-domain/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/tokenize-your-com/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Un nom que vous convoitez est déjà pris. Le propriétaire actuel ne le vend pas, ne répond pas, et pour autant que vous puissiez en juger, ne s''en sert même pas. Alors vous faites la seule chose qu''il vous reste : vous attendez qu''il oublie de le renouveler. À l''instant où cet enregistrement expire et où le nom retombe dans le pool ouvert, vous voulez être celui qui est là pour le saisir.

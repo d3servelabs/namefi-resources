@@ -12,6 +12,24 @@ format: guide
 description: "Was Domain-Flipping wirklich bedeutet – Namen günstig kaufen und teuer verkaufen – und das Bündel an Fähigkeiten hinter diesem Geschäft, von der Beschaffung über die Bewertung bis zum Verkauf."
 ogImage: ../../assets/domain-flipping-og.jpg
 keywords: ['domain flipping', 'wie man Domains flippt', 'Domains mit Gewinn flippen', 'Domain-Flipping für Anfänger', 'Domains kaufen und verkaufen', 'Domain-Investing', 'mit Domains Geld verdienen', 'Domain-Flipping-Leitfaden', 'wie man eine Domain bewertet', 'Domains zum Flippen finden', 'Domain-Portfolio', 'Domain-Reseller', 'ist Domain-Flipping legal', 'Domain-Aftermarket']
+relatedArticles:
+  - /de/blog/domain-renewal-costs-and-sell-through-rate/
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/when-to-drop-a-domain/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+  - /de/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Der Pitch ist der älteste im Handel überhaupt: günstig kaufen, teuer verkaufen. Registrieren oder erwerben Sie einen Domainnamen für ein paar Dollar, finden Sie jemanden, der ihn dringender braucht als Sie, und verkaufen Sie ihn für ein Vielfaches dessen, was Sie bezahlt haben. Gut gemacht wirkt es mühelos – ein cleverer Name günstig gekauft, Monate später ein fünfstelliger Scheck. Diese Geschichte ist real. Sie ist aber auch nur das Highlight-Reel.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Everything you need to know about the .aetna TLD. Explore the purpose of this unique domain extension, its role in corporate branding, and the future of digital identity."
 keywords: [".aetna domains", "TLD", "top-level domain", "what is .aetna", "why choose .aetna", "what is the .aetna domain", "why choose the .aetna domain", "brand TLD", "corporate domain names", "domain investing", "blockchain domains", "tokenized domain", "secure web addresses", "insurance domains", "Namefi"]
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
 ---
 
 ## **What is .aetna?**

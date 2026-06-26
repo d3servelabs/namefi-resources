@@ -6,6 +6,24 @@ tags: ["faq"]
 authors: ["namefiteam"]
 description: يشرح هذا المقال لماذا يجب ترميز النطاقات التقليدية على السلسلة ويسلط الضوء على الفوائد مثل الملكية الأوضح، القابلية للتركيب المالي، والتداول الأكثر حرية وسرعة.
 keywords: ["ترميز النطاقات","نطاقات البلوكتشين","نطاقات NFT","نطاقات على السلسلة","ملكية النطاقات","النطاقات اللامركزية","تداول النطاقات","نطاقات web3","العقود الذكية","قابلية تركيب النطاقات","ترميز DNS","الأصول الرقمية"]
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/tokenized-domain-use-cases-2026/
+  - /ar/blog/how-tokenized-marketplaces-replace-escrow/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/web3-foundations/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
+  - /ar/glossary/tld/
 ---
 
 

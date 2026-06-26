@@ -6,6 +6,24 @@ tags: ["partners"]
 authors: ["namefiteam"]
 description: BlockEden.xyz es una plataforma de infraestructura centrada en el desarrollador, construida para la escalabilidad y fiabilidad de Web3.
 keywords: ["socios", "BlockEden", "infraestructura Web3", "escalabilidad", "fiabilidad", "nodos RPC", "indexadores", "APIs de análisis", "Aptos", "Sui", "Solana", "EVM", "Namefi", "tokenización de dominios", "NFTs"]
+relatedArticles:
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/choosing-a-domain-tokenization-platform/
+  - /es/blog/why-tokenize-domains/
+  - /es/blog/onchain-domain-marketplaces-compared/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/web3/
+  - /es/glossary/dns/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
 ---
 
 ## **Presentando BlockEden.xyz al ecosistema Namefi**

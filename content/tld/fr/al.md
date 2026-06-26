@@ -24,6 +24,24 @@ keywords:
   - tokenized domains
   - web3 domains
   - acheter nom de domaine .al
+relatedArticles:
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/what-makes-a-domain-valuable/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/how-tld-affects-domain-value/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/best-tlds-by-industry/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
 ---
 
 Les extensions de domaine ([TLD](/fr/glossary/tld/)) racontent souvent une histoire géographique, mais dans l'économie numérique actuelle, elles offrent également des opportunités de branding créatif sans précédent. L'une des extensions les plus intrigantes et polyvalentes du moment est le **.al**.

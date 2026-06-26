@@ -12,6 +12,24 @@ format: guide
 description: "Comment commercialiser des domaines à vendre : pages de parking, pages de vente dédiées et SEO de listing pour mettre le bon nom devant le bon acheteur."
 ogImage: ../../assets/marketing-your-domains-for-sale-og.jpg
 keywords: ['commercialiser des domaines à vendre', 'comment promouvoir un domaine', 'page de vente de domaine', 'parking de domaine', 'vendre un domaine parké', 'lander de vente de domaine', 'listing sur marketplace de domaines', 'SEO de listing de domaine', 'comment annoncer un domaine à vendre', 'vente inbound vs outbound de domaines', 'page domaine à vendre', 'attirer des acheteurs pour des domaines', 'canaux marketing pour domaines', 'marketing investissement domaine']
+relatedArticles:
+  - /fr/blog/domain-for-sale-landing-pages/
+  - /fr/blog/marketplace-seo-for-domain-listings/
+  - /fr/blog/inbound-vs-outbound-domain-sales/
+  - /fr/blog/how-to-sell-domains-for-profit/
+  - /fr/blog/domain-parking-and-monetization/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Vous pouvez posséder le nom parfait et ne jamais réussir à le vendre. L'expertise vous dit ce que vaut un domaine ; la commercialisation comble l'écart entre ce chiffre et un acheteur qui ne vous a jamais entendu parler. La plupart des noms dans le portefeuille d'un flippeur ne se vendent pas parce que personne qui en a besoin ne découvre jamais qu'ils sont disponibles. La solution n'est que rarement un discours plus percutant. Il s'agit de placer le nom là où le bon acheteur cherche déjà.

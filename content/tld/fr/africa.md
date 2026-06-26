@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Le guide complet du domaine .africa. Découvrez comment cette extension renforce votre identité numérique en Afrique et pourquoi l'enregistrer dès aujourd'hui."
 keywords: ['.africa domains', '.africa TLD', 'top-level domain', 'what is .africa', 'why choose .africa', 'what is the .africa domain', 'why choose the .africa domain', 'domain investing africa', 'tokenized domain', 'blockchain domains', 'african digital identity', 'pan-african business', 'web3 domains', 'registry africa']
+relatedArticles:
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
+  - /fr/glossary/web3/
 ---
 
 L'économie numérique de l'Afrique est en pleine expansion, et avec elle, la nécessité d'une identité en ligne distincte et unifiée. Le domaine **.africa** a émergé comme la solution privilégiée pour les entreprises, les organisations et les particuliers souhaitant marquer leur présence sur le continent.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el significado, la historia y los beneficios del dominio .org. Aprende por qué es sinónimo de confianza y cómo registrarlo hoy mismo con Namefi.'
 keywords: ['.org', 'domains', 'TLD', 'top-level domain', 'what is .org', 'why choose .org', 'what is the .org domain', 'why choose the .org domain', 'dominio .org', 'registrar dominio .org', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'web3 domains', 'dominios para ongs']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /es/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 ## **¿Qué es .org?**

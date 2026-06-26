@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: स्मार्ट कॉन्ट्रैक्ट क्या हैं और वे डोमेन टोकनाइजेशन को कैसे सक्षम करते हैं?
 keywords: ["स्मार्ट कॉन्ट्रैक्ट","ब्लॉकचेन","स्वचालित निष्पादन","प्रोग्रामेबल लॉजिक","विकेन्द्रीकृत"]
+relatedArticles:
+  - /hi/blog/domain-escrow-explained/
+  - /hi/blog/the-badgerdao-frontend-attack/
+  - /hi/blog/the-curve-finance-dns-hijack/
+  - /hi/blog/tokenized-domain-use-cases-2026/
+  - /hi/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-security/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/web3/
+  - /hi/glossary/automated-delegation/
+  - /hi/glossary/revenue-sharing/
+  - /hi/glossary/tokenize/
+  - /hi/glossary/internet-native-asset/
 ---
 
 एक **स्मार्ट कॉन्ट्रैक्ट** एक स्व-निष्पादित प्रोग्राम है जो [ब्लॉकचेन](/hi/glossary/blockchain/) पर चलता है, पूर्व-निर्धारित शर्तों के पूरा होने पर स्वचालित रूप से समझौतों को लागू करता है और लेनदेन को निष्पादित करता है। पारंपरिक कॉन्ट्रैक्ट्स के विपरीत जिनमें मध्यस्थों की आवश्यकता होती है, स्मार्ट कॉन्ट्रैक्ट्स कोड के माध्यम से स्वायत्त रूप से काम करते हैं। Namefi डोमेन को टोकनाइज़ करने, ट्रांसफर को संभालने, स्वामित्व रिकॉर्ड को मैनेज करने और [स्वचालित डेलिगेशन](/hi/glossary/automated-delegation/) या [रेवेन्यू शेयरिंग](/hi/glossary/revenue-sharing/) जैसी उन्नत सुविधाओं को सक्षम करने के लिए स्मार्ट कॉन्ट्रैक्ट्स का उपयोग करता है। ये कॉन्ट्रैक्ट्स सुनिश्चित करते हैं कि डोमेन ऑपरेशन्स पारदर्शी, अपरिवर्तनीय हैं, और केंद्रीकृत अधिकारियों में विश्वास की आवश्यकता नहीं है—प्रोग्रामेबल, [इंटरनेट-नेटिव एसेट](/hi/glossary/internet-native-asset/) मैनेजमेंट बनाते हैं जो अन्य [वेब3](/hi/glossary/web3/) प्रोटोकॉल के साथ निर्बाध रूप से एकीकृत होते हैं।

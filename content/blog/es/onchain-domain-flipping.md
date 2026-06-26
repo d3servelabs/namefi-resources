@@ -12,6 +12,24 @@ format: guide
 description: "Cómo funciona el flipping de dominios onchain: comerciar con ENS y dominios tokenizados como activos que se guardan en la billetera y tienen liquidez de NFT, y en qué se diferencia del flipping a través de registradores."
 ogImage: ../../assets/onchain-domain-flipping-og.jpg
 keywords: ['flipping de dominios onchain', 'flipping de dominios ENS', 'flipping de dominios tokenizados', 'comerciar con dominios tokenizados', 'flipping de dominios NFT', 'flipping de dominios web3', 'inversión en dominios ENS', 'mercado de dominios NFT', 'vender dominios como NFT', 'comercio de dominios onchain', 'dominios ERC-721', 'dominios guardados en billetera', 'liquidación atómica de dominios', 'liquidez de dominios tokenizados', 'flipping de dominios web3']
+relatedArticles:
+  - /es/blog/tokenize-your-com-to-flip-it/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/selling-domains-as-nfts/
+  - /es/blog/onchain-domain-marketplaces-compared/
+  - /es/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/tokenize-your-com/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 El flipping de dominios tiene una forma familiar: compras un nombre barato, encuentras un comprador que lo necesita y lo vendes caro. La versión clásica de esa operación pasa por [registradores](/es/glossary/registrar/), mercados secundarios y un agente de depósito en garantía que retiene el dinero mientras se completa la transferencia. El flipping de dominios onchain es el mismo instinto de comprar barato y vender caro trasladado a una [blockchain](/es/glossary/blockchain/), donde el propio nombre es un token que guardas en una [billetera](/es/glossary/wallet/) y puedes comerciar como cualquier otro [NFT](/es/glossary/nft/).

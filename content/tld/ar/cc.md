@@ -16,6 +16,24 @@ faqs:
     answer: 'رسمياً "cc" هو رمز ISO لجزر كوكوس (كيلينج). في الواقع بتُقرأ بمرونة كـ "commercial company" أو "creative commons" أو "carbon copy" أو ببساطة زوج حروف أولى متطابق وسهل التذكّر، وده بالظبط ليه هو شائع كامتداد قصير قابل للتسمية التجارية.'
   - question: 'مين بيشغّل دومين .cc؟'
     answer: 'سجل .cc بيشغّله eNIC Cocos (Keeling) Islands Pty. Ltd. (اللي بتشتغل باسم Island Internet Services)، شركة مملوكة بالكامل لـ Verisign. قاعدة بيانات المنطقة الجذرية في IANA بتدرج eNIC / Island Internet Services كالمنظمة الراعية ومدير السجل.'
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/domain-hacks-explained/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 دومين **.cc** هو واحد من أكتر رموز الدول "المستعارة" بقاءً على الإنترنت — مساحة وطنية كبرت لامتداد قصير وقابل للتسمية التجارية وعالمي. هو رسمياً ccTLD لـ **جزر كوكوس (كيلينج)**، إقليم أسترالي صغير في المحيط الهندي، بس .cc اتسوّق حول العالم من عقود كبديل مرن لـ ".com." كلمة "cc" قابلة للتفسير بلا نهاية — **commercial company** أو **creative commons** أو **carbon copy** أو ببساطة زوج حروف أولى متطابق نضيف — وده بيخليه مفضّل للأسماء سهلة التذكّر والدومين هاكس الذكية.

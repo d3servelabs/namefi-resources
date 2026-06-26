@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Qué sucede realmente si pierdes el acceso a la billetera que contiene tu dominio tokenizado, y los pasos operativos para reducir la probabilidad de llegar a esa situación en primer lugar. Copias de seguridad, multifirma, billeteras de hardware, recuperación social y los límites de lo que cualquier plataforma puede hacer."
 keywords: ['recuperar dominio NFT', 'dominio de billetera perdida', 'billetera de dominio tokenizado perdida', 'recuperación de billetera de dominio', 'copia de seguridad de dominio NFT', 'billetera de hardware de dominio tokenizado', 'dominio tokenizado multifirma', 'recuperación de clave de dominio tokenizado', 'frase semilla perdida dominio', 'seguridad de dominio NFT', 'copia de seguridad de dominio tokenizado', 'gestión de claves de dominio', 'recuperación de pérdida de billetera']
+relatedArticles:
+  - /es/blog/onchain-domain-custody-and-recovery/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/tokenize-your-com-to-flip-it/
+  - /es/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-security/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
+  - /es/glossary/registry/
 ---
 
 De todas las cosas en las que la gente no piensa antes de [tokenizar un dominio](/es/blog/what-are-tokenized-domains/), **la recuperación tras la pérdida de la billetera** es la más importante. Una vez que se tokeniza un dominio, la [billetera](/es/glossary/wallet/) que contiene el [NFT](/es/glossary/nft/) es la fuente de la verdad para la propiedad. Si pierdes la billetera, tienes un problema real.

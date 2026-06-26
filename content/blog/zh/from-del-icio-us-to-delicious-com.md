@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '这家先驱性社交书签网站在2003年以著名的域名黑客技巧"del.icio.us"起步，那些点号如何成为每次提及时的永久负担，以及雅虎在2008年如何将其迁移到更简洁的 Delicious.com。'
 keywords: ['del.icio.us', 'delicious.com', 'delicious 域名', '域名黑客', 'joshua schachter', '社交书签', '雅虎 delicious', '域名升级', '初创公司命名', '品牌命名', '高级域名', '域名策略', 'ccTLD 域名黑客', '定义品类的域名']
+relatedArticles:
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-mona-co-to-crypto-com/
+  - /zh/blog/from-ctrip-com-to-trip-com/
+  - /zh/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/web3/
 ---
 
 在大约五年的时间里，Web 2.0 时代最具影响力的网站之一使用了一个几乎无法大声说出来的地址：**del.icio.us**。

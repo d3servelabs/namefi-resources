@@ -12,6 +12,24 @@ format: guide
 description: "Führe deine Domains wie Lagerbestand: erfasse die Anschaffungskosten, beobachte die Verkaufsquote, kontrolliere die Verlängerungslast, stoße Verlierer ab und halte die Bücher sauber."
 ogImage: ../../assets/domain-portfolio-management-og.jpg
 keywords: ['Domain-Portfolio-Management', 'Domain-Portfolio', 'Domain-Portfolio verwalten', 'Verkaufsquote Domains', 'Domain-Verlängerungskosten', 'wann eine Domain aufgeben', 'Domain-Anschaffungskosten', 'Domain-Bestandsverwaltung', 'Domain-Investing als Geschäft', 'Domain-Verlängerungslast', 'Domain-Portfolio ausmisten', 'Domain-Haltekosten', 'Domaining-Tabelle', 'Domain-Portfolio-Tabelle', 'Buchhaltung für Domain-Investoren']
+relatedArticles:
+  - /de/blog/domain-renewal-costs-and-sell-through-rate/
+  - /de/blog/when-to-drop-a-domain/
+  - /de/blog/domain-flipping/
+  - /de/blog/taxes-and-accounting-for-domain-investors/
+  - /de/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Die ersten zehn Domains fühlen sich wie eine Sammlung an. Du erinnerst dich, warum du jede einzelne gekauft hast, was du bezahlt hast und ungefähr, was du dafür zu bekommen hoffst. Irgendwo um die hundertste Domain herum hört dieses Gedächtnis auf zu funktionieren. Du kannst das Portfolio nicht mehr im Kopf behalten, die Verlängerungs-E-Mails treffen in Häufungen ein, die du nicht wiedererkennst, und du fängst an, dafür zu bezahlen, Domains zu halten, von denen du vergessen hattest, dass sie dir gehören. Das ist der Moment, in dem das Flipping aufhört, eine Reihe cleverer Geschäfte zu sein, und zur Bestandsverwaltung wird.

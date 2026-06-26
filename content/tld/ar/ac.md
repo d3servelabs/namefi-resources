@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .ac. تعرف على استخداماته للأكاديميات والشركات، ومميزاته الفريدة، وكيفية حجزه عبر Namefi."
 keywords: [".ac domains", ".ac TLD", "top-level domain .ac", "what is .ac", "why choose .ac", "what is the .ac domain", "why choose the .ac domain", "نطاقات .ac", "شراء نطاق .ac", "Ascension Island domain", "academic domains", "domain investing", "blockchain domains", "tokenized domains", "web3 domains"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/domain-hacks-explained/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/web3/
 ---
 
 سواء كنت تطلق منصة تعليمية جديدة، أو شركة تقنية، أو تبحث عن اسم نطاق قصير ومميز، فإن اختيار الامتداد الصحيح ([TLD](/ar/glossary/tld/)) هو الخطوة الأولى نحو النجاح الرقمي. في هذا المقال، سنلقي نظرة متعمقة على **نطاق .ac**، ونستكشف أصوله، واستخداماته المتعددة، ولماذا قد يكون الخيار الأمثل لمشروعك القادم.

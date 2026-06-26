@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: ".ai 与 .io 哪个更适合您的创业公司？从起源、谷歌 SEO 处理方式、定价、品牌信号到 .io 恰戈斯主权问题，附清晰决策指南与常见问题解答。"
 keywords: ["ai vs io tld", "io vs ai domain", "ai or io domain", "io vs ai domain extension", "ai vs io domain extension", ".ai vs .io", "ai or io tld", "ai vs io domain", "io or ai domain", ".ai vs .io domain", "ai domain vs io domain", "best domain for ai startup", "best domain for tech startup", "ai tld", "io tld", "domain extension for startup", "ccTLD for tech", "gccTLD seo", "io domain chagos", "io domain future", "ai domain pricing", "io domain pricing", "domain branding", "choosing a domain extension", "tokenized domain"]
+relatedArticles:
+  - /zh/blog/why-are-io-domains-expensive/
+  - /zh/blog/how-tld-affects-domain-value/
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 您已经想好了品牌名称，现在卡在最后两个字符上：究竟该选 `yourbrand.ai` 还是 `yourbrand.io`？两者都简短，都散发着"科技感"，也都早已超越各自小岛屿的地理局限，成为创业公司的心头好。但它们传递着不同的信号，价格不同，长期风险也各有差异。

@@ -16,6 +16,24 @@ faqs:
     answer: '.us 命名空间由美国商务部通过 NTIA 监督。当前的注册局运营商是 Registry Services, LLC，一家 GoDaddy Registry 公司，约在 2020 年从 Neustar 手中接管。IANA 将 Registry Services, LLC 列为管理者。'
   - question: '什么是 .us 的 Nexus 关联要求？'
     answer: 'Nexus 关联要求是将 .us 限制于与美国有真实联系的各方的资格规则。它涵盖美国公民和居民、在美国组建的实体，以及在美国维持真实存在（如常规经营或活动）的外国组织。'
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/domain-hacks-explained/
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/registry/
+  - /zh/glossary/dns/
 ---
 
 **.us** 域名是**美国**的官方国家代码顶级域名（ccTLD）——也是有史以来最早授权的 ccTLD 之一。像 [.co](/zh/tld/co/) 这样的扩展名被营销为无国界的 ".com" 替代品，而 .us 刻意反其道而行之：它是一个与美国身份紧密相连、受美国联邦政策管辖、仅保留给拥有真实美国存在的注册者的命名空间。对于一家想在网址中宣示"我们是美国的"的企业、品牌或组织而言，.us 是最直白的方式。

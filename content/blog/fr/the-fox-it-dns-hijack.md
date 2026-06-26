@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "En septembre 2017, des attaquants se sont connectés au bureau d'enregistrement tiers de la société de sécurité néerlandaise Fox-IT, ont modifié ses DNS, obtenu frauduleusement un certificat TLS et ont effectué une attaque man-in-the-middle pendant 10 heures sur le trafic client — jusqu'à ce que Fox-IT le détecte et publie l'un des post-mortems les plus transparents du secteur."
 keywords: ['détournement dns fox-it', 'man in the middle fox-it', 'incident fox-it 2017', 'détournement dns', 'compromission compte registrar', 'certificat ssl frauduleux', 'attaque man-in-the-middle', 'sécurité registrar de domaine', 'authentification deux facteurs dns', 'dnssec', 'verrouillage registre', 'sécurité des domaines', 'ncc group fox-it']
+relatedArticles:
+  - /fr/blog/the-dnspionage-campaign/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-lenovo-com-dns-hijack/
+  - /fr/blog/the-badgerdao-frontend-attack/
+  - /fr/blog/the-myetherwallet-bgp-dns-attack/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
 ---
 
 Le propre d'une attaque man-in-the-middle, c'est que pendant qu'elle se déroule, tout semble normal.

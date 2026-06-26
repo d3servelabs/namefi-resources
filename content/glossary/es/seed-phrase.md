@@ -9,6 +9,24 @@ keywords: ['frase semilla', 'frase de recuperación', 'frase mnemónica', 'copia
 level: 1
 sources:
   - https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
+relatedArticles:
+  - /es/blog/onchain-domain-custody-and-recovery/
+  - /es/blog/recovering-a-tokenized-domain-after-wallet-loss/
+  - /es/blog/do-multisig-wallets-actually-improve-security/
+  - /es/blog/selling-domains-as-nfts/
+  - /es/blog/the-badgerdao-frontend-attack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/private-key/
+  - /es/glossary/web3/
+  - /es/glossary/wallet/
+  - /es/glossary/tokenized-domain/
+  - /es/glossary/tokenize/
 ---
 
 Una **frase semilla** — también llamada **frase de recuperación** o **frase mnemónica** — es una lista legible por humanos de 12 o 24 palabras que codifica la clave privada maestra de una [billetera](/es/glossary/wallet/). El formato está estandarizado por [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) y es utilizado por la mayoría de las billeteras modernas (MetaMask, Ledger, Trezor, Rabby, Coinbase Wallet, etc.). Con la frase semilla, puedes restaurar la billetera — y cualquier activo en ella, incluidos los [dominios tokenizados](/es/blog/what-are-tokenized-domains/) — en cualquier dispositivo compatible. Sin ella, perder el acceso al dispositivo generalmente significa perder los fondos de forma permanente, porque no hay una autoridad central que emita un "restablecimiento de contraseña". Buenas prácticas: escribe la frase semilla en papel o en un respaldo metálico, guarda al menos dos copias en ubicaciones físicas separadas y **nunca** la escribas en ningún ordenador, documento en la nube, gestor de contraseñas conectado a la nube, chat o asistente de IA. Consulta [Recuperar un dominio tokenizado tras la pérdida de la billetera](/es/blog/recovering-a-tokenized-domain-after-wallet-loss/) para la guía operativa completa.

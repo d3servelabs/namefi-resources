@@ -12,6 +12,24 @@ format: comparison
 description: "Brandable erfundene Namen vs. exakt passende Keyword-Domains: Wer kauft was, was lässt sich zuverlässiger weiterverkaufen und der Markenrechtsaspekt, den jeder Domain-Flipper kennen sollte."
 ogImage: ../../assets/brandable-vs-keyword-domains-og.jpg
 keywords: ['Brandable-Domains', 'Keyword-Domains', 'Exact-Match-Domains', 'Brandable- vs. Keyword-Domains', 'erfundene Domainnamen', 'generische Domainnamen', 'Domain-Investing', 'Domain-Flipping', 'welche Domains verkaufen sich besser', 'Type-in-Traffic', 'Domain-Markenrecht', 'beschreibende Domainnamen', 'Wiederverkaufswert von Domains', 'Startup-Domainnamen', 'Domainnamen-Strategie']
+relatedArticles:
+  - /de/blog/domain-flipping/
+  - /de/blog/what-makes-a-domain-valuable/
+  - /de/blog/hand-registering-domains-to-flip/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+  - /de/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/best-tlds-by-industry/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Zwei Domains landen in derselben Woche in deinem Posteingang. Die eine ist im Stil von `Stripe`: ein kurzes, erfundenes Wort, das nichts bedeutet, bis ein Unternehmen ihm Bedeutung einhaucht. Die andere ist `CarInsurance`: eine schlichte Beschreibung dessen, was der Käufer genau verkauft. Mit beiden lässt sich Geld verdienen. Sie tun es auf völlig unterschiedliche Weise, verkaufen sich an völlig unterschiedliche Käufer und tragen völlig unterschiedliche Risiken. Die eine zu kaufen, wenn du eigentlich die andere hättest kaufen sollen, ist eine der häufigsten Arten, wie Flipper ihr Verlängerungsbudget verschwenden.

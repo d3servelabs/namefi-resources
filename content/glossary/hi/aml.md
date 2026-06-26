@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.fincen.gov/resources/statutes-regulations/guidance
   - https://www.investopedia.com/terms/a/aml.asp
+relatedArticles:
+  - /hi/blog/from-mona-co-to-crypto-com/
+  - /hi/blog/what-are-stablecoins/
+  - /hi/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /hi/blog/choosing-a-domain-tokenization-platform/
+  - /hi/blog/the-manifesto-of-digital-trust/
+relatedTopics:
+  - /hi/topics/web3-foundations/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/kyc/
+  - /hi/glossary/stablecoin/
+  - /hi/glossary/icann/
+  - /hi/glossary/smart-contract/
+  - /hi/glossary/web3/
 ---
 
 **AML** (*Anti-Money-Laundering*) वह निरंतर लेनदेन स्क्रीनिंग और रिपोर्टिंग है जिसका उपयोग विनियमित वित्तीय और क्रिप्टो सेवाएँ अवैध धन का पता लगाने और उसे रोकने के लिए करती हैं — प्रतिबंध सूचियों के विरुद्ध गतिविधि की निगरानी करना और असामान्य पैटर्न की रिपोर्ट अमेरिका में FinCEN जैसी अधिकारियों को करना। जहाँ [KYC](/hi/glossary/kyc/) ऑनबोर्डिंग के समय यह सत्यापित करता है कि उपयोगकर्ता कौन है, वहीं AML इसके बाद उनकी गतिविधियों पर नज़र रखता है। क्रिप्टो में, विनियमित [स्टेबलकॉइन](/hi/glossary/stablecoin/) जारीकर्ता और कस्टोडियल सेवाएँ उन [कस्टोडियल-स्वामित्व](/hi/glossary/custodial-ownership/) खातों को फ्रीज़ या ब्लैकलिस्ट कर सकती हैं जो इन अनुपालन जाँचों में विफल हों, जबकि गैर-कस्टोडियल प्रोटोकॉल में आमतौर पर उन्हें लागू करने में सक्षम कोई पक्ष नहीं होता।

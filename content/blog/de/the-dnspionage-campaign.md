@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Ende 2018 deckte Cisco Talos DNSpionage auf – eine Kampagne, die später mit iranischen Interessen in Verbindung gebracht wurde. Dabei wurden DNS-Einträge von Regierungen manipuliert, E-Mail- und VPN-Verkehr auf Angreifer-Server umgeleitet und gültige TLS-Zertifikate ausgestellt, um unsichtbar zu bleiben. Die Kampagne löste die erste Notfalldirektive dieser Art der US-Regierung aus.'
 keywords: ['dnspionage', 'dns-hijacking', 'dns-umleitung', 'cisco talos', 'cisa notfalldirektive 19-01', 'sea turtle dns', 'iran dns-hijacking', 'fireeye dns-hijacking', 'lets encrypt zertifikatsmissbrauch', 'dns-sicherheit', 'domain-sicherheit', 'staatliche cyberspionage', 'dns-infrastruktur-manipulation verhindern']
+relatedArticles:
+  - /de/blog/the-sea-turtle-dns-espionage/
+  - /de/blog/the-fox-it-dns-hijack/
+  - /de/blog/the-godaddy-multi-year-breach/
+  - /de/blog/the-myetherwallet-bgp-dns-attack/
+  - /de/blog/the-badgerdao-frontend-attack/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/dns/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/registry/
 ---
 
 Bei den meisten Domain-Katastrophen geht es darum, wer einen Namen *besitzt*. Bei dieser ging es darum, wer ihn *kontrolliert* – und für einige Monate Ende 2018 lautete die Antwort für Dutzende von Regierungsdomains im Nahen Osten: nicht die Regierungen selbst.

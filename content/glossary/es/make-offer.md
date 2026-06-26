@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.sedo.com/
   - https://www.namebio.com/
+relatedArticles:
+  - /es/blog/domain-pricing-psychology-buy-now-vs-make-offer/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/working-with-domain-brokers/
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/reserve-price/
+  - /es/glossary/domain-broker/
+  - /es/glossary/end-user/
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
 ---
 
 **Hacer una oferta** es un formato de listado de dominio que invita a los compradores potenciales a enviar una puja, que el vendedor puede aceptar, contrarrestar o rechazar. A diferencia de un precio fijo de [compra inmediata](/es/glossary/buy-it-now/), se adapta a nombres en los que el vendedor no está seguro del número óptimo o espera que aparezca un [usuario final](/es/glossary/end-user/) dispuesto a pagar por encima del mínimo del inversor. Los vendedores se protegen con un [precio de reserva](/es/glossary/reserve-price/) —un número mínimo privado por debajo del cual no negociarán— y a menudo canalizan la negociación a través de un [corredor de dominios](/es/glossary/domain-broker/) que interpreta la intención del comprador y ancla la conversación. La desventaja es la fricción y el tiempo: cada venta se convierte en una negociación.

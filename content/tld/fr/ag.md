@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .ag : un choix stratégique pour les sociétés (AG), le marché de l'argent et l'agriculture. Enregistrez votre domaine .ag sur Namefi."
 keywords: [".ag domains", ".ag TLD", "top-level domain", "what is .ag", "why choose .ag", "what is the .ag domain", "why choose the .ag domain", "domaine ag", "achat nom de domaine ag", "investissement domaine", "domaine blockchain", "tokenized domain", "domaine agriculture", "Aktiengesellschaft domaine", "domaine argent métal", "nom de domaine suisse allemagne"]
+relatedArticles:
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/ai-vs-io-domain/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
 ---
 
 Le choix d'une extension de domaine ([TLD](/fr/glossary/tld/)) est une étape cruciale pour l'identité numérique d'une entreprise ou d'un projet. Si le `.com` reste le standard historique, de nombreuses extensions offrent des opportunités de branding uniques et ciblées. Aujourd'hui, nous nous penchons sur le **.ag**, une extension polyvalente qui séduit aussi bien les grandes entreprises germanophones que les investisseurs en métaux précieux et les startups de l'AgTech.

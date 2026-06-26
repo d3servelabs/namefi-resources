@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Erfahren Sie alles über die .adac Top-Level-Domain: Bedeutung, Vorteile für die Markenidentität und ihre Rolle in der digitalen Welt der Mobilität.'
 keywords: ['.adac domains', '.adac TLD', 'top-level domain', 'was ist .adac', 'warum .adac wählen', 'was ist die .adac domain', 'warum die .adac domain wählen', 'Domain Investitionen', 'Blockchain Domains', 'tokenisierte Domains', 'ADAC', 'Marken TLD', 'Auto Domains', 'Web3 Domains', 'Domain Registrierung']
+relatedArticles:
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/premium-web3-tlds/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 ## **Was ist .adac?**

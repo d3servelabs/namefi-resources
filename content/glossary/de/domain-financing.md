@@ -9,6 +9,24 @@ keywords: ['Domain-Finanzierung', 'Ratenzahlung', 'Zahlungsplan', 'Domain-Erwerb
 level: 1
 sources:
   - https://www.namebio.com/
+relatedArticles:
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/how-to-sell-domains-for-profit/
+  - /de/blog/marketing-your-domains-for-sale/
+  - /de/blog/how-to-value-a-domain-name/
+  - /de/blog/working-with-domain-brokers/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/lease-to-own/
+  - /de/glossary/rent-to-own/
+  - /de/glossary/domain-broker/
+  - /de/glossary/icann/
+  - /de/glossary/escrow/
 ---
 
 **Domain-Finanzierung** (oder Ratenkauf) ermöglicht es einem Käufer, die Kosten einer Domain auf mehrere Zahlungen zu verteilen, anstatt den vollen Betrag beim Abschluss zu zahlen. Verkäufer profitieren davon, Käufer zu erreichen, die den Einmalbetrag nicht aufbringen könnten, was den Pool potenzieller Erwerber für Premium-Namen erweitert; Käufer profitieren davon, den Cashflow zu schonen und gleichzeitig sofort einen wertvollen Vermögenswert zu sichern. Die Strukturen reichen von einfachen zweiteiligen Aufteilungen bis zu mehrjährigen Plänen, die [Lease-to-Own](/de/glossary/lease-to-own/)-Vereinbarungen ähneln, und die meisten hochwertigen Deals laufen über einen [Domain-Broker](/de/glossary/domain-broker/), der die Konditionen aushandelt und Zahlungen über [Treuhandkonten](/de/glossary/escrow/) abwickelt, um beide Seiten zu schützen. Intermediäre wie [Rent-to-Own](/de/glossary/rent-to-own/)-Plattformen und Afternic's Dan.com haben standardisierte Ratenvorlagen popularisiert.

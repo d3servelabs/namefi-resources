@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: Ein verständlicher Leitfaden zu Treuhand und Domain-Treuhand — was ein Treuhandkonto ist, wie Treuhand Schritt für Schritt bei einem Domain-Verkauf funktioniert, warum es wichtig ist, um Betrug zu vermeiden, traditionelle Treuhanddienste im Vergleich zum modernen tokenisierten Ansatz und wie Smart Contracts die Treuhand durch atomare On-Chain-Abwicklung ersetzen können.
 keywords: ['Domain-Treuhand', 'was ist Treuhand', 'Treuhandkonto', 'Treuhand Bedeutung', 'wie funktioniert Treuhand', 'Domain-Treuhanddienst', 'escrow.com Alternative', 'Domain sicher kaufen', 'Domain sicher verkaufen', 'Auth-Code', 'EPP-Code', 'Registrar-Transfer', 'Treuhandgebühren', 'sichere Domain-Transaktion', 'Domain-Verkaufsbetrug', 'tokenisierte Domain-Treuhand', 'Smart-Contract-Treuhand', 'atomare Abwicklung', 'On-Chain-Domain-Verkauf', 'wie man Domain-Betrug vermeidet']
+relatedArticles:
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/avoiding-domain-sale-scams/
+  - /de/blog/how-tokenized-marketplaces-replace-escrow/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /de/topics/domain-basics/
+  - /de/topics/domain-tokenization/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
+  - /de/glossary/tld/
 ---
 
 Wenn Sie schon einmal etwas Wertvolles zwischen Fremden gekauft oder verkauft haben — ein Auto, ein Haus, eine `.com`-Domain im fünfstelligen Bereich — kennen Sie das Problem: Der Käufer möchte nicht zahlen, bevor er das Gut erhalten hat, und der Verkäufer möchte das Gut nicht übergeben, bevor er bezahlt wurde. Einer muss den ersten Schritt machen, und wer zuerst handelt, muss dem anderen vertrauen.

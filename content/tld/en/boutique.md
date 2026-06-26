@@ -16,6 +16,24 @@ faqs:
     answer: 'Small specialty retailers, fashion and lifestyle labels, designers, and curated online shops that want a descriptive, exact-match name. It also suits agencies, studios, and consultancies that present themselves as small, hand-picked operations.'
   - question: 'Is .boutique good for an online store?'
     answer: 'It can be, for a small curated catalog where the word "boutique" reinforces the brand. For a large general marketplace, broader suffixes like .shop or .store usually read better, since "boutique" implies a narrow, selective range of products.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.boutique domain** is a descriptive new [generic top-level domain](/en/glossary/gtld/) (gTLD) aimed at small, curated brands: independent fashion labels, lifestyle shops, design studios, and any business that wants its web address to signal taste, selectivity, and a hand-picked range. Where a generic suffix says nothing, `.boutique` carries built-in meaning, turning the address itself into part of the brand story.

@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: डोमेन बिक्री के लिए उपयोग की जाने वाली विभिन्न प्रकार की नीलामियाँ क्या हैं?
 keywords: ["नीलामी","डच नीलामी","इंग्लिश नीलामी","डायनामिक नीलामी","मूल्य निर्धारण","डोमेन बिक्री"]
+relatedArticles:
+  - /hi/blog/how-to-win-domain-auctions/
+  - /hi/blog/domain-terminology-guide/
+  - /hi/blog/how-to-find-domains-to-flip/
+  - /hi/blog/ens-vs-dns-domain-flipping/
+  - /hi/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/reserve-price/
+  - /hi/glossary/tld/
+  - /hi/glossary/registrar/
+  - /hi/glossary/registry/
+  - /hi/glossary/icann/
 ---
 
 

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف كل شيء عن نطاق .space. تعرف على استخداماته للمبدعين، الشركات الناشئة، ومشاريع الويب 3. تعرف على مزاياه وسجل نطاقك اليوم عبر Namefi."
 keywords: [".space domains", "ما هو نطاق .space", "لماذا تختار .space", "نطاقات المستوى الأعلى", "شراء نطاق space", "استثمار النطاقات", "نطاقات البلوكتشين", "نطاقات الويب 3", "Web3 domains", "tokenized domain", "creative domains", "نطاقات إبداعية", "tech startup domains", "Namefi", "تسجيل النطاقات"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .space؟**

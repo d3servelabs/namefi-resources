@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '一家宠物创业公司于 2011 年以"Mr. Chewy"的名义在 MrChewy.com 起步，后来去掉"Mr."，以 Chewy 的名义入驻完全匹配域名 Chewy.com，而正是这次单词域名升级，悄然成为 PetSmart 以 33.5 亿美元收购该品牌的重要因素之一。'
 keywords: ['mrchewy.com', 'chewy.com', 'chewy域名', 'mr chewy', '域名升级', 'ryan cohen', 'michael day', 'frank schilling', '精确匹配域名', '创业公司命名', '品牌命名', '高价域名', '域名策略', '宠物电商']
+relatedArticles:
+  - /zh/blog/from-urbancompass-com-to-compass-com/
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+  - /zh/blog/from-bufferapp-com-to-buffer-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
 ---
 
 在 Chewy 成为宠物电商的客服传奇之前——在那些手写卡片、慰问花束和 33.5 亿美元退出之前——它曾有一个更可爱、更保守的名字：**Mr. Chewy**，网址是 **MrChewy.com**。

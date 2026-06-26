@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Discover the purpose behind the .allstate TLD. Learn about Brand TLDs, how they enhance security and trust, and how you can secure your own powerful domain strategy with Namefi."
 keywords: ['.allstate domains', '.allstate TLD', 'top-level domain', 'what is .allstate', 'why choose .allstate', 'what is the .allstate domain', 'why choose the .allstate domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'brand TLD', 'insurance domains', 'corporate domain strategy', 'Web3 domains', 'Namefi']
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .allstate?**

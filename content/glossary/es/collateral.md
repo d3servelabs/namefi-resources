@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es una garantía y cómo pueden los dominios servir como garantía en DeFi?
 keywords: ["garantía","seguridad","préstamo","empréstito","garantía de dominio","DeFi"]
+relatedArticles:
+  - /es/blog/tokenized-domain-use-cases-2026/
+  - /es/blog/what-are-xstocks/
+  - /es/blog/why-tokenize-domains/
+  - /es/blog/what-are-stablecoins/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/web3-foundations/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/tokenized-domain/
+  - /es/glossary/web3/
+  - /es/glossary/lending-protocol/
+  - /es/glossary/tokenize/
+  - /es/glossary/defi/
 ---
 
 

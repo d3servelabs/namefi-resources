@@ -12,6 +12,24 @@ format: guide
 description: "रजिस्ट्रेशन फ़ीस के लायक अब भी उपलब्ध डोमेन कैसे ढूँढें: वर्डलिस्ट, TLD परम्यूटेशन, ब्रांडेबल पैटर्न, और वे फ़िल्टर जो आवेगी खरीदारी को मात देते हैं।"
 ogImage: ../../assets/hand-registering-domains-to-flip-og.jpg
 keywords: ['हैंड रजिस्टरिंग डोमेन', 'हैंड रजिस्टर्ड डोमेन', 'फ़्लिप करने योग्य उपलब्ध डोमेन', 'उपलब्ध डोमेन ढूँढना', 'ब्रांडेबल डोमेन नाम', 'डोमेन वर्डलिस्ट', 'बेचने के लिए डोमेन रजिस्टर करना', 'फ़्लिप करने के लिए सस्ते डोमेन', 'रजिस्टर करने के लिए डोमेन कैसे ढूँढें', 'बेचने के लिए डोमेन नाम के आइडिया', 'शुरुआती लोगों के लिए डोमेन फ़्लिपिंग', 'TLD परम्यूटेशन', 'उपलब्ध .com डोमेन', 'सट्टेबाज़ डोमेन रजिस्ट्रेशन', 'डोमेनिंग हैंड रेग']
+relatedArticles:
+  - /hi/blog/domain-flipping/
+  - /hi/blog/when-to-drop-a-domain/
+  - /hi/blog/how-to-find-domains-to-flip/
+  - /hi/blog/domain-renewal-costs-and-sell-through-rate/
+  - /hi/blog/domain-portfolio-management/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/choosing-a-tld/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/tld/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 हैंड-रजिस्टरिंग डोमेन फ़्लिपिंग में घुसने का सबसे सस्ता रास्ता है — और इसमें पैसा बर्बाद करने का सबसे आसान भी। आप किसी रजिस्ट्रार में एक नाम टाइप करते हैं, वह उपलब्ध दिखता है, आप रजिस्ट्रेशन फ़ीस चुका देते हैं, और अब आपके पास एक बिल्कुल नया डोमेन है जिसे आज तक किसी ने नहीं चाहा। यही आखिरी बात जाल है। 2023 के अंत तक [35.98 करोड़ डोमेन नाम](https://en.wikipedia.org/wiki/Domain_name#:~:text=359.8%20million%20domain%20names%20had%20been%20registered) पहले से ही रजिस्टर हो चुके थे, और *अनरजिस्टर्ड* स्ट्रिंग्स का ब्रह्मांड व्यावहारिक रूप से अनंत है। कोई नाम उपलब्ध होने से आपको लगभग कुछ भी पता नहीं चलता कि वह रखने लायक है या नहीं। आम तौर पर इसका उल्टा ही मतलब होता है।

@@ -8,6 +8,24 @@ draft: false
 description: 'Un vistazo a qué dominios de nivel superior de código de país dominan la mayor cuota de registros a nivel mundial, por qué los líderes difieren de lo que la mayoría espera y qué nos dicen las cifras de volumen sobre cómo se usa realmente internet.'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['cuota de mercado de cctld', 'dominios de código de país', '.cn', '.de', '.uk', '.tk', '.io', 'estadísticas de dominios', 'datos de registro', 'namefi']
+relatedArticles:
+  - /es/blog/how-tld-affects-domain-value/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/best-tlds-by-industry/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registrar/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 Cuando la mayoría de la gente se imagina internet, se imagina el `.com`. Y en números brutos, `.com` sigue siendo el [dominio de nivel superior](/es/glossary/tld/) más grande del planeta, con aproximadamente 160 millones de nombres bajo gestión. Pero el `.com` es un [gTLD](/es/glossary/gtld/): un dominio de nivel superior *genérico*. Al cambiar el enfoque hacia los **TLDs de código de país (ccTLDs)** —los sufijos de dos letras asignados a naciones y territorios bajo la norma [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)—, el panorama se vuelve mucho más interesante y mucho menos predecible.

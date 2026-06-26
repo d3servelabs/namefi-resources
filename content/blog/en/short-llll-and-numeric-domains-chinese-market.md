@@ -12,6 +12,24 @@ format: analysis
 description: "Why Chinese buyers price short, four-letter, and numeric .com domains as a distinct asset class — pinyin, no-vowel premiums, and lucky 8 vs unlucky 4."
 ogImage: ../../assets/short-llll-and-numeric-domains-chinese-market-og.jpg
 keywords: ['chinese premium domains', 'numeric domains', 'LLLL.com', 'four letter domains', 'chip domains', 'short domain names', 'lucky number 8 domains', 'unlucky number 4', 'pinyin domains', 'NNNN domains', 'chinese domain market', 'numeric domain value', 'no vowel domains', 'domain flipping china', 'short com domains']
+relatedArticles:
+  - /en/blog/what-makes-a-domain-valuable/
+  - /en/blog/how-tld-affects-domain-value/
+  - /en/blog/domain-flipping/
+  - /en/blog/how-to-read-comparable-domain-sales/
+  - /en/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 To a Western flipper, `xqjz.com` looks like keyboard noise and `5808.com` looks like a phone number. To a Chinese buyer, the first might be a clean pinyin-friendly four-letter brand and the second a string carrying "prosper" twice over. The disconnect is the whole point. A category of domains that reads as worthless to one market is priced as an asset class by another, and the flippers who learned to read that second market caught one of the biggest repricing events the [aftermarket](/en/glossary/aftermarket/) has ever seen.

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Découvrez le TLD .info : une extension universelle pour partager l''information. Explorez ses avantages, son histoire et comment l''enregistrer avec Namefi.'
 keywords: ['.info domains', '.info TLD', 'top-level domain', 'what is .info', 'why choose .info', 'what is the .info domain', 'why choose the .info domain', 'investir dans les domaines', 'blockchain domains', 'tokenized domain', 'acheter domaine .info', 'signification .info', 'domaine web3', 'enregistrement nom de domaine', 'identité numérique']
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-law-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Dans le vaste univers des noms de domaine, peu d'extensions sont aussi universellement reconnues et comprises que le **.info**. Que vous soyez un développeur lançant une base de connaissances, une entreprise souhaitant éduquer ses clients, ou un investisseur en domaines explorant des actifs numériques, le .info reste un choix stratégique majeur.

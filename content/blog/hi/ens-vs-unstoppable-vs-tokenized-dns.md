@@ -12,6 +12,24 @@ format: comparison
 description: "ENS बनाम Unstoppable Domains बनाम टोकनाइज़्ड ICANN DNS की तुलना — ब्राउज़र में नाम खुलता है या नहीं, रिन्यूअल देना पड़ता है या नहीं, और असल में नाम को नियंत्रित कौन करता है।"
 ogImage: ../../assets/ens-vs-unstoppable-vs-tokenized-dns-og.jpg
 keywords: ['ENS बनाम Unstoppable Domains', 'ENS बनाम टोकनाइज़्ड डोमेन', 'Unstoppable Domains बनाम ENS', 'web3 डोमेन तुलना', 'टोकनाइज़्ड DNS डोमेन', 'ENS डोमेन फ्लिपिंग', '.eth डोमेन', '.crypto डोमेन', 'क्या web3 डोमेन ब्राउज़र में खुलते हैं', 'ENS रिन्यूअल फीस', 'Unstoppable Domains बिना रिन्यूअल', 'ICANN बनाम web3 डोमेन', 'web3 डोमेन को कौन नियंत्रित करता है', 'टोकनाइज़्ड डोमेन बनाम web3 डोमेन', 'NFT डोमेन की तुलना']
+relatedArticles:
+  - /hi/blog/onchain-domain-flipping/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/ens-vs-dns-domain-flipping/
+  - /hi/blog/onchain-domain-marketplaces-compared/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /hi/topics/choosing-a-tld/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 अगर आप ऑन-चेन नाम फ्लिप कर रहे हैं, तो पहला फैसला यही है कि आप किस तरह का "ऑन-चेन नाम" ट्रेड कर रहे हैं। जिन तीन श्रेणियों को ज़्यादातर लोग एक साथ मिला देते हैं, वे एक जैसी एसेट नहीं हैं, और इनके फ़र्क ही तय करते हैं कि नाम ब्राउज़र में खुलेगा या नहीं, अगले साल आप पर कोई रिन्यूअल बकाया रहेगा या नहीं, और असल में नाम को नियंत्रित कौन करता है। यह गाइड इन तीनों की आमने-सामने तुलना करती है: [ENS (एथेरियम नेम सर्विस)](/hi/glossary/ens/) (`.eth`), [Unstoppable Domains](https://unstoppabledomains.com) (`.crypto`, `.x`, `.nft`), और टोकनाइज़्ड असली ICANN [DNS](/hi/glossary/dns/) डोमेन (वे `.com`/`.io`/`.xyz` नाम जिन्हें आप [Namefi](https://namefi.io) पर [टोकनाइज़](/hi/glossary/tokenize/) कर सकते हैं)।

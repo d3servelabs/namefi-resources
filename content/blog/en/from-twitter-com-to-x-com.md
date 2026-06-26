@@ -11,6 +11,24 @@ seriesOrder: 19
 format: case-study
 description: 'How Elon Musk built X.com in 1999, lost it when PayPal took his old name, bought it back in 2017 for sentimental value, and finally moved a $44B social network onto it — making Twitter.com redirect to X.com.'
 keywords: ['twitter.com', 'x.com', 'twitter rebrand x', 'elon musk x.com', 'x.com history', 'paypal x.com domain', 'twitter to x name change', 'domain redirect', 'domain upgrade', 'single letter domain', 'everything app', 'brand naming', 'premium domain']
+relatedArticles:
+  - /en/blog/from-mona-co-to-crypto-com/
+  - /en/blog/from-ubercab-com-to-uber-com/
+  - /en/blog/from-ctrip-com-to-trip-com/
+  - /en/blog/from-snapchat-com-to-snap-com/
+  - /en/blog/from-bufferapp-com-to-buffer-com/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/name-change-game-change/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/dns/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 Most domain-upgrade stories run in a straight line: a company starts on a descriptive name, grows up, and buys the clean exact-match. **Twitter.com to X.com** is stranger than that. It is a round trip. The destination domain — **X.com** — was the *first* domain in the story, registered by Elon Musk in 1999, lost to PayPal a year later, bought back two decades after that for nothing but nostalgia, and finally bolted onto a global social network in 2023.

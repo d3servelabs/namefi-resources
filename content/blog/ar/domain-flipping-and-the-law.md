@@ -12,6 +12,24 @@ format: explainer
 description: "المشهد القانوني اللي أي تاجر نطاقات محتاج يعرفه: أساسيات العلامات التجارية، وUDRP وACPA، والضمان وقت إقفال الصفقة، والدفاع ضد الاختطاف، وإزاي تتفادى عمليات النصب في البيع."
 ogImage: ../../assets/domain-flipping-and-the-law-og.jpg
 keywords: ['تجارة النطاقات والقانون', 'هل تجارة النطاقات قانونية', 'cybersquatting', 'UDRP', 'ACPA', 'قانون العلامات التجارية للنطاقات', 'نزاع النطاقات', 'اختطاف النطاق العكسي', 'عمليات نصب في تجارة النطاقات', 'ضمان النطاقات', 'اختطاف النطاق', 'تسجيل النطاق بنية سيئة', 'قانون الدومينينج', 'منازعات أسماء النطاقات', 'إزاي تتاجر في النطاقات بشكل قانوني']
+relatedArticles:
+  - /ar/blog/domain-flipping/
+  - /ar/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /ar/blog/avoiding-domain-sale-scams/
+  - /ar/blog/how-to-sell-domains-for-profit/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 تجارة النطاقات حاجة قانونية. لكن لما تتاجر في النطاقات الغلط، ده هيكلفك الاسم نفسه، والفلوس اللي دفعتها فيه، وساعات حُكم بخمسة أرقام كمان فوق ده كله. الفرق بين النتيجتين دول مش حظ. ده مجموعة صغيرة من القوانين تقدر تتعلمها في يوم واحد، زائد شوية عادات تشغيلية بتخلي محفظتك نضيفة وصفقاتك ما تتسرقش وهي على الباب.

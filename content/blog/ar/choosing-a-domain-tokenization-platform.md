@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "نظرة صادقة ومقارنة جنباً إلى جنب لمنصات ترميز النطاقات الرئيسية — ما الذي تجيده كل منصة فعلياً، وأين تتقاطع، وأين تختلف، وكيف تختار المنصة التي تناسب الطريقة التي تنوي بها استخدام نطاقاتك."
 keywords: ['منصات ترميز النطاقات', 'بديل Doma', 'بديل D3 Global Inc', 'بديل 3DNS', 'مقارنة ترميز النطاقات', 'Namefi مقابل Doma', 'Namefi مقابل D3 Global Inc', 'Namefi مقابل 3DNS', 'أفضل ترميز للنطاقات', 'مراجعة Namefi', 'مراجعة Doma Protocol', 'مراجعة D3 Global Inc', 'مراجعة 3DNS', 'اختيار ترميز النطاقات', 'مقارنة منصات ترميز النطاقات']
+relatedArticles:
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/onchain-domain-marketplaces-compared/
+  - /ar/blog/tokenized-domain-use-cases-2026/
+  - /ar/blog/tokenize-your-com-to-flip-it/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 إذا كنت تبحث عن منصة لترميز النطاقات (Tokenization) في عام 2026، فمن المحتمل أنك تنظر إلى مجموعة من الأسماء: [Namefi](https://namefi.io)، و[Doma Protocol](https://doma.xyz)، وD3 Global Inc (تُكتب أيضاً [D3.inc](https://d3.inc) أو D3 Inc)، و3DNS، و[Domora](https://domora.com)، و[WebUnited](https://webunited.com)، و[GBM](https://gbm.auction). جميعها تعرض "نطاقات مرمزّة" (tokenized domains) على صفحتها الرئيسية. لكنها لا تقوم جميعها بنفس الشيء.

@@ -18,6 +18,24 @@ faqs:
     answer: 'Charleston Road Registry placed the entire .esq namespace on the HSTS preload list, so browsers force HTTPS on every .esq site. You must install a valid TLS certificate or the site will not load in modern browsers.'
   - question: 'Is .esq better than .law or .attorney for a law firm?'
     answer: '.esq is the shortest and most universally recognized of the legal extensions, but unlike .law it is open to anyone, which slightly dilutes its credentialing value. .law and .attorney are longer; the best choice depends on your name and budget.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-law-firm/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 The **.esq domain** takes its name from "Esq.," the post-nominal abbreviation of "Esquire" that attorneys in the United States place after their names to signal they are admitted to practice law. Operated by Google's domain arm, it is a niche but instantly readable extension built for one audience above all others: lawyers and law firms who want a web address that announces their profession before a visitor reads a single word.

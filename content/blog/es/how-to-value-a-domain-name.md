@@ -12,6 +12,24 @@ format: guide
 description: "Cómo tasar un nombre de dominio: los factores de valor, en qué se equivocan las herramientas de tasación, cómo interpretar las ventas comparables y la brecha entre usuario final y revendedor."
 ogImage: ../../assets/how-to-value-a-domain-name-og.jpg
 keywords: ['cómo tasar un nombre de dominio', 'tasación de dominios', 'cuánto vale mi dominio', 'valoración de dominios', 'calculadora de valor de dominios', 'tasar un dominio', 'ventas comparables de dominios', 'precio de dominios', 'precio usuario final vs revendedor', 'cuánto vale mi nombre de dominio', 'valor de un nombre de dominio', 'herramientas de tasación de dominios', 'ventas de dominios comparables', 'estimación del valor de un dominio']
+relatedArticles:
+  - /es/blog/end-user-vs-reseller-domain-pricing/
+  - /es/blog/domain-appraisal-tools-compared/
+  - /es/blog/how-to-read-comparable-domain-sales/
+  - /es/blog/what-makes-a-domain-valuable/
+  - /es/blog/domain-flipping/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/choosing-a-tld/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/best-tlds-by-industry/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Tarde o temprano, todo el que posee un dominio se hace la misma pregunta: *¿cuánto vale mi dominio?* Es la primera pregunta que se hace un revendedor novato sobre un activo que acaba de comprar, y la última que se hace antes de ponerlo a la venta. Da la sensación de que debería tener una respuesta limpia, de tabla de consulta: escribes el nombre y obtienes una cifra.

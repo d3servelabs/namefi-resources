@@ -16,6 +16,24 @@ faqs:
     answer: 'It suits individual attorneys, solo practitioners, small law firms, and legal marketers who want a descriptive, profession-specific address. It is less suited to brands that want a non-legal identity or a strictly verified credential signal.'
   - question: 'What is the difference between .lawyer and .law?'
     answer: 'Both target legal professionals, but .law (operated by GoDaddy Registry) restricts registration to verified licensed practitioners, while .lawyer is open to anyone. .lawyer is therefore easier to obtain but carries no built-in proof of credentials.'
+relatedArticles:
+  - /en/blog/top-tlds-to-secure-for-your-law-firm/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.lawyer domain** is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the legal profession — individual attorneys, law firms, legal marketers, and anyone who wants a web address that says, plainly, what they do. Unlike the credential-gated `.law` extension, `.lawyer` is an **open gTLD**: anyone can register one on a first-come, first-served basis, with no bar membership or license verification at the point of sale.

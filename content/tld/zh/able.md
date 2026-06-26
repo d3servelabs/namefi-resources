@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入了解 .able 顶级域名（TLD）：一个充满潜力与创意的域名后缀。探索它在品牌塑造、SEO 以及 Web3 域名投资中的独特优势，并了解为何它是创新者的首选。'
 keywords: ['.able domains', '.able TLD', 'top-level domain', 'what is .able', 'why choose .able', 'what is the .able domain', 'why choose the .able domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'creative domains', 'domain hacks', 'buy .able domain', 'Namefi domains']
+relatedArticles:
+  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/brandable-vs-keyword-domains/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
 ---
 
 在数字时代，选择正确的域名就像在繁华的市中心选择最佳的店面位置一样重要。随着互联网的发展，传统的 `.com` 或 `.net` 资源日益枯竭，新兴的顶级域名（New gTLDs）和 [Web3](/zh/glossary/web3/) 域名正在重塑我们定义网络身份的方式。

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Discover the .ad TLD: the country code for Andorra that doubles as the ultimate domain for the advertising industry. Learn why brands and agencies are choosing .ad."
 keywords: [".ad domains", ".ad TLD", ".ad top-level domain", "what is .ad", "why choose .ad", "what is the .ad domain", "why choose the .ad domain", "advertising domains", "marketing domain names", "Andorra country code", "domain hacks", "ad tech domains", "creative branding", "buy .ad domain", "tokenized domains"]
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/why-are-io-domains-expensive/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 ## **What is .ad?**

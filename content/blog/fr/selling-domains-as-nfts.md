@@ -12,6 +12,24 @@ format: guide
 description: "Comment fonctionne la vente d''un domaine en tant que NFT : mécanique de mise en vente, Seaport et OpenSea, ventes privées réservées à un acheteur, royalties, ainsi que les pièges du gas et des arnaques."
 ogImage: ../../assets/selling-domains-as-nfts-og.jpg
 keywords: ['vendre un domaine en NFT', 'domaine NFT', 'vente de domaine tokenisé', 'liquidité on-chain des domaines', 'mettre en vente un domaine NFT sur OpenSea', 'protocole Seaport', 'mise en vente réservée à un acheteur', 'mise en vente NFT privée', 'royalties NFT domaines', 'domaine ERC-721', 'transfert atomique de domaine', 'vendre un domaine tokenisé', 'frais de gas vente NFT', 'arnaques aux domaines NFT', 'domain flipping on-chain']
+relatedArticles:
+  - /fr/blog/onchain-domain-marketplaces-compared/
+  - /fr/blog/onchain-domain-flipping/
+  - /fr/blog/tokenize-your-com-to-flip-it/
+  - /fr/blog/how-tokenization-changes-domain-flipping/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/tokenize-your-com/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
+  - /fr/glossary/tld/
 ---
 
 Une vente de domaine traditionnelle porte en elle un problème de confiance. Le vendeur ne veut pas lancer le transfert avant que l''argent n''arrive ; l''acheteur ne veut pas virer les fonds avant que le nom n''apparaisse dans son compte. Toute l''industrie du [séquestre](/fr/glossary/escrow/) existe pour se tenir entre ces deux réflexes. Vendre un domaine en tant que [NFT](/fr/glossary/nft/) réorganise ce face-à-face. Lorsque la propriété d''un véritable domaine ICANN est aussi un jeton [on-chain](/fr/glossary/on-chain/), le nom devient une chose que vous pouvez mettre en vente, valoriser et remettre à l''intérieur de la même transaction qui déplace l''argent — sans intermédiaire détenant l''actif dans les heures obscures entre le paiement et le transfert.

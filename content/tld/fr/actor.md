@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez le domaine .actor : l'extension idéale pour les acteurs et l'industrie du spectacle. Boostez votre image de marque avec Namefi."
 keywords: [".actor domains", ".actor TLD", "top-level domain", "what is .actor", "why choose .actor", "what is the .actor domain", "why choose the .actor domain", "nom de domaine acteur", "portfolio comédien", "domaine industrie du spectacle", "branding personnel artiste", "investissement domaines", "domaines tokenisés", "Web3 domains", "Namefi"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
+  - /fr/glossary/urs/
+  - /fr/glossary/registry/
 ---
 
 Pour un professionnel des arts du spectacle, se démarquer est essentiel. Dans un monde numérique saturé, votre présence en ligne est souvent votre première audition. C'est ici qu'intervient l'extension de domaine **.actor**. Spécifique, mémorable et professionnel, ce domaine de premier niveau (TLD) offre une opportunité unique de définir votre identité numérique dès la barre d'adresse du navigateur.

@@ -19,6 +19,24 @@ faqs:
     answer: 'L''Afnic vérifie l''éligibilité après l''enregistrement et tout au long de la vie du domaine. Si vous ne résidez plus dans une zone éligible, le nom peut être suspendu puis supprimé. Depuis le Brexit, les résidents britanniques ne peuvent plus enregistrer de nouveaux .fr.'
   - question: 'Le .fr prend-il en charge les noms de domaine internationalisés (IDN) ?'
     answer: 'Oui. Le .fr accepte les caractères accentués propres à la langue française (comme é, è, à, ç) dans le cadre des règles de l''Afnic, ce qui permet d''enregistrer des noms reflétant fidèlement une marque ou une expression française.'
+relatedArticles:
+  - /fr/blog/cctld-market-share-by-registration-volume/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/from-del-icio-us-to-delicious-com/
+  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/from-ctrip-com-to-trip-com/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/name-change-game-change/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/web3/
+  - /fr/glossary/registry/
 ---
 
 L'extension **.fr** est le domaine national de premier niveau (ccTLD) de la France. C'est le symbole numérique le plus immédiat d'une présence française : un visiteur, un client ou un moteur de recherche comprend instantanément qu'un site en .fr s'adresse au public français. Pour une entreprise, une association, un indépendant ou un particulier qui veut s'ancrer sur le marché national, le **domaine .fr** est souvent le choix de confiance par défaut.

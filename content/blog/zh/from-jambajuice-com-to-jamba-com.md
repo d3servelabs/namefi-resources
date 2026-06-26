@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Jamba Juice 花了 29 年向人们解释"Juice"这个词，为什么在 2019 年将品牌名改为简洁的"Jamba"，以及几乎无人注意到的一个关键优势：公司早在 1990 年代就已拥有精确匹配域名 Jamba.com。'
 keywords: ['jambajuice.com', 'jamba.com', 'jamba juice 域名', 'jamba 品牌重塑', '域名升级', 'jamba juice 改名', 'kirk perron', 'focus brands jamba', '精确匹配域名', '创业命名', '品牌命名', '高价值域名', '域名策略', '品类定义域名']
+relatedArticles:
+  - /zh/blog/from-ubercab-com-to-uber-com/
+  - /zh/blog/from-massdrop-com-to-drop-com/
+  - /zh/blog/from-urbancompass-com-to-compass-com/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
+  - /zh/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/name-change-game-change/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 二十九年来，美国最知名的奶昔连锁品牌之一，将它所售卖的产品直接写在了名字里：**Jamba Juice**，官网地址是 **JambaJuice.com**。

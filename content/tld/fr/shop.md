@@ -18,6 +18,24 @@ faqs:
     answer: "Oui. Le mot « shop » est compris mondialement et communique instantanément une intention commerciale, ce qui explique pourquoi des marques comme Netflix et MrBeast gèrent leurs boutiques de produits dérivés dessus. Le large espace de noms, plus récent, facilite également l'obtention de noms courts et correspondant exactement à un terme de vente au détail."
   - question: '.shop prend-il en charge la confidentialité WHOIS et DNSSEC ?'
     answer: "Oui. .shop prend en charge DNSSEC au niveau du registre, et la plupart des bureaux d'enregistrement proposent une confidentialité WHOIS gratuite qui masque les coordonnées personnelles dans les enregistrements publics. La disponibilité de la confidentialité dépend de votre bureau d'enregistrement plutôt que du registre."
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /fr/blog/how-to-sell-a-domain-name-you-own/
+  - /fr/blog/ai-vs-io-domain/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 Le domaine **.shop** est l'une des extensions les plus littérales d'internet : le suffixe est lui-même un appel à l'action. Là où un nom générique laisse les visiteurs dans l'incertitude, un nom se terminant par `.shop` leur indique avant même qu'ils ne cliquent qu'il s'agit d'un endroit pour parcourir et acheter. Cette clarté explique pourquoi les détaillants, les marques en vente directe et les créateurs l'ont adopté comme adresse dédiée à la vente en ligne.

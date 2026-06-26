@@ -8,6 +8,24 @@ draft: false
 description: "دليل عملي مبني على أبحاث حقيقية للمؤسسين اللي بيسموا مشروع أو منتج أو شركة: تأكد من الناحية القانونية، خليه سهل في النطق، اجنر أسماء قوية، اتحقق من التقبل الثقافي، ونفذ البحث الصح قبل ما تلتزم باختيارك."
 ogImage: ../../assets/how-to-name-your-project-og.jpg
 keywords: ['إزاي تسمي الستارت أب بتاعك', 'إزاي تسمي مشروعك', 'إزاي تسمي شركة', 'تسمية منتج', 'أفكار لأسماء براندات', 'اختيار اسم تجاري', 'اختيار اسم نطاق', 'بحث علامة تجارية', 'دومين قابل للتسمية التجارية', 'براندينج ستارت أب', 'اسم براند سهل النطق', 'سهولة المعالجة الإدراكية', 'دليل تسمية البراند', 'اختيار اسم لمشروعك', 'التحقق من توافر الدومين']
+relatedArticles:
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/from-del-icio-us-to-delicious-com/
+  - /ar/blog/what-makes-a-domain-valuable/
+  - /ar/blog/how-to-value-a-domain-name/
+  - /ar/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /ar/topics/domain-basics/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/web3/
 ---
 
 تسمية المشروع هي أول قرار بيتجاهله معظم المؤسسين.

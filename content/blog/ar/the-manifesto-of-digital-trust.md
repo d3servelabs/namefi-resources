@@ -9,6 +9,24 @@ authors: ['namefiteam']
 draft: false
 description: بيان رؤية D3Serve — لماذا يُعدّ تحويل الثقة إلى صيغة رقمية، على غرار ما جرى مع المعلومات من قبل، وعدًا بقفزة نوعية في الإنتاجية والدقة وخفض التكاليف وتحقيق الأتمتة.
 keywords: ['الثقة الرقمية', 'D3Serve', 'بلوك تشين', 'web3', 'العقود الذكية', 'التشفير', 'الإجماع', 'بيان', 'رؤية', 'رقمنة الثقة', 'ثقة المجموعات', 'أتمتة']
+relatedArticles:
+  - /ar/blog/onchain-domain-custody-and-recovery/
+  - /ar/blog/the-sushiswap-miso-insider-attack/
+  - /ar/blog/what-are-tokenized-domains/
+  - /ar/blog/how-tokenization-changes-domain-flipping/
+  - /ar/blog/recovering-a-tokenized-domain-after-wallet-loss/
+relatedTopics:
+  - /ar/topics/domain-tokenization/
+  - /ar/topics/domain-security/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
 ---
 
 في **D3Serve**، نُكرّس جهودنا لبناء *الثقة الرقمية* عبر توظيف تقنية البلوك تشين والتقنيات المتقدمة الأخرى.

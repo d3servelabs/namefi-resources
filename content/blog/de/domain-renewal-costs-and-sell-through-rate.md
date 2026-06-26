@@ -12,6 +12,24 @@ format: analysis
 description: "Die ehrliche Ökonomie des Domainings: die Last der Verlängerungen, die Verkaufsquote als Faustregel und warum ein einziger guter Verkauf viele Jahre an Verlängerungen finanzieren muss."
 ogImage: ../../assets/domain-renewal-costs-and-sell-through-rate-og.jpg
 keywords: ['Domain-Verlängerungskosten', 'Verkaufsquote Domains', 'Domain-Flipping Ökonomie', 'Domain-Haltekosten', 'Domain-Verlängerungsgebühren', 'Domaining-Gewinnrechnung', 'Domain-Portfolio Kosten', 'ist Domain-Flipping profitabel', 'Last der Domain-Verlängerungen', 'Anschaffungskosten Domains', 'Renditen Domain-Investing', 'wie viel kostet eine Domain-Verlängerung', '.com-Verlängerungspreis', 'Domain-Haltekosten']
+relatedArticles:
+  - /de/blog/domain-portfolio-management/
+  - /de/blog/when-to-drop-a-domain/
+  - /de/blog/domain-flipping/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+  - /de/blog/working-with-domain-brokers/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Jede Domain, die du hältst, schickt dir einmal im Jahr eine Rechnung. Diese eine Tatsache ist die Schwerkraft, unter der jeder Domain-Investor lebt, und sie ist genau der Teil, den die Erfolgsgeschichten weglassen. Ein fünfstelliger Verkauf gibt eine großartige Schlagzeile ab. Die zweihundert Namen, die sich nicht verkauft haben und alle zwölf Monate still eine Verlängerungsgebühr verursachen, schaffen es nie in die Geschichte.

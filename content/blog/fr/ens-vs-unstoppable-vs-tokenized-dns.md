@@ -12,6 +12,24 @@ format: comparison
 description: "ENS vs Unstoppable Domains vs DNS ICANN tokenisé, comparés sur la résolvabilité en navigateur, les renouvellements et qui contrôle réellement le nom."
 ogImage: ../../assets/ens-vs-unstoppable-vs-tokenized-dns-og.jpg
 keywords: ['ENS vs Unstoppable Domains', 'ENS vs domaines tokenisés', 'Unstoppable Domains vs ENS', 'comparaison des domaines web3', 'domaines DNS tokenisés', 'flipping de domaines ENS', 'domaines .eth', 'domaines .crypto', 'les domaines web3 se résolvent-ils dans les navigateurs', 'frais de renouvellement ENS', 'Unstoppable Domains sans renouvellement', 'ICANN vs domaines web3', 'qui contrôle un domaine web3', 'domaine tokenisé vs domaine web3', 'comparaison des domaines NFT']
+relatedArticles:
+  - /fr/blog/onchain-domain-flipping/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/ens-vs-dns-domain-flipping/
+  - /fr/blog/onchain-domain-marketplaces-compared/
+  - /fr/blog/tokenize-your-com-to-flip-it/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-investing/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Si vous flippez des noms on-chain, la première décision est de savoir quel type de « nom on-chain » vous échangez réellement. Les trois catégories que la plupart des gens mettent dans le même sac ne sont pas le même actif, et les différences décident si le nom se résout dans un navigateur, si vous devrez payer un renouvellement l''an prochain et qui le contrôle réellement. Ce guide compare les trois face à face : [ENS (Ethereum Name Service)](/fr/glossary/ens/) (`.eth`), [Unstoppable Domains](https://unstoppabledomains.com) (`.crypto`, `.x`, `.nft`) et les vrais domaines [DNS](/fr/glossary/dns/) ICANN tokenisés (les noms `.com`/`.io`/`.xyz` que vous pouvez [tokeniser](/fr/glossary/tokenize/) sur [Namefi](https://namefi.io)).

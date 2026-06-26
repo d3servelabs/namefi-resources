@@ -12,6 +12,24 @@ format: explainer
 description: "El panorama legal que todo revendedor de dominios necesita: nociones básicas de marcas, UDRP y ACPA, depósito en garantía al cierre, defensa frente al secuestro y cómo esquivar las estafas de venta."
 ogImage: ../../assets/domain-flipping-and-the-law-og.jpg
 keywords: ['reventa de dominios legal', '¿es legal la reventa de dominios?', 'cibersquatting', 'UDRP', 'ACPA', 'derecho de marcas en dominios', 'disputa de dominios', 'secuestro inverso de nombres de dominio', 'estafas de reventa de dominios', 'depósito en garantía de dominios', 'secuestro de dominios', 'registro de dominio de mala fe', 'derecho del domaining', 'disputas de nombres de dominio', 'cómo revender dominios legalmente']
+relatedArticles:
+  - /es/blog/domain-flipping/
+  - /es/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /es/blog/avoiding-domain-sale-scams/
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Revender dominios es legal. Revender los dominios equivocados te costará el nombre, el dinero que pagaste por él y, a veces, una condena de cinco cifras por encima de todo eso. La diferencia entre esos dos desenlaces no es cuestión de suerte. Es un pequeño cuerpo de leyes que puedes aprender en una tarde, más un puñado de hábitos operativos que mantienen tu cartera limpia y evitan que te roben en el cierre de tus operaciones.

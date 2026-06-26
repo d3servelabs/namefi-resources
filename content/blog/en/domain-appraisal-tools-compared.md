@@ -12,6 +12,24 @@ format: comparison
 description: "How automated domain appraisers like Estibot and GoDaddy actually work, where they systematically miss, and how to use them as a first filter."
 ogImage: ../../assets/domain-appraisal-tools-compared-og.jpg
 keywords: ['domain appraisal tools', 'estibot vs godaddy', 'domain value calculator', 'automated domain appraisal', 'domain valuation tool', 'how accurate is estibot', 'godaddy domain appraisal', 'what is my domain worth', 'domain appraisal accuracy', 'estibot review', 'domain value estimate', 'machine learning domain valuation', 'domain comps tool', 'how to appraise a domain', 'domain flipping tools']
+relatedArticles:
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/how-to-read-comparable-domain-sales/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+  - /en/blog/domain-flipping/
+  - /en/blog/what-makes-a-domain-valuable/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Paste a domain into an appraisal tool and you get a number in about a second. It looks authoritative — a clean dollar figure, often with a list of [comparable sales](/en/glossary/comparable-sales/) underneath it. New flippers treat that number as the answer. Experienced ones treat it as the first line of a much longer conversation.

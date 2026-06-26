@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '2020 年至 2022 年间，同一威胁行为者组织长期潜伏于 GoDaddy 的基础设施内部——盗取源代码、暴露 120 万 Managed WordPress 客户的数据，并间歇性地将客户网站重定向至恶意站点。本文深入剖析注册商集中化风险，以及这一事件揭示的单点故障问题。'
 keywords: ['godaddy 入侵', 'godaddy 数据泄露', 'managed wordpress 泄露', '注册商安全', '域名安全', '多年持续入侵', 'cpanel 恶意软件', '网站重定向攻击', 'ssl 私钥泄露', 'sftp 密码泄露', 'sec 10-k 网络安全', '注册商集中化风险', '单点故障']
+relatedArticles:
+  - /zh/blog/the-fox-it-dns-hijack/
+  - /zh/blog/the-dnspionage-campaign/
+  - /zh/blog/the-lenovo-com-dns-hijack/
+  - /zh/blog/the-badgerdao-frontend-attack/
+  - /zh/blog/the-icann-spear-phishing-breach/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-basics/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/web3/
+  - /zh/glossary/tld/
 ---
 
 域名[注册商](/zh/glossary/registrar/)是你完全依赖却又最容易忽视的公司。

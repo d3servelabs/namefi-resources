@@ -9,6 +9,24 @@ keywords: ['domain hijacking', 'account compromise', 'domain theft', 'registrar 
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en
+relatedArticles:
+  - /en/blog/how-domain-hijacking-actually-happens/
+  - /en/blog/domain-flipping-and-the-law/
+  - /en/blog/the-perl-com-domain-theft/
+  - /en/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /en/blog/the-panix-com-domain-hijack/
+relatedTopics:
+  - /en/topics/domain-security/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-apocalypse/
+  - /en/series/domain-flipping-skills/
+relatedGlossary:
+  - /en/glossary/domain-theft/
+  - /en/glossary/registrar/
+  - /en/glossary/registry-lock/
+  - /en/glossary/phishing/
+  - /en/glossary/transfer-lock/
 ---
 
 **Domain hijacking** is the unauthorized seizure of a domain name by an attacker who gains control of the owning [registrar](/en/glossary/registrar/) account — typically through [phishing](/en/glossary/phishing/), credential stuffing, or social engineering against registrar support staff. Once inside the account, the attacker can change nameservers to redirect traffic, disable [registry lock](/en/glossary/registry-lock/) protections, or initiate a transfer to lock the legitimate owner out entirely, which is why it often overlaps with outright [domain theft](/en/glossary/domain-theft/). Defenses include enabling a [transfer lock](/en/glossary/transfer-lock/), using hardware-key two-factor authentication, opting into registry-level locking for high-value names, and keeping registrar contact details current so recovery emails reach you.

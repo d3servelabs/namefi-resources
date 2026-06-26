@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "En juillet 2024, une migration de registrar de Google Domains vers Squarespace a transformé une authentification par défaut trop faible en une surface d'attaque massive. Des attaquants ont détourné les domaines de projets crypto et DeFi — Compound Finance, Celer Network, Pendle, Unstoppable Domains — et les ont redirigés vers des sites de phishing vidant les portefeuilles. Voici comment une migration « transparente » a créé des centaines de portes d'entrée non verrouillées, et ce qu'elle enseigne sur la sécurité des registrars et l'authentification multifacteur."
 keywords: ['détournement domaine squarespace', 'migration google domains', 'détournement dns defi', 'détournement compound finance', 'détournement celer network', 'wallet drainer', 'inferno drainer', 'sécurité des domaines', 'migration registrar', 'mfa authentification multifacteur', 'prise de contrôle de compte oauth', 'détournement dns', 'phishing crypto']
+relatedArticles:
+  - /fr/blog/the-curve-finance-dns-hijack/
+  - /fr/blog/the-badgerdao-frontend-attack/
+  - /fr/blog/the-fox-it-dns-hijack/
+  - /fr/blog/the-godaddy-multi-year-breach/
+  - /fr/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
+  - /fr/glossary/tld/
 ---
 
 En juillet 2024, la chose la plus dangereuse sur le site web d'un projet crypto n'était pas un bug de contrat intelligent ni une clé privée divulguée. C'était le registrar qui détenait le domaine.

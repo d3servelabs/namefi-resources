@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Cómo los mercados de dominios tokenizados permiten a compradores y vendedores liquidar atómicamente en cadena (on-chain): sin servicios de depósito en garantía (escrow), sin códigos de autorización, sin bloqueos de registrador de cinco días. Qué reemplaza cada pieza del flujo tradicional y qué riesgos se trasladan a otras capas."
 keywords: ['mercado de dominios blockchain', 'transferencia atómica de dominios', 'mercado de dominios tokenizados', 'reemplazar escrow de dominios', 'venta de dominio sin escrow', 'venta de dominio cripto', 'proceso de venta de dominio tokenizado', 'vender dominio tokenizado', 'comprar dominio tokenizado', 'venta de dominio en cadena', 'liquidación de NFT de dominio', 'mercado de dominios 2026', 'liquidez de dominios tokenizados']
+relatedArticles:
+  - /es/blog/domain-escrow-explained/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+  - /es/blog/tokenize-your-com-to-flip-it/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/selling-domains-as-nfts/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/tokenize-your-com/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 El flujo tradicional para vender un `.com` es más o menos así:

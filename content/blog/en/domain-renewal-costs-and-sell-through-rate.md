@@ -12,6 +12,24 @@ format: analysis
 description: "The honest economics of domaining: renewal drag, sell-through rate as a rule of thumb, and why one good sale has to fund many years of renewals."
 ogImage: ../../assets/domain-renewal-costs-and-sell-through-rate-og.jpg
 keywords: ['domain renewal cost', 'sell-through rate domains', 'domain flipping economics', 'domain carrying cost', 'domain renewal fees', 'domaining profit math', 'domain portfolio cost', 'is domain flipping profitable', 'domain renewal drag', 'cost basis domains', 'domain investing returns', 'how much do domains cost to renew', '.com renewal price', 'domain holding cost']
+relatedArticles:
+  - /en/blog/domain-portfolio-management/
+  - /en/blog/when-to-drop-a-domain/
+  - /en/blog/domain-flipping/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+  - /en/blog/working-with-domain-brokers/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/choosing-a-tld/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/tld/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 Every domain you hold sends you a bill once a year. That single fact is the gravity every domain investor lives under, and it's the part the success stories leave out. A five-figure sale makes a great headline. The two hundred names that didn't sell, quietly drawing a renewal fee apiece every twelve months, never make it into the story.

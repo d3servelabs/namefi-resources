@@ -14,6 +14,24 @@ sources:
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
+relatedArticles:
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/the-myetherwallet-bgp-dns-attack/
+  - /fr/blog/dns-over-https-vs-enterprise-split-horizon-dns/
+  - /fr/blog/the-sea-turtle-dns-espionage/
+  - /fr/blog/the-dnspionage-campaign/
+relatedTopics:
+  - /fr/topics/domain-security/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-apocalypse/
+  - /fr/series/name-change-game-change/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/web3/
 ---
 
 **DNS** (le *Système de noms de domaine*, aussi connu sous le nom de *Système de noms de domaine*) est le système de nommage distribué et hiérarchique d'internet qui traduit les noms de domaine lisibles par l'homme — tels que `example.com` — en [adresses IP](/fr/glossary/ip-address/) que les équipements réseau utilisent pour acheminer les paquets sur internet. Sans le DNS, chaque utilisateur devrait mémoriser les adresses numériques de chaque site qu'il souhaite visiter. Défini dans la [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034) et la [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035) (publiées par l'IETF en 1987 et toujours fondamentales aujourd'hui), le DNS demeure l'un des protocoles essentiels d'internet.

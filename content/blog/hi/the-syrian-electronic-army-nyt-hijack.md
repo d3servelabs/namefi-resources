@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '27 अगस्त 2013 को, सीरियाई इलेक्ट्रॉनिक आर्मी ने Melbourne IT के एक रिसेलर को फ़िश किया, nytimes.com और Twitter के डोमेन के DNS रिकॉर्ड्स को फिर से लिखा, और न्यूयॉर्क टाइम्स को घंटों के लिए ऑफ़लाइन कर दिया। एक गहरी पड़ताल कि कैसे रजिस्ट्रार-चेन की कमज़ोर कड़ी एक अखबार की सामने की दरवाज़े की विफलता बनी — और रजिस्ट्री लॉक ने क्या बदला होता।'
 keywords: ['nytimes.com हैक', 'सीरियाई इलेक्ट्रॉनिक आर्मी', 'melbourne it', 'dns हाइजैक', 'डोमेन हाइजैकिंग', 'रजिस्ट्रार सुरक्षा', 'रिसेलर फ़िशिंग', 'रजिस्ट्री लॉक', 'dns रिकॉर्ड्स', 'डोमेन नेम सर्वर अटैक', 'twitter dns 2013', 'डोमेन सुरक्षा', 'serverupdateprohibited']
+relatedArticles:
+  - /hi/blog/the-fox-it-dns-hijack/
+  - /hi/blog/the-lenovo-com-dns-hijack/
+  - /hi/blog/the-godaddy-multi-year-breach/
+  - /hi/blog/the-panix-com-domain-hijack/
+  - /hi/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-apocalypse/
+  - /hi/series/name-change-game-change/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/dns/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/tld/
 ---
 
 एक अखबार का डोमेन नाम उसका मुख्य द्वार होता है। जब आप `nytimes.com` टाइप करते हैं, तो आप एक अदृश्य श्रृंखला पर भरोसा कर रहे होते हैं — एक डोमेन रजिस्ट्री, एक [रजिस्ट्रार](/hi/glossary/registrar/), और कभी-कभी उस रजिस्ट्रार के नीचे एक रिसेलर — जो आपको असली न्यूज़रूम तक और कहीं नहीं पहुंचाती है। किसी सामान्य दिन आप उस श्रृंखला के बारे में कभी नहीं सोचते। 27 अगस्त 2013 को, वह टूट गई, और लाखों पाठक *The New York Times* के मुख्य द्वार पर पहुंचे तो पाया कि उसे किसी और के द्वार से बदल दिया गया है।

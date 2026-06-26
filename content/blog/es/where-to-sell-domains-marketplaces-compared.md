@@ -12,6 +12,24 @@ format: comparison
 description: "Afternic vs Sedo vs Dan vs mercados onchain comparados por alcance, comisiones y transferencia rápida — además de cómo listar un mismo nombre en varios a la vez."
 ogImage: ../../assets/where-to-sell-domains-marketplaces-compared-og.jpg
 keywords: ['dónde vender dominios', 'mejores mercados de dominios', 'afternic vs sedo', 'vender dominio en afternic', 'vender dominio en sedo', 'cierre de dan.com', 'transferencia rápida de dominios', 'comisiones de mercados de dominios', 'listar dominios en venta', 'mercado de dominios tokenizados', 'vender dominios en línea', 'mercado secundario de dominios', 'dónde listar un dominio', 'mejor sitio para vender un nombre de dominio']
+relatedArticles:
+  - /es/blog/how-to-sell-domains-for-profit/
+  - /es/blog/selling-domains-as-nfts/
+  - /es/blog/domain-flipping/
+  - /es/blog/working-with-domain-brokers/
+  - /es/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /es/topics/domain-investing/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-flipping-skills/
+  - /es/series/best-tlds-by-industry/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Un listado no es una venta, pero un listado en el lugar equivocado es una no-venta garantizada. Una vez que has decidido vender — algo que tratamos en nuestro pilar [cómo vender dominios con ganancia](/es/blog/how-to-sell-domains-for-profit/), parte de la guía más amplia de [domain flipping](/es/blog/domain-flipping/) — la siguiente pregunta es puramente práctica: ¿en qué sitio listas? La respuesta rara vez es "en uno solo." La mayoría de los domainers activos listan el mismo nombre en varios lugares a la vez, porque cada mercado llega a una porción distinta de compradores. Este artículo compara los principales sitios según las cuatro cosas que de verdad deciden una venta: alcance, comisiones, transferencia rápida y cómo cambia de manos el nombre una vez que alguien hace clic en comprar.

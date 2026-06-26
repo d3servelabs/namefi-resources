@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre todo sobre el TLD .af: desde su origen como dominio de Afganistán hasta su popularidad en domain hacks creativos. Registra tu .af hoy mismo.'
 keywords: ['.af domains', 'TLD .af', 'top-level domain .af', 'what is .af', 'why choose .af', 'what is the .af domain', 'why choose the .af domain', 'comprar dominio .af', 'registro de dominios .af', 'domain hack .af', 'inversión en dominios', 'dominios tokenizados', 'dominios blockchain', 'significado dominio af', 'disponibilidad dominio .af']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-tokenization/
+relatedSeries:
+  - /es/series/domain-investor-field-guide/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 ## **¿Qué es .af?**

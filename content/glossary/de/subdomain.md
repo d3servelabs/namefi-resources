@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://www.cloudflare.com/learning/dns/glossary/what-is-a-subdomain/
+relatedArticles:
+  - /de/blog/how-domain-hijacking-actually-happens/
+  - /de/blog/what-is-a-tld/
+  - /de/blog/domain-hacks-explained/
+  - /de/blog/domain-terminology-guide/
+  - /de/blog/dns-over-https-vs-enterprise-split-horizon-dns/
+relatedTopics:
+  - /de/topics/domain-security/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/dns/
+  - /de/glossary/tld/
+  - /de/glossary/registrar/
+  - /de/glossary/registry/
+  - /de/glossary/domain-forwarding/
 ---
 
 Eine **Subdomain** ist ein Präfix, das der eigenen Domain vorangestellt wird, um eine eigenständige Adresse darunter zu erstellen — `blog.example.com`, `app.example.com` oder `mail.example.com` sind allesamt Subdomains von `example.com`. Man erstellt eine Subdomain, indem man einen [DNS-Eintrag](/de/glossary/dns-record-types/) (üblicherweise A oder CNAME) bei den [Nameservern](/de/glossary/nameserver/) der übergeordneten Domain hinzufügt, ohne zusätzliche Registrierung oder Gebühr. Subdomains ermöglichen es, unter einem registrierten Namen viele Dienste bereitzustellen, weshalb sie ein grundlegender Baustein für Websites, Apps und APIs sind. In der tokenisierten Welt liegt das Eigentum bei der [registrierten](/de/glossary/registrant/) [Second-Level-Domain (SLD)](/de/glossary/second-level-domain/); Subdomains sind Konfiguration darunter und folgen demjenigen, der die [Wallet](/de/glossary/wallet/) der übergeordneten Domain kontrolliert. *Quelle(n): RFC 1034; Cloudflare-Subdomain-Glossar.*

@@ -9,6 +9,24 @@ keywords: ['reserved names', 'blocked names', 'registry reserved', 'premium rese
 level: 1
 sources:
   - https://www.icann.org/resources/pages/tlds-2012-02-25-en
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/hand-registering-domains-to-flip/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ens-vs-dns-domain-flipping/
+  - /en/blog/expired-domains-and-the-drop-cycle/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/registrant/
 ---
 
 **Reserved names** are labels a [registry](/en/glossary/registry/) holds back from open registration. The reasons vary: some are **premium** names set aside to sell at a higher price, some are blocked for policy or legal reasons (geographic terms, registrar names, ICANN-mandated strings), and some sit on a collision-avoidance list to prevent clashes with internal network names. The reserved list is specific to each [TLD](/en/glossary/tld/) and set by its operator under [ICANN](/en/glossary/icann/) rules, which is why a name can be available in one TLD but unregisterable in another. Reservation happens entirely at the registry layer of the traditional system, before a name ever becomes a [registrant](/en/glossary/registrant/)'s — and so before it could be tokenized.

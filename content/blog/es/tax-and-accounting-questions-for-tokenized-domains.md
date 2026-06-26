@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Un resumen en lenguaje sencillo, que no constituye asesoramiento, sobre las preguntas fiscales y contables que los propietarios de dominios tokenizados suelen plantear: base de coste, ventas, período de tenencia, uso comercial frente a personal, donaciones, herencias. Lleve estas preguntas a un verdadero profesional."
 keywords: ['impuestos dominio NFT', 'base de coste dominio tokenizado', 'contabilidad dominio tokenizado', 'ganancias de capital dominio tokenizado', 'impuestos venta dominio tokenizado', 'ganancias de capital dominio NFT', 'contabilidad NFT dominio', 'impuestos dominio como activo', 'impuestos donación dominio tokenizado', 'patrimonio dominio tokenizado', 'gasto comercial dominio tokenizado', 'preguntas fiscales tokenización dominios', 'impuestos dominio NFT EE. UU.', 'impuestos dominio cripto']
+relatedArticles:
+  - /es/blog/taxes-and-accounting-for-domain-investors/
+  - /es/blog/how-tokenized-marketplaces-replace-escrow/
+  - /es/blog/tokenized-domain-use-cases-2026/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /es/topics/domain-tokenization/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/tokenize-your-com/
+  - /es/series/domain-flipping-skills/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/icann/
+  - /es/glossary/tld/
+  - /es/glossary/dns/
+  - /es/glossary/web3/
 ---
 
 > **Lee esto primero.** Esta publicación **no** es un asesoramiento fiscal, contable, legal ni financiero. No somos su CPA (Contador Público Autorizado), no somos su abogado y no tenemos idea de en qué jurisdicción se encuentra. Esta es una *lista de preguntas* para llevar a un profesional de verdad. Úsela como una hoja de preparación, no como una postura en la cual confiar. El descargo de responsabilidad completo se encuentra al final y se aplica *especialmente* a esta publicación.

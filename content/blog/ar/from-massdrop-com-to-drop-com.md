@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'إزاي Massdrop قضت سبع سنين بتبني مجتمع مهووسين بالشراء الجماعي، وبعدين عملت ريبراند وبقت Drop في 2019 — وكانت بالهدوء اشترت دومين Drop.com المميز (اللي كان سعره المطلوب 800,000 دولار) قبل الإعلان عن الاسم الجديد، وليه التخلي عن "Mass" كان مهم.'
 keywords: ['massdrop.com', 'drop.com', 'drop domain name', 'massdrop rebrand', 'domain upgrade', 'group buying', 'mechanical keyboards', 'audiophile community', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'exact match domain', 'community commerce']
+relatedArticles:
+  - /ar/blog/from-ubercab-com-to-uber-com/
+  - /ar/blog/from-urbancompass-com-to-compass-com/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
+  - /ar/blog/from-snapchat-com-to-snap-com/
+  - /ar/blog/from-mrchewy-com-to-chewy-com/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/name-change-game-change/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/tld/
+  - /ar/glossary/web3/
 ---
 
 في أول سبع سنين من عمرها، اشتغل واحد من أحب مجتمعات المهووسين على الإنترنت من عنوان كان بيشرح بالظبط إيه اللي بيعمله: **Massdrop.com**.

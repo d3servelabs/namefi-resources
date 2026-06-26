@@ -16,6 +16,24 @@ faqs:
     answer: 'It suits marketing, advertising, PR, creative, design, talent, real-estate, recruitment, and consulting firms that describe themselves as agencies. It is a strong fit when a short, exact-match name is taken on .com but available as a .agency.'
   - question: 'Is .agency good for email and deliverability?'
     answer: 'Yes, when configured properly. As an established 2014-era Identity Digital extension, .agency carries no inherent spam stigma. Set up SPF, DKIM, and DMARC, warm up new domains gradually, and deliverability is comparable to other professional gTLDs.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 If your business is an agency, the .agency domain lets you say so in the URL itself. Instead of stacking the word "agency" on the left of a legacy suffix — as in *brightagency.com* — you can move it to the right of the dot and register the cleaner, more descriptive *bright.agency*. For marketing, creative, real-estate, recruitment, and consulting firms, that single change turns the web address into a plain-language label of what the company does.

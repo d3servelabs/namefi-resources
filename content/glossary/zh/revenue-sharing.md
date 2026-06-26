@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是收益分享以及它如何应用于域名变现？
 keywords: ["收益分享","被动收入","域名变现","利润分配","智能合约"]
+relatedArticles:
+  - /zh/blog/domain-parking-and-monetization/
+  - /zh/blog/why-tokenize-domains/
+  - /zh/blog/domain-escrow-explained/
+  - /zh/blog/from-thefacebook-com-to-facebook-com/
+  - /zh/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-investor-field-guide/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/smart-contract/
+  - /zh/glossary/tokenized-domain/
+  - /zh/glossary/tokenize/
+  - /zh/glossary/fractional-ownership/
+  - /zh/glossary/leasing/
 ---
 
 

@@ -18,6 +18,24 @@ faqs:
     answer: 'Yes. The suffix reads as modern and technical, and short, relevant names are still widely available compared with .com. Many teams use .cloud for product, infrastructure, or environment subdomains where the meaning reinforces what the service does.'
   - question: 'Does .cloud support DNSSEC and WHOIS privacy?'
     answer: 'Yes. The .cloud registry supports DNSSEC for cryptographically signed DNS, and WHOIS privacy is offered through registrars rather than the registry, so availability depends on the registrar you choose.'
+relatedArticles:
+  - /en/blog/what-is-a-tld/
+  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 The **.cloud domain** is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the era of cloud computing, SaaS, and distributed infrastructure. For founders shipping a developer tool, teams naming a platform, or providers who want a web address that says exactly what they do, **what .cloud offers** is a short, descriptive, globally available extension with an unmistakable technical meaning.

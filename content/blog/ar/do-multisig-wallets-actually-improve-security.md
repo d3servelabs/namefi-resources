@@ -8,6 +8,24 @@ draft: false
 description: 'تُعامل محافظ التوقيع المتعدد (Multisig) على نطاق واسع كنمط الحفظ الآمن الافتراضي في مجال العملات المشفرة، لكن الإجابة على سؤال "هل تعمل حقًا على تحسين الأمان؟" تعتمد كليًا على نموذج التهديد. يستعرض هذا المقال ما يمكن لمحافظ التوقيع المتعدد إحباطه، وما تعجز عنه، والحالات التي قد تزيد فيها الأمور سوءًا.'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['محفظة التوقيع المتعدد', 'توقيع متعدد', 'محفظة آمنة', 'gnosis safe', 'إدارة المفاتيح', 'الحفظ الذاتي', 'توقيع العتبة', 'الاسترداد الاجتماعي', 'namefi']
+relatedArticles:
+  - /ar/blog/onchain-domain-custody-and-recovery/
+  - /ar/blog/the-badgerdao-frontend-attack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-curve-finance-dns-hijack/
+  - /ar/blog/the-sushiswap-miso-insider-attack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/domain-flipping-skills/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/web3/
+  - /ar/glossary/tld/
 ---
 
 تُقدَّم محافظ [التوقيع المتعدد](/ar/glossary/multi-sig/) (Multisignature wallets) — وهي المحافظ التي تتطلب توقيع عدد (M) من إجمالي (N) من المفاتيح قبل أن تصبح المعاملة صالحة — عادةً باعتبارها الترقية البديهية للمحافظ الساخنة ذات المفتاح الواحد. تعتمد معظم إعدادات الخزانة في المنظمات المستقلة اللامركزية (DAOs)، ومنصات التداول، والشركات الجادة المتخصصة في العملات المشفرة، على شكل من أشكال التوقيع المتعدد (مثل Safe، وSquads، وMultisig.js، ومتغيرات توقيع العتبة).

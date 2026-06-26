@@ -12,6 +12,24 @@ format: analysis
 description: "Warum chinesische Käufer kurze, vierbuchstabige und numerische .com-Domains als eigene Anlageklasse bepreisen — Pinyin, Aufschläge ohne Vokale und die Glückszahl 8 gegen die Unglückszahl 4."
 ogImage: ../../assets/short-llll-and-numeric-domains-chinese-market-og.jpg
 keywords: ['chinesische Premium-Domains', 'numerische Domains', 'LLLL.com', 'vierbuchstabige Domains', 'Chip-Domains', 'kurze Domainnamen', 'Glückszahl-8-Domains', 'Unglückszahl 4', 'Pinyin-Domains', 'NNNN-Domains', 'chinesischer Domainmarkt', 'Wert numerischer Domains', 'Domains ohne Vokale', 'Domain-Flipping China', 'kurze .com-Domains']
+relatedArticles:
+  - /de/blog/what-makes-a-domain-valuable/
+  - /de/blog/how-tld-affects-domain-value/
+  - /de/blog/domain-flipping/
+  - /de/blog/how-to-read-comparable-domain-sales/
+  - /de/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/name-change-game-change/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Für einen westlichen Flipper sieht `xqjz.com` aus wie Tastaturgeklimper und `5808.com` wie eine Telefonnummer. Für einen chinesischen Käufer könnte das Erste eine saubere, Pinyin-freundliche Vierbuchstaben-Marke sein und das Zweite eine Zeichenfolge, die gleich zweimal „Wohlstand" trägt. Genau dieser Bruch ist der springende Punkt. Eine Kategorie von Domains, die der eine Markt als wertlos liest, wird vom anderen als Anlageklasse bepreist — und die Flipper, die diesen zweiten Markt zu lesen lernten, erwischten eine der größten Neubewertungen, die der [Aftermarket](/de/glossary/aftermarket/) je gesehen hat.

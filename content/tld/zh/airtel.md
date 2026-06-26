@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: '深入解析 .airtel 顶级域名：了解其作为巴帝电信（Airtel）专属品牌域名的独特价值、用途及优势。探索如何在 Namefi 开启您的域名投资与 Web3 身份之旅。'
 keywords: ['.airtel domains', '.airtel TLD', 'top-level domain', 'what is .airtel', 'why choose .airtel', 'what is the .airtel domain', 'why choose the .airtel domain', '.airtel 域名', '品牌顶级域名', 'domain investing', 'blockchain', 'tokenized domain', 'Bharti Airtel', 'web3 domains', 'digital identity']
+relatedArticles:
+  - /zh/blog/what-is-a-tld/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /zh/blog/ai-vs-io-domain/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/best-tlds-by-industry/
+  - /zh/series/domain-apocalypse/
+relatedGlossary:
+  - /zh/glossary/tld/
+  - /zh/glossary/registrar/
+  - /zh/glossary/icann/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
 ---
 
 ## **什么是 .airtel？**

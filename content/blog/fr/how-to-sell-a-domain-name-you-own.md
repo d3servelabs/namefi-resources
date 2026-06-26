@@ -8,6 +8,24 @@ draft: false
 description: "Une liste de contrôle pratique, pensée pour le vendeur, pour évaluer un domaine, trouver des acheteurs potentiels, gérer la prospection, éviter les arnaques et conclure le transfert en toute sécurité."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png
 keywords: ['comment vendre un nom de domaine', 'vendre un nom de domaine', 'liste de contrôle vente de domaine', 'évaluation de domaine', 'séquestre vente de domaine', 'transfert de domaine', 'ventes sortantes de domaine', 'trouver des acheteurs de domaine', 'négociation de domaine', 'vendre un domaine que vous possédez', 'Namefi Outbound', 'marché secondaire des domaines', 'processus de vente de domaine', 'prospection vente de domaine', 'guide vendeur de domaine']
+relatedArticles:
+  - /fr/blog/how-to-sell-domains-for-profit/
+  - /fr/blog/working-with-domain-brokers/
+  - /fr/blog/inbound-vs-outbound-domain-sales/
+  - /fr/blog/domain-flipping/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/tld/
+  - /fr/glossary/web3/
 ---
 
 Posséder un domaine est la partie facile. Le vendre, c'est là que le vrai travail commence.

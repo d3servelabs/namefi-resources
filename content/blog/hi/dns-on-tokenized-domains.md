@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "एक व्यावहारिक नज़र कि कैसे नियमित DNS — नेमसर्वर, A/AAAA, MX, TXT, DNSSEC, CAA — आपके द्वारा ICANN डोमेन को टोकनाइज़ करने के बाद भी काम करता रहता है। क्या बदलता है, क्या नहीं, और अपने मौजूदा DNS प्रदाता को कहाँ पॉइंट करें।"
 keywords: ['DNS टोकनाइज़्ड डोमेन', 'DNSSEC NFT डोमेन', 'टोकनाइज़्ड डोमेन नेमसर्वर', 'टोकनाइज़्ड डोमेन ईमेल', 'MX रिकॉर्ड्स NFT डोमेन', 'CAA रिकॉर्ड्स टोकनाइज़्ड डोमेन', 'टोकनाइज़्ड डोमेन DNS प्रबंधन', 'ऑन-चेन डोमेन DNS', 'NFT डोमेन MX', 'NFT डोमेन DNSSEC', 'टोकनाइज़्ड डोमेन Cloudflare', 'टोकनाइज़्ड डोमेन Route53', 'टोकनाइज़्ड DNS कैसे काम करता है', 'टोकनाइज़्ड डोमेन रिज़ॉल्यूशन']
+relatedArticles:
+  - /hi/blog/how-to-tokenize-your-com/
+  - /hi/blog/what-are-tokenized-domains/
+  - /hi/blog/tokenize-your-com-to-flip-it/
+  - /hi/blog/how-tokenized-marketplaces-replace-escrow/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/tokenize-your-com/
+  - /hi/series/domain-flipping-skills/
+relatedGlossary:
+  - /hi/glossary/dns/
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/registry/
+  - /hi/glossary/tld/
 ---
 
 एक डोमेन को टोकनाइज़ करने के बारे में एक आम चिंता: *"क्या मेरी वेबसाइट अभी भी काम करेगी? क्या मेरा ईमेल अभी भी काम करेगा? क्या मुझे पूरा नया DNS स्टैक सीखना होगा?"*

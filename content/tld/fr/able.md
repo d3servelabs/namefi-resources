@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Tout savoir sur l''extension de domaine .able : signification, usages créatifs et avantages pour votre marque. Découvrez comment l''enregistrer avec Namefi.'
 keywords: ['.able', 'domaines .able', 'TLD .able', 'qu''est-ce que .able', 'pourquoi choisir .able', 'pourquoi choisir le domaine .able', 'domaine blockchain', 'domaine tokenisé', 'investissement domaine', 'extension web3', 'nom de domaine .able', 'achat domaine .able', 'signification .able', 'domain hack', 'Namefi']
+relatedArticles:
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/brandable-vs-keyword-domains/
+  - /fr/blog/ai-vs-io-domain/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-flipping-skills/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/web3/
+  - /fr/glossary/registrar/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le .able ?**

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'في 27 أغسطس 2013، نجح الجيش الإلكتروني السوري في تصيُّد موزع تابع لـ Melbourne IT، وعدَّل سجلات DNS لـ nytimes.com ونطاقات تويتر، وأوقع جريدة New York Times عن الإنترنت لساعات. رحلة عميقة في كيف أصبح الحلقة الأضعف في سلسلة المسجِّلين هو باب الفشل الأمامي لصحيفة كبرى — وماذا كان سيتغير لو كانت أقفال السجل مفعَّلة.'
 keywords: ['اختراق nytimes.com', 'الجيش الإلكتروني السوري', 'melbourne it', 'اختطاف dns', 'اختطاف النطاق', 'أمان المسجِّل', 'تصيُّد الموزع', 'قفل السجل', 'سجلات dns', 'هجوم خادم أسماء النطاقات', 'dns تويتر 2013', 'أمان النطاق', 'serverupdateprohibited']
+relatedArticles:
+  - /ar/blog/the-fox-it-dns-hijack/
+  - /ar/blog/the-lenovo-com-dns-hijack/
+  - /ar/blog/the-godaddy-multi-year-breach/
+  - /ar/blog/the-panix-com-domain-hijack/
+  - /ar/blog/the-curve-finance-dns-hijack/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-apocalypse/
+  - /ar/series/name-change-game-change/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/tld/
 ---
 
 اسم النطاق بالنسبة لأي صحيفة هو بابها الأمامي. لما بتكتب `nytimes.com`، بتثق في سلسلة غير مرئية — سجل نطاقات، ومسجِّل، وأحياناً موزع تابع لهذا المسجِّل — علشان توصلك لغرفة التحرير الحقيقية ومش حتة تانية. في الأيام العادية، ما بتفكرش في الموضوع ده خالص. بس في 27 أغسطس 2013، الحلقة اتكسرت، وملايين القراء اتجهوا لباب *New York Times* الأمامي لقوا حاجة تانية خالص.

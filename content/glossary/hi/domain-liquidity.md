@@ -10,6 +10,24 @@ level: 1
 sources:
   - https://www.investopedia.com/terms/l/liquidity.asp
   - https://www.namebio.com/
+relatedArticles:
+  - /hi/blog/end-user-vs-reseller-domain-pricing/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/selling-domains-as-nfts/
+  - /hi/blog/where-to-sell-domains-marketplaces-compared/
+  - /hi/blog/ens-vs-dns-domain-flipping/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-investor-field-guide/
+relatedGlossary:
+  - /hi/glossary/tld/
+  - /hi/glossary/sell-through-rate/
+  - /hi/glossary/end-user/
+  - /hi/glossary/domain-appraisal/
+  - /hi/glossary/web3/
 ---
 
 डोमेन निवेश में **लिक्विडिटी** यह बताती है कि एक नाम को उसके अनुमानित मूल्य के करीब कितनी आसानी से नकदी में बदला जा सकता है। व्यापक व्यावसायिक आकर्षण वाला एक छोटा, जेनेरिक [.com](/hi/tld/com/) अत्यधिक तरल है — एक प्रेरित विक्रेता हफ्तों या महीनों के भीतर खरीदार की उचित उम्मीद कर सकता है। एक लंबा, निशान-विशेष या अस्पष्ट नाम उचित माँग मूल्य के बावजूद वर्षों तक अनबिका रह सकता है, जिससे उसका सैद्धांतिक मूल्य चाहे कुछ भी हो, वह अतरल हो जाता है। एक पोर्टफोलियो में कुल लिक्विडिटी का सबसे प्रत्यक्ष माप [सेल-थ्रू रेट](/hi/glossary/sell-through-rate/) है। [आफ्टरमार्केट](/hi/glossary/aftermarket/) की लिक्विडिटी संरचनात्मक रूप से स्टॉक या फॉरेक्स बाजारों की तुलना में कम है क्योंकि प्रत्येक डोमेन एक अद्वितीय संपत्ति है जिसका कोई मानक लॉट आकार नहीं है, और क्योंकि अधिकांश खरीदार बाजार निर्माता नहीं बल्कि एंड यूजर होते हैं जिनकी विशिष्ट खरीद आवश्यकताएं अनियमित होती हैं। [डोमेन अप्रेजल](/hi/glossary/domain-appraisal/) वह मूल्य अनुमानित करता है जिस पर एक नाम बिक *सकता* है, लेकिन लिक्विडिटी यह निर्धारित करती है कि विक्रेता को उसे साकार करने के लिए कितना इंतजार करना होगा।

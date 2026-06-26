@@ -12,6 +12,24 @@ format: guide
 description: '如何让域名列表被更多人看到：在 Afternic 和 Sedo 上优化标题、关键词和分类，以及提升曝光度、吸引精准买家的实用方法。'
 ogImage: ../../assets/marketplace-seo-for-domain-listings-og.jpg
 keywords: ['市场 SEO', '域名列表 SEO', '如何在 Afternic 上架域名', '如何在 Sedo 上架域名', '域名列表标题', '域名列表关键词', '域名市场分类', '让域名列表被发现', '域名二手市场上架', '在线出售域名', '域名列表优化', '域名搜索曝光', '买家如何找到域名', '域名分销商网络']
+relatedArticles:
+  - /zh/blog/marketing-your-domains-for-sale/
+  - /zh/blog/inbound-vs-outbound-domain-sales/
+  - /zh/blog/domain-for-sale-landing-pages/
+  - /zh/blog/domain-flipping/
+  - /zh/blog/how-to-sell-domains-for-profit/
+relatedTopics:
+  - /zh/topics/domain-investing/
+  - /zh/topics/choosing-a-tld/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/best-tlds-by-industry/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/tld/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/registry/
 ---
 
 没有人看到的列表，和没有列表没有区别。价格定得再准、出售页面写得再漂亮，如果在买家搜索的那一刻你的列表没有出现，交易就永远不会开始。这个行业的主动入站需求，大多来自为数不多的几个市场平台，而在这些平台内部，你的域名要和数百万个其他名字争夺同一种稀缺资源：买家在那个关键时刻的注意力。

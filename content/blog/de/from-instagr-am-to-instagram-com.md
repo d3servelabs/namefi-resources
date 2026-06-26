@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Wie Instagram 2010 mit dem Domain-Hack instagr.am startete – indem es Armeniens .am-ccTLD nutzte, um den eigenen Namen auszuschreiben – und dann 100.000 $ zahlte, um auf Instagram.com zu konsolidieren; und was der clevere ccTLD-Hack Gründern über Kompromisse lehrt.'
 keywords: ['instagr.am', 'instagram.com', 'instagram domainname', 'domain hack', 'ccTLD domain hack', '.am armenien domain', 'kevin systrom', 'mike krieger', 'domain upgrade', 'startup-benennung', 'markenname', 'premium domain', 'domain-strategie', 'instagram geschichte']
+relatedArticles:
+  - /de/blog/from-bufferapp-com-to-buffer-com/
+  - /de/blog/from-ubercab-com-to-uber-com/
+  - /de/blog/from-discordapp-com-to-discord-com/
+  - /de/blog/from-mona-co-to-crypto-com/
+  - /de/blog/from-slackhq-com-to-slack-com/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
 ---
 
 Bevor Instagram zu einer Milliarden-Nutzer-Plattform, zu einem Verb für das Fotografieren und zu einer der wertvollsten Apps wurde, die Facebook je gekauft hat, trug es einen Namen, der zugleich ein Stück cleveres Engineering war: **instagr.am**.

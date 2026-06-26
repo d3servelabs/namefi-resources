@@ -12,6 +12,24 @@ format: guide
 description: "أشهر أنواع النصب في بيع الدومين — مواقع الضمان المزيفة، المشترين الوهميين، الدفع الزائد والـ chargeback، والتحويل قبل الدفع — والعادات اللي بتخلي بيعك آمن."
 ogImage: ../../assets/avoiding-domain-sale-scams-og.jpg
 keywords: ['نصب بيع الدومين', 'تجنب نصب الدومين', 'موقع ضمان مزيف', 'ضمان وهمي', 'نصب مشتري الدومين', 'نصب الدفع الزائد', 'احتيال الـ chargeback', 'التحويل قبل الدفع', 'بيع دومين بأمان', 'ضمان الدومين', 'احتيال بيع الدومين', 'وسيط دومين مزيف', 'نصب نقل الدومين', 'معاملة دومين آمنة', 'أمان تاجر الدومين']
+relatedArticles:
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/how-to-sell-domains-for-profit/
+  - /ar/blog/working-with-domain-brokers/
+  - /ar/blog/domain-flipping-and-the-law/
+  - /ar/blog/end-user-vs-reseller-domain-pricing/
+relatedTopics:
+  - /ar/topics/domain-security/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/registry/
 ---
 
 الفلوس في [تجارة الدومينات](/ar/blog/domain-flipping/) بتتعمل لما الاسم يتباع أخيراً. وده بالظبط الوقت اللي بيظهر فيه النصابين. أي إعلان بيع شغّال هو دعوة مفتوحة لأي حد مستعد يتقمّص شخصية مشتري، أو وسيط، أو شركة ضمان. أغلى غلطة ممكن يعملها بتاع تجارة الدومينات مش إنه يشتري الاسم الغلط. الغلطة إنه يسلّم اسم كويس للشخص الغلط.

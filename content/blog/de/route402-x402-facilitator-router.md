@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Ein mandantenfähiger Router, der es Ihnen ermöglicht, x402 einmalig zu integrieren und Anfragen nach Richtlinien und Live-Signalen zu routen, ohne die Routing-Logik in Ihre App zu verschieben."
 keywords: ['Route402', 'x402', 'Zahlungs-Routing', 'Facilitator-Router', 'mandantenfähige Zahlungen', 'RBAC', 'Verschlüsselung von Anmeldedaten', 'Fähigkeits-Routing', 'Sticky-Settlement', 'Zahlungsinfrastruktur', 'YAML-Routing-Regeln']
+relatedArticles:
+  - /de/blog/from-bufferapp-com-to-buffer-com/
+  - /de/blog/from-discordapp-com-to-discord-com/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/from-urbancompass-com-to-compass-com/
+relatedTopics:
+  - /de/topics/web3-foundations/
+  - /de/topics/domain-investing/
+relatedSeries:
+  - /de/series/name-change-game-change/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/x402/
 ---
 
 ## Die Kurzfassung

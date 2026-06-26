@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "اكتشف إمكانات نطاق .now للأعمال الفورية والمبتكرة. دليل شامل حول استخداماته، مزاياه، وكيفية حجزه عبر Namefi لتعزيز حضورك الرقمي واستثمارك في النطاقات."
 keywords: [".now domains", ".now TLD", "top-level domain", "what is .now", "why choose .now", "what is the .now domain", "why choose the .now domain", "استثمار النطاقات", "نطاقات البلوك تشين", "tokenized domains", "Web3 domains", "شراء نطاق .now", "نطاقات مميزة", "تسجيل النطاقات", "Namefi"]
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/how-to-sell-a-domain-name-you-own/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/why-are-io-domains-expensive/
+  - /ar/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-investing/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .now؟**

@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .aero، المخصص حصريًا لقطاع الطيران. تعرف على مميزاته، شروط استخدامه، وكيفية تعزيز مصداقيتك الرقمية.'
 keywords: ['.aero domain', 'ما هو نطاق .aero', 'why choose .aero', 'شراء نطاق .aero', 'aero top-level domain', 'aviation domains', 'SITA registry', 'domain investing', 'blockchain domains', 'tokenized domain', 'Web3 domains', 'نطاقات الطيران', 'تسجيل نطاق الطيران', 'نطاقات المستوى الأعلى', 'Namefi domains']
+relatedArticles:
+  - /ar/blog/what-is-a-tld/
+  - /ar/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
+  - /ar/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /ar/blog/top-tlds-to-secure-for-your-real-estate-business/
+relatedTopics:
+  - /ar/topics/choosing-a-tld/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/best-tlds-by-industry/
+  - /ar/series/domain-apocalypse/
+relatedGlossary:
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/registry/
+  - /ar/glossary/registrar/
+  - /ar/glossary/dns/
 ---
 
 ## **ما هو نطاق .aero؟**

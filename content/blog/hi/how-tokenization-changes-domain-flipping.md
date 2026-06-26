@@ -12,6 +12,24 @@ format: explainer
 description: "किसी डोमेन को ऑन-चेन लाना फ़्लिपिंग को कैसे नया आकार देता है — सत्यापित स्वामित्व, एटॉमिक निपटान, और प्रोग्रामेबल ट्रांसफर बनाम धीमा रजिस्ट्रार आफ्टरमार्केट।"
 ogImage: ../../assets/how-tokenization-changes-domain-flipping-og.jpg
 keywords: ['टोकनाइज़्ड डोमेन फ़्लिपिंग', 'ऑन-चेन डोमेन फ़्लिपिंग', 'टोकनाइज़्ड डोमेन फ़्लिप करना', 'डोमेन NFT फ़्लिपिंग', 'एटॉमिक डोमेन निपटान', 'डोमेन को NFT के रूप में बेचना', 'टोकनाइज़्ड डोमेन मार्केटप्लेस', 'डोमेन फ़्लिपिंग web3', 'ERC-721 डोमेन', 'ऑन-चेन डोमेन ट्रांसफर', 'टोकनाइज़्ड डोमेन कस्टडी', 'प्रोग्रामेबल डोमेन स्वामित्व', 'एस्क्रो का विकल्प', 'डोमेन को ऑन-चेन फ़्लिप करना', 'टोकनाइज़्ड डोमेन पुनर्विक्रय']
+relatedArticles:
+  - /hi/blog/tokenize-your-com-to-flip-it/
+  - /hi/blog/onchain-domain-flipping/
+  - /hi/blog/onchain-domain-custody-and-recovery/
+  - /hi/blog/selling-domains-as-nfts/
+  - /hi/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /hi/topics/domain-tokenization/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/dns/
+  - /hi/glossary/tld/
+  - /hi/glossary/web3/
 ---
 
 [डोमेन फ़्लिपिंग](/hi/blog/domain-flipping/) का अधिकांश काम नाम से कोई लेना-देना नहीं रखता। आप उसे सोर्स करते हैं, उसका मूल्यांकन करते हैं, उसकी रक्षा करते हैं, और एक खरीदार ढूँढते हैं — और फिर आप उस हिस्से तक पहुँचते हैं जिसका आनंद किसी को नहीं आता: वास्तव में एसेट को स्थानांतरित करना और बिना किसी एक पक्ष के झुलसे भुगतान पाना। वह निपटान का चरण धीमा है, मैनुअल है, और अजनबियों के बीच भरोसे पर टिका है। टोकनाइज़ेशन वह बदलाव है जो इसे फिर से लिख देता है।

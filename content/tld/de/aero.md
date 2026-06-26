@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Entdecken Sie die .aero-Domain: Die exklusive Top-Level-Domain für die Luftfahrtindustrie. Erfahren Sie alles über Vorteile, Zugangsvoraussetzungen und die Registrierung bei Namefi."
 keywords: [".aero domains", ".aero TLD", "top-level domain", "was ist .aero", "warum .aero wählen", "was ist die .aero domain", "warum die .aero domain wählen", "luftfahrt domains", "aviation industry domains", "domain investing", "blockchain domains", "tokenized domain", "SITA domain", "flughafen domain", "fluggesellschaft domain"]
+relatedArticles:
+  - /de/blog/what-is-a-tld/
+  - /de/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /de/blog/top-tlds-to-secure-for-your-business/
+  - /de/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /de/blog/top-tlds-to-secure-for-your-real-estate-business/
+relatedTopics:
+  - /de/topics/choosing-a-tld/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-apocalypse/
+relatedGlossary:
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/registry/
+  - /de/glossary/registrar/
+  - /de/glossary/dns/
 ---
 
 ## **Was ist .aero?**

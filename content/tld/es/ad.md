@@ -24,6 +24,24 @@ keywords:
   - registrar dominio andorra
   - namefi
   - blockchain domains
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/top-tlds-to-secure-for-your-business/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/dns/
+  - /es/glossary/registry/
 ---
 
 Elegir la extensión de dominio adecuada es el primer paso crucial para establecer una identidad digital sólida. Mientras que el omnipresente .com sigue siendo el rey, las extensiones específicas ofrecen oportunidades únicas de marca. Hoy exploraremos el **dominio .ad**, una joya oculta que sirve tanto para la identidad nacional de un pequeño país europeo como para una industria global multimillonaria.

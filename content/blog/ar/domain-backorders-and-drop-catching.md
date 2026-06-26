@@ -12,6 +12,24 @@ format: explainer
 description: "يعني إيه باكأوردر ودروب-كاتشينج للدومينات، وإزاي الخدمات بتتسابق عشان تخطف الاسم في اللحظة اللي يتساب فيها، وإمتى الباكأوردر يستاهل إنك تدفع فيه."
 ogImage: ../../assets/domain-backorders-and-drop-catching-og.jpg
 keywords: ['باكأوردر دومين', 'دروب كاتشينج', 'إزاي تعمل باكأوردر لدومين', 'خطف الدومينات المنتهية', 'DropCatch', 'SnapNames', 'NameJet', 'Park.io', 'باكأوردر Dynadot', 'خدمة خطف الدومينات', 'فترة الاسترداد', 'دومين في انتظار الحذف', 'إمتى الدومينات بتتساب', 'مزاد الدومينات المنتهية', 'إزاي تجيب دومين متسجل بالفعل']
+relatedArticles:
+  - /ar/blog/expired-domains-and-the-drop-cycle/
+  - /ar/blog/how-to-win-domain-auctions/
+  - /ar/blog/when-to-drop-a-domain/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-basics/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/tokenize-your-com/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/icann/
+  - /ar/glossary/tld/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 الاسم اللي عايزه متسجَّل خلاص. صاحبه مش بايع، ومش بيرد عليك، وعلى قد ما إنت شايف مش حتى بيستخدمه. فتعمل الحاجة الوحيدة اللي فاضلة: تستنى لما ينسى يجدّده. اللحظة اللي يخلص فيها التسجيل ويرجع الاسم للسوق المفتوح، إنت عايز تكون إنت الواقف هناك عشان تخطفه.

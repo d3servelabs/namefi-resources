@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Was wirklich passiert, wenn Sie den Zugriff auf die Wallet verlieren, die Ihre tokenisierte Domain hält – und die operativen Schritte, um dieses Risiko von vornherein zu minimieren. Backups, Multisig, Hardware-Wallets, Social Recovery und die Grenzen dessen, was jede Plattform tun kann."
 keywords: ['NFT-Domain wiederherstellen', 'Wallet-Verlust Domain', 'tokenisierte Domain Wallet verloren', 'Wallet-Wiederherstellung Domain', 'NFT-Domain Backup', 'tokenisierte Domain Hardware-Wallet', 'Multisig tokenisierte Domain', 'Schlüsselwiederherstellung tokenisierte Domain', 'Seed-Phrase verloren Domain', 'NFT-Domain Sicherheit', 'tokenisierte Domain Backup', 'Domain Schlüsselverwaltung', 'Wallet-Verlust Wiederherstellung']
+relatedArticles:
+  - /de/blog/onchain-domain-custody-and-recovery/
+  - /de/blog/how-to-sell-a-domain-name-you-own/
+  - /de/blog/how-tokenization-changes-domain-flipping/
+  - /de/blog/tokenize-your-com-to-flip-it/
+  - /de/blog/what-are-tokenized-domains/
+relatedTopics:
+  - /de/topics/domain-tokenization/
+  - /de/topics/domain-security/
+relatedSeries:
+  - /de/series/domain-apocalypse/
+  - /de/series/domain-flipping-skills/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/web3/
+  - /de/glossary/registry/
 ---
 
 Von allen Dingen, über die sich Menschen vor der [Tokenisierung einer Domain](/de/blog/what-are-tokenized-domains/) keine Gedanken machen, ist die **Wiederherstellung nach einem Wallet-Verlust** das größte. Sobald eine Domain tokenisiert ist, ist die [Wallet](/de/glossary/wallet/), die das [NFT](/de/glossary/nft/) hält, die einzige Quelle der Wahrheit (Source of Truth) für das Eigentum. Verlieren Sie die Wallet, haben Sie ein echtes Problem.

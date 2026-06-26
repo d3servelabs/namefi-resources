@@ -12,6 +12,24 @@ format: guide
 description: "So nutzen Sie die Verkaufshistorie im NameBio-Stil zur Preisfindung einer Domain: echte Vergleichswerte finden, für TLD, Länge und Keyword anpassen und Rosinenpickerei vermeiden."
 ogImage: ../../assets/how-to-read-comparable-domain-sales-og.jpg
 keywords: ['vergleichbare Domain-Verkäufe', 'Domain-Comps', 'Domain-Comps richtig lesen', 'NameBio', 'Domain-Verkaufshistorie', 'Vergleichswerte zur Domain-Bewertung', 'Domain-Preisvergleich', 'wie man eine Domain bepreist', 'vergleichbare Verkäufe zur Domain-Schätzung', 'Domain-Verkaufsdaten', 'vergleichbare Domains finden', 'Anpassung von Domain-Comps', 'Domaining-Comps', 'Domain-Preisdaten']
+relatedArticles:
+  - /de/blog/how-to-value-a-domain-name/
+  - /de/blog/end-user-vs-reseller-domain-pricing/
+  - /de/blog/domain-appraisal-tools-compared/
+  - /de/blog/what-makes-a-domain-valuable/
+  - /de/blog/domain-flipping/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/choosing-a-tld/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/domain-investor-field-guide/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/tld/
+  - /de/glossary/icann/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Fragen Sie einen Immobiliengutachter, was ein Haus wert ist, und er rät nicht. Er zieht heran, wofür ähnliche Häuser in der Nähe kürzlich verkauft wurden, und passt von dort aus an. [Domain-Bewertung](/de/glossary/domain-appraisal/) funktioniert genauso, und das Gegenstück zu den "jüngsten Verkäufen in der Nähe" ist die öffentliche Aufzeichnung vergangener Domain-Verkäufe: die Comps. Lernen Sie, sie zu lesen, und Sie können fast jeden Preis verteidigen, den Sie einem Namen geben. Lesen Sie sie nachlässig, und Sie reden sich eine Zahl ein, der der Markt nie zugestimmt hat.

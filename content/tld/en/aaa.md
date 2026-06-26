@@ -24,6 +24,24 @@ keywords:
   - premium short domains
   - Web3 identity
   - brand TLDs
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/ai-vs-io-domain/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/domain-apocalypse/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/registry/
 ---
 
 In the ever-expanding universe of the internet, choosing the right digital identity is more crucial than ever. While everyone is familiar with `.com` or `.net`, the introduction of new generic [Top-Level Domains](/en/glossary/tld/) (gTLDs) has opened the door for more specific, branded, and memorable web addresses. One such intriguing extension is the **.aaa** TLD.

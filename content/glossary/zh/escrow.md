@@ -6,6 +6,24 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是托管以及智能合约如何为域名提供无需信任的托管？
 keywords: ["托管","受信任的第三方","智能合约托管","无需信任","安全交易"]
+relatedArticles:
+  - /zh/blog/domain-escrow-explained/
+  - /zh/blog/how-tokenized-marketplaces-replace-escrow/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+  - /zh/blog/selling-domains-as-nfts/
+  - /zh/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /zh/topics/domain-tokenization/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/tokenize-your-com/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/domain-broker/
+  - /zh/glossary/marketplace/
+  - /zh/glossary/domain-financing/
+  - /zh/glossary/lease-to-own/
 ---
 
 

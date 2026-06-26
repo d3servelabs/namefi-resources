@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Tout savoir sur l'extension .aetna : définition, usages par le géant de l'assurance et avantages. Découvrez comment sécuriser votre identité numérique avec Namefi."
 keywords: [".aetna domains", ".aetna TLD", "top-level domain .aetna", "what is .aetna", "why choose .aetna", "what is the .aetna domain", "why choose the .aetna domain", "domaine de marque", "investissement nom de domaine", "blockchain domains", "tokenized domain", "assurance santé web3", "enregistrer domaine .aetna", "extension internet santé", "namefi registrar"]
+relatedArticles:
+  - /fr/blog/top-tlds-to-secure-for-your-business/
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/what-are-tokenized-domains/
+  - /fr/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /fr/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-tokenization/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registrar/
+  - /fr/glossary/registry/
 ---
 
 ## **Qu'est-ce que le .aetna ?**

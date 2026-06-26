@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'Descubre el poder del dominio .now para la inmediatez y la acción en la web. Aprende qué es, sus ventajas y cómo registrarlo fácilmente a través de Namefi.'
 keywords: ['.now domains', '.now TLD', 'top-level domain .now', 'what is .now', 'why choose .now', 'what is the .now domain', 'why choose the .now domain', 'qué es el dominio .now', 'por qué elegir el dominio .now', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'registro de dominios web3', 'estrategia de dominios', 'comprar dominio .now']
+relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/how-to-sell-a-domain-name-you-own/
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /es/blog/why-are-io-domains-expensive/
+  - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-investing/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-investor-field-guide/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/tld/
+  - /es/glossary/icann/
+  - /es/glossary/registry/
+  - /es/glossary/dns/
 ---
 
 En el vasto universo de internet, elegir la extensión de dominio adecuada es crucial para definir la identidad de tu marca. Mientras que los dominios clásicos siguen siendo populares, las nuevas extensiones genéricas (new gTLDs) ofrecen oportunidades creativas y estratégicas únicas. Hoy exploraremos el **dominio .now**, una extensión vibrante diseñada para capturar el momento presente.

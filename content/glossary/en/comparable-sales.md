@@ -11,6 +11,24 @@ level: 1
 sources:
   - https://www.namebio.com/
   - https://www.investopedia.com/terms/c/comparables.asp
+relatedArticles:
+  - /en/blog/how-to-read-comparable-domain-sales/
+  - /en/blog/appraising-onchain-domains/
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/domain-appraisal-tools-compared/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-basics/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/domain-appraisal/
+  - /en/glossary/tld/
+  - /en/glossary/aftermarket/
+  - /en/glossary/keyword-domain/
+  - /en/glossary/icann/
 ---
 
 **Comparable sales** — or *comps* — are the historical sale prices of domains that closely resemble the name being valued, and they are the single most reliable input in any [domain appraisal](/en/glossary/domain-appraisal/). A comp is most useful when it matches on TLD, length, word count, keyword category, and approximate age of the sale; a three-letter [.com](/en/tld/com/) that sold for $80,000 last year is a far stronger signal for a similar three-letter .com than a five-year-old sale of a four-word [.net](/en/tld/net/). Databases like NameBio aggregate hundreds of thousands of disclosed aftermarket transactions, and platforms such as DNJournal publish weekly sale reports, making the [aftermarket](/en/glossary/aftermarket/) increasingly transparent. Because not all domain sales are disclosed, comps always represent a floor sample rather than a complete market picture.

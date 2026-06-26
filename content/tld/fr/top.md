@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Découvrez l'extension de domaine .top : sa signification, sa popularité mondiale et pourquoi c'est un choix stratégique pour votre marque avec Namefi."
 keywords: [".top domains", ".top TLD", "top-level domain", "what is .top", "why choose .top", "what is the .top domain", "why choose the .top domain", "domaine .top", "acheter domaine .top", "investissement domaine", "domaines tokenisés", "blockchain domains", "enregistrement domaine .top", "signification domaine .top", "Web3 domains"]
+relatedArticles:
+  - /fr/blog/what-is-a-tld/
+  - /fr/blog/top-tlds-to-secure-for-your-ecommerce-store/
+  - /fr/blog/why-are-io-domains-expensive/
+  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/top-tlds-to-secure-for-your-fashion-brand/
+relatedTopics:
+  - /fr/topics/choosing-a-tld/
+  - /fr/topics/domain-basics/
+relatedSeries:
+  - /fr/series/best-tlds-by-industry/
+  - /fr/series/domain-apocalypse/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/registry/
+  - /fr/glossary/dns/
 ---
 
 ## **Qu'est-ce que le .top ?**

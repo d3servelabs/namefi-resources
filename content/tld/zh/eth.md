@@ -6,6 +6,24 @@ tags: ["tld"]
 authors: ["namefiteam"]
 description: .eth 域名是基于区块链的名称，用人类可读的名称取代复杂的钱包地址。了解 ENS 如何改变 Web3 身份和数字所有权。
 keywords: ["顶级域", "eth域名", "web3身份", "区块链", "ENS", "去中心化域名", "nft域名"]
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /zh/blog/premium-web3-tlds/
+  - /zh/blog/ens-vs-dns-domain-flipping/
+  - /zh/blog/onchain-domain-flipping/
+relatedTopics:
+  - /zh/topics/choosing-a-tld/
+  - /zh/topics/domain-investing/
+relatedSeries:
+  - /zh/series/domain-flipping-skills/
+  - /zh/series/name-change-game-change/
+relatedGlossary:
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/icann/
+  - /zh/glossary/tld/
+  - /zh/glossary/web3/
 ---
 
 

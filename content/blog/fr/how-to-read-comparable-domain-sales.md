@@ -12,6 +12,24 @@ format: guide
 description: "Comment utiliser un historique de ventes de type NameBio pour fixer le prix d''un domaine : trouver de vrais comparables, ajuster selon le TLD, la longueur et le mot-clé, et éviter le cherry-picking."
 ogImage: ../../assets/how-to-read-comparable-domain-sales-og.jpg
 keywords: ['ventes de domaines comparables', 'comps de domaine', 'comment lire les comps de domaine', 'NameBio', 'historique des ventes de domaines', 'comps d''évaluation de domaine', 'comparaison des prix de domaine', 'comment fixer le prix d''un domaine', 'comparables d''expertise de domaine', 'données de ventes de domaines', 'trouver des domaines comparables', 'ajustement des comps de domaine', 'comps de domaining', 'données de prix de domaine']
+relatedArticles:
+  - /fr/blog/how-to-value-a-domain-name/
+  - /fr/blog/end-user-vs-reseller-domain-pricing/
+  - /fr/blog/domain-appraisal-tools-compared/
+  - /fr/blog/what-makes-a-domain-valuable/
+  - /fr/blog/domain-flipping/
+relatedTopics:
+  - /fr/topics/domain-investing/
+  - /fr/topics/choosing-a-tld/
+relatedSeries:
+  - /fr/series/domain-flipping-skills/
+  - /fr/series/domain-investor-field-guide/
+relatedGlossary:
+  - /fr/glossary/registrar/
+  - /fr/glossary/tld/
+  - /fr/glossary/icann/
+  - /fr/glossary/dns/
+  - /fr/glossary/registry/
 ---
 
 Demandez à un expert immobilier ce que vaut une maison : il ne devine pas. Il sort ce que des maisons similaires du voisinage se sont récemment vendues, puis ajuste à partir de là. L'[expertise de domaine](/fr/glossary/domain-appraisal/) fonctionne de la même façon, et l'équivalent des « ventes récentes du voisinage » est l'historique public des ventes de domaines passées : les comps. Apprenez à les lire et vous pourrez défendre presque n'importe quel prix que vous attribuez à un nom. Lisez-les sans soin et vous vous convaincrez d'un chiffre sur lequel le marché ne s'est jamais accordé.

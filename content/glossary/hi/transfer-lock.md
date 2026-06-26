@@ -10,6 +10,24 @@ also_known_as: ['रजिस्ट्रार लॉक']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
+relatedArticles:
+  - /hi/blog/the-panix-com-domain-hijack/
+  - /hi/blog/how-to-sell-a-domain-name-you-own/
+  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/avoiding-domain-sale-scams/
+  - /hi/blog/working-with-domain-brokers/
+relatedTopics:
+  - /hi/topics/domain-security/
+  - /hi/topics/domain-investing/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/domain-apocalypse/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/domain-hijacking/
+  - /hi/glossary/cross-registrar-transfer/
+  - /hi/glossary/epp/
+  - /hi/glossary/registry-lock/
 ---
 
 **ट्रांसफर लॉक** (रजिस्ट्रार लॉक भी कहते हैं; EPP स्थिति `clientTransferProhibited`) आपके [रजिस्ट्रार](/hi/glossary/registrar/) द्वारा सेट किया गया एक फ्लैग है जो किसी डोमेन को जानबूझकर अनलॉक किए बिना किसी अन्य रजिस्ट्रार में स्थानांतरित होने से रोकता है। जब लॉक चालू होता है, तो [क्रॉस-रजिस्ट्रार ट्रांसफर](/hi/glossary/cross-registrar-transfer/) शुरू करने का कोई भी प्रयास आगे बढ़ने से पहले ही अस्वीकृत हो जाता है, भले ही अनुरोधकर्ता के पास [auth-code](/hi/glossary/auth-code/) हो। यह [डोमेन हाइजैकिंग](/hi/glossary/domain-hijacking/) के खिलाफ सबसे सरल और सबसे प्रभावी बचावों में से एक है: एक चोर जिसने आपके खाते से समझौता किया है, वह संपत्ति को चुपचाप ट्रांसफर नहीं कर सकता जब तक लॉक सक्रिय है। सर्वोत्तम अभ्यास यह है कि ट्रांसफर लॉक को हर समय सक्षम रखें और इसे केवल एक वैध ट्रांसफर पूरा करने के लिए आवश्यक संक्षिप्त विंडो के लिए ही हटाएं।

@@ -12,6 +12,24 @@ format: explainer
 description: "Was Domain-Backorders und Drop-Catching sind, wie Dienste darum wetteifern, einen Namen in dem Moment zu schnappen, in dem er frei wird, und wann sich eine Backorder lohnt."
 ogImage: ../../assets/domain-backorders-and-drop-catching-og.jpg
 keywords: ['domain backorder', 'drop catching', 'domain per backorder reservieren', 'auslaufende domains schnappen', 'DropCatch', 'SnapNames', 'NameJet', 'Park.io', 'Dynadot backorder', 'domain drop catching dienst', 'redemption grace period', 'pending delete domain', 'wann werden domains frei', 'auktion abgelaufener domains', 'eine registrierte domain bekommen']
+relatedArticles:
+  - /de/blog/expired-domains-and-the-drop-cycle/
+  - /de/blog/how-to-win-domain-auctions/
+  - /de/blog/when-to-drop-a-domain/
+  - /de/blog/domain-flipping/
+  - /de/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /de/topics/domain-investing/
+  - /de/topics/domain-basics/
+relatedSeries:
+  - /de/series/domain-flipping-skills/
+  - /de/series/tokenize-your-com/
+relatedGlossary:
+  - /de/glossary/registrar/
+  - /de/glossary/icann/
+  - /de/glossary/tld/
+  - /de/glossary/dns/
+  - /de/glossary/registry/
 ---
 
 Ein Name, den du willst, ist bereits vergeben. Der aktuelle Inhaber verkauft nicht, antwortet nicht und benutzt ihn, soweit du erkennen kannst, nicht einmal. Also tust du das Einzige, was übrig bleibt: Du wartest darauf, dass er die Verlängerung vergisst. In dem Augenblick, in dem die Registrierung ausläuft und der Name in den offenen Pool zurückfällt, willst du derjenige sein, der bereitsteht, um ihn zu greifen.

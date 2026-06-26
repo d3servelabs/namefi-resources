@@ -24,6 +24,24 @@ keywords:
   - comprar dominio .aeg
   - registro de dominios web3
   - identidad digital
+relatedArticles:
+  - /es/blog/top-tlds-to-secure-for-your-fashion-brand/
+  - /es/blog/top-tlds-to-secure-for-your-saas/
+  - /es/blog/what-is-a-tld/
+  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-startup/
+relatedTopics:
+  - /es/topics/choosing-a-tld/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/best-tlds-by-industry/
+  - /es/series/domain-apocalypse/
+relatedGlossary:
+  - /es/glossary/tld/
+  - /es/glossary/web3/
+  - /es/glossary/icann/
+  - /es/glossary/blockchain/
+  - /es/glossary/ethereum/
 ---
 
 ## **¿Qué es .aeg?**

@@ -12,6 +12,24 @@ format: explainer
 description: "When a domain broker earns their cut, what good brokers actually do, inbound vs outbound brokerage, typical commissions, and how to vet one."
 ogImage: ../../assets/working-with-domain-brokers-og.jpg
 keywords: ['domain broker', 'domain brokerage', 'how to work with a domain broker', 'domain broker commission', 'sell domain with broker', 'buyer broker domains', 'seller broker domains', 'inbound domain broker', 'outbound domain broker', 'when to use a domain broker', 'vet a domain broker', 'domain broker fees', 'best domain brokers', 'domain acquisition broker', 'hire a domain broker']
+relatedArticles:
+  - /en/blog/how-to-sell-domains-for-profit/
+  - /en/blog/end-user-vs-reseller-domain-pricing/
+  - /en/blog/domain-flipping/
+  - /en/blog/how-to-sell-a-domain-name-you-own/
+  - /en/blog/inbound-vs-outbound-domain-sales/
+relatedTopics:
+  - /en/topics/domain-investing/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/domain-investor-field-guide/
+relatedGlossary:
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/dns/
+  - /en/glossary/tld/
+  - /en/glossary/web3/
 ---
 
 Most of the names you flip, you should sell yourself. List it, set a price, answer the inbound, close in escrow. A broker on a $400 name is a stranger taking a cut of money you could have kept. But there is a band of deals where a broker stops being overhead and starts being the difference between a sale and a stalemate, and knowing where that band starts is its own skill. This is the broker chapter of our [domain flipping](/en/blog/domain-flipping/) series, and it sits one level down from the selling pillar, [how to sell domains for profit](/en/blog/how-to-sell-domains-for-profit/). Here we'll cover when to hand a name to a broker, what a good one actually does, the difference between buy-side and sell-side brokerage, what commissions look like, and how to tell a real broker from someone who just wants your listing.

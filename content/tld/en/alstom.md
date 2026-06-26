@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: "Explore the .alstom TLD, a specialized domain for the rail transport giant. Understand the power of Brand TLDs and how to secure your own digital identity."
 keywords: [".alstom domains", ".alstom TLD", "top-level domain", "what is .alstom", "why choose .alstom", "what is the .alstom domain", "why choose the .alstom domain", "Alstom brand registry", "corporate TLD strategy", "domain investing", "blockchain domains", "tokenized domain", "dedicated brand domains", "transportation industry domains", "Namefi domain registration"]
+relatedArticles:
+  - /en/blog/what-are-tokenized-domains/
+  - /en/blog/top-tlds-to-secure-for-your-business/
+  - /en/blog/what-is-a-tld/
+  - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
+  - /en/blog/top-tlds-to-secure-for-your-saas/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-tokenization/
+relatedSeries:
+  - /en/series/best-tlds-by-industry/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/icann/
+  - /en/glossary/registrar/
+  - /en/glossary/registry/
+  - /en/glossary/web3/
 ---
 
 ## **What is .alstom?**

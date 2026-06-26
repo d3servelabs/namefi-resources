@@ -7,6 +7,24 @@ authors: ['namefiteam']
 draft: false
 description: 'En agosto de 2022, los contratos inteligentes de Curve Finance estaban intactos — pero los atacantes secuestraron el dominio curve.fi en su registrador, clonaron el sitio y drenaron aproximadamente $570K de los usuarios. Un análisis profundo del ataque DNS a una interfaz DeFi, y lo que enseña sobre seguridad de dominios.'
 keywords: ['secuestro dns curve finance', 'hijack curve.fi', 'dns hijacking defi', 'compromiso iwantmyname', 'compromiso nameserver', 'wallet drainer', 'ataque front-end defi', 'seguridad de dominios', 'seguridad dns', 'phishing cripto', 'ataque sitio clonado', 'compromiso cuenta registrador', 'domain mayday']
+relatedArticles:
+  - /es/blog/the-badgerdao-frontend-attack/
+  - /es/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /es/blog/the-bitcoin-org-dns-hijack/
+  - /es/blog/the-myetherwallet-bgp-dns-attack/
+  - /es/blog/the-lenovo-com-dns-hijack/
+relatedTopics:
+  - /es/topics/domain-security/
+  - /es/topics/domain-basics/
+relatedSeries:
+  - /es/series/domain-apocalypse/
+  - /es/series/name-change-game-change/
+relatedGlossary:
+  - /es/glossary/registrar/
+  - /es/glossary/dns/
+  - /es/glossary/icann/
+  - /es/glossary/web3/
+  - /es/glossary/tld/
 ---
 
 Los contratos inteligentes estaban bien.

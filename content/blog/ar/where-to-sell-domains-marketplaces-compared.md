@@ -12,6 +12,24 @@ format: comparison
 description: "مقارنة بين Afternic وSedo وDan والأسواق على البلوكتشين من حيث الوصول والرسوم والنقل السريع — وكمان إزاي تعرض نفس النطاق في كذا مكان مرة واحدة."
 ogImage: ../../assets/where-to-sell-domains-marketplaces-compared-og.jpg
 keywords: ['فين تبيع النطاقات', 'أفضل أسواق النطاقات', 'Afternic مقابل Sedo', 'بيع نطاق على Afternic', 'بيع نطاق على Sedo', 'إغلاق dan.com', 'النقل السريع للنطاق', 'رسوم سوق النطاقات', 'عرض نطاقات للبيع', 'سوق النطاقات المرمّزة', 'بيع النطاقات أونلاين', 'سوق النطاقات الثانوي', 'فين تعرض نطاق', 'أحسن مكان لبيع اسم نطاق']
+relatedArticles:
+  - /ar/blog/how-to-sell-domains-for-profit/
+  - /ar/blog/selling-domains-as-nfts/
+  - /ar/blog/domain-flipping/
+  - /ar/blog/working-with-domain-brokers/
+  - /ar/blog/onchain-domain-marketplaces-compared/
+relatedTopics:
+  - /ar/topics/domain-investing/
+  - /ar/topics/domain-tokenization/
+relatedSeries:
+  - /ar/series/domain-flipping-skills/
+  - /ar/series/best-tlds-by-industry/
+relatedGlossary:
+  - /ar/glossary/registrar/
+  - /ar/glossary/tld/
+  - /ar/glossary/icann/
+  - /ar/glossary/dns/
+  - /ar/glossary/registry/
 ---
 
 العرض مش بيعة، لكن العرض في المكان الغلط بيعة فاشلة مضمونة. بعد ما تقرر إنك تبيع — وده شرحناه في صفحتنا الرئيسية عن [إزاي تبيع النطاقات وتكسب منها](/ar/blog/how-to-sell-domains-for-profit/)، وهي جزء من الدليل الأشمل عن [تقليب النطاقات](/ar/blog/domain-flipping/) — السؤال اللي بعد كده عملي بحت: تعرض على أنهي منصة؟ والإجابة نادرًا ما بتكون "واحدة منهم". معظم تجار النطاقات الشطار بيعرضوا نفس الاسم في كذا مكان في نفس الوقت، لأن كل سوق بيوصل لشريحة مختلفة من المشترين. المقال ده بيقارن المنصات الكبيرة على الأربع حاجات اللي فعلًا بتحسم البيعة: الوصول، والرسوم، والنقل السريع، وإزاي الاسم بينتقل من إيد لإيد بمجرد ما حد يدوس "اشتري".

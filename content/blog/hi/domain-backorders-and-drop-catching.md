@@ -12,6 +12,24 @@ format: explainer
 description: "डोमेन बैकऑर्डर और ड्रॉप-कैचिंग क्या हैं, कोई नाम रिलीज़ होते ही उसे झपटने के लिए सेवाएँ कैसे होड़ करती हैं, और बैकऑर्डर पर पैसे खर्च करना कब सही रहता है।"
 ogImage: ../../assets/domain-backorders-and-drop-catching-og.jpg
 keywords: ['डोमेन बैकऑर्डर', 'ड्रॉप कैचिंग', 'डोमेन कैसे बैकऑर्डर करें', 'एक्सपायर होते डोमेन कैसे पकड़ें', 'DropCatch', 'SnapNames', 'NameJet', 'Park.io', 'Dynadot बैकऑर्डर', 'डोमेन ड्रॉप कैचिंग सेवा', 'रिडेम्पशन ग्रेस पीरियड', 'पेंडिंग डिलीट डोमेन', 'डोमेन कब ड्रॉप होते हैं', 'एक्सपायर्ड डोमेन नीलामी', 'पहले से रजिस्टर्ड डोमेन कैसे पाएँ']
+relatedArticles:
+  - /hi/blog/expired-domains-and-the-drop-cycle/
+  - /hi/blog/how-to-win-domain-auctions/
+  - /hi/blog/when-to-drop-a-domain/
+  - /hi/blog/domain-flipping/
+  - /hi/blog/hand-registering-domains-to-flip/
+relatedTopics:
+  - /hi/topics/domain-investing/
+  - /hi/topics/domain-basics/
+relatedSeries:
+  - /hi/series/domain-flipping-skills/
+  - /hi/series/tokenize-your-com/
+relatedGlossary:
+  - /hi/glossary/registrar/
+  - /hi/glossary/icann/
+  - /hi/glossary/tld/
+  - /hi/glossary/dns/
+  - /hi/glossary/registry/
 ---
 
 जो नाम आप चाहते हैं वह पहले से ही किसी और के पास है। मौजूदा मालिक न तो बेच रहा है, न जवाब दे रहा है, और जहाँ तक आप देख पा रहे हैं, वह उसका इस्तेमाल भी नहीं कर रहा। तो आपके पास बस एक ही रास्ता बचता है: इंतज़ार करना कि वह उसे रिन्यू करना भूल जाए। जिस पल वह रजिस्ट्रेशन खत्म होता है और नाम वापस खुले पूल में गिरता है, आप चाहते हैं कि उसे झपटने के लिए वहाँ खड़े रहने वाले आप ही हों।

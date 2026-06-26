@@ -12,6 +12,24 @@ sources:
   - https://web3.foundation/about/
   - https://en.wikipedia.org/wiki/Web3
   - https://www.wired.com/story/web3-blockchain-decentralization-explained/
+relatedArticles:
+  - /zh/blog/what-are-tokenized-domains/
+  - /zh/blog/onchain-domain-custody-and-recovery/
+  - /zh/blog/the-badgerdao-frontend-attack/
+  - /zh/blog/the-godaddy-multi-year-breach/
+  - /zh/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /zh/topics/domain-security/
+  - /zh/topics/domain-tokenization/
+relatedSeries:
+  - /zh/series/domain-apocalypse/
+  - /zh/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh/glossary/icann/
+  - /zh/glossary/registrar/
+  - /zh/glossary/dns/
+  - /zh/glossary/registry/
+  - /zh/glossary/tld/
 ---
 
 **Web3**（亦写作 *Web 3.0*）是一种互联网新范式构想，其核心基础设施运行在公共[区块链](/zh/glossary/blockchain/)网络之上，使参与者能够通过密码学密钥——而非由中心化平台管理的账户——拥有并掌控自己的数据、数字资产和网络身份。

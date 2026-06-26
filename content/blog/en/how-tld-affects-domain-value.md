@@ -12,6 +12,24 @@ format: analysis
 description: "How the extension after the dot moves a domain's price: the .com premium, the .io/.ai/.co context, and the policy and geopolitical risk behind ccTLDs."
 ogImage: ../../assets/how-tld-affects-domain-value-og.jpg
 keywords: ['how tld affects domain value', 'tld and domain value', 'com premium', '.com vs ccTLD value', 'does the extension matter', 'io domain value', 'ai domain value', 'co domain value', 'ccTLD risk', 'domain extension pricing', 'tld value flipping', 'best tld for resale', 'domain extension comparison', 'ccTLD geopolitical risk', 'choosing a tld']
+relatedArticles:
+  - /en/blog/what-makes-a-domain-valuable/
+  - /en/blog/domain-hacks-explained/
+  - /en/blog/how-to-value-a-domain-name/
+  - /en/blog/domain-flipping/
+  - /en/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /en/topics/choosing-a-tld/
+  - /en/topics/domain-investing/
+relatedSeries:
+  - /en/series/domain-flipping-skills/
+  - /en/series/name-change-game-change/
+relatedGlossary:
+  - /en/glossary/tld/
+  - /en/glossary/registrar/
+  - /en/glossary/icann/
+  - /en/glossary/registry/
+  - /en/glossary/dns/
 ---
 
 Take one good string of letters and price it across three extensions and you get three different numbers, sometimes off by an order of magnitude. The word didn't change. The part after the dot did. For a flipper, the extension is not a detail you tack on at the end of an appraisal. It is one of the largest single levers on what a name is worth and how easily it sells.
