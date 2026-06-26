@@ -14,6 +14,39 @@
    plus the submodule's own .ts/.js) only risks future false-positive utilities
    leaking into the always-loaded, render-blocking global CSS. */
 
+/* Primary action color — Resources scope.
+   The shared @namefi-astra/ui token sets `--primary` to a flat neutral grey
+   (oklch(0.922 0 0)), which reads as secondary/disabled and carries no brand
+   signal. Resources ties its primary action to the existing Namefi brand green
+   (`--brand-primary`) instead. The override is intentionally scoped to this
+   app's `:root` (declared after the `@import` above, so it wins the cascade) —
+   the main frontend and park apps keep the shared neutral primary. Preview
+   every token and component at `/r/<locale>/design-system`. */
+:root {
+  --primary: var(--brand-primary);
+  --primary-foreground: oklch(0.205 0 0);
+}
+
+/* Primary action treatment — Resources scope: outline, not solid.
+   A solid green fill on every primary button shouts on a content site where the
+   writing should lead. Resources renders the primary (the shared Button's
+   `default` variant, `bg-primary text-primary-foreground`) as a quiet on-brand
+   outline: transparent fill, green border + green label, faint green wash on
+   hover. This overrides the variant at the usage layer (we don't edit the
+   shared shadcn source) and is kept UNLAYERED so it wins over Tailwind's layered
+   `bg-primary` / `hover:bg-primary/80` utilities. Scoped to `[data-slot='button']`
+   so non-button `bg-primary` surfaces (e.g. badges) keep their solid fill. */
+[data-slot="button"].bg-primary {
+  background-color: transparent;
+  color: var(--primary);
+  border-color: color-mix(in oklab, var(--primary) 55%, transparent);
+}
+
+[data-slot="button"].bg-primary:hover {
+  background-color: color-mix(in oklab, var(--primary) 12%, transparent);
+  border-color: var(--primary);
+}
+
 @layer base {
   body.ltr {
     direction: ltr;
