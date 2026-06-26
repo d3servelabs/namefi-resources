@@ -2,11 +2,10 @@
   "signInChooser": {
     "title": "Bei Namefi anmelden",
     "description": "Wählen Sie, wie Sie sich anmelden möchten.",
-    "walletHeading": "Wallet verbinden",
-    "otherWallets": "Andere Wallets",
     "connecting": "Verbindung wird hergestellt …",
-    "or": "oder",
-    "loginButton": "Anmelden oder Konto erstellen",
+    "walletButton": "Mit Krypto-Wallet anmelden",
+    "googleButton": "Mit Google anmelden",
+    "loginButton": "Mit E-Mail oder anderem anmelden",
     "tos": "Durch das Verbinden eines Wallets oder das Anmelden stimmen Sie den <link>Allgemeinen Geschäftsbedingungen</link> von Namefi zu.",
     "errorTitle": "Anmeldung mit Wallet fehlgeschlagen",
     "errorDescription": "Die Anmeldung mit dem Wallet konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut."

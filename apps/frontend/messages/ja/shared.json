@@ -2,11 +2,10 @@
   "signInChooser": {
     "title": "Namefi にサインイン",
     "description": "サインイン方法を選択してください。",
-    "walletHeading": "ウォレットを接続",
-    "otherWallets": "その他のウォレット",
     "connecting": "接続中…",
-    "or": "または",
-    "loginButton": "ログインまたはアカウント作成",
+    "walletButton": "暗号資産ウォレットでサインイン",
+    "googleButton": "Google でサインイン",
+    "loginButton": "メールなどでサインイン",
     "tos": "ウォレットを接続またはログインすることで、Namefi の<link>利用規約</link>に同意したことになります。",
     "errorTitle": "ウォレットでサインインできませんでした",
     "errorDescription": "ウォレットでのサインインを完了できませんでした。もう一度お試しください。"

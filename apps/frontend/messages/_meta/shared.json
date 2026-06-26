@@ -6,21 +6,9 @@
   "signInChooser.description": {
     "description": "Body of the sign-in chooser dialog: invites the user to pick a sign-in method."
   },
-  "signInChooser.walletHeading": {
-    "description": "Section heading above the featured-wallet list in the sign-in chooser.",
-    "maxLength": 20
-  },
-  "signInChooser.otherWallets": {
-    "description": "Link below the featured wallets in the sign-in chooser that opens the full wallet list (AppKit modal).",
-    "maxLength": 18
-  },
-  "signInChooser.or": {
-    "description": "Divider label between the wallet options and the email login option in the sign-in chooser.",
-    "maxLength": 6
-  },
   "signInChooser.loginButton": {
-    "description": "Button in the sign-in chooser that opens Privy email login (sign in or create an account).",
-    "maxLength": 28
+    "description": "Button in the sign-in chooser that opens Privy login for email and the other social/messenger methods.",
+    "maxLength": 40
   },
   "signInChooser.tos": {
     "description": "Terms-of-Service consent line under the sign-in chooser actions. Contains a <link>...</link> tag wrapping the linked Terms of Service text."
@@ -625,5 +613,13 @@
   },
   "table.filter.operators.anyElementNotContain": {
     "description": "Array filter operator: at least one element of the array does not contain the text."
+  },
+  "signInChooser.walletButton": {
+    "description": "Button in the sign-in chooser that opens the crypto-wallet connect modal (Reown AppKit).",
+    "maxLength": 40
+  },
+  "signInChooser.googleButton": {
+    "description": "One-tap Google sign-in button in the sign-in chooser (Privy Google login).",
+    "maxLength": 40
   }
 }

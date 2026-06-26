@@ -2,11 +2,10 @@
   "signInChooser": {
     "title": "سجّل دخولك على Namefi",
     "description": "اختار طريقة تسجيل الدخول.",
-    "walletHeading": "وصّل محفظة",
-    "otherWallets": "محافظ تانية",
     "connecting": "بيوصّل…",
-    "or": "أو",
-    "loginButton": "سجّل دخولك أو أنشئ حساب",
+    "walletButton": "سجّل دخولك بمحفظة كريبتو",
+    "googleButton": "سجّل دخولك بحساب Google",
+    "loginButton": "سجّل دخولك بالإيميل أو غيره",
     "tos": "بوصل محفظة أو بتسجيل دخولك، بتوافق على <link>شروط الخدمة</link> بتاعت Namefi.",
     "errorTitle": "مقدرناش نسجّل دخولك بالمحفظة",
     "errorDescription": "مقدرناش نكمّل تسجيل الدخول بالمحفظة. حاول تاني."

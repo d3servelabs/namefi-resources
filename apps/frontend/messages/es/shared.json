@@ -2,11 +2,10 @@
   "signInChooser": {
     "title": "Inicia sesión en Namefi",
     "description": "Elige cómo quieres iniciar sesión.",
-    "walletHeading": "Conecta una billetera",
-    "otherWallets": "Otras billeteras",
     "connecting": "Conectando…",
-    "or": "o",
-    "loginButton": "Inicia sesión o crea una cuenta",
+    "walletButton": "Iniciar sesión con billetera cripto",
+    "googleButton": "Iniciar sesión con Google",
+    "loginButton": "Iniciar sesión con correo u otros",
     "tos": "Al conectar una billetera o iniciar sesión, aceptas los <link>Términos de servicio</link> de Namefi.",
     "errorTitle": "No se pudo iniciar sesión con la billetera",
     "errorDescription": "No pudimos completar el inicio de sesión con la billetera. Inténtalo de nuevo."
