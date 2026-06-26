@@ -31,7 +31,9 @@ export function isIndexableParkHost(host: string | null | undefined): boolean {
   return INDEXABLE_PARK_ROOT_HOSTS.has(bareHost(host));
 }
 
-function isTrustedDomainOverrideHost(host: string | null | undefined): boolean {
+export function isTrustedDomainOverrideHost(
+  host: string | null | undefined,
+): boolean {
   const normalized = bareHost(host);
   return (
     normalized === 'localhost' ||
@@ -41,6 +43,17 @@ function isTrustedDomainOverrideHost(host: string | null | undefined): boolean {
     normalized === '::1' ||
     normalized.endsWith('-d3servelabs.vercel.app')
   );
+}
+
+export function resolveTrustedParkHost(options: {
+  host: string | null | undefined;
+  originalHost?: string | null | undefined;
+}): string {
+  const host = bareHost(options.host);
+  const originalHost = bareHost(options.originalHost);
+  return originalHost && isTrustedDomainOverrideHost(host)
+    ? originalHost
+    : host;
 }
 
 function effectiveIndexableHost(options: {

@@ -1,5 +1,8 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { shouldNoindexParkRequest } from '@/lib/indexing-policy';
+import {
+  resolveTrustedParkHost,
+  shouldNoindexParkRequest,
+} from '@/lib/indexing-policy';
 
 /**
  * Set X-Robots-Tag: noindex, nofollow on non-indexable park responses.
@@ -26,8 +29,12 @@ function methodHeaders(shouldNoindex: boolean) {
 }
 
 export function proxy(request: NextRequest) {
+  const host = resolveTrustedParkHost({
+    host: request.headers.get('host'),
+    originalHost: request.headers.get('x-original-host'),
+  });
   const shouldNoindex = shouldNoindexParkRequest({
-    host: request.headers.get('x-original-host') ?? request.headers.get('host'),
+    host,
     pathname: request.nextUrl.pathname,
     search: request.nextUrl.search,
     domainOverride: request.nextUrl.searchParams.get('domain'),

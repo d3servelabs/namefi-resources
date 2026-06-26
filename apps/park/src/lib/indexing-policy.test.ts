@@ -5,6 +5,7 @@ import {
   isIndexableParkHost,
   isIndexableParkRoot,
   normalizeParkDomainParam,
+  resolveTrustedParkHost,
   shouldNoindexParkRequest,
 } from './indexing-policy';
 
@@ -18,6 +19,33 @@ describe('park indexing policy', () => {
   it('normalizes domain query params for local convenience URLs', () => {
     expect(normalizeParkDomainParam('<30003.CLICK>')).toBe('30003.click');
     expect(normalizeParkDomainParam('30003.click:443')).toBe('30003.click');
+  });
+
+  it('only trusts x-original-host from local or Namefi preview hosts', () => {
+    expect(
+      resolveTrustedParkHost({
+        host: 'localhost:3000',
+        originalHost: '30003.CLICK:443',
+      }),
+    ).toBe('30003.click');
+    expect(
+      resolveTrustedParkHost({
+        host: 'namefi-astra-park-abc-d3servelabs.vercel.app',
+        originalHost: '30003.click',
+      }),
+    ).toBe('30003.click');
+    expect(
+      resolveTrustedParkHost({
+        host: 'park.namefi.io',
+        originalHost: '30003.click',
+      }),
+    ).toBe('park.namefi.io');
+    expect(
+      resolveTrustedParkHost({
+        host: 'example.com',
+        originalHost: '30003.click',
+      }),
+    ).toBe('example.com');
   });
 
   it('allowlists only the 30003.click apex host', () => {

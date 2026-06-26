@@ -22,6 +22,7 @@ import {
   buildParkCanonicalUrl,
   isIndexableParkRoot,
   normalizeParkDomainParam,
+  resolveTrustedParkHost,
 } from '@/lib/indexing-policy';
 import {
   countDomainsByOwner,
@@ -150,19 +151,13 @@ const PBN_BRAND_TOKENS = {
   },
 } as const;
 
-function stripPort(rawHost: string): string {
-  if (rawHost.startsWith('[') && rawHost.endsWith(']')) {
-    return rawHost.slice(1, -1);
-  }
-  return rawHost.split(':')[0] ?? rawHost;
-}
-
 async function getActualRequestHost(): Promise<string> {
   const requestHeaders = await headers();
-  const hostHeader =
-    requestHeaders.get('x-original-host') ?? requestHeaders.get('host');
-  if (!hostHeader) return 'localhost';
-  return stripPort(hostHeader);
+  const host = resolveTrustedParkHost({
+    host: requestHeaders.get('host'),
+    originalHost: requestHeaders.get('x-original-host'),
+  });
+  return host || 'localhost';
 }
 
 async function getRequestHost(domainOverride?: string | null): Promise<string> {
@@ -529,8 +524,9 @@ function buildParkDescription(
   document: DomainDocument | null | undefined,
   domainName: string,
 ): string {
+  const documentDescription = document?.explain?.replace(/\s+/g, ' ').trim();
   const source =
-    document?.explain ??
+    documentDescription ||
     `${domainName} is a parked domain available through Namefi. Explore ownership details, expiration, domain highlights, and marketplace links.`;
   const normalized = source.replace(/\s+/g, ' ').trim();
   return normalized;

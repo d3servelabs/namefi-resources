@@ -332,7 +332,7 @@ jobs:
           PARK_CHANGED: ${{ needs.detect.outputs.park_changed || 'false' }}
           RESOURCES_CHANGED: ${{ needs.detect.outputs.resources_changed || 'false' }}
           DOCS_CHANGED: ${{ needs.detect.outputs.docs_changed || 'false' }}
-          PREVIEW_REQUESTED: ${{ needs.preview-label-gate.outputs.should_run || 'false' }}
+          BACKEND_PREVIEW_REQUESTED: ${{ needs.preview-label-gate.outputs.backend_preview || 'false' }}
           PARK_REQUESTED: ${{ needs.preview-label-gate.outputs.park_preview || 'false' }}
           RESOURCES_REQUESTED: ${{ needs.preview-label-gate.outputs.resources_preview || 'false' }}
           DOCS_REQUESTED: ${{ needs.preview-label-gate.outputs.docs_preview || 'false' }}
@@ -355,9 +355,12 @@ jobs:
             const parkRequested = isTrue(process.env.PARK_REQUESTED);
             const resourcesRequested = isTrue(process.env.RESOURCES_REQUESTED);
             const docsRequested = isTrue(process.env.DOCS_REQUESTED);
-            const previewRequested = isTrue(process.env.PREVIEW_REQUESTED);
+            const backendPreviewRequested = isTrue(
+              process.env.BACKEND_PREVIEW_REQUESTED,
+            );
             const hasBackendChanges = isTrue(process.env.HAS_BACKEND_CHANGES);
-            const frontendUsesPreviewBackend = previewRequested && hasBackendChanges;
+            const frontendUsesPreviewBackend =
+              backendPreviewRequested && hasBackendChanges;
             const frontendPendingBackendDecision =
               !frontendChanged && frontendUsesPreviewBackend;
 
@@ -392,7 +395,7 @@ jobs:
                   ? row('API Client Docs', '🟡 Building', [buildLink], 'Label-gated')
                   : row('API Client Docs', '⚪ Not requested', [], 'Add `preview-docs` label')
                 : row('API Client Docs', '⚪ Not affected', [], 'No relevant changes'),
-              !previewRequested
+              !backendPreviewRequested
                 ? row('Backend', '⚪ Not requested', [], 'Label-gated')
                 : hasBackendChanges
                   ? row('Backend', '🟡 Building', [buildLink], 'Label-gated')
@@ -499,6 +502,8 @@ jobs:
           vercel_project_id: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
           vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
 
+  # These duplicate mirror jobs intentionally preserve the two existing
+  # required status check names after the deploy-frontend job was consolidated.
   frontend-preview-dev-backend-context:
     name: "Frontend Preview (Dev Backend)"
     needs: [deploy-frontend]
@@ -519,6 +524,8 @@ jobs:
               ;;
           esac
 
+  # These duplicate mirror jobs intentionally preserve the two existing
+  # required status check names after the deploy-frontend job was consolidated.
   frontend-preview-preview-backend-context:
     name: "Frontend Preview (Preview Backend)"
     needs: [deploy-frontend]
@@ -1545,7 +1552,8 @@ jobs:
             echo "- Event: \`$EVENT_NAME / $EVENT_ACTION\`"
             echo "- Head branch: \`$HEAD_REF\`"
             echo "- Compare base: \`$(short_sha "$COMPARISON_SHA")\`"
-            echo "- Backend preview label active: \`$SHOULD_RUN\`"
+            echo "- Any preview requested: \`$SHOULD_RUN\`"
+            echo "- Backend preview active: \`$HAS_BACKEND_PREVIEW\`"
             echo "- Force preview: \`$IS_FORCE_PREVIEW\`"
             echo
             echo "### Preview Surfaces"

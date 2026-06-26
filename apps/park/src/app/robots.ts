@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import {
   buildParkCanonicalUrl,
   isIndexableParkHost,
+  resolveTrustedParkHost,
 } from '@/lib/indexing-policy';
 
 // The park app exclusively serves tenant subdomains and the parked-domain
@@ -19,8 +20,10 @@ import {
 // biome-ignore lint/style/noDefaultExport: Next.js metadata route API requires default export.
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const requestHeaders = await headers();
-  const host =
-    requestHeaders.get('x-original-host') ?? requestHeaders.get('host');
+  const host = resolveTrustedParkHost({
+    host: requestHeaders.get('host'),
+    originalHost: requestHeaders.get('x-original-host'),
+  });
 
   if (isIndexableParkHost(host)) {
     const canonicalUrl = buildParkCanonicalUrl(host);
