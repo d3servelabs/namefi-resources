@@ -54,7 +54,7 @@ the changeNameservers / processOrderItem diffs for the pattern.
 | ◻️ | `domain-ownership/epp-register-or-import.workflow.ts` | `createNextActionManager` L782, `defineSignal('nextAction')` L51 | the pattern this helper generalized | consolidation + `raceWith` for the unlock poll (L391); keep `legacySignals` bridge for senders. Works today → lower urgency |
 | ◻️ | `bulk-burn-expired-domains.workflow.ts` | approval `condition` L199 | times out → implicit proceed | already has approve/cancel signals; gate would make PROCEED/CANCEL explicit + audited |
 | ◻️ | `backfill-nft-wallet-users.workflow.ts` | confirm `condition` L138 (**no timeout**) | blocks forever on signal | low priority; gate adds a timeout + clean cancel |
-| ◻️⚠️ | `charge-user-and-create-payment.workflow.ts` / `multi-charge.workflow.ts` | nonRetryable failures (4 each) | throws → upstream refund | money flow — **retry is not idempotent**; only a CANCEL/RESPOND gate is safe, not RETRY. Evaluate carefully |
+| ◻️⚠️ | `multi-charge.workflow.ts` | nonRetryable failures | throws → upstream refund | money flow — **retry is not idempotent**; only a CANCEL/RESPOND gate is safe, not RETRY. Evaluate carefully. (Deprecated `charge-user-and-create-payment.workflow.ts` removed — superseded by the already-gated `chargeUser.workflow.ts`.) |
 | ◻️ | `x402/process-x402-purchase.workflow.ts` | `settlementSignal` L57; settle wait + nonRetryable L233/L338 | signal-or-poll for settlement | already signal-driven; a gate could front the terminal failures |
 
 ---

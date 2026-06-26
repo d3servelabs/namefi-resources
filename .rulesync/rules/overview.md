@@ -413,7 +413,7 @@ See [docs/dev-guides/storybook/README.md](docs/dev-guides/storybook/README.md) f
 
 ### Payment & Order Management Patterns
 
-- **Payment Workflows**: Use modular workflows for charging (`chargeUserAndCreatePaymentWorkflow`) and refunding (`refundUserWorkflow`)
+- **Payment Workflows**: Use modular workflows for charging (`chargeUserWorkflow`, orchestrated by `multiChargeWorkflow`) and refunding (`refundUserWorkflow`)
 - **Payment Method Determination**: Use `determineAvailablePaymentMethods` activity to find available payment options for users
 - **Order Creation**: Use `createAutoRenewOrder` activity to create order records after successful operations
 - **Payment Provider Support**: Handle both Stripe (credit card) and NFSC (blockchain) payment methods
