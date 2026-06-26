@@ -53,6 +53,7 @@ const C15tBridge: FC = () => {
   } = useConsentManager();
   const { _setSnapshot } = useNamefiConsent();
   const { authReady, isAuthenticated, user } = useAuth();
+  const hasConsentDecision = hasConsented();
 
   // Mirror c15t's live state into the lightweight context the app reads.
   useEffect(() => {
@@ -61,11 +62,13 @@ const C15tBridge: FC = () => {
         measurement: Boolean(consents.measurement),
         necessary: Boolean(consents.necessary),
       },
+      hasConsentDecision,
       isLoadingConsentInfo,
     });
   }, [
     consents.measurement,
     consents.necessary,
+    hasConsentDecision,
     isLoadingConsentInfo,
     _setSnapshot,
   ]);
@@ -75,7 +78,7 @@ const C15tBridge: FC = () => {
   // guard, a user un-checking measurement before saving (while hasConsented() is
   // still false) would re-trigger this effect and immediately re-seed it true,
   // fighting their choice.
-  const hasSeededDefault = hasConsented();
+  const hasSeededDefault = hasConsentDecision;
   const hasSeededRef = useRef(false);
   useEffect(() => {
     if (hasSeededRef.current) return;

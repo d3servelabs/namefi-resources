@@ -9,6 +9,12 @@ import {
   getGoogleConsentState,
 } from '@/lib/google-analytics-consent';
 import dynamic from 'next/dynamic';
+import {
+  discardPreConsentAnalyticsQueue,
+  flushPreConsentAnalyticsQueue,
+  installPreConsentAnalyticsQueue,
+  resolvePreConsentAnalyticsQueueAction,
+} from '@/lib/pre-consent-analytics-queue';
 
 const GoogleAnalyticsAuthenticatedUserSync = dynamic(
   () =>
@@ -19,12 +25,14 @@ const GoogleAnalyticsAuthenticatedUserSync = dynamic(
 );
 
 export function GoogleAnalyticsCookieConsentGated() {
-  const { consents, isLoadingConsentInfo } = useNamefiConsent();
+  const { consents, hasConsentDecision, isLoadingConsentInfo } =
+    useNamefiConsent();
   const hasMeasurement = consents.measurement;
   const originInfo = useOrigin();
 
   useEffect(() => {
     if (!config.GA_MEASUREMENT_ID) return;
+    installPreConsentAnalyticsQueue();
     if (isLoadingConsentInfo) return;
 
     (
@@ -41,7 +49,17 @@ export function GoogleAnalyticsCookieConsentGated() {
       }),
       update: true,
     });
+    const queueAction = resolvePreConsentAnalyticsQueueAction({
+      hasMeasurement,
+      hasConsentDecision,
+    });
+    if (queueAction === 'flush') {
+      flushPreConsentAnalyticsQueue();
+    } else if (queueAction === 'discard') {
+      discardPreConsentAnalyticsQueue();
+    }
   }, [
+    hasConsentDecision,
     hasMeasurement,
     isLoadingConsentInfo,
     originInfo.isFirstPartyOrigin,

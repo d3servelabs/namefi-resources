@@ -7,6 +7,12 @@ import {
 } from '@/lib/analytics-events';
 import { useCallback } from 'react';
 import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
+import { useNamefiConsent } from '@/components/providers/consent/namefi-consent';
+import {
+  queuePreConsentAnalyticsEvent,
+  shouldQueuePreConsentAnalyticsEvent,
+} from '@/lib/pre-consent-analytics-queue';
+import { config } from '@/lib/env';
 
 // From Google Analytics documentation
 type Item = { item_name: string; item_id: string; price: number };
@@ -155,10 +161,13 @@ function transformEvent(event: InteractionLoggingEvent): TransformedEvent {
 
 export function useGoogleAnalyticsInteractionLogger() {
   const { consumeAugmentation } = usePreAuthSignals();
+  const { consents, hasConsentDecision, isLoadingConsentInfo } =
+    useNamefiConsent();
 
   const logEvent = useCallback(
     (event: InteractionLoggingEvent) => {
       if (typeof window === 'undefined') return;
+      if (!config.GA_MEASUREMENT_ID) return;
 
       // Try to get augmentation for this event
       const partialEvent = consumeAugmentation(event.name);
@@ -177,6 +186,26 @@ export function useGoogleAnalyticsInteractionLogger() {
 
       // Transform to GA format
       const transformedEvent = transformEvent(eventWithAugmentation);
+      const hasResolvedBootstrapConsent = (
+        window as typeof window & { namefiMeasurementConsent?: boolean }
+      ).namefiMeasurementConsent;
+
+      if (
+        shouldQueuePreConsentAnalyticsEvent({
+          isLoadingConsentInfo,
+          hasMeasurement: consents.measurement,
+          hasConsentDecision,
+          hasResolvedBootstrapConsent,
+        })
+      ) {
+        queuePreConsentAnalyticsEvent(
+          transformedEvent.name,
+          transformedEvent.properties,
+        );
+        return;
+      }
+
+      if (!isLoadingConsentInfo && !consents.measurement) return;
 
       window.gtag?.(
         'event',
@@ -184,7 +213,12 @@ export function useGoogleAnalyticsInteractionLogger() {
         transformedEvent.properties,
       );
     },
-    [consumeAugmentation],
+    [
+      consents.measurement,
+      consumeAugmentation,
+      hasConsentDecision,
+      isLoadingConsentInfo,
+    ],
   );
 
   return {

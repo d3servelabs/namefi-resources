@@ -46,6 +46,7 @@ export function consumePendingConsentOpen(): boolean {
 
 export type ConsentSnapshot = {
   consents: { measurement: boolean; necessary: boolean };
+  hasConsentDecision: boolean;
   isLoadingConsentInfo: boolean;
 };
 
@@ -58,6 +59,7 @@ type NamefiConsentValue = ConsentSnapshot & {
 
 const DEFAULT_SNAPSHOT: ConsentSnapshot = {
   consents: { measurement: false, necessary: true },
+  hasConsentDecision: false,
   isLoadingConsentInfo: true,
 };
 

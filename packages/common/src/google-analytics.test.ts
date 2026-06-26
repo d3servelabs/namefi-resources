@@ -285,6 +285,68 @@ describe('google analytics helpers', () => {
     ]);
   });
 
+  it('installs the pre-consent analytics queue in the bootstrap script', () => {
+    const script = buildGoogleAnalyticsBootstrapScript({
+      measurementId: 'G-TEST',
+      measurementGranted: false,
+      originType: 'first_party',
+      originDomain: 'namefi.test',
+      debugMode: false,
+      exposeMeasurementConsent: true,
+    });
+    const windowMock = createGoogleAnalyticsWindowMock({
+      gpc: false,
+      initData: {
+        jurisdiction: 'NONE',
+        policy: { model: 'none', ui: { mode: 'none' } },
+      },
+    });
+
+    runGoogleAnalyticsBootstrapScript(script, windowMock);
+    windowMock.namefiQueuePreConsentAnalyticsEvent?.('add_to_cart', {
+      value: 12,
+    });
+    windowMock.namefiFlushPreConsentAnalyticsQueue?.();
+
+    expect(getGoogleAnalyticsCalls(windowMock)).toContainEqual([
+      'event',
+      'add_to_cart',
+      { value: 12 },
+    ]);
+  });
+
+  it('flushes queued analytics events when c15t prefetch grants measurement', async () => {
+    const script = buildGoogleAnalyticsBootstrapScript({
+      measurementId: 'G-TEST',
+      measurementGranted: false,
+      originType: 'first_party',
+      originDomain: 'namefi.test',
+      debugMode: false,
+      exposeMeasurementConsent: true,
+      c15tPrefetchBackendUrl: '/api/c15t',
+    });
+    const windowMock = createGoogleAnalyticsWindowMock({
+      gpc: false,
+      initData: {
+        jurisdiction: 'NONE',
+        policy: { model: 'none', ui: { mode: 'none' } },
+      },
+    });
+
+    runGoogleAnalyticsBootstrapScript(script, windowMock);
+    windowMock.namefiQueuePreConsentAnalyticsEvent?.('begin_checkout', {
+      value: 20,
+    });
+    await Promise.resolve();
+
+    expect(getGoogleAnalyticsCalls(windowMock)).toContainEqual([
+      'event',
+      'begin_checkout',
+      { value: 20 },
+    ]);
+    expect(windowMock.namefiPreConsentAnalyticsQueue).toEqual([]);
+  });
+
   it('keeps GA denied when c15t prefetch reports Global Privacy Control', async () => {
     const script = buildGoogleAnalyticsBootstrapScript({
       measurementId: 'G-TEST',
@@ -319,6 +381,17 @@ type GoogleAnalyticsWindowMock = {
   location: { origin: string };
   dataLayer: IArguments[];
   namefiMeasurementConsent?: boolean;
+  namefiPreConsentAnalyticsQueue?: Array<{
+    name: string;
+    properties: Record<string, unknown>;
+    queuedAt: number;
+  }>;
+  namefiQueuePreConsentAnalyticsEvent?: (
+    name: string,
+    properties?: Record<string, unknown>,
+  ) => void;
+  namefiFlushPreConsentAnalyticsQueue?: () => void;
+  namefiDiscardPreConsentAnalyticsQueue?: () => void;
   __c15tInitialDataPromises: Record<
     string,
     {

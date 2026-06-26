@@ -7,6 +7,8 @@ export const C15T_MEASUREMENT_CONSENT_HEADER = 'X-C15T-Measurement-Consent';
 export const C15T_CONSENT_COOKIE_NAME = 'c15t';
 
 const CONSENT_COOKIE_PREFIX = 'c.';
+const MAX_PRE_CONSENT_ANALYTICS_EVENTS = 50;
+const MAX_PRE_CONSENT_ANALYTICS_EVENT_AGE_MS = 30_000;
 const GA_CLIENT_ID_REGEX = /^[1-9]\d*\.[1-9]\d*$/;
 const GA_SESSION_ID_REGEX = /^\d+$/;
 const GA_COOKIE_PREFIX_REGEX = /^GA\d+$/;
@@ -408,6 +410,7 @@ export function buildGoogleAnalyticsBootstrapScript(args: {
     args.exposeMeasurementConsent
       ? `window.namefiMeasurementConsent = ${JSON.stringify(args.measurementGranted)};`
       : undefined,
+    buildPreConsentAnalyticsQueueBootstrapScript(),
     'window.gtag = window.gtag || function gtag(){window.dataLayer.push(arguments);};',
     `window.gtag('consent', 'default', ${consentState});`,
     prefetchConsentUpdateScript,
@@ -416,6 +419,47 @@ export function buildGoogleAnalyticsBootstrapScript(args: {
   ]
     .filter((line): line is string => Boolean(line))
     .join('\n');
+}
+
+function buildPreConsentAnalyticsQueueBootstrapScript(): string {
+  return `(() => {
+  const maxEvents = ${MAX_PRE_CONSENT_ANALYTICS_EVENTS};
+  const maxAgeMs = ${MAX_PRE_CONSENT_ANALYTICS_EVENT_AGE_MS};
+  const isFresh = (entry, now) =>
+    entry && typeof entry.queuedAt === 'number' && now - entry.queuedAt <= maxAgeMs;
+  const getQueue = () => {
+    if (!Array.isArray(window.namefiPreConsentAnalyticsQueue)) {
+      window.namefiPreConsentAnalyticsQueue = [];
+    }
+    return window.namefiPreConsentAnalyticsQueue;
+  };
+  window.namefiQueuePreConsentAnalyticsEvent =
+    window.namefiQueuePreConsentAnalyticsEvent ||
+    function namefiQueuePreConsentAnalyticsEvent(name, properties) {
+      const now = Date.now();
+      const queue = getQueue().filter((entry) => isFresh(entry, now));
+      window.namefiPreConsentAnalyticsQueue = queue;
+      if (queue.length >= maxEvents || typeof name !== 'string') return;
+      queue.push({ name, properties: properties || {}, queuedAt: now });
+    };
+  window.namefiFlushPreConsentAnalyticsQueue =
+    window.namefiFlushPreConsentAnalyticsQueue ||
+    function namefiFlushPreConsentAnalyticsQueue() {
+      const now = Date.now();
+      const queue = getQueue();
+      window.namefiPreConsentAnalyticsQueue = [];
+      if (typeof window.gtag !== 'function') return;
+      for (const entry of queue) {
+        if (!isFresh(entry, now) || typeof entry.name !== 'string') continue;
+        window.gtag('event', entry.name, entry.properties || {});
+      }
+    };
+  window.namefiDiscardPreConsentAnalyticsQueue =
+    window.namefiDiscardPreConsentAnalyticsQueue ||
+    function namefiDiscardPreConsentAnalyticsQueue() {
+      window.namefiPreConsentAnalyticsQueue = [];
+    };
+})();`;
 }
 
 function buildC15tPrefetchConsentUpdateScript(args: {
@@ -471,6 +515,7 @@ function buildC15tPrefetchConsentUpdateScript(args: {
             : ''
         }
         window.gtag('consent', 'update', ${grantedConsentState});
+        window.namefiFlushPreConsentAnalyticsQueue && window.namefiFlushPreConsentAnalyticsQueue();
       })
       .catch(() => undefined);
     return true;
