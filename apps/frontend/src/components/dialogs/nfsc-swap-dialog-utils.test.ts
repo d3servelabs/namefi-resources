@@ -117,7 +117,7 @@ describe('button affordances', () => {
       'Insufficient ETH Balance',
     );
     expect(getSwapButtonLabel('enter-amount')).toBe('Enter an amount');
-    expect(getSwapButtonLabel('ready')).toBe('Swap Tokens');
+    expect(getSwapButtonLabel('ready')).toBe('Pay');
   });
 });
 

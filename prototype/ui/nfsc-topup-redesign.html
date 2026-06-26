@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add NFSC — Top-up Redesign (ETH-only)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-card: #141414;
+      --bg-input: #1c1c1f;
+      --bg-input-2: #27272a;
+      --border: #27272a;
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #eab308;
+      --brand: #22c55e;       /* stand-in for --brand-primary */
+      --brand-ink: #04210f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(34,197,94,0.08), transparent 60%),
+        var(--bg-dark);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 40px 20px 80px;
+      min-height: 100vh;
+    }
+    .page { max-width: 1040px; margin: 0 auto; }
+    h1 { font-size: 26px; font-weight: 700; margin: 0 0 6px; }
+    .subtitle { color: var(--text-muted); margin: 0 0 28px; }
+
+    .req {
+      background: linear-gradient(135deg, rgba(34,197,94,0.10), rgba(34,197,94,0.04));
+      border: 1px solid rgba(34,197,94,0.20);
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 32px;
+    }
+    .req h2 {
+      font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--green); margin: 0 0 12px;
+    }
+    .req dl { display: grid; grid-template-columns: 130px 1fr; gap: 8px 16px; margin: 0; }
+    .req dt { font-weight: 600; color: var(--text-secondary); }
+    .req dd { margin: 0; color: var(--text-primary); }
+
+    .stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 720px) { .stage { grid-template-columns: 1fr; } }
+
+    /* ---- The modal ---- */
+    .phone {
+      display: flex; justify-content: center;
+      padding: 22px;
+      background:
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0 10px, transparent 10px 20px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+    }
+    .modal {
+      width: 100%; max-width: 420px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+      display: flex; flex-direction: column;
+      position: relative;
+    }
+    .scroll { padding: 22px 22px 96px; }
+
+    .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .title { font-size: 22px; font-weight: 700; margin: 0; }
+    .whatis { color: var(--text-muted); font-size: 13px; margin: 4px 0 0; }
+    .x {
+      border: none; background: transparent; color: var(--text-secondary);
+      font-size: 18px; cursor: pointer; line-height: 1; padding: 4px; border-radius: 8px;
+    }
+    .x:hover { background: var(--bg-input); color: var(--text-primary); }
+
+    .to-row {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      margin: 18px 0 22px; font-size: 13px; color: var(--text-secondary);
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--bg-input); border: 1px solid var(--border);
+      padding: 6px 10px; border-radius: 999px; font-size: 13px; color: var(--text-primary);
+    }
+    .avatar {
+      width: 18px; height: 18px; border-radius: 999px;
+      background: conic-gradient(from 140deg, #22c55e, #14b8a6, #6366f1, #22c55e);
+    }
+    .net { cursor: pointer; }
+    .net .dot { width: 14px; height: 14px; border-radius: 999px; background: #3b82f6; }
+
+    .label { font-size: 12px; text-transform: uppercase; letter-spacing: .8px; color: var(--text-muted); margin: 0 0 10px; }
+
+    .presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .chip {
+      flex: 1 1 0; min-width: 64px;
+      border: 1px solid var(--border); background: var(--bg-input);
+      color: var(--text-primary); border-radius: 12px; padding: 12px 8px;
+      font-size: 15px; font-weight: 600; cursor: pointer; text-align: center;
+      transition: all .18s ease;
+    }
+    .chip:hover { border-color: #3f3f46; }
+    .chip.active { border-color: var(--brand); background: rgba(34,197,94,0.12); color: #d9f7e3; }
+    .chip.custom { flex: 1 1 120px; color: var(--text-secondary); }
+    .chip.custom.active { color: #d9f7e3; }
+
+    .amount-box {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 18px; text-align: center; margin-bottom: 22px;
+      position: relative;
+    }
+    .amount-line { display: inline-flex; align-items: center; gap: 8px; }
+    .amount-prefix { font-size: 34px; font-weight: 700; color: var(--text-muted); }
+    .amount-input {
+      width: 4ch; min-width: 2ch; max-width: 8ch;
+      background: transparent; border: none; outline: none;
+      color: var(--text-primary); font-size: 40px; font-weight: 700;
+      font-family: inherit; text-align: left; padding: 0;
+    }
+    .amount-static { font-size: 40px; font-weight: 700; }
+    .info {
+      width: 22px; height: 22px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--bg-input);
+      color: var(--text-secondary); font-size: 13px; font-weight: 600;
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; top: -10px;
+    }
+    .info:hover { color: var(--text-primary); border-color: #3f3f46; }
+    .tooltip {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      bottom: calc(100% + 10px);
+      background: #000; border: 1px solid var(--border);
+      color: var(--text-primary); font-size: 13px; line-height: 1.4;
+      padding: 10px 12px; border-radius: 10px; width: 240px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.5);
+      opacity: 0; pointer-events: none; transition: opacity .15s ease; z-index: 5;
+    }
+    .tooltip::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 6px solid transparent; border-top-color: #000;
+    }
+    .tooltip.show { opacity: 1; }
+
+    .pay-input {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 16px 18px; margin-bottom: 16px;
+    }
+    .pay-input .row { display: flex; align-items: center; justify-content: space-between; }
+    .eth-amt { font-size: 22px; font-weight: 700; }
+    .eth-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--bg-input-2); padding: 6px 12px; border-radius: 10px; font-weight: 600; font-size: 14px; }
+    .eth-tag .glyph { width: 14px; height: 18px; background: #cfd2ff; clip-path: polygon(50% 0,100% 52%,50% 70%,0 52%); }
+    .bal { font-size: 12px; margin: 8px 0 0; color: var(--text-muted); }
+    .bal.bad { color: var(--red); }
+
+    .meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); padding: 4px 2px; }
+    .meta + .meta { margin-top: 6px; }
+
+    .actionbar {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 16px 22px calc(16px + env(safe-area-inset-bottom));
+      pointer-events: none;
+    }
+    .cta {
+      pointer-events: auto; width: 100%; border: none; cursor: pointer;
+      background: var(--brand); color: var(--brand-ink);
+      font-size: 16px; font-weight: 700; padding: 16px; border-radius: 999px;
+      transition: filter .15s ease;
+    }
+    .cta:hover { filter: brightness(1.05); }
+    .cta:disabled { cursor: not-allowed; filter: brightness(.5); }
+
+    /* processing */
+    .steps { list-style: none; margin: 8px 0 0; padding: 0; }
+    .steps li { display: flex; align-items: center; gap: 10px; padding: 10px 2px; color: var(--text-secondary); font-size: 14px; }
+    .steps .ic { width: 18px; height: 18px; border-radius: 999px; border: 2px solid var(--border); flex: none; }
+    .steps li.done .ic { border-color: var(--green); background: var(--green); position: relative; }
+    .steps li.done .ic::after { content: '✓'; position: absolute; inset: -3px 0 0 2px; font-size: 12px; color: #04210f; }
+    .steps li.active .ic { border-color: var(--green); border-top-color: transparent; animation: spin 0.8s linear infinite; }
+    .steps li.done, .steps li.active { color: var(--text-primary); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .back { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 13px; padding: 0; margin-bottom: 14px; }
+    .back:hover { color: var(--text-primary); }
+
+    /* config */
+    .config {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px;
+      position: sticky; top: 20px;
+    }
+    .config h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin: 0 0 14px; }
+    .config label { display: block; font-size: 12px; color: var(--text-secondary); margin: 14px 0 6px; }
+    .config input[type=range] { width: 100%; accent-color: var(--brand); }
+    .config .val { float: right; color: var(--text-primary); font-weight: 600; }
+    .hint { font-size: 11px; color: var(--text-muted); margin-top: 18px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Add NFSC — top-up redesign</h1>
+    <p class="subtitle">ETH-only · amount denominated in USD value · <code>ⓘ</code> explains the credit</p>
+
+    <div class="req">
+      <h2>📋 Design intent</h2>
+      <dl>
+        <dt>Problem</dt><dd>The old modal forced a DEX "swap" mental model and a parallel card checkout. Two flows, jargon ("Swap Tokens"), and a CTA that jumped between tabs.</dd>
+        <dt>Change</dt><dd>One ETH-only path. The subject is <strong>how much value</strong> (shown as <strong>$</strong>), not a raw NFSC figure. <code>ⓘ</code> defines NFSC on demand. ETH cost + gas stay visible; the CTA states the exact ETH amount.</dd>
+        <dt>Constraints</dt><dd>Mobile bottom-sheet, single floating action bar, theme tokens (no hardcoded zinc), RTL-safe, minimal chrome.</dd>
+      </dl>
+    </div>
+
+    <div class="stage">
+      <div class="phone">
+        <div class="modal" id="modal">
+          <!-- ENTER state -->
+          <div class="scroll" id="enterView">
+            <div class="head">
+              <div>
+                <h2 class="title">Add NFSC</h2>
+                <p class="whatis">Prepaid credit for renewals, fees &amp; checkout</p>
+              </div>
+              <button type="button" class="x" title="Close">✕</button>
+            </div>
+
+            <div class="to-row">
+              <span>To</span>
+              <span class="pill"><span class="avatar"></span> 0x1b0f…C8Ad</span>
+              <span>on</span>
+              <span class="pill net"><span class="dot"></span> Base ▾</span>
+            </div>
+
+            <p class="label">Amount</p>
+            <div class="presets" id="presets">
+              <button type="button" class="chip" data-amt="10">$10</button>
+              <button type="button" class="chip active" data-amt="25">$25</button>
+              <button type="button" class="chip" data-amt="50">$50</button>
+              <button type="button" class="chip" data-amt="100">$100</button>
+              <button type="button" class="chip custom" data-amt="custom">Custom</button>
+            </div>
+
+            <div class="amount-box">
+              <div class="tooltip" id="tooltip"></div>
+              <span class="amount-line">
+                <span class="amount-prefix">$</span>
+                <input class="amount-input" id="amountInput" value="25" inputmode="decimal" />
+                <button type="button" class="info" id="infoBtn" title="What is this?">i</button>
+              </span>
+            </div>
+
+            <p class="label">Pay with ETH</p>
+            <div class="pay-input">
+              <div class="row">
+                <span class="eth-amt" id="ethAmt">0.00877</span>
+                <span class="eth-tag"><span class="glyph"></span> ETH</span>
+              </div>
+              <p class="bal" id="bal">Balance: 0.2000 ETH</p>
+            </div>
+
+            <div class="meta"><span>Rate</span><span id="rateLine">1 ETH = 2850 NFSC</span></div>
+            <div class="meta"><span>Gas fee</span><span id="gasLine">≈ 0.000123 ETH</span></div>
+          </div>
+
+          <div class="actionbar" id="actionbar">
+            <button type="button" class="cta" id="payBtn">Pay · 0.00877 ETH</button>
+          </div>
+
+          <!-- PROCESSING state (hidden until pay) -->
+          <div class="scroll" id="processView" style="display:none">
+            <button type="button" class="back" id="backBtn">← Back</button>
+            <h2 class="title" style="font-size:18px" id="processTitle">Paying $25.00 with 0.00877 ETH</h2>
+            <ul class="steps" id="steps">
+              <li data-step="0"><span class="ic"></span> Awaiting wallet signature…</li>
+              <li data-step="1"><span class="ic"></span> Submitting transaction</li>
+              <li data-step="2"><span class="ic"></span> Crediting NFSC to your wallet</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="config">
+        <h3>Try states</h3>
+        <label>ETH balance <span class="val" id="balVal">0.2000</span></label>
+        <input type="range" id="balRange" min="0" max="0.5" step="0.001" value="0.2" />
+        <label>Rate (NFSC / ETH) <span class="val" id="rateVal">2850</span></label>
+        <input type="range" id="rateRange" min="1000" max="4000" step="10" value="2850" />
+        <p class="hint">
+          Drag the balance below the cost to see the <strong>insufficient</strong> state.
+          Click <strong>ⓘ</strong> for the credit definition. Press <strong>Pay</strong> to run the on-chain progress view.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const GAS_ETH = 0.000123;
+    const state = { amount: 25, rate: 2850, balance: 0.2, custom: false };
+
+    const $ = (id) => document.getElementById(id);
+    const fmtEth = (n) => n.toFixed(5);
+
+    function ethCost() { return state.amount / state.rate; }      // NFSC = USD; ETH = NFSC / (NFSC per ETH)
+    function totalEth() { return ethCost() + GAS_ETH; }
+    function insufficient() { return totalEth() > state.balance + 1e-12; }
+    function valid() { return state.amount > 0; }
+
+    function render() {
+      const cost = ethCost();
+      $('ethAmt').textContent = fmtEth(cost);
+      $('rateLine').textContent = `1 ETH = ${state.rate} NFSC`;
+      $('gasLine').textContent = `≈ ${GAS_ETH.toFixed(6)} ETH`;
+      const bal = $('bal');
+      const suffix = insufficient() ? ' · Insufficient balance' : '';
+      bal.textContent = `Balance: ${state.balance.toFixed(4)} ETH${suffix}`;
+      bal.classList.toggle('bad', insufficient());
+
+      const btn = $('payBtn');
+      if (!valid()) { btn.textContent = 'Enter an amount'; btn.disabled = true; }
+      else if (insufficient()) { btn.textContent = 'Insufficient ETH balance'; btn.disabled = true; }
+      else { btn.textContent = `Pay · ${fmtEth(cost)} ETH`; btn.disabled = false; }
+
+      // tooltip text tracks the amount
+      $('tooltip').textContent = `$${state.amount} worth of Namefi Service Credits (NFSC).`;
+    }
+
+    // presets
+    $('presets').addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      document.querySelectorAll('.chip').forEach((c) => {
+        c.classList.remove('active');
+      });
+      chip.classList.add('active');
+      if (chip.dataset.amt === 'custom') {
+        state.custom = true; $('amountInput').focus(); $('amountInput').select();
+      } else {
+        state.custom = false;
+        state.amount = Number(chip.dataset.amt);
+        $('amountInput').value = chip.dataset.amt;
+      }
+      render();
+    });
+
+    // custom typing
+    $('amountInput').addEventListener('input', (e) => {
+      const v = e.target.value.replace(/[^0-9.]/g, '');
+      e.target.value = v;
+      state.amount = Number(v) || 0;
+      // mark the custom chip active when typing a non-preset value
+      const presetMatch = [...document.querySelectorAll('.chip')].find(c => c.dataset.amt === v);
+      document.querySelectorAll('.chip').forEach((c) => {
+        c.classList.remove('active');
+      });
+      (presetMatch || document.querySelector('.chip.custom')).classList.add('active');
+      render();
+    });
+
+    // info tooltip (click to toggle — works on touch too)
+    let tipOpen = false;
+    $('infoBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      tipOpen = !tipOpen;
+      $('tooltip').classList.toggle('show', tipOpen);
+    });
+    document.addEventListener('click', () => { tipOpen = false; $('tooltip').classList.remove('show'); });
+
+    // config sliders
+    $('balRange').addEventListener('input', (e) => {
+      state.balance = Number(e.target.value); $('balVal').textContent = state.balance.toFixed(4); render();
+    });
+    $('rateRange').addEventListener('input', (e) => {
+      state.rate = Number(e.target.value); $('rateVal').textContent = state.rate; render();
+    });
+
+    // pay → processing
+    $('payBtn').addEventListener('click', () => {
+      if ($('payBtn').disabled) return;
+      $('processTitle').textContent = `Paying $${state.amount.toFixed(2)} with ${fmtEth(ethCost())} ETH`;
+      $('enterView').style.display = 'none';
+      $('actionbar').style.display = 'none';
+      $('processView').style.display = 'block';
+      const steps = [...document.querySelectorAll('#steps li')];
+      steps.forEach((s) => {
+        s.className = '';
+      });
+      let i = 0;
+      steps[0].classList.add('active');
+      const tick = () => {
+        steps[i].classList.remove('active'); steps[i].classList.add('done');
+        i++;
+        if (i < steps.length) { steps[i].classList.add('active'); setTimeout(tick, 1100); }
+      };
+      setTimeout(tick, 1100);
+    });
+
+    $('backBtn').addEventListener('click', () => {
+      $('processView').style.display = 'none';
+      $('enterView').style.display = 'block';
+      $('actionbar').style.display = 'block';
+    });
+
+    render();
+  </script>
+</body>
+</html>

@@ -1,14 +1,18 @@
 {
   "swap.title": {
-    "description": "Title of the NFSC swap/top-up dialog. Keep the 'NFSC' token name untranslated.",
+    "description": "Title of the NFSC top-up dialog. Keep the 'NFSC' token name untranslated.",
     "maxLength": 40
   },
+  "swap.subtitle": {
+    "description": "One-line description under the dialog title explaining what NFSC is for. Keep 'NFSC' untranslated.",
+    "maxLength": 56
+  },
   "swap.chargingWallet": {
-    "description": "Label above the wallet address that will be charged/credited in the NFSC swap dialog.",
+    "description": "Label above the wallet address that will be charged/credited in the NFSC top-up dialog.",
     "maxLength": 24
   },
   "swap.network": {
-    "description": "Label for the blockchain network selector in the NFSC swap dialog.",
+    "description": "Label for the blockchain network selector in the NFSC top-up dialog.",
     "maxLength": 16
   },
   "swap.switchingNetwork": {
@@ -26,20 +30,24 @@
   "swap.pendingTopUps": {
     "description": "Heading above the list of in-flight NFSC top-ups for the current wallet."
   },
-  "swap.payWithEth": {
-    "description": "Tab label for paying with ETH in the NFSC swap dialog. Keep 'ETH' untranslated.",
-    "maxLength": 18
+  "swap.amountLabel": {
+    "description": "Label above the amount selector in the NFSC top-up dialog.",
+    "maxLength": 16
   },
-  "swap.payWithCard": {
-    "description": "Tab label for paying with a credit card in the NFSC swap dialog.",
-    "maxLength": 18
+  "swap.presetCustom": {
+    "description": "Chip label letting the user enter a custom top-up amount instead of a preset.",
+    "maxLength": 16
   },
-  "swap.youPayExcludingGas": {
-    "description": "Label above the ETH amount input the user pays, noting gas fees are excluded."
+  "swap.creditTooltip": {
+    "description": "Popover explaining the credit. {amount} is a pre-formatted USD value shown after a literal '$'. Keep 'Namefi' and 'NFSC' untranslated; 'Service Credits' may be localized."
   },
-  "swap.youReceive": {
-    "description": "Label above the NFSC amount the user will receive in the swap dialog.",
+  "swap.creditInfoAriaLabel": {
+    "description": "Accessible label for the info button that explains what NFSC is. Keep 'NFSC' untranslated.",
     "maxLength": 24
+  },
+  "swap.payWithEth": {
+    "description": "Label above the ETH cost in the NFSC top-up dialog. Keep 'ETH' untranslated.",
+    "maxLength": 18
   },
   "swap.ethBalance": {
     "description": "Shows the user's ETH balance. {amount} is a pre-formatted number; keep 'ETH' untranslated.",
@@ -50,11 +58,11 @@
     "maxLength": 32
   },
   "swap.insufficientBalanceInline": {
-    "description": "Inline note appended next to the ETH balance when it is too low to cover the swap.",
+    "description": "Inline note appended next to the ETH balance when it is too low to cover the top-up.",
     "maxLength": 28
   },
   "swap.rate": {
-    "description": "Label for the exchange-rate row in the swap dialog.",
+    "description": "Label for the exchange-rate row in the top-up dialog.",
     "maxLength": 16
   },
   "swap.rateValue": {
@@ -62,7 +70,7 @@
     "maxLength": 32
   },
   "swap.gasFee": {
-    "description": "Label for the gas/network fee row in the swap dialog.",
+    "description": "Label for the gas/network fee row in the top-up dialog.",
     "maxLength": 16
   },
   "swap.estimatingGasFee": {
@@ -70,14 +78,14 @@
     "maxLength": 20
   },
   "swap.submittedToastTitle": {
-    "description": "Toast title shown when the NFSC swap transaction is submitted to the network.",
+    "description": "Toast title shown when the NFSC top-up transaction is submitted to the network.",
     "maxLength": 32
   },
   "swap.submittedToastDescription": {
-    "description": "Toast body after submitting a swap. {payAmount} and {receiveAmount} are pre-formatted numbers; keep 'ETH' and 'NFSC' untranslated."
+    "description": "Toast body after submitting a top-up. {nfscAmount} and {ethAmount} are pre-formatted numbers; keep 'ETH' and 'NFSC' untranslated."
   },
   "swap.genericError": {
-    "description": "Fallback error message when an NFSC swap fails without a specific reason."
+    "description": "Fallback error message when an NFSC top-up fails without a specific reason."
   },
   "swap.networkSwitchedToastTitle": {
     "description": "Toast title shown after the wallet successfully switches blockchain networks.",
@@ -90,102 +98,31 @@
     "description": "Toast title shown when switching blockchain networks fails.",
     "maxLength": 32
   },
-  "swap.insufficientEthError": {
-    "description": "Error shown when the user's ETH balance is too low to perform the swap. Keep 'ETH' untranslated."
-  },
   "swap.invalidAmountError": {
-    "description": "Error shown when the entered swap amount is not a valid number."
+    "description": "Error shown when the entered top-up amount is not a valid number."
   },
   "swap.transactionFailedError": {
-    "description": "Fallback error shown when the swap transaction fails."
+    "description": "Fallback error shown when the top-up transaction fails."
   },
   "swap.button.connectWallet": {
-    "description": "Primary swap button label prompting the user to connect their wallet.",
+    "description": "Primary button label prompting the user to connect their wallet.",
     "maxLength": 24
   },
   "swap.button.connectingWallet": {
-    "description": "Primary swap button label shown while a wallet connection is in progress.",
+    "description": "Primary button label shown while a wallet connection is in progress.",
     "maxLength": 24
   },
   "swap.button.insufficientEthBalance": {
-    "description": "Primary swap button label when ETH balance is too low. Keep 'ETH' untranslated.",
+    "description": "Primary button label when ETH balance is too low. Keep 'ETH' untranslated.",
     "maxLength": 28
   },
   "swap.button.enterAmount": {
-    "description": "Primary swap button label prompting the user to enter an amount.",
+    "description": "Primary button label prompting the user to enter an amount.",
     "maxLength": 24
   },
-  "swap.button.swapTokens": {
-    "description": "Primary swap button label when the swap is ready to submit.",
+  "swap.button.pay": {
+    "description": "Primary button label to submit the top-up. {amount} is the ETH cost; keep 'ETH' untranslated.",
     "maxLength": 24
-  },
-  "topup.connectWalletPrompt": {
-    "description": "Message prompting the user to connect or select a wallet before topping up NFSC. Keep 'NFSC' untranslated."
-  },
-  "topup.youPayWithCard": {
-    "description": "Label above the USD amount input when paying for NFSC with a card."
-  },
-  "topup.youReceive": {
-    "description": "Label above the NFSC amount the user will receive when topping up with a card.",
-    "maxLength": 24
-  },
-  "topup.rateUsdToNfsc": {
-    "description": "Exchange rate note for card top-ups. Keep 'USD' and 'NFSC' untranslated.",
-    "maxLength": 32
-  },
-  "topup.changeAmount": {
-    "description": "Back link to return to the amount-entry step in the card top-up flow.",
-    "maxLength": 24
-  },
-  "topup.youPay": {
-    "description": "Label for the amount-due row in the card top-up summary.",
-    "maxLength": 16
-  },
-  "topup.youPaySummary": {
-    "description": "Card top-up summary. {usdAmount} and {nfscAmount} are pre-formatted numbers; keep the leading '$' and 'NFSC' untranslated."
-  },
-  "topup.startingTopUp": {
-    "description": "Loading text shown while the card top-up is being started."
-  },
-  "topup.processingTopUp": {
-    "description": "Loading text shown while the card top-up is being processed."
-  },
-  "topup.continueToPayment": {
-    "description": "Button label to proceed to the card payment step.",
-    "maxLength": 24
-  },
-  "topup.enterAmount": {
-    "description": "Button label prompting the user to enter a top-up amount before continuing.",
-    "maxLength": 24
-  },
-  "topup.enterMinAmountError": {
-    "description": "Error shown when the entered top-up amount is below the $1.00 minimum."
-  },
-  "topup.selectNetworkError": {
-    "description": "Error shown when the user must pick a blockchain network before topping up."
-  },
-  "topup.noRecipientWalletError": {
-    "description": "Error shown when no recipient wallet is available for the NFSC top-up."
-  },
-  "topup.initPaymentError": {
-    "description": "Error shown when the card payment session fails to initialize."
-  },
-  "topup.startTopUpError": {
-    "description": "Fallback error shown when starting the NFSC card top-up fails."
-  },
-  "topup.completeToastTitle": {
-    "description": "Toast title shown when an NFSC card top-up completes successfully. Keep 'NFSC' untranslated.",
-    "maxLength": 32
-  },
-  "topup.completeToastDescription": {
-    "description": "Toast body after a successful card top-up. {amount} is a pre-formatted number; keep 'NFSC' untranslated."
-  },
-  "topup.incompleteToastTitle": {
-    "description": "Toast title shown when an NFSC card top-up did not complete. Keep 'NFSC' untranslated.",
-    "maxLength": 36
-  },
-  "topup.incompleteToastFallback": {
-    "description": "Fallback toast body when a card top-up fails without a specific error message."
   },
   "wallet.balanceLabel": {
     "description": "Label for the total NFSC balance on the wallet card. Keep 'NFSC' untranslated.",

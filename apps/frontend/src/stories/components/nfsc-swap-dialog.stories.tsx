@@ -137,9 +137,10 @@ function StoryProviders({ children }: { children: ReactNode }) {
 
 /**
  * The real `NFSCSwapDialog` rendered with mocked chain data (no live RPC) so the
- * top-up / swap flow can be inspected — including the #4578 mobile-scroll fix.
+ * ETH-only NFSC top-up flow can be inspected — the USD-denominated amount with
+ * preset chips + the ⓘ credit explainer, and the #4578 mobile-scroll fix.
  * Switch the Storybook viewport to a phone size (e.g. iPhone) to verify the
- * dialog scrolls and the Swap button stays reachable.
+ * dialog scrolls and the Pay button stays reachable.
  */
 const meta = {
   title: 'Components/NFSCSwapDialog',
@@ -161,3 +162,35 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+/** Sets the document direction to RTL while mounted (and restores it on
+ * unmount). The dialog renders through a portal on `document.body`, so a
+ * `dir="rtl"` wrapper around the story would not reach it — the attribute has
+ * to live on `<html>` for the logical-property layout to mirror. */
+function RtlDirection({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    const root = document.documentElement;
+    const previous = root.getAttribute('dir');
+    root.setAttribute('dir', 'rtl');
+    return () => {
+      if (previous === null) root.removeAttribute('dir');
+      else root.setAttribute('dir', previous);
+    };
+  }, []);
+  return <>{children}</>;
+}
+
+/**
+ * The same dialog under a right-to-left locale. Storybook's locale toolbar does
+ * not set the document `dir`, so a decorator sets it on `<html>` to verify the
+ * logical-property layout mirrors (presets, amount field, ⓘ, action bar).
+ */
+export const RTL: Story = {
+  decorators: [
+    (Story) => (
+      <RtlDirection>
+        <Story />
+      </RtlDirection>
+    ),
+  ],
+};

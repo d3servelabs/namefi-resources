@@ -208,7 +208,9 @@ export function getSwapButtonLabel(state: SwapButtonState): string {
     case 'enter-amount':
       return 'Enter an amount';
     case 'ready':
-      return 'Swap Tokens';
+      // The live button interpolates the ETH cost ("Pay 0.0088 ETH"); this is
+      // the amount-less reference fallback for the ready state.
+      return 'Pay';
   }
 }
 

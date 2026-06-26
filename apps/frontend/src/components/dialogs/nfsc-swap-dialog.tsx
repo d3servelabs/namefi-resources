@@ -8,18 +8,24 @@ import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@namefi-astra/ui/components/shadcn/popover';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { useBuyNfsc } from '@/hooks/use-buy-nfsc';
 import useGetNfscExchangeRate from '@/hooks/use-get-nfsc-exchange-rate';
 import useNfscBalance from '@/hooks/use-nfsc-balance';
-import { AlertCircle, ArrowDown, Loader2 } from 'lucide-react';
+import { AlertCircle, Info, Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { parseEther } from 'viem';
@@ -37,17 +43,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@namefi-astra/ui/components/shadcn/select';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@namefi-astra/ui/components/shadcn/tabs';
 import { NfscOrdersList } from '@/components/payment-method/nfsc-orders-list';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useWalletConnectionRuntime } from '@/components/providers/wallet-connection-runtime';
-import dynamic from 'next/dynamic';
 import {
   getSwapButtonState,
   isConnectAction,
@@ -60,26 +59,6 @@ import {
 } from '@/components/dialogs/nfsc-swap-dialog-utils';
 import { WagmiProvider } from '@/components/providers/wagmi';
 
-function TabLoadingFallback() {
-  const tCommon = useTranslations('common');
-  return (
-    <div className="flex items-center justify-center gap-2 py-10 text-gray-400">
-      <Loader2 className="h-5 w-5 animate-spin" />
-      {tCommon('actions.loading')}
-    </div>
-  );
-}
-
-const NfscCardTopUpTab = dynamic(
-  () =>
-    import('@/components/dialogs/nfsc-card-topup-tab').then(
-      (mod) => mod.NfscCardTopUpTab,
-    ),
-  {
-    loading: () => <TabLoadingFallback />,
-  },
-);
-
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -89,6 +68,10 @@ type Props = {
 const DISPLAY_DECIMALS = 2;
 const CALCULATION_DECIMALS = 6;
 const DECIMAL_INPUT_PATTERN = /^\d*\.?\d*$/;
+
+// Quick-pick amounts in whole USD. 1 USD buys 1 NFSC, so these double as the
+// NFSC quantities; the ETH actually sent is derived from the live rate.
+const PRESET_USD_AMOUNTS = [10, 25, 50, 100] as const;
 
 // Funded admin/treasury wallet used ONLY to simulate a representative fee
 // estimate (eth_estimateGas + the OP-stack L1-fee oracle read — read-only, no
@@ -129,12 +112,12 @@ function NFSCSwapDialogInner(props: Props) {
       displayAddress ? attemptGetChecksummedAddress(displayAddress) : null,
     [displayAddress],
   );
-  const [amountPay, setAmountPay] = useState('');
-  const [amountReceive, setAmountReceive] = useState('');
-  const [insufficientBalance, setInsufficientBalance] = useState(false);
+  // The amount of NFSC to buy, expressed in whole USD (1 USD = 1 NFSC). This is
+  // the subject of the screen; the ETH the user sends is derived from it.
+  const [amountUsd, setAmountUsd] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [paymentTab, setPaymentTab] = useState<'eth' | 'card'>('eth');
   const [isConnectingWallet, setIsConnectingWallet] = useState(false);
+  const amountInputRef = useRef<HTMLInputElement>(null);
 
   const { nfscBalanceChains: chains } = useAllowedChains();
   const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
@@ -144,7 +127,7 @@ function NFSCSwapDialogInner(props: Props) {
   const { data: conversionRate, isLoading: isConversionRateLoading } =
     useGetNfscExchangeRate();
 
-  // Pending NFSC top-ups for this wallet — shown above the tabs so users see
+  // Pending NFSC top-ups for this wallet — shown above the inputs so users see
   // anything already in flight before they start another. Polled while the
   // dialog is open so newly-started top-ups appear without manual refresh.
   const trpc = useTRPC();
@@ -161,6 +144,48 @@ function NFSCSwapDialogInner(props: Props) {
     enabled: open && Boolean(checksummedAddress),
     refetchInterval: open ? 5000 : false,
   });
+
+  // 1 USD = 1 NFSC, so the entered USD value is also the NFSC quantity.
+  const amountUsdNum = useMemo(() => {
+    const parsed = Number.parseFloat(amountUsd);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+  }, [amountUsd]);
+  // NFSC per ETH, from the on-chain price oracle.
+  const rateNum = useMemo(() => {
+    const parsed = conversionRate ? Number.parseFloat(conversionRate) : 0;
+    return Number.isFinite(parsed) ? parsed : 0;
+  }, [conversionRate]);
+
+  // ETH the user must send to receive the requested NFSC: NFSC ÷ (NFSC per ETH).
+  const ethToSendNum = useMemo(() => {
+    if (amountUsdNum <= 0 || rateNum <= 0) return 0;
+    return amountUsdNum / rateNum;
+  }, [amountUsdNum, rateNum]);
+  const ethToSendString = useMemo(
+    () => (ethToSendNum > 0 ? ethToSendNum.toFixed(CALCULATION_DECIMALS) : ''),
+    [ethToSendNum],
+  );
+  const displayEthAmount =
+    ethToSendNum > 0 ? ethToSendNum.toFixed(CALCULATION_DECIMALS) : '0';
+
+  // The exact wei the buy tx will send. `ethToSendString` is already rounded to
+  // our display precision, so this is what the user actually pays — it gates
+  // validity (a positive amount that rounds to 0 wei is not payable) and drives
+  // the gas estimate. `undefined` until a valid, positive amount is entered.
+  const payValueWei = useMemo(() => {
+    if (!ethToSendString) return undefined;
+    try {
+      return parseEther(ethToSendString);
+    } catch {
+      return undefined;
+    }
+  }, [ethToSendString]);
+
+  const insufficientBalance = useMemo(() => {
+    if (!nativeBalance || ethToSendNum <= 0) return false;
+    return ethToSendNum > Number.parseFloat(nativeBalance.formatted);
+  }, [nativeBalance, ethToSendNum]);
+
   const {
     writeContractAsync: exchangeNfsc,
     isPending,
@@ -171,8 +196,8 @@ function NFSCSwapDialogInner(props: Props) {
     onSuccess: () => {
       toast.success(t('swap.submittedToastTitle'), {
         description: t('swap.submittedToastDescription', {
-          payAmount: amountPay,
-          receiveAmount: displayReceiveAmount(),
+          nfscAmount: amountUsdNum.toFixed(DISPLAY_DECIMALS),
+          ethAmount: displayEthAmount,
         }),
       });
       onOpenChange(false);
@@ -183,48 +208,23 @@ function NFSCSwapDialogInner(props: Props) {
     },
   });
 
-  // Check if user has sufficient balance
-  useEffect(() => {
-    if (!nativeBalance || amountPay === '') return;
-
-    try {
-      const payAmount = Number.parseFloat(amountPay);
-      const nativeBalanceNum = Number.parseFloat(nativeBalance.formatted);
-
-      setInsufficientBalance(payAmount > nativeBalanceNum);
-
-      if (errorMessage) {
-        setErrorMessage('');
-      }
-    } catch (error) {
-      console.error('Error checking balance:', error);
-    }
-  }, [amountPay, nativeBalance, errorMessage]);
-
-  // Calculate the corresponding amount when inputs change
-  useEffect(() => {
-    if (!conversionRate || conversionRate === '0') return;
-
-    try {
-      const rate = Number.parseFloat(conversionRate);
-
-      if (amountPay !== '') {
-        const payAmount = Number.parseFloat(amountPay);
-        const receiveAmount = (payAmount * rate).toFixed(CALCULATION_DECIMALS);
-        setAmountReceive(receiveAmount);
-      } else {
-        setAmountReceive('');
-      }
-    } catch (error) {
-      console.error('Error calculating amounts:', error);
-    }
-  }, [amountPay, conversionRate]);
-
-  const handlePayChange = useCallback((value: string) => {
-    // Only allow valid decimal numbers
+  const handleAmountChange = useCallback((value: string) => {
+    // Only allow valid decimal numbers.
     if (value === '' || DECIMAL_INPUT_PATTERN.test(value)) {
-      setAmountPay(value);
+      setAmountUsd(value);
+      setErrorMessage('');
     }
+  }, []);
+
+  const handlePresetSelect = useCallback((usd: number) => {
+    setAmountUsd(String(usd));
+    setErrorMessage('');
+  }, []);
+
+  const handleCustomSelect = useCallback(() => {
+    setAmountUsd('');
+    setErrorMessage('');
+    amountInputRef.current?.focus();
   }, []);
 
   const handleChainChange = useCallback(
@@ -284,18 +284,24 @@ function NFSCSwapDialogInner(props: Props) {
   const handleOnExchange = async () => {
     setErrorMessage('');
 
-    if (insufficientBalance) {
-      setErrorMessage(t('swap.insufficientEthError'));
-      return;
-    }
+    // Note: insufficient balance is surfaced before this handler can run — the
+    // button is disabled and labeled "Insufficient ETH Balance" (and the ETH
+    // row shows an inline warning) whenever `insufficientBalance` is true, so
+    // there's no insufficient-balance branch here. Putting it in a persistent
+    // error would also go stale: the alert would linger after the balance
+    // recovers, since errors only clear on amount edit or resubmit.
 
-    if (!isInputValid()) {
+    // Guard the rounded-to-zero case: a tiny USD amount can leave a positive
+    // `ethToSendNum` that still rounds to "0.000000" at our 6-decimal
+    // precision, which would submit a 0-wei buy. `payValueWei` is the exact
+    // value the tx sends, so require it to be positive.
+    if (!payValueWei || payValueWei <= 0n) {
       setErrorMessage(t('swap.invalidAmountError'));
       return;
     }
 
     try {
-      await exchangeNfsc(parseEther(amountPay));
+      await exchangeNfsc(payValueWei);
     } catch (error) {
       setErrorMessage(
         error instanceof Error
@@ -305,38 +311,11 @@ function NFSCSwapDialogInner(props: Props) {
     }
   };
 
-  const isInputValid = useCallback(() => {
-    try {
-      const payValue = Number.parseFloat(amountPay) || 0;
-      return payValue > 0 && !Number.isNaN(payValue);
-    } catch {
-      return false;
-    }
-  }, [amountPay]);
-
-  const displayReceiveAmount = useCallback(() => {
-    if (amountReceive === '') return '';
-    try {
-      return Number.parseFloat(amountReceive).toFixed(DISPLAY_DECIMALS);
-    } catch {
-      return '';
-    }
-  }, [amountReceive]);
-
-  // Total network fee for the `buyWithEthers` swap (L2 execution + Base's L1
+  // Total network fee for the `buyWithEthers` call (L2 execution + Base's L1
   // data fee). It depends on the ETH value being sent, so re-estimate as the
-  // pay amount changes. Before a valid amount is entered — or if the user's own
+  // amount changes. Before a valid amount is entered — or if the user's own
   // params can't simulate — the hook falls back to a funded signer + a nominal
   // value so a representative fee still shows (flagged `isFallback`).
-  const payValueWei = useMemo(() => {
-    if (!isInputValid()) return undefined;
-    try {
-      return parseEther(amountPay);
-    } catch {
-      return undefined;
-    }
-  }, [amountPay, isInputValid]);
-
   const {
     feeFormatted: gasFeeEth,
     isLoading: isGasFeeLoading,
@@ -356,14 +335,20 @@ function NFSCSwapDialogInner(props: Props) {
     return isGasFeeFallback ? `≈ ${formatted}` : formatted;
   }, [isGasFeeLoading, gasFeeEth, isGasFeeFallback, t]);
 
-  const isEthTabLoading = isLoading || isConversionRateLoading;
+  const isBodyLoading = isLoading || isConversionRateLoading;
+  // A positive USD amount alone isn't enough: without a live rate we can't
+  // derive the ETH cost, and a cost that rounds to 0 at our display precision
+  // is not payable. Gate "ready" on a positive payable wei value (the exact
+  // amount the tx will send).
+  const isAmountValid =
+    amountUsdNum > 0 && payValueWei !== undefined && payValueWei > 0n;
 
   const swapButtonState = getSwapButtonState({
     hasReadyWallet: isWalletReady,
     isWalletConnecting: isWalletConnecting || isConnectingWallet,
     insufficientBalance,
     isPending,
-    isAmountValid: isInputValid(),
+    isAmountValid,
   });
   const isButtonDisabled = isSwapButtonDisabled(swapButtonState);
   const isSwapButtonActionConnect = isConnectAction(swapButtonState);
@@ -380,7 +365,7 @@ function NFSCSwapDialogInner(props: Props) {
       case 'enter-amount':
         return t('swap.button.enterAmount');
       case 'ready':
-        return t('swap.button.swapTokens');
+        return t('swap.button.pay', { amount: displayEthAmount });
     }
   })(swapButtonState);
   const formattedRate = conversionRate
@@ -393,6 +378,11 @@ function NFSCSwapDialogInner(props: Props) {
     ? Number.parseFloat(nativeBalance.formatted).toFixed(DISPLAY_DECIMALS)
     : '0';
 
+  // The credit explainer mirrors the entered amount; fall back to a sample so
+  // the popover still reads naturally before any amount is chosen.
+  const creditTooltipAmount =
+    amountUsdNum > 0 ? amountUsdNum.toFixed(DISPLAY_DECIMALS) : '25';
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
@@ -402,8 +392,8 @@ function NFSCSwapDialogInner(props: Props) {
         )}
         data-testid="nfsc-swap-dialog"
       >
-        {/* Scrollable body — header, balances, and the swap inputs scroll here,
-            full height, behind the floating action bar (#4578 / #4587). */}
+        {/* Scrollable body — header, balances, and the amount inputs scroll
+            here, full height, behind the floating action bar (#4578 / #4587). */}
         <div
           className={SWAP_DIALOG_SCROLL_CLASSNAME}
           data-testid="nfsc-swap-scroll"
@@ -413,9 +403,14 @@ function NFSCSwapDialogInner(props: Props) {
               {/* Reserve space for the absolutely-positioned close button
                   (top-4 right-4, size-8) so a long/localized title never runs
                   under the X. */}
-              <DialogTitle className="pe-10 text-2xl font-bold">
-                {t('swap.title')}
-              </DialogTitle>
+              <div className="flex flex-col gap-1">
+                <DialogTitle className="pe-10 text-2xl font-bold">
+                  {t('swap.title')}
+                </DialogTitle>
+                <DialogDescription className="text-gray-400">
+                  {t('swap.subtitle')}
+                </DialogDescription>
+              </div>
               {checksummedAddress && (
                 <div className="flex flex-col gap-1">
                   <span className="text-xs text-gray-500 uppercase tracking-wide">
@@ -498,153 +493,167 @@ function NFSCSwapDialogInner(props: Props) {
             </div>
           )}
 
-          <Tabs
-            value={paymentTab}
-            onValueChange={(value) => setPaymentTab(value as 'eth' | 'card')}
-            className="w-full"
-          >
-            <TabsList className="grid grid-cols-2 mx-6">
-              <TabsTrigger value="eth">{t('swap.payWithEth')}</TabsTrigger>
-              <TabsTrigger value="card">{t('swap.payWithCard')}</TabsTrigger>
-            </TabsList>
-            <TabsContent value="eth">
-              {isEthTabLoading ? (
-                <div className="flex items-center justify-center gap-2 py-10 text-gray-400">
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  {tCommon('actions.loading')}
+          {isBodyLoading ? (
+            <div className="flex items-center justify-center gap-2 py-10 text-gray-400">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              {tCommon('actions.loading')}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {/* Amount — the subject of the screen, in USD value (1 USD = 1
+                  NFSC). Quick-pick chips + a free-form field; the ⓘ explains
+                  what the credit is without permanent help text. */}
+              <div className="px-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-gray-500 uppercase tracking-wide">
+                    {t('swap.amountLabel')}
+                  </span>
+                  <span className="text-xs text-gray-400">
+                    {t('swap.nfscBalance', { amount: formattedNfscBalance })}
+                  </span>
                 </div>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  <div className="relative mx-6">
-                    <div className="bg-zinc-900 rounded-lg p-4 mb-1">
-                      <p className="text-gray-400 mb-2">
-                        {t('swap.youPayExcludingGas')}
-                      </p>
-                      <div className="flex justify-between items-center">
-                        <Input
-                          type="text"
-                          placeholder={'0'}
-                          value={amountPay}
-                          onChange={(e) => handlePayChange(e.target.value)}
-                          data-testid="nfsc-swap-pay-input"
-                          className="shadow-none ps-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
-                        />
-                        <div className="flex items-center gap-2 bg-zinc-700 p-2 px-4 rounded-lg">
-                          <Image
-                            src="/assets/payment/eth.svg"
-                            alt="ETH"
-                            width={16}
-                            height={16}
-                            className="text-secondary-foreground"
-                          />
-                          <span className="font-medium">ETH</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <p
-                          className={`text-sm mt-2 ${insufficientBalance ? 'text-red-500' : 'text-gray-400'}`}
-                        >
-                          {t('swap.ethBalance', {
-                            amount: formattedEthBalance,
-                          })}
-                          {insufficientBalance && (
-                            <span className="ms-2">
-                              • {t('swap.insufficientBalanceInline')}
-                            </span>
-                          )}
-                        </p>
-                      </div>
-                    </div>
 
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                      <div className="size-[48px] bg-zinc-950 rounded-full border-2 border-zinc-800 p-2 flex items-center justify-center">
-                        <ArrowDown className="h-5 w-5 text-gray-400" />
-                      </div>
-                    </div>
-
-                    <div className="bg-zinc-900 rounded-lg p-4">
-                      <p className="text-gray-400 mb-2">
-                        {t('swap.youReceive')}
-                      </p>
-                      <div className="flex justify-between items-center">
-                        <Input
-                          type="text"
-                          placeholder={'0'}
-                          readOnly={true}
-                          value={displayReceiveAmount()}
-                          data-testid="nfsc-swap-receive-output"
-                          className="shadow-none ps-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
-                        />
-                        <div className="flex items-center bg-zinc-700 gap-2 p-2 px-4 rounded-md">
-                          <Image
-                            src="/nfsc.svg"
-                            alt="Swap"
-                            width={24}
-                            height={24}
-                          />
-                          <span className="font-medium">NFSC</span>
-                        </div>
-                      </div>
-                      <p className="text-gray-400 text-sm mt-2">
-                        {t('swap.nfscBalance', {
-                          amount: formattedNfscBalance,
-                        })}
-                      </p>
-                    </div>
-                  </div>
-
-                  {errorMessage && (
-                    <div className="px-6 pt-2">
-                      <Alert
-                        variant="destructive"
-                        className="bg-red-900/50 border-red-800 text-red-300"
+                <div className="flex gap-2 flex-wrap">
+                  {PRESET_USD_AMOUNTS.map((usd) => {
+                    const active = amountUsd === String(usd);
+                    return (
+                      <button
+                        key={usd}
+                        type="button"
+                        onClick={() => handlePresetSelect(usd)}
+                        data-testid={`nfsc-swap-preset-${usd}`}
+                        className={cn(
+                          'flex-1 min-w-[64px] rounded-xl border px-3 py-2 text-sm font-medium transition-colors',
+                          active
+                            ? 'border-brand-primary bg-brand-primary/10 text-secondary-foreground'
+                            : 'border-zinc-800 bg-zinc-900 text-gray-300 hover:border-zinc-700',
+                        )}
                       >
-                        <AlertCircle className="h-4 w-4" />
-                        <AlertDescription className="break-words overflow-auto max-h-[200px] text-ellipsis max-w-full">
-                          {errorMessage}
-                        </AlertDescription>
-                      </Alert>
-                    </div>
-                  )}
+                        ${usd}
+                      </button>
+                    );
+                  })}
+                  <button
+                    type="button"
+                    onClick={handleCustomSelect}
+                    data-testid="nfsc-swap-preset-custom"
+                    className={cn(
+                      'flex-1 min-w-[80px] rounded-xl border px-3 py-2 text-sm font-medium transition-colors',
+                      amountUsd !== '' &&
+                        !PRESET_USD_AMOUNTS.some((u) => String(u) === amountUsd)
+                        ? 'border-brand-primary bg-brand-primary/10 text-secondary-foreground'
+                        : 'border-zinc-800 bg-zinc-900 text-gray-300 hover:border-zinc-700',
+                    )}
+                  >
+                    {t('swap.presetCustom')}
+                  </button>
+                </div>
 
-                  {/* Rate/Gas stay in the scrollable body — trust-critical
-                    details remain visible (#4587). The scroll body's bottom
-                    padding (not here) provides clearance so these can scroll
-                    above the floating action bar. */}
-                  <div className="px-6 pt-2">
-                    <div className="flex justify-between text-gray-400 mb-4">
-                      <span>{t('swap.rate')}</span>
-                      <span data-testid="nfsc-swap-rate">
-                        {t('swap.rateValue', { rate: formattedRate })}
-                      </span>
-                    </div>
+                <div className="mt-3 bg-zinc-900 rounded-lg p-4 flex items-center justify-center gap-1">
+                  <span className="text-3xl font-bold text-gray-500">$</span>
+                  <Input
+                    ref={amountInputRef}
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="0"
+                    value={amountUsd}
+                    onChange={(e) => handleAmountChange(e.target.value)}
+                    data-testid="nfsc-swap-amount-input"
+                    className="shadow-none ps-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-3xl dark:text-3xl font-bold focus-visible:ring-0 w-24 text-center"
+                  />
+                  <Popover>
+                    <PopoverTrigger
+                      aria-label={t('swap.creditInfoAriaLabel')}
+                      data-testid="nfsc-swap-credit-info"
+                      className="text-gray-400 hover:text-gray-200 transition-colors"
+                    >
+                      <Info className="h-4 w-4" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-60 text-sm text-gray-300">
+                      {t('swap.creditTooltip', { amount: creditTooltipAmount })}
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
 
-                    <div className="flex justify-between text-gray-400">
-                      <span>{t('swap.gasFee')}</span>
-                      <span data-testid="nfsc-swap-gas-fee">{gasFee}</span>
+              {/* Pay with ETH — what actually leaves the wallet, derived from
+                  the amount above at the live rate. */}
+              <div className="px-6">
+                <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">
+                  {t('swap.payWithEth')}
+                </p>
+                <div className="bg-zinc-900 rounded-lg p-4">
+                  <div className="flex justify-between items-center">
+                    <span
+                      className="text-secondary-foreground text-xl"
+                      data-testid="nfsc-swap-eth-cost"
+                    >
+                      {displayEthAmount}
+                    </span>
+                    <div className="flex items-center gap-2 bg-zinc-700 p-2 px-4 rounded-lg">
+                      <Image
+                        src="/assets/payment/eth.svg"
+                        alt="ETH"
+                        width={16}
+                        height={16}
+                        className="text-secondary-foreground"
+                      />
+                      <span className="font-medium">ETH</span>
                     </div>
                   </div>
+                  <p
+                    className={`text-sm mt-2 ${insufficientBalance ? 'text-red-500' : 'text-gray-400'}`}
+                  >
+                    {t('swap.ethBalance', { amount: formattedEthBalance })}
+                    {insufficientBalance && (
+                      <span className="ms-2">
+                        • {t('swap.insufficientBalanceInline')}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              {errorMessage && (
+                <div className="px-6">
+                  <Alert
+                    variant="destructive"
+                    className="bg-red-900/50 border-red-800 text-red-300"
+                  >
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription className="break-words overflow-auto max-h-[200px] text-ellipsis max-w-full">
+                      {errorMessage}
+                    </AlertDescription>
+                  </Alert>
                 </div>
               )}
-            </TabsContent>
-            <TabsContent value="card">
-              {paymentTab === 'card' && (
-                <NfscCardTopUpTab
-                  recipientWalletAddress={checksummedAddress}
-                  chainId={chainId}
-                  onClose={() => onOpenChange(false)}
-                />
-              )}
-            </TabsContent>
-          </Tabs>
+
+              {/* Rate/Gas stay in the scrollable body — trust-critical details
+                  remain visible (#4587). The scroll body's bottom padding
+                  provides clearance so these can scroll above the floating
+                  action bar. */}
+              <div className="px-6">
+                <div className="flex justify-between text-gray-400 mb-4">
+                  <span>{t('swap.rate')}</span>
+                  <span data-testid="nfsc-swap-rate">
+                    {t('swap.rateValue', { rate: formattedRate })}
+                  </span>
+                </div>
+
+                <div className="flex justify-between text-gray-400">
+                  <span>{t('swap.gasFee')}</span>
+                  <span data-testid="nfsc-swap-gas-fee">{gasFee}</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Floating action bar: the primary Swap action overlays the bottom of
-            the scrollable body — always on screen and tappable, independent of
+        {/* Floating action bar: the primary action overlays the bottom of the
+            scrollable body — always on screen and tappable, independent of
             scroll position or viewport height (#4587). The body scrolls full
-            height behind it; only the button captures pointer events. Rendered
-            for the ETH tab only — the card tab carries its own submit affordance. */}
-        {paymentTab === 'eth' && !isEthTabLoading && (
+            height behind it; only the button captures pointer events. */}
+        {!isBodyLoading && (
           <div
             className={SWAP_DIALOG_ACTION_BAR_CLASSNAME}
             data-testid="nfsc-swap-action-bar"
