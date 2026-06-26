@@ -3,7 +3,8 @@
   "header": {
     "usersLink": "ユーザー",
     "subscribeRss": "RSS で購読",
-    "rss": "RSS"
+    "rss": "RSS",
+    "countOfTotal": "{totalCount} 中 {filteredCount}"
   },
   "controls": {
     "searchLabel": "検索",

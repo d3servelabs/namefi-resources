@@ -3,7 +3,8 @@
   "header": {
     "usersLink": "用户",
     "subscribeRss": "通过 RSS 订阅",
-    "rss": "RSS"
+    "rss": "RSS",
+    "countOfTotal": "{totalCount} 中 {filteredCount}"
   },
   "controls": {
     "searchLabel": "搜索",

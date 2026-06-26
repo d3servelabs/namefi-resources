@@ -3,7 +3,8 @@
   "header": {
     "usersLink": "उपयोगकर्ता",
     "subscribeRss": "RSS के माध्यम से सदस्यता लें",
-    "rss": "RSS"
+    "rss": "RSS",
+    "countOfTotal": "{totalCount} में से {filteredCount}"
   },
   "controls": {
     "searchLabel": "खोजें",

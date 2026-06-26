@@ -35,6 +35,8 @@ export interface MlsSalesFeedPage {
   nextCursor: string | null;
   hasMore: boolean;
   limit: number;
+  filteredCount: number;
+  totalCount: number;
 }
 
 export interface MlsSalesByHandleSeller {

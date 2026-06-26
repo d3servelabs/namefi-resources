@@ -142,16 +142,28 @@ export async function getPublicNamefiFeedListings(
     throw new NamefiFeedInvalidCursorError();
   }
 
-  const whereClauses = buildBasePublicListingWhereClauses(activeAt);
-  appendPublicListingFilters(whereClauses, query);
+  const baseWhereClauses = buildBasePublicListingWhereClauses(activeAt);
+  const filteredWhereClauses = [...baseWhereClauses];
+  appendPublicListingFilters(filteredWhereClauses, query);
 
+  const pageWhereClauses = [...filteredWhereClauses];
   if (cursor) {
-    whereClauses.push(
+    pageWhereClauses.push(
       sql`(${namefiFeedListingsTable.postedAt} < ${cursor.sortAt} OR (${namefiFeedListingsTable.postedAt} = ${cursor.sortAt} AND ${namefiFeedListingsTable.id} < ${cursor.id}))`,
     );
   }
 
-  const rows = await selectListingRows(whereClauses, pageSize + 1);
+  const hasAppliedFilters =
+    filteredWhereClauses.length > baseWhereClauses.length;
+  const filteredCountPromise = countListingRows(filteredWhereClauses);
+  const totalCountPromise = hasAppliedFilters
+    ? countListingRows(baseWhereClauses)
+    : filteredCountPromise;
+  const [rows, filteredCount, totalCount] = await Promise.all([
+    selectListingRows(pageWhereClauses, pageSize + 1),
+    filteredCountPromise,
+    totalCountPromise,
+  ]);
   const visibleRows = rows.slice(0, pageSize);
   const normalizedRows = normalizeListingRows(visibleRows);
   const domainCountsByAuthorId =
@@ -169,6 +181,8 @@ export async function getPublicNamefiFeedListings(
         : null,
     hasMore,
     limit: pageSize,
+    filteredCount,
+    totalCount,
   };
 }
 
@@ -651,6 +665,21 @@ async function selectListingRows(
       desc(namefiFeedListingsTable.id),
     )
     .limit(limit);
+}
+
+async function countListingRows(whereClauses: SQL[]): Promise<number> {
+  const [row] = await db
+    .select({
+      value: sql<number>`count(*)::integer`,
+    })
+    .from(namefiFeedListingsTable)
+    .innerJoin(
+      namefiFeedPostsTable,
+      eq(namefiFeedPostsTable.id, namefiFeedListingsTable.postId),
+    )
+    .where(and(...whereClauses));
+
+  return Number(row?.value ?? 0);
 }
 
 async function findSellerMatchByHandle(

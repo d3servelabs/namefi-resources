@@ -3,7 +3,8 @@
   "header": {
     "usersLink": "பயனர்கள்",
     "subscribeRss": "RSS மூலம் குழுசேரவும்",
-    "rss": "RSS"
+    "rss": "RSS",
+    "countOfTotal": "{totalCount}-இல் {filteredCount}"
   },
   "controls": {
     "searchLabel": "தேடு",

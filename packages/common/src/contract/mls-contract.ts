@@ -109,6 +109,8 @@ export const mlsFeedPageSchema = z.object({
   nextCursor: z.string().nullable(),
   hasMore: z.boolean(),
   limit: z.number().int().positive(),
+  filteredCount: z.number().int().nonnegative(),
+  totalCount: z.number().int().nonnegative(),
 });
 
 export type MlsFeedPage = z.infer<typeof mlsFeedPageSchema>;

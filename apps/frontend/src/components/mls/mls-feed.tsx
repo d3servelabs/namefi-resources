@@ -3,7 +3,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { ArrowUp, ChevronDown, Rss, Search, Users, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -91,6 +91,13 @@ export function MlsFeed() {
     () => data?.pages.flatMap((page) => page.rows) ?? [],
     [data?.pages],
   );
+  const firstPage = data?.pages[0];
+  const feedCount: MlsFeedCount | null = firstPage
+    ? {
+        filteredCount: firstPage.filteredCount,
+        totalCount: firstPage.totalCount,
+      }
+    : null;
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -118,8 +125,9 @@ export function MlsFeed() {
         <MlsFeedControlRail
           searchInput={filters.searchInput}
           tldInput={filters.tldInput}
-          listingCount={listings.length}
+          feedCount={feedCount}
           isLoading={isLoading}
+          hasAppliedFilters={filters.hasAppliedFilters}
           hasActiveFilters={filters.hasVisibleFilters}
           onSearchInputChange={filters.setSearchInput}
           onTldInputChange={filters.setTldInput}
@@ -128,8 +136,9 @@ export function MlsFeed() {
 
         <div className="min-w-0">
           <MlsFeedMobileHeader
-            listingCount={listings.length}
+            feedCount={feedCount}
             isLoading={isLoading}
+            hasAppliedFilters={filters.hasAppliedFilters}
           />
 
           <MlsFeedMobileControls
@@ -282,9 +291,15 @@ interface MlsFeedFilterProps {
   onClearFilters: () => void;
 }
 
+interface MlsFeedCount {
+  filteredCount: number;
+  totalCount: number;
+}
+
 interface MlsFeedCountProps {
-  listingCount: number;
+  feedCount: MlsFeedCount | null;
   isLoading: boolean;
+  hasAppliedFilters: boolean;
 }
 
 interface MlsFeedHeaderCountProps extends MlsFeedCountProps {
@@ -299,8 +314,9 @@ interface MlsFeedControlRailProps
 function MlsFeedControlRail({
   searchInput,
   tldInput,
-  listingCount,
+  feedCount,
   isLoading,
+  hasAppliedFilters,
   hasActiveFilters,
   onSearchInputChange,
   onTldInputChange,
@@ -325,8 +341,9 @@ function MlsFeedControlRail({
             />
           </div>
           <MlsFeedHeaderCount
-            listingCount={listingCount}
+            feedCount={feedCount}
             isLoading={isLoading}
+            hasAppliedFilters={hasAppliedFilters}
             testId="feed.controls.domain-count"
             variant="inline"
           />
@@ -357,7 +374,11 @@ function MlsFeedControlRail({
   );
 }
 
-function MlsFeedMobileHeader({ listingCount, isLoading }: MlsFeedCountProps) {
+function MlsFeedMobileHeader({
+  feedCount,
+  isLoading,
+  hasAppliedFilters,
+}: MlsFeedCountProps) {
   const t = useTranslations('feed');
 
   return (
@@ -367,8 +388,9 @@ function MlsFeedMobileHeader({ listingCount, isLoading }: MlsFeedCountProps) {
           <MlsFeedTitle />
         </h1>
         <MlsFeedHeaderCount
-          listingCount={listingCount}
+          feedCount={feedCount}
           isLoading={isLoading}
+          hasAppliedFilters={hasAppliedFilters}
           testId="feed.header.domain-count"
         />
       </div>
@@ -656,13 +678,25 @@ function MlsAppliedFilterChips({
 }
 
 function MlsFeedHeaderCount({
-  listingCount,
+  feedCount,
   isLoading,
+  hasAppliedFilters,
   testId,
   variant = 'pill',
 }: MlsFeedHeaderCountProps) {
   const t = useTranslations('feed');
-  const value = isLoading ? '--' : listingCount;
+  const format = useFormatter();
+  let value = '--';
+
+  if (!isLoading && feedCount) {
+    const totalCount = format.number(feedCount.totalCount);
+    value = hasAppliedFilters
+      ? t('header.countOfTotal', {
+          filteredCount: format.number(feedCount.filteredCount),
+          totalCount,
+        })
+      : totalCount;
+  }
 
   if (variant === 'inline') {
     return (

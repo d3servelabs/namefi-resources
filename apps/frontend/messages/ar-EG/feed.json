@@ -3,7 +3,8 @@
   "header": {
     "usersLink": "المستخدمين",
     "subscribeRss": "اشترك عبر RSS",
-    "rss": "RSS"
+    "rss": "RSS",
+    "countOfTotal": "{filteredCount} من {totalCount}"
   },
   "controls": {
     "searchLabel": "بحث",

@@ -12,6 +12,9 @@
     "description": "Short RSS button label in the feed header. Keep 'RSS' verbatim.",
     "maxLength": 6
   },
+  "header.countOfTotal": {
+    "description": "Compact count shown when feed search or filters are active. Example: '12 of 340'. Keep both placeholders."
+  },
   "controls.searchLabel": {
     "description": "Accessibility label for the feed search input in the filter controls."
   },

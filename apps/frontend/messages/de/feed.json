@@ -3,7 +3,8 @@
   "header": {
     "usersLink": "Nutzer",
     "subscribeRss": "Via RSS abonnieren",
-    "rss": "RSS"
+    "rss": "RSS",
+    "countOfTotal": "{filteredCount} von {totalCount}"
   },
   "controls": {
     "searchLabel": "Suche",
