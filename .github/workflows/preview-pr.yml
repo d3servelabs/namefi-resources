@@ -43,15 +43,10 @@ jobs:
     if: |-
       needs.preview-label-gate.outputs.pr_number != '' &&
       needs.preview-label-gate.outputs.is_same_repo == 'true' &&
+      needs.preview-label-gate.outputs.should_run == 'true' &&
       (
         github.event_name == 'workflow_dispatch' ||
-        (
-          github.event_name == 'pull_request' &&
-          (
-            github.event.action != 'labeled' ||
-            needs.preview-label-gate.outputs.should_run == 'true'
-          )
-        )
+        github.event_name == 'pull_request'
       )
     runs-on: blacksmith-4vcpu-ubuntu-2404
     outputs:
@@ -312,10 +307,10 @@ jobs:
       needs.preview-label-gate.outputs.is_same_repo == 'true' &&
       needs.detect.outputs.resources_only_sync != 'true' &&
       needs.preview-label-gate.outputs.head_branch_should_run == 'true' &&
+      needs.preview-label-gate.outputs.should_run == 'true' &&
       (
         github.event_name == 'workflow_dispatch' ||
-        github.event.action != 'labeled' ||
-        needs.preview-label-gate.outputs.should_run == 'true'
+        github.event_name == 'pull_request'
       )
     needs:
       - detect
