@@ -11,7 +11,7 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import { useOrigin } from '@/components/providers/origin';
 import { isLandingPath } from '@/lib/origin/keys';
 import { MOBILE_NAV_TOGGLE_ID } from '@/components/sidebars/mobile-nav-toggle-id';
-import { Menu } from 'lucide-react';
+import { PanelLeftIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -74,16 +74,18 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
       )}
       {...rest}
     >
-      {/* Hamburger — a <label> for the mobile drawer's toggle checkbox, so it
+      {/* Menu toggle — a <label> for the mobile drawer's toggle checkbox, so it
           opens the drawer with NO JavaScript (works from first-paint HTML,
-          before hydration). SSR-rendered, mobile-only via CSS. */}
+          before hydration). SSR-rendered, mobile-only via CSS. Uses the same
+          PanelLeft glyph as the desktop sidebar trigger for a consistent
+          "open the navigation panel" affordance. */}
       <label
         htmlFor={MOBILE_NAV_TOGGLE_ID}
         aria-label={tNav('mobileDrawer.open')}
         data-testid="nav.mobile-drawer.trigger"
         className="inline-flex size-9 cursor-pointer items-center justify-center rounded-md text-foreground/80 hover:bg-accent hover:text-foreground md:hidden"
       >
-        <Menu className="size-5" />
+        <PanelLeftIcon className="size-5 rtl:-scale-x-100" />
       </label>
       {/* Mobile brand — SSR-rendered, hidden on desktop (desktop branding lives
           in the sidebar). Was gated behind the client `isMobile` flag, which
@@ -115,26 +117,29 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
           <div className="hidden sm:block">
             <HeaderMissingEmailWarning />
           </div>
-          <LanguageSelector
-            source="header"
-            showLabelBelowSm={isMobile}
-            className="inline-flex"
-          />
+          {/* Icon-only below sm (just the 文/A glyph, no language name) to keep
+              the small-screen bar compact — same as the footer selector. */}
+          <LanguageSelector source="header" className="inline-flex" />
           {isMobile && (
             <div className="hidden sm:block">
               <NotificationsBell variant="topbar" />
             </div>
           )}
+          {/* Cart and Sign in stay visible at every breakpoint (including the
+              small-screen top bar), matching the desktop header. Free mints and
+              the missing-email warning remain desktop-only to keep the mobile
+              bar uncrowded. */}
           <CartDropdown
-            className="hidden sm:block"
+            className="block"
             disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
           />
           <FreeMintsDropdown
             className="hidden sm:inline-flex"
             disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
           />
-          <div className="hidden sm:block">
+          <div className="block">
             <UserDropdown
+              iconOnlyBelowSm
               disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
             />
           </div>

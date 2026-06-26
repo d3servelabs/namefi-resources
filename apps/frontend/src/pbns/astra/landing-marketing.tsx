@@ -17,23 +17,14 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import EthNetwork from '@/components/chains/eth-network';
 import BaseNetwork from '@/components/chains/base-network';
 import { getExternalLinkRel } from '@/lib/external-link';
+import { GitHubBrandIcon } from '@namefi-astra/ui/components/namefi/brand-icons';
 import {
-  DiscordBrandIcon,
-  GitHubBrandIcon,
-  LinkedInBrandIcon,
-  TelegramBrandIcon,
-  XBrandIcon,
-  YouTubeBrandIcon,
-} from '@namefi-astra/ui/components/namefi/brand-icons';
-import {
-  ArrowRight,
   BrainCircuit,
   Coins,
   ShieldCheck,
   Send,
   Sparkles,
   CalendarCheck,
-  Newspaper,
   Search as SearchIcon,
 } from 'lucide-react';
 
@@ -283,49 +274,6 @@ const BACKERS_AND_PARTNERS: BackerItem[] = [
 ];
 
 const BACKER_FILTERS: BackerFilter[] = ['all', 'investor', 'partner', 'grant'];
-
-const COMMUNITY_LINKS = [
-  {
-    name: 'Discord',
-    href: 'https://discord.gg/PKW52TXS',
-    icon: DiscordBrandIcon,
-  },
-  {
-    name: 'Twitter',
-    href: 'https://twitter.com/namefi_io',
-    icon: XBrandIcon,
-  },
-  {
-    name: 'GitHub',
-    href: 'https://github.com/d3servelabs',
-    icon: GitHubBrandIcon,
-  },
-  {
-    name: 'Telegram',
-    href: 'https://t.me/namefidao',
-    icon: TelegramBrandIcon,
-  },
-  {
-    name: 'LinkedIn',
-    href: 'https://www.linkedin.com/company/d3servelabs',
-    icon: LinkedInBrandIcon,
-  },
-  {
-    name: 'YouTube',
-    href: 'https://www.youtube.com/@Namefi_io',
-    icon: YouTubeBrandIcon,
-  },
-  {
-    name: 'Namefi Resources',
-    href: '/r',
-    icon: Newspaper,
-  },
-  {
-    name: 'Namefi Events',
-    href: 'https://lu.ma/namefi',
-    icon: CalendarCheck,
-  },
-] as const;
 
 const CONTRACTS = [
   {
@@ -767,7 +715,7 @@ const CommunitySection = ({
         title={t('community.heading')}
         description={t('community.description')}
       />
-      <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr]">
+      <div className="mx-auto w-full max-w-2xl">
         <NewsletterForm
           from="namefi-home"
           title={t('community.newsletter.title')}
@@ -778,30 +726,6 @@ const CommunitySection = ({
           headerClassName="px-8 pt-8"
           contentClassName="px-8 pb-8"
         />
-        <div className="grid gap-4 sm:grid-cols-2">
-          {COMMUNITY_LINKS.map(({ name, href, icon: Icon }) => (
-            <Link
-              key={name}
-              href={href}
-              target="_blank"
-              rel={getExternalLinkRel(href)}
-              className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-white/12 bg-white/[0.03] p-4 text-sm font-medium text-white transition duration-300 hover:border-brand-primary/40 hover:bg-brand-primary/10"
-            >
-              <span className="absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100">
-                <span className="absolute inset-0 bg-gradient-to-r from-brand-primary/30 via-transparent to-emerald-400/30" />
-              </span>
-              <span className="relative z-10 flex h-9 w-9 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-brand-primary transition group-hover:border-transparent group-hover:bg-white group-hover:text-black">
-                <Icon className="h-4 w-4" />
-              </span>
-              <span className="relative z-10 flex-1 text-base font-semibold tracking-tight">
-                {name}
-              </span>
-              <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/60 transition group-hover:border-transparent group-hover:bg-white group-hover:text-black">
-                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1 rtl:-scale-x-100" />
-              </span>
-            </Link>
-          ))}
-        </div>
       </div>
     </section>
   );

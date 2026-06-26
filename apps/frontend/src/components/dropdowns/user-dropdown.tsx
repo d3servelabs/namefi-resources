@@ -14,7 +14,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import { Loader2Icon, MoreHorizontalIcon, WalletIcon } from 'lucide-react';
+import { Loader2Icon, LogIn, MoreHorizontalIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import {
   forwardRef,
@@ -34,6 +34,12 @@ import { shouldShowUserDropdownLoading } from './user-dropdown-state';
 export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
   forceExpanded?: boolean;
   disableBackdropBlur?: boolean;
+  /**
+   * Collapse the signed-out "Sign in" control to an icon-only button below the
+   * `sm` breakpoint (the small-screen top bar), expanding to the labeled pill
+   * from `sm` up. Used by the header so the mobile bar stays uncrowded.
+   */
+  iconOnlyBelowSm?: boolean;
 };
 
 type UserDropdownFullComponent =
@@ -58,6 +64,7 @@ type SignedOutButtonProps = {
   disableBackdropBlur: boolean;
   isExpanded: boolean;
   stretch: boolean;
+  iconOnlyBelowSm?: boolean;
 };
 
 type LoginButtonProps = SignedOutButtonProps & {
@@ -65,11 +72,21 @@ type LoginButtonProps = SignedOutButtonProps & {
   onLoginIntent: () => void;
 };
 
+/**
+ * Expands an `actionVariant="icon"` button (a 40px square below `sm`) back into
+ * the labeled pill from `sm` up. Shared by the signed-out and loading controls
+ * so `iconOnlyBelowSm` renders them identically on the small-screen top bar —
+ * an icon below `sm`, a full pill from `sm` — with no width jump between states.
+ */
+const ICON_ONLY_BELOW_SM_PILL_CLASS =
+  'sm:w-auto sm:justify-start sm:gap-2 sm:px-4 sm:text-sm sm:font-semibold';
+
 export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
   function UserDropdown(
     {
       forceExpanded = true,
       disableBackdropBlur = false,
+      iconOnlyBelowSm = false,
       className,
       ...rest
     }: UserDropdownProps,
@@ -181,10 +198,20 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
                 <DropdownMenuTrigger
                   render={
                     <HeaderActionButton
-                      actionVariant={actionVariant}
+                      // Icon-only (avatar) below sm, expanding to the avatar pill
+                      // from sm up — same responsive footprint as the loading and
+                      // signed-out controls, so the small top bar never jumps width
+                      // as auth resolves loading → authenticated. aria-label names
+                      // the avatar-only trigger for assistive tech.
+                      actionVariant={iconOnlyBelowSm ? 'icon' : actionVariant}
                       disableBackdropBlur={disableBackdropBlur}
                       stretch={shouldStretch}
-                      className={expandedAvatarPaddingClass}
+                      aria-label={iconOnlyBelowSm ? displayLabel : undefined}
+                      className={
+                        iconOnlyBelowSm
+                          ? 'sm:w-auto sm:justify-start sm:gap-2 sm:ps-1 sm:pe-4'
+                          : expandedAvatarPaddingClass
+                      }
                     />
                   }
                 >
@@ -203,7 +230,12 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
                       <span className="hidden text-sm md:block">
                         <UserDropdownLabel value={displayLabel} />
                       </span>
-                      <span className="ms-auto">
+                      <span
+                        className={cn(
+                          'ms-auto',
+                          iconOnlyBelowSm && 'hidden sm:block',
+                        )}
+                      >
                         <MoreHorizontalIcon className="h-5 w-5" />
                       </span>
                     </>
@@ -228,6 +260,7 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
               disableBackdropBlur={disableBackdropBlur}
               isExpanded={isExpanded}
               stretch={shouldStretch}
+              iconOnlyBelowSm={iconOnlyBelowSm}
             />
           )
         ) : (
@@ -236,6 +269,7 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
             disableBackdropBlur={disableBackdropBlur}
             isExpanded={isExpanded}
             stretch={shouldStretch}
+            iconOnlyBelowSm={iconOnlyBelowSm}
             onLogin={handleLoginRequest}
             onLoginIntent={preloadLoginRuntime}
           />
@@ -264,19 +298,33 @@ function LoadingButton({
   disableBackdropBlur,
   isExpanded,
   stretch,
+  iconOnlyBelowSm = false,
 }: SignedOutButtonProps) {
   const t = useTranslations('common');
   return (
     <div key="user-loading">
       <HeaderActionButton
-        actionVariant={actionVariant}
+        // Match the signed-out control's responsive footprint so the auth-loading
+        // state is also icon-only below sm (spinner only) and expands to the
+        // labeled pill from sm up — no width jump between loading and Sign in.
+        actionVariant={iconOnlyBelowSm ? 'icon' : actionVariant}
         disableBackdropBlur={disableBackdropBlur}
         stretch={stretch}
-        className={cn(!isExpanded && 'text-white/90')}
+        // Name the control so AT announces "loading" even when the visible label
+        // is hidden below sm (icon-only) — the spinner alone has no text.
+        aria-label={t('actions.loading')}
+        className={cn(
+          !isExpanded && 'text-white/90',
+          iconOnlyBelowSm && ICON_ONLY_BELOW_SM_PILL_CLASS,
+        )}
         disabled={true}
       >
         <Loader2Icon className="size-5 animate-spin" />
-        {isExpanded && <span>{t('actions.loading')}</span>}
+        {isExpanded && (
+          <span className={iconOnlyBelowSm ? 'hidden sm:inline' : undefined}>
+            {t('actions.loading')}
+          </span>
+        )}
       </HeaderActionButton>
     </div>
   );
@@ -287,6 +335,7 @@ function SignedOutButton({
   disableBackdropBlur,
   isExpanded,
   stretch,
+  iconOnlyBelowSm = false,
   onLogin,
   onLoginIntent,
 }: LoginButtonProps) {
@@ -313,9 +362,13 @@ function SignedOutButton({
           // biome-ignore lint/a11y/useAnchorContent: base-ui's render prop injects the button's icon + "Sign in" label as the anchor children at runtime; aria-label also set for the icon-only variant.
           <a href={loginHref} rel="nofollow" aria-label={t('actions.signIn')} />
         }
-        actionVariant={actionVariant}
+        // Below sm, render the icon-only square; from sm up, expand to the
+        // labeled pill. Driven by mobile-first overrides so the cascade is
+        // reliable (icon base → sm: pill).
+        actionVariant={iconOnlyBelowSm ? 'icon' : actionVariant}
         disableBackdropBlur={disableBackdropBlur}
         stretch={stretch}
+        className={iconOnlyBelowSm ? ICON_ONLY_BELOW_SM_PILL_CLASS : undefined}
         onClick={(event) => {
           event.preventDefault();
           onLogin();
@@ -325,8 +378,12 @@ function SignedOutButton({
         onTouchStart={onLoginIntent}
         data-testid="nav.user-menu.sign-in"
       >
-        <WalletIcon className="size-5" />
-        {isExpanded && <span>{t('actions.signIn')}</span>}
+        <LogIn className="size-5" />
+        {isExpanded && (
+          <span className={iconOnlyBelowSm ? 'hidden sm:inline' : undefined}>
+            {t('actions.signIn')}
+          </span>
+        )}
       </HeaderActionButton>
     </div>
   );
