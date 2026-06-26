@@ -62,14 +62,16 @@ const PRIVY_HANDOFF_DELAY_MS = 300;
  * surface it — the array only controls which enabled methods this entry point
  * requests. (`whatsapp` is not part of this Privy SDK's `LoginMethod` union, so
  * it is not listed; add it here if/when the SDK gains support.)
+ *
+ * Apple, Telegram, and LinkedIn are intentionally omitted: they are not
+ * provisioned/working end-to-end yet, so we don't offer login options that
+ * fail. Re-add them once enabled — tracked in
+ * https://github.com/d3servelabs/namefi-astra/issues/4943.
  */
 const GOOGLE_LOGIN_METHODS: LoginModalOptions['loginMethods'] = ['google'];
 const EMAIL_OR_OTHERS_LOGIN_METHODS: LoginModalOptions['loginMethods'] = [
   'email',
-  'apple',
   'github',
-  'linkedin',
-  'telegram',
   'sms',
 ];
 

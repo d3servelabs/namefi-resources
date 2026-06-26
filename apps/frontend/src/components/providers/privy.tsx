@@ -62,15 +62,19 @@ export const SessionsProvider: FC<PropsWithChildren> = ({ children }) => {
           accentColor: toHex(brandPrimary) as `#${string}`,
           logo: logoSrc,
         },
-        // Surface email + Apple + Telegram as buttons on the modal's first
-        // screen (instead of Privy collapsing them under "Other ways to log
-        // in"); the rest stay one tap away under the overflow. Provider-level,
-        // so it orders every Privy modal — the chooser's Google row is
-        // unaffected (it opens Privy filtered to `google` only). Each method
-        // must also be enabled in the Privy dashboard to actually render.
+        // Surface email as the button on the modal's first screen; the rest
+        // stay one tap away under the overflow. Provider-level, so it orders
+        // every Privy modal — the chooser's Google row is unaffected (it opens
+        // Privy filtered to `google` only). Each method must also be enabled in
+        // the Privy dashboard to actually render.
+        //
+        // Apple, Telegram, and LinkedIn are intentionally omitted: they are not
+        // provisioned/working end-to-end yet, so we don't offer login options
+        // that fail. Re-add them once enabled — tracked in
+        // https://github.com/d3servelabs/namefi-astra/issues/4943.
         loginMethodsAndOrder: {
-          primary: ['email', 'apple', 'telegram'],
-          overflow: ['google', 'github', 'linkedin', 'sms'],
+          primary: ['email'],
+          overflow: ['google', 'github', 'sms'],
         },
         embeddedWallets: {
           ethereum: {
