@@ -1,4 +1,8 @@
 const INDEXABLE_PARK_ROOT_HOSTS: ReadonlySet<string> = new Set(['30003.click']);
+const TRUSTED_DOMAIN_OVERRIDE_HOSTS: ReadonlySet<string> = new Set([
+  'park.namefi.io',
+  'park.astra.namefi.io',
+]);
 
 export function bareHost(host: string | null | undefined): string {
   if (!host) return '';
@@ -36,6 +40,7 @@ export function isTrustedDomainOverrideHost(
 ): boolean {
   const normalized = bareHost(host);
   return (
+    TRUSTED_DOMAIN_OVERRIDE_HOSTS.has(normalized) ||
     normalized === 'localhost' ||
     normalized.endsWith('.localhost') ||
     normalized === '127.0.0.1' ||
@@ -48,11 +53,14 @@ export function isTrustedDomainOverrideHost(
 export function resolveTrustedParkHost(options: {
   host: string | null | undefined;
   originalHost?: string | null | undefined;
+  forwardedHost?: string | null | undefined;
 }): string {
   const host = bareHost(options.host);
+  const forwardedHost = bareHost(options.forwardedHost);
   const originalHost = bareHost(options.originalHost);
-  return originalHost && isTrustedDomainOverrideHost(host)
-    ? originalHost
+  const overrideHost = originalHost || forwardedHost;
+  return overrideHost && isTrustedDomainOverrideHost(host)
+    ? overrideHost
     : host;
 }
 

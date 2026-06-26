@@ -32,6 +32,7 @@ export function proxy(request: NextRequest) {
   const host = resolveTrustedParkHost({
     host: request.headers.get('host'),
     originalHost: request.headers.get('x-original-host'),
+    forwardedHost: request.headers.get('x-forwarded-host'),
   });
   const shouldNoindex = shouldNoindexParkRequest({
     host,

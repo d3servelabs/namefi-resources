@@ -8,6 +8,7 @@ export const getOriginRuntime = cache(async () => {
   const host = resolveTrustedParkHost({
     host: headerList.get('host'),
     originalHost: headerList.get('x-original-host'),
+    forwardedHost: headerList.get('x-forwarded-host'),
   });
   const domainOverride = getDomainQueryParam(headerList);
 

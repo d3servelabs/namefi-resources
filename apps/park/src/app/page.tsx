@@ -156,6 +156,7 @@ async function getActualRequestHost(): Promise<string> {
   const host = resolveTrustedParkHost({
     host: requestHeaders.get('host'),
     originalHost: requestHeaders.get('x-original-host'),
+    forwardedHost: requestHeaders.get('x-forwarded-host'),
   });
   return host || 'localhost';
 }

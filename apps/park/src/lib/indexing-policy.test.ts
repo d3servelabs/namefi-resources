@@ -21,7 +21,7 @@ describe('park indexing policy', () => {
     expect(normalizeParkDomainParam('30003.click:443')).toBe('30003.click');
   });
 
-  it('only trusts x-original-host from local or Namefi preview hosts', () => {
+  it('trusts parked-domain overrides from local, preview, and first-party park hosts', () => {
     expect(
       resolveTrustedParkHost({
         host: 'localhost:3000',
@@ -39,7 +39,13 @@ describe('park indexing policy', () => {
         host: 'park.namefi.io',
         originalHost: '30003.click',
       }),
-    ).toBe('park.namefi.io');
+    ).toBe('30003.click');
+    expect(
+      resolveTrustedParkHost({
+        host: 'park.astra.namefi.io',
+        forwardedHost: '30003.click',
+      }),
+    ).toBe('30003.click');
     expect(
       resolveTrustedParkHost({
         host: 'example.com',
@@ -87,6 +93,14 @@ describe('park indexing policy', () => {
     expect(
       isIndexableParkRoot({
         host: 'namefi-astra-git-park-index-d3servelabs.vercel.app',
+        pathname: '/',
+        search: '?domain=30003.click',
+        domainOverride: '30003.click',
+      }),
+    ).toBe(true);
+    expect(
+      isIndexableParkRoot({
+        host: 'park.astra.namefi.io',
         pathname: '/',
         search: '?domain=30003.click',
         domainOverride: '30003.click',
@@ -153,6 +167,14 @@ describe('park indexing policy', () => {
     ).toBe(false);
     expect(
       shouldNoindexParkRequest({
+        host: 'park.astra.namefi.io',
+        pathname: '/',
+        search: '?domain=30003.click',
+        domainOverride: '30003.click',
+      }),
+    ).toBe(false);
+    expect(
+      shouldNoindexParkRequest({
         host: '30003.click',
         pathname: '/',
         search: '?domain=30003.click',
@@ -180,6 +202,9 @@ describe('park indexing policy', () => {
         '30003.click',
       ),
     ).toBe('https://30003.click/');
+    expect(buildParkCanonicalUrl('park.astra.namefi.io', '30003.click')).toBe(
+      'https://30003.click/',
+    );
     expect(
       buildParkCanonicalUrl('example.vercel.app', '30003.click'),
     ).toBeNull();
