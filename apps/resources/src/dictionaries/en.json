@@ -19,6 +19,11 @@
     "placeholder": "Search resources",
     "noResults": "No results found"
   },
+  "view": {
+    "label": "View",
+    "grid": "Card grid",
+    "list": "Compact rows"
+  },
   "blog": {
     "homeEmpty": "No posts are available in this language yet. Check back soon.",
     "homeCta": "Read article",

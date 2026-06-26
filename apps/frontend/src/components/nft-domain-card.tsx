@@ -3,11 +3,14 @@ import { originConfig } from '@/lib/origin/config';
 import { ExternalLink, Share2, Settings } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
+import type { ComponentProps } from 'react';
 import { CartCard } from './cart-card';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { NFTDomain } from './nft-domain';
 import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import { NetworkLogo } from '@/components/network-logo';
+
+type AnchorRenderProps = ComponentProps<'a'>;
 
 export interface NftDomainCardProps {
   item: {
@@ -29,6 +32,21 @@ export interface NftDomainCardProps {
   shareLabel?: string;
   viewDomainButtonText?: string;
   viewNftButtonText?: string;
+  backgroundSizes?: string;
+}
+
+export function resolveNftDomainOrigin(
+  parentDomain: string,
+  origin: OriginInfo,
+): OriginInfo {
+  const thirdPartyCfg = originConfig.thirdParty[parentDomain];
+  return thirdPartyCfg
+    ? {
+        isFirstPartyOrigin: false,
+        thirdPartyHostname: parentDomain,
+        config: thirdPartyCfg,
+      }
+    : origin;
 }
 
 export function NftDomainCard({
@@ -45,17 +63,11 @@ export function NftDomainCard({
   shareLabel = 'Share domain',
   viewDomainButtonText = 'View Your Domain',
   viewNftButtonText = 'View Your NFT',
+  backgroundSizes,
 }: NftDomainCardProps) {
   // Determine apex domain and origin-based config, mirroring FreeMintCard logic
   const apex = item.parentDomain;
-  const thirdPartyCfg = originConfig.thirdParty[apex];
-  const computedOrigin: OriginInfo = thirdPartyCfg
-    ? {
-        isFirstPartyOrigin: false,
-        thirdPartyHostname: apex,
-        config: thirdPartyCfg,
-      }
-    : origin;
+  const computedOrigin = resolveNftDomainOrigin(apex, origin);
   const explorerUrl = getNftExplorerUrl(item.chainId, item.tokenId);
   const manageTarget = manageHref ?? `/domains/${item.fullDomain}`;
 
@@ -65,6 +77,7 @@ export function NftDomainCard({
         subdomain={item.subdomain}
         parentDomain={item.parentDomain}
         origin={computedOrigin}
+        backgroundSizes={backgroundSizes}
       />
       {showViewDomainButton ? (
         domainAction === 'share' ? (
@@ -87,7 +100,7 @@ export function NftDomainCard({
                   tabIndex={isCompleted ? 0 : -1}
                 />
               ) : (
-                (props) => (
+                (props: AnchorRenderProps) => (
                   <a
                     {...props}
                     href={`https://${item.fullDomain}`}
@@ -120,7 +133,7 @@ export function NftDomainCard({
         <NamefiButton
           variant="ghost"
           className="w-full mt-2 bg-black/[0.03] border-white/10"
-          render={(props) => (
+          render={(props: AnchorRenderProps) => (
             <a
               {...props}
               href={explorerUrl}

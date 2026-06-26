@@ -7,12 +7,16 @@ import { resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
 import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
 import {
+  getResourceIndexGridClass,
   ResourceIndexCard,
   ResourceIndexEmptyState,
+  ResourceIndexViewSwitcher,
+  resolveResourceIndexViewMode,
 } from '@/components/resource-index-card';
 import { JsonLd } from '@/components/json-ld';
 import { createResourceMetaItems } from '@/lib/resource-meta-items';
 import { loadMdxReadingTime } from '@/lib/load-mdx-module';
+import { getResourceEntryPreviewImageSrc } from '@/lib/resource-index-preview';
 
 export async function generateMetadata({
   params,
@@ -82,11 +86,15 @@ export async function generateMetadata({
 
 export default async function PartnersIndex({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string }>;
+  searchParams?: Promise<{ view?: string | string[] }>;
 }) {
   const { lang } = await params;
+  const { view: viewParam } = (await searchParams) ?? {};
   const locale = lang as Locale;
+  const view = resolveResourceIndexViewMode(viewParam);
   const dictionary = await getDictionary(locale);
   const entries = getPartnersForLocale(locale);
   const entriesWithReadingTime = await Promise.all(
@@ -107,48 +115,64 @@ export default async function PartnersIndex({
   ]);
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
       <JsonLd data={breadcrumbJsonLd} />
       {entries.length === 0 ? (
         <ResourceIndexEmptyState>
           {dictionary.partners.indexEmpty}
         </ResourceIndexEmptyState>
       ) : (
-        <div className="grid gap-6">
-          {entriesWithReadingTime.map(({ entry, readingTimeText }) => {
-            const authorNames = getAuthorNames(
-              locale,
-              entry.frontmatter.authors,
-            );
-            const href = `/${locale}/partners/${entry.slug}`;
-            const summary =
-              entry.frontmatter.summary ?? entry.frontmatter.description;
-            const metaItems = createResourceMetaItems({
-              labels: {
-                publishedOn: dictionary.blog.detailPublishedOn,
-                by: dictionary.blog.detailBy,
-                sourceLanguage: dictionary.blog.detailSourceLanguage,
-              },
-              publishedAt: entry.publishedAt,
-              authorNames,
-              dateFormatter,
-              sourceLanguage: entry.sourceLanguage,
-              requestedLanguage: entry.requestedLanguage,
-              readingTimeText,
-            });
+        <>
+          <div className="flex justify-end">
+            <ResourceIndexViewSwitcher
+              view={view}
+              href={`/${locale}/partners`}
+              labels={dictionary.view}
+            />
+          </div>
+          <div className={getResourceIndexGridClass(view)}>
+            {entriesWithReadingTime.map(({ entry, readingTimeText }) => {
+              const authorNames = getAuthorNames(
+                locale,
+                entry.frontmatter.authors,
+              );
+              const href = `/${locale}/partners/${entry.slug}`;
+              const summary =
+                entry.frontmatter.summary ?? entry.frontmatter.description;
+              const metaItems = createResourceMetaItems({
+                labels: {
+                  publishedOn: dictionary.blog.detailPublishedOn,
+                  by: dictionary.blog.detailBy,
+                  sourceLanguage: dictionary.blog.detailSourceLanguage,
+                },
+                publishedAt: entry.publishedAt,
+                authorNames,
+                dateFormatter,
+                sourceLanguage: entry.sourceLanguage,
+                requestedLanguage: entry.requestedLanguage,
+                readingTimeText,
+              });
 
-            return (
-              <ResourceIndexCard
-                key={`${entry.slug}-${entry.sourceLanguage}`}
-                title={entry.frontmatter.title}
-                href={href}
-                summary={summary}
-                tags={entry.frontmatter.tags}
-                metaItems={metaItems}
-              />
-            );
-          })}
-        </div>
+              return (
+                <ResourceIndexCard
+                  key={`${entry.slug}-${entry.sourceLanguage}`}
+                  title={entry.frontmatter.title}
+                  href={href}
+                  summary={summary}
+                  tags={entry.frontmatter.tags}
+                  metaItems={metaItems}
+                  imageSrc={getResourceEntryPreviewImageSrc(
+                    locale,
+                    'partners',
+                    entry.slug,
+                  )}
+                  imageAlt={entry.frontmatter.title}
+                  view={view}
+                />
+              );
+            })}
+          </div>
+        </>
       )}
     </section>
   );

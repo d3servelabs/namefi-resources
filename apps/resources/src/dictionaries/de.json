@@ -19,6 +19,11 @@
     "placeholder": "Ressourcen durchsuchen",
     "noResults": "Keine Ergebnisse gefunden"
   },
+  "view": {
+    "label": "Ansicht",
+    "grid": "Kartenraster",
+    "list": "Kompakte Zeilen"
+  },
   "blog": {
     "homeEmpty": "In dieser Sprache sind noch keine Beiträge verfügbar. Schau bald wieder vorbei.",
     "homeCta": "Artikel lesen",

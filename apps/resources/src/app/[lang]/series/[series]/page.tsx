@@ -9,9 +9,15 @@ import {
   buildCollectionJsonLd,
 } from '@/lib/structured-data';
 import { resolveBaseUrl } from '@/lib/site-url';
-import { ResourceIndexCard } from '@/components/resource-index-card';
+import {
+  getResourceIndexGridClass,
+  ResourceIndexCard,
+  ResourceIndexViewSwitcher,
+  resolveResourceIndexViewMode,
+} from '@/components/resource-index-card';
 import { BreadcrumbNav } from '@/components/breadcrumb-nav';
 import { JsonLd } from '@/components/json-ld';
+import { getBlogPostPreviewImageSrc } from '@/lib/resource-index-preview';
 import {
   SERIES,
   SERIES_SLUGS,
@@ -63,14 +69,18 @@ export async function generateMetadata({
 
 export default async function SeriesHub({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string; series: string }>;
+  searchParams?: Promise<{ view?: string | string[] }>;
 }) {
   const { lang, series } = await params;
+  const { view: viewParam } = (await searchParams) ?? {};
   if (!i18n.locales.includes(lang as Locale) || !isSeriesSlug(series)) {
     notFound();
   }
   const locale = lang as Locale;
+  const view = resolveResourceIndexViewMode(viewParam);
   const dictionary = await getDictionary(locale);
   const meta = SERIES[series];
   const baseUrl = resolveBaseUrl();
@@ -99,7 +109,7 @@ export default async function SeriesHub({
   ]);
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
       <JsonLd data={collectionJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
 
@@ -125,18 +135,30 @@ export default async function SeriesHub({
           {dictionary.series.episodesEmpty}
         </p>
       ) : (
-        <div className="grid gap-6">
-          {episodes.map((post, index) => (
-            <ResourceIndexCard
-              key={`${post.slug}-${post.sourceLanguage}`}
-              title={post.frontmatter.title}
-              href={`/${locale}/blog/${post.slug}`}
-              summary={post.frontmatter.summary}
-              tags={[`#${index + 1}`]}
-              metaItems={[]}
+        <>
+          <div className="flex justify-end">
+            <ResourceIndexViewSwitcher
+              view={view}
+              href={`/${locale}/series/${series}`}
+              labels={dictionary.view}
             />
-          ))}
-        </div>
+          </div>
+          <div className={getResourceIndexGridClass(view)}>
+            {episodes.map((post, index) => (
+              <ResourceIndexCard
+                key={`${post.slug}-${post.sourceLanguage}`}
+                title={post.frontmatter.title}
+                href={`/${locale}/blog/${post.slug}`}
+                summary={post.frontmatter.summary}
+                tags={[`#${index + 1}`]}
+                metaItems={[]}
+                imageSrc={getBlogPostPreviewImageSrc(locale, post.slug)}
+                imageAlt={post.frontmatter.title}
+                view={view}
+              />
+            ))}
+          </div>
+        </>
       )}
     </section>
   );

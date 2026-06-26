@@ -202,6 +202,11 @@
     "useTypedDomain": "Usar dominio escrito",
     "domains": "Dominios"
   },
+  "viewSelector": {
+    "label": "Vista",
+    "grid": "Cuadrícula de tarjetas",
+    "list": "Filas compactas"
+  },
   "previewGate": {
     "title": "Acceso a vista previa",
     "description": "Introduce el código de acceso para acceder a este entorno de vista previa.",

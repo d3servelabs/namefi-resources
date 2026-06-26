@@ -42,6 +42,11 @@
     "useTypedDomain": "Use typed domain",
     "domains": "Domains"
   },
+  "viewSelector": {
+    "label": "View",
+    "grid": "Card grid",
+    "list": "Compact rows"
+  },
   "previewGate": {
     "title": "Preview access",
     "description": "Enter the access code to access this preview environment.",

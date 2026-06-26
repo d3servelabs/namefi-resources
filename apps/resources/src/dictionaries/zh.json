@@ -19,6 +19,11 @@
     "placeholder": "搜索资源",
     "noResults": "未找到结果"
   },
+  "view": {
+    "label": "视图",
+    "grid": "卡片网格",
+    "list": "紧凑列表"
+  },
   "blog": {
     "homeEmpty": "该语言暂时没有文章，请稍后再来。",
     "homeCta": "阅读文章",

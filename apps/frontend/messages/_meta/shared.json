@@ -112,6 +112,17 @@
   "domainSearchCombobox.domains": {
     "description": "Section heading in the domain combobox above the list of suggested domains."
   },
+  "viewSelector.label": {
+    "description": "Accessible label for a compact view-mode selector."
+  },
+  "viewSelector.grid": {
+    "description": "Tooltip and accessible label for the card-grid view option.",
+    "maxLength": 24
+  },
+  "viewSelector.list": {
+    "description": "Tooltip and accessible label for the compact-row list view option.",
+    "maxLength": 24
+  },
   "previewGate.title": {
     "description": "Title of the preview-access gate shown on preview/staging environments; means 'Preview access'."
   },

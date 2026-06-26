@@ -10,11 +10,15 @@ import {
 } from '@/lib/structured-data';
 import { resolveBaseUrl } from '@/lib/site-url';
 import {
+  getResourceIndexGridClass,
   ResourceIndexCard,
   ResourceIndexEmptyState,
+  ResourceIndexViewSwitcher,
+  resolveResourceIndexViewMode,
 } from '@/components/resource-index-card';
 import { JsonLd } from '@/components/json-ld';
 import { CLUSTER_SLUGS, CLUSTERS, localizeText } from '@/lib/taxonomy';
+import { getBlogPostPreviewImageSrc } from '@/lib/resource-index-preview';
 
 export async function generateMetadata({
   params,
@@ -57,14 +61,18 @@ export async function generateMetadata({
 
 export default async function TopicsIndex({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string }>;
+  searchParams?: Promise<{ view?: string | string[] }>;
 }) {
   const { lang } = await params;
+  const { view: viewParam } = (await searchParams) ?? {};
   if (!i18n.locales.includes(lang as Locale)) {
     notFound();
   }
   const locale = lang as Locale;
+  const view = resolveResourceIndexViewMode(viewParam);
   const dictionary = await getDictionary(locale);
   const baseUrl = resolveBaseUrl();
   const selfUrl = `${baseUrl}/r/${locale}/topics`;
@@ -102,7 +110,7 @@ export default async function TopicsIndex({
   ]);
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
       <JsonLd data={collectionJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
 
@@ -120,18 +128,30 @@ export default async function TopicsIndex({
           {dictionary.topics.indexEmpty}
         </ResourceIndexEmptyState>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2">
-          {clusters.map((cluster) => (
-            <ResourceIndexCard
-              key={cluster.slug}
-              title={localizeText(cluster.meta.title, locale)}
-              href={`/${locale}/topics/${cluster.slug}`}
-              summary={localizeText(cluster.meta.description, locale)}
-              tags={[`${cluster.count} ${dictionary.topics.guidesCountLabel}`]}
-              metaItems={[]}
+        <>
+          <div className="flex justify-end">
+            <ResourceIndexViewSwitcher
+              view={view}
+              href={`/${locale}/topics`}
+              labels={dictionary.view}
             />
-          ))}
-        </div>
+          </div>
+          <div className={getResourceIndexGridClass(view)}>
+            {clusters.map((cluster) => (
+              <ResourceIndexCard
+                key={cluster.slug}
+                title={localizeText(cluster.meta.title, locale)}
+                href={`/${locale}/topics/${cluster.slug}`}
+                summary={localizeText(cluster.meta.description, locale)}
+                tags={[
+                  `${cluster.count} ${dictionary.topics.guidesCountLabel}`,
+                ]}
+                metaItems={[]}
+                view={view}
+              />
+            ))}
+          </div>
+        </>
       )}
 
       {perspectives.length > 0 && (
@@ -139,7 +159,7 @@ export default async function TopicsIndex({
           <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-brand-primary">
             {dictionary.topics.perspectivesTitle}
           </h2>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className={getResourceIndexGridClass(view)}>
             {perspectives.map((post) => (
               <ResourceIndexCard
                 key={post.slug}
@@ -148,6 +168,9 @@ export default async function TopicsIndex({
                 summary={post.frontmatter.summary}
                 tags={[]}
                 metaItems={[]}
+                imageSrc={getBlogPostPreviewImageSrc(locale, post.slug)}
+                imageAlt={post.frontmatter.title}
+                view={view}
               />
             ))}
           </div>

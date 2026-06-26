@@ -6,6 +6,10 @@ import type { Address } from 'viem';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import {
+  usePersistedViewMode,
+  ViewModeToggle,
+} from '@/components/view-mode-toggle';
+import {
   domainDetailsKey,
   useDomainDetailsByTokenIds,
 } from '@/components/my-domains/marketplace-orders/use-domain-details';
@@ -33,8 +37,12 @@ function canBuyInApp(row: CollectionListingRow): boolean {
  */
 export function MarketplaceBrowser() {
   const t = useTranslations('mart');
+  const sharedT = useTranslations('shared');
   const listingsQuery = useCollectionListings();
   const ethUsdPrice = useEthUsdPrice();
+  const { viewMode, setViewMode } = usePersistedViewMode(
+    'namefi.mart.viewMode',
+  );
   // The listing the user is buying (drives the single shared confirm dialog).
   const [buyRow, setBuyRow] = useState<CollectionListingRow | null>(null);
   // The buy mutation is owned here (not in the dialog) so a purchase in flight
@@ -110,10 +118,27 @@ export function MarketplaceBrowser() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
-        {t('resultCount', { count: listingsQuery.data.length })}
-      </p>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">
+          {t('resultCount', { count: listingsQuery.data.length })}
+        </p>
+        <ViewModeToggle
+          value={viewMode}
+          onChange={setViewMode}
+          labels={{
+            label: sharedT('viewSelector.label'),
+            grid: sharedT('viewSelector.grid'),
+            list: sharedT('viewSelector.list'),
+          }}
+        />
+      </div>
+      <div
+        className={
+          viewMode === 'grid'
+            ? 'grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6'
+            : 'grid gap-3'
+        }
+      >
         {listingsQuery.data.map((row) => (
           <MartListingCard
             key={`${row.chainId}:${row.marketplaceId}:${row.listing.id}`}
@@ -135,6 +160,7 @@ export function MarketplaceBrowser() {
               // to a different listing than the one being bought.
               if (!buy.isPending) setBuyRow(row);
             }}
+            viewMode={viewMode}
           />
         ))}
       </div>
@@ -168,7 +194,7 @@ const SKELETON_KEYS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
 
 export function MarketplaceBrowserSkeleton() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
       {SKELETON_KEYS.map((key) => (
         <div
           key={key}

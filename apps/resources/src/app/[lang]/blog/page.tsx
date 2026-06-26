@@ -10,12 +10,16 @@ import {
   buildCollectionJsonLd,
 } from '@/lib/structured-data';
 import {
+  getResourceIndexGridClass,
   ResourceIndexCard,
   ResourceIndexEmptyState,
+  ResourceIndexViewSwitcher,
+  resolveResourceIndexViewMode,
 } from '@/components/resource-index-card';
 import { JsonLd } from '@/components/json-ld';
 import { createResourceMetaItems } from '@/lib/resource-meta-items';
 import { loadMdxReadingTime } from '@/lib/load-mdx-module';
+import { getBlogPostPreviewImageSrc } from '@/lib/resource-index-preview';
 
 export async function generateMetadata({
   params,
@@ -85,11 +89,15 @@ export async function generateMetadata({
 
 export default async function BlogIndex({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string }>;
+  searchParams?: Promise<{ view?: string | string[] }>;
 }) {
   const { lang } = await params;
+  const { view: viewParam } = (await searchParams) ?? {};
   const locale = lang as Locale;
+  const view = resolveResourceIndexViewMode(viewParam);
   const dictionary = await getDictionary(locale);
   const posts = getPostsForLocale(locale);
   const postsWithReadingTime = await Promise.all(
@@ -126,7 +134,7 @@ export default async function BlogIndex({
   });
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
       <JsonLd data={collectionJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
       {posts.length === 0 ? (
@@ -134,40 +142,52 @@ export default async function BlogIndex({
           {dictionary.blog.indexEmpty}
         </ResourceIndexEmptyState>
       ) : (
-        <div className="grid gap-6">
-          {postsWithReadingTime.map(({ post, readingTimeText }) => {
-            const authorNames = getAuthorNames(
-              locale,
-              post.frontmatter.authors,
-            );
-            const href = `/${locale}/blog/${post.slug}`;
-            const summary = post.frontmatter.summary;
-            const metaItems = createResourceMetaItems({
-              labels: {
-                publishedOn: dictionary.blog.detailPublishedOn,
-                by: dictionary.blog.detailBy,
-                sourceLanguage: dictionary.blog.detailSourceLanguage,
-              },
-              publishedAt: post.publishedAt,
-              authorNames,
-              dateFormatter,
-              sourceLanguage: post.sourceLanguage,
-              requestedLanguage: post.requestedLanguage,
-              readingTimeText,
-            });
+        <>
+          <div className="flex justify-end">
+            <ResourceIndexViewSwitcher
+              view={view}
+              href={`/${locale}/blog`}
+              labels={dictionary.view}
+            />
+          </div>
+          <div className={getResourceIndexGridClass(view)}>
+            {postsWithReadingTime.map(({ post, readingTimeText }) => {
+              const authorNames = getAuthorNames(
+                locale,
+                post.frontmatter.authors,
+              );
+              const href = `/${locale}/blog/${post.slug}`;
+              const summary = post.frontmatter.summary;
+              const metaItems = createResourceMetaItems({
+                labels: {
+                  publishedOn: dictionary.blog.detailPublishedOn,
+                  by: dictionary.blog.detailBy,
+                  sourceLanguage: dictionary.blog.detailSourceLanguage,
+                },
+                publishedAt: post.publishedAt,
+                authorNames,
+                dateFormatter,
+                sourceLanguage: post.sourceLanguage,
+                requestedLanguage: post.requestedLanguage,
+                readingTimeText,
+              });
 
-            return (
-              <ResourceIndexCard
-                key={`${post.slug}-${post.sourceLanguage}`}
-                title={post.frontmatter.title}
-                href={href}
-                summary={summary}
-                tags={post.frontmatter.tags}
-                metaItems={metaItems}
-              />
-            );
-          })}
-        </div>
+              return (
+                <ResourceIndexCard
+                  key={`${post.slug}-${post.sourceLanguage}`}
+                  title={post.frontmatter.title}
+                  href={href}
+                  summary={summary}
+                  tags={post.frontmatter.tags}
+                  metaItems={metaItems}
+                  imageSrc={getBlogPostPreviewImageSrc(locale, post.slug)}
+                  imageAlt={post.frontmatter.title}
+                  view={view}
+                />
+              );
+            })}
+          </div>
+        </>
       )}
     </section>
   );

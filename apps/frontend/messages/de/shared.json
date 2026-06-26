@@ -202,6 +202,11 @@
     "useTypedDomain": "Eingegebene Domain verwenden",
     "domains": "Domains"
   },
+  "viewSelector": {
+    "label": "Ansicht",
+    "grid": "Kartenraster",
+    "list": "Kompakte Zeilen"
+  },
   "previewGate": {
     "title": "Vorschau-Zugang",
     "description": "Geben Sie den Zugangscode ein, um auf diese Vorschau-Umgebung zuzugreifen.",

@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { useEnsAddress } from 'wagmi';
-import { Copy } from 'lucide-react';
+import { Copy, ExternalLink } from 'lucide-react';
 import { toast } from 'sonner';
 import { NftDomainCard } from '@/components/nft-domain-card';
 import { ControlledGlareCard } from '@/components/ui/aceternity/controlled-glare-card';
@@ -18,6 +18,12 @@ import { format } from 'date-fns';
 import { NetworkLogo } from '@/components/network-logo';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
+import {
+  usePersistedViewMode,
+  ViewModeToggle,
+} from '@/components/view-mode-toggle';
+import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 
 type OwnerDomainsResponse = AppRouterOutput['registry']['getDomainsByOwner'];
 type OwnerDomain = OwnerDomainsResponse['domains'][number];
@@ -35,6 +41,8 @@ const isLikelyEnsName = (value: string) => {
 };
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+const WALLET_NFT_GRID_IMAGE_SIZES =
+  '(min-width: 1536px) 14vw, (min-width: 1280px) 20vw, (min-width: 768px) 30vw, (min-width: 640px) 50vw, 50vw';
 
 const formatExpiration = (value: OwnerDomain | undefined, fallback: string) => {
   if (!value?.expirationTime) {
@@ -58,6 +66,9 @@ export function WalletNftGrid({
 }: WalletNftGridProps) {
   const t = useTranslations('shared');
   const trpc = useTRPC();
+  const { viewMode, setViewMode } = usePersistedViewMode(
+    'namefi.gallery.viewMode',
+  );
   const sanitizedIdentifier = useMemo(
     () => walletIdentifier.trim(),
     [walletIdentifier],
@@ -186,20 +197,33 @@ export function WalletNftGrid({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center gap-4">
-        <WalletIdentityBadge
-          walletAddress={finalWalletAddress}
-          lookupValue={sanitizedIdentifier}
-          ensName={displayEnsName}
-          onCopy={handleCopy}
-        />
-        <Badge
-          variant="secondary"
-          className="rounded-full"
-          data-testid="shared.wallet-nft-grid.nft-count"
-        >
-          {t('walletNftGrid.nftCount', { count: ownedDomains.length })}
-        </Badge>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-4">
+          <WalletIdentityBadge
+            walletAddress={finalWalletAddress}
+            lookupValue={sanitizedIdentifier}
+            ensName={displayEnsName}
+            onCopy={handleCopy}
+          />
+          <Badge
+            variant="secondary"
+            className="rounded-full"
+            data-testid="shared.wallet-nft-grid.nft-count"
+          >
+            {t('walletNftGrid.nftCount', { count: ownedDomains.length })}
+          </Badge>
+        </div>
+        {ownedDomains.length > 0 ? (
+          <ViewModeToggle
+            value={viewMode}
+            onChange={setViewMode}
+            labels={{
+              label: t('viewSelector.label'),
+              grid: t('viewSelector.grid'),
+              list: t('viewSelector.list'),
+            }}
+          />
+        ) : null}
       </div>
 
       {domainsQuery.isError ? (
@@ -221,7 +245,13 @@ export function WalletNftGrid({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:[grid-template-columns:repeat(auto-fill,minmax(18rem,1fr))]">
+        <div
+          className={
+            viewMode === 'grid'
+              ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6'
+              : 'grid gap-3'
+          }
+        >
           {ownedDomains.map((nft) => {
             const { subdomain, parentDomain } = splitDomain(
               nft.normalizedDomainName,
@@ -231,6 +261,25 @@ export function WalletNftGrid({
             const scanName =
               chain?.blockExplorers?.default?.name ??
               t('walletNftGrid.explorer');
+
+            if (viewMode === 'list') {
+              return (
+                <WalletNftRow
+                  key={`${nft.normalizedDomainName}-${nft.chainId ?? 'unknown'}`}
+                  nft={nft}
+                  chainLabel={chainLabel}
+                  scanName={scanName}
+                  expirationLabel={t('walletNftGrid.expiration')}
+                  networkLabel={t('walletNftGrid.network')}
+                  notIndexedYetLabel={t('walletNftGrid.notIndexedYet')}
+                  viewNftLabel={
+                    scanName
+                      ? t('walletNftGrid.viewOn', { explorer: scanName })
+                      : t('walletNftGrid.viewOnExplorer')
+                  }
+                />
+              );
+            }
 
             return (
               <ControlledGlareCard
@@ -261,6 +310,7 @@ export function WalletNftGrid({
                     canViewNft={Boolean(nft.tokenId && nft.chainId)}
                     className="flex h-full flex-col"
                     showViewDomainButton={false}
+                    backgroundSizes={WALLET_NFT_GRID_IMAGE_SIZES}
                     viewNftButtonText={
                       scanName
                         ? t('walletNftGrid.viewOn', { explorer: scanName })
@@ -300,6 +350,76 @@ export function WalletNftGrid({
   );
 }
 
+function WalletNftRow({
+  nft,
+  chainLabel,
+  scanName,
+  expirationLabel,
+  networkLabel,
+  notIndexedYetLabel,
+  viewNftLabel,
+}: {
+  nft: OwnerDomain;
+  chainLabel: string;
+  scanName: string;
+  expirationLabel: string;
+  networkLabel: string;
+  notIndexedYetLabel: string;
+  viewNftLabel: string;
+}) {
+  const explorerUrl = getNftExplorerUrl(nft.chainId, nft.tokenId);
+  const displayName = formatDomainNameForDisplay(nft.normalizedDomainName);
+
+  return (
+    <div
+      className="grid min-h-14 overflow-hidden rounded-xl border border-white/10 bg-card/70 transition-colors hover:border-brand-primary/40 lg:grid-cols-[minmax(13rem,1.35fr)_minmax(9rem,0.75fr)_minmax(10rem,0.9fr)_auto]"
+      data-testid={`shared.wallet-nft-grid.card.${nft.normalizedDomainName}`}
+    >
+      <div className="grid min-w-0 gap-1.5 p-3 sm:py-2.5 lg:contents">
+        <p
+          className="break-all font-mono text-sm font-semibold leading-snug text-foreground lg:line-clamp-2 lg:px-3 lg:py-2"
+          dir="ltr"
+          title={displayName}
+        >
+          {displayName}
+        </p>
+        <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground lg:px-3 lg:py-2">
+          <span className="lg:sr-only">{networkLabel}</span>
+          <span className="flex min-w-0 items-center gap-1 font-medium text-foreground">
+            {nft.chainId ? (
+              <NetworkLogo className="size-3.5" network={nft.chainId} />
+            ) : null}
+            <span className="truncate">{chainLabel}</span>
+          </span>
+        </div>
+        <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground lg:px-3 lg:py-2">
+          <span className="lg:sr-only">{expirationLabel}</span>
+          <span className="truncate font-medium text-foreground">
+            {formatExpiration(nft, notIndexedYetLabel)}
+          </span>
+        </div>
+      </div>
+      <div className="flex items-center border-white/10 border-t p-3 sm:px-3 sm:py-2.5 lg:border-t-0 lg:border-s lg:py-2">
+        {explorerUrl ? (
+          <a
+            href={explorerUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={viewNftLabel}
+            className="inline-flex min-h-9 flex-1 items-center justify-center gap-2 rounded-md border border-white/10 px-3 text-sm font-medium text-brand-primary transition hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:flex-none"
+          >
+            {nft.chainId !== null ? (
+              <NetworkLogo className="size-4" network={nft.chainId} />
+            ) : null}
+            <span className="hidden sm:inline">{scanName}</span>
+            <ExternalLink className="size-4" aria-hidden="true" />
+          </a>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 export function WalletNftGridSkeleton() {
   return (
     <div className="space-y-6">
@@ -307,7 +427,7 @@ export function WalletNftGridSkeleton() {
         <Skeleton className="h-12 w-72 rounded-2xl" />
         <Skeleton className="h-6 w-28" />
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
         {Array.from({ length: 4 }).map((_, index) => (
           <div key={index} className="space-y-3">
             <Skeleton className="h-64 w-full" />
@@ -339,7 +459,7 @@ function WalletIdentityBadge({
   }, [walletAddress]);
 
   return (
-    <div className="w-full md:w-auto flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
+    <div className="flex w-full flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 md:w-auto">
       <UserWalletAvatar address={formattedAddress} className="size-10" />
       <div className="min-w-0 flex-1">
         <p className="text-xs uppercase tracking-wide text-muted-foreground">

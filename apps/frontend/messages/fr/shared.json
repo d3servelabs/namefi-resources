@@ -202,6 +202,11 @@
     "useTypedDomain": "Utiliser le domaine saisi",
     "domains": "Domaines"
   },
+  "viewSelector": {
+    "label": "Vue",
+    "grid": "Grille de cartes",
+    "list": "Lignes compactes"
+  },
   "previewGate": {
     "title": "Accès à l'aperçu",
     "description": "Saisissez le code d'accès pour accéder à cet environnement d'aperçu.",

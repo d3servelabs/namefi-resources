@@ -19,6 +19,11 @@
     "placeholder": "Buscar recursos",
     "noResults": "No se encontraron resultados"
   },
+  "view": {
+    "label": "Vista",
+    "grid": "Cuadrícula de tarjetas",
+    "list": "Filas compactas"
+  },
   "blog": {
     "homeEmpty": "Todavía no hay publicaciones disponibles en este idioma. Vuelve pronto.",
     "homeCta": "Leer artículo",

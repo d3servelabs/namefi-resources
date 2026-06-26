@@ -10,10 +10,16 @@ import {
   buildCollectionJsonLd,
 } from '@/lib/structured-data';
 import { resolveBaseUrl } from '@/lib/site-url';
-import { ResourceIndexCard } from '@/components/resource-index-card';
+import {
+  getResourceIndexGridClass,
+  ResourceIndexCard,
+  ResourceIndexViewSwitcher,
+  resolveResourceIndexViewMode,
+} from '@/components/resource-index-card';
 import { BreadcrumbNav } from '@/components/breadcrumb-nav';
 import { JsonLd } from '@/components/json-ld';
 import { PillarDiagram } from '@/components/pillar-diagram';
+import { getBlogPostPreviewImageSrc } from '@/lib/resource-index-preview';
 import {
   CLUSTER_SLUGS,
   CLUSTERS,
@@ -71,14 +77,18 @@ export async function generateMetadata({
 
 export default async function ClusterHub({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string; cluster: string }>;
+  searchParams?: Promise<{ view?: string | string[] }>;
 }) {
   const { lang, cluster } = await params;
+  const { view: viewParam } = (await searchParams) ?? {};
   if (!i18n.locales.includes(lang as Locale) || !isClusterSlug(cluster)) {
     notFound();
   }
   const locale = lang as Locale;
+  const view = resolveResourceIndexViewMode(viewParam);
   const dictionary = await getDictionary(locale);
   const meta = CLUSTERS[cluster];
   const baseUrl = resolveBaseUrl();
@@ -124,7 +134,7 @@ export default async function ClusterHub({
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
       <JsonLd data={collectionJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
 
@@ -157,24 +167,36 @@ export default async function ClusterHub({
           {dictionary.topics.emptyCluster}
         </p>
       ) : (
-        <div className="grid gap-6">
-          {ordered.map((post) => {
-            const isCornerstone = post.slug === cornerstoneInCluster?.slug;
-            const tags = isCornerstone
-              ? [dictionary.topics.cornerstoneLabel, ...post.frontmatter.tags]
-              : post.frontmatter.tags;
-            return (
-              <ResourceIndexCard
-                key={`${post.slug}-${post.sourceLanguage}`}
-                title={post.frontmatter.title}
-                href={`/${locale}/blog/${post.slug}`}
-                summary={post.frontmatter.summary}
-                tags={tags}
-                metaItems={[]}
-              />
-            );
-          })}
-        </div>
+        <>
+          <div className="flex justify-end">
+            <ResourceIndexViewSwitcher
+              view={view}
+              href={`/${locale}/topics/${cluster}`}
+              labels={dictionary.view}
+            />
+          </div>
+          <div className={getResourceIndexGridClass(view)}>
+            {ordered.map((post) => {
+              const isCornerstone = post.slug === cornerstoneInCluster?.slug;
+              const tags = isCornerstone
+                ? [dictionary.topics.cornerstoneLabel, ...post.frontmatter.tags]
+                : post.frontmatter.tags;
+              return (
+                <ResourceIndexCard
+                  key={`${post.slug}-${post.sourceLanguage}`}
+                  title={post.frontmatter.title}
+                  href={`/${locale}/blog/${post.slug}`}
+                  summary={post.frontmatter.summary}
+                  tags={tags}
+                  metaItems={[]}
+                  imageSrc={getBlogPostPreviewImageSrc(locale, post.slug)}
+                  imageAlt={post.frontmatter.title}
+                  view={view}
+                />
+              );
+            })}
+          </div>
+        </>
       )}
 
       <nav

@@ -3,6 +3,7 @@
 import { ExternalLink, Info } from 'lucide-react';
 import Image from 'next/image';
 import { useFormatter, useTranslations } from 'next-intl';
+import type { ComponentProps } from 'react';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
@@ -12,12 +13,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 import { shortToken } from '@/components/my-domains/marketplace-orders/format';
 import { toSafeExternalUrl } from '@/components/domain-and-dns-managment/panels/marketplace/safe-external-url';
 import { NetworkLogo } from '@/components/network-logo';
+import type { ViewMode } from '@/components/view-mode-toggle';
 import type { DomainDetails } from '@/components/my-domains/marketplace-orders/use-domain-details';
 import { MARKETPLACE_ICONS } from '@/lib/marketplaces/factory';
 import type { Listing, MarketplaceId } from '@/lib/marketplaces/types';
+import { getChain } from '@namefi-astra/utils/chains';
 
 interface Props {
   chainId: number;
@@ -45,7 +50,12 @@ interface Props {
   onBuy?: () => void;
   /** Whether in-app fulfillment is available for this listing's marketplace. */
   canBuy?: boolean;
+  viewMode?: ViewMode;
 }
+
+const MART_GRID_IMAGE_SIZES =
+  '(min-width: 1536px) 14vw, (min-width: 1280px) 20vw, (min-width: 768px) 30vw, (min-width: 640px) 50vw, 50vw';
+type TooltipButtonRenderProps = ComponentProps<'button'>;
 
 /**
  * A single buy-oriented card in the `/mart` browse grid. Shows the domain's
@@ -62,14 +72,111 @@ export function MartListingCard({
   ethUsdPrice,
   onBuy,
   canBuy,
+  viewMode = 'grid',
 }: Props) {
   const t = useTranslations('mart');
   const safeUrl = toSafeExternalUrl(listing.externalUrl);
   const safeImage = toSafeExternalUrl(details?.imageUrl ?? null);
-  const displayName =
-    details?.normalizedDomainName ??
-    shortToken(listing.tokenAddress, listing.tokenId);
+  const displayName = details?.normalizedDomainName
+    ? formatDomainNameForDisplay(details.normalizedDomainName)
+    : shortToken(listing.tokenAddress, listing.tokenId);
   const awaitingName = !details && detailsLoading;
+  const chainLabel = getChain(chainId)?.name ?? String(chainId);
+
+  if (viewMode === 'list') {
+    return (
+      <Card
+        className="grid min-h-14 gap-0 overflow-hidden rounded-xl border border-brand-primary/15 bg-card/70 py-0 transition-colors hover:border-brand-primary/40 lg:grid-cols-[minmax(13rem,1.35fr)_minmax(7rem,0.55fr)_minmax(12rem,1fr)_auto]"
+        data-testid={`mart.card.${listing.tokenAddress}-${listing.tokenId}`}
+      >
+        <div className="grid min-w-0 gap-1.5 p-3 sm:py-2.5 lg:contents">
+          <div className="flex min-w-0 items-center gap-2 lg:px-3 lg:py-2">
+            <NetworkLogo
+              network={chainId}
+              className="h-4 w-4 shrink-0 lg:hidden"
+            />
+            <div className="min-w-0">
+              {awaitingName ? (
+                <Skeleton className="h-5 w-32" />
+              ) : (
+                <span
+                  className="block min-w-0 break-all font-mono text-sm font-semibold leading-snug text-zinc-100 lg:line-clamp-2"
+                  data-testid={`mart.card.name.${listing.tokenAddress}-${listing.tokenId}`}
+                  dir="ltr"
+                  title={displayName}
+                >
+                  {displayName}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="hidden min-w-0 items-center gap-2 text-xs text-muted-foreground lg:flex lg:px-3 lg:py-2">
+            <NetworkLogo network={chainId} className="h-4 w-4 shrink-0" />
+            <span className="truncate">{chainLabel}</span>
+          </div>
+          <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-0.5 lg:px-3 lg:py-2">
+            <PriceTag
+              listing={listing}
+              ethUsdPrice={ethUsdPrice}
+              compact={true}
+            />
+            <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Image
+                src={MARKETPLACE_ICONS[marketplaceId]}
+                alt=""
+                width={14}
+                height={14}
+                unoptimized
+              />
+              {listing.source}
+            </span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 border-white/10 border-t p-3 sm:px-3 sm:py-2.5 lg:border-t-0 lg:border-s lg:py-2">
+          {canBuy && onBuy ? (
+            <Button
+              type="button"
+              size="sm"
+              className="min-w-24 flex-1 bg-brand-primary font-semibold text-primary-foreground hover:bg-brand-primary/90 sm:flex-none"
+              onClick={onBuy}
+              aria-label={t('buyNowAria', { domain: displayName })}
+              data-testid={`mart.card.buy.${listing.tokenAddress}-${listing.tokenId}`}
+            >
+              {t('buyNow')}
+            </Button>
+          ) : safeUrl ? (
+            <a
+              href={safeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('buyAria', {
+                domain: displayName,
+                marketplace: listing.source,
+              })}
+              className="inline-flex min-h-9 flex-1 items-center justify-center gap-1 rounded-md border border-white/10 px-3 text-sm text-brand-primary transition hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:flex-none"
+              data-testid={`mart.card.buy.${listing.tokenAddress}-${listing.tokenId}`}
+            >
+              {t('buyOn', { marketplace: listing.source })}
+              <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            </a>
+          ) : null}
+          {safeUrl && canBuy && onBuy ? (
+            <a
+              href={safeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('viewOnMarketplace', {
+                marketplace: listing.source,
+              })}
+              className="inline-flex size-9 shrink-0 items-center justify-center rounded-md border border-white/10 text-muted-foreground transition hover:bg-white/5 hover:text-foreground"
+            >
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            </a>
+          ) : null}
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card
@@ -83,7 +190,8 @@ export function MartListingCard({
             alt={details?.normalizedDomainName ?? t('nftAlt')}
             fill
             unoptimized
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            loading="lazy"
+            sizes={MART_GRID_IMAGE_SIZES}
             className="object-cover"
           />
         ) : awaitingName ? (
@@ -113,6 +221,8 @@ export function MartListingCard({
             <span
               className="min-w-0 truncate font-mono text-zinc-100"
               data-testid={`mart.card.name.${listing.tokenAddress}-${listing.tokenId}`}
+              dir="ltr"
+              title={displayName}
             >
               {displayName}
             </span>
@@ -173,9 +283,11 @@ export function MartListingCard({
 function PriceTag({
   listing,
   ethUsdPrice,
+  compact = false,
 }: {
   listing: Listing;
   ethUsdPrice?: number | null;
+  compact?: boolean;
 }) {
   const t = useTranslations('mart');
   const format = useFormatter();
@@ -200,14 +312,19 @@ function PriceTag({
       className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5"
       data-testid={`mart.card.price.${listing.tokenAddress}-${listing.tokenId}`}
     >
-      <span className="inline-flex items-center gap-1 whitespace-nowrap font-mono text-lg font-semibold text-zinc-100">
+      <span
+        className={cn(
+          'inline-flex items-center gap-1 whitespace-nowrap font-mono font-semibold text-zinc-100',
+          compact ? 'text-sm' : 'text-lg',
+        )}
+      >
         {isEther ? (
           <>
             <span aria-hidden="true">Ξ</span>
             {listing.price.decimal.toFixed(4)}
             <Tooltip>
               <TooltipTrigger
-                render={(props) => (
+                render={(props: TooltipButtonRenderProps) => (
                   <button
                     type="button"
                     {...props}
@@ -228,7 +345,12 @@ function PriceTag({
         )}
       </span>
       {usdLabel ? (
-        <span className="whitespace-nowrap text-sm text-zinc-400">
+        <span
+          className={cn(
+            'whitespace-nowrap text-zinc-400',
+            compact ? 'text-xs' : 'text-sm',
+          )}
+        >
           {t('approxUsd', { amount: usdLabel })}
         </span>
       ) : null}

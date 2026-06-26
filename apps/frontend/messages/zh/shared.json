@@ -202,6 +202,11 @@
     "useTypedDomain": "使用输入的域名",
     "domains": "域名"
   },
+  "viewSelector": {
+    "label": "视图",
+    "grid": "卡片网格",
+    "list": "紧凑列表"
+  },
   "previewGate": {
     "title": "预览访问",
     "description": "输入访问码以进入此预览环境。",

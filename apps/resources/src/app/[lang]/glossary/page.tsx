@@ -10,11 +10,15 @@ import {
   buildDefinedTermSetJsonLd,
 } from '@/lib/structured-data';
 import {
+  getResourceIndexGridClass,
   ResourceIndexCard,
   ResourceIndexEmptyState,
+  ResourceIndexViewSwitcher,
+  resolveResourceIndexViewMode,
 } from '@/components/resource-index-card';
 import { JsonLd } from '@/components/json-ld';
 import { createResourceMetaItems } from '@/lib/resource-meta-items';
+import { getResourceEntryPreviewImageSrc } from '@/lib/resource-index-preview';
 
 export async function generateMetadata({
   params,
@@ -84,11 +88,15 @@ export async function generateMetadata({
 
 export default async function GlossaryIndex({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string }>;
+  searchParams?: Promise<{ view?: string | string[] }>;
 }) {
   const { lang } = await params;
+  const { view: viewParam } = (await searchParams) ?? {};
   const locale = lang as Locale;
+  const view = resolveResourceIndexViewMode(viewParam);
   const dictionary = await getDictionary(locale);
   const entries = getGlossaryEntriesForLocale(locale);
   const dateLocale = localeDateLocales[locale] ?? localeDateLocales.en;
@@ -116,7 +124,7 @@ export default async function GlossaryIndex({
   });
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={definedTermSetJsonLd} />
       {entries.length === 0 ? (
@@ -124,40 +132,56 @@ export default async function GlossaryIndex({
           {dictionary.glossary.indexEmpty}
         </ResourceIndexEmptyState>
       ) : (
-        <div className="grid gap-6">
-          {entries.map((entry) => {
-            const authorNames = getAuthorNames(
-              locale,
-              entry.frontmatter.authors,
-            );
-            const href = `/${locale}/glossary/${entry.slug}`;
-            const summary =
-              entry.frontmatter.summary ?? entry.frontmatter.description;
-            const metaItems = createResourceMetaItems({
-              labels: {
-                publishedOn: dictionary.blog.detailPublishedOn,
-                by: dictionary.blog.detailBy,
-                sourceLanguage: dictionary.blog.detailSourceLanguage,
-              },
-              publishedAt: entry.publishedAt,
-              authorNames,
-              dateFormatter,
-              sourceLanguage: entry.sourceLanguage,
-              requestedLanguage: entry.requestedLanguage,
-            });
+        <>
+          <div className="flex justify-end">
+            <ResourceIndexViewSwitcher
+              view={view}
+              href={`/${locale}/glossary`}
+              labels={dictionary.view}
+            />
+          </div>
+          <div className={getResourceIndexGridClass(view)}>
+            {entries.map((entry) => {
+              const authorNames = getAuthorNames(
+                locale,
+                entry.frontmatter.authors,
+              );
+              const href = `/${locale}/glossary/${entry.slug}`;
+              const summary =
+                entry.frontmatter.summary ?? entry.frontmatter.description;
+              const metaItems = createResourceMetaItems({
+                labels: {
+                  publishedOn: dictionary.blog.detailPublishedOn,
+                  by: dictionary.blog.detailBy,
+                  sourceLanguage: dictionary.blog.detailSourceLanguage,
+                },
+                publishedAt: entry.publishedAt,
+                authorNames,
+                dateFormatter,
+                sourceLanguage: entry.sourceLanguage,
+                requestedLanguage: entry.requestedLanguage,
+              });
 
-            return (
-              <ResourceIndexCard
-                key={`${entry.slug}-${entry.sourceLanguage}`}
-                title={entry.frontmatter.title}
-                href={href}
-                summary={summary}
-                tags={entry.frontmatter.tags}
-                metaItems={metaItems}
-              />
-            );
-          })}
-        </div>
+              return (
+                <ResourceIndexCard
+                  key={`${entry.slug}-${entry.sourceLanguage}`}
+                  title={entry.frontmatter.title}
+                  href={href}
+                  summary={summary}
+                  tags={entry.frontmatter.tags}
+                  metaItems={metaItems}
+                  imageSrc={getResourceEntryPreviewImageSrc(
+                    locale,
+                    'glossary',
+                    entry.slug,
+                  )}
+                  imageAlt={entry.frontmatter.title}
+                  view={view}
+                />
+              );
+            })}
+          </div>
+        </>
       )}
     </section>
   );

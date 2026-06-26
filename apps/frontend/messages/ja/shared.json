@@ -202,6 +202,11 @@
     "useTypedDomain": "入力したドメインを使用",
     "domains": "ドメイン"
   },
+  "viewSelector": {
+    "label": "表示",
+    "grid": "カードグリッド",
+    "list": "コンパクト行"
+  },
   "previewGate": {
     "title": "プレビューアクセス",
     "description": "このプレビュー環境にアクセスするには、アクセスコードを入力してください。",

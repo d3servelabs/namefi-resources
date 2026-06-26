@@ -19,6 +19,11 @@
     "placeholder": "Rechercher des ressources",
     "noResults": "Aucun résultat trouvé"
   },
+  "view": {
+    "label": "Vue",
+    "grid": "Grille de cartes",
+    "list": "Lignes compactes"
+  },
   "blog": {
     "homeEmpty": "Aucun article n’est encore disponible dans cette langue. Revenez bientôt.",
     "homeCta": "Lire l’article",

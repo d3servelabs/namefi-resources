@@ -10,8 +10,11 @@ import {
 } from '@/lib/structured-data';
 import { resolveBaseUrl } from '@/lib/site-url';
 import {
+  getResourceIndexGridClass,
   ResourceIndexCard,
   ResourceIndexEmptyState,
+  ResourceIndexViewSwitcher,
+  resolveResourceIndexViewMode,
 } from '@/components/resource-index-card';
 import { JsonLd } from '@/components/json-ld';
 import { SERIES, SERIES_SLUGS, localizeText } from '@/lib/taxonomy';
@@ -49,14 +52,18 @@ export async function generateMetadata({
 
 export default async function SeriesIndex({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string }>;
+  searchParams?: Promise<{ view?: string | string[] }>;
 }) {
   const { lang } = await params;
+  const { view: viewParam } = (await searchParams) ?? {};
   if (!i18n.locales.includes(lang as Locale)) {
     notFound();
   }
   const locale = lang as Locale;
+  const view = resolveResourceIndexViewMode(viewParam);
   const dictionary = await getDictionary(locale);
   const baseUrl = resolveBaseUrl();
   const selfUrl = `${baseUrl}/r/${locale}/series`;
@@ -84,7 +91,7 @@ export default async function SeriesIndex({
   ]);
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
       <JsonLd data={collectionJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
 
@@ -102,18 +109,30 @@ export default async function SeriesIndex({
           {dictionary.series.indexEmpty}
         </ResourceIndexEmptyState>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2">
-          {series.map((entry) => (
-            <ResourceIndexCard
-              key={entry.slug}
-              title={localizeText(entry.meta.title, locale)}
-              href={`/${locale}/series/${entry.slug}`}
-              summary={localizeText(entry.meta.description, locale)}
-              tags={[`${entry.count} ${dictionary.series.episodesCountLabel}`]}
-              metaItems={[]}
+        <>
+          <div className="flex justify-end">
+            <ResourceIndexViewSwitcher
+              view={view}
+              href={`/${locale}/series`}
+              labels={dictionary.view}
             />
-          ))}
-        </div>
+          </div>
+          <div className={getResourceIndexGridClass(view)}>
+            {series.map((entry) => (
+              <ResourceIndexCard
+                key={entry.slug}
+                title={localizeText(entry.meta.title, locale)}
+                href={`/${locale}/series/${entry.slug}`}
+                summary={localizeText(entry.meta.description, locale)}
+                tags={[
+                  `${entry.count} ${dictionary.series.episodesCountLabel}`,
+                ]}
+                metaItems={[]}
+                view={view}
+              />
+            ))}
+          </div>
+        </>
       )}
     </section>
   );
