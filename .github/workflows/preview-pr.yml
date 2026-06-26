@@ -448,7 +448,7 @@ jobs:
     # for the Cloud Run deploy to finish.
     needs: [detect, preview-label-gate, deploy-ledger]
     if: |-
-      always() &&
+      !cancelled() &&
       needs.detect.result == 'success' &&
       needs.deploy-ledger.result == 'success' &&
       needs.preview-label-gate.outputs.is_same_repo == 'true' &&
@@ -502,7 +502,7 @@ jobs:
   frontend-preview-dev-backend-context:
     name: "Frontend Preview (Dev Backend)"
     needs: [deploy-frontend]
-    if: always()
+    if: !cancelled()
     runs-on: ubuntu-latest
     steps:
       - name: Mirror unified frontend preview result
@@ -522,7 +522,7 @@ jobs:
   frontend-preview-preview-backend-context:
     name: "Frontend Preview (Preview Backend)"
     needs: [deploy-frontend]
-    if: always()
+    if: !cancelled()
     runs-on: ubuntu-latest
     steps:
       - name: Mirror unified frontend preview result
@@ -679,7 +679,7 @@ jobs:
       - name: Resolve backend URL
         id: state
         env:
-          SHOULD_RUN: ${{ needs.preview-label-gate.outputs.should_run }}
+          BACKEND_PREVIEW_REQUESTED: ${{ needs.preview-label-gate.outputs.backend_preview }}
           HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes }}
           PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
         shell: bash
@@ -690,7 +690,7 @@ jobs:
           # active and the backend actually changed (a force preview is reported
           # by detect-backend-changes as a change). This decision needs no Cloud
           # Run lookup, so the frontend can deploy in parallel with the backend.
-          if [[ "$SHOULD_RUN" == "true" && "$HAS_BACKEND_CHANGES" == "true" ]]; then
+          if [[ "$BACKEND_PREVIEW_REQUESTED" == "true" && "$HAS_BACKEND_CHANGES" == "true" ]]; then
             echo "has_backend_preview=true" >> "$GITHUB_OUTPUT"
             echo "target_backend_url=https://pr-${PR_NUMBER}---${BACKEND_PREVIEW_HOST}" >> "$GITHUB_OUTPUT"
           else
@@ -776,6 +776,7 @@ jobs:
     runs-on: blacksmith-2vcpu-ubuntu-2404
     outputs:
       should_run: ${{ steps.check-label.outputs.should_run }}
+      backend_preview: ${{ steps.check-label.outputs.backend_preview }}
       is_force_preview: ${{ steps.check-label.outputs.is_force_preview }}
       is_same_repo: ${{ steps.check-label.outputs.is_same_repo }}
       pr_number: ${{ steps.check-label.outputs.pr_number }}
@@ -876,6 +877,12 @@ jobs:
               BACKEND_PREVIEW="false"
             fi
 
+            if [[ "$BACKEND_PREVIEW" == "true" ]] || has_label preview-park || has_label preview-resources || has_label preview-docs; then
+              PROCESS_PREVIEW="true"
+            else
+              PROCESS_PREVIEW="false"
+            fi
+
             # Per-surface labels feed emit_surface_targets via these globals.
             HAS_PARK_PREVIEW_LABEL="false"; has_label preview-park && HAS_PARK_PREVIEW_LABEL="true"
             HAS_RESOURCES_PREVIEW_LABEL="false"; has_label preview-resources && HAS_RESOURCES_PREVIEW_LABEL="true"
@@ -894,7 +901,8 @@ jobs:
               echo "is_same_repo=false" >> "$GITHUB_OUTPUT"
             fi
             {
-              echo "should_run=$BACKEND_PREVIEW"
+              echo "should_run=$PROCESS_PREVIEW"
+              echo "backend_preview=$BACKEND_PREVIEW"
               echo "is_force_preview=$FORCE_ALL"
             } >> "$GITHUB_OUTPUT"
             emit_surface_targets "$FORCE_ALL"
@@ -923,23 +931,30 @@ jobs:
           if [[ "$EVENT_ACTION" == "labeled" ]]; then
             LABEL_NAME="$LABEL_NAME_FROM_EVENT"
             echo "Label added: $LABEL_NAME"
-            # Backend preview (should_run) is driven only by preview-backend /
-            # force-preview. App-surface labels (preview-park/-resources/-docs)
-            # do not enable the backend; they only set their own surface output
-            # via emit_surface_targets below.
+            # Process any preview label, but keep backend preview opt-in separate
+            # from app-surface previews.
             if [[ "$LABEL_NAME" == "force-preview" ]]; then
               {
                 echo "should_run=true"
+                echo "backend_preview=true"
                 echo "is_force_preview=true"
               } >> "$GITHUB_OUTPUT"
             elif [[ "$LABEL_NAME" == "preview-backend" ]]; then
               {
                 echo "should_run=true"
+                echo "backend_preview=true"
+                echo "is_force_preview=false"
+              } >> "$GITHUB_OUTPUT"
+            elif [[ "$LABEL_NAME" == "preview-park" || "$LABEL_NAME" == "preview-resources" || "$LABEL_NAME" == "preview-docs" ]]; then
+              {
+                echo "should_run=true"
+                echo "backend_preview=false"
                 echo "is_force_preview=false"
               } >> "$GITHUB_OUTPUT"
             else
               {
                 echo "should_run=false"
+                echo "backend_preview=false"
                 echo "is_force_preview=false"
               } >> "$GITHUB_OUTPUT"
             fi
@@ -950,16 +965,25 @@ jobs:
           if [[ "$HAS_FORCE_PREVIEW_LABEL" == "true" ]]; then
             {
               echo "should_run=true"
+              echo "backend_preview=true"
               echo "is_force_preview=true"
             } >> "$GITHUB_OUTPUT"
           elif [[ "$HAS_PREVIEW_LABEL" == "true" ]]; then
             {
               echo "should_run=true"
+              echo "backend_preview=true"
+              echo "is_force_preview=false"
+            } >> "$GITHUB_OUTPUT"
+          elif [[ "$HAS_PARK_PREVIEW_LABEL" == "true" || "$HAS_RESOURCES_PREVIEW_LABEL" == "true" || "$HAS_DOCS_PREVIEW_LABEL" == "true" ]]; then
+            {
+              echo "should_run=true"
+              echo "backend_preview=false"
               echo "is_force_preview=false"
             } >> "$GITHUB_OUTPUT"
           else
             {
               echo "should_run=false"
+              echo "backend_preview=false"
               echo "is_force_preview=false"
             } >> "$GITHUB_OUTPUT"
           fi
@@ -1115,7 +1139,7 @@ jobs:
   build-backend:
     name: Build Backend Image
     needs: [preview-label-gate, detect-backend-changes, deploy-ledger]
-    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true' && needs.deploy-ledger.outputs.backend_deployed != 'true'
+    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.deploy-ledger.outputs.has_backend_preview == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true' && needs.deploy-ledger.outputs.backend_deployed != 'true'
     runs-on: "blacksmith-8vcpu-ubuntu-2404"
     timeout-minutes: 10
     permissions:
@@ -1217,7 +1241,7 @@ jobs:
     name: Prepare Preview DB
     timeout-minutes: 5
     needs: [preview-label-gate, detect-backend-changes, deploy-ledger]
-    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true' && needs.deploy-ledger.outputs.backend_deployed != 'true'
+    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.deploy-ledger.outputs.has_backend_preview == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true' && needs.deploy-ledger.outputs.backend_deployed != 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
     outputs:
       branch_id: ${{ steps.branch-name.outputs.branch_id }}
@@ -1291,7 +1315,7 @@ jobs:
   deploy-preview:
     name: Deploy Backend Preview
     needs: [preview-label-gate, detect-backend-changes, build-backend, prepare-database, deploy-ledger]
-    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true' && needs.deploy-ledger.outputs.backend_deployed != 'true'
+    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.deploy-ledger.outputs.has_backend_preview == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true' && needs.deploy-ledger.outputs.backend_deployed != 'true'
     timeout-minutes: 10
     runs-on: ubuntu-latest
     permissions:

@@ -18,7 +18,6 @@ import {
   getFrontendBaseUrl,
   resolvePbnApex,
 } from '@/lib/frontend-url';
-import { getDomainQueryParam } from '@/lib/request';
 import {
   buildParkCanonicalUrl,
   isIndexableParkRoot,
@@ -169,12 +168,6 @@ async function getActualRequestHost(): Promise<string> {
 async function getRequestHost(domainOverride?: string | null): Promise<string> {
   if (domainOverride) {
     return domainOverride;
-  }
-
-  const requestHeaders = await headers();
-  const domainFromQuery = getDomainQueryParam(requestHeaders);
-  if (domainFromQuery) {
-    return domainFromQuery;
   }
 
   return getActualRequestHost();
@@ -678,10 +671,9 @@ export default async function ParkPage({
         domainOverride: domainFromQuery,
       }),
   );
-  const host =
-    shouldIndexCurrentPage && canonicalUrl
-      ? getCanonicalHost(canonicalUrl)
-      : await getRequestHost(domainFromQuery);
+  const host = canonicalUrl
+    ? getCanonicalHost(canonicalUrl)
+    : await getRequestHost();
   const data = await loadPageData(host);
   if (data.type === 'redirect_url') {
     redirect(data.redirectUrl);
