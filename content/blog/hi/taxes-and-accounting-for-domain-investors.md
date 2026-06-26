@@ -11,7 +11,7 @@ seriesOrder: 27
 format: faq
 description: "डोमेन निवेशक कर कैसे संभालते हैं: इन्वेंटरी बनाम पूंजी संपत्ति, लागत आधार, आय कब मानी जाती है, और नवीनीकरण व्यय। शैक्षिक — सलाह नहीं।"
 ogImage: ../../assets/taxes-and-accounting-for-domain-investors-og.jpg
-keywords: ['domain investing taxes', 'domain flipping taxes', 'domain cost basis', 'are domains capital assets', 'domain dealer vs investor', 'domain inventory tax', 'section 197 intangible domain', 'capital gains on domain sale', 'expensing domain renewals', 'domain holding period tax', 'how are domain sales taxed', 'domain portfolio accounting', 'domain investor tax questions', 'ordinary income vs capital gains domains']
+keywords: ['डोमेन निवेश पर कर', 'domain flipping पर टैक्स', 'डोमेन की लागत आधार', 'क्या डोमेन पूंजी संपत्ति हैं', 'डोमेन डीलर बनाम निवेशक', 'डोमेन इन्वेंटरी टैक्स', 'section 197 अमूर्त डोमेन', 'डोमेन बिक्री पर पूंजीगत लाभ', 'डोमेन नवीनीकरण व्यय काटना', 'डोमेन होल्डिंग अवधि कर', 'डोमेन बिक्री पर कर कैसे लगता है', 'डोमेन पोर्टफोलियो लेखांकन', 'डोमेन निवेशक कर प्रश्न', 'सामान्य आय बनाम पूंजीगत लाभ डोमेन']
 ---
 
 > **पहले यह पढ़ें।** यह पोस्ट कर, लेखांकन, कानूनी या वित्तीय सलाह **नहीं** है। हम आपके CA या CPA नहीं हैं, और हमें आपके अधिकार क्षेत्र या आपकी गतिविधि की संरचना के बारे में कुछ नहीं पता। नीचे दी गई हर बात को *किसी वास्तविक पेशेवर के पास ले जाने के लिए प्रश्नों और अवधारणाओं की सूची* के रूप में देखें, न कि किसी ऐसी स्थिति के रूप में जिस पर आप भरोसा कर सकें। पूरा अस्वीकरण नीचे है, और यहाँ यह पूरी ताकत के साथ लागू होता है।

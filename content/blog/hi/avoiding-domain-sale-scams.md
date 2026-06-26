@@ -11,7 +11,7 @@ seriesOrder: 18
 format: guide
 description: "आम डोमेन-बिक्री घोटाले — नकली एस्क्रो, नकली खरीदार, अधिक भुगतान चार्जबैक, भुगतान-से-पहले-ट्रांसफर — और वे आदतें जो आपकी बिक्री को सुरक्षित रखती हैं।"
 ogImage: ../../assets/avoiding-domain-sale-scams-og.jpg
-keywords: ['domain sale scams', 'avoid domain scams', 'fake escrow site', 'bogus escrow', 'domain buyer scam', 'overpayment scam', 'chargeback fraud', 'transfer before payment', 'sell a domain safely', 'domain escrow', 'domain selling fraud', 'fake domain broker', 'domain transfer scam', 'safe domain transaction', 'domainer security']
+keywords: ['डोमेन बिक्री घोटाले', 'डोमेन घोटालों से बचें', 'नकली एस्क्रो साइट', 'फर्जी एस्क्रो', 'डोमेन खरीदार घोटाला', 'अधिक भुगतान घोटाला', 'चार्जबैक धोखाधड़ी', 'भुगतान से पहले ट्रांसफर', 'डोमेन सुरक्षित रूप से बेचें', 'डोमेन एस्क्रो', 'डोमेन बिक्री धोखाधड़ी', 'नकली डोमेन दलाल', 'डोमेन ट्रांसफर घोटाला', 'सुरक्षित डोमेन लेनदेन', 'डोमेनर सुरक्षा']
 ---
 
 [डोमेन फ्लिपिंग](/hi/blog/domain-flipping/) में पैसा तब बनता है जब कोई नाम आखिरकार बिकता है। और यही वह वक्त है जब ठग सामने आते हैं। बिक्री के लिए एक सक्रिय लिस्टिंग उस हर शख्स के लिए एक खुला न्यौता है जो खरीदार, दलाल या एस्क्रो कंपनी का रूप धारण करने को तैयार हो। एक फ्लिपर की सबसे महंगी गलती गलत नाम खरीदना नहीं है — यह एक अच्छा नाम गलत इंसान को दे देना है।

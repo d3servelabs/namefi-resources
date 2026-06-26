@@ -11,7 +11,7 @@ seriesOrder: 15
 format: analysis
 description: "ليه المشترين الصينيين بيسعّروا نطاقات .com القصيرة والرباعية الحروف والرقمية كأنها فئة أصول قائمة بذاتها — البينيين، علاوة غياب حروف العلة، والرقم 8 السعيد مقابل الرقم 4 المنحوس."
 ogImage: ../../assets/short-llll-and-numeric-domains-chinese-market-og.jpg
-keywords: ['chinese premium domains', 'numeric domains', 'LLLL.com', 'four letter domains', 'chip domains', 'short domain names', 'lucky number 8 domains', 'unlucky number 4', 'pinyin domains', 'NNNN domains', 'chinese domain market', 'numeric domain value', 'no vowel domains', 'domain flipping china', 'short com domains']
+keywords: ['نطاقات صينية مميزة', 'نطاقات رقمية', 'LLLL.com', 'نطاقات أربع حروف', 'نطاقات تشيب', 'أسماء نطاقات قصيرة', 'نطاقات الرقم السعيد 8', 'الرقم المنحوس 4', 'نطاقات بينيين', 'نطاقات NNNN', 'سوق النطاقات الصيني', 'قيمة النطاقات الرقمية', 'نطاقات بدون حروف علة', 'تقليب نطاقات الصين', 'نطاقات .com قصيرة']
 ---
 
 بالنسبة لمضارب نطاقات غربي، `xqjz.com` بيبان زي خبط عشوائي على الكيبورد، و`5808.com` بيبان زي رقم تليفون. بالنسبة لمشتري صيني، الأول ممكن يبقى براند رباعي الحروف نضيف ومتوافق مع البينيين، والتاني سلسلة بتشيل معنى "الازدهار" مرتين. التضارب ده هو بيت القصيد كله. فئة من النطاقات بتتقري كأنها بلا قيمة في سوق، بتتسعّر كفئة أصول في سوق تاني، والمضاربين اللي اتعلّموا يقروا السوق التاني ده لحقوا واحدة من أكبر عمليات إعادة التسعير اللي شافها [السوق الثانوي](/ar/glossary/aftermarket/) في تاريخه.

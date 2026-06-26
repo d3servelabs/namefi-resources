@@ -11,7 +11,7 @@ seriesOrder: 25
 format: analysis
 description: "डोमेनिंग की वास्तविक अर्थव्यवस्था: नवीनीकरण का बोझ, एक व्यावहारिक नियम के रूप में सेल-थ्रू रेट, और क्यों एक अच्छी बिक्री को कई वर्षों के नवीनीकरण को वित्तपोषित करना होता है।"
 ogImage: ../../assets/domain-renewal-costs-and-sell-through-rate-og.jpg
-keywords: ['domain renewal cost', 'sell-through rate domains', 'domain flipping economics', 'domain carrying cost', 'domain renewal fees', 'domaining profit math', 'domain portfolio cost', 'is domain flipping profitable', 'domain renewal drag', 'cost basis domains', 'domain investing returns', 'how much do domains cost to renew', '.com renewal price', 'domain holding cost']
+keywords: ['डोमेन नवीनीकरण लागत', 'डोमेन सेल-थ्रू रेट', 'डोमेन फ्लिपिंग की अर्थव्यवस्था', 'डोमेन वहन लागत', 'डोमेन नवीनीकरण शुल्क', 'डोमेनिंग मुनाफे का गणित', 'डोमेन पोर्टफोलियो लागत', 'क्या डोमेन फ्लिपिंग फायदेमंद है', 'डोमेन नवीनीकरण का बोझ', 'डोमेन की लागत आधार', 'डोमेन निवेश पर रिटर्न', 'डोमेन नवीनीकरण में कितना खर्च आता है', '.com नवीनीकरण मूल्य', 'डोमेन होल्डिंग लागत']
 ---
 
 आपके पास मौजूद हर डोमेन आपको साल में एक बार बिल भेजता है। यही एकमात्र तथ्य वह गुरुत्वाकर्षण है जिसके तहत हर डोमेन निवेशक जीता है, और यही वह हिस्सा है जिसे सफलता की कहानियाँ छोड़ देती हैं। पाँच अंकों की बिक्री एक शानदार सुर्खी बनाती है। लेकिन वे दो सौ नाम जो नहीं बिके, हर बारह महीने में चुपचाप प्रत्येक पर नवीनीकरण शुल्क खींचते रहे — वे कभी कहानी में नहीं आते।

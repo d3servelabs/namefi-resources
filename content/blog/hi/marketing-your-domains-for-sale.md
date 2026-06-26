@@ -11,7 +11,7 @@ seriesOrder: 28
 format: guide
 description: "डोमेन को बिक्री के लिए कैसे मार्केट करें: पार्किंग पेज, फॉर-सेल लैंडर, और लिस्टिंग SEO जो सही खरीदार के सामने सही नाम रखे।"
 ogImage: ../../assets/marketing-your-domains-for-sale-og.jpg
-keywords: ['marketing domains for sale', 'how to market a domain', 'domain for sale landing page', 'domain parking', 'sell a parked domain', 'domain sales lander', 'domain marketplace listing', 'domain listing SEO', 'how to advertise a domain for sale', 'inbound vs outbound domain sales', 'domain for sale page', 'get buyers for domains', 'domain marketing channels', 'domain investing marketing']
+keywords: ['बिक्री के लिए डोमेन की मार्केटिंग', 'डोमेन को कैसे मार्केट करें', 'डोमेन फॉर-सेल लैंडिंग पेज', 'domain parking', 'पार्क्ड डोमेन कैसे बेचें', 'डोमेन सेल्स लैंडर', 'डोमेन मार्केटप्लेस लिस्टिंग', 'डोमेन लिस्टिंग SEO', 'बिक्री के लिए डोमेन का विज्ञापन कैसे करें', 'इनबाउंड बनाम आउटबाउंड डोमेन सेल्स', 'डोमेन फॉर-सेल पेज', 'डोमेन के लिए खरीदार कैसे पाएं', 'डोमेन मार्केटिंग चैनल', 'डोमेन इन्वेस्टिंग मार्केटिंग']
 ---
 
 आप एकदम सही नाम के मालिक हो सकते हैं और फिर भी उसे कभी न बेच पाएं। मूल्यांकन बताता है कि डोमेन की कीमत क्या है; मार्केटिंग वह चीज़ है जो उस कीमत और किसी ऐसे खरीदार के बीच की दूरी को पाटती है जिसने आपके बारे में कभी नहीं सुना। एक फ्लिपर के पोर्टफोलियो में मौजूद अधिकांश नाम इसलिए नहीं बिकते क्योंकि जिन्हें उनकी ज़रूरत है वे जान ही नहीं पाते कि वे उपलब्ध हैं। इसका समाधान जोर-शोर से पिच करना नहीं है। बल्कि नाम को वहां रखना है जहां सही खरीदार पहले से देख रहा है।
