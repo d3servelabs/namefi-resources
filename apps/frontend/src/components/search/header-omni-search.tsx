@@ -42,6 +42,10 @@ import { useAuth } from '@/hooks/use-auth';
 import { useCart } from '@/hooks/use-cart';
 import { useSearch } from '@/hooks/use-search';
 import { formatAmountInUSD } from '@/lib/number';
+import {
+  MARKETPLACE_LISTINGS_FLAG,
+  useBooleanOpenFeatureFlag,
+} from '@/lib/openfeature-flags';
 import { useTRPC } from '@/lib/trpc';
 import {
   ACCOUNT_DESTINATIONS,
@@ -149,6 +153,13 @@ export function HeaderOmniSearch() {
   // Mirror the sidebar's extra gate on the bulk Manage entrypoint so search and
   // nav never disagree about whether `/manage` is reachable for this user.
   const showManageEntrypoint = useManageEntrypointViewable();
+  // The per-domain "List for sale" action deep-links to `?tab=marketplace`, but
+  // DomainManagement only honors that tab when this flag is on (otherwise it
+  // falls back to the overview tab). Gate the action on the same flag so we
+  // don't offer a deep-link that silently lands somewhere else.
+  const marketplaceListingEnabled = useBooleanOpenFeatureFlag(
+    MARKETPLACE_LISTINGS_FLAG,
+  );
   const trpc = useTRPC();
   const locale = useLocale();
   const resourcesLanguage = useMemo(
@@ -326,13 +337,16 @@ export function HeaderOmniSearch() {
   const matchedDomainActions =
     ownedForActions.length === 0
       ? []
-      : DOMAIN_ACTIONS.filter((action) =>
-          destinationMatches(
+      : DOMAIN_ACTIONS.filter((action) => {
+          // Drop "List for sale" when marketplace listings are disabled — its
+          // `?tab=marketplace` deep-link would otherwise resolve to the overview.
+          if (action.id === 'sell' && !marketplaceListingEnabled) return false;
+          return destinationMatches(
             query,
             tDynamic(`omniSearch.domainActions.${action.titleKey}`),
             action.keywords,
-          ),
-        );
+          );
+        });
   const domainActionResults: OmniSearchResult[] = [];
   if (matchedDomainActions.length > 0) {
     const actionTerms = new Set(
