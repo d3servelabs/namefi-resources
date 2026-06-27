@@ -38,18 +38,72 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
   script. There is no `translate-glossary` program — it was removed for implying a
   workflow we don't use. Use `content/termbase.json` as the reference for
   canonical per-locale titles + anchor text.
+- **Honor explicit provider/model instructions.** If a task owner specifies a
+  translation provider/model (for example, Codex-only), that instruction overrides
+  the default above for that task. Never silently substitute Claude, Gemini, a
+  third-party translation API, or another model/provider.
 - **Model:** run drafting and translation agents on the **latest Claude Sonnet**
   (`claude-sonnet-4-6`), **not** Opus. Sonnet is sufficient for content/translation
   work and far cheaper; large fan-outs on Opus burn the session/usage limit fast.
   Reserve Opus for orchestration/judgement, not bulk content generation.
+- **Translate fresh from English source; do not summarize.** A translated file
+  must preserve the English source's content coverage: headings, section order,
+  tables, lists, images/alt text, FAQs, source blocks, citations, and body
+  substance. Do not use an existing locale file as the source for a re-translation;
+  it may already be truncated, over-compressed, or stylistically contaminated.
 - The translated **`title` is the canonical term** for that concept in that
   locale, reused site-wide — pick it deliberately. **zh titles are reviewed/signed
   off by the maintainer**; **`ar` uses modern Egyptian Arabic register** (not
   MSA), the natural register for a tech/business reader.
-- Rewrite internal links `/en/…` → `/<locale>/…`; **never change the slug**. A
-  link's anchor text = the linked term's canonical title in that locale.
+- Rewrite internal links `/en/…` → `/<locale>/…` when the target exists in that
+  locale; **never change the slug**. Fall back to `/en/…` only when the locale
+  counterpart does not exist, and make that fallback intentional. A link's anchor
+  text = the linked term's canonical title in that locale.
 - Keep verbatim: citation URLs (incl. `#:~:text=` fragments), code, brand names,
   domain names, and figures (`GoDaddy`, `ICANN`, `.com`, `$30`, `BIP-39`, …).
+- Translate all human-facing metadata: `title`, `description`, `keywords`, FAQ
+  questions/answers, visible table labels, headings, and image alt text. Keep
+  product/protocol names in English only where local readers expect them. Do not
+  leave English SEO residue such as `what is`, `why choose`, `tokenized domain`,
+  `blockchain domains`, or `Web3 domains` in localized keyword arrays unless the
+  phrase is deliberately part of the local search strategy.
+
+### Translation quality gates
+
+- **Completeness gate before LQA:** compare each translated file against its
+  English source. For alphabetic locales, a body that is below ~70% of the English
+  word count is presumed truncated or summarized unless the source is a short
+  glossary stub. For Chinese, compare heading/section/table/list coverage and line
+  shape instead of word ratio. If the file fails this gate, re-translate from
+  English; do not attempt a polish-only pass.
+- **Random sample every large batch:** after bulk translation, review a fresh
+  random 1% sample per locale (minimum 4 files when the locale has hundreds of
+  files). Read the sampled files end-to-end against English. If the sample finds
+  truncation, broken markdown, repeated English residue, or systemic locale
+  grammar issues, expand to deterministic sweeps and treat the batch as not
+  production-ready.
+- **LQA is not reconstruction.** LQA fixes tone, terminology, grammar, local
+  idiom, and minor metadata problems. It does not recover missing content. Missing
+  sections, heavily compressed articles, or template-like replacements require
+  re-translation from the English source.
+- **Markdown/link integrity:** preserve balanced Markdown links, especially
+  citation URLs containing parentheses such as Wikipedia paths. Keep `#:~:text=`
+  fragments intact. Run MDX lint and link audit; broken links or malformed source
+  reference blocks block merge.
+- **Locale-specific watch list from prior audits:**
+  - Turkish (`tr-TR`): do not hard-append suffixes to Latin abbreviations or TLD
+    tokens. Use natural Turkish typography and apostrophes where needed, e.g.
+    `.io'dan`, `.ai'ye`, `TLD'yi`, `TLD'dir`, `IANA'da`, `.com'un`, `SEO'yu`,
+    `HTTP'yi`. Avoid ASCII-only Turkish in body prose (`yalnizca`, `politikasi`,
+    `sektoru`) and avoid English FAQ remnants such as `what is the ...`.
+  - Spanish (`es`): audit same-locale links; `/en/tld/...` inside Spanish content
+    is only acceptable when the Spanish target is missing. Keep register
+    consistent (`tú` vs `usted`) within a page, avoid generic marketing filler,
+    and normalize technical borrowings (`TLD`, `NFT`, `UX`, `fees`) deliberately.
+  - Chinese (`zh`): body prose may keep expected technical names, but localized
+    frontmatter/keywords and TLD pages should not carry English SEO boilerplate
+    (`what is`, `why choose`, `tokenized domain`). Reduce translationese where the
+    page should read like local editorial/product copy rather than a whitepaper.
 
 ## Cross-linking & SEO
 
