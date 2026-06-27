@@ -100,7 +100,7 @@ export function AppSidebar() {
         <div className="flex flex-col gap-2 w-full">
           <NotificationsBell variant="sidebar" />
           <AppSidebarHydratedFooter isCollapsed={isCollapsed} />
-          <UserDropdown forceExpanded={false} />
+          <UserDropdown forceExpanded={false} compactAccountLabel />
         </div>
       </SidebarFooter>
       <SidebarRail />

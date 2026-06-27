@@ -3,7 +3,7 @@
 import { HeaderActionButton } from '@/components/header-action-button';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { useAuth } from '@/hooks/use-auth';
-import { abbreviation, shortage } from '@/lib/string';
+import { abbreviation } from '@/lib/string';
 import { getUserDisplaySafeIdentifier } from '@/lib/user';
 import { getAuthDisplayProfileSafeIdentifier } from '@/components/providers/auth-display-profile';
 import {
@@ -29,11 +29,20 @@ import type { HeaderActionVariant } from '@/components/header-action-button';
 import { SignInChooserDialog } from '@/components/dialogs/sign-in-chooser';
 import { useOpenSignInFromQuery } from '@/hooks/use-login-from-query';
 import { useSearchParams } from 'next/navigation';
-import { shouldShowUserDropdownLoading } from './user-dropdown-state';
+import {
+  formatCompactUserDropdownAccountLabel,
+  formatDefaultUserDropdownAccountLabel,
+  shouldShowUserDropdownLoading,
+} from './user-dropdown-state';
 
 export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
   forceExpanded?: boolean;
   disableBackdropBlur?: boolean;
+  /**
+   * Use the tighter account label for constrained placements, namely the
+   * expanded sidebar footer pill.
+   */
+  compactAccountLabel?: boolean;
   /**
    * Collapse the signed-out "Sign in" control to an icon-only button below the
    * `sm` breakpoint (the small-screen top bar), expanding to the labeled pill
@@ -86,6 +95,7 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
     {
       forceExpanded = true,
       disableBackdropBlur = false,
+      compactAccountLabel = false,
       iconOnlyBelowSm = false,
       className,
       ...rest
@@ -163,6 +173,10 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
       getUserDisplaySafeIdentifier(privyUser) ??
       getAuthDisplayProfileSafeIdentifier(unsafeDisplayProfile);
     const displayLabel = name ?? t('account.label');
+    const visibleDisplayLabel =
+      name && compactAccountLabel
+        ? formatCompactUserDropdownAccountLabel(name)
+        : formatDefaultUserDropdownAccountLabel(displayLabel);
     const avatarAddress =
       privyUser?.wallet?.address ?? unsafeDisplayProfile?.walletAddress ?? null;
     const avatarFallback = name
@@ -227,8 +241,15 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
                   </div>
                   {isExpanded && (
                     <>
-                      <span className="hidden text-sm md:block">
-                        <UserDropdownLabel value={displayLabel} />
+                      <span className="hidden min-w-0 max-w-full text-sm md:block">
+                        <UserDropdownLabel
+                          value={visibleDisplayLabel}
+                          title={
+                            visibleDisplayLabel !== displayLabel
+                              ? displayLabel
+                              : undefined
+                          }
+                        />
                       </span>
                       <span
                         className={cn(
@@ -285,10 +306,19 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
 
 UserDropdown.displayName = 'UserDropdown';
 
-function UserDropdownLabel({ value }: { value: string }) {
+function UserDropdownLabel({
+  value,
+  title,
+}: {
+  value: string;
+  title?: string;
+}) {
   return (
-    <span className="inline-block overflow-hidden align-bottom">
-      <span className="inline-block">{shortage(value, 11)}</span>
+    <span
+      className="block min-w-0 max-w-full overflow-hidden text-ellipsis whitespace-nowrap align-bottom"
+      title={title}
+    >
+      <span className="block truncate">{value}</span>
     </span>
   );
 }

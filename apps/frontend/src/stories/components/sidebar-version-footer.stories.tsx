@@ -10,7 +10,7 @@ import { CartProvider } from '@/components/providers/cart';
 import { FreeMintsGuidanceProvider } from '@/components/providers/free-mints-guidance';
 import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { LocaleChangeProvider } from '@/components/i18n/use-change-locale';
-import { MockPrivyProvider } from '@/lib/mock/privy';
+import { MockPrivyProvider, privyMockUser } from '@/lib/mock/privy';
 import { OriginProvider } from '@/components/providers/origin';
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
 import {
@@ -18,7 +18,7 @@ import {
   useSidebar,
 } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { StorybookAuthProvider } from '../utils/storybook-auth-provider';
-import { TRPCProvider, type AppRouter } from '@/lib/trpc';
+import { TRPCProvider, type AppRouter, type AppRouterOutput } from '@/lib/trpc';
 import { WishlistProvider } from '@/components/providers/wishlist';
 import { createMockLink } from '@/lib/mock/trpc';
 import { defaultLocale, type Locale } from '@/i18n/config';
@@ -46,8 +46,46 @@ const namefiOrigin: OriginRuntime = {
   },
 };
 
-function StoryProviders({ children }: { children: ReactNode }) {
+type StoryAuthState = {
+  fullName?: string;
+};
+
+function buildMockPrivyUser(fullName: string) {
+  return {
+    ...privyMockUser,
+    customMetadata: {
+      data: JSON.stringify({ fullName }),
+    },
+  };
+}
+
+function buildMockUser(fullName: string): AppRouterOutput['users']['getUser'] {
+  return {
+    id: 'd8988592-91c7-4b2c-a2ca-1eb612386f43',
+    stripeCustomerId: 'cus_SEo212w712hXZm',
+    privyUserId: 'did:privy:cmcjax6ya00123z0nch67ge9x',
+    subscribeToEmails: true,
+    lastSignInAt: new Date('2026-01-28T17:20:47.000Z'),
+    lastAccessedSessionAt: new Date('2026-01-28T17:20:55.411Z'),
+    createdAt: new Date('2025-05-02T14:18:18.531Z'),
+    updatedAt: new Date('2026-01-28T17:22:15.729Z'),
+    displayProfile: {
+      displayName: fullName,
+      email: 'dev-team@d3serve.xyz',
+      walletAddress: '0xB5856d4598c919834913b8656ebc15a64d3C7836',
+    },
+  };
+}
+
+function StoryProviders({
+  auth,
+  children,
+}: {
+  auth?: StoryAuthState;
+  children: ReactNode;
+}) {
   const [activeLocale, setActiveLocale] = useState<Locale>(defaultLocale);
+  const isAuthenticated = Boolean(auth?.fullName);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -58,10 +96,18 @@ function StoryProviders({ children }: { children: ReactNode }) {
     createTRPCClient<AppRouter>({
       links: [
         createMockLink({
-          isAuthenticated: false,
+          isAuthenticated,
+          user: auth?.fullName ? buildMockUser(auth.fullName) : undefined,
           getMockData: async (opts) => {
             if (opts.op.path === 'announcements.getActive') {
               return [null, { items: [] }];
+            }
+            if (
+              opts.op.path === 'wishlist.getWishlistDomains' ||
+              opts.op.path === 'freeClaims.getUserClaims' ||
+              opts.op.path === 'carts.getItems'
+            ) {
+              return [null, []];
             }
             return [null, {}];
           },
@@ -72,14 +118,18 @@ function StoryProviders({ children }: { children: ReactNode }) {
 
   return (
     <MockPrivyProvider
-      value={{ ready: true, authenticated: false, user: null }}
+      value={{
+        ready: true,
+        authenticated: isAuthenticated,
+        user: auth?.fullName ? buildMockPrivyUser(auth.fullName) : null,
+      }}
     >
       <QueryClientProvider client={queryClient}>
         <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
           <OriginProvider originInfo={namefiOrigin}>
             <NuqsAdapter>
               <ConsentManagerProvider options={{ mode: 'offline' }}>
-                <StorybookAuthProvider isAuthenticated={false}>
+                <StorybookAuthProvider isAuthenticated={isAuthenticated}>
                   <AdminFeatureFlagsProvider>
                     <PreAuthSignalsProvider>
                       <InteractionLoggersProvider>
@@ -124,14 +174,16 @@ function MobileDrawerController({ open }: { open: boolean }) {
 }
 
 type SidebarVersionShellProps = {
+  auth?: StoryAuthState;
   mobileDrawerOpen?: boolean;
 };
 
 function SidebarVersionShell({
+  auth,
   mobileDrawerOpen = false,
 }: SidebarVersionShellProps) {
   return (
-    <StoryProviders>
+    <StoryProviders auth={auth}>
       <MobileDrawerController open={mobileDrawerOpen} />
       <AppSidebar />
       <main
@@ -170,6 +222,22 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const DesktopExpanded: Story = {};
+
+export const SignedInShortName: Story = {
+  args: {
+    auth: {
+      fullName: 'Ada Lovelace',
+    },
+  },
+};
+
+export const SignedInLongFirstName: Story = {
+  args: {
+    auth: {
+      fullName: 'Alexander Hamilton',
+    },
+  },
+};
 
 export const MobileDrawerOpen: Story = {
   parameters: {

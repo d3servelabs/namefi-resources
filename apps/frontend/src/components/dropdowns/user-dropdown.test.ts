@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { shouldShowUserDropdownLoading } from './user-dropdown-state';
+import {
+  formatCompactUserDropdownAccountLabel,
+  formatDefaultUserDropdownAccountLabel,
+  shouldShowUserDropdownLoading,
+} from './user-dropdown-state';
 
 describe('shouldShowUserDropdownLoading', () => {
   it('keeps an authenticated trigger in loading while display identity is still pending', () => {
@@ -44,5 +48,45 @@ describe('shouldShowUserDropdownLoading', () => {
         isPrivyUserLoading: false,
       }),
     ).toBe(true);
+  });
+});
+
+describe('formatCompactUserDropdownAccountLabel', () => {
+  it('shows compact person names as first name and last initial', () => {
+    expect(formatCompactUserDropdownAccountLabel('Ada Lovelace')).toBe(
+      'Ada L.',
+    );
+    expect(formatCompactUserDropdownAccountLabel('Mary Jane Watson')).toBe(
+      'Mary W.',
+    );
+  });
+
+  it('shortens long first names to six characters plus ellipsis', () => {
+    expect(formatCompactUserDropdownAccountLabel('Alexander Hamilton')).toBe(
+      'Alexan...',
+    );
+    expect(formatCompactUserDropdownAccountLabel('Zachary')).toBe('Zachar...');
+  });
+
+  it('keeps non-name account identifiers on the existing safe shortener', () => {
+    expect(formatCompactUserDropdownAccountLabel('dev-team@d3serve.xyz')).toBe(
+      'dev-t...e.xyz',
+    );
+    expect(
+      formatCompactUserDropdownAccountLabel(
+        '0x1234567890abcdef1234567890abcdef',
+      ),
+    ).toBe('0x123...bcdef');
+  });
+});
+
+describe('formatDefaultUserDropdownAccountLabel', () => {
+  it('preserves the existing fixed cap for non-compact dropdown labels', () => {
+    expect(formatDefaultUserDropdownAccountLabel('Alexander Hamilton')).toBe(
+      'Alexa...ilton',
+    );
+    expect(formatDefaultUserDropdownAccountLabel('dev-team@d3serve.xyz')).toBe(
+      'dev-t...e.xyz',
+    );
   });
 });
