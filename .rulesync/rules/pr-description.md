@@ -19,6 +19,15 @@ Every PR description must contain the following sections, in this order.
   without reading the diff.
 - For fixes, include: **Issue → Root cause → Solution (how)** → key changes.
 - Reference the issue it closes (e.g. `Fixes #1234`).
+- **Scope of this increment.** State plainly what this PR does and does **not**
+  include relative to the larger feature it relates to. Don't let a preparatory
+  or partial step (a registry/catalog entry, a scaffold, a data model, an
+  off-by-default flag, docs) read as the feature itself shipping — **even if that
+  feature already exists or is built elsewhere**; this PR's title should describe
+  the artifact it touched, not the capability it points at. If it's one step in a
+  series, say which step and what remains. (Our product-update summarizer treats
+  merged PRs as "shipped this period", so an overstated scope here can credit the
+  period with a capability this PR didn't actually deliver.)
 
 ## 2. Test plan (required)
 

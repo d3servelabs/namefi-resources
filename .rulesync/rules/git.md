@@ -58,6 +58,36 @@ cursor:
 
 - Run `git --no-pager log -n 100 --pretty=format:"%h %s"` to the recent commit history to understand the conventional commit message style and scopes being used for <git_commit_message>
 
+## Report the real scope of the change (honest increments)
+
+A commit message, branch name, PR title, and PR description describe **what this
+change actually does** — the increment in front of you — not the larger feature it
+relates to. This holds **even when that feature already exists or is being built
+elsewhere**: a change that registers a catalog entry, adds a data model, scaffolds
+a stub, writes docs/tests, or flips an off-by-default flag has *not itself*
+implemented or shipped the feature, and must not be titled as if it had.
+
+Why it matters: human reviewers **and** our automated product-update summarizer
+read PR titles as ground truth for "what shipped this period". An overstated title
+misleads readers and lets the summarizer credit the period with a capability this
+change didn't actually deliver.
+
+- **Bound the claim to the diff.** Describe the artifact the change actually
+  touched (the catalog entry, the schema, the stub, the doc), not the end-user
+  capability it merely points at.
+- **Use the conventional-commit type/scope honestly.** Reserve `feat(...)` for a
+  change that itself delivers user-visible capability. Catalog/registry, docs,
+  config, test, and pure-refactor work is `docs:`/`chore:`/`refactor:`/`test:`/
+  `build:` — or a scoped `feat(<scope>): register …` that names the artifact.
+  - ❌ `feat(cuj): add CUJ-Owner.13 — import one or many domains` — reads as
+    *implementing* bulk import; this change only registered the journey in the
+    CUJ catalog. (The import feature itself may already exist — but this change
+    didn't build it, and merging a catalog entry isn't shipping it.)
+  - ✅ `docs(cuj): register CUJ-Owner.13 (catalog entry for the import journey)`
+- **Name what this change does NOT do.** If it's one step of a larger effort — or
+  just metadata about an already-existing feature — say so, so the increment is
+  never mistaken for delivering the whole.
+
 ## ClickUp & GitHub Integration Rules
 
 **Precondition:** Apply these rules ONLY if a ClickUp Task ID (e.g., `1abc2de`) or a custom ID matching the pattern `NFI-<number>` is provided in the context.

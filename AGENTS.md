@@ -400,7 +400,7 @@ See [docs/dev-guides/storybook/README.md](docs/dev-guides/storybook/README.md) f
 
 ### Payment & Order Management Patterns
 
-- **Payment Workflows**: Use modular workflows for charging (`chargeUserAndCreatePaymentWorkflow`) and refunding (`refundUserWorkflow`)
+- **Payment Workflows**: Use modular workflows for charging (`chargeUserWorkflow`, orchestrated by `multiChargeWorkflow`) and refunding (`refundUserWorkflow`)
 - **Payment Method Determination**: Use `determineAvailablePaymentMethods` activity to find available payment options for users
 - **Order Creation**: Use `createAutoRenewOrder` activity to create order records after successful operations
 - **Payment Provider Support**: Handle both Stripe (credit card) and NFSC (blockchain) payment methods
@@ -889,6 +889,36 @@ Based on official Cursor documentation and community forum research (as of Jan 2
 - You need to make a judgement: if this is a small file change, the <git_commit_message> should only be one single line; If it's more than 100 lines of code change (excluding documentation and comments), or non-trivial code change, <git_commit_messsage> should be one line conventional commit style plus a multi line bullet points
 
 - Run `git --no-pager log -n 100 --pretty=format:"%h %s"` to the recent commit history to understand the conventional commit message style and scopes being used for <git_commit_message>
+
+## Report the real scope of the change (honest increments)
+
+A commit message, branch name, PR title, and PR description describe **what this
+change actually does** — the increment in front of you — not the larger feature it
+relates to. This holds **even when that feature already exists or is being built
+elsewhere**: a change that registers a catalog entry, adds a data model, scaffolds
+a stub, writes docs/tests, or flips an off-by-default flag has *not itself*
+implemented or shipped the feature, and must not be titled as if it had.
+
+Why it matters: human reviewers **and** our automated product-update summarizer
+read PR titles as ground truth for "what shipped this period". An overstated title
+misleads readers and lets the summarizer credit the period with a capability this
+change didn't actually deliver.
+
+- **Bound the claim to the diff.** Describe the artifact the change actually
+  touched (the catalog entry, the schema, the stub, the doc), not the end-user
+  capability it merely points at.
+- **Use the conventional-commit type/scope honestly.** Reserve `feat(...)` for a
+  change that itself delivers user-visible capability. Catalog/registry, docs,
+  config, test, and pure-refactor work is `docs:`/`chore:`/`refactor:`/`test:`/
+  `build:` — or a scoped `feat(<scope>): register …` that names the artifact.
+  - ❌ `feat(cuj): add CUJ-Owner.13 — import one or many domains` — reads as
+    *implementing* bulk import; this change only registered the journey in the
+    CUJ catalog. (The import feature itself may already exist — but this change
+    didn't build it, and merging a catalog entry isn't shipping it.)
+  - ✅ `docs(cuj): register CUJ-Owner.13 (catalog entry for the import journey)`
+- **Name what this change does NOT do.** If it's one step of a larger effort — or
+  just metadata about an already-existing feature — say so, so the increment is
+  never mistaken for delivering the whole.
 
 ## ClickUp & GitHub Integration Rules
 
@@ -1567,6 +1597,15 @@ Every PR description must contain the following sections, in this order.
   without reading the diff.
 - For fixes, include: **Issue → Root cause → Solution (how)** → key changes.
 - Reference the issue it closes (e.g. `Fixes #1234`).
+- **Scope of this increment.** State plainly what this PR does and does **not**
+  include relative to the larger feature it relates to. Don't let a preparatory
+  or partial step (a registry/catalog entry, a scaffold, a data model, an
+  off-by-default flag, docs) read as the feature itself shipping — **even if that
+  feature already exists or is built elsewhere**; this PR's title should describe
+  the artifact it touched, not the capability it points at. If it's one step in a
+  series, say which step and what remains. (Our product-update summarizer treats
+  merged PRs as "shipped this period", so an overstated scope here can credit the
+  period with a capability this PR didn't actually deliver.)
 
 ## 2. Test plan (required)
 
