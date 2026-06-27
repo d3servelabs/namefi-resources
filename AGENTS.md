@@ -463,7 +463,7 @@ See [docs/dev-guides/storybook/README.md](docs/dev-guides/storybook/README.md) f
 Do what has been asked; nothing more, nothing less.
 NEVER create files unless they're absolutely necessary for achieving your goal.
 ALWAYS prefer editing an existing file to creating a new one.
-NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
+NEVER proactively create documentation files (*.md) or README files except when explicitly requested by the User or required by the Documentation rules.
 
 # ClickUp Bug Report Guidelines
 
@@ -690,13 +690,6 @@ interface EnhancedHuntVoteReturn extends HuntVoteFunctions {
 - Prefer function components with hooks
 - Use proper TypeScript types for all props and state
 - Handle loading and error states explicitly
-
-## Documentation
-
-- Before making significant changes (large code pieces or multiple files):
-  - Check for existing README.md in the folder
-  - Use README.md to understand purpose, context, and scope
-  - If README.md is missing or lacks purpose/context/scope details, update it with this information
 
 # Cursor Rules (.mdc) Formatting Standards
 
@@ -1613,7 +1606,14 @@ Every PR description must contain the following sections, in this order.
   steps). Call out anything automation can't cover (e.g. live wallet flows) so
   the reviewer knows what to verify manually.
 
-## 3. Claude session summary (required when the PR was authored with Claude)
+## 3. Documentation impact (required)
+
+- State whether the touched folders' `README.md` files and ancestor READMEs were
+  updated, reviewed and left unchanged, or not applicable. If a touched folder
+  has more than 5 files and no useful `README.md`, call out the added README or
+  explain why this PR cannot address it.
+
+## 4. Claude session summary (required when the PR was authored with Claude)
 
 When a PR is created (in whole or part) by a Claude Code session, append a
 section summarizing that session:
@@ -1657,6 +1657,34 @@ Minimum checklist before handing off code:
   runtime evidence.
 - Prefer local fixes and existing patterns. Add abstraction only for proven
   duplication, consistency risk, or an established local API.
+
+# README Documentation Rule
+
+This is a Namefi Astra repo-local rule. Do not depend on OPC or external
+workspace docs for this practice.
+
+## Required Practice
+
+- Before modifying a file, read the containing folder's `README.md` when it
+  exists, plus the file's intro/frontmatter when present.
+- Any folder with more than 5 direct files must have a `README.md` that briefly
+  states what the folder is for, how the files relate to each other, and includes
+  an ASCII structure diagram when that helps future readers.
+- When a file changes, consider whether to update the `README.md` in that file's
+  folder and every ancestor folder up to the repo root. Keep README updates
+  brief; prefer links to deeper docs over long duplicated explanations.
+- If a touched folder over the 5-file threshold lacks a useful `README.md`, add
+  or update one as part of the same change. Do not churn untouched historical
+  gaps unless they are needed to explain the work.
+- If tooling forbids a folder-level `README.md`, document the exception in the
+  nearest usable ancestor README and encode the exemption in
+  `scripts/check-readmes.ts` with a rationale.
+
+## Precheck
+
+- Run `bun run check:readmes` before pushing documentation-sensitive changes.
+- `validate`, `validate:staged`, `validate:pre-push`, and the pre-commit hook run
+  the README precheck too.
 
 # Resolve Code Reviews
 

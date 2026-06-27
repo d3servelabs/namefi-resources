@@ -27,6 +27,9 @@ pre-commit:
       priority: 3
       run: bun run sgr
       files: git diff --name-only --staged
+    readmes:
+      priority: 4
+      run: bun run check:readmes -- {staged_files}
 
 pre-push:
   commands:

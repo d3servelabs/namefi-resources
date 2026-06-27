@@ -475,4 +475,4 @@ See [docs/dev-guides/storybook/README.md](docs/dev-guides/storybook/README.md) f
 Do what has been asked; nothing more, nothing less.
 NEVER create files unless they're absolutely necessary for achieving your goal.
 ALWAYS prefer editing an existing file to creating a new one.
-NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
+NEVER proactively create documentation files (*.md) or README files except when explicitly requested by the User or required by the Documentation rules.

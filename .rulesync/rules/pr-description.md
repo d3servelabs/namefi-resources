@@ -35,7 +35,14 @@ Every PR description must contain the following sections, in this order.
   steps). Call out anything automation can't cover (e.g. live wallet flows) so
   the reviewer knows what to verify manually.
 
-## 3. Claude session summary (required when the PR was authored with Claude)
+## 3. Documentation impact (required)
+
+- State whether the touched folders' `README.md` files and ancestor READMEs were
+  updated, reviewed and left unchanged, or not applicable. If a touched folder
+  has more than 5 files and no useful `README.md`, call out the added README or
+  explain why this PR cannot address it.
+
+## 4. Claude session summary (required when the PR was authored with Claude)
 
 When a PR is created (in whole or part) by a Claude Code session, append a
 section summarizing that session:
