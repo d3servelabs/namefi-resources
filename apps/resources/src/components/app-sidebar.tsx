@@ -1,20 +1,10 @@
 'use client';
 
-import {
-  BookOpen,
-  Briefcase,
-  Globe,
-  Handshake,
-  Layers,
-  type LucideIcon,
-  Newspaper,
-  Tags,
-  Video,
-} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { Dictionary } from '@/get-dictionary';
 import type { Locale } from '@/i18n-config';
+import { getResourcesSidebarItems } from '@/components/resources-sidebar-items';
 import {
   Sidebar,
   SidebarContent,
@@ -27,12 +17,6 @@ import {
   SidebarRail,
   useSidebar,
 } from '@namefi-astra/ui/components/shadcn/sidebar';
-
-type SidebarNavItem = {
-  label: string;
-  href: string;
-  icon: LucideIcon;
-};
 
 /**
  * Left navigation rail for the resources site, mirroring the main app's sidebar
@@ -53,17 +37,7 @@ export function AppSidebar({
   const pathname = usePathname();
   const { nav } = dictionary;
   const { isMobile, setOpenMobile } = useSidebar();
-
-  const items: SidebarNavItem[] = [
-    { label: nav.blog, href: `/${locale}/blog`, icon: Newspaper },
-    { label: nav.topics, href: `/${locale}/topics`, icon: Tags },
-    { label: nav.series, href: `/${locale}/series`, icon: Layers },
-    { label: nav.watch, href: `/${locale}/watch`, icon: Video },
-    { label: nav.glossary, href: `/${locale}/glossary`, icon: BookOpen },
-    { label: nav.tld, href: `/${locale}/tld`, icon: Globe },
-    { label: nav.partners, href: `/${locale}/partners`, icon: Handshake },
-    { label: nav.careers, href: `/${locale}/careers`, icon: Briefcase },
-  ];
+  const items = getResourcesSidebarItems({ locale, nav });
 
   return (
     <Sidebar side="left" collapsible="icon">

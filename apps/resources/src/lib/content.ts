@@ -1121,6 +1121,16 @@ export function getPostsInCluster(
   );
 }
 
+function isFaqPost(post: PostEntry): boolean {
+  return (
+    post.frontmatter.format === 'faq' || post.frontmatter.tags.includes('faq')
+  );
+}
+
+export function getFaqPostsForLocale(locale: Locale): PostEntry[] {
+  return getPostsForLocale(locale).filter(isFaqPost);
+}
+
 // A heading in a post's Table of Contents. `id` matches the slug the MDX heading
 // renderer (mdx-components) stamps on the rendered heading, so an anchor link to
 // `#id` jumps to the section.

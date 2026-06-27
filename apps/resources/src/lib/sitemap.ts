@@ -3,6 +3,7 @@ import { i18n, type Locale } from '@/i18n-config';
 import {
   getAvailableLocalesForSlug,
   getAvailableLocalesForTld,
+  getFaqPostsForLocale,
   getGlossaryEntriesForLocale,
   getPartnersForLocale,
   getPostCached,
@@ -85,6 +86,11 @@ function buildLocaleIndexEntries(
     i18n.locales,
     (locale) => `/r/${locale}/blog`,
   );
+  const faqAlternates = createLanguageAlternates(
+    baseUrl,
+    i18n.locales,
+    (locale) => `/r/${locale}/faq`,
+  );
   const glossaryAlternates = createLanguageAlternates(
     baseUrl,
     i18n.locales,
@@ -108,6 +114,7 @@ function buildLocaleIndexEntries(
 
   return locales.flatMap((locale) => {
     const posts = getPostsForLocale(locale);
+    const faqPosts = getFaqPostsForLocale(locale);
     const glossaryEntries = getGlossaryEntriesForLocale(locale);
     const partners = getPartnersForLocale(locale);
     const tlds = getTldsForLocale(locale);
@@ -120,6 +127,7 @@ function buildLocaleIndexEntries(
       watchLatest,
     ]);
     const blogLastModified = posts[0]?.publishedAt ?? homeLastModified;
+    const faqLastModified = faqPosts[0]?.publishedAt ?? blogLastModified;
     const glossaryLastModified =
       glossaryEntries[0]?.publishedAt ?? homeLastModified;
     const partnersLastModified = partners[0]?.publishedAt;
@@ -139,6 +147,13 @@ function buildLocaleIndexEntries(
         priority: 0.8,
         lastModified: blogLastModified,
         alternates: blogAlternates,
+      }),
+      createEntry({
+        url: toAbsoluteUrl(baseUrl, `/r/${locale}/faq`),
+        changeFrequency: 'weekly',
+        priority: 0.7,
+        lastModified: faqLastModified,
+        alternates: faqAlternates,
       }),
       createEntry({
         url: toAbsoluteUrl(baseUrl, `/r/${locale}/watch`),

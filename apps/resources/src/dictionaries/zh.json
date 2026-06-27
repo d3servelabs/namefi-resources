@@ -5,6 +5,7 @@
   "nav": {
     "resources": "资源",
     "blog": "博客",
+    "faq": "常见问题",
     "watch": "视频",
     "glossary": "术语表",
     "tld": "TLD 指南",
@@ -37,6 +38,11 @@
     "detailSourceLanguage": "原始语言",
     "relatedHeading": "相关指南",
     "tocHeading": "本页目录"
+  },
+  "faq": {
+    "indexTitle": "常见问题",
+    "indexDescription": "围绕域名、通证化、TLD 和 Namefi 的常见问题，提供简短实用的回答。",
+    "indexEmpty": "该语言暂时没有常见问题文章，请稍后再来。"
   },
   "watch": {
     "indexEmpty": "暂时没有视频，敬请期待。",

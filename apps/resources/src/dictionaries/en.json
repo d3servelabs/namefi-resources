@@ -5,6 +5,7 @@
   "nav": {
     "resources": "Resources",
     "blog": "Blog",
+    "faq": "FAQ",
     "watch": "Watch",
     "glossary": "Glossary",
     "tld": "TLDs",
@@ -37,6 +38,11 @@
     "detailSourceLanguage": "Original language",
     "relatedHeading": "Related guides",
     "tocHeading": "On this page"
+  },
+  "faq": {
+    "indexTitle": "FAQ",
+    "indexDescription": "Short, practical answers to common questions about domains, tokenization, TLDs, and Namefi.",
+    "indexEmpty": "No FAQ articles are available in this language yet. Check back soon."
   },
   "watch": {
     "indexEmpty": "No videos published yet. Check back soon.",
