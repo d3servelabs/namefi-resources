@@ -30,6 +30,11 @@ import { waitForConnectFlowSettled } from '@/components/providers/reown-wallet-s
 import { useLogin } from '@/hooks/use-login';
 import { clientSideEnv } from '@/lib/env';
 import { isClientDebugFlagEnabled } from '@/lib/debug-flag';
+import {
+  getAlreadyConnectedSiweTarget,
+  isSameSiweLoginTarget,
+  runWalletSignInConnectFlow,
+} from './sign-in-chooser-wallet';
 
 /**
  * ms to wait after closing this (modal) dialog before opening Privy's modal.
@@ -482,10 +487,10 @@ function WalletConnectController({
   const { signMessageAsync } = useSignMessage();
   const { generateSiweMessage, loginWithSiwe } = useLoginWithSiwe();
 
-  // SIWE-authenticate the just-connected wallet via Privy. Driven by the connect
-  // payload (`connected`), which is authoritative for THIS connect, so we never
-  // sign for a stale/lagging `getAccount` read; `getAccount` is consulted only
-  // for the optional connector metadata Privy records.
+  // SIWE-authenticate the chosen wallet via Privy. The target is either the
+  // already-connected wagmi account or the account read after AppKit settles;
+  // `getAccount` is also consulted for the optional connector metadata Privy
+  // records.
   const completeSiweLogin = useCallback(
     async (connected: {
       address: string;
@@ -499,12 +504,28 @@ function WalletConnectController({
         // the message Privy builds disagree with the recovered signer.
         const address = getAddress(connected.address);
         const caip2ChainId = connected.caip2ChainId;
-        const connector = getAccount(config).connector;
+        const target = { address, caip2ChainId };
+        const readMatchingAccount = () => {
+          const account = getAccount(config);
+          if (
+            !isSameSiweLoginTarget(
+              getAlreadyConnectedSiweTarget(account),
+              target,
+            )
+          ) {
+            throw new Error(t('signInChooser.errorDescription'));
+          }
+          return account;
+        };
+
+        const connector = readMatchingAccount().connector;
         const message = await generateSiweMessage({
           address,
           chainId: caip2ChainId,
         });
+        readMatchingAccount();
         const signature = await signMessageAsync({ account: address, message });
+        readMatchingAccount();
 
         if (isSiweDebug()) {
           let recovered = 'n/a';
@@ -532,6 +553,7 @@ function WalletConnectController({
           console.info('[siwe-debug] message=%s', message);
         }
 
+        readMatchingAccount();
         await loginWithSiwe({
           message,
           signature,
@@ -569,15 +591,12 @@ function WalletConnectController({
   const connect = useCallback(async () => {
     onConnectingChange(true);
     try {
-      await open();
-      await waitForConnectFlowSettled(config);
-      const { address, chainId } = getAccount(config);
-      if (address && chainId) {
-        await completeSiweLogin({
-          address,
-          caip2ChainId: `eip155:${chainId}`,
-        });
-      }
+      await runWalletSignInConnectFlow({
+        readAccount: () => getAccount(config),
+        openWalletModal: open,
+        waitForConnectFlowSettled: () => waitForConnectFlowSettled(config),
+        completeSiweLogin,
+      });
     } catch {
       // Swallow so the connect promise never rejects (see above).
     } finally {

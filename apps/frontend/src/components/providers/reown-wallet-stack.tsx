@@ -7,9 +7,15 @@ import {
   type LinkedAccountWithMetadata,
   useLinkWithSiwe,
   usePrivy,
-  type WalletWithMetadata,
 } from '@privy-io/react-auth';
-import { useEffect, useMemo, useRef, type PropsWithChildren } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PropsWithChildren,
+} from 'react';
 import { getAddress } from 'viem';
 import {
   WagmiProvider as BaseWagmiProvider,
@@ -33,6 +39,17 @@ import {
   WalletConnectionRuntimeContext,
   type WalletConnectionRuntime,
 } from './wallet-connection-runtime';
+import {
+  abortWalletSiweLinkIfWalletChanged,
+  clearWalletSiweLinkRequestsOnLogout,
+  connectedWalletMatchesTarget,
+  getWalletSiweLinkRequestAddress,
+  getWalletSiweLinkKey,
+  isEthereumWalletAlreadyLinked,
+  recordWalletSiweLinkRequest,
+  shouldRecordWalletSiweLinkRequest,
+  shouldStartSiweLink,
+} from './reown-wallet-siwe-link';
 
 // Our viem chains satisfy AppKit's `BaseNetwork` branch (AppKit derives the
 // CAIP id from `id`), so we keep a single source of truth for chains.
@@ -171,8 +188,11 @@ const CONNECT_FLOW_MAX_WAIT_MS = 180_000;
  * "user finished connecting (or gave up)" signal after opening AppKit, instead
  * of re-implementing the latch.
  */
-export function waitForConnectFlowSettled(config: Config): Promise<void> {
-  if (getAccount(config).status === 'connected') {
+export function waitForConnectFlowSettled(
+  config: Config,
+  targetAddress?: string,
+): Promise<void> {
+  if (connectedWalletMatchesTarget({ ...getAccount(config), targetAddress })) {
     return Promise.resolve();
   }
   return new Promise((resolve) => {
@@ -192,7 +212,9 @@ export function waitForConnectFlowSettled(config: Config): Promise<void> {
     cleanups.push(
       watchAccount(config, {
         onChange(account) {
-          if (account.status === 'connected') finish();
+          if (connectedWalletMatchesTarget({ ...account, targetAddress })) {
+            finish();
+          }
         },
       }),
     );
@@ -218,41 +240,42 @@ export function waitForConnectFlowSettled(config: Config): Promise<void> {
 
     // Close the subscribe-after-check race: the account may have flipped to
     // `connected` between the initial read and the watcher taking effect.
-    if (getAccount(config).status === 'connected') finish();
+    if (
+      connectedWalletMatchesTarget({ ...getAccount(config), targetAddress })
+    ) {
+      finish();
+    }
   });
 }
 
 /**
- * Concurrency + backoff control for the eager SIWE link, at **module scope** so
- * it survives the per-route `WagmiProvider` remounting on navigation (the root
- * cause of the prior attempt re-prompting SIWE on every `/mart` ↔ `/domains`
- * navigation). `inFlight` prevents a second prompt while one is open; `failedAt`
- * applies a cooldown after a dismissed/failed attempt so navigation does not
- * re-prompt in a tight loop — but, unlike a permanent block, it still retries
- * once the cooldown elapses. The real "already done" signal is Privy's live
- * `linkedAccounts` (checked first); `linked` is a success marker that bridges
- * the brief window between `linkWithSiwe` resolving and Privy's `user` object
- * reflecting the new linked account, so we don't fire a duplicate prompt then.
+ * Concurrency + backoff control for explicit SIWE linking, at **module scope**
+ * so it survives the per-route `WagmiProvider` remounting on navigation.
+ * `inFlight` prevents a second prompt while one is open; `failedAt` applies a
+ * cooldown after a dismissed/failed attempt. The real "already done" signal is
+ * Privy's live `linkedAccounts` (checked first); `linked` is a success marker
+ * that bridges the brief window between `linkWithSiwe` resolving and Privy's
+ * `user` object reflecting the new linked account, so we don't fire a duplicate
+ * prompt then.
  */
 const siweLinkInFlight = new Set<string>();
 const siweLinkedKeys = new Set<string>();
 const siweLinkFailedAt = new Map<string, number>();
-const SIWE_LINK_RETRY_COOLDOWN_MS = 60_000;
+const siweLinkRequestedKeys = new Set<string>();
 
 /**
- * After a wallet connects via Reown AppKit, register it on the authenticated
- * Privy user with `useLinkWithSiwe` (a plain SIWE signature — no Privy modal, no
- * fragile deep-link). The backend trusts Privy *linked* wallets for ownership +
- * every EIP-712 signed mutation, so a connected-but-unlinked wallet would be
- * rejected. The "already linked" check reads Privy's **live** `user` object (not
- * the app auth-context snapshot, which lagged in the prior attempt), so a
- * successful link stops further prompts immediately.
+ * Register an explicitly chosen Reown AppKit wallet on the authenticated Privy
+ * user with `useLinkWithSiwe` (a plain SIWE signature — no Privy modal, no
+ * fragile deep-link). Passive wagmi reconnects must not call this: an email
+ * login followed by a page that mounts wagmi should not prompt SIWE just because
+ * a browser extension is already connected.
  */
 function useReconcileConnectedWalletWithPrivy() {
   const { address, chainId, connector, isConnected } = useAccount();
   const { ready, authenticated, user } = usePrivy();
   const { generateSiweMessage, linkWithSiwe } = useLinkWithSiwe();
   const { signMessageAsync } = useSignMessage();
+  const [linkRequestNonce, setLinkRequestNonce] = useState(0);
 
   // Live mirror of the connected address so an in-flight link can tell whether
   // the *same* wallet is still connected after an await — distinguishing a
@@ -262,6 +285,48 @@ function useReconcileConnectedWalletWithPrivy() {
   latestAddressRef.current = address;
 
   useEffect(() => {
+    clearWalletSiweLinkRequestsOnLogout({
+      requestedLinkKeys: siweLinkRequestedKeys,
+      ready,
+      authenticated,
+    });
+  }, [ready, authenticated]);
+
+  const requestSiweLinkForActiveWallet = useCallback(
+    (connectedAddress?: string) => {
+      const linkAddress = getWalletSiweLinkRequestAddress({
+        connectedAddress,
+        hookAddress: address,
+        hookIsConnected: isConnected,
+      });
+
+      if (
+        !shouldRecordWalletSiweLinkRequest({
+          ready,
+          authenticated,
+          hasUser: Boolean(user),
+        }) ||
+        !linkAddress ||
+        !user
+      ) {
+        return;
+      }
+
+      recordWalletSiweLinkRequest({
+        requestedLinkKeys: siweLinkRequestedKeys,
+        key: getWalletSiweLinkKey(user.id, linkAddress),
+        ready,
+        authenticated,
+        hasUser: true,
+      });
+      setLinkRequestNonce((nonce) => nonce + 1);
+    },
+    [ready, authenticated, user, isConnected, address],
+  );
+
+  useEffect(() => {
+    void linkRequestNonce;
+
     // Require `connector` to be settled too: attempting while wagmi is still
     // hydrating can fail and (previously) burned the dedup slot permanently.
     if (
@@ -277,33 +342,29 @@ function useReconcileConnectedWalletWithPrivy() {
     }
 
     const lowerAddress = address.toLowerCase();
-    const key = `${user.id}:${lowerAddress}`;
-    const alreadyLinked = (user.linkedAccounts ?? []).some(
-      (account: LinkedAccountWithMetadata) =>
-        account.type === 'wallet' &&
-        (account as WalletWithMetadata).chainType === 'ethereum' &&
-        (account as WalletWithMetadata).address?.toLowerCase() === lowerAddress,
+    const key = getWalletSiweLinkKey(user.id, address);
+
+    const alreadyLinked = isEthereumWalletAlreadyLinked(
+      user.linkedAccounts as LinkedAccountWithMetadata[] | undefined,
+      lowerAddress,
     );
     if (alreadyLinked) {
       // Privy's live state now reflects the link — release the transient bridge
       // so it can't permanently block re-linking if the wallet is later unlinked.
       siweLinkedKeys.delete(key);
-      return;
-    }
-    // `siweLinkedKeys` only bridges the gap between `linkWithSiwe` resolving and
-    // Privy's `linkedAccounts` catching up, preventing a back-to-back duplicate
-    // prompt in that window; it's cleared above once Privy reflects the link.
-    if (siweLinkedKeys.has(key)) {
+      siweLinkRequestedKeys.delete(key);
       return;
     }
 
-    if (siweLinkInFlight.has(key)) {
-      return;
-    }
-    const failedAt = siweLinkFailedAt.get(key);
     if (
-      failedAt !== undefined &&
-      Date.now() - failedAt < SIWE_LINK_RETRY_COOLDOWN_MS
+      !shouldStartSiweLink({
+        hasExplicitRequest: siweLinkRequestedKeys.has(key),
+        hasTransientLink: siweLinkedKeys.has(key),
+        isInFlight: siweLinkInFlight.has(key),
+        failedAt: siweLinkFailedAt.get(key),
+        now: Date.now(),
+        alreadyLinked,
+      })
     ) {
       return;
     }
@@ -327,12 +388,28 @@ function useReconcileConnectedWalletWithPrivy() {
         });
         // If the user switched/disconnected mid-flight, abort without recording a
         // failure (it's a different wallet now, with its own key + attempt).
-        if (!isSameWalletConnected()) return;
+        if (
+          abortWalletSiweLinkIfWalletChanged({
+            isSameWalletConnected,
+            requestedLinkKeys: siweLinkRequestedKeys,
+            key,
+          })
+        ) {
+          return;
+        }
         const signature = await signMessageAsync({
           account: checksummedAddress,
           message,
         });
-        if (!isSameWalletConnected()) return;
+        if (
+          abortWalletSiweLinkIfWalletChanged({
+            isSameWalletConnected,
+            requestedLinkKeys: siweLinkRequestedKeys,
+            key,
+          })
+        ) {
+          return;
+        }
         await linkWithSiwe({
           message,
           signature,
@@ -344,9 +421,13 @@ function useReconcileConnectedWalletWithPrivy() {
         // doesn't start a second sign/link for the same wallet.
         siweLinkedKeys.add(key);
         siweLinkFailedAt.delete(key);
+        siweLinkRequestedKeys.delete(key);
       } catch (error) {
         // Start a cooldown rather than blocking forever, so a transient failure
-        // or dismissed prompt retries later without re-prompting every nav.
+        // or dismissed prompt does not immediately re-prompt on the same action.
+        // Drop the explicit request so later navigation stays quiet; the next
+        // user-initiated wallet action can request linking again.
+        siweLinkRequestedKeys.delete(key);
         siweLinkFailedAt.set(key, Date.now());
         console.warn('[wallet] SIWE link to Privy failed', error);
       } finally {
@@ -364,7 +445,10 @@ function useReconcileConnectedWalletWithPrivy() {
     generateSiweMessage,
     signMessageAsync,
     linkWithSiwe,
+    linkRequestNonce,
   ]);
+
+  return requestSiweLinkForActiveWallet;
 }
 
 /**
@@ -377,7 +461,16 @@ function ReownWalletConnectionBridge({ children }: PropsWithChildren) {
   const { address } = useAccount();
   const config = useConfig();
 
-  useReconcileConnectedWalletWithPrivy();
+  const requestSiweLinkForActiveWallet = useReconcileConnectedWalletWithPrivy();
+  const requestSiweLinkIfConnected = useCallback(
+    (targetAddress?: string) => {
+      const account = getAccount(config);
+      if (connectedWalletMatchesTarget({ ...account, targetAddress })) {
+        requestSiweLinkForActiveWallet(account.address);
+      }
+    },
+    [config, requestSiweLinkForActiveWallet],
+  );
 
   const runtime = useMemo<WalletConnectionRuntime>(
     () => ({
@@ -388,17 +481,21 @@ function ReownWalletConnectionBridge({ children }: PropsWithChildren) {
         // resolving — imperative callers then gate on wagmi's `useAccount()`.
         // See `waitForConnectFlowSettled`.
         await waitForConnectFlowSettled(config);
+        requestSiweLinkIfConnected();
       },
       async setActiveWalletByAddress(targetAddress) {
         // Single active connection: if it already matches, we're done; otherwise
         // open the modal so the user can connect/switch to the requested wallet.
         if (address && address.toLowerCase() === targetAddress.toLowerCase()) {
+          requestSiweLinkIfConnected(targetAddress);
           return;
         }
         await open();
+        await waitForConnectFlowSettled(config, targetAddress);
+        requestSiweLinkIfConnected(targetAddress);
       },
     }),
-    [open, address, config],
+    [open, address, config, requestSiweLinkIfConnected],
   );
 
   return (
