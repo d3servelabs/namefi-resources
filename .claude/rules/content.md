@@ -14,11 +14,13 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 > product promotion; one concept per entry; single canonical titles;
 > `also_known_as` for strict synonyms only; ≥2 specific sources.)
 
-> **Writing or translating?** The step-by-step playbook + hard-won lessons (model/scale choices, the
-> en-first drafting flow, per-locale translation rules, a translation **error catalog** [Arabic-heavy],
-> the post-batch QA + verification workflow, and the dev-vs-prod publish cadence) live in the
-> [`content-authoring`](../../.agents/skills/content-authoring/SKILL.md) skill. This file is the rules;
-> that skill is the how-to.
+> **Writing or translating?** The step-by-step playbooks + hard-won lessons live in two skills (this file is
+> the rules; the skills are the how-to). **Drafting English content** → the
+> [`content-authoring`](../../.agents/skills/content-authoring/SKILL.md) skill (en-first drafting flow,
+> citations, frontmatter/taxonomy, post-draft QA). **Translating EN → other locales** → the
+> [`article-translation`](../../.agents/skills/article-translation/SKILL.md) skill (the studio method,
+> per-locale frontmatter/link rules, the Arabic-heavy translation **error catalog**, the translation
+> completeness/QA + verification workflow). The dev-vs-prod publish cadence is in both.
 
 ---
 
