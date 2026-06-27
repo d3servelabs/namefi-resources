@@ -53,18 +53,25 @@ const DESTINATIONS: DestinationSeed[] = [
     badgeLabel: 'Page',
   },
   {
-    id: 'dest-dnssec',
-    title: 'DNSSEC settings',
-    subtitle: 'Enable DNSSEC and manage DS records',
-    href: '/domains?tab=dns-management',
-    badgeLabel: 'Setting',
+    id: 'dest-api-key',
+    title: 'Get API key',
+    subtitle: 'Create and manage developer API keys',
+    href: '/profile?tab=security',
+    badgeLabel: 'Action',
   },
   {
-    id: 'dest-autorenew',
-    title: 'Auto-renew',
-    subtitle: 'Turn automatic renewal on or off',
-    href: '/domains?tab=dns-management',
-    badgeLabel: 'Setting',
+    id: 'dest-top-up',
+    title: 'Top up funds',
+    subtitle: 'Add NFSC credits to your balance',
+    href: '/payment-methods?action=add-funds',
+    badgeLabel: 'Action',
+  },
+  {
+    id: 'dest-manage',
+    title: 'Manage',
+    subtitle: 'Bulk DNS and domain settings',
+    href: '/manage',
+    badgeLabel: 'Page',
   },
   {
     id: 'dest-orders',
@@ -79,6 +86,29 @@ const DESTINATIONS: DestinationSeed[] = [
     subtitle: 'Manage cards and NFSC balance',
     href: '/payment-methods',
     badgeLabel: 'Page',
+  },
+];
+
+/**
+ * Mock per-domain management actions. In the real app these are generated over
+ * the signed-in user's owned domains when the query matches a management action
+ * (e.g. "dnssec", "dns records"); here we seed a couple so the "Domain actions"
+ * group is visible in Storybook.
+ */
+const DOMAIN_ACTIONS: DestinationSeed[] = [
+  {
+    id: 'dom-act-dnssec',
+    title: 'DNSSEC & nameservers',
+    subtitle: 'acme.xyz',
+    href: '/domains/acme.xyz?tab=dns-management',
+    badgeLabel: 'Action',
+  },
+  {
+    id: 'dom-act-dns-records',
+    title: 'DNS records',
+    subtitle: 'acme.xyz',
+    href: '/domains/acme.xyz?tab=dns-records',
+    badgeLabel: 'Action',
   },
 ];
 
@@ -197,6 +227,17 @@ function buildSections(
     badgeLabel: d.badgeLabel,
   }));
 
+  const domainActions: OmniSearchResult[] = DOMAIN_ACTIONS.filter(
+    (d) => matches(d.title, q) || matches(d.subtitle, q),
+  ).map((d) => ({
+    kind: 'destination',
+    id: d.id,
+    title: d.title,
+    subtitle: d.subtitle,
+    href: d.href,
+    badgeLabel: d.badgeLabel,
+  }));
+
   const resources: OmniSearchResult[] = RESOURCES.filter(
     (r) => matches(r.title, q) || matches(r.body, q),
   ).map((r) => ({
@@ -220,6 +261,15 @@ function buildSections(
       },
     },
     { id: 'destinations', heading: 'Pages & actions', results: destinations },
+    ...(domainActions.length > 0
+      ? [
+          {
+            id: 'domainActions',
+            heading: 'Domain actions',
+            results: domainActions,
+          } satisfies OmniSearchSection,
+        ]
+      : []),
     { id: 'resources', heading: 'Help & resources', results: resources },
   ];
 }
@@ -382,6 +432,7 @@ export const InlineAllGroups: Story = {
     });
     canvas.getByTestId('shared.omniSearch.group.domains');
     canvas.getByTestId('shared.omniSearch.group.destinations');
+    canvas.getByTestId('shared.omniSearch.group.domainActions');
     canvas.getByTestId('shared.omniSearch.group.resources');
   },
 };

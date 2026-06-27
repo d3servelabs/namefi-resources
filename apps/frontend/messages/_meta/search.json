@@ -136,6 +136,9 @@
   "omniSearch.pageBadge": {
     "description": "Badge marking an app page/action result."
   },
+  "omniSearch.actionBadge": {
+    "description": "Badge marking a quick-action result (e.g. top up, API key)."
+  },
   "omniSearch.seeAll": {
     "description": "Footer row linking to full search results. {query} is the search term echoed back."
   },
@@ -148,8 +151,41 @@
   "omniSearch.groups.destinations": {
     "description": "Heading for the app pages/actions results group."
   },
+  "omniSearch.groups.domainActions": {
+    "description": "Heading for the per-domain management actions results group."
+  },
   "omniSearch.groups.resources": {
     "description": "Heading for the help/resources results group."
+  },
+  "omniSearch.destinations.profile": {
+    "description": "Destination row: the user's profile page."
+  },
+  "omniSearch.destinations.apiKey": {
+    "description": "Destination row: create/manage developer API keys."
+  },
+  "omniSearch.destinations.topUp": {
+    "description": "Destination row: add funds / top up the NFSC credit balance."
+  },
+  "omniSearch.destinations.linkedWallets": {
+    "description": "Destination row: the profile wallets tab."
+  },
+  "omniSearch.destinations.linkedAccounts": {
+    "description": "Destination row: the profile linked social accounts tab."
+  },
+  "omniSearch.destinations.contactDetails": {
+    "description": "Destination row: the profile contact details tab."
+  },
+  "omniSearch.domainActions.manage": {
+    "description": "Per-domain action: open the domain's management overview."
+  },
+  "omniSearch.domainActions.dnsRecords": {
+    "description": "Per-domain action: open the domain's DNS records tab."
+  },
+  "omniSearch.domainActions.dnssec": {
+    "description": "Per-domain action: open the domain's DNSSEC & nameservers tab."
+  },
+  "omniSearch.domainActions.sell": {
+    "description": "Per-domain action: list the domain for sale on the marketplace."
   },
   "omniSearch.cart.add": {
     "description": "Add-to-cart button label (idle)."

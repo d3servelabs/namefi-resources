@@ -64,7 +64,8 @@
       "domains": "النطاقات",
       "ownedDomains": "نطاقاتك",
       "destinations": "الصفحات والإجراءات",
-      "resources": "المساعدة والموارد"
+      "resources": "المساعدة والموارد",
+      "domainActions": "إجراءات الدومين"
     },
     "cart": {
       "add": "أضف للسلة",
@@ -73,6 +74,21 @@
       "removing": "جارٍ الحذف…",
       "import": "استيراد"
     },
-    "all": "الكل"
+    "all": "الكل",
+    "actionBadge": "إجراء",
+    "destinations": {
+      "profile": "الملف الشخصي",
+      "apiKey": "الحصول على API key",
+      "topUp": "شحن الرصيد",
+      "linkedWallets": "المحافظ المرتبطة",
+      "linkedAccounts": "الحسابات المرتبطة",
+      "contactDetails": "بيانات التواصل"
+    },
+    "domainActions": {
+      "manage": "إدارة الدومين",
+      "dnsRecords": "سجلات DNS",
+      "dnssec": "DNSSEC والنيم سيرفرز",
+      "sell": "عرض للبيع"
+    }
   }
 }

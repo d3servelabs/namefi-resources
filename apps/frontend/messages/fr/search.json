@@ -64,7 +64,8 @@
       "domains": "Domaines",
       "ownedDomains": "Vos domaines",
       "destinations": "Pages et actions",
-      "resources": "Aide et ressources"
+      "resources": "Aide et ressources",
+      "domainActions": "Actions sur le domaine"
     },
     "cart": {
       "add": "Ajouter au panier",
@@ -73,6 +74,21 @@
       "removing": "Suppression…",
       "import": "Importer"
     },
-    "all": "Tout"
+    "all": "Tout",
+    "actionBadge": "Action",
+    "destinations": {
+      "profile": "Profil",
+      "apiKey": "Obtenir une clé API",
+      "topUp": "Recharger le solde",
+      "linkedWallets": "Portefeuilles liés",
+      "linkedAccounts": "Comptes liés",
+      "contactDetails": "Coordonnées"
+    },
+    "domainActions": {
+      "manage": "Gérer le domaine",
+      "dnsRecords": "Enregistrements DNS",
+      "dnssec": "DNSSEC & serveurs de noms",
+      "sell": "Mettre en vente"
+    }
   }
 }

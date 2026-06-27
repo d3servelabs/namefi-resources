@@ -30,25 +30,27 @@ import {
 } from '@namefi-astra/ui/components/namefi/omni-search';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useQuery } from '@tanstack/react-query';
-import {
-  ClipboardList,
-  Compass,
-  CreditCard,
-  Globe,
-  Heart,
-  Store,
-} from 'lucide-react';
+import { Globe } from 'lucide-react';
 import type { Route } from 'next';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { type ReactNode, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
+import { useManageEntrypointViewable } from '@/components/sidebars/use-manage-entrypoint';
 import { useAuth } from '@/hooks/use-auth';
 import { useCart } from '@/hooks/use-cart';
 import { useSearch } from '@/hooks/use-search';
 import { formatAmountInUSD } from '@/lib/number';
 import { useTRPC } from '@/lib/trpc';
+import {
+  ACCOUNT_DESTINATIONS,
+  DOMAIN_ACTIONS,
+  destinationMatches,
+  flattenNavDestinations,
+  MAX_DOMAIN_ACTION_RESULTS,
+  tokenizeQuery,
+} from './destinations';
 import {
   type ResourceHit,
   searchResources,
@@ -56,8 +58,6 @@ import {
 } from './pagefind-client';
 
 const MAX_OWNED_RESULTS = 5;
-
-type Destination = { id: string; title: string; href: string; icon: ReactNode };
 
 /** Pre-format a domain's price (and any first-year-discount original) for display. */
 function formatDomainPrice(
@@ -146,6 +146,9 @@ export function HeaderOmniSearch() {
   const search = useSearch();
   const cart = useCart();
   const { isAuthenticated } = useAuth();
+  // Mirror the sidebar's extra gate on the bulk Manage entrypoint so search and
+  // nav never disagree about whether `/manage` is reachable for this user.
+  const showManageEntrypoint = useManageEntrypointViewable();
   const trpc = useTRPC();
   const locale = useLocale();
   const resourcesLanguage = useMemo(
@@ -254,60 +257,120 @@ export function HeaderOmniSearch() {
       icon: <Globe className="size-4 opacity-60" />,
     }));
 
-  // Static per-locale; memoize so the keystroke-driven re-renders don't rebuild
-  // six JSX-icon objects each time.
-  const destinations: Destination[] = useMemo(
-    () => [
-      {
-        id: 'discover',
-        title: tNav('items.discover'),
-        href: '/',
-        icon: <Compass className="size-4 opacity-60" />,
-      },
-      {
-        id: 'my-domains',
-        title: tNav('items.myDomains'),
-        href: '/domains',
-        icon: <Globe className="size-4 opacity-60" />,
-      },
-      {
-        id: 'orders',
-        title: tNav('items.myOrders'),
-        href: '/orders',
-        icon: <ClipboardList className="size-4 opacity-60" />,
-      },
-      {
-        id: 'wishlist',
-        title: tNav('items.myWishlist'),
-        href: '/wishlist',
-        icon: <Heart className="size-4 opacity-60" />,
-      },
-      {
-        id: 'payment-methods',
-        title: tNav('items.myPaymentMethods'),
-        href: '/payment-methods',
-        icon: <CreditCard className="size-4 opacity-60" />,
-      },
-      {
-        id: 'marketplace',
-        title: tNav('items.marketplace'),
-        href: '/mart',
-        icon: <Store className="size-4 opacity-60" />,
-      },
-    ],
-    [tNav],
-  );
+  // Resolve dynamic i18n keys with the same cast the sidebar uses
+  // (sidebar-items.tsx): nav titles live under `nav.items.*`, catalog titles
+  // under `search.omniSearch.{destinations,domainActions}.*`. The i18n coverage
+  // checker still counts them via its dynamic-namespace / template-glob rules.
+  const tNavDynamic = tNav as (key: string) => string;
+  const tDynamic = t as (key: string) => string;
 
-  const destinationResults: OmniSearchResult[] = destinations
-    .filter((d) => d.title.toLowerCase().includes(normalizedQuery))
-    .map((d) => ({
-      kind: 'destination',
-      id: `dest:${d.id}`,
-      title: d.title,
-      href: d.href,
-      icon: d.icon,
-      badgeLabel: t('omniSearch.pageBadge'),
-    }));
+  // Top-level pages from the shared sidebar nav registry (the single source the
+  // sidebar renders), flattened and auth-gated like the nav itself.
+  const navDestinationResults: OmniSearchResult[] = flattenNavDestinations()
+    .filter((item) => isAuthenticated || !item.requiresAuth)
+    // `items.manage` carries a backend viewable gate beyond auth (see the
+    // shared hook); hide it from search when the sidebar would also hide it.
+    .filter((item) => item.title !== 'items.manage' || showManageEntrypoint)
+    .map((item) => ({ item, title: tNavDynamic(item.title) }))
+    .filter(({ item, title }) =>
+      destinationMatches(query, title, item.keywords),
+    )
+    .map(({ item, title }) => {
+      const Icon = item.icon;
+      return {
+        kind: 'destination',
+        id: `nav:${item.href}`,
+        title,
+        href: item.href,
+        icon: Icon ? <Icon className="size-4 opacity-60" /> : undefined,
+        badgeLabel: t('omniSearch.pageBadge'),
+      } satisfies OmniSearchResult;
+    });
+
+  // Account pages + quick actions that have no sidebar entry (API key, top-up,
+  // profile sub-tabs). Hidden when signed out since every entry requires auth.
+  const accountDestinationResults: OmniSearchResult[] =
+    ACCOUNT_DESTINATIONS.filter((dest) => isAuthenticated || !dest.requiresAuth)
+      .map((dest) => ({
+        dest,
+        title: tDynamic(`omniSearch.destinations.${dest.titleKey}`),
+      }))
+      .filter(({ dest, title }) =>
+        destinationMatches(query, title, dest.keywords),
+      )
+      .map(({ dest, title }) => {
+        const Icon = dest.icon;
+        return {
+          kind: 'destination',
+          id: `acct:${dest.id}`,
+          title,
+          href: dest.href,
+          icon: <Icon className="size-4 opacity-60" />,
+          badgeLabel:
+            dest.badge === 'action'
+              ? t('omniSearch.actionBadge')
+              : t('omniSearch.pageBadge'),
+        } satisfies OmniSearchResult;
+      });
+
+  const destinationResults: OmniSearchResult[] = [
+    ...navDestinationResults,
+    ...accountDestinationResults,
+  ];
+
+  // Per-domain management deep-links: when the query matches a management action
+  // (e.g. "dnssec", "dns records", "sell"), surface that action for the user's
+  // owned domains, narrowed by any non-action token (so "dnssec acme" prefers
+  // acme.*). Bounded by MAX_DOMAIN_ACTION_RESULTS to keep the panel scannable.
+  const ownedForActions = isAuthenticated ? (ownedDomains ?? []) : [];
+  const matchedDomainActions =
+    ownedForActions.length === 0
+      ? []
+      : DOMAIN_ACTIONS.filter((action) =>
+          destinationMatches(
+            query,
+            tDynamic(`omniSearch.domainActions.${action.titleKey}`),
+            action.keywords,
+          ),
+        );
+  const domainActionResults: OmniSearchResult[] = [];
+  if (matchedDomainActions.length > 0) {
+    const actionTerms = new Set(
+      DOMAIN_ACTIONS.flatMap((action) => action.keywords ?? []).map((keyword) =>
+        keyword.toLowerCase(),
+      ),
+    );
+    const nameTokens = tokenizeQuery(normalizedQuery).filter(
+      (tok) => !actionTerms.has(tok),
+    );
+    const targetDomains = ownedForActions.filter((domain) => {
+      const name = domain.normalizedDomainName.toLowerCase();
+      return (
+        nameTokens.length === 0 || nameTokens.some((tok) => name.includes(tok))
+      );
+    });
+    for (const action of matchedDomainActions) {
+      if (domainActionResults.length >= MAX_DOMAIN_ACTION_RESULTS) break;
+      const Icon = action.icon;
+      const title = tDynamic(`omniSearch.domainActions.${action.titleKey}`);
+      for (const domain of targetDomains) {
+        if (domainActionResults.length >= MAX_DOMAIN_ACTION_RESULTS) break;
+        const name = domain.normalizedDomainName;
+        const href = action.tab
+          ? `/domains/${name}?tab=${action.tab}`
+          : `/domains/${name}`;
+        domainActionResults.push({
+          kind: 'destination',
+          id: `domain-action:${action.id}:${name}`,
+          title,
+          subtitle: name,
+          href,
+          icon: <Icon className="size-4 opacity-60" />,
+          badgeLabel: t('omniSearch.actionBadge'),
+        });
+      }
+    }
+  }
 
   const resourceResults: OmniSearchResult[] = resources.hits.map((hit) => ({
     kind: 'resource',
@@ -351,6 +414,15 @@ export function HeaderOmniSearch() {
                   id: 'destinations',
                   heading: t('omniSearch.groups.destinations'),
                   results: destinationResults,
+                },
+              ]
+            : []),
+          ...(domainActionResults.length > 0
+            ? [
+                {
+                  id: 'domainActions',
+                  heading: t('omniSearch.groups.domainActions'),
+                  results: domainActionResults,
                 },
               ]
             : []),

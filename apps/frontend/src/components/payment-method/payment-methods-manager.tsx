@@ -30,6 +30,7 @@ import type { SetupIntent } from '@stripe/stripe-js';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferOutput } from '@trpc/tanstack-react-query';
 import { CreditCardIcon, Loader2, TrashIcon, Wallet2 } from 'lucide-react';
+import { useQueryState } from 'nuqs';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
@@ -460,6 +461,20 @@ function UserWalletCardsGrid() {
   const [swapDialogWalletAddress, setSwapDialogWalletAddress] = useState<
     string | null
   >(null);
+
+  // Deep-link: open the NFSC top-up dialog when arriving with
+  // `?action=add-funds` (e.g. from the OmniSearch "Top up funds" action). This
+  // grid only mounts once authenticated and past the loading state, so it is
+  // safe to open here. The param is cleared after opening so a refresh or
+  // back-nav doesn't reopen the dialog; with no wallet preselected the dialog
+  // falls back to the connected wallet (same as the in-page "Add Funds" button).
+  const [topUpAction, setTopUpAction] = useQueryState('action');
+  useEffect(() => {
+    if (topUpAction === 'add-funds') {
+      setIsSwapDialogOpen(true);
+      void setTopUpAction(null);
+    }
+  }, [topUpAction, setTopUpAction]);
 
   const walletDialog = useRequestWalletConnection();
 

@@ -19,15 +19,9 @@ import { useQueryState, parseAsStringEnum } from 'nuqs';
 import { useAuth } from '@/hooks/use-auth';
 import { PageShell } from '@/components/page-shell';
 import { AuthRequired } from '../auth-required';
+import { DEFAULT_PROFILE_TAB, ProfileTab as TabValues } from './tabs';
 
-enum TabValues {
-  WALLETS = 'wallets',
-  ACCOUNTS = 'accounts',
-  CONTACT_DETAILS = 'contact-details',
-  SECURITY = 'security',
-}
-
-const defaultTab = TabValues.ACCOUNTS;
+const defaultTab = DEFAULT_PROFILE_TAB;
 
 export default function Profile() {
   const router = useRouter();

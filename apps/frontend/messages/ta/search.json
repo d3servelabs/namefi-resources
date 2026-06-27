@@ -64,7 +64,8 @@
       "domains": "டொமைன்கள்",
       "ownedDomains": "உங்கள் டொமைன்கள்",
       "destinations": "பக்கங்கள் & செயல்கள்",
-      "resources": "உதவி & வளங்கள்"
+      "resources": "உதவி & வளங்கள்",
+      "domainActions": "டொமைன் செயல்கள்"
     },
     "cart": {
       "add": "கார்ட்டில் சேர்",
@@ -73,6 +74,21 @@
       "removing": "நீக்குகிறது…",
       "import": "இறக்குமதி"
     },
-    "all": "அனைத்தும்"
+    "all": "அனைத்தும்",
+    "actionBadge": "செயல்",
+    "destinations": {
+      "profile": "சுயவிவரம்",
+      "apiKey": "API key பெறுக",
+      "topUp": "நிதி நிரப்புக",
+      "linkedWallets": "இணைந்த வாலட்கள்",
+      "linkedAccounts": "இணைந்த கணக்குகள்",
+      "contactDetails": "தொடர்பு விவரங்கள்"
+    },
+    "domainActions": {
+      "manage": "டொமைன் நிர்வகி",
+      "dnsRecords": "DNS பதிவுகள்",
+      "dnssec": "DNSSEC & நேம்சர்வர்கள்",
+      "sell": "விற்பனைக்கு பட்டியலிடு"
+    }
   }
 }

@@ -59,12 +59,28 @@
     "importable": "Importable",
     "ownedBadge": "Owned",
     "pageBadge": "Page",
+    "actionBadge": "Action",
     "seeAll": "See all results for \"{query}\"",
     "groups": {
       "domains": "Domains",
       "ownedDomains": "Your domains",
       "destinations": "Pages & actions",
+      "domainActions": "Domain actions",
       "resources": "Help & resources"
+    },
+    "destinations": {
+      "profile": "Profile",
+      "apiKey": "Get API key",
+      "topUp": "Top up funds",
+      "linkedWallets": "Linked wallets",
+      "linkedAccounts": "Linked accounts",
+      "contactDetails": "Contact details"
+    },
+    "domainActions": {
+      "manage": "Manage domain",
+      "dnsRecords": "DNS records",
+      "dnssec": "DNSSEC & nameservers",
+      "sell": "List for sale"
     },
     "cart": {
       "add": "Add to cart",

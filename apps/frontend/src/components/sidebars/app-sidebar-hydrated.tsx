@@ -5,19 +5,18 @@ import {
   filterSidebarItemsByAuth,
   SidebarItems,
 } from '@/components/sidebars/sidebar-items';
+import { useManageEntrypointViewable } from '@/components/sidebars/use-manage-entrypoint';
 import { useAuth } from '@/hooks/use-auth';
 import { useFreeMints } from '@/hooks/use-free-mints';
 import { useRecentDomains } from '@/hooks/use-recent-domains';
 import { useWishlist } from '@/hooks/use-wishlist';
 import type { NavItem } from '@/lib/types/nav-item';
-import { useTRPC } from '@/lib/trpc';
 import { recordPerfOnce } from '@/lib/perf/marks';
 import {
   API_VERSION_URL,
   FRONTEND_COMMIT_URL,
   FRONTEND_VERSION_STAMP,
 } from '@/lib/version-info';
-import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, type FC } from 'react';
 
@@ -77,7 +76,6 @@ export const AppSidebarHydratedContent: FC<AppSidebarHydratedContentProps> = ({
 }) => {
   const t = useTranslations('nav');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
-  const trpc = useTRPC();
 
   // This component only mounts once its dynamic ({ ssr: false }) chunk has
   // loaded after app-shell hydration, so mount marks the chunk-arrival
@@ -98,25 +96,7 @@ export const AppSidebarHydratedContent: FC<AppSidebarHydratedContentProps> = ({
     isLoading: isFreeMintsLoading,
   } = useFreeMints();
 
-  const managerEntrypointViewable = useQuery({
-    ...trpc.users.getManagerPageEntrypointViewable.queryOptions(),
-    enabled: !isAuthLoading && isAuthenticated,
-  });
-
-  const showManageEntrypoint = useMemo(() => {
-    if (!isAuthenticated) return false;
-    if (managerEntrypointViewable.isLoading) return false;
-    if (managerEntrypointViewable.isFetching) return false;
-    if (managerEntrypointViewable.isError) return false;
-    if (!managerEntrypointViewable.data) return false;
-    return managerEntrypointViewable.data.viewable;
-  }, [
-    isAuthenticated,
-    managerEntrypointViewable.data,
-    managerEntrypointViewable.isError,
-    managerEntrypointViewable.isFetching,
-    managerEntrypointViewable.isLoading,
-  ]);
+  const showManageEntrypoint = useManageEntrypointViewable();
 
   const computedItems = useMemo(() => {
     const badgeOptions = {

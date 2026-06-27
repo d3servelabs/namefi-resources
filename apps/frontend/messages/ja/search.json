@@ -64,7 +64,8 @@
       "domains": "ドメイン",
       "ownedDomains": "マイドメイン",
       "destinations": "ページ＆操作",
-      "resources": "ヘルプ＆リソース"
+      "resources": "ヘルプ＆リソース",
+      "domainActions": "ドメイン操作"
     },
     "cart": {
       "add": "カートに追加",
@@ -73,6 +74,21 @@
       "removing": "削除中…",
       "import": "インポート"
     },
-    "all": "すべて"
+    "all": "すべて",
+    "actionBadge": "操作",
+    "destinations": {
+      "profile": "プロフィール",
+      "apiKey": "API キーを取得",
+      "topUp": "残高をチャージ",
+      "linkedWallets": "連携ウォレット",
+      "linkedAccounts": "連携アカウント",
+      "contactDetails": "連絡先情報"
+    },
+    "domainActions": {
+      "manage": "ドメインを管理",
+      "dnsRecords": "DNS レコード",
+      "dnssec": "DNSSEC＆ネームサーバー",
+      "sell": "売りに出す"
+    }
   }
 }

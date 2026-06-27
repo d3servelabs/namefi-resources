@@ -64,7 +64,8 @@
       "domains": "域名",
       "ownedDomains": "我的域名",
       "destinations": "页面与操作",
-      "resources": "帮助与资源"
+      "resources": "帮助与资源",
+      "domainActions": "域名操作"
     },
     "cart": {
       "add": "加入购物车",
@@ -73,6 +74,21 @@
       "removing": "移除中…",
       "import": "导入"
     },
-    "all": "全部"
+    "all": "全部",
+    "actionBadge": "操作",
+    "destinations": {
+      "profile": "个人资料",
+      "apiKey": "获取 API 密钥",
+      "topUp": "充值",
+      "linkedWallets": "关联钱包",
+      "linkedAccounts": "关联账户",
+      "contactDetails": "联系方式"
+    },
+    "domainActions": {
+      "manage": "管理域名",
+      "dnsRecords": "DNS 记录",
+      "dnssec": "DNSSEC 与域名服务器",
+      "sell": "上架出售"
+    }
   }
 }

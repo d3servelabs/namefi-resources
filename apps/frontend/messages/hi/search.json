@@ -64,7 +64,8 @@
       "domains": "डोमेन",
       "ownedDomains": "आपके डोमेन",
       "destinations": "पेज और क्रियाएं",
-      "resources": "सहायता और संसाधन"
+      "resources": "सहायता और संसाधन",
+      "domainActions": "डोमेन क्रियाएं"
     },
     "cart": {
       "add": "कार्ट में जोड़ें",
@@ -73,6 +74,21 @@
       "removing": "हटाया जा रहा है…",
       "import": "आयात करें"
     },
-    "all": "सभी"
+    "all": "सभी",
+    "actionBadge": "क्रिया",
+    "destinations": {
+      "profile": "प्रोफ़ाइल",
+      "apiKey": "API key प्राप्त करें",
+      "topUp": "फंड जोड़ें",
+      "linkedWallets": "लिंक्ड वॉलेट",
+      "linkedAccounts": "लिंक्ड अकाउंट",
+      "contactDetails": "संपर्क विवरण"
+    },
+    "domainActions": {
+      "manage": "डोमेन प्रबंधित करें",
+      "dnsRecords": "DNS रिकॉर्ड",
+      "dnssec": "DNSSEC & नेमसर्वर",
+      "sell": "बिक्री के लिए सूचीबद्ध करें"
+    }
   }
 }
