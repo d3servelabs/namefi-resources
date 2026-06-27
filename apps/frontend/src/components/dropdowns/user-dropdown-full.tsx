@@ -4,6 +4,12 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@namefi-astra/ui/components/shadcn/dropdown-menu';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { LanguageMenuSub } from '@/components/i18n/language-menu-sub';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
@@ -39,6 +45,7 @@ import {
   LayoutListIcon,
   Globe,
   RefreshCwIcon,
+  InfoIcon,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Route } from 'next';
@@ -987,14 +994,19 @@ function SyncPonderIndexQuickAccessCard({ onDone }: { onDone: () => void }) {
   );
 }
 
-function UserBalanceDropdownItem({
+export function UserBalanceDropdownItem({
   onOpen,
   totalBalanceInUsdCents,
   isLoadingBalance,
   hasWallets,
 }: BalanceDropdownItemProps) {
-  const t = useTranslations('common');
-  const formattedBalance = formatAmountInUSD(totalBalanceInUsdCents, true);
+  const tCommon = useTranslations('common');
+  const displayedBalance = hasWallets
+    ? formatAmountInUSD(totalBalanceInUsdCents, true)
+    : formatAmountInUSD(0, true);
+  const creditTooltipAmount = displayedBalance.startsWith('$')
+    ? displayedBalance.slice(1)
+    : displayedBalance;
 
   return (
     <DropdownMenuItem
@@ -1007,21 +1019,39 @@ function UserBalanceDropdownItem({
       }}
       className="cursor-pointer"
     >
-      <div className="flex w-full items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-sm">
-          <CoinsIcon className="h-4 w-4" />
-          <span>{t('account.balance')}</span>
-        </div>
-        <div className="flex flex-col items-end leading-tight font-mono">
-          {isLoadingBalance ? (
-            <Skeleton className="h-6 w-[10ch] bg-white/20" />
-          ) : (
-            <span className="text-sm font-semibold">
-              {hasWallets ? `${formattedBalance} NFSC` : '0.00 NFSC'}
-            </span>
-          )}
-        </div>
-      </div>
+      <CoinsIcon className="me-2 h-4 w-4" />
+      <span>{tCommon('account.balance')}</span>
+      {isLoadingBalance ? (
+        <Skeleton className="ms-auto h-5 w-[8ch] bg-white/20" />
+      ) : (
+        <span className="ms-auto inline-flex items-center gap-1.5 font-mono text-sm font-semibold leading-none">
+          <span>{displayedBalance}</span>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <span
+                    className="inline-flex cursor-help items-center text-muted-foreground transition-colors hover:text-foreground"
+                    data-testid="user-dropdown.balance.nfsc-info"
+                  />
+                }
+                aria-label={tCommon('account.balanceCreditInfoAriaLabel')}
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }}
+              >
+                <InfoIcon className="h-3.5 w-3.5" />
+              </TooltipTrigger>
+              <TooltipContent side="top" className="max-w-[16rem]">
+                {tCommon('account.balanceCreditTooltip', {
+                  amount: creditTooltipAmount,
+                })}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </span>
+      )}
     </DropdownMenuItem>
   );
 }

@@ -30,6 +30,8 @@
   "account": {
     "label": "கணக்கு",
     "balance": "இருப்பு",
+    "balanceCreditTooltip": "${amount} மதிப்பிலான Namefi சேவை கிரெடிட்கள் (NFSC).",
+    "balanceCreditInfoAriaLabel": "NFSC என்றால் என்ன?",
     "loadingBalanceDetails": "இருப்பு விவரங்களை ஏற்றுகிறது…",
     "balanceLoadFailed": "இருப்பு விவரங்களை ஏற்ற முடியவில்லை",
     "balanceLoadFailedDescription": "இருப்பு விவரங்களை ஏற்ற முடியவில்லை."

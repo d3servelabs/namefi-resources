@@ -30,6 +30,8 @@
   "account": {
     "label": "Konto",
     "balance": "Guthaben",
+    "balanceCreditTooltip": "${amount} Namefi Service Credits (NFSC).",
+    "balanceCreditInfoAriaLabel": "Was ist NFSC?",
     "loadingBalanceDetails": "Kontodetails werden geladen...",
     "balanceLoadFailed": "Guthaben konnte nicht geladen werden",
     "balanceLoadFailedDescription": "Die Guthabendetails konnten nicht geladen werden."

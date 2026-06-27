@@ -30,6 +30,8 @@
   "account": {
     "label": "खाता",
     "balance": "बैलेंस",
+    "balanceCreditTooltip": "${amount} Namefi सेवा क्रेडिट (NFSC) के बराबर।",
+    "balanceCreditInfoAriaLabel": "NFSC क्या है?",
     "loadingBalanceDetails": "बैलेंस विवरण लोड हो रहा है...",
     "balanceLoadFailed": "बैलेंस विवरण लोड नहीं हुआ",
     "balanceLoadFailedDescription": "बैलेंस विवरण लोड करने में समस्या आई।"

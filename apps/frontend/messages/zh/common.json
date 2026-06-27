@@ -30,6 +30,8 @@
   "account": {
     "label": "账户",
     "balance": "余额",
+    "balanceCreditTooltip": "${amount} 价值的 Namefi 服务积分（NFSC）。",
+    "balanceCreditInfoAriaLabel": "什么是 NFSC？",
     "loadingBalanceDetails": "正在加载余额明细…",
     "balanceLoadFailed": "加载余额明细失败",
     "balanceLoadFailedDescription": "余额明细加载失败。"

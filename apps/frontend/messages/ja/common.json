@@ -30,6 +30,8 @@
   "account": {
     "label": "アカウント",
     "balance": "残高",
+    "balanceCreditTooltip": "${amount}相当のNamefi サービスクレジット（NFSC）です。",
+    "balanceCreditInfoAriaLabel": "NFSCとは？",
     "loadingBalanceDetails": "残高情報を読み込み中...",
     "balanceLoadFailed": "残高情報の読み込みに失敗",
     "balanceLoadFailedDescription": "残高情報を読み込めませんでした。"

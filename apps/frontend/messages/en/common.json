@@ -30,6 +30,8 @@
   "account": {
     "label": "Account",
     "balance": "Balance",
+    "balanceCreditTooltip": "${amount} worth of Namefi Service Credits (NFSC).",
+    "balanceCreditInfoAriaLabel": "What is NFSC?",
     "loadingBalanceDetails": "Loading balance details...",
     "balanceLoadFailed": "Failed to load balance details",
     "balanceLoadFailedDescription": "The balance details failed to load."

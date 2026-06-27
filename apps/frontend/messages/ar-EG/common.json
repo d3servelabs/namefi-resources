@@ -30,6 +30,8 @@
   "account": {
     "label": "الحساب",
     "balance": "الرصيد",
+    "balanceCreditTooltip": "${amount} من رصيد خدمات Namefi (NFSC).",
+    "balanceCreditInfoAriaLabel": "ما هو NFSC؟",
     "loadingBalanceDetails": "بنحمّل تفاصيل الرصيد…",
     "balanceLoadFailed": "مقدرناش نحمّل تفاصيل الرصيد",
     "balanceLoadFailedDescription": "تفاصيل الرصيد مقدرتش تتحمّل."

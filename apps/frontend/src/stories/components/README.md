@@ -8,6 +8,8 @@ components/
   *.stories.tsx                 # interactive component stories
   resources-app-sidebar.stories.tsx
                                 # Resources sidebar preview using shared items
+  user-dropdown-balance.stories.tsx
+                                # account balance dropdown item states
 ```
 
 Stories should keep providers local and mocked so they render without real

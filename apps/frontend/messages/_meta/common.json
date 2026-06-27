@@ -165,6 +165,13 @@
     "description": "Label for the NFSC balance row in the account dropdown, and the title of the balance-breakdown dialog. Means 'Balance'.",
     "maxLength": 14
   },
+  "account.balanceCreditTooltip": {
+    "description": "Tooltip explaining the account dropdown balance credit. {amount} is a pre-formatted USD amount without the leading dollar sign. Keep 'Namefi' and 'NFSC' untranslated; 'Service Credits' may be localized."
+  },
+  "account.balanceCreditInfoAriaLabel": {
+    "description": "Accessible label for the info icon next to the account dropdown balance. Keep 'NFSC' untranslated.",
+    "maxLength": 24
+  },
   "account.loadingBalanceDetails": {
     "description": "Loading label shown while the balance-breakdown dialog fetches details. Includes a trailing ellipsis."
   },
