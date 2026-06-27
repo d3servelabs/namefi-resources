@@ -58,6 +58,13 @@ Per `content.md`. Translate FRESH from the EN source — don't read/copy the old
   term's canonical title in that locale (use `termbase.json`).
 - **Keep verbatim:** citation URLs (incl. `#:~:text=` fragments), code, brand/protocol/standard names (UDRP, ACPA,
   ICANN, ENS, NFT, ERC-721, OpenSea, Seaport, Afternic, Sedo, GoDaddy, NameBio, SEO), domain names, figures/numbers/dates.
+- **Do not ship link-only localization.** A file with `language: <locale>` and localized `/en/` links but English body
+  copy is still untranslated. Translate all human-facing content: body prose, headings, image alt text, table/list
+  labels, FAQ questions/answers, disclaimers, source notes, `title`, `description`, and `keywords`.
+- **Do not collapse full English entries into short locale stubs unless the task explicitly asks for stubs.** Preserve
+  the source meaning, examples, caveats, citations, and protocol/domain details. Glossary translations must retain the
+  definition's important examples and distinctions (for example EPP status code names and registrar-vs-registry
+  differences), not just a generic one-sentence summary.
 - YAML: double an apostrophe inside single-quoted scalars (`''`), never backslash. First line must be `---`. No code
   fences, no `<content>`/tool tags anywhere.
 
@@ -91,12 +98,22 @@ errors — no restyling). Check for these classes:
 1. **Artifact scan** all touched files: first line is `---`; frontmatter parses; NO ``` fences; NO `</content>` /
    `</invoke>` / `<parameter` / tool tags (especially the *last* lines — truncation marker); every `](/en/` rewritten
    to `](/<locale>/`; `language:` correct; not truncated (length sanity).
-2. `TMPDIR=/private/tmp bun run data:validate` (pass + ~19 pre-existing warnings) and `bun run lint:mdx`.
+2. **Translation-completeness LQA** for every locale batch:
+   - Compare a deterministic ~1% sample against the English source, stratified across touched collections (`blog`,
+     `glossary`, `tld`, `partners`, `authors`). Check meaning, frontmatter, FAQ, links, images/alt text, tables, and
+     whether prose is natural in the target language.
+   - Scan for exact body copies after normalizing `/<locale>/` links back to `/en/`. Exact copies are release-blocking.
+   - Scan for high English-word ratios in non-English files; allow brand/protocol/domain names, but investigate whole
+     English sentences, English FAQ/frontmatter, or copied TLD sections.
+   - For glossary, compare body length/detail against English. Large shrinkage can mean the entry became a stub and
+     lost examples, caveats, or protocol-specific details. If a sample catches one, audit sibling entries.
+   - If one sampled file has a pattern, search the rest of the same collection/locale for that pattern before shipping.
+3. `TMPDIR=/private/tmp bun run data:validate` (pass + ~19 pre-existing warnings) and `bun run lint:mdx`.
    (Fresh worktree? run `bun install` first or eslint can't resolve `@eslint/eslintrc`.)
-3. `bun .agents/skills/cross-link/link-audit.ts <paths>` → **0 broken, 0 locale-mismatch** (1 `missing-translation`
+4. `bun .agents/skills/cross-link/link-audit.ts <paths>` → **0 broken, 0 locale-mismatch** (1 `missing-translation`
    warning is OK — app serves the en fallback).
-4. **Dedicated Arabic accuracy QA pass** (see error catalog) — non-negotiable for bulk batches.
-5. **Bugbot handling:** it reviews a *sample/diff*, so **one flag often means several siblings** — when it flags an
+5. **Dedicated Arabic accuracy QA pass** (see error catalog) — non-negotiable for bulk batches.
+6. **Bugbot handling:** it reviews a *sample/diff*, so **one flag often means several siblings** — when it flags an
    issue, grep the rest of the corpus for the same pattern and fix them all. Reply to each thread in a human voice and
    **resolve threads one-by-one as you fix them — never bulk-auto-resolve** (a bulk resolver once closed a thread before
    the fix, hiding a real finding; caught only via the comment-count delta).

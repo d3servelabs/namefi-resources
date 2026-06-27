@@ -50,6 +50,22 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
   link's anchor text = the linked term's canonical title in that locale.
 - Keep verbatim: citation URLs (incl. `#:~:text=` fragments), code, brand names,
   domain names, and figures (`GoDaddy`, `ICANN`, `.com`, `$30`, `BIP-39`, …).
+- **Link-localized English is not a translation.** A translated file must localize
+  the human-facing frontmatter and body copy, not only `language:` and `/en/`
+  links. This includes `title`, `description`, `keywords`, FAQ questions/answers,
+  image alt text, headings, tables, list labels, disclaimers, and source notes.
+- **Do not compress full entries into stubs unless the task explicitly asks for
+  stubs.** Translations should preserve the source's meaning, examples,
+  caveats, citations, and domain/protocol details. Glossary entries especially
+  must not drop important protocol examples or term distinctions just because the
+  prose is shorter.
+- **Run a translation-completeness LQA before calling a locale batch done.** At
+  minimum: compare a deterministic ~1% sample against English across every
+  touched collection; scan for exact body copies after normalizing locale links;
+  scan for unusually high English-word ratio in non-English files; and compare
+  glossary body length against English to catch accidental stubs. Any sampled
+  exact-copy or stub issue means search the sibling collection for the same
+  pattern before shipping.
 
 ## Cross-linking & SEO
 
