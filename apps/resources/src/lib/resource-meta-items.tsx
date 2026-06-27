@@ -23,6 +23,7 @@ type ResourceMetaItemsParams = {
   sourceLanguage: Locale;
   requestedLanguage: Locale;
   readingTimeText?: string;
+  showPublishedLabel?: boolean;
 };
 
 export function createResourceMetaItems({
@@ -33,8 +34,10 @@ export function createResourceMetaItems({
   sourceLanguage,
   requestedLanguage,
   readingTimeText,
+  showPublishedLabel = true,
 }: ResourceMetaItemsParams): ResourceMetaItem[] {
   const publishedIso = publishedAt.toISOString();
+  const formattedPublishedAt = dateFormatter.format(publishedAt);
 
   const metaItems: ResourceMetaItem[] = [];
 
@@ -51,7 +54,9 @@ export function createResourceMetaItems({
     icon: CalendarDays,
     content: (
       <time dateTime={publishedIso}>
-        {labels.publishedOn} {dateFormatter.format(publishedAt)}
+        {showPublishedLabel
+          ? `${labels.publishedOn} ${formattedPublishedAt}`
+          : formattedPublishedAt}
       </time>
     ),
   });

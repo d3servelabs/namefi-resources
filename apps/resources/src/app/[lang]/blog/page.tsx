@@ -21,6 +21,8 @@ import { createResourceMetaItems } from '@/lib/resource-meta-items';
 import { loadMdxReadingTime } from '@/lib/load-mdx-module';
 import { getBlogPostPreviewImageSrc } from '@/lib/resource-index-preview';
 
+const DEFAULT_BLOG_AUTHOR_SLUG = 'namefiteam';
+
 export async function generateMetadata({
   params,
 }: {
@@ -154,7 +156,9 @@ export default async function BlogIndex({
             {postsWithReadingTime.map(({ post, readingTimeText }) => {
               const authorNames = getAuthorNames(
                 locale,
-                post.frontmatter.authors,
+                post.frontmatter.authors.filter(
+                  (authorSlug) => authorSlug !== DEFAULT_BLOG_AUTHOR_SLUG,
+                ),
               );
               const href = `/${locale}/blog/${post.slug}`;
               const summary = post.frontmatter.summary;
@@ -170,6 +174,7 @@ export default async function BlogIndex({
                 sourceLanguage: post.sourceLanguage,
                 requestedLanguage: post.requestedLanguage,
                 readingTimeText,
+                showPublishedLabel: false,
               });
 
               return (

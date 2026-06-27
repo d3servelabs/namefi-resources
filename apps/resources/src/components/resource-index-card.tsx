@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { ReactNode } from 'react';
-import { Grid2X2, Rows3 } from 'lucide-react';
+import { Grid2X2, type LucideIcon, Rows3 } from 'lucide-react';
 import {
   Card,
   CardDescription,
@@ -15,7 +15,6 @@ import {
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import type { ResourceMetaItem } from '@/lib/resource-meta-items';
 
 export type ResourceIndexViewMode = 'grid' | 'list';
 
@@ -23,6 +22,12 @@ export type ResourceIndexViewLabels = {
   label: string;
   grid: string;
   list: string;
+};
+
+export type ResourceIndexCardMetaItem = {
+  key: string;
+  icon: LucideIcon;
+  content: ReactNode;
 };
 
 export const RESOURCE_INDEX_GRID_CLASS =
@@ -49,7 +54,7 @@ export function getResourceIndexGridClass(view: ResourceIndexViewMode): string {
 export type ResourceIndexCardProps = {
   title: string;
   href: string;
-  metaItems: ResourceMetaItem[];
+  metaItems: ResourceIndexCardMetaItem[];
   summary?: string | null;
   tags?: string[];
   imageSrc?: string | null;
@@ -78,7 +83,7 @@ export function ResourceIndexCard({
           className,
         )}
       >
-        <Card className="grid min-h-24 grid-cols-[7rem_minmax(0,1fr)] items-center overflow-hidden rounded-xl border border-white/8 bg-card/70 py-0 transition-all duration-200 hover:border-brand-primary/45 hover:bg-card sm:grid-cols-[10rem_minmax(0,1fr)]">
+        <Card className="grid min-h-28 grid-cols-[7rem_minmax(0,1fr)] items-center overflow-hidden rounded-xl border border-white/8 bg-card/70 py-0 transition-all duration-200 hover:border-brand-primary/45 hover:bg-card sm:grid-cols-[10rem_minmax(0,1fr)]">
           <ResourceIndexPreviewImage
             imageSrc={imageSrc}
             imageAlt={imageAlt ?? title}
@@ -87,9 +92,16 @@ export function ResourceIndexCard({
             sizes={RESOURCE_INDEX_ROW_IMAGE_SIZES}
           />
           <CardContent className="flex min-w-0 flex-col justify-center gap-2 p-3 sm:p-4">
-            <CardTitle className="line-clamp-1 text-sm font-semibold tracking-tight text-white transition-colors duration-200 group-hover:text-brand-primary sm:text-base">
-              {title}
-            </CardTitle>
+            <div className="space-y-1.5">
+              <CardTitle className="line-clamp-2 text-sm font-semibold leading-snug tracking-tight text-white transition-colors duration-200 group-hover:text-brand-primary sm:text-base">
+                {title}
+              </CardTitle>
+              {summary ? (
+                <CardDescription className="line-clamp-2 text-xs leading-5 text-white/70">
+                  {summary}
+                </CardDescription>
+              ) : null}
+            </div>
             {metaItems.length > 0 ? (
               <ResourceMetaList
                 metaItems={metaItems}
@@ -157,7 +169,7 @@ function ResourceMetaList({
   metaItems,
   className,
 }: {
-  metaItems: ResourceMetaItem[];
+  metaItems: ResourceIndexCardMetaItem[];
   className?: string;
 }) {
   return (
