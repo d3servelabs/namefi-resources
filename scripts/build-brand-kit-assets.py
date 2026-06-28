@@ -38,6 +38,10 @@ EXTRA_ASSETS = [
 ICON_SOURCE = "namefi-compact.svg"
 ICON_SQUARE_SIZES = [32, 64, 128, 256, 512, 1024, 2048, 4096]
 ICON_CUT_WIDTHS = [64, 128, 256, 512, 1024, 2048, 4096]
+# Fraction of the square the mark spans, leaving a uniform safe-area margin so
+# the mark never touches an edge — every edge is the variant's own background
+# (transparent / black). The tight cut keeps no margin (green to the edge).
+ICON_SQUARE_INSET = 0.88
 
 ZIP_TIMESTAMP = (2026, 1, 1, 0, 0, 0)
 
@@ -131,9 +135,12 @@ def _icon_boxes() -> tuple[tuple[float, float, float, float], tuple[float, float
     units_x, units_y = width_px / vb_w, height_px / vb_h
     x0, y0 = left / units_x, top / units_y
     box_w, box_h = right / units_x - x0, bottom / units_y - y0
-    side = max(box_w, box_h)
     cut_box = (x0, y0, box_w, box_h)
-    square_box = (x0 - (side - box_w) / 2, y0 - (side - box_h) / 2, side, side)
+    # Square with a uniform safe-area margin: the mark spans ICON_SQUARE_INSET of
+    # the square and is centered, so no edge of the mark touches the icon border.
+    side = max(box_w, box_h) / ICON_SQUARE_INSET
+    center_x, center_y = x0 + box_w / 2, y0 + box_h / 2
+    square_box = (center_x - side / 2, center_y - side / 2, side, side)
     return cut_box, square_box
 
 
