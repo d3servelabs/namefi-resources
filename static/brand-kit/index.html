@@ -1231,6 +1231,8 @@
                       <option value="256" selected>256 &times; 256</option>
                       <option value="512">512 &times; 512</option>
                       <option value="1024">1024 &times; 1024</option>
+                      <option value="2048">2048 &times; 2048</option>
+                      <option value="4096">4096 &times; 4096</option>
                     </select>
                     <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact-square.svg" download data-download-base="namefi-compact-square" data-download-label="square Namefi icon" aria-label="Download square Namefi icon SVG" title="Download SVG">
                       <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1262,6 +1264,8 @@
                       <option value="256" selected>256 &times; 256</option>
                       <option value="512">512 &times; 512</option>
                       <option value="1024">1024 &times; 1024</option>
+                      <option value="2048">2048 &times; 2048</option>
+                      <option value="4096">4096 &times; 4096</option>
                     </select>
                     <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact-square-black.svg" download data-download-base="namefi-compact-square-black" data-download-label="square Namefi icon on black" aria-label="Download square Namefi icon on black SVG" title="Download SVG">
                       <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1293,6 +1297,7 @@
                       <option value="512" selected>512px wide</option>
                       <option value="1024">1024px wide</option>
                       <option value="2048">2048px wide</option>
+                      <option value="4096">4096px wide</option>
                     </select>
                     <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact-cut.svg" download data-download-base="namefi-compact-cut" data-download-label="compact Namefi icon" aria-label="Download compact Namefi icon SVG" title="Download SVG">
                       <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1324,6 +1329,7 @@
                       <option value="512" selected>512px wide</option>
                       <option value="1024">1024px wide</option>
                       <option value="2048">2048px wide</option>
+                      <option value="4096">4096px wide</option>
                     </select>
                     <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact-cut-black.svg" download data-download-base="namefi-compact-cut-black" data-download-label="compact Namefi icon on black" aria-label="Download compact Namefi icon on black SVG" title="Download SVG">
                       <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1769,8 +1775,8 @@
         }
 
         function hydrateDownloadSelectors() {
-          const SQUARE_SIZES = [32, 64, 128, 256, 512, 1024];
-          const CUT_SIZES = [64, 128, 256, 512, 1024, 2048];
+          const SQUARE_SIZES = [32, 64, 128, 256, 512, 1024, 2048, 4096];
+          const CUT_SIZES = [64, 128, 256, 512, 1024, 2048, 4096];
           const sizeMap = (base, sizes, ext, suffix = '') =>
             sizes.reduce((acc, size) => {
               acc[size] = `${base}-${size}${suffix}.${ext}`;

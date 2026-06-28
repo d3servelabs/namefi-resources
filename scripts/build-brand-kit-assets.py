@@ -36,8 +36,8 @@ EXTRA_ASSETS = [
 # a tight cut (no padding, ~1.35:1) and a square `contain` framing, each on a
 # transparent and an opaque-black background, rasterized at multiple sizes.
 ICON_SOURCE = "namefi-compact.svg"
-ICON_SQUARE_SIZES = [32, 64, 128, 256, 512, 1024]
-ICON_CUT_WIDTHS = [64, 128, 256, 512, 1024, 2048]
+ICON_SQUARE_SIZES = [32, 64, 128, 256, 512, 1024, 2048, 4096]
+ICON_CUT_WIDTHS = [64, 128, 256, 512, 1024, 2048, 4096]
 
 ZIP_TIMESTAMP = (2026, 1, 1, 0, 0, 0)
 

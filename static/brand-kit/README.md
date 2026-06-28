@@ -39,11 +39,11 @@ intended for favicons, app icons, and avatars. Provided in `svg`, `png`, `webp`,
 and `jpg`, on transparent and solid-black backgrounds.
 
 - `namefi-compact-square*` - the mark centered in a 1:1 square (`contain`; the
-  most common icon slot). PNG/WEBP/JPG at `32`, `64`, `128`, `256`, `512`, and
-  `1024` px (e.g. `namefi-compact-square-256.png`).
+  most common icon slot). PNG/WEBP/JPG at `32`, `64`, `128`, `256`, `512`,
+  `1024`, `2048`, and `4096` px (e.g. `namefi-compact-square-256.png`).
 - `namefi-compact-cut*` - the mark cut tight to its artwork (no padding, ~1.35:1).
-  PNG/WEBP/JPG sized by width: `64w`, `128w`, `256w`, `512w`, `1024w`, `2048w`
-  (e.g. `namefi-compact-cut-512w.png`).
+  PNG/WEBP/JPG sized by width: `64w`, `128w`, `256w`, `512w`, `1024w`, `2048w`,
+  `4096w` (e.g. `namefi-compact-cut-512w.png`).
 - `*-black*` files place the mark on an opaque black background; files without
   `-black` are transparent. The `svg` of each is resolution-independent.
 
