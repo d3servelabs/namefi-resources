@@ -6,19 +6,19 @@ priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false
-description: 'Someone once owned Google.com for a $12 minute; voice.com sold for $30 million. The .com domain is the internet''s default address — learn its history, pricing, aftermarket, SEO, and how to register one.'
-keywords: ['.com domains', 'what is .com', '.com TLD', '.com domain extension', 'register .com domain', 'com domain meaning', '.com vs .net', 'business domains', '.com price', '.com aftermarket']
+description: 'How a 1985 afterthought became the internet''s default address — and the most valuable two-and-a-half letters in business. The full story of .com: its birth, its monopoly, its million-dollar heists, and what it means for anyone buying one today.'
+keywords: ['.com domains', 'what is .com', '.com TLD', '.com domain extension', 'register .com domain', 'com domain meaning', '.com vs .net', 'business domains', '.com price', '.com aftermarket', 'history of .com']
 faqs:
   - question: 'Can anyone register a .com domain?'
-    answer: 'Yes. The .com namespace is open to everyone worldwide with no local-presence, business, credential, or community requirement. The original commercial intent is no longer enforced, so individuals, nonprofits, and companies alike can register one.'
+    answer: 'Yes. The .com namespace is open to everyone worldwide with no local-presence, business, credential, or community requirement. The original commercial intent has never been enforced, so individuals, nonprofits, and companies alike can register one.'
   - question: 'Does a .com domain affect SEO?'
-    answer: 'Google treats .com as a generic top-level domain with no inherent ranking advantage or penalty. The practical benefit is human: users trust and click .com results more readily, which can lift real-world click-through rates.'
+    answer: 'Google treats .com as a generic top-level domain with no inherent ranking advantage or penalty. The real benefit is human: users trust and click .com results more readily, which can lift real-world click-through rates.'
   - question: 'Why are good .com domains so hard to find?'
     answer: 'With more than 161 million .com names registered, the supply of short, dictionary, and exact-match brand names is largely exhausted. Most premium .com names are already owned, so many are only available on the secondary market.'
-  - question: 'How much does a .com cost, and does the price change?'
-    answer: 'Registrars set their own retail prices, but the registry wholesale price is regulated by ICANN. Under a 2020 amendment, Verisign may raise the .com wholesale fee by up to 7% in four of every six years, so budget for gradual renewal increases rather than a fixed price.'
+  - question: 'How much does a .com cost, and does the price keep rising?'
+    answer: 'Registrars set their own retail prices, but the registry wholesale price is regulated by ICANN and the U.S. government. Since 2018 Verisign has been allowed to raise it by up to 7% in four of every six years, taking it from $7.85 to $10.97 — so budget for gradual renewal increases.'
   - question: 'Who should register a .com domain?'
-    answer: 'Almost any business, brand, or project that wants the most universally recognized and trusted address, especially companies serving a global or mainstream consumer audience and anyone protecting a brand long term.'
+    answer: 'Almost any business, brand, or project that wants the most universally recognized and trusted address — especially companies serving a global or mainstream audience, and anyone protecting a brand for the long term.'
 relatedArticles:
   - /en/blog/the-12-dollar-minute-someone-owned-google-com/
   - /en/blog/the-sex-com-heist-the-forged-letter/
@@ -39,11 +39,9 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-Someone once owned **google.com** for a single [$12 minute](/en/blog/the-12-dollar-minute-someone-owned-google-com/). The internet's most valuable address, **sex.com**, was once [stolen with a forged letter](/en/blog/the-sex-com-heist-the-forged-letter/). And Tesla spent a decade and a reported [$11 million](/en/blog/from-teslamotors-com-to-tesla-com/) just to upgrade from TeslaMotors.com to Tesla.com. Every one of those stories turns on the same three letters — and that is the whole point of **.com**.
+In 2019, a single domain name — **voice.com** — [sold for $30 million](https://domaininvesting.com/voice-com-domain-name-acquired-for-30-million/). In 1995, the most valuable address on the early web, **sex.com**, was [stolen with a forged fax](/en/blog/the-sex-com-heist-the-forged-letter/) and fought over in court for a decade. And one night in 2015, an ex-Googler briefly [bought google.com for $12](/en/blog/the-12-dollar-minute-someone-owned-google-com/) before the company's own systems clawed it back. Every one of those stories turns on the same three letters.
 
-Short for "commercial," the **.com domain** is the original [generic top-level domain](/en/glossary/gtld/) that decades of ubiquity turned into the suffix people assume when they hear a website name. For most businesses and brands, **what is .com** really comes down to one thing: it is the address users expect, type, and trust without thinking.
-
-If you are launching a company, protecting a brand, or building anything meant for a mainstream or global audience, .com remains the benchmark every other extension is measured against — and often the most consequential domain you will ever buy. This page is written for the buyer: where .com came from, who runs it, exactly how its pricing works, what the aftermarket looks like, how it behaves for SEO and email, and how to decide whether to register, buy, or tokenize one.
+That is the strange thing about the **.com domain**: it is so ordinary we forget it is the most valuable real estate of the digital age. Short for "commercial," it is the original [generic top-level domain](/en/glossary/gtld/) — and through forty years of accident, ambition, and ubiquity it became the suffix people assume when they hear a website name. This page is the long version of how that happened, and what it means if you are thinking about buying one.
 
 ## .com at a glance
 
@@ -53,134 +51,144 @@ If you are launching a company, protecting a brand, or building anything meant f
 | Registry operator | Verisign (VeriSign Global Registry Services) |
 | Year delegated | 1985 |
 | Registrations | 161+ million — the largest TLD on the internet |
-| Wholesale price | Regulated by ICANN; rising from $10.26 to $10.97 in 2026 |
+| Wholesale price | Regulated; raised from $7.85 (2012) to $10.97 (2026) |
 | IDN support | Yes |
 | DNSSEC | Yes |
 | Registration restrictions | Open to all — no local presence, credential, or business requirement |
 | Best for | Businesses, global brands, e-commerce, anyone wanting the default extension |
 
-## What is .com?
+## The accidental default: how .com was born
 
-The **.com top-level domain** is a [generic TLD (gTLD)](/en/blog/what-is-a-tld/) originally intended for commercial organizations. It was one of the very first TLDs created in 1985, alongside `.net`, `.org`, `.edu`, `.gov`, and `.mil`, as documented in the [IANA root-zone entry for .com](https://www.iana.org/domains/root/db/com.html). The registry operator is **Verisign** (VeriSign Global Registry Services), which has run the authoritative .com infrastructure for decades.
+The internet's address book very nearly never existed. In the early 1980s, every machine on the ARPANET found every other machine through a single text file, `HOSTS.TXT`, hand-maintained at Stanford Research Institute and downloaded by everyone. By 1983 it was buckling under its own success.
 
-The "com" label points back to a commercial purpose, but that restriction was never meaningfully enforced, and the suffix is now used by everyone from Fortune 500 companies to personal blogs and nonprofits. For search, Google [classifies .com as a generic rather than country-targeted extension](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Unless%20ICANN%20lists%20a%20top%2Dlevel%20domain), so a .com site is **not geo-targeted** to any single market and is a sound choice for global audiences.
+The fix came from a researcher at USC's Information Sciences Institute named **Paul Mockapetris**, who in November 1983 authored the two foundational specifications of the [Domain Name System](/en/glossary/dns/) — the hierarchical, distributed design that still routes the internet today. Working alongside him was the bearded, sandal-wearing engineer who, more than anyone, *was* the early internet's administration: **Jon Postel**, keeper of the [IANA](/en/glossary/iana/) functions, the man who for decades decided what became an internet standard largely from his own desk.
 
-## History of .com
+In **October 1984**, Postel and Joyce Reynolds published [RFC 920](https://datatracker.ietf.org/doc/html/rfc920), which created the first generic top-level domains: `.com`, `.edu`, `.gov`, `.mil`, `.org`, and the transitional `.arpa`. (`.net` was added a few months later when the root zone was first populated.) The choice of six short, generic buckets was deliberate, and the definition of `.com` was almost comically loose — it was simply for "commercial" entities, with no verification, no payment, and no gatekeeping beyond emailing a form to a NIC. Postel ran the whole apparatus by a famous engineering maxim, "be conservative in what you send, be liberal in what you accept," and that liberality is exactly how he ran .com. He later tried to tighten the language in [RFC 1591](https://www.ietf.org/rfc/rfc1591.txt), but it never mattered. The door was open, and it has stayed open ever since.
 
-.com was delegated on **January 1, 1985**, making it one of the founding TLDs of the modern Domain Name System. The very first .com ever registered was **symbolics.com**, recorded on March 15, 1985 by the computer manufacturer Symbolics — [the first registered .com domain name on the internet](https://www.stackscale.com/blog/symbolics-com-domain-name/#:~:text=Symbolics.com%20is%20the%20first%20registered%20.com%20domain%20name%20on%20the%20Internet), a name that still resolves today and is often cited as a piece of internet history.
+That looseness is the whole personality of .com. It was never reserved for a club. It belonged to whoever asked first — which is exactly why it ate the internet.
 
-The commercial web boom of the late 1990s turned .com into the default storefront of the internet — so much so that "the dot-com era" named an entire economic cycle. That ubiquity is now measurable: Verisign's [Domain Name Industry Brief](https://blog.verisign.com/domain-names/q4-2025-domain-name-industry-brief-quarterly-report/) reports that .com and .net together held a [combined total of 173.5 million domain name registrations](https://blog.verisign.com/domain-names/q4-2025-domain-name-industry-brief-quarterly-report/#:~:text=173.5%20million) at the end of 2025, with **.com alone exceeding 161 million** — by far the largest single TLD and roughly four in ten of all domain names worldwide.
+## symbolics.com: the first .com, and a warning about hype
 
-## Who runs .com?
+On **March 15, 1985**, a Massachusetts computer-maker became the first entity ever to register a .com. The company was **Symbolics**, a spin-off of the MIT AI Lab that built specialized machines for running the Lisp programming language — the hardware of the *first* artificial-intelligence boom. Its domain, [symbolics.com, is recognized as the first registered .com on the internet](https://www.stackscale.com/blog/symbolics-com-domain-name/#:~:text=Symbolics.com%20is%20the%20first%20registered%20.com%20domain%20name%20on%20the%20Internet), and it has never lapsed.
 
-.com is operated by **Verisign** under a [registry agreement with ICANN](https://www.icann.org/en/registry-agreements/details/com), the contract that defines pricing limits, service levels, and policy obligations for the namespace. That agreement was most recently [renewed between ICANN and Verisign in November 2024](https://www.icann.org/en/announcements/details/icann-renews-com-registry-agreement-with-verisign-27-11-2024-en), extending Verisign's long-running stewardship of the zone.
+For perspective on how empty the new namespace was: in the entire rest of 1985, only five more .com domains were registered — by BBN, Think (Thinking Machines), MCC, DEC, and Northrop. Six commercial domains in the first year.
 
-For a buyer, the practical takeaway is stability. .com is not a young registry that might fold or get acquired and re-platformed. It is run by the same operator under a regulated, publicly documented contract — one reason a .com reads as a long-term, low-risk digital asset rather than a bet on a registry's survival.
+There is a quiet lesson in Symbolics for anyone buying an AI-flavored name in 2026. The company rode the 1980s AI wave, was briefly one of America's fastest-growing tech firms — and then the "AI winter" arrived, cheap general-purpose workstations destroyed its niche, and it collapsed into a skeleton operation. The domain outlived the company by decades. In **2009**, symbolics.com was finally sold to domain investor Aron Meystedt — the first ownership change in nearly twenty-five years — for an undisclosed sum. The first .com is now preserved as a piece of internet history. The technology fad that created it did not last; the address did.
 
-## How people use .com
+## From free to a fortune: the Network Solutions monopoly
 
-The suffix spans essentially every sector, but it concentrates where trust and recognition matter most:
+For its first decade, registering a .com was free. The U.S. National Science Foundation subsidized the system, and from 1991 a contractor called **Network Solutions** ran registrations on the government's behalf, winning the **InterNIC** cooperative agreement as essentially the only bidder.
 
-- **Established businesses and global brands** signaling permanence and authority
-- **E-commerce stores** where consumer trust at checkout is critical
-- **Startups** that want their primary brand on the most recognized extension
-- **Domain investors** treating premium .com names as blue-chip digital assets
-- **Personal brands and portfolios** that want to read as established and credible
+Then, on **September 14, 1995**, the money started. Network Solutions began charging **$100 for a two-year registration** — and, as the sole registrar for .com, .net, and .org, it had a monopoly on the act of getting online. Thirty percent of every fee was skimmed into a government "Internet Intellectual Infrastructure Fund," a surcharge a federal court would later call an unconstitutional tax before Congress retroactively blessed it. Network Solutions' owner, the defense contractor SAIC, had bought the company months earlier for a mere $4.7 million; it had, without quite realizing it, purchased a license to print money as the web went mainstream.
 
-**Who it's not ideal for:** budget buyers who only need a placeholder, projects that deliberately want a niche or techy signal (where [.io](/en/tld/io/) or [.ai](/en/tld/ai/) fit better), or anyone who cannot find an acceptable available name and is unwilling to consider the aftermarket.
+The monopoly bred a backlash, and the backlash reshaped how the internet is governed. In **1998** the U.S. government moved to privatize naming and numbering, leading to the creation of [ICANN](/en/glossary/icann/), the nonprofit that still oversees the domain system. That same year produced one of the internet's most remarkable acts of quiet authority: in January 1998, Jon Postel emailed the operators of most of the internet's root servers and told them to take their direction from his machine instead of the government's. They complied. For a few days, one researcher effectively held the keys to the internet's address book — before Washington persuaded him to reverse it. Postel died that October, sixteen days after ICANN was incorporated, never seeing the institution he had midwifed begin to operate.
 
-## Notable sites using .com
+The commercial endgame came in **2000**, when **Verisign** acquired Network Solutions in a deal announced at roughly $21 billion. Verisign later sold off the retail registrar business but kept the prize: the .com **registry** itself — the wholesale layer that collects a fee on every single .com name, from every competing [registrar](/en/glossary/registrar/), forever. It still runs it today.
 
-- **google.com** — the world's most visited website
-- **amazon.com** — the e-commerce giant that proved the commercial web at scale
-- **apple.com** — a short, dictionary-word .com with immense brand authority
-- **symbolics.com** — the first .com ever registered, now preserved as a piece of internet history
+## How .com became a synonym for the economy
 
-These span search, retail, hardware, and history itself, illustrating why .com reads as the default for serious, public-facing brands.
+You cannot explain .com's grip without the bubble. Between 1995 and 2000, the number of registered domains exploded from tens of thousands to more than 20 million — a land grab unlike anything before it. Just *appending* ".com" to a company name could move a stock: the booksellers, the pet-supply sites, the grocery-delivery startups all wore the suffix like a badge of the future.
 
-## .com vs other domains
+The mania has clean numbers. Venture investment in U.S. startups rose from around $7 billion in 1995 to roughly $100 billion in 2000. On its first day of trading in December 1999, the Linux company VA Linux rose 733% — the largest single-day IPO gain in history at the time. Two internet companies bought Super Bowl ads in 1999; seventeen dot-coms bought them in January 2000. One investment banker captured the logic of the moment: "the last thing I want to be is profitable, because then I wouldn't get the valuation of an internet company." Then the Nasdaq peaked at 5,048 in March 2000 and fell roughly 78% over the next two and a half years, vaporizing on the order of $5 trillion in market value.
 
-| Feature | .com | .net | .org | .io |
-| --- | --- | --- | --- | --- |
-| Type | gTLD | gTLD | gTLD | ccTLD (generic) |
-| Primary signal | Universal / default | Network / tech (legacy) | Nonprofit / community | Tech / Input-Output |
-| Short-name availability | Very scarce | Scarce | Moderate | Good |
-| Typical price tier | Standard | Standard | Standard | Premium |
+The bubble burst, but the word survived. If anything, the mania welded ".com" to the very idea of being online: at the height of it, companies saw their share prices jump simply by announcing a website, and the suffix became a kind of collective shorthand for "this is part of the future." "Dot-com" came to mean the entire internet economy — and .com became the default a brand reaches for without thinking.
 
-Pick **.com** as the universal default whenever you can find or afford the name. Choose [.net](/en/tld/net/) as a classic fallback when the matching .com is taken, [.org](/en/tld/org/) when you want a community, nonprofit, or open-project connotation, or [.io](/en/tld/io/) when a technical, startup-flavored signal and short-name availability matter more than mainstream familiarity.
+That cultural muscle memory is the real asset. It's why, decades later, Apple's iOS keyboard still surfaced a quick ".com" shortcut in Safari, why people still mentally append ".com" to any name they half-remember, and why a customer who hears your brand on a podcast types yours-name-dot-com first. Marketers call it the "radio test," and .com wins it every time. No amount of marketing money can manufacture that reflex in a new extension; .com got it for free, by being first and being everywhere when the web went mainstream.
 
-## Why choose .com?
+## Who controls the price of the internet's default
 
-- **Unmatched recognition.** .com is the suffix people assume by default — the "radio test" winner. Say a brand name aloud and listeners mentally append ".com," so owning it captures traffic that would otherwise leak elsewhere.
-- **Trust and credibility.** Decades of ubiquity make .com read as legitimate and established, which is especially valuable for e-commerce and any site asking for payment details.
-- **Interface integration.** Mobile keyboards have long surfaced a quick-entry .com option — a dedicated ".com" key in early iOS, and still a press-and-hold shortcut on the period key in Safari's address bar — a level of built-in convenience no other suffix shares.
-- **Global SEO.** Google treats it as generic, so your site can rank worldwide without being boxed into a single country.
-- **Resale value.** Premium .com names hold value more reliably than almost any other extension and anchor the most liquid segment of the domain [aftermarket](/en/blog/how-to-sell-a-domain-name-you-own/).
+Here is the part most buyers never see — and the part that most affects what you will pay for a .com over a lifetime.
 
-## Things to consider
+.com's wholesale price is not set by a market. Verisign runs the registry under a [contract with ICANN](https://www.icann.org/en/registry-agreements/details/com) and a parallel "Cooperative Agreement" with the U.S. Commerce Department, and for years that contract *froze* the price. In 2012, the Obama administration locked the wholesale fee at **$7.85** and stripped Verisign's automatic-increase rights; the regulator's own statement said consumers would benefit from removing the automatic increases.
 
-- **Scarcity.** With 161 million-plus names registered, short, brandable, and exact-match .com names are largely gone; you may face a compromise spelling, a longer name, or an aftermarket purchase.
-- **Aftermarket cost.** The most desirable .com names are owned and resold, sometimes for substantial sums, rather than available at standard registration price.
-- **No niche signal.** .com says "everything," which is a strength for mainstream brands but offers none of the built-in meaning a category-specific suffix provides.
-- **Single-TLD risk.** Building a brand on one suffix without securing key alternates leaves room for copycats.
+That changed in **2018**. The Trump-era NTIA signed [Amendment 35](https://www.ntia.gov/program/verisign-cooperative-agreement), which it said would "repeal Obama-era price controls" and restore Verisign's right to raise the wholesale price by **up to 7% in four of every six years**. Verisign's stock jumped roughly 18% in the days that followed. In 2020, [ICANN agreed to bake that pricing power into the registry contract](https://domainnamewire.com/2020/03/27/breaking-icann-and-verisign-agree-to-com-extension-with-7-price-hikes/) — alongside a $20 million payment from Verisign to ICANN for "DNS security." The public comment period drew roughly 9,000 submissions, the overwhelming majority opposed. ICANN approved it the day after publishing its analysis of those comments.
 
-## Who can register a .com domain?
+The result is a steady, contractually-guaranteed climb. The wholesale price has gone $7.85 → $8.39 → $8.97 → $9.59 → $10.26, and it is [rising from $10.26 to $10.97](https://domainnamewire.com/2025/11/19/verisign-can-increase-com-prices-in-2026/#:~:text=increase%20from%20%2410.26%20to%20%2410.97) in 2026.
 
-**Registration restrictions: open to all.** Anyone in the world can register a .com domain. There is **no local-presence requirement**, no business-eligibility check, and no credential or community gate. The original "commercial" intent has never been enforced, so individuals, nonprofits, and companies register .com names freely.
+Why this is so contested comes down to economics that are hard to find anywhere else in business. Verisign runs .com under a contract that was never put out for competitive bid — and when other countries *have* bid out their registries, the prices came in a fraction as high (Neustar and Afilias bid roughly $0.70 and $1.65 per domain to run India's `.in`). Industry analysts peg Verisign's true cost to operate a .com name at a few dollars at most, against a wholesale price now near $11; the company's operating margins sit around two-thirds of revenue, and by one analysis its net income *per employee* has outpaced Apple, Microsoft, and Google. The American Economic Liberties Project estimated the post-2018 increases alone hand Verisign a windfall on the order of $383 million a year, and in 2024 Senator Elizabeth Warren and Representative Jerry Nadler asked the Justice Department to examine whether the arrangement is an antitrust problem.
 
-Names run **1–63 characters**, allow letters, digits, and hyphens (not at the start or end), and **internationalized domain names (IDNs)** are supported for non-Latin scripts. Standard ICANN policies apply to every .com you own, and they are worth knowing before you buy:
+Verisign's reply is that it operates irreplaceable infrastructure with near-perfect uptime, and that the price of a single domain is trivial next to the cost of running a business online. Both sides have a point. For you, the buyer, the conclusion is the same either way, and it is unsentimental: **a .com is a subscription with a built-in escalator. Budget for the renewal, not the signup price.**
+
+## What a .com is actually worth
+
+If the wholesale price tells you what .com costs to *rent* from the registry, the aftermarket tells you what a *good* one is worth on the open market — and the numbers are staggering, because a memorable, exact-match .com is the one asset a competitor cannot simply recreate.
+
+The public record runs from the merely large to the historic:
+
+| Domain | Reported price | Year |
+| --- | --- | --- |
+| ai.com | ~$70 million | 2026 |
+| voice.com | $30 million | 2019 |
+| carinsurance.com | $49.7 million | 2010 |
+| insurance.com | $35.6 million | 2010 |
+| business.com | $7.5 million | 1999 |
+
+**voice.com** went to the blockchain company Block.one; **ai.com** reportedly set the all-time record in February 2026 — fittingly, the most expensive domain ever sold was a .com, not a .ai. (Beware the headline figures that aren't clean sales: cars.com's oft-cited ~$872 million was a valuation booked inside a corporate acquisition, not a domain price.)
+
+Then there are the stories that show how *much* a .com can matter — and how fragile possession once was.
+
+**The sex.com heist.** Gary Kremen, who also founded Match.com, registered sex.com in 1994. In 1995 a con man named Stephen Cohen sent Network Solutions a [forged letter](/en/blog/the-sex-com-heist-the-forged-letter/) claiming Kremen's company had abandoned the name — and Network Solutions simply handed it over, no verification. Cohen ran it as a fortune-generating porn portal for five years. Kremen sued, and in 2003 the Ninth Circuit issued a landmark ruling that **a domain name is property** you can sue to recover; the judgment against Cohen reached $65 million, which he fled the country rather than pay. The case rewrote the legal status of every domain you can own today.
+
+**The $12 minute.** In September 2015, former Google employee Sanmay Ved was poking around Google's own domain service when google.com showed as available. He clicked buy. His card was charged $12, and for about a minute he owned the world's most-visited website — until Google's systems caught the error and refunded him. Google's security team paid him a bug bounty of $6,006.13 (it spells "Google" in leetspeak); when Ved said he'd donate it, [Google doubled it to $12,012.26](/en/blog/the-12-dollar-minute-someone-owned-google-com/).
+
+These are not just trivia. They are why the .com [aftermarket](/en/glossary/aftermarket/) is the most liquid, most fought-over secondary market in the domain world. By Verisign's own account the .com secondary market turns over on the order of a billion dollars or more a year — an entire economy layered on top of names that cost a few dollars to register. The catch for a newcomer is the flip side of that liquidity: most genuinely good one-word .com names left registration availability long ago, which is why finding a strong .com today usually means coining a brand or buying on the aftermarket.
+
+## The competition that never came
+
+If .com is so scarce and its price only climbs, why hasn't something replaced it? Not for lack of trying. Starting in 2012, ICANN opened the floodgates to more than a thousand new generic extensions — [.xyz](/en/tld/xyz/), [.online](/en/tld/online/), [.shop](/en/tld/shop/), [.app](/en/tld/app/), and on and on — the single biggest expansion of the namespace in the internet's history. Some have found real audiences. None has dethroned .com, and the reason is a textbook network effect: .com is valuable because everyone expects it, and everyone expects it because it's valuable. A generation has been trained to type ".com" by reflex, to trust it at checkout, and to assume it when they only half-remember a name. That habit is the moat.
+
+It's also why "get the .com" remains the reflexive advice even in 2026. The alternatives are no longer fringe — a tech startup on [.io](/en/tld/io/) or [.ai](/en/tld/ai/) reads as perfectly legitimate — but they're chosen *for a reason* (a signal, a short available name), whereas .com is the default you fall back to when you have no reason to do anything else. Being the default, in a system with 160-million-plus names and decades of muscle memory, is the most durable position in the entire domain world.
+
+## So, should you buy a .com?
+
+Strip away the history and the buyer's question is concrete: with 160-million-plus names taken and a price that only rises, is .com still the right call? For most serious brands, yes — and here is the honest case on both sides.
+
+**The case for:**
+
+- **Unmatched recognition.** .com is the suffix people assume by default. Owning the exact-match captures traffic that would otherwise leak elsewhere.
+- **Trust at the moment of decision.** Decades of ubiquity make .com read as legitimate — especially valuable for e-commerce and anything that asks for payment details.
+- **Global, neutral SEO.** Google [treats .com as a generic gTLD](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Unless%20ICANN%20lists%20a%20top%2Dlevel%20domain), with no ranking penalty and no geographic boxing-in. The advantage is human — higher click-through from trust — not algorithmic.
+- **Resale value.** Premium .com names hold value more reliably than any other extension and anchor the deepest aftermarket in the industry.
+
+**The case against (or at least, eyes open):**
+
+- **Scarcity.** The short, brandable, exact-match names are largely gone. You may face a compromise spelling, a longer name, or an aftermarket purchase.
+- **A rising rent.** The wholesale escalator means renewals creep up for as long as you own the name.
+- **No niche signal.** .com says "everything," which is a strength for mainstream brands but offers none of the built-in meaning a category suffix like [.ai](/en/tld/ai/) or [.io](/en/tld/io/) provides.
+- **Copycat exposure.** Building on .com without securing the closest lookalikes invites typo-squatters.
+
+On **reputation and email**, .com carries the most neutral, trusted profile of any TLD — the opposite of the bargain new gTLDs some spam filters treat with suspicion. But deliverability still depends far more on your own SPF, DKIM, and DMARC setup than on the suffix. And on **naming**, because the dictionary words are taken, modern .com branding usually means coining a name — invented but pronounceable, or a short compound — that survives the radio test and isn't a confusing near-match to an existing [trademark](/en/glossary/trademark/).
+
+For any brand that can afford it, the disciplined move is to treat the exact-match .com as the **highest-priority defensive registration you can make** — even if you launch on another extension — and redirect the closest variants back to it, rather than fighting a copycat later through the [UDRP](/en/blog/what-is-udrp/). In practice that usually means the exact-match .com first, then the obvious typo and plural variants, then a small set of the highest-risk lookalikes (the one-character-off names and high-intent commercial strings). You don't need hundreds of registrations — you need the handful a determined impersonator would actually target, pointed back at your canonical site so the traffic and trust flow to one place.
+
+## How .com works today (the practical bits)
+
+**Anyone can register one.** There is no local-presence requirement, no business check, no credential gate. Names run 1–63 characters; letters, digits, and hyphens (not at the start or end); and [internationalized domain names](/en/glossary/idn/) are supported for non-Latin scripts. A few standard policies are worth knowing before you buy:
 
 - **DNSSEC.** Verisign [deployed DNSSEC in the .com and .net zones](https://www.verisign.com/en_US/domain-names/dnssec/index.xhtml#:~:text=we%20deployed%20DNSSEC%20in%20the%20.net%20and%20.com%20zones), so you can cryptographically sign your domain against DNS spoofing.
-- **Transfers.** Moving a .com between registrars uses an authorization code under ICANN's [Transfer Policy](https://www.icann.org/en/contracted-parties/accredited-registrars/transfer-policy-01-06-2016-en), with a 60-day lock after registration or a change of registrant.
-- **Expiration and recovery.** If a name lapses, ICANN's [Redemption Grace Period](https://www.icann.org/resources/pages/grace-2013-05-03-en) gives the registrant a window to restore it before it is released.
-- **Disputes.** Because .com is an ICANN gTLD, [trademark](/en/glossary/trademark/) holders can use mechanisms such as the [UDRP](/en/blog/what-is-udrp/) against infringing registrations — relevant if you are buying a name close to an existing mark.
+- **Transfers** between registrars use an authorization code under ICANN's [Transfer Policy](https://www.icann.org/en/contracted-parties/accredited-registrars/transfer-policy-01-06-2016-en), with a 60-day lock after registration or a change of registrant.
+- **Expiration** is recoverable: ICANN's [Redemption Grace Period](https://www.icann.org/resources/pages/grace-2013-05-03-en) gives the registrant a window to restore a lapsed name before it's released.
+- **Disputes** over names that infringe a mark run through the [UDRP](/en/blog/what-is-udrp/) — relevant if you're buying something close to an existing brand.
 
-## .com pricing and value
+One quirk worth understanding as a buyer: while the *wholesale* price is a single regulated number, the *retail* price you pay swings widely between registrars. Since 1999, .com has used a shared-registration model in which hundreds of [registrars](/en/glossary/registrar/) compete to sell the same names, which is why first-year promo rates can sit far below the true renewal price. Always check the renewal, not the teaser — the registry escalator applies to every registrar equally.
 
-This page never quotes live retail prices, but the pricing **mechanics** are unusually transparent for .com and directly affect what you will pay over time:
+The scale is its own fact: Verisign's [Domain Name Industry Brief](https://blog.verisign.com/domain-names/q4-2025-domain-name-industry-brief-quarterly-report/) put .com and .net at a [combined 173.5 million registrations](https://blog.verisign.com/domain-names/q4-2025-domain-name-industry-brief-quarterly-report/#:~:text=173.5%20million) at the end of 2025, with **.com alone above 161 million** — roughly four in ten of all domain names on earth.
 
-- **A regulated, capped wholesale price.** Verisign's .com wholesale fee is set under its ICANN registry agreement. A [2020 amendment](https://www.icann.org/en/announcements/details/icann-and-verisign-announce-proposed-amendment-to-com-registry-agreement-03-01-2020-en) permits Verisign to raise the wholesale price by up to **7% in four of every six years**, so the price moves in a predictable, regulated band rather than swinging freely.
-- **Where it stands now.** The wholesale fee is [increasing from $10.26 to $10.97](https://domainnamewire.com/2025/11/19/verisign-can-increase-com-prices-in-2026/#:~:text=increase%20from%20%2410.26%20to%20%2410.97) in 2026, and further 7% steps are expected in the following years. Budget for gradual renewal creep, not a flat lifetime price.
-- **First-year vs. renewal pricing differ at the registrar.** An introductory first-year retail rate can sit well below the recurring renewal rate, so plan around the renewal — not just the signup price.
-- **The real premium is the aftermarket.** Standard registration covers any available .com, but most short, dictionary, and brandable names are already owned. Their cost is driven by secondary-market demand and can dwarf the base price.
+## Why the first .com still resolves
 
-### What top .com names actually sell for
+Here is the detail that ties the whole story together. **symbolics.com**, registered in March 1985, still loads today — outliving the company that created it, the AI boom that made that company famous, the AI winter that killed it, the dial-up era, the dot-com bubble, and four decades of technological churn. The address proved more durable than almost everything around it.
 
-To calibrate expectations, the public record shows just how far premium .com value can run. **voice.com** [sold for a staggering $30 million in 2019](https://domainnamewire.com/2019/06/18/record-breaker-voice-com-domain-name-sells-for-staggering-30-million/) to Block.one — the highest publicly disclosed cash domain sale. Earlier, **business.com** changed hands for a reported $345 million in 2007, and **cars.com** was valued at roughly $872 million — though that figure was booked inside a corporate acquisition rather than a clean arms-length domain sale, so treat it as a valuation, not a market price. For most buyers the lesson is simpler: a memorable, exact-match .com is an asset competitors cannot easily replicate, which is why the .com [aftermarket](/en/glossary/aftermarket/) remains the most active in the industry.
+That is the quiet argument for .com as a long-term asset. Brands, technologies, and even whole business models come and go; a well-chosen .com tends to stay put, accrue trust, and remain the one thing a competitor cannot copy. It is the rare digital purchase that behaves less like a subscription and more like land. The escalating renewal is the price of holding that land — and for a name that anchors a serious brand, it is usually a price worth paying.
 
-## Reputation and email deliverability
+## Holding a .com for the long term
 
-.com carries the **most neutral and trusted reputation** of any TLD. To users, partners, and spam filters alike it reads as the established default — the opposite of the cheap, spam-prone new gTLDs that some aggressive mail filters treat with suspicion.
-
-Because .com is the home of countless legitimate businesses, it does not trigger the blanket suspicion that some bargain extensions attract, which makes it a strong foundation for business email. That said, deliverability depends far more on your own sending practices — properly configured SPF, DKIM, and DMARC records, a warmed-up sending domain, and clean list hygiene — than on the suffix itself.
-
-## Branding and naming tips
-
-Because the best one-word .com names are taken, modern .com branding usually means **coining a name** rather than finding a dictionary word: invented brandables (think made-up but pronounceable words), two-word compounds, and added prefixes or suffixes (`get-`, `try-`, `-app`, `-hq`). Keep the result short, easy to spell, and unambiguous when spoken aloud.
-
-Watch two pitfalls. First, avoid awkward hyphenation or number substitutions that are hard to dictate over a phone call. Second, check that your chosen .com is not a confusing near-match to an existing brand, which invites trademark trouble and lost traffic.
-
-## Should you buy defensively?
-
-For any serious brand, the .com is rarely a single purchase. Because .com is the name people guess first, securing the **exact-match .com** is the highest-priority defensive registration you can make — even if you launch on another extension. From there, many brands add the closest lookalikes and typo variants and redirect them to the canonical site, so traffic and trust flow back to one place instead of leaking to squatters. A small, deliberate portfolio of the names that matter is far cheaper than fighting a copycat later through the [UDRP](/en/blog/what-is-udrp/).
-
-## Holding a .com as a tokenized asset
-
-A .com is a long-lived asset, and how you hold it matters. Beyond conventional DNS registration, a .com can be held as a [tokenized domain](/en/blog/what-are-tokenized-domains/) — an [on-chain](/en/glossary/on-chain/) record that makes [domain ownership](/en/glossary/domain-ownership/) verifiable and transfers as simple as moving an [NFT](/en/glossary/nft/). For investors and traders, that unlocks faster, escrow-light sales; for brands, it adds a portable proof of ownership alongside the registrar record. You can [tokenize a .com you already own](/en/blog/how-to-tokenize-your-com/) without giving up its standard DNS resolution.
-
-## How to register a .com domain at Namefi
-
-1. **Search** for your desired name at [Namefi](https://namefi.io) to check availability.
-2. **Choose** the .com result (and any alternates worth securing defensively).
-3. **Register** and configure DNS — then optionally tokenize for on-chain ownership.
-
-As an [ICANN-accredited](/en/glossary/icann/) [registrar](/en/glossary/registrar/), Namefi bridges Web2 and [Web3](/en/glossary/web3/): transparent pricing, fast [DNS](/en/glossary/dns/) management, and the option to hold your name as a [tokenized domain](/en/blog/what-are-tokenized-domains/) for verifiable [domain ownership](/en/glossary/domain-ownership/) and easy transferability. Get started at [Namefi](https://namefi.io).
+A .com is a decades-long asset, and how you *hold* it matters as much as which one you buy. Beyond conventional [DNS](/en/glossary/dns/) registration, a .com can also be held as a [tokenized domain](/en/blog/what-are-tokenized-domains/) — an [on-chain](/en/glossary/on-chain/) record that makes [ownership](/en/glossary/domain-ownership/) verifiable and transfers as simple as moving an [NFT](/en/glossary/nft/), without giving up standard resolution. As an [ICANN-accredited](/en/glossary/icann/) [registrar](/en/glossary/registrar/) that bridges Web2 and [Web3](/en/glossary/web3/), [Namefi](https://namefi.io) lets you register a .com, manage its DNS, and optionally tokenize it in one place. You can search a name and get started at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 
 ### Can anyone register a .com domain?
 
-Yes. The .com namespace is open to everyone worldwide with no local-presence, business, credential, or community requirement. The original commercial intent is no longer enforced, so individuals, nonprofits, and companies alike can register one, subject only to standard availability.
+Yes. The .com namespace is open to everyone worldwide with no local-presence, business, credential, or community requirement. The original commercial intent has never been enforced, so individuals, nonprofits, and companies alike can register one, subject only to availability.
 
 ### Does a .com domain affect SEO?
 
@@ -188,26 +196,36 @@ Google treats .com as a generic top-level domain with no inherent ranking advant
 
 ### Why are good .com domains so hard to find?
 
-With more than 161 million .com names registered, the supply of short, dictionary, and exact-match brand names is largely exhausted. Most premium .com names are already owned, so they are typically available only through the secondary market rather than at standard registration price.
+With more than 161 million .com names registered, the supply of short, dictionary, and exact-match brand names is largely exhausted. Most premium names are already owned, so they are typically available only on the secondary market rather than at standard registration price.
 
-### How much does a .com cost, and does the price change?
+### How much does a .com cost, and does the price keep rising?
 
-Registrars set their own retail prices, but the registry wholesale price is regulated under Verisign's ICANN agreement. A 2020 amendment lets Verisign raise the wholesale fee by up to 7% in four of every six years — it is rising from $10.26 to $10.97 in 2026 — so budget for gradual renewal increases rather than a fixed price.
+Registrars set their own retail prices, but the registry wholesale price is regulated. Since a 2018 U.S. government amendment, Verisign may raise it by up to 7% in four of every six years — it has climbed from $7.85 to $10.97 — so plan around the renewal, not just the first-year signup rate.
 
 ### Who should register a .com domain?
 
-Almost any business, brand, or project that wants the most universally recognized and trusted address. It is especially worthwhile for companies serving a global or mainstream consumer audience and for anyone protecting a brand over the long term.
+Almost any business, brand, or project that wants the most universally recognized and trusted address. It is especially worthwhile for companies serving a global or mainstream audience and for anyone protecting a brand over the long term.
 
 ### Does .com support WHOIS privacy and DNSSEC?
 
 DNSSEC is supported by the .com registry. [WHOIS privacy](/en/glossary/whois-privacy/) availability depends on your registrar; most modern registrars, including Namefi, offer privacy protection on eligible registrations.
 
+## Sources
+
+- [IANA root-zone entry for .com](https://www.iana.org/domains/root/db/com.html) — registry operator and 1985 delegation
+- [RFC 920 (Postel & Reynolds, 1984)](https://datatracker.ietf.org/doc/html/rfc920) — creation of the original gTLDs
+- [Verisign Domain Name Industry Brief, Q4 2025](https://blog.verisign.com/domain-names/q4-2025-domain-name-industry-brief-quarterly-report/) — .com / .net registration totals
+- [ICANN .com Registry Agreement](https://www.icann.org/en/registry-agreements/details/com) and [NTIA Verisign Cooperative Agreement](https://www.ntia.gov/program/verisign-cooperative-agreement) — pricing authority
+- [ICANN–Verisign 2020 amendment with 7% price hikes](https://domainnamewire.com/2020/03/27/breaking-icann-and-verisign-agree-to-com-extension-with-7-price-hikes/) and the [2026 increase to $10.97](https://domainnamewire.com/2025/11/19/verisign-can-increase-com-prices-in-2026/)
+- [Google Search Central — managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) — .com treated as generic
+- [voice.com $30M sale](https://domaininvesting.com/voice-com-domain-name-acquired-for-30-million/) and [the symbolics.com story](https://www.stackscale.com/blog/symbolics-com-domain-name/)
+
 ## Related resources
 
-- [What is a domain?](/en/blog/what-is-domain/)
-- [What is a TLD?](/en/blog/what-is-a-tld/)
+- [The $12 minute someone owned Google.com](/en/blog/the-12-dollar-minute-someone-owned-google-com/)
+- [The sex.com heist: a forged letter](/en/blog/the-sex-com-heist-the-forged-letter/)
+- [From TeslaMotors.com to Tesla.com](/en/blog/from-teslamotors-com-to-tesla-com/)
 - [What makes a domain valuable?](/en/blog/what-makes-a-domain-valuable/)
-- [How to tokenize your .com](/en/blog/how-to-tokenize-your-com/)
 - [How to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own/)
 - TLD guides: [.net](/en/tld/net/), [.org](/en/tld/org/), [.io](/en/tld/io/), [.ai](/en/tld/ai/), [.xyz](/en/tld/xyz/)
 - Glossary: [ICANN](/en/glossary/icann/), [registrar](/en/glossary/registrar/), [DNS](/en/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
