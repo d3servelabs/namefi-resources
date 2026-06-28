@@ -26,6 +26,7 @@ OUT_JPG="$1"; H1="$2"; H2="$3"; SUB="$4"; VISUAL="$5"
 # Official logo source (rasterized fresh each run; never use generated logo text).
 LOGO_SRC="${NAMEFI_LOGOTYPE_SVG:-$HOME/ws/d3servelabs/namefi-astra/main/apps/resources/public/logotype.svg}"
 W="$(mktemp -d "${TMPDIR:-/tmp}/og.XXXXXX")"
+trap 'rm -rf "$W"' EXIT   # clean up the temp dir on any exit (incl. failure)
 rsvg-convert -w 132 -h 43 "$LOGO_SRC" -o "$W/logo.png"
 
 cat > "$W/prompt.txt" <<PROMPT

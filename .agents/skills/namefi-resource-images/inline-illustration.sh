@@ -28,6 +28,7 @@ esac; shift; done
 : "${OPENAI_API_KEY:?OPENAI_API_KEY not set — inject via with-secret.sh}"
 LOGO_SRC="${NAMEFI_LOGOTYPE_SVG:-$HOME/ws/d3servelabs/namefi-astra/main/apps/resources/public/logotype.svg}"
 W="$(mktemp -d "${TMPDIR:-/tmp}/inl.XXXXXX")"
+trap 'rm -rf "$W"' EXIT   # clean up the temp dir on any exit (incl. failure)
 
 HEAD_LINE=""
 [ -n "$HEADING" ] && HEAD_LINE="- Heading: in the upper-left, a short bold near-black sans-serif heading reading exactly: \"$HEADING\".
@@ -58,7 +59,14 @@ jq -r '.data[0].b64_json // empty' "$W/resp.json" | base64 -D > "$W/raw.png"
 RW=$(sips -g pixelWidth "$W/raw.png" | awk '/pixelWidth/{print $2}')
 RH=$(sips -g pixelHeight "$W/raw.png" | awk '/pixelHeight/{print $2}')
 TARGET_H=$(( RW * OUTH / OUTW ))
-if [ "$TARGET_H" -le "$RH" ]; then sips -c "$TARGET_H" "$RW" "$W/raw.png" --out "$W/c.png" >/dev/null; else cp "$W/raw.png" "$W/c.png"; fi
+if [ "$TARGET_H" -le "$RH" ]; then
+  # crop height to match the target ratio (source is wider/short enough)
+  sips -c "$TARGET_H" "$RW" "$W/raw.png" --out "$W/c.png" >/dev/null
+else
+  # target is taller than the source ratio → crop width instead (no stretch)
+  TARGET_W=$(( RH * OUTW / OUTH ))
+  sips -c "$RH" "$TARGET_W" "$W/raw.png" --out "$W/c.png" >/dev/null
+fi
 sips -z "$OUTH" "$OUTW" "$W/c.png" --out "$W/c.png" >/dev/null
 
 mkdir -p "$(dirname "$OUT_JPG")"
