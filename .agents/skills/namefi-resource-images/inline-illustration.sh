@@ -3,7 +3,7 @@
 # (content/assets/<slug>-NN-<name>.jpg) in the same flat-vector house style as
 # the OG covers, but without the strict cover layout. The model renders an
 # optional short heading and any small labels itself. A small Namefi logotype is
-# composited bottom-right unless --no-logo is given.
+# composited top-right unless --no-logo is given.
 #
 # Usage:
 #   inline-illustration.sh <out_jpg> <scene> [heading] [--no-logo] [--size WxH]
@@ -15,7 +15,11 @@
 #
 # Requires OPENAI_API_KEY (inject via with-secret.sh from namefi-astra; see og-cover.sh).
 set -euo pipefail
-OUT_JPG="$1"; SCENE="$2"; HEADING="${3:-}"; shift || true; shift || true; [ $# -gt 0 ] && shift || true
+OUT_JPG="${1:?usage: inline-illustration.sh <out_jpg> <scene> [heading] [--no-logo] [--size WxH]}"
+SCENE="${2:?missing <scene>}"; shift 2
+HEADING=""
+# an optional heading may follow scene, but only if it is not a flag
+if [ $# -gt 0 ] && [ "${1#--}" = "$1" ]; then HEADING="$1"; shift; fi
 LOGO=1; OUTW=1200; OUTH=675
 while [ $# -gt 0 ]; do case "$1" in
   --no-logo) LOGO=0;;
