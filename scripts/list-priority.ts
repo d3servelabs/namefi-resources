@@ -27,7 +27,7 @@ const has = (name: string) => process.argv.includes(`--${name}`);
 
 const locale = arg('locale') ?? 'en';
 const tierFilter = arg('tier')?.toUpperCase() as Tier | undefined;
-const collArg = arg('collection');
+const collArg = arg('collection')?.toLowerCase();
 const wantFaq = collArg === 'faq';
 const showAll = has('all') || tierFilter === 'P2';
 const asJson = has('json');
@@ -47,7 +47,9 @@ function collect(collection: string): Row[] {
     if (!/\.(md|mdx)$/.test(entry)) continue;
     const fm = matter(readFileSync(path.join(dir, entry), 'utf8')).data as Record<string, unknown>;
     if (collection === 'blog' && wantFaq && !isFaq(fm)) continue;
-    const raw = typeof fm.priority === 'string' ? fm.priority.toUpperCase() : 'P2';
+    // Stored frontmatter is canonical exact-case (P0/P1/P2), matching the
+    // data:validate enum; anything else is treated as P2 (the default).
+    const raw = typeof fm.priority === 'string' ? fm.priority : 'P2';
     const tier = (TIERS as readonly string[]).includes(raw) ? (raw as Tier) : 'P2';
     rows.push({
       collection: wantFaq ? 'faq' : collection,
