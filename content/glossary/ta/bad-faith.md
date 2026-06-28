@@ -1,14 +1,32 @@
 ---
-title: தீய நம்பிக்கை
+title: தீய நோக்கம்
 date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
-description: trademark-ஐ சுரண்ட டொமைனை register செய்வது அல்லது பயன்படுத்துவது; UDRP case வெல்ல தேவையான கூறு.
-keywords: ['bad faith', 'UDRP', 'domain dispute', 'cybersquatting', 'trademark abuse']
+description: வணிக முத்திரையை சுரண்ட ஒரு டொமைனை பதிவு செய்வது அல்லது பயன்படுத்துவது; UDRP வழக்கில் வெற்றி பெற நிரூபிக்க வேண்டிய இன்றியமையாத கூறு.
+keywords: ['தீய நோக்கம்', 'டொமைன் தகராறு', 'இணைய முகவரி கைப்பற்றல்', 'வணிக முத்திரை துஷ்பிரயோகம்', 'UDRP']
 level: 1
 sources:
   - https://www.wipo.int/amc/en/domains/
+relatedArticles:
+  - /ta/blog/what-is-udrp/
+  - /ta/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /ta/blog/domain-flipping-and-the-law/
+  - /ta/blog/how-to-sell-a-domain-name-you-own/
+  - /ta/blog/domain-flipping/
+relatedTopics:
+  - /ta/topics/domain-investing/
+  - /ta/topics/domain-security/
+relatedSeries:
+  - /ta/series/domain-flipping-skills/
+  - /ta/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ta/glossary/reverse-domain-hijacking/
+  - /ta/glossary/cybersquatting/
+  - /ta/glossary/icann/
+  - /ta/glossary/urs/
+  - /ta/glossary/wipo/
 ---
 
-**தீய நம்பிக்கை** என்பது [UDRP](/ta/glossary/udrp/) proceeding-இல் complainant நிரூபிக்க வேண்டிய மூன்றாவது மற்றும் பெரும்பாலும் அதிகம் விவாதிக்கப்படும் கூறு: disputed domain *registered* செய்யப்பட்டதோடு *used* செய்யப்படவும் bad faith இருக்க வேண்டும் ([WIPO](/ta/glossary/wipo/) கீழ் conjunctive test). UDRP policy panels presumptive bad faith என கருதிய non-exhaustive examples-ஐ பட்டியலிடுகிறது: documented costs-ஐ விட அதிக விலையில் [trademark](/ta/glossary/trademark/) owner-க்கு domain-ஐ விற்க முன்வருதல்; mark-holder தன் brand-ஐ online-இல் பிரதிபலிக்காமல் தடுக்க பதிவு செய்தல்; competitor-ஐ disrupt செய்ய பதிவு செய்தல்; அல்லது confusion சாத்தியத்தை உருவாக்கி commercial gain-க்காக users-ஐ ஈர்த்தல். Panels circumstantial indicators-ஐயும் மதிப்பிடுகின்றன - registration நேரத்தில் [registrant](/ta/glossary/registrant/) mark பற்றி அறிந்திருந்ததா, நம்ப முடியாத claimed use, மற்றும் [cybersquatting](/ta/glossary/cybersquatting/) உடன் ஒத்த portfolio patterns. Bad faith கண்டறியப்பட்டால் transfer அல்லது cancellation order வரும். மாறாக, வெற்றி பெற முடியாது என்பதை அறிந்தும் complainant UDRP claim தொடர்ந்ததாக panel கண்டால், registrant [reverse domain hijacking](/ta/glossary/reverse-domain-hijacking/) finding கோரலாம். ஒரு domain-ஐ [blockchain](/ta/glossary/blockchain/) இல் tokenize செய்வது panels bad faith-ஐ மதிப்பிடும் முறையை மாற்றாது; DNS registration history மற்றும் registrant-இன் conduct தான் operative facts.
+**தீய நோக்கம்** என்பது ஒரு [UDRP](/ta/glossary/udrp/) நடவடிக்கையில் புகார்தாரர் நிரூபிக்க வேண்டிய மூன்றாவது — மற்றும் பெரும்பாலும் மிகவும் சர்ச்சைக்குரிய — கூறு ஆகும்: தகராறில் உள்ள டொமைன் தீய நோக்கத்துடன் *பதிவு செய்யப்பட்டதாகவும்* *பயன்படுத்தப்பட்டதாகவும்* நிரூபிக்கப்பட வேண்டும் ([WIPO](/ta/glossary/wipo/) வழிகாட்டுதல்களின் கீழ் இரண்டும் சேர்ந்து நிரூபிக்க வேண்டும் என்ற கட்டாய நிபந்தனை). UDRP கொள்கையில் முழுமையற்ற எடுத்துக்காட்டுகள் பட்டியலிடப்பட்டுள்ளன; இவற்றை நடுவர் குழுக்கள் தீய நோக்கத்தின் அனுமானமாக கருதுகின்றன: ஆவணப்படுத்தப்பட்ட செலவுகளை விட அதிகமான விலையில் [வணிக முத்திரை](/ta/glossary/trademark/) உரிமையாளருக்கு டொமைனை விற்க முன்வருதல்; முத்திரை உரிமையாளர் தமது பிராண்டை இணையத்தில் பதிவு செய்யாமல் தடுக்கும் நோக்கில் பதிவு செய்தல்; போட்டியாளரின் வணிகத்தை சீர்குலைக்க பதிவு செய்தல்; அல்லது குழப்பத்தை உண்டாக்கி வணிக ஆதாயத்திற்காக பயனர்களை வேண்டுமென்றே கவர்ந்திழுத்தல். நடுவர் குழுக்கள் சாட்சியச் சான்றுகளையும் மதிப்பிடுகின்றன — பதிவு செய்த நேரத்தில் [பதிவாளர்](/ta/glossary/registrant/) அந்த முத்திரை பற்றி அறிந்திருந்தாரா என்பது, நம்பகத்தன்மையற்ற பயன்பாடு கோரல்கள், மற்றும் [இணைய முகவரி கைப்பற்றலுடன்](/ta/glossary/cybersquatting/) ஒத்த டொமைன் தொகுப்பு முறைகள். தீய நோக்கம் நிரூபிக்கப்பட்டால் டொமைனை மாற்றுவதற்கு அல்லது நீக்குவதற்கான உத்தரவு பிறப்பிக்கப்படும். மாறாக, வெற்றி பெற முடியாது என்று தெரிந்தும் புகார்தாரர் UDRP வழக்கை தொடுத்ததாக நடுவர் குழு கண்டறிந்தால், பதிவாளர் [தலைகீழ் டொமைன் கைப்பற்றல்](/ta/glossary/reverse-domain-hijacking/) குறித்த கண்டுபிடிப்பை கோரலாம். ஒரு டொமைனை [பிளாக்செயினில்](/ta/glossary/blockchain/) டோக்கனாக மாற்றுவது, நடுவர் குழுக்கள் தீய நோக்கத்தை மதிப்பிடும் முறையை மாற்றாது; DNS பதிவு வரலாறும் பதிவாளரின் நடத்தையும் தான் செயல்பாட்டு உண்மைகளாக இருக்கும்.
