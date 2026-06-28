@@ -2,6 +2,7 @@
 title: 'What Is the .city Domain? A Guide for Local Brands'
 date: '2026-06-15'
 language: 'en'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -3,6 +3,7 @@ title: 'What is the .ae Domain? UAE ccTLD Guide, Eligibility & Registration'
 date: '2025-12-10'
 updated: '2026-06-10'
 language: 'en'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

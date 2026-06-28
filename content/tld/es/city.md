@@ -2,6 +2,7 @@
 title: ¿Qué es el TLD .city y por qué es perfecto para negocios locales?
 date: '2025-06-21'
 language: es
+priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .city es el dominio para negocios locales, servicios municipales y sitios web centrados en la ciudad. Perfecto para establecer presencia local.

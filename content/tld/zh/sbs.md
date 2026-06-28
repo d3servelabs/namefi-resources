@@ -2,6 +2,7 @@
 title: 什麼是 .sbs TLD，為什麼它非常適合副業？
 date: '2025-06-21'
 language: zh
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

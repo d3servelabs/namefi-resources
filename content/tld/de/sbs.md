@@ -2,6 +2,7 @@
 title: Was ist die .sbs TLD und warum ist sie großartig für Nebenprojekte?
 date: '2025-06-21'
 language: de
+priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .sbs steht für "side by side" und ist perfekt für kollaborative Projekte, Partnerschaften und Nebenprojekte.

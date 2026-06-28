@@ -2,6 +2,7 @@
 title: Qu'est-ce que le TLD .sbs et pourquoi est-il idéal pour les activités secondaires ?
 date: '2025-06-21'
 language: fr
+priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .sbs signifie "side by side" (côte à côte) et est parfait pour les projets collaboratifs, les partenariats et les activités secondaires.

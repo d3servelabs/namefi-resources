@@ -2,6 +2,7 @@
 title: .city TLD 是什么？为何它非常适合本地企业？
 date: '2025-06-21'
 language: zh
+priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .city 是专为本地企业、市政服务和城市主题网站设计的域名。非常适合建立本地影响力。
