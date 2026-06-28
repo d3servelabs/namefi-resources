@@ -43,6 +43,8 @@ In 2019, a single domain name — **voice.com** — [sold for $30 million](https
 
 That is the strange thing about the **.com domain**: it is so ordinary we forget it is the most valuable real estate of the digital age. Short for "commercial," it is the original [generic top-level domain](/en/glossary/gtld/) — and through forty years of accident, ambition, and ubiquity it became the suffix people assume when they hear a website name. This page is the long version of how that happened, and what it means if you are thinking about buying one.
 
+![A phone keyboard with the .com key highlighted and a browser autocompleting yourname.com, while speech bubbles and a podcast icon all end in .com — how people reach for .com by reflex](../../assets/com-hero.jpg)
+
 ## .com at a glance
 
 | Fact | Detail |
@@ -65,11 +67,15 @@ The fix came from a researcher at USC's Information Sciences Institute named **[
 
 In **October 1984**, Postel and Joyce Reynolds published [RFC 920](https://datatracker.ietf.org/doc/html/rfc920), which created the first generic top-level domains: `.com`, `.edu`, `.gov`, `.mil`, `.org`, and the transitional `.arpa`. (`.net` was added a few months later when the root zone was first populated.) The choice of six short, generic buckets was deliberate, and the definition of `.com` was almost comically loose — it was simply for "commercial" entities, with no verification, no payment, and no gatekeeping beyond emailing a form to a NIC. Postel ran the whole apparatus by a famous engineering maxim, "be conservative in what you send, be liberal in what you accept," and that liberality is exactly how he ran .com. He later tried to tighten the language in [RFC 1591](https://www.ietf.org/rfc/rfc1591.txt), but it never mattered. The door was open, and it has stayed open ever since.
 
+![A 1980s computer beside a domain-name-space tree branching into .com, .edu, .gov, .mil and .org, with an RFC 920 (1984) note and the retired HOSTS.TXT file — how .com was born](../../assets/com-01-birth.jpg)
+
 That looseness is the whole personality of .com. It was never reserved for a club. It belonged to whoever asked first — which is exactly why it ate the internet.
 
 ## symbolics.com: the first .com, and a warning about hype
 
 On **March 15, 1985**, a Massachusetts computer-maker became the first entity ever to register a .com. The company was **Symbolics**, [a spinoff from the MIT AI Lab … founded … for the purpose of manufacturing Lisp machines](https://en.wikipedia.org/wiki/Symbolics#:~:text=Symbolics%20was%20a%20spinoff%20from%20the%20MIT%20AI%20Lab) — the hardware of the *first* artificial-intelligence boom. Its domain, [symbolics.com, is recognized as the first registered .com on the internet](https://www.stackscale.com/blog/symbolics-com-domain-name/#:~:text=Symbolics.com%20is%20the%20first%20registered%20.com%20domain%20name%20on%20the%20Internet), and it has never lapsed.
+
+![The first .com preserved like a museum piece: a 1980s Symbolics computer under glass with a plaque reading symbolics.com — 1985 and a green sprout showing the address still resolves](../../assets/com-02-first-dot-com.jpg)
 
 For perspective on how empty the new namespace was: in the entire rest of 1985, [only a handful more .com domains followed](https://en.wikipedia.org/wiki/List_of_the_oldest_currently_registered_Internet_domain_names) — names like BBN, Thinking Machines, DEC, and Northrop. A few commercial domains in the whole first year.
 
@@ -105,6 +111,8 @@ That changed in **2018**. The Trump-era NTIA signed [Amendment 35](https://www.n
 
 The result is a steady, contractually-guaranteed climb. The wholesale price has gone $7.85 → $8.39 → $8.97 → $9.59 → $10.26, and it is [rising from $10.26 to $10.97](https://domainnamewire.com/2025/11/19/verisign-can-increase-com-prices-in-2026/#:~:text=increase%20from%20%2410.26%20to%20%2410.97) in 2026.
 
+![A rising staircase of .com price tags from $7.85 to $10.97 marked with a 'regulated' seal — the contractually guaranteed climb of the wholesale price](../../assets/com-03-price-escalator.jpg)
+
 Why this is so contested comes down to economics that are hard to find anywhere else in business. Verisign runs .com under a contract that was never put out for competitive bid — and when other countries *have* bid out their registries, the prices came in a fraction as high (a bid to run India's `.in` came in from [Neustar at just 70 cents per domain name per year](https://circleid.com/posts/20181112_verisigns_attempt_to_increase_fees_unjustified_despite#:~:text=Neustar%20at%20just%2070%20cents%20per%20domain%20name%20per%20year), against Verisign's near-$11). Industry analysts peg Verisign's true cost to operate a .com name at a few dollars at most, and the company's operating margins sit around two-thirds of revenue. The American Economic Liberties Project estimated the post-2018 increases alone [represent an additional $383 million annual windfall for Verisign's shareholders](https://www.economicliberties.us/our-work/a-call-for-com-petition-reining-in-verisigns-monopoly-over-the-internets-most-popular-top-level-domain/#:~:text=represents%20an%20additional%20%24383%20million%20annual%20windfall), and in 2024 [Senator Elizabeth Warren and Rep. Jerry Nadler wrote to the National Telecommunications and Information Administration and Department of Justice](https://www.warren.senate.gov/newsroom/press-releases/warren-nadler-urge-regulators-to-take-action-on-verisigns-monopoly-over-com-website-prices#:~:text=wrote%20to%20the%20National%20Telecommunications%20and%20Information%20Administration) urging action on Verisign's pricing.
 
 Verisign's reply is that it operates irreplaceable infrastructure with near-perfect uptime, and that the price of a single domain is trivial next to the cost of running a business online. Both sides have a point. For you, the buyer, the conclusion is the same either way, and it is unsentimental: **a .com is a subscription with a built-in escalator. Budget for the renewal, not the signup price.**
@@ -124,6 +132,8 @@ The public record runs from the merely large to the historic:
 | business.com | [$7.5 million](https://en.wikipedia.org/wiki/Business.com#:~:text=for%20%247.5%20million) | 1999 |
 
 **voice.com** went to the blockchain company Block.one; **ai.com** reportedly set the all-time record in February 2026 — fittingly, the most expensive domain ever sold was a .com, not a .ai. (Beware the headline figures that aren't clean sales: cars.com's oft-cited ~$872 million was a valuation booked inside a corporate acquisition, not a domain price.)
+
+![An auction of premium .com names with framed deeds for voice.com ($30M), ai.com (~$70M) and business.com ($7.5M) beneath a '$1B+ a year' banner](../../assets/com-04-aftermarket.jpg)
 
 Then there are the stories that show how *much* a .com can matter — and how fragile possession once was.
 
