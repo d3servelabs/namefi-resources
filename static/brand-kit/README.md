@@ -32,6 +32,26 @@ Files:
 - `assets/namefi-lottie-wordmark-mono.svg` - single-color final-frame wordmark.
 - `assets/namefi_to_nfi.json` - animated Lottie mark that expands from compact mark to wordmark.
 
+## Icon / Favicon Assets
+
+Square and tight-cut versions of the compact `Nfi` mark (first Lottie frame),
+intended for favicons, app icons, and avatars. Provided in `svg`, `png`, `webp`,
+and `jpg`, on transparent and solid-black backgrounds.
+
+- `namefi-compact-square*` - the mark centered in a 1:1 square with a uniform
+  safe-area margin (the mark never touches an edge, so every edge is the
+  variant's own background; the most common icon slot). PNG/WEBP/JPG at `32`,
+  `64`, `128`, `256`, `512`, `1024`, `2048`, and `4096` px (e.g.
+  `namefi-compact-square-256.png`).
+- `namefi-compact-cut*` - the mark cut tight to its artwork (no padding, ~1.35:1).
+  PNG/WEBP/JPG sized by width: `64w`, `128w`, `256w`, `512w`, `1024w`, `2048w`,
+  `4096w` (e.g. `namefi-compact-cut-512w.png`).
+- `*-black*` files place the mark on an opaque black background; files without
+  `-black` are transparent. The `svg` of each is resolution-independent.
+
+JPEG cannot store transparency, so transparent variants are flattened onto a
+light matte and the black variants onto black.
+
 ## Name Usage
 
 Spell the brand name as `Namefi` in running text. Do not write `NameFi` or `NameFI`. Use `NAMEFI` only where full capitalization is required.
