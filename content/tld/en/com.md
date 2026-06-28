@@ -1,12 +1,12 @@
 ---
-title: 'What Is the .com Domain? The Internet Default Explained'
+title: 'What Is the .com Domain? Why It Still Rules the Internet'
 date: '2026-06-15'
 language: 'en'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false
-description: 'The .com domain is the default address of the commercial internet. A buyer-focused deep dive into its history, registry, pricing mechanics, aftermarket, SEO, and how to register or tokenize one.'
+description: 'Someone once owned Google.com for a $12 minute; voice.com sold for $30 million. The .com domain is the internet''s default address — learn its history, pricing, aftermarket, SEO, and how to register one.'
 keywords: ['.com domains', 'what is .com', '.com TLD', '.com domain extension', 'register .com domain', 'com domain meaning', '.com vs .net', 'business domains', '.com price', '.com aftermarket']
 faqs:
   - question: 'Can anyone register a .com domain?'
@@ -20,11 +20,11 @@ faqs:
   - question: 'Who should register a .com domain?'
     answer: 'Almost any business, brand, or project that wants the most universally recognized and trusted address, especially companies serving a global or mainstream consumer audience and anyone protecting a brand long term.'
 relatedArticles:
-  - /en/blog/what-is-a-tld/
-  - /en/blog/top-tlds-to-secure-for-your-business/
-  - /en/blog/top-tlds-to-secure-for-your-startup/
+  - /en/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /en/blog/the-sex-com-heist-the-forged-letter/
+  - /en/blog/from-teslamotors-com-to-tesla-com/
   - /en/blog/what-makes-a-domain-valuable/
-  - /en/blog/ai-vs-io-domain/
+  - /en/blog/top-tlds-to-secure-for-your-business/
 relatedTopics:
   - /en/topics/choosing-a-tld/
   - /en/topics/domain-investing/
@@ -39,7 +39,9 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-The **.com domain** is the closest thing the internet has to a default. Short for "commercial," it is the original [generic top-level domain](/en/glossary/gtld/) that, through decades of ubiquity, became the suffix people assume when they hear a website name. For most businesses and brands, **what is .com** really comes down to one thing: it is the address users expect, type, and trust without thinking.
+Someone once owned **google.com** for a single [$12 minute](/en/blog/the-12-dollar-minute-someone-owned-google-com/). The internet's most valuable address, **sex.com**, was once [stolen with a forged letter](/en/blog/the-sex-com-heist-the-forged-letter/). And Tesla spent a decade and a reported [$11 million](/en/blog/from-teslamotors-com-to-tesla-com/) just to upgrade from TeslaMotors.com to Tesla.com. Every one of those stories turns on the same three letters — and that is the whole point of **.com**.
+
+Short for "commercial," the **.com domain** is the original [generic top-level domain](/en/glossary/gtld/) that decades of ubiquity turned into the suffix people assume when they hear a website name. For most businesses and brands, **what is .com** really comes down to one thing: it is the address users expect, type, and trust without thinking.
 
 If you are launching a company, protecting a brand, or building anything meant for a mainstream or global audience, .com remains the benchmark every other extension is measured against — and often the most consequential domain you will ever buy. This page is written for the buyer: where .com came from, who runs it, exactly how its pricing works, what the aftermarket looks like, how it behaves for SEO and email, and how to decide whether to register, buy, or tokenize one.
 

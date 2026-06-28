@@ -1,12 +1,12 @@
 ---
-title: '什么是 .com 域名？互联网默认后缀详解'
+title: '什么是 .com 域名？它为何至今仍统治互联网'
 date: '2026-06-15'
 language: 'zh'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false
-description: '.com 域名是商业互联网的默认地址。面向买家的深度解析：历史、注册局、定价机制、二级市场、SEO，以及如何注册或代币化持有。'
+description: '有人曾仅花 12 美元拥有 Google.com 一分钟，voice.com 则以 3000 万美元成交。.com 是互联网的默认地址——了解它的历史、定价、二级市场、SEO，以及如何注册。'
 keywords: ['.com 域名', '什么是 .com', '.com TLD', '.com 域名后缀', '注册 .com 域名', 'com 域名含义', '.com 与 .net 对比', '商业域名', '.com 价格', '.com 二级市场']
 faqs:
   - question: '任何人都可以注册 .com 域名吗？'
@@ -20,11 +20,11 @@ faqs:
   - question: '哪些人应该注册 .com 域名？'
     answer: '几乎所有希望拥有最广泛认可和信任地址的企业、品牌或项目，尤其是面向全球或主流消费者的公司，以及任何希望长期保护品牌的人。'
 relatedArticles:
-  - /zh/blog/what-is-a-tld/
-  - /zh/blog/top-tlds-to-secure-for-your-business/
-  - /zh/blog/top-tlds-to-secure-for-your-startup/
+  - /zh/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /zh/blog/the-sex-com-heist-the-forged-letter/
+  - /zh/blog/from-teslamotors-com-to-tesla-com/
   - /zh/blog/what-makes-a-domain-valuable/
-  - /zh/blog/ai-vs-io-domain/
+  - /zh/blog/top-tlds-to-secure-for-your-business/
 relatedTopics:
   - /zh/topics/choosing-a-tld/
   - /zh/topics/domain-investing/
@@ -39,7 +39,9 @@ relatedGlossary:
   - /zh/glossary/registry/
 ---
 
-**.com 域名**是互联网最接近"默认选项"的存在。它是"commercial（商业）"的缩写，是最初的[通用顶级域名（gTLD）](/zh/glossary/gtld/)。经过数十年的普及，它已成为人们听到网站名称时自然联想到的后缀。对于大多数企业和品牌而言，**什么是 .com** 其实归结为一件事：它是用户期待、输入并毫不犹豫信任的地址。
+有人曾仅用 [12 美元拥有 **google.com** 一分钟](/zh/blog/the-12-dollar-minute-someone-owned-google-com/)；互联网上最有价值的地址 **sex.com**，曾[被一封伪造的信件盗走](/zh/blog/the-sex-com-heist-the-forged-letter/)；而特斯拉花了十年、据报 [1100 万美元](/zh/blog/from-teslamotors-com-to-tesla-com/)，只为把 TeslaMotors.com 升级成 Tesla.com。每一个故事都围绕着同样的三个字母——而这正是 **.com** 的全部意义所在。
+
+**.com 域名**是"commercial（商业）"的缩写，是最初的[通用顶级域名（gTLD）](/zh/glossary/gtld/)。经过数十年的普及，它已成为人们听到网站名称时自然联想到的后缀，也是互联网最接近"默认选项"的存在。对于大多数企业和品牌而言，**什么是 .com** 其实归结为一件事：它是用户期待、输入并毫不犹豫信任的地址。
 
 如果您正在创立公司、保护品牌，或构建任何面向主流或全球受众的产品，.com 仍是衡量所有其他后缀的基准——通常也是您这辈子最重要的一次域名购买。本页面面向买家撰写：.com 的起源、谁在运营它、定价机制的细节、二级市场的全貌、对 SEO 和电子邮件的影响，以及如何决定注册、购买或代币化持有。
 
