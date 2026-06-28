@@ -2,6 +2,7 @@
 title: "Die .live Domain: Was sie ist und warum sie die perfekte Wahl für Echtzeit-Content ist"
 date: '2025-12-10'
 language: 'de'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

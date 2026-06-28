@@ -2,6 +2,7 @@
 title: ICANN
 date: '2025-06-30'
 language: ar
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: المنظمة غير الربحية اللي بتنسّق نظام أسماء النطاقات العالمي وتخصيص IP ومعرّفات البروتوكول، وبتعتمد مسجلي النطاقات حول العالم.

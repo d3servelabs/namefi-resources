@@ -2,6 +2,7 @@
 title: محفظة
 date: '2025-06-30'
 language: ar
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هي محفظة العملات الرقمية وكيف تخزن النطاقات الرمزية؟

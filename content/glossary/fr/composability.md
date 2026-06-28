@@ -2,6 +2,7 @@
 title: Composabilité
 date: '2025-06-30'
 language: fr
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que la composabilité et comment s'applique-t-elle aux domaines tokenisés ?

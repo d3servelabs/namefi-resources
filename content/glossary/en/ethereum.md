@@ -2,6 +2,7 @@
 title: Ethereum
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: The leading smart-contract blockchain, and the network most tokenized domains are issued on.

@@ -2,6 +2,7 @@
 title: "Place de marché (ex: OpenSea, Blur)"
 date: '2025-06-30'
 language: fr
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Que sont les places de marché NFT et comment facilitent-elles le trading de domaines ?

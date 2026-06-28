@@ -2,6 +2,7 @@
 title: DID (Identité Décentralisée)
 date: '2025-06-30'
 language: fr
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que le DID et quel rôle les domaines jouent-ils dans l'identité décentralisée ?

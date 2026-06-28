@@ -2,6 +2,7 @@
 title: "ما هو نطاق .top ولماذا يجب عليك اختياره لموقعك القادم؟"
 date: '2025-12-10'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

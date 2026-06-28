@@ -2,6 +2,7 @@
 title: IDN (Internationalized Domain Name) / Punycode
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: A domain using non-ASCII characters, encoded for DNS as ASCII Punycode beginning with xn--.

@@ -2,6 +2,7 @@
 title: "डोमेन निवेशकों के लिए कर और लेखांकन"
 date: '2026-06-21'
 language: hi
+priority: P1
 tags: ['domains', 'domain-investing', 'domain-flipping', 'faq']
 authors: ['namefiteam']
 draft: false

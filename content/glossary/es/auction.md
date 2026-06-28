@@ -2,6 +2,7 @@
 title: Subasta (holandesa, inglesa, dinámica)
 date: '2025-06-30'
 language: es
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Cuáles son los diferentes tipos de subastas utilizadas para la venta de dominios?

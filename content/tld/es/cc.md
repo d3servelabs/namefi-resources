@@ -2,6 +2,7 @@
 title: '¿Qué es el dominio .cc? La alternativa global y con potencial de marca a ".com"'
 date: '2026-06-22'
 language: 'es'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

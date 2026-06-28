@@ -2,6 +2,7 @@
 title: NFT (Jeton Non Fongible)
 date: '2025-06-30'
 language: fr
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce qu'un NFT et comment se rapporte-t-il à la tokenisation de domaine ?

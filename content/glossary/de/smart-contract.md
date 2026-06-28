@@ -2,6 +2,7 @@
 title: Smart Contract
 date: '2025-06-30'
 language: de
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was sind Smart Contracts und wie ermöglichen sie die Domain-Tokenisierung?

@@ -2,6 +2,7 @@
 title: SERP
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: वह पृष्ठ जो खोज इंजन किसी क्वेरी के लिए परिणाम दिखाता है, जहाँ डोमेन दृश्यता के लिए प्रतिस्पर्धा करते हैं।

@@ -2,6 +2,7 @@
 title: DID (Dezentrale Identität)
 date: '2025-06-30'
 language: de
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist DID und welche Rolle spielen Domains bei der dezentralen Identität?

@@ -2,6 +2,7 @@
 title: 流动性
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 域名在接近估值的价格上能够被出售的速度——优质域名流动性高，小众域名流动性低。

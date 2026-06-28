@@ -2,6 +2,7 @@
 title: NFT (Non-Fungible Token)
 date: '2025-06-30'
 language: de
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist ein NFT und wie hängt es mit der Domain-Tokenisierung zusammen?

@@ -2,6 +2,7 @@
 title: السوق (مثل OpenSea، Blur)
 date: '2025-06-30'
 language: ar
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هي أسواق NFT وكيف تسهل تداول النطاقات؟

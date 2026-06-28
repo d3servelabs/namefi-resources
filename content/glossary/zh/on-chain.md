@@ -2,6 +2,7 @@
 title: 链上 (On-chain)
 date: '2025-06-29'
 language: zh
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 域名语境中“链上”是什么意思？

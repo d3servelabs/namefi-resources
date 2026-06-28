@@ -2,6 +2,7 @@
 title: Marque Commerciale
 date: '2026-06-22'
 language: fr
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un signe légalement protégé identifiant les biens ou services d''une marque, au cœur de nombreux litiges de domaines.

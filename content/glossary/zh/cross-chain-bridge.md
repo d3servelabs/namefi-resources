@@ -2,6 +2,7 @@
 title: 跨链桥
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 一种在无法原生互通的区块链之间移动代币或消息的协议。

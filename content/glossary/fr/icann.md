@@ -2,6 +2,7 @@
 title: ICANN
 date: '2025-06-30'
 language: fr
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: L''organisation à but non lucratif qui coordonne le système de noms de domaine mondial, l''allocation IP et les identifiants de protocole, et accrédite les registraires.

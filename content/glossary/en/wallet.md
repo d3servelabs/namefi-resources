@@ -2,6 +2,7 @@
 title: Wallet
 date: '2025-06-30'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Software or a device that stores the private keys controlling your on-chain assets and signs transactions, such as MetaMask or a hardware wallet.

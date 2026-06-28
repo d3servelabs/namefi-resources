@@ -2,6 +2,7 @@
 title: Domain Renewal (Auto-Renew)
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Paying to extend a domain's registration before it expires, often automatically each term.

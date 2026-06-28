@@ -2,6 +2,7 @@
 title: '.vip 域名全面解析：为何它是尊贵身份与高端品牌的首选？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

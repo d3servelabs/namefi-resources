@@ -2,6 +2,7 @@
 title: UDRP (Uniform Domain-Name Dispute-Resolution Policy)
 date: '2025-06-30'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: ICANN's mandatory policy for resolving domain disputes, mainly trademark and cybersquatting claims, as a faster, cheaper alternative to court.

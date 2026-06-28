@@ -2,6 +2,7 @@
 title: 'ccTLD (Domaine de premier niveau à code pays)'
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un domaine de premier niveau à deux lettres attribué à un pays ou territoire, tel que .uk, .de ou .jp.

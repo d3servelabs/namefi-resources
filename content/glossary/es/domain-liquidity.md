@@ -2,6 +2,7 @@
 title: Liquidez
 date: '2026-06-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: La rapidez con que un dominio puede venderse cerca de su valor estimado, alta para los mejores nombres y baja para los de nicho.

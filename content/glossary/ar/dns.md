@@ -2,6 +2,7 @@
 title: DNS
 date: '2025-06-30'
 language: ar
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: النظام الهرمي للتسمية الذي يترجم أسماء النطاقات المقروءة بشريًا إلى عناوين IP التي تستخدمها الأجهزة لتوجيه حركة المرور عبر الإنترنت.

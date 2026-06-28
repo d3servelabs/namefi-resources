@@ -2,6 +2,7 @@
 title: Marca Registrada
 date: '2026-06-22'
 language: es
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Signo legalmente protegido que identifica los bienes o servicios de una marca, fundamental en muchas disputas de dominios.

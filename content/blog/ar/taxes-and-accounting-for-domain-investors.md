@@ -2,6 +2,7 @@
 title: "الضرائب والمحاسبة لمستثمري النطاقات"
 date: '2026-06-21'
 language: ar
+priority: P1
 tags: ['domains', 'domain-investing', 'domain-flipping', 'faq']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: रजिस्ट्रेंट
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: रजिस्ट्रेंट वह व्यक्ति या संगठन है जो एक पंजीकृत डोमेन नाम के अधिकार रखता है — रिकॉर्ड पर मालिक।

@@ -2,6 +2,7 @@
 title: Blockchain
 date: '2026-06-22'
 language: fr
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un registre partagé et en ajout seul maintenu sur de nombreux ordinateurs, fondement de la propriété tokenisée.

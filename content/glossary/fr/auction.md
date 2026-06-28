@@ -2,6 +2,7 @@
 title: Enchère (hollandaise, anglaise, dynamique)
 date: '2025-06-30'
 language: fr
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Quels sont les différents types d'enchères utilisés pour la vente de domaines ?

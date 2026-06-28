@@ -2,6 +2,7 @@
 title: '¿Qué es el TLD .website y por qué elegirlo para tu proyecto?'
 date: '2025-12-10'
 language: 'es'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

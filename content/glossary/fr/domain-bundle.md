@@ -2,6 +2,7 @@
 title: Lot de domaines
 date: '2025-06-30'
 language: fr
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce qu'un lot de domaines et comment la tokenisation permet-elle la gestion de portefeuille ?

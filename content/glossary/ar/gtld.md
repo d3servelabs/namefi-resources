@@ -2,6 +2,7 @@
 title: gTLD (نطاق المستوى الأعلى العام)
 date: '2026-06-22'
 language: ar
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: نطاق علوي مش مرتبط بدولة معينة، زي .com و.org و.xyz، وبيشتغل تحت عقد مع ICANN.

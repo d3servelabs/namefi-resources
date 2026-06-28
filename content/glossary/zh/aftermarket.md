@@ -2,6 +2,7 @@
 title: 二级市场
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 已注册域名的转售市场，买卖双方在此之间交易域名所有权。

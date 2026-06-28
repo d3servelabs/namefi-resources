@@ -2,6 +2,7 @@
 title: '什么是 .top 顶级域名？为什么它是提升品牌形象的绝佳选择？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

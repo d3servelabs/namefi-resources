@@ -2,6 +2,7 @@
 title: على السلسلة (On-chain)
 date: '2025-06-29'
 language: ar
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ماذا يعني "على السلسلة" في سياق النطاقات؟

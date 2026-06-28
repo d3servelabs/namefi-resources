@@ -2,6 +2,7 @@
 title: 商标
 date: '2026-06-22'
 language: zh
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: 标识品牌商品或服务的受法律保护的标志，是众多域名争议的核心所在。

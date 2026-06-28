@@ -2,6 +2,7 @@
 title: Bureau d'enregistrement
 date: '2025-06-30'
 language: fr
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Une société accréditée par l'ICANN autorisée à enregistrer des noms de domaine au nom du public, faisant l'interface entre les titulaires et les registres.

@@ -2,6 +2,7 @@
 title: "Taxes and Accounting for Domain Investors"
 date: '2026-06-21'
 language: en
+priority: P1
 tags: ['domains', 'domain-investing', 'domain-flipping', 'faq']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: Cross-Chain-Bridge
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Ein Protokoll, das Token oder Nachrichten zwischen Blockchains überträgt, die nativ nicht miteinander kommunizieren können.

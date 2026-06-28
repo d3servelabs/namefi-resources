@@ -2,6 +2,7 @@
 title: DNSSEC (Domain Name System Security Extensions)
 date: '2026-05-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Kryptografische Signaturen auf DNS-Einträgen, die es Resolvern ermöglichen zu überprüfen, ob eine Antwort authentisch ist und nicht gefälscht oder während der Übertragung manipuliert wurde.

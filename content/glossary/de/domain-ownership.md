@@ -2,6 +2,7 @@
 title: Domain-Eigentum
 date: '2025-06-29'
 language: de
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was bedeutet Domain-Eigentum, wenn es tokenisiert ist?

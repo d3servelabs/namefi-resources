@@ -2,6 +2,7 @@
 title: नीलामी (डच, इंग्लिश, डायनामिक)
 date: '2025-06-30'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: डोमेन बिक्री के लिए उपयोग की जाने वाली विभिन्न प्रकार की नीलामियाँ क्या हैं?

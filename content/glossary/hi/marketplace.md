@@ -2,6 +2,7 @@
 title: मार्केटप्लेस (जैसे OpenSea, Blur)
 date: '2025-06-30'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: NFT मार्केटप्लेस क्या हैं और वे डोमेन ट्रेडिंग को कैसे सुगम बनाते हैं?

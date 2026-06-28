@@ -2,6 +2,7 @@
 title: '.com डोमेन क्या है? इंटरनेट का डिफ़ॉल्ट एक्सटेंशन समझाया गया'
 date: '2026-06-15'
 language: 'hi'
+priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

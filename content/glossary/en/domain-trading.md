@@ -2,6 +2,7 @@
 title: Domain trading
 date: '2025-06-30'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Buying and selling domain names to profit from price differences, ranging from quick flips to long-term holds in a managed portfolio.

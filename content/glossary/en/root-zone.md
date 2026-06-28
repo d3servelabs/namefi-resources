@@ -2,6 +2,7 @@
 title: Root Zone (Root Servers)
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: The top of the DNS hierarchy, listing every TLD and the servers authoritative for it.

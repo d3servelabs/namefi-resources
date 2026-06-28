@@ -2,6 +2,7 @@
 title: Registrar
 date: '2025-06-30'
 language: de
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Ein von ICANN akkreditiertes Unternehmen, das berechtigt ist, Domainnamen im Auftrag der Öffentlichkeit zu registrieren und als Schnittstelle zwischen Registranten und Registries fungiert.

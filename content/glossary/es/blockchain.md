@@ -2,6 +2,7 @@
 title: Blockchain
 date: '2026-06-22'
 language: es
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un libro de contabilidad compartido y solo de adición mantenido en muchos ordenadores, el fundamento de la propiedad tokenizada.

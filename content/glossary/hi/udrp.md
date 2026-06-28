@@ -2,6 +2,7 @@
 title: UDRP (यूनिफ़ॉर्म डोमेन-नेम विवाद-समाधान नीति)
 date: '2025-06-30'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: UDRP क्या है और यह टोकनाइज्ड डोमेन के स्वामित्व को कैसे प्रभावित करता है?

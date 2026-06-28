@@ -2,6 +2,7 @@
 title: 'إيه هو دومين .com؟ شرح الامتداد الافتراضي للإنترنت'
 date: '2026-06-15'
 language: 'ar'
+priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

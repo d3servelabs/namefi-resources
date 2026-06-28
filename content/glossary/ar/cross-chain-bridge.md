@@ -2,6 +2,7 @@
 title: جسر التسلسلات المتقاطعة
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: بروتوكول بيحرّك التوكنات أو الرسائل بين البلوكتشينات اللي ما تقدرش تتواصل مع بعضها بشكل أصلي.

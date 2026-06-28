@@ -2,6 +2,7 @@
 title: एसईओ (सर्च इंजन ऑप्टिमाइजेशन)
 date: '2025-06-30'
 language: hi
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: एसईओ क्या है और डोमेन टोकनाइजेशन खोज अनुकूलन को कैसे प्रभावित करता है?

@@ -2,6 +2,7 @@
 title: DeFi (التمويل اللامركزي)
 date: '2026-05-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: التمويل اللامركزي بيوفر الإقراض والاقتراض والتداول عبر عقود ذكية على بلوكتشين عامة، من غير بنوك أو وسطاء.

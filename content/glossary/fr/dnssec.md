@@ -2,6 +2,7 @@
 title: DNSSEC (Extensions de sécurité du DNS)
 date: '2026-05-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Des signatures cryptographiques sur les enregistrements DNS permettant aux résolveurs de vérifier qu'une réponse est authentique et n'a pas été falsifiée ou altérée en transit.

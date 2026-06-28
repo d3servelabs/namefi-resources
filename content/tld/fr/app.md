@@ -2,6 +2,7 @@
 title: "Tout savoir sur l'extension .app : Pourquoi la choisir pour votre projet ?"
 date: '2025-12-10'
 language: 'fr'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

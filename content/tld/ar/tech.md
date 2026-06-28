@@ -2,6 +2,7 @@
 title: 'ما هو نطاق .tech ولماذا يجب عليك اختياره لمشروعك التقني؟'
 date: '2025-12-10'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

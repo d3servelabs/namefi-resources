@@ -2,6 +2,7 @@
 title: On-chain
 date: '2025-06-29'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Describes data or actions recorded directly on a blockchain, where they are public, verifiable, and secured by the network rather than a private server.

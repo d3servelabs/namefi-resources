@@ -2,6 +2,7 @@
 title: Componibilidad
 date: '2025-06-30'
 language: es
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es la componibilidad y cómo se aplica a los dominios tokenizados?

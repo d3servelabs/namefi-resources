@@ -2,6 +2,7 @@
 title: IDN（国际化域名）/ Punycode
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 使用非 ASCII 字符的域名，为 DNS 编码为以 xn-- 开头的 ASCII Punycode。

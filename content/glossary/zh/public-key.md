@@ -2,6 +2,7 @@
 title: 公钥
 date: '2026-06-22'
 language: zh
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: 区块链密钥对中可公开分享的一半，由私钥派生而来，用于接收资产和验证签名。

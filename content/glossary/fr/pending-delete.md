@@ -2,6 +2,7 @@
 title: 'Suppression en attente (Drop)'
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Le statut final avant qu''un domaine non renouvelé soit libéré à nouveau pour l''enregistrement public.

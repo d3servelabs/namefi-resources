@@ -2,6 +2,7 @@
 title: '什么是 .io 域名？科技与 Web3 后缀详解'
 date: '2026-06-15'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

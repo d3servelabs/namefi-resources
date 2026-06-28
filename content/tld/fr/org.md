@@ -2,6 +2,7 @@
 title: "Qu'est-ce que le TLD .org et pourquoi le choisir ?"
 date: '2025-12-10'
 language: 'fr'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

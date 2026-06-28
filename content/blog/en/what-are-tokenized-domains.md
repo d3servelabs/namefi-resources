@@ -3,6 +3,7 @@ title: What Are Tokenized Domains? Domain Tokenization Explained
 date: '2026-05-22'
 updated: '2026-06-10'
 language: en
+priority: P0
 tags: ['faq']
 authors: ['namefiteam']
 draft: false

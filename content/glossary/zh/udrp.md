@@ -2,6 +2,7 @@
 title: UDRP (统一域名争议解决政策)
 date: '2025-06-30'
 language: zh
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: UDRP 是什么，它如何影响代币化域名所有权？

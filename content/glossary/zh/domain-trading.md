@@ -2,6 +2,7 @@
 title: 域名交易
 date: '2025-06-30'
 language: zh
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是域名交易，以及代币化如何改善交易体验？

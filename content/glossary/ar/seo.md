@@ -2,6 +2,7 @@
 title: تحسين محركات البحث (SEO)
 date: '2025-06-30'
 language: ar
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو تحسين محركات البحث (SEO) وكيف يؤثر ترميز النطاقات على تحسين محركات البحث؟

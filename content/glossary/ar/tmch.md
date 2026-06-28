@@ -2,6 +2,7 @@
 title: Trademark Clearinghouse
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: قاعدة بيانات العلامات التجارية المركزية لـ ICANN اللي بتشغّل التسجيل المبكر Sunrise وتنبيهات البراند في الـ gTLDs الجديدة.

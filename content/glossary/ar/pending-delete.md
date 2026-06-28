@@ -2,6 +2,7 @@
 title: 'الانتظار قبل الحذف (Drop)'
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: الحالة الأخيرة قبل ما نطاق غير متجدَّد يتحرر للعموم للتسجيل من جديد.

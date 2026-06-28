@@ -2,6 +2,7 @@
 title: 'Was ist die .tv-Domain? Die Internet-Heimat von Fernsehen, Video und Streaming'
 date: '2026-06-22'
 language: 'de'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

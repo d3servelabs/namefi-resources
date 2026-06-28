@@ -2,6 +2,7 @@
 title: TLD
 date: '2026-05-22'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: A top-level domain (TLD) is the rightmost label in a domain name, such as .com, .org, or .de, delegated through the IANA root zone under ICANN oversight.

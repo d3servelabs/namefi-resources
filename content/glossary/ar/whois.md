@@ -2,6 +2,7 @@
 title: WHOIS (و RDAP)
 date: '2026-05-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: WHOIS وخلفه RDAP هما خدمتا البحث العام عن تفاصيل تسجيل النطاق، زي المسجِّل وتاريخ انتهاء الصلاحية.

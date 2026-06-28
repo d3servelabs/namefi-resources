@@ -2,6 +2,7 @@
 title: Vollständiger Leitfaden zur Domainnamen-Terminologie – Wesentliche Begriffe für Domain-Investoren
 date: '2025-06-21'
 language: de
+priority: P0
 tags: ["faq","domains"]
 authors: ["namefiteam"]
 description: Meistern Sie Domain-Investitionen mit unserem umfassenden Leitfaden zur wesentlichen Domain-Terminologie. Von grundlegenden Konzepten bis zu fortgeschrittenen Handelsstrategien lernen Sie die Sprache der Domain-Profis.

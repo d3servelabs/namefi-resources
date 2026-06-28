@@ -2,6 +2,7 @@
 title: 'What Is the .site Domain? The Universal Website Extension'
 date: '2026-06-15'
 language: 'en'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

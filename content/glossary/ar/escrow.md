@@ -2,6 +2,7 @@
 title: الضمان (Escrow)
 date: '2025-06-30'
 language: ar
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو الضمان وكيف توفر العقود الذكية ضماناً لا يحتاج إلى ثقة للدومينات؟

@@ -2,6 +2,7 @@
 title: Registrante
 date: '2026-06-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: La persona u organización que posee los derechos sobre un nombre de dominio registrado, el titular del registro.

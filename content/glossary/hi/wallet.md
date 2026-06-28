@@ -2,6 +2,7 @@
 title: वॉलेट
 date: '2025-06-30'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: क्रिप्टो वॉलेट क्या है और यह टोकनाइज़्ड डोमेन को कैसे स्टोर करता है?

@@ -2,6 +2,7 @@
 title: Web3
 date: '2025-06-30'
 language: de
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Eine Vision des Internets auf öffentlichen Blockchains, bei der Nutzer ihre Daten, Assets und Identität durch eigene Schlüssel kontrollieren – nicht über Plattform-Konten.

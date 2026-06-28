@@ -2,6 +2,7 @@
 title: NFT (رمز غير قابل للاستبدال)
 date: '2025-06-30'
 language: ar
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو الـ NFT وكيف يرتبط بترميز النطاقات؟

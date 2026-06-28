@@ -2,6 +2,7 @@
 title: DNS
 date: '2025-06-30'
 language: zh
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: 将人类可读域名转换为计算机用于互联网路由的 IP 地址的分层命名系统。

@@ -2,6 +2,7 @@
 title: WHOIS Privacy
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: A service that masks a registrant's personal contact details in public WHOIS or RDAP records.

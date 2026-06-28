@@ -2,6 +2,7 @@
 title: "Tout savoir sur le domaine .online : Définition et avantages"
 date: '2025-12-10'
 language: 'fr'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

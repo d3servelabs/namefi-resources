@@ -2,6 +2,7 @@
 title: Why Tokenize Domains On-Chain? Isn't That Redundant?
 date: '2025-06-29'
 language: en
+priority: P1
 tags: ['faq']
 authors: ['namefiteam']
 draft: false

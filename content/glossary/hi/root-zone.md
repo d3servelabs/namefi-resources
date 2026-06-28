@@ -2,6 +2,7 @@
 title: 'रूट ज़ोन (रूट सर्वर)'
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: रूट ज़ोन DNS पदानुक्रम का शीर्ष है, जिसमें हर TLD और उसके लिए अधिकृत सर्वर सूचीबद्ध हैं।

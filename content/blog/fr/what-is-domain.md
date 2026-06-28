@@ -2,6 +2,7 @@
 title: Qu'est-ce qu'un nom de domaine?
 date: '2025-06-19'
 language: fr
+priority: P0
 tags: ["faq"]
 authors: ["namefiteam"]
 description: Un nom de domaine est la base de votre présence en ligne.

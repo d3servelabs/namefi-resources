@@ -2,6 +2,7 @@
 title: New gTLD
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: New gTLD वे जेनेरिक टॉप-लेवल डोमेन हैं जो ICANN के विस्तार कार्यक्रम द्वारा शुरू किए गए, जैसे .app, .xyz, या .shop।

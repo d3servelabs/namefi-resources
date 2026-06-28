@@ -2,6 +2,7 @@
 title: 'ما هو نطاق .ai؟ شرح ccTLD أنغيلا لمجال الذكاء الاصطناعي'
 date: '2026-06-15'
 language: 'ar'
+priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

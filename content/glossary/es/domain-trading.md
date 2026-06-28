@@ -2,6 +2,7 @@
 title: Comercio de dominios
 date: '2025-06-30'
 language: es
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es el comercio de dominios y cómo mejora la tokenización la experiencia de comercio?

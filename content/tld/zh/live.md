@@ -2,6 +2,7 @@
 title: '深入解析 .live 顶级域名：为什么它是实时互动的最佳选择？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

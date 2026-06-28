@@ -2,6 +2,7 @@
 title: 'ما هو نطاق .cloud ولماذا يعتبر الخيار الأمثل لمشروعك؟'
 date: '2025-12-10'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

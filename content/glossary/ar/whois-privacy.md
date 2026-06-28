@@ -2,6 +2,7 @@
 title: خصوصية WHOIS
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: خدمة بتخفي بيانات تواصل المسجِّل الشخصية في سجلات WHOIS أو RDAP العامة.

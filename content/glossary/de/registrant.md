@@ -2,6 +2,7 @@
 title: Registrant
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Die Person oder Organisation, die die Rechte an einem registrierten Domainnamen hält — der eingetragene Inhaber.

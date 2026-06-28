@@ -2,6 +2,7 @@
 title: السجل
 date: '2026-06-22'
 language: ar
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: المنظمة اللي بتشغّل قاعدة البيانات الموثوقة وخوادم الأسماء لنطاق المستوى الأعلى، وبتفوّض مبيعات التجزئة لمسجلي النطاقات.

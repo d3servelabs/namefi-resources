@@ -2,6 +2,7 @@
 title: TLD
 date: '2026-05-22'
 language: es
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un dominio de nivel superior (TLD) es la etiqueta más a la derecha de un nombre de dominio, como .com, .org o .de, delegado a través de la zona raíz de IANA bajo la supervisión de ICANN.

@@ -2,6 +2,7 @@
 title: ملكية النطاق
 date: '2025-06-29'
 language: ar
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ماذا تعني ملكية النطاق عند ترميزها؟

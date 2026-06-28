@@ -2,6 +2,7 @@
 title: '¿Qué es el dominio .io? La extensión tecnológica y de Web3 explicada'
 date: '2026-06-15'
 language: 'es'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

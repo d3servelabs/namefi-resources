@@ -2,6 +2,7 @@
 title: UDRP (السياسة الموحدة لتسوية منازعات أسماء النطاقات)
 date: '2025-06-30'
 language: ar
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هي UDRP وكيف تؤثر على ملكية النطاقات الرمزية (tokenized domains)؟

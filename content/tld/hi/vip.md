@@ -2,6 +2,7 @@
 title: ".vip डोमेन क्या है और आपको इसे अपने ब्रांड के लिए क्यों चुनना चाहिए?"
 date: '2025-12-10'
 language: 'hi'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: 'Was ist die .io-Domain? Die Tech- und Web3-Endung erklärt'
 date: '2026-06-15'
 language: 'de'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

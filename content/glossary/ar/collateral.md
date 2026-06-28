@@ -2,6 +2,7 @@
 title: الضمان
 date: '2025-06-30'
 language: ar
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو الضمان وكيف يمكن للنطاقات أن تكون بمثابة ضمان في التمويل اللامركزي (DeFi)؟

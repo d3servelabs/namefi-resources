@@ -2,6 +2,7 @@
 title: Auction (Dutch, English, dynamic)
 date: '2025-06-30'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: A competitive sale format where buyers bid to set the price, run as English (ascending), Dutch (descending), or dynamic timed auctions.

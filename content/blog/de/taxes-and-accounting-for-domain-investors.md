@@ -2,6 +2,7 @@
 title: "Steuern und Buchhaltung für Domain-Investoren"
 date: '2026-06-21'
 language: de
+priority: P1
 tags: ['domains', 'domain-investing', 'domain-flipping', 'faq']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: ICANN
 date: '2025-06-30'
 language: zh
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: 负责协调全球域名系统、IP 地址分配及协议标识符，并在全球范围内认证域名注册商的非营利组织。

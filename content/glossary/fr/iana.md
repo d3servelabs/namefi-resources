@@ -2,6 +2,7 @@
 title: 'IANA (Autorité d''attribution des numéros Internet)'
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: La fonction qui maintient la zone racine du DNS et alloue les blocs d'adresses IP ainsi que les numéros de protocole.

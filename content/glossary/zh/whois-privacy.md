@@ -2,6 +2,7 @@
 title: WHOIS 隐私
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 在公开的 WHOIS 或 RDAP 记录中屏蔽注册人真实联系信息的服务。

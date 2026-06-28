@@ -27,6 +27,10 @@ const SERIES_SLUGS = new Set([
   'domain-flipping-skills',
 ]);
 
+// Editorial priority tier for surfacing/ordering content. Optional; when a file
+// omits it, the content is treated as P2 (normal). Build-time-only metadata.
+const PRIORITY_VALUES = new Set(['P0', 'P1', 'P2']);
+
 type Issue = {
   file: string;
   message: string;
@@ -326,6 +330,17 @@ function validateContentFile(
       file: relativePath,
       message: '"title" is required',
     });
+  }
+
+  // Optional editorial priority tier; absent is valid (treated as P2/normal).
+  if (data.priority !== undefined) {
+    const priority = asString(data.priority);
+    if (!priority || !PRIORITY_VALUES.has(priority)) {
+      errors.push({
+        file: relativePath,
+        message: `"priority" must be one of P0, P1, P2 (got ${JSON.stringify(data.priority)})`,
+      });
+    }
   }
 
   if (!validateDate(data.date)) {

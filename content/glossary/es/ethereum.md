@@ -2,6 +2,7 @@
 title: Ethereum
 date: '2026-06-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: La blockchain de contratos inteligentes líder y la red en la que se emite la mayoría de los dominios tokenizados.

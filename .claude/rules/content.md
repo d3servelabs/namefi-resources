@@ -116,3 +116,16 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
   `taxonomy.ts`); illustrations via the image-gen recipe.
 - `content/tld/` — per-TLD pages (see `prompts/tld-page.md`).
 - `content/{partners,authors,careers}/` — supporting content.
+
+## Priority tiers (`priority:` frontmatter)
+
+- **Optional** `priority: P0 | P1 | P2` marks editorial priority for surfacing /
+  ordering content (translation order, featuring, SEO focus). Applies to
+  glossary, TLD, and blog (incl. FAQ-selected articles). **Absent = P2**
+  (normal) — only `P0`/`P1` are written explicitly; don't write `P2`.
+- **Same value across all locales** — a concept's priority doesn't change by
+  language. Set it on `en`, copy the identical value to every locale's same-slug
+  file. `bun data:validate` enforces the `P0/P1/P2` enum.
+- Build-time-only metadata; the astra renderer does not consume it yet. Seed
+  buckets are signal-derived: glossary by `bun glossary:mentions` demand + `level`,
+  TLDs by registration popularity, FAQ by foundational-ness.

@@ -2,6 +2,7 @@
 title: DNS
 date: '2025-06-30'
 language: de
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Das hierarchische Namensystem, das menschenlesbare Domainnamen in IP-Adressen übersetzt, die Computer zur Weiterleitung von Datenverkehr im Internet verwenden.

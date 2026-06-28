@@ -2,6 +2,7 @@
 title: Was ist die .org TLD und warum wird sie von Non-Profits weltweit geschätzt?
 date: '2025-06-21'
 language: de
+priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .org ist die vertrauenswürdige Domain für Non-Profit-Organisationen, NGOs und missionsgetriebene Organisationen. Erfahren Sie, warum sie die erste Wahl ist, um Glaubwürdigkeit und Vertrauen online aufzubauen.

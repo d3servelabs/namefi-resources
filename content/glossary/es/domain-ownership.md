@@ -2,6 +2,7 @@
 title: Propiedad de dominio
 date: '2025-06-29'
 language: es
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué significa la propiedad de dominio cuando está tokenizada?

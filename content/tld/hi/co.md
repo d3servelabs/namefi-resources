@@ -2,6 +2,7 @@
 title: '.co डोमेन क्या है? .com का वैश्विक "कंपनी" विकल्प'
 date: '2026-06-15'
 language: 'hi'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

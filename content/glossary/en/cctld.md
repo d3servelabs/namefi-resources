@@ -2,6 +2,7 @@
 title: ccTLD (Country-Code Top-Level Domain)
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: A two-letter top-level domain assigned to a country or territory, such as .uk, .de, or .jp.

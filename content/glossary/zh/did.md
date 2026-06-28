@@ -2,6 +2,7 @@
 title: DID (去中心化身份)
 date: '2025-06-30'
 language: zh
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是 DID，域名在去中心化身份中扮演什么角色？

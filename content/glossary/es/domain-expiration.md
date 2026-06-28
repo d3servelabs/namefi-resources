@@ -2,6 +2,7 @@
 title: Expiración de dominio
 date: '2026-06-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: La fecha en que finaliza el registro de un dominio; si no se renueva, inicia un proceso de caducidad hacia la eliminación.

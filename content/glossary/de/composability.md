@@ -2,6 +2,7 @@
 title: Komponierbarkeit
 date: '2025-06-30'
 language: de
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist Komponierbarkeit und wie findet sie Anwendung bei tokenisierten Domains?

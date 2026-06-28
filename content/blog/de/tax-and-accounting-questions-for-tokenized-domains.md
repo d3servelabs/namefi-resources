@@ -2,6 +2,7 @@
 title: "Steuer- und Buchhaltungsfragen für tokenisierte Domains (Dinge, die Sie mit Ihrem Berater besprechen sollten)"
 date: '2026-05-22'
 language: de
+priority: P1
 tags: ['guide']
 authors: ['namefiteam']
 draft: false

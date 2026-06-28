@@ -2,6 +2,7 @@
 title: Domain-Ablauf
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Das Datum, an dem die Registrierungslaufzeit einer Domain endet; wird sie nicht verlängert, beginnt ein Verfallsprozess bis zur Löschung.

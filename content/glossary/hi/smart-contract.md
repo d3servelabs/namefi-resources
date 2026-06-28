@@ -2,6 +2,7 @@
 title: स्मार्ट कॉन्ट्रैक्ट
 date: '2025-06-30'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: स्मार्ट कॉन्ट्रैक्ट क्या हैं और वे डोमेन टोकनाइजेशन को कैसे सक्षम करते हैं?

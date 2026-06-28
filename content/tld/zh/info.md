@@ -2,6 +2,7 @@
 title: '.info 域名全解析：它是什么以及为何选择它？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags:
   - 'tld'
 authors:

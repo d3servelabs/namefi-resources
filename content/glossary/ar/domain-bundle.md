@@ -2,6 +2,7 @@
 title: حزمة النطاقات
 date: '2025-06-30'
 language: ar
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هي حزمة النطاقات وكيف يُمكّن الترميز إدارة المحافظ؟

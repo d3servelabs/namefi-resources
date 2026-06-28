@@ -2,6 +2,7 @@
 title: 'ما هي النطاقات المرمزة؟ دليل لترميز النطاقات'
 date: '2026-05-22'
 language: ar
+priority: P0
 tags: ['faq']
 authors: ['namefiteam']
 draft: false

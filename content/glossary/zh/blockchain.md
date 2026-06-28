@@ -2,6 +2,7 @@
 title: 区块链
 date: '2026-06-22'
 language: zh
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: 一种在众多计算机间维护的共享只追加账本，是代币化所有权的基础。

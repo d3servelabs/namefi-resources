@@ -2,6 +2,7 @@
 title: ICANN
 date: '2025-06-30'
 language: es
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: La organización sin fines de lucro que coordina el sistema global de nombres de dominio, la asignación de IP y los identificadores de protocolo, y acredita a los registradores de dominios en todo el mundo.

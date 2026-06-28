@@ -2,6 +2,7 @@
 title: Mercado secundario
 date: '2026-06-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: El mercado de reventa de dominios ya registrados, donde los nombres se compran y se venden entre propietarios.

@@ -2,6 +2,7 @@
 title: DNS
 date: '2025-06-30'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: The hierarchical naming system that translates human-readable domain names into the IP addresses computers use to route traffic across the internet.

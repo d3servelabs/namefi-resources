@@ -2,6 +2,7 @@
 title: ICANN
 date: '2025-06-30'
 language: de
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Die gemeinnützige Organisation, die das globale Domain-Name-System, die IP-Zuteilung und Protokollkennungen koordiniert und Registrare weltweit akkreditiert.

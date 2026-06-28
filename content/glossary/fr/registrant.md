@@ -2,6 +2,7 @@
 title: Titulaire de domaine
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: La personne ou l'organisation qui détient les droits sur un nom de domaine enregistré — le propriétaire officiel.

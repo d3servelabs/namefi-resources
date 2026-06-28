@@ -2,6 +2,7 @@
 title: WHOIS-Datenschutz
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Ein Dienst, der die persönlichen Kontaktdaten eines Registranten in öffentlichen WHOIS- oder RDAP-Einträgen maskiert.

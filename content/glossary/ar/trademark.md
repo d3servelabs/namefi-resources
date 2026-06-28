@@ -2,6 +2,7 @@
 title: العلامة التجارية
 date: '2026-06-22'
 language: ar
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: علامة محمية قانونًا بتعرّف سلع أو خدمات براند ما، وهي محور كثير من نزاعات الدومينات.

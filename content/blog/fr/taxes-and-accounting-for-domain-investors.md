@@ -2,6 +2,7 @@
 title: "Fiscalité et comptabilité pour les investisseurs en noms de domaine"
 date: '2026-06-21'
 language: fr
+priority: P1
 tags: ['domains', 'domain-investing', 'domain-flipping', 'faq']
 authors: ['namefiteam']
 draft: false

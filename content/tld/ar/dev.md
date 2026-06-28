@@ -2,6 +2,7 @@
 title: ما هو نطاق .dev TLD ولماذا يحبه المطورون؟
 date: '2025-06-21'
 language: ar
+priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .dev هو نطاق Google الآمن للمطورين ومشاريع التطوير. اكتشف لماذا هو الخيار الأول للمبرمجين وشركات التكنولوجيا وفرق التطوير.

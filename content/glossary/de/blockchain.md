@@ -2,6 +2,7 @@
 title: Blockchain
 date: '2026-06-22'
 language: de
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Ein gemeinsames, nur erweitertes Hauptbuch, das auf vielen Computern gespeichert wird – das Fundament tokenisierter Eigentumsrechte.

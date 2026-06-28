@@ -2,6 +2,7 @@
 title: المُسجِّل
 date: '2025-06-30'
 language: ar
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: شركة معتمدة من ICANN مُخوَّلة بتسجيل أسماء النطاقات نيابةً عن الجمهور، تعمل واجهةً بين المُسجَّلين والسجلات.

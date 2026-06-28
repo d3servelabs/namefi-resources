@@ -2,6 +2,7 @@
 title: السوق الثانوي
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: سوق إعادة البيع للنطاقات المسجّلة مسبقاً، حيث بيتم شراء الأسماء وبيعها بين الملاك.

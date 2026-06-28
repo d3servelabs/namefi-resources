@@ -2,6 +2,7 @@
 title: انتهاء صلاحية النطاق
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: التاريخ اللي بتنتهي فيه فترة تسجيل النطاق؛ لو ما اتجدّدش هيبدأ في سلسلة حذف.

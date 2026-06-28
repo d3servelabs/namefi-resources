@@ -2,6 +2,7 @@
 title: المسجَّل
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: الشخص أو المنظمة اللي بتملك حقوق نطاق مُسجَّل — صاحب النطاق الرسمي.

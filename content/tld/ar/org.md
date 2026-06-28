@@ -2,6 +2,7 @@
 title: "ما هو نطاق .org؟ ولماذا يُعد الخيار الأمثل لمؤسستك؟"
 date: '2025-12-10'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

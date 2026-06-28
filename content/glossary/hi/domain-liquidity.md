@@ -2,6 +2,7 @@
 title: लिक्विडिटी
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: किसी डोमेन को उसके अनुमानित मूल्य के करीब कितनी जल्दी बेचा जा सकता है — बेहतरीन नामों के लिए अधिक, निशान-विशेष के लिए कम।

@@ -2,6 +2,7 @@
 title: 可组合性
 date: '2025-06-30'
 language: zh
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是可组合性以及它如何应用于代币化域名？

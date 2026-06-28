@@ -2,6 +2,7 @@
 title: '什么是 .me 域名？黑山为个人品牌打造的 ccTLD'
 date: '2026-06-22'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

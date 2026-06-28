@@ -2,6 +2,7 @@
 title: '什么是 .com 域名？互联网默认后缀详解'
 date: '2026-06-15'
 language: 'zh'
+priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

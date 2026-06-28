@@ -2,6 +2,7 @@
 title: डोमेन स्वामित्व
 date: '2025-06-29'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: टोकनाइज्ड होने पर डोमेन स्वामित्व का क्या अर्थ है?

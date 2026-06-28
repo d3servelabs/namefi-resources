@@ -2,6 +2,7 @@
 title: .dev TLD 是什么？为何开发者都喜爱它？
 date: '2025-06-21'
 language: zh
+priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .dev 是 Google 专为开发者和开发项目设计的安全域名。了解为何它是程序员、科技公司和开发团队的首选。

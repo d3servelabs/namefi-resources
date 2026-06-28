@@ -2,6 +2,7 @@
 title: DNSSEC（域名系统安全扩展）
 date: '2026-05-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: DNS 记录上的加密签名，让解析器能够验证响应是真实的，且在传输过程中未被伪造或篡改。

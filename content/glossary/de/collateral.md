@@ -2,6 +2,7 @@
 title: Sicherheit (Collateral)
 date: '2025-06-30'
 language: de
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist Sicherheit (Collateral) und wie können Domains als Sicherheit in DeFi dienen?

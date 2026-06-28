@@ -2,6 +2,7 @@
 title: "Was ist die .world TLD und warum Sie sich dafür entscheiden sollten?"
 date: '2025-12-10'
 language: 'de'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: SERP
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: The page of results a search engine returns for a query, where domains compete for visibility.

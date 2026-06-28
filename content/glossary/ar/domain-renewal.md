@@ -2,6 +2,7 @@
 title: 'تجديد النطاق (التجديد التلقائي)'
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: دفع رسوم لتمديد تسجيل نطاق قبل ما ينتهي، غالباً بشكل تلقائي كل مدة.

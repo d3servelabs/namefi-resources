@@ -2,6 +2,7 @@
 title: Renouvellement de domaine (Renouvellement automatique)
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Payer pour prolonger l'enregistrement d'un domaine avant son expiration, souvent automatiquement à chaque période.

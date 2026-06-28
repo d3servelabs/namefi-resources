@@ -2,6 +2,7 @@
 title: टोकनाइज़ करें
 date: '2025-06-29'
 language: hi
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: किसी डोमेन या संपत्ति को टोकनाइज़ करने का क्या अर्थ है?

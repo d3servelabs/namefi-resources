@@ -2,6 +2,7 @@
 title: 'gTLD (Dominio de Nivel Superior Genérico)'
 date: '2026-06-22'
 language: es
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un dominio de nivel superior no vinculado a un país, como .com, .org o .xyz, gestionado bajo contrato con ICANN.

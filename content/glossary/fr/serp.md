@@ -2,6 +2,7 @@
 title: SERP
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: La page de résultats qu''un moteur de recherche retourne pour une requête, où les domaines se disputent la visibilité.

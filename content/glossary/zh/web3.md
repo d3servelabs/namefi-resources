@@ -2,6 +2,7 @@
 title: Web3
 date: '2025-06-30'
 language: zh
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: 一种以公共区块链为核心基础设施的互联网愿景，用户通过自己掌握的密钥而非平台账户拥有数据、资产和身份。

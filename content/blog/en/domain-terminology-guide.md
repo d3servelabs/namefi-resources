@@ -2,6 +2,7 @@
 title: Complete Domain Name Terminology Guide - Essential Terms for Domain Investors
 date: '2025-06-21'
 language: en
+priority: P0
 tags: ['faq', 'domains']
 authors: ['namefiteam']
 draft: false

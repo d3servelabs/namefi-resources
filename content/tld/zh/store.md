@@ -2,6 +2,7 @@
 title: '什么是 .store 域名？为什么它是电商企业的理想选择？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags:
   - tld
 authors:

@@ -2,6 +2,7 @@
 title: 根区域（根服务器）
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: DNS 层级的顶端，列出每个 TLD 及其权威服务器。

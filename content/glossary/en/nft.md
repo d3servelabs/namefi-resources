@@ -2,6 +2,7 @@
 title: NFT (Non-Fungible Token)
 date: '2025-06-30'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: A Non-Fungible Token is a unique, indivisible blockchain token used to represent ownership of a specific item such as a tokenized domain.

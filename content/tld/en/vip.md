@@ -2,6 +2,7 @@
 title: 'What Is a .vip Domain? Meaning, Uses & Who Can Register'
 date: '2026-06-15'
 language: 'en'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

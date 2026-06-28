@@ -2,6 +2,7 @@
 title: تداول النطاقات
 date: '2025-06-30'
 language: ar
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو تداول النطاقات وكيف يحسن الترميز تجربة التداول؟

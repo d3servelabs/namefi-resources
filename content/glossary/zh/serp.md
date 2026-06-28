@@ -2,6 +2,7 @@
 title: SERP
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 搜索引擎针对某一查询返回的结果页面，是各域名争夺曝光度的主战场。

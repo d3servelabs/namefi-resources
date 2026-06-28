@@ -2,6 +2,7 @@
 title: "Qu'est-ce que le domaine .ai ? Le ccTLD d'Anguilla pour l'IA expliqué"
 date: '2026-06-15'
 language: 'fr'
+priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: Ethereum
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: प्रमुख स्मार्ट-कॉन्ट्रैक्ट ब्लॉकचेन, और वह नेटवर्क जिस पर अधिकांश टोकनाइज़्ड डोमेन जारी किए जाते हैं।

@@ -2,6 +2,7 @@
 title: 'gTLD (Generic Top-Level-Domain)'
 date: '2026-06-22'
 language: de
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Eine nicht länderspezifische Top-Level-Domain wie .com, .org oder .xyz, die unter ICANN-Vertrag betrieben wird.

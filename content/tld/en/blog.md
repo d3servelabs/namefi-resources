@@ -2,6 +2,7 @@
 title: 'What Is the .blog Domain? The Extension Built for Content'
 date: '2026-06-15'
 language: 'en'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

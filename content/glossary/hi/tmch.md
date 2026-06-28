@@ -2,6 +2,7 @@
 title: Trademark Clearinghouse
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: ICANN का केंद्रीय ट्रेडमार्क डेटाबेस जो नए gTLD में Sunrise पूर्व-पंजीकरण और ब्रांड दावों को संचालित करता है।

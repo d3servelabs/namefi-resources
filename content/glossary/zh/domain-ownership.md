@@ -2,6 +2,7 @@
 title: 域名所有权
 date: '2025-06-29'
 language: zh
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 域名代币化后，域名所有权意味着什么？

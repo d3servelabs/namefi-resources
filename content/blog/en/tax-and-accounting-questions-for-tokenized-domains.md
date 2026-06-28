@@ -2,6 +2,7 @@
 title: "Tax and Accounting Questions for Tokenized Domains (Things to Discuss with Your Professional)"
 date: '2026-05-22'
 language: en
+priority: P1
 tags: ['guide']
 authors: ['namefiteam']
 draft: false

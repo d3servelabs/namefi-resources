@@ -2,6 +2,7 @@
 title: "Qu'est-ce que le domaine .com ? L'adresse par défaut d'Internet expliquée"
 date: '2026-06-15'
 language: 'fr'
+priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

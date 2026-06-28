@@ -2,6 +2,7 @@
 title: Cross-Chain Bridge
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: A protocol that moves tokens or messages between blockchains that cannot natively talk to each other.

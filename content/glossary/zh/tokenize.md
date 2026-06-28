@@ -2,6 +2,7 @@
 title: 代币化
 date: '2025-06-29'
 language: zh
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 将域名或资产代币化意味着什么？

@@ -2,6 +2,7 @@
 title: '.ai डोमेन क्या है? AI के लिए Anguilla ccTLD की पूरी जानकारी'
 date: '2026-06-15'
 language: 'hi'
+priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

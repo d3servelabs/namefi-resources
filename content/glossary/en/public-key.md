@@ -2,6 +2,7 @@
 title: Public Key
 date: '2026-06-22'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: The shareable half of a blockchain key pair, derived from the private key; used to receive funds and verify signatures.

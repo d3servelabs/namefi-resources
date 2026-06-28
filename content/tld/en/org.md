@@ -2,6 +2,7 @@
 title: 'What Is the .org Domain? The Trusted Nonprofit Extension'
 date: '2026-06-15'
 language: 'en'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: 'DeFi (Dezentrale Finanzen)'
 date: '2026-05-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Dezentrale Finanzen bieten Kredite, Darlehen und Handel über Smart Contracts auf öffentlichen Blockchains an, ohne Banken oder Makler als Vermittler.

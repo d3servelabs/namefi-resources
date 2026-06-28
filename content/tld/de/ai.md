@@ -2,6 +2,7 @@
 title: 'Was ist die .ai-Domain? Anguilas ccTLD für KI erklärt'
 date: '2026-06-15'
 language: 'de'
+priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: '.cc डोमेन क्या है? वैश्विक, ब्रांडेबल ".com" विकल्प'
 date: '2026-06-22'
 language: 'hi'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

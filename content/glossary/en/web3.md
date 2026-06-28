@@ -2,6 +2,7 @@
 title: Web3
 date: '2025-06-30'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: A vision of the internet on public blockchains where users own their data, assets, and identity through their own keys, not platform accounts.

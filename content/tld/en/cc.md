@@ -2,6 +2,7 @@
 title: 'What Is the .cc Domain? The Global, Brandable ".com" Alternative'
 date: '2026-06-22'
 language: 'en'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

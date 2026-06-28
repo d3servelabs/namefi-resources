@@ -2,6 +2,7 @@
 title: Domain ownership
 date: '2025-06-29'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: The rights to control, use, and transfer a domain; tokenization records those rights on-chain in a wallet instead of only in a registrar account.

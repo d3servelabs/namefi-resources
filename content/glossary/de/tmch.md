@@ -2,6 +2,7 @@
 title: Trademark Clearinghouse
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: ICANNs zentrale Markendatenbank, die Sunrise-Vorregistrierungen und Markenbenachrichtigungen in neuen gTLDs ermöglicht.

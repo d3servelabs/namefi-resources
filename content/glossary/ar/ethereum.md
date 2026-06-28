@@ -2,6 +2,7 @@
 title: Ethereum
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: بلوكتشين العقود الذكية الرائدة، والشبكة اللي صدر عليها معظم النطاقات المُرمَّزة.

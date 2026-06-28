@@ -2,6 +2,7 @@
 title: Marktplatz (z.B. OpenSea, Blur)
 date: '2025-06-30'
 language: de
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was sind NFT-Marktplätze und wie erleichtern sie den Domain-Handel?

@@ -2,6 +2,7 @@
 title: "代币化域名的税务与会计问题（与专业人士探讨的必备指南）"
 date: '2026-05-22'
 language: zh
+priority: P1
 tags: ['guide']
 authors: ['namefiteam']
 draft: false

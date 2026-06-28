@@ -2,6 +2,7 @@
 title: '.xyz डोमेन क्या है? जेनेरिक TLD की पूरी जानकारी'
 date: '2026-06-15'
 language: 'hi'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false
