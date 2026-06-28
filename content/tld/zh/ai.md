@@ -6,7 +6,7 @@ priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false
-description: '一个密码朋克、一座微型加勒比岛屿，以及科技界最有价值的两个字母。.ai 域名的完整故事——谁在运营它、安圭拉如何靠它撑起半个政府预算、注册费用，以及你是否应该把品牌建在它上面。'
+description: '一个密码朋克、一座微型加勒比岛屿，以及科技界最有价值的两个字母。.ai 域名的完整故事——谁在运营它、安圭拉如何靠它撑起近半政府预算、注册费用，以及你是否应该把品牌建在它上面。'
 keywords: ['.ai 域名', '什么是 .ai', '.ai TLD', '安圭拉 ccTLD', '注册 .ai 域名', 'AI 初创公司域名', '.ai 与 .io', '谁拥有 .ai', '.ai 域名价格', '.ai 两年最短注册期', 'Vince Cate', '安圭拉 AI 域名']
 faqs:
   - question: '任何人都可以注册 .ai 域名吗？'
@@ -97,7 +97,7 @@ Cate 不是一个安静的观察者。以极低的成本抵达，他创立了安
 | 2023 年 | 约 354,000 | 约 $32M | 约 20% |
 | 2024 年 | 约 530,000+ | 约 $39M | 约 25% |
 | 2025 年 | 约 880,000+ | 约 $85M | 约 47% |
-| 2026 年 1 月 | 1,000,000+ | — | — |
+| 2026 年 | 1,200,000+ | — | — |
 
 官员们对自己有多幸运心知肚明。安圭拉的科技部长称之为["上帝赐予我们的礼物"](https://anguillafocus.com/ai-to-generate-nearly-half-of-anguillas-revenue-this-year-tech-minister-tells-bbc/#:~:text=this%20is%20as%20a%20gift%2C%20as%20we%20can%20only%20say%2C%20was%20given%20to%20us%20by%20God)。但岛上最清醒的声音也在警惕这件事。正如前总理 Ellis Webster 所说：["你无法预测这会持续多久"](https://gizmodo.com/anguilla-ai-2000652757#:~:text=predict%20how%20long%20this%20is%20going%20to%20last)——他不想让国家的整体经济"就建立在这个上面"。这种张力——一笔没有人能保证会持续的横财——是买家最应该牢记的一件事。
 

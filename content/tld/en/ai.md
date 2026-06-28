@@ -6,7 +6,7 @@ priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false
-description: 'A cypherpunk, a tiny Caribbean island, and the most valuable two letters in tech. The full story of the .ai domain — who runs it, how Anguilla now funds half its government from it, what it costs, and whether you should build on it.'
+description: 'A cypherpunk, a tiny Caribbean island, and the most valuable two letters in tech. The full story of the .ai domain — who runs it, how Anguilla now funds nearly half its government from it, what it costs, and whether you should build on it.'
 keywords: ['.ai domain', 'what is .ai', '.ai TLD', 'Anguilla ccTLD', 'register .ai domain', 'AI startup domain', '.ai vs .io', 'who owns .ai', '.ai domain price', '.ai two year minimum', 'Vince Cate', 'Anguilla AI domain']
 faqs:
   - question: 'Can anyone register a .ai domain?'
@@ -97,7 +97,7 @@ The shape of the boom is easiest to see in a single table:
 | 2023 | ~354,000 | ~$32M | ~20% |
 | 2024 | ~530,000+ | ~$39M | ~25% |
 | 2025 | ~880,000+ | ~$85M | ~47% |
-| Jan 2026 | 1,000,000+ | — | — |
+| 2026 | 1,200,000+ | — | — |
 
 Officials know exactly how lucky they are. Anguilla's technology minister called it a ["gift… given to us by God."](https://anguillafocus.com/ai-to-generate-nearly-half-of-anguillas-revenue-this-year-tech-minister-tells-bbc/#:~:text=this%20is%20as%20a%20gift%2C%20as%20we%20can%20only%20say%2C%20was%20given%20to%20us%20by%20God) But the smartest voices on the island are also wary of it. As former Premier Ellis Webster put it: ["You can't predict how long this is going to last"](https://gizmodo.com/anguilla-ai-2000652757#:~:text=predict%20how%20long%20this%20is%20going%20to%20last) — he didn't want the country's whole economy "just based on this." That tension — a windfall nobody can guarantee will last — is the single most useful thing for a buyer to keep in mind.
 
