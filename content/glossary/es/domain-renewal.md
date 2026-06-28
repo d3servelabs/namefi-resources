@@ -2,6 +2,7 @@
 title: 'Renovación de dominio (Renovación automática)'
 date: '2026-06-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: El pago para extender el registro de un dominio antes de que expire, a menudo de forma automática cada período.

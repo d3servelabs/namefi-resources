@@ -2,6 +2,7 @@
 title: '域名投资者的税务与会计指南'
 date: '2026-06-21'
 language: zh
+priority: P1
 tags: ['domains', 'domain-investing', 'domain-flipping', 'faq']
 authors: ['namefiteam']
 draft: false

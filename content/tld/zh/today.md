@@ -2,6 +2,7 @@
 title: '.today 顶级域名是什么？为什么您应该选择它？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags:
   - tld
 authors:

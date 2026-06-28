@@ -2,6 +2,7 @@
 title: DeFi（去中心化金融）
 date: '2026-05-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 去中心化金融通过公共区块链上的智能合约提供借贷和交易服务，无需银行或经纪商作为中间人。

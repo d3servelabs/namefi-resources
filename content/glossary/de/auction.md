@@ -2,6 +2,7 @@
 title: Auktion (holländische, englische, dynamische)
 date: '2025-06-30'
 language: de
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Welche verschiedenen Auktionsarten werden für Domainverkäufe verwendet?

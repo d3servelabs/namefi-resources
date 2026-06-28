@@ -2,6 +2,7 @@
 title: कोलैटरल (गिरवी)
 date: '2025-06-30'
 language: hi
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: कोलैटरल क्या है और DeFi में डोमेन कैसे कोलैटरल के रूप में काम कर सकते हैं?

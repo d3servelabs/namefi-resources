@@ -2,6 +2,7 @@
 title: '¿Qué es la extensión de dominio .top y por qué debería elegirla?'
 date: '2025-12-10'
 language: 'es'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

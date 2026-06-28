@@ -2,6 +2,7 @@
 title: Clave Pública
 date: '2026-06-22'
 language: es
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: La mitad compartible del par de claves blockchain, derivada de la clave privada; se usa para recibir fondos y verificar firmas.

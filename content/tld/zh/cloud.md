@@ -2,6 +2,7 @@
 title: '什么是 .cloud 顶级域名？为何它是科技与创新的首选？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

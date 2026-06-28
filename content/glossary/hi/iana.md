@@ -2,6 +2,7 @@
 title: 'IANA (इंटरनेट असाइन्ड नंबर्स अथॉरिटी)'
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: IANA वह कार्य है जो DNS रूट ज़ोन को बनाए रखता है और IP एड्रेस ब्लॉक तथा प्रोटोकॉल नंबर आवंटित करता है।

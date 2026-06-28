@@ -2,6 +2,7 @@
 title: डोमेन नेम क्या है?
 date: '2025-06-19'
 language: hi
+priority: P0
 tags: ["faq"]
 authors: ["namefiteam"]
 description: एक डोमेन नेम आपकी ऑनलाइन उपस्थिति की नींव है।

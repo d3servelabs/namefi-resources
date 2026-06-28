@@ -2,6 +2,7 @@
 title: 'डोमेन एक्सपायरेशन'
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: वह तारीख जब किसी डोमेन का रजिस्ट्रेशन समाप्त होता है; यदि रिन्यू न किया जाए, तो यह डिलीशन की प्रक्रिया शुरू करता है।

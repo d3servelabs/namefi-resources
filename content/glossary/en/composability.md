@@ -2,6 +2,7 @@
 title: Composability
 date: '2025-06-30'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: The ability to combine independent on-chain components like building blocks, so a tokenized domain can plug into lending, trading, and other protocols.

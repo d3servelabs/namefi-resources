@@ -2,6 +2,7 @@
 title: '什么是 .online 顶级域名？为何它是建立在线形象的最佳选择？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

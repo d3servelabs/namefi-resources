@@ -2,6 +2,7 @@
 title: 以太坊
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 领先的智能合约区块链，也是大多数代币化域名的发行网络。

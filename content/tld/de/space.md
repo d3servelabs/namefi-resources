@@ -2,6 +2,7 @@
 title: "Was ist die .space TLD und warum sollten Sie sie wählen?"
 date: '2025-12-10'
 language: 'de'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

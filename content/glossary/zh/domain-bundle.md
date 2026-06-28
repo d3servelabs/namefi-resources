@@ -2,6 +2,7 @@
 title: 域名捆绑包
 date: '2025-06-30'
 language: zh
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是域名捆绑包，代币化如何实现投资组合管理？

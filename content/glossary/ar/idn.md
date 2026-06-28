@@ -2,6 +2,7 @@
 title: 'IDN (اسم النطاق الدولي) / Punycode'
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: نطاق بيستخدم حروفاً غير ASCII، بيتشفَّر لـ DNS كـ ASCII Punycode يبدأ بـ xn--.

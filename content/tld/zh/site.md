@@ -2,6 +2,7 @@
 title: "深入解析 .site 域名：含义、优势及为何它是您的理想选择"
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

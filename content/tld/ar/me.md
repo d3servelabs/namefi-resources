@@ -2,6 +2,7 @@
 title: 'إيه هو دومين .me؟ امتداد رمز دولة الجبل الأسود المبني للعلامة الشخصية'
 date: '2026-06-22'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

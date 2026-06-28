@@ -2,6 +2,7 @@
 title: SEO (Search Engine Optimization)
 date: '2025-06-30'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Search Engine Optimization is the practice of improving a site's content and structure so it ranks higher in search results and draws more visitors.

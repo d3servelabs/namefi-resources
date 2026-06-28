@@ -2,6 +2,7 @@
 title: "¿Qué es el dominio .today y por qué debería elegirlo?"
 date: '2025-12-10'
 language: 'es'
+priority: P1
 tags: ['tld', 'dominios', 'web3', 'inversión']
 authors: ['namefiteam']
 draft: false

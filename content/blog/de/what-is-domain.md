@@ -2,6 +2,7 @@
 title: Was ist ein Domainname?
 date: '2025-06-19'
 language: de
+priority: P0
 tags: ["faq"]
 authors: ["namefiteam"]
 description: Ein Domainname ist die Grundlage Ihrer Online-Präsenz.

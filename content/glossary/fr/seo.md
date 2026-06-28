@@ -2,6 +2,7 @@
 title: SEO (Optimisation pour les moteurs de recherche)
 date: '2025-06-30'
 language: fr
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que le SEO et comment la tokenisation de domaine affecte-t-elle l'optimisation pour les moteurs de recherche ?

@@ -2,6 +2,7 @@
 title: Registrador
 date: '2025-06-30'
 language: es
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Una empresa acreditada por ICANN autorizada para registrar nombres de dominio en nombre del público, actuando como interfaz entre registrantes y registros.

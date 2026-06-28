@@ -2,6 +2,7 @@
 title: WHOIS (और RDAP)
 date: '2026-05-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: WHOIS और इसके उत्तराधिकारी RDAP किसी डोमेन के पंजीकरण विवरण जैसे उसके रजिस्ट्रार और समाप्ति तिथि के लिए सार्वजनिक लुकअप सेवाएं हैं।

@@ -2,6 +2,7 @@
 title: Bureau d'enregistrement accrédité ICANN
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un bureau d'enregistrement approuvé par ICANN via un accord d'accréditation pour vendre des domaines gTLD.

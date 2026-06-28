@@ -2,6 +2,7 @@
 title: NFT (नॉन-फंजीबल टोकन)
 date: '2025-06-30'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: NFT क्या है और इसका डोमेन टोकनाइज़ेशन से क्या संबंध है?

@@ -2,6 +2,7 @@
 title: Blockchain
 date: '2026-06-22'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: A shared, append-only ledger maintained across many computers, the foundation of tokenized ownership.

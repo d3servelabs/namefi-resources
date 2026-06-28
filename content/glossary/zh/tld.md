@@ -2,6 +2,7 @@
 title: TLD
 date: '2026-05-22'
 language: zh
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: 顶级域名（TLD）是域名中最右侧的标签，如 .com、.org 或 .de，经由 IANA 根区在 ICANN 监管下委派。

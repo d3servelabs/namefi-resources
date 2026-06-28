@@ -2,6 +2,7 @@
 title: 'ما هو دومين .shop؟ شرح امتداد التجارة الإلكترونية'
 date: '2026-06-15'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

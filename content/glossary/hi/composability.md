@@ -2,6 +2,7 @@
 title: कम्पोज़िबिलिटी
 date: '2025-06-30'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: कम्पोज़िबिलिटी क्या है और यह टोकनाइज़्ड डोमेन पर कैसे लागू होती है?

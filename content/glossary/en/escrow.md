@@ -2,6 +2,7 @@
 title: Escrow
 date: '2025-06-30'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: A neutral third party or smart contract that holds funds or assets until both sides meet the agreed terms, then releases them, cutting counterparty risk.

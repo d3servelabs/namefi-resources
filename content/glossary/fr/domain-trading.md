@@ -2,6 +2,7 @@
 title: Trading de domaines
 date: '2025-06-30'
 language: fr
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que le trading de domaines et comment la tokenisation améliore-t-elle l'expérience de trading ?

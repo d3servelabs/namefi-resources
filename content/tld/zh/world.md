@@ -2,6 +2,7 @@
 title: '深入解析 .world 域名：连接全球的数字化名片'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

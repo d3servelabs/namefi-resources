@@ -2,6 +2,7 @@
 title: ترميز
 date: '2025-06-29'
 language: ar
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ماذا يعني ترميز دومين أو أصل؟

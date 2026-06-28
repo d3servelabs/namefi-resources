@@ -2,6 +2,7 @@
 title: Registro
 date: '2026-06-22'
 language: es
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: La organización que opera la base de datos autoritativa y los servidores de nombres de un dominio de nivel superior, delegando las ventas al por menor a los registradores.

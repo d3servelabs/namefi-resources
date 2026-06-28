@@ -2,6 +2,7 @@
 title: Marketplace (e.g., OpenSea, Blur)
 date: '2025-06-30'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: An online venue where buyers and sellers trade assets; for NFTs and tokenized domains, examples include OpenSea and Blur.

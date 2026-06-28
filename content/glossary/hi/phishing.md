@@ -2,6 +2,7 @@
 title: फ़िशिंग
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: नकली साइटों और संदेशों के माध्यम से विश्वसनीय ब्रांडों का रूप धारण कर लोगों को उनके क्रेडेंशियल या धन प्रकट करने के लिए धोखा देना।

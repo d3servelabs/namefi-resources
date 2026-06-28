@@ -2,6 +2,7 @@
 title: Domain-Paket
 date: '2025-06-30'
 language: de
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist ein Domain-Paket und wie ermöglicht Tokenisierung die Portfolioverwaltung?

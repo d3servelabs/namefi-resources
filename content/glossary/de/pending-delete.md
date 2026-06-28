@@ -2,6 +2,7 @@
 title: 'Pending Delete (Drop)'
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Der letzte Status, bevor eine nicht verlängerte Domain wieder für die öffentliche Registrierung freigegeben wird.

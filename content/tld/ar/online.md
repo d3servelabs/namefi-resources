@@ -2,6 +2,7 @@
 title: "ما هو نطاق .online ولماذا يُعد الخيار الأمثل لمشروعك؟"
 date: '2025-12-10'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

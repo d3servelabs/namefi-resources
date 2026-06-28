@@ -2,6 +2,7 @@
 title: 'ما هو نطاق .app ولماذا يجب عليك اختياره لمشروعك القادم؟'
 date: '2025-12-10'
 language: 'ar'
+priority: P1
 tags:
   - tld
 authors:

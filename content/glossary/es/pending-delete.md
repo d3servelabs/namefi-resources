@@ -2,6 +2,7 @@
 title: 'Eliminación pendiente (Caída de dominio)'
 date: '2026-06-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: El estado final antes de que un dominio no renovado se libere de nuevo al público para su registro.

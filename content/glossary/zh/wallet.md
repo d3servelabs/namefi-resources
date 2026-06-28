@@ -2,6 +2,7 @@
 title: 钱包
 date: '2025-06-30'
 language: zh
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是加密钱包，它如何存储代币化域名？

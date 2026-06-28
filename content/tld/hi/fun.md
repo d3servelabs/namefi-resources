@@ -2,6 +2,7 @@
 title: '.fun TLD क्या है और आपको इसे क्यों चुनना चाहिए?'
 date: '2025-12-10'
 language: 'hi'
+priority: P1
 tags:
   - tld
 authors:

@@ -2,6 +2,7 @@
 title: Domain Expiration
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: The date a domain's registration ends; if not renewed, it begins a lapse process toward deletion.

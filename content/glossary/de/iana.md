@@ -2,6 +2,7 @@
 title: 'IANA (Internet Assigned Numbers Authority)'
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Die Instanz, die die DNS-Root-Zone pflegt und IP-Adressblöcke sowie Protokollnummern vergibt.

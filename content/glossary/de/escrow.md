@@ -2,6 +2,7 @@
 title: Treuhand
 date: '2025-06-30'
 language: de
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist Treuhand und wie bieten Smart Contracts eine vertrauenslose Treuhand für Domains?

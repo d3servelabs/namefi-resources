@@ -2,6 +2,7 @@
 title: التصيّد الإلكتروني
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: خداع الناس لإفشاء بيانات اعتمادهم أو أموالهم عبر مواقع ورسائل مزيّفة تنتحل هوية علامات تجارية موثوقة.

@@ -2,6 +2,7 @@
 title: '.tech TLD क्या है और इसे क्यों चुनें? टेक दुनिया के लिए सबसे बेहतरीन डोमेन'
 date: '2025-12-10'
 language: 'hi'
+priority: P1
 tags:
   - tld
 authors:

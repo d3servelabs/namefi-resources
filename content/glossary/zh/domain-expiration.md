@@ -2,6 +2,7 @@
 title: 域名到期
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 域名注册期结束的日期，若未续期，将开始进入失效流程直至被删除。

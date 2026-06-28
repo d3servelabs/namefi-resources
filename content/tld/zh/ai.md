@@ -2,6 +2,7 @@
 title: '什么是 .ai 域名？安圭拉 ccTLD 与人工智能品牌详解'
 date: '2026-06-15'
 language: 'zh'
+priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

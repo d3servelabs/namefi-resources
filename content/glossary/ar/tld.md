@@ -2,6 +2,7 @@
 title: TLD
 date: '2026-05-22'
 language: ar
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: نطاق المستوى الأعلى (TLD) هو التسمية الأقصى يمينًا في اسم النطاق، زي .com أو .org أو .de، مُفوَّضة عبر منطقة جذر IANA تحت إشراف ICANN.

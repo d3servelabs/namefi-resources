@@ -2,6 +2,7 @@
 title: Privacidad WHOIS
 date: '2026-06-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Servicio que oculta los datos de contacto personales del registrante en los registros públicos WHOIS o RDAP.

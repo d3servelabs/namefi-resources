@@ -2,6 +2,7 @@
 title: Trademark
 date: '2026-06-22'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: A legally protected mark identifying a brand's goods or services, central to many domain disputes.

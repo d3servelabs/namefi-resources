@@ -2,6 +2,7 @@
 title: NFT（非同质化代币）
 date: '2025-06-30'
 language: zh
+priority: P1
 tags:
   - glossary
 authors:

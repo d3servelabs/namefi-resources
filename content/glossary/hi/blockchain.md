@@ -2,6 +2,7 @@
 title: ब्लॉकचेन
 date: '2026-06-22'
 language: hi
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: कई कंप्यूटरों में बनाए रखा एक साझा, केवल-जोड़ने वाला लेजर, टोकनाइज़्ड स्वामित्व की नींव।

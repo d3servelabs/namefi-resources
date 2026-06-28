@@ -2,6 +2,7 @@
 title: 网络钓鱼
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 通过仿冒可信品牌的虚假网站和消息诱使用户泄露凭据或资金的欺诈手段。

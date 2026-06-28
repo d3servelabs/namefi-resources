@@ -2,6 +2,7 @@
 title: DNS
 date: '2025-06-30'
 language: fr
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Le système de nommage hiérarchique qui traduit les noms de domaine lisibles par l'homme en adresses IP utilisées par les ordinateurs pour acheminer le trafic sur internet.

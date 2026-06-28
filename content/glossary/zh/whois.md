@@ -2,6 +2,7 @@
 title: WHOIS（与 RDAP）
 date: '2026-05-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: WHOIS 及其继任者 RDAP 是用于查询域名注册详情（如注册商和到期日期）的公开查询服务。

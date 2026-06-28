@@ -2,6 +2,7 @@
 title: ¿Por qué tokenizar dominios On-Chain? ¿No es redundante?
 date: '2025-06-29'
 language: es
+priority: P1
 tags: ["faq"]
 authors: ["namefiteam"]
 description: Este artículo explica por qué los dominios tradicionales deberían ser tokenizados on-chain y destaca los beneficios como una propiedad más clara, componibilidad financiera y un trading más libre y rápido.

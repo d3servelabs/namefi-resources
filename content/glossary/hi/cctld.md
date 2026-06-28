@@ -2,6 +2,7 @@
 title: 'ccTLD (कंट्री-कोड टॉप-लेवल डोमेन)'
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: ccTLD एक दो-अक्षरी टॉप-लेवल डोमेन है जो किसी देश या क्षेत्र को सौंपा जाता है, जैसे .uk, .de, या .jp।

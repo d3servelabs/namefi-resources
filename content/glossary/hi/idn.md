@@ -2,6 +2,7 @@
 title: 'IDN (अंतर्राष्ट्रीयकृत डोमेन नाम) / Punycode'
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: एक डोमेन जो गैर-ASCII अक्षरों का उपयोग करता है, जिसे DNS के लिए xn-- से शुरू होने वाले ASCII Punycode में एनकोड किया जाता है।

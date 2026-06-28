@@ -2,6 +2,7 @@
 title: '¿Qué es el dominio .me? El ccTLD de Montenegro creado para la marca personal'
 date: '2026-06-22'
 language: 'es'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: 'पेंडिंग डिलीट (ड्रॉप)'
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: वह अंतिम स्थिति जिसके बाद अनरिन्यूड डोमेन को पुनः सार्वजनिक रजिस्ट्रेशन के लिए रिलीज़ किया जाता है।

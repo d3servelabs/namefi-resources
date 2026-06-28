@@ -2,6 +2,7 @@
 title: Pont inter-chaînes
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un protocole qui déplace des jetons ou des messages entre des blockchains qui ne peuvent pas communiquer nativement entre elles.

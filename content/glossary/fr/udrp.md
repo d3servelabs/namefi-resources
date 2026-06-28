@@ -2,6 +2,7 @@
 title: UDRP (Uniform Domain-Name Dispute-Resolution Policy)
 date: '2025-06-30'
 language: fr
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que l'UDRP et comment affecte-t-elle la propriété de domaines tokenisés ?

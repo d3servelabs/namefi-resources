@@ -2,6 +2,7 @@
 title: 市场 (例如 OpenSea, Blur)
 date: '2025-06-30'
 language: zh
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是 NFT 市场，它们如何促进域名交易？

@@ -2,6 +2,7 @@
 title: Wallet
 date: '2025-06-30'
 language: de
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist eine Krypto-Wallet und wie speichert sie tokenisierte Domains?

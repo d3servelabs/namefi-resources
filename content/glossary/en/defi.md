@@ -2,6 +2,7 @@
 title: DeFi (Decentralized Finance)
 date: '2026-05-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Decentralized Finance offers lending, borrowing, and trading through smart contracts on public blockchains, without banks or brokers as intermediaries.

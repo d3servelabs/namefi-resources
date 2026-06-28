@@ -2,6 +2,7 @@
 title: 'إيه هو دومين .co؟ البديل العالمي لـ .com بمعنى "شركة"'
 date: '2026-06-15'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: Liquidité
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: La facilité avec laquelle un domaine peut être vendu près de sa valeur estimée — élevée pour les grands noms, faible pour les noms de niche.

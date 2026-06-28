@@ -2,6 +2,7 @@
 title: 什么是域名？
 date: '2025-06-19'
 language: zh
+priority: P0
 tags:
   - faq
 authors:

@@ -2,6 +2,7 @@
 title: Clé Publique
 date: '2026-06-22'
 language: fr
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: La moitié partageable d''une paire de clés blockchain, dérivée de la clé privée ; utilisée pour recevoir des fonds et vérifier des signatures.

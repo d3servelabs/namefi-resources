@@ -2,6 +2,7 @@
 title: 'What Is the .space Domain? The Creative & Tech Extension Explained'
 date: '2026-06-15'
 language: 'en'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

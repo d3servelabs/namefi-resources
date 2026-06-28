@@ -2,6 +2,7 @@
 title: 'ما هو نطاق .today ولماذا يجب عليك اختياره؟'
 date: '2025-12-10'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

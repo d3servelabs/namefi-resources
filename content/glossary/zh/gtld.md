@@ -2,6 +2,7 @@
 title: gTLD（通用顶级域名）
 date: '2026-06-22'
 language: zh
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: 不与特定国家绑定的顶级域名，如 .com、.org 或 .xyz，在 ICANN 合同下运营。

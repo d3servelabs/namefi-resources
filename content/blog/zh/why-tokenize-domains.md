@@ -2,6 +2,7 @@
 title: 为什么要将域名代币化上链？这不是多余的吗？
 date: '2025-06-29'
 language: zh
+priority: P1
 tags: ["faq"]
 authors: ["namefiteam"]
 description: 本文解释了为什么应该将传统域名代币化上链，并强调了更清晰的所有权、金融可组合性以及更自由、更快速的交易等优势。

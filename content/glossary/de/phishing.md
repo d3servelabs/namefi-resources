@@ -2,6 +2,7 @@
 title: Phishing
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Das Täuschen von Personen zur Preisgabe von Zugangsdaten oder Geldern über gefälschte Seiten und Nachrichten, die vertrauenswürdige Marken imitieren.

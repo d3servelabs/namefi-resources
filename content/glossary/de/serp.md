@@ -2,6 +2,7 @@
 title: SERP
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Die Ergebnisseite, die eine Suchmaschine für eine Anfrage zurückgibt und auf der Domains um Sichtbarkeit konkurrieren.

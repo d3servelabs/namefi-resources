@@ -2,6 +2,7 @@
 title: Collateral
 date: '2025-06-30'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: An asset pledged to secure a loan that the lender can claim on default; a tokenized domain can serve as collateral in NFT-aware lending.

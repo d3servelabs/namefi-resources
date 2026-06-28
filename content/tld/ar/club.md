@@ -2,6 +2,7 @@
 title: "ما هو نطاق .club؟ ولماذا يجب عليك اختياره لبناء مجتمعك الرقمي؟"
 date: '2025-12-10'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

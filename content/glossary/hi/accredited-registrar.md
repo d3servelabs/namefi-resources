@@ -2,6 +2,7 @@
 title: ICANN-मान्यताप्राप्त रजिस्ट्रार
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: ICANN द्वारा रजिस्ट्रार मान्यता समझौते के तहत gTLD डोमेन बेचने के लिए स्वीकृत रजिस्ट्रार।

@@ -2,6 +2,7 @@
 title: 注册局
 date: '2026-06-22'
 language: zh
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: 负责运营顶级域名权威数据库与域名服务器的组织，将零售销售委托给注册商，并制定批发定价。

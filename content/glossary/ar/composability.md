@@ -2,6 +2,7 @@
 title: قابلية التركيب
 date: '2025-06-30'
 language: ar
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هي قابلية التركيب وكيف تنطبق على النطاقات الرمزية؟

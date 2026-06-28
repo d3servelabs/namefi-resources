@@ -2,6 +2,7 @@
 title: SERP
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: صفحة نتائج محرك البحث عند استجابته لاستعلام ما، وهي الساحة التي تتنافس فيها الدومينات للحصول على ظهور.

@@ -2,6 +2,7 @@
 title: SEO（搜索引擎优化）
 date: '2025-06-30'
 language: zh
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是SEO？域名代币化如何影响搜索优化？

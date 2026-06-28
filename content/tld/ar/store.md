@@ -2,6 +2,7 @@
 title: 'ما هو نطاق .store ولماذا يعد الخيار الأمثل لمتجرك الإلكتروني؟'
 date: '2025-12-10'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: Mercado (ej. OpenSea, Blur)
 date: '2025-06-30'
 language: es
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué son los mercados NFT y cómo facilitan el comercio de dominios?

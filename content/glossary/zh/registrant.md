@@ -2,6 +2,7 @@
 title: 注册人
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 持有已注册域名权利的个人或组织，即记录在册的所有者。

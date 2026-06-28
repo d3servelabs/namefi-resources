@@ -2,6 +2,7 @@
 title: 托管
 date: '2025-06-30'
 language: zh
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是托管以及智能合约如何为域名提供无需信任的托管？

@@ -2,6 +2,7 @@
 title: "دليلك الشامل لنطاق .info: لماذا هو الخيار الأمثل لموقعك؟"
 date: '2025-12-10'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

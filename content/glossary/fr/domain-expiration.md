@@ -2,6 +2,7 @@
 title: Expiration de domaine
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: La date à laquelle l'enregistrement d'un domaine se termine ; sans renouvellement, il entame une séquence de déchéance menant à la suppression.

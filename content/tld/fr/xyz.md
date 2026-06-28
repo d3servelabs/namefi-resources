@@ -2,6 +2,7 @@
 title: "Qu'est-ce que le domaine .xyz ? Le gTLD générique expliqué"
 date: '2026-06-15'
 language: 'fr'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: '.org 域名全解析：什么是 .org TLD 以及为什么您应该选择它？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags:
   - tld
 authors:

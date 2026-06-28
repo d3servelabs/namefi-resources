@@ -2,6 +2,7 @@
 title: UDRP (Política Uniforme de Resolución de Disputas de Nombres de Dominio)
 date: '2025-06-30'
 language: es
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es la UDRP y cómo afecta la propiedad de dominios tokenizados?

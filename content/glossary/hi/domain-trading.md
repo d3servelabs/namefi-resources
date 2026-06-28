@@ -2,6 +2,7 @@
 title: डोमेन ट्रेडिंग
 date: '2025-06-30'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: डोमेन ट्रेडिंग क्या है और टोकनाइजेशन ट्रेडिंग अनुभव को कैसे बेहतर बनाता है?

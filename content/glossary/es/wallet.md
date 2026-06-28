@@ -2,6 +2,7 @@
 title: Billetera
 date: '2025-06-30'
 language: es
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es una billetera cripto y cómo almacena los dominios tokenizados?

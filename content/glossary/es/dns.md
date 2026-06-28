@@ -2,6 +2,7 @@
 title: DNS
 date: '2025-06-30'
 language: es
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: El sistema de nomenclatura jerárquico que traduce nombres de dominio legibles por humanos en las direcciones IP que las computadoras usan para enrutar el tráfico por internet.

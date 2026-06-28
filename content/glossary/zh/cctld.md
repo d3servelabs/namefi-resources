@@ -2,6 +2,7 @@
 title: ccTLD（国家代码顶级域名）
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 根据 ISO 3166 列表分配给国家或地区的两字母顶级域名，如 .uk、.de 或 .jp。

@@ -2,6 +2,7 @@
 title: "Que sont les domaines tokenisés ? Un guide sur la tokenisation de domaine"
 date: '2026-05-22'
 language: fr
+priority: P0
 tags: ['faq']
 authors: ['namefiteam']
 draft: false

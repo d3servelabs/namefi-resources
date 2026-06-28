@@ -2,6 +2,7 @@
 title: IANA（互联网号码分配机构）
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 负责维护 DNS 根区域并分配 IP 地址块和协议号码的机构。

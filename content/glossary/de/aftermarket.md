@@ -2,6 +2,7 @@
 title: Aftermarket
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Der Wiederverkaufsmarkt für bereits registrierte Domains, auf dem Namen zwischen Eigentümern gehandelt werden.

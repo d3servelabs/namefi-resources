@@ -2,6 +2,7 @@
 title: क्रॉस-चेन ब्रिज
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: एक प्रोटोकॉल जो उन ब्लॉकचेन के बीच टोकन या संदेश स्थानांतरित करता है जो मूल रूप से एक-दूसरे से बात नहीं कर सकते।

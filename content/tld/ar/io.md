@@ -2,6 +2,7 @@
 title: 'ما هو دومين .io؟ شرح امتداد التكنولوجيا و Web3'
 date: '2026-06-15'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

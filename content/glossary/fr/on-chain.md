@@ -2,6 +2,7 @@
 title: On-chain
 date: '2025-06-29'
 language: fr
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Que signifie "on-chain" dans le contexte des domaines ?

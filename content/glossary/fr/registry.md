@@ -2,6 +2,7 @@
 title: Registre
 date: '2026-06-22'
 language: fr
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: L''organisation qui exploite la base de données principale et les serveurs de noms d''un TLD, déléguant la vente au détail aux registraires.

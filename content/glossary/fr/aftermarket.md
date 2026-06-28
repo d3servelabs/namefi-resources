@@ -2,6 +2,7 @@
 title: Marché secondaire
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Le marché de revente des noms de domaine déjà enregistrés, où les noms s'échangent entre propriétaires.

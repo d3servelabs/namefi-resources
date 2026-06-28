@@ -2,6 +2,7 @@
 title: WHOIS गोपनीयता
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: एक सेवा जो सार्वजनिक WHOIS या RDAP रिकॉर्ड में पंजीयक के व्यक्तिगत संपर्क विवरण छुपाती है।

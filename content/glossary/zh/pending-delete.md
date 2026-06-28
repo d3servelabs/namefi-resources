@@ -2,6 +2,7 @@
 title: 待删除（域名释放）
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 未续期域名被释放重新公开注册前的最后状态。

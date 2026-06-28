@@ -2,6 +2,7 @@
 title: DID (الهوية اللامركزية)
 date: '2025-06-30'
 language: ar
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ما هو DID وكيف تلعب النطاقات دورًا في الهوية اللامركزية؟

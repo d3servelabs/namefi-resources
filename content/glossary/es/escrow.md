@@ -2,6 +2,7 @@
 title: Depósito en Garantía (Escrow)
 date: '2025-06-30'
 language: es
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es el depósito en garantía y cómo los contratos inteligentes proporcionan un depósito en garantía sin confianza para los dominios?

@@ -2,6 +2,7 @@
 title: Guía Completa de Terminología de Nombres de Dominio - Términos Esenciales para Inversores de Dominios
 date: '2025-06-21'
 language: es
+priority: P0
 tags: ["faq","domains"]
 authors: ["namefiteam"]
 description: Domina la inversión en dominios con nuestra guía completa de terminología esencial de dominios. Desde conceptos básicos hasta estrategias de trading avanzadas, aprende el lenguaje de los profesionales de dominios.

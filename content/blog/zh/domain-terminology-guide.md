@@ -2,6 +2,7 @@
 title: 完整的域名术语指南 - 域名投资者的基本术语
 date: '2025-06-21'
 language: zh
+priority: P0
 tags: ["faq","domains"]
 authors: ["namefiteam"]
 description: 掌握域名投资，请参考我们关于基本域名术语的综合指南。从基本概念到高级交易策略，学习域名专业人士的语言。

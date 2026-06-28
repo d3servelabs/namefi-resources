@@ -2,6 +2,7 @@
 title: Liquidität
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Wie schnell eine Domain nahe ihrem geschätzten Wert verkauft werden kann – hoch bei großartigen Namen, niedrig bei Nischen-Domains.

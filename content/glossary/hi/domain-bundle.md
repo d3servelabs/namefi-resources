@@ -2,6 +2,7 @@
 title: डोमेन बंडल
 date: '2025-06-30'
 language: hi
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: डोमेन बंडल क्या है और टोकनाइज़ेशन पोर्टफोलियो प्रबंधन को कैसे सक्षम बनाता है?

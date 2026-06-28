@@ -2,6 +2,7 @@
 title: ICANN 认证注册商
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 经 ICANN 在注册商认证协议下批准、可销售 gTLD 域名的注册商。

@@ -2,6 +2,7 @@
 title: Qu'est-ce que le TLD .dev et pourquoi les développeurs l'adorent-ils ?
 date: '2025-06-21'
 language: fr
+priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .dev est le domaine sécurisé de Google pour les développeurs et les projets de développement. Découvrez pourquoi c'est le premier choix des programmeurs, des entreprises technologiques et des équipes de développement.

@@ -2,6 +2,7 @@
 title: Tokenisierung
 date: '2025-06-29'
 language: de
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was bedeutet es, eine Domain oder ein Asset zu tokenisieren?

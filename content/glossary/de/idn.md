@@ -2,6 +2,7 @@
 title: 'IDN (Internationalized Domain Name) / Punycode'
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Eine Domain mit Nicht-ASCII-Zeichen, die für DNS als ASCII-Punycode mit dem Präfix xn-- kodiert wird.

@@ -2,6 +2,7 @@
 title: Öffentlicher Schlüssel
 date: '2026-06-22'
 language: de
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Die teilbare Hälfte eines Blockchain-Schlüsselpaares, aus dem privaten Schlüssel abgeleitet; dient zum Empfangen von Geldern und zur Signaturverifizierung.

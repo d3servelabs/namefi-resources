@@ -2,6 +2,7 @@
 title: '¿Qué es el dominio .com? El predeterminado de internet explicado'
 date: '2026-06-15'
 language: 'es'
+priority: P0
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

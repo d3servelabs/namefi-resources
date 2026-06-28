@@ -2,6 +2,7 @@
 title: Collatéral
 date: '2025-06-30'
 language: fr
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que le collatéral et comment les domaines peuvent-ils servir de collatéral en DeFi ?

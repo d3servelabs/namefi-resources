@@ -2,6 +2,7 @@
 title: Paquete de dominios
 date: '2025-06-30'
 language: es
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es un paquete de dominios y cómo la tokenización permite la gestión de carteras?

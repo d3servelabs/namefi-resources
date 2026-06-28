@@ -2,6 +2,7 @@
 title: Guide Complet de la Terminologie des Noms de Domaine - Termes Essentiels pour les Investisseurs de Domaine
 date: '2025-06-21'
 language: fr
+priority: P0
 tags: ["faq","domains"]
 authors: ["namefiteam"]
 description: Maîtrisez l'investissement de domaine avec notre guide complet de la terminologie essentielle des domaines. Des concepts de base aux stratégies de trading avancées, apprenez le langage des professionnels du domaine.

@@ -2,6 +2,7 @@
 title: 拍卖（荷兰式、英式、动态）
 date: '2025-06-30'
 language: zh
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 域名销售中使用的不同类型拍卖有哪些？

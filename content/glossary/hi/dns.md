@@ -2,6 +2,7 @@
 title: DNS
 date: '2025-06-30'
 language: hi
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: वह पदानुक्रमिक नामकरण प्रणाली जो मानव-पठनीय डोमेन नामों को उन IP पतों में अनुवादित करती है जिनका उपयोग कंप्यूटर इंटरनेट पर ट्रैफिक रूट करने के लिए करते हैं।

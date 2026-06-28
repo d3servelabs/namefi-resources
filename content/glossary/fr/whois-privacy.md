@@ -2,6 +2,7 @@
 title: Confidentialité WHOIS
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un service qui masque les coordonnées personnelles d''un titulaire dans les registres WHOIS ou RDAP publics.

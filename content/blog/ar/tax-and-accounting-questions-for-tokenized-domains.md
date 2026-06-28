@@ -2,6 +2,7 @@
 title: "أسئلة ضريبية ومحاسبية حول النطاقات المرمزة (أمور يجب مناقشتها مع مستشارك المهني)"
 date: '2026-05-22'
 language: ar
+priority: P1
 tags: ['guide']
 authors: ['namefiteam']
 draft: false

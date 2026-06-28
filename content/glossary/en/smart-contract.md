@@ -2,6 +2,7 @@
 title: Smart contract
 date: '2025-06-30'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: A program stored on a blockchain that runs exactly as written when its conditions are met, enabling agreements that execute without an intermediary.

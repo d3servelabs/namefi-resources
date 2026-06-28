@@ -2,6 +2,7 @@
 title: 域名续期（自动续期）
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 在域名到期前付费延长其注册期限，通常每个周期自动进行。

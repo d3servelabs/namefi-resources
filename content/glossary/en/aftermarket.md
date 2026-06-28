@@ -2,6 +2,7 @@
 title: Aftermarket
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: The resale market for already-registered domains, where names are bought and sold between owners.

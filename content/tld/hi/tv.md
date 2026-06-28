@@ -2,6 +2,7 @@
 title: '.tv डोमेन क्या है? टेलीविज़न, वीडियो और स्ट्रीमिंग का इंटरनेट घर'
 date: '2026-06-22'
 language: 'hi'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: '什么是 .co 域名？面向全球的 "Company" 版 .com 替代选择'
 date: '2026-06-15'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: रजिस्ट्री
 date: '2026-06-22'
 language: hi
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: वह संगठन जो किसी टॉप-लेवल डोमेन के लिए आधिकारिक डेटाबेस और नेमसर्वर चलाता है और खुदरा बिक्री रजिस्ट्रारों को सौंपता है।

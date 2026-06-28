@@ -2,6 +2,7 @@
 title: एस्क्रो
 date: '2025-06-30'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: एस्क्रो क्या है और स्मार्ट कॉन्ट्रैक्ट डोमेन के लिए ट्रस्टलेस एस्क्रो कैसे प्रदान करते हैं?

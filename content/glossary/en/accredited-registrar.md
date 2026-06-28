@@ -2,6 +2,7 @@
 title: ICANN-Accredited Registrar
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: A registrar approved by ICANN under a Registrar Accreditation Agreement to sell gTLD domains.

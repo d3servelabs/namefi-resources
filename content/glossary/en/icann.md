@@ -2,6 +2,7 @@
 title: ICANN
 date: '2025-06-30'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: The nonprofit that coordinates the global domain name system, IP allocation, and protocol identifiers, and accredits domain registrars worldwide.

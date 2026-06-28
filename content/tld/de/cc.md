@@ -2,6 +2,7 @@
 title: 'Was ist die .cc-Domain? Die globale, markenfähige „.com"-Alternative'
 date: '2026-06-22'
 language: 'de'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

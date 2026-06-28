@@ -2,6 +2,7 @@
 title: ट्रेडमार्क
 date: '2026-06-22'
 language: hi
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: एक कानूनी रूप से संरक्षित चिह्न जो किसी ब्रांड की वस्तुओं या सेवाओं की पहचान करता है, जो कई डोमेन विवादों के केंद्र में होता है।

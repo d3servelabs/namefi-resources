@@ -2,6 +2,7 @@
 title: Registrant
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: The person or organization that holds the rights to a registered domain name — the owner of record.

@@ -2,6 +2,7 @@
 title: What is a Domain Name?
 date: '2025-06-19'
 language: en
+priority: P0
 tags: ['faq']
 authors: ['namefiteam']
 draft: false

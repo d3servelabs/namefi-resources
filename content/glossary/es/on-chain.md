@@ -2,6 +2,7 @@
 title: En cadena (On-chain)
 date: '2025-06-29'
 language: es
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué significa "en cadena" en el contexto de los dominios?

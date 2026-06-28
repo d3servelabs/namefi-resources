@@ -2,6 +2,7 @@
 title: '什么是代币化域名？域名代币化指南'
 date: '2026-05-22'
 language: zh
+priority: P0
 tags: ['faq']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: ऑन-चेन
 date: '2025-06-29'
 language: hi
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: डोमेन के संदर्भ में "ऑन-चेन" का क्या अर्थ है?

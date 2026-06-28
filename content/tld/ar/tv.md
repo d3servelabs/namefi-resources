@@ -2,6 +2,7 @@
 title: 'إيه هو دومين .tv؟ بيت التلفزيون والفيديو والبث على الإنترنت'
 date: '2026-06-22'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

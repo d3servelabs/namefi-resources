@@ -2,6 +2,7 @@
 title: Portefeuille
 date: '2025-06-30'
 language: fr
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce qu'un portefeuille crypto et comment stocke-t-il les domaines tokenisés ?

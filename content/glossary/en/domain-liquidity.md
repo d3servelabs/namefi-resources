@@ -2,6 +2,7 @@
 title: Liquidity
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: How quickly a domain can be sold near its estimated value — high for great names, low for niche ones.

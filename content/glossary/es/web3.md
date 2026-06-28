@@ -2,6 +2,7 @@
 title: Web3
 date: '2025-06-30'
 language: es
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Una visión de internet sobre blockchains públicas en la que los usuarios poseen sus datos, activos e identidad mediante sus propias claves, no cuentas de plataformas.

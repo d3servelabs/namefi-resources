@@ -2,6 +2,7 @@
 title: '.site डोमेन क्या है और इसे क्यों चुनें?'
 date: '2025-12-10'
 language: 'hi'
+priority: P1
 tags:
   - 'tld'
 authors:

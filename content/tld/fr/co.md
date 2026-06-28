@@ -2,6 +2,7 @@
 title: 'Qu''est-ce que le domaine .co ? L''alternative mondiale « company » au .com'
 date: '2026-06-15'
 language: 'fr'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

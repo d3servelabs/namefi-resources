@@ -2,6 +2,7 @@
 title: '什么是 .xyz 域名？通用顶级域名详解'
 date: '2026-06-15'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

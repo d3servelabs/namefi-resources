@@ -2,6 +2,7 @@
 title: 深入解析 .website 域名：为何它是您下一个项目的理想选择？
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags:
   - tld
 authors:

@@ -2,6 +2,7 @@
 title: Domain bundle
 date: '2025-06-30'
 language: en
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: A group of related domain names sold or managed together as one package, often covering multiple TLDs or spelling variants of a single brand.

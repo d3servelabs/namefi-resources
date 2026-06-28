@@ -2,6 +2,7 @@
 title: "Qu'est-ce que le domaine .cc ? L'alternative mondiale et brandable au « .com »"
 date: '2026-06-22'
 language: 'fr'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

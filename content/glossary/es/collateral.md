@@ -2,6 +2,7 @@
 title: Garantía
 date: '2025-06-30'
 language: es
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es una garantía y cómo pueden los dominios servir como garantía en DeFi?

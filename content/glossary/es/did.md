@@ -2,6 +2,7 @@
 title: DID (Identidad Descentralizada)
 date: '2025-06-30'
 language: es
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es DID y qué papel juegan los dominios en la identidad descentralizada?

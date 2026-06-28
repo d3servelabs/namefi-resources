@@ -2,6 +2,7 @@
 title: 新 gTLD
 date: '2026-06-22'
 language: zh
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: 由 ICANN 扩展计划引入的通用顶级域名，如 .app、.xyz 或 .shop。

@@ -2,6 +2,7 @@
 title: '¿Qué es el dominio .xyz? El TLD genérico explicado'
 date: '2026-06-15'
 language: 'es'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

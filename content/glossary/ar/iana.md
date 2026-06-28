@@ -2,6 +2,7 @@
 title: IANA (هيئة الأرقام المخصصة للإنترنت)
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: الجهة المسؤولة عن صيانة منطقة جذر DNS وتخصيص كتل عناوين IP وأرقام البروتوكولات.

@@ -2,6 +2,7 @@
 title: '.fun 域名全解析：是什么？为什么选择它？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags:
   - tld
 authors:

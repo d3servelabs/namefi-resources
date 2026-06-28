@@ -2,6 +2,7 @@
 title: Hameçonnage
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Tromper des personnes pour qu''elles divulguent des identifiants ou des fonds via de faux sites et messages imitant des marques de confiance.

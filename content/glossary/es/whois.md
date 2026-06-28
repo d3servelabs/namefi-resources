@@ -2,6 +2,7 @@
 title: 'WHOIS (y RDAP)'
 date: '2026-05-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: WHOIS y su sucesor RDAP son los servicios de consulta pública para los detalles de registro de un dominio, como su registrador y fecha de vencimiento.

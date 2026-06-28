@@ -2,6 +2,7 @@
 title: DNSSEC (امتدادات أمان نظام أسماء النطاقات)
 date: '2026-05-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: توقيعات تشفيرية على سجلات DNS بتخلي المحللين يتحققوا إن الرد أصلي وما اتزوّرش ولا اتعبّث بيه في الطريق.

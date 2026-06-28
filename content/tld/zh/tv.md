@@ -2,6 +2,7 @@
 title: '什么是 .tv 域名？电视、视频与流媒体的互联网家园'
 date: '2026-06-22'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

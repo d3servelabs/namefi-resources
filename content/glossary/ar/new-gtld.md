@@ -2,6 +2,7 @@
 title: New gTLD
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: نطاق من المستوى الأعلى العام تم إطلاقه في إطار برنامج توسع ICANN، زي .app و.xyz و.shop.

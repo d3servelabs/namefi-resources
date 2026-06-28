@@ -2,6 +2,7 @@
 title: Phishing
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Tricking people into revealing credentials or funds via fake sites and messages that impersonate trusted brands.

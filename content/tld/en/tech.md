@@ -2,6 +2,7 @@
 title: 'What Is the .tech Domain? The Extension for Tech Brands'
 date: '2026-06-15'
 language: 'en'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

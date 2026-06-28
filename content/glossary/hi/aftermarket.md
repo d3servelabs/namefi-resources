@@ -2,6 +2,7 @@
 title: आफ्टरमार्केट
 date: '2026-06-22'
 language: hi
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: पहले से पंजीकृत डोमेन का पुनर्विक्रय बाजार, जहाँ नाम मालिकों के बीच खरीदे और बेचे जाते हैं।

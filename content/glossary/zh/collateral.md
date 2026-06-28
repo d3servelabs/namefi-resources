@@ -2,6 +2,7 @@
 title: 抵押品
 date: '2025-06-30'
 language: zh
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是抵押品？域名如何在DeFi中充当抵押品？

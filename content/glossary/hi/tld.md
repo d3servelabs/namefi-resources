@@ -2,6 +2,7 @@
 title: TLD
 date: '2026-05-22'
 language: hi
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: टॉप-लेवल डोमेन (TLD) किसी डोमेन नाम का सबसे दाईं ओर का लेबल है, जैसे .com, .org या .de, जो ICANN की देखरेख में IANA रूट ज़ोन के माध्यम से प्रत्यायोजित होता है।

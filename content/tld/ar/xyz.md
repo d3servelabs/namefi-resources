@@ -2,6 +2,7 @@
 title: 'ما هو دومين .xyz؟ شرح كامل لهذا النطاق العام'
 date: '2026-06-15'
 language: 'ar'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

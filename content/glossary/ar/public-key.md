@@ -2,6 +2,7 @@
 title: المفتاح العام
 date: '2026-06-22'
 language: ar
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: النصف القابل للمشاركة من زوج مفاتيح البلوكشين، مشتق من المفتاح الخاص؛ يُستخدم لاستقبال الأموال والتحقق من التوقيعات.

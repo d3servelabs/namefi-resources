@@ -2,6 +2,7 @@
 title: Marke
 date: '2026-06-22'
 language: de
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Ein rechtlich geschütztes Kennzeichen zur Identifikation von Waren oder Dienstleistungen einer Marke, zentral für viele Domain-Streitigkeiten.

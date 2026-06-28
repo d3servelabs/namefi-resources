@@ -2,6 +2,7 @@
 title: "Preguntas fiscales y contables sobre dominios tokenizados (Temas a tratar con su profesional)"
 date: '2026-05-22'
 language: es
+priority: P1
 tags: ['guide']
 authors: ['namefiteam']
 draft: false

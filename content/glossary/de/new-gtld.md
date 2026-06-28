@@ -2,6 +2,7 @@
 title: New gTLD
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Eine generische Top-Level-Domain, die durch das Erweiterungsprogramm von ICANN eingeführt wurde, wie .app, .xyz oder .shop.

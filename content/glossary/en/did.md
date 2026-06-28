@@ -2,6 +2,7 @@
 title: DID (Decentralized Identity)
 date: '2025-06-30'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: A Decentralized Identifier is a globally unique ID controlled by its owner's keys rather than a central registry, used to prove identity across services.

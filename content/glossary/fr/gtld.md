@@ -2,6 +2,7 @@
 title: 'gTLD (Domaine générique de premier niveau)'
 date: '2026-06-22'
 language: fr
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un domaine de premier niveau non lié à un pays, tel que .com, .org ou .xyz, exploité sous contrat ICANN.

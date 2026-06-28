@@ -2,6 +2,7 @@
 title: ccTLD (نطاق المستوى الأعلى لرمز الدولة)
 date: '2026-06-22'
 language: ar
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: نطاق علوي من حرفين بيتخصص لدولة أو إقليم معين، زي .uk و.de و.jp.

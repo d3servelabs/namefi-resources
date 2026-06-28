@@ -2,6 +2,7 @@
 title: '.io डोमेन क्या है? टेक और Web3 एक्सटेंशन की पूरी जानकारी'
 date: '2026-06-15'
 language: 'hi'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

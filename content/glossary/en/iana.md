@@ -2,6 +2,7 @@
 title: IANA (Internet Assigned Numbers Authority)
 date: '2026-06-22'
 language: en
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: The function that maintains the DNS root zone and allocates IP address blocks and protocol numbers.

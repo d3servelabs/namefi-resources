@@ -2,6 +2,7 @@
 title: Web3
 date: '2025-06-30'
 language: ar
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: رؤية للإنترنت على شبكات البلوكتشين العامة حيث يمتلك المستخدمون بياناتهم وأصولهم وهويتهم عبر مفاتيحهم الخاصة لا حسابات المنصات.

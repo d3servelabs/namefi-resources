@@ -2,6 +2,7 @@
 title: Registry
 date: '2026-06-22'
 language: de
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: Die Organisation, die die maßgebliche Datenbank und Nameserver für eine Top-Level-Domain betreibt und den Einzelhandelsverkauf an Registrare delegiert.

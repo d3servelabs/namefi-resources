@@ -2,6 +2,7 @@
 title: ICANN
 date: '2025-06-30'
 language: hi
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: वह गैर-लाभकारी संगठन जो वैश्विक डोमेन नाम प्रणाली, IP आवंटन और प्रोटोकॉल पहचानकर्ताओं का समन्वय करता है और दुनिया भर में डोमेन रजिस्ट्रारों को मान्यता देता है।

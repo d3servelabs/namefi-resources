@@ -2,6 +2,7 @@
 title: Ethereum
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: La principale blockchain de contrats intelligents, et le réseau sur lequel la plupart des domaines tokenisés sont émis.

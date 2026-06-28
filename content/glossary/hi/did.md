@@ -2,6 +2,7 @@
 title: डीआईडी (विकेन्द्रीकृत पहचान)
 date: '2025-06-30'
 language: hi
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: डीआईडी क्या है और विकेन्द्रीकृत पहचान में डोमेन कैसे भूमिका निभाते हैं?

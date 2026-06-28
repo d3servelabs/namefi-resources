@@ -2,6 +2,7 @@
 title: 'ccTLD (Dominio de Nivel Superior de Código de País)'
 date: '2026-06-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Un dominio de nivel superior de dos letras asignado a un país o territorio, como .uk, .de o .jp.

@@ -2,6 +2,7 @@
 title: SEO (Suchmaschinenoptimierung)
 date: '2025-06-30'
 language: de
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist SEO und wie beeinflusst die Domain-Tokenisierung die Suchmaschinenoptimierung?

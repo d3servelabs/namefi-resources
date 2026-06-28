@@ -2,6 +2,7 @@
 title: '什么是 .cc 域名？面向全球、易于品牌化的 ".com" 替代选择'
 date: '2026-06-22'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: 'Was ist die .co-Domain? Die globale „Company"-Alternative zu .com'
 date: '2026-06-15'
 language: 'de'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

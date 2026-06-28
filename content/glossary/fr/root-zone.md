@@ -2,6 +2,7 @@
 title: Zone racine (Serveurs racine)
 date: '2026-06-22'
 language: fr
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Le sommet de la hiérarchie DNS, répertoriant chaque TLD et les serveurs faisant autorité pour celui-ci.

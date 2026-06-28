@@ -2,6 +2,7 @@
 title: '.club TLD क्या है और इसे क्यों चुनें? एक संपूर्ण गाइड'
 date: '2025-12-10'
 language: 'hi'
+priority: P1
 tags:
   - 'tld'
 authors:

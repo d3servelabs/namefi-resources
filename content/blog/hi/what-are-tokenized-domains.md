@@ -2,6 +2,7 @@
 title: "टोकनाइज़्ड डोमेन क्या हैं? डोमेन टोकनाइज़ेशन के लिए एक गाइड"
 date: '2026-05-22'
 language: hi
+priority: P0
 tags: ['faq']
 authors: ['namefiteam']
 draft: false

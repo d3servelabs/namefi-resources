@@ -2,6 +2,7 @@
 title: Séquestre
 date: '2025-06-30'
 language: fr
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Qu'est-ce que le séquestre et comment les contrats intelligents fournissent-ils un séquestre sans confiance pour les domaines ?

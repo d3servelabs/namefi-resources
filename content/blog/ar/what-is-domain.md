@@ -2,6 +2,7 @@
 title: ما هو اسم النطاق (Domain Name)؟
 date: '2025-06-19'
 language: ar
+priority: P0
 tags: ["faq"]
 authors: ["namefiteam"]
 description: اسم النطاق هو أساس وجودك على الإنترنت.

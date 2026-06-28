@@ -2,6 +2,7 @@
 title: .net 域名是什么？为什么要选择它？
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

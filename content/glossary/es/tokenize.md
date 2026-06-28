@@ -2,6 +2,7 @@
 title: Tokenizar
 date: '2025-06-29'
 language: es
+priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué significa tokenizar un dominio o un activo?

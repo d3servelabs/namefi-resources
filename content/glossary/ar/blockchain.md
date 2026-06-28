@@ -2,6 +2,7 @@
 title: بلوكتشين
 date: '2026-06-22'
 language: ar
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: سجل مشترك قابل للإلحاق فقط ومُوزَّع على كتير من أجهزة الكمبيوتر، وهو أساس الملكية المُرمَّزة.

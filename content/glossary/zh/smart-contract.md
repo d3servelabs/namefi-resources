@@ -2,6 +2,7 @@
 title: 智能合约
 date: '2025-06-30'
 language: zh
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: 什么是智能合约，它们如何实现域名代币化？

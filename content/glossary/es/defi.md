@@ -2,6 +2,7 @@
 title: DeFi (Finanzas Descentralizadas)
 date: '2026-05-22'
 language: es
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Las Finanzas Descentralizadas ofrecen préstamos, créditos e intercambios a través de contratos inteligentes en blockchains públicas, sin bancos ni intermediarios.

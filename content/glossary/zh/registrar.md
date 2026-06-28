@@ -2,6 +2,7 @@
 title: 注册商
 date: '2025-06-30'
 language: zh
+priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
 description: 经 ICANN 认证、获授权代表公众注册域名的公司，充当注册人与注册局之间的接口。

@@ -2,6 +2,7 @@
 title: 'Domain-Verlängerung (Auto-Renew)'
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Die Zahlung zur Verlängerung einer Domain-Registrierung vor deren Ablauf, häufig automatisch für jede Laufzeit.

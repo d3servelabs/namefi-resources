@@ -2,6 +2,7 @@
 title: 'Root-Zone (Root-Server)'
 date: '2026-06-22'
 language: de
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
 description: Die Spitze der DNS-Hierarchie, die jede TLD und die dafür autoritativen Server auflistet.

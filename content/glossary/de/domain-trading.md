@@ -2,6 +2,7 @@
 title: Domain-Handel
 date: '2025-06-30'
 language: de
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: Was ist Domain-Handel und wie verbessert die Tokenisierung das Handelserlebnis?

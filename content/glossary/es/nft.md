@@ -2,6 +2,7 @@
 title: NFT (Token No Fungible)
 date: '2025-06-30'
 language: es
+priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
 description: ¿Qué es un NFT y cómo se relaciona con la tokenización de dominios?
