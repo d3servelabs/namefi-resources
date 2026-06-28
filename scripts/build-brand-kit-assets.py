@@ -32,6 +32,13 @@ EXTRA_ASSETS = [
     "namefi_to_nfi.json",
 ]
 
+# Icon / favicon assets are derived from the compact mark (first Lottie frame):
+# a tight cut (no padding, ~1.35:1) and a square `contain` framing, each on a
+# transparent and an opaque-black background, rasterized at multiple sizes.
+ICON_SOURCE = "namefi-compact.svg"
+ICON_SQUARE_SIZES = [32, 64, 128, 256, 512, 1024]
+ICON_CUT_WIDTHS = [64, 128, 256, 512, 1024, 2048]
+
 ZIP_TIMESTAMP = (2026, 1, 1, 0, 0, 0)
 
 
@@ -95,7 +102,129 @@ def convert_svg(svg_name: str) -> None:
     background.convert("RGB").save(jpg_path, "JPEG", quality=95, subsampling=0)
 
 
-def build_zip() -> None:
+def _icon_boxes() -> tuple[tuple[float, float, float, float], tuple[float, float, float, float]]:
+    """Derive the tight-cut and square viewBoxes from the compact source SVG.
+
+    Renders the source, measures the opaque (green) bounding box, and returns
+    ``(cut_box, square_box)`` as ``(x, y, w, h)`` tuples in viewBox units.
+    """
+    source_path = BRAND_KIT / ICON_SOURCE
+    view = re.search(
+        r'viewBox="([0-9.\-]+)\s+([0-9.\-]+)\s+([0-9.\-]+)\s+([0-9.\-]+)"',
+        source_path.read_text(),
+    )
+    if not view:
+        raise ValueError(f"No viewBox found in {source_path}")
+    _, _, vb_w, vb_h = (float(value) for value in view.groups())
+
+    measure_path = BRAND_KIT / "_icon_measure.png"
+    subprocess.run(
+        ["rsvg-convert", "--zoom", "60", "--output", str(measure_path), str(source_path)],
+        check=True,
+    )
+    rendered = Image.open(measure_path).convert("RGBA")
+    width_px, height_px = rendered.size
+    opaque = rendered.split()[3].point(lambda value: 255 if value > 20 else 0)
+    left, top, right, bottom = opaque.getbbox()
+    measure_path.unlink()
+
+    units_x, units_y = width_px / vb_w, height_px / vb_h
+    x0, y0 = left / units_x, top / units_y
+    box_w, box_h = right / units_x - x0, bottom / units_y - y0
+    side = max(box_w, box_h)
+    cut_box = (x0, y0, box_w, box_h)
+    square_box = (x0 - (side - box_w) / 2, y0 - (side - box_h) / 2, side, side)
+    return cut_box, square_box
+
+
+def _retarget_viewbox(text: str, box: tuple[float, float, float, float], aspect: str | None) -> str:
+    x, y, w, h = box
+    out = re.sub(r'viewBox="[^"]*"', f'viewBox="{x:.4f} {y:.4f} {w:.4f} {h:.4f}"', text, count=1)
+    if aspect is not None:
+        if re.search(r'preserveAspectRatio="[^"]*"', out):
+            out = re.sub(r'preserveAspectRatio="[^"]*"', f'preserveAspectRatio="{aspect}"', out, count=1)
+        else:
+            out = re.sub(r"(<svg\b)", rf'\1 preserveAspectRatio="{aspect}"', out, count=1)
+    return out
+
+
+def _with_black_background(text: str, box: tuple[float, float, float, float]) -> str:
+    x, y, w, h = box
+    rect = f'<rect x="{x:.4f}" y="{y:.4f}" width="{w:.4f}" height="{h:.4f}" fill="#000000"/>'
+    return re.sub(r"(<svg\b[^>]*>)", r"\1" + rect, text, count=1)
+
+
+def _save_icon_raster(image: Image.Image, stem: str, *, black: bool) -> None:
+    if black:
+        canvas = Image.new("RGBA", image.size, (0, 0, 0, 255))
+        canvas.alpha_composite(image)
+        canvas.save(BRAND_KIT / f"{stem}.png")
+        canvas.save(BRAND_KIT / f"{stem}.webp", "WEBP", lossless=True, method=6)
+        canvas.convert("RGB").save(BRAND_KIT / f"{stem}.jpg", "JPEG", quality=95, subsampling=0)
+        return
+    image.save(BRAND_KIT / f"{stem}.png")
+    image.save(BRAND_KIT / f"{stem}.webp", "WEBP", lossless=True, method=6)
+    matte = Image.new("RGBA", image.size, (247, 250, 246, 255))
+    matte.alpha_composite(image)
+    matte.convert("RGB").save(BRAND_KIT / f"{stem}.jpg", "JPEG", quality=95, subsampling=0)
+
+
+def build_icons() -> list[str]:
+    """Generate the icon SVGs + multi-size rasters, returning their filenames."""
+    cut_box, square_box = _icon_boxes()
+    source = (BRAND_KIT / ICON_SOURCE).read_text()
+    cut_svg = _retarget_viewbox(source, cut_box, None)
+    square_svg = _retarget_viewbox(source, square_box, "xMidYMid meet")
+
+    (BRAND_KIT / "namefi-compact-cut.svg").write_text(cut_svg)
+    (BRAND_KIT / "namefi-compact-cut-black.svg").write_text(_with_black_background(cut_svg, cut_box))
+    (BRAND_KIT / "namefi-compact-square.svg").write_text(square_svg)
+    (BRAND_KIT / "namefi-compact-square-black.svg").write_text(_with_black_background(square_svg, square_box))
+
+    names = [
+        "namefi-compact-cut.svg",
+        "namefi-compact-cut-black.svg",
+        "namefi-compact-square.svg",
+        "namefi-compact-square-black.svg",
+    ]
+    tmp = BRAND_KIT / "_icon_tmp.png"
+
+    for size in ICON_SQUARE_SIZES:
+        subprocess.run(
+            ["rsvg-convert", "--format", "png", "--width", str(size), "--height", str(size),
+             "--output", str(tmp), str(BRAND_KIT / "namefi-compact-square.svg")],
+            check=True,
+        )
+        image = Image.open(tmp).convert("RGBA")
+        if image.size != (size, size):
+            padded = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+            padded.alpha_composite(image, ((size - image.width) // 2, (size - image.height) // 2))
+            image = padded
+        _save_icon_raster(image, f"namefi-compact-square-{size}", black=False)
+        _save_icon_raster(image, f"namefi-compact-square-black-{size}", black=True)
+        for ext in ("png", "webp", "jpg"):
+            names.append(f"namefi-compact-square-{size}.{ext}")
+            names.append(f"namefi-compact-square-black-{size}.{ext}")
+
+    for width in ICON_CUT_WIDTHS:
+        subprocess.run(
+            ["rsvg-convert", "--format", "png", "--width", str(width),
+             "--output", str(tmp), str(BRAND_KIT / "namefi-compact-cut.svg")],
+            check=True,
+        )
+        image = Image.open(tmp).convert("RGBA")
+        _save_icon_raster(image, f"namefi-compact-cut-{width}w", black=False)
+        _save_icon_raster(image, f"namefi-compact-cut-black-{width}w", black=True)
+        for ext in ("png", "webp", "jpg"):
+            names.append(f"namefi-compact-cut-{width}w.{ext}")
+            names.append(f"namefi-compact-cut-black-{width}w.{ext}")
+
+    if tmp.exists():
+        tmp.unlink()
+    return names
+
+
+def build_zip(icon_files: list[str]) -> None:
     with zipfile.ZipFile(ZIP_PATH, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         def write_bytes(archive_name: str, data: bytes, mode: int = 0o644) -> None:
             info = zipfile.ZipInfo(archive_name, ZIP_TIMESTAMP)
@@ -124,11 +253,15 @@ def build_zip() -> None:
         for filename in EXTRA_ASSETS:
             write_file(BRAND_KIT / filename, f"namefi-brand-kit/assets/{filename}")
 
+        for filename in icon_files:
+            write_file(BRAND_KIT / filename, f"namefi-brand-kit/assets/{filename}")
+
 
 def main() -> None:
     for svg_name in SVG_ASSETS:
         convert_svg(svg_name)
-    build_zip()
+    icon_files = build_icons()
+    build_zip(icon_files)
 
 
 if __name__ == "__main__":
