@@ -2,6 +2,7 @@
 title: "What is the .ad Domain and Why Is It Perfect for Advertising?"
 date: '2025-12-10'
 language: 'en'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false

@@ -2,6 +2,7 @@
 title: ما هو TLD .sbs ولماذا هو رائع للأعمال الجانبية؟
 date: '2025-06-21'
 language: ar
+priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .sbs تعني "جنباً إلى جنب" وهي مثالية للمشاريع التعاونية والشراكات والأعمال الجانبية.

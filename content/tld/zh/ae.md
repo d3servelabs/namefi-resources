@@ -2,6 +2,7 @@
 title: '什么是 .ae 域名？为什么要选择它作为您的数字身份？'
 date: '2025-12-10'
 language: 'zh'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 draft: false
