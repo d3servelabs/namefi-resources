@@ -23,3 +23,9 @@ jobs:
 
       - name: Lint MDX
         run: bun lint:mdx
+
+      # Audits every internal link across all locales: fails on a real 404
+      # (BROKEN) or a bare link missing its locale prefix (MISSING_LOCALE).
+      # Wrong-locale/missing-translation findings are warnings (exit 0).
+      - name: Audit internal links
+        run: bun links:audit

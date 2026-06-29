@@ -32,7 +32,7 @@ relatedGlossary:
   - /en/glossary/dns/
 ---
 
-If [forums](/blog/top-domain-trader-forums) are where the domain community *argues*, individual domainer blogs are where the community *thinks out loud*. Most of the long-running, considered analysis in the industry — sale post-mortems, [registrar](/en/glossary/registrar/)-policy critiques, market reads — happens on a small number of personal blogs that have been running for fifteen or twenty years.
+If [forums](/en/blog/top-domain-trader-forums) are where the domain community *argues*, individual domainer blogs are where the community *thinks out loud*. Most of the long-running, considered analysis in the industry — sale post-mortems, [registrar](/en/glossary/registrar/)-policy critiques, market reads — happens on a small number of personal blogs that have been running for fifteen or twenty years.
 
 This is the list worth bookmarking. It is opinionated, and it skews toward people who actually [buy and sell domains](/en/blog/domain-flipping/) (rather than to consultants or registries marketing their services).
 
@@ -71,20 +71,20 @@ Mike runs DomainMarket and is one of the most aggressive sellers of premium one-
 Substack has not produced a dominant *domain-specific* publication yet — most of the industry's long-form writers still publish on their own WordPress blogs. But several email newsletters are worth subscribing to:
 
 - **The DomainInvesting.com daily email** — same content as the blog, delivered to your inbox. The most reliable single feed in the industry.
-- **DomainNameWire newsletter** — see the companion post on [domain industry media](/blog/domain-industry-media) for context; the newsletter is the easiest way to follow [DomainNameWire](https://domainnamewire.com/) without checking the site.
+- **DomainNameWire newsletter** — see the companion post on [domain industry media](/en/blog/domain-industry-media) for context; the newsletter is the easiest way to follow [DomainNameWire](https://domainnamewire.com/) without checking the site.
 - **DNJournal's weekly sales report** — published every Monday since 2003 at [DNJournal](https://www.dnjournal.com/). Not a personal newsletter, but it is *the* canonical weekly digest of reported domain sales, edited by Ron Jackson. Every other "top sales" list in the industry derives from this one.
 - **DomainShane's recap posts** — Shane periodically does week-in-review pieces that are essentially newsletter-style summaries of the market.
 - **Saw.com blog** — [Saw.com](https://saw.com/blog) (the brokerage co-founded by Amanda Waltz and Jeff Gabriel) publishes thoughtful pieces on the brokerage side of the business. More polished than the average personal blog.
 
 ## X / Twitter as a "live newsletter"
 
-Many of the people on this list — Elliot, Morgan, Shane, Andrew Rosener (MediaOptions), Page Howe, Bill Sweetman (Name Ninja), and others — are more active on [X](https://x.com/) than on their blogs these days. If you only have time for one channel, follow them on X and let the long-form posts come to you. See the [forums post](/blog/top-domain-trader-forums) for hashtags that surface this crowd: [#domaining](https://x.com/hashtag/domaining), [#domaininvesting](https://x.com/hashtag/domaininvesting), [#domainnames](https://x.com/hashtag/domainnames).
+Many of the people on this list — Elliot, Morgan, Shane, Andrew Rosener (MediaOptions), Page Howe, Bill Sweetman (Name Ninja), and others — are more active on [X](https://x.com/) than on their blogs these days. If you only have time for one channel, follow them on X and let the long-form posts come to you. See the [forums post](/en/blog/top-domain-trader-forums) for hashtags that surface this crowd: [#domaining](https://x.com/hashtag/domaining), [#domaininvesting](https://x.com/hashtag/domaininvesting), [#domainnames](https://x.com/hashtag/domainnames).
 
 ## How to read this list
 
 A few patterns are worth pointing out.
 
-**Personal blog vs. industry media.** Some of these blogs (DomainInvesting, OnlineDomain) are essentially one-person media outlets — the line between "personal blog" and "industry publication" is blurry. The separate [domain industry media post](/blog/domain-industry-media) covers the outlets that operate more like newsrooms.
+**Personal blog vs. industry media.** Some of these blogs (DomainInvesting, OnlineDomain) are essentially one-person media outlets — the line between "personal blog" and "industry publication" is blurry. The separate [domain industry media post](/en/blog/domain-industry-media) covers the outlets that operate more like newsrooms.
 
 **Activity ebbs and flows.** Domain blogs have a tendency to go quiet for months and then surge back. RicksBlog, DomainShane, and MikeMann.com have all gone through long quiet stretches and then returned. Subscribe via RSS or email so you do not miss the comeback posts.
 
@@ -100,6 +100,6 @@ You can add the rest of this list as you figure out which voices you trust.
 
 **Related reading:**
 
-- [Top Domain Trader Forums in English](/blog/top-domain-trader-forums) — where the community *talks*, vs. where individuals *write*.
-- [Famous Domain Industry Media](/blog/domain-industry-media) — the outlets that cover this market as journalism, not as one person's diary.
-- [Complete Domain Name Terminology Guide](/blog/domain-terminology-guide) — vocabulary you will need to follow any of these writers.
+- [Top Domain Trader Forums in English](/en/blog/top-domain-trader-forums) — where the community *talks*, vs. where individuals *write*.
+- [Famous Domain Industry Media](/en/blog/domain-industry-media) — the outlets that cover this market as journalism, not as one person's diary.
+- [Complete Domain Name Terminology Guide](/en/blog/domain-terminology-guide) — vocabulary you will need to follow any of these writers.

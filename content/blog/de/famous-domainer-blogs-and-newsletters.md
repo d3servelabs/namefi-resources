@@ -28,7 +28,7 @@ relatedGlossary:
   - /de/glossary/dns/
 ---
 
-Wenn [Foren](/blog/top-domain-trader-forums) der Ort sind, an dem die Domain-Community *diskutiert*, dann sind individuelle Domainer-Blogs der Ort, an dem die Community *laut nachdenkt*. Die meisten der langjährigen, fundierten Analysen in der Branche – Nachbetrachtungen von Verkäufen, Kritik an [Registrar](/de/glossary/registrar/)-Richtlinien, Markteinschätzungen – finden auf einer kleinen Anzahl persönlicher Blogs statt, die bereits seit fünfzehn oder zwanzig Jahren betrieben werden.
+Wenn [Foren](/de/blog/top-domain-trader-forums) der Ort sind, an dem die Domain-Community *diskutiert*, dann sind individuelle Domainer-Blogs der Ort, an dem die Community *laut nachdenkt*. Die meisten der langjährigen, fundierten Analysen in der Branche – Nachbetrachtungen von Verkäufen, Kritik an [Registrar](/de/glossary/registrar/)-Richtlinien, Markteinschätzungen – finden auf einer kleinen Anzahl persönlicher Blogs statt, die bereits seit fünfzehn oder zwanzig Jahren betrieben werden.
 
 Dies ist die Liste, die es wert ist, als Lesezeichen gespeichert zu werden. Sie ist meinungsstark und konzentriert sich auf Personen, die tatsächlich Domains kaufen und verkaufen (und weniger auf Berater oder Registries, die ihre Dienstleistungen vermarkten).
 
@@ -67,20 +67,20 @@ Mike betreibt DomainMarket und ist einer der aggressivsten Verkäufer von Premiu
 Substack hat bisher noch keine dominierende *domain-spezifische* Publikation hervorgebracht – die meisten Autoren von ausführlicheren Texten in der Branche publizieren nach wie vor auf ihren eigenen WordPress-Blogs. Es gibt jedoch einige E-Mail-Newsletter, die es wert sind, abonniert zu werden:
 
 - **Die tägliche E-Mail von DomainInvesting.com** – die gleichen Inhalte wie auf dem Blog, direkt in Ihren Posteingang geliefert. Der zuverlässigste Einzel-Feed der Branche.
-- **DomainNameWire Newsletter** – siehe den begleitenden Beitrag über [Medien der Domain-Branche](/blog/domain-industry-media) für den Kontext; der Newsletter ist der einfachste Weg, [DomainNameWire](https://domainnamewire.com/) zu folgen, ohne die Website aufrufen zu müssen.
+- **DomainNameWire Newsletter** – siehe den begleitenden Beitrag über [Medien der Domain-Branche](/de/blog/domain-industry-media) für den Kontext; der Newsletter ist der einfachste Weg, [DomainNameWire](https://domainnamewire.com/) zu folgen, ohne die Website aufrufen zu müssen.
 - **Der wöchentliche Verkaufsbericht des DNJournal** – wird seit 2003 jeden Montag im [DNJournal](https://www.dnjournal.com/) veröffentlicht. Kein persönlicher Newsletter, aber es ist *die* maßgebliche wöchentliche Zusammenfassung gemeldeter Domain-Verkäufe, herausgegeben von Ron Jackson. Jede andere „Top-Verkäufe“-Liste in der Branche leitet sich von dieser ab.
 - **DomainShanes Recap-Posts** – Shane verfasst regelmäßig Wochenrückblicke, die im Grunde genommen marktzusammenfassende Newsletter sind.
 - **Saw.com Blog** – [Saw.com](https://saw.com/blog) (das von Amanda Waltz und Jeff Gabriel mitbegründete Brokerage-Unternehmen) veröffentlicht durchdachte Artikel über die Broker-Seite des Geschäfts. Professioneller aufbereitet als der durchschnittliche persönliche Blog.
 
 ## X / Twitter als „Live-Newsletter“
 
-Viele der Personen auf dieser Liste – Elliot, Morgan, Shane, Andrew Rosener (MediaOptions), Page Howe, Bill Sweetman (Name Ninja) und andere – sind heutzutage aktiver auf [X](https://x.com/) als auf ihren Blogs. Wenn Sie nur Zeit für einen Kanal haben, folgen Sie ihnen auf X und lassen Sie die langen Beiträge zu sich kommen. Siehe den [Foren-Beitrag](/blog/top-domain-trader-forums) für Hashtags, die diese Zielgruppe hervorheben: [#domaining](https://x.com/hashtag/domaining), [#domaininvesting](https://x.com/hashtag/domaininvesting), [#domainnames](https://x.com/hashtag/domainnames).
+Viele der Personen auf dieser Liste – Elliot, Morgan, Shane, Andrew Rosener (MediaOptions), Page Howe, Bill Sweetman (Name Ninja) und andere – sind heutzutage aktiver auf [X](https://x.com/) als auf ihren Blogs. Wenn Sie nur Zeit für einen Kanal haben, folgen Sie ihnen auf X und lassen Sie die langen Beiträge zu sich kommen. Siehe den [Foren-Beitrag](/de/blog/top-domain-trader-forums) für Hashtags, die diese Zielgruppe hervorheben: [#domaining](https://x.com/hashtag/domaining), [#domaininvesting](https://x.com/hashtag/domaininvesting), [#domainnames](https://x.com/hashtag/domainnames).
 
 ## Wie man diese Liste liest
 
 Einige Muster sind es wert, hervorgehoben zu werden.
 
-**Persönlicher Blog vs. Branchenmedien.** Einige dieser Blogs (DomainInvesting, OnlineDomain) sind im Grunde Ein-Personen-Medien – die Grenze zwischen „persönlichem Blog“ und „Branchenpublikation“ ist fließend. Der separate [Beitrag über Medien der Domain-Branche](/blog/domain-industry-media) behandelt die Kanäle, die eher wie Nachrichtenredaktionen (Newsrooms) arbeiten.
+**Persönlicher Blog vs. Branchenmedien.** Einige dieser Blogs (DomainInvesting, OnlineDomain) sind im Grunde Ein-Personen-Medien – die Grenze zwischen „persönlichem Blog“ und „Branchenpublikation“ ist fließend. Der separate [Beitrag über Medien der Domain-Branche](/de/blog/domain-industry-media) behandelt die Kanäle, die eher wie Nachrichtenredaktionen (Newsrooms) arbeiten.
 
 **Aktivität verläuft in Wellen.** Domain-Blogs haben die Tendenz, monatelang ruhig zu sein und dann plötzlich wieder aufzuleben. RicksBlog, DomainShane und MikeMann.com haben alle lange Ruhephasen durchlaufen und sind dann zurückgekehrt. Abonnieren Sie via RSS oder E-Mail, damit Sie die Comeback-Beiträge nicht verpassen.
 
@@ -96,6 +96,6 @@ Sie können den Rest dieser Liste nach und nach hinzufügen, sobald Sie herausge
 
 **Weiterführende Lektüre:**
 
-- [Die besten Foren für Domain-Händler auf Englisch](/blog/top-domain-trader-forums) – wo die Community *spricht*, im Gegensatz dazu, wo Einzelpersonen *schreiben*.
-- [Bekannte Medien der Domain-Branche](/blog/domain-industry-media) – die Publikationen, die diesen Markt journalistisch abdecken und nicht als Tagebuch einer Einzelperson.
-- [Der vollständige Leitfaden zur Domainnamen-Terminologie](/blog/domain-terminology-guide) – das Vokabular, das Sie benötigen, um all diesen Autoren folgen zu können.
+- [Die besten Foren für Domain-Händler auf Englisch](/de/blog/top-domain-trader-forums) – wo die Community *spricht*, im Gegensatz dazu, wo Einzelpersonen *schreiben*.
+- [Bekannte Medien der Domain-Branche](/de/blog/domain-industry-media) – die Publikationen, die diesen Markt journalistisch abdecken und nicht als Tagebuch einer Einzelperson.
+- [Der vollständige Leitfaden zur Domainnamen-Terminologie](/de/blog/domain-terminology-guide) – das Vokabular, das Sie benötigen, um all diesen Autoren folgen zu können.

@@ -17,6 +17,16 @@
  *   BROKEN              slug exists in neither the link locale NOR the default
  *                      locale (en) -> the runtime fallback can't save it, real
  *                      404. Must be fixed by hand. (Exit code 1.)
+ *   MISSING_LOCALE     the href omits the locale segment entirely — a bare
+ *                      `](/blog/<slug>)` instead of `](/<locale>/blog/<slug>)`.
+ *                      The app has NO bare `/blog/...` route (every page lives
+ *                      under `[lang]/`), so the locale middleware redirects the
+ *                      bare path to whatever locale the *reader's* cookie /
+ *                      Accept-Language resolves to — leaking an en reader onto a
+ *                      de page (and adding a redirect hop). A real defect, so it
+ *                      fails the run (Exit code 1), not a soft warning.
+ *                      Auto-fixable: prefix the file's own locale (or the en
+ *                      fallback when the file's locale lacks the slug).
  *   LOCALE_MISMATCH    link locale != file locale AND a same-locale counterpart
  *                      exists. e.g. a `zh` post links to `/en/glossary/dns/`
  *                      while `/zh/glossary/dns/` exists. Auto-fixable: repoint
@@ -58,6 +68,7 @@ const MD_EXT = new Set(['.md', '.mdx']);
 
 type Severity =
   | 'BROKEN'
+  | 'MISSING_LOCALE'
   | 'LOCALE_MISMATCH'
   | 'MISSING_TRANSLATION'
   | 'CROSS_LOCALE';
@@ -172,6 +183,17 @@ const LINK_RE = new RegExp(
 );
 const HREF_PARTS_RE = new RegExp(
   String.raw`^\/(${LOCALE_RE})\/(${COLL_RE})\/([^\/#?]+)\/?(?:[#?].*)?$`,
+);
+// matches a BARE internal link `](/<collection>/<slug>...)` — one that starts
+// with a known collection instead of a locale, i.e. the locale segment was
+// omitted. Locale and collection names are disjoint, so this never collides
+// with LINK_RE (which requires `/<locale>/<collection>/`).
+const BARE_LINK_RE = new RegExp(
+  String.raw`\]\((\/(?:${COLL_RE})\/[^)\s"]+)`,
+  'g',
+);
+const BARE_HREF_PARTS_RE = new RegExp(
+  String.raw`^\/(${COLL_RE})\/([^\/#?]+)\/?(?:[#?].*)?$`,
 );
 
 function localeOfFile(file: string): string | null {
@@ -308,6 +330,49 @@ for (const file of auditFiles) {
     }
   }
 
+  // Second pass: bare internal links missing the locale segment entirely.
+  for (const m of prose.matchAll(BARE_LINK_RE)) {
+    const href = m[1];
+    const parts = href.match(BARE_HREF_PARTS_RE);
+    if (!parts) continue;
+    const [, collection, slugRaw] = parts;
+    const slug = decodeURIComponent(slugRaw);
+
+    // Prefer the file's own locale (self-canonical); fall back to the default
+    // locale (en) only when the file's locale lacks the slug, mirroring the
+    // runtime fallback. If neither has it, leave fixedHref undefined — still
+    // reported (and fails the run) but not auto-rewritten into a fresh 404.
+    const sameLocaleExists = slugIndex.has(
+      `${collection}/${fileLocale}/${slug}`,
+    );
+    const defaultLocaleExists = slugIndex.has(
+      `${collection}/${DEFAULT_LOCALE}/${slug}`,
+    );
+    const targetLocale = sameLocaleExists
+      ? fileLocale
+      : defaultLocaleExists
+        ? DEFAULT_LOCALE
+        : null;
+    const fixedHref = targetLocale ? `/${targetLocale}${href}` : undefined;
+
+    findings.push({
+      file: rel(file),
+      line: lineAt(m.index ?? 0),
+      severity: 'MISSING_LOCALE',
+      href,
+      fixedHref,
+      collection,
+      slug,
+      fileLocale,
+      linkLocale: '',
+    });
+
+    if (FIX && fixedHref) {
+      const start = (m.index ?? 0) + 2;
+      edits.push({ start, end: start + href.length, replacement: fixedHref });
+    }
+  }
+
   if (FIX && edits.length > 0) {
     // Apply right-to-left so earlier offsets stay valid as we splice.
     edits.sort((a, b) => b.start - a.start);
@@ -347,6 +412,7 @@ if (JSON_OUT) {
   const c = (code: string, s: string) => (tty ? `[${code}m${s}[0m` : s);
   const tag: Record<Severity, string> = {
     BROKEN: c('31', '✗ BROKEN'),
+    MISSING_LOCALE: c('31', '✗ NO-LOCALE'),
     LOCALE_MISMATCH: c('33', '⚠ LOCALE'),
     MISSING_TRANSLATION: c('33', '⚠ MISSING-TR'),
     CROSS_LOCALE: c('2', '· x-locale'),
@@ -360,13 +426,17 @@ if (JSON_OUT) {
     console.log(c('1', file));
     for (const f of list.sort((a, b) => a.line - b.line)) {
       const fixNote =
-        f.severity === 'LOCALE_MISMATCH'
+        (f.severity === 'LOCALE_MISMATCH' || f.severity === 'MISSING_LOCALE') &&
+        f.fixedHref
           ? `  ${FIX ? 'fixed→' : '→'} ${f.fixedHref}`
           : '';
       console.log(`  ${tag[f.severity]}  L${f.line}  ${f.href}${fixNote}`);
     }
   }
   const broken = findings.filter((f) => f.severity === 'BROKEN').length;
+  const noLocale = findings.filter(
+    (f) => f.severity === 'MISSING_LOCALE',
+  ).length;
   const mismatch = findings.filter((f) => f.severity === 'LOCALE_MISMATCH').length;
   const missingTr = findings.filter(
     (f) => f.severity === 'MISSING_TRANSLATION',
@@ -376,12 +446,15 @@ if (JSON_OUT) {
   console.log(
     `Audited ${auditFiles.length} file(s): ` +
       `${c('31', `${broken} broken`)}, ` +
+      `${c('31', `${noLocale} missing-locale`)}, ` +
       `${c('33', `${mismatch} locale-mismatch`)}${FIX ? ` (${filesToRewrite.size} file(s) rewritten)` : ''}, ` +
       `${c('33', `${missingTr} missing-translation`)}, ` +
       `${c('2', `${xloc} cross-locale fallback`)}.`,
   );
-  if (!FIX && mismatch > 0) {
-    console.log('Re-run with --fix to repoint locale-mismatch links automatically.');
+  if (!FIX && (mismatch > 0 || noLocale > 0)) {
+    console.log(
+      'Re-run with --fix to repoint locale-mismatch and add missing locale prefixes automatically.',
+    );
   }
   if (selfCheckFailures > 0) {
     console.log(
@@ -390,5 +463,20 @@ if (JSON_OUT) {
   }
 }
 
+// A MISSING_LOCALE finding fails the run unless --fix actually rewrote its file
+// (a bare link with no resolvable target has no fixedHref and so always remains).
+const rewrittenRelPaths = new Set(
+  [...filesToRewrite.keys()].map((f) => rel(f)),
+);
+const missingLocaleUnresolved = findings.some(
+  (f) =>
+    f.severity === 'MISSING_LOCALE' &&
+    !(FIX && f.fixedHref && rewrittenRelPaths.has(f.file)),
+);
+
 process.exitCode =
-  selfCheckFailures > 0 || findings.some((f) => f.severity === 'BROKEN') ? 1 : 0;
+  selfCheckFailures > 0 ||
+  findings.some((f) => f.severity === 'BROKEN') ||
+  missingLocaleUnresolved
+    ? 1
+    : 0;

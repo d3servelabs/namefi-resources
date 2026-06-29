@@ -32,7 +32,7 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-If [individual domainer blogs](/blog/famous-domainer-blogs-and-newsletters) are personal voices, *domain industry media* are the outlets that operate more like newsrooms — sometimes one-person newsrooms, but with the editorial posture of journalism rather than a trader's diary. They cover deals, policy, registry/[registrar](/en/glossary/registrar/) moves, [ICANN](/en/glossary/icann/), and the occasional drama, and they are the sources other people quote.
+If [individual domainer blogs](/en/blog/famous-domainer-blogs-and-newsletters) are personal voices, *domain industry media* are the outlets that operate more like newsrooms — sometimes one-person newsrooms, but with the editorial posture of journalism rather than a trader's diary. They cover deals, policy, registry/[registrar](/en/glossary/registrar/) moves, [ICANN](/en/glossary/icann/), and the occasional drama, and they are the sources other people quote.
 
 This is the short list of media properties worth knowing in 2026.
 
@@ -52,7 +52,7 @@ The industry's satire-and-news outlet. Edited by Theo, who has an irreverent sty
 
 ### OnlineDomain.com and DomainInvesting.com (overlap)
 
-Both [OnlineDomain](https://onlinedomain.com/) and [DomainInvesting](https://domaininvesting.com/) sit on the boundary between individual blog and industry media — see the [famous-domainer-blogs post](/blog/famous-domainer-blogs-and-newsletters) for context. Listed here too because they regularly break news that the formal outlets pick up later.
+Both [OnlineDomain](https://onlinedomain.com/) and [DomainInvesting](https://domaininvesting.com/) sit on the boundary between individual blog and industry media — see the [famous-domainer-blogs post](/en/blog/famous-domainer-blogs-and-newsletters) for context. Listed here too because they regularly break news that the formal outlets pick up later.
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
@@ -84,7 +84,7 @@ Andrew Allemann's interview show, attached to [DomainNameWire](https://domainnam
 
 These are not strictly media, but they are where most published stories *land* and get debated.
 
-- [NamePros](https://www.namepros.com/) — covered in detail in the [forums post](/blog/top-domain-trader-forums). The discussion threads on any major story are often more informative than the original article.
+- [NamePros](https://www.namepros.com/) — covered in detail in the [forums post](/en/blog/top-domain-trader-forums). The discussion threads on any major story are often more informative than the original article.
 - [Domaining.com](https://www.domaining.com/) — aggregator of domainer blogs. Useful as a single page that shows the day's headlines across most of the sources on this list.
 
 ## How to read this list
@@ -93,7 +93,7 @@ A few things to keep in mind.
 
 **Some outlets are also businesses.** Brokerages, marketplaces, and registries publish content too, and the line between "industry media" and "content marketing" is not always clean. The outlets on this list are independently owned and have been around long enough to have an editorial reputation; if you read content from a brokerage's blog, treat it as informed but interested.
 
-**News breaks on X first.** Big stories — a major sale, a registry policy change, a lawsuit — almost always appear on [X](https://x.com/) before they appear on any of these outlets. The outlets are where stories get *recorded*, not where they break. Pair the media list with the X hashtags in the [forums post](/blog/top-domain-trader-forums#twitter-x-domain-twitter).
+**News breaks on X first.** Big stories — a major sale, a registry policy change, a lawsuit — almost always appear on [X](https://x.com/) before they appear on any of these outlets. The outlets are where stories get *recorded*, not where they break. Pair the media list with the X hashtags in the [forums post](/en/blog/top-domain-trader-forums#twitter-x-domain-twitter).
 
 **Sales numbers are reported, not audited.** Public sale figures come from registrar/marketplace press releases or seller disclosures, not from any neutral clearinghouse. [DNJournal](https://www.dnjournal.com/) and [NameBio](https://namebio.com/) are the most disciplined about labeling unverified sales — but even there, the underlying data is self-reported.
 
@@ -107,6 +107,6 @@ Add DomainSherpa's archive when you want depth on a specific investor, and Circl
 
 **Related reading:**
 
-- [Famous Domainer Blogs, Substacks, and Newsletters](/blog/famous-domainer-blogs-and-newsletters) — individual voices, vs. the outlets on this list.
-- [Top Domain Trader Forums in English](/blog/top-domain-trader-forums) — where stories get debated after they are published.
-- [Complete Domain Name Terminology Guide](/blog/domain-terminology-guide) — vocabulary that shows up across all of these outlets.
+- [Famous Domainer Blogs, Substacks, and Newsletters](/en/blog/famous-domainer-blogs-and-newsletters) — individual voices, vs. the outlets on this list.
+- [Top Domain Trader Forums in English](/en/blog/top-domain-trader-forums) — where stories get debated after they are published.
+- [Complete Domain Name Terminology Guide](/en/blog/domain-terminology-guide) — vocabulary that shows up across all of these outlets.

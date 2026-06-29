@@ -157,3 +157,76 @@ test('a slug absent from every locale (no en fallback) is BROKEN (exit 1)', () =
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test('a bare internal link (no locale segment) is MISSING_LOCALE and fails the run (exit 1)', () => {
+  const root = scaffold();
+  try {
+    // `](/glossary/dns)` omits the locale segment — there is no bare route, so
+    // the middleware would locale-redirect by the reader's cookie. A defect.
+    writeFileSync(
+      path.join(root, 'content/glossary/zh/probe.md'),
+      `---\ntitle: probe\n---\nSee [DNS](/glossary/dns) here.\n`,
+    );
+    const audit = run(root, ['--json', 'content/glossary/zh/probe.md']);
+    const report = JSON.parse(audit.stdout) as {
+      findings: { severity: string; href: string; fixedHref?: string }[];
+    };
+    const finding = report.findings.find((f) => f.href === '/glossary/dns');
+    expect(finding?.severity).toBe('MISSING_LOCALE');
+    // zh has the slug → fix prefixes the file's own locale (self-canonical).
+    expect(finding?.fixedHref).toBe('/zh/glossary/dns');
+    expect(audit.code).toBe(1); // a bare link is an error, not a soft warning
+    // check mode must never mutate the file.
+    expect(
+      readFileSync(path.join(root, 'content/glossary/zh/probe.md'), 'utf8'),
+    ).toContain('](/glossary/dns)');
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('--fix prefixes bare links: own locale when present, en fallback otherwise, anchors kept', () => {
+  const root = scaffold();
+  try {
+    // dns: zh has it → /zh/. dnssec: en-only → en fallback. plus an anchor form.
+    writeFileSync(
+      path.join(root, 'content/glossary/zh/probe.md'),
+      `---\ntitle: probe\n---\n` +
+        `[DNS](/glossary/dns) and [anchor](/glossary/dns#a) and ` +
+        `[DNSSEC](/glossary/dnssec).\n`,
+    );
+    const fix = run(root, ['--fix', 'content/glossary/zh/probe.md']);
+    expect(fix.code).toBe(0); // every bare link resolved → clean run
+    const probe = readFileSync(
+      path.join(root, 'content/glossary/zh/probe.md'),
+      'utf8',
+    );
+    expect(probe).toContain('](/zh/glossary/dns)');
+    expect(probe).toContain('](/zh/glossary/dns#a)'); // anchor preserved
+    expect(probe).toContain('](/en/glossary/dnssec)'); // en fallback
+    expect(probe).not.toContain('](/glossary/'); // no bare link survives
+    // Re-audit: the fixed tree is clean.
+    const audit = run(root, ['content/glossary/zh/probe.md']);
+    expect(audit.code).toBe(0);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('--fix leaves a bare link whose target exists in no locale (still exit 1)', () => {
+  const root = scaffold();
+  try {
+    writeFileSync(
+      path.join(root, 'content/glossary/zh/probe.md'),
+      `---\ntitle: probe\n---\nSee [Ghost](/glossary/ghost).\n`,
+    );
+    const fix = run(root, ['--fix', 'content/glossary/zh/probe.md']);
+    // No resolvable target → not auto-rewritten, and the run still fails.
+    expect(fix.code).toBe(1);
+    expect(
+      readFileSync(path.join(root, 'content/glossary/zh/probe.md'), 'utf8'),
+    ).toContain('](/glossary/ghost)');
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});

@@ -86,7 +86,7 @@ La plupart d'entre eux fonctionnent sur invitation et se développent autour de 
 
 ### Domaining.com et le réseau de blogs de domainers
 
-[Domaining.com](https://www.domaining.com/) n'est pas un forum ; c'est l'agrégateur canonique des blogs de domainers. L'essentiel des discussions de fond en anglais dans ce secteur a lieu dans les sections de commentaires de ces blogs — [DomainInvesting.com](https://domaininvesting.com/) (Elliot Silver), [OnlineDomain.com](https://onlinedomain.com/) (Konstantinos Zournas), [DomainGang](https://domaingang.com/), [TheDomains](https://thedomains.com/), et [DomainNameWire](https://domainnamewire.com/), entre autres. Si par « où les domainers discutent-ils ? » vous entendez « où se trouvent les analyses écrites approfondies ? », la réponse se divise en deux — les voix individuelles sont couvertes dans l'article sur [les blogs et newsletters célèbres de domainers](/blog/famous-domainer-blogs-and-newsletters), et les organes d'information dans l'article sur [les médias de l'industrie des noms de domaine](/blog/domain-industry-media).
+[Domaining.com](https://www.domaining.com/) n'est pas un forum ; c'est l'agrégateur canonique des blogs de domainers. L'essentiel des discussions de fond en anglais dans ce secteur a lieu dans les sections de commentaires de ces blogs — [DomainInvesting.com](https://domaininvesting.com/) (Elliot Silver), [OnlineDomain.com](https://onlinedomain.com/) (Konstantinos Zournas), [DomainGang](https://domaingang.com/), [TheDomains](https://thedomains.com/), et [DomainNameWire](https://domainnamewire.com/), entre autres. Si par « où les domainers discutent-ils ? » vous entendez « où se trouvent les analyses écrites approfondies ? », la réponse se divise en deux — les voix individuelles sont couvertes dans l'article sur [les blogs et newsletters célèbres de domainers](/fr/blog/famous-domainer-blogs-and-newsletters), et les organes d'information dans l'article sur [les médias de l'industrie des noms de domaine](/fr/blog/domain-industry-media).
 
 ### LinkedIn
 
@@ -108,8 +108,8 @@ Si vous cherchez également à savoir où *lister* vos noms de domaine (plutôt 
 
 **À lire également :**
 
-- [Célèbres blogs, Substacks et newsletters de domainers](/blog/famous-domainer-blogs-and-newsletters) — les voix individuelles vers lesquelles renvoient les fils de discussion des forums.
-- [Médias célèbres de l'industrie des noms de domaine](/blog/domain-industry-media) — les organes d'information qui couvrent ce marché de manière journalistique.
-- [Guide complet de la terminologie des noms de domaine](/blog/domain-terminology-guide) — le jargon que les domainers utilisent sur ces forums.
-- [Parts de marché des ccTLD par volume d'enregistrement](/blog/cctld-market-share-by-registration-volume) — le contexte pour les fils de discussion sur les extensions de code pays que vous verrez sur NamePros.
-- [Cas d'usage des noms de domaine tokenisés en 2026](/blog/tokenized-domain-use-cases-2026) — vers où se dirigent les futures conversations.
+- [Célèbres blogs, Substacks et newsletters de domainers](/fr/blog/famous-domainer-blogs-and-newsletters) — les voix individuelles vers lesquelles renvoient les fils de discussion des forums.
+- [Médias célèbres de l'industrie des noms de domaine](/fr/blog/domain-industry-media) — les organes d'information qui couvrent ce marché de manière journalistique.
+- [Guide complet de la terminologie des noms de domaine](/fr/blog/domain-terminology-guide) — le jargon que les domainers utilisent sur ces forums.
+- [Parts de marché des ccTLD par volume d'enregistrement](/fr/blog/cctld-market-share-by-registration-volume) — le contexte pour les fils de discussion sur les extensions de code pays que vous verrez sur NamePros.
+- [Cas d'usage des noms de domaine tokenisés en 2026](/fr/blog/tokenized-domain-use-cases-2026) — vers où se dirigent les futures conversations.

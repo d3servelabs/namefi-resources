@@ -86,7 +86,7 @@ Die meisten davon sind einladungsbasiert und wachsen rund um einzelne Broker, Pl
 
 ### Domaining.com und der Domainer-Blog-Ring
 
-[Domaining.com](https://www.domaining.com/) ist kein Forum; es ist der maßgebliche Aggregator von Domainer-Blogs. Der Großteil der ausführlichen englischsprachigen Diskussionen der Branche findet in den Kommentarbereichen dieser Blogs statt – unter anderem auf [DomainInvesting.com](https://domaininvesting.com/) (Elliot Silver), [OnlineDomain.com](https://onlinedomain.com/) (Konstantinos Zournas), [DomainGang](https://domaingang.com/), [TheDomains](https://thedomains.com/) und [DomainNameWire](https://domainnamewire.com/). Wenn „Wo tauschen sich Domainer aus?“ gleichbedeutend mit „Wo gibt es fundierte schriftliche Analysen?“ ist, teilt sich die Antwort in zwei Bereiche auf: Einzelne Stimmen werden im Beitrag über [bekannte Domainer-Blogs und Newsletter](/blog/famous-domainer-blogs-and-newsletters) behandelt, und die Nachrichtenportale im Beitrag über [Medien der Domain-Branche](/blog/domain-industry-media).
+[Domaining.com](https://www.domaining.com/) ist kein Forum; es ist der maßgebliche Aggregator von Domainer-Blogs. Der Großteil der ausführlichen englischsprachigen Diskussionen der Branche findet in den Kommentarbereichen dieser Blogs statt – unter anderem auf [DomainInvesting.com](https://domaininvesting.com/) (Elliot Silver), [OnlineDomain.com](https://onlinedomain.com/) (Konstantinos Zournas), [DomainGang](https://domaingang.com/), [TheDomains](https://thedomains.com/) und [DomainNameWire](https://domainnamewire.com/). Wenn „Wo tauschen sich Domainer aus?“ gleichbedeutend mit „Wo gibt es fundierte schriftliche Analysen?“ ist, teilt sich die Antwort in zwei Bereiche auf: Einzelne Stimmen werden im Beitrag über [bekannte Domainer-Blogs und Newsletter](/de/blog/famous-domainer-blogs-and-newsletters) behandelt, und die Nachrichtenportale im Beitrag über [Medien der Domain-Branche](/de/blog/domain-industry-media).
 
 ### LinkedIn
 
@@ -108,8 +108,8 @@ Wenn Sie auch darüber nachdenken, wo Sie Namen *anbieten* sollten (anstatt wo S
 
 **Weiterführende Artikel:**
 
-- [Bekannte Domainer-Blogs, Substacks und Newsletter](/blog/famous-domainer-blogs-and-newsletters) — die individuellen Stimmen, auf die in den Forum-Threads verlinkt wird.
-- [Bekannte Medien der Domain-Branche](/blog/domain-industry-media) — die Nachrichtenportale, die diesen Markt journalistisch abdecken.
-- [Der komplette Leitfaden zur Domain-Terminologie](/blog/domain-terminology-guide) — die Sprache, die Domainer in diesen Foren verwenden.
-- [Marktanteile der ccTLDs nach Registrierungsvolumen](/blog/cctld-market-share-by-registration-volume) — Kontext für die Country-Code-Threads, die Sie auf NamePros finden werden.
-- [Anwendungsfälle für tokenisierte Domains 2026](/blog/tokenized-domain-use-cases-2026) — wohin sich die Diskussion als Nächstes entwickelt.
+- [Bekannte Domainer-Blogs, Substacks und Newsletter](/de/blog/famous-domainer-blogs-and-newsletters) — die individuellen Stimmen, auf die in den Forum-Threads verlinkt wird.
+- [Bekannte Medien der Domain-Branche](/de/blog/domain-industry-media) — die Nachrichtenportale, die diesen Markt journalistisch abdecken.
+- [Der komplette Leitfaden zur Domain-Terminologie](/de/blog/domain-terminology-guide) — die Sprache, die Domainer in diesen Foren verwenden.
+- [Marktanteile der ccTLDs nach Registrierungsvolumen](/de/blog/cctld-market-share-by-registration-volume) — Kontext für die Country-Code-Threads, die Sie auf NamePros finden werden.
+- [Anwendungsfälle für tokenisierte Domains 2026](/de/blog/tokenized-domain-use-cases-2026) — wohin sich die Diskussion als Nächstes entwickelt.

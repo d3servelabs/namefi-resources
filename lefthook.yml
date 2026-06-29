@@ -4,3 +4,5 @@ pre-push:
       run: bun data:validate
     lint_mdx:
       run: bun lint:mdx
+    links_audit:
+      run: bun links:audit
