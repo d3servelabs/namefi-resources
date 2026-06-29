@@ -89,7 +89,7 @@ Panix 사건이 단순한 보안 사고를 넘어 역사적인 사례로 남은 
 
 Melbourne IT는 그 공로를 인정받을 만하게도 사실을 숨기지 않았습니다. 이틀 뒤 The Register는 [한 호주 도메인 레지스트라가 지난 주말 도메인 이름 하이재킹에서 자사의 역할을 인정했다고](https://www.theregister.com/2005/01/19/panix_hijack_more/#:~:text=An%20Australian%20domain%20registrar%20has%20admitted%20to%20its%20part) 보도했으며, Melbourne IT는 이전 프로세스에서 수행되지 않은 검증 단계를 실패 원인으로 지목하고 해당 허점이 폐쇄되었다고 약속했습니다.
 
-그러나 더 중요한 결과는 구조적 변화였습니다. Panix는 이후 이전 보안 문제를 둘러싼 광범위한 재검토에서 교과서적인 사례가 되었습니다. ICANN 보안 및 안정성 자문위원회는 2005년 보고서 [*도메인 이름 하이재킹: 사례, 위협, 위험 및 시정 조치*](https://itp.cdn.icann.org/en/files/security-and-stability-advisory-committee-ssac-reports/hijacking-report-12-07-2005-en.pdf)를 발표하며 레지스트라가 실제 [등록인](/ko/glossary/registrant/)의 확인 없이 이전을 수락하는 바로 이 유형의 실패를 분석했습니다. 시스템을 강화한 지속적인 개선 조치들은 이 사건과 같은 주말들에서 직접 비롯되었습니다.
+그러나 더 중요한 결과는 구조적 변화였습니다. Panix는 이후 이전 보안 문제를 둘러싼 광범위한 재검토에서 교과서적인 사례가 되었습니다. ICANN 보안 및 안정성 자문위원회는 2005년 보고서 [*도메인 이름 하이재킹: 사례, 위협, 위험 및 시정 조치*](https://itp.cdn.icann.org/en/files/security-and-stability-advisory-committee-ssac-reports/hijacking-report-12-07-2005-en.pdf)를 발표하며 레지스트라가 실제 [등록자](/ko/glossary/registrant/)의 확인 없이 이전을 수락하는 바로 이 유형의 실패를 분석했습니다. 시스템을 강화한 지속적인 개선 조치들은 이 사건과 같은 주말들에서 직접 비롯되었습니다.
 
 - **기본적인 레지스트라 잠금.** `clientTransferProhibited`로 설정된 도메인은 정당한 소유자가 잠금을 해제하기 전까지 이전 자체가 거부됩니다. 한때 선택적 옵션이었던 이 설정이 많은 레지스트라에서 기본 상태가 되었습니다 — 자동 승인 규칙도 무력화할 수 없는 브레이크가 생긴 것입니다.
 - **[인증 코드](/ko/glossary/auth-code/)(EPP 이전 코드).** 현재의 [gTLD](/ko/glossary/gtld/) 이전에는 *이전 내주는* 레지스트라가 검증된 등록인에게만 공개하는 비밀 인증 코드가 필요합니다. 이로써 이전 받는 레지스트라가 서류만으로 도메인을 가져가는 것이 불가능해졌습니다.

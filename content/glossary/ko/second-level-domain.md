@@ -30,4 +30,4 @@ relatedGlossary:
   - /ko/glossary/registrant/
 ---
 
-**2단계 도메인(SLD)**은 [TLD](/ko/glossary/tld/) 바로 왼쪽에 위치한 레이블입니다 — `example.com`에서 `example`에 해당하는 부분입니다. 이 부분은 [등록대행자](/ko/glossary/registrar/)를 통해 실제로 등록하는 구성 요소이며, TLD와 결합하여 [레지스트리](/ko/glossary/registry/)가 [등록인](/ko/glossary/registrant/) 정보와 함께 기록하는 등록 가능한 도메인명을 형성합니다. SLD 왼쪽에 오는 모든 레이블 — `www`, `blog`, `app` 등 — 은 사용자가 직접 관리하는 [서브도메인](/ko/glossary/subdomain/)이며, 오른쪽에 오는 모든 것은 공개 접미사입니다.
+**2단계 도메인(SLD)**은 [TLD](/ko/glossary/tld/) 바로 왼쪽에 위치한 레이블입니다 — `example.com`에서 `example`에 해당하는 부분입니다. 이 부분은 [등록대행자](/ko/glossary/registrar/)를 통해 실제로 등록하는 구성 요소이며, TLD와 결합하여 [레지스트리](/ko/glossary/registry/)가 [등록자](/ko/glossary/registrant/) 정보와 함께 기록하는 등록 가능한 도메인명을 형성합니다. SLD 왼쪽에 오는 모든 레이블 — `www`, `blog`, `app` 등 — 은 사용자가 직접 관리하는 [서브도메인](/ko/glossary/subdomain/)이며, 오른쪽에 오는 모든 것은 공개 접미사입니다.
