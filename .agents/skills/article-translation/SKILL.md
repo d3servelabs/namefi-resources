@@ -83,6 +83,20 @@ consistency checks don't false-flag legitimate word forms. Set a style profile: 
 address style, brand posture, and a **local SEO posture (natural target-language search phrases over literal
 English)**.
 
+**Establish the locale's borrowing convention** before drafting: for each foreign term decide between (a) a
+native translation, (b) transliteration into the **native script**, or (c) keeping it verbatim in the source
+script. Locales differ in how aggressively they nativise, and product-UI register differs from casual/social
+text. The default that matches well-localized major apps (Apple / Google / Meta): translate ordinary words that
+have a native term, transliterate entrenched borrowings into the native script (don't leave a common word in the
+source script mid-sentence), and keep verbatim only brand/product names and global standard acronyms/tickers/codes
+(the locale's analog of how those apps keep `Wi-Fi`/`USB`/`Bluetooth` while translating everything around them).
+**Ground specific renderings in an authoritative, locale-maintained terminology source** — the **Microsoft
+Language Portal** (publicly searchable per-language terminology) first, then Apple/Google style guides, CLDR, and
+the product's own already-localized strings — checking the language generally, the term's class, and the exact
+term. Use these as guidance, not gospel (coverage thins for low-resource languages; the source carries its own
+product flavour); reconcile with the product's register, and let native-LQA be the final arbiter. Persist the
+resolved choices in the working glossary / `termbase.json` so each term is decided once and reused.
+
 ### 5. Segmentation & mapping
 Assign stable IDs to source units (frontmatter fields, headings, paragraphs, list items, table rows/cells,
 FAQ Q/A, image alt text, blockquotes, source blocks, MDX visible text). Segment IDs are a **review and
