@@ -90,8 +90,9 @@ text. The default that matches well-localized major apps (Apple / Google / Meta)
 have a native term, transliterate entrenched borrowings into the native script (don't leave a common word in the
 source script mid-sentence), and keep verbatim only brand/product names and global standard acronyms/tickers/codes
 (the locale's analog of how those apps keep `Wi-Fi`/`USB`/`Bluetooth` while translating everything around them).
-**Ground specific renderings in an authoritative, locale-maintained terminology source** — the **Microsoft
-Language Portal** (publicly searchable per-language terminology) first, then Apple/Google style guides, CLDR, and
+**Ground specific renderings in an authoritative, locale-maintained terminology source** — **Microsoft
+Terminology** (a Terminology Search + downloadable `.tbx` on Microsoft Learn; the former *Language Portal* is
+retired) first, then Apple/Google style guides, CLDR, and
 the product's own already-localized strings — checking the language generally, the term's class, and the exact
 term. Use these as guidance, not gospel (coverage thins for low-resource languages; the source carries its own
 product flavour); reconcile with the product's register, and let native-LQA be the final arbiter. Persist the
