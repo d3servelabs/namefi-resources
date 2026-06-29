@@ -47,8 +47,7 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 - The translated **`title` is the canonical term** for that concept in that
   locale, reused site-wide — pick it deliberately. **zh titles are reviewed/signed
   off by the maintainer**; **`ar` uses modern Egyptian Arabic register** (not
-  MSA), the natural register for a tech/business reader; **`ta` targets a natural,
-  modern product-UI register** (not literal or formal book-Tamil).
+  MSA), the natural register for a tech/business reader.
 - **Translate for the target's natural register, not word-for-word.** Choose the
   **domain-correct sense** of a polysemous source word (a platform *ecosystem* is
   not the natural *environment*; *finance / financial services* is not *donating*),

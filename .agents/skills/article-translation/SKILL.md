@@ -23,10 +23,16 @@ Related: **`content-authoring`** (drafting English content), **`cross-link`** (i
   the EN source** — don't read/copy the old locale file (that propagates the prior translation's errors).
 - **Translate meaning, not strings.** A faithful translation preserves intent, reader effect, and factual
   claims; it need not preserve English sentence boundaries when the target reads better restructured.
+- **Faithful ≠ literal — match the target's natural register.** Especially for product/UI copy: choose the
+  *domain-correct* sense of a polysemous word, and use the established native term rather than a transliteration
+  of a common word (only brand / protocol / ticker / standard names and code stay in the source script). Stiff,
+  formal, or word-for-word prose reads as machine-translated even when it's "accurate". **Native-speaker LQA is
+  canonical** — fold a reviewer's validated correction into that locale's glossary/term notes and grep-fix every
+  sibling occurrence, rather than re-deciding it per file.
 - **Production and validation are separate.** Translation/edit/review produce; validators check coverage,
   structure, links, numbers, code spans. Neither replaces native-language judgement.
-- **Locales are repo-defined and growing** (`en ar de es fr hi zh`, with `ta`/others being added). Don't
-  hardcode the list — derive it from the content tree / `content.md`.
+- **Locales are repo-defined and growing.** Don't hardcode the list — derive it from the content tree /
+  `content.md`.
 - **No invented content.** Never add explanatory text, examples, or claims not in the source (the MQM
   "addition" error — as serious as omission), unless the brief explicitly authorizes transcreation.
 - **Independent review beats self-review.** The monolingual edit and QA passes should run with a fresh
@@ -87,7 +93,7 @@ sentences within a block when it reads better.
 **Granularity is constant: translate block-by-block with the full document in context** — whole-document
 single-shot drafting is the top trigger of summarizing-omission. What varies is verification depth:
 - High-resource languages (`zh es de fr` + `ja ru` when added) can draft then move to segment-level bilingual review.
-- Lower-resource / error-prone pairs (`ar hi`, future `ta`) translate at paragraph/section level with frequent
+- Lower-resource / error-prone pairs (e.g. `ar hi`) translate at paragraph/section level with frequent
   glossary + coverage checks.
 - **CJK is not judged by whitespace word ratio** — use structural/semantic-unit coverage, character/line
   sanity, and native readability.
@@ -157,15 +163,16 @@ proposed enhancement — confirm `data:validate` accepts new keys before adding 
 ## Translation error catalog — what actually goes wrong
 
 Real defects caught in shipped batches. **The error rate concentrates in Arabic** (the Egyptian register is the
-hardest target); EN-derived `de/es/fr/hi/zh` came out structurally clean. **Tamil (`ta`)** is the other target
-that needs a dedicated pass — its failure mode is register/term choice (see the `ta` subsection below), not
-structure. So: **always run a dedicated Arabic accuracy QA pass after any bulk translation** (one agent per `ar`
-file, diffing against the EN, fixing only clear errors — no restyling). Classes to check:
+hardest target); EN-derived `de/es/fr/hi/zh` came out structurally clean. So: **always run a dedicated Arabic
+accuracy QA pass after any bulk translation** (one agent per `ar` file, diffing against the EN, fixing only
+clear errors — no restyling). Classes to check:
 
 - **Untranslated keywords** — the `keywords:` array left byte-identical to English. Detect: compare each
   locale's `keywords:` line to EN; identical ⇒ not translated. Fix: translate the human phrases, keep
   brand/standard names. (One batch left 17 files like this; Bugbot flagged 1, a sibling scan found the other 16.)
-- **Wrong-sense word choices** (literal but wrong meaning):
+- **Wrong-sense word choices** (literal but wrong meaning) — pick the *domain-correct* sense of a polysemous
+  source word, not the first dictionary hit: a platform *ecosystem* is not a natural *environment*; *finance /
+  financial services* is not *donating*; a commerce *product* is not a generic *object/material*. Examples:
   - "invented/fake personas" → `المخترعين` (inventors) ✗ → `الوهميين` (fictitious) ✓
   - "squatting *profile*" (risk posture) → `ملف` (a file/document) ✗ → `وضع` (posture) ✓
   - "domain *reseller*" → `بيع بالجملة` (wholesale) ✗ → `إعادة بيع` (reselling) ✓
@@ -180,25 +187,15 @@ file, diffing against the EN, fixing only clear errors — no restyling). Classe
   "(مثل OpenSea، Blur)" to a *domain* marketplace link (OpenSea/Blur are NFT marketplaces, not domain
   aftermarkets). Translate only what's there; never add specifics the source didn't name.
 
-### Tamil (`ta`) — term choice & register (native-LQA-seeded)
-
-Tamil targets a **natural, modern product-UI register**, not literal or formal book-Tamil. The recurring
-failures are over-literal **sense selection** of polysemous English and needless **transliteration** of common
-words. Forbidden → preferred (with why), grown from native-speaker LQA — **append a row here whenever a native
-reviewer validates a correction**, then grep the rest of the locale for the forbidden form and fix every
-occurrence (same site-wide discipline as the Bugbot-sibling rule):
-
-- *ecosystem* (platform/context) → `சுற்றுச்சூழல்` (natural environment) ✗ → `சூழல்` ✓
-- *finance / use financial services* → `நிதியளி` (donate/fund) ✗ → `நிதி சேவைகளைப் பயன்படுத்து` ✓
-- *product* (cart/commerce UI) → `பொருள்` (generic object/material) ✗ → `தயாரிப்பு` ✓
-- *cart total* → `கார்ட் மொத்தம்` (transliterated "cart") ✗ → `மொத்த தொகை` ✓
-
-Rules of thumb: prefer an established Tamil word over a romanised borrowing for any **common** word (totals,
-buttons, nav, cart/checkout copy); pick the **domain-correct sense** of polysemous English (ecosystem ≠
-environment, finance ≠ donation, product ≠ generic object); avoid overly formal/literal phrasing. Keep
-brand/product/protocol/ticker terms in Latin (Namefi, NFT, ETH, BASE, GitHub, blockchain, wallet addresses).
-(This catalog also applies to the **frontend app UI** strings — `apps/frontend/messages/ta/*` in namefi-astra,
-which is where these examples were caught — not only resources content.)
+- **Over-literal register (translationese)** — renders that are word-accurate but read as stiff, formal, or
+  machine-translated for the surface. Match the register the surface actually needs: product/UI copy (nav,
+  buttons, cart/checkout, totals, CTAs) wants the natural, idiomatic phrasing a native user expects, not
+  textbook prose. This is what the monolingual edit (§9) exists to catch; weight it heavily for short UI strings,
+  where there is no surrounding context to carry an awkward choice.
+- **Gratuitous transliteration** — phonetically romanising a *common* source word that has an established native
+  equivalent, instead of using the real target word (a "cart total" or "product" label spelled out by sound
+  rather than translated). Only genuine brand / protocol / ticker / standard names and code stay in the source
+  script (per §7's keep-verbatim list); ordinary nouns and verbs get the native term.
 
 ## QA & verification (run after any batch, before merge)
 
@@ -224,8 +221,7 @@ which is where these examples were caught — not only resources content.)
    — when available, run it to prove structural/unit coverage (missing headings/paragraphs/FAQs, dropped
    citation URLs, table-shape drift). It proves coverage, **not** idiomatic quality — it does not replace the
    human passes above.
-7. **Dedicated Arabic accuracy QA pass** (see error catalog) — non-negotiable for bulk batches. For **Tamil**,
-   run the parallel **register/term pass** against the `ta` catalog above (sense selection + de-transliteration).
+7. **Dedicated Arabic accuracy QA pass** (see error catalog) — non-negotiable for bulk batches.
 8. **Bugbot handling:** it reviews a *sample/diff*, so **one flag often means several siblings** — when it flags
    an issue, grep the rest of the corpus for the same pattern and fix them all. Reply to each thread in a human
    voice and **resolve threads one-by-one as you fix them — never bulk-auto-resolve** (a bulk resolver once
