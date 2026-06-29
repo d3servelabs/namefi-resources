@@ -1,16 +1,34 @@
 ---
-title: 即時購入
+title: 今すぐ購入
 date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
-description: ドメイン出品に設定された固定の即時購入価格で、支払えば交渉なしに売買が成立する。
-keywords: ['buy it now', 'BIN', 'instant purchase', 'fixed price', 'domain listing']
+description: ドメイン出品に設定された固定の即時購入価格。その金額を支払えば、交渉なしにすぐ取引が成立する。
+keywords: ['今すぐ購入', 'BIN', '即時購入', '固定価格', 'ドメイン出品']
 also_known_as: ['BIN']
 level: 1
 sources:
   - https://www.sedo.com/
   - https://www.namebio.com/
+relatedArticles:
+  - /ja/blog/domain-pricing-psychology-buy-now-vs-make-offer/
+  - /ja/blog/domain-for-sale-landing-pages/
+  - /ja/blog/how-to-sell-domains-for-profit/
+  - /ja/blog/how-to-win-domain-auctions/
+  - /ja/blog/inbound-vs-outbound-domain-sales/
+relatedTopics:
+  - /ja/topics/domain-investing/
+  - /ja/topics/domain-basics/
+relatedSeries:
+  - /ja/series/domain-flipping-skills/
+  - /ja/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ja/glossary/end-user/
+  - /ja/glossary/aftermarket/
+  - /ja/glossary/registrar/
+  - /ja/glossary/reserve-price/
+  - /ja/glossary/icann/
 ---
 
-**即時購入**（**BIN**）とは、ドメイン出品に設定された固定の即時購入価格です。買い手が提示額を支払うと、交渉なしに売買がただちに成立します。[アフターマーケット](/ja/glossary/aftermarket/)で売る最も単純な方法で、価格が透明で取引の摩擦が少ないため、コモディティ化した名前や、売り手が目標価格をすでに把握している場合に向いています。一方で、[エンドユーザー](/ja/glossary/end-user/)がより高く支払う可能性があった場合、固定価格は利益を取り逃すことがあります。そのような場合、売り手は代わりに[オファー受付](/ja/glossary/make-offer/)の流れを使い、多くの[マーケットプレイス](/ja/glossary/marketplace/)は両方を同時に表示します。
+**今すぐ購入**（**BIN**）とは、ドメイン出品に設定された固定の即時購入価格のことで、買い手が提示金額を支払えば交渉なしにその場で取引が完了する。[アフターマーケット](/ja/glossary/aftermarket/)における最もシンプルな売却手段であり、価格が明示されているためトランザクションに余計な摩擦が生じない。コモディティ的なドメイン名や、すでに希望価格が明確な売り手に適した方式だ。一方で、固定価格を設定すると、[エンドユーザー](/ja/glossary/end-user/)がそれ以上の金額を出す意思があった場合に機会損失が生じるリスクもある。そのようなケースでは、売り手は代わりに[オファー受付](/ja/glossary/make-offer/)フローを利用することが多く、多くの[マーケットプレイス](/ja/glossary/marketplace/)プラットフォームでは両方の方式を同時に提供している。

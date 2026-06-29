@@ -41,7 +41,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi'] as const;
+const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko', 'ja'] as const;
 const COLLECTIONS = ['blog', 'glossary', 'tld', 'partners'] as const;
 const COLLECTION_PRIORITY: Record<string, number> = { glossary: 0, blog: 1, tld: 2, partners: 3 };
 const MD_EXT = new Set(['.md', '.mdx']);

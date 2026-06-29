@@ -1,15 +1,33 @@
 ---
-title: ブランド化しやすいドメイン
+title: ブランダブルドメイン
 date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
-description: 作られた言葉のように、短く印象に残り、覚えやすいブランドとして機能するドメイン名。
-keywords: ['brandable domain', 'brand domain', 'invented domain', 'made-up word domain', 'memorable domain']
+description: Zoom や Spotify のような造語で、辞書的な意味を持たずとも記憶に残る、短くて印象的なブランド名として機能するドメイン。
+keywords: ['ブランダブルドメイン', 'ブランドドメイン', '造語ドメイン', '覚えやすいドメイン', 'SEO', 'ドメイン投資']
 level: 1
 sources:
   - https://moz.com/learn/seo/domain
   - https://www.namebio.com/
+relatedArticles:
+  - /ja/blog/brandable-vs-keyword-domains/
+  - /ja/blog/from-airbedandbreakfast-com-to-airbnb-com/
+  - /ja/blog/what-makes-a-domain-valuable/
+  - /ja/blog/domain-hacks-explained/
+  - /ja/blog/how-to-name-your-project/
+relatedTopics:
+  - /ja/topics/domain-investing/
+  - /ja/topics/domain-basics/
+relatedSeries:
+  - /ja/series/domain-flipping-skills/
+  - /ja/series/name-change-game-change/
+relatedGlossary:
+  - /ja/glossary/exact-match-domain/
+  - /ja/glossary/domain-appraisal/
+  - /ja/glossary/tld/
+  - /ja/glossary/premium-domain/
+  - /ja/glossary/dns/
 ---
 
-**ブランド化しやすいドメイン**とは、文字通りのキーワード意味よりも、覚えやすさ、響き、見た目の印象で選ばれる名前です。Zoom、Spotify、Canva のような造語は辞書上の定義を持たなくても、すぐに識別できる特徴を持ちます。[完全一致ドメイン](/ja/glossary/exact-match-domain/)とは異なり、ブランド化しやすい名前は検索クエリとそのまま一致させて順位を狙うものではありません。代わりに、企業が育て、独占的に所有できる新しいアイデンティティを作ります。この種のドメインは短く、1 音節または 2 音節で、聞いて一度で綴りやすく、ハイフンや数字を含まない傾向があります。このカテゴリの投資家は、言語的・美的基準で名前を選別する Brandpa や Squadhelp のようなマーケットプレイスや、[ドメイン評価](/ja/glossary/domain-appraisal/)サービスに大きく依存します。ブランド化しやすい名前はデータではなく想像力から価値を得るため、キーワード資産より価格付けが難しいことがありますが、適切な買い手に刺さると[プレミアムドメイン](/ja/glossary/premium-domain/)価格になることがよくあります。
+**ブランダブルドメイン**とは、キーワードの字義通りの意味よりも、記憶しやすさ・音の響き・視覚的なインパクトを優先して選ばれたドメイン名のことだ。Zoom、Spotify、Canva のように、辞書には載っていない造語でありながら、一度見聞きすれば誰もが覚えてしまう独自性を持つ。[完全一致ドメイン（EMD）](/ja/glossary/exact-match-domain/)が検索クエリとの一致によってランキングを狙うのとは対照的に、ブランダブルドメインは企業が育て、独占的に所有できる新鮮なアイデンティティを生み出す。一般的に一音節か二音節と短く、耳で聞いた後でも正確にスペルできる点、ハイフンや数字を含まない点が特徴だ。このカテゴリに投資するドメイン投資家は、[ドメイン査定](/ja/glossary/domain-appraisal/)サービスや、言語的・美的基準に基づいてドメイン名をキュレーションする Brandpa や Squadhelp などのマーケットプレイスを積極的に活用する。ブランダブルドメインの価値は数値データではなく発想力に依拠しているため、キーワード系資産と比べて価格評価が難しい面もある。しかし、ぴったり合う買い手に出会ったときには、[プレミアムドメイン](/ja/glossary/premium-domain/)に匹敵する高値がつくことも珍しくない。

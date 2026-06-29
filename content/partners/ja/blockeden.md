@@ -5,6 +5,24 @@ language: ja
 tags: ['partners']
 authors: ['namefiteam']
 description: BlockEden.xyz は、Web3 の拡張性と信頼性を重視した開発者向けインフラプラットフォームです。
+relatedArticles:
+  - /ja/blog/what-are-tokenized-domains/
+  - /ja/blog/choosing-a-domain-tokenization-platform/
+  - /ja/blog/why-tokenize-domains/
+  - /ja/blog/onchain-domain-marketplaces-compared/
+  - /ja/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /ja/topics/domain-tokenization/
+  - /ja/topics/domain-investing/
+relatedSeries:
+  - /ja/series/domain-flipping-skills/
+  - /ja/series/domain-apocalypse/
+relatedGlossary:
+  - /ja/glossary/web3/
+  - /ja/glossary/dns/
+  - /ja/glossary/registrar/
+  - /ja/glossary/icann/
+  - /ja/glossary/tld/
 ---
 
 ## **Namefi エコシステムに BlockEden.xyz が参加**
