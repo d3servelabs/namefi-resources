@@ -157,9 +157,10 @@ proposed enhancement — confirm `data:validate` accepts new keys before adding 
 ## Translation error catalog — what actually goes wrong
 
 Real defects caught in shipped batches. **The error rate concentrates in Arabic** (the Egyptian register is the
-hardest target); EN-derived `de/es/fr/hi/zh` came out structurally clean. So: **always run a dedicated Arabic
-accuracy QA pass after any bulk translation** (one agent per `ar` file, diffing against the EN, fixing only
-clear errors — no restyling). Classes to check:
+hardest target); EN-derived `de/es/fr/hi/zh` came out structurally clean. **Tamil (`ta`)** is the other target
+that needs a dedicated pass — its failure mode is register/term choice (see the `ta` subsection below), not
+structure. So: **always run a dedicated Arabic accuracy QA pass after any bulk translation** (one agent per `ar`
+file, diffing against the EN, fixing only clear errors — no restyling). Classes to check:
 
 - **Untranslated keywords** — the `keywords:` array left byte-identical to English. Detect: compare each
   locale's `keywords:` line to EN; identical ⇒ not translated. Fix: translate the human phrases, keep
@@ -178,6 +179,26 @@ clear errors — no restyling). Classes to check:
 - **Hallucinated additions** — examples/brands invented and injected that aren't in the EN, e.g. adding
   "(مثل OpenSea، Blur)" to a *domain* marketplace link (OpenSea/Blur are NFT marketplaces, not domain
   aftermarkets). Translate only what's there; never add specifics the source didn't name.
+
+### Tamil (`ta`) — term choice & register (native-LQA-seeded)
+
+Tamil targets a **natural, modern product-UI register**, not literal or formal book-Tamil. The recurring
+failures are over-literal **sense selection** of polysemous English and needless **transliteration** of common
+words. Forbidden → preferred (with why), grown from native-speaker LQA — **append a row here whenever a native
+reviewer validates a correction**, then grep the rest of the locale for the forbidden form and fix every
+occurrence (same site-wide discipline as the Bugbot-sibling rule):
+
+- *ecosystem* (platform/context) → `சுற்றுச்சூழல்` (natural environment) ✗ → `சூழல்` ✓
+- *finance / use financial services* → `நிதியளி` (donate/fund) ✗ → `நிதி சேவைகளைப் பயன்படுத்து` ✓
+- *product* (cart/commerce UI) → `பொருள்` (generic object/material) ✗ → `தயாரிப்பு` ✓
+- *cart total* → `கார்ட் மொத்தம்` (transliterated "cart") ✗ → `மொத்த தொகை` ✓
+
+Rules of thumb: prefer an established Tamil word over a romanised borrowing for any **common** word (totals,
+buttons, nav, cart/checkout copy); pick the **domain-correct sense** of polysemous English (ecosystem ≠
+environment, finance ≠ donation, product ≠ generic object); avoid overly formal/literal phrasing. Keep
+brand/product/protocol/ticker terms in Latin (Namefi, NFT, ETH, BASE, GitHub, blockchain, wallet addresses).
+(This catalog also applies to the **frontend app UI** strings — `apps/frontend/messages/ta/*` in namefi-astra,
+which is where these examples were caught — not only resources content.)
 
 ## QA & verification (run after any batch, before merge)
 
@@ -203,7 +224,8 @@ clear errors — no restyling). Classes to check:
    — when available, run it to prove structural/unit coverage (missing headings/paragraphs/FAQs, dropped
    citation URLs, table-shape drift). It proves coverage, **not** idiomatic quality — it does not replace the
    human passes above.
-7. **Dedicated Arabic accuracy QA pass** (see error catalog) — non-negotiable for bulk batches.
+7. **Dedicated Arabic accuracy QA pass** (see error catalog) — non-negotiable for bulk batches. For **Tamil**,
+   run the parallel **register/term pass** against the `ta` catalog above (sense selection + de-transliteration).
 8. **Bugbot handling:** it reviews a *sample/diff*, so **one flag often means several siblings** — when it flags
    an issue, grep the rest of the corpus for the same pattern and fix them all. Reply to each thread in a human
    voice and **resolve threads one-by-one as you fix them — never bulk-auto-resolve** (a bulk resolver once
