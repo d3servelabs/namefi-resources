@@ -4,7 +4,7 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ja'] as const;
+const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko', 'ja'] as const;
 type Locale = (typeof LOCALES)[number];
 type Collection = 'blog' | 'tld' | 'glossary' | 'partners';
 

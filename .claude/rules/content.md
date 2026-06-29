@@ -28,7 +28,7 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 
 - **English is the source of truth.** Author in `en` first; translate from
   English, never chain language→language. Every collection is English-first, then
-  translated to all 7 locales (`en ar de es fr hi zh`).
+  translated to all 8 locales (`en ar de es fr hi zh ko`).
 - **Validate before you push:** `bun data:validate` + `bun lint:mdx` +
   cross-link audit (0 broken).
 - **Only act on Cursor Bugbot** in PR review. **Ignore CodeRabbit** entirely.
