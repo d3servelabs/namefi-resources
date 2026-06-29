@@ -32,7 +32,7 @@ relatedGlossary:
   - /ja/glossary/registry/
 ---
 
-[個人ドメイナーのブログ](/blog/famous-domainer-blogs-and-newsletters)が個人の声を届けるメディアだとすれば、*ドメイン業界メディア*はニュースルームのように機能する媒体だ。一人運営の場合もあるが、トレーダーの日記ではなくジャーナリズムとしての編集姿勢を持っている。取引、政策、レジストリ・[レジストラ](/ja/glossary/registrar/)の動向、[ICANN](/ja/glossary/icann/)、そして時には業界内の騒動まで取り上げ、他の媒体が引用するほどの信頼性を持つ。
+[個人ドメイナーのブログ](/ja/blog/famous-domainer-blogs-and-newsletters)が個人の声を届けるメディアだとすれば、*ドメイン業界メディア*はニュースルームのように機能する媒体だ。一人運営の場合もあるが、トレーダーの日記ではなくジャーナリズムとしての編集姿勢を持っている。取引、政策、レジストリ・[レジストラ](/ja/glossary/registrar/)の動向、[ICANN](/ja/glossary/icann/)、そして時には業界内の騒動まで取り上げ、他の媒体が引用するほどの信頼性を持つ。
 
 2026年時点で押さえておくべきメディアを厳選してまとめた。
 
@@ -52,7 +52,7 @@ relatedGlossary:
 
 ### OnlineDomain.com と DomainInvesting.com（重複あり）
 
-[OnlineDomain](https://onlinedomain.com/) と [DomainInvesting](https://domaininvesting.com/) はいずれも、個人ブログと業界メディアの境界線上に位置する。詳細は[ドメイナーブログの紹介記事](/blog/famous-domainer-blogs-and-newsletters)を参照してほしい。ここに挙げる理由は、大手メディアが後から追いかける形になるニュースをこの二つが先に発信することが多いからだ。
+[OnlineDomain](https://onlinedomain.com/) と [DomainInvesting](https://domaininvesting.com/) はいずれも、個人ブログと業界メディアの境界線上に位置する。詳細は[ドメイナーブログの紹介記事](/ja/blog/famous-domainer-blogs-and-newsletters)を参照してほしい。ここに挙げる理由は、大手メディアが後から追いかける形になるニュースをこの二つが先に発信することが多いからだ。
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
@@ -84,7 +84,7 @@ Andrew Allemannのインタビュー番組で、[DomainNameWire](https://domainn
 
 これらは厳密にはメディアではないが、公開された記事が*流れ込み*、議論が交わされる場所だ。
 
-- [NamePros](https://www.namepros.com/) — [フォーラム紹介記事](/blog/top-domain-trader-forums)で詳しく紹介。大きなニュースに関するディスカッションスレッドは、原典記事よりむしろ情報量が多いこともある。
+- [NamePros](https://www.namepros.com/) — [フォーラム紹介記事](/ja/blog/top-domain-trader-forums)で詳しく紹介。大きなニュースに関するディスカッションスレッドは、原典記事よりむしろ情報量が多いこともある。
 - [Domaining.com](https://www.domaining.com/) — ドメイナーブログのアグリゲーター。このリストに挙げたほぼすべてのソースの当日の見出しを1ページにまとめて確認できる。
 
 ## このリストの読み方
@@ -93,7 +93,7 @@ Andrew Allemannのインタビュー番組で、[DomainNameWire](https://domainn
 
 **一部のメディアはビジネスも兼ねている。** ブローカーやマーケットプレイス、レジストリもコンテンツを発信しており、「業界メディア」と「コンテンツマーケティング」の境界線は必ずしも明確ではない。このリストに挙げたメディアは独立系で、長年にわたって編集上の評判を積み上げてきたものに限定している。ブローカーのブログを読む場合は、情報は豊富だが立場のある発信者として読むべきだ。
 
-**速報はXが最初だ。** 大型取引、レジストリ方針の変更、訴訟といった大きなニュースは、これらのメディアより先に[X](https://x.com/)に現れることがほぼ常だ。メディアはニュースが*記録される*場所であり、速報が発信される場所ではない。このメディアリストと、[フォーラム紹介記事](/blog/top-domain-trader-forums#twitter-x-domain-twitter)に掲載しているXのハッシュタグを組み合わせて活用しよう。
+**速報はXが最初だ。** 大型取引、レジストリ方針の変更、訴訟といった大きなニュースは、これらのメディアより先に[X](https://x.com/)に現れることがほぼ常だ。メディアはニュースが*記録される*場所であり、速報が発信される場所ではない。このメディアリストと、[フォーラム紹介記事](/ja/blog/top-domain-trader-forums#twitter-x-domain-twitter)に掲載しているXのハッシュタグを組み合わせて活用しよう。
 
 **売却金額は申告ベースの数字だ。** 公開されている売却額は、レジストラ・マーケットプレイスのプレスリリースや売り手の開示に基づくものであり、中立的な決済機関が検証したものではない。[DNJournal](https://www.dnjournal.com/) と [NameBio](https://namebio.com/) は未検証の売却案件にラベルを付ける点で最も厳格だが、それでも元データは自己申告だ。
 
@@ -107,6 +107,6 @@ Andrew Allemannのインタビュー番組で、[DomainNameWire](https://domainn
 
 **関連記事：**
 
-- [著名ドメイナーのブログ・Substack・ニュースレター](/blog/famous-domainer-blogs-and-newsletters) — このリストのメディアとは対照的な、個人の声。
-- [英語圏のトップドメイントレーダーフォーラム](/blog/top-domain-trader-forums) — 記事が公開された後、議論が交わされる場所。
-- [ドメイン名用語集](/blog/domain-terminology-guide) — これらのメディア全体に登場する用語を解説。
+- [著名ドメイナーのブログ・Substack・ニュースレター](/ja/blog/famous-domainer-blogs-and-newsletters) — このリストのメディアとは対照的な、個人の声。
+- [英語圏のトップドメイントレーダーフォーラム](/ja/blog/top-domain-trader-forums) — 記事が公開された後、議論が交わされる場所。
+- [ドメイン名用語集](/ja/blog/domain-terminology-guide) — これらのメディア全体に登場する用語を解説。
