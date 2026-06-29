@@ -4,11 +4,29 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
-description: 偽のIP経路を広告してインターネット通信を迂回させる、DNSより下位のネットワーク層攻撃。
-keywords: ['BGP hijack', 'route hijacking', 'IP prefix', 'network security', 'internet routing']
+description: 偽のIPルートアナウンスによってインターネットトラフィックを迂回させる、DNSより下位のネットワーク層で起きる攻撃。
+keywords: ['BGPハイジャック', 'ルートハイジャック', 'IPプレフィックス', 'ネットワークセキュリティ', 'インターネットルーティング']
 level: 1
 sources:
   - https://www.cloudflare.com/learning/security/glossary/bgp-hijacking/
+relatedArticles:
+  - /ja/blog/the-myetherwallet-bgp-dns-attack/
+  - /ja/blog/the-dnspionage-campaign/
+  - /ja/blog/the-fox-it-dns-hijack/
+  - /ja/blog/the-sea-turtle-dns-espionage/
+  - /ja/blog/how-domain-hijacking-actually-happens/
+relatedTopics:
+  - /ja/topics/domain-security/
+  - /ja/topics/domain-basics/
+relatedSeries:
+  - /ja/series/domain-apocalypse/
+  - /ja/series/name-change-game-change/
+relatedGlossary:
+  - /ja/glossary/dns/
+  - /ja/glossary/dns-hijacking/
+  - /ja/glossary/icann/
+  - /ja/glossary/public-key/
+  - /ja/glossary/web3/
 ---
 
-**BGPハイジャック**（Border Gateway Protocol hijacking）とは、悪意ある、または誤設定された自律システムが偽の経路広告を流し、正当な [IPアドレス](/ja/glossary/ip-address/) 宛てのトラフィックを攻撃者のインフラ経由で送るよう、インターネット上の他のルーターに信じ込ませるネットワーク層攻撃です。名前から IP への対応を改ざんする [DNSハイジャック](/ja/glossary/dns-hijacking/)とは異なり、BGPハイジャックはルーティング層で動作するため、ドメインの DNS レコードは変更されず、[DNSSEC](/ja/glossary/dnssec/) では防げません。トラフィックが迂回されると、攻撃者は TLS 証明書発行を妨害・悪用したり、暗号化されていない通信を読んだり、中間者攻撃を行ったりできます。BGPハイジャックは、HTTP ベースのドメイン検証を使う CA から不正な証明書を取得するためにも使われてきました。対策には、RPKI（Resource Public Key Infrastructure）による経路起点検証や、予期しない AS が自分のプレフィックスを広告したときに通知する監視サービスがあります。
+**BGPハイジャック**（Border Gateway Protocolハイジャック）は、悪意のある、あるいは誤設定された自律システム（AS）が虚偽のルーティングアナウンスをブロードキャストするネットワーク層の攻撃である。これにより、インターネット上の他のルーターが正規の[IPアドレス](/ja/glossary/ip-address/)宛てのトラフィックを攻撃者のインフラ経由で転送するよう誘導される。[DNSハイジャック](/ja/glossary/dns-hijacking/)が名前とIPのマッピングを改ざんするのとは異なり、BGPハイジャックはルーティング層で機能するため、ドメインのDNSレコードは改変されず、[DNSSEC](/ja/glossary/dnssec/)もこの攻撃に対しては無効である。トラフィックが迂回されると、攻撃者はTLS証明書の発行を傍受したり（BGPハイジャックは、HTTPベースのドメイン検証を使用する認証局から不正な証明書を取得するために悪用された事例がある）、暗号化されていないトラフィックを盗聴したり、中間者攻撃を実行したりすることが可能になる。対策としては、RPKI（Resource Public Key Infrastructure）を用いたルートオリジン検証や、予期しないASがプレフィックスをアナウンスした際に警告を発する監視サービスの活用が挙げられる。

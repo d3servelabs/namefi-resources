@@ -1,14 +1,32 @@
 ---
-title: 悪意
+title: 不正目的
 date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
-description: 商標を不当に利用する目的でドメインを登録または使用することで、UDRPで勝つために必要な要素。
-keywords: ['bad faith', 'UDRP', 'domain dispute', 'cybersquatting', 'trademark abuse']
+description: 商標を悪用するためにドメインを登録・使用すること。UDRP手続きにおいて申立人が証明すべき必須要件のひとつ。
+keywords: ['不正目的', 'UDRP', 'ドメイン紛争', 'サイバースクワッティング', '商標侵害']
 level: 1
 sources:
   - https://www.wipo.int/amc/en/domains/
+relatedArticles:
+  - /ja/blog/what-is-udrp/
+  - /ja/blog/cybersquatting-vs-domaining-udrp-acpa/
+  - /ja/blog/domain-flipping-and-the-law/
+  - /ja/blog/how-to-sell-a-domain-name-you-own/
+  - /ja/blog/domain-flipping/
+relatedTopics:
+  - /ja/topics/domain-investing/
+  - /ja/topics/domain-security/
+relatedSeries:
+  - /ja/series/domain-flipping-skills/
+  - /ja/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ja/glossary/reverse-domain-hijacking/
+  - /ja/glossary/cybersquatting/
+  - /ja/glossary/icann/
+  - /ja/glossary/urs/
+  - /ja/glossary/wipo/
 ---
 
-**悪意**とは、[UDRP](/ja/glossary/udrp/) 手続きで申立人が証明しなければならない 3 つ目で、しばしば最も争われる要素です。係争ドメインは、[WIPO](/ja/glossary/wipo/) の下での結合要件として、悪意をもって登録され、かつ悪意をもって使用されていなければなりません。UDRP ポリシーは、パネルが推定的な悪意として扱ってきた非限定的な例を挙げています。たとえば、記録された費用を超える価格で[商標](/ja/glossary/trademark/)権者へドメインを売ろうとすること、商標権者が自分のブランドをオンラインで表せないよう登録すること、競合他社を妨害するために登録すること、または混同のおそれを作り出して商業的利益のためにユーザーを意図的に誘引することです。パネルは状況証拠も考慮します。登録時に[登録者](/ja/glossary/registrant/)が商標を認識していたか、主張された使用が不自然ではないか、[サイバースクワッティング](/ja/glossary/cybersquatting/)と一致するポートフォリオ上の傾向があるかなどです。悪意が認定されると、移転または取消命令が出されます。逆に、申立人が成功しないと知りながら UDRP 申立てを行ったとパネルが判断した場合、登録者は[リバースドメインハイジャッキング](/ja/glossary/reverse-domain-hijacking/)の認定を求めることができます。ドメインを[ブロックチェーン](/ja/glossary/blockchain/)上でトークン化しても、パネルが悪意を評価する方法は変わりません。DNS 登録履歴と登録者の行為が引き続き判断の中心になります。
+**不正目的**（Bad Faith）とは、[UDRP](/ja/glossary/udrp/)手続きにおいて申立人が証明しなければならない3つの要件のうちの3番目であり、最も争点になりやすい要素だ。[WIPO](/ja/glossary/wipo/)が定める連結要件として、係争ドメインは「登録」と「使用」の双方において不正目的であったことが求められる。UDRP政策は不正目的の非網羅的な例示を列挙しており、パネルはこれらを推定的な不正目的として扱ってきた：記録されたコストを上回る価格で[商標](/ja/glossary/trademark/)権者にドメインを売りつけようとすること、商標権者が自社ブランドをオンラインで体現できないようにするためにドメインを登録すること、競合他社の業務を妨害するために登録すること、あるいは混同のおそれを作り出すことで商業的利益を得る目的でユーザーを故意に誘引することなどが該当する。パネルはこのほか、登録時点での[登録者](/ja/glossary/registrant/)の商標への認知、主張された使用目的の信ぴょう性の欠如、[サイバースクワッティング](/ja/glossary/cybersquatting/)と整合するポートフォリオパターンといった間接的な事情も考慮する。不正目的が認定されると、ドメインの移転または取消命令が下される。一方、パネルが「申立人は勝訴の見込みがないことを知りながらUDRP申立てを行った」と判断した場合、登録者は[逆ドメインハイジャッキング](/ja/glossary/reverse-domain-hijacking/)の認定を求めることができる。ドメインを[ブロックチェーン](/ja/glossary/blockchain/)上でトークン化したとしても、パネルによる不正目的の判断に影響を与えない。評価の基準となるのは、あくまでDNS登録の経緯と登録者の行為である。

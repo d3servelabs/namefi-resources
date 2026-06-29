@@ -1,16 +1,34 @@
 ---
-title: ccTLD
+title: ccTLD（国別コードトップレベルドメイン）
 date: '2026-06-22'
 language: ja
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
-description: .uk、.de、.jpのように、国または地域に割り当てられる2文字のトップレベルドメイン。
-keywords: ['ccTLD', 'country-code TLD', 'country domain', '.uk', '.de', 'ISO 3166']
-also_known_as: ['国別コードトップレベルドメイン']
+description: ISO 3166に基づき国または地域に割り当てられた2文字のトップレベルドメイン。.ukや.de、.jpなどが代表例。
+keywords: ['ccTLD', '国別コードTLD', '国別ドメイン', '.uk', '.de', 'ISO 3166']
 level: 1
 sources:
   - https://www.iana.org/domains/root/db
   - https://www.iso.org/iso-3166-country-codes.html
+relatedArticles:
+  - /ja/blog/cctld-market-share-by-registration-volume/
+  - /ja/blog/what-is-a-tld/
+  - /ja/blog/domain-hacks-explained/
+  - /ja/blog/how-tld-affects-domain-value/
+  - /ja/blog/why-are-io-domains-expensive/
+relatedTopics:
+  - /ja/topics/choosing-a-tld/
+  - /ja/topics/domain-investing/
+relatedSeries:
+  - /ja/series/domain-flipping-skills/
+  - /ja/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ja/glossary/tld/
+  - /ja/glossary/icann/
+  - /ja/glossary/registrar/
+  - /ja/glossary/registry/
+  - /ja/glossary/dns/
 ---
 
-**ccTLD**（*国別コードトップレベルドメイン*）とは、ISO 3166 リストに基づいて国または地域に割り当てられる 2 文字の [TLD](/ja/glossary/tld/) です。例として `.uk`、`.de`、`.jp`、`.io`（イギリス領インド洋地域）などがあります。[gTLD](/ja/glossary/gtld/)とは異なり、ccTLD は [ICANN](/ja/glossary/icann/) 契約によって直接ではなく、その国の権限の下で管理されます。そのため、各 ccTLD は独自の資格要件、価格、ポリシールールを設定します。ローカルプレゼンスを求めるものもあれば、`.io` や `.co` のように世界中へ販売されるものもあります。
+**ccTLD（国別コードトップレベルドメイン）**とは、ISO 3166リストに基づいて国または地域に割り当てられた2文字の[TLD](/ja/glossary/tld/)である。`.uk`、`.de`、`.jp`、`.io`（英領インド洋地域）などがその代表例だ。[gTLD](/ja/glossary/gtld/)とは異なり、ccTLDは[ICANN](/ja/glossary/icann/)との直接契約ではなく、各国の権限のもとで管理される。そのため、登録資格・料金・ポリシーはccTLDごとに独自に定められており、現地での拠点設置を要件とするものもあれば、`.io`や`.co`のように世界中から登録できるものもある。
