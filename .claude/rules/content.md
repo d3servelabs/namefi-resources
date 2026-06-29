@@ -48,6 +48,16 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
   locale, reused site-wide — pick it deliberately. **zh titles are reviewed/signed
   off by the maintainer**; **`ar` uses modern Egyptian Arabic register** (not
   MSA), the natural register for a tech/business reader.
+- **Translate for the target's natural register, not word-for-word.** Choose the
+  **domain-correct sense** of a polysemous source word (a platform *ecosystem* is
+  not the natural *environment*; *finance / financial services* is not *donating*),
+  and **don't transliterate a common word that already has an established native
+  term** (prefer the native word for "cart total", "product", etc. over a romanised
+  borrowing). Keep brand/product/protocol/ticker terms unchanged (Namefi, NFT, ETH,
+  BASE, GitHub, blockchain, wallet addresses). **Native-speaker LQA is canonical:**
+  when a native reviewer validates a term correction, record it as a forbidden →
+  preferred entry in the [`article-translation`](../../.agents/skills/article-translation/SKILL.md)
+  skill's per-locale error catalog so it is enforced site-wide, not re-litigated.
 - Rewrite internal links `/en/…` → `/<locale>/…`; **never change the slug**. A
   link's anchor text = the linked term's canonical title in that locale.
 - Keep verbatim: citation URLs (incl. `#:~:text=` fragments), code, brand names,

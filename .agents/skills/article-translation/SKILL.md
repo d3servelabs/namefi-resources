@@ -23,10 +23,16 @@ Related: **`content-authoring`** (drafting English content), **`cross-link`** (i
   the EN source** — don't read/copy the old locale file (that propagates the prior translation's errors).
 - **Translate meaning, not strings.** A faithful translation preserves intent, reader effect, and factual
   claims; it need not preserve English sentence boundaries when the target reads better restructured.
+- **Faithful ≠ literal — match the target's natural register.** Especially for product/UI copy: choose the
+  *domain-correct* sense of a polysemous word, and use the established native term rather than a transliteration
+  of a common word (only brand / protocol / ticker / standard names and code stay in the source script). Stiff,
+  formal, or word-for-word prose reads as machine-translated even when it's "accurate". **Native-speaker LQA is
+  canonical** — fold a reviewer's validated correction into that locale's glossary/term notes and grep-fix every
+  sibling occurrence, rather than re-deciding it per file.
 - **Production and validation are separate.** Translation/edit/review produce; validators check coverage,
   structure, links, numbers, code spans. Neither replaces native-language judgement.
-- **Locales are repo-defined and growing** (`en ar de es fr hi zh`, with `ta`/others being added). Don't
-  hardcode the list — derive it from the content tree / `content.md`.
+- **Locales are repo-defined and growing.** Don't hardcode the list — derive it from the content tree /
+  `content.md`.
 - **No invented content.** Never add explanatory text, examples, or claims not in the source (the MQM
   "addition" error — as serious as omission), unless the brief explicitly authorizes transcreation.
 - **Independent review beats self-review.** The monolingual edit and QA passes should run with a fresh
@@ -87,7 +93,7 @@ sentences within a block when it reads better.
 **Granularity is constant: translate block-by-block with the full document in context** — whole-document
 single-shot drafting is the top trigger of summarizing-omission. What varies is verification depth:
 - High-resource languages (`zh es de fr` + `ja ru` when added) can draft then move to segment-level bilingual review.
-- Lower-resource / error-prone pairs (`ar hi`, future `ta`) translate at paragraph/section level with frequent
+- Lower-resource / error-prone pairs (e.g. `ar hi`) translate at paragraph/section level with frequent
   glossary + coverage checks.
 - **CJK is not judged by whitespace word ratio** — use structural/semantic-unit coverage, character/line
   sanity, and native readability.
@@ -164,7 +170,9 @@ clear errors — no restyling). Classes to check:
 - **Untranslated keywords** — the `keywords:` array left byte-identical to English. Detect: compare each
   locale's `keywords:` line to EN; identical ⇒ not translated. Fix: translate the human phrases, keep
   brand/standard names. (One batch left 17 files like this; Bugbot flagged 1, a sibling scan found the other 16.)
-- **Wrong-sense word choices** (literal but wrong meaning):
+- **Wrong-sense word choices** (literal but wrong meaning) — pick the *domain-correct* sense of a polysemous
+  source word, not the first dictionary hit: a platform *ecosystem* is not a natural *environment*; *finance /
+  financial services* is not *donating*; a commerce *product* is not a generic *object/material*. Examples:
   - "invented/fake personas" → `المخترعين` (inventors) ✗ → `الوهميين` (fictitious) ✓
   - "squatting *profile*" (risk posture) → `ملف` (a file/document) ✗ → `وضع` (posture) ✓
   - "domain *reseller*" → `بيع بالجملة` (wholesale) ✗ → `إعادة بيع` (reselling) ✓
@@ -178,6 +186,16 @@ clear errors — no restyling). Classes to check:
 - **Hallucinated additions** — examples/brands invented and injected that aren't in the EN, e.g. adding
   "(مثل OpenSea، Blur)" to a *domain* marketplace link (OpenSea/Blur are NFT marketplaces, not domain
   aftermarkets). Translate only what's there; never add specifics the source didn't name.
+
+- **Over-literal register (translationese)** — renders that are word-accurate but read as stiff, formal, or
+  machine-translated for the surface. Match the register the surface actually needs: product/UI copy (nav,
+  buttons, cart/checkout, totals, CTAs) wants the natural, idiomatic phrasing a native user expects, not
+  textbook prose. This is what the monolingual edit (§9) exists to catch; weight it heavily for short UI strings,
+  where there is no surrounding context to carry an awkward choice.
+- **Gratuitous transliteration** — phonetically romanising a *common* source word that has an established native
+  equivalent, instead of using the real target word (a "cart total" or "product" label spelled out by sound
+  rather than translated). Only genuine brand / protocol / ticker / standard names and code stay in the source
+  script (per §7's keep-verbatim list); ordinary nouns and verbs get the native term.
 
 ## QA & verification (run after any batch, before merge)
 
