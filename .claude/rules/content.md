@@ -66,8 +66,9 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
   words that have a native term, transliterate entrenched borrowings into the native
   script (don't leave them in the source script), and keep verbatim only brand/product
   names and global standard acronyms/tickers/codes. Resolve specific terms against an
-  **authoritative, locale-maintained terminology source** — the **Microsoft Language
-  Portal** (publicly searchable per-language terminology) first, plus Apple/Google
+  **authoritative, locale-maintained terminology source** — **Microsoft Terminology**
+  (a Terminology Search + downloadable `.tbx` on Microsoft Learn; the former *Language
+  Portal* is retired) first, plus Apple/Google
   style guides, CLDR, and the product's own existing localized strings — checking the
   language generally, the term's class, and the exact term. Use as guidance, not
   gospel (coverage thins for low-resource languages); reconcile with the product's
