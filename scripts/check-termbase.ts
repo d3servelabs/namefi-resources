@@ -27,7 +27,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko', 'ja'] as const;
+const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko', 'ja', 'ta'] as const;
 type Locale = (typeof LOCALES)[number];
 const COLLECTIONS = ['blog', 'glossary', 'tld', 'partners'] as const;
 const MD_EXT = new Set(['.md', '.mdx']);

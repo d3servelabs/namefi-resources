@@ -34,7 +34,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import { resolveEntryFile } from './glossary-fs.ts';
 
-const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko', 'ja'] as const;
+const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko', 'ja', 'ta'] as const;
 type Locale = (typeof LOCALES)[number];
 
 const REPO_ROOT = process.cwd();
