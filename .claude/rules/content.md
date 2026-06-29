@@ -58,6 +58,20 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
   when a native reviewer validates a term correction, record it as a forbidden →
   preferred entry in the [`article-translation`](../../.agents/skills/article-translation/SKILL.md)
   skill's per-locale error catalog so it is enforced site-wide, not re-litigated.
+- **Establish the locale's borrowing convention first, and ground terms in
+  authoritative precedent.** Each foreign term is resolved one of three ways —
+  translate to a native word, transliterate into the **native script**, or keep it
+  verbatim in the source script — and locales differ in how far they nativise (and
+  product-UI register differs from casual/social text). Default: translate ordinary
+  words that have a native term, transliterate entrenched borrowings into the native
+  script (don't leave them in the source script), and keep verbatim only brand/product
+  names and global standard acronyms/tickers/codes. Resolve specific terms against an
+  **authoritative, locale-maintained terminology source** — the **Microsoft Language
+  Portal** (publicly searchable per-language terminology) first, plus Apple/Google
+  style guides, CLDR, and the product's own existing localized strings — checking the
+  language generally, the term's class, and the exact term. Use as guidance, not
+  gospel (coverage thins for low-resource languages); reconcile with the product's
+  register, and native-LQA stays the final arbiter.
 - Rewrite internal links `/en/…` → `/<locale>/…`; **never change the slug**. A
   link's anchor text = the linked term's canonical title in that locale.
 - Keep verbatim: citation URLs (incl. `#:~:text=` fragments), code, brand names,
