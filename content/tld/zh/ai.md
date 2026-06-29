@@ -43,6 +43,8 @@ relatedGlossary:
 
 这是一个罕见的后缀——它的字母同时也是科技界最有价值的缩写之一。从技术层面而言，.ai 是安圭拉（东加勒比海英国海外领地）的[国家代码顶级域名（ccTLD）](/zh/glossary/cctld/)。而在实践中，它已成为整个人工智能行业的默认地址。本文讲述完整的故事——那个从海滩上运营注册局长达三十年的密码朋克、点燃一切的 ChatGPT 时刻，以及当你决定是否把品牌落在 .ai 上时，这一切意味着什么。
 
+![安圭拉——一座加勒比海小岛的友好插画，岛上立着发光的 .ai 路牌、一个机器人和 AI 应用卡片，并连向远处的城市天际线——这座小岛如何成为 AI 之家](../../assets/ai-hero.jpg)
+
 ## .ai 速览
 
 | 信息 | 详情 |
@@ -66,6 +68,8 @@ relatedGlossary:
 
 字母"AI"不是一个营销选择。它们只是安圭拉的 [ISO 3166-1](/zh/glossary/cctld/) 国家代码——和让 `.io`（英属印度洋领地）和 [.tv](/zh/tld/tv/)（图瓦卢）成为科技宠儿的那种字母巧合如出一辙。国家代码是 1990 年代由 Jon Postel 和 [IANA](/zh/glossary/iana/) 职能依据他在 [RFC 1591](https://www.ietf.org/rfc/rfc1591.txt) 中写下的理念分配的：ccTLD 的管理者是为社区服务的*受托人*，而"关于域名'权利'和'所有权'的担忧是不恰当的"。没有人料到这些两字母的意外会成为每年价值数千万美元的资产。
 
+![几张卡片将两字母国家代码与其领地配对——.ai 对应安圭拉、.io 对应英属印度洋领地、.tv 对应图瓦卢——旁边是一个地球仪，这正是 .ai 背后的字母表巧合](../../assets/ai-01-two-letters.jpg)
+
 .ai [于 1995 年授权给安圭拉](https://www.iana.org/domains/root/db/ai.html)，此后将近二十年基本上什么都没做。它只是一个安静的小岛 ccTLD——而它是如何苏醒的，这个故事绕过了早期互联网上一个颇为特别的人物。
 
 ## 那个从海滩上运营一国域名的密码朋克
@@ -76,6 +80,8 @@ Cate 不是一个安静的观察者。以极低的成本抵达，他创立了安
 
 他还想要一个域名。于是他给 [Jon Postel](https://en.wikipedia.org/wiki/Jon_Postel) 发了封邮件——那个亲自管理全球顶级域名的人——开口要。Postel 的回复，[据 Cate 复述](https://spectrum.ieee.org/ai-domains#:~:text=do%20you%20want%20to%20run%20.ai)是：*"没有人在运营 .ai，你想运营吗？"* Cate 说愿意。他把官方管理联系人转给了安圭拉政府（他觉得不应该以私人名义持有），但自己继续运营，搭建了自己的注册局软件（取名 **Zenaida**，以安圭拉的国鸟命名），并基本上一个人独撑了将近三十年。他[将 75% 的收入交给政府](https://domainnamewire.com/2025/02/28/former-ai-administrator-discloses-identity-digital-rev-share-other-details/#:~:text=he%20gave%2075%25%20to%20the%20government%20when%20he%20ran%20the%20domain)，自己通过电话和邮件提供支持。
 
+![安圭拉海滩上的一座测地线穹顶数据避风港，有服务器机架和卫星天线，一位管理员手工运营 .ai 注册局近三十年，旁边立着 .ai 路牌](../../assets/ai-02-cypherpunk-beach.jpg)
+
 那些年里，.ai 赚得极少。早期，注册[存在于下一级目录](https://en.wikipedia.org/wiki/.ai)——`company.com.ai`、`org.ai`——发给为数不多想要它们的安圭拉企业。甚至还发生过一次险些酿成灾难的事故，[控制权短暂落入一家海外公司](https://spectrum.ieee.org/ai-domains)，对方失联难联，不得不设法解套——这种意外已让其他小国痛失 ccTLD。
 
 两个安静的技术决定后来证明意义重大。[2017 年 12 月](https://en.wikipedia.org/wiki/.ai#:~:text=On%2016%20December%202017%2C%20the%20.ai%20registry%20started%20supporting%20the%20Extensible%20Provisioning%20Protocol)，.ai 注册局开始支持现代 [EPP](/zh/glossary/registrar/) 协议，这让全球各地的注册商首次可以直接销售该域名，而非强迫买家直接找 Cate。[2021 年，Google 将".ai"加入其通用国家代码顶级域名列表](https://en.wikipedia.org/wiki/.ai#:~:text=In%202021%2C%20Google%20Search%20analyst%20Gary%20Illyes%20announced%20that)——意味着 .ai 网站可以在全球排名，而非被锁定在安圭拉。这两步联手消除了让 .ai 一直处于小众的阻力和 SEO 惩罚。引线已经铺好，只等一个火花。
@@ -85,6 +91,8 @@ Cate 不是一个安静的观察者。以极低的成本抵达，他创立了安
 火花就是 **ChatGPT**，于 2022 年 11 月 30 日上线。几乎一夜之间，"AI"从一个研究术语变成了定义技术时代的标签——每个创始人都想要那个匹配的域名。Cate 自己的描述是对所发生之事最简洁的总结：[*"在那之后的五个月里，我们的销售量几乎翻了四倍。"*](https://spectrum.ieee.org/ai-domains#:~:text=In%20the%20five%20months%20after%20that%2C%20our%20sales%20went%20up%20by%20almost%20a%20factor%20of%20four)
 
 注册数字讲述了这个故事：2022 年底约 **144,000** 个 .ai 域名，2023 年底达到 **354,000**（[两组数据均来自 IMF](https://www.imf.org/en/news/articles/2024/05/15/cf-an-ai-powered-boost-to-anguillas-revenues)），[2026 年已突破 **120 万**](https://en.wikipedia.org/wiki/.ai)，新域名每天以数千的速度涌入。对安圭拉而言，财务影响是变革性的。国际货币基金组织（IMF）在 2024 年的国家报告["AI 助力安圭拉财政腾飞"](https://www.imf.org/en/news/articles/2024/05/15/cf-an-ai-powered-boost-to-anguillas-revenues)中记录了这笔意外之财：注册收入从 2018 年的约 $2.9M 攀升至 2023 年的约 $32 million——超过 GDP 的 10%——而约 90% 的域名续费，这将一次性激增转化为持续收入流。
+
+![一条 .ai 注册量增长曲线，在 2022 年 11 月的拐点后从 14.4 万跃升至 120 万，曲线顶端将硬币倾泻到一座加勒比小岛上](../../assets/ai-03-chatgpt-spark.jpg)
 
 到 2025 年，这笔意外之财估计达到 $85 million，而安圭拉已将其用在了日常生活中肉眼可见的地方：[扩建 Clayton J Lloyd 国际机场](https://anguillafocus.com/ai-to-generate-nearly-half-of-anguillas-revenue-this-year-tech-minister-tells-bbc/#:~:text=the%20expansion%20of%20the%20Clayton%20J%20Lloyd%20International%20Airport)、修缮道路、减免商品和服务税、扩展医疗服务，以及大幅削减公共债务。安圭拉还[开始讨论设立主权财富基金或国家发展基金](https://theanguillian.com/2025/10/government-leaders-address-high-living-costs-renewable-energy-and-where-the-ai-money-flows/#:~:text=conversations%20are%20ongoing%20about%20establishing%20a%20sovereign%20wealth%20or%20national%20development%20fund)，为子孙后代保留 .ai 收入。对于一场风暴就能抹掉一整年旅游收入的地方而言，把两个字母变成基础设施和雨季基金，是实实在在的治国之道。
 
@@ -169,6 +177,8 @@ Cate 不是一个安静的观察者。以极低的成本抵达，他创立了安
 .ai 最大的优势——它的含义被焊接到一个特定的、蓬勃发展的行业上——同时也是它的风险。前车之鉴是 **.tv**，值得完整了解，因为安圭拉官员自己也引用它。
 
 [图瓦卢是太平洋上约一万一千人的岛国](https://en.wikipedia.org/wiki/.tv#:~:text=Tuvalu%20is%20a%20tiny%20island%20nation%20of%2011%2C000%20people)，持有国家代码"TV"。1998 年它开始商业授权该域名；在一次早期协议破裂后，孵化器 Idealab 重组了这项业务，第一张百万美元支票让图瓦卢终于缴清了使它一直无法加入联合国的会费。Verisign 后来运营了 .tv，2021 年 [GoDaddy 赢得了运营图瓦卢 .tv 的合同](https://domainnamewire.com/2021/12/14/godaddy-wins-contract-to-run-tv-verisign-didnt-bid-for-renewal/#:~:text=has%20won%20the%20contract%20to%20operate)，据报每年约 1000 万美元。真金白银——但请注意其形态。.tv 在约五十万个注册时触顶并*停滞*。流媒体时代本该是它的黄金年代，结果却流向了平台——YouTube、Netflix、Twitch 本身——一个独立的 .tv 域名反而越来越无关紧要，即便被它命名的那件事已经爆炸式增长。品牌信号褪色了，哪怕它所标记的事物仍在蓬勃发展。
+
+![一架天平：上扬的 .ai 对阵风雨中黯淡下沉的 .tv，一旁由铁锚稳稳压住的 .com 作为后备——类别后缀的趋势风险](../../assets/ai-04-tv-cautionary.jpg)
 
 这就是悬在 .ai 上方的开放问题：等 AI 炒作周期成熟、这个品类变成普普通通的"软件"之后，这两个字母还能保持分量吗？就连为 you.ai 支付了 $700,000 的 Dharmesh Shah 也说，他相信[".com 域名的价值保持会更好、持续时间也会更长"](https://gizmodo.com/anguilla-ai-2000652757#:~:text=.com%20domains%20will%20maintain%20their%20value%20better%20and%20for%20longer)。安圭拉设计了与 Identity Digital 的合同，使自己获得了比图瓦卢多得多的收益——但没有哪份合同能立法规定"AI"永远时髦。
 
