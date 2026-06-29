@@ -27,7 +27,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi'] as const;
+const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko'] as const;
 type Locale = (typeof LOCALES)[number];
 const COLLECTIONS = ['blog', 'glossary', 'tld', 'partners'] as const;
 const MD_EXT = new Set(['.md', '.mdx']);
@@ -124,10 +124,11 @@ type Finding = { file: string; line: number; variant: string; slug: string; cano
 function main() {
   const termbase = loadTermbase();
 
-  // variant -> { slug, canonical } per locale
-  const variantIndex: Record<Locale, Map<string, { slug: string; canonical: string }>> = {
-    en: new Map(), es: new Map(), de: new Map(), fr: new Map(), zh: new Map(), ar: new Map(), hi: new Map(),
-  };
+  // variant -> { slug, canonical } per locale (derived from LOCALES so a newly
+  // added locale never leaves an undefined bucket here).
+  const variantIndex = Object.fromEntries(
+    LOCALES.map((l) => [l, new Map<string, { slug: string; canonical: string }>()]),
+  ) as Record<Locale, Map<string, { slug: string; canonical: string }>>;
   for (const [slug, entry] of Object.entries(termbase)) {
     const aliases = entry.aliasesByLocale;
     if (!aliases) continue;

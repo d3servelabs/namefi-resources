@@ -11,7 +11,7 @@ isolated articles into a hub-and-spoke knowledge base that readers (and LLM/Goog
 traverse — and it is the easiest thing to forget when you add or edit one page.
 
 **English is the single source of truth for the link graph.** Do all link *discovery* on the `en`
-pages only — the other six locales are *derived* from English, not cross-linked independently. This
+pages only — the other seven locales are *derived* from English, not cross-linked independently. This
 mirrors how the repo already works: `en` is the translation source, locales are translated from English
 with Claude (see `.claude/rules/content.md`), and the renderer doesn't auto-localize hrefs.
 
