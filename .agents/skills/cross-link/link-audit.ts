@@ -48,7 +48,7 @@
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
-const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi'] as const;
+const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ja'] as const;
 // Mirrors i18n.defaultLocale in apps/resources: the locale every other locale
 // falls back to at runtime when it lacks a slug. A link the default locale can
 // satisfy is never a hard 404.

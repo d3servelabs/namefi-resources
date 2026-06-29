@@ -1,14 +1,33 @@
 ---
-title: オークション
+title: オークション（イングリッシュ・ダッチ・ダイナミック）
 date: '2025-06-30'
 language: ja
+priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
-description: 買い手が入札して価格を決める競争的な販売形式で、英国式、オランダ式、動的な時間制などがある。
-keywords: ['auction', 'Dutch auction', 'English auction', 'dynamic auction', 'price discovery', 'domain sales']
+description: 買い手が入札によって価格を決める競争的な販売形式。イングリッシュ（上昇式）、ダッチ（下降式）、ダイナミック（動的）の3種類がある。
+keywords: ['オークション', 'ダッチオークション', 'イングリッシュオークション', 'ダイナミックオークション', '価格発見', 'ドメイン売買']
 level: 1
 sources:
   - https://www.investopedia.com/terms/a/auction.asp
+relatedArticles:
+  - /ja/blog/how-to-win-domain-auctions/
+  - /ja/blog/domain-terminology-guide/
+  - /ja/blog/how-to-find-domains-to-flip/
+  - /ja/blog/ens-vs-dns-domain-flipping/
+  - /ja/blog/how-to-read-comparable-domain-sales/
+relatedTopics:
+  - /ja/topics/domain-investing/
+  - /ja/topics/domain-basics/
+relatedSeries:
+  - /ja/series/domain-flipping-skills/
+  - /ja/series/domain-investor-field-guide/
+relatedGlossary:
+  - /ja/glossary/reserve-price/
+  - /ja/glossary/tld/
+  - /ja/glossary/registrar/
+  - /ja/glossary/registry/
+  - /ja/glossary/icann/
 ---
 
-**オークション**とは、市場価格を決め、ドメインを売却するために使われる競争的な入札プロセスです。**英国式オークション**は低い価格から始まり、入札者が価格を引き上げて最後の 1 人が残るまで競います。eBay のようなプラットフォームで一般的です。**オランダ式オークション**は高い価格から始まり、誰かが受け入れるまで徐々に価格が下がります。市場清算価格で素早く売却しやすい方式です。**動的オークション**は需要、参加状況、その他の要因に応じて仕組みを調整します。
+**オークション**は、ドメインの市場価格を決定し売買するために用いられる競争的な入札プロセスである。**イングリッシュオークション**は低い価格から始まり、最後の1人になるまで入札者が価格を競り上げていく方式で、eBayのようなプラットフォームで広く採用されている。**ダッチオークション**は高い価格から始まり、誰かが受諾するまで徐々に価格が下がっていく方式で、市場均衡価格での迅速な売却を実現する。**ダイナミックオークション**は、需要・参加状況・その他の要因に応じて仕組みを柔軟に調整する方式である。
