@@ -28,7 +28,7 @@ relatedGlossary:
   - /fr/glossary/registry/
 ---
 
-Si les [blogs individuels de domainers](/blog/famous-domainer-blogs-and-newsletters) représentent des voix personnelles, *les médias de l'industrie des noms de domaine* sont les organes qui fonctionnent davantage comme des salles de rédaction — parfois des rédactions d'une seule personne, mais avec une posture éditoriale journalistique plutôt que celle d'un journal de trader. Ils couvrent les transactions, les politiques, les mouvements des registres et des bureaux d'enregistrement (registrars), l'[ICANN](/fr/glossary/icann/) et les drames occasionnels ; ce sont d'ailleurs les sources que les autres finissent par citer.
+Si les [blogs individuels de domainers](/fr/blog/famous-domainer-blogs-and-newsletters) représentent des voix personnelles, *les médias de l'industrie des noms de domaine* sont les organes qui fonctionnent davantage comme des salles de rédaction — parfois des rédactions d'une seule personne, mais avec une posture éditoriale journalistique plutôt que celle d'un journal de trader. Ils couvrent les transactions, les politiques, les mouvements des registres et des bureaux d'enregistrement (registrars), l'[ICANN](/fr/glossary/icann/) et les drames occasionnels ; ce sont d'ailleurs les sources que les autres finissent par citer.
 
 Voici la liste restreinte des médias qu'il faut connaître en 2026.
 
@@ -48,7 +48,7 @@ Le média d'information et de satire de l'industrie. Édité par Theo, qui poss�
 
 ### OnlineDomain.com et DomainInvesting.com (chevauchement)
 
-[OnlineDomain](https://onlinedomain.com/) et [DomainInvesting](https://domaininvesting.com/) se situent tous deux à la frontière entre le blog individuel et le média de l'industrie — voir l'article sur [les blogs célèbres de domainers](/blog/famous-domainer-blogs-and-newsletters) pour plus de contexte. Ils sont également répertoriés ici car ils révèlent régulièrement des informations que les médias officiels reprennent par la suite.
+[OnlineDomain](https://onlinedomain.com/) et [DomainInvesting](https://domaininvesting.com/) se situent tous deux à la frontière entre le blog individuel et le média de l'industrie — voir l'article sur [les blogs célèbres de domainers](/fr/blog/famous-domainer-blogs-and-newsletters) pour plus de contexte. Ils sont également répertoriés ici car ils révèlent régulièrement des informations que les médias officiels reprennent par la suite.
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
@@ -80,7 +80,7 @@ L'émission d'interviews d'Andrew Allemann, rattachée à [DomainNameWire](https
 
 Ce ne sont pas strictement des médias, mais c'est là que la plupart des histoires publiées *atterrissent* et font l'objet de débats.
 
-- [NamePros](https://www.namepros.com/) — couvert en détail dans [l'article sur les forums](/blog/top-domain-trader-forums). Les fils de discussion sur n'importe quelle histoire majeure sont souvent plus instructifs que l'article original.
+- [NamePros](https://www.namepros.com/) — couvert en détail dans [l'article sur les forums](/fr/blog/top-domain-trader-forums). Les fils de discussion sur n'importe quelle histoire majeure sont souvent plus instructifs que l'article original.
 - [Domaining.com](https://www.domaining.com/) — agrégateur de blogs de domainers. Utile en tant que page unique affichant les gros titres du jour de la plupart des sources figurant sur cette liste.
 
 ## Comment lire cette liste
@@ -89,7 +89,7 @@ Quelques points à garder à l'esprit.
 
 **Certains médias sont aussi des entreprises.** Les courtiers, les places de marché et les registres publient également du contenu, et la frontière entre « médias de l'industrie » et « marketing de contenu » n'est pas toujours claire. Les médias de cette liste sont des entités indépendantes et existent depuis assez longtemps pour s'être forgé une réputation éditoriale ; si vous lisez le contenu du blog d'un courtier, considérez-le comme informé mais ayant des intérêts en jeu.
 
-**L'actualité éclate d'abord sur X.** Les grandes histoires — une vente majeure, un changement de politique de registre, un procès — apparaissent presque toujours sur [X](https://x.com/) avant d'apparaître sur l'un de ces médias. Ces plateformes sont les endroits où les histoires sont *enregistrées*, pas là où elles sont révélées en premier. Associez la liste des médias aux hashtags X présents dans [l'article sur les forums](/blog/top-domain-trader-forums#twitter-x-domain-twitter).
+**L'actualité éclate d'abord sur X.** Les grandes histoires — une vente majeure, un changement de politique de registre, un procès — apparaissent presque toujours sur [X](https://x.com/) avant d'apparaître sur l'un de ces médias. Ces plateformes sont les endroits où les histoires sont *enregistrées*, pas là où elles sont révélées en premier. Associez la liste des médias aux hashtags X présents dans [l'article sur les forums](/fr/blog/top-domain-trader-forums#twitter-x-domain-twitter).
 
 **Les chiffres de vente sont déclarés, non audités.** Les chiffres des ventes publiques proviennent de communiqués de presse des bureaux d'enregistrement/places de marché ou de divulgations par les vendeurs, et non d'une chambre de compensation neutre. [DNJournal](https://www.dnjournal.com/) et [NameBio](https://namebio.com/) sont les plus rigoureux pour signaler les ventes non vérifiées — mais même là, les données sous-jacentes sont auto-déclarées.
 
@@ -103,6 +103,6 @@ Ajoutez les archives de DomainSherpa lorsque vous souhaitez approfondir vos conn
 
 **Lectures associées :**
 
-- [Blogs, Substacks et newsletters célèbres de domainers](/blog/famous-domainer-blogs-and-newsletters) — des voix individuelles, par opposition aux médias de cette liste.
-- [Les meilleurs forums de traders de noms de domaine en anglais](/blog/top-domain-trader-forums) — là où les histoires sont débattues après leur publication.
-- [Guide complet de la terminologie des noms de domaine](/blog/domain-terminology-guide) — le vocabulaire qui apparaît dans tous ces médias.
+- [Blogs, Substacks et newsletters célèbres de domainers](/fr/blog/famous-domainer-blogs-and-newsletters) — des voix individuelles, par opposition aux médias de cette liste.
+- [Les meilleurs forums de traders de noms de domaine en anglais](/fr/blog/top-domain-trader-forums) — là où les histoires sont débattues après leur publication.
+- [Guide complet de la terminologie des noms de domaine](/fr/blog/domain-terminology-guide) — le vocabulaire qui apparaît dans tous ces médias.

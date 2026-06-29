@@ -86,7 +86,7 @@ La mayoría de estos funcionan por invitación y crecen alrededor de brókers in
 
 ### Domaining.com y el anillo de blogs de domainers
 
-[Domaining.com](https://www.domaining.com/) no es un foro; es el agregador principal de blogs de *domainers*. La mayor parte del debate profundo en inglés dentro de la industria ocurre en las secciones de comentarios de esos blogs: [DomainInvesting.com](https://domaininvesting.com/) (Elliot Silver), [OnlineDomain.com](https://onlinedomain.com/) (Konstantinos Zournas), [DomainGang](https://domaingang.com/), [TheDomains](https://thedomains.com/) y [DomainNameWire](https://domainnamewire.com/), entre otros. Si "¿dónde hablan los domainers?" significa "¿dónde está el análisis escrito sustancial?", la respuesta se divide en dos: las voces individuales se cubren en la publicación sobre [blogs y boletines famosos de domainers](/blog/famous-domainer-blogs-and-newsletters), y los medios de noticias en la publicación sobre [medios de la industria de dominios](/blog/domain-industry-media).
+[Domaining.com](https://www.domaining.com/) no es un foro; es el agregador principal de blogs de *domainers*. La mayor parte del debate profundo en inglés dentro de la industria ocurre en las secciones de comentarios de esos blogs: [DomainInvesting.com](https://domaininvesting.com/) (Elliot Silver), [OnlineDomain.com](https://onlinedomain.com/) (Konstantinos Zournas), [DomainGang](https://domaingang.com/), [TheDomains](https://thedomains.com/) y [DomainNameWire](https://domainnamewire.com/), entre otros. Si "¿dónde hablan los domainers?" significa "¿dónde está el análisis escrito sustancial?", la respuesta se divide en dos: las voces individuales se cubren en la publicación sobre [blogs y boletines famosos de domainers](/es/blog/famous-domainer-blogs-and-newsletters), y los medios de noticias en la publicación sobre [medios de la industria de dominios](/es/blog/domain-industry-media).
 
 ### LinkedIn
 
@@ -108,8 +108,8 @@ Si también estás evaluando dónde *poner a la venta* (*listar*) los nombres (e
 
 **Lecturas relacionadas:**
 
-- [Blogs, Substacks y boletines famosos de domainers](/blog/famous-domainer-blogs-and-newsletters) — las voces individuales a las que enlazan los hilos de los foros.
-- [Medios famosos de la industria de dominios](/blog/domain-industry-media) — los medios de noticias que cubren este mercado a nivel periodístico.
-- [Guía completa de terminología de nombres de dominio](/blog/domain-terminology-guide) — el lenguaje que usan los *domainers* en estos foros.
-- [Cuota de mercado de ccTLD por volumen de registro](/blog/cctld-market-share-by-registration-volume) — contexto para los hilos sobre códigos de país que verás en NamePros.
-- [Casos de uso de dominios tokenizados en 2026](/blog/tokenized-domain-use-cases-2026) — hacia dónde se dirige la conversación en el futuro.
+- [Blogs, Substacks y boletines famosos de domainers](/es/blog/famous-domainer-blogs-and-newsletters) — las voces individuales a las que enlazan los hilos de los foros.
+- [Medios famosos de la industria de dominios](/es/blog/domain-industry-media) — los medios de noticias que cubren este mercado a nivel periodístico.
+- [Guía completa de terminología de nombres de dominio](/es/blog/domain-terminology-guide) — el lenguaje que usan los *domainers* en estos foros.
+- [Cuota de mercado de ccTLD por volumen de registro](/es/blog/cctld-market-share-by-registration-volume) — contexto para los hilos sobre códigos de país que verás en NamePros.
+- [Casos de uso de dominios tokenizados en 2026](/es/blog/tokenized-domain-use-cases-2026) — hacia dónde se dirige la conversación en el futuro.

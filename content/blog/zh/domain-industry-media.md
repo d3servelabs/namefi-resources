@@ -28,7 +28,7 @@ relatedGlossary:
   - /zh/glossary/registry/
 ---
 
-如果说[个人域名投资者博客](/blog/famous-domainer-blogs-and-newsletters)代表了个人的声音，那么*域名行业媒体*则更像是新闻机构——有时虽是“一人新闻室”，但它们秉持的是新闻报道的编辑立场，而非仅仅是交易者的日记。它们报道交易、政策、注册局/[注册商](/zh/glossary/registrar/)的动态、[ICANN](/zh/glossary/icann/) 资讯以及偶尔发生的行业风波，且往往是其他人引用的信息来源。
+如果说[个人域名投资者博客](/zh/blog/famous-domainer-blogs-and-newsletters)代表了个人的声音，那么*域名行业媒体*则更像是新闻机构——有时虽是“一人新闻室”，但它们秉持的是新闻报道的编辑立场，而非仅仅是交易者的日记。它们报道交易、政策、注册局/[注册商](/zh/glossary/registrar/)的动态、[ICANN](/zh/glossary/icann/) 资讯以及偶尔发生的行业风波，且往往是其他人引用的信息来源。
 
 以下是 2026 年值得了解的行业媒体精选名单。
 
@@ -48,7 +48,7 @@ relatedGlossary:
 
 ### OnlineDomain.com 与 DomainInvesting.com（交叉领域）
 
-[OnlineDomain](https://onlinedomain.com/) 和 [DomainInvesting](https://domaininvesting.com/) 都介于个人博客和行业媒体之间——具体背景请参见[著名域名投资者博客文章](/blog/famous-domainer-blogs-and-newsletters)。将它们列在这里，是因为它们经常率先发布突发新闻，随后才会被正式的行业媒体转载。
+[OnlineDomain](https://onlinedomain.com/) 和 [DomainInvesting](https://domaininvesting.com/) 都介于个人博客和行业媒体之间——具体背景请参见[著名域名投资者博客文章](/zh/blog/famous-domainer-blogs-and-newsletters)。将它们列在这里，是因为它们经常率先发布突发新闻，随后才会被正式的行业媒体转载。
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
@@ -80,7 +80,7 @@ relatedGlossary:
 
 它们严格来说不算媒体，但却是大多数已发布新闻*落地*并引发讨论的地方。
 
-- [NamePros](https://www.namepros.com/) — 在[论坛文章](/blog/top-domain-trader-forums)中有详细介绍。关于任何重大新闻的讨论帖往往比原始文章提供更多的信息。
+- [NamePros](https://www.namepros.com/) — 在[论坛文章](/zh/blog/top-domain-trader-forums)中有详细介绍。关于任何重大新闻的讨论帖往往比原始文章提供更多的信息。
 - [Domaining.com](https://www.domaining.com/) — 域名投资者博客的聚合平台。作为一个整合页面，它汇集了本列表多数来源的当日头条，非常实用。
 
 ## 如何看待这份名单
@@ -89,7 +89,7 @@ relatedGlossary:
 
 **部分媒体本身也是商业机构。** 经纪公司、交易平台和注册局同样会发布内容，“行业媒体”和“内容营销”之间的界限并不总是泾渭分明。本榜单上的媒体均独立运营，且存续时间较长，已建立起良好的编辑声誉；如果你阅读的是经纪公司博客上的内容，请将其视为消息灵通但可能带有利益导向的资讯。
 
-**突发新闻通常最先在 X 上爆出。** 重大事件——大额交易、注册局政策变更、法律诉讼——几乎总是先在 [X](https://x.com/) 上出现，然后才会登陆这些媒体平台。这些媒体是新闻被*记录*的地方，而非其发源地。建议将此媒体名单与[论坛文章](/blog/top-domain-trader-forums#twitter-x-domain-twitter)中提到的 X 标签结合使用。
+**突发新闻通常最先在 X 上爆出。** 重大事件——大额交易、注册局政策变更、法律诉讼——几乎总是先在 [X](https://x.com/) 上出现，然后才会登陆这些媒体平台。这些媒体是新闻被*记录*的地方，而非其发源地。建议将此媒体名单与[论坛文章](/zh/blog/top-domain-trader-forums#twitter-x-domain-twitter)中提到的 X 标签结合使用。
 
 **销售数据是上报的，而非经审计的。** 公开的销售数据来自注册商/交易平台的新闻稿或卖方的披露，而非来自任何中立的清算机构。[DNJournal](https://www.dnjournal.com/) 和 [NameBio](https://namebio.com/) 在标记未经核实的销售数据方面做得最为严谨——但即使如此，底层数据依然是自我报告的。
 
@@ -103,6 +103,6 @@ relatedGlossary:
 
 **相关阅读：**
 
-- [著名域名投资者博客、Substack 与时事通讯](/blog/famous-domainer-blogs-and-newsletters) — 聚焦个人声音，与本列表中的机构媒体形成互补。
-- [最受欢迎的英文域名交易论坛](/blog/top-domain-trader-forums) — 新闻发布后引发热烈讨论的地方。
-- [全面的域名术语指南](/blog/domain-terminology-guide) — 涵盖所有这些媒体中频繁出现的核心专业词汇。
+- [著名域名投资者博客、Substack 与时事通讯](/zh/blog/famous-domainer-blogs-and-newsletters) — 聚焦个人声音，与本列表中的机构媒体形成互补。
+- [最受欢迎的英文域名交易论坛](/zh/blog/top-domain-trader-forums) — 新闻发布后引发热烈讨论的地方。
+- [全面的域名术语指南](/zh/blog/domain-terminology-guide) — 涵盖所有这些媒体中频繁出现的核心专业词汇。

@@ -55,9 +55,12 @@ Direction 3 (i18n parity) and broken-link detection are mechanical and unforgivi
 ```bash
 bun .agents/skills/cross-link/link-audit.ts                 # audit everything
 bun .agents/skills/cross-link/link-audit.ts content/blog/zh # audit a subtree / changed paths
-bun .agents/skills/cross-link/link-audit.ts --fix <paths>   # repoint LOCALE_MISMATCH links
+bun .agents/skills/cross-link/link-audit.ts --fix <paths>   # repoint LOCALE_MISMATCH + add MISSING_LOCALE prefixes
 bun .agents/skills/cross-link/link-audit.ts --json <paths>  # machine-readable
 ```
+
+The same audit runs in CI (`bun links:audit`, wired into `.github/workflows/validate.yml` and the
+pre-push hook), so a `BROKEN` or `MISSING_LOCALE` link fails the build, not just a local check.
 
 It classifies every internal link. The resources app **falls back to the default locale (`en`)
 at runtime** — requesting `/<loc>/.../<slug>` when that locale lacks the slug serves the English
@@ -67,7 +70,13 @@ the `en` fallback is. The severities mirror that:
 
 - **`BROKEN`** — slug exists in neither the link locale **nor** the `en` fallback → genuine 404.
   **Must be fixed by hand** (create the term, or repoint to a locale that has it). Never auto-fixed
-  (the right answer is editorial). The only severity that fails the run (exit 1).
+  (the right answer is editorial). Fails the run (exit 1).
+- **`MISSING_LOCALE`** — the href omits the locale segment entirely: a bare `](/blog/<slug>)` instead
+  of `](/<locale>/blog/<slug>)`. The app has **no** bare `/blog/...` route (every page lives under
+  `[lang]/`), so the locale middleware redirects the bare path to whatever locale the *reader's*
+  cookie / `Accept-Language` resolves to — leaking an `en` reader onto a `de` page (plus a redirect
+  hop). A real defect, so it **fails the run (exit 1)**. **Auto-fixable** with `--fix`: prefixes the
+  file's own locale (or the `en` fallback when the file's locale lacks the slug).
 - **`LOCALE_MISMATCH`** — link locale ≠ file locale and the file's own locale *has* the counterpart.
   **Auto-fixable** with `--fix` (repoints to the file's locale).
 - **`MISSING_TRANSLATION`** — the link locale lacks the slug but `en` has it, so the app renders it

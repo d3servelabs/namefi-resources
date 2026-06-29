@@ -28,7 +28,7 @@ relatedGlossary:
   - /de/glossary/registry/
 ---
 
-Wenn [individuelle Domainer-Blogs](/blog/famous-domainer-blogs-and-newsletters) persönliche Stimmen sind, dann sind *Medien der Domain-Branche* die Plattformen, die eher wie Nachrichtenredaktionen arbeiten — manchmal Ein-Personen-Redaktionen, aber mit der redaktionellen Haltung von Journalismus statt eines Händler-Tagebuchs. Sie berichten über Deals, Richtlinien, Schritte von Registrierungsstellen (Registries)/Registraren, [ICANN](/de/glossary/icann/) und das gelegentliche Drama, und sie sind die Quellen, die andere zitieren.
+Wenn [individuelle Domainer-Blogs](/de/blog/famous-domainer-blogs-and-newsletters) persönliche Stimmen sind, dann sind *Medien der Domain-Branche* die Plattformen, die eher wie Nachrichtenredaktionen arbeiten — manchmal Ein-Personen-Redaktionen, aber mit der redaktionellen Haltung von Journalismus statt eines Händler-Tagebuchs. Sie berichten über Deals, Richtlinien, Schritte von Registrierungsstellen (Registries)/Registraren, [ICANN](/de/glossary/icann/) und das gelegentliche Drama, und sie sind die Quellen, die andere zitieren.
 
 Dies ist die kurze Liste der Medienangebote, die man im Jahr 2026 kennen sollte.
 
@@ -48,7 +48,7 @@ Das Satire- und Nachrichtenportal der Branche. Redigiert von Theo, der einen unk
 
 ### OnlineDomain.com und DomainInvesting.com (Überschneidungen)
 
-Sowohl [OnlineDomain](https://onlinedomain.com/) als auch [DomainInvesting](https://domaininvesting.com/) bewegen sich an der Grenze zwischen individuellem Blog und Branchenmedium — siehe den Beitrag über [bekannte Domainer-Blogs](/blog/famous-domainer-blogs-and-newsletters) für den Kontext. Sie sind auch hier aufgeführt, weil sie regelmäßig Neuigkeiten veröffentlichen, die von den offiziellen Nachrichtenportalen erst später aufgegriffen werden.
+Sowohl [OnlineDomain](https://onlinedomain.com/) als auch [DomainInvesting](https://domaininvesting.com/) bewegen sich an der Grenze zwischen individuellem Blog und Branchenmedium — siehe den Beitrag über [bekannte Domainer-Blogs](/de/blog/famous-domainer-blogs-and-newsletters) für den Kontext. Sie sind auch hier aufgeführt, weil sie regelmäßig Neuigkeiten veröffentlichen, die von den offiziellen Nachrichtenportalen erst später aufgegriffen werden.
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
@@ -80,7 +80,7 @@ Andrew Allemanns Interview-Show, die an [DomainNameWire](https://domainnamewire.
 
 Dies sind im engeren Sinne keine Medien, aber hier *landen* die meisten veröffentlichten Geschichten und werden diskutiert.
 
-- [NamePros](https://www.namepros.com/) — wird im [Foren-Beitrag](/blog/top-domain-trader-forums) ausführlich behandelt. Die Diskussionsstränge zu jeder wichtigen Geschichte sind oft informativer als der ursprüngliche Artikel.
+- [NamePros](https://www.namepros.com/) — wird im [Foren-Beitrag](/de/blog/top-domain-trader-forums) ausführlich behandelt. Die Diskussionsstränge zu jeder wichtigen Geschichte sind oft informativer als der ursprüngliche Artikel.
 - [Domaining.com](https://www.domaining.com/) — Ein Aggregator für Domainer-Blogs. Nützlich als zentrale Seite, die die Schlagzeilen des Tages aus den meisten Quellen dieser Liste anzeigt.
 
 ## Wie diese Liste zu lesen ist
@@ -89,7 +89,7 @@ Ein paar Dinge, die Sie im Hinterkopf behalten sollten.
 
 **Einige Portale sind gleichzeitig Unternehmen.** Broker, Marktplätze und Registries veröffentlichen ebenfalls Inhalte, und die Grenze zwischen "Branchenmedien" und "Content-Marketing" ist nicht immer scharf gezogen. Die Portale auf dieser Liste sind in unabhängigem Besitz und existieren schon lange genug, um einen redaktionellen Ruf zu haben. Wenn Sie Inhalte auf dem Blog eines Brokers lesen, betrachten Sie diese als sachkundig, aber von Eigeninteressen geprägt.
 
-**Nachrichten tauchen zuerst auf X auf.** Große Geschichten — ein bedeutender Verkauf, eine Änderung der Registry-Richtlinien, ein Rechtsstreit — erscheinen fast immer auf [X](https://x.com/), bevor sie in einem dieser Portale veröffentlicht werden. In den Medienportalen werden Geschichten *festgehalten*, nicht exklusiv aufgedeckt. Kombinieren Sie diese Medienliste mit den X-Hashtags im [Foren-Beitrag](/blog/top-domain-trader-forums#twitter-x-domain-twitter).
+**Nachrichten tauchen zuerst auf X auf.** Große Geschichten — ein bedeutender Verkauf, eine Änderung der Registry-Richtlinien, ein Rechtsstreit — erscheinen fast immer auf [X](https://x.com/), bevor sie in einem dieser Portale veröffentlicht werden. In den Medienportalen werden Geschichten *festgehalten*, nicht exklusiv aufgedeckt. Kombinieren Sie diese Medienliste mit den X-Hashtags im [Foren-Beitrag](/de/blog/top-domain-trader-forums#twitter-x-domain-twitter).
 
 **Verkaufszahlen werden gemeldet, nicht geprüft.** Öffentliche Verkaufszahlen stammen aus Pressemitteilungen von Registraren/Marktplätzen oder Offenlegungen von Verkäufern, nicht von einer neutralen Verrechnungsstelle. [DNJournal](https://www.dnjournal.com/) und [NameBio](https://namebio.com/) sind am diszipliniertesten bei der Kennzeichnung unbestätigter Verkäufe — aber selbst dort beruhen die zugrunde liegenden Daten auf Selbstauskünften.
 
@@ -103,6 +103,6 @@ Nutzen Sie das Archiv von DomainSherpa, wenn Sie tiefergehende Informationen zu 
 
 **Weiterführende Lektüre:**
 
-- [Bekannte Domainer-Blogs, Substacks und Newsletter](/blog/famous-domainer-blogs-and-newsletters) — individuelle Stimmen im Vergleich zu den Portalen auf dieser Liste.
-- [Top-Foren für Domain-Händler (Englisch)](/blog/top-domain-trader-forums) — wo Geschichten nach ihrer Veröffentlichung diskutiert werden.
-- [Umfassender Leitfaden zur Domainnamen-Terminologie](/blog/domain-terminology-guide) — Vokabular, das in all diesen Portalen auftaucht.
+- [Bekannte Domainer-Blogs, Substacks und Newsletter](/de/blog/famous-domainer-blogs-and-newsletters) — individuelle Stimmen im Vergleich zu den Portalen auf dieser Liste.
+- [Top-Foren für Domain-Händler (Englisch)](/de/blog/top-domain-trader-forums) — wo Geschichten nach ihrer Veröffentlichung diskutiert werden.
+- [Umfassender Leitfaden zur Domainnamen-Terminologie](/de/blog/domain-terminology-guide) — Vokabular, das in all diesen Portalen auftaucht.
