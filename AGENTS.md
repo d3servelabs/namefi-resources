@@ -10,6 +10,15 @@ translation, cross-linking, validation, publishing). Read it before changing
 content. Drafting and translation playbooks live in the skills under
 [`.agents/skills/`](.agents/skills/).
 
+## Production releases
+
+When the user asks you to "do a prod release", "prod promotion", or similar,
+assume they mean to use the existing release/deploy GitHub Actions workflow
+checked into `.github/workflows/` for this repo or its publishing path. It is
+fine to use `gh workflow run` or `gh run watch` only to dispatch and observe that
+checked-in workflow; do not replace the workflow with ad hoc local or `gh`
+commandline release steps unless the user explicitly asks for that.
+
 ## Images — always use the `namefi-resource-images` skill
 
 **Whenever you are asked to generate or revise a cover image (OpenGraph/Twitter
