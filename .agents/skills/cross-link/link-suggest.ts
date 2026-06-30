@@ -41,7 +41,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko', 'ja'] as const;
+const LOCALES = ['en', 'es', 'de', 'fr', 'zh-CN', 'ar', 'hi', 'ko', 'ja'] as const;
 const COLLECTIONS = ['blog', 'glossary', 'tld', 'partners'] as const;
 const COLLECTION_PRIORITY: Record<string, number> = { glossary: 0, blog: 1, tld: 2, partners: 3 };
 const MD_EXT = new Set(['.md', '.mdx']);
@@ -374,7 +374,7 @@ if (termArgs.length) {
   for (const t of termArgs) {
     let collection: string | undefined;
     let slug: string | undefined;
-    const hrefM = t.match(/^\/[a-z]{2}\/([a-z]+)\/(.+?)\/?$/);
+    const hrefM = t.match(/^\/[a-z]{2}(?:-[A-Z]{2})?\/([a-z]+)\/(.+?)\/?$/);
     if (hrefM) {
       collection = hrefM[1];
       slug = hrefM[2];

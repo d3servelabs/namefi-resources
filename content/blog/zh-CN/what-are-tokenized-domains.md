@@ -1,0 +1,224 @@
+---
+title: '什么是代币化域名？域名代币化指南'
+date: '2026-05-22'
+language: zh-CN
+priority: P0
+tags: ['faq']
+authors: ['namefiteam']
+draft: false
+description: '简明易懂地介绍代币化域名和域名代币化——代币化域名意味着什么，域名代币化如何运作，以及代币化域名与传统域名和仅限区块链的名称（如 ENS）有何不同。'
+keywords: ['代币化域名', '代币化一个域名', '代币化多个域名', '将一个域名代币化', '将多个域名代币化', '域名代币化', '域名的代币化', '一个域名的代币化', '域名名称代币化', '如何代币化域名', '什么是代币化域名', '代币化域名是什么', 'NFT 域名', '链上域名', '区块链域名', 'DNS', 'ICANN 域名', 'web3 域名', '域名 NFT', '作为 NFT 的域名', 'namefi', '域名所有权', '域名资产代币化', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', '代币化域名 vs ENS', '代币化域名 vs web3 域名', 'ICANN 域名 vs web3 域名', '比较代币化域名平台']
+relatedArticles:
+  - /zh-CN/blog/premium-web3-tlds/
+  - /zh-CN/blog/ens-vs-unstoppable-vs-tokenized-dns/
+  - /zh-CN/blog/tokenized-domain-vs-web3-domain/
+  - /zh-CN/blog/how-to-sell-a-domain-name-you-own/
+  - /zh-CN/blog/choosing-a-domain-tokenization-platform/
+relatedTopics:
+  - /zh-CN/topics/domain-tokenization/
+  - /zh-CN/topics/choosing-a-tld/
+relatedSeries:
+  - /zh-CN/series/domain-flipping-skills/
+  - /zh-CN/series/domain-investor-field-guide/
+relatedGlossary:
+  - /zh-CN/glossary/registrar/
+  - /zh-CN/glossary/dns/
+  - /zh-CN/glossary/icann/
+  - /zh-CN/glossary/tld/
+  - /zh-CN/glossary/web3/
+---
+
+您可能听说过“代币化域名（tokenized domain）”、“将域名代币化（tokenize a domain）”或“域名代币化（domain tokenization）”等词，并想知道它们究竟意味着什么。代币化域名是一种新型域名吗？是一个仅存在于[区块链](/zh-CN/glossary/blockchain/)上的名称吗？是 `.com` 的替代品吗？首先，将一个域名*代币化*到底意味着什么？
+
+本文将直接回答**“是什么”**的问题：代币化域名*是什么*，域名代币化*意味着什么*，域名代币化*不是什么*，以及整个概念与您已经熟悉的域名有什么关系。
+
+> 如果您想了解*为什么*域名代币化很重要，请参阅[为什么要在链上将域名代币化？](/zh-CN/blog/why-tokenize-domains/)。本文将侧重于讨论*它是什么*。
+
+---
+
+## 简短定义
+
+**代币化域名**是一个常规的、受 [ICANN](/zh-CN/glossary/icann/) 认可的[域名](/zh-CN/blog/what-is-domain/)（例如 `mybrand.xyz` 或 `example.com`），其所有权同时也作为**区块链上的代币**（通常是 [NFT](/zh-CN/glossary/nft/)）来表示。创建这种由代币支持的表示的过程被称为**域名代币化（domain tokenization）**，而这一行为本身就是人们常说的*代币化一个域名（tokenize a domain）*或*代币化多个域名（tokenize domains）*。
+
+换句话说：
+
+> 代币化域名是拥有**两层同步所有权**的一个域名：传统的 [DNS](/zh-CN/glossary/dns/) 注册局记录，*以及*镜像该记录的[链上](/zh-CN/glossary/on-chain/)代币。**将域名代币化**就是为现有或新注册的域名添加这第二层链上层。
+
+当您转移该代币时，底层的域名也会随之转移。当域名过期或续费时，代币也会反映该状态。
+
+---
+
+## 两层结构，一个域名
+
+将代币化域名想象成具有两条同步记录会有助于理解：
+
+| 层面             | 它是什么                                            | 谁来维护                                  |
+|------------------|-----------------------------------------------------|-------------------------------------------|
+| DNS / 注册局     | [注册商](/zh-CN/glossary/registrar/)和注册局的官方记录 | 经 [ICANN](/zh-CN/glossary/icann/) 认证的[注册商](/zh-CN/glossary/registrar/) |
+| 链上代币         | 您[钱包](/zh-CN/glossary/wallet/)中代表所有权的 [NFT](/zh-CN/glossary/nft/) | 公有区块链上的[智能合约](/zh-CN/glossary/smart-contract/) |
+
+这两层记录由域名代币化平台（就 Namefi 而言，通过 Namefi 协议及其注册商集成）保持同步。每当我们谈论*将域名代币化*、*代币化多个域名*或*域名名称代币化*时，我们指的都是为特定域名建立并维护这种双层关系。
+
+这有别于*仅*在注册商处拥有域名（传统模式），也有别于*仅*在链上拥有名称（ENS 模式）。代币化域名则是刻意将两者合二为一。
+
+---
+
+## 代币化域名*不是*什么
+
+以下几个关于域名代币化的常见误解值得澄清：
+
+### 不是新的顶级域 (TLD)
+
+代币化域名不是 `.crypto`、`.eth` 或 `.x` 风格的名称。当您通过 Namefi 将域名代币化时，您使用的仍然是您所熟悉的相同 TLD——`.com`、`.xyz`、`.io`、`.art` 等等——它们可以在全球任何浏览器、电子邮件客户端或 [DNS 解析器](/zh-CN/glossary/dns-resolver/)中解析。
+
+### 与 ENS 或“区块链名称”不同
+
+[ENS](/zh-CN/glossary/ens/) 名称（如 `vitalik.eth`）完全存在于链上，如果没有桥接或特殊的解析器，它们无法在标准 DNS 中解析。相比之下，代币化域名是**真正的 DNS 域名**，只是*同时*拥有链上表示。域名代币化是为真实的 DNS 名称添加链上层；它并不会用一个平行的命名系统来取代 DNS。
+
+| 特性                             | 传统域名 | ENS / 区块链名称 | 代币化域名 |
+|----------------------------------|----------|------------------|------------|
+| 在任何浏览器中可用               | 是       | 需要解析器       | 是         |
+| 受 ICANN 认可                    | 是       | 否               | 是         |
+| 保存在您的钱包中                 | 否       | 是               | 是         |
+| 可在链上转移                     | 否       | 是               | 是         |
+| 可与智能合约组合                 | 否       | 是               | 是         |
+
+### 不是抗审查或“法外之地”
+
+因为底层资产是真实的 DNS 域名，所以代币化域名仍然受制于续费规则、[ICANN](/zh-CN/glossary/icann/) 政策、[UDRP](/zh-CN/glossary/udrp/) 争议以及适用的法律。代币反映的是所有权；它并不能使域名免受现实世界规则的约束。
+
+---
+
+## 域名代币化在实践中如何运作
+
+以下是在 Namefi 上代币化一个域名（或注册一个全新的代币化域名）时的实际运作过程：
+
+1. **注册** —— 通过受认证的[注册商](/zh-CN/glossary/registrar/)注册（或转入）一个真实的 DNS 域名。
+2. **铸造** —— 作为域名代币化的一部分，一个代表该域名的 [NFT](/zh-CN/glossary/nft/) 会被铸造到您的[钱包](/zh-CN/glossary/wallet/)中。
+3. **同步** —— 平台会为每个代币化域名保持 DNS 级别所有权与链上所有权的一致。如果您转移了 NFT，DNS 记录也会随之转移。
+4. **使用** —— 您可以将该代币化域名指向某个网站、设置 DNS 记录，或者在链上应用（如市场、身份系统、[DeFi](/zh-CN/glossary/defi/) 等）中使用该 NFT。
+
+最终用户的体验是：*一个域名，两种交互方式*——熟悉的 DNS 世界，以及域名代币化所解锁的可编程的链上世界。
+
+---
+
+## 代币化域名能做什么
+
+由于这两层同时存在，您将获得两者功能的结合：
+
+- **作为普通域名使用** —— [托管](/zh-CN/glossary/escrow/)网站、设置电子邮件、配置 DNS 记录。
+- **保存在您自己的钱包中** —— 拥有所有权无需托管账户。
+- **秒级转移** —— 将 NFT 发送到另一个钱包；DNS 记录会随之改变。
+- **在 NFT 市场上挂售** —— 如 OpenSea、Blur 等。
+- **在智能合约中使用** —— 抵押、[拍卖](/zh-CN/glossary/auction/)、[租赁](/zh-CN/glossary/leasing/)、[碎片化所有权](/zh-CN/glossary/fractional-ownership/)等。
+- **绑定链上身份** —— 链接到 [Farcaster](/zh-CN/glossary/farcaster/)、[Lens](/zh-CN/glossary/lens/) 或 [DID](/zh-CN/glossary/did/) 系统。
+
+---
+
+## 顶级的域名代币化平台
+
+域名代币化不再是单一供应商的实验——现在有多个平台提供了代币化域名或使用代币化域名的方法，各自的方式略有不同。以下是该领域最知名的一些平台概览。
+
+> 以下外部链接仅作为有用的参考提供，不构成背书。
+
+### 1. Namefi（那就是我们）
+
+**方法：** 将真实的 ICANN 域名（`.com`、`.xyz`、`.io`、`.art` 及其他许多域名）代币化为 NFT，同时保持 DNS 层的完全可用。通过受认证的[注册商](/zh-CN/glossary/registrar/)使两层保持同步。
+
+**Namefi 的与众不同之处：** Namefi 是**第一个在[以太坊](/zh-CN/glossary/ethereum/)主网上将真实的 ICANN 域名代币化的平台，也是第一个在 Base 网络上实现这一壮举的平台**。由于 Namefi 代币化的域名存在于以太坊和 Base 上，得益于以太坊深厚成熟的 [DeFi](/zh-CN/glossary/defi/) 生态系统，它们能自然地与**大多数主要的 NFT 市场和借贷协议**（如 OpenSea、Blur、NFTfi 等）集成。其他平台在区块链的选择上也做出了符合其自身目标的深思熟虑的决定；而就目前而言，以太坊和 Base 恰好能为 Namefi 用户提供与现有 NFT 和 DeFi 工具之间最广泛的开箱即用兼容性。
+
+**最适用人群：** 那些希望在一个产品中同时获得真实的、浏览器可解析的域名*以及*钱包原生、可组合的所有权，并且希望位于拥有最广泛 DeFi 和 NFT 支持的区块链上的所有者。访问 [namefi.io](https://namefi.io) 开始使用。
+
+### 2. D3 Global Inc
+
+**方法：** 一个专注于在注册局层面将新的和现有的 TLD 引入链上的平台，他们与 TLD 运营商及符合 ICANN 标准的基础设施进行合作。
+
+**最适用人群：** 注册局级别的代币化计划和新的代币化 TLD 发布。网站：[d3.inc](https://d3.inc)。
+
+### 3. Doma Protocol
+
+**方法：** 一项协议层面的工作，旨在标准化跨注册商和跨链的真实域名的链上表示及转移方式。
+
+**最适用人群：** 寻求域名代币化协议层抽象的开发者。网站：[doma.xyz](https://doma.xyz)。
+
+### 4. Domora
+
+**方法：** 代币化域名领域另一个新兴的平台，致力于将真实的域名引入链上。
+
+**最适用人群：** 正在评估代币化 DNS 域名分类中替代方案的用户。网站：[domora.com](https://domora.com)。
+
+### 5. WebUnited
+
+**方法：** 一个探索真实域名的链上表现形式及相关基础设施的参与者。
+
+**最适用人群：** 正在寻找其他代币化域名选项的团队。网站：[webunited.com](https://webunited.com)。
+
+### 6. GBM (Global Brand Marketplace / GBM Auctions)
+
+**方法：** 以链上拍卖基础设施而闻名，该基础设施已应用于代币化域名销售和品牌资产。
+
+**最适用人群：** 针对代币化域名及相关数字品牌资产以拍卖驱动的发现和销售。网站：[gbm.auction](https://gbm.auction)。
+
+### 7. 探索代币化的传统注册商
+
+一些现有的 ICANN [注册商](/zh-CN/glossary/registrar/)和注册局（例如 [GoDaddy](https://www.godaddy.com)、[Identity Digital](https://www.identity.digital)）已经宣布了试探性的代币化举措或合作伙伴关系。其覆盖范围和可用性差异很大，且它们的大部分核心业务仍然是传统的仅限 DNS 的注册。
+
+---
+
+## 近亲类别：ENS、Unstoppable Domains、Freename 和 Web3 域名
+
+代币化域名的一个近亲类别是 **[Web3](/zh-CN/glossary/web3/) 域名**系列——这是一个由 ENS、Unstoppable Domains 和 Freename 等优秀项目开创的类别。我们要明确这种区别，并非为了贬低它们的工作（它们为链上命名和身份做出了巨大贡献），而是为了帮助读者根据自己的目标选择正确的工具。
+
+Web3 域名在设计上与代币化的 ICANN 域名有着深思熟虑的区别。您可以这样理解它们：
+
+- **设计上属于不同的命名空间。** Web3 域名（`.eth`、`.crypto`、`.x`、`.nft` 以及用户创建的 TLD）有意独立于 [ICANN](/zh-CN/glossary/icann/) 根域之外，这使得它们能够快速迭代并尝试新的命名模式。代价是它们与传统的 DNS 层级结构并行存在，而非置于其中。
+- **浏览器和电子邮件解析需要额外的步骤。** 在普通浏览器中访问 Web3 域名或向其发送电子邮件通常需要解析器、扩展程序或桥接。*支持*它们的钱包、dApp 和加密原生浏览器生态系统正在稳步增长——但在与标准浏览器、邮件服务器、CDN、SEO 工具和 SSL/TLS 证书颁发机构的对等兼容方面仍在推进中。
+- **真正新颖的钱包原生用例。** 这是 Web3 域名大放异彩的地方：用人类可读的名称替换冗长的 `0x…` 地址、简化代币转移、为 dApp 登录提供支持，并作为链上身份原语。这些模式中的许多在 ENS 及其同行出现之前根本不存在，而代币化域名正是建立在这些理念之上的。
+- **采用情况与真实的 DNS / ICANN 域名不同。** 真实域名（也称为 *DNS 域名*、*ICANN 域名*或*真实域名*——例如 `.com`、`.org`、`.xyz`、`.io`）得益于几十年来所有浏览器、电子邮件提供商、CDN 和证书颁发机构的普遍支持。Web3 域名在加密原生生态系统中拥有令人印象深刻且不断扩大的影响力，而更广泛的互联网普及则仍在追赶之中。
+
+领先的 Web3 域名平台（向它们各自的贡献致敬）：
+
+- [ENS](https://ens.domains) —— 一个基础性的以太坊原生命名系统（`.eth`），也是 Web3 中最重要的原语之一。ENS 还通过 [DNSSEC](/zh-CN/glossary/dnssec/) 提供了通向真实 DNS 名称的深思熟虑的桥梁。
+- [Unstoppable Domains](https://unstoppabledomains.com) —— `.crypto`、`.x` 和 `.nft` 等区块链原生名称的一位具有影响力的早期先驱，拥有广泛的钱包和 dApp 集成。
+- [Freename](https://freename.io) —— 一种针对用户创建的 Web3 TLD 和命名空间的创新方法。
+
+如果您的首要目标是**链上身份**或 **Web3 命名**，这些平台非常出色且非常值得探索。如果您的首要目标是获得一个**同样**能在任何浏览器、任何电子邮件客户端、任何 CDN 和任何 SSL 证书颁发机构中工作的名称——即一个您可以额外在钱包中持有和编程的真实 ICANN 域名——那么前面提到的代币化域名平台（Namefi、D3 Global Inc、Doma Protocol、Domora、WebUnited、GBM）正是为此用例而设计的。这两个类别可以很好地共存，许多用户同时持有两者。
+
+---
+
+## 如何在它们之间做出选择
+
+一个快速的思考方式：
+
+| 如果您想要……                                                                 | 请关注                                 |
+|------------------------------------------------------------------------------|----------------------------------------|
+| 在以太坊或 Base 上代币化的真实 `.com`/`.xyz`/`.io`，拥有最广泛的 NFT 市场和 DeFi 借贷支持 | **Namefi**                             |
+| 针对全新 TLD 的注册局级别的合作伙伴关系                                      | D3 Global Inc                          |
+| 代币化域名的协议层标准                                                       | Doma Protocol                          |
+| 评估其他代币化的 DNS 域名平台                                                | Domora, WebUnited                      |
+| 针对代币化域名的拍卖驱动销售基础设施                                         | GBM                                    |
+| 链上身份和以太坊原生命名（如 `.eth`）——这是一个并列类别，并非代币化的 ICANN 域名 | ENS                                    |
+| 专为钱包优先的用例设计的 Web3 原生 TLD——这是一个并列类别，并非代币化的 ICANN 域名 | Unstoppable Domains, Freename          |
+| 传统的域名注册，辅以可选的、特定供应商的代币化试点                           | GoDaddy, Identity Digital 等           |
+
+需要记住的关键区别是：**将域名代币化（在 Namefi 的意义上）意味着保留一个真实的、受 ICANN 认可的 DNS 名称，并在其之上添加一个链上代币**——而不是用一个平行的 Web3 命名系统来取代 DNS。
+
+---
+
+## 一个简单的心理模型
+
+如果说传统域名是一张**由第三方代您持有的地契**，那么代币化域名就是**同一张地契，只是您自己的口袋里多了一份密码学副本**——而且两者保持着完全同步。
+
+您不会失去法律/注册局层面。您只是在它的基础上增加了一个可编程的层面。
+
+---
+
+## 总结
+
+- **代币化域名**是一个具有链上代币（通常是 NFT）的真实 DNS 域名，该代币镜像反映了域名的所有权。
+- **域名代币化**（*domain tokenization* 或 *domain name tokenization*，亦即*域名的代币化*）是创建和维护这种链上表现形式的过程。
+- **代币化一个域名**（或批量**代币化多个域名**）是指在真实的 ICANN 域名中添加这种钱包原生的所有权层——而不放弃传统的 DNS 层。
+- 代币化域名**不是**一种新的 TLD，不是 ENS 风格的名称，也不是绕过 DNS 或法律的方法。
+- 它能为您提供传统域名所具备的一切，*加上*钱包原生的所有权以及与链上应用的[可组合性](/zh-CN/glossary/composability/)。
+
+想探索这*为什么*重要以及域名代币化能解锁什么，请阅读[为什么要在链上将域名代币化？](/zh-CN/blog/why-tokenize-domains/)。要注册或代币化您的第一个域名，请访问 [namefi.io](https://namefi.io)。

@@ -61,7 +61,7 @@ import path from 'node:path';
 // Must mirror `i18n.locales` in apps/resources/src/i18n-config.ts (the astra
 // renderer): a locale the renderer serves but this list omits is silently
 // skipped by the audit (its files never checked, and links into it invisible).
-const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko', 'ja', 'ta'] as const;
+const LOCALES = ['en', 'es', 'de', 'fr', 'zh-CN', 'ar', 'hi', 'ko', 'ja', 'ta'] as const;
 // Mirrors i18n.defaultLocale in apps/resources: the locale every other locale
 // falls back to at runtime when it lacks a slug. A link the default locale can
 // satisfy is never a hard 404.

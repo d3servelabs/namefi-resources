@@ -5,7 +5,7 @@
  * substring-replace `](${href}`, so repointing a fixable slug whose name is a
  * PREFIX of a sibling (e.g. `dns` ⊂ `dnssec`, `com` ⊂ `company`) also clobbered
  * the sibling — turning a valid `/en/glossary/dnssec/` cross-locale fallback
- * into a `/zh/glossary/dnssec/` 404. The bug fired only for the no-trailing-
+ * into a `/zh-CN/glossary/dnssec/` 404. The bug fired only for the no-trailing-
  * slash form of the fixable link, so we exercise both forms here.
  *
  * Run: bun test .agents/skills/cross-link/link-audit.test.ts
@@ -25,8 +25,8 @@ const SCRIPT = path.join(import.meta.dir, 'link-audit.ts');
 
 /**
  * Build a throwaway content/ tree reproducing the en-only collision:
- *   glossary: dns exists en+zh (fixable) · dnssec en-only · whois en-only
- *   tld:      com exists en+zh (fixable) · company en-only
+ *   glossary: dns exists en+zh-CN (fixable) · dnssec en-only · whois en-only
+ *   tld:      com exists en+zh-CN (fixable) · company en-only
  * `dns` is a prefix of `dnssec`; `com` is a prefix of `company` — the exact
  * shape that broke the old substring rewrite.
  */
@@ -42,16 +42,16 @@ function scaffold(): string {
   write('content/glossary/en/dns.md', doc('DNS'));
   write('content/glossary/en/dnssec.md', doc('DNSSEC'));
   write('content/glossary/en/whois.md', doc('WHOIS'));
-  write('content/glossary/zh/dns.md', doc('DNS zh'));
+  write('content/glossary/zh-CN/dns.md', doc('DNS zh-CN'));
   write('content/tld/en/com.md', doc('com'));
   write('content/tld/en/company.md', doc('company'));
-  write('content/tld/zh/com.md', doc('com zh'));
+  write('content/tld/zh-CN/com.md', doc('com zh-CN'));
 
-  // A zh post linking to fixable + en-only siblings on the same line. The
+  // A zh-CN post linking to fixable + en-only siblings on the same line. The
   // fixable links (`dns`, `com`) use the no-trailing-slash form that triggered
   // the prefix collision; the en-only fallbacks use the trailing-slash form.
   write(
-    'content/glossary/zh/post.md',
+    'content/glossary/zh-CN/post.md',
     `---\ntitle: post\n---\n` +
       `See [DNS](/en/glossary/dns) and [DNSSEC](/en/glossary/dnssec/) and ` +
       `[WHOIS](/en/glossary/whois/).\n` +
@@ -75,22 +75,22 @@ test('--fix repoints fixable siblings but leaves en-only fallbacks on /en/', () 
     const res = run(root, ['--fix', 'content/glossary', 'content/tld']);
     expect(res.code).toBe(0);
     const post = readFileSync(
-      path.join(root, 'content/glossary/zh/post.md'),
+      path.join(root, 'content/glossary/zh-CN/post.md'),
       'utf8',
     );
 
-    // Fixable: the file's own locale (zh) has the slug → repointed to /zh/.
-    expect(post).toContain('](/zh/glossary/dns)');
-    expect(post).toContain('](/zh/tld/com)');
+    // Fixable: the file's own locale (zh-CN) has the slug → repointed to /zh-CN/.
+    expect(post).toContain('](/zh-CN/glossary/dns)');
+    expect(post).toContain('](/zh-CN/tld/com)');
 
-    // En-only fallbacks: zh has no counterpart → MUST stay on /en/.
+    // En-only fallbacks: zh-CN has no counterpart → MUST stay on /en/.
     expect(post).toContain('](/en/glossary/dnssec/)');
     expect(post).toContain('](/en/glossary/whois/)');
     expect(post).toContain('](/en/tld/company/)');
 
-    // The bug repointed these to non-existent /zh/ targets.
-    expect(post).not.toContain('/zh/glossary/dnssec');
-    expect(post).not.toContain('/zh/tld/company');
+    // The bug repointed these to non-existent /zh-CN/ targets.
+    expect(post).not.toContain('/zh-CN/glossary/dnssec');
+    expect(post).not.toContain('/zh-CN/tld/company');
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -116,18 +116,18 @@ test('--fix never leaves a link whose target is absent from slugIndex', () => {
 test('an un-translated slug is MISSING_TRANSLATION (warning, exit 0), not BROKEN', () => {
   const root = scaffold();
   try {
-    // zh lacks `dnssec`, but en has it → the app serves it via the en
+    // zh-CN lacks `dnssec`, but en has it → the app serves it via the en
     // fallback (200). A warning, never a 404.
     writeFileSync(
-      path.join(root, 'content/glossary/zh/probe.md'),
-      `---\ntitle: probe\n---\nSee [DNSSEC](/zh/glossary/dnssec/).\n`,
+      path.join(root, 'content/glossary/zh-CN/probe.md'),
+      `---\ntitle: probe\n---\nSee [DNSSEC](/zh-CN/glossary/dnssec/).\n`,
     );
-    const audit = run(root, ['--json', 'content/glossary/zh/probe.md']);
+    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
     const report = JSON.parse(audit.stdout) as {
       findings: { severity: string; href: string }[];
     };
     const finding = report.findings.find(
-      (f) => f.href === '/zh/glossary/dnssec/',
+      (f) => f.href === '/zh-CN/glossary/dnssec/',
     );
     expect(finding?.severity).toBe('MISSING_TRANSLATION');
     expect(report.findings.some((f) => f.severity === 'BROKEN')).toBe(false);
@@ -141,15 +141,15 @@ test('a slug absent from every locale (no en fallback) is BROKEN (exit 1)', () =
   const root = scaffold();
   try {
     writeFileSync(
-      path.join(root, 'content/glossary/zh/probe.md'),
-      `---\ntitle: probe\n---\nSee [Ghost](/zh/glossary/ghost/).\n`,
+      path.join(root, 'content/glossary/zh-CN/probe.md'),
+      `---\ntitle: probe\n---\nSee [Ghost](/zh-CN/glossary/ghost/).\n`,
     );
-    const audit = run(root, ['--json', 'content/glossary/zh/probe.md']);
+    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
     const report = JSON.parse(audit.stdout) as {
       findings: { severity: string; href: string }[];
     };
     const finding = report.findings.find(
-      (f) => f.href === '/zh/glossary/ghost/',
+      (f) => f.href === '/zh-CN/glossary/ghost/',
     );
     expect(finding?.severity).toBe('BROKEN');
     expect(audit.code).toBe(1);
@@ -164,21 +164,21 @@ test('a bare internal link (no locale segment) is MISSING_LOCALE and fails the r
     // `](/glossary/dns)` omits the locale segment — there is no bare route, so
     // the middleware would locale-redirect by the reader's cookie. A defect.
     writeFileSync(
-      path.join(root, 'content/glossary/zh/probe.md'),
+      path.join(root, 'content/glossary/zh-CN/probe.md'),
       `---\ntitle: probe\n---\nSee [DNS](/glossary/dns) here.\n`,
     );
-    const audit = run(root, ['--json', 'content/glossary/zh/probe.md']);
+    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
     const report = JSON.parse(audit.stdout) as {
       findings: { severity: string; href: string; fixedHref?: string }[];
     };
     const finding = report.findings.find((f) => f.href === '/glossary/dns');
     expect(finding?.severity).toBe('MISSING_LOCALE');
-    // zh has the slug → fix prefixes the file's own locale (self-canonical).
-    expect(finding?.fixedHref).toBe('/zh/glossary/dns');
+    // zh-CN has the slug → fix prefixes the file's own locale (self-canonical).
+    expect(finding?.fixedHref).toBe('/zh-CN/glossary/dns');
     expect(audit.code).toBe(1); // a bare link is an error, not a soft warning
     // check mode must never mutate the file.
     expect(
-      readFileSync(path.join(root, 'content/glossary/zh/probe.md'), 'utf8'),
+      readFileSync(path.join(root, 'content/glossary/zh-CN/probe.md'), 'utf8'),
     ).toContain('](/glossary/dns)');
   } finally {
     rmSync(root, { recursive: true, force: true });
@@ -188,25 +188,25 @@ test('a bare internal link (no locale segment) is MISSING_LOCALE and fails the r
 test('--fix prefixes bare links: own locale when present, en fallback otherwise, anchors kept', () => {
   const root = scaffold();
   try {
-    // dns: zh has it → /zh/. dnssec: en-only → en fallback. plus an anchor form.
+    // dns: zh-CN has it → /zh-CN/. dnssec: en-only → en fallback. plus an anchor form.
     writeFileSync(
-      path.join(root, 'content/glossary/zh/probe.md'),
+      path.join(root, 'content/glossary/zh-CN/probe.md'),
       `---\ntitle: probe\n---\n` +
         `[DNS](/glossary/dns) and [anchor](/glossary/dns#a) and ` +
         `[DNSSEC](/glossary/dnssec).\n`,
     );
-    const fix = run(root, ['--fix', 'content/glossary/zh/probe.md']);
+    const fix = run(root, ['--fix', 'content/glossary/zh-CN/probe.md']);
     expect(fix.code).toBe(0); // every bare link resolved → clean run
     const probe = readFileSync(
-      path.join(root, 'content/glossary/zh/probe.md'),
+      path.join(root, 'content/glossary/zh-CN/probe.md'),
       'utf8',
     );
-    expect(probe).toContain('](/zh/glossary/dns)');
-    expect(probe).toContain('](/zh/glossary/dns#a)'); // anchor preserved
+    expect(probe).toContain('](/zh-CN/glossary/dns)');
+    expect(probe).toContain('](/zh-CN/glossary/dns#a)'); // anchor preserved
     expect(probe).toContain('](/en/glossary/dnssec)'); // en fallback
     expect(probe).not.toContain('](/glossary/'); // no bare link survives
     // Re-audit: the fixed tree is clean.
-    const audit = run(root, ['content/glossary/zh/probe.md']);
+    const audit = run(root, ['content/glossary/zh-CN/probe.md']);
     expect(audit.code).toBe(0);
   } finally {
     rmSync(root, { recursive: true, force: true });
@@ -217,14 +217,14 @@ test('--fix leaves a bare link whose target exists in no locale (still exit 1)',
   const root = scaffold();
   try {
     writeFileSync(
-      path.join(root, 'content/glossary/zh/probe.md'),
+      path.join(root, 'content/glossary/zh-CN/probe.md'),
       `---\ntitle: probe\n---\nSee [Ghost](/glossary/ghost).\n`,
     );
-    const fix = run(root, ['--fix', 'content/glossary/zh/probe.md']);
+    const fix = run(root, ['--fix', 'content/glossary/zh-CN/probe.md']);
     // No resolvable target → not auto-rewritten, and the run still fails.
     expect(fix.code).toBe(1);
     expect(
-      readFileSync(path.join(root, 'content/glossary/zh/probe.md'), 'utf8'),
+      readFileSync(path.join(root, 'content/glossary/zh-CN/probe.md'), 'utf8'),
     ).toContain('](/glossary/ghost)');
   } finally {
     rmSync(root, { recursive: true, force: true });

@@ -7,7 +7,7 @@
 //   bun priority:list                       # all collections, en, P0+P1 (P2 hidden)
 //   bun priority:list --tier P0             # only P0
 //   bun priority:list --collection tld      # glossary | tld | blog | faq
-//   bun priority:list --locale zh           # a different locale (default en)
+//   bun priority:list --locale zh-CN           # a different locale (default en)
 //   bun priority:list --all                 # include P2 too
 //   bun priority:list --json                # machine-readable output
 import { readdirSync, readFileSync, existsSync } from 'node:fs';

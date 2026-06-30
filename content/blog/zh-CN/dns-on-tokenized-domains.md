@@ -1,0 +1,168 @@
+---
+title: "DNS 依然有效：代币化域名上的域名服务器、电子邮件和 DNSSEC"
+date: '2026-05-22'
+language: zh-CN
+tags: ['guide']
+authors: ['namefiteam']
+draft: false
+description: 实用指南：在您将 ICANN 域名代币化后，常规 DNS（域名服务器、A/AAAA、MX、TXT、DNSSEC、CAA）如何继续运作。了解哪些发生了变化，哪些没有，以及如何设置您现有的 DNS 提供商。
+keywords: ['代币化域名 DNS', 'NFT 域名 DNSSEC', '代币化域名 域名服务器', '代币化域名 电子邮件', 'NFT 域名 MX 记录', '代币化域名 CAA 记录', '代币化域名 DNS 管理', '链上域名 DNS', 'NFT 域名 MX', '代币化域名 Cloudflare', '代币化域名 Route53', '代币化 DNS 如何工作', '代币化域名解析']
+relatedArticles:
+  - /zh-CN/blog/how-to-tokenize-your-com/
+  - /zh-CN/blog/what-are-tokenized-domains/
+  - /zh-CN/blog/tokenize-your-com-to-flip-it/
+  - /zh-CN/blog/how-tokenized-marketplaces-replace-escrow/
+  - /zh-CN/blog/how-tokenization-changes-domain-flipping/
+relatedTopics:
+  - /zh-CN/topics/domain-tokenization/
+  - /zh-CN/topics/domain-basics/
+relatedSeries:
+  - /zh-CN/series/tokenize-your-com/
+  - /zh-CN/series/domain-flipping-skills/
+relatedGlossary:
+  - /zh-CN/glossary/dns/
+  - /zh-CN/glossary/registrar/
+  - /zh-CN/glossary/icann/
+  - /zh-CN/glossary/registry/
+  - /zh-CN/glossary/tld/
+---
+
+关于域名[代币化](/zh-CN/glossary/tokenize/)，人们常有一个担忧：*“我的网站还能正常访问吗？我的电子邮箱还能继续使用吗？我需要学习一套全新的 DNS 技术栈吗？”*
+
+简而言之：**是的，是的，不需要。** [代币化域名](/zh-CN/glossary/tokenized-domain/)依然是真实的 ICANN 域名。DNS 将继续履行它原本的职能。本文将带您了解哪些方面发生了（微小的）改变，以及哪些方面（绝大部分）保持不变。
+
+---
+
+## 需要牢记的核心概念
+
+代币化域名包含**两层架构**：
+
+1. **[DNS](/zh-CN/glossary/dns/) / [注册局](/zh-CN/glossary/registry/)层** —— 您的 `.com` 域名一直存在的地方。包含 [ICANN](/zh-CN/glossary/icann/)、[注册商](/zh-CN/glossary/registrar/)、[根服务器](/zh-CN/glossary/root-zone/)和递归解析器。
+2. **[链上](/zh-CN/glossary/on-chain/)层** —— 您[钱包](/zh-CN/glossary/wallet/)中的一个 [NFT](/zh-CN/glossary/nft/)，代表了域名的*所有权*。
+
+DNS 解析（将 `example.com` 转换为 [IP 地址](/zh-CN/glossary/ip-address/)）完全发生在第 1 层。链上层关乎的是**谁拥有该域名的控制权**，而不是它如何解析。浏览器、电子邮件服务器、CDN 和证书颁发机构永远不需要知道[区块链](/zh-CN/glossary/blockchain/)的存在。
+
+这就是为什么说“DNS 依然有效”。这不是什么魔法，它就是原来的那个 DNS。
+
+---
+
+## 哪些没有改变
+
+### 域名服务器 (Nameservers)
+
+您仍然需要为域名设置域名服务器。无论您使用 Cloudflare、Route53、Namecheap、Google Cloud DNS 还是 dnsimple —— 继续使用您以前的提供商完全没问题。许多人在进行代币化时，会保留原有的 DNS 提供商设置，之后也无需再做任何改动。
+
+### A、AAAA、CNAME、ALIAS 记录
+
+全部符合标准规范。您的网站解析方式与昨天完全一样。
+
+### MX、SPF、DKIM、DMARC 记录
+
+电子邮件继续正常运作。代币化对邮件送达率没有任何影响。无论您使用的是 Google Workspace、Microsoft 365、Fastmail、ProtonMail，还是自托管邮件服务器，一切照旧。
+
+### TXT 记录
+
+SaaS 工具（如 Stripe、Slack、GitHub、Atlassian 等）的域名验证继续有效。您可以根据需要添加和删除 TXT 记录。
+
+### CAA 记录
+
+证书颁发机构授权（CAA）—— 告诉证书颁发机构（如 Let's Encrypt, DigiCert）谁有权为您域名颁发证书的记录 —— 保持不变且继续有效。
+
+### TLS / SSL 证书
+
+您仍然从原来的机构获取证书。无论是 Let's Encrypt、您的 CDN 提供商，还是您的负载均衡器 —— 流程完全相同。ACME 质询（DNS-01 或 HTTP-01）的运作方式也一样。
+
+### 续费
+
+域名仍然通过注册商进行续费，遵循相同的时间表，并以相同的方式计费。代币化不会引入任何新的续费机制。
+
+---
+
+## 哪些*确实*发生了（微小）改变
+
+### 谁控制该域名
+
+之前：拥有注册商账户登录凭证的人。
+之后：**持有链上 NFT 的人**拥有权威控制权。Namefi 仪表盘通过协议将 NFT 与注册商账户绑定，因此钱包成为了真正的控制源头。
+
+这就是代币化的核心意义。这也是为什么您必须认真对待钱包安全的原因 —— 详见[在钱包丢失后恢复代币化域名](/zh-CN/blog/recovering-a-tokenized-domain-after-wallet-loss/)。
+
+### 在哪里点击管理 DNS
+
+代币化之后，大多数所有者会在 Namefi 仪表盘内管理 DNS 记录 —— 仪表盘会代表您与注册商进行交互。如果您更愿意将 DNS 保留在 Cloudflare/Route53 等平台，只需将您的域名服务器指向那里，并忽略应用内的 DNS 用户界面即可。这两种方式都行得通。
+
+### 域名转移
+
+之前：需要走[跨注册商转移](/zh-CN/glossary/cross-registrar-transfer/)流程，依赖[授权码 (Auth Codes)](/zh-CN/glossary/auth-code/)，并有 60 天的冷却期。
+之后：[**转移 NFT**](/zh-CN/glossary/atomic-transfer/)。单次链上交易即可转移所有权。注册商一侧的记录会由协议保持同步。这极大地提高了速度 —— 这也是为什么代币化域名市场不需要传统[第三方托管 (Escrow)](/zh-CN/glossary/escrow/) 的原因（详见[从上架到结算](/zh-CN/blog/how-tokenized-marketplaces-replace-escrow/)）。
+
+如果您愿意，仍然可以进行传统的注册商转移；链上层并不妨碍这一点。
+
+---
+
+## 代币化域名上的 DNSSEC
+
+[DNSSEC](/zh-CN/glossary/dnssec/) 继续有效。如果您以前启用了它，它会保持启用状态。如果您以前没有，代币化后也可以启用。信任链依然像往常一样穿过注册局 —— 链上层并不会介入此路径的任何环节。（背景信息：[RFC 4033](https://datatracker.ietf.org/doc/html/rfc4033) 定义了该协议；[ICANN 的 KSK 仪式说明](https://www.icann.org/dns-resolvers-checking-current-trust-anchors)描述了信任根的过程。）
+
+一些实用注意事项：
+
+- 如果您的 DNS 托管在 Cloudflare 或 Route53，这些提供商会自动为您处理 DNSSEC 签名。只需在注册商一侧将其开启即可，您可以通过 Namefi 仪表盘完成此操作。
+- DS 记录在注册商/注册局层面进行管理。如果您轮换 KSK（密钥签名密钥），可以通过您一直使用的流程发布新的 DS 记录。
+- DNSSEC 故障可以在标准工具中查看（如 `dig +dnssec`、[dnsviz.net](https://dnsviz.net/)、[Verisign 的 DNSSEC 分析器](https://dnssec-debugger.verisignlabs.com/)）。代币化不会引入新的故障模式。
+
+---
+
+## 代币化后的电子邮件送达率
+
+电子邮件是大家最担心的部分，所以我们要明确指出：**关于电子邮件，一切都没有改变。**
+
+您的 MX 记录依然会将邮件路由到您的提供商。SPF 依然对发件人进行授权。DKIM 依然为发出的邮件签名。DMARC 依然强制执行对齐策略。信誉绑定在发送方 IP/域名对上，而您的域名依然是您的域名 —— 名字相同、域名年龄相同、历史记录相同。
+
+如果您在代币化的同时更换邮件服务提供商（这通常是顺便清理设置的好时机），请逐一进行更改。这不是因为代币化会破坏什么，而是一次只改变一个变量是良好的操作规范。
+
+---
+
+## 快速参考：常见 DNS 记录
+
+| 记录 | 用途 | 受代币化影响吗？ |
+|---|---|---|
+| A / AAAA | 网站 IP | 否 |
+| CNAME / ALIAS | 别名 | 否 |
+| MX | 电子邮件路由 | 否 |
+| TXT | 验证、SPF、DKIM、DMARC | 否 |
+| CAA | 证书颁发机构限制 | 否 |
+| NS | 委派 | 否（您依然自行选择域名服务器） |
+| DS | DNSSEC 委派 | 否（像往常一样在注册局管理） |
+| SRV | 服务定位 | 否 |
+| TLSA | DANE | 否 |
+
+整个“代币化”层与 DNS 是*并行*的关系，而不是凌驾于它之上。
+
+---
+
+## 人们实际容易犯错的地方
+
+- **忘记是哪个钱包持有 NFT。** 这不是 DNS 问题，但这却是人们失去代币化域名访问权限的第一大原因。请务必妥善记录。
+- **同时切换域名服务器和 DNS 提供商。** 这虽然很诱人，但会引入不必要的风险。建议先进行代币化，如果需要的话再更改 DNS 提供商。
+- **以为链上层会自动推送 DNS 更改。** 事实并非如此。DNS 更改仍然需要通过 DNS 提供商进行，并需要正常的传播时间（取决于 TTL，从几分钟到几小时不等）。
+- **在迁移过程中禁用 DNSSEC。** 如果您关闭并重新开启 DNSSEC，请务必通过正确的 DS 记录更新干净利落地完成。半截子的 DNSSEC 配置会导致各处的解析失败。
+
+---
+
+## 友情免责声明（请阅读！）
+
+> 我们不是律师、会计师、财务顾问或医生 —— **本文中的任何内容均不构成法律、财务、税务、会计、医疗或任何其他形式的专业建议。** 我们撰写这些文章是为了自我学习，并为客户提供便利。此处的信息可能已过时、具有地域局限性或纯粹是错误的 —— 我们也会犯错。
+>
+> 对于任何重大决策，**请务必咨询真正的专业人士（认真的！）**。或者如果那不是您的风格，可以问朋友、问推特、问 Reddit、问 AI 或问算命先生。简而言之：**DOYR —— 做好您自己的研究 (Do Your Own Research)**。让我们在学习中享受乐趣。
+
+---
+
+## 总结
+
+- 代币化域名并不会取代 DNS。DNS 继续履行其原有职责。
+- 您的域名服务器、网站、电子邮件（MX/SPF/DKIM/DMARC）、DNSSEC、CAA 和 TLS 证书将不受任何影响，继续有效。
+- 真正发生变化的是**所有权**：您钱包中的 NFT 成为新的权威控制点。转让操作在链上进行，不再需要注册商的繁琐流程。
+- 您可以将 DNS 保留在 Cloudflare、Route53 或它原来所在的任何地方。也可以通过 Namefi 进行管理。两者都有效。
+- 实际意义：除了在出售或转移域名时链上层会让一切变得极为快捷外，代币化的 `.com` 在日常操作上与非代币化的 `.com` 没有什么区别。
+
+有关最初代币化操作层面的指南，请参阅[如何将您的 .com 域名代币化](/zh-CN/blog/how-to-tokenize-your-com/)。
