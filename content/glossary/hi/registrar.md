@@ -13,7 +13,7 @@ sources:
   - https://www.icann.org/resources/pages/transfer-policy-2016-06-01-en
   - https://www.iana.org/domains/root
 aliasesByLocale:
-  zh: ['注册服务商']
+  zh-CN: ['注册服务商']
   de: ['Registrierungsdienst']
 relatedArticles:
   - /hi/blog/how-to-sell-a-domain-name-you-own/

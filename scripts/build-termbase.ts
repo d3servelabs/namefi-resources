@@ -13,8 +13,8 @@
  *     "<slug>": {
  *       "en": "<english title>",
  *       "level": 1,
- *       "titles": { "en": "...", "zh": "...", "ar": "...", ... },
- *       "aliasesByLocale": { "zh": ["注册中心", ...], "de": [...] }
+ *       "titles": { "en": "...", "zh-CN": "...", "ar": "...", ... },
+ *       "aliasesByLocale": { "zh-CN": ["注册中心", ...], "de": [...] }
  *     }
  *   }
  *
@@ -34,7 +34,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import { resolveEntryFile } from './glossary-fs.ts';
 
-const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko', 'ja', 'ta'] as const;
+const LOCALES = ['en', 'es', 'de', 'fr', 'zh-CN', 'ar', 'hi', 'ko', 'ja', 'ta'] as const;
 type Locale = (typeof LOCALES)[number];
 
 const REPO_ROOT = process.cwd();

@@ -4,7 +4,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-const locales = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi', 'ko', 'ja'] as const;
+const locales = ['en', 'es', 'de', 'fr', 'zh-CN', 'ar', 'hi', 'ko', 'ja'] as const;
 type Locale = (typeof locales)[number];
 
 type Collection = 'blog' | 'tld' | 'partners' | 'glossary' | 'authors';
@@ -135,7 +135,9 @@ function asStringArray(value: unknown) {
 }
 
 function fileExistsForPath(value: string, locale: Locale) {
-  const match = value.match(/^\/([a-z]{2})\/(blog|glossary)\/([^/]+)\/$/);
+  const match = value.match(
+    /^\/([a-z]{2}(?:-[A-Z]{2})?)\/(blog|glossary)\/([^/]+)\/$/,
+  );
   if (!match) return false;
   const [, pathLocale, collection, slug] = match;
   if (pathLocale !== locale) return false;
@@ -204,8 +206,8 @@ function validateRelationshipArray({
       continue;
     }
 
-    const topicMatch = value.match(/^\/[a-z]{2}\/topics\/([^/]+)\/$/);
-    const seriesMatch = value.match(/^\/[a-z]{2}\/series\/([^/]+)\/$/);
+    const topicMatch = value.match(/^\/[a-z]{2}(?:-[A-Z]{2})?\/topics\/([^/]+)\/$/);
+    const seriesMatch = value.match(/^\/[a-z]{2}(?:-[A-Z]{2})?\/series\/([^/]+)\/$/);
 
     if (key === 'relatedTopics' && !TOPIC_SLUGS.has(topicMatch?.[1] ?? '')) {
       errors.push({
