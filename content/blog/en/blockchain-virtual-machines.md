@@ -45,7 +45,7 @@ A blockchain VM is a deterministic, sandboxed execution environment: every full 
 Two properties define a VM's design tradeoffs:
 
 - **Language and toolchain.** What can developers write contracts in, and how large is the existing library of audited code, tooling, and hires who already know it?
-- **Execution model.** Does the VM process transactions strictly one at a time (sequential), or can independent transactions run at once on multiple CPU cores ([parallel](/en/glossary/on-chain/) execution)? Sequential execution is simpler to reason about; parallel execution raises theoretical throughput but adds scheduling complexity.
+- **Execution model.** Does the VM process transactions strictly one at a time (sequential), or can independent transactions run at once on multiple CPU cores (parallel execution)? Sequential execution is simpler to reason about; parallel execution raises theoretical throughput but adds scheduling complexity.
 
 These choices ripple outward into gas costs, congestion behavior, and which existing contracts and tools port over without a rewrite — which is why "which VM" is one of the first questions any new chain, or any [tokenized](/en/glossary/tokenize/) asset built on top of one, has to answer.
 
