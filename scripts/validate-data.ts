@@ -19,6 +19,7 @@ const TOPIC_SLUGS = new Set([
 ]);
 
 const SERIES_SLUGS = new Set([
+  'blockchain-concepts',
   'domain-apocalypse',
   'name-change-game-change',
   'tokenize-your-com',
