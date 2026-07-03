@@ -6,6 +6,8 @@ tags: ['guide']
 authors: ['namefiteam']
 draft: false
 cluster: web3-foundations
+series: blockchain-concepts
+seriesOrder: 30
 format: roundup
 description: A guide to the top blockchain virtual machines—EVM, SVM, MoveVM, WASM-based VMs, and CairoVM—comparing languages, execution models, and ecosystems.
 ogImage: ../../assets/blockchain-virtual-machines-og.jpg

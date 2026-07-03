@@ -6,6 +6,8 @@ tags: ['guide']
 authors: ['namefiteam']
 draft: false
 cluster: web3-foundations
+series: blockchain-concepts
+seriesOrder: 20
 format: roundup
 description: A clear guide to blockchain consensus mechanisms—Proof of Work, Proof of Stake, Delegated Proof of Stake, BFT consensus, and how each secures a network.
 ogImage: ../../assets/blockchain-consensus-mechanisms-og.jpg

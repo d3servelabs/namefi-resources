@@ -6,6 +6,8 @@ tags: ['guide']
 authors: ['namefiteam']
 draft: false
 cluster: web3-foundations
+series: blockchain-concepts
+seriesOrder: 40
 format: roundup
 description: A learner's guide to blockchain scaling — optimistic rollups, ZK rollups, sidechains, payment channels, sharding, and data availability layers compared.
 ogImage: ../../assets/blockchain-scaling-approaches-og.jpg

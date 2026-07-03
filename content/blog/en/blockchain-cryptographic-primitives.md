@@ -6,6 +6,8 @@ tags: ['guide']
 authors: ['namefiteam']
 draft: false
 cluster: web3-foundations
+series: blockchain-concepts
+seriesOrder: 10
 format: roundup
 description: A guide to the core cryptographic primitives that make blockchains work—hash functions, digital signatures, Merkle trees, elliptic-curve crypto, and commitments.
 ogImage: ../../assets/blockchain-cryptographic-primitives-og.jpg

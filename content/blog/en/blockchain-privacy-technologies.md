@@ -6,6 +6,8 @@ tags: ['guide']
 authors: ['namefiteam']
 draft: false
 cluster: web3-foundations
+series: blockchain-concepts
+seriesOrder: 50
 format: roundup
 description: A plain-language guide to the five leading blockchain privacy technologies—zero-knowledge proofs, FHE, MPC, TEEs, and ring signatures—compared side by side.
 ogImage: ../../assets/blockchain-privacy-technologies-og.jpg

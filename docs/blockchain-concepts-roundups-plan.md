@@ -89,12 +89,13 @@ and a review cadence. Seed 2–3 flagships first to test maintenance burden.
 
 ## Follow-ups (out of scope for this resources-only PR)
 
-1. **Proper home for the initiative (cross-repo, astra).** Add a `blockchain-concepts`
-   **series** (and/or promote the cluster) to
-   `namefi-astra/apps/resources/src/lib/taxonomy.ts` **and** mirror the slug into
-   `namefi-resources/scripts/validate-data.ts` (`SERIES_SLUGS`). Then reassign these
-   articles' `relatedSeries` (and optionally add `series:` membership) so they stop
-   borrowing domain-flipping series.
+1. **Proper home for the initiative — DONE (needs the astra companion to render).**
+   The 5 articles are now members of a new **`blockchain-concepts`** series
+   (`series: blockchain-concepts` + `seriesOrder` 10–50), and the slug is registered in
+   `namefi-resources/scripts/validate-data.ts` (`SERIES_SLUGS`). The matching series
+   definition in `namefi-astra/apps/resources/src/lib/taxonomy.ts` (`SERIES`) ships as a
+   **companion astra PR** — that PR must merge/deploy so `/en/series/blockchain-concepts/`
+   renders before this resources change reaches an astra environment.
 2. **Illustrations.** Run the `article-illustrations` pass — a cover (OG card) + one image
    per `##` section for each article, saved to `content/assets/` **before** referencing
    (static-import build breaks on dangling refs). Needs `OPENAI_API_KEY` (astra Infisical,
