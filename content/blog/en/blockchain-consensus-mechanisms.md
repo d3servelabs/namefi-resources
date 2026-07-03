@@ -109,7 +109,7 @@ A few more mechanisms round out the landscape, each solving a narrower problem r
 | Mechanism | Sybil resistance basis | Finality | Energy cost | Decentralization | Example chains |
 |---|---|---|---|---|---|
 | Proof of Work | Computational cost (hashing) | Probabilistic (confirmations) | Very high | High (permissionless mining) | Bitcoin, Litecoin, Dogecoin |
-| Proof of Stake | Economic stake at risk | Checkpointed / near-final within epochs | Very low | High (thousands of validators) | Ethereum, Cardano, Polkadot |
+| Proof of Stake | Economic stake at risk | Checkpointed / near-final within epochs | Very low | High (hundreds of thousands of validators) | Ethereum, Cardano, Polkadot |
 | Delegated Proof of Stake | Stake-weighted voting for delegates | Fast, near-instant per elected producer | Very low | Lower (small elected validator set) | EOS, TRON |
 | BFT-style (Tendermint/CometBFT, PBFT) | Stake or permissioned identity + supermajority vote | Instant/deterministic once committed | Low | Moderate (bounded validator set) | Cosmos Hub, Binance Chain |
 | Proof of Authority | Vetted identity/reputation | Fast, near-instant | Very low | Low (small trusted validator set) | Private/enterprise chains, testnets |

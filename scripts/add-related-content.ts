@@ -21,6 +21,7 @@ const TOPICS = [
 ] as const;
 
 const SERIES = [
+  'blockchain-concepts',
   'domain-apocalypse',
   'name-change-game-change',
   'tokenize-your-com',
@@ -45,6 +46,8 @@ const TOPIC_TEXT: Record<string, string> = {
 };
 
 const SERIES_TEXT: Record<string, string> = {
+  'blockchain-concepts':
+    'blockchain concepts privacy zero knowledge FHE MPC TEE virtual machine EVM SVM consensus proof of work proof of stake cryptography hash signature merkle rollup scaling sharding data availability',
   'domain-apocalypse':
     'domain security incidents hijack breach attack DNS phishing recovery domain disasters case study',
   'name-change-game-change':
