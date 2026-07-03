@@ -367,6 +367,13 @@
     },
     "level": 1
   },
+  "consensus-mechanism": {
+    "en": "Consensus Mechanism",
+    "titles": {
+      "en": "Consensus Mechanism"
+    },
+    "level": 1
+  },
   "cross-chain-bridge": {
     "en": "Cross-Chain Bridge",
     "titles": {
@@ -463,6 +470,13 @@
     },
     "level": 1
   },
+  "data-availability": {
+    "en": "Data Availability",
+    "titles": {
+      "en": "Data Availability"
+    },
+    "level": 1
+  },
   "defi": {
     "en": "DeFi (Decentralized Finance)",
     "titles": {
@@ -492,6 +506,13 @@
       "ko": "DID (탈중앙화 신원)",
       "ja": "DID（分散型アイデンティティ）",
       "ta": "DID (பரவலாக்கப்பட்ட அடையாளம்)"
+    },
+    "level": 1
+  },
+  "digital-signature": {
+    "en": "Digital Signature",
+    "titles": {
+      "en": "Digital Signature"
     },
     "level": 1
   },
@@ -1023,6 +1044,13 @@
     },
     "level": 1
   },
+  "ethereum-virtual-machine": {
+    "en": "Ethereum Virtual Machine",
+    "titles": {
+      "en": "Ethereum Virtual Machine"
+    },
+    "level": 1
+  },
   "exact-match-domain": {
     "en": "Exact-Match Domain",
     "titles": {
@@ -1068,6 +1096,13 @@
       "ko": "분할 소유권",
       "ja": "分割所有",
       "ta": "பகுதி உரிமை"
+    },
+    "level": 1
+  },
+  "fully-homomorphic-encryption": {
+    "en": "Fully Homomorphic Encryption",
+    "titles": {
+      "en": "Fully Homomorphic Encryption"
     },
     "level": 1
   },
@@ -1132,6 +1167,13 @@
       "ko": "하드웨어 지갑",
       "ja": "ハードウェアウォレット",
       "ta": "வன்பொருள் பணப்பை"
+    },
+    "level": 1
+  },
+  "hash-function": {
+    "en": "Hash Function",
+    "titles": {
+      "en": "Hash Function"
     },
     "level": 1
   },
@@ -1391,6 +1433,13 @@
     },
     "level": 1
   },
+  "merkle-tree": {
+    "en": "Merkle Tree",
+    "titles": {
+      "en": "Merkle Tree"
+    },
+    "level": 1
+  },
   "minting": {
     "en": "Minting",
     "titles": {
@@ -1487,6 +1536,13 @@
     },
     "level": 1
   },
+  "optimistic-rollup": {
+    "en": "Optimistic Rollup",
+    "titles": {
+      "en": "Optimistic Rollup"
+    },
+    "level": 1
+  },
   "pending-delete": {
     "en": "Pending Delete (Drop)",
     "titles": {
@@ -1580,6 +1636,20 @@
       "ko": "개인 키",
       "ja": "秘密鍵",
       "ta": "தனிப்பட்ட விசை"
+    },
+    "level": 1
+  },
+  "proof-of-stake": {
+    "en": "Proof of Stake",
+    "titles": {
+      "en": "Proof of Stake"
+    },
+    "level": 1
+  },
+  "proof-of-work": {
+    "en": "Proof of Work",
+    "titles": {
+      "en": "Proof of Work"
     },
     "level": 1
   },
@@ -1815,6 +1885,13 @@
     },
     "level": 1
   },
+  "rollup": {
+    "en": "Rollup",
+    "titles": {
+      "en": "Rollup"
+    },
+    "level": 1
+  },
   "root-zone": {
     "en": "Root Zone (Root Servers)",
     "titles": {
@@ -1844,6 +1921,13 @@
       "ko": "2단계 도메인 (SLD)",
       "ja": "セカンドレベルドメイン（SLD）",
       "ta": "இரண்டாம் நிலை டொமைன் (SLD)"
+    },
+    "level": 1
+  },
+  "secure-multiparty-computation": {
+    "en": "Secure Multi-Party Computation",
+    "titles": {
+      "en": "Secure Multi-Party Computation"
     },
     "level": 1
   },
@@ -1908,6 +1992,13 @@
       "ko": "SERP",
       "ja": "SERP（検索結果ページ）",
       "ta": "SERP (தேடல் முடிவுகள் பக்கம்)"
+    },
+    "level": 1
+  },
+  "sharding": {
+    "en": "Sharding",
+    "titles": {
+      "en": "Sharding"
     },
     "level": 1
   },
@@ -2087,6 +2178,13 @@
     },
     "level": 1
   },
+  "trusted-execution-environment": {
+    "en": "Trusted Execution Environment",
+    "titles": {
+      "en": "Trusted Execution Environment"
+    },
+    "level": 1
+  },
   "ttl": {
     "en": "TTL (Time to Live)",
     "titles": {
@@ -2199,6 +2297,13 @@
     },
     "level": 2
   },
+  "webassembly": {
+    "en": "WebAssembly",
+    "titles": {
+      "en": "WebAssembly"
+    },
+    "level": 1
+  },
   "whois": {
     "en": "WHOIS (and RDAP)",
     "titles": {
@@ -2276,6 +2381,20 @@
       "ko": "x402",
       "ja": "x402",
       "ta": "x402"
+    },
+    "level": 1
+  },
+  "zero-knowledge-proof": {
+    "en": "Zero-Knowledge Proof",
+    "titles": {
+      "en": "Zero-Knowledge Proof"
+    },
+    "level": 1
+  },
+  "zk-rollup": {
+    "en": "ZK Rollup",
+    "titles": {
+      "en": "ZK Rollup"
     },
     "level": 1
   },
