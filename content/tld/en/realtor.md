@@ -185,5 +185,3 @@ The `.realtor` registry is operated by Real Estate Domains LLC, which is also th
 - [What is a domain?](/en/blog/what-is-domain) — the fundamentals, if you are new to domains.
 - [Domain terminology guide](/en/blog/domain-terminology-guide) — a glossary of the terms used above.
 - [ICANN](/en/glossary/icann), [registrar](/en/glossary/registrar), [DNS](/en/glossary/dns), and [DNSSEC](/en/glossary/dnssec) glossary entries.
-</content>
-</invoke>

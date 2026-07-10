@@ -122,5 +122,3 @@ This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenized owners
 - Wikipedia — [Domain name speculation (definition of domaining)](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=is%20the%20practice%20of%20identifying%20and%20registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment)
 - Wikipedia — [Uniform Domain-Name Dispute-Resolution Policy (the three elements of a UDRP claim)](https://en.wikipedia.org/wiki/Uniform_Domain-Name_Dispute-Resolution_Policy#:~:text=identical%20or%20confusingly%20similar%20to%20a%20trademark%20or%20service%20mark)
 - Wikipedia — [Cybersquatting (definition)](https://en.wikipedia.org/wiki/Cybersquatting#:~:text=is%20the%20practice%20of%20registering%2C%20trafficking%20in%2C%20or%20using%20an%20Internet%20domain%20name%2C%20with%20a%20bad%20faith%20intent)
-</content>
-</invoke>

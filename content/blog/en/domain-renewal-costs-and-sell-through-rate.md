@@ -110,5 +110,3 @@ The economics above decide *whether* to hold a name. The other half of every fli
 - Wikipedia — [Domain drop catching (redemption window of ~30–90 days; 5-day pending-delete phase)](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=usually%20around%2030%20to%2090%20days)
 - Domain Name Wire — [Verisign .com wholesale price increase to $10.26 (7% annual cap under the registry contract)](https://domainnamewire.com/2024/02/08/verisign-announces-com-price-hike-to-10-26/#:~:text=charges%20registrars%20%249.59%20per%20year%20for%20.com%20registrations.%20That%20will%20increase%20to%20%2410.26)
 - Wikipedia — [Domain name speculation (parking and PPC revenue share on unused domains)](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=allow%20unused%20domains%20to%20be%20parked%20with%20the%20registrant%20receiving%20a%20share%20of%20the%20PPC%20revenue)
-</content>
-</invoke>
