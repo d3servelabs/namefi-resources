@@ -15,7 +15,6 @@ relatedArticles:
   - /en/blog/airo-vs-namefi/
   - /en/blog/claude-mcp-domains/
   - /en/blog/ai-agent-register/
-  # TODO(link-when-published): /en/blog/agents-buy-domains/ /en/blog/wallet-checkout/ /en/blog/agent-own-domain/
 relatedTopics:
   - /en/topics/domain-tokenization/
   - /en/topics/choosing-a-tld/
@@ -58,7 +57,7 @@ Two things are worth flagging honestly. First, Name.com's blog post is a positio
 
 Namefi's approach starts from a different assumption: that the buyer might not be a human with a browser session or a credit card at all, and might not want a Namefi account before it can act. Per Namefi's own machine-readable API documentation — the only source of truth for its product claims — Namefi runs an MCP server at `https://api.namefi.io/mcp` over Streamable HTTP transport that exposes "every `/v-next` operation as a typed tool (search, registration, DNS, domain config, outbound)," discoverable at `https://namefi.io/.well-known/mcp/servers.json`, with a documented one-line setup command for Claude Code (`claude mcp add --transport http namefi https://api.namefi.io/mcp --header "x-api-key: YOUR_KEY"`). Authentication for the REST API uses an `x-api-key` header tied to the wallet that owns the domain, and read-only tools need no key at all.
 
-The distinctive piece is payment. Namefi documents an [x402](https://x402.org) payment flow that lets an agent buy a domain with the stablecoin USDC without creating a Namefi account first — the buyer's wallet signs an EIP-3009 `transferWithAuthorization`, the API returns a `402 Payment Required` response with the price if no payment is attached, and settles the registration once a valid payment header arrives. A separate Machine Payable Protocol (MPP) flow offers a similar challenge-and-sign pattern. Neither Cloudflare nor Name.com documents anything comparable; it's the sharpest point of differentiation in this comparison.<!-- link-when-published: /en/blog/wallet-checkout/ -->
+The distinctive piece is payment. Namefi documents an [x402](https://x402.org) payment flow that lets an agent buy a domain with the stablecoin USDC without creating a Namefi account first — the buyer's wallet signs an EIP-3009 `transferWithAuthorization`, the API returns a `402 Payment Required` response with the price if no payment is attached, and settles the registration once a valid payment header arrives. A separate Machine Payable Protocol (MPP) flow offers a similar challenge-and-sign pattern. Neither Cloudflare nor Name.com documents anything comparable; it's the sharpest point of differentiation in this comparison. See [Pay for Domains with a Crypto Wallet: No Account Needed](/en/blog/wallet-checkout/) for how that checkout flow works end to end.
 
 Namefi also registers domains as [NFTs](/en/glossary/nft/) — [tokenized domains](/en/glossary/tokenized-domain/) whose ownership is verified on-chain rather than only in a registrar's internal database — and its DNS toggles include auto-[ENS](/en/glossary/ens/) records and [DNSSEC](/en/glossary/dnssec/), alongside full CRUD DNS record management (single and batch), auto-renewal, domain parking, and forwarding. What Namefi's llms.txt does not publish is a stated pricing policy — there's no "at-cost" claim comparable to Cloudflare's, and no visible published price list in the documentation reviewed for this piece, so check current pricing at namefi.io directly rather than assuming parity with Cloudflare on price. <!-- TODO: confirm with team — Namefi's published pricing/markup policy relative to registry cost -->
 
@@ -86,7 +85,7 @@ Pick **Name.com** if you want an agent that writes the integration code for you 
 
 Pick **Namefi** if the buyer is genuinely agent-first — no human account, payment authorized by a wallet signature instead of a stored card, and ownership you want represented as an on-chain, transferable token rather than only a row in a registrar's database. That combination — MCP server, full DNS control, auto-ENS, and wallet-native checkout — isn't something Cloudflare's beta or Name.com's announcement currently offers. The trade-off is that Namefi hasn't published an at-cost pricing commitment the way Cloudflare has, so if wholesale pricing is your top priority, verify current Namefi pricing directly before assuming it undercuts Cloudflare.
 
-Many teams will end up using more than one: Cloudflare or Name.com for the domain sitting in front of infrastructure they already run there, and a wallet-native registrar like Namefi for anything that needs to be owned and transacted on-chain, whether that's a name meant to trade in a marketplace or one owned by an agent's own wallet rather than a person's account. What "ownership" even means once the [registrant](/en/glossary/registrant/) is an agent instead of a person is a question deep enough for its own article.<!-- link-when-published: /en/blog/agent-own-domain/ -->
+Many teams will end up using more than one: Cloudflare or Name.com for the domain sitting in front of infrastructure they already run there, and a wallet-native registrar like Namefi for anything that needs to be owned and transacted on-chain, whether that's a name meant to trade in a marketplace or one owned by an agent's own wallet rather than a person's account. What "ownership" even means once the [registrant](/en/glossary/registrant/) is an agent instead of a person is a question deep enough for its own article — see [Can an AI Agent Own a Domain? WHOIS, Custody & Tokens](/en/blog/agent-own-domain/).
 
 ## Frequently Asked Questions
 
@@ -107,7 +106,7 @@ Agent-native means an agent can discover the API, authenticate, and complete a p
 
 ## Buy and Tokenize Domains at Namefi
 
-If wallet-native checkout and tokenized ownership are what you need, [Namefi](https://namefi.io) registers real ICANN domains the way any accredited registrar does, with the option to hold the domain as an NFT your wallet controls. See [AI-Agentic Domain Platforms: The 2026 Guide](/en/blog/ai-domain-platforms/) for the full landscape beyond these three, or jump straight to the hands-on setup in [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/).<!-- link-when-published: /en/blog/agents-buy-domains/ -->
+If wallet-native checkout and tokenized ownership are what you need, [Namefi](https://namefi.io) registers real ICANN domains the way any accredited registrar does, with the option to hold the domain as an NFT your wallet controls. See [AI-Agentic Domain Platforms: The 2026 Guide](/en/blog/ai-domain-platforms/) for the full landscape beyond these three, or jump straight to the hands-on setup in [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/). For the mechanics of an agent completing that purchase on its own, see [How AI Agents Buy Domains Without a Human (2026)](/en/blog/agents-buy-domains/).
 
 **[Search and register a domain at Namefi](https://namefi.io).**
 

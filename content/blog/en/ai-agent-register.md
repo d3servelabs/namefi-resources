@@ -15,7 +15,6 @@ relatedArticles:
   - /en/blog/ai-domain-platforms/
   - /en/blog/agent-native/
   - /en/blog/airo-vs-namefi/
-  # TODO(link-when-published): /en/blog/namefi-mcp/ /en/blog/mcp-quickstart/ /en/blog/wallet-checkout/ /en/blog/llms-txt/ /en/blog/nl-domain-purchase/
 relatedTopics:
   - /en/topics/domain-tokenization/
   - /en/topics/domain-basics/
@@ -121,7 +120,7 @@ Cursor reads MCP server definitions from `mcp.json` — a project-scoped copy at
 }
 ```
 
-`${env:NAMEFI_API_KEY}` resolves to whatever that environment variable holds at connection time.<!-- link-when-published: /en/blog/mcp-quickstart/ -->
+`${env:NAMEFI_API_KEY}` resolves to whatever that environment variable holds at connection time. See [Namefi MCP Quickstart: Claude Code, Cursor & Windsurf](/en/blog/mcp-quickstart/) for the condensed version of this same setup.
 
 ## Windsurf (Cascade)
 
@@ -186,13 +185,13 @@ curl "https://api.namefi.io/v-next/orders/{orderId}" \
   -H "x-api-key: YOUR_KEY"
 ```
 
-llms.txt is a plain-text convention — a machine-readable index a site publishes at its root specifically so an AI agent can discover what an API does without crawling rendered documentation pages. Namefi's file is short enough to read directly at [namefi.io/llms.txt](https://namefi.io/llms.txt) if you want the full version instead of the compressed summary above.<!-- link-when-published: /en/blog/llms-txt/ -->
+llms.txt is a plain-text convention — a machine-readable index a site publishes at its root specifically so an AI agent can discover what an API does without crawling rendered documentation pages. Namefi's file is short enough to read directly at [namefi.io/llms.txt](https://namefi.io/llms.txt) if you want the full version instead of the compressed summary above. See [llms.txt for Domains: An API Any AI Agent Can Read](/en/blog/llms-txt/) for more on the convention itself.
 
 ## Paying: API key vs wallet checkout
 
 Everything in the sections above assumes an API key billed against a funded NFSC (Namefi Service Credit) balance — check it anytime at `GET /v-next/balance` (`x-api-key` required), top it up via a faucet endpoint in development environments, or through the Namefi dashboard in production. <!-- TODO: confirm with team — the exact production NFSC top-up flow: accepted payment methods, and whether it's purchasable through chat/API or only the dashboard UI -->
 
-Namefi also supports registering a domain with a crypto wallet and **no Namefi account at all**, through the [x402](/en/glossary/x402/) protocol: an agent's wallet signs an EIP-3009 authorization, the API responds with an HTTP 402 listing the price if none was attached yet, and the registration settles once a valid signed payment arrives — typically in a [stablecoin](/en/glossary/stablecoin/) like USDC. There's also a related MPP (Machine Payable Protocol) challenge-response variant, and a manual EIP-712 signing path for wallets that aren't using either shortcut. This wallet-first path matters for exactly the agents this guide is about: it removes the account-creation step entirely, so an autonomous process never has to hold — or leak — an API key at all.<!-- link-when-published: /en/blog/wallet-checkout/ -->
+Namefi also supports registering a domain with a crypto wallet and **no Namefi account at all**, through the [x402](/en/glossary/x402/) protocol: an agent's wallet signs an EIP-3009 authorization, the API responds with an HTTP 402 listing the price if none was attached yet, and the registration settles once a valid signed payment arrives — typically in a [stablecoin](/en/glossary/stablecoin/) like USDC. There's also a related MPP (Machine Payable Protocol) challenge-response variant, and a manual EIP-712 signing path for wallets that aren't using either shortcut. This wallet-first path matters for exactly the agents this guide is about: it removes the account-creation step entirely, so an autonomous process never has to hold — or leak — an API key at all. See [Pay for Domains with a Crypto Wallet: No Account Needed](/en/blog/wallet-checkout/) for that flow on its own.
 
 ## Guardrails before you give an agent purchase power
 
@@ -234,7 +233,7 @@ Use the raw REST path above. Every operation an MCP tool call reaches is also a 
 Yes, by default. If you don't specify an `nftReceivingWallet` in the registration request, the domain registers as an NFT to the wallet tied to your API key, on Base. You can redirect it to a different wallet at registration time.
 
 ### Can an agent register a domain without me holding an API key at all?
-Yes — the wallet-signed x402 checkout path needs no Namefi account or API key, only a funded wallet. The payment section above covers the essentials of that flow.<!-- link-when-published: /en/blog/wallet-checkout/ -->
+Yes — the wallet-signed x402 checkout path needs no Namefi account or API key, only a funded wallet. The payment section above covers the essentials of that flow; see [Pay for Domains with a Crypto Wallet: No Account Needed](/en/blog/wallet-checkout/) for the full walkthrough.
 
 ### Does registering through an agent cost more than registering through Namefi's website?
 This guide doesn't claim a price comparison either way. <!-- TODO: confirm with team — whether Namefi's MCP/API pricing matches its standard registration pricing, or differs --> Either way, every path draws against the same NFSC balance whether the request came from a browser, a script, or an agent's tool call.
@@ -243,7 +242,7 @@ This guide doesn't claim a price comparison either way. <!-- TODO: confirm with 
 
 You don't need six clients installed to use this guide — you need exactly one, plus a Namefi API key or a funded wallet. Pick the section above that matches whatever you're already talking to, run the setup, and try the test prompt. From there, the rest of this page's flow — search, register, configure DNS — happens in the same conversation.
 
-**[Generate a Namefi API key](https://namefi.io/api-key)** or go deeper with the [Claude walkthrough with a full transcript](/en/blog/claude-mcp-domains/) and the [head-to-head comparison of the agent-native registrars](/en/blog/cf-namecom-namefi/).<!-- link-when-published: /en/blog/namefi-mcp/ /en/blog/mcp-quickstart/ /en/blog/wallet-checkout/ /en/blog/llms-txt/ -->
+**[Generate a Namefi API key](https://namefi.io/api-key)** or go deeper with the [Claude walkthrough with a full transcript](/en/blog/claude-mcp-domains/) and the [head-to-head comparison of the agent-native registrars](/en/blog/cf-namecom-namefi/). For the pieces underneath this guide, see [Namefi MCP Server: Domain Tools for AI Agents](/en/blog/namefi-mcp/), [Namefi MCP Quickstart: Claude Code, Cursor & Windsurf](/en/blog/mcp-quickstart/), [Pay for Domains with a Crypto Wallet: No Account Needed](/en/blog/wallet-checkout/), and [llms.txt for Domains: An API Any AI Agent Can Read](/en/blog/llms-txt/).
 
 ## Sources and further reading
 

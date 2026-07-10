@@ -15,7 +15,6 @@ relatedArticles:
   - /en/blog/ai-domain-platforms/
   - /en/blog/ai-agent-register/
   - /en/blog/agent-native/
-  # TODO(link-when-published): /en/blog/best-ai-tools-2026/ /en/blog/beyond-generators/ /en/blog/ai-search-meanings/ /en/blog/nl-domain-purchase/
 relatedTopics:
   - /en/topics/domain-basics/
   - /en/topics/choosing-a-tld/

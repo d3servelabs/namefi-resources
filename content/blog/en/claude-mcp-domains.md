@@ -15,7 +15,6 @@ relatedArticles:
   - /en/blog/ai-domain-platforms/
   - /en/blog/agent-native/
   - /en/blog/airo-vs-namefi/
-  # TODO(link-when-published): /en/blog/namefi-mcp/ /en/blog/mcp-quickstart/ /en/blog/wallet-checkout/ /en/blog/llms-txt/ /en/blog/nl-domain-purchase/ /en/blog/ai-tld-registrars/
 relatedTopics:
   - /en/topics/domain-tokenization/
   - /en/topics/domain-basics/
@@ -40,7 +39,7 @@ The [Model Context Protocol](https://modelcontextprotocol.io) (MCP) is an open s
 
 ## Prerequisites
 
-- **An MCP-capable Claude client.** This guide covers Claude Code (command-line) with concrete, tested commands, and Claude Desktop / claude.ai (via Custom Connectors) with the documented general flow. Other MCP clients, like Cursor or Windsurf, connect to the same server; see the per-agent sections in [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) for those.<!-- link-when-published: /en/blog/mcp-quickstart/ -->
+- **An MCP-capable Claude client.** This guide covers Claude Code (command-line) with concrete, tested commands, and Claude Desktop / claude.ai (via Custom Connectors) with the documented general flow. Other MCP clients, like Cursor or Windsurf, connect to the same server; see the per-agent sections in [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) for those, or the condensed [Namefi MCP Quickstart: Claude Code, Cursor & Windsurf](/en/blog/mcp-quickstart/) if you just need the connection commands.
 - **A Namefi API key**, generated at [namefi.io/api-key](https://namefi.io/api-key), *or* a crypto [wallet](/en/glossary/wallet/) if you'd rather pay per-transaction without an API key at all (see the wallet section near the end).
 - **A funded NFSC balance** if you're registering on Namefi's production environment. NFSC (Namefi Service Credits) is the balance domain registration draws against; Namefi's docs describe topping it up through the Namefi dashboard in production, and requesting free test credits from a faucet endpoint in development environments.
 
@@ -114,7 +113,7 @@ Claude toggles [auto-renewal](/en/glossary/domain-renewal/) via `PUT /v-next/dom
 
 ## Paying with a wallet instead of an API key
 
-Everything above uses the API-key path. Namefi also supports registering a domain with a crypto wallet and no Namefi account at all, via the [x402](/en/glossary/x402/) protocol: the buyer's wallet signs an EIP-3009 authorization, the API responds `402 Payment Required` with the price if none is attached, and settles registration once a valid payment arrives. That flow deserves its own guide rather than a footnote — the payment section of [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) covers it in more detail.<!-- link-when-published: /en/blog/wallet-checkout/ -->
+Everything above uses the API-key path. Namefi also supports registering a domain with a crypto wallet and no Namefi account at all, via the [x402](/en/glossary/x402/) protocol: the buyer's wallet signs an EIP-3009 authorization, the API responds `402 Payment Required` with the price if none is attached, and settles registration once a valid payment arrives. That flow deserves its own guide rather than a footnote — see [Pay for Domains with a Crypto Wallet: No Account Needed](/en/blog/wallet-checkout/), or the payment section of [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/), for the full detail.
 
 ## Troubleshooting
 
@@ -142,11 +141,11 @@ Yes, by default. If you don't specify an `nftReceivingWallet` in the registratio
 DNS writes go through Namefi's validation before they're applied, and malformed `rdata` (a missing trailing dot on a CNAME target, for instance) is rejected with an error rather than silently accepted — see the troubleshooting table above. Still, treat DNS changes to a live domain the way you'd treat any infrastructure change: review what Claude is about to submit before confirming.
 
 ### Can I use this same MCP server with Cursor or Windsurf instead of Claude?
-Yes — Namefi's server speaks the same open MCP protocol regardless of which client connects, so the server side doesn't change. The client-side connection commands differ per editor; see the per-client config sections in [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/).<!-- link-when-published: /en/blog/mcp-quickstart/ -->
+Yes — Namefi's server speaks the same open MCP protocol regardless of which client connects, so the server side doesn't change. The client-side connection commands differ per editor; see the per-client config sections in [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/), or the shorter [Namefi MCP Quickstart: Claude Code, Cursor & Windsurf](/en/blog/mcp-quickstart/).
 
 ## Buy your next domain from a conversation
 
-This is the exact setup Namefi supports today, not a hypothetical. Once the MCP server is connected, everything from searching a name to registering it, setting DNS, and (optionally) turning it into a wallet-held token happens without leaving the chat. The MCP server exposes more than registration — outbound lead-finding, batch DNS operations, domain configuration — all discoverable from the same connection once you're set up.<!-- link-when-published: /en/blog/namefi-mcp/ -->
+This is the exact setup Namefi supports today, not a hypothetical. Once the MCP server is connected, everything from searching a name to registering it, setting DNS, and (optionally) turning it into a wallet-held token happens without leaving the chat. The MCP server exposes more than registration — outbound lead-finding, batch DNS operations, domain configuration — all discoverable from the same connection once you're set up — see [Namefi MCP Server: Domain Tools for AI Agents](/en/blog/namefi-mcp/) for the full tool catalog.
 
 **[Generate a Namefi API key and connect Claude](https://namefi.io/api-key).**
 
