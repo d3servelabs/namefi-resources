@@ -114,5 +114,3 @@ Most of this guide is about defending the moment of handover — proving payment
 - Wikipedia — [Chargeback (definition and how a chargeback reverses a payment)](https://en.wikipedia.org/wiki/Chargeback#:~:text=A%20chargeback%20is%20a%20return%20of%20money%20to%20a%20payer)
 - Wikipedia — [Domain name transfer (EPP auth code, ~5-day transfer, 30-day lock)](https://en.wikipedia.org/wiki/Domain_name_transfer#:~:text=obtains%20the%20authentication%20code%20%28EPP%20transfer%20code%29)
 - Namefi resources — [Domain escrow explained](/en/blog/domain-escrow-explained/) · [How to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own/) · [How domain hijacking actually happens](/en/blog/how-domain-hijacking-actually-happens/)
-</content>
-</invoke>
