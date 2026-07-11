@@ -113,7 +113,7 @@ Namefi 为整个 API 运行一台 MCP 服务器，地址为 `https://api.namefi.
 | `listOutboundLeads` | `GET /v-next/outbound/runs/{runId}/leads` | 列出排名靠前的买方潜在客户，每个客户附带依据、已发现的联系方式和已有的外联草稿 | API 密钥 |
 | `prepareOutboundOutreach` | `POST /v-next/outbound/runs/{runId}/leads/{leadId}/outreach` | 为一位潜在客户生成外联草稿，或无额外生成成本地返回已有草稿 | API 密钥 |
 
-响应不会包含内部排名机制——评分、模型详情和被抑制潜在客户状态——因此，为人类汇总结果的智能体只能看到公开依据、找到的联系人，以及是否已有草稿。
+响应不会包含内部排名机制——评分、模型详情和被筛除的潜在客户状态——因此，为人类汇总结果的智能体只能看到公开依据、找到的联系人，以及是否已有草稿。
 
 ### 付款与账户
 
@@ -121,7 +121,7 @@ Namefi 为整个 API 运行一台 MCP 服务器，地址为 `https://api.namefi.
 | --- | --- | --- | --- |
 | `getBalance` | `GET /v-next/balance` | 查询为注册提供资金的 NFSC（Namefi Service Credit）余额 | API 密钥 |
 | `requestNfscFaucet` | `POST /v-next/user/faucet` | 请求免费的测试 NFSC 额度（仅限开发环境） | API 密钥 |
-| `registerDomainX402` | `GET /x402/domain/{domainName}` | 通过一次由稳定币签名的 HTTP 402 流程完成注册和付款，无需 Namefi 账户 | 钱包签名 |
+| `registerDomainX402` | `GET /x402/domain/{domainName}` | 通过一次由钱包签署的稳定币支付授权完成 HTTP 402 流程，无需 Namefi 账户 | 钱包签名 |
 | — | `GET /x402/purchase/{purchaseId}` | 轮询 x402 购买的状态 | 无 |
 | `registerDomainMPP` | `GET /mpp/domain/{domainName}` | 通过 MPP（Machine Payable Protocol，机器可支付协议）质询—响应流程完成注册和付款 | 钱包签名 |
 
@@ -147,11 +147,11 @@ Namefi 为整个 API 运行一台 MCP 服务器，地址为 `https://api.namefi.
 
 ## 三个智能体，三种使用同一工具集的方式
 
-**构建者在一次对话中注册域名并发布 DNS。**`checkAvailability` 确认名称可用，`registerDomain` 以 `autoRenew` 和 `dnssec` 的 `domainSetupOptions` 设置提交注册；订单到达 `SUCCEEDED` 后，`batchCreateDnsRecords` 写入部署平台验证步骤所等待的 CNAME 和 TXT 记录。[面向编程智能体的 Namefi MCP 快速入门](/zh-CN/blog/mcp-quickstart/)会在编辑器中演示这一序列。
+**构建者在一次对话中注册域名并完成 DNS 配置。**`checkAvailability` 确认名称可用，`registerDomain` 以 `autoRenew` 和 `dnssec` 的 `domainSetupOptions` 设置提交注册；订单到达 `SUCCEEDED` 后，`batchCreateDnsRecords` 写入部署平台验证步骤所等待的 CNAME 和 TXT 记录。[面向编程智能体的 Namefi MCP 快速入门](/zh-CN/blog/mcp-quickstart/)会在编辑器中演示这一序列。
 
 **域名交易者管理一个组合。**`getUserDomains` 拉取当前持有的域名，`checkBulkAvailability` 在单次调用中筛查新的候选名称，`registerDomain` 则购入值得获取的名称。对于正在转售的名称，`toggleDomainParking` 会建立落地页，`isDomainParked` 确认其已上线；对于整个组合，`getAutoRenew` 和 `toggleAutoRenew` 决定哪些名称值得给予持续的续期授权，哪些则足够投机而可以任其到期。
 
-**企业对自己已拥有的域名进行外联潜在客户挖掘。**`getUserDomains` 找到一个未使用的域名，`startOutboundRun` 启动研究，`getOutboundRun` 持续轮询直至达到 `SUCCEEDED`。`listOutboundLeads` 返回画像表明可能想要该名称的排名企业，`prepareOutboundOutreach` 则为每位潜在客户起草一封邮件——只生成一次，重复调用时免费返回。
+**企业对自己已拥有的域名进行外联潜在客户挖掘。**`getUserDomains` 找到一个未使用的域名，`startOutboundRun` 启动研究，`getOutboundRun` 持续轮询直至达到 `SUCCEEDED`。`listOutboundLeads` 返回按优先级排序的潜在买家企业，其画像显示它们可能需要该名称；`prepareOutboundOutreach` 则为每位潜在客户起草一封邮件——只生成一次，重复调用时免费返回。
 
 ## 在让智能体无人值守运行前
 
@@ -165,7 +165,7 @@ Namefi 自己的外联文档将四项操作标注为**影响重大的操作**：
 
 ### 我仅仅想检查一个名称是否可用，也需要 API 密钥吗？
 
-不需要。`checkAvailability`、`checkBulkAvailability` 和 `getSuggestions` 都无需认证，因此在刚连接智能体、尚未为任何内容充值时也能使用。
+不需要。`checkAvailability`、`checkBulkAvailability` 和 `getSuggestions` 都无需认证，因此在刚连接智能体、尚未进行任何充值时也能使用。
 
 ### 智能体能否在我从未持有 Namefi API 密钥的情况下使用这整套目录？
 
@@ -173,7 +173,7 @@ Namefi 自己的外联文档将四项操作标注为**影响重大的操作**：
 
 ### 通过这些任一路径注册域名时，域名都会自动代币化吗？
 
-是的。默认情况下，所有注册路径都会将域名作为 ERC-721 NFT 注册到与调用方 API 密钥关联的钱包，并部署在 Base 上；如果未指定 `nftReceivingWallet`，即采用这一默认行为。
+是的。默认情况下，所有注册路径都会将域名铸造为 ERC-721 NFT 并发送至与调用方 API 密钥关联的钱包，部署在 Base 上；如果未指定 `nftReceivingWallet`，即采用这一默认行为。
 
 ### 自主智能体运行哪些操作前应由人确认？
 

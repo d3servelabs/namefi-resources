@@ -35,7 +35,7 @@ relatedGlossary:
 
 今年“AI 与域名”报道中有两个数字被不断引用，但它们应获得不同程度的信任。
 
-第一个是 Name.com 自己声称，其[“91% 的受访者预期，在未来两年中 AI 智能体将处理至少一部分域名管理工作”](https://www.name.com/blog/the-first-ai-native-domain-platform#:~:text=a%20remarkable%2091%25%20of%20respondents%20envision%20AI%20agents%20handling%20at%20least%20some%20of%20their%20domain%20management%20in%20the%20next%20two%20years)。该公司于 **2025 年 7 月 10 日**发布的一篇博客文章提出了这一说法。Name.com 将该数字归因于“我们最近的客户调查”，但没有公布样本量、方法论或独立验证。应如实看待它：**Name.com 报告**其自行调查的客户这样表示——这是公司报告的情绪，不是独立的行业统计数据。
+第一个是 Name.com 自己声称，其[“91% 的受访者预期，在未来两年中 AI 智能体将处理至少一部分域名管理工作”](https://www.name.com/blog/the-first-ai-native-domain-platform#:~:text=a%20remarkable%2091%25%20of%20respondents%20envision%20AI%20agents%20handling%20at%20least%20some%20of%20their%20domain%20management%20in%20the%20next%20two%20years)。该公司于 **2025 年 7 月 10 日**发布的一篇博客文章提出了这一说法。Name.com 将该数字归因于“我们最近的客户调查”，但没有公布样本量、方法论或独立验证。应如实看待它：**Name.com 报告**其自行调查的客户这样表示——这是公司自行报告的受访者意向，不是独立的行业统计数据。
 
 第二个数字可验证，且得到独立佐证。**2026 年 1 月 28 日**，安圭拉政府宣布 `.ai` [ccTLD（国家代码顶级域名）](/zh-CN/glossary/cctld/)的注册域名已超过 100 万；[Domain Name Wire 直接报道了这一里程碑](https://domainnamewire.com/2026/01/28/ai-namespace-hits-1-million-domain-names/)：2025 年初约有 598,000 个 `.ai` 域名，约 13 个月后突破 100 万；而从 2020 年约 40,000 个注册量的基数增长至此，历时五年。CircleID 对域名行业的报道独立引用了同一里程碑，Hogan Lovells 关于 `.ai` 的行业说明也证实了该走势——这是多方交叉确认的数据，并非单一主体的自报数字。
 
@@ -55,7 +55,7 @@ relatedGlossary:
 | 2026-04-15 | Cloudflare 在“Agents Week”期间将 Registrar API 以公开 beta 形式推出，将注册、搜索和定价接入 MCP 层 | [Cloudflare 的 Registrar API beta 公告](https://blog.cloudflare.com/registrar-api-beta/)；[行业报道](https://webhosting.today/2026/04/22/ai-agents-can-now-register-domains-no-human-required/#:~:text=On%20April%2015%2C%202026%2C%20Cloudflare%20moved%20that%20transaction%20into%20the%20agent%20layer) |
 | 2026-04-20 | CircleID 发布关于“智能体作为域名经销商”的分析 | [CircleID，Simone Catania](https://circleid.com/posts/the-domain-universe-in-2026-ai-security-market-maturity-and-the-new-gtld-frontier#:~:text=AI%20agents%20are%20increasingly%20acting%20as%20domain%20resellers%20checking%20availability%2C%20registering%20names%2C%20and%20configuring%20DNS%20without%20human%20intervention) |
 | 2026-04-24 | Verisign 的 2026 年第一季度《域名行业简报》报告域名注册总量为 3.925 亿，为上列各项提供全市场背景 | [DNIB.com](https://www.dnib.com)；[CircleID 报道](https://circleid.com/posts/dnib-reports-392.5-million-domain-name-registrations-in-q1-2026#:~:text=The%20first%20quarter%20of%202026%20closed%20with%20392.5%20million%20domain%20name%20registrations%20across%20all%20top-level%20domains%20%28TLDs%29) |
-| 2026-04-27 | Identity Digital——`.ai` 注册局及 [Name.com](https://www.name.com) 的母公司——推出“面向 AI 智能体的中立、DNS 锚定身份标准”，提议将 DNS 记录作为记录智能体责任主体的位置 | [Identity Digital 新闻中心](https://www.globenewswire.com/news-release/2026/04/27/3281553/0/en/identity-digital-launches-neutral-dns-anchored-identity-standard-for-ai-agents.html) |
+| 2026-04-27 | Identity Digital——`.ai` 注册局及 [Name.com](https://www.name.com) 的母公司——推出“面向 AI 智能体的中立、DNS 锚定身份标准”，提议使用 DNS 记录承载智能体责任主体信息 | [Identity Digital 新闻中心](https://www.globenewswire.com/news-release/2026/04/27/3281553/0/en/identity-digital-launches-neutral-dns-anchored-durable-identity-standard-for-ai-agents.html) |
 | 2026-06-04 | Identity Digital 的 Innovation Labs 将该提案正式形成 IETF Internet-Draft（互联网草案）——“面向 AI 智能体的 DNS 锚定持久身份（DNSid）” | [GlobeNewswire](https://www.globenewswire.com/news-release/2026/06/04/3306702/0/en/innovation-labs-by-identity-digital-submits-dns-anchored-durable-identity-proposal-for-ai-agents-to-the-ietf.html#:~:text=Which%20accountable%20entity%20is%20responsible%20for%20this%20agent%2C%20and%20can%20that%20be%20verified%20independently%20across%20systems)；[IETF Datatracker 草案](https://datatracker.ietf.org/doc/draft-ihsanullah-dnsid/) |
 
 按顺序阅读，脉络如下：先是已有二十年历史的配置协议；随后是两个根本不是为域名打造的通用 AI 智能体标准（llms.txt、MCP）；接着，注册商逐个将这些标准改造用于结账流程；最后，同一注册局集团（Identity Digital）越过自有注册商，提出将 DNS 作为智能体*身份*而非仅仅智能体*购买*的基础设施。最后一步最新、也最未尘埃落定：Internet-Draft 是提交供讨论的提案，不是已获批准的标准。
@@ -80,15 +80,15 @@ relatedGlossary:
 
 ## 经销商论点
 
-2026 年域名行业报道中反复出现的一句话是：AI 智能体正在成为*经销商*。CircleID 在 2026 年 4 月 20 日的分析中直言不讳：[“AI 智能体越来越多地充当域名经销商，查询可用性、注册名称并配置 DNS，而无需人工干预。”](https://circleid.com/posts/the-domain-universe-in-2026-ai-security-market-maturity-and-the-new-gtld-frontier#:~:text=AI%20agents%20are%20increasingly%20acting%20as%20domain%20resellers%20checking%20availability%2C%20registering%20names%2C%20and%20configuring%20DNS%20without%20human%20intervention)
+2026 年域名行业报道中反复出现的一句话是：AI 智能体正在成为*经销商*。CircleID 在 2026 年 4 月 20 日的分析中直言不讳：[“AI 智能体越来越多地充当域名经销商，查询可用性、注册域名并配置 DNS，而无需人工干预。”](https://circleid.com/posts/the-domain-universe-in-2026-ai-security-market-maturity-and-the-new-gtld-frontier#:~:text=AI%20agents%20are%20increasingly%20acting%20as%20domain%20resellers%20checking%20availability%2C%20registering%20names%2C%20and%20configuring%20DNS%20without%20human%20intervention)
 
-这一定义应与其隐含的含义区分开来。在域名行业自身的术语中，[经销商](/zh-CN/glossary/reseller/)是一个具体且正式的主体：它依据注册商的 [ICANN](/zh-CN/glossary/icann/)认证协议出售或配置域名，对注册商负有合同义务，并因此间接对 ICANN 负有义务。如今，智能体调用注册 API 并不会建立这种关系——智能体是终端客户的受托代理，以客户自身的 API 密钥或钱包进行认证，而不是自行成为已获认证的主体。CircleID 的表述是描述性的，并非对认证状态的主张：经销商的*行为模式*——为他人以规模化方式反复搜索、定价、注册、配置 DNS——如今已出现在智能体工作流中，尽管其运营者并不是一家签署经销商协议的公司。
+这一用词应与其隐含的含义区分开来。在域名行业自身的术语中，[经销商](/zh-CN/glossary/reseller/)是一个具体且正式的主体：它依据注册商的 [ICANN](/zh-CN/glossary/icann/)认证协议出售或配置域名，对注册商负有合同义务，并因此间接对 ICANN 负有义务。如今，智能体调用注册 API 并不会建立这种关系——智能体是终端客户的受托代理，以客户自身的 API 密钥或钱包进行认证，而不是自行成为已获认证的主体。CircleID 的表述是描述性的，并非对认证状态的主张：经销商的*行为模式*——为他人以规模化方式反复搜索、定价、注册、配置 DNS——如今已出现在智能体工作流中，尽管其运营者并不是一家签署经销商协议的公司。
 
-这种行为是否会凝结为注册局正式承认的某种身份，仍是一个悬而未决的问题。这将要求注册局和注册商决定：高交易量且受策略约束的智能体活动是否需要独立于人工经销商的认证层级、限速策略或滥用监控类别。上述时间线中的内容——Cloudflare 的 beta、Name.com 的文章、Identity Digital 的 DNSid 草案——都尚未提出这样的层级。DNSid 是最接近的一项，因为它明确针对核验谁要为智能体行为负责；但“谁负责”和“是否已正式获认证成为经销商”是两个不同问题，草案只回答前者。若想了解单次购买的操作机制，请参阅[AI 智能体如何无需人工购买域名](/zh-CN/blog/agents-buy-domains/)。
+这种行为是否会凝结为注册局正式承认的某种类别或机制，仍是一个悬而未决的问题。这将要求注册局和注册商决定：高交易量且受策略约束的智能体活动是否需要独立于人工经销商的认证层级、限速策略或滥用监控类别。上述时间线中的内容——Cloudflare 的 beta、Name.com 的文章、Identity Digital 的 DNSid 草案——都尚未提出这样的层级。DNSid 是最接近的一项，因为它明确针对核验谁要为智能体行为负责；但“谁负责”和“是否已正式获认证成为经销商”是两个不同问题，草案只回答前者。若想了解单次购买的操作机制，请参阅[AI 智能体如何无需人工购买域名](/zh-CN/blog/agents-buy-domains/)。
 
 ## 2027 年预测
 
-以下每项预测都写成可依据公开证据核验的具体主张，而非一种情绪。因此，读者在 2027 年年中回看时，无需由我们解释即可将其标为真、假或未决。
+以下每项预测都写成可依据公开证据核验的具体主张，而非泛泛的判断。因此，读者在 2027 年年中回看时，无需由我们解释即可将其标为真、假或未决。
 
 1. 到 2027 年 7 月，**Cloudflare、Name.com 或可比的主流注册商中至少一家，会发布有文档记录、由 API 强制执行的支出上限或购买确认原语**（而非仅提供客户端指引）。截至撰文时，我们检查的每个平台——包括 Namefi——在这一项上都是空白。
 2. 到 2027 年底，**Cloudflare 的 Registrar API 将移除“beta”标签，并交付 DNS 记录管理、续期自动化或转移支持中的至少一项**——与其 beta 公告中“2026 年晚些时候”的表述相符，并额外留出一年缓冲时间。
@@ -122,7 +122,7 @@ DNSid 是由 Identity Digital 的 Innovation Labs 于 2026 年 6 月向 IETF 提
 
 [AI 智能体如何无需人工购买域名](/zh-CN/blog/agents-buy-domains/)会逐步讲解搜索、定价、认证、注册和配置的流程。[Cloudflare、Name.com 与 Namefi 对比](/zh-CN/blog/cf-namecom-namefi/)逐项比较三个平台，而[什么是智能体原生域名注册商？](/zh-CN/blog/agent-native/)则列出了本文已交付与已宣布对照表背后的检查清单。
 
-## 使用已交付完整技术栈的智能体注册
+## 使用已提供完整技术栈的智能体完成注册
 
 本文记录的大多数缺口——未记录的支出上限、beta 标签、没有逐项规范的定位文章——并非某一个平台独有；它们反映了该类别在 2026 年年中的位置。[Namefi](https://namefi.io)已经交付当下可用的能力：智能体可直接连接的 MCP 服务器、可通过 `llms.txt` 发现的 REST API，以及无需账户、以 USDC 进行钱包签名的 [x402](/zh-CN/glossary/x402/)结账；如果你希望域名存放在智能体的钱包中，还可选择[代币化域名](/zh-CN/glossary/tokenized-domain/)所有权。
 
