@@ -10,11 +10,11 @@ ogImage: ../../assets/ai-agent-register-og.jpg
 description: "通过 MCP、REST 或钱包结账，使用 Claude、Codex、Cursor 等任意 AI 智能体在 Namefi 注册域名的权威指南。"
 keywords: ["AI 智能体注册域名", "Namefi 教程", "Claude 域名注册", "Codex 域名注册", "Cursor MCP 域名", "Windsurf MCP 域名", "Gemini CLI MCP 域名", "智能体域名操作指南", "x-api-key", "MCP 服务器", "钱包结账", "Namefi MCP 域名注册", "AI 智能体在 Namefi 购买域名", "域名注册 MCP 教程"]
 relatedArticles:
-  - /en/blog/claude-mcp-domains/
-  - /en/blog/cf-namecom-namefi/
-  - /en/blog/ai-domain-platforms/
-  - /en/blog/agent-native/
-  - /en/blog/airo-vs-namefi/
+  - /zh-CN/blog/claude-mcp-domains/
+  - /zh-CN/blog/cf-namecom-namefi/
+  - /zh-CN/blog/ai-domain-platforms/
+  - /zh-CN/blog/agent-native/
+  - /zh-CN/blog/airo-vs-namefi/
 relatedTopics:
   - /zh-CN/topics/domain-tokenization/
   - /zh-CN/topics/domain-basics/

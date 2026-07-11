@@ -10,17 +10,17 @@ ogImage: ../../assets/agent-own-domain-og.jpg
 description: "注册人必须是法律主体，但域名托管可以委托。本文解释 WHOIS、API 密钥与代币化域名构成的托管光谱。"
 keywords: ["AI 智能体能拥有域名吗", "AI 智能体域名所有权", "AI 注册域名时谁是注册人", "AI 智能体 WHOIS", "域名注册人法律主体", "代币化域名托管", "AI 智能体钱包 NFT 域名", "域名托管光谱", "智能体持有域名风险", "AI 智能体 UDRP 风险", "将域名委托给 AI 智能体", "钱包持有的域名", "AI 智能体 RDAP 查询", "域名所有权与控制权"]
 relatedArticles:
-  - /en/blog/wallet-checkout/
-  - /en/blog/agents-buy-domains/
-  - /en/blog/ai-agent-register/
-  - /en/blog/cf-namecom-namefi/
-  - /en/blog/namefi-mcp/
+  - /zh-CN/blog/wallet-checkout/
+  - /zh-CN/blog/agents-buy-domains/
+  - /zh-CN/blog/ai-agent-register/
+  - /zh-CN/blog/cf-namecom-namefi/
+  - /zh-CN/blog/namefi-mcp/
 relatedTopics:
-  - /en/topics/domain-tokenization/
-  - /en/topics/domain-security/
+  - /zh-CN/topics/domain-tokenization/
+  - /zh-CN/topics/domain-security/
 relatedSeries:
-  - /en/series/blockchain-concepts/
-  - /en/series/tokenize-your-com/
+  - /zh-CN/series/blockchain-concepts/
+  - /zh-CN/series/tokenize-your-com/
 relatedGlossary:
   - /zh-CN/glossary/registrant/
   - /zh-CN/glossary/whois/

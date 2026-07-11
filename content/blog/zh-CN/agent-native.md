@@ -10,17 +10,17 @@ ogImage: ../../assets/agent-native-og.jpg
 description: "注册商早已有 API，但仅有 API 并不等于智能体原生。评估清单包括可发现性、文档、错误、支付和策略钩子。"
 keywords: ["智能体原生注册商", "智能体原生定义", "什么是智能体原生注册商", "面向智能体的 API", "MCP 服务器", "llms.txt", "机器可读错误", "幂等性", "智能体支付", "AI 智能体注册域名", "自然语言 API 文档", "AI 智能体策略钩子", "API 密钥计费", "钱包结账加密域名"]
 relatedArticles:
-  - /en/blog/ai-domain-platforms/
-  - /en/blog/cf-namecom-namefi/
-  - /en/blog/ai-agent-register/
-  - /en/blog/claude-mcp-domains/
-  - /en/blog/airo-vs-namefi/
+  - /zh-CN/blog/ai-domain-platforms/
+  - /zh-CN/blog/cf-namecom-namefi/
+  - /zh-CN/blog/ai-agent-register/
+  - /zh-CN/blog/claude-mcp-domains/
+  - /zh-CN/blog/airo-vs-namefi/
 relatedTopics:
-  - /en/topics/web3-foundations/
-  - /en/topics/domain-basics/
+  - /zh-CN/topics/web3-foundations/
+  - /zh-CN/topics/domain-basics/
 relatedSeries:
-  - /en/series/blockchain-concepts/
-  - /en/series/tokenize-your-com/
+  - /zh-CN/series/blockchain-concepts/
+  - /zh-CN/series/tokenize-your-com/
 relatedGlossary:
   - /zh-CN/glossary/ai-agent/
   - /zh-CN/glossary/registrar/

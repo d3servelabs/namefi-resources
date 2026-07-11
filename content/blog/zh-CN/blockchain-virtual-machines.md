@@ -25,11 +25,11 @@ relatedSeries:
   - /zh-CN/series/tokenize-your-com/
   - /zh-CN/series/domain-flipping-skills/
 relatedGlossary:
-  - /en/glossary/ethereum-virtual-machine/
-  - /en/glossary/webassembly/
   - /zh-CN/glossary/smart-contract/
   - /zh-CN/glossary/ethereum/
   - /zh-CN/glossary/gas/
+  - /zh-CN/glossary/blockchain/
+  - /zh-CN/glossary/web3/
 ---
 
 每个[智能合约](/zh-CN/glossary/smart-contract/)都必须在某处运行。这个“某处”就是区块链虚拟机（VM）——由网络中的每个节点以完全相同的方式执行的沙盒化程序，因此无论由谁运行，相同的输入总会产生相同的输出。所构建的 VM 几乎决定了一条链的一切：可以使用哪些编程语言、交易能否同时运行还是只能依次运行，以及从第一天起能够接入多大范围的现有开发者生态系统。

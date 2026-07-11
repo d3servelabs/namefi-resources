@@ -10,17 +10,17 @@ ogImage: ../../assets/ai-domain-platforms-og.jpg
 description: "汇总 2026 年所有可让 AI 智能体搜索、查询价格并注册域名的平台——Cloudflare、Name.com 和 Namefi；按接口、支付方式与自主程度比较。"
 keywords: ["AI 智能体域名注册", "智能体域名平台", "用 AI 购买域名", "自然语言购买域名", "MCP 域名注册商", "AI 域名 API", "智能体域名注册平台", "原生支持智能体的注册商", "Cloudflare Registrar API", "Namefi MCP", "Name.com AI-native API", "llms.txt 域名注册商", "AI 能购买域名吗", "AI 智能体购买域名平台 2026", "哪些平台允许 AI 智能体注册域名"]
 relatedArticles:
-  - /en/blog/cf-namecom-namefi/
-  - /en/blog/agent-native/
-  - /en/blog/claude-mcp-domains/
-  - /en/blog/ai-agent-register/
-  - /en/blog/airo-vs-namefi/
+  - /zh-CN/blog/cf-namecom-namefi/
+  - /zh-CN/blog/agent-native/
+  - /zh-CN/blog/claude-mcp-domains/
+  - /zh-CN/blog/ai-agent-register/
+  - /zh-CN/blog/airo-vs-namefi/
 relatedTopics:
-  - /en/topics/domain-tokenization/
-  - /en/topics/domain-basics/
+  - /zh-CN/topics/domain-tokenization/
+  - /zh-CN/topics/domain-basics/
 relatedSeries:
-  - /en/series/tokenize-your-com/
-  - /en/series/best-tlds-by-industry/
+  - /zh-CN/series/tokenize-your-com/
+  - /zh-CN/series/best-tlds-by-industry/
 relatedGlossary:
   - /zh-CN/glossary/ai-agent/
   - /zh-CN/glossary/registrar/

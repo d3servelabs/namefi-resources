@@ -19,11 +19,11 @@ relatedArticles:
   - /zh-CN/blog/blockchain-cryptographic-primitives/
   - /zh-CN/blog/premium-web3-tlds/
 relatedGlossary:
-  - /en/glossary/rollup/
-  - /en/glossary/optimistic-rollup/
-  - /en/glossary/zk-rollup/
-  - /en/glossary/data-availability/
   - /zh-CN/glossary/layer-2/
+  - /zh-CN/glossary/blockchain/
+  - /zh-CN/glossary/ethereum/
+  - /zh-CN/glossary/smart-contract/
+  - /zh-CN/glossary/gas/
 relatedTopics:
   - /zh-CN/topics/web3-foundations/
   - /zh-CN/topics/domain-tokenization/

@@ -10,11 +10,11 @@ ogImage: ../../assets/agents-buy-domains-og.jpg
 description: "2026 年 4 月，域名注册进入智能体层。了解 AI 智能体如何搜索、定价和注册域名，以及仍不可忽视的安全护栏。"
 keywords: ["AI 智能体注册域名", "无需人工注册域名", "自主域名注册", "智能体层域名注册", "Cloudflare Registrar API 公测", "智能体安全护栏", "2026 年 AI 智能体域名注册", "让 AI 购买域名是否安全", "充当域名经销商的智能体", "MCP 域名注册", "llms.txt 域名发现", "AI 智能体支出上限", "EPP 注册局配置"]
 relatedArticles:
-  - /en/blog/ai-domain-platforms/
-  - /en/blog/cf-namecom-namefi/
-  - /en/blog/agent-native/
-  - /en/blog/namefi-mcp/
-  - /en/blog/state-of-agentic/
+  - /zh-CN/blog/ai-domain-platforms/
+  - /zh-CN/blog/cf-namecom-namefi/
+  - /zh-CN/blog/agent-native/
+  - /zh-CN/blog/namefi-mcp/
+  - /zh-CN/blog/state-of-agentic/
 relatedTopics:
   - /zh-CN/topics/domain-basics/
   - /zh-CN/topics/domain-security/
