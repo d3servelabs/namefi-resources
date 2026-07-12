@@ -29,8 +29,6 @@ relatedGlossary:
   - /en/glossary/udrp/
 ---
 
-<!-- LEGAL REVIEW REQUIRED before publish — registrant/legal-person claims -->
-
 "Can my AI agent own a domain?" comes up constantly once an [AI agent](/en/glossary/ai-agent/) is registering, renewing, and managing domains on someone's behalf — see [How AI Agents Buy Domains Without a Human](/en/blog/agents-buy-domains/) for how common that's become in 2026. The short answer sits at the top; the rest of this page works through *why*, in the form of the specific questions people actually ask, each one answerable on its own.
 
 ## Can an AI agent legally own a domain?
