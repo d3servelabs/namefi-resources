@@ -35,7 +35,7 @@ La forma más rápida de despejar la confusión es una taxonomía, no una clasif
 
 ## Los tres niveles, uno por párrafo
 
-**Nivel 1 — Generadores.** Escribes una idea de negocio en un campo de texto; la herramienta devuelve una lista breve de nombres de empresa —cada uno como candidato a [Dominio de marca](/es/glossary/brandable-domain/)— e indica cuáles están disponibles. Aún tienes que ir a un [Registrador](/es/glossary/registrar/) y completar por tu cuenta una compra normal. Es el uso más antiguo y común de la "IA" en las herramientas de dominios, y resulta realmente útil para la tarea concreta de idear un nombre.
+**Nivel 1 — Generadores.** Escribes una idea de negocio en un campo de texto; la herramienta devuelve una lista breve de [nombres de marca](/es/glossary/brandable-domain/) y de dominios disponibles. Aún tienes que ir a un [registrador](/es/glossary/registrar/) y completar por tu cuenta una compra normal. Es el uso más antiguo y común de la "IA" en las herramientas de dominios, y resulta realmente útil para la tarea concreta de idear un nombre.
 
 **Nivel 2 — Asistentes de IA de registradores.** La IA se encarga de más trabajo alrededor de la compra —comprobar la disponibilidad en varios TLD a la vez, crear el borrador de un sitio inicial e incluso poner en cola una reserva de dominio—, pero sigue funcionando dentro del propio panel del registrador y una persona debe aprobar la compra. La IA hace tareas para una persona; no actúa como compradora independiente.
 
@@ -47,7 +47,7 @@ Nada de esto es una jerarquía estricta de calidad. Un fundador en solitario que
 
 ### GoDaddy Airo
 
-La suite Airo de GoDaddy reúne una Búsqueda de Dominios con IA, un Creador de Logotipos, un sitio inicial generado por IA y un Asistente SEO en un solo panel. Una lista independiente de registradores lo resume bien: [GoDaddy Airo, su asistente de configuración con IA, también puede sugerir un nombre, un logotipo y un sitio inicial una vez que te registras](https://www.hostinger.com/tutorials/best-domain-registrars/#:~:text=GoDaddy%20Airo%2C%20its%20AI%20setup%20assistant%2C%20can%20also%20suggest%20a%20name%2C%20logo%2C%20and%20starter%20site%20once%20you%20register). El detalle de «una vez que te registras» marca el nivel: tú completas la compra mediante el proceso de pago normal de GoDaddy. Es una opción sólida para quien monta un pequeño negocio por primera vez y quiere un nombre, un logotipo y una página publicada de una vez.
+La suite Airo de GoDaddy reúne una Búsqueda de Dominios con IA, un Creador de Logotipos, un sitio inicial generado por IA y un Asistente SEO en un solo panel. Una lista independiente de registradores lo resume bien: [GoDaddy Airo, su asistente de configuración con IA, también puede sugerir un nombre, un logotipo y un sitio inicial una vez que registras un dominio](https://www.hostinger.com/tutorials/best-domain-registrars/#:~:text=GoDaddy%20Airo%2C%20its%20AI%20setup%20assistant%2C%20can%20also%20suggest%20a%20name%2C%20logo%2C%20and%20starter%20site%20once%20you%20register). El detalle de «una vez que registras un dominio» marca el nivel: tú completas la compra mediante el proceso de pago normal de GoDaddy. Es una opción sólida para quien monta un pequeño negocio por primera vez y quiere un nombre, un logotipo y una página publicada de una vez.
 
 ### Herramientas Visual de Namecheap
 
