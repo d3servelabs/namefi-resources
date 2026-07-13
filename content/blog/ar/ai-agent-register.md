@@ -51,7 +51,7 @@ Namefi بتشغّل خادم MCP واحد لكل الـ API عندها، على 
 4. **سجّل ثم استطلع الحالة.** بعد التأكيد، الوكيل بيبعت `registerDomain` (`POST /v-next/orders/register-domain`)، أو النسخة المجمعة `register-domain/records` لو عايز تضبط DNS في نفس الاستدعاء. التسجيل غير متزامن — جسم الطلب بياخد `normalizedDomainName` و`durationInYears`، ونقطة `register-domain/records` بتقبل كمان مصفوفة `records` (`name` و`type` و`rdata` و`ttl` لكل سجل) عشان DNS يتكتب لحظة ما الطلب يكتمل. الوكيل (أو أنت) بيستطلع `getOrder` (`GET /v-next/orders/{orderId}`) لحد ما يوصل لحالة نهائية: `SUCCEEDED` أو `FAILED` أو `CANCELLED` أو `PARTIALLY_COMPLETED`.
 5. **اضبط DNS وتحقق.** أضف أو عدّل [أنواع سجلات DNS (A، AAAA، CNAME، MX، TXT)](/ar/glossary/dns-record-types/) عن طريق `createDnsRecord` (`POST /v-next/dns/records`)، واضبط التفويض على مستوى [خادم الأسماء (سجل NS)](/ar/glossary/nameserver/) لو لزم، وادّي [انتشار DNS](/ar/glossary/dns-propagation/) دقايق قليلة قبل ما تتأكد إن الدومين بيتحل بشكل صحيح.
 
-طلب التسجيل كمان بيقبل كائن `domainSetupOptions` فيه إعدادات لكل دومين — `autoPark` و`autoEns` و`autoRenew` و`dnssec` و`keepExistingNameservers` (الأخير بيقول لـ Namefi تسيب تفويض خادم الأسماء الحالي للدومين زي ما هو بدل ما تعيد توجيهه، وده مفيد لو بتسجّل دومين المفروض يفضل شغال في مكان تاني فوراً). الحقل الاختياري `nftReceivingWallet` بيتحكم في المحفظة اللي بيروح لها توكن ملكية الدومين — سيبه فارغاً والدومين هيتسجل كـ NFT على Base للمحفظة المرتبطة بمفتاح الـ API بتاعك.
+طلب التسجيل كمان بيقبل كائن `domainSetupOptions` فيه إعدادات لكل دومين — `autoPark` و`autoEns` و`autoRenew` و`dnssec` و`keepExistingNameservers` (الأخير بيقول لـ Namefi تسيب تفويض خادم الأسماء الحالي للدومين زي ما هو بدل ما تعيد توجيهه، وده مفيد لو بتسجّل دومين المفروض يفضل شغال في مكان تاني فوراً). الحقل الاختياري `nftReceivingWallet` بيتحكم في المحفظة اللي بيروح لها توكن ملكية الدومين — لو ما بعتّوش، الدومين هيتسجل كـ NFT على Base للمحفظة المرتبطة بمفتاح الـ API بتاعك.
 
 ## جدول إعداد كل وكيل
 
@@ -185,7 +185,7 @@ curl "https://api.namefi.io/v-next/orders/{orderId}" \
   -H "x-api-key: YOUR_KEY"
 ```
 
-llms.txt هو اصطلاح نص عادي — فهرس مقروء آلياً الموقع بينشره عند الجذر تحديداً عشان وكيل ذكاء اصطناعي يقدر يكتشف الـ API بتعمل إيه من غير ما يزحف في وثائق مرسومة. ملف Namefi قصير كفاية تقرأه مباشرةً في [namefi.io/llms.txt](https://namefi.io/llms.txt) لو عايز النسخة الكاملة بدل الملخص المضغوط. راجع [llms.txt للدومينات: API يقدر أي وكيل ذكاء اصطناعي يقراها](/ar/blog/llms-txt/) عشان تعرف أكتر عن الاصطلاح نفسه.
+llms.txt هو اصطلاح نص عادي — فهرس مقروء آلياً الموقع بينشره عند الجذر تحديداً عشان وكيل ذكاء اصطناعي يقدر يكتشف الـ API بتعمل إيه من غير ما يزحف في صفحات وثائق معروضة في المتصفح. ملف Namefi قصير كفاية تقرأه مباشرةً في [namefi.io/llms.txt](https://namefi.io/llms.txt) لو عايز النسخة الكاملة بدل الملخص المضغوط. راجع [llms.txt للدومينات: API يقدر أي وكيل ذكاء اصطناعي يقراها](/ar/blog/llms-txt/) عشان تعرف أكتر عن الاصطلاح نفسه.
 
 ## الدفع: مفتاح API أم الدفع من المحفظة
 
