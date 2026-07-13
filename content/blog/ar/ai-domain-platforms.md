@@ -22,11 +22,11 @@ relatedSeries:
   - /ar/series/tokenize-your-com/
   - /ar/series/best-tlds-by-industry/
 relatedGlossary:
+  - /ar/glossary/ai-agent/
   - /ar/glossary/registrar/
   - /ar/glossary/tld/
   - /ar/glossary/tokenized-domain/
   - /ar/glossary/wallet/
-  - /ar/glossary/dns/
 ---
 
 من سنة، كانت عبارة «الذكاء الاصطناعي والدومينات» معناها مولِّد أسماء: تكتب فكرة مشروع في مربع، فيطلع لك اقتراحات لـ `.com` و`.ai`، وبعدها تكمّل في صفحة دفع عادية لشخص بشري. الفئة دي ما زالت موجودة ومفيدة. لكنها لم تعد القصة كلها.
@@ -75,7 +75,7 @@ relatedGlossary:
 
 ### Namefi: خادم MCP مع دفع بالمحفظة
 
-فهرس Namefi القابل للقراءة آلياً — [namefi.io/llms.txt](https://namefi.io/llms.txt) — مثال بحد ذاته على نمط الواجهة الثالث أعلاه، وهو المصدر الوحيد المعتمد لما يأتي. تشغّل Namefi خادم MCP على `api.namefi.io/mcp` عبر Streamable HTTP، ويعرض أدوات مُحددة النوع للتسجيل وفحوص الإتاحة وإدارة DNS؛ ويمكن إضافته إلى Claude Code بأمر واحد (`claude mcp add --transport http namefi https://api.namefi.io/mcp`). وتحته REST API (`api.namefi.io/v-next/`) موثقة بهيدر `x-api-key` — ويجب إنشاء المفتاح من المحفظة التي تملك الدومين، ما يربط الوصول إلى الـ API مباشرة بالحيازة على السلسلة بدلاً من مسار منفصل لاستعادة الحساب.
+فهرس Namefi القابل للقراءة آلياً — [namefi.io/llms.txt](https://namefi.io/llms.txt) — مثال بحد ذاته على نمط الواجهة الثالث أعلاه، وهو المصدر الوحيد المعتمد لما يأتي. تشغّل Namefi خادم MCP على `api.namefi.io/mcp` عبر Streamable HTTP، ويعرض أدوات مُحددة النوع للتسجيل وفحوص الإتاحة وإدارة DNS؛ ويمكن إضافته إلى Claude Code بأمر واحد (`claude mcp add --transport http namefi https://api.namefi.io/mcp`). وتحته REST API (`api.namefi.io/v-next/`) ومصادَق عليها بهيدر `x-api-key` — ويجب إنشاء المفتاح من المحفظة التي تملك الدومين، ما يربط الوصول إلى الـ API مباشرة بالحيازة على السلسلة بدلاً من مسار منفصل لاستعادة الحساب.
 
 الفارق هو الدفع. توثق Namefi مسارين: مسار مفتاح API القياسي، المفوتر مقابل رصيد مُسبق الدفع من NFSC (Namefi Service Credits)، ومسار أصلي للعملات المشفرة يستخدم توقيعات المحفظة — بما فيها SIWE ‏(Sign-In With Ethereum) — لما تصفه وثائقها بمستخدمي Web3 و«محافظ الوكلاء»، فيتيح تفويض الشراء من دون إنشاء حساب مُسجِّل على الإطلاق. بعد التسجيل، تدعم Namefi كامل عمليات CRUD لسجلات DNS ‏(A وAAAA وCNAME وMX وTXT وغيرها)، والتجديد التلقائي، وركن الدومين وإعادة توجيهه، وإنشاء سجلات ENS تلقائياً، و— الميزة التي تميزها بنيوياً عن المنصتين الأخريين هنا — [ترميز الدومين](/ar/glossary/tokenized-domain/): تمثيل دومين حقيقي مسجل لدى ICANN كأصل على السلسلة تحتفظ به [محفظة](/ar/glossary/wallet/). الشرح خطوة بخطوة — لـ Claude وCodex وCursor وثلاثة وكلاء آخرين — موجود في [كيفية تسجيل دومين باستخدام وكيل الذكاء الاصطناعي على Namefi](/ar/blog/ai-agent-register/)، مع شرح أعمق خاص بـ Claude في [اشترِ دومين باستخدام Claude: دليل Namefi MCP خطوة بخطوة](/ar/blog/claude-mcp-domains/). ولرؤية شكل طلب اللغة العادية فعلاً، راجع [كيف تشتري دوميناً بلغة طبيعية (2026)](/ar/blog/nl-domain-purchase/).
 
