@@ -69,9 +69,9 @@ Co-founder and CTO Cal Henderson has explained why the word was worth chasing in
 
 Most blockbuster domain stories involve a reluctant holder, a long stalemate, and an eventual capitulation. Slack's is gentler — and a little funnier.
 
-The previous owner was not a domain investor warehousing the name for a payday. By Henderson's account, [we bought the domain from a guy who had been using it as a personal website for pictures of his cats](https://www.siliconrepublic.com/start-ups/slack-cal-henderson-interview#:~:text=We%20bought%20the%20domain%20from%20a%20guy%20who%20had%20been%20using%20it%20as%20a%20personal%20website%20for%20pictures%20of%20his%20cats). A five-letter English word — one of the most valuable kinds of .com there is — had been quietly serving as a hobbyist's photo album.
+Henderson described the previous owner through an unexpectedly personal use of the name: [we bought the domain from a guy who had been using it as a personal website for pictures of his cats](https://www.siliconrepublic.com/start-ups/slack-cal-henderson-interview#:~:text=We%20bought%20the%20domain%20from%20a%20guy%20who%20had%20been%20using%20it%20as%20a%20personal%20website%20for%20pictures%20of%20his%20cats). A five-letter English word — one of the most valuable kinds of .com there is — had been quietly serving as a hobbyist's photo album.
 
-That detail explains the relatively modest price. A seller running a personal cat-photo site is not anchored to a multimillion-dollar valuation; he has no business plan riding on the name, no competing buyers bidding it up, no reason to treat $60,000 as anything but a windfall. Compared with the decade-long, NDA-shrouded standoffs that some companies endure to pry an exact-match domain loose, Slack's path to Slack.com was short, friendly, and cheap.
+That detail establishes how the domain had been used before Slack acquired it, but it does not reveal the seller's motives, competing bids, or the negotiation itself. Public accounts give us the reported $60,000 price and the cat-photo anecdote; they do not tell us why the seller accepted that figure or how difficult the transaction was.
 
 The lesson is not "domains are cheap." It is that the price of an exact-match domain has very little to do with how valuable it will become, and almost everything to do with who happens to be holding it when you call.
 
@@ -103,7 +103,7 @@ The distance between SlackHQ.com and Slack.com is two letters. Strategically, it
 
 This is the recurring pattern in domain upgrades: early names *explain* or *qualify*; great names *own*. A modifier like "HQ," "Motors," "App," or "The" is a reasonable on-ramp when the clean name isn't available. It becomes drag the moment the company is big enough that the word itself should be the destination.
 
-Slack had the unusual luxury of fixing this fast. Because the seller was easy and the price was low, the modifier never had time to harden into the brand. Most of the world only ever knew the product as Slack.com.
+Slack had the unusual luxury of fixing this early. The modifier never had time to harden into the brand, and most of the world only ever knew the product as Slack.com.
 
 ## Sequence: the word, then the address
 
@@ -134,7 +134,7 @@ The easy takeaway — "always own your exact-match .com before launch" — is th
 
 1. **A modifier is a fine on-ramp.** "HQ" let Slack launch under its real name while the bare word was held by someone else. Launching on SlackHQ.com was not a failure; it was a reasonable way to ship without waiting.
 2. **Treat the bare name as something to acquire, not assume.** The brand was decided; the address was a transaction. Slack budgeted for the upgrade and pursued the holder rather than renaming around the obstacle.
-3. **Move while the modifier is still cheap to remove.** Because Slack bought Slack.com early and at a friendly price, the "HQ" never became load-bearing. The longer a workaround lives, the more expensive — and confusing — it is to undo.
+3. **Move while the modifier is still cheap to remove.** Slack bought Slack.com early for a reported $60,000, so the "HQ" never became load-bearing. The longer a workaround lives, the more expensive — and confusing — it can become to undo.
 4. **Accept that some modifiers survive forever.** Slack got Slack.com but never got @Slack. Different platforms have different occupants. Owning the canonical .com is the high-leverage win; matching it on every social channel is a nice-to-have you may never fully get.
 
 The domain upgrade didn't make Slack win. Product, timing, distribution, and an almost magical preview launch mattered far more. But Slack.com made the win easier to *type* — and cheaper than almost anyone would guess.
@@ -145,9 +145,9 @@ The domain upgrade didn't make Slack win. Product, timing, distribution, and an 
 
 Slack's story is, underneath the jokes about cat photos, a transfer problem.
 
-The strategic call was never in doubt — of course a product named Slack should live at Slack.com. The work was everything around the asset: finding the individual who held it, agreeing on a price with no public comparables, moving the money, transferring control cleanly, and pointing the world from the old address to the new one without breaking the live product. Even at $60,000 and even with a friendly seller, the *mechanics* of the deal — proving who owns what and moving it safely — are where domain upgrades get stuck.
+The strategic logic is easy to see in hindsight — a product named Slack benefits from living at Slack.com. The public sources identify the domain's former use and a reported price, but they do not document Slack's negotiation, payment, or transfer process. More generally, domain upgrades still require the buyer and seller to verify control, agree on terms, transfer the asset safely, and redirect the old address without disrupting a live product.
 
-[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, transfer, and integrate into modern workflows while staying compatible with DNS — turning the slow, trust-heavy part of a deal like this (confirming ownership, agreeing terms, moving the asset) into something closer to a clean, auditable transaction.
+[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, transfer, and integrate into modern workflows while staying compatible with DNS — making common acquisition steps such as confirming ownership, agreeing terms, and moving the asset easier to audit.
 
 Slack.com looks obvious now because Slack became enormous. But the lesson lands at the very beginning of the story: when a name is going to carry the business, the domain isn't decoration. It's the difference between launching as a workaround and launching as the real thing — and sometimes it costs less than a single engineer's salary to fix.
 
