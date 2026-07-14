@@ -61,7 +61,7 @@ relatedGlossary:
 
 흔한 걱정: "국가 코드 도메인이면 카리브해나 인도양에서만 랭킹이 잡히지 않을까요?" 이 두 확장자에 대한 답은 '아니요'입니다.
 
-Google은 전 세계적으로 사용되는 ccTLD를 **일반(gccTLD)** 으로 처리하는 목록을 유지하고 있습니다. `.ai`와 `.io` 모두 이 목록에 포함되어 있으므로, Google은 기본적으로 이들을 지리적으로 타겟팅하지 **않습니다**. 사이트는 전 세계적으로 랭킹될 수 있으며, 특정 시장에 집중하고 싶다면 Search Console에서 직접 지리적 타겟팅을 설정할 수 있습니다. Google이 이를 처리하는 방식은 [다중 지역 사이트 관리에 관한 Google 문서](https://developers.google.com/search/docs/crawling-indexing/manage-multiregional-site#geotargeting)에서 확인할 수 있습니다.
+Google은 전 세계적으로 사용되는 ccTLD를 **일반(gccTLD)** 으로 처리하는 목록을 유지하고 있습니다. `.ai`와 `.io` 모두 이 목록에 포함되어 있으므로, Google은 기본적으로 이들을 지리적으로 타겟팅하지 **않습니다**. Google은 [2022년에 Search Console의 International Targeting 보고서를 폐기했습니다](https://developers.google.com/search/blog/2022/12/thanks-2022). 따라서 Search Console에서 구성할 수 있는 국가 타겟팅 설정은 더 이상 없습니다. 특정 시장에 집중하려면 Google의 현재 지침에 따라 언어 또는 지역별 URL을 사용하고 `hreflang` 주석이나 사이트맵으로 지역 또는 언어 변형을 표시해야 합니다. 화면에 표시되는 현지화된 콘텐츠와 현지 주소, 통화, 현지 사이트에서 들어오는 링크 같은 신호도 Google이 대상 사용자층을 파악하는 데 도움이 될 수 있습니다. 자세한 내용은 [다중 지역 사이트 관리에 관한 Google 문서](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#geotargeting)에서 확인할 수 있습니다.
 
 **SEO 판정:** 무승부입니다. 어느 확장자도 검색 도달 범위를 해치지 않으며, Google 기준으로 한쪽이 다른 쪽보다 랭킹 면에서 의미 있는 우위를 갖지 않습니다.
 

@@ -59,7 +59,7 @@ relatedGlossary:
 
 一个常见的顾虑是："如果是国家代码域名，我的网站会不会只能在加勒比海或印度洋地区排名？"对于这两个后缀，答案是否定的。
 
-谷歌维护着一份将某些 ccTLD 视为**通用域名**（gccTLD）的列表，因为这些域名被全球范围内广泛使用，而非仅限于某一国家。`.ai` 和 `.io` 都在这份列表上，因此谷歌**默认不会**对它们进行地理定向。您的网站可以在全球范围内排名，也可以在 Search Console 中自行设置地理定向以聚焦特定市场。您可以在 [谷歌关于管理多区域网站的文档](https://developers.google.com/search/docs/crawling-indexing/manage-multiregional-site#geotargeting) 中确认相关处理方式。
+谷歌维护着一份将某些 ccTLD 视为**通用域名**（gccTLD）的列表，因为这些域名被全球范围内广泛使用，而非仅限于某一国家。`.ai` 和 `.io` 都在这份列表上，因此谷歌**默认不会**对它们进行地理定向。谷歌已于 2022 年[移除 Search Console 的“国际定位”报告](https://developers.google.com/search/blog/2022/12/thanks-2022)，因此现在已无法在 Search Console 中配置国家或地区定位。若希望面向特定市场，谷歌目前建议为不同语言或区域使用专属 URL，并通过 `hreflang` 标记或站点地图说明页面适用的区域或语言。页面中可见的本地化内容，以及本地地址、货币和来自本地网站的链接等信号，也能帮助谷歌识别目标受众。请参阅[谷歌关于管理多区域网站的文档](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#geotargeting)。
 
 **SEO 结论：** 两者打平。无论选哪个，都不会影响您的搜索覆盖范围，在谷歌眼中也不存在明显的排名优势差异。
 
