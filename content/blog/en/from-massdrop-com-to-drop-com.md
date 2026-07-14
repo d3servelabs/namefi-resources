@@ -73,13 +73,13 @@ What Massdrop actually paid is not public. The domain went dark behind privacy p
 
 ## The money looked different then
 
-It is tempting to look at a six-figure (or more) domain purchase and call it an easy decision. Drop went on to ship its own keyboards and headphones, expand internationally, and eventually get [acquired by Corsair in July 2023](https://en.wikipedia.org/wiki/Drop_(company)#:~:text=Corsair%20announced%20it%20had%20acquired%20Drop). Against an exit to a public hardware company, an $800,000-ish domain looks small.
+It is tempting to look at a one-word `.com` acquisition in hindsight and call it an easy decision. Drop went on to ship its own keyboards and headphones, expand internationally, and eventually get [acquired by Corsair in July 2023](https://en.wikipedia.org/wiki/Drop_(company)#:~:text=Corsair%20announced%20it%20had%20acquired%20Drop). But the actual Drop.com purchase price was never disclosed, so the earlier $800,000 asking price cannot be treated as the amount Massdrop paid.
 
 But it should be judged at the moment it was spent, not from the far end of the story.
 
-In 2017 and 2018, Drop was still Massdrop — a venture-backed community-commerce company that lived and died on margins, logistics, and inventory bets on its own first products. A near-million-dollar line item for a *domain name* — not engineering, not inventory, not a keyboard mold — is the kind of spend a CFO questions hard. It only makes sense if you treat the domain as infrastructure for a rename you've already decided is coming.
+In 2017 and 2018, Drop was still Massdrop — a venture-backed community-commerce company that lived and died on margins, logistics, and inventory bets on its own first products. Without a disclosed sale price, we cannot know how large the domain line item was. We can say that negotiating for a one-word `.com` publicly offered at $800,000 required the company to weigh the address against engineering, inventory, and product tooling — and to treat the domain as infrastructure for a rename it had decided was coming.
 
-That is what makes the sequence telling. Drop didn't buy Drop.com because it had spare cash lying around. It bought Drop.com because it had concluded the company needed to stop being "Mass" anything — and the only way to make that real was to own the shorter name first.
+That is what makes the sequence telling. The company secured Drop.com before announcing that it needed to stop being "Mass" anything — and the only way to make that shorter identity real was to own the shorter name first.
 
 ## Why shortening to "Drop" mattered
 
