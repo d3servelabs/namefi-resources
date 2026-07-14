@@ -48,7 +48,7 @@ Bitcoin은 전반에 SHA-256을 사용합니다. 각 새 블록 헤더에 이전
 
 반면 Ethereum은 범용 해시로 Keccak-256을 표준화해 사용합니다. 이는 이후의 NIST SHA-3 표준과는 다른, 최초 Keccak 제출안입니다. 모든 계정 주소는 계정 [공개 키](/ko/glossary/public-key/)의 Keccak-256 해시에서 마지막 20바이트를 가져와 파생합니다([ethereum.org](https://ethereum.org/en/developers/docs/accounts/#:~:text=You%20get%20a%20public%20address%20for%20your%20account%20by%20taking%20the%20last%2020%20bytes%20of%20the%20Keccak-256%20hash%20of%20the%20public%20key)). 같은 함수는 Ethereum 상태를 저장하는 [Merkle Patricia Trie](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/#:~:text=key%20%3D%3D%20keccak256%28rlp%28value%29%29) 전반에서 키/값 콘텐츠 주소 지정의 기반으로도 사용됩니다.
 
-해싱은 블록 헤더를 느슨한 기록 모음이 아니라 실제 체인으로 만드는 요소이기도 합니다. 각 헤더의 해시는 이전 헤더의 해시에 의존하므로 기록을 다시 쓰려면 바꾸려는 지점 이후의 모든 블록을 다시 처리하는 동시에 정직한 네트워크가 계속 수행하는 작업보다 앞서야 합니다. 이 “연결” 속성이 데이터 구조를 말 그대로 **블록체인**이라 부르는 이유입니다.
+해싱은 블록 헤더를 느슨한 기록 모음이 아니라 하나의 체인으로 연결하는 역할도 합니다. 헤더를 변경하면 그 해시가 바뀌고 이후 헤더의 참조가 깨집니다. 이후의 작업을 다시 수행하고 정직한 네트워크의 누적 작업을 따라잡아야 한다는 추가 조건은 Bitcoin의 작업 증명 합의에만 해당합니다. 과거 블록을 변경한 공격자는 해당 블록의 작업 증명과 그 이후의 모든 작업을 다시 수행한 뒤 정직한 체인을 따라잡아야 합니다([Bitcoin 백서, §4](https://bitcoin.org/bitcoin.pdf)). 다른 블록체인은 서로 다른 합의 규칙으로 기록의 유효성을 확인하고 확정하므로 해시 연결만으로는 이러한 작업 증명 비용이 생기지 않습니다. 서로 연결된 헤더 해시가 이 데이터 구조를 말 그대로 **블록체인**이라 부르는 이유입니다.
 
 ---
 
@@ -80,7 +80,7 @@ Ethereum은 Merkle 트리와 접두사(radix) 트라이를 결합한 Merkle Patr
 
 타원곡선 암호학(ECC)은 ECDSA, EdDSA, BLS의 수학적 기반입니다. 고전적인 RSA처럼 큰 수의 인수분해 난이도에 의존하는 대신 ECC는 타원곡선 이산 로그 문제의 난이도에 의존합니다. 기준점을 여러 번 더해 도달한 곡선 위의 점이 주어졌을 때, 정방향으로 그 점을 계산하는 일은 쉽지만 기준점을 몇 번 더했는지 역으로 알아내는 일은 계산상 불가능합니다. 이 비대칭성, 즉 한 방향은 쉽고 역방향은 어렵다는 특성 덕분에 파생된 공개 키를 안전하게 공개하면서 개인 키로 안전하게 서명할 수 있습니다.
 
-구체적인 곡선 선택이 중요합니다. Bitcoin과 Ethereum은 모두 Standards for Efficient Cryptography Group이 표준화한 Koblitz 곡선 secp256k1을 사용하며, 이 곡선의 256비트 매개변수는 충분히 연구되어 있습니다([SEC 2: 권장 타원곡선 도메인 매개변수](https://www.secg.org/sec2-v2.pdf)). 다른 생태계는 서로 다른 트레이드오프를 위해 다른 곡선을 사용합니다. Solana와 Stellar에서 EdDSA의 기반이 되는 Ed25519는 구현 안전성과 속도를 우선하고, BLS12-381은 집계에 필요한 페어링 연산을 지원하기 때문에 선택됩니다. 모두 키 비트당 대체로 같은 수준의 실질적 보안을 제공하면서 동급 RSA보다 훨씬 짧은 키와 서명을 만듭니다. 그래서 블록체인 계정에서는 RSA가 아니라 ECC가 기본값이 되었습니다.
+구체적인 곡선과 서명 방식이 중요합니다. Bitcoin과 Ethereum은 모두 Standards for Efficient Cryptography Group이 표준화한 Koblitz 곡선 secp256k1을 사용하며, 이 곡선의 256비트 매개변수는 충분히 연구되어 있습니다([SEC 2: 권장 타원곡선 도메인 매개변수](https://www.secg.org/sec2-v2.pdf)). 다른 생태계는 서로 다른 트레이드오프를 선택합니다. Ed25519는 Edwards25519 곡선 위에 구현된 구체적인 EdDSA 서명 방식입니다([RFC 8032, §5.1](https://www.rfc-editor.org/rfc/rfc8032.html#section-5.1)). RFC 8032는 이를 약 128비트의 고전적 보안 수준으로 평가합니다([§8.5](https://www.rfc-editor.org/rfc/rfc8032.html#section-8.5)). BLS12-381은 페어링에 적합한 곡선으로 BLS 서명 집계 같은 연산을 위해 선택되며, EIP-2537은 120비트가 넘는 보안 수준을 설명합니다([EIP-2537](https://eips.ethereum.org/EIPS/eip-2537#motivation)). 이러한 추정치는 각 방식의 “키 비트당 보안”이 같다는 뜻이 아닙니다. 각 시스템은 서로 다른 군, 인코딩, 가정을 사용하며 명목상 키 길이 자체가 보안 강도를 뜻하지도 않습니다. 예를 들어 NIST는 128비트 고전적 보안에 일반 ECC 키 256~383비트를 대응시키지만 RSA 키는 3072비트를 대응시킵니다([NIST SP 800-57 Part 1 Rev. 5, 표 2](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf#page=67)). 이는 타원곡선 시스템이 블록체인 계정의 기본값이 된 이유를 설명하는 데 도움이 됩니다.
 
 ---
 
@@ -88,7 +88,7 @@ Ethereum은 Merkle 트리와 접두사(radix) 트라이를 결합한 Merkle Patr
 
 커밋먼트 스킴을 사용하면 값을 “잠글” 수 있습니다. 특정 데이터에 구속되도록 하는 결과물을 게시하되 데이터 자체는 공개하지 않고, 나중에 커밋먼트를 “열어” 그 값이 무엇이었는지 증명할 수 있습니다. 일상적인 비유로는 봉인된 봉투가 있습니다. 오늘 누군가에게 봉인된 봉투를 건네 이미 답을 정했다는 사실을 증명하면서도 나중에 직접 열기 전까지 답을 보여 주지 않을 수 있습니다. 한 번 봉인하면 안의 답을 바꿀 수 없습니다.
 
-작은 기본 요소처럼 들리지만 대부분의 영지식 증명 시스템을 지탱하는 핵심 요소입니다. 예를 들어 Ethereum의 blob 기반 데이터 가용성 설계는 다항식 커밋먼트 스킴인 KZG 커밋먼트를 사용합니다. 대규모 rollup 데이터 blob을 하나의 작은 암호학적 커밋먼트로 줄여, 증명자와 검증자가 전체 blob을 처리하지 않고도 확인할 수 있게 합니다([ethereum.org, Danksharding](https://ethereum.org/en/roadmap/danksharding/#:~:text=KZG%20stands%20for%20Kate-Zaverucha-Goldberg)). 실제로 Merkle 루트 자체도 단순한 커밋먼트 스킴입니다. 루트 해시를 통해 전체 데이터셋에 커밋하고, Merkle 브랜치는 그중 한 부분을 공개하는 “열기”입니다. ZK-rollup은 더 고급인 다항식 및 벡터 커밋먼트 스킴을 바탕으로 거래 실행 배치 전체를 온체인에서 저렴하게 검증할 수 있는 증명으로 압축합니다. 자세한 내용은 [완전 영지식과 계산적 영지식](/ko/blog/perfect-vs-computational-zero-knowledge/)에서 다룹니다.
+작은 기본 요소처럼 들리지만 대부분의 영지식 증명 시스템을 지탱하는 핵심 요소입니다. 예를 들어 Ethereum의 blob 기반 데이터 가용성 설계는 KZG 다항식 커밋먼트를 사용해 각 blob을 작은 암호학적 커밋먼트로 줄입니다. KZG 증명은 해당 커밋먼트를 기준으로 평가값이나 샘플링된 셀이 일치하는지 인증할 수 있지만, 그 자체로 전체 blob을 사용할 수 있다는 사실을 증명하지는 않습니다. 가용성은 합의 계층의 배포 및 샘플링 규칙에서 나오며, KZG는 수신한 데이터의 무결성을 검사합니다([EIP-4844](https://eips.ethereum.org/EIPS/eip-4844#consensus-layer-validation); [EIP-7594, PeerDAS](https://eips.ethereum.org/EIPS/eip-7594#networking)). 이러한 분리 덕분에 검증자는 간결한 평가 증명을 blob 데이터 전체가 게시되었다는 증명으로 오인하지 않고도 blob의 작은 일부를 확인할 수 있습니다. 실제로 Merkle 루트 자체도 단순한 커밋먼트 스킴입니다. 루트 해시를 통해 전체 데이터셋에 커밋하고, Merkle 브랜치는 그중 한 부분을 공개하는 “열기”입니다. ZK-rollup은 더 고급인 다항식 및 벡터 커밋먼트 스킴을 바탕으로 거래 실행 배치 전체를 온체인에서 저렴하게 검증할 수 있는 증명으로 압축합니다. 자세한 내용은 [완전 영지식과 계산적 영지식](/ko/blog/perfect-vs-computational-zero-knowledge/)에서 다룹니다.
 
 ---
 
@@ -107,7 +107,7 @@ Ethereum은 Merkle 트리와 접두사(radix) 트라이를 결합한 Merkle Patr
 
 ## 토큰화 도메인과의 관계
 
-도메인을 [토큰화](/ko/glossary/tokenize/)할 때 이 모든 기본 요소가 직접 사용됩니다. 소유권을 나타내는 [NFT](/ko/glossary/nft/)는 다른 블록체인 자산을 보호하는 것과 같은 ECDSA 서명으로 보호됩니다. 개인 키를 통제하는 사람이 도메인 토큰을 통제합니다. 이것이 전부이므로 토큰화된 `.com`에서도 다른 온체인 자산과 마찬가지로 [하드웨어 지갑](/ko/glossary/hardware-wallet/)과 신중한 [시드 구문](/ko/glossary/seed-phrase/) 보관이 중요합니다. 도메인 소유권 기록은 체인의 다른 모든 계정 잔액과 [스마트 컨트랙트](/ko/glossary/smart-contract/)를 보호하는 것과 같은 Merkle 커밋 상태에 존재합니다. 따라서 토큰화 도메인은 다른 온체인 자산과 같은 변조 탐지성을 갖습니다. 등록대행자의 데이터베이스를 유일한 진실의 원천으로 삼지 않아도 이전할 수 있고, 검증할 수 있으며, 소유권을 증명할 수 있습니다.
+도메인을 [토큰화](/ko/glossary/tokenize/)할 때 이 모든 기본 요소가 직접 사용됩니다. 소유권을 나타내는 [NFT](/ko/glossary/nft/)는 체인의 계정 및 토큰 권한 규칙으로 보호됩니다. 외부 소유 계정(EOA)이 NFT를 보유한 경우 해당 계정의 개인 키가 계정 작업을 승인합니다. 컨트랙트 계정에는 개인 키가 없으며 코드가 계정을 제어합니다([ethereum.org, *Ethereum 계정*](https://ethereum.org/en/developers/docs/accounts/#account-types)). ERC-721 토큰은 승인된 주소나 운영자도 이전을 시작할 수 있습니다([ERC-721](https://eips.ethereum.org/EIPS/eip-721#specification)). 따라서 직접 관리하는 EOA가 소유권을 보유할 때는 [하드웨어 지갑](/ko/glossary/hardware-wallet/)과 신중한 [시드 구문](/ko/glossary/seed-phrase/) 보관이 중요하지만, 스마트 컨트랙트 지갑과 수탁형 지갑에는 서로 다른 권한 및 신뢰 경계가 적용됩니다. 도메인 소유권 기록은 체인의 다른 모든 계정 잔액과 [스마트 컨트랙트](/ko/glossary/smart-contract/)를 보호하는 것과 같은 Merkle 커밋 상태에 존재합니다. 이로써 토큰화 도메인은 다른 온체인 자산과 같은 변조 탐지성을 갖습니다. 등록대행자의 데이터베이스를 유일한 진실의 원천으로 삼지 않아도 이전할 수 있고, 검증할 수 있으며, 소유권을 증명할 수 있습니다.
 
 이러한 기본 요소를 이해하면 토큰화가 바꾸는 것과 바꾸지 않는 것도 명확해집니다. 도메인의 DNS 레코드와 레지스트리 상태는 여전히 ICANN 규칙을 따르지만, 소유권 증명은 이제 로그인으로 보호되는 [등록대행자](/ko/glossary/registrar/) 계정 대신 위에서 설명한 암호학을 기반으로 작동합니다. 더 넓은 맥락은 [블록체인 합의 메커니즘](/ko/blog/blockchain-consensus-mechanisms/)과 [블록체인 확장 접근법](/ko/blog/blockchain-scaling-approaches/)에서 살펴볼 수 있으며, [namefi.io](https://namefi.io)에서 토큰화를 시작할 수 있습니다.
 
@@ -116,13 +116,19 @@ Ethereum은 Merkle 트리와 접두사(radix) 트라이를 결합한 Merkle Patr
 ## 출처 및 추가 자료
 
 - Bitcoin 개발자 가이드 — [블록체인](https://developer.bitcoin.org/devguide/block_chain.html), 이전 헤더의 SHA256(SHA256())을 통한 연결
+- Bitcoin — [Bitcoin: A Peer-to-Peer Electronic Cash System](https://bitcoin.org/bitcoin.pdf), 작업 증명 기록 재작성과 누적 작업량
 - Bitcoin 개발자 참고 자료 — [블록체인](https://developer.bitcoin.org/reference/block_chain.html), Merkle 루트 구성
 - Bitcoin 개발자 가이드 — [운영 모드](https://developer.bitcoin.org/devguide/operating_modes.html), SPV와 Merkle 브랜치
-- ethereum.org — [Ethereum 계정](https://ethereum.org/en/developers/docs/accounts/), ECDSA 및 Keccak-256 주소 파생
+- ethereum.org — [Ethereum 계정](https://ethereum.org/en/developers/docs/accounts/), ECDSA 및 Keccak-256 주소 파생, EOA와 컨트랙트 계정 제어
 - ethereum.org — [Merkle Patricia Trie](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/), 상태/거래/영수증 루트
 - ethereum.org — [Danksharding](https://ethereum.org/en/roadmap/danksharding/), KZG 다항식 커밋먼트
+- EIP-4844 — [Shard Blob Transactions](https://eips.ethereum.org/EIPS/eip-4844), blob 커밋먼트, 증명, 합의 계층 가용성
+- EIP-7594 — [PeerDAS](https://eips.ethereum.org/EIPS/eip-7594), 셀 증명과 데이터 가용성 샘플링
+- ERC-721 — [Non-Fungible Token Standard](https://eips.ethereum.org/EIPS/eip-721), 토큰 소유권, 승인, 운영자
 - EIP-2 — [Homestead 하드포크 변경 사항](https://eips.ethereum.org/EIPS/eip-2), secp256k1 서명 제약
 - EIP-2537 — [BLS12-381 곡선 연산용 프리컴파일](https://eips.ethereum.org/EIPS/eip-2537)
+- RFC 8032 — [Edwards-Curve Digital Signature Algorithm (EdDSA)](https://www.rfc-editor.org/rfc/rfc8032.html), Ed25519의 서명 방식, 곡선, 보안 수준
 - SEC 2: 권장 타원곡선 도메인 매개변수 — [secg.org](https://www.secg.org/sec2-v2.pdf)
+- NIST SP 800-57 Part 1 Rev. 5 — [Recommendation for Key Management](https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final), ECC와 RSA의 비교 가능한 보안 강도
 - *The Eth2 Book* — [서명 및 BLS 집계](https://eth2book.info/capella/part2/building_blocks/signatures/)
 - NIST — [NIST, 최종 확정된 양자 내성 암호화 표준 3종 최초 공개](https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards)
