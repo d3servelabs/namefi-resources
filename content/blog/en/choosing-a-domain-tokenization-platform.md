@@ -1,5 +1,5 @@
 ---
-title: "Namefi vs Doma Protocol vs D3 Global Inc vs 3DNS: Choosing a Domain Tokenization Platform"
+title: "Namefi vs Doma/D3 vs 3DNS vs GBM: Choosing a Domain Tokenization Platform"
 date: '2026-05-22'
 language: en
 tags: ['comparison']
@@ -29,7 +29,7 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-If you're shopping for a domain tokenization platform in 2026, you're probably looking at a handful of names: [Namefi](https://namefi.io), [Doma Protocol](https://doma.xyz), D3 Global Inc (also written as [D3.inc](https://d3.inc) or D3 Inc), 3DNS, [Domora](https://domora.com), [WebUnited](https://webunited.com), and [GBM](https://gbm.auction). They all have "tokenized domains" on the homepage. They don't all do the same thing.
+If you're shopping for a domain tokenization platform in 2026, you're probably looking at a handful of names: [Namefi](https://namefi.io), [Doma Protocol](https://doma.xyz) and the company building it, [D3](https://d3.inc), 3DNS, [Domora](https://domora.com), [WebUnited](https://webunited.com), and [GBM Domains](https://testdomains.gbm.auction/). They all work with tokenized domains, but they do not all expose the same layer or custody model.
 
 This post is our honest attempt to lay out who's good at what. We obviously work on Namefi, so take the framing with the appropriate salt — but we'll try to be specific enough that you can verify each claim yourself.
 
@@ -39,9 +39,9 @@ This post is our honest attempt to lay out who's good at what. We obviously work
 
 Roughly, the platforms fall into three camps:
 
-1. **Owner-facing tokenization services.** You bring a real ICANN domain (or register one) and the platform tokenizes it. Examples: **Namefi, 3DNS**.
-2. **Protocol layers and [registry](/en/glossary/registry/)-facing infrastructure.** The platform builds standards, smart contracts, or registry partnerships that other platforms (and registrars) build on top of. Examples: **Doma Protocol, D3 Global Inc**.
-3. **Specialized sale and [liquidity](/en/glossary/domain-liquidity/) tooling.** Auctions, fractionalization, lending — built on top of tokenized domains rather than producing them. Examples: **GBM** (auctions), **Doma Prime** (liquidity), **Domora** (fractionalization-focused).
+1. **Owner-facing tokenization services.** You bring a real ICANN domain (or register one) and the platform tokenizes it. Examples: **Namefi, 3DNS, and GBM Domains**.
+2. **Protocol layers and [registry](/en/glossary/registry/)-facing infrastructure.** The platform builds standards, smart contracts, or registrar/registry integrations that other products use. The main example here is **Doma Protocol, built by D3**; D3 and Doma are not separate competing platform choices.
+3. **Specialized sale and [liquidity](/en/glossary/domain-liquidity/) tooling.** Auctions, fractionalization, lending, and liquidity can sit on top of—or be bundled into—a tokenization flow. Examples include **GBM's** auctions, **Doma Prime**, and **Domora**.
 
 These categories overlap. Some platforms span more than one. But "what camp does this platform sit in?" is the first question to ask.
 
@@ -57,21 +57,13 @@ These categories overlap. Some platforms span more than one. But "what camp does
 
 **Less suited for:** people who want a brand-new TLD they don't already own, or people who only want a [Web3](/en/glossary/web3/)-native name like `name.eth`.
 
-### Doma Protocol
+### Doma Protocol / D3
 
-**Best for:** developers and protocol-level work. Doma Protocol is a protocol layer — it provides shared standards and primitives for tokenized DNS domains, including liquidity primitives (Doma Prime) and a launchpad for new tokenized names (Mizu).
+**Best for:** developers, registrars, and protocol-level work. Doma Protocol is D3's DNS-compliant blockchain and integration layer for tokenizing domains, synchronizing registrar state, and enabling trading and DomainFi applications across supported chains ([Doma protocol overview](https://docs.doma.xyz/readme/protocol-overview)).
 
-**Notable:** very developer-focused; partnerships with multiple registrars; growing ecosystem of apps building on the protocol.
+**Notable:** Doma combines registrar-facing infrastructure with owner- and trader-facing apps. D3 is the company building and scaling this ecosystem through Doma Protocol, so treating "Doma Protocol" and "D3 Global Inc" as independent alternatives double-counts one stack ([Doma](https://www.doma.xyz/), [D3](https://d3.inc)).
 
-**Less suited for:** owners who just want to tokenize a domain they already have and aren't shopping for a protocol stack. You'll typically interact with Doma Protocol indirectly, through a platform built on it.
-
-### D3 Global Inc
-
-**Best for:** registry-layer partnerships and brand-new TLDs designed for Web3 use cases.
-
-**Notable:** D3 Global Inc has positioned itself around new TLDs and registry agreements, with an emphasis on interoperability between Web2 DNS and Web3 naming.
-
-**Less suited for:** if your goal is "tokenize the `.com` I already own," D3 Global Inc isn't the most direct path — they're more focused on the registry/TLD layer than the individual owner workflow.
+**Less suited for:** owners who want a platform-agnostic NFT without registrar integration or who do not want to depend on Doma's supported registrar and chain paths. The exact owner workflow depends on the registrar or Doma app used to enter the protocol.
 
 ### 3DNS
 
@@ -97,13 +89,13 @@ These categories overlap. Some platforms span more than one. But "what camp does
 
 **Less suited for:** if you want a full marketplace, lending stack, or broad NFT-marketplace compatibility.
 
-### GBM (GBM Auctions)
+### GBM Domains
 
-**Best for:** selling tokenized domains via "bid to earn" [auction](/en/glossary/auction/) mechanics.
+**Best for:** owners who want to register, transfer, manage, tokenize, privately sell, or auction a domain in one Base-based workflow.
 
-**Notable:** auction infrastructure, not a tokenization platform itself. Often used in combination with one of the above to handle the sale step.
+**Notable:** GBM Domains is a tokenization platform as well as an auction marketplace. It says it holds the DNS domain at an ICANN-accredited registrar on the owner's behalf and issues a token on Base that can control, sell, or redeem the domain. Its published one-time tokenization fee is USD 1, excluding registrar registration and extension fees ([GBM Domains](https://testdomains.gbm.auction/)).
 
-**Less suited for:** anything other than the sale step.
+**Less suited for:** owners who do not want a wallet- and Base-centered control path, or whose TLD is outside GBM's current support. Verify the custody, redemption, renewal, and supported-TLD terms before moving a portfolio.
 
 ---
 
@@ -131,12 +123,12 @@ If a platform's documentation doesn't make any of these clear, that itself is a 
 | If you want… | Look at |
 |---|---|
 | Tokenize a real `.com`/`.xyz`/`.io` you already own, broad marketplace and lending support, DNS done right | **Namefi** |
-| Build *on top of* a tokenized-domain protocol as a developer | Doma Protocol |
-| New TLDs and registry-level partnerships | D3 Global Inc |
-| Streamlined tokenization UX, opinionated flow | 3DNS, Namefi |
+| Build *on top of* a tokenized-domain protocol as a developer | Doma Protocol / D3 |
+| Registrar and registry integrations, plus new DomainFi applications | Doma Protocol / D3 |
+| Streamlined owner-facing tokenization UX | 3DNS, Namefi, GBM Domains |
 | Fractional / co-ownership of premium names | Domora |
 | Web2↔Web3 DNS bridging | WebUnited |
-| Auction-style sales infrastructure | GBM |
+| Tokenization plus private sales and bid-to-earn auctions | GBM Domains |
 | Pure on-chain identity (e.g., `name.eth`) — *different category* | [ENS](/en/glossary/ens/), [Unstoppable Domains](https://unstoppabledomains.com), [Freename](https://freename.io) |
 
 The last row is important: **on-chain identity names like `.eth` are a sibling category, not a tokenized ICANN domain.** They're useful for different things. See [Tokenized Domain vs Web3 Domain](/en/blog/tokenized-domain-vs-web3-domain/) for that breakdown.
@@ -161,18 +153,23 @@ We obviously think Namefi is the right answer for a lot of owners. But the best 
 
 > We're not lawyers, accountants, financial advisors, or doctors — and **nothing in this article is legal, financial, tax, accounting, medical, or any other flavor of professional advice.** We write these posts to educate ourselves and as a convenience for our customers. Info here may be out of date, geography-specific, or just plain wrong — we make mistakes too.
 >
-> For any important decision, **please consult a real professional (seriously!)**. Or if that's not your vibe, ask a friend, ask Twitter, ask Reddit, ask an AI, or ask a psychic. In short: **DOYR — Do Your Own Research**. Let's learn and have fun.
+> For any important decision, **please consult a real professional (seriously!)**. Or if that's not your vibe, ask a friend, ask Twitter, ask Reddit, ask an AI, or ask a psychic. In short: **DYOR — Do Your Own Research**. Let's learn and have fun.
 
 ---
 
 ## Summary
 
 - Domain tokenization platforms fall into three buckets: owner-facing services, protocol layers, and specialized sale/liquidity tools.
-- **Namefi** and **3DNS** are the most direct paths for owners who want to tokenize a domain they already have.
-- **Doma Protocol** is a protocol layer; you usually interact with it indirectly.
-- **D3 Global Inc** is registry-focused, oriented around new TLDs.
-- **Domora**, **WebUnited**, and **GBM** specialize in fractionalization, DNS bridging, and auctions respectively.
+- **Namefi**, **3DNS**, and **GBM Domains** expose owner-facing tokenization flows; GBM also bundles private sales and auctions.
+- **Doma Protocol** is the protocol and app ecosystem built by **D3**, not a separate competitor from D3.
+- **Domora** and **WebUnited** specialize in fractionalization and DNS bridging, while GBM spans tokenization and auctions.
 - The right pick depends on your TLDs, your custody preference, marketplace compatibility, and what you plan to *do* with the tokenized domain.
 - Try more than one before committing your portfolio.
 
 To learn more about Namefi specifically, visit [namefi.io](https://namefi.io). To understand the broader category, read [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains/).
+
+## Sources and further reading
+
+- Doma — [Protocol overview](https://docs.doma.xyz/readme/protocol-overview) and [Doma ecosystem](https://www.doma.xyz/)
+- D3 — [DomainFi infrastructure built on Doma](https://d3.inc)
+- GBM Domains — [owner workflow, custody model, Base token, sales, redemption, and fees](https://testdomains.gbm.auction/)
