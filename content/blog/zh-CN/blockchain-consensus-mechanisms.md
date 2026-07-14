@@ -96,9 +96,9 @@ relatedSeries:
 
 还有几种机制补全了这一图景；它们各自解决更狭窄的问题，而不是取代抗女巫攻击这一核心问题。
 
-**历史证明（Proof of History，PoH）**由 Solana 与 PoS 一同使用，它不是独立的共识机制，而是一种密码学时钟。它通过反复哈希“先前生成状态的数据”，将可验证的时间戳直接插入链中，创建出一个序列来证明事件之间经过了多少时间，而验证者无需就时间进行通信（[Solana：历史证明](https://solana.com/news/proof-of-history#:~:text=inserting%20data%20into%20the%20sequence%20by%20appending%20the%20hash%20of%20the%20data%20of%20the%20previously%20generated%20states)）。通过让时间本身变得可验证，它使验证者能够并行处理和验证交易，从而减少通常会拖慢共识的通信开销。
+**历史证明（Proof of History，PoH）**由 Solana 与 PoS 一同使用，它不是独立的共识机制，而是一种密码学时钟。它通过反复哈希“先前生成状态的数据”，将可验证的时间戳直接插入链中，创建出一个序列来证明事件之间经过了多少时间，而验证者无需就时间进行通信（[Solana：历史证明](https://solana.com/news/proof-of-history#:~:text=inserting%20data%20into%20the%20sequence%20by%20appending%20the%20hash%20of%20the%20data%20of%20the%20previously%20generated%20states)）。这个时钟为验证者提供了用于共识的可验证排序，但并不负责并行执行交易。并行执行来自 **Sealevel**：Solana 交易会声明其将读取或写入的每个账户，因此运行时可以并发执行互不重叠的交易，以及仅从同一状态读取数据的交易（[Solana：Sealevel](https://solana.com/news/sealevel---parallel-processing-thousands-of-smart-contracts#:~:text=The%20reason%20why%20Solana%20is%20able%20to%20process%20transactions%20in%20parallel,transactions%20that%20are%20only%20reading%20the%20same%20state%20to%20execute%20concurrently%20as%20well)）。
 
-**权威证明（Proof of Authority，PoA）**完全放弃了经济和计算成本，转而依赖声誉。一组固定、已知且身份明确的验证者——“知名企业”或经审查的个人——被信任来生产区块；对不当行为的约束来自声誉和法律责任，而不是被削减的质押或浪费的计算（[ethereum.org：权威证明](https://ethereum.org/en/developers/docs/consensus-mechanisms/poa/#:~:text=The%20reputation%20in%20this%20context%20is%20not%20a%20quantified%20thing)）。它以去中心化换取速度和低成本，因此主要用于私有链、测试网和本地开发网络，而不是公开、对抗性的网络。
+**权威证明（Proof of Authority，PoA）**用一组获准的签名者取代开放挖矿或基于质押的验证。与 PoW 相比，这显著降低了生产区块的资源成本；ethereum.org 指出，PoA 无需像 PoW 那样进行高资源消耗的挖矿（[ethereum.org：权威证明](https://ethereum.org/en/developers/docs/consensus-mechanisms/poa/#:~:text=as%20it%20overcomes%20the%20need%20for%20high%20quality%20resources%20as%20PoW%20does)）。但它并不会消除网络运行或安全成本。安全与治理负担转移到了可信验证者的身份、声誉以及签名者准入规则上：PoA 要求信任一组身份已知的签名者，这些签名者通常经过 KYC 验证，或隶属于身份明确的组织（[ethereum.org：可信签名者](https://ethereum.org/en/developers/docs/consensus-mechanisms/poa/#:~:text=Proof%2Dof%2Dauthority%20requires%20trusting%20a%20set%20of%20authorized%20signers,if%20a%20validator%20does%20anything%20wrong%2C%20their%20identity%20is%20known)）；ethereum.org 所述的实现还允许签名者投票添加或移除其他签名者（[ethereum.org：签名者准入](https://ethereum.org/en/developers/docs/consensus-mechanisms/poa/#:~:text=Each%20signer%20votes%20for%20the%20addition%20or%20removal%20of%20a%20signer%20in%20their%20block%20when%20they%20create%20a%20new%20block)）。它以去中心化换取速度和较低的运营成本，因此主要用于私有链、测试网和本地开发网络，而不是公开、对抗性的网络。
 
 **空间证明**（及其近亲时空证明）以分配的磁盘存储空间取代计算能力或质押：参与者证明自己已预留未使用的硬盘空间，协议会定期挑战他们，以证明这些空间仍由其持有。它以远低于 PoW 的能源足迹提供类似的抗女巫攻击能力，代价是需要大量存储硬件。Chia 是最知名的例子。
 
@@ -134,3 +134,4 @@ relatedSeries:
 - [Cosmos Network](https://cosmos.network/)
 - [Binance Academy — 委托权益证明详解](https://www.binance.com/en/academy/articles/delegated-proof-of-stake-explained)
 - [Solana — 历史证明](https://solana.com/news/proof-of-history)
+- [Solana — Sealevel：并行处理数千个智能合约](https://solana.com/news/sealevel---parallel-processing-thousands-of-smart-contracts)
