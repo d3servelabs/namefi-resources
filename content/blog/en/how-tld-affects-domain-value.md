@@ -90,7 +90,7 @@ The short version: the word sets the floor of what a name could be worth; the ex
 
 ## What this looks like at the top of the market
 
-One verified anchor keeps the premium concrete. The highest publicly disclosed domain sale on record is Voice.com, which per Wikipedia's list [sold in 2019 for $30,000,000](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Voice.com) — a `.com`, bought by a deep-pocketed buyer who needed the default version of a common word and nothing else would do. That's not a comp for a normal name. But it's a clean illustration of the principle: at every tier, the extension that requires no explanation is the one that fetches the top number, and every other extension is, in price terms, an argument for why the discount is worth it.
+One public anchor keeps the premium concrete. In February 2026, domain broker GetYourDomain.com announced the [$70 million sale of AI.com](https://www.prnewswire.com/news-releases/getyourdomaincom-brokers-the-70-million-sale-of-aicom-the-largest-domain-name-transaction-in-history-302682315.html), describing it as the largest domain transaction to date and more than double the prior $30 million Voice.com record. AI.com's own launch announcement says the domain [was acquired in 2025 in a transaction believed to be the largest domain purchase in history](https://ai.com/company-news/ai-com-launch). That's not a comp for a normal name. But it illustrates the principle at the very top of the market: the category-defining string and the default `.com` extension combine into an asset for which substitutes are difficult to price.
 
 ## The Namefi angle
 
@@ -112,4 +112,5 @@ This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenized owners
 - Wikipedia — [.co (Colombia; open to any registrant worldwide)](https://en.wikipedia.org/wiki/.co#:~:text=Any%20individual%20or%20entity%20in%20the%20world%20can%20register%20a%20.co%20domain)
 - Wikipedia — [.am (Armenia)](https://en.wikipedia.org/wiki/.am#:~:text=is%20the%20internet%20country%20code%20top%2Dlevel%20domain)
 - Wikipedia — [.tk (Tokelau; free registrations, 31.3M peak, phishing/abuse)](https://en.wikipedia.org/wiki/.tk#:~:text=The%20.tk%20domain%20ranked%20first%20worldwide%20with%2031%2C311%2C498%20registered%20domain%20names)
-- Wikipedia — [List of most expensive domain names (Voice.com, $30M, 2019)](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Voice.com)
+- GetYourDomain.com via PR Newswire — [AI.com sold for $70M, surpassing the prior $30M Voice.com record](https://www.prnewswire.com/news-releases/getyourdomaincom-brokers-the-70-million-sale-of-aicom-the-largest-domain-name-transaction-in-history-302682315.html)
+- AI.com — [2026 launch announcement (domain acquired in 2025)](https://ai.com/company-news/ai-com-launch)
