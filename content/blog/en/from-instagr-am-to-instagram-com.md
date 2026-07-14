@@ -59,9 +59,9 @@ To understand why instagr.am was so attractive, you have to understand what `.am
 
 For a 2010 startup, the appeal was obvious:
 
-- **It was exact.** "instagr" + "[.am](/en/tld/am/)" reads as the full brand, with nothing extra to explain — the holy grail of an unfunded launch.
+- **It was exact.** "instagr" + "[.am](/en/tld/am/)" reads as the full brand, with nothing extra to explain — the holy grail of an early-stage launch.
 - **It was short and shareable.** A photo app lives or dies on how easily a link gets passed around. instagr.am was tight enough to print, text, and tweet.
-- **It was available right now.** Instagram.com was already owned by someone else, and a brand-new app had neither the cash nor the leverage to pry it loose on day one.
+- **It was available right now.** Instagram.com was already owned by someone else, and a brand-new app had little leverage to pry it loose on day one.
 
 The hack let Instagram *look* like it owned its exact-match name long before it actually did. That was the whole trick — and it worked beautifully while the company was small.
 
@@ -163,6 +163,7 @@ Instagram.com looks inevitable now because Instagram became enormous. But the le
 - Wikipedia — [.am](https://en.wikipedia.org/wiki/.am#:~:text=any%20person%20in%20the%20world%20can%20register%20a%20.am)
 - Wikipedia — [Instagram](https://en.wikipedia.org/wiki/Instagram#:~:text=Instagram%20was%20launched%20for%20iOS%20in%20October%202010%20by%20Kevin%20Systrom%20and%20the%20Brazilian%20software%20engineer%20Mike%20Krieger)
 - Wikipedia — [Timeline of Instagram](https://en.wikipedia.org/wiki/Timeline_of_Instagram#:~:text=Over%2025%2C000%20users%20registered%20on%20launch%20day)
+- TechCrunch — [Burbn closes a $500,000 seed round before the Instagram pivot](https://techcrunch.com/2010/03/05/burbn-funding/)
 - DomainIncite — [Instagram paid Chinese cybersquatter $100,000 for instagram.com, Facebook lawsuit reveals](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=made%20the%20decision%20to%20pay%20%24100%2C000%20for%20the%20domain%20in%20January%202011)
 - WIPO Arbitration and Mediation Center — [Instagram, LLC v. Zhou Murong, Case No. D2014-1550](https://www.wipo.int/amc/en/domains/decisions/text/2014/d2014-1550.html#:~:text=Instagram%20was%20launched%20on%20October%206%2C%202010)
 - Entrepreneur — [How Instagram Went From Idea to $1 Billion in Less Than Two Years](https://www.entrepreneur.com/science-technology/how-instagram-went-from-idea-to-1-billion-in-less-than-two/223310#:~:text=launch%20the%20Instagram%20photo-sharing%20iPhone%20app%20with%2080%20initial%20users)
