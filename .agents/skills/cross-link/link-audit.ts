@@ -428,7 +428,11 @@ function unresolvableTargetCounts(content: string): Map<string, number> {
       `${collection}/${DEFAULT_LOCALE}/${slug}`,
     );
     if (literalExists || defaultExists) continue;
-    counts.set(occurrence.href, (counts.get(occurrence.href) ?? 0) + 1);
+    // Prefix-only repair can change `/fr/.../slug/` into `/ar/.../slug/`.
+    // Compare target identity rather than its rendered href so an already-dead
+    // slug is not mistaken for a newly introduced 404 after that repair.
+    const targetKey = `${collection}/${slug}`;
+    counts.set(targetKey, (counts.get(targetKey) ?? 0) + 1);
   }
   return counts;
 }
@@ -510,12 +514,7 @@ for (const file of auditFiles) {
       const expectedValues = sourceValues.map((href) =>
         localizedSourceRoute(href, field, fileLocale),
       );
-      if (
-        expectedValues.length === 0 ||
-        expectedValues.some((href) => href === null)
-      ) {
-        continue;
-      }
+      if (expectedValues.length === 0) continue;
 
       parityFields.add(field);
       const actualValues = frontmatter.values[field];
@@ -532,6 +531,10 @@ for (const file of auditFiles) {
       for (let valueIndex = 0; valueIndex < comparisonLength; valueIndex++) {
         const actualHref = actualValues[valueIndex];
         const expectedHref = expectedValues[valueIndex];
+        // Ignore only the malformed/external English source item. A bad source
+        // value must not disable parity checking for every other relationship
+        // in this field.
+        if (expectedHref === null) continue;
         if (actualHref === expectedHref) continue;
 
         const occurrence = occurrencesByIndex.get(valueIndex);
@@ -591,7 +594,14 @@ for (const file of auditFiles) {
   }
 
   for (const occurrence of routeOccurrences(prose)) {
-    if (recordLocaleMismatch({ ...occurrence, source: 'markdown' })) continue;
+    const localeMismatch = recordLocaleMismatch({
+      ...occurrence,
+      source: 'markdown',
+    });
+    // The focused command intentionally reports only the locale invariant. The
+    // full audit must also classify an underlying dead route, even when its
+    // locale prefix is wrong, so a mismatch cannot hide a genuine 404.
+    if (LOCALE_ONLY && localeMismatch) continue;
     if (LOCALE_ONLY) continue;
 
     const localizedParts = occurrence.href.match(HREF_PARTS_RE);

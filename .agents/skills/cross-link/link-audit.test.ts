@@ -180,6 +180,40 @@ describe('full link audit regressions', () => {
     expect(audit.code).toBe(1);
   });
 
+  test('a foreign-locale dead link is both reported and prefix-repaired', () => {
+    const root = scaffold();
+    const frDirectory = path.join(root, 'content/glossary/fr');
+    mkdirSync(frDirectory, { recursive: true });
+    writeFileSync(path.join(frDirectory, 'placeholder.md'), '---\ntitle: placeholder\n---\n');
+    const probe = path.join(root, 'content/glossary/zh-CN/probe.md');
+    writeFileSync(
+      probe,
+      `---\ntitle: probe\n---\nSee [Ghost](/fr/glossary/ghost/).\n`,
+    );
+
+    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
+    const report = parseAudit(audit);
+    expect(audit.code).toBe(1);
+    expect(report.findings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          severity: 'LOCALE_MISMATCH',
+          href: '/fr/glossary/ghost/',
+          fixedHref: '/zh-CN/glossary/ghost/',
+        }),
+        expect.objectContaining({
+          severity: 'BROKEN',
+          href: '/fr/glossary/ghost/',
+        }),
+      ]),
+    );
+
+    // The dead slug still makes the command fail, but its locale prefix is
+    // repaired so a later content fix does not also need to repair the route.
+    expect(run(root, ['--fix', 'content/glossary/zh-CN/probe.md']).code).toBe(1);
+    expect(readFileSync(probe, 'utf8')).toContain('/zh-CN/glossary/ghost/');
+  });
+
   test('a bare internal route remains a separate blocking full-audit error', () => {
     const root = scaffold();
     writeFileSync(
@@ -473,6 +507,48 @@ describe('same-locale route invariant', () => {
     expect(readFileSync(arabicFile, 'utf8')).toContain(
       'https://example.com/article',
     );
+  });
+
+  test('one malformed English relationship does not skip later parity entries', () => {
+    const root = freshFixture();
+    const englishFile = path.join(root, 'content/blog/en/mixed-relation.md');
+    const arabicFile = path.join(root, 'content/blog/ar/mixed-relation.md');
+    writeFileSync(
+      englishFile,
+      '---\nrelatedArticles:\n  - https://example.com/article\n  - /en/blog/target/\n---\n',
+    );
+    writeFileSync(
+      arabicFile,
+      '---\nrelatedArticles:\n  - https://example.com/article\n  - /ar/blog/fr-only/\n---\n',
+    );
+
+    const audit = run(root, [
+      '--locale-only',
+      '--json',
+      'content/blog/ar/mixed-relation.md',
+    ]);
+    const report = parseAudit(audit);
+    expect(audit.code).toBe(1);
+    expect(report.findings).toEqual([
+      expect.objectContaining({
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/blog/fr-only/',
+        fixedHref: '/ar/blog/target/',
+        field: 'relatedArticles',
+      }),
+    ]);
+
+    expect(
+      run(root, [
+        '--locale-only',
+        '--fix',
+        'content/blog/ar/mixed-relation.md',
+      ]).code,
+    ).toBe(0);
+    expect(readFileSync(arabicFile, 'utf8')).toContain(
+      'https://example.com/article',
+    );
+    expect(readFileSync(arabicFile, 'utf8')).toContain('/ar/blog/target/');
   });
 
   test('Arabic privacy metadata keeps the four core English glossary relationships', () => {
