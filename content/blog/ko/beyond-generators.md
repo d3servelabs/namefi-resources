@@ -50,7 +50,7 @@ AI 이름 생성기에 "반려식물 정기 배송 상자"처럼 아이디어를
 11. 자동 갱신을 켜거나, 만료일보다 훨씬 앞선 날짜로 직접 알림을 설정해 도메인이 만료되지 않도록 합니다.
 12. 나중에 등록대행자를 옮기고 싶다면 도메인 잠금을 해제하고, 현재 등록대행자로부터 인증 코드를 받은 뒤 이전을 시작합니다. 그런 다음 다시 이전할 수 있을 때까지 이전 후 잠금 기간이 끝나기를 기다립니다.
 
-각 단계는 그 자체로 어렵지 않습니다. 하지만 모두 합치면 AI가 한 번의 프롬프트로 이미 결정을 도와줬다고 여겨지는 일을 위해 등록대행자 대시보드, DNS 패널, 달력에 걸쳐 열두 번이나 수동으로 작업해야 합니다. 12단계는 뜬소문이 아닙니다. [Wikipedia의 도메인 이전 절차 요약](https://en.wikipedia.org/wiki/Domain_name_registrar)에 따르면 등록자는 기존 등록대행자로부터 "인증 코드(EPP 이전 코드)"를 받고 "모든 도메인 잠금을 해제"해야 하며, 과거에는 그 뒤 "60일 동안 도메인을 다시 이전할 수 없는" 기간이 있었습니다. ICANN은 2025년 삼월 이 잠금 기간을 30일로 단축하기로 의결했고, 이후 18개월에 걸쳐 적용됩니다. 어느 경우든 사람이 해당 규정의 존재를 알고 직접 조치해야 합니다.
+각 단계는 그 자체로 어렵지 않습니다. 하지만 모두 합치면 AI가 한 번의 프롬프트로 이미 결정을 도와줬다고 여겨지는 일을 위해 등록대행자 대시보드, DNS 패널, 달력에 걸쳐 열두 번이나 수동으로 작업해야 합니다. 12단계는 뜬소문이 아닙니다. ICANN은 [도메인을 한 등록대행자에서 다른 등록대행자로 이전하려면 Auth-Code가 필요하다고 설명합니다](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en#:~:text=An%20Auth%2DCode%20is%20required%20for%20a%20domain%20holder%20to%20transfer%20a%20domain%20name%20from%20one%20registrar%20to%20another). 현행 이전 정책에 따르면 신규 등록 후 60일 이내이거나 직전의 등록대행자 간 이전 후 60일 이내일 때 등록대행자가 이전을 거부할 수 있습니다. 또한 일부 등록자 변경 후에는, 등록대행자가 잠금 적용 제외 옵션을 제공하고 등록자가 변경 전에 이를 선택한 경우가 아니라면 60일 잠금이 요구됩니다([3.7.5~3.8.5절 및 II.C.2절](https://www.icann.org/en/contracted-parties/accredited-registrars/transfer-policy-01-06-2016-en#:~:text=3.7.5%20The%20transfer%20was%20requested%20within%2060%20days)). 이러한 현행 규정은 일괄적인 30일 잠금으로 전면 대체된 것이 아닙니다. 결국 사람이 어떤 규정이 적용되는지 알고 직접 조치해야 합니다.
 
 ## 역량 사다리: 제안에서 거래까지
 
@@ -78,7 +78,7 @@ GoDaddy Airo와 Namecheap의 Visual 도구는 1단계를 실제로 잘 수행하
 
 3단계부터 5단계까지는 양식보다는 도구가 연결된 대화에 가깝습니다. 등록대행자의 [MCP](https://modelcontextprotocol.io) 서버나 REST API에 연결된 에이전트가 이름을 확인하고, 실제 가격을 받아 등록하고, DNS 레코드를 설정합니다. 사람이 미리 정한 한도 안에서 에이전트가 직접 호출하는 방식이므로 한 페이지씩 클릭할 필요가 없습니다. [CircleID의 2026년 업계 분석](https://circleid.com/posts/the-domain-universe-in-2026-ai-security-market-maturity-and-the-new-gtld-frontier#:~:text=AI%20agents%20are%20increasingly%20acting%20as%20domain%20resellers%20checking%20availability%2C%20registering%20names%2C%20and%20configuring%20DNS%20without%20human%20intervention)은 이를 간단히 설명합니다. "AI 에이전트는 도메인 리셀러 역할을 점점 더 많이 맡아 사람의 개입 없이 등록 가능 여부를 확인하고, 이름을 등록하고, DNS를 설정합니다."
 
-여기서 같은 내용을 반복하기보다 전체 실전 예시는 다른 글에 담았습니다. [자연어로 도메인을 구매하는 방법](/ko/blog/nl-domain-purchase/)은 자연어 프롬프트에서 등록과 DNS 설정이 완료된 도메인까지 이어지는 주석 포함 대화를 통해 3단계와 4단계의 작동 방식을 자세히 보여 줍니다. [Namefi에서 AI 에이전트로 도메인을 등록하는 방법](/ko/blog/ai-agent-register/)은 주요 에이전트 클라이언트를 아우르는 표준 설정 가이드로, 자격 증명 받기, 연결하기, 검색 및 가격 확인하기, 등록하기, DNS 설정하기라는 공통 다섯 단계 절차를 설명합니다. 5단계는 더 새로운 부분입니다. 도메인을 등록한 에이전트가 등록할 때 사용한 바로 그 도구를 이용해 자동 갱신을 켜고, 몇 달 뒤 DNS 레코드를 수정하거나, 이전을 시작할 수도 있습니다. 별도의 대시보드 로그인이 필요하지 않습니다.
+여기서 같은 내용을 반복하기보다 전체 실전 예시는 다른 글에 담았습니다. [자연어로 도메인을 구매하는 방법](/ko/blog/nl-domain-purchase/)은 자연어 프롬프트에서 등록과 DNS 설정이 완료된 도메인까지 이어지는 주석 포함 대화를 통해 3단계와 4단계의 작동 방식을 자세히 보여 줍니다. [Namefi에서 AI 에이전트로 도메인을 등록하는 방법](/ko/blog/ai-agent-register/)은 주요 에이전트 클라이언트를 아우르는 표준 설정 가이드로, 자격 증명 받기, 연결하기, 검색 및 가격 확인하기, 등록하기, DNS 설정하기라는 공통 다섯 단계 절차를 설명합니다. 5단계는 더 새로운 부분입니다. Namefi의 문서에 공개된 도구를 사용하면 에이전트가 도메인 등록에 사용한 것과 같은 인터페이스에서 몇 달 뒤에도 자동 갱신을 켜거나 DNS 레코드를 수정할 수 있으며, 별도의 대시보드 로그인은 필요하지 않습니다. 다만 현재 공개된 도구 카탈로그에는 등록대행자 간 이전을 시작하는 작업이 문서화되어 있지 않으므로, 전체 수명 주기 자동화의 이 부분은 아직 별도 경로가 필요합니다.
 
 ## 에이전트에게 맡기기 전에 모든 등록대행자에게 물어볼 다섯 가지 질문
 
@@ -112,7 +112,7 @@ GoDaddy Airo와 Namecheap의 Visual 도구는 1단계를 실제로 잘 수행하
 
 ### 현재 Namefi는 5단계에 있나요?
 
-자체적으로 공개한 API 레퍼런스에 문서화된 기능을 기준으로 하면 그렇습니다. 결제 페이지 없이 API나 MCP에서 등록이 완료되고, DNS 레코드를 프로그래밍 방식으로 읽고 쓸 수 있으며, 에이전트가 등록 당일 설정할 수 있는 토글로 자동 갱신이 제공됩니다. 아직 공개 문서에 없는 것은 서버 측 지출 상한 기능입니다. 현재 이 안전장치는 MCP 클라이언트나 그 주변에 구축한 정책 계층에서 설정해야 합니다.
+부분적으로는 그렇지만, 이 단계의 정의에 포함된 모든 수명 주기 작업을 지원하는 것은 아닙니다. Namefi의 공개 API 레퍼런스에는 프로그래밍 방식의 DNS 읽기·쓰기와 자동 갱신 토글이 문서화되어 있어, 에이전트가 등록 후에도 의미 있는 관리 작업을 수행할 수 있습니다. 하지만 등록대행자 간 이전을 시작하거나 모든 등록자 연락처 필드를 업데이트하는 작업은 현재 문서화되어 있지 않습니다. 서버 측 지출 상한 기능도 공개 문서에 없으며, 현재 이 안전장치는 MCP 클라이언트나 그 주변에 구축한 정책 계층에서 설정해야 합니다.
 
 ### 결국 "API가 있는 등록대행자" 아닌가요? 등록대행자 API는 수년 전부터 있었잖아요.
 
@@ -120,7 +120,7 @@ API가 있다는 것과 에이전트가 처음부터 끝까지 사용할 수 있
 
 ## 에이전트에게 사다리의 나머지를 맡기세요
 
-에이전트가 이미 코드를 작성하고 이름을 고를 수 있다면 그다음 아홉 단계인 확인, 구매, DNS 설정, 갱신, 이전을 위해 사용자가 다시 대시보드를 클릭할 이유가 없습니다. [Namefi](https://namefi.io)는 MCP를 지원하는 에이전트가 직접 호출할 수 있는 도구로 도메인 검색, 등록, DNS 관리, 갱신 제어 기능을 제공합니다. API 키나 지갑 서명으로 인증하므로 사다리가 이름에서 멈출 필요가 없습니다.
+에이전트가 이미 코드를 작성하고 이름을 고를 수 있다면 확인, 구매, DNS 설정, 갱신 관리를 위해 사용자가 다시 대시보드를 클릭할 이유가 없습니다. [Namefi](https://namefi.io)는 MCP를 지원하는 에이전트가 직접 호출할 수 있는 도구로 도메인 검색, 등록, DNS 관리, 갱신 제어 기능을 제공합니다. API 키나 지갑 서명으로 인증하므로 사다리가 이름에서 멈출 필요가 없습니다. 등록대행자 간 이전은 현재 문서화된 도구 카탈로그의 범위 밖에 있습니다.
 
 **[Namefi의 에이전트 도구가 작동하는 방식 알아보기](https://namefi.io).**
 
@@ -128,7 +128,7 @@ API가 있다는 것과 에이전트가 처음부터 끝까지 사용할 수 있
 
 - Hostinger — [2026년 최고의 도메인 등록대행자 8곳: 테스트 및 비교](https://www.hostinger.com/tutorials/best-domain-registrars/#:~:text=GoDaddy%20Airo%2C%20its%20AI%20setup%20assistant%2C%20can%20also%20suggest%20a%20name%2C%20logo%2C%20and%20starter%20site%20once%20you%20register) — GoDaddy Airo의 제안이 여전히 GoDaddy 자체 등록 절차로 이어진다는 점을 독립적으로 확인합니다.
 - webhosting.today — [이제 AI 에이전트가 사람 없이 도메인을 등록할 수 있다](https://webhosting.today/2026/04/22/ai-agents-can-now-register-domains-no-human-required/) — Cloudflare가 2026년 사월 공개한 Registrar API 베타에 관한 보도로, 이전, 갱신, 연락처 업데이트 같은 등록 후 수명 주기 관리가 아직 베타에 포함되지 않았다는 명시된 공백도 다룹니다.
-- Wikipedia — [도메인 이름 등록대행자](https://en.wikipedia.org/wiki/Domain_name_registrar) — 표준 이전 절차, EPP 인증 코드의 역할, 이전 후 잠금 기간을 60일에서 30일로 줄이는 2025년 ICANN 정책을 설명합니다.
+- ICANN — [이전 정책](https://www.icann.org/en/contracted-parties/accredited-registrars/transfer-policy-01-06-2016-en) · [등록자 이전 FAQ](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en) — Auth-Code 요구 사항과 현행 60일 이전 제한의 출처입니다.
 - CircleID — [2026년의 도메인 세계: AI, 보안, 시장 성숙도, 새로운 gTLD의 개척지](https://circleid.com/posts/the-domain-universe-in-2026-ai-security-market-maturity-and-the-new-gtld-frontier#:~:text=AI%20agents%20are%20increasingly%20acting%20as%20domain%20resellers%20checking%20availability%2C%20registering%20names%2C%20and%20configuring%20DNS%20without%20human%20intervention) — 도메인 리셀러 역할을 맡는 에이전트에 관한 업계 분석입니다.
 - GoDaddy — [Airo: 온라인 성장을 돕는 AI 기반 환경](https://www.godaddy.com/airo) — Airo의 이름 짓기, 로고, 사이트 구축 제품군에 관한 GoDaddy의 자체 제품 설명입니다.
 - Namecheap — [Visual: 비즈니스 이름 생성기](https://www.namecheap.com/visual/business-name-generator/) — 무료 AI 이름 짓기 및 브랜딩 도구에 관한 Namecheap의 자체 설명입니다.
