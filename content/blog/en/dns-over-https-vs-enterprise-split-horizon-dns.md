@@ -42,9 +42,9 @@ A DoH client sends DNS queries as HTTPS POST or GET requests, typically to `http
 
 - **Encrypted in transit.** Network observers cannot read the query name or the answer.
 - **Authenticated server.** The client verifies the resolver's TLS certificate, so a man-in-the-middle cannot impersonate it.
-- **Indistinguishable from web traffic.** Port 443, TLS 1.3, normal SNI patterns. There is no DNS-shaped traffic to filter on.
+- **Not identifiable by port or cleartext DNS signatures.** DoH uses HTTPS on port 443, so a network cannot separate it from other HTTPS merely by looking for port 53 or DNS-shaped packets. Administrators can still block known resolver endpoints by IP address or hostname policy, although shared infrastructure, encrypted metadata, and previously unknown endpoints make that incomplete and operationally costly.
 
-The third property is the one that defines the conflict. DoT also encrypts queries, but it does so on a *dedicated* port (853), which a network can easily block or redirect. DoH cannot be selectively blocked without also blocking ordinary web browsing.
+The third property is the one that defines the conflict. DoT also encrypts queries, but it does so on a *dedicated* port (853), which a network can easily block. DoH cannot be identified from port and packet shape alone; targeted blocking instead depends on knowing or controlling the resolver endpoint, and blocking an endpoint that shares infrastructure with other HTTPS services can cause collateral damage.
 
 ## What enterprise split-horizon DNS actually does
 
@@ -61,7 +61,7 @@ Outside the network (or on a personal device on home Wi-Fi):
 - `git.example.com` resolves to the public load balancer.
 - The internal-only names simply do not resolve.
 
-This is not exotic. It is the default for almost every enterprise of more than a few hundred employees. It depends on one critical assumption: **the endpoint uses the resolver the network tells it to use**, via DHCP, push policy, or VPN configuration.
+This is a common enterprise pattern, especially in environments with internal services, Active Directory, VPNs, or DNS-based security controls. It depends on one critical assumption: **the endpoint uses the resolver the organization intends it to use**, via DHCP, device policy, or VPN configuration.
 
 DoH breaks that assumption. If the browser ships its own resolver, or the operating system bypasses the system resolver, the endpoint stops consulting the internal DNS entirely. Internal hostnames stop resolving. Security tooling stops seeing the queries it relies on for detection.
 
@@ -79,13 +79,13 @@ Firefox's approach has been more controversial. In locales where Mozilla has ena
 
 ### Apple's encrypted DNS (iOS 14+, macOS Big Sur+)
 
-Apple lets apps and configuration profiles opt-in to DoH or DoT for the whole system, but respects MDM policies that mandate a specific resolver. Enterprise-managed devices behave correctly out of the box.
+Apple lets apps and configuration profiles opt in to DoH or DoT for the whole system and gives administrators MDM controls for managed devices. Whether split-horizon works therefore depends on the profiles and resolver policy the organization actually deploys; management alone does not guarantee the correct result.
 
 ### Windows native DoH
 
-Since Windows 11, and on Windows Server 2022 and later, the OS itself can use DoH for the system resolver. Group Policy controls whether DoH is allowed, required, or prohibited, and Windows only enables DoH against configured DNS servers that are known to support it. This is arguably the cleanest model: the security team chooses the policy, the OS enforces it.
+Since Windows 11, and for the DNS client on Windows Server 2022 and later, the OS itself can use DoH for the system resolver. Group Policy controls whether the DNS client allows, requires, or prohibits DoH, and administrators can register the DoH template for a configured DNS server. This is distinct from serving DoH: Microsoft's DNS Server service requires Windows Server 2025 with the June 2026 security update or later. In either case, the security team must configure both the resolver and endpoint policy deliberately.
 
-The pattern is clear: **DoH that lives in a single app (the browser) is hard for the network to control; DoH that lives in the OS-level resolver is controllable through normal MDM channels**. The IETF and OS vendors have largely agreed that policy belongs in the OS layer.
+The pattern is clear: **DoH that lives in a single app can bypass system resolver choices unless that app is managed; DoH in the OS-level resolver can be governed through device policy**. Browser enterprise policies remain important because application-level DoH has not disappeared.
 
 ## The realistic options for an enterprise in 2026
 
@@ -99,13 +99,13 @@ This is the most prescriptive option. It preserves split-horizon perfectly and g
 
 ### Strategy B: Internal DoH
 
-Stand up an internal DoH server (Cloudflared, AdGuard, or a Windows DNS Server with DoH enabled), configure endpoints to use it, and run split-horizon at the internal DoH server. Endpoints get encrypted DNS without the network losing visibility.
+Stand up an internal DoH server, configure endpoints to use it, and run split-horizon at that resolver. Depending on support and operational requirements, that could be a dedicated DoH-capable resolver or Microsoft's DNS Server service on Windows Server 2025 with the June 2026 security update or later. Endpoints get encrypted transport to the resolver without the resolver itself losing query visibility.
 
-This is the cleanest option and the one most large enterprises are moving toward. It preserves the privacy benefit (queries are encrypted on the LAN) while keeping the security benefit (the internal resolver still sees and can filter every query). Microsoft, Google, and Apple all support OS-level configuration for this scenario.
+This can be a clean option where the organization can operate the resolver and manage every endpoint. It protects queries on the path between managed clients and the internal resolver while preserving resolver-side filtering and logging. Platform support and deployment details differ, so teams should verify client, server, certificate, and fallback behavior for their chosen stack.
 
 ### Strategy C: Canary domain / network signal
 
-Publish the Mozilla canary domain. Push the relevant Chrome and Edge policies. Rely on the browsers to detect that they are on a managed network and defer to the system resolver. This is the lightest-touch option and is sufficient for many small and mid-sized organizations.
+Configure the local resolver so Mozilla's `use-application-dns.net` canary query returns the negative result Firefox expects, and push the relevant browser policies. The canary signal applies to Firefox users whose DoH was enabled by default; it does not override a user's explicit choice. Chromium does not use Mozilla's canary mechanism, so Chrome and Edge require their own deployment model and enterprise policies. This approach must therefore be implemented per browser rather than treated as one universal network signal.
 
 ### Strategy D (does not work): "We'll just ignore DoH"
 
@@ -125,19 +125,19 @@ If you run a domain that is consumed by enterprises—a SaaS app, a developer to
 
 - Some fraction of your users will resolve you through a public DoH endpoint, especially on unmanaged devices or explicitly configured browsers. CNAME chains, [subdomain](/en/glossary/subdomain/) delegations, and any clever DNS tricks you do for personalization need to work the same when resolved from an arbitrary public resolver as from a customer's internal one.
 - DNS-based censorship circumvention is a real use case for DoH. If your domain is blocked by a government's DNS filter (as several encrypted-messaging and VPN domains have been), users will reach you over DoH from a public resolver. The mechanics are the same; the political stakes are different.
-- Internal split-horizon should never resolve a public-facing name to something *only meaningful internally*, in a way that would break if a user accidentally queried over DoH. The classic failure is internal-only `app.example.com` returning a private IP that no DoH user can reach—then a remote employee in a hotel finds the same hostname unreachable and files a bug. Use a clearly separate internal-only zone (`app.example.internal`).
+- Design both sides of a split-horizon name intentionally. A remote user querying a public DoH resolver receives the public DNS view, not the private answer from the organization's internal resolver. If the public view has no usable record, the name will fail; if it has a public endpoint, the user will reach that endpoint. A clearly separate internal-only zone such as `app.example.internal` can make intent clearer, but it does not make the service reachable remotely—VPN access and managed split-DNS policy are still required.
 
 ## How Namefi fits in
 
 Namefi treats DNS as the public-facing [control plane](/en/blog/dns-is-the-control-plane/)—the place where global naming meets local policy. Our DNS workflows assume queries can come from any resolver, including DoH endpoints we cannot enumerate, and the names we publish work consistently regardless. For customers running split-horizon internally, we sit on the public side: the authoritative answer for `example.com` is what we serve, and what the internal resolver overrides for internal users is between them and their endpoint policy.
 
-The deeper point: encrypted DNS is here to stay, and so is enterprise visibility. The way to reconcile them is not to fight the standards, but to move the policy enforcement point from the network to the operating system. The standards bodies, Microsoft, Apple, Google, and Mozilla have all converged on that answer. The work left is mostly operational.
+The deeper point: encrypted DNS is here to stay, and so is the enterprise need for resolver policy and visibility. Reconciliation usually combines managed OS resolver settings, browser-specific enterprise controls, and an internal resolver where split-horizon is required. The exact mix remains platform- and deployment-specific; it is an operational design choice, not a universal vendor convergence on one mechanism.
 
 ## Sources and further reading
 
 - IETF — [DNS over HTTPS, RFC 8484](https://datatracker.ietf.org/doc/html/rfc8484) and [DNS over TLS, RFC 7858](https://datatracker.ietf.org/doc/html/rfc7858).
 - Chrome Enterprise — [DoH policy controls](https://chromeenterprise.google/policies/?policy=DnsOverHttpsMode).
 - Mozilla — [Trusted Recursive Resolver program](https://wiki.mozilla.org/Trusted_Recursive_Resolver), [canary domain behavior](https://support.mozilla.org/en-US/kb/canary-domain-use-application-dnsnet#:~:text=A%20negative%20result%20will%20be%20a%20signal%20to%20disable%20application%20DNS%2C%20(i.e.%2C%20DoH).), and [split-horizon fallback guidance](https://support.mozilla.org/gu-IN/kb/dns-over-https-doh-faqs#:~:text=If%20Firefox%20fails%20to%20resolve%20a%20domain%20via%20DoH%2C%20it%20will%20fall%20back%20to%20the%20DNS.).
-- Chromium — [Chrome's same-provider DoH auto-upgrade model](https://www.chromium.org/developers/dns-over-https/#:~:text=Chrome's%20auto%2Dupgrade%20approach%20does%20not%20change%20the%20DNS%20provider).
-- Microsoft — [Configure DNS over HTTPS in Windows](https://learn.microsoft.com/en-us/windows-server/networking/dns/doh-client-support#:~:text=Allow%20DoH.%20Queries%20will%20be%20performed%20using%20DoH%20if%20the%20specified%20DNS%20servers%20support%20the%20protocol.).
+- Chromium — [Chrome's same-provider DoH auto-upgrade model and canary-domain position](https://www.chromium.org/developers/dns-over-https/).
+- Microsoft — [Configure the Windows DNS client to use DoH](https://learn.microsoft.com/en-us/windows-server/networking/dns/doh-client-support) and [enable DoH in the Windows Server DNS Server service](https://learn.microsoft.com/en-us/windows-server/networking/dns/enable-dns-over-https-server).
 - EFF — [Encrypted DNS could help close one of the internet's biggest privacy gaps](https://www.eff.org/deeplinks/2019/10/encrypted-dns-could-help-close-biggest-privacy-gap-internet).
