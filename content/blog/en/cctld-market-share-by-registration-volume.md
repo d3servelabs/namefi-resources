@@ -85,10 +85,10 @@ Some ccTLDs have eligibility rules—you need a local address, a local company, 
 ccTLD ranking by registration count is the most-cited statistic, and also the most-misunderstood. A more honest picture comes from looking at three numbers together:
 
 - **Total registrations** — the headline figure.
-- **Renewal rate** — what fraction of names are still around a year later. Healthy zones sit at 75-85%. Speculative or free-tier zones can sit below 50%.
+- **Renewal rate** — what fraction of eligible names are renewed over the registry's reporting window. It helps distinguish persistence from churn, but registries may define and publish the metric differently.
 - **Use rate** — what fraction of names actually resolve to a website, MX record, or other live service. This is harder to measure, but registry transparency reports and third-party crawls (e.g., [DomainTools](https://www.domaintools.com/resources/blog/), [SecurityTrails](https://securitytrails.com/blog)) publish estimates.
 
-A ccTLD with 20 million names and a 50% renewal rate is, in a meaningful sense, smaller than a ccTLD with 6 million names and an 88% renewal rate. The first is churn; the second is *installed base*.
+A lower renewal rate can signal more churn, but it does not make a larger zone smaller by itself: a high-volume zone can still retain more names in absolute terms than a smaller zone with a higher renewal rate. Treat registration count as the size of the current installed base, then use renewal and active-use data to judge how durable and useful that base appears.
 
 ## What this means if you are choosing a domain
 
@@ -97,7 +97,7 @@ For builders, the practical takeaways are:
 - **`.com` is still the default global brand extension.** It is the only TLD that no one ever has to spell out.
 - **A local ccTLD beats `.com` for local-market trust** in countries where the ccTLD is dominant—Germany, the Netherlands, the U.K., Czechia, Poland. In those markets, users actively prefer the local extension.
 - **Small-country ccTLDs operated globally** (`.io`, `.ai`, `.co`, `.me`) are gTLDs in everything but name. Treat them like brand decisions, not jurisdictional ones, and read the [registry's policy](https://www.icann.org/resources/pages/registries-listing-2012-02-25-en) so you know what happens if the operator changes.
-- **Registration volume is not a quality signal.** It is mostly a marketing signal. Renewal rate is the number worth asking for.
+- **Registration volume is not a quality signal.** It is mostly a size and distribution signal. Renewal and active-use rates are worth asking for alongside the headline count.
 
 ## How Namefi thinks about this
 
