@@ -102,7 +102,7 @@ Rollup 会根据如何证明链下执行正确无误，分为两大类。
 
 ## 与代币化域名的关联
 
-扩容选择会影响[代币化域名](/zh-CN/glossary/tokenized-domain/)，因为每次铸造、转移、DNS 更新或抵押品操作都是链上交易，其成本和终局性时间取决于它在何处结算。在乐观 Rollup 上确认的代币化 `.com` 转移，对用户而言费用低且速度快，但除非使用快速退出桥，否则相对于 L1 约一周内尚未达到完全终局性；同一笔转移若在 ZK Rollup 上进行，则会在有效性证明上链后立即相对于 L1 达到终局性。侧链的成本可能更低，但若域名 NFT 只存在于某条侧链上，它继承的是该侧链规模更小的验证者集合的安全性，而非以太坊的安全性。理解这些取舍，是理解域名以链上形式表示时你实际拥有何物的一部分；这也是理解[Web3 基础知识](/zh-CN/topics/web3-foundations/)时应具备的同一种尽职调查习惯。
+扩容选择会影响[代币化域名](/zh-CN/glossary/tokenized-domain/)，因为每次铸造、转移、DNS 更新或抵押品操作都是链上交易，其成本和终局性时间取决于它在何处结算。在乐观 Rollup 上确认的代币化 `.com` 转移，在 L2 上看起来费用低、速度快，但该 Rollup 交易[只有在 Rollup 区块被以太坊接受后才达到终局性](https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/#:~:text=transactions%20conducted%20on%20the%20rollup%20are%20only%20final%20after%20the%20rollup%20block%20is%20accepted%20on%20Ethereum)。快速退出桥不会让 Rollup 状态更早在 L1 上达到终局性：对于提款，流动性提供者会[接手待处理的 L2 提款，并在 L1 上向用户付款](https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/#:~:text=A%20liquidity%20provider%20assumes%20ownership%20of%20a%20pending%20L2%20withdrawal%20and%20pays%20the%20user%20on%20L1)，通常会收取费用，而标准提款仍须等待挑战期结束。同一笔转移若在 ZK Rollup 上进行，则会在有效性证明上链后立即相对于 L1 达到终局性。侧链的成本可能更低，但若域名 NFT 只存在于某条侧链上，它继承的是该侧链规模更小的验证者集合的安全性，而非以太坊的安全性。理解这些取舍，是理解域名以链上形式表示时你实际拥有何物的一部分；这也是理解[Web3 基础知识](/zh-CN/topics/web3-foundations/)时应具备的同一种尽职调查习惯。
 
 ---
 
