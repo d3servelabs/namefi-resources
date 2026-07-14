@@ -1,5 +1,5 @@
 ---
-title: "أهم الآلات الافتراضية للبلوكتشين: EVM وSVM وMoveVM وWASM وCairoVM"
+title: "أهم الآلات الافتراضية للبلوكتشين: EVM وSVM وMoveVM وWebAssembly/RISC-V وCairoVM"
 date: '2026-07-02'
 language: ar
 tags: ['guide']
@@ -9,7 +9,7 @@ cluster: web3-foundations
 series: blockchain-concepts
 seriesOrder: 30
 format: roundup
-description: "دليل لأهم الآلات الافتراضية للبلوكتشين: EVM وSVM وMoveVM والآلات المعتمدة على WASM وCairoVM، مع مقارنة اللغات ونماذج التنفيذ والأنظمة البيئية."
+description: "دليل لأهم الآلات الافتراضية للبلوكتشين: EVM وSVM وMoveVM والآلات القائمة على WebAssembly وRISC-V وCairoVM، مع مقارنة اللغات ونماذج التنفيذ والأنظمة البيئية."
 ogImage: ../../assets/blockchain-virtual-machines-og.jpg
 keywords: ['آلة افتراضية للبلوكتشين', 'آلات افتراضية للبلوكتشين', 'EVM', 'آلة Ethereum الافتراضية', 'SVM', 'آلة Solana الافتراضية', 'Sealevel', 'MoveVM', 'لغة Move', 'بلوكتشين WASM', 'CosmWasm', 'PolkaVM', 'CairoVM', 'لغة Cairo', 'Starknet', 'لغة العقود الذكية', 'تنفيذ متوازٍ في البلوكتشين', 'متوافق مع EVM', 'بيئة تنفيذ البلوكتشين', 'آلة حالات البلوكتشين']
 relatedArticles:
@@ -34,7 +34,7 @@ relatedGlossary:
 
 كل [عقد ذكي](/ar/glossary/smart-contract/) لازم يشتغل في مكان ما. و«المكان» ده هو آلة افتراضية للبلوكتشين (VM): برنامج معزول تنفّذه كل عقدة في الشبكة بالطريقة نفسها، بحيث ينتج عن المدخل نفسه المخرج نفسه مهما كان اللي يشغّله. والـ VM التي تبني عليها تشكّل تقريباً كل شيء في السلسلة: اللغات التي تقدر تكتب بها، وهل المعاملات تشتغل في الوقت نفسه أم واحدة وراء الثانية، وقدر ما يمكن توصيله من منظومة المطورين الحالية من أول يوم.
 
-الدليل ده يستعرض خمسة تصاميم للـ VM تشغّل فيما بينها معظم نشاط العقود الذكية في [Web3](/ar/glossary/web3/) اليوم: [Ethereum Virtual Machine](/ar/glossary/ethereum-virtual-machine/) ‏(EVM)، وSVM الخاصة بـ Solana، وMoveVM كما تستخدمها Aptos وSui، والآلات المعتمدة على [WebAssembly](/ar/glossary/webassembly/) ‏(WASM) مثل CosmWasm وPolkaVM، وCairoVM الخاصة بـ Starknet.
+يستعرض هذا الدليل خمس عائلات من الآلات الافتراضية تشغّل فيما بينها جانباً كبيراً من نشاط العقود الذكية في [Web3](/ar/glossary/web3/) اليوم: [Ethereum Virtual Machine](/ar/glossary/ethereum-virtual-machine/) ‏(EVM)، وSVM الخاصة بـ Solana، وMoveVM كما تستخدمها Aptos وSui، وآلات الشيفرة الثنائية المحمولة المبنية على [WebAssembly](/ar/glossary/webassembly/) أو RISC-V مثل CosmWasm وPolkaVM، وCairoVM الخاصة بـ Starknet.
 
 ---
 
@@ -55,7 +55,7 @@ relatedGlossary:
 
 ![رسم متجهي مسطح لـ EVM كآلة مكدس ذات مسار واحد، فيها مؤشر تعليمات يدفع قيماً ويسحبها من مكدس رأسي وقرص قياس للغاز يتابع تكلفة التنفيذ](../../assets/blockchain-virtual-machines-01-evm-stack.jpg)
 
-تعد EVM أقدم آلة افتراضية للعقود الذكية وأكثرها انتشاراً، وقد قُدّمت مع [Ethereum](/ar/glossary/ethereum/) في 2015. وهي آلة **قائمة على المكدس**: تحدد وثائق Ethereum أنها تعمل «كآلة مكدس بعمق 1024 عنصراً»، حيث كل عنصر كلمة من 256 بت ([ethereum.org](https://ethereum.org/en/developers/docs/evm/#:~:text=The%20EVM%20executes%20as%20a,256%2Dbit%20word)). توجد حالة العقد في شجرة Merkle Patricia مرتبطة بكل حساب، كما تنظّم حالة السلسلة العامة في شجرة Merkle Patricia معدّلة تربط كل الحسابات بالتجزئات ([ethereum.org](https://ethereum.org/en/developers/docs/evm/#:~:text=Ethereum%20uses%20a%20modified%20Merkle,linked%20by%20hashes)).
+قُدّمت EVM مع [Ethereum](/ar/glossary/ethereum/) في 2015، وهي اليوم واحدة من أكثر الآلات الافتراضية للعقود الذكية انتشاراً. وهي آلة **قائمة على المكدس**: تحدد وثائق Ethereum أنها تعمل «كآلة مكدس بعمق 1024 عنصراً»، حيث كل عنصر كلمة من 256 بت ([ethereum.org](https://ethereum.org/en/developers/docs/evm/#:~:text=The%20EVM%20executes%20as%20a,256%2Dbit%20word)). توجد حالة العقد في شجرة Merkle Patricia مرتبطة بكل حساب، كما تنظّم حالة السلسلة العامة في شجرة Merkle Patricia معدّلة تربط كل الحسابات بالتجزئات ([ethereum.org](https://ethereum.org/en/developers/docs/evm/#:~:text=Ethereum%20uses%20a%20modified%20Merkle,linked%20by%20hashes)).
 
 **اللغة.** تُكتب العقود في الغالب بـ **Solidity**، التي تصفها وثائق Ethereum نفسها بأنها «لغة عالية المستوى وكائنية التوجه لتنفيذ العقود الذكية»، ومتأثرة بشدة ببنية C++ ([ethereum.org](https://ethereum.org/en/developers/docs/smart-contracts/languages/#:~:text=Solidity)). أما **Vyper**، وهي لغة «بطابع Python» تقلّص الميزات عمداً لتسهّل تدقيق العقود، فهي البديل الرئيسي ([ethereum.org](https://ethereum.org/en/developers/docs/smart-contracts/languages/#:~:text=Vyper)).
 
@@ -63,7 +63,7 @@ relatedGlossary:
 
 **الغاز.** كل عملية تكلّف [الغاز (رسوم المعاملات)](/ar/glossary/gas/)، وهي وحدة Ethereum لـ «الجهد الحاسوبي المطلوب للعمليات»، والتي تسعّر التنفيذ وتحمي الشبكة من الرسائل المزعجة أو الحلقات اللانهائية ([ethereum.org](https://ethereum.org/en/developers/docs/evm/#:~:text=Since%20each%20transaction%20is%20broadcast,uses%20gas)).
 
-**القوة والانتشار المميزان.** الخندق الحقيقي لـ EVM هو منظومتها: إنها الـ VM الأكثر تطبيقاً في العملات المشفرة، وعشرات حلول Layer 2 والسلاسل المستقلة (Arbitrum وOptimism وBase وPolygon وBNB Chain وAvalanche C-Chain) تقدّم بيئات **متوافقة مع EVM** أو **مكافئة لـ EVM** حتى تُنشر عقود Solidity والمحافظ والأدوات القائمة بتغيير قليل أو من دونه.
+**القوة والانتشار المميزان.** الخندق الحقيقي لـ EVM هو منظومتها: إنها الـ VM الأكثر تطبيقاً في العملات المشفرة، وعشرات حلول الطبقة الثانية والسلاسل المستقلة (Arbitrum وOptimism وBase وPolygon وBNB Chain وAvalanche C-Chain) تقدّم بيئات **متوافقة مع EVM** أو **مكافئة لـ EVM** حتى تُنشر عقود Solidity والمحافظ والأدوات القائمة بتغيير قليل أو من دونه.
 
 ---
 
@@ -97,15 +97,15 @@ relatedGlossary:
 
 ---
 
-## الآلات المعتمدة على WASM ‏(CosmWasm وPolkaVM)
+## آلات الشيفرة الثنائية المحمولة ‏(CosmWasm وPolkaVM)
 
-بدلاً من تعريف صيغة شيفرة ثنائية مصممة خصيصاً، تشغّل عائلة ثانية من السلاسل العقود الذكية عبر **WebAssembly**، وهي صيغة ثنائية عامة بُنيت أصلاً للمتصفح. يصف معيار WebAssembly ‏Wasm بأنها «صيغة تعليمات ثنائية لآلة افتراضية قائمة على المكدس»، ومصممة لتكون «هدف ترجمة محمولاً للغات البرمجة» و«تهدف إلى التنفيذ بسرعة أصلية» ([webassembly.org](https://webassembly.org/#:~:text=WebAssembly%20(abbreviated%20Wasm)%20is%20a,wide%20range%20of%20platforms)). استخدام Wasm كـ VM للعقود يعني أن أي لغة لديها هدف ترجمة إلى Wasm، مثل Rust وC وC++ وGo، يمكنها من حيث المبدأ إنتاج عقد قابل للنشر.
+بدلاً من تعريف شيفرة ثنائية خاصة بالبلوكتشين، تستخدم بعض السلاسل صيغ تعليمات محمولة وعامة الغرض. تنفّذ **CosmWasm** شيفرة WebAssembly، بينما تنفّذ **PolkaVM** شيفرة ثنائية مشتقة من RISC-V؛ ولذلك فإن PolkaVM ليست آلة افتراضية معتمدة على WASM. يصف معيار WebAssembly ‏Wasm بأنها «صيغة تعليمات ثنائية لآلة افتراضية قائمة على المكدس»، ومصممة لتكون «هدف ترجمة محمولاً للغات البرمجة» و«تهدف إلى التنفيذ بسرعة أصلية» ([webassembly.org](https://webassembly.org/#:~:text=WebAssembly%20(abbreviated%20Wasm)%20is%20a,wide%20range%20of%20platforms)). استخدام Wasm كـ VM للعقود يعني أن أي لغة لديها هدف ترجمة إلى Wasm، مثل Rust وC وC++ وGo، يمكنها من حيث المبدأ إنتاج عقد قابل للنشر.
 
 **CosmWasm.** منصة العقود الذكية المعتمدة على Wasm والأبرز في منظومة Cosmos، تصف CosmWasm نفسها بأنها «منصة عقود ذكية آمنة وعالية الأداء وقابلة للتشغيل البيني لعالم متعدد السلاسل» ([cosmwasm.com](https://www.cosmwasm.com/#:~:text=Secure%2C%20performant%2C%20interoperable%20smart%20contract,platform%20for%20the%20multi%2Dchain%20world)). تُكتب العقود بـ **Rust** وتعمل على «بيئة تشغيل Web Assembly محسّنة جداً» ([cosmwasm.com](https://www.cosmwasm.com/#:~:text=highly%20optimized%20Web%20Assembly%20runtime)). نُشرت CosmWasm عبر عشرات من سلاسل Cosmos SDK، بما فيها Osmosis وNeutron وInjective وSecret Network وTerra، وترث رسائل IBC الأصلية العابرة للسلاسل من Cosmos.
 
 **PolkaVM.** اتخذت VM العقود الذكية الأحدث في Polkadot طريقاً مختلفاً: بدلاً من تنفيذ Wasm الخام، بنت Parity ‏PolkaVM التي يصفها مستودعها بأنها «آلة افتراضية عامة على مستوى المستخدم مبنية على RISC-V» ([github.com/paritytech/polkavm](https://github.com/paritytech/polkavm#:~:text=PolkaVM%20is%20a%20general%20purpose,level%20RISC%2DV%20based%20virtual%20machine)). والسبب، وفق وثائق العقود الذكية لـ ink!، هو الأداء: تنفيذ RISC-V «يرتبط بإنتاجية المعاملات وتكاليفها»، بما يوفّر تنفيذاً أسرع وأرخص من مفسر Wasm الذي كانت ink! تستخدمه سابقاً ([use.ink](https://use.ink/docs/v6/background/why-riscv-and-polkavm-for-smart-contracts/#:~:text=performance%20correlates%20with%20transaction%20throughput)). ومن اللافت أن حزمة PolkaVM في Polkadot، التي تحمل علامة «Revive»، تقدّم أيضاً طبقة مفسر EVM، ما يسمح لعقود Solidity بالعمل على الواجهة الخلفية نفسها المبنية على RISC-V.
 
-**القوة المميزة.** تستبدل الآلات المعتمدة على WASM شيفرة ثنائية مصممة لغرض محدد بهدف ترجمة ناضج واسع التطبيق؛ وتمنح Rust خصوصاً ضمانات قوية لسلامة الذاكرة لشيفرة العقود، كما تستفيد بيئات تشغيل Wasm/RISC-V الأساسية من أدوات بُنيت لحالات استخدام غير بلوكتشين أكبر بكثير.
+**القوة المميزة.** تستبدل آلات الشيفرة الثنائية المحمولة الشيفرة الخاصة بالبلوكتشين بأهداف ترجمة عامة الغرض وراسخة. وتمنح Rust خصوصاً ضمانات قوية لسلامة الذاكرة لشيفرة العقود، كما تستفيد كل من Wasm وRISC-V من أدوات بُنيت لحالات استخدام غير بلوكتشين أكبر بكثير. وتظل CosmWasm وPolkaVM بنيتين مختلفتين: تنفّذ الأولى Wasm، بينما تنفّذ الثانية شيفرة ثنائية مشتقة من RISC-V.
 
 ---
 
@@ -115,7 +115,7 @@ relatedGlossary:
 
 **نموذج التنفيذ.** تترجم Cairo إلى مجموعة تعليمات مكتملة تورنغ («آلة Cairo») تُحدد كمجموعة من التمثيلات الوسيطة الجبرية، بحيث يمكن تحويل أثر تنفيذ أي برنامج Cairo إلى إثبات STARK موجز قابل للتحقق على Ethereum L1 ([starknet.io](https://www.starknet.io/cairo-book/ch201-architecture.html#:~:text=At%20its%20core%2C%20Cairo%20is,arbitrary%20code%29%20through%20the%20Cairo%20machine)). وهذا ما يتيح لـ Starknet تجميع آلاف المعاملات خارج السلسلة ونشر إثبات واحد صغير للصحة إلى Ethereum، بدلاً من إعادة تنفيذ كل معاملة.
 
-**القوة المميزة.** لأن قابلية إنشاء الإثبات كانت قيد التصميم الابتدائي لا فكرة لاحقة، يكون إثبات برامج Cairo أرخص من حساب مكافئ يُشغّل عبر VM عامة أُعيد تكييفها مع مُثبت zk ‏(«zkEVM»). والمقابل هو منظومة لغوية أحدث وأصغر ومنحنى تعلم أشد انحداراً من Solidity للمطورين القادمين من Ethereum.
+**القوة المميزة.** كانت ملاءمة الإثبات قيداً تصميمياً أساسياً في Cairo؛ فقد صُممت مجموعة التعليمات وأثر التنفيذ لتوليد إثباتات STARK بكفاءة. ومع ذلك، تعتمد تكلفة الإثبات الفعلية على البرنامج وتنفيذ المُثبِت ومعلمات نظام الإثبات ومرجع المقارنة، ولذلك لا تكون دائماً أقل من تكلفة كل أعباء عمل zkEVM. والمقابل هو منظومة لغوية أحدث وأصغر ومنحنى تعلم أشد انحداراً من Solidity للمطورين القادمين من Ethereum.
 
 ---
 
@@ -126,7 +126,7 @@ relatedGlossary:
 | **EVM** | Solidity، Vyper | آلة مكدس؛ حالة الحساب/التخزين في شجرة Merkle Patricia | لا، متسلسل داخل الكتلة | الأكبر؛ الهدف الافتراضي لحلول L2 وسلاسل التطبيقات | أصلي |
 | **SVM ‏(Solana)** | Rust، C، C++ | شيفرة ثنائية مشتقة من BPF؛ حالة قائمة على الحسابات مع مجموعات قراءة/كتابة معلنة | نعم، تجدول Sealevel المعاملات غير المتداخلة بالتزامن | كبير وسريع النمو، ومعظمه خاص بـ Solana | لا (منظومة منفصلة) |
 | **MoveVM ‏(Aptos/Sui)** | Move | كائنات بأنواع موارد؛ تستخدم Aptos ‏Block-STM، وتستخدم Sui صور ملكية متعددة مع مسارات مباشرة ومسارات مرتبة عبر التوافق | نعم، يُستنتج وقت التشغيل (Aptos) أو عبر ملكية الكائن (Sui) | أصغر وينمو؛ منظومتان مستقلتان لـ Move | لا |
-| **معتمدة على WASM ‏(CosmWasm، PolkaVM)** | Rust ‏(CosmWasm)؛ سلاسل أدوات Rust/C/RISC-V ‏(PolkaVM) | شيفرة Wasm الثنائية (CosmWasm) أو شيفرة RISC-V الثنائية (PolkaVM) | يعتمد على السلسلة؛ ليس خاصية عامة لتنفيذ Wasm | متوسط؛ موزع على كثير من سلاسل Cosmos ومجموعة parachains في Polkadot | تضيف PolkaVM/Revive طبقة مفسر EVM؛ أما CosmWasm فليست متوافقة مع EVM |
+| **شيفرة ثنائية محمولة ‏(CosmWasm، PolkaVM)** | Rust ‏(CosmWasm)؛ سلاسل أدوات Rust/C/RISC-V ‏(PolkaVM) | شيفرة Wasm الثنائية (CosmWasm) أو شيفرة RISC-V الثنائية (PolkaVM) | يعتمد على السلسلة؛ وليس خاصية عامة لأي من صيغتي التعليمات | متوسط؛ موزع على كثير من سلاسل Cosmos ومجموعة parachains في Polkadot | تضيف PolkaVM/Revive طبقة مفسر EVM؛ أما CosmWasm فليست متوافقة مع EVM |
 | **CairoVM ‏(Starknet)** | Cairo | آلة مكتملة تورنغ قائمة على AIR ومصممة لإثباتات STARK | ليس هدف التصميم الرئيسي؛ محسّنة لقابلية الإثبات لا للتزامن | الأصغر بين الخمسة، لكنه ينمو مع نشاط L2 في Starknet | لا (مشروعات zkEVM تربط عقود Solidity بها بشكل منفصل) |
 
 ---
@@ -154,4 +154,3 @@ relatedGlossary:
 - [لماذا RISC-V وPolkaVM للعقود الذكية — وثائق ink!](https://use.ink/docs/v6/background/why-riscv-and-polkavm-for-smart-contracts/)
 - [بنية Cairo — لغة برمجة Cairo / Starknet](https://www.starknet.io/cairo-book/ch201-architecture.html)
 - [WebAssembly](https://webassembly.org/)
----
