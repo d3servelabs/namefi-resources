@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 cluster: web3-foundations
 format: news
-description: UCP is Google’s bid to power agent-native commerce, letting AI assistants shop and check out across the open web.
+description: UCP is an open-source commerce standard for connecting AI shopping surfaces with merchants and payment providers.
 keywords: [‘Universal Commerce Protocol’, ‘UCP’, ‘Google UCP’, ‘AI shopping agents’, ‘AI-powered commerce’, ‘agentic commerce’, ‘AI ecommerce protocol’, ‘conversational commerce’, ‘AI checkout’, ‘future of ecommerce’, ‘agent-based shopping’, ‘open commerce standards’, ‘Google AI’, ‘Gemini AI’, ‘Agent Engine Optimization’]
 relatedArticles:
   - /en/blog/ai-vs-io-domain/
@@ -29,18 +29,26 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-Google is officially declaring war on the "[link tax](https://ccianet.org/advocacy/link-taxes/)" of traditional e-commerce. Earlier this week at the [National Retail Federation (NRF)](https://nrf.com/) conference, the search giant announced the release of the [Universal Commerce Protocol (UCP)](https://ucp.dev/), an open-source standard designed to let AI agents—like Gemini and potentially others—handle the entire shopping lifecycle from discovery to checkout without ever leaving the chat interface.
+At the National Retail Federation conference, Google introduced the [Universal Commerce Protocol (UCP)](https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/?linkId=36493970), an open-source standard for commerce interoperability among consumer surfaces, businesses, and payment providers. Google says UCP will support a new checkout experience for eligible product listings in AI Mode and the Gemini app in the United States, while the protocol itself is intended for use beyond Google's own products.
 
-The protocol, developed in collaboration with retail heavyweights like [Shopify](http://shopify.com), [Walmart](http://walmart.com), [Target](http://target.com), and [Etsy](http://etsy.com), aims to solve the "[N x N](https://thingsithinkithink.blog/posts/2025/04-08-the-m-x-n-problem-in-software-architecture/)" integration problem that has plagued the nascent agentic web. Until now, building an AI that could buy things meant building custom integrations for every single merchant. UCP proposes a standardized language for agents to "negotiate" with merchant backends, covering inventory checks, dynamic pricing, and secure payments.
+Google developed UCP with companies including [Shopify](https://www.shopify.com/), [Etsy](https://www.etsy.com/), [Wayfair](https://www.wayfair.com/), [Target](https://www.target.com/), and [Walmart](https://www.walmart.com/). Instead of requiring a unique point-to-point integration between every consumer surface and every business, UCP defines shared commerce primitives and a way for participants to discover and negotiate supported capabilities. A business publishes a profile describing the services and endpoints it supports; a client then uses those declared capabilities rather than scraping the merchant's site.
 
-*"AI agents will be a big part of how we shop in the not-so-distant future,"* Google CEO [Sundar Pichai](https://www.britannica.com/money/Sundar-Pichai) said in a post on X. *"UCP powers native checkout so you can buy directly on AI Mode and the Gemini app."*
+In his [NRF remarks](https://blog.google/company-news/inside-google/message-ceo/nrf-2026-remarks/), Google CEO Sundar Pichai described UCP as open and platform-agnostic. Google's [launch announcement](https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/) says more than 20 companies across retail, payments, and commerce have endorsed the protocol.
 
 ### Under the Hood
 
-Technically, UCP acts as an [abstraction layer](https://www.strata.io/glossary/abstraction-layer/). It separates the "shopping service" (checkout sessions, line items) from "capabilities" (shipping, loyalty programs). It is fully compatible with the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro) and Google’s own [Agent Payments Protocol (AP2)](https://ap2-protocol.org/), signaling that Google wants to own the rails of agentic commerce, even if it doesn't own every storefront.
+UCP separates commerce services, such as checkout, from optional capabilities, such as fulfillment choices and discounts. Its [technical overview](https://ucp.dev/2026-01-11/specification/overview/) defines bindings for REST, the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro), and Agent2Agent (A2A), allowing the same commerce capabilities to be exposed through different transports. UCP is also designed to work with the [Agent Payments Protocol (AP2)](https://ucp.dev/documentation/ucp-and-ap2/) so payment authorization can remain separate from the shopping workflow.
 
-### The Amazon Factor
+### What UCP Does — and Does Not Do
 
-The move is a clear shot across the bow at [Amazon](http://amazon.com), which has been increasingly litigious toward AI search engines like [Perplexity](http://perplexity.ai) for scraping its product data. By creating an open standard where merchants opt-in to be scraped and sold by agents, Google is building a coalition of the willing—essentially offering retailers a way to bypass Amazon's walled garden and sell directly through the world's most popular AI models.
+UCP is an opt-in interoperability standard, not permission for an agent to scrape a merchant's website. Participating businesses choose which capabilities and endpoints to expose. Google's announcement also says retailers remain the merchant of record and can preserve their customer relationships, while payment credentials are handled by the customer's chosen provider.
 
-For now, UCP is rolling out with select partners in the US, but the message is clear: The era of [SEO](/en/glossary/seo/) is ending; the era of AEO (Agent Engine Optimization) has begun.
+UCP could add another surface for product discovery and checkout, but it does not mean the era of [SEO](/en/glossary/seo/) is ending. Retailers still need accurate, discoverable product information for people and search engines. If agent-mediated commerce grows, businesses may also need structured catalogs, clear policies, and machine-readable capability profiles that agents can use reliably.
+
+### Sources
+
+- [Google Developers Blog: Under the Hood — Universal Commerce Protocol](https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/?linkId=36493970)
+- [Google: New tech and tools for retailers in the agentic era](https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/)
+- [Google: Sundar Pichai's NRF 2026 remarks](https://blog.google/company-news/inside-google/message-ceo/nrf-2026-remarks/)
+- [Universal Commerce Protocol technical overview](https://ucp.dev/2026-01-11/specification/overview/)
+- [UCP and Agent Payments Protocol](https://ucp.dev/documentation/ucp-and-ap2/)
