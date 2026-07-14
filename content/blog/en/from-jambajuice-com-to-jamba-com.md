@@ -9,7 +9,7 @@ cluster: domain-investing
 series: name-change-game-change
 seriesOrder: 15
 format: case-study
-description: 'How Jamba Juice spent 29 years explaining itself with the word "Juice," why it dropped that word in 2019 to become simply "Jamba," and the quiet advantage almost no one noticed: the company had owned the exact-match Jamba.com since the 1990s.'
+description: 'How Jamba Juice spent 29 years explaining itself with the word "Juice," why it dropped that word in 2019 to become simply "Jamba," and the quiet advantage almost no one noticed: Jamba.com was already an established company domain before the rebrand.'
 keywords: ['jambajuice.com', 'jamba.com', 'jamba juice domain name', 'jamba rebrand', 'domain upgrade', 'jamba juice name change', 'kirk perron', 'focus brands jamba', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'category-defining domain']
 relatedArticles:
   - /en/blog/from-ubercab-com-to-uber-com/
@@ -73,7 +73,7 @@ In August 2018, Jamba, Inc. agreed to be acquired by Atlanta-based Focus Brands.
 
 New ownership tends to force the identity question that founders defer for years. Within months of the sale closing, the 29-year-old "Juice" was gone. The rebrand was Focus Brands' first big public statement about what Jamba was going to be — and the simplest, cleanest way to say "we're more than juice now" was to stop saying "Juice."
 
-Kirk Perron, the founder who chose "Jamba" in the first place, didn't live to see the brand fully grow into the single word he'd picked. He [passed away on June 20](https://www.legacy.com/news/kirk-perron-2020-jamba-juice-founder) in 2020, in Palm Springs. The word he'd borrowed from Swahili to mean "celebrate" outlived the descriptive label that had ridden alongside it for a quarter century.
+Kirk Perron, the founder who chose "Jamba" in the first place, didn't live to see the brand fully grow into the single word he'd picked. He [passed away on June 20](https://www.legacy.com/news/kirk-perron-2020-jamba-juice-founder) in 2020, in Palm Springs. The coined identity associated with celebration outlived the descriptive label that had ridden alongside it for a quarter century.
 
 ## The money looked different then
 
@@ -119,9 +119,9 @@ A company's core domain shows up in places the marketing team never directly con
 
 Every one of those repetitions either adds friction or removes it. JambaJuice.com made each mention longer and pinned it to a single, increasingly loaded word. Jamba.com made each mention shorter, cleaner, and category-free — letting "bowls" and "boosts" and "plant-based" coexist with the name instead of fighting it.
 
-And the crucial point: **Jamba could make that switch instantly, because it already owned the destination.** Its own SEC filings list, in plain language, that [the Company has registered and maintains numerous Internet domain names, including "jamba.com" and "jambajuice.com."](https://www.sec.gov/Archives/edgar/data/1316898/000114420414014228/v369380_10k.htm) — a sentence on the record years *before* the 2019 rebrand. The expensive, slow part of a name change — securing the exact-match [.com](/en/tld/com/) — had been quietly handled since the late 1990s.
+And the crucial point: **Jamba could make that switch instantly, because it already owned the destination.** Its own SEC filings list, in plain language, that [the Company has registered and maintains numerous Internet domain names, including "jamba.com" and "jambajuice.com."](https://www.sec.gov/Archives/edgar/data/1316898/000114420414014228/v369380_10k.htm) — a sentence on the record years *before* the 2019 rebrand. The exact-match [.com](/en/tld/com/) had a documented Jamba web presence by 1999 and appeared again in the company's SEC filings well before the name change.
 
-Is there a public price for Jamba.com? No. Because there was no headline acquisition to put a number on. Jamba registered and held the name itself, so unlike the eleven-million-dollar Tesla.com deal or the equity-for-Uber.com trade, there is simply no public sale figure — and we won't invent one. The story here isn't what the domain cost. It's that owning it early made the rebrand almost free to execute.
+Is there a public acquisition price for Jamba.com? None appears in the sources reviewed for this article. Unlike the eleven-million-dollar Tesla.com deal or the equity-for-Uber.com trade, there is no documented sale figure here — and we won't invent one. The story is not what the domain cost or how it was first obtained; it is that the company already controlled it before the 2019 rebrand.
 
 ## What founders should learn from Case 16
 
@@ -129,18 +129,18 @@ The easy takeaway — "drop the descriptive word" — misses the more durable le
 
 1. **A descriptive word is fine — even smart — at the start.** "Juice" did 29 years of honest work, teaching a young category what the stores sold. A modifier in your name is an on-ramp, not a sin.
 2. **Watch for the day the word flips from asset to liability.** For Jamba, "Juice" didn't change — consumer perception did, and the menu outgrew it. The signal to upgrade is when your own name describes a smaller, or more dated, company than the one you've become.
-3. **Own the exact-match .com early, before you need it.** This is the quiet hero of the Jamba story. By holding Jamba.com for decades, the company turned a potentially expensive, multi-year domain hunt into a same-day switch. The cheapest time to buy your brand's exact-match domain is long before your brand is worth enough to make the seller greedy.
+3. **Control the exact-match .com before you need it.** This is the quiet hero of the Jamba story. Jamba.com had a documented company web presence by 1999 and was listed in SEC filings before the rebrand, so the company did not need a last-minute domain hunt when it shortened the name.
 4. **A rebrand is only as real as its address.** Announcing you're "Jamba" while still sending customers to JambaJuice.com would have undercut the whole point. Because the domain was already in hand, the new name was instantly, fully real.
 
-The domain upgrade did not make Jamba win or lose; product, ownership, and execution mattered far more. But owning Jamba.com decades early meant that when the strategy finally called for dropping a word, the company could do it cleanly — no negotiation, no NDA, no eight-figure check.
+The domain upgrade did not make Jamba win or lose; product, ownership, and execution mattered far more. But controlling Jamba.com before the rebrand meant that when the strategy finally called for dropping a word, the company could do it cleanly without a last-minute domain acquisition.
 
 ## The Namefi angle
 
 ![Colorful illustration of a premium domain moving through verified transfer, a green Namefi token, and DNS continuity](../../assets/from-jambajuice-com-to-jamba-com-03-namefi-angle.jpg)
 
-Most cases in this series are transfer problems: a company needs a domain someone else owns, and the drama is in acquiring it. Jamba is the inverse — and just as instructive. The drama here is *foresight*: a founder who, decades before it mattered, made sure the brand's exact-match .com was already in the portfolio.
+Most cases in this series are transfer problems: a company needs a domain someone else owns, and the drama is in acquiring it. Jamba is the inverse — and just as instructive. The important fact here is readiness: the company had an established Jamba.com presence long before the shorter name became its primary brand.
 
-That foresight is exactly the behavior good domain infrastructure should make easier and cheaper. The hard part of holding a strategic domain for twenty years isn't the idea — it's the upkeep: keeping registrations current, proving ownership cleanly across corporate changes (a founder's startup, a public company, a $200M acquisition by Focus Brands), and being able to promote a long-held name to primary status the day the strategy calls for it, without breaking anything live.
+That readiness is exactly the behavior good domain infrastructure should make easier and cheaper. The hard part of managing a strategic domain over the long term isn't the idea — it's the upkeep: keeping registrations current, proving ownership cleanly across corporate changes (a founder's startup, a public company, a $200M acquisition by Focus Brands), and being able to promote an existing name to primary status the day the strategy calls for it, without breaking anything live.
 
 [Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, hold, transfer, and integrate into modern workflows while staying compatible with DNS — turning the quiet, long-term work of *keeping* a strategic domain (and proving you still own it through every corporate twist) into something closer to a clean, auditable, programmable asset.
 
