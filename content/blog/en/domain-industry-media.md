@@ -64,7 +64,7 @@ These are reference works rather than publications, but no media stack is comple
 
 ### DNJournal — [dnjournal.com](https://www.dnjournal.com/)
 
-Edited by Ron Jackson since 2003. Publishes the **weekly Domain Sales Report** every Monday — the canonical record of reported sales for the prior week. Every "top sales of the year" list in the industry derives from DNJournal data. Also runs The Lowdown, a long-form interview column.
+Edited by Ron Jackson, with sales archives reaching back to 2003. The report was weekly for many years, but the [archive labels the 2021-2025 columns as bi-weekly](https://www.dnjournal.com/archive/domainsales-archive.htm), and current 2026 reports generally cover two-week periods. It is a long-running curated record of publicly reported sales, not a complete or audited ledger; DNJournal itself says private deals make a complete list impossible. The site also runs The Lowdown, a long-form interview column.
 
 ### NameBio — [namebio.com](https://namebio.com/)
 
@@ -99,9 +99,14 @@ A few things to keep in mind.
 
 ## Choosing a starting set
 
-If you want a single recommendation: **subscribe to DomainNameWire (RSS or newsletter), check DNJournal every Monday morning, and bookmark NameBio for lookups.** That gives you news, weekly sales context, and a searchable history — enough to follow the industry without needing to refresh ten sites a day.
+If you want a single recommendation: **subscribe to DomainNameWire (RSS or newsletter), check DNJournal when its next sales report lands, and bookmark NameBio for lookups.** That gives you news, recurring sales context, and a searchable history — enough to follow the industry without needing to refresh ten sites a day.
 
 Add DomainSherpa's archive when you want depth on a specific investor, and CircleID when policy issues start affecting your portfolio.
+
+## Sources and further reading
+
+- DNJournal — [Domain Sales Archive](https://www.dnjournal.com/archive/domainsales-archive.htm), including weekly and bi-weekly historical columns.
+- DNJournal — [Latest Domain Sales Report](https://www.dnjournal.com/domainsales.htm), including the report's date range and disclosure limits.
 
 ---
 

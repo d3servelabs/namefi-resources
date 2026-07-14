@@ -72,7 +72,7 @@ Substack has not produced a dominant *domain-specific* publication yet — most 
 
 - **The DomainInvesting.com daily email** — same content as the blog, delivered to your inbox. The most reliable single feed in the industry.
 - **DomainNameWire newsletter** — see the companion post on [domain industry media](/en/blog/domain-industry-media) for context; the newsletter is the easiest way to follow [DomainNameWire](https://domainnamewire.com/) without checking the site.
-- **DNJournal's weekly sales report** — published every Monday since 2003 at [DNJournal](https://www.dnjournal.com/). Not a personal newsletter, but it is *the* canonical weekly digest of reported domain sales, edited by Ron Jackson. Every other "top sales" list in the industry derives from this one.
+- **DNJournal's recurring sales report** — edited by Ron Jackson, with archives reaching back to 2003. It ran weekly for many years, while the [2021-2025 archives are labeled bi-weekly](https://www.dnjournal.com/archive/domainsales-archive.htm) and current 2026 reports generally cover two-week periods. It is not a personal newsletter, but it remains a useful curated digest of publicly reported sales; it is neither a complete nor an audited ledger.
 - **DomainShane's recap posts** — Shane periodically does week-in-review pieces that are essentially newsletter-style summaries of the market.
 - **Saw.com blog** — [Saw.com](https://saw.com/blog) (the brokerage co-founded by Amanda Waltz and Jeff Gabriel) publishes thoughtful pieces on the brokerage side of the business. More polished than the average personal blog.
 
@@ -92,9 +92,14 @@ A few patterns are worth pointing out.
 
 ## Choosing a starting set
 
-If you want a single recommendation: **subscribe to DomainInvesting.com (daily), DNJournal (weekly), and follow Elliot, Morgan Linton, and one or two brokers on X.** That gives you the daily pulse, the weekly sales digest, and the live feed — without drowning.
+If you want a single recommendation: **subscribe to DomainInvesting.com (daily), follow DNJournal's recurring sales reports, and follow Elliot, Morgan Linton, and one or two brokers on X.** That gives you the daily pulse, periodic sales context, and the live feed — without drowning.
 
 You can add the rest of this list as you figure out which voices you trust.
+
+## Sources and further reading
+
+- DNJournal — [Domain Sales Archive](https://www.dnjournal.com/archive/domainsales-archive.htm), including weekly and bi-weekly historical columns.
+- DNJournal — [Latest Domain Sales Report](https://www.dnjournal.com/domainsales.htm), including the report's date range and disclosure limits.
 
 ---
 
