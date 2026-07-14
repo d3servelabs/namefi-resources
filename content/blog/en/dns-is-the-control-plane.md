@@ -39,7 +39,7 @@ Namefi customers, however, saw a quiet day. Our systems kept running as usual—
 
 That said, the Namefi engineering team reviews global outages like this and learns from them, as it does for all major incidents. Here is what has been learned so far:
 
-*Note: At the time of writing, the incident is still developing. This post may be updated from time to time. If you see any mistakes or corrections needed, please share with dev-team at [namefi.io](http://namefi.io). We appreciate it.*
+*Note: This article has been updated to reflect AWS's official post-event summary. If you see any mistakes or corrections needed, please share them with the dev team at [namefi.io](https://namefi.io). We appreciate it.*
 
 ## What actually went wrong in AWS—without the jargon
 
@@ -55,7 +55,9 @@ Amazon’s own properties had trouble too: Amazon.com, Prime Video, Alexa, and R
 
 ## Under the hood
 
-AWS’s timeline points to DNS resolution failures for the DynamoDB API in US-EAST-1. The underlying trigger was attributed to an internal EC2 subsystem that monitors the health of Network Load Balancers (NLBs); when that subsystem malfunctioned, it surfaced outwardly as bad name lookups to the DynamoDB endpoint. AWS mitigated the DNS issue at 2:24 AM PDT and declared all services normal by 3:01 PM PDT, while backlogs drained through the afternoon. ([Amazon](https://www.aboutamazon.com/news/aws/aws-service-disruptions-outage-update), [Reuters](https://www.reuters.com/business/retail-consumer/amazons-cloud-unit-reports-outage-several-websites-down-2025-10-20/))
+AWS’s post-event summary identifies a latent race condition in DynamoDB’s automated DNS-management system as the root cause. Two independent DNS Enactors applied and cleaned up plans in an unlikely sequence, leaving the regional DynamoDB endpoint with an incorrect empty DNS record that the automation could not repair. AWS restored the DNS information by 2:25 AM PDT, and customers recovered as cached failures expired through 2:40 AM. ([AWS post-event summary](https://aws.amazon.com/message/101925/))
+
+The EC2 and Network Load Balancer (NLB) problems came later in the recovery cascade; they did not trigger the DynamoDB DNS failure. EC2’s fleet-management system depended on DynamoDB and accumulated expired leases and queued work during the DNS outage. Delayed network-state propagation for newly launched EC2 instances then caused false NLB health-check failures, leading some healthy NLB capacity to be removed from DNS. ([AWS post-event summary](https://aws.amazon.com/message/101925/))
 
 Independent network telemetry noted no broader internet routing anomaly (for example, no BGP incident), which aligns with the conclusion that the fault sat inside AWS’s control plane rather than on the public internet. ([ThousandEyes](https://www.thousandeyes.com/blog/aws-outage-analysis-october-20-2025))
 
@@ -79,8 +81,8 @@ When incidents like Oct 20 occur, that separation is what keeps the map intact.
 
 ## Sources and further reading
 
-- Amazon — Official incident timings and recovery steps (mitigation at 2:24 AM PDT; all services normal by 3:01 PM PDT; EC2 throttling during recovery). ([Amazon](https://www.aboutamazon.com/news/aws/aws-service-disruptions-outage-update))
-- Reuters — Root cause in EC2 internal NLB health-monitoring subsystem; scope of impact; multi-million user reports; backlog clearing. ([Reuters](https://www.reuters.com/business/retail-consumer/amazons-cloud-unit-reports-outage-several-websites-down-2025-10-20/))
+- AWS — Official post-event summary identifying the DynamoDB DNS-management race condition as the root cause and documenting the later EC2 and NLB recovery cascade. ([AWS](https://aws.amazon.com/message/101925/))
+- Amazon / Reuters — Initial incident timeline, scope of impact, multi-million user reports, and backlog clearing. ([Amazon](https://www.aboutamazon.com/news/aws/aws-service-disruptions-outage-update), [Reuters](https://www.reuters.com/business/retail-consumer/amazons-cloud-unit-reports-outage-several-websites-down-2025-10-20/))
 - ThousandEyes — Telemetry focusing on US-EAST-1, DNS to DynamoDB, and absence of broader routing anomalies. ([ThousandEyes](https://www.thousandeyes.com/blog/aws-outage-analysis-october-20-2025))
 - The Verge / Tom’s Guide — Public timelines, confirmation that the event was DNS/control-plane related rather than a cyberattack, and examples of affected platforms. ([The Verge](https://www.theverge.com/news/802486/aws-outage-alexa-fortnite-snapchat-offline))
 - IETF / Cloudflare Docs — DNS negative caching behavior (RFC 2308, RFC 9520) and multi-signer DNSSEC patterns for multi-provider authoritative deployments (RFC 8901, operator docs). ([RFC Editor](https://www.rfc-editor.org/rfc/rfc8901), [RFC Editor](https://www.rfc-editor.org/rfc/rfc9520))
