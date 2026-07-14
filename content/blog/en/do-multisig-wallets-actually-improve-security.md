@@ -107,8 +107,8 @@ This is the unavoidable tension. Higher M is more secure against external attack
 
 A few honest cases:
 
-- **For very small balances**, the operational overhead of multisig (transaction coordination, gas costs on EVM, learning curve) can produce mistakes that single-key custody would not have. The right tool for $200 of pocket-money crypto is a hardware-backed single key.
-- **For solo users who treat multisig as a recovery scheme** but in practice keep all three keys on devices they alone control, multisig adds complexity without changing the threat model—if a single attacker compromises one of those devices today, they probably can compromise them all.
+- **For balances whose impact does not justify the operational cost**, multisig coordination, transaction fees, and learning overhead can introduce mistakes that a simpler setup would avoid. There is no universal dollar threshold: the choice should follow the owner's loss tolerance, attack exposure, and ability to operate recovery procedures. For some low-impact personal holdings, a well-protected hardware-backed single key may be the safer operational choice.
+- **For solo users who treat multisig as a recovery scheme** but keep every key in correlated environments, multisig can add complexity without much independence. An attacker who reaches a shared password manager, cloud backup, recovery location, or similarly administered device fleet may cross the threshold through that common dependency. Separating keys across genuinely independent storage and recovery paths is what changes this threat.
 - **For organizations that do not actually have signer diversity**—everyone in the same office, on the same VPN, using the same SSO—the threshold becomes a formality.
 
 In all three cases, the answer is not "use single-key custody." It is "use multisig *correctly* or use a custodian who does." But pretending the contract type alone delivers safety, regardless of operational practice, is how the high-profile losses happen.
@@ -124,13 +124,13 @@ A 2-of-3 or 3-of-5 multisig works well as a treasury control when *all* of the f
 - The multisig contract itself is well-audited (Safe is the conservative default in 2026) and the version is pinned and known.
 - A signer replacement procedure exists and has been rehearsed.
 
-This is more discipline than most teams realize at the outset. The good news is the discipline is one-time investment; the bad news is the discipline matters more than the contract.
+This is more discipline than most teams realize at the outset. It is an ongoing operational investment: signer rotation, recovery drills, device updates, transaction review, and process audits must continue over the life of the wallet. That discipline matters at least as much as the contract.
 
 ## How this connects to domains
 
-Naming is one of the strongest analogies to multisig in the off-chain world. A domain controlled by a single [registrar](/en/glossary/registrar/) account behind a single password is a single-key wallet. A domain protected by registrar lock + [registry lock](/en/glossary/registry-lock/) + 2FA at the DNS provider + multiple authoritative providers is, structurally, a multisig: multiple independent factors must each be compromised before the name moves.
+Domain operations contain several security boundaries, but they are not one multisig. Registrar and [registry locks](/en/glossary/registry-lock/) constrain transfer, deletion, or registration-data changes at the registration layer. 2FA at a DNS provider protects that provider account. Multiple authoritative DNS providers can improve availability when they are configured and operated independently. These are useful layers of defense, but they do not form an M-of-N threshold: compromise of a registrar account or a single writable DNS control plane may still be enough to change nameserver delegation or DNS answers without defeating every other layer.
 
-Namefi takes this further by representing ownership as an on-chain record that can be held in a multisig wallet directly. The same threshold scheme that protects a treasury can now protect the *DNS control plane*—so a single phished individual cannot lose the company's domain any more than they can drain the treasury alone. The threat model upgrade is the same in both worlds: replace "trust one credential" with "compromise M of N independent factors."
+Namefi represents domain ownership as an on-chain record that can be held in a multisig wallet. In that configuration, the wallet's threshold protects on-chain ownership actions that require the token holder's authorization: one compromised signer cannot unilaterally transfer the token. It does **not** automatically impose the same threshold on DNS changes made through a registrar or external DNS provider such as Cloudflare or Route 53. Those systems need their own least-privilege access, MFA, approval, logging, and recovery controls. The precise threat-model improvement is therefore at the tokenized ownership boundary; DNS resilience depends on how the separate DNS and delegation control planes are configured.
 
 ## Sources and further reading
 
@@ -139,3 +139,5 @@ Namefi takes this further by representing ownership as an on-chain record that c
 - Bitcoin — [BIP-174 PSBT](https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki).
 - Parity — [Multisig freeze post-mortem](https://www.parity.io/blog/security-alert/).
 - a16z crypto — [Practical guide to running a Safe multisig](https://a16zcrypto.com/posts/article/secure-your-tokens-set-up-a-safe-multisig/).
+- ICANN SSAC — [A Registrant's Guide to Protecting Domain Name Registration Accounts (SAC044)](https://www.icann.org/en/system/files/files/sac-044-en.pdf), including separate registration, DNS-hosting, monitoring, and lock controls.
+- Namefi — [How DNS, nameservers, and the ownership token interact on a tokenized domain](/en/blog/dns-on-tokenized-domains/).
