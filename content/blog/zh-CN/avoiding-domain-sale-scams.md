@@ -50,7 +50,7 @@ relatedGlossary:
 
 维基百科对这一手法有直白的描述：[虚假托管诈骗是一种直截了当的信任骗局，骗子运营一个虚假托管服务](https://en.wikipedia.org/wiki/Bogus_escrow#:~:text=The%20bogus%20escrow%20scam%20is%20a%20straightforward%20confidence%20trick%20in%20which%20a%20scammer%20operates%20a%20bogus%20escrow%20service)。这个假网站存在的唯一意义，就是在你最认真听话的那一刻对你撒谎。用维基百科的话说，[这个虚假托管服务会向受害者保证，骗子已经发送了其物品，受害者应将自己的物品发送给托管服务](https://en.wikipedia.org/wiki/Bogus_escrow#:~:text=This%20bogus%20escrow%20service%20assures%20the%20victim%20that%20the%20scammer%20has%20sent%20its%20item)。你看到"买家已注入托管资金"，便把域名转移过去以结清交易，而那笔钱从来就不存在。网站随即消失，买家也随之蒸发。
 
-识破的方法永远只有一个：是买家选择了这家托管服务，而你从未听说过它。托管之所以能保护你，前提是*你*自己选择了托管方。由你的交易对手推荐、链接、并方便地设置好的托管公司，不是中立的裁判，而是对方队伍穿着裁判球衣的球员。
+真正的警示信号，不是托管服务由谁提出，而是对方施压要求你使用一个未经独立核验的服务商或链接。请通过权威来源核查服务商的法律主体、适用时所需的牌照、官方域名和联系方式。加州金融保护与创新部建议用户[确认在线托管公司是否持牌，并警告称，坚持使用某项特定服务的买家或卖家可能是在把用户引向诈骗网站](https://dfpi.ca.gov/regulated-industries/escrow-law/online-escrow-companies/10-tips-to-avoid-online-escrow-fraud/)。发起交易时，请自行输入服务商已知的官方域名，或登录你亲自在该服务商处开设的账户——绝不要使用对方提供的链接——并在这个已登录的账户内核实交易。Escrow.com 的诈骗防范指南同样建议[直接在浏览器中访问该公司的网站，而不要点击链接](https://www.escrow.com/what-is-escrow/fraud-prevention)。买家建议的服务商也可能是合法的；真正提供保护的，是你独立确认并使用了真实的服务。
 
 ## 虚假买家与虚假经纪人
 
@@ -76,7 +76,7 @@ relatedGlossary:
 
 有时骗局连表演都省去了，直接诉诸你的善意。"买家"解释说，他们公司的规定是*收到资产之后*才能支付发票——采购流程如此、财务政策如此，或者老板必须先看到域名在账户里才会放款。能不能先转移域名，他们马上放款？听起来合情合理，甚至带着一丝被你不信任的委屈。
 
-不要先转移。域名一旦离开你的掌控，你的筹码就消失了，要追回来就得走漫长而充满不确定性的争议程序，而不是简单退款。之所以这一点尤为关键，是因为域名转移本身的运作机制如此。将域名迁移到另一家[注册商](/zh-CN/glossary/registrar/)，需要你交出授权码——维基百科指出，买家需要[从原注册商处获取授权码（EPP 转移码）](https://en.wikipedia.org/wiki/Domain_name_transfer#:~:text=obtains%20the%20authentication%20code%20%28EPP%20transfer%20code%29)——一旦该授权码发出、转移完成，域名就归对方所有了。同一来源还指出，[整个过程大约需要五天](https://en.wikipedia.org/wiki/Domain_name_transfer#:~:text=The%20process%20may%20take%20about%20five%20days)，转移完成后还有一段锁定期不可再次转移，这个锁定期曾经是 60 天，根据维基百科，[60 天转移锁定政策已被取消，改为 30 天锁定期](https://en.wikipedia.org/wiki/Domain_name_transfer#:~:text=replaced%20with%20a%2030%2Dday%20lock%20period)。如果你已经把域名交给了骗子，这些规定对你毫无帮助。
+不要先转移。域名一旦离开你的掌控，你的筹码就消失了，要追回来就得走漫长而充满不确定性的争议程序，而不是简单退款。之所以这一点尤为关键，是因为域名转移本身的运作机制如此。将域名迁移到另一家[注册商](/zh-CN/glossary/registrar/)需要授权码；ICANN 说明，[域名持有人要将域名从一家注册商转移到另一家注册商，必须使用 Auth-Code](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en#:~:text=An%20Auth%2DCode%20is%20required%20for%20a%20domain%20holder%20to%20transfer%20a%20domain%20name%20from%20one%20registrar%20to%20another)。一旦该授权码发出、转移完成，域名就归对方所有了。ICANN 现行《转移政策》仍允许注册商拒绝转移注册未满 60 天，或距上一次注册商间转移未满 60 天的域名；同时要求在注册人变更后执行 60 天的注册商间转移锁定，除非注册商提供了退出选项且注册人选择退出（[ICANN《转移政策》第 3.7.5–3.8.5 节及 II.C.2](https://www.icann.org/en/contracted-parties/accredited-registrars/transfer-policy-01-06-2016-en#:~:text=3.7.5%20The%20transfer%20was%20requested%20within%2060%20days)）。这些现行的 60 天规则并未被统一的 30 天锁定全面取代。如果你已经把域名交给了骗子，任何一条规则都帮不了你。
 
 这种骗局还有一个变体，针对的是你正在*购买*的域名：卖家收款后不释放[授权码（EPP 码 / 转移码）](/zh-CN/glossary/auth-code/)，或者释放一个无效的授权码。两种情形的原理完全一致。无论从哪一方来看，谁在没有中立方持有交易另一半的情况下先行出手，谁就是那个暴露在风险中的人。
 
@@ -84,7 +84,7 @@ relatedGlossary:
 
 上述骗局形态各异，但防范措施并不复杂。一份简短而朴实的清单，几乎可以抵御所有域名出售攻击，而真正正规的交易对手，会欣然配合其中每一条。
 
-**始终使用真实的托管结算，并由你自己选择托管方。** 坚持使用*你*提出的信誉良好的托管服务或[市场 (例如 OpenSea, Blur)](/zh-CN/glossary/marketplace/)。中立性只有在你亲自选择裁判时才成立。如果买家拒绝你的托管方案，坚持使用他们自己的，交易就此终止——那声拒绝本身就是诊断结果。完整的操作流程详见[域名托管详解](/zh-CN/blog/domain-escrow-explained/)，卖家核查清单详见[如何出售你名下的域名](/zh-CN/blog/how-to-sell-a-domain-name-you-own/)。
+**始终使用经过独立核验、有托管保障的结算方式。** 使用信誉良好的托管服务或[市场 (例如 OpenSea, Blur)](/zh-CN/glossary/marketplace/)，并在登录或投入资金前，独立核验服务商的法律主体、适用时所需的牌照和官方域名。请从服务商官网登录自己的账户，并在该账户内发起或加入交易，不要使用任何一方提供的链接。买家若拒绝使用任何经过独立核验的中立服务，就应停止交易；买家仅仅提出一家合法服务商，并不能证明存在欺诈。完整的操作流程详见[域名托管详解](/zh-CN/blog/domain-escrow-explained/)，卖家核查清单详见[如何出售你名下的域名](/zh-CN/blog/how-to-sell-a-domain-name-you-own/)。
 
 **在信任这笔交易之前，先核实对方身份。** 查询 [WHOIS（与 RDAP）](/zh-CN/glossary/whois/)，核实买家声称所属的公司，确认邮件域名是否匹配，并对声称代表企业采购部门却使用免费网页邮箱的人保持警惕。两分钟的身份核查，几乎可以完全瓦解虚假买家和虚假经纪人骗局。
 
@@ -100,7 +100,7 @@ relatedGlossary:
 
 本指南的大部分内容，都在讨论如何守护交接的那一刻——在域名转移之前证明付款真实存在，在资金转移之前证明域名真实存在。这整个僵局之所以存在，是因为在传统体系中，所有权与支付分处两个独立的系统，需要由一个可信的中间人来协调对接。
 
-[Namefi](https://namefi.io) 通过将真实 ICANN 域名的所有权代币化，正在缩小这一鸿沟——域名的控制权与交易结算可以同时得到验证和交换，同时保持 DNS 连续性，使域名在交接过程中始终可以正常解析。当资产可审计、转移是原子性的，本指南中所有骗局所攻击的"谁先出手"问题，就少了许多藏身之所。我们在[代币化市场如何取代托管](/zh-CN/blog/how-tokenized-marketplaces-replace-escrow/)中深入探讨了这一转变。
+[Namefi](https://namefi.io) 通过将真实 ICANN 域名的所有权代币化来缩小这一鸿沟，让域名控制权可审计，同时在交接过程中保持 DNS 连续性。但代币转移本身并不等同于付款与所有权的原子交换：ERC-721 的标准转移函数[规定了 NFT 所有权从一个地址转移到另一个地址](https://eips.ethereum.org/EIPS/eip-721#:~:text=Transfers%20the%20ownership%20of%20an%20NFT%20from%20one%20address%20to%20another%20address)，却不要求同时包含购买付款环节。如果交易的两个环节都在链上，具体的销售合约可以在同一笔交易中绑定付款和所有权交付；任一环节失败，整笔交易就会回滚。EIP-140 规定，`REVERT` 会[停止执行并回滚此前所有状态变更](https://eips.ethereum.org/EIPS/eip-140#:~:text=The%20REVERT%20instruction%20will%20stop%20execution%2C%20roll%20back%20all%20state%20changes)。只有这种合约层面的绑定——而不是代币化本身——才能形成原子的交付对付款（Delivery versus Payment，DvP），并缓解"谁先出手"的问题。没有这种绑定，双方仍需使用托管或其他结算机制。我们在[代币化市场如何取代托管](/zh-CN/blog/how-tokenized-marketplaces-replace-escrow/)中深入探讨了这一转变。
 
 ## 友情提示（请阅读！）
 
@@ -112,5 +112,8 @@ relatedGlossary:
 
 - 维基百科 — [Bogus escrow（虚假托管诈骗的定义与运作机制）](https://en.wikipedia.org/wiki/Bogus_escrow#:~:text=The%20bogus%20escrow%20scam%20is%20a%20straightforward%20confidence%20trick%20in%20which%20a%20scammer%20operates%20a%20bogus%20escrow%20service)
 - 维基百科 — [Chargeback（拒付的定义与撤销付款的机制）](https://en.wikipedia.org/wiki/Chargeback#:~:text=A%20chargeback%20is%20a%20return%20of%20money%20to%20a%20payer)
-- 维基百科 — [Domain name transfer（EPP 授权码、约 5 天转移周期、30 天锁定）](https://en.wikipedia.org/wiki/Domain_name_transfer#:~:text=obtains%20the%20authentication%20code%20%28EPP%20transfer%20code%29)
+- ICANN — [转移政策](https://www.icann.org/en/contracted-parties/accredited-registrars/transfer-policy-01-06-2016-en) · [面向域名持有人的转移常见问题](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en)
+- Ethereum Improvement Proposals — [ERC-721 代币转移语义](https://eips.ethereum.org/EIPS/eip-721) · [EIP-140 交易回滚语义](https://eips.ethereum.org/EIPS/eip-140)
+- 加州 DFPI — [避免在线托管诈骗的 10 条建议](https://dfpi.ca.gov/regulated-industries/escrow-law/online-escrow-companies/10-tips-to-avoid-online-escrow-fraud/)
+- Escrow.com — [诈骗防范](https://www.escrow.com/what-is-escrow/fraud-prevention)
 - Namefi 资源 — [域名托管详解](/zh-CN/blog/domain-escrow-explained/) · [如何出售你名下的域名](/zh-CN/blog/how-to-sell-a-domain-name-you-own/) · [域名劫持是如何发生的](/zh-CN/blog/how-domain-hijacking-actually-happens/)
