@@ -19,11 +19,11 @@ relatedArticles:
   - /es/blog/blockchain-consensus-mechanisms/
   - /es/blog/perfect-vs-computational-zero-knowledge/
 relatedGlossary:
-  - /es/glossary/blockchain/
+  - /es/glossary/zero-knowledge-proof/
+  - /es/glossary/fully-homomorphic-encryption/
+  - /es/glossary/secure-multiparty-computation/
+  - /es/glossary/trusted-execution-environment/
   - /es/glossary/cryptographic-security/
-  - /es/glossary/ethereum/
-  - /es/glossary/nft/
-  - /es/glossary/wallet/
 relatedTopics:
   - /es/topics/web3-foundations/
   - /es/topics/domain-tokenization/

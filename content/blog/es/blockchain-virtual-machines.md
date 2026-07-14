@@ -25,11 +25,11 @@ relatedSeries:
   - /es/series/tokenize-your-com/
   - /es/series/domain-flipping-skills/
 relatedGlossary:
-  - /es/glossary/blockchain/
+  - /es/glossary/ethereum-virtual-machine/
+  - /es/glossary/webassembly/
   - /es/glossary/smart-contract/
   - /es/glossary/ethereum/
   - /es/glossary/gas/
-  - /es/glossary/layer-2/
 ---
 
 Todo [contrato inteligente](/es/glossary/smart-contract/) debe ejecutarse en algún lugar. Ese «lugar» es una máquina virtual de blockchain (VM): el programa aislado que todos los nodos de la red ejecutan de manera idéntica, de modo que la misma entrada siempre produzca la misma salida sin importar quién la ejecute. La VM sobre la que construyes determina casi todo lo relativo a una cadena: en qué lenguajes puedes programar, si las transacciones pueden ejecutarse al mismo tiempo o solo una tras otra, y qué parte del ecosistema de desarrolladores existente puedes aprovechar desde el primer día.

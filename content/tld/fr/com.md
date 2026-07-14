@@ -18,11 +18,11 @@ faqs:
   - question: 'Pourquoi les bons domaines .com sont-ils si difficiles à trouver ?'
     answer: "Avec plus de 160 millions de noms .com enregistrés, l'offre de noms courts, de dictionnaire et correspondant exactement à une marque est en grande partie épuisée. La plupart des noms .com premium sont déjà détenus et ne sont donc disponibles que sur le marché secondaire."
 relatedArticles:
-  - /fr/blog/what-is-a-tld/
-  - /fr/blog/top-tlds-to-secure-for-your-business/
-  - /fr/blog/top-tlds-to-secure-for-your-startup/
+  - /fr/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /fr/blog/the-sex-com-heist-the-forged-letter/
+  - /fr/blog/from-teslamotors-com-to-tesla-com/
   - /fr/blog/what-makes-a-domain-valuable/
-  - /fr/blog/ai-vs-io-domain/
+  - /fr/blog/top-tlds-to-secure-for-your-business/
 relatedTopics:
   - /fr/topics/choosing-a-tld/
   - /fr/topics/domain-investing/

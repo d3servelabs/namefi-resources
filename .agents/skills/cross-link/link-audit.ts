@@ -8,7 +8,9 @@
  * resources runtime can apply its default-locale fallback.
  *
  * The focused locale check scans Markdown/MDX links plus the related-content
- * frontmatter fields already understood by scripts/validate-data.ts:
+ * frontmatter fields already understood by scripts/validate-data.ts. For
+ * translated content, relatedArticles and relatedGlossary must also preserve
+ * the English source's ordered relationship slugs while using the file locale:
  *
  *   bun links:locale
  *   bun links:locale --fix
@@ -19,10 +21,10 @@
  *   bun links:audit
  *   bun links:audit --fix
  *
- * Both modes accept path scopes and --json. Locale mismatches, broken targets,
- * and missing locale prefixes are blocking in the full audit. The focused
- * locale mode intentionally ignores external URLs, anchors, and internal paths
- * that do not begin with a recognized locale prefix.
+ * Both modes accept path scopes and --json. Locale/relationship mismatches,
+ * broken targets, and missing locale prefixes are blocking in the full audit.
+ * The focused locale mode intentionally ignores external URLs, anchors, and
+ * internal paths that do not begin with a recognized locale prefix.
  */
 
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -43,14 +45,20 @@ const RELATED_PATH_FIELDS = [
   'relatedSeries',
   'relatedGlossary',
 ] as const;
+const SOURCE_RELATION_FIELDS = [
+  'relatedArticles',
+  'relatedGlossary',
+] as const;
 const MD_EXT = new Set(['.md', '.mdx']);
 
 type Severity =
   | 'BROKEN'
   | 'MISSING_LOCALE'
   | 'LOCALE_MISMATCH'
+  | 'RELATIONSHIP_MISMATCH'
   | 'MISSING_TRANSLATION';
 type RelatedPathField = (typeof RELATED_PATH_FIELDS)[number];
+type SourceRelationField = (typeof SOURCE_RELATION_FIELDS)[number];
 type Finding = {
   file: string;
   line: number;
@@ -63,10 +71,18 @@ type Finding = {
   linkLocale: string;
   source: 'markdown' | 'frontmatter';
   field?: RelatedPathField;
+  fixable?: boolean;
 };
 type RouteOccurrence = {
   href: string;
   start: number;
+};
+type RelatedFrontmatter = {
+  values: Record<RelatedPathField, string[]>;
+  occurrences: Array<
+    RouteOccurrence & { field: RelatedPathField; valueIndex: number }
+  >;
+  fieldStarts: Partial<Record<RelatedPathField, number>>;
 };
 
 // --- arg parsing -----------------------------------------------------------
@@ -256,45 +272,57 @@ function asStringArray(value: unknown): string[] {
   return [];
 }
 
-function relatedFrontmatterOccurrences(
-  raw: string,
-): Array<RouteOccurrence & { field: RelatedPathField }> {
+function relatedFrontmatter(raw: string): RelatedFrontmatter {
+  const emptyValues = (): Record<RelatedPathField, string[]> => ({
+    relatedArticles: [],
+    relatedTopics: [],
+    relatedSeries: [],
+    relatedGlossary: [],
+  });
   const frontmatterMatch = raw.match(
     /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/,
   );
-  if (!frontmatterMatch) return [];
+  if (!frontmatterMatch) {
+    return { values: emptyValues(), occurrences: [], fieldStarts: {} };
+  }
 
   let data: Record<string, unknown>;
   try {
     data = matter(raw).data as Record<string, unknown>;
   } catch {
     // scripts/validate-data.ts owns YAML parse diagnostics.
-    return [];
+    return { values: emptyValues(), occurrences: [], fieldStarts: {} };
   }
 
   const frontmatter = frontmatterMatch[0];
-  const claimedStarts = new Set<number>();
-  const occurrences: Array<RouteOccurrence & { field: RelatedPathField }> = [];
+  const values = emptyValues();
+  const occurrences: RelatedFrontmatter['occurrences'] = [];
+  const fieldStarts: RelatedFrontmatter['fieldStarts'] = {};
+  const topLevelKeys = [...frontmatter.matchAll(/^([A-Za-z_][\w-]*)\s*:/gm)];
 
   for (const field of RELATED_PATH_FIELDS) {
-    for (const href of asStringArray(data[field])) {
-      if (!href.startsWith('/')) continue;
+    values[field] = asStringArray(data[field]);
+    const keyIndex = topLevelKeys.findIndex((match) => match[1] === field);
+    if (keyIndex === -1) continue;
 
-      let searchFrom = 0;
-      while (searchFrom < frontmatter.length) {
-        const start = frontmatter.indexOf(href, searchFrom);
-        if (start === -1) break;
-        searchFrom = start + href.length;
-        if (claimedStarts.has(start)) continue;
+    const fieldStart = topLevelKeys[keyIndex].index ?? 0;
+    const fieldEnd = topLevelKeys[keyIndex + 1]?.index ?? frontmatter.length;
+    fieldStarts[field] = fieldStart;
+    let searchFrom = fieldStart;
 
-        claimedStarts.add(start);
-        occurrences.push({ href, start, field });
-        break;
-      }
+    for (const [valueIndex, href] of values[field].entries()) {
+      const start = frontmatter.indexOf(href, searchFrom);
+      if (start === -1 || start >= fieldEnd) continue;
+      occurrences.push({ href, start, field, valueIndex });
+      searchFrom = start + href.length;
     }
   }
 
-  return occurrences.sort((a, b) => a.start - b.start);
+  return {
+    values,
+    occurrences: occurrences.sort((a, b) => a.start - b.start),
+    fieldStarts,
+  };
 }
 
 function escapeRegExp(value: string) {
@@ -324,6 +352,58 @@ function replaceLocalePrefix(href: string, locale: string) {
   return href.replace(/^\/[^/]+(?=\/)/, `/${locale}`);
 }
 
+function englishCounterpart(file: string): string | null {
+  const match = rel(file).match(/^content\/([^/]+)\/([^/]+)\/(.+)$/);
+  if (!match || match[2] === DEFAULT_LOCALE) return null;
+
+  const [, collection, , relativeFile] = match;
+  const direct = path.join(CONTENT_ROOT, collection, DEFAULT_LOCALE, relativeFile);
+  if (statSync(direct, { throwIfNoEntry: false })?.isFile()) return direct;
+
+  const extension = path.extname(direct);
+  for (const candidateExtension of MD_EXT) {
+    if (candidateExtension === extension) continue;
+    const candidate = direct.slice(0, -extension.length) + candidateExtension;
+    if (statSync(candidate, { throwIfNoEntry: false })?.isFile()) return candidate;
+  }
+  return null;
+}
+
+function sourceRelationshipRoutes(
+  file: string,
+): Partial<Record<SourceRelationField, string[]>> | null {
+  const sourceFile = englishCounterpart(file);
+  if (!sourceFile) return null;
+
+  let data: Record<string, unknown>;
+  try {
+    data = matter(readFileSync(sourceFile, 'utf8')).data as Record<string, unknown>;
+  } catch {
+    // scripts/validate-data.ts owns YAML parse diagnostics.
+    return null;
+  }
+
+  const routes: Partial<Record<SourceRelationField, string[]>> = {};
+  for (const field of SOURCE_RELATION_FIELDS) {
+    routes[field] = asStringArray(data[field]);
+  }
+  return routes;
+}
+
+function localizedSourceRoute(
+  href: string,
+  field: SourceRelationField,
+  locale: string,
+): string | null {
+  const parts = href.match(HREF_PARTS_RE);
+  const expectedCollection =
+    field === 'relatedArticles' ? 'blog' : 'glossary';
+  if (!parts || parts[1] !== DEFAULT_LOCALE || parts[2] !== expectedCollection) {
+    return null;
+  }
+  return replaceLocalePrefix(href, locale);
+}
+
 function decodeSlug(slug: string) {
   try {
     return decodeURIComponent(slug);
@@ -334,7 +414,11 @@ function decodeSlug(slug: string) {
 
 function unresolvableTargetCounts(content: string): Map<string, number> {
   const counts = new Map<string, number>();
-  for (const occurrence of routeOccurrences(stripNonProse(content))) {
+  const occurrences = [
+    ...routeOccurrences(stripNonProse(content)),
+    ...relatedFrontmatter(content).occurrences,
+  ];
+  for (const occurrence of occurrences) {
     const parts = occurrence.href.match(HREF_PARTS_RE);
     if (!parts) continue;
     const [, linkLocale, collection, slugRaw] = parts;
@@ -360,6 +444,7 @@ for (const file of auditFiles) {
 
   const raw = readFileSync(file, 'utf8');
   const prose = stripNonProse(raw);
+  const frontmatter = relatedFrontmatter(raw);
   const lineStarts: number[] = [0];
   for (let index = 0; index < raw.length; index++) {
     if (raw[index] === '\n') lineStarts.push(index + 1);
@@ -417,7 +502,91 @@ for (const file of auditFiles) {
     return true;
   };
 
-  for (const occurrence of relatedFrontmatterOccurrences(raw)) {
+  const sourceRelationships = sourceRelationshipRoutes(file);
+  const parityFields = new Set<SourceRelationField>();
+  if (sourceRelationships) {
+    for (const field of SOURCE_RELATION_FIELDS) {
+      const sourceValues = sourceRelationships[field] ?? [];
+      const expectedValues = sourceValues.map((href) =>
+        localizedSourceRoute(href, field, fileLocale),
+      );
+      if (
+        expectedValues.length === 0 ||
+        expectedValues.some((href) => href === null)
+      ) {
+        continue;
+      }
+
+      parityFields.add(field);
+      const actualValues = frontmatter.values[field];
+      const occurrencesByIndex = new Map(
+        frontmatter.occurrences
+          .filter((occurrence) => occurrence.field === field)
+          .map((occurrence) => [occurrence.valueIndex, occurrence]),
+      );
+      const comparisonLength = Math.max(
+        actualValues.length,
+        expectedValues.length,
+      );
+
+      for (let valueIndex = 0; valueIndex < comparisonLength; valueIndex++) {
+        const actualHref = actualValues[valueIndex];
+        const expectedHref = expectedValues[valueIndex];
+        if (actualHref === expectedHref) continue;
+
+        const occurrence = occurrencesByIndex.get(valueIndex);
+        if (
+          actualHref &&
+          expectedHref &&
+          replaceLocalePrefix(actualHref, fileLocale) === expectedHref &&
+          actualHref.match(LOCALIZED_PREFIX_RE)
+        ) {
+          recordLocaleMismatch({
+            href: actualHref,
+            start:
+              occurrence?.start ?? frontmatter.fieldStarts[field] ?? 0,
+            source: 'frontmatter',
+            field,
+          });
+          continue;
+        }
+
+        const expectedDisplay = expectedHref ?? '<no relationship>';
+        const fixable = Boolean(
+          occurrence && expectedHref && actualHref?.match(HREF_PARTS_RE),
+        );
+        findings.push({
+          file: rel(file),
+          line: lineAt(
+            occurrence?.start ?? frontmatter.fieldStarts[field] ?? 0,
+          ),
+          severity: 'RELATIONSHIP_MISMATCH',
+          href: actualHref ?? '<missing>',
+          fixedHref: expectedDisplay,
+          fileLocale,
+          linkLocale: actualHref?.match(LOCALIZED_PREFIX_RE)?.[1] ?? '',
+          source: 'frontmatter',
+          field,
+          fixable,
+        });
+        if (FIX && fixable && occurrence && expectedHref) {
+          edits.push({
+            start: occurrence.start,
+            end: occurrence.start + occurrence.href.length,
+            replacement: expectedHref,
+          });
+        }
+      }
+    }
+  }
+
+  for (const occurrence of frontmatter.occurrences) {
+    if (
+      SOURCE_RELATION_FIELDS.includes(occurrence.field as SourceRelationField) &&
+      parityFields.has(occurrence.field as SourceRelationField)
+    ) {
+      continue;
+    }
     recordLocaleMismatch({ ...occurrence, source: 'frontmatter' });
   }
 
@@ -549,6 +718,7 @@ if (JSON_OUT) {
     BROKEN: color('31', 'BROKEN'),
     MISSING_LOCALE: color('31', 'NO-LOCALE'),
     LOCALE_MISMATCH: color('31', 'LOCALE'),
+    RELATIONSHIP_MISMATCH: color('31', 'RELATION'),
     MISSING_TRANSLATION: color('33', 'MISSING-TR'),
   };
   const byFile = new Map<string, Finding[]>();
@@ -578,6 +748,9 @@ if (JSON_OUT) {
   const mismatch = findings.filter(
     (f) => f.severity === 'LOCALE_MISMATCH',
   ).length;
+  const relationshipMismatch = findings.filter(
+    (f) => f.severity === 'RELATIONSHIP_MISMATCH',
+  ).length;
   const missingTranslation = findings.filter(
     (f) => f.severity === 'MISSING_TRANSLATION',
   ).length;
@@ -586,19 +759,21 @@ if (JSON_OUT) {
   if (LOCALE_ONLY) {
     console.log(
       `Checked ${auditFiles.length} file(s): ${mismatch} locale-mismatch` +
+        `, ${relationshipMismatch} relationship-mismatch` +
         `${FIX ? ` (${filesToRewrite.size} file(s) rewritten)` : ''}.`,
     );
   } else {
     console.log(
       `Audited ${auditFiles.length} file(s): ${broken} broken, ` +
-        `${missingLocale} missing-locale, ${mismatch} locale-mismatch` +
+        `${missingLocale} missing-locale, ${mismatch} locale-mismatch, ` +
+        `${relationshipMismatch} relationship-mismatch` +
         `${FIX ? ` (${filesToRewrite.size} file(s) rewritten)` : ''}, ` +
         `${missingTranslation} missing-translation fallback.`,
     );
   }
-  if (!FIX && mismatch > 0) {
+  if (!FIX && (mismatch > 0 || relationshipMismatch > 0)) {
     console.log(
-      'Re-run with --fix to replace only the locale prefix; slugs are preserved.',
+      'Re-run with --fix to restore file-locale prefixes and English-source relationship routes.',
     );
   }
   if (!FIX && !LOCALE_ONLY && missingLocale > 0) {
@@ -617,6 +792,16 @@ const mismatchUnresolved = findings.some(
     finding.severity === 'LOCALE_MISMATCH' &&
     !(FIX && finding.fixedHref && rewrittenRelPaths.has(finding.file)),
 );
+const relationshipMismatchUnresolved = findings.some(
+  (finding) =>
+    finding.severity === 'RELATIONSHIP_MISMATCH' &&
+    !(
+      FIX &&
+      finding.fixable &&
+      finding.fixedHref &&
+      rewrittenRelPaths.has(finding.file)
+    ),
+);
 const missingLocaleUnresolved = findings.some(
   (finding) =>
     finding.severity === 'MISSING_LOCALE' &&
@@ -627,6 +812,7 @@ const brokenExists = findings.some((finding) => finding.severity === 'BROKEN');
 process.exitCode =
   selfCheckFailures > 0 ||
   mismatchUnresolved ||
+  relationshipMismatchUnresolved ||
   (!LOCALE_ONLY && (brokenExists || missingLocaleUnresolved))
     ? 1
     : 0;

@@ -19,11 +19,11 @@ relatedArticles:
   - /ar/blog/blockchain-cryptographic-primitives/
   - /ar/blog/premium-web3-tlds/
 relatedGlossary:
+  - /ar/glossary/rollup/
+  - /ar/glossary/optimistic-rollup/
+  - /ar/glossary/zk-rollup/
+  - /ar/glossary/data-availability/
   - /ar/glossary/layer-2/
-  - /ar/glossary/blockchain/
-  - /ar/glossary/ethereum/
-  - /ar/glossary/smart-contract/
-  - /ar/glossary/cryptographic-security/
 relatedTopics:
   - /ar/topics/web3-foundations/
   - /ar/topics/domain-tokenization/

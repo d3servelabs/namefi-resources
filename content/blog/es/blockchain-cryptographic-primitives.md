@@ -17,13 +17,13 @@ relatedArticles:
   - /es/blog/blockchain-consensus-mechanisms/
   - /es/blog/blockchain-virtual-machines/
   - /es/blog/blockchain-scaling-approaches/
-  - /es/blog/what-are-tokenized-domains/
+  - /es/blog/perfect-vs-computational-zero-knowledge/
 relatedGlossary:
-  - /es/glossary/blockchain/
-  - /es/glossary/cryptographic-security/
+  - /es/glossary/hash-function/
+  - /es/glossary/digital-signature/
+  - /es/glossary/merkle-tree/
   - /es/glossary/public-key/
   - /es/glossary/private-key/
-  - /es/glossary/ethereum/
 relatedTopics:
   - /es/topics/web3-foundations/
   - /es/topics/domain-tokenization/

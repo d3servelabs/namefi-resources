@@ -14,6 +14,7 @@ import {
 } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import matter from 'gray-matter';
 import { routeResolvesForPath } from '../../../scripts/validate-data';
 
 const SCRIPT = path.join(import.meta.dir, 'link-audit.ts');
@@ -347,6 +348,156 @@ describe('same-locale route invariant', () => {
     expect(
       routeResolvesForPath('/en/glossary/ghost/', 'en', dataRoot),
     ).toBe(false);
+    expect(
+      routeResolvesForPath('/fr/glossary/foo/', 'ar', dataRoot),
+    ).toBe(false);
+    expect(routeResolvesForPath('/ar/glossary/foo', 'ar', dataRoot)).toBe(
+      false,
+    );
+    expect(
+      routeResolvesForPath('https://example.com/ar/glossary/foo/', 'ar', dataRoot),
+    ).toBe(false);
+    expect(
+      routeResolvesForPath('/ar/topics/domain-basics/', 'ar', dataRoot),
+    ).toBe(false);
+  });
+
+  test('relatedGlossary preserves English source order and slugs through fallback routes', () => {
+    const root = freshFixture();
+    const relativeFile = 'content/blog/ar/privacy.md';
+    const audit = run(root, ['--locale-only', '--json', relativeFile]);
+    const report = parseAudit(audit);
+
+    expect(audit.code).toBe(1);
+    expect(report.findings[0]).toEqual(
+      expect.objectContaining({
+        line: 3,
+        href: '/ar/blog/fr-only/',
+        fixedHref: '/ar/blog/target/',
+      }),
+    );
+    expect(
+      report.findings.map(({ severity, href, fixedHref, field }) => ({
+        severity,
+        href,
+        fixedHref,
+        field,
+      })),
+    ).toEqual([
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/blog/fr-only/',
+        fixedHref: '/ar/blog/target/',
+        field: 'relatedArticles',
+      },
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/glossary/blockchain/',
+        fixedHref: '/ar/glossary/zero-knowledge-proof/',
+        field: 'relatedGlossary',
+      },
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/glossary/cryptographic-security/',
+        fixedHref: '/ar/glossary/fully-homomorphic-encryption/',
+        field: 'relatedGlossary',
+      },
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/glossary/public-key/',
+        fixedHref: '/ar/glossary/secure-multiparty-computation/',
+        field: 'relatedGlossary',
+      },
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/glossary/private-key/',
+        fixedHref: '/ar/glossary/trusted-execution-environment/',
+        field: 'relatedGlossary',
+      },
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/glossary/smart-contract/',
+        fixedHref: '/ar/glossary/cryptographic-security/',
+        field: 'relatedGlossary',
+      },
+    ]);
+
+    const dataRoot = path.join(root, 'content');
+    for (const finding of report.findings
+      .filter((item) => item.field === 'relatedGlossary')
+      .slice(0, 4)) {
+      expect(
+        routeResolvesForPath(finding.fixedHref!, 'ar', dataRoot),
+      ).toBe(true);
+    }
+
+    const fix = run(root, [
+      '--locale-only',
+      '--fix',
+      '--json',
+      relativeFile,
+    ]);
+    expect(fix.code).toBe(0);
+    expect(run(root, ['--locale-only', relativeFile]).code).toBe(0);
+  });
+
+  test('--fix leaves a malformed external related-content value unchanged', () => {
+    const root = freshFixture();
+    const englishFile = path.join(root, 'content/blog/en/external-relation.md');
+    const arabicFile = path.join(root, 'content/blog/ar/external-relation.md');
+    writeFileSync(
+      englishFile,
+      '---\nrelatedArticles:\n  - /en/blog/target/\n---\n',
+    );
+    writeFileSync(
+      arabicFile,
+      '---\nrelatedArticles:\n  - https://example.com/article\n---\n',
+    );
+
+    const fix = run(root, [
+      '--locale-only',
+      '--fix',
+      '--json',
+      'content/blog/ar/external-relation.md',
+    ]);
+    const report = parseAudit(fix);
+    expect(fix.code).toBe(1);
+    expect(report.findings).toEqual([
+      expect.objectContaining({
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: 'https://example.com/article',
+        fixedHref: '/ar/blog/target/',
+        fixable: false,
+      }),
+    ]);
+    expect(readFileSync(arabicFile, 'utf8')).toContain(
+      'https://example.com/article',
+    );
+  });
+
+  test('Arabic privacy metadata keeps the four core English glossary relationships', () => {
+    const repoRoot = path.resolve(import.meta.dir, '../../..');
+    const readRelations = (locale: 'en' | 'ar') => {
+      const file = path.join(
+        repoRoot,
+        'content/blog',
+        locale,
+        'blockchain-privacy-technologies.md',
+      );
+      return matter(readFileSync(file, 'utf8')).data.relatedGlossary as string[];
+    };
+    const english = readRelations('en');
+    const arabic = readRelations('ar');
+
+    expect(arabic).toEqual(
+      english.map((href) => href.replace('/en/', '/ar/')),
+    );
+    expect(arabic.slice(0, 4)).toEqual([
+      '/ar/glossary/zero-knowledge-proof/',
+      '/ar/glossary/fully-homomorphic-encryption/',
+      '/ar/glossary/secure-multiparty-computation/',
+      '/ar/glossary/trusted-execution-environment/',
+    ]);
   });
 
   test('--fix changes only locale prefixes and produces a clean rerun', () => {
@@ -392,6 +543,14 @@ describe('same-locale route invariant', () => {
     expect(audit.code).toBe(1);
     expect(audit.stdout).toContain(
       'LOCALE L3 field=relatedArticles actual=/en/blog/target/ expected=/ar/blog/target/',
+    );
+
+    const relationshipAudit = run(root, [
+      '--locale-only',
+      'content/blog/ar/privacy.md',
+    ]);
+    expect(relationshipAudit.stdout).toContain(
+      'RELATION L3 field=relatedArticles actual=/ar/blog/fr-only/ expected=/ar/blog/target/',
     );
   });
 });

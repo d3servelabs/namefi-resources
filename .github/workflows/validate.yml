@@ -28,7 +28,8 @@ jobs:
         run: bun lint:mdx
 
       # Audits every internal link across all discovered locales. Real 404s,
-      # bare routes, and wrong-locale prefixes are blocking; a missing
-      # translation remains an accepted runtime-fallback warning.
+      # bare routes, wrong-locale prefixes, and translated relationship
+      # substitutions are blocking; a missing translation remains an accepted
+      # runtime-fallback warning.
       - name: Audit internal links
         run: bun links:audit

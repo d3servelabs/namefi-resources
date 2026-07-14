@@ -19,11 +19,11 @@ relatedArticles:
   - /ar/blog/blockchain-consensus-mechanisms/
   - /ar/blog/perfect-vs-computational-zero-knowledge/
 relatedGlossary:
-  - /ar/glossary/blockchain/
+  - /ar/glossary/zero-knowledge-proof/
+  - /ar/glossary/fully-homomorphic-encryption/
+  - /ar/glossary/secure-multiparty-computation/
+  - /ar/glossary/trusted-execution-environment/
   - /ar/glossary/cryptographic-security/
-  - /ar/glossary/public-key/
-  - /ar/glossary/private-key/
-  - /ar/glossary/smart-contract/
 relatedTopics:
   - /ar/topics/web3-foundations/
   - /ar/topics/domain-tokenization/

@@ -9,9 +9,9 @@ keywords: ["Farcaster","dezentrales soziales Netzwerk","Web3-Sozial","Blockchain
 relatedArticles:
   - /de/blog/what-are-tokenized-domains/
   - /de/blog/why-tokenize-domains/
+  - /de/blog/why-a-dao-should-control-the-main-domain/
   - /de/blog/from-thefacebook-com-to-facebook-com/
   - /de/blog/onchain-domain-custody-and-recovery/
-  - /de/blog/tokenized-domain-use-cases-2026/
 relatedTopics:
   - /de/topics/domain-tokenization/
   - /de/topics/domain-investing/

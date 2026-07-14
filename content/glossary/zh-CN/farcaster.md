@@ -9,9 +9,9 @@ keywords: ["Farcaster","去中心化社交","Web3 社交","区块链身份","社
 relatedArticles:
   - /zh-CN/blog/what-are-tokenized-domains/
   - /zh-CN/blog/why-tokenize-domains/
+  - /zh-CN/blog/why-a-dao-should-control-the-main-domain/
   - /zh-CN/blog/from-thefacebook-com-to-facebook-com/
   - /zh-CN/blog/onchain-domain-custody-and-recovery/
-  - /zh-CN/blog/tokenized-domain-use-cases-2026/
 relatedTopics:
   - /zh-CN/topics/domain-tokenization/
   - /zh-CN/topics/domain-investing/

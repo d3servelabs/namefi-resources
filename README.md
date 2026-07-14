@@ -15,7 +15,7 @@ All content lives under the `content/` directory (e.g., `content/blog/en/...`).
 - Run `bun install` once, then:
   - `bun data:validate` to check frontmatter, dates, and the same-locale internal-link invariant.
   - `bun lint:mdx` to lint markdown/MDX frontmatter and formatting.
-  - `bun links:locale` for the focused locale-prefix check (`--fix` performs prefix-only repairs and preserves slugs).
+  - `bun links:locale` for the focused locale-route and related-metadata check (`--fix` repairs prefixes and restores English-source relationship routes).
   - `bun links:audit` for the full broken-link, missing-locale, and locale-prefix audit.
   - `bun links:test` for deterministic offline regression fixtures.
 - CI runs these validation, test, lint, and link-audit gates on every pull request.
@@ -26,6 +26,12 @@ the file's own locale. For example, an Arabic file must use
 runtime's English fallback decides what is rendered at that same-locale route.
 External URLs, anchors, and internal routes without a recognized locale prefix
 are outside this focused check.
+
+Translated `relatedArticles` and `relatedGlossary` arrays must preserve the
+English counterpart's ordered slugs while replacing `/en/` with the content
+locale. Missing translated targets keep that same-locale route and resolve via
+the runtime fallback; substituting an unrelated existing localized target is a
+blocking relationship mismatch.
 
 ## Glossary & termbase tooling
 

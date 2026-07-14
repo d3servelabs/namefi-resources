@@ -9,9 +9,9 @@ keywords: ["Farcaster","social décentralisé","Web3 social","identité blockcha
 relatedArticles:
   - /fr/blog/what-are-tokenized-domains/
   - /fr/blog/why-tokenize-domains/
+  - /fr/blog/why-a-dao-should-control-the-main-domain/
   - /fr/blog/from-thefacebook-com-to-facebook-com/
   - /fr/blog/onchain-domain-custody-and-recovery/
-  - /fr/blog/tokenized-domain-use-cases-2026/
 relatedTopics:
   - /fr/topics/domain-tokenization/
   - /fr/topics/domain-investing/

@@ -20,11 +20,11 @@ faqs:
   - question: '.com 도메인을 등록해야 하는 사람은 누구인가요?'
     answer: '세계적으로 가장 널리 인정받고 신뢰받는 주소를 원하는 거의 모든 비즈니스, 브랜드, 프로젝트에 적합합니다. 특히 글로벌 또는 일반 대중을 대상으로 서비스하는 기업, 그리고 장기적으로 브랜드를 보호하려는 모든 이에게 유용합니다.'
 relatedArticles:
-  - /ko/blog/from-mona-co-to-crypto-com/
-  - /ko/blog/from-ctrip-com-to-trip-com/
-  - /ko/blog/from-twitter-com-to-x-com/
-  - /ko/blog/from-bufferapp-com-to-buffer-com/
-  - /ko/blog/from-box-net-to-box-com/
+  - /ko/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /ko/blog/the-sex-com-heist-the-forged-letter/
+  - /ko/blog/from-teslamotors-com-to-tesla-com/
+  - /ko/blog/what-makes-a-domain-valuable/
+  - /ko/blog/top-tlds-to-secure-for-your-business/
 relatedTopics:
   - /ko/topics/domain-investing/
   - /ko/topics/choosing-a-tld/
@@ -32,9 +32,9 @@ relatedSeries:
   - /ko/series/name-change-game-change/
   - /ko/series/best-tlds-by-industry/
 relatedGlossary:
-  - /ko/glossary/icann/
-  - /ko/glossary/registrar/
   - /ko/glossary/tld/
+  - /ko/glossary/registrar/
+  - /ko/glossary/icann/
   - /ko/glossary/dns/
   - /ko/glossary/registry/
 ---

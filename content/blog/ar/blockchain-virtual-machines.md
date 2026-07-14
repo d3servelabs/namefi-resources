@@ -25,11 +25,11 @@ relatedSeries:
   - /ar/series/tokenize-your-com/
   - /ar/series/domain-flipping-skills/
 relatedGlossary:
-  - /ar/glossary/ethereum/
+  - /ar/glossary/ethereum-virtual-machine/
+  - /ar/glossary/webassembly/
   - /ar/glossary/smart-contract/
+  - /ar/glossary/ethereum/
   - /ar/glossary/gas/
-  - /ar/glossary/blockchain/
-  - /ar/glossary/layer-2/
 ---
 
 كل [عقد ذكي](/ar/glossary/smart-contract/) لازم يشتغل في مكان ما. و«المكان» ده هو آلة افتراضية للبلوكتشين (VM): برنامج معزول تنفّذه كل عقدة في الشبكة بالطريقة نفسها، بحيث ينتج عن المدخل نفسه المخرج نفسه مهما كان اللي يشغّله. والـ VM التي تبني عليها تشكّل تقريباً كل شيء في السلسلة: اللغات التي تقدر تكتب بها، وهل المعاملات تشتغل في الوقت نفسه أم واحدة وراء الثانية، وقدر ما يمكن توصيله من منظومة المطورين الحالية من أول يوم.

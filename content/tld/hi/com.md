@@ -18,11 +18,11 @@ faqs:
   - question: 'अच्छे .com डोमेन इतने कठिन क्यों मिलते हैं?'
     answer: '160 मिलियन से अधिक .com नाम रजिस्टर होने के साथ, छोटे, शब्दकोश और एग्जैक्ट-मैच ब्रांड नामों की आपूर्ति लगभग समाप्त हो चुकी है। अधिकांश प्रीमियम .com नाम पहले से ही स्वामित्व में हैं, इसलिए वे केवल सेकेंडरी मार्केट पर उपलब्ध हैं।'
 relatedArticles:
-  - /hi/blog/what-is-a-tld/
-  - /hi/blog/top-tlds-to-secure-for-your-business/
-  - /hi/blog/top-tlds-to-secure-for-your-startup/
+  - /hi/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /hi/blog/the-sex-com-heist-the-forged-letter/
+  - /hi/blog/from-teslamotors-com-to-tesla-com/
   - /hi/blog/what-makes-a-domain-valuable/
-  - /hi/blog/ai-vs-io-domain/
+  - /hi/blog/top-tlds-to-secure-for-your-business/
 relatedTopics:
   - /hi/topics/choosing-a-tld/
   - /hi/topics/domain-investing/

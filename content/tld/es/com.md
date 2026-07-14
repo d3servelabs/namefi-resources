@@ -18,11 +18,11 @@ faqs:
   - question: '¿Por qué es tan difícil encontrar buenos dominios .com?'
     answer: 'Con más de 160 millones de nombres .com registrados, la disponibilidad de nombres cortos, de diccionario y de coincidencia exacta con marcas está prácticamente agotada. La mayoría de los nombres .com premium ya tienen dueño, por lo que muchos solo están disponibles en el mercado secundario.'
 relatedArticles:
-  - /es/blog/what-is-a-tld/
-  - /es/blog/top-tlds-to-secure-for-your-business/
-  - /es/blog/top-tlds-to-secure-for-your-startup/
+  - /es/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /es/blog/the-sex-com-heist-the-forged-letter/
+  - /es/blog/from-teslamotors-com-to-tesla-com/
   - /es/blog/what-makes-a-domain-valuable/
-  - /es/blog/ai-vs-io-domain/
+  - /es/blog/top-tlds-to-secure-for-your-business/
 relatedTopics:
   - /es/topics/choosing-a-tld/
   - /es/topics/domain-investing/

@@ -10,7 +10,7 @@ ogImage: ../../assets/ai-tld-registrars-og.jpg
 description: "أين تسجّل شركات الذكاء الاصطناعي الناشئة نطاق .ai في 2026: نطاقات أسعار وشروط تجديد موثّقة لدى خمسة مُسجِّلات، وأيّها يمكن لوكيل ذكاء اصطناعي استخدامه فعليًا."
 keywords: ["مُسجِّل نطاق .ai", "أفضل مُسجِّل .ai", "سعر نطاق .ai 2026", "تكلفة تجديد نطاق .ai", "تسجيل نطاق .ai", "اسم نطاق لشركة ذكاء اصطناعي ناشئة", "الحد الأدنى لمدة نطاق .ai", "أرخص مُسجِّل .ai", "شراء نطاق .ai بوكيل ذكاء اصطناعي", "نطاق .ai أنغويلا", "مقارنة مُسجِّلات ccTLD", "مُسجِّل Cloudflare .ai", "نطاق Namefi .ai", "الحد الأدنى لسنتين لنطاق .ai"]
 relatedArticles:
-  - /ar/blog/best-ai-tools-2026/
+  - /ar/blog/ai-vs-io-domain/
   - /ar/blog/cf-namecom-namefi/
   - /ar/blog/airo-vs-namefi/
   - /ar/blog/ai-agent-register/

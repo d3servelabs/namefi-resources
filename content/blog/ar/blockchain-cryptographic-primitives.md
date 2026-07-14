@@ -19,11 +19,11 @@ relatedArticles:
   - /ar/blog/blockchain-scaling-approaches/
   - /ar/blog/perfect-vs-computational-zero-knowledge/
 relatedGlossary:
-  - /ar/glossary/cryptographic-security/
+  - /ar/glossary/hash-function/
+  - /ar/glossary/digital-signature/
+  - /ar/glossary/merkle-tree/
   - /ar/glossary/public-key/
   - /ar/glossary/private-key/
-  - /ar/glossary/blockchain/
-  - /ar/glossary/smart-contract/
 relatedTopics:
   - /ar/topics/web3-foundations/
   - /ar/topics/domain-tokenization/

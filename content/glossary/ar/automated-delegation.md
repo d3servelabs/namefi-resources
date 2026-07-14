@@ -11,7 +11,7 @@ relatedArticles:
   - /ar/blog/tokenized-domain-use-cases-2026/
   - /ar/blog/how-to-sell-a-domain-name-you-own/
   - /ar/blog/why-tokenize-domains/
-  - /ar/blog/the-2024-squarespace-defi-domain-hijacks/
+  - /ar/blog/why-a-dao-should-control-the-main-domain/
 relatedTopics:
   - /ar/topics/domain-tokenization/
   - /ar/topics/domain-security/

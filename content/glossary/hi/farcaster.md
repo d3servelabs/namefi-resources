@@ -9,9 +9,9 @@ keywords: ["Farcaster","विकेन्द्रीकृत सोशल","W
 relatedArticles:
   - /hi/blog/what-are-tokenized-domains/
   - /hi/blog/why-tokenize-domains/
+  - /hi/blog/why-a-dao-should-control-the-main-domain/
   - /hi/blog/from-thefacebook-com-to-facebook-com/
   - /hi/blog/onchain-domain-custody-and-recovery/
-  - /hi/blog/tokenized-domain-use-cases-2026/
 relatedTopics:
   - /hi/topics/domain-tokenization/
   - /hi/topics/domain-investing/

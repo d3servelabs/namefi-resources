@@ -19,11 +19,11 @@ relatedArticles:
   - /ar/blog/blockchain-privacy-technologies/
   - /ar/blog/what-are-tokenized-domains/
 relatedGlossary:
+  - /ar/glossary/consensus-mechanism/
+  - /ar/glossary/proof-of-work/
+  - /ar/glossary/proof-of-stake/
   - /ar/glossary/blockchain/
   - /ar/glossary/ethereum/
-  - /ar/glossary/nft/
-  - /ar/glossary/smart-contract/
-  - /ar/glossary/cryptographic-security/
 relatedTopics:
   - /ar/topics/web3-foundations/
   - /ar/topics/domain-tokenization/
