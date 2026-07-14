@@ -34,15 +34,15 @@ When most people picture the internet, they picture `.com`. And in raw numbers, 
 
 This post walks through which ccTLDs lead by registration volume, why the leaders are not who you would guess, and what those numbers reveal about how the internet is *actually used* in different parts of the world.
 
-## The leaders, roughly ordered
+## The leaders as of March 31, 2026
 
-Public registry data (from operators that publish counts, plus aggregator snapshots like [DNIB's Q1 2026 Domain Name Industry Brief](https://www.dnib.com/articles/the-domain-name-industry-brief-q1-2026#:~:text=The%20top%2010%20ccTLDs%2C%20as%20of%20March%2031%2C%202026%2C%20were%20.cn%2C%20.de%2C%20.uk%2C%20.ru%2C%20.nl%2C%20.br%2C%20.fr%2C%20.au%2C%20.in%20and%20.eu.) and [DENIC's .de statistics](https://www.denic.de/en/products/statistics-about-de/)) puts the top tier of ccTLDs in roughly this order:
+Public registry data (from operators that publish counts, plus aggregator snapshots like [DNIB's Q1 2026 Domain Name Industry Brief](https://www.dnib.com/articles/the-domain-name-industry-brief-q1-2026#:~:text=The%20top%2010%20ccTLDs%2C%20as%20of%20March%2031%2C%202026%2C%20were%20.cn%2C%20.de%2C%20.uk%2C%20.ru%2C%20.nl%2C%20.br%2C%20.fr%2C%20.au%2C%20.in%20and%20.eu.) and [DENIC's .de statistics](https://www.denic.de/en/products/statistics-about-de/)) puts the top tier of ccTLDs in this reported order as of March 31, 2026:
 
 - **.cn (China)** — somewhere in the range of 20 million names. Largest [ccTLD](/en/glossary/cctld/) on most days.
 - **.de (Germany)** — around 17 million. Run by DENIC; remarkably stable year over year.
 - **.uk (United Kingdom)** — around 10 million across `.uk` and `.co.uk` combined.
-- **.nl (Netherlands)** — about 6 million. Outsized for a country of 17 million people.
-- **.ru (Russia)** — around 5 million, plus several million on `.рф` (the Cyrillic IDN equivalent).
+- **.ru (Russia)** — about 6.1 million; the official .RU/.РФ Coordination Center reported 6,119,675 `.ru` registrations on April 7, 2026, plus a separate `.рф` Cyrillic IDN zone ([Coordination Center](https://cctld.ru/en/media/news/kc/39938/)).
+- **.nl (Netherlands)** — 6,063,462 registrations on April 1, 2026, according to registry operator SIDN. That is outsized for a country of roughly 18 million people ([SIDN](https://www.sidn.nl/en/news-and-blogs/nl-starts-2026-with-growth)).
 - **.br (Brazil)** and **.fr (France)** — each around the next large tier, with `.br` concentrated heavily under `.com.br`.
 - **.au (Australia)**, **.in (India)**, and **.eu (European Union)** — each in the next tier; `.eu` is technically a regional ccTLD rather than a single-country namespace.
 - **.it, .pl, .ca** — important national namespaces that sit just outside or near the current top-10 band depending on the reporting period and source.
@@ -110,6 +110,8 @@ The deeper point: ccTLD market share is a story about *trust signals* on the ope
 - Verisign — [Domain Name Industry Brief](https://www.verisign.com/en_US/domain-names/dnib/index.xhtml), the most cited quarterly snapshot of the TLD market.
 - DNIB — [Q1 2026 Domain Name Industry Brief](https://www.dnib.com/articles/the-domain-name-industry-brief-q1-2026#:~:text=The%20top%2010%20ccTLDs%2C%20as%20of%20March%2031%2C%202026%2C%20were%20.cn%2C%20.de%2C%20.uk%2C%20.ru%2C%20.nl%2C%20.br%2C%20.fr%2C%20.au%2C%20.in%20and%20.eu.), the current top-10 ccTLD ordering used above.
 - DENIC — [Statistics for .de](https://www.denic.de/en/know-how/statistics/), the German registry's public dashboard.
+- Coordination Center for TLD .RU/.РФ — [.RU registration count on April 7, 2026](https://cctld.ru/en/media/news/kc/39938/).
+- SIDN — [.nl registration count on April 1, 2026](https://www.sidn.nl/en/news-and-blogs/nl-starts-2026-with-growth).
 - Nominet — [Statistics for .uk](https://www.nominet.uk/news/reports-statistics/) and policy.
 - JPRS — [.jp registration eligibility](https://jprs.co.jp/en/jpdomain.html#:~:text=Any%20individual%2C%20group%20or%20organization%20having%20a%20permanent%20postal%20address%20in%20Japan%20is%20eligible%20for%20registration.).
 - Norid — [.no general requirements](https://teknisk.norid.no/en/administrere-domenenavn/generelle-krav/#:~:text=must%20have%20a%20mailing%20address%20in%20Norway).
