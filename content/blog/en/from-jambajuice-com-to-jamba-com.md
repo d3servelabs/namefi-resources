@@ -73,7 +73,7 @@ In August 2018, Jamba, Inc. agreed to be acquired by Atlanta-based Focus Brands.
 
 New ownership tends to force the identity question that founders defer for years. Within months of the sale closing, the 29-year-old "Juice" was gone. The rebrand was Focus Brands' first big public statement about what Jamba was going to be — and the simplest, cleanest way to say "we're more than juice now" was to stop saying "Juice."
 
-Kirk Perron, the founder who chose "Jamba" in the first place, didn't live to see the brand fully grow into the single word he'd picked. He [passed away on June 20](https://www.legacy.com/news/kirk-perron-2020-jamba-juice-founder) in 2020, in Palm Springs. The coined identity associated with celebration outlived the descriptive label that had ridden alongside it for a quarter century.
+Kirk Perron, the founder who chose "Jamba" in the first place, lived to see the brand shorten to the single word he'd picked. He [passed away on June 20](https://www.legacy.com/news/kirk-perron-2020-jamba-juice-founder) in 2020, in Palm Springs. The coined identity associated with celebration outlived the descriptive label that had ridden alongside it for a quarter century.
 
 ## The money looked different then
 
