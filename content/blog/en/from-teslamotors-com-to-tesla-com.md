@@ -33,7 +33,7 @@ relatedGlossary:
 
 For its first thirteen years, the most valuable car company of the next decade lived at a slightly awkward address: **TeslaMotors.com**.
 
-The name was honest. When the company was incorporated in 2003, it made cars, and only cars. "Tesla Motors" described exactly what it was, and TeslaMotors.com described exactly where to find it. The extra word did real work: it told you this was an automaker named after Nikola Tesla, not a battery startup, not an electricity utility, not the domain some other "Tesla" had been sitting on since the early days of the web.
+The name was honest. When the company was incorporated in 2003, it was focused on developing cars, and only cars; [regular production of the Tesla Roadster did not begin until March 2008](https://ir.tesla.com/press-release/tesla-motors-begins-regular-production-2008-tesla-roadster). "Tesla Motors" described the business it was building, and TeslaMotors.com described exactly where to find it. The extra word did real work: it told you this was an automaker named after Nikola Tesla, not a battery startup, not an electricity utility, not the domain some other "Tesla" had been sitting on since the early days of the web.
 
 Because someone else *had* been sitting on Tesla.com. The [exact-match domain](/en/glossary/exact-match-domain/) belonged to Stuart Grossman, a Silicon Valley engineer who had held it long before an electric-car company existed, and who had already [defended it in a UDRP dispute](https://electrek.co/2016/02/18/tesla-motors-domain-tesla-com/) brought by a different company called Tesla Industries. Tesla Motors could not simply ask for the name. It had to buy it, and the owner was in no hurry to sell.
 
@@ -175,3 +175,4 @@ Tesla.com looks inevitable now because Tesla became enormous. But the lesson lan
 - Smart Branding — [TeslaMotors.com Upgrades to Tesla.com](https://smartbranding.com/teslamotors-com-upgrades-to-tesla-com/)
 - James Names — [Case Study: Why Musk Acquired Tesla.com for $11 Million](https://jamesnames.com/2021/08/case-study-why-musk-acquired-tesla-com-for-11-million/)
 - TechCrunch — [Tesla Motors, Inc. is now officially Tesla, Inc.](https://techcrunch.com/2017/02/01/tesla-motors-inc-is-now-officially-tesla-inc/)
+- Tesla Investor Relations — [Tesla Motors Begins Regular Production of the 2008 Tesla Roadster](https://ir.tesla.com/press-release/tesla-motors-begins-regular-production-2008-tesla-roadster)
