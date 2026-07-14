@@ -47,7 +47,7 @@ relatedGlossary:
 
 ### GoDaddy Airo
 
-GoDaddy의 Airo 제품군은 AI Domain Search, Logo Maker, AI가 생성하는 시작용 사이트, SEO Wizard를 하나의 대시보드에 묶었습니다. 한 독립 등록대행자 종합 평가에서는 이를 잘 요약합니다. [GoDaddy의 AI 설정 도우미 Airo는 등록을 마치면 이름, 로고, 시작용 사이트도 제안할 수 있습니다](https://www.hostinger.com/tutorials/best-domain-registrars/#:~:text=GoDaddy%20Airo%2C%20its%20AI%20setup%20assistant%2C%20can%20also%20suggest%20a%20name%2C%20logo%2C%20and%20starter%20site%20once%20you%20register). 여기서 "등록을 마치면"이라는 부분이 단계를 구분하는 기준입니다. 구매는 GoDaddy의 일반 결제 절차를 통해 사용자가 직접 완료합니다. 이름과 로고, 실제로 공개할 페이지를 한 번에 마련하려는 초보 소상공인에게 좋은 선택입니다.
+GoDaddy의 Airo 경험은 AI 지원 도메인 및 사업명 검색으로 시작합니다. 새 도메인을 등록하면 기본 기능에서 로고 옵션과 맞춤 설정 가능한 공개 예정 페이지를 생성할 수 있습니다. [GoDaddy에 따르면 Airo 기본 기능은 새 도메인 등록에 추가 비용 없이 포함되지만, 완전한 웹사이트, 비즈니스 이메일, 일부 마케팅 기능은 유료 제품이나 업그레이드가 필요합니다](https://www.godaddy.com/resources/news/what-is-godaddy-airo#how-much-does-godaddy-airo-cost). 사용자가 직접 완료하는 도메인 구매에 의존한다는 점이 단계를 구분하는 기준입니다. 구매는 GoDaddy의 일반 결제 절차를 통해 사용자가 직접 완료합니다. 이름과 로고, 시작용 페이지를 한 번에 마련하려는 초보 소상공인에게 좋은 선택이지만, 어떤 추가 기능에 별도 요금제가 필요한지 확인해야 합니다.
 
 ### Namecheap Visual 도구
 
@@ -86,7 +86,7 @@ NameBuddy는 범위가 더 좁은 단일 목적 도구입니다. 홈페이지의
 | 3 | Namecheap Visual | 1 — 생성기 | Airo와 같은 일을 하지만 하나의 안내형 절차 대신 독립적인 도구들로 구성되며, 가격도 부담이 적습니다. |
 | 4 | Wix AI 도메인 생성기 | 1 — 생성기 | 이미 Wix에서 사이트를 만들고 있다면 무난하지만, 독립형 이름 생성 도구로는 활용도가 낮습니다. |
 | 5 | GoDaddy Airo.ai 에이전트 | 2 — 등록대행자 도우미 | 2026년 현재 기존 등록대행자 가운데 가장 자율적인 도구입니다. 하지만 여전히 사람의 승인이 필요하고 외부 에이전트에는 개방되지 않았습니다. |
-| 6 | Cloudflare Registrar API | 3 — 에이전트형 플랫폼 | 등록 기능만 제공하는 베타 중 가격과 기본 보안 설정이 가장 뛰어납니다. 아직 DNS 관리나 암호화폐 결제는 지원하지 않습니다. |
+| 6 | Cloudflare Registrar API | 3 — 에이전트형 플랫폼 | 원가로 등록하는 베타 서비스입니다. DNS 레코드는 Cloudflare의 별도 DNS API로 관리하며, 이 API는 Cloudflare API MCP 서버에서도 사용할 수 있습니다. 암호화폐 결제는 지원하지 않습니다. |
 | 7 | Name.com AI 네이티브 API | 3 — 에이전트형 플랫폼 | 고정 엔드포인트를 호출하는 데 그치지 않고 에이전트가 통합 코드를 작성하기를 원할 때 가장 적합합니다. |
 | 8 | Namefi (MCP + 지갑) | 3 — 에이전트형 플랫폼 | 지갑 서명 결제와 토큰화 소유권을 모두 지원하는 유일한 서비스입니다. 원가 기준 가격 책정 방침은 공개하지 않았습니다. |
 
@@ -94,7 +94,7 @@ NameBuddy는 범위가 더 좁은 단일 목적 도구입니다. 홈페이지의
 
 단계보다 해야 할 일에서 출발하세요. 아직 이름이 없고 AI와 함께 아이디어를 내고 싶다면 어떤 1단계 생성기를 사용해도 됩니다. 속도 외에는 필요하지 않다면 NameBuddy를, 로고와 시작용 사이트까지 묶어서 원한다면 GoDaddy Airo나 Namecheap Visual을 선택할 수 있습니다. 이미 이름을 정했고, 최종 결정은 직접 내리되 여러 TLD 확인, 최종 후보 예약, 사이트 연결 같은 주변 작업을 AI에 맡기고 싶다면 현재 출시된 도구 중 GoDaddy의 Airo.ai 에이전트가 이 방식에 가장 충실합니다.
 
-실제 구매자가 소프트웨어라면 이야기가 달라집니다. 자체 도메인이 필요한 앱을 만드는 코딩 에이전트, 인프라를 프로비저닝하는 자동화 파이프라인, 일정에 따라 실행되는 스크립트가 그 예입니다. 1단계와 2단계에는 외부 에이전트가 호출할 수 있는 구매 경로가 없으므로 어느 것도 사용할 수 없습니다. 이는 명확히 3단계의 문제이며, Cloudflare, Name.com, Namefi 중 무엇을 선택할지는 "이름 등록" 이후에 필요한 기능에 따라 달라집니다. 아직 DNS 관리가 필요하지 않고 가격과 기본 보안 설정이 가장 중요하다면 Cloudflare, 고정된 API를 호출하는 것을 넘어 에이전트가 통합 코드를 직접 작성하기를 원한다면 Name.com, 지갑 기반 결제와 [온체인](/ko/glossary/on-chain/) 소유권을 표준 [ICANN](/ko/glossary/icann/) 등록과 함께 원한다면 Namefi가 알맞습니다. 마지막 경로의 단계별 설명은 [Claude로 도메인 구매하기: Namefi MCP 단계별 가이드](/ko/blog/claude-mcp-domains/)를 참고하세요.
+실제 구매자가 소프트웨어라면 이야기가 달라집니다. 자체 도메인이 필요한 앱을 만드는 코딩 에이전트, 인프라를 프로비저닝하는 자동화 파이프라인, 일정에 따라 실행되는 스크립트가 그 예입니다. 1단계와 2단계에는 외부 에이전트가 호출할 수 있는 구매 경로가 없으므로 어느 것도 사용할 수 없습니다. 이는 명확히 3단계의 문제이며, Cloudflare, Name.com, Namefi 중 무엇을 선택할지는 "이름 등록" 이후에 필요한 기능에 따라 달라집니다. 가격과 기본 보안 설정이 가장 중요하고 Registrar API와 DNS API가 분리된 구조가 워크플로에 맞는다면 Cloudflare, 고정된 API를 호출하는 것을 넘어 에이전트가 통합 코드를 직접 작성하기를 원한다면 Name.com, 지갑 기반 결제와 [온체인](/ko/glossary/on-chain/) 소유권을 표준 [ICANN](/ko/glossary/icann/) 등록과 함께 원한다면 Namefi가 알맞습니다. 마지막 경로의 단계별 설명은 [Claude로 도메인 구매하기: Namefi MCP 단계별 가이드](/ko/blog/claude-mcp-domains/)를 참고하세요.
 
 ## 자주 묻는 질문
 
@@ -102,13 +102,13 @@ NameBuddy는 범위가 더 좁은 단일 목적 도구입니다. 홈페이지의
 생성기(1단계)는 프롬프트를 받아 이름 후보를 돌려주며, 구매는 여전히 사용자가 일반적인 결제 절차를 통해 직접 완료합니다. 에이전트(3단계)는 AI 클라이언트를 위해 만들어진 API나 프로토콜을 호출하고, 사람이 미리 설정한 한도 안에서 등록을 직접 완료합니다. 브라우저 결제는 전혀 필요하지 않습니다. 2단계는 그 사이에 있습니다. 생성기보다 자동화 범위가 넓지만, 등록대행자의 자체 대시보드 안에서 사람이 승인 버튼을 눌러야 합니다.
 
 ### GoDaddy Airo와 GoDaddy의 Airo.ai 에이전트는 같은 것인가요?
-서로 관련은 있지만 동일하지는 않습니다. Airo는 도메인을 등록하면 제공되는 최초의 AI 제품군으로, 이름 제안, Logo Maker, AI가 생성하는 시작용 사이트, SEO Wizard를 포함합니다. 2025년 11월에 출시된 Airo.ai는 이 제품군 위에 구축된 더 새롭고 폭넓은 에이전트 조율 계층입니다. 여러 TLD를 확인하고 수동으로 다시 검색하는 일을 줄이면서 도메인을 예약할 수 있지만, 도메인 등록 단계가 완료되기 전에는 여전히 사용자의 승인이 필요합니다.
+서로 관련은 있지만 동일하지는 않습니다. Airo는 이름 제안, 로고 옵션, 공개 예정 페이지를 제공하는 기존 AI 경험입니다. 기본 기능은 새 도메인 등록에 추가 비용 없이 포함되지만, 완전한 웹사이트, 비즈니스 이메일, 일부 마케팅 기능은 유료 제품이나 업그레이드가 필요합니다. 2025년 11월에 출시된 Airo.ai는 이 경험 위에 구축된 더 새롭고 폭넓은 에이전트 조율 계층입니다. 여러 TLD를 확인하고 수동으로 다시 검색하는 일을 줄이면서 도메인을 예약할 수 있지만, 도메인 등록 단계가 완료되기 전에는 여전히 사용자의 승인이 필요합니다.
 
 ### Claude나 코딩 도우미 같은 외부 AI 에이전트가 이 도구들을 호출할 수 있나요?
 3단계 플랫폼인 Cloudflare Registrar API, Name.com AI 네이티브 API, Namefi의 MCP 서버 및 REST API만 가능합니다. GoDaddy의 최신 Airo.ai 에이전트를 포함해 GoDaddy, Namecheap, Wix의 AI 도구는 각 회사의 웹사이트나 대시보드 안에서 작동합니다. 외부 AI 클라이언트가 구매를 진행하도록 설계된 API나 프로토콜을 현재 공개한 곳은 없습니다.
 
 ### 어떤 도구가 가장 저렴한가요?
-여기서 살펴본 1단계 생성기 네 개는 모두 무료로 사용할 수 있습니다. 비용은 이름 생성 단계가 아니라 이후의 도메인 등록에서 발생합니다. 다만 어떤 생성기든 짧고 눈에 띄는 이름을 제안했을 때, 그 이름이 표준 등록비보다 훨씬 비싼 [프리미엄 도메인](/ko/glossary/premium-domain/)일 수 있으므로 마음에 들기 전에 가격을 확인하세요. 3단계 플랫폼 중 원가 기준이며 추가 마진이 없다는 가격 정책을 공개한 곳은 Cloudflare뿐입니다. Name.com과 Namefi는 이에 상응하는 정책을 공개하지 않으므로 가격이 같다고 가정하기 전에 실시간 가격을 직접 확인해야 합니다.
+여기서 살펴본 1단계 도구 네 개는 모두 이름 생성과 검색을 무료로 시작할 수 있지만, 묶여 있는 모든 서비스가 무료라는 뜻은 아닙니다. GoDaddy에 따르면 Airo 기본 기능은 새 도메인 등록에 추가 비용 없이 포함되지만, 완전한 웹사이트, 비즈니스 이메일, 일부 마케팅 기능은 유료 제품이나 업그레이드가 필요합니다. 도메인 등록 자체는 유료이며, 어떤 생성기든 짧고 눈에 띄는 이름을 제안했을 때 그 이름이 표준 등록비보다 훨씬 비싼 [프리미엄 도메인](/ko/glossary/premium-domain/)일 수 있으므로 마음에 들기 전에 가격을 확인하세요. 3단계 플랫폼 중 원가 기준이며 추가 마진이 없다는 가격 정책을 공개한 곳은 Cloudflare뿐입니다. Name.com과 Namefi는 이에 상응하는 정책을 공개하지 않으므로 가격이 같다고 가정하기 전에 실시간 가격을 직접 확인해야 합니다.
 
 ### 이름만 필요합니다. 에이전트형 플랫폼까지 생각해야 하나요?
 아니요. 어느 쪽이든 사람이 구매를 완료할 예정이라면 1단계 생성기, 또는 잡무를 더 많이 자동화하고 싶을 때는 2단계 도구가 정답입니다. 3단계는 구매자가 사람이 아니라 소프트웨어일 때만 중요합니다. 예를 들어 에이전트가 앱을 직접 만들고 배포하는 과정에서 도메인을 등록하는 경우입니다.
@@ -124,12 +124,12 @@ NameBuddy는 범위가 더 좁은 단일 목적 도구입니다. 홈페이지의
 
 ## 출처 및 추가 자료
 
-- Hostinger — [2026년 최고의 도메인 등록대행자 8곳: 테스트 및 비교](https://www.hostinger.com/tutorials/best-domain-registrars/#:~:text=GoDaddy%20Airo%2C%20its%20AI%20setup%20assistant%2C%20can%20also%20suggest%20a%20name%2C%20logo%2C%20and%20starter%20site%20once%20you%20register) — GoDaddy Airo가 무엇을 생성하는지, 그리고 여전히 사람이 등록을 완료한다는 점을 확인할 수 있습니다.
+- GoDaddy — [GoDaddy Airo란?](https://www.godaddy.com/resources/news/what-is-godaddy-airo) — Airo를 무료로 시작할 수 있고, 기본 기능은 새 도메인 등록에 포함되며, 완전한 웹사이트, 비즈니스 이메일, 일부 마케팅 기능에는 유료 제품이나 업그레이드가 필요하다고 설명합니다.
 - GoDaddy — [GoDaddy, Airo.ai 출시로 소상공인에게 에이전트형 AI 제공](https://aboutus.godaddy.net/newsroom/news-releases/press-release-details/2025/GoDaddy-Brings-Agentic-AI-to-Small-Businesses-with-Launch-of-Airo-ai/default.aspx) — Airo.ai 에이전트 프레임워크, 에이전트별 기능 설명, 도메인 등록 시 사람의 승인이 필요하다는 GoDaddy의 공식 발표입니다.
 - Toolworthy — [Namecheap Business Name Generator](https://www.toolworthy.ai/tool/namecheap-business-name-generator#:~:text=brandable%20name%20ideas%20from%20a%20short%20description%20or%20keyword%20prompt) — Namecheap의 무료 생성기가 만드는 결과를 독립적으로 설명합니다.
 - 10Web — [Namecheap Free Logo Maker](https://10web.io/ai-tools/namecheap-free-logo-maker/#:~:text=The%20AI%20analyzes%20your%20brand%20information%20and%20preferences%20to%20suggest%20logos%20that%20align%20with%20your%20brand%27s%20aesthetic%20and%20values%2C%20offering%20a%20variety%20of%20customizable%20options) — Namecheap의 AI 로고 도구를 독립적으로 설명합니다.
 - Wix — [무료 도메인 이름 생성기](https://www.wix.com/domains/domain-name-generator#:~:text=Within%20seconds%2C%20it%20will%20provide%20you%20with%20a%20list%20of%20creative%2C%20brandable%20and%20available%20domain%20name%20suggestions) — AI 기반 생성기와 결제 절차에 관한 Wix의 공식 설명입니다.
 - NameBuddy — [namebuddy.ai](https://namebuddy.ai/#:~:text=is%20a%20free%20AI%20domain%20name%20generator) — NameBuddy의 생성기와 등록대행자 연결 방식을 설명하는 공식 자료입니다.
-- Cloudflare — [.ai 도메인 구매: 원가 기준 가격과 포함된 보안 기능](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/#:~:text=Cloudflare%20offers%20.ai%20domain%20registrations%20and%20renewals%20at%20wholesale%20prices%2C%20with%20no%20additional%20markups)
+- Cloudflare — [Registrar 개요 및 원가 가격 정책](https://developers.cloudflare.com/registrar/), [Registrar API 베타](https://developers.cloudflare.com/registrar/registrar-api/), [DNS Records API](https://developers.cloudflare.com/api/resources/dns/subresources/records/), [Cloudflare API MCP 서버](https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/#cloudflare-api-mcp-server) — 등록 작업과 DNS 레코드 관리를 구분하고, API MCP가 DNS를 포함한 Cloudflare API를 지원한다는 점을 확인합니다.
 - Name.com — [최초의 AI 네이티브 도메인 플랫폼](https://www.name.com/blog/the-first-ai-native-domain-platform#:~:text=our%20platform%20is%20supported%20by%20modern%20standards%20like%20Model%20Context%20Protocol%20%28MCP%29%20and%20OpenAPI%20specification)
 - Namefi — [namefi.io/llms.txt](https://namefi.io/llms.txt) — Namefi의 MCP 서버, REST API, 인증 모델을 기계 판독 가능한 형식으로 설명한 자료이며, 이 글에 포함된 모든 Namefi 제품 설명의 출처입니다.

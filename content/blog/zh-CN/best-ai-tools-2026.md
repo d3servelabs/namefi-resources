@@ -47,7 +47,7 @@ relatedGlossary:
 
 ### GoDaddy Airo
 
-GoDaddy 的 Airo 套件在一个控制面板中整合了 AI Domain Search、Logo Maker、AI 生成的起步网站和 SEO Wizard。一篇独立注册商评测准确地概括道：[GoDaddy Airo 这款 AI 设置助手会在你注册后推荐名称、logo 和起步网站](https://www.hostinger.com/tutorials/best-domain-registrars/#:~:text=GoDaddy%20Airo%2C%20its%20AI%20setup%20assistant%2C%20can%20also%20suggest%20a%20name%2C%20logo%2C%20and%20starter%20site%20once%20you%20register)。“注册后”这一细节正是它的层级标志：你仍要通过 GoDaddy 的常规结账流程亲自完成购买。对于想在一次操作中搞定名称、logo 和上线页面的首次创业小企业主，这是一项很强的选择。
+GoDaddy 的 Airo 体验从 AI 辅助的域名和企业名称搜索开始；注册新域名后，其基础体验可生成 logo 选项和可自定义的“即将上线”页面。[GoDaddy 表示，Airo 随新域名注册提供且不另收费，但完整网站、企业邮箱和部分营销功能需要购买相应产品或付费升级](https://www.godaddy.com/resources/news/what-is-godaddy-airo#how-much-does-godaddy-airo-cost)。这种依赖用户亲自完成域名购买的模式正是其层级标志：你仍要通过 GoDaddy 的常规结账流程亲自完成购买。对于想在一次操作中搞定名称、logo 和起步页面的首次创业小企业主，这是一项很强的选择，前提是先确认哪些附加功能需要另购套餐。
 
 ### Namecheap Visual 工具
 
@@ -86,7 +86,7 @@ NameBuddy 是一款更聚焦的单一用途工具：按其首页所述，它[是
 | 3 | Namecheap Visual | 1 —— 生成器 | 与 Airo 做的是同一件事，但以独立工具而非单一引导流程呈现，并搭配亲民定价。 |
 | 4 | Wix AI 域名生成器 | 1 —— 生成器 | 若你已经在 Wix 上建站，它很合适；作为独立的命名工具则没那么实用。 |
 | 5 | GoDaddy Airo.ai 智能体 | 2 —— 注册商助手 | 2026 年可用的既有厂商工具中自主性最高；仍需人工批准，也仍不对外部智能体开放。 |
-| 6 | Cloudflare Registrar API | 3 —— 智能体平台 | 对仅注册域名的 beta 而言，价格和默认安全设置最佳；尚无 DNS 管理或加密货币支付。 |
+| 6 | Cloudflare Registrar API | 3 —— 智能体平台 | 按成本价注册的 beta；DNS 记录通过 Cloudflare 单独的 DNS API 管理，该 API 也可通过 Cloudflare API MCP 服务器调用；不支持加密货币支付。 |
 | 7 | Name.com AI-native API | 3 —— 智能体平台 | 若你希望智能体编写集成代码，而非只调用固定端点，它最合适。 |
 | 8 | Namefi（MCP + 钱包） | 3 —— 智能体平台 | 唯一支持钱包签名结账和代币化所有权的平台；尚未公布按成本价定价的承诺。 |
 
@@ -94,7 +94,7 @@ NameBuddy 是一款更聚焦的单一用途工具：按其首页所述，它[是
 
 从任务出发，而不是从层级出发。若你还没有名称，只想让 AI 帮忙头脑风暴，任何第 1 层生成器都可以——想要速度和别无他求，选 NameBuddy；若希望捆绑 logo 和起步网站，选 GoDaddy Airo 或 Namecheap Visual。若你已经有名称，并希望 AI 处理周边琐事——检查多个 TLD、预留胜出的名称、将其接入网站——但仍由你做最终决定，GoDaddy 的 Airo.ai 智能体是目前最完善的此类产品。
 
-如果实际买方是软件——为应用构建域名的编程智能体、为基础设施配置域名的自动化流水线，或按计划运行的脚本——第 1 层和第 2 层都不适用，因为它们都没有提供外部智能体可调用的购买路径。这正是第 3 层特有的问题。Cloudflare、Name.com 和 Namefi 的选择取决于“注册名称”以外的需求：若最看重价格和默认安全设置、且暂时不需要 DNS 管理，选 Cloudflare；若希望智能体自己编写集成代码，选 Name.com；若想要钱包原生付款，以及与标准 [ICANN](/zh-CN/glossary/icann/) 注册并存的[链上 (On-chain)](/zh-CN/glossary/on-chain/)所有权，选 Namefi。关于最后一种路径的分步说明，请参阅[用 Claude 购买域名：Namefi MCP 分步指南](/zh-CN/blog/claude-mcp-domains/)。
+如果实际买方是软件——为应用构建域名的编程智能体、为基础设施配置域名的自动化流水线，或按计划运行的脚本——第 1 层和第 2 层都不适用，因为它们都没有提供外部智能体可调用的购买路径。这正是第 3 层特有的问题。Cloudflare、Name.com 和 Namefi 的选择取决于“注册名称”以外的需求：若最看重价格和默认安全设置，且 Registrar API 与 DNS API 分离的使用方式适合你的工作流，选 Cloudflare；若希望智能体自己编写集成代码，选 Name.com；若想要钱包原生付款，以及与标准 [ICANN](/zh-CN/glossary/icann/) 注册并存的[链上 (On-chain)](/zh-CN/glossary/on-chain/)所有权，选 Namefi。关于最后一种路径的分步说明，请参阅[用 Claude 购买域名：Namefi MCP 分步指南](/zh-CN/blog/claude-mcp-domains/)。
 
 ## 常见问题
 
@@ -104,7 +104,7 @@ NameBuddy 是一款更聚焦的单一用途工具：按其首页所述，它[是
 
 ### GoDaddy Airo 与 GoDaddy 的 Airo.ai 智能体是同一回事吗？
 
-两者有关联，但并不相同。Airo 是原有的 AI 套件（名称建议、Logo Maker、AI 生成的起步网站和 SEO Wizard），在你注册域名后提供。Airo.ai 于 2025 年 11 月推出，是构建于该套件之上的更新、更广泛的智能体编排层——它能检查多个 TLD，并以更少的手动重新搜索来预留域名，但域名注册步骤完成前仍需要用户批准。
+两者有关联，但并不相同。Airo 是提供名称建议、logo 选项和“即将上线”页面的原有 AI 体验；其基础体验随新域名注册提供且不另收费，但完整网站、企业邮箱和部分营销功能需要购买相应产品或付费升级。Airo.ai 于 2025 年 11 月推出，是构建于该体验之上的更新、更广泛的智能体编排层——它能检查多个 TLD，并以更少的手动重新搜索来预留域名，但域名注册步骤完成前仍需要用户批准。
 
 ### 这些工具中有能被外部 AI 智能体（如 Claude 或编程助手）调用的吗？
 
@@ -112,7 +112,7 @@ NameBuddy 是一款更聚焦的单一用途工具：按其首页所述，它[是
 
 ### 哪个工具最便宜？
 
-在本文评测的第 1 层生成器中，四款工具都可免费使用，因为费用发生在之后的域名注册，而不是名称生成步骤——不过，它们给出的短小、朗朗上口的建议仍可能对应一个价格远高于标准注册费的[溢价域名](/zh-CN/glossary/premium-domain/)，所以在喜欢上某个名称前先查看价格。第 3 层平台中，只有 Cloudflare 公布了按成本、不加价的定价承诺；Name.com 和 Namefi 没有公布对等政策，因此不要先假定价格相同，应直接查看实时定价。
+本文评测的四款第 1 层工具都可免费开始名称生成和搜索，但这并不意味着捆绑的每项服务都免费。GoDaddy 表示，Airo 的基础体验随新域名注册提供且不另收费，但完整网站、企业邮箱和部分营销功能需要购买相应产品或付费升级。域名注册本身仍要付费，而且任何生成器给出的短小、朗朗上口的建议都可能对应一个价格远高于标准注册费的[溢价域名](/zh-CN/glossary/premium-domain/)，所以在喜欢上某个名称前先查看价格。第 3 层平台中，只有 Cloudflare 公布了按成本、不加价的定价承诺；Name.com 和 Namefi 没有公布对等政策，因此不要先假定价格相同，应直接查看实时定价。
 
 ### 我只想要一个名称——还需要考虑智能体平台吗？
 
@@ -130,12 +130,12 @@ NameBuddy 是一款更聚焦的单一用途工具：按其首页所述，它[是
 
 ## 来源与延伸阅读
 
-- Hostinger —— [2026 年 8 家最佳域名注册商：实测与对比](https://www.hostinger.com/tutorials/best-domain-registrars/#:~:text=GoDaddy%20Airo%2C%20its%20AI%20setup%20assistant%2C%20can%20also%20suggest%20a%20name%2C%20logo%2C%20and%20starter%20site%20once%20you%20register) —— 确认 GoDaddy Airo 可生成的内容，以及仍由人完成注册这一事实。
+- GoDaddy —— [GoDaddy Airo 是什么？](https://www.godaddy.com/resources/news/what-is-godaddy-airo) —— 说明 Airo 可以免费开始使用，其基础体验随新域名注册提供，而完整网站、企业邮箱和部分营销功能需要购买相应产品或付费升级。
 - GoDaddy —— [GoDaddy 通过推出 Airo.ai 将智能体 AI 带给小企业](https://aboutus.godaddy.net/newsroom/news-releases/press-release-details/2025/GoDaddy-Brings-Agentic-AI-to-Small-Businesses-with-Launch-of-Airo-ai/default.aspx) —— GoDaddy 对 Airo.ai 智能体框架、各智能体能力及域名注册人工批准要求的官方公告。
 - Toolworthy —— [Namecheap Business Name Generator](https://www.toolworthy.ai/tool/namecheap-business-name-generator#:~:text=brandable%20name%20ideas%20from%20a%20short%20description%20or%20keyword%20prompt) —— 对 Namecheap 免费生成器产出内容的独立说明。
 - 10Web —— [Namecheap Free Logo Maker](https://10web.io/ai-tools/namecheap-free-logo-maker/#:~:text=The%20AI%20analyzes%20your%20brand%20information%20and%20preferences%20to%20suggest%20logos%20that%20align%20with%20your%20brand%27s%20aesthetic%20and%20values%2C%20offering%20a%20variety%20of%20customizable%20options) —— 对 Namecheap AI logo 工具的独立说明。
 - Wix —— [免费域名生成器](https://www.wix.com/domains/domain-name-generator#:~:text=Within%20seconds%2C%20it%20will%20provide%20you%20with%20a%20list%20of%20creative%2C%20brandable%20and%20available%20domain%20name%20suggestions) —— Wix 对其 AI 驱动生成器和结账流程的官方说明。
 - NameBuddy —— [namebuddy.ai](https://namebuddy.ai/#:~:text=is%20a%20free%20AI%20domain%20name%20generator) —— NameBuddy 对其生成器及注册跳转方式的说明。
-- Cloudflare —— [购买 .ai 域名：按成本定价和随附安全功能](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/#:~:text=Cloudflare%20offers%20.ai%20domain%20registrations%20and%20renewals%20at%20wholesale%20prices%2C%20with%20no%20additional%20markups)
+- Cloudflare —— [Registrar 概览与按成本定价政策](https://developers.cloudflare.com/registrar/)、[Registrar API beta](https://developers.cloudflare.com/registrar/registrar-api/)、[DNS Records API](https://developers.cloudflare.com/api/resources/dns/subresources/records/)和 [Cloudflare API MCP 服务器](https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/#cloudflare-api-mcp-server) —— 区分注册操作与 DNS 记录管理，并确认 API MCP 覆盖包括 DNS 在内的 Cloudflare API。
 - Name.com —— [首个 AI 原生域名平台](https://www.name.com/blog/the-first-ai-native-domain-platform#:~:text=our%20platform%20is%20supported%20by%20modern%20standards%20like%20Model%20Context%20Protocol%20%28MCP%29%20and%20OpenAPI%20specification)
 - Namefi —— [namefi.io/llms.txt](https://namefi.io/llms.txt) —— Namefi 对其 MCP 服务器、REST API 和认证模型的机器可读说明；本文所有 Namefi 产品主张的来源。
