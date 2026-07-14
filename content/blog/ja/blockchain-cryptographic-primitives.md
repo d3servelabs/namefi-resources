@@ -48,7 +48,7 @@ Bitcoinは全体でSHA-256を使います。各ブロックヘッダーに一つ
 
 一方、Ethereumは汎用ハッシュとしてKeccak-256を標準化しています。これは元のKeccak提案であり、後に制定されたNIST SHA-3標準とは異なります。各アカウントのアドレスは、そのアカウントの[公開鍵](/ja/glossary/public-key/)をKeccak-256でハッシュ化し、最後の20バイトを取ることで導出されます（[ethereum.org](https://ethereum.org/en/developers/docs/accounts/#:~:text=You%20get%20a%20public%20address%20for%20your%20account%20by%20taking%20the%20last%2020%20bytes%20of%20the%20Keccak-256%20hash%20of%20the%20public%20key)）。同じ関数は、Ethereumの状態を保存する[マークル・パトリシア・トライ](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/#:~:text=key%20%3D%3D%20keccak256%28rlp%28value%29%29)全体で使われる、キー/値のコンテンツアドレッシングの基盤でもあります。
 
-ハッシュ化は、ブロックヘッダーをばらばらな記録の集まりではなく、本物のチェーンへ変える仕組みでもあります。各ヘッダーのハッシュは前のヘッダーのハッシュに依存するため、履歴を書き換えるには、変更したい地点より後のすべてのブロックを再計算し、さらに稼働し続ける誠実なネットワークを追い越さなければなりません。この「連結」という性質こそ、このデータ構造が文字どおり**ブロックチェーン**と呼ばれる理由です。
+ハッシュ化は、ブロックヘッダーをばらばらな記録の集まりではなく、一つのチェーンとして連結する仕組みでもあります。あるヘッダーを変更すると、そのハッシュが変わり、後続ヘッダー内の参照が壊れます。その後の作業をやり直して誠実なネットワークへ追いつく必要があるのは、Bitcoinのプルーフ・オブ・ワーク・コンセンサスに固有の要件です。過去のブロックを変更する攻撃者は、そのブロックのプルーフ・オブ・ワークと、それ以降のすべての作業をやり直したうえで、誠実なチェーンへ追いつかなければなりません（[Bitcoinホワイトペーパー、§4](https://bitcoin.org/bitcoin.pdf)）。他のブロックチェーンは異なるコンセンサスルールに基づいて履歴を認証し、ファイナライズします。そのため、ハッシュによる連結だけでは、このプルーフ・オブ・ワークのコストは生じません。連結されたヘッダーハッシュこそ、このデータ構造が文字どおり**ブロックチェーン**と呼ばれる理由です。
 
 ---
 
@@ -80,7 +80,7 @@ Ethereumは、マークルツリーとプレフィックス（基数）トライ
 
 楕円曲線暗号（ECC）は、ECDSA、EdDSA、BLSすべての数学的基盤です。古典的なRSAのように大きな数の素因数分解の難しさへ依存する代わりに、ECCは楕円曲線離散対数問題の難しさへ依存します。基点を何度も加算して得られた曲線上の点が与えられても、何回加算したかを復元することは計算上困難です。一方、順方向に点を計算するのは簡単です。この非対称性、つまり一方向は簡単で逆方向は難しいという性質により、導出した公開鍵を安全に公開しながら、秘密鍵を署名に安全に使用できます。
 
-具体的な曲線の選択は重要です。BitcoinとEthereumはいずれも、Standards for Efficient Cryptography Groupが標準化し、十分に研究された256ビットのパラメータを持つKoblitz曲線、secp256k1を使います（[SEC 2：推奨楕円曲線ドメインパラメータ](https://www.secg.org/sec2-v2.pdf)）。他のエコシステムは、異なるトレードオフのために別の曲線を使います。SolanaとStellarのEdDSAを支える曲線Ed25519は、実装の安全性と速度を重視します。一方、BLS12-381は、集約に必要なペアリング演算へ対応するために選ばれています。いずれも鍵の1ビットあたりでおおむね同等の実用的なセキュリティ水準を提供し、同等のRSAよりはるかに短い鍵と署名を生成します。そのため、ブロックチェーンアカウントでは、RSAではなくECCが標準となりました。
+具体的な曲線と署名方式の両方が重要です。BitcoinとEthereumはいずれも、Standards for Efficient Cryptography Groupが標準化し、十分に研究された256ビットのパラメータを持つKoblitz曲線、secp256k1を使います（[SEC 2：推奨楕円曲線ドメインパラメータ](https://www.secg.org/sec2-v2.pdf)）。他のエコシステムは異なるトレードオフを選びます。Ed25519は、Edwards25519曲線上に実装された具体的なEdDSA署名方式です（[RFC 8032、§5.1](https://www.rfc-editor.org/rfc/rfc8032.html#section-5.1)）。RFC 8032では、その古典計算機に対するセキュリティ水準を約128ビットとしています（[§8.5](https://www.rfc-editor.org/rfc/rfc8032.html#section-8.5)）。BLS12-381はペアリングに適した曲線で、BLS署名の集約などの演算に選ばれており、EIP-2537では120ビット超のセキュリティが説明されています（[EIP-2537](https://eips.ethereum.org/EIPS/eip-2537#motivation)）。これらの見積もりは、各方式が同じ「鍵1ビット当たりのセキュリティ」を提供するという意味ではありません。方式ごとに群、符号化、前提が異なり、公称鍵長そのものがセキュリティ強度を表すわけでもありません。たとえばNISTは、128ビットの古典的セキュリティに対し、通常のECC鍵では256〜383ビット、RSA鍵では3072ビットを対応付けています（[NIST SP 800-57 Part 1 Rev. 5、表2](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf#page=67)）。これは、楕円曲線方式がブロックチェーンアカウントの標準となった理由を理解する助けになります。
 
 ---
 
@@ -88,7 +88,7 @@ Ethereumは、マークルツリーとプレフィックス（基数）トライ
 
 コミットメント方式を使うと、値を「確定」できます。特定のデータに自分を拘束する情報を公開しながら、データ自体は明かさず、後からコミットメントを「開示」して、その内容を証明できます。日常的なたとえは、封をした封筒です。今日、封をした封筒を誰かに渡せば、後から開封するまで中身を見せずに、すでに答えを決めていたことを示せます。一度封をすれば、中の答えを入れ替えることはできません。
 
-小さなプリミティブに見えますが、ほとんどのゼロ知識証明システムを支える中核要素です。たとえば、Ethereumのblobベースのデータ可用性設計では、多項式コミットメント方式であるKZGコミットメントを使います。大きなrollupデータのblobを一つの小さな暗号学的コミットメントへ縮約し、証明者と検証者はblob全体を処理せずに確認できます（[ethereum.org：Danksharding](https://ethereum.org/en/roadmap/danksharding/#:~:text=KZG%20stands%20for%20Kate-Zaverucha-Goldberg)）。実際、マークルルート自体も単純なコミットメント方式です。ルートハッシュを通じてデータセット全体へコミットし、マークルブランチが、その一部を明かす「開示」となります。ZK-rollupは、より高度なコミットメント方式である多項式コミットメントとベクトルコミットメントを基盤に、トランザクション実行のバッチ全体を、オンチェーンで安価に検証できる一つの証明へ圧縮します。このテーマは[完全ゼロ知識と計算量的ゼロ知識](/ja/blog/perfect-vs-computational-zero-knowledge/)で詳しく解説しています。
+小さなプリミティブに見えますが、ほとんどのゼロ知識証明システムを支える中核要素です。たとえば、Ethereumのblobベースのデータ可用性設計では、KZG多項式コミットメントを使い、各blobを小さな暗号学的コミットメントへ縮約します。KZG証明は、そのコミットメントに対する評価値やサンプリングしたセルの正当性を確認できますが、それだけでblob全体が利用可能だとは証明しません。可用性はコンセンサス層の配布とサンプリングのルールによって確保され、KZGは受信したデータの完全性を検証します（[EIP-4844](https://eips.ethereum.org/EIPS/eip-4844#consensus-layer-validation)、[EIP-7594：PeerDAS](https://eips.ethereum.org/EIPS/eip-7594#networking)）。この分離により、検証者は、コンパクトな評価証明をblobの全データが公開された証明と取り違えることなく、blobの小さな一部分を確認できます。実際、マークルルート自体も単純なコミットメント方式です。ルートハッシュを通じてデータセット全体へコミットし、マークルブランチが、その一部を明かす「開示」となります。ZK-rollupは、より高度なコミットメント方式である多項式コミットメントとベクトルコミットメントを基盤に、トランザクション実行のバッチ全体を、オンチェーンで安価に検証できる一つの証明へ圧縮します。このテーマは[完全ゼロ知識と計算量的ゼロ知識](/ja/blog/perfect-vs-computational-zero-knowledge/)で詳しく解説しています。
 
 ---
 
@@ -107,7 +107,7 @@ Ethereumは、マークルツリーとプレフィックス（基数）トライ
 
 ## トークン化ドメインとの関係
 
-ドメインを[トークン化](/ja/glossary/tokenize/)するとき、これらすべてのプリミティブが直接使われます。所有権を表す[NFT（非代替性トークン）](/ja/glossary/nft/)は、他のブロックチェーン資産を守るものと同じECDSA署名で保護されます。秘密鍵を管理する者がドメイントークンを管理します。例外はありません。そのため、トークン化された`.com`でも、他のオンチェーン資産と同じように、[ハードウェアウォレット](/ja/glossary/hardware-wallet/)と[シードフレーズ](/ja/glossary/seed-phrase/)の慎重な管理が重要です。ドメインの所有権記録は、チェーン上の他のアカウント残高や[スマートコントラクト](/ja/glossary/smart-contract/)を保護するものと同じ、マークルコミットされた状態に存在します。そのため、トークン化ドメインは、他のオンチェーン資産と同じ改ざん検知性を持ちます。移転可能で、検証可能であり、レジストラのデータベースだけを唯一の正しい情報源とせず、所有権を証明できます。
+ドメインを[トークン化](/ja/glossary/tokenize/)するとき、これらすべてのプリミティブが直接使われます。所有権を表す[NFT（非代替性トークン）](/ja/glossary/nft/)は、チェーンのアカウントとトークンに関する認可ルールで保護されます。外部所有アカウント（EOA）が保有している場合、そのアカウントの秘密鍵がアカウント操作を認可します。一方、コントラクトアカウントは秘密鍵を持たず、そのコードによって制御されます（[ethereum.org『Ethereumアカウント』](https://ethereum.org/en/developers/docs/accounts/#account-types)）。ERC-721トークンでは、承認済みアドレスやオペレーターも移転を開始できます（[ERC-721](https://eips.ethereum.org/EIPS/eip-721#specification)）。そのため、自分で管理するEOAで所有する場合は、[ハードウェアウォレット](/ja/glossary/hardware-wallet/)と[シードフレーズ](/ja/glossary/seed-phrase/)の慎重な管理が重要です。一方、スマートコントラクトウォレットやカストディアルウォレットでは、認可と信頼の境界が異なります。ドメインの所有権記録は、チェーン上の他のアカウント残高や[スマートコントラクト](/ja/glossary/smart-contract/)を保護するものと同じ、マークルコミットされた状態に存在します。そのため、トークン化ドメインは、他のオンチェーン資産と同じ改ざん検知性を持ちます。移転可能で、検証可能であり、レジストラのデータベースだけを唯一の正しい情報源とせず、所有権を証明できます。
 
 これらのプリミティブを理解すると、トークン化によって変わることと変わらないことも明確になります。ドメインのDNSレコードとレジストリ上の状態は引き続きICANNのルールに従いますが、所有権の証明には、ログインで保護された[レジストラ](/ja/glossary/registrar/)アカウントではなく、ここで説明した暗号技術を使うようになります。全体像は[ブロックチェーンのコンセンサスメカニズム](/ja/blog/blockchain-consensus-mechanisms/)と[ブロックチェーンのスケーリング手法](/ja/blog/blockchain-scaling-approaches/)で確認できます。トークン化を始めるには[namefi.io](https://namefi.io)へアクセスしてください。
 
@@ -116,13 +116,19 @@ Ethereumは、マークルツリーとプレフィックス（基数）トライ
 ## 出典と参考資料
 
 - Bitcoin開発者ガイド — [ブロックチェーン](https://developer.bitcoin.org/devguide/block_chain.html)、前のヘッダーのSHA256(SHA256())による連結
+- Bitcoin — [Bitcoin: A Peer-to-Peer Electronic Cash System](https://bitcoin.org/bitcoin.pdf)、プルーフ・オブ・ワーク履歴の書き換えと累積作業量
 - Bitcoin開発者リファレンス — [ブロックチェーン](https://developer.bitcoin.org/reference/block_chain.html)、マークルルートの構築
 - Bitcoin開発者ガイド — [動作モード](https://developer.bitcoin.org/devguide/operating_modes.html)、SPVとマークルブランチ
-- ethereum.org — [Ethereumアカウント](https://ethereum.org/en/developers/docs/accounts/)、ECDSAとKeccak-256によるアドレス導出
+- ethereum.org — [Ethereumアカウント](https://ethereum.org/en/developers/docs/accounts/)、ECDSAとKeccak-256によるアドレス導出、EOAとコントラクトアカウントの制御
 - ethereum.org — [マークル・パトリシア・トライ](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/)、状態 / トランザクション / レシートのルート
 - ethereum.org — [Danksharding](https://ethereum.org/en/roadmap/danksharding/)、KZG多項式コミットメント
+- EIP-4844 — [Shard Blob Transactions](https://eips.ethereum.org/EIPS/eip-4844)、blobコミットメント、証明、コンセンサス層での可用性
+- EIP-7594 — [PeerDAS](https://eips.ethereum.org/EIPS/eip-7594)、セル証明とデータ可用性サンプリング
+- ERC-721 — [Non-Fungible Token Standard](https://eips.ethereum.org/EIPS/eip-721)、トークン所有権、承認、オペレーター
 - EIP-2 — [Homesteadハードフォークの変更](https://eips.ethereum.org/EIPS/eip-2)、secp256k1署名の制約
 - EIP-2537 — [BLS12-381曲線演算のプリコンパイル](https://eips.ethereum.org/EIPS/eip-2537)
+- RFC 8032 — [Edwards-Curve Digital Signature Algorithm (EdDSA)](https://www.rfc-editor.org/rfc/rfc8032.html)、Ed25519の方式、曲線、セキュリティ水準
 - SEC 2：推奨楕円曲線ドメインパラメータ — [secg.org](https://www.secg.org/sec2-v2.pdf)
+- NIST SP 800-57 Part 1 Rev. 5 — [Recommendation for Key Management](https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final)、ECCとRSAで同等となるセキュリティ強度
 - 『The Eth2 Book』— [署名とBLS集約](https://eth2book.info/capella/part2/building_blocks/signatures/)
 - NIST — [NISTが最初の3つの耐量子暗号標準を最終決定](https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards)
