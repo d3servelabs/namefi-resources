@@ -40,17 +40,17 @@ relatedSeries:
 
 ## 영지식 증명
 
-![증명자가 문서를 등 뒤에 잠근 채 검증자에게 빛나는 유효 증명 배지를 건네며, 영지식 증명이 원래 명제를 공개하지 않고도 상대를 납득시키는 방식을 보여 주는 모습](../../assets/blockchain-privacy-technologies-01-zero-knowledge.jpg)
+![증명자가 비공개 증인을 등 뒤에 잠가 둔 채 검증자에게 빛나는 유효 증명 배지를 건네며, 영지식 증명이 비밀을 공개하지 않고 공개 명제를 검증하는 방식을 보여 주는 모습](../../assets/blockchain-privacy-technologies-01-zero-knowledge.jpg)
 
-[영지식 증명](/ko/glossary/zero-knowledge-proof/)(ZKP)을 사용하면 한 주체인 *증명자*가 다른 주체인 *검증자*에게 어떤 명제가 참임을 그 명제에 관한 다른 정보를 공개하지 않고 확신시킬 수 있습니다. Ethereum 개발자 문서는 이를 명확하게 설명합니다. “영지식 증명은 명제 자체를 공개하지 않고 명제의 유효성을 증명하는 방법”이며, 여기서 “‘증명자’는 주장을 증명하려는 주체이고 ‘검증자’는 그 주장을 검증하는 주체”입니다([ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/#:~:text=A%20zero%2Dknowledge%20proof%20is,without%20revealing%20the%20statement%20itself)).
+[영지식 증명](/ko/glossary/zero-knowledge-proof/)(ZKP)을 사용하면 한 주체인 *증명자*가 다른 주체인 *검증자*에게 공개 명제가 참임을 납득시키면서, 그 명제와 유효성에서 이미 드러나는 것 외에는 증명에 사용한 비공개 *증인*을 공개하지 않을 수 있습니다. “`x`를 알고 있으며 `H(x) = y`가 성립한다”라는 주장에서는 검증자가 보통 명제와 공개 값 `y`를 보고, 영지식성은 `x`를 보호합니다. 애플리케이션은 공개 입력의 일부를 별도로 숨기거나 암호학적 커밋먼트에 연결할 수 있지만, 명제 자체를 숨기는 것은 일반적인 ZKP 정의에 포함되지 않습니다([Thaler, *Proofs, Arguments, and Zero-Knowledge*](https://people.cs.georgetown.edu/jthaler/ProofsArgsAndZK.html)).
 
-진정한 영지식 프로토콜로 인정받으려면 증명 시스템은 세 가지 속성을 만족해야 합니다. 완전성은 “입력이 유효하면 영지식 프로토콜이 항상 ‘참’을 반환”한다는 뜻이고, 건전성은 “입력이 유효하지 않으면 영지식 프로토콜이 ‘참’을 반환하도록 속이는 것이 이론적으로 불가능”하다는 뜻입니다. 영지식성은 “검증자가 명제의 참 또는 거짓 여부 외에는 그 명제에 관해 아무것도 알지 못한다”는 의미입니다([ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/)). 구체적으로 증명은 증명자가 알고 있는 비밀인 증인(witness), 검증자가 제시하는 질문인 챌린지, 그리고 검증자가 증인 자체를 보지 않고도 증명자의 지식을 확인하게 하는 응답으로 구성됩니다.
+진정한 영지식 프로토콜로 인정받으려면 증명 시스템은 세 가지 속성을 만족해야 합니다. 완전성은 정직한 검증자가 참인 주장을 받아들인다는 뜻이고, 건전성은 증명 시스템에서 상한이 정해진 오류 확률을 제외하면 부정직한 증명자가 정직한 검증자에게 거짓 주장을 받아들이게 할 수 없다는 뜻입니다. 영지식성은 증명이 공개 명제에서 도출되는 것 외에 비공개 증인에 관한 추가 정보를 드러내지 않는다는 의미입니다. 고전적인 상호작용형 프로토콜은 흔히 커밋먼트, 검증자의 챌린지, 증명자의 응답을 사용합니다. 현대의 비상호작용형 SNARK와 STARK는 검증자의 실시간 챌린지 없이 필요한 증명 데이터를 하나로 구성하면서도 완전성, 건전성, 영지식성이라는 같은 상위 목표를 유지합니다.
 
-**숨기는 것:** 기초 데이터 또는 연산입니다. 주장 하나가 참이라는 증명만 공개됩니다.
+**숨기는 것:** 비밀 데이터나 비공개 연산 입력 같은 비공개 증인입니다. 애플리케이션이 별도로 커밋먼트에 연결하거나 암호화하지 않는 한 공개 명제와 공개 입력은 계속 보입니다.
 
 **현재 사용 방식:** ZK 롤업은 블록체인 확장에서 ZKP가 가장 대규모로 실사용되는 사례입니다. 거래를 “오프체인에서 실행되는 배치로 묶은 뒤(또는 ‘롤업한 뒤’)” 하나의 유효성 증명을 생성하고, Ethereum은 배치의 상태 변경을 최종 확정하기 전에 이를 검증합니다([ethereum.org](https://ethereum.org/en/developers/docs/scaling/zk-rollups/#:~:text=ZK%2Drollups%20bundle%20)). Matter Labs가 만든 zkSync Era는 “자체 zkEVM으로 구동되는 EVM 호환 ZK 롤업”입니다([ethereum.org](https://ethereum.org/en/developers/docs/scaling/zk-rollups/)). StarkWare가 만든 Starknet은 EVM 대신 자체 Cairo VM을 실행하는 유효성 롤업입니다. Solidity 컨트랙트는 별도로 브리지됩니다. L2BEAT는 두 프로젝트를 옵티미스틱 롤업의 사기 증명 챌린지 기간이 아니라 유효성 증명으로 보호되는 롤업으로 분류합니다([l2beat.com](https://l2beat.com/scaling/summary)). 프라이버시 측면에서는 [Zcash](https://z.cash/technology/)가 보호 거래에 zk-SNARK(Zero-Knowledge Succinct Non-Interactive Arguments of Knowledge)를 선구적으로 도입했습니다. 네트워크가 거래의 유효성을 확인하는 동안 “사용자의 주소, 거래 금액”과 다른 세부 정보는 암호화된 상태로 남습니다([z.cash](https://z.cash/technology/)).
 
-**트레이드오프:** ZK 증명 생성에는 많은 연산이 필요합니다. 증명 회로가 배치의 모든 거래를 순회하며 검사를 다시 실행하기 때문에 온체인 검증은 저렴하고 빠르더라도 증명 시간과 하드웨어 비용은 실질적인 제약입니다. 시스템의 신뢰 가정은 대부분 수학으로 축소되지만, 일부 증명 시스템에서는 일회성 신뢰 설정 절차(trusted setup ceremony)도 신뢰해야 합니다.
+**트레이드오프:** ZK 증명 생성에는 많은 연산이 필요합니다. 증명 회로가 배치의 모든 거래를 순회하며 검사를 다시 실행하기 때문에 온체인 검증은 저렴하고 빠르더라도 증명 시간과 하드웨어 비용은 실질적인 제약입니다. 보안은 증명 시스템의 암호학적 가정, 안전한 매개변수 생성, 회로와 프로토콜의 올바른 구현에 달려 있습니다. 일부 증명 시스템에서는 일회성 신뢰 설정 절차(trusted setup ceremony)도 필요합니다. Ethereum 문서는 신뢰 설정의 엔트로피가 침해되면 거짓 증명을 만들 수 있고, 구현 오류가 보안 모델을 훼손할 수 있다고 설명합니다([ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/#trust-assumptions)).
 
 ---
 
@@ -66,7 +66,7 @@ relatedSeries:
 
 **예시 프로젝트:** [Zama](https://www.zama.org/)는 오픈 소스 FHE 라이브러리(TFHE-rs, Concrete)와 EVM 체인에서 기밀 스마트 컨트랙트 실행을 추가하는 fhEVM을 개발합니다. [Fhenix](https://cofhe-docs.fhenix.zone/)는 “개발자가 완전 동형 암호화를 사용해 프라이버시 보존형 스마트 컨트랙트를 구축”하고 “민감한 데이터가 연산 내내 암호화된 상태로 유지”되게 하기 위해 특별히 만들어진 블록체인입니다. 클라이언트 측 암호화를 위한 JavaScript 라이브러리(Cofhejs)와 온체인 암호화 연산을 위한 Solidity FHE 라이브러리를 제공합니다([cofhe-docs.fhenix.zone](https://cofhe-docs.fhenix.zone/)).
 
-**트레이드오프:** FHE는 이 목록에서 가장 강한 프라이버시 보장을 제공합니다. 연산 중에도 아무것도 복호화하지 않기 때문입니다. 하지만 평문 연산과 비교하면 단연 가장 많은 연산 비용이 듭니다. 그래서 오늘날 FHE 기반 체인은 모든 거래가 아니라 기밀성이 중요한 로직에 FHE를 사용하며, FHE 하드웨어 가속은 활발한 연구 경쟁 분야입니다.
+**트레이드오프:** FHE의 차별적인 보장은 지원되는 연산을 입력이나 중간값을 복호화하지 않고 실행할 수 있다는 점입니다. 다만 구체적인 보안은 여전히 스킴과 매개변수 선택에 달려 있으므로 HomomorphicEncryption.org는 스킴별 보안 표와 매개변수 선택 지침을 제공합니다([HomomorphicEncryption.org](https://homomorphicencryption.org/security-guidelines/)). 또한 평문 연산과 비교하면 이 목록에서 단연 가장 많은 연산 비용이 듭니다. 그래서 오늘날 FHE 기반 체인은 모든 거래가 아니라 기밀성이 중요한 로직에 FHE를 사용하며, FHE 하드웨어 가속은 활발한 연구 경쟁 분야입니다.
 
 ---
 
@@ -78,11 +78,11 @@ relatedSeries:
 
 **숨기는 것:** 각 주체의 개별 입력을 다른 모든 주체에게서 숨깁니다. 합의된 출력만 공개되며, 어느 한 참여자도 전체 비밀을 볼 수 없습니다.
 
-**신뢰 가정:** 보안은 스킴이 깨지기 전에 부정직할 수 있는 참여자 수에 따라 달라집니다. 고전적인 비밀 공유 방식은 능동적 악성 참여자가 전체의 3분의 1 미만이거나, 수동적·반정직(semi-honest) 참여자가 절반 미만일 때 정보 이론적 보안을 제공합니다([Wikipedia](https://en.wikipedia.org/wiki/Secure_multi-party_computation)). 다시 말해 MPC는 “한 명의 수탁자를 신뢰”하는 대신 “N명의 주체 중 너무 많은 수가 공모하지 않을 것이라고 신뢰”하는 방식입니다.
+**신뢰 가정:** 모든 MPC에 적용되는 보편적인 손상 임계값은 없습니다. 완전 연결망을 가정한 고전적 BGW 결과에서 수동적 결함에 대한 프라이버시는 `t < n/2`일 때 유지되고, 비잔틴 결함에 대한 강건성은 `t < n/3`일 때 유지됩니다([ACM](https://doi.org/10.1145/62212.62213)). 이 한계는 해당 프로토콜 모델을 설명할 뿐 모든 MPC에 적용되지는 않습니다. 브로드캐스트를 가정하면 완전 보안 프로토콜이 `t < n/2`에 도달할 수 있는 반면([TCC 2021](https://www.iacr.org/archive/tcc2021/130420196/130420196.pdf)), 계산적 보안에 기반한 SPDZ 프로토콜은 전처리 모델에서 최대 `n - 1`명의 참여자가 손상되어도 능동적 보안을 제공합니다([IACR](https://eprint.iacr.org/2011/535)). 이러한 부정직한 다수 보장은 중단을 허용하는 보안입니다. 즉, 손상된 참여자가 여전히 연산을 중단시킬 수 있으며 공정성이나 출력 보장을 제공하는 것은 아닙니다([PoPETs](https://petsymposium.org/popets/2024/popets-2024-0053.php)). 따라서 실제 배포에서는 프로토콜, 수동적 또는 능동적 손상 모델, 동기성, 채널과 설정에 관한 가정(브로드캐스트 포함), 정직한 다수와 부정직한 다수 중 무엇을 가정하는지 명시해야 합니다.
 
 **현재 사용 방식 — 임계값 서명 수탁:** 블록체인에서 가장 눈에 띄는 MPC 활용 사례는 개인 키를 독립된 여러 주체에 나누어 어느 한 기기나 사람도 전체 키를 보유하지 않게 하는 것입니다. 수탁 인프라 제공업체 Fireblocks는 이를 직접 설명합니다. “다자간 연산(MPC)은 개인 키를 여러 독립 주체에 분산된 별도 조각으로 나누는 암호학적 방법”이며, 중요한 점은 “어느 시점에도 완전한 키가 한곳에서 조립되지 않는다”는 것입니다([fireblocks.com](https://www.fireblocks.com/what-is-mpc#:~:text=Multi%2Dparty%20computation%20)). 거래에 서명해야 할 때는 정족수를 충족하는 엔드포인트가 각각 거래를 검증하고 부분 서명을 제공합니다. “어느 시점에도 개인 키는 조립되지 않으므로” “한 엔드포인트가 침해되더라도 다른 곳의 키 조각은 각각 따로는 쓸모가 없습니다”([fireblocks.com](https://www.fireblocks.com/what-is-mpc)). 이 임계값 서명 패턴은 이제 대부분의 기관 암호화폐 수탁 서비스와 여러 다중 서명 지갑의 기반입니다.
 
-**트레이드오프:** MPC는 한 기기의 개인 키 하나에서 생기는 단일 장애점을 없애지만, 주체 사이에 통신 라운드가 추가되어 지연 시간이 늘어나고 프로토콜을 신중하게 설계해야 합니다. MPC 스킴의 보안 보장은 가정한 정직한 다수 임계값만큼만 강하며, 이는 수학적 가정일 뿐 아니라 사회적·운영적 가정이기도 합니다.
+**트레이드오프:** MPC는 한 기기의 개인 키 하나에서 생기는 단일 장애점을 없애지만, 주체 사이에 통신 라운드가 추가되어 지연 시간이 늘어나고 프로토콜을 신중하게 설계해야 합니다. 보안 보장은 선택한 프로토콜의 암호학적 가정, 손상 및 네트워크 가정, 그리고 각 주체의 운영상 독립성만큼만 강합니다. MPC는 단일 키 보유자를 없앨 수 있지만 시스템 설계에서 신뢰 자체를 없애지는 않습니다.
 
 ---
 
@@ -92,11 +92,11 @@ relatedSeries:
 
 **숨기는 것:** 엔클레이브 내부의 데이터와 코드를 같은 컴퓨터의 다른 모든 프로세스에서 숨깁니다. 침해된 운영체제도 볼 수 없습니다. 서버 운영자를 신뢰하지 않고 특정 코드의 실행을 신뢰해야 할 때 유용합니다.
 
-**신뢰 가정:** 순수하게 수학에 의존하는 ZKP, FHE, MPC와 달리 TEE는 칩 제조사의 하드웨어와 펌웨어를 신뢰해야 합니다. 이 신뢰는 여러 차례 시험대에 올랐습니다. SGX는 “사이드 채널 공격을 방어하지 못하며”, 연구자들은 2017년에 “같은 시스템에서 실행되는 SGX 엔클레이브로부터 5분 안에 RSA 키”를 추출한 사례부터 2018년에 “추측 실행과 버퍼 오버플로를 결합해 SGX를 우회”한 Foreshadow 공격까지 실용적인 공격을 거듭 입증했습니다. 이후에도 Plundervolt, LVI, SGAxe, ÆPIC Leak 같은 취약점이 발견되었습니다([Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions#:~:text=While%20this%20can%20mitigate%20many%20kinds%20of%20attacks%2C%20it%20does%20not%20protect%20against%20side%2Dchannel%20attacks)). 이런 이력 때문에 TEE는 대개 암호학적으로 빈틈없는 보장이라기보다 실용적이고 빠른 중간 지점으로 설명됩니다.
+**신뢰 가정:** ZKP, FHE, MPC는 “순수 수학”에만 의존하고 TEE만 공급업체를 신뢰해야 한다고 구분해서는 안 됩니다. 실제 배포된 암호 시스템도 명시된 난이도 가정, 매개변수 또는 설정, 올바른 구현에 의존하며, MPC의 경우에는 프로토콜의 참여자 및 통신 모델에도 의존합니다. TEE는 이 시스템 신뢰 모델에 하드웨어 기반 격리와 원격 증명을 추가합니다. Intel은 SGX의 신뢰 컴퓨팅 기반을 SGX의 보안 목표를 달성하는 데 필요한 하드웨어, CPU 펌웨어, 플랫폼 소프트웨어로 정의합니다. 원격 증명을 통해 이를 신뢰하는 측은 엔클레이브의 신원과 플랫폼의 패치 수준을 평가할 수 있습니다([Intel](https://www.intel.com/content/www/us/en/security-center/technical-details/sgx-attestation-technical-details.html)). 이 신뢰 경계는 여러 차례 시험대에 올랐습니다. SGX는 “사이드 채널 공격을 방어하지 못하며”, 연구자들은 2017년에 “같은 시스템에서 실행되는 SGX 엔클레이브로부터 오 분 안에 RSA 키”를 추출한 사례부터 2018년에 “추측 실행과 버퍼 오버플로를 결합해 SGX를 우회”한 Foreshadow 공격까지 실용적인 공격을 거듭 입증했습니다. 이후에도 Plundervolt, LVI, SGAxe, ÆPIC Leak 같은 취약점이 발견되었습니다([Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions#:~:text=While%20this%20can%20mitigate%20many%20kinds%20of%20attacks%2C%20it%20does%20not%20protect%20against%20side%2Dchannel%20attacks)). 이런 이력 때문에 TEE는 대개 암호학적으로 빈틈없는 보장이라기보다 실용적이고 빠른 중간 지점으로 설명됩니다.
 
 **예시 프로젝트:** [Oasis Protocol](https://oasis.net/technology)의 Sapphire 네트워크는 하드웨어 엔클레이브 안에서 스마트 컨트랙트를 실행합니다. 따라서 사용자는 “하드웨어로 보호된 엔클레이브 안에서 코드를 실행”할 수 있고 “데이터는 서버 운영자에게도 암호화된 상태로 유지”됩니다. 또한 “모든 실행은 사용자가 맹목적인 신뢰 없이 검증할 수 있는 암호학적 증명을 생성”합니다. 이를 통해 “EVM 호환성과 조합 가능성”을 유지하면서 “기밀 스마트 컨트랙트”를 제공합니다([oasis.net](https://oasis.net/technology)). Secret Network를 비롯해 리스테이킹과 연계된 여러 프라이버시 제품도 TEE를 기반으로 하며, 심층 방어를 위해 다른 기법과 결합하는 경우가 많습니다.
 
-**트레이드오프:** TEE는 네이티브에 가까운 속도로 실행되어 FHE나 무거운 ZK 증명보다 훨씬 빠릅니다. 지연 시간에 민감한 애플리케이션에 매력적인 이유입니다. 하지만 이 속도는 실제 사이드 채널 공격 이력이 있는 하드웨어를 신뢰하는 대가로 얻는 것이므로, 최악의 경우 TEE 기반 시스템의 보안 보장은 순수 암호학적 방식보다 대체로 약하고 더 강한 외부 신뢰를 요구합니다.
+**트레이드오프:** TEE는 네이티브에 가까운 속도로 실행되어 FHE나 무거운 ZK 증명보다 훨씬 빠릅니다. 지연 시간에 민감한 애플리케이션에 매력적인 이유입니다. 하지만 이 속도에는 실제로 문서화된 사이드 채널 침해 이력이 있는 더 넓은 하드웨어 및 소프트웨어 신뢰 컴퓨팅 기반이 따릅니다. 따라서 비교 대상은 서로 다른 시스템 가정이지, 하드웨어 신뢰와 아무런 가정이 없는 “순수 암호학”이 아닙니다.
 
 ---
 
@@ -118,10 +118,10 @@ relatedSeries:
 
 | 기술 | 숨기는 것 | 신뢰 가정 | 성능 비용 | 현재 성숙도 | 예시 프로젝트 |
 |---|---|---|---|---|---|
-| 영지식 증명 | 기초 데이터/연산, 증명의 유효성만 공개 | 암호학적 수학(일부 시스템은 신뢰 설정 추가) | 증명 생성 비용 높음, 검증은 저렴함 | 대규모 실사용(rollup, 보호 결제) | zkSync, Starknet, Zcash |
-| 완전 동형 암호화 | 연산 제공자를 포함해 연산 내내 모든 데이터 | 암호학적 수학(격자 기반) | 연산 오버헤드 매우 높음 | 초기 실사용, 하드웨어 가속 연구 활발 | Zama, Fhenix |
-| 안전한 다자간 연산 | 각 주체의 개별 입력 | 참여자 사이의 정직한 다수/임계값 | 중간, 통신 라운드 추가 | 성숙했으며 수탁 분야에 널리 배포 | Fireblocks 및 기타 임계값 서명 수탁업체 |
-| 신뢰 실행 환경 | 운영체제를 포함한 다른 모든 프로세스로부터 데이터/코드 | 하드웨어/펌웨어 공급업체(칩 제조사) | 네이티브에 가까운 속도 | 실사용 중이지만 문서화된 사이드 채널 공격 이력 존재 | Intel SGX, Oasis Sapphire |
+| 영지식 증명 | 비공개 증인 또는 데이터, 별도로 숨기지 않으면 공개 명제는 계속 노출 | 증명 시스템의 가정, 매개변수 또는 설정, 올바른 구현 | 증명 생성 비용 높음, 검증은 저렴함 | 대규모 실사용(rollup, 보호 결제) | zkSync, Starknet, Zcash |
+| 완전 동형 암호화 | 연산 제공자를 포함해 지원되는 연산 동안의 데이터 | 암호학적 가정, 스킴과 매개변수 선택 | 연산 오버헤드 매우 높음 | 초기 실사용, 하드웨어 가속 연구 활발 | Zama, Fhenix |
+| 안전한 다자간 연산 | 각 주체의 개별 입력 | 프로토콜별 손상, 네트워크 및 설정, 다수 가정 | 중간, 통신 라운드 추가 | 성숙했으며 수탁 분야에 널리 배포 | Fireblocks 및 기타 임계값 서명 수탁업체 |
+| 신뢰 실행 환경 | 운영체제를 포함한 다른 모든 프로세스로부터 데이터/코드 | 검증된 엔클레이브 코드와 하드웨어, 펌웨어, 소프트웨어 및 패치 수준을 포함한 신뢰 컴퓨팅 기반 | 네이티브에 가까운 속도 | 실사용 중이지만 문서화된 사이드 채널 공격 이력 존재 | Intel SGX, Oasis Sapphire |
 | 링 서명 및 스텔스 주소 | 송신자 신원과 수신자 신원 | 미끼 집합의 통계적 비구별성 | 낮음, 일반 하드웨어에서 효율적 | 성숙했으며 십 년 넘게 실제 운영 | Monero |
 
 어느 한 기술도 모든 축에서 이기지는 못합니다. 그래서 현재 연구는 MPC 연산의 정확성을 검증하는 ZK 증명이나, 심층 방어를 위해 FHE와 함께 사용하는 TEE처럼 여러 기술을 점점 더 결합하고 있습니다.
@@ -139,14 +139,21 @@ relatedSeries:
 ## 출처 및 추가 자료
 
 - [영지식 증명 — ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/)
+- [증명, 논증, 영지식 — Justin Thaler](https://people.cs.georgetown.edu/jthaler/ProofsArgsAndZK.html)
 - [ZK-Rollup — ethereum.org](https://ethereum.org/en/developers/docs/scaling/zk-rollups/)
 - [L2BEAT 확장성 요약](https://l2beat.com/scaling/summary)
 - [Zcash 기술 개요](https://z.cash/technology/)
 - [동형 암호화 소개 — Zama](https://www.zama.org/introduction-to-homomorphic-encryption)
+- [보안 지침 — HomomorphicEncryption.org](https://homomorphicencryption.org/security-guidelines/)
 - [Fhenix cofhe 문서](https://cofhe-docs.fhenix.zone/)
 - [안전한 다자간 연산 — Wikipedia](https://en.wikipedia.org/wiki/Secure_multi-party_computation)
+- [비암호학적 결함 허용 분산 연산의 완전성 정리 — ACM](https://doi.org/10.1145/62212.62213)
+- [효율적인 완전 보안 연산 — TCC 2021](https://www.iacr.org/archive/tcc2021/130420196/130420196.pdf)
+- [부분 동형 암호화를 활용한 다자간 연산(SPDZ) — IACR](https://eprint.iacr.org/2011/535)
+- [공정성을 통한 SPDZ 보안 확장 — PoPETs](https://petsymposium.org/popets/2024/popets-2024-0053.php)
 - [MPC란? — Fireblocks](https://www.fireblocks.com/what-is-mpc)
 - [Software Guard Extensions(SGX) — Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions)
+- [Intel SGX 원격 증명 기술 세부 정보](https://www.intel.com/content/www/us/en/security-center/technical-details/sgx-attestation-technical-details.html)
 - [Oasis Protocol 기술](https://oasis.net/technology)
 - [링 서명 — Monero Moneropedia](https://www.getmonero.org/resources/moneropedia/ring-signatures.html)
 - [스텔스 주소 — Monero Moneropedia](https://www.getmonero.org/resources/moneropedia/stealthaddress.html)
