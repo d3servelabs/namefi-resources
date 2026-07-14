@@ -40,17 +40,17 @@ relatedSeries:
 
 ## 零知识证明
 
-![一名证明者把一枚发光的“有效证明”徽章交给验证者，同时将文件锁在身后，说明零知识证明如何在不揭示底层陈述的前提下令人信服](../../assets/blockchain-privacy-technologies-01-zero-knowledge.jpg)
+![一名证明者把一枚发光的“有效证明”徽章交给验证者，同时将私有见证锁在身后，说明零知识证明如何在不泄露秘密的情况下验证公开陈述](../../assets/blockchain-privacy-technologies-01-zero-knowledge.jpg)
 
-[零知识证明](/zh-CN/glossary/zero-knowledge-proof/)（ZKP）让一方——*证明者（prover）*——能够说服另一方——*验证者（verifier）*——某个陈述为真，而不透露该陈述的任何其他信息。Ethereum 的开发者文档对此有一句简明的说明：“零知识证明是一种在不揭示陈述本身的情况下证明陈述有效性的方法”；其中，“证明者”是试图证明某项主张的一方，而“验证者”负责验证该主张（[ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/#:~:text=A%20zero%2Dknowledge%20proof%20is,without%20revealing%20the%20statement%20itself)）。
+[零知识证明](/zh-CN/glossary/zero-knowledge-proof/)（ZKP）让一方——*证明者（prover）*——能够说服另一方——*验证者（verifier）*——某个公开陈述为真，同时除了该陈述及其有效性已经蕴含的信息外，不泄露用于证明它的私有*见证（witness）*。以“我知道一个 `x`，满足 `H(x) = y`”为例，验证者通常会看到该陈述和公开值 `y`；零知识性保护的是 `x`。应用可以另行隐藏公开输入的某些部分，或通过密码学承诺将其绑定，但隐藏陈述本身并不属于 ZKP 的一般定义（[Thaler，《Proofs, Arguments, and Zero-Knowledge》](https://people.cs.georgetown.edu/jthaler/ProofsArgsAndZK.html)）。
 
-要成为真正的零知识协议，证明系统必须满足三项性质：完备性（“如果输入有效，零知识协议总会返回 'true'”）、可靠性（“如果输入无效，从理论上讲不可能欺骗零知识协议返回 'true'”），以及零知识性本身，即“验证者除陈述为真或为假之外，对该陈述一无所知”（[ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/)）。具体而言，一份证明由见证（证明者掌握的秘密）、挑战（验证者提出的问题）和响应构成；响应让验证者能够检验证明者的知识，却始终看不到见证本身。
+要成为真正的零知识协议，证明系统必须满足三项性质：完备性（诚实验证者会接受真实陈述）、可靠性（除了证明系统设定的有界错误概率外，不诚实的证明者无法让诚实验证者接受虚假陈述），以及零知识性本身（除公开陈述已经蕴含的信息外，证明不会泄露有关私有见证的额外知识）。经典交互式协议通常使用承诺、验证者挑战和证明者响应。现代非交互式 SNARK 和 STARK 无需验证者实时发出挑战，就能封装必要的证明数据，同时保持相同的完备性、可靠性与零知识性目标。
 
-**它隐藏什么：**底层数据或计算——只公开某项主张为真的证明。
+**它隐藏什么：**私有见证，例如秘密数据或私有计算输入。公开陈述和公开输入仍然可见，除非应用另行通过承诺绑定或对其加密。
 
 **如今如何使用：**ZK-rollup 是 ZKP 在区块链扩容中的最大规模生产应用。它们会“将交易捆绑（或‘汇总’）成批次，在链下执行”，再生成一份由 Ethereum 验证的有效性证明，之后才最终确认该批次的状态变更（[ethereum.org](https://ethereum.org/en/developers/docs/scaling/zk-rollups/#:~:text=ZK%2Drollups%20bundle%20)）。由 Matter Labs 构建的 zkSync Era 是“与 EVM 兼容的 ZK Rollup……由其自身 zkEVM 驱动”（[ethereum.org](https://ethereum.org/en/developers/docs/scaling/zk-rollups/)）；而由 StarkWare 构建的 Starknet 是有效性 rollup，运行自己的 Cairo VM 而不是 EVM（Solidity 合约会另行桥接）。L2BEAT 将两者都列为由有效性证明保障的 rollup，而不是采用乐观 rollup 所使用的欺诈证明挑战窗口（[l2beat.com](https://l2beat.com/scaling/summary)）。在隐私领域，[Zcash](https://z.cash/technology/)率先将 zk-SNARK（Zero-Knowledge Succinct Non-Interactive Arguments of Knowledge）用于屏蔽交易；在此类交易中，“用户的地址、交易金额”及其他细节保持加密，而网络仍可确认交易有效（[z.cash](https://z.cash/technology/)）。
 
-**取舍：**生成 ZK 证明的计算成本很高——证明电路必须遍历一批中的每笔交易并重新执行检查——因此证明时间和硬件成本都是实实在在的约束；尽管如此，链上验证既便宜又快速。对系统的信任可归结为对数学的信任，以及对某些证明系统的一次性可信设置仪式的信任。
+**取舍：**生成 ZK 证明的计算成本很高——证明电路必须遍历一批中的每笔交易并重新执行检查——因此证明时间和硬件成本都是实实在在的约束；尽管如此，链上验证既便宜又快速。安全性依赖证明系统的密码学假设、安全的参数生成，以及电路和协议的正确实现；对某些证明系统而言，还包括一次性的可信设置仪式。Ethereum 文档指出，设置过程中的熵一旦遭到泄露，攻击者就可能生成虚假证明，而实现错误也会破坏安全模型（[ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/#trust-assumptions)）。
 
 ---
 
@@ -66,7 +66,7 @@ relatedSeries:
 
 **示例项目：**[Zama](https://www.zama.org/)构建开源 FHE 库（TFHE-rs、Concrete）以及用于为 EVM 链添加机密智能合约执行能力的 fhEVM。[Fhenix](https://cofhe-docs.fhenix.zone/)是一条专门构建的区块链，用于让“开发者能够使用全同态加密构建保护隐私的智能合约”，从而使“敏感数据在整个计算过程中始终保持加密”；它提供 JavaScript 库 Cofhejs 用于客户端加密，也提供 Solidity FHE 库用于链上加密操作（[cofhe-docs.fhenix.zone](https://cofhe-docs.fhenix.zone/)）。
 
-**取舍：**FHE 在本列表中提供最强的隐私保障——即使在计算过程中也从不解密任何内容——但与明文执行相比，它的计算成本也要高得多。因此，当今基于 FHE 的链只会将其用于保密性关键逻辑，而不是每一笔交易；FHE 硬件加速也仍是活跃的研究竞赛。
+**取舍：**FHE 的独特保障在于，受支持的计算可以在不解密输入或中间值的情况下执行；但其具体安全性仍取决于方案和参数选择，因此 HomomorphicEncryption.org 发布了各方案的安全性表格和参数选择指南（[HomomorphicEncryption.org](https://homomorphicencryption.org/security-guidelines/)）。与此同时，它也是本列表中相较明文执行计算开销最大的方案。因此，当今基于 FHE 的链只会将其用于保密性关键逻辑，而不是每一笔交易；FHE 硬件加速也仍是活跃的研究竞赛。
 
 ---
 
@@ -78,11 +78,11 @@ relatedSeries:
 
 **它隐藏什么：**每一方的单独输入不向其他任何一方披露——只公开事先约定的输出，且没有单一参与者会看到完整秘密。
 
-**信任假设：**安全性取决于在方案失效之前允许多少参与者不诚实。经典秘密共享构造可提供信息论安全性，前提是主动恶意的一方少于三分之一，或者只是好奇的一方少于二分之一（[Wikipedia](https://en.wikipedia.org/wiki/Secure_multi-party_computation)）。换言之，MPC 将“信任一名保管人”替换为“信任这 N 方中不会有太多方串通”。
+**信任假设：**MPC 不存在普适的腐化门限。在经典 BGW 的完全网络模型中，面对被动故障时，隐私性在 `t < n/2` 时成立；面对拜占庭故障时，鲁棒性在 `t < n/3` 时成立（[ACM](https://doi.org/10.1145/62212.62213)）。这些界限描述的是该协议模型，而不是所有 MPC：假设存在广播时，完美安全协议可以达到 `t < n/2`（[TCC 2021](https://www.iacr.org/archive/tcc2021/130420196/130420196.pdf)）；而基于计算安全性的 SPDZ 协议在其预处理模型中，即使多达 `n - 1` 方遭腐化，也能提供主动安全性（[IACR](https://eprint.iacr.org/2011/535)）。这种不诚实多数保障属于“带中止的安全性”——腐化参与者仍可终止计算——而不是公平性或保证输出（[PoPETs](https://petsymposium.org/popets/2024/popets-2024-0053.php)）。因此，具体部署必须说明所用协议、被动或主动腐化模型、同步性以及信道和设置假设（包括广播），并明确假设诚实多数还是不诚实多数。
 
 **如今如何使用——门限签名托管：**MPC 最显眼的区块链应用，是将私钥拆分给独立多方，使没有任何单一设备或个人持有完整密钥。托管基础设施提供商 Fireblocks 的直接描述是：“多方计算（MPC）是一种密码学方法，它将私钥拆分为分配给多个独立方的不同份额”；关键在于，“完整密钥在任何时间点都不会在同一处被组装出来”（[fireblocks.com](https://www.fireblocks.com/what-is-mpc#:~:text=Multi%2Dparty%20computation%20)）。当交易需要签名时，一组达到法定人数的端点会分别验证交易并贡献部分签名；“私钥在任何时候都不会被组装出来”，因此“即使一个端点被攻破……其他位置持有的密钥份额单独来看也毫无用处”（[fireblocks.com](https://www.fireblocks.com/what-is-mpc)）。这一门限签名模式如今支撑了大多数机构级加密资产托管和许多多签名钱包。
 
-**取舍：**MPC 避免了单把私钥放在单台设备上造成的单点故障，但它增加了参与方之间的通信轮次（延迟），也要求审慎的协议设计。MPC 方案的安全保障只与其假设的诚实多数门限一样强；这不仅是数学假设，也是社会和运营层面的假设。
+**取舍：**MPC 避免了单把私钥放在单台设备上造成的单点故障，但它增加了参与方之间的通信轮次（延迟），也要求审慎的协议设计。其保障只与所选协议的密码学、腐化和网络假设，以及各方的运营独立性一样强；MPC 可以消除单一密钥持有者，却无法消除系统设计中的信任。
 
 ---
 
@@ -92,11 +92,11 @@ relatedSeries:
 
 **它隐藏什么：**飞地内的数据和代码不被同一台机器上的任何其他进程看到，包括已被攻破的操作系统——当你需要信任某段特定代码的执行、却不想信任服务器运营者时，这很有用。
 
-**信任假设：**与纯粹依赖数学的 ZKP、FHE 或 MPC 不同，TEE 要求你信任芯片制造商的硬件和固件。这一信任已被反复检验：SGX“无法防御侧信道攻击”，研究人员也多次展示实际攻击，从“在五分钟内从同一系统中运行的 SGX 飞地提取 RSA 密钥”（2017 年），到结合推测执行与缓冲区溢出以绕过 SGX 的 Foreshadow 攻击（2018 年），以及之后的 Plundervolt、LVI、SGAxe 和 ÆPIC Leak 等漏洞（[Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions#:~:text=While%20this%20can%20mitigate%20many%20kinds%20of%20attacks%2C%20it%20does%20not%20protect%20against%20side%2Dchannel%20attacks)）。正因如此，TEE 通常被描述为务实、速度更快的折中方案，而不是密码学上无懈可击的保障。
+**信任假设：**这里的区别并不是 ZKP、FHE 和 MPC 依赖“纯数学”，而 TEE 只依赖供应商信任。已部署的密码系统同样依赖其声明的困难性假设、参数或设置、正确实现；对 MPC 而言，还依赖协议的参与者与通信模型。TEE 在这一系统信任模型上增加了硬件支持的隔离和远程证明。Intel 将 SGX 的可信计算基定义为实现 SGX 安全目标所需的硬件、CPU 固件和平台软件；远程证明让依赖方能够评估飞地身份和平台补丁级别（[Intel](https://www.intel.com/content/www/us/en/security-center/technical-details/sgx-attestation-technical-details.html)）。这一信任边界已被反复检验：SGX“无法防御侧信道攻击”，研究人员也多次展示实际攻击，从“在五分钟内从同一系统中运行的 SGX 飞地提取 RSA 密钥”（2017 年），到结合推测执行与缓冲区溢出以绕过 SGX 的 Foreshadow 攻击（2018 年），以及之后的 Plundervolt、LVI、SGAxe 和 ÆPIC Leak 等漏洞（[Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions#:~:text=While%20this%20can%20mitigate%20many%20kinds%20of%20attacks%2C%20it%20does%20not%20protect%20against%20side%2Dchannel%20attacks)）。正因如此，TEE 通常被描述为务实、速度更快的折中方案，而不是密码学上无懈可击的保障。
 
 **示例项目：**[Oasis Protocol](https://oasis.net/technology) 的 Sapphire 网络在硬件飞地内运行智能合约，用户可以“在受硬件保护的飞地内运行代码”，其中“数据即使对服务器运营者也保持加密”；同时，“每次执行都会产生用户无需盲目信任即可验证的密码学证明”——由此提供了保持“EVM 兼容性和可组合性”的“机密智能合约”（[oasis.net](https://oasis.net/technology)）。Secret Network 和若干与再质押相邻的隐私产品也建立在 TEE 之上，且常与其他技术结合，以实现纵深防御。
 
-**取舍：**TEE 的运行速度接近原生速度——远快于 FHE 或高成本 ZK 证明——这使它们对延迟敏感的应用很有吸引力；但这种速度源自对硬件的信任，而硬件存在真实且有记录的侧信道攻破历史。因此，在最坏情形下的信任假设方面，基于 TEE 的系统通常弱于纯密码学方案。
+**取舍：**TEE 的运行速度接近原生速度——远快于 FHE 或高成本 ZK 证明——这使它们对延迟敏感的应用很有吸引力；但这种速度伴随着范围更广的软硬件可信计算基，而它存在真实且有记录的侧信道攻破历史。因此，比较的是不同的系统假设，而不是硬件信任与一种不依赖任何假设的“纯密码学”之间的高下。
 
 ---
 
@@ -118,10 +118,10 @@ relatedSeries:
 
 | 技术 | 它隐藏什么 | 信任假设 | 性能成本 | 当前成熟度 | 示例项目 |
 |---|---|---|---|---|---|
-| 零知识证明 | 底层数据/计算；只公开证明的有效性 | 密码学数学（部分系统还需可信设置） | 生成证明成本高；验证成本低 | 已大规模投入生产（rollup、屏蔽支付） | zkSync、Starknet、Zcash |
-| 全同态加密 | 计算全过程中的所有数据，连计算提供方也看不到 | 密码学数学（基于格） | 极高的计算开销 | 早期生产阶段；硬件加速研究活跃 | Zama、Fhenix |
-| 安全多方计算 | 每一方的单独输入 | 参与者之间的诚实多数/门限 | 中等；增加通信轮次 | 成熟，且广泛用于托管 | Fireblocks 和其他门限签名托管方 |
-| 可信执行环境 | 来自其他所有进程（包括操作系统）的数据/代码 | 硬件/固件供应商（芯片制造商） | 接近原生速度 | 已投入生产，但有记录在案的侧信道攻击历史 | Intel SGX、Oasis Sapphire |
+| 零知识证明 | 私有见证或数据；除非另行隐藏，否则公开陈述仍然可见 | 证明系统假设、参数或设置，以及正确实现 | 生成证明成本高；验证成本低 | 已大规模投入生产（rollup、屏蔽支付） | zkSync、Starknet、Zcash |
+| 全同态加密 | 受支持计算过程中的数据，连计算提供方也看不到 | 密码学假设、方案与参数选择 | 极高的计算开销 | 早期生产阶段；硬件加速研究活跃 | Zama、Fhenix |
+| 安全多方计算 | 每一方的单独输入 | 特定协议的腐化、网络和设置假设，以及多数假设 | 中等；增加通信轮次 | 成熟，且广泛用于托管 | Fireblocks 和其他门限签名托管方 |
+| 可信执行环境 | 来自其他所有进程（包括操作系统）的数据/代码 | 经远程证明的飞地代码，以及涵盖软硬件、固件和补丁级别的可信计算基 | 接近原生速度 | 已投入生产，但有记录在案的侧信道攻击历史 | Intel SGX、Oasis Sapphire |
 | 环签名与隐身地址 | 发送者身份和接收者身份 | 诱饵集合在统计上不可区分 | 低；可在普通硬件上高效运行 | 成熟，已在线运行逾十年 | Monero |
 
 没有一种技术能在所有维度上胜出——这正是当前研究日益将它们结合使用的原因，例如用 ZK 证明验证 MPC 计算的正确性，或将 TEE 与 FHE 并用以实现纵深防御。
@@ -139,14 +139,21 @@ relatedSeries:
 ## 参考来源与延伸阅读
 
 - [零知识证明 — ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/)
+- [证明、论证与零知识 — Justin Thaler](https://people.cs.georgetown.edu/jthaler/ProofsArgsAndZK.html)
 - [ZK-Rollups — ethereum.org](https://ethereum.org/en/developers/docs/scaling/zk-rollups/)
 - [L2BEAT 扩容摘要](https://l2beat.com/scaling/summary)
 - [Zcash 技术概览](https://z.cash/technology/)
 - [同态加密简介 — Zama](https://www.zama.org/introduction-to-homomorphic-encryption)
+- [安全指南 — HomomorphicEncryption.org](https://homomorphicencryption.org/security-guidelines/)
 - [Fhenix cofhe 文档](https://cofhe-docs.fhenix.zone/)
 - [安全多方计算 — Wikipedia](https://en.wikipedia.org/wiki/Secure_multi-party_computation)
+- [非密码学容错分布式计算的完备性定理 — ACM](https://doi.org/10.1145/62212.62213)
+- [高效的完美安全计算 — TCC 2021](https://www.iacr.org/archive/tcc2021/130420196/130420196.pdf)
+- [基于部分同态加密的多方计算（SPDZ）— IACR](https://eprint.iacr.org/2011/535)
+- [通过公平性扩展 SPDZ 的安全性 — PoPETs](https://petsymposium.org/popets/2024/popets-2024-0053.php)
 - [什么是 MPC？— Fireblocks](https://www.fireblocks.com/what-is-mpc)
 - [软件防护扩展（SGX）— Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions)
+- [Intel SGX 远程证明技术详情](https://www.intel.com/content/www/us/en/security-center/technical-details/sgx-attestation-technical-details.html)
 - [Oasis Protocol 技术](https://oasis.net/technology)
 - [环签名 — Monero Moneropedia](https://www.getmonero.org/resources/moneropedia/ring-signatures.html)
 - [隐身地址 — Monero Moneropedia](https://www.getmonero.org/resources/moneropedia/stealthaddress.html)
