@@ -531,13 +531,22 @@ for (const file of auditFiles) {
       for (let valueIndex = 0; valueIndex < comparisonLength; valueIndex++) {
         const actualHref = actualValues[valueIndex];
         const expectedHref = expectedValues[valueIndex];
+        const occurrence = occurrencesByIndex.get(valueIndex);
         // Ignore only the malformed/external English source item. A bad source
         // value must not disable parity checking for every other relationship
-        // in this field.
-        if (expectedHref === null) continue;
+        // in this field, or the independent locale-prefix check at this index.
+        if (expectedHref === null) {
+          if (actualHref && occurrence) {
+            recordLocaleMismatch({
+              ...occurrence,
+              source: 'frontmatter',
+              field,
+            });
+          }
+          continue;
+        }
         if (actualHref === expectedHref) continue;
 
-        const occurrence = occurrencesByIndex.get(valueIndex);
         if (
           actualHref &&
           expectedHref &&

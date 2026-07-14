@@ -509,7 +509,7 @@ describe('same-locale route invariant', () => {
     );
   });
 
-  test('one malformed English relationship does not skip later parity entries', () => {
+  test('one malformed English relationship does not skip locale or later parity checks', () => {
     const root = freshFixture();
     const englishFile = path.join(root, 'content/blog/en/mixed-relation.md');
     const arabicFile = path.join(root, 'content/blog/ar/mixed-relation.md');
@@ -519,7 +519,7 @@ describe('same-locale route invariant', () => {
     );
     writeFileSync(
       arabicFile,
-      '---\nrelatedArticles:\n  - https://example.com/article\n  - /ar/blog/fr-only/\n---\n',
+      '---\nrelatedArticles:\n  - /fr/blog/wrong-locale/\n  - /ar/blog/fr-only/\n---\n',
     );
 
     const audit = run(root, [
@@ -529,14 +529,22 @@ describe('same-locale route invariant', () => {
     ]);
     const report = parseAudit(audit);
     expect(audit.code).toBe(1);
-    expect(report.findings).toEqual([
-      expect.objectContaining({
-        severity: 'RELATIONSHIP_MISMATCH',
-        href: '/ar/blog/fr-only/',
-        fixedHref: '/ar/blog/target/',
-        field: 'relatedArticles',
-      }),
-    ]);
+    expect(report.findings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          severity: 'LOCALE_MISMATCH',
+          href: '/fr/blog/wrong-locale/',
+          fixedHref: '/ar/blog/wrong-locale/',
+          field: 'relatedArticles',
+        }),
+        expect.objectContaining({
+          severity: 'RELATIONSHIP_MISMATCH',
+          href: '/ar/blog/fr-only/',
+          fixedHref: '/ar/blog/target/',
+          field: 'relatedArticles',
+        }),
+      ]),
+    );
 
     expect(
       run(root, [
@@ -545,10 +553,9 @@ describe('same-locale route invariant', () => {
         'content/blog/ar/mixed-relation.md',
       ]).code,
     ).toBe(0);
-    expect(readFileSync(arabicFile, 'utf8')).toContain(
-      'https://example.com/article',
-    );
-    expect(readFileSync(arabicFile, 'utf8')).toContain('/ar/blog/target/');
+    const fixed = readFileSync(arabicFile, 'utf8');
+    expect(fixed).toContain('/ar/blog/wrong-locale/');
+    expect(fixed).toContain('/ar/blog/target/');
   });
 
   test('Arabic privacy metadata keeps the four core English glossary relationships', () => {
