@@ -12,6 +12,7 @@ import {
   rmSync,
   writeFileSync,
 } from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { routeResolvesForPath } from '../../../scripts/validate-data';
 
@@ -40,7 +41,7 @@ type AuditResult = {
 };
 
 function temporaryRoot(prefix: string) {
-  const directory = mkdtempSync(`/private/tmp/${prefix}-`);
+  const directory = mkdtempSync(path.join(os.tmpdir(), `${prefix}-`));
   temporaryDirectories.push(directory);
   return directory;
 }
