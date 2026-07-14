@@ -18,11 +18,11 @@ faqs:
   - question: 'ليه الدومينات الحلوة في .com صعبة الإيجاد؟'
     answer: 'مع أكتر من 160 مليون اسم .com مسجّل، العرض من الأسماء القصيرة وكلمات القاموس والأسماء المطابقة للعلامات التجارية اتخلص في معظمه. أغلب أسماء .com المميزة مملوكة، فالكتير منها متاح بس في السوق الثانوي.'
 relatedArticles:
-  - /ar/blog/what-is-a-tld/
-  - /ar/blog/top-tlds-to-secure-for-your-business/
-  - /ar/blog/top-tlds-to-secure-for-your-startup/
+  - /ar/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /ar/blog/the-sex-com-heist-the-forged-letter/
+  - /ar/blog/from-teslamotors-com-to-tesla-com/
   - /ar/blog/what-makes-a-domain-valuable/
-  - /ar/blog/ai-vs-io-domain/
+  - /ar/blog/top-tlds-to-secure-for-your-business/
 relatedTopics:
   - /ar/topics/choosing-a-tld/
   - /ar/topics/domain-investing/

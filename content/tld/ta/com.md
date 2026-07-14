@@ -18,11 +18,11 @@ faqs:
   - question: 'நல்ல .com டொமைன்களை ஏன் கண்டுபிடிப்பது இவ்வளவு கஷ்டம்?'
     answer: '160 மில்லியனுக்கும் அதிகமான .com பெயர்கள் பதிவு செய்யப்பட்டுள்ளதால், குறுகிய, அகராதி-சொல், மற்றும் துல்லியமான பிராண்ட் பெயர்களின் வழங்கல் பெரும்பாலும் தீர்ந்துவிட்டது. பெரும்பாலான உயர்நிலை .com பெயர்கள் ஏற்கெனவே உரிமையில் உள்ளன, எனவே அவை பெரும்பாலும் மறுவிற்பனை சந்தையில் மட்டுமே கிடைக்கின்றன.'
 relatedArticles:
-  - /ta/blog/what-is-a-tld/
-  - /ta/blog/top-tlds-to-secure-for-your-business/
-  - /ta/blog/top-tlds-to-secure-for-your-startup/
+  - /ta/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /ta/blog/the-sex-com-heist-the-forged-letter/
+  - /ta/blog/from-teslamotors-com-to-tesla-com/
   - /ta/blog/what-makes-a-domain-valuable/
-  - /ta/blog/ai-vs-io-domain/
+  - /ta/blog/top-tlds-to-secure-for-your-business/
 relatedTopics:
   - /ta/topics/choosing-a-tld/
   - /ta/topics/domain-investing/

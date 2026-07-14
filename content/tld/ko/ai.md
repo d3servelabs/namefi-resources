@@ -21,10 +21,10 @@ faqs:
     answer: '앙귈라 레지스트리가 해당 정책을 설정합니다. .ai 도메인은 .com에서 일반적인 1년 단위가 아닌 2~10년 단위로 등록 및 갱신됩니다. 이는 초기 비용을 높이지만, 1년 갱신을 놓쳐 도메인을 잃을 위험을 줄여 줍니다.'
 relatedArticles:
   - /ko/blog/ai-vs-io-domain/
-  - /ko/blog/from-mona-co-to-crypto-com/
+  - /ko/blog/why-are-io-domains-expensive/
   - /ko/blog/how-tld-affects-domain-value/
   - /ko/blog/what-is-a-tld/
-  - /ko/blog/why-are-io-domains-expensive/
+  - /ko/blog/top-tlds-to-secure-for-your-startup/
 relatedTopics:
   - /ko/topics/choosing-a-tld/
   - /ko/topics/domain-investing/
@@ -33,10 +33,10 @@ relatedSeries:
   - /ko/series/domain-flipping-skills/
 relatedGlossary:
   - /ko/glossary/registrar/
-  - /ko/glossary/icann/
   - /ko/glossary/tld/
-  - /ko/glossary/registry/
+  - /ko/glossary/icann/
   - /ko/glossary/dns/
+  - /ko/glossary/registry/
 ---
 
 2023년, 카리브해에서 가장 작은 영토 중 하나인 이 나라의 정부는 도메인 이름 판매로 [약 3,200만 달러를 벌어들였으며, 이는 전체 GDP의 10% 이상에 해당합니다](https://en.wikipedia.org/wiki/.ai#:~:text=In%202023%2C%20Anguilla%27s%20government%20made%20about%20US%2432%20million). 2025년에는 한 장관이 BBC에 도메인 수익이 [국가 예산의 약 47%](https://en.wikipedia.org/wiki/.ai#:~:text=by%202025%20it%20will%20be%20around%2047%25)에 달할 것이라고 밝혔습니다. 이 영토는 인구 약 1만 6천 명의 앙귈라입니다. 앙귈라는 AI 모델을 단 하나도 개발하지 않았습니다. 단지 우연히 알맞은 두 글자를 소유하고 있었을 뿐입니다: **.ai**.

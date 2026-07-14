@@ -19,11 +19,11 @@ relatedArticles:
   - /es/blog/blockchain-privacy-technologies/
   - /es/blog/what-are-tokenized-domains/
 relatedGlossary:
+  - /es/glossary/consensus-mechanism/
+  - /es/glossary/proof-of-work/
+  - /es/glossary/proof-of-stake/
   - /es/glossary/blockchain/
   - /es/glossary/ethereum/
-  - /es/glossary/nft/
-  - /es/glossary/cryptographic-security/
-  - /es/glossary/tokenize/
 relatedTopics:
   - /es/topics/web3-foundations/
   - /es/topics/domain-tokenization/
@@ -46,7 +46,7 @@ Dos problemas dificultan el acuerdo descentralizado.
 
 **Acuerdo sin una parte central.** En una base de datos convencional, la decisión de un único operador es definitiva. En una red pública y sin permisos, cualquiera puede ejecutar un nodo, proponer transacciones e intentar añadir el siguiente bloque, incluidos participantes que podrían mentir, censurar o intentar reescribir el historial. Un mecanismo de consenso debe hacer que atacar el libro mayor sea prohibitivamente costoso o que deje de resultar atractivo, manteniendo al mismo tiempo un coste suficientemente bajo para que los participantes honestos puedan operar la red.
 
-Cada mecanismo siguiente responde de forma distinta a «¿quién propone el siguiente bloque y cómo sabemos que podemos confiar en él?». Los dos ejes más importantes para compararlos son la [resistencia a Sybil](/en/glossary/consensus-mechanism/), es decir, qué impide que un atacante cree identidades falsas ilimitadas para superar en votos a todos los demás, y la **finalidad**, es decir, con qué rapidez y con qué grado de certeza una transacción se vuelve irreversible.
+Cada mecanismo siguiente responde de forma distinta a «¿quién propone el siguiente bloque y cómo sabemos que podemos confiar en él?». Los dos ejes más importantes para compararlos son la [resistencia a Sybil](/es/glossary/consensus-mechanism/), es decir, qué impide que un atacante cree identidades falsas ilimitadas para superar en votos a todos los demás, y la **finalidad**, es decir, con qué rapidez y con qué grado de certeza una transacción se vuelve irreversible.
 
 ---
 
@@ -54,7 +54,7 @@ Cada mecanismo siguiente responde de forma distinta a «¿quién propone el sigu
 
 ![Varios mineros compiten por resolver el mismo rompecabezas hash; uno sostiene un bloque que dice «¡lo encontré!», mientras rayos muestran el elevado coste energético de la minería](../../assets/blockchain-consensus-mechanisms-01-proof-of-work.jpg)
 
-[Proof of Work](/en/glossary/proof-of-work/) (PoW) es el mecanismo que Bitcoin introdujo en 2009 y el que la mayoría de la gente imagina al oír «blockchain». Los mineros compiten por resolver un rompecabezas criptográfico: aplican repetidamente una función hash a los datos de un bloque candidato con un nonce hasta que el hash resultante queda por debajo de un valor objetivo. La documentación para desarrolladores de Ethereum describe la carrera de forma sencilla: un minero «introduce repetidamente un conjunto de datos… en una función matemática» para encontrar una solución válida antes que los demás ([ethereum.org: Proof-of-work](https://ethereum.org/en/developers/docs/consensus-mechanisms/pow/#:~:text=When%20racing%20to%20create%20a%20block%2C%20a%20miner%20repeatedly%20put%20a%20dataset)). Quien encuentra primero un hash válido puede proponer el siguiente bloque y cobrar la recompensa de bloque más las comisiones de transacción.
+[Proof of Work](/es/glossary/proof-of-work/) (PoW) es el mecanismo que Bitcoin introdujo en 2009 y el que la mayoría de la gente imagina al oír «blockchain». Los mineros compiten por resolver un rompecabezas criptográfico: aplican repetidamente una función hash a los datos de un bloque candidato con un nonce hasta que el hash resultante queda por debajo de un valor objetivo. La documentación para desarrolladores de Ethereum describe la carrera de forma sencilla: un minero «introduce repetidamente un conjunto de datos… en una función matemática» para encontrar una solución válida antes que los demás ([ethereum.org: Proof-of-work](https://ethereum.org/en/developers/docs/consensus-mechanisms/pow/#:~:text=When%20racing%20to%20create%20a%20block%2C%20a%20miner%20repeatedly%20put%20a%20dataset)). Quien encuentra primero un hash válido puede proponer el siguiente bloque y cobrar la recompensa de bloque más las comisiones de transacción.
 
 La **resistencia a Sybil** proviene del propio rompecabezas: calcular hashes consume electricidad y hardware reales, por lo que fingir muchas identidades no da ventaja alguna; solo cuenta la potencia de cálculo bruta. La **finalidad es probabilística**. El white paper de Bitcoin describe que los nodos siempre extienden «la cadena más larga como la correcta» ([white paper de Bitcoin](https://bitcoin.org/bitcoin.pdf)); quien recibe un pago gana confianza en que una transacción está liquidada al esperar que se minen bloques adicionales encima de ella. Cada bloque nuevo hace exponencialmente más costoso reescribir el historial, pero ningún bloque individual es final de forma instantánea y matemática.
 
@@ -66,7 +66,7 @@ La contrapartida es la energía. Proteger la red mediante cómputo del mundo rea
 
 ![Un validador bloquea una pila de monedas en una cámara acorazada como depósito en staking; después, una ruleta lo selecciona para proponer el siguiente bloque, y una etiqueta de advertencia de slashing cuelga de la cámara](../../assets/blockchain-consensus-mechanisms-02-proof-of-stake.jpg)
 
-[Proof of Stake](/en/glossary/proof-of-stake/) (PoS) sustituye el trabajo computacional por una garantía económica. En lugar de minar, los participantes hacen **staking**, es decir, bloquean el activo nativo de la red, y el protocolo selecciona de forma seudoaleatoria a uno de ellos para proponer cada bloque. El papel de validador de Ethereum es un buen diseño de referencia: un validador deposita 32 ETH y ejecuta software de cliente; después, el protocolo selecciona aleatoriamente a «un validador… como proponente de bloque en cada slot», mientras un comité elegido al azar de otros validadores certifica la validez de ese bloque ([ethereum.org: Proof-of-stake](https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/#:~:text=One%20validator%20is%20randomly%20selected%20to%20be%20a%20block%20proposer%20in%20every%20slot)).
+[Proof of Stake](/es/glossary/proof-of-stake/) (PoS) sustituye el trabajo computacional por una garantía económica. En lugar de minar, los participantes hacen **staking**, es decir, bloquean el activo nativo de la red, y el protocolo selecciona de forma seudoaleatoria a uno de ellos para proponer cada bloque. El papel de validador de Ethereum es un buen diseño de referencia: un validador deposita 32 ETH y ejecuta software de cliente; después, el protocolo selecciona aleatoriamente a «un validador… como proponente de bloque en cada slot», mientras un comité elegido al azar de otros validadores certifica la validez de ese bloque ([ethereum.org: Proof-of-stake](https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/#:~:text=One%20validator%20is%20randomly%20selected%20to%20be%20a%20block%20proposer%20in%20every%20slot)).
 
 La **resistencia a Sybil** procede de la propia participación en staking: crear muchos validadores falsos solo divide el mismo capital entre más identidades y no aporta influencia adicional. La conducta deshonesta, como proponer bloques en conflicto o certificaciones contradictorias, se castiga mediante **slashing**: el protocolo quema una parte del staking del validador infractor ([ethereum.org: Proof-of-stake](https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/#:~:text=Two%20primary%20behaviors%20can%20be%20considered%20dishonest)). Ethereum finaliza bloques en épocas mediante un mecanismo de puntos de control (Casper FFG combinado con la regla de elección de bifurcación LMD-GHOST), lo que ofrece garantías de finalidad más sólidas que el PoW puro sin requerir una votación de una sola ronda al estilo BFT.
 

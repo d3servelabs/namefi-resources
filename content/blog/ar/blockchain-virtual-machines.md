@@ -25,16 +25,16 @@ relatedSeries:
   - /ar/series/tokenize-your-com/
   - /ar/series/domain-flipping-skills/
 relatedGlossary:
-  - /ar/glossary/ethereum/
+  - /ar/glossary/ethereum-virtual-machine/
+  - /ar/glossary/webassembly/
   - /ar/glossary/smart-contract/
+  - /ar/glossary/ethereum/
   - /ar/glossary/gas/
-  - /ar/glossary/blockchain/
-  - /ar/glossary/layer-2/
 ---
 
 كل [عقد ذكي](/ar/glossary/smart-contract/) لازم يشتغل في مكان ما. و«المكان» ده هو آلة افتراضية للبلوكتشين (VM): برنامج معزول تنفّذه كل عقدة في الشبكة بالطريقة نفسها، بحيث ينتج عن المدخل نفسه المخرج نفسه مهما كان اللي يشغّله. والـ VM التي تبني عليها تشكّل تقريباً كل شيء في السلسلة: اللغات التي تقدر تكتب بها، وهل المعاملات تشتغل في الوقت نفسه أم واحدة وراء الثانية، وقدر ما يمكن توصيله من منظومة المطورين الحالية من أول يوم.
 
-الدليل ده يستعرض خمسة تصاميم للـ VM تشغّل فيما بينها معظم نشاط العقود الذكية في [Web3](/ar/glossary/web3/) اليوم: [Ethereum Virtual Machine](/en/glossary/ethereum-virtual-machine/) ‏(EVM)، وSVM الخاصة بـ Solana، وMoveVM كما تستخدمها Aptos وSui، والآلات المعتمدة على [WebAssembly](/en/glossary/webassembly/) ‏(WASM) مثل CosmWasm وPolkaVM، وCairoVM الخاصة بـ Starknet.
+الدليل ده يستعرض خمسة تصاميم للـ VM تشغّل فيما بينها معظم نشاط العقود الذكية في [Web3](/ar/glossary/web3/) اليوم: [Ethereum Virtual Machine](/ar/glossary/ethereum-virtual-machine/) ‏(EVM)، وSVM الخاصة بـ Solana، وMoveVM كما تستخدمها Aptos وSui، والآلات المعتمدة على [WebAssembly](/ar/glossary/webassembly/) ‏(WASM) مثل CosmWasm وPolkaVM، وCairoVM الخاصة بـ Starknet.
 
 ---
 

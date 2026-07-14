@@ -30,11 +30,11 @@ relatedGlossary:
 
 Ihr Name und Ihre lokale Marke sind die beiden wertvollsten Vermögenswerte im Immobiliengeschäft. Wenn ein Käufer nach „Jana Müller Immobilienmakler" oder nach dem Namen des Stadtteils sucht, den Sie betreuen, sollten die Domains zu diesen Begriffen auf Sie verweisen – und nicht auf einen Mitbewerber, eine gefälschte Kopie oder eine geparkte Seite voller Werbung. Genau deshalb ist das Sichern mehrerer **TLDs (Top-Level-Domains)** für Ihr Immobiliengeschäft eine der günstigsten Formen des Markenschutzes, die Sie erwerben können.
 
-Ein Immobilienmakler, der nur die [`.com`](/de/tld/com) seines Namens besitzt, öffnet die Tür dafür, dass jemand anderes die [`.realty`](/en/tld/realty)-, [`.homes`](/en/tld/homes)- oder [`.house`](/en/tld/house)-Version registriert und von Ihrem erarbeiteten Ruf profitiert. Durch die Registrierung eines kleinen Portfolios der richtigen Top-Level-Domains schützen Sie Ihre lokale Marke, können saubere Untermarken für Angebote oder Farmgebiete aufbauen und offensichtliche Identitätsdiebstähle von vornherein unterbinden. Dieser Leitfaden führt Sie durch die besten TLDs für Immobilienmakler, die wichtigen Zulassungsregeln und eine einfache Defensivstrategie.
+Ein Immobilienmakler, der nur die [`.com`](/de/tld/com) seines Namens besitzt, öffnet die Tür dafür, dass jemand anderes die [`.realty`](/de/tld/realty)-, [`.homes`](/de/tld/homes)- oder [`.house`](/de/tld/house)-Version registriert und von Ihrem erarbeiteten Ruf profitiert. Durch die Registrierung eines kleinen Portfolios der richtigen Top-Level-Domains schützen Sie Ihre lokale Marke, können saubere Untermarken für Angebote oder Farmgebiete aufbauen und offensichtliche Identitätsdiebstähle von vornherein unterbinden. Dieser Leitfaden führt Sie durch die besten TLDs für Immobilienmakler, die wichtigen Zulassungsregeln und eine einfache Defensivstrategie.
 
 ## So wählen Sie TLDs für Ihr Immobiliengeschäft
 
-Einige wenige Kriterien sollten jede Registrierung leiten. **Vertrauen** steht an erster Stelle: Die Endungen, die Käufer kennen (allen voran `.com`), erzeugen die geringste Hürde. **Geografische und branchenbezogene Relevanz** kommt als Nächstes – immobilienspezifische Endungen wie [`.realtor`](/en/tld/realtor), `.realty` und `.homes` signalisieren auf einen Blick, was Sie tun. Einige der glaubwürdigsten Optionen sind **eingeschränkte „verifizierte" TLDs**: `.realtor` erfordert eine qualifizierende Beziehung zur National Association of REALTORS®, was das Besitzen einer solchen Domain zu einem starken Vertrauenssignal macht. Schließlich bedeutet **defensiver Schutz**, die offensichtlichen Varianten Ihres Hauptnamens zu sichern, damit niemand anderes sie registrieren kann. Sie brauchen nicht alle davon – wählen Sie Ihre Ankerdomain `.com`, fügen Sie ein oder zwei branchenspezifische Endungen hinzu und ergänzen Sie defensive Auswahlen.
+Einige wenige Kriterien sollten jede Registrierung leiten. **Vertrauen** steht an erster Stelle: Die Endungen, die Käufer kennen (allen voran `.com`), erzeugen die geringste Hürde. **Geografische und branchenbezogene Relevanz** kommt als Nächstes – immobilienspezifische Endungen wie [`.realtor`](/de/tld/realtor), `.realty` und `.homes` signalisieren auf einen Blick, was Sie tun. Einige der glaubwürdigsten Optionen sind **eingeschränkte „verifizierte" TLDs**: `.realtor` erfordert eine qualifizierende Beziehung zur National Association of REALTORS®, was das Besitzen einer solchen Domain zu einem starken Vertrauenssignal macht. Schließlich bedeutet **defensiver Schutz**, die offensichtlichen Varianten Ihres Hauptnamens zu sichern, damit niemand anderes sie registrieren kann. Sie brauchen nicht alle davon – wählen Sie Ihre Ankerdomain `.com`, fügen Sie ein oder zwei branchenspezifische Endungen hinzu und ergänzen Sie defensive Auswahlen.
 
 ## Die 10 wichtigsten TLDs für Immobilienmakler
 
@@ -52,7 +52,7 @@ Einige wenige Kriterien sollten jede Registrierung leiten. **Vertrauen** steht a
 
 ### 4. .estate — breit gefächert und markentauglich
 
-[`.estate`](/en/tld/estate) eignet sich gut für Luxus-, Gewerbe- und güterbasierte Praxen und liest sich natürlich in einer Marke wie `hafenblick.estate`. Es ist eine uneingeschränkte generische TLD, daher steht die Registrierung jedem offen. Den Delegierungseintrag finden Sie in der [IANA-Root-Datenbank](https://www.iana.org/domains/root/db/estate.html).
+[`.estate`](/de/tld/estate) eignet sich gut für Luxus-, Gewerbe- und güterbasierte Praxen und liest sich natürlich in einer Marke wie `hafenblick.estate`. Es ist eine uneingeschränkte generische TLD, daher steht die Registrierung jedem offen. Den Delegierungseintrag finden Sie in der [IANA-Root-Datenbank](https://www.iana.org/domains/root/db/estate.html).
 
 ### 5. .homes — listing- und verbraucherfreundlich
 
@@ -60,7 +60,7 @@ Einige wenige Kriterien sollten jede Registrierung leiten. **Vertrauen** steht a
 
 ### 6. .properties — für Portfolios und Teams
 
-[`.properties`](/en/tld/properties) eignet sich für Makler und Teams, die mehrere Angebote oder ein Immobilienportfolio verwalten, und stärkt eine professionelle, bestandsorientierte Marke. Wie die meisten neuen gTLDs ist sie uneingeschränkt. Die TLD ist in der [IANA-Root-Datenbank](https://www.iana.org/domains/root/db/properties.html) eingetragen.
+[`.properties`](/de/tld/properties) eignet sich für Makler und Teams, die mehrere Angebote oder ein Immobilienportfolio verwalten, und stärkt eine professionelle, bestandsorientierte Marke. Wie die meisten neuen gTLDs ist sie uneingeschränkt. Die TLD ist in der [IANA-Root-Datenbank](https://www.iana.org/domains/root/db/properties.html) eingetragen.
 
 ### 7. .house — kurz, einprägsam, flexibel
 

@@ -154,7 +154,7 @@ blog . namefi . io
 | [`.vip`](/ar/tld/vip/) | gTLD جديد | العلامات التجارية المميزة والحصرية والعضوية |
 | [`.sbs`](/ar/tld/sbs/) | gTLD جديد | "جنبًا إلى جنب" — أسماء معبّرة بأسعار معقولة |
 
-عايز تعمّق في واحد منهم؟ تصفح المكتبة الكاملة لـ[أدلة الـ TLD](/en/tld/)، بما فيها [`.cloud`](/ar/tld/cloud/) و[`.online`](/ar/tld/online/) و[`.store`](/ar/tld/store/) و[`.site`](/ar/tld/site/) و[`.club`](/ar/tld/club/) و[`.world`](/ar/tld/world/) وعشرات غيرهم.
+عايز تعمّق في واحد منهم؟ تصفح المكتبة الكاملة لـ[أدلة الـ TLD](/ar/tld/)، بما فيها [`.cloud`](/ar/tld/cloud/) و[`.online`](/ar/tld/online/) و[`.store`](/ar/tld/store/) و[`.site`](/ar/tld/site/) و[`.club`](/ar/tld/club/) و[`.world`](/ar/tld/world/) وعشرات غيرهم.
 
 ---
 

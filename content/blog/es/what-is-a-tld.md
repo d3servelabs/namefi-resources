@@ -84,7 +84,7 @@ Están abiertos a cualquiera y siguen siendo los finales más confiables y líqu
 
 ### 2. TLDs de Código de País (ccTLDs)
 
-Los **ccTLDs** son TLDs de dos letras vinculados a un país o territorio, basados en la lista de códigos de país ISO 3166. Ejemplos incluyen `.us` (Estados Unidos), `.uk` (Reino Unido), `.de` (Alemania), `.cn` (China), [`.ae`](/en/tld/ae/) (Emiratos Árabes Unidos), y [`.ac`](/es/tld/ac/) (Isla Ascensión).
+Los **ccTLDs** son TLDs de dos letras vinculados a un país o territorio, basados en la lista de códigos de país ISO 3166. Ejemplos incluyen `.us` (Estados Unidos), `.uk` (Reino Unido), `.de` (Alemania), `.cn` (China), [`.ae`](/es/tld/ae/) (Emiratos Árabes Unidos), y [`.ac`](/es/tld/ac/) (Isla Ascensión).
 
 Lo interesante es que muchos ccTLDs han sido reutilizados mucho más allá de su país de origen porque las letras deletrean algo útil:
 
@@ -128,7 +128,7 @@ Detrás de cada TLD hay un sistema de gobernanza en capas. Esto es lo que hace c
 
 - **ICANN** — la [Corporación de Internet para la Asignación de Nombres y Números](/es/glossary/icann/) es la organización sin fines de lucro que coordina el espacio de nombres global, establece la política para los gTLDs y acredita a los registradores. Fundada en 1998, es lo más parecido a un árbitro que tiene el mundo de los dominios.
 - **IANA** — la Autoridad de Números Asignados de Internet (operada bajo ICANN) mantiene la **zona raíz** autoritativa: la lista maestra de cada TLD válido y qué [registro](/es/glossary/registry/) lo gestiona.
-- **Registros** — cada TLD es operado por un *registro*, la organización que administra la base de datos central para esa extensión. Por ejemplo, **Verisign** opera `.com` y `.net`, y el **Public Interest Registry (PIR)** gestiona `.org`. Los registros de ccTLD suelen ser organismos nacionales — por ejemplo, [`.ae`](/en/tld/ae/) es administrado por el TDRA de los Emiratos Árabes Unidos.
+- **Registros** — cada TLD es operado por un *registro*, la organización que administra la base de datos central para esa extensión. Por ejemplo, **Verisign** opera `.com` y `.net`, y el **Public Interest Registry (PIR)** gestiona `.org`. Los registros de ccTLD suelen ser organismos nacionales — por ejemplo, [`.ae`](/es/tld/ae/) es administrado por el TDRA de los Emiratos Árabes Unidos.
 - **Registradores** — un [registrador](/es/glossary/registrar/) es el minorista al que le compras. Los registradores acreditados por ICANN (como Namefi, GoDaddy y Namecheap) venden nombres al público y transmiten los registros al registro.
 
 La cadena se ve así: **ICANN/IANA** establece las reglas y la raíz → los **registros** operan cada TLD → los **registradores** venden nombres a **ti**. Cuando registras `tunombre.com`, le estás comprando a un registrador, quien lo anota en el registro (Verisign), todo bajo la política de ICANN.
@@ -154,7 +154,7 @@ Una referencia rápida y escaneable de **ejemplos de TLD** comunes y por qué es
 | [`.vip`](/es/tld/vip/) | nuevo gTLD | Marcas premium, exclusivas y de membresía |
 | [`.sbs`](/es/tld/sbs/) | nuevo gTLD | "Side-by-side" — nombres asequibles y expresivos |
 
-¿Quieres profundizar en alguno en concreto? Explora la biblioteca completa de [guías de TLD](/en/tld/), incluyendo [`.cloud`](/es/tld/cloud/), [`.online`](/es/tld/online/), [`.store`](/es/tld/store/), [`.site`](/es/tld/site/), [`.club`](/es/tld/club/), [`.world`](/es/tld/world/), y docenas más.
+¿Quieres profundizar en alguno en concreto? Explora la biblioteca completa de [guías de TLD](/es/tld/), incluyendo [`.cloud`](/es/tld/cloud/), [`.online`](/es/tld/online/), [`.store`](/es/tld/store/), [`.site`](/es/tld/site/), [`.club`](/es/tld/club/), [`.world`](/es/tld/world/), y docenas más.
 
 ---
 
@@ -164,7 +164,7 @@ Con más de mil opciones, elegir la extensión correcta se reduce a unas pocas p
 
 1. **¿Está disponible `.com`?** Sigue siendo el estándar de oro para la confianza y el valor de reventa. Si tu `.com` exacto está libre y es asequible, suele ser la opción segura por defecto. Consulta [por qué `.com` sigue siendo el estándar de oro](/es/tld/com/).
 2. **¿El TLD encaja con tu propósito?** Una startup encaja con [`.io`](/es/tld/io/) o [`.ai`](/es/tld/ai/); una tienda encaja con [`.shop`](/es/tld/shop/) o [`.store`](/es/tld/store/); una herramienta para desarrolladores encaja con [`.dev`](/es/tld/dev/). La extensión correcta puede *describir* lo que haces.
-3. **¿Estás apuntando a un país específico?** Un ccTLD como [`.ae`](/en/tld/ae/) señala presencia local y puede ayudar con la visibilidad en búsquedas locales — pero primero verifica los requisitos de elegibilidad.
+3. **¿Estás apuntando a un país específico?** Un ccTLD como [`.ae`](/es/tld/ae/) señala presencia local y puede ayudar con la visibilidad en búsquedas locales — pero primero verifica los requisitos de elegibilidad.
 4. **¿Es el nombre memorable y susceptible de convertirse en marca?** Un SLD corto con un TLD moderno ([`.xyz`](/es/tld/xyz/), [`.app`](/es/tld/app/)) suele ser mejor que un `.com` largo y torpe.
 5. **¿Cuánto cuesta la renovación?** Algunos TLDs tienen promociones de bajo precio el primer año, pero renovaciones más caras. Verifica siempre el precio a largo plazo, no solo el precio introductorio.
 6. **¿Hay restricciones?** Los TLDs patrocinados (`.gov`, `.edu`) y algunos ccTLDs requieren cumplir ciertos requisitos. Los nuevos gTLDs como [`.app`](/es/tld/app/) y [`.dev`](/es/tld/dev/) imponen HTTPS de forma predeterminada.

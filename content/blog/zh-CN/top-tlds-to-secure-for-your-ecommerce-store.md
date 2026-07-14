@@ -64,11 +64,11 @@ relatedGlossary:
 
 ### 7. .shopping — 高度商业意图
 
-[`.shopping`](/en/tld/shopping) 是由Identity Digital（前身为Donuts）运营的通用TLD，开放注册（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/shopping)）。它承载了明确的购买意图，非常适合比价页面、优惠聚合站或季节性营销活动。
+[`.shopping`](/zh-CN/tld/shopping) 是由Identity Digital（前身为Donuts）运营的通用TLD，开放注册（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/shopping)）。它承载了明确的购买意图，非常适合比价页面、优惠聚合站或季节性营销活动。
 
 ### 8. .deals — 促销与折扣
 
-[`.deals`](/en/tld/deals) 同样由Identity Digital运营，向所有注册人开放（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/deals)）。对于经常开展促销活动的电商品牌，"yourbrand.deals" 是清仓页面和优惠券落地页的绝佳选择——同时也值得提前持有，以防被用于虚假折扣诈骗。
+[`.deals`](/zh-CN/tld/deals) 同样由Identity Digital运营，向所有注册人开放（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/deals)）。对于经常开展促销活动的电商品牌，"yourbrand.deals" 是清仓页面和优惠券落地页的绝佳选择——同时也值得提前持有，以防被用于虚假折扣诈骗。
 
 ### 9. [.club](/zh-CN/tld/club) — 社区与会员
 

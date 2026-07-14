@@ -18,11 +18,11 @@ faqs:
   - question: 'Warum sind gute .com-Domains so schwer zu finden?'
     answer: 'Bei über 160 Millionen registrierten .com-Namen ist das Angebot an kurzen, lexikalischen und markengenauen Namen weitgehend erschöpft. Die meisten Premium-.com-Namen sind bereits vergeben, sodass sie häufig nur auf dem Sekundärmarkt verfügbar sind.'
 relatedArticles:
-  - /de/blog/what-is-a-tld/
-  - /de/blog/top-tlds-to-secure-for-your-business/
-  - /de/blog/top-tlds-to-secure-for-your-startup/
+  - /de/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /de/blog/the-sex-com-heist-the-forged-letter/
+  - /de/blog/from-teslamotors-com-to-tesla-com/
   - /de/blog/what-makes-a-domain-valuable/
-  - /de/blog/ai-vs-io-domain/
+  - /de/blog/top-tlds-to-secure-for-your-business/
 relatedTopics:
   - /de/topics/choosing-a-tld/
   - /de/topics/domain-investing/

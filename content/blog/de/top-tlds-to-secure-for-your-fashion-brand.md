@@ -66,15 +66,15 @@ Sie brauchen keine Hunderte von Domains. Sie brauchen die kanonische `.com`, ein
 
 ### 7. .fashion — kategorieprägende Relevanz
 
-[.fashion](/en/tld/fashion) wird von [Registry Services, LLC](https://www.iana.org/domains/root/db/fashion.html) (GoDaddy Registry) betrieben und ist die treffendste Endung für die Branche. Sie kommuniziert sofort Ihren Sektor und eignet sich hervorragend für ein Markenstatement, einen redaktionellen Hub oder ein Designer-Portfolio. Offen für alle Registranten, ohne Mitgliedschaftspflicht in der Branche.
+[.fashion](/de/tld/fashion) wird von [Registry Services, LLC](https://www.iana.org/domains/root/db/fashion.html) (GoDaddy Registry) betrieben und ist die treffendste Endung für die Branche. Sie kommuniziert sofort Ihren Sektor und eignet sich hervorragend für ein Markenstatement, einen redaktionellen Hub oder ein Designer-Portfolio. Offen für alle Registranten, ohne Mitgliedschaftspflicht in der Branche.
 
 ### 8. .boutique — für kuratierte, hochwertige Labels
 
-[.boutique](/en/tld/boutique) wird von [Binky Moon, LLC](https://www.iana.org/domains/root/db/boutique.html) unter Identity Digital betrieben. Das Wort selbst steht für kuratiertes, kleinseriiges, hochwertiges Einzelhandelsangebot – genau die Positionierung, die viele unabhängige Modehäuser anstreben. Sie passt zu einer Kapselkollektion oder einem exklusiven Concept Store und hat keine besonderen Berechtigungsregeln.
+[.boutique](/de/tld/boutique) wird von [Binky Moon, LLC](https://www.iana.org/domains/root/db/boutique.html) unter Identity Digital betrieben. Das Wort selbst steht für kuratiertes, kleinseriiges, hochwertiges Einzelhandelsangebot – genau die Positionierung, die viele unabhängige Modehäuser anstreben. Sie passt zu einer Kapselkollektion oder einem exklusiven Concept Store und hat keine besonderen Berechtigungsregeln.
 
 ### 9. .style — Lifestyle- und redaktioneller Ansatz
 
-[.style](/en/tld/style) ist ebenfalls eine [Binky Moon, LLC](https://www.iana.org/domains/root/db/style.html) / Identity Digital-Endung. Sie ist eher redaktionell und aspirativ ausgerichtet, was sie zu einem natürlichen Fit für einen Styling-Service, ein Trendjournal oder eine influencer-geführte Untermarke macht. Offene Registrierung, keine Einschränkungen – sowohl als aktive Präsenz als auch als defensiver Hold nützlich.
+[.style](/de/tld/style) ist ebenfalls eine [Binky Moon, LLC](https://www.iana.org/domains/root/db/style.html) / Identity Digital-Endung. Sie ist eher redaktionell und aspirativ ausgerichtet, was sie zu einem natürlichen Fit für einen Styling-Service, ein Trendjournal oder eine influencer-geführte Untermarke macht. Offene Registrierung, keine Einschränkungen – sowohl als aktive Präsenz als auch als defensiver Hold nützlich.
 
 ### 10. .vip — Exklusivität und Loyalität
 

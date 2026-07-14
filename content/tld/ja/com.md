@@ -18,11 +18,11 @@ faqs:
   - question: '良い.comドメインはなぜ見つけにくいのですか？'
     answer: '1億6,000万件以上の.com名が登録されており、短い名前・辞書単語・完全一致のブランド名の供給はほぼ枯渇しています。優良な.comドメインのほとんどはすでに所有されているため、多くはセカンダリーマーケット（流通市場）でのみ入手可能です。'
 relatedArticles:
-  - /ja/blog/what-is-a-tld/
-  - /ja/blog/top-tlds-to-secure-for-your-business/
-  - /ja/blog/top-tlds-to-secure-for-your-startup/
+  - /ja/blog/the-12-dollar-minute-someone-owned-google-com/
+  - /ja/blog/the-sex-com-heist-the-forged-letter/
+  - /ja/blog/from-teslamotors-com-to-tesla-com/
   - /ja/blog/what-makes-a-domain-valuable/
-  - /ja/blog/ai-vs-io-domain/
+  - /ja/blog/top-tlds-to-secure-for-your-business/
 relatedTopics:
   - /ja/topics/choosing-a-tld/
   - /ja/topics/domain-investing/

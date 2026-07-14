@@ -72,7 +72,7 @@ Considera cuatro criterios. **Relevancia**: ¿el sufijo se adapta a tu industria
 
 ### 9. .company — una opción literal para cualquier empresa
 
-[.company](/en/tld/company) es exactamente lo que dice, operado por [Identity Digital](https://www.icann.org/en/registry-agreements/details/company). Es [sin restricciones](https://www.iana.org/domains/root/db/company.html) y se lee de forma natural para empresas consolidadas que desean una dirección que se explique por sí sola. También es un registro defensivo sensato, ya que la palabra mapea directamente a una identidad empresarial.
+[.company](/es/tld/company) es exactamente lo que dice, operado por [Identity Digital](https://www.icann.org/en/registry-agreements/details/company). Es [sin restricciones](https://www.iana.org/domains/root/db/company.html) y se lee de forma natural para empresas consolidadas que desean una dirección que se explique por sí sola. También es un registro defensivo sensato, ya que la palabra mapea directamente a una identidad empresarial.
 
 ### 10. .vip — posicionamiento premium
 

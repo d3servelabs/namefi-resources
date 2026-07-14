@@ -44,11 +44,11 @@ L'extension [.com](/fr/tld/com) reste la référence par défaut pour tout site 
 
 ### 2. .cpa — le signal de confiance de référence (accès restreint)
 
-L'extension [.cpa](https://www.iana.org/domains/root/db/cpa.html) est le domaine le plus crédible qu'un cabinet comptable puisse détenir — et aussi le plus restrictif. Elle est administrée en association avec l'American Institute of CPAs (AICPA), dont la filiale technologique CPA.com gère le [registre](/fr/glossary/registry/). L'éligibilité est limitée aux cabinets CPA agréés et aux CPA individuels : selon le [programme officiel .cpa de CPA.com](https://register.domains.cpa/faqs/), vous devez détenir une licence de cabinet CPA délivrée par un conseil d'État de la comptabilité ou une licence individuelle de CPA, la disponibilité étant actuellement limitée aux cabinets basés aux États-Unis, au Canada et en Irlande. Étant donné que la licence est validée à l'achat et à chaque renouvellement, une adresse [.cpa](/en/tld/cpa) prouve aux clients que votre cabinet a été vérifié — une garantie qu'aucun TLD ouvert ne peut offrir.
+L'extension [.cpa](https://www.iana.org/domains/root/db/cpa.html) est le domaine le plus crédible qu'un cabinet comptable puisse détenir — et aussi le plus restrictif. Elle est administrée en association avec l'American Institute of CPAs (AICPA), dont la filiale technologique CPA.com gère le [registre](/fr/glossary/registry/). L'éligibilité est limitée aux cabinets CPA agréés et aux CPA individuels : selon le [programme officiel .cpa de CPA.com](https://register.domains.cpa/faqs/), vous devez détenir une licence de cabinet CPA délivrée par un conseil d'État de la comptabilité ou une licence individuelle de CPA, la disponibilité étant actuellement limitée aux cabinets basés aux États-Unis, au Canada et en Irlande. Étant donné que la licence est validée à l'achat et à chaque renouvellement, une adresse [.cpa](/fr/tld/cpa) prouve aux clients que votre cabinet a été vérifié — une garantie qu'aucun TLD ouvert ne peut offrir.
 
 ### 3. .tax — clair, descriptif et thématique
 
-L'extension [.tax](/en/tld/tax) communique immédiatement une spécialité en préparation fiscale, planification ou conseil fiscal. Elle est gérée par Identity Digital (via Binky Moon, LLC) dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/tax), et contrairement au .cpa, elle est ouverte à l'enregistrement général. Elle s'associe bien à une page d'atterrissage axée sur les services ou à une campagne fiscale saisonnière.
+L'extension [.tax](/fr/tld/tax) communique immédiatement une spécialité en préparation fiscale, planification ou conseil fiscal. Elle est gérée par Identity Digital (via Binky Moon, LLC) dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/tax), et contrairement au .cpa, elle est ouverte à l'enregistrement général. Elle s'associe bien à une page d'atterrissage axée sur les services ou à une campagne fiscale saisonnière.
 
 ### 4. .accountant — ouvert et largement disponible
 
@@ -60,7 +60,7 @@ L'extension plurielle [.accountants](/fr/tld/accountants) est gérée par Binky 
 
 ### 6. .finance — pour les services de conseil et de gestion de patrimoine
 
-L'extension [.finance](/en/tld/finance) positionne votre cabinet dans le paysage plus large des services financiers, ce qui est idéal si vous proposez des services de conseil, de gestion de patrimoine ou de direction financière au-delà des missions de conformité. Elle est gérée par Binky Moon, LLC dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/finance) et est ouverte à l'enregistrement général. Elle paraît sérieuse et professionnelle, en complément d'une marque axée sur la fiscalité ou l'audit.
+L'extension [.finance](/fr/tld/finance) positionne votre cabinet dans le paysage plus large des services financiers, ce qui est idéal si vous proposez des services de conseil, de gestion de patrimoine ou de direction financière au-delà des missions de conformité. Elle est gérée par Binky Moon, LLC dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/finance) et est ouverte à l'enregistrement général. Elle paraît sérieuse et professionnelle, en complément d'une marque axée sur la fiscalité ou l'audit.
 
 ### 7. .net — l'alternative technique classique
 

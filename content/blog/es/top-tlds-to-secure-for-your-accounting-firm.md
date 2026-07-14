@@ -44,11 +44,11 @@ La extensión [.com](/es/tld/com) sigue siendo la expectativa predeterminada par
 
 ### 2. .cpa — la señal de confianza más valiosa (restringida)
 
-La extensión [.cpa](https://www.iana.org/domains/root/db/cpa.html) es el dominio más creíble que puede tener una firma contable — y también el más restringido. Está administrada en asociación con el American Institute of CPAs (AICPA), cuyo afiliado tecnológico CPA.com gestiona el [registro](/es/glossary/registry/). La elegibilidad se limita a firmas CPA con licencia e individuos CPA con licencia: según el [programa oficial .cpa de CPA.com](https://register.domains.cpa/faqs/), debes tener una licencia de firma CPA emitida por una junta estatal de contabilidad o una licencia individual de CPA, con disponibilidad actualmente limitada a firmas con sede en los Estados Unidos, Canadá e Irlanda. Dado que la licencia se valida en el momento de la compra y en cada renovación, una dirección [.cpa](/en/tld/cpa) demuestra a los clientes que tu firma ha sido verificada — una garantía que ningún TLD abierto puede ofrecer.
+La extensión [.cpa](https://www.iana.org/domains/root/db/cpa.html) es el dominio más creíble que puede tener una firma contable — y también el más restringido. Está administrada en asociación con el American Institute of CPAs (AICPA), cuyo afiliado tecnológico CPA.com gestiona el [registro](/es/glossary/registry/). La elegibilidad se limita a firmas CPA con licencia e individuos CPA con licencia: según el [programa oficial .cpa de CPA.com](https://register.domains.cpa/faqs/), debes tener una licencia de firma CPA emitida por una junta estatal de contabilidad o una licencia individual de CPA, con disponibilidad actualmente limitada a firmas con sede en los Estados Unidos, Canadá e Irlanda. Dado que la licencia se valida en el momento de la compra y en cada renovación, una dirección [.cpa](/es/tld/cpa) demuestra a los clientes que tu firma ha sido verificada — una garantía que ningún TLD abierto puede ofrecer.
 
 ### 3. .tax — claro, descriptivo y específico
 
-La extensión [.tax](/en/tld/tax) comunica de inmediato una especialización en preparación, planificación o asesoría fiscal. Está operada por Identity Digital (a través de Binky Moon, LLC) bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/tax), y a diferencia de .cpa está abierta al registro general. Funciona bien con una página de destino orientada a servicios o una campaña fiscal de temporada.
+La extensión [.tax](/es/tld/tax) comunica de inmediato una especialización en preparación, planificación o asesoría fiscal. Está operada por Identity Digital (a través de Binky Moon, LLC) bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/tax), y a diferencia de .cpa está abierta al registro general. Funciona bien con una página de destino orientada a servicios o una campaña fiscal de temporada.
 
 ### 4. .accountant — abierto y ampliamente disponible
 
@@ -60,7 +60,7 @@ La extensión plural [.accountants](/es/tld/accountants) está operada por Binky
 
 ### 6. .finance — para servicios de asesoría y patrimonio
 
-La extensión [.finance](/en/tld/finance) posiciona a tu firma en el panorama más amplio de los servicios financieros, lo que es ideal si ofreces servicios de asesoría, gestión de patrimonio o de director financiero más allá del trabajo de cumplimiento. Está operada por Binky Moon, LLC bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/finance) y está abierta al registro general. Se percibe como seria y profesional, complementando una marca enfocada en impuestos o auditoría.
+La extensión [.finance](/es/tld/finance) posiciona a tu firma en el panorama más amplio de los servicios financieros, lo que es ideal si ofreces servicios de asesoría, gestión de patrimonio o de director financiero más allá del trabajo de cumplimiento. Está operada por Binky Moon, LLC bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/finance) y está abierta al registro general. Se percibe como seria y profesional, complementando una marca enfocada en impuestos o auditoría.
 
 ### 7. .net — la alternativa técnica clásica
 
@@ -72,7 +72,7 @@ La extensión [.org](/es/tld/org), operada por Public Interest Registry bajo un 
 
 ### 9. .agency — moderno y orientado a servicios
 
-La extensión [.agency](/en/tld/agency) es adecuada para firmas que se presentan como socios de servicio completo en lugar de preparadores transaccionales. Está operada por Binky Moon, LLC bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/agency) y está abierta al registro general, brindándote una opción contemporánea y fácil de marcar para campañas o submarcas.
+La extensión [.agency](/es/tld/agency) es adecuada para firmas que se presentan como socios de servicio completo en lugar de preparadores transaccionales. Está operada por Binky Moon, LLC bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/agency) y está abierta al registro general, brindándote una opción contemporánea y fácil de marcar para campañas o submarcas.
 
 ### 10. .info — informativo y defensivo
 

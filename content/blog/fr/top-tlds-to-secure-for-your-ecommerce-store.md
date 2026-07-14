@@ -64,11 +64,11 @@ Trois critères doivent guider la décision. Premièrement, **confiance et conve
 
 ### 7. .shopping — forte intention commerciale
 
-[`.shopping`](/en/tld/shopping) est un TLD générique géré par Identity Digital (anciennement Donuts) et est ouvert à l'enregistrement ([Accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/shopping)). Il véhicule une intention d'achat explicite et s'associe bien avec des pages de comparaison, des hubs de bons plans ou des campagnes saisonnières.
+[`.shopping`](/fr/tld/shopping) est un TLD générique géré par Identity Digital (anciennement Donuts) et est ouvert à l'enregistrement ([Accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/shopping)). Il véhicule une intention d'achat explicite et s'associe bien avec des pages de comparaison, des hubs de bons plans ou des campagnes saisonnières.
 
 ### 8. .deals — promotions et remises
 
-[`.deals`](/en/tld/deals) est également géré par Identity Digital et est ouvert à tous les déposants ([Accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/deals)). Pour une marque e-commerce qui organise fréquemment des soldes, « votremarque.deals » est un emplacement mémorable pour les pages de déstockage et les pages de codes promo — et utile à détenir pour éviter qu'il ne soit utilisé dans une arnaque aux fausses remises.
+[`.deals`](/fr/tld/deals) est également géré par Identity Digital et est ouvert à tous les déposants ([Accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/deals)). Pour une marque e-commerce qui organise fréquemment des soldes, « votremarque.deals » est un emplacement mémorable pour les pages de déstockage et les pages de codes promo — et utile à détenir pour éviter qu'il ne soit utilisé dans une arnaque aux fausses remises.
 
 ### 9. [.club](/fr/tld/club) — communauté et adhésion
 

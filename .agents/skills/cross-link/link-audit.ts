@@ -1,97 +1,96 @@
 #!/usr/bin/env bun
 /**
- * cross-link link auditor for namefi-resources.
+ * Deterministic internal-link auditor for namefi-resources.
  *
- * Deterministic backbone of the `cross-link` skill. It does NOT invent
- * editorial links (that is the model's judgement job) — it audits the
- * internal links that already exist and finds the mechanical failure modes a
- * human eye misses across 7 locales x 4 collections.
+ * Locale invariant: content stored under content/<collection>/<locale>/ must
+ * keep every recognized locale-prefixed route in that same locale. A missing
+ * translation does not relax the rule: /<locale>/... is preserved so the
+ * resources runtime can apply its default-locale fallback.
  *
- * Severity model — the resources app falls back to the DEFAULT locale (en) at
- * runtime: requesting /<loc>/<coll>/<slug> when that locale lacks the slug
- * serves the English entry (200) with rel=canonical -> the en URL (see the
- * load*Entry default-locale fallback in apps/resources/src/lib/content.ts).
- * So "the linked locale lacks the slug" is NOT automatically a 404 — only the
- * absence of the en fallback is. The classifier mirrors that:
+ * The focused locale check scans Markdown/MDX links plus the related-content
+ * frontmatter fields already understood by scripts/validate-data.ts. For
+ * translated content, relatedArticles and relatedGlossary must also preserve
+ * the English source's ordered relationship slugs while using the file locale:
  *
- *   BROKEN              slug exists in neither the link locale NOR the default
- *                      locale (en) -> the runtime fallback can't save it, real
- *                      404. Must be fixed by hand. (Exit code 1.)
- *   MISSING_LOCALE     the href omits the locale segment entirely — a bare
- *                      `](/blog/<slug>)` instead of `](/<locale>/blog/<slug>)`.
- *                      The app has NO bare `/blog/...` route (every page lives
- *                      under `[lang]/`), so the locale middleware redirects the
- *                      bare path to whatever locale the *reader's* cookie /
- *                      Accept-Language resolves to — leaking an en reader onto a
- *                      de page (and adding a redirect hop). A real defect, so it
- *                      fails the run (Exit code 1), not a soft warning.
- *                      Auto-fixable: prefix the file's own locale (or the en
- *                      fallback when the file's locale lacks the slug).
- *   LOCALE_MISMATCH    link locale != file locale AND a same-locale counterpart
- *                      exists. e.g. a `zh` post links to `/en/glossary/dns/`
- *                      while `/zh/glossary/dns/` exists. Auto-fixable: repoint
- *                      the link to the file's own locale.
- *   MISSING_TRANSLATION the link locale lacks the slug but the default locale
- *                      (en) has it, so the app renders it via the en fallback.
- *                      A warning (not a 404): translate the term, or link /en/
- *                      explicitly for a self-canonical URL. Never auto-fixed.
- *   CROSS_LOCALE       link locale != file locale, the linked page genuinely
- *                      exists, and no same-locale counterpart does (the term is
- *                      only translated in the linked locale). Acceptable — a
- *                      warning, never auto-fixed.
+ *   bun links:locale
+ *   bun links:locale --fix
  *
- * Internal links are written as absolute, locale-prefixed, trailing-slash
- * paths: /<locale>/<collection>/<slug>/ . The app does NOT auto-localize hrefs
- * (see apps/resources/src/mdx-components.tsx), so the locale in the href is
- * authoritative for which page is served / canonicalized.
+ * The full audit additionally checks supported content routes for broken and
+ * missing-locale links:
  *
- * Usage (run from the namefi-resources repo root):
- *   bun .agents/skills/cross-link/link-audit.ts                 # audit everything
- *   bun .agents/skills/cross-link/link-audit.ts content/blog/zh # audit a subtree
- *   bun .agents/skills/cross-link/link-audit.ts --fix <paths>   # repoint LOCALE_MISMATCH
- *   bun .agents/skills/cross-link/link-audit.ts --json <paths>  # machine-readable
+ *   bun links:audit
+ *   bun links:audit --fix
  *
- * Exit code is 1 when BROKEN links remain (after --fix), else 0. Warnings
- * (MISSING_TRANSLATION, CROSS_LOCALE) never affect the exit code.
+ * Both modes accept path scopes and --json. Locale/relationship mismatches,
+ * broken targets, and missing locale prefixes are blocking in the full audit.
+ * The focused locale mode intentionally ignores external URLs, anchors, and
+ * internal paths that do not begin with a recognized locale prefix.
  */
 
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import matter from 'gray-matter';
 
-// Must mirror `i18n.locales` in apps/resources/src/i18n-config.ts (the astra
-// renderer): a locale the renderer serves but this list omits is silently
-// skipped by the audit (its files never checked, and links into it invisible).
-const LOCALES = ['en', 'es', 'de', 'fr', 'zh-CN', 'ar', 'hi', 'ko', 'ja', 'ta'] as const;
-// Mirrors i18n.defaultLocale in apps/resources: the locale every other locale
-// falls back to at runtime when it lacks a slug. A link the default locale can
-// satisfy is never a hard 404.
+// Mirrors i18n.defaultLocale in apps/resources. A same-locale route whose
+// translation is absent is still resolvable when this locale has the slug.
 const DEFAULT_LOCALE = 'en';
-const COLLECTIONS = ['blog', 'glossary', 'tld', 'partners'] as const;
+const LINK_COLLECTIONS = ['blog', 'glossary', 'tld', 'partners'] as const;
+const LOCALE_SOURCE_COLLECTIONS = [
+  ...LINK_COLLECTIONS,
+  'authors',
+] as const;
+const RELATED_PATH_FIELDS = [
+  'relatedArticles',
+  'relatedTopics',
+  'relatedSeries',
+  'relatedGlossary',
+] as const;
+const SOURCE_RELATION_FIELDS = [
+  'relatedArticles',
+  'relatedGlossary',
+] as const;
 const MD_EXT = new Set(['.md', '.mdx']);
 
 type Severity =
   | 'BROKEN'
   | 'MISSING_LOCALE'
   | 'LOCALE_MISMATCH'
-  | 'MISSING_TRANSLATION'
-  | 'CROSS_LOCALE';
+  | 'RELATIONSHIP_MISMATCH'
+  | 'MISSING_TRANSLATION';
+type RelatedPathField = (typeof RELATED_PATH_FIELDS)[number];
+type SourceRelationField = (typeof SOURCE_RELATION_FIELDS)[number];
 type Finding = {
   file: string;
   line: number;
   severity: Severity;
   href: string;
   fixedHref?: string;
-  collection: string;
-  slug: string;
+  collection?: string;
+  slug?: string;
   fileLocale: string;
   linkLocale: string;
+  source: 'markdown' | 'frontmatter';
+  field?: RelatedPathField;
+  fixable?: boolean;
+};
+type RouteOccurrence = {
+  href: string;
+  start: number;
+};
+type RelatedFrontmatter = {
+  values: Record<RelatedPathField, string[]>;
+  occurrences: Array<
+    RouteOccurrence & { field: RelatedPathField; valueIndex: number }
+  >;
+  fieldStarts: Partial<Record<RelatedPathField, number>>;
 };
 
 // --- arg parsing -----------------------------------------------------------
 const argv = process.argv.slice(2);
 const FIX = argv.includes('--fix');
 const JSON_OUT = argv.includes('--json');
-const pathArgs = argv.filter((a) => !a.startsWith('--'));
+const LOCALE_ONLY = argv.includes('--locale-only');
+const pathArgs = argv.filter((arg) => !arg.startsWith('--'));
 
 // --- locate the content/ root ---------------------------------------------
 function findContentRoot(): string {
@@ -101,6 +100,7 @@ function findContentRoot(): string {
   } catch {
     /* fall through */
   }
+
   // .agents/skills/cross-link/ -> repo root is three levels up.
   const fromScript = path.resolve(import.meta.dir, '../../..', 'content');
   try {
@@ -108,6 +108,7 @@ function findContentRoot(): string {
   } catch {
     /* fall through */
   }
+
   console.error(
     'Could not find a content/ directory. Run from the namefi-resources repo root.',
   );
@@ -121,6 +122,44 @@ function rel(file: string) {
   return path.relative(REPO_ROOT, file).split(path.sep).join('/');
 }
 
+function listDirectories(dir: string): string[] {
+  try {
+    return readdirSync(dir).filter((entry) =>
+      statSync(path.join(dir, entry)).isDirectory(),
+    );
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * The repository's locale folders are the content model. Discovering their
+ * union prevents a new locale from being silently omitted by a hand-maintained
+ * checker list. `_shared` and non-locale utility directories are excluded by
+ * the locale-shaped folder convention.
+ */
+function discoverContentLocales(): string[] {
+  const localePattern = /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?$/;
+  const locales = new Set<string>();
+
+  for (const collection of LOCALE_SOURCE_COLLECTIONS) {
+    for (const entry of listDirectories(path.join(CONTENT_ROOT, collection))) {
+      if (localePattern.test(entry)) locales.add(entry);
+    }
+  }
+
+  if (!locales.has(DEFAULT_LOCALE)) {
+    console.error(
+      `Could not discover the default content locale (${DEFAULT_LOCALE}) under content/.`,
+    );
+    process.exit(2);
+  }
+
+  return [...locales].sort((a, b) => a.localeCompare(b));
+}
+
+const LOCALES = discoverContentLocales();
+
 // --- walk content + build the slug index ----------------------------------
 function listMarkdown(dir: string): string[] {
   let entries: string[] = [];
@@ -129,6 +168,7 @@ function listMarkdown(dir: string): string[] {
   } catch {
     return [];
   }
+
   const out: string[] = [];
   for (const entry of entries) {
     const full = path.join(dir, entry);
@@ -139,262 +179,530 @@ function listMarkdown(dir: string): string[] {
   return out;
 }
 
-const allFiles: string[] = [];
 const slugIndex = new Set<string>(); // `${collection}/${locale}/${slug}`
-for (const collection of COLLECTIONS) {
+for (const collection of LINK_COLLECTIONS) {
   for (const locale of LOCALES) {
-    const dir = path.join(CONTENT_ROOT, collection, locale);
-    for (const file of listMarkdown(dir)) {
-      allFiles.push(file);
+    for (const file of listMarkdown(path.join(CONTENT_ROOT, collection, locale))) {
       const slug = path.basename(file).replace(/\.mdx?$/, '');
       slugIndex.add(`${collection}/${locale}/${slug}`);
     }
   }
 }
 
-// Which files to audit (full index is always built so counterpart lookups work).
-const absPathArgs = pathArgs.map((p) => path.resolve(process.cwd(), p));
+// Audit every localized Markdown/MDX collection, not only the four route
+// collections used by the broken-target classifier.
+const allFiles: string[] = [];
+for (const collection of listDirectories(CONTENT_ROOT)) {
+  for (const locale of LOCALES) {
+    allFiles.push(
+      ...listMarkdown(path.join(CONTENT_ROOT, collection, locale)),
+    );
+  }
+}
+
+// Which files to audit (the full slug index is always built for lookups).
+const absPathArgs = pathArgs.map((arg) => path.resolve(process.cwd(), arg));
 function inScope(file: string) {
   if (absPathArgs.length === 0) return true;
-  return absPathArgs.some((p) => file === p || file.startsWith(p + path.sep));
+  return absPathArgs.some(
+    (scope) => file === scope || file.startsWith(scope + path.sep),
+  );
 }
 const auditFiles = allFiles.filter(inScope);
 
-// --- strip frontmatter + code so we only look at prose links ---------------
+// --- route extraction ------------------------------------------------------
 function stripNonProse(raw: string): string {
   let body = raw;
-  // leading YAML frontmatter
-  body = body.replace(/^---\n[\s\S]*?\n---\n?/, (m) =>
-    m.replace(/[^\n]/g, ' '),
+  // Blank leading YAML frontmatter while preserving byte offsets and lines.
+  body = body.replace(/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/, (match) =>
+    match.replace(/[^\n]/g, ' '),
   );
-  // fenced code blocks (``` or ~~~) — blank them out, preserving line count
-  body = body.replace(/^([ \t]*)(`{3,}|~{3,})[\s\S]*?\n\1\2[^\n]*$/gm, (m) =>
-    m.replace(/[^\n]/g, ' '),
+  // Blank fenced code blocks (``` or ~~~), preserving byte offsets and lines.
+  body = body.replace(
+    /^([ \t]*)(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n\1\2[^\n]*$/gm,
+    (match) => match.replace(/[^\n]/g, ' '),
   );
-  // inline code spans
-  body = body.replace(/`[^`\n]*`/g, (m) => m.replace(/[^\n]/g, ' '));
+  // Blank inline code spans.
+  body = body.replace(/`[^`\n]*`/g, (match) => match.replace(/[^\n]/g, ' '));
   return body;
 }
 
-const LOCALE_RE = LOCALES.join('|');
-const COLL_RE = COLLECTIONS.join('|');
-// matches `](/<locale>/<collection>/<slug>[/][#anchor])`, href token has no
-// spaces/quotes/closeparen so a `](href "title")` form still captures cleanly.
-const LINK_RE = new RegExp(
-  String.raw`\]\((\/(?:${LOCALE_RE})\/(?:${COLL_RE})\/[^)\s"]+)`,
-  'g',
-);
+function routeOccurrences(prose: string): RouteOccurrence[] {
+  const occurrences: RouteOccurrence[] = [];
+  const patterns = [
+    // Inline Markdown links and images: [label](/route) / ![alt](/route).
+    /\]\(\s*<?(\/[^)\s<>"']+)>?/g,
+    // Reference definitions: [label]: /route or [label]: </route>.
+    /^[ \t]{0,3}\[[^\]\n]+\]:[ \t]*<?(\/[^\s<>]+)>?/gm,
+    // HTML and MDX href attributes, including href={"/route"}.
+    /\bhref\s*=\s*(?:\{\s*)?["'](\/[^"']+)["'](?:\s*\})?/g,
+  ];
+
+  for (const pattern of patterns) {
+    for (const match of prose.matchAll(pattern)) {
+      const href = match[1];
+      const matchStart = match.index ?? 0;
+      occurrences.push({
+        href,
+        start: matchStart + match[0].indexOf(href),
+      });
+    }
+  }
+
+  const unique = new Map<string, RouteOccurrence>();
+  for (const occurrence of occurrences) {
+    unique.set(`${occurrence.start}:${occurrence.href}`, occurrence);
+  }
+  return [...unique.values()].sort((a, b) => a.start - b.start);
+}
+
+function asStringArray(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value
+      .filter((item): item is string => typeof item === 'string')
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+  if (typeof value === 'string') {
+    return value
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
+function relatedFrontmatter(raw: string): RelatedFrontmatter {
+  const emptyValues = (): Record<RelatedPathField, string[]> => ({
+    relatedArticles: [],
+    relatedTopics: [],
+    relatedSeries: [],
+    relatedGlossary: [],
+  });
+  const frontmatterMatch = raw.match(
+    /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/,
+  );
+  if (!frontmatterMatch) {
+    return { values: emptyValues(), occurrences: [], fieldStarts: {} };
+  }
+
+  let data: Record<string, unknown>;
+  try {
+    data = matter(raw).data as Record<string, unknown>;
+  } catch {
+    // scripts/validate-data.ts owns YAML parse diagnostics.
+    return { values: emptyValues(), occurrences: [], fieldStarts: {} };
+  }
+
+  const frontmatter = frontmatterMatch[0];
+  const values = emptyValues();
+  const occurrences: RelatedFrontmatter['occurrences'] = [];
+  const fieldStarts: RelatedFrontmatter['fieldStarts'] = {};
+  const topLevelKeys = [...frontmatter.matchAll(/^([A-Za-z_][\w-]*)\s*:/gm)];
+
+  for (const field of RELATED_PATH_FIELDS) {
+    values[field] = asStringArray(data[field]);
+    const keyIndex = topLevelKeys.findIndex((match) => match[1] === field);
+    if (keyIndex === -1) continue;
+
+    const fieldStart = topLevelKeys[keyIndex].index ?? 0;
+    const fieldEnd = topLevelKeys[keyIndex + 1]?.index ?? frontmatter.length;
+    fieldStarts[field] = fieldStart;
+    let searchFrom = fieldStart;
+
+    for (const [valueIndex, href] of values[field].entries()) {
+      const start = frontmatter.indexOf(href, searchFrom);
+      if (start === -1 || start >= fieldEnd) continue;
+      occurrences.push({ href, start, field, valueIndex });
+      searchFrom = start + href.length;
+    }
+  }
+
+  return {
+    values,
+    occurrences: occurrences.sort((a, b) => a.start - b.start),
+    fieldStarts,
+  };
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// Longest first prevents a shorter locale from claiming a compound prefix.
+const LOCALE_RE = [...LOCALES]
+  .sort((a, b) => b.length - a.length)
+  .map(escapeRegExp)
+  .join('|');
+const COLLECTION_RE = LINK_COLLECTIONS.map(escapeRegExp).join('|');
+const LOCALIZED_PREFIX_RE = new RegExp(String.raw`^\/(${LOCALE_RE})\/`);
 const HREF_PARTS_RE = new RegExp(
-  String.raw`^\/(${LOCALE_RE})\/(${COLL_RE})\/([^\/#?]+)\/?(?:[#?].*)?$`,
-);
-// matches a BARE internal link `](/<collection>/<slug>...)` — one that starts
-// with a known collection instead of a locale, i.e. the locale segment was
-// omitted. Locale and collection names are disjoint, so this never collides
-// with LINK_RE (which requires `/<locale>/<collection>/`).
-const BARE_LINK_RE = new RegExp(
-  String.raw`\]\((\/(?:${COLL_RE})\/[^)\s"]+)`,
-  'g',
+  String.raw`^\/(${LOCALE_RE})\/(${COLLECTION_RE})\/([^\/#?]+)\/?(?:[#?].*)?$`,
 );
 const BARE_HREF_PARTS_RE = new RegExp(
-  String.raw`^\/(${COLL_RE})\/([^\/#?]+)\/?(?:[#?].*)?$`,
+  String.raw`^\/(${COLLECTION_RE})\/([^\/#?]+)\/?(?:[#?].*)?$`,
 );
 
 function localeOfFile(file: string): string | null {
-  const r = rel(file); // content/<collection>/<locale>/<slug>.md
-  const m = r.match(new RegExp(String.raw`^content\/[^/]+\/([^/]+)\/`));
-  return m ? m[1] : null;
+  const match = rel(file).match(/^content\/[^/]+\/([^/]+)\//);
+  return match ? match[1] : null;
 }
 
-// Every internal-link href in `content` whose exact target
-// (`<collection>/<linkLocale>/<slug>`) is absent from slugIndex — i.e. a 404.
-// Used by the --fix self-check to prove a rewrite never *introduces* a dead
-// link (the en-only mislocalization bug). Returns raw hrefs (may repeat).
-function findAbsentTargets(content: string): string[] {
-  const prose = stripNonProse(content);
-  const out: string[] = [];
-  for (const m of prose.matchAll(LINK_RE)) {
-    const href = m[1];
-    const parts = href.match(HREF_PARTS_RE);
+function replaceLocalePrefix(href: string, locale: string) {
+  return href.replace(/^\/[^/]+(?=\/)/, `/${locale}`);
+}
+
+function englishCounterpart(file: string): string | null {
+  const match = rel(file).match(/^content\/([^/]+)\/([^/]+)\/(.+)$/);
+  if (!match || match[2] === DEFAULT_LOCALE) return null;
+
+  const [, collection, , relativeFile] = match;
+  const direct = path.join(CONTENT_ROOT, collection, DEFAULT_LOCALE, relativeFile);
+  if (statSync(direct, { throwIfNoEntry: false })?.isFile()) return direct;
+
+  const extension = path.extname(direct);
+  for (const candidateExtension of MD_EXT) {
+    if (candidateExtension === extension) continue;
+    const candidate = direct.slice(0, -extension.length) + candidateExtension;
+    if (statSync(candidate, { throwIfNoEntry: false })?.isFile()) return candidate;
+  }
+  return null;
+}
+
+function sourceRelationshipRoutes(
+  file: string,
+): Partial<Record<SourceRelationField, string[]>> | null {
+  const sourceFile = englishCounterpart(file);
+  if (!sourceFile) return null;
+
+  let data: Record<string, unknown>;
+  try {
+    data = matter(readFileSync(sourceFile, 'utf8')).data as Record<string, unknown>;
+  } catch {
+    // scripts/validate-data.ts owns YAML parse diagnostics.
+    return null;
+  }
+
+  const routes: Partial<Record<SourceRelationField, string[]>> = {};
+  for (const field of SOURCE_RELATION_FIELDS) {
+    routes[field] = asStringArray(data[field]);
+  }
+  return routes;
+}
+
+function localizedSourceRoute(
+  href: string,
+  field: SourceRelationField,
+  locale: string,
+): string | null {
+  const parts = href.match(HREF_PARTS_RE);
+  const expectedCollection =
+    field === 'relatedArticles' ? 'blog' : 'glossary';
+  if (!parts || parts[1] !== DEFAULT_LOCALE || parts[2] !== expectedCollection) {
+    return null;
+  }
+  return replaceLocalePrefix(href, locale);
+}
+
+function decodeSlug(slug: string) {
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+}
+
+function unresolvableTargetCounts(content: string): Map<string, number> {
+  const counts = new Map<string, number>();
+  const occurrences = [
+    ...routeOccurrences(stripNonProse(content)),
+    ...relatedFrontmatter(content).occurrences,
+  ];
+  for (const occurrence of occurrences) {
+    const parts = occurrence.href.match(HREF_PARTS_RE);
     if (!parts) continue;
     const [, linkLocale, collection, slugRaw] = parts;
-    const slug = decodeURIComponent(slugRaw);
-    if (!slugIndex.has(`${collection}/${linkLocale}/${slug}`)) out.push(href);
+    const slug = decodeSlug(slugRaw);
+    const literalExists = slugIndex.has(`${collection}/${linkLocale}/${slug}`);
+    const defaultExists = slugIndex.has(
+      `${collection}/${DEFAULT_LOCALE}/${slug}`,
+    );
+    if (literalExists || defaultExists) continue;
+    // Prefix-only repair can change `/fr/.../slug/` into `/ar/.../slug/`.
+    // Compare target identity rather than its rendered href so an already-dead
+    // slug is not mistaken for a newly introduced 404 after that repair.
+    const targetKey = `${collection}/${slug}`;
+    counts.set(targetKey, (counts.get(targetKey) ?? 0) + 1);
   }
-  return out;
+  return counts;
 }
 
 // --- audit -----------------------------------------------------------------
 const findings: Finding[] = [];
 const filesToRewrite = new Map<string, string>();
-// Count of files where --fix would have created a dead link and was refused.
 let selfCheckFailures = 0;
 
 for (const file of auditFiles) {
   const fileLocale = localeOfFile(file);
-  if (!fileLocale || !(LOCALES as readonly string[]).includes(fileLocale)) {
-    continue;
-  }
+  if (!fileLocale || !LOCALES.includes(fileLocale)) continue;
+
   const raw = readFileSync(file, 'utf8');
   const prose = stripNonProse(raw);
+  const frontmatter = relatedFrontmatter(raw);
   const lineStarts: number[] = [0];
-  for (let i = 0; i < prose.length; i++) {
-    if (prose[i] === '\n') lineStarts.push(i + 1);
+  for (let index = 0; index < raw.length; index++) {
+    if (raw[index] === '\n') lineStarts.push(index + 1);
   }
-  const lineAt = (idx: number) => {
+  const lineAt = (index: number) => {
     let lo = 0;
     let hi = lineStarts.length - 1;
     while (lo < hi) {
       const mid = (lo + hi + 1) >> 1;
-      if (lineStarts[mid] <= idx) lo = mid;
+      if (lineStarts[mid] <= index) lo = mid;
       else hi = mid - 1;
     }
     return lo + 1;
   };
 
-  // Collected --fix rewrites as exact byte spans into `raw`. prose is built by
-  // stripNonProse, which blanks frontmatter/code char-for-char (length and
-  // newlines preserved), so a match index in `prose` is the same index in
-  // `raw`. Splicing exact spans — rather than the old substring replace —
-  // is what makes the fix immune to prefix collisions (see below).
+  // Exact byte-span edits make prefix-only repairs deterministic and preserve
+  // slugs, query strings, fragments, prose, and formatting verbatim.
   const edits: { start: number; end: number; replacement: string }[] = [];
 
-  for (const m of prose.matchAll(LINK_RE)) {
-    const href = m[1];
+  const recordLocaleMismatch = ({
+    href,
+    start,
+    source,
+    field,
+  }: RouteOccurrence & {
+    source: Finding['source'];
+    field?: RelatedPathField;
+  }) => {
+    const prefix = href.match(LOCALIZED_PREFIX_RE);
+    if (!prefix || prefix[1] === fileLocale) return false;
+
+    const linkLocale = prefix[1];
+    const fixedHref = replaceLocalePrefix(href, fileLocale);
     const parts = href.match(HREF_PARTS_RE);
-    if (!parts) continue;
-    const [, linkLocale, collection, slugRaw] = parts;
-    const slug = decodeURIComponent(slugRaw);
-
-    const literalExists = slugIndex.has(`${collection}/${linkLocale}/${slug}`);
-    // The file's OWN locale having the slug is the single source of truth for
-    // "auto-fixable": it guarantees the repointed /<fileLocale>/ href resolves
-    // to a real slug, so --fix can never localize an en-only term into a 404.
-    const sameLocaleExists = slugIndex.has(
-      `${collection}/${fileLocale}/${slug}`,
-    );
-    // The default locale (en) is the runtime fallback target: if it has the
-    // slug, the app serves /<linkLocale>/.../<slug> via that fallback (200),
-    // so the link is at worst a missing translation, never a hard 404.
-    const defaultLocaleExists = slugIndex.has(
-      `${collection}/${DEFAULT_LOCALE}/${slug}`,
-    );
-
-    let severity: Severity | null = null;
-    let fixedHref: string | undefined;
-
-    if (!literalExists) {
-      // The linked locale itself lacks the slug.
-      if (sameLocaleExists) {
-        // ...but the file's own locale has it → repoint to it (best target).
-        severity = 'LOCALE_MISMATCH';
-        fixedHref = href.replace(`/${linkLocale}/`, `/${fileLocale}/`);
-      } else if (defaultLocaleExists) {
-        // The en fallback covers it: the app renders en at this URL (200).
-        // Not a 404 — a warning to translate or link /en/ explicitly.
-        severity = 'MISSING_TRANSLATION';
-      } else {
-        // Missing in the linked locale AND in the en fallback — real 404.
-        severity = 'BROKEN';
-      }
-    } else if (linkLocale !== fileLocale) {
-      if (sameLocaleExists) {
-        severity = 'LOCALE_MISMATCH';
-        fixedHref = href.replace(`/${linkLocale}/`, `/${fileLocale}/`);
-      } else {
-        // Term only translated in the linked locale — acceptable fallback.
-        severity = 'CROSS_LOCALE';
-      }
-    }
-
-    if (!severity) continue;
-
     findings.push({
       file: rel(file),
-      line: lineAt(m.index ?? 0),
-      severity,
+      line: lineAt(start),
+      severity: 'LOCALE_MISMATCH',
       href,
       fixedHref,
-      collection,
-      slug,
+      collection: parts?.[2],
+      slug: parts ? decodeSlug(parts[3]) : undefined,
       fileLocale,
       linkLocale,
+      source,
+      field,
     });
+    if (FIX) {
+      edits.push({
+        start,
+        end: start + href.length,
+        replacement: fixedHref,
+      });
+    }
+    return true;
+  };
 
-    if (FIX && severity === 'LOCALE_MISMATCH' && fixedHref) {
-      // Rewrite ONLY this href occurrence. The previous implementation did
-      // `content.split(`](${href}`).join(...)`, a substring replace that also
-      // rewrote any longer href sharing this one as a prefix: fixing
-      // `](/en/glossary/dns` clobbered the sibling `](/en/glossary/dnssec/)`,
-      // repointing an en-only fallback to a /zh/ 404 (and doing so only for
-      // the no-trailing-slash form). LINK_RE puts m.index at the `]`, so the
-      // href begins two chars later, at `](`.length.
-      const start = (m.index ?? 0) + 2;
-      edits.push({ start, end: start + href.length, replacement: fixedHref });
+  const sourceRelationships = sourceRelationshipRoutes(file);
+  const parityFields = new Set<SourceRelationField>();
+  if (sourceRelationships) {
+    for (const field of SOURCE_RELATION_FIELDS) {
+      const sourceValues = sourceRelationships[field] ?? [];
+      const expectedValues = sourceValues.map((href) =>
+        localizedSourceRoute(href, field, fileLocale),
+      );
+      if (expectedValues.length === 0) continue;
+
+      parityFields.add(field);
+      const actualValues = frontmatter.values[field];
+      const occurrencesByIndex = new Map(
+        frontmatter.occurrences
+          .filter((occurrence) => occurrence.field === field)
+          .map((occurrence) => [occurrence.valueIndex, occurrence]),
+      );
+      const comparisonLength = Math.max(
+        actualValues.length,
+        expectedValues.length,
+      );
+
+      for (let valueIndex = 0; valueIndex < comparisonLength; valueIndex++) {
+        const actualHref = actualValues[valueIndex];
+        const expectedHref = expectedValues[valueIndex];
+        const occurrence = occurrencesByIndex.get(valueIndex);
+        // Ignore only the malformed/external English source item. A bad source
+        // value must not disable parity checking for every other relationship
+        // in this field, or the independent locale-prefix check at this index.
+        if (expectedHref === null) {
+          if (actualHref && occurrence) {
+            recordLocaleMismatch({
+              ...occurrence,
+              source: 'frontmatter',
+              field,
+            });
+          }
+          continue;
+        }
+        if (actualHref === expectedHref) continue;
+
+        if (
+          actualHref &&
+          expectedHref &&
+          replaceLocalePrefix(actualHref, fileLocale) === expectedHref &&
+          actualHref.match(LOCALIZED_PREFIX_RE)
+        ) {
+          recordLocaleMismatch({
+            href: actualHref,
+            start:
+              occurrence?.start ?? frontmatter.fieldStarts[field] ?? 0,
+            source: 'frontmatter',
+            field,
+          });
+          continue;
+        }
+
+        const expectedDisplay = expectedHref ?? '<no relationship>';
+        const fixable = Boolean(
+          occurrence && expectedHref && actualHref?.match(HREF_PARTS_RE),
+        );
+        findings.push({
+          file: rel(file),
+          line: lineAt(
+            occurrence?.start ?? frontmatter.fieldStarts[field] ?? 0,
+          ),
+          severity: 'RELATIONSHIP_MISMATCH',
+          href: actualHref ?? '<missing>',
+          fixedHref: expectedDisplay,
+          fileLocale,
+          linkLocale: actualHref?.match(LOCALIZED_PREFIX_RE)?.[1] ?? '',
+          source: 'frontmatter',
+          field,
+          fixable,
+        });
+        if (FIX && fixable && occurrence && expectedHref) {
+          edits.push({
+            start: occurrence.start,
+            end: occurrence.start + occurrence.href.length,
+            replacement: expectedHref,
+          });
+        }
+      }
     }
   }
 
-  // Second pass: bare internal links missing the locale segment entirely.
-  for (const m of prose.matchAll(BARE_LINK_RE)) {
-    const href = m[1];
-    const parts = href.match(BARE_HREF_PARTS_RE);
-    if (!parts) continue;
-    const [, collection, slugRaw] = parts;
-    const slug = decodeURIComponent(slugRaw);
+  for (const occurrence of frontmatter.occurrences) {
+    if (
+      SOURCE_RELATION_FIELDS.includes(occurrence.field as SourceRelationField) &&
+      parityFields.has(occurrence.field as SourceRelationField)
+    ) {
+      continue;
+    }
+    recordLocaleMismatch({ ...occurrence, source: 'frontmatter' });
+  }
 
-    // Prefer the file's own locale (self-canonical); fall back to the default
-    // locale (en) only when the file's locale lacks the slug, mirroring the
-    // runtime fallback. If neither has it, leave fixedHref undefined — still
-    // reported (and fails the run) but not auto-rewritten into a fresh 404.
+  for (const occurrence of routeOccurrences(prose)) {
+    const localeMismatch = recordLocaleMismatch({
+      ...occurrence,
+      source: 'markdown',
+    });
+    // The focused command intentionally reports only the locale invariant. The
+    // full audit must also classify an underlying dead route, even when its
+    // locale prefix is wrong, so a mismatch cannot hide a genuine 404.
+    if (LOCALE_ONLY && localeMismatch) continue;
+    if (LOCALE_ONLY) continue;
+
+    const localizedParts = occurrence.href.match(HREF_PARTS_RE);
+    if (localizedParts) {
+      const [, linkLocale, collection, slugRaw] = localizedParts;
+      const slug = decodeSlug(slugRaw);
+      const literalExists = slugIndex.has(
+        `${collection}/${linkLocale}/${slug}`,
+      );
+      const defaultExists = slugIndex.has(
+        `${collection}/${DEFAULT_LOCALE}/${slug}`,
+      );
+
+      if (!literalExists) {
+        findings.push({
+          file: rel(file),
+          line: lineAt(occurrence.start),
+          severity: defaultExists ? 'MISSING_TRANSLATION' : 'BROKEN',
+          href: occurrence.href,
+          collection,
+          slug,
+          fileLocale,
+          linkLocale,
+          source: 'markdown',
+        });
+      }
+      continue;
+    }
+
+    // The full audit retains its separate missing-locale rule. The focused
+    // locale invariant deliberately ignores these unprefixed paths.
+    const bareParts = occurrence.href.match(BARE_HREF_PARTS_RE);
+    if (!bareParts) continue;
+    const [, collection, slugRaw] = bareParts;
+    const slug = decodeSlug(slugRaw);
     const sameLocaleExists = slugIndex.has(
       `${collection}/${fileLocale}/${slug}`,
     );
-    const defaultLocaleExists = slugIndex.has(
+    const defaultExists = slugIndex.has(
       `${collection}/${DEFAULT_LOCALE}/${slug}`,
     );
-    const targetLocale = sameLocaleExists
-      ? fileLocale
-      : defaultLocaleExists
-        ? DEFAULT_LOCALE
-        : null;
-    const fixedHref = targetLocale ? `/${targetLocale}${href}` : undefined;
+    // If the runtime can resolve the route, always add the file locale. Using
+    // /en/ here would immediately violate the locale invariant.
+    const fixedHref =
+      sameLocaleExists || defaultExists
+        ? `/${fileLocale}${occurrence.href}`
+        : undefined;
 
     findings.push({
       file: rel(file),
-      line: lineAt(m.index ?? 0),
+      line: lineAt(occurrence.start),
       severity: 'MISSING_LOCALE',
-      href,
+      href: occurrence.href,
       fixedHref,
       collection,
       slug,
       fileLocale,
       linkLocale: '',
+      source: 'markdown',
     });
-
     if (FIX && fixedHref) {
-      const start = (m.index ?? 0) + 2;
-      edits.push({ start, end: start + href.length, replacement: fixedHref });
+      edits.push({
+        start: occurrence.start,
+        end: occurrence.start + occurrence.href.length,
+        replacement: fixedHref,
+      });
     }
   }
 
   if (FIX && edits.length > 0) {
-    // Apply right-to-left so earlier offsets stay valid as we splice.
     edits.sort((a, b) => b.start - a.start);
     let mutated = raw;
-    for (const e of edits) {
-      mutated = mutated.slice(0, e.start) + e.replacement + mutated.slice(e.end);
+    for (const edit of edits) {
+      mutated =
+        mutated.slice(0, edit.start) +
+        edit.replacement +
+        mutated.slice(edit.end);
     }
-    // Guard: --fix must never INTRODUCE a link whose target is absent from
-    // slugIndex. Pre-existing BROKEN links are allowed to remain (we don't
-    // invent translations), so compare against the original rather than
-    // requiring zero. If the rewrite would create a new dead link, refuse to
-    // write the file and fail the run loudly instead of shipping a 404.
-    const before = new Set(findAbsentTargets(raw));
-    const introduced = findAbsentTargets(mutated).filter((h) => !before.has(h));
+
+    // A same-locale translation may be absent, so the safety oracle is runtime
+    // resolvability (literal target OR default-locale fallback), not literal
+    // target existence. Refuse only newly introduced genuine 404s.
+    const before = unresolvableTargetCounts(raw);
+    const after = unresolvableTargetCounts(mutated);
+    const introduced = [...after.entries()]
+      .filter(([href, count]) => count > (before.get(href) ?? 0))
+      .map(([href]) => href);
+
     if (introduced.length > 0) {
       console.error(
-        `✗ self-check failed for ${rel(file)}: --fix would create dead ` +
-          `link(s) absent from slugIndex: ${introduced.join(', ')}. ` +
-          `Refusing to write this file.`,
+        `self-check failed for ${rel(file)}: --fix would create ` +
+          `unresolvable link(s): ${introduced.join(', ')}. Refusing to write this file.`,
       );
       selfCheckFailures++;
     } else {
@@ -409,77 +717,121 @@ if (FIX) {
 
 // --- report ----------------------------------------------------------------
 if (JSON_OUT) {
-  console.log(JSON.stringify({ findings, fixedFiles: [...filesToRewrite.keys()].map(rel) }, null, 2));
+  console.log(
+    JSON.stringify(
+      {
+        mode: LOCALE_ONLY ? 'locale' : 'full',
+        locales: LOCALES,
+        findings,
+        fixedFiles: [...filesToRewrite.keys()].map(rel),
+      },
+      null,
+      2,
+    ),
+  );
 } else {
   const tty = process.stdout.isTTY;
-  const c = (code: string, s: string) => (tty ? `[${code}m${s}[0m` : s);
+  const color = (code: string, value: string) =>
+    tty ? `\u001b[${code}m${value}\u001b[0m` : value;
   const tag: Record<Severity, string> = {
-    BROKEN: c('31', '✗ BROKEN'),
-    MISSING_LOCALE: c('31', '✗ NO-LOCALE'),
-    LOCALE_MISMATCH: c('33', '⚠ LOCALE'),
-    MISSING_TRANSLATION: c('33', '⚠ MISSING-TR'),
-    CROSS_LOCALE: c('2', '· x-locale'),
+    BROKEN: color('31', 'BROKEN'),
+    MISSING_LOCALE: color('31', 'NO-LOCALE'),
+    LOCALE_MISMATCH: color('31', 'LOCALE'),
+    RELATIONSHIP_MISMATCH: color('31', 'RELATION'),
+    MISSING_TRANSLATION: color('33', 'MISSING-TR'),
   };
   const byFile = new Map<string, Finding[]>();
-  for (const f of findings) {
-    if (!byFile.has(f.file)) byFile.set(f.file, []);
-    byFile.get(f.file)!.push(f);
+  for (const finding of findings) {
+    if (!byFile.has(finding.file)) byFile.set(finding.file, []);
+    byFile.get(finding.file)!.push(finding);
   }
+
   for (const [file, list] of [...byFile.entries()].sort()) {
-    console.log(c('1', file));
-    for (const f of list.sort((a, b) => a.line - b.line)) {
-      const fixNote =
-        (f.severity === 'LOCALE_MISMATCH' || f.severity === 'MISSING_LOCALE') &&
-        f.fixedHref
-          ? `  ${FIX ? 'fixed→' : '→'} ${f.fixedHref}`
-          : '';
-      console.log(`  ${tag[f.severity]}  L${f.line}  ${f.href}${fixNote}`);
+    console.log(color('1', file));
+    for (const finding of list.sort((a, b) => a.line - b.line)) {
+      const field = finding.field ? ` field=${finding.field}` : '';
+      const expected = finding.fixedHref
+        ? ` expected=${finding.fixedHref}${FIX ? ' (fixed)' : ''}`
+        : '';
+      console.log(
+        `  ${tag[finding.severity]} L${finding.line}${field} ` +
+          `actual=${finding.href}${expected}`,
+      );
     }
   }
+
   const broken = findings.filter((f) => f.severity === 'BROKEN').length;
-  const noLocale = findings.filter(
+  const missingLocale = findings.filter(
     (f) => f.severity === 'MISSING_LOCALE',
   ).length;
-  const mismatch = findings.filter((f) => f.severity === 'LOCALE_MISMATCH').length;
-  const missingTr = findings.filter(
+  const mismatch = findings.filter(
+    (f) => f.severity === 'LOCALE_MISMATCH',
+  ).length;
+  const relationshipMismatch = findings.filter(
+    (f) => f.severity === 'RELATIONSHIP_MISMATCH',
+  ).length;
+  const missingTranslation = findings.filter(
     (f) => f.severity === 'MISSING_TRANSLATION',
   ).length;
-  const xloc = findings.filter((f) => f.severity === 'CROSS_LOCALE').length;
+
   console.log('');
-  console.log(
-    `Audited ${auditFiles.length} file(s): ` +
-      `${c('31', `${broken} broken`)}, ` +
-      `${c('31', `${noLocale} missing-locale`)}, ` +
-      `${c('33', `${mismatch} locale-mismatch`)}${FIX ? ` (${filesToRewrite.size} file(s) rewritten)` : ''}, ` +
-      `${c('33', `${missingTr} missing-translation`)}, ` +
-      `${c('2', `${xloc} cross-locale fallback`)}.`,
-  );
-  if (!FIX && (mismatch > 0 || noLocale > 0)) {
+  if (LOCALE_ONLY) {
     console.log(
-      'Re-run with --fix to repoint locale-mismatch and add missing locale prefixes automatically.',
+      `Checked ${auditFiles.length} file(s): ${mismatch} locale-mismatch` +
+        `, ${relationshipMismatch} relationship-mismatch` +
+        `${FIX ? ` (${filesToRewrite.size} file(s) rewritten)` : ''}.`,
+    );
+  } else {
+    console.log(
+      `Audited ${auditFiles.length} file(s): ${broken} broken, ` +
+        `${missingLocale} missing-locale, ${mismatch} locale-mismatch, ` +
+        `${relationshipMismatch} relationship-mismatch` +
+        `${FIX ? ` (${filesToRewrite.size} file(s) rewritten)` : ''}, ` +
+        `${missingTranslation} missing-translation fallback.`,
     );
   }
-  if (selfCheckFailures > 0) {
+  if (!FIX && (mismatch > 0 || relationshipMismatch > 0)) {
     console.log(
-      c('31', `${selfCheckFailures} file(s) skipped: --fix self-check failed.`),
+      'Re-run with --fix to restore file-locale prefixes and English-source relationship routes.',
     );
+  }
+  if (!FIX && !LOCALE_ONLY && missingLocale > 0) {
+    console.log('Re-run the full audit with --fix to add file-locale prefixes.');
+  }
+  if (selfCheckFailures > 0) {
+    console.log(`${selfCheckFailures} file(s) skipped: --fix self-check failed.`);
   }
 }
 
-// A MISSING_LOCALE finding fails the run unless --fix actually rewrote its file
-// (a bare link with no resolvable target has no fixedHref and so always remains).
 const rewrittenRelPaths = new Set(
-  [...filesToRewrite.keys()].map((f) => rel(f)),
+  [...filesToRewrite.keys()].map((file) => rel(file)),
+);
+const mismatchUnresolved = findings.some(
+  (finding) =>
+    finding.severity === 'LOCALE_MISMATCH' &&
+    !(FIX && finding.fixedHref && rewrittenRelPaths.has(finding.file)),
+);
+const relationshipMismatchUnresolved = findings.some(
+  (finding) =>
+    finding.severity === 'RELATIONSHIP_MISMATCH' &&
+    !(
+      FIX &&
+      finding.fixable &&
+      finding.fixedHref &&
+      rewrittenRelPaths.has(finding.file)
+    ),
 );
 const missingLocaleUnresolved = findings.some(
-  (f) =>
-    f.severity === 'MISSING_LOCALE' &&
-    !(FIX && f.fixedHref && rewrittenRelPaths.has(f.file)),
+  (finding) =>
+    finding.severity === 'MISSING_LOCALE' &&
+    !(FIX && finding.fixedHref && rewrittenRelPaths.has(finding.file)),
 );
+const brokenExists = findings.some((finding) => finding.severity === 'BROKEN');
 
 process.exitCode =
   selfCheckFailures > 0 ||
-  findings.some((f) => f.severity === 'BROKEN') ||
-  missingLocaleUnresolved
+  mismatchUnresolved ||
+  relationshipMismatchUnresolved ||
+  (!LOCALE_ONLY && (brokenExists || missingLocaleUnresolved))
     ? 1
     : 0;

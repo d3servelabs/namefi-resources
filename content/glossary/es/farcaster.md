@@ -9,9 +9,9 @@ keywords: ["Farcaster","red social descentralizada","Web3 social","identidad blo
 relatedArticles:
   - /es/blog/what-are-tokenized-domains/
   - /es/blog/why-tokenize-domains/
+  - /es/blog/why-a-dao-should-control-the-main-domain/
   - /es/blog/from-thefacebook-com-to-facebook-com/
   - /es/blog/onchain-domain-custody-and-recovery/
-  - /es/blog/tokenized-domain-use-cases-2026/
 relatedTopics:
   - /es/topics/domain-tokenization/
   - /es/topics/domain-investing/

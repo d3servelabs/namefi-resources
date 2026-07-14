@@ -33,13 +33,13 @@ relatedGlossary:
 
 但事实证明，这问错了问题。试图代表你注册域名的 [AI 智能体](/zh-CN/glossary/ai-agent/) 并不会因为注册商缺少 API 而失败；它失败的原因是，API 是为这样的开发者打造的：他们读一次文档，手写集成代码，然后发布——而不是为一个必须在运行时发现 API、从 JSON 响应中判断发生了什么，并在无人盯着结账页面的情况下完成购买的系统打造的。这是两套不同的要求；满足后者，才是本文所说的**智能体原生**。
 
-本文会精确定义这一术语，列出一份用来评估任何注册商（或任何 API）的清单，然后把这份清单诚实地应用于 2026 年正在推出的各个平台，包括 [Namefi](https://namefi.io)。如果你想看的是逐个平台的比较而不是定义，请参阅[Cloudflare、Name.com 与 Namefi：智能体原生注册商](/en/blog/cf-namecom-namefi/)，或更广泛的 [AI 智能体域名平台指南](/en/blog/ai-domain-platforms/)。如果你仍把“AI 与域名”理解为一个推荐可品牌化字符串的名称生成器，下面的清单会说明智能体原生的门槛高得多；[超越 AI 域名生成器：智能体时代](/en/blog/beyond-generators/)会完整讲解两者的差距。
+本文会精确定义这一术语，列出一份用来评估任何注册商（或任何 API）的清单，然后把这份清单诚实地应用于 2026 年正在推出的各个平台，包括 [Namefi](https://namefi.io)。如果你想看的是逐个平台的比较而不是定义，请参阅[Cloudflare、Name.com 与 Namefi：智能体原生注册商](/zh-CN/blog/cf-namecom-namefi/)，或更广泛的 [AI 智能体域名平台指南](/zh-CN/blog/ai-domain-platforms/)。如果你仍把“AI 与域名”理解为一个推荐可品牌化字符串的名称生成器，下面的清单会说明智能体原生的门槛高得多；[超越 AI 域名生成器：智能体时代](/zh-CN/blog/beyond-generators/)会完整讲解两者的差距。
 
 ## 为什么“有 API”与“智能体原生”不是同一种主张
 
 传统注册商 API 假定人类在设计阶段参与，而不是在运行时参与。开发者注册账户，阅读为人编写的参考页面，复制代码示例，然后把端点、认证标头和预期响应结构硬编码进应用程序。完成后，集成可以在无人值守的情况下运行——但这只是因为人已经完成了解读工作。API 本身没有任何东西能让一个初来乍到、没有既有集成、必须当场弄清有哪些操作以及如何调用它们的系统读懂。
 
-智能体却会不断以这种“冷启动”状态出现。每一次与编程智能体的对话、每一个新的 MCP 客户端，实际上都相当于一位从未见过你 API 的开发者，只有几秒钟的上下文预算来弄明白它。如果“智能体如何学会使用这个 API”的答案是“人类多年前读过文档并写了胶水代码”，那么即使购买时没有任何人点击，API 的执行路径中仍永久卡着一个人。本文讨论的是：要让这种冷启动智能体成功，注册商本身必须具备哪些条件；若想从买方视角了解同一交接过程，请参阅[AI 智能体如何在没有人类参与的情况下购买域名（2026）](/en/blog/agents-buy-domains/)。
+智能体却会不断以这种“冷启动”状态出现。每一次与编程智能体的对话、每一个新的 MCP 客户端，实际上都相当于一位从未见过你 API 的开发者，只有几秒钟的上下文预算来弄明白它。如果“智能体如何学会使用这个 API”的答案是“人类多年前读过文档并写了胶水代码”，那么即使购买时没有任何人点击，API 的执行路径中仍永久卡着一个人。本文讨论的是：要让这种冷启动智能体成功，注册商本身必须具备哪些条件；若想从买方视角了解同一交接过程，请参阅[AI 智能体如何在没有人类参与的情况下购买域名（2026）](/zh-CN/blog/agents-buy-domains/)。
 
 ## 智能体原生清单
 
@@ -60,7 +60,7 @@ relatedGlossary:
 
 人类开发者会通过搜索或在文档网站上点击来找到 API。智能体则需要一种能一次性获取并阅读的文件，或一个可以查询可用操作的协议连接。如今有两种东西承担这一角色。
 
-[llms.txt](https://llmstxt.org) 按该提案自己的说法，是[“一项建议，即采用 `/llms.txt` 文件来提供信息，帮助 LLM 在推理时使用网站”](https://llmstxt.org/#:~:text=A%20proposal%20to%20standardise%20on%20using%20an%20/llms.txt%20file%20to%20provide%20information%20to%20help%20LLMs%20use%20a%20website%20at%20inference%20time)。它与 `robots.txt` 的理念相同，但不是告诉爬虫可以索引什么，而是告诉语言模型一个网站是什么、如何使用。要了解注册商发布此类文件时它的样子，请参阅[面向域名的 llms.txt：任何 AI 智能体都能读取的 API](/en/blog/llms-txt/)。
+[llms.txt](https://llmstxt.org) 按该提案自己的说法，是[“一项建议，即采用 `/llms.txt` 文件来提供信息，帮助 LLM 在推理时使用网站”](https://llmstxt.org/#:~:text=A%20proposal%20to%20standardise%20on%20using%20an%20/llms.txt%20file%20to%20provide%20information%20to%20help%20LLMs%20use%20a%20website%20at%20inference%20time)。它与 `robots.txt` 的理念相同，但不是告诉爬虫可以索引什么，而是告诉语言模型一个网站是什么、如何使用。要了解注册商发布此类文件时它的样子，请参阅[面向域名的 llms.txt：任何 AI 智能体都能读取的 API](/zh-CN/blog/llms-txt/)。
 
 [MCP（Model Context Protocol）](https://modelcontextprotocol.io) 解决的是相邻的问题：它是[“用于将 AI 应用程序连接到外部系统的开源标准”](https://modelcontextprotocol.io/#:~:text=MCP%20%28Model%20Context%20Protocol%29%20is%20an%20open-source%20standard%20for%20connecting%20AI%20applications%20to%20external%20systems)。`llms.txt` 是智能体读取一次、用来定位方向的文档；MCP 则是智能体客户端连接到服务器、获取一组已定义可调用工具的实时连接。二者是互补关系，而不是竞争关系：`llms.txt` 用于让智能体发现某个注册商的存在及其大致功能；MCP 用于让智能体的客户端真正连接并调用操作。
 
@@ -72,7 +72,7 @@ Namefi 同时发布了这两者。[namefi.io/llms.txt](https://namefi.io/llms.tx
 
 目前有两种替代方案正在推出。第一种是 API 密钥计费：注册商发放一个与预充值或账期账户关联的凭据，智能体用该密钥认证每一次调用，而不是使用银行卡。Namefi 的文档说明了如何在 [namefi.io/api-key](https://namefi.io/api-key) 生成该密钥，并将其作为 `x-api-key` 标头随每个请求发送——无需浏览器会话，也无需银行卡表单。Cloudflare 的 `.ai` 定价遵循同样的按成本计价逻辑：[它“以批发价提供 `.ai` 域名注册和续费，不加任何额外加价”](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/#:~:text=Cloudflare%20offers%20.ai%20domain%20registrations%20and%20renewals%20at%20wholesale%20prices%2C%20with%20no%20additional%20markups)；价格固定、可预测，比随促销变化的价格更便于智能体推理。
 
-第二种替代方案是钱包签名支付，它移除的不只是银行卡，而是账户本身。Namefi 的 `web3` 文档描述了一条建立在 HTTP 402 状态码和 [x402](/zh-CN/glossary/x402/) 模式之上的流程：没有付款的域名请求会在 402 响应中返回价格；调用方的钱包签署 EIP-3009 授权；随后将该签名授权作为标头重放，以一步完成注册和结算——明确表示[“无需 Namefi 账户或 EIP-712 签名。”](https://namefi.io/web3/llms.txt) 这里的重点更窄：这是一种软件可以自行持有和使用的支付方式，而已保存的信用卡在结构上无法做到。若想了解端到端的流程，请参阅[用加密钱包支付域名：无需账户](/en/blog/wallet-checkout/)。
+第二种替代方案是钱包签名支付，它移除的不只是银行卡，而是账户本身。Namefi 的 `web3` 文档描述了一条建立在 HTTP 402 状态码和 [x402](/zh-CN/glossary/x402/) 模式之上的流程：没有付款的域名请求会在 402 响应中返回价格；调用方的钱包签署 EIP-3009 授权；随后将该签名授权作为标头重放，以一步完成注册和结算——明确表示[“无需 Namefi 账户或 EIP-712 签名。”](https://namefi.io/web3/llms.txt) 这里的重点更窄：这是一种软件可以自行持有和使用的支付方式，而已保存的信用卡在结构上无法做到。若想了解端到端的流程，请参阅[用加密钱包支付域名：无需账户](/zh-CN/blog/wallet-checkout/)。
 
 ## 策略钩子：整个类别尚未解决的一行
 
@@ -104,7 +104,7 @@ Namefi 同时发布了这两者。[namefi.io/llms.txt](https://namefi.io/llms.tx
 
 ### `llms.txt` 与 MCP 有什么区别？
 
-`llms.txt` 是智能体读取一次、用于了解网站或 API 是什么及如何使用它的纯文本文件——它对语言模型的作用，类似 `robots.txt` 对爬虫的作用。[MCP](https://modelcontextprotocol.io) 是智能体客户端连接到服务器、以调用工具的实时协议连接。二者互补：`llms.txt` 用于发现，MCP 是智能体用来行动的连接。关于发现这一半的更多内容，请参阅[面向域名的 llms.txt：任何 AI 智能体都能读取的 API](/en/blog/llms-txt/)。
+`llms.txt` 是智能体读取一次、用于了解网站或 API 是什么及如何使用它的纯文本文件——它对语言模型的作用，类似 `robots.txt` 对爬虫的作用。[MCP](https://modelcontextprotocol.io) 是智能体客户端连接到服务器、以调用工具的实时协议连接。二者互补：`llms.txt` 用于发现，MCP 是智能体用来行动的连接。关于发现这一半的更多内容，请参阅[面向域名的 llms.txt：任何 AI 智能体都能读取的 API](/zh-CN/blog/llms-txt/)。
 
 ### 我如何让自己的 API 可供智能体使用？
 

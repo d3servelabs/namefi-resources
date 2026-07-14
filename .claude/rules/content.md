@@ -73,8 +73,14 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
   language generally, the term's class, and the exact term. Use as guidance, not
   gospel (coverage thins for low-resource languages); reconcile with the product's
   register, and native-LQA stays the final arbiter.
-- Rewrite internal links `/en/…` → `/<locale>/…`; **never change the slug**. A
-  link's anchor text = the linked term's canonical title in that locale.
+- Rewrite every recognized locale-prefixed internal link to `/<locale>/…`;
+  **never change a body-link slug**. Keep the same-locale route even when that
+  target translation is missing so the runtime fallback decides what readers
+  see. A link's anchor text = the linked term's canonical title in that locale.
+- Translated `relatedArticles` and `relatedGlossary` must preserve the English
+  source's ordered relationship slugs with only the locale segment changed.
+  Never substitute a generic existing localized entry for a missing
+  translation; retain the same-slug `/<locale>/…` route for runtime fallback.
 - Keep verbatim: citation URLs (incl. `#:~:text=` fragments), code, brand names,
   domain names, and figures (`GoDaddy`, `ICANN`, `.com`, `$30`, `BIP-39`, …).
 - **Link-localized English is not a translation.** A translated file must localize
@@ -126,6 +132,8 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 | `bun termbase:build` / `termbase:check` | (re)generate / verify `content/termbase.json` |
 | `bun glossary:mentions` | per-term distinct-post mention counts — the L2-promotion demand metric |
 | `bun check:termbase` | advisory linter: flags translated prose using a known non-canonical variant (`aliasesByLocale`) |
+| `bun links:locale` | blocking same-locale route and English-source relationship check for Markdown/MDX plus related-content frontmatter (`--fix` repairs prefixes and relationship routes) |
+| `bun links:test` | offline regression fixtures for the deterministic link checker |
 | `bun .agents/skills/cross-link/link-audit.ts <paths>` | verify internal links (0 broken) |
 
 > Shell notes for agents: the dev shell is often **fish** (`for x in $var` does

@@ -7,11 +7,11 @@ authors: ["namefiteam"]
 description: 什么是DAO，它与域名管理有什么关系？
 keywords: ["DAO","去中心化自治组织","治理","集体所有权","智能合约"]
 relatedArticles:
+  - /zh-CN/blog/why-a-dao-should-control-the-main-domain/
   - /zh-CN/blog/tokenized-domain-use-cases-2026/
   - /zh-CN/blog/the-badgerdao-frontend-attack/
   - /zh-CN/blog/what-are-xstocks/
   - /zh-CN/blog/why-tokenize-domains/
-  - /zh-CN/blog/domain-escrow-explained/
 relatedTopics:
   - /zh-CN/topics/domain-tokenization/
   - /zh-CN/topics/web3-foundations/

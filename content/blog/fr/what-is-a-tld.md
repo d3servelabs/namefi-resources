@@ -154,7 +154,7 @@ Une référence rapide et lisible des **exemples de TLD** courants et de ce pour
 | [`.vip`](/fr/tld/vip/) | nouveau gTLD | Marques premium, exclusives, d'adhésion |
 | [`.sbs`](/fr/tld/sbs/) | nouveau gTLD | « Side-by-side » — noms abordables et expressifs |
 
-Vous souhaitez approfondir un TLD en particulier ? Parcourez la bibliothèque complète des [guides TLD](/en/tld/), notamment [`.cloud`](/fr/tld/cloud/), [`.online`](/fr/tld/online/), [`.store`](/fr/tld/store/), [`.site`](/fr/tld/site/), [`.club`](/fr/tld/club/), [`.world`](/fr/tld/world/), et bien d'autres encore.
+Vous souhaitez approfondir un TLD en particulier ? Parcourez la bibliothèque complète des [guides TLD](/fr/tld/), notamment [`.cloud`](/fr/tld/cloud/), [`.online`](/fr/tld/online/), [`.store`](/fr/tld/store/), [`.site`](/fr/tld/site/), [`.club`](/fr/tld/club/), [`.world`](/fr/tld/world/), et bien d'autres encore.
 
 ---
 

@@ -7,11 +7,11 @@ authors: ["namefiteam"]
 description: DAO क्या है और यह डोमेन प्रबंधन से कैसे संबंधित हो सकता है?
 keywords: ["DAO","विकेंद्रीकृत स्वायत्त संगठन","शासन","सामूहिक स्वामित्व","स्मार्ट कॉन्ट्रैक्ट्स"]
 relatedArticles:
+  - /hi/blog/why-a-dao-should-control-the-main-domain/
   - /hi/blog/tokenized-domain-use-cases-2026/
   - /hi/blog/the-badgerdao-frontend-attack/
   - /hi/blog/what-are-xstocks/
   - /hi/blog/why-tokenize-domains/
-  - /hi/blog/domain-escrow-explained/
 relatedTopics:
   - /hi/topics/domain-tokenization/
   - /hi/topics/web3-foundations/

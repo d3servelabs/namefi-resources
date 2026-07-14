@@ -64,11 +64,11 @@ Drei Kriterien sollten die Entscheidung leiten. Erstens **Vertrauen und Konversi
 
 ### 7. .shopping — hohe Kaufabsicht
 
-[`.shopping`](/en/tld/shopping) ist eine generische TLD, die von Identity Digital (ehemals Donuts) betrieben wird und zur Registrierung offensteht ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/shopping)). Sie signalisiert explizit Kaufabsicht und passt gut zu Vergleichsseiten, Angebotsportalen oder saisonalen Kampagnen.
+[`.shopping`](/de/tld/shopping) ist eine generische TLD, die von Identity Digital (ehemals Donuts) betrieben wird und zur Registrierung offensteht ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/shopping)). Sie signalisiert explizit Kaufabsicht und passt gut zu Vergleichsseiten, Angebotsportalen oder saisonalen Kampagnen.
 
 ### 8. .deals — Aktionen und Rabatte
 
-[`.deals`](/en/tld/deals) wird ebenfalls von Identity Digital betrieben und steht allen Registranten offen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/deals)). Für eine E-Commerce-Marke, die häufig Aktionen durchführt, ist „ihremarke.deals" ein einprägsamer Ort für Räumungsseiten und Gutschein-Landingpages – und es lohnt sich, sie zu halten, damit sie nicht für einen gefälschten Rabatt-Betrug missbraucht werden kann.
+[`.deals`](/de/tld/deals) wird ebenfalls von Identity Digital betrieben und steht allen Registranten offen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/deals)). Für eine E-Commerce-Marke, die häufig Aktionen durchführt, ist „ihremarke.deals" ein einprägsamer Ort für Räumungsseiten und Gutschein-Landingpages – und es lohnt sich, sie zu halten, damit sie nicht für einen gefälschten Rabatt-Betrug missbraucht werden kann.
 
 ### 9. [.club](/de/tld/club) — Community und Mitgliedschaft
 

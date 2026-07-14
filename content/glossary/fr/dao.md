@@ -7,11 +7,11 @@ authors: ["namefiteam"]
 description: Qu'est-ce qu'un DAO et comment peut-il être lié à la gestion des domaines ?
 keywords: ["DAO","organisation autonome décentralisée","gouvernance","propriété collective","contrats intelligents"]
 relatedArticles:
+  - /fr/blog/why-a-dao-should-control-the-main-domain/
   - /fr/blog/tokenized-domain-use-cases-2026/
   - /fr/blog/the-badgerdao-frontend-attack/
   - /fr/blog/what-are-xstocks/
   - /fr/blog/why-tokenize-domains/
-  - /fr/blog/domain-escrow-explained/
 relatedTopics:
   - /fr/topics/domain-tokenization/
   - /fr/topics/web3-foundations/

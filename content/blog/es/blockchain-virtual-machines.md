@@ -25,16 +25,16 @@ relatedSeries:
   - /es/series/tokenize-your-com/
   - /es/series/domain-flipping-skills/
 relatedGlossary:
-  - /es/glossary/blockchain/
+  - /es/glossary/ethereum-virtual-machine/
+  - /es/glossary/webassembly/
   - /es/glossary/smart-contract/
   - /es/glossary/ethereum/
   - /es/glossary/gas/
-  - /es/glossary/layer-2/
 ---
 
 Todo [contrato inteligente](/es/glossary/smart-contract/) debe ejecutarse en algún lugar. Ese «lugar» es una máquina virtual de blockchain (VM): el programa aislado que todos los nodos de la red ejecutan de manera idéntica, de modo que la misma entrada siempre produzca la misma salida sin importar quién la ejecute. La VM sobre la que construyes determina casi todo lo relativo a una cadena: en qué lenguajes puedes programar, si las transacciones pueden ejecutarse al mismo tiempo o solo una tras otra, y qué parte del ecosistema de desarrolladores existente puedes aprovechar desde el primer día.
 
-Esta guía recorre cinco diseños de VM que, en conjunto, impulsan la mayor parte de la actividad de contratos inteligentes en [Web3](/es/glossary/web3/) hoy: la [Ethereum Virtual Machine](/en/glossary/ethereum-virtual-machine/) (EVM), la SVM de Solana, MoveVM, utilizada por Aptos y Sui, las VM basadas en [WebAssembly](/en/glossary/webassembly/) (WASM), como CosmWasm y PolkaVM, y CairoVM de Starknet.
+Esta guía recorre cinco diseños de VM que, en conjunto, impulsan la mayor parte de la actividad de contratos inteligentes en [Web3](/es/glossary/web3/) hoy: la [Ethereum Virtual Machine](/es/glossary/ethereum-virtual-machine/) (EVM), la SVM de Solana, MoveVM, utilizada por Aptos y Sui, las VM basadas en [WebAssembly](/es/glossary/webassembly/) (WASM), como CosmWasm y PolkaVM, y CairoVM de Starknet.
 
 ---
 

@@ -9,9 +9,9 @@ keywords: ["Farcaster","اجتماعي لامركزي","Web3 اجتماعي","ه
 relatedArticles:
   - /ar/blog/what-are-tokenized-domains/
   - /ar/blog/why-tokenize-domains/
+  - /ar/blog/why-a-dao-should-control-the-main-domain/
   - /ar/blog/from-thefacebook-com-to-facebook-com/
   - /ar/blog/onchain-domain-custody-and-recovery/
-  - /ar/blog/tokenized-domain-use-cases-2026/
 relatedTopics:
   - /ar/topics/domain-tokenization/
   - /ar/topics/domain-investing/

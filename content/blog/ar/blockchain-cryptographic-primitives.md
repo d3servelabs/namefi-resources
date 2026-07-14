@@ -19,11 +19,11 @@ relatedArticles:
   - /ar/blog/blockchain-scaling-approaches/
   - /ar/blog/perfect-vs-computational-zero-knowledge/
 relatedGlossary:
-  - /ar/glossary/cryptographic-security/
+  - /ar/glossary/hash-function/
+  - /ar/glossary/digital-signature/
+  - /ar/glossary/merkle-tree/
   - /ar/glossary/public-key/
   - /ar/glossary/private-key/
-  - /ar/glossary/blockchain/
-  - /ar/glossary/smart-contract/
 relatedTopics:
   - /ar/topics/web3-foundations/
   - /ar/topics/domain-tokenization/
@@ -34,7 +34,7 @@ relatedSeries:
 
 أي ادعاء في البلوكتشين — مثل «هذه المعاملة نهائية»، أو «هذا العنوان يملك هذا الأصل»، أو «هذا السجل التاريخي لم يُعدَّل» — يرجع في النهاية إلى عدد محدود من الأساسيات التشفيرية، لكلٍ منها مهمة ضيقة ومحددة. ولا واحدة منها اختراعٌ للبلوكتشين؛ فدوال التجزئة والتوقيعات الرقمية وأشجار Merkle سبقت Bitcoin بعقود. ما فعلته البلوكتشينات هو جمعها في نظام لا يحتاج فيه أي ادعاء من هذه الادعاءات إلى الثقة في طرف واحد كي يظل صحيحًا.
 
-يشرح هذا الدليل الأساسيات التي تتحمل العبء فعلًا: [دوال التجزئة](/en/glossary/hash-function/) التي تمنح البيانات بصمة، و[التوقيعات الرقمية](/en/glossary/digital-signature/) التي تُجيز المعاملات، و[أشجار Merkle](/en/glossary/merkle-tree/) التي تجعل مجموعات البيانات الضخمة قابلة للتحقق منها على أجزاء، ورياضيات المنحنيات الإهليلجية التي تعمل عليها تلك التوقيعات، ومخططات الالتزام — اللبنة التي تقود إلى [إثباتات المعرفة الصفرية](/en/glossary/zero-knowledge-proof/). وفهم كل واحدة منها هو أسرع طريق لفهم ما الذي يفعله البلوكتشين فعلًا تحت الغطاء.
+يشرح هذا الدليل الأساسيات التي تتحمل العبء فعلًا: [دوال التجزئة](/ar/glossary/hash-function/) التي تمنح البيانات بصمة، و[التوقيعات الرقمية](/ar/glossary/digital-signature/) التي تُجيز المعاملات، و[أشجار Merkle](/ar/glossary/merkle-tree/) التي تجعل مجموعات البيانات الضخمة قابلة للتحقق منها على أجزاء، ورياضيات المنحنيات الإهليلجية التي تعمل عليها تلك التوقيعات، ومخططات الالتزام — اللبنة التي تقود إلى [إثباتات المعرفة الصفرية](/ar/glossary/zero-knowledge-proof/). وفهم كل واحدة منها هو أسرع طريق لفهم ما الذي يفعله البلوكتشين فعلًا تحت الغطاء.
 
 ---
 
@@ -42,9 +42,9 @@ relatedSeries:
 
 ![مستند يدخل آلة دالة تجزئة فينتج بصمة ثابتة الطول، ويؤدي تغيير حرف واحد في المدخل إلى بصمة مختلفة تمامًا، بما يوضح تأثير الانهيار الجليدي](../../assets/blockchain-cryptographic-primitives-01-hash-function.jpg)
 
-تأخذ [دالة التجزئة](/en/glossary/hash-function/) مُدخلًا بأي حجم وتنتج بصورة حتمية مخرجًا ثابت الحجم — «ملخصًا» — بحيث إن قلب بت واحد في المُدخل يبعثر المخرج بالكامل، ويصبح العثور على مُدخلين مختلفين لهما المخرج نفسه غير ممكن عمليًا من الناحية الحسابية. وهذه الخاصية، أي مقاومة التصادم، هي ما يجعل التجزئة بصمة مدمجة تكشف العبث لبيانات كبيرة بأي حجم.
+تأخذ [دالة التجزئة](/ar/glossary/hash-function/) مُدخلًا بأي حجم وتنتج بصورة حتمية مخرجًا ثابت الحجم — «ملخصًا» — بحيث إن قلب بت واحد في المُدخل يبعثر المخرج بالكامل، ويصبح العثور على مُدخلين مختلفين لهما المخرج نفسه غير ممكن عمليًا من الناحية الحسابية. وهذه الخاصية، أي مقاومة التصادم، هي ما يجعل التجزئة بصمة مدمجة تكشف العبث لبيانات كبيرة بأي حجم.
 
-يستخدم Bitcoin ‏SHA-256 في كل أجزائه: تُربط رؤوس الكتل بإدراج تجزئة SHA256(SHA256()) لرأس الكتلة السابقة في كل رأس جديد، وبالتالي فإن تعديل أي كتلة قديمة يغيّر تجزئتها ويكسر كل الرؤوس اللاحقة لها ([Bitcoin Developer Guide](https://developer.bitcoin.org/devguide/block_chain.html#:~:text=Each%20block%20also%20stores%20the%20hash%20of%20the%20previous%20block%27s%20header%2C%20chaining%20the%20blocks%20together)). ويُستخدم البناء نفسه، أي double-SHA-256، لتجزئة المعاملات داخل [شجرة Merkle](/en/glossary/merkle-tree/) الخاصة بالكتلة ([مرجع Bitcoin.org](https://developer.bitcoin.org/reference/block_chain.html#:~:text=A%20SHA256%28SHA256%28%29%29%20hash%20in%20internal%20byte%20order)).
+يستخدم Bitcoin ‏SHA-256 في كل أجزائه: تُربط رؤوس الكتل بإدراج تجزئة SHA256(SHA256()) لرأس الكتلة السابقة في كل رأس جديد، وبالتالي فإن تعديل أي كتلة قديمة يغيّر تجزئتها ويكسر كل الرؤوس اللاحقة لها ([Bitcoin Developer Guide](https://developer.bitcoin.org/devguide/block_chain.html#:~:text=Each%20block%20also%20stores%20the%20hash%20of%20the%20previous%20block%27s%20header%2C%20chaining%20the%20blocks%20together)). ويُستخدم البناء نفسه، أي double-SHA-256، لتجزئة المعاملات داخل [شجرة Merkle](/ar/glossary/merkle-tree/) الخاصة بالكتلة ([مرجع Bitcoin.org](https://developer.bitcoin.org/reference/block_chain.html#:~:text=A%20SHA256%28SHA256%28%29%29%20hash%20in%20internal%20byte%20order)).
 
 أما Ethereum فيعتمد Keccak-256 (نسخة Keccak الأصلية، وهي مختلفة عن معيار NIST SHA-3 اللاحق) كدالة التجزئة العامة. ويُشتق كل عنوان حساب من آخر 20 بايت من تجزئة Keccak-256 الخاصة بـ[المفتاح العام](/ar/glossary/public-key/) للحساب ([ethereum.org](https://ethereum.org/en/developers/docs/accounts/#:~:text=You%20get%20a%20public%20address%20for%20your%20account%20by%20taking%20the%20last%2020%20bytes%20of%20the%20Keccak-256%20hash%20of%20the%20public%20key))، كما تدعم الدالة نفسها عنونة المحتوى بأسلوب المفتاح/القيمة في [Merkle Patricia Trie](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/#:~:text=key%20%3D%3D%20keccak256%28rlp%28value%29%29) التي تخزن حالة Ethereum.
 
@@ -56,7 +56,7 @@ relatedSeries:
 
 ![مفتاح خاص يوقّع معاملة لإنتاج توقيع رقمي، ويتحقق مفتاح عام مطابق من صحته بعلامة اختيار خضراء، بينما يرفض مفتاح عام غير مطابق التوقيع بعلامة X حمراء](../../assets/blockchain-cryptographic-primitives-02-signatures.jpg)
 
-لا تملك البلوكتشين شاشة تسجيل دخول، لذا تحتاج إلى طريقة أخرى لإثبات أن «هذه المعاملة صدرت بالفعل من مالك هذا الحساب». ويحل [تشفير المفتاح العام](/ar/glossary/public-key/) ذلك عبر زوج مفاتيح: [مفتاح خاص](/ar/glossary/private-key/) يبقى سريًا، ومفتاح عام يمكن مشاركته بحرية. ينتج عن توقيع معاملة بالمفتاح الخاص [توقيع رقمي](/en/glossary/digital-signature/) يستطيع أي شخص التحقق منه باستخدام المفتاح العام؛ وبذلك يثبت التفويض من دون كشف المفتاح الخاص نفسه.
+لا تملك البلوكتشين شاشة تسجيل دخول، لذا تحتاج إلى طريقة أخرى لإثبات أن «هذه المعاملة صدرت بالفعل من مالك هذا الحساب». ويحل [تشفير المفتاح العام](/ar/glossary/public-key/) ذلك عبر زوج مفاتيح: [مفتاح خاص](/ar/glossary/private-key/) يبقى سريًا، ومفتاح عام يمكن مشاركته بحرية. ينتج عن توقيع معاملة بالمفتاح الخاص [توقيع رقمي](/ar/glossary/digital-signature/) يستطيع أي شخص التحقق منه باستخدام المفتاح العام؛ وبذلك يثبت التفويض من دون كشف المفتاح الخاص نفسه.
 
 تشتق حسابات Ethereum مفتاحها العام من المفتاح الخاص باستخدام خوارزمية التوقيع الرقمي بالمنحنى الإهليلجي، ECDSA، فوق المنحنى secp256k1 — وهو المنحنى نفسه الذي يستخدمه Bitcoin ([وثائق حسابات ethereum.org](https://ethereum.org/en/developers/docs/accounts/#:~:text=The%20public%20key%20is%20generated%20from%20the%20private%20key%20using%20the%20Elliptic%20Curve%20Digital%20Signature%20Algorithm); [EIP-2 وإصلاح قابلية تطويع توقيع secp256k1](https://eips.ethereum.org/EIPS/eip-2#:~:text=secp256k1n%2F2)). التحقق من ECDSA سريع وقد خضع لعقود من التدقيق، لكنه يحمل نقطة ضعف تشغيلية مهمة للتصاميم الأحدث: توقيعات ECDSA الفردية لا تتجمع بكفاءة، لذا فإن التحقق من آلاف منها يعني إجراء آلاف عمليات الفحص المنفصلة.
 
@@ -68,7 +68,7 @@ relatedSeries:
 
 ![هرم من عُقد التجزئة في شجرة Merkle تتحد زوجيًا حتى جذر واحد، مع مسار إثبات من ورقة إلى الجذر مميز بالبرتقالي يوضح إثبات Merkle لعميل خفيف](../../assets/blockchain-cryptographic-primitives-03-merkle-tree.jpg)
 
-تسمح [شجرة Merkle](/en/glossary/merkle-tree/) للبلوكتشين بتلخيص آلاف المعاملات في تجزئة واحدة من 32 بايت، من دون إجبار كل مشارك على تخزين كل معاملة. الأوراق هي تجزئات عناصر البيانات الفردية (المعاملات وحالات الحسابات)، ويجري وصل كل زوج من التجزئات ثم تجزئته مرة أخرى، وتتكرر العملية حتى تبقى تجزئة واحدة — الجذر ([Bitcoin Developer Guide](https://developer.bitcoin.org/devguide/block_chain.html#:~:text=Copies%20of%20each%20transaction%20are%20hashed%2C%20and%20the%20hashes%20are%20then%20paired%2C%20hashed%2C%20paired%20again%2C%20and%20hashed%20again%20until%20a%20single%20hash%20remains%2C%20the%20merkle%20root%20of%20a%20merkle%20tree)). ويُخزَّن هذا الجذر مباشرة في رأس الكتلة، وهو ما يتيح للعقدة الكاملة الالتزام بمحتوى كتلة كامل بمساحة إضافية شبه معدومة.
+تسمح [شجرة Merkle](/ar/glossary/merkle-tree/) للبلوكتشين بتلخيص آلاف المعاملات في تجزئة واحدة من 32 بايت، من دون إجبار كل مشارك على تخزين كل معاملة. الأوراق هي تجزئات عناصر البيانات الفردية (المعاملات وحالات الحسابات)، ويجري وصل كل زوج من التجزئات ثم تجزئته مرة أخرى، وتتكرر العملية حتى تبقى تجزئة واحدة — الجذر ([Bitcoin Developer Guide](https://developer.bitcoin.org/devguide/block_chain.html#:~:text=Copies%20of%20each%20transaction%20are%20hashed%2C%20and%20the%20hashes%20are%20then%20paired%2C%20hashed%2C%20paired%20again%2C%20and%20hashed%20again%20until%20a%20single%20hash%20remains%2C%20the%20merkle%20root%20of%20a%20merkle%20tree)). ويُخزَّن هذا الجذر مباشرة في رأس الكتلة، وهو ما يتيح للعقدة الكاملة الالتزام بمحتوى كتلة كامل بمساحة إضافية شبه معدومة.
 
 والفائدة هي حجم الإثبات. فلكي تثبت أن معاملة واحدة موجودة في كتلة، لا تحتاج إلى الكتلة كلها؛ يكفي المعاملة مع «فرع Merkle»، أي تجزئات الأشقاء على المسار من تلك الورقة إلى الجذر، ويكون عددها عادة في حدود log₂(n) من التجزئات إذا كان عدد المعاملات n. وهذا هو أساس التحقق المبسط من المدفوعات (SPV): إذ يستطيع عميل خفيف لا يملك سوى رؤوس الكتل أن يتحقق من حدوث معاملة بعينها بمراجعة فرع Merkle مقابل جذر الرأس، من دون تنزيل البلوكتشين كاملًا ([Bitcoin Developer Guide](https://developer.bitcoin.org/devguide/operating_modes.html#:~:text=the%20merkle%20root%20in%20the%20block%20header%20along%20with%20a%20merkle%20branch%20can%20prove%20to%20the%20SPV%20client%20that%20the%20transaction%20in%20question%20is%20embedded%20in%20a%20block%20in%20the%20block%20chain)).
 

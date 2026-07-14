@@ -72,7 +72,7 @@ Berücksichtigen Sie vier Kriterien. **Relevanz**: Passt das Suffix zu Ihrer Bra
 
 ### 9. .company — eine wörtliche Passform für jedes Unternehmen
 
-[.company](/en/tld/company) ist genau das, was es sagt — es wird von [Identity Digital](https://www.icann.org/en/registry-agreements/details/company) betrieben. Es ist [uneingeschränkt](https://www.iana.org/domains/root/db/company.html) und liest sich natürlich für etablierte Firmen, die eine selbsterklärende Adresse wünschen. Es ist auch eine sinnvolle defensive Registrierung, da das Wort so direkt auf eine Unternehmensidentität verweist.
+[.company](/de/tld/company) ist genau das, was es sagt — es wird von [Identity Digital](https://www.icann.org/en/registry-agreements/details/company) betrieben. Es ist [uneingeschränkt](https://www.iana.org/domains/root/db/company.html) und liest sich natürlich für etablierte Firmen, die eine selbsterklärende Adresse wünschen. Es ist auch eine sinnvolle defensive Registrierung, da das Wort so direkt auf eine Unternehmensidentität verweist.
 
 ### 10. .vip — Premium-Positionierung
 

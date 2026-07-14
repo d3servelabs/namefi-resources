@@ -11,7 +11,7 @@ relatedArticles:
   - /hi/blog/why-tokenize-domains/
   - /hi/blog/the-curve-finance-dns-hijack/
   - /hi/blog/what-are-xstocks/
-  - /hi/blog/how-tokenization-changes-domain-flipping/
+  - /hi/blog/why-a-dao-should-control-the-main-domain/
 relatedTopics:
   - /hi/topics/domain-tokenization/
   - /hi/topics/web3-foundations/

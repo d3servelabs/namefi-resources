@@ -1,39 +1,66 @@
 /**
- * Fixture tests for link-audit.ts --fix.
+ * Deterministic fixture tests for link-audit.ts.
  *
- * Regression guard for the en-only mislocalization bug: `--fix` used to
- * substring-replace `](${href}`, so repointing a fixable slug whose name is a
- * PREFIX of a sibling (e.g. `dns` ⊂ `dnssec`, `com` ⊂ `company`) also clobbered
- * the sibling — turning a valid `/en/glossary/dnssec/` cross-locale fallback
- * into a `/zh-CN/glossary/dnssec/` 404. The bug fired only for the no-trailing-
- * slash form of the fixable link, so we exercise both forms here.
- *
- * Run: bun test .agents/skills/cross-link/link-audit.test.ts
+ * Run: bun run links:test
  */
-import { test, expect } from 'bun:test';
+import { afterEach, describe, expect, test } from 'bun:test';
 import {
-  mkdtempSync,
+  cpSync,
   mkdirSync,
-  writeFileSync,
+  mkdtempSync,
   readFileSync,
   rmSync,
+  writeFileSync,
 } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import matter from 'gray-matter';
+import { routeResolvesForPath } from '../../../scripts/validate-data';
 
 const SCRIPT = path.join(import.meta.dir, 'link-audit.ts');
+const FIXTURE = path.join(
+  import.meta.dir,
+  'test-fixtures',
+  'locale-invariant',
+);
+const temporaryDirectories: string[] = [];
+
+type Finding = {
+  file: string;
+  line: number;
+  severity: string;
+  href: string;
+  fixedHref?: string;
+  source: string;
+  field?: string;
+};
+type AuditResult = {
+  mode: string;
+  locales: string[];
+  findings: Finding[];
+  fixedFiles: string[];
+};
+
+function temporaryRoot(prefix: string) {
+  const directory = mkdtempSync(path.join(os.tmpdir(), `${prefix}-`));
+  temporaryDirectories.push(directory);
+  return directory;
+}
+
+function freshFixture() {
+  const directory = temporaryRoot('namefi-link-audit');
+  cpSync(FIXTURE, directory, { recursive: true });
+  return directory;
+}
 
 /**
- * Build a throwaway content/ tree reproducing the en-only collision:
- *   glossary: dns exists en+zh-CN (fixable) · dnssec en-only · whois en-only
- *   tld:      com exists en+zh-CN (fixable) · company en-only
- * `dns` is a prefix of `dnssec`; `com` is a prefix of `company` — the exact
- * shape that broke the old substring rewrite.
+ * Build a throwaway content tree with prefix-collision slugs. `dns` is a
+ * prefix of `dnssec`; `com` is a prefix of `company`.
  */
-function scaffold(): string {
-  const root = mkdtempSync(path.join(os.tmpdir(), 'crosslink-'));
-  const write = (relPath: string, body: string) => {
-    const full = path.join(root, relPath);
+function scaffold() {
+  const root = temporaryRoot('namefi-link-collision');
+  const write = (relativePath: string, body: string) => {
+    const full = path.join(root, relativePath);
     mkdirSync(path.dirname(full), { recursive: true });
     writeFileSync(full, body);
   };
@@ -46,10 +73,6 @@ function scaffold(): string {
   write('content/tld/en/com.md', doc('com'));
   write('content/tld/en/company.md', doc('company'));
   write('content/tld/zh-CN/com.md', doc('com zh-CN'));
-
-  // A zh-CN post linking to fixable + en-only siblings on the same line. The
-  // fixable links (`dns`, `com`) use the no-trailing-slash form that triggered
-  // the prefix collision; the en-only fallbacks use the trailing-slash form.
   write(
     'content/glossary/zh-CN/post.md',
     `---\ntitle: post\n---\n` +
@@ -61,172 +84,556 @@ function scaffold(): string {
 }
 
 function run(root: string, args: string[]) {
-  const r = Bun.spawnSync(['bun', SCRIPT, ...args], { cwd: root });
+  const process = Bun.spawnSync({
+    cmd: ['bun', SCRIPT, ...args],
+    cwd: root,
+    stdout: 'pipe',
+    stderr: 'pipe',
+  });
   return {
-    code: r.exitCode,
-    stdout: r.stdout.toString(),
-    stderr: r.stderr.toString(),
+    code: process.exitCode,
+    stdout: process.stdout.toString(),
+    stderr: process.stderr.toString(),
   };
 }
 
-test('--fix repoints fixable siblings but leaves en-only fallbacks on /en/', () => {
-  const root = scaffold();
-  try {
-    const res = run(root, ['--fix', 'content/glossary', 'content/tld']);
-    expect(res.code).toBe(0);
+function parseAudit(result: ReturnType<typeof run>): AuditResult {
+  expect(result.stderr).toBe('');
+  return JSON.parse(result.stdout) as AuditResult;
+}
+
+afterEach(() => {
+  for (const directory of temporaryDirectories.splice(0)) {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+describe('full link audit regressions', () => {
+  test('--fix preserves whole slugs while localizing every recognized prefix', () => {
+    const root = scaffold();
+    const result = run(root, ['--fix', 'content/glossary', 'content/tld']);
+    expect(result.code).toBe(0);
+
     const post = readFileSync(
       path.join(root, 'content/glossary/zh-CN/post.md'),
       'utf8',
     );
-
-    // Fixable: the file's own locale (zh-CN) has the slug → repointed to /zh-CN/.
     expect(post).toContain('](/zh-CN/glossary/dns)');
+    expect(post).toContain('](/zh-CN/glossary/dnssec/)');
+    expect(post).toContain('](/zh-CN/glossary/whois/)');
     expect(post).toContain('](/zh-CN/tld/com)');
+    expect(post).toContain('](/zh-CN/tld/company/)');
+    expect(post).not.toContain('/en/glossary/');
+    expect(post).not.toContain('/en/tld/');
+  });
 
-    // En-only fallbacks: zh-CN has no counterpart → MUST stay on /en/.
-    expect(post).toContain('](/en/glossary/dnssec/)');
-    expect(post).toContain('](/en/glossary/whois/)');
-    expect(post).toContain('](/en/tld/company/)');
+  test('--fix never introduces a route the runtime cannot resolve', () => {
+    const root = scaffold();
+    expect(run(root, ['--fix', 'content/glossary', 'content/tld']).code).toBe(0);
 
-    // The bug repointed these to non-existent /zh-CN/ targets.
-    expect(post).not.toContain('/zh-CN/glossary/dnssec');
-    expect(post).not.toContain('/zh-CN/tld/company');
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
-});
-
-test('--fix never leaves a link whose target is absent from slugIndex', () => {
-  const root = scaffold();
-  try {
-    run(root, ['--fix', 'content/glossary', 'content/tld']);
-    // Re-audit the fixed tree: zero BROKEN and a clean (exit 0) run.
-    const audit = run(root, ['--json', 'content/glossary', 'content/tld']);
-    const report = JSON.parse(audit.stdout) as {
-      findings: { severity: string; href: string }[];
-    };
-    const broken = report.findings.filter((f) => f.severity === 'BROKEN');
-    expect(broken).toEqual([]);
+    const audit = run(root, [
+      '--json',
+      'content/glossary',
+      'content/tld',
+    ]);
+    const report = parseAudit(audit);
+    expect(report.findings.filter((finding) => finding.severity === 'BROKEN')).toEqual([]);
+    expect(
+      report.findings.filter(
+        (finding) => finding.severity === 'LOCALE_MISMATCH',
+      ),
+    ).toEqual([]);
     expect(audit.code).toBe(0);
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
-});
+  });
 
-test('an un-translated slug is MISSING_TRANSLATION (warning, exit 0), not BROKEN', () => {
-  const root = scaffold();
-  try {
-    // zh-CN lacks `dnssec`, but en has it → the app serves it via the en
-    // fallback (200). A warning, never a 404.
+  test('a same-locale route with only an English fallback is accepted', () => {
+    const root = scaffold();
     writeFileSync(
       path.join(root, 'content/glossary/zh-CN/probe.md'),
       `---\ntitle: probe\n---\nSee [DNSSEC](/zh-CN/glossary/dnssec/).\n`,
     );
-    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
-    const report = JSON.parse(audit.stdout) as {
-      findings: { severity: string; href: string }[];
-    };
-    const finding = report.findings.find(
-      (f) => f.href === '/zh-CN/glossary/dnssec/',
-    );
-    expect(finding?.severity).toBe('MISSING_TRANSLATION');
-    expect(report.findings.some((f) => f.severity === 'BROKEN')).toBe(false);
-    expect(audit.code).toBe(0); // warnings never fail the run
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
-});
 
-test('a slug absent from every locale (no en fallback) is BROKEN (exit 1)', () => {
-  const root = scaffold();
-  try {
+    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
+    const report = parseAudit(audit);
+    expect(
+      report.findings.find(
+        (finding) => finding.href === '/zh-CN/glossary/dnssec/',
+      )?.severity,
+    ).toBe('MISSING_TRANSLATION');
+    expect(audit.code).toBe(0);
+  });
+
+  test('a slug absent from the locale and English fallback is broken', () => {
+    const root = scaffold();
     writeFileSync(
       path.join(root, 'content/glossary/zh-CN/probe.md'),
       `---\ntitle: probe\n---\nSee [Ghost](/zh-CN/glossary/ghost/).\n`,
     );
-    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
-    const report = JSON.parse(audit.stdout) as {
-      findings: { severity: string; href: string }[];
-    };
-    const finding = report.findings.find(
-      (f) => f.href === '/zh-CN/glossary/ghost/',
-    );
-    expect(finding?.severity).toBe('BROKEN');
-    expect(audit.code).toBe(1);
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
-});
 
-test('a bare internal link (no locale segment) is MISSING_LOCALE and fails the run (exit 1)', () => {
-  const root = scaffold();
-  try {
-    // `](/glossary/dns)` omits the locale segment — there is no bare route, so
-    // the middleware would locale-redirect by the reader's cookie. A defect.
+    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
+    const report = parseAudit(audit);
+    expect(
+      report.findings.find(
+        (finding) => finding.href === '/zh-CN/glossary/ghost/',
+      )?.severity,
+    ).toBe('BROKEN');
+    expect(audit.code).toBe(1);
+  });
+
+  test('a foreign-locale dead link is both reported and prefix-repaired', () => {
+    const root = scaffold();
+    const frDirectory = path.join(root, 'content/glossary/fr');
+    mkdirSync(frDirectory, { recursive: true });
+    writeFileSync(path.join(frDirectory, 'placeholder.md'), '---\ntitle: placeholder\n---\n');
+    const probe = path.join(root, 'content/glossary/zh-CN/probe.md');
+    writeFileSync(
+      probe,
+      `---\ntitle: probe\n---\nSee [Ghost](/fr/glossary/ghost/).\n`,
+    );
+
+    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
+    const report = parseAudit(audit);
+    expect(audit.code).toBe(1);
+    expect(report.findings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          severity: 'LOCALE_MISMATCH',
+          href: '/fr/glossary/ghost/',
+          fixedHref: '/zh-CN/glossary/ghost/',
+        }),
+        expect.objectContaining({
+          severity: 'BROKEN',
+          href: '/fr/glossary/ghost/',
+        }),
+      ]),
+    );
+
+    // The dead slug still makes the command fail, but its locale prefix is
+    // repaired so a later content fix does not also need to repair the route.
+    expect(run(root, ['--fix', 'content/glossary/zh-CN/probe.md']).code).toBe(1);
+    expect(readFileSync(probe, 'utf8')).toContain('/zh-CN/glossary/ghost/');
+  });
+
+  test('a bare internal route remains a separate blocking full-audit error', () => {
+    const root = scaffold();
     writeFileSync(
       path.join(root, 'content/glossary/zh-CN/probe.md'),
-      `---\ntitle: probe\n---\nSee [DNS](/glossary/dns) here.\n`,
+      `---\ntitle: probe\n---\nSee [DNS](/glossary/dns).\n`,
     );
-    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
-    const report = JSON.parse(audit.stdout) as {
-      findings: { severity: string; href: string; fixedHref?: string }[];
-    };
-    const finding = report.findings.find((f) => f.href === '/glossary/dns');
-    expect(finding?.severity).toBe('MISSING_LOCALE');
-    // zh-CN has the slug → fix prefixes the file's own locale (self-canonical).
-    expect(finding?.fixedHref).toBe('/zh-CN/glossary/dns');
-    expect(audit.code).toBe(1); // a bare link is an error, not a soft warning
-    // check mode must never mutate the file.
-    expect(
-      readFileSync(path.join(root, 'content/glossary/zh-CN/probe.md'), 'utf8'),
-    ).toContain('](/glossary/dns)');
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
-});
 
-test('--fix prefixes bare links: own locale when present, en fallback otherwise, anchors kept', () => {
-  const root = scaffold();
-  try {
-    // dns: zh-CN has it → /zh-CN/. dnssec: en-only → en fallback. plus an anchor form.
+    const audit = run(root, ['--json', 'content/glossary/zh-CN/probe.md']);
+    const report = parseAudit(audit);
+    expect(report.findings).toContainEqual(
+      expect.objectContaining({
+        severity: 'MISSING_LOCALE',
+        href: '/glossary/dns',
+        fixedHref: '/zh-CN/glossary/dns',
+      }),
+    );
+    expect(audit.code).toBe(1);
+  });
+
+  test('--fix gives every resolvable bare route the file locale', () => {
+    const root = scaffold();
     writeFileSync(
       path.join(root, 'content/glossary/zh-CN/probe.md'),
       `---\ntitle: probe\n---\n` +
         `[DNS](/glossary/dns) and [anchor](/glossary/dns#a) and ` +
         `[DNSSEC](/glossary/dnssec).\n`,
     );
-    const fix = run(root, ['--fix', 'content/glossary/zh-CN/probe.md']);
-    expect(fix.code).toBe(0); // every bare link resolved → clean run
+
+    expect(run(root, ['--fix', 'content/glossary/zh-CN/probe.md']).code).toBe(0);
     const probe = readFileSync(
       path.join(root, 'content/glossary/zh-CN/probe.md'),
       'utf8',
     );
     expect(probe).toContain('](/zh-CN/glossary/dns)');
-    expect(probe).toContain('](/zh-CN/glossary/dns#a)'); // anchor preserved
-    expect(probe).toContain('](/en/glossary/dnssec)'); // en fallback
-    expect(probe).not.toContain('](/glossary/'); // no bare link survives
-    // Re-audit: the fixed tree is clean.
-    const audit = run(root, ['content/glossary/zh-CN/probe.md']);
-    expect(audit.code).toBe(0);
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
-});
+    expect(probe).toContain('](/zh-CN/glossary/dns#a)');
+    expect(probe).toContain('](/zh-CN/glossary/dnssec)');
+    expect(probe).not.toContain('](/glossary/');
+    expect(run(root, ['content/glossary/zh-CN/probe.md']).code).toBe(0);
+  });
 
-test('--fix leaves a bare link whose target exists in no locale (still exit 1)', () => {
-  const root = scaffold();
-  try {
+  test('--fix leaves an unresolvable bare route unchanged and fails', () => {
+    const root = scaffold();
     writeFileSync(
       path.join(root, 'content/glossary/zh-CN/probe.md'),
       `---\ntitle: probe\n---\nSee [Ghost](/glossary/ghost).\n`,
     );
-    const fix = run(root, ['--fix', 'content/glossary/zh-CN/probe.md']);
-    // No resolvable target → not auto-rewritten, and the run still fails.
-    expect(fix.code).toBe(1);
+
+    expect(run(root, ['--fix', 'content/glossary/zh-CN/probe.md']).code).toBe(1);
     expect(
       readFileSync(path.join(root, 'content/glossary/zh-CN/probe.md'), 'utf8'),
     ).toContain('](/glossary/ghost)');
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
+  });
+});
+
+describe('same-locale route invariant', () => {
+  test('reports recognized locale prefixes in Markdown and related frontmatter', () => {
+    const root = freshFixture();
+    const audit = run(root, [
+      '--locale-only',
+      '--json',
+      'content/blog/ar/article.md',
+    ]);
+    const report = parseAudit(audit);
+
+    expect(audit.code).toBe(1);
+    expect(report.mode).toBe('locale');
+    expect(report.locales).toEqual(['ar', 'en', 'fr']);
+    expect(
+      report.findings.map(({ line, href, fixedHref, source, field }) => ({
+        line,
+        href,
+        fixedHref,
+        source,
+        field,
+      })),
+    ).toEqual([
+      {
+        line: 3,
+        href: '/en/blog/target/',
+        fixedHref: '/ar/blog/target/',
+        source: 'frontmatter',
+        field: 'relatedArticles',
+      },
+      {
+        line: 8,
+        href: '/en/glossary/foo/',
+        fixedHref: '/ar/glossary/foo/',
+        source: 'markdown',
+        field: undefined,
+      },
+      {
+        line: 9,
+        href: '/fr/blog/fr-only/',
+        fixedHref: '/ar/blog/fr-only/',
+        source: 'markdown',
+        field: undefined,
+      },
+      {
+        line: 14,
+        href: '/en/help/',
+        fixedHref: '/ar/help/',
+        source: 'markdown',
+        field: undefined,
+      },
+      {
+        line: 16,
+        href: '/fr/blog/fr-only/',
+        fixedHref: '/ar/blog/fr-only/',
+        source: 'markdown',
+        field: undefined,
+      },
+    ]);
+  });
+
+  test('ignores external URLs, anchors, code, and unprefixed internal paths', () => {
+    const root = freshFixture();
+    const audit = run(root, [
+      '--locale-only',
+      '--json',
+      'content/blog/ar/ignored.md',
+    ]);
+    expect(audit.code).toBe(0);
+    expect(parseAudit(audit).findings).toEqual([]);
+  });
+
+  test('checks MDX and accepts missing same-locale frontmatter/body targets', () => {
+    const root = freshFixture();
+    const mdxAudit = run(root, [
+      '--locale-only',
+      '--json',
+      'content/blog/ar/component.mdx',
+    ]);
+    const mdxReport = parseAudit(mdxAudit);
+    expect(mdxAudit.code).toBe(1);
+    expect(mdxReport.findings).toEqual([
+      expect.objectContaining({
+        href: '/en/blog/target/',
+        fixedHref: '/ar/blog/target/',
+        source: 'markdown',
+      }),
+    ]);
+
+    const fallbackAudit = run(root, [
+      '--json',
+      'content/blog/ar/fallback.md',
+    ]);
+    expect(fallbackAudit.code).toBe(0);
+    expect(parseAudit(fallbackAudit).findings).toEqual([
+      expect.objectContaining({
+        severity: 'MISSING_TRANSLATION',
+        href: '/ar/glossary/foo/',
+      }),
+    ]);
+  });
+
+  test('related-content validation accepts an English fallback behind a same-locale route', () => {
+    const root = freshFixture();
+    const dataRoot = path.join(root, 'content');
+
+    expect(
+      routeResolvesForPath('/ar/glossary/foo/', 'ar', dataRoot),
+    ).toBe(true);
+    expect(
+      routeResolvesForPath('/ar/glossary/ghost/', 'ar', dataRoot),
+    ).toBe(false);
+    expect(
+      routeResolvesForPath('/en/glossary/ghost/', 'en', dataRoot),
+    ).toBe(false);
+    expect(
+      routeResolvesForPath('/fr/glossary/foo/', 'ar', dataRoot),
+    ).toBe(false);
+    expect(routeResolvesForPath('/ar/glossary/foo', 'ar', dataRoot)).toBe(
+      false,
+    );
+    expect(
+      routeResolvesForPath('https://example.com/ar/glossary/foo/', 'ar', dataRoot),
+    ).toBe(false);
+    expect(
+      routeResolvesForPath('/ar/topics/domain-basics/', 'ar', dataRoot),
+    ).toBe(false);
+  });
+
+  test('relatedGlossary preserves English source order and slugs through fallback routes', () => {
+    const root = freshFixture();
+    const relativeFile = 'content/blog/ar/privacy.md';
+    const audit = run(root, ['--locale-only', '--json', relativeFile]);
+    const report = parseAudit(audit);
+
+    expect(audit.code).toBe(1);
+    expect(report.findings[0]).toEqual(
+      expect.objectContaining({
+        line: 3,
+        href: '/ar/blog/fr-only/',
+        fixedHref: '/ar/blog/target/',
+      }),
+    );
+    expect(
+      report.findings.map(({ severity, href, fixedHref, field }) => ({
+        severity,
+        href,
+        fixedHref,
+        field,
+      })),
+    ).toEqual([
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/blog/fr-only/',
+        fixedHref: '/ar/blog/target/',
+        field: 'relatedArticles',
+      },
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/glossary/blockchain/',
+        fixedHref: '/ar/glossary/zero-knowledge-proof/',
+        field: 'relatedGlossary',
+      },
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/glossary/cryptographic-security/',
+        fixedHref: '/ar/glossary/fully-homomorphic-encryption/',
+        field: 'relatedGlossary',
+      },
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/glossary/public-key/',
+        fixedHref: '/ar/glossary/secure-multiparty-computation/',
+        field: 'relatedGlossary',
+      },
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/glossary/private-key/',
+        fixedHref: '/ar/glossary/trusted-execution-environment/',
+        field: 'relatedGlossary',
+      },
+      {
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: '/ar/glossary/smart-contract/',
+        fixedHref: '/ar/glossary/cryptographic-security/',
+        field: 'relatedGlossary',
+      },
+    ]);
+
+    const dataRoot = path.join(root, 'content');
+    for (const finding of report.findings
+      .filter((item) => item.field === 'relatedGlossary')
+      .slice(0, 4)) {
+      expect(
+        routeResolvesForPath(finding.fixedHref!, 'ar', dataRoot),
+      ).toBe(true);
+    }
+
+    const fix = run(root, [
+      '--locale-only',
+      '--fix',
+      '--json',
+      relativeFile,
+    ]);
+    expect(fix.code).toBe(0);
+    expect(run(root, ['--locale-only', relativeFile]).code).toBe(0);
+  });
+
+  test('--fix leaves a malformed external related-content value unchanged', () => {
+    const root = freshFixture();
+    const englishFile = path.join(root, 'content/blog/en/external-relation.md');
+    const arabicFile = path.join(root, 'content/blog/ar/external-relation.md');
+    writeFileSync(
+      englishFile,
+      '---\nrelatedArticles:\n  - /en/blog/target/\n---\n',
+    );
+    writeFileSync(
+      arabicFile,
+      '---\nrelatedArticles:\n  - https://example.com/article\n---\n',
+    );
+
+    const fix = run(root, [
+      '--locale-only',
+      '--fix',
+      '--json',
+      'content/blog/ar/external-relation.md',
+    ]);
+    const report = parseAudit(fix);
+    expect(fix.code).toBe(1);
+    expect(report.findings).toEqual([
+      expect.objectContaining({
+        severity: 'RELATIONSHIP_MISMATCH',
+        href: 'https://example.com/article',
+        fixedHref: '/ar/blog/target/',
+        fixable: false,
+      }),
+    ]);
+    expect(readFileSync(arabicFile, 'utf8')).toContain(
+      'https://example.com/article',
+    );
+  });
+
+  test('one malformed English relationship does not skip locale or later parity checks', () => {
+    const root = freshFixture();
+    const englishFile = path.join(root, 'content/blog/en/mixed-relation.md');
+    const arabicFile = path.join(root, 'content/blog/ar/mixed-relation.md');
+    writeFileSync(
+      englishFile,
+      '---\nrelatedArticles:\n  - https://example.com/article\n  - /en/blog/target/\n---\n',
+    );
+    writeFileSync(
+      arabicFile,
+      '---\nrelatedArticles:\n  - /fr/blog/wrong-locale/\n  - /ar/blog/fr-only/\n---\n',
+    );
+
+    const audit = run(root, [
+      '--locale-only',
+      '--json',
+      'content/blog/ar/mixed-relation.md',
+    ]);
+    const report = parseAudit(audit);
+    expect(audit.code).toBe(1);
+    expect(report.findings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          severity: 'LOCALE_MISMATCH',
+          href: '/fr/blog/wrong-locale/',
+          fixedHref: '/ar/blog/wrong-locale/',
+          field: 'relatedArticles',
+        }),
+        expect.objectContaining({
+          severity: 'RELATIONSHIP_MISMATCH',
+          href: '/ar/blog/fr-only/',
+          fixedHref: '/ar/blog/target/',
+          field: 'relatedArticles',
+        }),
+      ]),
+    );
+
+    expect(
+      run(root, [
+        '--locale-only',
+        '--fix',
+        'content/blog/ar/mixed-relation.md',
+      ]).code,
+    ).toBe(0);
+    const fixed = readFileSync(arabicFile, 'utf8');
+    expect(fixed).toContain('/ar/blog/wrong-locale/');
+    expect(fixed).toContain('/ar/blog/target/');
+  });
+
+  test('Arabic privacy metadata keeps the four core English glossary relationships', () => {
+    const repoRoot = path.resolve(import.meta.dir, '../../..');
+    const readRelations = (locale: 'en' | 'ar') => {
+      const file = path.join(
+        repoRoot,
+        'content/blog',
+        locale,
+        'blockchain-privacy-technologies.md',
+      );
+      return matter(readFileSync(file, 'utf8')).data.relatedGlossary as string[];
+    };
+    const english = readRelations('en');
+    const arabic = readRelations('ar');
+
+    expect(arabic).toEqual(
+      english.map((href) => href.replace('/en/', '/ar/')),
+    );
+    expect(arabic.slice(0, 4)).toEqual([
+      '/ar/glossary/zero-knowledge-proof/',
+      '/ar/glossary/fully-homomorphic-encryption/',
+      '/ar/glossary/secure-multiparty-computation/',
+      '/ar/glossary/trusted-execution-environment/',
+    ]);
+  });
+
+  test('--fix changes only locale prefixes and produces a clean rerun', () => {
+    const root = freshFixture();
+    const fix = run(root, [
+      '--locale-only',
+      '--fix',
+      '--json',
+      'content/blog/ar/article.md',
+    ]);
+    const fixReport = parseAudit(fix);
+    expect(fix.code).toBe(0);
+    expect(fixReport.fixedFiles).toEqual(['content/blog/ar/article.md']);
+
+    const content = readFileSync(
+      path.join(root, 'content/blog/ar/article.md'),
+      'utf8',
+    );
+    expect(content).toContain('/ar/blog/target/');
+    expect(content).toContain('/ar/glossary/foo/');
+    expect(content).toContain('/ar/blog/fr-only/');
+    expect(content).toContain('/ar/help/');
+    expect(content).toContain('https://example.com/en/glossary/foo/');
+    expect(content).toContain('](/glossary/foo/)');
+    expect(content).not.toContain('/en/blog/target/');
+    expect(content).not.toContain('/fr/blog/fr-only/');
+
+    const rerun = run(root, [
+      '--locale-only',
+      '--json',
+      'content/blog/ar/article.md',
+    ]);
+    expect(rerun.code).toBe(0);
+    expect(parseAudit(rerun).findings).toEqual([]);
+  });
+
+  test('human diagnostics include file, line, actual route, and expected route', () => {
+    const root = freshFixture();
+    const audit = run(root, [
+      '--locale-only',
+      'content/blog/ar/article.md',
+    ]);
+    expect(audit.code).toBe(1);
+    expect(audit.stdout).toContain(
+      'LOCALE L3 field=relatedArticles actual=/en/blog/target/ expected=/ar/blog/target/',
+    );
+
+    const relationshipAudit = run(root, [
+      '--locale-only',
+      'content/blog/ar/privacy.md',
+    ]);
+    expect(relationshipAudit.stdout).toContain(
+      'RELATION L3 field=relatedArticles actual=/ar/blog/fr-only/ expected=/ar/blog/target/',
+    );
+  });
 });

@@ -44,11 +44,11 @@ relatedGlossary:
 
 ### 2. .cpa — 黄金级信任背书（受限）
 
-[.cpa](https://www.iana.org/domains/root/db/cpa.html) 后缀是会计师事务所所能持有的最具公信力的域名，同时也是限制最严格的。它由美国注册会计师协会（AICPA）关联机构管理，其技术子公司 CPA.com 负责运营[注册局](/zh-CN/glossary/registry/)。根据 [CPA.com 官方 .cpa 计划](https://register.domains.cpa/faqs/)，资格仅限于持有州会计委员会颁发的 CPA 事务所执照或个人 CPA 执照的机构，目前仅向美国、加拿大和爱尔兰的事务所开放。由于执照资质在购买时及每次续期时均须核验，[.cpa](/en/tld/cpa) 地址向客户证明了事务所已通过审核——这是任何开放域名都无法提供的保证。
+[.cpa](https://www.iana.org/domains/root/db/cpa.html) 后缀是会计师事务所所能持有的最具公信力的域名，同时也是限制最严格的。它由美国注册会计师协会（AICPA）关联机构管理，其技术子公司 CPA.com 负责运营[注册局](/zh-CN/glossary/registry/)。根据 [CPA.com 官方 .cpa 计划](https://register.domains.cpa/faqs/)，资格仅限于持有州会计委员会颁发的 CPA 事务所执照或个人 CPA 执照的机构，目前仅向美国、加拿大和爱尔兰的事务所开放。由于执照资质在购买时及每次续期时均须核验，[.cpa](/zh-CN/tld/cpa) 地址向客户证明了事务所已通过审核——这是任何开放域名都无法提供的保证。
 
 ### 3. .tax — 简洁、直观、主题明确
 
-[.tax](/en/tld/tax) 后缀能立即传达出专注于税务申报、税务规划或税务咨询的专业定位。它由 Identity Digital（通过 Binky Moon, LLC）在 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/tax)框架下运营，与 .cpa 不同，它对普通注册开放。非常适合用于聚焦服务的落地页或季节性税务宣传活动。
+[.tax](/zh-CN/tld/tax) 后缀能立即传达出专注于税务申报、税务规划或税务咨询的专业定位。它由 Identity Digital（通过 Binky Moon, LLC）在 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/tax)框架下运营，与 .cpa 不同，它对普通注册开放。非常适合用于聚焦服务的落地页或季节性税务宣传活动。
 
 ### 4. .accountant — 开放注册，覆盖广泛
 
@@ -60,7 +60,7 @@ relatedGlossary:
 
 ### 6. .finance — 适用于咨询与财富管理业务
 
-[.finance](/en/tld/finance) 后缀将您的事务所定位于更广泛的金融服务领域，非常适合那些在合规工作之外还提供咨询、财富管理或 CFO 服务的机构。它由 Binky Moon, LLC 在 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/finance)框架下运营，对普通注册开放。这一后缀格调正式、专业，与聚焦税务或审计的品牌形象相得益彰。
+[.finance](/zh-CN/tld/finance) 后缀将您的事务所定位于更广泛的金融服务领域，非常适合那些在合规工作之外还提供咨询、财富管理或 CFO 服务的机构。它由 Binky Moon, LLC 在 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/finance)框架下运营，对普通注册开放。这一后缀格调正式、专业，与聚焦税务或审计的品牌形象相得益彰。
 
 ### 7. .net — 经典的技术备选域名
 

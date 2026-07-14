@@ -7,11 +7,11 @@ authors: ["namefiteam"]
 description: ما هو DAO وكيف يمكن أن يرتبط بإدارة النطاقات؟
 keywords: ["DAO","منظمة ذاتية لامركزية","حوكمة","ملكية جماعية","عقود ذكية"]
 relatedArticles:
+  - /ar/blog/why-a-dao-should-control-the-main-domain/
   - /ar/blog/tokenized-domain-use-cases-2026/
   - /ar/blog/the-badgerdao-frontend-attack/
   - /ar/blog/what-are-xstocks/
   - /ar/blog/why-tokenize-domains/
-  - /ar/blog/domain-escrow-explained/
 relatedTopics:
   - /ar/topics/domain-tokenization/
   - /ar/topics/web3-foundations/

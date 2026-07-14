@@ -72,7 +72,7 @@ Pesez quatre critères. **La pertinence** : le suffixe correspond-il à votre se
 
 ### 9. .company — une correspondance littérale pour toute entreprise
 
-[.company](/en/tld/company) est exactement ce qu'il dit, exploité par [Identity Digital](https://www.icann.org/en/registry-agreements/details/company). Il est [sans restriction](https://www.iana.org/domains/root/db/company.html) et se lit naturellement pour les entreprises établies qui souhaitent une adresse explicite. C'est aussi un enregistrement défensif judicieux, car le mot renvoie si directement à une identité d'entreprise.
+[.company](/fr/tld/company) est exactement ce qu'il dit, exploité par [Identity Digital](https://www.icann.org/en/registry-agreements/details/company). Il est [sans restriction](https://www.iana.org/domains/root/db/company.html) et se lit naturellement pour les entreprises établies qui souhaitent une adresse explicite. C'est aussi un enregistrement défensif judicieux, car le mot renvoie si directement à une identité d'entreprise.
 
 ### 10. .vip — un positionnement premium
 
