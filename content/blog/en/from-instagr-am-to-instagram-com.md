@@ -138,7 +138,7 @@ The hack didn't build Instagram's growth — filters, timing, and the iPhone cam
 
 The easy takeaway — "never use a domain hack" — is wrong. The hack was *good*. The more useful lessons are about how to use one without getting trapped by it:
 
-1. **A domain hack is a great launch front door.** instagr.am was exact, short, shareable, and available when the `.com` wasn't. For a pre-funding launch, that is a real edge, not a failure.
+1. **A domain hack is a great launch front door.** instagr.am was exact, short, shareable, and available when the `.com` wasn't. For an early-stage launch, that is a real edge, not a failure.
 2. **Know what you're borrowing.** A [ccTLD](/en/glossary/cctld/) hack means a foreign registry sets your policies and pricing. That is fine at small scale and a liability once your brand is valuable. Treat the hack as [a secondary URL](https://www.domaingravity.com/instagr.am-Instagram.com.htm#:~:text=secondary%20URLs), not the permanent home.
 3. **Secure the canonical `.com` early — while it can still become the one people remember.** Instagram bought Instagram.com in its first months, not after it was famous. The window to make the clean name canonical is narrow.
 4. **Budget for the transaction, not just the price.** The strategic call is obvious; clean title is not. Instagram paid $100,000 and *still* ended up in a multi-year ownership dispute over who had the authority to sell.
