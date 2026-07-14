@@ -39,7 +39,7 @@ Then, in 2019, after almost three decades of explaining itself, the company drop
 
 The reasoning was that "Juice" had stopped describing the business — and started shrinking it. The chain now sold bowls, plant-based bites, and boosts, not just blended drinks, and the word "juice" had quietly turned into a liability in a more sugar-conscious era.
 
-But here's the detail that makes this case different from almost every other story in this series: **Jamba didn't have to buy its [exact-match domain](/en/glossary/exact-match-domain/).** Unlike Tesla, which paid $11 million for [Tesla.com](/en/blog/from-teslamotors-com-to-tesla-com/), or Uber, which traded equity for [Uber.com](/en/blog/from-ubercab-com-to-uber-com/), Jamba had quietly owned **Jamba.com for decades** — the snapshot record shows the site live and reading [Welcome to Jamba.com](http://web.archive.org/web/19990125090358/http://jamba.com:80/) back in January 1999. When the rebrand came, the hardest, most expensive part of a name change was already done.
+But here's the detail that makes this case different from almost every other story in this series: **Jamba didn't have to buy its [exact-match domain](/en/glossary/exact-match-domain/) for the 2019 rebrand.** Unlike Tesla, which paid $11 million for [Tesla.com](/en/blog/from-teslamotors-com-to-tesla-com/), or Uber, which traded equity for [Uber.com](/en/blog/from-ubercab-com-to-uber-com/), Jamba already had an established **Jamba.com** presence dating back at least two decades — the snapshot record shows the site live and reading [Welcome to Jamba.com](http://web.archive.org/web/19990125090358/http://jamba.com:80/) in January 1999. When the rebrand came, the hardest, most expensive part of a name change was already done.
 
 ## 1990–1995: the Juice Club that became Jamba Juice
 
@@ -47,7 +47,7 @@ In the beginning, "Juice" wasn't even the headline word — "Club" was.
 
 Kirk Perron was a cyclist who wanted to make healthy eating easy. He [started the popular juice company Jamba Juice in 1990 as a senior project in college](https://www.legacy.com/news/kirk-perron-2020-jamba-juice-founder), opening the first location — then called **Juice Club** — in San Luis Obispo, California. Per the company's own history, [the first restaurant, named Juice Club, opened on March 31, 1990, in San Luis Obispo, California](https://en.wikipedia.org/wiki/Jamba_Juice).
 
-The "Jamba" name came five years later. In 1995, [the chain was renamed Jamba Juice, drawing from an East African word for 'celebration'](https://en.wikipedia.org/wiki/Jamba_Juice). The word itself, by most accounts, is [a nod to the Swahili word "jama," which means "to celebrate,"](https://www.mashed.com/677372/the-swahili-word-jambas-name-was-derived-from/) — a deliberate signal that the brand was about more than a beverage; it was about a feeling.
+The "Jamba" name came five years later. In 1995, [the company changed its name to Jamba Juice Company to distinguish itself as competitors entered the juice and smoothie market](https://www.sec.gov/Archives/edgar/data/1316898/000095013606009203/file1.htm). Later brand histories commonly described the new identity as evoking celebration, but that is best understood as branding intent, not a literal Swahili translation: the TUKI-based MobiTUKI dictionary [does not define the Swahili word `jamba` as "to celebrate"](https://swahili-dictionary.com/swahili-english/jamba_jamba). Whatever its exact etymology, the coined name gave the growing chain a richer, more festive identity.
 
 But notice the structure of that 1995 decision. The founders kept "Juice" on the marquee even after choosing a richer, more evocative word. "Jamba" carried the emotion; "Juice" carried the explanation. For a young chain still teaching America what a smoothie even was, the explanation had to stay. JambaJuice.com was the address that matched the storefront word for word.
 
@@ -142,17 +142,18 @@ Most cases in this series are transfer problems: a company needs a domain someon
 
 That foresight is exactly the behavior good domain infrastructure should make easier and cheaper. The hard part of holding a strategic domain for twenty years isn't the idea — it's the upkeep: keeping registrations current, proving ownership cleanly across corporate changes (a founder's startup, a public company, a $200M acquisition by Focus Brands), and being able to promote a long-held name to primary status the day the strategy calls for it, without breaking anything live.
 
-[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, hold, transfer, and integrate into modern workflows while staying compatible with DNS — turning the quiet, multi-decade work of *keeping* a strategic domain (and proving you still own it through every corporate twist) into something closer to a clean, auditable, programmable asset.
+[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, hold, transfer, and integrate into modern workflows while staying compatible with DNS — turning the quiet, long-term work of *keeping* a strategic domain (and proving you still own it through every corporate twist) into something closer to a clean, auditable, programmable asset.
 
-Jamba.com looks obvious now because Jamba grew into it. But the lesson lands long before that: the smartest domain move isn't always a dramatic purchase. Sometimes it's holding the exact-match name quietly for twenty years — so that when you finally drop the extra word, the only thing left to do is take it off the sign.
+Jamba.com looks obvious now because Jamba grew into it. But the lesson lands long before that: the smartest domain move isn't always a dramatic purchase. Sometimes it's having the exact-match name ready after a web presence dating back twenty years — so that when you finally drop the extra word, the only thing left to do is take it off the sign.
 
 ## Sources and further reading
 
 - Fox News — [Jamba Juice drops 'juice' to become 'Jamba'](https://www.foxnews.com/food-drink/jamba-juice-drops-jamba)
 - Mashed — [This Is Why Jamba Changed Its Name](https://www.mashed.com/332198/this-is-why-jamba-changed-its-name/)
-- Mashed — [The Swahili Word Jamba's Name Was Derived From](https://www.mashed.com/677372/the-swahili-word-jambas-name-was-derived-from/)
+- MobiTUKI — [Swahili-English dictionary entry for `jamba`](https://swahili-dictionary.com/swahili-english/jamba_jamba)
 - Restaurant Dive — [Jamba unveils fresh rebrand, spotlights more than smoothies](https://www.restaurantdive.com/news/jamba-unveils-fresh-rebrand-that-spotlights-more-than-smoothies/556411/)
 - BeverageDaily — [Jamba Juice acquired by Focus Brands for $200m](https://www.beveragedaily.com/Article/2018/08/07/Jamba-Juice-acquired-by-Focus-Brands-for-200m/)
+- U.S. SEC — [Jamba Juice Company history and 1995 name change](https://www.sec.gov/Archives/edgar/data/1316898/000095013606009203/file1.htm)
 - U.S. SEC — [Jamba, Inc. Form 10-K (intellectual property / domain names)](https://www.sec.gov/Archives/edgar/data/1316898/000114420414014228/v369380_10k.htm)
 - Legacy.com — [Kirk Perron (1964–2020), Jamba Juice founder](https://www.legacy.com/news/kirk-perron-2020-jamba-juice-founder)
 - Wikipedia — [Jamba Juice](https://en.wikipedia.org/wiki/Jamba_Juice)
