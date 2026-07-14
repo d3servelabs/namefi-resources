@@ -53,9 +53,9 @@ Below that band, a long tail of country-code zones sit between hundreds of thous
 
 A few patterns are worth pulling out.
 
-### China and Germany dominate, not the U.S.
+### China and Germany dominate; the U.S. does not
 
-The U.S. has a ccTLD—`.us`—and almost nobody uses it. It sits well below a million active registrations. The American internet ran straight at `.com` from the start, and never looked back. So the world's largest economy is essentially absent from the ccTLD chart, and the actual ccTLD leaders end up being economies where the *local* extension carries strong brand trust: Germany (`.de`), the U.K. (`.co.uk`), the Netherlands (`.nl`), and China (`.cn`).
+The U.S. has a ccTLD—`.us`—with [more than 2 million registered domains](https://www.about.us/stats-trends#:~:text=2M%2B,.US%20Domains%20Registered), according to the registry's current statistics. That is a substantial namespace, but it remains well outside the current ccTLD top 10 and far below `.com` in the U.S. market. The world's largest economy is therefore underrepresented rather than absent from the ccTLD leaders, which are economies where the *local* extension carries strong brand trust: Germany (`.de`), the U.K. (`.co.uk`), the Netherlands (`.nl`), and China (`.cn`).
 
 This is the single biggest reason ccTLD market share looks unfamiliar. The denominator is not "internet users." It is "internet users in places where the local extension actually means something."
 
@@ -112,6 +112,7 @@ The deeper point: ccTLD market share is a story about *trust signals* on the ope
 - DENIC — [Statistics for .de](https://www.denic.de/en/know-how/statistics/), the German registry's public dashboard.
 - Coordination Center for TLD .RU/.РФ — [.RU registration count on April 7, 2026](https://cctld.ru/en/media/news/kc/39938/).
 - SIDN — [.nl registration count on April 1, 2026](https://www.sidn.nl/en/news-and-blogs/nl-starts-2026-with-growth).
+- Registry Services — [.US registration statistics](https://www.about.us/stats-trends), reporting more than 2 million registered `.us` domains.
 - Nominet — [Statistics for .uk](https://www.nominet.uk/news/reports-statistics/) and policy.
 - JPRS — [.jp registration eligibility](https://jprs.co.jp/en/jpdomain.html#:~:text=Any%20individual%2C%20group%20or%20organization%20having%20a%20permanent%20postal%20address%20in%20Japan%20is%20eligible%20for%20registration.).
 - Norid — [.no general requirements](https://teknisk.norid.no/en/administrere-domenenavn/generelle-krav/#:~:text=must%20have%20a%20mailing%20address%20in%20Norway).
