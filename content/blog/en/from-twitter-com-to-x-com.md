@@ -9,7 +9,7 @@ cluster: domain-investing
 series: name-change-game-change
 seriesOrder: 19
 format: case-study
-description: 'How Elon Musk built X.com in 1999, lost it when PayPal took his old name, bought it back in 2017 for sentimental value, and finally moved a $44B social network onto it — making Twitter.com redirect to X.com.'
+description: 'How Elon Musk co-founded the online bank X.com in 1999, saw the domain remain with the company that became PayPal, bought it back in 2017 for sentimental value, and finally moved a $44B social network onto it.'
 keywords: ['twitter.com', 'x.com', 'twitter rebrand x', 'elon musk x.com', 'x.com history', 'paypal x.com domain', 'twitter to x name change', 'domain redirect', 'domain upgrade', 'single letter domain', 'everything app', 'brand naming', 'premium domain']
 relatedArticles:
   - /en/blog/from-mona-co-to-crypto-com/
@@ -31,13 +31,13 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-Most domain-upgrade stories run in a straight line: a company starts on a descriptive name, grows up, and buys the clean exact-match. **Twitter.com to X.com** is stranger than that. It is a round trip. The destination domain — **X.com** — was the *first* domain in the story, registered by Elon Musk in 1999, lost to PayPal a year later, bought back two decades after that for nothing but nostalgia, and finally bolted onto a global social network in 2023.
+Most domain-upgrade stories run in a straight line: a company starts on a descriptive name, grows up, and buys the clean exact-match. **Twitter.com to X.com** is stranger than that. It is a round trip. The destination domain — **X.com** — was the *first* domain in the story, used by the online bank Musk co-founded in 1999, retained by the company that became PayPal, bought back by Musk in 2017 for sentimental value, and finally attached to a global social network in 2023.
 
 For seventeen years, Twitter lived at exactly the address you'd expect: **Twitter.com**. The name was honest and the domain matched it. A "tweet" happened on Twitter, at Twitter.com, under a blue bird that users had seen since the platform's early days. There was no descriptive modifier to outgrow, no "App" or "HQ" to shed. By the usual logic of this series, Twitter.com was already the destination.
 
 Then the owner changed, and so did the destination.
 
-In July 2023, nine months after buying the company [for $44bn](https://www.aljazeera.com/news/2023/7/23/elon-musk-says-he-will-change-twitters-blue-bird-logo-to-an-x#:~:text=Musk%20bought%20the%20social%20media%20platform%20for%20%2444bn%20last%20year), Musk did something no other founder in this series did: he threw away a perfectly good [exact-match domain](/en/glossary/exact-match-domain/) and replaced it with a one-letter brand he had been carrying around, personally, for 24 years. Twitter became **X**, and the website began the long migration to **X.com** — a domain whose history is older than Twitter itself.
+In July 2023, nine months after buying the company [for $44bn](https://www.aljazeera.com/news/2023/7/23/elon-musk-says-he-will-change-twitters-blue-bird-logo-to-an-x#:~:text=Musk%20bought%20the%20social%20media%20platform%20for%20%2444bn%20last%20year), Musk did something no other founder in this series did: he threw away a perfectly good [exact-match domain](/en/glossary/exact-match-domain/) and replaced it with a one-letter brand tied to his first online bank and back in his personal ownership since 2017. Twitter became **X**, and the website began the long migration to **X.com** — a domain whose history is older than Twitter itself.
 
 ## Twitter.com: the rare startup that launched on its own name
 
@@ -67,11 +67,11 @@ In March 1999, Musk co-founded **X.com**, an online bank. Wikipedia records that
 
 It grew fast. [Within two months, X.com attracted over 200,000 signups](https://en.wikipedia.org/wiki/X.com_(bank)#:~:text=Within%20two%20months%2C%20X.com%20attracted%20over%20200%2C000%20signups). But across town was a competitor: Confinity, [founded in December 1998 by Max Levchin, Peter Thiel, Luke Nosek, Ken Howery, and Yu Pan](https://en.wikipedia.org/wiki/Confinity#:~:text=It%20was%20founded%20in%20December%201998%20by%20Max%20Levchin%2C%20Peter%20Thiel), which [launched its milestone product, PayPal, in late 1999](https://en.wikipedia.org/wiki/Confinity#:~:text=Confinity%20launched%20its%20milestone%20product%2C%20PayPal%2C%20in%20late%201999). In March 2000, the two merged: [X.com merged with its competitor Confinity](https://en.wikipedia.org/wiki/X.com_(bank)#:~:text=X.com%20merged%20with%20its%20competitor%20Confinity), the company that had built PayPal.
 
-Then Musk lost control of his own name. [In September 2000, when Musk was in Australia for a honeymoon trip, the X.com board voted for a change of CEO from Musk to Peter Thiel](https://en.wikipedia.org/wiki/X.com_(bank)#:~:text=In%20September%202000%2C%20when%20Musk%20was%20in%20Australia%20for%20a%20honeymoon%20trip%2C%20the%20X.com%20board%20voted%20for%20a%20change%20of%20CEO%20from%20Musk%20to%20Peter%20Thiel). The new leadership had little affection for the X.com brand, and [in June 2001, the x.com domain was changed to PayPal.com](https://en.wikipedia.org/wiki/X.com_(bank)#:~:text=In%20June%202001%2C%20the%20x.com%20domain%20was%20changed%20to%20PayPal.com). The name Musk had registered, the company he had founded, the domain he had chosen — all of it now answered to "PayPal," and the X.com domain stayed behind with the company when he left.
+Then Musk lost control of the company. [In September 2000, when Musk was in Australia for a honeymoon trip, the X.com board voted for a change of CEO from Musk to Peter Thiel](https://en.wikipedia.org/wiki/X.com_(bank)#:~:text=In%20September%202000%2C%20when%20Musk%20was%20in%20Australia%20for%20a%20honeymoon%20trip%2C%20the%20X.com%20board%20voted%20for%20a%20change%20of%20CEO%20from%20Musk%20to%20Peter%20Thiel). The new leadership had little affection for the X.com brand, and [in June 2001, the x.com domain was changed to PayPal.com](https://en.wikipedia.org/wiki/X.com_(bank)#:~:text=In%20June%202001%2C%20the%20x.com%20domain%20was%20changed%20to%20PayPal.com). The company Musk had co-founded and the domain it used now answered to "PayPal," and X.com remained with the corporate successor.
 
 ## "Great sentimental value to me": buying it back in 2017
 
-For sixteen years, X.com sat inside PayPal's portfolio, dormant. Then in July 2017, Musk quietly bought it back.
+For sixteen years, X.com remained inside PayPal's portfolio. Then in July 2017, Musk quietly bought it back.
 
 There was no business plan attached. PYMNTS reported simply that [space entrepreneur Elon Musk, the head of Tesla, has purchased the X.com domain name from PayPal](https://www.pymnts.com/news/merchant-innovation/2017/elon-musk-purchases-domain-from-paypal/#:~:text=Elon%20Musk%2C%20the%20head%20of%20Tesla%2C%20has%20purchased%20the%20X.com%20domain%20name%20from%20PayPal), and that [X.com was the brand name Musk created for a financial service startup that later merged with Confinity to become PayPal](https://www.pymnts.com/news/merchant-innovation/2017/elon-musk-purchases-domain-from-paypal/#:~:text=X.com%20was%20the%20brand%20name%20Musk%20created%20for%20a%20financial%20service%20startup%20that%20later%20merged%20with%20Confinity%20to%20become%20PayPal). Musk himself framed it as pure nostalgia. Engadget quoted his tweet: "[Thanks PayPal for allowing me to buy back X.com! No plans right now, but it has great sentimental value to me](https://www.engadget.com/2017-07-11-elon-musk-buys-his-old-x-com-domain-from-paypal.html#:~:text=Thanks%20PayPal%20for%20allowing%20me%20to%20buy%20back%20X.com!%20No%20plans%20right%20now%2C%20but%20it%20has%20great%20sentimental%20value%20to%20me)."
 
@@ -103,7 +103,7 @@ So why do it? Because Musk wasn't trying to name a social network. He was trying
 | Names one product: public 280-character posts | Names nothing specific — a blank container |
 | A globally recognized brand and a verb ("to tweet") | A single letter with no built-in meaning |
 | Anchored to social media | Open to payments, video, messaging — an "everything app" |
-| A famous brand the owner inherited | A domain the owner had carried personally since 1999 |
+| A famous brand the owner inherited | A domain tied to the owner's first online bank and reacquired in 2017 |
 
 It is the riskiest move in the series, and the most personal. Every other founder here upgraded *toward* clarity. Musk traded recognized clarity for deliberate openness — and for the chance to put his oldest brand back on top.
 
@@ -141,7 +141,7 @@ The easy takeaway — "rename to a single letter like Musk did" — is exactly t
 3. **The brand flips in a night; the domain migration takes a year.** Musk owned X.com outright and *still* needed ten months to make twitter.com point at it cleanly. Budget for the migration, not just the announcement.
 4. **Never break the old domain.** Twitter.com still redirects, and it must. The descriptive or legacy domain becomes infrastructure the moment a brand is famous enough to have links pointing at it from everywhere.
 
-The rebrand did not, on its own, make X succeed or fail — product, moderation, advertisers, and execution matter far more, and the jury is still out. But the case shows something the others don't: sometimes the upgrade runs *away* from the obvious domain, toward one the founder has been holding for a quarter century.
+The rebrand did not, on its own, make X succeed or fail — product, moderation, advertisers, and execution matter far more, and the jury is still out. But the case shows something the others don't: sometimes the upgrade runs *away* from the obvious domain, toward one tied to the founder's much earlier career.
 
 ## The Namefi angle
 
@@ -149,11 +149,11 @@ The rebrand did not, on its own, make X succeed or fail — product, moderation,
 
 Strip away the spectacle and Case 3 is, like the others, a transfer-and-continuity problem — just spread across 24 years and several owners.
 
-X.com changed hands repeatedly: from Musk's startup, to the merged Confinity entity, to PayPal, and back to Musk in 2017 — each move a negotiation, an undisclosed price, and a quiet transfer of one of the most valuable single-letter domains on the internet. Then came the hardest part: not *owning* X.com, but *migrating onto it* — pointing a global platform's every link, login, and bookmark at a new domain while keeping the old one (twitter.com) alive as a permanent, unbreakable redirect. Ownership, valuation, transfer, and DNS continuity — every friction point in the story lives at the boundary between a brand and its domain.
+X.com remained with the company through the X.com–Confinity merger and the shift to the PayPal name, before PayPal sold it back to Musk in 2017 for an undisclosed price. Then came the hardest visible part: not *owning* X.com, but *migrating onto it* — pointing a global platform's links, logins, and bookmarks at a new domain while keeping the old one (twitter.com) alive as a durable redirect. Ownership, valuation, transfer, and DNS continuity all meet at the boundary between a brand and its domain.
 
-[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, transfer, and integrate into modern workflows while staying compatible with DNS — turning the messiest parts of a saga like this (proving who owns a domain across decades and corporate owners, agreeing on value with no public comparables, and moving control without disturbing the live records) into something closer to a clean, auditable transaction. A domain that can travel cleanly through every owner — and keep its DNS continuity intact while a new brand grows on top of it — is exactly the friction this 24-year round trip kept running into.
+[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, transfer, and integrate into modern workflows while staying compatible with DNS — making steps such as proving control, agreeing on value, and moving an asset without disturbing live records easier to audit. A domain that can move cleanly between owners while preserving DNS continuity is useful infrastructure for any long-lived brand asset.
 
-X.com looks inevitable now only because Musk had carried it since 1999. But the lesson lands long before the rebrand: a domain can outlive the company that registered it, the company that renamed it, and the company that abandoned it — and still come back to define the next one. When a name is going to carry the business, the domain isn't decoration. It's the one asset worth holding for 24 years to get back.
+X.com looks inevitable now only because Musk's history with the name began in 1999 and he reacquired the domain in 2017. But the lesson lands long before the rebrand: a domain can outlive the company that used it, survive a corporate renaming, and later return to define another business. When a name is going to carry the business, the domain isn't decoration; it is durable infrastructure whose ownership history should be described precisely.
 
 ## Sources and further reading
 
