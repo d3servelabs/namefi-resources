@@ -98,7 +98,7 @@ Most owners manage DNS records inside the Namefi dashboard after tokenization �
 ### Transferring the domain
 
 Before: [cross-registrar transfer](/en/glossary/cross-registrar-transfer/) flow, with [auth codes](/en/glossary/auth-code/) and 60-day cooldowns.
-After: [**transfer the NFT**](/en/glossary/atomic-transfer/). A single on-chain transaction moves ownership. The registrar-side record is kept in sync by the protocol. This is dramatically faster — and is why tokenized-domain marketplaces don't need traditional [escrow](/en/glossary/escrow/) (see [From Listing to Settlement](/en/blog/how-tokenized-marketplaces-replace-escrow/)).
+After: [**transfer the NFT**](/en/glossary/atomic-transfer/). A single on-chain transaction moves ownership, and the protocol keeps the registrar-side record in sync. When a marketplace sale contract atomically exchanges the buyer's payment for that NFT, payment and delivery settle together. That atomic sale—not an NFT transfer by itself—is why tokenized-domain marketplaces can avoid traditional [escrow](/en/glossary/escrow/) (see [From Listing to Settlement](/en/blog/how-tokenized-marketplaces-replace-escrow/)).
 
 You can still do a traditional registrar transfer if you want; the on-chain layer doesn't prevent that.
 
