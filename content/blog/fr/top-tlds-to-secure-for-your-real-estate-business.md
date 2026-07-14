@@ -30,11 +30,11 @@ relatedGlossary:
 
 Votre nom et votre marque locale sont les deux atouts les plus précieux dans l'immobilier. Lorsqu'un acheteur recherche « Jane Smith Agent Immobilier » ou le nom du quartier que vous cultivez, les domaines liés à ces termes devraient pointer vers vous — et non vers un concurrent, un sosie ou une page parquée diffusant des publicités. C'est pourquoi sécuriser plusieurs **[TLD](/fr/glossary/tld/) (domaines de premier niveau)** pour votre activité immobilière est l'une des formes d'assurance de marque les moins chères que vous puissiez acheter.
 
-Un agent immobilier qui ne possède que le [`.com`](/fr/tld/com) de son nom laisse la porte ouverte à quelqu'un d'autre pour enregistrer la version [`.realty`](/en/tld/realty), [`.homes`](/en/tld/homes) ou [`.house`](/en/tld/house) et capitaliser sur la réputation que vous avez construite. L'enregistrement d'un petit portefeuille des bons domaines de premier niveau vous permet de protéger votre marque locale, de créer des sous-marques propres pour vos annonces ou zones de prospection, et de bloquer toute usurpation d'identité évidente avant qu'elle ne commence. Ce guide passe en revue les meilleurs TLD pour les agents immobiliers, les règles d'éligibilité importantes et une stratégie défensive simple.
+Un agent immobilier qui ne possède que le [`.com`](/fr/tld/com) de son nom laisse la porte ouverte à quelqu'un d'autre pour enregistrer la version [`.realty`](/fr/tld/realty), [`.homes`](/fr/tld/homes) ou [`.house`](/fr/tld/house) et capitaliser sur la réputation que vous avez construite. L'enregistrement d'un petit portefeuille des bons domaines de premier niveau vous permet de protéger votre marque locale, de créer des sous-marques propres pour vos annonces ou zones de prospection, et de bloquer toute usurpation d'identité évidente avant qu'elle ne commence. Ce guide passe en revue les meilleurs TLD pour les agents immobiliers, les règles d'éligibilité importantes et une stratégie défensive simple.
 
 ## Comment choisir les TLD pour votre activité immobilière
 
-Quelques critères doivent guider chaque enregistrement. La **confiance** vient en premier : les extensions que les acheteurs reconnaissent (`.com` avant tout) génèrent le moins de friction. La **pertinence géographique et sectorielle** vient ensuite — les terminaisons spécifiques à l'immobilier comme [`.realtor`](/en/tld/realtor), `.realty` et `.homes` indiquent immédiatement votre activité. Certaines des options les plus crédibles sont des **TLD « vérifiés » restreints** : `.realtor` exige une relation qualifiante avec la National Association of REALTORS®, ce qui en fait précisément un signal de confiance. Enfin, la **couverture défensive** consiste à s'emparer des sosies évidents de votre nom principal pour que personne d'autre ne puisse le faire. Vous n'avez pas besoin de tous ces éléments — choisissez votre `.com` d'ancrage, ajoutez une ou deux extensions sectorielles, et complétez avec des choix défensifs.
+Quelques critères doivent guider chaque enregistrement. La **confiance** vient en premier : les extensions que les acheteurs reconnaissent (`.com` avant tout) génèrent le moins de friction. La **pertinence géographique et sectorielle** vient ensuite — les terminaisons spécifiques à l'immobilier comme [`.realtor`](/fr/tld/realtor), `.realty` et `.homes` indiquent immédiatement votre activité. Certaines des options les plus crédibles sont des **TLD « vérifiés » restreints** : `.realtor` exige une relation qualifiante avec la National Association of REALTORS®, ce qui en fait précisément un signal de confiance. Enfin, la **couverture défensive** consiste à s'emparer des sosies évidents de votre nom principal pour que personne d'autre ne puisse le faire. Vous n'avez pas besoin de tous ces éléments — choisissez votre `.com` d'ancrage, ajoutez une ou deux extensions sectorielles, et complétez avec des choix défensifs.
 
 ## Les 10 meilleurs TLD à sécuriser en tant qu'agent immobilier
 
@@ -52,7 +52,7 @@ Quelques critères doivent guider chaque enregistrement. La **confiance** vient 
 
 ### 4. .estate — large et propice à la création de marque
 
-[`.estate`](/en/tld/estate) convient bien aux pratiques axées sur le luxe, le commerce et les successions, et se lit naturellement dans une marque comme `harborview.estate`. C'est un TLD générique sans restriction, donc l'enregistrement est ouvert à tous. Consultez sa délégation dans la [base de données racine de l'IANA](https://www.iana.org/domains/root/db/estate.html).
+[`.estate`](/fr/tld/estate) convient bien aux pratiques axées sur le luxe, le commerce et les successions, et se lit naturellement dans une marque comme `harborview.estate`. C'est un TLD générique sans restriction, donc l'enregistrement est ouvert à tous. Consultez sa délégation dans la [base de données racine de l'IANA](https://www.iana.org/domains/root/db/estate.html).
 
 ### 5. .homes — convivial pour les annonces et les consommateurs
 
@@ -60,7 +60,7 @@ Quelques critères doivent guider chaque enregistrement. La **confiance** vient 
 
 ### 6. .properties — pour les portefeuilles et les équipes
 
-[`.properties`](/en/tld/properties) convient aux agents et aux équipes gérant plusieurs annonces ou un portefeuille immobilier, et renforce une marque professionnelle axée sur l'inventaire. Comme la plupart des nouveaux gTLD, il est sans restriction. Le TLD est répertorié dans la [base de données racine de l'IANA](https://www.iana.org/domains/root/db/properties.html).
+[`.properties`](/fr/tld/properties) convient aux agents et aux équipes gérant plusieurs annonces ou un portefeuille immobilier, et renforce une marque professionnelle axée sur l'inventaire. Comme la plupart des nouveaux gTLD, il est sans restriction. Le TLD est répertorié dans la [base de données racine de l'IANA](https://www.iana.org/domains/root/db/properties.html).
 
 ### 7. .house — court, mémorable, flexible
 

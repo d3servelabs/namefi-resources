@@ -66,15 +66,15 @@ relatedGlossary:
 
 ### 7. .fashion — 最直接的行业定义
 
-[.fashion](/en/tld/fashion) 由 [Registry Services, LLC](https://www.iana.org/domains/root/db/fashion.html)（GoDaddy Registry）运营，是最贴切时尚行业的后缀。它能即刻传达您所在的领域，非常适合品牌声明页、编辑内容中心或设计师作品集。无行业会员资格限制，对所有注册者开放。
+[.fashion](/zh-CN/tld/fashion) 由 [Registry Services, LLC](https://www.iana.org/domains/root/db/fashion.html)（GoDaddy Registry）运营，是最贴切时尚行业的后缀。它能即刻传达您所在的领域，非常适合品牌声明页、编辑内容中心或设计师作品集。无行业会员资格限制，对所有注册者开放。
 
 ### 8. .boutique — 为精选高端品牌而设
 
-[.boutique](/en/tld/boutique) 由 [Binky Moon, LLC](https://www.iana.org/domains/root/db/boutique.html)（隶属 Identity Digital）运营。这个词本身就蕴含精选、小批量、高端零售的定位——这正是许多独立时装屋所追求的品牌形象。它非常适合胶囊系列或高品质概念店，且无特殊资质要求。
+[.boutique](/zh-CN/tld/boutique) 由 [Binky Moon, LLC](https://www.iana.org/domains/root/db/boutique.html)（隶属 Identity Digital）运营。这个词本身就蕴含精选、小批量、高端零售的定位——这正是许多独立时装屋所追求的品牌形象。它非常适合胶囊系列或高品质概念店，且无特殊资质要求。
 
 ### 9. .style — 生活方式与编辑视角
 
-[.style](/en/tld/style) 同样由 [Binky Moon, LLC](https://www.iana.org/domains/root/db/style.html) / Identity Digital 运营。其风格偏向编辑性与向往感，非常适合造型服务、潮流日志或网红主导的子品牌。开放注册，无限制——既可作为活跃站点，也可用于防御持有。
+[.style](/zh-CN/tld/style) 同样由 [Binky Moon, LLC](https://www.iana.org/domains/root/db/style.html) / Identity Digital 运营。其风格偏向编辑性与向往感，非常适合造型服务、潮流日志或网红主导的子品牌。开放注册，无限制——既可作为活跃站点，也可用于防御持有。
 
 ### 10. .vip — 专属感与用户忠诚度
 

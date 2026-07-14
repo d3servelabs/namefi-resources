@@ -66,15 +66,15 @@ relatedGlossary:
 
 ### 7. .fashion — الأكتر صلة بالقطاع
 
-[.fashion](/en/tld/fashion) بتديره [Registry Services, LLC](https://www.iana.org/domains/root/db/fashion.html) (GoDaddy Registry) وهو الامتداد الأوضح تعبيراً عن قطاع الموضة. بيوصّل فوراً تخصصك في القطاع، وهو ممتاز لإعلان العلامة التجارية أو مركز تحريري أو ملف مصمم. مفتوح لجميع المسجّلين بدون شرط عضوية في أي صناعة.
+[.fashion](/ar/tld/fashion) بتديره [Registry Services, LLC](https://www.iana.org/domains/root/db/fashion.html) (GoDaddy Registry) وهو الامتداد الأوضح تعبيراً عن قطاع الموضة. بيوصّل فوراً تخصصك في القطاع، وهو ممتاز لإعلان العلامة التجارية أو مركز تحريري أو ملف مصمم. مفتوح لجميع المسجّلين بدون شرط عضوية في أي صناعة.
 
 ### 8. .boutique — للعلامات الراقية المتخصصة
 
-[.boutique](/en/tld/boutique) بتديره [Binky Moon, LLC](https://www.iana.org/domains/root/db/boutique.html) تحت Identity Digital. الكلمة نفسها بتوحي ببيع بالتجزئة راقي ومتميز ومختار بعناية—وده بالضبط التموضع اللي كتير من دور الموضة المستقلة بتسعاله. يتناسب مع مجموعة كبسول أو متجر مفهوم راقي، وليه قيود تسجيل خاصة.
+[.boutique](/ar/tld/boutique) بتديره [Binky Moon, LLC](https://www.iana.org/domains/root/db/boutique.html) تحت Identity Digital. الكلمة نفسها بتوحي ببيع بالتجزئة راقي ومتميز ومختار بعناية—وده بالضبط التموضع اللي كتير من دور الموضة المستقلة بتسعاله. يتناسب مع مجموعة كبسول أو متجر مفهوم راقي، وليه قيود تسجيل خاصة.
 
 ### 9. .style — زاوية المحتوى والأسلوب الحياتي
 
-[.style](/en/tld/style) كمان من [Binky Moon, LLC](https://www.iana.org/domains/root/db/style.html) / Identity Digital. بيميل للمحتوى التحريري والطموح، وده بيخليه مناسب بشكل طبيعي لخدمة استايلينج أو مجلة تريندات أو علامة فرعية قائدها مؤثر. تسجيل مفتوح، بدون قيود—مفيد كموقع فعلي ومحجوز دفاعياً في نفس الوقت.
+[.style](/ar/tld/style) كمان من [Binky Moon, LLC](https://www.iana.org/domains/root/db/style.html) / Identity Digital. بيميل للمحتوى التحريري والطموح، وده بيخليه مناسب بشكل طبيعي لخدمة استايلينج أو مجلة تريندات أو علامة فرعية قائدها مؤثر. تسجيل مفتوح، بدون قيود—مفيد كموقع فعلي ومحجوز دفاعياً في نفس الوقت.
 
 ### 10. .vip — الحصرية والولاء
 

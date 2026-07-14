@@ -46,7 +46,7 @@ relatedSeries:
 
 **没有中央机构时如何达成一致。** 在普通数据库中，一家运营方说了算。在公开、无需许可的网络中，任何人都可以运行节点、提议交易并尝试添加下一个区块——其中也包括可能撒谎、审查或试图重写历史的参与者。共识机制既要让攻击账本的代价高得令人无法承受，或以其他方式消除攻击动机，又要让诚实参与者维持网络运行的成本足够低。
 
-以下每一种机制都在回答同一个问题：“谁来提议下一个区块，我们又如何知道该信任它？”比较这些机制时，最重要的两条轴线是**[抗女巫攻击能力](/en/glossary/consensus-mechanism/)**——什么能阻止攻击者创建无限多个虚假身份来压倒其他所有人——以及**终局性**——一笔交易以多快的速度、又以多绝对的方式变得不可逆转。
+以下每一种机制都在回答同一个问题：“谁来提议下一个区块，我们又如何知道该信任它？”比较这些机制时，最重要的两条轴线是**[抗女巫攻击能力](/zh-CN/glossary/consensus-mechanism/)**——什么能阻止攻击者创建无限多个虚假身份来压倒其他所有人——以及**终局性**——一笔交易以多快的速度、又以多绝对的方式变得不可逆转。
 
 ---
 
@@ -54,7 +54,7 @@ relatedSeries:
 
 ![多名矿工竞相解开同一道哈希谜题，其中一人举起写着“找到了！”的区块，闪电象征挖矿的高能耗](../../assets/blockchain-consensus-mechanisms-01-proof-of-work.jpg)
 
-[工作量证明](/en/glossary/proof-of-work/)（Proof of Work，PoW）是比特币于 2009 年引入的机制，也是大多数人听到“区块链”时会想到的机制。矿工竞相解决一道密码学谜题：反复使用 nonce 对候选区块数据进行哈希，直到所得哈希值低于目标值。以太坊的开发者文档对这场竞赛描述得很直白——矿工会“反复将一组数据……输入数学函数”，以便在其他人之前找到有效解（[ethereum.org：工作量证明](https://ethereum.org/en/developers/docs/consensus-mechanisms/pow/#:~:text=When%20racing%20to%20create%20a%20block%2C%20a%20miner%20repeatedly%20put%20a%20dataset)）。谁先找到有效哈希，谁就能提议下一个区块，并获得区块奖励及交易费。
+[工作量证明](/zh-CN/glossary/proof-of-work/)（Proof of Work，PoW）是比特币于 2009 年引入的机制，也是大多数人听到“区块链”时会想到的机制。矿工竞相解决一道密码学谜题：反复使用 nonce 对候选区块数据进行哈希，直到所得哈希值低于目标值。以太坊的开发者文档对这场竞赛描述得很直白——矿工会“反复将一组数据……输入数学函数”，以便在其他人之前找到有效解（[ethereum.org：工作量证明](https://ethereum.org/en/developers/docs/consensus-mechanisms/pow/#:~:text=When%20racing%20to%20create%20a%20block%2C%20a%20miner%20repeatedly%20put%20a%20dataset)）。谁先找到有效哈希，谁就能提议下一个区块，并获得区块奖励及交易费。
 
 **抗女巫攻击能力**来自谜题本身：计算哈希需要真实的电力和硬件，因此伪造许多身份不会带来优势——只有纯粹的计算能力才重要。**终局性具有概率性。** 比特币白皮书指出，节点会始终将“最长链视为正确链”（[比特币白皮书](https://bitcoin.org/bitcoin.pdf)）；收款人通过等待其上继续挖出更多区块，来提高对交易已结算的信心。每一个新区块都会让重写历史的成本呈指数级上升，但没有任何单一区块能在瞬间获得数学意义上的最终确定性。
 
@@ -66,7 +66,7 @@ relatedSeries:
 
 ![一名验证者将一摞代币作为质押存入保险库，随后由抽奖转盘选中来提议下一个区块；保险库上带有惩罚性削减警示标签](../../assets/blockchain-consensus-mechanisms-02-proof-of-stake.jpg)
 
-[权益证明](/en/glossary/proof-of-stake/)（Proof of Stake，PoS）用经济担保取代计算工作。参与者不再挖矿，而是进行**质押**——锁定网络的原生资产——协议再以伪随机方式选出一名质押者来提议每个区块。以太坊的验证者角色是很好的参考设计：验证者存入 32 ETH 并运行客户端软件；随后协议会在“每个时隙随机选出一名验证者担任区块提议者”，而由随机选出的其他验证者委员会为该区块的有效性作证明（[ethereum.org：权益证明](https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/#:~:text=One%20validator%20is%20randomly%20selected%20to%20be%20a%20block%20proposer%20in%20every%20slot)）。
+[权益证明](/zh-CN/glossary/proof-of-stake/)（Proof of Stake，PoS）用经济担保取代计算工作。参与者不再挖矿，而是进行**质押**——锁定网络的原生资产——协议再以伪随机方式选出一名质押者来提议每个区块。以太坊的验证者角色是很好的参考设计：验证者存入 32 ETH 并运行客户端软件；随后协议会在“每个时隙随机选出一名验证者担任区块提议者”，而由随机选出的其他验证者委员会为该区块的有效性作证明（[ethereum.org：权益证明](https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/#:~:text=One%20validator%20is%20randomly%20selected%20to%20be%20a%20block%20proposer%20in%20every%20slot)）。
 
 **抗女巫攻击能力**来自质押本身——创建许多虚假验证者只是在更多身份之间分割同一笔资本，并不会获得额外影响力。提议相互冲突的区块或作出彼此矛盾的证明等不诚实行为，会受到**惩罚性削减**（slashing）的处罚：协议会销毁违规验证者部分质押（[ethereum.org：权益证明](https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/#:~:text=Two%20primary%20behaviors%20can%20be%20considered%20dishonest)）。以太坊使用检查点机制（Casper FFG 与 LMD-GHOST 分叉选择规则相结合）在各个周期（epoch）中完成区块的最终确认，在无需 BFT 风格单轮投票的前提下，提供比纯 PoW 更强的终局性保障。
 

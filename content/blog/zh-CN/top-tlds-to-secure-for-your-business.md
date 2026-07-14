@@ -72,7 +72,7 @@ relatedGlossary:
 
 ### 9. .company — 适合任何公司的字面后缀
 
-[.company](/en/tld/company) 顾名思义，由 [Identity Digital](https://www.icann.org/en/registry-agreements/details/company) 运营。它[不设限制](https://www.iana.org/domains/root/db/company.html)，对于希望拥有一个不言自明地址的成熟企业来说是自然之选。由于该词与商业身份高度契合，也是一个明智的防御性注册选项。
+[.company](/zh-CN/tld/company) 顾名思义，由 [Identity Digital](https://www.icann.org/en/registry-agreements/details/company) 运营。它[不设限制](https://www.iana.org/domains/root/db/company.html)，对于希望拥有一个不言自明地址的成熟企业来说是自然之选。由于该词与商业身份高度契合，也是一个明智的防御性注册选项。
 
 ### 10. .vip — 彰显高端定位
 

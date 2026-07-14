@@ -44,11 +44,11 @@ Die [.com](/de/tld/com)-Endung bleibt die Standarderwartung für jede Unternehme
 
 ### 2. .cpa — das Gold-Standard-Vertrauenssignal (eingeschränkt)
 
-Die [.cpa](https://www.iana.org/domains/root/db/cpa.html)-Endung ist die glaubwürdigste Domain, die eine Steuerberatungskanzlei besitzen kann – und gleichzeitig die am stärksten eingeschränkte. Sie wird in Zusammenarbeit mit dem American Institute of CPAs (AICPA) verwaltet, dessen Technologietochter CPA.com die [Registry](/de/glossary/registry/) betreibt. Die Berechtigung ist auf lizenzierte CPA-Kanzleien und einzelne CPAs beschränkt: Gemäß dem [offiziellen .cpa-Programm von CPA.com](https://register.domains.cpa/faqs/) müssen Sie eine CPA-Kanzleizulassung einer staatlichen Wirtschaftsprüferbehörde oder eine individuelle CPA-Lizenz besitzen; die Verfügbarkeit ist derzeit auf Kanzleien in den Vereinigten Staaten, Kanada und Irland beschränkt. Da die Zulassung bei Kauf und bei jeder Verlängerung geprüft wird, beweist eine [.cpa](/en/tld/cpa)-Adresse Mandanten, dass Ihre Kanzlei verifiziert wurde – eine Garantie, die keine offene TLD bieten kann.
+Die [.cpa](https://www.iana.org/domains/root/db/cpa.html)-Endung ist die glaubwürdigste Domain, die eine Steuerberatungskanzlei besitzen kann – und gleichzeitig die am stärksten eingeschränkte. Sie wird in Zusammenarbeit mit dem American Institute of CPAs (AICPA) verwaltet, dessen Technologietochter CPA.com die [Registry](/de/glossary/registry/) betreibt. Die Berechtigung ist auf lizenzierte CPA-Kanzleien und einzelne CPAs beschränkt: Gemäß dem [offiziellen .cpa-Programm von CPA.com](https://register.domains.cpa/faqs/) müssen Sie eine CPA-Kanzleizulassung einer staatlichen Wirtschaftsprüferbehörde oder eine individuelle CPA-Lizenz besitzen; die Verfügbarkeit ist derzeit auf Kanzleien in den Vereinigten Staaten, Kanada und Irland beschränkt. Da die Zulassung bei Kauf und bei jeder Verlängerung geprüft wird, beweist eine [.cpa](/de/tld/cpa)-Adresse Mandanten, dass Ihre Kanzlei verifiziert wurde – eine Garantie, die keine offene TLD bieten kann.
 
 ### 3. .tax — klar, beschreibend und thematisch passend
 
-Die [.tax](/en/tld/tax)-Endung kommuniziert unmittelbar eine Spezialisierung auf Steuererklärung, -planung oder -beratung. Sie wird von Identity Digital (über Binky Moon, LLC) im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/tax) betrieben und ist im Gegensatz zu .cpa für die allgemeine Registrierung offen. Sie passt gut zu einer servicefokussierten Landing-Page oder einer saisonalen Steuerkampagne.
+Die [.tax](/de/tld/tax)-Endung kommuniziert unmittelbar eine Spezialisierung auf Steuererklärung, -planung oder -beratung. Sie wird von Identity Digital (über Binky Moon, LLC) im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/tax) betrieben und ist im Gegensatz zu .cpa für die allgemeine Registrierung offen. Sie passt gut zu einer servicefokussierten Landing-Page oder einer saisonalen Steuerkampagne.
 
 ### 4. .accountant — offen und allgemein verfügbar
 
@@ -60,7 +60,7 @@ Die plurale [.accountants](/de/tld/accountants)-Endung wird von Binky Moon, LLC 
 
 ### 6. .finance — für Beratungs- und Vermögensdienstleistungen
 
-Die [.finance](/en/tld/finance)-Endung positioniert Ihre Kanzlei im breiteren Finanzdienstleistungsumfeld – ideal, wenn Sie neben Compliance-Arbeit auch Beratungs-, Vermögens- oder CFO-Dienstleistungen anbieten. Sie wird von Binky Moon, LLC im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/finance) betrieben und steht zur allgemeinen Registrierung offen. Sie vermittelt Seriosität und Professionalität und ergänzt eine steuer- oder prüfungsorientierte Marke.
+Die [.finance](/de/tld/finance)-Endung positioniert Ihre Kanzlei im breiteren Finanzdienstleistungsumfeld – ideal, wenn Sie neben Compliance-Arbeit auch Beratungs-, Vermögens- oder CFO-Dienstleistungen anbieten. Sie wird von Binky Moon, LLC im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/finance) betrieben und steht zur allgemeinen Registrierung offen. Sie vermittelt Seriosität und Professionalität und ergänzt eine steuer- oder prüfungsorientierte Marke.
 
 ### 7. .net — die klassische technische Alternative
 

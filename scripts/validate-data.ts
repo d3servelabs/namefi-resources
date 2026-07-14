@@ -135,7 +135,11 @@ function asStringArray(value: unknown) {
   return [];
 }
 
-function fileExistsForPath(value: string, locale: Locale) {
+export function routeResolvesForPath(
+  value: string,
+  locale: Locale,
+  dataRoot = DATA_ROOT,
+) {
   const match = value.match(
     /^\/([a-z]{2}(?:-[A-Z]{2})?)\/(blog|glossary)\/([^/]+)\/$/,
   );
@@ -143,13 +147,23 @@ function fileExistsForPath(value: string, locale: Locale) {
   const [, pathLocale, collection, slug] = match;
   if (pathLocale !== locale) return false;
 
-  const filePath = path.join(
-    DATA_ROOT,
-    collection,
-    locale,
-    `${slug}.md`,
-  );
-  return statSync(filePath, { throwIfNoEntry: false })?.isFile() ?? false;
+  const targetExists = (targetLocale: string) => {
+    for (const extension of MARKDOWN_EXTENSIONS) {
+      const filePath = path.join(
+        dataRoot,
+        collection,
+        targetLocale,
+        `${slug}${extension}`,
+      );
+      if (statSync(filePath, { throwIfNoEntry: false })?.isFile()) return true;
+    }
+    return false;
+  };
+
+  // Keep the route in the content locale even when that translation is
+  // missing. The resources runtime resolves the same-locale URL through the
+  // default English entry, so only absence from both locales is invalid.
+  return targetExists(locale) || (locale !== 'en' && targetExists('en'));
 }
 
 function validateRelationshipArray({
@@ -188,20 +202,20 @@ function validateRelationshipArray({
     }
 
     if (key === 'relatedArticles') {
-      if (!fileExistsForPath(value, locale) || !value.includes('/blog/')) {
+      if (!routeResolvesForPath(value, locale) || !value.includes('/blog/')) {
         errors.push({
           file: relativePath,
-          message: `"${key}" path does not resolve to a ${locale} blog file: ${value}`,
+          message: `"${key}" path does not resolve through the ${locale} route or its en fallback: ${value}`,
         });
       }
       continue;
     }
 
     if (key === 'relatedGlossary') {
-      if (!fileExistsForPath(value, locale) || !value.includes('/glossary/')) {
+      if (!routeResolvesForPath(value, locale) || !value.includes('/glossary/')) {
         errors.push({
           file: relativePath,
-          message: `"${key}" path does not resolve to a ${locale} glossary file: ${value}`,
+          message: `"${key}" path does not resolve through the ${locale} route or its en fallback: ${value}`,
         });
       }
       continue;
@@ -536,4 +550,4 @@ async function main() {
   }
 }
 
-main();
+if (import.meta.main) main();

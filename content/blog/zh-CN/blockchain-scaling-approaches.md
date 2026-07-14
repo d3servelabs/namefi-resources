@@ -32,7 +32,7 @@ relatedSeries:
   - /zh-CN/series/domain-flipping-skills/
 ---
 
-以太坊主网每秒大约处理 15 笔交易。像 Visa 这样的支付网络则能处理数万笔。这个差距正是区块链需要扩容的原因：在不要求每位参与者都在基础链上验证每笔交易的前提下，完成更多工作的方法。过去数年，业界逐渐形成了几种截然不同的方案——[Rollup](/en/glossary/rollup/)、侧链、支付通道和分片——它们对安全性、去中心化和成本作出了不同取舍。
+以太坊主网每秒大约处理 15 笔交易。像 Visa 这样的支付网络则能处理数万笔。这个差距正是区块链需要扩容的原因：在不要求每位参与者都在基础链上验证每笔交易的前提下，完成更多工作的方法。过去数年，业界逐渐形成了几种截然不同的方案——[Rollup](/zh-CN/glossary/rollup/)、侧链、支付通道和分片——它们对安全性、去中心化和成本作出了不同取舍。
 
 本指南将讲解主要扩容方案、说明各自背后的机制，并将它们并列比较；下次你在某个项目文档中看到这些术语时，就能清楚区分它们。
 
@@ -48,7 +48,7 @@ Vitalik Buterin 对**可扩展性三难困境**的阐释，是这个领域大部
 
 ![许多小型交易凭证汇入一个标有“Rollup Compressor”的压缩器，被压成一个批次立方体，再发布到由相连区块组成的基础层链上的扁平矢量图](../../assets/blockchain-scaling-approaches-01-rollup-batching.jpg)
 
-**[Rollup](/en/glossary/rollup/)** 在第一层（L1）之外执行交易，随后将精简摘要及底层交易数据发布回基础链。此类系统的主要追踪平台 L2BEAT 将 Rollup 定义为“定期向以太坊发布状态承诺的 L2”，这些承诺“要么由有效性证明验证，要么以乐观方式接受，并可在特定的欺诈证明窗口内通过欺诈证明机制提出挑战”（[l2beat.com](https://l2beat.com/scaling/summary)）。由于数据和承诺都会落在 L1 上，任何人都能仅凭以太坊重建 Rollup 的状态；这使 Rollup 继承 L1 的安全性，而不必要求用户信任一套新的验证者集合。这正是当今大多数人接触的 [Layer 2](/zh-CN/glossary/layer-2/) 网络所采用的技术：Base、Arbitrum、Optimism、zkSync 和 Starknet 都是 Rollup。
+**[Rollup](/zh-CN/glossary/rollup/)** 在第一层（L1）之外执行交易，随后将精简摘要及底层交易数据发布回基础链。此类系统的主要追踪平台 L2BEAT 将 Rollup 定义为“定期向以太坊发布状态承诺的 L2”，这些承诺“要么由有效性证明验证，要么以乐观方式接受，并可在特定的欺诈证明窗口内通过欺诈证明机制提出挑战”（[l2beat.com](https://l2beat.com/scaling/summary)）。由于数据和承诺都会落在 L1 上，任何人都能仅凭以太坊重建 Rollup 的状态；这使 Rollup 继承 L1 的安全性，而不必要求用户信任一套新的验证者集合。这正是当今大多数人接触的 [Layer 2](/zh-CN/glossary/layer-2/) 网络所采用的技术：Base、Arbitrum、Optimism、zkSync 和 Starknet 都是 Rollup。
 
 Rollup 会根据如何证明链下执行正确无误，分为两大类。
 
@@ -56,13 +56,13 @@ Rollup 会根据如何证明链下执行正确无误，分为两大类。
 
 ![两扇并列的门的扁平矢量图：橙色“Optimistic”门配有 7 天时钟和代表欺诈证明窗口的挑战期旗帜；绿色“ZK”门配有即时有效性证明的绿色对勾](../../assets/blockchain-scaling-approaches-02-optimistic-vs-zk.jpg)
 
-[乐观 Rollup](/en/glossary/optimistic-rollup/)“假定链下交易有效，且不为交易批次发布有效性证明”（[ethereum.org](https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/#:~:text=Optimistic%20rollups%20assume%20offchain%20transactions%20are%20valid%20and%20don%27t%20publish%20proofs%20of%20validity)）。运营者将交易打包、在链下执行，再把压缩数据发布到以太坊。随后会开启一个挑战窗口，任何运行全节点的人都可在此期间用欺诈证明质疑该批次；从 L2 将资金提回 L1 必须等到“挑战期——约持续七天——结束”（[ethereum.org](https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/#:~:text=the%20challenge%20period%E2%80%94lasting%20roughly%20seven%20days%E2%80%94elapses)）。因此，普通的乐观 Rollup 提款大约需要一周；除非借助第三方流动性提供者，以付费方式更快退出。
+[乐观 Rollup](/zh-CN/glossary/optimistic-rollup/)“假定链下交易有效，且不为交易批次发布有效性证明”（[ethereum.org](https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/#:~:text=Optimistic%20rollups%20assume%20offchain%20transactions%20are%20valid%20and%20don%27t%20publish%20proofs%20of%20validity)）。运营者将交易打包、在链下执行，再把压缩数据发布到以太坊。随后会开启一个挑战窗口，任何运行全节点的人都可在此期间用欺诈证明质疑该批次；从 L2 将资金提回 L1 必须等到“挑战期——约持续七天——结束”（[ethereum.org](https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/#:~:text=the%20challenge%20period%E2%80%94lasting%20roughly%20seven%20days%E2%80%94elapses)）。因此，普通的乐观 Rollup 提款大约需要一周；除非借助第三方流动性提供者，以付费方式更快退出。
 
 乐观 Rollup 只需要欺诈证明系统，而不需要完整的密码学证明管线；从历史上看，这使它们更容易支持通用智能合约。**Arbitrum**、**Optimism** 和 **Base** 是当今按使用量计规模最大的乐观 Rollup；ethereum.org 将 Coinbase 的 Rollup **Base** 描述为“使用 OP Stack 构建的乐观 Rollup”（[ethereum.org](https://ethereum.org/en/layer-2/#:~:text=Base%20is%20an%20Optimistic%20Rollup%20built%20with%20the%20OP%20Stack)）。
 
 ### ZK Rollup
 
-[ZK Rollup](/en/glossary/zk-rollup/)采取相反的方法：它不假定有效性并设置挑战期，而是在每个批次旁提交有效性证明——即证明该批次状态转换正确的密码学证明。由于以太坊会在链上验证该证明，“从 ZK Rollup 向以太坊转移资金不会有延迟……因为退出交易会在 ZK Rollup 合约验证有效性证明后执行”（[ethereum.org](https://ethereum.org/en/developers/docs/scaling/zk-rollups/#:~:text=There%20are%20no%20delays%20when%20moving%20funds%20from%20a%20ZK%2Drollup%20to%20Ethereum)）。ZK Rollup“可在一个批次中处理数千笔交易，然后只向主网发布少量摘要数据”（[ethereum.org](https://ethereum.org/en/developers/docs/scaling/zk-rollups/#:~:text=ZK%2Drollups%20can%20process%20thousands%20of%20transactions%20in%20a%20batch)），所用证明系统包括 zk-SNARK（证明小、验证快）和 zk-STARK（透明且无需可信设置）。**zkSync Era**、**Starknet**——ethereum.org 将其描述为“基于 STARK 和 Cairo VM 的通用 ZK Rollup”（[ethereum.org](https://ethereum.org/en/layer-2/#:~:text=Starknet%20is%20a%20general%20purpose%20ZK%20Rollup%20based%20on%20STARKs%20and%20the%20Cairo%20VM)）——以及 **Linea** 都是重要的 ZK Rollup；Polygon zkEVM 和 Scroll 也实现了 zkEVM，以便在可由 ZK 证明的环境中运行现有的以太坊智能合约。
+[ZK Rollup](/zh-CN/glossary/zk-rollup/)采取相反的方法：它不假定有效性并设置挑战期，而是在每个批次旁提交有效性证明——即证明该批次状态转换正确的密码学证明。由于以太坊会在链上验证该证明，“从 ZK Rollup 向以太坊转移资金不会有延迟……因为退出交易会在 ZK Rollup 合约验证有效性证明后执行”（[ethereum.org](https://ethereum.org/en/developers/docs/scaling/zk-rollups/#:~:text=There%20are%20no%20delays%20when%20moving%20funds%20from%20a%20ZK%2Drollup%20to%20Ethereum)）。ZK Rollup“可在一个批次中处理数千笔交易，然后只向主网发布少量摘要数据”（[ethereum.org](https://ethereum.org/en/developers/docs/scaling/zk-rollups/#:~:text=ZK%2Drollups%20can%20process%20thousands%20of%20transactions%20in%20a%20batch)），所用证明系统包括 zk-SNARK（证明小、验证快）和 zk-STARK（透明且无需可信设置）。**zkSync Era**、**Starknet**——ethereum.org 将其描述为“基于 STARK 和 Cairo VM 的通用 ZK Rollup”（[ethereum.org](https://ethereum.org/en/layer-2/#:~:text=Starknet%20is%20a%20general%20purpose%20ZK%20Rollup%20based%20on%20STARKs%20and%20the%20Cairo%20VM)）——以及 **Linea** 都是重要的 ZK Rollup；Polygon zkEVM 和 Scroll 也实现了 zkEVM，以便在可由 ZK 证明的环境中运行现有的以太坊智能合约。
 
 其代价在于：生成有效性证明需要大量计算资源，而且要实现完整的 EVM 等价性，其技术构建难度也高于欺诈证明系统——这也是为什么尽管 ZK Rollup 提供更快的终局性，乐观 Rollup 仍更早获得主流采用。
 
@@ -82,7 +82,7 @@ Rollup 会根据如何证明链下执行正确无误，分为两大类。
 
 ![交易被拆分至四条并行分片通道（分片 1 至分片 4）的扁平矢量图；每条通道独立处理自己的区块链，所有通道都汇入下方的数据可用性层](../../assets/blockchain-scaling-approaches-03-sharding.jpg)
 
-**分片**将区块链的验证工作分配给多个并行的节点子集（“分片”），使任何单一节点都不必处理整个网络的交易负载。Vitalik Buterin 认为“分片是一种能同时获得三者的技术”（[vitalik.eth.limo](https://vitalik.eth.limo/general/2021/04/07/sharding.html#:~:text=Sharding%20is%20a%20technique%20that%20gets%20you%20all%20three)）：它使用随机抽样的验证者委员会并行验证不同分片。使分片能够安全运作、又无需每个节点下载每个分片全部数据的技术是[数据可用性](/en/glossary/data-availability/)抽样（DAS）——“让网络检查数据是否可用，同时又不会给任何单个节点带来过多负担的方法”（[ethereum.org](https://ethereum.org/en/developers/docs/data-availability/#:~:text=Data%20availability%20sampling%20is%20a%20way%20for%20the%20network%20to%20check%20that%20data%20is%20available%20without%20putting%20too%20much%20strain%20on%20any%20individual%20node)）：轻节点只下载区块数据中随机选取的小部分，借助纠删码，仍可确信完整数据已被发布。
+**分片**将区块链的验证工作分配给多个并行的节点子集（“分片”），使任何单一节点都不必处理整个网络的交易负载。Vitalik Buterin 认为“分片是一种能同时获得三者的技术”（[vitalik.eth.limo](https://vitalik.eth.limo/general/2021/04/07/sharding.html#:~:text=Sharding%20is%20a%20technique%20that%20gets%20you%20all%20three)）：它使用随机抽样的验证者委员会并行验证不同分片。使分片能够安全运作、又无需每个节点下载每个分片全部数据的技术是[数据可用性](/zh-CN/glossary/data-availability/)抽样（DAS）——“让网络检查数据是否可用，同时又不会给任何单个节点带来过多负担的方法”（[ethereum.org](https://ethereum.org/en/developers/docs/data-availability/#:~:text=Data%20availability%20sampling%20is%20a%20way%20for%20the%20network%20to%20check%20that%20data%20is%20available%20without%20putting%20too%20much%20strain%20on%20any%20individual%20node)）：轻节点只下载区块数据中随机选取的小部分，借助纠删码，仍可确信完整数据已被发布。
 
 同样的数据可用性问题也直接适用于 Rollup，这正是专用数据可用性层成为独立基础设施类别的原因。**Celestia** 是一条专门构建的模块化区块链，旨在让“Rollup 和 L2 将 Celestia 用作发布交易数据并让任何人都可下载这些数据的网络”（[celestia.org](https://celestia.org/what-is-celestia/#:~:text=Rollups%20and%20L2s%20use%20Celestia%20as%20a%20network%20for%20publishing%20and%20making%20transaction%20data%20available%20for%20anyone%20to%20download)），让 Rollup 能将数据发布到比以太坊主网更便宜、为此目的打造的 DA 层。构建在 EigenLayer 再质押基础设施上的 **EigenDA** 提供类似服务，其安全性来自选择同时保障该 DA 层的以太坊质押者。将数据发布到外部 DA 层而非以太坊 L1 的 Rollup，有时会被称为 *validium* 或 *optimium*，而非“纯”Rollup；L2BEAT 将它们作为与 Rollup 及其他 L2 方案并列的独立类别进行追踪（[l2beat.com](https://l2beat.com/scaling/summary)）。它们以一部分锚定于 L1 的安全保障，换取更低的数据发布成本。
 

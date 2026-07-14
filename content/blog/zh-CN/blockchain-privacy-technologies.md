@@ -34,7 +34,7 @@ relatedSeries:
 
 公有[区块链](/zh-CN/glossary/blockchain/)上的每笔交易，默认对任何查看者都可见。余额、转账金额和交易对手方会永久留存在公开账本上。这种透明性是区块链信任保障的来源，但也是一种负担：没有银行会公开客户余额，也没有企业愿意让竞争对手读到其供应商付款或薪酬发放记录。
 
-区块链隐私技术的存在，正是为了弥合这一缺口，同时不放弃区块链之所以有用的属性——可验证性、去中心化，以及陌生人无需可信中介即可交易的能力。当前格局由五种技术主导：[零知识证明](/en/glossary/zero-knowledge-proof/)（ZKP）、[全同态加密](/en/glossary/fully-homomorphic-encryption/)（FHE）、[安全多方计算](/en/glossary/secure-multiparty-computation/)（MPC）、[可信执行环境](/en/glossary/trusted-execution-environment/)（TEE），以及环签名与隐身地址。它们各自隐藏拼图中的不同部分，依赖不同的信任假设，也消耗不同程度的算力。本文会逐一介绍这五种技术，进行横向比较，并说明为何这一选择对所有在[Web3](/zh-CN/glossary/web3/)上构建应用或只是学习相关知识的人都很重要。
+区块链隐私技术的存在，正是为了弥合这一缺口，同时不放弃区块链之所以有用的属性——可验证性、去中心化，以及陌生人无需可信中介即可交易的能力。当前格局由五种技术主导：[零知识证明](/zh-CN/glossary/zero-knowledge-proof/)（ZKP）、[全同态加密](/zh-CN/glossary/fully-homomorphic-encryption/)（FHE）、[安全多方计算](/zh-CN/glossary/secure-multiparty-computation/)（MPC）、[可信执行环境](/zh-CN/glossary/trusted-execution-environment/)（TEE），以及环签名与隐身地址。它们各自隐藏拼图中的不同部分，依赖不同的信任假设，也消耗不同程度的算力。本文会逐一介绍这五种技术，进行横向比较，并说明为何这一选择对所有在[Web3](/zh-CN/glossary/web3/)上构建应用或只是学习相关知识的人都很重要。
 
 ---
 
@@ -42,7 +42,7 @@ relatedSeries:
 
 ![一名证明者把一枚发光的“有效证明”徽章交给验证者，同时将文件锁在身后，说明零知识证明如何在不揭示底层陈述的前提下令人信服](../../assets/blockchain-privacy-technologies-01-zero-knowledge.jpg)
 
-[零知识证明](/en/glossary/zero-knowledge-proof/)（ZKP）让一方——*证明者（prover）*——能够说服另一方——*验证者（verifier）*——某个陈述为真，而不透露该陈述的任何其他信息。Ethereum 的开发者文档对此有一句简明的说明：“零知识证明是一种在不揭示陈述本身的情况下证明陈述有效性的方法”；其中，“证明者”是试图证明某项主张的一方，而“验证者”负责验证该主张（[ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/#:~:text=A%20zero%2Dknowledge%20proof%20is,without%20revealing%20the%20statement%20itself)）。
+[零知识证明](/zh-CN/glossary/zero-knowledge-proof/)（ZKP）让一方——*证明者（prover）*——能够说服另一方——*验证者（verifier）*——某个陈述为真，而不透露该陈述的任何其他信息。Ethereum 的开发者文档对此有一句简明的说明：“零知识证明是一种在不揭示陈述本身的情况下证明陈述有效性的方法”；其中，“证明者”是试图证明某项主张的一方，而“验证者”负责验证该主张（[ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/#:~:text=A%20zero%2Dknowledge%20proof%20is,without%20revealing%20the%20statement%20itself)）。
 
 要成为真正的零知识协议，证明系统必须满足三项性质：完备性（“如果输入有效，零知识协议总会返回 'true'”）、可靠性（“如果输入无效，从理论上讲不可能欺骗零知识协议返回 'true'”），以及零知识性本身，即“验证者除陈述为真或为假之外，对该陈述一无所知”（[ethereum.org](https://ethereum.org/en/zero-knowledge-proofs/)）。具体而言，一份证明由见证（证明者掌握的秘密）、挑战（验证者提出的问题）和响应构成；响应让验证者能够检验证明者的知识，却始终看不到见证本身。
 
@@ -58,7 +58,7 @@ relatedSeries:
 
 ![一个上锁的盒子穿过由云服务器操作的数学机器，服务器没有钥匙；盒子出来时仍上锁，却装着计算结果，说明可以直接在加密数据上进行计算](../../assets/blockchain-privacy-technologies-02-fhe.jpg)
 
-[全同态加密](/en/glossary/fully-homomorphic-encryption/)采用不同的方法：它不是证明隐藏数据的某个事实，而是让你能够*直接在加密数据上计算*，并获得一个加密结果；该结果解密后与在明文上计算得到的答案相同。领先的 FHE 研究和基础设施公司之一 Zama 如此描述：“FHE 支持在不解密的情况下处理数据——公司可在不接触用户数据的情况下提供服务，用户的使用体验则保持不变”（[zama.org](https://www.zama.org/introduction-to-homomorphic-encryption)）。
+[全同态加密](/zh-CN/glossary/fully-homomorphic-encryption/)采用不同的方法：它不是证明隐藏数据的某个事实，而是让你能够*直接在加密数据上计算*，并获得一个加密结果；该结果解密后与在明文上计算得到的答案相同。领先的 FHE 研究和基础设施公司之一 Zama 如此描述：“FHE 支持在不解密的情况下处理数据——公司可在不接触用户数据的情况下提供服务，用户的使用体验则保持不变”（[zama.org](https://www.zama.org/introduction-to-homomorphic-encryption)）。
 
 **它隐藏什么：**计算的原始输入、中间状态和输出——除密钥持有人外，所有人只能看到密文，即使是执行计算的一方也是如此。
 
@@ -74,7 +74,7 @@ relatedSeries:
 
 ![三个人各自持有一块拼图式密钥分片，并以虚线连接成一笔已签名交易，说明安全多方计算如何在任何一方都看不到完整秘密的情况下生成联合结果](../../assets/blockchain-privacy-technologies-03-mpc.jpg)
 
-[安全多方计算](/en/glossary/secure-multiparty-computation/)（MPC）解决的是一个相关但不同的问题：它不是让一方在加密数据上计算，而是让各自持有私有输入片段的*多方*共同计算一个函数，同时不向彼此披露各自的输入。按照正式定义，MPC 是“密码学的一个子领域，目标是创建让各方在保持输入私密的同时，能够共同计算其输入上的函数的方法”；因此，对于三名参与者而言，“Alice、Bob 和 Charlie 仍能得知 F(x, y, z)，而无需披露谁贡献了什么”（[Wikipedia](https://en.wikipedia.org/wiki/Secure_multi-party_computation#:~:text=Secure%20multi%2Dparty%20computation%20)）。
+[安全多方计算](/zh-CN/glossary/secure-multiparty-computation/)（MPC）解决的是一个相关但不同的问题：它不是让一方在加密数据上计算，而是让各自持有私有输入片段的*多方*共同计算一个函数，同时不向彼此披露各自的输入。按照正式定义，MPC 是“密码学的一个子领域，目标是创建让各方在保持输入私密的同时，能够共同计算其输入上的函数的方法”；因此，对于三名参与者而言，“Alice、Bob 和 Charlie 仍能得知 F(x, y, z)，而无需披露谁贡献了什么”（[Wikipedia](https://en.wikipedia.org/wiki/Secure_multi-party_computation#:~:text=Secure%20multi%2Dparty%20computation%20)）。
 
 **它隐藏什么：**每一方的单独输入不向其他任何一方披露——只公开事先约定的输出，且没有单一参与者会看到完整秘密。
 
@@ -88,7 +88,7 @@ relatedSeries:
 
 ## 可信执行环境（TEE）
 
-[可信执行环境](/en/glossary/trusted-execution-environment/)采取了另一条路线：它不在整个计算过程中加密数据，而是将计算隔离在芯片中受硬件保护的区域——*安全飞地（secure enclave）*——内；即使是机器自身的操作系统也无法检查该区域。最广为人知的实现 Intel SGX（Software Guard Extensions），在 Wikipedia 上被描述为“内置于某些 Intel 中央处理器（CPU）中的一组实现可信执行环境的指令代码”（[Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions#:~:text=Intel%20Software%20Guard%20Extensions)）。从机制上看，“SGX 涉及 CPU 对一部分内存（飞地）进行加密”，因此“源自飞地的数据和代码会在 CPU 内即时解密，防止它们被其他代码检查或读取”，其中包括“在操作系统和任何底层虚拟机监控程序等更高权限级别运行的代码”（[Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions)）。
+[可信执行环境](/zh-CN/glossary/trusted-execution-environment/)采取了另一条路线：它不在整个计算过程中加密数据，而是将计算隔离在芯片中受硬件保护的区域——*安全飞地（secure enclave）*——内；即使是机器自身的操作系统也无法检查该区域。最广为人知的实现 Intel SGX（Software Guard Extensions），在 Wikipedia 上被描述为“内置于某些 Intel 中央处理器（CPU）中的一组实现可信执行环境的指令代码”（[Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions#:~:text=Intel%20Software%20Guard%20Extensions)）。从机制上看，“SGX 涉及 CPU 对一部分内存（飞地）进行加密”，因此“源自飞地的数据和代码会在 CPU 内即时解密，防止它们被其他代码检查或读取”，其中包括“在操作系统和任何底层虚拟机监控程序等更高权限级别运行的代码”（[Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions)）。
 
 **它隐藏什么：**飞地内的数据和代码不被同一台机器上的任何其他进程看到，包括已被攻破的操作系统——当你需要信任某段特定代码的执行、却不想信任服务器运营者时，这很有用。
 

@@ -34,7 +34,7 @@ relatedGlossary:
 
 每个[智能合约](/zh-CN/glossary/smart-contract/)都必须在某处运行。这个“某处”就是区块链虚拟机（VM）——由网络中的每个节点以完全相同的方式执行的沙盒化程序，因此无论由谁运行，相同的输入总会产生相同的输出。所构建的 VM 几乎决定了一条链的一切：可以使用哪些编程语言、交易能否同时运行还是只能依次运行，以及从第一天起能够接入多大范围的现有开发者生态系统。
 
-本指南将介绍五种 VM 设计；它们共同支撑了当今 [Web3](/zh-CN/glossary/web3/) 中大多数智能合约活动： [以太坊虚拟机](/en/glossary/ethereum-virtual-machine/)（EVM）、Solana 的 SVM、Aptos 和 Sui 所使用的 MoveVM、CosmWasm 和 PolkaVM 等基于 [WebAssembly](/en/glossary/webassembly/)（WASM）的 VM，以及 Starknet 的 CairoVM。
+本指南将介绍五种 VM 设计；它们共同支撑了当今 [Web3](/zh-CN/glossary/web3/) 中大多数智能合约活动： [以太坊虚拟机](/zh-CN/glossary/ethereum-virtual-machine/)（EVM）、Solana 的 SVM、Aptos 和 Sui 所使用的 MoveVM、CosmWasm 和 PolkaVM 等基于 [WebAssembly](/zh-CN/glossary/webassembly/)（WASM）的 VM，以及 Starknet 的 CairoVM。
 
 ---
 

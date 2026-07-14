@@ -154,7 +154,7 @@ blog . namefi . io
 | [`.vip`](/hi/tld/vip/) | new gTLD | प्रीमियम, एक्सक्लूसिव, सदस्यता ब्रांड |
 | [`.sbs`](/hi/tld/sbs/) | new gTLD | "Side-by-side" — किफ़ायती, अभिव्यंजक नाम |
 
-किसी विशेष पर गहराई से जाना चाहते हैं? [TLD गाइड](/en/tld/) की पूरी लाइब्रेरी ब्राउज़ करें, जिसमें [`.cloud`](/hi/tld/cloud/), [`.online`](/hi/tld/online/), [`.store`](/hi/tld/store/), [`.site`](/hi/tld/site/), [`.club`](/hi/tld/club/), [`.world`](/hi/tld/world/), और दर्जनों अन्य शामिल हैं।
+किसी विशेष पर गहराई से जाना चाहते हैं? [TLD गाइड](/hi/tld/) की पूरी लाइब्रेरी ब्राउज़ करें, जिसमें [`.cloud`](/hi/tld/cloud/), [`.online`](/hi/tld/online/), [`.store`](/hi/tld/store/), [`.site`](/hi/tld/site/), [`.club`](/hi/tld/club/), [`.world`](/hi/tld/world/), और दर्जनों अन्य शामिल हैं।
 
 ---
 

@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "data:validate": "bun scripts/validate-data.ts",
+    "data:validate": "bun scripts/validate-data.ts && bun .agents/skills/cross-link/link-audit.ts --locale-only",
     "related:build": "bun scripts/add-related-content.ts",
     "termbase:build": "bun scripts/build-termbase.ts",
     "termbase:check": "bun scripts/build-termbase.ts --check",
@@ -12,7 +12,9 @@
     "check:termbase": "bun scripts/check-termbase.ts",
     "brandkit:build": "python3 scripts/build-brand-kit-assets.py",
     "lint:mdx": "bunx eslint \"content/**/*.{md,mdx}\"",
-    "links:audit": "bun .agents/skills/cross-link/link-audit.ts"
+    "links:audit": "bun .agents/skills/cross-link/link-audit.ts",
+    "links:locale": "bun .agents/skills/cross-link/link-audit.ts --locale-only",
+    "links:test": "bun test ./.agents/skills/cross-link/link-audit.test.ts"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

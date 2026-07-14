@@ -31,7 +31,7 @@ relatedGlossary:
 
 <!-- 发布前须经法律审核——涉及注册人／法律主体的主张 -->
 
-一旦 [AI 智能体](/zh-CN/glossary/ai-agent/)开始代人注册、续费和管理域名，“我的 AI 智能体能拥有域名吗？”这个问题便会不断出现——想了解这在 2026 年有多普遍，可参阅[《AI 智能体如何无需人工购买域名》](/en/blog/agents-buy-domains/)。简短答案在前面；本文其余部分则说明*为什么*，并按人们实际会问的具体问题展开，每个问题都可独立理解。
+一旦 [AI 智能体](/zh-CN/glossary/ai-agent/)开始代人注册、续费和管理域名，“我的 AI 智能体能拥有域名吗？”这个问题便会不断出现——想了解这在 2026 年有多普遍，可参阅[《AI 智能体如何无需人工购买域名》](/zh-CN/blog/agents-buy-domains/)。简短答案在前面；本文其余部分则说明*为什么*，并按人们实际会问的具体问题展开，每个问题都可独立理解。
 
 ## AI 智能体能在法律上拥有域名吗？
 
@@ -43,7 +43,7 @@ relatedGlossary:
 
 注册人是持有账户、支付购买费用并同意注册商条款的人，绝不会是智能体。当智能体调用注册商 API 注册名称时，它是在某人的授权下充当工具；其法律性质与个人使用网页表单相同，只是流程自动化了。ICANN 面向注册人的指引明确了责任归属：根据 [ICANN 的《注册人权益与责任》页面](https://www.icann.org/resources/pages/benefits-2013-09-16-en#:~:text=You%20will%20assume%20sole%20responsibility%20for%20the%20registration%20and%20use%20of%20your%20domain%20name)，注册人“将对域名的注册和使用承担全部责任”。该责任落在放手让智能体执行操作的账户持有人身上，而不是落在实际发起调用的软件身上。
 
-这正是为何每一种可信的智能体注册流程——包括 [Namefi](https://namefi.io)——都经由由个人或实体控制的凭据：与已充值账户绑定的 API 密钥，或由某人控制其[私钥](/zh-CN/glossary/private-key/)的[钱包](/zh-CN/glossary/wallet/)。实际操作中该凭据步骤如何进行，请参阅[《如何通过 Namefi 用 AI 智能体注册域名》](/en/blog/ai-agent-register/)。
+这正是为何每一种可信的智能体注册流程——包括 [Namefi](https://namefi.io)——都经由由个人或实体控制的凭据：与已充值账户绑定的 API 密钥，或由某人控制其[私钥](/zh-CN/glossary/private-key/)的[钱包](/zh-CN/glossary/wallet/)。实际操作中该凭据步骤如何进行，请参阅[《如何通过 Namefi 用 AI 智能体注册域名》](/zh-CN/blog/ai-agent-register/)。
 
 ## 对于由智能体注册的域名，WHOIS 或 RDAP 记录实际会显示什么？
 
@@ -53,7 +53,7 @@ relatedGlossary:
 
 ## 智能体*运营*域名与智能体*拥有*域名有什么区别？
 
-运营是指智能体能够对域名采取行动——续费、编辑 DNS 记录、发起转移——因为它持有被授予相应权限的凭据。拥有则是在唯一具有法律效力的意义上，指按上述 RAA 定义作为记录注册人：对注册商和 ICANN 政策负责的个人或法律实体。智能体可以广泛运营一个域名——[Namefi 的 MCP 服务器](/en/blog/namefi-mcp/)正好提供这类工具——却始终不是所有者；这就像物业经理可以持有钥匙、安排维护，但并不拥有建筑物的产权。
+运营是指智能体能够对域名采取行动——续费、编辑 DNS 记录、发起转移——因为它持有被授予相应权限的凭据。拥有则是在唯一具有法律效力的意义上，指按上述 RAA 定义作为记录注册人：对注册商和 ICANN 政策负责的个人或法律实体。智能体可以广泛运营一个域名——[Namefi 的 MCP 服务器](/zh-CN/blog/namefi-mcp/)正好提供这类工具——却始终不是所有者；这就像物业经理可以持有钥匙、安排维护，但并不拥有建筑物的产权。
 
 这两种角色之间的空隙，正是人们大多数实际问题所在。因此，接下来的章节将其视为一条光谱，而不是简单的“是”或“否”。
 
@@ -62,8 +62,8 @@ relatedGlossary:
 可分为三个层级：在法律注册人不变的情况下，每一层都让智能体获得更直接的控制权：
 
 - **注册商账户访问权限。** 智能体（或代表智能体调用注册商 API 的脚本）使用与个人或组织自身注册商账户关联的凭据。注册人字段从不改变；智能体只是在某人已拥有的账户内行动，与今天共享登录凭据的安排相似。
-- **API 密钥。** 一种限定于注册商 API 的凭据，从已充值余额中计费，未必需要共享完整的账户仪表盘访问权限。[Namefi 会签发这类密钥](https://namefi.io/api-key)，使智能体能够搜索、查询价格并注册域名，而无须接触浏览器会话——其实际流程见[《如何通过 Namefi 用 AI 智能体注册域名》](/en/blog/ai-agent-register/)。注册人仍是该密钥所限定账户的持有人。
-- **钱包持有的[代币化域名](/zh-CN/glossary/tokenized-domain/)。** 注册被铸造成链上代币；谁的[钱包](/zh-CN/glossary/wallet/)持有该代币——无论是通过 [x402](/zh-CN/glossary/x402/) 钱包签名结账，还是指定的接收地址——谁就直接控制该域名的链上转移路径，完全不必经由注册商仪表盘。有关如何以此方式将域名放入钱包，请参阅[《使用加密钱包支付域名：无需账户》](/en/blog/wallet-checkout/)。
+- **API 密钥。** 一种限定于注册商 API 的凭据，从已充值余额中计费，未必需要共享完整的账户仪表盘访问权限。[Namefi 会签发这类密钥](https://namefi.io/api-key)，使智能体能够搜索、查询价格并注册域名，而无须接触浏览器会话——其实际流程见[《如何通过 Namefi 用 AI 智能体注册域名》](/zh-CN/blog/ai-agent-register/)。注册人仍是该密钥所限定账户的持有人。
+- **钱包持有的[代币化域名](/zh-CN/glossary/tokenized-domain/)。** 注册被铸造成链上代币；谁的[钱包](/zh-CN/glossary/wallet/)持有该代币——无论是通过 [x402](/zh-CN/glossary/x402/) 钱包签名结账，还是指定的接收地址——谁就直接控制该域名的链上转移路径，完全不必经由注册商仪表盘。有关如何以此方式将域名放入钱包，请参阅[《使用加密钱包支付域名：无需账户》](/zh-CN/blog/wallet-checkout/)。
 
 每一层都比上一层更直接，但前面关于法律注册人的问题不会改变——无论智能体在哪一层操作，答案都相同。
 
@@ -83,11 +83,11 @@ relatedGlossary:
 
 取决于托管层级，有两种不同的保护机制，它们提供的救济并不相同。在注册商层面，ICANN 的转移规则内置了阻力：域名通常不能在首次注册后的 60 天内转移至新的注册商；而在注册人的姓名、组织或电子邮件地址变更后，会适用**60 天注册人变更锁定**，这两点都记录在 [ICANN 的注册人常见问题](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en#:~:text=Another%20situation%20is%20if%20the%20domain%20name%20is%20subject%20to%20a%2060-day%20Change%20of%20Registrant%20lock)中。这些窗口让注册人在未授权变更最终生效前有时间发现并提出异议；对于在普通注册商账户或 API 密钥中失控的智能体，这是实际但有限的保护。
 
-一旦域名完成代币化且 NFT 位于钱包中，这张安全网就不同了。链上转移一经确认通常就是最终结果——注册商一侧没有可撤销误发至错误地址的代币的锁定机制。因此，实际防御必须前移，取决于智能体钱包拥有多少权限：可以使用要求第二位签名人的[多重签名](/zh-CN/glossary/multi-sig/)安排，或干脆不授予智能体对持有高价值代币化域名的钱包的常设权限；这与[《使用加密钱包支付域名：无需账户》](/en/blog/wallet-checkout/#the-security-model-what-the-agent-can-and-cannot-do)中介绍的付款防护原则相同。
+一旦域名完成代币化且 NFT 位于钱包中，这张安全网就不同了。链上转移一经确认通常就是最终结果——注册商一侧没有可撤销误发至错误地址的代币的锁定机制。因此，实际防御必须前移，取决于智能体钱包拥有多少权限：可以使用要求第二位签名人的[多重签名](/zh-CN/glossary/multi-sig/)安排，或干脆不授予智能体对持有高价值代币化域名的钱包的常设权限；这与[《使用加密钱包支付域名：无需账户》](/zh-CN/blog/wallet-checkout/#the-security-model-what-the-agent-can-and-cannot-do)中介绍的付款防护原则相同。
 
 ## 将域名代币化会消除 UDRP 风险吗？
 
-不会，我们查阅的资料也没有任何相反的依据。[UDRP（统一域名争议解决政策）](/zh-CN/glossary/udrp/)义务附着于底层获 ICANN 承认的 DNS 注册，代币化域名仍具有这种注册——代币化改变的是谁能够移动域名及其方式，而不是商标法或 ICANN 争议政策是否适用。一篇关于智能体持有域名的评论文章直言：如果没人监控智能体以其凭据注册的内容，“智能体注册的域名若被证明与商标冲突，就没有人会回应 UDRP 投诉”；详情见[《AI 智能体如何无需人工购买域名》](/en/blog/agents-buy-domains/#guardrails-no-human-required-still-needs-a-human-set-policy)。UDRP 投诉针对的是记录注册人——无论该法律主体是谁——而非碰巧提交注册的智能体。
+不会，我们查阅的资料也没有任何相反的依据。[UDRP（统一域名争议解决政策）](/zh-CN/glossary/udrp/)义务附着于底层获 ICANN 承认的 DNS 注册，代币化域名仍具有这种注册——代币化改变的是谁能够移动域名及其方式，而不是商标法或 ICANN 争议政策是否适用。一篇关于智能体持有域名的评论文章直言：如果没人监控智能体以其凭据注册的内容，“智能体注册的域名若被证明与商标冲突，就没有人会回应 UDRP 投诉”；详情见[《AI 智能体如何无需人工购买域名》](/zh-CN/blog/agents-buy-domains/#guardrails-no-human-required-still-needs-a-human-set-policy)。UDRP 投诉针对的是记录注册人——无论该法律主体是谁——而非碰巧提交注册的智能体。
 
 ## 如果智能体的域名导致法律问题，实际由谁承担责任？
 
@@ -95,7 +95,7 @@ relatedGlossary:
 
 ## 以真实、登记在案的注册人进行注册和代币化
 
-[Namefi](https://namefi.io)就是为这类问题而设计的：它提供真实、[获 ICANN 认证](/zh-CN/glossary/icann/)的注册服务，注册人字段按 ICANN 的要求处理，并提供可选的[代币化](/zh-CN/glossary/tokenized-domain/)层，把链上控制权放入你选择的任何钱包——包括由智能体在你设定的防护措施下操作的钱包。请从[《如何通过 Namefi 用 AI 智能体注册域名》](/en/blog/ai-agent-register/)开始，或直接前往[《使用加密钱包支付域名：无需账户》](/en/blog/wallet-checkout/)中的钱包签名结账流程。
+[Namefi](https://namefi.io)就是为这类问题而设计的：它提供真实、[获 ICANN 认证](/zh-CN/glossary/icann/)的注册服务，注册人字段按 ICANN 的要求处理，并提供可选的[代币化](/zh-CN/glossary/tokenized-domain/)层，把链上控制权放入你选择的任何钱包——包括由智能体在你设定的防护措施下操作的钱包。请从[《如何通过 Namefi 用 AI 智能体注册域名》](/zh-CN/blog/ai-agent-register/)开始，或直接前往[《使用加密钱包支付域名：无需账户》](/zh-CN/blog/wallet-checkout/)中的钱包签名结账流程。
 
 **[在 Namefi 搜索并注册域名](https://namefi.io)。**
 
@@ -108,5 +108,5 @@ relatedGlossary:
 - Ethereum — [EIP-721：非同质化代币标准](https://eips.ethereum.org/EIPS/eip-721)（对可持有代币的地址类型——包括合约——没有限制）
 - Namefi — [namefi.io/llms.txt](https://namefi.io/llms.txt)（代币化和 `nftReceivingWallet` 铸造参考——本文中 Namefi 产品主张的来源）
 - dev.to — [AI 智能体如何购买自己的域名，以及这为何重要](https://dev.to/purpleflea/how-ai-agents-can-buy-their-own-domain-names-and-why-this-matters-1l4j#:~:text=If%20an%20agent%20registers%20a%20domain%20that%20turns%20out%20to%20be%20a%20trademark%20conflict%2C%20there%27s%20no%20human%20to%20respond%20to%20a%20UDRP%20complaint)（无人监控智能体注册时的 UDRP 风险）
-- Namefi — [AI 智能体如何无需人工购买域名（2026）](/en/blog/agents-buy-domains/)（本文依托的防护措施与转售框架）
-- Namefi — [使用加密钱包支付域名：无需账户](/en/blog/wallet-checkout/)（钱包签名托管机制与支出政策防护）
+- Namefi — [AI 智能体如何无需人工购买域名（2026）](/zh-CN/blog/agents-buy-domains/)（本文依托的防护措施与转售框架）
+- Namefi — [使用加密钱包支付域名：无需账户](/zh-CN/blog/wallet-checkout/)（钱包签名托管机制与支出政策防护）

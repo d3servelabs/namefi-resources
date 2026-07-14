@@ -72,7 +72,7 @@ relatedGlossary:
 
 ### 9. .company — किसी भी फर्म के लिए शाब्दिक रूप से उपयुक्त
 
-[.company](/en/tld/company) वही है जो यह कहता है, [Identity Digital](https://www.icann.org/en/registry-agreements/details/company) द्वारा संचालित। यह [अप्रतिबंधित](https://www.iana.org/domains/root/db/company.html) है और स्थापित फर्मों के लिए स्वाभाविक रूप से पढ़ा जाता है जो एक स्व-व्याख्यात्मक पता चाहते हैं। यह एक समझदार डिफेंसिव पंजीकरण भी है, क्योंकि शब्द इतना सीधे एक व्यावसायिक पहचान से मेल खाता है।
+[.company](/hi/tld/company) वही है जो यह कहता है, [Identity Digital](https://www.icann.org/en/registry-agreements/details/company) द्वारा संचालित। यह [अप्रतिबंधित](https://www.iana.org/domains/root/db/company.html) है और स्थापित फर्मों के लिए स्वाभाविक रूप से पढ़ा जाता है जो एक स्व-व्याख्यात्मक पता चाहते हैं। यह एक समझदार डिफेंसिव पंजीकरण भी है, क्योंकि शब्द इतना सीधे एक व्यावसायिक पहचान से मेल खाता है।
 
 ### 10. .vip — प्रीमियम स्थिति
 

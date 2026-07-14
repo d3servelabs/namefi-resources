@@ -72,7 +72,7 @@ relatedGlossary:
 
 ### 9. .company — مناسب تماماً لأي شركة
 
-[.company](/en/tld/company) هو بالظبط ما بيقوله اسمه، وبتشغّله [Identity Digital](https://www.icann.org/en/registry-agreements/details/company). هو [غير مقيّد](https://www.iana.org/domains/root/db/company.html) وبيُقرأ بشكل طبيعي للشركات الراسخة اللي عايزة عنواناً يشرح نفسه بنفسه. وده تسجيل وقائي منطقي، لأن الكلمة بتتطابق مباشرة مع هوية الأعمال.
+[.company](/ar/tld/company) هو بالظبط ما بيقوله اسمه، وبتشغّله [Identity Digital](https://www.icann.org/en/registry-agreements/details/company). هو [غير مقيّد](https://www.iana.org/domains/root/db/company.html) وبيُقرأ بشكل طبيعي للشركات الراسخة اللي عايزة عنواناً يشرح نفسه بنفسه. وده تسجيل وقائي منطقي، لأن الكلمة بتتطابق مباشرة مع هوية الأعمال.
 
 ### 10. .vip — التموضع المميز
 

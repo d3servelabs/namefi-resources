@@ -64,11 +64,11 @@ Tres criterios deben guiar la decisión. Primero, **confianza y conversión**: l
 
 ### 7. .shopping — alta intención comercial
 
-[`.shopping`](/en/tld/shopping) es un TLD genérico operado por Identity Digital (anteriormente Donuts) y está abierto para registro ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/shopping)). Conlleva una intención de compra explícita y combina bien con páginas de comparación, centros de ofertas o campañas estacionales.
+[`.shopping`](/es/tld/shopping) es un TLD genérico operado por Identity Digital (anteriormente Donuts) y está abierto para registro ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/shopping)). Conlleva una intención de compra explícita y combina bien con páginas de comparación, centros de ofertas o campañas estacionales.
 
 ### 8. .deals — promociones y descuentos
 
-[`.deals`](/en/tld/deals) también está operado por Identity Digital y está abierto a todos los registrantes ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/deals)). Para una marca de comercio electrónico que realiza ventas frecuentes, "tumarca.deals" es un hogar memorable para páginas de liquidación y páginas de aterrizaje de cupones — y uno útil para tener de modo que no pueda ser utilizado en una estafa de descuentos falsos.
+[`.deals`](/es/tld/deals) también está operado por Identity Digital y está abierto a todos los registrantes ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/deals)). Para una marca de comercio electrónico que realiza ventas frecuentes, "tumarca.deals" es un hogar memorable para páginas de liquidación y páginas de aterrizaje de cupones — y uno útil para tener de modo que no pueda ser utilizado en una estafa de descuentos falsos.
 
 ### 9. [.club](/es/tld/club) — comunidad y membresía
 

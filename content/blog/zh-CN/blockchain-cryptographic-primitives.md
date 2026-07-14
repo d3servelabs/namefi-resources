@@ -34,7 +34,7 @@ relatedSeries:
 
 区块链的每一项主张——“这笔交易已最终确定”“这个地址拥有这项资产”“这段历史没有被篡改”——归根结底都依赖于少数几种职责明确的密码学原语。它们没有一项是区块链的发明；哈希函数、数字签名和 Merkle 树都比 Bitcoin 早了几十年。区块链所做的，是把它们组合成一个系统，让这些主张成立时不必信任任何单一方。
 
-本指南会逐一说明真正承担关键作用的原语：为数据生成指纹的[哈希函数](/en/glossary/hash-function/)、授权交易的[数字签名](/en/glossary/digital-signature/)、让庞大数据集能够分段验证的[Merkle 树](/en/glossary/merkle-tree/)、这些签名所依赖的椭圆曲线数学，以及承诺方案——它是通向[零知识证明](/en/glossary/zero-knowledge-proof/)的基础构件。理解每一种原语，是弄清区块链底层实际在做什么的最快途径。
+本指南会逐一说明真正承担关键作用的原语：为数据生成指纹的[哈希函数](/zh-CN/glossary/hash-function/)、授权交易的[数字签名](/zh-CN/glossary/digital-signature/)、让庞大数据集能够分段验证的[Merkle 树](/zh-CN/glossary/merkle-tree/)、这些签名所依赖的椭圆曲线数学，以及承诺方案——它是通向[零知识证明](/zh-CN/glossary/zero-knowledge-proof/)的基础构件。理解每一种原语，是弄清区块链底层实际在做什么的最快途径。
 
 ---
 
@@ -42,9 +42,9 @@ relatedSeries:
 
 ![一份文档被输入哈希函数机器，输出固定长度的指纹摘要；输入中只改动一个字母，摘要就完全不同，展示雪崩效应](../../assets/blockchain-cryptographic-primitives-01-hash-function.jpg)
 
-[哈希函数](/en/glossary/hash-function/)接收任意大小的输入，并以确定性的方式生成固定大小的输出，即“摘要”。只要翻转输入中的一个比特，输出就会完全混乱；而要找到两个哈希值相同的不同输入，在计算上不可行。这种抗碰撞性使哈希可作为任意大型数据的紧凑、防篡改指纹。
+[哈希函数](/zh-CN/glossary/hash-function/)接收任意大小的输入，并以确定性的方式生成固定大小的输出，即“摘要”。只要翻转输入中的一个比特，输出就会完全混乱；而要找到两个哈希值相同的不同输入，在计算上不可行。这种抗碰撞性使哈希可作为任意大型数据的紧凑、防篡改指纹。
 
-Bitcoin 在各处使用 SHA-256：每个新区块头都会嵌入前一个区块头的 SHA256(SHA256()) 哈希，因此篡改任何历史区块都会改变其哈希，并破坏后续的每一个区块头（[Bitcoin Developer Guide](https://developer.bitcoin.org/devguide/block_chain.html#:~:text=Each%20block%20also%20stores%20the%20hash%20of%20the%20previous%20block%27s%20header%2C%20chaining%20the%20blocks%20together)）。同样的双重 SHA-256 构造还会将交易哈希进区块的[Merkle 树](/en/glossary/merkle-tree/)（[Bitcoin.org 参考资料](https://developer.bitcoin.org/reference/block_chain.html#:~:text=A%20SHA256%28SHA256%28%29%29%20hash%20in%20internal%20byte%20order)）。
+Bitcoin 在各处使用 SHA-256：每个新区块头都会嵌入前一个区块头的 SHA256(SHA256()) 哈希，因此篡改任何历史区块都会改变其哈希，并破坏后续的每一个区块头（[Bitcoin Developer Guide](https://developer.bitcoin.org/devguide/block_chain.html#:~:text=Each%20block%20also%20stores%20the%20hash%20of%20the%20previous%20block%27s%20header%2C%20chaining%20the%20blocks%20together)）。同样的双重 SHA-256 构造还会将交易哈希进区块的[Merkle 树](/zh-CN/glossary/merkle-tree/)（[Bitcoin.org 参考资料](https://developer.bitcoin.org/reference/block_chain.html#:~:text=A%20SHA256%28SHA256%28%29%29%20hash%20in%20internal%20byte%20order)）。
 
 Ethereum 则以 Keccak-256（最初提交的 Keccak 方案，与之后的 NIST SHA-3 标准不同）作为通用哈希标准。每个账户地址都由该账户[公钥](/zh-CN/glossary/public-key/)的 Keccak-256 哈希的最后 20 个字节推导而来（[ethereum.org](https://ethereum.org/en/developers/docs/accounts/#:~:text=You%20get%20a%20public%20address%20for%20your%20account%20by%20taking%20the%20last%2020%20bytes%20of%20the%20Keccak-256%20hash%20of%20the%20public%20key)）；同一函数也是存储 Ethereum 状态的 [Merkle Patricia Trie](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/#:~:text=key%20%3D%3D%20keccak256%28rlp%28value%29%29) 中键/值内容寻址的基础。
 
@@ -56,7 +56,7 @@ Ethereum 则以 Keccak-256（最初提交的 Keccak 方案，与之后的 NIST S
 
 ![一把私钥为交易签名后生成数字签名；匹配的公钥以绿色勾号验证其有效，而不匹配的公钥以红色 X 拒绝它](../../assets/blockchain-cryptographic-primitives-02-signatures.jpg)
 
-区块链没有登录表单，因此需要另一种方式证明“这笔交易确实来自该账户的拥有者”。公钥密码学通过一对密钥解决这个问题：必须保密的[私钥](/zh-CN/glossary/private-key/)以及可以自由分享的[公钥](/zh-CN/glossary/public-key/)。用私钥为交易签名会生成一份[数字签名](/en/glossary/digital-signature/)，任何人都能用公钥验证它——在从不暴露私钥本身的前提下证明授权。
+区块链没有登录表单，因此需要另一种方式证明“这笔交易确实来自该账户的拥有者”。公钥密码学通过一对密钥解决这个问题：必须保密的[私钥](/zh-CN/glossary/private-key/)以及可以自由分享的[公钥](/zh-CN/glossary/public-key/)。用私钥为交易签名会生成一份[数字签名](/zh-CN/glossary/digital-signature/)，任何人都能用公钥验证它——在从不暴露私钥本身的前提下证明授权。
 
 Ethereum 账户使用 secp256k1 曲线上的椭圆曲线数字签名算法（ECDSA）从私钥推导公钥——Bitcoin 使用的也是同一条曲线（[ethereum.org 账户文档](https://ethereum.org/en/developers/docs/accounts/#:~:text=The%20public%20key%20is%20generated%20from%20the%20private%20key%20using%20the%20Elliptic%20Curve%20Digital%20Signature%20Algorithm)；[EIP-2：secp256k1 签名可塑性修复](https://eips.ethereum.org/EIPS/eip-2#:~:text=secp256k1n%2F2)）。ECDSA 的验证速度快，且经历了数十年的审视；但它有一个与新型设计相关的实际弱点：单份 ECDSA 签名无法高效聚合，所以验证数千份签名就意味着分别进行数千次检查。
 
@@ -68,7 +68,7 @@ EdDSA 和 BLS 签名正是为填补这一空白而生。EdDSA（Solana、Stellar
 
 ![由 Merkle 树哈希节点两两合并、逐层汇聚成单一根节点的金字塔；其中一条从叶到根的证明路径以橙色突出显示，呈现轻客户端的 Merkle 证明](../../assets/blockchain-cryptographic-primitives-03-merkle-tree.jpg)
 
-[Merkle 树](/en/glossary/merkle-tree/)让区块链能将数千笔交易汇总为单个 32 字节哈希，而不必强迫每名参与者存储每一笔交易。叶节点是单个数据项（交易、账户状态）的哈希；每对哈希会连接起来再做一次哈希，如此重复，直到只剩一个哈希，即根节点（[Bitcoin Developer Guide](https://developer.bitcoin.org/devguide/block_chain.html#:~:text=Copies%20of%20each%20transaction%20are%20hashed%2C%20and%20the%20hashes%20are%20then%20paired%2C%20hashed%2C%20paired%20again%2C%20and%20hashed%20again%20until%20a%20single%20hash%20remains%2C%20the%20merkle%20root%20of%20a%20merkle%20tree)）。该根直接存储在区块头中，因此全节点只用几乎不额外占用空间，就能对一个区块的全部内容作出承诺。
+[Merkle 树](/zh-CN/glossary/merkle-tree/)让区块链能将数千笔交易汇总为单个 32 字节哈希，而不必强迫每名参与者存储每一笔交易。叶节点是单个数据项（交易、账户状态）的哈希；每对哈希会连接起来再做一次哈希，如此重复，直到只剩一个哈希，即根节点（[Bitcoin Developer Guide](https://developer.bitcoin.org/devguide/block_chain.html#:~:text=Copies%20of%20each%20transaction%20are%20hashed%2C%20and%20the%20hashes%20are%20then%20paired%2C%20hashed%2C%20paired%20again%2C%20and%20hashed%20again%20until%20a%20single%20hash%20remains%2C%20the%20merkle%20root%20of%20a%20merkle%20tree)）。该根直接存储在区块头中，因此全节点只用几乎不额外占用空间，就能对一个区块的全部内容作出承诺。
 
 其价值在于证明大小。要证明一笔交易被包含在某个区块中，不需要整个区块——只需该交易以及一条“Merkle 分支”，即从该叶节点到根节点路径上的相邻哈希。对于 n 笔交易，通常只需约 log₂(n) 个哈希。这是简化支付验证（SPV）的基础：仅保存区块头的轻量客户端，无须下载整个区块链，也能通过对照区块头根节点检查 Merkle 分支，验证某笔特定交易确实发生过（[Bitcoin Developer Guide](https://developer.bitcoin.org/devguide/operating_modes.html#:~:text=the%20merkle%20root%20in%20the%20block%20header%20along%20with%20a%20merkle%20branch%20can%20prove%20to%20the%20SPV%20client%20that%20the%20transaction%20in%20question%20is%20embedded%20in%20a%20block%20in%20the%20block%20chain)）。
 

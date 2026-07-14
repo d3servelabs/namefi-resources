@@ -64,11 +64,11 @@ relatedGlossary:
 
 ### 7. .shopping — نية شراء عالية
 
-[`.shopping`](/en/tld/shopping) امتداد عام تديره Identity Digital (اسمها القديم Donuts) ومفتوح للتسجيل ([اتفاقية سجل ICANN](https://www.icann.org/en/registry-agreements/details/shopping)). بيحمل نية شراء صريحة ومناسب جدًا لصفحات المقارنة ومراكز العروض والحملات الموسمية.
+[`.shopping`](/ar/tld/shopping) امتداد عام تديره Identity Digital (اسمها القديم Donuts) ومفتوح للتسجيل ([اتفاقية سجل ICANN](https://www.icann.org/en/registry-agreements/details/shopping)). بيحمل نية شراء صريحة ومناسب جدًا لصفحات المقارنة ومراكز العروض والحملات الموسمية.
 
 ### 8. .deals — العروض والخصومات
 
-[`.deals`](/en/tld/deals) أيضًا تديره Identity Digital ومفتوح لجميع المسجّلين ([اتفاقية سجل ICANN](https://www.icann.org/en/registry-agreements/details/deals)). لعلامة تجارية إلكترونية بتنظم تخفيضات متكررة، "yourbrand.deals" بيت مميز لصفحات التصفية وصفحات هبوط الكوبونات — ومن المفيد الاحتفاظ بيه حتى ما يتحوّلش لعملية نصب في صورة خصم مزيف.
+[`.deals`](/ar/tld/deals) أيضًا تديره Identity Digital ومفتوح لجميع المسجّلين ([اتفاقية سجل ICANN](https://www.icann.org/en/registry-agreements/details/deals)). لعلامة تجارية إلكترونية بتنظم تخفيضات متكررة، "yourbrand.deals" بيت مميز لصفحات التصفية وصفحات هبوط الكوبونات — ومن المفيد الاحتفاظ بيه حتى ما يتحوّلش لعملية نصب في صورة خصم مزيف.
 
 ### 9. [.club](/ar/tld/club) — المجتمع والعضوية
 

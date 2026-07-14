@@ -64,11 +64,11 @@ relatedGlossary:
 
 ### 7. .shopping — उच्च व्यावसायिक इरादा
 
-[`.shopping`](/en/tld/shopping) Identity Digital (पूर्व में Donuts) द्वारा संचालित एक जेनेरिक TLD है और पंजीकरण के लिए खुला है ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/shopping))। यह स्पष्ट खरीद इरादा दर्शाता है और तुलना पृष्ठों, डील हब्स, या मौसमी अभियानों के साथ अच्छी तरह मेल खाता है।
+[`.shopping`](/hi/tld/shopping) Identity Digital (पूर्व में Donuts) द्वारा संचालित एक जेनेरिक TLD है और पंजीकरण के लिए खुला है ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/shopping))। यह स्पष्ट खरीद इरादा दर्शाता है और तुलना पृष्ठों, डील हब्स, या मौसमी अभियानों के साथ अच्छी तरह मेल खाता है।
 
 ### 8. .deals — प्रमोशन और छूट
 
-[`.deals`](/en/tld/deals) भी Identity Digital द्वारा संचालित है और सभी रजिस्ट्रेंट के लिए खुला है ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/deals))। एक ई-कॉमर्स ब्रांड के लिए जो बार-बार सेल चलाता है, "yourbrand.deals" क्लीयरेंस पेजों और कूपन लैंडिंग पेजों के लिए एक यादगार घर है — और इसे होल्ड करना उपयोगी है ताकि इसे नकली-छूट घोटाले में उपयोग न किया जा सके।
+[`.deals`](/hi/tld/deals) भी Identity Digital द्वारा संचालित है और सभी रजिस्ट्रेंट के लिए खुला है ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/deals))। एक ई-कॉमर्स ब्रांड के लिए जो बार-बार सेल चलाता है, "yourbrand.deals" क्लीयरेंस पेजों और कूपन लैंडिंग पेजों के लिए एक यादगार घर है — और इसे होल्ड करना उपयोगी है ताकि इसे नकली-छूट घोटाले में उपयोग न किया जा सके।
 
 ### 9. [.club](/hi/tld/club) — समुदाय और सदस्यता
 

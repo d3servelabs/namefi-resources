@@ -154,7 +154,7 @@ blog . namefi . io
 | [`.vip`](/zh-CN/tld/vip/) | 新 gTLD | 高端、专属、会员制品牌 |
 | [`.sbs`](/zh-CN/tld/sbs/) | 新 gTLD | "并肩同行"——经济实惠、富有表现力的名称 |
 
-想深入了解某个特定后缀？浏览完整的 [TLD 指南库](/en/tld/)，包括 [`.cloud`](/zh-CN/tld/cloud/)、[`.online`](/zh-CN/tld/online/)、[`.store`](/zh-CN/tld/store/)、[`.site`](/zh-CN/tld/site/)、[`.club`](/zh-CN/tld/club/)、[`.world`](/zh-CN/tld/world/) 等数十个更多选项。
+想深入了解某个特定后缀？浏览完整的 [TLD 指南库](/zh-CN/tld/)，包括 [`.cloud`](/zh-CN/tld/cloud/)、[`.online`](/zh-CN/tld/online/)、[`.store`](/zh-CN/tld/store/)、[`.site`](/zh-CN/tld/site/)、[`.club`](/zh-CN/tld/club/)、[`.world`](/zh-CN/tld/world/) 等数十个更多选项。
 
 ---
 
