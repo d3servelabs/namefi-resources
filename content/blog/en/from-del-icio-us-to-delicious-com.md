@@ -61,7 +61,7 @@ So here is the setup. A company that *named an entire category* was wearing a do
 
 The trick was genuinely elegant. As the construction walkthrough explained, [icio was the selected domain name and .us was the registered country code level top level domain (ccTLD) which combined to form icio.us](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=icio%20was%20the%20selected%20domain%20name%20and%20.us%20was%20the%20registered%20country%20code%20level%20top%20level%20domain), with `del` stacked on top as a subdomain. The address didn't *point at* a word. The address *was* a word. For an audience of engineers, that was catnip.
 
-The problem is that the rest of the world doesn't read DNS for fun. Those four dots turned the brand into a spelling test, and most people failed it. When the team finally explained the 2008 move, they listed the damage: [we've seen a zillion different confusions and misspellings of "del.icio.us" over the years (for example, "de.licio.us", "del.icio.us.com", and "del.licio.us")](https://domainnamewire.com/2008/08/01/delicious-rebrands-as-deliciouscom-a-lesson-for-entrepreneurs/#:~:text=zillion%20different%20confusions%20and%20misspellings). Every misplaced dot was a user who didn't arrive, a link shared that didn't resolve, a recommendation that died in the gap between hearing the name and typing it.
+The problem is that the rest of the world doesn't read DNS for fun. Those two dots turned the brand into a spelling test, and most people failed it. When the team finally explained the 2008 move, they listed the damage: [we've seen a zillion different confusions and misspellings of "del.icio.us" over the years (for example, "de.licio.us", "del.icio.us.com", and "del.licio.us")](https://domainnamewire.com/2008/08/01/delicious-rebrands-as-deliciouscom-a-lesson-for-entrepreneurs/#:~:text=zillion%20different%20confusions%20and%20misspellings). Every misplaced dot was a user who didn't arrive, a link shared that didn't resolve, a recommendation that died in the gap between hearing the name and typing it.
 
 Schachter knew. He'd known almost from the start. As Domain Name Wire noted, way back in 2004 he talked about the naming mistake, quoting him directly: [I somewhat regret using the domain name, because it's almost impossible to discuss or verify without sounding silly.](https://domainnamewire.com/2008/08/01/delicious-rebrands-as-deliciouscom-a-lesson-for-entrepreneurs/#:~:text=I%20somewhat%20regret%20using%20the%20domain%20name)
 
@@ -103,14 +103,14 @@ The trap isn't choosing a domain hack when you're small. The trap is *keeping* i
 
 The gap between `del.icio.us` and `Delicious.com` looks like punctuation. Strategically, it's the difference between a name that performs cleverness and a name that delivers users.
 
-**del.icio.us** is a puzzle: four dots, a borrowed country code, a string you have to *decode* before you can type it. **Delicious.com** is just a word. One asks the listener to remember an unusual structure. The other asks them to remember a word they already know how to spell.
+**del.icio.us** is a puzzle: two dots, a borrowed country code, a string you have to *decode* before you can type it. **Delicious.com** is just a word. One asks the listener to remember an unusual structure. The other asks them to remember a word they already know how to spell.
 
 | Before | After |
 | --- | --- |
 | del.icio.us | Delicious.com |
 | A domain hack (the .us ccTLD spelling a word) | A plain, exact-match .com word |
 | Clever to read on screen | Easy to say out loud and share |
-| Four dots = four places to mistype | One word, one spelling |
+| Two dots = two places to mistype | One word, one spelling |
 | "de.licio.us", "del.licio.us", "del.icio.us.com" | delicious.com |
 | Signals a hacker's side project | Signals a mainstream consumer product |
 
