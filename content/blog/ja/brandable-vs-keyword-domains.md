@@ -76,17 +76,17 @@ relatedGlossary:
 
 ここが2つのカテゴリが最も大きく分かれる点であり、他のすべてを守るセクションでもある。
 
-**ブランダブルドメインは商標の*創造*価値が高く、*衝突*リスクも高い。** 商標法はまさに名前をブランダブルにする特質を評価する。[商標の識別性](/ja/glossary/udrp/)のスペクトルにおいて、造語は強い側に位置する。Wikipediaの表現を借りれば、[空想的（ファンシフル）な商標は本質的に識別力があり原則として登録可能であり、完全に発明された「ファンシフル」な標識から成る](https://en.wikipedia.org/wiki/Trademark_distinctiveness#:~:text=A%20fanciful%20%2F%20inherently%20distinctive%20trademark%20is%20prima%20facie%20registrable)。だからこそ創業者は造語を好む——最も保護しやすく完全に独占できるからだ。しかし売り手であるあなたにとっての裏面は衝突リスクだ。造語は非常に保護しやすいがゆえに、手動登録したブランダブルがすでに他社の登録商標である可能性があり、巧妙に見える名前が実は自分が所有していない商標であることもある。危険なのは名前の中に含まれる辞書の単語ではなく、その*文字列そのもの*が既存ブランドのものかどうかだ。
+**ブランダブルドメインは商標の*創造*価値が高く、*衝突*リスクも高い。** 商標法はまさに名前をブランダブルにする特質を評価する。[商標の識別性](/ja/glossary/udrp/)のスペクトルにおいて、造語は強い側に位置する。Wikipediaの表現を借りれば、[空想的（ファンシフル）な商標は本質的に識別力があり原則として登録可能であり、完全に発明された「ファンシフル」な標識から成る](https://en.wikipedia.org/wiki/Trademark_distinctiveness#:~:text=A%20fanciful%20%2F%20inherently%20distinctive%20trademark%20is%20prima%20facie%20registrable)。だからこそ創業者は造語を好む——最も保護しやすく完全に独占できるからだ。しかし売り手であるあなたにとっての裏面は衝突リスクだ。造語は非常に保護しやすいがゆえに、手動登録したブランダブルがすでに他社の登録商標である可能性があり、巧妙に見える名前が実は自分が所有していない商標であることもある。危険は文字列が完全一致する場合に限られない。UDRPでは、ドメイン名に商標全体が含まれている場合、または商標の主要な特徴を認識できる状態で残している場合、通常、第一要件の「同一または混同を招くほど類似」の基準を満たす。説明的な語を付加しても、通常はこの比較を免れない（[WIPO Overview 3.1、第1.7〜1.8節](https://www.wipo.int/en/web/amc/domain-name-disputes/search/overview/index#17)）。
 
-**キーワードドメインは商標としての価値は低いが、サイバースクワッティングのリスクも小さい——ただし一つの罠がある。** 純粋に説明的または一般的なキーワードは、誰かが独占することが難しい。[一般的な用語とは、塩化ナトリウムとの関連で使用する「salt」のように、商品やサービスの一般名称のことであり](https://en.wikipedia.org/wiki/Trademark_distinctiveness#:~:text=A%20generic%20term%20is%20the%20common%20name)、一般的な用語は商標として独占できない。また[説明的な商標は二次的意味を獲得することで保護される](https://en.wikipedia.org/wiki/Trademark_distinctiveness#:~:text=Descriptive%20marks%20must%20acquire%20distinctiveness%20through%20secondary%20meaning)まで保護の対象にならない。そのため `insurance` や `loans` を所有することが誰かの商標を侵害することはほとんどない。罠は、キーワードドメインの中に他社の商標が*含まれている*ケースだ。`BuyNikeShoes.com` は他社の商標を内包したキーワード構成であり、これはまさに権利者が[UDRP](/ja/blog/what-is-udrp/)によって取り戻せる種類の名前だ。UDRPの第一要件は、[ドメイン名が申立人の持つ商標またはサービスマークと同一または混同を招くほど類似している](https://en.wikipedia.org/wiki/Uniform_Domain-Name_Dispute-Resolution_Policy#:~:text=identical%20or%20confusingly%20similar%20to%20a%20trademark%20or%20service%20mark)ことだ。
+**キーワードドメインは商標としての価値は低いが、サイバースクワッティングのリスクも小さい——ただし一つの罠がある。** 純粋に説明的または一般的なキーワードは、誰かが独占することが難しい。[一般的な用語とは、塩化ナトリウムとの関連で使用する「salt」のように、商品やサービスの一般名称のことであり](https://en.wikipedia.org/wiki/Trademark_distinctiveness#:~:text=A%20generic%20term%20is%20the%20common%20name)、一般的な用語は商標として独占できない。また[説明的な商標は二次的意味を獲得することで保護される](https://en.wikipedia.org/wiki/Trademark_distinctiveness#:~:text=Descriptive%20marks%20must%20acquire%20distinctiveness%20through%20secondary%20meaning)まで保護の対象にならない。そのため `insurance` や `loans` を所有することが誰かの商標を侵害することはほとんどない。罠は、キーワードドメインの中に他社の商標が*含まれている*ケースだ。`BuyNikeShoes.com` は他社の商標を内包したキーワード構成であり、これはまさに権利者が[UDRP](/ja/blog/what-is-udrp/)で争える種類の名前だ。申立人は、混同を招くほどの類似性だけでなく、登録者に当該ドメイン名についての権利または正当な利益がないこと、そして当該ドメイン名が悪意で登録され、かつ使用されていることという、UDRPの三要件すべてを立証しなければならない（[WIPO UDRPガイド](https://www.wipo.int/amc/en/domains/guide/)）。
 
-両カテゴリに共通する明快な運用ルールは次のとおりだ。一般的・説明的・自由に発明された名前をフリップする。特定企業のブランドに依存した名前——造語であっても企業の登録ワードそのものであるもの、またはキーワードフレーズがそのブランドを内包しているもの——は決してフリップしない。購入前に簡単な商標調査を行うことは、この業界で最も費用対効果の高い保険であり、ブランダブルにとってはその識別性こそが保護の根拠となるだけに特に重要だ。
+両カテゴリに共通する明快な運用ルールは次のとおりだ。一般的な名前、説明的な名前、そして独自に考案した名前をフリップする。特定企業の商標を狙う、または利用する名前は買わない。その商標のスペル違いも、商標が認識可能な形で残る長いフレーズも避ける。購入前には、完全一致の商標だけでなく、混同を招くほど類似した商標も検索し、リスクが重要な場合は資格を持つ法律専門家に相談する。この調査は、まさに識別性が保護の根拠となるブランダブルにとって、特に重要だ。
 
 ## では、どちらをフリップすべきか？
 
 どちらのカテゴリが絶対的に優れているわけではなく、気質と予算によって向き不向きが変わる。
 
-ブランダブルは、より広い買い手プールを求める人、在庫を忍耐強く保有できる人、本物の企業名らしく聞こえる名前の感覚が磨かれている人、そして購入のたびに商標調査をいとわない人に向いている。**キーワード**は、真に強力な完全一致フレーズを見つけられる人、価格交渉力の強さと引き換えに買い手プールの狭さを受け入れられる人、そして液体性の高い一語の `.com` はほぼ消滅していることを理解している人に向いている。現実には、稼働中のポートフォリオの多くは両方を保有している——ブランダブルは量と選択肢のために、いくつかの鋭いキーワードドメインは確信度の高い売却機会のために。
+ブランダブルは、より広い買い手プールを求める人、在庫を忍耐強く保有できる人、本物の企業名らしく聞こえる名前の感覚が磨かれている人、そして購入のたびに商標調査をいとわない人に向いている。**キーワード**は、真に強力な完全一致フレーズを見つけられる人、価格交渉力の強さと引き換えに買い手プールの狭さを受け入れられる人、そして流動性の高い一語の `.com` はほぼ消滅していることを理解している人に向いている。現実には、稼働中のポートフォリオの多くは両方を保有している——ブランダブルは量と選択肢のために、いくつかの鋭いキーワードドメインは確信度の高い売却機会のために。
 
 どちら側の名前であっても、実際に利益を得られるかどうかを決めるのは移転プロセスだ。膠着状態はどちらも同じだ——売り手は入金前に名前を渡さず、買い手は名前が移転する前に送金しない。この摩擦を解消するために[Namefi](https://namefi.io)はある。トークン化されたオーナーシップにより、正規の[ICANN](/ja/glossary/icann/)ドメインの所有権の確認と移転が容易になり、引渡し中もDNSが途切れなく継続される。名前のタイプを選ぶのはあなただ——クリーンで監査可能な決済が、どちらのドメインも確実な収益に変える。
 
@@ -103,4 +103,5 @@ relatedGlossary:
 - Wikipedia — [高額ドメイン名一覧（Hotels.com、1,100万ドル、2001年）](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Hotel%20Reservations%20Network%20acquired%20the%20domain%20and%20rebranded%20as%20Hotels.com%20in%202002)
 - Wikipedia — [Stripe, Inc.（コリソン兄弟創業、パロアルト、2010年）](https://en.wikipedia.org/wiki/Stripe,_Inc.#:~:text=John%20and%20Patrick%20Collison%20founded%20Stripe%20in%20Palo%20Alto%2C%20California%2C%20in%202010)
 - SIDN — [Voice.comが3,000万米ドルで売却（Block.one、ブランダブル一語 .com）](https://www.sidn.nl/en/news-and-blogs/voice-com-sold-for-usd-30-million#:~:text=30%20million%20US%20dollars)
-- Wikipedia — [統一ドメイン名紛争解決方針UDRP（第一要件）](https://en.wikipedia.org/wiki/Uniform_Domain-Name_Dispute-Resolution_Policy#:~:text=identical%20or%20confusingly%20similar%20to%20a%20trademark%20or%20service%20mark)
+- WIPO — [統一ドメイン名紛争解決方針（UDRP）ガイド](https://www.wipo.int/amc/en/domains/guide/)
+- WIPO — [UDRPに関するWIPOパネル見解の概説 3.1](https://www.wipo.int/en/web/amc/domain-name-disputes/search/overview/index#17)
