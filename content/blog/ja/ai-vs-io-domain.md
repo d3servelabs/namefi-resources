@@ -61,7 +61,7 @@ relatedGlossary:
 
 よくある疑問：「国別コードなら、カリブ海やインド洋地域でしか検索順位がつかないのでは？」この2つに関しては、答えはノーだ。
 
-Googleは、特定の国ではなく世界中で使われているccTLDを**汎用（gccTLD）**として扱うリストを管理している。`.ai` も `.io` も、そのリストに含まれている。したがって、Googleはデフォルトでこれらをジオターゲットしない。サイトはグローバルにランク付けされ、特定市場に絞りたい場合はSearch Consoleで地域ターゲティングを設定できる。Googleのこの扱いについては、[マルチリージョンサイトの管理に関するGoogleのドキュメント](https://developers.google.com/search/docs/crawling-indexing/manage-multiregional-site#geotargeting)で確認できる。
+Googleは、特定の国ではなく世界中で使われているccTLDを**汎用（gccTLD）**として扱うリストを管理している。`.ai` も `.io` も、そのリストに含まれている。したがって、Googleはデフォルトでこれらをジオターゲットしない。Googleは[2022年にSearch ConsoleのInternational Targetingレポートを廃止した](https://developers.google.com/search/blog/2022/12/thanks-2022)ため、現在はSearch Consoleで国別ターゲティングを設定する項目はない。特定市場に絞りたい場合、Googleの現行ガイダンスでは言語・地域ごとのURLを使用し、`hreflang`アノテーションまたはサイトマップで地域や言語のバリエーションを明示することが推奨されている。ページ上で確認できるローカライズされたコンテンツに加え、現地の住所や通貨、現地サイトからのリンクといったシグナルも、Googleが対象オーディエンスを把握する助けになる。詳しくは[マルチリージョンサイトの管理に関するGoogleのドキュメント](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#geotargeting)で確認できる。
 
 **SEOの判定：引き分け。** どちらの拡張子も検索リーチを損なわず、Googleの観点では一方が他方より検索順位で優位というメリットはない。
 
