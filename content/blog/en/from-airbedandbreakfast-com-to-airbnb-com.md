@@ -67,7 +67,7 @@ The case for the change was not aesthetic. It was structural.
 
 By 2009 the original name was simply doing the wrong job. As the company evolved beyond air mattresses in its own apartment and started facilitating bookings for spare rooms, entire apartments, and unique homes offered by other hosts, [the need for a shorter, catchier, and more scalable name became apparent](https://www.airroi.com/resources/tips-guides/why-is-it-called-airbnb#:~:text=the%20need%20for%20a%20shorter%2C%20catchier%2C%20and%20more%20scalable%20name%20became%20apparent).
 
-"AirBedAndBreakfast.com" is twenty letters in the address bar. It is hard to say on a phone call, awkward on a business card, and — worse — it makes a promise the product had already broken. Every time a host read it, the domain quietly insisted the platform was about air beds. "Airbnb.com" makes no such claim. It is a coined word that can mean whatever the company grows into: a room, a loft, a castle, an "Experience," a global travel brand.
+"AirBedAndBreakfast" is an eighteen-letter name before the `.com` extension. It is hard to say on a phone call, awkward on a business card, and — worse — it makes a promise the product had already broken. Every time a host read it, the domain quietly insisted the platform was about air beds. "Airbnb.com" makes no such claim. It is a coined word that can mean whatever the company grows into: a room, a loft, a castle, an "Experience," a global travel brand.
 
 This is the recurring pattern in domain upgrades. Early names *explain*. Great names *own*. A descriptive domain is a fantastic on-ramp when nobody understands your product yet, and a ceiling once they do.
 
@@ -83,7 +83,7 @@ That is exactly when the decision counted. The company was small enough that the
 
 ## Why shortening to "Airbnb" mattered
 
-![Colorful illustration of the long AirBedAndBreakfast name shrinking to the coral Airbnb belo brand](../../assets/from-airbedandbreakfast-com-to-airbnb-com-01-shortening.jpg)
+![Colorful illustration of the long AirBedAndBreakfast name shrinking to the coral Airbnb Bélo brand](../../assets/from-airbedandbreakfast-com-to-airbnb-com-01-shortening.jpg)
 
 The distance between AirBedAndBreakfast.com and Airbnb.com is a few syllables in speech. Strategically, it is the difference between a description and a brand.
 
@@ -94,7 +94,7 @@ The distance between AirBedAndBreakfast.com and Airbnb.com is a few syllables in
 | AirBedAndBreakfast.com | Airbnb.com |
 | Describes air mattresses and breakfast | Names a global lodging brand |
 | Promises a floor to sleep on | Promises any kind of space |
-| Twenty letters, hard to say | One coined word, easy to say |
+| Eighteen-letter name before `.com`, hard to say | One coined word, easy to say |
 | Anchored to a 2007 origin story | Travels into rooms, homes, and experiences |
 | Reads like a product | Reads like a company |
 
@@ -135,7 +135,7 @@ The easy takeaway — "never pick a literal name" — is wrong. The literal name
 1. **Use a literal, descriptive domain to launch if it makes the product instantly understandable.** AirBedAndBreakfast.com worked because nobody yet knew what "renting a stranger's floor" meant; the name explained the whole offer in four words.
 2. **Watch for the moment the description stops matching the company.** The signal to upgrade isn't aesthetic — it's when the name starts promising something smaller or narrower than what you actually do. For Airbnb, that was the day the listings stopped being air mattresses.
 3. **Treat the shorter name as infrastructure, not decoration.** Shortening to Airbnb.com bought scalability, sayability, and a brand that could expand into rooms, homes, and experiences — not just a tidier URL.
-4. **Move before the weak name hardens, even when money is tightest.** Airbnb rebranded while broke, pre-venture-funding, with only a few thousand users — early enough that the world only ever learned the clean version.
+4. **Move before the weak name hardens, even when money is tightest.** Airbnb rebranded while broke, pre-venture-funding, with about 10,000 users — early enough that the world only ever learned the clean version.
 
 The domain upgrade did not make Airbnb win. Product, design, relentless founder hustle, timing, and capital mattered far more. But Airbnb.com made the company *nameable* as something far bigger than the air mattresses it started on.
 
