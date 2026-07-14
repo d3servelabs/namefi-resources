@@ -1,5 +1,5 @@
 ---
-title: "Principales machines virtuelles blockchain : EVM, SVM, MoveVM, WASM et CairoVM"
+title: "Principales machines virtuelles blockchain : EVM, SVM, MoveVM, WebAssembly/RISC-V et CairoVM"
 date: '2026-07-02'
 language: fr
 tags: ['guide']
@@ -9,7 +9,7 @@ cluster: web3-foundations
 series: blockchain-concepts
 seriesOrder: 30
 format: roundup
-description: "Guide des principales machines virtuelles blockchain — EVM, SVM, MoveVM, VM fondées sur WASM et CairoVM — comparant langages, modèles d’exécution et écosystèmes."
+description: "Guide des principales machines virtuelles blockchain — EVM, SVM, MoveVM, VM WebAssembly et RISC-V, et CairoVM — comparant langages, modèles d’exécution et écosystèmes."
 ogImage: ../../assets/blockchain-virtual-machines-og.jpg
 keywords: ['machine virtuelle blockchain', 'machines virtuelles blockchain', 'evm', 'ethereum virtual machine', 'svm', 'solana virtual machine', 'sealevel', 'movevm', 'langage move', 'blockchain wasm', 'cosmwasm', 'polkavm', 'cairovm', 'langage cairo', 'starknet', 'langage de smart contract', 'exécution parallèle blockchain', 'compatible evm', 'environnement d’exécution blockchain', 'machine à états blockchain']
 relatedArticles:
@@ -34,7 +34,7 @@ relatedGlossary:
 
 Chaque [smart contract](/fr/glossary/smart-contract/) doit s’exécuter quelque part. Ce « quelque part » est une machine virtuelle (VM) blockchain : le programme isolé que chaque nœud du réseau exécute de manière identique, afin que la même entrée produise toujours la même sortie, quel que soit celui qui l’exécute. La VM sur laquelle vous construisez façonne presque tout dans une chaîne : les langages que vous pouvez utiliser, la possibilité d’exécuter les transactions simultanément ou seulement les unes après les autres, et la part de l’écosystème de développeurs existant que vous pouvez exploiter dès le premier jour.
 
-Ce guide présente cinq conceptions de VM qui, à elles seules, propulsent aujourd’hui l’essentiel de l’activité de smart contracts dans le [Web3](/fr/glossary/web3/) : l’[Ethereum Virtual Machine](/fr/glossary/ethereum-virtual-machine/) (EVM), la SVM de Solana, la MoveVM employée par Aptos et Sui, les VM fondées sur [WebAssembly](/fr/glossary/webassembly/) (WASM), comme CosmWasm et PolkaVM, et la CairoVM de Starknet.
+Ce guide présente cinq familles de VM qui, ensemble, propulsent aujourd’hui une grande partie de l’activité de smart contracts dans le [Web3](/fr/glossary/web3/) : l’[Ethereum Virtual Machine](/fr/glossary/ethereum-virtual-machine/) (EVM), la SVM de Solana, la MoveVM employée par Aptos et Sui, les VM à bytecode portable — CosmWasm sur [WebAssembly](/fr/glossary/webassembly/) et PolkaVM sur RISC-V — et la CairoVM de Starknet.
 
 ---
 
@@ -55,7 +55,7 @@ Ces choix se répercutent sur les coûts de gas, le comportement en cas de conge
 
 ![Schéma vectoriel plat de l’EVM comme machine à pile à voie unique, avec un pointeur d’instruction qui empile et dépile des valeurs sur une pile verticale, et un compteur de gas qui suit le coût d’exécution](../../assets/blockchain-virtual-machines-01-evm-stack.jpg)
 
-L’EVM est la VM de smart contracts la plus ancienne et la plus largement déployée, introduite avec [Ethereum](/fr/glossary/ethereum/) en 2015. C’est une machine **à pile** : la documentation Ethereum précise qu’elle fonctionne comme « a stack machine with a depth of 1024 items », chaque élément étant un mot de 256 bits ([ethereum.org](https://ethereum.org/en/developers/docs/evm/#:~:text=The%20EVM%20executes%20as%20a,256%2Dbit%20word)). L’état des contrats réside dans un trie Merkle Patricia associé à chaque compte, et l’état global de la chaîne est lui aussi organisé comme un trie Merkle Patricia modifié qui relie tous les comptes par hachage ([ethereum.org](https://ethereum.org/en/developers/docs/evm/#:~:text=Ethereum%20uses%20a%20modified%20Merkle,linked%20by%20hashes)).
+L’EVM a été introduite avec [Ethereum](/fr/glossary/ethereum/) en 2015 et compte aujourd’hui parmi les VM de smart contracts les plus largement déployées. C’est une machine **à pile** : la documentation Ethereum précise qu’elle fonctionne comme « a stack machine with a depth of 1024 items », chaque élément étant un mot de 256 bits ([ethereum.org](https://ethereum.org/en/developers/docs/evm/#:~:text=The%20EVM%20executes%20as%20a,256%2Dbit%20word)). L’état des contrats réside dans un trie Merkle Patricia associé à chaque compte, et l’état global de la chaîne est lui aussi organisé comme un trie Merkle Patricia modifié qui relie tous les comptes par hachage ([ethereum.org](https://ethereum.org/en/developers/docs/evm/#:~:text=Ethereum%20uses%20a%20modified%20Merkle,linked%20by%20hashes)).
 
 **Langage.** Les contrats sont presque toujours écrits en **Solidity**, décrit dans la documentation Ethereum comme un « object-oriented, high-level language for implementing smart contracts », fortement influencé par la syntaxe C++ ([ethereum.org](https://ethereum.org/en/developers/docs/smart-contracts/languages/#:~:text=Solidity)). **Vyper**, un langage « Pythonic » qui réduit délibérément ses fonctionnalités pour rendre les contrats plus faciles à auditer, en est la principale alternative ([ethereum.org](https://ethereum.org/en/developers/docs/smart-contracts/languages/#:~:text=Vyper)).
 
@@ -63,7 +63,7 @@ L’EVM est la VM de smart contracts la plus ancienne et la plus largement dépl
 
 **Gas.** Chaque opération coûte du [gas](/fr/glossary/gas/), l’unité Ethereum qui mesure « the computational effort required for operations ». Il tarifie l’exécution et protège le réseau contre le spam ou les boucles infinies ([ethereum.org](https://ethereum.org/en/developers/docs/evm/#:~:text=Since%20each%20transaction%20is%20broadcast,uses%20gas)).
 
-**Atout distinctif et portée.** Le véritable fossé défensif de l’EVM est son écosystème : c’est la VM la plus implémentée dans les cryptomonnaies, et des dizaines de Layer 2 et de chaînes indépendantes (Arbitrum, Optimism, Base, Polygon, BNB Chain, Avalanche C-Chain) proposent des environnements **compatibles EVM** ou **équivalents EVM**, afin que les contrats Solidity, portefeuilles et outils existants puissent être déployés avec peu ou pas de modification.
+**Atout distinctif et portée.** Le véritable fossé défensif de l’EVM est son écosystème : c’est la VM la plus implémentée dans les cryptomonnaies, et des dizaines de solutions de deuxième couche et de chaînes indépendantes (Arbitrum, Optimism, Base, Polygon, BNB Chain, Avalanche C-Chain) proposent des environnements **compatibles EVM** ou **équivalents EVM**, afin que les contrats Solidity, portefeuilles et outils existants puissent être déployés avec peu ou pas de modification.
 
 ---
 
@@ -97,15 +97,15 @@ Le runtime de Solana, **Sealevel**, repose sur une hypothèse précise : la plup
 
 ---
 
-## VM fondées sur WASM (CosmWasm, PolkaVM)
+## VM à bytecode portable (CosmWasm et PolkaVM)
 
-Plutôt que de définir un format de bytecode sur mesure, une seconde famille de chaînes exécute les smart contracts via **WebAssembly**, un format binaire généraliste conçu à l’origine pour le navigateur. La norme WebAssembly décrit Wasm comme « a binary instruction format for a stack-based virtual machine », conçu comme « a portable compilation target for programming languages » et visant à « execute at native speed » ([webassembly.org](https://webassembly.org/#:~:text=WebAssembly%20(abbreviated%20Wasm)%20is%20a,wide%20range%20of%20platforms)). Employer Wasm comme VM de contrat signifie que tout langage ayant une cible de compilation Wasm — Rust, C, C++, Go — peut, en principe, produire un contrat déployable.
+Plutôt que de définir un bytecode propre à la blockchain, certaines chaînes utilisent des formats d’instructions portables et généralistes. **CosmWasm** exécute WebAssembly, tandis que **PolkaVM** exécute un bytecode dérivé de RISC-V ; PolkaVM n’est donc pas une VM fondée sur WASM. La norme WebAssembly décrit Wasm comme « a binary instruction format for a stack-based virtual machine », conçu comme « a portable compilation target for programming languages » et visant à « execute at native speed » ([webassembly.org](https://webassembly.org/#:~:text=WebAssembly%20(abbreviated%20Wasm)%20is%20a,wide%20range%20of%20platforms)). Employer Wasm comme VM de contrat signifie que tout langage ayant une cible de compilation Wasm — Rust, C, C++, Go — peut, en principe, produire un contrat déployable.
 
 **CosmWasm.** Principale plateforme de smart contracts fondée sur Wasm dans l’écosystème Cosmos, CosmWasm se décrit comme une « secure, performant, interoperable smart contract platform for the multi-chain world » ([cosmwasm.com](https://www.cosmwasm.com/#:~:text=Secure%2C%20performant%2C%20interoperable%20smart%20contract,platform%20for%20the%20multi%2Dchain%20world)). Les contrats sont écrits en **Rust** et s’exécutent sur « a highly optimized Web Assembly runtime » ([cosmwasm.com](https://www.cosmwasm.com/#:~:text=highly%20optimized%20Web%20Assembly%20runtime)). CosmWasm est déployé sur des dizaines de chaînes Cosmos SDK, notamment Osmosis, Neutron, Injective, Secret Network et Terra, et hérite de la messagerie interchaîne IBC native de Cosmos.
 
 **PolkaVM.** La nouvelle VM de smart contracts de Polkadot a choisi une autre voie : au lieu d’exécuter du Wasm brut, Parity a créé PolkaVM, décrite dans son propre dépôt comme « a general purpose user-level RISC-V based virtual machine » ([github.com/paritytech/polkavm](https://github.com/paritytech/polkavm#:~:text=PolkaVM%20is%20a%20general%20purpose,level%20RISC%2DV%20based%20virtual%20machine)). La justification, selon la documentation de smart contracts ink!, est la performance : l’exécution RISC-V « correlates with transaction throughput and transaction costs », procurant une exécution plus rapide et moins coûteuse que l’interpréteur Wasm qu’ink! utilisait auparavant ([use.ink](https://use.ink/docs/v6/background/why-riscv-and-polkavm-for-smart-contracts/#:~:text=performance%20correlates%20with%20transaction%20throughput)). Fait notable, la pile PolkaVM de Polkadot (sous la marque « Revive ») propose aussi une couche d’interpréteur EVM, qui permet aux contrats Solidity de s’exécuter sur le même backend RISC-V.
 
-**Atout distinctif.** Les VM fondées sur WASM échangent un bytecode conçu sur mesure contre une cible de compilation mature et très largement implémentée. Rust, en particulier, apporte de solides garanties de sûreté mémoire au code de contrat, et les runtimes Wasm/RISC-V sous-jacents profitent d’outils conçus pour des usages non blockchain bien plus étendus.
+**Atout distinctif.** Les VM à bytecode portable remplacent un bytecode propre à la blockchain par des cibles de compilation généralistes bien établies. Rust, en particulier, apporte de solides garanties de sûreté mémoire au code de contrat, et Wasm comme RISC-V profitent d’outils conçus pour des usages non blockchain bien plus étendus. CosmWasm et PolkaVM restent des architectures distinctes : la première exécute Wasm, la seconde un bytecode dérivé de RISC-V.
 
 ---
 
@@ -115,7 +115,7 @@ Plutôt que de définir un format de bytecode sur mesure, une seconde famille de
 
 **Modèle d’exécution.** Cairo est compilé vers un ensemble d’instructions Turing-complet (la « machine Cairo »), défini comme un ensemble de représentations intermédiaires algébriques. La trace d’exécution de tout programme Cairo peut ainsi être transformée en une preuve STARK concise vérifiable sur Ethereum L1 ([starknet.io](https://www.starknet.io/cairo-book/ch201-architecture.html#:~:text=At%20its%20core%2C%20Cairo%20is,arbitrary%20code%29%20through%20the%20Cairo%20machine)). Starknet peut donc regrouper des milliers de transactions hors chaîne et publier une preuve compacte de correction sur Ethereum, au lieu de rejouer chaque transaction.
 
-**Atout distinctif.** Puisque la facilité de génération de preuves a été la contrainte de conception initiale, et non un ajout tardif, les programmes Cairo coûtent moins cher à prouver qu’un calcul équivalent exécuté dans une VM généraliste adaptée ensuite à un zk-prover (une « zkEVM »). Le compromis est un écosystème de langage plus récent et plus petit, ainsi qu’une courbe d’apprentissage plus abrupte que Solidity pour les développeurs venant d’Ethereum.
+**Atout distinctif.** La facilité de génération de preuves était une contrainte fondamentale dès la conception de Cairo : son jeu d’instructions et sa trace d’exécution sont pensés pour produire efficacement des preuves STARK. Le coût réel dépend toutefois du programme, de l’implémentation du prouveur, des paramètres du système de preuve et du point de comparaison ; il n’est donc pas nécessairement inférieur pour toutes les charges de travail zkEVM. Le compromis est un écosystème de langage plus récent et plus petit, ainsi qu’une courbe d’apprentissage plus abrupte que Solidity pour les développeurs venant d’Ethereum.
 
 ---
 
@@ -126,7 +126,7 @@ Plutôt que de définir un format de bytecode sur mesure, une seconde famille de
 | **EVM** | Solidity, Vyper | Machine à pile ; état des comptes/du stockage dans un trie Merkle Patricia | Non — séquentielle dans un bloc | Le plus grand ; cible par défaut des L2 et des chaînes applicatives | Native |
 | **SVM (Solana)** | Rust, C, C++ | Bytecode dérivé de BPF ; état fondé sur les comptes avec ensembles lecture/écriture déclarés | Oui — Sealevel ordonne simultanément les transactions qui ne se chevauchent pas | Grand, en croissance rapide, principalement natif de Solana | Non (écosystème distinct) |
 | **MoveVM (Aptos/Sui)** | Move | Objets typés comme ressources ; Aptos utilise Block-STM, Sui plusieurs formes de propriété avec des voies directes ou séquencées par consensus | Oui — déduit au runtime (Aptos) ou via la propriété des objets (Sui) | Plus petit, en croissance ; deux écosystèmes Move indépendants | Non |
-| **Fondées sur WASM (CosmWasm, PolkaVM)** | Rust (CosmWasm) ; chaînes d’outils Rust/C/RISC-V (PolkaVM) | Bytecode Wasm (CosmWasm) ou RISC-V (PolkaVM) | Dépend de la chaîne ; ce n’est pas une propriété universelle de l’exécution Wasm | Moyen ; réparti entre de nombreuses chaînes Cosmos et l’ensemble de parachains Polkadot | PolkaVM/Revive ajoute une couche d’interpréteur EVM ; CosmWasm n’est pas compatible EVM |
+| **Bytecode portable (CosmWasm, PolkaVM)** | Rust (CosmWasm) ; chaînes d’outils Rust/C/RISC-V (PolkaVM) | Bytecode Wasm (CosmWasm) ou RISC-V (PolkaVM) | Dépend de la chaîne ; ce n’est pas une propriété universelle de l’un ou l’autre format d’instructions | Moyen ; réparti entre de nombreuses chaînes Cosmos et l’ensemble de parachains Polkadot | PolkaVM/Revive ajoute une couche d’interpréteur EVM ; CosmWasm n’est pas compatible EVM |
 | **CairoVM (Starknet)** | Cairo | Machine Turing-complète fondée sur AIR, conçue pour les preuves STARK | Ce n’est pas l’objectif principal — optimisée pour la prouvabilité, non pour la concurrence | La plus petite des cinq, mais grandit avec l’activité L2 de Starknet | Non (les projets zkEVM font entrer les contrats Solidity séparément) |
 
 ---
