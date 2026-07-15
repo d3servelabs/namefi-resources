@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 cluster: web3-foundations
 format: explainer
-description: A multi-tenant router that lets you integrate x402 once and route requests by policy and live signals, without pushing routing logic into your app.
+description: A multi-tenant router that lets you integrate x402 once and route requests by policy and facilitator capability, without pushing routing logic into your app.
 keywords: ['Route402', 'x402', 'payments routing', 'facilitator router', 'multi-tenant payments', 'RBAC', 'credential encryption', 'capability routing', 'sticky settlement', 'payments infrastructure', 'YAML routing rules']
 relatedArticles:
   - /en/blog/from-bufferapp-com-to-buffer-com/
@@ -31,7 +31,7 @@ relatedGlossary:
 
 ## The short version
 
-Route402 lets you integrate [x402](https://www.x402.org/) once, then route requests across multiple facilitators based on policy and live signals like health and latency. Your app stays simple, and your payment operations stay flexible.
+Route402 lets you integrate [x402](https://www.x402.org/) once, then route requests across multiple enabled facilitators based on policy and capability support. Your app stays simple, and your payment operations stay flexible.
 
 ## x402, in plain terms
 
@@ -47,13 +47,13 @@ Teams end up baking routing decisions into the app: which provider to use, how t
 
 A multi-tenant router that sits between your app and upstream facilitators. Your app talks to Route402 as if it were a single facilitator. Route402 makes the routing decision.
 
-The key proposition: integrate once, then route every request based on rules plus live signals.
+The key proposition: integrate once, then route every request based on deterministic rules and supported capabilities.
 
 ## What you can route on
 
 - Policy rules: network, asset, environment, org or project, and other business rules.
 - Capability checks: do not send a request to a provider that cannot support it.
-- Health and latency: avoid degraded or slow providers.
+- Verification fallback: if the selected facilitator's verify request errors, Route402 can try one alternative enabled facilitator that supports the request.
 - Sticky settlement: keep settle decisions consistent to prevent double-settling.
 
 ## Ruleset language (simple, readable, deterministic)
@@ -72,7 +72,7 @@ rules:
       use: "cdp-base"
 ```
 
-This lets you express business policy and operational signals in one place without baking routing logic into your app.
+This lets you express business policy in one place without baking routing logic into your app.
 
 ## Why it matters
 
@@ -85,7 +85,7 @@ This lets you express business policy and operational signals in one place witho
 
 - Prod vs staging provider splits.
 - Route USDC on Base to one facilitator, everything else to another.
-- Automatic failover when a provider is slow or unhealthy.
+- One fallback attempt when a facilitator's verify request returns an upstream error.
 - Gradual rollout or canarying a new provider.
 
 ## Operational basics
