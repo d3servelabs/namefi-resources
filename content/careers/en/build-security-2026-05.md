@@ -1,5 +1,5 @@
 ---
-title: 'AI Empowered Builder: Engineer with Specialty in Cyber Security'
+title: 'Security Engineer (AI Empowered)'
 date: '2026-05-27'
 language: en
 tags: ['engineering', 'security', 'ai']
@@ -11,6 +11,11 @@ employmentType: FULL_TIME
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
+baseSalary:
+  currency: USD
+  minValue: 1500
+  maxValue: 6000
+  unitText: MONTH
 ---
 
 ## What You Will Do

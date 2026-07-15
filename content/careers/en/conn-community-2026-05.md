@@ -1,5 +1,5 @@
 ---
-title: 'AI Empowered Connector: Community Manager'
+title: 'Community Manager (AI Empowered)'
 date: '2026-05-27'
 language: en
 tags: ['community', 'engagement', 'ai']
@@ -11,6 +11,11 @@ employmentType: FULL_TIME
 team: Community
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
+baseSalary:
+  currency: USD
+  minValue: 500
+  maxValue: 800
+  unitText: MONTH
 ---
 
 ## What You Will Do

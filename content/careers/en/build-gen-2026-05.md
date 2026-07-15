@@ -1,5 +1,5 @@
 ---
-title: 'AI Empowered Builder: General Full Stack Engineer'
+title: 'Full Stack Engineer (AI Empowered)'
 date: '2026-05-26'
 language: en
 tags: ['engineering', 'full-stack', 'ai']
@@ -11,6 +11,11 @@ employmentType: FULL_TIME
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
+baseSalary:
+  currency: USD
+  minValue: 1500
+  maxValue: 6000
+  unitText: MONTH
 ---
 
 ## What You Will Do

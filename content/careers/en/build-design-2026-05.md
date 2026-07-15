@@ -1,5 +1,5 @@
 ---
-title: 'AI Empowered Builder: Non-Engineer (PM / Product Designer / UXUI Designer)'
+title: 'Product Designer (AI Empowered)'
 date: '2026-05-27'
 language: en
 tags: ['product', 'design', 'ai']
@@ -11,6 +11,11 @@ employmentType: FULL_TIME
 team: Product
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
+baseSalary:
+  currency: USD
+  minValue: 500
+  maxValue: 800
+  unitText: MONTH
 ---
 
 ## What You Will Do

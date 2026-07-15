@@ -1,5 +1,5 @@
 ---
-title: 'AI Empowered Connector: Creative Creator'
+title: 'Content Creator (AI Empowered)'
 date: '2026-05-27'
 language: en
 tags: ['content', 'creative', 'ai']
@@ -11,6 +11,11 @@ employmentType: FULL_TIME
 team: Marketing
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
+baseSalary:
+  currency: USD
+  minValue: 500
+  maxValue: 800
+  unitText: MONTH
 ---
 
 ## What You Will Do
