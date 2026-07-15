@@ -9,7 +9,7 @@ cluster: domain-tokenization
 series: tokenize-your-com
 seriesOrder: 1
 format: guide
-description: A practical, step-by-step walkthrough for tokenizing a domain you already own — eligibility, wallets, fees, time, and what to expect on each screen. Written for owners, not protocol nerds.
+description: "A practical walkthrough of Namefi's current import flow: EPP auth code, cart, checkout, registrar transfer, and automatic NFT minting."
 keywords: ['how to tokenize a domain', 'how to tokenize a .com', 'tokenize my domain', 'tokenize an existing domain', 'tokenize a domain step by step', 'domain tokenization tutorial', 'tokenize .com guide', 'tokenize .xyz', 'tokenize .io', 'namefi tokenize', 'NFT domain how to', 'transfer domain to NFT', 'domain to NFT', 'domain tokenization process', 'tokenized domain setup', 'tokenize ICANN domain']
 relatedArticles:
   - /en/blog/tokenize-your-com-to-flip-it/
@@ -31,119 +31,97 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-So you own a domain — maybe `mybrand.com`, maybe a portfolio of `.xyz` names — and you've decided you want to **tokenize** it. This guide walks through what actually happens, screen by screen, so you can plan the time, money, and access you'll need before you start.
+So you own a domain — maybe `mybrand.com`, maybe a portfolio of `.xyz` names — and you've decided you want to **tokenize** it. On Namefi, the current path is an **import**: you submit the domain and its EPP authorization code, complete checkout, and the registrar transfer and NFT mint run as one acquisition workflow.
 
 If you're still deciding *why* to tokenize, read [Why Tokenize Domains On-Chain?](/en/blog/why-tokenize-domains/) first. If you're not sure *what* tokenization even means, [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains/) is the place to begin.
 
-This post assumes you already want to do it.
+This post assumes you already want to do it. Product screens can change, so treat the live flow at [namefi.io](https://namefi.io) as the final authority.
 
----
-
-## Before You Start: A 60-Second Checklist
+## Before You Start: A Quick Checklist
 
 You'll have a much smoother time if these are true before you click anything:
 
-- **You control the domain at its current [registrar](/en/glossary/registrar/).** You can log in, change nameservers, and approve transfer / [auth codes](/en/glossary/auth-code/).
-- **You have a self-custodied [wallet](/en/glossary/wallet/).** MetaMask, Rabby, Coinbase Wallet, or any standard EVM wallet. Make sure you actually have the [seed phrase](/en/glossary/seed-phrase/) — not just an exchange account.
-- **The wallet has a small amount of [gas](/en/glossary/gas/).** A few dollars of ETH or Base ETH covers the [on-chain](/en/glossary/on-chain/) [minting](/en/glossary/minting/) transaction. You don't need much.
-- **The domain isn't locked, expiring, or mid-transfer.** Domains within ~60 days of a recent [cross-registrar transfer](/en/glossary/cross-registrar-transfer/), or within 30 days of expiry, often can't move. Check first.
-- **You have time.** Plan for ~30 minutes of attention, plus up to 5–7 days of background processing for cross-registrar moves.
+- **You control the domain at its current [registrar](/en/glossary/registrar/).** You can unlock it, obtain its [auth code](/en/glossary/auth-code/) (also called an EPP code), and approve the transfer.
+- **The domain is eligible to move.** A registrar lock, a recent transfer, an unsupported [TLD](/en/glossary/tld/), or another transfer restriction can block the import.
+- **You can sign in to Namefi and complete wallet onboarding.** The destination wallet receives the [tokenized domain](/en/glossary/tokenized-domain/) NFT after the import. Namefi's automatic mint does not require you to sign a separate mint transaction or fund mint gas.
+- **You know what should happen to DNS.** At checkout, the **Keep NS** option preserves the domain's current nameservers. Selecting it skips Namefi Auto Park, Auto ENS, and DNSSEC setup. If the domain serves a live website or email, verify this choice carefully.
+- **You have time for a registrar transfer.** Namefi's current order screen says imports typically take 5–7 days and may be expedited through the old registrar.
 
 If any of those is shaky, fix it before you start. The process tolerates patience much better than it tolerates surprises.
 
 ---
 
-## Step 1: Connect Your Wallet at namefi.io
+## Step 1: Open Import Mode
 
-Head to [namefi.io](https://namefi.io) and click "Connect Wallet". Approve the connection in your wallet. This wallet will become the **owner** of the [tokenized domain](/en/glossary/tokenized-domain/) — the NFT will live here, and whoever holds this wallet holds the domain.
+Go to [namefi.io](https://namefi.io), sign in or connect your [wallet](/en/glossary/wallet/), and select **Import** in the main domain search. Import is for domains you already own elsewhere; **Register** is for buying an available name.
 
-> **Take this seriously.** If you lose this wallet, you lose the on-chain side of your domain. We have a separate guide on [recovering a tokenized domain after wallet loss](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) — read it now, not later.
+> **Take the destination wallet seriously.** It will receive the domain NFT. Review [recovering a tokenized domain after wallet loss](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) before importing a valuable name.
 
----
+## Step 2: Enter the Domain and EPP Auth Code
 
-## Step 2: Add the Domain You Want to Tokenize
+Enter one domain with its code in the format shown by the app:
 
-In your Namefi dashboard, search for or add the domain you already own. Namefi will check eligibility — the [registrar](/en/glossary/registrar/) it's currently at, whether it's lockable, whether it's within [ICANN](/en/glossary/icann/) transfer rules, and whether the [TLD](/en/glossary/tld/) is supported.
+```text
+example.com, authcode123
+```
 
-You'll see one of three statuses:
+You can also paste multiple domains. Each importable domain needs its own valid code before checkout. Search results can identify names as locked, temporarily unimportable, unsupported, or already on Namefi; resolve any blocking status with the current registrar before continuing.
 
-- **Eligible now.** Proceed to Step 3.
-- **Eligible after a wait.** Usually means a recent transfer is still inside the 60-day ICANN window. Wait it out and come back.
-- **Not supported.** Some TLDs aren't yet supported. Check the supported-TLD list, or ping support.
+## Step 3: Add the Import to Your Cart
 
----
+Add the importable domain — or use **Add all** for an eligible batch — to the cart. There is no separate choice between an "in-place" mint and a transfer-in path in the current live journey. Import uses the EPP transfer-in workflow.
 
-## Step 3: Choose a Tokenization Path
+Before paying, review the domain setup options. In particular:
 
-Namefi typically offers a few paths depending on the domain's current registrar:
+- Turn on **Keep NS** if the domain must continue using its current nameservers.
+- If you do not keep the existing nameservers, review the available Auto Park, Auto ENS, and DNSSEC settings.
+- Confirm the recipient account or wallet and the order total shown by checkout.
 
-1. **Transfer-in then tokenize.** Move the domain to Namefi's accredited registrar partner, then mint the on-chain token. This is the most common path. It takes a few days because of ICANN's transfer flow, not because of anything [blockchain](/en/glossary/blockchain/)-related.
-2. **In-place tokenize (where supported).** For some registrar integrations, the domain stays where it is and the on-chain layer is added on top. Faster, but only available for specific partner registrars.
+## Step 4: Complete Checkout
 
-You'll see the path that applies to your domain. The dashboard will show the estimated time and any fees up front.
+Complete the cart checkout using the payment methods the app offers for your account. The checkout amount, currency, and included services shown on that screen are authoritative; do not rely on an old article or screenshot for a current price.
 
----
+Checkout starts Namefi's import order. It does **not** ask you to approve a separate NFT-mint transaction in your wallet.
 
-## Step 4: Confirm Auth Code / Approve Transfer (if needed)
+## Step 5: Approve the Registrar Transfer
 
-For the transfer-in path, you'll grab the [**auth code**](/en/glossary/auth-code/) (sometimes called EPP code) from your current registrar and paste it into Namefi. You may also need to:
+Your old registrar may contact the [registrant](/en/glossary/registrant/) to confirm the transfer. Keep the domain unlocked and watch the order page for a required action. If the EPP code is rejected or changes, Namefi can ask you to provide a new one.
 
-- Unlock the domain at your current registrar.
-- Approve a confirmation email sent to the [registrant](/en/glossary/registrant/) contact.
+The order screen currently says imports typically take 5–7 days. That interval is registrar processing time, not time spent waiting for an on-chain transaction.
 
-This is the slowest part of the whole process. Plan for 5–7 days for the cross-registrar move to complete, though it often finishes faster.
+## Step 6: Namefi Mints the NFT Automatically
 
----
+The import workflow starts the [NFT](/en/glossary/nft/) mint for the destination wallet. For traditional domains, that mint can continue in the background while the order settles, so you may briefly see a **Minting…** state.
 
-## Step 5: Mint the On-Chain Token
+This is an automatic, service-side transaction. You do not need ETH or Base ETH for the import mint, and you do not confirm that mint in a wallet popup. When it completes, the [on-chain](/en/glossary/on-chain/) NFT represents control of the imported domain within Namefi's registrar and protocol workflow.
 
-Once the domain is under the Namefi registrar integration, you'll be prompted to **mint** the [NFT](/en/glossary/nft/) representation (a standard [ERC-721](/en/glossary/erc-721/) token). Your wallet pops up; you confirm a transaction; [gas](/en/glossary/gas/) is paid; the token lands in your wallet.
+## Step 7: Verify the Domain, NFT, and DNS
 
-This is the moment the domain becomes [*tokenized*](/en/glossary/tokenize/). You now have:
+Check the order and **My Domains** views first. Once minting completes, confirm the token's destination address and on-chain record using the links Namefi provides or an appropriate block explorer.
 
-- The traditional [DNS](/en/glossary/dns/) / registrar record (still real, still ICANN-recognized).
-- An [on-chain](/en/glossary/on-chain/) NFT in your wallet that represents ownership.
+Then test the domain's website, email, and important [DNS](/en/glossary/dns/) records. If you selected **Keep NS**, DNS remains at the existing provider and Namefi's Auto Park, Auto ENS, and DNSSEC setup is skipped. If you chose Namefi-managed nameservers, review the resulting records before assuming production traffic is safe.
 
-The two are kept in sync by the protocol going forward.
+## Step 8: Manage DNS and Renewals
 
----
-
-## Step 6: Verify in Your Wallet and a Block Explorer
-
-Open your wallet's NFT tab. You should see the new tokenized domain NFT. Click through to a block explorer (Etherscan, Basescan, etc.) to confirm the contract and ownership address. This is a good moment to take a screenshot for your own records.
-
-If you have a [hardware wallet](/en/glossary/hardware-wallet/), this is a great moment to move the NFT to it. The transfer is a normal NFT transfer and costs gas.
-
----
-
-## Step 7: Manage DNS and Renewals
-
-Tokenizing a domain doesn't change how it resolves. Your nameservers, A records, MX records, [DNSSEC](/en/glossary/dnssec/) — all of it keeps working. You can manage these from the Namefi dashboard, or delegate to your existing DNS provider (Cloudflare, Route53, etc.) just like before.
+DNS behavior depends on the setup choice made in the cart. Namefi can manage DNS records and nameservers after import, or you can keep external nameservers and continue managing records with the existing DNS provider.
 
 For details on what changes (and what doesn't) at the DNS layer, see [DNS Still Works: Nameservers, Email, and DNSSEC on a Tokenized Domain](/en/blog/dns-on-tokenized-domains/).
 
-Renewals continue to happen through the registrar layer. Namefi handles the registrar-side billing; you keep the on-chain ownership.
-
----
+Renewals continue through the registrar layer and appear in Namefi after the transfer. Review the expiration date and auto-renew setting in **My Domains** rather than assuming the old registrar's renewal configuration carried over.
 
 ## What to Expect Cost-Wise
 
-You're paying for three things, roughly:
+The order total shown at checkout is the source of truth. Depending on the domain and account, it can include registrar transfer or renewal costs and the services shown in the cart.
 
-- **Registrar fees.** Normal annual [domain renewal](/en/glossary/domain-renewal/) pricing, plus any transfer-in fee. These are real-world costs that exist regardless of tokenization.
-- **Gas.** A few dollars for the mint transaction, depending on which chain (Base is cheaper than [Ethereum](/en/glossary/ethereum/) L1).
-- **Protocol fees.** Namefi's own fees for the tokenization service. These are shown in the dashboard before you confirm.
-
-There is no hidden surprise. If a number isn't on the confirmation screen, it isn't a charge.
-
----
+There is no separate user-paid [gas](/en/glossary/gas/) line for the automatic import mint. Later on-chain actions initiated by you — such as transferring an NFT — are different operations and may require a wallet transaction and network gas.
 
 ## Common Snags
 
 - **"My registrar won't release the auth code."** Some registrars hide this deep in their UI or require a support ticket. Be patient and persistent.
-- **"I unlocked the domain but the system still says locked."** Registrars often cache lock status for up to 24 hours. Wait a day, refresh.
-- **"My wallet shows the NFT, but the domain still appears at my old registrar."** During the transfer window, both sides may briefly show ownership. The on-chain side becomes authoritative after the transfer settles.
-- **"I want to use a [multisig](/en/glossary/multi-sig/) as the owner."** Supported. Connect the multisig wallet. Just be sure you can actually execute transactions from it — a multisig you've lost signers on is a domain you've lost too. Background: [Do Multisig Wallets Actually Improve Security?](/en/blog/do-multisig-wallets-actually-improve-security/)
+- **"The order says my auth code needs attention."** Retrieve a current EPP code from the registrar and update it on the Namefi order.
+- **"The transfer is still pending."** Watch for an approval message from the old registrar. Namefi's order page says you can contact that registrar to expedite.
+- **"The NFT says Minting…."** The traditional-domain mint runs in the background. Check the order state before trying to restart the import.
+- **"My website or email changed after import."** Recheck whether **Keep NS** was selected and verify the active nameservers and records. A wrong nameserver choice can interrupt both web and mail traffic.
 
 ---
 
@@ -157,10 +135,11 @@ There is no hidden surprise. If a number isn't on the confirmation screen, it is
 
 ## Summary
 
-- Tokenizing a domain you already own is a guided, ~30-minute interactive process plus up to a week of registrar-side waiting.
-- You need: control of the domain, a self-custodied wallet, a small amount of gas, and patience.
-- The on-chain mint is the *last* step; most of the work is the boring registrar-transfer flow that ICANN imposes regardless of blockchain.
-- After tokenization, you have **two synchronized layers of ownership** — the traditional DNS record and an NFT in your wallet.
+- The current Namefi journey is **Import → domain plus EPP auth code → cart → checkout → registrar transfer → automatic NFT mint**.
+- The import mint is service-side: you do not approve a separate mint transaction or fund its gas.
+- Namefi's current order screen says registrar imports typically take 5–7 days.
+- Choose **Keep NS** deliberately if the domain must continue using its existing DNS provider.
+- After completion, verify the order, NFT destination, nameservers, website, email, expiration date, and auto-renew setting.
 - Read the [wallet-loss recovery guide](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) *before* you tokenize, not after.
 
 Ready to start? Head to [namefi.io](https://namefi.io).
