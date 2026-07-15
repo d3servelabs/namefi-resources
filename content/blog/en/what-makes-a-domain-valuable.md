@@ -80,9 +80,9 @@ The clearest evidence is in the prices the insurance category has paid. QuinStre
 
 ## Brandability: when an invented word wins
 
-Keyword value is one road to a valuable name. Brandability is the other, and sometimes the better one. Plenty of the most valuable names in tech aren't dictionary words at all — `Stripe`, `Zillow`, the kind of short, pronounceable coinages a company can trademark cleanly and own outright.
+Keyword value is one road to a valuable name. Brandability is another. A brand can repurpose an ordinary dictionary word, as `Stripe` does, or use a coined name such as `Zillow`. What matters for a domain appraisal is whether the name is distinctive, pronounceable, memorable, and legally usable in the relevant market — not whether every successful example is invented.
 
-The appeal is precisely that they're *not* generic. A made-up but sayable name is distinctive by construction, defensible as a [trademark](/en/glossary/trademark/), and free of the crowding that surrounds every obvious keyword. A funded startup that can't get (or can't afford) the exact-match keyword `.com` will often happily pay for a brandable invented name instead, because distinctiveness is the thing a crowded category lacks. The bar is still the same three-part test from earlier — it has to read as wordlike, be sayable, and be spellable on first hearing — but a name that clears it without leaning on a dictionary entry can be worth as much as a keyword, and is usually easier to defend. We weigh the two approaches head to head in [brandable vs keyword domains](/en/blog/brandable-vs-keyword-domains/), and the practical side of choosing one for a project in [how to name your project](/en/blog/how-to-name-your-project/).
+The appeal is distinctiveness rather than generic meaning. A coined but sayable name may avoid some keyword crowding, while a familiar word may be easier to remember. Neither automatically creates enforceable [trademark](/en/glossary/trademark/) rights: registrability and scope depend on the mark, goods or services, jurisdiction, prior rights, and use. The appraisal test remains practical — can a buyer say, spell, remember, and lawfully use the name? We weigh the two approaches in [brandable vs keyword domains](/en/blog/brandable-vs-keyword-domains/) and cover naming practice in [how to name your project](/en/blog/how-to-name-your-project/).
 
 ## Extension stability: price the country in
 
@@ -102,7 +102,7 @@ Once you can read the fundamentals, the rest of the cluster opens up: the [domai
 
 Knowing what a name is worth is one skill. Trading on that knowledge safely is another. The moment a valuable name changes hands, the value factors stop mattering and the mechanics take over: the buyer doesn't want to pay before they control the asset, and the seller doesn't want to release control before they're paid. That trust gap is where high-value [domain trading](/en/glossary/domain-trading/) gets nervous.
 
-This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenizing a real [ICANN](/en/glossary/icann/) domain makes ownership easier to verify and transfer, with DNS continuity so the name keeps resolving cleanly through the handover. Read the name first; then make the trade auditable.
+This is the gap [Namefi](https://namefi.io) is built to narrow for supported domains. Tokenization makes the token-control history publicly auditable and can support atomic token-and-payment settlement on compatible venues. It does not by itself establish legal or registrar title: registry records, ICANN policy, platform agreements, disputes, and court orders still apply. Read the name first; then understand which control and settlement layers the trade actually moves.
 
 ## Friendly Disclaimer (Read Me!)
 
@@ -121,3 +121,5 @@ This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenizing a rea
 - Wikipedia — [.io (IANA phase-out risk after Chagos transfer)](https://en.wikipedia.org/wiki/.io#:~:text=current%20IANA%20rules%20may%20require%20the%20.io%20domain%20to%20be%20phased%20out)
 - Wikipedia — [.ai (Anguilla's 2023 .ai registration revenue)](https://en.wikipedia.org/wiki/.ai#:~:text=In%202023%2C%20Anguilla%27s%20government%20made%20about%20US%2432%20million)
 - Wikipedia — [Domain aftermarket (NameBio 2024 sales volume)](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)
+- Cambridge Dictionary — [`stripe`](https://dictionary.cambridge.org/dictionary/english/stripe) (dictionary-word classification)
+- Namefi — [Terms of Service](https://namefi.io/tos) and [Registration Agreement](https://namefi.io/registration-agreement) (token-control, registrar, policy, dispute, and legal layers)

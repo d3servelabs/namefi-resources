@@ -10,7 +10,7 @@ series: best-tlds-by-industry
 seriesOrder: 6
 format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
-description: 'The top 10 TLDs to secure for your law firm, including why .law is the only legal TLD restricted to verified attorneys (while .esq, .legal, .attorney, and .lawyer are open), plus a defensive strategy.'
+description: 'The top 10 TLDs to secure for your law firm, including the credential restrictions on .law and .abogado, the open registration of .esq and other legal-themed options, and a defensive strategy.'
 keywords: ['tlds for law firms', 'best domains for lawyers', '.law domain', 'is .esq restricted', 'legal domain extensions', 'defensive domain registration', 'attorney domain names', 'law firm branding', 'restricted legal TLDs', 'register law firm domains']
 relatedArticles:
   - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
@@ -38,7 +38,7 @@ There is also a defensive dimension. If you only register [`.com`](/en/tld/com),
 
 ## How to choose TLDs for your law firm
 
-Three criteria matter most. First, **trust signals**: extensions like `.com` and the legal-themed TLDs carry instant professional weight. Second, **restricted "verified" TLDs**: among the legal extensions, only `.law` actually gates registration behind proof of legal credentials, which is a feature — it signals to clients that the [registrant](/en/glossary/registrant/) was vetted. Despite being marketed to lawyers, [`.esq`](/en/tld/esq) is openly available with no [registry](/en/glossary/registry/)-level credential check, as are [`.legal`](/en/tld/legal), [`.attorney`](/en/tld/attorney), and [`.lawyer`](/en/tld/lawyer). Third, **defensive coverage**: register the obvious variants and partner names so no one else can. You do not need every extension on the internet; you need the few your clients and competitors would actually look for.
+Three criteria matter most. First, **trust signals**: extensions like `.com` and legal-themed TLDs can communicate professional positioning. Second, **restricted TLDs**: `.law` and [`.abogado`](/en/tld/abogado) both require eligible licensed legal professionals, law firms, legal regulators, or other categories defined by their current registry policies. In contrast, [`.esq`](/en/tld/esq), [`.legal`](/en/tld/legal), [`.attorney`](/en/tld/attorney), and [`.lawyer`](/en/tld/lawyer) do not currently impose the same registry-level credential gate. Third, **defensive coverage**: register the variants that fit your actual brand, risk, and budget rather than assuming every extension is necessary.
 
 ## The top 10 TLDs to secure for your law firm
 
@@ -66,9 +66,9 @@ Three criteria matter most. First, **trust signals**: extensions like `.com` and
 
 `.lawyer` pairs naturally with an individual practitioner's name and, like `.attorney`, is **not** restricted to verified credentials. You can confirm its delegation in the [IANA root database](https://www.iana.org/domains/root/db/lawyer.html) and its [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/lawyer). Grab it to protect your name and to support partner microsites.
 
-### 7. [.abogado](/en/tld/abogado) — reach Spanish-speaking clients
+### 7. [.abogado](/en/tld/abogado) — Spanish-language legal positioning (RESTRICTED)
 
-[`.abogado`](/en/tld/abogado) ("lawyer" in Spanish) is a smart pick for firms serving Hispanic and Latino communities or operating in Spanish-speaking markets. It is openly available; see its [IANA root entry](https://www.iana.org/domains/root/db/abogado.html) and [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/abogado). A focused way to signal language and cultural fit.
+[`.abogado`](/en/tld/abogado) ("lawyer" in Spanish) is intended for qualified legal professionals and organizations serving Spanish-speaking markets. It is **not** open to everyone: GoDaddy Registry's current eligibility policy restricts registration to appropriately licensed legal professionals, law firms, legal regulators, courts, law schools, and other listed legal organizations, with verification and continuing-eligibility requirements. See the registry's [`.abogado` Eligibility Policy](https://domains.registry.godaddy/policiespdf/ABGD-POL-001-Eligibility_Policy-1.0.pdf), [IANA root entry](https://www.iana.org/domains/root/db/abogado.html), and [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/abogado).
 
 ### 8. [.net](/en/tld/net) — the classic defensive backup
 
@@ -98,7 +98,7 @@ Namefi also supports [Web3](/en/glossary/web3/) domain tokenization, letting you
 
 ### Can any law firm register a .law domain?
 
-No. `.law` is a restricted TLD. Registration is limited to qualified lawyers, law firms, and legal regulators who can be verified as licensed to practice law, and the registry uses an independent validator and may request proof of eligibility at any time, per the registry's [eligibility requirements](https://www.namecheap.com/support/knowledgebase/article.aspx/10378/35/law-domain-registration-requirements/). Among the legal-themed extensions, `.law` is the only one that gates registration this way. Despite being marketed to attorneys, `.esq` is **not** credential-gated, and `.legal`, `.attorney`, and `.lawyer` are likewise open to anyone.
+No. `.law` is restricted to qualified legal registrants under its current eligibility requirements. `.abogado` also has a registry-level eligibility policy for licensed legal professionals and specified legal organizations. Despite being marketed to attorneys, `.esq` is not currently credential-gated, and `.legal`, `.attorney`, and `.lawyer` do not have the same restriction.
 
 ### Does the TLD I choose affect my SEO?
 
@@ -110,4 +110,4 @@ There is no fixed number, but most firms are well served by their primary `.com`
 
 ### Should I register a legal TLD I am not yet eligible for?
 
-If you cannot pass eligibility verification for `.law` — the one restricted legal TLD — you cannot register it, because the [registry verifies credentials](https://www.iana.org/domains/root/db/law.html) before and after registration. The other legal-themed extensions have no such gate: focus your defensive budget on the unrestricted ones you can control today, such as `.esq`, `.legal`, `.attorney`, `.lawyer`, and `.com`.
+Do not register `.law` or `.abogado` unless you satisfy the applicable current eligibility policy and can pass verification. If you are not eligible, focus on unrestricted options such as `.esq`, `.legal`, `.attorney`, `.lawyer`, and `.com`, while still checking each registry's live terms before registration.

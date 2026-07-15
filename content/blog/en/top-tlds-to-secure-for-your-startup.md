@@ -86,11 +86,11 @@ Focus on four criteria. **Relevance**: does the suffix signal what you do (a dev
 
 You do not need all ten extensions on day one. A practical baseline: register the exact-match version of your brand across the top two to four extensions your audience actually types (almost always your .com plus one or two of .io, .ai, or .co), then add the one category TLD that fits your product, such as .app, .dev, .tech, or .club. This blocks the most likely [typosquatting](/en/glossary/typosquatting/) and impersonation targets while keeping costs reasonable.
 
-From there, treat your portfolio like any other critical asset. Watch your renewal dates closely, since an expired core domain can be snapped up within hours and is expensive or impossible to recover. Enable [auto-renew](/en/glossary/domain-renewal/), keep your [registrant](/en/glossary/registrant/) contact information current, and consider redirecting your defensive registrations to your primary site so they all funnel traffic and reputation back to one canonical brand.
+From there, treat your portfolio like any other critical asset. Watch renewal dates closely: expiration can interrupt resolution before a domain becomes available to the public, and recovery can become more expensive or eventually impossible. For covered gTLDs, ICANN's Expired Registration Recovery Policy requires a 30-day Redemption Grace Period after deletion, during which the prior registrant can restore the name and transfer is prohibited; availability after the lifecycle completes is a later stage, not an immediate consequence of expiration. Enable [auto-renew](/en/glossary/domain-renewal/), keep your [registrant](/en/glossary/registrant/) contact information current, and consider redirecting defensive registrations to your primary site.
 
 ## Register your startup domains at Namefi
 
-[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) built for founders who want to manage their entire [domain portfolio](/en/glossary/domain-portfolio/) in one place. You get transparent pricing with no surprise upsells, fast DNS so changes propagate quickly, and support for the extensions above and many more. Namefi also supports Web3 tokenization, letting you hold eligible domains as NFTs, which makes ownership portable and programmable in a way traditional registrars cannot match. Secure your startup's core .com alongside its category and defensive extensions, then manage renewals and DNS from a single dashboard at [Namefi](https://namefi.io).
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) where founders can manage registrations, renewals, and DNS for supported extensions. Namefi also offers a token-control layer for eligible domains; registrar and registry records, ICANN policy, platform agreements, disputes, and court orders still apply. Check the live catalog and current pricing before relying on support for a particular TLD.
 
 ## Frequently asked questions
 
@@ -104,8 +104,15 @@ Not directly. Google's Search Central team states that its systems treat new gTL
 
 ### Should I register country-code TLDs like .io and .ai if I'm not in those countries?
 
-Yes. Extensions like .io and .ai are technically country-code TLDs (for the British Indian Ocean Territory and Anguilla respectively), but both [accept registrations from anyone worldwide](https://www.iana.org/domains/root/db/ai.html) and are used overwhelmingly by global tech companies for their wordplay, not their geography.
+They may be options, but check the current registry and registrar eligibility rules before registering. `.io` and `.ai` are country-code TLDs for the British Indian Ocean Territory and Anguilla, even though they are also used for technology branding outside those territories. IANA's delegation record identifies the operator and TLD type; it is not, by itself, a statement that registration is open without restriction.
 
 ### Why do some extensions like .app and .dev require HTTPS?
 
 Google Registry placed the entire .app and .dev namespaces on the [HSTS preload list](https://hstspreload.org/), so browsers will only load these sites over a secure HTTPS connection. It is a built-in security feature: you simply need a valid TLS certificate, which most modern hosting providers issue for free.
+
+## Sources and further reading
+
+- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-28-02-2013-en) (expiration notices and the 30-day Redemption Grace Period after deletion)
+- ICANN — [Registry agreements](https://www.icann.org/en/registry-agreements) (current gTLD operators and contract records)
+- IANA — [Root Zone Database](https://www.iana.org/domains/root/db) (authoritative TLD types and delegation records)
+- Google Search Central — [Google's handling of new top-level domains](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level) (generic TLD ranking treatment)

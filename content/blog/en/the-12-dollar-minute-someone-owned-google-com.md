@@ -35,7 +35,7 @@ For about one minute on the night of September 29, 2015, Google's own retail reg
 
 He did not break in. He did not exploit a buffer overflow or phish an administrator. He went to Google's own retail storefront — Google Domains — typed in the most famous domain in the world, and watched the checkout flow do something it should never have done: it let him pay. His card was charged and Google systems sent ownership-related messages before canceling the order. Public evidence does **not** establish that the `.com` registry's [registrant](/en/glossary/registrant/) record changed, or that Ved gained DNS, mail, certificate, or registry-level control.
 
-This is **Domain Mayday / 域名浩劫**, our series on the moments when domain security failed in public. Most episodes are about names stolen by attackers. This one is different — and more unsettling — because nobody was attacking anything. The single most important domain on earth was sold, at list price, to the first person who happened to put it in a shopping cart.
+This is **Domain Mayday / 域名浩劫**, our series on moments when domain security failed in public. Most episodes are about names stolen by attackers. This one is different because nobody was attacking anything: a retail checkout accepted a list-price order for one of the internet's most important domains, and related ownership-verification systems reacted before Google canceled it. That is serious without claiming the registry completed a sale.
 
 ## What google.com normally is
 
@@ -43,7 +43,7 @@ It is hard to overstate what google.com is worth, because the number isn't reall
 
 Google.com is the front door to the most-used search engine on the planet, the anchor of Gmail, Maps, Ads, YouTube account flows, and the authentication backbone for billions of people. Slate, covering the incident, called it ["the most-trafficked domain in the world"](https://slate.com/business/2015/10/google-com-domain-buy-ex-googler-sanmay-ved-bought-the-search-engine-s-domain-for-one-minute-in-cute-stunt.html#:~:text=The%20cost%20to%20buy%20the%20most%2Dtrafficked%20domain%20in%20the%20world%3F%20Only%20%2412.). Whatever [Tesla.com](/en/blog/from-teslamotors-com-to-tesla-com/) or Cars.com sold for, google.com is in a category of one: it is not a brand asset, it is *infrastructure* that a large fraction of the human population touches every day.
 
-A domain like that is supposed to be untouchable. It should be locked, flagged, registry-held, server-hold, transfer-prohibited — wrapped in every protection a [registrar](/en/glossary/registrar/) can apply. The entire premise of domain security is that the more critical the name, the harder it is to move.
+A domain like that should have layered registrar and registry protections: registry lock, restricted and audited update paths, multi-party approval, and statuses such as `serverTransferProhibited`, `serverUpdateProhibited`, or `serverDeleteProhibited` where appropriate. `serverHold` is not a protective lock for an active site; it removes the domain from DNS. The more critical the name, the more carefully every change path should be controlled.
 
 And then, for $12, Google's storefront behaved as though it could be ordered.
 
@@ -75,7 +75,7 @@ Ved did the responsible thing and immediately reported what he saw. Because the 
 
 ![Vivid colorful concept art of a giant glowing key held briefly in an open hand, then gently pulled back by a beam of light, against a colorful circuit-board sky with a refunded coin floating away](../../assets/the-12-dollar-minute-someone-owned-google-com-02-how.jpg)
 
-Google's automated systems caught the anomaly fast. Within about a minute, the order was reversed. Fox News reported the cancellation plainly: ["Google Domains canceled the sale a minute later, saying someone had registered the site before he could, and refunded Ved the $12."](https://www.foxnews.com/tech/student-manages-to-buy-domain-name-of-google-com-for-12#:~:text=Google%20Domains%20canceled%20the%20sale%20a%20minute%20later) The "someone" who had registered it first, of course, was Google itself.
+Google canceled the order within about a minute and refunded the charge; public reporting does not establish the internal detection mechanism. Fox News described the cancellation plainly: ["Google Domains canceled the sale a minute later, saying someone had registered the site before he could, and refunded Ved the $12."](https://www.foxnews.com/tech/student-manages-to-buy-domain-name-of-google-com-for-12#:~:text=Google%20Domains%20canceled%20the%20sale%20a%20minute%20later) The "someone" who had registered it first, of course, was Google itself.
 
 Then Google did the thing that turned this into legend. Through its Vulnerability Reward Program, it paid Ved a bounty — and the company chose the number on purpose. In its official 2015 security year-in-review, Google wrote: ["Our initial financial reward to Sanmay—$ 6,006.13—spelled-out Google, numerically (squint a little and you'll see it!). We then doubled this amount when Sanmay donated his reward to charity."](https://americanbazaaronline.com/2016/01/29/google-paid-for-buying-google-com-domain/#:~:text=Our%20initial%20financial%20reward%20to%20Sanmay) (Read it as digits: 6-0-0-6-1-3 → G-O-O-G-L-E.)
 
@@ -91,7 +91,7 @@ The honest answer is that nobody outside Google has the full internal post-morte
 
 What's verifiable is the visible behavior. Reporting at the time floated the two ordinary explanations: ["It could have been a bug in Google Domains or the company simply failed to renew its domain name when the time came."](https://finance.yahoo.com/news/google-briefly-lost-ownership-domain-160018662.html#:~:text=It%20could%20have%20been%20a%20bug%20in%20Google%20Domains%20or%20the%20company%20simply%20failed%20to%20renew) Either way, for a brief window the storefront's "is this name available to register?" logic returned the wrong answer for a name that should have been hard-coded as unsellable.
 
-The deeper lesson is architectural. A domain's protection is only as good as the *weakest path to changing it*. A registry can apply server-hold and transfer-prohibited flags; a registrar can lock a name; an organization can enable registrar-level multi-factor and approval workflows. But if any single interface — a retail checkout, an internal admin tool, a support override, an API endpoint — can mutate ownership without those guards firing, then the name is exactly as secure as that one weakest interface. The blast radius of a domain takeover is enormous (DNS, email, certificates, login), but the surface that triggers it can be tiny: one form that should have said "no" and said "yes" instead.
+The deeper lesson is architectural. A domain's protection is only as good as the *weakest authorized path to changing it*. A registry can apply transfer-, update-, and delete-prohibited statuses; a registrar can offer registry lock; an organization can require multi-factor and multi-party approval. If any interface — retail checkout, admin tool, support override, or API — can bypass those guards, that interface becomes the weak point. This incident proves the checkout and adjacent verification logic failed; it does not prove that either could mutate the registry record.
 
 That asymmetry is the whole problem. The value at stake is maximal. The action required to move it can be minimal.
 
@@ -101,7 +101,7 @@ A few durable lessons come out of the $12 minute:
 
 1. **Registrar and registry control is a critical trust layer.** DNS delegation and many ownership-verification flows ultimately depend on it, so protect registrar access, transfer controls, and registry locks accordingly. This incident does not prove that Ved obtained that layer; it proves that adjacent checkout and verification systems can fail dangerously.
 
-2. **Criticality and protection are not automatically correlated.** You'd assume the most important domain in the world is the most locked-down. For one minute, it wasn't. Importance does not enforce itself; explicit locks, holds, and approval gates do. Audit them; don't assume them.
+2. **Criticality must cover every adjacent system.** The registry may remain locked while checkout or ownership-verification logic still behaves incorrectly. Audit the storefront, account, support, API, and verification paths as well as registry controls.
 
 3. **The [control plane](/en/blog/dns-is-the-control-plane/) is bigger than DNS.** People secure their nameservers and forget the registrar account, the support channel, the billing email, and the internal tooling. A domain can be lost through any door that can rewrite ownership — not just the one labeled "DNS."
 
@@ -134,5 +134,6 @@ Google canceled the order in about a minute. The broader goal is defense in dept
 - Security Affairs — [Sanmay Ved who bought Google.com donates Google reward](https://securityaffairs.com/40904/breaking-news/google-com-charity.html)
 - Yahoo Finance — [Google Briefly Lost Ownership Of Its Domain After It Was Mistakenly Sold For $12](https://finance.yahoo.com/news/google-briefly-lost-ownership-domain-160018662.html)
 - Forbes — [Google Accidentally Sold Google.com To A Man For $12](https://www.forbes.com/sites/ianmorris/2015/10/02/google-accidentally-sold-google-com-to-a-man-for-12/) (contemporaneous analysis questioning whether meaningful domain control or registry completion occurred)
+- ICANN — [EPP Status Codes](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en) (`serverHold` removes DNS activation; transfer, update, and delete prohibitions have different effects)
 - Vocal Media — [The Man Who Owned Google.com — for One Minute](https://vocal.media/fyi/the-man-who-owned-google-com-for-one-minute-rc1vud0zhq)
 - Namefi — [namefi.io](https://namefi.io)

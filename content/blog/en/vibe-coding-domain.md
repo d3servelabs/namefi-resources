@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 format: opinion
 ogImage: ../../assets/vibe-coding-domain-og.jpg
-description: "Vibe-coded apps deploy to platform subdomains. How the same agent that built your app can name it and register the domain without breaking flow."
+description: "Many vibe-coded apps deploy to a hosting-platform subdomain. How the same agent that built your app can name it and register a domain without breaking flow."
 keywords: ["vibe coding domain", "vibe coding custom domain", "register domain from cursor", "AI built my app now I need a domain", "custom domain for AI generated app", "vibe coded app domain name", "platform subdomain", "domain registration without leaving editor", "coding agent domain registration", "namefi mcp vibe coding", "AI agent registers domain", "in-context domain registration", "deploy custom domain AI app", "availability-aware domain brainstorming"]
 relatedArticles:
   - /en/blog/mcp-quickstart/
@@ -39,7 +39,7 @@ None of that is a knock on the practice. Describing what you want and getting a 
 
 ## The last mile: from platform subdomain to your own domain
 
-Every one of those platforms solves the same problem the same way: ship first, deploy to a [subdomain](/en/glossary/subdomain/) of the platform's own domain, and let the custom domain be a later, optional step you configure in a settings panel. That's the right default — you shouldn't need to own a domain before you can see whether your idea even works — but it means the platform subdomain is a waypoint, not a destination. It's slower to say out loud, it's not memorable, and it broadcasts "I'm still on the free tier of someone else's tool" to anyone who looks at the address bar.
+Hosting platforms commonly let you ship first to a [subdomain](/en/glossary/subdomain/) of the platform's own domain, then configure a custom domain later. Editors and coding agents such as Cursor or Claude Code do not themselves host every app, so the exact deployment URL comes from the hosting service used by the project. A platform subdomain is useful for testing, but it may be less memorable than a domain you control.
 
 Registering the real domain is a small task in absolute terms — a name search, a purchase, a couple of DNS records — but it's the one step in the whole vibe-coding loop that traditionally happens somewhere else entirely.
 
@@ -55,9 +55,9 @@ The fix is to treat the domain the same way you already treat the deploy: as ano
 
 Condensed to the essentials, the flow is three steps:
 
-1. **Ask the agent to check the name.** "Is `myapp.com` available?" is a read-only call, so it works even before you've connected anything with write access.
+1. **Ask the agent to check the name.** "Is `myapp.com` available?" is a read-only call and does not spend funds. The current live MCP endpoint still requires the session to authenticate during initialization, using OAuth or an API key.
 2. **Confirm and register.** "Register it for a year" submits the order; the agent watches it until it's done.
-3. **Point it at your deploy.** Give the agent the record your hosting platform asks for (an A record for an apex domain, a CNAME for a subdomain), and it writes it — or, if you're handing DNS entirely to your host, it repoints the domain's [nameserver](/en/glossary/nameserver/)-level delegation instead.
+3. **Point it at your deploy.** Give the agent the exact DNS records your hosting platform asks for, and it writes those supported records into the Namefi-managed zone. Record types and values vary by host; do not assume every apex uses an A record or every subdomain uses a CNAME. The current Namefi MCP/API flow described here does not expose parent-zone [nameserver](/en/glossary/nameserver/) delegation changes.
 
 That's the shape of it; the exact mechanics — which config file each editor reads, the literal DNS values Vercel and Cloudflare Pages ask for — are already spelled out step by step in [Namefi MCP Quickstart: Claude Code, Cursor & Windsurf](/en/blog/mcp-quickstart/), so this piece won't repeat them. If you're coding in something other than those three editors — OpenAI Codex, Gemini CLI, Claude Desktop, or anything else that speaks [MCP](https://modelcontextprotocol.io) — [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) is the hub with a verified setup for each one, plus a raw REST path for anything that isn't MCP-native at all.
 
@@ -82,24 +82,25 @@ No more than you need to know how a database index works to use one. Your agent 
 The registration and DNS side is platform-agnostic — it's a domain and a DNS record, which work the same regardless of what built your app. What varies is which record type your hosting platform asks for, which [Namefi MCP Quickstart](/en/blog/mcp-quickstart/) covers for Vercel and Cloudflare Pages specifically.
 
 ### Is the domain I register this way tokenized?
-Yes, by default. Namefi is an ICANN-accredited registrar, and it registers the domain as an NFT to the wallet tied to your API key, on Base, alongside the standard registration — you get a normal working domain and an on-chain ownership record, not one instead of the other.
+For the documented `/v-next` `registerDomain` flow, Namefi mints the domain token to the designated receiving wallet on its supported chain. Check the current documentation for the exact registration and payment path you use rather than assuming every path has the same default wallet or chain. The registrar, registry, policy, agreement, dispute, and legal layers remain in addition to the token-control layer.
 
 ### What if the exact name I want is already taken?
 That's what the bulk availability check above is for — hand your agent several candidates ([TLD](/en/glossary/tld/) variations, prefixes, synonyms) instead of testing them one at a time, and let it report back what's actually free.
 
 ### Do I need a Namefi account before trying this?
-No. The availability check is read-only and needs no authentication, so you can wire up the connection and test a name before generating an API key or funding anything.
+You do not need funds for an availability check, and a compatible MCP client can authenticate with OAuth rather than a static API key. Although the underlying availability REST operation is documented as public, the live MCP endpoint returned `401 Unauthorized` to an unauthenticated `initialize` request when verified on July 14, 2026.
 
 ## Ship the name with the flow you're already in
 
-The domain isn't a separate project — it's the same kind of infrastructure decision as picking a hosting platform, and there's no good reason it should be the one piece of shipping an app that still requires a browser tab and a checkout form. The next time an agent hands you back a working app on a platform subdomain, stay in the conversation and ask it to check a name.
+The domain is an infrastructure decision like picking a hosting platform. OAuth may open a browser once for authorization; after that, the registration and DNS-record workflow can continue in the coding-agent conversation. The next time an agent hands you a working app on a platform subdomain, ask it to check a name.
 
-**[Generate a Namefi API key](https://namefi.io/api-key)** and try it on whatever you're building right now, or start with the full walkthrough in [Namefi MCP Quickstart: Claude Code, Cursor & Windsurf](/en/blog/mcp-quickstart/).
+Use OAuth in a compatible client or **[generate a Namefi API key](https://namefi.io/api-key)**, then try it on what you're building now. For the full walkthrough, see [Namefi MCP Quickstart: Claude Code, Cursor & Windsurf](/en/blog/mcp-quickstart/).
 
 ## Sources and further reading
 
 - Wikipedia — [Vibe coding](https://en.wikipedia.org/wiki/Vibe_coding) (definition, Andrej Karpathy's February 2025 coinage, adoption timeline)
 - Namefi — [namefi.io/llms.txt](https://namefi.io/llms.txt#:~:text=or%20screen%20many%20names%20at%20once) (bulk availability endpoint, MCP server URL, registration and DNS reference)
+- Namefi — [MCP discovery descriptor](https://namefi.io/.well-known/mcp/servers.json) (OAuth and API-key authentication metadata; its anonymous-read claim differed from live `initialize` behavior on July 14, 2026)
 - Namefi — [Namefi MCP Quickstart: Claude Code, Cursor & Windsurf](/en/blog/mcp-quickstart/) (per-editor config, the full five-step flow, Vercel and Cloudflare Pages DNS steps)
 - Namefi — [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) (setup for Codex, Gemini CLI, Claude Desktop, and the raw REST path)
 - Model Context Protocol — [modelcontextprotocol.io](https://modelcontextprotocol.io) (protocol overview)

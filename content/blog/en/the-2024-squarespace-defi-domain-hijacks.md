@@ -31,7 +31,7 @@ relatedGlossary:
   - /en/glossary/tld/
 ---
 
-In July 2024, the most dangerous thing about a crypto project's website was not a [smart-contract](/en/glossary/smart-contract/) bug or a leaked [private key](/en/glossary/private-key/). It was the [registrar](/en/glossary/registrar/) that owned the domain.
+In July 2024, the most dangerous thing about several crypto-project websites was not a [smart-contract](/en/glossary/smart-contract/) bug or a leaked [private key](/en/glossary/private-key/). It was the compromised [registrar](/en/glossary/registrar/) account and DNS control path. The registrar managed the registration; the registrant retained the contractual registration rights.
 
 For a stretch of days that month, users who typed a familiar address into their browser — the official site of a [lending protocol](/en/glossary/lending-protocol/) they trusted, a bridge they had used a hundred times — landed exactly where they expected, on a page that looked exactly right, and then watched their [wallets](/en/glossary/wallet/) drain. Nothing had been hacked in the usual sense. No one had cracked a password or phished a [seed phrase](/en/glossary/seed-phrase/). The attackers had simply walked in through the front door of the *domain* itself, because that front door had been left unlocked during a corporate move most of these projects never noticed.
 
@@ -45,7 +45,7 @@ That is what made the 2024 incident a *mass* event rather than a string of unluc
 
 In June 2023, [Squarespace purchased roughly 10 million domain names from Google Domains](https://krebsonsecurity.com/2024/07/researchers-weak-security-defaults-enabled-squarespace-domains-hijacks/#:~:text=Squarespace%20purchased%20roughly%2010%20million%20domain%20names%20from%20Google%20Domains%20in%20June%202023), after Google announced it was shutting its registrar down. Over the following year, [Squarespace has been migrating users for roughly 10 million domain names purchased in the transaction](https://www.securityweek.com/hackers-exploit-flaw-in-squarespace-migration-to-hijack-domains/#:~:text=Squarespace%20has%20been%20migrating%20users%20for%20roughly%2010%20million%20domain%20names%20purchased%20in%20the%20transaction). To make the transition feel seamless, Squarespace pre-created accounts for the people associated with each migrated domain, keyed to the email addresses Google had on file.
 
-Seamless was exactly the problem. A migration that asks nothing of the user is a migration where the user has not proven anything — not their password, not their identity, not their control of the email. The accounts existed, the domains were attached, and the only thing standing between a domain and whoever showed up first was a login screen that, for these migrated accounts, asked for almost nothing.
+The convenience created risk. According to the incident reporting cited below, some migrated accounts had not completed a strong ownership-verification flow before domains were associated with them. In the affected path, a person who knew the associated email address could create or claim an account before the legitimate holder did, without the protections users would reasonably expect for a domain-control account.
 
 ## The July 2024 hijacks
 
@@ -77,7 +77,7 @@ Put those together and the attack writes itself. The email addresses tied to mig
 
 Why did the pre-linking exist at all? Convenience. The researchers concluded that [Squarespace assumed all users migrating from Google Domains would select the social login options](https://krebsonsecurity.com/2024/07/researchers-weak-security-defaults-enabled-squarespace-domains-hijacks/#:~:text=Squarespace%20assumed%20all%20users%20migrating%20from%20Google%20Domains%20would%20select%20the%20social%20login%20options) — Google OAuth — rather than email-and-password. The system [pre-linking all emails to domains, regardless of whether the account already exists, likely because they wanted users to be able to OAuth with Google and immediately have access to all their domains](https://www.theregister.com/2024/07/15/squarespace_fingered_for_dns_hijackings/#:~:text=pre%2Dlinking%20all%20emails%20to%20domains%2C%20regardless%20of%20whether%20the%20account%20already%20exists%2C%20likely%20because%20they%20wanted%20users%20to%20be%20able%20to%20OAuth%20with%20Google%20and%20immediately%20have%20access%20to%20all%20their%20domains), as the researchers explained to The Register. But the email-and-password path was never closed off, and on that path nothing proved control of the inbox.
 
-There was one more accelerant. During the migration, the protection that should have caught this was switched off: [as part of the transition to Squarespace, multi-factor authentication was turned off on accounts](https://www.bleepingcomputer.com/news/security/dns-hijacks-target-crypto-platforms-registered-with-squarespace/#:~:text=as%20part%20of%20the%20transition%20to%20Squarespace%2C%20multi%2Dfactor%20authentication%20was%20turned%20off%20on%20accounts). Even a domain owner who had carefully enabled MFA on Google Domains arrived at Squarespace with that MFA stripped away. No password to crack, no second factor to bypass, no email to intercept — for a migrated, unclaimed account, possession of a guessable email address was the whole authentication story.
+There was one more accelerant. During the migration, the protection that should have caught this was switched off: [as part of the transition to Squarespace, multi-factor authentication was turned off on accounts](https://www.bleepingcomputer.com/news/security/dns-hijacks-target-crypto-platforms-registered-with-squarespace/#:~:text=as%20part%20of%20the%20transition%20to%20Squarespace%2C%20multi%2Dfactor%20authentication%20was%20turned%20off%20on%20accounts). Even a domain owner who had enabled MFA on Google Domains could arrive at Squarespace without that protection. For the vulnerable migrated-account path described by researchers, knowing the associated email address could therefore be enough to start the unauthorized claim flow; the precise path and impact depended on the account's migration state.
 
 ## Response and mitigation
 
@@ -91,7 +91,7 @@ The Squarespace hijacks are not really a story about one company's misconfigurat
 
 A few lessons generalize well beyond July 2024:
 
-1. **The registrar account is the real root of trust — not the smart contract.** None of the affected protocols had a contract bug. Their [on-chain](/en/glossary/on-chain/) code was fine. The attackers took the *domain*, and the domain is what users type, trust, and connect their wallets to. A project can be flawless on-chain and still hand its users to an attacker if its DNS [control plane](/en/blog/dns-is-the-control-plane/) is weak.
+1. **The registrar and DNS accounts are critical roots of trust for the website — independent of the smart contract.** None of the affected protocols needed a contract bug for the attack to work. The attackers changed the *domain's* destination, and the domain is what users type, trust, and connect their wallets to. A project can be flawless on-chain and still hand its users to an attacker if its DNS [control plane](/en/blog/dns-is-the-control-plane/) is weak.
 
 2. **MFA is only protection if it survives migrations.** The painful detail here is that MFA didn't fail under attack — it was *removed* before the attack, as a migration convenience. Treat MFA status as something to re-verify after every account move, transfer, or vendor change, not something to set once and forget.
 
@@ -99,17 +99,17 @@ A few lessons generalize well beyond July 2024:
 
 4. **Guessable identifiers are credentials in disguise.** The "secret" that unlocked these domains was an email address that was never secret. Any system where knowing a public identifier grants control is one impersonation away from compromise.
 
-5. **The blast radius of a registrar equals its entire customer base.** Individual domain security doesn't matter if the registrar's default behavior is weak, because the default applies to everyone at once. Where your domain lives, and how that custodian handles authentication, is a security decision as consequential as any you make on-chain.
+5. **A registrar-wide migration can create a shared blast radius.** A weak default can expose every account that passes through the affected migration path, even if it does not compromise every customer. Where your domain lives, and how that provider handles authentication and migrations, is a security decision as consequential as many choices you make on-chain.
 
 ## The Namefi angle
 
 ![Colorful illustration of verifiable, tamper-resistant domain ownership — a domain card secured by a green shield, a green Namefi token, and DNS continuity](../../assets/the-2024-squarespace-defi-domain-hijacks-03-namefi-angle.jpg)
 
-The 2024 hijacks happened in the gap between "who really owns this domain" and "who can log into the account that controls it." In the traditional model, those two things are only loosely connected: ownership is a record in a registrar's database, and access to it is gated by whatever authentication that registrar happens to enforce that week — including in the middle of a 10-million-domain migration where the gate was, briefly, wide open.
+The 2024 hijacks exposed the difference between registrant rights, registrar-account access, and operational DNS control. Those layers are connected, but they are not identical: an attacker did not need to become the lawful registrant to redirect users if the attacker could reach the account path that changed DNS.
 
-[Namefi](https://namefi.io) is built to close that gap. By representing [domain ownership](/en/glossary/domain-ownership/) as a tokenized, on-chain asset that stays compatible with DNS, control becomes something you can *verify cryptographically* rather than something that rests on a guessable email and a vendor's login defaults. Ownership lives in a wallet you control, transfers are auditable, and the question "who is allowed to change this domain's records" has a tamper-resistant answer instead of a customer-support answer.
+[Namefi](https://namefi.io) adds an on-chain token-control layer for supported domains. Wallet possession and token transfers can be verified publicly, and compatible marketplace settlement can move that token atomically. But tokenization does not replace the registrar, registry, or DNS layers: [DNS still runs through ordinary providers and registrar infrastructure](https://namefi.io/r/en/blog/dns-on-tokenized-domains), while Namefi's [Terms of Service](https://namefi.io/tos) preserve platform and registrar actions required by policy, disputes, vendor changes, or service enforcement.
 
-That would not have made Squarespace's migration flawless. But it changes the failure mode. An attacker who registers an account with a known email does not thereby own a [tokenized domain](/en/blog/what-are-tokenized-domains/) — ownership is not a row that a half-initialized account can quietly claim. The control plane for a name should be as hard to spoof as the assets it guards. In July 2024, for hundreds of crypto projects, it wasn't. That gap is exactly the one worth engineering away.
+That distinction matters. Registering an account with a known email would not, by itself, transfer the wallet token for a [tokenized domain](/en/blog/what-are-tokenized-domains/). It could still threaten DNS if the compromised account or provider retained authority to change records, and registrar or platform interventions can still affect the domain and token. Token custody is therefore an additional auditable control and settlement layer, not immunity from registrar, DNS-provider, policy, or support-channel compromise.
 
 ## Sources and further reading
 
@@ -123,4 +123,5 @@ That would not have made Squarespace's migration flawless. But it changes the fa
 - SiliconANGLE — [Multiple crypto domains hijacked from Squarespace due to Google Domains migration flaw](https://siliconangle.com/2024/07/15/multiple-crypto-domains-hijacked-squarespace-due-google-domains-migration-flaw/)
 - Cybernews — [Squarespace crypto domains under DNS attack, lack of MFA to blame](https://cybernews.com/security/squarespace-dns-hijack-attack-crypto-domains-mfa/)
 - Hackread — [DeFi Hack Alert: Squarespace Domains Vulnerable to DNS Hijacking](https://hackread.com/defi-hack-alert-squarespace-domains-dns-hijacking/)
+- Namefi — [DNS on Tokenized Domains](https://namefi.io/r/en/blog/dns-on-tokenized-domains) and [Terms of Service](https://namefi.io/tos)
 - CircleID — [Security Lapses Lead to Squarespace Domain Hijacks](https://circleid.com/posts/20240716-security-lapses-lead-to-squarespace-domain-hijacks)

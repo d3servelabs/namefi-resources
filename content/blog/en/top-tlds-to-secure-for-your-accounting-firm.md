@@ -90,7 +90,7 @@ You do not need to register hundreds of permutations. Focus on the extensions wh
 
 ## Register your accounting firm domains at Namefi
 
-[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) built for professionals who want clarity and control over their [domain portfolio](/en/glossary/domain-portfolio/). You get transparent pricing with no surprise renewal markups, fast DNS so your sites and email resolve reliably, and a single dashboard to manage every extension your firm holds. Namefi also supports [Web3](/en/glossary/web3/) domain tokenization, letting you hold eligible domains as NFTs for portable, verifiable ownership — a forward-looking option as digital identity evolves. Consolidate your flagship, industry, and defensive registrations in one place and keep your firm's brand secure.
+[Namefi](https://namefi.io) can register and manage supported ordinary domains in an accounting firm's [domain portfolio](/en/glossary/domain-portfolio/), including many flagship, industry, and defensive options. Check the live catalog before relying on support for a particular extension: Namefi's public availability API currently marks `.cpa` as unsupported and not importable, so an eligible firm must obtain and manage that restricted domain through the authorized `.cpa` program. Namefi's optional [Web3](/en/glossary/web3/) token-control layer applies only to eligible supported domains and does not make `.cpa` available through Namefi.
 
 ## Frequently asked questions
 
@@ -108,4 +108,4 @@ There is no fixed number, but most firms are well served by a small portfolio: a
 
 ### What is a Web3 or tokenized domain?
 
-A [tokenized domain](/en/glossary/tokenized-domain/) is a traditional domain whose ownership is represented as an NFT on a [blockchain](/en/glossary/blockchain/), making ownership portable and verifiable [on-chain](/en/glossary/on-chain/). Namefi supports this option for eligible TLDs, which can be useful for firms exploring digital-identity and decentralized-web initiatives while keeping their conventional DNS working as normal.
+A [tokenized domain](/en/glossary/tokenized-domain/) adds an NFT-based token-control layer to an eligible supported domain. The token history is verifiable [on-chain](/en/glossary/on-chain/), while registrar and registry records, ICANN policy, platform agreements, disputes, and court orders still apply. Support is TLD-specific: Namefi currently marks `.cpa` unsupported and not importable, so verify the live catalog before planning any tokenization workflow.
