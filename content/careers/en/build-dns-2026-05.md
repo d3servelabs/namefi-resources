@@ -14,11 +14,9 @@ compensation: Competitive pay with equity
 baseSalary:
   currency: USD
   minValue: 1500
-  maxValue: 6000
+  maxValue: 9000
   unitText: MONTH
 ---
-
-**This is a contractor role.**
 
 ## What You Will Do
 
