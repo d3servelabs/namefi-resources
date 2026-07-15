@@ -48,7 +48,7 @@ A few criteria should drive every registration. **Trust** comes first: the exten
 
 ### 2. .realtor — a verified industry credential (RESTRICTED)
 
-`.realtor` is a restricted, verified TLD: it is reserved for people and organizations with a qualifying relationship to the National Association of REALTORS®. The [registry operator](/en/glossary/registry/) is [Real Estate Domains, LLC](https://www.iana.org/domains/root/db/realtor.html), and eligibility is set by NAR in its sole discretion. Per the official [Real Estate Domain License Agreement](https://www.get.realestate/license-agreement), registrants must be a REALTOR®, an NAR member, a member of the Canadian Real Estate Association (CREA), an NAR/CREA member board or association, an NAR affiliate or licensee, or otherwise in a contractual relationship with NAR relating to use of the REALTOR® mark — and losing that relationship is grounds for losing the domain. If you qualify, it is one of the strongest trust signals available.
+`.realtor` is restricted to people and organizations with a qualifying relationship to the National Association of REALTORS®. The [registry operator](/en/glossary/registry/) is [Real Estate Domains, LLC](https://www.iana.org/domains/root/db/realtor.html), and eligibility is set by NAR in its sole discretion. Under the official [Real Estate Domain License Agreement](https://www.get.realestate/license-agreement), `.RealEstate` remains the registrant of record and an eligible user receives a non-transferable, revocable license. Losing the qualifying relationship can end the license. This is not the same ownership or transfer model as an ordinary registrar-managed gTLD.
 
 ### 3. .realty — an open real-estate alternative
 
@@ -90,13 +90,13 @@ Keep three habits. Point every defensive domain at your primary site with a redi
 
 ## Register your real estate domains at Namefi
 
-You can build and manage your entire real-estate [domain portfolio](/en/glossary/domain-portfolio/) at [Namefi](https://namefi.io), an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing and fast DNS so your listing sites and redirects go live quickly. Because Namefi also supports [Web3](/en/glossary/web3/) domain tokenization, you can hold eligible domains as NFTs and transfer them as easily as any other on-chain asset — useful when a brand or portfolio changes hands. Register your anchor `.com`, add your industry and defensive endings, and keep auto-renewal on so nothing slips through the cracks.
+[Namefi](https://namefi.io) can register and manage supported ordinary domains such as an anchor `.com` and many industry or defensive alternatives. Check the live catalog before relying on any TLD: Namefi's public availability API currently marks `.realtor` as unsupported and not importable. Obtain and manage a `.realtor` license through the NAR-authorized process if you qualify. Namefi's optional token-control layer applies only to eligible supported domains; it does not turn the non-transferable `.realtor` license into an ordinary transferable NFT.
 
 ## Frequently asked questions
 
 ### Who can register a .realtor domain?
 
-`.realtor` is a restricted TLD. Eligibility is determined by the National Association of REALTORS® in its sole discretion, and per the official [Real Estate Domain License Agreement](https://www.get.realestate/license-agreement), registrants must be a REALTOR®, an NAR member, a CREA member, an NAR/CREA member board or association, an NAR affiliate or licensee, or otherwise in a contractual relationship with NAR regarding the REALTOR® mark. If that relationship ends, your right to the domain can end too. The registry is operated by [Real Estate Domains, LLC](https://www.iana.org/domains/root/db/realtor.html).
+Eligibility is determined by the National Association of REALTORS® in its sole discretion. Under the official [Real Estate Domain License Agreement](https://www.get.realestate/license-agreement), qualifying users receive a non-transferable, revocable license while `.RealEstate` remains the registrant of record. If the qualifying relationship ends, the license can end too. The registry is operated by [Real Estate Domains, LLC](https://www.iana.org/domains/root/db/realtor.html).
 
 ### Does my choice of TLD affect SEO?
 
@@ -104,8 +104,8 @@ Not directly. According to [Google Search Central](https://developers.google.com
 
 ### How many TLDs should a realtor actually register?
 
-For most agents, three to five is plenty: your anchor `.com`, one defensive backup like `.net`, and one or two real-estate endings such as `.realty` or `.homes`. Add `.realtor` if you qualify through NAR. Buying dozens of extensions rarely pays off — concentrate on the ones a client might realistically type.
+For most agents, a focused set is more practical than every extension: your anchor `.com`, a defensive backup, and one or two relevant endings such as `.realty` or `.homes`. If you qualify, consider a separate `.realtor` license through the authorized NAR process. Concentrate on names a client might realistically type and on renewal costs you can sustain.
 
 ### Should I register real-estate TLDs as tokenized (Web3) domains?
 
-You can. Tokenizing a domain as an NFT makes ownership portable and easy to transfer, which is handy if you sell a brand or move a portfolio between entities. For your everyday public listing sites, a standard registration with reliable DNS is the simplest path; tokenization is an option you can add when portability or [on-chain](/en/glossary/on-chain/) use matters.
+For an eligible domain supported by the platform, a token layer can make the token-control leg transferable onchain, while registrar, registry, policy, agreement, dispute, and legal layers remain. It is not available for every TLD: the `.realtor` license is non-transferable under its agreement and Namefi currently marks that TLD unsupported and not importable. Verify the current TLD, chain, collection, and marketplace support before relying on tokenization.
