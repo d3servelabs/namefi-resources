@@ -89,4 +89,11 @@ We require professional fluency in English. A second language of any kind is a p
 4. **Team interviews** — Meet the people you would work with. We evaluate across all six dimensions of our hiring framework.
 5. **Offer** — If it is a mutual fit, we move fast.
 
+**Every application must include one identity check so we can verify you are who you say you are:**
+
+- **Current students** — email us **from your school email address** (for example `you@university.edu`). Sending from your institutional account is how we validate that you are currently enrolled, so a personal address on its own is not enough.
+- **Everyone else** (or if you do not have a school email) — include **at least one** of these: your **LinkedIn profile**, your **GitHub profile**, or your **personal website or project portfolio**.
+
+Applications with neither a school-email validation nor one of the three links above cannot be processed.
+
 Ready to apply? Reach us at **careers [at] namefi.io**.
