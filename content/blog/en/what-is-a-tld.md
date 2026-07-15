@@ -75,12 +75,12 @@ Not all TLDs are the same. ICANN and [IANA](/en/glossary/iana/) classify them in
 
 ### 1. Generic TLDs (gTLDs)
 
-**gTLDs** are the classic, general-purpose extensions. The original set is small and globally recognized:
+**gTLDs** are generic top-level domains rather than country-code domains. Well-established examples include:
 
 - [`.com`](/en/tld/com/) — *commercial*, the default for the entire web
 - [`.net`](/en/tld/net/) — originally for network infrastructure
 - [`.org`](/en/tld/org/) — originally for organizations and nonprofits
-- [`.info`](/en/tld/info/) — informational sites
+- [`.info`](/en/tld/info/) — informational sites; introduced in the 2000 expansion round and delegated in 2001, not one of the original 1980s gTLDs
 
 These are open to anyone and remain the most trusted, liquid endings on the internet.
 
@@ -177,17 +177,17 @@ A good rule of thumb: **choose the TLD your audience will trust and remember**, 
 
 ## TLDs and Tokenization
 
-Here's where it gets interesting for the next era of domains. Your TLD doesn't just shape your branding — it also affects whether your domain can be brought **[on-chain](/en/glossary/on-chain/)**.
+Your TLD does not just shape branding — it can also affect whether a particular registrar or tokenization platform supports bringing the domain **[on-chain](/en/glossary/on-chain/)**.
 
-A [tokenized domain](/en/blog/what-are-tokenized-domains/) is a real, ICANN-recognized domain whose ownership is *also* represented as a token (typically an [NFT](/en/glossary/nft/)) in your [wallet](/en/glossary/wallet/). The DNS layer keeps working exactly as before; you simply gain a second, programmable layer of ownership on top.
+A [tokenized domain](/en/blog/what-are-tokenized-domains/) is a domain in the ordinary DNS root whose platform-supported control is also represented by a token, typically an [NFT](/en/glossary/nft/), in a [wallet](/en/glossary/wallet/). Registrar and registry records, ICANN policy, platform agreements, disputes, and court orders still apply. DNS remains in the ordinary system and must stay aligned with the token-control layer.
 
-But not every TLD is equally ready for this. Some registries have moved early to support on-chain ownership layers; others haven't moved at all. That's why the TLD you pick matters if you ever want to:
+Support varies by TLD, registrar, platform, chain, and contract. Check the live platform catalog if you want to:
 
 - Hold your domain directly in your own wallet
-- Transfer it on-chain in seconds (the DNS record follows)
-- List it on NFT marketplaces or use it as [collateral](/en/glossary/collateral/) in [DeFi](/en/glossary/defi/)
+- Transfer its token-control leg onchain while the platform keeps domain management aligned
+- List it on a compatible NFT marketplace or offer it as [collateral](/en/glossary/collateral/) only where a [DeFi](/en/glossary/defi/) protocol explicitly supports that chain, collection, and asset
 
-**Namefi** was the first platform to [tokenize](/en/glossary/tokenize/) real ICANN domains on [Ethereum](/en/glossary/ethereum/) mainnet — and the first to do so on Base — across many of the TLDs above, including [`.com`](/en/tld/com/), [`.xyz`](/en/tld/xyz/), [`.io`](/en/tld/io/), and more. You keep a real, browser-resolvable domain *and* wallet-native ownership in one product.
+**Namefi** supports [tokenization](/en/glossary/tokenize/) for eligible domains across a current catalog of TLDs, including examples such as [`.com`](/en/tld/com/), [`.xyz`](/en/tld/xyz/), and [`.io`](/en/tld/io/). Availability and chain support can change, so verify the live product before relying on a specific TLD or marketplace.
 
 > Curious how the two layers fit together? Read [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains/) or visit [namefi.io](https://namefi.io) to register or tokenize a domain.
 
@@ -218,6 +218,16 @@ ICANN coordinates the global namespace and accredits registrars, IANA maintains 
 
 ### Which TLD should I choose?
 If your exact `.com` is available and affordable, it's usually the safest choice for trust and resale value. Otherwise, pick a TLD that matches your purpose — `.io` or `.ai` for startups, `.shop` for stores, `.dev` for developers — and check the renewal price and any eligibility rules before registering.
+
+---
+
+## Sources and further reading
+
+- ICANN — [New gTLD Program history](https://www.icann.org/resources/pages/newgtlds-history-2023-04-05-en) (the original seven gTLDs and the 2000 expansion round)
+- IANA — [`.info` delegation record](https://www.iana.org/domains/root/db/info.html) (`.info` type and 2001 delegation date)
+- IANA — [`.io` delegation record](https://www.iana.org/domains/root/db/io.html) (`.io` classification as a country-code TLD)
+- Namefi — [Registration Agreement](https://namefi.io/registration-agreement) (registrar, registry, policy, dispute, and legal layers)
+- Namefi — [Terms of Service](https://namefi.io/tos) (platform and token-control terms)
 
 ---
 

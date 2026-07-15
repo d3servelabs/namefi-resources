@@ -37,11 +37,11 @@ Route402 lets you integrate [x402](https://www.x402.org/) once, then route reque
 
 [x402](/en/glossary/x402/) defines a standard handshake for paid requests. It gives clients and facilitators a common shape for verify and settle flows so you do not need custom glue for every provider.
 
-That standardization is great. The hard part starts when you have more than one facilitator, network, or environment.
+That standardization is great. The hard part starts when you have more than one facilitator or need deterministic routing by supported request fields.
 
 ## The real problem
 
-Teams end up baking routing decisions into the app: which provider to use, how to fail over, how to split traffic, and how to avoid double-settling. That logic does not belong in product code, but it tends to accumulate there.
+Teams end up baking routing decisions into the app: which provider to use for a scheme, network, asset, amount, payee, or endpoint; how to handle one verification failure; and how to avoid double-settling. That logic does not belong in product code, but it tends to accumulate there.
 
 ## What Route402 is
 
@@ -51,7 +51,7 @@ The key proposition: integrate once, then route every request based on determini
 
 ## What you can route on
 
-- Policy rules: network, asset, environment, org or project, and other business rules.
+- Policy rules over the current DSL fields: `scheme`, `network`, `asset`, `amount`, `payTo`, and `endpoint`.
 - Capability checks: do not send a request to a provider that cannot support it.
 - Verification fallback: if the selected facilitator's verify request errors, Route402 can try one alternative enabled facilitator that supports the request.
 - Sticky settlement: keep settle decisions consistent to prevent double-settling.
@@ -83,10 +83,10 @@ This lets you express business policy in one place without baking routing logic 
 
 ## Common use cases
 
-- Prod vs staging provider splits.
+- Route one endpoint or payment recipient to a selected facilitator.
 - Route USDC on Base to one facilitator, everything else to another.
 - One fallback attempt when a facilitator's verify request returns an upstream error.
-- Gradual rollout or canarying a new provider.
+- Select a facilitator for a deterministic subset of supported request fields; the current DSL does not provide weighted or percentage canary routing.
 
 ## Operational basics
 

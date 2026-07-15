@@ -42,11 +42,11 @@ Tokenizing domains is like switching from **physical mail via a post office** to
 
 In the traditional system, [domain ownership](/en/glossary/domain-ownership/) and transfers are handled by [registrars](/en/glossary/registrar/) (like "authorized post offices"). If a [registrar](/en/glossary/registrar/) refuses service, or if your region only allows licensed operators, your transfer may be delayed or blocked entirely.
 
-On-chain domains work more like email: **any compatible [wallet](/en/glossary/wallet/), platform, or protocol can freely send, receive, trade, or build around them**. No gatekeepers.
+The token layer works more like an open protocol: a compatible [wallet](/en/glossary/wallet/), marketplace, or application can interact with the token under the chain and contract's rules. For an ICANN domain, that does **not** remove the registrar, registry, Namefi terms, renewal obligations, dispute procedures, sanctions, or court-order layer.
 
-This doesn't just cut costs (from high brokerage fees to near-zero), or slash delays (from days to seconds)—it **opens up innovation**. Just as email evolved beyond sending text to enabling group workflows, file attachments, and automation, **tokenized domains unlock new functionality** like [auctions](/en/glossary/auction/) (Dutch, English, dynamic), [leasing](/en/glossary/leasing/), [fractional ownership](/en/glossary/fractional-ownership/), bundling, and more.
+The main opportunity is interoperability. Just as email evolved beyond sending text, a standard token interface can support compatible [auctions](/en/glossary/auction/), [leasing](/en/glossary/leasing/), [fractional ownership](/en/glossary/fractional-ownership/), bundling, and other applications. Each use case still needs a contract and platform that actually implements and supports it; tokenization alone does not guarantee availability, liquidity, or lower cost.
 
-> It's the shift from a gatekept system to an internet-native, [permissionless](/en/glossary/permissionless/) asset layer.
+> It adds an internet-native token layer without erasing the regulated DNS and registration layers underneath it.
 
 ---
 
@@ -56,10 +56,10 @@ To [tokenize](/en/glossary/tokenize/) simply means:
 
 > Representing a real-world asset (like a domain) as a token—making it transferable, composable, and programmable.
 
-On Namefi, every domain you register (e.g. `mybrand.xyz`) is automatically represented by an [NFT](/en/glossary/nft/). You can:
+On Namefi, eligible supported domains you register (e.g. `mybrand.xyz`) can be represented by an [NFT](/en/glossary/nft/). Depending on current platform and marketplace support, you can:
 
 - Transfer it to others like sending ETH  
-- Grant usage rights without transferring ownership  
+- Build a contract or application that grants limited usage rights without transferring the token
 - List it for sale on marketplaces like OpenSea  
 - Combine it with contracts, [DAOs](/en/glossary/dao/), websites, or other apps  
 
@@ -73,12 +73,12 @@ By tokenizing domains, Namefi acts as a **bridge** between traditional [DNS](/en
 
 | Traditional System       | On-Chain World                         |
 |--------------------------|----------------------------------------|
-| [Registrar](/en/glossary/registrar/)-owned database | [Smart contracts](/en/glossary/smart-contract/) on public blockchains  |
-| Manual transfers, friction | Instant, [atomic transfers](/en/glossary/atomic-transfer/)             |
+| Registrar and registry records | A [smart-contract](/en/glossary/smart-contract/) token-control layer on a public blockchain  |
+| Account, registrar, and policy workflows | Potentially [atomic transfers](/en/glossary/atomic-transfer/) for the token and payment legs |
 | Static records            | [Composable](/en/glossary/composability/) into DeFi, identity, [DAOs](/en/glossary/dao/)  |
 | Centralized verification  | Ownership verifiable on-chain         |
 
-You're no longer just "leasing a name"—you're holding a **programmable digital gateway asset** in your own [wallet](/en/glossary/wallet/).
+You hold a programmable token-control layer in your own [wallet](/en/glossary/wallet/), while your rights to the underlying domain still come from the applicable registration agreement and policies.
 
 ---
 
@@ -91,13 +91,13 @@ Transferring domains traditionally involves:
 - Authorization codes  
 - Registrar-level validation  
 - Emails, wait periods, and manual approvals  
-- Cross-registrar delays (often 5–7+ days)
+- Cross-registrar workflows that can take up to five calendar days for the gaining registrar to receive an approval or default approval, with additional locks or disputes handled separately
 
-With Namefi, ownership is transferred via a single transaction—within seconds. You can also set approvals, assign managers, or automate delegation via [smart contracts](/en/glossary/smart-contract/).
+Within Namefi's supported tokenization flow, the onchain token-control leg can transfer in a blockchain transaction. Confirmation time depends on the chain, and the underlying registrar, registry, renewal, dispute, contractual, and legal layers still apply. Compatible [smart contracts](/en/glossary/smart-contract/) can add approvals or management logic around the token.
 
 ### ✅ 2. Clearer Ownership & User-Controlled Access
 
-With traditional [registrars](/en/glossary/registrar/) (like GoDaddy), you may hold a license to a domain, but **true control is often [custodial](/en/glossary/custodial-ownership/)**—subject to their UI, their terms, their platform policies.
+With a traditional [registrar](/en/glossary/registrar/), a registrant holds contractual rights under the registration agreement and applicable policies. Account access and operational controls are provided through the registrar; that is different from private-key custody, but it does not mean the registrant has no rights or is merely borrowing an account.
 
 With Namefi:
 
@@ -111,9 +111,9 @@ With Namefi:
 
 Tokenized domains can be:
 
-- Used as [collateral](/en/glossary/collateral/) in [lending protocols](/en/glossary/lending-protocol/)  
+- Offered as [collateral](/en/glossary/collateral/) only where a compatible [lending protocol](/en/glossary/lending-protocol/) explicitly supports the chain, collection, and asset
 - Attached to decentralized identities ([DID](/en/glossary/did/)), [Farcaster](/en/glossary/farcaster/), [Lens](/en/glossary/lens/), etc.  
-- Instantly linked to AI-generated websites via Namefi  
+- Linked to websites through supported DNS and hosting integrations
 - Managed across teams, [DAOs](/en/glossary/dao/), or [multi-sig](/en/glossary/multi-sig/) setups  
 
 ---
@@ -126,25 +126,25 @@ This is perhaps the most revolutionary but overlooked feature:
 
 ### ✅ Dramatically Lower Trading Costs
 
-Traditional domain [marketplaces](/en/glossary/marketplace/) (e.g. GoDaddy, Sedo) often charge **15%–30%+ in fees**, slow withdrawals, and closed APIs.
+Traditional domain [marketplaces](/en/glossary/marketplace/) publish different commission schedules by venue, sales path, and service. Onchain venues also vary by transaction type and can add marketplace fees, creator earnings, and network gas.
 
 In contrast, [on-chain](/en/glossary/on-chain/) [NFT](/en/glossary/nft/) platforms like OpenSea or Blur:
 
-- Charge 0%–2% trading fees  
+- Publish venue- and transaction-specific fee policies that can change
 - Allow direct [wallet](/en/glossary/wallet/)-to-[wallet](/en/glossary/wallet/) transfers  
 - Settle fast, scale globally, and support automation  
 
-### ✅ From "Days" to "Seconds" in Transfer Time
+### ✅ Faster Token Settlement Where Supported
 
-- Traditional transfers take hours to days  
-- [Cross-registrar transfers](/en/glossary/cross-registrar-transfer/) can take **10–30 days**  
+- Traditional registrar workflows can take hours or days
+- Under the current ICANN transfer policy, a standard [cross-registrar transfer](/en/glossary/cross-registrar-transfer/) is processed on explicit approval or defaults to approval within five calendar days, while transfer locks, disputes, and court orders are separate conditions
 - Adding KYC, international payments, or [escrow](/en/glossary/escrow/) delays adds even more friction
 
 With Namefi:
 
-- Transfers finalize in seconds  
-- No authorization codes or email approvals  
-- Everything is compatible with [smart contracts](/en/glossary/smart-contract/) and automation
+- A supported token-and-payment settlement can be atomic onchain
+- That token leg does not require the buyer and seller to exchange a registrar authorization code with each other
+- Compatible [smart contracts](/en/glossary/smart-contract/) can automate the token layer; registrar and legal controls remain
 
 ### ✅ Plug into a Composable Market Structure
 
@@ -154,7 +154,7 @@ Traditional [domain trading](/en/glossary/domain-trading/) is closed:
 - You rely on them to build [auctions](/en/glossary/auction/) or lease features  
 - Innovation depends on what the platform chooses to offer
 
-Namefi's tokenized domains are **open-layer assets**. Anyone can build:
+Namefi's tokenized domains expose a standard token interface. Developers can build compatible implementations of:
 
 - English/Dutch/dynamic [auction](/en/glossary/auction/) mechanisms  
 - [Leasing](/en/glossary/leasing/) and [rent-to-own](/en/glossary/rent-to-own/) protocols  
@@ -185,7 +185,7 @@ Tokenizing real estate doesn't exempt it from city zoning, property taxes, or em
 
 ## 🛡️ Namefi's Role: A Legal Bridge, Not a Legal Shortcut
 
-- We only support [ICANN](/en/glossary/icann/)-approved TLDs (`.xyz`, `.com`, `.art`, etc.)  
+- We support eligible TLDs in the ordinary DNS root (`.xyz`, `.com`, `.art`, etc.); current coverage depends on Namefi's live catalog
 - We work with accredited [registrars](/en/glossary/registrar/)  
 - Token ownership is kept in sync with off-chain DNS records  
 - Domains still work with [SEO](/en/glossary/seo/), email, browser compatibility, etc.
@@ -212,5 +212,13 @@ It:
 2. Search for a real-world domain you love  
 3. Register and connect your [wallet](/en/glossary/wallet/) to receive its [NFT](/en/glossary/nft/)  
 4. Experiment: list it, build with it, lease it, or combine it
+
+## Sources and further reading
+
+- ICANN — [Transfer Policy](https://www.icann.org/en/contracted-parties/consensus-policies/transfer-policy/transfer-policy-01-12-2016-en) (inter-registrar approval timing, transfer locks, and registrant protections)
+- Namefi — [Registration Agreement](https://namefi.io/registration-agreement) (registrant rights, registrar and registry obligations, disputes, and legal compliance)
+- Namefi — [Terms of Service](https://namefi.io/tos) (platform and token-control terms)
+- OpenSea — [What fees do I pay on OpenSea?](https://support.opensea.io/en/articles/8867091-what-fees-do-i-pay-on-opensea) (current venue-specific marketplace fee policy)
+- Sedo — [Price list](https://sedo.com/us/what-we-offer/price-list/) (current domain-marketplace fees by sales path)
 
 Welcome to a world where **domains aren't just website tools—they're open [protocol assets](/en/glossary/protocol-asset/)**.
