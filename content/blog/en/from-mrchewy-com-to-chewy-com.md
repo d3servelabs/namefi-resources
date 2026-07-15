@@ -59,7 +59,7 @@ Industry chroniclers of domain upgrades treat the move as a textbook simplificat
 
 How much did the upgrade cost? Here the public record goes quiet. Smart Branding reports that the company [acquired the name from domain investor Frank Schilling for an undisclosed amount](https://smartbranding.com/mychewy-com-upgrade-to-chewy-com/#:~:text=They%20acquired%20the%20name%20from%20domain%20investor%20Frank%20Schilling%20for%20an%20undisclosed%20amount), and its decade review says [the price of the domain was kept private](https://smartbranding.com/2010-2020-a-decade-in-domains-part-1-brands-simplified-their-names/#:~:text=The%20price%20of%20the%20domain%20was%20kept%20private). So the figure that *is* on the record for this story is not the domain price at all — it's the one at the other end of the arc: [PetSmart completed its acquisition of the Chewy company in 2017](https://investor.chewy.com/news-and-events/news/news-details/2017/PetSmart-Completes-Acquisition-of-Chewy/default.aspx), in a deal widely reported at $3.35 billion. PetSmart bought the company, not a domain stake.
 
-## The backstory: a Java chat room, a jewelry pivot, and 100 rejections
+## The backstory: a Java chat room, a jewelry pivot, and dozens of rejections
 
 The founders did not look like people destined to win a category against Amazon.
 
@@ -136,7 +136,7 @@ The easy takeaway — "drop the cute modifier and grab your exact-match .com" �
 3. **Build the substance the name was faking.** "Mr." promised friendliness; Chewy's call center, live chat, and condolence flowers *delivered* it. Once the warmth lives in the company, the name no longer has to costume it — and can afford to be plain and confident.
 4. **Upgrade before switching costs compound.** The switching cost of a rename grows with every customer who has learned the old name. Chewy's public record does not disclose the exact date of the domain change, so this case should not be used to claim a precise cutoff; the practical lesson is to weigh the externally owned exact match before the old name becomes harder to replace.
 
-The domain upgrade did not make Chewy win. Service, logistics, capital, and relentless execution mattered far more. But dropping "Mr." and consolidating on Chewy.com made the company's growth *nameable* — and it was done while the cost of doing it was still small.
+The domain upgrade did not make Chewy win. Service, logistics, capital, and relentless execution mattered far more. But dropping "Mr." and consolidating on Chewy.com made the company's growth *nameable* — and removed a modifier the brand no longer needed.
 
 ## The Namefi angle
 
