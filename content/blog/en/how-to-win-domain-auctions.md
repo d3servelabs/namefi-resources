@@ -32,29 +32,29 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-Most of the good names you'll ever want to buy are already taken, and a large share of them eventually pass through an [auction](/en/glossary/auction/). When a registration lapses, when a domainer liquidates, when a registrar captures a dropping name with no [backorder](/en/glossary/backorder/) behind it, the name lands on an auction block and goes to the highest bidder. If you flip domains, you will spend real money in these rooms, and the difference between a profitable acquisition and a dead name in your account is mostly discipline at the moment of bidding.
+Many desirable domains are already registered, and [auctions](/en/glossary/auction/) are one way they return to the market. Inventory can come from owner listings, registrar expiry programs, or competing [backorders](/en/glossary/backorder/) after a drop-catching service secures a name. If you flip domains, you may spend real money in these rooms, and the difference between a profitable acquisition and a dead name in your account is mostly discipline at the moment of bidding.
 
 This guide covers how [aftermarket](/en/glossary/aftermarket/) auctions actually work, the two bidding mechanics you must understand (proxy bidding and sniping), how to set and hold a hard maximum, how to read whether demand is real, and how to avoid the two ways auctions separate you from your money: overpaying yourself, and getting played by someone else. It sits inside our broader [domain flipping](/en/blog/domain-flipping/) series, and pairs directly with [how to find domains to flip](/en/blog/how-to-find-domains-to-flip/), since auctions are one of the main places you'll find them.
 
 ## Where domain auctions come from
 
-A domain name auction is the formal version of the buy-low-sell-high trade: it [facilitates the buying and selling of currently registered domain names, enabling individuals to purchase a previously registered domain that suits their needs from an owner wishing to sell](https://en.wikipedia.org/wiki/Domain_name_auction#:~:text=facilitates%20the%20buying%20and%20selling%20of%20currently%20registered). Most of the inventory you'll bid on comes from the expiry pipeline. When a name isn't renewed, it doesn't snap back into the open pool right away — registrars route it through an auction first. As Wikipedia describes the mechanics of [domain drop catching](/en/blog/expired-domains-and-the-drop-cycle/), [retail registrars such as GoDaddy or eNom retain names for auction through services such as TDNAM or Snapnames](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=Retail%20registrars%20such%20as%20GoDaddy%20or%20eNom%20retain%20names%20for%20auction). Other registrars hand the name to a middleman: [some registrars do not allow domains to drop in the normal fashion, instead introducing an intermediary (e.g., Snapnames and Namejet) that auction the domain prior to their deletion](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=introducing%20an%20intermediary).
+A domain name auction is the formal version of the buy-low-sell-high trade: it [facilitates the buying and selling of currently registered domain names, enabling individuals to purchase a previously registered domain that suits their needs from an owner wishing to sell](https://en.wikipedia.org/wiki/Domain_name_auction#:~:text=facilitates%20the%20buying%20and%20selling%20of%20currently%20registered). Expired names are one source, but there is no universal rule that every unrenewed name is auctioned. [ICANN's registrant guidance](https://www.icann.org/resources/pages/registrant-about-errp-2018-12-07-en) says a registrar may offer an expired name for auction during the Auto-Renew Grace Period, depending on its terms and conditions; a name can instead proceed through the expiry and deletion lifecycle. Some registrars or their partners do auction names before deletion, while other inventory comes directly from owners.
 
 In practice you'll meet three flavors of platform:
 
-- **GoDaddy Auctions**, the highest-volume expiry market, fed by names dropping out of the largest [registrar](/en/glossary/registrar/) on earth. Most listings are expired names on a public timer.
+- **GoDaddy Auctions**, which includes expired-domain and other auction inventory on public timers.
 - **NameJet** (and the closely related Snapnames), which run as backorder-plus-auction services. You place a [backorder](/en/blog/domain-backorders-and-drop-catching/) on a pending-delete name; if more than one person wants it, it goes to a private auction among the backorderers.
 - **Sedo**, more about owner-listed inventory than expiry. Sedo is an American domain aftermarket company that [introduced domain name auctions](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions) in 2006, and remains a primary venue for seller-initiated and brokered sales.
 
-The supply differs, but the bidding mechanics are nearly identical. Learn them once and you can bid anywhere.
+The supply and bidding rules differ by platform. Proxy bidding, closing-time extensions, reserve prices, bidder eligibility, and settlement requirements can all change, so read the rules for the exact venue before you bid.
 
 ## Proxy bidding: the engine under the hood
 
 ![Editorial illustration of a sealed envelope holding a hidden maximum bid feeding into a gear-driven machine that steps a bid up only as high as needed, stopping below a hidden ceiling line](../../assets/how-to-win-domain-auctions-01-proxy.jpg)
 
-Almost every domain auction runs on **proxy bidding**, the same system eBay made famous. The definition is precise: proxy bidding [is an implementation of an English second-price auction used on eBay, in which the winning bidder pays the price of the second-highest bid plus a defined increment](https://en.wikipedia.org/wiki/Proxy_bid#:~:text=is%20an%20implementation%20of%20an%20English%20second%2Dprice%20auction). You enter the most you're willing to pay. The system doesn't expose that number; it bids on your behalf in increments, only as high as it needs to go to stay on top, up to your ceiling.
+Some major domain-auction platforms use **proxy bidding**. Under [GoDaddy Auctions' published rules](https://www.godaddy.com/en-ca/help/bidding-on-godaddy-auctions-domains-893), you enter the maximum you are willing to pay and the service raises your current bid by the minimum increment when another bid arrives, up to that ceiling. The system does not display your hidden maximum to other bidders.
 
-The consequence is the single most useful fact about auction strategy, and it's counterintuitive at first: because [the price paid is determined only by competitors' bids and not by the amount of the new bid](https://en.wikipedia.org/wiki/Proxy_bid#:~:text=the%20price%20paid%20is%20determined%20only%20by%20competitors%27%20bids), the rational move is to bid your true maximum once and never touch it again. You don't pay your max unless someone pushes you there. If your ceiling is $1,200 and the next-highest bidder tops out at $700, you win at roughly $700 plus one increment, not $1,200. Entering your real number doesn't "give it away," because nobody can see it and the price is set by the runner-up.
+On a proxy platform, the practical consequence is counterintuitive: entering a maximum does not mean you immediately pay that amount. If your ceiling is $1,200 and the next-highest legitimate bid tops out at $700, you would normally win at roughly $700 plus the applicable increment, not $1,200. Entering your real number does not display it, but competing bids — legitimate or not — can still raise the clearing price up to your ceiling.
 
 This is why nudging your bid up $25 at a time is a losing habit. Incremental bidding doesn't get a better price under a proxy system; it just teaches you, in real time, how badly you want the name, which is exactly the information that makes you overpay. Decide your number off the clock, enter it once, let the machine do the rest.
 
@@ -62,9 +62,9 @@ This is why nudging your bid up $25 at a time is a losing habit. Incremental bid
 
 The other mechanic everyone asks about is **sniping** — bidding at the last possible second. Auction sniping is [the practice, in a timed online auction, of placing a bid likely to exceed the current highest bid ... as late as possible](https://en.wikipedia.org/wiki/Auction_sniping#:~:text=the%20practice%2C%20in%20a%20timed%20online%20auction). The logic is sound in a vacuum: bidding late gives competitors no time to react, and it [avoids bidding wars](https://en.wikipedia.org/wiki/Auction_sniping#:~:text=avoid%20bidding%20wars) and bid chasing, where the mere sight of a competing bid drags other people into the fight.
 
-Two things complicate sniping in domain auctions. First, most serious platforms use **anti-snipe extensions**: a bid placed in the final minutes pushes the closing time out a few minutes, repeatedly, until nobody bids in the window. That neutralizes the surprise that makes sniping work, because you can't beat a clock that waits for you. Second, sniping is a tactic for *winning*, not for *paying less*. Under proxy bidding, sniping your true max at the last second wins the same name at the same price as entering that max early.
+Platform rules determine whether sniping can work. Some auctions close at a fixed time; others extend the closing window after a late bid, giving other bidders time to respond. On a platform that combines proxy bidding with closing-time extensions, a last-second bid offers much less surprise and does not by itself create a lower clearing price.
 
-So the honest version: sniping has one legitimate use, which is keeping your interest hidden so you don't bid-chase yourself or tip off a rival who feeds off competition. On auction-extension platforms it changes nothing about the price. The discipline that matters isn't *when* you bid. It's *what number* you're willing to bid.
+So the honest version: a late bid can keep your interest hidden for longer, but its effect depends on the venue's timer and proxy rules. The discipline that travels across platforms is not a particular second on the clock. It is the maximum you are willing to pay.
 
 ## Set a hard max, then hold it
 
@@ -94,7 +94,9 @@ Half of not overpaying is valuing the name correctly going in, and an auction gi
 
 The other way to overpay is to be manipulated, and auctions have a classic manipulation built into their structure. A **shill** is a fake bidder: people who [drive prices in favor of the seller or auctioneer with fake bids in an auction are called shills](https://en.wikipedia.org/wiki/Shill#:~:text=drive%20prices%20in%20favor%20of%20the%20seller%20or%20auctioneer%20with%20fake%20bids), manufacturing the appearance of demand so a real bidder pushes higher than they otherwise would. Shill bidding is prohibited on every reputable platform, but no policy makes it vanish entirely.
 
-Your defense is not to detect shills in the moment, which you usually can't. Your defense is that a hard max makes shilling irrelevant. A phantom bidder can only hurt you if their fake bids drag your number up, and your number doesn't move. If a shill bids you to your ceiling and "wins," they've bought the name back from themselves, possibly owing a commission for the privilege. Hold your wall and the manipulation runs into it.
+You usually cannot identify a shill with certainty while an auction is running. A hard maximum limits how much you can lose, but it does **not** make shilling irrelevant. Under proxy bidding, a fake bid placed just below your hidden ceiling can lose the auction and still force you to pay roughly that fake bid plus the increment, rather than the price set by the legitimate runner-up. This is why [eBay's shill-bidding policy](https://www.ebay.com/help/policies/selling-policies/selling-practices-policy/shill-bidding-policy?id=4353&ra=true) says the practice can artificially increase the price and make another bidder pay more than they should.
+
+The practical defense is to set your ceiling from independent value evidence, avoid chasing suspicious bidding activity, preserve the auction record, and report suspected manipulation through the platform's process. A ceiling contains the damage; it does not prove that the clearing price was fair.
 
 A few related pricing traps worth naming:
 
@@ -110,7 +112,7 @@ Settlement is also where tokenized ownership changes the math. The classic stand
 
 ## The short version
 
-Auctions reward preparation and punish improvisation. Do your valuation before the timer starts. Set a hard max backsolved from a realistic exit, not from how much you want the name. Proxy bidding lets you enter your true ceiling once without overpaying; sniping on extension-protected platforms changes timing but not price; and the winner's curse, shills, and BIN anchors all lose their power against a number you refuse to move. Win the names that fit your math, let the others go to whoever will overpay, and settle through [escrow](/en/glossary/escrow/) so the win actually lands in your account.
+Auctions reward preparation and punish improvisation. Do your valuation before the timer starts. Set a hard max backsolved from a realistic exit, not from how much you want the name. On proxy platforms, a hidden ceiling automates bidding but competing bids can still raise your price. Timer extensions determine whether sniping has any tactical value, and a hard maximum limits — but does not eliminate — the damage from the winner's curse, shills, and pricing anchors. Win the names that fit your math, let the others go, and settle through [escrow](/en/glossary/escrow/) so the win actually lands in your account.
 
 ## Friendly Disclaimer (Read Me!)
 
@@ -121,6 +123,9 @@ Auctions reward preparation and punish improvisation. Do your valuation before t
 ## Sources and further reading
 
 - Wikipedia — [Domain name auction (definition; escrow links)](https://en.wikipedia.org/wiki/Domain_name_auction#:~:text=facilitates%20the%20buying%20and%20selling%20of%20currently%20registered)
+- ICANN — [What a registrant should know about expired-domain recovery](https://www.icann.org/resources/pages/registrant-about-errp-2018-12-07-en)
+- GoDaddy — [Bidding on GoDaddy Auctions domains](https://www.godaddy.com/en-ca/help/bidding-on-godaddy-auctions-domains-893)
+- eBay — [Shill bidding policy](https://www.ebay.com/help/policies/selling-policies/selling-practices-policy/shill-bidding-policy?id=4353&ra=true)
 - Wikipedia — [Proxy bid (eBay second-price model; price set by competitors' bids)](https://en.wikipedia.org/wiki/Proxy_bid#:~:text=is%20an%20implementation%20of%20an%20English%20second%2Dprice%20auction)
 - Wikipedia — [Auction sniping (last-second bidding; avoiding bidding wars)](https://en.wikipedia.org/wiki/Auction_sniping#:~:text=the%20practice%2C%20in%20a%20timed%20online%20auction)
 - Wikipedia — [Winner's curse (the most optimistic bidder overpays)](https://en.wikipedia.org/wiki/Winner%27s_curse#:~:text=the%20winner%20is%20the%20bidder%20with%20the%20most%20optimistic%20evaluation)
