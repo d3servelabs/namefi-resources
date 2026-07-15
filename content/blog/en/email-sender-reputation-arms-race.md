@@ -8,6 +8,7 @@ draft: false
 cluster: domain-security
 format: explainer
 ogImage: ../../assets/email-sender-reputation-arms-race-og.jpg
+socialCopy: "For thirty years, bulk email senders have invented ever-cleverer ways to look trustworthy — open relays, botnets, image spam, snowshoe campaigns, inbox warmup — and every trick was eventually caught and shut down. The full history of that arms race, and the one reason the shortcuts always lose: email reputation measures a single thing, whether real humans actually want your mail."
 description: A source-backed history of the thirty-year arms race over email sender reputation—the open relays, botnets, image spam, snowshoe campaigns, warmup networks, and other tricks bulk senders used to look trustworthy, the named operators who ran them, and the year and mechanism by which each trick was detected and shut down.
 keywords: ['email sender reputation', 'domain reputation', 'email deliverability', 'history of email spam', 'spam filter', 'botnet takedown', 'snowshoe spam', 'image spam', 'SPF', 'DKIM', 'DMARC', 'email warmup', 'Spamhaus', 'CAN-SPAM', 'Google Postmaster Tools', 'bulk sender requirements', 'cold email']
 relatedArticles:
