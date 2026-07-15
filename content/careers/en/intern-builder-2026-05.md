@@ -1,5 +1,5 @@
 ---
-title: 'Intern: AI Empowered Builder'
+title: 'Software Engineer Intern (AI Empowered)'
 date: '2026-05-27'
 language: en
 tags: ['intern', 'engineering', 'ai']

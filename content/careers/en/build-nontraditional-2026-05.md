@@ -1,5 +1,5 @@
 ---
-title: 'AI Empowered Builder: Without Traditional Product Experience'
+title: 'Product Engineer (AI Empowered)'
 date: '2026-05-27'
 language: en
 tags: ['engineering', 'product', 'ai']
@@ -7,11 +7,18 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Turn high AI and agent fluency into real product output — no conventional background required, just the ability to deliver with cutting-edge tools.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
+baseSalary:
+  currency: USD
+  minValue: 1500
+  maxValue: 6000
+  unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 

@@ -1,5 +1,5 @@
 ---
-title: 'AI Empowered Builder: General Full Stack Engineer'
+title: 'Full Stack Engineer (AI Empowered)'
 date: '2026-05-26'
 language: en
 tags: ['engineering', 'full-stack', 'ai']
@@ -7,11 +7,18 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Deliver end-to-end product features across the entire stack, leveraging AI agents and the latest AI tooling to ship faster and smarter.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
+baseSalary:
+  currency: USD
+  minValue: 1500
+  maxValue: 6000
+  unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 

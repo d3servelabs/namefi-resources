@@ -1,5 +1,5 @@
 ---
-title: 'AI Empowered Builder: Non-Engineer (PM / Product Designer / UXUI Designer)'
+title: 'Product Designer (AI Empowered)'
 date: '2026-05-27'
 language: en
 tags: ['product', 'design', 'ai']
@@ -7,11 +7,18 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Drive product decisions, user experience, and design quality with AI agents as core collaborators in your daily workflow.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Product
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
+baseSalary:
+  currency: USD
+  minValue: 500
+  maxValue: 800
+  unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 

@@ -1,5 +1,5 @@
 ---
-title: 'AI Empowered Builder: Engineer with Specialty in DNS and EPP'
+title: 'DNS Engineer (AI Empowered)'
 date: '2026-05-27'
 language: en
 tags: ['engineering', 'dns', 'ai']
@@ -7,11 +7,18 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Lead technical depth in DNS and EPP domains while contributing broadly as a full-stack engineer, amplified by AI-assisted development workflows.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
+baseSalary:
+  currency: USD
+  minValue: 1500
+  maxValue: 6000
+  unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 

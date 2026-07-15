@@ -1,5 +1,5 @@
 ---
-title: 'Intern: AI Empowered Connector'
+title: 'Marketing Intern (AI Empowered)'
 date: '2026-05-27'
 language: en
 tags: ['intern', 'content', 'community', 'ai']
