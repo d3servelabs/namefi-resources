@@ -7,8 +7,8 @@ authors: ['namefiteam']
 draft: false
 format: guide
 ogImage: ../../assets/mcp-quickstart-og.jpg
-description: "Per-editor MCP setup for Claude Code, Cursor, and Windsurf, then a 5-step quickstart from a new app to a live custom domain, without leaving the editor."
-keywords: ["claude code mcp domain", "cursor mcp domain", "windsurf mcp domain", "in-editor domain registration", "coding agent domain registration", "register domain from editor", "mcp quickstart", "namefi mcp config", "vercel custom domain namefi", "cloudflare pages custom domain namefi", "deploy custom domain ai agent", "domain registration quickstart", "x-api-key mcp config", "point domain at deployment"]
+description: "Per-editor OAuth and API-key MCP setup for Claude Code, Cursor, and Windsurf, then a five-step quickstart from a new app to a live custom domain."
+keywords: ["claude code mcp domain", "cursor mcp domain", "windsurf mcp domain", "in-editor domain registration", "coding agent domain registration", "register domain from editor", "mcp quickstart", "namefi mcp config", "MCP OAuth PKCE", "vercel custom domain namefi", "cloudflare pages custom domain namefi", "deploy custom domain ai agent", "domain registration quickstart", "x-api-key mcp config", "point domain at deployment"]
 relatedArticles:
   - /en/blog/ai-agent-register/
   - /en/blog/claude-mcp-domains/
@@ -29,7 +29,7 @@ relatedGlossary:
   - /en/glossary/domain-renewal/
 ---
 
-You're already in the editor. The app is scaffolded, the first deploy just went out to a platform subdomain, and the only thing left before you can point people at it is a real domain. This is the quickstart for doing that registration step without opening a browser tab, filling out a checkout form, or leaving the same [coding agent](/en/glossary/ai-agent/) session that built the app: exact [MCP](https://modelcontextprotocol.io) connection config for Claude Code, Cursor, and Windsurf, a condensed five-step flow, and — the part most domain guides skip — how to take the domain you just registered and actually point it at the deployment you just shipped.
+You're already in the editor. The app is scaffolded, the first deploy just went out to a platform subdomain, and the only thing left before you can point people at it is a real domain. This is the quickstart for doing that registration step from the same [coding agent](/en/glossary/ai-agent/) session that built the app: exact [MCP](https://modelcontextprotocol.io) connection config for Claude Code, Cursor, and Windsurf, a condensed five-step flow, and — the part most domain guides skip — how to take the domain you just registered and point it at the deployment you just shipped. OAuth may open a browser once for authorization; the domain workflow then returns to the editor.
 
 This guide covers three editors on purpose. If you're on OpenAI Codex, Gemini CLI, or Claude Desktop instead, [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) is the canonical hub with a verified setup for all six clients plus the raw REST path for anything that isn't MCP-native. Everything here connects to the same [Namefi](https://namefi.io) MCP server that hub documents, so nothing below contradicts it — this page is just the condensed, developer-tool-first cut through it, with a deployment step the hub doesn't cover.
 
@@ -41,21 +41,42 @@ The alternative is to let the same agent that scaffolded the project and wired u
 
 ## Set up the connection: three editors, three config files
 
-All three editors below connect to the same endpoint, `https://api.namefi.io/mcp`, over Streamable HTTP, with your Namefi [API key](https://namefi.io/api-key) sent as an `x-api-key` header. What changes per editor is only the file format and the command that writes it.
+All three editors below connect to `https://api.namefi.io/mcp` over Streamable HTTP. The current server advertises two authentication paths: OAuth 2.1 authorization code with PKCE (plus dynamic client registration) and a Namefi [API key](https://namefi.io/api-key) in the `x-api-key` header. Prefer OAuth when the client supports it and you do not already have a key; use a key for explicit header-based or automated setups.
+
+One current-behavior caveat matters for this quickstart. Namefi's discovery descriptor says read-only tools need no authentication, but an unauthenticated MCP `initialize` request returned `401 Unauthorized` when this article was verified on **July 14, 2026**. A client must initialize the MCP session before it can call even a read-only tool, so treat the live endpoint as authentication-required until the server behavior or descriptor changes.
 
 ### Claude Code
 
-Claude Code's own documentation gives a direct CLI command for adding a remote HTTP server with a custom header:
+For OAuth, add the server without a static authentication header:
+
+```bash
+claude mcp add --transport http namefi https://api.namefi.io/mcp
+claude mcp login namefi
+```
+
+Claude Code can also start the OAuth flow from `/mcp` inside an interactive session. Its documentation says a `401` or `403` marks the remote server as needing authentication; follow the browser authorization steps. For API-key authentication instead, add the custom header:
 
 ```bash
 claude mcp add --transport http namefi https://api.namefi.io/mcp --header "x-api-key: YOUR_KEY"
 ```
 
-Run it once from a terminal in your project, with your real key swapped in. By default it writes the server at **local** scope — available to you, in this project only. Add `--scope user` to make it available across every project on your machine instead, and confirm it connected with `claude mcp list`.
+Run only the authentication variant you intend to use. For the key command, replace `YOUR_KEY` with the real key and avoid committing it. By default Claude Code writes the server at **local** scope — available to you, in this project only. Add `--scope user` to make it available across every project on your machine, and confirm the connection with `claude mcp list`.
 
 ### Cursor
 
-Cursor reads MCP servers from `mcp.json` — a project copy at `.cursor/mcp.json`, or a global copy at `~/.cursor/mcp.json`. Its documented remote-server shape supports header-based auth with environment-variable interpolation, so the key itself doesn't have to live in the file:
+Cursor reads MCP servers from `mcp.json` — a project copy at `.cursor/mcp.json`, or a global copy at `~/.cursor/mcp.json`. Cursor documents OAuth support for Streamable HTTP servers. For OAuth, configure only the URL, enable the server, and complete the interactive authentication prompt:
+
+```json
+{
+  "mcpServers": {
+    "namefi": {
+      "url": "https://api.namefi.io/mcp"
+    }
+  }
+}
+```
+
+For API-key authentication, Cursor's documented remote-server shape supports headers with environment-variable interpolation, so the key itself does not have to live in the file:
 
 ```json
 {
@@ -70,11 +91,23 @@ Cursor reads MCP servers from `mcp.json` — a project copy at `.cursor/mcp.json
 }
 ```
 
-`${env:NAMEFI_API_KEY}` resolves from whatever that variable holds in the shell that launched Cursor — export it before opening the editor.
+`${env:NAMEFI_API_KEY}` resolves from whatever that variable holds in the shell that launched Cursor — export it before opening the editor. If an OAuth-capable server remains in a “Needs authentication” state, use Cursor's MCP settings to start the authorization flow; client-version and Remote SSH behavior can differ, so keep the API-key configuration as a fallback.
 
 ### Windsurf (Cascade)
 
-Windsurf's MCP integration — branded Cascade — reads `~/.codeium/windsurf/mcp_config.json`. Remote servers there use a `serverUrl` field rather than `url`, with the same `headers` and `${env:VAR}` pattern as Cursor:
+Windsurf's MCP integration — branded Cascade — reads `~/.codeium/windsurf/mcp_config.json`. Current Cascade documentation says Streamable HTTP supports OAuth. Start with a URL-only entry and complete authorization from the MCP settings UI:
+
+```json
+{
+  "mcpServers": {
+    "namefi": {
+      "serverUrl": "https://api.namefi.io/mcp"
+    }
+  }
+}
+```
+
+For API-key authentication, add the header through environment interpolation:
 
 ```json
 {
@@ -95,8 +128,8 @@ One thing worth flagging: as of this guide's publish date, `docs.windsurf.com/wi
 
 Once one of the connections above is live, the rest of the flow is the same regardless of which editor you're in.
 
-1. **Get an API key** from [namefi.io/api-key](https://namefi.io/api-key), generated from the wallet that should own the new domain.
-2. **Connect** using the config for your editor above, then sanity-check it: ask "check whether `<yourapp>.com` is available on Namefi, and tell me which tool you called." That's a read-only `checkAvailability` call, so it works before you've funded anything.
+1. **Choose authentication.** Use the editor's OAuth flow, or generate an API key at [namefi.io/api-key](https://namefi.io/api-key) and keep it outside version control.
+2. **Connect and authenticate** using the matching config above. Then sanity-check it: ask "check whether `<yourapp>.com` is available on Namefi, and tell me which tool you called." `checkAvailability` is read-only and does not spend funds, but the MCP session currently still requires authentication to initialize.
 3. **Register.** Confirm a name and duration in plain language — "register it for one year." The agent submits `registerDomain` and polls the order until it reaches `SUCCEEDED` (or a terminal failure state); a typical registration finishes in a handful of poll cycles.
 4. **Point it at your deploy.** This is the step the next section covers in detail — add the DNS records your hosting platform asks for, through the same conversation.
 5. **Verify it resolves.** [DNS propagation](/en/glossary/dns-propagation/) isn't instant, so give it a few minutes, then confirm with a public DNS lookup or by just loading the domain in a browser.
@@ -137,7 +170,7 @@ Namefi's MCP server covers the full lifecycle today — registration, DNS, [auto
 Not here — this guide is deliberately scoped to Claude Code, Cursor, and Windsurf. [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) has the same exact, verified config for Codex CLI, Gemini CLI, and Claude Desktop.
 
 ### Do I need a Namefi account before I can try this?
-No. A read-only availability check needs no authentication, so you can connect any editor above and run the test prompt in step 2 before generating an API key or funding anything.
+You need an authenticated MCP session before the current live endpoint will initialize. Use OAuth, or provide an API key. The availability call itself is read-only and does not require funds, but do not rely on the discovery descriptor's unauthenticated-read claim until it matches live behavior.
 
 ### What if my deployment platform isn't Vercel or Cloudflare Pages?
 The pattern holds everywhere: your platform's dashboard tells you which DNS record type it needs — almost always an A record for an apex domain, a CNAME for a subdomain — and you hand that value to your agent to write via `createDnsRecord`.
@@ -146,19 +179,19 @@ The pattern holds everywhere: your platform's dashboard tells you which DNS reco
 Yes, by default — the domain registers as an NFT on Base, to the wallet tied to your API key, unless you specify a different `nftReceivingWallet` in the request. See [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains/) if that's new to you.
 
 ### Can I skip the API key entirely?
-Yes, with a caveat: Namefi's wallet-signed [x402](/en/glossary/x402/) checkout path lets a funded wallet pay for a registration with no account or API key at all. It needs its own explanation, covered in [Pay for Domains with a Crypto Wallet](/en/blog/wallet-checkout/).
+Yes. Use OAuth 2.1 with PKCE in a compatible MCP client, so no static Namefi API key is stored in the editor configuration. Separately, Namefi's wallet-signed [x402](/en/glossary/x402/) checkout path can authorize and pay for a registration without an API key, as covered in [Pay for Domains with a Crypto Wallet](/en/blog/wallet-checkout/). That x402 transaction path does not make an unauthenticated MCP `initialize` request succeed.
 
 ## Ship the name with the app
 
-The domain is infrastructure, same as the deploy target and the database — there's no real reason it should be the one piece of shipping an app that still requires leaving your tools and filling out a web form. Connect one of the three configs above, run the five-step flow, and the domain goes live pointed at the same deployment your agent just built, without a single browser tab.
+The domain is infrastructure, like the deploy target and the database. Connect one of the three configs above, complete OAuth or provide a key, then run the five-step flow. OAuth may require a browser authorization step; registration, DNS changes, and verification can continue from the editor after that.
 
-**[Generate a Namefi API key](https://namefi.io/api-key)** and try the availability-check prompt in whichever editor you already have open, or read the [full Claude Code walkthrough with an annotated transcript](/en/blog/claude-mcp-domains/) if you want to see every step spelled out.
+Use OAuth or **[generate a Namefi API key](https://namefi.io/api-key)**, then try the availability-check prompt in whichever editor you already have open. Read the [full Claude Code walkthrough with an annotated transcript](/en/blog/claude-mcp-domains/) if you want to see every step spelled out.
 
 ## Sources and further reading
 
 - Namefi — [namefi.io/llms.txt](https://namefi.io/llms.txt) (MCP server URL, transport, authentication, registration/DNS endpoint reference — primary source for every Namefi-specific claim in this guide)
 - Namefi — [docs.namefi.io: Register a domain](https://docs.namefi.io/docs/03-getting-started/01-your-first-domain.mdx) (registration request fields, polling flow, order status values)
-- Namefi — [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json) (MCP discovery descriptor)
+- Namefi — [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json) (MCP discovery descriptor, OAuth metadata, and the read-only authentication claim that differed from live `initialize` behavior on July 14, 2026)
 - Anthropic / Claude Code — [Connect Claude Code to tools via MCP](https://code.claude.com/docs/en/mcp#:~:text=claude%20mcp%20add%20%2D%2Dtransport%20http) (`claude mcp add --transport http` syntax, `--header`, `--scope` flags)
 - Cursor — [cursor.com/docs/mcp](https://cursor.com/docs/mcp) (`mcp.json` remote-server format, `headers`, `${env:VAR}` interpolation, project vs global config locations)
 - Windsurf / Cascade — [docs.windsurf.com/windsurf/cascade/mcp](https://docs.windsurf.com/windsurf/cascade/mcp) (redirects to [docs.devin.ai/desktop/cascade/mcp](https://docs.devin.ai/desktop/cascade/mcp) as of this guide's publish date; `mcp_config.json` format, `serverUrl`, `headers`)
