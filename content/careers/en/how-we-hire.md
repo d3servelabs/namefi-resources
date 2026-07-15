@@ -95,7 +95,7 @@ If you speak other languages natively or with professional fluency, include them
 
 **Every application must include one identity check so we can verify you are who you say you are:**
 
-- **Current students** — email us **from your school email address** (for example `you@university.edu`). Sending from your institutional account is how we validate that you are currently enrolled, so a personal address on its own is not enough.
+- **Current students** — email us **from your school email address**: a `.edu` address, a country-specific school domain (such as `.edu.cn`, `.edu.au`, or `.ac.uk`), or any other email issued by your school. Sending from your school account is how we validate that you are currently enrolled, so a personal address on its own is not enough.
 - **Everyone else** (or if you do not have a school email) — include **at least one** of these: your **LinkedIn profile**, your **GitHub profile**, or your **personal website or project portfolio**.
 
 Applications with neither a school-email validation nor one of the three links above cannot be processed.
