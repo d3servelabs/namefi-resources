@@ -77,7 +77,11 @@ Namefi is a Delaware-incorporated company. All hiring is conducted in accordance
 
 ## Language
 
-We require professional fluency in English. A second language of any kind is a plus. A second language that none of our existing teammates speak is a *big* plus — it is a slight additional way for us to prioritize cultural and geographic diversity, though it is never a requirement.
+We require professional fluency in English. Beyond that, the languages you speak are a real advantage here. We work in the domain name industry, serving customers all over the world who care deeply about names, culture, and trademarks — the meaning a word carries in one language, the associations it picks up in another, the brands it might collide with. The languages on our team shape how well we can read those signals on our customers' behalf.
+
+We therefore give high priority to candidates who bring more than one language, and especially to those who **add coverage the team does not have yet** — a language none of us speaks. A second language of any kind is a plus; one that no current teammate speaks is a *big* plus, because it widens the range of markets and cultures we can serve well. It is never a hard requirement.
+
+If you speak other languages natively or with professional fluency, include them in your submission — and tell us which ones.
 
 ---
 
@@ -88,5 +92,12 @@ We require professional fluency in English. A second language of any kind is a p
 3. **Audit project** — A take-home or pair-programming project that mirrors real work you would do on the team. We look for people who go beyond what we asked.
 4. **Team interviews** — Meet the people you would work with. We evaluate across all six dimensions of our hiring framework.
 5. **Offer** — If it is a mutual fit, we move fast.
+
+**Every application must include one identity check so we can verify you are who you say you are:**
+
+- **Current students** — email us **from your school email address**: a `.edu` address, a country-specific school domain (such as `.edu.cn`, `.edu.au`, or `.ac.uk`), or any other email issued by your school. Sending from your school account is how we validate that you are currently enrolled, so a personal address on its own is not enough.
+- **Everyone else** (or if you do not have a school email) — include **at least one** of these: your **LinkedIn profile**, your **GitHub profile**, or your **personal website or project portfolio**.
+
+Applications with neither a school-email validation nor one of the three links above cannot be processed.
 
 Ready to apply? Reach us at **careers [at] namefi.io**.
