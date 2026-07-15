@@ -91,11 +91,11 @@ The August 27 hijack is a near-perfect teaching case because every link in the f
 
 ![Colorful illustration of verifiable, tamper-resistant domain ownership — a domain card secured by a green shield, a green Namefi token, and DNS continuity](../../assets/the-syrian-electronic-army-nyt-hijack-03-namefi-angle.jpg)
 
-The SEA hijack was, at its core, an **authority** problem. The registrar's system could not tell the difference between the real owner and someone holding a phished password, so it did what it was built to do and accepted the change. Every defense that worked — registry locks, out-of-band confirmation, careful monitoring — is really a way of raising the bar for *proving* that a change request truly comes from the owner.
+The SEA hijack was a **DNS-administration authority** problem. Phished reseller credentials let the attackers submit changes that Melbourne IT's systems accepted. Registry locks, out-of-band confirmation, least privilege, and monitoring raise the bar for those specific DNS and registry operations.
 
-[Namefi](https://namefi.io) starts from that exact premise: [domain ownership](/en/glossary/domain-ownership/) and control should be **verifiable and tamper-resistant**, not a single reusable password floating through a reseller's inbox. By representing domain ownership as an [on-chain](/en/glossary/on-chain/), cryptographically verifiable asset that stays compatible with DNS, Namefi makes "who is allowed to change this domain" a question with a strong, auditable answer rather than an implicit trust in whoever logged in. Control changes become explicit, signed actions tied to the owner — closer to a registry lock you hold the key to than to a front door whose lock anyone with the right password can open.
+[Namefi](https://namefi.io) provides an [on-chain](/en/glossary/on-chain/) layer for [domain ownership](/en/glossary/domain-ownership/) and token transfer. That can make the tokenized ownership state independently auditable, but the DNS and registry layers remain separate. A compromised reseller or registrar path can change nameservers or other registry data while the on-chain ownership token remains unchanged; tokenization alone would not have prevented or necessarily exposed the *Times* redirect.
 
-A newspaper's domain is its front door. The lesson of August 27, 2013 is that the strongest possible deadbolt does no good if a stranger several buildings away can be tricked into handing over a copy of the key. The fix is to make ownership itself provable — so that "came in through the front door" stops being a thing a stranger can ever say.
+A newspaper's domain is its front door. The lesson of August 27, 2013 is to protect every organization and account that can change its delegation, and to use registry-level update controls and monitoring rather than treating ownership verification as a substitute for DNS security.
 
 ## Sources and further reading
 
