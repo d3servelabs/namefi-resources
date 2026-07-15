@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 cluster: domain-security
 format: explainer
-# ogImage: ../../assets/email-sender-reputation-arms-race-og.jpg  # TODO: generate cover + inline illustrations via the namefi-resource-images skill (needs OPENAI_API_KEY); visual pass deferred
+ogImage: ../../assets/email-sender-reputation-arms-race-og.jpg
 description: A source-backed history of the thirty-year arms race over email sender reputation—the open relays, botnets, image spam, snowshoe campaigns, warmup networks, and other tricks bulk senders used to look trustworthy, the named operators who ran them, and the year and mechanism by which each trick was detected and shut down.
 keywords: ['email sender reputation', 'domain reputation', 'email deliverability', 'history of email spam', 'spam filter', 'botnet takedown', 'snowshoe spam', 'image spam', 'SPF', 'DKIM', 'DMARC', 'email warmup', 'Spamhaus', 'CAN-SPAM', 'Google Postmaster Tools', 'bulk sender requirements', 'cold email']
 relatedArticles:
