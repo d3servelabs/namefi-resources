@@ -150,11 +150,11 @@ That calls `createDnsRecord` twice — once per record — the same [DNS record]
 
 ### Cloudflare Pages
 
-If your deploy target is Cloudflare Pages instead, and your domain's DNS isn't already managed on Cloudflare, [Cloudflare's own custom-domains documentation](https://developers.cloudflare.com/pages/configuration/custom-domains/#:~:text=This%20record%20should%20point%20to%20your%20custom%20Pages%20subdomain) asks for a single **CNAME** record pointing at your project's `.pages.dev` subdomain — no A record needed, since Pages serves everything through that CNAME target. The Cloudflare dashboard step (Workers & Pages → your project → Custom domains → Set up a domain) has to happen first; only then does the CNAME target resolve correctly.
+If your deploy target is Cloudflare Pages, the record path depends on whether you attach a subdomain or the apex. For a **subdomain** such as `app.yourdomain.com` whose DNS remains with another provider, [Cloudflare's custom-domain documentation](https://developers.cloudflare.com/pages/configuration/custom-domains/#:~:text=This%20record%20should%20point%20to%20your%20custom%20Pages%20subdomain) uses one **CNAME** pointing to your project's `.pages.dev` hostname. First add that exact subdomain under Workers & Pages → your project → Custom domains → Set up a domain; then create the CNAME at your DNS provider.
 
 > "Add a CNAME for `app` pointing to `my-project.pages.dev.`"
 
-Same tool call, same trailing-dot rule on the target, different platform.
+For an **apex domain** such as `yourdomain.com`, Cloudflare documents a different requirement: add the domain as a Cloudflare zone and point the registrar's nameservers to the assigned Cloudflare nameservers. A CNAME at an external DNS provider is not the documented apex setup. In that case, the agent can help with registrar nameserver configuration only if the current Namefi tooling supports that operation; `createDnsRecord` alone is not a substitute. For the subdomain path above, it is the same DNS-record tool call and trailing-dot rule on the target as elsewhere.
 
 <!-- TODO: verify — Vercel and Cloudflare Pages exact steps for issuing/renewing the TLS certificate on a newly attached custom domain, to state confidently whether it's automatic on both or needs a manual trigger -->
 
@@ -197,6 +197,6 @@ Use OAuth or **[generate a Namefi API key](https://namefi.io/api-key)**, then tr
 - Windsurf / Cascade — [docs.windsurf.com/windsurf/cascade/mcp](https://docs.windsurf.com/windsurf/cascade/mcp) (redirects to [docs.devin.ai/desktop/cascade/mcp](https://docs.devin.ai/desktop/cascade/mcp) as of this guide's publish date; `mcp_config.json` format, `serverUrl`, `headers`)
 - Vercel — [Adding & Configuring a Custom Domain](https://vercel.com/docs/domains/working-with-domains/add-a-domain#:~:text=Each%20project%20has%20a%20unique%20CNAME%20record) (apex-domain A record, per-project CNAME target for subdomains, nameserver method)
 - Vercel — [Domains Overview](https://vercel.com/docs/domains#:~:text=76.76.21.21) (the `76.76.21.21` serving IP used for apex A records)
-- Cloudflare — [Custom domains for Pages](https://developers.cloudflare.com/pages/configuration/custom-domains/#:~:text=This%20record%20should%20point%20to%20your%20custom%20Pages%20subdomain) (CNAME-to-`.pages.dev` flow for domains not managed on Cloudflare)
+- Cloudflare — [Custom domains for Pages](https://developers.cloudflare.com/pages/configuration/custom-domains/) (external-DNS CNAME flow for custom subdomains; Cloudflare-zone and nameserver requirements for apex domains)
 - webhosting.today — [AI Agents Can Now Register Domains, No Human Required](https://webhosting.today/2026/04/22/ai-agents-can-now-register-domains-no-human-required/) (Cloudflare Registrar API beta report: editor integrations, beta limitations)
 - Model Context Protocol — [modelcontextprotocol.io](https://modelcontextprotocol.io) (protocol overview)
