@@ -176,7 +176,7 @@ You need an authenticated MCP session before the current live endpoint will init
 The pattern holds everywhere: your platform's dashboard tells you which DNS record type it needs — almost always an A record for an apex domain, a CNAME for a subdomain — and you hand that value to your agent to write via `createDnsRecord`.
 
 ### Is the domain automatically tokenized when I register it this way?
-Yes, by default — the domain registers as an NFT on Base, to the wallet tied to your API key, unless you specify a different `nftReceivingWallet` in the request. See [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains/) if that's new to you.
+Yes, by default — the domain registers as an NFT on Base to the authenticated buyer's wallet, unless you specify a different `nftReceivingWallet` in the request. See [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains/) if that's new to you.
 
 ### Can I skip the API key entirely?
 Yes. Use OAuth 2.1 with PKCE in a compatible MCP client, so no static Namefi API key is stored in the editor configuration. Separately, Namefi's wallet-signed [x402](/en/glossary/x402/) checkout path can authorize and pay for a registration without an API key, as covered in [Pay for Domains with a Crypto Wallet](/en/blog/wallet-checkout/). That x402 transaction path does not make an unauthenticated MCP `initialize` request succeed.
