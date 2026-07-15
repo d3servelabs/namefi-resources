@@ -38,9 +38,9 @@ The traditional flow for selling a `.com` looks something like this:
 3. Open an [escrow](/en/glossary/escrow/) at [Escrow.com](https://www.escrow.com/) or similar. Buyer wires funds.
 4. Seller unlocks the domain and provides the [auth code](/en/glossary/auth-code/).
 5. Buyer initiates [cross-registrar transfer](/en/glossary/cross-registrar-transfer/) at their [registrar](/en/glossary/registrar/).
-6. Wait for the [ICANN](/en/glossary/icann/) inter-registrar process. Under ICANN's current policy, the transfer proceeds by default if the registrar of record does not respond to the registry within five calendar days; that is a response window, not a five-day lock.
+6. Wait for the [ICANN](/en/glossary/icann/) inter-registrar process. Under ICANN's current policy, the registry completes the transfer unless it receives a NACK from the registrar of record within five calendar days; that is a response window, not a five-day lock.
 7. Confirm the transfer; escrow releases funds.
-8. Pay the escrow provider's current fee, plus any marketplace charges. [Escrow.com's published standard domain fee schedule](https://www.escrow.com/domains) currently ranges from 2.6% for transactions up to USD 5,000 to 0.7% for transactions above USD 10 million; its optional concierge tier ranges from 5.2% to 1.4% across those bands.
+8. Pay the escrow provider's current fee, plus any marketplace charges. [Escrow.com's published USD fee schedule](https://www.escrow.com/fee-calculator) currently ranges from 2.6% for standard service on transactions up to USD 5,000 to 0.7% above USD 10 million; its optional concierge tier ranges from 5.2% to 1.4% across those bands. Published minimum fees apply in several bands, and eligible credit-card or PayPal payments up to USD 5,000 add a 3.05% payment-processing fee.
 
 It works. It's been the standard for two decades. It is also slow, expensive, and full of moments where one party has to trust the other (or a third-party escrow) to do the right thing.
 
@@ -72,7 +72,7 @@ Compatible venues can add discovery and settlement surfaces. Whether that produc
 
 **Potentially unnecessary for the supported on-chain trade.** Replaced by atomic settlement for the payment and NFT legs.
 
-In the traditional flow, escrow bridges the asynchronous gap between buyer payment and domain transfer. An atomic marketplace contract can remove that gap for the token trade, so a separate fund-holding service may not be needed for that leg. This avoids the selected escrow service's fee, but marketplace fees, network gas, currency conversion, and any registrar-side processing can remain. As of this article's update, [Escrow.com's standard domain schedule](https://www.escrow.com/domains) is 0.7%–2.6% by transaction value, not a universal 3%–6%.
+In the traditional flow, escrow bridges the asynchronous gap between buyer payment and domain transfer. An atomic marketplace contract can remove that gap for the token trade, so a separate fund-holding service may not be needed for that leg. This avoids the selected escrow service's fee, but marketplace fees, network gas, currency conversion, and any registrar-side processing can remain. As of this article's update, [Escrow.com's standard USD domain schedule](https://www.escrow.com/fee-calculator) is 0.7%–2.6% by transaction value, with published minimums in several bands and an additional 3.05% processing fee for eligible credit-card or PayPal payments up to USD 5,000; the percentage range is not the complete effective cost in every case.
 
 ### Auth codes (EPP codes)
 
@@ -82,7 +82,7 @@ In the traditional flow, escrow bridges the asynchronous gap between buyer payme
 
 ### ICANN transfer timing and 60-day restrictions
 
-There is no general "five-day registrar lock." Under the [ICANN Transfer Policy](https://www.icann.org/en/contracted-parties/accredited-registrars/resources/domain-name-transfers/policy), five calendar days is the window in which the registrar of record can respond to the registry before an inter-registrar request receives default approval. Separate rules allow denial within 60 days of initial registration or a previous inter-registrar transfer.
+There is no general "five-day registrar lock." Under the [ICANN Transfer Policy](https://www.icann.org/en/contracted-parties/accredited-registrars/resources/domain-name-transfers/policy), the registry completes an inter-registrar transfer unless it receives a NACK from the registrar of record within five calendar days. Separate rules allow denial within 60 days of initial registration or a previous inter-registrar transfer. A registrar can also impose a 60-day inter-registrar lock after a Change of Registrant when the registered name holder did not opt out before the change; whether that pre-change opt-out is offered depends on the registrar.
 
 An in-protocol NFT transfer may not be an inter-registrar transfer, but that does not make ICANN and registrar policy irrelevant. The platform must still map the buyer to the registered name holder or authorized control record, and a later detokenization or registrar move can encounter transfer restrictions.
 
