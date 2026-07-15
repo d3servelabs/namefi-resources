@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Turn high AI and agent fluency into real product output — no conventional background required, just the ability to deliver with cutting-edge tools.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
@@ -17,6 +17,8 @@ baseSalary:
   maxValue: 6000
   unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 

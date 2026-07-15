@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Apply security-first thinking across everything we ship while contributing as a hands-on engineer, amplified by AI-augmented tooling.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
@@ -17,6 +17,8 @@ baseSalary:
   maxValue: 6000
   unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 

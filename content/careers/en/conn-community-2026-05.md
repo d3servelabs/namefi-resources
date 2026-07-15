@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Grow and nurture our community with meaningful engagement, using AI agents to stay responsive and surface insights at scale.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Community
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
@@ -17,6 +17,8 @@ baseSalary:
   maxValue: 800
   unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 

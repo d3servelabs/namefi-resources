@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Deliver end-to-end product features across the entire stack, leveraging AI agents and the latest AI tooling to ship faster and smarter.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
@@ -17,6 +17,8 @@ baseSalary:
   maxValue: 6000
   unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 

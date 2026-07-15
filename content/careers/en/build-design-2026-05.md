@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Drive product decisions, user experience, and design quality with AI agents as core collaborators in your daily workflow.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Product
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
@@ -17,6 +17,8 @@ baseSalary:
   maxValue: 800
   unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 

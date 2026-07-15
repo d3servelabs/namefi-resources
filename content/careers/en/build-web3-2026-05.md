@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Bring deep Web3 and smart contract expertise across the full product surface, using AI agents to accelerate on-chain and off-chain delivery.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
@@ -17,6 +17,8 @@ baseSalary:
   maxValue: 6000
   unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 

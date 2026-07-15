@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: false
 type: job
 description: Lead technical depth in DNS and EPP domains while contributing broadly as a full-stack engineer, amplified by AI-assisted development workflows.
-employmentType: FULL_TIME
+employmentType: [FULL_TIME, CONTRACTOR]
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
@@ -17,6 +17,8 @@ baseSalary:
   maxValue: 6000
   unitText: MONTH
 ---
+
+**This is a contractor role.**
 
 ## What You Will Do
 
