@@ -37,11 +37,11 @@ We'll keep this platform-neutral. The use cases below apply across [Namefi](http
 
 ## Use Case 1: Wallet-Native Sale and Settlement
 
-**What it is:** Sell a domain by signing a single [on-chain](/en/glossary/on-chain/) transaction. The buyer pays, the [NFT](/en/glossary/nft/) moves, the [registrar](/en/glossary/registrar/) record updates, [atomically](/en/glossary/atomic-transfer/). No [escrow](/en/glossary/escrow/) service, no [auth code](/en/glossary/auth-code/), no 5-day registrar lock.
+**What it is:** On a compatible marketplace, the payment and [NFT](/en/glossary/nft/) can move together in one [atomic](/en/glossary/atomic-transfer/) on-chain settlement. That atomicity applies to the token and payment legs; it does **not** prove that every platform updates the [registrar](/en/glossary/registrar/) or registry record in the same transaction. The off-chain registration step is platform-specific and may require a separate claim, contact details, review, or approval.
 
-**Why it matters:** Traditional domain sales rely on third-party escrow services ([Escrow.com](https://www.escrow.com/), Sav, Sedo) to hold funds while the registrar transfer is in progress. That's slow and expensive — escrow fees of 3–6% and timelines measured in days, not minutes. Tokenized sales replace this with on-chain atomic settlement.
+**Why it matters:** Traditional domain sales may use third-party escrow services ([Escrow.com](https://www.escrow.com/), Sav, Sedo) while a registrar or registrant change is completed. Tokenized marketplaces can reduce the gap between the token and payment legs, but end-to-end time and cost still depend on marketplace fees, network gas, compliance, and the platform's registration-state workflow.
 
-**Reality check:** This is **live and working** in 2026 across multiple platforms. The hardest part is [liquidity](/en/glossary/domain-liquidity/) (do enough buyers find your listing?), not the mechanics.
+**Reality check:** Token-and-payment settlement is live in 2026, but platforms do not expose one universal registrar-update model. For example, Doma's [current transfer documentation](https://docs.doma.xyz/getting-started) says an NFT transfer puts the domain into temporary custody; the recipient then submits a Domain Claim and waits for registrar approval or rejection. Also distinguish ICANN's transfer-pending period from a lock: the [ICANN Transfer Policy](https://www.icann.org/en/contracted-parties/accredited-registrars/resources/domain-name-transfers/policy) describes separate five-calendar-day processing rules and 60-day inter-registrar lock conditions. Do not assume tokenization removes every auth-code, claim, approval, custody, or lock step across all platforms.
 
 For the deep dive, see [From Listing to Settlement](/en/blog/how-tokenized-marketplaces-replace-escrow/).
 
@@ -153,7 +153,7 @@ You don't have to use any of these to benefit from tokenizing. Many owners token
 ## Summary
 
 - Tokenized domains are useful because they let domains participate in the broader on-chain economy: sale and settlement, lending, leasing, fractionalization, AI-agent identity, marketplace listings, programmable transfers, and inheritance.
-- Some of these (sale, marketplace listing, lending) are **mature**. Others (AI agent identity, fractionalization) are **emerging**. A few (full decentralized DNS) are **still mostly aspirational**.
+- Some token listing and payment mechanics are live, while registrar synchronization, lending support, AI agent identity, and fractionalization vary by platform and remain at different stages of maturity. Full decentralized DNS is a separate, mostly aspirational goal.
 - The common thread: a domain that's a token plugs into everything else built on tokens.
 - You don't have to use any of these use cases to benefit. Faster transferability and self-custody are reasons enough for many owners.
 - Where the use case touches money, ownership structure, or legal status, **get professional help** — especially for lending, leasing, fractionalization, and estate planning.

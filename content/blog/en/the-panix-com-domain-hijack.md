@@ -65,7 +65,7 @@ When you control a domain's DNS, you can redirect where its email is delivered. 
 
 Mail that is misrouted during a hijack may be delayed, bounced, dropped, or exposed to an unintended system. In this case the documented impact was loss of email service and messages, not confirmed attacker access to message contents.
 
-And there was nothing the customers could do. The problem was not on Panix's machines, which were running fine. It was in the global routing table of the [Domain Name System](/en/glossary/dns/), which had been told — by a [registrar](/en/glossary/registrar/) in Australia, acting on a fraudulent request — that panix.com now belonged to someone else.
+And there was nothing the customers could do. The problem was not on Panix's machines, which were running fine. The unauthorized registrar transfer enabled the attacker-controlled account to change the domain's delegation and [DNS](/en/glossary/dns/) data, sending web and mail traffic to different systems. DNS published where `panix.com` should resolve; it did not itself say who legally owned the registration.
 
 ## How it happened: authorization and process failures
 
@@ -83,7 +83,7 @@ Stack the failures and the picture is grim. The *gaining* registrar, through its
 
 Recovery, once humans got involved, was fast — and that is its own indictment, because it proved the transfer never should have been approved in the first place.
 
-By Sunday, [Panix had recovered its Panix.com domain from Australian domain hosting / registration firm Melbourne IT, where the purloined domain was parked](https://www.theregister.com/2005/01/17/panix_domain_hijack/#:~:text=Panix%20had%20recovered%20its%20Panix.com%20domain), and pointed it back to its natural home at Dotster. The fix at the [registry](/en/glossary/registry/) level was nearly instant; the global cleanup was not, because DNS does not forget on command. As The Register noted, [root servers](/en/glossary/root-zone/) were updated quickly but the distributed nature of DNS meant it would take up to 24 hours before normality was fully restored — caches around the world had to expire before every user saw the real panix.com again.
+By Sunday, [Panix had recovered its Panix.com domain from Australian domain hosting / registration firm Melbourne IT, where the purloined domain was parked](https://www.theregister.com/2005/01/17/panix_domain_hijack/#:~:text=Panix%20had%20recovered%20its%20Panix.com%20domain), and pointed it back to its natural home at Dotster. The registration and `.com` delegation data could be corrected quickly; the global cleanup was not instant, because cached DNS answers had to expire before every resolver saw the restored data. A contemporaneous Register report called the updated systems "root servers," but `panix.com` is a second-level name: the DNS root delegates `.com`, while the `.com` authoritative layer publishes the delegation for `panix.com`.
 
 Melbourne IT, to its credit, did not hide. Two days later The Register reported that [an Australian domain registrar has admitted to its part in last weekend's domain name hijack](https://www.theregister.com/2005/01/19/panix_hijack_more/#:~:text=An%20Australian%20domain%20registrar%20has%20admitted%20to%20its%20part), tracing the failure to a verification step in its transfer process that had not been performed and pledging that the loophole that allowed the error had been closed.
 
@@ -101,19 +101,19 @@ Strip away the dates and the registrar names, and Panix leaves a few durable les
 
 1. **Express authorization must be verified before a transfer starts.** The five-day losing-registrar window is not permission for the gaining registrar or reseller to skip identity checks. ICANN concluded that failure, not the new policy itself, enabled Panix.
 2. **Every party in the transfer chain has a security role.** The gaining side must authenticate the requester; the losing registrar must act on registry notices; and the registrant needs a reachable, monitored contact path. One party's silence should not erase another party's verification duty.
-3. **Turn on the lock.** `clientTransferProhibited` is the cheapest, most effective protection a domain owner has against this exact attack, and it costs nothing. A locked domain cannot be silently transferred no matter how convincing the paperwork is. Lock your important names and leave them locked.
-4. **Your domain is your single point of failure.** Panix's servers were never compromised, yet the company was effectively offline. When one record in a registry can redirect your entire web and email presence, that record deserves more protection than your servers do.
+3. **Use transfer locks as one layer.** `clientTransferProhibited` can block ordinary inter-registrar transfer requests until the status is removed, but it is not an absolute guarantee against registrar error, account compromise, policy processes, court orders, or unauthorized lock removal. Availability and pricing depend on the registrar. Use the lock for important names and pair it with strong account security, monitored contacts, and escalation procedures.
+4. **Treat domain control as critical infrastructure.** Panix's servers were never compromised, yet changing the registration and delegation disrupted web and email service. Protect registrar access, registry-facing workflows, DNS configuration, mail, and servers as separate layers rather than assuming server security alone protects reachability.
 5. **Watch notices, but do not rely on them alone.** Panix did not receive notice, while Dotster did and did not act. Maintain monitored contacts and escalation paths, and pair them with transfer locks and strong requester verification.
 
 ## The Namefi angle
 
-![Colorful illustration of verifiable, tamper-resistant domain ownership — a domain card secured by a green shield, a green Namefi token, and DNS continuity](../../assets/the-panix-com-domain-hijack-03-namefi-angle.jpg)
+![Colorful illustration of auditable on-chain token control — a domain card secured by a green shield, a green Namefi token, and DNS continuity](../../assets/the-panix-com-domain-hijack-03-namefi-angle.jpg)
 
 The Panix hijack is, at its heart, an authorization failure. A reseller and gaining registrar accepted a fraudulent request without obtaining the registrant's express approval, and the losing registrar did not stop it after receiving notice.
 
-[Namefi](https://namefi.io) provides an on-chain representation of [domain ownership](/en/glossary/domain-ownership/) and token transfer. That can make the tokenized ownership state and token-transfer authorization auditable. It does not, by itself, prevent a conventional registrar or registry from processing an unauthorized transfer of the underlying DNS domain, so registrar locks, verified contacts, and emergency restoration procedures remain essential.
+[Namefi](https://namefi.io) provides an on-chain token-control and transfer layer for supported domains. That can make token custody and token-transfer authorization auditable, but the token is not an unconditional legal title or a replacement for registrar and registry records. It does not, by itself, prevent a conventional registrar or registry from processing an unauthorized transfer of the underlying DNS domain, so registrar locks, verified contacts, and emergency restoration procedures remain essential.
 
-The lesson is narrower and stronger than a claim that one technology fixes transfer policy: high-value domains need independent ownership records **and** correctly enforced controls at every operational layer that can move or repoint the name.
+The lesson is narrower and stronger than a claim that one technology fixes transfer policy: high-value domains benefit from independently auditable token state **and** correctly enforced controls at every operational layer that can move or repoint the name.
 
 ## Sources and further reading
 
