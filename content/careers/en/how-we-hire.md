@@ -77,7 +77,11 @@ Namefi is a Delaware-incorporated company. All hiring is conducted in accordance
 
 ## Language
 
-We require professional fluency in English. A second language of any kind is a plus. A second language that none of our existing teammates speak is a *big* plus — it is a slight additional way for us to prioritize cultural and geographic diversity, though it is never a requirement.
+We require professional fluency in English. Beyond that, the languages you speak are a real advantage here. We work in the domain name industry, serving customers all over the world who care deeply about names, culture, and trademarks — the meaning a word carries in one language, the associations it picks up in another, the brands it might collide with. The languages on our team shape how well we can read those signals on our customers' behalf.
+
+We therefore give high priority to candidates who bring more than one language, and especially to those who **add coverage the team does not have yet** — a language none of us speaks. A second language of any kind is a plus; one that no current teammate speaks is a *big* plus, because it widens the range of markets and cultures we can serve well. It is never a hard requirement.
+
+If you speak other languages natively or with professional fluency, include them in your submission — and tell us which ones.
 
 ---
 
