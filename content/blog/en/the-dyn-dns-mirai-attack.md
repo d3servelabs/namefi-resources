@@ -1,5 +1,5 @@
 ---
-title: 'The Dyn DNS Attack: When a Mirai Botnet of Hacked Cameras Broke Half the Internet'
+title: 'The Dyn DNS Attack: When a Mirai Botnet Disrupted Major Internet Services'
 date: '2026-06-17'
 language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
@@ -9,7 +9,7 @@ cluster: domain-security
 series: domain-apocalypse
 seriesOrder: 11
 format: case-study
-description: 'On October 21, 2016, a DDoS attack powered by the Mirai IoT botnet hit DNS provider Dyn in three waves, knocking Twitter, Netflix, Reddit, Spotify, GitHub, Airbnb and PayPal offline for hours — a Domain Mayday case study in DNS provider concentration.'
+description: 'On October 21, 2016, a DDoS attack powered by the Mirai IoT botnet hit DNS provider Dyn in three waves, making Twitter, Netflix, Reddit, Spotify, GitHub, Airbnb, PayPal, and other services unreachable for many users — a Domain Mayday case study in DNS provider concentration.'
 keywords: ['dyn dns attack', 'mirai botnet', 'october 21 2016 ddos', 'dns ddos attack', 'iot botnet', 'dns provider outage', 'domain security', 'dns single point of failure', 'dyn ddos 2016', 'mirai malware', 'internet outage 2016', 'dns redundancy', 'hacked iot cameras']
 relatedArticles:
   - /en/blog/the-godaddy-multi-year-breach/
@@ -33,7 +33,7 @@ relatedGlossary:
 
 For a few hours on a Friday in October 2016, the internet forgot how to find itself.
 
-Twitter loaded a blank page. Netflix spun and gave up. Reddit, Spotify, GitHub, Airbnb, PayPal — all there, all online, all running perfectly fine on their own servers, and all completely unreachable. Nothing was hacked. No data was stolen. The websites were exactly where they had always been. What broke was the part of the internet that *tells you where things are*.
+Twitter, Netflix, Reddit, Spotify, GitHub, Airbnb, PayPal, and other services became unreachable for many users because DNS lookups failed. The contemporaneous reporting establishes the shared DNS disruption; it does not establish the health of every affected company's application servers or rule out every unrelated incident during the same window. What failed across this group was the lookup path that *tells users where services are*.
 
 The attack didn't hit Twitter or Netflix. It hit a company most of their users had never heard of: **Dyn**, a New Hampshire firm that ran DNS — the internet's address book — for a large slice of the modern web. And the weapon wasn't a server farm or a nation-state arsenal. It was a swarm of hacked baby monitors, webcams, and home routers: ordinary household gadgets, quietly conscripted into an army called **Mirai**.
 
@@ -85,7 +85,7 @@ When the dust settled, even the basic question of *how big was it* turned out to
 
 The legal aftermath added a twist. The three young men behind Mirai — Paras Jha, Josiah White, and Dalton Norman — eventually [pleaded guilty for their role in creating, operating and selling access to the "Mirai botnet"](https://cyberscoop.com/mirai-botnet-charges-paris-jha-dalton-norman-josiah-white/#:~:text=pleaded%20guilty%20for%20their%20role%20in%20creating). But by the time of the Dyn attack, Jha had already released the source code publicly — and prosecutors and reporters have been careful to note that the Dyn attackers were not necessarily the original trio. As CyberScoop reported, it's [not yet clear, for example, who was behind most high profile Mirai-linked attack against internet performance management company Dyn](https://cyberscoop.com/mirai-botnet-charges-paris-jha-dalton-norman-josiah-white/#:~:text=not%20yet%20clear%2C%20for%20example%2C%20who%20was%20behind). Once the weapon was open-source, anyone could pull the trigger.
 
-For Dyn, the business damage was real: in the months that followed, thousands of domains moved their DNS elsewhere, a costly lesson in customer trust after a single bad day.
+For Dyn and its customers, the incident made DNS-provider concentration and failover a board-level reliability question. Later research examined how slowly major sites adopted multi-provider authoritative DNS despite the outage.
 
 ## What this teaches about DNS provider concentration
 
@@ -98,17 +98,17 @@ The defensive answer is redundancy: spreading authoritative DNS across more than
 1. **A domain has more failure points than its [registrar](/en/glossary/registrar/).** The provider answering "where does this name point?" is just as load-bearing as the servers behind it.
 2. **Single-provider DNS is a single point of failure.** Excellent uptime in normal conditions says nothing about behavior under a 1 Tbps flood.
 3. **Concentration is convenient and fragile.** The same efficiency that makes one provider attractive makes its outage widely felt.
-4. **Resilience is a property of ownership, not just hosting.** When something breaks, you need to control your domain's configuration cleanly enough to re-route fast.
+4. **Resilience depends on operational DNS control, not just ownership or hosting.** When something breaks, you need tested authority, access, and procedures to reroute safely — ideally across more than one authoritative provider.
 
 ## The Namefi angle
 
-![Colorful illustration of verifiable, resilient domain ownership — a domain card secured by a green shield, a green Namefi token, and DNS continuity](../../assets/the-dyn-dns-mirai-attack-03-namefi-angle.jpg)
+![Colorful illustration separating a domain ownership token from redundant DNS-provider paths, with a domain card, shield, and multiple routing lines](../../assets/the-dyn-dns-mirai-attack-03-namefi-angle.jpg)
 
-The Dyn attack didn't steal a single domain. It didn't forge a transfer or hijack a registrar account. And yet, for a few hours, the people who *owned* those domains effectively lost control of where their names pointed — not because their ownership was in doubt, but because the operational layer beneath their domains failed all at once.
+The Dyn attack did not need to steal a domain, forge a transfer, or hijack a registrar account. Registrant rights remained intact while a shared authoritative-DNS provider became unavailable. That is precisely why ownership and resolution resilience must be treated as separate properties.
 
-That gap — between *owning* a name and *reliably controlling* where it resolves — is exactly the seam attacks like this exploit. Domains are among the most valuable assets a business holds, yet their control often sits behind opaque, centralized infrastructure that the owner can neither verify nor quickly reconfigure under pressure.
+For a Dyn-style availability event, the practical defenses are redundant authoritative DNS, tested failover, controlled access to delegation and zone data, monitoring, and a recovery plan. A different ownership representation does not absorb a DDoS attack or make a single nameserver provider redundant.
 
-[Namefi](https://namefi.io) is built on the idea that domains should behave like internet-native assets: ownership that is cryptographically verifiable and portable, while staying fully compatible with DNS. Verifiable, owner-controlled [domain ownership](/en/glossary/domain-ownership/) doesn't stop a botnet — but it pushes the world toward an internet where control of a name is provable, auditable, and not silently dependent on one provider's worst day. The Mirai-Dyn attack is a reminder that a domain you "own" is only as resilient as the layer that answers for it. Resilience starts with making ownership and control something you can actually verify.
+[Namefi](https://namefi.io) adds a verifiable token-control layer for supported domains while remaining compatible with conventional DNS. Its [DNS guide](https://namefi.io/r/en/blog/dns-on-tokenized-domains) explicitly separates the layers: nameservers and DNS resolution stay in layer 1, and on-chain token ownership sits alongside them. Tokenization therefore does not make a domain less dependent on its chosen DNS provider or record a DNS outage on-chain. It can make token transfers auditable; Dyn-style resilience still comes from the DNS architecture and operations above.
 
 ## Sources and further reading
 
@@ -120,4 +120,5 @@ That gap — between *owning* a name and *reliably controlling* where it resolve
 - The Register — [In the two years since Dyn went dark, what have we learned? Not much, it appears](https://www.theregister.com/2018/10/11/dns_insecurity_survey/)
 - BankInfoSecurity — [Botnet Army of 'Up to 100,000' IoT Devices Disrupted Dyn](https://www.bankinfosecurity.com/botnet-army-just-100000-iot-devices-disrupted-dyn-a-9486)
 - Carnegie Mellon CyLab — [Four years since the Mirai-Dyn attack… is the Internet safer?](https://cylab.cmu.edu/news/2020/10/30-dynattack.html)
+- Namefi — [DNS on Tokenized Domains](https://namefi.io/r/en/blog/dns-on-tokenized-domains) (nameservers and resolution remain in the conventional DNS layer)
 - CyberScoop — [Three men plead guilty for roles in Mirai botnet empire](https://cyberscoop.com/mirai-botnet-charges-paris-jha-dalton-norman-josiah-white/)
