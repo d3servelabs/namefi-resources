@@ -39,10 +39,10 @@ If you want the long form on tokenized domains specifically, start with [What Ar
 
 ## The One-Liner
 
-- **Tokenized domain** = a real [ICANN](/en/glossary/icann/) domain (`.com`, `.xyz`, `.io`, etc.) with an added [on-chain](/en/glossary/on-chain/) ownership token on top.
-- [**Web3**](/en/glossary/web3/) **domain** = a name that lives **only** on-chain (`.eth`, `.crypto`, `.x`, etc.). It's a separate naming system, not part of [DNS](/en/glossary/dns/).
+- **Tokenized domain** = a real [ICANN](/en/glossary/icann/) domain (`.com`, `.xyz`, `.io`, etc.) with an added [on-chain](/en/glossary/on-chain/) token-control layer.
+- [**Web3**](/en/glossary/web3/) **domain** = a name issued by a blockchain-oriented naming system (`.eth`, `.crypto`, `.x`, etc.). A Web3-native suffix such as `.eth` is outside the public [DNS](/en/glossary/dns/) root, but the broader ecosystem is not literally "only on-chain": ENS can [import DNS names](https://docs.ens.domains/learn/dns/) and resolvers can use [CCIP Read](https://docs.ens.domains/resolvers/ccip-read/) for data stored on another network or off-chain.
 
-A tokenized domain *extends* the existing DNS world. A Web3 domain *replaces* it (or sits beside it, depending on how you use it).
+A tokenized ICANN domain adds a token layer to the existing DNS and registration system. A Web3-native suffix usually sits beside public DNS and depends on support in the client or gateway where it is used.
 
 ---
 
@@ -53,7 +53,7 @@ Both involve NFTs in wallets. Both get called "domains." Both have ICANN in the 
 Here's the cleanest mental model:
 
 - If you type the name into a normal browser and it resolves to a website without any extension, plugin, or special resolver — it's a **DNS domain**. Tokenizing it doesn't change that.
-- If you need a browser extension, a special [wallet](/en/glossary/wallet/) feature, or a resolver gateway to make it work — it's a **Web3 domain**.
+- If a name is outside the public DNS root, it needs a Web3-aware client, [wallet](/en/glossary/wallet/) feature, gateway, or other resolver integration. That is common for Web3-native suffixes, but implementations differ.
 
 Both are valid. They do different things.
 
@@ -63,16 +63,16 @@ Both are valid. They do different things.
 
 | Feature | Tokenized ICANN Domain | Web3 Domain (ENS, .crypto, etc.) |
 |---|---|---|
-| Resolves in any browser | Yes, natively | No (needs resolver/extension) |
-| Works for email out of the box | Yes | No (different mechanism) |
-| Works for SSL/TLS certs | Yes (Let's Encrypt, etc.) | No (separate trust model) |
+| Resolves through public DNS | Yes, after DNS configuration | Not for Web3-native suffixes without a gateway or integration |
+| Works with standard email | Yes, after configuring a mail service and MX/DNS records | Not by default for a Web3-native suffix |
+| Eligible for standard SSL/TLS workflows | Yes, after CA validation and server configuration | Not by default for a Web3-native suffix |
 | Recognized by ICANN | Yes | No |
-| Lives on-chain | Yes (ownership layer) | Yes (entire identity) |
-| Held as NFT in wallet | Yes | Yes |
-| Used as wallet alias | Sometimes (via plugins) | Yes, natively |
-| Annual renewal at registrar | Yes (real DNS domain) | Typically one-time or different model |
-| Browser-extension free for end users | Yes | No |
-| Compatible with DNS infrastructure | Yes | Not directly |
+| On-chain component | Token-control layer | Naming records and control vary by system; some data can be off-chain |
+| Held as NFT in wallet | Yes, for supported tokenized domains | Common, but system-specific |
+| Used as wallet alias | With a supporting integration | With a supporting wallet or app |
+| Renewal model | Registrar renewal for the DNS domain | System-specific; ENS `.eth` uses renewals, while other providers differ |
+| Browser-extension free for end users | Yes, after normal website/DNS setup | Not universally for Web3-native suffixes |
+| Compatible with DNS infrastructure | Yes | Web3-native suffixes are not in public DNS; ENS also supports imported DNS names |
 
 ---
 
@@ -83,9 +83,9 @@ Both are valid. They do different things.
 Best when:
 
 - You're running a real website, app, or business and you want it to work for **everyone**, regardless of whether they've installed any Web3 software.
-- You want email at your domain, SSL certificates from standard CAs, CDN configs, etc.
-- You want **wallet-native ownership and transferability** for the domain itself — selling, gifting, lending — without the registrar bureaucracy.
-- You want the domain to be usable as on-chain [collateral](/en/glossary/collateral/) in [DeFi](/en/glossary/defi/) while still operating as a normal website.
+- You want to configure email, request SSL certificates from standard CAs, use CDNs, and operate through normal DNS tooling.
+- You want a **wallet-native token-control and transfer layer** while keeping the domain's registrar, registry, renewal, dispute, and legal dependencies.
+- You want a token that a compatible [DeFi](/en/glossary/defi/) protocol could choose to evaluate as [collateral](/en/glossary/collateral/). This is not automatic: protocol support, valuation, loan terms, and liquidation risk determine whether borrowing is actually available.
 
 Examples: a company's `.com`, a SaaS app's `.io`, a creator's `.xyz`, a brand's `.art`. Anything that needs to function in the real internet.
 
@@ -95,7 +95,7 @@ Best when:
 
 - You want a **wallet identity** — a name that, when typed into a crypto app or wallet, resolves to your address. `vitalik.eth` instead of `0x...`.
 - You want a Web3-native profile / handle in dapps that support it.
-- You don't need the name to work in standard email, browsers without plugins, or SSL.
+- You do not require the Web3-native suffix itself to work through standard public-DNS email, ordinary browsers without an integration, or ordinary CA workflows.
 - You like the cultural and community aspects of a specific TLD (`.eth`, `.crypto`, `.x`).
 
 Examples: your personal Web3 identity, a profile on a wallet, a memorable address for receiving crypto, NFT showcase pages.
@@ -112,7 +112,7 @@ See [DNS Still Works](/en/blog/dns-on-tokenized-domains/) for the practical deta
 
 ### ENS / Web3-name resolution
 
-You type `vitalik.eth`. A Web3-aware client (MetaMask, a dapp, certain browsers with [ENS](/en/glossary/ens/) support) queries the ENS [smart contract](/en/glossary/smart-contract/) on [Ethereum](/en/glossary/ethereum/), gets the associated address or content hash, and renders accordingly. A non-Web3-aware client (Chrome without extensions, your office email server, your SSL CA) doesn't know what `.eth` means and won't resolve it.
+You type `vitalik.eth`. A Web3-aware client can use ENS to find the relevant registry and resolver, then obtain records such as an address or content hash. Many records are read from [smart contracts](/en/glossary/smart-contract/) on [Ethereum](/en/glossary/ethereum/), but ENS also supports resolver designs such as [CCIP Read](https://docs.ens.domains/resolvers/ccip-read/) that retrieve authenticated data from L2 networks or off-chain systems. A client that only uses the public DNS root does not know what `.eth` means without an integration or gateway.
 
 That's not a flaw — it's the design. ENS and similar systems are built for a Web3-native experience, not for replacing the broader internet's naming layer. See the [official ENS documentation](https://docs.ens.domains/) for the underlying architecture.
 
@@ -142,8 +142,8 @@ The tokenized `.com` works for the open internet. The `.eth` works as a wallet a
 
 - **"ENS will replace DNS."** No, and it isn't trying to. ENS is a parallel naming system optimized for crypto identity.
 - **"A tokenized `.com` is a 'Web3 domain'."** It's a *tokenized DNS domain*. The "Web3 domain" label is usually used for `.eth`/`.crypto`-style names. The categories are different.
-- **"Browsers natively support `.eth` now."** Brave and a few specific extensions, yes. Mainstream browsers, no. For an end-user experience that works for everyone, DNS is still the answer.
-- **"If I tokenize my domain, I lose ICANN recognition."** No. The DNS / ICANN side is unchanged. You just add an on-chain ownership layer.
+- **"Browsers natively support `.eth` now."** There is no universal public-DNS treatment of `.eth`. Browser, wallet, extension, gateway, and resolver support can change, so test the clients your audience actually uses.
+- **"If I tokenize my domain, I lose ICANN recognition."** Tokenization does not move an ICANN domain out of public DNS. It adds a token-control layer, while the registration still depends on registrar and registry records, platform synchronization, renewals, agreements, policies, disputes, and legal controls.
 - **"Web3 domains are decentralized, tokenized domains aren't."** Both have some decentralized properties (on-chain ownership) and some centralized ones (registries, ICANN, smart contract upgrades). Decentralization is a spectrum, not a checkbox.
 
 ---
@@ -158,8 +158,8 @@ The tokenized `.com` works for the open internet. The `.eth` works as a wallet a
 
 ## Summary
 
-- **Tokenized domains** are real ICANN domains with an added on-chain ownership token. They resolve normally in every browser, support email, work with SSL, and pay normal annual renewals.
-- **Web3 domains** (ENS, Unstoppable Domains, Freename) are a different category — names that live entirely on-chain and act as wallet aliases / Web3 identities.
+- **Tokenized domains** are ICANN domains with an added on-chain token-control layer. After the usual DNS, mail, hosting, and certificate configuration, they use standard internet infrastructure and retain normal registrar renewals.
+- **Web3 naming systems** (ENS, Unstoppable Domains, Freename) issue Web3-native names and wallet identities under system-specific architectures. Do not assume every record lives on-chain or every provider uses the same renewal, resolution, or custody model.
 - The categories aren't competitors. They solve different problems and many people hold both.
 - If you need the name to work everywhere on the internet, you want a tokenized DNS domain. If you want a Web3-native handle and address, you want an ENS-style name.
 - The same wallet can hold both.

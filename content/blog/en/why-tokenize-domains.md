@@ -8,7 +8,7 @@ authors: ['namefiteam']
 draft: false
 cluster: domain-tokenization
 format: opinion
-description: This article explains why traditional domains should be tokenized on-chain and highlights the benefits such as clearer ownership, financial composability, and freer, faster trading.
+description: This article explains why traditional domains can add an on-chain token-control layer, including its interoperability benefits and the registration and legal limits that remain.
 keywords: ['domain tokenization', 'blockchain domains', 'NFT domains', 'on-chain domains', 'domain ownership', 'decentralized domains', 'domain trading', 'web3 domains', 'smart contracts', 'domain composability', 'DNS tokenization', 'digital assets']
 relatedArticles:
   - /en/blog/what-are-tokenized-domains/
@@ -63,7 +63,7 @@ On Namefi, eligible supported domains you register (e.g. `mybrand.xyz`) can be r
 - List it for sale on marketplaces like OpenSea  
 - Combine it with contracts, [DAOs](/en/glossary/dao/), websites, or other apps  
 
-This brings new flexibility and utility to domain ownership.
+This can add flexibility to supported token-control and integration workflows. It does not replace the registrant's contractual rights, the registrar and registry records, or the policies that govern the underlying domain.
 
 ---
 
@@ -76,7 +76,7 @@ By tokenizing domains, Namefi acts as a **bridge** between traditional [DNS](/en
 | Registrar and registry records | A [smart-contract](/en/glossary/smart-contract/) token-control layer on a public blockchain  |
 | Account, registrar, and policy workflows | Potentially [atomic transfers](/en/glossary/atomic-transfer/) for the token and payment legs |
 | Static records            | [Composable](/en/glossary/composability/) into DeFi, identity, [DAOs](/en/glossary/dao/)  |
-| Centralized verification  | Ownership verifiable on-chain         |
+| Registrar and registry verification | Token control and transfer history auditable on-chain |
 
 You hold a programmable token-control layer in your own [wallet](/en/glossary/wallet/), while your rights to the underlying domain still come from the applicable registration agreement and policies.
 
@@ -95,17 +95,17 @@ Transferring domains traditionally involves:
 
 Within Namefi's supported tokenization flow, the onchain token-control leg can transfer in a blockchain transaction. Confirmation time depends on the chain, and the underlying registrar, registry, renewal, dispute, contractual, and legal layers still apply. Compatible [smart contracts](/en/glossary/smart-contract/) can add approvals or management logic around the token.
 
-### ✅ 2. Clearer Ownership & User-Controlled Access
+### ✅ 2. Auditable Token Control & Wallet-Based Access
 
 With a traditional [registrar](/en/glossary/registrar/), a registrant holds contractual rights under the registration agreement and applicable policies. Account access and operational controls are provided through the registrar; that is different from private-key custody, but it does not mean the registrant has no rights or is merely borrowing an account.
 
 With Namefi:
 
-- Your ownership is recorded [on-chain](/en/glossary/on-chain/) as an [NFT](/en/glossary/nft/)  
-- You manage it with your own [wallet](/en/glossary/wallet/)—not a hosted account  
-- While still subject to real-world DNS rules (renewals, lawful use), your **control is cryptographically secured**
+- Control of the [NFT](/en/glossary/nft/) and its transfers is recorded [on-chain](/en/glossary/on-chain/)
+- You can manage that token through your own [wallet](/en/glossary/wallet/) rather than only through a hosted dashboard
+- The underlying registration remains subject to renewal, registry and registrar procedures, Namefi's agreements, disputes, sanctions, court orders, and other legal controls; Namefi's [Terms of Service](https://namefi.io/tos) also describe platform authority over supported tokens in specified circumstances
 
-> It's not about "permanent, [censorship-free](/en/glossary/censorship-free/) domains"—it's about *clearer, user-first ownership*.
+> It is not "permanent" or [censorship-free](/en/glossary/censorship-free/). The benefit is an auditable, programmable token-control layer alongside the existing registration system—not a replacement for legal registrant rights.
 
 ### ✅ 3. Unlocking New Use Cases
 
@@ -120,11 +120,11 @@ Tokenized domains can be:
 
 ## 🔗 Composability: From Closed Market to Internet-Native Asset
 
-This is perhaps the most revolutionary but overlooked feature:
+This is one of the main practical opportunities:
 
 > Tokenizing turns domains into *open [protocol assets](/en/glossary/protocol-asset/)*—anyone can build services, exchanges, or financial layers around them.
 
-### ✅ Dramatically Lower Trading Costs
+### ✅ More Choice in Trading Workflows and Costs
 
 Traditional domain [marketplaces](/en/glossary/marketplace/) publish different commission schedules by venue, sales path, and service. Onchain venues also vary by transaction type and can add marketplace fees, creator earnings, and network gas.
 
@@ -132,7 +132,9 @@ In contrast, [on-chain](/en/glossary/on-chain/) [NFT](/en/glossary/nft/) platfor
 
 - Publish venue- and transaction-specific fee policies that can change
 - Allow direct [wallet](/en/glossary/wallet/)-to-[wallet](/en/glossary/wallet/) transfers  
-- Settle fast, scale globally, and support automation  
+- Can support automated token settlement across supported wallets and networks
+
+Neither model is universally cheaper or faster. Compare marketplace commissions, payment and escrow services, network gas, smart-contract risk, compliance checks, and any registrar or platform steps for the actual transaction.
 
 ### ✅ Faster Token Settlement Where Supported
 
@@ -187,22 +189,22 @@ Tokenizing real estate doesn't exempt it from city zoning, property taxes, or em
 
 - We support eligible TLDs in the ordinary DNS root (`.xyz`, `.com`, `.art`, etc.); current coverage depends on Namefi's live catalog
 - We work with accredited [registrars](/en/glossary/registrar/)  
-- Token ownership is kept in sync with off-chain DNS records  
+- Namefi's supported workflow coordinates token control with the applicable off-chain registration state; DNS records remain separate configuration data used for resolution and services
 - Domains still work with [SEO](/en/glossary/seo/), email, browser compatibility, etc.
 
-What you get is **real usability** and **real freedom**, not an illusion of decentralization.
+What you get is another programmable control and integration surface, with the same underlying registration, policy, and DNS dependencies stated above.
 
 ---
 
 ## ✅ Conclusion: On-Chain Domains Are Evolution, Not Escape
 
-> Tokenizing domains doesn't make them "more blockchain"—it makes them *more usable, ownable, and programmable*.
+> Tokenizing domains adds a more auditable and programmable token-control layer without turning that token into an unconditional legal title.
 
 It:
 
 - Doesn't make them censorship-proof  
 - Doesn't bypass legal oversight  
-- But **does** make them composable, transparent, and Internet-native
+- But **can** make supported token-control workflows composable, auditable, and easier to integrate with on-chain applications
 
 ---
 
