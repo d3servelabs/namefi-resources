@@ -9,7 +9,7 @@ cluster: domain-security
 series: domain-apocalypse
 seriesOrder: 15
 format: case-study
-description: 'On February 25, 2015, Lizard Squad hijacked Lenovo.com by compromising the registrar Webnic, rerouting the world''s largest PC maker''s domain to a webcam slideshow and intercepting its email — days after the Superfish scandal. A Domain Mayday deep-dive on why the registrar is your real perimeter.'
+description: 'On February 25, 2015, attackers changed Lenovo.com''s nameserver and mail routing, sending visitors to a webcam slideshow and exposing some email traffic. Researchers attributed the incident to a Webnic compromise, but Webnic did not publicly confirm their reported exploit chain.'
 keywords: ['lenovo.com dns hijack', 'lizard squad', 'webnic registrar', 'web commerce communications', 'dns hijacking', 'superfish', 'domain registrar security', 'registrar compromise', 'epp auth code', 'email interception', 'google vietnam hijack', 'domain security', 'registrar lock']
 relatedArticles:
   - /en/blog/the-malaysia-airlines-dns-hijack/
@@ -31,11 +31,11 @@ relatedGlossary:
   - /en/glossary/tld/
 ---
 
-On the morning of February 25, 2015, the most-clicked link on the internet for the world's largest PC maker pointed at a slideshow of bored teenagers staring into their webcams, scored to a song from *High School Musical*. Nobody had hacked a single Lenovo server. Nobody had stolen a Lenovo password. The attackers never touched the building, the network, or the website itself.
+On February 25, 2015, the website of the world's largest PC maker pointed at a slideshow of bored teenagers staring into their webcams, scored to a song from *High School Musical*. Lenovo said traffic to its website had been redirected. Public reporting pointed to changes at its registrar rather than a compromise of Lenovo's web servers.
 
-They changed one record at the company's domain [registrar](/en/glossary/registrar/) — and that was enough to seize Lenovo's front door, reroute its mail, and turn its brand into a punchline for an afternoon.
+The attackers changed the domain's nameserver and mail-routing configuration through its [registrar](/en/glossary/registrar/). That was enough to redirect Lenovo's front door and expose some mail during the incident window.
 
-This is **Domain Mayday EP17**: the Lenovo.com DNS hijack. It is a small story by the numbers — a few hours of downtime, no breached production systems, no leaked customer database. But it is one of the cleanest demonstrations ever staged of a lesson most companies still get wrong: your domain is only as secure as the registrar that holds it, and that registrar is almost never inside your security program.
+This is **Domain Mayday EP17**: the Lenovo.com DNS hijack. It is a compact demonstration of a lesson many companies miss: registrar and DNS-provider access belong inside the organization's security program. The public record does not establish that Lenovo's production systems or customer database were breached in this incident.
 
 ## A hardware giant whose domain is its face
 
@@ -57,7 +57,7 @@ The attribution was hiding in plain sight. The replacement page's HTML credited 
 
 And then it got worse than embarrassing. Because the attackers controlled lenovo.com's DNS, they did not just own the website — they owned the mail. As one outlet put it, the hijack [meant it was able to intercept Lenovo email as well](https://www.engadget.com/2015-02-25-lenovo-com-hacked.html), until the redirect was shut off. Lizard Squad later published two messages [sent to employees at Lenovo](https://www.bankinfosecurity.com/lizard-squad-teases-lenovo-e-mail-grab-a-7953#:~:text=published%20two%20e%2Dmails) during the window it held control. One of them, with grim comedic timing, [referred to a Lenovo Yoga laptop that was "bricked"](https://www.bankinfosecurity.com/lizard-squad-teases-lenovo-e-mail-grab-a-7953#:~:text=bricked) when a customer tried to run Lenovo's own tool to remove a piece of software called Superfish.
 
-That detail is the whole motive in one sentence.
+That attacker-posted email fed speculation about motive, but it does not independently establish that the removal tool caused the reported device failure or why Lenovo was targeted.
 
 ## The Superfish backdrop
 
@@ -67,22 +67,22 @@ Superfish was adware that Lenovo had been [bundling with some of its computers s
 
 Worse, the certificate used the same [private key](/en/glossary/private-key/) on every machine, and that key was crackable. Any attacker who extracted it could impersonate *any* HTTPS website to *any* Lenovo laptop running Superfish. This was not a theoretical flaw. On [February 20, 2015, the United States Department of Homeland Security advised uninstalling it](https://en.wikipedia.org/wiki/Superfish#:~:text=the%20United%20States%20Department%20of%20Homeland%20Security%20advised%20uninstalling%20it) and its root certificate.
 
-So in the span of one week, a company that sold security and trust to enterprises had shipped millions of laptops with a built-in man-in-the-middle vulnerability, then watched its own removal tool brick at least one customer's machine. Lizard Squad's hijack came framed as a protest — a [taste of its own medicine](https://www.theregister.com/2015/02/25/lenovo_hacked_lizard_squad/#:~:text=sparked%20online%20uproar%20following%20the%20discovery%20of%20adware%20called%20Superfish) after the Superfish uproar. The webcam slideshow was theater. The message was: *you broke encryption for your customers, so we'll break your front door for you.*
+Lenovo had shipped some consumer notebooks with software that introduced a man-in-the-middle vulnerability. The hijack followed days of public backlash over Superfish, so contemporary reports discussed retaliation as a possible motive. The attackers did not publish evidence that conclusively established their motive, and Lenovo's official statement focused on restoring service and investigating the redirect.
 
-## How it happened: the registrar was the weak point
+## How it happened: reported compromise at the registrar
 
 ![Vivid colorful concept art of a hijacked control panel with glowing routing dials and switches, a shadowy hand rerouting a brand's front door and mail pipes down a new neon-lit path, electric teal and magenta, no brand logos](../../assets/the-lenovo-com-dns-hijack-02-registrar-compromise.jpg)
 
-Here is the part that should keep CISOs awake: Lenovo's own infrastructure was never breached.
+Lenovo's public statement confirmed the traffic redirect but did not publish the underlying exploit chain. Independent researchers pointed instead to the registrar layer.
 
-The attackers went after the registrar instead. Security analysts traced the hijack to a compromise of **Web Commerce Communications** — better known as **Webnic.cc**, a Malaysia-based registrar. As Help Net Security put it, the hackers did not compromise Lenovo's servers; instead they [compromised those of Web Commerce Communications (Webnic.cc)](https://www.helpnetsecurity.com/2015/02/26/lenovocom-hijacking-made-possible-by-compromise-of-webnic-registrar/), the registrar with whom the Lenovo domain was registered.
+Security researchers attributed the hijack to a compromise of **Web Commerce Communications** — better known as **Webnic.cc**, a Malaysia-based registrar. As Help Net Security reported, the researchers' account was that the attackers compromised Webnic rather than Lenovo's servers. Webnic told KrebsOnSecurity that it was still investigating and did not publicly confirm the detailed mechanism.
 
-This was not Webnic's first bad week. Just two days earlier, Google's Vietnamese domain had been redirected the same way. SecurityWeek summarized the connection bluntly: Lizard Squad [hijacked Google Vietnam and Lenovo DNS records after breaching the systems of WebNIC](https://www.securityweek.com/lizard-squad-hijacks-lenovo-website-emails/), a Malaysia-based registrar. Brian Krebs, citing the researchers who investigated it, reported that [both hijacks were possible because the attackers seized control over Webnic.cc](https://krebsonsecurity.com/2015/02/webnic-registrar-blamed-for-hijack-of-lenovo-google-domains/#:~:text=both%20hijacks%20were%20possible%20because%20the%20attackers%20seized%20control%20over%20Webnic.cc) — a registrar that, per the same reporting, served those two domains and 600,000 others.
+Just two days earlier, Google's Vietnamese domain had been redirected in a similar way. SecurityWeek reported that both incidents followed a Webnic breach. Brian Krebs was more explicit about the attribution: his mechanism came from statements by researchers Ryan King and Rory Godfrey, who said attackers had seized control over Webnic.cc. That account is credible reporting, but it should not be read as a Webnic-confirmed forensic finding.
 
-The mechanics, from Krebs's reporting, read like a textbook for why a registrar is a juicy target:
+The mechanics below are the researchers' account as reported by Krebs, not a mechanism confirmed by Webnic or Lenovo:
 
-- **The way in.** Lizard Squad used a [command injection vulnerability in Webnic.cc to upload a rootkit](https://krebsonsecurity.com/2015/02/webnic-registrar-blamed-for-hijack-of-lenovo-google-domains/#:~:text=command%20injection%20vulnerability%20in%20Webnic.cc%20to%20upload%20a%20rootkit) — giving them persistent, hidden access to the registrar's systems.
-- **The master keys.** They also [gained access to Webnic's store of](https://krebsonsecurity.com/2015/02/webnic-registrar-blamed-for-hijack-of-lenovo-google-domains/#:~:text=also%20gained%20access%20to%20Webnic%27s%20store%20of) ["auth codes"](/en/glossary/auth-code/) — the EPP transfer secrets that can move *any* domain to another registrar.
+- **The reported way in.** The researchers said Lizard Squad used a [command-injection vulnerability in Webnic.cc to upload a rootkit](https://krebsonsecurity.com/2015/02/webnic-registrar-blamed-for-hijack-of-lenovo-google-domains/#:~:text=command%20injection%20vulnerability%20in%20Webnic.cc%20to%20upload%20a%20rootkit), which would have enabled hidden access to registrar systems.
+- **The reported auth-code exposure.** They also said the attackers [gained access to Webnic's store of](https://krebsonsecurity.com/2015/02/webnic-registrar-blamed-for-hijack-of-lenovo-google-domains/#:~:text=also%20gained%20access%20to%20Webnic%27s%20store%20of) ["auth codes"](/en/glossary/auth-code/), the EPP secrets used to authorize inter-registrar transfers. The Lenovo incident itself was a routing change, not a disclosed domain transfer.
 - **The redirect.** With registrar-level control, they changed lenovo.com's [nameserver](/en/glossary/nameserver/) records. The Register noted the domain's [nameserver settings were suspiciously updated today to point at DNS servers belonging to web hosting biz CloudFlare](https://www.theregister.com/2015/02/25/lenovo_hacked_lizard_squad/#:~:text=nameserver%20settings%20were%20suspiciously%20updated%20today%20to%20point%20at%20DNS%20servers%20belonging%20to%20web%20hosting%20biz%20CloudFlare) — using Cloudflare to mask the true destination server.
 - **The mail grab.** Crucially, they didn't stop at the website. They [changed mail server records allowing them to intercept messages](https://www.securityweek.com/lizard-squad-hijacks-lenovo-website-emails/) sent to Lenovo addresses. DNS controls more than the `A` record; it controls the `MX` record too. Owning the domain meant owning the mail.
 
@@ -92,7 +92,7 @@ That last point is the one people forget. A defacement is loud and obvious. Sile
 
 Lenovo moved fast, because there was little else it could do — the fix lived at the registrar, not on its own servers. The company confirmed it had been [the victim of a cyber attack](https://www.securityweek.com/lizard-squad-hijacks-lenovo-website-emails/) whose effect was to redirect traffic from the Lenovo website, and it [appeared to have restored complete access to its public website by the evening of Feb. 25](https://www.bankinfosecurity.com/lizard-squad-teases-lenovo-e-mail-grab-a-7953#:~:text=restored%20complete%20access%20to%20its%20public%20website%20by%20the%20evening%20of%20Feb.%2025). Cloudflare, finding its name used in the redirect chain, cut off the malicious nameservers, which also ended the email interception.
 
-The bigger cleanup belonged to Webnic. A single registrar's command-injection bug had put two of the most valuable domains on the internet — Lenovo's and a Google property — into the hands of a stunt-driven hacking crew within a 48-hour span. The incident became a standing case study in registrar risk, and a reminder that "600,000 other domains" sat behind the same compromised system.
+The bigger investigation belonged to Webnic. Researchers attributed two high-profile redirects — Lenovo and Google Vietnam — to its systems within a 48-hour span. Because Webnic did not publicly confirm the reported command-injection and rootkit chain, the incident is best treated as a strong third-party attribution rather than a completed public forensic report.
 
 For Lenovo, the lasting damage was reputational. Coming days after Superfish, the hijack turned a serious security failure into a two-act story: first the company broke trust for its own customers, then it visibly lost control of its own name. The webcam slideshow is what people remembered, but the registrar compromise is what actually mattered.
 
@@ -104,8 +104,8 @@ A few takeaways that generalize far beyond 2015:
 
 1. **The registrar is in your trust boundary whether you treat it that way or not.** You can harden every server you own and still lose the domain at a third party you've probably never security-reviewed. The attacker takes the path of least resistance — and the registrar is often softer than you are.
 2. **DNS control is mail control.** A hijack isn't just a defaced homepage. The same record change quietly reroutes email, enabling interception, password resets against your domain, and impersonation. Treat the `MX` record as a security-critical asset, not plumbing.
-3. **Lock what can be locked.** Registrar locks (registrar-lock / `clientTransferProhibited`), restricted access to EPP/auth codes, and [registry](/en/glossary/registry/)-level locks for high-value domains exist precisely to stop unauthorized nameserver and transfer changes. They are cheap. The downside of skipping them is your brand on a webcam slideshow.
-4. **[DNSSEC](/en/glossary/dnssec/) raises the cost.** It wouldn't have stopped a registrar-account takeover by itself, but signed zones and monitored DNS make silent tampering harder to pull off undetected.
+3. **Use the right lock for the change you want to stop.** `clientTransferProhibited` blocks inter-registrar transfer; it does not block nameserver updates. For high-value domains, ask whether the registrar and registry support update-prohibiting controls such as `clientUpdateProhibited`, `serverUpdateProhibited`, or a registry-lock service, and define an authenticated emergency-unlock process. Restrict EPP/auth-code access separately.
+4. **Understand the [DNSSEC](/en/glossary/dnssec/) boundary.** DNSSEC lets validating resolvers detect answers that do not match the signed delegation. It does not prevent an authorized registrar or registry path from changing delegation data, and a bad change may turn a hijack into a validation failure and outage rather than preserve availability. Monitor DNS and DNSSEC state together.
 5. **Monitor your own DNS for drift.** Lenovo's nameservers changing to an unexpected provider was the tell. Continuous monitoring of NS and MX records turns "we found out when customers saw a slideshow" into "we got paged when the record changed."
 
 The shared theme: domain control is a security domain of its own, and most companies have outsourced it to a vendor that never appears in their threat model.
@@ -114,14 +114,13 @@ The shared theme: domain control is a security domain of its own, and most compa
 
 ![Colorful illustration of verifiable, tamper-resistant domain ownership — a domain card secured by a green shield, a green Namefi token, and DNS continuity](../../assets/the-lenovo-com-dns-hijack-03-namefi-angle.jpg)
 
-The Lenovo hijack is, at its root, a control-and-provenance problem. The attacker didn't need to *be* Lenovo; they only needed to convince the system that controls lenovo.com to point somewhere new. There was no strong, independent, verifiable record of who legitimately controls the domain — just a registrar account that could be quietly overpowered through a vulnerability nobody at Lenovo could see.
+The Lenovo hijack was a DNS-administration incident: someone changed nameserver and mail-routing state through the registrar path. That state is separate from domain ownership. An ownership record — conventional or tokenized — does not by itself stop a compromised registrar or registry from changing NS, MX, DS, or other delegation data.
 
-[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets with verifiable, tamper-resistant ownership. When control of a domain is anchored to cryptographic ownership that's auditable and hard to silently override — rather than a single registrar account with a recoverable auth code — an unauthorized nameserver swap stops being a quiet backend edit and starts being a visible, provable break in the chain of custody. Tokenized ownership keeps the domain compatible with DNS while making "who controls this name, and did that just change?" a question with a verifiable answer.
-
-Lizard Squad turned a hardware giant's front door into a prank in an afternoon by exploiting the weakest link in the ownership chain. The defense isn't a louder website. It's making the *ownership* of the name itself something an attacker can't quietly forge.
+[Namefi](https://namefi.io) provides an on-chain ownership and transfer layer for tokenized domains. It can make that ownership state independently auditable, but it does not make registrar or DNS-provider changes automatically appear on-chain, and it would not by itself have prevented the Lenovo redirect. The relevant defenses remain hardened registrar access, update-prohibiting registry controls where available, DNS/DNSSEC monitoring, and an incident-recovery process that spans every provider in the resolution path.
 
 ## Sources and further reading
 
+- Lenovo — [Statement on Cyber Attack](https://news.lenovo.com/pressroom/press-releases/lenovo-statement-on-cyber-attack/)
 - Krebs on Security — [Webnic Registrar Blamed for Hijack of Lenovo, Google Domains](https://krebsonsecurity.com/2015/02/webnic-registrar-blamed-for-hijack-of-lenovo-google-domains/)
 - The Register — [Oh No, Lenovo! Lizard Squad on the attack, flashes swiped emails](https://www.theregister.com/2015/02/25/lenovo_hacked_lizard_squad/)
 - Engadget — [Lenovo's website hijacked, apparently by Lizard Squad](https://www.engadget.com/2015-02-25-lenovo-com-hacked.html)

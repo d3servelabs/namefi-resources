@@ -9,7 +9,7 @@ cluster: domain-security
 series: domain-apocalypse
 seriesOrder: 20
 format: case-study
-description: 'How "Sea Turtle," a state-sponsored campaign disclosed by Cisco Talos in 2019, hijacked DNS by compromising registrars, registries, and DNS providers — redirecting governments, ministries, and energy firms to attacker servers, forging valid certificates, and even breaching a national TLD registry.'
+description: 'How "Sea Turtle," a state-sponsored campaign disclosed by Cisco Talos in 2019, hijacked DNS through registrars, registries, and DNS providers — redirecting governments, ministries, and energy firms to attacker servers, obtaining CA-signed and other certificates for interception, and breaching a national TLD registry.'
 keywords: ['sea turtle dns hijacking', 'cisco talos sea turtle', 'dns hijacking attack', 'state-sponsored dns attack', 'registry compromise', 'registrar compromise', 'dns espionage campaign', 'lets encrypt mitm certificate', 'netnod compromise', 'ics-forth greece ccTLD', 'cisa emergency directive 19-01', 'dns security', 'domain ownership security', 'nation state cyberattack']
 relatedArticles:
   - /en/blog/the-dnspionage-campaign/
@@ -33,9 +33,9 @@ relatedGlossary:
 
 Most cyberattacks try to break *into* a target. The Sea Turtle campaign did something quieter and far more dangerous: it broke into the **map** that tells the entire internet where the target lives.
 
-When you type a government ministry's web address, or send email to its officials, your computer first asks the [Domain Name System](/en/glossary/dns/) — DNS — to translate that human-readable name into the numeric address of the right server. That lookup is so foundational that almost nothing on the internet verifies it. We simply trust that the name resolves to the place it's supposed to. Sea Turtle's operators understood that trust completely, and they spent more than two years abusing it to spy on governments across the Middle East and North Africa.
+When you type a government ministry's web address, or send email to its officials, your computer first asks the [Domain Name System](/en/glossary/dns/) — DNS — to translate that human-readable name into the numeric address of the right server. Protections such as DNSSEC, TLS certificate validation, and routing security can verify parts of that path, but coverage and enforcement are uneven. Sea Turtle's operators exploited those gaps for more than two years to spy on governments across the Middle East and North Africa.
 
-Disclosed by Cisco Talos in April 2019, Sea Turtle is one of the clearest case studies we have of DNS itself being weaponized as an instrument of nation-state espionage. The attackers didn't phish individual employees and hope. They went after the [registrars](/en/glossary/registrar/), registries, and DNS providers that sit *above* their targets — the institutions that control how names resolve — and from that vantage point they rerouted the traffic of entire organizations, harvested credentials, and forged the cryptographic certificates that were supposed to make impersonation impossible.
+Disclosed by Cisco Talos in April 2019, Sea Turtle is one of the clearest case studies we have of DNS being weaponized as an instrument of nation-state espionage. The attackers went after the [registrars](/en/glossary/registrar/), registries, and DNS providers that sit *above* their targets. From that vantage point they rerouted traffic, harvested credentials, and used CA-signed, stolen, or self-signed certificates on interception servers. A CA-signed certificate was legitimately issued after domain validation; it was not a forged cryptographic signature.
 
 ## DNS as a target for nation-state espionage
 
@@ -75,13 +75,13 @@ The cleverest — and most alarming — piece was how they defeated the padlock.
 
 Brian Krebs, documenting the closely related earlier wave, described the same playbook: the attackers [appear to have changed the DNS records for these domains so that the domains pointed to servers in Europe that they controlled](https://krebsonsecurity.com/2019/02/a-deep-dive-on-the-recent-widespread-dns-hijacking-attacks/), and then [were able to obtain SSL certificates for those domains from SSL providers Comodo and/or Let's Encrypt](https://krebsonsecurity.com/2019/02/a-deep-dive-on-the-recent-widespread-dns-hijacking-attacks/). One of the cited victims was [mail.gov.ae, which handles email for government offices of the United Arab Emirates](https://krebsonsecurity.com/2019/02/a-deep-dive-on-the-recent-widespread-dns-hijacking-attacks/).
 
-### The registry compromises
+### Compromised infrastructure providers and a ccTLD registry
 
-The campaign's high-water mark was the compromise of organizations that don't just *use* DNS but *run* it for entire countries.
+The campaign reached infrastructure providers and, later, a country-code top-level-domain registry. Those are distinct roles and incidents.
 
-The first publicly confirmed case involved Sweden's Netnod. As Krebs reported, the attackers [gained access to accounts at Netnod's domain name registrar](https://krebsonsecurity.com/2019/02/a-deep-dive-on-the-recent-widespread-dns-hijacking-attacks/), and Netnod itself stated it [learned of its role in the attack on January 2](https://krebsonsecurity.com/2019/02/a-deep-dive-on-the-recent-widespread-dns-hijacking-attacks/). Crucially, Netnod was not the destination — it was a doorway. BleepingComputer noted Netnod said [they were not the target of the attacks but a route for the attacker to "capture of login details for Internet services"](https://www.bleepingcomputer.com/news/security/sea-turtle-campaign-focuses-on-dns-hijacking-to-compromise-targets/).
+One publicly confirmed case involved Sweden's Netnod. As Krebs reported, the attackers [gained access to accounts at Netnod's domain name registrar](https://krebsonsecurity.com/2019/02/a-deep-dive-on-the-recent-widespread-dns-hijacking-attacks/), and Netnod itself stated it learned of its role in the attack on January 2. Netnod said it was not the ultimate target but a route used to capture login details for other internet services. This was access through Netnod's registrar account, not evidence that the attackers obtained authority over every country-level namespace or every DNS service Netnod operates.
 
-Talos described the broader significance in stark terms: the operators were [responsible for the first publicly confirmed case against an organizations that manages a root server zone](https://blog.talosintelligence.com/seaturtle/#:~:text=responsible%20for%20the%20first%20publicly%20confirmed%20case%20against%20an%20organizations%20that%20manages%20a%20root%20server%20zone). When the people who run a piece of the internet's core address book can be silently impersonated, the assumption that DNS is trustworthy by default stops holding.
+Talos described the broader significance in stark terms: the operators were [responsible for the first publicly confirmed case against an organization that manages a root-server instance](https://blog.talosintelligence.com/seaturtle/#:~:text=responsible%20for%20the%20first%20publicly%20confirmed%20case%20against%20an%20organizations%20that%20manages%20a%20root%20server%20zone). The later compromise of ICS-FORTH, operator of Greece's `.gr` ccTLD registry, is the campaign's clearer country-code registry case.
 
 ## Response and aftermath: they didn't stop
 
@@ -109,13 +109,11 @@ Strip away the geopolitics and Sea Turtle leaves behind a set of uncomfortable l
 
 ![Colorful illustration of verifiable, tamper-resistant domain ownership — a domain card secured by a green shield, a green Namefi token, and DNS continuity](../../assets/the-sea-turtle-dns-espionage-03-namefi-angle.jpg)
 
-Sea Turtle is, at its root, a story about *who is allowed to change a domain's records* — and how hard it is for the rest of the world to tell when that authority has been quietly stolen.
+Sea Turtle is a story about stolen authority over DNS administration. Registrar, registry, and DNS-provider accounts can change delegation or hosted records independently of the domain's ownership representation.
 
-The traditional model concentrates that authority in registrar and registry accounts protected, too often, by little more than a password and an email address. When those accounts fall, control of the domain falls with them, silently. There is no built-in, independently verifiable record of who legitimately holds a name, and no tamper-evident trail when control changes hands.
+[Namefi](https://namefi.io) provides an on-chain layer for [domain ownership](/en/glossary/domain-ownership/) and transfer. That can make the tokenized ownership state independently auditable, but DNS resolution and configuration remain in the conventional DNS layer. A compromised registrar or registry can therefore reroute DNS while the on-chain ownership token remains unchanged; tokenization alone does not prevent or necessarily reveal Sea Turtle's attack path.
 
-[Namefi](https://namefi.io) approaches [domain ownership](/en/glossary/domain-ownership/) as something that should be **verifiable and tamper-resistant by design**, while staying compatible with DNS. Tokenizing ownership creates an auditable, cryptographically anchored record of who controls a domain — making unauthorized transfers and silent takeovers far harder to pull off without leaving an obvious trace. It does not, by itself, stop a registry from being phished. But the broader lesson Sea Turtle drives home is the one Namefi is built around: domains are critical infrastructure, and the question of *who really owns this name* deserves a stronger answer than "whoever can log in to the control panel."
-
-The campaign rerouted governments by exploiting the gap between *holding* a domain and *proving* you hold it. Closing that gap — making ownership verifiable, transfers auditable, and control continuity provable — is exactly the kind of resilience the naming layer still needs.
+The relevant defenses are phishing-resistant authentication, least privilege, update-prohibiting controls where supported, DNS and certificate monitoring, and incident response across every provider in the resolution chain. Ownership verification solves a different problem and should not be presented as a substitute for those controls.
 
 ## Sources and further reading
 
