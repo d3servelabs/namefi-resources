@@ -13,12 +13,10 @@ location: Remote (Worldwide)
 compensation: Competitive pay with equity
 baseSalary:
   currency: USD
-  minValue: 500
-  maxValue: 800
+  minValue: 400
+  maxValue: 2400
   unitText: MONTH
 ---
-
-**This is a contractor role.**
 
 ## What You Will Do
 
