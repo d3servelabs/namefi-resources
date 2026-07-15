@@ -179,7 +179,7 @@ Not necessarily. A compatible MCP client can authenticate with OAuth instead of 
 It can use OAuth for the MCP connection, without storing a Namefi API key. For direct REST integration, EIP-712 and SIWE cover supported request types. The x402 and MPP registration flows are separate HTTP endpoints, not MCP tools or substitutes for MCP connection authentication, so inspect the current documentation for the particular operation you need.
 
 ### Is a domain automatically tokenized when I register it through any of these paths?
-Yes, by default, across every registration path. If `nftReceivingWallet` isn't specified, the domain registers as an ERC-721 NFT to the wallet tied to the caller's API key, on Base.
+For the documented `/v-next` `registerDomain` flow, Namefi mints the domain token to the designated receiving wallet on its supported chain. This catalog does not establish identical defaults for every separate registration and payment path, so inspect the current documentation for the path you are calling rather than assuming an API-key wallet or a particular chain.
 
 ### Which operations should a human confirm before an autonomous agent runs them?
 At minimum, the four Namefi's docs mark as consequential — `registerDomain`, `registerWithRecords`, `startOutboundRun`, `prepareOutboundOutreach` — plus any DNS write on a domain already serving live traffic.
