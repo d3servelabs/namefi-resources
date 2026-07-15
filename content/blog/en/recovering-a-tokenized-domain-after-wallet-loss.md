@@ -31,7 +31,7 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-Of all the things people don't think about before [tokenizing a domain](/en/blog/what-are-tokenized-domains/), **wallet loss recovery** is the biggest. Once a domain is tokenized, the [wallet](/en/glossary/wallet/) holding the [NFT](/en/glossary/nft/) is the source of truth for ownership. Lose the wallet, and you have a real problem.
+Of all the things people don't think about before [tokenizing a domain](/en/blog/what-are-tokenized-domains/), **wallet loss recovery** is the biggest. Once a domain is tokenized, the [wallet](/en/glossary/wallet/) holding the [NFT](/en/glossary/nft/) controls the token onchain. That is not the only legal or operational layer: registrar and registry records, ICANN policy, platform agreements, and court orders can still matter. Lose every usable signer for the wallet, and you have a real problem.
 
 This post explains, honestly, what your options actually look like — and how to set things up *now* so the worst case is recoverable.
 
@@ -41,7 +41,7 @@ This post explains, honestly, what your options actually look like — and how t
 
 ## The Uncomfortable Truth First
 
-Cryptographic key loss is not like losing a registrar password. There is no "forgot password" link that sends you an email. If you have lost the seed phrase, you have lost the wallet, and no one — not Namefi, not [Ethereum](/en/glossary/ethereum/), not anyone — can recover the [private key](/en/glossary/private-key/) for you. That's the trade-off self-custody comes with.
+Cryptographic key loss is not like losing a registrar password. There is no "forgot password" link that reconstructs a missing private key. Losing a seed phrase does **not** immediately mean losing control if a working device, another valid backup, or enough multisig signers can still authorize a transfer. But when no usable signer, device, or backup remains, no one — not Namefi, not [Ethereum](/en/glossary/ethereum/), not anyone — can recover the missing [private key](/en/glossary/private-key/) for you. That's the trade-off self-custody comes with.
 
 The good news: **platform-level recovery paths exist** in addition to the cryptographic layer. Tokenized domains have an off-chain side (the registrar / DNS record) that platforms can sometimes use to help, depending on the situation.
 
@@ -71,7 +71,7 @@ The wallet you use to *interact* with apps can be a hot wallet (MetaMask, Rabby)
 
 For domains that represent a business — your company's primary `.com`, a key brand — a [**multisig wallet**](/en/glossary/multi-sig/) ([Safe](https://safe.global/), formerly Gnosis Safe) is a strong choice. Set up 2-of-3 or 3-of-5 signers across different devices and people. Losing one signer doesn't lose the domain.
 
-Make sure you actually understand how to *execute* multisig transactions, not just hold them. A multisig you've lost signers on is a domain you've lost. Practice transfer of a tiny token before it matters.
+Make sure you actually understand how to *execute* multisig transactions, not just hold them. Losing one signer is survivable while the remaining signers still meet the threshold; losing enough signers to fall below the threshold can make the domain inaccessible. Practice a transfer of a tiny token before it matters.
 
 ### 4. Keep a recovery doc somewhere your heirs can find
 
@@ -119,7 +119,7 @@ Different problem. The NFT may have been transferred to an attacker. Steps:
 2. **Trace the on-chain movement.** Block explorers will show where the NFT went. This is evidence.
 3. **Notify the platform.** They may be able to flag the address on their side, prevent registrar-level updates, or coordinate with marketplaces to delist.
 4. **File a police report and contact a lawyer.** Theft is theft. The legal layer matters here, because the domain is also a real registered asset, not just an NFT.
-5. **Coordinate with marketplaces.** OpenSea, Blur, etc. have processes for flagging stolen NFTs that can prevent resale.
+5. **Contact marketplaces where the token is listed.** A marketplace may have a current process for reporting stolen assets, restricting listings, or preserving evidence, but policies and outcomes vary and can change. Do not assume a report will prevent an onchain transfer or resale elsewhere.
 
 ---
 
@@ -178,7 +178,7 @@ Other platforms have similar limits, with variations. The important thing is to 
 
 ## Summary
 
-- Self-custody means you are responsible for the keys. There is no password reset for a lost seed phrase.
+- Self-custody means you are responsible for maintaining at least one usable signing path. A lost seed phrase alone may be survivable if a working signer or other backup remains; no service can reconstruct a private key once every usable path is gone.
 - **Prevention is the recovery strategy.** Write down the seed, use a hardware wallet, use a multisig for high-value domains, document everything for your heirs.
 - If you do lose access, act immediately: contact the platform, preserve evidence, and start the registrar-level appeals process. Time matters.
 - A 2-of-3 multisig is the single best practical defense for owners who don't want to be one bad day away from losing a domain.

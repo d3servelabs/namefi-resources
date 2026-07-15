@@ -9,7 +9,7 @@ cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 32
 format: guide
-description: "How onchain domain flipping works — trading ENS and tokenized domains as wallet-held, NFT-liquid assets, and how it differs from registrar flipping."
+description: "How onchain domain flipping works — trading ENS and tokenized domains through wallets and compatible NFT marketplaces, and how it differs from registrar flipping."
 ogImage: ../../assets/onchain-domain-flipping-og.jpg
 keywords: ['onchain domain flipping', 'flipping ENS domains', 'tokenized domain flipping', 'trading tokenized domains', 'domain NFT flipping', 'flip web3 domains', 'ENS domain investing', 'NFT domain marketplace', 'sell domains as NFTs', 'onchain domain trading', 'ERC-721 domains', 'wallet-held domains', 'atomic domain settlement', 'tokenized domain liquidity', 'web3 domain flipping']
 relatedArticles:
@@ -32,17 +32,17 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-Domain flipping has a familiar shape: buy a name low, find a buyer who needs it, sell high. The classic version of that trade runs through [registrars](/en/glossary/registrar/), aftermarket marketplaces, and an escrow agent who holds the money while the transfer clears. Onchain domain flipping is the same buy-low-sell-high instinct moved onto a [blockchain](/en/glossary/blockchain/), where the name itself is a token you hold in a [wallet](/en/glossary/wallet/) and can trade like any other [NFT](/en/glossary/nft/).
+Domain flipping has a familiar shape: buy a name low, find a buyer who needs it, sell high. The classic version of that trade runs through [registrars](/en/glossary/registrar/), aftermarket marketplaces, and often an escrow agent who holds the money while the transfer clears. Onchain domain flipping applies that instinct to names represented by a token in a [wallet](/en/glossary/wallet/), so the token can trade through compatible [NFT](/en/glossary/nft/) infrastructure while the naming system's own rules still apply.
 
-That single change — name as token — rewrites almost every step of the trade. Custody, listing, and settlement stop being account-level operations at a registrar and become onchain transactions you control directly. This guide explains what onchain domain flipping actually is, draws the important line between the two very different kinds of "onchain name" you can flip, and walks the full arc of the trade: acquire, custody, list, settle. It's the onchain pillar of the broader [domain flipping](/en/blog/domain-flipping/) playbook.
+That token layer changes custody, listing, and settlement for the token itself. For a tokenized ICANN domain it does not erase the registrar, registry, contractual, policy, or legal layers behind the registration. This guide explains what onchain domain flipping actually is, draws the important line between two different kinds of "onchain name," and walks the full arc of the trade: acquire, custody, list, settle. It's the onchain pillar of the broader [domain flipping](/en/blog/domain-flipping/) playbook.
 
 ## What "onchain domain flipping" means
 
 In a normal flip, ownership lives in a registrar's database. You log into an account, the registrar's records say you control the name, and moving it to a buyer means an account-to-account or registrar-to-registrar [transfer](/en/glossary/atomic-transfer/) that the registrar mediates. The asset is real, but you never hold it yourself — you hold an account that points at it.
 
-Onchain flipping replaces that account with a [token](/en/glossary/tokenize/). The name is represented as an NFT under the [ERC-721](/en/glossary/erc-721/) standard, which Ethereum's spec describes as a [standard API for NFTs within smart contracts](https://eips.ethereum.org/EIPS/eip-721#:~:text=The%20following%20standard%20allows%20for%20the%20implementation%20of%20a%20standard%20API%20for%20NFTs) — and which its own summary calls a standard interface for [non-fungible tokens, also known as deeds](https://eips.ethereum.org/EIPS/eip-721#:~:text=non%2Dfungible%20tokens%2C%20also%20known%20as%20deeds). That word, "deeds," is the whole idea: the token is the title to the name, sitting in your wallet, not a receipt for a record someone else keeps. Whoever holds the token controls the name, and transferring control is a [smart-contract](/en/glossary/smart-contract/) call rather than a support ticket.
+Onchain flipping represents the name as a [token](/en/glossary/tokenize/). The [ERC-721](/en/glossary/erc-721/) specification defines a [standard API for NFTs within smart contracts](https://eips.ethereum.org/EIPS/eip-721#:~:text=The%20following%20standard%20allows%20for%20the%20implementation%20of%20a%20standard%20API%20for%20NFTs). Its summary informally calls NFTs "deeds," but ERC-721 by itself does not establish legal title, registrar rights, or unrestricted control of an ICANN domain. What the token holder controls depends on the naming protocol or tokenization platform, its contracts and terms, and the registrar and registry layers behind a DNS domain. Within that supported system, transferring the token is a [smart-contract](/en/glossary/smart-contract/) call rather than an ordinary registrar transfer ticket.
 
-That property is why onchain names trade like a liquid asset class. They list on the same [NFT marketplaces](/en/glossary/marketplace/) as art and collectibles, settle in minutes, and carry a public, auditable ownership history. The flip itself looks less like a registrar transfer and more like [domain trading](/en/glossary/domain-trading/) on rails built for digital assets.
+That token interface can let supported onchain names list on compatible [NFT marketplaces](/en/glossary/marketplace/) and settle the token-and-payment legs atomically. Actual settlement time, marketplace support, buyer demand, and liquidity depend on the chain, contract, venue, and market. The chain also provides a public token-transfer history, which is useful evidence but not a complete record of legal ownership or authorization.
 
 ## Two kinds of onchain name — don't conflate them
 
@@ -52,7 +52,7 @@ The single most important thing to get right before you trade is that "onchain d
 
 The first is the [Web3](/en/glossary/web3/)-native name, the archetype being [ENS](/en/glossary/ens/) (`.eth`). These names live entirely on Ethereum. They are not part of the [ICANN](/en/glossary/icann/) root, so `vitalik.eth` does not resolve in an ordinary browser without a resolver or bridge. Their value is as wallet identity and crypto-native naming. ENS is also openly a registration market: per the ENS docs, a [5+ letter .eth will cost you 5 USD per year](https://docs.ens.domains/registry/eth#:~:text=letter%20%60.eth%60%20will%20cost%20you%20%605%20USD%60%20per%20year), with four- and three-letter names priced higher by design, and once registered a name can be moved [just like with any other ERC721 token](https://docs.ens.domains/registry/eth#:~:text=just%20like%20with%20any%20other%20ERC721%20token). That low, transparent registration floor is exactly why short, premium `.eth` names became a speculative market of their own.
 
-The second is the **tokenized ICANN domain** — a real `.com`, `.xyz`, or `.io` whose ownership is mirrored as an NFT while the underlying DNS name keeps resolving everywhere. As our explainer on [what tokenized domains are](/en/blog/what-are-tokenized-domains/) lays out, these are real DNS domains that *also* have an onchain representation, not a parallel namespace. For a flipper the distinction is concrete: a tokenized `.com` carries the universal resolvability, email, and certificate support of the traditional internet, while an ENS name carries crypto-native utility but needs a bridge to behave like a website. They can both be flipped onchain; they are not the same product, and a buyer is paying for different things in each. We compare the families directly in [tokenized domain vs Web3 domain](/en/blog/tokenized-domain-vs-web3-domain/).
+The second is the **tokenized ICANN domain** — a real `.com`, `.xyz`, or `.io` whose platform-supported control is represented by an NFT while the underlying DNS name remains in the ordinary root. As our explainer on [what tokenized domains are](/en/blog/what-are-tokenized-domains/) lays out, these are DNS domains that *also* have an onchain representation, not a parallel namespace. Registrar and registry records, ICANN policy, platform agreements, dispute procedures, and court orders still apply. For a flipper the distinction is concrete: a tokenized `.com` retains ordinary DNS resolvability, while an ENS name carries crypto-native utility but needs a resolver or bridge to behave like a conventional website. They can both be traded onchain where supported; they are not the same product.
 
 A third bucket — Web3 TLDs from platforms like Unstoppable Domains — sits closer to ENS than to tokenized ICANN names; the [premium Web3 TLDs](/en/blog/premium-web3-tlds/) guide covers where those fit. Keep the three straight and you'll price each correctly.
 
@@ -66,9 +66,9 @@ Onchain, that standoff can collapse into a single atomic transaction. Marketplac
 
 The other big differences:
 
-- **Custody is yours.** Instead of an account at a registrar, the asset sits in your wallet. That removes platform lock-in and account-seizure risk, but it hands you the full weight of [key management](/en/glossary/custodial-ownership/) — lose the keys, lose the name.
-- **Liquidity is broader.** A tokenized name can list on general NFT marketplaces alongside every other ERC-721 asset, not just domain-specific aftermarkets, which widens the pool of eyeballs and bids.
-- **Provenance is public.** Every prior sale and transfer is visible onchain, so a buyer can verify history without trusting a marketplace's word — useful for appraisal and for proving a name isn't stolen.
+- **Token custody is yours.** The token sits in your wallet, which reduces dependence on an ordinary account login but adds [key-management](/en/glossary/custodial-ownership/) risk. It does not remove platform, registrar, registry, dispute, freeze, or court-order risk.
+- **Marketplace reach can be broader.** A compatible tokenized name may list on general NFT marketplaces as well as domain-specific aftermarkets. That creates more possible venues, not a guarantee of more bids or liquidity.
+- **Token provenance is public.** Onchain transfers and sales are visible, so a buyer can inspect token history without relying only on one marketplace. The chain cannot by itself prove that every transfer was authorized, that a token was not stolen, or that the holder has uncontested legal title.
 
 ## The trade, step by step: acquire, custody, list, settle
 
@@ -88,7 +88,7 @@ Listing an onchain name is a marketplace action, not a "for sale" landing page o
 
 ### Settle
 
-Settlement is the payoff for all the onchain plumbing. The buyer fills your order, payment and token transfer execute together, and ownership moves in one confirmed transaction. For an ENS name that's the end of it — the new holder now controls the `.eth` name. For a tokenized ICANN domain the token transfer is the deed, and the platform keeps the underlying DNS registration in sync so the buyer ends up controlling a real, resolvable domain. Either way, neither party had to move first, and no agent held the asset in between.
+Settlement is the payoff for all the onchain plumbing. In a compatible atomic marketplace order, the buyer's payment and the token transfer execute together. For an ENS name, the new holder then controls the `.eth` token under ENS rules. For a tokenized ICANN domain, a supported platform uses the token transfer to update the onchain control layer and align the domain-management experience; the registrar and registry relationship still follows the platform's agreements and applicable policy. Neither party has to send its trade leg first, and no escrow agent holds the token between them.
 
 ## What the numbers look like
 
@@ -98,7 +98,7 @@ Treat those as outliers, not a business model — the same reality check that ap
 
 ## Where Namefi fits
 
-The clean version of an onchain flip — wallet-held title, atomic settlement, no escrow standoff — is exactly the workflow [Namefi](https://namefi.io) is built to deliver for *real* ICANN domains. Tokenized ownership makes control of a `.com` auditable and transferable like an NFT, while DNS continuity keeps the name resolving through the handover, so a flipper gets the onchain liquidity without giving up the universal resolvability buyers actually pay for. If you want to bring a name you already own into this model, the walkthrough is in [how to tokenize your .com](/en/blog/how-to-tokenize-your-com/), and the platform trade-offs are in [choosing a domain tokenization platform](/en/blog/choosing-a-domain-tokenization-platform/).
+[Namefi](https://namefi.io) is built to add a wallet-controlled token and compatible marketplace settlement to supported ICANN domains while maintaining ordinary DNS operation. The token-control history is auditable and transferable onchain, subject to Namefi's agreements and the registrar, registry, ICANN, dispute, and legal layers that still govern the underlying registration. Marketplace support and liquidity remain venue- and demand-dependent. If you want to bring a name you already own into this model, the walkthrough is in [how to tokenize your .com](/en/blog/how-to-tokenize-your-com/), and the platform trade-offs are in [choosing a domain tokenization platform](/en/blog/choosing-a-domain-tokenization-platform/).
 
 ## Friendly Disclaimer (Read Me!)
 

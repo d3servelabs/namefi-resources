@@ -110,7 +110,7 @@ Starting in 2013, ICANN opened the floodgates with the **[new gTLD](/en/glossary
 | Modern & generic | [`.xyz`](/en/tld/xyz/), [`.site`](/en/tld/site/), [`.online`](/en/tld/online/), [`.world`](/en/tld/world/), [`.space`](/en/tld/space/) |
 | Commerce | [`.shop`](/en/tld/shop/), [`.store`](/en/tld/store/), [`.vip`](/en/tld/vip/) |
 | Community & content | [`.blog`](/en/tld/blog/), [`.club`](/en/tld/club/), [`.live`](/en/tld/live/), [`.fun`](/en/tld/fun/) |
-| Short & memorable | [`.io`](/en/tld/io/), [`.top`](/en/tld/top/), [`.sbs`](/en/tld/sbs/), [`.now`](/en/tld/now/) |
+| Short & memorable | [`.top`](/en/tld/top/), [`.sbs`](/en/tld/sbs/), [`.now`](/en/tld/now/) |
 
 New gTLDs gave the internet breathing room: when every good `.com` was taken, endings like [`.xyz`](/en/tld/xyz/), [`.site`](/en/tld/site/), and [`.app`](/en/tld/app/) opened up fresh, memorable naming space.
 
