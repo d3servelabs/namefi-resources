@@ -3,7 +3,8 @@ title: "ドメインを手動登録してフリップする：まだ取れる掘
 date: '2026-06-21'
 language: ja
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

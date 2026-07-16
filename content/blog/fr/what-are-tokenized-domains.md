@@ -4,7 +4,8 @@ date: '2026-05-22'
 language: fr
 priority: P0
 tags: ['faq']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Une introduction en langage clair aux domaines tokenisés et à la tokenisation de domaine : ce que signifie tokeniser un domaine, comment cela fonctionne et en quoi un domaine tokenisé diffère des domaines traditionnels et des noms exclusivement basés sur la blockchain comme l'ENS."
 keywords: ["domaine tokenisé", "domaines tokenisés", "tokeniser un domaine", "tokeniser des domaines", "tokeniser domaine", "tokenisation d'un domaine", "tokenisation de domaines", "tokenisation de domaine", "tokenisation des domaines", "tokenisation de nom de domaine", "comment tokeniser un domaine", "qu'est-ce qu'un domaine tokenisé", "que sont les domaines tokenisés", "domaines NFT", "domaine NFT", "domaines on-chain", "domaine on-chain", "domaines blockchain", "domaine blockchain", "DNS", "domaines ICANN", "domaines web3", "domaine web3", "NFT de domaine", "domaine en tant que NFT", "namefi", "propriété de domaine", "tokenisation d'actif de domaine", "Namefi", "D3", "D3 Global Inc", "D3 Inc", "Doma", "Doma Protocol", "Domora", "WebUnited", "GBM", "GBM Auctions", "ENS", "Ethereum Name Service", "Unstoppable Domains", "Freename", "GoDaddy", "Identity Digital", "Namefi vs ENS", "Namefi vs Unstoppable Domains", "Namefi vs D3", "domaine tokenisé vs ENS", "domaine tokenisé vs domaine web3", "domaine ICANN vs domaine web3", "comparer les plateformes de domaines tokenisés"]

@@ -3,7 +3,8 @@ title: 'பிரபல டொமைன் முதலீட்டாளர் 
 date: '2026-05-22'
 language: ta
 tags: ['domains', 'domain-investing', 'blogs', 'newsletters', 'community']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

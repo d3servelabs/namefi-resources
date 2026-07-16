@@ -3,7 +3,8 @@ title: "இயல்பான மொழியில் ஒரு டொமைன
 date: '2026-07-10'
 language: 'ta'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/nl-domain-purchase-og.jpg

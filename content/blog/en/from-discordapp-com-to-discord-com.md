@@ -3,7 +3,8 @@ title: 'From DiscordApp.com to Discord.com: How Dropping "App" Closed a Door Phi
 date: '2026-06-17'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

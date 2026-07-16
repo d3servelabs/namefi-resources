@@ -3,7 +3,8 @@ title: ".ai 还是 .io：哪个域名更适合您的 AI 或科技创业公司？
 date: '2026-06-10'
 language: 'zh-CN'
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: ".ai 与 .io 哪个更适合您的创业公司？从起源、谷歌 SEO 处理方式、定价、品牌信号到 .io 恰戈斯主权问题，附清晰决策指南与常见问题解答。"
 keywords: ["ai vs io tld", "io vs ai domain", "ai or io domain", "io vs ai domain extension", "ai vs io domain extension", ".ai vs .io", "ai or io tld", "ai vs io domain", "io or ai domain", ".ai vs .io domain", "ai domain vs io domain", "best domain for ai startup", "best domain for tech startup", "ai tld", "io tld", "domain extension for startup", "ccTLD for tech", "gccTLD seo", "io domain chagos", "io domain future", "ai domain pricing", "io domain pricing", "domain branding", "choosing a domain extension", "tokenized domain"]

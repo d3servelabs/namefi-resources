@@ -3,7 +3,8 @@ title: 'ICANN 자체가 피싱 당한 날: 인터넷의 심장부를 강타한 2
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

@@ -3,7 +3,8 @@ title: 'From UberCab.com to Uber.com: Trading Equity for the Domain Before Uber 
 date: '2026-06-16'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

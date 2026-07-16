@@ -3,7 +3,8 @@ title: "出品から決済まで：トークン化マーケットプレイスが
 date: '2026-05-22'
 language: ja
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: tokenize-your-com

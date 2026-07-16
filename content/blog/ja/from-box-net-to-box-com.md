@@ -3,7 +3,8 @@ title: 'Box.netからBox.comへ：「.net」を捨て、完全一致ドメイン
 date: '2026-06-17'
 language: ja
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

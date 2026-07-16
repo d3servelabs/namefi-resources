@@ -3,7 +3,8 @@ title: "प्रमुख ब्लॉकचेन सहमति तंत्
 date: '2026-07-02'
 language: hi
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

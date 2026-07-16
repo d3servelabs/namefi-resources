@@ -3,7 +3,8 @@ title: "Coûts de renouvellement et taux de vente : la vraie arithmétique du do
 date: '2026-06-21'
 language: fr
 tags: ['domains', 'domain-investing', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

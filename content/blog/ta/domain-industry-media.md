@@ -3,7 +3,8 @@ title: 'பின்தொடர வேண்டிய பிரபல டொம
 date: '2026-05-22'
 language: ta
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

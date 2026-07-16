@@ -3,7 +3,8 @@ title: "如何在 Namefi 上通过 AI 智能体注册域名"
 date: '2026-07-10'
 language: 'zh-CN'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-agent-register-og.jpg

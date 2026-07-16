@@ -3,7 +3,8 @@ title: '.com을 토큰화하여 되팔기: Namefi 실전 가이드'
 date: '2026-06-24'
 language: ko
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-flipping-skills

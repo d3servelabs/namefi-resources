@@ -3,7 +3,8 @@ title: 'Google 推出“通用商务协议”，赋能下一代 AI 购物代理'
 date: '2026-01-15'
 language: zh-CN
 tags: ['Infrastructure', 'AI Agents', 'Digital Commerce']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'UCP 是 Google 致力于推动代理原生商务的举措，旨在让 AI 助手能够在开放网络上进行购物和结账。'
 keywords: ['通用商务协议', 'UCP', 'Google UCP', 'AI 购物代理', 'AI 驱动商务', '代理商务', 'AI 电商协议', '对话式商务', 'AI 结账', '电商未来', '基于代理的购物', '开放商务标准', 'Google AI', 'Gemini AI', '代理引擎优化']

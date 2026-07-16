@@ -3,7 +3,8 @@ title: ".comドメインをトークン化する方法：ステップバイス�
 date: '2026-05-22'
 language: ja
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: tokenize-your-com

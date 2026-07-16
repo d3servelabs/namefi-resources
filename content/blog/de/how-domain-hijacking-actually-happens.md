@@ -3,7 +3,8 @@ title: 'Wie Domain-Hijacking tatsächlich abläuft: Fünf Angriffswege und die K
 date: '2026-05-10'
 language: de
 tags: ['security', 'domains', 'registrar', 'incident-response']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Ein praktischer Leitfaden zu den fünf Wegen, wie Angreifer Domains in der realen Welt tatsächlich übernehmen – Social Engineering, Kompromittierung des Registrar-Kontos, Übernahme des DNS-Anbieters, NS-Hijacking und Rückforderung abgelaufener Domains – sowie die spezifischen Kontrollmechanismen, die jeden einzelnen blockieren.'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg

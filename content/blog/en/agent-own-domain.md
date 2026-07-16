@@ -3,7 +3,8 @@ title: "Can an AI Agent Own a Domain? WHOIS, Custody & Tokens"
 date: '2026-07-10'
 language: 'en'
 tags: ['ai-agents', 'domains', 'web3']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: faq
 ogImage: ../../assets/agent-own-domain-og.jpg

@@ -3,7 +3,8 @@ title: 'DNS over HTTPS vs 기업용 스플릿 호라이즌 DNS: 스스로 해결
 date: '2026-05-04'
 language: ko
 tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 format: comparison

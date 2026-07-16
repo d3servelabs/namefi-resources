@@ -3,7 +3,8 @@ title: "ENS- und tokenisierte Domains bewerten: Onchain-Vergleichswerte lesen"
 date: '2026-06-24'
 language: de
 tags: ['domains', 'domain-flipping', 'web3', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

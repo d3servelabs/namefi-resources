@@ -3,7 +3,8 @@ title: "Qu'est-ce qu'un TLD (domaine de premier niveau) ? Guide complet"
 date: '2026-06-10'
 language: fr
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Un TLD est la partie d'un domaine après le dernier point, comme .com ou .io. Découvrez ce qu'est un TLD, les types (gTLD, ccTLD, sponsorisé, nouveau gTLD, IDN) et comment en choisir un."
 keywords: ['tld', 'signification tld', 'qu est ce qu un tld', 'qu est-ce qu un domaine de premier niveau', 'domaine de premier niveau', 'définition tld', 'définition de tld', 'que es un tld', "qu'est-ce qu'un tld", 'types de tld', 'gtld vs cctld', 'exemples de tld', 'qu est-ce qu une extension de domaine', 'extension de domaine', 'gTLD', 'ccTLD', 'TLD sponsorisé', 'nouveau gTLD', 'IDN TLD', 'ICANN', 'IANA', 'registre de domaine', 'registrar de domaine', 'choisir un TLD', 'TLDs populaires', 'namefi']

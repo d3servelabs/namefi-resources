@@ -3,7 +3,8 @@ title: "Tokeniser votre .com pour le flipper : un guide pas à pas Namefi"
 date: '2026-06-24'
 language: fr
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-flipping-skills

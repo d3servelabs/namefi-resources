@@ -3,7 +3,8 @@ title: "ஒரு டொமைனுக்கு எவ்வளவு செல
 date: '2026-06-29'
 language: ta
 tags: ['domains', 'domain-investing', 'domain-pricing', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

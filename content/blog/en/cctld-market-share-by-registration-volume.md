@@ -3,7 +3,8 @@ title: 'ccTLD Market Share by Registration Volume: Who Actually Runs the Nationa
 date: '2026-05-01'
 language: en
 tags: ['cctld', 'domains', 'market-analysis', 'registry']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: analysis

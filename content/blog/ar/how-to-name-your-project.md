@@ -3,7 +3,8 @@ title: "إزاي تسمي مشروعك: الدليل العملي للمؤسسي
 date: '2026-06-13'
 language: ar
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "دليل عملي مبني على أبحاث حقيقية للمؤسسين اللي بيسموا مشروع أو منتج أو شركة: تأكد من الناحية القانونية، خليه سهل في النطق، اجنر أسماء قوية، اتحقق من التقبل الثقافي، ونفذ البحث الصح قبل ما تلتزم باختيارك."
 ogImage: ../../assets/how-to-name-your-project-og.jpg

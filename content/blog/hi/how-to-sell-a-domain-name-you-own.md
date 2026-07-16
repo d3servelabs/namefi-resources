@@ -3,7 +3,8 @@ title: "अपना खुद का डोमेन नाम कैसे ब
 date: '2026-06-09'
 language: hi
 tags: ['domains', 'guide', 'domain-investing', 'outbound']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "डोमेन की कीमत तय करने, संभावित खरीदारों को खोजने, आउटरीच संभालने, घोटालों से बचने और ट्रांसफर को सुरक्षित रूप से पूरा करने के लिए विक्रेताओं के लिए एक व्यावहारिक चेकलिस्ट।"
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png

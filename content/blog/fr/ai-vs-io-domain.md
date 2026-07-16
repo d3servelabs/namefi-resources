@@ -3,7 +3,8 @@ title: ".ai vs .io : Quel domaine convient à votre startup IA ou tech ?"
 date: '2026-06-10'
 language: 'fr'
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: ".ai vs .io pour votre startup ? Comparez les origines, le traitement SEO par Google, les tarifs, les signaux de marque et la question Chagos liée à .io, avec un guide de décision clair et une FAQ."
 keywords: ["ai vs io tld", "io vs ai domaine", "domaine ai ou io", "extension de domaine io vs ai", "extension de domaine ai vs io", ".ai vs .io", "tld ai ou io", "domaine ai vs io", "domaine io ou ai", ".ai vs .io domaine", "domaine ai contre domaine io", "meilleur domaine pour startup ia", "meilleur domaine pour startup tech", "tld ai", "tld io", "extension de domaine pour startup", "ccTLD pour la tech", "gccTLD seo", "domaine io chagos", "avenir domaine io", "prix domaine ai", "prix domaine io", "image de marque domaine", "choisir une extension de domaine", "domaine tokenisé"]

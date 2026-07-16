@@ -3,7 +3,8 @@ title: 'La Minute à 12 Dollars : Quand Quelqu''un a Discrètement Acheté Googl
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'En septembre 2015, un ancien employé de Google a acheté google.com via Google Domains pour 12 dollars et a détenu le contrôle administratif du domaine le plus précieux au monde pendant environ une minute. L''histoire de Sanmay Ved, la prime de 6 006,13 dollars, et ce qu''une minute de propriété révèle sur celui qui contrôle vraiment un domaine.'
 keywords: ['domaine google.com', 'sanmay ved', 'bug google domains', 'sécurité des domaines', 'qui possède google.com', 'détournement de domaine', 'accès webmaster tools', 'programme de récompense google', 'récompense 6006.13', 'vulnérabilité enregistrement domaine', 'contrôle domaine', 'sécurité dns', 'vérification propriété domaine']

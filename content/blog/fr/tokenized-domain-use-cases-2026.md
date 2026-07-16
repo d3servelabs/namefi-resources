@@ -3,7 +3,8 @@ title: "Cas d'utilisation des domaines tokenisés en 2026 : Prêts, Location, Pr
 date: '2026-05-22'
 language: fr
 tags: ['thesis']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Un tour d'horizon neutre des cas d'utilisation réels des domaines tokenisés en 2026 : prêts DeFi, location, propriété fractionnée, identité pour agents IA, et les cas d'utilisation qui n'ont pas encore tout à fait abouti."
 keywords: ["cas d'utilisation domaine tokenisé", 'DomainFi', 'prêt domaine tokenisé', 'collatéral domaine tokenisé', 'louer domaine tokenisé', 'propriété fractionnée de domaine', 'domaine agent IA', 'DeFi domaine', 'marketplace de domaines tokenisés', 'applications de domaines tokenisés', "cas d'utilisation domaine NFT", 'pourquoi tokeniser un domaine en 2026', 'utilisation de domaine on-chain', 'exemples de domaines tokenisés']

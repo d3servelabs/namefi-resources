@@ -3,7 +3,8 @@ title: "D'Instagr.am à Instagram.com : le domain hack à 100 000 $ qui a épel�
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Comment Instagram s'est lancé en 2010 sur le domain hack instagr.am — en empruntant le ccTLD arménien .am pour épeler son propre nom — avant de payer 100 000 $ pour consolider sa présence sur Instagram.com, et ce que les compromis d'un domain hack ingénieux enseignent aux fondateurs."
 keywords: ['instagr.am', 'instagram.com', 'nom de domaine instagram', 'domain hack', 'ccTLD domain hack', '.am domaine arménie', 'kevin systrom', 'mike krieger', 'mise à niveau de domaine', 'nommage de startup', 'nommage de marque', 'domaine premium', 'stratégie de domaine', 'histoire instagram']

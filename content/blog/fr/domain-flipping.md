@@ -3,7 +3,8 @@ title: "Le domain flipping : comment acheter et revendre des domaines avec profi
 date: '2026-06-20'
 language: fr
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

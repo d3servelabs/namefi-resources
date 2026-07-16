@@ -3,7 +3,8 @@ title: "链上域名市场对比：OpenSea、Seaport 及其他"
 date: '2026-06-24'
 language: zh-CN
 tags: ['domains', 'domain-flipping', 'web3', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

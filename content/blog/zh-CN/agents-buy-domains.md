@@ -3,7 +3,8 @@ title: "AI 智能体如何无需人工购买域名（2026）"
 date: '2026-07-10'
 language: zh-CN
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/agents-buy-domains-og.jpg

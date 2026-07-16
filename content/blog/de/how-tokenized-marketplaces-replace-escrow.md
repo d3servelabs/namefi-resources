@@ -3,7 +3,8 @@ title: 'Vom Listing bis zur Abwicklung: Wie tokenisierte Marktplätze Treuhanddi
 date: '2026-05-22'
 language: de
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Wie Marktplätze für tokenisierte Domains es Käufern und Verkäufern ermöglichen, atomar On-Chain abzuwickeln – ohne Treuhanddienst, ohne Auth-Codes, ohne fünftägige Registrar-Sperre. Was jeden Teil des traditionellen Ablaufs ersetzt und welche Risiken sich auf andere Ebenen verlagern.'
 keywords: ['Domain-Marktplatz Blockchain', 'atomarer Domain-Transfer', 'Marktplatz für tokenisierte Domains', 'Domain-Treuhand ersetzen', 'Domain-Verkauf ohne Treuhand', 'Domain-Verkauf Krypto', 'Verkaufsprozess für tokenisierte Domains', 'tokenisierte Domain verkaufen', 'tokenisierte Domain kaufen', 'On-Chain Domain-Verkauf', 'Domain NFT-Abwicklung', 'Domain-Marktplatz 2026', 'Liquidität für tokenisierte Domains']

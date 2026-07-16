@@ -3,7 +3,8 @@ title: 'GetDropbox.comからDropbox.comへ：「Get」を外し、シャンパ�
 date: '2026-06-16'
 language: ja
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

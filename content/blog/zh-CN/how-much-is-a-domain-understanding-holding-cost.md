@@ -3,7 +3,8 @@ title: "域名多少钱？理解持有成本"
 date: '2026-06-29'
 language: zh-CN
 tags: ['domains', 'domain-investing', 'domain-pricing', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

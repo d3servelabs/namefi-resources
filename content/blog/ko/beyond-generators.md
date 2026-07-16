@@ -3,7 +3,8 @@ title: "AI 도메인 이름 생성기를 넘어: 에이전트 시대"
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/beyond-generators-og.jpg

@@ -3,7 +3,8 @@ title: '"La búsqueda de dominios con IA" significa dos cosas diferentes en 2026
 date: '2026-07-10'
 language: 'es'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/ai-search-meanings-og.jpg

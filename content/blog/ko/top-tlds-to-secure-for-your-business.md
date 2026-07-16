@@ -3,7 +3,8 @@ title: '비즈니스를 위해 확보해야 할 상위 10개 TLD'
 date: '2026-06-14'
 language: ko
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

@@ -3,7 +3,8 @@ title: '为什么 DAO 应掌控主域名'
 date: '2026-06-23'
 language: zh-CN
 tags: ['governance', 'dao', 'web3', 'namefi space']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 description: "每个国家和每场运动终会迎来宪政危机时刻：谁具有正当性，谁握有权威，谁能站在舞台中央发声。对一场在线运动而言，这个问题最终落在一项资产上：主域名。本文说明它为何应归 DAO 所有。"

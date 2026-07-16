@@ -4,7 +4,8 @@ date: '2026-05-22'
 language: zh-CN
 priority: P1
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "以通俗易懂的语言梳理代币化域名所有者常问的税务和会计问题（非专业建议），涵盖成本基准、销售、持有期、商业与个人用途、赠与及遗产等。请带上这些问题咨询真正的专业人士。"
 keywords: ['NFT域名税务', '代币化域名成本基准', '代币化域名会计处理', '代币化域名资本利得', '出售代币化域名纳税', 'NFT域名资本利得', '域名NFT会计处理', '域名作为资产的税务', '赠与代币化域名纳税', '代币化域名遗产', '代币化域名业务支出', '域名代币化税务问题', '美国NFT域名税务', '加密域名税务']

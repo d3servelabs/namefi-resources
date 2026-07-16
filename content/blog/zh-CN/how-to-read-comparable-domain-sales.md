@@ -3,7 +3,8 @@ title: "如何解读域名的参考成交价（Comps）"
 date: '2026-06-21'
 language: zh-CN
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

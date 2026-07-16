@@ -3,7 +3,8 @@ title: '从 SlackHQ.com 到 Slack.com：花费 6 万美元去掉"HQ"的品牌升
 date: '2026-06-16'
 language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Slack 当年因为 Slack.com 被他人占用，不得不以 SlackHQ.com 起步，随后花费 6 万美元收购精确匹配域名，摘掉"HQ"后缀——而 @SlackHQ 这个社交账号却沿用至今。'
 keywords: ['slackhq.com', 'slack.com', 'slack域名', '域名升级', 'stewart butterfield', 'tiny speck', '精确匹配域名', '创业命名', '品牌命名', '高价域名', '域名策略', 'slack历史', '域名收购', '品类定义域名']

@@ -3,7 +3,8 @@ title: "When to Drop a Domain (and Cut Your Losers)"
 date: '2026-06-21'
 language: en
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

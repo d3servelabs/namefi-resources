@@ -3,7 +3,8 @@ title: '„KI-Domainsuche“ bedeutet 2026 zwei verschiedene Dinge'
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/ai-search-meanings-og.jpg

@@ -3,7 +3,8 @@ title: 'Los 10 mejores TLD que debes asegurar para tu startup'
 date: '2026-06-14'
 language: es
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-startup-og.jpg
 description: 'Descubre los mejores TLD para asegurar tu startup, desde .com hasta .ai, además de una estrategia de registro defensivo para proteger tu marca frente a los typosquatters.'

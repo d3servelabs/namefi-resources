@@ -3,7 +3,8 @@ title: 'TeslaMotors.com से Tesla.com तक: एक दशक में ह�
 date: '2026-06-10'
 language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Tesla ने एक दशक से अधिक समय और कथित रूप से $11M खर्च करके TeslaMotors.com से exact-match Tesla.com पर कैसे स्थानांतरण किया, और यह डोमेन अपग्रेड कंपनी के "Motors" नाम हटाने से ठीक पहले क्यों आया।'
 keywords: ['teslamotors.com', 'tesla.com', 'tesla domain name', 'domain upgrade', 'elon musk domain', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'tesla rebrand', 'tesla motors name change', 'domain acquisition', 'category-defining domain']

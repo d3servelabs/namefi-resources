@@ -3,7 +3,8 @@ title: "Namefi vs Doma/D3 vs 3DNS vs GBM: Choosing a Domain Tokenization Platfor
 date: '2026-05-22'
 language: en
 tags: ['comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 format: comparison

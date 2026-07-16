@@ -3,7 +3,8 @@ title: "ENS vs DNS ドメインフリッピング：何が違うのか"
 date: '2026-06-24'
 language: ja
 tags: ['domains', 'domain-flipping', 'web3', 'comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

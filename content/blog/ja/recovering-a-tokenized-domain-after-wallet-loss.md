@@ -3,7 +3,8 @@ title: "トークン化ドメインをウォレット喪失後に復元する：
 date: '2026-05-22'
 language: ja
 tags: ['guide', 'security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-apocalypse

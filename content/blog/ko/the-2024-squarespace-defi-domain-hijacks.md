@@ -3,7 +3,8 @@ title: '도메인 긴급 사태 EP05: 2024년 Squarespace DeFi 도메인 대규�
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

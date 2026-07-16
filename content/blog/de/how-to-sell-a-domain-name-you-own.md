@@ -3,7 +3,8 @@ title: "Wie man einen eigenen Domainnamen verkauft: Eine praktische Checkliste"
 date: '2026-06-09'
 language: de
 tags: ['domains', 'guide', 'domain-investing', 'outbound']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Eine praktische Checkliste aus Verkäufersicht für die Preisfindung einer Domain, das Finden potenzieller Käufer, die Kontaktaufnahme, die Vermeidung von Betrug und den sicheren Abschluss des Transfers."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png

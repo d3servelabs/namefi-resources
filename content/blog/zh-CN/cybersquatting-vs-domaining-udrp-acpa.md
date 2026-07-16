@@ -3,7 +3,8 @@ title: '网络抢注与合法域名投资：UDRP 与 ACPA 详解'
 date: '2026-06-21'
 language: zh-CN
 tags: ['domains', 'security', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

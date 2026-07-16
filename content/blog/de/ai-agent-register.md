@@ -3,7 +3,8 @@ title: "So registrieren Sie eine Domain mit Ihrem KI-Agenten bei Namefi"
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-agent-register-og.jpg

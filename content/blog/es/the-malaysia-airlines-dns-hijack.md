@@ -3,7 +3,8 @@ title: 'El secuestro DNS de Malaysia Airlines: "404 — Avión No Encontrado"'
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'En enero de 2015, Lizard Squad secuestró el DNS de malaysiaairlines.com y reemplazó el sitio de la aerolínea con un lagarto vestido de esmoquin y la burla "404 — Avión No Encontrado". Ningún servidor fue vulnerado — los atacantes simplemente cambiaron a dónde apuntaba el dominio. Un análisis en profundidad de Domain Mayday sobre cómo el DNS se convirtió en la puerta de entrada más expuesta de la aerolínea.'
 keywords: ['secuestro dns malaysia airlines', 'lizard squad', 'cyber caliphate', '404 avión no encontrado', 'secuestro dns', 'secuestro de dominio', 'compromiso de registrar', 'webnic', 'malaysiaairlines.com', 'seguridad de dominios', 'redirección dns', 'registry lock', 'mh370']

@@ -3,7 +3,8 @@ title: "Namefi MCP Server: Domain Tools for AI Agents"
 date: '2026-07-10'
 language: 'en'
 tags: ['ai-agents', 'domains', 'web3']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/namefi-mcp-og.jpg

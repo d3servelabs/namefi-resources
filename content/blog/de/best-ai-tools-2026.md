@@ -3,7 +3,8 @@ title: "Die besten KI-Domainwerkzeuge 2026: Generatoren vs. Agentenplattformen"
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'domains', 'roundup']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: roundup
 ogImage: ../../assets/best-ai-tools-2026-og.jpg

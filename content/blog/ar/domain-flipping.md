@@ -3,7 +3,8 @@ title: "تقليب الدومينات: إزاي تشتري وتبيع أسماء
 date: '2026-06-20'
 language: ar
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

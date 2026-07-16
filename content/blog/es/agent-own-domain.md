@@ -3,7 +3,8 @@ title: "¿Puede un agente de IA poseer un dominio? WHOIS, custodia y tokens"
 date: '2026-07-10'
 language: 'es'
 tags: ['ai-agents', 'domains', 'web3']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: faq
 ogImage: ../../assets/agent-own-domain-og.jpg

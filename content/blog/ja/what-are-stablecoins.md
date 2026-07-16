@@ -3,7 +3,8 @@ title: 'ステーブルコインとは？Web3経済における安定の基盤'
 date: '2025-12-11'
 language: 'ja'
 tags: ['web3', 'cryptocurrency', 'defi', 'blockchain', 'finance']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: explainer

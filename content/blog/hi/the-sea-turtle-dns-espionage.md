@@ -3,7 +3,8 @@ title: 'Sea Turtle: वह राज्य-प्रायोजित अभि
 date: '2026-06-17'
 language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: '"Sea Turtle" — 2019 में Cisco Talos द्वारा उजागर किया गया एक राज्य-प्रायोजित अभियान — ने रजिस्ट्रारों, रजिस्ट्रियों और DNS प्रदाताओं से समझौता करके DNS को हाईजैक किया, सरकारों, मंत्रालयों और ऊर्जा कंपनियों को हमलावरों के सर्वरों पर पुनर्निर्देशित किया, वैध प्रमाणपत्र जाली बनाए और यहाँ तक कि एक राष्ट्रीय TLD रजिस्ट्री का उल्लंघन किया।'
 keywords: ['sea turtle dns hijacking', 'cisco talos sea turtle', 'dns hijacking attack', 'state-sponsored dns attack', 'registry compromise', 'registrar compromise', 'dns espionage campaign', 'lets encrypt mitm certificate', 'netnod compromise', 'ics-forth greece ccTLD', 'cisa emergency directive 19-01', 'dns security', 'domain ownership security', 'nation state cyberattack']

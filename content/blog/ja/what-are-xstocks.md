@@ -4,7 +4,8 @@ date: '2025-07-02'
 updated: '2026-06-10'
 language: ja
 tags: ['faq', 'domains', 'tokenization']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: explainer

@@ -3,7 +3,8 @@ title: "« Recherche de domaine par IA » désigne deux choses différentes en 2
 date: '2026-07-10'
 language: 'fr'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/ai-search-meanings-og.jpg

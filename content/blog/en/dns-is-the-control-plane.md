@@ -3,7 +3,8 @@ title: "Behind the Scenes of the Oct 20, 2025 AWS Outage"
 date: '2025-10-23'
 language: en
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

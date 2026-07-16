@@ -3,7 +3,8 @@ title: 'Domain Mayday EP05: 2024 Squarespace DeFi டொமைன் பெர�
 date: '2026-06-17'
 language: ta
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

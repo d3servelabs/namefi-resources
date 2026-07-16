@@ -3,7 +3,8 @@ title: 'ليه لازم الـ DAO تتحكم في الدومين الرئيسي
 date: '2026-06-23'
 language: ar
 tags: ['governance', 'dao', 'web3', 'namefi space']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 description: "كل بلد وكل حركة بتمر في لحظة أزمة دستورية: مين الشرعي، ومين له السلطة، ومين بيتكلم من قلب المشهد. بالنسبة لحركة على الإنترنت، السؤال ده بينتهي عند أصل واحد: الدومين الرئيسي. وده سبب إن مكانه الطبيعي يكون مع الـ DAO."

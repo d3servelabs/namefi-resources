@@ -383,6 +383,20 @@ function validateContentFile(
     });
   }
 
+  // `editors` is optional; when present it must be a non-empty list of
+  // author-slugs (same vocabulary as `authors`). It surfaces as the "Edited by"
+  // byline, an editor card, and a schema.org `editor` Person in the article
+  // JSON-LD.
+  if (data.editors !== undefined) {
+    const editors = asStringArray(data.editors);
+    if (editors.length === 0) {
+      errors.push({
+        file: relativePath,
+        message: '"editors" is present but empty or malformed',
+      });
+    }
+  }
+
   if (
     collection === 'blog' ||
     collection === 'tld' ||

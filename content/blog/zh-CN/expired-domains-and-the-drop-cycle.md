@@ -3,7 +3,8 @@ title: "详解过期域名与掉落周期"
 date: '2026-06-21'
 language: zh-CN
 tags: ['domains', 'domain-investing', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

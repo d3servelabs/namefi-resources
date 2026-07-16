@@ -3,7 +3,8 @@ title: "Recovering a Tokenized Domain After Wallet Loss: A Survival Guide"
 date: '2026-05-22'
 language: en
 tags: ['guide', 'security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-apocalypse

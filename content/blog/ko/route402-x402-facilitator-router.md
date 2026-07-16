@@ -3,7 +3,8 @@ title: 'Route402 소개 — x402 퍼실리테이터 라우터'
 date: '2026-01-22'
 language: ko
 tags: ['infrastructure', 'payments', 'x402']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: explainer

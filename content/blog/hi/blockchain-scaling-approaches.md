@@ -3,7 +3,8 @@ title: "ब्लॉकचेन स्केलिंग के प्रमु
 date: '2026-07-02'
 language: hi
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

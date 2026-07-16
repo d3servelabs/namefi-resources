@@ -3,7 +3,8 @@ title: "プロジェクトの名前の付け方：創業者のためのフィー
 date: '2026-06-13'
 language: ja
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: guide

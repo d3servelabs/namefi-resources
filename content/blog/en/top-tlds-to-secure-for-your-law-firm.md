@@ -3,7 +3,8 @@ title: 'Top 10 TLDs You Should Secure for Your Law Firm'
 date: '2026-06-14'
 language: en
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

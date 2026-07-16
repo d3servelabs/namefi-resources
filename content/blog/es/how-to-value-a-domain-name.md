@@ -3,7 +3,8 @@ title: "Cómo tasar un nombre de dominio: una guía práctica de valoración"
 date: '2026-06-20'
 language: es
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

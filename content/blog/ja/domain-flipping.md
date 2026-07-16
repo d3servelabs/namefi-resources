@@ -3,7 +3,8 @@ title: "ドメインフリッピング：ドメインを売買して利益を得
 date: '2026-06-20'
 language: ja
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

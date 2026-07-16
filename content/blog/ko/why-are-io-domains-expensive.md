@@ -3,7 +3,8 @@ title: ".io 도메인은 왜 이렇게 비쌀까요?"
 date: '2026-06-10'
 language: ko
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: explainer

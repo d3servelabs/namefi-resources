@@ -3,7 +3,8 @@ title: '최종 사용자 가격 vs 리셀러 가격: 동일한 도메인에 두 
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'domain-investing', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

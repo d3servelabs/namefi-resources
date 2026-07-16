@@ -3,7 +3,8 @@ title: "UDRP란 무엇인가? 도메인 이름 분쟁 해결 절차 해설"
 date: '2026-06-10'
 language: ko
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: explainer

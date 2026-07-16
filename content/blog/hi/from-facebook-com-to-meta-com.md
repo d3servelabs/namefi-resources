@@ -3,7 +3,8 @@ title: 'Facebook.com से Meta.com तक: कैसे एक $60 मिल�
 date: '2026-06-17'
 language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Facebook, Inc. अक्टूबर 2021 में Meta कैसे बना, Meta.com पहले से ही एक Zuckerberg-संबंधित एसेट क्यों था जो एक विज्ञान खोज इंजन से फॉरवर्ड हो रहा था, और एक अलग $60 मिलियन के सौदे ने एक South Dakota बैंक से "Meta" नाम कैसे खरीदा — जबकि Facebook ऐप ने Facebook.com बनाए रखा।'
 keywords: ['facebook.com', 'meta.com', 'meta rebrand', 'facebook meta name change', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', 'metaverse pivot', 'domain acquisition', 'company rebrand', 'premium domain', 'domain strategy', 'parent company rename']

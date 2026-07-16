@@ -3,7 +3,8 @@ title: "2026년 에이전틱 도메인 관리 현황"
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'domains', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: analysis
 ogImage: ../../assets/state-of-agentic-og.jpg

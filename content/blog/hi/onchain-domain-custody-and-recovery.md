@@ -3,7 +3,8 @@ title: "ऑन-चेन डोमेन कस्टडी, वॉलेट औ
 date: '2026-06-24'
 language: hi
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

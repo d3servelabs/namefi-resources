@@ -3,7 +3,8 @@ title: "டொமைன் ஹேக்குகள்: புள்ளியி
 date: '2026-06-20'
 language: ta
 tags: ['domains', 'domain-investing', 'branding', 'domain-flipping']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

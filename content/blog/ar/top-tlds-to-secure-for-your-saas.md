@@ -3,7 +3,8 @@ title: 'أفضل 10 امتدادات نطاقات يجب تأمينها لمنت
 date: '2026-06-14'
 language: ar
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-saas-og.jpg
 description: 'أفضل 10 امتدادات نطاقات يجب تأمينها لمنتجك SaaS — من .com و .io إلى .app و .ai — مع نصائح عملية للتسجيل الدفاعي وحقائق موثوقة عن جهات التسجيل.'

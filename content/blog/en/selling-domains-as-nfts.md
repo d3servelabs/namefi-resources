@@ -3,7 +3,8 @@ title: "Selling Domains as NFTs: Onchain Liquidity"
 date: '2026-06-24'
 language: en
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

@@ -3,7 +3,8 @@ title: 'من SlackHQ.com إلى Slack.com: الترقية بـ60 ألف دولا
 date: '2026-06-16'
 language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'إزاي Slack انطلق على SlackHQ.com لأن حد تاني كان ماسك Slack.com، ودفع 60 ألف دولار عشان يشتري الدومين الأصلي، وشال الـ"HQ" — وليه @SlackHQ لسه موجود على السوشيال ميديا لحد دلوقتي.'
 keywords: ['slackhq.com', 'slack.com', 'اسم دومين slack', 'ترقية دومين', 'ستيوارت باترفيلد', 'tiny speck', 'دومين مطابق تمام', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'دومين بريميوم', 'استراتيجية الدومين', 'تاريخ slack', 'شراء دومين', 'دومين يعرّف الفئة']

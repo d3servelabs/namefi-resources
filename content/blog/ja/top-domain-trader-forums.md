@@ -3,7 +3,8 @@ title: '英語圏のドメイントレーダーフォーラム完全ガイド：
 date: '2026-05-22'
 language: ja
 tags: ['domains', 'community', 'domain-investing', 'forums']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

@@ -3,7 +3,8 @@ title: 'أفضل 10 امتدادات نطاق تحتاج تؤمّنها لمتج
 date: '2026-06-14'
 language: ar
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-ecommerce-store-og.jpg
 description: 'أفضل 10 امتدادات نطاق لتأمينها لمتجرك الإلكتروني، من .com إلى .shop و.store، مع استراتيجية تسجيل دفاعية لحماية علامتك التجارية في قطاع التجزئة.'

@@ -3,7 +3,8 @@ title: "도메인 감정 도구 비교: Estibot vs GoDaddy vs 현실"
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'domain-investing', 'domain-flipping', 'comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

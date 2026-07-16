@@ -3,7 +3,8 @@ title: 'From AirBedAndBreakfast.com to Airbnb.com: The Domain Upgrade That Let a
 date: '2026-06-16'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

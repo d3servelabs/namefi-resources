@@ -3,7 +3,8 @@ title: 'Los 10 TLD principales que debes asegurar para tu marca de moda'
 date: '2026-06-14'
 language: es
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-fashion-brand-og.jpg
 description: 'Una guía práctica sobre los 10 TLD principales que debes asegurar para tu marca de moda, con cobertura de protección de marca, intención de compra y estrategia de registro defensivo.'

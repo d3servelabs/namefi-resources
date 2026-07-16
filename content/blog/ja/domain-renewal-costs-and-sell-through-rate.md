@@ -3,7 +3,8 @@ title: "更新コストと売却成立率：ドメイン投資の真の収支計
 date: '2026-06-21'
 language: ja
 tags: ['domains', 'domain-investing', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

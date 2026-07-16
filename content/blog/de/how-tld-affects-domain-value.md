@@ -3,7 +3,8 @@ title: "Wie die TLD den Wert einer Domain beeinflusst"
 date: '2026-06-21'
 language: de
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

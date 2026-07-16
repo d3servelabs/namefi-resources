@@ -3,7 +3,8 @@ title: '从 del.icio.us 到 Delicious.com：互联网上最聪明的域名黑客
 date: '2026-06-17'
 language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: '这家先驱性社交书签网站在2003年以著名的域名黑客技巧"del.icio.us"起步，那些点号如何成为每次提及时的永久负担，以及雅虎在2008年如何将其迁移到更简洁的 Delicious.com。'
 keywords: ['del.icio.us', 'delicious.com', 'delicious 域名', '域名黑客', 'joshua schachter', '社交书签', '雅虎 delicious', '域名升级', '初创公司命名', '品牌命名', '高级域名', '域名策略', 'ccTLD 域名黑客', '定义品类的域名']

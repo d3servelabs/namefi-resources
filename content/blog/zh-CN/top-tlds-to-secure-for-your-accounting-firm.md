@@ -3,7 +3,8 @@ title: '会计师事务所必须抢注的十大顶级域名后缀'
 date: '2026-06-14'
 language: zh-CN
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-accounting-firm-og.jpg
 description: '适合会计师事务所抢注的最佳顶级域名后缀——从受限的 .cpa 到防御性的 .com、.net 和 .org 注册，全面保护您的品牌并赢得客户信任。'

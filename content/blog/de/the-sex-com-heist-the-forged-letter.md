@@ -3,7 +3,8 @@ title: 'Der Sex.com-Raub: Ein gefälschter Brief, der die wertvollste Domain des
 date: '2026-06-17'
 language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Im Jahr 1995 stahl ein Betrüger namens Stephen Cohen sex.com vom rechtmäßigen Eigentümer Gary Kremen mit einem einzigen gefälschten Brief an Network Solutions. Der jahrelange Kampf um die Rückgabe endete mit einem Urteil über 65 Millionen Dollar, einem Flüchtigen in Mexiko und einem wegweisenden Urteil, das Domains als Eigentum einstuft.'
 keywords: ['sex.com', 'Domain-Diebstahl', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'gefälschter Brief', 'Domain-Hijacking', 'Sharon Dimmick Brief', 'Domain-Sicherheit', 'Domain als Eigentum', '65-Millionen-Dollar-Urteil', 'Domain-Transfer-Betrug', 'Domain Mayday']

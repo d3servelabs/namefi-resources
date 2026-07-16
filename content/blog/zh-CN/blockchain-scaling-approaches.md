@@ -3,7 +3,8 @@ title: "主流区块链扩容方案：Rollup、侧链、通道与分片"
 date: '2026-07-02'
 language: zh-CN
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

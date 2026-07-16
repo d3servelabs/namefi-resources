@@ -3,7 +3,8 @@ title: '¿Mejoran realmente la seguridad las billeteras multifirma? Una perspect
 date: '2026-05-07'
 language: es
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Las billeteras multifirma suelen considerarse como el estándar predeterminado para la custodia segura en cripto, pero la respuesta a "¿realmente mejoran la seguridad?" depende por completo del modelo de amenazas. Esta publicación analiza lo que la multifirma logra evitar, lo que no, y en qué casos puede empeorar la situación.'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg

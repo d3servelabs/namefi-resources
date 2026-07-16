@@ -3,7 +3,8 @@ title: "如何在域名拍卖中胜出而不溢价"
 date: '2026-06-21'
 language: zh-CN
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

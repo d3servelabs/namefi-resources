@@ -3,7 +3,8 @@ title: 'De GetDropbox.com a Dropbox.com: La Mejora de $300K que Eliminó el "Get
 date: '2026-06-16'
 language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Cómo Dropbox lanzó en GetDropbox.com porque Dropbox.com estaba tomado, libró una batalla de marca registrada y ocupación ilegítima, y finalmente compró el dominio exacto Dropbox.com por un reportado $300,000 en efectivo.'
 keywords: ['getdropbox.com', 'dropbox.com', 'nombre de dominio dropbox', 'drew houston', 'y combinator dropbox', 'actualización de dominio', 'nombres de startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'dominio de coincidencia exacta', 'adquisición de dominio', 'evenflow dropbox']

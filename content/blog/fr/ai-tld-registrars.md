@@ -3,7 +3,8 @@ title: "Meilleurs bureaux d'enregistrement de domaines .ai pour les startups IA 
 date: '2026-07-10'
 language: 'fr'
 tags: ['ai-agents', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: roundup
 ogImage: ../../assets/ai-tld-registrars-og.jpg

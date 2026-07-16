@@ -3,7 +3,8 @@ title: '域名倒卖与法律：商标、UDRP 与诈骗防范'
 date: '2026-06-21'
 language: zh-CN
 tags: ['domains', 'security', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

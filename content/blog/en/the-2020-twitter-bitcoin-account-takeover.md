@@ -3,7 +3,8 @@ title: 'Domain Mayday EP03: The 2020 Twitter Bitcoin Account Takeover'
 date: '2026-06-17'
 language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

@@ -3,7 +3,8 @@ title: "النطاقات القصيرة و LLLL والرقمية: العلاوة
 date: '2026-06-21'
 language: ar
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

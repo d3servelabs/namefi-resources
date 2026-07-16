@@ -3,7 +3,8 @@ title: "De Facebook.com à Meta.com : comment un accord à 60 M$ et un domaine s
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Comment Facebook, Inc. est devenu Meta en octobre 2021, pourquoi Meta.com était déjà un actif lié à Zuckerberg renvoyant vers un moteur de recherche scientifique, et comment un accord séparé à 60 M$ a permis d'acquérir le nom « Meta » auprès d'une banque de Sioux Falls — tandis que l'application Facebook conservait Facebook.com."
 keywords: ['facebook.com', 'meta.com', 'rebranding meta', 'changement de nom facebook meta', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', 'pivot métavers', 'acquisition de domaine', 'rebranding entreprise', 'domaine premium', 'stratégie de domaine', 'renommage société mère']

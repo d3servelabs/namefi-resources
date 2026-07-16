@@ -3,7 +3,8 @@ title: 'Dyn DNS攻撃：ハッキングされたカメラのMiraiボットネッ
 date: '2026-06-17'
 language: ja
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

@@ -3,7 +3,8 @@ title: '什么是稳定币？Web3 经济稳定的基石'
 date: '2025-12-11'
 language: 'zh-CN'
 tags: ['web3', '加密货币', 'defi', '区块链', '金融']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: '了解稳定币如何连接传统法币与加密货币，为 Web3 交易和域名投资提供稳定性。'
 keywords: ['什么是稳定币', '稳定币定义', 'USDT vs USDC', '加密货币波动性', 'web3 支付', '区块链域名', '去中心化金融', '法币抵押', '用加密货币购买域名', 'namefi']

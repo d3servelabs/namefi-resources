@@ -3,7 +3,8 @@ title: '2026년 토큰화 도메인 활용 사례: 대출, 임대, 분할 소유
 date: '2026-05-22'
 language: ko
 tags: ['thesis']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 format: opinion

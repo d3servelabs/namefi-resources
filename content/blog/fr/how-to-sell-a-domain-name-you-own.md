@@ -3,7 +3,8 @@ title: "Comment vendre un nom de domaine que vous possédez : Une liste de contr
 date: '2026-06-09'
 language: fr
 tags: ['noms-de-domaine', 'guide', 'investissement-domaine', 'outbound']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Une liste de contrôle pratique, pensée pour le vendeur, pour évaluer un domaine, trouver des acheteurs potentiels, gérer la prospection, éviter les arnaques et conclure le transfert en toute sécurité."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png

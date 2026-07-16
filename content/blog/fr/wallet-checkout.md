@@ -3,7 +3,8 @@ title: "Payer ses noms de domaine avec un portefeuille crypto : aucun compte req
 date: '2026-07-10'
 language: 'fr'
 tags: ['ai-agents', 'payments']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/wallet-checkout-og.jpg

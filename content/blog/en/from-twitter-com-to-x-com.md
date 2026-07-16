@@ -3,7 +3,8 @@ title: 'From Twitter.com to X.com: The 24-Year Round Trip of a Single-Letter Dom
 date: '2026-06-17'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

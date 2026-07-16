@@ -3,7 +3,8 @@ title: 'Der Panix.com-Domain-Hijack: Wie eine Fünf-Tage-Automatik-Genehmigungsr
 date: '2026-06-17'
 language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Im Januar 2005 wurde panix.com – die Domain des ältesten kommerziellen ISPs New Yorks – mithilfe gestohlener Kreditkarten betrügerisch zu einem Registrar in Australien übertragen, wodurch Web und E-Mail tagelang ausfielen. Die damals geltenden Regeln zur automatischen Genehmigung von Registrar-Transfers machten dies möglich, und die Aufarbeitung formte die Domain-Transfer-Richtlinien grundlegend um.'
 keywords: ['panix.com', 'panix domain hijack', 'Domain-Entführung', 'inter-registrar transfer', 'Melbourne IT', 'Dotster', 'Fibranet', 'ICANN Transfer Policy', 'Registrar Lock', 'clientTransferProhibited', 'Domain-Sicherheit', 'DNS-Hijacking', 'EPP Auth-Code']

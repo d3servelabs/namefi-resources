@@ -3,7 +3,8 @@ title: "2025年10月20日のAWS障害の舞台裏"
 date: '2025-10-23'
 language: ja
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

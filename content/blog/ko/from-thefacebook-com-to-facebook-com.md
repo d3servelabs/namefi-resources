@@ -3,7 +3,8 @@ title: 'TheFacebook.com에서 Facebook.com으로: 캠퍼스 앱을 필연적 존
 date: '2026-06-10'
 language: ko
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

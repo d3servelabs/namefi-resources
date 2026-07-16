@@ -3,7 +3,8 @@ title: "Comment les agents IA achètent des domaines sans humain (2026)"
 date: '2026-07-10'
 language: 'fr'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/agents-buy-domains-og.jpg

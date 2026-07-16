@@ -3,7 +3,8 @@ title: "வைப் கோடிங்கிற்கு ஒரு டொமை
 date: '2026-07-10'
 language: 'ta'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 ogImage: ../../assets/vibe-coding-domain-og.jpg

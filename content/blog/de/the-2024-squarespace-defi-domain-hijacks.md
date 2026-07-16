@@ -3,7 +3,8 @@ title: 'Domain Mayday EP05: Der Squarespace-DeFi-Domain-Massenraub 2024'
 date: '2026-06-17'
 language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Im Juli 2024 verwandelte eine Registrar-Migration von Google Domains zu Squarespace schwache Standard-Authentifizierung in eine Massenangriffsfläche. Angreifer kaperten die Domains von Krypto- und DeFi-Projekten – Compound Finance, Celer Network, Pendle, Unstoppable Domains – und leiteten sie auf Wallet-Drainer-Phishing-Seiten um. So schuf eine „nahtlose" Migration hunderte ungesicherter Eingangstüren, und was das über Registrar-Sicherheit und MFA lehrt.'
 keywords: ['squarespace domain hijack', 'google domains migration', 'defi dns hijack', 'compound finance hijack', 'celer network hijack', 'wallet drainer', 'inferno drainer', 'domain security', 'registrar migration', 'mfa multi-factor authentication', 'oauth account takeover', 'dns hijacking', 'crypto phishing']

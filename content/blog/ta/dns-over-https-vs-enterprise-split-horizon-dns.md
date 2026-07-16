@@ -3,7 +3,8 @@ title: 'HTTPS வழி DNS மற்றும் நிறுவன Split-Horiz
 date: '2026-05-04'
 language: ta
 tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 format: comparison

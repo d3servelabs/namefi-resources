@@ -3,7 +3,8 @@ title: "TLD किसी डोमेन के मूल्य को कैस
 date: '2026-06-21'
 language: hi
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

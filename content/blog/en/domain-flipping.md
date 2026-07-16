@@ -3,7 +3,8 @@ title: "Domain Flipping: How to Buy and Sell Domains for Profit"
 date: '2026-06-20'
 language: en
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

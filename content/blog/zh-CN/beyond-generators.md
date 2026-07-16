@@ -3,7 +3,8 @@ title: "不止于 AI 域名生成器：智能体时代"
 date: '2026-07-10'
 language: 'zh-CN'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/beyond-generators-og.jpg

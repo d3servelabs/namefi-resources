@@ -3,7 +3,8 @@ title: 'El Secuestro de DNS de Curve Finance: Cuando los "Contratos Auditados" N
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'En agosto de 2022, los contratos inteligentes de Curve Finance estaban intactos — pero los atacantes secuestraron el dominio curve.fi en su registrador, clonaron el sitio y drenaron aproximadamente $570K de los usuarios. Un análisis profundo del ataque DNS a una interfaz DeFi, y lo que enseña sobre seguridad de dominios.'
 keywords: ['secuestro dns curve finance', 'hijack curve.fi', 'dns hijacking defi', 'compromiso iwantmyname', 'compromiso nameserver', 'wallet drainer', 'ataque front-end defi', 'seguridad de dominios', 'seguridad dns', 'phishing cripto', 'ataque sitio clonado', 'compromiso cuenta registrador', 'domain mayday']

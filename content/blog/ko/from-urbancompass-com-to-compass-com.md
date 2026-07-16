@@ -3,7 +3,8 @@ title: 'UrbanCompass.com에서 Compass.com으로: "Urban"을 뺀 것이 뉴욕 �
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

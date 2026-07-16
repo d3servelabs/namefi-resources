@@ -3,7 +3,8 @@ title: 'BadgerDAO फ्रंट-एंड अटैक: एक इंजेक
 date: '2026-06-17'
 language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'दिसंबर 2021 में, हमलावरों ने BadgerDAO के Cloudflare अकाउंट को हैक किया और उसकी वेबसाइट के फ्रंट-एंड में एक दुर्भावनापूर्ण स्क्रिप्ट इंजेक्ट कर दी। ऑडिट किए गए स्मार्ट कॉन्ट्रैक्ट कभी नहीं छुए गए — फिर भी वॉलेट अप्रूवल के ज़रिए ~$120M उड़ा दिए गए, जिन्हें यूज़र्स ने बिना जाने साइन किया। यह एक गहन विश्लेषण है कि वेबसाइट आपकी सुरक्षा सतह का हिस्सा क्यों है।'
 keywords: ['badgerdao hack', 'badgerdao front-end attack', 'cloudflare api key compromise', 'injected script attack', 'web3 front-end security', 'ice phishing', 'increaseAllowance attack', 'token approval exploit', 'dns and domain security', 'cloudflare workers exploit', 'defi security', 'supply chain attack web3', 'website tampering', 'domain security']

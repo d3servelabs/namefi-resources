@@ -4,7 +4,8 @@ date: '2025-06-19'
 language: fr
 priority: P0
 tags: ["faq"]
-authors: ["namefiteam"]
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 description: Un nom de domaine est la base de votre présence en ligne.
 keywords: ["nom de domaine","DNS","système de noms de domaine","adresse IP","adresse web","bases d'internet","enregistrement de domaine","adresse de site web","URL","namefi"]
 relatedArticles:

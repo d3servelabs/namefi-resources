@@ -3,7 +3,8 @@ title: 'நிலையான நாணயங்கள் என்றால் 
 date: '2025-12-11'
 language: 'ta'
 tags: ['web3', 'cryptocurrency', 'defi', 'blockchain', 'finance']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: explainer

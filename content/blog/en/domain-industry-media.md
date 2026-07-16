@@ -3,7 +3,8 @@ title: 'Famous Domain Industry Media: News Sites, Sales Reports, and Podcasts Wo
 date: '2026-05-22'
 language: en
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

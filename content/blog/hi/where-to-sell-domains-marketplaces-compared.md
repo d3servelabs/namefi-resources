@@ -3,7 +3,8 @@ title: "डोमेन कहाँ बेचें: Afternic vs Sedo vs Dan vs
 date: '2026-06-21'
 language: hi
 tags: ['domains', 'domain-investing', 'domain-flipping', 'comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

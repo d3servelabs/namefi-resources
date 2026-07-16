@@ -3,7 +3,8 @@ title: 'هجوم MISO من الداخل على SushiSwap: كيف أدى كومي
 date: '2026-06-17'
 language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'في سبتمبر 2021، تمكّن مقاول مجهول الهوية من إدراج عنوان محفظته الخاصة في واجهة MISO الأمامية على SushiSwap من خلال كوميت خبيث، وحوّل 864.8 ETH (~3 مليون دولار) من مزاد Jay Pegs Auto Mart. تحليل معمّق من Domain Mayday عن سلاسل توريد الكود وثقة الواجهة الأمامية وما يمكن تعلّمه حول الملكية القابلة للتحقق.'
 keywords: ['اختراق sushiswap miso', 'هجوم سلسلة توريد miso', 'aristok3', 'jay pegs auto mart', 'هجوم واجهة defi الأمامية', '864.8 eth', 'سلسلة توريد البرمجيات', 'كوميت خبيث', 'تهديد داخلي', 'auctionwallet', 'joseph delong', 'أمان سلسلة توريد الويب', 'أمان النطاقات']

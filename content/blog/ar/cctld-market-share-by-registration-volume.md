@@ -3,7 +3,8 @@ title: 'حصة سوق نطاقات ccTLD حسب حجم التسجيل: من يد
 date: '2026-05-01'
 language: ar
 tags: ['cctld', 'domains', 'market-analysis', 'registry']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'نظرة على نطاقات المستوى الأعلى لرموز البلدان التي تستحوذ على الحصة الأكبر من التسجيلات حول العالم، ولماذا يختلف المتصدرون عما يتوقعه معظم الناس، وما تخبرنا به أرقام الحجم عن كيفية استخدام الإنترنت فعلياً.'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg

@@ -3,7 +3,8 @@ title: 'Les 10 meilleurs TLD à sécuriser en tant qu''agent immobilier'
 date: '2026-06-14'
 language: fr
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-real-estate-business-og.jpg
 description: 'Les 10 meilleurs TLD que tout agent immobilier devrait sécuriser pour protéger sa marque, avec les règles d''éligibilité pour .realtor, des conseils d''enregistrement défensif et où s''enregistrer.'

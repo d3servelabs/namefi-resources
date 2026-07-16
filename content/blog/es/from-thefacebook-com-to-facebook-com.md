@@ -3,7 +3,8 @@ title: 'De TheFacebook.com a Facebook.com: La mejora de dominio por $200K que co
 date: '2026-06-10'
 language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Cómo Facebook abandonó TheFacebook.com, compró Facebook.com por $200K, luego pagó $8,5 millones por FB.com y convirtió las mejoras de dominio en infraestructura de marca.'
 keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'nombre de dominio de facebook', 'mejora de dominio', 'naming de startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'historia de facebook', 'adquisición de dominio', 'rebranding de empresa', 'dominio que define una categoría']

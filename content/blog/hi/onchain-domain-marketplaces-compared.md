@@ -3,7 +3,8 @@ title: "ऑनचेन डोमेन मार्केटप्लेस क
 date: '2026-06-24'
 language: hi
 tags: ['domains', 'domain-flipping', 'web3', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

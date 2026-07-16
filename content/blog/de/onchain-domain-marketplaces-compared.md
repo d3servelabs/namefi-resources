@@ -3,7 +3,8 @@ title: "Onchain-Domain-Marktplätze im Vergleich: OpenSea, Seaport und mehr"
 date: '2026-06-24'
 language: de
 tags: ['domains', 'domain-flipping', 'web3', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

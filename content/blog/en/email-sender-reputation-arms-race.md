@@ -3,7 +3,8 @@ title: "The Cat-and-Mouse War of Email Sender Reputation"
 date: '2026-07-14'
 language: en
 tags: ['email', 'sender-reputation', 'deliverability', 'dmarc', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 format: explainer

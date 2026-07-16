@@ -3,7 +3,8 @@ title: "L'attaque BGP + DNS contre MyEtherWallet : comment le détournement du r
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Le 24 avril 2018, des attaquants ont détourné le routage Internet d'Amazon Route 53, empoisonné les réponses DNS pour myetherwallet.com, et servi un clone de phishing derrière un certificat auto-signé — vidant environ 150 000 $ en Ethereum. Une analyse approfondie Domain Mayday sur les raisons pour lesquelles DNS repose sur une couche de routage qui fait confiance par défaut."
 keywords: ['myetherwallet', 'bgp hijack', 'détournement dns', 'amazon route 53', 'route 53 hijack', 'sécurité dns', 'sécurité routage bgp', 'phishing ethereum', 'certificat auto-signé', 'enet as10297', 'rpki roa', 'phishing portefeuille crypto', 'sécurité des domaines']

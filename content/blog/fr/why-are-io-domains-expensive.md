@@ -3,7 +3,8 @@ title: "Pourquoi les domaines .io sont-ils si chers ?"
 date: '2026-06-10'
 language: 'fr'
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Pourquoi les domaines .io sont-ils si chers ? Une explication claire sur la tarification de gros des registres, la demande des startups et des technologies, la rareté des noms courts, les renouvellements, et la nouvelle question de souveraineté sur les Chagos."
 keywords: ['pourquoi les domaines io sont chers', 'pourquoi les domaines .io sont chers', 'domaine io cher', 'pourquoi domaines io coûtent plus', 'pourquoi les domaines .io sont si chers', 'pourquoi utiliser un domaine .io', 'domaine io pour startups', 'prix domaine io', 'coût domaine io', 'coût renouvellement domaine io', 'les domaines io valent-ils le prix', 'io vs com', 'domaine io vs ai', 'coût domaine io', 'pourquoi domaines io plus chers', 'tarification domaines io expliquée', 'devrais-je acheter un domaine io', 'io ccTLD', 'Chagos domaine io', 'acheter domaine io']

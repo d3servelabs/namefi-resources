@@ -3,7 +3,8 @@ title: 'Twitter.com에서 X.com으로: 단 하나의 알파벳 도메인이 걸�
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

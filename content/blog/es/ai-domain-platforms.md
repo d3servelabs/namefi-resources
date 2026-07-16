@@ -3,7 +3,8 @@ title: "Plataformas de dominios para agentes de IA: guía de 2026"
 date: '2026-07-10'
 language: 'es'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-domain-platforms-og.jpg

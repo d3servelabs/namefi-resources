@@ -3,7 +3,8 @@ title: '多签钱包真的能提升安全性吗？从威胁模型视角看'
 date: '2026-05-07'
 language: zh-CN
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: '在加密领域，多重签名钱包被广泛视为默认的安全托管模式，但“它们真的能提升安全性吗？”这个问题的答案完全取决于威胁模型。本文将详细探讨多签能防范什么、不能防范什么，以及在哪些情况下它会让事情变得更糟。'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg

@@ -3,7 +3,8 @@ title: '스타트업을 위해 반드시 확보해야 할 TLD 10선'
 date: '2026-06-14'
 language: ko
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

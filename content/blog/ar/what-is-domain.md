@@ -4,7 +4,8 @@ date: '2025-06-19'
 language: ar
 priority: P0
 tags: ["faq"]
-authors: ["namefiteam"]
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 description: اسم النطاق هو أساس وجودك على الإنترنت.
 keywords: ["اسم النطاق","نظام أسماء النطاقات","عنوان IP","عنوان الويب","أساسيات الإنترنت","تسجيل النطاق","عنوان الموقع","URL","Namefi"]
 relatedArticles:

@@ -3,7 +3,8 @@ title: "如何出售您拥有的域名：实用检查清单"
 date: '2026-06-09'
 language: zh-CN
 tags: ['domains', 'guide', 'domain-investing', 'outbound']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "一份实用的、以卖家为中心的检查清单，涵盖域名定价、寻找潜在买家、处理外发推销、避免诈骗以及安全完成转移等环节。"
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png

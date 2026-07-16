@@ -3,7 +3,8 @@ title: "주요 블록체인 가상 머신: EVM, SVM, MoveVM, WebAssembly/RISC-V,
 date: '2026-07-02'
 language: ko
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

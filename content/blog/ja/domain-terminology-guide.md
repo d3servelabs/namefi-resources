@@ -4,7 +4,8 @@ date: '2025-06-21'
 language: ja
 priority: P0
 tags: ['faq', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: faq

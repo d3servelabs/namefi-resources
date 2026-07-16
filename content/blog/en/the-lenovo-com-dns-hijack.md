@@ -3,7 +3,8 @@ title: 'The Lenovo.com DNS Hijack: When Lizard Squad Took a Hardware Giant''s Fr
 date: '2026-06-17'
 language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

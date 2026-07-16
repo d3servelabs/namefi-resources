@@ -3,7 +3,8 @@ title: "짧은 도메인, LLLL, 숫자 도메인: 중국 시장 프리미엄"
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

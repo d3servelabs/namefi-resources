@@ -3,7 +3,8 @@ title: "Dans les coulisses de la panne AWS du 20 octobre 2025"
 date: '2025-10-23'
 language: fr
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Une perspective axée sur les opérations DNS et registrar concernant l'incident AWS du 20 octobre 2025, le fonctionnement réel du DNS, les raisons de la propagation de cette panne, et ce que les équipes internet résilientes peuvent faire."
 keywords: ['dns', 'panne aws', 'plan de contrôle', 'dynamodb', 'us-east-1', 'mise en cache dns', 'résilience cloud', 'dns multi-signataire', 'réponse aux incidents']

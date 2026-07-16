@@ -4,7 +4,8 @@ date: '2026-06-23'
 updated: '2026-07-14'
 language: en
 tags: ['governance', 'dao', 'web3', 'namefi space']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 description: "The main domain is a critical control point for an online movement. Here is how a DAO can govern it while preserving legal, registrar, DNS, security, and operational safeguards."

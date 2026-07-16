@@ -3,7 +3,8 @@ title: 'Top 10 des TLD à sécuriser pour votre boutique e-commerce'
 date: '2026-06-14'
 language: fr
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-ecommerce-store-og.jpg
 description: 'Les 10 meilleurs TLD à sécuriser pour votre boutique e-commerce, du .com au .shop et .store, ainsi qu''une stratégie d''enregistrement défensif pour protéger votre marque commerciale.'

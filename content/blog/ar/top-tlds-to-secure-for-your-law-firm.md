@@ -3,7 +3,8 @@ title: 'أفضل 10 امتدادات نطاقات يجب تأمينها لمكت
 date: '2026-06-14'
 language: ar
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: 'أفضل 10 امتدادات نطاقات لتأمينها لمكتبك القانوني، بما في ذلك سبب كون .law الامتداد القانوني الوحيد المقيّد بالمحامين الموثّقين (بينما .esq و.legal و.attorney و.lawyer مفتوحة للجميع)، مع استراتيجية الحماية الدفاعية.'

@@ -3,7 +3,8 @@ title: '域名紧急事件 EP03：2020年Twitter比特币账户劫持事件'
 date: '2026-06-17'
 language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: '2020年7月15日，攻击者通过电话诈骗入侵Twitter，劫持了奥巴马、拜登、马斯克、盖茨、苹果和Uber等认证账户，实施比特币翻倍骗局——最终骗取约11.8万美元。深度解析网络身份是如何被盗取的，以及这一事件对"拥有一个名字"的启示。'
 keywords: ['2020年推特黑客事件', '推特比特币诈骗', 'graham ivan clark', '语音钓鱼', '电话鱼叉式网络钓鱼', '社会工程学', '账户劫持', '网络身份安全', '认证账户劫持', '推特管理员工具', 'agent tool', '内部风险', '域名安全', '纽约金融服务局推特报告']

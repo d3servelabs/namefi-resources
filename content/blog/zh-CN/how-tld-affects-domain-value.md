@@ -3,7 +3,8 @@ title: "顶级域名（TLD）如何影响域名价值"
 date: '2026-06-21'
 language: zh-CN
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

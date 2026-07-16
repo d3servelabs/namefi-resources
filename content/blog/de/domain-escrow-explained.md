@@ -3,7 +3,8 @@ title: "Domain-Treuhand erklärt: So funktionieren sichere Domain-Transaktionen"
 date: '2026-06-10'
 language: de
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: Ein verständlicher Leitfaden zu Treuhand und Domain-Treuhand — was ein Treuhandkonto ist, wie Treuhand Schritt für Schritt bei einem Domain-Verkauf funktioniert, warum es wichtig ist, um Betrug zu vermeiden, traditionelle Treuhanddienste im Vergleich zum modernen tokenisierten Ansatz und wie Smart Contracts die Treuhand durch atomare On-Chain-Abwicklung ersetzen können.
 keywords: ['Domain-Treuhand', 'was ist Treuhand', 'Treuhandkonto', 'Treuhand Bedeutung', 'wie funktioniert Treuhand', 'Domain-Treuhanddienst', 'escrow.com Alternative', 'Domain sicher kaufen', 'Domain sicher verkaufen', 'Auth-Code', 'EPP-Code', 'Registrar-Transfer', 'Treuhandgebühren', 'sichere Domain-Transaktion', 'Domain-Verkaufsbetrug', 'tokenisierte Domain-Treuhand', 'Smart-Contract-Treuhand', 'atomare Abwicklung', 'On-Chain-Domain-Verkauf', 'wie man Domain-Betrug vermeidet']

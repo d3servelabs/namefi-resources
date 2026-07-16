@@ -3,7 +3,8 @@ title: "面向 AI 智能体的域名平台：2026 年指南"
 date: '2026-07-10'
 language: zh-CN
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-domain-platforms-og.jpg

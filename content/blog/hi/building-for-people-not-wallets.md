@@ -3,7 +3,8 @@ title: "लोगों के लिए बनाना, वॉलेट्स 
 date: '2025-11-19'
 language: hi
 tags: ['partners']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: Privy के निर्माण के दौरान Henri Stern की यात्रा पर आधारित एक संवाद-प्रेरित विश्लेषण, जिसमें उपयोगिता, ग्राहक-नेतृत्व वाले उत्पाद विकास, और क्रिप्टो की जटिलता से मानव-केंद्रित डिजाइन की ओर बदलाव पर ध्यान केंद्रित किया गया है।
 relatedArticles:

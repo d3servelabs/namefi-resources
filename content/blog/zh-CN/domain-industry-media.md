@@ -3,7 +3,8 @@ title: '知名域名行业媒体：值得关注的新闻网站、销售报告与
 date: '2026-05-22'
 language: zh-CN
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: '域名行业新闻媒体、销售数据网站和播客指南，涵盖 DomainNameWire、DNJournal、TheDomains、NameBio、DomainSherpa、CircleID 等优质行业信息源。'
 ogImage: ../../assets/domain-industry-media-og.jpg

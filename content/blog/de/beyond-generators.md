@@ -3,7 +3,8 @@ title: "Jenseits des KI-Domainnamengenerators: die Agentenära"
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/beyond-generators-og.jpg

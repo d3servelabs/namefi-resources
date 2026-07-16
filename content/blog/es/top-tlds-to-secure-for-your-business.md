@@ -3,7 +3,8 @@ title: 'Los 10 mejores TLDs que debes asegurar para tu negocio'
 date: '2026-06-14'
 language: es
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-business-og.jpg
 description: 'Descubre los mejores TLDs para asegurar tu negocio, por qué el registro defensivo de dominios protege tu marca y cómo registrarlos de forma inteligente.'

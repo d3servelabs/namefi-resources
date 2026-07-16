@@ -3,7 +3,8 @@ title: 'Der Bitcoin.org DNS-Hijack: Wie Bitcoins eigene Homepage zu einem „Ver
 date: '2026-06-17'
 language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Im September 2021 wurde Bitcoin.org — die langjährige Informationsheimat von Bitcoin, betrieben vom pseudonymen Operator Cobra — auf der DNS-Ebene gekapert und in ein gefälschtes „Verdoppele deine Bitcoin"-Gewinnspiel verwandelt, das Betrügern rund 17.000 US-Dollar einbrachte, bevor die Seite offline genommen wurde. Eine Domain-Mayday-Analyse darüber, was passierte, wie es geschah und was es selbst für kryptonative Seiten über ihre Abhängigkeit von DNS lehrt.'
 keywords: ['bitcoin.org', 'bitcoin.org hack', 'dns-hijack', 'domain-hijacking', 'bitcoin verdoppeln betrug', 'krypto-gewinnspiel-betrug', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'dns-sicherheit', 'domain-sicherheit', 'nameserver-hijack', 'whois-änderungsangriff']

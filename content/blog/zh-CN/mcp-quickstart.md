@@ -3,7 +3,8 @@ title: "Namefi MCP 快速入门：Claude Code、Cursor 与 Windsurf"
 date: '2026-07-10'
 language: 'zh-CN'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/mcp-quickstart-og.jpg

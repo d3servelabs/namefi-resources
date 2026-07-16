@@ -3,7 +3,8 @@ title: "وضع إدارة الدومينات بالوكلاء في 2026"
 date: '2026-07-10'
 language: 'ar'
 tags: ['ai-agents', 'domains', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: analysis
 ogImage: ../../assets/state-of-agentic-og.jpg

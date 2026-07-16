@@ -3,7 +3,8 @@ title: "短域名、四字母域名与数字域名：中国市场的溢价逻辑
 date: '2026-06-21'
 language: zh-CN
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

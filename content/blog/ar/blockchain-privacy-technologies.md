@@ -3,7 +3,8 @@ title: "أهم تقنيات الخصوصية في البلوكتشين: براه
 date: '2026-07-02'
 language: ar
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

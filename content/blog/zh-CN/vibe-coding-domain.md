@@ -3,7 +3,8 @@ title: "Vibe Coding 需要一个域名：不离开工作流即可注册"
 date: '2026-07-10'
 language: 'zh-CN'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 ogImage: ../../assets/vibe-coding-domain-og.jpg

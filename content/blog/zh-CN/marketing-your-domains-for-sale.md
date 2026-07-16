@@ -3,7 +3,8 @@ title: '域名出售营销指南'
 date: '2026-06-21'
 language: zh-CN
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

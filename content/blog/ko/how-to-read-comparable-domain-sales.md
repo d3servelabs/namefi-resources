@@ -3,7 +3,8 @@ title: '비교 도메인 거래 사례(Comps) 읽는 법'
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

@@ -3,7 +3,8 @@ title: 'Der Dyn-DNS-Angriff: Als ein Mirai-Botnetz aus gehackten Kameras das hal
 date: '2026-06-17'
 language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Am 21. Oktober 2016 traf ein DDoS-Angriff des Mirai-IoT-Botnetzes den DNS-Anbieter Dyn in drei Wellen und legte Twitter, Netflix, Reddit, Spotify, GitHub, Airbnb und PayPal stundenlang lahm — eine Domain-Mayday-Fallstudie zur Konzentration auf einen einzelnen DNS-Anbieter.'
 keywords: ['dyn dns angriff', 'mirai botnetz', 'ddos 21 oktober 2016', 'dns ddos angriff', 'iot botnetz', 'dns-anbieter ausfall', 'domain-sicherheit', 'dns single point of failure', 'dyn ddos 2016', 'mirai malware', 'internet ausfall 2016', 'dns redundanz', 'gehackte iot kameras']

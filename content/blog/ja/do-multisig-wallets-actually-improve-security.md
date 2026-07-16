@@ -3,7 +3,8 @@ title: 'マルチシグウォレットはセキュリティを本当に向上さ
 date: '2026-05-07'
 language: ja
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 format: explainer

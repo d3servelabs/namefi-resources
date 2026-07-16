@@ -4,7 +4,8 @@ date: '2026-05-22'
 language: ta
 priority: P1
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: tokenize-your-com

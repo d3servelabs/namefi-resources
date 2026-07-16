@@ -3,7 +3,8 @@ title: "Le DNS fonctionne toujours : serveurs de noms, e-mails et DNSSEC sur un 
 date: '2026-05-22'
 language: fr
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Un aperçu pratique de la façon dont le DNS classique — serveurs de noms, A/AAAA, MX, TXT, DNSSEC, CAA — continue de fonctionner après avoir tokenisé un domaine ICANN. Ce qui change, ce qui ne change pas, et où pointer votre fournisseur DNS existant."
 keywords: ['DNS domaine tokenisé', 'DNSSEC domaine NFT', 'serveurs de noms domaine tokenisé', 'e-mail domaine tokenisé', 'enregistrements MX domaine NFT', 'enregistrements CAA domaine tokenisé', 'gestion DNS domaine tokenisé', 'DNS domaine on-chain', 'MX domaine NFT', 'DNSSEC domaine NFT', 'Cloudflare domaine tokenisé', 'Route53 domaine tokenisé', 'fonctionnement DNS tokenisé', 'résolution domaine tokenisé']

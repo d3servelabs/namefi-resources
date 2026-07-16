@@ -3,7 +3,8 @@ title: 'Domain Mayday EP10: How the Syrian Electronic Army Took Down NYTimes.com
 date: '2026-06-17'
 language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

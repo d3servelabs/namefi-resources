@@ -3,7 +3,8 @@ title: 'DAOがメインドメインを管理すべき理由'
 date: '2026-06-23'
 language: ja
 tags: ['governance', 'dao', 'web3', 'namefi space']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 description: "国家も運動体も、いずれ憲法的危機の瞬間を迎える――誰が正統であり、誰が権威を持ち、誰がステージの中央に立って語るのか。オンライン上の運動では、その問いはひとつの資産に帰着する。メインドメインだ。それをDAOが保有すべき理由を解説する。"

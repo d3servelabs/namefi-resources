@@ -3,7 +3,8 @@ title: "KI-agentische Domain-Plattformen: Der Leitfaden für 2026"
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-domain-platforms-og.jpg

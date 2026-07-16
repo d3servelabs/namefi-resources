@@ -3,7 +3,8 @@ title: 'Verbessern Multisig-Wallets wirklich die Sicherheit? Eine Betrachtung au
 date: '2026-05-07'
 language: de
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Multisignatur-Wallets werden in der Kryptowelt weithin als der Standard für sichere Verwahrung angesehen, aber die Antwort auf die Frage "Verbessern sie wirklich die Sicherheit?" hängt vollständig vom Bedrohungsmodell ab. Dieser Artikel erläutert, was Multisig abwehrt, was nicht und wo es die Situation sogar verschlimmern kann.'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg

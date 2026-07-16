@@ -3,7 +3,8 @@ title: "2026 年智能体域名管理现状"
 date: '2026-07-10'
 language: 'zh-CN'
 tags: ['ai-agents', 'domains', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: analysis
 ogImage: ../../assets/state-of-agentic-og.jpg

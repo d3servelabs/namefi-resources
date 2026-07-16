@@ -3,7 +3,8 @@ title: "Tokeniza tu .com para revenderlo: un recorrido con Namefi"
 date: '2026-06-24'
 language: es
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-flipping-skills

@@ -3,7 +3,8 @@ title: 'SushiSwap MISO உள்நபர் தாக்குதல்: ஒர
 date: '2026-06-17'
 language: ta
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

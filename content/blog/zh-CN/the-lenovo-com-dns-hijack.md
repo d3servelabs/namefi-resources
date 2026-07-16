@@ -3,7 +3,8 @@ title: 'Lenovo.com DNS 劫持事件：当蜥蜴小队夺走这家硬件巨头的
 date: '2026-06-17'
 language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: '2015年2月25日，Lizard Squad（蜥蜴小队）通过入侵注册商 Webnic，劫持了 Lenovo.com，将全球最大PC制造商的域名重定向到一段网络摄像头幻灯片，并拦截其邮件——此事发生在 Superfish 丑闻曝光后的数天之内。这是一篇关于注册商才是真正安全边界的深度解析。'
 keywords: ['lenovo.com DNS劫持', '蜥蜴小队', 'Lizard Squad', 'webnic注册商', 'Web Commerce Communications', 'DNS劫持', 'Superfish', '域名注册商安全', '注册商入侵', 'EPP授权码', '邮件拦截', '谷歌越南域名劫持', '域名安全', '注册商锁定']

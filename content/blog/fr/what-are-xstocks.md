@@ -3,7 +3,8 @@ title: Que sont les xStocks ? Pourquoi les domaineurs devraient-ils s'en soucier
 date: '2025-07-02'
 language: fr
 tags: ["faq","domains","tokenization"]
-authors: ["namefiteam"]
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 description: Découvrez comment les xStocks révolutionnent la finance et pourquoi les domaineurs utilisant la tokenisation via Namefi sont idéalement positionnés pour mener ce changement numérique.
 keywords: ["xStocks","actions tokenisées","titres tokenisés","investissement de domaine","tokenisation de domaine","Namefi","actions blockchain","propriété fractionnée","web3 finance","trading d'actifs numériques","actifs tokenisés Solana","actions crypto","titres on-chain","tokenisation d'actifs réels","noms de domaine tokenisés"]
 relatedArticles:

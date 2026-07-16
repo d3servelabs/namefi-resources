@@ -3,7 +3,8 @@ title: "链上域名翻转：交易 ENS 与代币化域名"
 date: '2026-06-24'
 language: zh-CN
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

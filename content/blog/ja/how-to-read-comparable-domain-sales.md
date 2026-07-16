@@ -3,7 +3,8 @@ title: "ドメイン売却事例（コンプス）の読み方"
 date: '2026-06-21'
 language: ja
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

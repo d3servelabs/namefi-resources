@@ -3,7 +3,8 @@ title: "Récupérer un domaine tokenisé après la perte d'un portefeuille : un 
 date: '2026-05-22'
 language: fr
 tags: ['guide', 'security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Ce qui se passe réellement si vous perdez l'accès au portefeuille qui détient votre domaine tokenisé — et les étapes opérationnelles pour réduire les risques d'en arriver là. Sauvegardes, multisig, portefeuilles matériels, récupération sociale, et les limites de ce qu'une plateforme peut faire."
 keywords: ['récupérer domaine NFT', 'domaine portefeuille perdu', 'portefeuille domaine tokenisé perdu', 'récupération portefeuille domaine', 'sauvegarde domaine NFT', 'portefeuille matériel domaine tokenisé', 'multisig domaine tokenisé', 'récupération clé domaine tokenisé', 'phrase de récupération domaine perdue', 'sécurité domaine NFT', 'sauvegarde domaine tokenisé', 'gestion clés domaine', 'récupération perte portefeuille']

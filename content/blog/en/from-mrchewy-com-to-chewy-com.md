@@ -3,7 +3,8 @@ title: 'From Mr. Chewy to Chewy.com: A $3.35B Pet Brand’s One-Word Upgrade'
 date: '2026-06-17'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

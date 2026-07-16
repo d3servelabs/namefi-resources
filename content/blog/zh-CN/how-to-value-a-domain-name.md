@@ -3,7 +3,8 @@ title: "如何为域名估值：一份实用的评估指南"
 date: '2026-06-20'
 language: zh-CN
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

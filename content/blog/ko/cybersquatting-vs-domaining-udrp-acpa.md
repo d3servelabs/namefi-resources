@@ -3,7 +3,8 @@ title: "사이버스쿼팅 vs 합법적 도메인 투자: UDRP와 ACPA 해설"
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'security', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

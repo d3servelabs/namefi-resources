@@ -3,7 +3,8 @@ title: "Für Menschen bauen, nicht für Wallets: Lektionen zur Benutzerfreundlic
 date: '2025-11-19'
 language: de
 tags: ['partners']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: Ein dialogorientierter Einblick in Henri Sterns Weg beim Aufbau von Privy – mit Fokus auf Usability, kundengetriebene Produktentwicklung und den Wandel von kryptotechnischer Komplexität hin zu menschenzentriertem Design.
 relatedArticles:

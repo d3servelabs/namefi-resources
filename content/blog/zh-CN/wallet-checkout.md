@@ -3,7 +3,8 @@ title: "使用加密钱包支付域名：无需账户"
 date: '2026-07-10'
 language: 'zh-CN'
 tags: ['ai-agents', 'payments']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/wallet-checkout-og.jpg

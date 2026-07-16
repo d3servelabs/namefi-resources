@@ -3,7 +3,8 @@ title: 'GoDaddy의 다년간 보안 침해: 세계 최대 도메인 등록기관
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

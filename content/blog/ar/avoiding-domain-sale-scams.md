@@ -3,7 +3,8 @@ title: "إزاي تتجنب نصب بيع الدومين"
 date: '2026-06-21'
 language: ar
 tags: ['domains', 'security', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

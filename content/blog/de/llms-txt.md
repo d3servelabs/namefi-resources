@@ -3,7 +3,8 @@ title: "llms.txt für Domains: Eine API, die jeder KI-Agent lesen kann"
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/llms-txt-og.jpg

@@ -4,7 +4,8 @@ date: '2025-06-19'
 language: hi
 priority: P0
 tags: ["faq"]
-authors: ["namefiteam"]
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 description: एक डोमेन नेम आपकी ऑनलाइन उपस्थिति की नींव है।
 keywords: ["डोमेन नेम","डीएनएस","डोमेन नेम सिस्टम","आईपी एड्रेस","वेब एड्रेस","इंटरनेट की बुनियादी बातें","डोमेन रजिस्ट्रेशन","वेबसाइट एड्रेस","यूआरएल","नेमफाई"]
 relatedArticles:

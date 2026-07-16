@@ -4,7 +4,8 @@ date: '2025-06-21'
 language: de
 priority: P0
 tags: ["faq","domains"]
-authors: ["namefiteam"]
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 description: Meistern Sie Domain-Investitionen mit unserem umfassenden Leitfaden zur wesentlichen Domain-Terminologie. Von grundlegenden Konzepten bis zu fortgeschrittenen Handelsstrategien lernen Sie die Sprache der Domain-Profis.
 keywords: ["Domain-Terminologie","Domain-Investitionen","Domainnamen","Domain-Handel","Domain-Glossar","TLD","Registrar","Domain-Auktion","Domain-Portfolio","Domain-Bewertung","Premium-Domains","Domain-Flipping"]
 relatedArticles:

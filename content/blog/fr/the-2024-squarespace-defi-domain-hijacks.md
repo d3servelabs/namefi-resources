@@ -3,7 +3,8 @@ title: 'Domain Mayday EP05 : Le détournement massif de domaines DeFi sur Square
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "En juillet 2024, une migration de registrar de Google Domains vers Squarespace a transformé une authentification par défaut trop faible en une surface d'attaque massive. Des attaquants ont détourné les domaines de projets crypto et DeFi — Compound Finance, Celer Network, Pendle, Unstoppable Domains — et les ont redirigés vers des sites de phishing vidant les portefeuilles. Voici comment une migration « transparente » a créé des centaines de portes d'entrée non verrouillées, et ce qu'elle enseigne sur la sécurité des registrars et l'authentification multifacteur."
 keywords: ['détournement domaine squarespace', 'migration google domains', 'détournement dns defi', 'détournement compound finance', 'détournement celer network', 'wallet drainer', 'inferno drainer', 'sécurité des domaines', 'migration registrar', 'mfa authentification multifacteur', 'prise de contrôle de compte oauth', 'détournement dns', 'phishing crypto']

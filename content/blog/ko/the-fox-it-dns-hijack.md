@@ -3,7 +3,8 @@ title: '도메인 재난 EP14: 보안 기업이 DNS 하이재킹 당한 날 — 
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

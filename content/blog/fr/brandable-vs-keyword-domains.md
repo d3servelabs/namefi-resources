@@ -3,7 +3,8 @@ title: "Domaines brandables ou domaines mot-clé : lesquels se vendent le mieux 
 date: '2026-06-21'
 language: fr
 tags: ['domains', 'domain-investing', 'domain-flipping', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

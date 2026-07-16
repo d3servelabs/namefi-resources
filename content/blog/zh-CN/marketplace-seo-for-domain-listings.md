@@ -3,7 +3,8 @@ title: '市场 SEO：让你的域名列表被买家发现'
 date: '2026-06-21'
 language: zh-CN
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

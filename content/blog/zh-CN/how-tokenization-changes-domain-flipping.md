@@ -3,7 +3,8 @@ title: "代币化如何改变域名翻转"
 date: '2026-06-24'
 language: zh-CN
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-flipping-skills

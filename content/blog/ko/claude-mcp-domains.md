@@ -3,7 +3,8 @@ title: "Claude로 도메인 구매하기: Namefi MCP 단계별 가이드"
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/claude-mcp-domains-og.jpg

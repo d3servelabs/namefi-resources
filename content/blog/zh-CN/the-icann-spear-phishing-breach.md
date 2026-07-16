@@ -3,7 +3,8 @@ title: '当ICANN自身遭到钓鱼攻击：2014年针对互联网核心机构的
 date: '2026-06-17'
 language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: '2014年底，ICANN——协调互联网域名系统的机构——承认，一封伪造其自身域名的鱼叉式钓鱼邮件窃取了员工凭证，攻击者由此获得了对集中区域数据系统（CZDS）的管理员访问权限。Domain Mayday深度解析：DNS权威机构本身是如何遭到钓鱼攻击的、哪些数据被暴露，以及这一事件至今仍有何警示意义。'
 keywords: ['icann泄露', 'icann鱼叉式钓鱼', 'czds', '集中区域数据系统', 'dns安全', '域名安全', '鱼叉式钓鱼攻击', '凭证钓鱼', '区域文件', 'iana', '加盐密码哈希', '域名系统泄露', 'icann 2014黑客攻击']

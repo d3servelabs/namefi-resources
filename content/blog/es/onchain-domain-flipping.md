@@ -3,7 +3,8 @@ title: "Flipping de dominios onchain: comerciar con ENS y dominios tokenizados"
 date: '2026-06-24'
 language: es
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

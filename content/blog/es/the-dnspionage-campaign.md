@@ -3,7 +3,8 @@ title: 'DNSpionage: La campaña que convirtió el DNS en un arma contra gobierno
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'A finales de 2018, Cisco Talos reveló DNSpionage — una campaña vinculada a intereses iraníes que reescribió registros DNS gubernamentales, redirigió el tráfico de correo electrónico y VPN hacia servidores atacantes, y obtuvo certificados TLS válidos para permanecer invisible. Contribuyó a desencadenar la primera directiva de emergencia de este tipo emitida por el gobierno de EE. UU.'
 keywords: ['dnspionage', 'secuestro dns', 'redirección dns', 'cisco talos', 'directiva de emergencia cisa 19-01', 'sea turtle dns', 'secuestro dns irán', 'fireeye secuestro dns', 'abuso de certificados lets encrypt', 'seguridad dns', 'seguridad de dominios', 'ciberespionaje de estados nación', 'mitigar manipulación de infraestructura dns']

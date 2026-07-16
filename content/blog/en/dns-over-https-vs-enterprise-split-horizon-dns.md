@@ -3,7 +3,8 @@ title: 'DNS over HTTPS vs Enterprise Split-Horizon DNS: A Standoff That Will Not
 date: '2026-05-04'
 language: en
 tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 format: comparison

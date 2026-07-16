@@ -3,7 +3,8 @@ title: "Cybersquatting vs domaining légitime : l''UDRP et l''ACPA expliqués"
 date: '2026-06-21'
 language: fr
 tags: ['domains', 'security', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

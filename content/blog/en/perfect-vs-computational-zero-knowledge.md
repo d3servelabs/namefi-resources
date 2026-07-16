@@ -3,7 +3,8 @@ title: 'Perfect vs Computational Zero-Knowledge: What the Distinction Actually M
 date: '2026-05-13'
 language: en
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: explainer

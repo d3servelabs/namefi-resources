@@ -3,7 +3,8 @@ title: "Registrar dominios a mano para revenderlos: cómo encontrar joyas dispon
 date: '2026-06-21'
 language: es
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

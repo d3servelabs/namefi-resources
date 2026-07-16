@@ -3,7 +3,8 @@ title: "什么是UDRP？域名争议解决机制详解"
 date: '2026-06-10'
 language: zh-CN
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "面向域名持有者和投资者的UDRP详解：投诉方必须证明的三要素、流程与时间线、裁决结果、UDRP与URS及法院诉讼的区别，以及如何应对投诉。"
 keywords: ['udrp', '什么是udrp', 'udrp流程', 'udrp政策', 'udrp投诉', 'udrp verfahren', 'udrp-verfahren', '统一域名争议解决政策', '域名争议', '域名纠纷', '网络抢注', '反向域名劫持', '恶意注册', 'icann udrp', 'wipo', 'urs', '统一快速暂停', '商标域名争议', '域名投资法律', '应对udrp投诉']

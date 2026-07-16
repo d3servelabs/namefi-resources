@@ -3,7 +3,8 @@ title: '如何避免域名出售诈骗'
 date: '2026-06-21'
 language: zh-CN
 tags: ['domains', 'security', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

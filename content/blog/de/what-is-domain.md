@@ -4,7 +4,8 @@ date: '2025-06-19'
 language: de
 priority: P0
 tags: ["faq"]
-authors: ["namefiteam"]
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 description: Ein Domainname ist die Grundlage Ihrer Online-Präsenz.
 keywords: ["Domainname","DNS","Domain Name System","IP-Adresse","Webadresse","Internet-Grundlagen","Domainregistrierung","Website-Adresse","URL","Namefi"]
 relatedArticles:

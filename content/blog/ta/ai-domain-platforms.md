@@ -3,7 +3,8 @@ title: "AI முகவர் சார்ந்த டொமைன் தளங
 date: '2026-07-10'
 language: 'ta'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-domain-platforms-og.jpg

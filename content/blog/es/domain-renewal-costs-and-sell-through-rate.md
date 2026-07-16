@@ -3,7 +3,8 @@ title: "Costos de renovación y tasa de venta: las verdaderas cuentas del domain
 date: '2026-06-21'
 language: es
 tags: ['domains', 'domain-investing', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

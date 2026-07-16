@@ -3,7 +3,8 @@ title: 'أفضل 10 نطاقات رئيسية يجب تأمينها لعملك'
 date: '2026-06-14'
 language: ar
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-business-og.jpg
 description: 'اكتشف أفضل النطاقات الرئيسية اللي لازم تأمّنها لعملك، وليه التسجيل الوقائي بيحمي علامتك التجارية، وإزاي تسجّلها بالطريقة الصح.'

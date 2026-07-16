@@ -3,7 +3,8 @@ title: "Les domain hacks : quand une adresse web épelle un mot à travers le po
 date: '2026-06-20'
 language: fr
 tags: ['domains', 'domain-investing', 'branding', 'domain-flipping']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

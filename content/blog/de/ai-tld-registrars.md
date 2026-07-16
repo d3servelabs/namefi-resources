@@ -3,7 +3,8 @@ title: "Die besten .ai-Domain-Registrare für KI-Startups (2026)"
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: roundup
 ogImage: ../../assets/ai-tld-registrars-og.jpg

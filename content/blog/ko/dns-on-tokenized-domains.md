@@ -3,7 +3,8 @@ title: "DNS는 그대로 작동합니다: 토큰화된 도메인의 네임서버
 date: '2026-05-22'
 language: ko
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: tokenize-your-com

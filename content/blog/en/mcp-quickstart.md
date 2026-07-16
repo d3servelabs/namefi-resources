@@ -3,7 +3,8 @@ title: "Namefi MCP Quickstart: Claude Code, Cursor & Windsurf"
 date: '2026-07-10'
 language: 'en'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/mcp-quickstart-og.jpg

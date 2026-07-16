@@ -3,7 +3,8 @@ title: 'AirBedAndBreakfast.com से Airbnb.com तक: वह डोमेन 
 date: '2026-06-16'
 language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Airbnb ने 2008 में AirBed & Breakfast के रूप में AirBedAndBreakfast.com पर लॉन्च किया, फिर 2009 में Airbnb.com पर स्थानांतरित होकर सचमुच की एयर मैट्रेस वाली छवि से मुक्ति पाई और एक वैश्विक, स्केलेबल ब्रांड बन गया।'
 keywords: ['airbedandbreakfast.com', 'airbnb.com', 'airbnb domain name', 'airbnb rebrand', 'airbed and breakfast', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'airbnb history', 'y combinator airbnb', 'company rebrand']

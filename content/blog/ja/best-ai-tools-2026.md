@@ -3,7 +3,8 @@ title: "2026年版ベストAIドメインツール：ジェネレーターとエ
 date: '2026-07-10'
 language: 'ja'
 tags: ['ai-agents', 'domains', 'roundup']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: roundup
 ogImage: ../../assets/best-ai-tools-2026-og.jpg

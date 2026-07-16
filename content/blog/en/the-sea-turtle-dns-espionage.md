@@ -3,7 +3,8 @@ title: 'Sea Turtle: The State-Sponsored Campaign That Hijacked DNS to Spy on Gov
 date: '2026-06-17'
 language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

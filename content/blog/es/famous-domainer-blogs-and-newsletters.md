@@ -3,7 +3,8 @@ title: 'Blogs famosos de domainers, Substacks y boletines: A quién leer en 2026
 date: '2026-05-22'
 language: es
 tags: ['dominios', 'inversión-en-dominios', 'blogs', 'boletines', 'comunidad']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Una lista seleccionada de domainers, brókeres y comerciantes individuales cuyos blogs, boletines y Substacks vale la pena leer en 2026: por qué es conocido cada uno y cómo se complementan.'
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg

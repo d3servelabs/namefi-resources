@@ -3,7 +3,8 @@ title: 'Von DiscordApp.com zu Discord.com: Wie das Weglassen von „App" eine T�
 date: '2026-06-17'
 language: de
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Wie Discord im Jahr 2015 auf DiscordApp.com startete, weil Discord.com vergeben war, die Domain still und leise kaufte und 2020 discord.com zur primären Adresse machte – teils für eine sauberere Markenidentität, teils weil die Aufspaltung zwischen „discordapp.com" und „discord.com" ein Geschenk für Phisher und Malware-Gruppen war.'
 keywords: ['discordapp.com', 'discord.com', 'discord domain name', 'domain upgrade', 'jason citron', 'discord history', 'cdn.discordapp.com', 'discord phishing', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'domain migration']

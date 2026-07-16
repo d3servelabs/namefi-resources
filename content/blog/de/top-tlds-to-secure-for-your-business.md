@@ -3,7 +3,8 @@ title: 'Die 10 wichtigsten TLDs, die Sie für Ihr Unternehmen sichern sollten'
 date: '2026-06-14'
 language: de
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-business-og.jpg
 description: 'Entdecken Sie die wichtigsten TLDs, die Sie für Ihr Unternehmen sichern sollten, warum defensives Domain-Registrieren Ihre Marke schützt und wie Sie dabei am klügsten vorgehen.'

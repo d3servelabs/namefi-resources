@@ -3,7 +3,8 @@ title: "マーケットプレイスSEO：ドメイン出品を検索で見つけ
 date: '2026-06-21'
 language: ja
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

@@ -3,7 +3,8 @@ title: "De MrChewy.com à Chewy.com : comment supprimer « Mr. » a transformé 
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Comment une startup animalière fondée en 2011 sous le nom « Mr. Chewy » sur MrChewy.com a abandonné le « Mr. » pour devenir Chewy sur le domaine exact-match Chewy.com, et pourquoi cette mise à niveau d'un seul mot est discrètement devenue un élément clé d'une marque rachetée par PetSmart pour 3,35 milliards de dollars."
 keywords: ['mrchewy.com', 'chewy.com', 'nom de domaine chewy', 'mr chewy', 'mise à niveau de domaine', 'ryan cohen', 'michael day', 'frank schilling', 'domaine exact match', 'naming startup', 'naming de marque', 'domaine premium', 'stratégie de domaine', 'e-commerce animalier']

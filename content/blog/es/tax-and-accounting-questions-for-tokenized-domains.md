@@ -4,7 +4,8 @@ date: '2026-05-22'
 language: es
 priority: P1
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Un resumen en lenguaje sencillo, que no constituye asesoramiento, sobre las preguntas fiscales y contables que los propietarios de dominios tokenizados suelen plantear: base de coste, ventas, período de tenencia, uso comercial frente a personal, donaciones, herencias. Lleve estas preguntas a un verdadero profesional."
 keywords: ['impuestos dominio NFT', 'base de coste dominio tokenizado', 'contabilidad dominio tokenizado', 'ganancias de capital dominio tokenizado', 'impuestos venta dominio tokenizado', 'ganancias de capital dominio NFT', 'contabilidad NFT dominio', 'impuestos dominio como activo', 'impuestos donación dominio tokenizado', 'patrimonio dominio tokenizado', 'gasto comercial dominio tokenizado', 'preguntas fiscales tokenización dominios', 'impuestos dominio NFT EE. UU.', 'impuestos dominio cripto']

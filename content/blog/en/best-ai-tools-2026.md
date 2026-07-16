@@ -3,7 +3,8 @@ title: "Best AI Domain Tools 2026: Generators vs Agent Platforms"
 date: '2026-07-10'
 language: 'en'
 tags: ['ai-agents', 'domains', 'roundup']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: roundup
 ogImage: ../../assets/best-ai-tools-2026-og.jpg

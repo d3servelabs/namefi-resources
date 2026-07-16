@@ -3,7 +3,8 @@ title: "Cómo vender un nombre de dominio que te pertenece: una lista de verific
 date: '2026-06-09'
 language: es
 tags: ['domains', 'guide', 'domain-investing', 'outbound']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Una lista de verificación práctica enfocada en el vendedor para valorar un dominio, encontrar posibles compradores, gestionar el contacto, evitar estafas y cerrar la transferencia de forma segura."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png

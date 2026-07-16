@@ -3,7 +3,8 @@ title: 'DiscordApp.comからDiscord.comへ：「App」を外した日、フィ�
 date: '2026-06-17'
 language: ja
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

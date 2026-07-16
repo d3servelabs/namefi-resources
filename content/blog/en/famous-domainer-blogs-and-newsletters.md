@@ -3,7 +3,8 @@ title: 'Famous Domainer Blogs, Substacks, and Newsletters: Who to Read in 2026'
 date: '2026-05-22'
 language: en
 tags: ['domains', 'domain-investing', 'blogs', 'newsletters', 'community']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

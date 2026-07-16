@@ -3,7 +3,8 @@ title: "Route402 の紹介 — x402 ファシリテーター・ルーター"
 date: '2026-01-22'
 language: ja
 tags: ['infrastructure', 'payments', 'x402']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: explainer

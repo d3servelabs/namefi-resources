@@ -3,7 +3,8 @@ title: 'Von del.icio.us zu Delicious.com: Der cleverste Domain-Hack im Web — u
 date: '2026-06-17'
 language: de
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Wie die wegweisende Social-Bookmarking-Website 2003 als berühmter Domain-Hack "del.icio.us" startete, warum diese Punkte zu einer dauerhaften Bürde für jede Erwähnung wurden und wie Yahoo sie 2008 zur saubereren Adresse Delicious.com verlegte.'
 keywords: ['del.icio.us', 'delicious.com', 'delicious domainname', 'domain hack', 'joshua schachter', 'social bookmarking', 'yahoo delicious', 'domain-upgrade', 'startup-naming', 'markennamenstrategie', 'premium domain', 'domain-strategie', 'ccTLD domain hack', 'kategoriedefinierender domain']

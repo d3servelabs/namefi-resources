@@ -3,7 +3,8 @@ title: "ENS vs Unstoppable vs 토큰화된 DNS 도메인 비교"
 date: '2026-06-24'
 language: ko
 tags: ['domains', 'domain-flipping', 'web3', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

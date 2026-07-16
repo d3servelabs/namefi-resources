@@ -3,7 +3,8 @@ title: '2025년 10월 20일 AWS 장애의 이면'
 date: '2025-10-23'
 language: ko
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

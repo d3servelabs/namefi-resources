@@ -3,7 +3,8 @@ title: 'Von TeslaMotors.com zu Tesla.com: Das Domain-Upgrade für 11 Mio. $, das
 date: '2026-06-10'
 language: de
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Wie Tesla über ein Jahrzehnt und angeblich 11 Mio. $ benötigte, um von TeslaMotors.com zur exakt passenden Tesla.com zu wechseln – und warum das Domain-Upgrade kurz vor der Umbenennung des Unternehmens eintraf.'
 keywords: ['teslamotors.com', 'tesla.com', 'tesla domain name', 'domain upgrade', 'elon musk domain', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'tesla rebrand', 'tesla motors name change', 'domain acquisition', 'category-defining domain']

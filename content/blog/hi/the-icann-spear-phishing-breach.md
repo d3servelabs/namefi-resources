@@ -3,7 +3,8 @@ title: 'जब ICANN खुद फिश हो गया: 2014 का स्प
 date: '2026-06-17'
 language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'वर्ष 2014 के अंत में, ICANN — वह संस्था जो इंटरनेट डोमेन नाम प्रणाली का समन्वय करती है — ने स्वीकार किया कि उसके अपने डोमेन की नकल करके भेजे गए एक स्पियर-फिशिंग ईमेल ने स्टाफ की साख चुरा ली और हमलावरों को सेंट्रलाइज्ड ज़ोन डेटा सिस्टम तक प्रशासनिक पहुँच दे दी। Domain Mayday की यह गहरी पड़ताल बताती है कि DNS प्राधिकरण को कैसे फिश किया गया, क्या उजागर हुआ, और यह अभी भी क्यों महत्वपूर्ण है।'
 keywords: ['icann breach', 'icann spear phishing', 'czds', 'centralized zone data system', 'dns security', 'domain security', 'spear phishing attack', 'credential phishing', 'zone files', 'iana', 'salted password hashes', 'domain name system breach', 'icann 2014 hack']

@@ -4,7 +4,8 @@ date: '2026-06-14'
 updated: '2026-07-14'
 language: ta
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

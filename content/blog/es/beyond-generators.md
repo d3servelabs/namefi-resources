@@ -3,7 +3,8 @@ title: "Más allá del generador de nombres de dominio con IA: la era de los age
 date: '2026-07-10'
 language: 'es'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/beyond-generators-og.jpg

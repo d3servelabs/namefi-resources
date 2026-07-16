@@ -3,7 +3,8 @@ title: '会計事務所が取得すべきTLDトップ10'
 date: '2026-06-14'
 language: ja
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

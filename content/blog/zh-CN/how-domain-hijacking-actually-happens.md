@@ -3,7 +3,8 @@ title: '域名劫持的真实内幕：五种攻击路径及有效防御措施'
 date: '2026-05-10'
 language: zh-CN
 tags: ['security', 'domains', 'registrar', 'incident-response']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: '实战解析现实世界中攻击者接管域名的五种方式——社会工程学、注册商账户入侵、DNS 提供商接管、NS 劫持和过期域名抢注——以及阻断这些攻击的具体控制措施。'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg

@@ -3,7 +3,8 @@ title: "La reventa de dominios y la ley: marcas, UDRP y estafas"
 date: '2026-06-21'
 language: es
 tags: ['domains', 'security', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

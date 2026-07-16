@@ -3,7 +3,8 @@ title: '您应该为电子商务店铺抢注的十大顶级域名后缀'
 date: '2026-06-14'
 language: zh-CN
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-ecommerce-store-og.jpg
 description: '为您的电子商务店铺抢注的十大顶级域名后缀，从 .com 到 .shop 和 .store，以及保护零售品牌的防御性注册策略。'

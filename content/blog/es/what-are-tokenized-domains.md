@@ -4,7 +4,8 @@ date: '2026-05-22'
 language: es
 priority: P0
 tags: ['faq']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Una introducción en lenguaje sencillo a los dominios tokenizados y a la tokenización de dominios: qué significa tokenizar un dominio, cómo funciona la tokenización de dominios y en qué se diferencia un dominio tokenizado de los dominios tradicionales y de los nombres exclusivos de blockchain como ENS."
 keywords: ['dominio tokenizado', 'dominios tokenizados', 'tokenizar un dominio', 'tokenizar dominios', 'tokenizar dominio', 'tokenizando un dominio', 'tokenizando dominios', 'tokenización de dominios', 'tokenización de un dominio', 'tokenización de nombres de dominio', 'cómo tokenizar un dominio', 'qué es un dominio tokenizado', 'qué son los dominios tokenizados', 'dominios NFT', 'dominio NFT', 'dominios on-chain', 'dominio on-chain', 'dominios blockchain', 'dominio blockchain', 'DNS', 'dominios ICANN', 'dominios web3', 'dominio web3', 'NFT de dominio', 'dominio como NFT', 'namefi', 'propiedad de dominio', 'tokenización de activos de dominio', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', 'dominio tokenizado vs ENS', 'dominio tokenizado vs dominio web3', 'dominio ICANN vs dominio web3', 'comparar plataformas de dominios tokenizados']

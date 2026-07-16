@@ -3,7 +3,8 @@ title: "자연어로 도메인을 구매하는 방법 (2026)"
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/nl-domain-purchase-og.jpg

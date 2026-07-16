@@ -3,7 +3,8 @@ title: '도메인 브로커와 함께 일하기: 언제, 어떻게'
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'domain-investing', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

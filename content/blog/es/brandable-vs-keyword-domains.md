@@ -3,7 +3,8 @@ title: "Dominios de marca vs. dominios de palabras clave: ¿cuáles se venden me
 date: '2026-06-21'
 language: es
 tags: ['domains', 'domain-investing', 'domain-flipping', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

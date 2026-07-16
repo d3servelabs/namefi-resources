@@ -3,7 +3,8 @@ title: 'هل تعمل محافظ التوقيع المتعدد على تحسين
 date: '2026-05-07'
 language: ar
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'تُعامل محافظ التوقيع المتعدد (Multisig) على نطاق واسع كنمط الحفظ الآمن الافتراضي في مجال العملات المشفرة، لكن الإجابة على سؤال "هل تعمل حقًا على تحسين الأمان؟" تعتمد كليًا على نموذج التهديد. يستعرض هذا المقال ما يمكن لمحافظ التوقيع المتعدد إحباطه، وما تعجز عنه، والحالات التي قد تزيد فيها الأمور سوءًا.'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg

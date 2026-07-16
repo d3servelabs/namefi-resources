@@ -3,7 +3,8 @@ title: 'साइबरस्क्वैटिंग बनाम वैध ड
 date: '2026-06-21'
 language: hi
 tags: ['domains', 'security', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

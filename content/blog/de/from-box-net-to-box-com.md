@@ -3,7 +3,8 @@ title: 'Von Box.net zu Box.com: Das ~1-Mio.-$-Upgrade, das das „.net" fallen l
 date: '2026-06-17'
 language: de
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Wie Box 2005 auf Box.net startete, weil Box.com vergeben war, vom Konsumenten-Speicher zum Unternehmensgeschäft pivotete und 2011 Digimedia knapp 1 Million US-Dollar für die exakt passende Box.com zahlte – ein .net-zu-.com-Upgrade, das genau dann erfolgte, als das Unternehmen schlicht „Box" wurde.'
 keywords: ['box.net', 'box.com', 'box domainname', 'aaron levie', 'dylan smith', 'digimedia', 'scott day', 'domain-upgrade', 'startup-naming', 'markenname', 'premium-domain', 'exact-match-domain', 'net zu com']

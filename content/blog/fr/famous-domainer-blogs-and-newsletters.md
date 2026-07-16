@@ -3,7 +3,8 @@ title: 'Blogs, Substacks et Newsletters de Domainers Célèbres : Qui Lire en 20
 date: '2026-05-22'
 language: fr
 tags: ['domaines', 'investissement-domaine', 'blogs', 'newsletters', 'communaute']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Une liste soigneusement sélectionnée de domainers, courtiers et traders individuels dont les blogs, newsletters et Substacks valent la peine d'être lus en 2026 — ce pour quoi chacun est connu, et comment ils s'articulent."
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg

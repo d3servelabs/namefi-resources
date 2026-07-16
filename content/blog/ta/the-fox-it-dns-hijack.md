@@ -3,7 +3,8 @@ title: 'Domain Mayday EP14: ஒரு பாதுகாப்பு நிற�
 date: '2026-06-17'
 language: ta
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

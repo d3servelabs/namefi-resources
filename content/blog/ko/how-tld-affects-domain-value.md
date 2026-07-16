@@ -3,7 +3,8 @@ title: 'TLD가 도메인 가치에 미치는 영향'
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

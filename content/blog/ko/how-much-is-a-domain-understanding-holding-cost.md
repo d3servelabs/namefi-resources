@@ -3,7 +3,8 @@ title: "도메인 가격은 얼마일까? 보유 비용 이해하기"
 date: '2026-06-29'
 language: ko
 tags: ['domains', 'domain-investing', 'domain-pricing', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

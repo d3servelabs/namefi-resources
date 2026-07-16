@@ -3,7 +3,8 @@ title: "AI डोमेन नाम जनरेटर से आगे: एज
 date: '2026-07-10'
 language: 'hi'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/beyond-generators-og.jpg

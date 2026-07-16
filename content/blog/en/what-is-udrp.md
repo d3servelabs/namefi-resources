@@ -4,7 +4,8 @@ date: '2026-06-10'
 updated: '2026-07-14'
 language: en
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: explainer

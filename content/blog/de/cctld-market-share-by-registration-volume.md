@@ -3,7 +3,8 @@ title: 'ccTLD-Marktanteil nach Registrierungsvolumen: Wer kontrolliert eigentlic
 date: '2026-05-01'
 language: de
 tags: ['cctld', 'domains', 'market-analysis', 'registry']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Ein Blick darauf, welche länderspezifischen Top-Level-Domains den weltweit größten Anteil an Registrierungen verzeichnen, warum die Spitzenreiter von den Erwartungen der meisten abweichen und was die Volumenzahlen darüber aussagen, wie das Internet tatsächlich genutzt wird.'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg

@@ -3,7 +3,8 @@ title: 'Sex.comの強奪：インターネット最高価値ドメインを盗�
 date: '2026-06-17'
 language: ja
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

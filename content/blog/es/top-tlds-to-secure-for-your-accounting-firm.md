@@ -3,7 +3,8 @@ title: 'Los 10 mejores TLDs que deberías asegurar para tu firma contable'
 date: '2026-06-14'
 language: es
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-accounting-firm-og.jpg
 description: 'Los mejores TLDs para asegurar para tu firma contable — desde el restringido .cpa hasta registros defensivos en .com, .net y .org que protegen tu marca y generan confianza con los clientes.'

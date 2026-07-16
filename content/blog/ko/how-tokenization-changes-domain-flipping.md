@@ -3,7 +3,8 @@ title: "토크나이제이션이 도메인 플리핑을 바꾸는 방식"
 date: '2026-06-24'
 language: ko
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-flipping-skills

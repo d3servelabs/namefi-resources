@@ -3,7 +3,8 @@ title: "自然言語でドメインを購入する方法（2026年）"
 date: '2026-07-10'
 language: 'ja'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/nl-domain-purchase-og.jpg

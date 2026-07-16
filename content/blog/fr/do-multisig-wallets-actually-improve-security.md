@@ -3,7 +3,8 @@ title: "Les portefeuilles multisig améliorent-ils vraiment la sécurité ? Une 
 date: '2026-05-07'
 language: fr
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Les portefeuilles multisignatures sont largement considérés comme le modèle de conservation sécurisé par défaut dans les cryptomonnaies, mais la réponse à la question « améliorent-ils vraiment la sécurité ? » dépend entièrement du modèle de menace. Cet article explique ce que le multisig permet de contrer, ce qu'il ne peut pas faire, et dans quels cas il peut aggraver la situation."
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg

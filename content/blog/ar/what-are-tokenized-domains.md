@@ -4,7 +4,8 @@ date: '2026-05-22'
 language: ar
 priority: P0
 tags: ['faq']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'مقدمة مبسطة حول النطاقات المرمزة وترميز النطاقات — ماذا يعني ترميز النطاق، وكيف تعمل النطاقات المرمزة، وكيف يختلف النطاق المرمز عن النطاقات التقليدية والأسماء المقتصرة على البلوكتشين مثل ENS.'
 keywords: ['النطاق المرمز', 'النطاقات المرمزة', 'ترميز النطاق', 'ترميز النطاقات', 'ترميز نطاق', 'عملية ترميز النطاق', 'عملية ترميز النطاقات', 'ترميز اسم النطاق', 'كيفية ترميز النطاق', 'ما هو النطاق المرمز', 'ما هي النطاقات المرمزة', 'نطاقات NFT', 'نطاق NFT', 'النطاقات على السلسلة', 'نطاق على السلسلة', 'نطاقات البلوكتشين', 'نطاق البلوكتشين', 'DNS', 'نطاقات ICANN', 'نطاقات web3', 'نطاق web3', 'نطاق كـ NFT', 'namefi', 'ملكية النطاق', 'ترميز أصول النطاقات', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi مقابل ENS', 'Namefi مقابل Unstoppable Domains', 'Namefi مقابل D3', 'النطاق المرمز مقابل ENS', 'النطاق المرمز مقابل نطاق web3', 'نطاق ICANN مقابل نطاق web3', 'مقارنة منصات النطاقات المرمزة']

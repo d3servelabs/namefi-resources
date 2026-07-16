@@ -4,7 +4,8 @@ date: '2025-06-19'
 language: ta
 priority: P0
 tags: ['faq']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: explainer

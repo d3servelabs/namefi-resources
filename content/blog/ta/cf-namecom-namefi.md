@@ -3,7 +3,8 @@ title: "Cloudflare vs Name.com vs Namefi: முகவர்-நேட்டி�
 date: '2026-07-10'
 language: 'ta'
 tags: ['ai-agents', 'comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: comparison
 ogImage: ../../assets/cf-namecom-namefi-og.jpg

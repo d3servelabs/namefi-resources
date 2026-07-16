@@ -3,7 +3,8 @@ title: "Construir para las personas, no para las billeteras: Lecciones sobre usa
 date: '2025-11-19'
 language: es
 tags: ['partners']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: Una exploración guiada por la conversación sobre el camino de Henri Stern al construir Privy, centrada en la usabilidad, el desarrollo de productos dirigido por los clientes y la transición de la complejidad cripto hacia un diseño centrado en las personas.
 relatedArticles:

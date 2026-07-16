@@ -3,7 +3,8 @@ title: "How to Find Domains to Flip: Every Sourcing Channel"
 date: '2026-06-21'
 language: en
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

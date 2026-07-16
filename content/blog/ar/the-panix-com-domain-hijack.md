@@ -3,7 +3,8 @@ title: 'اختطاف نطاق Panix.com: كيف سرقت قاعدة موافقة
 date: '2026-06-17'
 language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'في يناير 2005، تم نقل نطاق panix.com — الخاص بأقدم مزود إنترنت تجاري في نيويورك — بشكل احتيالي إلى جهة تسجيل في أستراليا باستخدام بطاقات ائتمان مسروقة، مما أوقف الويب والبريد الإلكتروني لأيام. قواعد النقل التلقائي بين جهات التسجيل في تلك الحقبة كانت هي التي أتاحت ذلك، وأعادت عملية الإصلاح رسم سياسة نقل النطاقات.'
 keywords: ['panix.com', 'اختطاف نطاق panix', 'اختطاف النطاقات', 'النقل بين جهات التسجيل', 'Melbourne IT', 'Dotster', 'Fibranet', 'سياسة نقل ICANN', 'قفل جهة التسجيل', 'clientTransferProhibited', 'أمان النطاقات', 'اختطاف DNS', 'رمز EPP auth']

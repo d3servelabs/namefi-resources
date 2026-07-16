@@ -3,7 +3,8 @@ title: '您应为企业抢注的十大顶级域名后缀'
 date: '2026-06-14'
 language: zh-CN
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-business-og.jpg
 description: '探索您应为企业抢注的顶级域名后缀，了解防御性域名注册如何保护品牌，以及如何以最明智的方式完成注册。'

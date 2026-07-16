@@ -3,7 +3,8 @@ title: 'DAO가 메인 도메인을 통제해야 하는 이유'
 date: '2026-06-23'
 language: ko
 tags: ['governance', 'dao', 'web3', 'namefi space']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 description: "모든 국가와 모든 운동은 결국 헌법적 위기의 순간을 맞이합니다. 누가 정당한지, 누가 권위를 가지는지, 누가 무대 중앙에서 발언하는지의 문제입니다. 온라인 운동에서 이 질문은 하나의 자산으로 귀결됩니다. 바로 메인 도메인입니다. 그것이 DAO에 속해야 하는 이유를 설명합니다."

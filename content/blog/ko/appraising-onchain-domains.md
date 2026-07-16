@@ -3,7 +3,8 @@ title: 'ENS 및 토큰화 도메인 감정: 온체인 비교 거래 읽기'
 date: '2026-06-24'
 language: ko
 tags: ['domains', 'domain-flipping', 'web3', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills
