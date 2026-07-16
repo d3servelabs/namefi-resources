@@ -3,7 +3,8 @@ title: 'Domain Mayday EP14: When a Security Firm Got DNS-Hijacked — The Fox-IT
 date: '2026-06-17'
 language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

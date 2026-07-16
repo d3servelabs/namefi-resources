@@ -3,7 +3,8 @@ title: "Google ने AI शॉपिंग एजेंट्स की अग�
 date: '2026-01-15'
 language: hi
 tags: ['Infrastructure', 'AI Agents', 'Digital Commerce']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "UCP एजेंट-नेटिव कॉमर्स को संचालित करने की Google की पहल है, जो AI सहायकों को पूरे ओपन वेब पर खरीदारी और चेकआउट करने की सुविधा देती है।"
 keywords: ["Universal Commerce Protocol", "UCP", "Google UCP", "AI shopping agents", "AI-powered commerce", "agentic commerce", "AI ecommerce protocol", "conversational commerce", "AI checkout", "future of ecommerce", "agent-based shopping", "open commerce standards", "Google AI", "Gemini AI", "Agent Engine Optimization"]

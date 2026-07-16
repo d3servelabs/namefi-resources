@@ -3,7 +3,8 @@ title: 'Der Perl.com-Domain-Diebstahl: Wie ein 30 Jahre altes Community-Zuhause 
 date: '2026-06-17'
 language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Ende Januar 2021 wurde perl.com – das jahrzehntelange Zuhause der Perl-Programmier-Community – durch einen Registrar-Account-Kompromiss gestohlen, über China übertragen, auf eine mit Malware verbundene IP-Adresse gezeigt und für 190.000 Dollar angeboten. Hier erfahren Sie, wie es passierte, wie es wiederhergestellt wurde und was es über die Sicherheit von Registrar-Accounts lehrt.'
 keywords: ['perl.com', 'perl.com Domain-Diebstahl', 'Domain-Hijacking', 'Domain-Diebstahl', 'Registrar-Account-Kompromiss', 'Social Engineering', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'DNS-Hijack', 'Domain-Sicherheit', 'Account-Übernahme', 'BizCN']

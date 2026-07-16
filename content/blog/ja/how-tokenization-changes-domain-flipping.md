@@ -3,7 +3,8 @@ title: "トークン化がドメインフリッピングを変える方法"
 date: '2026-06-24'
 language: ja
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-flipping-skills

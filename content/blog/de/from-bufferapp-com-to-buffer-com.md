@@ -3,7 +3,8 @@ title: 'Von BufferApp.com zu Buffer.com: Der 624-tägige Domain-Deal mit offenen
 date: '2026-06-17'
 language: de
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Wie Buffer 2010 mit BufferApp.com startete, weil Buffer.com bereits vergeben war, dann 624 Tage damit verbrachte, die exakt passende Domain zu erwerben – dabei dem Verkäufer sogar den eigenen Kontostand zeigte – und warum ein Unternehmen, das für radikale Transparenz bekannt ist, ausgerechnet bei der einen Zahl schwieg, die alle wissen wollten: dem Kaufpreis.'
 keywords: ['bufferapp.com', 'buffer.com', 'buffer domainname', 'domain-upgrade', 'joel gascoigne', 'buffer transparenz', 'exact-match-domain', 'startup-naming', 'markenname', 'premium-domain', 'domain-strategie', 'buffer-geschichte', 'domain-akquisition', 'kategoriendefinierende domain']

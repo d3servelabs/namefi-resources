@@ -3,7 +3,8 @@ title: "GoDaddy Airo vs Namecheap AI vs Namefi: Key Differences"
 date: '2026-07-10'
 language: 'en'
 tags: ['ai-agents', 'domains', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: comparison
 ogImage: ../../assets/airo-vs-namefi-og.jpg

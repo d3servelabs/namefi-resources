@@ -3,7 +3,8 @@ title: "Principales enfoques de escalabilidad de blockchain: rollups, sidechains
 date: '2026-07-02'
 language: es
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

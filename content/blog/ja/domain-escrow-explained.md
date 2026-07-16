@@ -3,7 +3,8 @@ title: "ドメインエスクローとは：安全なドメイン取引の仕組
 date: '2026-06-10'
 language: ja
 tags: ['guide', 'domains', 'domain-investing', 'domain-flipping']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: explainer

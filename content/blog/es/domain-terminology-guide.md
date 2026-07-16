@@ -4,7 +4,8 @@ date: '2025-06-21'
 language: es
 priority: P0
 tags: ["faq","domains"]
-authors: ["namefiteam"]
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 description: Domina la inversión en dominios con nuestra guía completa de terminología esencial de dominios. Desde conceptos básicos hasta estrategias de trading avanzadas, aprende el lenguaje de los profesionales de dominios.
 keywords: ["terminología de dominios","inversión de dominios","nombres de dominio","trading de dominios","glosario de dominios","TLD","registrador","subasta de dominios","cartera de dominios","valoración de dominios","dominios premium","flipping de dominios"]
 relatedArticles:

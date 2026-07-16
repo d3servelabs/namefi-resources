@@ -3,7 +3,8 @@ title: 'El Minuto de $12: Cuando Alguien Compró Google.com en Silencio'
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'En septiembre de 2015, un exempleado de Google compró google.com a través de Google Domains por $12 y tuvo el control administrativo del dominio más valioso del mundo durante aproximadamente un minuto. La historia de Sanmay Ved, la recompensa de $6,006.13 y lo que un minuto de propiedad revela sobre quién controla realmente un dominio.'
 keywords: ['dominio google.com', 'sanmay ved', 'bug google domains', 'seguridad de dominios', 'quién posee google.com', 'secuestro de dominio', 'acceso a herramientas de webmaster', 'recompensa de errores de google', 'recompensa 6006.13', 'vulnerabilidad de registro de dominio', 'control de dominio', 'seguridad dns', 'verificación de propiedad de dominio']

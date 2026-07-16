@@ -3,7 +3,8 @@ title: "De TheFacebook.com à Facebook.com : la mise à niveau à 200 000 $ qui 
 date: '2026-06-10'
 language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Comment Facebook a abandonné TheFacebook.com, acheté Facebook.com pour 200 000 $, puis payé 8,5 millions $ pour FB.com, transformant les mises à niveau de domaine en infrastructure de marque."
 keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'nom de domaine facebook', 'mise à niveau de domaine', 'nommage de startup', 'nommage de marque', 'domaine premium', 'stratégie de domaine', 'histoire de facebook', 'acquisition de domaine', 'rebranding entreprise', 'domaine définissant une catégorie']

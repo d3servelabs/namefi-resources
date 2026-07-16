@@ -3,7 +3,8 @@ title: "Cloudflare、Name.com 与 Namefi：智能体原生注册商对比"
 date: '2026-07-10'
 language: 'zh-CN'
 tags: ['ai-agents', 'comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: comparison
 ogImage: ../../assets/cf-namecom-namefi-og.jpg

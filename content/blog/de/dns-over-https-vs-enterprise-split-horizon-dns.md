@@ -3,7 +3,8 @@ title: 'DNS over HTTPS vs. Enterprise Split-Horizon DNS: Eine Pattsituation, die
 date: '2026-05-04'
 language: de
 tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'DNS over HTTPS (DoH) schützt die Privatsphäre der Nutzer, indem DNS-Anfragen innerhalb von HTTPS verschlüsselt werden. Enterprise Split-Horizon-DNS ist darauf angewiesen, dass das Netzwerk diese Anfragen sehen kann. Die Kollision zwischen beiden verändert die Art und Weise, wie Unternehmensnetzwerke, Browser und Betriebssysteme mit der Namensauflösung umgehen.'
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg

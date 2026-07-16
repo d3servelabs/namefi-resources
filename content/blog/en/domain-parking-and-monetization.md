@@ -3,7 +3,8 @@ title: "Domain Parking and Monetization While You Hold"
 date: '2026-06-21'
 language: en
 tags: ['domains', 'domain-investing', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

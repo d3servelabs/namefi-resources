@@ -3,7 +3,8 @@ title: "모든 블록체인을 지탱하는 주요 암호학적 기본 요소"
 date: '2026-07-02'
 language: ko
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

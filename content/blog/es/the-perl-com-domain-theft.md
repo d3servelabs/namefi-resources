@@ -3,7 +3,8 @@ title: 'El robo del dominio Perl.com: cómo fue robado en silencio el hogar de u
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'A finales de enero de 2021, perl.com — hogar desde hace décadas de la comunidad de programación Perl — fue robado mediante un compromiso de cuenta a nivel de registrador, transferido a través de China, apuntado a una IP vinculada a malware y puesto a la venta por 190.000 dólares. Así fue como ocurrió, cómo se recuperó y qué enseña sobre la seguridad de las cuentas de registrador.'
 keywords: ['perl.com', 'robo de dominio perl.com', 'secuestro de dominio', 'robo de dominio', 'compromiso de cuenta de registrador', 'ingeniería social', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'secuestro de DNS', 'seguridad de dominios', 'apropiación de cuenta', 'BizCN']

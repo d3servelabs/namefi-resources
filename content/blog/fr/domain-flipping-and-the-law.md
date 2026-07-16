@@ -3,7 +3,8 @@ title: "Le flipping de domaines et la loi : marques, UDRP et arnaques"
 date: '2026-06-21'
 language: fr
 tags: ['domains', 'security', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

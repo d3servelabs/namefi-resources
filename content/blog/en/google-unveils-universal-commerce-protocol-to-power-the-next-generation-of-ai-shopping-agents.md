@@ -3,7 +3,8 @@ title: Google Unveils ‘Universal Commerce Protocol’ to Power the Next Genera
 date: '2026-01-15'
 language: en
 tags: ['Infrastructure', 'AI Agents', 'Digital Commerce']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: news

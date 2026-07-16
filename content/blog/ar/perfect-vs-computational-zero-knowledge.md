@@ -3,7 +3,8 @@ title: 'المعرفة الصفرية المثالية مقابل الحسابي
 date: '2026-05-13'
 language: ar
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'تأتي إثباتات المعرفة الصفرية في ثلاثة أنواع - مثالية، وإحصائية، وحسابية - والفرق بينها أكثر أهمية مما تعترف به معظم النقاشات الهندسية. يشرح هذا المقال كل نوع بلغة بسيطة، ولماذا يُعد تقريبًا كل نظام معرفة صفرية (ZK) إنتاجي في عام 2026 نظامًا حسابيًا، وما هي فوائد وتكاليف ذلك.'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg

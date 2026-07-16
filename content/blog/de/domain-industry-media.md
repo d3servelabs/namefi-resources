@@ -3,7 +3,8 @@ title: 'Bekannte Medien der Domain-Branche: Nachrichten-Websites, Verkaufsberich
 date: '2026-05-22'
 language: de
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Ein Leitfaden zu den Nachrichtenportalen, Verkaufsdaten-Websites und Podcasts, die die Domainnamen-Branche journalistisch abdecken — DomainNameWire, DNJournal, TheDomains, NameBio, DomainSherpa, CircleID und mehr.'
 ogImage: ../../assets/domain-industry-media-og.jpg

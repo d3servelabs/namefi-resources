@@ -3,7 +3,8 @@ title: 'Por qué una DAO debe controlar el dominio principal'
 date: '2026-06-23'
 language: es
 tags: ['governance', 'dao', 'web3', 'namefi space']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 description: 'Todo país y todo movimiento atraviesa tarde o temprano una crisis constitucional: quién es legítimo, quién tiene autoridad y quién habla por todos. Para un movimiento en línea, esa pregunta recae sobre un activo: el dominio principal. Por qué debe pertenecer a la DAO.'

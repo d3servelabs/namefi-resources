@@ -3,7 +3,8 @@ title: '도메인 가격 심리학: 즉시 구매 vs 가격 제안'
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

@@ -3,7 +3,8 @@ title: "Namefi MCP 서버: AI 에이전트를 위한 도메인 도구"
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'domains', 'web3']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/namefi-mcp-og.jpg

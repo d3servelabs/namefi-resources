@@ -3,7 +3,8 @@ title: "链上域名的托管、钱包与找回"
 date: '2026-06-24'
 language: zh-CN
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

@@ -3,7 +3,8 @@ title: 'De Box.net a Box.com: La mejora de ~$1 millón que eliminó el ".net" y 
 date: '2026-06-17'
 language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Cómo Box comenzó en 2005 con Box.net porque Box.com estaba tomado, pivotó del almacenamiento para consumidores hacia el sector empresarial, y en 2011 pagó a Digimedia cerca de $1 millón por el dominio exacto Box.com — una mejora de .net a .com que llegó justo cuando la empresa pasó a llamarse simplemente "Box".'
 keywords: ['box.net', 'box.com', 'nombre de dominio box', 'aaron levie', 'dylan smith', 'digimedia', 'scott day', 'mejora de dominio', 'naming de startups', 'naming de marca', 'dominio premium', 'dominio de coincidencia exacta', 'net a com']

@@ -3,7 +3,8 @@ title: "Principales tecnologías de privacidad en blockchain: pruebas de conocim
 date: '2026-07-02'
 language: es
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

@@ -3,7 +3,8 @@ title: "Paga dominios con una billetera cripto: sin necesidad de cuenta"
 date: '2026-07-10'
 language: 'es'
 tags: ['ai-agents', 'payments']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/wallet-checkout-og.jpg

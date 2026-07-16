@@ -3,7 +3,8 @@ title: "How Much Is a Domain? Understanding the Holding Cost"
 date: '2026-06-29'
 language: en
 tags: ['domains', 'domain-investing', 'domain-pricing', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

@@ -3,7 +3,8 @@ title: "Wie man eine Domain mit natürlicher Sprache kauft (2026)"
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/nl-domain-purchase-og.jpg

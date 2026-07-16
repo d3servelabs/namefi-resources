@@ -3,7 +3,8 @@ title: '域名紧急事件 EP14：当一家安全公司遭遇 DNS 劫持——Fo
 date: '2026-06-17'
 language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: '2017 年 9 月，攻击者登录了荷兰安全公司 Fox-IT 的第三方域名注册商，修改了其 DNS 记录，欺诈性地获取了一张 TLS 证书，并对客户流量实施了长达 10 小时的中间人攻击——直到 Fox-IT 发现并发布了行业内最透明的事后分析报告之一。'
 keywords: ['fox-it dns 劫持', 'fox-it 中间人攻击', 'fox-it 2017 事件', 'dns 劫持', '域名注册商账户入侵', '欺诈性 ssl 证书', '中间人攻击', '域名注册商安全', 'dns 双因素认证', 'dnssec', '注册局锁定', '域名安全', 'ncc group fox-it']

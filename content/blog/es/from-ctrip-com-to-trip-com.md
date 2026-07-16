@@ -3,7 +3,8 @@ title: 'De Ctrip.com a Trip.com: Cómo el gigante chino del turismo compró un d
 date: '2026-06-17'
 language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Cómo Ctrip, la mayor agencia de viajes en línea de China, adquirió el dominio premium Trip.com en 2017 a una startup llamada Gogobot, relanzó su marca global con ese nombre y en 2019 rebautizó toda la empresa matriz como Trip.com Group para expandirse internacionalmente.'
 keywords: ['ctrip.com', 'trip.com', 'rebranding ctrip', 'trip.com group', 'dominio trip.com', 'mejora de dominio', 'expansión global de marca china', 'gogobot trip.com', 'james liang ctrip', 'dominio premium de viajes', 'nombre de startup', 'nombre de marca', 'adquisición de dominio']

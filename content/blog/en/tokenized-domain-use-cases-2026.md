@@ -3,7 +3,8 @@ title: "Use Cases for Tokenized Domains in 2026: Lending, Leasing, Fractional, A
 date: '2026-05-22'
 language: en
 tags: ['thesis']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 format: opinion

@@ -3,7 +3,8 @@ title: "Premium Web3 TLDs: A 2026 Guide to Tokenized DNS Domains"
 date: '2026-06-10'
 language: en
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: roundup

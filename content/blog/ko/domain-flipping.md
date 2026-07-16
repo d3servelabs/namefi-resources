@@ -3,7 +3,8 @@ title: '도메인 플리핑: 도메인을 사고팔아 수익을 내는 방법'
 date: '2026-06-20'
 language: ko
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

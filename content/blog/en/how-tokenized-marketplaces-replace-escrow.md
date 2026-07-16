@@ -3,7 +3,8 @@ title: "From Listing to Settlement: How Tokenized Marketplaces Can Replace Escro
 date: '2026-05-22'
 language: en
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: tokenize-your-com

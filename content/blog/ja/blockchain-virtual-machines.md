@@ -3,7 +3,8 @@ title: "主要なブロックチェーン仮想マシン：EVM、SVM、MoveVM、
 date: '2026-07-02'
 language: ja
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

@@ -3,7 +3,8 @@ title: "Domains mit einer Krypto-Wallet bezahlen: Kein Konto nötig"
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'payments']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/wallet-checkout-og.jpg

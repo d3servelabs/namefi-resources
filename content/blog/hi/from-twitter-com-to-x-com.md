@@ -3,7 +3,8 @@ title: 'Twitter.com से X.com तक: एक सिंगल-लेटर ड
 date: '2026-06-17'
 language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'कैसे Elon Musk ने 1999 में X.com बनाया, PayPal द्वारा उनका पुराना नाम लेने पर इसे खो दिया, 2017 में भावनात्मक कारणों से इसे वापस खरीदा, और अंततः एक $44 बिलियन के सोशल नेटवर्क को इस पर स्थानांतरित किया — जिससे Twitter.com X.com पर रीडायरेक्ट होने लगा।'
 keywords: ['twitter.com', 'x.com', 'twitter rebrand x', 'elon musk x.com', 'x.com history', 'paypal x.com domain', 'twitter to x name change', 'domain redirect', 'domain upgrade', 'single letter domain', 'everything app', 'brand naming', 'premium domain']

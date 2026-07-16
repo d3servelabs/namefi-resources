@@ -3,7 +3,8 @@ title: '프리미엄 Web3 TLD: 2026년 가장 가치 있는 토큰화 도메인 
 date: '2026-06-10'
 language: ko
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: roundup

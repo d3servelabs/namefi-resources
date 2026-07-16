@@ -3,7 +3,8 @@ title: "البدء السريع مع Namefi MCP: Claude Code وCursor وWindsurf
 date: '2026-07-10'
 language: ar
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/mcp-quickstart-og.jpg

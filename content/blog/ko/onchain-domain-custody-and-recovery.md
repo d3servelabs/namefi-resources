@@ -3,7 +3,8 @@ title: '온체인 도메인 커스터디, 지갑, 그리고 복구'
 date: '2026-06-24'
 language: ko
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

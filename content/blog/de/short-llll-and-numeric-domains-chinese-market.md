@@ -3,7 +3,8 @@ title: "Kurze, LLLL- und numerische Domains: Der Aufschlag des chinesischen Mark
 date: '2026-06-21'
 language: de
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

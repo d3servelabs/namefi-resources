@@ -3,7 +3,8 @@ title: '이커머스 스토어를 위해 확보해야 할 상위 10가지 TLD'
 date: '2026-06-14'
 language: ko
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

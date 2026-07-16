@@ -3,7 +3,8 @@ title: '初创公司必须抢注的十大顶级域名后缀'
 date: '2026-06-14'
 language: zh-CN
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-startup-og.jpg
 description: '探索初创公司应优先抢注的顶级域名后缀，从 .com 到 .ai，以及如何通过防御性注册策略保护品牌免受抢注者侵害。'

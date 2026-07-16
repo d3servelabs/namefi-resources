@@ -3,7 +3,8 @@ title: 'From GetDropbox.com to Dropbox.com: The $300K Upgrade That Dropped "Get"
 date: '2026-06-16'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

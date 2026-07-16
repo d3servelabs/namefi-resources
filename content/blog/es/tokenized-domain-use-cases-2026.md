@@ -3,7 +3,8 @@ title: "Casos de uso para dominios tokenizados en 2026: préstamos, arrendamient
 date: '2026-05-22'
 language: es
 tags: ['thesis']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Un recorrido neutral en cuanto a plataformas sobre para qué se están utilizando realmente los dominios tokenizados en 2026: préstamos DeFi, arrendamientos, propiedad fraccionada, identidad de agentes de IA y los casos de uso que aún no terminan de aterrizar."
 keywords: ['casos de uso de dominios tokenizados', 'DomainFi', 'préstamos con dominios tokenizados', 'garantía de dominio tokenizado', 'arrendar dominio tokenizado', 'propiedad fraccionada de dominios', 'dominio de agente de IA', 'DeFi de dominios', 'mercado de dominios tokenizados', 'aplicaciones de dominios tokenizados', 'casos de uso de dominios NFT', 'por qué tokenizar un dominio en 2026', 'uso de dominios on-chain', 'ejemplos de dominios tokenizados']

@@ -3,7 +3,8 @@ title: 'Top 10 des TLD à sécuriser pour votre cabinet comptable'
 date: '2026-06-14'
 language: fr
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-accounting-firm-og.jpg
 description: 'Les meilleurs TLD à sécuriser pour votre cabinet comptable — du .cpa à accès restreint aux enregistrements défensifs .com, .net et .org pour protéger votre marque et renforcer la confiance des clients.'

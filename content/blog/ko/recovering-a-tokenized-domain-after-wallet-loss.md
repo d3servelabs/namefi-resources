@@ -3,7 +3,8 @@ title: '토큰화 도메인 지갑 분실 후 복구 가이드: 생존 매뉴얼
 date: '2026-05-22'
 language: ko
 tags: ['guide', 'security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-apocalypse

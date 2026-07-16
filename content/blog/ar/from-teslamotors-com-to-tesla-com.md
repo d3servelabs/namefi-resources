@@ -3,7 +3,8 @@ title: 'من TeslaMotors.com إلى Tesla.com: ترقية الدومين بـ 11
 date: '2026-06-10'
 language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'كيف أمضت Tesla أكتر من عقد ودفعت 11 مليون دولار عشان تنقل من TeslaMotors.com لـ Tesla.com بالظبط — وإزاي جاءت الترقية دي قُبيل ما الشركة شالت كلمة "Motors" من اسمها.'
 keywords: ['teslamotors.com', 'tesla.com', 'اسم دومين تسلا', 'ترقية الدومين', 'دومين إيلون ماسك', 'دومين مطابق تمام', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'دومين بريميوم', 'استراتيجية الدومين', 'إعادة تسمية تسلا', 'تغيير اسم تسلا موتورز', 'الاستحواذ على الدومين', 'دومين يحدد الفئة']

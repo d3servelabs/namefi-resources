@@ -3,7 +3,8 @@ title: "Principales approches de mise à l’échelle blockchain : rollups, side
 date: '2026-07-02'
 language: fr
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

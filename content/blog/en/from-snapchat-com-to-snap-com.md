@@ -3,7 +3,8 @@ title: 'From Snapchat.com to Snap.com: The $5M Domain That Turned an App Into a 
 date: '2026-06-16'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

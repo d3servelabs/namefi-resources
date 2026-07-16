@@ -3,7 +3,8 @@ title: "Was kostet eine Domain? Die Haltekosten verstehen"
 date: '2026-06-29'
 language: de
 tags: ['domains', 'domain-investing', 'domain-pricing', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

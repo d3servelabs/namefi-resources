@@ -3,7 +3,8 @@ title: 'Sea Turtle: Die staatlich geförderte Kampagne, die DNS kaperte, um Regi
 date: '2026-06-17'
 language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Wie „Sea Turtle", eine 2019 von Cisco Talos aufgedeckte staatlich geförderte Kampagne, DNS durch die Kompromittierung von Registraren, Registries und DNS-Anbietern kaperte – Regierungen, Ministerien und Energieunternehmen auf Angreifer-Server umleitete, gültige Zertifikate fälschte und sogar eine nationale TLD-Registry kompromittierte.'
 keywords: ['sea turtle dns-hijacking', 'cisco talos sea turtle', 'dns-hijacking-angriff', 'staatlich geförderter dns-angriff', 'registry-kompromittierung', 'registrar-kompromittierung', 'dns-spionagekampagne', 'lets encrypt mitm-zertifikat', 'netnod kompromittierung', 'ics-forth griechenland ccTLD', 'cisa-notfalldirektive 19-01', 'dns-sicherheit', 'domain-eigentümerschaft sicherheit', 'nationalstaatlicher cyberangriff']

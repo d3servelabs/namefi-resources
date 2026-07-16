@@ -3,7 +3,8 @@ title: 'DNSpionage: 정부를 겨냥해 DNS를 무기화한 사이버 첩보 캠
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

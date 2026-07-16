@@ -3,7 +3,8 @@ title: "Démarrage rapide avec Namefi MCP : Claude Code, Cursor et Windsurf"
 date: '2026-07-10'
 language: 'fr'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/mcp-quickstart-og.jpg

@@ -3,7 +3,8 @@ title: "2026-இல் \"AI டொமைன் தேடல்\" என்பத
 date: '2026-07-10'
 language: 'ta'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/ai-search-meanings-og.jpg

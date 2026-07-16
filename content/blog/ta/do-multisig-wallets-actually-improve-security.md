@@ -3,7 +3,8 @@ title: 'பல-கையெழுத்து பணப்பைகள் உண
 date: '2026-05-07'
 language: ta
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 format: explainer

@@ -3,7 +3,8 @@ title: 'Los mejores foros en inglés sobre compraventa de dominios: Dónde habla
 date: '2026-05-22'
 language: es
 tags: ['domains', 'community', 'domain-investing', 'forums']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Una guía práctica sobre los foros y comunidades en inglés donde los inversores de dominios se reúnen realmente en 2026: desde NamePros y DNForum hasta los canales de Twitter/X y Telegram que los han reemplazado silenciosamente.'
 ogImage: ../../assets/top-domain-trader-forums-og.jpg

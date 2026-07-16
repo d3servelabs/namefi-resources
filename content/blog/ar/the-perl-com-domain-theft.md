@@ -3,7 +3,8 @@ title: 'سرقة دومين Perl.com: كيف اتسرق بيت مجتمع عمر
 date: '2026-06-17'
 language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'في آخر يناير 2021، اتسرق perl.com — بيت مجتمع Perl البرمجي اللي عمره عقود — عن طريق اختراق حساب في موقع التسجيل، واتنقل لبرا من الصين، واتوجه لـ IP مرتبط ببرامج خبيثة، واتعرض للبيع بـ 190,000 دولار. دي حكاية إزاي حصل ده، وإزاي اتاسترد، وإيه اللي بيعلمنا إياه عن أمان حسابات التسجيل.'
 keywords: ['perl.com', 'سرقة دومين perl.com', 'اختطاف دومين', 'سرقة دومين', 'اختراق حساب تسجيل', 'هندسة اجتماعية', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'اختطاف DNS', 'أمان الدومين', 'استيلاء على حساب', 'BizCN']

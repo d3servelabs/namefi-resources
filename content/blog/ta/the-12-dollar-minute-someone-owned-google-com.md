@@ -3,7 +3,8 @@ title: 'அந்த $12 நிமிடம்: Google Domains ஒரு Google.
 date: '2026-06-17'
 language: ta
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

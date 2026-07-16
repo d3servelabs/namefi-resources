@@ -3,7 +3,8 @@ title: "主要なブロックチェーンスケーリング手法：ロールア
 date: '2026-07-02'
 language: ja
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

@@ -3,7 +3,8 @@ title: '부동산 중개인이 반드시 확보해야 할 TLD 10선'
 date: '2026-06-14'
 language: ko
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

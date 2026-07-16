@@ -3,7 +3,8 @@ title: "Detrás de escena de la caída de AWS del 20 de octubre de 2025"
 date: '2025-10-23'
 language: es
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Una perspectiva desde las operaciones de registro/DNS sobre el incidente de AWS del 20 de octubre de 2025, cómo funciona realmente el DNS, por qué este fallo se propagó tanto y qué pueden hacer al respecto los equipos de internet resilientes."
 keywords: ['dns', 'caída de aws', 'plano de control', 'dynamodb', 'us-east-1', 'caché dns', 'resiliencia en la nube', 'dns multifirma', 'respuesta a incidentes']

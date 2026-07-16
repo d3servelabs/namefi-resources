@@ -3,7 +3,8 @@ title: "代币化你的 .com 再倒卖：Namefi 实操指南"
 date: '2026-06-24'
 language: zh-CN
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-flipping-skills

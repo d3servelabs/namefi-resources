@@ -3,7 +3,8 @@ title: "Was ist UDRP? Domain-Streitbeilegung erklärt"
 date: '2026-06-10'
 language: de
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "UDRP erklärt für Domain-Inhaber und -Investoren: die drei Elemente, die ein Beschwerdeführer beweisen muss, Ablauf und Zeitplan, mögliche Ergebnisse, UDRP vs. URS vs. Gericht sowie Hinweise zur Erwiderung."
 keywords: ['udrp', 'was ist udrp', 'udrp prozess', 'udrp richtlinie', 'udrp beschwerde', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'domain streit', 'domain name streit', 'cybersquatting', 'reverse domain name hijacking', 'bösgläubige registrierung', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'marken domain streit', 'domain investor rechtlich', 'udrp beschwerde beantworten']

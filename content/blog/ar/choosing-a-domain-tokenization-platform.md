@@ -3,7 +3,8 @@ title: "Namefi مقابل Doma Protocol مقابل D3 Global Inc مقابل 3DNS
 date: '2026-05-22'
 language: ar
 tags: ['comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "نظرة صادقة ومقارنة جنباً إلى جنب لمنصات ترميز النطاقات الرئيسية — ما الذي تجيده كل منصة فعلياً، وأين تتقاطع، وأين تختلف، وكيف تختار المنصة التي تناسب الطريقة التي تنوي بها استخدام نطاقاتك."
 keywords: ['منصات ترميز النطاقات', 'بديل Doma', 'بديل D3 Global Inc', 'بديل 3DNS', 'مقارنة ترميز النطاقات', 'Namefi مقابل Doma', 'Namefi مقابل D3 Global Inc', 'Namefi مقابل 3DNS', 'أفضل ترميز للنطاقات', 'مراجعة Namefi', 'مراجعة Doma Protocol', 'مراجعة D3 Global Inc', 'مراجعة 3DNS', 'اختيار ترميز النطاقات', 'مقارنة منصات ترميز النطاقات']

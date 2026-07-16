@@ -3,7 +3,8 @@ title: 'Top Domain Trader Forums in English: Where Domainers Actually Talk in 20
 date: '2026-05-22'
 language: en
 tags: ['domains', 'community', 'domain-investing', 'forums']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

@@ -3,7 +3,8 @@ title: "Comparatif des outils d'estimation de domaines : Estibot vs GoDaddy vs r
 date: '2026-06-21'
 language: fr
 tags: ['domains', 'domain-investing', 'domain-flipping', 'comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

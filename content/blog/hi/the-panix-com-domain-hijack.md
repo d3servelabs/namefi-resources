@@ -3,7 +3,8 @@ title: 'Panix.com डोमेन हाईजैक: कैसे पाँच 
 date: '2026-06-17'
 language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'जनवरी 2005 में, panix.com — न्यू यॉर्क के सबसे पुराने व्यावसायिक ISP का डोमेन — को चुराए गए क्रेडिट कार्ड का उपयोग करके ऑस्ट्रेलिया के एक रजिस्ट्रार को धोखाधड़ी से ट्रांसफर कर दिया गया, जिससे वेब और ईमेल कई दिनों के लिए ऑफलाइन हो गए। उस दौर के ऑटो-अप्रूव इंटर-रजिस्ट्रार ट्रांसफर नियमों ने इसे संभव बनाया, और इसकी सफाई ने डोमेन-ट्रांसफर नीति को नया रूप दिया।'
 keywords: ['panix.com', 'panix domain hijack', 'domain hijacking', 'inter-registrar transfer', 'Melbourne IT', 'Dotster', 'Fibranet', 'ICANN transfer policy', 'registrar lock', 'clientTransferProhibited', 'domain security', 'DNS hijacking', 'EPP auth code']

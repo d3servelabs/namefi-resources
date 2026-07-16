@@ -3,7 +3,8 @@ title: "所有するドメイン名の売り方：実践チェックリスト"
 date: '2026-06-09'
 language: ja
 tags: ['domains', 'guide', 'domain-investing', 'outbound', 'domain-flipping']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

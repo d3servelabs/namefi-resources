@@ -3,7 +3,8 @@ title: 'मलेशिया एयरलाइंस DNS हाईजैक: "
 date: '2026-06-17'
 language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'जनवरी 2015 में, Lizard Squad ने malaysiaairlines.com का DNS हाईजैक कर लिया और एयरलाइन की साइट को एक टक्सीडो पहने छिपकली और ताना "404 — Plane Not Found" से बदल दिया। किसी सर्वर में सेंध नहीं लगाई गई — हमलावरों ने बस यह बदल दिया कि डोमेन कहाँ इंगित करता है। यह एक Domain Mayday की गहन पड़ताल है कि DNS कैसे एयरलाइन का सबसे उजागर दरवाज़ा बना।'
 keywords: ['malaysia airlines dns hijack', 'lizard squad', 'cyber caliphate', '404 plane not found', 'dns hijacking', 'domain hijacking', 'registrar compromise', 'webnic', 'malaysiaairlines.com', 'domain security', 'dns redirection', 'registry lock', 'mh370']

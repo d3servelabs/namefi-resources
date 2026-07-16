@@ -3,7 +3,8 @@ title: "Domain Appraisal Tools Compared: Estibot vs GoDaddy vs Reality"
 date: '2026-06-21'
 language: en
 tags: ['domains', 'domain-investing', 'domain-flipping', 'comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

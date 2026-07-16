@@ -3,7 +3,8 @@ title: "கிரிப்டோ பணப்பை மூலம் டொமை
 date: '2026-07-10'
 language: 'ta'
 tags: ['ai-agents', 'payments']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/wallet-checkout-og.jpg

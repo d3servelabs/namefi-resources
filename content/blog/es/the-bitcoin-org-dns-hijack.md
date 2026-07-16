@@ -3,7 +3,8 @@ title: 'El secuestro DNS de Bitcoin.org: Cómo la página principal de Bitcoin s
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'En septiembre de 2021, Bitcoin.org —el histórico sitio informativo de Bitcoin operado por el seudónimo Cobra— fue secuestrado a nivel DNS y convertido en un falso sorteo de "duplica tu Bitcoin", con el que los estafadores obtuvieron alrededor de $17,000 antes de que el sitio fuera dado de baja. Un análisis en profundidad de Domain Mayday sobre qué ocurrió, cómo sucedió y qué nos enseña sobre la dependencia del DNS incluso en sitios nativos de cripto.'
 keywords: ['bitcoin.org', 'hackeo de bitcoin.org', 'secuestro dns', 'secuestro de dominio', 'estafa duplica tu bitcoin', 'estafa de sorteo cripto', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'seguridad dns', 'seguridad de dominio', 'secuestro de nameserver', 'ataque de cambio whois']

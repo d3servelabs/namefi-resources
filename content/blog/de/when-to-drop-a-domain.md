@@ -3,7 +3,8 @@ title: "Wann man eine Domain fallen lässt (und seine Verlierer abstößt)"
 date: '2026-06-21'
 language: de
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

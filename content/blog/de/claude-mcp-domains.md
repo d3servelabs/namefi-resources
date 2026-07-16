@@ -3,7 +3,8 @@ title: "Eine Domain mit Claude kaufen: Schritt-für-Schritt-Anleitung für Namef
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/claude-mcp-domains-og.jpg

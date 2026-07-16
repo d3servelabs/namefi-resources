@@ -3,7 +3,8 @@ title: 'Cuando la propia ICANN fue víctima de phishing: la brecha de spear-phis
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'A finales de 2014, ICANN —el organismo que coordina el sistema de nombres de dominio de Internet— admitió que un correo electrónico de spear-phishing que suplantaba su propio dominio había cosechado las credenciales del personal y otorgado a los atacantes acceso administrativo al Sistema Centralizado de Datos de Zona. Un análisis en profundidad de Domain Mayday sobre cómo la propia autoridad del DNS fue víctima de phishing, qué quedó expuesto y por qué sigue siendo relevante.'
 keywords: ['brecha de icann', 'spear phishing icann', 'czds', 'sistema centralizado de datos de zona', 'seguridad dns', 'seguridad de dominios', 'ataque de spear phishing', 'phishing de credenciales', 'archivos de zona', 'iana', 'hashes de contraseña con sal', 'brecha del sistema de nombres de dominio', 'hackeo icann 2014']

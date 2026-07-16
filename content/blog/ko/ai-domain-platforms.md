@@ -3,7 +3,8 @@ title: "AI 에이전트 도메인 플랫폼: 2026년 가이드"
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-domain-platforms-og.jpg

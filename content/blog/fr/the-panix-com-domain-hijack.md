@@ -3,7 +3,8 @@ title: "Le piratage du domaine Panix.com : comment une règle d'approbation auto
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "En janvier 2005, panix.com — le domaine du plus ancien FAI commercial de New York — a été transféré frauduleusement vers un registraire en Australie à l'aide de cartes de crédit volées, coupant le web et la messagerie pendant plusieurs jours. Les règles de transfert inter-registraires à approbation automatique de l'époque ont rendu la chose possible, et le nettoyage a reconfiguré la politique de transfert de domaine."
 keywords: ['panix.com', 'piratage domaine panix', 'détournement de domaine', 'transfert inter-registraire', 'Melbourne IT', 'Dotster', 'Fibranet', 'politique de transfert ICANN', 'verrou registraire', 'clientTransferProhibited', 'sécurité des domaines', 'détournement DNS', 'code auth EPP']

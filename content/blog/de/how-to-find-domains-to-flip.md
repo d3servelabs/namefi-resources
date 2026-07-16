@@ -3,7 +3,8 @@ title: "Domains zum Flippen finden: jeder Beschaffungskanal"
 date: '2026-06-21'
 language: de
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

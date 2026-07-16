@@ -3,7 +3,8 @@ title: TLD(최상위 도메인)란 무엇인가? 완전 가이드
 date: '2026-06-10'
 language: ko
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: explainer

@@ -3,7 +3,8 @@ title: "Top Blockchain Virtual Machines: EVM, SVM, MoveVM, WebAssembly/RISC-V an
 date: '2026-07-02'
 language: en
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

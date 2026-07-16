@@ -5,7 +5,8 @@ updated: '2023-09-04'
 originalUrl: 'https://hackmd.io/@d3servelabs/vision'
 language: es
 tags: ['vision', 'digital-trust']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: Una declaración de visión de D3Serve — por qué la digitalización de la confianza, al igual que la digitalización de la información antes de ella, promete un salto en productividad, precisión sin pérdidas, menor costo y automatización.
 keywords: ['confianza digital', 'D3Serve', 'blockchain', 'web3', 'contratos inteligentes', 'criptografía', 'consenso', 'manifiesto', 'visión', 'digitalización de la confianza', 'confianza grupal', 'automatización']

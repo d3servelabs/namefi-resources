@@ -3,7 +3,8 @@ title: "2026 年 AI 初创公司最佳 .ai 域名注册商"
 date: '2026-07-10'
 language: 'zh-CN'
 tags: ['ai-agents', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: roundup
 ogImage: ../../assets/ai-tld-registrars-og.jpg

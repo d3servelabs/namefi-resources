@@ -3,7 +3,8 @@ title: "டொமைன் விற்பனை மோசடிகளைத் 
 date: '2026-06-21'
 language: ta
 tags: ['domains', 'security', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

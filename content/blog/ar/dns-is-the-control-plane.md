@@ -3,7 +3,8 @@ title: "ما وراء الكواليس: انقطاع خدمة AWS في 20 أكت
 date: '2025-10-23'
 language: ar
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "نظرة من منظور مسجلي النطاقات وعمليات DNS حول حادثة AWS في 20 أكتوبر 2025، كيف يعمل نظام DNS فعلياً، لماذا انتشر هذا الفشل على نطاق واسع، وما الذي يمكن لفرق الإنترنت المرنة فعله حيال ذلك."
 keywords: ['نظام أسماء النطاقات', 'انقطاع aws', 'مستوى التحكم', 'dynamodb', 'us-east-1', 'التخزين المؤقت لنظام dns', 'مرونة السحابة', 'dns متعدد التواقيع', 'الاستجابة للحوادث']

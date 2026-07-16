@@ -3,7 +3,8 @@ title: "De TeslaMotors.com à Tesla.com : la mise à niveau de domaine à 11 M$ 
 date: '2026-06-10'
 language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Comment Tesla a mis plus d'une décennie et un montant rapporté de 11 millions de dollars pour passer de TeslaMotors.com au domaine exact Tesla.com, et pourquoi cette mise à niveau est arrivée juste avant que l'entreprise supprime « Motors » de son nom."
 keywords: ['teslamotors.com', 'tesla.com', 'nom de domaine tesla', 'mise à niveau de domaine', 'domaine elon musk', 'domaine exact match', 'naming startup', 'naming de marque', 'domaine premium', 'stratégie de domaine', 'rebranding tesla', 'changement de nom tesla motors', 'acquisition de domaine', 'domaine qui définit une catégorie']

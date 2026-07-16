@@ -3,7 +3,8 @@ title: '도메인 재난 EP10: 시리아 전자군이 피싱된 리셀러를 통
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

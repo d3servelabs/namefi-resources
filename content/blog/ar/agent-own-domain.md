@@ -3,7 +3,8 @@ title: "هل يمكن لوكيل ذكاء اصطناعي امتلاك نطاق؟
 date: '2026-07-10'
 language: 'ar'
 tags: ['ai-agents', 'domains', 'web3']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: faq
 ogImage: ../../assets/agent-own-domain-og.jpg

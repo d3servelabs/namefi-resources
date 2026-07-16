@@ -3,7 +3,8 @@ title: "ஒரு AI முகவர் டொமைனைச் சொந்த
 date: '2026-07-10'
 language: 'ta'
 tags: ['ai-agents', 'domains', 'web3']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: faq
 ogImage: ../../assets/agent-own-domain-og.jpg

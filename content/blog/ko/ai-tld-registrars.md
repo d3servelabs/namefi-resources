@@ -3,7 +3,8 @@ title: "AI 스타트업을 위한 최고의 .ai 도메인 등록대행자 (2026�
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: roundup
 ogImage: ../../assets/ai-tld-registrars-og.jpg

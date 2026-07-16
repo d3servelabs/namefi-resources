@@ -4,7 +4,8 @@ date: '2026-06-21'
 language: hi
 priority: P1
 tags: ['domains', 'domain-investing', 'domain-flipping', 'faq']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

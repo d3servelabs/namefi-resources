@@ -3,7 +3,8 @@ title: "에이전트 네이티브 도메인 등록대행자란 무엇인가?"
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/agent-native-og.jpg

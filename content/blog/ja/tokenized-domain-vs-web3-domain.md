@@ -3,7 +3,8 @@ title: "トークン化ドメイン vs Web3ドメイン（ENS・.crypto）：何
 date: '2026-05-22'
 language: ja
 tags: ['comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 format: comparison

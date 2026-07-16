@@ -3,7 +3,8 @@ title: "顶级区块链虚拟机：EVM、SVM、MoveVM、WebAssembly/RISC-V 与 C
 date: '2026-07-02'
 language: zh-CN
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

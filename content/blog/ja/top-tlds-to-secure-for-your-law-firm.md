@@ -3,7 +3,8 @@ title: '法律事務所が確保すべきトップ10のTLD'
 date: '2026-06-14'
 language: ja
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

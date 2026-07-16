@@ -3,7 +3,8 @@ title: 'Curve Finance DNS 하이재킹: "감사된 컨트랙트"도 현관문은
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

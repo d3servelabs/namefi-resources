@@ -3,7 +3,8 @@ title: 'Top 10 TLDs, die Sie für Ihren E-Commerce-Shop sichern sollten'
 date: '2026-06-14'
 language: de
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-ecommerce-store-og.jpg
 description: 'Die Top 10 TLDs, die Sie für Ihren E-Commerce-Shop sichern sollten – von .com bis .shop und .store, plus eine defensive Registrierungsstrategie zum Schutz Ihrer Einzelhandelsmarke.'

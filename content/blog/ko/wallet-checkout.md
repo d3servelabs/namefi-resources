@@ -3,7 +3,8 @@ title: "계정 없이 암호화폐 지갑으로 도메인 결제하기"
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'payments']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/wallet-checkout-og.jpg

@@ -3,7 +3,8 @@ title: "Qu’est-ce qu’un bureau d’enregistrement de domaines conçu pour le
 date: '2026-07-10'
 language: 'fr'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/agent-native-og.jpg

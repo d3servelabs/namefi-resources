@@ -3,7 +3,8 @@ title: '유명 도메이너 블로그, Substack, 뉴스레터: 2026년에 읽어
 date: '2026-05-22'
 language: ko
 tags: ['domains', 'domain-investing', 'blogs', 'newsletters', 'community']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

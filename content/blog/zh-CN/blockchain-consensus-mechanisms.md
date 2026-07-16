@@ -3,7 +3,8 @@ title: "区块链共识机制详解：工作量证明、权益证明及其他机
 date: '2026-07-02'
 language: zh-CN
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

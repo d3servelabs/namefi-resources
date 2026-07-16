@@ -3,7 +3,8 @@ title: "온체인 도메인 플리핑: ENS 및 토큰화 도메인 거래"
 date: '2026-06-24'
 language: ko
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

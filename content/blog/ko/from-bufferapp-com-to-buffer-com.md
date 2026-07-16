@@ -3,7 +3,8 @@ title: 'BufferApp.com에서 Buffer.com으로: 624일간의 도메인 거래, 은
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

@@ -3,7 +3,8 @@ title: 'Perl.com டொமைன் திருட்டு: 30 ஆண்டு
 date: '2026-06-17'
 language: ta
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

@@ -3,7 +3,8 @@ title: 'The GoDaddy Multi-Year Campaign: Hosting Breaches, Exposed Credentials, 
 date: '2026-06-17'
 language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

@@ -3,7 +3,8 @@ title: '스테이블코인이란? Web3 경제 안정성의 토대'
 date: '2025-12-11'
 language: 'ko'
 tags: ['web3', 'cryptocurrency', 'defi', 'blockchain', 'finance']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: explainer

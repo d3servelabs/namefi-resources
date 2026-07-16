@@ -3,7 +3,8 @@ title: 'Von Snapchat.com zu Snap.com: Die 5-Millionen-Dollar-Domain, die aus ein
 date: '2026-06-16'
 language: de
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Wie Snapchat Snap.com still und leise von Idealab für angeblich 5 Millionen Dollar kaufte – im Jahr 2014 – und dann im September 2016 sich in Snap Inc. umbenannte, „ein Kameraunternehmen", und die kurze Exact-Match-Domain eine Identität tragen ließ, die größer war als jede einzelne App.'
 keywords: ['snapchat.com', 'snap.com', 'snap inc', 'snap domainname', 'domain-upgrade', 'startup-naming', 'markennamensgebung', 'premium-domain', 'domain-strategie', 'snapchat rebrand', 'kameraunternehmen', 'idealab snap.com', 'domain-akquisition', 'kategorie-definierende domain']

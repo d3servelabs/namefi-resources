@@ -3,7 +3,8 @@ title: 'Warum eine DAO die Hauptdomain kontrollieren sollte'
 date: '2026-06-23'
 language: de
 tags: ['governance', 'dao', 'web3', 'namefi space']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 description: "Jedes Land und jede Bewegung erreicht irgendwann einen Moment der Verfassungskrise — wer legitim ist, wer Autorität besitzt, wer im Zentrum der Bühne spricht. Für eine Onlinebewegung konzentriert sich diese Frage auf ein Asset: die Hauptdomain. Darum sollte sie der DAO gehören."

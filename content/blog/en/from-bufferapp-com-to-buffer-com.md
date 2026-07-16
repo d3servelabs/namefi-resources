@@ -3,7 +3,8 @@ title: 'From BufferApp.com to Buffer.com: The 624-Day, Bank-Statement-Open Domai
 date: '2026-06-17'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

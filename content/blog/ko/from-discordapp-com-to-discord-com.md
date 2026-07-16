@@ -3,7 +3,8 @@ title: 'DiscordApp.com에서 Discord.com으로: "App"을 떼어낸 것이 피싱
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

@@ -3,7 +3,8 @@ title: '“AI 域名搜索”在 2026 年有两种截然不同的含义'
 date: '2026-07-10'
 language: 'zh-CN'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/ai-search-meanings-og.jpg

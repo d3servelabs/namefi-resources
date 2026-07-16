@@ -3,7 +3,8 @@ title: "Cómo nombrar tu proyecto: Una guía de campo para fundadores"
 date: '2026-06-13'
 language: es
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Una guía práctica y respaldada por investigación para fundadores que nombran un proyecto, producto o empresa: verifica la legalidad, hazlo fácil de pronunciar, genera candidatos sólidos, compruébalo en diferentes culturas y realiza las búsquedas que importan antes de comprometerte."
 ogImage: ../../assets/how-to-name-your-project-og.jpg

@@ -3,7 +3,8 @@ title: "Domain Hacks: How a Web Address Spells a Word Across the Dot"
 date: '2026-06-20'
 language: en
 tags: ['domains', 'domain-investing', 'branding', 'domain-flipping']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

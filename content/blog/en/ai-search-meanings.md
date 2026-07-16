@@ -3,7 +3,8 @@ title: "\"AI Domain Search\" Means Two Different Things in 2026"
 date: '2026-07-10'
 language: 'en'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/ai-search-meanings-og.jpg

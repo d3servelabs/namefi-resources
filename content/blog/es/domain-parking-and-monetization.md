@@ -3,7 +3,8 @@ title: "Aparcamiento y monetización de dominios mientras los conservas"
 date: '2026-06-21'
 language: es
 tags: ['domains', 'domain-investing', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

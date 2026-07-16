@@ -3,7 +3,8 @@ title: "Les principaux mécanismes de consensus des blockchains : preuve de trav
 date: '2026-07-02'
 language: fr
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

@@ -3,7 +3,8 @@ title: 'Die Top 10 TLDs, die Sie für Ihr SaaS sichern sollten'
 date: '2026-06-14'
 language: de
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-saas-og.jpg
 description: 'Die Top 10 TLDs, die Sie für Ihr SaaS sichern sollten – von .com und .io bis .app und .ai – mit Tipps zur defensiven Registrierung und offiziellen Registry-Fakten.'

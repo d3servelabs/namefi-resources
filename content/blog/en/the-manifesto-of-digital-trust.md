@@ -5,7 +5,8 @@ updated: '2023-09-04'
 originalUrl: 'https://hackmd.io/@d3servelabs/vision'
 language: en
 tags: ['vision', 'digital-trust']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 description: A vision statement of D3Serve — why digitizing trust, much like the digitization of information before it, promises a leap in productivity, loss-less precision, lower cost, and automation.

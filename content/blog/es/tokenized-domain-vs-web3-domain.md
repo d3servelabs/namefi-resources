@@ -3,7 +3,8 @@ title: "Dominio tokenizado vs. Dominio Web3 (ENS, .crypto): ¿Cuál es la difere
 date: '2026-05-22'
 language: es
 tags: ['comparación']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Una comparación clara y práctica entre los dominios ICANN tokenizados (como un .com tokenizado) y los nombres nativos de Web3 (como nombre.eth, nombre.crypto). ¿Cuándo funciona cada uno? ¿Dónde se superponen? ¿Por qué mucha gente tiene ambos?"
 keywords: ['dominio tokenizado vs dominio web3', 'dominio tokenizado vs ENS', 'dominio ICANN vs ENS', '.com vs .eth', '.com tokenizado vs .crypto', 'dominio tokenizado vs unstoppable', 'comparación de dominios web3', 'ENS vs dominio tokenizado', 'dominio NFT vs ENS', 'nombres web3', 'diferencia de nombres on-chain', 'soporte de navegador dominio web3', 'resolución de dominio web3']

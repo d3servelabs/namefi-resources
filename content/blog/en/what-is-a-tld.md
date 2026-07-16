@@ -3,7 +3,8 @@ title: What Is a TLD (Top-Level Domain)? A Complete Guide
 date: '2026-06-10'
 language: en
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: explainer

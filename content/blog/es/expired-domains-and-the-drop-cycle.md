@@ -3,7 +3,8 @@ title: "Dominios caducados y el ciclo de caída, explicado"
 date: '2026-06-21'
 language: es
 tags: ['domains', 'domain-investing', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

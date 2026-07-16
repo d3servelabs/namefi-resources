@@ -3,7 +3,8 @@ title: "Custodia, billeteras y recuperación de dominios en cadena"
 date: '2026-06-24'
 language: es
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

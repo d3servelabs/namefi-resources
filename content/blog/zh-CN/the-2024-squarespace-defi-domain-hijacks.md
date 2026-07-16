@@ -3,7 +3,8 @@ title: '域名危机 EP05：2024年 Squarespace DeFi 域名大规模劫持事件
 date: '2026-06-17'
 language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: '2024年7月，Google Domains 向 Squarespace 的注册商迁移，将薄弱的默认身份验证变成了大规模攻击面。攻击者劫持了 Compound Finance、Celer Network、Pendle、Unstoppable Domains 等加密货币和 DeFi 项目的域名，将其指向钱包耗尽型钓鱼网站。本文揭示"无缝"迁移如何创造了数百扇敞开的大门，以及这一事件对注册商安全和多因素认证的深刻启示。'
 keywords: ['squarespace域名劫持', 'google domains迁移', 'defi dns劫持', 'compound finance劫持', 'celer network劫持', '钱包耗尽攻击', 'inferno drainer', '域名安全', '注册商迁移', 'mfa多因素认证', 'oauth账户接管', 'dns劫持', '加密货币钓鱼']

@@ -3,7 +3,8 @@ title: "Namefi vs Doma Protocol vs D3 Global Inc vs 3DNS：ドメイントーク
 date: '2026-05-22'
 language: ja
 tags: ['comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 format: comparison

@@ -3,7 +3,8 @@ title: "Médias célèbres de l'industrie des noms de domaine : sites d'actualit
 date: '2026-05-22'
 language: fr
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Un guide des médias d'actualités, des sites de données de ventes et des podcasts qui couvrent l'industrie des noms de domaine avec une approche journalistique — DomainNameWire, DNJournal, TheDomains, NameBio, DomainSherpa, CircleID, et plus encore."
 ogImage: ../../assets/domain-industry-media-og.jpg

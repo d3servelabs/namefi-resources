@@ -3,7 +3,8 @@ title: 'ரியல் எஸ்டேட் முகவராக நீங்
 date: '2026-06-14'
 language: ta
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

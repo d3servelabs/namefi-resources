@@ -3,7 +3,8 @@ title: '브랜더블 도메인 vs 키워드 도메인: 어느 쪽이 더 잘 팔
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'domain-investing', 'domain-flipping', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

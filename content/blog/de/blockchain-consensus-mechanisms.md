@@ -3,7 +3,8 @@ title: "Die wichtigsten Blockchain-Konsensmechanismen: Proof of Work, Proof of S
 date: '2026-07-02'
 language: de
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

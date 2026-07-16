@@ -3,7 +3,8 @@ title: "Anwendungsfälle für tokenisierte Domains 2026: Kreditvergabe, Leasing,
 date: '2026-05-22'
 language: de
 tags: ['thesis']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Ein plattformneutraler Überblick darüber, wofür tokenisierte Domains im Jahr 2026 tatsächlich genutzt werden – DeFi-Kredite, Leasing, Teilbesitz, KI-Agenten-Identitäten und die Anwendungsfälle, die sich noch nicht ganz durchgesetzt haben."
 keywords: ['Anwendungsfälle tokenisierte Domains', 'DomainFi', 'tokenisierte Domains Kreditvergabe', 'tokenisierte Domains Sicherheiten', 'tokenisierte Domain leasen', 'Domain-Teilbesitz', 'KI-Agenten Domain', 'Domain DeFi', 'Marktplatz für tokenisierte Domains', 'Anwendungen für tokenisierte Domains', 'NFT-Domain Anwendungsfälle', 'warum Domains tokenisieren 2026', 'Domain On-Chain-Nutzung', 'Beispiele für tokenisierte Domains']

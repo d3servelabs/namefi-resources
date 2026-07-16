@@ -3,7 +3,8 @@ title: "面向域名的 llms.txt：任何 AI 智能体都能读取的 API"
 date: '2026-07-10'
 language: 'zh-CN'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/llms-txt-og.jpg

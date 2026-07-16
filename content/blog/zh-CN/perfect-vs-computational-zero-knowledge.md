@@ -3,7 +3,8 @@ title: '完美零知识证明与计算零知识证明：这一区别究竟意味
 date: '2026-05-13'
 language: zh-CN
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: '零知识证明分为三种类型——完美、统计和计算。这一区别比大多数工程讨论中所承认的更为重要。本文用通俗易懂的语言解释了每种类型，说明了为什么2026年几乎所有生产环境中的ZK系统都是计算零知识证明，以及这种选择带来了什么优势与代价。'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg

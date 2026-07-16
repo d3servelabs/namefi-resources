@@ -3,7 +3,8 @@ title: 'Sea Turtle: La campaña patrocinada por un Estado que secuestró el DNS 
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Cómo "Sea Turtle", una campaña patrocinada por un Estado revelada por Cisco Talos en 2019, secuestró el DNS al comprometer registradores, registros y proveedores de DNS — redirigiendo a gobiernos, ministerios y empresas energéticas hacia servidores de los atacantes, falsificando certificados válidos e incluso vulnerando un registro nacional de TLD.'
 keywords: ['secuestro dns sea turtle', 'cisco talos sea turtle', 'ataque de secuestro dns', 'ataque dns patrocinado por estado', 'compromiso de registro', 'compromiso de registrador', 'campaña de espionaje dns', 'certificado mitm lets encrypt', 'compromiso netnod', 'ics-forth grecia ccTLD', 'directiva de emergencia cisa 19-01', 'seguridad dns', 'seguridad de propiedad de dominio', 'ciberataque de estado nación']

@@ -3,7 +3,8 @@ title: "How to Name Your Project: A Founder's Field Guide"
 date: '2026-06-13'
 language: en
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: guide

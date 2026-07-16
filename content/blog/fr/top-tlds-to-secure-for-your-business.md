@@ -3,7 +3,8 @@ title: 'Les 10 meilleurs TLD à sécuriser pour votre entreprise'
 date: '2026-06-14'
 language: fr
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-business-og.jpg
 description: 'Découvrez les meilleurs TLD à sécuriser pour votre entreprise, pourquoi l''enregistrement défensif de domaines protège votre marque, et comment les enregistrer intelligemment.'

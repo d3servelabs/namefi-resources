@@ -3,7 +3,8 @@ title: 'Sea Turtle : la campagne parrainée par un État qui a détourné le DNS
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Comment « Sea Turtle », une campagne parrainée par un État révélée par Cisco Talos en 2019, a détourné le DNS en compromettant des bureaux d''enregistrement, des registres et des fournisseurs DNS — redirigeant gouvernements, ministères et entreprises énergétiques vers des serveurs contrôlés par les attaquants, forgeant des certificats valides, et allant jusqu''à s''introduire dans un registre national de TLD.'
 keywords: ['détournement dns sea turtle', 'cisco talos sea turtle', 'attaque de détournement dns', 'attaque dns parrainée par un état', 'compromission de registre', 'compromission de bureau d enregistrement', 'campagne d espionnage dns', 'certificat mitm lets encrypt', 'compromission netnod', 'ics-forth grèce ccTLD', 'directive d urgence cisa 19-01', 'sécurité dns', 'sécurité de la propriété de domaine', 'cyberattaque d état nation']

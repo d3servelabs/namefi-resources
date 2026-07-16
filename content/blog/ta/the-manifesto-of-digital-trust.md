@@ -5,7 +5,8 @@ updated: '2023-09-04'
 originalUrl: 'https://hackmd.io/@d3servelabs/vision'
 language: ta
 tags: ['vision', 'digital-trust']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 description: தகவல் டிஜிட்டல்மயமாக்கப்பட்டதைப் போலவே நம்பிக்கையை டிஜிட்டல்மயமாக்குவதும் உற்பத்தித்திறனில் பெரும் பாய்ச்சல், இழப்பில்லாத துல்லியம், குறைந்த செலவு மற்றும் தானியக்கம் ஆகியவற்றை எவ்வாறு சாத்தியமாக்கும் என்பதை விளக்கும் D3Serve-இன் தொலைநோக்கு அறிக்கை.

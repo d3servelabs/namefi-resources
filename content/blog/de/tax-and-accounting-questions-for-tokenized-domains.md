@@ -4,7 +4,8 @@ date: '2026-05-22'
 language: de
 priority: P1
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Ein allgemeiner, nicht beratender Überblick über die Steuer- und Buchhaltungsfragen, die Eigentümer von tokenisierten Domains häufig stellen – Anschaffungskosten, Verkäufe, Haltedauer, geschäftlich vs. privat, Schenkungen, Nachlässe. Besprechen Sie diese Fragen mit einem echten Fachexperten."
 keywords: ['NFT Domain Steuern', 'tokenisierte Domain Anschaffungskosten', 'tokenisierte Domain Buchhaltung', 'tokenisierte Domain Kapitalerträge', 'Verkauf tokenisierte Domain Steuern', 'NFT Domain Kapitalerträge', 'Domain NFT Buchhaltung', 'Domain als Wirtschaftsgut Steuer', 'Schenkung tokenisierte Domain Steuer', 'Nachlass tokenisierte Domain', 'tokenisierte Domain Betriebsausgabe', 'Domain Tokenisierung Steuerfragen', 'Steuer NFT Domain US', 'Krypto Domain Steuer']

@@ -3,7 +3,8 @@ title: 'El Robo de Sex.com: La Carta Falsificada que Robó el Dominio Más Valio
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'En 1995, un estafador llamado Stephen Cohen le robó sex.com a su legítimo propietario Gary Kremen con una sola carta falsificada enviada a Network Solutions. La lucha de años para recuperarlo terminó en una sentencia de $65 millones, un fugitivo en México y un fallo histórico que estableció que los dominios son propiedad.'
 keywords: ['sex.com', 'robo de dominio', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'carta falsificada', 'secuestro de dominio', 'carta Sharon Dimmick', 'seguridad de dominio', 'dominio como propiedad', 'sentencia de $65 millones', 'fraude de transferencia de dominio', 'Domain Mayday']

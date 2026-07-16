@@ -3,7 +3,8 @@ title: 'من Twitter.com إلى X.com: الرحلة ذهابًا وإيابًا 
 date: '2026-06-17'
 language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'كيف أسّس إيلون ماسك X.com سنة 1999، وخسره حين استولى PayPal على اسمه القديم، واسترده سنة 2017 لقيمته العاطفية، وفي النهاية نقل عليه شبكة تواصل اجتماعي بـ44 مليار دولار — فأصبح Twitter.com يُعيد التوجيه إلى X.com.'
 keywords: ['twitter.com', 'x.com', 'إعادة تسمية تويتر إلى x', 'إيلون ماسك x.com', 'تاريخ x.com', 'نطاق paypal x.com', 'تغيير اسم تويتر إلى x', 'إعادة توجيه النطاق', 'ترقية النطاق', 'نطاق بحرف واحد', 'تطبيق كل شيء', 'تسمية العلامة التجارية', 'نطاق مميز']

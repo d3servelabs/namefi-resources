@@ -3,7 +3,8 @@ title: 'ドメイン業界の主要メディア：注目すべきニュースサ
 date: '2026-05-22'
 language: ja
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

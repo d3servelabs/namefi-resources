@@ -3,7 +3,8 @@ title: 'Von Twitter.com zu X.com: Die 24-jährige Hin- und Rückreise einer Ein-
 date: '2026-06-17'
 language: de
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Wie Elon Musk X.com 1999 aufbaute, sie verlor als PayPal seinen alten Namen übernahm, sie 2017 aus Nostalgie zurückkaufte und schließlich ein soziales Netzwerk mit 44 Milliarden Dollar Kaufpreis darauf umzog – sodass Twitter.com nun auf X.com weiterleitet.'
 keywords: ['twitter.com', 'x.com', 'twitter rebranding x', 'elon musk x.com', 'x.com geschichte', 'paypal x.com domain', 'twitter zu x namensänderung', 'domain-weiterleitung', 'domain-upgrade', 'ein-buchstaben-domain', 'everything app', 'markenbezeichnung', 'premium-domain']

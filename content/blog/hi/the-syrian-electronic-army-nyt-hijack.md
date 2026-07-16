@@ -3,7 +3,8 @@ title: 'Domain Mayday EP10: सीरियाई इलेक्ट्रॉन
 date: '2026-06-17'
 language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: '27 अगस्त 2013 को, सीरियाई इलेक्ट्रॉनिक आर्मी ने Melbourne IT के एक रिसेलर को फ़िश किया, nytimes.com और Twitter के डोमेन के DNS रिकॉर्ड्स को फिर से लिखा, और न्यूयॉर्क टाइम्स को घंटों के लिए ऑफ़लाइन कर दिया। एक गहरी पड़ताल कि कैसे रजिस्ट्रार-चेन की कमज़ोर कड़ी एक अखबार की सामने की दरवाज़े की विफलता बनी — और रजिस्ट्री लॉक ने क्या बदला होता।'
 keywords: ['nytimes.com हैक', 'सीरियाई इलेक्ट्रॉनिक आर्मी', 'melbourne it', 'dns हाइजैक', 'डोमेन हाइजैकिंग', 'रजिस्ट्रार सुरक्षा', 'रिसेलर फ़िशिंग', 'रजिस्ट्री लॉक', 'dns रिकॉर्ड्स', 'डोमेन नेम सर्वर अटैक', 'twitter dns 2013', 'डोमेन सुरक्षा', 'serverupdateprohibited']

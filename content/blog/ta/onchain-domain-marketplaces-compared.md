@@ -3,7 +3,8 @@ title: "ஆன்-செயின் டொமைன் சந்தைத்த
 date: '2026-06-24'
 language: ta
 tags: ['domains', 'domain-flipping', 'web3', 'comparison']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

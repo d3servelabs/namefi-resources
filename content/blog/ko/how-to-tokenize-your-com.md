@@ -3,7 +3,8 @@ title: '.com 도메인 토크나이즈 방법: 단계별 가이드 (2026)'
 date: '2026-05-22'
 language: ko
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: tokenize-your-com

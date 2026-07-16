@@ -3,7 +3,8 @@ title: 'Top 10 des TLD à sécuriser pour votre marque de mode'
 date: '2026-06-14'
 language: fr
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-fashion-brand-og.jpg
 description: 'Un guide pratique sur les 10 meilleurs TLD à sécuriser pour votre marque de mode, couvrant la protection de marque, l''intention d''achat et la stratégie d''enregistrement défensif de domaines.'

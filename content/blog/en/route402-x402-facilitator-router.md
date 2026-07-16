@@ -3,7 +3,8 @@ title: "Introducing Route402 — an x402 facilitator router"
 date: '2026-01-22'
 language: en
 tags: ['infrastructure', 'payments', 'x402']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: explainer

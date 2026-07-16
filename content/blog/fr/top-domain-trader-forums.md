@@ -3,7 +3,8 @@ title: 'Top des forums anglophones de trading de noms de domaine : où les domai
 date: '2026-05-22'
 language: fr
 tags: ['domains', 'community', 'domain-investing', 'forums']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Un guide pratique des forums et communautés anglophones où les investisseurs en noms de domaine se rassemblent réellement en 2026 — de NamePros et DNForum aux canaux Twitter/X et Telegram qui les ont discrètement remplacés.'
 ogImage: ../../assets/top-domain-trader-forums-og.jpg

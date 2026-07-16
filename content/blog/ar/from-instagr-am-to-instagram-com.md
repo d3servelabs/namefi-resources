@@ -3,7 +3,8 @@ title: 'من Instagr.am إلى Instagram.com: صفقة الـ 100,000 دولار
 date: '2026-06-17'
 language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'كيف أطلق إنستجرام في 2010 على نطاق instagr.am — مستعيرًا الامتداد الأرميني .am ليكمل اسمه — ثم دفع 100,000 دولار للانتقال إلى Instagram.com، وما تعلمه المؤسسون من تجربة الذكاء الإبداعي في اختيار الامتدادات الجغرافية.'
 keywords: ['instagr.am', 'instagram.com', 'اسم نطاق إنستجرام', 'domain hack', 'نطاق ccTLD', '.am نطاق أرمينيا', 'kevin systrom', 'mike krieger', 'ترقية النطاق', 'تسمية الشركات الناشئة', 'تسمية العلامات التجارية', 'نطاق مميز', 'استراتيجية النطاقات', 'تاريخ إنستجرام']

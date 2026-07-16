@@ -3,7 +3,8 @@ title: 'BadgerDAO 前端攻击事件：一段注入脚本让 1.2 亿美元不翼
 date: '2026-06-17'
 language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: '2021 年 12 月，攻击者入侵了 BadgerDAO 的 Cloudflare 账户，并向其网站前端注入了一段恶意脚本。经过审计的智能合约从未被触动——然而约 1.2 亿美元的资产通过用户在毫不知情的情况下签署的钱包授权悄然流失。深度解析：为何网站本身也是你的安全防线的一部分。'
 keywords: ['badgerdao 黑客攻击', 'badgerdao 前端攻击', 'cloudflare api 密钥泄露', '注入脚本攻击', 'web3 前端安全', '冰钓攻击', 'increaseAllowance 攻击', '代币授权漏洞', 'dns 与域名安全', 'cloudflare workers 漏洞', 'defi 安全', 'web3 供应链攻击', '网站篡改', '域名安全']

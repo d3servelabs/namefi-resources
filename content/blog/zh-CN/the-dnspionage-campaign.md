@@ -3,7 +3,8 @@ title: 'DNSpionage：将 DNS 武器化、针对各国政府的间谍行动'
 date: '2026-06-17'
 language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: '2018 年底，Cisco Talos 披露了 DNSpionage——一场后来被证实与伊朗利益相关的行动。攻击者篡改政府 DNS 记录，将电子邮件和 VPN 流量重定向至攻击者服务器，并申请有效的 TLS 证书以掩人耳目。这场行动促使美国政府发布了有史以来第一份同类紧急指令。'
 keywords: ['dnspionage', 'dns劫持', 'dns重定向', 'cisco talos', 'cisa紧急指令19-01', 'sea turtle dns', '伊朗dns劫持', 'fireeye dns劫持', 'lets encrypt证书滥用', 'dns安全', '域名安全', '国家级网络间谍', '缓解dns基础设施篡改']

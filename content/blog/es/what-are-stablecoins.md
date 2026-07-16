@@ -3,7 +3,8 @@ title: '¿Qué son las stablecoins? Los cimientos de la estabilidad en la econom
 date: '2025-12-11'
 language: 'es'
 tags: ['web3', 'criptomonedas', 'defi', 'blockchain', 'finanzas']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Descubre cómo las stablecoins cierran la brecha entre el dinero fiat tradicional y las criptomonedas, ofreciendo estabilidad para las transacciones Web3 y la inversión en dominios.'
 keywords: ['qué son las stablecoins', 'definición de stablecoin', 'USDT vs USDC', 'volatilidad cripto', 'pagos web3', 'dominios blockchain', 'finanzas descentralizadas', 'colateralizado por fiat', 'comprar dominios con cripto', 'namefi']

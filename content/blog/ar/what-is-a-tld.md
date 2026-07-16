@@ -3,7 +3,8 @@ title: "ما هو امتداد النطاق (TLD)؟ دليل شامل"
 date: '2026-06-10'
 language: ar
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "امتداد النطاق TLD هو الجزء اللي بيجي بعد آخر نقطة في اسم النطاق، زي .com أو .io. اتعلم إيه هو الـ TLD وأنواعه (gTLD وccTLD والممول والـ gTLD الجديد والـ IDN) وإزاي تختار المناسب."
 keywords: ['tld', 'tld meaning', 'what is a tld', 'what is a top level domain', 'top-level domain', 'tld def', 'tld definition', 'que es un tld', "qu'est-ce qu'un tld", 'types of tld', 'gtld vs cctld', 'tld examples', 'what is a domain extension', 'domain extension', 'gTLD', 'ccTLD', 'sponsored TLD', 'new gTLD', 'IDN TLD', 'ICANN', 'IANA', 'domain registry', 'domain registrar', 'choosing a TLD', 'popular TLDs', 'namefi']

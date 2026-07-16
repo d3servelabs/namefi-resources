@@ -3,7 +3,8 @@ title: 'When ICANN Staff Got Phished: The 2014 CZDS Data Breach'
 date: '2026-06-17'
 language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

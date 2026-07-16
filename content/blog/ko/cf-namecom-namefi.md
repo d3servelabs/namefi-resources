@@ -3,7 +3,8 @@ title: "Cloudflare vs Name.com vs Namefi: AI 에이전트 네이티브 등록대
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: comparison
 ogImage: ../../assets/cf-namecom-namefi-og.jpg

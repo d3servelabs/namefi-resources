@@ -3,7 +3,8 @@ title: 'What Are Stablecoins? The Foundation of Stability in the Web3 Economy'
 date: '2025-12-11'
 language: 'en'
 tags: ['web3', 'cryptocurrency', 'defi', 'blockchain', 'finance']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: explainer

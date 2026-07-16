@@ -6,7 +6,9 @@ priority: P0
 tags:
   - faq
 authors:
-  - namefiteam
+  - fenwei-bian
+editors:
+  - victor-zhou
 draft: false
 description: 域名是您在线身份的基石。
 keywords:

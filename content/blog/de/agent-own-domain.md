@@ -3,7 +3,8 @@ title: "Kann ein KI-Agent eine Domain besitzen? WHOIS, Verwahrung und Token"
 date: '2026-07-10'
 language: 'de'
 tags: ['ai-agents', 'domains', 'web3']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: faq
 ogImage: ../../assets/agent-own-domain-og.jpg

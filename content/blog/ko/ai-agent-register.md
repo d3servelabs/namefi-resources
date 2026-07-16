@@ -3,7 +3,8 @@ title: "AI 에이전트로 Namefi에서 도메인을 등록하는 방법"
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-agent-register-og.jpg

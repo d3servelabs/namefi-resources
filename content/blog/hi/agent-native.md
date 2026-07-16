@@ -3,7 +3,8 @@ title: "एजेंट-नेटिव डोमेन रजिस्ट्र
 date: '2026-07-10'
 language: 'hi'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/agent-native-og.jpg

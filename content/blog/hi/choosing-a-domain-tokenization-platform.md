@@ -5,7 +5,9 @@ language: hi
 tags:
   - comparison
 authors:
-  - namefiteam
+  - aileen-wright
+editors:
+  - victor-zhou
 draft: false
 description: 'प्रमुख डोमेन टोकनाइज़ेशन प्लेटफ़ॉर्म्स पर एक निष्पक्ष और तुलनात्मक नज़र — हर एक किस चीज़ में वास्तव में अच्छा है, वे कहाँ समान हैं, कहाँ नहीं हैं, और अपने डोमेन के उपयोग के अनुसार सही प्लेटफ़ॉर्म कैसे चुनें।'
 keywords:

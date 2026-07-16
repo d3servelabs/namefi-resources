@@ -3,7 +3,8 @@ title: 'Domain Mayday EP03 : La prise de contrôle de comptes Twitter Bitcoin en
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Le 15 juillet 2020, des attaquants ont infiltré Twitter par téléphone, détourné les comptes vérifiés d'Obama, Biden, Musk, Gates, Apple et Uber, et lancé une arnaque de doublement de Bitcoin — récoltant environ 118 000 dollars. Une analyse approfondie de la façon dont le contrôle d'une identité en ligne a été volé, et ce qu'elle enseigne sur la possession d'un nom."
 keywords: ['piratage twitter 2020', 'arnaque bitcoin twitter', 'graham ivan clark', 'vishing', 'hameçonnage vocal ciblé', 'ingénierie sociale', 'prise de contrôle de compte', 'sécurité de lidentité en ligne', 'détournement de compte vérifié', 'outil administrateur twitter', 'outil agent', 'risque interne', 'sécurité des domaines', 'rapport ny dfs twitter']

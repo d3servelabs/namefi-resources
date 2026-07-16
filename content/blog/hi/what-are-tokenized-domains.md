@@ -4,7 +4,8 @@ date: '2026-05-22'
 language: hi
 priority: P0
 tags: ['faq']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "टोकनाइज़्ड डोमेन और डोमेन टोकनाइज़ेशन का एक सरल भाषा में परिचय - किसी डोमेन को टोकनाइज़ करने का क्या मतलब है, डोमेन टोकनाइज़ेशन कैसे काम करता है, और एक टोकनाइज़्ड डोमेन पारंपरिक डोमेन और ENS जैसे केवल-ब्लॉकचेन नामों से कैसे अलग है।"
 keywords: ['टोकनाइज़्ड डोमेन', 'टोकनाइज़्ड डोमेन्स', 'डोमेन टोकनाइज़ करें', 'डोमेन को टोकनाइज़ करें', 'डोमेन टोकनाइज़ेशन', 'डोमेन का टोकनाइज़ेशन', 'डोमेन नेम टोकनाइज़ेशन', 'डोमेन को टोकनाइज़ कैसे करें', 'टोकनाइज़्ड डोमेन क्या है', 'टोकनाइज़्ड डोमेन क्या हैं', 'NFT डोमेन', 'ऑन-चेन डोमेन', 'ब्लॉकचेन डोमेन', 'DNS', 'ICANN डोमेन', 'web3 डोमेन', 'डोमेन NFT', 'NFT के रूप में डोमेन', 'namefi', 'डोमेन स्वामित्व', 'डोमेन एसेट टोकनाइज़ेशन', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', 'टोकनाइज़्ड डोमेन बनाम ENS', 'टोकनाइज़्ड डोमेन बनाम web3 डोमेन', 'ICANN डोमेन बनाम web3 डोमेन', 'टोकनाइज़्ड डोमेन प्लेटफॉर्म्स की तुलना']

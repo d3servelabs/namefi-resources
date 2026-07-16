@@ -3,7 +3,8 @@ title: "Wie die Tokenisierung das Domain-Flipping verändert"
 date: '2026-06-24'
 language: de
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: domain-flipping-skills

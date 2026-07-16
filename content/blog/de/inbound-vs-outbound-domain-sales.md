@@ -3,7 +3,8 @@ title: "Inbound- vs. Outbound-Domainverkauf"
 date: '2026-06-21'
 language: de
 tags: ['domains', 'domain-investing', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

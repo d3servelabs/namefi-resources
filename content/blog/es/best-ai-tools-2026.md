@@ -3,7 +3,8 @@ title: "Las mejores herramientas de IA para dominios de 2026: generadores frente
 date: '2026-07-10'
 language: 'es'
 tags: ['ai-agents', 'domains', 'roundup']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: roundup
 ogImage: ../../assets/best-ai-tools-2026-og.jpg

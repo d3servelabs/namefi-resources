@@ -3,7 +3,8 @@ title: "Comment enregistrer un domaine avec votre Agent IA sur Namefi"
 date: '2026-07-10'
 language: 'fr'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-agent-register-og.jpg

@@ -3,7 +3,8 @@ title: 'Top 10 TLDs, die Sie für Ihre Kanzlei sichern sollten'
 date: '2026-06-14'
 language: de
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: 'Die Top 10 TLDs, die Sie für Ihre Kanzlei sichern sollten – einschließlich der Frage, warum .law die einzige juristische TLD ist, die auf verifizierte Anwälte beschränkt ist (während .esq, .legal, .attorney und .lawyer offen sind), plus eine Defensivstrategie.'

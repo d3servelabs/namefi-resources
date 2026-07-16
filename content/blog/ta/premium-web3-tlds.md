@@ -3,7 +3,8 @@ title: "பிரீமியம் Web3 TLD-கள்: டோக்கனைஸ
 date: '2026-06-10'
 language: ta
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: roundup

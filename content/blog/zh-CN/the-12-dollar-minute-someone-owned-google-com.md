@@ -3,7 +3,8 @@ title: '12美元的那一分钟：有人悄悄买下了 google.com'
 date: '2026-06-17'
 language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: '2015年9月，一位前谷歌员工通过 Google Domains 以12美元买下了 google.com，并对全球最具价值的域名拥有了约一分钟的管理控制权。这是 Sanmay Ved 的故事，6006.13美元的漏洞奖励，以及这一分钟的所有权所揭示的：究竟谁真正控制着一个域名。'
 keywords: ['google.com域名', 'sanmay ved', 'google domains漏洞', '域名安全', '谁拥有google.com', '域名劫持', '网站管理员工具访问', 'google漏洞奖励', '6006.13奖励', '域名注册漏洞', '域名控制', 'dns安全', '域名所有权验证']

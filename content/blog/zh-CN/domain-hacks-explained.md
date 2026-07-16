@@ -3,7 +3,8 @@ title: "域名创意拼接：一个网址如何横跨小数点拼出一个单词
 date: '2026-06-20'
 language: zh-CN
 tags: ['domains', 'domain-investing', 'branding', 'domain-flipping']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

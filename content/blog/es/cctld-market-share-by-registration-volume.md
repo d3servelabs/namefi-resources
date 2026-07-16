@@ -3,7 +3,8 @@ title: 'Cuota de mercado de ccTLD por volumen de registro: ¿Quién controla rea
 date: '2026-05-01'
 language: es
 tags: ['cctld', 'domains', 'market-analysis', 'registry']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Un vistazo a qué dominios de nivel superior de código de país dominan la mayor cuota de registros a nivel mundial, por qué los líderes difieren de lo que la mayoría espera y qué nos dicen las cifras de volumen sobre cómo se usa realmente internet.'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg

@@ -3,7 +3,8 @@ title: "Conservation, portefeuilles et récupération des domaines onchain"
 date: '2026-06-24'
 language: fr
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

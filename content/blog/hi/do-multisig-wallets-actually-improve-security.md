@@ -3,7 +3,8 @@ title: 'क्या मल्टीसिग वॉलेट्स वास्
 date: '2026-05-07'
 language: hi
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'मल्टीसिग्नेचर वॉलेट्स को क्रिप्टो में डिफ़ॉल्ट सुरक्षित कस्टडी पैटर्न माना जाता है, लेकिन "क्या वे वास्तव में सुरक्षा बढ़ाते हैं?" इसका उत्तर पूरी तरह से थ्रेट मॉडल पर निर्भर करता है। यह पोस्ट बताती है कि मल्टीसिग किन चीज़ों से बचाता है, किनसे नहीं, और यह कहाँ चीज़ों को बदतर बना सकता है।'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg

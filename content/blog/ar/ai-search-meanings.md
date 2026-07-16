@@ -3,7 +3,8 @@ title: '"البحث عن نطاقات بالذكاء الاصطناعي" له م
 date: '2026-07-10'
 language: 'ar'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/ai-search-meanings-og.jpg

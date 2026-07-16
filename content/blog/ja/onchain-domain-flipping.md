@@ -3,7 +3,8 @@ title: "オンチェーン・ドメインフリッピング：ENSとトークン
 date: '2026-06-24'
 language: ja
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

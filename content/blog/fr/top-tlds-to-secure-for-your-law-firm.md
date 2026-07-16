@@ -3,7 +3,8 @@ title: 'Les 10 meilleurs TLD à sécuriser pour votre cabinet d''avocats'
 date: '2026-06-14'
 language: fr
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: 'Les 10 meilleurs TLD à sécuriser pour votre cabinet d''avocats, notamment pourquoi .law est le seul TLD juridique réservé aux avocats vérifiés (tandis que .esq, .legal, .attorney et .lawyer sont ouverts), ainsi qu''une stratégie défensive.'

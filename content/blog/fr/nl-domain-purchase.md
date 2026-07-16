@@ -3,7 +3,8 @@ title: "Comment acheter un nom de domaine en langage naturel (2026)"
 date: '2026-07-10'
 language: 'fr'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/nl-domain-purchase-og.jpg

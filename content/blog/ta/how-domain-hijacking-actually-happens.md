@@ -3,7 +3,8 @@ title: 'டொமைன் கடத்தல் உண்மையில் எ
 date: '2026-05-10'
 language: ta
 tags: ['security', 'domains', 'registrar', 'incident-response', 'domain-flipping']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

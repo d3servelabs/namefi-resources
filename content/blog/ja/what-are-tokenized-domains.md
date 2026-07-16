@@ -5,7 +5,8 @@ updated: '2026-06-10'
 language: ja
 priority: P0
 tags: ['faq']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 format: explainer

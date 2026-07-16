@@ -3,7 +3,8 @@ title: ".ioドメインはなぜ高いのか？"
 date: '2026-06-10'
 language: 'ja'
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: explainer

@@ -3,7 +3,8 @@ title: 'أفضل 10 نطاقات عليك تأمينها كوسيط عقاري'
 date: '2026-06-14'
 language: ar
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-real-estate-business-og.jpg
 description: 'أفضل 10 نطاقات يجب على كل وسيط عقاري تأمينها لحماية علامته التجارية، بما في ذلك شروط التسجيل في .realtor، ونصائح التسجيل الدفاعي، وأين تسجّل نطاقاتك.'

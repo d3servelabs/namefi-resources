@@ -3,7 +3,8 @@ title: "مقارنة أدوات تقييم الدومينات: Estibot ضد GoDa
 date: '2026-06-21'
 language: ar
 tags: ['domains', 'domain-investing', 'domain-flipping', 'comparison']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

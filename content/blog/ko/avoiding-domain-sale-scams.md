@@ -3,7 +3,8 @@ title: '도메인 판매 사기를 피하는 방법'
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'security', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

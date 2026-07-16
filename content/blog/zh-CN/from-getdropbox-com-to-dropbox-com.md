@@ -3,7 +3,8 @@ title: '从 GetDropbox.com 到 Dropbox.com：那次花掉 30 万美元、去掉"
 date: '2026-06-16'
 language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Dropbox 因为 Dropbox.com 已被注册，只能在 GetDropbox.com 上起步，随后经历了商标维权与域名抢注的漫长拉锯，最终以据报道 30 万美元现金买下了精准匹配域名 Dropbox.com。'
 keywords: ['getdropbox.com', 'dropbox.com', 'dropbox域名', 'drew houston', 'y combinator dropbox', '域名升级', '创业命名', '品牌命名', '高端域名', '域名策略', '精准匹配域名', '域名收购', 'evenflow dropbox']

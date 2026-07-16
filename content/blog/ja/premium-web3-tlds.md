@@ -3,7 +3,8 @@ title: "プレミアムWeb3 TLD：2026年版・最も価値あるトークン化
 date: '2026-06-10'
 language: ja
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: roundup

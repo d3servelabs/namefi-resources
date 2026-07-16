@@ -3,7 +3,8 @@ title: '프로젝트 이름 짓기: 창업자를 위한 실전 가이드'
 date: '2026-06-13'
 language: ko
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: guide

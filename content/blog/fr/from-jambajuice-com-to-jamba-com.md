@@ -3,7 +3,8 @@ title: "De JambaJuice.com à Jamba.com : comment une chaîne de smoothies a aban
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Comment Jamba Juice a passé 29 ans à s'expliquer avec le mot « Juice », pourquoi elle l'a abandonné en 2019 pour devenir simplement « Jamba », et l'avantage discret que presque personne n'a remarqué : l'entreprise possédait le domaine exact Jamba.com depuis les années 1990."
 keywords: ['jambajuice.com', 'jamba.com', 'nom de domaine jamba juice', 'rebranding jamba', 'mise à niveau de domaine', 'changement de nom jamba juice', 'kirk perron', 'focus brands jamba', 'domaine correspondance exacte', 'dénomination startup', 'dénomination de marque', 'domaine premium', 'stratégie de domaine', 'domaine définissant une catégorie']

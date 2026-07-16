@@ -3,7 +3,8 @@ title: "AIエージェント型ドメインプラットフォーム：2026年版
 date: '2026-07-10'
 language: 'ja'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-domain-platforms-og.jpg

@@ -3,7 +3,8 @@ title: '도메인 플리핑과 법률: 상표, UDRP, 그리고 사기'
 date: '2026-06-21'
 language: ko
 tags: ['domains', 'security', 'domain-flipping', 'explainer']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

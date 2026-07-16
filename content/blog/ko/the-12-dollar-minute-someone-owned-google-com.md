@@ -3,7 +3,8 @@ title: '12달러의 1분: 누군가 조용히 Google.com을 구매한 날'
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

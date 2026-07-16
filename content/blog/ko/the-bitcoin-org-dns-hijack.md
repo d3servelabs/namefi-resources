@@ -3,7 +3,8 @@ title: 'Bitcoin.org DNS 하이재킹: 비트코인의 공식 홈페이지가 어
 date: '2026-06-17'
 language: ko
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

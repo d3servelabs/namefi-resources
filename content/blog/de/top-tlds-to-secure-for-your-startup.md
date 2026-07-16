@@ -3,7 +3,8 @@ title: 'Die 10 wichtigsten TLDs, die Sie für Ihr Startup sichern sollten'
 date: '2026-06-14'
 language: de
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-startup-og.jpg
 description: 'Entdecken Sie die wichtigsten TLDs für Ihr Startup – von .com bis .ai – sowie eine defensive Registrierungsstrategie zum Schutz Ihrer Marke vor Typosquattern.'

@@ -3,7 +3,8 @@ title: "سيكولوجية تسعير النطاقات: اشتري الآن مق
 date: '2026-06-21'
 language: ar
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

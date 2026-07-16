@@ -3,7 +3,8 @@ title: 'Do Multisig Wallets Actually Improve Security? A Threat-Model View'
 date: '2026-05-07'
 language: en
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 format: explainer

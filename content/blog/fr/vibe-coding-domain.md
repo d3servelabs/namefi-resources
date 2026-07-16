@@ -3,7 +3,8 @@ title: "Le vibe coding a besoin d’un domaine : enregistrez-le sans interrompre
 date: '2026-07-10'
 language: 'fr'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 ogImage: ../../assets/vibe-coding-domain-og.jpg

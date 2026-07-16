@@ -3,7 +3,8 @@ title: "ドメイン売買詐欺を回避する方法"
 date: '2026-06-21'
 language: ja
 tags: ['domains', 'security', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

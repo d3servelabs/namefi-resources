@@ -3,7 +3,8 @@ title: 'Der Malaysia-Airlines-DNS-Hijack: „404 — Flugzeug nicht gefunden"'
 date: '2026-06-17'
 language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'Im Januar 2015 kapert Lizard Squad das DNS von malaysiaairlines.com und ersetzt die Airline-Website durch einen Eidechse im Frack und den Spott „404 — Flugzeug nicht gefunden." Kein Server wurde kompromittiert — die Angreifer änderten einfach, wohin die Domain zeigte. Ein Domain-Mayday-Deep-Dive darüber, wie DNS zur verwundbarsten Eingangstür der Fluggesellschaft wurde.'
 keywords: ['malaysia airlines dns hijack', 'lizard squad', 'cyber caliphate', '404 flugzeug nicht gefunden', 'dns hijacking', 'domain hijacking', 'registrar kompromittierung', 'webnic', 'malaysiaairlines.com', 'domain sicherheit', 'dns umleitung', 'registry lock', 'mh370']

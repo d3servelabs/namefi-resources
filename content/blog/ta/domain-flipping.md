@@ -3,7 +3,8 @@ title: "டொமைன் மறுவிற்பனை: லாபத்தி
 date: '2026-06-20'
 language: ta
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

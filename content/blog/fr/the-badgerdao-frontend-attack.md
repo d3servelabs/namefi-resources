@@ -3,7 +3,8 @@ title: "L'attaque front-end de BadgerDAO : 120 millions de dollars siphonnés pa
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "En décembre 2021, des attaquants ont compromis le compte Cloudflare de BadgerDAO et injecté un seul script malveillant dans le front-end de son site web. Les contrats intelligents audités n'ont jamais été touchés — et pourtant, environ 120 millions de dollars sont partis via des approbations de portefeuilles signées à l'insu des utilisateurs. Une analyse approfondie expliquant pourquoi le site web fait partie de votre surface de sécurité."
 keywords: ['piratage badgerdao', 'attaque front-end badgerdao', 'compromission clé api cloudflare', 'attaque par script injecté', 'sécurité front-end web3', 'ice phishing', 'attaque increaseAllowance', 'exploit approbation de tokens', 'sécurité dns et domaine', 'exploit cloudflare workers', 'sécurité defi', 'attaque chaîne d approvisionnement web3', 'falsification de site web', 'sécurité des domaines']

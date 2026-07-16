@@ -3,7 +3,8 @@ title: "डोमेन प्राइसिंग साइकोलॉजी:
 date: '2026-06-21'
 language: hi
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

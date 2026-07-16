@@ -3,7 +3,8 @@ title: "Meilleurs outils IA pour les domaines en 2026 : générateurs ou platefo
 date: '2026-07-10'
 language: 'fr'
 tags: ['ai-agents', 'domains', 'roundup']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: roundup
 ogImage: ../../assets/best-ai-tools-2026-og.jpg

@@ -3,7 +3,8 @@ title: 'DNS sobre HTTPS vs. DNS Empresarial de Horizonte Dividido: Un Punto Muer
 date: '2026-05-04'
 language: es
 tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'DNS sobre HTTPS (DoH) protege la privacidad del usuario encriptando las consultas DNS dentro de HTTPS. El DNS empresarial de horizonte dividido depende de que la red pueda ver esas consultas. La colisión entre ambos está redefiniendo cómo las redes corporativas, navegadores y sistemas operativos manejan la resolución de nombres.'
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg

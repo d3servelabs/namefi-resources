@@ -3,7 +3,8 @@ title: 'From TheFacebook.com to Facebook.com: The $200K Domain Upgrade That Made
 date: '2026-06-10'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

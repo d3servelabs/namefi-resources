@@ -3,7 +3,8 @@ title: 'La Brecha Plurianual de GoDaddy: Cómo los Intrusos Vivieron Dentro del 
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Entre 2020 y 2022, un único grupo de actores maliciosos habitó dentro de la infraestructura de GoDaddy — robando código fuente, exponiendo a 1,2 millones de clientes de Managed WordPress y redirigiendo intermitentemente sitios web de clientes a destinos maliciosos. Un análisis profundo sobre el riesgo de concentración en registradores y lo que enseña acerca de los puntos únicos de falla.'
 keywords: ['brecha godaddy', 'filtración de datos godaddy', 'brecha managed wordpress', 'seguridad de registradores', 'seguridad de dominios', 'brecha plurianual', 'malware cpanel', 'ataque de redirección de sitios web', 'exposición de clave privada ssl', 'brecha de contraseña sftp', 'ciberseguridad sec 10-k', 'riesgo de concentración de registradores', 'punto único de falla']

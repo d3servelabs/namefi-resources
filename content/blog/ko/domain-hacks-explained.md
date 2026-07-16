@@ -3,7 +3,8 @@ title: "도메인 핵: 웹 주소가 점을 가로질러 하나의 단어가 되
 date: '2026-06-20'
 language: ko
 tags: ['domains', 'domain-investing', 'branding', 'domain-flipping']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

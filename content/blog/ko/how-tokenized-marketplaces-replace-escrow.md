@@ -3,7 +3,8 @@ title: '목록 등록부터 결제까지: 토큰화 마켓플레이스가 에스
 date: '2026-05-22'
 language: ko
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-tokenization
 series: tokenize-your-com

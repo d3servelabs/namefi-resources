@@ -3,7 +3,8 @@ title: 'The Curve Finance DNS Hijack: When "Audited Contracts" Couldn''t Save th
 date: '2026-06-17'
 language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

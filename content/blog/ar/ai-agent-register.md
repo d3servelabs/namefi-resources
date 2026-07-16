@@ -3,7 +3,8 @@ title: "إزاي تسجّل دومين باستخدام وكيل الذكاء ا
 date: '2026-07-10'
 language: 'ar'
 tags: ['ai-agents', 'guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/ai-agent-register-og.jpg

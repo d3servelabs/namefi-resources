@@ -3,7 +3,8 @@ title: 'El ataque BGP + DNS a MyEtherWallet: Cómo el secuestro del enrutamiento
 date: '2026-06-17'
 language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'El 24 de abril de 2018, unos atacantes secuestraron el enrutamiento de internet de Amazon Route 53, envenenaron las respuestas DNS de myetherwallet.com y sirvieron un clon de phishing con un certificado autofirmado, drenando aproximadamente $150,000 en Ethereum. Un análisis en profundidad de por qué el DNS depende de una capa de enrutamiento que confía por defecto.'
 keywords: ['myetherwallet', 'bgp hijack', 'secuestro dns', 'amazon route 53', 'route 53 hijack', 'seguridad dns', 'seguridad enrutamiento bgp', 'phishing ethereum', 'certificado autofirmado', 'enet as10297', 'rpki roa', 'phishing billetera crypto', 'seguridad de dominios']

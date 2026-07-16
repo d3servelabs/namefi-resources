@@ -3,7 +3,8 @@ title: 'How Domain Hijacking Actually Happens: Five Attack Paths and Controls Th
 date: '2026-05-10'
 language: en
 tags: ['security', 'domains', 'registrar', 'incident-response', 'domain-flipping']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

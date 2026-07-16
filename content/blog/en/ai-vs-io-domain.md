@@ -3,7 +3,8 @@ title: ".ai vs .io: Which Domain Is Right for Your AI or Tech Startup?"
 date: '2026-06-10'
 language: 'en'
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: comparison

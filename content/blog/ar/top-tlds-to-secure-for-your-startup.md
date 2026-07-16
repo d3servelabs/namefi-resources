@@ -3,7 +3,8 @@ title: 'أفضل 10 امتدادات دومين لازم تأمّنها لشرك
 date: '2026-06-14'
 language: ar
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-startup-og.jpg
 description: 'اكتشف أفضل امتدادات الدومين اللي لازم تأمّنها لشركتك الناشئة، من .com لـ .ai، مع استراتيجية تسجيل دفاعية تحمي علامتك التجارية من المحتالين.'

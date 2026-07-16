@@ -3,7 +3,8 @@ title: "How to Avoid Domain Sale Scams"
 date: '2026-06-21'
 language: en
 tags: ['domains', 'security', 'domain-flipping', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

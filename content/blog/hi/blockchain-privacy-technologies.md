@@ -3,7 +3,8 @@ title: "ब्लॉकचेन की प्रमुख गोपनीयत
 date: '2026-07-02'
 language: hi
 tags: ['guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

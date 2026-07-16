@@ -3,7 +3,8 @@ title: "L'attaque DNS Dyn : quand un botnet Mirai de caméras piratées a mis la
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: "Le 21 octobre 2016, une attaque DDoS alimentée par le botnet IoT Mirai a frappé le fournisseur DNS Dyn en trois vagues, rendant Twitter, Netflix, Reddit, Spotify, GitHub, Airbnb et PayPal inaccessibles pendant des heures — une étude de cas Domain Mayday sur la concentration des fournisseurs DNS."
 keywords: ['attaque dns dyn', 'botnet mirai', 'ddos 21 octobre 2016', 'attaque ddos dns', 'botnet iot', 'panne fournisseur dns', 'sécurité des domaines', 'point de défaillance unique dns', 'ddos dyn 2016', 'malware mirai', 'panne internet 2016', 'redondance dns', 'caméras iot piratées']

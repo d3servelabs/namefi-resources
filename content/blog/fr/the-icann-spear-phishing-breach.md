@@ -3,7 +3,8 @@ title: "Quand l'ICANN elle-même s'est fait hameçonner : la violation par spear
 date: '2026-06-17'
 language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: "Fin 2014, l'ICANN — l'organisme qui coordonne le système de noms de domaine Internet — a reconnu qu'un courriel de spear-phishing usurpant son propre domaine avait récolté les identifiants de membres du personnel et accordé aux attaquants un accès administrateur au Centralized Zone Data System. Une analyse approfondie de Domain Mayday sur la façon dont l'autorité DNS elle-même s'est fait hameçonner, ce qui a été exposé et pourquoi cela compte encore aujourd'hui."
 keywords: ['violation icann', 'spear phishing icann', 'czds', 'centralized zone data system', 'sécurité dns', 'sécurité des noms de domaine', 'attaque spear phishing', 'hameçonnage de credentials', 'fichiers de zone', 'iana', 'hachages de mots de passe salés', 'violation du système de noms de domaine', 'piratage icann 2014']

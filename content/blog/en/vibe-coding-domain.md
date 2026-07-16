@@ -3,7 +3,8 @@ title: "Vibe Coding Needs a Domain: Register Without Leaving Flow"
 date: '2026-07-10'
 language: 'en'
 tags: ['ai-agents', 'domains', 'guide']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: opinion
 ogImage: ../../assets/vibe-coding-domain-og.jpg

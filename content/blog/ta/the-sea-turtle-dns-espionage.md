@@ -3,7 +3,8 @@ title: 'Sea Turtle: அரசுகளை உளவு பார்க்க DNS
 date: '2026-06-17'
 language: ta
 tags: ['domains', 'security', 'dns', 'domain-security']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

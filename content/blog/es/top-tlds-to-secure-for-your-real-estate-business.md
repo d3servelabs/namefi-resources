@@ -3,7 +3,8 @@ title: 'Los 10 mejores TLD que debes asegurar como agente inmobiliario'
 date: '2026-06-14'
 language: es
 tags: ['tld', 'domains']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-real-estate-business-og.jpg
 description: 'Los 10 mejores TLD que todo agente inmobiliario debe asegurar para proteger su marca, incluyendo las reglas de elegibilidad para .realtor, consejos de registro defensivo y dónde registrarse.'

@@ -3,7 +3,8 @@ title: "AI 에이전트가 사람 없이 도메인을 구매하는 방법 (2026)
 date: '2026-07-10'
 language: 'ko'
 tags: ['ai-agents', 'domains', 'explainer']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/agents-buy-domains-og.jpg

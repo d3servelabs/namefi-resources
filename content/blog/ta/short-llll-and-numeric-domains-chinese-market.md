@@ -3,7 +3,8 @@ title: "குறுகிய, LLLL மற்றும் எண் டொமை
 date: '2026-06-21'
 language: ta
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

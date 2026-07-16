@@ -3,7 +3,8 @@ title: 'Was sind Stablecoins? Das Fundament der Stabilität in der Web3-Ökonomi
 date: '2025-12-11'
 language: 'de'
 tags: ['web3', 'kryptowährung', 'defi', 'blockchain', 'finanzen']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
+editors: ['victor-zhou']
 draft: false
 description: 'Entdecken Sie, wie Stablecoins die Lücke zwischen traditionellem Fiat-Geld und Kryptowährungen schließen und Stabilität für Web3-Transaktionen und Domain-Investitionen bieten.'
 keywords: ['was sind stablecoins', 'stablecoin definition', 'USDT vs USDC', 'krypto volatilität', 'web3 zahlungen', 'blockchain domains', 'dezentralisierte finanzen', 'fiat-besichert', 'domains mit krypto kaufen', 'namefi']
