@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .boutique domain is an open generic extension built for curated shops and small specialty brands. Learn who uses it, how it is priced, and whether it suits you.'
 keywords: ['.boutique domain', 'what is .boutique', 'boutique TLD', 'boutique domain registration', 'domains for small shops', 'curated brand domain', 'new gTLD', 'Binky Moon']

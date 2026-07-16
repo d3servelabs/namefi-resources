@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 以恶意方式注册与他人商标相同或近似的域名，意图从中牟利。
 keywords: ['网络抢注', '恶意注册', '域名争议', '商标侵权', 'UDRP']
 level: 1

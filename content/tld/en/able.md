@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld', 'branding', 'domain-names', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Discover the creative power of the .able domain extension. Learn how this versatile TLD boosts branding for startups, developers, and creatives. Secure yours at Namefi."
 relatedArticles:

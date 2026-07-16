@@ -5,6 +5,7 @@ language: 'ta'
 tags: ['ai-agents', 'comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 format: roundup
 ogImage: ../../assets/ai-tld-registrars-og.jpg

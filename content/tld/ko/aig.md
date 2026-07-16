@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: "인공지능과 생성형 기술을 위한 새로운 도메인 선택지, .aig TLD를 알아보세요. 차세대 혁신 프로젝트에 .aig가 최선인 이유를 살펴봅니다."
 keywords: [".aig 도메인", ".aig TLD", "최상위 도메인 .aig", ".aig란", ".aig를 선택하는 이유", ".aig 도메인이란", ".aig 도메인 선택 이유", "인공지능 도메인", "블록체인 도메인", "토큰화 도메인", "생성형 AI 도메인", "테크 스타트업 브랜딩", "도메인 투자", "Web3 도메인", "AI 게이밍"]

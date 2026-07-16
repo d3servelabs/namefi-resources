@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .accountant TLD: Vorteile für Finanzprofis, Verfügbarkeit und wie Sie diese vertrauenswürdige Domain bei Namefi registrieren."
 keywords: [".accountant domains", ".accountant TLD", ".accountant top-level domain", "was ist .accountant", "warum .accountant wählen", "was ist die .accountant domain", "warum die .accountant domain wählen", "Buchhalter Domain", "Finanzdienstleister Domains", "Domain Investing", "Blockchain Domains", "Tokenisierte Domains", "Steuerberater Marketing", "Web3 Domains"]

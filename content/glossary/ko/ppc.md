@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 방문자가 광고를 클릭할 때마다 소유자에게 수익이 발생하는 광고 모델로, 파킹 도메인 수익화에 활용됩니다.
 keywords: ['PPC', '클릭당 과금', '도메인 수익화', '광고 수익', '파킹 수익']
 also_known_as: ['클릭당 과금']

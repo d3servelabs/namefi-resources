@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo Massdrop pasó siete años construyendo una comunidad de compras grupales para entusiastas, luego se rebrandeó como Drop en 2019 — adquiriendo discretamente el dominio premium Drop.com (cuyo precio de venta fue alguna vez $800,000) antes del cambio de nombre, y por qué eliminar "Mass" fue tan importante.'
 keywords: ['massdrop.com', 'drop.com', 'dominio drop', 'rebrand massdrop', 'actualización de dominio', 'compras grupales', 'teclados mecánicos', 'comunidad audiófila', 'naming de startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'dominio de coincidencia exacta', 'comercio comunitario']

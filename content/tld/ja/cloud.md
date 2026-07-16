@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.cloudドメインはAruba PEC S.p.A.が運営するオープンgTLDで、クラウド・SaaS・テックブランド向けに設計されています。適した用途、価格の動向、評判を解説します。'
 keywords: ['.cloudドメイン', '.cloudとは', '.cloud TLD', 'クラウドコンピューティング ドメイン', 'SaaS ドメイン名', 'Aruba .cloudレジストリ', '新gTLD', 'テック ドメイン拡張子']

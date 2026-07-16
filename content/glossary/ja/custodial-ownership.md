@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 第三者があなたの資産の秘密鍵を代理で保管する仕組みで、取引には相手のセキュリティと許可に依存することになる。
 keywords: ['カストディアル所有権', 'カストディ', '第三者管理', 'レジストラ管理', '集中型ストレージ']
 level: 1

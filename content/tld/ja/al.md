@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: ".alドメイン拡張子の多彩な活用法を解説します。アルバニアでのプレゼンス確立から「digit.al」のようなドメインハックまで、.al TLDが現代のブランディングに最適な理由を紹介します。"
 keywords: [".alドメイン", ".al TLD", "トップレベルドメイン", ".alとは", ".alを選ぶ理由", ".alドメインとは", "アルバニア ドメイン登録", "ドメインハック", "クリエイティブブランディング", ".alドメイン購入", "ドメイン投資", "ブロックチェーンドメイン", "トークン化資産", "Web3ドメイン"]

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: レジストラアカウントへの不正アクセスにより、ドメイン名の管理権を奪取される行為。
 keywords: ['ドメインハイジャック', 'アカウント侵害', 'ドメイン盗難', 'レジストラセキュリティ', '不正移管']
 level: 1

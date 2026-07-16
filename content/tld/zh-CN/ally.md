@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .ally 顶级域名（TLD）的独特价值。探索它如何帮助品牌展示合作伙伴关系、包容性及社区支持，并了解为何它是 Web3 和域名投资者的明智之选。'
 keywords: ['.ally domains', '.ally TLD', 'top-level domain', 'what is .ally', 'why choose .ally', 'what is the .ally domain', 'why choose the .ally domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'brand partnerships', 'inclusive branding', 'new gTLD investment']

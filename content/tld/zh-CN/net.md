@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 深入了解 .net 顶级域名（TLD）的历史、用途及独特优势。作为互联网最受信任的域名之一，.net 是科技企业和网络服务的首选。立即在 Namefi 注册，体验 Web3 时代的域名管理。
 keywords: ['.net domains', '.net TLD', '.net top-level domain', 'what is .net', 'why choose .net', 'what is the .net domain', 'why choose the .net domain', '.net 域名', '购买 .net 域名', 'domain investing .net', 'blockchain domains', 'tokenized domains', 'Web3 domains', '.net registry', 'Verisign .net']

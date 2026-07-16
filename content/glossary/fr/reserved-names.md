@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Des domaines qu''un registre soustrait à l''enregistrement public, comme les étiquettes premium, de politique ou protégées.
 keywords: ['noms réservés', 'noms bloqués', 'réservé par le registre', 'premium réservé', 'liste de collision']
 level: 1

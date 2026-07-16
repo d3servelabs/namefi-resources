@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'domain-flipping', 'guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ブロックチェーンアカウントを管理し、トランザクションに署名するための秘密の数値。絶対に他人と共有してはならない。
 keywords: ['秘密鍵', '署名鍵', 'ウォレット鍵', 'シークレットキー', 'ブロックチェーンアカウント']
 level: 1

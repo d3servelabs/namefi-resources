@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 商標権者がサイバースクワッターを連邦裁判所で訴えることを可能にする米国法。UDRPに代わる手段として機能する。
 keywords: ['ACPA', 'サイバースクワッティング対策', '米国商標法', 'ドメイン紛争', '連邦裁判所']
 also_known_as: ['反サイバースクワッティング消費者保護法']

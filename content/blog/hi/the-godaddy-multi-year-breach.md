@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '2020 से 2022 के बीच, एक ही खतरा अभिनेता समूह GoDaddy के बुनियादी ढांचे के अंदर रहा — स्रोत कोड चुराते हुए, 1.2 मिलियन Managed WordPress ग्राहकों को उजागर करते हुए, और बीच-बीच में ग्राहकों की वेबसाइटों को दुर्भावनापूर्ण साइटों पर पुनर्निर्देशित करते हुए। रजिस्ट्रार केंद्रीकरण जोखिम और विफलता के एकल बिंदुओं के बारे में एक गहन विश्लेषण।'
 keywords: ['godaddy breach', 'godaddy data breach', 'managed wordpress breach', 'registrar security', 'domain security', 'multi-year breach', 'cpanel malware', 'website redirect attack', 'ssl private key exposure', 'sftp password breach', 'sec 10-k cybersecurity', 'registrar concentration risk', 'single point of failure']

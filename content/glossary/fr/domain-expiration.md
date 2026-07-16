@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: La date à laquelle l'enregistrement d'un domaine se termine ; sans renouvellement, il entame une séquence de déchéance menant à la suppression.
 keywords: ['expiration de domaine', 'domaine expiré', 'renouvellement', 'période de grâce', 'rachat']
 level: 1

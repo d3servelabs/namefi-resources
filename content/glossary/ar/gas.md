@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الرسوم المدفوعة لمعالجة معاملة على البلوكتشين، بتتحدد بالأصل الأصلي للشبكة وبترتفع مع الازدحام؛ وشبكات Layer 2 بتتقاضى أقل بكتير.
 keywords: ['غاز', 'رسوم الغاز', 'رسوم المعاملات', 'gwei', 'غاز إيثريوم', 'غاز Base', 'رسوم L2', 'تكلفة الإصدار']
 level: 1

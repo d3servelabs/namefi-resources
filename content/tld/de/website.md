@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Erfahren Sie alles über die .website Domain: Vorteile, Verfügbarkeit und warum sie die ideale Wahl für Ihr Online-Projekt bei Namefi ist.'
 keywords: ['.website domains', '.website TLD', '.website top-level domain', 'was ist .website', 'warum .website wählen', 'was ist die .website domain', 'warum die .website domain wählen', 'Domain investieren', 'Blockchain Domains', 'tokenisierte Domains', 'günstige Domains kaufen', 'neue gTLDs', 'Web3 Domains', 'Domain Registrierung', 'Namefi']

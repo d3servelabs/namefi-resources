@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 衡量域名搜索排名潜力的信誉指标，主要由高质量入站链接驱动。
 keywords: ['域名权威度', '反向链接', '链接权益', 'SEO', '排名信号', '入站链接']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 허위 IP 경로 공지를 통해 인터넷 트래픽을 우회시키는 네트워크 계층 공격으로, DNS보다 하위 계층에서 작동합니다.
 keywords: ['BGP 하이재킹', '경로 하이재킹', 'IP 프리픽스', '네트워크 보안', '인터넷 라우팅']
 level: 1

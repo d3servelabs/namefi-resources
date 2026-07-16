@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனை வேறு பதிவாளரிடம் மாற்றுவதை, வேண்டுமென்றே தடை நீக்கும் வரை தடுக்கும் நிலை.
 keywords: ['பரிமாற்ற தடை', 'பதிவாளர் தடை', 'டொமைன் பாதுகாப்பு', 'EPP நிலை', 'டொமைன் பரிமாற்றம்']
 also_known_as: ['பதிவாளர் தடை']

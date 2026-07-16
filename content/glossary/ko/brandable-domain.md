@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 짧고 기억하기 쉬우며 종종 창작된 단어로 구성된, 강력한 브랜드로 기능하는 도메인 이름입니다.
 keywords: ['브랜더블 도메인', '브랜드 도메인', '창작 도메인', '만들어진 단어 도메인', '기억하기 쉬운 도메인']
 level: 1

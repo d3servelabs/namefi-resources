@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.styleドメインは、ファッション・デザイン・ライフスタイルブランド向けのオープンな汎用TLDです。運営者、登録資格、価格の仕組み、取得方法をわかりやすく解説します。'
 keywords: ['.styleドメイン', '.styleとは', '.style TLD', '.styleドメイン取得', 'ファッション向けドメイン拡張子', 'デザインドメイン名', 'ライフスタイル TLD', '.styleドメイン登録', 'Identity Digital', '新gTLD']

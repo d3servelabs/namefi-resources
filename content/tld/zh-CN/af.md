@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: 深入了解 .af 顶级域名（TLD）。探索其独特的用途、域名投资价值以及为何它成为创意品牌和科技初创企业的热门选择。立即在 Namefi 保护您的域名。
 keywords:

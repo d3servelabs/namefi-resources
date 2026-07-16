@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '深入了解 .aig 顶级域名：专为生成式 AI (AIGC) 时代打造的数字资产。探索其优势、应用场景以及为何它是科技初创企业和投资者的明智选择。'
 keywords:

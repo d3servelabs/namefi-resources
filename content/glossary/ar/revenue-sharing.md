@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي مشاركة الإيرادات وكيف يمكن تطبيقها على تحقيق دخل من الدومينات؟
 keywords: ["مشاركة الإيرادات","دخل سلبي","تحقيق دخل من الدومين","توزيع الأرباح","العقود الذكية"]
 relatedArticles:

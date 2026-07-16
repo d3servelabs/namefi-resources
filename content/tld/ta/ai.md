@@ -5,6 +5,8 @@ language: 'ta'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.ai என்பது Anguilla-வின் நாட்டுக்குரிய டொமைன் — இப்போது உலகளாவிய செயற்கை நுண்ணறிவு பிராண்டிங் நீட்டிப்பாக மாறியது. யார் நிர்வகிக்கிறார்கள், பதிவு விதிகள், SEO தாக்கம், மற்றும் Namefi-ல் .ai எப்படி பதிவு செய்வது என்று அறிக.'
 keywords: ['.ai டொமைன்', '.ai என்றால் என்ன', '.ai TLD', 'Anguilla ccTLD', '.ai டொமைன் பதிவு', 'செயற்கை நுண்ணறிவு தொடக்க நிறுவனம் டொமைன்', '.ai vs .io', '.ai-ஐ யார் வைத்திருக்கிறார்கள்']

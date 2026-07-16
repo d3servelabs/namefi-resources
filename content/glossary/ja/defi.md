@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 分散型金融（DeFi）は、銀行や仲介業者を介さず、パブリックブロックチェーン上のスマートコントラクトを通じて融資・借入・取引などを提供する金融サービスの総称。
 keywords: ['DeFi', '分散型金融', '融資', '借入', '担保', 'DEX', 'マネーマーケット', 'オンチェーン金融']
 level: 1

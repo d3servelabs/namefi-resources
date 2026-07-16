@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.loanドメインは、融資・金融サイト向けのオープンな新gTLDです。登録資格、価格体系、スパム評判、購入すべきかどうかを詳しく解説します。'
 keywords: ['.loanドメイン', '.loanドメインとは', '.loan TLD', '.loanドメイン登録', '.loanドメインは安全か', '.loanドメインの意味', 'ローンドメイン拡張子', '新gTLD', '安いドメイン拡張子', '金融ドメイン名']

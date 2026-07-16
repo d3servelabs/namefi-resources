@@ -7,6 +7,7 @@ language: ar
 tags: ['vision', 'digital-trust']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: بيان رؤية D3Serve — لماذا يُعدّ تحويل الثقة إلى صيغة رقمية، على غرار ما جرى مع المعلومات من قبل، وعدًا بقفزة نوعية في الإنتاجية والدقة وخفض التكاليف وتحقيق الأتمتة.
 keywords: ['الثقة الرقمية', 'D3Serve', 'بلوك تشين', 'web3', 'العقود الذكية', 'التشفير', 'الإجماع', 'بيان', 'رؤية', 'رقمنة الثقة', 'ثقة المجموعات', 'أتمتة']

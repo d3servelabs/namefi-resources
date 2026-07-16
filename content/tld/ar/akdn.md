@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld', 'akdn', 'domains', 'web3', 'branding']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .akdn، استخداماته، وأهميته في عالم النطاقات الرقمية. تعرف على كيفية تعزيز حضورك الرقمي مع خدمات Namefi المتطورة."
 keywords: ['نطاق .akdn', 'نطاقات المستوى الأعلى', 'تسجيل نطاق .akdn', 'شراء نطاق', 'استثمار النطاقات', 'ما هو نطاق .akdn', 'لماذا تختار .akdn', 'نطاقات البلوك تشين', 'Namefi', 'نطاقات الويب 3', 'مجال .akdn', '.akdn domains', 'brand tld', 'tokenized domains', 'digital identity']

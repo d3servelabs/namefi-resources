@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: How a domain's extension does and doesn't affect search rankings — content and links matter more.
 keywords: ['tld seo', 'domain extension ranking', 'new gtld seo', 'ccTLD', 'search ranking factors', 'domain seo']
 level: 1

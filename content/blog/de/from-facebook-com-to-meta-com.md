@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Wie Facebook, Inc. im Oktober 2021 zu Meta wurde, warum Meta.com bereits ein Zuckerberg-verbundenes Asset war, das von einer wissenschaftlichen Suchmaschine weiterleitete, und wie ein separater 60-Millionen-Dollar-Deal den Namen „Meta" von einer Bank in Sioux Falls kaufte – während die Facebook-App Facebook.com behielt.'
 keywords: ['facebook.com', 'meta.com', 'meta rebrand', 'facebook meta namensänderung', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', 'metaverse pivot', 'domain-akquisition', 'unternehmens-rebrand', 'premium-domain', 'domain-strategie', 'muttergesellschaft umbenennung']

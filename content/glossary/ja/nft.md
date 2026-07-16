@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 非代替性トークン（NFT）とは、ブロックチェーン上に存在する唯一無二のデジタル資産であり、トークン化ドメインなど特定のアイテムの所有権を表す。
 keywords: ['NFT', '非代替性トークン', 'ブロックチェーン', 'ユニーク資産', 'ドメインNFT']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Anti-Money-Laundering — el monitoreo continuo de transacciones e informes que los servicios regulados utilizan para detectar fondos ilícitos.
 keywords: ['AML', 'Anti-Money-Laundering', 'monitoreo de transacciones', 'verificación de sanciones', 'cumplimiento']
 also_known_as: ['Anti-Money-Laundering']

@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.vipドメインはVery Important Person（非常に重要な人物）を意味するオープンな新gTLDで、会員制サービス・ロイヤルティプログラム・プレミアムブランドに最適です。登録ルール、価値、Namefiでの登録方法を解説します。'
 keywords: ['.vipドメイン', 'vipドメイン', '.vipドメインの意味', '.vipとは', '.vip TLD', '.vipドメインは安全か', '.vipドメイン登録', '会員制ドメイン', 'プレミアムドメイン', '新gTLD']

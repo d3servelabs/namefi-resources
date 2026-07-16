@@ -4,6 +4,7 @@ date: '2026-07-02'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The confidence that the data needed to verify a block was actually published and is available to network participants.
 keywords: ['data availability', 'da', 'data availability sampling', 'das', 'celestia', 'eigenda', 'rollup data']
 also_known_as: ['DA']

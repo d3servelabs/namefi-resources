@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: How long, in seconds, a DNS record may be cached by resolvers before it must be looked up again.
 keywords: ['TTL', 'time to live', 'DNS cache', 'DNS propagation', 'record caching']
 level: 1

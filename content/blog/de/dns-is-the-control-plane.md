@@ -5,6 +5,7 @@ language: de
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Eine Perspektive aus Sicht von Registrar/DNS-Betrieb auf den AWS-Vorfall vom 20. Oktober 2025, wie DNS tatsächlich funktioniert, warum sich dieser Fehler so weit verbreitete und was resiliente Internet-Teams dagegen tun können."
 keywords: ['DNS', 'AWS-Ausfall', 'Control Plane', 'DynamoDB', 'us-east-1', 'DNS-Caching', 'Cloud-Resilienz', 'Multi-Signer DNS', 'Incident Response']

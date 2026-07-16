@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインを管理・使用・移転する権利。トークン化により、その権利はレジストラのアカウントだけでなく、ウォレット上にオンチェーンで記録される。
 keywords: ['ドメイン所有権', 'NFTドメイン', 'レジストラ', 'カストディアル', 'ウォレット所有権']
 level: 1

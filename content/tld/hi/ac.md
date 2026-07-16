@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld', 'domain-names', 'web3', 'branding', 'business-tips']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.ac डोमेन एक्सटेंशन (TLD) के बारे में सब कुछ जानें। समझें कि यह अकादमिक, व्यवसायों और टेक स्टार्टअप्स के लिए एक बेहतरीन विकल्प क्यों है और Namefi पर इसे कैसे रजिस्टर करें।'
 keywords: ['.ac domains', '.ac TLD', 'top-level domain', 'what is .ac', 'why choose .ac', 'what is the .ac domain', 'why choose the .ac domain', 'buy .ac domain', 'domain investment', 'tokenized domain', 'blockchain domains', 'domain registrar India', 'Ascension Island domain', 'academic domains', 'Namefi domains']

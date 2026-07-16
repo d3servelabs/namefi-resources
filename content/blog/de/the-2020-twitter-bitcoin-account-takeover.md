@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Am 15. Juli 2020 verschafften sich Angreifer per Telefon Zugang zu Twitter, übernahmen die verifizierten Konten von Obama, Biden, Musk, Gates, Apple und Uber und führten einen Bitcoin-Verdopplungsbetrug durch – mit einer Beute von rund 118.000 US-Dollar. Eine Tiefenanalyse, wie die Kontrolle über eine Online-Identität gestohlen wurde und was das für den Besitz eines Namens bedeutet.'
 keywords: ['Twitter-Hack 2020', 'Twitter Bitcoin-Betrug', 'Graham Ivan Clark', 'Vishing', 'telefonisches Spear-Phishing', 'Social Engineering', 'Kontoübernahme', 'Online-Identitätssicherheit', 'Übernahme verifizierter Konten', 'Twitter Admin-Tool', 'Agent-Tool', 'Insider-Risiko', 'Domain-Sicherheit', 'NY DFS Twitter-Bericht']

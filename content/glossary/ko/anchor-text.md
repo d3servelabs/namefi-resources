@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 하이퍼링크에서 사용자가 볼 수 있는 클릭 가능한 텍스트로, 검색 엔진이 링크 대상 페이지의 주제를 파악하는 데 활용하는 신호입니다.
 keywords: ['앵커 텍스트', '링크 텍스트', '백링크', 'seo', '하이퍼링크', '랭킹 신호']
 level: 1

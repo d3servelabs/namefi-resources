@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Entdecken Sie die .ally Domain: Die perfekte TLD für Partnerschaften, Inklusion und Communitys. Erfahren Sie, warum Sie Ihre .ally Domain noch heute bei Namefi registrieren sollten.'
 keywords: ['.ally domains', '.ally TLD', 'top-level domain', 'was ist .ally', 'warum .ally wählen', 'was ist die .ally domain', 'warum die .ally domain wählen', 'domain investieren', 'blockchain domains', 'tokenisierte domains', 'web3 domains', 'neue gTLD', 'domainregistrierung', 'digitale identität', 'partnerschaft domains']

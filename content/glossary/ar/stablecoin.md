@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: عملة تشفيرية مصمَّمة للحفاظ على قيمة ثابتة مقابل مرجع زي الدولار الأمريكي، بتُستخدم للدفع والتسوية من غير تقلبات أسعار التشفير.
 keywords: ['عملة مستقرة', 'USDC', 'USDT', 'DAI', 'مرتبط بالعملات الورقية', 'دفع تشفيري', 'دولارات على السلسلة']
 level: 1

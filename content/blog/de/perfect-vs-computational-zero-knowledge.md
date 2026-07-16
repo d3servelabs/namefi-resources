@@ -5,6 +5,7 @@ language: de
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Zero-Knowledge-Beweise gibt es in drei Varianten – perfekt, statistisch und rechnerisch – und der Unterschied ist wichtiger, als in den meisten technischen Diskussionen zugegeben wird. Dieser Beitrag erklärt jede Variante in einfacher Sprache, warum fast jedes ZK-Produktionssystem im Jahr 2026 rechnerischer Natur ist und welche Vor- und Nachteile dies mit sich bringt.'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg

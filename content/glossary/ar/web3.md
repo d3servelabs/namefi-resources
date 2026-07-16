@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: رؤية للإنترنت على شبكات البلوكتشين العامة حيث يمتلك المستخدمون بياناتهم وأصولهم وهويتهم عبر مفاتيحهم الخاصة لا حسابات المنصات.
 keywords: ['Web3', 'الويب اللامركزي', 'إنترنت البلوكتشين', 'ملكية المستخدم', 'نظير إلى نظير', 'لامركزية', 'عملات مشفرة', 'عقود ذكية', 'DeFi', 'NFT']
 level: 2

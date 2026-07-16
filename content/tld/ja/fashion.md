@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.fashionドメインは、デザイナー、アパレルブランド、スタイル関連企業が自分たちの業種をそのまま表現できるオープンなgTLDです。どんな人に向いているか、なぜ選ばれるのかを解説します。'
 keywords: ['.fashionドメイン', '.fashionとは', 'ファッションTLD', 'ファッションブランドドメイン', 'アパレルドメイン', 'スタイルドメイン拡張子', '.fashion登録', 'GoDaddy Registry']

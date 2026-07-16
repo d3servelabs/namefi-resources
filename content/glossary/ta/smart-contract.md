@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு blockchain-ல் சேமிக்கப்பட்ட நிரல்; நிபந்தனைகள் நிறைவேறும்போது சரியாக எழுதியபடி இயங்கி, இடைத்தரகர் இல்லாமல் ஒப்பந்தங்களை நிறைவேற்றுகிறது.
 keywords: ['ஸ்மார்ட் கான்ட்ராக்ட்', 'blockchain', 'தானியங்கி நிறைவேற்றம்', 'நிரலாக்கத் தர்க்கம்', 'பரவிய நெட்வொர்க்']
 level: 1

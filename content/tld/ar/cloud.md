@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج معرفته عن نطاق .cloud ومميزاته للشركات التقنية والمطورين. سجّل نطاقك الآن مع Namefi لدمج تقنيات الويب 3 وحماية استثمارك الرقمي.'
 keywords: ['.cloud domains', 'what is .cloud', 'why choose .cloud', 'top-level domain', 'gTLD', 'cloud computing domains', 'buy .cloud domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Namefi', 'نطاقات .cloud', 'ما هو نطاق .cloud', 'شراء نطاق', 'الاستثمار في النطاقات']

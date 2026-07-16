@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是域名租赁，代币化如何实现新的租赁模式？
 keywords: ["租赁","域名租用","被动收入","智能合约租赁","自动化支付"]
 relatedArticles:

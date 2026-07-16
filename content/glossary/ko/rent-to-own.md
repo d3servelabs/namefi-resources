@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 구매자가 도메인을 사용하면서 할부로 대금을 납부하고, 합의된 총액을 완납하면 완전한 소유권을 취득하는 구매 방식입니다.
 keywords: ['렌트-투-오운', '단계적 소유권', '할부 결제', '도메인 취득', '스마트 컨트랙트']
 level: 1

@@ -5,6 +5,7 @@ language: ar
 tags: ['governance', 'dao', 'web3', 'namefi space']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 format: opinion
 description: "كل بلد وكل حركة بتمر في لحظة أزمة دستورية: مين الشرعي، ومين له السلطة، ومين بيتكلم من قلب المشهد. بالنسبة لحركة على الإنترنت، السؤال ده بينتهي عند أصل واحد: الدومين الرئيسي. وده سبب إن مكانه الطبيعي يكون مع الـ DAO."

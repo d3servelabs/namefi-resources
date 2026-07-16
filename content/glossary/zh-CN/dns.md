@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 将人类可读域名转换为计算机用于互联网路由的 IP 地址的分层命名系统。
 keywords: ['DNS', '域名系统', '名称解析', 'DNS 查询', 'DNS 记录', '名称服务器', '递归解析器', 'DNSSEC', '互联网基础设施']
 also_known_as: ['域名系统']

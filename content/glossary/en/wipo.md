@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The UN agency whose arbitration center decides many UDRP domain-name disputes.
 keywords: ['WIPO', 'World Intellectual Property Organization', 'UDRP', 'domain dispute', 'arbitration']
 also_known_as: ['World Intellectual Property Organization']

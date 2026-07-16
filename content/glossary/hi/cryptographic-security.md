@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: क्रिप्टोग्राफिक सुरक्षा क्या है और यह टोकनाइज्ड डोमेन को कैसे सुरक्षित करती है?
 keywords: ["क्रिप्टोग्राफिक सुरक्षा","एन्क्रिप्शन","निजी कुंजियाँ","डिजिटल हस्ताक्षर","ब्लॉकचेन सुरक्षा"]
 relatedArticles:

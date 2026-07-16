@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인이 만료된 직후 정상 가격으로 갱신할 수 있는 짧은 기간입니다.
 keywords: ['유예 기간', '자동 갱신 유예 기간', '도메인 만료', '갱신', 'RGP']
 level: 1

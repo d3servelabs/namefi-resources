@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist ein DAO und wie kann es mit der Domainverwaltung in Verbindung stehen?
 keywords: ["DAO","dezentrale autonome Organisation","Governance","kollektives Eigentum","Smart Contracts"]
 relatedArticles:

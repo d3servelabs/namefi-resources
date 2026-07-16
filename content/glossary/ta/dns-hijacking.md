@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: டொமைனின் பதிவை மாற்றாமல், DNS தெளிவாக்கல் அடுக்கை சிதைத்து போக்குவரத்தை திசைதிருப்பும் தாக்குதல்.
 keywords: ['DNS கடத்தல்', 'தற்காலிக நினைவக நச்சேற்றம்', 'DNS ஏமாற்றல்', 'DNSSEC', 'போக்குவரத்து திசைதிருப்பல்']
 level: 1

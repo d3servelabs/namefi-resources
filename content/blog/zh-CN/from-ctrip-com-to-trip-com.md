@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '携程如何在 2017 年从一家名为 Gogobot 的初创公司收购高价值域名 Trip.com，围绕这一品牌重塑全球形象，并于 2019 年将整个母公司更名为 Trip.com Group，以推进国际化扩张。'
 keywords: ['ctrip.com', 'trip.com', '携程品牌重塑', 'trip.com集团', 'trip.com域名', '域名升级', '中国品牌全球扩张', 'gogobot trip.com', '梁建章 携程', '高价值旅游域名', '初创公司命名', '品牌命名', '域名收购']

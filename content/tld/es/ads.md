@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio de nivel superior .ads: qué es, quiénes lo utilizan y por qué es la extensión perfecta para agencias, expertos en marketing e inversores de dominios en la era Web3.'
 keywords: ['.ads domains', '.ads TLD', 'top-level domain', 'what is .ads', 'why choose .ads', 'what is the .ads domain', 'why choose the .ads domain', 'comprar dominio .ads', 'inversión en dominios', 'dominios tokenizados', 'Namefi', 'marketing digital', 'adtech', 'dominios blockchain', 'publicidad online']

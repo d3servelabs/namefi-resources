@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ICANN இன் விரிவாக்கத் திட்டம் மூலம் அறிமுகப்படுத்தப்பட்ட ஒரு பொதுவான உச்சநிலை டொமைன் — .app, .xyz, .shop போன்றவை.
 keywords: ['புதிய gTLD', 'ICANN விரிவாக்கம்', '.app', '.xyz', '.shop', 'டொமைன் நீட்டிப்பு']
 level: 1

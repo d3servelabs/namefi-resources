@@ -4,6 +4,8 @@ date: '2025-06-21'
 language: hi
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: .eth डोमेन ब्लॉकचेन-आधारित नाम हैं जो जटिल वॉलेट पतों को मानव-पठनीय नामों से बदलते हैं। जानें कि ENS Web3 पहचान और डिजिटल स्वामित्व को कैसे बदल रहा है।
 keywords: ["टीएलडी", "ईटीएच डोमेन", "Web3 पहचान", "ब्लॉकचेन", "ENS", "विकेन्द्रीकृत डोमेन", "NFT डोमेन"]
 relatedArticles:

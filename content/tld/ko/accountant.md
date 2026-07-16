@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.accountant 도메인은 회계사, 장부 담당자, 금융 전문가를 위한 개방형 신규 gTLD입니다. 운영 주체, 등록 자격, 브랜드 적합성을 알아보십시오.'
 keywords: ['.accountant 도메인', '.accountant란', '.accountant TLD', '회계사 도메인 이름', '금융 도메인 확장자', '회계사용 신규 gTLD', '.accountant 등록', '장부 관리 웹사이트 도메인']

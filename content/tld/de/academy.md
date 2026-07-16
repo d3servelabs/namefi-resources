@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .academy Domain: Ideal für Bildung, Kurse und Coaching. Sichern Sie sich Ihre digitale Identität jetzt bei Namefi."
 keywords: [".academy domains", ".academy TLD", ".academy top-level domain", "was ist .academy", "warum .academy wählen", "was ist die .academy domain", "warum die .academy domain wählen", "Bildungs-Domain", "Online-Kurs Domain", "domain investing", "blockchain domains", "tokenized domains", "Web3 domains", "Namefi", "Domain Registrierung"]

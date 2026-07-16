@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.me 도메인이란 무엇인가? 몬테네그로의 국가 코드 TLD로, "me"로 끝나는 이름이 완성되는 퍼스널 브랜딩 및 도메인 핵 확장자로 전 세계에서 마케팅되고 있습니다. 운영 주체, 등록 자격, 가격, SEO에 대해 알아보세요.'
 keywords: ['.me 도메인', '.me TLD', 'me 도메인', '.me란', '.me 도메인이란', '.me vs .com', '퍼스널 브랜딩 me 도메인', '몬테네그로 도메인', '.me 도메인 등록', '도메인 핵 .me', 'about.me']

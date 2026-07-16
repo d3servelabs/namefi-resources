@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 以有价值的搜索关键词或短语构建的域名，以描述性清晰度为核心价值。
 keywords: ['关键词域名', '富含关键词域名', '描述性域名', '搜索关键词域名', 'SEO域名']
 level: 1

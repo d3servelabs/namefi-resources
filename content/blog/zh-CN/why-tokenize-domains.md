@@ -6,6 +6,7 @@ priority: P1
 tags: ["faq"]
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 本文解释了为什么应该将传统域名代币化上链，并强调了更清晰的所有权、金融可组合性以及更自由、更快速的交易等优势。
 keywords: ["域名代币化","区块链域名","NFT 域名","链上域名","域名所有权","去中心化域名","域名交易","web3 域名","智能合约","域名可组合性","DNS 代币化","数字资产"]
 relatedArticles:

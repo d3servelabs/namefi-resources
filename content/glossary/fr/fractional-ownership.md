@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que la propriété fractionnée et comment s'applique-t-elle aux domaines de valeur ?
 keywords: ["propriété fractionnée","propriété partagée","fractionnement de domaine","accessibilité","tokenisation"]
 relatedArticles:

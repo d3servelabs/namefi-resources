@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاق بيستخدم حروفاً غير ASCII، بيتشفَّر لـ DNS كـ ASCII Punycode يبدأ بـ xn--.
 keywords: ['IDN', 'اسم نطاق دولي', 'Punycode', 'xn--', 'نطاق يونيكود', 'homograph']
 level: 1

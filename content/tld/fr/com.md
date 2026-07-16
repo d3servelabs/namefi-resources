@@ -5,6 +5,8 @@ language: 'fr'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Le domaine .com est l'adresse par défaut du web commercial. Découvrez son histoire, qui peut en enregistrer un, comment fonctionne la tarification, et pourquoi il reste incontournable."
 keywords: ['domaines .com', "qu'est-ce que .com", '.com TLD', 'extension de domaine .com', 'enregistrer un domaine .com', 'signification domaine com', '.com vs .net', "domaines d'entreprise"]

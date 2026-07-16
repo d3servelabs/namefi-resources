@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio .website: su versatilidad, alta disponibilidad y ventajas SEO. Aprende por qué es ideal para invertir y regístralo hoy en Namefi.'
 keywords: ['.website domains', '.website TLD', 'top-level domain', 'qué es el dominio .website', 'por qué elegir .website', 'comprar dominio .website', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'registro de dominios', 'Namefi', 'disponibilidad de dominios', 'alternativas al .com', 'web3 domains', 'estrategia de dominios']

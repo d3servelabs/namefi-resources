@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld', 'domains', 'marketing', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .click. تعرف على استخداماته، ميزاته، وكيف يمكن أن يعزز استراتيجيتك الرقمية. سجل نطاقك اليوم مع Namefi."
 keywords: [".click domains", ".click TLD", "top-level domain", "what is .click", "why choose .click", "what is the .click domain", "why choose the .click domain", "domain investing", "blockchain domains", "tokenized domain", "نطاقات .click", "شراء نطاق", "استثمار النطاقات", "نطاق المستوى الأعلى", "تسجيل دومين"]

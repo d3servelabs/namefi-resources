@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனின் அனைத்து DNS பதிவுகளையும் — அதன் பெயர் சேவையகங்களுக்கான glue பதிவுகள் உட்பட — கொண்டிருக்கும் உரை கோப்பு.
 keywords: ['மண்டல கோப்பு', 'glue பதிவு', 'DNS மண்டலம்', 'அதிகாரப்பூர்வ பதிவுகள்', 'பெயர் சேவையகம்']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: நியாயமான டொமைன் உரிமையாளரிடமிருந்து பெயரை பறிக்க UDRP-ஐ தீய நோக்கத்துடன் துஷ்பிரயோகம் செய்வது.
 keywords: ['தலைகீழ் டொமைன் கடத்தல்', 'RDNH', 'UDRP துஷ்பிரயோகம்', 'டொமைன் தகராறு', 'தீய நோக்கம் புகார்தாரர்']
 also_known_as: ['RDNH']

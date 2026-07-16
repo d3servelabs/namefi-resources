@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: டொமைன் பதிவின் காலம் முடியும் தேதி; புதுப்பிக்கப்படாவிட்டால், அது நீக்கத்தை நோக்கி ஒரு கட்ட வரிசையில் செல்லும்.
 keywords: ['டொமைன் காலாவதி', 'காலாவதியான டொமைன்', 'புதுப்பித்தல்', 'கருணைக் காலம்', 'மீட்பு காலம்']
 level: 1

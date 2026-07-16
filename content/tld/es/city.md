@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: .city es el dominio para negocios locales, servicios municipales y sitios web centrados en la ciudad. Perfecto para establecer presencia local.
 keywords: ["tld", "dominio .city", "negocio local", "servicios municipales", "sitios web de ciudad", "presencia local"]
 relatedArticles:

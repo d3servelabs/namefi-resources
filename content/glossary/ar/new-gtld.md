@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاق من المستوى الأعلى العام تم إطلاقه في إطار برنامج توسع ICANN، زي .app و.xyz و.shop.
 keywords: ['new gTLD', 'توسع ICANN', '.app', '.xyz', '.shop', 'لاحقة نطاق']
 level: 1

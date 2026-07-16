@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ブロックチェーンの鍵ペアにおける共有可能な半分。秘密鍵から導出され、資金の受け取りと署名の検証に使用される。
 keywords: ['公開鍵', 'アドレス', '検証鍵', '非対称暗号', 'ブロックチェーンアカウント']
 level: 1

@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: التمويل اللامركزي بيوفر الإقراض والاقتراض والتداول عبر عقود ذكية على بلوكتشين عامة، من غير بنوك أو وسطاء.
 keywords: ['DeFi', 'تمويل لامركزي', 'إقراض', 'اقتراض', 'ضمان', 'DEX', 'أسواق المال', 'تمويل على السلسلة']
 level: 1

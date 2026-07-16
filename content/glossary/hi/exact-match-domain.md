@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक डोमेन जो किसी सर्च कीवर्ड से बिल्कुल मेल खाता है, जैसे besthotels.com, जो SEO के लिए कभी बहुत मूल्यवान था।
 keywords: ['exact-match domain', 'EMD', 'keyword match domain', 'SEO domain', 'search ranking domain']
 also_known_as: ['EMD']

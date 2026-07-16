@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo Urban Compass se lanzó en 2012 como una app de alquileres en Nueva York con UrbanCompass.com, eliminó "Urban" en su cambio de marca en febrero de 2015 y adquirió el dominio exacto Compass.com —que había sido listado en subasta por 1 millón de dólares— justo cuando se preparaba para expandirse a nivel nacional.'
 keywords: ['urbancompass.com', 'compass.com', 'nombre de dominio compass', 'mejora de dominio', 'cambio de marca urban compass', 'robert reffkin', 'ori allon', 'nombres de startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'compass real estate', 'startup inmobiliaria', 'dominio de coincidencia exacta']

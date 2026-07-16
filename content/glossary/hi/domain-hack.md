@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक ऐसा नाम जो TLD का उपयोग करके डॉट के पार एक शब्द बनाता है, जैसे del.icio.us या examp.le।
 keywords: ['domain hack', 'creative domain', 'TLD wordplay', 'brandable domain', 'ccTLD']
 level: 1

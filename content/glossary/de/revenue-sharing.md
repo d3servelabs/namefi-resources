@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist Umsatzbeteiligung und wie kann sie auf die Domain-Monetarisierung angewendet werden?
 keywords: ["umsatzbeteiligung","passives Einkommen","Domain-Monetarisierung","Gewinnverteilung","Smart Contracts"]
 relatedArticles:

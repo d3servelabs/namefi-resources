@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: Farcaster क्या है और डोमेन विकेन्द्रीकृत सोशल नेटवर्क से कैसे संबंधित हैं?
 keywords: ["Farcaster","विकेन्द्रीकृत सोशल","Web3 सोशल","ब्लॉकचेन पहचान","सोशल प्रोटोकॉल"]
 relatedArticles:

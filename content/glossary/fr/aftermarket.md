@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le marché de revente des noms de domaine déjà enregistrés, où les noms s'échangent entre propriétaires.
 keywords: ['marché secondaire', 'aftermarket', 'revente de domaine', 'investissement domaine', 'ventes de domaines']
 also_known_as: ['Marché de revente']

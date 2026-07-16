@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce qu'un transfert atomique et comment assure-t-il la sécurité des transactions de domaine ?
 keywords: ["transfert atomique","transaction blockchain","tout ou rien","échange sécurisé","contrat intelligent"]
 relatedArticles:

@@ -4,6 +4,7 @@ date: '2026-07-02'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A cryptographic technique letting several parties jointly compute a result from their private inputs without revealing those inputs to each other.
 keywords: ['secure multi-party computation', 'mpc', 'smpc', 'threshold signature', 'threshold custody']
 also_known_as: ['MPC', 'SMPC']

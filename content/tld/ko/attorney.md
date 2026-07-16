@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.attorney 도메인은 법률 전문직을 위해 설계된 개방형 신규 gTLD입니다. 운영 주체, 등록 자격, 현황, 그리고 법무법인에 적합한지 여부를 알아보십시오.'
 keywords: ['.attorney 도메인', '.attorney란 무엇인가', '.attorney TLD', '변호사 도메인 확장자', '법률 도메인 이름', '법무법인 도메인', '변호사 웹사이트 도메인', 'Identity Digital TLD']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Une courte fenêtre suivant l''expiration d''un domaine pendant laquelle vous pouvez encore le renouveler au prix normal.
 keywords: ['période de grâce', 'période de grâce de renouvellement automatique', 'expiration de domaine', 'renouvellement', 'RGP']
 level: 1

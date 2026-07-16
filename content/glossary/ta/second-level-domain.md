@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: TLD-க்கு நேரடியாக இடதுபுறத்தில் உள்ள பெயர்ப்பட்டை — example.com-இல் உள்ள "example" — நீங்கள் உண்மையில் பதிவு செய்யும் பகுதி.
 keywords: ['இரண்டாம் நிலை டொமைன்', 'SLD', 'மூல டொமைன்', 'apex டொமைன்', 'பதிவு செய்யக்கூடிய பெயர்']
 level: 1

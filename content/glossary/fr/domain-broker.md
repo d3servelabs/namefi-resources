@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un intermédiaire qui négocie la vente d'un domaine entre acheteur et vendeur, généralement contre une commission.
 keywords: ['courtier en domaines', 'courtage de domaines', 'négociation de domaine', 'intermédiaire domaine', 'commission domaine']
 level: 1

@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인을 추정 가치에 가깝게 매도할 수 있는 속도 — 우량 도메인은 높고, 틈새 도메인은 낮습니다.
 keywords: ['도메인 유동성', '유동성', '도메인 시장성', '도메인 매도 속도', '도메인 시장 깊이']
 level: 1

@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .space : un TLD créatif et polyvalent pour les startups, artistes et passionnés. Apprenez pourquoi choisir .space pour votre identité numérique."
 keywords: [".space domains", ".space TLD", ".space top-level domain", "what is .space", "why choose .space", "what is the .space domain", "why choose the .space domain", "enregistrement de domaine", "investissement de domaine", "nom de domaine web3", "domaine tokenisé", "blockchain domains", "identité numérique", "nouveaux gTLD", "acheter un nom de domaine"]

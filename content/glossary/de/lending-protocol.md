@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was sind Lending-Protokolle und wie können Domains im DeFi-Lending verwendet werden?
 keywords: ["Lending-Protokoll","DeFi","Sicherheit","Ausleihe","Domain-Finanzierung","Rendite"]
 relatedArticles:

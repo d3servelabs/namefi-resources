@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La transferencia no autorizada de un dominio fuera del control de su legítimo propietario, a menudo mediante el compromiso de una cuenta.
 keywords: ['robo de dominio', 'transferencia no autorizada', 'compromiso de cuenta', 'seguridad de dominio', 'recuperación']
 level: 1

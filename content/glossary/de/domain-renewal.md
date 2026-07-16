@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die Zahlung zur Verlängerung einer Domain-Registrierung vor deren Ablauf, häufig automatisch für jede Laufzeit.
 keywords: ['Domain-Verlängerung', 'Auto-Renew', 'Registrierungslaufzeit', 'Ablauf', 'Verlängerungsgebühr']
 level: 1

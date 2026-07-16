@@ -5,6 +5,7 @@ language: ta
 tags: ['guide', 'security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 cluster: domain-tokenization
 series: domain-apocalypse

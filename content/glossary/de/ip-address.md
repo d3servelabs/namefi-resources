@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die numerische Adresse, die ein Gerät im Netzwerk identifiziert und auf die DNS einen Domainnamen abbildet.
 keywords: ['IP-Adresse', 'IPv4', 'IPv6', 'A-Record', 'AAAA-Record', 'Netzwerk']
 level: 1

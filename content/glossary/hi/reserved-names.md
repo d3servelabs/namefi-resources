@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वे डोमेन जिन्हें रजिस्ट्री ओपन रजिस्ट्रेशन से रोकती है, जैसे प्रीमियम, नीति, या संरक्षित लेबल।
 keywords: ['रिज़र्व्ड नेम्स', 'ब्लॉक्ड नेम्स', 'registry reserved', 'premium reserved', 'collision list']
 level: 1

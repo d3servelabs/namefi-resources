@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .vip Domain: Bedeutung, Vorteile für Ihr Branding und SEO. Registrieren Sie jetzt Ihre exklusive Webadresse bei Namefi."
 keywords: [".vip domains", ".vip TLD", ".vip top-level domain", "was ist .vip", "warum .vip wählen", "was ist die .vip domain", "warum die .vip domain wählen", "exklusive domains", "luxus domain endungen", "domain registrieren", "Web3 domains", "Blockchain Domains", "Namefi", "Domain Investing", "tokenisierte domains"]

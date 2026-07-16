@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: பதிவு செய்யப்பட்ட டொமைன் பெயரின் உரிமைகளை வைத்திருக்கும் நபர் அல்லது நிறுவனம் — பதிவேட்டில் உள்ள உரிமையாளர்.
 keywords: ['பதிவாளர்', 'டொமைன் உரிமையாளர்', 'பதிவுசெய்யப்பட்ட பெயர் வைத்திருப்பவர்', 'RNH', 'டொமைன் உரிமை']
 level: 1

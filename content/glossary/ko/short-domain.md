@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 세 글자 또는 네 글자 알파벳 조합, 혹은 전체 숫자로 구성된 매우 짧은 도메인으로, 간결함 때문에 높은 가치를 인정받습니다.
 keywords: ['단문자 도메인', '숫자 도메인', 'LLLL 도메인', 'NNNN 도메인', '세 글자 도메인', '네 글자 도메인']
 level: 1

@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2021年1月下旬，拥有数十年历史的Perl编程社区门户 perl.com 遭到盗窃——攻击者通过入侵注册商账户，将域名经中国转移，指向一个与恶意软件相关的IP地址，并以19万美元挂牌出售。本文还原事件经过、记录域名找回过程，并深入探讨注册商账户安全的重要性。'
 keywords: ['perl.com', 'perl.com域名盗窃', '域名劫持', '域名盗窃', '注册商账户入侵', '社会工程学', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'DNS劫持', '域名安全', '账户接管', 'BizCN']

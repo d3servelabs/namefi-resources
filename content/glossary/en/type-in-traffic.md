@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Visitors who reach a site by typing a guessed domain directly, the basis of domain parking revenue.
 keywords: ['type-in traffic', 'direct navigation', 'domain parking', 'exact match domain', 'domain value']
 level: 1

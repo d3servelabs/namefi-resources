@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist verwahrte Eigentümerschaft und wie unterscheidet sie sich von der Selbstverwahrung?
 keywords: ["verwahrte Eigentümerschaft","Verwahrung","Drittanbieterkontrolle","Registrar-Kontrolle","zentralisierte Speicherung"]
 relatedArticles:

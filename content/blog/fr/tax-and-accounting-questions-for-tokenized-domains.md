@@ -6,6 +6,7 @@ priority: P1
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Un tour d'horizon en langage clair et sans valeur de conseil des questions fiscales et comptables que se posent souvent les propriétaires de domaines tokenisés : prix de revient, ventes, durée de détention, usage professionnel vs personnel, donations, successions. Soumettez ces questions à un vrai professionnel."
 keywords: ['fiscalité domaine NFT', 'prix de revient domaine tokenisé', 'comptabilité domaine tokenisé', 'plus-values domaine tokenisé', 'fiscalité vente domaine tokenisé', 'plus-values domaine NFT', 'comptabilité NFT domaine', 'fiscalité domaine comme actif', 'fiscalité donation domaine tokenisé', 'succession domaine tokenisé', 'dépense professionnelle domaine tokenisé', 'questions fiscales tokenisation domaine', 'fiscalité domaine NFT US', 'fiscalité domaine crypto']

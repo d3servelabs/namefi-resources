@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'community', 'domain-investing', 'forums']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Ein praktischer Leitfaden zu den englischsprachigen Foren und Communities, in denen sich Domain-Investoren im Jahr 2026 tatsächlich versammeln – von NamePros und DNForum bis hin zu den Twitter/X- und Telegram-Kanälen, die sie still und heimlich abgelöst haben.'
 ogImage: ../../assets/top-domain-trader-forums-og.jpg

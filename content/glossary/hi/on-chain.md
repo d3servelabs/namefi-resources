@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन के संदर्भ में "ऑन-चेन" का क्या अर्थ है?
 keywords: ["ऑन-चेन","ब्लॉकचेन","स्मार्ट कॉन्ट्रैक्ट्स","डोमेन NFT","विकेन्द्रीकरण"]
 relatedArticles:

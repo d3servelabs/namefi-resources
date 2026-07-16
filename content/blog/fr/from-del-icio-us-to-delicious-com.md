@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Comment le site pionnier de partage de favoris a été lancé en 2003 sous le célèbre hack de domaine « del.icio.us », pourquoi ces points sont devenus une taxe permanente sur chaque mention, et comment Yahoo l'a migré vers le plus simple Delicious.com en 2008."
 keywords: ['del.icio.us', 'delicious.com', 'nom de domaine delicious', 'hack de domaine', 'joshua schachter', 'bookmarking social', 'yahoo delicious', 'mise à niveau de domaine', 'nommage startup', 'nommage de marque', 'domaine premium', 'stratégie de domaine', 'hack de domaine ccTLD', 'domaine définissant une catégorie']

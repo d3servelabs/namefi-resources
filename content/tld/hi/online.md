@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: ".online TLD के बारे में सब कुछ जानें। समझें कि यह डोमेन व्यवसायों और डेवलपर्स के लिए बेहतरीन विकल्प क्यों है और Namefi पर इसे कैसे रजिस्टर करें।"
 keywords: ['.online domains', 'what is .online', 'why choose .online', '.online TLD', 'top-level domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'what is the .online domain', 'why choose the .online domain', '.online डोमेन', 'नया डोमेन रजिस्टर करें', 'डोमेन नाम', 'Web3 domains', 'best domain for business']

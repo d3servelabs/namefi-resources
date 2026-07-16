@@ -6,6 +6,7 @@ priority: P0
 tags: ["faq"]
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein Domainname ist die Grundlage Ihrer Online-Präsenz.
 keywords: ["Domainname","DNS","Domain Name System","IP-Adresse","Webadresse","Internet-Grundlagen","Domainregistrierung","Website-Adresse","URL","Namefi"]
 relatedArticles:

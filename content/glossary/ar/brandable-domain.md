@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: اسم قصير وجذاب وغالباً مخترع يشتغل كبراند مميز، زي كلمة مصنوعة من الصفر.
 keywords: ['النطاق القابل للتبرند', 'نطاق البراند', 'نطاق مخترع', 'نطاق كلمة مبتكرة', 'نطاق سهل التذكر']
 level: 1

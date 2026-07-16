@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 领先的智能合约区块链，也是大多数代币化域名的发行网络。
 keywords: ['以太坊', 'ETH', '智能合约', 'EVM', '去中心化应用']
 also_known_as: ['ETH']

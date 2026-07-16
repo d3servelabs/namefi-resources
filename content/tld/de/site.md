@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .site Top-Level-Domain: Ihre Bedeutung, Vorteile für SEO und Branding sowie Gründe, warum sie ideal für Ihr nächstes Projekt ist."
 keywords: ['.site domains', 'TLD', 'Top-Level-Domain', 'was ist .site', 'warum .site wählen', 'was ist die .site domain', 'warum die .site domain wählen', 'domain investieren', 'blockchain domains', 'tokenisierte domains', 'namefi', 'günstige domains kaufen', 'neue gTLD trends', 'webseite erstellen', 'markenschutz domains']

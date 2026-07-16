@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "深入解析 .aarp 顶级域名：了解其背后的含义、用途及信任价值。探索如何在 Namefi 通过区块链技术管理和投资高价值域名。"
 keywords: [".aarp domains", ".aarp TLD", "top-level domain", "what is .aarp", "why choose .aarp", "what is the .aarp domain", "why choose the .aarp domain", "domain investing", "blockchain domains", "tokenized domain", "AARP digital identity", "trusted domains", "senior services domains", "Web3 domains", "Namefi"]

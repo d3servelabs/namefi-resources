@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld', 'brand-tld', 'domain-investing', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج معرفته عن نطاق .afamilycompany، استخداماته، وأهميته في عالم النطاقات والاستثمار الرقمي، وكيفية البحث عن نطاقك المثالي عبر Namefi.'
 keywords: ['.afamilycompany domains', 'TLD', 'top-level domain', 'what is .afamilycompany', 'why choose .afamilycompany', 'what is the .afamilycompany domain', 'why choose the .afamilycompany domain', 'شراء نطاق .afamilycompany', 'نطاقات البلوكتشين', 'الاستثمار في النطاقات', 'نطاقات الويب 3', 'تسجيل النطاقات', 'Namefi', 'tokenized domain']

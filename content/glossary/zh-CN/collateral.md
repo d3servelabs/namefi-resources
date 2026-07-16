@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是抵押品？域名如何在DeFi中充当抵押品？
 keywords: ["抵押品","安全","借贷","借款","域名抵押品","DeFi"]
 relatedArticles:

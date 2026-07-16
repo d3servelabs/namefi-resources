@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist Teileigentum und wie trifft es auf wertvolle Domains zu?
 keywords: ["Teileigentum","gemeinsames Eigentum","Domain-Fragmentierung","Zugänglichkeit","Tokenisierung"]
 relatedArticles:

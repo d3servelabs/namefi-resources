@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Cuáles son los diferentes tipos de subastas utilizadas para la venta de dominios?
 keywords: ["subasta","subasta holandesa","subasta inglesa","subasta dinámica","descubrimiento de precios","venta de dominios"]
 relatedArticles:

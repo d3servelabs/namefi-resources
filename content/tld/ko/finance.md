@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.finance 도메인은 Binky Moon(Identity Digital)이 운영하는 개방형 일반 gTLD로, 은행, 핀테크, 금융 자문사, 금융 미디어를 위해 설계되었습니다. 이 도메인이 누구에게 적합한지, 그 이유는 무엇인지 알아보세요.'
 keywords: ['.finance 도메인', '.finance란', '.finance 도메인들', 'finance TLD', '핀테크 도메인', '금융 도메인 이름', 'Identity Digital', 'Binky Moon', '.finance 등록']

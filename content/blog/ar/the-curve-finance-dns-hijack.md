@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في أغسطس 2022، العقود الذكية لـ Curve Finance اتلمستش — لكن المهاجمين خطفوا دومين curve.fi من عند الـ registrar، عملوا نسخة مزيفة من الموقع، وسرقوا حوالي $570K من المستخدمين. تحليل عميق للهجوم على الواجهة الأمامية لمشروع DeFi، وإيه اللي بيعلمنا إياه عن أمان الدومينات.'
 keywords: ['اختطاف dns لـ curve finance', 'curve.fi hijack', 'اختطاف dns في defi', 'اختراق iwantmyname', 'اختراق nameserver', 'wallet drainer', 'هجوم على واجهة defi', 'أمان الدومينات', 'أمان dns', 'تصيد احتيالي في العملات الرقمية', 'هجوم موقع مستنسخ', 'اختراق حساب registrar', 'domain mayday']

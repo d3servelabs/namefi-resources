@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह संगठन जो किसी टॉप-लेवल डोमेन के लिए आधिकारिक डेटाबेस और नेमसर्वर चलाता है और खुदरा बिक्री रजिस्ट्रारों को सौंपता है।
 keywords: ['रजिस्ट्री', 'रजिस्ट्री ऑपरेटर', 'TLD रजिस्ट्री', 'डोमेन रजिस्ट्री', 'ICANN', 'रजिस्ट्रार', 'EPP', 'gTLD रजिस्ट्री', 'ccTLD रजिस्ट्री', 'shared registry system']
 also_known_as: ['रजिस्ट्री ऑपरेटर']

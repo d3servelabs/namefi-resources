@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'Discover the purpose of the .agakhan TLD, a unique domain extension for the AKDN. Learn about Brand TLDs, digital trust, and domain identity.'
 keywords: ['.agakhan domains', '.agakhan TLD', 'top-level domain', 'what is .agakhan', 'why choose .agakhan', 'what is the .agakhan domain', 'why choose the .agakhan domain', 'brand TLD', 'Aga Khan Development Network', 'domain investing', 'blockchain domains', 'tokenized domain', 'digital identity', 'secure domains', 'NGO domains']

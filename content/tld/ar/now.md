@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف إمكانات نطاق .now للأعمال الفورية والمبتكرة. دليل شامل حول استخداماته، مزاياه، وكيفية حجزه عبر Namefi لتعزيز حضورك الرقمي واستثمارك في النطاقات."
 keywords: [".now domains", ".now TLD", "top-level domain", "what is .now", "why choose .now", "what is the .now domain", "why choose the .now domain", "استثمار النطاقات", "نطاقات البلوك تشين", "tokenized domains", "Web3 domains", "شراء نطاق .now", "نطاقات مميزة", "تسجيل النطاقات", "Namefi"]

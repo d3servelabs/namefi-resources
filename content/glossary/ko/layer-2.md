@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 이더리움의 Base처럼 블록체인 위에 구축되어 트랜잭션을 더 빠르고 저렴하게 처리하는 네트워크입니다.
 keywords: ['레이어 2', '롤업', '스케일링', '옵티미스틱 롤업', 'ZK 롤업']
 level: 1

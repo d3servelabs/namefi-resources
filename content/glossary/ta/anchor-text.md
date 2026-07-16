@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு இணைப்பின் தெரியக்கூடிய, கிளிக் செய்யக்கூடிய வார்த்தைகள்; இலக்கு பக்கத்தை புரிந்துகொள்ள தேடுபொறிகள் பயன்படுத்தும் சமிக்ஞை.
 keywords: ['நங்கூர உரை', 'இணைப்பு உரை', 'backlinks', 'SEO', 'இணைப்பு', 'தரவரிசை சமிக்ஞைகள்']
 level: 1

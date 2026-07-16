@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Les frais de renouvellement récurrents qu'un investisseur paie pour conserver un domaine jusqu'à sa vente.
 keywords: ['coût de détention', 'coût de portage', 'frais de renouvellement de domaine', 'coût investissement domaine', 'frais annuels de renouvellement']
 also_known_as: ['Coût de portage']

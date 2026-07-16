@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 相互に直接通信できないブロックチェーン間でトークンやメッセージを移動させるプロトコル。
 keywords: ['ブリッジ', 'クロスチェーン', '相互運用性', 'トークンブリッジ', 'マルチチェーン']
 also_known_as: ['ブリッジ']

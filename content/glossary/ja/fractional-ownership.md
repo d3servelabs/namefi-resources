@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 単一の高額資産を複数の取引可能な持分に分割し、複数人が一部ずつ所有できるようにする仕組み。オンチェーンのトークン標準によって実現される。
 keywords: ['分割所有', '共同所有', 'ドメイン分割', 'アクセシビリティ', 'トークン化']
 level: 1

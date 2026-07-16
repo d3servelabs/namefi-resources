@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '.shop 域名是由 GMO Registry 运营的开放性新通用顶级域名，传递出"这里可以购物"的明确信号。了解谁在使用它、相关规则、定价规律以及 SEO 影响。'
 keywords: ['.shop 域名', '什么是 .shop', '.shop TLD', '.shop 域名注册', '电商域名', 'GMO Registry', '零售新通用顶级域名', '购买 .shop 域名']

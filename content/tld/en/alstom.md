@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Explore the .alstom TLD, a specialized domain for the rail transport giant. Understand the power of Brand TLDs and how to secure your own digital identity."
 keywords: [".alstom domains", ".alstom TLD", "top-level domain", "what is .alstom", "why choose .alstom", "what is the .alstom domain", "why choose the .alstom domain", "Alstom brand registry", "corporate TLD strategy", "domain investing", "blockchain domains", "tokenized domain", "dedicated brand domains", "transportation industry domains", "Namefi domain registration"]

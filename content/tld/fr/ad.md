@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout ce qu'il faut savoir sur le domaine .ad : son origine andorrane, son potentiel pour le secteur de la publicité et ses avantages pour votre marque."
 keywords: [".ad domains", "domaine .ad", "TLD .ad", "top-level domain .ad", "what is .ad", "why choose .ad", "what is the .ad domain", "why choose the .ad domain", "acheter domaine .ad", "investissement domaine", "domaines tokenisés", "Web3 domains", "blockchain domains", "extension Andorre", "publicité en ligne"]

@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ローンを担保するために差し入れる資産であり、借り手がデフォルトした場合に貸し手が取得できる。トークン化されたドメインはNFT対応の融資において担保として機能しうる。
 keywords: ['担保', 'セキュリティ', '融資', '借入', 'ドメイン担保', 'DeFi']
 level: 1

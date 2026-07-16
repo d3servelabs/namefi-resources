@@ -5,6 +5,7 @@ language: hi
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-real-estate-business-og.jpg
 description: 'हर रियल्टर को ब्रांड सुरक्षा के लिए शीर्ष 10 TLD सुरक्षित करने चाहिए, जिसमें .realtor पात्रता नियम, रक्षात्मक पंजीकरण सुझाव और पंजीकरण स्थल शामिल हैं।'

@@ -5,6 +5,7 @@ language: es
 tags: ['infrastructure', 'payments', 'x402']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Un enrutador multiinquilino que le permite integrar x402 una vez y enrutar solicitudes según políticas y señales en vivo, sin tener que incluir la lógica de enrutamiento en su aplicación."
 keywords: ['Route402', 'x402', 'enrutamiento de pagos', 'enrutador de facilitadores', 'pagos multiinquilino', 'RBAC', 'cifrado de credenciales', 'enrutamiento por capacidades', 'liquidación persistente', 'infraestructura de pagos', 'reglas de enrutamiento YAML']

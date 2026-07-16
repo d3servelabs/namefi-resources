@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是跨注册商转移？代币化如何简化此过程？
 keywords: ["跨注册商转移","注册商转移","域名迁移","转移过程","代币化"]
 relatedArticles:

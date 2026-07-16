@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு மண்டலத்தில் டொமைனை முகவரிகளும் சேவைகளும் உடன் இணைக்கும் உள்ளீடுகள் — A, AAAA, CNAME, MX, TXT மற்றும் பலவற்றை உள்ளடக்கியவை.
 keywords: ['DNS பதிவுகள்', 'A பதிவு', 'AAAA பதிவு', 'CNAME', 'MX பதிவு', 'TXT பதிவு']
 level: 1

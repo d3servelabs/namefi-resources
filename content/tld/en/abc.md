@@ -9,6 +9,8 @@ tags:
   - web3
 authors:
   - namefiteam
+editors:
+  - victor-zhou
 draft: false
 description: "Discover the power of the .abc TLD. Learn why this short, memorable domain extension is perfect for education, startups, and Web3 investors. Secure your future today."
 keywords:

@@ -4,6 +4,7 @@ date: '2026-07-02'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Cryptographic proof, generated with a private key, that a transaction was authorized by the account owner and hasn't been altered.
 keywords: ['digital signature', 'ECDSA', 'EdDSA', 'BLS signature', 'transaction signing', 'signature verification']
 level: 1

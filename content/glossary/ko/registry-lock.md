@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 레지스트리가 도메인을 동결하여 변경 사항을 수동 대역 외 승인을 통해서만 처리할 수 있도록 하는 고보안 서비스입니다.
 keywords: ['레지스트리 잠금', '도메인 잠금', '고보안 잠금', '도메인 탈취 방지', '대역 외 인증']
 level: 1

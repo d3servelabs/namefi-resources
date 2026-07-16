@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.law 도메인은 등록 및 갱신 시 자격 검증이 요구되는 제한적 TLD로, 면허 변호사·법률 사무소·로스쿨·법률 규제 기관만 등록할 수 있는 자격 인증 기반 확장자입니다.'
 keywords: ['.law 도메인', '.law란 무엇인가', 'law 도메인 등록', '제한 TLD', '변호사 도메인', '법률 사무소 도메인', '법률 도메인 이름', '자격 인증 TLD']

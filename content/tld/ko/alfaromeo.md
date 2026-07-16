@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld', 'brand-tld', 'automotive', 'domain-investing']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.alfaromeo TLD를 알아보세요: 상징적인 이탈리아 자동차 브랜드를 위한 전용 도메인 확장자입니다. 브랜드 TLD, 사용 방식, 도메인 트렌드에 대해 살펴봅니다.'
 keywords: ['.alfaromeo 도메인', 'TLD', '최상위 도메인', '.alfaromeo란', '.alfaromeo를 선택하는 이유', '.alfaromeo 도메인이란', '.alfaromeo 도메인을 선택하는 이유', '자동차 도메인', '브랜드 TLD', '도메인 투자', '토큰화 도메인', '블록체인 도메인', '럭셔리 자동차 도메인', 'Namefi 도메인', '.alfaromeo 도메인 구매']

@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'Buffer ने 2010 में BufferApp.com पर शुरुआत की क्योंकि Buffer.com पहले से किसी और के पास था, फिर कंपनी ने 624 दिनों में exact-match डोमेन हासिल किया — यहाँ तक कि विक्रेता को अपना बैंक बैलेंस दिखाया — और क्यों radical transparency के लिए मशहूर कंपनी ने वह एकमात्र संख्या छुपाई जो सभी जानना चाहते थे: कीमत।'
 keywords: ['bufferapp.com', 'buffer.com', 'buffer domain name', 'domain upgrade', 'joel gascoigne', 'buffer transparency', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'buffer history', 'domain acquisition', 'category-defining domain']

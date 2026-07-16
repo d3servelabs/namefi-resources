@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.alsace डोमेन के साथ अपनी डिजिटल पहचान को अल्जीसियन (Alsatian) संस्कृति से जोड़ें। जानें कि यह स्थानीय व्यवसायों और ब्रांड्स के लिए क्यों महत्वपूर्ण है और Namefi पर इसे कैसे रजिस्टर करें।'
 keywords:

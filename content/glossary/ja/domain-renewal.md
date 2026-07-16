@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインの登録期限が切れる前に料金を支払って延長すること。多くの場合、各期間ごとに自動的に処理される。
 keywords: ['ドメイン更新', '自動更新', '登録期間', '有効期限', '更新料']
 level: 1

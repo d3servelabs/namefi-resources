@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: gTLD एक टॉप-लेवल डोमेन है जो किसी देश से नहीं जुड़ा, जैसे .com, .org, या .xyz, जो ICANN अनुबंध के तहत चलता है।
 keywords: ['gTLD', 'जेनेरिक TLD', '.com', '.org', '.xyz', 'ICANN']
 level: 1

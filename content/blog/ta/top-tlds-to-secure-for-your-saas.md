@@ -5,6 +5,7 @@ language: ta
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

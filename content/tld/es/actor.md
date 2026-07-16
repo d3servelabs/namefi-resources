@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre el dominio .actor, la extensión web perfecta para artistas y profesionales del espectáculo. Aprende sus ventajas, usos y cómo registrarlo hoy mismo.'
 keywords: ['.actor domains', '.actor TLD', '.actor top-level domain', 'what is .actor', 'why choose .actor', 'what is the .actor domain', 'why choose the .actor domain', 'registrar dominio actor', 'dominios para artistas', 'portfolio digital actor', 'marca personal actores', 'inversión en dominios', 'Namefi', 'tokenized domains', 'blockchain domains']

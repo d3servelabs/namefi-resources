@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un protocolo que transfiere tokens o mensajes entre blockchains que no pueden comunicarse de forma nativa entre sí.
 keywords: ['puente', 'entre cadenas', 'interoperabilidad', 'puente de tokens', 'multicadena']
 also_known_as: ['Puente']

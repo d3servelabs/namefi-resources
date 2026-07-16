@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: TLD 바로 왼쪽에 위치한 레이블 — example.com에서 ''example'' 부분 — 실제로 등록하는 구성 요소입니다.
 keywords: ['2단계 도메인', 'SLD', '루트 도메인', '에이펙스 도메인', '등록 가능한 도메인명']
 level: 1

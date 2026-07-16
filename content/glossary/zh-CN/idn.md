@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 使用非 ASCII 字符的域名，为 DNS 编码为以 xn-- 开头的 ASCII Punycode。
 keywords: ['IDN', '国际化域名', 'Punycode', 'xn--', 'Unicode 域名', '同形字攻击']
 level: 1

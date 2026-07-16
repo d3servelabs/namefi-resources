@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: ब्लॉकचेन पर ट्रांज़ैक्शन प्रोसेस करने के लिए चुकाया जाने वाला शुल्क, जो नेटवर्क की मूल संपत्ति में मापा जाता है और भीड़ के साथ बढ़ता है; Layer 2 बहुत कम शुल्क लेते हैं।
 keywords: ['गैस', 'gas fee', 'transaction fee', 'gwei', 'Ethereum gas', 'Base gas', 'L2 fees', 'mint cost']
 level: 1

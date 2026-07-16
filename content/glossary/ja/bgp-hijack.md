@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 偽のIPルートアナウンスによってインターネットトラフィックを迂回させる、DNSより下位のネットワーク層で起きる攻撃。
 keywords: ['BGPハイジャック', 'ルートハイジャック', 'IPプレフィックス', 'ネットワークセキュリティ', 'インターネットルーティング']
 level: 1

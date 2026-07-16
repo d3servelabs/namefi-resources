@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 지갑의 마스터 키를 인코딩하는 12개 또는 24개의 단어 목록으로, 이를 보유한 누구든 지갑을 제어할 수 있으므로 반드시 백업해야 하는 유일한 정보입니다.
 keywords: ['시드 구문', '복구 구문', '니모닉 구문', '지갑 백업', 'BIP39', '12단어', '24단어', '암호화폐 복구']
 level: 1

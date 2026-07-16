@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'دومين .shop هو نطاق gTLD مفتوح تديره GMO Registry وبيقول للزوار "هنا تتسوق." اتعرف على مين بيستخدمه، والقواعد، وأسعاره، وتأثيره على SEO.'
 keywords: ['دومين .shop', 'ما هو .shop', 'TLD للتسوق', 'تسجيل دومين .shop', 'دومين التجارة الإلكترونية', 'GMO Registry', 'نطاق جديد للتجزئة', 'شراء دومين .shop']

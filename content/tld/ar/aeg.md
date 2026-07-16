@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .aeg. تعرف على استخداماته، ومزاياه للشركات والمطورين، وكيفية حجزه بسهولة عبر Namefi."
 keywords: [".aeg domains", "شراء نطاق .aeg", "نطاقات المستوى الأعلى", "what is .aeg", "why choose .aeg", "استثمار النطاقات", "نطاقات البلوك تشين", "tokenized domain", "Namefi", "نطاقات الويب 3", "تسجيل النطاقات", "what is the .aeg domain", "why choose the .aeg domain", "مستقبل النطاقات", "aeg TLD"]

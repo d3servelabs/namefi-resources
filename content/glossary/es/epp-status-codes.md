@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Los indicadores estandarizados de un dominio que muestran su estado — bloqueado, en suspensión, pendiente de transferencia y más.
 keywords: ['códigos de estado EPP', 'clientHold', 'serverTransferProhibited', 'estado de dominio', 'eliminación pendiente']
 level: 1

@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: प्रमुख स्मार्ट-कॉन्ट्रैक्ट ब्लॉकचेन, और वह नेटवर्क जिस पर अधिकांश टोकनाइज़्ड डोमेन जारी किए जाते हैं।
 keywords: ['ethereum', 'ETH', 'smart contract', 'EVM', 'decentralized applications']
 also_known_as: ['ETH']

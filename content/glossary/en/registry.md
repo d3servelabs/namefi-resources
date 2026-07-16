@@ -5,6 +5,7 @@ language: en
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The organization that operates the authoritative database and nameservers for a top-level domain, delegating retail sales to registrars.
 keywords: ['registry', 'registry operator', 'TLD registry', 'domain registry', 'ICANN', 'registrar', 'EPP', 'gTLD registry', 'ccTLD registry', 'shared registry system']
 also_known_as: ['Registry Operator']

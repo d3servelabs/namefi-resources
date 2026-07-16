@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The lowest price a seller will accept, often hidden, below which an offer or auction bid is rejected.
 keywords: ['reserve price', 'minimum offer', 'reserve bid', 'floor price', 'domain auction reserve']
 level: 1

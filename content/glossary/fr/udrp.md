@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que l'UDRP et comment affecte-t-elle la propriété de domaines tokenisés ?
 keywords: ["UDRP","litiges de domaine","protection des marques","cybersquatting","cadre juridique"]
 relatedArticles:

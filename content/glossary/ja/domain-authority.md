@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインが検索結果でどれほど上位表示されやすいかを推定する評判シグナル。主に質の高い被リンクによって決まる。
 keywords: ['ドメインオーソリティ', '被リンク', 'リンクエクイティ', 'SEO', 'ランキングシグナル', '流入リンク']
 level: 1

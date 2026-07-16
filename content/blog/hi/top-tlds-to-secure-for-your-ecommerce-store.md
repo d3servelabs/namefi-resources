@@ -5,6 +5,7 @@ language: hi
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-ecommerce-store-og.jpg
 description: 'आपके ई-कॉमर्स स्टोर के लिए सुरक्षित करने योग्य शीर्ष 10 TLD, .com से लेकर .shop और .store तक, साथ ही आपके रिटेल ब्रांड की सुरक्षा के लिए एक डिफेंसिव रजिस्ट्रेशन रणनीति।'

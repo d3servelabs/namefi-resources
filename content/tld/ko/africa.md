@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - gong-jihye
 draft: false
 description: '.africa 도메인의 잠재력을 알아보세요. 이 TLD가 어떻게 비즈니스를 아프리카 디지털 경제와 연결하는지, 그리고 Namefi에서 등록해야 하는 이유를 설명합니다.'
 keywords:

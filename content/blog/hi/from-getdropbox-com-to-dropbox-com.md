@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'कैसे Dropbox ने GetDropbox.com पर लॉन्च किया क्योंकि Dropbox.com किसी और के पास था, ट्रेडमार्क और स्क्वाटिंग की लड़ाई लड़ी, और अंततः $300,000 नकद में Dropbox.com का एक्जैक्ट-मैच डोमेन खरीदा।'
 keywords: ['getdropbox.com', 'dropbox.com', 'dropbox domain name', 'drew houston', 'y combinator dropbox', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'exact match domain', 'domain acquisition', 'evenflow dropbox']

@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: سر قصير خاص بكل نطاق يُصدره المسجِّل للسماح بنقل النطاق إلى مسجِّل تاني، وبيتسمى كمان رمز EPP أو رمز النقل.
 keywords: ['رمز التفويض', 'رمز EPP', 'رمز النقل', 'نقل النطاق', 'رمز التفويض', 'رمز AuthInfo']
 level: 1

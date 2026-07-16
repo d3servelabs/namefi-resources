@@ -5,6 +5,7 @@ language: en
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A top-level domain not tied to a country, such as .com, .org, or .xyz, run under ICANN contract.
 keywords: ['gTLD', 'generic TLD', '.com', '.org', '.xyz', 'ICANN']
 level: 1

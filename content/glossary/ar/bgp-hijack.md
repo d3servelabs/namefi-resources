@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: إعادة توجيه ترافيك الإنترنت عن طريق إعلان مسارات IP مزيفة، وهو هجوم على طبقة الشبكة أسفل من DNS.
 keywords: ['اختطاف BGP', 'اختطاف المسار', 'IP prefix', 'أمن الشبكات', 'توجيه الإنترنت']
 level: 1

@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre cómo el dominio .accountants puede elevar la credibilidad de tu firma contable. Aprende sobre sus beneficios, casos de uso y cómo registrarlo en Namefi.'
 keywords:

@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'डोमेन नाम उद्योग को पत्रकारिता के रूप में कवर करने वाले न्यूज़ आउटलेट्स, सेल्स डेटा साइट्स और पॉडकास्ट के लिए एक गाइड — DomainNameWire, DNJournal, TheDomains, NameBio, DomainSherpa, CircleID, और बहुत कुछ।'
 ogImage: ../../assets/domain-industry-media-og.jpg

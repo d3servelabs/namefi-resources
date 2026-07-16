@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक AI मॉडल द्वारा संचालित सॉफ़्टवेयर जो उपयोगकर्ता की ओर से कार्य करता है — खरीदारी करना, API कॉल करना, और तेजी से अन्य एजेंटों के साथ लेन-देन करना।
 keywords: ['AI एजेंट', 'autonomous agent', 'एजेंट आइडेंटिटी', 'एजेंट कॉमर्स', 'on-chain एजेंट', 'agentic AI']
 level: 1

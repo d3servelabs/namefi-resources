@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 一人のオーナーが保有するドメイン名の集合体。更新・売却・評価などを投資として管理する資産群。
 keywords: ['ドメインポートフォリオ', 'ドメイン投資', 'ドメイン管理', 'ドメイン評価', 'ドメイン資産']
 level: 1

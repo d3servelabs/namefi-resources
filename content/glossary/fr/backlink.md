@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un hyperlien entrant provenant d'un autre site web vers le vôtre ; le principal moteur du classement dans les moteurs de recherche et de l'autorité de domaine.
 keywords: ['backlink', 'lien entrant', 'création de liens', 'équité de lien', 'seo']
 also_known_as: ['Lien entrant']

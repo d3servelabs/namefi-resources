@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.dev는 개발자, 프로젝트, 기술 팀을 위한 Google의 HTTPS 전용 최상위 도메인입니다. 등록 자격, SEO 영향, 구매 방법까지 알아보세요.'
 keywords: ['.dev 도메인', '.dev란', 'dev TLD', 'Google Registry dev', 'HSTS 프리로드', '개발자 도메인', 'dev 도메인 등록', 'dev 도메인 SEO']

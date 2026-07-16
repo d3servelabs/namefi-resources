@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es la multifirma y cómo mejora la seguridad de los dominios?
 keywords: ["multifirma","multisig","múltiples firmas","seguridad mejorada","custodia compartida"]
 relatedArticles:

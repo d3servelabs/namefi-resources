@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un precio fijo de compra instantánea en un listado de dominio; quien lo paga cierra la venta de inmediato, sin negociación.
 keywords: ['compra inmediata', 'BIN', 'compra instantánea', 'precio fijo', 'listado de dominio']
 also_known_as: ['BIN']

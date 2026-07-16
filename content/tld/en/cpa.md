@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .cpa domain is a restricted, credential-gated extension for licensed CPAs and CPA firms in the US, Canada, and Ireland, verified at registration and renewal.'
 keywords: ['.cpa domain', 'what is .cpa', 'cpa domain registration', 'restricted TLD', 'AICPA domain', 'CPA.com', 'licensed CPA domain', 'accounting firm domain']

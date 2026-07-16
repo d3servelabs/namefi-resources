@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .online domain is an open, unrestricted new gTLD by Radix that any person or business can register. Learn who it suits, how it ranks, and what to consider.'
 keywords: ['.online domain', 'what is .online', '.online TLD', 'register .online domain', 'Radix registry', 'new gTLD', 'online domain extension', 'is .online good for SEO']

@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 特定の国に紐づかないトップレベルドメイン。.com、.org、.xyzなどが代表例で、ICANNとの契約のもと運営される。
 keywords: ['gTLD', 'ジェネリックTLD', '.com', '.org', '.xyz', 'ICANN']
 level: 1

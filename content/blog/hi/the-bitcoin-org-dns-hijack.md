@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'सितंबर 2021 में, Bitcoin.org — छद्म नाम से चलाए जाने वाले Cobra के नेतृत्व में Bitcoin का दीर्घकालिक सूचनात्मक घर — DNS स्तर पर हाईजैक किया गया और एक नकली "अपना Bitcoin दोगुना करें" गिवअवे में बदल दिया गया, जिससे साइट ऑफलाइन होने से पहले धोखेबाजों ने लगभग $17,000 कमाए। एक Domain Mayday गहन विश्लेषण: क्या हुआ, कैसे हुआ, और यह DNS पर निर्भर क्रिप्टो-नेटिव साइटों के बारे में क्या सिखाता है।'
 keywords: ['bitcoin.org', 'bitcoin.org hack', 'dns hijack', 'domain hijacking', 'double your bitcoin scam', 'crypto giveaway scam', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'dns security', 'domain security', 'nameserver hijack', 'whois change attack']

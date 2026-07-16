@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'En 1995, un estafador llamado Stephen Cohen le robó sex.com a su legítimo propietario Gary Kremen con una sola carta falsificada enviada a Network Solutions. La lucha de años para recuperarlo terminó en una sentencia de $65 millones, un fugitivo en México y un fallo histórico que estableció que los dominios son propiedad.'
 keywords: ['sex.com', 'robo de dominio', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'carta falsificada', 'secuestro de dominio', 'carta Sharon Dimmick', 'seguridad de dominio', 'dominio como propiedad', 'sentencia de $65 millones', 'fraude de transferencia de dominio', 'Domain Mayday']

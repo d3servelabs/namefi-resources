@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '埃隆·马斯克如何在 1999 年创建 X.com，在 PayPal 接管后失去这个名字，2017 年以情感价值将其买回，最终将一个价值 440 亿美元的社交网络迁移至此——让 Twitter.com 重定向到 X.com。'
 keywords: ['twitter.com', 'x.com', 'twitter改名x', '马斯克x.com', 'x.com历史', 'paypal x.com域名', 'twitter改名x', '域名重定向', '域名升级', '单字母域名', '万能应用', '品牌命名', '溢价域名']

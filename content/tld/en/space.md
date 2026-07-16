@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .space domain is an open new gTLD from Radix, popular with startups, creatives, and space-tech projects. Learn who it suits, how it ranks, and what it costs.'
 keywords: ['.space domain', 'what is .space', 'space TLD', 'register .space domain', 'Radix registry', 'new gTLD', 'creative domain extension', 'startup domain']

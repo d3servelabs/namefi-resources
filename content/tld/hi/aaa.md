@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld', 'domain-names', 'branding', 'web3', 'aaa']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.aaa डोमेन एक्सटेंशन (TLD) के बारे में सब कुछ जानें। समझें कि यह ब्रांडिंग, SEO और डोमेन निवेश के लिए क्यों महत्वपूर्ण है और Namefi के साथ इसे कैसे सुरक्षित करें।'
 keywords: ['.aaa domains', '.aaa TLD', 'top-level domain', 'what is .aaa', 'why choose .aaa', 'what is the .aaa domain', 'why choose the .aaa domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'web3 domains', 'buy .aaa domain', 'digital identity', 'brand tld', 'Namefi']

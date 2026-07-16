@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 以太坊上的同质化代币标准，如稳定币所采用，与 ERC-721 NFT 标准互补。
 keywords: ['ERC-20', '同质化代币', '代币标准', '稳定币', '以太坊代币']
 level: 1

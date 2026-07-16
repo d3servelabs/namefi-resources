@@ -5,6 +5,7 @@ language: en
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Describes data or actions recorded directly on a blockchain, where they are public, verifiable, and secured by the network rather than a private server.
 keywords: ['on-chain', 'blockchain', 'smart contracts', 'domain NFT', 'decentralization']
 level: 1

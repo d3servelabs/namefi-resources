@@ -4,6 +4,7 @@ date: '2025-06-30'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Protection based on public-key cryptography, where only the holder of a private key can authorize actions, rather than a password a server could leak.
 keywords: ['cryptographic security', 'encryption', 'private keys', 'digital signatures', 'blockchain security']
 level: 1

@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 区块链密钥对中可公开分享的一半，由私钥派生而来，用于接收资产和验证签名。
 keywords: ['公钥', '地址', '验证密钥', '非对称密码学', '区块链账户']
 level: 1

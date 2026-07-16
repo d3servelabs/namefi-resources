@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld', 'brand-domains', 'domain-security']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 深入解析 .abbott 顶级域名（TLD）的定义与用途。探索 Abbott 实验室如何利用这一品牌域名增强信任，并了解如何在 Namefi 开启您的域名投资与 Web3 之旅。
 keywords: ['.abbott domains', 'TLD', 'top-level domain', 'what is .abbott', 'why choose .abbott', 'what is the .abbott domain', 'why choose the .abbott domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'brand TLD', 'corporate domain strategy', 'Abbott Laboratories domain', 'secure domains', 'Web3 domains']

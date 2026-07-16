@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 블록체인에 새로운 토큰 레코드를 기록하는 행위로, 도메인의 경우 소유권을 나타내는 NFT를 발행하는 것을 말합니다.
 keywords: ['민팅', '민트', 'NFT 생성', '토큰 발행', '온체인']
 also_known_as: ['Mint']

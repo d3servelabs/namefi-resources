@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le sommet de la hiérarchie DNS, répertoriant chaque TLD et les serveurs faisant autorité pour celui-ci.
 keywords: ['zone racine', 'serveurs racine', 'hiérarchie DNS', 'délégation TLD', 'IANA']
 level: 1

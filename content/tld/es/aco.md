@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld', 'dominios', 'inversión en dominios', 'web3', 'branding']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio .aco: su significado, ventajas para empresas y cómo esta extensión puede potenciar tu presencia digital. Regístralo hoy en Namefi.'
 keywords: ['.aco domains', 'dominio .aco', 'TLD .aco', 'top-level domain .aco', 'what is .aco', 'why choose .aco', 'qué es el dominio .aco', 'por qué elegir el dominio .aco', 'domain investing', 'blockchain domains', 'tokenized domain', 'comprar dominio .aco', 'registro de dominios', 'web3 domains', 'namefi .aco']

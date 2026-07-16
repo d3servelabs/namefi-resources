@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: कोलैटरल क्या है और DeFi में डोमेन कैसे कोलैटरल के रूप में काम कर सकते हैं?
 keywords: ["कोलैटरल","सुरक्षा","उधार देना","उधार लेना","डोमेन कोलैटरल","DeFi"]
 relatedArticles:

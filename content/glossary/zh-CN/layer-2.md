@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 构建于区块链之上以提升交易速度、降低成本的网络，例如以太坊上的 Base。
 keywords: ['layer 2', 'rollup', '扩容', 'optimistic rollup', 'ZK rollup']
 level: 1

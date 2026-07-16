@@ -6,6 +6,8 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
 draft: false
 description: 'Discover everything about the .afl top-level domain. Learn how the Australian Football League uses this unique Brand TLD and what it means for domain investing and digital identity.'
 keywords:

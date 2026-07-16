@@ -6,6 +6,7 @@ priority: P1
 tags: ["faq"]
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Dieser Artikel erklärt, warum traditionelle Domains On-Chain tokenisiert werden sollten und beleuchtet die Vorteile wie klareres Eigentum, finanzielle Komponierbarkeit und freieren, schnelleren Handel.
 keywords: ["Domain-Tokenisierung","Blockchain-Domains","NFT-Domains","On-Chain-Domains","Domain-Eigentum","dezentrale Domains","Domain-Handel","Web3-Domains","Smart Contracts","Domain-Komponierbarkeit","DNS-Tokenisierung","digitale Assets"]
 relatedArticles:

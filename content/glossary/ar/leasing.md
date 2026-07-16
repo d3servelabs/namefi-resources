@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو تأجير النطاقات وكيف يُمكّن الترميز نماذج تأجير جديدة؟
 keywords: ["تأجير","تأجير نطاقات","دخل سلبي","تأجير بالعقود الذكية","مدفوعات تلقائية"]
 relatedArticles:

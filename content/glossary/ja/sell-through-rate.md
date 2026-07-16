@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 一定期間内に売却されたドメインポートフォリオの割合を示す、投資家にとっての主要な流動性指標。
 keywords: ['売却率', 'STR', 'ドメイン流動性', 'ポートフォリオパフォーマンス', 'ドメイン売却速度']
 also_known_as: ['STR']

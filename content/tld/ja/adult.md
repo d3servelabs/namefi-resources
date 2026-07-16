@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: ".adult TLDを徹底解説：アダルトエンターテインメント業界向けに特化した安全なドメイン。ブランディングのメリット、取得可能性、登録方法をわかりやすく紹介します。"
 keywords: [".adultドメイン", ".adult TLD", "トップレベルドメイン", ".adultとは", ".adultを選ぶ理由", ".adultドメインとは", "アダルト業界ブランディング", "ドメイン投資", "デジタルアイデンティティ", "規制コンテンツドメイン", "トークン化ドメイン", "ブロックチェーンドメイン", "安全なアダルトドメイン", ".adultドメイン購入"]

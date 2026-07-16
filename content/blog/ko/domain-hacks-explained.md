@@ -5,6 +5,7 @@ language: ko
 tags: ['domains', 'domain-investing', 'branding', 'domain-flipping']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

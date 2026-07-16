@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 存放域名所有 DNS 记录的文本文件，包括用于其域名服务器的胶水记录。
 keywords: ['区域文件', '胶水记录', 'DNS 区域', '权威记录', '域名服务器']
 level: 1

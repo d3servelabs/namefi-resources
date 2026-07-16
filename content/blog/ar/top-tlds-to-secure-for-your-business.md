@@ -5,6 +5,7 @@ language: ar
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-business-og.jpg
 description: 'اكتشف أفضل النطاقات الرئيسية اللي لازم تأمّنها لعملك، وليه التسجيل الوقائي بيحمي علامتك التجارية، وإزاي تسجّلها بالطريقة الصح.'

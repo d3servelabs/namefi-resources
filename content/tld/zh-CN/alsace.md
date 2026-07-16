@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .alsace 域名：法国阿尔萨斯地区的专属数字身份。探索其在品牌塑造、本地 SEO 和域名投资中的价值，以及如何在 Namefi 进行注册。'
 keywords: ['.alsace domains', '.alsace TLD', 'top-level domain', 'what is .alsace', 'why choose .alsace', 'what is the .alsace domain', 'why choose the .alsace domain', 'Alsace region domains', 'GeoTLD investment', 'domain investing', 'blockchain domains', 'tokenized domains', 'Namefi', 'local business SEO', 'European domains']

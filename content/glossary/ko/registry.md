@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 최상위 도메인의 권위 있는 데이터베이스와 네임서버를 운영하며, 소매 판매는 레지스트라에 위임하는 조직입니다.
 keywords: ['레지스트리', '레지스트리 운영자', 'TLD 레지스트리', '도메인 레지스트리', 'ICANN', '레지스트라', 'EPP', 'gTLD 레지스트리', 'ccTLD 레지스트리', '공유 레지스트리 시스템']
 also_known_as: ['레지스트리 운영자']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: பரிவர்த்தனைகளை வேகமாகவும் மலிவாகவும் செய்வதற்காக ஒரு பிளாக்செயினின் மேல் கட்டப்படும் நெட்வொர்க்; எடுத்துக்காட்டாக Ethereum மேல் Base.
 keywords: ['லேயர் 2', 'ரோல்அப்', 'அளவீட்டு விரிவாக்கம்', 'ஆப்டிமிஸ்டிக் ரோல்அப்', 'ZK ரோல்அப்']
 level: 1

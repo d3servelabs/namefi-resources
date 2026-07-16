@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld', 'brand domains', 'domain investing', 'internet security']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".abbott TLD에 관해 알아야 할 모든 것. 이 독점 도메인의 목적, 헬스케어 분야에서의 활용 사례, 브랜드 TLD의 이점을 살펴봅니다."
 keywords: [".abbott 도메인", ".abbott TLD", "최상위 도메인", ".abbott란", ".abbott를 선택하는 이유", ".abbott 도메인이란", ".abbott 도메인을 선택하는 이유", "브랜드 TLD", "헬스케어 도메인 이름", "제한된 최상위 도메인", "Abbott Laboratories 도메인", "도메인 투자", "블록체인 도메인", "토큰화 도메인", "Namefi"]

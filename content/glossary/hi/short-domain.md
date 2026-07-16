@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: बहुत छोटे डोमेन — तीन से चार अक्षर या सभी अंक — जो संक्षिप्तता के लिए, विशेष रूप से कुछ बाजारों में, बेशकीमती हैं।
 keywords: ['short domain', 'numeric domain', 'LLLL domain', 'NNNN domain', 'three-letter domain', 'four-letter domain']
 level: 1

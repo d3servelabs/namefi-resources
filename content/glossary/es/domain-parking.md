@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Colocar anuncios o un aviso de venta en un dominio sin desarrollar para obtener ingresos o señalar disponibilidad.
 keywords: ['aparcamiento de dominios', 'dominio aparcado', 'monetización', 'inversión en dominios', 'ingreso pasivo']
 also_known_as: ['Dominio aparcado']

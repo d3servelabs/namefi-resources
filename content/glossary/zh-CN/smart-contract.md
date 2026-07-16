@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是智能合约，它们如何实现域名代币化？
 keywords: ["智能合约","区块链","自动化执行","可编程逻辑","去中心化"]
 relatedArticles:

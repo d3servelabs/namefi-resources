@@ -5,6 +5,8 @@ language: 'ta'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.live டொமைன் என்பது Identity Digital நிறுவனம் நிர்வகிக்கும் ஒரு திறந்த புதிய gTLD ஆகும். இது நேரடி ஒளிபரப்பு, நிகழ்வுகள் மற்றும் நிகழ்நேர உள்ளடக்கத்திற்காக வடிவமைக்கப்பட்டது. யார் பயன்படுத்துகிறார்கள், விதிகள் என்ன, இது உங்களுக்கு ஏற்றதா என்று அறியுங்கள்.'
 keywords: ['.live டொமைன்கள்', '.live TLD', '.live என்றால் என்ன', '.live ஏன் தேர்வு செய்வது', 'நேரடி ஒளிபரப்பு டொமைன்', 'நேரடி ஸ்ட்ரீமிங் டொமைன் பெயர்', 'Identity Digital', 'புதிய gTLD']

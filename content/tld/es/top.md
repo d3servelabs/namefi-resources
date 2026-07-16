@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio .top: su significado, ventajas para tu marca y por qué es una excelente opción. Registra tu .top hoy mismo en Namefi.'
 keywords: ['.top domains', '.top TLD', 'top-level domain', 'what is .top', 'why choose .top', 'qué es el dominio .top', 'por qué elegir el dominio .top', 'comprar dominio .top', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'registro de dominios web3', 'estrategia SEO dominios', 'ventajas dominio .top', 'Namefi']

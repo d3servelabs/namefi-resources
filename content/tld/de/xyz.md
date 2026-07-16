@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Die .xyz-Domain ist eine offene generische TLD, die 2014 eingeführt wurde und durch Alphabets abc.xyz weltbekannt wurde. Erfahren Sie, für wen sie geeignet ist, wie sie bepreist wird und wie man sie registriert.'
 keywords: ['.xyz-Domains', 'was ist .xyz', '.xyz TLD', '.xyz-Domain-Bedeutung', 'abc.xyz Alphabet', '.xyz vs .com', '.xyz-Domain registrieren', 'ist .xyz gut für SEO']

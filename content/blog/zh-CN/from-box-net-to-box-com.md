@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Box 于 2005 年在 Box.net 上线，因为 Box.com 已被他人占用；随后从消费级存储转型为企业级市场，并于 2011 年向 Digimedia 支付近 100 万美元买下完全匹配的 Box.com——这次从 .net 到 .com 的升级，恰好发生在公司正式更名为"Box"的时刻。'
 keywords: ['box.net', 'box.com', 'box 域名', 'aaron levie', 'dylan smith', 'digimedia', 'scott day', '域名升级', '初创公司命名', '品牌命名', '溢价域名', '完全匹配域名', 'net 转 com']

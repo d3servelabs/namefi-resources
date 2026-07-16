@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Créer un nouveau token sur une blockchain — pour un domaine, émettre le NFT qui représente sa propriété.
 keywords: ['frappe', 'minting', 'création de NFT', 'émission de token', 'on-chain']
 also_known_as: ['Frapper']

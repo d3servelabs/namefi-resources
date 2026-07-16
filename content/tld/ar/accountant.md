@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته عن النطاق .accountant: الخيار الأمثل للمحاسبين والشركات المالية لتعزيز المصداقية الرقمية. سجل نطاقك الآن عبر Namefi.'
 keywords: ['.accountant domains', '.accountant TLD', 'top-level domain .accountant', 'what is .accountant', 'why choose .accountant', 'what is the .accountant domain', 'why choose the .accountant domain', 'نطاق .accountant', 'شراء نطاق محاسب', 'domain investing', 'blockchain domains', 'tokenized domains', 'نطاقات البلوكشين', 'accounting web address', 'financial services domains']

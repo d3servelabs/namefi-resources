@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: السعر اللي المستخدم النهائي بيدفعه مقابل نطاق ينوي استخدامه — وغالباً أعلى بكتير من سعر أرضية المستثمرين.
 keywords: ['تسعير التجزئة', 'تسعير المستخدم النهائي', 'تجزئة النطاق', 'سعر المستخدم النهائي', 'السعر الكامل']
 also_known_as: ['تسعير المستخدم النهائي']

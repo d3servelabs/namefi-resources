@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: المدة بالثواني اللي ممكن المحلّلات تخزّن فيها سجل DNS في الكاش قبل ما تعيد الاستعلام.
 keywords: ['TTL', 'مدة البقاء', 'كاش DNS', 'انتشار DNS', 'تخزين السجلات']
 level: 1

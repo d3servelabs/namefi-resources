@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'guide', 'domain-investing', 'outbound']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Eine praktische Checkliste aus Verkäufersicht für die Preisfindung einer Domain, das Finden potenzieller Käufer, die Kontaktaufnahme, die Vermeidung von Betrug und den sicheren Abschluss des Transfers."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक कंपनी जो किसी बड़े रजिस्ट्रार की मान्यता के तहत डोमेन बेचती है, न कि अपनी खुद की मान्यता रखकर।
 keywords: ['रीसेलर', 'डोमेन रीसेलर', 'व्हाइट-लेबल रजिस्ट्रार', 'ICANN मान्यता', 'रजिस्ट्रार']
 level: 1

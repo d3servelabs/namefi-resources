@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインの取得費用を一括払いではなく分割払いで支払う仕組み。
 keywords: ['ドメインファイナンシング', '分割払い', '支払いプラン', 'ドメイン取得', 'ドメイン投資']
 level: 1

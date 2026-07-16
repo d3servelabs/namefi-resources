@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: بلوكتشين العقود الذكية الرائدة، والشبكة اللي صدر عليها معظم النطاقات المُرمَّزة.
 keywords: ['ethereum', 'ETH', 'عقد ذكي', 'EVM', 'تطبيقات لامركزية']
 also_known_as: ['ETH']

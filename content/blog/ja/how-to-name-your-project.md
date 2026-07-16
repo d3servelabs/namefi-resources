@@ -5,6 +5,7 @@ language: ja
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: domain-basics
 format: guide

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: ".alipay TLDの目的を解説します。このブランドTLDがフィンテック分野のセキュリティをどのように強化するか、そしてドメイン投資の未来に何をもたらすかを学びましょう。"
 keywords: [".alipayドメイン", ".alipay TLD", "トップレベルドメイン", ".alipayとは", ".alipayを選ぶ理由", ".alipayドメインとは", "フィンテックドメイン", "ブランドTLD", "アリババグループドメイン", "ブロックチェーンドメイン", "トークン化ドメイン", "ドメイン投資", "デジタル決済セキュリティ", "Namefi"]

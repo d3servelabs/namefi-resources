@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक मध्यस्थ जो खरीदार और विक्रेता के बीच डोमेन बिक्री की बातचीत करता है, आमतौर पर कमीशन के लिए।
 keywords: ['domain broker', 'domain brokerage', 'domain negotiation', 'domain intermediary', 'domain commission']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.house 도메인은 Binky Moon(Identity Digital)이 운영하는 개방형 일반 TLD입니다. 적합한 사용자, SEO 순위 영향, 등록 규정, 가격 역학을 알아보세요.'
 keywords: ['.house 도메인', '.house란', '.house TLD', '부동산 도메인', '홈 도메인 확장자', 'Binky Moon', 'Identity Digital', '일반 TLD', '도메인 등록']

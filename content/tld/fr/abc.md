@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le potentiel du domaine .abc. Apprenez pourquoi ce TLD simple et mémorable est idéal pour votre marque et comment l'enregistrer sur Namefi."
 keywords: [".abc domains", ".abc TLD", "top-level domain .abc", "what is .abc", "why choose .abc", "what is the .abc domain", "why choose the .abc domain", "domaine .abc", "extension .abc", "investissement nom de domaine", "blockchain domains", "tokenized domain", "acheter domaine .abc", "signification domaine .abc", "Web3 domains"]

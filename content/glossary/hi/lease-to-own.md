@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: आवर्ती भुगतानों के माध्यम से डोमेन अधिग्रहण जो पूर्ण स्वामित्व की ओर बढ़ता है, जो rent-to-own का एक समकक्ष है।
 keywords: ['lease-to-own', 'डोमेन अधिग्रहण', 'किस्त', 'डोमेन फाइनेंसिंग', 'rent-to-own']
 level: 1

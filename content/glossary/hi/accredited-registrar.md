@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: ICANN द्वारा रजिस्ट्रार मान्यता समझौते के तहत gTLD डोमेन बेचने के लिए स्वीकृत रजिस्ट्रार।
 keywords: ['accredited registrar', 'RAA', 'ICANN accreditation', 'gTLD', 'registrar agreement']
 level: 1

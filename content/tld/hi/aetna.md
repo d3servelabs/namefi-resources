@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.aetna डोमेन एक्सटेंशन (TLD) के बारे में सब कुछ जानें। समझें कि यह ब्रांड TLD कैसे काम करता है, इसका महत्व क्या है और Namefi के साथ अपनी डोमेन यात्रा कैसे शुरू करें।'
 keywords:

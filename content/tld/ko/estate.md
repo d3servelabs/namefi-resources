@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.estate 도메인은 부동산 중개인, 브로커리지, 부동산 관련 사업체를 위해 설계된 개방형 일반 확장자입니다. 사용 대상, 가격 책정 방식, 적합성 여부를 알아보세요.'
 keywords: ['.estate 도메인', '.estate란 무엇인가', 'estate TLD', '부동산 도메인', 'estate 도메인 등록', '프로퍼티 도메인', '신규 gTLD', 'Binky Moon']

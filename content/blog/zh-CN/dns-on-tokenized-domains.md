@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 实用指南：在您将 ICANN 域名代币化后，常规 DNS（域名服务器、A/AAAA、MX、TXT、DNSSEC、CAA）如何继续运作。了解哪些发生了变化，哪些没有，以及如何设置您现有的 DNS 提供商。
 keywords: ['代币化域名 DNS', 'NFT 域名 DNSSEC', '代币化域名 域名服务器', '代币化域名 电子邮件', 'NFT 域名 MX 记录', '代币化域名 CAA 记录', '代币化域名 DNS 管理', '链上域名 DNS', 'NFT 域名 MX', '代币化域名 Cloudflare', '代币化域名 Route53', '代币化 DNS 如何工作', '代币化域名解析']

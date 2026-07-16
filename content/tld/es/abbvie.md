@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld', 'dominios', 'marca', 'tecnología', 'internet']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubre qué es el dominio .abbvie, un TLD exclusivo de marca. Analizamos su propósito, seguridad y el impacto de los dominios personalizados en la era digital."
 keywords: [".abbvie", "dominios .abbvie", "TLD .abbvie", "top-level domain .abbvie", "qué es el dominio .abbvie", "por qué elegir el dominio .abbvie", "inversión en dominios", "dominios de marca", "blockchain domains", "dominios tokenizados", "registro de dominios", "ICANN gTLD", "seguridad web", "namefi", "comprar dominios web3"]

@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'hi'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.biz डोमेन GoDaddy Registry द्वारा चलाया जाने वाला एक खुला, व्यवसाय-उन्मुख gTLD है। जानें कि यह किसके लिए उपयुक्त है, यह .com की तुलना में कैसा है, और खरीदने से पहले क्या जानना है।'
 keywords: ['.biz', '.biz डोमेन', '.biz TLD', '.biz क्या है', 'बिज़नेस डोमेन एक्सटेंशन', 'biz बनाम com', 'GoDaddy Registry', 'वास्तविक व्यावसायिक उपयोग']

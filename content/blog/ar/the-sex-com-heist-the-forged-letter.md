@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في 1995، نصّاب اسمه Stephen Cohen سرق sex.com من صاحبه الحقيقي Gary Kremen بخطاب مزوّر واحد بعتهولهم في Network Solutions. المعركة اللي دامت سنين انتهت بحكم بـ65 مليون دولار، ومتهم هرب لـ المكسيك، وحكم تاريخي اعتبر الدومينات ملكية خاصة.'
 keywords: ['sex.com', 'سرقة الدومين', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'خطاب مزوّر', 'اختطاف الدومين', 'خطاب Sharon Dimmick', 'أمان الدومين', 'الدومين كملكية', 'حكم 65 مليون دولار', 'احتيال نقل الدومين', 'Domain Mayday']

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .ads 顶级域名：专为广告行业、营销人员和创意机构打造的数字身份。探索其优势、应用场景，以及为何您应该立即在 Namefi 注册。'
 keywords: ['.ads domains', '.ads TLD', 'top-level domain', 'what is .ads', 'why choose .ads', 'what is the .ads domain', 'why choose the .ads domain', 'buy .ads domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'marketing domains', 'advertising TLD', 'ad tech domains', 'creative agency domains']

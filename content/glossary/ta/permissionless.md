@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: மைய அதிகாரியின் ஒப்புதல் தேவையின்றி எவரும் பயன்படுத்தவோ கட்டமைக்கவோ முடியும் என்ற அமைப்பு; விதிகள் திறந்த நெறிமுறைகளால் செயல்படுத்தப்படுகின்றன.
 keywords: ['அனுமதி தேவையற்றது', 'பரவலாக்கப்பட்டது', 'தணிக்கை எதிர்ப்பு', 'திறந்த அணுகல்', 'blockchain']
 level: 1

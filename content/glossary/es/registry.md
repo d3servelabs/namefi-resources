@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La organización que opera la base de datos autoritativa y los servidores de nombres de un dominio de nivel superior, delegando las ventas al por menor a los registradores.
 keywords: ['registro', 'operador de registro', 'registro TLD', 'registro de dominios', 'ICANN', 'registrador', 'EPP', 'registro gTLD', 'registro ccTLD', 'sistema de registro compartido']
 also_known_as: ['Operador de registro']

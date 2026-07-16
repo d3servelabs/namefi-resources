@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "深入了解 .blog 顶级域名：专为内容创作者和企业博客打造。探索其优势、使用案例，以及为何它是域名投资和 Web3 身份的明智选择。"
 keywords: [".blog domains", ".blog TLD", "top-level domain", "what is .blog", "why choose .blog", "what is the .blog domain", "why choose the .blog domain", "domain investing", "blockchain domains", "tokenized domain", "content creator domains", "blogging platform", "new gTLD", "Web3 domains", "Namefi"]

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 소유권을 유지하면서 반복 수수료를 받고 도메인의 사용권을 임대하는 방식으로, 스마트 계약을 통해 조건 집행과 결제를 자동화할 수 있습니다.
 keywords: ['리스', '도메인 임대', '패시브 인컴', '스마트 계약 리스', '자동 결제']
 level: 1

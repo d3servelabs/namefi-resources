@@ -5,6 +5,8 @@ language: ta
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: எந்த நாட்டோடும் தொடர்பில்லாத ஒரு உச்ச-நிலை டொமெயின் — .com, .org, .xyz போன்றவை — ICANN ஒப்பந்தத்தின் கீழ் இயங்குவது.
 keywords: ['gTLD', 'பொதுவான TLD', '.com', '.org', '.xyz', 'ICANN']
 level: 1

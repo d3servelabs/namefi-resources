@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.world 도메인은 Identity Digital이 운영하는 개방형 일반 gTLD로, 글로벌 브랜드·국제 프로젝트·커뮤니티 사이트에 적합합니다. 작동 방식을 알아보세요.'
 keywords: ['.world 도메인', '.world란', 'world TLD', 'world 도메인 등록', '글로벌 도메인 확장자', 'Identity Digital', '일반 최상위 도메인', '.world 등록']

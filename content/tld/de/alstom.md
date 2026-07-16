@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Erfahren Sie alles über die .alstom Top-Level-Domain. Einblicke in diese exklusive Marken-TLD, ihre Bedeutung für den Schienenverkehr und Domain-Trends.'
 keywords:

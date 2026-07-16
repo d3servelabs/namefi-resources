@@ -6,6 +6,7 @@ priority: P0
 tags: ["faq"]
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक डोमेन नेम आपकी ऑनलाइन उपस्थिति की नींव है।
 keywords: ["डोमेन नेम","डीएनएस","डोमेन नेम सिस्टम","आईपी एड्रेस","वेब एड्रेस","इंटरनेट की बुनियादी बातें","डोमेन रजिस्ट्रेशन","वेबसाइट एड्रेस","यूआरएल","नेमफाई"]
 relatedArticles:

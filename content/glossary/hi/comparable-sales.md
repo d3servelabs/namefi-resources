@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: समान डोमेन की पिछली बिक्री जो किसी नाम का मूल्य अनुमानित करने के लिए बेंचमार्क के रूप में उपयोग की जाती है।
 keywords: ['comparable sales', 'comps', 'domain sales data', 'domain benchmarks', 'domain pricing history']
 also_known_as: ['Comps']

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Tout savoir sur l'extension de domaine .ac : origines, usages pour les académies et la tech, et pourquoi l'enregistrer dès maintenant sur Namefi."
 keywords: [".ac domains", "domaines .ac", "TLD .ac", "top-level domain .ac", "what is .ac", "why choose .ac", "qu'est-ce que le domaine .ac", "pourquoi choisir le domaine .ac", "domaine internet ile ascension", "acheter un domaine .ac", "investir dans les domaines", "domaines tokenisés", "domaines blockchain", "registraire de domaine web3", "extension internet ac"]

@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.fun 도메인은 Radix가 운영하는 개방형 새로운 gTLD로, 게임·이벤트·pump.fun과 같은 Web3 프로젝트에서 널리 활용됩니다. 이용 대상, 규정, 그리고 그 가치를 안내합니다.'
 keywords: ['.fun 도메인', '.fun TLD', '.fun이란', '.fun 도메인이란', 'Radix 레지스트리', '새로운 gTLD', '게임 도메인', 'pump.fun']

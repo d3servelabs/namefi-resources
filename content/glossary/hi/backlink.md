@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: किसी अन्य वेबसाइट से आपकी साइट पर आने वाला इनबाउंड हाइपरलिंक; सर्च रैंकिंग और डोमेन अथॉरिटी का प्राथमिक चालक।
 keywords: ['backlink', 'inbound link', 'link building', 'link equity', 'seo']
 also_known_as: ['इनबाउंड लिंक']

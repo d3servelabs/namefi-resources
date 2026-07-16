@@ -5,6 +5,7 @@ language: ko
 tags: ['thesis']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-tokenization
 format: opinion

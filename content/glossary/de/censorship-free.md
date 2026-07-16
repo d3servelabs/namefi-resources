@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was bedeutet "zensurfrei" für Domain-Eigentum und -Verwaltung?
 keywords: ["zensurfrei","Zensurresistenz","dezentralisiert","Freiheit","nicht aufzuhalten"]
 relatedArticles:

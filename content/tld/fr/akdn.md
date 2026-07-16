@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld', 'domaines', 'akdn', 'web3', 'identité numérique']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .akdn : son origine, son utilisation par le Réseau Aga Khan et l'importance des TLD de marque. Enregistrez votre domaine idéal avec Namefi."
 keywords: [".akdn", "domaine .akdn", "TLD .akdn", "extension .akdn", "qu'est-ce que le .akdn", "pourquoi choisir .akdn", "investir nom de domaine", "achat nom de domaine", "domaines blockchain", "domaines tokenisés", "registraire de domaine", "Namefi", "top-level domain", "signification .akdn", "réseau aga khan"]

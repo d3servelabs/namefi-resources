@@ -6,6 +6,7 @@ priority: P1
 tags: ['tld']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.sbsドメインはShortDotが運営する低コストのオープン汎用gTLDで、「side by side（共に並んで）」と読まれることが多い。その起源・実際の用途・評判、そして取得すべきかどうかを解説する。'
 keywords: ['.sbsドメイン', '.sbsとは', '.sbsドメインの意味', 'sbs TLD', '.sbsは安全か', 'ShortDot .sbs', 'サイドバイサイド ドメイン', '新gTLD']

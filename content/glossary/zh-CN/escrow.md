@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是托管以及智能合约如何为域名提供无需信任的托管？
 keywords: ["托管","受信任的第三方","智能合约托管","无需信任","安全交易"]
 relatedArticles:

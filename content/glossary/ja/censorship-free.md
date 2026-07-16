@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: いかなる単一の権力者も一方的に所有権を押収・遮断・改変できない特性。管理権は公開台帳上の鍵保有者に帰属する。
 keywords: ['検閲耐性', 'censorship-free', '検閲フリー', '分散型', '自由', '停止不能']
 level: 1

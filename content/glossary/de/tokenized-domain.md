@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Eine echte DNS-Domain, deren Eigentümerschaft als Blockchain-Token repräsentiert wird, den man in einer Wallet hält.
 keywords: ['tokenisierte domain', 'domain NFT', 'on-chain domain', 'domain-eigentümerschaft', 'web3 domain']
 level: 1

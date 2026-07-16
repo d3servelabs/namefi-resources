@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: ब्लॉकचेन पर एक नया टोकन बनाना — डोमेन के लिए, वह NFT जारी करना जो उसके स्वामित्व को दर्शाता है।
 keywords: ['मिंटिंग', 'mint', 'NFT निर्माण', 'टोकन जारी करना', 'ऑन-चेन']
 also_known_as: ['मिंट करना']

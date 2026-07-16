@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインが失効した瞬間に登録を試みるサービス。期限切れの名前をいち早く取得するために利用される。
 keywords: ['バックオーダー', 'ドロップキャッチング', '期限切れドメイン', 'ペンディングデリート', 'ドメイン取得']
 level: 1

@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez l'extension .fun : un TLD dynamique pour le divertissement, les marques et le Web3. Apprenez pourquoi et comment enregistrer votre domaine .fun avec Namefi."
 keywords: [".fun domains", ".fun TLD", "top-level domain .fun", "what is .fun", "why choose .fun", "what is the .fun domain", "why choose the .fun domain", "investir domaine .fun", "domaines tokenisés", "Web3 domains", "achat nom de domaine", "nom de domaine divertissement", "extension internet ludique", "registraire Namefi", "blockchain domains"]

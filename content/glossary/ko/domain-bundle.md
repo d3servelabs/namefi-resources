@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 단일 브랜드의 여러 TLD나 철자 변형을 포함하는 등, 관련 도메인들을 하나의 패키지로 묶어 판매하거나 관리하는 집합입니다.
 keywords: ['도메인 번들', '포트폴리오', '대량 거래', '도메인 컬렉션', '자산 관리']
 level: 1

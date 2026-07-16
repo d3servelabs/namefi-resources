@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: ".af トップレベルドメインを徹底解説。アフガニスタンの国別ccTLDとしての起源から、クリエイティブなドメインハックやブランディングへの活用まで、.afが賢い選択である理由を学ぶ。"
 keywords: [".afドメイン", ".af TLD", "トップレベルドメイン", ".afとは", ".afを選ぶ理由", ".afドメインとは", "アフガニスタンドメイン", "ドメインハック", "クリエイティブブランディング", "ドメイン投資", ".afドメインを購入", "トークン化ドメイン", "ブロックチェーンドメイン", "Namefi"]

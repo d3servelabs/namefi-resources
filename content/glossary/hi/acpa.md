@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक अमेरिकी कानून जो ट्रेडमार्क मालिकों को साइबरस्क्वैटर पर संघीय अदालत में मुकदमा करने देता है, UDRP का एक विकल्प।
 keywords: ['ACPA', 'anticybersquatting', 'US trademark law', 'domain dispute', 'federal court']
 also_known_as: ['Anticybersquatting Consumer Protection Act']

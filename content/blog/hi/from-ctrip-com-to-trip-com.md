@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'कैसे Ctrip, चीन की सबसे बड़ी ऑनलाइन ट्रैवल एजेंसी, ने 2017 में Gogobot नामक एक स्टार्टअप से प्रीमियम Trip.com डोमेन हासिल किया, उसके इर्द-गिर्द अपना वैश्विक ब्रांड फिर से बनाया, और 2019 में अंतरराष्ट्रीय विस्तार के लिए पूरी मूल कंपनी का नाम बदलकर Trip.com Group कर दिया।'
 keywords: ['ctrip.com', 'trip.com', 'ctrip रीब्रांड', 'trip.com group', 'trip.com डोमेन', 'डोमेन अपग्रेड', 'चीनी ब्रांड वैश्विक विस्तार', 'gogobot trip.com', 'james liang ctrip', 'प्रीमियम ट्रैवल डोमेन', 'स्टार्टअप नामकरण', 'ब्रांड नामकरण', 'डोमेन अधिग्रहण']

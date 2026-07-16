@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Entdecken Sie die .able Domain: Eine vielseitige Endung für kreative Marken und Web3-Innovationen. Erfahren Sie alles über Vorteile, Nutzung und Registrierung.'
 keywords:

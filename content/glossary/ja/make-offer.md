@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 買い手が入札額を提出し、売り手がそれを承諾・カウンターオファー・拒否できるドメイン掲載形式。
 keywords: ['オファー提示', 'ベストオファー', 'ドメイン交渉', 'オファー', 'カウンターオファー']
 level: 1

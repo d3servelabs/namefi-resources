@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 중앙 관리자의 승인 없이 누구나 사용하거나 그 위에 구축할 수 있는 시스템으로, 규칙이 중앙 권한이 아닌 개방형 프로토콜에 의해 집행됩니다.
 keywords: ['퍼미션리스', '탈중앙화', '검열 저항', '개방형 접근', 'blockchain']
 level: 1

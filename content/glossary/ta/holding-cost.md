@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைன் விற்பனையாகும் வரை முதலீட்டாளர் அதை வைத்திருக்க செலுத்தும் தொடர் புதுப்பிப்பு கட்டணங்கள்.
 keywords: ['வைத்திருப்பு செலவு', 'சுமை செலவு', 'டொமைன் புதுப்பிப்பு செலவு', 'டொமைன் முதலீட்டு செலவு', 'ஆண்டுத் புதுப்பிப்பு கட்டணம்']
 also_known_as: ['சுமை செலவு']

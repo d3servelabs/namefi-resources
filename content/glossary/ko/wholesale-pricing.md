@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 투자자 간에 형성되는 도메인 최저 거래 가격 — 도메이너가 빠른 자금 회수를 위해 소매가보다 낮게 수용하는 가격입니다.
 keywords: ['도매 가격', '투자자 가격', '도메인 도매', '청산 가격', '도메이너 가격']
 also_known_as: ['투자자 가격']

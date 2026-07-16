@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.today はIdentity Digitalが運営するオープンな新gTLDで、ニュース・日替わりセール・イベント・最新情報の発信に適しています。利用用途、規約、取得すべきかどうかを解説します。'
 keywords: ['.today ドメイン', '.today とは', '.today TLD', 'today ドメイン拡張子', '新gTLD', 'Identity Digital', 'ドメイン登録', 'ニュース用ドメイン']

@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.storeドメインは小売・ネットショッピング専用に設計されたオープンな新gTLDです。運営元、利用対象者、SEOへの影響、登録方法を解説します。'
 keywords: ['.storeドメイン', '.storeとは', '.store TLD', 'ECサイト用ドメイン', 'ネットショップのドメイン名', '小売向けドメイン拡張子', '.storeドメイン取得', '.store登録']

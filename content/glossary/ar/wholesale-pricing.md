@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: سعر الأرضية بين المستثمرين للنطاق — ما يقبله domainer عشان يبيع بسرعة بأقل من سعر التجزئة.
 keywords: ['تسعير الجملة', 'تسعير المستثمر', 'نطاق الجملة', 'سعر التصفية', 'تسعير domainer']
 also_known_as: ['تسعير المستثمر']

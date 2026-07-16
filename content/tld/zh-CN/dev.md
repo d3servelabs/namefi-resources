@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: .dev 是 Google 专为开发者和开发项目设计的安全域名。了解为何它是程序员、科技公司和开发团队的首选。
 keywords: ["tld", ".dev 域名", "开发者", "开发项目", "科技公司", "编程", "HTTPS", "Google"]
 relatedArticles:

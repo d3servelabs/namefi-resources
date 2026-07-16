@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Firmas criptográficas sobre registros DNS que permiten a los resolutores verificar que una respuesta es auténtica y no fue falsificada ni alterada en tránsito.
 keywords: ['DNSSEC', 'seguridad DNS', 'seguridad de dominio', 'registro DS', 'cadena de confianza', 'DNS criptográfico']
 level: 1

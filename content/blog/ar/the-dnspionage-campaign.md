@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في أواخر 2018، كشفت Cisco Talos عن حملة DNSpionage — حملة مرتبطة بمصالح إيرانية أعادت كتابة سجلات DNS الحكومية، وحوّلت مسار الإيميل وحركة VPN لسيرفرات المهاجمين، وولّدت شهادات TLS حقيقية عشان تفضل مخفية. وكانت السبب في أول توجيه طارئ من نوعه تُصدره الحكومة الأمريكية.'
 keywords: ['dnspionage', 'اختطاف dns', 'إعادة توجيه dns', 'cisco talos', 'توجيه cisa الطارئ 19-01', 'sea turtle dns', 'اختطاف dns إيراني', 'fireeye اختطاف dns', 'إساءة استخدام شهادة lets encrypt', 'أمن dns', 'أمن النطاقات', 'تجسس سيبراني على مستوى الدول', 'التخفيف من التلاعب بالبنية التحتية لـ dns']

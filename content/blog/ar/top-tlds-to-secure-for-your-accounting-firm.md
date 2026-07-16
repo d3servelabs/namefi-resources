@@ -5,6 +5,7 @@ language: ar
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-accounting-firm-og.jpg
 description: 'أفضل النطاقات اللي لازم تحجزها لشركة المحاسبة بتاعتك — من .cpa المقيّد للتسجيل الدفاعي على .com و.net و.org، لحماية علامتك التجارية وبناء ثقة العملاء.'

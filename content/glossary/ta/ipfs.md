@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: கோப்புகளை அவற்றின் உள்ளடக்கத்தால் அடையாளப்படுத்தும் ஒரு பியர்-டு-பியர் நெறிமுறை; பரவலாக்கப்பட்ட இணைய தரவை வழங்க பயன்படுகிறது.
 keywords: ['IPFS', 'உள்ளடக்க முகவரியிடல்', 'பியர்-டு-பியர்', 'பரவலாக்கப்பட்ட சேமிப்பு', 'CID']
 also_known_as: ['InterPlanetary File System']

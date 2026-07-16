@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: DNSの変更がインターネット全体に反映されるまでの遅延。古いレコードのキャッシュがリゾルバー間でTTL切れを迎えるまで発生する。
 keywords: ['DNS伝播', 'DNS更新の遅延', 'TTL', 'DNSキャッシュ', 'ネームサーバー変更']
 level: 1

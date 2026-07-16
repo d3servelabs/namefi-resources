@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The text file holding all the DNS records for a domain, including glue records for its nameservers.
 keywords: ['zone file', 'glue record', 'DNS zone', 'authoritative records', 'nameserver']
 level: 1

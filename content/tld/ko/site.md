@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.site 도메인은 Radix가 운영하는 개방형 글로벌 new gTLD입니다. 활용 사례, SEO 및 이메일 전달성 특성, Namefi에서의 등록 방법을 알아보세요.'
 keywords: ['.site 도메인', '.site란', '.site TLD', '.site 도메인 등록', 'Radix 레지스트리', 'new gTLD', '.site 도메인 구매', '.site SEO에 좋은가']

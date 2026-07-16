@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: कई कंप्यूटरों में बनाए रखा एक साझा, केवल-जोड़ने वाला लेजर, टोकनाइज़्ड स्वामित्व की नींव।
 keywords: ['blockchain', 'distributed ledger', 'decentralized', 'immutable', 'consensus']
 level: 1

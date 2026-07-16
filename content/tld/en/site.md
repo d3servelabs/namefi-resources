@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .site domain is an open, globally understood new gTLD by Radix. Learn who uses it, its SEO and deliverability profile, and how to register one at Namefi.'
 keywords: ['.site domains', 'what is .site', '.site TLD', '.site domain registration', 'Radix registry', 'new gTLD', 'buy .site domain', 'is .site good for SEO']

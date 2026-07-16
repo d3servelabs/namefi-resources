@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是收益分享以及它如何应用于域名变现？
 keywords: ["收益分享","被动收入","域名变现","利润分配","智能合约"]
 relatedArticles:

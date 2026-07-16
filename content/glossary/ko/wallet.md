@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 온체인 자산을 통제하는 개인 키를 저장하고 트랜잭션에 서명하는 소프트웨어 또는 장치입니다. MetaMask나 하드웨어 지갑이 대표적인 예입니다.
 keywords: ['지갑', '크립토 지갑', '개인 키', '디지털 자산 보관', '도메인 보관']
 level: 1

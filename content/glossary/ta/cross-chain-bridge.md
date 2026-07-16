@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: தனிப்பட்ட தகவல் தொடர்பு கொள்ள இயலாத blockchain-களுக்கு இடையே டோக்கன்களையும் செய்திகளையும் நகர்த்தும் ஒரு நெறிமுறை.
 keywords: ['பாலம்', 'குறுக்கு-சங்கிலி', 'இடைச்செயல்பாட்டு திறன்', 'டோக்கன் பாலம்', 'பல-சங்கிலி']
 also_known_as: ['பாலம்']

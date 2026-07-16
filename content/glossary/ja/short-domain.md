@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 3〜4文字または全数字で構成される非常に短いドメイン。特定の市場で簡潔さが評価され、高い価値を持つ。
 keywords: ['短いドメイン', '数字ドメイン', 'LLLLドメイン', 'NNNNドメイン', '3文字ドメイン', '4文字ドメイン']
 level: 1

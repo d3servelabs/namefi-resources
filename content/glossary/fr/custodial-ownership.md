@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que la propriété custodiale et en quoi diffère-t-elle de l'auto-garde ?
 keywords: ["propriété custodiale","garde","contrôle tiers","contrôle registraire","stockage centralisé"]
 relatedArticles:

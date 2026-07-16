@@ -5,6 +5,7 @@ language: 'hi'
 tags: ['web3', 'cryptocurrency', 'defi', 'blockchain', 'finance']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'जानें कि कैसे stablecoins पारंपरिक फिएट और क्रिप्टोकरेंसी के बीच की खाई को पाटते हैं, और Web3 लेनदेन तथा डोमेन निवेश के लिए स्थिरता प्रदान करते हैं।'
 keywords: ['stablecoins क्या हैं', 'stablecoin परिभाषा', 'USDT बनाम USDC', 'क्रिप्टो अस्थिरता', 'web3 भुगतान', 'ब्लॉकचेन डोमेन', 'विकेंद्रीकृत वित्त', 'फिएट-कोलेटरलाइज्ड', 'क्रिप्टो से डोमेन खरीदें', 'namefi']

@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Las Finanzas Descentralizadas ofrecen préstamos, créditos e intercambios a través de contratos inteligentes en blockchains públicas, sin bancos ni intermediarios.
 keywords: ['DeFi', 'finanzas descentralizadas', 'préstamos', 'créditos', 'garantía', 'DEX', 'mercados monetarios', 'finanzas en cadena']
 level: 1

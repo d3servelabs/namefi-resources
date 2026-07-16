@@ -5,6 +5,7 @@ language: de
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Ein praxisnaher, forschungsgestützter Leitfaden für Gründer, die ein Projekt, ein Produkt oder ein Unternehmen benennen möchten: rechtliche Prüfung, leichte Aussprache, starke Kandidaten generieren, kulturelle Verträglichkeit sicherstellen und die entscheidenden Suchen durchführen, bevor Sie sich festlegen."
 ogImage: ../../assets/how-to-name-your-project-og.jpg

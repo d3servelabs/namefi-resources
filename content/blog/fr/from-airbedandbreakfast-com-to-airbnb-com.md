@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Comment Airbnb a été lancé en 2008 sous le nom d'AirBed & Breakfast sur AirBedAndBreakfast.com, puis a raccourci en Airbnb.com en 2009 pour se libérer du nom littéral de matelas pneumatique et devenir une marque mondiale évolutive."
 keywords: ['airbedandbreakfast.com', 'airbnb.com', 'nom de domaine airbnb', 'rebranding airbnb', 'airbed and breakfast', 'mise à niveau de domaine', 'naming startup', 'naming de marque', 'domaine premium', 'stratégie de domaine', 'histoire airbnb', 'y combinator airbnb', 'rebranding entreprise']

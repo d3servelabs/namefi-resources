@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Was ist die .tv-Domain? Tuvalus länderspezifische TLD, weltweit als Heimat von Fernsehen, Video und Live-Streaming vermarktet. Erfahren Sie, wer sie betreibt, wer registrieren kann, wie die Preisgestaltung funktioniert und wie es um die SEO steht.'
 keywords: ['.tv-Domains', '.tv TLD', 'tv Domain', 'was ist .tv', 'was ist die .tv-Domain', '.tv für Streaming', 'tv Domain für Video', 'Tuvalu Domain', '.tv-Domain registrieren', 'twitch.tv', 'Video-Streaming-Domain']

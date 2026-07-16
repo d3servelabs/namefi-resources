@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Registrar o usar un dominio para explotar una marca, un elemento necesario para ganar un caso UDRP.
 keywords: ['mala fe', 'UDRP', 'disputa de dominio', 'cibersquatting', 'abuso de marca']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Que sont les transferts inter-registrar et comment la tokénisation simplifie-t-elle le processus ?
 keywords: ["transfert inter-registrar","transfert registrar","migration de domaine","processus de transfert","tokénisation"]
 relatedArticles:

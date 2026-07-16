@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - chie-kudo
 draft: false
 description: '.aflトップレベルドメインのすべてを解説します。オーストラリアン・フットボール・リーグがこの独自のブランドTLDをどのように活用しているか、そしてドメイン投資やデジタルアイデンティティにとって何を意味するかを学びましょう。'
 keywords:

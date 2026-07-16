@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '2010 में एक cease-and-desist ने UberCab को "Cab" हटाने पर मजबूर किया, Uber ने Universal Music से Uber.com को 2% इक्विटी (तब $107,000 मूल्य) के बदले खरीदा, और यह डोमेन अपग्रेड स्टार्टअप इतिहास के सबसे महत्वपूर्ण ट्रेड में से एक कैसे बना।'
 keywords: ['ubercab.com', 'uber.com', 'uber domain name', 'domain upgrade', 'ubercab cease and desist', 'universal music uber domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'uber history', 'equity for domain', 'domain acquisition', 'category-defining domain']

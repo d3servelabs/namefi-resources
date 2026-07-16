@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: ".abudhabi TLDでUAEの首都にデジタルプレゼンスを確立しましょう。メリット、SEO上の優位性、Namefiでの登録方法について解説します。"
 keywords: [".abudhabi ドメイン", ".abudhabi TLD", "トップレベルドメイン", ".abudhabi とは", ".abudhabi を選ぶ理由", ".abudhabi ドメインとは", ".abudhabi ドメインを選ぶ理由", "アブダビ ドメイン登録", "UAE デジタルアイデンティティ", "地理的TLD アブダビ", "中東 ビジネスドメイン", "UAE ドメイン投資", "トークン化ドメイン資産", "ブロックチェーン ドメイン アブダビ", "ローカルSEO アブダビ"]

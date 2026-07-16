@@ -7,6 +7,7 @@ language: fr
 tags: ['vision', 'digital-trust']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: Une déclaration de vision de D3Serve — pourquoi la numérisation de la confiance, tout comme la numérisation de l'information qui l'a précédée, promet un bond de productivité, une précision sans perte, des coûts réduits et une automatisation accrue.
 keywords: ['confiance numérique', 'D3Serve', 'blockchain', 'web3', 'contrats intelligents', 'cryptographie', 'consensus', 'manifeste', 'vision', 'numérisation de la confiance', 'confiance de groupe', 'automatisation']

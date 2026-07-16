@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: وكالة الأمم المتحدة اللي مركز التحكيم التابع لها بيفصل في كثير من نزاعات الدومينات بموجب UDRP.
 keywords: ['WIPO', 'المنظمة العالمية للملكية الفكرية', 'UDRP', 'نزاع دومين', 'تحكيم']
 also_known_as: ['World Intellectual Property Organization']

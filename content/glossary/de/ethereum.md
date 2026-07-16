@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die führende Smart-Contract-Blockchain und das Netzwerk, auf dem die meisten tokenisierten Domains ausgegeben werden.
 keywords: ['Ethereum', 'ETH', 'Smart Contract', 'EVM', 'Dezentralisierte Anwendungen']
 also_known_as: ['ETH']

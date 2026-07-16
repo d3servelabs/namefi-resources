@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - gong-jihye
 draft: false
 description: '.abbvie 최상위 도메인을 살펴봅니다. 이 브랜드 TLD가 디지털 신뢰, 기업 정체성, 그리고 도메인 투자의 미래에 미치는 의미를 알아보세요.'
 keywords:

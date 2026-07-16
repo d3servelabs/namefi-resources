@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.adac TLD의 가능성을 알아보십시오. 이 도메인의 탄생 배경, 자동차 업계에서의 의미, 그리고 도메인 업계에서 신뢰와 보안을 상징하는 이유를 살펴봅니다.'
 keywords: ['.adac 도메인', '.adac TLD', '최상위 도메인', '.adac란 무엇인가', '.adac를 선택하는 이유', '.adac 도메인이란', '.adac 도메인을 선택하는 이유', 'ADAC 레지스트리', '자동차 도메인', '도메인 투자', '블록체인 도메인', '토큰화 도메인', '브랜드 TLD', '독일 인터넷 도메인', '보안 도메인']

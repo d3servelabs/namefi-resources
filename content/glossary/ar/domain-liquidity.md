@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: مدى سرعة بيع النطاق قريباً من قيمته التقديرية — عالية للأسماء الرائعة، منخفضة للأسماء المتخصصة.
 keywords: ['سيولة النطاقات', 'السيولة', 'قابلية تسويق النطاق', 'سرعة بيع النطاق', 'عمق سوق النطاق']
 level: 1

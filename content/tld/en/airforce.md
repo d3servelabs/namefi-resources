@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: Explore the strategic advantages of the .airforce domain. Perfect for recruitment, veterans, and aviation tech. Register your .airforce TLD with Namefi today.
 keywords: [.airforce domains, .airforce TLD, .airforce top-level domain, what is .airforce, why choose .airforce, what is the .airforce domain, why choose the .airforce domain, military domain names, aviation industry domains, tokenized military domains, blockchain domain assets, buy .airforce domain, defense technology domains, domain investing airforce, Namefi domains]

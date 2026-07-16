@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインなどの資産の所有権をブロックチェーン上の譲渡可能なトークンとして表現し、ウォレットで保有したりオンチェーンで取引できるようにすること。
 keywords: ['トークン化', 'tokenize', 'tokenization', 'NFT', 'デジタル資産', 'オンチェーン資産']
 level: 1

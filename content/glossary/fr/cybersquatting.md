@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Enregistrer un domaine correspondant à la marque d'autrui de mauvaise foi dans l'espoir d'en tirer profit.
 keywords: ['cybersquatting', 'mauvaise foi', 'litige de domaine', 'contrefaçon de marque', 'UDRP']
 level: 1

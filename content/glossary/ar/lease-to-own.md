@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الحصول على دومين بدفعات دورية تتراكم نحو التملك الكامل، وهو نموذج مشابه للإيجار التمويلي.
 keywords: ['إيجار بهدف التملك', 'الحصول على دومين', 'دفعات تقسيط', 'تمويل الدومين', 'إيجار تمويلي']
 level: 1

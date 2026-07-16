@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: .abbvie TLD के बारे में विस्तृत जानकारी। जानें कि यह क्या है, इसका उपयोग कैसे होता है और डिजिटल ब्रांडिंग व डोमेन निवेश में इसका क्या महत्व है।
 keywords: ['.abbvie domains', '.abbvie TLD', 'top-level domain', 'what is .abbvie', 'why choose .abbvie', 'what is the .abbvie domain', 'why choose the .abbvie domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'pharma domains', 'new gTLD', 'brand TLD', 'AbbVie Inc domain', 'digital identity']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Una ley estadounidense que permite a los propietarios de marcas demandar a cibersquatters en tribunales federales, una alternativa al UDRP.
 keywords: ['ACPA', 'anticibersquatting', 'ley de marcas de EE.UU.', 'disputa de dominio', 'tribunal federal']
 also_known_as: ['Anticybersquatting Consumer Protection Act']

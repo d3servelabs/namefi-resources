@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La mitad compartible del par de claves blockchain, derivada de la clave privada; se usa para recibir fondos y verificar firmas.
 keywords: ['clave pública', 'dirección', 'clave de verificación', 'criptografía asimétrica', 'cuenta blockchain']
 level: 1

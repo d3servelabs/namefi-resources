@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: பதிவு செய்த பிறகு இலவச சேர்க்கை அனுமதி காலத்தில் ரத்து செய்யும் ஒரு பெரும்பாலும் வரலாறான தந்திரம்.
 keywords: ['டொமைன் டேஸ்டிங்', 'AGP', 'சேர்க்கை அனுமதி காலம்', 'டொமைன் கைட்டிங்', 'ICANN கொள்கை']
 level: 1

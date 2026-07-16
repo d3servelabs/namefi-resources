@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: パブリックブロックチェーン上でユーザーが自身の鍵を通じてデータ・資産・アイデンティティを所有・管理する、新しいインターネットのビジョン。
 keywords: ['Web3', '分散型ウェブ', 'ブロックチェーンインターネット', 'ユーザー所有権', 'ピアツーピア', '分散化', '暗号通貨', 'スマートコントラクト', 'DeFi', 'NFT']
 level: 2

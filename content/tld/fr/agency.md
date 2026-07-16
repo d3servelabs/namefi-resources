@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .agency : l'extension idéale pour établir votre autorité professionnelle. Avantages, usages et enregistrement Web3 avec Namefi."
 keywords: [".agency domains", ".agency TLD", "top-level domain", "what is .agency", "why choose .agency", "what is the .agency domain", "why choose the .agency domain", "achat nom de domaine", "investissement nom de domaine", "domaines tokenisés", "domaine blockchain", "agence marketing", "agence immobilière", "agence web", "Namefi"]

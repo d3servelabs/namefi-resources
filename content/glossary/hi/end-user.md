@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक खरीदार जो किसी डोमेन को किसी व्यवसाय या परियोजना के लिए वास्तव में उपयोग करना चाहता है, न कि पुनः बेचना।
 keywords: ['end user', 'domain buyer', 'domain end use', 'business domain', 'domain deployment']
 level: 1

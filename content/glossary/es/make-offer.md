@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un formato de listado de dominio que invita a los compradores a enviar una oferta que el vendedor puede aceptar, contrarrestar o rechazar.
 keywords: ['hacer una oferta', 'mejor oferta', 'negociación de dominios', 'oferta', 'contraoferta']
 level: 1

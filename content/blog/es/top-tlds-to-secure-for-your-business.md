@@ -5,6 +5,7 @@ language: es
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-business-og.jpg
 description: 'Descubre los mejores TLDs para asegurar tu negocio, por qué el registro defensivo de dominios protege tu marca y cómo registrarlos de forma inteligente.'

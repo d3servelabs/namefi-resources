@@ -5,6 +5,7 @@ language: hi
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: "डोमेन मालिकों और निवेशकों के लिए UDRP की व्याख्या: वे तीन तत्व जो एक शिकायतकर्ता को साबित करने होते हैं, प्रक्रिया और समयसीमा, परिणाम, UDRP बनाम URS बनाम अदालत, और कैसे जवाब दें।"
 keywords: ['udrp', 'udrp क्या है', 'udrp प्रक्रिया', 'udrp नीति', 'udrp शिकायत', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'डोमेन विवाद', 'डोमेन नाम विवाद', 'साइबरस्क्वाटिंग', 'रिवर्स डोमेन नाम हाइजैकिंग', 'बुरे इरादे से पंजीकरण', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'ट्रेडमार्क डोमेन विवाद', 'डोमेन निवेशक कानूनी', 'udrp शिकायत का जवाब दें']

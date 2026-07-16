@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 買い手が入札によって価格を決める競争的な販売形式。イングリッシュ（上昇式）、ダッチ（下降式）、ダイナミック（動的）の3種類がある。
 keywords: ['オークション', 'ダッチオークション', 'イングリッシュオークション', 'ダイナミックオークション', '価格発見', 'ドメイン売買']
 level: 1

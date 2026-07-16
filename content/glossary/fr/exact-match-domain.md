@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un domaine qui reproduit exactement un mot-clé de recherche, comme besthotels.com, autrefois très prisé pour le référencement.
 keywords: ['domaine à correspondance exacte', 'EMD', 'domaine mot-clé exact', 'domaine SEO', 'domaine classement recherche']
 also_known_as: ['EMD']

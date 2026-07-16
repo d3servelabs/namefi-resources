@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Instagram 如何在 2010 年借助域名创意"instagr.am"——利用亚美尼亚的 .am 国家顶级域名拼出自己的品牌名——随后花费 10 万美元迁移到 Instagram.com，以及这个聪明的 ccTLD 技巧给创业者带来的经验教训。'
 keywords: ['instagr.am', 'instagram.com', 'Instagram 域名', '域名创意', 'ccTLD 域名技巧', '.am 亚美尼亚域名', 'kevin systrom', 'mike krieger', '域名升级', '创业命名', '品牌命名', '优质域名', '域名策略', 'Instagram 历史']

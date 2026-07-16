@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A protocol that moves tokens or messages between blockchains that cannot natively talk to each other.
 keywords: ['bridge', 'cross-chain', 'interoperability', 'token bridge', 'multi-chain']
 also_known_as: ['Bridge']

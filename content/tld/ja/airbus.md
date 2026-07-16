@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.airbus トップレベルドメインの価値を解説。航空宇宙業界におけるブランド権威とその限定的な使用方法、そしてNamefiでプレミアムドメインを確保する方法をご紹介します。'
 keywords: ['.airbusドメイン', '.airbus TLD', 'トップレベルドメイン', '.airbusとは', '.airbusを選ぶ理由', '.airbusドメインとは', 'ブランドTLD', '航空宇宙ドメイン', 'ドメイン投資', 'ブロックチェーン', 'トークン化ドメイン', 'コーポレートアイデンティティ', 'Namefi Web3ドメイン', 'ドメイン登録セキュリティ']

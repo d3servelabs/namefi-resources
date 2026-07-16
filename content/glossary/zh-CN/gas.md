@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 在区块链上处理交易所需支付的费用，以网络原生资产计价，随拥堵程度上涨；Layer 2 的费用远低于主网。
 keywords: ['Gas', 'Gas 费', '交易费', 'gwei', '以太坊 Gas', 'Base Gas', 'L2 费用', '铸造成本']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: முகவரிப் பட்டியில் நேரடியாக URL தட்டச்சு செய்து வரும் பார்வையாளர்கள் — டொமைன் பார்க்கிங் வருவாயின் அடிப்படை.
 keywords: ['நேரடி தட்டச்சு போக்குவரத்து', 'நேரடி வழிசெலுத்தல்', 'டொமைன் பார்க்கிங்', 'சரியான பொருத்த டொமைன்', 'டொமைன் மதிப்பு']
 level: 1

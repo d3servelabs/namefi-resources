@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un secreto corto por dominio que un registrador emite para autorizar el traslado de un dominio a otro registrador, también llamado código EPP o código de transferencia.
 keywords: ['código de autorización', 'código EPP', 'código de transferencia', 'transferencia de dominio', 'código de autorización', 'código AuthInfo']
 level: 1

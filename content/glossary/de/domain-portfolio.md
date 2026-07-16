@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Eine Sammlung von Domains, die ein Eigentümer als Investition hält und mit Verlängerungen, Verkäufen und Bewertungen verwaltet.
 keywords: ['Domain-Portfolio', 'Domain-Investition', 'Domain-Verwaltung', 'Domain-Bewertung', 'Domain-Assets']
 level: 1

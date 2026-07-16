@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: आंशिक स्वामित्व क्या है और यह मूल्यवान डोमेन पर कैसे लागू होता है?
 keywords: ["आंशिक स्वामित्व","साझा स्वामित्व","डोमेन फ्रैक्शनाइजेशन","पहुँच","टोकनाइजेशन"]
 relatedArticles:

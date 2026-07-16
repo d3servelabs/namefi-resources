@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 米ドルなどの参照資産に対して安定した価値を保つよう設計された暗号通貨。暗号資産の価格変動リスクなしに決済や支払いに利用される。
 keywords: ['ステーブルコイン', 'USDC', 'USDT', 'DAI', 'フィアット連動', '暗号資産決済', 'オンチェーンドル']
 level: 1

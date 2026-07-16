@@ -5,6 +5,7 @@ language: ar
 tags: ['security', 'domains', 'registrar', 'incident-response']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'استعراض عملي للطرق الخمس التي يستولي بها المهاجمون فعلياً على النطاقات في العالم الحقيقي — الهندسة الاجتماعية، واختراق حساب مسجل النطاق، والاستيلاء على مزود خدمة DNS، واختطاف خوادم الأسماء (NS)، واسترجاع النطاقات منتهية الصلاحية — والضوابط المحددة التي تتصدى لكل منها.'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg

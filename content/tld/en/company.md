@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .company domain is an open generic gTLD anyone can register. Learn who runs it, how it compares to .com, its SEO impact, and whether it suits your business.'
 keywords: ['.company domain', 'what is .company', '.company TLD', '.company vs .com', 'register .company domain', 'business domain extension', 'new gTLD for business', 'Identity Digital TLD']

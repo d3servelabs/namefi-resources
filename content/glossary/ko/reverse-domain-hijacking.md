@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 합법적인 도메인 소유자로부터 도메인을 탈취하려는 목적으로 UDRP를 악의적으로 남용하는 행위입니다.
 keywords: ['역도메인 하이재킹', 'RDNH', 'UDRP 남용', '도메인 분쟁', '악의적 신청인']
 also_known_as: ['RDNH']

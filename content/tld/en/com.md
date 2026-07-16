@@ -5,6 +5,7 @@ language: 'en'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'How a 1985 afterthought became the internet''s default address — and the most valuable two-and-a-half letters in business. The full story of .com: its birth, its monopoly, its million-dollar heists, and what it means for anyone buying one today.'
 keywords: ['.com domains', 'what is .com', '.com TLD', '.com domain extension', 'register .com domain', 'com domain meaning', '.com vs .net', 'business domains', '.com price', '.com aftermarket', 'history of .com']

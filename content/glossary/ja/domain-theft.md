@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 正当な所有者のコントロールからドメインが不正に移転される行為。多くの場合、アカウント侵害を通じて実行される。
 keywords: ['ドメイン窃取', '不正移転', 'アカウント侵害', 'ドメインセキュリティ', 'ドメイン回復']
 level: 1

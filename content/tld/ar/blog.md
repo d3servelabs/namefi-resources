@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "هل تفكر في إطلاق مدونة أو قسم أخبار؟ اكتشف لماذا يعد نطاق .blog الخيار الأمثل لتعزيز حضورك الرقمي وكيفية تسجيله بسهولة عبر Namefi."
 keywords: ['.blog domains', 'نطاقات .blog', 'TLD', 'top-level domain', 'what is .blog', 'why choose .blog', 'what is the .blog domain', 'why choose the .blog domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'نطاق المستوى الأعلى', 'استثمار النطاقات', 'نطاقات الويب 3', 'شراء دومين']

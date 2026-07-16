@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक स्थिति जो किसी डोमेन को दूसरे रजिस्ट्रार में ट्रांसफर होने से तब तक रोकती है जब तक इसे स्पष्ट रूप से अनलॉक न किया जाए।
 keywords: ['transfer lock', 'रजिस्ट्रार लॉक', 'डोमेन सुरक्षा', 'EPP स्थिति', 'डोमेन ट्रांसफर']
 also_known_as: ['रजिस्ट्रार लॉक']

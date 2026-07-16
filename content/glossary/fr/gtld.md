@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un domaine de premier niveau non lié à un pays, tel que .com, .org ou .xyz, exploité sous contrat ICANN.
 keywords: ['gTLD', 'TLD générique', '.com', '.org', '.xyz', 'ICANN']
 level: 1

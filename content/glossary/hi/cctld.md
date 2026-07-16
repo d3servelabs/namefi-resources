@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: ccTLD एक दो-अक्षरी टॉप-लेवल डोमेन है जो किसी देश या क्षेत्र को सौंपा जाता है, जैसे .uk, .de, या .jp।
 keywords: ['ccTLD', 'कंट्री-कोड TLD', 'देश डोमेन', '.uk', '.de', 'ISO 3166']
 level: 1

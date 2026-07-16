@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "从域名注册商/DNS 运营角度深度解析 2025 年 10 月 20 日 AWS 事故，探讨 DNS 的实际工作原理、此次故障广泛传播的原因，以及弹性互联网团队的应对之策。"
 keywords: ['dns', 'aws 宕机', '控制平面', 'dynamodb', 'us-east-1', 'dns 缓存', '云韧性', '多签名 dns', '事故响应']

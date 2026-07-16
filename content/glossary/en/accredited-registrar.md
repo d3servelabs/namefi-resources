@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A registrar approved by ICANN under a Registrar Accreditation Agreement to sell gTLD domains.
 keywords: ['accredited registrar', 'RAA', 'ICANN accreditation', 'gTLD', 'registrar agreement']
 level: 1

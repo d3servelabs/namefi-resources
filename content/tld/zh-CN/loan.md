@@ -4,6 +4,8 @@ date: '2025-06-22'
 language: zh-CN
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: .loan 是一种专为金融服务、贷款机构和个人金融平台设计的域名扩展。了解其目的、用途和优势。
 keywords: ["顶级域", "loan域名", "金融服务", "贷款", "金融科技", "信贷"]
 relatedArticles:

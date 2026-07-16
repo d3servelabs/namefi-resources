@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El retraso antes de que un cambio de DNS sea visible en todas partes, mientras los registros antiguos almacenados en caché expiran en los resolvedores.
 keywords: ['propagación DNS', 'retraso en actualización DNS', 'TTL', 'caché DNS', 'cambio de servidor de nombres']
 level: 1

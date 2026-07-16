@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: पहले से पंजीकृत डोमेन का पुनर्विक्रय बाजार, जहाँ नाम मालिकों के बीच खरीदे और बेचे जाते हैं।
 keywords: ['aftermarket', 'secondary market', 'domain resale', 'domain investing', 'domain sales']
 also_known_as: ['सेकेंडरी मार्केट']

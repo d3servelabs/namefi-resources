@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 selfCanonical: true
 description: 'El dominio .abogado es un gTLD restringido para abogados e instituciones jurídicas verificadas. Descubre quién puede registrarlo, su valor y su reputación.'

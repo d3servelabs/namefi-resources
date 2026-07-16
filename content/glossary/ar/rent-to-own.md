@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو الإيجار المنتهي بالتملك وكيف يمكن تطبيقه على حيازة الدومينات؟
 keywords: ["الإيجار المنتهي بالتملك","ملكية تدريجية","خطط الدفع","اكتساب الدومين","العقود الذكية"]
 relatedArticles:

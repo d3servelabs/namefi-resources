@@ -5,6 +5,7 @@ language: 'ta'
 tags: ['ai-agents', 'domains', 'explainer']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 format: explainer
 ogImage: ../../assets/ai-search-meanings-og.jpg

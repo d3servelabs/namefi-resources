@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Am 27. August 2013 phishte die Syrische Elektronische Armee einen Melbourne-IT-Wiederverkäufer, überschrieb die DNS-Einträge von nytimes.com und Twitter-Domains und legte die New York Times für Stunden offline. Eine eingehende Analyse, wie ein schwaches Glied in der Registrar-Kette zum Versagen der Eingangstür einer Zeitung wurde – und was Registry Locks hätten verändern können.'
 keywords: ['nytimes.com-Hack', 'Syrische Elektronische Armee', 'melbourne it', 'DNS-Hijack', 'Domain-Hijacking', 'Registrar-Sicherheit', 'Wiederverkäufer-Phishing', 'Registry Lock', 'DNS-Einträge', 'Domain-Name-Server-Angriff', 'Twitter DNS 2013', 'Domain-Sicherheit', 'serverUpdateProhibited']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الملف النصي اللي بيحتوي على كل سجلات DNS للنطاق، بما فيها سجلات الغراء لخوادم الأسماء.
 keywords: ['ملف المنطقة', 'سجل الغراء', 'منطقة DNS', 'سجلات موثوقة', 'خادم الأسماء']
 level: 1

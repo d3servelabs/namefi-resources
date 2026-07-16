@@ -4,6 +4,8 @@ date: '2025-12-11'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'دليلك الشامل حول نطاق .abarth: اكتشف مزايا هذا الامتداد الرقمي الحصري، علاقته بعالم السيارات، وكيفية تعزيز هويتك الرقمية من خلال Namefi.'
 keywords: ['.abarth', 'نطاقات .abarth', 'نطاق المستوى الأعلى .abarth', 'ما هو .abarth', 'لماذا تختار .abarth', 'ما هو نطاق .abarth', 'لماذا تختار نطاق .abarth', 'استثمار النطاقات', 'نطاقات البلوكشين', 'نطاقات الويب 3', 'شراء دومين .abarth', 'حجز دومين', 'نطاقات السيارات']

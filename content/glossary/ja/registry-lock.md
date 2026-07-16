@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: レジストリがドメインを凍結し、変更には手動による帯域外承認が必要となる高セキュリティサービス。
 keywords: ['レジストリロック', 'ドメインロック', '高セキュリティロック', 'ドメインハイジャック防止', '帯域外認証']
 level: 1

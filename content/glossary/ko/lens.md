@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: Lens Protocol은 프로필, 팔로우, 게시물을 사용자가 온체인 자산으로 소유하고 앱 간에 이동할 수 있는 탈중앙화 소셜 그래프입니다.
 keywords: ['Lens', 'Lens Protocol', '탈중앙화 소셜', 'NFT 프로필', '소셜 그래프', 'Web3 신원']
 level: 1

@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur le TLD .store : l'extension idéale pour le e-commerce. Analysez ses avantages, son usage et enregistrez votre domaine dès aujourd'hui."
 keywords: [".store domains", ".store TLD", "top-level domain", "what is .store", "why choose .store", "what is the .store domain", "why choose the .store domain", "domaine .store", "extension e-commerce", "boutique en ligne", "investissement domaine", "domaines tokenisés", "blockchain", "Namefi", "achat nom de domaine"]

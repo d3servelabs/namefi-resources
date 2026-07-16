@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: राजस्व-साझाकरण क्या है और यह डोमेन मुद्रीकरण पर कैसे लागू हो सकता है?
 keywords: ["राजस्व-साझाकरण","निष्क्रिय आय","डोमेन मुद्रीकरण","लाभ वितरण","स्मार्ट कॉन्ट्रैक्ट"]
 relatedArticles:

@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.aigo डोमेन एक्सटेंशन के बारे में सब कुछ जानें। यह AI और ब्लॉकचेन प्रोजेक्ट्स के लिए बेहतरीन विकल्प क्यों है, और इसे Namefi पर कैसे रजिस्टर करें।'
 keywords:

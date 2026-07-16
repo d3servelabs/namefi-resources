@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: தேடல் முக்கியச்சொல் அல்லது சொற்றொடரை மையமாகக் கொண்ட டொமைன்; விளக்கத் தெளிவுக்காக மதிப்பிடப்படுகிறது.
 keywords: ['முக்கியச்சொல் டொமைன்', 'முக்கியச்சொல் நிறைந்த டொமைன்', 'விளக்க டொமைன்', 'தேடல் முக்கியச்சொல் டொமைன்', 'SEO டொமைன் பெயர்']
 level: 1

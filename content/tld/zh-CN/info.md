@@ -7,6 +7,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '深入了解 .info 顶级域名（TLD）的含义、历史及优势。探索为何 .info 是展示信息、提升品牌可信度的绝佳选择，以及如何在 Namefi 注册并管理您的 Web3 域名资产。'
 keywords:

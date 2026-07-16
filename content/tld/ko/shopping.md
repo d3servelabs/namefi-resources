@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.shopping 도메인은 Binky Moon(Identity Digital)이 운영하는 오픈 전자상거래 gTLD입니다. 적합한 사용자, .shop 및 .store와의 비교, 등록 방법을 알아보세요.'
 keywords: ['.shopping 도메인', '.shopping이란', '.shopping TLD', '.shopping 도메인', '전자상거래 도메인', '소매 도메인 이름', 'Binky Moon', 'Identity Digital', '쇼핑 도메인 확장자', '.shopping 도메인 구매']

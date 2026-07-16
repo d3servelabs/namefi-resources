@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: وسيط محترف بيفاوض على صفقة نطاق بين المشتري والبائع عادةً مقابل عمولة.
 keywords: ['وسيط النطاقات', 'domain brokerage', 'تفاوض على النطاق', 'وسيط النطاق', 'عمولة النطاق']
 level: 1

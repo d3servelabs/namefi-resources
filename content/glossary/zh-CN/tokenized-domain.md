@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 将所有权以区块链代币形式表示、可存储于钱包中的真实 DNS 域名。
 keywords: ['代币化域名', '域名 NFT', '链上域名', '域名所有权', 'web3 域名']
 level: 1

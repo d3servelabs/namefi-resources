@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في 27 أغسطس 2013، نجح الجيش الإلكتروني السوري في تصيُّد موزع تابع لـ Melbourne IT، وعدَّل سجلات DNS لـ nytimes.com ونطاقات تويتر، وأوقع جريدة New York Times عن الإنترنت لساعات. رحلة عميقة في كيف أصبح الحلقة الأضعف في سلسلة المسجِّلين هو باب الفشل الأمامي لصحيفة كبرى — وماذا كان سيتغير لو كانت أقفال السجل مفعَّلة.'
 keywords: ['اختراق nytimes.com', 'الجيش الإلكتروني السوري', 'melbourne it', 'اختطاف dns', 'اختطاف النطاق', 'أمان المسجِّل', 'تصيُّد الموزع', 'قفل السجل', 'سجلات dns', 'هجوم خادم أسماء النطاقات', 'dns تويتر 2013', 'أمان النطاق', 'serverupdateprohibited']

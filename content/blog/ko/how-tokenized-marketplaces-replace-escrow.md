@@ -5,6 +5,7 @@ language: ko
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-tokenization
 series: tokenize-your-com

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubre el potencial del dominio .click para potenciar tu marca y llamadas a la acción. Aprende sus ventajas y cómo registrarlo en Namefi."
 keywords: [".click domains", ".click TLD", "top-level domain", "what is .click", "why choose .click", "what is the .click domain", "why choose the .click domain", "comprar dominio .click", "registro de dominios", "inversión en dominios", "dominios web3", "dominios tokenizados", "marketing digital", "llamada a la acción", "identidad de marca"]

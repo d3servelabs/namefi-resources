@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.legal 도메인은 법률 분야를 위한 개방형 일반 TLD입니다. 운영 주체, 등록 자격, .law와의 비교, 그리고 로펌에 적합한지 여부를 알아보세요.'
 keywords: ['.legal 도메인', '.legal이란', '.legal TLD', '법률 도메인 확장자', '로펌 도메인 이름', '변호사 웹사이트 도메인', 'Identity Digital TLD', 'Binky Moon 레지스트리']

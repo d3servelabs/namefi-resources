@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Las palabras visibles y clicables de un hipervínculo, una señal que los motores de búsqueda usan para comprender el destino.
 keywords: ['texto de anclaje', 'texto del enlace', 'backlinks', 'seo', 'hipervínculo', 'señales de clasificación']
 level: 1

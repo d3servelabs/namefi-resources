@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 更新されなかったドメインが公開登録に戻される直前の最終ステータス。
 keywords: ['ペンディングデリート', 'ドメインドロップ', 'ドロップキャッチング', '期限切れドメイン', 'リリース']
 level: 1

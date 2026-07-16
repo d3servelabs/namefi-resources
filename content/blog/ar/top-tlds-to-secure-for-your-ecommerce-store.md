@@ -5,6 +5,7 @@ language: ar
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-ecommerce-store-og.jpg
 description: 'أفضل 10 امتدادات نطاق لتأمينها لمتجرك الإلكتروني، من .com إلى .shop و.store، مع استراتيجية تسجيل دفاعية لحماية علامتك التجارية في قطاع التجزئة.'

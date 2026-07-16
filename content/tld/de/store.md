@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Entdecken Sie die Vorteile der .store TLD für Ihren Online-Shop. Erfahren Sie, warum sie perfekt für E-Commerce ist und registrieren Sie sie bei Namefi.'
 keywords: ['.store domains', '.store TLD', '.store top-level domain', 'was ist .store', 'warum .store wählen', 'was ist die .store domain', 'warum die .store domain wählen', 'domain investing', 'blockchain domains', 'tokenized domains', 'e-commerce domains', 'online shop domain name', 'Namefi registrar', 'digital asset domains', 'neue gTLD']

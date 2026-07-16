@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 抗审查对于域名所有权和管理意味着什么？
 keywords: ["抗审查","审查抵抗","去中心化","自由","不可阻挡"]
 relatedArticles:

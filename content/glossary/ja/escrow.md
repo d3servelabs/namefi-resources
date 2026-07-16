@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 両者が合意した条件を満たすまで資金や資産を保管し、その後に引き渡す中立的な第三者またはスマートコントラクト。取引相手方リスクを大幅に低減する。
 keywords: ['エスクロー', '信頼できる第三者', 'スマートコントラクト エスクロー', 'トラストレス', '安全な取引']
 level: 1

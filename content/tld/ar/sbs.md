@@ -6,6 +6,7 @@ priority: P1
 tags: ["tld"]
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: .sbs تعني "جنباً إلى جنب" وهي مثالية للمشاريع التعاونية والشراكات والأعمال الجانبية.
 relatedArticles:
   - /ar/blog/what-is-a-tld/

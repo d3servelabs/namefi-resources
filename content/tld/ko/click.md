@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.click 도메인은 웹의 핵심 행동을 중심으로 설계된 개방형 신규 gTLD입니다. 운영 주체, 적합한 사용자, 가격 구조, 그리고 다른 TLD와의 비교까지 알아보세요.'
 keywords: ['.click 도메인', '.click이란', '.click TLD', 'click 도메인 확장자', '행동 유도 도메인', 'URL 단축 도메인', '신규 gTLD', '.click 도메인 등록']

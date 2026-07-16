@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह चालू नवीनीकरण शुल्क जो एक निवेशक किसी डोमेन के बिकने तक उसे रखने के लिए चुकाता है।
 keywords: ['holding cost', 'carrying cost', 'domain renewal cost', 'domain investment cost', 'annual renewal fee']
 also_known_as: ['कैरीइंग कॉस्ट']

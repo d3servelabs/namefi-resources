@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Une collection de noms de domaine détenus par un même propriétaire et gérés comme un investissement.
 keywords: ['portefeuille de domaines', 'investissement domaine', 'gestion de domaines', 'valorisation de domaines', 'actifs domaine']
 level: 1

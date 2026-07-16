@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El precio que paga un usuario final por un dominio que tiene intención de usar, generalmente muy por encima del suelo mayorista entre inversores.
 keywords: ['precio minorista', 'precio de usuario final', 'precio al por menor de dominios', 'precio al comprador final', 'precio completo']
 also_known_as: ['Precio de usuario final']

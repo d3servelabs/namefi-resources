@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ko
 tags: ['tld', 'brand domains', 'digital identity', 'domain investing']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".aetna TLD에 관해 알아야 할 모든 것. 이 고유한 도메인 확장자의 목적, 기업 브랜딩에서의 역할, 그리고 디지털 정체성의 미래를 살펴봅니다."
 keywords: [".aetna 도메인", "TLD", "최상위 도메인", ".aetna란 무엇인가", ".aetna를 선택하는 이유", ".aetna 도메인이란", ".aetna 도메인을 선택하는 이유", "브랜드 TLD", "기업 도메인명", "도메인 투자", "블록체인 도메인", "토큰화된 도메인", "보안 웹 주소", "보험 도메인", "Namefi"]

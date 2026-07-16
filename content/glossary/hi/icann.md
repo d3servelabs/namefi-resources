@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह गैर-लाभकारी संगठन जो वैश्विक डोमेन नाम प्रणाली, IP आवंटन और प्रोटोकॉल पहचानकर्ताओं का समन्वय करता है और दुनिया भर में डोमेन रजिस्ट्रारों को मान्यता देता है।
 keywords: ['ICANN', 'इंटरनेट गवर्नेंस', 'डोमेन नीति', 'DNS ओवरसाइट', 'IANA', 'gTLD', 'रजिस्ट्रार मान्यता', 'मल्टीस्टेकहोल्डर', 'UDRP']
 also_known_as: ['Internet Corporation for Assigned Names and Numbers']

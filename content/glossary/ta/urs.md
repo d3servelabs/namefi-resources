@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: தெளிவான வணிக முத்திரை மீறல் வழக்குகளில் டொமைனை விரைவாக இடைநிறுத்தும் குறைந்த செலவிலான தீர்வு வழிமுறை; UDRP-ஐ நிரப்புகிறது.
 keywords: ['URS', 'சீரான விரைவு இடைநிறுத்தம்', 'டொமைன் இடைநிறுத்தம்', 'வணிக முத்திரை மீறல்', 'புதிய gTLD']
 also_known_as: ['சீரான விரைவு இடைநிறுத்தம்']

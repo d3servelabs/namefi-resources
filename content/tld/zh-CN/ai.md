@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '一个密码朋克、一座微型加勒比岛屿，以及科技界最有价值的两个字母。.ai 域名的完整故事——谁在运营它、安圭拉如何靠它撑起近半政府预算、注册费用，以及你是否应该把品牌建在它上面。'
 keywords: ['.ai 域名', '什么是 .ai', '.ai TLD', '安圭拉 ccTLD', '注册 .ai 域名', 'AI 初创公司域名', '.ai 与 .io', '谁拥有 .ai', '.ai 域名价格', '.ai 两年最短注册期', 'Vince Cate', '安圭拉 AI 域名']

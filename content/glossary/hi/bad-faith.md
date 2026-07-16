@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: किसी ट्रेडमार्क का फायदा उठाने के लिए डोमेन पंजीकृत करना या उसका उपयोग करना, UDRP मामला जीतने के लिए एक आवश्यक तत्व।
 keywords: ['bad faith', 'UDRP', 'domain dispute', 'cybersquatting', 'trademark abuse']
 level: 1

@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 去中心化金融通过公共区块链上的智能合约提供借贷和交易服务，无需银行或经纪商作为中间人。
 keywords: ['DeFi', '去中心化金融', '借贷', '抵押', 'DEX', '货币市场', '链上金融']
 level: 1

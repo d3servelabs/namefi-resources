@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '深入了解 .org 顶级域名：从其代表信任的历史渊源到 Web3 时代的全新应用。探索为何非营利组织、开源项目及 DAO 首选 .org，并立即在 Namefi 体验下一代域名注册服务。'
 keywords:

@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '1985 年的一个意外之举如何成为互联网的默认地址——以及商界最有价值的两个半字母。.com 的完整故事：它的诞生、垄断、价值百万的抢注风云，以及今日购买它的实际意义。'
 keywords: ['.com 域名', '什么是 .com', '.com TLD', '.com 域名后缀', '注册 .com 域名', 'com 域名含义', '.com 与 .net 对比', '商业域名', '.com 价格', '.com 二级市场', '.com 历史']

@@ -6,6 +6,7 @@ priority: P0
 tags: ["faq","domains"]
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 掌握域名投资，请参考我们关于基本域名术语的综合指南。从基本概念到高级交易策略，学习域名专业人士的语言。
 keywords: ["域名术语","域名投资","域名","域名交易","域名词汇表","TLD","注册商","域名拍卖","域名组合","域名估值","高级域名","域名抢注"]
 relatedArticles:

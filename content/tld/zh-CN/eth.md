@@ -4,6 +4,8 @@ date: '2025-06-21'
 language: zh-CN
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: .eth 域名是基于区块链的名称，用人类可读的名称取代复杂的钱包地址。了解 ENS 如何改变 Web3 身份和数字所有权。
 keywords: ["顶级域", "eth域名", "web3身份", "区块链", "ENS", "去中心化域名", "nft域名"]
 relatedArticles:

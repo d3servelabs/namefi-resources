@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Ende 2014 gab ICANN – die Organisation, die das Domain-Name-System des Internets koordiniert – zu, dass eine Spear-Phishing-E-Mail, die die eigene Domain vortäuschte, Zugangsdaten von Mitarbeitern abgegriffen und Angreifern administrativen Zugriff auf das Centralized Zone Data System verschafft hatte. Eine tiefgehende Domain-Mayday-Analyse, wie die DNS-Autorität selbst Opfer eines Phishing-Angriffs wurde, was offengelegt wurde und warum das noch immer relevant ist.'
 keywords: ['icann breach', 'icann spear phishing', 'czds', 'centralized zone data system', 'dns-sicherheit', 'domain-sicherheit', 'spear-phishing-angriff', 'credential phishing', 'zonendateien', 'iana', 'salted password hashes', 'domain name system einbruch', 'icann 2014 hack']

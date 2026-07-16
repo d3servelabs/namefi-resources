@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Wie lange, in Sekunden, ein DNS-Eintrag von Resolvern zwischengespeichert werden darf, bevor er erneut abgefragt werden muss.
 keywords: ['TTL', 'Time to Live', 'DNS-Cache', 'DNS-Propagierung', 'Eintrag-Caching']
 level: 1

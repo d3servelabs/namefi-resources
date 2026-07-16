@@ -5,6 +5,7 @@ language: en
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The shareable half of a blockchain key pair, derived from the private key; used to receive funds and verify signatures.
 keywords: ['public key', 'address', 'verification key', 'asymmetric cryptography', 'blockchain account']
 level: 1

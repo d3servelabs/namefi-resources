@@ -6,6 +6,8 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
 draft: false
 description: 'Explore the .abbvie top-level domain. Learn what this Brand TLD means for digital trust, corporate identity, and the future of domain investing.'
 keywords:

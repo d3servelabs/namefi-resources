@@ -5,6 +5,7 @@ language: ar
 tags: ['ai-agents', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 format: guide
 ogImage: ../../assets/mcp-quickstart-og.jpg

@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.af डोमेन एक्सटेंशन (TLD) के बारे में सब कुछ जानें। यह रचनात्मक ब्रांडिंग, स्टार्टअप्स और डेवलपर्स के लिए एक बेहतरीन विकल्प क्यों है, यहाँ पढ़ें।'
 keywords:

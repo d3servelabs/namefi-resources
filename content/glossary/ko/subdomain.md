@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인 앞에 접두사를 붙여 별도의 주소를 만드는 방식으로, blog.example.com이나 app.example.com 같은 형태가 이에 해당합니다.
 keywords: ['서브도메인', '호스트', 'blog.example.com', 'DNS', '2차 도메인']
 level: 1

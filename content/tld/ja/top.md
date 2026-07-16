@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.topドメインは、短くキーワード豊富な名前を低コストで取得できるオープンな新gTLDです。運営者、登録資格、SEOへの影響、スパム評判のトレードオフについて解説します。'
 keywords: ['.topドメイン', '.topとは', '.top TLD', '.topドメインの意味', '.topはSEOに有利か', '.topと.comの比較', '.topドメインを購入', '新gTLD']

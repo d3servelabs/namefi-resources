@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: Ethereum Name Service என்பது alice.eth போன்ற மனித-படிக்கக்கூடிய பெயர்களை பணப்பை முகவரிகளுடன் இணைக்கும் அமைப்பு; இது முழுமையாக சங்கிலி-மீதான ஸ்மார்ட் ஒப்பந்தங்களால் நிர்வகிக்கப்படுகிறது.
 keywords: ['ENS', 'Ethereum பெயர் சேவை', '.eth', 'web3 பெயர்', 'சங்கிலி-மீதான பெயரிடல்', 'பணப்பை மாற்றுப்பெயர்', 'கிரிப்டோ அடையாளம்']
 level: 1

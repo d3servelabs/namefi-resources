@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist kryptografische Sicherheit und wie schützt sie tokenisierte Domains?
 keywords: ["kryptografische Sicherheit","Verschlüsselung","private Schlüssel","digitale Signaturen","Blockchain-Sicherheit"]
 relatedArticles:

@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.blogドメインはAutomatticが運営するオープンgTLDで、コンテンツサイトであることを一目で示します。対象ユーザー、価格体系、メール配信評価について解説します。'
 keywords: ['.blogドメイン', '.blogとは', '.blog TLD', 'ブログドメイン名', 'Automattic .blog', 'ブログ向けgTLD', '.blogドメイン登録', 'コンテンツサイトドメイン']

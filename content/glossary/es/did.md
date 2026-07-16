@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es DID y qué papel juegan los dominios en la identidad descentralizada?
 keywords: ["DID","identidad descentralizada","identidad soberana","identidad blockchain","identidad Web3"]
 relatedArticles:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die Praxis, in Domainnamen zu investieren – sie zu registrieren, zu kaufen und mit Gewinn zu verkaufen.
 keywords: ['Domaining', 'Domainer', 'Domain-Investition', 'Domain-Flipping', 'Domain-Spekulation']
 level: 1

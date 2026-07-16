@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .academy. تعرف على استخداماته المثالية للمؤسسات التعليمية، مزاياه في العلامة التجارية، وكيفية حجزه بسهولة عبر Namefi.'
 keywords: ['.academy domains', '.academy TLD', 'top-level domain', 'what is .academy', 'why choose .academy', 'what is the .academy domain', 'why choose the .academy domain', 'نطاقات .academy', 'شراء نطاق تعليمي', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'educational domains', 'نطاقات البلوك تشين']

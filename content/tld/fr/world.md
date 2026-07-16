@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez l'extension de domaine .world : une portée internationale pour votre marque. Explorez ses avantages, ses cas d'usage et comment l'enregistrer dès aujourd'hui sur Namefi."
 keywords: ['.world domain', '.world TLD', '.world top-level domain', 'what is .world', 'why choose .world', 'what is the .world domain', 'why choose the .world domain', 'achat nom de domaine', 'investissement domaine', 'nom de domaine web3', 'domaine tokenisé', 'extension globale', 'identité numérique', 'Namefi', 'blockchain domains']

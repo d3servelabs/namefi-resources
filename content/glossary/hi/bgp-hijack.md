@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: झूठी IP रूट घोषणाओं द्वारा इंटरनेट ट्रैफिक को रीरूट करना, एक नेटवर्क-परत हमला जो DNS से नीचे होता है।
 keywords: ['BGP hijack', 'route hijacking', 'IP prefix', 'network security', 'internet routing']
 level: 1

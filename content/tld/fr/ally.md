@@ -4,6 +4,8 @@ date: '2025-12-11'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .ally : ses avantages, ses usages et pourquoi c'est le choix parfait pour votre marque. Enregistrez-le sur Namefi."
 keywords: ['.ally', 'domaines .ally', 'TLD .ally', 'qu''est-ce que .ally', 'pourquoi choisir .ally', 'investir dans les domaines', 'domaines blockchain', 'extension de domaine', 'domaine web3', 'achat nom de domaine', 'signification .ally', 'registar namefi', 'tld top level domain', 'domaine pour alliance', 'domaine inclusif']

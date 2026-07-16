@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A collection of domains held by one owner, managed as an investment with renewals, sales, and valuation.
 keywords: ['domain portfolio', 'domain investing', 'domain management', 'domain valuation', 'domain assets']
 level: 1

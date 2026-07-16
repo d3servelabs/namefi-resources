@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un signal de réputation estimant la capacité d'un domaine à bien se classer, principalement déterminé par la qualité des liens entrants.
 keywords: ['autorité de domaine', 'backlinks', 'équité de lien', 'seo', 'signal de classement', 'liens entrants']
 level: 1

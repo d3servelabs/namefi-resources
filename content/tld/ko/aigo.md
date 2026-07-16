@@ -4,6 +4,8 @@ date: '2025-12-11'
 language: ko
 tags: ['tld', 'domain-investing', 'branding', 'web3', 'ai']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".aigo 도메인 확장자의 가능성을 살펴보세요. .aigo가 무엇인지, AI 및 기술 혁신가에게 왜 적합한지, 그리고 Namefi에서 어떻게 등록할 수 있는지 알아보세요."
 keywords: [".aigo 도메인", ".aigo TLD", "최상위 도메인", ".aigo란", ".aigo를 선택하는 이유", ".aigo 도메인이란", ".aigo 도메인을 선택하는 이유", "도메인 투자", "블록체인 도메인", "토큰화된 도메인", "AI 도메인 이름", "기술 브랜딩", ".aigo 도메인 구매", "Namefi 도메인", "신규 gTLD"]

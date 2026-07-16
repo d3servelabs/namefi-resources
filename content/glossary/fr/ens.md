@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: "L'Ethereum Name Service associe des noms lisibles par l'humain comme alice.eth à des adresses de portefeuille et des enregistrements, entièrement gérés par des smart contracts on-chain."
 keywords: ['ENS', 'Ethereum Name Service', '.eth', 'nom web3', 'nommage on-chain', 'alias portefeuille', 'identité crypto']
 level: 1

@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '2018 के अंत में, Cisco Talos ने DNSpionage का खुलासा किया — एक अभियान जो बाद में ईरानी हितों से जुड़ा पाया गया, जिसने सरकारी DNS रिकॉर्ड को फिर से लिखा, ईमेल और VPN ट्रैफ़िक को हमलावर सर्वरों पर पुनर्निर्देशित किया, और अदृश्य रहने के लिए वैध TLS प्रमाणपत्र जारी किए। इसने अमेरिकी सरकार की ओर से इस प्रकार का पहला आपातकालीन निर्देश जारी करवाया।'
 keywords: ['dnspionage', 'dns हाइजैकिंग', 'dns पुनर्निर्देशन', 'cisco talos', 'cisa emergency directive 19-01', 'sea turtle dns', 'iran dns hijacking', 'fireeye dns hijacking', 'lets encrypt certificate abuse', 'dns सुरक्षा', 'डोमेन सुरक्षा', 'राष्ट्र-राज्य साइबर जासूसी', 'dns इंफ्रास्ट्रक्चर छेड़छाड़ को कम करें']

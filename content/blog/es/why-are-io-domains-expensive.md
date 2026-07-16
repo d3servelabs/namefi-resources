@@ -5,6 +5,7 @@ language: 'es'
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "¿Por qué los dominios .io son tan caros? Un desglose claro de los precios mayoristas del registro, la demanda de startups y tecnología, la escasez de nombres cortos, las renovaciones y la nueva pregunta sobre la soberanía de Chagos."
 keywords: ['por qué los dominios io son caros', 'por qué los dominios .io son caros', 'dominio io caro', 'por qué los dominios io son costosos', 'por qué los dominios .io son tan caros', 'para qué sirve el dominio .io', 'dominio io para startups', 'precio dominio io', 'costo dominio io', 'costo de renovación dominio io', 'vale la pena un dominio io', 'io vs com', 'dominio io vs ai', 'precio del dominio io', 'por qué los dominios io cuestan más', 'precios de dominios io explicados', 'debo comprar un dominio io', 'io ccTLD', 'Chagos dominio io', 'comprar dominio io']

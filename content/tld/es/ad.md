@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre el potencial del dominio .ad para agencias de publicidad y negocios en Andorra. Aprende qué es, sus ventajas y cómo registrarlo en Namefi.'
 keywords:

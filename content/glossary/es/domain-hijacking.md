@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El robo de un dominio al obtener control no autorizado de su cuenta de registrador o registro.
 keywords: ['secuestro de dominio', 'compromiso de cuenta', 'robo de dominio', 'seguridad de registrador', 'transferencia no autorizada']
 level: 1

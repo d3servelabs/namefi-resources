@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Que signifie la propriété de domaine lorsqu'elle est tokenisée ?
 keywords: ["propriété de domaine","domaine NFT","registraire","custodial","propriété de portefeuille"]
 relatedArticles:

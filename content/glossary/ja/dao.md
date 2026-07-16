@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: スマートコントラクトとメンバー投票によって運営される分散型自律組織。中央集権的な経営者を置かず、共有トレジャリーを管理することが多い。
 keywords: ['DAO', '分散型自律組織', 'ガバナンス', '集合的所有', 'スマートコントラクト']
 level: 1

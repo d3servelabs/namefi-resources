@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاق بيطابق تماماً كلمة بحث معيّنة زي besthotels.com، كان بيُقدَّر قديماً لتأثيره في السيو.
 keywords: ['النطاق المطابق للبحث', 'EMD', 'نطاق مطابق للكلمة المفتاحية', 'نطاق سيو', 'نطاق تصنيف البحث']
 also_known_as: ['EMD']

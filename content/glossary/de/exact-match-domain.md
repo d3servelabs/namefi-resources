@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Eine Domain, die exakt einem Suchbegriff entspricht, wie besthotels.com – früher hoch geschätzt für SEO.
 keywords: ['Exact-Match Domain', 'EMD', 'Keyword-Match-Domain', 'SEO-Domain', 'Suchrankig-Domain']
 also_known_as: ['EMD']

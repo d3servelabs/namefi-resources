@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'إزاي Airbnb انطلقت سنة 2008 باسم AirBed & Breakfast على AirBedAndBreakfast.com، وبعدين اختصرت لـ Airbnb.com في 2009 عشان تهرب من اسم المرتبة الهوائية الحرفي وتبقى علامة تجارية عالمية قادرة على التوسع.'
 keywords: ['airbedandbreakfast.com', 'airbnb.com', 'دومين airbnb', 'ريبراند airbnb', 'airbed and breakfast', 'ترقية دومين', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'دومين بريميوم', 'استراتيجية الدومين', 'تاريخ airbnb', 'y combinator airbnb', 'ريبراند الشركة']

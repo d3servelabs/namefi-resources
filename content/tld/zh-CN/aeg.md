@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 深入了解 .aeg 顶级域名（TLD）的含义、价值及应用场景。探索为何 .aeg 是企业品牌和 Web3 域名投资的绝佳选择，以及如何在 Namefi 进行注册和代币化管理。
 keywords: ['.aeg domains', '.aeg TLD', 'top-level domain', 'what is .aeg', 'why choose .aeg', 'what is the .aeg domain', 'why choose the .aeg domain', 'domain investing', 'blockchain domains', 'tokenized domain', '.aeg 域名', '顶级域名投资', 'Web3 域名', 'Namefi']

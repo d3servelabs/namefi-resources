@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Redirigir el tráfico de internet anunciando falsamente rutas IP, un ataque a nivel de red que opera por debajo de DNS.
 keywords: ['secuestro BGP', 'secuestro de rutas', 'prefijo IP', 'seguridad de red', 'enrutamiento de internet']
 level: 1

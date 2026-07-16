@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: रजिस्ट्रार खाते या पंजीकरण का अनधिकृत नियंत्रण हासिल करके डोमेन की चोरी।
 keywords: ['domain hijacking', 'account compromise', 'domain theft', 'registrar security', 'unauthorized transfer']
 level: 1

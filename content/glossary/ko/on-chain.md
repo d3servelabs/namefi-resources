@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 블록체인에 직접 기록되는 데이터 또는 행위를 가리키며, 개인 서버가 아닌 네트워크에 의해 공개적으로 검증되고 보호됩니다.
 keywords: ['온체인', '블록체인', '스마트 컨트랙트', '도메인 NFT', '탈중앙화']
 level: 1

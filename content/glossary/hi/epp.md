@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह मानक प्रोटोकॉल जिसका उपयोग रजिस्ट्रार रजिस्ट्री के साथ डोमेन पंजीकृत और प्रबंधित करने के लिए करते हैं।
 keywords: ['EPP', 'Extensible Provisioning Protocol', 'domain management', 'registry protocol', 'RFC 5730']
 also_known_as: ['Extensible Provisioning Protocol']

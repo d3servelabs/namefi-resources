@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: ICANN의 인증을 받아 일반 대중을 대신하여 도메인 이름을 등록할 수 있는 권한을 가진 기업으로, 등록자와 도메인 데이터베이스를 운영하는 레지스트리 사이를 연결하는 역할을 합니다.
 keywords: ['등록대행자', '도메인 등록대행자', 'ICANN 인증', '도메인 등록', 'RAA', 'EPP', '인증 코드', '전송 잠금', '도메인 이전']
 level: 2

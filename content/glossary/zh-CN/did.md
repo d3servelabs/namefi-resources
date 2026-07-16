@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是 DID，域名在去中心化身份中扮演什么角色？
 keywords: ["DID","去中心化身份","自我主权身份","区块链身份","Web3 身份"]
 relatedArticles:

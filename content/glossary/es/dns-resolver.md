@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El servidor que recibe una consulta de dominio y recorre la jerarquía DNS para devolver la dirección correspondiente.
 keywords: ['resolvedor DNS', 'resolvedor recursivo', 'resolvedor', '8.8.8.8', '1.1.1.1', 'consulta DNS']
 level: 1

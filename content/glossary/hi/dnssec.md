@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: DNS रिकॉर्ड पर क्रिप्टोग्राफ़िक हस्ताक्षर जो रिज़ॉल्वर को यह सत्यापित करने देते हैं कि कोई प्रतिक्रिया प्रामाणिक है और ट्रांजिट में जाली या छेड़छाड़ नहीं की गई है।
 keywords: ['DNSSEC', 'DNS सुरक्षा', 'डोमेन सुरक्षा', 'DS record', 'chain of trust', 'cryptographic DNS']
 level: 1

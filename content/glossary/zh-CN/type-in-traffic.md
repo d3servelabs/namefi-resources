@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 直接在浏览器地址栏输入猜测域名而访问网站的用户流量，是域名停放收益的基础。
 keywords: ['直输流量', '直接导航', '域名停放', '精确匹配域名', '域名价值']
 level: 1

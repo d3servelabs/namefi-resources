@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是自动化委托，智能合约如何管理域名控制？
 keywords: ["自动化委托","智能合约","域名管理","可编程控制","自动化"]
 relatedArticles:

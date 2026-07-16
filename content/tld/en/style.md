@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .style domain is an open generic TLD for fashion, design, and lifestyle brands. Learn who runs it, who can register, pricing dynamics, and how to buy one.'
 keywords: ['.style domains', 'what is .style', '.style TLD', '.style domain', 'fashion domain extension', 'design domain name', 'lifestyle TLD', 'register .style domain', 'Identity Digital', 'new gTLD']

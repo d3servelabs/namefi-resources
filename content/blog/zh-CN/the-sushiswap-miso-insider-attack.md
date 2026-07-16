@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2021 年 9 月，一名匿名承包商通过恶意提交将自己的钱包地址悄悄植入 SushiSwap 的 MISO 发射台前端，从 Jay Pegs Auto Mart 拍卖中转走了 864.8 ETH（约 300 万美元）。Domain Mayday 深度解析代码供应链、前端信任机制及其对可验证所有权的启示。'
 keywords: ['sushiswap miso 黑客', 'miso 供应链攻击', 'aristok3', 'jay pegs auto mart', 'defi 前端攻击', '864.8 eth', '软件供应链', '恶意提交', '内部威胁', 'auctionwallet', 'joseph delong', 'web 供应链安全', '域名安全']

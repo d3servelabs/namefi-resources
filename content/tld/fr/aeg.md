@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld', 'aeg', 'domain-names', 'web3', 'branding']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur le domaine .aeg : sa signification, ses avantages SEO et pourquoi c'est un choix stratégique pour les investisseurs et la tech. Enregistrez votre .aeg sur Namefi."
 keywords: ['.aeg domains', '.aeg TLD', 'top-level domain .aeg', 'what is .aeg', 'why choose .aeg', 'what is the .aeg domain', 'why choose the .aeg domain', 'achat domaine .aeg', 'investissement nom de domaine', 'blockchain domains', 'tokenized domain', 'domaine web3', 'nouveaux gTLD', 'aeg domain registration', 'signification domaine aeg']

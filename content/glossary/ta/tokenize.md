@@ -5,6 +5,8 @@ language: ta
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைன் போன்ற சொத்தின் உரிமையை blockchain-இல் பரிமாற்றக்கூடிய டோக்கனாக மாற்றுவது, இதன் மூலம் அதை wallet-இல் வைத்திருக்கலாம் மற்றும் on-chain வர்த்தகம் செய்யலாம்.
 keywords: ['டோக்கனைஸ் செய்தல்', 'டோக்கனைசேஷன்', 'NFT', 'டிஜிட்டல் சொத்து', 'on-chain சொத்து']
 level: 1

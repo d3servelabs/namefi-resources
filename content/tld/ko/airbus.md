@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.airbus 최상위 도메인의 의미와 가치를 알아보십시오. 항공 산업에서의 독점적 사용 방식, 브랜드 권위, 그리고 Namefi로 프리미엄 도메인을 확보하는 방법을 설명합니다.'
 keywords: ['.airbus 도메인', '.airbus TLD', '최상위 도메인', '.airbus란', '.airbus를 선택하는 이유', '.airbus 도메인이란', '.airbus 도메인을 선택하는 이유', '브랜드 TLD', '항공 도메인', '도메인 투자', '블록체인', '토큰화 도메인', '기업 정체성', 'Namefi Web3 도메인', '안전한 도메인 등록']

@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que le trading de domaines et comment la tokenisation améliore-t-elle l'expérience de trading ?
 keywords: ["trading de domaines","investissement de domaine","immobilier numérique","marché secondaire","liquidité"]
 relatedArticles:

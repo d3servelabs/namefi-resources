@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Domains a registry withholds from open registration, such as premium, policy, or protected labels.
 keywords: ['reserved names', 'blocked names', 'registry reserved', 'premium reserved', 'collision list']
 level: 1

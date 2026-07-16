@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.bizドメインはGoDaddy Registryが運営するオープンなビジネス向けgTLDです。適した利用シーン、.comとの比較、購入前に知っておくべきポイントを解説します。'
 keywords: ['.biz', '.bizドメイン', '.biz TLD', '.bizとは', 'ビジネスドメイン拡張子', 'bizとcomの比較', 'GoDaddy Registry', '真正なビジネス利用']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인 확장자가 검색 순위에 미치는 영향과 그 한계 — 콘텐츠와 링크가 더 중요합니다.
 keywords: ['tld seo', '도메인 확장자 순위', '신규 gtld seo', 'ccTLD', '검색 순위 요소', '도메인 seo']
 level: 1

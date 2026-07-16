@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入解析 .airtel 顶级域名：了解其作为巴帝电信（Airtel）专属品牌域名的独特价值、用途及优势。探索如何在 Namefi 开启您的域名投资与 Web3 身份之旅。'
 keywords: ['.airtel domains', '.airtel TLD', 'top-level domain', 'what is .airtel', 'why choose .airtel', 'what is the .airtel domain', 'why choose the .airtel domain', '.airtel 域名', '品牌顶级域名', 'domain investing', 'blockchain', 'tokenized domain', 'Bharti Airtel', 'web3 domains', 'digital identity']

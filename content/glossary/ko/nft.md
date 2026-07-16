@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 대체 불가능 토큰(NFT)은 블록체인 위에 존재하는 고유하고 분할 불가능한 토큰으로, 토큰화된 도메인 등 특정 항목의 소유권을 나타냅니다.
 keywords: ['NFT', '대체 불가능 토큰', '블록체인', '고유 자산', '도메인 NFT']
 level: 1

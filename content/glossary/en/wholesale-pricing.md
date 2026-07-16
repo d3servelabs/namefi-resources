@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The investor-to-investor floor price for a domain — what a domainer accepts to liquidate quickly, below retail.
 keywords: ['wholesale pricing', 'investor pricing', 'domain wholesale', 'liquidation price', 'domainer pricing']
 also_known_as: ['Investor Pricing']

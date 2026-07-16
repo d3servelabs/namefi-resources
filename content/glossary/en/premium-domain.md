@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A high-value domain priced above standard rates for its memorability, brevity, or keyword strength.
 keywords: ['premium domain', 'premium name', 'registry premium', 'aftermarket', 'domain value']
 level: 1

@@ -5,6 +5,7 @@ language: es
 tags: ['partners']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: Una exploración guiada por la conversación sobre el camino de Henri Stern al construir Privy, centrada en la usabilidad, el desarrollo de productos dirigido por los clientes y la transición de la complejidad cripto hacia un diseño centrado en las personas.
 relatedArticles:

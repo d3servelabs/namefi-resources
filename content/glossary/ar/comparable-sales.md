@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: أسعار بيع نطاقات مشابهة سابقة بتُستخدم كمعيار لتقدير قيمة الاسم.
 keywords: ['المبيعات المشابهة', 'Comps', 'بيانات مبيعات النطاقات', 'معايير النطاق', 'تاريخ تسعير النطاق']
 also_known_as: ['Comps']

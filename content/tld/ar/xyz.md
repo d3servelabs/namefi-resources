@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'دومين .xyz هو نطاق عام مفتوح تم إطلاقه عام 2014، واشتهر باستخدام شركة Alphabet له على abc.xyz. اتعرف على مين يناسبه، وأسعاره، وإزاي تسجّله.'
 keywords: ['دومين .xyz', 'ما هو .xyz', 'نطاق .xyz', 'معنى دومين .xyz', 'abc.xyz Alphabet', '.xyz مقابل .com', 'تسجيل دومين .xyz', 'هل .xyz مفيد لـ SEO']

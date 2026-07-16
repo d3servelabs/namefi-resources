@@ -5,6 +5,7 @@ language: ar
 tags: ['ai-agents', 'domains', 'web3']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 format: explainer
 ogImage: ../../assets/namefi-mcp-og.jpg

@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '深入了解 .ag 顶级域名：从安提瓜和巴布达的国家代码到德国企业的首选后缀，以及其在贵金属和农业领域的独特价值。探索为何 .ag 是您下一个数字资产的理想选择。'
 keywords:

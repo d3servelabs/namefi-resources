@@ -5,6 +5,7 @@ language: ko
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-security
 format: explainer

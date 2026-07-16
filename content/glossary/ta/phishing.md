@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: நம்பகமான நிறுவனங்களைப் போல் நடிக்கும் போலி தளங்கள் மற்றும் செய்திகள் மூலம் நற்சான்றிதழ்கள் அல்லது நிதியை திருடும் மோசடி முறை.
 keywords: ['ஃபிஷிங்', 'சமூக பொறியியல்', 'நற்சான்றிதழ் திருட்டு', 'போல் நடித்தல்', 'டொமைன் துஷ்பிரயோகம்']
 level: 1

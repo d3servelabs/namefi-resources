@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक सेवा जो सार्वजनिक WHOIS या RDAP रिकॉर्ड में पंजीयक के व्यक्तिगत संपर्क विवरण छुपाती है।
 keywords: ['WHOIS privacy', 'गोपनीयता सुरक्षा', 'RDAP', 'पंजीयक गोपनीयता', 'संपर्क छुपाना']
 also_known_as: ['गोपनीयता सुरक्षा']

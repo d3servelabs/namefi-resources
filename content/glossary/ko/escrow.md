@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 양측이 합의된 조건을 이행할 때까지 자금이나 자산을 보관했다가 조건 충족 시 이전하는 중립적 제3자 또는 스마트 계약으로, 거래 상대방 위험을 줄여 줍니다.
 keywords: ['에스크로', '신뢰할 수 있는 제3자', '스마트 계약 에스크로', '무신뢰', '안전한 거래']
 level: 1

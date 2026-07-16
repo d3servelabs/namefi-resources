@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: UDRP 是什么，它如何影响代币化域名所有权？
 keywords: ["UDRP","域名争议","商标保护","网络抢注","法律框架"]
 relatedArticles:

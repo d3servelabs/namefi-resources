@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.vip 도메인은 "Very Important Person"을 의미하는 개방형 새 gTLD로, 멤버십·로열티 프로그램·프리미엄 브랜드에 최적화되어 있습니다. 규정, 가치, Namefi에서의 등록 방법을 알아보세요.'
 keywords: ['.vip 도메인', 'vip 도메인', '.vip 도메인 의미', '.vip란', '.vip TLD', '.vip 도메인 안전성', '.vip 도메인 등록', '멤버십 도메인', '프리미엄 도메인 이름', '새 gTLD']

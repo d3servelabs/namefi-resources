@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاقات [السجل] بيمسكها بعيد عن التسجيل المفتوح، زي النطاقات المتميزة أو المحظورة لأسباب قانونية.
 keywords: ['الأسماء المحجوزة', 'الأسماء المحظورة', 'سجل محجوز', 'متميز محجوز', 'قائمة التعارض']
 level: 1

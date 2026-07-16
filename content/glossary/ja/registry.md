@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: トップレベルドメインの権威あるデータベースとネームサーバーを運営し、小売販売をレジストラに委託する組織。
 keywords: ['レジストリ', 'レジストリオペレーター', 'TLDレジストリ', 'ドメインレジストリ', 'ICANN', 'レジストラ', 'EPP', 'gTLDレジストリ', 'ccTLDレジストリ', '共有レジストリシステム']
 also_known_as: ['レジストリオペレーター']

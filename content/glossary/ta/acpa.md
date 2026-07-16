@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: அமெரிக்க வர்த்தக முத்திரை உரிமையாளர்கள் இணையவெளி குடியேற்றக்காரர்களை கூட்டாட்சி நீதிமன்றத்தில் வழக்காட அனுமதிக்கும் அமெரிக்கச் சட்டம்; UDRP-க்கு மாற்று வழி.
 keywords: ['ACPA', 'இணையவெளி முறைகேட்டை எதிர்க்கும் சட்டம்', 'அமெரிக்க வர்த்தக முத்திரைச் சட்டம்', 'டொமைன் தகராறு', 'கூட்டாட்சி நீதிமன்றம்']
 also_known_as: ['Anticybersquatting Consumer Protection Act']

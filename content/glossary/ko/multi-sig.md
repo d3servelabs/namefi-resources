@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 트랜잭션을 승인하기 위해 여러 개의 개인 키가 필요한 지갑으로, 예를 들어 3개 중 2개의 서명이 필요한 방식이므로 키 하나가 유출되더라도 단독으로 자금을 이동시킬 수 없습니다.
 keywords: ['멀티시그', 'multisig', '다중 서명', '보안 강화', '공동 보관']
 level: 1

@@ -5,6 +5,7 @@ language: ja
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: choosing-a-tld
 format: comparison

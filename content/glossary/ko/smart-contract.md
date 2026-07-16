@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 조건이 충족될 때 코드에 작성된 그대로 정확히 실행되는 블록체인 상의 프로그램으로, 중개자 없이 합의를 이행할 수 있게 합니다.
 keywords: ['스마트 컨트랙트', '블록체인', '자동 실행', '프로그래머블 로직', '탈중앙화']
 level: 1

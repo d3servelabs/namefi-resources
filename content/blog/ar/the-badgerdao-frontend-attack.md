@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في ديسمبر 2021، اخترق المهاجمون حساب Cloudflare الخاص بـ BadgerDAO وحقنوا سكريبتًا خبيثًا في واجهة الموقع الأمامية. العقود الذكية المُدققة لم تُمسّ — لكن ~120 مليون دولار خرجت من الباب عبر موافقات المحافظ التي وقّعها المستخدمون دون أن يعلموا. تحليل معمّق لماذا الموقع الإلكتروني جزء من نطاق أمانك.'
 keywords: ['اختراق badgerdao', 'هجوم الواجهة الأمامية لـ badgerdao', 'اختراق مفتاح api في cloudflare', 'هجوم السكريبت المُدرج', 'أمان الواجهة الأمامية لـ web3', 'تصيد الجليد', 'هجوم increaseAllowance', 'استغلال موافقة التوكن', 'أمان dns والدومين', 'استغلال cloudflare workers', 'أمان defi', 'هجوم سلسلة التوريد لـ web3', 'تلاعب الموقع', 'أمان الدومين']

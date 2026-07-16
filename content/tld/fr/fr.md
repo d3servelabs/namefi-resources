@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 selfCanonical: true
 description: 'Le .fr est l''extension officielle de la France, gérée par l''Afnic. Découvrez les règles d''éligibilité, le SEO, la réputation et comment l''enregistrer sur Namefi.'

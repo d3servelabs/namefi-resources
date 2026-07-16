@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインの拡張子が検索順位に与える影響と与えない影響——コンテンツとリンクのほうがはるかに重要。
 keywords: ['TLD SEO', 'ドメイン拡張子 検索順位', '新gTLD SEO', 'ccTLD', '検索順位要因', 'ドメイン SEO']
 level: 1

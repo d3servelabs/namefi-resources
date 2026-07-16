@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: .city هو النطاق للأعمال التجارية المحلية، والخدمات البلدية، والمواقع الإلكترونية التي تركز على المدينة. مثالي لتأسيس حضور محلي.
 keywords: ["tld", "نطاق .city", "أعمال محلية", "خدمات بلدية", "مواقع مدن", "حضور محلي"]
 relatedArticles:

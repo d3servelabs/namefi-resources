@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El archivo de texto que contiene todos los registros DNS de un dominio, incluidos los registros de pegamento para sus servidores de nombres.
 keywords: ['archivo de zona', 'registro de pegamento', 'zona DNS', 'registros autoritativos', 'servidor de nombres']
 level: 1

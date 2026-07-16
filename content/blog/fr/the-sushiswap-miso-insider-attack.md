@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "En septembre 2021, un prestataire anonyme a glissé sa propre adresse de portefeuille dans le front-end du launchpad MISO de SushiSwap via un commit malveillant, détournant 864,8 ETH (~3 M$) de la vente aux enchères Jay Pegs Auto Mart. Un deep-dive Domain Mayday sur les chaînes d'approvisionnement logicielles, la confiance accordée aux front-ends, et ce que cela enseigne sur la propriété vérifiable."
 keywords: ['sushiswap miso hack', 'attaque supply chain miso', 'aristok3', 'jay pegs auto mart', 'attaque front-end defi', '864.8 eth', 'chaîne d approvisionnement logicielle', 'commit malveillant', 'menace interne', 'auctionwallet', 'joseph delong', 'sécurité chaîne web', 'sécurité des domaines']

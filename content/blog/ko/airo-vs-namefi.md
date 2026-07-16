@@ -5,6 +5,7 @@ language: 'ko'
 tags: ['ai-agents', 'domains', 'comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 format: comparison
 ogImage: ../../assets/airo-vs-namefi-og.jpg

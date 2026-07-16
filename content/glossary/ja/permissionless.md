@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 中央管理者の承認を必要とせず、誰でも利用・構築できるシステム。ルールはオープンなプロトコルによって強制される。
 keywords: ['パーミッションレス', '分散型', '検閲耐性', 'オープンアクセス', 'ブロックチェーン']
 level: 1

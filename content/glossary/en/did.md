@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A Decentralized Identifier is a globally unique ID controlled by its owner's keys rather than a central registry, used to prove identity across services.
 keywords: ['DID', 'decentralized identity', 'self-sovereign identity', 'blockchain identity', 'Web3 identity']
 level: 1

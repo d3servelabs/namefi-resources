@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 标识网络上设备的数字地址，DNS 将域名映射到该地址。
 keywords: ['IP 地址', 'IPv4', 'IPv6', 'A 记录', 'AAAA 记录', '网络']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: டொமைன் பட்டியலில் நிர்ணயிக்கப்பட்ட உடனடி வாங்கல் விலை — அதை செலுத்தினால் பேரம் பேசாமலேயே விற்பனை உடனே நிறைவடையும்.
 keywords: ['உடனடி வாங்கல்', 'BIN', 'உடனடி கொள்முதல்', 'நிர்ணய விலை', 'டொமைன் பட்டியல்']
 also_known_as: ['BIN']

@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 비ASCII 문자를 사용하는 도메인으로, DNS에서 xn--로 시작하는 ASCII Punycode로 인코딩되어 처리됩니다.
 keywords: ['IDN', '국제화 도메인 이름', 'Punycode', 'xn--', '유니코드 도메인', '호모그래프']
 level: 1

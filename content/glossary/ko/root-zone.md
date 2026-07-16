@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 모든 TLD와 해당 TLD에 대한 권한 있는 서버 목록을 포함하는 DNS 계층 구조의 최상위 영역입니다.
 keywords: ['루트 존', '루트 서버', 'DNS 계층 구조', 'TLD 위임', 'IANA']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 通过参考成交价、关键词需求、字符长度和后缀等因素估算域名市场价值的过程。
 keywords: ['域名估值', '域名评估', '域名价值', '域名定价', '参考成交价']
 also_known_as: ['域名评估']

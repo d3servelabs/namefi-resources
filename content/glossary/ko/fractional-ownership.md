@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 단일 고가 자산을 소규모 거래 가능한 지분으로 나눠 여러 사람이 일부를 보유할 수 있도록 하는 방식으로, 온체인 토큰 표준을 통해 구현됩니다.
 keywords: ['분할 소유권', '공동 소유', '도메인 분할화', '접근성', '토큰화']
 level: 1

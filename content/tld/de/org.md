@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: .org ist die vertrauenswürdige Domain für Non-Profit-Organisationen, NGOs und missionsgetriebene Organisationen. Erfahren Sie, warum sie die erste Wahl ist, um Glaubwürdigkeit und Vertrauen online aufzubauen.
 keywords: ["tld", "org domain", "non-profit", "ngo", "wohltätigkeit", "vertrauenswürdige domain"]
 relatedArticles:

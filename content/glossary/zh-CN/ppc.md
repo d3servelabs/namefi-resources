@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种每次访客点击广告即向域名所有者付费的广告模式，常用于停放域名的流量变现。
 keywords: ['PPC', '按点击付费', '域名变现', '广告收入', '停放收益']
 also_known_as: ['Pay-Per-Click']

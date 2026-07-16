@@ -5,6 +5,7 @@ language: hi
 tags: ['governance', 'dao', 'web3', 'namefi space']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 format: opinion
 description: "हर देश और हर आंदोलन के सामने अंततः संवैधानिक संकट की घड़ी आती है — कौन वैध है, किसके पास अंतिम अधिकार है, केंद्र में रहकर कौन बोलता है। किसी ऑनलाइन आंदोलन के लिए यह सवाल एक ही परिसंपत्ति पर आ टिकता है: मुख्य डोमेन। जानिए कि यह DAO के पास क्यों होना चाहिए।"

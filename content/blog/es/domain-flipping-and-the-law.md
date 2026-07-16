@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'security', 'domain-flipping', 'explainer']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld', 'brand-tld', 'automotive', 'domain-investing']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'Discover the .alfaromeo TLD: a dedicated domain extension for the iconic Italian automotive brand. Learn about brand TLDs, their usage, and domain trends.'
 keywords: ['.alfaromeo domains', 'TLD', 'top-level domain', 'what is .alfaromeo', 'why choose .alfaromeo', 'what is the .alfaromeo domain', 'why choose the .alfaromeo domain', 'automotive domains', 'brand TLD', 'domain investing', 'tokenized domain', 'blockchain domains', 'luxury car domains', 'Namefi domains', 'buy .alfaromeo domain']

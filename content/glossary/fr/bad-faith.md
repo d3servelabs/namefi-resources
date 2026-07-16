@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Enregistrer ou utiliser un domaine pour exploiter une marque, un élément requis pour gagner une procédure UDRP.
 keywords: ['mauvaise foi', 'UDRP', 'litige de domaine', 'cybersquatting', 'abus de marque']
 level: 1

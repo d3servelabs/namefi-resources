@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメイン登録期間が終了する日付。更新されなければ、削除に向けた失効プロセスが開始される。
 keywords: ['ドメイン失効', '期限切れドメイン', '更新', 'グレースピリオド', '猶予期間', '償還期間']
 level: 1

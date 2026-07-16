@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.academy 도메인은 학교, 강좌, 교육 센터, 코칭 브랜드를 위한 개방형 gTLD입니다. 사용 사례, 규정, 가격 구조, 등록 방법을 알아보세요.'
 keywords: ['.academy 도메인', '.academy란', '.academy TLD', 'academy 도메인 등록', '교육 도메인 확장자', '온라인 강좌 도메인', '교육 웹사이트 도메인', '신규 gTLD']

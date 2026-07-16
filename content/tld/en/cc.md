@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'What is the .cc domain? The Cocos (Keeling) Islands country-code TLD, run by Verisign and marketed worldwide as a short, brandable alternative to .com. Learn who runs it, who can register, pricing, and SEO.'
 keywords: ['.cc domains', '.cc TLD', 'cc domain', 'what is .cc', 'what is the .cc domain', '.cc vs .com', 'cc domain meaning', 'Cocos Keeling Islands domain', 'register .cc domain', 'short brandable domain', 'domain hack cc']

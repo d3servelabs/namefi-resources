@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种在众多计算机间维护的共享只追加账本，是代币化所有权的基础。
 keywords: ['区块链', '分布式账本', '去中心化', '不可篡改', '共识机制']
 level: 1

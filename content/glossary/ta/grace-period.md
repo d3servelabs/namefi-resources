@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைன் காலாவதியான உடனே கிடைக்கும் குறுகிய காலம், இதில் சாதாரண விலையிலேயே புதுப்பிக்கலாம்.
 keywords: ['கருணைக் காலம்', 'தன்னியக்க புதுப்பிப்பு கருணைக் காலம்', 'டொமைன் காலாவதி', 'புதுப்பிப்பு', 'RGP']
 level: 1

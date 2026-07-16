@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die Einträge in einer Zone, die eine Domain auf Adressen und Dienste abbilden — A, AAAA, CNAME, MX, TXT und mehr.
 keywords: ['DNS-Einträge', 'A-Record', 'AAAA-Record', 'CNAME', 'MX-Record', 'TXT-Record']
 level: 1

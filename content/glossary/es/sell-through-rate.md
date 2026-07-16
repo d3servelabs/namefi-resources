@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La proporción de una cartera de dominios que se vende en un período determinado, una métrica clave de liquidez para los inversores.
 keywords: ['tasa de venta', 'STR', 'liquidez de dominios', 'rendimiento de cartera', 'velocidad de ventas de dominios']
 also_known_as: ['STR']

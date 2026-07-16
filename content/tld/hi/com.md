@@ -5,6 +5,8 @@ language: 'hi'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.com डोमेन कमर्शियल इंटरनेट का डिफ़ॉल्ट पता है। इसका इतिहास, पंजीकरण प्रक्रिया, मूल्य निर्धारण और यह क्यों आज भी सबसे आगे है — सब कुछ जानें।'
 keywords: ['.com डोमेन', '.com क्या है', '.com TLD', '.com डोमेन एक्सटेंशन', '.com डोमेन रजिस्टर करें', 'com डोमेन का अर्थ', '.com बनाम .net', 'बिज़नेस डोमेन']

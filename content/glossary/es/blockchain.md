@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un libro de contabilidad compartido y solo de adición mantenido en muchos ordenadores, el fundamento de la propiedad tokenizada.
 keywords: ['blockchain', 'libro de contabilidad distribuido', 'descentralizado', 'inmutable', 'consenso']
 level: 1

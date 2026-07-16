@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 투자자가 도메인을 매각할 때까지 소유권을 유지하기 위해 지속적으로 지불하는 갱신 수수료입니다.
 keywords: ['보유 비용', '유지 비용', '도메인 갱신 비용', '도메인 투자 비용', '연간 갱신 수수료']
 also_known_as: ['유지 비용']

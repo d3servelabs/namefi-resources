@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-saas-og.jpg
 description: '为您的 SaaS 锁定的十大顶级域名后缀——从 .com、.io 到 .app 和 .ai——涵盖防御性注册技巧与权威注册局事实。'

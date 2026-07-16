@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Software impulsado por un modelo de IA que actúa en nombre de un usuario, realizando compras, llamando a APIs y cada vez más transaccionando con otros agentes.
 keywords: ['agente de IA', 'agente autónomo', 'identidad del agente', 'comercio de agentes', 'agente en cadena', 'IA agéntica']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein Hochsicherheitsdienst, bei dem die Registry eine Domain einfriert, sodass Änderungen eine manuelle Out-of-Band-Genehmigung erfordern.
 keywords: ['registry-sperre', 'domain-sperre', 'hochsicherheitssperre', 'domain-hijacking-prävention', 'out-of-band-verifizierung']
 level: 1

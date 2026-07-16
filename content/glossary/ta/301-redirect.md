@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு பக்கம் புதிய URL-க்கு நிரந்தரமாக நகர்ந்தது என உலாவிகளுக்கும் தேடுபொறிகளுக்கும் தெரிவிக்கும் HTTP நிலைக்குறியீடு.
 keywords: ['301 redirect', 'நிரந்தர மறுவழிமாற்று', 'http redirect', 'SEO', 'டொமைன் திருப்புதல்', 'இணைப்பு சமபங்கு']
 also_known_as: ['நிரந்தர மறுவழிமாற்று']

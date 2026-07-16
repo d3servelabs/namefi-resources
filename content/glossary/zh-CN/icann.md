@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 负责协调全球域名系统、IP 地址分配及协议标识符，并在全球范围内认证域名注册商的非营利组织。
 keywords: ['ICANN', '互联网治理', '域名政策', 'DNS 监管', 'IANA', 'gTLD', '注册商认证', '多利益相关方', 'UDRP']
 also_known_as: ['互联网名称与数字地址分配机构']

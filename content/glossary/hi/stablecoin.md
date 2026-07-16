@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक क्रिप्टोकरेंसी जिसे अमेरिकी डॉलर जैसे संदर्भ के मुकाबले स्थिर मूल्य बनाए रखने के लिए डिज़ाइन किया गया है, जिसका उपयोग क्रिप्टो मूल्य अस्थिरता के बिना भुगतान और निपटान के लिए किया जाता है।
 keywords: ['स्टेबलकॉइन', 'USDC', 'USDT', 'DAI', 'fiat-pegged', 'crypto payment', 'on-chain dollars']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein eingehender Hyperlink von einer anderen Website auf die eigene – der wichtigste Treiber für Suchranking und Domain-Autorität.
 keywords: ['Backlink', 'Eingehender Link', 'Linkaufbau', 'Link-Equity', 'SEO']
 also_known_as: ['Eingehender Link']

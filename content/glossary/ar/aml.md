@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: مكافحة غسيل الأموال — المراقبة المستمرة للمعاملات والإبلاغ عنها اللي بتستخدمها الخدمات المنظَّمة للكشف عن الأموال غير المشروعة.
 keywords: ['AML', 'مكافحة غسيل الأموال', 'مراقبة المعاملات', 'فحص العقوبات', 'الامتثال']
 also_known_as: ['Anti-Money-Laundering']

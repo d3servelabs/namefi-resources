@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un dominio de nivel superior no vinculado a un país, como .com, .org o .xyz, gestionado bajo contrato con ICANN.
 keywords: ['gTLD', 'TLD genérico', '.com', '.org', '.xyz', 'ICANN']
 level: 1

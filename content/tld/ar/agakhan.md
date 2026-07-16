@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - zakia-al-sinai
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .agakhan. تعرف على أهميته، استخداماته، وكيفية البحث عن النطاقات المميزة وتسجيلها عبر Namefi.'
 keywords:

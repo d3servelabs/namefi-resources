@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Comment une mise en demeure en 2010 a forcé UberCab à supprimer « Cab », comment Uber a acheté Uber.com à Universal Music pour 2 % de son capital (soit 107 000 $), et pourquoi cet upgrade de domaine est devenu l'une des transactions les plus décisives de l'histoire des startups."
 keywords: ['ubercab.com', 'uber.com', 'nom de domaine uber', 'upgrade de domaine', 'ubercab mise en demeure', 'universal music domaine uber', 'naming startup', 'naming de marque', 'domaine premium', 'stratégie de domaine', 'histoire uber', 'équité contre domaine', 'acquisition de domaine', 'domaine catégorie']

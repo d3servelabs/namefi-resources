@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: '律师事务所必须注册的十大顶级域名后缀，包括为何 .law 是唯一仅限经过认证的律师注册的法律类后缀（而 .esq、.legal、.attorney 和 .lawyer 对所有人开放），以及防御性域名注册策略。'

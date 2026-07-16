@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '技術的リーダーシップを体現するドメイン拡張子、.abb TLDを徹底解説。その起源・活用事例・ドメイン投資家にとっての価値を学ぶ。'
 keywords: ['.abbドメイン', 'TLD', 'トップレベルドメイン', '.abbとは', '.abbを選ぶ理由', '.abbドメインとは', 'ドメイン投資 .abb', 'ブランドTLD', 'Web3ドメイン', 'トークン化ドメイン', '産業向けドメイン', 'blockchain', 'Namefi']

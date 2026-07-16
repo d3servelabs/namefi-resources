@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन बिक्री के लिए उपयोग की जाने वाली विभिन्न प्रकार की नीलामियाँ क्या हैं?
 keywords: ["नीलामी","डच नीलामी","इंग्लिश नीलामी","डायनामिक नीलामी","मूल्य निर्धारण","डोमेन बिक्री"]
 relatedArticles:

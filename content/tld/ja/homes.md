@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.homesドメインはXYZ Registryが運営するオープンな新gTLDで、不動産・物件・住宅関連ブランドが分かりやすいウェブアドレスを持つのに最適です。'
 keywords: ['.homesドメイン', '.homesとは', '.homes TLD', '不動産ドメイン', '物件ドメイン名', 'XYZ Registry', '新gTLD', 'homesドメイン登録']

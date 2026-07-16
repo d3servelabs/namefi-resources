@@ -4,6 +4,8 @@ date: '2025-06-22'
 language: ar
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: .loan هو امتداد نطاق متخصص مصمم للخدمات المالية، مؤسسات الإقراض، ومنصات التمويل الشخصي. اكتشف هدفه، استخداماته، وفوائده.
 keywords: ["نطاق المستوى الأعلى", "نطاق loan", "خدمات مالية", "إقراض", "فينتك", "قرض"]
 relatedArticles:

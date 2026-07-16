@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'domain-investing', 'blogs', 'newsletters', 'community']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Eine kuratierte Liste der einzelnen Domainer, Broker und Händler, deren Blogs, Newsletter und Substacks 2026 lesenswert sind – wofür jeder bekannt ist und wie sie zusammenpassen.'
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg

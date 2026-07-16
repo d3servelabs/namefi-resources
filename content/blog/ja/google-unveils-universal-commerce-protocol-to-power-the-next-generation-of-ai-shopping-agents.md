@@ -5,6 +5,7 @@ language: ja
 tags: ['Infrastructure', 'AI Agents', 'Digital Commerce']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: web3-foundations
 format: news

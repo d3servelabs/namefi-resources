@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Im September 2015 kaufte ein ehemaliger Google-Mitarbeiter google.com über Google Domains für 12 Dollar und hatte etwa eine Minute lang die administrative Kontrolle über die wertvollste Domain der Welt. Die Geschichte von Sanmay Ved, dem 6.006,13-Dollar-Kopfgeld und was eine Minute Eigentumsrecht darüber verrät, wer wirklich eine Domain kontrolliert.'
 keywords: ['google.com Domain', 'sanmay ved', 'Google Domains Bug', 'Domain-Sicherheit', 'wem gehört google.com', 'Domain-Hijacking', 'Webmaster-Tools-Zugang', 'Google Bug Bounty', '6006.13 Belohnung', 'Domain-Registrierungs-Sicherheitslücke', 'Domain-Kontrolle', 'DNS-Sicherheit', 'Domain-Eigentumsverifizierung']

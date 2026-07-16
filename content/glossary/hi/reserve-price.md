@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह न्यूनतम कीमत जो विक्रेता स्वीकार करेगा, अक्सर छिपी हुई, जिसके नीचे कोई प्रस्ताव या नीलामी बोली अस्वीकार हो जाती है।
 keywords: ['reserve price', 'minimum offer', 'reserve bid', 'floor price', 'domain auction reserve']
 level: 1

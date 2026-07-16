@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 파일을 서버 위치가 아닌 콘텐츠 해시로 식별하는 P2P 프로토콜로, 탈중앙화 웹 데이터 호스팅에 사용됩니다.
 keywords: ['IPFS', '콘텐츠 주소 지정', 'P2P', '탈중앙화 스토리지', 'CID']
 also_known_as: ['InterPlanetary File System']

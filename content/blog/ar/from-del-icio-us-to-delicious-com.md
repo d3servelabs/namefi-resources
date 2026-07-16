@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'إزاي موقع الـ social bookmarking الرائد اتأسس عام 2003 باسم النطاق الشهير del.icio.us، وليه النقط دي بقت ضريبة دايمة على كل ذكر للموقع، وإزاي Yahoo نقلته لـ Delicious.com الأنظف عام 2008.'
 keywords: ['del.icio.us', 'delicious.com', 'اسم نطاق delicious', 'domain hack', 'جوشوا شاكتر', 'social bookmarking', 'yahoo delicious', 'ترقية النطاق', 'تسمية الشركات الناشئة', 'تسمية العلامات التجارية', 'نطاق مميز', 'استراتيجية النطاق', 'ccTLD domain hack', 'نطاق يُعرِّف فئة']

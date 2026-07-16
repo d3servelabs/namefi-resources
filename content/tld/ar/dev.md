@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: .dev هو نطاق Google الآمن للمطورين ومشاريع التطوير. اكتشف لماذا هو الخيار الأول للمبرمجين وشركات التكنولوجيا وفرق التطوير.
 keywords: ["tld", "نطاق .dev", "مطورون", "مشاريع تطوير", "شركات التكنولوجيا", "برمجة", "HTTPS", "Google"]
 relatedArticles:

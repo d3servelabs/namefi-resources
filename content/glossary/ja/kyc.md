@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 規制を受ける金融・暗号資産サービスがユーザーのオンボーディング前に実施する本人確認手続き。
 keywords: ['KYC', '本人確認', 'Know Your Customer', '身元確認', 'コンプライアンス', 'オンボーディング']
 also_known_as: ['Know Your Customer']

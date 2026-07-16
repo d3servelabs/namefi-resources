@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'إزاي Facebook تخلّت عن TheFacebook.com، واشترت Facebook.com بـ200 ألف دولار، وبعدين دفعت 8.5 مليون دولار لـFB.com، وحوّلت ترقية الدومين لبنية تحتية للعلامة التجارية.'
 keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'facebook domain name', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'facebook history', 'domain acquisition', 'company rebrand', 'category-defining domain']

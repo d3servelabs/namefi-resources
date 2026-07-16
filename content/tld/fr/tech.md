@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .tech : l'extension idéale pour les startups et développeurs. Apprenez pourquoi choisir ce TLD pour votre marque technologique avec Namefi."
 keywords: [".tech domains", "domaine .tech", "TLD .tech", "top-level domain", "qu'est-ce que le .tech", "pourquoi choisir .tech", "what is .tech", "why choose .tech", "investir nom de domaine", "domaines blockchain", "domaines tokenisés", "acheter domaine .tech", "startups tech", "Web3 domains", "Namefi"]

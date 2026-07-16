@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ウォレットのマスター秘密鍵をエンコードする12語または24語のリスト。保有者はウォレットを完全に支配できるため、必ずバックアップすべき唯一の情報です。
 keywords: ['シードフレーズ', 'リカバリーフレーズ', 'ニーモニックフレーズ', 'ウォレットバックアップ', 'BIP39', '12ワード', '24ワード', '暗号資産リカバリー']
 level: 1

@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'إيه هو دومين .tv؟ امتداد رمز دولة توفالو، اللي اتسوّق حول العالم كبيت للتلفزيون والفيديو والبث المباشر. اتعرف على مين بيشغّله، ومين يقدر يسجّله، والأسعار، وتأثيره على SEO.'
 keywords: ['دومينات .tv', 'امتداد .tv TLD', 'دومين tv', 'إيه هو .tv', 'إيه هو دومين .tv', '.tv للبث', 'دومين tv للفيديو', 'دومين توفالو', 'تسجيل دومين .tv', 'twitch.tv', 'دومين بث الفيديو']

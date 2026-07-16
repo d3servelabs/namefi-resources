@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The theft of a domain by gaining unauthorized control of its registrar account or registration.
 keywords: ['domain hijacking', 'account compromise', 'domain theft', 'registrar security', 'unauthorized transfer']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ja
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: .airforceドメインの戦略的優位性を解説。採用活動、退役軍人支援、航空テクノロジーに最適。今すぐNamefiで.airforce TLDを登録しよう。
 keywords: [.airforceドメイン, .airforce TLD, .airforceトップレベルドメイン, .airforceとは, .airforceを選ぶ理由, .airforceドメインとは何か, 軍用ドメイン名, 航空業界ドメイン, トークン化軍用ドメイン, ブロックチェーンドメイン資産, .airforceドメイン取得, 防衛テクノロジードメイン, airforceドメイン投資, Namefiドメイン]

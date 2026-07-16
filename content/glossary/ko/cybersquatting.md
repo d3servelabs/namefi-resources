@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 타인의 상표와 동일하거나 혼동을 일으킬 정도로 유사한 도메인을 악의적으로 등록하여 이익을 취하려는 행위입니다.
 keywords: ['사이버스쿼팅', '악의', '도메인 분쟁', '상표권 침해', 'UDRP']
 level: 1

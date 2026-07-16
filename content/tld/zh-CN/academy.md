@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '.academy 域名是教育机构、在线课程和专业培训的理想选择。探索 .academy 的优势、应用场景，以及如何在 Namefi 注册这个权威的顶级域名。'
 keywords:

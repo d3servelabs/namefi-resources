@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक छोटा, आकर्षक और अक्सर गढ़ा हुआ नाम जो एक यादगार ब्रांड की तरह काम करता है, जैसे कोई बनाया हुआ शब्द।
 keywords: ['brandable domain', 'brand domain', 'invented domain', 'made-up word domain', 'memorable domain']
 level: 1

@@ -5,6 +5,7 @@ language: hi
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: "TLD डोमेन के अंतिम डॉट के बाद का हिस्सा है, जैसे .com या .io। जानें TLD क्या है, इसके प्रकार (gTLD, ccTLD, sponsored, new gTLD, IDN), और सही TLD कैसे चुनें।"
 keywords: ['tld', 'tld का अर्थ', 'tld क्या है', 'टॉप लेवल डोमेन क्या है', 'top-level domain', 'tld परिभाषा', 'tld definition', 'que es un tld', "qu'est-ce qu'un tld", 'tld के प्रकार', 'gtld vs cctld', 'tld उदाहरण', 'डोमेन एक्सटेंशन क्या है', 'domain extension', 'gTLD', 'ccTLD', 'sponsored TLD', 'new gTLD', 'IDN TLD', 'ICANN', 'IANA', 'domain registry', 'domain registrar', 'TLD कैसे चुनें', 'लोकप्रिय TLD', 'namefi']

@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: La Finance Décentralisée propose le prêt, l'emprunt et l'échange via des smart contracts sur des blockchains publiques, sans banques ni courtiers comme intermédiaires.
 keywords: ['DeFi', 'finance décentralisée', 'prêt', 'emprunt', 'collatéral', 'DEX', 'marchés monétaires', 'finance on-chain']
 level: 1

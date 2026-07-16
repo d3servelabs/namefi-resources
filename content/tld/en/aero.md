@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Discover the power of the .aero TLD—the exclusive domain for the aviation industry. Learn about eligibility, benefits, and how this restricted extension builds immediate trust."
 keywords: [".aero domains", "TLD", "top-level domain", "what is .aero", "why choose .aero", "what is the .aero domain", "why choose the .aero domain", "aviation domains", "restricted TLD", "SITA registry", "domain investing", "blockchain domains", "tokenized domain", "aerospace web address", "airline branding"]

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 「besthotels.com」のように検索キーワードと完全に一致するドメイン名。かつてSEO上の優位性が高く評価されていた。
 keywords: ['完全一致ドメイン', 'EMD', 'キーワード一致ドメイン', 'SEOドメイン', '検索順位ドメイン']
 also_known_as: ['EMD']

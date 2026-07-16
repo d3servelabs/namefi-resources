@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué son los activos de protocolo y cómo funcionan los dominios tokenizados como activos de protocolo?
 keywords: ["activo de protocolo","protocolo blockchain","activo de infraestructura","activo de red","token de utilidad"]
 relatedArticles:

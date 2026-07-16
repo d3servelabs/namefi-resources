@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.houseドメインはBinky Moon（Identity Digital）が運営するオープンな汎用TLDです。適したユーザー層、検索順位への影響、登録ルール、価格動向を解説します。'
 keywords: ['.houseドメイン', '.houseとは', '.house TLD', '不動産ドメイン', '住宅ドメイン拡張子', 'Binky Moon', 'Identity Digital', '汎用TLD', 'ドメイン登録']

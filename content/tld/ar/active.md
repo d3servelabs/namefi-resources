@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .active، النطاق المثالي للياقة البدنية، الرياضة، ونمط الحياة النشط. تعرف على كيفية تسجيله عبر Namefi."
 keywords: [".active domains", ".active TLD", "top-level domain", "what is .active", "why choose .active", "what is the .active domain", "why choose the .active domain", "domain investing", "blockchain domains", "tokenized domain", "شراء نطاق active", "نطاقات رياضية", "استثمار النطاقات", "Web3 domains", "Namefi"]

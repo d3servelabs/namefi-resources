@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Paying for a domain over time in installments instead of a single upfront sum.
 keywords: ['domain financing', 'installment', 'payment plan', 'domain acquisition', 'domain investing']
 level: 1

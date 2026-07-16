@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .blog domain is an open gTLD run by Automattic that instantly signals a content site. Learn who it suits, how it is priced, and its email reputation.'
 keywords: ['.blog domain', 'what is .blog', '.blog TLD', 'blog domain name', 'Automattic .blog', 'gTLD for blogs', 'register .blog domain', 'content website domain']

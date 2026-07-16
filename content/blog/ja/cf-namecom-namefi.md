@@ -5,6 +5,7 @@ language: 'ja'
 tags: ['ai-agents', 'comparison']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 format: comparison
 ogImage: ../../assets/cf-namecom-namefi-og.jpg

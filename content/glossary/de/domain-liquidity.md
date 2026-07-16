@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Wie schnell eine Domain nahe ihrem geschätzten Wert verkauft werden kann – hoch bei großartigen Namen, niedrig bei Nischen-Domains.
 keywords: ['Domain-Liquidität', 'Liquidität', 'Domain-Marktgängigkeit', 'Domain-Verkaufsgeschwindigkeit', 'Domain-Markttiefe']
 level: 1

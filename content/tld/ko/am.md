@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - gong-jihye
 draft: false
 description: '.am 도메인 확장자를 살펴봅니다. "AM 라디오"부터 "I am"과 같은 창의적인 도메인 핵(domain hack)까지, 이 TLD가 브랜딩에 최적인 이유와 등록 방법을 안내합니다.'
 keywords:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La práctica de invertir en nombres de dominio, registrándolos, comprándolos y vendiéndolos con fines lucrativos.
 keywords: ['domaining', 'dominero', 'inversión en dominios', 'especulación con dominios', 'reventa de dominios']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Empresa que vende dominios bajo la acreditación de un registrador mayor en lugar de poseer la propia.
 keywords: ['revendedor', 'revendedor de dominios', 'registrador de marca blanca', 'acreditación ICANN', 'registrador']
 level: 1

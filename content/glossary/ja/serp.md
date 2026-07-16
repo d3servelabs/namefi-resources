@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 検索エンジンがクエリに対して返す結果ページ。ドメインがオーガニックトラフィックの獲得を競う場。
 keywords: ['SERP', '検索結果ページ', 'SEO', '検索エンジン', 'オーガニック順位', '検索表示']
 also_known_as: ['検索エンジン結果ページ']

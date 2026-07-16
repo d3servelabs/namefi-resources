@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメイン投資家が売却までの間、ドメインを保持し続けるために支払う継続的な更新費用。
 keywords: ['保有コスト', 'キャリングコスト', 'ドメイン更新費用', 'ドメイン投資コスト', '年間更新料']
 also_known_as: ['キャリングコスト']

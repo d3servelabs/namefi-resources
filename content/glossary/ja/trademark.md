@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ブランドの商品やサービスを識別する法的保護を受けたマーク。多くのドメイン紛争の核心となる。
 keywords: ['商標', 'ブランド保護', '知的財産', 'ドメイン紛争', 'UDRP', 'WIPO']
 level: 1

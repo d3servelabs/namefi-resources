@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو الأمن التشفيري وكيف يحمي النطاقات الرمزية (tokenized domains)؟
 keywords: ["الأمن التشفيري","التشفير","المفاتيح الخاصة","التوقيعات الرقمية","أمن البلوك تشين"]
 relatedArticles:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Der Erwerb einer Domain durch wiederkehrende Zahlungen, die auf den vollen Kaufpreis angerechnet werden – ein Geschwister des Miet-zum-Kauf-Modells.
 keywords: ['mietkauf', 'domain-erwerb', 'ratenzahlung', 'domain-finanzierung', 'miete-zu-eigentum']
 level: 1

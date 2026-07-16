@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Engaño que induce a las personas a revelar credenciales o fondos mediante sitios falsos y mensajes que suplantan marcas de confianza.
 keywords: ['phishing', 'ingeniería social', 'robo de credenciales', 'suplantación de identidad', 'abuso de dominios']
 level: 1

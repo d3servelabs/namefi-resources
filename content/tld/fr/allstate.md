@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .allstate : son origine, son utilité pour la sécurité de marque et ses avantages. Trouvez votre domaine idéal chez Namefi."
 keywords: ['.allstate domains', 'TLD .allstate', 'top-level domain', 'what is .allstate', 'why choose .allstate', 'what is the .allstate domain', 'why choose the .allstate domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'domaine de marque', 'sécurité domaine', 'Web3 domains']

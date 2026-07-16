@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ISO 3166 பட்டியலின் படி ஒரு நாடு அல்லது பிரதேசத்துக்கு ஒதுக்கப்படும் இரண்டு எழுத்துக் குறியீடுகொண்ட உச்ச-நிலை டொமைன், எடுத்துக்காட்டாக .uk, .de, .jp.
 keywords: ['ccTLD', 'நாட்டுக்குரிய TLD', 'நாட்டு டொமைன்', '.uk', '.de', 'ISO 3166']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld', 'aetna', 'domaines de marque', 'web3', 'namefi']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Tout savoir sur l'extension .aetna : définition, usages par le géant de l'assurance et avantages. Découvrez comment sécuriser votre identité numérique avec Namefi."
 keywords: [".aetna domains", ".aetna TLD", "top-level domain .aetna", "what is .aetna", "why choose .aetna", "what is the .aetna domain", "why choose the .aetna domain", "domaine de marque", "investissement nom de domaine", "blockchain domains", "tokenized domain", "assurance santé web3", "enregistrer domaine .aetna", "extension internet santé", "namefi registrar"]

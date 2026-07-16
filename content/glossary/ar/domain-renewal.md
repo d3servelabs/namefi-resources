@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: دفع رسوم لتمديد تسجيل نطاق قبل ما ينتهي، غالباً بشكل تلقائي كل مدة.
 keywords: ['تجديد النطاق', 'تجديد تلقائي', 'مدة التسجيل', 'انتهاء الصلاحية', 'رسوم التجديد']
 level: 1

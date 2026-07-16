@@ -4,6 +4,8 @@ date: '2026-06-18'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.eg 도메인이란 무엇인가? 1990년부터 이집트 대학 네트워크(EUN)가 운영하는 이집트 공식 국가 코드 최상위 도메인입니다. 등록 자격 요건, 구조, SEO 영향, 등록 적합 대상을 알아보세요.'
 keywords: ['.eg 도메인', '.eg TLD', '이집트 도메인', '.eg란', 'com.eg 등록', '이집트 ccTLD', '.eg 도메인 등록', '이집트 대학 네트워크', '.eg 등록 자격', '이집트 도메인 요건']

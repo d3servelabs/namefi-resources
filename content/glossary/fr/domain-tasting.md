@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Une tactique largement abandonnée consistant à enregistrer des domaines puis à les annuler dans la période de grâce d''ajout gratuit.
 keywords: ['domain tasting', 'AGP', 'période de grâce d''ajout', 'domain kiting', 'politique ICANN']
 level: 1

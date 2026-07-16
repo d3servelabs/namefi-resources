@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Acquiring a domain through recurring payments that build toward full ownership, a sibling of rent-to-own.
 keywords: ['lease-to-own', 'domain acquisition', 'installment', 'domain financing', 'rent-to-own']
 level: 1

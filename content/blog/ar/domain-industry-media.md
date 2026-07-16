@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'دليل إلى المنافذ الإخبارية، ومواقع بيانات المبيعات، والبودكاست التي تغطي صناعة أسماء النطاقات كصحافة — DomainNameWire، DNJournal، TheDomains، NameBio، DomainSherpa، CircleID، وغيرها.'
 ogImage: ../../assets/domain-industry-media-og.jpg

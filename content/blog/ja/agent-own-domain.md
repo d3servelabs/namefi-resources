@@ -5,6 +5,7 @@ language: 'ja'
 tags: ['ai-agents', 'domains', 'web3']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 format: faq
 ogImage: ../../assets/agent-own-domain-og.jpg

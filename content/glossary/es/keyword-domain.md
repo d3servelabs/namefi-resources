@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un dominio construido alrededor de una valiosa palabra clave o frase de búsqueda, valorado por su claridad descriptiva.
 keywords: ['dominio de palabras clave', 'dominio keyword', 'dominio descriptivo', 'dominio de búsqueda', 'nombre de dominio SEO']
 level: 1

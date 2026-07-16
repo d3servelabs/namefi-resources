@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre el potencial global del dominio .world. Aprende sus usos, ventajas SEO y por qué es ideal para marcas internacionales y proyectos Web3 en Namefi.'
 keywords: ['.world domains', 'dominios .world', 'TLD', 'top-level domain', 'what is .world', 'why choose .world', 'qué es el dominio .world', 'por qué elegir el dominio .world', 'investing in domains', 'blockchain domains', 'tokenized domain', 'registro de dominios', 'identidad digital', 'Web3 domains', 'global branding']

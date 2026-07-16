@@ -5,6 +5,7 @@ language: 'ar'
 tags: ['ai-agents', 'domains', 'guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 format: opinion
 ogImage: ../../assets/vibe-coding-domain-og.jpg

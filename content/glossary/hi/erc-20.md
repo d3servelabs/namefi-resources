@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: स्टेबलकॉइन जैसे फंजिबल टोकन के लिए Ethereum मानक, ERC-721 NFT मानक का पूरक।
 keywords: ['ERC-20', 'fungible token', 'token standard', 'stablecoin', 'ethereum token']
 level: 1

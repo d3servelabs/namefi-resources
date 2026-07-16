@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: شركة معتمدة من ICANN مُخوَّلة بتسجيل أسماء النطاقات نيابةً عن الجمهور، تعمل واجهةً بين المُسجَّلين والسجلات.
 keywords: ['مسجّل', 'مسجّل نطاقات', 'اعتماد ICANN', 'تسجيل نطاقات', 'RAA', 'EPP', 'رمز المصادقة', 'قفل النقل', 'نقل النطاق']
 level: 2

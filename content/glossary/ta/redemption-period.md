@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: காலாவதியான டொமைனை மீண்டும் பெற அனுமதிக்கும் காலாவதிக்கு பிந்தைய சாளரம்; பொதுவாக அதிக மீட்பு கட்டணம் செலுத்த வேண்டும்.
 keywords: ['மீட்பு காலம்', 'RGP', 'மீட்பு சலுகைக் காலம்', 'காலாவதியான டொமைன் மீட்பு', 'மீட்பு கட்டணம்']
 level: 1

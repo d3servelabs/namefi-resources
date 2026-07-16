@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي الأنواع المختلفة للمزادات المستخدمة لبيع النطاقات؟
 keywords: ["مزاد","مزاد هولندي","مزاد إنجليزي","مزاد ديناميكي","اكتشاف السعر","مبيعات النطاقات"]
 relatedArticles:

@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2021年9月，Bitcoin.org——由化名运营者 Cobra 管理、长期作为比特币信息门户的网站——在 DNS 层遭到劫持，被改造成虚假的"比特币翻倍赠送"骗局。在网站被下线之前，骗子敛财约 17,000 美元。本文深入剖析事件经过、攻击手法，以及此次事件对即便是加密原生网站依赖 DNS 这一问题的深刻警示。'
 keywords: ['bitcoin.org', 'bitcoin.org 被黑', 'dns劫持', '域名劫持', '比特币翻倍骗局', '加密货币赠品诈骗', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'dns安全', '域名安全', '域名服务器劫持', 'whois变更攻击']

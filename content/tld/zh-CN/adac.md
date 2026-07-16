@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld', 'domain-investing', 'automotive', 'brand-domains']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .adac 顶级域名（TLD）：它的起源、用途以及为何它是信任与权威的象征。探索如何在 Namefi 注册和管理高价值域名资产。'
 keywords: ['.adac domains', '.adac TLD', 'top-level domain', 'what is .adac', 'why choose .adac', 'what is the .adac domain', 'why choose the .adac domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'automotive domains', 'German automobile club', 'brand TLD', 'Web3 domains', 'secure domain registration']

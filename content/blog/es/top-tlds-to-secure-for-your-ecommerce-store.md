@@ -5,6 +5,7 @@ language: es
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-ecommerce-store-og.jpg
 description: 'Los 10 TLDs principales que deberías asegurar para tu tienda de comercio electrónico, desde .com hasta .shop y .store, además de una estrategia de registro defensivo para proteger tu marca minorista.'

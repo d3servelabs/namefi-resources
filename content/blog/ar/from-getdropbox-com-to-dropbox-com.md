@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'قصة إزاي Dropbox انطلقت على GetDropbox.com لأن Dropbox.com كانت مش متاحة، وخاضت معركة قانونية ضد محتكر الدومين، واشترت الدومين الأصلي Dropbox.com بـ 300 ألف دولار كاش.'
 keywords: ['getdropbox.com', 'dropbox.com', 'دومين dropbox', 'drew houston', 'y combinator dropbox', 'ترقية الدومين', 'تسمية الشركات الناشئة', 'تسمية البراند', 'دومين متميز', 'استراتيجية الدومين', 'دومين مطابق', 'شراء الدومين', 'evenflow dropbox']

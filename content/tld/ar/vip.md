@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف قوة نطاق .vip وكيف يضيف لمسة من الفخامة والتميز لعلامتك التجارية. تعرف على مزاياه، وكيفية استخدامه، ولماذا يعتبر استثماراً ذكياً لنطاقات الويب 3 مع Namefi."
 keywords: [".vip domains", ".vip TLD", ".vip top-level domain", "what is .vip", "why choose .vip", "what is the .vip domain", "why choose the .vip domain", "نطاق vip", "شراء دومين vip", "استثمار النطاقات", "domain investing vip", "blockchain domains", "tokenized domains", "web3 domains", "نطاقات الويب 3", "luxury domains"]

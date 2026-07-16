@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: ICANN's mandatory policy for resolving domain disputes, mainly trademark and cybersquatting claims, as a faster, cheaper alternative to court.
 keywords: ['UDRP', 'domain disputes', 'trademark protection', 'cybersquatting', 'legal framework']
 level: 1

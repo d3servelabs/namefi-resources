@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 一份清晰的 2026 年高端 Web3 顶级域名指南——"Web3 TLD"的真正含义、为什么像 .com、.ai 和 .io 这样的代币化 ICANN 扩展优于纯区块链名称，以及哪些域名扩展最具价值。
 keywords: ['高端web3顶级域名', '高端web3 tld', 'web3顶级域名', 'web3 tld', '高端web3域名', '最佳web3域名', 'web3域名扩展', 'web3域名', '代币化域名扩展', '高端域名扩展', '最有价值域名扩展', '代币化tld', '代币化域名', 'ICANN顶级域名', '区块链顶级域名', 'NFT域名', '高端.com', '高端.ai', '高端.io', '高端.xyz', '2026最佳域名扩展', '加密货币tld', 'web3命名', '域名tld投资', 'namefi']

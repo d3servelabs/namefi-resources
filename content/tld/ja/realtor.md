@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.realtorドメインはNARおよびCREA会員に限定された不動産業界専用の制限付きTLDです。登録資格、運営主体、エージェントへの活用方法を解説します。'
 keywords: ['.realtorドメイン', '.realtorとは', '.realtor TLD', 'realtorドメイン拡張子', '不動産ドメイン名', 'NARドメイン', '不動産業者ウェブサイトドメイン', 'Real Estate Domains LLC']

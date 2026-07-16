@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un dominio de nivel superior de dos letras asignado a un país o territorio, como .uk, .de o .jp.
 keywords: ['ccTLD', 'TLD de código de país', 'dominio de país', '.uk', '.de', 'ISO 3166']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Tout savoir sur le domaine .abbott : une extension exclusive dédiée à la santé et l'innovation. Découvrez son usage, sa sécurité et comment enregistrer votre domaine."
 keywords: [".abbott domains", ".abbott TLD", "top-level domain .abbott", "what is .abbott", "why choose .abbott", "what is the .abbott domain", "why choose the .abbott domain", "domaine santé", "extension internet abbott", "tokenized domain", "blockchain domains", "domain investing", "achat nom de domaine", "registraire web3", "sécurité domaine marque"]

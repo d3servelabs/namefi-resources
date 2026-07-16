@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: Lens Protocol என்பது பரவலாக்கப்பட்ட சமூக வரைபடம் (social graph) ஆகும்; இதில் சுயவிவரங்கள், தொடர்புகள் மற்றும் இடுகைகள் பயனர்களுக்கு சொந்தமான சங்கிலி-சொத்துகளாக (on-chain assets) பல பயன்பாடுகளிலும் பயன்படுத்தப்படலாம்.
 keywords: ['Lens', 'Lens Protocol', 'பரவலாக்கப்பட்ட சமூக ஊடகம்', 'NFT சுயவிவரங்கள்', 'சமூக வரைபடம்', 'Web3 அடையாளம்']
 level: 1

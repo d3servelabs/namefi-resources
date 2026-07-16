@@ -6,6 +6,7 @@ priority: P0
 tags: ["faq"]
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un nombre de dominio es la base de su presencia en línea.
 keywords: ["nombre de dominio","DNS","Sistema de Nombres de Dominio","dirección IP","dirección web","conceptos básicos de internet","registro de dominio","dirección de sitio web","URL","Namefi"]
 relatedArticles:

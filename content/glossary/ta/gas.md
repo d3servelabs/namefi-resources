@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு blockchain பரிவர்த்தனையை செயல்படுத்த செலுத்தப்படும் கட்டணம்; நெட்வொர்க்கின் சொந்த சொத்தில் நிர்ணயிக்கப்படும், நெரிசல் அதிகமாகும்போது விலை உயரும்; Layer 2 நெட்வொர்க்குகள் மிகவும் குறைந்த கட்டணம் வசூலிக்கின்றன.
 keywords: ['கேஸ்', 'கேஸ் கட்டணம்', 'பரிவர்த்தனை கட்டணம்', 'gwei', 'Ethereum கேஸ்', 'Base கேஸ்', 'L2 கட்டணங்கள்', 'மின்டிங் செலவு']
 level: 1

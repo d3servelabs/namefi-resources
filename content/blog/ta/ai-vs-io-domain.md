@@ -5,6 +5,7 @@ language: 'ta'
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 cluster: choosing-a-tld
 format: comparison

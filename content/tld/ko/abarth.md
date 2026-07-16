@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: .abarth TLD에 대해 알아보고, 그 용도와 장점, 그리고 Namefi를 통해 .abarth 도메인을 등록하는 방법을 확인하세요. 지금 바로 나만의 고유한 온라인 정체성을 확보하세요!
 relatedArticles:

@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'قصة كيف اشترت Ctrip، أكبر وكالة سفر أونلاين في الصين، دومين Trip.com المميز في 2017 من شركة ناشئة اسمها Gogobot، وأعادت إطلاق علامتها التجارية العالمية حوليه، وفي 2019 غيّرت اسم الشركة الأم بالكامل لـ Trip.com Group للتوسع دوليًا.'
 keywords: ['ctrip.com', 'trip.com', 'إعادة تسمية ctrip', 'trip.com group', 'دومين trip.com', 'ترقية الدومين', 'توسع العلامات التجارية الصينية عالميًا', 'gogobot trip.com', 'james liang ctrip', 'دومين سياحة مميز', 'تسمية الشركات الناشئة', 'تسمية العلامات التجارية', 'شراء الدومين']

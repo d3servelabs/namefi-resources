@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die Person oder Organisation, die die Rechte an einem registrierten Domainnamen hält — der eingetragene Inhaber.
 keywords: ['Registrant', 'Domain-Inhaber', 'Registered Name Holder', 'RNH', 'Domain-Eigentum']
 level: 1

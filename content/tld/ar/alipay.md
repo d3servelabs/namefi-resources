@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .alipay، واستخداماته في التكنولوجيا المالية، ولماذا تعتبر نطاقات العلامات التجارية (Brand TLDs) مستقبل الاستثمار الرقمي."
 keywords: [".alipay domains", "TLD", "top-level domain", "what is .alipay", "why choose .alipay", "what is the .alipay domain", "why choose the .alipay domain", "نطاق .alipay", "شراء نطاق", "استثمار النطاقات", "domain investing", "blockchain domains", "fintech domains", "tokenized domain", "Alipay TLD"]

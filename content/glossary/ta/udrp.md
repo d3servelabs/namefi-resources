@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: டொமைன் தகராறுகளை — குறிப்பாக வணிக முத்திரை மீறல் மற்றும் சைபர்ஸ்குவாட்டிங் வழக்குகளை — நீதிமன்றத்தை விட வேகமாகவும் மலிவாகவும் தீர்க்க ICANN நிர்ணயித்த கட்டாயக் கொள்கை.
 keywords: ['UDRP', 'டொமைன் தகராறுகள்', 'வணிக முத்திரை பாதுகாப்பு', 'சைபர்ஸ்குவாட்டிங்', 'சட்ட கட்டமைப்பு']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Réacheminer le trafic internet en annonçant faussement des routes IP, une attaque de couche réseau qui se situe sous le DNS.
 keywords: ['détournement BGP', 'détournement de route', 'préfixe IP', 'sécurité réseau', 'routage internet']
 level: 1

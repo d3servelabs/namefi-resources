@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein Server, der DNS-Anfragen für eine Domain beantwortet; seine NS Records benennen die autoritativen Server.
 keywords: ['Nameserver', 'NS Record', 'autoritativer Server', 'DNS-Delegierung', 'DNS-Hosting']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: "जानें .abc डोमेन एक्सटेंशन के बारे में सब कुछ। यह शिक्षा, स्टार्टअप्स और बुनियादी सेवाओं के लिए क्यों बेहतरीन है और Namefi पर इसे कैसे रजिस्टर करें।"
 keywords: ['.abc domains', '.abc TLD', 'top-level domain', 'what is .abc', 'why choose .abc', 'what is the .abc domain', 'why choose the .abc domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'web3 domains', 'educational domains', 'startup branding', 'buy domain name', 'Namefi']

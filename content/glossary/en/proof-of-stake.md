@@ -4,6 +4,7 @@ date: '2026-07-02'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A consensus mechanism where validators lock up the network's asset as a bond and are chosen to propose blocks in proportion to their stake.
 keywords: ['proof of stake', 'pos', 'staking', 'validator', 'slashing', 'ethereum merge']
 also_known_as: ['PoS']

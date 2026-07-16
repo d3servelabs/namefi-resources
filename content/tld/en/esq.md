@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .esq domain is a Google Registry extension built for lawyers and law firms. Learn who can register, how it is perceived, and whether it fits your practice.'
 keywords: ['.esq domain', 'what is .esq', '.esq domains', 'esq TLD for lawyers', 'esquire domain', 'Charleston Road Registry', 'Google Registry TLD', 'law firm domain']

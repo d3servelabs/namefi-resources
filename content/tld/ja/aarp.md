@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld', 'domain-names', 'branding', 'internet-security']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: ".aarp トップレベルドメインの目的を解説します。この限定TLDがセキュリティとコミュニティの象徴である理由、そして自分自身のデジタルアイデンティティを確保する方法を学びましょう。"
 relatedArticles:

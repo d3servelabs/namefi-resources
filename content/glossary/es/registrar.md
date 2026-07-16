@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Una empresa acreditada por ICANN autorizada para registrar nombres de dominio en nombre del público, actuando como interfaz entre registrantes y registros.
 keywords: ['registrador', 'registrador de dominios', 'acreditación ICANN', 'registro de dominios', 'RAA', 'EPP', 'código de autorización', 'bloqueo de transferencia', 'transferencia de dominio']
 level: 2

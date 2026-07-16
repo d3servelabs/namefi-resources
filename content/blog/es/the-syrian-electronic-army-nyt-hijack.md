@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'El 27 de agosto de 2013, el Ejército Electrónico Sirio realizó un ataque de phishing a un revendedor de Melbourne IT, reescribió los registros DNS de nytimes.com y los dominios de Twitter, y dejó al New York Times fuera de línea durante horas. Un análisis profundo de cómo el eslabón débil de la cadena de registradores se convirtió en el punto de falla de un periódico — y qué habrían cambiado los bloqueos de registro.'
 keywords: ['hackeo de nytimes.com', 'ejército electrónico sirio', 'melbourne it', 'secuestro de dns', 'secuestro de dominio', 'seguridad de registrador', 'phishing de revendedor', 'bloqueo de registro', 'registros dns', 'ataque de servidor de nombres de dominio', 'dns de twitter 2013', 'seguridad de dominios', 'serverupdateprohibited']

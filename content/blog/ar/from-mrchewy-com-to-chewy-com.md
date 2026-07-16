@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'قصة شركة ناشئة في مجال مستلزمات الحيوانات الأليفة أطلقت عام 2011 باسم "Mr. Chewy" على MrChewy.com، ثم حذفت كلمة "Mr." لتصبح Chewy على النطاق المطابق Chewy.com — وكيف أصبح هذا الترقية بكلمة واحدة جزءًا من علامة تجارية استحوذت عليها PetSmart مقابل 3.35 مليار دولار.'
 keywords: ['mrchewy.com', 'chewy.com', 'chewy domain name', 'mr chewy', 'domain upgrade', 'ryan cohen', 'michael day', 'frank schilling', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'pet ecommerce']

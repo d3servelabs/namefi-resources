@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .net domain is one of the internet''s original gTLDs, run by Verisign and open to anyone. Learn who uses it, how it compares to .com, and when to register it.'
 keywords: ['.net domain', 'what is .net', '.net TLD', '.net vs .com', 'register .net domain', 'Verisign .net registry', 'is .net good for SEO', 'tech startup domains']

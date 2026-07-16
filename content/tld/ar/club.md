@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف قوة نطاق .club في بناء المجتمعات والعلامات التجارية. تعرف على مزاياه، استخداماته، وكيفية تسجيله وربطه بتقنيات الويب 3 عبر Namefi."
 keywords: [".club domains", ".club TLD", "top-level domain", "what is .club", "why choose .club", "what is the .club domain", "why choose the .club domain", "نطاق club", "تسجيل نطاق", "استثمار النطاقات", "نطاقات الويب 3", "Namefi", "شراء دومين", "نطاقات البلوك تشين", "tokenized domain"]

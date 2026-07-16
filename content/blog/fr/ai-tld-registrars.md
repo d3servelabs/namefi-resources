@@ -5,6 +5,7 @@ language: 'fr'
 tags: ['ai-agents', 'comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 format: roundup
 ogImage: ../../assets/ai-tld-registrars-og.jpg

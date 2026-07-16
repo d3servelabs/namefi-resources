@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو تحسين محركات البحث (SEO) وكيف يؤثر ترميز النطاقات على تحسين محركات البحث؟
 keywords: ["SEO","تحسين محركات البحث","قيمة النطاق","تصنيفات البحث","التسويق الرقمي"]
 relatedArticles:

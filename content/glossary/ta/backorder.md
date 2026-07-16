@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: காலாவதியான டொமைன் பொதுவெளிக்கு திரும்பும் அந்த நொடியிலேயே அதை பதிவு செய்யும் முயற்சி செய்யும் சேவை.
 keywords: ['முன்பதிவு', 'drop-catching', 'காலாவதியான டொமைன்', 'நிலுவை நீக்கம்', 'டொமைன் கையகப்படுத்தல்']
 level: 1

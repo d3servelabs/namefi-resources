@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un TLD, ou domaine de premier niveau, est l''étiquette la plus à droite d''un nom de domaine, comme .com, .org ou .de, délégué via la zone racine IANA sous supervision ICANN.
 keywords: ['TLD', 'domaine de premier niveau', 'gTLD', 'ccTLD', 'nouveau gTLD', 'DNS', 'IANA', 'ICANN', 'zone racine', 'registre de domaine']
 also_known_as: ['Domaine de premier niveau']

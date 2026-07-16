@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .now : un TLD puissant pour l'immédiateté, l'action et le web en temps réel. Apprenez pourquoi et comment l'enregistrer sur Namefi."
 keywords: [".now domains", "TLD", "top-level domain", "what is .now", "why choose .now", "what is the .now domain", "why choose the .now domain", "qu'est-ce que le .now", "pourquoi choisir le .now", "domain investing", "blockchain domains", "tokenized domain", "investir nom de domaine", "achat domaine .now", "Web3 domains"]

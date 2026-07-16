@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: besthotels.com போன்று, ஒரு தேடல் வினாவை அப்படியே பிரதிபலிக்கும் டொமைன் — ஒருகாலத்தில் SEO-க்காக மிகவும் மதிப்பிடப்பட்டது.
 keywords: ['துல்லியப் பொருத்த டொமைன்', 'EMD', 'முக்கியச் சொல் பொருத்த டொமைன்', 'SEO டொமைன்', 'தேடல் தரவரிசை டொமைன்']
 also_known_as: ['EMD']

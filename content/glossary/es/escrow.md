@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es el depósito en garantía y cómo los contratos inteligentes proporcionan un depósito en garantía sin confianza para los dominios?
 keywords: ["depósito en garantía","tercero de confianza","escrow de contrato inteligente","sin confianza","transacciones seguras"]
 relatedArticles:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ラベルとTLDを合わせてひとつの単語を形成するドメイン名。del.icio.us（delicious）やexamp.leなどが典型例。
 keywords: ['ドメインハック', '創造的ドメイン', 'TLD ワードプレイ', 'ブランダブルドメイン', 'ccTLD']
 level: 1

@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 블록체인 키 쌍에서 공유 가능한 절반으로, 개인 키에서 파생되며 자금 수신 및 서명 검증에 사용됩니다.
 keywords: ['공개 키', '주소', '검증 키', '비대칭 암호화', '블록체인 계정']
 level: 1

@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es el SEO y cómo afecta la tokenización de dominios a la optimización de búsqueda?
 keywords: ["SEO","optimización de motores de búsqueda","valor de dominio","clasificaciones de búsqueda","marketing digital"]
 relatedArticles:

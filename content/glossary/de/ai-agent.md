@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Software, die von einem KI-Modell angetrieben wird und im Auftrag eines Nutzers handelt – Käufe tätigt, APIs aufruft und zunehmend mit anderen Agenten interagiert.
 keywords: ['KI-Agent', 'autonomer Agent', 'Agenten-Identität', 'Agenten-Handel', 'On-Chain-Agent', 'agentische KI']
 level: 1

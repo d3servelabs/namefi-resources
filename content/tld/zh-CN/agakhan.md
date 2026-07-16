@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .agakhan 顶级域名（TLD）：它代表了什么，有哪些独特优势，以及为何品牌顶级域名在数字身份中至关重要。立即在 Namefi 探索您的域名机会。'
 keywords: ['.agakhan domains', '.agakhan TLD', 'top-level domain', 'what is .agakhan', 'why choose .agakhan', 'what is the .agakhan domain', 'why choose the .agakhan domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'digital identity', 'brand TLD', 'Namefi', 'web3 domains', 'Aga Khan domain']

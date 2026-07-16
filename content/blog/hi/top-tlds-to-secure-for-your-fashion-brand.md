@@ -5,6 +5,7 @@ language: hi
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-fashion-brand-og.jpg
 description: 'अपने फैशन ब्रांड के लिए शीर्ष 10 TLD सुरक्षित करने की व्यावहारिक गाइड, जिसमें ब्रांड सुरक्षा, रिटेल इरादा और डिफेंसिव डोमेन पंजीकरण रणनीति शामिल है।'

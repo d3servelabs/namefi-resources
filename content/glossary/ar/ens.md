@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: خدمة أسماء إيثريوم بتربط أسماء مقروءة زي alice.eth بعناوين المحافظ والسجلات، وبتتدار بالكامل عبر عقود ذكية على السلسلة.
 keywords: ['ENS', 'خدمة أسماء إيثريوم', '.eth', 'اسم web3', 'تسمية على السلسلة', 'اسم مستعار للمحفظة', 'هوية رقمية']
 level: 1

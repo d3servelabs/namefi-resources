@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "دليلك الشامل حول نطاق .net: تاريخه، استخداماته، ولماذا يعد من أكثر النطاقات موثوقية عالمياً. ابدأ رحلتك الرقمية وسجّل نطاقك اليوم مع Namefi."
 keywords: [".net domains", ".net TLD", "top-level domain", "what is .net", "why choose .net", "what is the .net domain", "why choose the .net domain", "نطاقات .net", "ما هو نطاق .net", "لماذا تختار .net", "نطاق المستوى الأعلى", "استثمار النطاقات", "نطاقات البلوك تشين", "domain investing", "tokenized domains"]

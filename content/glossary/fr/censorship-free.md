@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Que signifie "sans censure" pour la propriété et la gestion des domaines ?
 keywords: ["sans censure","résistance à la censure","décentralisé","liberté","inarrêtable"]
 relatedArticles:

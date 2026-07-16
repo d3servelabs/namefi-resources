@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 cluster: domain-tokenization
 series: domain-flipping-skills

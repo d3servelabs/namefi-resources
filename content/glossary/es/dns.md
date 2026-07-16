@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El sistema de nomenclatura jerárquico que traduce nombres de dominio legibles por humanos en las direcciones IP que las computadoras usan para enrutar el tráfico por internet.
 keywords: ['DNS', 'sistema de nombres de dominio', 'resolución de nombres', 'búsqueda DNS', 'registros DNS', 'servidor de nombres', 'resolvedor recursivo', 'DNSSEC', 'infraestructura de internet']
 also_known_as: ['Sistema de Nombres de Dominio']

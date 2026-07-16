@@ -5,6 +5,7 @@ language: de
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-accounting-firm-og.jpg
 description: 'Die besten TLDs für Ihre Steuerberatungskanzlei – von der eingeschränkten .cpa bis hin zu defensiven .com-, .net- und .org-Registrierungen, die Ihre Marke schützen und das Vertrauen Ihrer Mandanten stärken.'

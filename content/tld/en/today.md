@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: '.today is an open new gTLD run by Identity Digital, built for news, daily deals, events, and updates. Learn who uses it, the rules, and whether to buy.'
 keywords: ['.today domain', 'what is .today', '.today TLD', 'today domain extension', 'new gTLD', 'Identity Digital', 'domain registration', 'news domain']

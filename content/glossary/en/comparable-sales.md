@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Past sales of similar domains used as benchmarks to estimate what a name is worth.
 keywords: ['comparable sales', 'comps', 'domain sales data', 'domain benchmarks', 'domain pricing history']
 also_known_as: ['Comps']

@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2015 年 1 月，Lizard Squad 劫持了 malaysiaairlines.com 的 DNS，将航空公司官网替换为一只身着燕尾服的蜥蜴图片，并配以嘲讽文字"404 — 飞机未找到"。整个攻击过程中，攻击者没有入侵任何服务器——他们只是修改了域名的指向。这是一次深度剖析 DNS 如何成为该航空公司最脆弱入口的"域名紧急事件"案例。'
 keywords: ['马来西亚航空 DNS 劫持', 'Lizard Squad', '网络哈里发', '404 飞机未找到', 'DNS 劫持', '域名劫持', '注册商入侵', 'Webnic', 'malaysiaairlines.com', '域名安全', 'DNS 重定向', '注册表锁定', 'MH370']

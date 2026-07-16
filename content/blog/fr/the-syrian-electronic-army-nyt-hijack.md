@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Le 27 août 2013, l'Armée électronique syrienne a hameçonné un revendeur de Melbourne IT, réécrit les enregistrements DNS de nytimes.com et des domaines de Twitter, et mis le New York Times hors ligne pendant des heures. Une analyse approfondie de la façon dont un maillon faible dans la chaîne des registraires est devenu la faille d'entrée d'un grand journal — et ce qu'un verrouillage au niveau du registre aurait changé."
 keywords: ['piratage nytimes.com', 'armée électronique syrienne', 'melbourne it', 'détournement dns', 'hijacking de domaine', 'sécurité registraire', 'phishing revendeur', 'verrouillage registre', 'enregistrements dns', 'attaque serveur de noms de domaine', 'dns twitter 2013', 'sécurité des noms de domaine', 'serverupdateprohibited']

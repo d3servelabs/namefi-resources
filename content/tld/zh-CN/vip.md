@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .vip 顶级域名的优势与用途。探索为何高端品牌和投资者青睐 .vip，以及如何在 Namefi 轻松注册并管理这一象征尊贵身份的 Web3 就绪域名。'
 keywords: ['.vip domains', '.vip TLD', '.vip top-level domain', 'what is .vip', 'why choose .vip', 'what is the .vip domain', 'why choose the .vip domain', '.vip 域名', '购买 .vip 域名', '高端域名投资', '域名注册', 'Web3 域名', 'Namefi', '品牌保护', '区块链域名', '.vip 含义']

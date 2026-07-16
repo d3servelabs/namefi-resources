@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक प्रतिष्ठा संकेत जो अनुमान लगाता है कि एक डोमेन कितनी अच्छी तरह रैंक करता है, मुख्य रूप से गुणवत्ता इनबाउंड लिंक द्वारा संचालित।
 keywords: ['domain authority', 'backlinks', 'link equity', 'seo', 'ranking signal', 'inbound links']
 level: 1

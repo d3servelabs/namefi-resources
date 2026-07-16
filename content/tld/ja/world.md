@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.worldドメインはIdentity Digitalが運営するオープンな汎用gTLDです。グローバルブランド、国際プロジェクト、コミュニティサイトに最適な拡張子の仕組みを解説します。'
 keywords: ['.worldドメイン', '.worldとは', 'world TLD', 'worldドメイン登録', 'グローバルドメイン拡張子', 'Identity Digital', '汎用トップレベルドメイン', '.world登録']

@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'Urban Compass ने 2012 में UrbanCompass.com पर एक न्यूयॉर्क रेंटल ऐप के रूप में शुरुआत की, फरवरी 2015 में रीब्रांडिंग के दौरान "Urban" को हटाया, और Compass.com — एक डोमेन जो नीलामी में $1 मिलियन में सूचीबद्ध था — को अपग्रेड किया, ठीक उस वक्त जब कंपनी राष्ट्रीय स्तर पर जाने की तैयारी कर रही थी।'
 keywords: ['urbancompass.com', 'compass.com', 'compass domain name', 'domain upgrade', 'urban compass rebrand', 'robert reffkin', 'ori allon', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'compass real estate', 'real estate startup', 'exact match domain']

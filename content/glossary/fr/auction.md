@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Quels sont les différents types d'enchères utilisés pour la vente de domaines ?
 keywords: ["enchère","enchère hollandaise","enchère anglaise","enchère dynamique","découverte de prix","vente de domaines"]
 relatedArticles:

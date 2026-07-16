@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Qu'est-ce que le domaine .cc ? Le TLD national des îles Cocos (Keeling), géré par Verisign et commercialisé dans le monde entier comme une alternative courte et brandable au .com. Découvrez qui le gère, qui peut en enregistrer un, la tarification et le référencement."
 keywords: ['domaines .cc', '.cc TLD', 'domaine cc', "qu'est-ce que .cc", "qu'est-ce que le domaine .cc", '.cc vs .com', 'signification domaine cc', 'domaine îles Cocos Keeling', 'enregistrer un domaine .cc', 'domaine court et brandable', 'domain hack cc']

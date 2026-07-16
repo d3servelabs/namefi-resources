@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: DNS மூல மண்டலத்தை நிர்வகித்து, IP முகவரி தொகுதிகளையும் நெறிமுறை எண்களையும் ஒதுக்கீடு செய்யும் செயல்பாடு.
 keywords: ['IANA', 'மூல மண்டலம்', 'IP ஒதுக்கீடு', 'நெறிமுறை எண்கள்', 'ICANN']
 level: 1

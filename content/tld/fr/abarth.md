@@ -4,6 +4,8 @@ date: '2025-12-11'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: 'Tout savoir sur le domaine de premier niveau .abarth. Découvrez l''histoire, les avantages et l''utilisation de cette extension exclusive liée à l''automobile et au branding.'
 keywords: ['.abarth', 'domaines .abarth', 'TLD .abarth', 'qu''est-ce que .abarth', 'pourquoi choisir .abarth', 'investissement domaine', 'domaines tokenisés', 'blockchain', 'Web3 domains', 'extension abarth', 'domaine automobile', 'nouveaux gTLD', 'nom de domaine marque', 'enregistrement domaine', 'Namefi']

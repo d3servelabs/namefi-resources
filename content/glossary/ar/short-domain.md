@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاقات قصيرة جداً — تلاتة أو أربع حروف أو كلها أرقام — بتُقدَّر لإيجازها خاصةً في بعض الأسواق.
 keywords: ['النطاق القصير', 'نطاق رقمي', 'نطاق LLLL', 'نطاق NNNN', 'نطاق ثلاثة حروف', 'نطاق أربع حروف']
 level: 1

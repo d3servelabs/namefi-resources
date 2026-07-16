@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ネットワーク上のデバイスを識別する数値アドレス。DNSがドメイン名をこのアドレスに対応付ける。
 keywords: ['IPアドレス', 'IPv4', 'IPv6', 'Aレコード', 'AAAAレコード', 'ネットワーク']
 level: 1

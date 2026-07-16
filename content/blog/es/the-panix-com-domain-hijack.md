@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'En enero de 2005, panix.com — el dominio del proveedor de internet comercial más antiguo de Nueva York — fue transferido de forma fraudulenta a un registrador en Australia mediante tarjetas de crédito robadas, dejando el sitio web y el correo electrónico fuera de servicio durante días. Las reglas de transferencia entre registradores con aprobación automática de la época lo hicieron posible, y la resolución del caso reformó la política de transferencia de dominios.'
 keywords: ['panix.com', 'secuestro de dominio panix', 'secuestro de dominio', 'transferencia entre registradores', 'Melbourne IT', 'Dotster', 'Fibranet', 'política de transferencia ICANN', 'bloqueo de registrador', 'clientTransferProhibited', 'seguridad de dominios', 'secuestro DNS', 'código de autorización EPP']

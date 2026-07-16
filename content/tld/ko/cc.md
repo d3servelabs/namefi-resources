@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.cc 도메인이란 무엇인가요? 코코스(킬링) 제도의 국가 코드 TLD로, Verisign이 운영하며 전 세계적으로 짧고 브랜드화하기 쉬운 .com 대안으로 마케팅됩니다. 운영 주체, 등록 자격, 가격, SEO에 대해 알아보세요.'
 keywords: ['.cc 도메인', '.cc TLD', 'cc 도메인', '.cc란', '.cc 도메인이란', '.cc vs .com', 'cc 도메인 의미', '코코스 킬링 제도 도메인', '.cc 도메인 등록', '짧은 브랜드 도메인', '도메인 핵 cc']

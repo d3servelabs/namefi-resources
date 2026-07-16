@@ -4,6 +4,7 @@ date: '2026-07-02'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A layer 2 scaling technique that executes transactions off the main chain and posts the compressed data and result back to it.
 keywords: ['rollup', 'layer 2', 'optimistic rollup', 'zk rollup', 'scaling', 'l2']
 level: 1

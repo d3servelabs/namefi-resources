@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'إيه هو دومين .me؟ امتداد رمز دولة الجبل الأسود، اللي اتسوّق حول العالم كامتداد للعلامة الشخصية والدومين هاكس اللي بيكمّل الاسم بـ "me". اتعرف على مين بيشغّله، ومين يقدر يسجّله، والأسعار، وتأثيره على SEO.'
 keywords: ['دومينات .me', 'امتداد .me TLD', 'دومين me', 'إيه هو .me', 'إيه هو دومين .me', '.me مقابل .com', 'دومين me للعلامة الشخصية', 'دومين الجبل الأسود', 'تسجيل دومين .me', 'دومين هاك .me', 'about.me']

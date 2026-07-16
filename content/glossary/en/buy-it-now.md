@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A fixed instant-purchase price on a domain listing — meet it and the sale completes immediately, no negotiation.
 keywords: ['buy it now', 'BIN', 'instant purchase', 'fixed price', 'domain listing']
 also_known_as: ['BIN']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 其他网站指向你的网站的入站超链接，是搜索排名和域名权威度的主要驱动因素。
 keywords: ['反向链接', '导入链接', '链接建设', '链接权益', 'SEO']
 also_known_as: ['导入链接']

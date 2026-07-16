@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - gong-jihye
 draft: false
 description: '.afl 최상위 도메인에 관한 모든 것을 알아보십시오. 호주 풋볼 리그가 이 독자적인 브랜드 TLD를 어떻게 활용하는지, 그리고 도메인 투자 및 디지털 정체성에 어떤 의미를 갖는지 살펴봅니다.'
 keywords:

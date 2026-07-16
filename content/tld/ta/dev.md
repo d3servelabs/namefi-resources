@@ -5,6 +5,8 @@ language: 'ta'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.dev என்பது Google இயக்கும் HTTPS மட்டும் பயன்படுத்தும் உச்சநிலை டொமெயின் — டெவலப்பர்கள், திட்டங்கள், மற்றும் தொழில்நுட்பக் குழுக்களுக்கானது. யார் பதிவு செய்யலாம், SEO பாதிப்பு என்ன, எப்படி வாங்குவது என்று அறியுங்கள்.'
 keywords: ['.dev டொமெயின்', '.dev என்றால் என்ன', 'dev TLD', 'Google Registry dev', 'HSTS preload', 'டெவலப்பர் டொமெயின்', 'dev டொமெயின் பதிவு', 'dev டொமெயின் SEO']

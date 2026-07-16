@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 무료 추가 유예 기간 내에 도메인을 등록한 뒤 취소하는 방식으로, 현재는 대부분 사라진 전략입니다.
 keywords: ['도메인 테이스팅', 'AGP', '추가 유예 기간', '도메인 카이팅', 'ICANN 정책']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El número secreto que controla una cuenta blockchain y firma sus transacciones; nunca debe compartirse.
 keywords: ['clave privada', 'clave de firma', 'clave de billetera', 'clave secreta', 'cuenta blockchain']
 level: 1

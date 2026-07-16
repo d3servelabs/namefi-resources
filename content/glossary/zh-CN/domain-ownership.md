@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名代币化后，域名所有权意味着什么？
 keywords: ["域名所有权","NFT域名","注册商","托管","钱包所有权"]
 relatedArticles:

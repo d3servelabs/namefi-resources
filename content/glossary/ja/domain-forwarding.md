@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 訪問者をあるドメインから別のURLへ自動的に転送する設定。多くの場合、301リダイレクトを使用して行われる。
 keywords: ['ドメイン転送', '301リダイレクト', 'URLリダイレクト', 'DNS', 'ドメイン管理']
 level: 1

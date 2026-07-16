@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.accountantドメインは、会計士・経理担当者・財務専門家向けに開放されたnew gTLDです。運営者、登録資格、ブランドへの適合性を詳しく解説します。'
 keywords: ['.accountantドメイン', '.accountantとは', '.accountant TLD', '会計士ドメイン名', '財務向けドメイン拡張子', '会計士向けnew gTLD', '.accountant登録', '経理サイトドメイン']

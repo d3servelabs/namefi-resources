@@ -5,6 +5,7 @@ language: ar
 tags: ['نطاقات', 'استثمار-النطاقات', 'مدونات', 'نشرات-إخبارية', 'مجتمع']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'قائمة منتقاة لأبرز مستثمري النطاقات والوسطاء والمتداولين الأفراد الذين تستحق مدوناتهم ونشراتهم الإخبارية وحساباتهم على سبستاك (Substack) القراءة في عام 2026 — بماذا يُعرف كل منهم، وكيف يتكاملون معًا.'
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg

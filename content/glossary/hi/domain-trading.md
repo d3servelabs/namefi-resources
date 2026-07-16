@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन ट्रेडिंग क्या है और टोकनाइजेशन ट्रेडिंग अनुभव को कैसे बेहतर बनाता है?
 keywords: ["डोमेन ट्रेडिंग","डोमेन निवेश","डिजिटल रियल एस्टेट","द्वितीयक बाजार","तरलता"]
 relatedArticles:

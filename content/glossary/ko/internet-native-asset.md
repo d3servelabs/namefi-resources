@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 물리적 또는 법적 객체의 디지털 기록이 아니라, 도메인이나 토큰처럼 인터넷 자체에서 발생하고 존재하는 자산입니다.
 keywords: ['인터넷 네이티브 자산', '디지털 자산', '블록체인', '네이티브 인터넷', '토큰화 도메인']
 level: 1

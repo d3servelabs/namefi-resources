@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubre el poder del dominio .live para streaming, eventos y marcas en tiempo real. Aprende sus ventajas y cómo registrarlo fácilmente en Namefi."
 keywords: [".live domains", ".live TLD", "top-level domain", "what is .live", "why choose .live", "what is the .live domain", "why choose the .live domain", "qué es .live", "por qué elegir .live", "comprar dominio .live", "registro de dominios", "dominios para streaming", "inversión en dominios", "dominios tokenizados", "blockchain domains"]

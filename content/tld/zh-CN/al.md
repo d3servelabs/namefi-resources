@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '深入了解 .al 域名：从阿尔巴尼亚的国家代码到全球创意品牌的新宠。探索其作为域名 Hack 的独特价值、投资潜力，以及如何在 Namefi 注册并利用 Web3 技术管理您的域名资产。'
 keywords:

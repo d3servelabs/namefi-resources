@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ماذا تعني مقاومة الرقابة لملكية النطاقات وإدارتها؟
 keywords: ["مقاومة للرقابة","مقاومة الرقابة","لامركزية","حرية","لا يمكن إيقافها"]
 relatedArticles:

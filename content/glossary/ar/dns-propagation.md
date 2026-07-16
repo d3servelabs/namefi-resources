@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: التأخير قبل ما تغيير DNS يتشاف في كل مكان، وده بيحصل لأن السجلات القديمة المُخزّنة بتنتهي تدريجياً عند المحلّلات.
 keywords: ['انتشار DNS', 'تأخير تحديث DNS', 'TTL', 'كاش DNS', 'تغيير خادم الأسماء']
 level: 1

@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ماذا يعني ترميز دومين أو أصل؟
 keywords: ["ترميز","توكنايزيشن","NFT","أصل رقمي","أصل على السلسلة"]
 relatedArticles:

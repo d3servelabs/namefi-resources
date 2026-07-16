@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '.me 域名是什么？它是黑山的国家代码顶级域名，却被全球营销为个人品牌和域名拼接（domain hack）后缀——名称以 "me" 收尾。了解它的运营方、注册资格、定价方式以及 SEO 表现。'
 keywords: ['.me 域名', '.me TLD', 'me 域名', '什么是 .me', '什么是 .me 域名', '.me 与 .com 对比', '个人品牌 .me 域名', '黑山域名', '注册 .me 域名', '域名拼接 .me', 'about.me']

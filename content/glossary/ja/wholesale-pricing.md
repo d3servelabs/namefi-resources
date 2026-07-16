@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメイン投資家間で成立する最低価格——エンドユーザーが支払う小売価格を下回り、迅速に資金化するために受け入れられる価格。
 keywords: ['卸売価格', '投資家間価格', 'ドメイン卸売', '清算価格', 'ドメイン投資家価格']
 also_known_as: ['投資家間価格']

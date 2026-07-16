@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "探索 .site 顶级域名的潜力。了解其含义、SEO 价值以及为什么它是企业、开发者和 Web3 投资者的热门选择。立即在 Namefi 注册您的 .site 域名，开启数字资产新篇章。"
 keywords: [".site domains", ".site TLD", ".site top-level domain", "what is .site", "why choose .site", "what is the .site domain", "why choose the .site domain", "register .site domain", "domain investing", "blockchain domains", "tokenized domain", ".site域名含义", "购买.site域名", "Web3 domains", "Namefi"]

@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: பரவலாக்கப்பட்ட அடையாளங்காட்டி என்பது உலகளாவிய தனித்துவமான ஒரு ID ஆகும், இது மத்திய பதிவேட்டை நம்பாமல் உரிமையாளரின் சாவிகளால் கட்டுப்படுத்தப்படுகிறது, மேலும் சேவைகளில் அடையாளத்தை நிரூபிக்கப் பயன்படுகிறது.
 keywords: ['DID', 'பரவலாக்கப்பட்ட அடையாளம்', 'சுய-இறையாண்மை அடையாளம்', 'blockchain அடையாளம்', 'Web3 அடையாளம்']
 level: 1

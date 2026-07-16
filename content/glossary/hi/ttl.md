@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: TTL वह समय है, सेकंड में, जितने समय तक DNS रिकॉर्ड को रिज़ॉल्वर कैश कर सकते हैं, इसके बाद उसे फिर से लुकअप करना होता है।
 keywords: ['TTL', 'टाइम टू लिव', 'DNS कैश', 'DNS प्रोपेगेशन', 'रिकॉर्ड कैशिंग']
 level: 1

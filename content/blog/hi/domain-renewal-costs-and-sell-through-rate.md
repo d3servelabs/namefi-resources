@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'domain-investing', 'domain-flipping', 'analysis']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

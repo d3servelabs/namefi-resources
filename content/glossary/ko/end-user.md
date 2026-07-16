@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인을 재판매하지 않고 비즈니스나 프로젝트에 실제로 활용하려는 구매자.
 keywords: ['최종 사용자', '도메인 구매자', '도메인 최종 사용', '비즈니스 도메인', '도메인 배포']
 level: 1

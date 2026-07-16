@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: DAO क्या है और यह डोमेन प्रबंधन से कैसे संबंधित हो सकता है?
 keywords: ["DAO","विकेंद्रीकृत स्वायत्त संगठन","शासन","सामूहिक स्वामित्व","स्मार्ट कॉन्ट्रैक्ट्स"]
 relatedArticles:

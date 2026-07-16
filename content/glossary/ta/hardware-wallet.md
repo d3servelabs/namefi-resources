@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: பணப்பையின் தனிப்பட்ட திறவுகோல்களை ஆஃப்லைனில் சேமித்து, சாதனத்திலேயே பரிவர்த்தனைகளில் கையெழுத்திடும் ஒரு சிறப்பு சாதனம் — இதனால் திறவுகோல்கள் இணையத்துடன் இணைக்கப்பட்ட கணினியை ஒருபோதும் தொடுவதில்லை.
 keywords: ['வன்பொருள் பணப்பை', 'குளிர் பணப்பை', 'Ledger', 'Trezor', 'GridPlus', 'Keystone', 'பாதுகாப்பு உறுப்பு', 'சுய-காவல்']
 level: 1

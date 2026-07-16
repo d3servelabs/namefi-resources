@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: Ethereum மீது கட்டமைக்கப்பட்ட ஒரு பரவலாக்கப்பட்ட சமூக வலைப்பின்னல்; கணக்குகள், அடையாளங்கள் மற்றும் சமூக தொடர்புகள் ஒரு நிறுவனத்தின் சேவையகங்களில் இல்லாமல் சங்கிலியில் (on-chain) நேரடியாக பதியப்படுகின்றன.
 keywords: ['Farcaster', 'பரவலாக்கப்பட்ட சமூக வலைப்பின்னல்', 'Web3 சமூக நெறிமுறை', 'தொகுதிச்சங்கிலி அடையாளம்', 'சமூக நெறிமுறை']
 level: 1

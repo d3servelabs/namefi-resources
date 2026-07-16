@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La página única que se muestra en un dominio aparcado o en venta, a menudo con anuncios, búsqueda u oferta de compra.
 keywords: ['página de aterrizaje', 'lander', 'página en venta', 'aparcamiento de dominios', 'monetización de dominios']
 also_known_as: ['Página de aterrizaje']

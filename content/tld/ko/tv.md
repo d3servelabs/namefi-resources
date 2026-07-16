@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.tv 도메인이란 무엇인가? 투발루의 국가코드 TLD로, 전 세계에서 텔레비전·영상·라이브 스트리밍의 대표 도메인으로 마케팅되고 있습니다. 운영 주체, 등록 자격, 가격, SEO에 대해 알아보세요.'
 keywords: ['.tv 도메인', '.tv TLD', 'tv 도메인', '.tv란 무엇인가', '.tv 도메인이란', '스트리밍용 .tv', '영상용 tv 도메인', '투발루 도메인', '.tv 도메인 등록', 'twitch.tv', '영상 스트리밍 도메인']

@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 cluster: domain-security
 series: domain-flipping-skills

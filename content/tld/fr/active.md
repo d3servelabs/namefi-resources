@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur le domaine .active : une extension dynamique pour les marques et communautés. Apprenez pourquoi et comment l'enregistrer dès aujourd'hui sur Namefi."
 keywords: ['.active domains', '.active TLD', 'top-level domain', 'what is .active', 'why choose .active', 'what is the .active domain', 'why choose the .active domain', 'achat nom de domaine', 'domaine blockchain', 'investissement domaine', 'domaine tokenisé', 'extension internet sport', 'domaine lifestyle', 'Web3 domains', 'Namefi registrar']

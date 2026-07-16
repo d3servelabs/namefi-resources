@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio .allfinanz: su significado, beneficios para el sector financiero y por qué es una elección estratégica. Registra tu dominio hoy en Namefi.'
 keywords: ['.allfinanz domains', 'dominio .allfinanz', 'TLD', 'top-level domain', 'what is .allfinanz', 'qué es .allfinanz', 'why choose .allfinanz', 'por qué elegir .allfinanz', 'what is the .allfinanz domain', 'why choose the .allfinanz domain', 'inversión de dominios', 'blockchain domains', 'tokenized domain', 'servicios financieros', 'fintech']

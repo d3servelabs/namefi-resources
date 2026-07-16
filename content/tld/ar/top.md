@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .top. تعرف على مزاياه، استخداماته، وكيفية حجز اسم نطاق مميز عبر Namefi لتعزيز حضورك الرقمي واستثمارك في النطاقات."
 keywords: [".top domain", "نطاق .top", "TLD", "نطاق المستوى الأعلى", "what is .top", "ما هو نطاق .top", "why choose .top", "لماذا تختار نطاق .top", "buy .top domain", "شراء نطاق .top", "domain investing", "استثمار النطاقات", "blockchain domains", "نطاقات البلوك تشين", "tokenized domain", "نطاقات مرمزّة", "web3 domains", "نطاقات ويب 3", "cheap domains", "نطاقات رخيصة", "Namefi"]

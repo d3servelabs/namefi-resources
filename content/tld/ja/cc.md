@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.ccドメインとは何か？ Verisignが運営し、短くブランダブルな.com代替として世界中にマーケティングされているCocos（Keeling）諸島の国別コードTLD。運営者、登録資格、価格、SEOへの影響について解説します。'
 keywords: ['.ccドメイン', '.cc TLD', 'ccドメイン', '.ccとは', '.cc ドメインとは', '.ccと.com比較', 'ccドメインの意味', 'Cocos Keeling諸島ドメイン', '.ccドメイン登録', '短いブランダブルドメイン', 'ドメインハック cc']

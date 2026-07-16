@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Discover the purpose behind the .allstate TLD. Learn about Brand TLDs, how they enhance security and trust, and how you can secure your own powerful domain strategy with Namefi."
 keywords: ['.allstate domains', '.allstate TLD', 'top-level domain', 'what is .allstate', 'why choose .allstate', 'what is the .allstate domain', 'why choose the .allstate domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'brand TLD', 'insurance domains', 'corporate domain strategy', 'Web3 domains', 'Namefi']

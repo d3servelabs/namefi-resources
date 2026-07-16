@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Les indicateurs standardisés sur un domaine qui affichent son état — verrouillé, suspendu, en attente de transfert, et plus encore.
 keywords: ['codes de statut EPP', 'clientHold', 'serverTransferProhibited', 'statut de domaine', 'suppression en attente']
 level: 1

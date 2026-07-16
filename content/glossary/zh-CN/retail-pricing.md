@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 终端用户为实际使用域名所支付的价格，通常远高于投资者间的批发底价。
 keywords: ['零售定价', '终端用户定价', '域名零售', '终端用户价格', '全价']
 also_known_as: ['终端用户定价']

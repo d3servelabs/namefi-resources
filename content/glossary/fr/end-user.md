@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un acheteur qui acquiert un domaine pour l'utiliser activement dans un projet ou une entreprise, et non pour le revendre.
 keywords: ['utilisateur final', 'acheteur de domaine', 'usage final du domaine', 'domaine professionnel', 'déploiement de domaine']
 level: 1

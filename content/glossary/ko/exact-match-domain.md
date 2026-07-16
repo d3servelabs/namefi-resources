@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 검색 키워드와 정확히 일치하는 도메인으로, besthotels.com처럼 과거 SEO에서 높은 가치를 지녔습니다.
 keywords: ['정확 일치 도메인', 'EMD', '키워드 일치 도메인', 'SEO 도메인', '검색 순위 도메인']
 also_known_as: ['EMD']

@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2019 年 Cisco Talos 披露的国家支持行动"海龟"，通过入侵域名注册商、注册局和 DNS 服务商来劫持 DNS，将政府机构、部委和能源企业的流量重定向至攻击者控制的服务器，伪造有效证书，甚至入侵了国家级顶级域名注册局。'
 keywords: ['海龟 DNS 劫持', 'cisco talos 海龟行动', 'DNS 劫持攻击', '国家支持 DNS 攻击', '注册局入侵', '注册商入侵', 'DNS 间谍活动', 'lets encrypt 中间人证书', 'netnod 入侵', 'ics-forth 希腊 ccTLD', 'cisa 紧急指令 19-01', 'DNS 安全', '域名所有权安全', '国家级网络攻击']

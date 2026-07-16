@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: जानें कि .store डोमेन आपके ई-कॉमर्स बिजनेस के लिए क्यों महत्वपूर्ण है। इसकी विशेषताओं, फायदों और Namefi पर इसे रजिस्टर करने के तरीकों के बारे में पढ़ें।
 keywords: ['.store domains', '.store TLD', 'top-level domain', 'what is .store', 'why choose .store', 'what is the .store domain', 'why choose the .store domain', 'buy .store domain', 'ecommerce domain names', 'online shop domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'web3 domains', 'new gTLD']

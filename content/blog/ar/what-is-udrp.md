@@ -5,6 +5,7 @@ language: ar
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "شرح شامل لسياسة UDRP لأصحاب أسماء النطاقات والمستثمرين: العناصر الثلاثة اللي لازم يُثبتها المدّعي، وإجراءات العملية والجدول الزمني، والنتائج المحتملة، والفرق بين UDRP وURS والتقاضي في المحاكم، وكيف ترد على شكوى."
 keywords: ['udrp', 'ما هي udrp', 'إجراءات udrp', 'سياسة udrp', 'شكوى udrp', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'نزاع اسم نطاق', 'نزاع أسماء نطاقات', 'cybersquatting', 'اختطاف أسماء نطاقات عكسي', 'تسجيل بنية سيئة', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'نزاع نطاق علامة تجارية', 'قانوني لمستثمري النطاقات', 'الرد على شكوى udrp']

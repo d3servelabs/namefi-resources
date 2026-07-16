@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Massdrop 花了七年时间打造了一个发烧友团购社区，随后于 2019 年更名为 Drop——在更名前悄悄收购了高端域名 Drop.com（要价曾高达 80 万美元）。本文探讨为何舍弃"Mass"至关重要。'
 keywords: ['massdrop.com', 'drop.com', 'drop 域名', 'massdrop 更名', '域名升级', '团购', '机械键盘', '发烧友社区', '创业命名', '品牌命名', '高端域名', '域名策略', '精确匹配域名', '社区电商']

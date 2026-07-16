@@ -397,6 +397,19 @@ function validateContentFile(
     }
   }
 
+  // `translators` is optional; when present it must be a non-empty list of
+  // author-slugs (same vocabulary as `authors`). It surfaces as the
+  // "Translated by" byline on localized (non-en) pages.
+  if (data.translators !== undefined) {
+    const translators = asStringArray(data.translators);
+    if (translators.length === 0) {
+      errors.push({
+        file: relativePath,
+        message: '"translators" is present but empty or malformed',
+      });
+    }
+  }
+
   if (
     collection === 'blog' ||
     collection === 'tld' ||

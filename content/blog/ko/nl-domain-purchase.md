@@ -5,6 +5,7 @@ language: 'ko'
 tags: ['ai-agents', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 format: guide
 ogImage: ../../assets/nl-domain-purchase-og.jpg

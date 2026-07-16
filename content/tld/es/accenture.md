@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre todo sobre el dominio .accenture: qué es, sus ventajas de identidad corporativa y por qué representa el futuro de la confianza digital. Infórmate con Namefi.'
 keywords:

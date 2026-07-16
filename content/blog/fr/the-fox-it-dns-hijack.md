@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "En septembre 2017, des attaquants se sont connectés au bureau d'enregistrement tiers de la société de sécurité néerlandaise Fox-IT, ont modifié ses DNS, obtenu frauduleusement un certificat TLS et ont effectué une attaque man-in-the-middle pendant 10 heures sur le trafic client — jusqu'à ce que Fox-IT le détecte et publie l'un des post-mortems les plus transparents du secteur."
 keywords: ['détournement dns fox-it', 'man in the middle fox-it', 'incident fox-it 2017', 'détournement dns', 'compromission compte registrar', 'certificat ssl frauduleux', 'attaque man-in-the-middle', 'sécurité registrar de domaine', 'authentification deux facteurs dns', 'dnssec', 'verrouillage registre', 'sécurité des domaines', 'ncc group fox-it']

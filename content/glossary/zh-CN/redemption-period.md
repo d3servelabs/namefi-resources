@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名完全失效后的一个约 30 天的窗口期，原注册人可在此期间恢复域名，但通常须缴纳高额赎回费。
 keywords: ['赎回期', 'RGP', '赎回宽限期', '已到期域名恢复', '赎回费']
 level: 1

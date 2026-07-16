@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 卖家设定的最低可接受价格，通常保密，低于此价格的出价或竞拍将不予成交。
 keywords: ['底价', '最低出价', '保留价', '底线价格', '域名拍卖底价']
 level: 1

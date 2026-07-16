@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .live domain is an open new gTLD run by Identity Digital, built for streaming, events, and real-time content. Learn who uses it, the rules, and whether it fits you.'
 keywords: ['.live domains', '.live TLD', 'what is .live', 'why choose .live', 'streaming domain', 'live streaming domain name', 'Identity Digital', 'new gTLD']

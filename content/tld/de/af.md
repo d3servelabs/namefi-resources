@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .af-Domain: Von ihrer Herkunft als ccTLD für Afghanistan bis hin zu ihrer Beliebtheit für kreative Domain-Hacks und modernes Branding. Sichern Sie sich jetzt Ihre .af-Adresse."
 keywords: [".af domains", ".af TLD", "top-level domain", "was ist .af", "warum .af wählen", "was ist die .af domain", "warum die .af domain wählen", "domain investing", "blockchain domains", "tokenized domain", "domain hacks", "afghanistan domain", "kreative domains", "web3 domains", "namefi"]

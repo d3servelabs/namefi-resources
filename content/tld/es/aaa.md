@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubra el potencial de los dominios .aaa para su marca. Aprenda sobre su significado, ventajas de SEO y cómo registrarlo hoy mismo a través de Namefi.'
 keywords:

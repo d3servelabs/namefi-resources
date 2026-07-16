@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Abuso de la UDRP de mala fe para intentar arrebatar un dominio a su legítimo propietario.
 keywords: ['secuestro inverso de dominio', 'RDNH', 'abuso de la UDRP', 'disputa de dominio', 'demandante de mala fe']
 also_known_as: ['RDNH']

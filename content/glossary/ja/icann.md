@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: グローバルなドメインネームシステム・IPアドレス割り当て・プロトコル識別子を調整し、世界中のドメインレジストラを認定する非営利組織。
 keywords: ['ICANN', 'インターネットガバナンス', 'ドメインポリシー', 'DNS監督', 'IANA', 'gTLD', 'レジストラ認定', 'マルチステークホルダー', 'UDRP']
 also_known_as: ['Internet Corporation for Assigned Names and Numbers']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ページが新しいURLへ恒久的に移動したことをブラウザと検索エンジンに伝えるHTTPステータスコード。
 keywords: ['301リダイレクト', '恒久的リダイレクト', 'HTTPリダイレクト', 'SEO', 'ドメイン転送', 'リンクエクイティ']
 also_known_as: ['恒久的リダイレクト']

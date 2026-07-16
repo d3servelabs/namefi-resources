@@ -5,6 +5,8 @@ language: 'hi'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.ai Anguilla का कंट्री-कोड डोमेन है जो वैश्विक AI ब्रांडिंग एक्सटेंशन बन गया है। जानें इसे कौन चलाता है, रजिस्ट्रेशन के नियम, SEO पर प्रभाव, और Namefi पर .ai कैसे रजिस्टर करें।'
 keywords: ['.ai डोमेन', '.ai क्या है', '.ai TLD', 'Anguilla ccTLD', '.ai डोमेन रजिस्टर करें', 'AI स्टार्टअप डोमेन', '.ai बनाम .io', '.ai का मालिक कौन है']

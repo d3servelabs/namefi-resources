@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.xyzドメインは2014年に登場したオープンな汎用TLDで、AlphabetがAbc.xyzとして使用したことで広く知られています。適した用途、価格体系、登録方法をわかりやすく解説します。'
 keywords: ['.xyzドメイン', '.xyzとは', '.xyz TLD', '.xyzドメインの意味', 'abc.xyz Alphabet', '.xyz vs .com', '.xyzドメイン登録', '.xyzはSEOに影響するか']

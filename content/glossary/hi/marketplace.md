@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: NFT मार्केटप्लेस क्या हैं और वे डोमेन ट्रेडिंग को कैसे सुगम बनाते हैं?
 keywords: ["मार्केटप्लेस","OpenSea","Blur","NFT ट्रेडिंग","डोमेन मार्केटप्लेस","द्वितीयक बाजार"]
 relatedArticles:

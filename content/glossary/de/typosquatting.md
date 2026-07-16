@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Das Registrieren von Schreibfehlervarianten populärer Domains, um falsch getippten Traffic abzufangen – oft für Anzeigen oder Phishing.
 keywords: ['typosquatting', 'tipp-domain', 'phishing', 'markenmissbrauch', 'cybersquatting']
 level: 1

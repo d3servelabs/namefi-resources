@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 기억하기 쉽고 간결하며 키워드 경쟁력이 높아 일반 등록 가격보다 훨씬 높은 가격에 거래되는 고가치 도메인입니다.
 keywords: ['프리미엄 도메인', '프리미엄 네임', '레지스트리 프리미엄', '애프터마켓', '도메인 가치']
 level: 1

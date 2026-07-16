@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un comprador que desea un dominio para usarlo en un negocio o proyecto, no para revenderlo.
 keywords: ['usuario final', 'comprador de dominio', 'uso final de dominio', 'dominio para negocio', 'despliegue de dominio']
 level: 1

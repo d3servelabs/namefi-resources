@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un registre partagé et en ajout seul maintenu sur de nombreux ordinateurs, fondement de la propriété tokenisée.
 keywords: ['blockchain', 'registre distribué', 'décentralisé', 'immuable', 'consensus']
 level: 1

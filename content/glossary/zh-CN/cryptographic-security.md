@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 加密安全性是什么，它如何保护代币化域名？
 keywords: ["加密安全性","加密","私钥","数字签名","区块链安全"]
 relatedArticles:

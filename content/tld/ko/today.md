@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.today는 Identity Digital이 운영하는 개방형 새 gTLD로, 뉴스·일일 딜·이벤트·업데이트에 최적화되어 있습니다. 사용 대상, 규정, 구매 여부를 확인하세요.'
 keywords: ['.today 도메인', '.today란', '.today TLD', 'today 도메인 확장자', '새 gTLD', 'Identity Digital', '도메인 등록', '뉴스 도메인']

@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Entdecken Sie die .aig Domain: Die perfekte Wahl für KI-Innovationen und Web3. Erfahren Sie alles über Vorteile, Nutzung und Registrierung bei Namefi.'
 keywords:

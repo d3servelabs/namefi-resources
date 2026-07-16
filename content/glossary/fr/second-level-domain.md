@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: 'Le label directement à gauche du TLD — le "example" dans example.com — la partie que l''on enregistre réellement.'
 keywords: ['domaine de deuxième niveau', 'SLD', 'domaine racine', 'domaine apex', 'nom enregistrable']
 level: 1

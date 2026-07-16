@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein Protokoll, das Token oder Nachrichten zwischen Blockchains überträgt, die nativ nicht miteinander kommunizieren können.
 keywords: ['Bridge', 'Cross-Chain', 'Interoperabilität', 'Token-Bridge', 'Multi-Chain']
 also_known_as: ['Bridge']

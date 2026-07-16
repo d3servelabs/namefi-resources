@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: Ethereum Name Serviceは、alice.ethのような人間が読める名前をウォレットアドレスやリソースにマッピングする、オンチェーンのスマートコントラクトによって管理された分散型ネーミングシステムです。
 keywords: ['ENS', 'Ethereum Name Service', '.eth', 'web3ネーム', 'オンチェーンネーミング', 'ウォレットエイリアス', '暗号資産アイデンティティ']
 level: 1

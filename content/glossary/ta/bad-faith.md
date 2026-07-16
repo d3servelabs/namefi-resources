@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: வணிக முத்திரையை சுரண்ட ஒரு டொமைனை பதிவு செய்வது அல்லது பயன்படுத்துவது; UDRP வழக்கில் வெற்றி பெற நிரூபிக்க வேண்டிய இன்றியமையாத கூறு.
 keywords: ['தீய நோக்கம்', 'டொமைன் தகராறு', 'இணைய முகவரி கைப்பற்றல்', 'வணிக முத்திரை துஷ்பிரயோகம்', 'UDRP']
 level: 1

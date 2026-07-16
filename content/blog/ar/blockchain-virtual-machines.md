@@ -5,6 +5,7 @@ language: ar
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

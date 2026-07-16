@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: خدمة أمان رفيعة المستوى يُجمّد فيها السجل الدومين بحيث تحتاج أي تعديلات إلى موافقة يدوية خارج النطاق.
 keywords: ['قفل السجل', 'قفل الدومين', 'قفل الأمان العالي', 'منع اختطاف الدومين', 'التحقق خارج النطاق']
 level: 1

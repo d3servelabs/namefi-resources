@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Estimación del valor de mercado de un dominio a partir de ventas comparables, demanda de palabras clave, longitud y extensión.
 keywords: ['tasación de dominios', 'valoración de dominios', 'valor de dominio', 'precio de dominio', 'ventas comparables']
 also_known_as: ['Valoración de dominios']

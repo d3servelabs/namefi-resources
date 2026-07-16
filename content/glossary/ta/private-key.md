@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு blockchain கணக்கை கட்டுப்படுத்தும் மற்றும் அதன் பரிவர்த்தனைகளில் கையொப்பமிடும் இரகசிய எண்; இதை யாரிடமும் பகிரக்கூடாது.
 keywords: ['தனிப்பட்ட விசை', 'கையொப்ப விசை', 'பணப்பை விசை', 'இரகசிய விசை', 'blockchain கணக்கு']
 level: 1

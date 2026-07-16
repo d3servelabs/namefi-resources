@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un registrador aprobado por ICANN bajo un Acuerdo de Acreditación de Registradores para vender dominios gTLD.
 keywords: ['registrador acreditado', 'RAA', 'acreditación ICANN', 'gTLD', 'acuerdo de registrador']
 level: 1

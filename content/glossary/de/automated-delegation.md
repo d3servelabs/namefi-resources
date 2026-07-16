@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist automatisierte Delegierung und wie verwalten Smart Contracts die Domain-Kontrolle?
 keywords: ["automatisierte Delegierung","Smart Contracts","Domain-Management","programmierbare Kontrolle","Automatisierung"]
 relatedArticles:

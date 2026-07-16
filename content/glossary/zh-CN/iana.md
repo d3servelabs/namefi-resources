@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 负责维护 DNS 根区域并分配 IP 地址块和协议号码的机构。
 keywords: ['IANA', '根区域', 'IP 分配', '协议号码', 'ICANN']
 level: 1

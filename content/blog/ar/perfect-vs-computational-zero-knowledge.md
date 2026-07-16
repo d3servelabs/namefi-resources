@@ -5,6 +5,7 @@ language: ar
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'تأتي إثباتات المعرفة الصفرية في ثلاثة أنواع - مثالية، وإحصائية، وحسابية - والفرق بينها أكثر أهمية مما تعترف به معظم النقاشات الهندسية. يشرح هذا المقال كل نوع بلغة بسيطة، ولماذا يُعد تقريبًا كل نظام معرفة صفرية (ZK) إنتاجي في عام 2026 نظامًا حسابيًا، وما هي فوائد وتكاليف ذلك.'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg

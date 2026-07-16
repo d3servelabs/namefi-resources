@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: WHOIS और इसके उत्तराधिकारी RDAP किसी डोमेन के पंजीकरण विवरण जैसे उसके रजिस्ट्रार और समाप्ति तिथि के लिए सार्वजनिक लुकअप सेवाएं हैं।
 keywords: ['WHOIS', 'RDAP', 'domain registration lookup', 'registrant information', 'domain ownership lookup']
 level: 1

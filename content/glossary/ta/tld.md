@@ -5,6 +5,8 @@ language: ta
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: உச்சநிலை டொமைன் (TLD) என்பது ஒரு டொமைன் பெயரின் மிகவும் வலதுபுற லேபிள் ஆகும் — .com, .org, .de போன்றவை — இவை ICANN மேற்பார்வையில் IANA வேர் மண்டலம் வழியாக வழங்கப்படுகின்றன.
 keywords: ['TLD', 'உச்சநிலை டொமைன்', 'gTLD', 'ccTLD', 'புதிய gTLD', 'DNS', 'IANA', 'ICANN', 'வேர் மண்டலம்', 'டொமைன் பதிவக நிறுவனம்']
 also_known_as: ['உச்சநிலை டொமைன்']

@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ASCII அல்லாத எழுத்துகளைப் பயன்படுத்தும் டொமைன் பெயர்; DNS-இல் xn-- என்று தொடங்கும் ASCII Punycode வடிவில் குறியாக்கப்படும்.
 keywords: ['IDN', 'சர்வதேச டொமைன் பெயர்', 'Punycode', 'xn--', 'யூனிகோட் டொமைன்', 'ஒத்த-தோற்ற எழுத்து தாக்குதல்']
 level: 1

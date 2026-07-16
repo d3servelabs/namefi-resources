@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.shop 도메인은 GMO Registry가 운영하는 개방형 신규 gTLD로, "여기서 구매할 수 있습니다"라는 의미를 즉각적으로 전달합니다. 사용 현황, 등록 규정, 가격 동향, SEO 영향까지 상세히 알아보세요.'
 keywords: ['.shop 도메인', '.shop이란', '.shop TLD', '.shop 도메인 등록', '전자상거래 도메인', 'GMO Registry', '소매업용 신규 gTLD', '.shop 도메인 구매']

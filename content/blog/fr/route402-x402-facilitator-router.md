@@ -5,6 +5,7 @@ language: fr
 tags: ['infrastructure', 'payments', 'x402']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Un routeur multi-locataire qui vous permet d'intégrer x402 une seule fois et de diriger les requêtes selon des règles et des signaux en direct, sans injecter la logique de routage dans votre application."
 keywords: ['Route402', 'x402', 'routage des paiements', 'routeur de facilitateurs', 'paiements multi-locataires', 'RBAC', 'chiffrement des identifiants', 'routage par capacité', 'règlement persistant', 'infrastructure de paiement', 'règles de routage YAML']

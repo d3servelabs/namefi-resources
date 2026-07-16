@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La blockchain de contratos inteligentes líder y la red en la que se emite la mayoría de los dominios tokenizados.
 keywords: ['ethereum', 'ETH', 'contrato inteligente', 'EVM', 'aplicaciones descentralizadas']
 also_known_as: ['ETH']

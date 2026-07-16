@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Eine zweistellige Top-Level-Domain, die einem Land oder Gebiet zugewiesen ist, wie .uk, .de oder .jp.
 keywords: ['ccTLD', 'länderspezifische TLD', 'Länder-Domain', '.uk', '.de', 'ISO 3166']
 level: 1

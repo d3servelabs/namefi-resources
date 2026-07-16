@@ -7,6 +7,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.cloud डोमेन के बारे में सब कुछ जानें। समझें कि यह आधुनिक व्यवसायों और डेवलपर्स के लिए क्यों महत्वपूर्ण है और Namefi पर इसे कैसे रजिस्टर करें।'
 keywords:

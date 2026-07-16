@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Im September 2017 loggten sich Angreifer in den Drittanbieter-Registrar des niederländischen Sicherheitsunternehmens Fox-IT ein, änderten die DNS-Einträge, erlangten auf betrügerische Weise ein TLS-Zertifikat und führten 10 Stunden lang einen Man-in-the-Middle-Angriff auf den Client-Datenverkehr durch — bis Fox-IT ihn entdeckte und eine der transparentesten Post-Mortem-Analysen der Branche veröffentlichte.'
 keywords: ['fox-it dns hijack', 'fox-it man in the middle', 'fox-it vorfall 2017', 'dns hijacking', 'registrar-account-kompromittierung', 'betrügerisches ssl-zertifikat', 'man-in-the-middle-angriff', 'domain-registrar sicherheit', 'zwei-faktor-authentifizierung dns', 'dnssec', 'registry lock', 'domain-sicherheit', 'ncc group fox-it']

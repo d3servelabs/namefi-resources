@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: Découvrez tout sur l'extension .afamilycompany. Apprenez pourquoi ce domaine unique renforce la confiance et l'image de marque des entreprises familiales et comment l'enregistrer avec Namefi.
 keywords: ['.afamilycompany domains', '.afamilycompany TLD', 'top-level domain .afamilycompany', 'what is .afamilycompany', 'why choose .afamilycompany', 'what is the .afamilycompany domain', 'why choose the .afamilycompany domain', 'domaine entreprise familiale', 'investissement nom de domaine', 'blockchain domains', 'domaines tokenisés', 'achat nom de domaine', 'web3 domains', 'identité numérique']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: மதிப்பிடப்படும் டொமைனுக்கு நிகரான பெயர்களின் கடந்தகால விற்பனை விலைகள் — இவை மதிப்பீட்டுக்கான அளவுகோல்களாக பயன்படுகின்றன.
 keywords: ['ஒப்பிடத்தக்க விற்பனைகள்', 'comps', 'டொமைன் விற்பனைத் தரவு', 'டொமைன் அளவுகோல்கள்', 'டொமைன் விலை வரலாறு']
 also_known_as: ['Comps']

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld', 'dominios', 'tecnología', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre el propósito, la historia y el valor del TLD .agakhan. Conoce por qué esta extensión exclusiva es sinónimo de confianza, filantropía y desarrollo global.'
 keywords: ['.agakhan domains', 'dominio .agakhan', 'qué es el dominio .agakhan', 'why choose .agakhan', 'top-level domain', 'TLD .agakhan', 'comprar dominio .agakhan', 'registro de dominios', 'inversión en dominios', 'blockchain domains', 'Namefi', 'dominios tokenizados', 'identidad digital', 'AKDN dominios', 'Aga Khan TLD']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein Domain-Angebot, das Käufer einlädt, ein Gebot einzureichen, das der Verkäufer annehmen, gegenbieten oder ablehnen kann.
 keywords: ['Preisverhandlung', 'Bestgebot', 'Domain-Verhandlung', 'Angebot', 'Gegenangebot']
 level: 1

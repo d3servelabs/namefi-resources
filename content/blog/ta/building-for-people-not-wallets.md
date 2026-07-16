@@ -5,6 +5,7 @@ language: ta
 tags: ['partners', 'namefi space']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 format: opinion
 description: Privy-யை உருவாக்கிய Henri Stern-இன் பயணத்தை உரையாடல் வழியாக ஆராயும் கட்டுரை; பயன்பாட்டுத் திறன், வாடிக்கையாளர் வழிநடத்தும் தயாரிப்பு மேம்பாடு, கிரிப்டோ சிக்கலிலிருந்து மனிதரை மையமாகக் கொண்ட வடிவமைப்புக்கு ஏற்பட்ட மாற்றம் ஆகியவற்றில் கவனம் செலுத்துகிறது.

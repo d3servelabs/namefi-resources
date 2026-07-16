@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Le 25 février 2015, Lizard Squad a détourné Lenovo.com en compromettant le bureau d'enregistrement Webnic, redirigeant le domaine du plus grand fabricant de PC au monde vers un diaporama de webcam et interceptant ses e-mails — quelques jours après le scandale Superfish. Une analyse approfondie de Domain Mayday sur les raisons pour lesquelles le bureau d'enregistrement est votre véritable périmètre de sécurité."
 keywords: ['détournement dns lenovo.com', 'lizard squad', 'webnic registrar', 'web commerce communications', 'dns hijacking', 'superfish', 'sécurité bureau enregistrement domaine', 'compromission registrar', 'epp auth code', 'interception email', 'détournement google vietnam', 'sécurité domaine', 'registrar lock']

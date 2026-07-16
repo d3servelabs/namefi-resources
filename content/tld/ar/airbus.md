@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld', 'brand-tld', 'aviation', 'domain-investment', 'namefi']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'دليل شامل حول نطاق .airbus: تعرف على استخداماته، أهميته كعلامة تجارية رقمية في قطاع الطيران، وكيفية إدارة الأصول الرقمية والنطاقات عبر منصة Namefi.'
 keywords: ['.airbus domains', 'نطاقات .airbus', 'ما هو نطاق .airbus', 'لماذا تختار .airbus', 'Top-Level Domain', 'نطاق المستوى الأعلى', 'استثمار النطاقات', 'blockchain domains', 'tokenized domains', 'نطاقات الويب 3', 'شراء نطاق .airbus', 'what is the .airbus domain', 'why choose the .airbus domain', 'brand TLD', 'Airbus registry']

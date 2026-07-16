@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'What is the .tv domain? Tuvalu''s country-code TLD, marketed worldwide as the home of television, video, and live streaming. Learn who runs it, who can register, pricing, and SEO.'
 keywords: ['.tv domains', '.tv TLD', 'tv domain', 'what is .tv', 'what is the .tv domain', '.tv for streaming', 'tv domain for video', 'Tuvalu domain', 'register .tv domain', 'twitch.tv', 'video streaming domain']

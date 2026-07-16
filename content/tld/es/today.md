@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld', 'dominios', 'web3', 'inversión']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubre el potencial del TLD .today: una extensión moderna para noticias, eventos y ofertas. Aprende por qué es la elección perfecta para la inmediatez."
 keywords: [".today domains", ".today TLD", ".today top-level domain", "what is .today", "why choose .today", "what is the .today domain", "why choose the .today domain", "dominios .today", "comprar dominio .today", "registro de dominios", "domain investing", "blockchain domains", "tokenized domains", "Namefi", "dominios web3"]

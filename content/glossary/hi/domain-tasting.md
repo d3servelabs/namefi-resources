@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन रजिस्टर करके फिर निःशुल्क ऐड-ग्रेस पीरियड के भीतर रद्द करने की एक अब प्रायः समाप्त हो चुकी युक्ति।
 keywords: ['डोमेन टेस्टिंग', 'AGP', 'add grace period', 'domain kiting', 'ICANN policy']
 level: 1

@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Discover the .ally TLD: The perfect domain for partnerships, communities, and inclusive brands. Learn why .ally is the future of collaborative digital identity."
 keywords: [".ally domains", ".ally TLD", "top-level domain", "what is .ally", "why choose .ally", "what is the .ally domain", "why choose the .ally domain", "domain investing", "blockchain domains", "tokenized domain", "Web3 identity", "community domains", "brand partnership", "digital ally", "buy .ally domain"]

@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في سبتمبر 2015، موظف سابق في Google اشترى google.com من خلال Google Domains بـ 12 دولار، وامتلك السيطرة الإدارية على أثمن نطاق في العالم لمدة دقيقة تقريباً. قصة سانماي فيد، ومكافأة الـ 6,006.13 دولار، وما تكشفه دقيقة واحدة من الملكية عن مَن يتحكم فعلاً في النطاق.'
 keywords: ['نطاق google.com', 'سانماي فيد', 'خلل Google Domains', 'أمان النطاقات', 'مَن يملك google.com', 'اختطاف النطاق', 'وصول webmaster tools', 'مكافأة أخطاء Google', 'مكافأة 6006.13', 'ثغرة تسجيل النطاق', 'التحكم في النطاق', 'أمان DNS', 'التحقق من ملكية النطاق']

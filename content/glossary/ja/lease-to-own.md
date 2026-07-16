@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 分割払いを通じてドメインを取得する仕組みで、最終支払いの完了により所有権が移転する。レント・トゥ・オウンと同類の方式。
 keywords: ['リース・トゥ・オウン', 'ドメイン取得', '分割払い', 'ドメインファイナンス', 'レント・トゥ・オウン']
 level: 1

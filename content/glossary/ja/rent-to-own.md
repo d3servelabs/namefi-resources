@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 買い手が資産を使用しながら分割払いを行い、合意した総額を完済した時点で完全な所有権を取得する購入形態。
 keywords: ['レントトゥオウン', '段階的所有', '分割払い', 'ドメイン取得', 'スマートコントラクト']
 level: 1

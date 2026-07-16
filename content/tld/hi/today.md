@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: जानें कि .today डोमेन न्यूज़, इवेंट्स और आधुनिक बिज़नेस के लिए बेहतरीन क्यों है। इसके फायदे, उपयोग और Namefi पर इसे रजिस्टर करने का तरीका समझें।
 keywords: ['.today domains', '.today TLD', 'top-level domain', 'what is .today', 'why choose .today', 'what is the .today domain', 'why choose the .today domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'buy .today domain', 'new gTLD', 'hindi domain guide', 'news website domain', 'daily deals domain']

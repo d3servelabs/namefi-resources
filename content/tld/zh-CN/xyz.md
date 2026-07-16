@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '.xyz 域名是一个开放的通用顶级域名，于 2014 年推出，因 Alphabet 在 abc.xyz 使用而广为人知。了解它适合哪些用户、定价如何以及如何注册。'
 keywords: ['.xyz 域名', '什么是 .xyz', '.xyz TLD', '.xyz 域名含义', 'abc.xyz Alphabet', '.xyz 与 .com 对比', '注册 .xyz 域名', '.xyz 对 SEO 是否有利']

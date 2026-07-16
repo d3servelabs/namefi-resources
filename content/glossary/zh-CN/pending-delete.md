@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 未续期域名被释放重新公开注册前的最后状态。
 keywords: ['待删除', '域名释放', '抢注', '已到期域名', '释放']
 level: 1

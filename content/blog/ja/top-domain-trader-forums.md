@@ -5,6 +5,7 @@ language: ja
 tags: ['domains', 'community', 'domain-investing', 'forums']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

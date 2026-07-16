@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un serveur qui répond aux requêtes DNS pour un domaine ; ses enregistrements NS désignent les serveurs faisant autorité.
 keywords: ['serveur de noms', 'enregistrement NS', 'serveur faisant autorité', 'délégation DNS', 'hébergement DNS']
 level: 1

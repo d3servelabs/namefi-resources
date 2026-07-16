@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: ICANN का केंद्रीय ट्रेडमार्क डेटाबेस जो नए gTLD में Sunrise पूर्व-पंजीकरण और ब्रांड दावों को संचालित करता है।
 keywords: ['TMCH', 'Trademark Clearinghouse', 'Sunrise period', 'ब्रांड सुरक्षा', 'new gTLD']
 also_known_as: ['TMCH']

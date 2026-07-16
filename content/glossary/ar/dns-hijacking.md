@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: إعادة توجيه ترافيك النطاق بالتلاعب في تحليل DNS بدل التسجيل نفسه.
 keywords: ['اختطاف DNS', 'تسميم الكاش', 'تزوير DNS', 'DNSSEC', 'إعادة توجيه الترافيك']
 level: 1

@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '15 जुलाई 2020 को, हमलावरों ने फोन के जरिए Twitter में घुसपैठ की, Obama, Biden, Musk, Gates, Apple और Uber के वेरिफाइड अकाउंट्स को हाईजैक किया, और एक Bitcoin दोगुना करने का घोटाला चलाया — जिससे लगभग $118,000 की कमाई हुई। एक ऑनलाइन पहचान के नियंत्रण की चोरी पर गहरी पड़ताल, और यह किसी नाम के स्वामित्व के बारे में क्या सिखाता है।'
 keywords: ['2020 twitter hack', 'twitter bitcoin scam', 'graham ivan clark', 'vishing', 'phone spear phishing', 'social engineering', 'account takeover', 'online identity security', 'verified account hijacking', 'twitter admin tool', 'agent tool', 'insider risk', 'domain security', 'ny dfs twitter report']

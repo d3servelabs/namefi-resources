@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre qué es el dominio .online, sus ventajas para el branding y SEO, y por qué es la alternativa moderna ideal al .com. Registra el tuyo en Namefi hoy.'
 keywords: ['.online domains', 'TLD', 'top-level domain', 'what is .online', 'why choose .online', 'what is the .online domain', 'why choose the .online domain', 'dominios .online', 'comprar dominio .online', 'inversión en dominios', 'blockchain domains', 'dominios tokenizados', 'gTLD', 'registro de dominios web3', 'estrategia de dominios']

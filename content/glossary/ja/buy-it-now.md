@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメイン出品に設定された固定の即時購入価格。その金額を支払えば、交渉なしにすぐ取引が成立する。
 keywords: ['今すぐ購入', 'BIN', '即時購入', '固定価格', 'ドメイン出品']
 also_known_as: ['BIN']

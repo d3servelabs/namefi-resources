@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是托管所有权，它与自托管有何不同？
 keywords: ["托管所有权","托管","第三方控制","注册商控制","集中存储"]
 relatedArticles:

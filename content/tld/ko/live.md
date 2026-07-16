@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.live 도메인은 Identity Digital이 운영하는 개방형 신규 gTLD로, 스트리밍·이벤트·실시간 콘텐츠를 위해 설계되었습니다. 사용 대상, 등록 규칙, 적합 여부를 살펴보세요.'
 keywords: ['.live 도메인', '.live TLD', '.live란 무엇인가', '.live를 선택하는 이유', '스트리밍 도메인', '라이브 스트리밍 도메인 이름', 'Identity Digital', '신규 gTLD']

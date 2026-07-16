@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक प्रोटोकॉल जो उन ब्लॉकचेन के बीच टोकन या संदेश स्थानांतरित करता है जो मूल रूप से एक-दूसरे से बात नहीं कर सकते।
 keywords: ['bridge', 'cross-chain', 'interoperability', 'token bridge', 'multi-chain']
 also_known_as: ['ब्रिज']

@@ -5,6 +5,7 @@ language: ar
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "نظرة عملية على كيفية استمرار عمل نظام أسماء النطاقات (DNS) العادي - خوادم الأسماء، A/AAAA، MX، TXT، DNSSEC، CAA - بعد ترميز نطاق ICANN الخاص بك. ما الذي يتغير، وما الذي لا يتغير، وإلى أين توجه مزود DNS الحالي الخاص بك."
 keywords: ['نظام DNS للنطاق المرمز', 'DNSSEC لنطاق NFT', 'خوادم أسماء النطاق المرمز', 'البريد الإلكتروني للنطاق المرمز', 'سجلات MX لنطاق NFT', 'سجلات CAA للنطاق المرمز', 'إدارة DNS للنطاق المرمز', 'نظام DNS للنطاق على السلسلة', 'MX لنطاق NFT', 'DNSSEC لنطاق NFT', 'Cloudflare للنطاق المرمز', 'Route53 للنطاق المرمز', 'كيف يعمل DNS مع الترميز', 'تحليل النطاق المرمز']

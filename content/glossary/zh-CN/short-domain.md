@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 三到四个字符或纯数字的极短域名，因简洁性而备受推崇，在部分市场尤为抢手。
 keywords: ['短域名', '数字域名', 'LLLL域名', 'NNNN域名', '三字母域名', '四字母域名']
 level: 1

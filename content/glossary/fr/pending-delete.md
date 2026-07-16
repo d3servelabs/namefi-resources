@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le statut final avant qu''un domaine non renouvelé soit libéré à nouveau pour l''enregistrement public.
 keywords: ['suppression en attente', 'drop de domaine', 'drop-catching', 'domaine expiré', 'libération']
 level: 1

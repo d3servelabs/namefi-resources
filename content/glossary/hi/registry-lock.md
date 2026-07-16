@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक उच्च-सुरक्षा सेवा जहाँ रजिस्ट्री डोमेन को फ्रीज़ कर देती है ताकि बदलावों के लिए मैन्युअल आउट-ऑफ-बैंड अनुमोदन आवश्यक हो।
 keywords: ['registry lock', 'डोमेन लॉक', 'हाई-सिक्योरिटी लॉक', 'डोमेन हाइजैकिंग रोकथाम', 'आउट-ऑफ-बैंड सत्यापन']
 level: 1

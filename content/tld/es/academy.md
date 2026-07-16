@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre todo sobre el dominio .academy: su significado, beneficios SEO y por qué es ideal para el sector educativo y Web3. ¡Registra el tuyo en Namefi hoy!'
 keywords:

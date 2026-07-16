@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre el potencial del dominio .aig para proyectos de Inteligencia Artificial y Web3. Aprende por qué es la elección inteligente para tu identidad digital en Namefi.'
 keywords: ['.aig domains', 'TLD', 'top-level domain', 'what is .aig', 'why choose .aig', 'what is the .aig domain', 'why choose the .aig domain', 'dominio .aig', 'comprar dominio .aig', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'dominios inteligencia artificial', 'Web3 domains', 'registro de dominios']

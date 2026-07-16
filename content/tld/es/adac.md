@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld', 'dominios', 'adac', 'marca', 'automoción']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubre todo sobre el TLD .adac: su origen, ventajas de seguridad y relevancia en el mundo automotriz. Aprende cómo los dominios de marca potencian la confianza online."
 keywords: ['dominios .adac', 'comprar dominio .adac', 'qué es el dominio .adac', 'por qué elegir .adac', 'top-level domain .adac', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'registro de dominios web3', 'dominios de automoción', 'seguridad en dominios', 'identidad digital adac', 'namefi dominios', 'dominios de marca', 'estrategia de dominios']

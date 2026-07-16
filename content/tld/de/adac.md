@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Erfahren Sie alles über die .adac Top-Level-Domain: Bedeutung, Vorteile für die Markenidentität und ihre Rolle in der digitalen Welt der Mobilität.'
 keywords: ['.adac domains', '.adac TLD', 'top-level domain', 'was ist .adac', 'warum .adac wählen', 'was ist die .adac domain', 'warum die .adac domain wählen', 'Domain Investitionen', 'Blockchain Domains', 'tokenisierte Domains', 'ADAC', 'Marken TLD', 'Auto Domains', 'Web3 Domains', 'Domain Registrierung']

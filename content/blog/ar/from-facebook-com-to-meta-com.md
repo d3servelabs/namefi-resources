@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'كيف أصبحت شركة Facebook, Inc. هي Meta في أكتوبر 2021، ولماذا كان Meta.com أصلاً أصلاً مرتبطاً بزوكربيرج يُعيد التوجيه من محرك بحث علمي، وكيف اشترت صفقة منفصلة بـ60 مليون دولار اسم "Meta" من بنك في ساو فولز — بينما احتفظ تطبيق Facebook بنطاق Facebook.com.'
 keywords: ['facebook.com', 'meta.com', 'إعادة تسمية ميتا', 'تغيير اسم فيسبوك إلى ميتا', 'meta.org', 'مبادرة تشان زوكربيرج ميتا', 'مجموعة ميتا المالية', 'beige key llc', 'تحول الميتافيرس', 'استحواذ النطاق', 'إعادة تسمية الشركة', 'نطاق مميز', 'استراتيجية النطاق', 'إعادة تسمية الشركة الأم']

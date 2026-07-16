@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre el potencial del TLD .fun para marcas de entretenimiento, juegos y Web3. Aprende por qué registrar un dominio .fun en Namefi es una estrategia inteligente.'
 keywords: ['dominios .fun', 'dominio de nivel superior', 'TLD', 'qué es .fun', 'por qué elegir .fun', 'registro de dominios', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'Namefi', 'comprar dominio .fun', 'dominios web3', 'nombres para sitios de juegos', 'estrategia de dominios', 'nuevo gTLD']

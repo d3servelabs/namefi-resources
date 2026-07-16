@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '広告代理店、マーケター、アドテック企業に向けた.adsドメイン拡張子の可能性を解説。デジタル広告における.ads TLDが最有力の選択肢である理由を学ぶ。'
 keywords: ['.adsドメイン', '.ads TLD', 'トップレベルドメイン', '.adsとは', '.adsを選ぶ理由', '.adsドメインとは', 'デジタル広告ドメイン', 'マーケティングドメイン', 'デジタルマーケティング TLD', '.adsドメイン取得', 'ドメイン投資', 'ブロックチェーンドメイン', 'トークン化ドメイン', 'アドテックドメイン']

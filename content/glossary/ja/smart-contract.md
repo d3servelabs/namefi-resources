@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 条件が満たされると記述どおりに自動実行されるブロックチェーン上のプログラム。仲介者なしに合意を執行する。
 keywords: ['スマートコントラクト', 'ブロックチェーン', '自動実行', 'プログラマブルロジック', '分散型']
 level: 1

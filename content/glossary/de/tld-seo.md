@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Wie die Endung einer Domain Suchrankings beeinflusst – oder eben nicht – denn Inhalte und Links zählen mehr.
 keywords: ['tld seo', 'domain-endung ranking', 'new gtld seo', 'ccTLD', 'suchrankingfaktoren', 'domain seo']
 level: 1

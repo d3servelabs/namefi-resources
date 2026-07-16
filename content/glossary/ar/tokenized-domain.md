@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: دومين DNS حقيقي تملّكه مُمثَّل كتوكن بلوكشين بتحتفظ به في محفظتك.
 keywords: ['دومين مُرمَّز', 'NFT دومين', 'دومين على السلسلة', 'تملّك الدومين', 'دومين web3']
 level: 1

@@ -5,6 +5,7 @@ language: ta
 tags: ['comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 cluster: domain-tokenization
 format: comparison

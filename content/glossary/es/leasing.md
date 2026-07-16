@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es el arrendamiento de dominios y cómo la tokenización permite nuevos modelos de arrendamiento?
 keywords: ["arrendamiento","alquiler de dominios","ingresos pasivos","arrendamiento con contratos inteligentes","pagos automatizados"]
 relatedArticles:

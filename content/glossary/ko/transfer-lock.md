@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 명시적으로 잠금을 해제하기 전까지 도메인이 다른 레지스트라로 이전되는 것을 차단하는 상태입니다.
 keywords: ['전송 잠금', '레지스트라 잠금', '도메인 보안', 'EPP 상태', '도메인 이전']
 also_known_as: ['레지스트라 잠금']

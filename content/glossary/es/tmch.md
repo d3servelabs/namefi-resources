@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Base de datos central de marcas registradas de ICANN que impulsa el pre-registro en Sunrise y las reclamaciones de marca en nuevos gTLD.
 keywords: ['TMCH', 'Trademark Clearinghouse', 'período Sunrise', 'protección de marca', 'nuevo gTLD']
 also_known_as: ['TMCH']

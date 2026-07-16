@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: 'Découvrez le TLD .info : une extension universelle pour partager l''information. Explorez ses avantages, son histoire et comment l''enregistrer avec Namefi.'
 keywords: ['.info domains', '.info TLD', 'top-level domain', 'what is .info', 'why choose .info', 'what is the .info domain', 'why choose the .info domain', 'investir dans les domaines', 'blockchain domains', 'tokenized domain', 'acheter domaine .info', 'signification .info', 'domaine web3', 'enregistrement nom de domaine', 'identité numérique']

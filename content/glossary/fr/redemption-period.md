@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Une fenêtre post-expiration permettant de récupérer un domaine déchu, généralement moyennant des frais de rachat élevés.
 keywords: ['période de rachat', 'RGP', 'période de grâce de rachat', 'récupération de domaine expiré', 'frais de rachat']
 level: 1

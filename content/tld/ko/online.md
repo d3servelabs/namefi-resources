@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.online 도메인은 Radix가 운영하는 개방형·무제한 신규 gTLD로, 누구든 개인이나 기업이 등록할 수 있습니다. 적합한 대상, SEO 성과, 고려 사항을 살펴봅니다.'
 keywords: ['.online 도메인', '.online이란', '.online TLD', '.online 도메인 등록', 'Radix 레지스트리', '신규 gTLD', '온라인 도메인 확장자', '.online SEO에 좋은가']

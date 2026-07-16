@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 商標を悪用するためにドメインを登録・使用すること。UDRP手続きにおいて申立人が証明すべき必須要件のひとつ。
 keywords: ['不正目的', 'UDRP', 'ドメイン紛争', 'サイバースクワッティング', '商標侵害']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .aaa، وكيفية استخدامه لتعزيز الثقة بالعلامة التجارية، وأهمية اختيار النطاق الصحيح لاستثمارك الرقمي."
 keywords: [".aaa domains", "TLD", "top-level domain", "ما هو نطاق .aaa", "why choose .aaa", "what is the .aaa domain", "why choose the .aaa domain", "استثمار النطاقات", "نطاقات البلوكتشين", "tokenized domain", "نطاقات العلامات التجارية", "شراء دومين", "Namefi", "تسجيل النطاقات", "أمان النطاقات"]

@@ -5,6 +5,8 @@ language: 'ta'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.app டொமைன் என்பது மென்பொருள் மற்றும் பயன்பாடுகளுக்காக Google Registry வழங்கும் gTLD ஆகும்; ஒவ்வொரு தளத்திலும் HTTPS கட்டாயம். யாருக்கு ஏற்றது, SEO தரவரிசையில் எப்படி நிற்கிறது, பதிவு செய்வது எப்படி என்று அறிக.'
 keywords: ['.app டொமைன்', '.app என்றால் என்ன', '.app TLD', '.app டொமைன்கள்', 'பயன்பாட்டு டொமைன் நீட்டிப்பு', 'Google Registry .app', '.app HTTPS கட்டாயம்', '.app டொமைன் பதிவு', 'டெவலப்பர் டொமைன்கள்']

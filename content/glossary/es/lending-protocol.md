@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué son los protocolos de préstamo y cómo se pueden usar los dominios en el préstamo DeFi?
 keywords: ["protocolo de préstamo","DeFi","colateral","préstamo","finanzas de dominio","rendimiento"]
 relatedArticles:

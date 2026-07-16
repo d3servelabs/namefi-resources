@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 selfCanonical: true
 description: '.cn 是中国的国家顶级域名，由 CNNIC 运营。本文讲清实名认证、ICP 备案、注册资格与适用人群，帮助你判断是否值得注册 .cn 域名。'

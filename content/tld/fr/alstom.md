@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld', 'brand tld', 'alstom', 'domain names', 'branding']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .alstom : un TLD de marque synonyme d'innovation et de confiance. Explorez ses avantages et son utilisation dans l'univers numérique."
 keywords: [".alstom domains", "TLD", "top-level domain", "what is .alstom", "why choose .alstom", "what is the .alstom domain", "why choose the .alstom domain", "domaine .alstom", "acheter domaine .alstom", "domain investing", "blockchain domains", "tokenized domain", "marque alstom", "brand TLD", "nom de domaine entreprise"]

@@ -4,6 +4,7 @@ date: '2026-05-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The Ethereum Name Service maps human-readable names like alice.eth to wallet addresses and records, managed entirely by on-chain smart contracts.
 keywords: ['ENS', 'Ethereum Name Service', '.eth', 'web3 name', 'on-chain naming', 'wallet alias', 'crypto identity']
 level: 1

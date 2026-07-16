@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインの現在の状態（ロック中、保留中、転送待ちなど）を示す標準化されたフラグ。
 keywords: ['EPPステータスコード', 'clientHold', 'serverTransferProhibited', 'ドメインステータス', 'pending delete']
 level: 1

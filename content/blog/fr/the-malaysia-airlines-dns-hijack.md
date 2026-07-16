@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: 'En janvier 2015, Lizard Squad a détourné le DNS de malaysiaairlines.com et remplacé le site de la compagnie aérienne par un lézard en tuxedo et le message moqueur « 404 — Avion Introuvable ». Aucun serveur n''a été piraté — les attaquants ont simplement modifié la destination du nom de domaine. Une analyse approfondie Domain Mayday sur la façon dont le DNS est devenu la porte d''entrée la plus exposée de la compagnie.'
 keywords: ['piratage dns malaysia airlines', 'lizard squad', 'cyber caliphate', '404 avion introuvable', 'détournement dns', 'détournement de domaine', 'compromission du bureau d''enregistrement', 'webnic', 'malaysiaairlines.com', 'sécurité des domaines', 'redirection dns', 'verrouillage de registre', 'mh370']

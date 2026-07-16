@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Jamba Juice 花了 29 年向人们解释"Juice"这个词，为什么在 2019 年将品牌名改为简洁的"Jamba"，以及几乎无人注意到的一个关键优势：公司早在 1990 年代就已拥有精确匹配域名 Jamba.com。'
 keywords: ['jambajuice.com', 'jamba.com', 'jamba juice 域名', 'jamba 品牌重塑', '域名升级', 'jamba juice 改名', 'kirk perron', 'focus brands jamba', '精确匹配域名', '创业命名', '品牌命名', '高价值域名', '域名策略', '品类定义域名']

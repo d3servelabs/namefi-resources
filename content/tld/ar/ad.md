@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج معرفته عن نطاق .ad، من استخدامه للشركات في أندورا إلى تميزه لوكالات الإعلان. تعرف على كيفية تسجيله عبر Namefi."
 keywords: [".ad domains", "نطاق .ad", "TLD", "top-level domain", "what is .ad", "why choose .ad", "what is the .ad domain", "why choose the .ad domain", "buy .ad domain", "Andorra domain", "advertising domains", "domain investing", "blockchain domains", "tokenized domain", "شراء دومين ad", "نطاقات الإعلانات"]

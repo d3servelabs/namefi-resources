@@ -4,6 +4,7 @@ date: '2025-06-30'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: An asset whose existence and rules are defined by an open protocol's smart contracts, so it works the same for everyone without a controlling company.
 keywords: ['protocol asset', 'blockchain protocol', 'infrastructure asset', 'network asset', 'utility token']
 level: 1

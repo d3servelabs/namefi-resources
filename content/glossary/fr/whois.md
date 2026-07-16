@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: WHOIS et son successeur RDAP sont les services de recherche publics pour les détails d'enregistrement d'un domaine, tels que son registraire et sa date d'expiration.
 keywords: ['WHOIS', 'RDAP', 'recherche enregistrement domaine', 'informations titulaire', 'recherche propriété domaine']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .ac. تعرف على استخداماته للأكاديميات والشركات، ومميزاته الفريدة، وكيفية حجزه عبر Namefi."
 keywords: [".ac domains", ".ac TLD", "top-level domain .ac", "what is .ac", "why choose .ac", "what is the .ac domain", "why choose the .ac domain", "نطاقات .ac", "شراء نطاق .ac", "Ascension Island domain", "academic domains", "domain investing", "blockchain domains", "tokenized domains", "web3 domains"]

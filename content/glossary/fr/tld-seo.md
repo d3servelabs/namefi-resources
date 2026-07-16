@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Dans quelle mesure l''extension d''un domaine influence ou non son classement dans les recherches — le contenu et les liens comptent davantage.
 keywords: ['seo tld', 'classement par extension de domaine', 'seo nouveau gtld', 'ccTLD', 'facteurs de classement', 'seo de domaine']
 level: 1

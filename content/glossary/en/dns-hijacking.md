@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Redirecting a domain's traffic by tampering with DNS resolution rather than its registration.
 keywords: ['DNS hijacking', 'cache poisoning', 'DNS spoofing', 'DNSSEC', 'traffic redirection']
 level: 1

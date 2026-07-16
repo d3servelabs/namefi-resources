@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: ब्लॉकचेन और डोमेन प्रबंधन में अनुमति-रहित का क्या अर्थ है?
 keywords: ["अनुमति-रहित","विकेन्द्रीकृत","सेंसरशिप-प्रतिरोधी","खुली पहुँच","ब्लॉकचेन"]
 relatedArticles:

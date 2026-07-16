@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '探索 .africa 域名如何帮助您的企业连接整个非洲大陆。了解该顶级域名的优势、SEO 价值以及如何在 Namefi 轻松注册这一独特的数字资产。'
 keywords:

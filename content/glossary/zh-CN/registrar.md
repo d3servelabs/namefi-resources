@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 经 ICANN 认证、获授权代表公众注册域名的公司，充当注册人与注册局之间的接口。
 keywords: ['注册商', '域名注册商', 'ICANN 认证', '域名注册', 'RAA', 'EPP', '授权码', '转移锁', '域名转移']
 level: 2

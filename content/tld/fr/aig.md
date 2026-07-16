@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le potentiel du TLD .aig pour votre projet. Apprenez pourquoi cette extension est prisée par les secteurs de l'IA et de la Tech. Enregistrez le vôtre sur Namefi."
 keywords: [".aig domains", ".aig TLD", "top-level domain", "what is .aig", "why choose .aig", "what is the .aig domain", "why choose the .aig domain", "domaine investissement", "blockchain domains", "tokenized domain", "nom de domaine IA", "achat domaine .aig", "Web3 domains", "future of domains", "tech domains"]

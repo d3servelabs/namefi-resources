@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: بادئة بتتضاف على النطاق عشان تنشئ عنوان منفصل، زي blog.example.com أو app.example.com.
 keywords: ['نطاق فرعي', 'مضيف', 'blog.example.com', 'DNS', 'نطاق المستوى الثاني']
 level: 1

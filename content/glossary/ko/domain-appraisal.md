@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 유사 거래 사례, 키워드 수요, 길이, 확장자 등을 바탕으로 도메인의 시장 가치를 추정하는 과정입니다.
 keywords: ['도메인 감정평가', '도메인 가치평가', '도메인 가치', '도메인 가격 산정', '유사 거래 사례']
 also_known_as: ['도메인 가치평가']

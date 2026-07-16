@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 구매자와 판매자가 자산을 거래하는 온라인 플랫폼으로, NFT 및 토큰화 도메인 거래 플랫폼으로는 OpenSea와 Blur 등이 있습니다.
 keywords: ['마켓플레이스', 'OpenSea', 'Blur', 'NFT 거래', '도메인 마켓플레이스', '2차 시장']
 level: 1

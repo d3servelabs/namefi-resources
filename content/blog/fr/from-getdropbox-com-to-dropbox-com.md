@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Comment Dropbox a lancé son service sur GetDropbox.com parce que Dropbox.com était pris, a mené une bataille de marque et de cybersquattage, et a finalement acheté le domaine exact Dropbox.com pour la somme rapportée de 300 000 dollars en espèces."
 keywords: ['getdropbox.com', 'dropbox.com', 'nom de domaine dropbox', 'drew houston', 'y combinator dropbox', 'mise à niveau de domaine', 'nommage de startup', 'nommage de marque', 'domaine premium', 'stratégie de domaine', 'domaine exact match', 'acquisition de domaine', 'evenflow dropbox']

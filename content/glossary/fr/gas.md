@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Les frais payés pour traiter une transaction sur une blockchain, libellés en actif natif du réseau et augmentant avec la congestion ; les réseaux Layer 2 facturent bien moins.
 keywords: ['gas', 'frais de gas', 'frais de transaction', 'gwei', 'gas Ethereum', 'gas Base', 'frais L2', 'coût de mint']
 level: 1

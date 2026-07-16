@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 検索エンジン最適化とは、サイトのコンテンツや構造を改善することで検索結果での順位を上げ、より多くの訪問者を集める取り組みです。
 keywords: ['SEO', '検索エンジン最適化', 'ドメイン価値', '検索順位', 'デジタルマーケティング']
 level: 1

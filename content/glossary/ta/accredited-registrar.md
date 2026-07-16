@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: gTLD டொமைன்களை விற்பனை செய்ய Registrar Accreditation Agreement மூலம் ICANN அங்கீகரித்த பதிவாளர் நிறுவனம்.
 keywords: ['அங்கீகாரம் பெற்ற பதிவாளர்', 'RAA', 'ICANN அங்கீகாரம்', 'gTLD', 'பதிவாளர் ஒப்பந்தம்']
 level: 1

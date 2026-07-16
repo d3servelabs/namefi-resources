@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 검색 엔진 최적화(SEO)는 사이트의 콘텐츠와 구조를 개선하여 검색 결과에서 더 높은 순위를 차지하고 더 많은 방문자를 유입시키는 실천 방법입니다.
 keywords: ['SEO', '검색 엔진 최적화', '도메인 가치', '검색 순위', '디지털 마케팅']
 level: 1

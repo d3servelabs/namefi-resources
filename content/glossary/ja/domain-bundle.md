@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 複数の関連ドメイン名をひとまとめにして売買・管理するパッケージ。同一ブランドの複数TLDやスペル違いのバリエーションをまとめることが多い。
 keywords: ['ドメインバンドル', 'ポートフォリオ', '一括取引', 'ドメインコレクション', '資産管理']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un modèle publicitaire où le propriétaire perçoit un revenu à chaque clic d''un visiteur sur une annonce, utilisé pour monétiser les domaines en parking.
 keywords: ['PPC', 'pay-per-click', 'monétisation de domaine', 'revenus publicitaires', 'revenus de parking']
 also_known_as: ['Pay-Per-Click']

@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: வாங்குநர்கள் போட்டி ஏலம் கொண்டு விலை நிர்ணயிக்கும் விற்பனை முறை; English (ஏறுமுக), Dutch (இறங்குமுக), அல்லது dynamic timed ஏலமாக நடக்கும்.
 keywords: ['ஏலம்', 'Dutch ஏலம்', 'English ஏலம்', 'dynamic ஏலம்', 'விலை கண்டறிதல்', 'டொமைன் விற்பனை']
 level: 1

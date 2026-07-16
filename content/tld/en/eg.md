@@ -4,6 +4,7 @@ date: '2026-06-18'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'What is the .eg domain? Egypt''s official country-code TLD, run by the Egyptian Universities Network since 1990. Learn eligibility rules, structure, SEO impact, and who should register.'
 keywords: ['.eg domain', '.eg TLD', 'Egypt domain', 'what is .eg', 'com.eg registration', 'Egypt ccTLD', 'register .eg domain', 'Egyptian Universities Network', '.eg eligibility', 'Egypt domain requirements']

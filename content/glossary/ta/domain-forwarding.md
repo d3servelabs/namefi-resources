@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனுக்கு வரும் பார்வையாளர்களை தானாகவே வேறொரு முகவரிக்கு அனுப்பும் அமைப்பு, பெரும்பாலும் 301 திருப்புதல் வழியாக.
 keywords: ['டொமைன் திருப்பி அனுப்புதல்', '301 திருப்புதல்', 'URL திருப்புதல்', 'DNS', 'டொமைன் நிர்வாகம்']
 level: 1

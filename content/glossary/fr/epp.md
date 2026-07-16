@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le protocole standard que les bureaux d'enregistrement utilisent pour enregistrer et gérer des domaines auprès d'un registre.
 keywords: ['EPP', 'Extensible Provisioning Protocol', 'gestion de domaine', 'protocole de registre', 'RFC 5730']
 also_known_as: ['Extensible Provisioning Protocol']

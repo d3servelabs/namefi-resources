@@ -5,6 +5,7 @@ language: en
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: To represent ownership of an asset like a domain as a transferable token on a blockchain so it can be held in a wallet and traded on-chain.
 keywords: ['tokenize', 'tokenization', 'NFT', 'digital asset', 'on-chain asset']
 level: 1

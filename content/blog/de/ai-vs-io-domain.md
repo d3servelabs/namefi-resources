@@ -5,6 +5,7 @@ language: 'de'
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: ".ai vs. .io für Ihr Startup? Herkunft, Google-SEO-Behandlung, Preise, Markensignale und die .io-Chagos-Frage im Vergleich – plus ein klarer Entscheidungsleitfaden und FAQ."
 keywords: ["ai vs io tld", "io vs ai domain", "ai oder io domain", "io vs ai domain endung", "ai vs io domain endung", ".ai vs .io", "ai oder io tld", "ai vs io domain", "io oder ai domain", ".ai vs .io domain", "ai domain vs io domain", "beste domain für ki startup", "beste domain für tech startup", "ai tld", "io tld", "domain endung für startup", "ccTLD für tech", "gccTLD seo", "io domain chagos", "io domain zukunft", "ai domain preise", "io domain preise", "domain branding", "domain endung wählen", "tokenisierte domain"]

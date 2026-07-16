@@ -5,6 +5,7 @@ language: es
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-real-estate-business-og.jpg
 description: 'Los 10 mejores TLD que todo agente inmobiliario debe asegurar para proteger su marca, incluyendo las reglas de elegibilidad para .realtor, consejos de registro defensivo y dónde registrarse.'

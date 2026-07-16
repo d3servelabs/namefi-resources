@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.accenture डोमेन एक्सटेंशन के बारे में सब कुछ जानें। यह क्या है, यह ब्रांड अथॉरिटी कैसे बनाता है, और Namefi पर अपने लिए बेहतरीन डोमेन विकल्प कैसे चुनें।'
 keywords:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 负责回应域名 DNS 查询的服务器，其 NS 记录声明了权威服务器。
 keywords: ['域名服务器', 'NS 记录', '权威服务器', 'DNS 委托', 'DNS 托管']
 level: 1

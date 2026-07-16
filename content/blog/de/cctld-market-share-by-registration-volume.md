@@ -5,6 +5,7 @@ language: de
 tags: ['cctld', 'domains', 'market-analysis', 'registry']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Ein Blick darauf, welche länderspezifischen Top-Level-Domains den weltweit größten Anteil an Registrierungen verzeichnen, warum die Spitzenreiter von den Erwartungen der meisten abweichen und was die Volumenzahlen darüber aussagen, wie das Internet tatsächlich genutzt wird.'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg

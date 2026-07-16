@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: क्रॉस-रजिस्ट्रार ट्रांसफर क्या होते हैं और टोकनाइजेशन इस प्रक्रिया को कैसे सरल बनाता है?
 keywords: ["क्रॉस-रजिस्ट्रार ट्रांसफर","रजिस्ट्रार ट्रांसफर","डोमेन माइग्रेशन","ट्रांसफर प्रक्रिया","टोकनाइजेशन"]
 relatedArticles:

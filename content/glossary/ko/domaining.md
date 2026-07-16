@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인 이름을 투자 자산으로 등록·매입·매도하여 수익을 창출하는 활동입니다.
 keywords: ['도메인 투자', '도메이너', 'domain investing', '도메인 플리핑', '도메인 투기']
 level: 1

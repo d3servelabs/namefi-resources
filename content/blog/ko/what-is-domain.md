@@ -6,6 +6,7 @@ priority: P0
 tags: ['faq']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-basics
 format: explainer

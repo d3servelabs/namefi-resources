@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubre el potencial del dominio .active para marcas dinámicas y estilos de vida. Aprende qué es, sus ventajas y por qué registrarlo hoy mismo en Namefi."
 keywords: [".active domains", ".active TLD", "top-level domain", "what is .active", "why choose .active", "what is the .active domain", "why choose the .active domain", "dominios .active", "comprar dominio .active", "inversión en dominios", "dominios tokenizados", "marca personal fitness", "registro de dominios web3", "identidad digital activa", "blockchain domains"]

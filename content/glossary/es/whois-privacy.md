@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Servicio que oculta los datos de contacto personales del registrante en los registros públicos WHOIS o RDAP.
 keywords: ['privacidad WHOIS', 'protección de privacidad', 'RDAP', 'privacidad del registrante', 'enmascaramiento de contacto']
 also_known_as: ['Protección de privacidad']

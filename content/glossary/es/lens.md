@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es el Protocolo Lens y cómo utiliza los dominios para la identidad social?
 keywords: ["Lens","Protocolo Lens","red social descentralizada","perfiles NFT","grafo social","identidad Web3"]
 relatedArticles:

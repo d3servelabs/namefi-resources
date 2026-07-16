@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف لماذا يُعد نطاق .tech الخيار الأمثل للشركات الناشئة والمطورين ورواد الأعمال. دليل شامل حول ميزات هذا النطاق وكيفية حجزه وتوثيقه عبر Namefi.'
 keywords: ['.tech domains', '.tech TLD', 'top-level domain', 'what is .tech', 'why choose .tech', 'what is the .tech domain', 'why choose the .tech domain', 'tech domain investing', 'blockchain domains', 'tokenized domain', 'Web3 domains', 'technology business name', 'نطاق tech', 'شراء دومين', 'نطاقات الويب 3']

@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 사람이 읽을 수 있는 도메인 이름을 컴퓨터가 인터넷 트래픽을 라우팅하는 데 사용하는 IP 주소로 변환하는 계층적 네이밍 시스템입니다.
 keywords: ['DNS', '도메인 네임 시스템', '이름 해석', 'DNS 조회', 'DNS 레코드', '네임서버', '재귀 리졸버', 'DNSSEC', '인터넷 인프라']
 also_known_as: ['도메인 네임 시스템']

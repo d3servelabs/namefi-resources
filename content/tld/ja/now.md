@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.nowドメインはAmazonが運営する非公開のブランドTLD（dotBrand）であり、一般登録は不可能です。.nowの実態と、代わりに取得すべきドメインを解説します。'
 keywords: ['.nowドメイン', '.nowとは', '.now TLD', '.nowトップレベルドメイン', 'Amazon Registry Services', 'ブランドTLD', 'dotBrand', 'Specification 13']

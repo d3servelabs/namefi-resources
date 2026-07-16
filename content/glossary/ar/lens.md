@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو بروتوكول لينس وكيف يستخدم النطاقات للهوية الاجتماعية؟
 keywords: ["لينس","بروتوكول لينس","اجتماعي لامركزي","ملفات NFT الشخصية","الرسم البياني الاجتماعي","هوية الويب 3"]
 relatedArticles:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 通过虚假宣告 IP 路由来转移互联网流量的网络层攻击，位于 DNS 层之下。
 keywords: ['BGP劫持', '路由劫持', 'IP前缀', '网络安全', '互联网路由']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un dispositivo offline dedicado que almacena las claves privadas de una billetera y firma transacciones en el dispositivo, de modo que las claves nunca toquen un ordenador conectado a internet.
 keywords: ['billetera de hardware', 'billetera fría', 'Ledger', 'Trezor', 'GridPlus', 'Keystone', 'elemento seguro', 'autocustodia']
 level: 1

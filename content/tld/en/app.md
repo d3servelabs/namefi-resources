@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .app domain is Google Registry''s gTLD for software and apps, with HTTPS required on every site. Learn who it suits, how it ranks, and how to register one.'
 keywords: ['.app domain', 'what is .app', '.app TLD', '.app domains', 'app domain extension', 'Google Registry .app', '.app HTTPS required', 'register .app domain', 'developer domains']

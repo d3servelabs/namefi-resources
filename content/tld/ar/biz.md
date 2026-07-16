@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'دومين .biz هو امتداد عام (gTLD) مفتوح وموجّه للأعمال بيشغّله GoDaddy Registry. اتعرف على مين بيناسبه، وإزاي بيتقارن بـ .com، وإيه اللي تعرفه قبل الشراء.'
 keywords: ['.biz', 'دومينات .biz', 'امتداد .biz TLD', 'إيه هو .biz', 'امتداد دومين الأعمال', 'biz مقابل com', 'GoDaddy Registry', 'استخدام تجاري حقيقي']

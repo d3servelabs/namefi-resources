@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: ICANN 的中央商标数据库，为新 gTLD 的日出期预注册和品牌权利通知提供支撑。
 keywords: ['TMCH', 'Trademark Clearinghouse', '日出期', '品牌保护', '新 gTLD']
 also_known_as: ['TMCH']

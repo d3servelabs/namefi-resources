@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: スマートコントラクトを実行する主要なブロックチェーン。トークン化ドメインの大多数が発行されるネットワーク。
 keywords: ['イーサリアム', 'ETH', 'スマートコントラクト', 'EVM', '分散型アプリケーション']
 also_known_as: ['ETH']

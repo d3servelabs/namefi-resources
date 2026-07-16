@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 認証コードを用いて、同一の所有者・同一のドメイン名を保ったまま、ドメインの登録を別のICANN認定レジストラへ移転するプロセス。
 keywords: ['レジストラ間移転', 'ドメイン移転', 'ドメイン移行', '移転手続き', 'トークン化']
 level: 1

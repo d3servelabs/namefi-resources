@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: WHOIS மற்றும் அதன் வாரிசான RDAP ஆகியவை, ஒரு டொமைனின் பதிவு விவரங்களை — ரெஜிஸ்ட்ரார், காலாவதி தேதி உள்ளிட்டவற்றை — பொதுமக்கள் தேடிப் பார்க்கும் சேவைகளாகும்.
 keywords: ['WHOIS', 'RDAP', 'டொமைன் பதிவு தேடல்', 'பதிவாளர் தகவல்', 'டொமைன் உரிமை தேடல்']
 level: 1

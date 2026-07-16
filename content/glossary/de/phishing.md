@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Das Täuschen von Personen zur Preisgabe von Zugangsdaten oder Geldern über gefälschte Seiten und Nachrichten, die vertrauenswürdige Marken imitieren.
 keywords: ['phishing', 'social engineering', 'zugangsdaten-diebstahl', 'identitätsbetrug', 'domain-missbrauch']
 level: 1

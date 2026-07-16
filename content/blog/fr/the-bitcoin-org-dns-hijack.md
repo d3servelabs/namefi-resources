@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "En septembre 2021, Bitcoin.org — le site d'information de référence de Bitcoin, géré par l'opérateur pseudonyme Cobra — a été détourné au niveau de la couche DNS et transformé en un faux cadeau « doublez vos Bitcoin », permettant aux escrocs de soutirer environ 17 000 $ avant que le site ne soit mis hors ligne. Une analyse approfondie de Domain Mayday sur ce qui s'est passé, comment, et ce que cela nous apprend sur la dépendance de sites crypto-natifs envers le DNS."
 keywords: ['bitcoin.org', 'piratage bitcoin.org', 'détournement dns', 'détournement de domaine', 'arnaque doubler vos bitcoin', 'arnaque cadeau crypto', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'sécurité dns', 'sécurité des domaines', 'détournement nameserver', 'attaque changement whois']

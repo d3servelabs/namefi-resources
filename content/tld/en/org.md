@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .org domain is an open legacy gTLD run by the nonprofit Public Interest Registry, trusted by charities, open-source projects, and communities worldwide.'
 keywords: ['.org domains', 'what is .org', '.org domain meaning', 'org TLD', 'Public Interest Registry', 'nonprofit domain', 'register .org domain', 'is .org good for SEO']

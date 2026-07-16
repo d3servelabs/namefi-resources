@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक उच्च-मूल्य वाला डोमेन जो अपनी यादगारियत, संक्षिप्तता, या कीवर्ड ताकत के कारण मानक दरों से अधिक मूल्य पर होता है।
 keywords: ['प्रीमियम डोमेन', 'premium name', 'registry premium', 'aftermarket', 'डोमेन मूल्य']
 level: 1

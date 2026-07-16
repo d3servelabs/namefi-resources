@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Tesla 如何花费十余年时间、据报道斥资 1100 万美元，从 TeslaMotors.com 迁移到精确匹配品牌的 Tesla.com，以及这次域名升级恰好发生在公司去掉"Motors"之前的深层逻辑。'
 keywords: ['teslamotors.com', 'tesla.com', 'tesla域名', '域名升级', 'elon musk域名', '精确匹配域名', '创业公司命名', '品牌命名', '高价域名', '域名策略', 'tesla品牌重塑', 'tesla motors更名', '域名收购', '品类定义域名']

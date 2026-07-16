@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce qu'un DAO et comment peut-il être lié à la gestion des domaines ?
 keywords: ["DAO","organisation autonome décentralisée","gouvernance","propriété collective","contrats intelligents"]
 relatedArticles:

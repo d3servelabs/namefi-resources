@@ -5,6 +5,7 @@ language: 'ja'
 tags: ['ai-agents', 'domains', 'guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 format: opinion
 ogImage: ../../assets/vibe-coding-domain-og.jpg

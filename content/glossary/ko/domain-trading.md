@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 가격 차익을 목적으로 도메인 이름을 사고파는 행위로, 단기 플립부터 관리형 포트폴리오의 장기 보유까지 다양한 전략을 포함합니다.
 keywords: ['도메인 거래', '도메인 투자', '디지털 부동산', '2차 시장', '유동성']
 level: 1

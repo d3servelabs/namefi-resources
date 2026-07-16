@@ -5,6 +5,7 @@ language: es
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: Un vistazo práctico a cómo el DNS habitual —servidores de nombres, A/AAAA, MX, TXT, DNSSEC, CAA— sigue funcionando después de tokenizar un dominio de la ICANN. Qué cambia, qué no y a dónde apuntar tu proveedor de DNS existente.
 keywords: ['dominio tokenizado DNS', 'dominio NFT DNSSEC', 'servidores de nombres dominio tokenizado', 'correo electrónico dominio tokenizado', 'registros MX dominio NFT', 'registros CAA dominio tokenizado', 'gestión DNS dominio tokenizado', 'DNS dominio on-chain', 'MX dominio NFT', 'DNSSEC dominio NFT', 'Cloudflare dominio tokenizado', 'Route53 dominio tokenizado', 'cómo funciona DNS tokenizado', 'resolución dominio tokenizado']

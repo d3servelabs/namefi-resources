@@ -5,6 +5,7 @@ language: es
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Cómo los mercados de dominios tokenizados permiten a compradores y vendedores liquidar atómicamente en cadena (on-chain): sin servicios de depósito en garantía (escrow), sin códigos de autorización, sin bloqueos de registrador de cinco días. Qué reemplaza cada pieza del flujo tradicional y qué riesgos se trasladan a otras capas."
 keywords: ['mercado de dominios blockchain', 'transferencia atómica de dominios', 'mercado de dominios tokenizados', 'reemplazar escrow de dominios', 'venta de dominio sin escrow', 'venta de dominio cripto', 'proceso de venta de dominio tokenizado', 'vender dominio tokenizado', 'comprar dominio tokenizado', 'venta de dominio en cadena', 'liquidación de NFT de dominio', 'mercado de dominios 2026', 'liquidez de dominios tokenizados']

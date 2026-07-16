@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.funドメインはRadixが運営するオープンな新gTLDで、ゲーム・イベント・pump.funなどのWeb3プロジェクトに人気です。利用者・ルール・価値をわかりやすく解説します。'
 keywords: ['.funドメイン', '.fun TLD', '.funとは', '.funドメイン取得', 'Radixレジストリ', '新gTLD', 'ゲーミングドメイン', 'pump.fun']

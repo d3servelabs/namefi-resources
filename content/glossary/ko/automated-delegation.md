@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 각 변경 사항을 사람이 승인하지 않아도 스마트 컨트랙트가 규칙을 자동으로 집행하여 도메인 또는 도메인 레코드의 제어권을 넘기는 것.
 keywords: ['자동화된 위임', '스마트 컨트랙트', '도메인 관리', '프로그래밍 가능한 제어', '자동화']
 level: 1

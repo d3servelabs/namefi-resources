@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 将访问某域名的访问者自动重定向至另一地址，通常通过 301 重定向实现。
 keywords: ['域名转发', '301重定向', 'URL重定向', 'DNS', '域名管理']
 level: 1

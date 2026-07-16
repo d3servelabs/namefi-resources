@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The share of a domain portfolio that sells in a given period — a key liquidity metric for investors.
 keywords: ['sell-through rate', 'STR', 'domain liquidity', 'portfolio performance', 'domain sales velocity']
 also_known_as: ['STR']

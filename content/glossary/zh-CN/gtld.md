@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 不与特定国家绑定的顶级域名，如 .com、.org 或 .xyz，在 ICANN 合同下运营。
 keywords: ['gTLD', '通用 TLD', '.com', '.org', '.xyz', 'ICANN']
 level: 1

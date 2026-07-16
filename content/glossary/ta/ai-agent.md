@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: பயனரின் சார்பில் வாங்குதல், APIs அழைத்தல் மற்றும் பிற முகவர்களுடன் பரிவர்த்தனை செய்வது உள்ளிட்ட செயல்களைச் செய்யும் AI-ஆல் இயக்கப்படும் மென்பொருள்.
 keywords: ['AI முகவர்', 'தன்னாட்சி முகவர்', 'முகவர் அடையாளம்', 'முகவர் வணிகம்', 'சங்கிலித் தொகுப்பு முகவர்', 'முகவர் AI']
 level: 1

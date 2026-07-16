@@ -6,6 +6,7 @@ language: ja
 tags: ['faq', 'domains', 'tokenization']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: web3-foundations
 format: explainer

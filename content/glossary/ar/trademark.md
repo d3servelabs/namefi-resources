@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: علامة محمية قانونًا بتعرّف سلع أو خدمات براند ما، وهي محور كثير من نزاعات الدومينات.
 keywords: ['علامة تجارية', 'حماية البراند', 'ملكية فكرية', 'نزاع دومين', 'UDRP', 'WIPO']
 level: 1

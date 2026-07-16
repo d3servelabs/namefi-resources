@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Explore the .accenture top-level domain. Understand the strategy behind Brand TLDs, why corporations use them, and how to find your own perfect domain at Namefi."
 keywords: [".accenture domains", ".accenture TLD", "top-level domain", "what is .accenture", "why choose .accenture", "what is the .accenture domain", "why choose the .accenture domain", "brand TLD", "domain investing", "blockchain domains", "tokenized domains", "corporate digital identity", "exclusive TLDs", "Accenture domain strategy", "Web3 domains"]

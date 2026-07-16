@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: Zoom や Spotify のような造語で、辞書的な意味を持たずとも記憶に残る、短くて印象的なブランド名として機能するドメイン。
 keywords: ['ブランダブルドメイン', 'ブランドドメイン', '造語ドメイン', '覚えやすいドメイン', 'SEO', 'ドメイン投資']
 level: 1

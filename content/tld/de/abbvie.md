@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: "Erfahren Sie alles über die .abbvie TLD: Was sie ist, wie sie genutzt wird und warum Marken-Domains in der Web3-Ära wichtig sind."
 keywords:

@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Registering a domain matching someone else's trademark in bad faith, hoping to profit from it.
 keywords: ['cybersquatting', 'bad faith', 'domain dispute', 'trademark infringement', 'UDRP']
 level: 1

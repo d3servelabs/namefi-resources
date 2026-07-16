@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A short window right after a domain expires when you can still renew it at the normal price.
 keywords: ['grace period', 'auto-renew grace period', 'domain expiration', 'renewal', 'RGP']
 level: 1

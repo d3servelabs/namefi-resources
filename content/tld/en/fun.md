@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .fun domain is an open new gTLD run by Radix, popular with games, events, and Web3 projects like pump.fun. Here is who uses it, the rules, and its value.'
 keywords: ['.fun domain', '.fun TLD', 'what is .fun', '.fun domains', 'Radix registry', 'new gTLD', 'gaming domains', 'pump.fun']

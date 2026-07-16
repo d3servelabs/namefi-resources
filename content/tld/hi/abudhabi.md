@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.abudhabi डोमेन क्या है? जानें कि यह TLD अबू धाबी और UAE में व्यवसायों के लिए डिजिटल पहचान और विश्वसनीयता को कैसे बढ़ा सकता है। Namefi के साथ अपना .abudhabi डोमेन रजिस्टर करें।'
 keywords:

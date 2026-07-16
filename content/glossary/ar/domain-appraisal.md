@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: تقدير القيمة السوقية لنطاق ما بناءً على المبيعات المشابهة والطلب على الكلمات المفتاحية والطول واللاحقة.
 keywords: ['تقييم النطاق', 'domain valuation', 'قيمة النطاق', 'تسعير النطاق', 'مبيعات مشابهة']
 also_known_as: ['تثمين النطاق']

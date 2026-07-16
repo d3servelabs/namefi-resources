@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es una transferencia atómica y cómo garantiza transacciones de dominio seguras?
 keywords: ["transferencia atómica","transacción blockchain","todo o nada","intercambio seguro","contrato inteligente"]
 relatedArticles:

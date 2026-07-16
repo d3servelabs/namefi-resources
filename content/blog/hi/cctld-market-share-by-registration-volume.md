@@ -5,6 +5,7 @@ language: hi
 tags: ['cctld', 'domains', 'market-analysis', 'registry']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'एक नज़र इस बात पर कि दुनिया भर में किन कंट्री-कोड टॉप-लेवल डोमेन (ccTLDs) के पास रजिस्ट्रेशन का सबसे बड़ा हिस्सा है, क्यों इसके लीडर्स लोगों की उम्मीदों से अलग हैं, और वॉल्यूम के आंकड़े हमें इंटरनेट के वास्तविक उपयोग के बारे में क्या बताते हैं।'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg

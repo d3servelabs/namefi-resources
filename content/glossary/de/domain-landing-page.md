@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die einzelne Seite, die auf einer geparkten oder zum Verkauf stehenden Domain angezeigt wird, oft mit Anzeigen, Suche oder einem Kaufangebot.
 keywords: ['Landingpage', 'Lander', 'Verkaufsseite', 'Domain-Parking', 'Domain-Monetarisierung']
 also_known_as: ['Landingpage']

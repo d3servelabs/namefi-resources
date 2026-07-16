@@ -6,6 +6,7 @@ priority: P1
 tags: ["faq"]
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Este artículo explica por qué los dominios tradicionales deberían ser tokenizados on-chain y destaca los beneficios como una propiedad más clara, componibilidad financiera y un trading más libre y rápido.
 keywords: ["tokenización de dominios","dominios blockchain","dominios NFT","dominios on-chain","propiedad de dominios","dominios descentralizados","trading de dominios","web3 dominios","contratos inteligentes","componibilidad de dominios","tokenización DNS","activos digitales"]
 relatedArticles:

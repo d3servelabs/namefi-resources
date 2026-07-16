@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Das Datum, an dem die Registrierungslaufzeit einer Domain endet; wird sie nicht verlängert, beginnt ein Verfallsprozess bis zur Löschung.
 keywords: ['Domain-Ablauf', 'abgelaufene Domain', 'Verlängerung', 'Grace Period', 'Redemption']
 level: 1

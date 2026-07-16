@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: NFT क्या है और इसका डोमेन टोकनाइज़ेशन से क्या संबंध है?
 keywords: ["NFT","नॉन-फंजीबल टोकन","ब्लॉकचेन","अद्वितीय संपत्ति","डोमेन NFT"]
 relatedArticles:

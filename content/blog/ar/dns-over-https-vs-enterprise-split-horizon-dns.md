@@ -5,6 +5,7 @@ language: ar
 tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'يحمي DNS عبر HTTPS (DoH) خصوصية المستخدم من خلال تشفير استعلامات DNS داخل HTTPS. بينما يعتمد Enterprise split-horizon DNS على قدرة الشبكة على رؤية تلك الاستعلامات. يعيد هذا التعارض بينهما تشكيل كيفية تعامل شبكات الشركات والمتصفحات وأنظمة التشغيل مع تحليل الأسماء.'
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg

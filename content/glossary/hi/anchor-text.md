@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक हाइपरलिंक के दृश्य, क्लिक करने योग्य शब्द, एक संकेत जिसे सर्च इंजन लक्ष्य को समझने के लिए उपयोग करते हैं।
 keywords: ['anchor text', 'link text', 'backlinks', 'seo', 'hyperlink', 'ranking signals']
 level: 1

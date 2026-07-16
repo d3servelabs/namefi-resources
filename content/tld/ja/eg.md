@@ -4,6 +4,8 @@ date: '2026-06-18'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.egドメインとは何か？1990年からエジプト大学ネットワークが運営するエジプトの公式国別コードTLD。登録資格、構造、SEOへの影響、登録すべき対象者を詳しく解説。'
 keywords: ['.egドメイン', '.eg TLD', 'エジプトドメイン', '.egとは', 'com.eg登録', 'エジプトccTLD', '.egドメイン登録', 'エジプト大学ネットワーク', '.eg登録資格', 'エジプトドメイン要件']

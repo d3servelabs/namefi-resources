@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: TLD（トップレベルドメイン）とは、ドメイン名の最も右側のラベルであり、.com、.org、.de などがその例。ICANN の監督のもと、IANA のルートゾーンを通じて委任される。
 keywords: ['TLD', 'トップレベルドメイン', 'gTLD', 'ccTLD', '新gTLD', 'DNS', 'IANA', 'ICANN', 'ルートゾーン', 'ドメインレジストリ']
 also_known_as: ['トップレベルドメイン']

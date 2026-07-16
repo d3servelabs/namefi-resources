@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: اسم بيمتد عبر النقطة ليُهجّي كلمة باستخدام TLD، زي del.icio.us أو examp.le.
 keywords: ['حيلة النطاق', 'نطاق إبداعي', 'لعب الكلمات بالـ TLD', 'نطاق يُعبّر عن علامة تجارية', 'ccTLD']
 level: 1

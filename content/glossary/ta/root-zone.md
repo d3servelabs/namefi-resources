@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: DNS படிநிலையின் உச்சப் புள்ளி — ஒவ்வொரு TLD-ஐயும் அதற்கு அதிகாரம் வாய்ந்த சேவையகங்களையும் பட்டியலிடுகிறது.
 keywords: ['மூல மண்டலம்', 'மூல சேவையகங்கள்', 'DNS படிநிலை', 'TLD பதிவுப் பகுப்பு', 'IANA']
 level: 1

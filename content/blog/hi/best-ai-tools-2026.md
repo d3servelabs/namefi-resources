@@ -5,6 +5,7 @@ language: 'hi'
 tags: ['ai-agents', 'domains', 'roundup']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 format: roundup
 ogImage: ../../assets/best-ai-tools-2026-og.jpg

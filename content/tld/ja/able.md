@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld', 'branding', 'domain-names', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.ableドメイン拡張子のクリエイティブな可能性を探る。スタートアップ、開発者、クリエイターのブランディングを強化するこの汎用性の高い TLD について学ぼう。Namefi であなたのドメインを確保しよう。'
 relatedArticles:

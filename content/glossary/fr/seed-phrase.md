@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Une liste de 12 ou 24 mots qui encode la clé maîtresse d'un portefeuille ; quiconque la possède contrôle le portefeuille, c'est donc la seule chose que vous devez absolument sauvegarder.
 keywords: ['phrase secrète', 'phrase de récupération', 'phrase mnémonique', 'sauvegarde portefeuille', 'BIP39', '12 mots', '24 mots', 'récupération crypto']
 level: 1

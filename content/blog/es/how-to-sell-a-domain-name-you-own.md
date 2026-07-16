@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'guide', 'domain-investing', 'outbound']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Una lista de verificación práctica enfocada en el vendedor para valorar un dominio, encontrar posibles compradores, gestionar el contacto, evitar estafas y cerrar la transferencia de forma segura."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png

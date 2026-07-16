@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.afamilycompany डोमेन आपके पारिवारिक व्यवसाय को एक विश्वसनीय डिजिटल पहचान देता है। जानें कि यह TLD क्यों खास है और इसे Namefi के साथ कैसे रजिस्टर करें।'
 keywords:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு உண்மையான DNS டொமைன், இதன் உரிமை ஒரு பணப்பையில் வைத்திருக்கும் பிளாக்செயின் டோக்கனாக குறிப்பிடப்படுகிறது.
 keywords: ['டோக்கனைஸ் செய்யப்பட்ட டொமைன்', 'டொமைன் NFT', 'ஆன்-செயின் டொமைன்', 'டொமைன் உரிமை', 'web3 டொமைன்']
 level: 1

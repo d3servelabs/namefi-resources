@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种以公共区块链为核心基础设施的互联网愿景，用户通过自己掌握的密钥而非平台账户拥有数据、资产和身份。
 keywords: ['Web3', '去中心化网络', '区块链互联网', '用户所有权', '点对点', '去中心化', '加密货币', '智能合约', 'DeFi', 'NFT']
 level: 2

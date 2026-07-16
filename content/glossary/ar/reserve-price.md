@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: أدنى سعر البائع مستعد يقبله، وغالباً بيبقى مخفي، وأي عرض أقل منه بيُرفض تلقائياً.
 keywords: ['السعر الاحتياطي', 'الحد الأدنى للعرض', 'العطاء الاحتياطي', 'سعر الأرضية', 'احتياطي مزاد النطاق']
 level: 1

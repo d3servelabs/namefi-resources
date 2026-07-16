@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo Instagram se lanzó en 2010 con el domain hack instagr.am — aprovechando el ccTLD .am de Armenia para deletrear su propio nombre — y luego pagó $100 000 para consolidarse en Instagram.com, y qué enseñan a los fundadores las ventajas e inconvenientes de un ingenioso ccTLD hack.'
 keywords: ['instagr.am', 'instagram.com', 'nombre de dominio de instagram', 'domain hack', 'ccTLD domain hack', '.am dominio armenia', 'kevin systrom', 'mike krieger', 'actualización de dominio', 'naming de startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'historia de instagram']

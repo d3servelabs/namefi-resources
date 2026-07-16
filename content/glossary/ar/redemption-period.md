@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نافذة ما بعد انتهاء الصلاحية اللي فيها نطاق منتهٍ يتقدر يتاسترد، عادةً برسوم استرداد باهظة.
 keywords: ['فترة الاسترداد', 'RGP', 'فترة سماح الاسترداد', 'استرداد نطاق منتهٍ', 'رسوم الاسترداد']
 level: 1

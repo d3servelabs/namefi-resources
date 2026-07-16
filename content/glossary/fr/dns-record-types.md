@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: "Les entrées d'une zone qui associent un domaine à des adresses et des services — A, AAAA, CNAME, MX, TXT et plus encore."
 keywords: ['enregistrements DNS', 'enregistrement A', 'enregistrement AAAA', 'CNAME', 'enregistrement MX', 'enregistrement TXT']
 level: 1

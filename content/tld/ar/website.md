@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .website. تعرف على سبب كونه الخيار الأمثل لعنوان موقعك القادم، وكيفية حجزه بسهولة من خلال Namefi."
 keywords: [".website domains", ".website TLD", "top-level domain .website", "what is .website", "why choose .website", "what is the .website domain", "why choose the .website domain", "domain investing", "blockchain domains", "tokenized domain", "buy .website domain", "new gTLD", "شراء نطاق website", "استثمار النطاقات", "نطاقات الويب 3"]

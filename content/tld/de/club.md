@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Erfahren Sie alles über die .club Domain: Ideal für Communitys, Unternehmen und Web3-Projekte. Jetzt informieren und Ihre .club Domain bei Namefi sichern.'
 keywords:

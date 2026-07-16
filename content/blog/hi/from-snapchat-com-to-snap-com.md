@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'कैसे Snapchat ने 2014 में Idealab से Snap.com को कथित रूप से $5M में चुपचाप खरीदा, फिर सितंबर 2016 में खुद को Snap Inc., "एक कैमरा कंपनी" का नाम दिया और उस छोटे exact-match डोमेन को एक ऐसी पहचान का प्रवेश द्वार बनने दिया जो किसी एक ऐप से कहीं बड़ी थी।'
 keywords: ['snapchat.com', 'snap.com', 'snap inc', 'snap डोमेन नाम', 'डोमेन अपग्रेड', 'स्टार्टअप नामकरण', 'ब्रांड नामकरण', 'प्रीमियम डोमेन', 'डोमेन रणनीति', 'snapchat रीब्रांड', 'कैमरा कंपनी', 'idealab snap.com', 'डोमेन अधिग्रहण', 'कैटेगरी-परिभाषित डोमेन']

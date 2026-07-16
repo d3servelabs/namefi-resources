@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الشخص أو المنظمة اللي بتملك حقوق نطاق مُسجَّل — صاحب النطاق الرسمي.
 keywords: ['مسجَّل', 'صاحب النطاق', 'حامل الاسم المُسجَّل', 'RNH', 'ملكية النطاق']
 level: 1

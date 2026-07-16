@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 通过仿冒可信品牌的虚假网站和消息诱使用户泄露凭据或资金的欺诈手段。
 keywords: ['网络钓鱼', '社会工程学', '凭据窃取', '身份冒充', '域名滥用']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Enviar visitantes automáticamente desde un dominio a otra dirección, a menudo mediante una redirección 301.
 keywords: ['reenvío de dominio', 'redirección 301', 'redirección de URL', 'DNS', 'gestión de dominios']
 level: 1

@@ -5,6 +5,7 @@ language: ar
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-real-estate-business-og.jpg
 description: 'أفضل 10 نطاقات يجب على كل وسيط عقاري تأمينها لحماية علامته التجارية، بما في ذلك شروط التسجيل في .realtor، ونصائح التسجيل الدفاعي، وأين تسجّل نطاقاتك.'

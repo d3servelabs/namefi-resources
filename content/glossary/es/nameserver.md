@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un servidor que responde consultas DNS para un dominio; sus registros NS indican los servidores autoritativos.
 keywords: ['servidor de nombres', 'registro NS', 'servidor autoritativo', 'delegación DNS', 'alojamiento DNS']
 level: 1

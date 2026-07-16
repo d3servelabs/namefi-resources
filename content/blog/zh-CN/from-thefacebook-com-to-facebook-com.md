@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Facebook 如何放弃 TheFacebook.com，以 20 万美元购入 Facebook.com，后来又斥资 850 万美元收购 FB.com，并将域名升级转化为品牌基础设施。'
 keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'facebook 域名', '域名升级', '初创公司命名', '品牌命名', '高价域名', '域名策略', 'facebook 历史', '域名收购', '公司品牌重塑', '定义品类的域名']

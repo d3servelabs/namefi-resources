@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez l'extension .am : du code pays de l'Arménie aux jeux de mots créatifs. Apprenez pourquoi c'est un choix stratégique pour votre domaine."
 keywords: [".am domains", "TLD .am", "top-level domain .am", "what is .am", "why choose .am", "what is the .am domain", "why choose the .am domain", "domaine am", "extension internet am", "achat nom de domaine", "investissement domaine", "blockchain domain", "tokenized domain", "jeu de mots domaine", "création site web", "Namefi", "nom de domaine arménie"]

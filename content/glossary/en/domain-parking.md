@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Placing ads or a for-sale notice on an undeveloped domain to earn revenue or signal availability.
 keywords: ['domain parking', 'parked domain', 'monetization', 'domain investing', 'passive income']
 also_known_as: ['Parked Domain']

@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.info டொமைன் என்பது 2001 ஆம் ஆண்டு தகவல் சார்ந்த தளங்களுக்காக அறிமுகப்படுத்தப்பட்ட திறந்த, கட்டுப்பாடற்ற gTLD ஆகும். யார் இதை பயன்படுத்துகிறார்கள், அதன் SEO மற்றும் நம்பகத்தன்மை, மற்றும் இதை பதிவு செய்ய வேண்டுமா என்பதை அறியுங்கள்.'
 keywords: ['.info', '.info டொமைன்', '.info TLD', '.info என்றால் என்ன', '.info டொமைன் பதிவு செய்வது எப்படி', 'info டொமைன் பொருள்', 'Identity Digital', 'கட்டுப்பாடற்ற gTLD']

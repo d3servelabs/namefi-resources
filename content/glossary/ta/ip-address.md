@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு வலையமைப்பில் சாதனத்தை அடையாளப்படுத்தும் எண் முகவரி; DNS ஒரு டொமைன் பெயரை இந்த முகவரியோடு இணைக்கிறது.
 keywords: ['IP முகவரி', 'IPv4', 'IPv6', 'A பதிவு', 'AAAA பதிவு', 'வலையமைப்பு']
 level: 1

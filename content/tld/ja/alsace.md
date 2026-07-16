@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: 'リージョナルブランディングとSEOにおける.alsace TLDの力を解説します。NamefiでビジネスオーナーやWeb3開発者が.alsaceを選ぶ理由を学びましょう。'
 keywords: ['.alsaceドメイン', '.alsace TLD', '.alsaceトップレベルドメイン', '.alsaceとは', '.alsaceを選ぶ理由', '.alsaceドメインとは何か', '.alsaceドメインを選ぶ理由', '.alsaceドメイン登録', 'アルザス地域ドメイン', 'フランス地理的TLD', 'ドメイン投資', 'トークン化ドメイン', 'Web3ドメイン', 'アルザスビジネスドメイン', 'ブロックチェーンドメイン登録']

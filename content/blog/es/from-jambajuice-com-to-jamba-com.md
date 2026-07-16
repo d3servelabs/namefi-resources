@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo Jamba Juice pasó 29 años explicándose con la palabra "Juice", por qué la eliminó en 2019 para convertirse simplemente en "Jamba", y la ventaja discreta que casi nadie notó: la empresa había sido dueña del dominio exacto Jamba.com desde los años 90.'
 keywords: ['jambajuice.com', 'jamba.com', 'nombre de dominio jamba juice', 'cambio de marca jamba', 'actualización de dominio', 'cambio de nombre jamba juice', 'kirk perron', 'focus brands jamba', 'dominio de coincidencia exacta', 'nombres para startups', 'nombre de marca', 'dominio premium', 'estrategia de dominios', 'dominio que define categoría']

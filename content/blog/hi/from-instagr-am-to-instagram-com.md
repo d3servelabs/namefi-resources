@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'Instagram ने 2010 में instagr.am डोमेन हैक पर कैसे लॉन्च किया — अपना नाम स्पेल करने के लिए आर्मेनिया के .am ccTLD का उपयोग करते हुए — फिर Instagram.com पर एकीकृत होने के लिए $100,000 चुकाए, और एक चतुर ccTLD हैक के समझौते संस्थापकों को क्या सिखाते हैं।'
 keywords: ['instagr.am', 'instagram.com', 'instagram domain name', 'domain hack', 'ccTLD domain hack', '.am armenia domain', 'kevin systrom', 'mike krieger', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'instagram history']

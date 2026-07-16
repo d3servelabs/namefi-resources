@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ICANNとレジストラ認定契約（RAA）を締結し、gTLDドメインを販売する権限を付与された認定レジストラ。
 keywords: ['認定レジストラ', 'RAA', 'ICANN認定', 'gTLD', 'レジストラ契約']
 level: 1

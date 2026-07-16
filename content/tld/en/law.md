@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .law domain is a restricted, credential-gated extension reserved for licensed lawyers, law firms, law schools, and legal regulators, verified at registration and renewal.'
 keywords: ['.law domain', 'what is .law', 'law domain registration', 'restricted TLD', 'lawyer domain', 'law firm domain', 'legal domain name', 'credential-gated TLD']

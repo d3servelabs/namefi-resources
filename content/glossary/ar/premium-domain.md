@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاق عالي القيمة بسعره أعلى من الأسعار العادية لقصره أو سهولة تذكره أو قوة كلمته المفتاحية.
 keywords: ['النطاق المتميز', 'اسم متميز', 'سجل متميز', 'السوق الثانوي', 'قيمة النطاق']
 level: 1

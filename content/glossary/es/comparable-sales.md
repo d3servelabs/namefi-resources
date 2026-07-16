@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Ventas pasadas de dominios similares utilizadas como referencia para estimar el valor de un nombre.
 keywords: ['ventas comparables', 'comps', 'datos de ventas de dominios', 'referencias de dominios', 'historial de precios de dominios']
 also_known_as: ['Comps']

@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في 24 أبريل 2018، اخترق المهاجمون التوجيه على الإنترنت الخاص بـ Amazon Route 53، ودسّوا إجابات DNS مسمومة لـ myetherwallet.com، وأداروا موقعًا مزيفًا بشهادة موقّعة ذاتيًا — فسرقوا ما يقارب 150 ألف دولار من الإيثر. غوص عميق في أسباب اعتماد DNS على طبقة توجيه تثق بكل شيء افتراضيًا.'
 keywords: ['myetherwallet', 'bgp hijack', 'dns hijacking', 'amazon route 53', 'route 53 hijack', 'dns security', 'bgp routing security', 'ethereum phishing', 'self-signed certificate', 'enet as10297', 'rpki roa', 'crypto wallet phishing', 'domain security']

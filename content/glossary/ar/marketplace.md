@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي أسواق NFT وكيف تسهل تداول النطاقات؟
 keywords: ["السوق","OpenSea","Blur","تداول NFT","سوق النطاقات","السوق الثانوية"]
 relatedArticles:

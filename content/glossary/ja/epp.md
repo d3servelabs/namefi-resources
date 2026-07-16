@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: レジストラがレジストリとの間でドメインの登録・管理を行うために使用する標準プロトコル。
 keywords: ['EPP', 'Extensible Provisioning Protocol', 'ドメイン管理', 'レジストリプロトコル', 'RFC 5730']
 also_known_as: ['Extensible Provisioning Protocol']

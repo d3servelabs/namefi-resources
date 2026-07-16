@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo Elon Musk fundó X.com en 1999, lo perdió cuando PayPal adoptó su antiguo nombre, lo recuperó en 2017 por valor sentimental, y finalmente migró una red social valorada en 44.000 millones de dólares hacia él, haciendo que Twitter.com redirigiera a X.com.'
 keywords: ['twitter.com', 'x.com', 'twitter rebrand x', 'elon musk x.com', 'historia x.com', 'paypal dominio x.com', 'twitter cambio de nombre a x', 'redireccion de dominio', 'mejora de dominio', 'dominio de una letra', 'aplicacion todo en uno', 'naming de marca', 'dominio premium']

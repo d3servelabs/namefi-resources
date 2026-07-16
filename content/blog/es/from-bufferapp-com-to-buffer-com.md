@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo Buffer lanzó en 2010 desde BufferApp.com porque Buffer.com estaba ocupado, luego pasó 624 días adquiriendo el dominio exacto —llegando incluso a mostrarle al vendedor su saldo bancario— y por qué una empresa famosa por la transparencia radical guardó silencio sobre el único número que todos querían saber: el precio.'
 keywords: ['bufferapp.com', 'buffer.com', 'nombre de dominio buffer', 'mejora de dominio', 'joel gascoigne', 'transparencia buffer', 'dominio de coincidencia exacta', 'nomenclatura de startups', 'branding de marca', 'dominio premium', 'estrategia de dominio', 'historia de buffer', 'adquisición de dominio', 'dominio que define la categoría']

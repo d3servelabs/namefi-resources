@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld', 'brand-tld', 'domain-industry']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: ".akdn TLDの目的、アガ・ハーン開発ネットワークにおける役割、そして限定公開型ブランドTLDがドメイン業界でどのように機能するかを解説します。"
 keywords: [".akdnドメイン", ".akdn TLD", "トップレベルドメイン", ".akdnとは", ".akdnを選ぶ理由", ".akdnドメインとは何か", "アガ・ハーン開発ネットワーク", "ブランドTLD", "限定ドメイン登録", "ドメイン投資", "ブロックチェーンドメイン", "トークン化ドメイン", "ICANN 新gTLD", "非営利団体ドメイン"]

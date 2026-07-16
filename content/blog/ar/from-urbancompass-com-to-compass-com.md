@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'كيف أطلقت Urban Compass في 2012 كتطبيق تأجير نيويوركي على UrbanCompass.com، ثم حذفت كلمة "Urban" في إعادة تسمية فبراير 2015، وترقّت إلى النطاق Compass.com المطابق تمامًا — الذي كان مدرجًا في مزاد بمليون دولار — في اللحظة التي قررت فيها التوسع على المستوى الوطني.'
 keywords: ['urbancompass.com', 'compass.com', 'اسم نطاق compass', 'ترقية النطاق', 'إعادة تسمية urban compass', 'robert reffkin', 'ori allon', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'نطاق متميز', 'استراتيجية النطاق', 'compass للعقارات', 'شركة عقارات ناشئة', 'نطاق مطابق تمامًا']

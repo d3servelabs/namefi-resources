@@ -5,6 +5,8 @@ language: 'ar'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: '.ai هو نطاق رمز الدولة لأنغيلا، وأصبح الامتداد العالمي الأبرز لعلامات الذكاء الاصطناعي. تعرّف على من يديره، وقواعد التسجيل، وتأثيره على SEO، وكيف تسجّل .ai على Namefi.'
 keywords: ['نطاق .ai', 'ما هو .ai', 'TLD .ai', 'ccTLD أنغيلا', 'تسجيل نطاق .ai', 'نطاق شركات AI', '.ai مقابل .io', 'من يملك .ai']

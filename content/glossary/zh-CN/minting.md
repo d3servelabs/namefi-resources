@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 在区块链上创建新代币的行为——对域名而言，即发行代表其所有权的 NFT。
 keywords: ['铸造', 'NFT 创建', '代币发行', '链上', 'minting']
 also_known_as: ['Mint']

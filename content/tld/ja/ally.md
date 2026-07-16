@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.ally TLDを徹底解説：パートナーシップ、コミュニティ、インクルーシブなブランドに最適なドメイン。なぜ.allyが協働的なデジタルアイデンティティの未来を担うのかを学ぶ。'
 keywords: ['.allyドメイン', '.ally TLD', 'トップレベルドメイン', '.allyとは', '.allyを選ぶ理由', '.allyドメインとは', 'ドメイン投資', 'ブロックチェーンドメイン', 'トークン化ドメイン', 'Web3アイデンティティ', 'コミュニティドメイン', 'ブランドパートナーシップ', 'デジタルアライ', '.allyドメインを購入']

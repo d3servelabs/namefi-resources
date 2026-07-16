@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 用于估算域名价值的同类域名历史成交数据，是域名估值中最可靠的参考依据。
 keywords: ['参考成交价', 'Comps', '域名销售数据', '域名基准', '域名定价历史']
 also_known_as: ['Comps']

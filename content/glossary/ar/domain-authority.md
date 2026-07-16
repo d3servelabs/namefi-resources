@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: إشارة سمعة بتقدّر مدى تصدّر النطاق في نتائج البحث، مدفوعة في الأساس بالروابط الواردة عالية الجودة.
 keywords: ['سلطة النطاق', 'روابط واردة', 'link equity', 'seo', 'إشارة ترتيب', 'inbound links']
 level: 1

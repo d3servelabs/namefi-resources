@@ -5,6 +5,7 @@ language: ar
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "نظرة من منظور مسجلي النطاقات وعمليات DNS حول حادثة AWS في 20 أكتوبر 2025، كيف يعمل نظام DNS فعلياً، لماذا انتشر هذا الفشل على نطاق واسع، وما الذي يمكن لفرق الإنترنت المرنة فعله حيال ذلك."
 keywords: ['نظام أسماء النطاقات', 'انقطاع aws', 'مستوى التحكم', 'dynamodb', 'us-east-1', 'التخزين المؤقت لنظام dns', 'مرونة السحابة', 'dns متعدد التواقيع', 'الاستجابة للحوادث']

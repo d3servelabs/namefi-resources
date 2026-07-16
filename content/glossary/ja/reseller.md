@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 独自のICANN認定を持たず、上位レジストラの認定のもとでドメインを販売する事業者または個人。
 keywords: ['リセラー', 'ドメインリセラー', 'ホワイトラベルレジストラ', 'ICANN認定', 'レジストラ']
 level: 1

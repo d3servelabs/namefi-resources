@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'El dominio .biz es un gTLD abierto y orientado a negocios gestionado por GoDaddy Registry. Conoce a quién le conviene, cómo se compara con .com y qué debes saber antes de comprar.'
 keywords: ['.biz', 'dominios .biz', 'TLD .biz', 'qué es .biz', 'extensión de dominio para negocios', 'biz vs com', 'GoDaddy Registry', 'uso comercial de buena fe']

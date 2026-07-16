@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Der missbräuchliche Einsatz des UDRP in böser Absicht, um eine Domain von ihrem rechtmäßigen Eigentümer zu entreißen.
 keywords: ['reverse domain hijacking', 'RDNH', 'UDRP-missbrauch', 'domain-streit', 'bösgläubiger beschwerdeführer']
 also_known_as: ['RDNH']

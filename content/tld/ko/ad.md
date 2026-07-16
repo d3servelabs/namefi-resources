@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".ad TLD를 알아보세요: 광고 업계의 궁극적인 도메인으로도 활용되는 안도라 국가 코드입니다. 브랜드와 에이전시가 .ad를 선택하는 이유를 알아보세요."
 keywords: [".ad 도메인", ".ad TLD", ".ad 최상위 도메인", ".ad란 무엇인가", ".ad를 선택하는 이유", ".ad 도메인이란", ".ad 도메인을 선택하는 이유", "광고 도메인", "마케팅 도메인 이름", "안도라 국가 코드", "도메인 핵", "광고 기술 도메인", "크리에이티브 브랜딩", ".ad 도메인 구매", "토큰화 도메인"]

@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق .world وكيف يمكن أن يساعد في توسيع نطاق علامتك التجارية عالمياً. تعرف على مزايا الحجز عبر Namefi.'
 keywords: ['.world domains', 'TLD', 'top-level domain', 'what is .world', 'why choose .world', 'what is the .world domain', 'why choose the .world domain', 'نطاق .world', 'حجز دومين world', 'domain investing', 'tokenized domain', 'blockchain domains', 'شراء نطاق', 'استثمار النطاقات', 'Namefi']

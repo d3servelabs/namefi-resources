@@ -5,6 +5,7 @@ language: ta
 tags: ['domains', 'domain-flipping', 'web3', 'guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

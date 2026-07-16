@@ -5,6 +5,7 @@ language: fr
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Une marche à suivre pratique et détaillée pour tokéniser un domaine que vous possédez déjà : éligibilité, portefeuilles, frais, délais et ce à quoi s'attendre sur chaque écran. Rédigé pour les propriétaires, pas pour les nerds de protocoles."
 keywords: ['comment tokéniser un domaine', 'comment tokéniser un .com', 'tokéniser mon domaine', 'tokéniser un domaine existant', 'tokéniser un domaine étape par étape', 'tutoriel de tokénisation de domaine', 'guide tokéniser .com', 'tokéniser .xyz', 'tokéniser .io', 'tokéniser namefi', 'domaine NFT comment faire', 'transférer domaine vers NFT', 'domaine vers NFT', 'processus de tokénisation de domaine', 'configuration de domaine tokénisé', 'tokéniser domaine ICANN']

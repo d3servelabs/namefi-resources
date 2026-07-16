@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le fichier texte contenant tous les enregistrements DNS d'un domaine, y compris les enregistrements glue pour ses serveurs de noms.
 keywords: ['fichier de zone', 'enregistrement glue', 'zone DNS', 'enregistrements autoritaires', 'serveur de noms']
 level: 1

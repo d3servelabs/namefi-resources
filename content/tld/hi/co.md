@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.co डोमेन क्या है? कोलंबिया का कंट्री-कोड TLD, जिसे विश्वभर में एक छोटे ".com" या "company" विकल्प के रूप में प्रचारित किया जाता है। जानें कि इसे कौन चलाता है, कौन रजिस्टर कर सकता है, मूल्य निर्धारण और SEO।'
 keywords: ['.co डोमेन', '.co TLD', 'co डोमेन', '.co क्या है', '.co डोमेन क्या है', '.co बनाम .com', 'स्टार्टअप के लिए co डोमेन', 'कोलंबिया डोमेन', '.co डोमेन रजिस्टर करें', 'छोटा कंपनी डोमेन']

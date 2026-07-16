@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un appareil hors ligne dédié qui stocke les clés privées d'un portefeuille et signe les transactions sur l'appareil lui-même, de sorte que les clés ne touchent jamais un ordinateur connecté à internet.
 keywords: ['portefeuille matériel', 'portefeuille froid', 'Ledger', 'Trezor', 'GridPlus', 'Keystone', 'élément sécurisé', 'auto-garde']
 level: 1

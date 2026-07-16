@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 已注册域名的转售市场，买卖双方在此之间交易域名所有权。
 keywords: ['二级市场', '次级市场', '域名转售', '域名投资', '域名销售']
 also_known_as: ['次级市场']

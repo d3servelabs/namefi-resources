@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'إيه هو دومين .us؟ امتداد رمز الدولة الرسمي للولايات المتحدة، المقيّد بالمسجّلين اللي عندهم تواجد أمريكي حقيقي. اتعرف على مين بيشغّله، وشرط الـ Nexus، والأسعار، وSEO، وإمكانية التسليم بالإيميل.'
 keywords: ['دومينات .us', 'امتداد .us TLD', 'دومين us', 'إيه هو .us', 'إيه هو دومين .us', '.us مقابل .com', 'شرط US nexus', 'دومين الولايات المتحدة', 'تسجيل دومين .us', 'امتداد دومين أمريكي', 'del.icio.us']

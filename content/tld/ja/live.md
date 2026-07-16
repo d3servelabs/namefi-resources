@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.liveドメインはIdentity Digitalが運営するオープンな新gTLDで、ストリーミング・イベント・リアルタイムコンテンツ向けに設計されています。利用者層、登録ルール、あなたのプロジェクトに適しているかどうかを解説します。'
 keywords: ['.liveドメイン', '.live TLD', '.liveとは', '.liveを選ぶ理由', 'ストリーミングドメイン', 'ライブ配信ドメイン', 'Identity Digital', '新gTLD']

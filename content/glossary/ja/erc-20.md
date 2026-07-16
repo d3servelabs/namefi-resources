@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ステーブルコインなどの代替可能トークンに関するEthereumの標準規格で、ERC-721 NFT標準を補完するものです。
 keywords: ['ERC-20', '代替可能トークン', 'トークン標準', 'ステーブルコイン', 'イーサリアムトークン']
 level: 1

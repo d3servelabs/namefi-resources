@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The price an end user pays for a domain they intend to use — typically far above the wholesale investor floor.
 keywords: ['retail pricing', 'end user pricing', 'domain retail', 'end-user price', 'full price']
 also_known_as: ['End-User Pricing']

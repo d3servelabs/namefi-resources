@@ -6,6 +6,7 @@ language: ta
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 cluster: domain-basics
 format: explainer

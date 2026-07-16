@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: النظام الهرمي للتسمية الذي يترجم أسماء النطاقات المقروءة بشريًا إلى عناوين IP التي تستخدمها الأجهزة لتوجيه حركة المرور عبر الإنترنت.
 keywords: ['DNS', 'نظام أسماء النطاقات', 'حل الأسماء', 'استعلام DNS', 'سجلات DNS', 'خادم أسماء', 'محلل متكرر', 'DNSSEC', 'بنية تحتية للإنترنت']
 also_known_as: ['نظام أسماء النطاقات']

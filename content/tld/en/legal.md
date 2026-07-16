@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .legal domain is an open generic TLD for the legal field. Learn who runs it, who can register, how it compares to .law, and whether it suits your firm.'
 keywords: ['.legal domains', 'what is .legal', '.legal TLD', 'legal domain extension', 'law firm domain names', 'lawyer website domain', 'Identity Digital TLD', 'Binky Moon registry']

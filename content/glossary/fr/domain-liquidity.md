@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: La facilité avec laquelle un domaine peut être vendu près de sa valeur estimée — élevée pour les grands noms, faible pour les noms de niche.
 keywords: ['liquidité domaine', 'liquidité', 'commerciabilité du domaine', 'vitesse de vente du domaine', 'profondeur du marché domaine']
 level: 1

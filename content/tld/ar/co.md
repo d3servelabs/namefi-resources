@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'إيه هو دومين .co؟ امتداد رمز دولة كولومبيا، اللي اتسوّق حول العالم كبديل قصير لـ ".com" أو بمعنى "company". اتعرف على مين بيشغّله، ومين يقدر يسجّله، وإزاي بيتحدد سعره، وتأثيره على SEO.'
 keywords: ['دومينات .co', 'امتداد .co TLD', 'دومين co', 'إيه هو .co', 'إيه هو دومين .co', '.co مقابل .com', 'دومين co للشركات الناشئة', 'دومين كولومبيا', 'تسجيل دومين .co', 'دومين شركة قصير']

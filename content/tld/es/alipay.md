@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre todo sobre el dominio .alipay, un TLD sinónimo de seguridad financiera y confianza digital. Aprende sus ventajas y relevancia en el ecosistema fintech.'
 keywords:

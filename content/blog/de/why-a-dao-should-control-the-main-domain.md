@@ -5,6 +5,7 @@ language: de
 tags: ['governance', 'dao', 'web3', 'namefi space']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 format: opinion
 description: "Jedes Land und jede Bewegung erreicht irgendwann einen Moment der Verfassungskrise — wer legitim ist, wer Autorität besitzt, wer im Zentrum der Bühne spricht. Für eine Onlinebewegung konzentriert sich diese Frage auf ein Asset: die Hauptdomain. Darum sollte sie der DAO gehören."

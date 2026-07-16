@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'A finales de 2018, Cisco Talos reveló DNSpionage — una campaña vinculada a intereses iraníes que reescribió registros DNS gubernamentales, redirigió el tráfico de correo electrónico y VPN hacia servidores atacantes, y obtuvo certificados TLS válidos para permanecer invisible. Contribuyó a desencadenar la primera directiva de emergencia de este tipo emitida por el gobierno de EE. UU.'
 keywords: ['dnspionage', 'secuestro dns', 'redirección dns', 'cisco talos', 'directiva de emergencia cisa 19-01', 'sea turtle dns', 'secuestro dns irán', 'fireeye secuestro dns', 'abuso de certificados lets encrypt', 'seguridad dns', 'seguridad de dominios', 'ciberespionaje de estados nación', 'mitigar manipulación de infraestructura dns']

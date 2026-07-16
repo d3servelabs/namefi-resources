@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 区域文件中将域名映射到地址和服务的条目，包括 A、AAAA、CNAME、MX、TXT 等。
 keywords: ['DNS 记录', 'A 记录', 'AAAA 记录', 'CNAME', 'MX 记录', 'TXT 记录']
 level: 1

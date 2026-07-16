@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 서로 직접 통신할 수 없는 블록체인 간에 토큰이나 메시지를 이동시키는 프로토콜입니다.
 keywords: ['브리지', '크로스체인', '상호운용성', '토큰 브리지', '멀티체인']
 also_known_as: ['브리지']

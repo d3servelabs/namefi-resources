@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 根据 ISO 3166 列表分配给国家或地区的两字母顶级域名，如 .uk、.de 或 .jp。
 keywords: ['ccTLD', '国家代码 TLD', '国家域名', '.uk', '.de', 'ISO 3166']
 level: 1

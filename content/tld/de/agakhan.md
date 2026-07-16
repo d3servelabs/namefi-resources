@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Erfahren Sie alles über die .agakhan Top-Level-Domain: Bedeutung, Nutzung und Vorteile. Entdecken Sie, wie diese exklusive TLD Vertrauen schafft und wie Namefi Ihre Domain-Reise unterstützt.'
 keywords: ['.agakhan domains', 'TLD', 'top-level domain', 'was ist .agakhan', 'warum .agakhan wählen', 'was ist die .agakhan domain', 'warum die .agakhan domain wählen', 'domain investieren', 'blockchain domains', 'tokenisierte domains', 'Aga Khan Development Network', 'exklusive domains', 'web3 domains', 'marken TLD', 'domain registrierung']

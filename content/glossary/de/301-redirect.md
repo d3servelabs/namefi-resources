@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein HTTP-Statuscode, der Browsern und Suchmaschinen mitteilt, dass eine Seite dauerhaft auf eine neue URL umgezogen ist.
 keywords: ['301-Weiterleitung', 'Permanente Weiterleitung', 'HTTP-Weiterleitung', 'SEO', 'Domain-Weiterleitung', 'Link-Equity']
 also_known_as: ['Permanente Weiterleitung']

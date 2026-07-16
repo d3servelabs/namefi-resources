@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubre todo sobre el dominio .afamilycompany: su origen como TLD de marca, su importancia para la identidad corporativa y cómo los activos digitales están evolucionando."
 keywords: [".afamilycompany domains", ".afamilycompany TLD", "top-level domain", "what is .afamilycompany", "why choose .afamilycompany", "what is the .afamilycompany domain", "why choose the .afamilycompany domain", "domain investing", "blockchain domains", "tokenized domain", "SC Johnson domain", "brand TLD", "corporate identity domains", "web3 domains", "dominios de marca"]

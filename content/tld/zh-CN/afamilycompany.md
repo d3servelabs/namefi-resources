@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .afamilycompany 顶级域名（TLD）。探索其作为品牌顶级域名的独特价值、背后的家族企业精神以及如何在 Namefi 注册和管理您的域名资产。'
 keywords: ['.afamilycompany domains', '.afamilycompany TLD', 'top-level domain', 'what is .afamilycompany', 'why choose .afamilycompany', 'what is the .afamilycompany domain', 'why choose the .afamilycompany domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'family business branding', 'SC Johnson domain', 'Web3 domains', 'buy .afamilycompany domain', 'secure family domain']

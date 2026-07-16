@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La fecha en que finaliza el registro de un dominio; si no se renueva, inicia un proceso de caducidad hacia la eliminación.
 keywords: ['expiración de dominio', 'dominio expirado', 'renovación', 'período de gracia', 'redención']
 level: 1

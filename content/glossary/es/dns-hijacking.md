@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Redirigir el tráfico de un dominio manipulando la resolución DNS en lugar de su registro.
 keywords: ['secuestro DNS', 'envenenamiento de caché', 'suplantación DNS', 'DNSSEC', 'redirección de tráfico']
 level: 1

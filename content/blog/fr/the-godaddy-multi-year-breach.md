@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Entre 2020 et 2022, un seul groupe de menaces a vécu à l'intérieur de l'infrastructure de GoDaddy — volant du code source, exposant 1,2 million de clients Managed WordPress, et redirigeant par intermittence des sites clients vers des destinations malveillantes. Une analyse approfondie du risque de concentration chez les registraires et des leçons sur les points uniques de défaillance."
 keywords: ['violation godaddy', 'fuite de données godaddy', 'violation managed wordpress', 'sécurité registraire', 'sécurité domaine', 'violation pluriannuelle', 'malware cpanel', 'attaque de redirection de site', 'exposition clé privée ssl', 'violation mot de passe sftp', 'cybersécurité sec 10-k', 'risque de concentration registraire', 'point unique de défaillance']

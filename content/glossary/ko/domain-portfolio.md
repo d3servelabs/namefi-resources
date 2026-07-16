@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 한 명의 소유자가 보유한 도메인 모음으로, 갱신·매각·평가를 통해 투자 자산으로 관리됩니다.
 keywords: ['도메인 포트폴리오', '도메인 투자', '도메인 관리', '도메인 가치 평가', '도메인 자산']
 level: 1

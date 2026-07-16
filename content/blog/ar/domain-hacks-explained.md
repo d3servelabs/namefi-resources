@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'domain-investing', 'branding', 'domain-flipping']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

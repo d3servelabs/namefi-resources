@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: Know Your Customer — वे पहचान-सत्यापन जाँचें जो कोई विनियमित वित्तीय या क्रिप्टो सेवा उपयोगकर्ता को जोड़ने से पहले करती है।
 keywords: ['KYC', 'Know Your Customer', 'पहचान सत्यापन', 'ऑनबोर्डिंग', 'अनुपालन']
 also_known_as: ['Know Your Customer']

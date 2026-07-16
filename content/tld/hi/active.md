@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: ".active डोमेन एक गतिशील और ऊर्जावान ऑनलाइन पहचान के लिए बेहतरीन है। जानें कि यह फिटनेस, स्पोर्ट्स और लाइफस्टाइल ब्रांड्स के लिए क्यों सही है और Namefi पर इसे कैसे रजिस्टर करें।"
 keywords: [".active domains", ".active TLD", "top-level domain", "what is .active", "why choose .active", "what is the .active domain", "why choose the .active domain", "domain investing", "blockchain domains", "tokenized domain", "fitness domain name", "sports TLD", "lifestyle branding", "Namefi domain registration", "Web3 domains"]

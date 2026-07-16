@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: किसी डोमेन को उसके अनुमानित मूल्य के करीब कितनी जल्दी बेचा जा सकता है — बेहतरीन नामों के लिए अधिक, निशान-विशेष के लिए कम।
 keywords: ['domain liquidity', 'liquidity', 'domain marketability', 'domain sell speed', 'domain market depth']
 level: 1

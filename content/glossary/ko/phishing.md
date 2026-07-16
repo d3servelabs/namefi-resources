@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 신뢰할 수 있는 브랜드를 사칭한 가짜 사이트와 메시지를 통해 자격 증명이나 자금을 탈취하는 사기 수법입니다.
 keywords: ['피싱', '소셜 엔지니어링', '자격 증명 도용', '사칭', '도메인 악용']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld', 'airforce', 'domains', 'technology', 'aviation']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما يخص نطاق .airforce. الخيار الأمثل للمؤسسات العسكرية، وعشاق الطيران، والشركات ذات الصلة. احرف كيف تحجز نطاقك المييز عبر Namefi.'
 keywords: ['.airforce domains', '.airforce TLD', 'top-level domain', 'what is .airforce', 'why choose .airforce', 'what is the .airforce domain', 'why choose the .airforce domain', 'buy domain name', 'domain investing', 'blockchain domains', 'tokenized domain', 'aviation website', 'military community domains', 'Namefi', 'web3 domains']

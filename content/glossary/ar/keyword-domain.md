@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاق مبني حول كلمة مفتاحية بحثية ذات قيمة أو عبارة، بيُقدَّر لوضوحه الوصفي.
 keywords: ['نطاق الكلمة المفتاحية', 'نطاق غني بالكلمات المفتاحية', 'نطاق وصفي', 'نطاق كلمة بحث', 'اسم نطاق سيو']
 level: 1

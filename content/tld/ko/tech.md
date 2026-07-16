@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.tech 도메인은 Radix가 운영하는 개방형 신규 gTLD로, 기술 브랜드, 스타트업, 개발자를 위해 설계되었습니다. 적합한 대상, 장단점, 등록 방법을 알아보세요.'
 keywords: ['.tech 도메인', '.tech란 무엇인가', '.tech TLD', '기술 도메인 확장자', 'Radix 레지스트리', '스타트업용 신규 gTLD', '개발자 포트폴리오 도메인', '.tech 도메인 등록']

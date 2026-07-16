@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die standardisierten Flags einer Domain, die ihren Zustand anzeigen – gesperrt, zurückgehalten, ausstehender Transfer und mehr.
 keywords: ['EPP-Statuscodes', 'clientHold', 'serverTransferProhibited', 'Domain-Status', 'Pending Delete']
 level: 1

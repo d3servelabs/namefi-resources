@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 深入了解 .am 域名：从亚美尼亚国家代码到全球广播、播客及创意“域名拼接”的热门选择。探索 .am 的优势、知名案例以及为何它是您下一个数字化项目的理想后缀。立即在 Namefi 注册。
 keywords: ['.am domains', '.am TLD', 'top-level domain', 'what is .am', 'why choose .am', 'what is the .am domain', 'why choose the .am domain', '.am 域名', '亚美尼亚域名', '广播域名', '域名拼接', '创意域名', '域名投资', '区块链域名', 'Namefi']

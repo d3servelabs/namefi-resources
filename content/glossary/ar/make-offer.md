@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: صيغة قائمة نطاق بتدعو المشترين لتقديم عرض يقدر البائع يقبله أو يعارضه أو يرفضه.
 keywords: ['تقديم عرض', 'أفضل عرض', 'تفاوض على النطاق', 'عرض', 'عرض مقابل']
 level: 1

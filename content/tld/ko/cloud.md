@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.cloud 도메인은 Aruba PEC S.p.A.가 운영하는 오픈 gTLD로, 클라우드·SaaS·테크 브랜드를 위해 설계되었습니다. 적합한 사용자, 가격 동향, 평판을 알아보세요.'
 keywords: ['.cloud 도메인', '.cloud란', '.cloud TLD', '클라우드 컴퓨팅 도메인', 'SaaS 도메인 이름', 'Aruba .cloud 레지스트리', '신규 gTLD', '테크 도메인 확장자']

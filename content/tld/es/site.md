@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre qué es el dominio .site, sus ventajas para tu marca y por qué es una alternativa ideal al .com. Asegura tu identidad digital hoy con Namefi.'
 keywords: ['.site domains', '.site TLD', 'top-level domain', 'what is .site', 'why choose .site', 'what is the .site domain', 'why choose the .site domain', 'comprar dominio .site', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'registro de dominios', 'identidad digital', 'dominios web3', 'estrategia seo']

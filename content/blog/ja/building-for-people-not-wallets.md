@@ -5,6 +5,7 @@ language: ja
 tags: ['partners', 'namefi space']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 format: opinion
 description: PrivyのHenri Sternがどのようにして同社を構築してきたかを対話形式で掘り下げ、ユーザビリティ、顧客主導のプロダクト開発、そして暗号資産の複雑さから人間中心の設計へのシフトに焦点を当てた考察。

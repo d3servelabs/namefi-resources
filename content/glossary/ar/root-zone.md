@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: قمة هيكل DNS، بتحتوي على قائمة بكل TLD والخوادم الموثوقة ليه.
 keywords: ['منطقة الجذر', 'خوادم الجذر', 'هيكل DNS', 'تفويض TLD', 'IANA']
 level: 1

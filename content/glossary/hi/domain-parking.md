@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: राजस्व अर्जित करने या उपलब्धता का संकेत देने के लिए अविकसित डोमेन पर विज्ञापन या बिक्री नोटिस रखना।
 keywords: ['domain parking', 'parked domain', 'monetization', 'domain investing', 'passive income']
 also_known_as: ['पार्क्ड डोमेन']

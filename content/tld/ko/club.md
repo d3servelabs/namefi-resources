@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.club 도메인은 커뮤니티, 멤버십, Web3 그룹을 위한 개방형 gTLD입니다. 누가 사용하는지, SEO 측면에서의 위치, 가격 구조, 그리고 등록 방법을 알아보십시오.'
 keywords: ['.club 도메인', '.club TLD', '.club이란', '.club 도메인 등록', '커뮤니티 도메인', '멤버십 도메인', 'web3 클럽 도메인', '신규 gTLD', '클럽 도메인 SEO']

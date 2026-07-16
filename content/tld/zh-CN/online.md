@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .online 顶级域名（TLD）的优势与应用。无论是企业数字化转型还是个人品牌展示，.online 都是绝佳选择。立即在 Namefi 注册，体验 Web3 时代的域名管理。'
 keywords: ['.online domains', '.online TLD', 'top-level domain', 'what is .online', 'why choose .online', 'what is the .online domain', 'why choose the .online domain', 'domain investing', 'blockchain domains', 'tokenized domain', '.online域名注册', '购买.online域名', 'Web3 domains', 'new gTLD', 'Namefi']

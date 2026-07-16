@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: تسجيل نطاق أو استخدامه لاستغلال علامة تجارية، وهو عنصر مطلوب للفوز في قضية UDRP.
 keywords: ['النية السيئة', 'UDRP', 'نزاع النطاقات', 'احتلال النطاقات', 'التعدي على العلامات التجارية']
 level: 1

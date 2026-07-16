@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ASCII以外の文字を使用するドメイン名で、DNSではxn--で始まるASCII形式のPunycodeにエンコードされる。
 keywords: ['IDN', '国際化ドメイン名', 'Punycode', 'xn--', 'Unicodeドメイン', 'ホモグラフ']
 level: 1

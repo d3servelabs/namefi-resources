@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '深入解析 .alipay 顶级域名（TLD）：阿里巴巴旗下的专属品牌域名。探索其在金融科技中的信任价值、安全性优势，以及为何它是品牌保护的典范。立即在 Namefi 了解更多域名投资资讯。'
 keywords:

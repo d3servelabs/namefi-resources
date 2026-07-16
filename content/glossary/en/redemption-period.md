@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A post-expiration window where a lapsed domain can be recovered, usually for a steep redemption fee.
 keywords: ['redemption period', 'RGP', 'redemption grace period', 'expired domain recovery', 'redemption fee']
 level: 1

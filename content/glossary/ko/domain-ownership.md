@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인을 통제·사용·이전할 수 있는 권리. 토크나이제이션은 해당 권리를 등록기관 계정이 아닌 지갑에 온체인으로 기록합니다.
 keywords: ['도메인 소유권', 'NFT 도메인', '등록기관', '커스터디얼', '지갑 소유권']
 level: 1

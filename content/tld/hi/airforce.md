@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.airforce डोमेन के महत्व और उपयोग को समझें। यह एविएशन, सैन्य सहायता और दिग्गजों के लिए आदर्श है। Namefi के साथ अपनी .airforce डिजिटल पहचान सुरक्षित करें।'
 keywords:

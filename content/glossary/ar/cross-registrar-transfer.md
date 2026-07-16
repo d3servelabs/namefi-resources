@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي عمليات نقل النطاق بين المسجلين وكيف يسهل الترميز العملية؟
 keywords: ["نقل النطاق بين المسجلين","نقل المسجل","ترحيل النطاق","عملية النقل","الترميز"]
 relatedArticles:

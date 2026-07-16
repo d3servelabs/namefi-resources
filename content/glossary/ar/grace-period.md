@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نافذة قصيرة مباشرةً بعد انتهاء صلاحية النطاق بتقدر فيها تجدده بالسعر العادي.
 keywords: ['فترة السماح', 'فترة سماح التجديد التلقائي', 'انتهاء صلاحية النطاق', 'تجديد', 'RGP']
 level: 1

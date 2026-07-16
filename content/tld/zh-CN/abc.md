@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入解析 .abc 顶级域名 (TLD) 的价值。了解其含义、独特优势以及在教育和初创领域的应用。立即通过 Namefi 注册，开启您的 Web3 域名资产化之旅。'
 keywords: ['.abc domains', '.abc TLD', 'top-level domain', 'what is .abc', 'why choose .abc', 'what is the .abc domain', 'why choose the .abc domain', '.abc 域名', '域名投资', '区块链域名', 'tokenized domains', 'Web3 domains', '购买域名', '教育域名', 'Namefi']

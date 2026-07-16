@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एथेरियम नेम सर्विस मानव-पठनीय नामों जैसे alice.eth को वॉलेट पतों और रिकॉर्ड से मैप करती है, जिसे पूरी तरह से ऑन-चेन स्मार्ट कॉन्ट्रैक्ट द्वारा प्रबंधित किया जाता है।
 keywords: ['ENS', 'Ethereum Name Service', '.eth', 'web3 नाम', 'on-chain नामकरण', 'वॉलेट उपनाम', 'crypto identity']
 level: 1

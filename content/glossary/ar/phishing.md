@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: خداع الناس لإفشاء بيانات اعتمادهم أو أموالهم عبر مواقع ورسائل مزيّفة تنتحل هوية علامات تجارية موثوقة.
 keywords: ['تصيّد إلكتروني', 'هندسة اجتماعية', 'سرقة بيانات الاعتماد', 'انتحال الهوية', 'إساءة استخدام الدومين']
 level: 1

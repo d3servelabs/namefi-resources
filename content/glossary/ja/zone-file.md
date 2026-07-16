@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインのすべての DNS レコード（ネームサーバー用のグルーレコードを含む）を保持するテキストファイル。
 keywords: ['ゾーンファイル', 'グルーレコード', 'DNS ゾーン', '権威レコード', 'ネームサーバー']
 level: 1

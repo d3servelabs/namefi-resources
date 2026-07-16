@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: La fonction qui maintient la zone racine du DNS et alloue les blocs d'adresses IP ainsi que les numéros de protocole.
 keywords: ['IANA', 'zone racine', 'allocation IP', 'numéros de protocole', 'ICANN']
 level: 1

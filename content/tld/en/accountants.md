@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .accountants domain is an open gTLD for CPAs, bookkeepers, and accounting firms. Learn who can register it, how it is priced, and how it affects trust.'
 keywords: ['.accountants domain', 'what is .accountants', '.accountants TLD', 'accounting firm domain', 'CPA domain name', 'Identity Digital gTLD', 'bookkeeping website domain', 'niche TLD for accountants']

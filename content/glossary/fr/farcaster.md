@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que Farcaster et comment les domaines se rapportent-ils aux réseaux sociaux décentralisés ?
 keywords: ["Farcaster","social décentralisé","Web3 social","identité blockchain","protocole social"]
 relatedArticles:

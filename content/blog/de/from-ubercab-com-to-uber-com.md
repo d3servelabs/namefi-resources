@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Wie eine Unterlassungsaufforderung im Jahr 2010 UberCab dazu zwang, „Cab" zu streichen, wie Uber Uber.com von Universal Music für 2 % Eigenkapital im Wert von 107.000 USD erwarb und warum dieses Domain-Upgrade zu einem der folgenreichsten Deals in der Startup-Geschichte wurde.'
 keywords: ['ubercab.com', 'uber.com', 'uber domainname', 'domain-upgrade', 'ubercab unterlassungsaufforderung', 'universal music uber domain', 'startup-naming', 'markennamensgebung', 'premium-domain', 'domain-strategie', 'uber-geschichte', 'eigenkapital für domain', 'domain-akquisition', 'kategoriedefinierender domainname']

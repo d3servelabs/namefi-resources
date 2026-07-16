@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: صفحة نتائج محرك البحث عند استجابته لاستعلام ما، وهي الساحة التي تتنافس فيها الدومينات للحصول على ظهور.
 keywords: ['SERP', 'نتائج البحث', 'SEO', 'محرك بحث', 'ترتيب طبيعي', 'ظهور في البحث']
 also_known_as: ['Search Engine Results Page']

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '기술 리더십의 대명사인 .abb TLD를 살펴봅니다. 그 기원, 활용 방식, 그리고 도메인 투자자에게 지니는 가치를 알아보세요.'
 keywords: ['.abb 도메인', 'TLD', '최상위 도메인', '.abb란 무엇인가', '.abb를 선택해야 하는 이유', '.abb 도메인이란', '.abb 도메인을 선택해야 하는 이유', '도메인 투자 .abb', '블록체인 도메인', '토큰화 도메인', '산업용 도메인', '브랜드 TLD', 'Web3 도메인', 'Namefi']

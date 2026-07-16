@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Boostez votre visibilité avec l'extension .blog. Découvrez pourquoi ce TLD est idéal pour les créateurs et entreprises, et enregistrez le vôtre sur Namefi."
 keywords: [".blog domain", "domaine .blog", ".blog TLD", "top-level domain", "what is .blog", "why choose .blog", "qu'est-ce que le .blog", "pourquoi choisir le domaine .blog", "domain investing", "blockchain domains", "tokenized domain", "achat nom de domaine", "blogging SEO", "Web3 domains", "Namefi"]

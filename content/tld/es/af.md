@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el TLD .af: desde su origen como dominio de Afganistán hasta su popularidad en domain hacks creativos. Registra tu .af hoy mismo.'
 keywords: ['.af domains', 'TLD .af', 'top-level domain .af', 'what is .af', 'why choose .af', 'what is the .af domain', 'why choose the .af domain', 'comprar dominio .af', 'registro de dominios .af', 'domain hack .af', 'inversión en dominios', 'dominios tokenizados', 'dominios blockchain', 'significado dominio af', 'disponibilidad dominio .af']

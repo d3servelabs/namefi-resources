@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 자산에서 발생한 수익을 사전에 정해진 비율에 따라 관계 당사자들에게 자동으로 분배하는 약정으로, 스마트 계약을 통해 온체인에서 강제 이행됩니다.
 keywords: ['수익 분배', '패시브 인컴', '도메인 수익화', '이익 배분', '스마트 계약']
 level: 1

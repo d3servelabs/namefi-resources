@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un protocole pair-à-pair qui identifie les fichiers par leur contenu, utilisé pour héberger des données web décentralisées.
 keywords: ['IPFS', 'adressage par contenu', 'pair-à-pair', 'stockage décentralisé', 'CID']
 also_known_as: ['InterPlanetary File System']

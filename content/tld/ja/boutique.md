@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.boutiqueドメインは、厳選されたショップや小規模専門ブランド向けに設計されたオープンな汎用拡張子です。利用者、価格体系、自分に合っているかどうかを解説します。'
 keywords: ['.boutiqueドメイン', '.boutiqueとは', 'boutique TLD', 'boutiqueドメイン登録', '小規模ショップ向けドメイン', 'キュレーテッドブランドドメイン', '新gTLD', 'Binky Moon']

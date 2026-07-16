@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: خادم بيرد على استفسارات DNS للنطاق؛ سجلات NS بتسمّي الخوادم الموثوقة.
 keywords: ['خادم الأسماء', 'سجل NS', 'خادم موثوق', 'تفويض DNS', 'استضافة DNS']
 level: 1

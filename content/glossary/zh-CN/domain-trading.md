@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是域名交易，以及代币化如何改善交易体验？
 keywords: ["域名交易","域名投资","数字房地产","二级市场","流动性"]
 relatedArticles:

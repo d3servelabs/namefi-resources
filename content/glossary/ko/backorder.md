@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인이 만료되는 즉시 등록을 시도하는 서비스로, 만료 예정인 도메인을 선점할 수 있게 해 줍니다.
 keywords: ['백오더', '드롭 캐칭', '만료 도메인', '삭제 대기', '도메인 취득']
 level: 1

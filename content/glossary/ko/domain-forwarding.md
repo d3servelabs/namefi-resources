@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 방문자를 한 도메인에서 다른 주소로 자동 전송하는 설정으로, 주로 301 리디렉션 방식을 사용합니다.
 keywords: ['도메인 포워딩', '301 리디렉션', 'URL 리디렉션', 'DNS', '도메인 관리']
 level: 1

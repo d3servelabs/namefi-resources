@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是部分所有权？它如何适用于有价值的域名？
 keywords: ["部分所有权","共享所有权","域名分割","可访问性","代币化"]
 relatedArticles:

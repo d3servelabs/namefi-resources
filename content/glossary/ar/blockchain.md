@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: سجل مشترك قابل للإلحاق فقط ومُوزَّع على كتير من أجهزة الكمبيوتر، وهو أساس الملكية المُرمَّزة.
 keywords: ['بلوكتشين', 'سجل موزع', 'لامركزي', 'غير قابل للتعديل', 'توافق']
 level: 1

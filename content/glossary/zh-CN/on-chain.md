@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名语境中“链上”是什么意思？
 keywords: ["链上","区块链","智能合约","域名 NFT","去中心化"]
 relatedArticles:

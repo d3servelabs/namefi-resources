@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: DNS 记录可被解析器缓存的时长（以秒为单位），超时后必须重新查询。
 keywords: ['TTL', '生存时间', 'DNS 缓存', 'DNS 传播', '记录缓存']
 level: 1

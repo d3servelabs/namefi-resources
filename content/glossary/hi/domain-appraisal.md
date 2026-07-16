@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: तुलनात्मक बिक्री, कीवर्ड माँग, लंबाई और एक्सटेंशन के आधार पर किसी डोमेन का बाजार मूल्य अनुमानित करना।
 keywords: ['domain appraisal', 'domain valuation', 'domain worth', 'domain pricing', 'comparable sales']
 also_known_as: ['डोमेन वैल्यूएशन']

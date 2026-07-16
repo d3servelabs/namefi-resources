@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: WHOISとその後継であるRDAPは、ドメインの登録情報（登録事業者や有効期限など）を公開照会するサービスです。
 keywords: ['WHOIS', 'RDAP', 'ドメイン登録照会', '登録者情報', 'ドメイン所有者確認']
 level: 1

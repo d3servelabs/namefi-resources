@@ -5,6 +5,8 @@ language: 'ar'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'دومين .com هو العنوان الافتراضي للإنترنت التجاري. اتعرف على تاريخه، ومين يقدر يسجّله، وإزاي بيتحدد سعره، وليه لسه في المقدمة.'
 keywords: ['دومين .com', 'إيه هو .com', 'امتداد .com TLD', 'تسجيل دومين .com', 'معنى دومين com', '.com مقابل .net', 'دومينات الأعمال', 'دومين تجاري']

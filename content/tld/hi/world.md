@@ -7,6 +7,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.world डोमेन की बहुमुखी प्रतिभा को जानें। यह वैश्विक ब्रांड्स और समुदायों के लिए एक बेहतरीन विकल्प है। जानें कि आपको आज ही Namefi के साथ अपना .world डोमेन क्यों रजिस्टर करना चाहिए।'
 keywords:

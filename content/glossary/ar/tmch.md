@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: قاعدة بيانات العلامات التجارية المركزية لـ ICANN اللي بتشغّل التسجيل المبكر Sunrise وتنبيهات البراند في الـ gTLDs الجديدة.
 keywords: ['TMCH', 'Trademark Clearinghouse', 'فترة Sunrise', 'حماية البراند', 'gTLD جديد']
 also_known_as: ['TMCH']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Das bösgläubige Registrieren einer Domain, die einer fremden Marke entspricht, in der Absicht, davon zu profitieren.
 keywords: ['Cybersquatting', 'Bösgläubigkeit', 'Domain-Streit', 'Markenverletzung', 'UDRP']
 level: 1

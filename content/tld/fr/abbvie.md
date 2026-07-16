@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Tout savoir sur le domaine .abbvie. Découvrez ce qu'est cette extension exclusive, ses avantages pour la marque et comment sécuriser votre propre domaine avec Namefi."
 keywords: [".abbvie", "domaines .abbvie", "TLD .abbvie", "top-level domain .abbvie", "qu'est-ce que .abbvie", "pourquoi choisir .abbvie", "qu'est-ce que le domaine .abbvie", "pourquoi choisir le domaine .abbvie", "investir dans les domaines", "domaine tokenisé", "blockchain domains", "extension internet", "achat nom de domaine", "brand TLD", "ICANN"]

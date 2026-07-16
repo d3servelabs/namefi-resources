@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The ability to combine independent on-chain components like building blocks, so a tokenized domain can plug into lending, trading, and other protocols.
 keywords: ['composability', 'interoperability', 'building blocks', 'DeFi', 'Web3 integration']
 level: 1

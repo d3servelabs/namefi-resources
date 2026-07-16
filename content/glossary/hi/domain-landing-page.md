@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: पार्क्ड या बिक्री के लिए उपलब्ध डोमेन पर दिखाया जाने वाला एकल पेज, अक्सर विज्ञापन, खोज, या खरीद प्रस्ताव के साथ।
 keywords: ['landing page', 'lander', 'for-sale page', 'domain parking', 'domain monetization']
 also_known_as: ['लैंडिंग पेज']

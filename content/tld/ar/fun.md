@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما يخص نطاق .fun، الخيار الأمثل للمواقع الترفيهية والألعاب. تعرف على كيفية تسجيل نطاقك عبر Namefi ومزايا الاستثمار في هذا الامتداد المميز.'
 keywords: ['.fun domains', '.fun TLD', 'top-level domain', 'what is .fun', 'why choose .fun', 'what is the .fun domain', 'why choose the .fun domain', 'نطاقات .fun', 'شراء نطاق', 'استثمار النطاقات', 'blockchain domains', 'tokenized domains', 'نطاقات الألعاب', 'web3 domains', 'Namefi']

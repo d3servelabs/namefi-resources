@@ -5,6 +5,7 @@ language: hi
 tags: ['security', 'domains', 'registrar', 'incident-response']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'वास्तविक दुनिया में हमलावर कैसे डोमेन पर कब्ज़ा करते हैं, इसके 5 तरीकों—सोशल इंजीनियरिंग, रजिस्ट्रार अकाउंट कॉम्प्रोमाइज, DNS प्रोवाइडर टेकओवर, NS हाईजैक, और एक्सपायर्ड-डोमेन रिक्लेमेशन—और उन्हें रोकने वाले विशिष्ट सुरक्षा उपायों का एक व्यावहारिक विवरण।'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg

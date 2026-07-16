@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: L'adresse numérique qui identifie un appareil sur un réseau et vers laquelle le DNS fait pointer un nom de domaine.
 keywords: ['adresse IP', 'IPv4', 'IPv6', 'enregistrement A', 'enregistrement AAAA', 'réseau']
 level: 1

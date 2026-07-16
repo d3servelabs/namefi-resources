@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A status that blocks a domain from transferring to another registrar until it is explicitly unlocked.
 keywords: ['transfer lock', 'registrar lock', 'domain security', 'EPP status', 'domain transfer']
 also_known_as: ['Registrar Lock']

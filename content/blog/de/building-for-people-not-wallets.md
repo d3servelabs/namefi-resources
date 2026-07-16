@@ -5,6 +5,7 @@ language: de
 tags: ['partners']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: Ein dialogorientierter Einblick in Henri Sterns Weg beim Aufbau von Privy – mit Fokus auf Usability, kundengetriebene Produktentwicklung und den Wandel von kryptotechnischer Komplexität hin zu menschenzentriertem Design.
 relatedArticles:

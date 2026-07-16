@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.alipay डोमेन एक्सटेंशन (TLD) के बारे में सब कुछ जानें। यह फिनटेक और डिजिटल भुगतान के लिए क्यों महत्वपूर्ण है? Namefi पर अपनी ऑनलाइन पहचान और डोमेन सुरक्षित करें।'
 keywords:

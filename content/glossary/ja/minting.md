@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ブロックチェーン上に新しいトークンを作成すること。ドメインの場合は、その所有権を表すNFTを発行する処理を指す。
 keywords: ['ミンティング', 'ミント', 'NFT作成', 'トークン発行', 'オンチェーン']
 also_known_as: ['ミント']

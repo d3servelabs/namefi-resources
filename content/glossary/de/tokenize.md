@@ -5,6 +5,8 @@ language: de
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was bedeutet es, eine Domain oder ein Asset zu tokenisieren?
 keywords: ["tokenisieren","tokenisierung","NFT","digitales Asset","On-Chain-Asset"]
 relatedArticles:

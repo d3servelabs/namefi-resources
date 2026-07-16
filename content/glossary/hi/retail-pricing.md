@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह मूल्य जो एंड यूजर किसी डोमेन के लिए चुकाता है जिसे वे उपयोग करने का इरादा रखते हैं — आमतौर पर होलसेल निवेशक फ्लोर से कहीं अधिक।
 keywords: ['retail pricing', 'end user pricing', 'domain retail', 'end-user price', 'full price']
 also_known_as: ['एंड-यूजर प्राइसिंग']

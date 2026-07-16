@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: "航空業界専用の.aeroドメインの魅力を徹底解説。取得資格、メリット、そしてこの制限付き拡張子が即座に信頼を構築する理由とは。"
 keywords: [".aeroドメイン", "TLD", "トップレベルドメイン", ".aeroとは", ".aeroを選ぶ理由", ".aeroドメインとは", "航空ドメイン", "制限付きTLD", "SITAレジストリ", "ドメイン投資", "ブロックチェーンドメイン", "トークン化ドメイン", "航空宇宙ウェブアドレス", "航空会社ブランディング"]

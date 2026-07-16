@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le vol d'un domaine en prenant le contrôle non autorisé de son compte ou de son enregistrement chez le bureau d'enregistrement.
 keywords: ['piratage de domaine', 'compromission de compte', 'vol de domaine', 'sécurité du bureau d''enregistrement', 'transfert non autorisé']
 level: 1

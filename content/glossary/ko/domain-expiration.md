@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인 등록 기간이 종료되는 날짜로, 갱신하지 않으면 삭제 절차가 시작됩니다.
 keywords: ['도메인 만료', '만료 도메인', '갱신', '유예 기간', '환매 기간']
 level: 1

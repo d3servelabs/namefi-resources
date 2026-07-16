@@ -5,6 +5,8 @@ language: de
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist Sicherheit (Collateral) und wie können Domains als Sicherheit in DeFi dienen?
 keywords: ["Sicherheit","Collateral","Kreditvergabe","Kreditaufnahme","Domain-Sicherheit","DeFi"]
 relatedArticles:

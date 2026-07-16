@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Snapchat 如何悄然以据报道 500 万美元的价格从 Idealab 收购 Snap.com，随后在 2016 年 9 月更名为 Snap Inc.，自称"一家相机公司"，并让这个简短的精准匹配域名承载了远超单一应用的品牌身份。'
 keywords: ['snapchat.com', 'snap.com', 'snap inc', 'snap 域名', '域名升级', '初创公司命名', '品牌命名', '高价域名', '域名战略', 'snapchat 品牌重塑', '相机公司', 'idealab snap.com', '域名收购', '类别定义域名']

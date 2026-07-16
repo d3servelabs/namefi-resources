@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인 가치를 추정하기 위한 기준으로 활용되는 유사 도메인의 과거 거래 실적입니다.
 keywords: ['비교 판매 사례', '비교 사례', '도메인 판매 데이터', '도메인 가격 기준', '도메인 가격 이력']
 also_known_as: ['비교 사례']

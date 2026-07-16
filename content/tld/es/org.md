@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre el significado, la historia y los beneficios del dominio .org. Aprende por qué es sinónimo de confianza y cómo registrarlo hoy mismo con Namefi.'
 keywords: ['.org', 'domains', 'TLD', 'top-level domain', 'what is .org', 'why choose .org', 'what is the .org domain', 'why choose the .org domain', 'dominio .org', 'registrar dominio .org', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'web3 domains', 'dominios para ongs']

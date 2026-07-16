@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: La moitié partageable d''une paire de clés blockchain, dérivée de la clé privée ; utilisée pour recevoir des fonds et vérifier des signatures.
 keywords: ['clé publique', 'adresse', 'clé de vérification', 'cryptographie asymétrique', 'compte blockchain']
 level: 1

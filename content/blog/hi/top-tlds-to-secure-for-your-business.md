@@ -5,6 +5,7 @@ language: hi
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-business-og.jpg
 description: 'जानें कि अपने व्यवसाय के लिए कौन से शीर्ष TLD सुरक्षित करें, डिफेंसिव डोमेन पंजीकरण आपके ब्रांड की सुरक्षा क्यों करता है, और उन्हें स्मार्ट तरीके से कैसे पंजीकृत करें।'

@@ -5,6 +5,7 @@ language: es
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-accounting-firm-og.jpg
 description: 'Los mejores TLDs para asegurar para tu firma contable — desde el restringido .cpa hasta registros defensivos en .com, .net y .org que protegen tu marca y generan confianza con los clientes.'

@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: रजिस्ट्रेंट वह व्यक्ति या संगठन है जो एक पंजीकृत डोमेन नाम के अधिकार रखता है — रिकॉर्ड पर मालिक।
 keywords: ['रजिस्ट्रेंट', 'डोमेन मालिक', 'पंजीकृत नाम धारक', 'RNH', 'डोमेन स्वामित्व']
 level: 1

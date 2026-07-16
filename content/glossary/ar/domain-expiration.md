@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: التاريخ اللي بتنتهي فيه فترة تسجيل النطاق؛ لو ما اتجدّدش هيبدأ في سلسلة حذف.
 keywords: ['انتهاء صلاحية النطاق', 'نطاق منتهي', 'تجديد', 'فترة السماح', 'الاسترداد']
 level: 1

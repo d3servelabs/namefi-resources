@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: La pratique d'investir dans des noms de domaine — les enregistrer, les acheter et les vendre pour en tirer profit.
 keywords: ['domaining', 'domaineur', 'investissement domaine', 'revente de domaine', 'spéculation sur les domaines']
 level: 1

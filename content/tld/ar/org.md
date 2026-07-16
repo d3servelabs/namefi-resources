@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "دليلك الشامل حول نطاق .org: اكتشف معناه، تاريخه، ومزاياه الفريدة. تعرف على كيفية تسجيل نطاقك بآلية Web3 المتطورة عبر Namefi لبناء ثقة فورية مع جمهورك."
 keywords: [".org domains", "TLD", "top-level domain", "what is .org", "why choose .org", "what is the .org domain", "why choose the .org domain", "نطاق org", "حجز دومين", "نطاقات المستوى الأعلى", "استثمار النطاقات", "نطاقات البلوكشين", "توكنة النطاقات", "منظمات غير ربحية", "Namefi"]

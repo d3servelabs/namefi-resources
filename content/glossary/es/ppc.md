@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Modelo publicitario en el que el propietario gana cada vez que un visitante hace clic en un anuncio, usado para monetizar dominios aparcados.
 keywords: ['PPC', 'pago por clic', 'monetización de dominios', 'ingresos publicitarios', 'ingresos de aparcamiento']
 also_known_as: ['Pay-Per-Click']

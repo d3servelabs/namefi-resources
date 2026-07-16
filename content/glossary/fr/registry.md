@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: L''organisation qui exploite la base de données principale et les serveurs de noms d''un TLD, déléguant la vente au détail aux registraires.
 keywords: ['registre', 'opérateur de registre', 'registre TLD', 'registre de domaine', 'ICANN', 'registraire', 'EPP', 'registre gTLD', 'registre ccTLD', 'système de registre partagé']
 also_known_as: ['Opérateur de registre']

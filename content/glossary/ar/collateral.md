@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو الضمان وكيف يمكن للنطاقات أن تكون بمثابة ضمان في التمويل اللامركزي (DeFi)؟
 keywords: ["ضمان","تأمين","إقراض","اقتراض","ضمان النطاق","DeFi"]
 relatedArticles:

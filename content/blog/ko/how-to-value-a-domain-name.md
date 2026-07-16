@@ -5,6 +5,7 @@ language: ko
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Una lista de 12 o 24 palabras que codifica la clave maestra de una billetera; quien la posea controla la billetera, por lo que es lo único que debes respaldar.
 keywords: ['frase semilla', 'frase de recuperación', 'frase mnemónica', 'copia de seguridad de billetera', 'BIP39', '12 palabras', '24 palabras', 'recuperación cripto']
 level: 1

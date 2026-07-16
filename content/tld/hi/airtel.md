@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.airtel डोमेन के बारे में सब कुछ जानें। समझें कि यह TLD क्यों महत्वपूर्ण है, इसके फायदे क्या हैं और Namefi के साथ अपने डिजिटल भविष्य को कैसे सुरक्षित करें।'
 keywords:

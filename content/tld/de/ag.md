@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Entdecken Sie die Bedeutung der .ag Domain: Ideal für Aktiengesellschaften im deutschsprachigen Raum und Unternehmen in Antigua. Sichern Sie sich Ihre .ag TLD bei Namefi.'
 keywords:

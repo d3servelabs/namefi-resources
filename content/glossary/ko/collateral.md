@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 대출을 보증하기 위해 제공하는 자산으로, 채무불이행 시 대출자가 이를 청구할 수 있습니다. 토큰화된 도메인은 NFT 인식 대출에서 담보로 활용될 수 있습니다.
 keywords: ['담보', '보증', '대출', '차입', '도메인 담보', 'DeFi']
 level: 1

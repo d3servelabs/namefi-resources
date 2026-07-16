@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एसईओ क्या है और डोमेन टोकनाइजेशन खोज अनुकूलन को कैसे प्रभावित करता है?
 keywords: ["एसईओ","सर्च इंजन ऑप्टिमाइजेशन","डोमेन मूल्य","खोज रैंकिंग","डिजिटल मार्केटिंग"]
 relatedArticles:

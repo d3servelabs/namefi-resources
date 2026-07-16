@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 지갑의 개인 키를 오프라인 장치에 저장하고 트랜잭션을 기기 내부에서 서명하여, 키가 인터넷에 연결된 컴퓨터에 노출되지 않도록 하는 전용 보안 장치입니다.
 keywords: ['하드웨어 지갑', '콜드 월렛', 'Ledger', 'Trezor', 'GridPlus', 'Keystone', '보안 요소', '자기 수탁']
 level: 1

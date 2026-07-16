@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: شركة بتبيع دومينات تحت اعتماد مُسجِّل أكبر بدل ما تمتلك اعتمادها الخاص.
 keywords: ['موزّع', 'موزّع دومينات', 'مُسجِّل بعلامة بيضاء', 'اعتماد ICANN', 'مُسجِّل']
 level: 1

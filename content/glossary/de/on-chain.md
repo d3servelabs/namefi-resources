@@ -5,6 +5,8 @@ language: de
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was bedeutet "On-Chain" im Kontext von Domains?
 keywords: ["On-Chain","Blockchain","Smart Contracts","Domain-NFT","Dezentralisierung"]
 relatedArticles:

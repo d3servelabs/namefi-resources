@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Un guide des médias d'actualités, des sites de données de ventes et des podcasts qui couvrent l'industrie des noms de domaine avec une approche journalistique — DomainNameWire, DNJournal, TheDomains, NameBio, DomainSherpa, CircleID, et plus encore."
 ogImage: ../../assets/domain-industry-media-og.jpg

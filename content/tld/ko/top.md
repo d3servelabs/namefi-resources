@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.top 도메인은 짧고 키워드가 풍부한 이름으로 인기 있는 개방형 저비용 신규 gTLD입니다. 운영 주체, 등록 자격, SEO 영향 및 평판 관련 장단점을 알아보세요.'
 keywords: ['.top 도메인', '.top이란', '.top TLD', '.top 도메인 의미', '.top SEO에 좋은가', '.top vs .com', '.top 도메인 구매', '신규 gTLD']

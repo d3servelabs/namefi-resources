@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인 조회 요청을 받아 DNS 계층 구조를 탐색하여 해당 주소를 반환하는 서버입니다.
 keywords: ['DNS 리졸버', '재귀 리졸버', '리졸버', '8.8.8.8', '1.1.1.1', 'DNS 조회']
 level: 1

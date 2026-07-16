@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الرقم السري اللي بيتحكم في حساب البلوكشين وبيوقّع معاملاته؛ يجب إلا يُشارَك مطلقًا.
 keywords: ['مفتاح خاص', 'مفتاح التوقيع', 'مفتاح المحفظة', 'مفتاح سري', 'حساب البلوكشين']
 level: 1

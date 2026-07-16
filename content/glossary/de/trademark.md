@@ -5,6 +5,8 @@ language: de
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein rechtlich geschütztes Kennzeichen zur Identifikation von Waren oder Dienstleistungen einer Marke, zentral für viele Domain-Streitigkeiten.
 keywords: ['marke', 'markenschutz', 'geistiges eigentum', 'domain-streit', 'UDRP', 'WIPO']
 level: 1

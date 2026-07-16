@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .now domain is a closed Amazon brand TLD (dotBrand), not open for public registration. Here is what .now really is and what to buy instead.'
 keywords: ['.now domain', 'what is .now', '.now TLD', '.now top-level domain', 'Amazon Registry Services', 'brand TLD', 'dotBrand', 'Specification 13']

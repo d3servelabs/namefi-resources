@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.am डोमेन एक्सटेंशन (TLD) के बारे में सब कुछ जानें। समझें कि स्टार्टअप्स, मीडिया और आर्मेनिया के व्यवसायों के लिए यह एक बेहतरीन विकल्प क्यों है।'
 keywords:

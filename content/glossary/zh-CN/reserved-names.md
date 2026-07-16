@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 注册局从公开注册中扣留的域名，如溢价、政策规定或受保护的标签。
 keywords: ['保留名称', '屏蔽名称', '注册局保留', '保留溢价', '碰撞列表']
 level: 1

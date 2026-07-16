@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन बंडल क्या है और टोकनाइज़ेशन पोर्टफोलियो प्रबंधन को कैसे सक्षम बनाता है?
 keywords: ["डोमेन बंडल","पोर्टफोलियो","थोक ट्रेडिंग","डोमेन कलेक्शन","एसेट मैनेजमेंट"]
 relatedArticles:

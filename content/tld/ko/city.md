@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.city는 Identity Digital이 운영하는 개방형 일반 최상위 도메인으로, 지역 비즈니스, 도시 가이드, 커뮤니티 사이트를 위해 설계되었습니다. 누구에게 적합한지, 그 이유는 무엇인지 살펴봅니다.'
 keywords: ['.city 도메인', '.city란 무엇인가', '.city TLD', '지역 비즈니스 도메인', '도시 도메인 이름', 'Identity Digital', '신규 gTLD', '커뮤니티 웹사이트 도메인']

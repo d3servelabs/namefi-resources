@@ -5,6 +5,7 @@ language: ar
 tags: ['partners']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: استكشاف قائم على الحوار لرحلة هنري ستيرن في بناء Privy، مع التركيز على قابلية الاستخدام، وتطوير المنتجات بقيادة العملاء، والتحول من تعقيد التشفير إلى تصميم يتمحور حول الإنسان.
 relatedArticles:

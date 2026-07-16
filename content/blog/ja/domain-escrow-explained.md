@@ -5,6 +5,7 @@ language: ja
 tags: ['guide', 'domains', 'domain-investing', 'domain-flipping']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: domain-basics
 format: explainer

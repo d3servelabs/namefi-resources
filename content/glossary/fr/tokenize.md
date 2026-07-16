@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Que signifie tokeniser un domaine ou un actif ?
 keywords: ["tokeniser","tokenisation","NFT","actif numérique","actif on-chain"]
 relatedArticles:

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف قوة نطاق .africa لعملك التجاري. تعرف على سبب كونه البوابة الرقمية للقارة وكيفية تسجيله بسهولة وأمان مع Namefi اليوم لتعزيز تواجدك الرقمي.'
 keywords: ['.africa domains', '.africa TLD', 'top-level domain', 'what is .africa', 'why choose .africa', 'what is the .africa domain', 'why choose the .africa domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'African digital market', 'Web3 domains', 'تسجيل نطاق africa', 'دومين أفريقيا', 'شراء نطاق africa']

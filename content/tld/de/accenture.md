@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Erfahren Sie alles über die .accenture Top-Level-Domain: Was sie ist, wie sie genutzt wird und warum Brand-TLDs die digitale Identität revolutionieren.'
 keywords:

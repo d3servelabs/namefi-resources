@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist ein NFT und wie hängt es mit der Domain-Tokenisierung zusammen?
 keywords: ["NFT","non-fungible token","blockchain","einzigartiger Vermögenswert","Domain-NFT"]
 relatedArticles:

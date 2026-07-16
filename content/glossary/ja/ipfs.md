@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ファイルをサーバーの場所ではなくコンテンツのハッシュで識別するピアツーピアプロトコル。分散型Webデータのホスティングに使用される。
 keywords: ['IPFS', 'コンテンツアドレッシング', 'ピアツーピア', '分散型ストレージ', 'CID']
 also_known_as: ['InterPlanetary File System']

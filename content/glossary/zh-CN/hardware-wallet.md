@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种专用离线设备，在设备本地存储钱包私钥并签署交易，使私钥永远不会接触联网计算机。
 keywords: ['硬件钱包', '冷钱包', 'Ledger', 'Trezor', 'GridPlus', 'Keystone', '安全元件', '自托管']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Registro de errores tipográficos de dominios populares para capturar tráfico mal escrito, frecuentemente con fines publicitarios o de phishing.
 keywords: ['typosquatting', 'dominio tipográfico', 'phishing', 'abuso de marca', 'ciberocupación']
 level: 1

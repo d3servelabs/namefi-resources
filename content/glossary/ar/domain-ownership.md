@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ماذا تعني ملكية النطاق عند ترميزها؟
 keywords: ["ملكية النطاق","نطاق NFT","مسجل نطاقات","حضانة","ملكية المحفظة"]
 relatedArticles:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 邀请买家提交报价、卖家可接受、还价或拒绝的域名挂牌模式。
 keywords: ['议价', '最佳报价', '域名谈判', '出价', '还价']
 level: 1

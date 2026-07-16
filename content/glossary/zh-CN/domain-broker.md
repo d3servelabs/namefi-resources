@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 在买卖双方之间居中协调域名交易的专业中介，通常按成交价收取佣金。
 keywords: ['域名经纪人', '域名经纪', '域名谈判', '域名中介', '域名佣金']
 level: 1

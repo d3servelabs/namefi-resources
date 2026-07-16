@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Adquisición de un dominio mediante pagos periódicos que acumulan valor hacia la propiedad total, similar al alquiler con opción a compra.
 keywords: ['arrendamiento con opción a compra', 'adquisición de dominio', 'cuotas', 'financiación de dominio', 'alquiler con opción a compra']
 level: 1

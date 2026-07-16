@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج معرفته عن نطاق .alsace، الخيار الأمثل لتعزيز الهوية الرقمية المرتبطة بمنطقة الألزاس. تعرف على المزايا وكيفية التسجيل عبر Namefi."
 keywords: [".alsace domains", ".alsace TLD", "top-level domain", "what is .alsace", "why choose .alsace", "what is the .alsace domain", "why choose the .alsace domain", "Alsace region domains", "geoTLD", "France domains", "local business domains", "domain investing", "blockchain domains", "tokenized domain", "Namefi"]

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Una ventana breve justo después de que un dominio expira en la que aún puede renovarlo al precio normal.
 keywords: ['período de gracia', 'período de gracia de renovación automática', 'expiración de dominio', 'renovación', 'RGP']
 level: 1

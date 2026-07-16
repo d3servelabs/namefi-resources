@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Umleitung des Internetverkehrs durch falsche Ankündigung von IP-Routen – ein Netzwerkangriff unterhalb der DNS-Ebene.
 keywords: ['BGP-Hijack', 'Route-Hijacking', 'IP-Präfix', 'Netzwerksicherheit', 'Internet-Routing']
 level: 1

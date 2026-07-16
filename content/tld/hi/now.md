@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.now TLD आपके ब्रांड को तत्काल पहचान और आधुनिकता देता है। जानें कि .now डोमेन आपके ऑनलाइन व्यवसाय, रियल-टाइम सेवाओं और SEO के लिए क्यों बेहतरीन विकल्प है।'
 keywords: ['.now domains', 'TLD', 'top-level domain', 'what is .now', 'why choose .now', 'what is the .now domain', 'why choose the .now domain', 'domain investing', 'blockchain', 'tokenized domain', 'buy .now domain', 'real-time domains', 'new gTLD', 'creative domain names', 'Namefi']

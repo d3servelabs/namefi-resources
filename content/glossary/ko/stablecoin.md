@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 미국 달러 등 기준 자산에 대해 안정적인 가치를 유지하도록 설계된 암호화폐로, 가격 변동성 없이 결제 및 정산에 활용됩니다.
 keywords: ['스테이블코인', 'USDC', 'USDT', 'DAI', '법정화폐 연동', '암호화폐 결제', '온체인 달러']
 level: 1

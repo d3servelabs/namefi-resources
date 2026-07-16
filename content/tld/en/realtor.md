@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .realtor domain is a restricted real-estate TLD limited to NAR and CREA members. Learn who can register, who runs it, and how it works for agents.'
 keywords: ['.realtor domains', 'what is .realtor', '.realtor TLD', 'realtor domain extension', 'real estate domain names', 'NAR domain', 'realtor website domain', 'Real Estate Domains LLC']

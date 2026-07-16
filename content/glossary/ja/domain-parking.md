@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 未開発のドメインに広告や売却告知を表示し、収益を得るかドメインの空き状況を示す慣行。
 keywords: ['ドメインパーキング', 'パーキングドメイン', '収益化', 'ドメイン投資', '不労所得']
 also_known_as: ['パーキングドメイン']

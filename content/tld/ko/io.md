@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.io 도메인은 스타트업, 개발자, Web3 프로젝트의 사실상 표준입니다. 그 기원, 등록 자격, 가격 구조, 평판을 알아보세요.'
 keywords: ['.io 도메인', '.io란', '.io TLD', '.io 도메인 확장자', '.io 도메인 등록', 'io 도메인 의미', '.io vs .ai', '테크 스타트업 도메인']

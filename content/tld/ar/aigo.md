@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق .aigo، وميزاته للشركات الناشئة في مجال الذكاء الاصطناعي والبلوكتشين، وكيفية حجزه بسهولة عبر Namefi.'
 keywords: ['.aigo domains', '.aigo TLD', 'top-level domain', 'what is .aigo', 'why choose .aigo', 'what is the .aigo domain', 'why choose the .aigo domain', 'domain investing', 'blockchain', 'tokenized domain', 'نطاقات .aigo', 'الاستثمار في النطاقات', 'نطاقات البلوكتشين', 'شراء نطاق .aigo']

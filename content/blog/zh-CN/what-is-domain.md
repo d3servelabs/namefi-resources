@@ -9,6 +9,8 @@ authors:
   - fenwei-bian
 editors:
   - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: 域名是您在线身份的基石。
 keywords:

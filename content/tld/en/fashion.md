@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .fashion domain is an open gTLD for designers, apparel labels, and style brands who want a name that says exactly what they do — here is who it suits and why.'
 keywords: ['.fashion domain', 'what is .fashion', 'fashion TLD', 'fashion brand domain', 'apparel domain name', 'style domain extension', 'register .fashion', 'GoDaddy Registry']

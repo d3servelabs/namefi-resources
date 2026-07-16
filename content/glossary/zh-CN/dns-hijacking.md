@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 通过篡改 DNS 解析而非域名注册本身，将域名流量重定向至恶意目标。
 keywords: ['DNS劫持', '缓存投毒', 'DNS欺骗', 'DNSSEC', '流量重定向']
 level: 1

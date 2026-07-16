@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.agakhan TLDの目的を解説します。AKDNのための独自ドメイン拡張子、ブランドTLD、デジタル信頼性、ドメインアイデンティティについて学べます。'
 keywords: ['.agakhanドメイン', '.agakhan TLD', 'トップレベルドメイン', '.agakhanとは', '.agakhanを選ぶ理由', '.agakhanドメインとは', 'ブランドTLD', 'アガ・カーン開発ネットワーク', 'ドメイン投資', 'ブロックチェーンドメイン', 'トークン化ドメイン', 'デジタルアイデンティティ', 'セキュアドメイン', 'NGOドメイン']

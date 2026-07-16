@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ウォレット内のブロックチェーントークンとして所有権が表現された、実際のDNSドメインのこと。
 keywords: ['トークン化ドメイン', 'ドメインNFT', 'オンチェーンドメイン', 'ドメイン所有権', 'web3ドメイン']
 level: 1

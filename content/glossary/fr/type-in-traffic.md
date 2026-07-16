@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Les visiteurs qui accèdent à un site en tapant directement un domaine deviné, la base des revenus du parking de domaines.
 keywords: ['trafic en saisie directe', 'navigation directe', 'parking de domaines', 'domaine à correspondance exacte', 'valeur de domaine']
 level: 1

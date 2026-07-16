@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: DNS प्रोपेगेशन वह देरी है जिसके बाद DNS परिवर्तन हर जगह दिखने लगता है, जैसे-जैसे रिज़ॉल्वर पर कैश्ड पुराने रिकॉर्ड समाप्त होते हैं।
 keywords: ['DNS प्रोपेगेशन', 'DNS अपडेट देरी', 'TTL', 'DNS कैश', 'नेमसर्वर बदलाव']
 level: 1

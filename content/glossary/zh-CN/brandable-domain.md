@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 以简短、悦耳、易于记忆为核心价值的域名，通常是创造性的造词，而非描述性关键词。
 keywords: ['品牌型域名', '品牌域名', '创意域名', '造词域名', '易记域名']
 level: 1

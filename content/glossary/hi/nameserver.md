@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: नेमसर्वर वह सर्वर है जो किसी डोमेन के DNS क्वेरी का जवाब देता है और NS रिकॉर्ड अधिकृत सर्वर का नाम बताते हैं।
 keywords: ['नेमसर्वर', 'NS रिकॉर्ड', 'अधिकृत सर्वर', 'DNS डेलिगेशन', 'DNS होस्टिंग']
 level: 1

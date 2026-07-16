@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: WHOIS 及其继任者 RDAP 是用于查询域名注册详情（如注册商和到期日期）的公开查询服务。
 keywords: ['WHOIS', 'RDAP', '域名注册查询', '注册人信息', '域名所有权查询']
 level: 1

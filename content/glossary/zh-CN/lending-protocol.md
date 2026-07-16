@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是借贷协议以及域名如何用于 DeFi 借贷？
 keywords: ["借贷协议","DeFi","抵押品","借贷","域名金融","收益"]
 relatedArticles:

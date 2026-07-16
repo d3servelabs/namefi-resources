@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo Slack lanzó en SlackHQ.com porque otra persona tenía Slack.com, pagó una cifra reportada de $60,000 para comprar el dominio exacto, eliminó las "HQ" — y por qué @SlackHQ sigue vivo en las redes sociales hasta hoy.'
 keywords: ['slackhq.com', 'slack.com', 'nombre de dominio slack', 'mejora de dominio', 'stewart butterfield', 'tiny speck', 'dominio de coincidencia exacta', 'naming de startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'historia de slack', 'adquisición de dominio', 'dominio que define una categoría']

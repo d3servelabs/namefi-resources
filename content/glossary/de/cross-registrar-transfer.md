@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was sind Cross-Registrar-Transfers und wie vereinfacht die Tokenisierung den Prozess?
 keywords: ["Cross-Registrar-Transfer","Registrar-Transfer","Domain-Migration","Transferprozess","Tokenisierung"]
 relatedArticles:

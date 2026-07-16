@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-real-estate-business-og.jpg
 description: '每位房产经纪人都应注册的十大顶级域名，涵盖 .realtor 资格要求、防御性注册技巧及推荐注册平台。'

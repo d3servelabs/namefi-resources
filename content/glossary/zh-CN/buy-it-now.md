@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名挂牌的固定即时购买价格，支付即成交，无需谈判。
 keywords: ['一口价', 'BIN', '即时购买', '固定价格', '域名挂牌']
 also_known_as: ['BIN']

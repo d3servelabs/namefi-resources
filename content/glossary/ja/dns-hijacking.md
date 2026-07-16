@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインの登録情報ではなくDNS解決レイヤーを改ざんすることで、トラフィックを不正に転送する攻撃手法。
 keywords: ['DNSハイジャック', 'キャッシュポイズニング', 'DNSスプーフィング', 'DNSSEC', 'トラフィックリダイレクト']
 level: 1

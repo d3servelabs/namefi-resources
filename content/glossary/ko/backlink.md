@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 다른 웹사이트에서 내 사이트로 연결되는 인바운드 하이퍼링크로, 검색 순위와 도메인 권위도를 결정하는 핵심 요소입니다.
 keywords: ['백링크', '인바운드 링크', '링크 빌딩', '링크 에쿼티', 'seo']
 also_known_as: ['인바운드 링크']

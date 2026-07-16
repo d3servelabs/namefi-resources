@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: DNSルートゾーンを管理し、IPアドレスブロックおよびプロトコル番号を割り当てる機能組織。
 keywords: ['IANA', 'ルートゾーン', 'IPアドレス割り当て', 'プロトコル番号', 'ICANN']
 level: 1

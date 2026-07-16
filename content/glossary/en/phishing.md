@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Tricking people into revealing credentials or funds via fake sites and messages that impersonate trusted brands.
 keywords: ['phishing', 'social engineering', 'credential theft', 'impersonation', 'domain abuse']
 level: 1

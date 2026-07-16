@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".abudhabi TLD로 UAE 수도에 디지털 존재감을 구축하세요. 주요 혜택, SEO 이점, 그리고 Namefi를 통한 등록 방법을 알아보세요."
 keywords: [".abudhabi 도메인", ".abudhabi TLD", "최상위 도메인", ".abudhabi란", ".abudhabi를 선택하는 이유", ".abudhabi 도메인이란", ".abudhabi 도메인을 선택하는 이유", "아부다비 도메인 등록", "UAE 디지털 정체성", "지오-TLD 아부다비", "중동 비즈니스 도메인", "UAE 도메인 투자", "토큰화 도메인 자산", "블록체인 도메인 아부다비", "아부다비 로컬 SEO"]

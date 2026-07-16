@@ -5,6 +5,8 @@ language: ta
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரே தொகுப்பாக விற்கப்படும் அல்லது நிர்வகிக்கப்படும் தொடர்புடைய டொமைன் பெயர்களின் குழு; பொதுவாக பல TLDகள் அல்லது ஒரு brand-இன் எழுத்துப் பிழை வடிவங்களை உள்ளடக்கியது.
 keywords: ['டொமைன் தொகுப்பு', 'போர்ட்ஃபோலியோ', 'மொத்த வர்த்தகம்', 'டொமைன் தொகை', 'சொத்து மேலாண்மை']
 level: 1

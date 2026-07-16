@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld', 'brand domains', 'digital identity', 'domain investing']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Everything you need to know about the .aetna TLD. Explore the purpose of this unique domain extension, its role in corporate branding, and the future of digital identity."
 keywords: [".aetna domains", "TLD", "top-level domain", "what is .aetna", "why choose .aetna", "what is the .aetna domain", "why choose the .aetna domain", "brand TLD", "corporate domain names", "domain investing", "blockchain domains", "tokenized domain", "secure web addresses", "insurance domains", "Namefi"]

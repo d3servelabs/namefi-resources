@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: किसी डोमेन पर मानकीकृत फ्लैग जो उसकी स्थिति दर्शाते हैं — लॉक्ड, होल्ड पर, ट्रांसफर पेंडिंग, और अधिक।
 keywords: ['EPP status codes', 'clientHold', 'serverTransferProhibited', 'domain status', 'pending delete']
 level: 1

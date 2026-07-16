@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist Komponierbarkeit und wie findet sie Anwendung bei tokenisierten Domains?
 keywords: ["Komponierbarkeit","Interoperabilität","Bausteine","DeFi","Web3-Integration"]
 relatedArticles:

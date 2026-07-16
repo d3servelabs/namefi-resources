@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 스마트 컨트랙트 규칙과 구성원 투표로 운영되는 탈중앙화 자율 조직으로, 중앙 경영진 없이 공동 자산을 관리합니다.
 keywords: ['DAO', '탈중앙화 자율 조직', '거버넌스', '공동 소유', '스마트 컨트랙트']
 level: 1

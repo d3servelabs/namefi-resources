@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .allfinanz 顶级域名（TLD）。探索其在综合金融服务领域的独特含义，了解它如何提升品牌信任度，以及如何在 Namefi 注册这一独特的金融域名。'
 keywords: ['.allfinanz', '.allfinanz domains', '.allfinanz TLD', 'top-level domain', 'what is .allfinanz', 'why choose .allfinanz', 'what is the .allfinanz domain', 'why choose the .allfinanz domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'financial domains', 'fintech TLD', 'comprehensive finance', 'Namefi']

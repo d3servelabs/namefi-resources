@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'कैसे एक 2011 के पेट स्टार्टअप ने "Mr. Chewy" नाम से MrChewy.com पर शुरुआत की, "Mr." हटाकर Chewy.com पर आ गए, और क्यों यह एक-शब्द डोमेन अपग्रेड चुपचाप उस ब्रांड का हिस्सा बन गई जिसे PetSmart ने $3.35 अरब में खरीदा।'
 keywords: ['mrchewy.com', 'chewy.com', 'chewy domain name', 'mr chewy', 'domain upgrade', 'ryan cohen', 'michael day', 'frank schilling', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'pet ecommerce']

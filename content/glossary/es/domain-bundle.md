@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es un paquete de dominios y cómo la tokenización permite la gestión de carteras?
 keywords: ["paquete de dominios","cartera","comercio a granel","colección de dominios","gestión de activos"]
 relatedArticles:

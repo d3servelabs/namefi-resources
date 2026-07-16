@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'El 21 de octubre de 2016, un ataque DDoS impulsado por la botnet IoT Mirai golpeó al proveedor de DNS Dyn en tres oleadas, dejando fuera de línea durante horas a Twitter, Netflix, Reddit, Spotify, GitHub, Airbnb y PayPal — un caso de estudio sobre la concentración de proveedores DNS.'
 keywords: ['ataque dns dyn', 'botnet mirai', 'ddos 21 octubre 2016', 'ataque ddos dns', 'botnet iot', 'caída proveedor dns', 'seguridad de dominios', 'punto único de fallo dns', 'ddos dyn 2016', 'malware mirai', 'caída de internet 2016', 'redundancia dns', 'cámaras iot hackeadas']

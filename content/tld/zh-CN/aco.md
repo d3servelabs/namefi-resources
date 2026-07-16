@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '深入了解 .aco 顶级域名的独特价值。无论您是医疗行业的创新者还是寻找简短品牌的初创公司，探索 .aco 域名的优势，并在 Namefi 开启您的 Web3 域名投资之旅。'
 keywords:

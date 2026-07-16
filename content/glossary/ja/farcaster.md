@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: アカウント・アイデンティティ・ソーシャルグラフを特定企業のサーバーではなくオンチェーンで管理する、Ethereum上に構築された分散型ソーシャルネットワーク。
 keywords: ['Farcaster', '分散型ソーシャル', 'Web3ソーシャル', 'ブロックチェーンアイデンティティ', 'ソーシャルプロトコル']
 level: 1

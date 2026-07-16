@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是域名捆绑包，代币化如何实现投资组合管理？
 keywords: ["域名捆绑包","投资组合","批量交易","域名集合","资产管理"]
 relatedArticles:

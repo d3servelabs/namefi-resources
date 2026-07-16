@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 레지스트라가 도메인을 다른 레지스트라로 이전하는 것을 승인하기 위해 발급하는 도메인별 단일 비밀 코드로, EPP 코드 또는 이전 코드라고도 합니다.
 keywords: ['인증 코드', 'EPP 코드', '이전 코드', '도메인 이전', '승인 코드', 'AuthInfo 코드']
 level: 1

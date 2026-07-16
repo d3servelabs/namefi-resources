@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez l'extension de domaine .top : sa signification, sa popularité mondiale et pourquoi c'est un choix stratégique pour votre marque avec Namefi."
 keywords: [".top domains", ".top TLD", "top-level domain", "what is .top", "why choose .top", "what is the .top domain", "why choose the .top domain", "domaine .top", "acheter domaine .top", "investissement domaine", "domaines tokenisés", "blockchain domains", "enregistrement domaine .top", "signification domaine .top", "Web3 domains"]

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 단일 주체가 소유권을 일방적으로 압류·차단·변경할 수 없는 속성으로, 통제권이 공개 원장 위의 키 보유자에게 귀속됩니다.
 keywords: ['검열 불가', '검열 저항', '탈중앙화', '자유', '중단 불가능']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 公開鍵暗号に基づく保護方式であり、サーバーから漏洩しうるパスワードではなく、秘密鍵の保持者だけが操作を承認できる。
 keywords: ['暗号学的セキュリティ', '暗号化', '秘密鍵', 'デジタル署名', 'ブロックチェーンセキュリティ']
 level: 1

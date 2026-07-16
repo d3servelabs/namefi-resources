@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .ad 顶级域名：从其作为安道尔国家代码的起源，到成为广告行业的首选。探索 .ad 域名如何提升您的品牌形象，以及为什么它是营销和创意领域的绝佳选择。'
 keywords: ['.ad 域名', '.ad domains', '.ad TLD', 'top-level domain', 'what is .ad', 'why choose .ad', 'what is the .ad domain', 'why choose the .ad domain', '安道尔域名', '广告域名', '创意域名', '域名投资', '区块链域名', 'Web3 domains', 'advertising domains']

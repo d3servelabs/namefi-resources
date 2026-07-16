@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक मूल्यवान सर्च कीवर्ड या वाक्यांश पर आधारित डोमेन, जो वर्णनात्मक स्पष्टता के लिए महत्व रखता है।
 keywords: ['keyword domain', 'keyword-rich domain', 'descriptive domain', 'search keyword domain', 'SEO domain name']
 level: 1

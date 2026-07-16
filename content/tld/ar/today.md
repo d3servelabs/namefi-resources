@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .today. تعرف على استخداماته، ميزاته، وكيفية حجزه الآن عبر Namefi لتعزيز حضورك الرقمي واستثمار النطاقات.'
 keywords: ['.today domains', 'TLD', 'top-level domain', 'what is .today', 'why choose .today', 'what is the .today domain', 'why choose the .today domain', 'شراء نطاق .today', 'معنى نطاق .today', 'domain investing', 'blockchain domains', 'tokenized domain', 'نطاقات الويب 3', 'استثمار النطاقات', 'Namefi']

@@ -5,6 +5,8 @@ language: 'ta'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.club டொமைன் என்பது சமூகங்கள், உறுப்பினர் திட்டங்கள் மற்றும் Web3 குழுக்களுக்கான திறந்த gTLD ஆகும். யார் இதை பயன்படுத்துகிறார்கள், SEO நிலை, விலை இயக்கவியல் மற்றும் பதிவு செய்வது எப்படி என்று அறிந்துகொள்ளுங்கள்.'
 keywords: ['.club டொமைன்', '.club TLD', '.club என்றால் என்ன', '.club டொமைன் பதிவு', 'சமூக டொமைன்', 'உறுப்பினர் டொமைன்', 'web3 கிளப் டொமைன்', 'புதிய gTLD', 'கிளப் டொமைன் SEO']

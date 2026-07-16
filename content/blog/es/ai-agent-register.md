@@ -5,6 +5,7 @@ language: 'es'
 tags: ['ai-agents', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 format: guide
 ogImage: ../../assets/ai-agent-register-og.jpg

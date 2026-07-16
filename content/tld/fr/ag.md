@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .ag : un choix stratégique pour les sociétés (AG), le marché de l'argent et l'agriculture. Enregistrez votre domaine .ag sur Namefi."
 keywords: [".ag domains", ".ag TLD", "top-level domain", "what is .ag", "why choose .ag", "what is the .ag domain", "why choose the .ag domain", "domaine ag", "achat nom de domaine ag", "investissement domaine", "domaine blockchain", "tokenized domain", "domaine agriculture", "Aktiengesellschaft domaine", "domaine argent métal", "nom de domaine suisse allemagne"]

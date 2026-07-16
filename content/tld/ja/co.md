@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.coドメインとは何か？コロンビアのccTLDでありながら、世界中で「.com」や「company」の短い代替として普及。運営者・登録資格・価格・SEOへの影響を解説。'
 keywords: ['.coドメイン', '.co TLD', 'coドメイン', '.coとは', '.coドメインとは', '.co vs .com', 'スタートアップ向けドメイン', 'コロンビアドメイン', '.coドメイン登録', '短い会社ドメイン']

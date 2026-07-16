@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: ".allstate TLDの目的を解説します。ブランドTLDの仕組み、セキュリティと信頼性の向上効果、そしてNamefiで自社のドメイン戦略を構築する方法をご紹介します。"
 keywords: ['.allstateドメイン', '.allstate TLD', 'トップレベルドメイン', '.allstateとは', '.allstateを選ぶ理由', '.allstateドメインとは', 'ドメイン投資', 'ブロックチェーンドメイン', 'トークン化ドメイン', 'ブランドTLD', '保険ドメイン', '企業ドメイン戦略', 'Web3ドメイン', 'Namefi']

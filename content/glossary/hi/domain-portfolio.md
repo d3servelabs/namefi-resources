@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक मालिक द्वारा रखे गए डोमेन का संग्रह, जिसे नवीनीकरण, बिक्री और मूल्यांकन के साथ निवेश के रूप में प्रबंधित किया जाता है।
 keywords: ['domain portfolio', 'domain investing', 'domain management', 'domain valuation', 'domain assets']
 level: 1
