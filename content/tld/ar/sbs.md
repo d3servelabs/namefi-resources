@@ -4,7 +4,8 @@ date: '2025-06-21'
 language: ar
 priority: P1
 tags: ["tld"]
-authors: ["namefiteam"]
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 description: .sbs تعني "جنباً إلى جنب" وهي مثالية للمشاريع التعاونية والشراكات والأعمال الجانبية.
 relatedArticles:
   - /ar/blog/what-is-a-tld/

@@ -4,7 +4,8 @@ date: '2026-06-15'
 language: ko
 priority: P1
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: '.sbs 도메인은 ShortDot이 운영하는 저비용 개방형 일반 gTLD로, 흔히 "나란히(side by side)"를 의미합니다. 출처, 실제 사용 사례, 평판, 구매 여부에 대해 알아보세요.'
 keywords: ['.sbs 도메인', '.sbs란', '.sbs 도메인 의미', 'sbs tld', '.sbs 안전성', 'ShortDot .sbs', '사이드 바이 사이드 도메인', '신규 gTLD']

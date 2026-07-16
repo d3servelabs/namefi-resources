@@ -4,7 +4,8 @@ date: '2025-06-21'
 language: fr
 priority: P1
 tags: ["tld"]
-authors: ["namefiteam"]
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 description: .sbs signifie "side by side" (côte à côte) et est parfait pour les projets collaboratifs, les partenariats et les activités secondaires.
 relatedArticles:
   - /fr/blog/what-is-a-tld/

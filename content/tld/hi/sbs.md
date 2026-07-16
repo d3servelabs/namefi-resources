@@ -4,7 +4,8 @@ date: '2025-06-21'
 language: hi
 priority: P1
 tags: ["tld"]
-authors: ["namefiteam"]
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 description: .sbs का अर्थ "साइड बाई साइड" है और यह सहयोगात्मक परियोजनाओं, साझेदारियों और साइड बिजनेस के लिए एकदम सही है।
 relatedArticles:
   - /hi/blog/what-is-a-tld/
