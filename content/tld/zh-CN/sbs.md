@@ -4,7 +4,8 @@ date: '2025-06-21'
 language: zh-CN
 priority: P1
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: .sbs 代表「side by side」（並肩作戰），非常適合協作項目、合作夥伴關係和副業。
 relatedArticles:

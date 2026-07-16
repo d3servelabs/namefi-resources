@@ -4,7 +4,8 @@ date: '2026-06-15'
 language: 'en'
 priority: P1
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
+editors: ['victor-zhou']
 draft: false
 description: 'The .sbs domain is a low-cost open generic gTLD run by ShortDot, often read as "side by side." Learn its origin, real uses, reputation, and whether to buy.'
 keywords: ['.sbs domain', 'what is .sbs', '.sbs domain meaning', 'sbs tld', 'is .sbs safe', 'ShortDot .sbs', 'side by side domain', 'new gTLD']
