@@ -211,6 +211,8 @@ clear errors — no restyling). Classes to check:
   equivalent, instead of using the real target word (a "cart total" or "product" label spelled out by sound
   rather than translated). Only genuine brand / protocol / ticker / standard names and code stay in the source
   script (per §7's keep-verbatim list); ordinary nouns and verbs get the native term.
+- **Chinese contributor names** — use the contributor's maintainer-confirmed Chinese name in `zh-CN` display
+  copy while preserving the author slug and references: `Fenwei Bian` → `卞芬薇` (not the English display name).
 
 ## QA & verification (run after any batch, before merge)
 
