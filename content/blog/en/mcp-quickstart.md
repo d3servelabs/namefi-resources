@@ -42,7 +42,7 @@ The alternative is to let the same agent that scaffolded the project and wired u
 
 ## Set up the connection: three editors, three config files
 
-All three editors below connect to `https://api.namefi.io/mcp` over Streamable HTTP. The current server advertises two authentication paths: OAuth 2.1 authorization code with PKCE (plus dynamic client registration) and a Namefi [API key](https://namefi.io/api-key) in the `x-api-key` header. Prefer OAuth when the client supports it and you do not already have a key; use a key for explicit header-based or automated setups.
+All three editors below connect to `https://api.namefi.io/mcp` over Streamable HTTP. The current server advertises two authentication paths: OAuth 2.1 authorization code with PKCE (plus dynamic client registration) and a Namefi [API key](https://namefi.io/profile?tab=api-keys) in the `x-api-key` header. Prefer OAuth when the client supports it and you do not already have a key; use a key for explicit header-based or automated setups.
 
 One current-behavior caveat matters for this quickstart. Namefi's discovery descriptor says read-only tools need no authentication, but an unauthenticated MCP `initialize` request returned `401 Unauthorized` when this article was verified on **July 14, 2026**. A client must initialize the MCP session before it can call even a read-only tool, so treat the live endpoint as authentication-required until the server behavior or descriptor changes.
 
@@ -129,7 +129,7 @@ One thing worth flagging: as of this guide's publish date, `docs.windsurf.com/wi
 
 Once one of the connections above is live, the rest of the flow is the same regardless of which editor you're in.
 
-1. **Choose authentication.** Use the editor's OAuth flow, or generate an API key at [namefi.io/api-key](https://namefi.io/api-key) and keep it outside version control.
+1. **Choose authentication.** Use the editor's OAuth flow, or generate an API key on the [Namefi API Keys page](https://namefi.io/profile?tab=api-keys) and keep it outside version control.
 2. **Connect and authenticate** using the matching config above. Then sanity-check it: ask "check whether `<yourapp>.com` is available on Namefi, and tell me which tool you called." `checkAvailability` is read-only and does not spend funds, but the MCP session currently still requires authentication to initialize.
 3. **Register.** Confirm a name and duration in plain language — "register it for one year." The agent submits `registerDomain` and polls the order until it reaches `SUCCEEDED` (or a terminal failure state); a typical registration finishes in a handful of poll cycles.
 4. **Point it at your deploy.** This is the step the next section covers in detail — add the DNS records your hosting platform asks for, through the same conversation.
@@ -186,7 +186,7 @@ Yes. Use OAuth 2.1 with PKCE in a compatible MCP client, so no static Namefi API
 
 The domain is infrastructure, like the deploy target and the database. Connect one of the three configs above, complete OAuth or provide a key, then run the five-step flow. OAuth may require a browser authorization step; registration, DNS changes, and verification can continue from the editor after that.
 
-Use OAuth or **[generate a Namefi API key](https://namefi.io/api-key)**, then try the availability-check prompt in whichever editor you already have open. Read the [full Claude Code walkthrough with an annotated transcript](/en/blog/claude-mcp-domains/) if you want to see every step spelled out.
+Use OAuth or **[generate a Namefi API key](https://namefi.io/profile?tab=api-keys)**, then try the availability-check prompt in whichever editor you already have open. Read the [full Claude Code walkthrough with an annotated transcript](/en/blog/claude-mcp-domains/) if you want to see every step spelled out.
 
 ## Sources and further reading
 
