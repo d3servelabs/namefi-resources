@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 스마트 컨트랙트를 지원하는 대표적인 블록체인으로, 대부분의 토크나이즈드 도메인이 발행되는 네트워크입니다.
 keywords: ['이더리움', 'ETH', '스마트 컨트랙트', 'EVM', '탈중앙화 애플리케이션']
 also_known_as: ['ETH']

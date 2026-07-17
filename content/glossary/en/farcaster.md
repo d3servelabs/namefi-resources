@@ -4,6 +4,7 @@ date: '2025-06-30'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A decentralized social network built on Ethereum where accounts, identities, and social graphs live on-chain rather than on one company's servers.
 keywords: ['Farcaster', 'decentralized social', 'Web3 social', 'blockchain identity', 'social protocol']
 level: 1

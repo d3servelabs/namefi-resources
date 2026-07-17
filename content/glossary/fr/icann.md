@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: L''organisation à but non lucratif qui coordonne le système de noms de domaine mondial, l''allocation IP et les identifiants de protocole, et accrédite les registraires.
 keywords: ['ICANN', 'gouvernance internet', 'politique de domaine', 'supervision DNS', 'IANA', 'gTLD', 'accréditation de registraire', 'multipartites', 'UDRP']
 also_known_as: ['Internet Corporation for Assigned Names and Numbers']

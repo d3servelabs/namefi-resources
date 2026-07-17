@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: レジストリが一般登録から留保するドメインラベル。プレミアム名、ポリシー上の制限、または衝突回避リストに該当するものが含まれる。
 keywords: ['予約済みドメイン名', 'ブロック名', 'レジストリ予約', 'プレミアム予約', '衝突回避リスト']
 level: 1

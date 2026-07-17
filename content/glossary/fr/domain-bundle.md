@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce qu'un lot de domaines et comment la tokenisation permet-elle la gestion de portefeuille ?
 keywords: ["lot de domaines","portefeuille","trading en gros","collection de domaines","gestion d'actifs"]
 relatedArticles:

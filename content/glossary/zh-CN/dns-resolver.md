@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 接受域名查询并遍历 DNS 层级以返回对应地址的服务器。
 keywords: ['DNS 解析器', '递归解析器', '解析器', '8.8.8.8', '1.1.1.1', 'DNS 查询']
 level: 1

@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo Tesla tardó más de una década y pagó un reportado $11M para pasar de TeslaMotors.com al dominio exacto Tesla.com, y por qué la actualización llegó justo antes de que la compañía eliminara "Motors" de su nombre.'
 keywords: ['teslamotors.com', 'tesla.com', 'nombre de dominio tesla', 'actualización de dominio', 'dominio elon musk', 'dominio de coincidencia exacta', 'nombres de startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'rebranding tesla', 'cambio de nombre tesla motors', 'adquisición de dominio', 'dominio que define categoría']

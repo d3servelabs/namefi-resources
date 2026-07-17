@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubre el potencial del dominio .africa para expandir tu marca en el continente. Aprende sobre sus ventajas y regístralo fácilmente en Namefi."
 keywords: [".africa domains", ".africa TLD", "top-level domain", "what is .africa", "why choose .africa", "what is the .africa domain", "why choose the .africa domain", "dominios .africa", "registro de dominios", "inversión en dominios", "dominios tokenizados", "blockchain domains", "identidad digital áfrica", "negocios en áfrica", "namefi"]

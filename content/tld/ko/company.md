@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.company 도메인은 누구나 등록할 수 있는 개방형 범용 gTLD입니다. 운영 주체, .com과의 비교, SEO 영향, 그리고 비즈니스에 적합한지 여부를 알아보십시오.'
 keywords: ['.company 도메인', '.company란', '.company TLD', '.company vs .com', '.company 도메인 등록', '비즈니스 도메인 확장자', '비즈니스용 신규 gTLD', 'Identity Digital TLD']

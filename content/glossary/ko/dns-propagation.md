@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: DNS 변경 후 전 세계 리졸버에 캐시된 구 레코드가 만료되기까지 해당 변경이 인터넷 전체에 반영되기 전의 지연 시간입니다.
 keywords: ['DNS 전파', 'DNS 업데이트 지연', 'TTL', 'DNS 캐시', '네임서버 변경']
 level: 1

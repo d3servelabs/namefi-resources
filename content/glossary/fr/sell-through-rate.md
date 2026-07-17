@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: La part d'un portefeuille de domaines effectivement vendue sur une période donnée — un indicateur clé de liquidité pour les investisseurs.
 keywords: ['taux de vente', 'STR', 'liquidité domaine', 'performance portefeuille', 'vélocité de vente domaine']
 also_known_as: ['STR']

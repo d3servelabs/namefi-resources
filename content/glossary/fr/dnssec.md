@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Des signatures cryptographiques sur les enregistrements DNS permettant aux résolveurs de vérifier qu'une réponse est authentique et n'a pas été falsifiée ou altérée en transit.
 keywords: ['DNSSEC', 'sécurité DNS', 'sécurité domaine', 'enregistrement DS', 'chaîne de confiance', 'DNS cryptographique']
 level: 1

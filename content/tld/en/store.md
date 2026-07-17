@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .store domain is an open new gTLD built for retail and online shopping. Learn who runs it, who should use it, how it affects SEO, and where to register.'
 keywords: ['.store domains', 'what is .store', '.store TLD', 'e-commerce domain', 'online store domain name', 'retail domain extension', 'buy a .store domain', 'register .store']

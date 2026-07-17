@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 以太坊域名服务将 alice.eth 等人类可读名称映射到钱包地址和记录，完全由链上智能合约管理。
 keywords: ['ENS', '以太坊域名服务', '.eth', 'Web3 名称', '链上命名', '钱包别名', '加密身份']
 level: 1

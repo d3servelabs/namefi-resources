@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 因易记性、简洁性或关键词强度而定价远高于标准注册费的高价值域名。
 keywords: ['溢价域名', '优质域名', '注册局溢价', '二级市场', '域名价值']
 level: 1

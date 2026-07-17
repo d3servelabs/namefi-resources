@@ -6,6 +6,8 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
 draft: false
 description: 'Discover the power of the .aaa top-level domain. Learn why this unique extension signifies quality and trust, and how it fits into the future of domain investing and Web3.'
 keywords:

@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'كيف انطلق Discord سنة 2015 على DiscordApp.com لأن Discord.com كانت محجوزة، ثم اشترى الاسم الصريح بهدوء، وفي 2020 جعل discord.com عنوانه الرئيسي — جزئيًا لنظافة العلامة التجارية، وجزئيًا لأن الانقسام بين "discordapp.com" و"discord.com" كان هدية للمحتالين ومنتشري البرامج الخبيثة.'
 keywords: ['discordapp.com', 'discord.com', 'اسم نطاق discord', 'ترقية النطاق', 'جيسون سيترون', 'تاريخ discord', 'cdn.discordapp.com', 'تصيد احتيالي discord', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'نطاق مميز', 'استراتيجية النطاق', 'ترحيل النطاق']

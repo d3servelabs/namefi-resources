@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Une entreprise qui vend des domaines sous l''accréditation d''un bureau d''enregistrement plus grand plutôt que d''en détenir une propre.
 keywords: ['revendeur', 'revendeur de domaines', 'bureau d''enregistrement en marque blanche', 'accréditation ICANN', 'bureau d''enregistrement']
 level: 1

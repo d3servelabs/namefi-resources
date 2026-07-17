@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Umleitung des Datenverkehrs einer Domain durch Manipulation der DNS-Auflösung statt der Registrierung selbst.
 keywords: ['DNS-Hijacking', 'Cache-Poisoning', 'DNS-Spoofing', 'DNSSEC', 'Datenverkehrsumleitung']
 level: 1

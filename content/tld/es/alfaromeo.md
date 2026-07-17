@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld', 'alfaromeo', 'dominios', 'marca', 'automotriz', 'tecnología']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubra todo sobre el dominio .alfaromeo: un TLD exclusivo que define prestigio y confianza digital. Aprenda sus ventajas y usos en la web."
 keywords: ['.alfaromeo domains', 'TLD .alfaromeo', 'top-level domain', 'qué es .alfaromeo', 'por qué elegir .alfaromeo', 'what is .alfaromeo', 'why choose .alfaromeo', 'dominio marca alfaromeo', 'inversión en dominios', 'dominios tokenizados', 'registro de dominios', 'blockchain domains', 'dominios automotrices', 'seguridad de marca', 'what is the .alfaromeo domain']

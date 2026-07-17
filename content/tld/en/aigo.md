@@ -4,6 +4,7 @@ date: '2025-12-11'
 language: 'en'
 tags: ['tld', 'domain-investing', 'branding', 'web3', 'ai']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Discover the potential of the .aigo domain extension. Learn what .aigo is, why it's perfect for AI and tech innovators, and how to register yours with Namefi."
 keywords: [".aigo domains", ".aigo TLD", "top-level domain", "what is .aigo", "why choose .aigo", "what is the .aigo domain", "why choose the .aigo domain", "domain investing", "blockchain domains", "tokenized domain", "AI domain names", "tech branding", "buy .aigo domain", "Namefi domains", "new gTLD"]

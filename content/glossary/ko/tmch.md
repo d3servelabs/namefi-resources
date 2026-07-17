@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 신규 gTLD의 선라이즈 사전 등록 및 브랜드 클레임을 지원하는 ICANN의 중앙 상표 데이터베이스입니다.
 keywords: ['TMCH', '상표 클리어링하우스', '선라이즈 기간', '브랜드 보호', '신규 gTLD']
 also_known_as: ['TMCH']

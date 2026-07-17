@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: مسجِّل معتمد من ICANN بموجب اتفاقية اعتماد المسجلين لبيع نطاقات gTLD.
 keywords: ['مسجل معتمد', 'RAA', 'اعتماد ICANN', 'gTLD', 'اتفاقية المسجل']
 level: 1

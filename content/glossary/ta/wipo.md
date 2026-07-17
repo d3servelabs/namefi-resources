@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: பல UDRP டொமைன் பெயர் தகராறுகளை தீர்க்கும் நடுவர் மையத்தை நடத்தும் ஐ.நா. நிறுவனம்.
 keywords: ['WIPO', 'உலக அறிவுசார் சொத்துரிமை அமைப்பு', 'UDRP', 'டொமைன் தகராறு', 'நடுவர் தீர்ப்பு']
 also_known_as: ['உலக அறிவுசார் சொத்துரிமை அமைப்பு']

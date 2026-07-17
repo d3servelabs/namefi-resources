@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.accountants डोमेन एक्सटेंशन वित्तीय पेशेवरों और अकाउंटिंग फर्मों के लिए बेहतरीन विकल्प है। जानें इसके फायदे और Namefi के साथ इसे कैसे रजिस्टर करें।'
 keywords:

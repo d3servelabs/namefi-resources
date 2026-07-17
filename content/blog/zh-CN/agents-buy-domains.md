@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['ai-agents', 'domains', 'explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 format: explainer
 ogImage: ../../assets/agents-buy-domains-og.jpg

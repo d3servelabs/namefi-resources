@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'إزاي Massdrop قضت سبع سنين بتبني مجتمع مهووسين بالشراء الجماعي، وبعدين عملت ريبراند وبقت Drop في 2019 — وكانت بالهدوء اشترت دومين Drop.com المميز (اللي كان سعره المطلوب 800,000 دولار) قبل الإعلان عن الاسم الجديد، وليه التخلي عن "Mass" كان مهم.'
 keywords: ['massdrop.com', 'drop.com', 'drop domain name', 'massdrop rebrand', 'domain upgrade', 'group buying', 'mechanical keyboards', 'audiophile community', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'exact match domain', 'community commerce']

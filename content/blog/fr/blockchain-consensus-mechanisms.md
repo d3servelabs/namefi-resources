@@ -5,6 +5,7 @@ language: fr
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

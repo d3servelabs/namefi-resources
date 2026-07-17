@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.usドメインとは何か？米国の公式国別コードTLDであり、真の米国プレゼンスを持つ登録者に限定されます。運営主体、ネクサス要件、価格、SEO、メール到達性について解説します。'
 keywords: ['.usドメイン', '.us TLD', 'usドメイン', '.usとは', '.usドメインとは', '.us vs .com', '米国ネクサス要件', '米国ドメイン', '.usドメイン登録', 'アメリカのドメイン拡張子', 'del.icio.us']

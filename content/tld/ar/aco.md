@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld', 'domains', 'web3', 'branding']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .aco، استخداماته، ومزاياه الفريدة. تعلم كيف يمكنك حجز وإدارة نطاقك بتقنية البلوك تشين عبر Namefi.'
 keywords: ['.aco domain', 'what is .aco', 'why choose .aco', 'register .aco domain', 'buy .aco domain', 'what is the .aco domain', 'why choose the .aco domain', 'blockchain domains', 'tokenized domain', 'domain investing', 'Web3 domains', 'نطاق .aco', 'شراء دومين', 'استثمار النطاقات', 'Namefi']

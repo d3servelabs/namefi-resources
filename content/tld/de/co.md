@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Was ist die .co-Domain? Die länderspezifische TLD Kolumbiens, weltweit als kurze „.com"- oder „Company"-Alternative vermarktet. Erfahren Sie, wer sie betreibt, wer registrieren kann, wie die Preisgestaltung funktioniert und wie es um die SEO steht.'
 keywords: ['.co-Domains', '.co TLD', 'co Domain', 'was ist .co', 'was ist die .co-Domain', '.co vs .com', 'co Domain für Startups', 'Kolumbien Domain', '.co-Domain registrieren', 'kurze Company-Domain']

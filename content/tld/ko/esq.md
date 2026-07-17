@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.esq 도메인은 변호사와 법률 사무소를 위해 설계된 Google Registry 확장자입니다. 등록 자격, 인식도, 그리고 실제 업무에 적합한지 알아보세요.'
 keywords: ['.esq 도메인', '.esq란', '.esq 도메인 등록', '변호사용 esq TLD', '에스콰이어 도메인', 'Charleston Road Registry', 'Google Registry TLD', '법률 사무소 도메인']

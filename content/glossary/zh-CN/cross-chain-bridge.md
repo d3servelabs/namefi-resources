@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种在无法原生互通的区块链之间移动代币或消息的协议。
 keywords: ['跨链桥', '跨链', '互操作性', '代币桥', '多链']
 also_known_as: ['桥']

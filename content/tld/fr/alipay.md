@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .alipay, symbole de confiance dans la fintech. Apprenez ses avantages, ses usages et comment enregistrer votre domaine avec Namefi."
 keywords: [".alipay domains", ".alipay TLD", "top-level domain", "what is .alipay", "why choose .alipay", "what is the .alipay domain", "why choose the .alipay domain", "qu'est-ce que le domaine .alipay", "pourquoi choisir le domaine .alipay", "domaine investissement", "blockchain domains", "tokenized domain", "fintech domains", "paiement numérique", "Ant Group domain"]

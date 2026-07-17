@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld', 'brand-tld', 'domain-investing', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 深入解析 .alibaba 顶级域名（TLD）。了解这一品牌专属域名的用途、它在域名投资与数字身份中的地位，以及如何通过 Namefi 开启您的 Web3 域名之旅。
 keywords: [".alibaba domains", ".alibaba TLD", "top-level domain", "what is .alibaba", "why choose .alibaba", "what is the .alibaba domain", "why choose the .alibaba domain", "domain investing", "blockchain domains", "tokenized domain", "brand TLD", "Web3 domains", "Alibaba Group", "digital identity", "namefi"]

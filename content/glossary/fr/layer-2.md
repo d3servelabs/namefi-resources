@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un réseau construit au-dessus d''une blockchain pour rendre les transactions plus rapides et moins coûteuses, comme Base sur Ethereum.
 keywords: ['layer 2', 'rollup', 'scalabilité', 'rollup optimiste', 'ZK rollup']
 level: 1

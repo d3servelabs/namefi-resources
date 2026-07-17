@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - gong-jihye
 draft: false
 description: '.aaa 최상위 도메인의 가능성을 알아보세요. 이 고유한 확장자가 품질과 신뢰를 상징하는 이유, 그리고 도메인 투자와 Web3의 미래에서 어떤 역할을 하는지 살펴봅니다.'
 keywords:

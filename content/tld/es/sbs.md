@@ -6,6 +6,7 @@ priority: P1
 tags: ["tld"]
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: .sbs significa "side by side" (lado a lado) y es perfecto para proyectos colaborativos, asociaciones y negocios secundarios.
 relatedArticles:
   - /es/blog/what-is-a-tld/

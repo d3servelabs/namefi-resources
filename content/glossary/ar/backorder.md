@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: خدمة بتحاول تسجل نطاق في لحظة تحرره، عشان تقدر تحجز اسم منتهٍ وطلعت منه.
 keywords: ['الباكأوردر', 'الإمساك بالنطاق المتاح', 'نطاق منتهٍ', 'الانتظار قبل الحذف', 'اقتناء النطاق']
 level: 1

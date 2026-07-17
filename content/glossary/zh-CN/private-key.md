@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 控制区块链账户并为其交易签名的秘密数字，绝不能向任何人透露。
 keywords: ['私钥', '签名密钥', '钱包密钥', '密钥', '区块链账户']
 level: 1

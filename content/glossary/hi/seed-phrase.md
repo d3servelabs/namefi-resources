@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: 12 या 24 शब्दों की एक सूची जो वॉलेट की मास्टर कुंजी एनकोड करती है; इसे रखने वाला कोई भी व्यक्ति वॉलेट को नियंत्रित करता है, इसलिए यह एकमात्र चीज़ है जिसका आपको बैकअप लेना चाहिए।
 keywords: ['सीड फ्रेज़', 'रिकवरी फ्रेज़', 'mnemonic phrase', 'wallet backup', 'BIP39', '12 words', '24 words', 'crypto recovery']
 level: 1

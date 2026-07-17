@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "一份面向创始人的实用、有研究支撑的命名指南，涵盖法律核查、易读易记、候选名称生成、跨文化审查，以及在正式决定前必须完成的所有关键搜索。"
 ogImage: ../../assets/how-to-name-your-project-og.jpg

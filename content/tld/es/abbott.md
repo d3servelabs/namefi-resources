@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld', 'dominios', 'tecnología', 'salud', 'marca']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio de nivel superior .abbott. Analizamos su propósito, exclusividad y cómo los "Brand TLDs" transforman la identidad digital. Aprende más con Namefi.'
 keywords: ['.abbott domains', 'TLD', 'top-level domain', 'qué es .abbott', 'por qué elegir .abbott', 'what is the .abbott domain', 'why choose the .abbott domain', 'registro de dominios', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'Abbott Laboratories', 'gTLD de marca', 'seguridad en dominios', 'ICANN']

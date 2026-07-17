@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: कस्टोडियल स्वामित्व क्या है और यह सेल्फ-कस्टडी से कैसे अलग है?
 keywords: ["कस्टोडियल स्वामित्व","कस्टडी","तीसरे पक्ष का नियंत्रण","रजिस्ट्रार नियंत्रण","केन्द्रीकृत भंडारण"]
 relatedArticles:

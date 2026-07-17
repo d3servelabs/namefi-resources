@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: பயனர்கள் சொத்துகளை வழங்கி வட்டி ஈட்டவும், கடன் வாங்குநர்கள் பிணையத்திற்கு எதிராக கடன் பெறவும் உதவும் ஒரு smart-contract தளம் — வங்கி போன்ற இடைத்தரகர் எதுவும் இல்லாமல்.
 keywords: ['கடன் நெறிமுறை', 'DeFi', 'பிணையம்', 'கடன் வாங்குதல்', 'டொமைன் நிதி', 'வருவாய்']
 level: 1

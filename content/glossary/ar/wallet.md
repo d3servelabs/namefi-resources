@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي محفظة العملات الرقمية وكيف تخزن النطاقات الرمزية؟
 keywords: ["محفظة","محفظة العملات الرقمية","المفتاح الخاص","تخزين الأصول الرقمية","تخزين النطاق"]
 relatedArticles:

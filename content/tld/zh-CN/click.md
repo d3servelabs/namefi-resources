@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '探索 .click 域名的独特优势以及它如何提升您的数字品牌形象。了解其在号召性用语和科技领域的应用。立即在 Namefi 注册您的 .click 域名！'
 keywords:

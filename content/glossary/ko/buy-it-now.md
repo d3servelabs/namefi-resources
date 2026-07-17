@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인 매물에 설정된 고정 즉시 구매 가격으로, 해당 금액을 지불하면 협상 없이 즉시 거래가 완료됩니다.
 keywords: ['즉시 구매가', 'BIN', '즉시 구매', '고정 가격', '도메인 매물']
 also_known_as: ['BIN']

@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 selfCanonical: true
 description: 'El dominio .es es el ccTLD de España, gestionado por Red.es. Descubra quién puede registrarlo, cómo se usa y qué tener en cuenta antes de comprarlo.'

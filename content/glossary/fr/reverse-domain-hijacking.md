@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Abuser de la procédure UDRP de mauvaise foi pour tenter de saisir un domaine auprès de son propriétaire légitime.
 keywords: ['détournement inverse de domaine', 'RDNH', 'abus UDRP', 'litige de domaine', 'plaignant de mauvaise foi']
 also_known_as: ['RDNH']

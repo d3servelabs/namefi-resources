@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Servicio de alta seguridad en el que el registro congela un dominio para que cualquier cambio requiera aprobación manual fuera de banda.
 keywords: ['bloqueo de registro', 'bloqueo de dominio', 'bloqueo de alta seguridad', 'prevención de secuestro de dominio', 'verificación fuera de banda']
 level: 1

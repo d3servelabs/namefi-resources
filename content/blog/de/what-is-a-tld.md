@@ -5,6 +5,7 @@ language: de
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: Eine TLD ist der Teil einer Domain nach dem letzten Punkt, wie .com oder .io. Erfahren Sie, was eine TLD ist, welche Typen es gibt (gTLD, ccTLD, Sponsored, neue gTLD, IDN) und wie Sie die richtige wählen.
 keywords: ['tld', 'tld bedeutung', 'was ist eine tld', 'was ist eine top-level-domain', 'top-level-domain', 'tld definition', 'tld def', 'tld erklärung', 'tld typen', 'gtld vs cctld', 'tld beispiele', 'was ist eine domain-endung', 'domain-endung', 'gTLD', 'ccTLD', 'sponsored TLD', 'neue gTLD', 'IDN TLD', 'ICANN', 'IANA', 'domain registry', 'domain registrar', 'tld auswählen', 'beliebte TLDs', 'namefi']

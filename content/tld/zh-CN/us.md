@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '.us 域名是什么？它是美国的官方国家代码顶级域名，仅限拥有真实美国存在的注册者使用。了解它的运营方、Nexus 关联要求、定价、SEO 以及邮件送达率。'
 keywords: ['.us 域名', '.us TLD', 'us 域名', '什么是 .us', '什么是 .us 域名', '.us 与 .com 对比', '美国 nexus 关联要求', '美国域名', '注册 .us 域名', '美国域名扩展名', 'del.icio.us']

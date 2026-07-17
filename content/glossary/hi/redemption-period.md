@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक्सपायरेशन के बाद की एक विंडो जिसमें लैप्स हुए डोमेन को आमतौर पर भारी रिडेम्पशन शुल्क देकर वापस पाया जा सकता है।
 keywords: ['रिडेम्पशन पीरियड', 'RGP', 'redemption grace period', 'एक्सपायर्ड डोमेन रिकवरी', 'रिडेम्पशन शुल्क']
 level: 1

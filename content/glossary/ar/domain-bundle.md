@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي حزمة النطاقات وكيف يُمكّن الترميز إدارة المحافظ؟
 keywords: ["حزمة النطاقات","محفظة","تداول بالجملة","مجموعة النطاقات","إدارة الأصول"]
 relatedArticles:

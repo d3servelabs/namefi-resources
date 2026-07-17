@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.space 도메인은 Radix가 운영하는 개방형 신규 gTLD로, 스타트업, 크리에이터, 우주 기술 프로젝트에서 인기 있습니다. 적합한 대상, 검색 순위, 비용에 대해 알아보세요.'
 keywords: ['.space 도메인', '.space란 무엇인가', 'space TLD', '.space 도메인 등록', 'Radix 레지스트리', '신규 gTLD', '크리에이티브 도메인 확장자', '스타트업 도메인']

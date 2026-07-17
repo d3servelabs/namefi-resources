@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 많은 UDRP 도메인 분쟁을 중재 센터를 통해 처리하는 유엔 전문 기관입니다.
 keywords: ['WIPO', '세계지식재산기구', 'UDRP', '도메인 분쟁', '중재']
 also_known_as: ['세계지식재산기구']

@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubre el poder del dominio .vip para tu marca. Aprende qué significa, sus beneficios de exclusividad y cómo registrarlo hoy mismo con Namefi."
 keywords: [".vip domains", "TLD", "top-level domain", "what is .vip", "why choose .vip", "what is the .vip domain", "why choose the .vip domain", "dominios vip", "comprar dominio vip", "inversión en dominios", "dominios tokenizados", "dominios blockchain", "registro de dominios", "exclusividad de marca", "identidad digital premium"]

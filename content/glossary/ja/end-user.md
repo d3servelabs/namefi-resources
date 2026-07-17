@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインを転売するためではなく、事業やプロジェクトで実際に活用するために購入する買い手のこと。
 keywords: ['エンドユーザー', 'ドメイン購入者', 'ドメインの最終用途', 'ビジネス用ドメイン', 'ドメイン運用']
 level: 1

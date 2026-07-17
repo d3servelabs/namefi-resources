@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: '.website is an open generic top-level domain run by Radix that literally spells out what a site is. Here is who it suits, how it is perceived, and what to weigh.'
 keywords: ['.website domain', 'what is .website', '.website TLD', 'Radix registry', 'generic TLD', 'register .website domain', '.website vs .site', 'new gTLD']

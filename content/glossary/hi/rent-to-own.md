@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: रेंट-टू-ओन क्या है और यह डोमेन अधिग्रहण पर कैसे लागू हो सकता है?
 keywords: ["रेंट-टू-ओन","धीरे-धीरे स्वामित्व","भुगतान योजना","डोमेन अधिग्रहण","स्मार्ट कॉन्ट्रैक्ट"]
 relatedArticles:

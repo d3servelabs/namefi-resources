@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le prix payé par un utilisateur final pour un domaine qu'il compte utiliser — généralement bien au-dessus du plancher de gros entre investisseurs.
 keywords: ['prix de détail', 'prix utilisateur final', 'détail domaine', 'prix utilisateur final', 'prix plein']
 also_known_as: ['Prix utilisateur final']

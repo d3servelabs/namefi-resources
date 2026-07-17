@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Tout savoir sur l'extension de domaine .af : identité locale, opportunités de branding et avantages pour l'investissement de domaines. Enregistrez votre .af dès aujourd'hui."
 keywords: [".af domains", ".af TLD", "top-level domain .af", "domaine .af", "extension .af", "what is .af", "why choose .af", "qu'est-ce que le domaine .af", "pourquoi choisir le domaine .af", "acheter domaine .af", "domain investing", "blockchain domains", "tokenized domain", "Afghanistan domain", "Web3 domains"]

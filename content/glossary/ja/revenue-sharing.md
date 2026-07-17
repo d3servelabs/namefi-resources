@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 資産から生じる収益を、事前に定めた比率に基づいて関係者間で自動的に分配する仕組み。スマートコントラクトによってオンチェーンで執行可能。
 keywords: ['レベニューシェアリング', '収益分配', 'パッシブインカム', 'ドメインマネタイズ', '利益分配', 'スマートコントラクト']
 level: 1

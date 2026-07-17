@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是可组合性以及它如何应用于代币化域名？
 keywords: ["可组合性","互操作性","构建块","DeFi","Web3 集成"]
 relatedArticles:

@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Sending visitors from one domain automatically to another address, often via a 301 redirect.
 keywords: ['domain forwarding', '301 redirect', 'URL redirect', 'DNS', 'domain management']
 level: 1

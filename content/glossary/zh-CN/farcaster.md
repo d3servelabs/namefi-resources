@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是 Farcaster，域名与去中心化社交网络有何关系？
 keywords: ["Farcaster","去中心化社交","Web3 社交","区块链身份","社交协议"]
 relatedArticles:

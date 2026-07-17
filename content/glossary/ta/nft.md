@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு Non-Fungible Token என்பது ஒரு குறிப்பிட்ட பொருளின் உரிமையை — எடுத்துக்காட்டாக, ஒரு டோக்கனைஸ் செய்யப்பட்ட டொமைன் — குறிக்கும் தனிப்பட்ட, பிரிக்க முடியாத பிளாக்செயின் டோக்கன்.
 keywords: ['NFT', 'பரிமாற்றமற்ற டோக்கன்', 'பிளாக்செயின்', 'தனிப்பட்ட சொத்து', 'டொமைன் NFT']
 level: 1

@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '正在寻找专业的法律域名？深入了解 .abogado TLD。这是专为律师和律所设计的域名后缀，助您在西班牙语市场建立信任。立即在 Namefi 注册，开启您的 Web3 域名投资之旅。'
 keywords:

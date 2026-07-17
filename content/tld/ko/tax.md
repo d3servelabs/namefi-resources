@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.tax 도메인은 Binky Moon이 운영하는 개방형 일반 gTLD입니다. 사용 대상, 등록 규정, 가격 구조, 신뢰도, 그리고 귀사에 적합한지 여부를 알아보세요.'
 keywords: ['.tax 도메인', '.tax란', '.tax TLD', '세금 도메인 확장자', '.tax 등록', '회계 도메인', '세금 신고 대행 웹사이트', '신규 gTLD']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Payer un domaine en versements échelonnés dans le temps plutôt qu'en une seule somme initiale.
 keywords: ['financement de domaine', 'versements', 'plan de paiement', 'acquisition de domaine', 'investissement en domaines']
 level: 1

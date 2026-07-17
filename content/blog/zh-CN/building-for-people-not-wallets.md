@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['partners']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 一场关于 Henri Stern 构建 Privy 的深度对话，探讨其在可用性、客户驱动的产品开发，以及从加密复杂性转向以人为本设计的旅程。
 relatedArticles:

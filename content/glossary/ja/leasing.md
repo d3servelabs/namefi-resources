@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 所有権を保持したまま一定の利用料を受け取りドメインの使用権を貸し出す仕組みで、スマートコントラクトにより条件の執行と支払いの自動化が可能。
 keywords: ['リース', 'ドメイン賃貸', 'パッシブインカム', 'スマートコントラクトリース', '自動支払い']
 level: 1

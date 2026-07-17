@@ -5,6 +5,8 @@ language: 'de'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Die .com-Domain ist die Standard-Adresse des kommerziellen Internets. Erfahren Sie mehr über ihre Geschichte, wer eine registrieren kann, wie die Preisgestaltung funktioniert und warum sie nach wie vor führend ist.'
 keywords: ['.com-Domains', 'was ist .com', '.com TLD', '.com Domain-Endung', '.com-Domain registrieren', 'com Domain Bedeutung', '.com vs .net', 'Geschäftsdomains']

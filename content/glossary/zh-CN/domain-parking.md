@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 在未开发的域名上放置广告或待售通知，以赚取收益或表明域名可供出售。
 keywords: ['域名停放', '停放域名', '变现', '域名投资', '被动收入']
 also_known_as: ['停放域名']

@@ -4,6 +4,7 @@ date: '2026-07-02'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A consensus mechanism where miners compete to solve a computational puzzle to earn the right to add the next block.
 keywords: ['proof of work', 'pow', 'bitcoin mining', 'hash puzzle', 'mining difficulty']
 also_known_as: ['PoW']

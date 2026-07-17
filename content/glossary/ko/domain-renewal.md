@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인 등록이 만료되기 전에 등록 기간을 연장하기 위해 요금을 지불하는 것으로, 대개 매 기간마다 자동으로 이루어집니다.
 keywords: ['도메인 갱신', '자동 갱신', '등록 기간', '만료', '갱신 수수료']
 level: 1

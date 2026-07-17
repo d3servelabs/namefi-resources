@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.shopドメインはGMOレジストリが運営するオープンな新gTLDで、「ここで買い物ができる」というメッセージを発信します。利用者層・登録ルール・価格動向・SEOへの影響を解説します。'
 keywords: ['.shopドメイン', '.shopとは', '.shop TLD', '.shopドメイン登録', 'ECサイト用ドメイン', 'GMOレジストリ', '小売向け新gTLD', '.shopドメインを取得']

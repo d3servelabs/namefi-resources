@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: Lens Protocolは、プロフィール・フォロー・投稿をユーザーがオンチェーン資産としてアプリ間で持ち運べる分散型ソーシャルグラフである。
 keywords: ['Lens', 'Lens Protocol', '分散型ソーシャル', 'NFTプロフィール', 'ソーシャルグラフ', 'Web3アイデンティティ']
 level: 1

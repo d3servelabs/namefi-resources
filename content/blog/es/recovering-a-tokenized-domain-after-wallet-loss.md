@@ -5,6 +5,7 @@ language: es
 tags: ['guide', 'security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Qué sucede realmente si pierdes el acceso a la billetera que contiene tu dominio tokenizado, y los pasos operativos para reducir la probabilidad de llegar a esa situación en primer lugar. Copias de seguridad, multifirma, billeteras de hardware, recuperación social y los límites de lo que cualquier plataforma puede hacer."
 keywords: ['recuperar dominio NFT', 'dominio de billetera perdida', 'billetera de dominio tokenizado perdida', 'recuperación de billetera de dominio', 'copia de seguridad de dominio NFT', 'billetera de hardware de dominio tokenizado', 'dominio tokenizado multifirma', 'recuperación de clave de dominio tokenizado', 'frase semilla perdida dominio', 'seguridad de dominio NFT', 'copia de seguridad de dominio tokenizado', 'gestión de claves de dominio', 'recuperación de pérdida de billetera']

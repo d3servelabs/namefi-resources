@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ja
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.active TLDでブランドに躍動感をプラスしよう。フィットネスブランド、ライフスタイルアプリ、エネルギッシュなスタートアップに最適。.activeドメインの詳細はこちら。'
 keywords: ['.activeドメイン', '.active TLD', 'トップレベルドメイン', '.activeとは', '.activeを選ぶ理由', '.activeドメインとは何か', '.activeドメインを選ぶ理由', '.activeドメイン取得', 'フィットネスドメイン名', 'ライフスタイルTLD', 'ドメイン投資', 'ブロックチェーンドメイン', 'トークン化ドメイン', 'スポーツブランディング', 'Namefi']

@@ -5,6 +5,7 @@ language: es
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "La UDRP explicada para propietarios e inversores de dominios: los tres elementos que debe probar el reclamante, el proceso y los plazos, los resultados posibles, UDRP vs URS vs tribunales, y cómo responder."
 keywords: ['udrp', 'qué es la udrp', 'proceso udrp', 'política udrp', 'reclamación udrp', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'disputa de dominio', 'disputa por nombre de dominio', 'ciberocupación', 'secuestro inverso de nombre de dominio', 'registro de mala fe', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'disputa de dominio por marca registrada', 'inversor de dominios legal', 'responder a una reclamación udrp']

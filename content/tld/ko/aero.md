@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".aero TLD의 강점을 알아보세요. 항공 산업 전용 도메인으로, 자격 요건, 혜택, 그리고 이 제한된 확장자가 어떻게 즉각적인 신뢰를 구축하는지 살펴봅니다."
 keywords: [".aero 도메인", "TLD", "최상위 도메인", ".aero란", ".aero를 선택하는 이유", ".aero 도메인이란", ".aero 도메인을 선택하는 이유", "항공 도메인", "제한 TLD", "SITA 레지스트리", "도메인 투자", "블록체인 도메인", "토큰화 도메인", "항공우주 웹 주소", "항공사 브랜딩"]

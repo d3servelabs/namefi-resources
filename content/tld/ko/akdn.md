@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld', 'brand-tld', 'domain-industry']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".akdn TLD의 목적, 아가 칸 개발 네트워크에서의 역할, 그리고 독점 브랜드 TLD가 도메인 산업에서 어떻게 기능하는지 살펴봅니다."
 keywords: [".akdn 도메인", ".akdn TLD", "최상위 도메인", ".akdn이란", ".akdn을 선택하는 이유", ".akdn 도메인이란", ".akdn 도메인을 선택하는 이유", "아가 칸 개발 네트워크", "브랜드 TLD", "제한된 도메인 등록", "도메인 투자", "블록체인 도메인", "토큰화 도메인", "ICANN 신규 gTLD", "비영리 도메인"]

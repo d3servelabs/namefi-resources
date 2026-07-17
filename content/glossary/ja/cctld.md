@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ISO 3166に基づき国または地域に割り当てられた2文字のトップレベルドメイン。.ukや.de、.jpなどが代表例。
 keywords: ['ccTLD', '国別コードTLD', '国別ドメイン', '.uk', '.de', 'ISO 3166']
 level: 1

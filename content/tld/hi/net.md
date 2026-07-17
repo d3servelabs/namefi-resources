@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: "जानें .net TLD का इतिहास, इसके लाभ और यह आपके व्यवसाय के लिए क्यों सही है। वेब3 सुविधाओं के साथ Namefi पर अपना .net डोमेन आज ही सुरक्षित करें।"
 keywords: ['.net domains', '.net TLD', '.net top-level domain', 'what is .net', 'why choose .net', 'what is the .net domain', 'why choose the .net domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'buy .net domain', 'tech business domains', 'internet infrastructure', 'Namefi registrar', 'gTLD benefits']

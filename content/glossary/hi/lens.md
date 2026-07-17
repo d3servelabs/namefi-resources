@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: लेंस प्रोटोकॉल क्या है और यह सोशल आइडेंटिटी के लिए डोमेन का उपयोग कैसे करता है?
 keywords: ["लेंस","लेंस प्रोटोकॉल","विकेन्द्रीकृत सोशल","NFT प्रोफाइल","सोशल ग्राफ़","Web3 आइडेंटिटी"]
 relatedArticles:

@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un protocole qui déplace des jetons ou des messages entre des blockchains qui ne peuvent pas communiquer nativement entre elles.
 keywords: ['pont', 'inter-chaînes', 'interopérabilité', 'pont de jetons', 'multi-chaîne']
 also_known_as: ['Pont']

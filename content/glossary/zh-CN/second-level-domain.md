@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 紧邻 TLD 左侧的标签——example.com 中的"example"——即你实际注册的部分。
 keywords: ['二级域名', 'SLD', '根域名', '顶点域名', '可注册名称']
 level: 1

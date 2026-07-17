@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 人気ドメインのよくある打ち間違いを登録し、誤入力によるトラフィックを広告やフィッシングに悪用する行為。
 keywords: ['タイポスクワッティング', 'タイポドメイン', 'フィッシング', 'ブランド侵害', 'サイバースクワッティング']
 level: 1

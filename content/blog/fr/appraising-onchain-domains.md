@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'domain-flipping', 'web3', 'analysis']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

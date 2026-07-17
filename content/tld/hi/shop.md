@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.shop डोमेन GMO Registry द्वारा संचालित एक खुला नया gTLD है जो संकेत देता है "यह खरीदारी की जगह है।" जानें इसे कौन उपयोग करता है, नियम, मूल्य निर्धारण की गतिशीलता, और SEO।'
 keywords: ['.shop डोमेन', '.shop क्या है', '.shop TLD', '.shop डोमेन पंजीकरण', 'ई-कॉमर्स डोमेन', 'GMO Registry', 'रिटेल के लिए नया gTLD', '.shop डोमेन खरीदें']

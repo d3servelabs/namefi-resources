@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein dediziertes Offline-Gerät, das die privaten Schlüssel einer Wallet speichert und Transaktionen auf dem Gerät signiert, sodass die Schlüssel niemals einen internetverbundenen Computer berühren.
 keywords: ['Hardware-Wallet', 'Cold Wallet', 'Ledger', 'Trezor', 'GridPlus', 'Keystone', 'Secure Element', 'Self-Custody']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.propertiesドメインは、Binky Moon（Identity Digital）が運営するオープンな汎用gTLDで、不動産物件の掲載、仲介業者、世界中のプロパティポートフォリオ向けに設計されています。'
 keywords: ['.propertiesドメイン', '.propertiesとは', '.properties TLD', '不動産ドメイン', 'プロパティドメイン名', 'Binky Moon properties', 'Identity Digital 不動産 gTLD', '.propertiesを登録する']

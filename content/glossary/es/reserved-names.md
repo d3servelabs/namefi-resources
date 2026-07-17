@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Dominios que un registro retiene del registro abierto, como etiquetas premium, de política o protegidas.
 keywords: ['nombres reservados', 'nombres bloqueados', 'reserva de registro', 'premium reservado', 'lista de colisiones']
 level: 1

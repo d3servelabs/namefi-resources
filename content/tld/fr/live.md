@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .live : l'extension idéale pour le streaming et l'événementiel. Enregistrez votre .live sur Namefi avec des fonctionnalités Web3 et ICANN."
 keywords: [".live domains", "TLD", "top-level domain", "what is .live", "why choose .live", "what is the .live domain", "why choose the .live domain", "domaine .live", "domaines tokenisés", "investissement domaine", "blockchain domains", "Web3 domains", "live streaming", "création de contenu", "identité numérique"]

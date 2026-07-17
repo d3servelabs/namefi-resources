@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ブロックチェーン上に直接記録されたデータや操作を指し、プライベートサーバーではなくネットワークによって公開・検証・保護される。
 keywords: ['オンチェーン', 'ブロックチェーン', 'スマートコントラクト', 'ドメイン NFT', '分散化']
 level: 1

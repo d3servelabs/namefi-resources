@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '.cc 域名是什么？它是科科斯（基林）群岛的国家代码顶级域名，由 Verisign 运营，被全球营销为简短、易于品牌化的 .com 替代后缀。了解它的运营方、注册资格、定价方式以及 SEO 表现。'
 keywords: ['.cc 域名', '.cc TLD', 'cc 域名', '什么是 .cc', '什么是 .cc 域名', '.cc 与 .com 对比', 'cc 域名含义', '科科斯基林群岛域名', '注册 .cc 域名', '简短可品牌化域名', '域名拼接 cc']

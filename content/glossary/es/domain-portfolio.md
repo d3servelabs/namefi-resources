@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Una colección de dominios en manos de un mismo propietario, gestionada como inversión con renovaciones, ventas y valoración.
 keywords: ['cartera de dominios', 'inversión en dominios', 'gestión de dominios', 'valoración de dominios', 'activos de dominios']
 level: 1

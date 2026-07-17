@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: DNS 层级的顶端，列出每个 TLD 及其权威服务器。
 keywords: ['根区域', '根服务器', 'DNS 层级', 'TLD 委托', 'IANA']
 level: 1

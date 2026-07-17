@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld', 'aero', 'aviation', 'domain-names']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .aero، المخصص حصريًا لقطاع الطيران. تعرف على مميزاته، شروط استخدامه، وكيفية تعزيز مصداقيتك الرقمية.'
 keywords: ['.aero domain', 'ما هو نطاق .aero', 'why choose .aero', 'شراء نطاق .aero', 'aero top-level domain', 'aviation domains', 'SITA registry', 'domain investing', 'blockchain domains', 'tokenized domain', 'Web3 domains', 'نطاقات الطيران', 'تسجيل نطاق الطيران', 'نطاقات المستوى الأعلى', 'Namefi domains']

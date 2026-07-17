@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह तारीख जब किसी डोमेन का रजिस्ट्रेशन समाप्त होता है; यदि रिन्यू न किया जाए, तो यह डिलीशन की प्रक्रिया शुरू करता है।
 keywords: ['डोमेन एक्सपायरेशन', 'एक्सपायर्ड डोमेन', 'रिन्यूअल', 'grace period', 'redemption']
 level: 1

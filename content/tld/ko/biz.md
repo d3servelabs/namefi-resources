@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.biz 도메인은 GoDaddy Registry가 운영하는 개방형 비즈니스 전용 gTLD입니다. 적합한 대상, .com과의 비교, 구매 전 알아야 할 사항을 안내합니다.'
 keywords: ['.biz', '.biz 도메인', '.biz TLD', '.biz란', '비즈니스 도메인 확장자', 'biz vs com', 'GoDaddy Registry', '정당한 사업 목적 사용']

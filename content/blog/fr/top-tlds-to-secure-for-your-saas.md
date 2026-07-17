@@ -5,6 +5,7 @@ language: fr
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-saas-og.jpg
 description: 'Les 10 meilleurs TLD à sécuriser pour votre SaaS — du .com et .io au .app et .ai — avec des conseils pour l''enregistrement défensif et des informations officielles sur les registres.'

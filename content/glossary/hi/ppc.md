@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक विज्ञापन मॉडल जिसमें मालिक को हर बार एक विज़िटर द्वारा विज्ञापन पर क्लिक करने पर कमाई होती है, जो पार्क किए गए डोमेन को मुद्रीकृत करने के लिए उपयोग होता है।
 keywords: ['PPC', 'Pay-Per-Click', 'डोमेन मुद्रीकरण', 'विज्ञापन राजस्व', 'पार्किंग राजस्व']
 also_known_as: ['Pay-Per-Click']

@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: '.eth is not an ICANN domain but an Ethereum Name Service (ENS) name held as an NFT on-chain. Learn how it works, who can register one, and its real limits.'
 keywords: ['.eth domains', 'what is .eth', 'ENS domain', 'Ethereum Name Service', '.eth name NFT', 'register .eth', 'is .eth a real domain', '.eth vs DNS domain']

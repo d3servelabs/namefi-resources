@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인 등록 정보가 아닌 DNS 확인 과정을 조작하여 트래픽을 다른 곳으로 우회시키는 공격 방식입니다.
 keywords: ['DNS 하이재킹', '캐시 포이즈닝', 'DNS 스푸핑', 'DNSSEC', '트래픽 우회']
 level: 1

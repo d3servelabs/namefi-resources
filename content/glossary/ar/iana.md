@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الجهة المسؤولة عن صيانة منطقة جذر DNS وتخصيص كتل عناوين IP وأرقام البروتوكولات.
 keywords: ['IANA', 'منطقة الجذر', 'تخصيص IP', 'أرقام البروتوكولات', 'ICANN']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入解析 .now 顶级域名（TLD）的独特价值。了解为何 .now 域名是实时服务、新闻媒体及即时行动品牌的最佳选择，以及如何在 Namefi 轻松注册并利用 Web3 技术管理您的域名。'
 keywords: ['.now domains', '.now TLD', 'top-level domain', 'what is .now', 'why choose .now', 'what is the .now domain', 'why choose the .now domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'Web3 domains', 'real-time branding', 'buy .now domain', 'new gTLD', 'Namefi']

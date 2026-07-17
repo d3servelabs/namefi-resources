@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.app डोमेन डेवलपर्स और व्यवसायों के लिए एक सुरक्षित विकल्प है। जानें कि अपनी अगली परियोजना के लिए .app TLD क्यों चुनें और इसे Namefi पर कैसे रजिस्टर करें।'
 keywords: ['.app domains', '.app TLD', 'top-level domain', 'what is .app', 'why choose .app', 'what is the .app domain', 'why choose the .app domain', 'secure domains', 'developer domains', 'mobile app website', 'buy .app domain', 'domain investing', 'blockchain domains', 'tokenized domain']

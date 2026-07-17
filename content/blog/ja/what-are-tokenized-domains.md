@@ -7,6 +7,7 @@ priority: P0
 tags: ['faq']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: domain-tokenization
 format: explainer

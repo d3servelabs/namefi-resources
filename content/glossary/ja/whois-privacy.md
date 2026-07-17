@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 公開 WHOIS または RDAP レコードにおいて、登録者の個人連絡先情報をマスクするサービス。
 keywords: ['WHOIS プライバシー', 'プライバシー保護', 'RDAP', '登録者プライバシー', '連絡先マスキング']
 also_known_as: ['プライバシー保護']

@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 由 AI 模型驱动的软件，代表用户执行操作——进行购买、调用 API，并日益频繁地与其他智能体进行交易。
 keywords: ['AI 智能体', '自主智能体', '智能体身份', '智能体商务', '链上智能体', '代理式 AI']
 level: 1

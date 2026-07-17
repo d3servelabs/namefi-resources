@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு blockchain-இல் புதிய டோக்கனை உருவாக்கும் செயல் — டொமெயினுக்கு, அதன் உரிமையை குறிக்கும் NFT-ஐ வெளியிடுவது.
 keywords: ['டோக்கன் உருவாக்கம்', 'மிண்டிங்', 'NFT உருவாக்கம்', 'டோக்கன் வெளியீடு', 'ஆன்-செயின்']
 also_known_as: ['மிண்ட்']

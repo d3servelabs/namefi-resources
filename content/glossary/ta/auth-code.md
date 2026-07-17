@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனை வேறு registrar-க்கு மாற்ற அனுமதிக்க registrar வழங்கும் குறுகிய per-domain இரகசியக் குறியீடு; EPP code அல்லது transfer code என்றும் அழைக்கப்படுகிறது.
 keywords: ['அனுமதிக் குறியீடு', 'EPP குறியீடு', 'மாற்றுக் குறியீடு', 'டொமைன் மாற்றம்', 'அங்கீகாரக் குறியீடு', 'AuthInfo குறியீடு']
 level: 1

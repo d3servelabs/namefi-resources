@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld', 'adac', 'domaine de marque', 'automobile', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout ce qu'il faut savoir sur l'extension .adac : son origine, ses avantages pour le secteur automobile et comment elle renforce la confiance numérique."
 keywords: [".adac domains", "domaine .adac", "TLD .adac", "top-level domain", "qu'est-ce que .adac", "pourquoi choisir .adac", "what is the .adac domain", "why choose the .adac domain", "investissement domaine", "blockchain domaines", "domaines tokenisés", "web3 domaines", "achat nom de domaine", "adac domain registration", "brand TLD"]

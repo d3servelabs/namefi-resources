@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Tout savoir sur l'extension .academy : le choix idéal pour l'éducation et la formation. Découvrez ses avantages et enregistrez le vôtre dès aujourd'hui sur Namefi."
 keywords: [".academy domains", ".academy TLD", "top-level domain", "what is .academy", "why choose .academy", "domaine .academy", "extension .academy", "qu'est-ce que le domaine .academy", "pourquoi choisir le domaine .academy", "investissement nom de domaine", "blockchain domains", "noms de domaine tokenisés", "formation en ligne", "education web3", "Namefi"]

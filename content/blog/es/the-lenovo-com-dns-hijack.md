@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'El 25 de febrero de 2015, Lizard Squad secuestró Lenovo.com comprometiendo al registrador Webnic, redirigiendo el dominio del mayor fabricante de PC del mundo hacia una presentación de diapositivas de webcam e interceptando su correo electrónico, días después del escándalo de Superfish. Un análisis en profundidad de Domain Mayday sobre por qué el registrador es tu verdadero perímetro de seguridad.'
 keywords: ['secuestro dns lenovo.com', 'lizard squad', 'registrador webnic', 'web commerce communications', 'secuestro dns', 'superfish', 'seguridad registrador de dominios', 'compromiso de registrador', 'código auth epp', 'interceptación de correo electrónico', 'secuestro google vietnam', 'seguridad de dominios', 'bloqueo de registrador']

@@ -5,6 +5,7 @@ language: ar
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "دليل عملي مبني على أبحاث حقيقية للمؤسسين اللي بيسموا مشروع أو منتج أو شركة: تأكد من الناحية القانونية، خليه سهل في النطق، اجنر أسماء قوية، اتحقق من التقبل الثقافي، ونفذ البحث الصح قبل ما تلتزم باختيارك."
 ogImage: ../../assets/how-to-name-your-project-og.jpg

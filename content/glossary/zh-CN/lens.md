@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是Lens Protocol？它如何利用域名实现社交身份？
 keywords: ["Lens","Lens Protocol","去中心化社交","NFT资料","社交图谱","Web3身份"]
 relatedArticles:

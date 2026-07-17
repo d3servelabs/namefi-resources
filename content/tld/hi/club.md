@@ -7,6 +7,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.club डोमेन के बारे में सब कुछ जानें। समझें कि समुदायों, ब्रांड्स और Web3 प्रोजेक्ट्स के लिए यह बेहतरीन विकल्प क्यों है। आज ही Namefi पर अपना डोमेन रजिस्टर करें।'
 keywords:

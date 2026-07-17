@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Les mots visibles et cliquables d'un hyperlien, un signal que les moteurs de recherche utilisent pour comprendre la cible.
 keywords: ['texte d''ancre', 'texte de lien', 'backlinks', 'seo', 'hyperlien', 'signaux de classement']
 level: 1

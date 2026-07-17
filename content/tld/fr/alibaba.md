@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout ce qu'il faut savoir sur l'extension de domaine .alibaba. Explorez ses avantages pour le branding, son lien avec le géant du e-commerce et comment l'enregistrer via Namefi."
 keywords: [".alibaba domains", "domaine .alibaba", "TLD .alibaba", "top-level domain", "what is .alibaba", "qu'est-ce que .alibaba", "why choose .alibaba", "pourquoi choisir .alibaba", "what is the .alibaba domain", "why choose the .alibaba domain", "investir nom de domaine", "blockchain domains", "domaines tokenisés", "domaine e-commerce", "achat domaine alibaba"]

@@ -4,6 +4,8 @@ date: '2025-12-11'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: 'Découvrez tout sur l''extension de domaine .aarp : une analyse détaillée de ce TLD de marque, ses avantages en termes de confiance et comment sécuriser votre propre identité numérique.'
 keywords: ['.aarp', 'domaines .aarp', 'TLD .aarp', 'qu''est-ce que .aarp', 'pourquoi choisir .aarp', 'qu''est-ce que le domaine .aarp', 'pourquoi choisir le domaine .aarp', 'investissement domaine', 'domaines blockchain', 'domaine de marque', 'sécurité web3', 'extensions de domaine', 'registrar namefi', 'tld restreint', 'identité numérique']

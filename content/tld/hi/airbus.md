@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld', 'domain-names', 'brand-tld', 'aviation', 'technology']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.airbus TLD विमानन और कॉर्पोरेट ब्रांडिंग की दुनिया में क्या महत्व रखता है? जानें कि यह डोमेन एक्सटेंशन कैसे काम करता है और Namefi के साथ अपनी डिजिटल पहचान कैसे सुरक्षित करें।'
 keywords: ['.airbus domains', '.airbus TLD', 'top-level domain', 'what is .airbus', 'why choose .airbus', 'what is the .airbus domain', 'why choose the .airbus domain', 'aviation domains', 'brand TLD', 'domain investing', 'blockchain domains', 'tokenized domain', 'Web3 domains', 'digital identity', 'Namefi']

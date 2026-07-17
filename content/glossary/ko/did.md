@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 탈중앙화 식별자(DID)는 중앙 등록 기관이 아닌 소유자의 키로 제어되는 전 세계적으로 고유한 ID로, 여러 서비스에서 신원을 증명하는 데 사용됩니다.
 keywords: ['DID', '탈중앙화 신원', '자기주권 신원', '블록체인 신원', 'Web3 신원']
 level: 1

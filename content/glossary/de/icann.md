@@ -5,6 +5,8 @@ language: de
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die gemeinnützige Organisation, die das globale Domain-Name-System, die IP-Zuteilung und Protokollkennungen koordiniert und Registrare weltweit akkreditiert.
 keywords: ['ICANN', 'Internet-Governance', 'Domain-Politik', 'DNS-Aufsicht', 'IANA', 'gTLD', 'Registrar-Akkreditierung', 'Multistakeholder', 'UDRP']
 also_known_as: ['Internet Corporation for Assigned Names and Numbers']

@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'guide', 'domain-investing', 'outbound']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "一份实用的、以卖家为中心的检查清单，涵盖域名定价、寻找潜在买家、处理外发推销、避免诈骗以及安全完成转移等环节。"
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png

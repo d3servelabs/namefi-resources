@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .tech domain is an open new gTLD run by Radix for technology brands, startups, and developers. Learn who it suits, its trade-offs, and how to register.'
 keywords: ['.tech domain', 'what is .tech', '.tech TLD', 'tech domain extension', 'Radix registry', 'new gTLD for startups', 'developer portfolio domain', 'register .tech domain']

@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .accountant domain is an open new gTLD for accountants, bookkeepers, and finance professionals. Learn who runs it, who can register, and whether it suits your brand.'
 keywords: ['.accountant domain', 'what is .accountant', '.accountant TLD', 'accountant domain name', 'finance domain extension', 'new gTLD for accountants', 'register .accountant', 'bookkeeping website domain']

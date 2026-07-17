@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '探索 .club 顶级域名的优势，了解它为何是社群、DAO 和订阅服务的理想选择。在 Namefi 注册您的 .club 域名，体验无缝的 Web3 资产管理。'
 keywords: ['.club domains', '.club TLD', 'top-level domain', 'what is .club', 'why choose .club', 'what is the .club domain', 'why choose the .club domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'DAO domains', 'community building', 'Web3 domains', 'Namefi', 'buy .club domain']

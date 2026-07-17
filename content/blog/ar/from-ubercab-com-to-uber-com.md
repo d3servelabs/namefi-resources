@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'قصة كيف أجبر إنذار قانوني سنة 2010 شركة UberCab على حذف كلمة "Cab"، وكيف اشترت Uber دومين Uber.com من Universal Music مقابل حصة 2% كانت تساوي 107 آلاف دولار، ولماذا كانت صفقة الدومين دي من أهم الصفقات في تاريخ الشركات الناشئة.'
 keywords: ['ubercab.com', 'uber.com', 'اسم دومين أوبر', 'ترقية الدومين', 'إنذار ubercab القانوني', 'universal music uber domain', 'تسمية الشركات الناشئة', 'العلامة التجارية', 'دومين مميز', 'استراتيجية الدومين', 'تاريخ أوبر', 'أسهم مقابل دومين', 'شراء دومين', 'دومين يعرّف تصنيفاً كاملاً']

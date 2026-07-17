@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي UDRP وكيف تؤثر على ملكية النطاقات الرمزية (tokenized domains)؟
 keywords: ["UDRP","نزاعات النطاقات","حماية العلامات التجارية","القرصنة الإلكترونية","الإطار القانوني"]
 relatedArticles:

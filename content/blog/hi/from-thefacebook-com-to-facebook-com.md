@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'कैसे Facebook ने TheFacebook.com छोड़ा, $200K में Facebook.com खरीदा, बाद में FB.com के लिए $8.5M चुकाए, और डोमेन अपग्रेड को ब्रांड इन्फ्रास्ट्रक्चर में बदल दिया।'
 keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'facebook domain name', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'facebook history', 'domain acquisition', 'company rebrand', 'category-defining domain']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un statut HTTP indiquant aux navigateurs et aux moteurs de recherche qu'une page a définitivement changé d'URL.
 keywords: ['redirection 301', 'redirection permanente', 'redirection http', 'seo', 'transfert de domaine', 'équité de lien']
 also_known_as: ['Redirection permanente']

@@ -4,6 +4,8 @@ date: '2025-06-22'
 language: es
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: .loan es una extensión de dominio especializada diseñada para servicios financieros, instituciones de préstamo y plataformas de finanzas personales. Descubre su propósito, usos y beneficios.
 keywords: ["tld", "dominio loan", "servicios financieros", "préstamos", "fintech", "crédito"]
 relatedArticles:

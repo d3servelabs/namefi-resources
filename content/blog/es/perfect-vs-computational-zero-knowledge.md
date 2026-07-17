@@ -5,6 +5,7 @@ language: es
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Las pruebas de conocimiento cero vienen en tres variantes: perfectas, estadísticas y computacionales, y la diferencia importa más de lo que admiten la mayoría de las discusiones de ingeniería. Esta publicación explica cada una en un lenguaje sencillo, por qué casi todos los sistemas ZK de producción en 2026 son computacionales, y lo que esto aporta y cuesta.'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg

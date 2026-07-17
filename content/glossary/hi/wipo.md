@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह संयुक्त राष्ट्र एजेंसी जिसका मध्यस्थता केंद्र कई UDRP डोमेन-नाम विवादों का निर्णय करता है।
 keywords: ['WIPO', 'World Intellectual Property Organization', 'UDRP', 'डोमेन विवाद', 'मध्यस्थता']
 also_known_as: ['World Intellectual Property Organization']

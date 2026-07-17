@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメイン名を投資資産として取得・売買し、利益を得る実践的な活動。
 keywords: ['ドメイン投資', 'ドメイナー', 'ドメイン売買', 'ドメインフリッピング', 'ドメイン投機']
 level: 1

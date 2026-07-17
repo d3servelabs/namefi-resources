@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: WHOIS와 그 후속 프로토콜인 RDAP는 도메인의 등록 정보(등록 기관, 만료일 등)를 공개적으로 조회할 수 있는 서비스입니다.
 keywords: ['WHOIS', 'RDAP', '도메인 등록 조회', '등록자 정보', '도메인 소유권 조회']
 level: 1

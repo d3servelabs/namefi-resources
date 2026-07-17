@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubra el potencial del dominio .ac. Desde instituciones educativas hasta startups innovadoras, aprenda por qué registrar un .ac es una decisión inteligente.'
 keywords:

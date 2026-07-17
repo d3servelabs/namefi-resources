@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Erfahren Sie alles über die .ad-Domain: Von der Herkunft in Andorra bis hin zum Potenzial für Werbung und Marketing. Jetzt informieren und bei Namefi registrieren.'
 keywords:

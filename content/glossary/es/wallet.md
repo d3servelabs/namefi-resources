@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es una billetera cripto y cómo almacena los dominios tokenizados?
 keywords: ["billetera","billetera cripto","clave privada","almacenamiento de activos digitales","almacenamiento de dominio"]
 relatedArticles:

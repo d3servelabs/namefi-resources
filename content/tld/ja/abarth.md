@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ja
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: .abarth TLDの概要、活用方法、メリット、そしてNamefiでの登録方法を解説します。唯一無二のオンラインアイデンティティを今すぐ確保しましょう。
 relatedArticles:

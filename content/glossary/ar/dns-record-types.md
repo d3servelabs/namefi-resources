@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الإدخالات في المنطقة اللي بتربط نطاق بعناوين وخدمات — A وAAAA وCNAME وMX وTXT وغيرهم.
 keywords: ['سجلات DNS', 'سجل A', 'سجل AAAA', 'CNAME', 'سجل MX', 'سجل TXT']
 level: 1

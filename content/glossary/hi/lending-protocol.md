@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: लेंडिंग प्रोटोकॉल क्या हैं और डीफाई लेंडिंग में डोमेन का उपयोग कैसे किया जा सकता है?
 keywords: ["लेंडिंग प्रोटोकॉल","डीफाई","कोलैटरल","उधार लेना","डोमेन फाइनेंस","यील्ड"]
 relatedArticles:

@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'هل تخطط لإطلاق متجر إلكتروني؟ اكتشف لماذا يعتبر نطاق .store الخيار الأفضل للتجارة الإلكترونية، وكيف يساعدك في تعزيز علامتك التجارية وزيادة المبيعات.'
 keywords: ['.store domains', '.store TLD', 'top-level domain', 'what is .store', 'why choose .store', 'what is the .store domain', 'why choose the .store domain', 'نطاق .store', 'حجز دومين store', 'نطاقات التجارة الإلكترونية', 'ecommerce domains', 'tokenized domain', 'domain investing', 'blockchain domains', 'شراء نطاق للمتجر', 'Web3 domains']

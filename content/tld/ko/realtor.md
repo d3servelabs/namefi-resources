@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.realtor 도메인은 NAR 및 CREA 회원에게만 허용되는 제한적 부동산 TLD입니다. 등록 자격, 운영 주체, 그리고 부동산 중개인이 활용하는 방법을 알아보십시오.'
 keywords: ['.realtor 도메인', '.realtor란', '.realtor TLD', '부동산 도메인 확장자', '부동산 도메인 이름', 'NAR 도메인', '부동산 중개인 웹사이트 도메인', 'Real Estate Domains LLC']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 매수자와 매도자 사이에서 도메인 거래를 중개하고, 통상적으로 수수료를 받는 전문 중개인입니다.
 keywords: ['도메인 브로커', '도메인 중개', '도메인 협상', '도메인 중개인', '도메인 수수료']
 level: 1

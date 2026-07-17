@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2022 年 8 月，Curve Finance 的智能合约完好无损——但攻击者在注册商层面劫持了 curve.fi 域名，克隆了网站，从用户处盗取约 57 万美元。深度解析针对 DeFi 前端的 DNS 攻击，以及它对域名安全的警示。'
 keywords: ['curve finance dns 劫持', 'curve.fi 劫持', 'dns 劫持 defi', 'iwantmyname 被入侵', '域名服务器被入侵', '钱包盗币', 'defi 前端攻击', '域名安全', 'dns 安全', '加密钓鱼', '克隆网站攻击', '注册商账户入侵', '域名告急']

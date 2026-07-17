@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '正在寻找完美的在线商店域名？深入了解 .store 顶级域名的优势。本文将探讨其定义、用途、知名案例以及为什么它是电商和Web3品牌的最佳选择。立即在 Namefi 注册。'
 keywords:

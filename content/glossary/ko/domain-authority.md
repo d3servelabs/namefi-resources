@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인이 검색 결과에서 얼마나 높이 노출될지를 추정하는 평판 지표로, 주로 양질의 인바운드 링크에 의해 결정됩니다.
 keywords: ['도메인 권위도', '백링크', '링크 에쿼티', 'seo', '순위 신호', '인바운드 링크']
 level: 1

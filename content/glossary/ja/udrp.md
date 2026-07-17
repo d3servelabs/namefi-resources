@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ICANNが定めるドメイン紛争解決のための必須方針。主に商標侵害やサイバースクワッティングの申し立てを、訴訟より迅速かつ低コストで処理する。
 keywords: ['UDRP', 'ドメイン紛争', '商標保護', 'サイバースクワッティング', '法的枠組み']
 level: 1

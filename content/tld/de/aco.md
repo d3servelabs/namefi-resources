@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: Entdecken Sie das Potenzial der .aco Domain. Erfahren Sie alles über die Bedeutung, SEO-Vorteile und wie Sie diese TLD bei Namefi registrieren können.
 keywords: ['.aco domains', 'TLD', 'top-level domain', 'was ist .aco', 'warum .aco wählen', 'was ist die .aco domain', 'warum die .aco domain wählen', 'domain investing', 'blockchain', 'tokenized domain', 'web3 domains', 'domain namen kaufen', 'nischen domains', 'markenschutz']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: विज़िटर को एक डोमेन से स्वचालित रूप से दूसरे पते पर भेजना, अक्सर 301 रीडायरेक्ट के माध्यम से।
 keywords: ['domain forwarding', '301 redirect', 'URL redirect', 'DNS', 'domain management']
 level: 1

@@ -5,6 +5,7 @@ language: 'ko'
 tags: ['web3', 'cryptocurrency', 'defi', 'blockchain', 'finance']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: web3-foundations
 format: explainer

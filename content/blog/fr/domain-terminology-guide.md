@@ -6,6 +6,7 @@ priority: P0
 tags: ["faq","domains"]
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Maîtrisez l'investissement de domaine avec notre guide complet de la terminologie essentielle des domaines. Des concepts de base aux stratégies de trading avancées, apprenez le langage des professionnels du domaine.
 keywords: ["terminologie de domaine","investissement de domaine","noms de domaine","trading de domaine","glossaire de domaine","TLD","registraire","enchère de domaine","portefeuille de domaine","évaluation de domaine","domaines premium","flipping de domaine"]
 relatedArticles:

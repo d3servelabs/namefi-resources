@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Software or a device that stores the private keys controlling your on-chain assets and signs transactions, such as MetaMask or a hardware wallet.
 keywords: ['wallet', 'crypto wallet', 'private key', 'digital asset storage', 'domain storage']
 level: 1

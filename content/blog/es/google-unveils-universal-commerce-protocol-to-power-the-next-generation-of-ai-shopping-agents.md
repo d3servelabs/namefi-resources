@@ -5,6 +5,7 @@ language: es
 tags: ['Infraestructura', 'Agentes de IA', 'Comercio Digital']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "UCP es la apuesta de Google para impulsar el comercio nativo de agentes, permitiendo a los asistentes de IA comprar y realizar pagos en la web abierta."
 keywords: ['Protocolo de Comercio Universal', 'UCP', 'Google UCP', 'agentes de compra de IA', 'comercio impulsado por IA', 'comercio agéntico', 'protocolo de comercio electrónico de IA', 'comercio conversacional', 'pago con IA', 'futuro del comercio electrónico', 'compras basadas en agentes', 'estándares de comercio abierto', 'Google IA', 'Gemini IA', 'Optimización de Motores de Agentes']

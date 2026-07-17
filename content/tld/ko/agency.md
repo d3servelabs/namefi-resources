@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.agency 도메인은 Identity Digital이 운영하는 개방형 신규 gTLD로, 마케팅·크리에이티브·부동산·컨설팅 기업이 설명적이고 브랜드화하기 좋은 웹 주소를 원할 때 적합합니다.'
 keywords: ['.agency 도메인', '.agency란', '.agency TLD', '.agency 도메인 이름', '에이전시 도메인', '에이전시를 위한 신규 gTLD', '마케팅 에이전시 도메인', '크리에이티브 에이전시 웹사이트', 'Identity Digital TLD', '.agency 등록']

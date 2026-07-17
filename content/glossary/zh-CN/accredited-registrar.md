@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 经 ICANN 在注册商认证协议下批准、可销售 gTLD 域名的注册商。
 keywords: ['认证注册商', 'RAA', 'ICANN认证', 'gTLD', '注册商协议']
 level: 1

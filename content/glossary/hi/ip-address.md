@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: IP एड्रेस वह संख्यात्मक पता है जो नेटवर्क पर किसी डिवाइस की पहचान करता है, जिसे DNS एक डोमेन नाम से मैप करता है।
 keywords: ['IP एड्रेस', 'IPv4', 'IPv6', 'A रिकॉर्ड', 'AAAA रिकॉर्ड', 'नेटवर्किंग']
 level: 1

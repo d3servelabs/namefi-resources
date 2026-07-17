@@ -6,6 +6,7 @@ language: ta
 tags: ['governance', 'dao', 'web3', 'namefi space']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 format: opinion
 description: "முதன்மை டொமைன் என்பது ஓர் இணைய இயக்கத்தின் முக்கியமான கட்டுப்பாட்டுப் புள்ளி. சட்டம், ரெஜிஸ்ட்ரார், DNS, பாதுகாப்பு மற்றும் செயல்பாட்டுப் பாதுகாப்புகளைத் தக்கவைத்தபடி ஒரு DAO அதை எவ்வாறு நிர்வகிக்க முடியும் என்பதை இங்கே காணலாம்."

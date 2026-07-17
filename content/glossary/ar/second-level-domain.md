@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: 'التسمية اللي على يسار TLD مباشرة — الـ "example" في example.com — وهو الجزء اللي بتسجّله فعلاً.'
 keywords: ['نطاق المستوى الثاني', 'SLD', 'النطاق الجذر', 'النطاق القمة', 'الاسم القابل للتسجيل']
 level: 1

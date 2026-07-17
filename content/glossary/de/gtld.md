@@ -5,6 +5,8 @@ language: de
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Eine nicht länderspezifische Top-Level-Domain wie .com, .org oder .xyz, die unter ICANN-Vertrag betrieben wird.
 keywords: ['gTLD', 'generische TLD', '.com', '.org', '.xyz', 'ICANN']
 level: 1

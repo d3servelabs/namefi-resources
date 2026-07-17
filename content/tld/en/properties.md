@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .properties domain is an open generic gTLD run by Binky Moon (Identity Digital), built for real estate listings, brokers, and property portfolios worldwide.'
 keywords: ['.properties domain', 'what is .properties', '.properties TLD', 'real estate domain', 'property domain name', 'Binky Moon properties', 'Identity Digital real estate gTLD', 'register .properties']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인을 실제로 사용할 최종 사용자가 지불하는 가격으로, 일반적으로 도매 투자자 기준가보다 수배 높습니다.
 keywords: ['소매 가격', '최종 사용자 가격', '도메인 소매', '최종 사용자 가격', '정가']
 also_known_as: ['최종 사용자 가격']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Las entradas en una zona que asignan un dominio a direcciones y servicios — A, AAAA, CNAME, MX, TXT y más.
 keywords: ['registros DNS', 'registro A', 'registro AAAA', 'CNAME', 'registro MX', 'registro TXT']
 level: 1

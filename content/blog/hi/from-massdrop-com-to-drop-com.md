@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'कैसे Massdrop ने सात साल तक एक उत्साही ग्रुप-बाय कम्युनिटी बनाई, फिर 2019 में Drop के रूप में रीब्रांड किया — रीनेम से पहले ही प्रीमियम Drop.com डोमेन (जिसकी कभी $800,000 की मांगी कीमत थी) चुपचाप हासिल की, और क्यों "Mass" हटाना जरूरी था।'
 keywords: ['massdrop.com', 'drop.com', 'drop domain name', 'massdrop rebrand', 'domain upgrade', 'group buying', 'mechanical keyboards', 'audiophile community', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'exact match domain', 'community commerce']

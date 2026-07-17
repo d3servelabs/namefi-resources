@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "En 1995, un escroc nommé Stephen Cohen a volé sex.com à son propriétaire légitime Gary Kremen grâce à une seule lettre falsifiée envoyée à Network Solutions. La longue bataille pour le récupérer s'est soldée par un jugement de 65 millions de dollars, un fugitif au Mexique, et une décision historique établissant que les domaines sont une propriété."
 keywords: ['sex.com', 'vol de domaine', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'lettre falsifiée', 'détournement de domaine', 'lettre Sharon Dimmick', 'sécurité des domaines', 'domaine en tant que propriété', 'jugement de 65 millions de dollars', 'fraude au transfert de domaine', 'Domain Mayday']

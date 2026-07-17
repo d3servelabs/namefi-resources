@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.aco TLDを詳しく解説します。このユニークなドメイン拡張子がビジネス、医療、Web3ポートフォリオで注目される理由を学び、Namefiで.acoドメインを取得しましょう。'
 keywords: ['.acoドメイン', '.aco TLD', 'トップレベルドメイン .aco', '.acoとは', '.acoドメインを選ぶ理由', 'ドメイン投資', 'ブロックチェーンドメイン', 'トークン化ドメイン', 'Web3ドメイン', '医療ドメイン', 'ブランド保護', '新gTLD']

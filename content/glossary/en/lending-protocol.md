@@ -4,6 +4,7 @@ date: '2025-06-30'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A smart-contract platform where users supply assets to earn interest and borrowers take loans against collateral, with no bank as intermediary.
 keywords: ['lending protocol', 'DeFi', 'collateral', 'borrowing', 'domain finance', 'yield']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是协议资产，代币化域名如何作为协议资产发挥作用？
 keywords: ["协议资产","区块链协议","基础设施资产","网络资产","实用代币"]
 relatedArticles:

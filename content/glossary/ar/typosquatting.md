@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: تسجيل أخطاء إملائية لدومينات مشهورة لاصطياد حركة الزوار المخطئين، غالبًا لأغراض الإعلانات أو التصيّد.
 keywords: ['طغيان كتابي', 'دومين خطأ إملائي', 'تصيّد إلكتروني', 'إساءة استخدام البراند', 'استغلال إلكتروني']
 level: 1

@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '探索 .actor 域名：专为演员、演艺人员和选角导演设计的顶级域名。了解如何通过 .actor 提升个人品牌，以及如何在 Namefi 轻松注册这一独特的域名资产。'
 keywords:

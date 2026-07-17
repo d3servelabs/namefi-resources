@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'كيف اشترت Snapchat بهدوء دومين Snap.com من Idealab بـ5 مليون دولار (على ما بُلّغ) سنة 2014، وإزاي غيّرت اسمها في سبتمبر 2016 لـ Snap Inc. "شركة كاميرات"، وسمحت للدومين القصير الدقيق إنه يحمل هوية أكبر من أي تطبيق منفرد.'
 keywords: ['snapchat.com', 'snap.com', 'snap inc', 'اسم دومين snap', 'ترقية الدومين', 'تسمية الشركات الناشئة', 'تسمية العلامة التجارية', 'دومين مميز', 'استراتيجية الدومين', 'إعادة تسمية snapchat', 'شركة كاميرات', 'idealab snap.com', 'شراء دومين', 'دومين يحدد الفئة']

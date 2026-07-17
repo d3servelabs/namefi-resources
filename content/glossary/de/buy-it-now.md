@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein fester Sofortkaufpreis auf einem Domain-Angebot – wer ihn zahlt, schließt den Kauf sofort ab, ohne Verhandlung.
 keywords: ['Sofortkauf', 'BIN', 'Sofortkauf', 'Festpreis', 'Domain-Listing']
 also_known_as: ['BIN']

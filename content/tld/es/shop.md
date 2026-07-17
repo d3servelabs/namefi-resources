@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'El dominio .shop es un nuevo gTLD abierto operado por GMO Registry que indica "este es un lugar para comprar". Aprende quién lo usa, las reglas, la dinámica de precios y el SEO.'
 keywords: ['dominios .shop', 'qué es .shop', 'TLD .shop', 'registro de dominio .shop', 'dominio de comercio electrónico', 'GMO Registry', 'nuevo gTLD para minoristas', 'comprar dominio .shop']

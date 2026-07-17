@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نموذج إعلاني بيكسب فيه المالك في كل مرة زائر ينقر على إعلان، ويُستخدم لتحقيق الدخل من الدومينات المُعطَّلة.
 keywords: ['PPC', 'الدفع مقابل النقر', 'تحقيق الدخل من الدومين', 'عائد الإعلانات', 'عائد احتجاز الدومين']
 also_known_as: ['Pay-Per-Click']

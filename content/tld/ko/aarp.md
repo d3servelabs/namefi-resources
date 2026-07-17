@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld', 'domain-names', 'branding', 'internet-security']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".aarp 최상위 도메인의 목적을 알아보세요. 이 제한된 TLD가 보안과 커뮤니티를 어떻게 상징하는지, 그리고 나만의 디지털 정체성을 확보하는 방법을 살펴보세요."
 relatedArticles:

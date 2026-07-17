@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.spaceドメインはRadixが運営するオープンな新gTLDで、スタートアップ・クリエイター・宇宙テックプロジェクトに人気です。適した用途、SEOへの影響、登録費用を詳しく解説します。'
 keywords: ['.spaceドメイン', '.spaceとは', 'space TLD', '.spaceドメイン登録', 'Radixレジストリ', '新gTLD', 'クリエイティブドメイン拡張子', 'スタートアップドメイン']

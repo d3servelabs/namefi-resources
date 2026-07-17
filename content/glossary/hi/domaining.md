@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन नामों में निवेश करने की प्रक्रिया — उन्हें लाभ के लिए पंजीकृत, खरीद और बेच करना।
 keywords: ['domaining', 'domainer', 'domain investing', 'domain flipping', 'domain speculation']
 level: 1

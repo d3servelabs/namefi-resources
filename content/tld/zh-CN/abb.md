@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld', '域名注册', '品牌建设', 'abb']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入探索 .abb 顶级域名的独特价值。了解其在提升品牌信任度、SEO 优化及简短易记方面的优势，并立即在 Namefi 锁定您的理想域名。'
 relatedArticles:

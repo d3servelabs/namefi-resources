@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனில் உள்ள தரப்படுத்தப்பட்ட கொடிகள் — பூட்டப்பட்டது, நிறுத்தி வைக்கப்பட்டது, இடமாற்றம் நிலுவையில் உள்ளது என்பன போன்ற அதன் நிலையைக் காட்டுபவை.
 keywords: ['EPP நிலைக் குறியீடுகள்', 'clientHold', 'serverTransferProhibited', 'டொமைன் நிலை', 'நீக்கம் நிலுவையில்']
 level: 1

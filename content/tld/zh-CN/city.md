@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: .city 是专为本地企业、市政服务和城市主题网站设计的域名。非常适合建立本地影响力。
 keywords: ["tld", ".city 域名", "本地企业", "市政服务", "城市网站", "本地影响力"]
 relatedArticles:

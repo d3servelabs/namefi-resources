@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld', 'dominios', 'tecnología', 'marca']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio .alibaba. Explora qué es, cómo se utiliza este TLD de marca exclusivo y la importancia de asegurar tu identidad digital con Namefi.'
 keywords: ['.alibaba domains', 'TLD .alibaba', 'top-level domain', 'what is .alibaba', 'why choose .alibaba', 'what is the .alibaba domain', 'why choose the .alibaba domain', 'inversión en dominios', 'blockchain', 'dominio tokenizado', 'registro de dominios', 'identidad digital', 'gTLD de marca', 'seguridad web', 'dominios web3']

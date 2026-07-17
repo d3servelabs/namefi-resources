@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: New gTLD वे जेनेरिक टॉप-लेवल डोमेन हैं जो ICANN के विस्तार कार्यक्रम द्वारा शुरू किए गए, जैसे .app, .xyz, या .shop।
 keywords: ['new gTLD', 'ICANN विस्तार', '.app', '.xyz', '.shop', 'डोमेन एक्सटेंशन']
 level: 1

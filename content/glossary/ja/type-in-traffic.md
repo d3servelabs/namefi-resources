@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 検索結果やリンクを経由せず、ドメインを直接アドレスバーに入力して訪れるユーザーで、ドメインパーキング収益の基盤となる。
 keywords: ['タイプイントラフィック', 'ダイレクトナビゲーション', 'ドメインパーキング', '完全一致ドメイン', 'ドメイン価値']
 level: 1

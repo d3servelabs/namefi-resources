@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '想展示空军荣耀或服务于航空社区吗？深入了解 .airforce 顶级域名、它的用途以及如何在 Namefi 注册。立即锁定您的专属域名！'
 keywords: ['.airforce domains', '.airforce TLD', 'top-level domain airforce', 'what is .airforce', 'why choose .airforce', 'what is the .airforce domain', 'why choose the .airforce domain', '.airforce 域名', 'buy .airforce domain', 'air force community domains', 'aviation domains', 'tokenized domains', 'Web3 domains', 'military domains', 'domain investing airforce']

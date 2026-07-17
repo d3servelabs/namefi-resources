@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .afl : son lien avec le football australien, ses avantages SEO et comment l'enregistrer. Sécurisez votre identité numérique avec Namefi."
 keywords: [".afl domains", ".afl TLD", "top-level domain", "what is .afl", "why choose .afl", "what is the .afl domain", "why choose the .afl domain", "investissement domaine", "blockchain domains", "tokenized domain", "domaine web3", "ligue australienne de football", "nom de domaine sport", "achat nom de domaine", "Namefi registrar"]

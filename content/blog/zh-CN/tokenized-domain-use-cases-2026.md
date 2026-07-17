@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['thesis']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "以平台中立的视角，带您全面了解2026年通证化域名的实际应用——DeFi借贷、租赁、碎片化所有权、AI代理身份，以及那些尚未完全落地的应用场景。"
 keywords: ['通证化域名应用场景', 'DomainFi', '通证化域名借贷', '通证化域名抵押', '租赁通证化域名', '域名碎片化所有权', 'AI代理域名', '域名DeFi', '通证化域名市场', '通证化域名应用', 'NFT域名应用场景', '2026年为何通证化域名', '域名链上使用', '通证化域名案例']

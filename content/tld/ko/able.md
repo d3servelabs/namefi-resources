@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld', 'branding', 'domain-names', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.able 도메인 확장자의 창의적인 가능성을 발견하십시오. 이 다재다능한 TLD가 스타트업, 개발자, 크리에이티브의 브랜딩을 어떻게 강화하는지 알아보십시오. Namefi에서 지금 확보하십시오.'
 relatedArticles:

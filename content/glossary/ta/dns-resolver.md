@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைன் தேடலை ஏற்று, பொருந்தும் முகவரியை வழங்க DNS படிநிலையில் இறங்கிச் செல்லும் சேவையகம்.
 keywords: ['DNS ரிசால்வர்', 'மறுசெயல் ரிசால்வர்', 'ரிசால்வர்', '8.8.8.8', '1.1.1.1', 'DNS தேடல்']
 level: 1

@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un service qui masque les coordonnées personnelles d''un titulaire dans les registres WHOIS ou RDAP publics.
 keywords: ['confidentialité WHOIS', 'protection de la confidentialité', 'RDAP', 'confidentialité du titulaire', 'masquage des coordonnées']
 also_known_as: ['Protection de la confidentialité']

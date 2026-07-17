@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: प्रोटोकॉल एसेट क्या हैं और टोकनाइज्ड डोमेन प्रोटोकॉल एसेट के रूप में कैसे कार्य करते हैं?
 keywords: ["प्रोटोकॉल एसेट","ब्लॉकचेन प्रोटोकॉल","बुनियादी ढाँचा एसेट","नेटवर्क एसेट","यूटिलिटी टोकन"]
 relatedArticles:

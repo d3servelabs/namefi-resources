@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वे विज़िटर जो सीधे किसी अनुमानित डोमेन को टाइप करके साइट पर पहुँचते हैं, जो डोमेन पार्किंग राजस्व का आधार है।
 keywords: ['type-in traffic', 'डायरेक्ट नेविगेशन', 'डोमेन पार्किंग', 'एग्ज़ैक्ट मैच डोमेन', 'डोमेन मूल्य']
 level: 1

@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: नकली साइटों और संदेशों के माध्यम से विश्वसनीय ब्रांडों का रूप धारण कर लोगों को उनके क्रेडेंशियल या धन प्रकट करने के लिए धोखा देना।
 keywords: ['फ़िशिंग', 'सोशल इंजीनियरिंग', 'क्रेडेंशियल चोरी', 'प्रतिरूपण', 'डोमेन दुरुपयोग']
 level: 1

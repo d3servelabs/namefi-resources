@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le délai avant qu'une modification DNS soit visible partout, au fur et à mesure que les anciens enregistrements mis en cache expirent sur les résolveurs.
 keywords: ['propagation DNS', 'délai de mise à jour DNS', 'TTL', 'cache DNS', 'changement de serveur de noms']
 level: 1

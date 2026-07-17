@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 계정, 신원, 소셜 그래프가 특정 기업의 서버가 아닌 블록체인에 존재하는 이더리움 기반 탈중앙화 소셜 네트워크입니다.
 keywords: ['Farcaster', '탈중앙화 소셜', 'Web3 소셜', '블록체인 신원', '소셜 프로토콜']
 level: 1

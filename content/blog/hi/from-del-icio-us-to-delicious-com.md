@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'इस लेख में जानें कि 2003 में प्रसिद्ध डोमेन हैक "del.icio.us" के रूप में लॉन्च हुई सोशल बुकमार्किंग साइट कैसे शुरू हुई, उन डॉट्स ने हर उल्लेख पर स्थायी कर क्यों लगाया, और Yahoo ने 2008 में इसे साफ-सुथरे Delicious.com पर कैसे स्थानांतरित किया।'
 keywords: ['del.icio.us', 'delicious.com', 'delicious domain name', 'domain hack', 'joshua schachter', 'social bookmarking', 'yahoo delicious', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'ccTLD domain hack', 'category-defining domain']

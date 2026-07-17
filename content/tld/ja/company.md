@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.companyドメインは誰でも登録できるオープンな汎用gTLDです。運営者、.comとの比較、SEOへの影響、ビジネスへの適性について解説します。'
 keywords: ['.companyドメイン', '.companyとは', '.company TLD', '.company vs .com', '.companyドメイン登録', 'ビジネス用ドメイン拡張子', 'ビジネス向け新gTLD', 'Identity Digital TLD']

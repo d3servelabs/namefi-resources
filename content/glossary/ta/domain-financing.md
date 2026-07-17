@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைன் பெயரின் முழு விலையையும் உடனடியாகச் செலுத்துவதற்கு பதில், தவணைகளாகப் பிரித்துச் செலுத்தும் முறை.
 keywords: ['டொமைன் நிதியுதவி', 'தவணை முறை', 'கட்டண திட்டம்', 'டொமைன் கையகப்படுத்தல்', 'டொமைன் முதலீடு']
 level: 1

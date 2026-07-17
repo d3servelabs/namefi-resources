@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインを大量登録し、無料のアドグレース期間内にキャンセルするという、現在はほぼ廃れた手法。
 keywords: ['ドメインテイスティング', 'AGP', 'アドグレース期間', 'ドメインカイティング', 'ICANN ポリシー']
 level: 1

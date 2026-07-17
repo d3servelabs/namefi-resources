@@ -6,6 +6,8 @@ language: ja
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.aeドメインはアラブ首長国連邦（UAE）のカントリーコードTLDです。.aeがどの国のTLDか、登録資格、取得条件、そしてUAEおよびドバイのビジネスで信頼を得る理由をわかりやすく解説します。'
 keywords: ['aeドメイン', '.aeドメイン', 'ae tld', 'aeトップレベルドメイン', 'UAEドメイン', 'UAE tld', 'UAEドメイン拡張子', '.aeドメインとは', '.aeドメインの国', '.aeドメイン登録資格', 'ドバイドメイン', 'アブダビドメイン', 'アラブ首長国連邦インターネットTLD', '.aeDA', 'TDRAドメイン', 'UAE国番号', '.aeドメイン購入', '.aeドメイン登録', 'なぜ.aeを選ぶか', 'トークン化ドメイン', 'Namefiレジストラ', '中東ドメイン']

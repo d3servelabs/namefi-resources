@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الأعلام القياسية على النطاق اللي بتوضح حالته — مقفول أو متوقف أو قيد النقل والمزيد.
 keywords: ['أكواد حالة EPP', 'clientHold', 'serverTransferProhibited', 'حالة النطاق', 'قيد الحذف']
 level: 1

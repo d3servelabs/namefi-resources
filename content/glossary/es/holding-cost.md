@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Las cuotas de renovación periódicas que un inversor paga para conservar un dominio hasta que se vende.
 keywords: ['costo de mantenimiento', 'costo de custodia', 'costo de renovación de dominio', 'costo de inversión en dominios', 'cuota de renovación anual']
 also_known_as: ['Costo de custodia']

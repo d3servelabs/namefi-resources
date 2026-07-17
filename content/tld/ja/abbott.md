@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld', 'brand domains', 'domain investing', 'internet security']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: ".abbott TLDについて知っておくべきすべてのこと。この限定ドメインの目的、ヘルスケア分野での活用事例、ブランドTLDのメリットを解説します。"
 keywords: [".abbottドメイン", ".abbott TLD", "トップレベルドメイン", ".abbottとは", ".abbottを選ぶ理由", "ブランドTLD", "ヘルスケアドメイン", "制限付きトップレベルドメイン", "Abbott Laboratoriesドメイン", "ドメイン投資", "ブロックチェーンドメイン", "トークン化ドメイン", "Namefi"]

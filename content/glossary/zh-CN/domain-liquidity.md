@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名在接近估值的价格上能够被出售的速度——优质域名流动性高，小众域名流动性低。
 keywords: ['域名流动性', '流动性', '域名可变现性', '域名出售速度', '域名市场深度']
 level: 1

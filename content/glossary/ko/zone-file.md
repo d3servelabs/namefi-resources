@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인의 모든 DNS 레코드(네임서버를 위한 글루 레코드 포함)를 저장하는 텍스트 파일입니다.
 keywords: ['존 파일', '글루 레코드', 'DNS 존', '권한 레코드', '네임서버']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Dominios muy cortos de tres o cuatro letras o totalmente numéricos, apreciados por su brevedad, especialmente en algunos mercados.
 keywords: ['dominio corto', 'dominio numérico', 'dominio LLLL', 'dominio NNNN', 'dominio de tres letras', 'dominio de cuatro letras']
 level: 1

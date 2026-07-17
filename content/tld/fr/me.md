@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Qu'est-ce que le domaine .me ? Le TLD national du Monténégro, commercialisé dans le monde entier comme une extension de marque personnelle et de domain hack où le nom se complète par « me ». Découvrez qui le gère, qui peut en enregistrer un, la tarification et le référencement."
 keywords: ['domaines .me', '.me TLD', 'domaine me', "qu'est-ce que .me", "qu'est-ce que le domaine .me", '.me vs .com', 'domaine me pour marque personnelle', 'domaine Monténégro', 'enregistrer un domaine .me', 'domain hack .me', 'about.me']

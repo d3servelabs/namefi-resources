@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 以投资为目的注册、买入并出售域名以获取利润的实践活动。
 keywords: ['域名投资', '域名投资者', '域名炒作', '域名翻转', '域名投机']
 level: 1

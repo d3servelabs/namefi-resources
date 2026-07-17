@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué son los activos nativos de Internet y cómo encajan los dominios en esta categoría?
 keywords: ["activo nativo de internet","activo digital","blockchain","internet nativo","dominios tokenizados"]
 relatedArticles:

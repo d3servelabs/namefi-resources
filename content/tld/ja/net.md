@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.netドメインは1985年に誕生したインターネット黎明期のgTLDで、Verisignが運営し誰でも登録できます。用途・.comとの違い・登録すべきタイミングをわかりやすく解説します。'
 keywords: ['.netドメイン', '.netとは', '.net TLD', '.net vs .com', '.netドメイン登録', 'Verisign .netレジストリ', '.netはSEOに有利か', 'テックスタートアップ ドメイン']

@@ -6,6 +6,7 @@ priority: P0
 tags: ["faq"]
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: اسم النطاق هو أساس وجودك على الإنترنت.
 keywords: ["اسم النطاق","نظام أسماء النطاقات","عنوان IP","عنوان الويب","أساسيات الإنترنت","تسجيل النطاق","عنوان الموقع","URL","Namefi"]
 relatedArticles:

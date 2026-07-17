@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "探索 .space 域名的无限潜力！它是创意人士、初创企业和自由职业者的理想选择。本文深入解析 .space 的优势、用途及注册指南。立即在 Namefi 保护您的创意空间，开启 Web3 时代的数字品牌之旅。"
 keywords: [".space domains", ".space TLD", "top-level domain", "what is .space", "why choose .space", "what is the .space domain", "why choose the .space domain", "buy .space domain", ".space 域名", "顶级域名", "域名投资", "Web3 domains", "tokenized domain", "creative portfolio domains", "tech startup domains"]

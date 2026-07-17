@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Comment Urban Compass a lancé en 2012 une appli de location à New York sur UrbanCompass.com, a abandonné « Urban » lors de sa refonte en février 2015, et a acquis le domaine exact-match Compass.com — qui avait été mis aux enchères pour 1 million de dollars — juste avant de se lancer à l'échelle nationale."
 keywords: ['urbancompass.com', 'compass.com', 'nom de domaine compass', 'mise à niveau de domaine', 'rebranding urban compass', 'robert reffkin', 'ori allon', 'dénomination startup', 'nommage de marque', 'domaine premium', 'stratégie de domaine', 'compass immobilier', 'startup immobilière', 'domaine exact-match']

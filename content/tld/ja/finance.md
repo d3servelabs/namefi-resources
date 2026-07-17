@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.financeドメインは、銀行・フィンテック企業・ファイナンシャルアドバイザー・金融メディア向けに設計されたオープンな汎用gTLDで、Binky Moon（Identity Digital）が運営しています。どのような事業者に適しているか、その理由を解説します。'
 keywords: ['.financeドメイン', '.financeとは', '.financeドメイン取得', 'finance TLD', 'フィンテックドメイン', '金融ドメイン名', 'Identity Digital', 'Binky Moon', '.finance登録']

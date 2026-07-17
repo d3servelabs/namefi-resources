@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Entdecken Sie alles über die .akdn Domain: Eine exklusive TLD für das Aga Khan Development Network. Erfahren Sie mehr über Vorteile, Nutzung und Bedeutung.'
 keywords:

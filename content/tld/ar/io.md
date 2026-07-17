@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'دومين .io هو المعيار الفعلي للشركات الناشئة والمطورين ومشاريع Web3. اتعلم أصله، ومين يقدر يسجله، وديناميكيات الأسعار، وسمعته.'
 keywords: ['دومينات .io', 'ما هو .io', 'TLD خاص بـ .io', 'امتداد دومين .io', 'تسجيل دومين .io', 'معنى دومين io', '.io مقابل .ai', 'دومينات الشركات الناشئة التكنولوجية']

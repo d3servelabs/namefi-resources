@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: ब्लॉकचेन की-पेयर का साझा करने योग्य आधा भाग, प्राइवेट की से व्युत्पन्न; धन प्राप्त करने और हस्ताक्षर सत्यापित करने के लिए उपयोग होता है।
 keywords: ['पब्लिक की', 'पता', 'सत्यापन की', 'असममित क्रिप्टोग्राफी', 'ब्लॉकचेन खाता']
 level: 1

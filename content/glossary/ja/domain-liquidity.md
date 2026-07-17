@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインが査定価格に近い金額で売却できる速さ——優良ドメインは高く、ニッチなドメインは低い。
 keywords: ['ドメイン流動性', '流動性', 'ドメイン売却のしやすさ', 'ドメイン売却スピード', 'ドメイン市場の厚み']
 level: 1

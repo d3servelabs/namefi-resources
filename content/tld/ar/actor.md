@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "هل أنت ممثل أو تعمل في مجال الفن؟ اكتشف لماذا يعتبر نطاق .actor الخيار الأمثل لبناء هويتك الرقمية وكيفية تسجيله واستثماره عبر منصة Namefi."
 keywords: [".actor domains", ".actor TLD", "top-level domain .actor", "what is .actor", "why choose .actor", "what is the .actor domain", "why choose the .actor domain", "acting portfolio", "entertainment industry domains", "personal branding for actors", "domain investing", "blockchain domains", "tokenized domains", "Web3 domains", "digital identity"]

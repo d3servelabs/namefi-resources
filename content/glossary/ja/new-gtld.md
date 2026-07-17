@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ICANNの拡張プログラムによって導入された汎用トップレベルドメイン。.app、.xyz、.shopなどが該当する。
 keywords: ['新gTLD', 'ICANN拡張', '.app', '.xyz', '.shop', 'ドメイン拡張子']
 level: 1

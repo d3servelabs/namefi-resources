@@ -5,6 +5,7 @@ language: ko
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

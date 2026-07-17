@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Entdecken Sie die Vorteile der .fun Domain. Ideal für Unterhaltung, Spiele und kreative Marken. Jetzt bei Namefi registrieren und Online-Präsenz stärken!'
 keywords: ['.fun domains', '.fun TLD', '.fun top-level domain', 'what is .fun', 'why choose .fun', 'what is the .fun domain', 'why choose the .fun domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'gaming domains', 'entertainment TLD', 'kreative webseiten', 'web3 domains', 'Namefi registrar']

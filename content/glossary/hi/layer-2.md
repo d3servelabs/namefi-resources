@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक ब्लॉकचेन के ऊपर बना नेटवर्क जो लेन-देन को तेज़ और सस्ता बनाता है, जैसे Ethereum पर Base।
 keywords: ['layer 2', 'रोलअप', 'स्केलिंग', 'ऑप्टिमिस्टिक रोलअप', 'ZK रोलअप']
 level: 1

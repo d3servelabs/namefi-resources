@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un nom court et accrocheur, souvent inventé, qui fonctionne comme une marque mémorable — à la manière d'un mot forgé.
 keywords: ['domaine brandable', 'domaine de marque', 'domaine inventé', 'nom forgé', 'domaine mémorable']
 level: 1

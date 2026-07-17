@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The single page shown on a parked or for-sale domain, often with ads, search, or a purchase offer.
 keywords: ['landing page', 'lander', 'for-sale page', 'domain parking', 'domain monetization']
 also_known_as: ['Lander']

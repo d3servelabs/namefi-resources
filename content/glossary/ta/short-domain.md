@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: மூன்று முதல் நான்கு எழுத்துகள் அல்லது முழுக்க எண்களால் ஆன மிகவும் குறுகிய டொமைன்கள் — சுருக்கத்திற்காக மதிக்கப்படுவன, குறிப்பாக சில சந்தைகளில்.
 keywords: ['குறுகிய டொமைன்', 'எண் டொமைன்', 'LLLL டொமைன்', 'NNNN டொமைன்', 'மூன்று எழுத்து டொமைன்', 'நான்கு எழுத்து டொமைன்']
 level: 1

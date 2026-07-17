@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.ioドメインはスタートアップ、開発者、Web3プロジェクトの事実上の標準です。その由来、登録資格、価格の仕組み、評判をわかりやすく解説します。'
 keywords: ['.ioドメイン', '.ioとは', '.io TLD', '.ioドメイン拡張子', '.ioドメイン登録', 'ioドメインの意味', '.io vs .ai', 'テックスタートアップ ドメイン']

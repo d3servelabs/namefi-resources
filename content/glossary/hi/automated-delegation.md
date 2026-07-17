@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: स्वचालित डेलिगेशन क्या है और स्मार्ट कॉन्ट्रैक्ट्स डोमेन नियंत्रण का प्रबंधन कैसे करते हैं?
 keywords: ["स्वचालित डेलिगेशन","स्मार्ट कॉन्ट्रैक्ट्स","डोमेन प्रबंधन","प्रोग्रामेबल नियंत्रण","ऑटोमेशन"]
 relatedArticles:

@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 selfCanonical: true
 description: 'نطاق .ae هو رمز دولة الإمارات على الإنترنت، مثالي للأعمال والعلامات التجارية في السوق الإماراتي. تعرّف على شروط التسجيل والسعر والمصداقية.'

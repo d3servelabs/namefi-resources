@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन एक्सपायर होने के तुरंत बाद की एक छोटी विंडो जिसमें आप इसे सामान्य मूल्य पर रिन्यू कर सकते हैं।
 keywords: ['ग्रेस पीरियड', 'ऑटो-रिन्यू ग्रेस पीरियड', 'डोमेन एक्सपायरेशन', 'रिन्यूअल', 'RGP']
 level: 1

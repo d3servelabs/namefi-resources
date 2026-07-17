@@ -5,6 +5,7 @@ language: 'es'
 tags: ['ai-agents', 'domains', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 format: guide
 ogImage: ../../assets/claude-mcp-domains-og.jpg

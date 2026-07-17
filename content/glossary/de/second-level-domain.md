@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Das Label direkt links von der TLD — das „example" in example.com — der Teil, den man tatsächlich registriert.
 keywords: ['Second-Level-Domain', 'SLD', 'Root-Domain', 'Apex-Domain', 'registrierbarer Name']
 level: 1

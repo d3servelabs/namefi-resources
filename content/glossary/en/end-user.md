@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A buyer who wants a domain to actually use for a business or project, not to resell it.
 keywords: ['end user', 'domain buyer', 'domain end use', 'business domain', 'domain deployment']
 level: 1

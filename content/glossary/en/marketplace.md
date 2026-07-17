@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: An online venue where buyers and sellers trade assets; for NFTs and tokenized domains, examples include OpenSea and Blur.
 keywords: ['marketplace', 'OpenSea', 'Blur', 'NFT trading', 'domain marketplace', 'secondary market']
 level: 1

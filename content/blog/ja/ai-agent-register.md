@@ -5,6 +5,7 @@ language: 'ja'
 tags: ['ai-agents', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 format: guide
 ogImage: ../../assets/ai-agent-register-og.jpg

@@ -5,6 +5,7 @@ language: ar
 tags: ['comparison']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "نظرة صادقة ومقارنة جنباً إلى جنب لمنصات ترميز النطاقات الرئيسية — ما الذي تجيده كل منصة فعلياً، وأين تتقاطع، وأين تختلف، وكيف تختار المنصة التي تناسب الطريقة التي تنوي بها استخدام نطاقاتك."
 keywords: ['منصات ترميز النطاقات', 'بديل Doma', 'بديل D3 Global Inc', 'بديل 3DNS', 'مقارنة ترميز النطاقات', 'Namefi مقابل Doma', 'Namefi مقابل D3 Global Inc', 'Namefi مقابل 3DNS', 'أفضل ترميز للنطاقات', 'مراجعة Namefi', 'مراجعة Doma Protocol', 'مراجعة D3 Global Inc', 'مراجعة 3DNS', 'اختيار ترميز النطاقات', 'مقارنة منصات ترميز النطاقات']

@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué son los contratos inteligentes y cómo habilitan la tokenización de dominios?
 keywords: ["contrato inteligente","blockchain","ejecución automatizada","lógica programable","descentralizado"]
 relatedArticles:

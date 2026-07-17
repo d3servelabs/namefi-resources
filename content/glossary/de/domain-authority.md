@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein Reputationssignal, das abschätzt, wie gut eine Domain rankt – hauptsächlich bestimmt durch qualitativ hochwertige eingehende Links.
 keywords: ['Domain-Autorität', 'Backlinks', 'Link-Equity', 'SEO', 'Ranking-Signal', 'Eingehende Links']
 level: 1

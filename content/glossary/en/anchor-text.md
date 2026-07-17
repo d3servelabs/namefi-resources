@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The visible, clickable words of a hyperlink, a signal search engines use to understand the target.
 keywords: ['anchor text', 'link text', 'backlinks', 'seo', 'hyperlink', 'ranking signals']
 level: 1

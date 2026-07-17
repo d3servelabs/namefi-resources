@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die sichtbaren, anklickbaren Wörter eines Hyperlinks – ein Signal, das Suchmaschinen verwenden, um das Linkziel zu verstehen.
 keywords: ['Ankertext', 'Linktext', 'Backlinks', 'SEO', 'Hyperlink', 'Ranking-Signale']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur le domaine .alfaromeo : une extension exclusive dédiée à la marque légendaire. Comprendre son usage, ses avantages et l'avenir des TLDs de marque."
 keywords: [".alfaromeo domains", ".alfaromeo TLD", "top-level domain", "what is .alfaromeo", "why choose .alfaromeo", "what is the .alfaromeo domain", "why choose the .alfaromeo domain", "domain investing", "blockchain domains", "tokenized domain", "luxury car domains", "brand TLD", "automotive digital identity", "Stellantis domains", "Web3 domains"]

@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .net : crédibilité, histoire et avantages SEO. Apprenez pourquoi choisir cette extension pour votre projet Web3 ou tech chez Namefi."
 keywords: [".net domains", "domaine .net", "TLD", "top-level domain", "what is .net", "qu'est-ce que le .net", "why choose .net", "pourquoi choisir le .net", "what is the .net domain", "why choose the .net domain", "domain investing", "investissement de domaine", "blockchain domains", "tokenized domain", "web3 domains"]

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインの有効期限が切れた後、元の登録者が高額な償還手数料を支払って取り戻せる約30日間の猶予期間。
 keywords: ['償還期間', 'RGP', '償還猶予期間', '期限切れドメイン回収', '償還手数料']
 level: 1

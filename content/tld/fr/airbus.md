@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld', 'domaines', 'internet', 'marque', 'branding']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur l'extension .airbus : une plongée dans les domaines de marque (Brand TLDs), leurs avantages pour la sécurité et comment Namefi révolutionne l'investissement de domaines."
 keywords: [".airbus domains", ".airbus TLD", "top-level domain .airbus", "what is .airbus", "why choose .airbus", "what is the .airbus domain", "why choose the .airbus domain", "investir nom de domaine", "domaines tokenisés", "blockchain domains", "Web3 domains", "achat nom de domaine .airbus", "extension internet airbus", "domain investing", "Namefi"]

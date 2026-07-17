@@ -4,6 +4,7 @@ date: '2026-05-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A cryptocurrency designed to hold a steady value against a reference like the US dollar, used to pay and settle without crypto price volatility.
 keywords: ['stablecoin', 'USDC', 'USDT', 'DAI', 'fiat-pegged', 'crypto payment', 'on-chain dollars']
 level: 1

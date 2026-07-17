@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Pagar por un dominio a lo largo del tiempo en cuotas en lugar de una suma única por adelantado.
 keywords: ['financiación de dominio', 'cuotas', 'plan de pago', 'adquisición de dominio', 'inversión en dominios']
 level: 1

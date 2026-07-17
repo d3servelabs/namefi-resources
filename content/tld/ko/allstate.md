@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".allstate TLD의 목적을 알아보세요. 브랜드 TLD의 개념과 보안 및 신뢰도를 높이는 방법, 그리고 Namefi를 통해 강력한 도메인 전략을 수립하는 방법을 소개합니다."
 keywords: ['.allstate 도메인', '.allstate TLD', '최상위 도메인', '.allstate란', '.allstate를 선택하는 이유', '.allstate 도메인이란', '.allstate 도메인을 선택하는 이유', '도메인 투자', '블록체인 도메인', '토큰화 도메인', '브랜드 TLD', '보험 도메인', '기업 도메인 전략', 'Web3 도메인', 'Namefi']

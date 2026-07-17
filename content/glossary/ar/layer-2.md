@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: شبكة مبنية فوق البلوكشين لتسريع المعاملات وتخفيض تكلفتها، زي Base على Ethereum.
 keywords: ['layer 2', 'رولأب', 'تحجيم الشبكة', 'رولأب تفاؤلي', 'ZK رولأب']
 level: 1

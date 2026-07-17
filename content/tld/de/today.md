@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Entdecken Sie das Potenzial der .today-Domain für News, Blogs und zeitkritische Inhalte. Erfahren Sie mehr über Vorteile, SEO und die Registrierung bei Namefi."
 keywords: [".today domains", ".today TLD", ".today top-level domain", "was ist .today", "warum .today wählen", "was ist die .today domain", "warum die .today domain wählen", "domain investieren", "blockchain domains", "tokenisierte domains", "nachrichten domains", "zeitungs domains", "neue gTLDs", "domain kaufen", "Namefi"]

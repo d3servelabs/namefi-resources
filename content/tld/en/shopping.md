@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .shopping domain is an open e-commerce gTLD from Binky Moon (Identity Digital). Learn who it suits, how it compares to .shop and .store, and how to register it.'
 keywords: ['.shopping domains', 'what is .shopping', '.shopping TLD', '.shopping domain', 'e-commerce domain', 'retail domain name', 'Binky Moon', 'Identity Digital', 'shopping domain extension', 'buy .shopping domain']

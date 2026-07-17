@@ -7,6 +7,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.top डोमेन के बारे में सब कुछ जानें। समझें कि यह TLD आपके ब्रांड के लिए क्यों सही है, इसके फायदे क्या हैं और Namefi पर इसे आसानी से कैसे रजिस्टर करें।'
 keywords:

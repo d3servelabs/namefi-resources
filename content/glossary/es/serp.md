@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La página de resultados que devuelve un motor de búsqueda para una consulta, donde los dominios compiten por visibilidad.
 keywords: ['serp', 'resultados de búsqueda', 'seo', 'motor de búsqueda', 'posicionamiento orgánico', 'visibilidad en búsquedas']
 also_known_as: ['Search Engine Results Page']

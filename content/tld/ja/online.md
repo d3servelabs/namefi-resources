@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.onlineドメインは、Radixが運営するオープンで制限のない新しいgTLDです。個人・法人を問わず誰でも登録できます。適した用途、SEOへの影響、検討すべき事項を解説します。'
 keywords: ['.onlineドメイン', '.onlineとは', '.online TLD', '.onlineドメイン登録', 'Radixレジストリ', '新gTLD', 'オンラインドメイン拡張子', '.onlineはSEOに有利か']

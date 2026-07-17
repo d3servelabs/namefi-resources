@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - alan-machin
 draft: false
 description: 'Découvrez le TLD .al : de son origine albanaise à son immense potentiel pour les "domain hacks" (comme digit.al) et l''investissement Web3 avec Namefi.'
 keywords:

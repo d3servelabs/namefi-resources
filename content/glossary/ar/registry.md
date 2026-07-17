@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: المنظمة اللي بتشغّل قاعدة البيانات الموثوقة وخوادم الأسماء لنطاق المستوى الأعلى، وبتفوّض مبيعات التجزئة لمسجلي النطاقات.
 keywords: ['سجل النطاقات', 'مشغل السجل', 'سجل TLD', 'سجل النطاق', 'ICANN', 'مسجل النطاقات', 'EPP', 'سجل gTLD', 'سجل ccTLD', 'نظام السجل المشترك']
 also_known_as: ['مشغّل السجل']

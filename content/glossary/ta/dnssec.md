@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: DNS பதிவுகளில் கிரிப்டோகிராஃபிக் கையெழுத்துகள் — இவை ஒரு பதில் நம்பகமானது என்றும், பரிமாற்றத்தில் போலியாகவோ திருத்தப்பட்டதாகவோ இல்லை என்றும் தீர்வுகாண்பவர்கள் சரிபார்க்க உதவுகின்றன.
 keywords: ['DNSSEC', 'DNS பாதுகாப்பு', 'டொமைன் பாதுகாப்பு', 'DS பதிவு', 'நம்பிக்கை சங்கிலி', 'கிரிப்டோகிராஃபிக் DNS']
 level: 1

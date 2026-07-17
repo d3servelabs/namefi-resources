@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインにプレフィックスを付加して独立したアドレスを作成する仕組み。blog.example.com や app.example.com などがその例。
 keywords: ['サブドメイン', 'ホスト', 'blog.example.com', 'DNS', 'セカンドレベルドメイン']
 level: 1

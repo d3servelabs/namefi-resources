@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El estándar de Ethereum para tokens fungibles como las stablecoins, complementario al estándar de NFT ERC-721.
 keywords: ['ERC-20', 'token fungible', 'estándar de token', 'stablecoin', 'token ethereum']
 level: 1

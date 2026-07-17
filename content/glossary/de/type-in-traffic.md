@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Besucher, die eine Website durch direktes Eintippen einer vermuteten Domain erreichen – die Grundlage der Domain-Parking-Einnahmen.
 keywords: ['type-in-traffic', 'direktnavigation', 'domain parking', 'exact-match-domain', 'domain-wert']
 level: 1

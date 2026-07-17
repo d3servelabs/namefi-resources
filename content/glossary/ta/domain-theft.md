@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனை உரிமையுள்ள உரிமையாளரின் கட்டுப்பாட்டிலிருந்து அனுமதியின்றி மாற்றுவது, பெரும்பாலும் கணக்கு சமரசம் மூலம் நடைபெறுகிறது.
 keywords: ['டொமைன் திருட்டு', 'அனுமதியற்ற பரிமாற்றம்', 'கணக்கு சமரசம்', 'டொமைன் பாதுகாப்பு', 'மீட்பு']
 level: 1

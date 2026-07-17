@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '探索 .world 域名的无限潜力！本文深入分析 .world 顶级域名的优势、适用场景及成功案例。了解为何全球化企业与 Web3 创新者纷纷选择 .world，并立即在 Namefi 开启您的域名注册之旅。'
 keywords: ['.world domains', '.world TLD', '.world top-level domain', 'what is .world', 'why choose .world', 'what is the .world domain', 'why choose the .world domain', 'buy .world domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'global branding', 'new gTLD', 'Web3 domains', 'Namefi']

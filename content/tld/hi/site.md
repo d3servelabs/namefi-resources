@@ -7,6 +7,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.site डोमेन एक्सटेंशन के बारे में सब कुछ जानें। समझें कि व्यवसाय इसका उपयोग क्यों करते हैं, इसके लाभ क्या हैं, और Namefi के साथ अपना .site डोमेन कैसे रजिस्टर करें।'
 keywords:

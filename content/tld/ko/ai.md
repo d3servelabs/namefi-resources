@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '사이퍼펑크, 작은 카리브해 섬, 그리고 기술 분야에서 가장 가치 있는 두 글자. .ai 도메인의 완전한 이야기 — 누가 운영하는지, 앙귈라가 어떻게 정부 예산의 절반에 가까운 수입을 여기서 얻게 됐는지, 비용은 얼마인지, 그리고 여기에 브랜드를 구축해야 할지.'
 keywords: ['.ai 도메인', '.ai란 무엇인가', '.ai TLD', '앙귈라 ccTLD', '.ai 도메인 등록', 'AI 스타트업 도메인', '.ai vs .io', '.ai 소유자', '.ai 도메인 가격', '.ai 2년 최소 기간', 'Vince Cate', '앙귈라 AI 도메인']

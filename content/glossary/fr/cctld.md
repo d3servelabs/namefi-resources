@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un domaine de premier niveau à deux lettres attribué à un pays ou territoire, tel que .uk, .de ou .jp.
 keywords: ['ccTLD', 'domaine à code pays', 'domaine national', '.uk', '.de', 'ISO 3166']
 level: 1

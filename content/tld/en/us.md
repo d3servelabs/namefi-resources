@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'What is the .us domain? The official country-code TLD for the United States, restricted to registrants with a genuine US presence. Learn who runs it, the Nexus Requirement, pricing, SEO, and email deliverability.'
 keywords: ['.us domains', '.us TLD', 'us domain', 'what is .us', 'what is the .us domain', '.us vs .com', 'US nexus requirement', 'United States domain', 'register .us domain', 'American domain extension', 'del.icio.us']

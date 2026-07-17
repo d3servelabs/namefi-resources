@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist Domain-Leasing und wie ermöglicht Tokenisierung neue Leasing-Modelle?
 keywords: ["Leasing","Domainmiete","passives Einkommen","Smart-Contract-Leasing","automatisierte Zahlungen"]
 relatedArticles:

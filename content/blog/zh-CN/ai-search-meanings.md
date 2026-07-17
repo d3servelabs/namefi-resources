@@ -5,6 +5,7 @@ language: 'zh-CN'
 tags: ['ai-agents', 'domains', 'explainer']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 format: explainer
 ogImage: ../../assets/ai-search-meanings-og.jpg

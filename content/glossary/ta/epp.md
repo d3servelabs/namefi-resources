@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: டொமைன் பதிவுகளை உருவாக்க, புதுப்பிக்க, மாற்ற அல்லது நீக்க registrar-கள் registry-யுடன் தொடர்பு கொள்ள பயன்படுத்தும் நிலையான நெறிமுறை.
 keywords: ['EPP', 'விரிவாக்கக்கூடிய வழங்கல் நெறிமுறை', 'டொமைன் மேலாண்மை', 'registry நெறிமுறை', 'RFC 5730']
 also_known_as: ['விரிவாக்கக்கூடிய வழங்கல் நெறிமுறை']

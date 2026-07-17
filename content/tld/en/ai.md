@@ -5,6 +5,7 @@ language: 'en'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'A cypherpunk, a tiny Caribbean island, and the most valuable two letters in tech. The full story of the .ai domain — who runs it, how Anguilla now funds nearly half its government from it, what it costs, and whether you should build on it.'
 keywords: ['.ai domain', 'what is .ai', '.ai TLD', 'Anguilla ccTLD', 'register .ai domain', 'AI startup domain', '.ai vs .io', 'who owns .ai', '.ai domain price', '.ai two year minimum', 'Vince Cate', 'Anguilla AI domain']

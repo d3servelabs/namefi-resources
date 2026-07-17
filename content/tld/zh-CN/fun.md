@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '正在寻找富有创意的域名？探索 .fun 顶级域名！它是娱乐、游戏及 Web3 项目的完美选择。本文将详细解析 .fun 的优势、应用场景，以及如何在 Namefi 轻松注册您的专属域名。'
 keywords:

@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو DID وكيف تلعب النطاقات دورًا في الهوية اللامركزية؟
 keywords: ["DID","الهوية اللامركزية","الهوية ذاتية السيادة","هوية البلوك تشين","هوية الويب 3"]
 relatedArticles:

@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que le séquestre et comment les contrats intelligents fournissent-ils un séquestre sans confiance pour les domaines ?
 keywords: ["séquestre","tiers de confiance","séquestre via contrat intelligent","sans confiance","transactions sécurisées"]
 relatedArticles:

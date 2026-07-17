@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - chie-kudo
 draft: false
 description: '.aaa トップレベルドメインの力を発見しよう。この独自の拡張子が品質と信頼を象徴する理由、そしてドメイン投資とWeb3の未来においてどのような位置づけにあるかを解説します。'
 keywords:

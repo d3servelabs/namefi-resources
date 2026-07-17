@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 攻击者通过未经授权取得注册商账户或注册信息的控制权，从而窃取域名的行为。
 keywords: ['域名劫持', '账户入侵', '域名盗窃', '注册商安全', '未授权转移']
 level: 1

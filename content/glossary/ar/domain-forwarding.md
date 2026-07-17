@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: إرسال الزوار من نطاق تلقائياً لعنوان تاني، غالباً عبر إعادة توجيه 301.
 keywords: ['إعادة توجيه النطاق', 'إعادة توجيه 301', 'إعادة توجيه URL', 'DNS', 'إدارة النطاقات']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نسبة النطاقات في المحفظة اللي بتتباع خلال فترة معيّنة — مقياس سيولة أساسي للمستثمرين.
 keywords: ['معدل البيع الفعلي', 'STR', 'سيولة النطاقات', 'أداء المحفظة', 'سرعة مبيعات النطاقات']
 also_known_as: ['STR']

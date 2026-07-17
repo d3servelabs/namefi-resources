@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .finance domain is an open generic gTLD run by Binky Moon (Identity Digital), built for banks, fintech, advisors and finance media. Here is who it suits and why.'
 keywords: ['.finance domain', 'what is .finance', '.finance domains', 'finance TLD', 'fintech domain', 'finance domain name', 'Identity Digital', 'Binky Moon', 'register .finance']

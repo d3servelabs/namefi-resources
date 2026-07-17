@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.techドメインは、テクノロジーブランド・スタートアップ・開発者向けにRadixが運営するオープンな新gTLDです。適性や注意点、登録方法について解説します。'
 keywords: ['.techドメイン', '.techとは', '.tech TLD', 'テックドメイン拡張子', 'Radixレジストリ', 'スタートアップ向け新gTLD', '開発者ポートフォリオドメイン', '.techドメイン登録']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ரெஜிஸ்ட்ரார் கணக்கு அல்லது பதிவை அனுமதியின்றி கைப்பற்றுவதன் மூலம் ஒரு டொமைன் பெயரை திருடும் செயல்.
 keywords: ['டொமைன் கடத்தல்', 'கணக்கு சமரசம்', 'டொமைன் திருட்டு', 'ரெஜிஸ்ட்ரார் பாதுகாப்பு', 'அனுமதியற்ற பரிமாற்றம்']
 level: 1

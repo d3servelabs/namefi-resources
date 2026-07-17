@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Der unbefugte Transfer einer Domain aus der Kontrolle ihres rechtmäßigen Eigentümers, oft durch Kontoübernahme.
 keywords: ['Domain-Diebstahl', 'Unbefugter Transfer', 'Kontoübernahme', 'Domain-Sicherheit', 'Wiederherstellung']
 level: 1

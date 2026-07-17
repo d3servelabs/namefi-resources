@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Que signifie "sans permission" dans la blockchain et la gestion de domaine ?
 keywords: ["sans permission","décentralisé","résistant à la censure","accès ouvert","blockchain"]
 relatedArticles:

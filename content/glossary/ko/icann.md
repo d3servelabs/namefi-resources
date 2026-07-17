@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 글로벌 도메인 이름 시스템, IP 주소 할당, 프로토콜 식별자를 조정하고 전 세계 도메인 등록기관을 인증하는 비영리 단체입니다.
 keywords: ['ICANN', '인터넷 거버넌스', '도메인 정책', 'DNS 감독', 'IANA', 'gTLD', '등록기관 인증', '다중이해관계자', 'UDRP']
 also_known_as: ['Internet Corporation for Assigned Names and Numbers', '국제인터넷주소관리기구']

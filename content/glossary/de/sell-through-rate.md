@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Der Anteil eines Domain-Portfolios, der in einem bestimmten Zeitraum verkauft wird – eine wichtige Liquiditätskennzahl für Investoren.
 keywords: ['Verkaufsquote', 'STR', 'Domain-Liquidität', 'Portfolio-Performance', 'Domain-Verkaufsgeschwindigkeit']
 also_known_as: ['STR']

@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Erfahren Sie alles über die .afamilycompany TLD: Ein Symbol für Vertrauen und familiäre Unternehmenswerte. Entdecken Sie Vorteile und Hintergründe bei Namefi.'
 keywords:

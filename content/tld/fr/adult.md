@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .adult : une extension spécialisée pour l'industrie du divertissement. Sécurisez votre marque et profitez de l'intégration Web3 avec Namefi."
 keywords: [".adult domains", ".adult TLD", "top-level domain", "what is .adult", "why choose .adult", "what is the .adult domain", "why choose the .adult domain", "investir nom de domaine", "blockchain domains", "tokenized domain", "protection de marque", "domaine divertissement", "SEO adulte", "Namefi", "registre internet"]

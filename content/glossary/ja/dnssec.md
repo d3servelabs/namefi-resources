@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: DNSレコードに付与される暗号署名。リゾルバーが応答の正当性を検証し、転送中の偽造や改ざんを検知できるようにする。
 keywords: ['DNSSEC', 'DNSセキュリティ', 'ドメインセキュリティ', 'DSレコード', '信頼チェーン', '暗号化DNS']
 level: 1

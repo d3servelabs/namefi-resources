@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: توقيعات تشفيرية على سجلات DNS بتخلي المحللين يتحققوا إن الرد أصلي وما اتزوّرش ولا اتعبّث بيه في الطريق.
 keywords: ['DNSSEC', 'أمان DNS', 'أمان النطاق', 'سجل DS', 'سلسلة الثقة', 'DNS تشفيري']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Alles über die exklusive .abarth Domain. Erfahren Sie, was diese Top-Level-Domain für die Automobilwelt bedeutet, ihre Vorteile und wie Namefi die Domain-Registrierung revolutioniert."
 keywords: [".abarth domains", ".abarth TLD", "top-level domain", "was ist .abarth", "warum .abarth wählen", "was ist die .abarth domain", "warum die .abarth domain wählen", "Abarth Automarke", "Marken-TLD", "Domain-Investition", "Blockchain Domains", "Tokenisierte Domains", "Web3 Integration", "digitale Markenführung", "exklusive Domains"]

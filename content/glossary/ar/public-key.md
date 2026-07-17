@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: النصف القابل للمشاركة من زوج مفاتيح البلوكشين، مشتق من المفتاح الخاص؛ يُستخدم لاستقبال الأموال والتحقق من التوقيعات.
 keywords: ['مفتاح عام', 'عنوان', 'مفتاح التحقق', 'تشفير غير متماثل', 'حساب البلوكشين']
 level: 1

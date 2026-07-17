@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الخادم اللي بياخد استعلام نطاق ويتنقل في هيكل DNS عشان يرجّع العنوان المناسب.
 keywords: ['محلّل DNS', 'محلّل تكراري', 'محلّل', '8.8.8.8', '1.1.1.1', 'استعلام DNS']
 level: 1

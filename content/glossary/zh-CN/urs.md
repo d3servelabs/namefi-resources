@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种快速、低成本的救济机制，可暂停明显侵权的域名，是对 UDRP 的有效补充。
 keywords: ['URS', 'Uniform Rapid Suspension', '域名暂停', '商标侵权', '新 gTLD']
 also_known_as: ['Uniform Rapid Suspension']

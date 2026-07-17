@@ -4,6 +4,7 @@ date: '2026-07-02'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The stack-based, deterministic runtime that executes smart contract code identically across every Ethereum node.
 keywords: ['ethereum virtual machine', 'evm', 'evm compatible', 'smart contract execution', 'solidity']
 also_known_as: ['EVM']

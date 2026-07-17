@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Signo legalmente protegido que identifica los bienes o servicios de una marca, fundamental en muchas disputas de dominios.
 keywords: ['marca registrada', 'protección de marca', 'propiedad intelectual', 'disputa de dominio', 'UDRP', 'WIPO']
 level: 1

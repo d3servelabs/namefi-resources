@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Visitantes que acceden a un sitio escribiendo directamente un dominio adivinado, la base de los ingresos por aparcamiento de dominios.
 keywords: ['tráfico directo', 'navegación directa', 'aparcamiento de dominios', 'dominio de coincidencia exacta', 'valor del dominio']
 level: 1

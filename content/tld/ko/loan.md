@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.loan 도메인은 대출 및 금융 사이트를 위한 개방형 신규 gTLD입니다. 등록 자격, 가격 구조, 스팸 평판, 그리고 구매 가치에 대해 알아보십시오.'
 keywords: ['.loan 도메인', '.loan 도메인이란', '.loan tld', '.loan 도메인 등록', '.loan 도메인 안전성', '.loan 도메인 의미', '도메인 확장자 loan', '신규 gTLD', '저렴한 도메인 확장자', '금융 도메인 이름']

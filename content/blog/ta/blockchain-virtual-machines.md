@@ -5,6 +5,7 @@ language: ta
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

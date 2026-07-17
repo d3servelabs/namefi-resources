@@ -5,6 +5,7 @@ language: ko
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: choosing-a-tld
 format: roundup

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 深入了解 .abudhabi 顶级域名：它代表了阿联酋首都的数字身份。本文将探讨其优势、适用场景以及为何它是阿布扎比企业和品牌的最佳选择。
 keywords: ['.abudhabi', '.abudhabi domains', '.abudhabi TLD', 'top-level domain', 'what is .abudhabi', 'why choose .abudhabi', 'what is the .abudhabi domain', 'why choose the .abudhabi domain', 'Abu Dhabi business', 'GeoTLD', 'domain investing', 'blockchain domains', 'tokenized domains', 'UAE domains']

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: スマートコントラクトがあらかじめ定めたルールに基づいてドメインの管理権限を自動的に委任する仕組み。各変更を人間が承認する必要がない。
 keywords: ['自動委任', 'スマートコントラクト', 'ドメイン管理', 'プログラマブル制御', '自動化']
 level: 1

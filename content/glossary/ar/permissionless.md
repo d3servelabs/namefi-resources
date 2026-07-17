@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ماذا يعني "بلا تصريح" في البلوكتشين وإدارة الدومينات؟
 keywords: ["بلا تصريح","لامركزي","مقاوم للرقابة","وصول مفتوح","بلوكتشين"]
 relatedArticles:

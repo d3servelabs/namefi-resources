@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo la startup de tarjetas cripto Monaco se rebautizó como Crypto.com en 2018 al adquirir el dominio ultra-premium Crypto.com —registrado en 1993 por el criptógrafo Matt Blaze, quien se negó a venderlo durante 25 años— en un acuerdo que los expertos valoraron en hasta $10 millones.'
 keywords: ['mona.co', 'crypto.com', 'dominio crypto.com', 'monaco mco', 'matt blaze crypto.com', 'kris marszalek', 'actualización de dominio', 'dominio premium', 'dominio de categoría', 'adquisición de dominio', 'rebranding cripto', 'dominio de coincidencia exacta', 'branding']

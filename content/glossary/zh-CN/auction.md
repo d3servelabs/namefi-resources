@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名销售中使用的不同类型拍卖有哪些？
 keywords: ["拍卖","荷兰式拍卖","英式拍卖","动态拍卖","价格发现","域名销售"]
 relatedArticles:

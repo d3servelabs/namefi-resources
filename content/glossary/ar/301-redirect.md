@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: استجابة HTTP بتخبر المتصفحات ومحركات البحث إن صفحة انتقلت بشكل دائم لـ URL جديد.
 keywords: ['إعادة توجيه 301', 'إعادة توجيه دائم', 'http redirect', 'seo', 'إعادة توجيه النطاق', 'link equity']
 also_known_as: ['إعادة توجيه دائم']

@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Entdecken Sie die Vorteile der .click Domain. Erfahren Sie, warum Startups und Marketer diese TLD für starke Handlungsaufforderungen nutzen und wie Sie sie bei Namefi registrieren.'
 keywords:

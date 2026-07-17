@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld', 'brand-tld', 'domain-trends', 'allstate', 'sicherheit']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .allstate Top-Level-Domain: Einblicke in Brand-TLDs, Sicherheitsvorteile und warum exklusive Domain-Endungen die Zukunft der digitalen Identität prägen."
 keywords: ['.allstate domains', '.allstate TLD', 'top-level domain', 'was ist .allstate', 'warum .allstate wählen', 'was ist die .allstate domain', 'warum die .allstate domain wählen', 'domain investieren', 'blockchain domains', 'tokenisierte domains', 'Web3 domains', 'Allstate Marken-TLD', 'sichere domains', 'ICANN neue gTLDs', 'Namefi domain registrierung']

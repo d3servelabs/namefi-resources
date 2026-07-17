@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La persona u organización que posee los derechos sobre un nombre de dominio registrado, el titular del registro.
 keywords: ['registrante', 'propietario de dominio', 'titular de nombre registrado', 'RNH', 'propiedad de dominio']
 level: 1

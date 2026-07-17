@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El pago para extender el registro de un dominio antes de que expire, a menudo de forma automática cada período.
 keywords: ['renovación de dominio', 'renovación automática', 'período de registro', 'expiración', 'tarifa de renovación']
 level: 1

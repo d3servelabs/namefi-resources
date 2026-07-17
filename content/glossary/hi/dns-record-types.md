@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: ज़ोन में वे एंट्री जो किसी डोमेन को एड्रेस और सेवाओं से मैप करती हैं — A, AAAA, CNAME, MX, TXT, और अन्य।
 keywords: ['DNS रिकॉर्ड', 'A रिकॉर्ड', 'AAAA रिकॉर्ड', 'CNAME', 'MX रिकॉर्ड', 'TXT रिकॉर्ड']
 level: 1

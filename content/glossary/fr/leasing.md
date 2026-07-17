@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que la location de domaine et comment la tokenisation permet-elle de nouveaux modèles de location ?
 keywords: ["location","location de domaine","revenu passif","location par contrat intelligent","paiements automatisés"]
 relatedArticles:

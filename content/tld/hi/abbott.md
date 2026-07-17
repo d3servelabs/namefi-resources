@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.abbott टॉप-लेवल डोमेन (TLD) के बारे में सब कुछ जानें। समझें कि यह स्वास्थ्य सेवा ब्रांडिंग, विश्वास और डिजिटल पहचान के लिए एक शक्तिशाली विकल्प क्यों है।'
 keywords:

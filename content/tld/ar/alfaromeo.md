@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما يخص نطاق .alfaromeo، النطاق المخصص للعلامة التجارية الإيطالية العريقة. تعرف على فوائد استخدامه، وقيمته في عالم النطاقات، وكيفية البحث عنه عبر Namefi.'
 keywords: ['.alfaromeo domain', 'نطاق .alfaromeo', '.alfaromeo TLD', 'top-level domain', 'what is .alfaromeo', 'why choose .alfaromeo', 'ما هو نطاق .alfaromeo', 'لماذا تختار نطاق .alfaromeo', 'what is the .alfaromeo domain', 'why choose the .alfaromeo domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'استثمار النطاقات', 'نطاقات الويب 3']

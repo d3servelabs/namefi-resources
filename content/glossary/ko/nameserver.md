@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인의 DNS 쿼리에 응답하는 서버로, NS 레코드는 해당 도메인에 대한 권한 있는 서버를 지정합니다.
 keywords: ['네임서버', 'NS 레코드', '권한 있는 서버', 'DNS 위임', 'DNS 호스팅']
 level: 1

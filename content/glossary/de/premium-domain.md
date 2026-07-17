@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Eine hochwertige Domain, die aufgrund ihrer Einprägsamkeit, Kürze oder Keyword-Stärke über dem Standardpreis bewertet wird.
 keywords: ['Premium-Domain', 'Premium-Name', 'Registry-Premium', 'Aftermarket', 'Domain-Wert']
 level: 1

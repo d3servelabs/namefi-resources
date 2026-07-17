@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La comisión pagada para procesar una transacción en una blockchain, con precio en el activo nativo de la red y que sube con la congestión; las Layer 2 cobran mucho menos.
 keywords: ['gas', 'comisión de gas', 'comisión de transacción', 'gwei', 'gas de Ethereum', 'gas de Base', 'comisiones L2', 'costo de acuñación']
 level: 1

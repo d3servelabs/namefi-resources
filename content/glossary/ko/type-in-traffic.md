@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 검색 결과나 링크가 아닌 브라우저 주소창에 도메인을 직접 입력하여 사이트에 접속하는 방문자로, 도메인 파킹 수익의 근간입니다.
 keywords: ['직접 입력 트래픽', '직접 탐색', '도메인 파킹', '정확히 일치하는 도메인', '도메인 가치']
 level: 1

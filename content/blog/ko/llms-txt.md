@@ -5,6 +5,7 @@ language: 'ko'
 tags: ['ai-agents', 'domains', 'explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 format: explainer
 ogImage: ../../assets/llms-txt-og.jpg

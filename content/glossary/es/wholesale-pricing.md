@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El precio mínimo entre inversores para un dominio, lo que un dominero acepta para liquidar rápidamente, por debajo del precio minorista.
 keywords: ['precio mayorista', 'precio de inversor', 'mayoreo de dominios', 'precio de liquidación', 'precio entre domineros']
 also_known_as: ['Precio para inversores']

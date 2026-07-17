@@ -4,6 +4,8 @@ date: '2026-06-18'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'ما هو نطاق .eg؟ هو النطاق الوطني الرسمي لمصر، تديره شبكة الجامعات المصرية منذ 1990. تعرف على شروط التسجيل والهيكل والتأثير على السيو ومن يجب أن يسجله.'
 keywords: ['نطاق .eg', '.eg TLD', 'نطاق مصر', 'ما هو .eg', 'تسجيل com.eg', 'Egypt ccTLD', 'تسجيل نطاق .eg', 'شبكة الجامعات المصرية', 'شروط .eg', 'متطلبات نطاق مصر']

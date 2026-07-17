@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 동일한 소유자와 도메인명을 유지하면서 인증 코드를 사용하여 도메인 등록을 한 ICANN 레지스트라에서 다른 레지스트라로 이전하는 과정입니다.
 keywords: ['레지스트라 간 이전', '레지스트라 이전', '도메인 이전', '이전 절차', '토크나이제이션']
 level: 1

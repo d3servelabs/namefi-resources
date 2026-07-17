@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: カテゴリ・商品・サービスを表す検索キーワードを軸に構成されたドメイン名。記述的な明確さと商業的意図の伝達を主な価値とする。
 keywords: ['キーワードドメイン', 'キーワードリッチドメイン', '説明型ドメイン', '検索キーワードドメイン', 'SEOドメイン名']
 level: 1

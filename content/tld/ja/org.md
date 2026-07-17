@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.orgドメインは、非営利法人のPublic Interest Registryが運営するオープンなレガシーgTLDで、世界中の慈善団体・オープンソースプロジェクト・コミュニティに信頼されています。'
 keywords: ['.orgドメイン', '.orgとは', '.orgドメインの意味', 'org TLD', 'Public Interest Registry', '非営利ドメイン', '.orgドメイン取得', '.orgのSEO効果']

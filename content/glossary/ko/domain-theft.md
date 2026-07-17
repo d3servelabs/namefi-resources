@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 정당한 소유자의 통제권 밖으로 도메인이 무단 이전되는 것으로, 주로 계정 침해를 통해 발생합니다.
 keywords: ['도메인 탈취', '무단 이전', '계정 침해', '도메인 보안', '복구']
 level: 1

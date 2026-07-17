@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனின் பயன்பாட்டு உரிமையை தொடர் கட்டணத்திற்கு தற்காலிகமாக வழங்குவது; உரிமை உரிமையாளரிடமே தங்கும், smart contracts மூலம் நிபந்தனைகளை தானியங்கி முறையில் நிறைவேற்றலாம்.
 keywords: ['குத்தகை', 'டொமைன் வாடகை', 'இயங்கு வருமானம்', 'smart contract குத்தகை', 'தானியங்கி கட்டணங்கள்']
 level: 1

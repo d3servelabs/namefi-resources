@@ -5,6 +5,8 @@ language: 'ta'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.net டொமைன் இணையத்தின் அசல் gTLD-களில் ஒன்று; Verisign நிர்வகிக்கிறது, யாரும் பதிவு செய்யலாம். யார் இதை பயன்படுத்துகிறார்கள், .com உடன் ஒப்பீடு, எப்போது பதிவு செய்வது என அறியுங்கள்.'
 keywords: ['.net டொமைன்', '.net என்றால் என்ன', '.net TLD', '.net மற்றும் .com ஒப்பீடு', '.net டொமைன் பதிவு', 'Verisign .net பதிவகம்', '.net SEO-க்கு நல்லதா', 'தொழில்நுட்ப தொடக்க நிறுவன டொமைன்கள்']

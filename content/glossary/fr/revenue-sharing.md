@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que le partage de revenus et comment peut-il s'appliquer à la monétisation de domaine ?
 keywords: ["partage de revenus","revenu passif","monétisation de domaine","distribution des bénéfices","contrats intelligents"]
 relatedArticles:

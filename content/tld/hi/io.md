@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.io डोमेन स्टार्टअप्स, डेवलपर्स और Web3 प्रोजेक्ट्स के लिए वास्तविक मानक बन चुका है। इसकी उत्पत्ति, रजिस्ट्रेशन की शर्तें, मूल्य निर्धारण और प्रतिष्ठा के बारे में जानें।'
 keywords: ['.io डोमेन', '.io क्या है', '.io TLD', '.io डोमेन एक्सटेंशन', '.io डोमेन रजिस्टर करें', 'io डोमेन का अर्थ', '.io बनाम .ai', 'टेक स्टार्टअप डोमेन']

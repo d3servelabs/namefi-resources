@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.meドメインとは何か？モンテネグロの国別コードTLDでありながら、「me」で文章が完結するドメインハックや個人ブランディングの拡張子として世界中で普及している。運営主体、登録資格、価格、SEOへの影響を解説。'
 keywords: ['.meドメイン', '.me TLD', 'meドメイン', '.meとは', '.meドメインとは', '.me vs .com', '個人ブランディング用ドメイン', 'モンテネグロドメイン', '.meドメイン登録', 'ドメインハック .me', 'about.me']

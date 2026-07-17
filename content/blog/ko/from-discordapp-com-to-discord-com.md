@@ -5,6 +5,7 @@ language: ko
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-investing
 series: name-change-game-change

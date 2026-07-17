@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .club domain is an open gTLD for communities, memberships, and Web3 groups. Learn who uses it, its SEO standing, pricing dynamics, and how to register.'
 keywords: ['.club domain', '.club TLD', 'what is .club', 'register .club domain', 'community domain', 'membership domain', 'web3 club domain', 'new gTLD', 'club domain SEO']

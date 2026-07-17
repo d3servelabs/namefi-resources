@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种 HTTP 状态码，告知浏览器和搜索引擎某个页面已永久迁移至新 URL。
 keywords: ['301重定向', '永久重定向', 'HTTP重定向', 'SEO', '域名转发', '链接权益']
 also_known_as: ['永久重定向']

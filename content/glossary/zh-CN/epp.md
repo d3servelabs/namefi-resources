@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 注册商与注册局之间用于注册和管理域名的标准协议。
 keywords: ['EPP', 'Extensible Provisioning Protocol', '域名管理', '注册局协议', 'RFC 5730']
 also_known_as: ['Extensible Provisioning Protocol']

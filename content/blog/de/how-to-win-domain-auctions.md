@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

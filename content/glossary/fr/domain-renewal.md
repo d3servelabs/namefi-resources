@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Payer pour prolonger l'enregistrement d'un domaine avant son expiration, souvent automatiquement à chaque période.
 keywords: ['renouvellement de domaine', 'renouvellement automatique', 'période d''enregistrement', 'expiration', 'frais de renouvellement']
 level: 1

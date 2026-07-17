@@ -5,6 +5,7 @@ language: 'ko'
 tags: ['ai-agents', 'domains', 'explainer']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 format: explainer
 ogImage: ../../assets/beyond-generators-og.jpg

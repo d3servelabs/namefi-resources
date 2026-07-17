@@ -7,6 +7,10 @@ tags:
   - glossary
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 description: 什么是 NFT？它与域名代币化有何关联？
 keywords:
   - NFT

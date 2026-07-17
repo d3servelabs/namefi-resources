@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.cc डोमेन क्या है? Cocos (Keeling) Islands का कंट्री-कोड TLD, जिसे Verisign चलाता है और विश्वभर में .com के एक छोटे, ब्रांडेबल विकल्प के रूप में प्रचारित किया जाता है। जानें कि इसे कौन चलाता है, कौन रजिस्टर कर सकता है, मूल्य निर्धारण और SEO।'
 keywords: ['.cc डोमेन', '.cc TLD', 'cc डोमेन', '.cc क्या है', '.cc डोमेन क्या है', '.cc बनाम .com', 'cc डोमेन का अर्थ', 'Cocos Keeling Islands डोमेन', '.cc डोमेन रजिस्टर करें', 'छोटा ब्रांडेबल डोमेन', 'डोमेन हैक cc']

@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: ICANN과 등록기관 인증 계약(RAA)을 체결하여 gTLD 도메인을 판매할 권한을 부여받은 등록기관입니다.
 keywords: ['공인 등록기관', 'RAA', 'ICANN 인증', 'gTLD', '등록기관 계약']
 level: 1

@@ -5,6 +5,7 @@ language: ko
 tags: ['comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-tokenization
 format: comparison

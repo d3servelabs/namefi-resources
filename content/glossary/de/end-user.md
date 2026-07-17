@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein Käufer, der eine Domain tatsächlich für ein Unternehmen oder Projekt nutzen möchte, nicht um sie weiterzuverkaufen.
 keywords: ['Endnutzer', 'Domain-Käufer', 'Domain-Einsatz', 'Unternehmens-Domain', 'Domain-Deployment']
 level: 1

@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A fast, low-cost remedy that suspends a clearly infringing domain, complementing the UDRP.
 keywords: ['URS', 'Uniform Rapid Suspension', 'domain suspension', 'trademark infringement', 'new gTLD']
 also_known_as: ['Uniform Rapid Suspension']

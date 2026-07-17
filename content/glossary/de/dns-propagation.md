@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die Verzögerung, bevor eine DNS-Änderung überall sichtbar ist, da alte Einträge in den Resolver-Caches ablaufen.
 keywords: ['DNS-Propagierung', 'DNS-Aktualisierungsverzögerung', 'TTL', 'DNS-Cache', 'Nameserver-Änderung']
 level: 1

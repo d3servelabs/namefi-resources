@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.store 도메인은 소매 및 온라인 쇼핑을 위해 설계된 개방형 신규 gTLD입니다. 운영 주체, 활용 대상, SEO 영향, 등록 방법 등을 자세히 알아보세요.'
 keywords: ['.store 도메인', '.store란 무엇인가', '.store TLD', '이커머스 도메인', '온라인 쇼핑몰 도메인 이름', '소매 도메인 확장자', '.store 도메인 구매', '.store 등록']

@@ -5,6 +5,7 @@ language: de
 tags: ["faq","domains","tokenization"]
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Erfahren Sie, wie xStocks die Finanzwelt revolutionieren und warum Domain-Besitzer, die Tokenisierung über Namefi nutzen, einzigartig positioniert sind, um diese digitale Verschiebung anzuführen.
 keywords: ["xStocks","tokenisierte Aktien","tokenisierte Wertpapiere","Domain-Investitionen","Domain-Tokenisierung","Namefi","Blockchain-Aktien","Bruchteilseigentum","Web3-Finanzen","Digitaler Asset-Handel","Solana tokenisierte Assets","Krypto-Aktien","On-Chain-Wertpapiere","Tokenisierung von Realwirtschaftlichen Assets","tokenisierte Domainnamen"]
 relatedArticles:

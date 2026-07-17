@@ -5,6 +5,8 @@ language: 'de'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: '.ai ist Anguilas Ländercode-Domain, die zur globalen KI-Branding-Erweiterung geworden ist. Erfahren Sie, wer sie betreibt, welche Registrierungsregeln gelten, wie sie sich auf SEO auswirkt und wie Sie .ai bei Namefi registrieren.'
 keywords: ['.ai Domain', 'Was ist .ai', '.ai TLD', 'Anguilla ccTLD', '.ai Domain registrieren', 'KI-Startup-Domain', '.ai vs .io', 'wer besitzt .ai']

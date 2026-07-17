@@ -5,6 +5,8 @@ language: ta
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு blockchain விசை ஜோடியில் பகிரக்கூடிய பாதி; தனிப்பட்ட விசையிலிருந்து உருவாக்கப்படும், நிதி பெறவும் கையொப்பங்களை சரிபார்க்கவும் பயன்படுகிறது.
 keywords: ['பொது விசை', 'முகவரி', 'சரிபார்ப்பு விசை', 'சமச்சீரற்ற மறைக்குறியீடு', 'blockchain கணக்கு']
 level: 1

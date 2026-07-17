@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: La page unique affichée sur un domaine parqué ou à vendre, souvent avec des publicités, une recherche ou une offre d'achat.
 keywords: ['page d''atterrissage', 'lander', 'page à vendre', 'parking de domaine', 'monétisation de domaine']
 also_known_as: ['Page d''atterrissage']

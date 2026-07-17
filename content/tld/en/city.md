@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: '.city is an open generic top-level domain run by Identity Digital, built for local businesses, city guides, and community sites. Here is who it suits and why.'
 keywords: ['.city domain', 'what is .city', '.city TLD', 'local business domain', 'city domain name', 'Identity Digital', 'new gTLD', 'community website domain']

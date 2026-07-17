@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 상표권 침해 및 사이버스쿼팅 분쟁을 법원 소송보다 빠르고 저렴하게 해결하기 위한 ICANN의 의무 도메인 분쟁 해결 정책입니다.
 keywords: ['UDRP', '도메인 분쟁', '상표권 보호', '사이버스쿼팅', '법적 프레임워크']
 level: 1

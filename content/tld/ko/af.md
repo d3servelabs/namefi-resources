@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".af 최상위 도메인을 알아보세요. 아프가니스탄 ccTLD로서의 기원부터 크리에이티브 도메인 핵과 브랜딩에서의 인기까지, .af가 현명한 선택인 이유를 살펴봅니다."
 keywords: [".af 도메인", ".af TLD", "최상위 도메인", ".af란 무엇인가", ".af 선택 이유", ".af 도메인이란", ".af 도메인 선택 이유", "아프가니스탄 도메인", "도메인 핵", "크리에이티브 브랜딩", "도메인 투자", ".af 도메인 구매", "토큰화 도메인", "블록체인 도메인", "Namefi"]

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 판매자가 수락할 최소 판매 가격으로, 흔히 비공개로 설정되며 이 가격 미만의 입찰이나 제안은 거절됩니다.
 keywords: ['최저 낙찰가', '최소 제안가', '리저브 비드', '하한가', '도메인 경매 리저브']
 level: 1

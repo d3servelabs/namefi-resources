@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.boutique 도메인은 엄선된 소규모 전문 브랜드를 위한 개방형 일반 확장자입니다. 실제 사용 사례, 가격 구조, 그리고 귀사에 적합한지 여부를 알아보십시오.'
 keywords: ['.boutique 도메인', '.boutique란', 'boutique TLD', 'boutique 도메인 등록', '소규모 쇼핑몰 도메인', '큐레이션 브랜드 도메인', '신규 gTLD', 'Binky Moon']

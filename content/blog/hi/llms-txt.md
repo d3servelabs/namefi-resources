@@ -5,6 +5,7 @@ language: 'hi'
 tags: ['ai-agents', 'domains', 'explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 format: explainer
 ogImage: ../../assets/llms-txt-og.jpg

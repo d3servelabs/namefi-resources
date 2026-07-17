@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '.biz 域名是由 GoDaddy Registry 运营的开放型、面向商业的 gTLD。了解它适合谁、与 .com 相比如何，以及购买前需要知道什么。'
 keywords: ['.biz', '.biz 域名', '.biz TLD', '什么是 .biz', '商业域名扩展名', 'biz 与 com 对比', 'GoDaddy Registry', '真实商业用途']

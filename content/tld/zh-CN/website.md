@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: 探索 .website 顶级域名：了解其定义、适用场景及 SEO 优势。无论您是企业还是个人，Namefi 助您轻松注册并管理这一通用且直观的域名资产。
 keywords:

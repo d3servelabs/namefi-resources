@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: ".abogado डोमेन वकीलों और कानूनी फर्मों के लिए एक बेहतरीन विकल्प है। जानें कि यह आपकी डिजिटल पहचान को कैसे मजबूत करता है और Namefi के साथ इसे कैसे रजिस्टर करें।"
 keywords: [".abogado domains", ".abogado TLD", "top-level domain", "what is .abogado", "why choose .abogado", "what is the .abogado domain", "why choose the .abogado domain", "domain investing", "blockchain domains", "tokenized domains", "legal services domain", "attorney website", "law firm domains", "web3 domains", "digital identity for lawyers"]

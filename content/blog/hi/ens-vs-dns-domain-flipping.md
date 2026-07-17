@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'domain-flipping', 'web3', 'comparison']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

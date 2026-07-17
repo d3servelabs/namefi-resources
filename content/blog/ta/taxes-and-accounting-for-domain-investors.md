@@ -6,6 +6,7 @@ priority: P1
 tags: ['domains', 'domain-investing', 'domain-flipping', 'faq']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

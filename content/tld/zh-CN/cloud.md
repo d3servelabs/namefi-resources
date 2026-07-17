@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '探索 .cloud 域名的优势及其对科技企业、SaaS 平台和现代品牌的价值。了解为何 .cloud 是展示创新与连接性的最佳选择，并立即在 Namefi 注册您的专属域名。'
 keywords: ['.cloud domains', '.cloud TLD', 'top-level domain', 'what is .cloud', 'why choose .cloud', 'what is the .cloud domain', 'why choose the .cloud domain', 'cloud computing domains', 'SaaS domains', 'domain investing', 'blockchain domains', 'tokenized domain', 'technology branding', 'Namefi', 'Web3 domains']

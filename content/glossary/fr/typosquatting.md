@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Enregistrer des fautes d''orthographe de domaines populaires pour intercepter le trafic des utilisateurs qui se trompent, souvent pour des publicités ou de l''hameçonnage.
 keywords: ['typosquattage', 'domaine typo', 'hameçonnage', 'abus de marque', 'cybersquattage']
 level: 1

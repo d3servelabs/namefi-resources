@@ -5,6 +5,8 @@ language: ta
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ICANN அங்கீகாரம் பெற்று, பொதுமக்கள் சார்பாக டொமைன் பெயர்களை பதிவு செய்ய அனுமதிக்கப்பட்ட நிறுவனம்; பதிவாளர்களுக்கும் registry-க்கும் இடையே இயங்கும் இணைப்பு.
 keywords: ['ரெஜிஸ்ட்ரார்', 'டொமைன் ரெஜிஸ்ட்ரார்', 'ICANN அங்கீகாரம்', 'டொமைன் பதிவு', 'RAA', 'EPP', 'auth code', 'transfer lock', 'டொமைன் மாற்றம்']
 level: 2

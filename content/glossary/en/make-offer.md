@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A domain listing that invites buyers to submit a bid the seller can accept, counter, or decline.
 keywords: ['make offer', 'best offer', 'domain negotiation', 'offer', 'counteroffer']
 level: 1

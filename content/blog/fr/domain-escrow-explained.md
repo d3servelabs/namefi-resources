@@ -5,6 +5,7 @@ language: fr
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: Un guide en langage clair sur le séquestre et le séquestre de domaine — ce qu'est un compte séquestre, comment fonctionne le séquestre étape par étape dans une vente de domaine, pourquoi c'est important pour éviter la fraude, les services de séquestre traditionnels par rapport à l'approche tokenisée moderne, et comment les contrats intelligents peuvent remplacer le séquestre par un règlement atomique en chaîne.
 keywords: ['séquestre de domaine', 'qu''est-ce que le séquestre', 'compte séquestre', 'signification séquestre', 'comment fonctionne le séquestre', 'service de séquestre de domaine', 'alternative escrow.com', 'acheter un domaine en toute sécurité', 'vendre un domaine en toute sécurité', 'code auth', 'code EPP', 'transfert de registrar', 'frais de séquestre', 'transaction de domaine sécurisée', 'fraude à la vente de domaine', 'séquestre de domaine tokenisé', 'séquestre par contrat intelligent', 'règlement atomique', 'vente de domaine en chaîne', 'comment éviter la fraude de domaine']

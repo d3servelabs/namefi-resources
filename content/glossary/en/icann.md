@@ -5,6 +5,7 @@ language: en
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The nonprofit that coordinates the global domain name system, IP allocation, and protocol identifiers, and accredits domain registrars worldwide.
 keywords: ['ICANN', 'internet governance', 'domain policy', 'DNS oversight', 'IANA', 'gTLD', 'registrar accreditation', 'multistakeholder', 'UDRP']
 also_known_as: ['Internet Corporation for Assigned Names and Numbers']

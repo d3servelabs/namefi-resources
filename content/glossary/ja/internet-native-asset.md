@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 物理的・法的オブジェクトのデジタル記録ではなく、ドメインやトークンのようにインターネット上に生まれ、インターネット上に存在する資産。
 keywords: ['インターネットネイティブ資産', 'デジタル資産', 'ブロックチェーン', 'ネイティブインターネット', 'トークン化ドメイン']
 level: 1

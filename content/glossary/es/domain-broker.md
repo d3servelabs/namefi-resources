@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un intermediario que negocia la venta de un dominio entre comprador y vendedor, generalmente a cambio de una comisión.
 keywords: ['corredor de dominios', 'corretaje de dominios', 'negociación de dominios', 'intermediario de dominios', 'comisión de dominios']
 level: 1

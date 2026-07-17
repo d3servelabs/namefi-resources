@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.adac TLDの可能性を探る。その成り立ち、自動車業界における重要性、そしてドメイン業界における信頼性とセキュリティの象徴としての意義を解説します。'
 keywords: ['.adacドメイン', '.adac TLD', 'トップレベルドメイン', '.adacとは', '.adacを選ぶ理由', '.adacドメインとは', 'ADACレジストリ', '自動車ドメイン', 'ドメイン投資', 'ブロックチェーンドメイン', 'トークン化ドメイン', 'ブランドTLD', 'ドイツのインターネットドメイン', 'セキュアドメイン']

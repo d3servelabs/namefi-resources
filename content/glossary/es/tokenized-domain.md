@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un dominio DNS real cuya propiedad está representada como un token blockchain que se custodia en una billetera.
 keywords: ['dominio tokenizado', 'NFT de dominio', 'dominio on-chain', 'propiedad de dominio', 'dominio web3']
 level: 1

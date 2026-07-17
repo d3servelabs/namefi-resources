@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['ai-agents', 'domains', 'guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 format: guide
 ogImage: ../../assets/ai-domain-platforms-og.jpg

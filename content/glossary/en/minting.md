@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Creating a new token on a blockchain — for a domain, issuing the NFT that represents its ownership.
 keywords: ['minting', 'mint', 'NFT creation', 'token issuance', 'on-chain']
 also_known_as: ['Mint']

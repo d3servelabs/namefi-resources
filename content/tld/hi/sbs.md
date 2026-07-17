@@ -6,6 +6,7 @@ priority: P1
 tags: ["tld"]
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: .sbs का अर्थ "साइड बाई साइड" है और यह सहयोगात्मक परियोजनाओं, साझेदारियों और साइड बिजनेस के लिए एकदम सही है।
 relatedArticles:
   - /hi/blog/what-is-a-tld/

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Envoyer automatiquement les visiteurs d'un domaine vers une autre adresse, souvent via une redirection 301.
 keywords: ['transfert de domaine', 'redirection 301', 'redirection URL', 'DNS', 'gestion de domaine']
 level: 1

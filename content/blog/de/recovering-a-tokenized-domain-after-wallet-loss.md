@@ -5,6 +5,7 @@ language: de
 tags: ['leitfaden', 'sicherheit']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Was wirklich passiert, wenn Sie den Zugriff auf die Wallet verlieren, die Ihre tokenisierte Domain hält – und die operativen Schritte, um dieses Risiko von vornherein zu minimieren. Backups, Multisig, Hardware-Wallets, Social Recovery und die Grenzen dessen, was jede Plattform tun kann."
 keywords: ['NFT-Domain wiederherstellen', 'Wallet-Verlust Domain', 'tokenisierte Domain Wallet verloren', 'Wallet-Wiederherstellung Domain', 'NFT-Domain Backup', 'tokenisierte Domain Hardware-Wallet', 'Multisig tokenisierte Domain', 'Schlüsselwiederherstellung tokenisierte Domain', 'Seed-Phrase verloren Domain', 'NFT-Domain Sicherheit', 'tokenisierte Domain Backup', 'Domain Schlüsselverwaltung', 'Wallet-Verlust Wiederherstellung']

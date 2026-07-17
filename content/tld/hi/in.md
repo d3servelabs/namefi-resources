@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'hi'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 selfCanonical: true
 description: '.in भारत का आधिकारिक ccTLD है, जिसे NIXI संचालित करता है। जानें .in कौन रजिस्टर कर सकता है, इसके फायदे, SEO प्रभाव और Namefi पर रजिस्ट्रेशन कैसे करें।'

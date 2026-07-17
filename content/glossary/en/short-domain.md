@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Very short domains — three to four letters or all-digits — prized for brevity, especially in some markets.
 keywords: ['short domain', 'numeric domain', 'LLLL domain', 'NNNN domain', 'three-letter domain', 'four-letter domain']
 level: 1

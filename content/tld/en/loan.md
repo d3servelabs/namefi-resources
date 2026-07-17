@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'A .loan domain is an open new gTLD for lending and finance sites. Learn who can register it, how it is priced, its spam reputation, and whether it is worth buying.'
 keywords: ['.loan domain', 'what is .loan domain', '.loan tld', 'register .loan domain', 'is .loan domain safe', '.loan domain meaning', 'loan domain extension', 'new gTLD', 'cheap domain extensions', 'finance domain names']

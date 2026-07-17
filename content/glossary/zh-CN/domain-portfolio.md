@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 单一持有人管理的一批域名资产，涵盖续费、出售与估值等投资活动。
 keywords: ['域名投资组合', '域名投资', '域名管理', '域名估值', '域名资产']
 level: 1

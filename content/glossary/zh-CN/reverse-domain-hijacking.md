@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 以恶意目的滥用 UDRP 程序，试图从合法域名所有者手中夺取域名的行为。
 keywords: ['反向域名劫持', 'RDNH', 'UDRP 滥用', '域名争议', '恶意投诉方']
 also_known_as: ['RDNH']

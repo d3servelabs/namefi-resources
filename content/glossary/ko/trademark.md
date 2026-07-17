@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 특정 주체의 상품 또는 서비스를 식별하고 타인의 것과 구별하는 법적 보호 표지로, 도메인 분쟁의 핵심 쟁점입니다.
 keywords: ['상표', '브랜드 보호', '지식재산권', '도메인 분쟁', 'UDRP', 'WIPO']
 level: 1

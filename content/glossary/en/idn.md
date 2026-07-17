@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A domain using non-ASCII characters, encoded for DNS as ASCII Punycode beginning with xn--.
 keywords: ['IDN', 'internationalized domain name', 'Punycode', 'xn--', 'Unicode domain', 'homograph']
 level: 1

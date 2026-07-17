@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Der Kauf einer Domain in Raten über die Zeit statt als einmalige Vorauszahlung.
 keywords: ['Domain-Finanzierung', 'Ratenzahlung', 'Zahlungsplan', 'Domain-Erwerb', 'Domain-Investment']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le serveur qui prend en charge une requête de domaine et parcourt la hiérarchie DNS pour retourner l'adresse correspondante.
 keywords: ['résolveur DNS', 'résolveur récursif', 'résolveur', '8.8.8.8', '1.1.1.1', 'requête DNS']
 level: 1

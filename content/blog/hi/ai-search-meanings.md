@@ -5,6 +5,7 @@ language: 'hi'
 tags: ['ai-agents', 'domains', 'explainer']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 format: explainer
 ogImage: ../../assets/ai-search-meanings-og.jpg

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन स्वामित्व और प्रबंधन के लिए सेंसरशिप-मुक्त का क्या अर्थ है?
 keywords: ["सेंसरशिप-मुक्त","सेंसरशिप प्रतिरोध","विकेन्द्रीकृत","स्वतंत्रता","अजेय"]
 relatedArticles:

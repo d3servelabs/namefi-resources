@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: العنوان الرقمي اللي بيعرّف جهاز على شبكة، وهو اللي DNS بيربط اسم النطاق بيه.
 keywords: ['عنوان IP', 'IPv4', 'IPv6', 'سجل A', 'سجل AAAA', 'شبكات']
 level: 1

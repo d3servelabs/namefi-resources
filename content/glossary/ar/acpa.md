@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: قانون أمريكي بيتيح لأصحاب العلامات التجارية ملاحقة محتلي النطاقات في المحاكم الفيدرالية كبديل لـ UDRP.
 keywords: ['ACPA', 'مكافحة احتلال النطاقات', 'قانون العلامات التجارية الأمريكي', 'نزاع النطاقات', 'المحكمة الفيدرالية']
 also_known_as: ['Anticybersquatting Consumer Protection Act']

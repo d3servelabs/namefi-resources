@@ -5,6 +5,7 @@ language: hi
 tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'DNS over HTTPS (DoH), HTTPS के अंदर DNS क्वेरीज़ को एन्क्रिप्ट करके यूज़र की प्राइवेसी की रक्षा करता है। एंटरप्राइज़ स्प्लिट-होराइज़न DNS (Enterprise split-horizon DNS) नेटवर्क पर इन क्वेरीज़ को देखे जा सकने पर निर्भर करता है। इन दोनों के बीच का टकराव यह बदल रहा है कि कैसे कॉर्पोरेट नेटवर्क, ब्राउज़र और ऑपरेटिंग सिस्टम नेम रिज़ॉल्यूशन को संभालते हैं।'
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg

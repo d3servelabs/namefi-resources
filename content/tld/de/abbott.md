@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: "Erfahren Sie alles über die .abbott Top-Level-Domain: Einblicke in Marken-TLDs, Vorteile für die digitale Identität und wie Namefi die Domain-Welt revolutioniert."
 keywords:

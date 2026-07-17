@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: इंटरनेट-नेटिव एसेट क्या हैं और डोमेन इस श्रेणी में कैसे आते हैं?
 keywords: ["इंटरनेट-नेटिव एसेट","डिजिटल एसेट","ब्लॉकचेन","नेटिव इंटरनेट","टोकनाइज़्ड डोमेन"]
 relatedArticles:

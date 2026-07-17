@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .attorney domain is an open new gTLD built for the legal profession. Learn who runs it, who can register, how it ranks, and whether it suits your firm.'
 keywords: ['.attorney domains', 'what is .attorney', '.attorney TLD', 'attorney domain extension', 'legal domain names', 'law firm domains', 'lawyer website domain', 'Identity Digital TLD']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ハイパーリンクの表示・クリック可能なテキスト部分。検索エンジンがリンク先ページの関連性を判断する際に用いる重要なシグナル。
 keywords: ['アンカーテキスト', 'リンクテキスト', 'バックリンク', 'SEO', 'ハイパーリンク', '順位シグナル']
 level: 1

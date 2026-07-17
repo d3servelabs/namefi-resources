@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La organización sin fines de lucro que coordina el sistema global de nombres de dominio, la asignación de IP y los identificadores de protocolo, y acredita a los registradores de dominios en todo el mundo.
 keywords: ['ICANN', 'gobernanza de internet', 'política de dominios', 'supervisión del DNS', 'IANA', 'gTLD', 'acreditación de registradores', 'múltiples partes interesadas', 'UDRP']
 also_known_as: ['Internet Corporation for Assigned Names and Numbers']

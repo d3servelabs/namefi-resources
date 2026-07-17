@@ -5,6 +5,7 @@ language: fr
 tags: ['cctld', 'domains', 'market-analysis', 'registry']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Un aperçu des domaines de premier niveau nationaux qui détiennent la plus grande part des enregistrements dans le monde, pourquoi les leaders diffèrent de ce à quoi la plupart s'attendent, et ce que les chiffres de volume nous disent sur la façon dont Internet est réellement utilisé."
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: UDRP का बुरे इरादे से दुरुपयोग कर किसी वैध डोमेन मालिक से उसका डोमेन छीनने की कोशिश करना।
 keywords: ['reverse domain hijacking', 'RDNH', 'UDRP दुरुपयोग', 'डोमेन विवाद', 'बुरे इरादे वाला शिकायतकर्ता']
 also_known_as: ['RDNH']

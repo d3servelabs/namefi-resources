@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.estateドメインは、不動産エージェント、仲介業者、物件関連ビジネス向けに設計されたオープンな汎用拡張子です。利用者層、価格帯、自社への適合性をわかりやすく解説します。'
 keywords: ['.estateドメイン', '.estateとは', 'estate TLD', '不動産ドメイン', 'estateドメイン登録', '物件ドメイン', '新gTLD', 'Binky Moon']

@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: ".ad TLDを徹底解説：アンドラの国別コードドメインでありながら、広告業界究極のドメインとしても注目を集めています。ブランドや広告代理店が.adを選ぶ理由を解説します。"
 keywords: [".adドメイン", ".ad TLD", ".adトップレベルドメイン", ".adとは", ".adを選ぶ理由", "広告向けドメイン", "マーケティングドメイン名", "アンドラ国別コード", "ドメインハック", "アドテクドメイン", "クリエイティブブランディング", ".adドメイン購入", "トークン化ドメイン"]

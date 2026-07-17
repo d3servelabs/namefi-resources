@@ -5,6 +5,7 @@ language: ar
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-startup-og.jpg
 description: 'اكتشف أفضل امتدادات الدومين اللي لازم تأمّنها لشركتك الناشئة، من .com لـ .ai، مع استراتيجية تسجيل دفاعية تحمي علامتك التجارية من المحتالين.'

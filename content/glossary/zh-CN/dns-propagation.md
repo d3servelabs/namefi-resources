@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: DNS 变更在全球范围内生效前的延迟，原因是各地解析器中的旧缓存记录尚未过期。
 keywords: ['DNS 传播', 'DNS 更新延迟', 'TTL', 'DNS 缓存', '域名服务器变更']
 level: 1

@@ -5,6 +5,7 @@ language: ar
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-fashion-brand-og.jpg
 description: 'دليل عملي لأفضل 10 امتدادات نطاق تحتاج تؤمّنها لعلامتك التجارية في الموضة، يغطي حماية العلامة التجارية ونية الشراء وإستراتيجية تسجيل النطاقات الدفاعية.'

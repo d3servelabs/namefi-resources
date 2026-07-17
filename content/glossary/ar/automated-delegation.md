@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو التفويض التلقائي وكيف تدير العقود الذكية التحكم في النطاق؟
 keywords: ["التفويض التلقائي","العقود الذكية","إدارة النطاقات","التحكم القابل للبرمجة","الأتمتة"]
 relatedArticles:

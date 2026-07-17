@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['comparison']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "对主流域名代币化平台进行客观、全面的横向对比——深入探讨每个平台的实际优势、重叠与差异点，并指导您如何根据域名的预期用途选择最适合的平台。"
 keywords: ['域名代币化平台', 'Doma 替代方案', 'D3 Global Inc 替代方案', '3DNS 替代方案', '域名代币化对比', 'Namefi 对比 Doma', 'Namefi 对比 D3 Global Inc', 'Namefi 对比 3DNS', '最佳域名代币化', 'Namefi 评测', 'Doma Protocol 评测', 'D3 Global Inc 评测', '3DNS 评测', '选择域名代币化', '域名代币化比较']

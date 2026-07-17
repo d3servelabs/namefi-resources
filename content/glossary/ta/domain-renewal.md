@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனின் பதிவை காலாவதியாவதற்கு முன்பு நீட்டிக்க கட்டணம் செலுத்துவது, பெரும்பாலும் ஒவ்வொரு காலகட்டத்திலும் தானியங்கியாக நடைபெறுவது.
 keywords: ['டொமைன் புதுப்பித்தல்', 'தானியங்கி புதுப்பித்தல்', 'பதிவு காலம்', 'காலாவதி', 'புதுப்பித்தல் கட்டணம்']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन का एक्सटेंशन खोज रैंकिंग को कैसे प्रभावित करता है और नहीं करता — सामग्री और लिंक अधिक मायने रखते हैं।
 keywords: ['tld seo', 'डोमेन एक्सटेंशन रैंकिंग', 'new gtld seo', 'ccTLD', 'खोज रैंकिंग कारक', 'डोमेन seo']
 level: 1

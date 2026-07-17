@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: .city स्थानीय व्यवसायों, नगरपालिका सेवाओं और शहर-केंद्रित वेबसाइटों के लिए एक डोमेन है। यह स्थानीय उपस्थिति स्थापित करने के लिए एकदम सही है।
 keywords: ["tld", ".city डोमेन", "स्थानीय व्यवसाय", "नगरपालिका सेवाएं", "शहर की वेबसाइटें", "स्थानीय उपस्थिति"]
 relatedArticles:

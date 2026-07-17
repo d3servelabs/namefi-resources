@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: "Erfahren Sie alles über die .airbus Top-Level-Domain: Eine exklusive Marken-TLD, ihre Bedeutung für die digitale Identität und was Domain-Investoren wissen müssen."
 keywords:

@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是 NFT 市场，它们如何促进域名交易？
 keywords: ["市场","OpenSea","Blur","NFT 交易","域名市场","二级市场"]
 relatedArticles:

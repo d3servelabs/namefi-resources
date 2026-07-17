@@ -5,6 +5,7 @@ language: zh-CN
 tags: ["faq","domains","tokenization"]
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 探索 xStocks 如何彻底改变金融，以及为什么通过 Namefi 进行代币化的域名投资者在引领这场数字变革中处于独特地位。
 keywords: ["xStocks","代币化股票","代币化权益","域名投资","域名代币化","Namefi","区块链股票","碎片化所有权","web3 金融","数字资产交易","Solana 代币化资产","加密股票","链上权益","实物资产代币化","代币化域名"]
 relatedArticles:

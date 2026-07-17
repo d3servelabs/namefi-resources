@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld', 'sports', 'brand-identity', 'domain-investing']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入解析 .afl 顶级域名：它的含义、澳大利亚橄榄球联盟的专属用途，以及它如何提升品牌信任度。了解如何在 Namefi 探索和管理 Web3 域名资产。'
 keywords: ['.afl domains', '.afl TLD', 'top-level domain', 'what is .afl', 'why choose .afl', 'what is the .afl domain', 'why choose the .afl domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'sports domains', 'brand protection', 'Web3 domains', 'Namefi', 'Australian Football League domain']

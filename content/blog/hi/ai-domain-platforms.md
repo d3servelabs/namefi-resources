@@ -5,6 +5,7 @@ language: 'hi'
 tags: ['ai-agents', 'domains', 'guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 format: guide
 ogImage: ../../assets/ai-domain-platforms-og.jpg

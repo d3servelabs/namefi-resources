@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .site. تعرف على استخداماته، مزاياه، وكيفية الاستفادة منه في استثمار النطاقات والويب 3 مع Namefi.'
 keywords: ['.site domains', '.site TLD', 'top-level domain', 'what is .site', 'why choose .site', 'what is the .site domain', 'why choose the .site domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'Web3 domains', 'buy .site domain', 'new gTLD', 'شراء نطاق', 'استثمار الدومينات']

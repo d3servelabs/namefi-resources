@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 제3자가 자산의 개인 키를 대신 보유하는 방식으로, 거래 시 해당 기관의 보안 체계와 허가에 의존하게 됩니다.
 keywords: ['수탁 소유권', '커스터디', '제3자 통제', '등록 기관 통제', '중앙화 보관']
 level: 1

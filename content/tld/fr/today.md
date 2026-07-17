@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez l'extension .today : idéale pour l'actualité, les promos et l'immédiateté. Apprenez pourquoi et comment l'enregistrer avec Namefi."
 keywords: [".today", "domaines .today", "TLD .today", "top-level domain .today", "what is .today", "why choose .today", "qu'est-ce que le domaine .today", "pourquoi choisir le domaine .today", "investissement domaine", "domaines tokenisés", "blockchain domains", "achat nom de domaine", "Web3 domains", "Namefi", "new gTLD"]

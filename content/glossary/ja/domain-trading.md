@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 価格差から利益を得るためにドメイン名を売買すること。短期転売から管理されたポートフォリオでの長期保有まで幅広い手法がある。
 keywords: ['ドメイン売買', 'ドメイン投資', 'デジタル不動産', 'セカンダリーマーケット', '流動性']
 level: 1

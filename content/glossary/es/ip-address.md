@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La dirección numérica que identifica un dispositivo en una red, a la que el DNS asigna un nombre de dominio.
 keywords: ['dirección IP', 'IPv4', 'IPv6', 'registro A', 'registro AAAA', 'redes']
 level: 1

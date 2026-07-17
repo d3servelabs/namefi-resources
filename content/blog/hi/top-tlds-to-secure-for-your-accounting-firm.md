@@ -5,6 +5,7 @@ language: hi
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-accounting-firm-og.jpg
 description: 'आपकी अकाउंटिंग फर्म के लिए सर्वश्रेष्ठ TLD — प्रतिबंधित .cpa से लेकर रक्षात्मक .com, .net, और .org पंजीकरण तक जो आपके ब्रांड की सुरक्षा करते हैं और क्लाइंट का विश्वास बनाते हैं।'

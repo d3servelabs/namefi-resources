@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un dominio de nivel superior genérico introducido por el programa de expansión de ICANN, como .app, .xyz o .shop.
 keywords: ['nuevo gTLD', 'expansión ICANN', '.app', '.xyz', '.shop', 'extensión de dominio']
 level: 1

@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.info ドメインは、2001年に情報発信サイト向けに開設された、制限のないオープンな gTLD です。利用者層、SEO への影響、評判、登録すべきかどうかを詳しく解説します。'
 keywords: ['.info', '.info ドメイン', '.info TLD', '.info とは', '.info ドメイン登録', 'info ドメインの意味', 'Identity Digital', '制限なし gTLD']

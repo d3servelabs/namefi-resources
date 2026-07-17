@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 通过定期分期付款逐步取得域名完整所有权的收购方式，是"租转买"模式的近亲。
 keywords: ['租购', '域名收购', '分期付款', '域名融资', '租转买']
 level: 1

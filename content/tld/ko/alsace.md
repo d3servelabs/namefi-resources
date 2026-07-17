@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '지역 브랜딩과 SEO를 위한 .alsace TLD의 가능성을 알아보세요. Namefi에서 비즈니스 오너, 투자자, Web3 개발자들이 .alsace를 선택하는 이유를 확인하세요.'
 keywords: ['.alsace 도메인', '.alsace TLD', '.alsace 최상위 도메인', '.alsace란 무엇인가', '.alsace를 선택하는 이유', '.alsace 도메인이란', '.alsace 도메인 선택 이유', '.alsace 도메인 등록', '알자스 지역 도메인', '프랑스 지역 TLD', '도메인 투자', '토큰화 도메인', 'Web3 도메인', '알자스 비즈니스 도메인', '블록체인 도메인 등록']

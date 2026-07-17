@@ -5,6 +5,7 @@ language: ko
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: choosing-a-tld
 series: best-tlds-by-industry

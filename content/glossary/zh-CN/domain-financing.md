@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 以分期付款方式购买域名，而非一次性支付全款。
 keywords: ['域名融资', '分期付款', '付款计划', '域名收购', '域名投资']
 level: 1

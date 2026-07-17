@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインのDNSクエリに応答するサーバー。NSレコードがそのドメインの権威サーバーを指定する。
 keywords: ['ネームサーバー', 'NSレコード', '権威サーバー', 'DNS委任', 'DNSホスティング']
 level: 1

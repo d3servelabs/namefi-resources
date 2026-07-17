@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre el poder del dominio .cloud para tu negocio tecnológico. Conoce sus ventajas, casos de uso y cómo registrar tu dominio tokenizado en Namefi.'
 keywords: ['.cloud', 'dominios .cloud', 'TLD', 'top-level domain', 'qué es .cloud', 'por qué elegir .cloud', 'qué es el dominio .cloud', 'por qué elegir el dominio .cloud', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'Namefi', 'SaaS', 'computación en la nube', 'registro de dominios']

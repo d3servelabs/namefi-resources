@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: المعيار القياسي لـ Ethereum للتوكنات القابلة للتبادل زي العملات المستقرة، ويكمّل معيار ERC-721 للـ NFT.
 keywords: ['ERC-20', 'توكن قابل للتبادل', 'معيار التوكن', 'عملة مستقرة', 'توكن إيثيريوم']
 level: 1

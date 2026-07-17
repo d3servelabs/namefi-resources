@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'قصة شركة Box اللي انطلقت سنة 2005 على Box.net لأن Box.com كان محجوز، وبعد ما تحولت من التخزين للمستهلكين للشركات الكبيرة، دفعت سنة 2011 قرابة مليون دولار لـDigimedia عشان تاخد Box.com — ترقية من .net لـ.com جت في نفس الوقت اللي بقت فيه الشركة معروفة بـ"Box" فقط.'
 keywords: ['box.net', 'box.com', 'دومين box', 'aaron levie', 'dylan smith', 'digimedia', 'scott day', 'ترقية دومين', 'تسمية الشركات الناشئة', 'تسمية البراند', 'دومين بريميوم', 'دومين مطابق', 'net to com']

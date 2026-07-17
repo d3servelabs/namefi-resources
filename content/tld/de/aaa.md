@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Erfahren Sie alles über die .aaa Domain: Ein Symbol für Qualität und Exzellenz. Entdecken Sie Vorteile, Anwendungsfälle und wie Sie Ihre Domain bei Namefi registrieren.'
 keywords: ['.aaa domains', '.aaa TLD', 'top-level domain', 'was ist .aaa', 'warum .aaa wählen', 'was ist die .aaa domain', 'warum die .aaa domain wählen', 'domain investing', 'blockchain domains', 'tokenized domains', 'web3 domains', 'namefi', 'aaa domain bedeutung', 'neue gTLDs', 'domain registrieren']

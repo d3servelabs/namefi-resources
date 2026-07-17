@@ -6,6 +6,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .ae domain is the country code TLD for the United Arab Emirates. Learn what country .ae is, who can register a .ae domain, eligibility rules, and why it wins UAE and Dubai business trust.'
 keywords: ['ae domain', '.ae domain', 'ae tld', 'ae top level domain', 'uae domain', 'uae tld', 'uae domain extension', 'what is .ae domain', 'what is the .ae domain', 'ae domain country', 'who can register a .ae domain', '.ae domain eligibility', 'dubai domain', 'abu dhabi domain', 'internet tld vereinigte arabische emirate', 'ae land', 'aeDA', 'TDRA domain', 'uae country code', 'buy .ae domain', 'register .ae domain', 'why choose .ae', 'tokenized domains', 'Namefi registrar', 'middle east domain']

@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .homes domain is an open new gTLD run by XYZ Registry, ideal for real estate, property, and housing brands that want a clear, descriptive web address.'
 keywords: ['.homes domain', 'what is .homes', '.homes TLD', 'real estate domain', 'property domain name', 'XYZ Registry', 'new gTLD', 'homes domain registration']

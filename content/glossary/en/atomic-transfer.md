@@ -4,6 +4,7 @@ date: '2025-06-30'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A transaction that completes fully or not at all, never in a partial state, so an asset and its payment swap in one indivisible on-chain step.
 keywords: ['atomic transfer', 'blockchain transaction', 'all-or-nothing', 'secure exchange', 'smart contract']
 level: 1

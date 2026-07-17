@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक डोमेन जो गैर-ASCII अक्षरों का उपयोग करता है, जिसे DNS के लिए xn-- से शुरू होने वाले ASCII Punycode में एनकोड किया जाता है।
 keywords: ['IDN', 'internationalized domain name', 'Punycode', 'xn--', 'Unicode domain', 'homograph']
 level: 1

@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un signe légalement protégé identifiant les biens ou services d''une marque, au cœur de nombreux litiges de domaines.
 keywords: ['marque commerciale', 'protection de marque', 'propriété intellectuelle', 'litige de domaine', 'UDRP', 'WIPO']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que la délégation automatisée et comment les contrats intelligents gèrent-ils le contrôle des domaines ?
 keywords: ["délégation automatisée","contrats intelligents","gestion de domaine","contrôle programmable","automatisation"]
 relatedArticles:

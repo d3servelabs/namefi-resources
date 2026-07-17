@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인과 같은 자산의 소유권을 블록체인 상의 양도 가능한 토큰으로 표현하여 지갑에 보관하거나 온체인에서 거래할 수 있도록 하는 것.
 keywords: ['토큰화', '토크나이즈', 'NFT', '디지털 자산', '온체인 자산']
 level: 1

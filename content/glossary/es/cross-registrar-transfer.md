@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué son las transferencias entre registradores y cómo la tokenización simplifica el proceso?
 keywords: ["transferencia entre registradores","transferencia de registrador","migración de dominio","proceso de transferencia","tokenización"]
 relatedArticles:

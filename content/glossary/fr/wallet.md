@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce qu'un portefeuille crypto et comment stocke-t-il les domaines tokenisés ?
 keywords: ["portefeuille","portefeuille crypto","clé privée","stockage d'actifs numériques","stockage de domaine"]
 relatedArticles:

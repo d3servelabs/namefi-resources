@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.accountants 도메인은 공인회계사(CPA), 부기 담당자, 회계 법인을 위한 개방형 gTLD입니다. 등록 자격, 가격 구조, 신뢰도에 미치는 영향을 알아보세요.'
 keywords: ['.accountants 도메인', '.accountants란', '.accountants TLD', '회계 법인 도메인', 'CPA 도메인 이름', 'Identity Digital gTLD', '부기 웹사이트 도메인', '회계사를 위한 틈새 TLD']

@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ICANNの認定を受け、一般の代理としてドメイン名を登録する権限を持つ企業。登録者とレジストリの間を仲介するサービス提供者。
 keywords: ['レジストラ', 'ドメインレジストラ', 'ICANN認定', 'ドメイン登録', 'RAA', 'EPP', '認証コード', '移管ロック', 'ドメイン移管']
 level: 2

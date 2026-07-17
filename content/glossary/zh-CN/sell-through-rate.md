@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 在特定周期内投资组合中实际售出域名的比例，是衡量投资者流动性的关键指标。
 keywords: ['售出率', 'STR', '域名流动性', '投资组合表现', '域名销售速度']
 also_known_as: ['STR']

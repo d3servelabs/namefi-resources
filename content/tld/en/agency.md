@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .agency domain is an open new gTLD from Identity Digital, ideal for marketing, creative, real-estate, and consulting firms wanting a descriptive, brandable web address.'
 keywords: ['.agency domain', 'what is .agency', '.agency TLD', '.agency domains', 'agency domain name', 'new gTLD for agencies', 'marketing agency domain', 'creative agency website', 'Identity Digital TLD', 'register .agency']

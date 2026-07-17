@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.org 도메인은 비영리 법인 Public Interest Registry가 운영하는 개방형 레거시 gTLD로, 전 세계 자선단체, 오픈소스 프로젝트, 커뮤니티로부터 신뢰를 받고 있습니다.'
 keywords: ['.org 도메인', '.org란 무엇인가', '.org 도메인 의미', 'org TLD', 'Public Interest Registry', '비영리 도메인', '.org 도메인 등록', '.org SEO에 좋은가']

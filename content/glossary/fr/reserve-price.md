@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le prix plancher confidentiel en dessous duquel un vendeur refuse toute offre ou enchère sur un domaine.
 keywords: ['prix de réserve', 'offre minimale', 'enchère réserve', 'prix plancher', 'réserve enchère domaine']
 level: 1

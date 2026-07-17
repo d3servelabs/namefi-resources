@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El Servicio de Nombres de Ethereum mapea nombres legibles por humanos como alice.eth a direcciones de billetera y registros, gestionado íntegramente por contratos inteligentes en cadena.
 keywords: ['ENS', 'Servicio de Nombres de Ethereum', '.eth', 'nombre web3', 'nomenclatura en cadena', 'alias de billetera', 'identidad cripto']
 level: 1

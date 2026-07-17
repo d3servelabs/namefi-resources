@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Que sont les smart contracts et comment permettent-ils la tokenisation de domaine ?
 keywords: ["smart contract","blockchain","exécution automatisée","logique programmable","décentralisé"]
 relatedArticles:

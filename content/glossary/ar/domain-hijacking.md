@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: سرقة نطاق عن طريق الحصول على سيطرة غير مرخصة على حساب المسجِّل أو التسجيل.
 keywords: ['اختطاف النطاق', 'اختراق الحساب', 'سرقة النطاق', 'أمن المسجل', 'نقل غير مرخص']
 level: 1

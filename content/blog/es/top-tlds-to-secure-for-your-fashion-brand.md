@@ -5,6 +5,7 @@ language: es
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-fashion-brand-og.jpg
 description: 'Una guía práctica sobre los 10 TLD principales que debes asegurar para tu marca de moda, con cobertura de protección de marca, intención de compra y estrategia de registro defensivo.'

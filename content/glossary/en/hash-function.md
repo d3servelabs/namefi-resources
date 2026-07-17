@@ -4,6 +4,7 @@ date: '2026-07-02'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A one-way function that turns any input into a fixed-size fingerprint, used to chain blocks and detect tampering.
 keywords: ['hash function', 'cryptographic hash function', 'SHA-256', 'Keccak-256', 'hashing', 'collision resistance']
 also_known_as: ['Cryptographic Hash Function']

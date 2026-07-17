@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 부분적인 실행 없이 완전히 완료되거나 전혀 실행되지 않는 트랜잭션으로, 자산과 대금이 단일 온체인 단계에서 동시에 교환됩니다.
 keywords: ['원자적 이전', '블록체인 트랜잭션', '전부 아니면 전무', '안전한 교환', '스마트 계약']
 level: 1

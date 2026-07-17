@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur l'extension .abudhabi : un choix stratégique pour les entreprises et investisseurs ciblant les Émirats. Avantages, SEO et enregistrement."
 keywords: [".abudhabi domains", ".abudhabi TLD", "top-level domain", "what is .abudhabi", "why choose .abudhabi", "what is the .abudhabi domain", "why choose the .abudhabi domain", "investissement domaine", "blockchain domains", "tokenized domain", "domaine géographique", "entreprise Abu Dhabi", "domaine Émirats", "Web3 domains", "achat nom de domaine"]

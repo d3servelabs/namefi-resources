@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: البروتوكول القياسي اللي بيستخدمه المسجلون لتسجيل النطاقات وإدارتها مع السجل.
 keywords: ['EPP', 'Extensible Provisioning Protocol', 'إدارة النطاقات', 'بروتوكول السجل', 'RFC 5730']
 also_known_as: ['Extensible Provisioning Protocol']

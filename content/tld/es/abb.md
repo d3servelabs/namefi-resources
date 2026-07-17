@@ -9,6 +9,10 @@ tags:
   - tech
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre todo sobre el TLD .abb: su origen, quién lo utiliza y la importancia de los dominios de marca. Aprende cómo la tecnología y la identidad digital se unen.'
 keywords:

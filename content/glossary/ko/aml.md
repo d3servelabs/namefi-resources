@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 자금세탁방지 — 규제 대상 서비스가 불법 자금을 탐지하기 위해 지속적으로 수행하는 거래 모니터링 및 보고 체계입니다.
 keywords: ['AML', '자금세탁방지', '거래 모니터링', '제재 심사', '컴플라이언스']
 also_known_as: ['자금세탁방지']

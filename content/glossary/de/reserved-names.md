@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Domains, die eine Registry von der offenen Registrierung zurückhält, wie Premium-, Richtlinien- oder geschützte Labels.
 keywords: ['Reservierte Namen', 'Gesperrte Namen', 'Registry-reserviert', 'Premium reserviert', 'Kollisionsliste']
 level: 1

@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 특정 국가에 귀속되지 않으며 ICANN과의 계약 하에 운영되는 최상위 도메인으로, .com, .org, .xyz 등이 해당됩니다.
 keywords: ['gTLD', '일반 TLD', '.com', '.org', '.xyz', 'ICANN']
 level: 1

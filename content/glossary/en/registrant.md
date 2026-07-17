@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The person or organization that holds the rights to a registered domain name — the owner of record.
 keywords: ['registrant', 'domain owner', 'registered name holder', 'RNH', 'domain ownership']
 level: 1

@@ -5,6 +5,7 @@ language: ko
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-basics
 format: guide

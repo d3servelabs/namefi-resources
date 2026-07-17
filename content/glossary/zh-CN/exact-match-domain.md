@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 与搜索关键词完全一致的域名（如 besthotels.com），曾因 SEO 优势而备受追捧。
 keywords: ['精确匹配域名', 'EMD', '关键词匹配域名', 'SEO域名', '搜索排名域名']
 also_known_as: ['EMD']

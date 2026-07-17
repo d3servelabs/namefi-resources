@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक छोटा प्रति-डोमेन गुप्त कोड जिसे रजिस्ट्रार किसी डोमेन को दूसरे रजिस्ट्रार में स्थानांतरित करने के लिए अधिकृत करने हेतु जारी करता है, जिसे EPP कोड या ट्रांसफर कोड भी कहते हैं।
 keywords: ['ऑथ कोड', 'EPP कोड', 'ट्रांसफर कोड', 'डोमेन ट्रांसफर', 'authorization code', 'AuthInfo कोड']
 level: 1

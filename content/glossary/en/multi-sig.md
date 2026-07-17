@@ -4,6 +4,7 @@ date: '2025-06-30'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A wallet that needs several private keys to approve a transaction, such as two of three signers, so one compromised key cannot move funds alone.
 keywords: ['multi-sig', 'multisig', 'multiple signatures', 'enhanced security', 'shared custody']
 level: 1

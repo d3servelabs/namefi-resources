@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld', 'brand-tld', 'domain-industry']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Discover the purpose of the .akdn TLD, its role in the Aga Khan Development Network, and how exclusive Brand TLDs function in the domain industry."
 keywords: [".akdn domains", ".akdn TLD", "top-level domain", "what is .akdn", "why choose .akdn", "what is the .akdn domain", "why choose the .akdn domain", "Aga Khan Development Network", "brand TLD", "restricted domain registration", "domain investing", "blockchain domains", "tokenized domain", "ICANN new gTLDs", "non-profit domains"]

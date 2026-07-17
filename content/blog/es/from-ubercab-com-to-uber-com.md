@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo una orden de cese y desistimiento en 2010 obligó a UberCab a eliminar "Cab", cómo Uber compró Uber.com a Universal Music por el 2% de sus acciones (valoradas en solo $107 000), y por qué ese cambio de dominio se convirtió en uno de los intercambios más trascendentales en la historia de las startups.'
 keywords: ['ubercab.com', 'uber.com', 'nombre de dominio de uber', 'actualización de dominio', 'ubercab orden de cese y desistimiento', 'universal music dominio uber', 'naming de startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'historia de uber', 'acciones por dominio', 'adquisición de dominio', 'dominio que define una categoría']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனின் நீட்டிப்பு தேடல் தரவரிசைகளை எவ்வாறு பாதிக்கிறது அல்லது பாதிக்காது என்பது — உள்ளடக்கமும் இணைப்புகளும் அதிக முக்கியத்துவம் வாய்ந்தவை.
 keywords: ['tld seo', 'டொமைன் நீட்டிப்பு தரவரிசை', 'new gtld seo', 'ccTLD', 'தேடல் தரவரிசை காரணிகள்', 'டொமைன் seo']
 level: 1

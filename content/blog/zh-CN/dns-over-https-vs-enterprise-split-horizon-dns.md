@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '基于 HTTPS 的 DNS (DoH) 通过在 HTTPS 内部加密 DNS 查询来保护用户隐私。而企业水平分割 DNS 则依赖于网络能够查看到这些查询。这两者之间的冲突正在重塑企业网络、浏览器和操作系统处理名称解析的方式。'
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg

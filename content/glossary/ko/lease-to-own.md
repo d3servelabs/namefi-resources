@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 정기적인 분할 납부를 통해 도메인을 취득하는 구조로, 완납 시 소유권이 이전됩니다. 렌트-투-온과 유사한 방식입니다.
 keywords: ['리스-투-온', '도메인 취득', '할부', '도메인 파이낸싱', '렌트-투-온']
 level: 1

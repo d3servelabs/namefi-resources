@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: புள்ளியையும் TLD-ஐயும் சேர்த்து ஒரு வார்த்தை உருவாகும் வகையில் அமைந்த டொமைன் பெயர், எடுத்துக்காட்டாக del.icio.us அல்லது examp.le.
 keywords: ['டொமைன் ஹேக்', 'படைப்பாற்றல் மிகு டொமைன்', 'TLD சொல் விளையாட்டு', 'பிராண்டுக்கு ஏற்ற டொமைன்', 'ccTLD']
 level: 1

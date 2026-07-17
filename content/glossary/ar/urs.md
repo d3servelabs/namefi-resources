@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: إجراء سريع وقليل التكلفة بيعلّق دومينًا منتهكًا بوضوح، ويعمل كمكمّل لـ UDRP.
 keywords: ['URS', 'Uniform Rapid Suspension', 'تعليق الدومين', 'انتهاك العلامة التجارية', 'gTLD جديد']
 also_known_as: ['Uniform Rapid Suspension']

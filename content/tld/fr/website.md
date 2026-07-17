@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .website : une extension moderne, intuitive et disponible. Apprenez pourquoi c'est un choix stratégique pour votre site et comment l'enregistrer avec Namefi."
 keywords: [".website domains", ".website TLD", "top-level domain .website", "what is .website", "why choose .website", "what is the .website domain", "why choose the .website domain", "domaine .website", "extension .website", "acheter nom de domaine", "investissement domaine", "domaines tokenisés", "blockchain domains", "Namefi", "création site web"]

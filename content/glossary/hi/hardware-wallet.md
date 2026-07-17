@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक समर्पित ऑफलाइन डिवाइस जो वॉलेट की प्राइवेट कुंजियाँ संग्रहीत करती है और ट्रांज़ैक्शन को डिवाइस पर ही साइन करती है, ताकि कुंजियाँ कभी इंटरनेट से जुड़े कंप्यूटर को न छुएं।
 keywords: ['hardware wallet', 'cold wallet', 'Ledger', 'Trezor', 'GridPlus', 'Keystone', 'secure element', 'self-custody']
 level: 1

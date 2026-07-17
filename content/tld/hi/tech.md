@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: 'जानें कि .tech डोमेन आपके स्टार्टअप या प्रोजेक्ट के लिए सही क्यों है। Namefi के साथ इसके लाभ, उपयोग और रजिस्ट्रेशन के बारे में पूरी जानकारी प्राप्त करें।'
 keywords:

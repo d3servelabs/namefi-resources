@@ -5,6 +5,7 @@ language: ja
 tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: domain-security
 format: comparison

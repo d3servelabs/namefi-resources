@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un service haute sécurité où le registre gèle un domaine de sorte que toute modification nécessite une approbation manuelle hors bande.
 keywords: ['verrou de registre', 'verrouillage de domaine', 'verrou haute sécurité', 'prévention du détournement de domaine', 'vérification hors bande']
 level: 1

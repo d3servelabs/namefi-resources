@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld', 'domain-investing', 'adac', 'web3', 'branding']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'जानें .adac डोमेन एक्सटेंशन (TLD) के बारे में सब कुछ। इसकी विशेषताएं, उपयोग और यह कैसे डिजिटल ब्रांडिंग और डोमेन निवेश में महत्वपूर्ण है। Namefi पर आज ही एक्सप्लोर करें।'
 keywords: ['.adac domains', '.adac TLD', 'top-level domain', 'what is .adac', 'why choose .adac', 'what is the .adac domain', 'why choose the .adac domain', 'buy .adac domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'ADAC registry', 'Namefi domain registration', 'premium domains', 'digital identity']

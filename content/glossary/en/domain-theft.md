@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The unauthorized transfer of a domain out of its rightful owner's control, often via account compromise.
 keywords: ['domain theft', 'unauthorized transfer', 'account compromise', 'domain security', 'recovery']
 level: 1

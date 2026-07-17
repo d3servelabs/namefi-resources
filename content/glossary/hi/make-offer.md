@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक डोमेन लिस्टिंग जो खरीदारों को बोली लगाने के लिए आमंत्रित करती है जिसे विक्रेता स्वीकार, काउंटर या अस्वीकार कर सकता है।
 keywords: ['make offer', 'best offer', 'domain negotiation', 'offer', 'counteroffer']
 level: 1

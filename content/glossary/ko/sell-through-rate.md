@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 일정 기간 내에 도메인 포트폴리오에서 실제로 판매된 도메인의 비율로, 투자자에게 핵심 유동성 지표입니다.
 keywords: ['판매 전환율', 'STR', '도메인 유동성', '포트폴리오 성과', '도메인 판매 속도']
 also_known_as: ['STR']

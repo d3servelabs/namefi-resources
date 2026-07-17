@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The entries in a zone that map a domain to addresses and services — A, AAAA, CNAME, MX, TXT, and more.
 keywords: ['DNS records', 'A record', 'AAAA record', 'CNAME', 'MX record', 'TXT record']
 level: 1

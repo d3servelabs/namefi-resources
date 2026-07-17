@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un domaine construit autour d'un mot-clé ou d'une expression de recherche à valeur élevée, prisé pour sa clarté descriptive.
 keywords: ['domaine mot-clé', 'domaine riche en mots-clés', 'domaine descriptif', 'domaine SEO', 'nom de domaine mot-clé']
 level: 1

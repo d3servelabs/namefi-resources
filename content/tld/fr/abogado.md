@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Le TLD .abogado est l'extension idéale pour les professionnels du droit ciblant le marché hispanophone. Découvrez ses avantages, son impact SEO et comment l'enregistrer sur Namefi."
 keywords: [".abogado domains", ".abogado TLD", "top-level domain .abogado", "what is .abogado", "why choose .abogado", "what is the .abogado domain", "why choose the .abogado domain", "investir nom de domaine", "domaine juridique", "avocat espagnol", "nom de domaine avocat", "tokenized domain", "blockchain domains", "Web3 domains", "acheter domaine .abogado"]

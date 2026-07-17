@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Zwischen 2020 und 2022 lebte eine einzelne Bedrohungsakteurgruppe in GoDaddys Infrastruktur – sie stahl Quellcode, legte die Daten von 1,2 Millionen Managed-WordPress-Kunden offen und leitete Kundenwebseiten zeitweise auf bösartige Seiten um. Eine eingehende Analyse des Konzentrationsrisikos bei Registraren und was sie über einzelne Fehlerquellen lehrt.'
 keywords: ['godaddy einbruch', 'godaddy datenpanne', 'managed wordpress breach', 'registrar sicherheit', 'domain sicherheit', 'mehrjähriger einbruch', 'cpanel malware', 'website redirect angriff', 'ssl private key offenlegung', 'sftp passwort breach', 'sec 10-k cybersicherheit', 'registrar konzentrationsrisiko', 'single point of failure']

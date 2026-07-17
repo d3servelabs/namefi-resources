@@ -5,6 +5,8 @@ language: ta
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: பல கணினிகளில் பராமரிக்கப்படும் பகிர்வு, சேர்க்கை-மட்டும் பேரேடு; உரிமை டோக்கனைசேஷனின் அடித்தளம்.
 keywords: ['பிளாக்செயின்', 'பகிர்வு பேரேடு', 'பரவலாக்கப்பட்டது', 'மாற்ற முடியாதது', 'ஒருமித்த கருத்து']
 level: 1

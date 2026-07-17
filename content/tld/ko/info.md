@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.info 도메인은 2001년 정보 중심 사이트를 위해 출시된 개방형 제한 없는 gTLD입니다. 사용 주체, SEO 및 신뢰도, 등록 여부 결정에 대해 알아보십시오.'
 keywords: ['.info', '.info 도메인', '.info TLD', '.info란', '.info 도메인 등록', 'info 도메인 의미', 'Identity Digital', '제한 없는 gTLD']

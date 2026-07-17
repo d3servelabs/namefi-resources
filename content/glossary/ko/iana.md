@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: DNS 루트 존을 관리하고 IP 주소 블록과 프로토콜 번호를 할당하는 기관입니다.
 keywords: ['IANA', '루트 존', 'IP 할당', '프로토콜 번호', 'ICANN']
 level: 1

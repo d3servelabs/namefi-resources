@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन लीजिंग क्या है और टोकनाइज़ेशन नए लीजिंग मॉडल को कैसे सक्षम बनाता है?
 keywords: ["लीजिंग","डोमेन किराये पर देना","निष्क्रिय आय","स्मार्ट कॉन्ट्रैक्ट लीजिंग","स्वचालित भुगतान"]
 relatedArticles:

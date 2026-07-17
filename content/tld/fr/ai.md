@@ -5,6 +5,8 @@ language: 'fr'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: ".ai est l'extension nationale d'Anguilla devenue une marque mondiale pour l'IA. Découvrez qui la gère, les règles d'enregistrement, l'impact SEO et comment enregistrer un .ai sur Namefi."
 keywords: ['domaine .ai', "qu'est-ce que le .ai", '.ai TLD', 'ccTLD Anguilla', 'enregistrer un domaine .ai', 'domaine startup IA', '.ai vs .io', 'qui possède le .ai']

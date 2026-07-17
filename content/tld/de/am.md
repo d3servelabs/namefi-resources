@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Erfahren Sie alles über die .am-Domain: Von der Bedeutung für Armenien bis hin zu Radio-Hacks und SEO-Vorteilen. Sichern Sie sich Ihre Adresse bei Namefi.'
 keywords:

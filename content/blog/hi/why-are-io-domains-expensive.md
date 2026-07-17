@@ -5,6 +5,7 @@ language: 'hi'
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: ".io डोमेन इतने महंगे क्यों हैं? रजिस्ट्री होलसेल मूल्य निर्धारण, स्टार्टअप और टेक डिमांड, छोटे नामों की कमी, नवीनीकरण, और नई Chagos संप्रभुता के सवाल का स्पष्ट विश्लेषण।"
 keywords: ['why are io domains expensive', 'why are .io domains expensive', 'io domain expensive', 'why io domains expensive', 'why are .io domains so expensive', 'why use .io domain', 'io domain for startups', 'io domain price', 'io domain cost', 'io domain renewal cost', 'are io domains worth it', 'io vs com', 'io vs ai domain', 'cost of io domain', 'why io domains cost more', 'io domain pricing explained', 'should I buy an io domain', 'io ccTLD', 'Chagos io domain', 'buy io domain']

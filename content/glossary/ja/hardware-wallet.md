@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ウォレットの秘密鍵をオフラインで保管し、デバイス上でトランザクションに署名する専用デバイス。鍵がインターネットに接続されたコンピュータに触れることはない。
 keywords: ['ハードウェアウォレット', 'コールドウォレット', 'Ledger', 'Trezor', 'GridPlus', 'Keystone', 'セキュアエレメント', 'セルフカストディ']
 level: 1

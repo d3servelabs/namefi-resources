@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو الـ NFT وكيف يرتبط بترميز النطاقات؟
 keywords: ["NFT","رمز غير قابل للاستبدال","بلوكتشين","أصل فريد","NFT للنطاق"]
 relatedArticles:

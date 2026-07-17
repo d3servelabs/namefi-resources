@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: Sunriseの事前登録とブランドクレームを新gTLDで実現するICANNの中央商標データベース。
 keywords: ['TMCH', '商標クリアリングハウス', 'Sunrise期間', 'ブランド保護', '新gTLD']
 also_known_as: ['TMCH']

@@ -5,6 +5,8 @@ language: 'ta'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.com டொமைன் வணிக இணையத்தின் இயல்புநிலை விலாசமாகும். அதன் வரலாறு, பதிவு செய்வது எப்படி, விலை நிர்ணயம் எவ்வாறு இயங்குகிறது, மற்றும் அது ஏன் இன்னும் முன்னணியில் உள்ளது என்பதை அறியுங்கள்.'
 keywords: ['.com டொமைன்கள்', '.com என்றால் என்ன', '.com TLD', '.com டொமைன் நீட்டிப்பு', '.com டொமைன் பதிவு', 'com டொமைன் பொருள்', '.com மற்றும் .net ஒப்பீடு', 'வணிக டொமைன்கள்']

@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: क्रिप्टो वॉलेट क्या है और यह टोकनाइज़्ड डोमेन को कैसे स्टोर करता है?
 keywords: ["वॉलेट","क्रिप्टो वॉलेट","प्राइवेट की","डिजिटल एसेट स्टोरेज","डोमेन स्टोरेज"]
 relatedArticles:

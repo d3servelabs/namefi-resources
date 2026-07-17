@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: マネーロンダリング防止（Anti-Money-Laundering）——規制対象の金融・暗号資産サービスが不正資金を検出するために行う継続的な取引監視と当局への報告義務。
 keywords: ['AML', 'マネーロンダリング防止', '取引監視', 'サンクションスクリーニング', 'コンプライアンス']
 also_known_as: ['Anti-Money-Laundering']

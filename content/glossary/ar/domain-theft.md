@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: النقل غير المرخص للنطاق خارج سيطرة مالكه الشرعي، غالباً عبر اختراق الحساب.
 keywords: ['سرقة النطاق', 'نقل غير مرخص', 'اختراق الحساب', 'أمن النطاق', 'الاسترداد']
 level: 1

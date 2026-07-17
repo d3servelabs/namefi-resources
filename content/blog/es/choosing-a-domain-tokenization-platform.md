@@ -5,6 +5,7 @@ language: es
 tags: ['comparison']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Un vistazo honesto e imparcial a las principales plataformas de tokenización de dominios: en qué destaca realmente cada una, dónde se solapan, dónde no lo hacen y cómo elegir la que mejor se adapte al uso que planeas darle a tus dominios."
 keywords: ['plataformas de tokenización de dominios', 'alternativa a Doma', 'alternativa a D3 Global Inc', 'alternativa a 3DNS', 'comparar tokenización de dominios', 'Namefi vs Doma', 'Namefi vs D3 Global Inc', 'Namefi vs 3DNS', 'mejor tokenización de dominios', 'reseña de Namefi', 'reseña de Doma Protocol', 'reseña de D3 Global Inc', 'reseña de 3DNS', 'elegir tokenización de dominios', 'comparativa de tokenización de dominios']

@@ -7,6 +7,7 @@ language: ja
 tags: ['vision', 'digital-trust']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 format: opinion
 description: D3Serve のビジョン・ステートメント — 情報のデジタル化がかつてそうであったように、信頼のデジタル化が生産性の飛躍、無劣化の精度、コスト削減、そして自動化をもたらすとわれわれが確信する理由。

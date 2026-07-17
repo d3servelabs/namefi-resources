@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".al 도메인 확장자의 다양한 활용 가능성을 알아보세요. 알바니아에서의 온라인 존재감 구축부터 'digit.al'과 같은 창의적인 도메인 핵까지, .al TLD가 현대 브랜딩에 탁월한 선택인 이유를 소개합니다."
 keywords: [".al 도메인", ".al TLD", "최상위 도메인", ".al이란", ".al 선택 이유", ".al 도메인이란", ".al 도메인 선택 이유", "알바니아 도메인 등록", "도메인 핵", "창의적 브랜딩", ".al 도메인 구매", "도메인 투자", "블록체인 도메인", "토큰화 자산", "Web3 도메인"]

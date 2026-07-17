@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 登録済みドメイン名に対する権利を保有する個人または組織——公式記録上の所有者。
 keywords: ['登録者', 'ドメイン所有者', '登録名義人', 'RNH', 'ドメイン所有権']
 level: 1

@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'Discover the potential of the .ads domain extension for agencies, marketers, and ad-tech. Learn why .ads is the ultimate choice for digital advertising.'
 keywords: ['.ads domains', '.ads TLD', 'top-level domain', 'what is .ads', 'why choose .ads', 'what is the .ads domain', 'why choose the .ads domain', 'advertising domains', 'marketing domain names', 'digital marketing TLD', 'buy .ads domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'adtech domains']

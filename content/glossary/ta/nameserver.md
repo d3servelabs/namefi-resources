@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனுக்கான DNS வினவல்களுக்கு பதிலளிக்கும் சேவையகம்; அதன் NS பதிவுகள் அதிகாரப்பூர்வ சேவையகங்களை குறிப்பிடுகின்றன.
 keywords: ['பெயர் சேவையகம்', 'NS பதிவு', 'அதிகாரப்பூர்வ சேவையகம்', 'DNS பகிர்வு', 'DNS விருந்தோம்பல்']
 level: 1

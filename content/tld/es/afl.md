@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre qué es el dominio .afl, su importancia para la Australian Football League y cómo los dominios de marca definen la confianza en la web. Aprende más aquí.'
 keywords:

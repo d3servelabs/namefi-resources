@@ -8,6 +8,10 @@ tags:
   - 'domain-investing'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.aero डोमेन एक्सटेंशन के बारे में सब कुछ जानें। विमानन उद्योग (aviation industry) के लिए इसकी विशिष्टता, पात्रता और लाभों को समझें। आज ही अपना डोमेन सुरक्षित करें।'
 keywords:

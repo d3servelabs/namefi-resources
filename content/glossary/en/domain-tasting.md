@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A largely defunct tactic of registering domains then cancelling within the free add-grace period.
 keywords: ['domain tasting', 'AGP', 'add grace period', 'domain kiting', 'ICANN policy']
 level: 1

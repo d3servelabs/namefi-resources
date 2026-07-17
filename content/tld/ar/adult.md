@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج لمعرفته حول نطاق .adult، استخداماته في قطاع الترفيه، ومزايا اختياره لحماية علامتك التجارية. سجّل نطاقك اليوم مع Namefi."
 keywords: [".adult domains", "نطاقات .adult", "TLD", "top-level domain", "نطاق المستوى الأعلى", "what is .adult", "ما هو نطاق .adult", "why choose .adult", "لماذا تختار .adult", "what is the .adult domain", "why choose the .adult domain", "domain investing", "استثمار النطاقات", "blockchain domains", "tokenized domains", "نطاقات مرمزّة"]

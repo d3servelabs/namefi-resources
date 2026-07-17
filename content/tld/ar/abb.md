@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج معرفته عن نطاق .abb المستوى الأعلى (TLD). تعرف على أهميته، استخداماته في عالم الأعمال والتكنولوجيا، وكيفية البدء في رحلة تسجيل النطاقات مع Namefi.'
 keywords: ['.abb domains', 'TLD', 'top-level domain', 'what is .abb', 'why choose .abb', 'what is the .abb domain', 'why choose the .abb domain', 'شراء نطاق .abb', 'نطاقات البلوك تشين', 'استثمار النطاقات', 'domain investing', 'blockchain', 'tokenized domain', 'Web3 domains', 'تسجيل النطاقات']

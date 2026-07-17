@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre el potencial del dominio .aeg. Aprende qué es, quién lo utiliza y por qué es la opción perfecta para marcas modernas y tecnología. ¡Regístralo en Namefi!'
 keywords:

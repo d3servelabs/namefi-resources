@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Que sont les protocoles de prêt et comment les domaines peuvent-ils être utilisés dans le prêt DeFi ?
 keywords: ["protocole de prêt","DeFi","garantie","emprunt","finance de domaine","rendement"]
 relatedArticles:

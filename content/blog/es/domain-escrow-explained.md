@@ -5,6 +5,7 @@ language: es
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Una guía en lenguaje sencillo sobre el escrow y el escrow de dominios: qué es una cuenta escrow, qué significa escrow, cómo funciona paso a paso en la venta de un dominio, por qué importa para evitar fraudes, los servicios de escrow tradicionales frente al enfoque moderno, y cómo los contratos inteligentes pueden reemplazar el escrow con liquidación atómica en cadena."
 keywords: ['cuenta escrow', 'que es una cuenta escrow', 'qué es una cuenta escrow', 'cuenta de depósito escrow', 'escrow significado', 'cuenta de escrow', 'qué es escrow', 'que es escrow', 'cuentas escrow', 'depósito en garantía', 'cómo funciona el escrow', 'escrow de dominios', 'servicio de escrow', 'comprar un dominio de forma segura', 'vender un dominio de forma segura', 'código de autorización', 'transferencia de dominio', 'comisiones de escrow', 'evitar fraude en dominios', 'escrow significa', 'cuenta de depósito en garantía', 'contrato inteligente escrow', 'liquidación atómica', 'dominio tokenizado']

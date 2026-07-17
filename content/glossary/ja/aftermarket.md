@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 既登録ドメインの二次流通市場。ドメイン名がオーナー間で売買される場。
 keywords: ['アフターマーケット', '二次市場', 'ドメイン転売', 'ドメイン投資', 'ドメイン売買']
 also_known_as: ['二次市場']

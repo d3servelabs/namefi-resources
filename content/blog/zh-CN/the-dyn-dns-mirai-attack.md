@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2016 年 10 月 21 日，由 Mirai 物联网僵尸网络发动的 DDoS 攻击以三波浪潮猛击 DNS 服务商 Dyn，导致 Twitter、Netflix、Reddit、Spotify、GitHub、Airbnb 和 PayPal 数小时无法访问——这是一个关于 DNS 服务商集中化风险的域名危机案例。'
 keywords: ['dyn dns 攻击', 'mirai 僵尸网络', '2016年10月21日ddos', 'dns ddos 攻击', '物联网僵尸网络', 'dns 服务商中断', '域名安全', 'dns 单点故障', 'dyn ddos 2016', 'mirai 恶意软件', '2016年互联网中断', 'dns 冗余', '被黑物联网摄像头']

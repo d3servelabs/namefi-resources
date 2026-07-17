@@ -5,6 +5,7 @@ language: 'hi'
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: "आपके स्टार्टअप के लिए .ai बनाम .io? उत्पत्ति, Google SEO उपचार, मूल्य निर्धारण, ब्रांडिंग संकेत, और .io चागोस प्रश्न की तुलना करें, साथ ही एक स्पष्ट निर्णय गाइड और FAQ।"
 keywords: ["ai vs io tld", "io vs ai domain", "ai or io domain", "io vs ai domain extension", "ai vs io domain extension", ".ai vs .io", "ai or io tld", "ai vs io domain", "io or ai domain", ".ai vs .io domain", "ai domain vs io domain", "best domain for ai startup", "best domain for tech startup", "ai tld", "io tld", "domain extension for startup", "ccTLD for tech", "gccTLD seo", "io domain chagos", "io domain future", "ai domain pricing", "io domain pricing", "domain branding", "choosing a domain extension", "tokenized domain"]

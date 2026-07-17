@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைன் அல்லது அதன் பதிவுகளின் கட்டுப்பாட்டை smart contract-க்கு ஒப்படைப்பது; ஒவ்வொரு மாற்றத்திற்கும் மனித அனுமதி தேவையின்றி விதிகள் தானாகவே செயல்படுத்தப்படும்.
 keywords: ['தானியங்கி அதிகார மாற்றம்', 'smart contracts', 'டொமைன் நிர்வாகம்', 'நிரலாக்க கட்டுப்பாடு', 'தன்னியக்கம்']
 level: 1

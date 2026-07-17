@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 在域名到期前付费延长其注册期限，通常每个周期自动进行。
 keywords: ['域名续期', '自动续期', '注册期限', '到期', '续期费']
 level: 1

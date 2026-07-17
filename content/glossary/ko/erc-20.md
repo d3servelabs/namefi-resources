@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 스테이블코인 등 대체 가능한 토큰을 위한 이더리움 표준으로, ERC-721 NFT 표준과 함께 사용됩니다.
 keywords: ['ERC-20', '대체 가능 토큰', '토큰 표준', '스테이블코인', '이더리움 토큰']
 level: 1

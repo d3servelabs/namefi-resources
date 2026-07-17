@@ -5,6 +5,7 @@ language: 'zh-CN'
 tags: ['ai-agents', 'payments']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 format: explainer
 ogImage: ../../assets/wallet-checkout-og.jpg

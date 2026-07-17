@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - chie-kudo
 draft: false
 description: '.amドメイン拡張子を徹底解説——「AMラジオ」から「I am」のようなドメインハックまで。このTLDがブランディングに最適な理由と、取得方法を紹介します。'
 keywords:

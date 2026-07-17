@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '一家宠物创业公司于 2011 年以"Mr. Chewy"的名义在 MrChewy.com 起步，后来去掉"Mr."，以 Chewy 的名义入驻完全匹配域名 Chewy.com，而正是这次单词域名升级，悄然成为 PetSmart 以 33.5 亿美元收购该品牌的重要因素之一。'
 keywords: ['mrchewy.com', 'chewy.com', 'chewy域名', 'mr chewy', '域名升级', 'ryan cohen', 'michael day', 'frank schilling', '精确匹配域名', '创业公司命名', '品牌命名', '高价域名', '域名策略', '宠物电商']

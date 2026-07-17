@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Que sont les places de marché NFT et comment facilitent-elles le trading de domaines ?
 keywords: ["place de marché","OpenSea","Blur","trading NFT","place de marché de domaines","marché secondaire"]
 relatedArticles:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Registrar un dominio que coincide con la marca de otra persona de mala fe, con la esperanza de obtener beneficio de ello.
 keywords: ['cibersquatting', 'mala fe', 'disputa de dominio', 'infracción de marca', 'UDRP']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 他のウェブサイトから自サイトへのインバウンドハイパーリンク。検索順位とドメインオーソリティを左右する最重要要因。
 keywords: ['バックリンク', 'インバウンドリンク', 'リンクビルディング', 'リンクエクイティ', 'SEO']
 also_known_as: ['インバウンドリンク']

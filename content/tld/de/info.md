@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Erfahren Sie alles über die .info Domain: Bedeutung, Geschichte und Vorteile. Entdecken Sie, warum .info ideal für Informationsseiten und Branding ist.'
 keywords:

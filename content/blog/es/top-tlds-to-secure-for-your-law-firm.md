@@ -5,6 +5,7 @@ language: es
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: 'Los 10 principales TLDs que debes asegurar para tu firma de abogados, incluyendo por qué .law es el único TLD legal restringido a abogados verificados (mientras que .esq, .legal, .attorney y .lawyer son abiertos), además de una estrategia defensiva.'

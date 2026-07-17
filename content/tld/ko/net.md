@@ -5,6 +5,8 @@ language: 'ko'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.net 도메인은 Verisign이 운영하는 인터넷 초기 gTLD 중 하나로, 누구나 등록할 수 있습니다. .net의 주요 사용자, .com과의 차이점, 등록 시 고려할 사항을 알아보세요.'
 keywords: ['.net 도메인', '.net이란', '.net TLD', '.net vs .com', '.net 도메인 등록', 'Verisign .net 레지스트리', '.net SEO', '테크 스타트업 도메인']

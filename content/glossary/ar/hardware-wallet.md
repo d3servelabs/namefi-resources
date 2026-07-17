@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: جهاز مخصص أوف لاين بيخزّن المفاتيح الخاصة للمحفظة وبيوقّع المعاملات جوّاه، عشان المفاتيح ما تلمسش أي كمبيوتر متصل بالإنترنت.
 keywords: ['محفظة أجهزة', 'محفظة باردة', 'Ledger', 'Trezor', 'GridPlus', 'Keystone', 'عنصر أمان', 'حضانة ذاتية']
 level: 1

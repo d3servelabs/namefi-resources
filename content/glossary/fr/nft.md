@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce qu'un NFT et comment se rapporte-t-il à la tokenisation de domaine ?
 keywords: ["NFT","jeton non fongible","blockchain","actif unique","NFT de domaine"]
 relatedArticles:

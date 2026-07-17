@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 持有已注册域名权利的个人或组织，即记录在册的所有者。
 keywords: ['注册人', '域名所有者', '已注册名称持有人', 'RNH', '域名所有权']
 level: 1

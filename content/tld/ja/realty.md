@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.realtyドメインは不動産のプロフェッショナル向けのオープンなジェネリックTLDです。.realtorとは異なり、NAR会員資格は不要です。登録資格・価格・SEOへの影響を解説します。'
 keywords: ['.realtyドメイン', '.realtyとは', '.realty TLD', '.realty vs .realtor', '不動産ドメイン名', '物件サイトのドメイン', 'Internet Naming Co', '不動産向け新gTLD']

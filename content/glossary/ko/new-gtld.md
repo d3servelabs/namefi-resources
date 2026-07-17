@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: ICANN의 확장 프로그램을 통해 도입된 일반 최상위 도메인으로, .app, .xyz, .shop 등이 해당됩니다.
 keywords: ['신규 gTLD', 'ICANN 확장', '.app', '.xyz', '.shop', '도메인 확장자']
 level: 1

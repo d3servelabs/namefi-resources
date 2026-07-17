@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: "Descubre el potencial del dominio .space: una extensión versátil para creativos, startups y proyectos Web3. Aprende por qué elegirlo y regístralo en Namefi."
 keywords: [".space domains", "TLD .space", "top-level domain .space", "qué es .space", "por qué elegir .space", "qué es el dominio .space", "por qué elegir el dominio .space", "inversión en dominios", "dominios tokenizados", "dominios blockchain", "registrar dominio .space", "disponibilidad de dominios cortos", "nuevos gTLD", "identidad digital", "Namefi"]

@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist eine Krypto-Wallet und wie speichert sie tokenisierte Domains?
 keywords: ["Wallet","Krypto-Wallet","privater Schlüssel","Speicherung digitaler Assets","Domain-Speicherung"]
 relatedArticles:

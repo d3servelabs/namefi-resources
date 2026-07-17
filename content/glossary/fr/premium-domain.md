@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un domaine de grande valeur tarifé au-dessus des tarifs standards pour sa mémorabilité, sa brièveté ou sa force en mots-clés.
 keywords: ['domaine premium', 'nom premium', 'premium de registre', 'marché secondaire', 'valeur de domaine']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein Status, der den Transfer einer Domain zu einem anderen Registrar blockiert, bis er explizit aufgehoben wird.
 keywords: ['transfer-sperre', 'registrar-sperre', 'domain-sicherheit', 'EPP-status', 'domain-transfer']
 also_known_as: ['Registrar-Sperre']

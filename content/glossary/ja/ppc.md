@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 訪問者が広告をクリックするたびにオーナーに報酬が発生する広告モデル。駐車ドメインの収益化に広く活用される。
 keywords: ['PPC', 'クリック課金', 'ドメイン収益化', '広告収入', '駐車収益']
 also_known_as: ['クリック課金型広告']

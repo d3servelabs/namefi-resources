@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 明白な商標侵害ドメインをUDRPより迅速かつ低コストで停止させるICANN公認の紛争処理制度。
 keywords: ['URS', '統一迅速停止手続', 'ドメイン停止', '商標侵害', '新gTLD']
 also_known_as: ['Uniform Rapid Suspension']

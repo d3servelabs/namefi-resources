@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: நிலையான நாணயங்கள் (stablecoins) உள்ளிட்ட மாற்றுயோகு டோக்கன்களுக்கான Ethereum தரநிலை; ERC-721 NFT தரநிலையை நிறைவு செய்கிறது.
 keywords: ['ERC-20', 'மாற்றுயோகு டோக்கன்', 'டோக்கன் தரநிலை', 'நிலையான நாணயம்', 'ethereum டோக்கன்']
 level: 1

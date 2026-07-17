@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'Discover the .aco TLD! Learn why this unique domain extension is gaining traction for businesses, healthcare, and Web3 portfolios. Secure your .aco at Namefi.'
 keywords: ['.aco domains', '.aco TLD', 'top-level domain .aco', 'what is .aco', 'why choose .aco', 'what is the .aco domain', 'why choose the .aco domain', 'buy .aco domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'healthcare domains', 'brand protection', 'new gTLD']

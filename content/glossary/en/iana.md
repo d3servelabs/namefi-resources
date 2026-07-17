@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The function that maintains the DNS root zone and allocates IP address blocks and protocol numbers.
 keywords: ['IANA', 'root zone', 'IP allocation', 'protocol numbers', 'ICANN']
 level: 1

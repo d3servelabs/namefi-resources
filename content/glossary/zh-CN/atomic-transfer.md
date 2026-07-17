@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是原子传输？它如何确保安全的域名交易？
 keywords: ["原子传输","区块链交易","全有或全无","安全交换","智能合约"]
 relatedArticles:

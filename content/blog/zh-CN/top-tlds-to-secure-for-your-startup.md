@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-startup-og.jpg
 description: '探索初创公司应优先抢注的顶级域名后缀，从 .com 到 .ai，以及如何通过防御性注册策略保护品牌免受抢注者侵害。'

@@ -5,6 +5,7 @@ language: fr
 tags: ['security', 'domains', 'registrar', 'incident-response']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Un guide pratique sur les cinq véritables méthodes utilisées par les attaquants pour s'emparer de domaines dans le monde réel — ingénierie sociale, compromission de compte registrar, prise de contrôle du fournisseur DNS, piratage de serveurs de noms (NS) et récupération de domaines expirés — et les contrôles spécifiques qui bloquent chacune d'elles."
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg

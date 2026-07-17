@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: DNS 레코드를 리졸버가 캐시할 수 있는 시간(초 단위)으로, 이 시간이 지나면 다시 조회해야 합니다.
 keywords: ['TTL', 'time to live', 'DNS 캐시', 'DNS 전파', '레코드 캐싱']
 level: 1

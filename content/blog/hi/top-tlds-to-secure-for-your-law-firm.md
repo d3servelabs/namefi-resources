@@ -5,6 +5,7 @@ language: hi
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: 'आपकी लॉ फर्म के लिए शीर्ष 10 TLDs जिन्हें सुरक्षित करना चाहिए, जिसमें यह भी शामिल है कि .law ही एकमात्र कानूनी TLD है जो सत्यापित वकीलों तक सीमित है (जबकि .esq, .legal, .attorney, और .lawyer खुले हैं), साथ ही एक रक्षात्मक रणनीति।'

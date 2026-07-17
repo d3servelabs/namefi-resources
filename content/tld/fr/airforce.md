@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Le domaine .airforce est dédié à l'aviation et aux forces armées. Découvrez ses avantages, son utilisation et comment l'enregistrer dès aujourd'hui sur Namefi."
 keywords: [".airforce domains", ".airforce TLD", ".airforce top-level domain", "what is .airforce", "why choose .airforce", "what is the .airforce domain", "why choose the .airforce domain", "domaine militaire", "aviation tld", "enregistrement domaine", "domaine web3", "domaine tokenisé", "investissement domaine", "aérospatial", "communauté vétérans"]

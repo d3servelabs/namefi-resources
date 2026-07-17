@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 超链接中可见的可点击文字，搜索引擎用其理解目标页面内容的重要信号。
 keywords: ['锚文本', '链接文字', '反向链接', 'SEO', '超链接', '排名信号']
 level: 1

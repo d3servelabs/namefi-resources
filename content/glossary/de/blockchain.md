@@ -5,6 +5,8 @@ language: de
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein gemeinsames, nur erweitertes Hauptbuch, das auf vielen Computern gespeichert wird – das Fundament tokenisierter Eigentumsrechte.
 keywords: ['Blockchain', 'Verteiltes Hauptbuch', 'Dezentralisiert', 'Unveränderlich', 'Konsens']
 level: 1

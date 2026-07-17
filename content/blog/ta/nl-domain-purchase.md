@@ -5,6 +5,7 @@ language: 'ta'
 tags: ['ai-agents', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 format: guide
 ogImage: ../../assets/nl-domain-purchase-og.jpg

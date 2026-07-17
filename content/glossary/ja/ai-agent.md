@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 大規模言語モデルなどのAIを搭載し、購入・API呼び出し・他エージェントとの取引など、ユーザーに代わって自律的に行動するソフトウェア。
 keywords: ['AIエージェント', '自律エージェント', 'エージェントID', 'エージェントコマース', 'オンチェーンエージェント', 'エージェンティックAI']
 level: 1

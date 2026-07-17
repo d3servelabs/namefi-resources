@@ -6,6 +6,8 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
 draft: false
 description: 'Discover the potential of the .africa domain. Learn how this TLD connects businesses to the African digital economy and why you should register it at Namefi.'
 keywords:

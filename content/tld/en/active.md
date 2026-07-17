@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'Unlock the power of movement with the .active TLD. Perfect for fitness brands, lifestyle apps, and energetic startups. Learn more about .active domains here.'
 keywords: ['.active domains', '.active TLD', 'top-level domain', 'what is .active', 'why choose .active', 'what is the .active domain', 'why choose the .active domain', 'buy .active domain', 'fitness domain names', 'lifestyle TLD', 'domain investing', 'blockchain domains', 'tokenized domain', 'sports branding', 'Namefi']

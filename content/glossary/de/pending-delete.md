@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Der letzte Status, bevor eine nicht verlängerte Domain wieder für die öffentliche Registrierung freigegeben wird.
 keywords: ['Pending Delete', 'Domain Drop', 'Drop Catching', 'abgelaufene Domain', 'Freigabe']
 level: 1

@@ -5,6 +5,7 @@ language: ko
 tags: ['security', 'domains', 'registrar', 'incident-response', 'domain-flipping']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह गुप्त संख्या जो ब्लॉकचेन खाते को नियंत्रित करती है और उसके लेन-देन पर हस्ताक्षर करती है; इसे कभी साझा नहीं करना चाहिए।
 keywords: ['प्राइवेट की', 'साइनिंग की', 'वॉलेट की', 'सीक्रेट की', 'ब्लॉकचेन खाता']
 level: 1

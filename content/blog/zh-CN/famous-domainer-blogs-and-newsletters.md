@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'domain-investing', 'blogs', 'newsletters', 'community']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2026 年值得一读的独立域名投资者、经纪人和交易员的博客、新闻通讯与 Substack 精选列表——了解他们的知名领域及相互之间的联系。'
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg

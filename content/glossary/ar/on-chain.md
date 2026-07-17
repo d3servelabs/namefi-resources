@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ماذا يعني "على السلسلة" في سياق النطاقات؟
 keywords: ["على السلسلة","بلوكتشين","العقود الذكية","نطاق NFT","اللامركزية"]
 relatedArticles:

@@ -9,6 +9,10 @@ tags:
   - abbvie
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: 探索 .abbvie 顶级域名的独特之处。作为艾伯维公司的专属品牌域名，它代表了极致的安全与信任。了解其背后的价值，并在 Namefi 开启您的域名注册之旅。
 relatedArticles:

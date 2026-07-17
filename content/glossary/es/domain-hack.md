@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un nombre que abarca el punto para deletrear una palabra usando el TLD, como del.icio.us o examp.le.
 keywords: ['domain hack', 'dominio creativo', 'juego de palabras con TLD', 'dominio de marca', 'ccTLD']
 level: 1

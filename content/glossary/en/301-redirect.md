@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: An HTTP status telling browsers and search engines that a page has permanently moved to a new URL.
 keywords: ['301 redirect', 'permanent redirect', 'http redirect', 'seo', 'domain forwarding', 'link equity']
 also_known_as: ['Permanent Redirect']

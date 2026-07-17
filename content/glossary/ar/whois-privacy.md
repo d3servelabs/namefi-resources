@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: خدمة بتخفي بيانات تواصل المسجِّل الشخصية في سجلات WHOIS أو RDAP العامة.
 keywords: ['خصوصية WHOIS', 'حماية الخصوصية', 'RDAP', 'خصوصية المسجِّل', 'إخفاء بيانات التواصل']
 also_known_as: ['حماية الخصوصية']

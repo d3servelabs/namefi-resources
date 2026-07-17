@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A prefix added to a domain to create a separate address, such as blog.example.com or app.example.com.
 keywords: ['subdomain', 'host', 'blog.example.com', 'DNS', 'second-level domain']
 level: 1

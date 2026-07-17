@@ -5,6 +5,7 @@ language: 'ko'
 tags: ['ai-agents', 'domains', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 format: guide
 ogImage: ../../assets/claude-mcp-domains-og.jpg

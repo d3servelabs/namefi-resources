@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डीआईडी क्या है और विकेन्द्रीकृत पहचान में डोमेन कैसे भूमिका निभाते हैं?
 keywords: ["डीआईडी","विकेन्द्रीकृत पहचान","स्व-संप्रभु पहचान","ब्लॉकचेन पहचान","वेब3 पहचान"]
 relatedArticles:

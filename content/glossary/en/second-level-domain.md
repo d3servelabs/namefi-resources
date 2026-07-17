@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The label directly left of the TLD — the "example" in example.com — the part you actually register.
 keywords: ['second-level domain', 'SLD', 'root domain', 'apex domain', 'registrable name']
 level: 1

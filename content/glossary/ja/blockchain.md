@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 多数のコンピュータにまたがって維持される共有の追記専用台帳であり、トークン化された所有権の基盤となる技術。
 keywords: ['ブロックチェーン', '分散型台帳', '非中央集権', '改ざん耐性', 'コンセンサス']
 level: 1

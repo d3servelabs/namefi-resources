@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: رابط تشعبي وارد من موقع تاني لموقعك؛ هو المحرك الأساسي لترتيب البحث وسلطة النطاق.
 keywords: ['رابط وارد', 'backlink', 'بناء الروابط', 'link equity', 'seo']
 also_known_as: ['Inbound Link']

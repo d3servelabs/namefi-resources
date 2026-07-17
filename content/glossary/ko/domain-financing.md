@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인 비용을 일시불 대신 여러 번에 나누어 분할 납부하는 방식입니다.
 keywords: ['도메인 할부 구매', '분할 납부', '납부 계획', '도메인 취득', '도메인 투자']
 level: 1

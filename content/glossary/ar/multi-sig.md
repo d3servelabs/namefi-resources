@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو التوقيع المتعدد وكيف يعزز أمان الدومينات؟
 keywords: ["التوقيع المتعدد","multisig","توقيعات متعددة","أمان معزز","حضانة مشتركة"]
 relatedArticles:

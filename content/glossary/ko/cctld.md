@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: ISO 3166 기준에 따라 특정 국가나 영토에 할당된 두 글자 최상위 도메인으로, .uk, .de, .jp 등이 해당됩니다.
 keywords: ['ccTLD', '국가 코드 TLD', '국가 도메인', '.kr', '.jp', 'ISO 3166']
 level: 1

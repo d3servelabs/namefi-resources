@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Protocolo entre pares que identifica archivos por su contenido, utilizado para alojar datos web descentralizados.
 keywords: ['IPFS', 'direccionamiento por contenido', 'entre pares', 'almacenamiento descentralizado', 'CID']
 also_known_as: ['InterPlanetary File System']

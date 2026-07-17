@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في سبتمبر 2021، اتعرض Bitcoin.org — البيت الإلكتروني التاريخي للبيتكوين اللي بيديره المشغّل المجهول Cobra — لاختراق على مستوى الـ DNS وتحوّل لعملية نصب "ضاعف بيتكوينك" المزيفة، وجمع المحتالون حوالي 17,000 دولار قبل ما الموقع يتوقف. غطاء تفصيلي من Domain Mayday عن اللي حصل، وإزاي، وإيه اللي بيعلّمنا إياه حتى لو المواقع المتعلقة بالكريبتو نفسها بتعتمد على DNS.'
 keywords: ['bitcoin.org', 'اختراق bitcoin.org', 'اختراق dns', 'اختراق النطاق', 'نصب ضاعف بيتكوين', 'نصب هدية كريبتو', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'أمان dns', 'أمان النطاقات', 'اختراق nameserver', 'هجوم تغيير whois']

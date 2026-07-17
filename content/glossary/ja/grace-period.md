@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインの有効期限が切れた直後に、通常価格で更新できる短い猶予期間。
 keywords: ['グレースピリオド', '自動更新猶予期間', 'ドメイン失効', '更新', 'RGP']
 level: 1

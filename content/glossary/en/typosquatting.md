@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Registering misspellings of popular domains to catch mistyped traffic, often for ads or phishing.
 keywords: ['typosquatting', 'typo domain', 'phishing', 'brand abuse', 'cybersquatting']
 level: 1

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.ac 도메인의 숨겨진 가치를 알아보세요. 학문적 권위부터 창의적인 브랜딩까지, .ac TLD가 다음 프로젝트에 탁월한 선택인 이유를 소개합니다. 지금 Namefi에서 등록하세요.'
 keywords: ['.ac 도메인', '.ac TLD', '최상위 도메인 .ac', '.ac란 무엇인가', '.ac를 선택하는 이유', '.ac 도메인이란', '.ac 도메인을 선택하는 이유', '어센션 섬 도메인', '학술 도메인', '도메인 투자', '블록체인 도메인', '토큰화 도메인', '회계 도메인', '단축 링크 도메인', 'Web3 도메인']

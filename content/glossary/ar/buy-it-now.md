@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: سعر شراء فوري ثابت على قائمة نطاق — ادفعه والصفقة تتم على طول من غير أي تفاوض.
 keywords: ['اشتري الآن', 'BIN', 'شراء فوري', 'سعر ثابت', 'قائمة النطاق']
 also_known_as: ['BIN']

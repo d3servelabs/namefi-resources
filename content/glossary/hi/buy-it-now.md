@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: डोमेन लिस्टिंग पर एक निश्चित तत्काल-खरीद मूल्य — इसे पूरा करें और बिक्री बिना बातचीत के तुरंत पूरी हो जाती है।
 keywords: ['buy it now', 'BIN', 'instant purchase', 'fixed price', 'domain listing']
 also_known_as: ['BIN']

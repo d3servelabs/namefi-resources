@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ブロックチェーン上でトランザクションを処理するために支払う手数料。ネットワークのネイティブ資産で表示され、混雑時には上昇する。Layer 2では大幅に低い。
 keywords: ['ガス', 'ガス代', 'トランザクション手数料', 'gwei', 'Ethereum ガス', 'Base ガス', 'L2 手数料', 'ミントコスト']
 level: 1

@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld', 'brand domains', 'domain investing', 'internet security']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Everything you need to know about the .abbott TLD. Explore the purpose of this exclusive domain, its use cases in healthcare, and the benefits of Brand TLDs."
 keywords: [".abbott domains", ".abbott TLD", "top-level domain", "what is .abbott", "why choose .abbott", "what is the .abbott domain", "why choose the .abbott domain", "brand TLDs", "healthcare domain names", "restricted top-level domains", "Abbott Laboratories domain", "domain investing", "blockchain domains", "tokenized domain", "Namefi"]

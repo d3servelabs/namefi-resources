@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 검색 엔진이 특정 쿼리에 대해 반환하는 결과 페이지로, 도메인들이 가시성을 놓고 경쟁하는 공간입니다.
 keywords: ['serp', '검색 결과', 'seo', '검색 엔진', '자연 검색 순위', '검색 노출']
 also_known_as: ['검색 엔진 결과 페이지']

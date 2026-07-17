@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .realty domain is an open generic TLD for property professionals. No NAR membership needed, unlike .realtor. See who can register, pricing, and SEO.'
 keywords: ['.realty domains', 'what is .realty', '.realty TLD', '.realty vs .realtor', 'real estate domain names', 'property website domain', 'Internet Naming Co', 'new gTLD for realtors']

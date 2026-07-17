@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .info domain is an open, unrestricted gTLD launched in 2001 for information-led sites. Learn who uses it, its SEO and reputation, and whether to register one.'
 keywords: ['.info', '.info domain', '.info TLD', 'what is .info', 'register .info domain', 'info domain meaning', 'Identity Digital', 'unrestricted gTLD']

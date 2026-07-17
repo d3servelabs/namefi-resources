@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .am. تعرف على مميزاته للمحطات الإذاعية، والشركات الناشئة، وكيفية الاستفادة منه في الاستثمار بالنطاقات عبر Namefi.'
 keywords: ['.am domains', 'نطاق .am', '.am TLD', 'top-level domain .am', 'what is .am', 'why choose .am', 'what is the .am domain', 'why choose the .am domain', 'shiraa nitaq .am', 'domain investing', 'blockchain domains', 'tokenized domain', 'Armenia domain', 'radio domains', 'buy .am domain']

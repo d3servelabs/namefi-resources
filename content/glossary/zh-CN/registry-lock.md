@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 注册局提供的高级安全服务，将域名冻结以确保任何变更都需要人工带外审批。
 keywords: ['注册局锁定', '域名锁定', '高安全级别锁定', '防域名劫持', '带外验证']
 level: 1

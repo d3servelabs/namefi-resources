@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.afl डोमेन एक्सटेंशन के बारे में सब कुछ जानें। ऑस्ट्रेलियन फुटबॉल लीग से जुड़े इस TLD की विशेषताएं और Namefi पर डोमेन रजिस्ट्रेशन के लाभ।'
 keywords:

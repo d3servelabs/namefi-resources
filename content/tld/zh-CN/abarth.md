@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 深入了解 .abarth 顶级域名：一个象征高性能与汽车激情的专属域名后缀。探索其价值、用途以及如何在 Namefi 进行注册和管理。
 keywords: ['.abarth domains', '.abarth TLD', 'top-level domain', 'what is .abarth', 'why choose .abarth', 'what is the .abarth domain', 'why choose the .abarth domain', '.abarth 域名', '顶级域名', 'domain investing', 'blockchain domains', 'tokenized domain', 'web3 domains', 'automotive domains', 'brand TLD']

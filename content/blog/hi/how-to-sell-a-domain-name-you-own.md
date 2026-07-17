@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'guide', 'domain-investing', 'outbound']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: "डोमेन की कीमत तय करने, संभावित खरीदारों को खोजने, आउटरीच संभालने, घोटालों से बचने और ट्रांसफर को सुरक्षित रूप से पूरा करने के लिए विक्रेताओं के लिए एक व्यावहारिक चेकलिस्ट।"
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png

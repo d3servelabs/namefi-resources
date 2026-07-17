@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.aco TLD를 알아보세요! 이 독특한 도메인 확장자가 비즈니스, 헬스케어, Web3 포트폴리오에서 주목받는 이유를 확인하고, Namefi에서 .aco를 지금 바로 확보하세요.'
 keywords: ['.aco 도메인', '.aco TLD', '최상위 도메인 .aco', '.aco란 무엇인가', '.aco를 선택해야 하는 이유', '.aco 도메인이란', '.aco 도메인 선택 이유', '.aco 도메인 구매', '도메인 투자', '블록체인 도메인', '토큰화 도메인', 'Web3 도메인', '헬스케어 도메인', '브랜드 보호', '신규 gTLD']

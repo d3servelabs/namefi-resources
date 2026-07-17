@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '.io 域名已成为初创企业、开发者和 Web3 项目的事实标准。了解其起源、注册资格、定价规律及行业声誉。'
 keywords: ['.io 域名', '什么是 .io', '.io TLD', '.io 域名后缀', '注册 .io 域名', 'io 域名含义', '.io 与 .ai 对比', '科技初创公司域名']

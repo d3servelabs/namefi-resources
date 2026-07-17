@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Una criptomoneda diseñada para mantener un valor estable frente a una referencia como el dólar estadounidense, usada para pagar y liquidar sin la volatilidad de precios cripto.
 keywords: ['stablecoin', 'USDC', 'USDT', 'DAI', 'vinculada a moneda fiat', 'pago cripto', 'dólares en cadena']
 level: 1

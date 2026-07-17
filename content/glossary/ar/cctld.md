@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاق علوي من حرفين بيتخصص لدولة أو إقليم معين، زي .uk و.de و.jp.
 keywords: ['ccTLD', 'نطاق رمز الدولة', 'نطاق الدولة', '.uk', '.de', 'ISO 3166']
 level: 1

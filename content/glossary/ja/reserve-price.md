@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 売り手が受け入れる最低売却価格。多くの場合非公開で、これを下回るオファーやオークション入札は成立しない。
 keywords: ['最低落札価格', '最低オファー', '最低入札額', '底値', 'ドメインオークション最低価格']
 level: 1

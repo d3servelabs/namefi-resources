@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Im Dezember 2021 kompromittierten Angreifer das Cloudflare-Konto von BadgerDAO und schleusten ein bösartiges Skript in das Website-Frontend ein. Die auditierten Smart Contracts wurden nie berührt — und dennoch verschwanden rund 120 Millionen Dollar durch Wallet-Freigaben, die Nutzer unwissentlich unterzeichneten. Eine Tiefenanalyse darüber, warum die Website Teil Ihrer Sicherheitsoberfläche ist.'
 keywords: ['badgerdao hack', 'badgerdao frontend-angriff', 'cloudflare api-schlüssel kompromittierung', 'eingeschleustes skript angriff', 'web3 frontend-sicherheit', 'ice phishing', 'increaseAllowance angriff', 'token-freigabe exploit', 'dns und domain-sicherheit', 'cloudflare workers exploit', 'defi sicherheit', 'supply chain angriff web3', 'website-manipulation', 'domain-sicherheit']

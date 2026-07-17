@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .house domain is an open generic TLD run by Binky Moon (Identity Digital). See who it suits, how it ranks, registration rules, and pricing dynamics.'
 keywords: ['.house domain', 'what is .house', '.house TLD', 'real estate domain', 'home domain extension', 'Binky Moon', 'Identity Digital', 'generic TLD', 'domain registration']

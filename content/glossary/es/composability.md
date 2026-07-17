@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es la componibilidad y cómo se aplica a los dominios tokenizados?
 keywords: ["componibilidad","interoperabilidad","bloques de construcción","DeFi","integración Web3"]
 relatedArticles:

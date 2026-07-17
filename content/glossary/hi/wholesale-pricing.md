@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: किसी डोमेन के लिए निवेशक-से-निवेशक फ्लोर मूल्य — वह राशि जो एक डोमेनर रिटेल से नीचे, जल्दी लिक्विडेट करने के लिए स्वीकार करता है।
 keywords: ['wholesale pricing', 'investor pricing', 'domain wholesale', 'liquidation price', 'domainer pricing']
 also_known_as: ['इन्वेस्टर प्राइसिंग']

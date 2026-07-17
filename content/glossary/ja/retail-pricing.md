@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: エンドユーザーがドメインを実際に利用する目的で支払う価格。卸売投資家の最低価格を大幅に上回るのが一般的。
 keywords: ['リテール価格', 'エンドユーザー価格', 'ドメイン小売価格', 'エンドユーザー向け価格', '正規価格']
 also_known_as: ['エンドユーザー価格']

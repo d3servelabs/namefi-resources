@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في يناير 2015، اختطفت مجموعة Lizard Squad نظام DNS الخاص بـ malaysiaairlines.com واستبدلت موقع شركة الطيران بصورة سحلية ترتدي سترة رسمية مع رسالة استهزاء "404 — الطائرة مش موجودة". ما حصلش أي اختراق للسيرفرات — المهاجمون ببساطة غيّروا المكان اللي بيشير إليه الدومين. تحليل معمّق في إطار "Domain Mayday" يكشف كيف أصبح الـ DNS أكثر نقطة ضعف في بنية الشركة.'
 keywords: ['اختطاف dns ماليزيا إيرلاينز', 'lizard squad', 'cyber caliphate', '404 plane not found', 'dns hijacking', 'domain hijacking', 'registrar compromise', 'webnic', 'malaysiaairlines.com', 'أمان الدومين', 'إعادة توجيه dns', 'registry lock', 'mh370']

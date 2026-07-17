@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El protocolo estándar que usan los registradores para registrar y gestionar dominios con un registro.
 keywords: ['EPP', 'Extensible Provisioning Protocol', 'gestión de dominios', 'protocolo de registro', 'RFC 5730']
 also_known_as: ['Extensible Provisioning Protocol']

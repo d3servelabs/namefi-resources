@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Acquérir un domaine par versements périodiques qui constituent la propriété finale, une formule similaire à la location avec option d''achat.
 keywords: ['location-vente', 'acquisition de domaine', 'versements', 'financement de domaine', 'location avec option d''achat']
 level: 1

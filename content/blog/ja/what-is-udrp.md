@@ -5,6 +5,7 @@ language: ja
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: domain-basics
 format: explainer

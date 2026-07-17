@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 사용자를 대신하여 구매, API 호출, 다른 에이전트와의 거래 등 다양한 작업을 수행하는 AI 모델 기반 소프트웨어입니다.
 keywords: ['AI 에이전트', '자율 에이전트', '에이전트 신원', '에이전트 커머스', '온체인 에이전트', '에이전틱 AI']
 level: 1

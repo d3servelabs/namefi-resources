@@ -5,6 +5,8 @@ language: de
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die Organisation, die die maßgebliche Datenbank und Nameserver für eine Top-Level-Domain betreibt und den Einzelhandelsverkauf an Registrare delegiert.
 keywords: ['Registry', 'Registry-Betreiber', 'TLD-Registry', 'Domain-Registry', 'ICANN', 'Registrar', 'EPP', 'gTLD-Registry', 'ccTLD-Registry', 'Shared-Registry-System']
 also_known_as: ['Registry-Betreiber']

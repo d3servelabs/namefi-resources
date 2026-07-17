@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '.tv 域名是什么？它是图瓦卢的国家代码顶级域名，却被全球营销为电视、视频和直播的家园。了解它的运营方、注册资格、定价方式以及 SEO 表现。'
 keywords: ['.tv 域名', '.tv TLD', 'tv 域名', '什么是 .tv', '什么是 .tv 域名', '.tv 用于流媒体', '视频 .tv 域名', '图瓦卢域名', '注册 .tv 域名', 'twitch.tv', '视频流媒体域名']

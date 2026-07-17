@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.taxドメインはBinky Moonが運営するオープンな汎用gTLDです。利用者層、登録ルール、価格の動向、信頼性、そして自社に適しているかどうかを解説します。'
 keywords: ['.taxドメイン', '.taxとは', '.tax TLD', '税務ドメイン拡張子', '.tax登録', '会計ドメイン', '税理士ウェブサイト', '新gTLD']

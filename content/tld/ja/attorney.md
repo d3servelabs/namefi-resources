@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.attorney ドメインは法律専門職向けに作られたオープンな新gTLDです。運営者、登録資格、SEOへの影響、自分の事務所に適しているかどうかを解説します。'
 keywords: ['.attorney ドメイン', '.attorney とは', '.attorney TLD', '弁護士ドメイン拡張子', '法律事務所ドメイン', '弁護士ウェブサイトドメイン', 'Identity Digital TLD', '法律系ドメイン名']

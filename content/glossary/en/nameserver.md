@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A server that answers DNS queries for a domain; its NS records name the authoritative servers.
 keywords: ['nameserver', 'NS record', 'authoritative server', 'DNS delegation', 'DNS hosting']
 level: 1

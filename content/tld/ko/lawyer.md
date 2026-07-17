@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.lawyer 도메인은 법률 전문가와 로펌을 위한 개방형 일반 최상위 도메인(gTLD)입니다. 등록 자격, .law 및 .attorney와의 차이점, 그리고 활용 적합성을 알아보세요.'
 keywords: ['lawyer 도메인', '.lawyer란', '.lawyer 도메인', '.lawyer vs .law', '법률 도메인 확장자', '로펌용 도메인', 'lawyer TLD', '.lawyer 등록']

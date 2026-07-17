@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Know Your Customer — les vérifications d''identité qu''un service financier ou crypto réglementé effectue avant d''enregistrer un utilisateur.
 keywords: ['KYC', 'Know Your Customer', 'vérification d''identité', 'enregistrement', 'conformité']
 also_known_as: ['Know Your Customer']

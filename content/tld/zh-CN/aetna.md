@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld', 'domain-investing', 'brand-tld', 'security']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 深入解析 .aetna 顶级域名（TLD）的定义与价值。了解为何像 Aetna 这样的企业选择品牌专属域名，并探索如何在 Namefi 开启您的域名投资与 Web3 之旅。
 keywords: ['.aetna domains', '.aetna TLD', 'top-level domain', 'what is .aetna', 'why choose .aetna', 'what is the .aetna domain', 'why choose the .aetna domain', '.aetna 域名', '品牌顶级域名', '域名投资', 'tokenized domain', 'blockchain domains', 'insurance domains', 'Namefi', 'Web3 domains']

@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 搜索引擎针对某一查询返回的结果页面，是各域名争夺曝光度的主战场。
 keywords: ['SERP', '搜索结果', 'SEO', '搜索引擎', '自然排名', '搜索可见度']
 also_known_as: ['Search Engine Results Page']

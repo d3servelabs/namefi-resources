@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 파킹 중이거나 매각 대상인 도메인에 표시되는 단일 페이지로, 광고·검색·구매 제안 등을 포함하는 경우가 많습니다.
 keywords: ['랜딩 페이지', '랜더', '매각 페이지', '도메인 파킹', '도메인 수익화']
 also_known_as: ['랜더']

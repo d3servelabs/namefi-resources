@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El estado final antes de que un dominio no renovado se libere de nuevo al público para su registro.
 keywords: ['eliminación pendiente', 'caída de dominio', 'captura de caída', 'dominio expirado', 'liberación']
 level: 1

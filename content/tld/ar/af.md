@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج معرفته عن نطاق .af، من استخداماته الإبداعية (Domain Hacks) إلى أهميته للأعمال. تعرف على كيفية تسجيل نطاقك بسهولة وأمان عبر Namefi."
 keywords: [".af domains", "نطاقات af", "TLD", "top-level domain", "نطاق المستوى الأعلى", "what is .af", "why choose .af", "what is the .af domain", "why choose the .af domain", "ما هو نطاق .af", "لماذا تختار .af", "domain investing", "استثمار النطاقات", "blockchain domains", "tokenized domain", "af registry", "creative domains", "أفغانستان"]

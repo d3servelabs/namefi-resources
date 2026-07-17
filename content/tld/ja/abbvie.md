@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - chie-kudo
 draft: false
 description: '.abbvieトップレベルドメインを詳しく解説。このブランドTLDがデジタルの信頼性、企業アイデンティティ、そしてドメイン投資の未来にとって何を意味するかを学ぶ。'
 keywords:

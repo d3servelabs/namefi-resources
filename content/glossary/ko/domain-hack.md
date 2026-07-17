@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 레지스트러블 레이블과 TLD가 합쳐져 하나의 단어를 이루는 도메인 이름으로, del.icio.us나 examp.le처럼 점을 가로질러 단어를 완성합니다.
 keywords: ['도메인 핵', '창의적 도메인', 'TLD 언어유희', '브랜더블 도메인', 'ccTLD']
 level: 1

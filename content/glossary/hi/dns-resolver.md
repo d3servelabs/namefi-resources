@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: DNS रिज़ॉल्वर वह सर्वर है जो डोमेन लुकअप लेता है और मिलान एड्रेस वापस करने के लिए DNS पदानुक्रम में चलता है।
 keywords: ['DNS रिज़ॉल्वर', 'रिकर्सिव रिज़ॉल्वर', 'रिज़ॉल्वर', '8.8.8.8', '1.1.1.1', 'DNS लुकअप']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le transfert non autorisé d'un domaine hors du contrôle de son propriétaire légitime, souvent via la compromission d'un compte.
 keywords: ['vol de domaine', 'transfert non autorisé', 'compromission de compte', 'sécurité des domaines', 'récupération']
 level: 1

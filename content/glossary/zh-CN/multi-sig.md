@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是多重签名以及它如何增强域名安全性？
 keywords: ["多重签名","multisig","多重签名","增强安全性","共享托管"]
 relatedArticles:

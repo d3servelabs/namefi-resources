@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 블록체인에서 트랜잭션을 처리하기 위해 지불하는 수수료로, 네트워크 기본 자산으로 표시되며 혼잡 시 상승합니다. Layer 2에서는 훨씬 저렴합니다.
 keywords: ['가스', '가스비', '트랜잭션 수수료', 'gwei', '이더리움 가스', 'Base 가스', 'L2 수수료', '민팅 비용']
 level: 1

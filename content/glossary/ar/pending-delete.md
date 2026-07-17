@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الحالة الأخيرة قبل ما نطاق غير متجدَّد يتحرر للعموم للتسجيل من جديد.
 keywords: ['الانتظار قبل الحذف', 'حذف النطاق', 'الإمساك بالنطاق المتاح', 'نطاق منتهٍ', 'تحرير']
 level: 1

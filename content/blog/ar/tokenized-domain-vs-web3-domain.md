@@ -5,6 +5,7 @@ language: ar
 tags: ['comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "مقارنة عملية وواضحة بين نطاقات ICANN المرمزة (مثل نطاق .com المرمز) وأسماء Web3 الأصلية (مثل name.eth و name.crypto). متى يعمل كل منهما؟ أين يتداخلان؟ ولماذا يمتلك الكثير من الأشخاص كليهما؟"
 keywords: ['النطاقات المرمزة مقابل نطاقات web3', 'النطاقات المرمزة مقابل ENS', 'نطاقات ICANN مقابل ENS', '.com مقابل .eth', 'نطاق .com المرمز مقابل .crypto', 'النطاقات المرمزة مقابل unstoppable', 'مقارنة نطاقات web3', 'ENS مقابل النطاقات المرمزة', 'نطاقات NFT مقابل ENS', 'تسمية web3', 'الفرق في التسمية على السلسلة', 'دعم المتصفح لنطاقات web3', 'تحليل نطاقات web3']

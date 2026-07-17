@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un statut qui empêche un domaine d''être transféré vers un autre bureau d''enregistrement jusqu''à ce qu''il soit explicitement déverrouillé.
 keywords: ['verrou de transfert', 'verrou du bureau d''enregistrement', 'sécurité de domaine', 'statut EPP', 'transfert de domaine']
 also_known_as: ['Verrou du bureau d''enregistrement']

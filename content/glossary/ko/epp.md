@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 등록대행자가 레지스트리와 통신하여 도메인을 등록·관리할 때 사용하는 표준 프로토콜입니다.
 keywords: ['EPP', 'Extensible Provisioning Protocol', '도메인 관리', '레지스트리 프로토콜', 'RFC 5730']
 also_known_as: ['Extensible Provisioning Protocol']

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 은행 등 중개 기관 없이 사용자가 자산을 공급해 이자를 얻고, 차입자가 담보를 제공해 대출을 받는 스마트 컨트랙트 플랫폼입니다.
 keywords: ['대출 프로토콜', 'DeFi', '담보', '차입', '도메인 금융', '수익률']
 level: 1

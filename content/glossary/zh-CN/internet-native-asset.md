@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是互联网原生资产，域名如何属于这一类别？
 keywords: ["互联网原生资产","数字资产","区块链","原生互联网","代币化域名"]
 relatedArticles:

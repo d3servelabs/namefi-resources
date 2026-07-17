@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld', 'domain-investing', 'fintech', 'marken-domains']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Erfahren Sie alles über die .alipay Top-Level-Domain. Entdecken Sie, warum diese TLD für Vertrauen im E-Commerce und Fintech steht und wie Sie sie für Ihre digitale Identität nutzen können.'
 keywords: ['.alipay domains', '.alipay TLD', 'top-level domain', 'was ist .alipay', 'warum .alipay wählen', 'was ist die .alipay domain', 'warum die .alipay domain wählen', 'domain investing', 'blockchain domains', 'tokenized domain', 'fintech domains', 'e-commerce domains', 'domain registrierung', 'digitale identität', 'web3 domains']

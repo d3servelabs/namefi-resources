@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو التحويل الذري وكيف يضمن معاملات النطاق الآمنة؟
 keywords: ["التحويل الذري","معاملة البلوكتشين","الكل أو لا شيء","تبادل آمن","عقد ذكي"]
 relatedArticles:

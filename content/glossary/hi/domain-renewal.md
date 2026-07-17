@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक्सपायर होने से पहले डोमेन का रजिस्ट्रेशन बढ़ाने के लिए भुगतान करना, जो अक्सर प्रत्येक टर्म में स्वचालित रूप से होता है।
 keywords: ['डोमेन रिन्यूअल', 'ऑटो-रिन्यू', 'रजिस्ट्रेशन टर्म', 'expiration', 'रिन्यूअल शुल्क']
 level: 1

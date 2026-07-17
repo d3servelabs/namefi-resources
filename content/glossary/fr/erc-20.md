@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: La norme Ethereum pour les jetons fongibles comme les stablecoins, complémentaire à la norme ERC-721 NFT.
 keywords: ['ERC-20', 'jeton fongible', 'norme de jeton', 'stablecoin', 'jeton ethereum']
 level: 1

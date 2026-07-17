@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو الضمان وكيف توفر العقود الذكية ضماناً لا يحتاج إلى ثقة للدومينات؟
 keywords: ["الضمان","طرف ثالث موثوق به","ضمان العقد الذكي","عديم الثقة","معاملات آمنة"]
 relatedArticles:

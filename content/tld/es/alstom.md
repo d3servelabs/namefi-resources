@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre todo sobre el dominio .alstom: un TLD exclusivo centrado en la innovación y el transporte. Aprende su valor y cómo registrar dominios con Namefi.'
 keywords:

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.agakhan TLD의 목적을 알아보세요. AKDN을 위한 고유한 도메인 확장자로서 브랜드 TLD, 디지털 신뢰, 도메인 정체성에 대해 설명합니다.'
 keywords: ['.agakhan 도메인', '.agakhan TLD', '최상위 도메인', '.agakhan이란', '.agakhan을 선택해야 하는 이유', '.agakhan 도메인이란', '.agakhan 도메인을 선택하는 이유', '브랜드 TLD', '아가 칸 개발 네트워크', '도메인 투자', '블록체인 도메인', '토큰화 도메인', '디지털 정체성', '보안 도메인', 'NGO 도메인']

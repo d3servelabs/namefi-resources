@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: بروتوكول نظير-لنظير يعرّف الملفات بمحتواها، يُستخدم لاستضافة بيانات الويب اللامركزي.
 keywords: ['IPFS', 'عنونة المحتوى', 'نظير-لنظير', 'تخزين لامركزي', 'CID']
 also_known_as: ['InterPlanetary File System']

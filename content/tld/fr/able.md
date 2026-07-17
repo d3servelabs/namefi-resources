@@ -4,6 +4,8 @@ date: '2025-12-11'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: 'Tout savoir sur l''extension de domaine .able : signification, usages créatifs et avantages pour votre marque. Découvrez comment l''enregistrer avec Namefi.'
 keywords: ['.able', 'domaines .able', 'TLD .able', 'qu''est-ce que .able', 'pourquoi choisir .able', 'pourquoi choisir le domaine .able', 'domaine blockchain', 'domaine tokenisé', 'investissement domaine', 'extension web3', 'nom de domaine .able', 'achat domaine .able', 'signification .able', 'domain hack', 'Namefi']

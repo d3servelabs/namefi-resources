@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: खाते की सुरक्षा से समझौता होने पर डोमेन का अनधिकृत हस्तांतरण जो उसके वैध मालिक के नियंत्रण से बाहर हो जाता है।
 keywords: ['domain theft', 'unauthorized transfer', 'account compromise', 'domain security', 'recovery']
 level: 1

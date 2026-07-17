@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 独立したオンチェーンコンポーネントをブロックのように組み合わせる能力。トークン化されたドメインを貸付・取引・その他のプロトコルに接続できる。
 keywords: ['コンポーザビリティ', '相互運用性', 'ビルディングブロック', 'DeFi', 'Web3統合']
 level: 1

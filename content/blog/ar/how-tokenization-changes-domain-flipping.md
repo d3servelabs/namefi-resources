@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'domain-flipping', 'web3', 'explainer']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 cluster: domain-tokenization
 series: domain-flipping-skills

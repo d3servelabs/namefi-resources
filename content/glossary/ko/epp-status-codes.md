@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인의 현재 상태를 나타내는 표준화된 플래그로, 잠금, 보류, 이전 대기 등 허용 가능한 작업을 정의합니다.
 keywords: ['EPP 상태 코드', 'clientHold', 'serverTransferProhibited', '도메인 상태', '삭제 대기']
 level: 1

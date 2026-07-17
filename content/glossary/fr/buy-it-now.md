@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un prix d'achat instantané et fixe sur une annonce de domaine — le payer conclut la vente immédiatement, sans négociation.
 keywords: ['achat immédiat', 'BIN', 'achat instantané', 'prix fixe', 'annonce de domaine']
 also_known_as: ['BIN']

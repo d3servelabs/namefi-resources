@@ -4,6 +4,8 @@ date: '2025-06-22'
 language: hi
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: .loan वित्तीय सेवाओं, उधार देने वाली संस्थाओं और व्यक्तिगत वित्त प्लेटफॉर्मों के लिए डिज़ाइन किया गया एक विशेष डोमेन एक्सटेंशन है। इसके उद्देश्य, उपयोग और लाभों के बारे में जानें।
 keywords: ["टीएलडी", "लोन डोमेन", "वित्तीय सेवाएँ", "उधार", "फिनटेक", "ऋण"]
 relatedArticles:

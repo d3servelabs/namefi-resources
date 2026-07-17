@@ -5,6 +5,7 @@ language: de
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-real-estate-business-og.jpg
 description: 'Die 10 wichtigsten TLDs, die jeder Immobilienmakler zum Markenschutz sichern sollte – einschließlich Zulassungsregeln für .realtor, Tipps zur defensiven Registrierung und wo Sie Ihre Domain anmelden.'

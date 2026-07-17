@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que la multi-signature et comment améliore-t-elle la sécurité des domaines ?
 keywords: ["multi-signature","multisig","signatures multiples","sécurité renforcée","garde partagée"]
 relatedArticles:

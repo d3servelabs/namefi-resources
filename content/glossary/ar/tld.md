@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاق المستوى الأعلى (TLD) هو التسمية الأقصى يمينًا في اسم النطاق، زي .com أو .org أو .de، مُفوَّضة عبر منطقة جذر IANA تحت إشراف ICANN.
 keywords: ['TLD', 'نطاق المستوى الأعلى', 'gTLD', 'ccTLD', 'gTLD جديد', 'DNS', 'IANA', 'ICANN', 'منطقة الجذر', 'سجل النطاقات']
 also_known_as: ['نطاق المستوى الأعلى']

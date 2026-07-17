@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 고객 신원 확인(Know Your Customer) — 규제 대상 금융 또는 암호화폐 서비스가 사용자를 온보딩하기 전에 수행하는 신원 검증 절차입니다.
 keywords: ['KYC', '고객 신원 확인', '신원 검증', '온보딩', '컴플라이언스']
 also_known_as: ['고객 신원 확인']

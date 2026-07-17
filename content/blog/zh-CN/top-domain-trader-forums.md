@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'community', 'domain-investing', 'forums']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2026年英语域名论坛和社区实用指南。了解域名投资人真正聚集的地方——从 NamePros 和 DNForum，到已悄然取代它们的 Twitter/X 和 Telegram 频道。'
 ogImage: ../../assets/top-domain-trader-forums-og.jpg

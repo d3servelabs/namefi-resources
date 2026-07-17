@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: मल्टी-सिग क्या है और यह डोमेन सुरक्षा को कैसे बढ़ाता है?
 keywords: ["मल्टी-सिग","मल्टीसिग","कई हस्ताक्षर","बढ़ी हुई सुरक्षा","साझा कस्टडी"]
 relatedArticles:

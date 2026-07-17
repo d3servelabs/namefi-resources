@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein schnelles, kostengünstiges Mittel, das eine klar verletzende Domain suspendiert und das UDRP ergänzt.
 keywords: ['URS', 'Uniform Rapid Suspension', 'domain-suspendierung', 'markenverletzung', 'neues gTLD']
 also_known_as: ['Uniform Rapid Suspension']

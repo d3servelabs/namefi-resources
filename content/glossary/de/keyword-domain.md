@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Eine Domain, die auf einem wertvollen Suchbegriff oder einer Phrase aufgebaut ist und für ihre beschreibende Klarheit geschätzt wird.
 keywords: ['Keyword-Domain', 'keyword-reiche Domain', 'beschreibende Domain', 'Such-Keyword-Domain', 'SEO-Domainname']
 level: 1

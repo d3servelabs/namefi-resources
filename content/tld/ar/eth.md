@@ -4,6 +4,8 @@ date: '2025-06-21'
 language: ar
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاقات .eth هي أسماء قائمة على البلوك تشين تحل محل عناوين المحافظ المعقدة بأسماء قابلة للقراءة البشرية. تعرف على كيفية تحويل ENS لهوية Web3 والملكية الرقمية.
 keywords: ["نطاق المستوى الأعلى", "نطاق eth", "هوية web3", "بلوك تشين", "ENS", "نطاق لامركزي", "نطاق nft"]
 relatedArticles:

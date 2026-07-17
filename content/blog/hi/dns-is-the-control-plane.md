@@ -5,6 +5,7 @@ language: hi
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: "20 अक्टूबर, 2025 की AWS घटना पर एक रजिस्ट्रार/DNS-ऑपरेशंस का नज़रिया, DNS वास्तव में कैसे काम करता है, यह विफलता इतनी व्यापक रूप से क्यों फैली, और इंटरनेट टीमें इसके बारे में क्या कर सकती हैं।"
 keywords: ['dns', 'aws आउटेज', 'कंट्रोल प्लेन', 'dynamodb', 'us-east-1', 'dns कैशिंग', 'क्लाउड रेसिलिएंस', 'मल्टी-साइनर dns', 'इंसीडेंट रिस्पॉन्स']

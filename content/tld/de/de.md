@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 selfCanonical: true
 description: 'Die .de-Domain ist die offizielle Länderendung für Deutschland, betrieben von DENIC. Erfahren Sie, wer sie registrieren darf, welche DENIC-Regeln gelten und worauf Sie achten sollten.'

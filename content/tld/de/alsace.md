@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld', 'geoTLD', 'domain-investing', 'branding']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .alsace TLD: Die perfekte Domain für Unternehmen und Kultur im Elsass. Entdecken Sie Vorteile, SEO-Chancen und Registrierung bei Namefi."
 keywords: ['.alsace domains', '.alsace TLD', 'top-level domain', 'was ist .alsace', 'warum .alsace wählen', 'was ist die .alsace domain', 'warum die .alsace domain wählen', 'Elsass Domain registrieren', 'GeoTLD Elsass', 'lokale SEO Domains', 'Domain Investment', 'Blockchain Domains', 'Namefi', 'Web3 Domains', 'digitale Identität Elsass']

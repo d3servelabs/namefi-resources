@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: تكتيك انتهى في معظمه كان بيعتمد على تسجيل نطاقات وإلغاؤها خلال فترة السماح المجانية.
 keywords: ['تذوق النطاقات', 'AGP', 'فترة سماح الإضافة', 'تحليق النطاقات', 'سياسة ICANN']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: DNS மாற்றம் செய்யப்பட்டதிலிருந்து அது இணையம் முழுவதிலும் தெரியும் வரையிலான தாமதம்; தேக்ககப்படுத்தப்பட்ட பழைய பதிவுகள் தீர்விகள் முழுவதும் காலாவதியாகும் வரை காத்திருக்கும் நேரம்.
 keywords: ['DNS பரவல்', 'DNS புதுப்பிப்பு தாமதம்', 'TTL', 'DNS தேக்ககம்', 'பெயர் சேவையக மாற்றம்']
 level: 1

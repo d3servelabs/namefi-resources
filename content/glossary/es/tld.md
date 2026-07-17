@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un dominio de nivel superior (TLD) es la etiqueta más a la derecha de un nombre de dominio, como .com, .org o .de, delegado a través de la zona raíz de IANA bajo la supervisión de ICANN.
 keywords: ['TLD', 'dominio de nivel superior', 'gTLD', 'ccTLD', 'nuevo gTLD', 'DNS', 'IANA', 'ICANN', 'zona raíz', 'registro de dominio']
 also_known_as: ['Dominio de nivel superior']

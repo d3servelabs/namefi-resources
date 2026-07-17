@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio .al: desde su uso para marcas creativas y domain hacks hasta su relevancia en Albania. Asegura tu nombre ideal hoy.'
 keywords: ['.al domains', '.al TLD', 'top-level domain', 'what is .al', 'why choose .al', 'what is the .al domain', 'why choose the .al domain', 'dominio .al', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'domain hacks', 'registro de dominios albania', 'comprar dominio .al', 'estrategia de nombres de dominio']

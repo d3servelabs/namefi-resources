@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: सबडोमेन किसी डोमेन में जोड़ा गया एक प्रीफ़िक्स है जो एक अलग एड्रेस बनाता है, जैसे blog.example.com या app.example.com।
 keywords: ['सबडोमेन', 'होस्ट', 'blog.example.com', 'DNS', 'सेकंड-लेवल डोमेन']
 level: 1

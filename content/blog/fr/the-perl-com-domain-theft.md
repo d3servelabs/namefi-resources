@@ -5,6 +5,7 @@ language: fr
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: 'Fin janvier 2021, perl.com — la maison historique de la communauté de programmation Perl — a été volé via une compromission de compte chez un registrar, transféré à travers la Chine, pointé vers une adresse IP liée à des logiciels malveillants, et mis en vente à 190 000 $. Voici comment cela s''est produit, comment le domaine a été récupéré, et ce que cela nous enseigne sur la sécurité des comptes registrar.'
 keywords: ['perl.com', 'vol du domaine perl.com', 'détournement de domaine', 'vol de domaine', 'compromission de compte registrar', 'ingénierie sociale', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'détournement DNS', 'sécurité des domaines', 'prise de contrôle de compte', 'BizCN']

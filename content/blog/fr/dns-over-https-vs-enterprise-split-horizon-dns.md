@@ -5,6 +5,7 @@ language: fr
 tags: ['dns', 'doh', 'entreprise', 'sécurité', 'réseau']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Le DNS over HTTPS (DoH) protège la confidentialité des utilisateurs en chiffrant les requêtes DNS dans le protocole HTTPS. Le DNS split-horizon d'entreprise repose sur la capacité du réseau à voir ces requêtes. La collision entre les deux redéfinit la façon dont les réseaux d'entreprise, les navigateurs et les systèmes d'exploitation gèrent la résolution de noms."
 ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg

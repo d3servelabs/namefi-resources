@@ -5,6 +5,7 @@ language: fr
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Les preuves à divulgation nulle se déclinent en trois catégories — parfaite, statistique et computationnelle — et la différence est bien plus importante que ne le laissent entendre la plupart des discussions d'ingénierie. Cet article explique chacune d'elles en termes simples, pourquoi presque tous les systèmes ZK en production en 2026 sont computationnels, et ce que cela implique en termes d'avantages et de coûts."
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg

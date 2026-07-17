@@ -5,6 +5,7 @@ language: 'zh-CN'
 tags: ['ai-agents', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 format: guide
 ogImage: ../../assets/mcp-quickstart-og.jpg

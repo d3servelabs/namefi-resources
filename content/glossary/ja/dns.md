@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 人間が読めるドメイン名をコンピューターがインターネット上でトラフィックを転送する際に使用するIPアドレスに変換する、階層型の命名システム。
 keywords: ['DNS', 'ドメインネームシステム', '名前解決', 'DNSルックアップ', 'DNSレコード', 'ネームサーバー', '再帰的リゾルバー', 'DNSSEC', 'インターネットインフラ']
 also_known_as: ['ドメインネームシステム']

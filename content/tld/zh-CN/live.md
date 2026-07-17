@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '探索 .live 域名的独特价值。无论您是流媒体主播、新闻机构还是 Web3 开发者，了解 .live 如何提升您的品牌实时影响力。立即在 Namefi 注册并体验代币化域名的优势。'
 keywords: ['.live domains', '.live TLD', '.live top-level domain', 'what is .live', 'why choose .live', 'what is the .live domain', 'why choose the .live domain', 'domain investing', 'blockchain domains', 'tokenized domain', '直播域名', '实时互动', 'Web3 domains', 'Namefi', 'buy .live domain']

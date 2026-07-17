@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.fashion 도메인은 디자이너, 의류 브랜드, 스타일 기업을 위한 개방형 gTLD로, 한눈에 무엇을 하는 곳인지 알 수 있는 도메인 주소를 원하는 분들에게 적합합니다. 누구에게 맞는지, 그 이유는 무엇인지 설명합니다.'
 keywords: ['.fashion 도메인', '.fashion이란', '패션 TLD', '패션 브랜드 도메인', '의류 도메인 이름', '스타일 도메인 확장자', '.fashion 등록', 'GoDaddy Registry']

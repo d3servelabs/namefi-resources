@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was sind Internet-native Assets und wie passen Domains in diese Kategorie?
 keywords: ["Internet-natives Asset","digitales Asset","Blockchain","natives Internet","tokenisierte Domains"]
 relatedArticles:

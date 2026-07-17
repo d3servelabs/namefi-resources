@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 만료된 도메인을 높은 환매 수수료를 내고 되찾을 수 있는, 만료 후 일정 기간의 유예 창구입니다.
 keywords: ['환매 기간', 'RGP', '환매 유예 기간', '만료 도메인 복구', '환매 수수료']
 level: 1

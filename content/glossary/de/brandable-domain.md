@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein kurzer, einprägsamer, oft erfundener Name, der als Marke funktioniert – ähnlich einem Kunstwort.
 keywords: ['Brandable Domain', 'Marken-Domain', 'erfundene Domain', 'Kunstwort-Domain', 'einprägsame Domain']
 level: 1

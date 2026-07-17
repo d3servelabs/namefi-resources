@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.blog 도메인은 Automattic이 운영하는 개방형 gTLD로, 콘텐츠 사이트임을 즉시 알 수 있게 해줍니다. 적합한 대상, 가격 책정 방식, 이메일 평판에 대해 알아보세요.'
 keywords: ['.blog 도메인', '.blog란', '.blog TLD', '블로그 도메인 이름', 'Automattic .blog', '블로그용 gTLD', '.blog 도메인 등록', '콘텐츠 웹사이트 도메인']

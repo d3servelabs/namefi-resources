@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'Discover the power of the .adac TLD. Learn about its origins, its significance in the automotive world, and how it represents trust and security in the domain industry.'
 keywords: ['.adac domains', '.adac TLD', 'top-level domain', 'what is .adac', 'why choose .adac', 'what is the .adac domain', 'why choose the .adac domain', 'ADAC registry', 'automotive domains', 'domain investing', 'blockchain domains', 'tokenized domain', 'brand TLD', 'German internet domains', 'secure domains']

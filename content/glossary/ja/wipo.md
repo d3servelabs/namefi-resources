@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメイン名に関するUDRP紛争の多くを裁定する仲裁センターを持つ国連機関。
 keywords: ['WIPO', '世界知的所有権機関', 'UDRP', 'ドメイン紛争', '仲裁']
 also_known_as: ['世界知的所有権機関']

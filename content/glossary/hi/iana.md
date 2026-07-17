@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: IANA वह कार्य है जो DNS रूट ज़ोन को बनाए रखता है और IP एड्रेस ब्लॉक तथा प्रोटोकॉल नंबर आवंटित करता है।
 keywords: ['IANA', 'रूट ज़ोन', 'IP आवंटन', 'प्रोटोकॉल नंबर', 'ICANN']
 level: 1

@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['security', 'domains', 'registrar', 'incident-response']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '实战解析现实世界中攻击者接管域名的五种方式——社会工程学、注册商账户入侵、DNS 提供商接管、NS 劫持和过期域名抢注——以及阻断这些攻击的具体控制措施。'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg

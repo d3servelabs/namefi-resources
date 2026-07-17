@@ -5,6 +5,7 @@ language: hi
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 cluster: web3-foundations
 series: blockchain-concepts

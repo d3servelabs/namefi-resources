@@ -4,6 +4,8 @@ date: '2025-12-11'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Entdecken Sie die Vorteile der .ads-Domain für Ihr Marketing-Business. Erfahren Sie, warum diese TLD perfekt für Werbeagenturen und Ad-Tech ist.'
 keywords: ['.ads', '.ads domains', '.ads TLD', 'was ist .ads', 'warum .ads wählen', 'was ist die .ads domain', 'warum die .ads domain wählen', 'werbeagentur domain', 'online werbung', 'domain handel', 'blockchain domains', 'tokenisierte domains', 'ad tech', 'marketing tld', 'neue gTLD']

@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld', 'brand-tld', 'domain-investing', 'airtel']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'Discover the .airtel Top-Level Domain: a specialized TLD for the telecom giant. Learn about Brand TLDs, their security benefits, and the future of domain naming.'
 keywords: ['.airtel domains', '.airtel TLD', 'top-level domain', 'what is .airtel', 'why choose .airtel', 'what is the .airtel domain', 'why choose the .airtel domain', 'Bharti Airtel domain', 'brand TLD', 'domain investing', 'blockchain domains', 'tokenized domain', 'new gTLD', 'telecom domains', 'Web3 domains']

@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف ما هو نطاق .info ولماذا يعد خياراً ممتازاً للمواقع المعلوماتية والتجارية. تعرف على مزاياه، استخداماته، وكيفية حجزه الآن عبر Namefi."
 keywords: [".info domain", ".info TLD", "top-level domain", "what is .info", "why choose .info", "what is the .info domain", "why choose the .info domain", "buy .info domain", "شراء دومين info", "نطاق .info", "domain investing", "blockchain domains", "tokenized domain", "Namefi", "استثمار الدومينات", "Web3 domains"]

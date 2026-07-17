@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '域名行业新闻媒体、销售数据网站和播客指南，涵盖 DomainNameWire、DNJournal、TheDomains、NameBio、DomainSherpa、CircleID 等优质行业信息源。'
 ogImage: ../../assets/domain-industry-media-og.jpg

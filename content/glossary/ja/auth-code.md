@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: レジストラがドメインごとに発行する短い秘密コード。ドメインを別のレジストラへ移管する際に必要で、EPPコードまたは転送コードとも呼ばれる。
 keywords: ['認証コード', 'EPPコード', '転送コード', 'ドメイン移管', '承認コード', 'AuthInfoコード']
 level: 1

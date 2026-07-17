@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种基本已废止的策略，即在免费添加宽限期内注册域名后再取消以享受全额退款。
 keywords: ['域名尝鲜', 'AGP', '添加宽限期', '域名风筝', 'ICANN 政策']
 level: 1

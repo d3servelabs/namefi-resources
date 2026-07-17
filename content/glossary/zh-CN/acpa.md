@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一部美国法律，允许商标持有人在联邦法院起诉网络抢注者，是 UDRP 之外的另一途径。
 keywords: ['ACPA', '反网络抢注', '美国商标法', '域名争议', '联邦法院']
 also_known_as: ['反网络抢注消费者保护法']

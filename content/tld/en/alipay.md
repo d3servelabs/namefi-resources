@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Discover the purpose behind the .alipay TLD. Learn how this unique Brand TLD enhances security in fintech and what it means for the future of domain investing."
 keywords: [".alipay domains", ".alipay TLD", "top-level domain", "what is .alipay", "why choose .alipay", "what is the .alipay domain", "why choose the .alipay domain", "fintech domains", "brand TLD", "Alibaba Group domains", "blockchain domains", "tokenized domains", "domain investing", "digital payment security", "Namefi"]

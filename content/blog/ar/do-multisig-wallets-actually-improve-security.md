@@ -5,6 +5,7 @@ language: ar
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'تُعامل محافظ التوقيع المتعدد (Multisig) على نطاق واسع كنمط الحفظ الآمن الافتراضي في مجال العملات المشفرة، لكن الإجابة على سؤال "هل تعمل حقًا على تحسين الأمان؟" تعتمد كليًا على نموذج التهديد. يستعرض هذا المقال ما يمكن لمحافظ التوقيع المتعدد إحباطه، وما تعجز عنه، والحالات التي قد تزيد فيها الأمور سوءًا.'
 ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg

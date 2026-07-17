@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'community', 'domain-investing', 'forums']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'دليل عملي للمنتديات والمجتمعات الناطقة باللغة الإنجليزية حيث يتجمع مستثمرو أسماء النطاقات فعليًا في عام 2026 — بدءًا من NamePros و DNForum إلى قنوات منصة إكس (تويتر) وتليجرام التي حلت محلها بهدوء.'
 ogImage: ../../assets/top-domain-trader-forums-og.jpg

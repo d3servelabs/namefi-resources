@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: .dev डेवलपर्स और डेवलपमेंट प्रोजेक्ट्स के लिए Google का सुरक्षित डोमेन है। जानें कि यह प्रोग्रामर, टेक कंपनियों और डेवलपमेंट टीमों के लिए सबसे अच्छा विकल्प क्यों है।
 keywords: ["tld", ".dev डोमेन", "डेवलपर्स", "डेवलपमेंट प्रोजेक्ट्स", "टेक कंपनियां", "प्रोग्रामिंग", "HTTPS", "Google"]
 relatedArticles:

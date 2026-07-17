@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Ende 2018 deckte Cisco Talos DNSpionage auf – eine Kampagne, die später mit iranischen Interessen in Verbindung gebracht wurde. Dabei wurden DNS-Einträge von Regierungen manipuliert, E-Mail- und VPN-Verkehr auf Angreifer-Server umgeleitet und gültige TLS-Zertifikate ausgestellt, um unsichtbar zu bleiben. Die Kampagne löste die erste Notfalldirektive dieser Art der US-Regierung aus.'
 keywords: ['dnspionage', 'dns-hijacking', 'dns-umleitung', 'cisco talos', 'cisa notfalldirektive 19-01', 'sea turtle dns', 'iran dns-hijacking', 'fireeye dns-hijacking', 'lets encrypt zertifikatsmissbrauch', 'dns-sicherheit', 'domain-sicherheit', 'staatliche cyberspionage', 'dns-infrastruktur-manipulation verhindern']

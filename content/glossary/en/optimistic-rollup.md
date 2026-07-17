@@ -4,6 +4,7 @@ date: '2026-07-02'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A rollup that assumes off-chain transactions are valid by default and relies on a fraud-proof challenge window instead of cryptographic proofs.
 keywords: ['optimistic rollup', 'fraud proof', 'challenge window', 'rollup', 'layer 2', 'arbitrum', 'optimism', 'base']
 level: 1

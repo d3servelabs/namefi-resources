@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 미개발 도메인에 광고나 판매 안내를 게시하여 수익을 창출하거나 도메인 가용성을 알리는 방식입니다.
 keywords: ['도메인 파킹', '파킹 도메인', '수익화', '도메인 투자', '패시브 인컴']
 also_known_as: ['파킹 도메인']

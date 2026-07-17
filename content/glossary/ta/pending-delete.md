@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: புதுப்பிக்கப்படாத ஒரு டொமைன் பொதுப் பதிவிற்காக மீண்டும் வெளியிடப்படும் முன்னர் உள்ள இறுதி நிலை.
 keywords: ['நீக்க நிலுவை', 'டொமைன் drop', 'drop catching', 'காலாவதி டொமைன்', 'வெளியீடு']
 level: 1

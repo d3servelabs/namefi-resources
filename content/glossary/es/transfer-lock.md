@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Estado que impide la transferencia de un dominio a otro registrador hasta que se desbloquea explícitamente.
 keywords: ['bloqueo de transferencia', 'bloqueo del registrador', 'seguridad de dominio', 'estado EPP', 'transferencia de dominio']
 also_known_as: ['Bloqueo del registrador']

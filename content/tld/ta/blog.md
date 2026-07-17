@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.blog டொமைன் என்பது Automattic நிறுவனம் நடத்தும் திறந்த gTLD ஆகும், இது ஒரு உள்ளடக்க தளத்தை உடனடியாக அடையாளப்படுத்துகிறது. யார் பயன்படுத்தலாம், விலை என்ன, மின்னஞ்சல் நம்பகத்தன்மை எப்படி இருக்கும் என்பதை அறியுங்கள்.'
 keywords: ['.blog டொமைன்', '.blog என்றால் என்ன', '.blog TLD', 'வலைப்பதிவு டொமைன் பெயர்', 'Automattic .blog', 'வலைப்பதிவுகளுக்கான gTLD', '.blog டொமைன் பதிவு', 'உள்ளடக்க வலைத்தள டொமைன்']

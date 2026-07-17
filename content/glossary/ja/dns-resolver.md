@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインの問い合わせを受け取り、DNSの階層構造をたどって対応するアドレスを返すサーバー。
 keywords: ['DNSリゾルバー', '再帰的リゾルバー', 'リゾルバー', '8.8.8.8', '1.1.1.1', 'DNS検索']
 level: 1

@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre qué es el dominio .airbus, un TLD de marca exclusivo. Analizamos su propósito, beneficios de seguridad y la relevancia de los dominios corporativos en la era digital.'
 keywords:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 도메인을 주소 및 서비스에 매핑하는 존(zone) 내 항목 — A, AAAA, CNAME, MX, TXT 등.
 keywords: ['DNS 레코드', 'A 레코드', 'AAAA 레코드', 'CNAME', 'MX 레코드', 'TXT 레코드']
 level: 1

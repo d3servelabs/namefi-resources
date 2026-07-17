@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué significa "en cadena" en el contexto de los dominios?
 keywords: ["en cadena","blockchain","contratos inteligentes","dominio NFT","descentralización"]
 relatedArticles:

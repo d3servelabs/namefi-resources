@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الزوار اللي بيصلوا لموقع بكتابة الدومين مباشرةً في المتصفح، وهي أساس عائد احتجاز الدومين.
 keywords: ['حركة الكتابة المباشرة', 'التنقل المباشر', 'احتجاز الدومين', 'دومين المطابقة التامة', 'قيمة الدومين']
 level: 1

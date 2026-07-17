@@ -5,6 +5,7 @@ language: 'ko'
 tags: ['ai-agents', 'domains', 'web3']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 format: explainer
 ogImage: ../../assets/namefi-mcp-og.jpg

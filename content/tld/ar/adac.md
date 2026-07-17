@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld', 'adac', 'domains', 'web3', 'branding']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'اكتشف كل ما تحتاج لمعرفته حول نطاق المستوى الأعلى .adac. تعرف على استخداماته، ومزاياه لقطاع السيارات، وكيفية الاستفادة منه في الاستثمار في النطاقات عبر Namefi.'
 keywords: ['.adac domains', 'register .adac', 'buy .adac domain', 'what is .adac', 'why choose .adac', 'نطاقات .adac', 'domain investing', 'blockchain domains', 'tokenized domains', 'top-level domain', 'TLD investment', 'automotive domains', 'Web3 domains', 'why choose the .adac domain', 'Namefi domains']

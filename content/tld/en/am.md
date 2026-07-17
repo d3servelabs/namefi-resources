@@ -6,6 +6,8 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
 draft: false
 description: 'Explore the .am domain extension: from "AM radio" to creative domain hacks like "I am." Learn why this TLD is perfect for branding and how to register yours.'
 keywords:

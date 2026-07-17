@@ -5,6 +5,7 @@ language: 'ko'
 tags: ['ai-agents', 'domains', 'roundup']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 format: roundup
 ogImage: ../../assets/best-ai-tools-2026-og.jpg

@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: टॉप-लेवल डोमेन (TLD) किसी डोमेन नाम का सबसे दाईं ओर का लेबल है, जैसे .com, .org या .de, जो ICANN की देखरेख में IANA रूट ज़ोन के माध्यम से प्रत्यायोजित होता है।
 keywords: ['TLD', 'टॉप-लेवल डोमेन', 'gTLD', 'ccTLD', 'new gTLD', 'DNS', 'IANA', 'ICANN', 'रूट ज़ोन', 'डोमेन रजिस्ट्री']
 also_known_as: ['टॉप-लेवल डोमेन']

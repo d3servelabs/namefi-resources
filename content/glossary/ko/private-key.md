@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 블록체인 계정을 제어하고 트랜잭션에 서명하는 비밀 숫자로, 절대 공유해서는 안 됩니다.
 keywords: ['개인 키', '서명 키', '지갑 키', '비밀 키', '블록체인 계정']
 level: 1

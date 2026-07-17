@@ -5,6 +5,8 @@ language: de
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist SEO und wie beeinflusst die Domain-Tokenisierung die Suchmaschinenoptimierung?
 keywords: ["SEO","Suchmaschinenoptimierung","Domainwert","Suchrankings","digitales Marketing"]
 relatedArticles:

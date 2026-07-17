@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في 21 أكتوبر 2016، ضرب هجوم DDoS بقوة بوت نت Mirai للأجهزة الذكية مزود DNS شركة Dyn في ثلاث موجات، وخلّى Twitter وNetflix وReddit وSpotify وGitHub وAirbnb وPayPal بره الخدمة لساعات — دراسة حالة Domain Mayday عن مخاطر الاعتماد على مزود DNS واحد.'
 keywords: ['هجوم dyn dns', 'بوت نت mirai', 'هجوم ddos 21 أكتوبر 2016', 'هجوم ddos على dns', 'بوت نت إنترنت الأشياء', 'انقطاع مزود dns', 'أمان النطاقات', 'نقطة فشل واحدة في dns', 'dyn ddos 2016', 'برنامج mirai الخبيث', 'انقطاع الإنترنت 2016', 'تكرار dns', 'كاميرات iot متهكرة']

@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 이더리움 네임 서비스는 alice.eth와 같이 사람이 읽을 수 있는 이름을 지갑 주소 및 레코드에 매핑하며, 온체인 스마트 컨트랙트로 완전히 관리됩니다.
 keywords: ['ENS', '이더리움 네임 서비스', '.eth', 'web3 이름', '온체인 네이밍', '지갑 별칭', '크립토 신원']
 level: 1

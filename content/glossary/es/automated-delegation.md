@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es la delegación automatizada y cómo gestionan los contratos inteligentes el control de dominios?
 keywords: ["delegación automatizada","contratos inteligentes","gestión de dominios","control programable","automatización"]
 relatedArticles:

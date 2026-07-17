@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 借助大型注册商的资质向终端客户销售域名的公司，本身不持有 ICANN 认证。
 keywords: ['经销商', '域名经销商', '白标注册商', 'ICANN 认证', '注册商']
 level: 1

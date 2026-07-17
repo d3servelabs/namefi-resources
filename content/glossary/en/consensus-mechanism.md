@@ -4,6 +4,7 @@ date: '2026-07-02'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The rules a blockchain's participants follow to agree on a single, shared transaction history without a central authority.
 keywords: ['consensus mechanism', 'blockchain consensus', 'sybil resistance', 'proof of work', 'proof of stake', 'finality']
 level: 1

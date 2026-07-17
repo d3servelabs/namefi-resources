@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.us 도메인이란 무엇인가요? 미국의 공식 국가 코드 TLD로, 실질적인 미국 거주 요건을 충족하는 등록자에게만 제한됩니다. 운영 주체, Nexus 요건, 가격, SEO, 이메일 전달성에 대해 알아보세요.'
 keywords: ['.us 도메인', '.us TLD', 'us 도메인', '.us란', '.us 도메인이란', '.us vs .com', '미국 넥서스 요건', '미국 도메인', '.us 도메인 등록', '미국 도메인 확장자', 'del.icio.us']

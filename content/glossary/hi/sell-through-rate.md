@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: किसी दिए गए अवधि में बिकने वाले डोमेन पोर्टफोलियो का हिस्सा — निवेशकों के लिए एक प्रमुख लिक्विडिटी मेट्रिक।
 keywords: ['sell-through rate', 'STR', 'domain liquidity', 'portfolio performance', 'domain sales velocity']
 also_known_as: ['STR']

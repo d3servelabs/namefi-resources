@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 利用 TLD 与域名标签拼合成一个完整单词或短语的域名，如 del.icio.us 或 examp.le。
 keywords: ['域名创意拼接', '创意域名', 'TLD文字游戏', '品牌域名', 'ccTLD']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.clickドメインは、ウェブの最も基本的なアクション「クリック」をアドレスにした、制限なしの新gTLDです。運営者・対象ユーザー・価格の仕組み・他ドメインとの比較を詳しく解説します。'
 keywords: ['.clickドメイン', '.clickとは', '.click TLD', 'clickドメイン拡張子', '行動喚起ドメイン', 'URLショートナードメイン', '新gTLD', '.clickドメイン登録']

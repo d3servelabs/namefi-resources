@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: லாபம் பெறும் நோக்கில், வேறொருவரின் வர்த்தக முத்திரைக்கு ஒத்த டொமைன் பெயரை தவறான நோக்குடன் பதிவு செய்யும் செயல்முறை.
 keywords: ['சைபர்ஸ்குவாட்டிங்', 'தவறான நோக்கு', 'டொமைன் தகராறு', 'வர்த்தக முத்திரை மீறல்', 'UDRP']
 level: 1

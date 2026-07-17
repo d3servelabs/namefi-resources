@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: 'hi'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.us डोमेन क्या है? संयुक्त राज्य अमेरिका के लिए आधिकारिक कंट्री-कोड TLD, जो वास्तविक US उपस्थिति वाले पंजीयकों तक प्रतिबंधित है। जानें कि इसे कौन चलाता है, Nexus आवश्यकता, मूल्य निर्धारण, SEO, और ईमेल डिलीवरेबिलिटी।'
 keywords: ['.us डोमेन', '.us TLD', 'us डोमेन', '.us क्या है', '.us डोमेन क्या है', '.us बनाम .com', 'US nexus आवश्यकता', 'संयुक्त राज्य डोमेन', '.us डोमेन रजिस्टर करें', 'अमेरिकी डोमेन एक्सटेंशन', 'del.icio.us']

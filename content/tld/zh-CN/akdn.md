@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 深入了解 .akdn 顶级域名：它代表了什么，阿迦汗发展网络 (AKDN) 如何使用它，以及专属域名对建立信任和品牌权威的重要性。
 keywords: ['.akdn domains', '.akdn TLD', 'top-level domain', 'what is .akdn', 'why choose .akdn', 'what is the .akdn domain', 'why choose the .akdn domain', 'domain investing', 'blockchain', 'tokenized domain', 'Aga Khan Development Network domain', 'Web3 domains', 'digital identity', 'brand TLD', 'trustworthy domains']

@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The rights to control, use, and transfer a domain; tokenization records those rights on-chain in a wallet instead of only in a registrar account.
 keywords: ['domain ownership', 'NFT domain', 'registrar', 'custodial', 'wallet ownership']
 level: 1

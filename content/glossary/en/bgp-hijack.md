@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Rerouting internet traffic by falsely announcing IP routes, a network-layer attack that sits below DNS.
 keywords: ['BGP hijack', 'route hijacking', 'IP prefix', 'network security', 'internet routing']
 level: 1

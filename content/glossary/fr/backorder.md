@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un service qui tente d''enregistrer un domaine à l''instant de son drop, pour revendiquer un nom expirant.
 keywords: ['backorder', 'drop-catching', 'domaine expiré', 'suppression en attente', 'acquisition de domaine']
 level: 1

@@ -4,6 +4,7 @@ date: '2025-06-30'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: An arrangement where a third party holds the private keys to your assets for you, so you depend on their security and their permission to transact.
 keywords: ['custodial ownership', 'custody', 'third-party control', 'registrar control', 'centralized storage']
 level: 1

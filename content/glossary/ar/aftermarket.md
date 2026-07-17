@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: سوق إعادة البيع للنطاقات المسجّلة مسبقاً، حيث بيتم شراء الأسماء وبيعها بين الملاك.
 keywords: ['السوق الثانوي', 'aftermarket', 'إعادة بيع النطاقات', 'استثمار النطاقات', 'مبيعات النطاقات']
 also_known_as: ['السوق اللاحق']

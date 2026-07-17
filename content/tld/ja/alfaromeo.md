@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld', 'brand-tld', 'automotive', 'domain-investing']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.alfaromeo TLDを徹底解説。イタリアの象徴的な自動車ブランド専用のドメイン拡張子について、ブランドTLDの仕組みや活用方法、ドメイントレンドをわかりやすく説明します。'
 keywords: ['.alfaromeoドメイン', 'TLD', 'トップレベルドメイン', '.alfaromeoとは', '.alfaromeoを選ぶ理由', '.alfaromeoドメインとは', 'なぜ.alfaromeoドメインを選ぶのか', '自動車ドメイン', 'ブランドTLD', 'ドメイン投資', 'トークン化ドメイン', 'ブロックチェーンドメイン', '高級車ドメイン', 'Namefiドメイン', '.alfaromeoドメインを購入']

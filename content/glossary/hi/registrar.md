@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक ICANN-मान्यता प्राप्त कंपनी जो जनता की ओर से डोमेन नाम पंजीकृत करने के लिए अधिकृत है, रजिस्ट्रेंट और रजिस्ट्री के बीच इंटरफेस के रूप में कार्य करती है।
 keywords: ['रजिस्ट्रार', 'डोमेन रजिस्ट्रार', 'ICANN मान्यता', 'डोमेन पंजीकरण', 'RAA', 'EPP', 'auth code', 'ट्रांसफर लॉक', 'डोमेन ट्रांसफर']
 level: 2

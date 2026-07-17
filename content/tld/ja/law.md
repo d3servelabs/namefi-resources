@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.lawドメインは、登録時および更新時に資格審査が行われる、認定弁護士・法律事務所・ロースクール・法律規制機関のみに開放された、アクセス制限付きの専門家向けTLDです。'
 keywords: ['.lawドメイン', '.lawとは', 'lawドメイン登録', '制限付きTLD', '弁護士ドメイン', '法律事務所ドメイン', '法律系ドメイン名', '資格審査TLD']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le prix plancher entre investisseurs pour un domaine — ce qu'un domaineur accepte pour liquider rapidement, en dessous du prix de détail.
 keywords: ['prix de gros', 'prix investisseur', 'gros domaine', 'prix de liquidation', 'prix domaineur']
 also_known_as: ['Prix investisseur']

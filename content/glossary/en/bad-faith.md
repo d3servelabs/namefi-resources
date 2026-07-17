@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Registering or using a domain to exploit a trademark, a required element to win a UDRP case.
 keywords: ['bad faith', 'UDRP', 'domain dispute', 'cybersquatting', 'trademark abuse']
 level: 1

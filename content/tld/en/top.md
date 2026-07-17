@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .top domain is an open, low-cost new gTLD popular for short, keyword-rich names. Learn who runs it, who can register, its SEO and reputation trade-offs.'
 keywords: ['.top domains', 'what is .top', '.top TLD', '.top domain meaning', 'is .top good for SEO', '.top vs .com', 'buy .top domain', 'new gTLD']

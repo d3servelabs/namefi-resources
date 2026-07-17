@@ -5,6 +5,7 @@ language: fr
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-ecommerce-store-og.jpg
 description: 'Les 10 meilleurs TLD à sécuriser pour votre boutique e-commerce, du .com au .shop et .store, ainsi qu''une stratégie d''enregistrement défensif pour protéger votre marque commerciale.'

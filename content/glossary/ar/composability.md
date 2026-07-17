@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي قابلية التركيب وكيف تنطبق على النطاقات الرمزية؟
 keywords: ["قابلية التركيب","قابلية التشغيل البيني","وحدات بناء","DeFi","تكامل Web3"]
 relatedArticles:

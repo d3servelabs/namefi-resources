@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 売り手と買い手の間でドメイン売買を仲介するプロフェッショナルで、通常は成約価格に対するコミッションを報酬として受け取る。
 keywords: ['ドメインブローカー', 'ドメイン仲介', 'ドメイン交渉', 'ドメイン仲介業者', 'ドメインコミッション']
 level: 1

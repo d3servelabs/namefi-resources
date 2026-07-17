@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.app 도메인은 Google Registry가 운영하는 소프트웨어·앱 전용 gTLD로, 모든 사이트에 HTTPS가 의무화되어 있습니다. 적합한 대상, 검색 순위 영향, 등록 방법을 알아보세요.'
 keywords: ['.app 도메인', '.app이란', '.app TLD', '.app 도메인 종류', '앱 도메인 확장자', 'Google Registry .app', '.app HTTPS 필수', '.app 도메인 등록', '개발자 도메인']

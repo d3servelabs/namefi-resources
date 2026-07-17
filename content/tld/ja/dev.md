@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.devはGoogleが運営するHTTPS必須のトップレベルドメインで、開発者・プロジェクト・技術チーム向けに設計されています。登録資格、SEOへの影響、取得方法を解説します。'
 keywords: ['.devドメイン', '.devとは', 'dev TLD', 'Google Registry dev', 'HSTSプリロード', '開発者ドメイン', '.devドメイン登録', '.dev SEO']

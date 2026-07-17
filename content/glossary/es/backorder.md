@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un servicio que intenta registrar un dominio en el instante en que cae, para que usted pueda reclamar un nombre que expira.
 keywords: ['reserva anticipada', 'captura de caída', 'dominio expirado', 'eliminación pendiente', 'adquisición de dominio']
 level: 1

@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.info TLD के बारे में सब कुछ जानें। समझें कि यह सूचनात्मक साइटों और व्यवसायों के लिए क्यों एक बेहतरीन विकल्प है। आज ही Namefi पर अपना .info डोमेन रजिस्टर करें।'
 keywords:

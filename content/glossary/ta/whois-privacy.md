@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: பொது WHOIS அல்லது RDAP பதிவுகளில் ஒரு பதிவாளரின் தனிப்பட்ட தொடர்பு விவரங்களை மறைக்கும் சேவை.
 keywords: ['WHOIS தனியுரிமை', 'தனியுரிமை பாதுகாப்பு', 'RDAP', 'பதிவாளர் தனியுரிமை', 'தொடர்பு மறைப்பு']
 also_known_as: ['தனியுரிமை பாதுகாப்பு']

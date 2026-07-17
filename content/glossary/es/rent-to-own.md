@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es el alquiler con opción a compra y cómo se aplica a la adquisición de dominios?
 keywords: ["alquiler con opción a compra","propiedad gradual","planes de pago","adquisición de dominio","contratos inteligentes"]
 relatedArticles:

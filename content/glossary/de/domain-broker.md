@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein Vermittler, der einen Domainverkauf zwischen Käufer und Verkäufer verhandelt, in der Regel gegen eine Provision.
 keywords: ['Domain-Broker', 'Domain-Vermittlung', 'Domain-Verhandlung', 'Domain-Intermediär', 'Domain-Provision']
 level: 1

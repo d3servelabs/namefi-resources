@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.click डोमेन के बारे में सब कुछ जानें। समझें कि यह डिजिटल मार्केटिंग और ऑनलाइन एक्शन के लिए क्यों बेहतरीन है और आज ही Namefi के साथ अपना डोमेन रजिस्टर करें।'
 keywords: ['.click domains', '.click TLD', '.click top-level domain', 'what is .click', 'why choose .click', 'what is the .click domain', 'why choose the .click domain', 'buy .click domain', 'digital marketing domains', 'call to action domains', 'Namefi domain registration', 'tokenized domains', 'web3 domains', 'domain investing strategies', 'new gTLD']

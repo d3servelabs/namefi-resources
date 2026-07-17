@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Das automatische Senden von Besuchern von einer Domain zu einer anderen Adresse, häufig über eine 301-Weiterleitung.
 keywords: ['Domain-Weiterleitung', '301-Weiterleitung', 'URL-Weiterleitung', 'DNS', 'Domain-Verwaltung']
 level: 1

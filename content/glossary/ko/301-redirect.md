@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 브라우저와 검색 엔진에 특정 페이지가 새로운 URL로 영구 이동했음을 알리는 HTTP 상태 코드입니다.
 keywords: ['301 리디렉션', '영구 리디렉션', 'http 리디렉션', 'seo', '도메인 포워딩', '링크 에퀴티']
 also_known_as: ['영구 리디렉션']

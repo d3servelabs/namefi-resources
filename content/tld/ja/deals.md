@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.dealsドメインは、Binky Moon（Identity Digital）が運営するオープンな新gTLDです。クーポンサイト、バーゲンハンター、Eコマースのプロモーションに特化した拡張子で、どんな用途に向いているかを解説します。'
 keywords: ['.dealsドメイン', '.dealsとは', '.deals TLD', '.dealsドメイン登録', 'クーポンドメイン', 'セールサイトドメイン', 'Binky Moon', 'Identity Digital gTLD']

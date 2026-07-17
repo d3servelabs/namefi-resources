@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是DAO，它与域名管理有什么关系？
 keywords: ["DAO","去中心化自治组织","治理","集体所有权","智能合约"]
 relatedArticles:

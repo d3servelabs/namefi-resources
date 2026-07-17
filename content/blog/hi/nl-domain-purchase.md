@@ -5,6 +5,7 @@ language: 'hi'
 tags: ['ai-agents', 'guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 format: guide
 ogImage: ../../assets/nl-domain-purchase-og.jpg

@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.accountantsドメインは、公認会計士・ブックキーパー・会計事務所向けのオープンgTLDです。登録資格・価格・信頼性への影響をわかりやすく解説します。'
 keywords: ['.accountantsドメイン', '.accountantsとは', '.accountants TLD', '会計事務所のドメイン', '公認会計士のドメイン名', 'Identity Digital gTLD', '記帳サービスのウェブドメイン', '会計士向けニッチTLD']

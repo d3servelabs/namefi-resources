@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '1985년의 우연한 선택이 어떻게 인터넷의 기본 주소가 됐는가 — 비즈니스에서 가장 가치 있는 두 글자 반의 전부. .com의 탄생, 독점, 수백만 달러의 강탈 사건, 그리고 오늘 .com을 구입하려는 이들에게 의미하는 것.'
 keywords: ['.com 도메인', '.com이란', '.com TLD', '.com 도메인 확장자', '.com 도메인 등록', 'com 도메인 의미', '.com vs .net', '비즈니스 도메인', '.com 가격', '.com 애프터마켓', '.com의 역사']

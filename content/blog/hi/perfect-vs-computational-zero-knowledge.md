@@ -5,6 +5,7 @@ language: hi
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'ज़ीरो-नॉलेज प्रूफ़ तीन प्रकार के होते हैं—परफेक्ट, स्टैटिस्टिकल और कंप्यूटेशनल—और यह अंतर अधिकांश इंजीनियरिंग चर्चाओं की तुलना में कहीं अधिक मायने रखता है। यह पोस्ट सरल भाषा में प्रत्येक प्रकार को समझाती है कि क्यों 2026 में लगभग हर प्रोडक्शन ZK सिस्टम कंप्यूटेशनल है, और इसके क्या फायदे और नुकसान हैं।'
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg

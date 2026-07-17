@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Wie Discord im Jahr 2015 auf DiscordApp.com startete, weil Discord.com vergeben war, die Domain still und leise kaufte und 2020 discord.com zur primären Adresse machte – teils für eine sauberere Markenidentität, teils weil die Aufspaltung zwischen „discordapp.com" und „discord.com" ein Geschenk für Phisher und Malware-Gruppen war.'
 keywords: ['discordapp.com', 'discord.com', 'discord domain name', 'domain upgrade', 'jason citron', 'discord history', 'cdn.discordapp.com', 'discord phishing', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'domain migration']

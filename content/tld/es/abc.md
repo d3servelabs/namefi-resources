@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld', 'dominios', 'branding', 'web3', 'namefi']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre el potencial del dominio .abc: una extensión simple, memorable y fundamental. Aprende por qué es ideal para educación, startups y el ecosistema Web3.'
 keywords: ['.abc domains', 'dominios .abc', 'TLD .abc', 'top-level domain', 'what is .abc', 'que es el dominio .abc', 'why choose .abc', 'por que elegir .abc', 'what is the .abc domain', 'why choose the .abc domain', 'investing in domains', 'inversión en dominios', 'blockchain domains', 'tokenized domains', 'Namefi']

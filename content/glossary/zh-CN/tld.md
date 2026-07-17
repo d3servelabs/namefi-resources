@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 顶级域名（TLD）是域名中最右侧的标签，如 .com、.org 或 .de，经由 IANA 根区在 ICANN 监管下委派。
 keywords: ['TLD', '顶级域名', 'gTLD', 'ccTLD', '新 gTLD', 'DNS', 'IANA', 'ICANN', '根区', '域名注册局']
 also_known_as: ['顶级域名']

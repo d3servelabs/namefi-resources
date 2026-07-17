@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एस्क्रो क्या है और स्मार्ट कॉन्ट्रैक्ट डोमेन के लिए ट्रस्टलेस एस्क्रो कैसे प्रदान करते हैं?
 keywords: ["एस्क्रो","विश्वसनीय तृतीय पक्ष","स्मार्ट कॉन्ट्रैक्ट एस्क्रो","ट्रस्टलेस","सुरक्षित लेनदेन"]
 relatedArticles:

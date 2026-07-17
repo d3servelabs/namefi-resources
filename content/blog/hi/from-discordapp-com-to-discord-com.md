@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'Discord ने 2015 में DiscordApp.com पर शुरुआत कैसे की क्योंकि Discord.com किसी और के पास था, फिर धीरे-धीरे वह मूल शब्द खरीदा, और 2020 में discord.com को अपना प्राथमिक घर बनाया — आंशिक रूप से ब्रांड की स्वच्छता के लिए, और आंशिक रूप से इसलिए क्योंकि "discordapp.com" और "discord.com" का विभाजन फ़िशर्स और मालवेयर गिरोहों के लिए वरदान था।'
 keywords: ['discordapp.com', 'discord.com', 'discord domain name', 'domain upgrade', 'jason citron', 'discord history', 'cdn.discordapp.com', 'discord phishing', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'domain migration']

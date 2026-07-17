@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: بروتوكول بيحرّك التوكنات أو الرسائل بين البلوكتشينات اللي ما تقدرش تتواصل مع بعضها بشكل أصلي.
 keywords: ['جسر', 'cross-chain', 'قابلية التشغيل البيني', 'جسر التوكنات', 'متعدد التسلسلات']
 also_known_as: ['جسر']

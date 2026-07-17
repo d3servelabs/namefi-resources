@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Facebook, Inc. 如何在 2021 年 10 月更名为 Meta，Meta.com 为何早已是扎克伯格旗下资产并转向一个科学搜索引擎，以及另一笔 6000 万美元的交易如何从南达科他州一家银行手中买下"Meta"这个名称——而 Facebook 应用本身则继续使用 Facebook.com。'
 keywords: ['facebook.com', 'meta.com', 'meta 品牌重塑', 'facebook meta 更名', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', '元宇宙转型', '域名收购', '公司品牌重塑', '优质域名', '域名战略', '母公司更名']

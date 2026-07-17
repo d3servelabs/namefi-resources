@@ -5,6 +5,7 @@ language: de
 tags: ['infrastructure', 'payments', 'x402']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Ein mandantenfähiger Router, der es Ihnen ermöglicht, x402 einmalig zu integrieren und Anfragen nach Richtlinien und Live-Signalen zu routen, ohne die Routing-Logik in Ihre App zu verschieben."
 keywords: ['Route402', 'x402', 'Zahlungs-Routing', 'Facilitator-Router', 'mandantenfähige Zahlungen', 'RBAC', 'Verschlüsselung von Anmeldedaten', 'Fähigkeits-Routing', 'Sticky-Settlement', 'Zahlungsinfrastruktur', 'YAML-Routing-Regeln']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: Anti-Money-Laundering（反洗钱）——受监管服务用于检测非法资金流动的持续交易监控与报告机制。
 keywords: ['AML', '反洗钱', '交易监控', '制裁筛查', '合规']
 also_known_as: ['Anti-Money-Laundering']

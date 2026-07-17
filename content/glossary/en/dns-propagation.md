@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The delay before a DNS change is seen everywhere, as cached old records expire across resolvers.
 keywords: ['DNS propagation', 'DNS update delay', 'TTL', 'DNS cache', 'nameserver change']
 level: 1

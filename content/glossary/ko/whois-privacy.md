@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 공개 WHOIS 또는 RDAP 레코드에서 등록자의 개인 연락처 정보를 마스킹하는 서비스입니다.
 keywords: ['WHOIS 개인정보 보호', '개인정보 보호', 'RDAP', '등록자 개인정보', '연락처 마스킹']
 also_known_as: ['개인정보 보호 서비스']

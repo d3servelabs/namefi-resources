@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio .app: la extensión segura y perfecta para desarrolladores y aplicaciones. Aprende sus ventajas y regístralo hoy en Namefi.'
 keywords: ['.app domains', 'dominios .app', 'TLD .app', 'top-level domain .app', 'what is .app', 'qué es el dominio .app', 'why choose .app', 'por qué elegir el dominio .app', 'what is the .app domain', 'why choose the .app domain', 'domain investing', 'inversión en dominios', 'blockchain domains', 'tokenized domains', 'seguridad web https']

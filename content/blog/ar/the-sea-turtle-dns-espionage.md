@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'كيف اخترقت حملة "Sea Turtle" المدعومة من دولة، والتي كشف عنها Cisco Talos في 2019، نظام DNS عن طريق اختراق جهات تسجيل النطاقات والسجلات ومزودي DNS — لتحويل حركة الحكومات والوزارات وشركات الطاقة نحو خوادم المهاجمين، وتزوير شهادات صالحة، بل والتسلل إلى سجل نطاق وطني.'
 keywords: ['اختراق dns sea turtle', 'cisco talos sea turtle', 'هجوم اختطاف dns', 'هجوم dns برعاية دولة', 'اختراق السجل', 'اختراق جهة التسجيل', 'حملة تجسس dns', 'شهادة mitm lets encrypt', 'اختراق netnod', 'ics-forth greece ccTLD', 'توجيه طارئ cisa 19-01', 'أمان dns', 'أمان ملكية النطاق', 'هجوم إلكتروني من دولة قومية']

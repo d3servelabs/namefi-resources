@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Discord 于 2015 年在 DiscordApp.com 上线，原因是 Discord.com 已被他人注册。多年后，公司悄然买下这个裸词域名，并于 2020 年将 discord.com 设为主站——一方面是为了品牌整洁，另一方面也是因为"discordapp.com"与"discord.com"并存的局面为钓鱼者和恶意软件团伙提供了可乘之机。'
 keywords: ['discordapp.com', 'discord.com', 'Discord 域名', '域名升级', 'Jason Citron', 'Discord 历史', 'cdn.discordapp.com', 'Discord 钓鱼', '初创公司命名', '品牌命名', '优质域名', '域名策略', '域名迁移']

@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'Discover the power of the .airbus Top-Level Domain. Learn about its exclusive usage, brand authority in aviation, and how to secure premium domains with Namefi.'
 keywords: ['.airbus domains', '.airbus TLD', 'top-level domain', 'what is .airbus', 'why choose .airbus', 'what is the .airbus domain', 'why choose the .airbus domain', 'brand TLD', 'aviation domains', 'domain investing', 'blockchain', 'tokenized domain', 'corporate identity', 'Namefi Web3 domains', 'secure domain registration']

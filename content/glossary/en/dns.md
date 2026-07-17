@@ -5,6 +5,7 @@ language: en
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The hierarchical naming system that translates human-readable domain names into the IP addresses computers use to route traffic across the internet.
 keywords: ['DNS', 'domain name system', 'name resolution', 'DNS lookup', 'DNS records', 'nameserver', 'recursive resolver', 'DNSSEC', 'internet infrastructure']
 also_known_as: ['Domain Name System']

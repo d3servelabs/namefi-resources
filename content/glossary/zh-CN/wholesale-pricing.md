@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名投资者之间交易的底线价格——为快速变现而接受的低于零售价的折让。
 keywords: ['批发定价', '投资者定价', '域名批发', '清仓价', '域名投资者定价']
 also_known_as: ['投资者定价']

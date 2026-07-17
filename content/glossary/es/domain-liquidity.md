@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La rapidez con que un dominio puede venderse cerca de su valor estimado, alta para los mejores nombres y baja para los de nicho.
 keywords: ['liquidez de dominios', 'liquidez', 'comerciabilidad de dominios', 'velocidad de venta de dominios', 'profundidad del mercado de dominios']
 level: 1

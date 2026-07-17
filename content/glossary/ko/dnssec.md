@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: DNS 레코드에 적용된 암호화 서명으로, 응답이 위조되거나 전송 중에 변조되지 않았음을 리졸버가 검증할 수 있게 합니다.
 keywords: ['DNSSEC', 'DNS 보안', '도메인 보안', 'DS 레코드', '신뢰 체인', '암호화 DNS']
 level: 1

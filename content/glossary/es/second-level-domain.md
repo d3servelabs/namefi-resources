@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La etiqueta inmediatamente a la izquierda del TLD — el "example" en example.com — la parte que usted registra.
 keywords: ['dominio de segundo nivel', 'SLD', 'dominio raíz', 'dominio ápex', 'nombre registrable']
 level: 1

@@ -5,6 +5,8 @@ language: ta
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: மனிதர்களுக்கு படிக்கக்கூடிய டொமைன் பெயர்களை கணினிகள் இணையத்தில் தரவு அனுப்பப் பயன்படுத்தும் IP முகவரிகளாக மாற்றும் படிநிலை பெயரிடு முறைமை.
 keywords: ['DNS', 'டொமைன் பெயர் முறைமை', 'பெயர் தீர்வு', 'DNS தேடல்', 'DNS பதிவுகள்', 'பெயர் சேவையகம்', 'மறுசெயல் தீர்வி', 'DNSSEC', 'இணைய உள்கட்டமைப்பு']
 also_known_as: ['Domain Name System']

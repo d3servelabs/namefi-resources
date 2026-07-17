@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 갱신되지 않은 도메인이 공개 등록 시장에 다시 풀리기 직전의 마지막 상태입니다.
 keywords: ['삭제 대기', '도메인 드롭', '드롭 캐칭', '만료 도메인', '도메인 해제']
 level: 1

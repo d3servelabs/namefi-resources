@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Abusing the UDRP in bad faith to try to seize a domain from its legitimate owner.
 keywords: ['reverse domain hijacking', 'RDNH', 'UDRP abuse', 'domain dispute', 'bad faith complainant']
 also_known_as: ['RDNH']

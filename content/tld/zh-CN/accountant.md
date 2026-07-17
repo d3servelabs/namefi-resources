@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 探索 .accountant 顶级域名：专为会计和金融专业人士打造的数字身份。了解其优势、使用案例，以及为何它是您建立在线信任的最佳选择。
 keywords: ['.accountant domains', '.accountant TLD', 'top-level domain', 'what is .accountant', 'why choose .accountant', 'what is the .accountant domain', 'why choose the .accountant domain', 'domain investing', 'blockchain domains', 'tokenized domain', '会计域名', '财务域名', 'Namefi', '.accountant 域名注册', '专业服务域名']

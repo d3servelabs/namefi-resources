@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'कैसे Slack ने SlackHQ.com पर लॉन्च किया क्योंकि किसी और के पास Slack.com था, बताई गई $60,000 की कीमत पर exact-match डोमेन खरीदा, "HQ" हटाया — और आज भी @SlackHQ सोशल मीडिया पर क्यों जिंदा है।'
 keywords: ['slackhq.com', 'slack.com', 'slack domain name', 'domain upgrade', 'stewart butterfield', 'tiny speck', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'slack history', 'domain acquisition', 'category-defining domain']

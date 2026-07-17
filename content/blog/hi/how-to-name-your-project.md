@@ -5,6 +5,7 @@ language: hi
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: "संस्थापकों के लिए एक व्यावहारिक, शोध-आधारित गाइड जो किसी प्रोजेक्ट, उत्पाद या कंपनी का नाम रखने में मदद करती है: कानूनी रूप से मंजूरी लें, बोलने में आसान बनाएं, मजबूत उम्मीदवार तैयार करें, संस्कृतियों में जाँचें, और प्रतिबद्ध होने से पहले ज़रूरी खोजें चलाएं।"
 ogImage: ../../assets/how-to-name-your-project-og.jpg

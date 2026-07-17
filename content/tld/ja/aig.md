@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ja
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: "人工知能と生成技術のための新興ドメイン、.aig TLDを紹介します。次のイノベーティブなプロジェクトに.aigが最善の選択である理由を解説します。"
 keywords: [".aigドメイン", ".aig TLD", "トップレベルドメイン .aig", ".aigとは", ".aigを選ぶ理由", "人工知能ドメイン", "ブロックチェーンドメイン", "トークン化ドメイン", "生成AIドメイン", "テックスタートアップブランディング", "ドメイン投資", "Web3ドメイン", "AIゲーミング"]

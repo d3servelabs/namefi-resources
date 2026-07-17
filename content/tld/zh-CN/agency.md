@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .agency 顶级域名：专为代理机构、事务所和服务公司打造的专业域名后缀。探索其品牌优势、SEO 价值，以及为何它成为数字营销和 Web3 企业的首选。在 Namefi 立即注册。'
 keywords: ['.agency domains', '.agency TLD', 'top-level domain', 'what is .agency', 'why choose .agency', 'what is the .agency domain', 'why choose the .agency domain', '顶级域名', '域名投资', '数字营销域名', 'Web3 domains', 'tokenized domain', 'blockchain domains', 'creative agency domain', 'service business domain']

@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما يخص نطاق .online، ومميزاته للشركات والأفراد، ولماذا يعتبر بديلاً قوياً لنطاق .com. احجز اسم نطاقك المميز الآن وابدأ رحلتك الرقمية."
 keywords: [".online domains", ".online TLD", "top-level domain", "what is .online", "why choose .online", "what is the .online domain", "why choose the .online domain", "domain investing", "blockchain domains", "tokenized domains", "buy .online domain", "Web3 domains", "new gTLD", "حجز نطاق", "استثمار النطاقات"]

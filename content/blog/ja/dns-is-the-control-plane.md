@@ -5,6 +5,7 @@ language: ja
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

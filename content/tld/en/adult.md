@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Explore the .adult TLD: A specialized, secure domain for the entertainment industry. Learn about its branding benefits, availability, and how to register yours."
 keywords: [".adult domains", ".adult TLD", "top-level domain", "what is .adult", "why choose .adult", "what is the .adult domain", "why choose the .adult domain", "adult industry branding", "domain investing", "digital identity", "regulated content domains", "tokenized domain", "blockchain domains", "secure adult domains", "buy .adult domain"]

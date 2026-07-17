@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Urban Compass 于 2012 年以纽约租房应用的身份在 UrbanCompass.com 上线，2015 年 2 月完成品牌重塑并去掉"Urban"，同时升级为精确匹配域名 Compass.com——这个域名曾以 100 万美元的价格在拍卖市场挂牌——恰在公司开启全国扩张之际。'
 keywords: ['urbancompass.com', 'compass.com', 'compass 域名', '域名升级', 'urban compass 品牌重塑', 'robert reffkin', 'ori allon', '初创公司命名', '品牌命名', '溢价域名', '域名策略', 'compass 房产', '房产初创公司', '精确匹配域名']

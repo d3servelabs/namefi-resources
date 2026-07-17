@@ -5,6 +5,7 @@ language: de
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Eine praktische Schritt-für-Schritt-Anleitung zur Tokenisierung einer Domain, die Sie bereits besitzen – Voraussetzungen, Wallets, Gebühren, Dauer und was Sie auf jedem Bildschirm erwartet. Geschrieben für Eigentümer, nicht für Protokoll-Nerds."
 keywords: ['Wie man eine Domain tokenisiert', 'Wie man eine .com tokenisiert', 'Meine Domain tokenisieren', 'Bestehende Domain tokenisieren', 'Domain tokenisieren Schritt für Schritt', 'Domain-Tokenisierung Tutorial', '.com tokenisieren Anleitung', '.xyz tokenisieren', '.io tokenisieren', 'Namefi tokenisieren', 'NFT Domain Anleitung', 'Domain zu NFT transferieren', 'Domain zu NFT', 'Domain Tokenisierungsprozess', 'Tokenisierte Domain Einrichtung', 'ICANN Domain tokenisieren']

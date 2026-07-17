@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.website는 Radix가 운영하는 개방형 일반 최상위 도메인으로, 도메인이 무엇인지를 이름 자체로 설명합니다. 어떤 용도에 적합한지, 어떻게 인식되는지, 무엇을 고려해야 하는지 알아봅니다.'
 keywords: ['.website 도메인', '.website란', '.website TLD', 'Radix 레지스트리', '일반 TLD', '.website 도메인 등록', '.website vs .site', '신규 gTLD']

@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு தேடலுக்கு பதிலளிக்கும் வகையில் தேடுபொறி வழங்கும் தரவரிசைப்படுத்தப்பட்ட முடிவுகள் பக்கம்; இதில்தான் டொமெயின்கள் தெரிவுநிலைக்காக போட்டியிடுகின்றன.
 keywords: ['SERP', 'தேடல் முடிவுகள்', 'SEO', 'தேடுபொறி', 'இயற்கை தரவரிசை', 'தேடல் தெரிவுநிலை']
 also_known_as: ['தேடுபொறி முடிவுகள் பக்கம்']

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: hi
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एटॉमिक ट्रांसफर क्या है और यह सुरक्षित डोमेन लेनदेन कैसे सुनिश्चित करता है?
 keywords: ["एटॉमिक ट्रांसफर","ब्लॉकचेन लेनदेन","सभी या कुछ भी नहीं","सुरक्षित विनिमय","स्मार्ट कॉन्ट्रैक्ट"]
 relatedArticles:

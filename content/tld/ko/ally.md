@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.ally TLD를 알아보세요: 파트너십, 커뮤니티, 포용적 브랜드를 위한 최적의 도메인입니다. 협업적 디지털 정체성의 미래인 .ally를 선택해야 하는 이유를 확인하세요.'
 keywords: ['.ally 도메인', '.ally TLD', '최상위 도메인', '.ally란 무엇인가', '.ally를 선택하는 이유', '.ally 도메인이란', '.ally 도메인을 선택하는 이유', '도메인 투자', '블록체인 도메인', '토큰화 도메인', 'Web3 정체성', '커뮤니티 도메인', '브랜드 파트너십', '디지털 앨라이', '.ally 도메인 구매']

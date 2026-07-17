@@ -6,6 +6,7 @@ priority: P1
 tags: ['faq']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: domain-tokenization
 format: opinion

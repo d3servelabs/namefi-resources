@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "深入了解 .app 顶级域名：首个强制要求 HTTPS 加密的 TLD。探索其优势、安全性及知名案例，并了解为何它是开发者和应用程序的最佳选择。立即在 Namefi 注册。"
 keywords: [".app domains", ".app TLD", "top-level domain", "what is .app", "why choose .app", "what is the .app domain", "why choose the .app domain", "app domain registration", "应用程序域名", "secure domains", "Google registry", "domain investing", "blockchain domains", "tokenized domain", "Namefi", "developer domains"]

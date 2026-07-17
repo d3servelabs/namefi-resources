@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Sehr kurze Domains – drei bis vier Buchstaben oder rein numerisch – für ihre Kürze geschätzt, besonders in bestimmten Märkten.
 keywords: ['kurze Domain', 'numerische Domain', 'LLLL-Domain', 'NNNN-Domain', 'Drei-Buchstaben-Domain', 'Vier-Buchstaben-Domain']
 level: 1

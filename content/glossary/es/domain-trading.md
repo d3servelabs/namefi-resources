@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es el comercio de dominios y cómo mejora la tokenización la experiencia de comercio?
 keywords: ["comercio de dominios","inversión en dominios","bienes raíces digitales","mercado secundario","liquidez"]
 relatedArticles:

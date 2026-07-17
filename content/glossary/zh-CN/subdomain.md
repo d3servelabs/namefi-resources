@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 添加到域名前面以创建独立地址的前缀，如 blog.example.com 或 app.example.com。
 keywords: ['子域名', '主机', 'blog.example.com', 'DNS', '二级域名']
 level: 1

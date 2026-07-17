@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: UDRP क्या है और यह टोकनाइज्ड डोमेन के स्वामित्व को कैसे प्रभावित करता है?
 keywords: ["UDRP","डोमेन विवाद","ट्रेडमार्क संरक्षण","साइबरस्क्वाटिंग","कानूनी ढाँचा"]
 relatedArticles:

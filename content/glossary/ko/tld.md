@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 최상위 도메인(TLD)은 도메인 이름에서 가장 오른쪽에 위치한 레이블로, .com, .org, .de 등이 해당되며 ICANN 감독 하에 IANA 루트 존을 통해 위임됩니다.
 keywords: ['TLD', '최상위 도메인', 'gTLD', 'ccTLD', '신규 gTLD', 'DNS', 'IANA', 'ICANN', '루트 존', '도메인 레지스트리']
 also_known_as: ['최상위 도메인', 'Top-Level Domain']

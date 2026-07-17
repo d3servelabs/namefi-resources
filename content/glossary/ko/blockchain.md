@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 여러 컴퓨터에 걸쳐 유지되는 공유 추기 전용 원장으로, 토큰화된 소유권의 기반입니다.
 keywords: ['블록체인', '분산 원장', '탈중앙화', '불변성', '합의']
 level: 1

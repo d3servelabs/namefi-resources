@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Tromper des personnes pour qu''elles divulguent des identifiants ou des fonds via de faux sites et messages imitant des marques de confiance.
 keywords: ['hameçonnage', 'phishing', 'ingénierie sociale', 'vol d''identifiants', 'usurpation d''identité', 'abus de domaine']
 level: 1

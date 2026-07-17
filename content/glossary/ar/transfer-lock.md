@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: حالة تمنع نقل الدومين لمُسجِّل آخر حتى يُفتح القفل صراحةً.
 keywords: ['قفل النقل', 'قفل المُسجِّل', 'أمان الدومين', 'حالة EPP', 'نقل الدومين']
 also_known_as: ['قفل المُسجِّل']

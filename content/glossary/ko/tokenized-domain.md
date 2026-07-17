@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 실제 DNS 도메인의 소유권을 블록체인 토큰 형태로 표현하여 지갑에 보관할 수 있도록 한 도메인입니다.
 keywords: ['토큰화 도메인', '도메인 NFT', '온체인 도메인', '도메인 소유권', '웹3 도메인']
 level: 1

@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .xyz domain is an open generic TLD launched in 2014 and famously used by Alphabet at abc.xyz. Learn who it suits, how it is priced, and how to register.'
 keywords: ['.xyz domains', 'what is .xyz', '.xyz TLD', '.xyz domain meaning', 'abc.xyz Alphabet', '.xyz vs .com', 'register .xyz domain', 'is .xyz good for SEO']

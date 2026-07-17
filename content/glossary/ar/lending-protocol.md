@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي بروتوكولات الإقراض وكيف يمكن استخدام النطاقات في إقراض DeFi؟
 keywords: ["بروتوكول الإقراض","DeFi","ضمان","اقتراض","تمويل النطاق","عائد"]
 relatedArticles:

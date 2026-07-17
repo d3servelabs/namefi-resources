@@ -5,6 +5,7 @@ language: de
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "UDRP erklärt für Domain-Inhaber und -Investoren: die drei Elemente, die ein Beschwerdeführer beweisen muss, Ablauf und Zeitplan, mögliche Ergebnisse, UDRP vs. URS vs. Gericht sowie Hinweise zur Erwiderung."
 keywords: ['udrp', 'was ist udrp', 'udrp prozess', 'udrp richtlinie', 'udrp beschwerde', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'domain streit', 'domain name streit', 'cybersquatting', 'reverse domain name hijacking', 'bösgläubige registrierung', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'marken domain streit', 'domain investor rechtlich', 'udrp beschwerde beantworten']

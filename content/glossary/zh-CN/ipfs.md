@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种通过内容哈希寻址文件的点对点协议，用于托管去中心化网络数据。
 keywords: ['IPFS', '内容寻址', '点对点', '去中心化存储', 'CID']
 also_known_as: ['InterPlanetary File System']

@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Erfahren Sie alles über die .abb Top-Level-Domain (TLD): Ihre Bedeutung, Anwendungsbereiche und warum kurze, prägnante Domains für Marken und Web3 von entscheidender Bedeutung sind.'
 keywords:

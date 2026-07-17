@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Decentralized Finance offers lending, borrowing, and trading through smart contracts on public blockchains, without banks or brokers as intermediaries.
 keywords: ['DeFi', 'decentralized finance', 'lending', 'borrowing', 'collateral', 'DEX', 'money markets', 'on-chain finance']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक तेज़, कम लागत वाला उपाय जो स्पष्ट रूप से उल्लंघन करने वाले डोमेन को निलंबित करता है, UDRP का पूरक।
 keywords: ['URS', 'Uniform Rapid Suspension', 'डोमेन निलंबन', 'ट्रेडमार्क उल्लंघन', 'new gTLD']
 also_known_as: ['Uniform Rapid Suspension']

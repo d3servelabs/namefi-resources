@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: किसी डोमेन या संपत्ति को टोकनाइज़ करने का क्या अर्थ है?
 keywords: ["टोकनाइज़","टोकनाइजेशन","एनएफटी","डिजिटल संपत्ति","ऑन-चेन संपत्ति"]
 relatedArticles:

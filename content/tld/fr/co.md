@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Qu'est-ce que le domaine .co ? Le TLD national de la Colombie, commercialisé dans le monde entier comme une alternative courte à « .com » ou « company ». Découvrez qui le gère, qui peut en enregistrer un, la tarification et le référencement."
 keywords: ['domaines .co', '.co TLD', 'domaine co', "qu'est-ce que .co", "qu'est-ce que le domaine .co", '.co vs .com', 'domaine co pour startups', 'domaine Colombie', 'enregistrer un domaine .co', 'domaine company court']

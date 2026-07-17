@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es la propiedad custodial y en qué se diferencia del autocustodia?
 keywords: ["propiedad custodial","custodia","control de terceros","control del registrador","almacenamiento centralizado"]
 relatedArticles:

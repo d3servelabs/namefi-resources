@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo Facebook, Inc. se convirtió en Meta en octubre de 2021, por qué Meta.com ya era un activo relacionado con Zuckerberg que redirigía desde un motor de búsqueda científico, y cómo un acuerdo separado de $60 millones compró el nombre "Meta" a un banco de Sioux Falls, mientras que la aplicación de Facebook conservó Facebook.com.'
 keywords: ['facebook.com', 'meta.com', 'rebranding de meta', 'cambio de nombre facebook meta', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', 'giro hacia el metaverso', 'adquisición de dominio', 'rebranding corporativo', 'dominio premium', 'estrategia de dominio', 'cambio de nombre empresa matriz']

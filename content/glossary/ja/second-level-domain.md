@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: TLDのすぐ左に位置するラベル。example.comの「example」にあたる部分で、実際に登録する名前。
 keywords: ['セカンドレベルドメイン', 'SLD', 'ルートドメイン', 'Apexドメイン', '登録可能ドメイン名']
 level: 1

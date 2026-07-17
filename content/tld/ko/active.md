@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.active TLD로 움직임의 힘을 발휘하세요. 피트니스 브랜드, 라이프스타일 앱, 활기찬 스타트업에 최적입니다. .active 도메인에 대해 자세히 알아보세요.'
 keywords: ['.active 도메인', '.active TLD', '최상위 도메인', '.active란', '.active를 선택하는 이유', '.active 도메인이란', '.active 도메인 선택 이유', '.active 도메인 구매', '피트니스 도메인 이름', '라이프스타일 TLD', '도메인 투자', '블록체인 도메인', '토큰화 도메인', '스포츠 브랜딩', 'Namefi']

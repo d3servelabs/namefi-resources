@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre todo sobre el dominio .allstate. Analizamos qué es este TLD exclusivo, sus ventajas de seguridad, su uso por la marca Allstate y cómo potencia la confianza online.'
 keywords:

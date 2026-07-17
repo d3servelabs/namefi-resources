@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو تداول النطاقات وكيف يحسن الترميز تجربة التداول؟
 keywords: ["تداول النطاقات","استثمار النطاقات","العقارات الرقمية","السوق الثانوية","السيولة"]
 relatedArticles:

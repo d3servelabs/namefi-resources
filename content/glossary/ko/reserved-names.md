@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 레지스트리가 프리미엄, 정책, 또는 보호 목적으로 일반 등록에서 제외해 둔 도메인입니다.
 keywords: ['예약 도메인', '차단 도메인', '레지스트리 예약', '프리미엄 예약', '충돌 방지 목록']
 level: 1

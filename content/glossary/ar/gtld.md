@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: نطاق علوي مش مرتبط بدولة معينة، زي .com و.org و.xyz، وبيشتغل تحت عقد مع ICANN.
 keywords: ['gTLD', 'نطاق عام', '.com', '.org', '.xyz', 'ICANN']
 level: 1

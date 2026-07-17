@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '探索 .airbus 顶级域名（TLD）的独特之处。了解这个品牌域名如何定义数字权威，以及其在域名投资和品牌保护中的重要意义。'
 keywords: ['.airbus', '.airbus domains', '.airbus TLD', 'top-level domain', 'what is .airbus', 'why choose .airbus', 'what is the .airbus domain', 'why choose the .airbus domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'brand TLD', 'Web3 domains', 'Airbus digital identity', 'buy domains']

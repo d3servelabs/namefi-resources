@@ -5,6 +5,8 @@ language: 'es'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: '.ai es la extensión de dominio de código de país de Anguila convertida en la extensión de marca global para la IA. Descubre quién la gestiona, las reglas de registro, el impacto en el SEO y cómo registrar .ai en Namefi.'
 keywords: ['dominio .ai', 'qué es .ai', '.ai TLD', 'ccTLD de Anguila', 'registrar dominio .ai', 'dominio para startup de IA', '.ai vs .io', 'quién posee .ai']

@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre el poder del dominio .able para tu marca. Explora qué es, sus ventajas creativas para "domain hacks" y por qué es una excelente inversión. Registra tu .able hoy en Namefi.'
 keywords:

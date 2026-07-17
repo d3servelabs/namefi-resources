@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: Anti-Money-Laundering — विनियमित सेवाओं द्वारा अवैध धन का पता लगाने के लिए उपयोग की जाने वाली लेनदेन निगरानी और रिपोर्टिंग।
 keywords: ['AML', 'Anti-Money-Laundering', 'transaction monitoring', 'sanctions screening', 'compliance']
 also_known_as: ['Anti-Money-Laundering']

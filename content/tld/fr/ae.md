@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .ae, l'extension incontournable pour les Émirats et le secteur tech. Avantages SEO, confiance et enregistrement Web3 expliqués."
 keywords: [".ae domains", "domaines .ae", "TLD", "top-level domain", "what is .ae", "qu'est-ce que le .ae", "why choose .ae", "pourquoi choisir .ae", "what is the .ae domain", "why choose the .ae domain", "investissement domaine", "domaines web3", "domaine blockchain", "seo dubaï", "uae domains"]

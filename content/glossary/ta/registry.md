@@ -5,6 +5,8 @@ language: ta
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு உச்சநிலை டொமைனின் (TLD) அதிகாரப்பூர்வ தரவுதளத்தையும் பெயர் சேவையகங்களையும் இயக்கும் நிறுவனம்; சில்லறை விற்பனையை பதிவாளர்களிடம் ஒப்படைக்கிறது.
 keywords: ['பதிவக நிறுவனம்', 'registry operator', 'TLD பதிவகம்', 'டொமைன் பதிவகம்', 'ICANN', 'பதிவாளர்', 'EPP', 'gTLD பதிவகம்', 'ccTLD பதிவகம்', 'பகிரப்பட்ட பதிவக அமைப்பு']
 also_known_as: ['Registry Operator']

@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: '¿Qué es el dominio .me? El TLD de código de país de Montenegro, comercializado en todo el mundo como una extensión para marca personal y domain hacks donde el nombre se completa con "me". Conoce quién lo gestiona, quién puede registrarlo, su precio y su SEO.'
 keywords: ['dominios .me', 'TLD .me', 'dominio me', 'qué es .me', 'qué es el dominio .me', '.me vs .com', 'dominio me para marca personal', 'dominio de Montenegro', 'registrar dominio .me', 'domain hack .me', 'about.me']

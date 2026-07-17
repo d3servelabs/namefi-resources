@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El precio mínimo que un vendedor está dispuesto a aceptar, a menudo oculto, por debajo del cual una oferta o puja de subasta se rechaza.
 keywords: ['precio de reserva', 'oferta mínima', 'puja de reserva', 'precio mínimo', 'reserva de subasta de dominios']
 level: 1

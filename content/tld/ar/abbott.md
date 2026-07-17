@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج معرفته عن نطاق المستوى الأعلى .abbott، استخداماته في القطاع الصحي، وكيفية الاستثمار في النطاقات المميزة عبر Namefi."
 keywords: [".abbott domains", ".abbott TLD", "top-level domain", "what is .abbott", "why choose .abbott", "what is the .abbott domain", "why choose the .abbott domain", "domain investing", "blockchain domains", "tokenized domain", "buy .abbott domain", "register .abbott", "Namefi domain registrar", "healthcare domains", "brand TLD strategy"]

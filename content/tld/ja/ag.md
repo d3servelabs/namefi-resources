@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.agドメインの多様な活用法を探る。アンティグア・バーブーダのccTLDとしての起源から、ドイツ語圏の企業（Aktiengesellschaft）やAgTechまで、.agが次のウェブアドレスとして賢い選択である理由を解説します。'
 keywords: ['.agドメイン', '.ag TLD', '.agトップレベルドメイン', '.agとは', '.agドメインを選ぶ理由', 'アンティグア・バーブーダ ドメイン', 'ドイツAG企業', 'Aktiengesellschaft ドメイン', 'AgTech ドメイン', '銀投資 ドメイン', 'ドメイン投資', 'トークン化ドメイン', 'ブロックチェーン ドメイン']

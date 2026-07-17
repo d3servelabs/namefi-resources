@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह पृष्ठ जो खोज इंजन किसी क्वेरी के लिए परिणाम दिखाता है, जहाँ डोमेन दृश्यता के लिए प्रतिस्पर्धा करते हैं।
 keywords: ['serp', 'खोज परिणाम', 'seo', 'खोज इंजन', 'ऑर्गेनिक रैंकिंग', 'खोज दृश्यता']
 also_known_as: ['Search Engine Results Page']

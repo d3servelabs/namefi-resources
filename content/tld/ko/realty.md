@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.realty 도메인은 부동산 전문가를 위한 개방형 일반 TLD입니다. .realtor와 달리 NAR 회원 자격이 필요 없습니다. 등록 자격, 요금, SEO 영향까지 알아보세요.'
 keywords: ['.realty 도메인', '.realty란', '.realty TLD', '.realty vs .realtor', '부동산 도메인 이름', '부동산 웹사이트 도메인', 'Internet Naming Co', '공인중개사를 위한 신규 gTLD']

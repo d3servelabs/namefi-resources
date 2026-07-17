@@ -5,6 +5,7 @@ language: de
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-startup-og.jpg
 description: 'Entdecken Sie die wichtigsten TLDs für Ihr Startup – von .com bis .ai – sowie eine defensive Registrierungsstrategie zum Schutz Ihrer Marke vor Typosquattern.'

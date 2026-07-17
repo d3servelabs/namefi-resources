@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".adult TLD 완벽 가이드: 성인 엔터테인먼트 산업을 위한 전문화된 보안 도메인. 브랜딩 이점, 도메인 가용성, 등록 방법을 알아보세요."
 keywords: [".adult 도메인", ".adult TLD", "최상위 도메인", ".adult란 무엇인가", ".adult를 선택하는 이유", ".adult 도메인이란", ".adult 도메인을 선택하는 이유", "성인 산업 브랜딩", "도메인 투자", "디지털 정체성", "규제 콘텐츠 도메인", "토큰화 도메인", "블록체인 도메인", "안전한 성인 도메인", ".adult 도메인 구매"]

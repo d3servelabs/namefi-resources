@@ -6,6 +6,10 @@ tags:
 - tld
 authors:
 - namefiteam
+editors:
+- victor-zhou
+translators:
+- fenwei-bian
 draft: false
 description: '正在为您的会计师事务所寻找完美域名？深入了解 .accountants 顶级域名的优势、适用人群以及如何在 Namefi 注册。通过这个专业的域名后缀提升品牌信任度，即刻开始您的数字之旅。'
 keywords:

@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'El dominio .io es el estándar de facto para startups, desarrolladores y proyectos Web3. Conoce su origen, quién puede registrarlo, la dinámica de precios y su reputación.'
 keywords: ['dominios .io', 'qué es .io', '.io TLD', 'extensión de dominio .io', 'registrar dominio .io', 'significado dominio io', '.io vs .ai', 'dominios para startups tecnológicas']

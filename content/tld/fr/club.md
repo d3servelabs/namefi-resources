@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Le domaine .club est idéal pour bâtir une communauté ou une DAO. Découvrez ses avantages, son potentiel pour le Web3 et comment l'enregistrer sur Namefi."
 keywords: [".club domains", ".club TLD", ".club top-level domain", "what is .club", "why choose .club", "what is the .club domain", "why choose the .club domain", "acheter domaine .club", "domaine web3", "investissement domaine", "communauté en ligne", "DAO domain", "domaines tokenisés", "enregistrement nom de domaine", "gTLD .club"]

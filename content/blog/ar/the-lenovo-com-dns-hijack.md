@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'في 25 فبراير 2015، اختطف Lizard Squad نطاق Lenovo.com عن طريق اختراق شركة التسجيل Webnic، وحوّل موقع أكبر شركة لصناعة أجهزة الكمبيوتر في العالم لعرض صور ويب كاميرا واعترض بريدها الإلكتروني — وده حصل بعد فضيحة Superfish بأيام قليلة. دراسة معمقة في Domain Mayday تكشف ليه شركة التسجيل هي الخط الدفاعي الحقيقي.'
 keywords: ['اختطاف DNS لـ lenovo.com', 'lizard squad', 'webnic registrar', 'web commerce communications', 'اختطاف DNS', 'superfish', 'أمان مُسجِّل النطاقات', 'اختراق المُسجِّل', 'epp auth code', 'اعتراض البريد الإلكتروني', 'اختطاف google vietnam', 'أمان النطاقات', 'registrar lock']

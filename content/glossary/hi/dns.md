@@ -5,6 +5,8 @@ language: hi
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह पदानुक्रमिक नामकरण प्रणाली जो मानव-पठनीय डोमेन नामों को उन IP पतों में अनुवादित करती है जिनका उपयोग कंप्यूटर इंटरनेट पर ट्रैफिक रूट करने के लिए करते हैं।
 keywords: ['DNS', 'डोमेन नेम सिस्टम', 'नेम रिज़ॉल्यूशन', 'DNS लुकअप', 'DNS रिकॉर्ड', 'नेमसर्वर', 'रिकर्सिव रिज़ॉल्वर', 'DNSSEC', 'इंटरनेट इंफ्रास्ट्रक्चर']
 also_known_as: ['डोमेन नेम सिस्टम']

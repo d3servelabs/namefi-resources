@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: مشتري عايز النطاق عشان يستخدمه فعلاً في مشروع أو شركة، مش لإعادة بيعه.
 keywords: ['المستخدم النهائي', 'مشتري النطاق', 'استخدام النطاق', 'نطاق الأعمال', 'توظيف النطاق']
 level: 1

@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: 'अपनी ऑनलाइन स्ट्रीमिंग और लाइव इवेंट्स के लिए .live डोमेन की शक्ति को पहचानें। जानें कि यह क्रिएटर्स और व्यवसायों के लिए सही विकल्प क्यों है।'
 keywords:

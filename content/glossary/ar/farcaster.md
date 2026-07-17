@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو Farcaster وكيف ترتبط النطاقات بالشبكات الاجتماعية اللامركزية؟
 keywords: ["Farcaster","اجتماعي لامركزي","Web3 اجتماعي","هوية البلوكتشين","بروتوكول اجتماعي"]
 relatedArticles:

@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre el poder del dominio .store para tu ecommerce. Aprende qué es, sus ventajas para tiendas online y cómo registrar el tuyo en Namefi hoy mismo.'
 keywords: ['.store domains', '.store TLD', '.store top-level domain', 'what is .store', 'why choose .store', 'what is the .store domain', 'why choose the .store domain', 'comprar dominio .store', 'dominios para ecommerce', 'tienda online', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'registro de dominios web3', 'nombres de dominio para tiendas']

@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 偽サイトやメッセージで信頼されたブランドを装い、認証情報や資金を騙し取る攻撃手法。
 keywords: ['フィッシング', 'ソーシャルエンジニアリング', '認証情報窃取', '成りすまし', 'ドメイン悪用']
 level: 1

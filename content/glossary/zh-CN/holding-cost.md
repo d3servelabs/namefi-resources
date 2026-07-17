@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 投资者在等待出售期间为保留域名所有权而持续支付的续费等费用。
 keywords: ['持有成本', '持仓成本', '域名续费成本', '域名投资成本', '年度续费']
 also_known_as: ['持仓成本']

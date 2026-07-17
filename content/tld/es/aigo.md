@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre todo sobre el dominio .aigo: una extensión innovadora para IA y Web3. Aprende sus ventajas y cómo registrarlo hoy mismo con Namefi.'
 keywords:

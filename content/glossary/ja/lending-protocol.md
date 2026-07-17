@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ユーザーが資産を預けて利息を得たり、担保を差し入れてローンを借りたりできるスマートコントラクト基盤のプラットフォーム。銀行などの仲介機関を介さない。
 keywords: ['レンディングプロトコル', 'DeFi', '担保', '借入', 'ドメインファイナンス', 'イールド']
 level: 1

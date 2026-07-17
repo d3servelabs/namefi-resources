@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '探索 .aero 顶级域名：航空业专属的数字身份。了解它的优势、申请资格以及为何它是航空专业人士和企业的最佳选择。'
 keywords:

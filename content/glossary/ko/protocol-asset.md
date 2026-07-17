@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 오픈 프로토콜의 스마트 계약에 의해 존재와 규칙이 정의되는 자산으로, 통제 주체 없이 누구에게나 동일하게 작동합니다.
 keywords: ['프로토콜 자산', '블록체인 프로토콜', '인프라 자산', '네트워크 자산', '유틸리티 토큰']
 level: 1

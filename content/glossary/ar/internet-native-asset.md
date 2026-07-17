@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي الأصول الرقمية الأصيلة للإنترنت وكيف تندرج النطاقات ضمن هذه الفئة؟
 keywords: ["أصل رقمي أصيل للإنترنت","أصل رقمي","بلوكتشين","إنترنت أصيل","نطاقات مرمزة"]
 relatedArticles:

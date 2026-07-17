@@ -5,6 +5,8 @@ language: ta
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு நிறுவனத்தின் பொருட்கள் அல்லது சேவைகளை அடையாளப்படுத்தும் சட்டப்பூர்வமாகப் பாதுகாக்கப்பட்ட முத்திரை — பல டொமைன் தகராறுகளின் மையமாக இருக்கிறது.
 keywords: ['வணிக முத்திரை', 'பிராண்ட் பாதுகாப்பு', 'அறிவுசார் சொத்து', 'டொமைன் தகராறு', 'UDRP', 'WIPO']
 level: 1

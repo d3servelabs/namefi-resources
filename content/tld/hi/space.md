@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.space डोमेन के बारे में जानें। फ्रीलांसरों, स्टार्टअप्स और क्रिएटिव प्रोजेक्ट्स के लिए एक बेहतरीन विकल्प। जानें कि Namefi पर अपना .space डोमेन कैसे रजिस्टर करें।'
 keywords: ['.space domains', '.space TLD', 'top-level domain', 'what is .space', 'why choose .space', 'what is the .space domain', 'why choose the .space domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'creative portfolio', 'buy .space domain', 'new gTLD', 'Namefi domains', 'web3 domains']

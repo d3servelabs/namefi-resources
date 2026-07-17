@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.website は Radix が運営するオープンな汎用トップレベルドメインで、そのアドレスが「ウェブサイト」であることをそのまま表します。どんな人に向いているか、信頼性や評判はどうか、検討すべきポイントを解説します。'
 keywords: ['.website ドメイン', '.website とは', '.website TLD', 'Radix レジストリ', '汎用 TLD', '.website ドメイン登録', '.website vs .site', '新 gTLD']

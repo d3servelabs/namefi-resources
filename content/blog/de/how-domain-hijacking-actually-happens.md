@@ -5,6 +5,7 @@ language: de
 tags: ['security', 'domains', 'registrar', 'incident-response']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Ein praktischer Leitfaden zu den fünf Wegen, wie Angreifer Domains in der realen Welt tatsächlich übernehmen – Social Engineering, Kompromittierung des Registrar-Kontos, Übernahme des DNS-Anbieters, NS-Hijacking und Rückforderung abgelaufener Domains – sowie die spezifischen Kontrollmechanismen, die jeden einzelnen blockieren.'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg

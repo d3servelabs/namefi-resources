@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.now 도메인은 일반 등록이 불가능한 Amazon의 폐쇄형 브랜드 TLD(dotBrand)입니다. .now의 실체와 대신 선택할 수 있는 도메인을 안내합니다.'
 keywords: ['.now 도메인', '.now란 무엇인가', '.now TLD', '.now 최상위 도메인', 'Amazon Registry Services', '브랜드 TLD', 'dotBrand', 'Specification 13']

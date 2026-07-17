@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein kurzes Zeitfenster direkt nach dem Ablauf einer Domain, in dem man sie noch zum normalen Preis verlängern kann.
 keywords: ['Grace Period', 'Auto-Renew Grace Period', 'Domain-Ablauf', 'Verlängerung', 'RGP']
 level: 1

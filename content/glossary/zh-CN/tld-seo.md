@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名后缀对搜索排名的实际影响分析——内容质量和外链权重远比后缀本身重要。
 keywords: ['TLD SEO', '域名后缀排名', '新通用顶级域名 SEO', 'ccTLD', '搜索排名因素', '域名 SEO']
 level: 1

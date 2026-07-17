@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Airbnb 于 2008 年以"AirBed & Breakfast"的名义在 AirBedAndBreakfast.com 上线，2009 年缩短为 Airbnb.com，摆脱了字面意义上的"气垫床"标签，成就了可规模化的全球品牌。'
 keywords: ['airbedandbreakfast.com', 'airbnb.com', 'airbnb域名', 'airbnb品牌重塑', 'airbed and breakfast', '域名升级', '初创公司命名', '品牌命名', '高端域名', '域名策略', 'airbnb历史', 'y combinator airbnb', '公司品牌重塑']

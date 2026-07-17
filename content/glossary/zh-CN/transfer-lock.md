@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 阻止域名转移至其他注册商的状态标志，需明确解锁后方可执行转移操作。
 keywords: ['转移锁定', '注册商锁定', '域名安全', 'EPP 状态', '域名转移']
 also_known_as: ['注册商锁定']

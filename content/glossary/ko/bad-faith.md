@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 상표를 악용할 목적으로 도메인을 등록하거나 사용하는 행위로, UDRP 분쟁에서 승소하기 위해 입증해야 하는 필수 요건입니다.
 keywords: ['부정한 의도', 'UDRP', '도메인 분쟁', '사이버스쿼팅', '상표 남용']
 level: 1

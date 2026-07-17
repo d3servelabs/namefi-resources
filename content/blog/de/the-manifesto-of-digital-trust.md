@@ -7,6 +7,7 @@ language: de
 tags: ['vision', 'digital-trust']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: Ein Visionsdokument von D3Serve – warum die Digitalisierung von Vertrauen, ähnlich wie die Digitalisierung von Informationen zuvor, einen Produktivitätssprung, verlustfreie Präzision, geringere Kosten und Automatisierung verspricht.
 keywords: ['digitales Vertrauen', 'D3Serve', 'Blockchain', 'Web3', 'Smart Contracts', 'Kryptografie', 'Konsens', 'Manifest', 'Vision', 'Vertrauensdigitalisierung', 'Gruppenvertrauen', 'Automatisierung']

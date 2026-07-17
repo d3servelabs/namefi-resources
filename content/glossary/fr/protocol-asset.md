@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Que sont les actifs de protocole et comment les domaines tokenisés fonctionnent-ils comme des actifs de protocole ?
 keywords: ["actif de protocole","protocole blockchain","actif d'infrastructure","actif réseau","jeton utilitaire"]
 relatedArticles:

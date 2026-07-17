@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die Textdatei, die alle DNS-Einträge einer Domain enthält, einschließlich Glue Records für ihre Nameserver.
 keywords: ['Zone-File', 'Glue Record', 'DNS-Zone', 'autoritative Einträge', 'Nameserver']
 level: 1

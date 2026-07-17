@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .org : le symbole de confiance pour les organisations, les ONG et les projets open-source. Enregistrez votre .org dès aujourd'hui sur Namefi."
 keywords: [".org", "domaines", "TLD", "top-level domain", "domaine de premier niveau", "qu'est-ce que le .org", "pourquoi choisir .org", "définition domaine .org", "achat domaine .org", "investissement noms de domaine", "domaines blockchain", "domaines tokenisés", "web3", "domaine association", "organisation à but non lucratif"]

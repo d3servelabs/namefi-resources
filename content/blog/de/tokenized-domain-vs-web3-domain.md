@@ -5,6 +5,7 @@ language: de
 tags: ['comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Ein klarer, praxisorientierter Vergleich zwischen tokenisierten ICANN-Domains (wie einer tokenisierten .com) und nativen Web3-Namen (wie name.eth, name.crypto). Wann funktioniert was? Wo gibt es Überschneidungen? Warum besitzen viele Menschen beides?"
 keywords: ['tokenisierte domain vs web3 domain', 'tokenisierte domain vs ENS', 'ICANN domain vs ENS', '.com vs .eth', 'tokenisierte .com vs .crypto', 'tokenisierte domain vs unstoppable', 'web3 domain vergleich', 'ENS vs tokenisierte domain', 'NFT domain vs ENS', 'web3 naming', 'on-chain naming unterschied', 'browser unterstützung web3 domain', 'web3 domain auflösung']

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: .airforce 도메인의 전략적 장점을 살펴보세요. 모집, 재향군인, 항공 기술에 최적화된 도메인입니다. 오늘 Namefi에서 .airforce TLD를 등록하세요.
 keywords: [.airforce 도메인, .airforce TLD, .airforce 최상위 도메인, .airforce란, .airforce를 선택하는 이유, .airforce 도메인이란, .airforce 도메인을 선택하는 이유, 군사 도메인 이름, 항공 산업 도메인, 토큰화된 군사 도메인, 블록체인 도메인 자산, .airforce 도메인 구매, 방산 기술 도메인, 도메인 투자 airforce, Namefi 도메인]

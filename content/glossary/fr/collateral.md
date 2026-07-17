@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que le collatéral et comment les domaines peuvent-ils servir de collatéral en DeFi ?
 keywords: ["collatéral","sécurité","prêt","emprunt","collatéral de domaine","DeFi"]
 relatedArticles:

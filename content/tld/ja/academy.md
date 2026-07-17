@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.academyドメインは、学校・オンラインコース・研修機関・コーチングブランド向けのオープンgTLDです。利用者像、登録ルール、価格の仕組み、登録方法を解説します。'
 keywords: ['.academyドメイン', '.academyとは', '.academy TLD', 'academyドメイン登録', '教育系ドメイン拡張子', 'オンラインコース用ドメイン', '研修サイト用ドメイン', '新gTLD']

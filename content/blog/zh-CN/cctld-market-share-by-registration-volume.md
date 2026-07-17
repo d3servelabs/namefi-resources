@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['cctld', 'domains', 'market-analysis', 'registry']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '带您一探究竟：全球哪些国家代码顶级域名拥有最大的注册份额，为何领先者的真实情况与常人预期大相径庭，以及这些注册量数据揭示了互联网在世界各地的真实使用情况。'
 ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg

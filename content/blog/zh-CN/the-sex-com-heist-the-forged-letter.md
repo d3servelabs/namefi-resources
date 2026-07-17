@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '1995年，一个名叫斯蒂芬·科恩的骗子仅凭一封伪造信件发给 Network Solutions，便从合法所有者加里·克雷门手中盗走了 sex.com。追回域名的漫长斗争最终以6500万美元的判决、一名逃亡墨西哥的逃犯，以及一项确立域名为财产的里程碑式裁决画上句号。'
 keywords: ['sex.com', '域名盗窃', '斯蒂芬·科恩', '加里·克雷门', 'Kremen v. Cohen', 'Network Solutions', '伪造信件', '域名劫持', 'Sharon Dimmick 信件', '域名安全', '域名即财产', '6500万美元判决', '域名转让欺诈', 'Domain Mayday']

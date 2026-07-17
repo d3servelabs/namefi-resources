@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: MetaMaskやハードウェアウォレットのように、オンチェーン資産を管理する秘密鍵を保管し、トランザクションに署名するソフトウェアまたはデバイス。
 keywords: ['ウォレット', '暗号資産ウォレット', '秘密鍵', 'デジタル資産管理', 'ドメイン管理']
 level: 1

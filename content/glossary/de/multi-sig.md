@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist Multi-Sig und wie verbessert es die Domain-Sicherheit?
 keywords: ["Multi-Sig","Multisig","mehrere Signaturen","verbesserte Sicherheit","geteilte Verwahrung"]
 relatedArticles:

@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 買い手と売り手が資産を取引するオンラインの場。NFTやトークン化ドメインの例としてはOpenSeaやBlurが挙げられる。
 keywords: ['マーケットプレイス', 'OpenSea', 'Blur', 'NFT取引', 'ドメインマーケットプレイス', '二次流通市場']
 level: 1

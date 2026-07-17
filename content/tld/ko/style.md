@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.style 도메인은 패션, 디자인, 라이프스타일 브랜드를 위한 개방형 일반 TLD입니다. 운영 주체, 등록 자격, 가격 구조, 그리고 구매 방법까지 알아보세요.'
 keywords: ['.style 도메인', '.style이란', '.style TLD', '.style 도메인', '패션 도메인 확장자', '디자인 도메인 이름', '라이프스타일 TLD', '.style 도메인 등록', 'Identity Digital', '신규 gTLD']

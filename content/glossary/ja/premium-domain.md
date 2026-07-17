@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 覚えやすさ・簡潔さ・キーワードの強さを理由に、標準登録料を大幅に上回る価格が設定された高価値ドメイン。
 keywords: ['プレミアムドメイン', 'プレミアムネーム', 'レジストリプレミアム', 'アフターマーケット', 'ドメイン価値']
 level: 1

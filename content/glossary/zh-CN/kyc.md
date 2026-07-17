@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: Know Your Customer——受监管金融或加密服务在用户注册前执行的身份核验流程。
 keywords: ['KYC', 'Know Your Customer', '身份验证', '用户注册', '合规']
 also_known_as: ['Know Your Customer']

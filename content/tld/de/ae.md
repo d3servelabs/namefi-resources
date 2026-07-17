@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - kai-kunstmann
 draft: false
 description: 'Erfahren Sie alles über die .ae Domain. Perfekt für Unternehmen in den VAE, SEO und globale Marken. Sichern Sie sich Ihre digitale Identität jetzt mit Namefi.'
 keywords:

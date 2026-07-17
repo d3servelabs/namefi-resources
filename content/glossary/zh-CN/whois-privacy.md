@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 在公开的 WHOIS 或 RDAP 记录中屏蔽注册人真实联系信息的服务。
 keywords: ['WHOIS 隐私', '隐私保护', 'RDAP', '注册人隐私', '联系信息遮蔽']
 also_known_as: ['隐私保护']

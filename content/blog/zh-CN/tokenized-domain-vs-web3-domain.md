@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "对代币化的 ICANN 域名（如代币化的 .com）和 Web3 原生名称（如 name.eth、name.crypto）进行清晰实用的比较。它们各自适用于什么场景？在哪里有交集？为什么许多人两者都持有？"
 keywords: ['代币化域名 vs web3 域名', '代币化域名 vs ENS', 'ICANN 域名 vs ENS', '.com vs .eth', '代币化 .com vs .crypto', '代币化域名 vs unstoppable', 'web3 域名比较', 'ENS vs 代币化域名', 'NFT 域名 vs ENS', 'web3 命名', '链上命名区别', '浏览器支持 web3 域名', 'web3 域名解析']

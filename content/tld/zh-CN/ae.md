@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解阿拉伯联合酋长国的 .ae 顶级域名。探索其对于拓展中东市场、提升 SEO 排名以及在域名投资与区块链领域的独特价值。'
 keywords: ['.ae domains', '.ae TLD', 'top-level domain', 'what is .ae', 'why choose .ae', 'what is the .ae domain', 'why choose the .ae domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'UAE business', 'Dubai startups', 'Middle East SEO', 'web3 domains', 'Namefi']

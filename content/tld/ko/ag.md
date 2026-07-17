@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.ag 도메인의 다양한 활용 가능성을 알아보세요. 앤티가 바부다의 국가 도메인부터 독일 주식회사(Aktiengesellschaft), 농업기술(AgTech)까지 — .ag가 차기 웹 주소로 탁월한 선택인 이유를 설명합니다.'
 keywords: ['.ag 도메인', '.ag TLD', '.ag 최상위 도메인', '.ag란 무엇인가', '.ag를 선택하는 이유', '.ag 도메인이란', '.ag 도메인을 선택하는 이유', '앤티가 바부다 도메인', '독일 AG 기업', 'Aktiengesellschaft 도메인', 'AgTech 도메인', '은 투자 도메인', '도메인 투자', '토큰화 도메인', '블록체인 도메인']

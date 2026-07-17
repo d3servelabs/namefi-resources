@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-fashion-brand-og.jpg
 description: '一份关于时尚品牌应注册的十大顶级域名后缀的实用指南，涵盖品牌保护、零售意图及防御性域名注册策略。'

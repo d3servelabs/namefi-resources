@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Una ventana posterior a la expiración en la que se puede recuperar un dominio caducado, normalmente con una elevada tarifa de redención.
 keywords: ['período de redención', 'RGP', 'período de gracia de redención', 'recuperación de dominio expirado', 'tarifa de redención']
 level: 1

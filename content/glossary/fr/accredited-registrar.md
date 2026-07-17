@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un bureau d'enregistrement approuvé par ICANN via un accord d'accréditation pour vendre des domaines gTLD.
 keywords: ['bureau accrédité', 'RAA', 'accréditation ICANN', 'gTLD', 'accord de registraire']
 level: 1

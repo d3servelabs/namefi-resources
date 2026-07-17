@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es el reparto de ingresos y cómo se aplica a la monetización de dominios?
 keywords: ["reparto de ingresos","ingresos pasivos","monetización de dominios","distribución de beneficios","contratos inteligentes"]
 relatedArticles:

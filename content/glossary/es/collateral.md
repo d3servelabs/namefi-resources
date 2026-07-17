@@ -5,6 +5,8 @@ language: es
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es una garantía y cómo pueden los dominios servir como garantía en DeFi?
 keywords: ["garantía","seguridad","préstamo","empréstito","garantía de dominio","DeFi"]
 relatedArticles:

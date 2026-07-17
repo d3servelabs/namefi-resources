@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Logiciel propulsé par un modèle d'IA qui agit pour le compte d'un utilisateur — effectuant des achats, appelant des API et de plus en plus en interagissant avec d'autres agents.
 keywords: ['agent IA', 'agent autonome', 'identité agent', 'commerce agent', 'agent on-chain', 'IA agentique']
 level: 1

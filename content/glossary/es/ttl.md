@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: El tiempo, en segundos, durante el cual un registro DNS puede ser almacenado en caché por los resolvedores antes de consultarse de nuevo.
 keywords: ['TTL', 'tiempo de vida', 'caché DNS', 'propagación DNS', 'caché de registros']
 level: 1

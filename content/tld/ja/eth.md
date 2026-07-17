@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.ethはICANNドメインではなく、オンチェーンでNFTとして保有されるEthereum Name Service（ENS）ネームです。仕組み、登録方法、実際の制限について解説します。'
 keywords: ['.ethドメイン', '.ethとは', 'ENSドメイン', 'Ethereum Name Service', '.ethネームNFT', '.eth登録', '.ethは本物のドメインか', '.eth対DNSドメイン']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: En qué medida la extensión de un dominio afecta o no al posicionamiento en buscadores — el contenido y los enlaces importan más.
 keywords: ['seo del tld', 'posicionamiento por extensión de dominio', 'seo de nuevos gtld', 'ccTLD', 'factores de posicionamiento', 'seo de dominio']
 level: 1

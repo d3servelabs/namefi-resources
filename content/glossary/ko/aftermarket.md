@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 이미 등록된 도메인이 소유자 간에 매매되는 2차 거래 시장입니다.
 keywords: ['애프터마켓', '2차 시장', '도메인 재판매', '도메인 투자', '도메인 거래']
 also_known_as: ['2차 시장']

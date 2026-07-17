@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 등록된 도메인 이름에 대한 권리를 보유하는 개인 또는 조직 — 공식 기록상의 소유자.
 keywords: ['등록자', '도메인 소유자', '등록 명의인', 'RNH', '도메인 소유권']
 level: 1

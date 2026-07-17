@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.shoppingドメインはBinky Moon（Identity Digital）が運営するオープンなEコマース向けgTLDです。対象ユーザー、.shopや.storeとの違い、登録方法をわかりやすく解説します。'
 keywords: ['.shoppingドメイン', '.shoppingとは', '.shopping TLD', '.shoppingドメイン', 'Eコマース向けドメイン', '小売業向けドメイン名', 'Binky Moon', 'Identity Digital', 'shoppingドメイン拡張子', '.shoppingドメイン取得']

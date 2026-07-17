@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld', '品牌域名', '域名知识']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入解析 .allstate 顶级域名：了解其作为品牌顶级域名的独特价值、安全性及用途。探索如何在 Namefi 注册和管理类似的优质 Web3 域名。'
 keywords: ['.allstate', '.allstate domains', '.allstate TLD', 'top-level domain', 'what is .allstate', 'why choose .allstate', 'what is the .allstate domain', 'why choose the .allstate domain', '品牌顶级域名', '域名投资', '区块链域名', 'Namefi', 'Web3 domains', '保险行业域名', '通证化域名']

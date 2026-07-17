@@ -9,6 +9,10 @@ tags:
   - web3
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre todo sobre el dominio .akdn: su origen, ventajas de seguridad y por qué es vital para la identidad digital. Registra tu dominio con tecnología Web3 en Namefi.'
 keywords:

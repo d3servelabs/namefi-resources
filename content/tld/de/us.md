@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Was ist die .us-Domain? Die offizielle länderspezifische TLD der Vereinigten Staaten, beschränkt auf Registranten mit einer echten US-Präsenz. Erfahren Sie, wer sie betreibt, was das Nexus-Erfordernis ist, wie die Preisgestaltung funktioniert und wie es um SEO und E-Mail-Zustellbarkeit steht.'
 keywords: ['.us-Domains', '.us TLD', 'us Domain', 'was ist .us', 'was ist die .us-Domain', '.us vs .com', 'US-Nexus-Erfordernis', 'Vereinigte-Staaten-Domain', '.us-Domain registrieren', 'amerikanische Domain-Endung', 'del.icio.us']

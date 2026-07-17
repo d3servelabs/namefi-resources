@@ -5,6 +5,8 @@ language: 'zh-CN'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '.top 域名代表着“顶尖”与“卓越”，是全球最受欢迎的新通用顶级域名之一。本文将为您详细解析 .top 的含义、优势以及适用场景。立即在 Namefi 注册您的 .top 域名，开启顶尖品牌之旅。'
 keywords: ['.top domain', '.top TLD', 'top-level domain', 'what is .top', 'why choose .top', 'what is the .top domain', 'why choose the .top domain', 'buy .top domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'new gTLD', 'best domain for startups', 'Namefi .top registration']

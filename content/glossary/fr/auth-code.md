@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un court secret propre à chaque domaine qu'un registraire émet pour autoriser le transfert d'un domaine vers un autre registraire, aussi appelé code EPP ou code de transfert.
 keywords: ['code autorisation', 'code EPP', 'code de transfert', 'transfert de domaine', 'code autorisation', 'code AuthInfo']
 level: 1

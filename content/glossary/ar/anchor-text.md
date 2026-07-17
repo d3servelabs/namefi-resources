@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الكلمات المرئية القابلة للنقر في الرابط التشعبي، وهي إشارة بتستخدمها محركات البحث لفهم الصفحة المستهدفة.
 keywords: ['نص الرابط', 'نص الارتباط', 'الروابط الواردة', 'seo', 'رابط تشعبي', 'إشارات الترتيب']
 level: 1

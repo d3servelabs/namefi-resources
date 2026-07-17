@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு DNS பதிவை மறு-தேடலுக்கு முன் தீர்வகங்கள் எத்தனை நொடிகள் தங்கள் தற்காலிக நினைவகத்தில் வைத்திருக்கலாம் என்பதை தீர்மானிக்கும் மதிப்பு.
 keywords: ['TTL', 'நேரம் முடியும் வரை இயங்கும் கால அளவு', 'DNS தற்காலிக நினைவகம்', 'DNS பரவல்', 'பதிவு தற்காலிக சேமிப்பு']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 购买域名用于实际建站或品牌运营的买家，而非转手倒卖。
 keywords: ['终端用户', '域名买家', '域名用途', '品牌域名', '域名部署']
 level: 1

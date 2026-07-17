@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு சொத்திலிருந்து கிடைக்கும் வருமானத்தை முன்னரே நிர்ணயிக்கப்பட்ட சதவீதங்களின்படி பல தரப்பினருக்கிடையே தானாகவே பிரிக்கும் ஒரு ஏற்பாடு, இது smart contracts மூலம் on-chain ஆக செயல்படுத்தப்படுகிறது.
 keywords: ['வருவாய் பங்கீடு', 'செயலற்ற வருமானம்', 'டொமைன் பணமாக்கல்', 'இலாப விநியோகம்', 'smart contracts']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名到期后的短暂窗口期，在此期间仍可按正常价格续期。
 keywords: ['宽限期', '自动续期宽限期', '域名到期', '续期', 'RGP']
 level: 1

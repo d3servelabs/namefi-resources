@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Rediriger le trafic d'un domaine en altérant la résolution DNS plutôt que son enregistrement.
 keywords: ['détournement DNS', 'empoisonnement de cache', 'usurpation DNS', 'DNSSEC', 'redirection de trafic']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: كيف تؤثر — أو لا تؤثر — لاحقة الدومين على ترتيبه في محركات البحث؛ المحتوى والروابط أهم بكتير.
 keywords: ['SEO اللاحقة', 'ترتيب امتداد الدومين', 'SEO gTLD الجديد', 'ccTLD', 'عوامل ترتيب البحث', 'SEO الدومين']
 level: 1

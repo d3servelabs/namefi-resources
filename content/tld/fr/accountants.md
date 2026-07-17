@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .accountants, l'extension idéale pour les experts-comptables et la finance. Boostez votre crédibilité et votre SEO avec Namefi."
 keywords: [".accountants domains", ".accountants TLD", ".accountants top-level domain", "what is .accountants", "why choose .accountants", "what is the .accountants domain", "why choose the .accountants domain", "domaine expert comptable", "achat domaine finance", "investissement domaine", "tokenized domain", "blockchain domains", "nom de domaine comptabilité", "identité numérique finance", "Namefi registrar"]

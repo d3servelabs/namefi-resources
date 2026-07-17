@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名上的标准化标志，显示其当前状态——锁定、暂停、待转移等。
 keywords: ['EPP状态码', 'clientHold', 'serverTransferProhibited', '域名状态', '待删除']
 level: 1

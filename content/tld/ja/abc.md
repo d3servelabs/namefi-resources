@@ -9,6 +9,10 @@ tags:
   - web3
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - chie-kudo
 draft: false
 description: ".abc TLDの可能性を探る。この短く記憶しやすいドメイン拡張子が、教育、スタートアップ、Web3投資家にとって最適な理由を解説します。今すぐ未来を確保しよう。"
 keywords:

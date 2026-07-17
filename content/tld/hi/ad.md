@@ -7,6 +7,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.ad डोमेन अंडोरा और विज्ञापन जगत दोनों के लिए एक बेहतरीन विकल्प है। जानें कि .ad TLD क्या है, इसके लाभ, और Namefi के साथ इसे कैसे रजिस्टर करें।'
 keywords:

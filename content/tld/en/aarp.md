@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld', 'domain-names', 'branding', 'internet-security']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Discover the purpose of the .aarp Top-Level Domain. Learn how this restricted TLD represents security and community, and how to secure your own digital identity."
 relatedArticles:

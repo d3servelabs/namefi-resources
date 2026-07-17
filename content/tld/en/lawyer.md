@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .lawyer domain is an open generic gTLD for legal professionals and firms. Learn who can register it, how it compares to .law and .attorney, and whether it fits.'
 keywords: ['lawyer domain', 'what is .lawyer', '.lawyer domains', '.lawyer vs .law', 'legal domain extensions', 'domains for law firms', 'lawyer TLD', 'register .lawyer']

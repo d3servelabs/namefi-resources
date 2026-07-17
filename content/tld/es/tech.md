@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre qué es el TLD .tech, sus ventajas para empresas tecnológicas y startups, y por qué es la elección ideal para tu identidad digital. Regístralo en Namefi.'
 keywords: ['.tech domains', 'dominio .tech', 'TLD .tech', 'top-level domain', 'what is .tech', 'why choose .tech', 'qué es el dominio .tech', 'por qué elegir el dominio .tech', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'registro de dominios', 'nombres para startups', 'Web3 domains']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு பதிவக நிறுவனம் திறந்த பதிவிலிருந்து தடுத்து வைக்கும் டொமைன்கள் — பிரீமியம், கொள்கை அல்லது பாதுகாக்கப்பட்ட பெயர்கள்.
 keywords: ['ஒதுக்கப்பட்ட பெயர்கள்', 'தடுக்கப்பட்ட பெயர்கள்', 'registry ஒதுக்கல்', 'பிரீமியம் ஒதுக்கல்', 'மோதல் தவிர்ப்பு பட்டியல்']
 level: 1

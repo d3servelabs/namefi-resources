@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 2-of-3署名のように、複数の秘密鍵でトランザクションを承認するウォレットの仕組み。1つの鍵が漏洩しても単独で資産を移動できない。
 keywords: ['マルチシグ', 'multisig', '複数署名', 'セキュリティ強化', '共同管理']
 level: 1

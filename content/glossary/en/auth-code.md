@@ -4,6 +4,7 @@ date: '2026-05-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A short per-domain secret a registrar issues to authorize moving a domain to another registrar, also called an EPP code or transfer code.
 keywords: ['auth code', 'EPP code', 'transfer code', 'domain transfer', 'authorization code', 'AuthInfo code']
 level: 1

@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 탈중앙화 금융(DeFi)은 은행이나 중개인 없이 공개 블록체인의 스마트 컨트랙트를 통해 대출, 차입, 거래 등의 금융 서비스를 제공합니다.
 keywords: ['DeFi', '탈중앙화 금융', '대출', '차입', '담보', 'DEX', '머니마켓', '온체인 금융']
 level: 1

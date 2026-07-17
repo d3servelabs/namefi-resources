@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: DNS रेज़ोल्यूशन के साथ छेड़छाड़ करके डोमेन के ट्रैफिक को रीडायरेक्ट करना, न कि उसके पंजीकरण के माध्यम से।
 keywords: ['DNS hijacking', 'cache poisoning', 'DNS spoofing', 'DNSSEC', 'traffic redirection']
 level: 1

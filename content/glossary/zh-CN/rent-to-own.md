@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是先租后买以及它如何应用于域名获取？
 keywords: ["先租后买","渐进式所有权","分期付款计划","域名收购","智能合约"]
 relatedArticles:

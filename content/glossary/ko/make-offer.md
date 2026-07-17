@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 매수인이 입찰가를 제출하면 매도인이 수락·역제안·거절 중 하나를 선택할 수 있는 도메인 매물 형식입니다.
 keywords: ['가격 제안', '최고 제안', '도메인 협상', '제안', '역제안']
 level: 1

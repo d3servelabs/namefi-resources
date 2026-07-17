@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: إنشاء توكن جديد على البلوكشين — وفي حالة الدومين، إصدار الـ NFT اللي بيمثّل تملّكه.
 keywords: ['سكّ', 'إنشاء NFT', 'إصدار توكن', 'على السلسلة', 'مينتنج']
 also_known_as: ['سَكّ']

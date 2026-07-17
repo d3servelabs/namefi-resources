@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Am 24. April 2018 kaperten Angreifer das Internet-Routing für Amazon Route 53, vergifteten DNS-Antworten für myetherwallet.com und stellten einen Phishing-Klon hinter einem selbstsignierten Zertifikat bereit — und entzogen dabei rund 150.000 $ in Ethereum. Ein Domain-Mayday-Tiefgang darüber, warum DNS auf einer Routing-Schicht aufbaut, die standardmäßig vertraut.'
 keywords: ['myetherwallet', 'bgp hijack', 'dns-hijacking', 'amazon route 53', 'route 53 hijack', 'dns-sicherheit', 'bgp-routing-sicherheit', 'ethereum phishing', 'selbstsigniertes zertifikat', 'enet as10297', 'rpki roa', 'krypto-wallet phishing', 'domain-sicherheit']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: رسوم التجديد الدورية اللي المستثمر بيدفعها عشان يحتفظ بالنطاق لحد ما يتباع.
 keywords: ['تكلفة الاحتفاظ', 'Carrying Cost', 'تكلفة تجديد النطاق', 'تكلفة الاستثمار في النطاق', 'رسوم التجديد السنوي']
 also_known_as: ['تكلفة الحيازة']

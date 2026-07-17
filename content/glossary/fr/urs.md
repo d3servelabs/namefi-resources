@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un recours rapide et peu coûteux qui suspend un domaine clairement contrefaisant, en complément de l''UDRP.
 keywords: ['URS', 'Uniform Rapid Suspension', 'suspension de domaine', 'contrefaçon de marque', 'nouveau gTLD']
 also_known_as: ['Uniform Rapid Suspension']

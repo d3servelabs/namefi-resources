@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Die Instanz, die die DNS-Root-Zone pflegt und IP-Adressblöcke sowie Protokollnummern vergibt.
 keywords: ['IANA', 'Root-Zone', 'IP-Vergabe', 'Protokollnummern', 'ICANN']
 level: 1

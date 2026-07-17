@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.xyz 도메인은 2014년에 출시된 개방형 범용 TLD로, Alphabet이 abc.xyz에서 사용하며 유명해졌습니다. 누구에게 적합한지, 가격은 어떻게 책정되는지, 등록 방법은 무엇인지 알아보세요.'
 keywords: ['.xyz 도메인', '.xyz란 무엇인가', '.xyz TLD', '.xyz 도메인 의미', 'abc.xyz Alphabet', '.xyz vs .com', '.xyz 도메인 등록', '.xyz SEO에 좋은가']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: DNSレコードに付与される秒単位の値で、リゾルバーが再問い合わせを行う前にその回答をキャッシュしてよい時間を示す。
 keywords: ['TTL', 'time to live', 'DNSキャッシュ', 'DNS伝播', 'レコードキャッシュ']
 level: 1

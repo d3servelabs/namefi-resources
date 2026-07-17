@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: முன்னணி ஸ்மார்ட்-ஒப்பந்த பிளாக்செயின், மேலும் டோக்கனாக்கப்பட்ட டொமைன்களில் பெரும்பாலானவை வெளியிடப்படும் வலைப்பின்னல்.
 keywords: ['Ethereum', 'ETH', 'ஸ்மார்ட் ஒப்பந்தம்', 'EVM', 'பரவலாக்கப்பட்ட பயன்பாடுகள்']
 also_known_as: ['ETH']

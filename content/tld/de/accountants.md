@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Entdecken Sie die .accountants Domain: Die ideale digitale Identität für Steuerberater, Buchhalter und Finanzexperten. Sichern Sie sich jetzt Ihren Namen.'
 keywords: ['.accountants domains', '.accountants TLD', '.accountants top-level domain', 'was ist .accountants', 'warum .accountants wählen', 'was ist die .accountants domain', 'warum die .accountants domain wählen', 'Domain Investition', 'Blockchain Domains', 'tokenisierte Domains', 'Steuerberater Domain', 'Buchhaltung Website', 'Finanzdienstleister Webadresse', 'Web3 Domains', 'Firmennamen Registrierung']

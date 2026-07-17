@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 네트워크상의 장치를 식별하는 숫자 주소로, DNS가 도메인 이름을 이 주소로 연결합니다.
 keywords: ['IP 주소', 'IPv4', 'IPv6', 'A 레코드', 'AAAA 레코드', '네트워킹']
 level: 1

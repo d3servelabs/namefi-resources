@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 오타 트래픽을 유입하기 위해 인기 도메인의 철자 오류 버전을 등록하는 행위로, 광고 수익 창출이나 피싱에 악용됩니다.
 keywords: ['타이포스쿼팅', '오타 도메인', '피싱', '브랜드 남용', '사이버스쿼팅']
 level: 1

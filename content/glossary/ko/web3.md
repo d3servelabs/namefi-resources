@@ -5,6 +5,8 @@ language: ko
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 사용자가 플랫폼 계정이 아닌 자신의 키를 통해 데이터, 자산, 신원을 소유하는 공개 블록체인 기반 인터넷 비전입니다.
 keywords: ['Web3', '탈중앙화 웹', '블록체인 인터넷', '사용자 소유권', '피어투피어', '탈중앙화', '암호화폐', '스마트 컨트랙트', 'DeFi', 'NFT']
 level: 2

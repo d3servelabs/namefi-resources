@@ -5,6 +5,7 @@ language: 'ar'
 tags: ['ai-agents', 'domains', 'analysis']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 format: analysis
 ogImage: ../../assets/state-of-agentic-og.jpg

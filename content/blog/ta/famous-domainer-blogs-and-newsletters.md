@@ -5,6 +5,7 @@ language: ta
 tags: ['domains', 'domain-investing', 'blogs', 'newsletters', 'community']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 cluster: domain-investing
 series: domain-investor-field-guide

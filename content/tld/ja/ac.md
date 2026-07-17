@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.acドメインに秘められた価値を発見しましょう。学術的な信頼性からクリエイティブなブランディングまで、.ac TLDが次のプロジェクトにとって賢明な選択である理由を解説します。今すぐNamefiで登録を。'
 keywords: ['.acドメイン', '.ac TLD', 'トップレベルドメイン .ac', '.acとは', '.acを選ぶ理由', '.acドメインとは', 'アセンション島ドメイン', '学術ドメイン', 'ドメイン投資', 'ブロックチェーンドメイン', 'トークン化ドメイン', '会計ドメイン', '短縮リンクドメイン', 'Web3ドメイン']

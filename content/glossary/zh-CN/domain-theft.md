@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 通过账户入侵等手段将域名未经授权转移出合法持有人控制范围的行为。
 keywords: ['域名盗窃', '未授权转移', '账户入侵', '域名安全', '域名追回']
 level: 1

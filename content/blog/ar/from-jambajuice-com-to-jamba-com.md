@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'قصة Jamba Juice على مدار 29 سنة وهي بتشرح نفسها بكلمة "Juice"، وليه حذفتها سنة 2019 وبقت بس "Jamba"، والميزة الهادية اللي ما حدش تقريبًا لاحظها: الشركة كانت بتمتلك Jamba.com بالظبط من تسعينيات القرن الماضي.'
 keywords: ['jambajuice.com', 'jamba.com', 'jamba juice domain name', 'jamba rebrand', 'domain upgrade', 'jamba juice name change', 'kirk perron', 'focus brands jamba', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'category-defining domain']

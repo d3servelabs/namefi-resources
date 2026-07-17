@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.deals 도메인은 Binky Moon(Identity Digital)이 운영하는 개방형 신규 gTLD로, 쿠폰 사이트·할인 정보 탐색자·이커머스 프로모션을 위해 설계되었습니다. 어떤 용도에 적합한지, 그 이유를 설명합니다.'
 keywords: ['.deals 도메인', '.deals란 무엇인가', '.deals TLD', '.deals 도메인 등록', '쿠폰 도메인', '할인 웹사이트 도메인', 'Binky Moon', 'Identity Digital gTLD']

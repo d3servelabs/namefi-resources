@@ -5,6 +5,8 @@ language: 'ta'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.city என்பது Identity Digital நடத்தும் ஒரு திறந்த பொதுவான உச்சநிலை டொமைன் ஆகும். இது உள்ளூர் வணிகங்கள், நகர வழிகாட்டிகள், மற்றும் சமூக தளங்களுக்காக உருவாக்கப்பட்டது. யாருக்கு இது பொருந்தும், ஏன் என்பதை இங்கே அறியுங்கள்.'
 keywords: ['.city டொமைன்', '.city என்றால் என்ன', '.city TLD', 'உள்ளூர் வணிக டொமைன்', 'நகர டொமைன் பெயர்', 'Identity Digital', 'புதிய gTLD', 'சமூக வலைத்தளம் டொமைன்']

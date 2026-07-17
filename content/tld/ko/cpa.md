@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.cpa 도메인은 미국, 캐나다, 아일랜드의 공인회계사(CPA) 및 CPA 법인을 위한 제한적 자격 검증형 도메인 확장자로, 등록 및 갱신 시 자격이 확인됩니다.'
 keywords: ['.cpa 도메인', '.cpa란', 'cpa 도메인 등록', '제한 TLD', 'AICPA 도메인', 'CPA.com', '공인회계사 도메인', '회계 법인 도메인']

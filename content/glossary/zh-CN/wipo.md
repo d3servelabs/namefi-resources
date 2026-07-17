@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 联合国下属机构，其仲裁调解中心负责裁决大量 UDRP 域名争议案件。
 keywords: ['WIPO', 'World Intellectual Property Organization', 'UDRP', '域名争议', '仲裁']
 also_known_as: ['World Intellectual Property Organization']

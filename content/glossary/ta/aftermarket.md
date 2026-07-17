@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஏற்கனவே பதிவு செய்யப்பட்ட டொமைன் பெயர்கள் உரிமையாளர்களுக்கிடையே வாங்கப்படும் மற்றும் விற்கப்படும் மறுவிற்பனை சந்தை.
 keywords: ['மறுவிற்பனை சந்தை', 'இரண்டாம் நிலை சந்தை', 'டொமைன் மறுவிற்பனை', 'டொமைன் முதலீடு', 'டொமைன் விற்பனை']
 also_known_as: ['இரண்டாம் நிலை சந்தை']

@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was sind NFT-Marktplätze und wie erleichtern sie den Domain-Handel?
 keywords: ["Marktplatz","OpenSea","Blur","NFT-Handel","Domain-Marktplatz","Sekundärmarkt"]
 relatedArticles:

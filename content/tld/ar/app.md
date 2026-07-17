@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - zakia-al-sinai
 draft: false
 description: 'اكتشف لماذا يُعد نطاق .app الخيار الأكثر أماناً وابتكاراً للمطورين والشركات. تعرف على ميزاته وكيفية حجز نطاقك وربطه بتقنية البلوك تشين عبر Namefi.'
 keywords:

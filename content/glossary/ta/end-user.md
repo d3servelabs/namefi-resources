@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனை மறுவிற்பனை செய்யாமல், வணிகம் அல்லது திட்டத்திற்கு நேரடியாகப் பயன்படுத்த விரும்பும் வாங்குநர்.
 keywords: ['இறுதி பயனர்', 'டொமைன் வாங்குநர்', 'டொமைன் இறுதி பயன்பாடு', 'வணிக டொமைன்', 'டொமைன் பயன்பாட்டு நிலை']
 level: 1

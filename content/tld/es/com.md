@@ -5,6 +5,8 @@ language: 'es'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'El dominio .com es la dirección predeterminada del internet comercial. Conoce su historia, quién puede registrarlo, cómo funciona el precio y por qué sigue liderando.'
 keywords: ['dominios .com', 'qué es .com', 'TLD .com', 'extensión de dominio .com', 'registrar dominio .com', 'significado dominio com', '.com vs .net', 'dominios para negocios']

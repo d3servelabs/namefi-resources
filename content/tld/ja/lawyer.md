@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.lawyer ドメインは法律専門家や法律事務所向けのオープンな汎用 gTLD です。登録資格、.law や .attorney との違い、利用に適したケースを解説します。'
 keywords: ['lawyer ドメイン', '.lawyer とは', '.lawyer ドメイン', '.lawyer vs .law', '法律系ドメイン拡張子', '法律事務所向けドメイン', 'lawyer TLD', '.lawyer 登録']

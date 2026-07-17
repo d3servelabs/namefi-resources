@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.esq ドメインは Google Registry が弁護士・法律事務所向けに提供する拡張子です。登録資格、社会的な認知度、あなたの法律実務への適合性を詳しく解説します。'
 keywords: ['.esq ドメイン', '.esq とは', '.esq ドメイン登録', '弁護士向け TLD', 'エスクワイア ドメイン', 'Charleston Road Registry', 'Google Registry TLD', '法律事務所 ドメイン']

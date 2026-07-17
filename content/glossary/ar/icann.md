@@ -5,6 +5,8 @@ language: ar
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: المنظمة غير الربحية اللي بتنسّق نظام أسماء النطاقات العالمي وتخصيص IP ومعرّفات البروتوكول، وبتعتمد مسجلي النطاقات حول العالم.
 keywords: ['ICANN', 'حوكمة الإنترنت', 'سياسة النطاقات', 'إشراف DNS', 'IANA', 'gTLD', 'اعتماد مسجل النطاقات', 'متعدد الأطراف', 'UDRP']
 also_known_as: ['Internet Corporation for Assigned Names and Numbers']

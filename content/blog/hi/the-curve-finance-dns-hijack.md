@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'अगस्त 2022 में, Curve Finance के स्मार्ट कॉन्ट्रैक्ट्स अछूते रहे — लेकिन हमलावरों ने curve.fi डोमेन को रजिस्ट्रार स्तर पर हाईजैक किया, साइट का क्लोन बनाया, और उपयोगकर्ताओं से लगभग $570K निकाल लिए। एक DeFi फ्रंट-एंड पर DNS हमले की गहराई से जांच, और यह डोमेन सुरक्षा के बारे में क्या सिखाता है।'
 keywords: ['curve finance dns hijack', 'curve.fi hijack', 'dns hijacking defi', 'iwantmyname compromise', 'nameserver compromise', 'wallet drainer', 'defi front-end attack', 'domain security', 'dns security', 'crypto phishing', 'cloned website attack', 'registrar account compromise', 'domain mayday']

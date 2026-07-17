@@ -5,6 +5,7 @@ language: ja
 tags: ['thesis']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: domain-tokenization
 format: opinion

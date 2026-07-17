@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'domain-flipping', 'web3', 'comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

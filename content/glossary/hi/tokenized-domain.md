@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक वास्तविक DNS डोमेन जिसका स्वामित्व ब्लॉकचेन टोकन के रूप में आपके वॉलेट में प्रस्तुत होता है।
 keywords: ['tokenized domain', 'डोमेन NFT', 'ऑन-चेन डोमेन', 'डोमेन स्वामित्व', 'web3 डोमेन']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 駐車中または売却中のドメインに表示される単一ページ。広告、検索、または購入オファーが含まれることが多い。
 keywords: ['ランディングページ', 'ランダー', '売却ページ', 'ドメイン駐車', 'ドメイン収益化']
 also_known_as: ['ランダー']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Der Diebstahl einer Domain durch unbefugte Übernahme des Registrar-Kontos oder der Registrierung.
 keywords: ['Domain-Hijacking', 'Kontoübernahme', 'Domain-Diebstahl', 'Registrar-Sicherheit', 'Unbefugter Transfer']
 level: 1

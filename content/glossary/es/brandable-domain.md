@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un nombre corto, atractivo y a menudo inventado que funciona como una marca memorable, similar a una palabra creada.
 keywords: ['dominio de marca', 'dominio brandable', 'dominio inventado', 'nombre de fantasía', 'dominio memorable']
 level: 1

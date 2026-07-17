@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.clubドメインは、コミュニティ・会員制サービス・Web3グループ向けのオープンgTLDです。利用者層、SEOへの影響、価格動向、登録方法をわかりやすく解説します。'
 keywords: ['.clubドメイン', '.club TLD', '.clubとは', '.clubドメイン登録', 'コミュニティドメイン', '会員制ドメイン', 'Web3クラブドメイン', '新gTLD', 'クラブドメイン SEO']

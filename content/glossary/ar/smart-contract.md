@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي العقود الذكية وكيف تمكن ترميز النطاقات؟
 keywords: ["عقد ذكي","بلوك تشين","تنفيذ آلي","منطق قابل للبرمجة","لامركزي"]
 relatedArticles:

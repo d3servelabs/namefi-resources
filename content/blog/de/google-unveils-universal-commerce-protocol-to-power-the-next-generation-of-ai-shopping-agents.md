@@ -5,6 +5,7 @@ language: de
 tags: ['Infrastruktur', 'KI-Agenten', 'Digitaler Handel']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "UCP ist Googles Vorstoß, den Agenten-nativen Handel voranzutreiben und KI-Assistenten das Einkaufen und Bezahlen im gesamten Open Web zu ermöglichen."
 keywords: ['Universal Commerce Protocol', 'UCP', 'Google UCP', 'KI-Shopping-Agenten', 'KI-gestützter Handel', 'Agentischer Handel', 'KI-E-Commerce-Protokoll', 'Conversational Commerce', 'KI-Checkout', 'Zukunft des E-Commerce', 'Agentenbasiertes Einkaufen', 'Offene Handelsstandards', 'Google AI', 'Gemini AI', 'Agent Engine Optimization']

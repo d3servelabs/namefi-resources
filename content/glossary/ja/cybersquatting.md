@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 他者の商標と同一または紛らわしいドメイン名を不正な目的で登録し、利益を得ようとする行為。
 keywords: ['サイバースクワッティング', '不正目的', 'ドメイン紛争', '商標侵害', 'UDRP']
 level: 1

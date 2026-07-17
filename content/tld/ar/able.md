@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف إمكانيات نطاق .able الجديد. تعرف على كيفية استخدامه لتعزيز علامتك التجارية، وأهميته في عالم الويب 3 واستثمار النطاقات عبر Namefi."
 keywords: [".able domains", "TLD", "top-level domain", "what is .able", "why choose .able", "what is the .able domain", "why choose the .able domain", "domain investing", "blockchain domains", "tokenized domain", "نطاق .able", "الاستثمار في النطاقات", "نطاقات الويب 3", "شراء نطاق", "نطاقات مميزة"]

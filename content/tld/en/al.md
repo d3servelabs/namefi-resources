@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: "Discover the versatility of the .al domain extension. From establishing a presence in Albania to creating clever domain hacks like 'digit.al', learn why the .al TLD is a prime choice for modern branding."
 keywords: [".al domains", ".al TLD", "top-level domain", "what is .al", "why choose .al", "what is the .al domain", "why choose the .al domain", "Albania domain registration", "domain hacks", "creative branding", "buy .al domain", "domain investing", "blockchain domains", "tokenized assets", "Web3 domains"]

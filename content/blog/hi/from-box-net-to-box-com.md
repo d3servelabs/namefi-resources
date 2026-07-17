@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'कैसे Box ने 2005 में Box.net पर शुरुआत की क्योंकि Box.com पहले से ली गई थी, उपभोक्ता स्टोरेज से एंटरप्राइज़ की ओर पिवट किया, और 2011 में Digimedia को करीब $1 मिलियन देकर एग्जैक्ट-मैच Box.com खरीदी — एक .net-से-.com अपग्रेड जो तब हुआ जब कंपनी सीधे "Box" बन गई।'
 keywords: ['box.net', 'box.com', 'box domain name', 'aaron levie', 'dylan smith', 'digimedia', 'scott day', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'exact match domain', 'net to com']

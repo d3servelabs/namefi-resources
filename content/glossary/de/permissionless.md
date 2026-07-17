@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was bedeutet "permissionless" in Blockchain und Domainverwaltung?
 keywords: ["permissionless","dezentralisiert","zensurresistent","offener Zugang","blockchain"]
 relatedArticles:

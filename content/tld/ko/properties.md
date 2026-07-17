@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.properties 도메인은 Binky Moon(Identity Digital)이 운영하는 개방형 일반 gTLD로, 전 세계 부동산 매물, 중개사, 자산 포트폴리오를 위해 설계된 확장자입니다.'
 keywords: ['.properties 도메인', '.properties란 무엇인가', '.properties TLD', '부동산 도메인', '부동산 도메인 이름', 'Binky Moon properties', 'Identity Digital 부동산 gTLD', '.properties 등록']

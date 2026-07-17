@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 域名注册期结束的日期，若未续期，将开始进入失效流程直至被删除。
 keywords: ['域名到期', '已到期域名', '续期', '宽限期', '赎回']
 level: 1

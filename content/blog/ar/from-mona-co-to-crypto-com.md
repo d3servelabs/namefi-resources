@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: 'قصة شركة Monaco الناشئة لبطاقات الكريبتو وكيف أعادت تسمية نفسها لتصبح Crypto.com في 2018 بعد شرائها للدومين الأسطوري — المسجَّل منذ 1993 من قِبَل المشفِّر Matt Blaze الذي رفض البيع لمدة 25 سنة — في صفقة قدَّر الخبراء قيمتها بما يصل إلى 10 ملايين دولار.'
 keywords: ['mona.co', 'crypto.com', 'دومين crypto.com', 'monaco mco', 'matt blaze crypto.com', 'kris marszalek', 'ترقية الدومين', 'دومين مميز', 'دومين الفئة', 'شراء دومين', 'إعادة تسمية كريبتو', 'دومين المطابقة الدقيقة', 'العلامة التجارية']

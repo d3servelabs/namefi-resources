@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La cima de la jerarquía DNS, que lista cada TLD y los servidores autoritativos para él.
 keywords: ['zona raíz', 'servidores raíz', 'jerarquía DNS', 'delegación TLD', 'IANA']
 level: 1

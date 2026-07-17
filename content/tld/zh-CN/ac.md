@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 深入了解 .ac 域名的含义与优势。从学术机构到科技初创公司，探索为何 .ac 成为热门选择，并在 Namefi 立即注册您的专属域名。
 keywords: ['.ac domains', '.ac TLD', 'top-level domain', 'what is .ac', 'why choose .ac', 'what is the .ac domain', 'why choose the .ac domain', 'Ascension Island domain', 'academic domains', 'domain investing', 'blockchain domains', 'tokenized domain', 'web3 domains', 'educational branding', '.ac 域名注册']

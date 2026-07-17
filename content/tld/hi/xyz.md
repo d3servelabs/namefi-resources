@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '.xyz डोमेन एक ओपन जेनेरिक TLD है जिसे 2014 में लॉन्च किया गया था और जिसे Alphabet ने abc.xyz पर प्रसिद्ध रूप से उपयोग किया। जानें यह किसके लिए उपयुक्त है, इसकी कीमत क्या है, और इसे कैसे रजिस्टर करें।'
 keywords: ['.xyz डोमेन', '.xyz क्या है', '.xyz TLD', '.xyz डोमेन का अर्थ', 'abc.xyz Alphabet', '.xyz बनाम .com', '.xyz डोमेन रजिस्टर करें', 'क्या .xyz SEO के लिए अच्छा है']

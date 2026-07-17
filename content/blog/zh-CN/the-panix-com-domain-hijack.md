@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2005 年 1 月，纽约最古老商业 ISP 的域名 panix.com 在未经授权的情况下，被人使用盗刷的信用卡转移至澳大利亚一家注册商，导致网页和电子邮件中断数日。当时的域名注册商间转移规则存在"自动批准"漏洞，使这一切成为可能，而事后的补救工作也重塑了域名转移政策。'
 keywords: ['panix.com', 'panix域名劫持', '域名劫持', '注册商间转移', 'Melbourne IT', 'Dotster', 'Fibranet', 'ICANN转移政策', '注册商锁定', 'clientTransferProhibited', '域名安全', 'DNS劫持', 'EPP授权码']

@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre el poder del dominio .club para crear comunidades. Aprende qué es, sus ventajas y por qué es ideal para marcas y proyectos Web3 en Namefi.'
 keywords:

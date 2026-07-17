@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: The server that takes a domain lookup and walks the DNS hierarchy to return the matching address.
 keywords: ['DNS resolver', 'recursive resolver', 'resolver', '8.8.8.8', '1.1.1.1', 'DNS lookup']
 level: 1

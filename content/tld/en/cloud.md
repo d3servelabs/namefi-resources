@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .cloud domain is an open gTLD operated by Aruba PEC S.p.A., built for cloud, SaaS, and tech brands. Learn who it suits, its pricing dynamics, and reputation.'
 keywords: ['.cloud domain', 'what is .cloud', '.cloud TLD', 'cloud computing domain', 'SaaS domain name', 'Aruba .cloud registry', 'new gTLD', 'tech domain extension']

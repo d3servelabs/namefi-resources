@@ -5,6 +5,7 @@ language: fr
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "L'UDRP expliquée pour les propriétaires et investisseurs de noms de domaine : les trois éléments qu'un plaignant doit prouver, le processus et les délais, les résultats possibles, UDRP vs URS vs tribunal, et comment répondre à une plainte."
 keywords: ['udrp', "qu'est-ce que l'udrp", 'procédure udrp', 'politique udrp', 'plainte udrp', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'litige de domaine', 'litige de nom de domaine', 'cybersquattage', 'détournement inverse de nom de domaine', 'enregistrement de mauvaise foi', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'litige de marque de domaine', 'investisseur de domaine juridique', 'répondre à une plainte udrp']

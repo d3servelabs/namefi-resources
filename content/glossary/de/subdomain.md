@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Ein Präfix, das einer Domain hinzugefügt wird, um eine separate Adresse zu erstellen, wie blog.example.com oder app.example.com.
 keywords: ['Subdomain', 'Host', 'blog.example.com', 'DNS', 'Second-Level-Domain']
 level: 1

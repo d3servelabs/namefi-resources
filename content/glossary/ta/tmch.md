@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: புதிய gTLD-களில் Sunrise முன்பதிவு மற்றும் வணிக முத்திரை உரிமைகோரல்களை இயக்கும் ICANN-இன் மைய வணிக முத்திரை தரவுத்தளம்.
 keywords: ['TMCH', 'வணிக முத்திரை அனுமதி மையம்', 'Sunrise காலம்', 'வணிக முத்திரை பாதுகாப்பு', 'புதிய gTLD']
 also_known_as: ['TMCH']

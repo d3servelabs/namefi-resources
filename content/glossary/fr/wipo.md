@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: L''agence de l''ONU dont le centre d''arbitrage tranche de nombreux litiges UDRP sur les noms de domaine.
 keywords: ['WIPO', 'Organisation Mondiale de la Propriété Intellectuelle', 'UDRP', 'litige de domaine', 'arbitrage']
 also_known_as: ['Organisation Mondiale de la Propriété Intellectuelle']

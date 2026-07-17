@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل ما تحتاج معرفته عن نطاق .abc، استخداماته، ومميزاته للشركات والأفراد. تعرف على كيفية حجز نطاقك المميز عبر منصة Namefi وكيفية الاستثمار في النطاقات."
 keywords: [".abc domains", ".abc TLD", "top-level domain", "what is .abc", "why choose .abc", "what is the .abc domain", "why choose the .abc domain", "حجز نطاق abc", "استثمار النطاقات", "web3 domains", "blockchain domains", "tokenized domain", "شراء دومين", "نطاقات المستوى الأعلى", "domain investing"]

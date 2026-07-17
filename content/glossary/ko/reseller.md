@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 자체 ICANN 인가 없이 상위 등록대행사의 인가를 활용하여 도메인을 판매하는 기업 또는 개인.
 keywords: ['리셀러', '도메인 리셀러', '화이트 라벨 등록대행사', 'ICANN 인가', '등록대행사']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 対象ドメインの価値を推定するための基準として用いる、類似ドメインの過去の販売価格。
 keywords: ['比較売買事例', 'コンプス', 'ドメイン販売データ', 'ドメイン価格基準', 'ドメイン価格履歴']
 also_known_as: ['コンプス']

@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是加密钱包，它如何存储代币化域名？
 keywords: ["钱包","加密钱包","私钥","数字资产存储","域名存储"]
 relatedArticles:

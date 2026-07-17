@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "一份实用的分步讲解指南，教您如何将已拥有的域名进行代币化——涵盖资格要求、钱包、费用、时间以及每个页面的预期情况。专为域名所有者而非协议极客编写。"
 keywords: ['如何代币化域名', '如何代币化.com', '代币化我的域名', '代币化现有域名', '分步代币化域名', '域名代币化教程', '代币化.com指南', '代币化.xyz', '代币化.io', 'namefi代币化', 'NFT域名教程', '将域名转移为NFT', '域名转NFT', '域名代币化流程', '代币化域名设置', '代币化ICANN域名']

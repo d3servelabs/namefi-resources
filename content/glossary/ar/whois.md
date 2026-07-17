@@ -5,6 +5,8 @@ language: ar
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: WHOIS وخلفه RDAP هما خدمتا البحث العام عن تفاصيل تسجيل النطاق، زي المسجِّل وتاريخ انتهاء الصلاحية.
 keywords: ['WHOIS', 'RDAP', 'بحث تسجيل النطاق', 'معلومات المسجِّل', 'بحث ملكية النطاق']
 level: 1

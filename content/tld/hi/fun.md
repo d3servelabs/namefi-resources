@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.fun डोमेन के साथ अपनी ऑनलाइन उपस्थिति को मनोरंजक बनाएं। जानें कि यह गेमिंग, इवेंट्स और Web3 के लिए क्यों बेहतरीन है। Namefi पर अपना डोमेन रजिस्टर करें।'
 keywords:

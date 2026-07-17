@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: すべての TLD とその権威サーバーを一覧するDNS階層の最上位。
 keywords: ['ルートゾーン', 'ルートサーバー', 'DNS階層', 'TLD委任', 'IANA']
 level: 1

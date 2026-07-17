@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: कम्पोज़िबिलिटी क्या है और यह टोकनाइज़्ड डोमेन पर कैसे लागू होती है?
 keywords: ["कम्पोज़िबिलिटी","इंटरऑपरेबिलिटी","बिल्डिंग ब्लॉक्स","डीफाई","वेब3 इंटीग्रेशन"]
 relatedArticles:

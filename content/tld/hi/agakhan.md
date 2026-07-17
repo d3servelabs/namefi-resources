@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.agakhan डोमेन एक्सटेंशन, आगा खान डेवलपमेंट नेटवर्क (AKDN) से जुड़ा एक प्रतिष्ठित TLD है। जानें कि यह डिजिटल पहचान, विश्वास और ब्रांडिंग के लिए क्यों महत्वपूर्ण है।'
 keywords:

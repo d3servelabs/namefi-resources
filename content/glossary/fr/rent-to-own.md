@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que la location-vente et comment peut-elle s'appliquer à l'acquisition de domaine ?
 keywords: ["location-vente","acquisition progressive","plans de paiement","acquisition de domaine","contrats intelligents"]
 relatedArticles:

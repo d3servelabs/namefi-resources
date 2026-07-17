@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 서버가 유출할 수 있는 비밀번호 대신, 개인 키 보유자만이 작업을 승인할 수 있는 공개 키 암호화 기반의 보호 방식입니다.
 keywords: ['암호학적 보안', '암호화', '개인 키', '디지털 서명', '블록체인 보안']
 level: 1

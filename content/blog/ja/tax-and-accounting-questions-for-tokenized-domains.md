@@ -6,6 +6,7 @@ priority: P1
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: domain-tokenization
 series: tokenize-your-com

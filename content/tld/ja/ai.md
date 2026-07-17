@@ -5,6 +5,8 @@ language: ja
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.aiはアンギラの国別コードドメインがグローバルなAIブランディング拡張子へと転換したTLDです。運営者、登録ルール、SEOへの影響、およびNamefiでの.ai登録方法を解説します。'
 keywords: ['.aiドメイン', '.aiとは', '.ai TLD', 'アンギラ ccTLD', '.aiドメイン登録', 'AIスタートアップ ドメイン', '.ai vs .io', '.ai 所有者']

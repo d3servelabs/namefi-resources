@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: வாங்குநர்களும் விற்பனையாளர்களும் சொத்துக்களை வர்த்தகம் செய்யும் ஆன்லைன் தளம்; NFT மற்றும் டோக்கனைஸ் செய்யப்பட்ட டொமைன்களுக்கு OpenSea மற்றும் Blur போன்றவை எடுத்துக்காட்டுகளாகும்.
 keywords: ['சந்தை இடம்', 'OpenSea', 'Blur', 'NFT வர்த்தகம்', 'டொமைன் சந்தை', 'இரண்டாம் நிலை சந்தை']
 level: 1

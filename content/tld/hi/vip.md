@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: ".vip डोमेन के बारे में सब कुछ जानें। समझें कि यह प्रीमियम ब्रांडिंग के लिए क्यों बेहतरीन है और Namefi के साथ आसानी से अपना .vip डोमेन कैसे रजिस्टर करें।"
 keywords: [".vip domain", ".vip domains", ".vip TLD", "top-level domain", "what is .vip", "why choose .vip", "what is the .vip domain", "why choose the .vip domain", ".vip meaning", "buy .vip domain", "domain investing", "blockchain domains", "tokenized domain", "premium domains", "Web3 domains"]

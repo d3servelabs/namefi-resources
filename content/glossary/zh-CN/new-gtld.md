@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 由 ICANN 扩展计划引入的通用顶级域名，如 .app、.xyz 或 .shop。
 keywords: ['新 gTLD', 'ICANN 扩展', '.app', '.xyz', '.shop', '域名后缀']
 level: 1

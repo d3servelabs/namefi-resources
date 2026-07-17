@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: लोकप्रिय डोमेन की गलत वर्तनियाँ पंजीकृत करना ताकि गलत टाइप किए गए ट्रैफ़िक को पकड़ा जा सके, अक्सर विज्ञापन या फ़िशिंग के लिए।
 keywords: ['टाइपोस्क्वैटिंग', 'टाइपो डोमेन', 'फ़िशिंग', 'ब्रांड दुरुपयोग', 'साइबरस्क्वैटिंग']
 level: 1

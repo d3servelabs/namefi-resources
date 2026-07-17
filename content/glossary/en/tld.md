@@ -5,6 +5,7 @@ language: en
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A top-level domain (TLD) is the rightmost label in a domain name, such as .com, .org, or .de, delegated through the IANA root zone under ICANN oversight.
 keywords: ['TLD', 'top-level domain', 'gTLD', 'ccTLD', 'new gTLD', 'DNS', 'IANA', 'ICANN', 'root zone', 'domain registry']
 also_known_as: ['Top-Level Domain']

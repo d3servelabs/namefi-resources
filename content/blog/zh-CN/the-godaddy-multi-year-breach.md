@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '2020 年至 2022 年间，同一威胁行为者组织长期潜伏于 GoDaddy 的基础设施内部——盗取源代码、暴露 120 万 Managed WordPress 客户的数据，并间歇性地将客户网站重定向至恶意站点。本文深入剖析注册商集中化风险，以及这一事件揭示的单点故障问题。'
 keywords: ['godaddy 入侵', 'godaddy 数据泄露', 'managed wordpress 泄露', '注册商安全', '域名安全', '多年持续入侵', 'cpanel 恶意软件', '网站重定向攻击', 'ssl 私钥泄露', 'sftp 密码泄露', 'sec 10-k 网络安全', '注册商集中化风险', '单点故障']

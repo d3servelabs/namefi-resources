@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف مميزات نطاق .live وكيف يعزز حضورك الرقمي في البث المباشر والفعاليات. تعرف على كيفية حجز نطاقك المميز وتملكه الحقيقي عبر Namefi."
 keywords: [".live domains", ".live TLD", "top-level domain", "what is .live", "why choose .live", "what is the .live domain", "why choose the .live domain", "buy .live domain", "domain investing", "blockchain domains", "tokenized domain", "نطاق live", "حجز دومين", "نطاقات الويب 3", "استثمار النطاقات"]

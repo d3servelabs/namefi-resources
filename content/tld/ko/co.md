@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.co 도메인이란 무엇인가요? 콜롬비아의 국가 코드 TLD로, 짧은 ".com" 또는 "company" 대안으로 전 세계에 마케팅되고 있습니다. 운영 주체, 등록 자격, 가격, SEO에 대해 알아보세요.'
 keywords: ['.co 도메인', '.co TLD', 'co 도메인', '.co란', '.co 도메인이란', '.co vs .com', '스타트업 co 도메인', '콜롬비아 도메인', '.co 도메인 등록', '짧은 회사 도메인']

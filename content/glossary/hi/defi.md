@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: विकेंद्रीकृत वित्त (DeFi) सार्वजनिक ब्लॉकचेन पर स्मार्ट कॉन्ट्रैक्ट के माध्यम से बैंकों या दलालों को मध्यस्थ के रूप में शामिल किए बिना ऋण देने, उधार लेने और व्यापार करने की सुविधा प्रदान करता है।
 keywords: ['DeFi', 'विकेंद्रीकृत वित्त', 'lending', 'borrowing', 'कोलैटरल (गिरवी)', 'DEX', 'money markets', 'on-chain finance']
 level: 1

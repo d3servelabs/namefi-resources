@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué significa la propiedad de dominio cuando está tokenizada?
 keywords: ["propiedad de dominio","dominio NFT","registrador","custodia","propiedad de billetera"]
 relatedArticles:

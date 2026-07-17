@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio .info: su historia, ventajas y por qué es ideal para sitios informativos. Registra tu dominio con la tecnología Web3 de Namefi.'
 keywords: ['.info domains', '.info TLD', 'top-level domain .info', 'what is .info', 'why choose .info', 'what is the .info domain', 'why choose the .info domain', 'comprar dominio .info', 'registro de dominios', 'dominios tokenizados', 'inversión en dominios', 'dominios blockchain', 'ventajas dominio info', 'gTLD', 'Identity Digital']

@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: オープンプロトコルのスマートコントラクトによってその存在とルールが定義されるデジタル資産。管理企業なしに誰に対しても同一の動作を保証する。
 keywords: ['プロトコル資産', 'ブロックチェーンプロトコル', 'インフラ資産', 'ネットワーク資産', 'ユーティリティトークン']
 level: 1

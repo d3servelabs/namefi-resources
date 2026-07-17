@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.appドメインはGoogle RegistryのgTLDで、すべてのサイトにHTTPSが必須です。対象ユーザー、SEOへの影響、登録方法をわかりやすく解説します。'
 keywords: ['.appドメイン', '.appとは', '.app TLD', '.appドメインとは', 'アプリドメイン拡張子', 'Google Registry .app', '.app HTTPS必須', '.appドメイン登録', '開発者向けドメイン']

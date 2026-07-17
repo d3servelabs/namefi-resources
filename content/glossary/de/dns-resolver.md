@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Der Server, der eine Domain-Anfrage entgegennimmt und die DNS-Hierarchie durchläuft, um die passende Adresse zurückzugeben.
 keywords: ['DNS-Resolver', 'rekursiver Resolver', 'Resolver', '8.8.8.8', '1.1.1.1', 'DNS-Lookup']
 level: 1

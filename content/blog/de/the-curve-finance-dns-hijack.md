@@ -5,6 +5,7 @@ language: de
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: 'Im August 2022 waren Curve Finances Smart Contracts unangetastet — doch Angreifer übernahmen die Domain curve.fi beim Registrar, klonten die Website und raubten Nutzern rund 570.000 US-Dollar. Eine eingehende Analyse des DNS-Angriffs auf ein DeFi-Frontend und was er uns über Domain-Sicherheit lehrt.'
 keywords: ['curve finance dns hijack', 'curve.fi hijack', 'dns hijacking defi', 'iwantmyname kompromittiert', 'nameserver-kompromittierung', 'wallet drainer', 'defi frontend-angriff', 'domain-sicherheit', 'dns-sicherheit', 'krypto-phishing', 'geklonte website angriff', 'registrar-konto kompromittiert', 'domain mayday']

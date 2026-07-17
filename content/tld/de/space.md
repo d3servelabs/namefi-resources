@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Entdecken Sie die .space Domain: Eine kreative TLD für Visionäre und Startups. Erfahren Sie alles über Vorteile, SEO und tokenisierte Domains bei Namefi."
 keywords: [".space", ".space domains", ".space TLD", "top-level domain", "was ist .space", "warum .space wählen", "was ist die .space domain", "warum die .space domain wählen", "domain investing", "blockchain domains", "tokenized domains", "web3 domains", "günstige domains kaufen", "creative domains", "Namefi"]

@@ -5,6 +5,8 @@ language: 'ta'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.online டொமைன் என்பது Radix நடத்தும் திறந்த, கட்டுப்பாடற்ற புதிய gTLD ஆகும் — எந்த நபரும் அல்லது வணிகமும் பதிவு செய்யலாம். யாருக்கு ஏற்றது, SEO-ல் எப்படி செயல்படுகிறது, எதை கவனிக்க வேண்டும் என்பதை அறியுங்கள்.'
 keywords: ['.online டொமைன்', '.online என்றால் என்ன', '.online TLD', '.online டொமைன் பதிவு', 'Radix பதிவக நிறுவனம்', 'புதிய gTLD', 'online டொமைன் நீட்டிப்பு', '.online SEO-க்கு நல்லதா']

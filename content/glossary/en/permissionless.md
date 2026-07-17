@@ -4,6 +4,7 @@ date: '2025-06-30'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A system anyone can use or build on without a gatekeeper's approval, because the rules are enforced by open protocols rather than a central authority.
 keywords: ['permissionless', 'decentralized', 'censorship-resistant', 'open access', 'blockchain']
 level: 1

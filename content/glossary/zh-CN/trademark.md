@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 标识品牌商品或服务的受法律保护的标志，是众多域名争议的核心所在。
 keywords: ['商标', '品牌保护', '知识产权', '域名争议', 'UDRP', 'WIPO']
 level: 1

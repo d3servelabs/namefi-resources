@@ -4,6 +4,7 @@ date: '2026-05-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A dedicated offline device that stores a wallet's private keys and signs transactions on-device, so the keys never touch an internet-connected computer.
 keywords: ['hardware wallet', 'cold wallet', 'Ledger', 'Trezor', 'GridPlus', 'Keystone', 'secure element', 'self-custody']
 level: 1

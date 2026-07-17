@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué significa "sin censura" para la propiedad y gestión de dominios?
 keywords: ["sin censura","resistencia a la censura","descentralizado","libertad","imparable"]
 relatedArticles:

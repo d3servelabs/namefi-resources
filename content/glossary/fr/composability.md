@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Qu'est-ce que la composabilité et comment s'applique-t-elle aux domaines tokenisés ?
 keywords: ["composabilité","interopérabilité","blocs de construction","DeFi","intégration Web3"]
 relatedArticles:

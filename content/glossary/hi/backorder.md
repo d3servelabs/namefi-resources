@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक सेवा जो डोमेन के ड्रॉप होते ही उसे रजिस्टर करने की कोशिश करती है, ताकि आप एक्सपायर हो रहे नाम पर दावा कर सकें।
 keywords: ['बैकऑर्डर', 'ड्रॉप-कैचिंग', 'एक्सपायर्ड डोमेन', 'पेंडिंग डिलीट', 'डोमेन अधिग्रहण']
 level: 1

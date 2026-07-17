@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ko'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.homes 도메인은 XYZ Registry가 운영하는 개방형 신규 gTLD로, 명확하고 직관적인 웹 주소를 원하는 부동산·주택·주거 브랜드에 최적화된 확장자입니다.'
 keywords: ['.homes 도메인', '.homes란', '.homes TLD', '부동산 도메인', '주택 도메인 이름', 'XYZ Registry', '신규 gTLD', 'homes 도메인 등록']

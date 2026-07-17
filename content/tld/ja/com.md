@@ -5,6 +5,8 @@ language: 'ja'
 priority: P0
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.comドメインは商用インターネットのデフォルトアドレスです。その歴史、登録資格、料金の仕組み、そして今なお首位に立つ理由を解説します。'
 keywords: ['.comドメイン', '.comとは', '.com TLD', '.comドメイン拡張子', '.comドメイン登録', 'comドメインの意味', '.comと.netの比較', 'ビジネスドメイン']

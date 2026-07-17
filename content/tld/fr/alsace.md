@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld', 'domaines', 'alsace', 'seo local', 'branding']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez l'extension .alsace : l'atout numérique incontournable pour rayonner dans le Grand Est. Boostez votre SEO local et affirmez votre identité avec Namefi."
 keywords: ['.alsace domains', 'TLD .alsace', 'top-level domain .alsace', 'what is .alsace', 'why choose .alsace', 'what is the .alsace domain', 'why choose the .alsace domain', 'domaine .alsace', 'acheter nom de domaine alsace', 'investissement nom de domaine', 'tokenized domain', 'blockchain domains', 'SEO local alsace', 'identité numérique alsace', 'Web3 domains']

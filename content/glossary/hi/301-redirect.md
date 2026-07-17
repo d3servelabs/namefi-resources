@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक HTTP स्टेटस जो ब्राउज़र और सर्च इंजन को बताता है कि कोई पेज स्थायी रूप से नए URL पर चला गया है।
 keywords: ['301 redirect', 'permanent redirect', 'http redirect', 'seo', 'domain forwarding', 'link equity']
 also_known_as: ['स्थायी रीडायरेक्ट']

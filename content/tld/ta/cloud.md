@@ -5,6 +5,8 @@ language: 'ta'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.cloud டொமைன் என்பது Aruba PEC S.p.A. இயக்கும் திறந்த gTLD ஆகும், இது கிளவுட், SaaS மற்றும் தொழில்நுட்ப நிறுவனங்களுக்காக உருவாக்கப்பட்டது. இது யாருக்கு ஏற்றது, விலை இயக்கவியல் மற்றும் நம்பகத்தன்மை ஆகியவற்றை அறியுங்கள்.'
 keywords: ['.cloud டொமைன்', '.cloud என்றால் என்ன', '.cloud TLD', 'கிளவுட் கம்ப்யூட்டிங் டொமைன்', 'SaaS டொமைன் பெயர்', 'Aruba .cloud பதிவக நிறுவனம்', 'புதிய gTLD', 'தொழில்நுட்ப டொமைன் நீட்டிப்பு']

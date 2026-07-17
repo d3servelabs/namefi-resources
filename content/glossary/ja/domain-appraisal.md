@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 類似取引実績、キーワード需要、文字数、拡張子に基づいてドメイン名の市場価値を見積もるプロセス。
 keywords: ['ドメイン査定', 'ドメイン評価', 'ドメインの価値', 'ドメイン価格設定', '類似取引実績']
 also_known_as: ['ドメイン評価']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un dominio de alto valor con precio superior a las tarifas estándar por su memorabilidad, brevedad o potencia como palabra clave.
 keywords: ['dominio premium', 'nombre premium', 'premium de registro', 'mercado secundario', 'valor de dominio']
 level: 1

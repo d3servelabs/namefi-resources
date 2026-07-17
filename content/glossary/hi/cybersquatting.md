@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: किसी अन्य के ट्रेडमार्क से मिलता-जुलता डोमेन बुरे इरादे से पंजीकृत करना, उससे लाभ कमाने की आशा में।
 keywords: ['cybersquatting', 'bad faith', 'domain dispute', 'trademark infringement', 'UDRP']
 level: 1

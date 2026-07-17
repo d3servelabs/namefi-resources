@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Des domaines très courts — trois à quatre lettres ou entièrement numériques — prisés pour leur brièveté, notamment sur certains marchés.
 keywords: ['domaine court', 'domaine numérique', 'domaine LLLL', 'domaine NNNN', 'domaine trois lettres', 'domaine quatre lettres']
 level: 1

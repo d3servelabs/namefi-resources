@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي أصول البروتوكول وكيف تعمل النطاقات الرمزية (tokenized domains) كأصول بروتوكول؟
 keywords: ["أصل البروتوكول","بروتوكول البلوك تشين","أصل البنية التحتية","أصل الشبكة","رمز الخدمة"]
 relatedArticles:

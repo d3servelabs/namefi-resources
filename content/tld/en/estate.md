@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .estate domain is an open generic extension built for real estate agents, brokerages, and property businesses. Learn who uses it, how it is priced, and whether it fits.'
 keywords: ['.estate domain', 'what is .estate', 'estate TLD', 'real estate domain', 'estate domain registration', 'property domain', 'new gTLD', 'Binky Moon']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: ज़ोन फ़ाइल वह टेक्स्ट फ़ाइल है जिसमें किसी डोमेन के सभी DNS रिकॉर्ड होते हैं, जिसमें उसके नेमसर्वर के लिए ग्लू रिकॉर्ड भी शामिल हैं।
 keywords: ['ज़ोन फ़ाइल', 'ग्लू रिकॉर्ड', 'DNS ज़ोन', 'आधिकारिक रिकॉर्ड', 'नेमसर्वर']
 level: 1

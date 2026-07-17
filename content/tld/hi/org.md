@@ -5,6 +5,8 @@ language: 'hi'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'जानें कि .org डोमेन क्या है, इसका इतिहास, और यह आपके संगठन या प्रोजेक्ट के लिए सबसे भरोसेमंद विकल्प क्यों है। आज ही Namefi के साथ अपना .org डोमेन रजिस्टर करें।'
 keywords: ['.org domains', '.org TLD', 'top-level domain', 'what is .org', 'why choose .org', 'what is the .org domain', 'why choose the .org domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'buy .org domain', 'crypto domains', 'NGO website', 'trusted domains', 'Namefi registrar']

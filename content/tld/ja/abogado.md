@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.abogadoドメインは、スペイン語で「弁護士（abogado）」を意味する、資格審査付きのTLDです。ヒスパニック市場向け法律ブランディングに最適な拡張子です。'
 keywords: ['.abogadoドメイン', '.abogadoとは', '.abogado TLD', '弁護士ドメイン拡張子', '法律ドメイン名', 'スペイン語弁護士ドメイン', 'abogadoドメイン登録', '認証済み法律TLD']

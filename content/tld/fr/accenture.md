@@ -6,6 +6,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - alan-machin
 draft: false
 description: 'Découvrez tout sur le domaine de premier niveau .accenture : son utilité, son exclusivité en tant que Brand TLD et son impact sur l''identité numérique.'
 keywords:

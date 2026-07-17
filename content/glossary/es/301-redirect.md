@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un estado HTTP que indica a navegadores y motores de búsqueda que una página se ha movido permanentemente a una nueva URL.
 keywords: ['redirección 301', 'redirección permanente', 'redirección http', 'seo', 'reenvío de dominio', 'equidad de enlace']
 also_known_as: ['Redirección permanente']

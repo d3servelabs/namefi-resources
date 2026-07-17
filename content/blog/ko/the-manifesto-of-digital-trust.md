@@ -7,6 +7,7 @@ language: ko
 tags: ['vision', 'digital-trust']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 format: opinion
 description: D3Serve의 비전 선언문 — 정보의 디지털화가 그러했듯, 신뢰의 디지털화 역시 생산성의 도약, 손실 없는 정밀도, 비용 절감, 그리고 자동화를 실현할 것이라는 이유를 설명합니다.

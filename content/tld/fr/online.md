@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .online : une extension polyvalente et moderne. Apprenez pourquoi les entreprises et les investisseurs choisissent ce TLD pour leur identité numérique."
 keywords: ['.online domains', '.online TLD', 'top-level domain', 'what is .online', 'why choose .online', 'what is the .online domain', 'why choose the .online domain', 'domain investing', 'blockchain', 'tokenized domain', 'acheter domaine online', 'Web3 domains', 'investissement domaine', 'ICANN registrar', 'Namefi']

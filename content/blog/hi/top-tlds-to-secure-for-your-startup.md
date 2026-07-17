@@ -5,6 +5,7 @@ language: hi
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-startup-og.jpg
 description: 'अपने स्टार्टअप के लिए शीर्ष TLD खोजें — .com से .ai तक — साथ ही टाइपोस्क्वैटर्स से अपने ब्रांड की रक्षा के लिए एक डिफेंसिव रजिस्ट्रेशन रणनीति।'

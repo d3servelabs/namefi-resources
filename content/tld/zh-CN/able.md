@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'zh-CN'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: '深入了解 .able 顶级域名（TLD）：一个充满潜力与创意的域名后缀。探索它在品牌塑造、SEO 以及 Web3 域名投资中的独特优势，并了解为何它是创新者的首选。'
 keywords: ['.able domains', '.able TLD', 'top-level domain', 'what is .able', 'why choose .able', 'what is the .able domain', 'why choose the .able domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'creative domains', 'domain hacks', 'buy .able domain', 'Namefi domains']

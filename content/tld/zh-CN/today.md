@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - fenwei-bian
 draft: false
 description: '深入了解 .today 顶级域名（TLD）的定义与优势。探索它如何为新闻、活动和现代品牌提供紧迫感与新鲜感。立即在 Namefi 注册您的 .today 域名。'
 keywords:

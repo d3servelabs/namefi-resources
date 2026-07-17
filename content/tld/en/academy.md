@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .academy domain is an open gTLD for schools, courses, training centers and coaching brands. Learn who uses it, the rules, pricing dynamics and how to register.'
 keywords: ['.academy domain', 'what is .academy', '.academy TLD', 'academy domain registration', 'education domain extension', 'online course domain', 'training website domain', 'new gTLD']

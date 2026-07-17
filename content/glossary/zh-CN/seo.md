@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 什么是SEO？域名代币化如何影响搜索优化？
 keywords: ["SEO","搜索引擎优化","域名价值","搜索排名","数字营销"]
 relatedArticles:

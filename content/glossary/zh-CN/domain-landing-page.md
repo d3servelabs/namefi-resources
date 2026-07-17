@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 在停放或待售域名上展示的单页面，通常包含广告、搜索框或购买报价。
 keywords: ['着陆页', '域名停放', '待售页面', '域名停放', '域名变现']
 also_known_as: ['着陆页']

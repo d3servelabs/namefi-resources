@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'ar'
 tags: ['tld', 'geoTLD', 'middle-east', 'business']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف أهمية نطاق .abudhabi لتعزيز حضورك الرقمي في عاصمة الإمارات. تعرف على مزايا هذا النطاق للأعمال والمؤسسات وكيفية تسجيله عبر Namefi."
 keywords: [".abudhabi domains", ".abudhabi TLD", "top-level domain .abudhabi", "what is .abudhabi", "why choose .abudhabi", "what is the .abudhabi domain", "why choose the .abudhabi domain", "Abu Dhabi domains", "UAE business domains", "domain investing", "blockchain domains", "tokenized domain", "buy .abudhabi domain", "digital identity UAE", "Arabic domains"]

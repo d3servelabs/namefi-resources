@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un nom qui s'étend sur le point pour former un mot en utilisant le TLD, comme del.icio.us ou examp.le.
 keywords: ['domain hack', 'domaine créatif', 'jeu de mots TLD', 'domaine de marque', 'ccTLD']
 level: 1

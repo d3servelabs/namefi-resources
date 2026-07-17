@@ -5,6 +5,7 @@ language: es
 tags: ['guide']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: Una guía clara para 2026 sobre los TLDs Web3 premium—qué significa realmente "TLD Web3", por qué las extensiones ICANN tokenizadas como .com, .ai e .io superan a los nombres solo blockchain, y qué extensiones de dominio tienen mayor valor.
 keywords: ['tld web3 premium', 'tlds web3 premium', 'tld web3', 'tlds web3', 'dominios web3 premium', 'mejores dominios web3', 'extensiones de dominio web3', 'dominio web3', 'dominios web3', 'extensiones de dominio tokenizadas', 'extensiones de dominio premium', 'extensiones de dominio más valiosas', 'tld tokenizado', 'dominios tokenizados', 'tld ICANN', 'tld blockchain', 'dominio NFT', '.com premium', '.ai premium', '.io premium', '.xyz premium', 'mejores extensiones de dominio 2026', 'tld crypto', 'nomenclatura web3', 'inversión en tld de dominio', 'namefi']

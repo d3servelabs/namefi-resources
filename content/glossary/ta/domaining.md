@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: டொமைன் பெயர்களை முதலீட்டு சொத்துக்களாக பதிவு செய்து, வாங்கி, விற்று இலாபம் ஈட்டும் நடைமுறை.
 keywords: ['டொமைனிங்', 'டொமைனர்', 'டொமைன் முதலீடு', 'டொமைன் திரும்பவிற்பனை', 'டொமைன் ஊகவணிகம்']
 level: 1

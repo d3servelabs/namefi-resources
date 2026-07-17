@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['guide', 'security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "如果您失去了持有代币化域名的钱包访问权限，究竟会发生什么？以及如何通过操作步骤从一开始就降低这种情况发生的几率。本文将探讨备份、多签、硬件钱包、社交恢复，以及平台能力的极限。"
 keywords: ['找回 NFT 域名', '丢失钱包域名', '代币化域名钱包丢失', '钱包恢复域名', 'NFT 域名备份', '代币化域名硬件钱包', '多签代币化域名', '代币化域名密钥恢复', '丢失助记词域名', 'NFT 域名安全', '代币化域名备份', '域名密钥管理', '钱包丢失恢复']

@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.agencyドメインはIdentity Digitalが運営するオープンな新gTLDで、マーケティング・クリエイティブ・不動産・コンサルティング会社が説明的かつブランディングしやすいWebアドレスを持つのに最適です。'
 keywords: ['.agencyドメイン', '.agencyとは', '.agency TLD', '.agencyドメイン名', 'エージェンシー向け新gTLD', 'マーケティングエージェンシー ドメイン', 'クリエイティブエージェンシー ウェブサイト', 'Identity Digital TLD', '.agency 登録']

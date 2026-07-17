@@ -5,6 +5,7 @@ language: en
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: Buying and selling domain names to profit from price differences, ranging from quick flips to long-term holds in a managed portfolio.
 keywords: ['domain trading', 'domain investing', 'digital real estate', 'secondary market', 'liquidity']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: सेकंड-लेवल डोमेन TLD के ठीक बाईं ओर का लेबल है — example.com में "example" — वह हिस्सा जो आप वास्तव में रजिस्टर करते हैं।
 keywords: ['सेकंड-लेवल डोमेन', 'SLD', 'रूट डोमेन', 'एपेक्स डोमेन', 'रजिस्ट्रेबल नाम']
 level: 1

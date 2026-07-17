@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: குறிப்பிட்ட காலகட்டத்தில் ஒரு டொமைன் போர்ட்ஃபோலியோவிலிருந்து விற்பனையாகும் பங்கு — முதலீட்டாளர்களுக்கான முக்கிய பணமாக்கும் அளவுகோல்.
 keywords: ['விற்பனை விகிதம்', 'STR', 'டொமைன் பணமாக்கும் திறன்', 'போர்ட்ஃபோலியோ செயல்திறன்', 'டொமைன் விற்பனை வேகம்']
 also_known_as: ['STR']

@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld', 'brand-tld', 'domain-investing', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .aaa : son utilisation exclusive par l'American Automobile Association, ses avantages en matière de sécurité et comment Namefi révolutionne la gestion de domaines."
 keywords: [".aaa domains", ".aaa TLD", "top-level domain .aaa", "what is .aaa", "why choose .aaa", "what is the .aaa domain", "why choose the .aaa domain", "domain investing", "blockchain domains", "tokenized domain", "brand TLD", "American Automobile Association domain", "extension de domaine .aaa", "achat nom de domaine web3"]

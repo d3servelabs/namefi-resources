@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist ein atomarer Transfer und wie gewährleistet er sichere Domain-Transaktionen?
 keywords: ["atomarer Transfer","Blockchain-Transaktion","Alles-oder-Nichts","sicherer Austausch","Smart Contract"]
 relatedArticles:

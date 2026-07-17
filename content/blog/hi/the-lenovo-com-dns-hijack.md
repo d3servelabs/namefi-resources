@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '25 फरवरी 2015 को, Lizard Squad ने रजिस्ट्रार Webnic से समझौता करके Lenovo.com को हाईजैक कर लिया — दुनिया के सबसे बड़े PC निर्माता के डोमेन को एक वेबकैम स्लाइडशो पर रिडायरेक्ट किया और उसका ईमेल इंटरसेप्ट किया — यह Superfish घोटाले के कुछ ही दिनों बाद हुआ। Domain Mayday की यह गहन पड़ताल बताती है कि आपका रजिस्ट्रार ही आपकी असली सुरक्षा परिधि है।'
 keywords: ['lenovo.com dns हाईजैक', 'lizard squad', 'webnic रजिस्ट्रार', 'web commerce communications', 'dns हाईजैकिंग', 'superfish', 'डोमेन रजिस्ट्रार सुरक्षा', 'रजिस्ट्रार समझौता', 'epp auth code', 'ईमेल इंटरसेप्शन', 'google vietnam हाईजैक', 'डोमेन सुरक्षा', 'रजिस्ट्रार लॉक']

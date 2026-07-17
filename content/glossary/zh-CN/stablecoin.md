@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种旨在相对于参考资产（如美元）保持稳定价值的加密货币，用于支付和结算而无需承受加密价格波动风险。
 keywords: ['稳定币', 'USDC', 'USDT', 'DAI', '法币锚定', '加密支付', '链上美元']
 level: 1

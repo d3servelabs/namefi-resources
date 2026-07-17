@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एकमुश्त राशि के बजाय किस्तों में समय के साथ डोमेन के लिए भुगतान करना।
 keywords: ['domain financing', 'installment', 'payment plan', 'domain acquisition', 'domain investing']
 level: 1

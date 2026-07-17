@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 공격자가 도메인 등록기관 계정 또는 등록 정보에 대한 무단 접근 권한을 획득하여 도메인을 탈취하는 행위.
 keywords: ['도메인 하이재킹', '계정 탈취', '도메인 도용', '등록기관 보안', '무단 이전']
 level: 1

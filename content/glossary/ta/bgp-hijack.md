@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: IP வழித்தடங்களை பொய்யாக அறிவித்து இணையப் போக்குவரத்தை திசைதிருப்பும் வலையமைப்பு அடுக்கு தாக்குதல் — இது DNS-க்கும் கீழான நிலையில் நடைபெறுகிறது.
 keywords: ['BGP கைப்பற்றல்', 'வழிப்பாதை கைப்பற்றல்', 'IP முன்னொட்டு', 'வலையமைப்பு பாதுகாப்பு', 'இணைய வழித்தடம்']
 level: 1

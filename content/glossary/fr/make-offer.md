@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Un format d'annonce de domaine qui invite les acheteurs à soumettre une offre que le vendeur peut accepter, contrer ou refuser.
 keywords: ['faire une offre', 'meilleure offre', 'négociation de domaine', 'offre', 'contre-offre']
 level: 1

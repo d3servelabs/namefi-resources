@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: टोकनाइज्ड होने पर डोमेन स्वामित्व का क्या अर्थ है?
 keywords: ["डोमेन स्वामित्व","NFT डोमेन","रजिस्ट्रार","कस्टोडियल","वॉलेट स्वामित्व"]
 relatedArticles:

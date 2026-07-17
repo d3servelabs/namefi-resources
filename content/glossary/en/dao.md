@@ -4,6 +4,7 @@ date: '2025-06-30'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A Decentralized Autonomous Organization run by smart-contract rules and member voting rather than a central executive, often managing a shared treasury.
 keywords: ['DAO', 'decentralized autonomous organization', 'governance', 'collective ownership', 'smart contracts']
 level: 1

@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 구매자가 입찰을 통해 가격을 결정하는 경쟁 판매 방식으로, 영국식(상승), 네덜란드식(하강), 동적 시한 경매 형태로 진행됩니다.
 keywords: ['경매', '네덜란드식 경매', '영국식 경매', '동적 경매', '가격 발견', '도메인 판매']
 level: 1

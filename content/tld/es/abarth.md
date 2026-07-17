@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre todo sobre el dominio .abarth, la extensión exclusiva para la marca del escorpión. Analizamos su valor, uso en la industria automotriz y potencial de inversión.'
 keywords: ['dominios .abarth', 'TLD', 'top-level domain', 'qué es .abarth', 'por qué elegir .abarth', 'qué es el dominio .abarth', 'inversión en dominios', 'blockchain', 'dominio tokenizado', 'registro de dominios', 'dominios de marca', 'Stellantis', 'identidad digital', 'Namefi']

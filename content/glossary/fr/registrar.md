@@ -5,6 +5,8 @@ language: fr
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Une société accréditée par l'ICANN autorisée à enregistrer des noms de domaine au nom du public, faisant l'interface entre les titulaires et les registres.
 keywords: ['bureau d''enregistrement', 'registraire de domaine', 'accréditation ICANN', 'enregistrement de domaine', 'RAA', 'EPP', 'code d''autorisation', 'verrou de transfert', 'transfert de domaine']
 level: 2

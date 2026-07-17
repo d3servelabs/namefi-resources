@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 取引が完全に完了するか、まったく実行されないかのいずれかとなるトランザクション。資産と支払いを単一の不可分なオンチェーンのステップで同時に交換する。
 keywords: ['アトミック転送', 'ブロックチェーントランザクション', 'オールオアナッシング', '安全な交換', 'スマートコントラクト']
 level: 1

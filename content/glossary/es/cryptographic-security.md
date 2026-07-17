@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué es la seguridad criptográfica y cómo protege los dominios tokenizados?
 keywords: ["seguridad criptográfica","cifrado","claves privadas","firmas digitales","seguridad blockchain"]
 relatedArticles:

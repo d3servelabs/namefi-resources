@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 특정 카테고리, 제품 또는 서비스를 설명하는 검색 키워드를 중심으로 구성된 도메인으로, 명확한 설명력과 상업적 의도 신호로 가치를 인정받습니다.
 keywords: ['키워드 도메인', '키워드 중심 도메인', '설명형 도메인', '검색 키워드 도메인', 'SEO 도메인 이름']
 level: 1

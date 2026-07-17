@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: برنامج مدعوم بنموذج ذكاء اصطناعي يتصرف نيابةً عن المستخدم — بيشتري، بيستدعي APIs، وبيتعامل بشكل متزايد مع وكلاء تانيين.
 keywords: ['وكيل الذكاء الاصطناعي', 'وكيل مستقل', 'هوية الوكيل', 'تجارة الوكلاء', 'وكيل على السلسلة', 'ذكاء اصطناعي وكيل']
 level: 1

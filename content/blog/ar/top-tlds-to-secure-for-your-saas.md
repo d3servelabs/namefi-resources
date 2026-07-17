@@ -5,6 +5,7 @@ language: ar
 tags: ['tld', 'domains']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-saas-og.jpg
 description: 'أفضل 10 امتدادات نطاقات يجب تأمينها لمنتجك SaaS — من .com و .io إلى .app و .ai — مع نصائح عملية للتسجيل الدفاعي وحقائق موثوقة عن جهات التسجيل.'

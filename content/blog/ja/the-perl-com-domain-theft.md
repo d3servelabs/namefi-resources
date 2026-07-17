@@ -5,6 +5,7 @@ language: ja
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 cluster: domain-security
 series: domain-apocalypse

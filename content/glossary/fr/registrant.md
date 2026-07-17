@@ -5,6 +5,8 @@ language: fr
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: La personne ou l'organisation qui détient les droits sur un nom de domaine enregistré — le propriétaire officiel.
 keywords: ['titulaire de domaine', 'propriétaire de domaine', 'titulaire de nom enregistré', 'RNH', 'propriété de domaine']
 level: 1

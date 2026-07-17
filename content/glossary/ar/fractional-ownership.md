@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هي الملكية الجزئية وكيف تنطبق على النطاقات القيمة؟
 keywords: ["ملكية جزئية","ملكية مشتركة","تجزئة النطاق","إمكانية الوصول","ترميز"]
 relatedArticles:

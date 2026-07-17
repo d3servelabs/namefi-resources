@@ -5,6 +5,8 @@ language: 'de'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .online-TLD: Ihre Bedeutung, Vorteile für SEO und Branding sowie Verfügbarkeit. Registrieren Sie Ihre .online-Domain noch heute bei Namefi."
 keywords: [".online domains", ".online TLD", "top-level domain", "was ist .online", "warum .online wählen", "was ist die .online domain", "warum die .online domain wählen", "domain investing", "blockchain domains", "tokenized domain", "neue gTLD", "domain registrierung", "web3 domains", "günstige domains", "markenschutz domain"]

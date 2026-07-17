@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre el potencial del dominio .ag: ideal para empresas AG, agricultura y creatividad. Asegura tu identidad digital con Namefi y la tecnología blockchain.'
 keywords: ['.ag domains', 'dominios .ag', 'TLD .ag', 'top-level domain', 'qué es el dominio .ag', 'por qué elegir el dominio .ag', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'Namefi dominios', 'Aktiengesellschaft domains', 'dominios agricultura', 'registro de dominios .ag', 'comprar dominio .ag', 'ccTLD Antigua y Barbuda']

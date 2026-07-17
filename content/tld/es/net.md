@@ -5,6 +5,8 @@ language: 'es'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Descubre la historia, usos y ventajas del dominio .net. Aprende por qué es una opción confiable para tu negocio y regístralo fácilmente en Namefi.'
 keywords: ['.net domains', '.net TLD', 'top-level domain .net', 'what is .net', 'why choose .net', 'what is the .net domain', 'why choose the .net domain', 'dominios .net', 'comprar dominio .net', 'inversión en dominios', 'dominios tokenizados', 'blockchain domains', 'alternativa a .com', 'registro de dominios web3', 'namefi']

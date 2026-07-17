@@ -4,6 +4,7 @@ date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A service that tries to register a domain the instant it drops, so you can claim an expiring name.
 keywords: ['backorder', 'drop-catching', 'expired domain', 'pending delete', 'domain acquisition']
 level: 1

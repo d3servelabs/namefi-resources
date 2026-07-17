@@ -6,6 +6,10 @@ tags:
   - 'tld'
 authors:
   - 'namefiteam'
+editors:
+  - victor-zhou
+translators:
+  - nirmit-buddhiraja
 draft: false
 description: '.abb डोमेन एक्सटेंशन के बारे में पूरी जानकारी प्राप्त करें। जानें कि यह डिजिटल दुनिया में क्यों महत्वपूर्ण है और Namefi के साथ अपनी डोमेन निवेश यात्रा कैसे शुरू करें।'
 keywords:

@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: रूट ज़ोन DNS पदानुक्रम का शीर्ष है, जिसमें हर TLD और उसके लिए अधिकृत सर्वर सूचीबद्ध हैं।
 keywords: ['रूट ज़ोन', 'रूट सर्वर', 'DNS पदानुक्रम', 'TLD डेलिगेशन', 'IANA']
 level: 1

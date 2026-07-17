@@ -4,6 +4,7 @@ date: '2025-12-10'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: Learn about the .abarth TLD, its uses, advantages, and how to register your .abarth domain with Namefi. Secure your unique online identity today!
 relatedArticles:

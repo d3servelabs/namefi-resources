@@ -5,6 +5,7 @@ language: hi
 tags: ['comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: "टोकनाइज़्ड ICANN डोमेन (जैसे टोकनाइज़्ड .com) और Web3-नेटिव नाम (जैसे name.eth, name.crypto) की एक स्पष्ट और व्यावहारिक तुलना। दोनों कहाँ काम आते हैं? दोनों में क्या समानताएँ हैं? बहुत से लोग दोनों को क्यों रखते हैं?"
 keywords: ['टोकनाइज़्ड डोमेन बनाम वेब3 डोमेन', 'tokenized domain vs ENS', 'ICANN डोमेन बनाम ENS', '.com बनाम .eth', 'टोकनाइज़्ड .com बनाम .crypto', 'tokenized domain vs unstoppable', 'web3 डोमेन तुलना', 'ENS बनाम टोकनाइज़्ड डोमेन', 'NFT डोमेन बनाम ENS', 'web3 नेमिंग', 'ऑन-चेन नेमिंग में अंतर', 'ब्राउज़र सपोर्ट web3 डोमेन', 'web3 डोमेन रिज़ॉल्यूशन']

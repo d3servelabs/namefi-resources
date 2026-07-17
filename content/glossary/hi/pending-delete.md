@@ -5,6 +5,8 @@ language: hi
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: वह अंतिम स्थिति जिसके बाद अनरिन्यूड डोमेन को पुनः सार्वजनिक रजिस्ट्रेशन के लिए रिलीज़ किया जाता है।
 keywords: ['पेंडिंग डिलीट', 'डोमेन ड्रॉप', 'ड्रॉप-कैचिंग', 'एक्सपायर्ड डोमेन', 'रिलीज़']
 level: 1

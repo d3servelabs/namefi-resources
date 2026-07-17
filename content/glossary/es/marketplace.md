@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: ¿Qué son los mercados NFT y cómo facilitan el comercio de dominios?
 keywords: ["mercado","OpenSea","Blur","comercio de NFT","mercado de dominios","mercado secundario"]
 relatedArticles:

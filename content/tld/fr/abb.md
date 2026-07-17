@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'fr'
 tags: ['tld', 'domaines', 'internet', 'marque', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez tout sur l'extension de domaine .abb : son origine, ses avantages pour l'identité numérique et son utilisation. Sécurisez votre nom de domaine avec Namefi."
 keywords: [".abb domains", "TLD .abb", "top-level domain", "qu'est-ce que le .abb", "pourquoi choisir .abb", "domaine .abb", "investissement nom de domaine", "blockchain domains", "nom de domaine tokenisé", "Web3 domains", "acheter domaine .abb", "registre domaine abb", "définition domaine .abb"]

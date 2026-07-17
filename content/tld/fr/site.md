@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .site : polyvalent et intuitif. Apprenez ses avantages pour votre marque et comment l'enregistrer et le tokeniser via Namefi."
 keywords: ['.site domains', '.site TLD', '.site top-level domain', 'what is .site', 'why choose .site', 'what is the .site domain', 'why choose the .site domain', 'achat domaine .site', 'investir nom de domaine', 'blockchain domains', 'domaines tokenisés', 'web3 domains', 'disponibilité domaine', 'nouveaux gTLD', 'enregistrement domaine']

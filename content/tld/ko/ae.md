@@ -6,6 +6,8 @@ language: ko
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: '.ae 도메인은 아랍에미리트(UAE)의 국가 코드 최상위 도메인(ccTLD)입니다. .ae가 어느 나라의 도메인인지, 등록 자격 요건은 무엇인지, UAE 및 두바이 비즈니스에서 신뢰를 얻는 이유를 알아보십시오.'
 keywords: ['ae 도메인', '.ae 도메인', 'ae tld', 'ae 최상위 도메인', '아랍에미리트 도메인', 'uae 도메인', 'uae tld', 'uae 도메인 확장자', '.ae 도메인이란', 'ae 도메인 국가', '.ae 도메인 자격 요건', '두바이 도메인', '아부다비 도메인', 'internet tld vereinigte arabische emirate', 'ae 국가', 'aeDA', 'TDRA 도메인', 'uae 국가 코드', '.ae 도메인 구매', '.ae 도메인 등록', '.ae를 선택해야 하는 이유', '토큰화 도메인', 'Namefi 레지스트라', '중동 도메인']

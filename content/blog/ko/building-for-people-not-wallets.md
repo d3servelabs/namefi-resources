@@ -5,6 +5,7 @@ language: ko
 tags: ['partners', 'namefi space']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 format: opinion
 description: Privy를 구축한 Henri Stern의 여정을 대화 형식으로 탐구합니다. 사용성, 고객 중심의 제품 개발, 그리고 암호화폐의 복잡성에서 인간 중심 설계로의 전환에 초점을 맞춥니다.

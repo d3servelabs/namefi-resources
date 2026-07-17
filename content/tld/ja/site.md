@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.site ドメインは Radix が運営するオープンな新 gTLD です。利用者層、SEO およびメール到達性のプロファイル、Namefi での登録方法まで詳しく解説します。'
 keywords: ['.site ドメイン', '.site とは', '.site TLD', '.site ドメイン登録', 'Radix レジストリ', '新 gTLD', '.site ドメイン購入', '.site は SEO に有利か']

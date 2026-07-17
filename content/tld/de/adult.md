@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'de'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .adult-TLD: Bedeutung, Vorteile für die Erwachsenenbranche & SEO. Jetzt sicher & diskret bei Namefi registrieren!"
 keywords: [".adult domains", ".adult TLD", "top-level domain", "what is .adult", "why choose .adult", "was ist die .adult domain", "warum .adult wählen", "domain investing", "blockchain domains", "tokenized domain", "adult entertainment branding", "digital identity", "web3 domains", "domain registration germany", "niche tld"]

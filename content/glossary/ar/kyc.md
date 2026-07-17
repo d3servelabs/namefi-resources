@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: Know Your Customer — إجراءات التحقق من هوية العميل اللي بتعملها الخدمات المالية والكريبتو المُنظَّمة قبل تفعيل الحساب.
 keywords: ['KYC', 'اعرف عميلك', 'التحقق من الهوية', 'تأهيل العميل', 'الامتثال']
 also_known_as: ['Know Your Customer']

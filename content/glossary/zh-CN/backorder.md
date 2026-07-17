@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一种服务，在域名释放的瞬间尝试注册该域名，让你有机会获得正在到期的域名。
 keywords: ['预订单', '抢注', '已到期域名', '待删除', '域名获取']
 level: 1

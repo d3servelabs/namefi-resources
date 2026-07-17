@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 상표권자가 사이버스쿼터를 연방 법원에 제소할 수 있도록 허용하는 미국 법률로, UDRP의 대안입니다.
 keywords: ['ACPA', '사이버스쿼팅 방지법', '미국 상표법', '도메인 분쟁', '연방 법원']
 also_known_as: ['Anticybersquatting Consumer Protection Act']

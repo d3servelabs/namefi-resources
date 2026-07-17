@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: La función que mantiene la zona raíz del DNS y asigna bloques de direcciones IP y números de protocolo.
 keywords: ['IANA', 'zona raíz', 'asignación de IP', 'números de protocolo', 'ICANN']
 level: 1

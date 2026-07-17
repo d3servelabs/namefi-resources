@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 以利用商标为目的注册或使用域名的行为，是赢得 UDRP 案件的必要构成要件。
 keywords: ['恶意', 'UDRP', '域名争议', '网络抢注', '商标滥用']
 level: 1

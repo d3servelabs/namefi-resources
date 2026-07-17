@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills

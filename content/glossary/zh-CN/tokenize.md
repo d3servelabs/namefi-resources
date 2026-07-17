@@ -5,6 +5,8 @@ language: zh-CN
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 将域名或资产代币化意味着什么？
 keywords: ["代币化","通证化","NFT","数字资产","链上资产"]
 relatedArticles:

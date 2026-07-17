@@ -5,6 +5,7 @@ language: zh-CN
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: 'Buffer 于 2010 年因 Buffer.com 已被注册而以 BufferApp.com 起步，此后花费 624 天完成精确匹配域名的收购——甚至向卖家展示了公司银行账户余额。而这家以极致透明著称的公司，却对外界最想知道的那个数字保持了沉默。'
 keywords: ['bufferapp.com', 'buffer.com', 'buffer 域名', '域名升级', 'joel gascoigne', 'buffer 透明度', '精确匹配域名', '创业公司命名', '品牌命名', '溢价域名', '域名策略', 'buffer 历史', '域名收购', '类别定义域名']

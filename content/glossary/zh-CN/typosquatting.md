@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 注册热门域名常见拼写错误版本以截获误输流量的行为，常用于广告变现或网络钓鱼。
 keywords: ['误植抢注', '拼写错误域名', '网络钓鱼', '品牌滥用', '网络抢注']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 一组由 12 或 24 个单词组成的列表，用于编码钱包的主密钥；持有助记词即控制钱包，因此它是你唯一必须备份的东西。
 keywords: ['助记词', '恢复短语', '记忆短语', '钱包备份', 'BIP39', '12 个词', '24 个词', '加密恢复']
 level: 1

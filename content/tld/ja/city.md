@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.cityは、Identity Digitalが運営するオープンな汎用トップレベルドメインです。地域ビジネス、都市ガイド、コミュニティサイト向けに設計されており、どのような用途に適しているかを解説します。'
 keywords: ['.cityドメイン', '.cityとは', '.city TLD', '地域ビジネス ドメイン', '都市 ドメイン名', 'Identity Digital', '新gTLD', 'コミュニティサイト ドメイン']

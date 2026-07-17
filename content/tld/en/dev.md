@@ -5,6 +5,7 @@ language: 'en'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: '.dev is Google''s HTTPS-only top-level domain for developers, projects, and tech teams. Learn who can register it, how it affects SEO, and how to buy one.'
 keywords: ['.dev domain', 'what is .dev', 'dev TLD', 'Google Registry dev', 'HSTS preload', 'developer domain', 'register dev domain', 'dev domain SEO']

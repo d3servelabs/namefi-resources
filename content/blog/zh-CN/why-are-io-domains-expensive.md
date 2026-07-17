@@ -5,6 +5,7 @@ language: 'zh-CN'
 tags: ['guide']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['fenwei-bian']
 draft: false
 description: "为什么 .io 域名这么贵？本文详细解析注册局批发定价、科技创业公司的强劲需求、短域名的稀缺性、续费成本，以及新出现的查戈斯主权争议。"
 keywords: ['为什么io域名贵', '为什么.io域名贵', 'io域名贵', 'io域名为什么贵', '.io域名为什么这么贵', '为什么用io域名', 'io域名适合创业公司', 'io域名价格', 'io域名费用', 'io域名续费费用', 'io域名值得买吗', 'io对比com', 'io域名对比ai域名', 'io域名价格', 'io域名为什么更贵', 'io域名定价解析', '我应该买io域名吗', 'io国家顶级域名', '查戈斯io域名', '购买io域名']

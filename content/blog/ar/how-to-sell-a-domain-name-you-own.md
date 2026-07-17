@@ -5,6 +5,7 @@ language: ar
 tags: ['domains', 'guide', 'domain-investing', 'outbound']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "قائمة مرجعية عملية تضع البائع في المقام الأول لتسعير النطاق، والعثور على المشترين المحتملين، والتعامل مع استراتيجيات التواصل، وتجنب الاحتيال، وإتمام عملية النقل بأمان."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png

@@ -5,6 +5,8 @@ language: zh-CN
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: DNS 记录上的加密签名，让解析器能够验证响应是真实的，且在传输过程中未被伪造或篡改。
 keywords: ['DNSSEC', 'DNS 安全', '域名安全', 'DS 记录', '信任链', '加密 DNS']
 level: 1

@@ -4,6 +4,8 @@ date: '2026-06-15'
 language: 'ja'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.cpaドメインは、米国・カナダ・アイルランドの公認会計士（CPA）およびCPA事務所を対象とした、登録時および更新時に資格審査が行われる制限付き・資格認証型の拡張子です。'
 keywords: ['.cpaドメイン', '.cpaとは', 'cpaドメイン登録', '制限付きTLD', 'AICPAドメイン', 'CPA.com', '公認会計士ドメイン', '会計事務所ドメイン']

@@ -4,6 +4,8 @@ date: '2026-05-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 注册商为授权将域名转移至另一家注册商而颁发的每域名短密钥，也称为 EPP 码或转移码。
 keywords: ['授权码', 'EPP 码', '转移码', '域名转移', '授权代码', 'AuthInfo 码']
 level: 1

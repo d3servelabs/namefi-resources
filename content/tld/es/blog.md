@@ -7,6 +7,10 @@ tags:
   - tld
 authors:
   - namefiteam
+editors:
+  - victor-zhou
+translators:
+  - iria-maquieira
 draft: false
 description: 'Descubre todo sobre el dominio .blog: su importancia para creadores de contenido, ventajas de disponibilidad y cómo registrar el tuyo en Namefi hoy mismo.'
 keywords:

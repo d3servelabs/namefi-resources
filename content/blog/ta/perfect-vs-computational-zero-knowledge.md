@@ -5,6 +5,7 @@ language: ta
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 cluster: web3-foundations
 format: explainer

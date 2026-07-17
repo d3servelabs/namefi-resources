@@ -5,6 +5,8 @@ language: es
 priority: P1
 tags: ["tld"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: .dev es el dominio seguro de Google para desarrolladores y proyectos de desarrollo. Descubra por qué es la opción principal para programadores, empresas tecnológicas y equipos de desarrollo.
 keywords: ["tld", "dominio .dev", "desarrolladores", "proyectos de desarrollo", "empresas tecnológicas", "programación", "HTTPS", "Google"]
 relatedArticles:

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Le nombre secret qui contrôle un compte blockchain et signe ses transactions ; il ne doit jamais être partagé.
 keywords: ['clé privée', 'clé de signature', 'clé de portefeuille', 'clé secrète', 'compte blockchain']
 level: 1

@@ -5,6 +5,7 @@ language: es
 tags: ['dominios', 'inversión-en-dominios', 'blogs', 'boletines', 'comunidad']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Una lista seleccionada de domainers, brókeres y comerciantes individuales cuyos blogs, boletines y Substacks vale la pena leer en 2026: por qué es conocido cada uno y cómo se complementan.'
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg

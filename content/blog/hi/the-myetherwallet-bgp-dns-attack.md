@@ -5,6 +5,7 @@ language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: '24 अप्रैल 2018 को, हमलावरों ने Amazon Route 53 के लिए इंटरनेट रूटिंग को हाईजैक किया, myetherwallet.com के DNS उत्तरों को जहरीला किया, और एक सेल्फ-साइन्ड सर्टिफिकेट के पीछे एक फिशिंग क्लोन परोसा — जिससे लगभग $150,000 का Ethereum निकाला गया। Domain Mayday की गहन पड़ताल — क्यों DNS एक ऐसी रूटिंग परत पर निर्भर है जो डिफ़ॉल्ट रूप से भरोसा करती है।'
 keywords: ['myetherwallet', 'bgp hijack', 'dns hijacking', 'amazon route 53', 'route 53 hijack', 'dns security', 'bgp routing security', 'ethereum phishing', 'self-signed certificate', 'enet as10297', 'rpki roa', 'crypto wallet phishing', 'domain security']

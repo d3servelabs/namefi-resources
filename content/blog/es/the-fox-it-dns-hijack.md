@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'En septiembre de 2017, atacantes iniciaron sesión en el registrador de dominios externo de la firma de seguridad holandesa Fox-IT, modificaron su DNS, obtuvieron fraudulentamente un certificado TLS y ejecutaron un ataque de intermediario de 10 horas sobre el tráfico de clientes — hasta que Fox-IT lo detectó y publicó uno de los análisis post-mortem más transparentes de la industria.'
 keywords: ['secuestro dns fox-it', 'fox-it ataque intermediario', 'incidente fox-it 2017', 'secuestro dns', 'compromiso cuenta registrador', 'certificado ssl fraudulento', 'ataque man-in-the-middle', 'seguridad registrador de dominios', 'autenticación dos factores dns', 'dnssec', 'registry lock', 'seguridad de dominios', 'ncc group fox-it']

@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 draft: false
 description: '.fun டொமைன் என்பது Radix நடத்தும் ஒரு திறந்த புதிய gTLD ஆகும். விளையாட்டு, நிகழ்வுகள் மற்றும் pump.fun போன்ற Web3 திட்டங்களில் பிரபலமான இந்த டொமைன் யார் பயன்படுத்துகிறார்கள், என்ன விதிகள் உள்ளன, இதன் மதிப்பு என்ன என்பதை இங்கே காணலாம்.'
 keywords: ['.fun டொமைன்', '.fun TLD', '.fun என்றால் என்ன', '.fun டொமைன்கள்', 'Radix பதிவக நிறுவனம்', 'புதிய gTLD', 'விளையாட்டு டொமைன்கள்', 'pump.fun']

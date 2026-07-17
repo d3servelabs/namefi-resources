@@ -5,6 +5,8 @@ language: de
 priority: P0
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist ein Domain-Paket und wie ermöglicht Tokenisierung die Portfolioverwaltung?
 keywords: ["Domain-Paket","Portfolio","Großhandel","Domain-Sammlung","Asset-Management"]
 relatedArticles:

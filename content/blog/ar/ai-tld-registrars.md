@@ -5,6 +5,7 @@ language: ar
 tags: ['ai-agents', 'comparison']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 format: roundup
 ogImage: ../../assets/ai-tld-registrars-og.jpg

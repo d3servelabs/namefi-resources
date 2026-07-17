@@ -5,6 +5,7 @@ language: es
 tags: ['security', 'domains', 'registrar', 'incident-response']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Un recorrido práctico por las cinco formas en que los atacantes realmente se apoderan de los dominios en el mundo real (ingeniería social, compromiso de la cuenta del registrador, toma de control del proveedor de DNS, secuestros de NS y recuperación de dominios expirados) y los controles específicos que bloquean a cada una.'
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg

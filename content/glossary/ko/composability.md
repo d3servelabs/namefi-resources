@@ -5,6 +5,8 @@ language: ko
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 레고 블록처럼 독립적인 온체인 구성 요소를 결합할 수 있는 능력으로, 토큰화된 도메인을 대출·거래 등 다양한 프로토콜에 연결할 수 있습니다.
 keywords: ['컴포저빌리티', '상호운용성', '빌딩 블록', 'DeFi', 'Web3 통합']
 level: 1

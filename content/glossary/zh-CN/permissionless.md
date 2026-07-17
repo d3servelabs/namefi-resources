@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: zh-CN
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['fenwei-bian']
 description: 区块链和域名管理中的“无许可”是什么意思？
 keywords: ["无许可","去中心化","抗审查","开放访问","区块链"]
 relatedArticles:

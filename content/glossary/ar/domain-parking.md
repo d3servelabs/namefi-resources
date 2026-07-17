@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: وضع إعلانات أو إشعار بيع على نطاق غير متطور لكسب الدخل أو الإشارة لتوفره.
 keywords: ['توقيف النطاق', 'نطاق متوقّف', 'تحقيق الدخل', 'استثمار النطاقات', 'دخل سلبي']
 also_known_as: ['نطاق متوقّف']

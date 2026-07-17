@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: Placer des publicités ou un avis de mise en vente sur un domaine non développé pour générer des revenus ou signaler sa disponibilité.
 keywords: ['parking de domaine', 'domaine parqué', 'monétisation', 'investissement en domaines', 'revenu passif']
 also_known_as: ['Domaine parqué']

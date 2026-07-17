@@ -5,6 +5,8 @@ language: ja
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 分散型識別子（DID）は、中央集権的なレジストリではなく所有者の鍵によって制御される、グローバルに一意のIDであり、サービス間でのアイデンティティ証明に使用される。
 keywords: ['DID', '分散型アイデンティティ', '自己主権型アイデンティティ', 'ブロックチェーンアイデンティティ', 'Web3 アイデンティティ']
 level: 1

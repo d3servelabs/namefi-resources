@@ -5,6 +5,8 @@ language: de
 priority: P1
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Was ist Treuhand und wie bieten Smart Contracts eine vertrauenslose Treuhand für Domains?
 keywords: ["Treuhand","vertrauenswürdige dritte Partei","Smart Contract Treuhand","Trustless","sichere Transaktionen"]
 relatedArticles:

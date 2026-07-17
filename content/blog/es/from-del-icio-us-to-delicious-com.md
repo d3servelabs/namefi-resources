@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 description: 'Cómo el pionero sitio de marcadores sociales se lanzó en 2003 con el famoso truco de dominio "del.icio.us", por qué esos puntos se convirtieron en un impuesto permanente sobre cada mención, y cómo Yahoo lo trasladó al más limpio Delicious.com en 2008.'
 keywords: ['del.icio.us', 'delicious.com', 'nombre de dominio delicious', 'truco de dominio', 'joshua schachter', 'marcadores sociales', 'yahoo delicious', 'actualización de dominio', 'nombres para startups', 'naming de marca', 'dominio premium', 'estrategia de dominio', 'truco de dominio ccTLD', 'dominio que define una categoría']

@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Das Erstellen eines neuen Tokens auf einer Blockchain – bei einer Domain bedeutet es die Ausgabe des NFT, das deren Eigentümerschaft repräsentiert.
 keywords: ['prägen', 'minting', 'NFT-erstellung', 'token-ausgabe', 'on-chain']
 also_known_as: ['Mint']

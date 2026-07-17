@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: தனது சொந்த ICANN அங்கீகாரம் இல்லாமல், ஒரு பெரிய ரெஜிஸ்ட்ராரின் உரிமம் மூலம் டொமைன்களை விற்கும் நிறுவனம்.
 keywords: ['மறுவிற்பனையாளர்', 'டொமைன் மறுவிற்பனையாளர்', 'வெள்ளை-லேபிள் ரெஜிஸ்ட்ரார்', 'ICANN அங்கீகாரம்', 'ரெஜிஸ்ட்ரார்']
 level: 1

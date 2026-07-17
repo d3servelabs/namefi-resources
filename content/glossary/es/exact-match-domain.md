@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: es
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['iria-maquieira']
 description: Un dominio que reproduce exactamente una palabra clave de búsqueda, como besthotels.com, antes muy valorado por el SEO.
 keywords: ['dominio de coincidencia exacta', 'EMD', 'dominio de palabra clave exacta', 'dominio SEO', 'dominio de posicionamiento']
 also_known_as: ['EMD']

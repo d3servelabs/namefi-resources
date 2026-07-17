@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: fr
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 description: "L'estimation de la valeur marchande d'un domaine à partir de ventes comparables, de la demande en mots-clés, de la longueur et de l'extension."
 keywords: ["expertise de domaine", 'valorisation de domaine', 'valeur du domaine', 'prix du domaine', 'ventes comparables']
 also_known_as: ['Évaluation de domaine']

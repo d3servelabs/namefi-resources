@@ -5,6 +5,7 @@ language: es
 tags: ['domains', 'domain-investing', 'domain-flipping', 'comparison']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['iria-maquieira']
 draft: false
 cluster: domain-investing
 series: domain-flipping-skills

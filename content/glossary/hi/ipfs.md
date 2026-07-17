@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 description: एक पीयर-टू-पीयर प्रोटोकॉल जो फ़ाइलों को उनकी सामग्री द्वारा पहचानता है और विकेंद्रीकृत वेब डेटा होस्ट करने के लिए उपयोग होता है।
 keywords: ['IPFS', 'कंटेंट एड्रेसिंग', 'पीयर-टू-पीयर', 'विकेंद्रीकृत स्टोरेज', 'CID']
 also_known_as: ['InterPlanetary File System']

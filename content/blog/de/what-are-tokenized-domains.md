@@ -6,6 +6,7 @@ priority: P0
 tags: ['faq']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 draft: false
 description: "Eine leicht verständliche Einführung in tokenisierte Domains und Domain-Tokenisierung – was es bedeutet, eine Domain zu tokenisieren, wie dies funktioniert und wie sich eine tokenisierte Domain von traditionellen Domains und reinen Blockchain-Namen wie ENS unterscheidet."
 keywords: ['tokenisierte Domain', 'tokenisierte Domains', 'Domain tokenisieren', 'Domains tokenisieren', 'Domain-Tokenisierung', 'Tokenisierung einer Domain', 'Tokenisierung von Domains', 'Domainnamen-Tokenisierung', 'wie man eine Domain tokenisiert', 'was ist eine tokenisierte Domain', 'was sind tokenisierte Domains', 'NFT-Domains', 'NFT-Domain', 'On-Chain-Domains', 'On-Chain-Domain', 'Blockchain-Domains', 'Blockchain-Domain', 'DNS', 'ICANN-Domains', 'Web3-Domains', 'Web3-Domain', 'Domain-NFT', 'Domain als NFT', 'namefi', 'Domain-Eigentum', 'Domain-Asset-Tokenisierung', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', 'tokenisierte Domain vs ENS', 'tokenisierte Domain vs Web3-Domain', 'ICANN-Domain vs Web3-Domain', 'Plattformen für tokenisierte Domains vergleichen']

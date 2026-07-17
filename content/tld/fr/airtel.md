@@ -4,6 +4,8 @@ date: '2025-12-11'
 language: 'fr'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: 'Découvrez tout sur l''extension .airtel, son importance stratégique pour la marque Airtel et comment Namefi révolutionne l''enregistrement de domaines avec le Web3.'
 keywords: ['.airtel', 'domaines .airtel', 'TLD .airtel', 'top-level domain', "qu'est-ce que .airtel", 'pourquoi choisir .airtel', 'quel est le domaine .airtel', 'pourquoi choisir le domaine .airtel', 'domaine de marque', 'investissement domaine', 'blockchain', 'domaine tokenisé', 'bharti airtel', 'web3']

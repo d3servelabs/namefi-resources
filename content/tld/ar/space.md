@@ -5,6 +5,8 @@ language: 'ar'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 description: "اكتشف كل شيء عن نطاق .space. تعرف على استخداماته للمبدعين، الشركات الناشئة، ومشاريع الويب 3. تعرف على مزاياه وسجل نطاقك اليوم عبر Namefi."
 keywords: [".space domains", "ما هو نطاق .space", "لماذا تختار .space", "نطاقات المستوى الأعلى", "شراء نطاق space", "استثمار النطاقات", "نطاقات البلوكتشين", "نطاقات الويب 3", "Web3 domains", "tokenized domain", "creative domains", "نطاقات إبداعية", "tech startup domains", "Namefi", "تسجيل النطاقات"]

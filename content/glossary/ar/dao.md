@@ -4,6 +4,8 @@ date: '2025-06-30'
 language: ar
 tags: ["glossary"]
 authors: ["namefiteam"]
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: ما هو DAO وكيف يمكن أن يرتبط بإدارة النطاقات؟
 keywords: ["DAO","منظمة ذاتية لامركزية","حوكمة","ملكية جماعية","عقود ذكية"]
 relatedArticles:

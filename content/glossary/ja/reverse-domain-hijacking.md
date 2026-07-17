@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: 正当なドメイン所有者からドメインを奪おうとするUDRP制度の悪意ある濫用行為。
 keywords: ['逆ドメインハイジャック', 'RDNH', 'UDRP濫用', 'ドメイン紛争', '悪意ある申立人']
 also_known_as: ['RDNH']

@@ -5,6 +5,7 @@ language: ar
 tags: ['tld', 'domains']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: 'أفضل 10 امتدادات نطاقات لتأمينها لمكتبك القانوني، بما في ذلك سبب كون .law الامتداد القانوني الوحيد المقيّد بالمحامين الموثّقين (بينما .esq و.legal و.attorney و.lawyer مفتوحة للجميع)، مع استراتيجية الحماية الدفاعية.'

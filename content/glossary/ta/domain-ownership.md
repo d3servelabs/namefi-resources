@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனை கட்டுப்படுத்த, பயன்படுத்த மற்றும் மாற்றம் செய்ய உள்ள உரிமைகள்; டோக்கனைசேஷன் அந்த உரிமைகளை ரெஜிஸ்ட்ரார் கணக்கில் மட்டுமல்லாமல் வாலட்டில் ஆன்-செயினாக பதிவு செய்கிறது.
 keywords: ['டொமைன் உரிமை', 'NFT டொமைன்', 'ரெஜிஸ்ட்ரார்', 'கஸ்டோடியல்', 'வாலட் உரிமை']
 level: 1

@@ -5,6 +5,7 @@ language: en
 priority: P0
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 description: A shared, append-only ledger maintained across many computers, the foundation of tokenized ownership.
 keywords: ['blockchain', 'distributed ledger', 'decentralized', 'immutable', 'consensus']
 level: 1

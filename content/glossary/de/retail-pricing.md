@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: de
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['kai-kunstmann']
 description: Der Preis, den ein Endnutzer für eine Domain zahlt, die er nutzen möchte – typischerweise weit über dem Großhandels-Investorbodenpreis.
 keywords: ['Einzelhandelspreis', 'Endnutzerpreis', 'Domain-Einzelhandel', 'Endnutzer-Preis', 'Vollpreis']
 also_known_as: ['Endnutzerpreis']

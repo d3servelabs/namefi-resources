@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 description: 명백한 상표 침해 도메인을 신속히 정지시키는 저비용 분쟁 처리 절차로, UDRP를 보완합니다.
 keywords: ['URS', '통합 신속 정지', '도메인 정지', '상표 침해', '신규 gTLD']
 also_known_as: ['Uniform Rapid Suspension', '통합 신속 정지']

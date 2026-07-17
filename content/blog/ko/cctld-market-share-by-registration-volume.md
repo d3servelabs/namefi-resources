@@ -5,6 +5,7 @@ language: ko
 tags: ['cctld', 'domains', 'market-analysis', 'registry']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 cluster: choosing-a-tld
 format: analysis

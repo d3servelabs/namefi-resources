@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: メインのブロックチェーン上に構築され、トランザクションを高速・低コストで処理するネットワーク。EthereumにおけるBaseなどがその例。
 keywords: ['レイヤー2', 'ロールアップ', 'スケーリング', 'オプティミスティックロールアップ', 'ZKロールアップ']
 level: 1

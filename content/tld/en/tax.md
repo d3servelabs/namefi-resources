@@ -4,6 +4,7 @@ date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 description: 'The .tax domain is an open generic gTLD run by Binky Moon. Learn who uses it, the registration rules, pricing dynamics, reputation, and whether it fits your firm.'
 keywords: ['.tax domain', 'what is .tax', '.tax TLD', 'tax domain extension', '.tax registration', 'accounting domain', 'tax preparer website', 'new gTLD']

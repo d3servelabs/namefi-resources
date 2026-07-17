@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: إساءة استخدام UDRP بنية سيئة لمحاولة الاستيلاء على دومين من مالكه الشرعي.
 keywords: ['الاختطاف العكسي للدومين', 'RDNH', 'إساءة استخدام UDRP', 'نزاع دومين', 'مُشتكٍ بنية سيئة']
 also_known_as: ['RDNH']

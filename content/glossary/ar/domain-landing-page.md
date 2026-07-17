@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['zakia-al-sinai']
 description: الصفحة الوحيدة اللي بتظهر على نطاق موقوف أو معروض للبيع، غالباً فيها إعلانات أو بحث أو عرض شراء.
 keywords: ['صفحة هبوط', 'لاندر', 'صفحة للبيع', 'توقيف النطاق', 'تحقيق الدخل من النطاق']
 also_known_as: ['صفحة هبوط']

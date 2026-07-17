@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインを別のレジストラへ移管できないようにするステータス。明示的にロックを解除するまで移管は拒否される。
 keywords: ['移管ロック', 'レジストラロック', 'ドメインセキュリティ', 'EPP ステータス', 'ドメイン移管']
 also_known_as: ['レジストラロック']

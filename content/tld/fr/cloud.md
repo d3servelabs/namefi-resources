@@ -5,6 +5,8 @@ language: 'fr'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['alan-machin']
 draft: false
 description: "Découvrez le domaine .cloud : l'extension idéale pour l'innovation, le SaaS et la tech. Apprenez ses avantages et enregistrez-le dès aujourd'hui sur Namefi."
 keywords: ['.cloud domains', '.cloud TLD', '.cloud top-level domain', 'what is .cloud', 'why choose .cloud', 'what is the .cloud domain', 'why choose the .cloud domain', 'investir dans les domaines', 'domaines blockchain', 'domaines tokenisés', 'cloud computing', 'SaaS', 'startups tech', 'transformation numérique', 'Namefi']

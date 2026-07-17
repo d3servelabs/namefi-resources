@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 description: ドメインをアドレスやサービスにマッピングするゾーン内のエントリ — A、AAAA、CNAME、MX、TXT など。
 keywords: ['DNSレコード', 'Aレコード', 'AAAAレコード', 'CNAME', 'MXレコード', 'TXTレコード']
 level: 1

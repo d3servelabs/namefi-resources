@@ -5,6 +5,8 @@ language: 'ja'
 priority: P1
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['chie-kudo']
 draft: false
 description: '.tvドメインとは何か？ツバル国のccTLDでありながら、テレビ・動画・ライブストリーミングのホームとして世界中で活用されています。運営主体・登録資格・価格・SEOへの影響を解説します。'
 keywords: ['.tvドメイン', '.tv TLD', 'tvドメイン', '.tvとは', '.tvドメインとは', '動画配信 .tv', 'ストリーミング用ドメイン', 'ツバルドメイン', '.tvドメイン登録', 'twitch.tv', '動画ストリーミングドメイン']

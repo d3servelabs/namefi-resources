@@ -5,6 +5,8 @@ language: ta
 priority: P1
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: தனித்தனி சங்கிலியிலுள்ள கூறுகளை கட்டுமான தொகுதிகளைப் போல் இணைக்கும் திறன்; ஒரு டோக்கனாக்கப்பட்ட டொமைன் கடன், வர்த்தகம் மற்றும் பிற நெறிமுறைகளில் நேரடியாக இணைந்து செயல்படலாம்.
 keywords: ['கூட்டமைவு திறன்', 'இடைச்செயல்திறன்', 'கட்டுமான தொகுதிகள்', 'DeFi', 'Web3 ஒருங்கிணைப்பு']
 level: 1

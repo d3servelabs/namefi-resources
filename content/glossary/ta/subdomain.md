@@ -4,6 +4,8 @@ date: '2026-06-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['arivu-iyandhiran']
 description: ஒரு டொமைனுக்கு தனிப்பட்ட முகவரியை உருவாக்க அதன் முன்னால் சேர்க்கப்படும் முன்னொட்டு; உதாரணமாக blog.example.com அல்லது app.example.com.
 keywords: ['துணை-டொமைன்', 'புரவலன்', 'blog.example.com', 'DNS', 'இரண்டாம் நிலை டொமைன்']
 level: 1

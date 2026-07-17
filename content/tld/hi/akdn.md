@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: 'hi'
 tags: ['tld', 'akdn', 'domain-names', 'branding', 'web3']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['nirmit-buddhiraja']
 draft: false
 description: 'जानें .akdn TLD के बारे में सब कुछ। यह किसके लिए है, इसके फायदे क्या हैं और आप Namefi के माध्यम से इस प्रतिष्ठित डोमेन एक्सटेंशन को कैसे सुरक्षित कर सकते हैं।'
 keywords: ['.akdn domains', '.akdn TLD', 'top-level domain', 'what is .akdn', 'why choose .akdn', 'what is the .akdn domain', 'why choose the .akdn domain', 'domain investing', 'blockchain domains', 'tokenized domain', 'web3 domains', 'buy .akdn domain', 'Aga Khan Development Network domain', 'niche TLDs', 'digital identity']

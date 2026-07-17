@@ -4,6 +4,8 @@ date: '2025-12-10'
 language: ko
 tags: ['tld']
 authors: ['namefiteam']
+editors: ['victor-zhou']
+translators: ['gong-jihye']
 draft: false
 description: ".alipay TLD의 목적을 알아보십시오. 이 고유한 브랜드 TLD가 핀테크 분야에서 보안을 강화하는 방법과 도메인 투자의 미래에 어떤 의미를 갖는지 살펴보십시오."
 keywords: [".alipay 도메인", ".alipay TLD", "최상위 도메인", ".alipay란 무엇인가", ".alipay를 선택해야 하는 이유", ".alipay 도메인이란 무엇인가", ".alipay 도메인을 선택해야 하는 이유", "핀테크 도메인", "브랜드 TLD", "알리바바 그룹 도메인", "블록체인 도메인", "토큰화 도메인", "도메인 투자", "디지털 결제 보안", "Namefi"]
