@@ -1,13 +1,22 @@
 ---
-title: 'What is the .airbus TLD and Why Does It Matter?'
-date: '2025-12-10'
+title: "What Is the .airbus Domain? Airbus's Brand TLD Explained"
+date: '2026-07-24'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
-description: 'Discover the power of the .airbus Top-Level Domain. Learn about its exclusive usage, brand authority in aviation, and how to secure premium domains with Namefi.'
-keywords: ['.airbus domains', '.airbus TLD', 'top-level domain', 'what is .airbus', 'why choose .airbus', 'what is the .airbus domain', 'why choose the .airbus domain', 'brand TLD', 'aviation domains', 'domain investing', 'blockchain', 'tokenized domain', 'corporate identity', 'Namefi Web3 domains', 'secure domain registration']
+description: 'The .airbus domain is the closed brand TLD of Airbus S.A.S., the European aerospace manufacturer, not open to the public. Learn who runs it and what to register instead.'
+keywords: ['.airbus domain', 'what is .airbus', '.airbus TLD', 'Airbus brand domain', 'dot-brand TLD', 'Airbus registry operator', 'closed generic TLD', 'is .airbus available']
+faqs:
+  - question: 'Can anyone register a .airbus domain?'
+    answer: 'No. .airbus is a closed brand TLD delegated to Airbus S.A.S. Only Airbus and parties it authorizes can hold a .airbus name, so it is not available to the general public through any registrar.'
+  - question: 'Who operates the .airbus registry?'
+    answer: 'Airbus S.A.S. is the registry operator, with Identity Digital providing the technical back-end. The TLD was delegated to the DNS root zone in 2016 under ICANN''s New gTLD Program.'
+  - question: 'What kind of company is Airbus?'
+    answer: 'Airbus S.A.S. is the European aerospace and commercial-aircraft manufacturer behind the .airbus domain.'
+  - question: 'What can I register instead of .airbus?'
+    answer: 'Because .airbus is closed, choose an open extension for your own project. A matching .com, or a modern alternative like .io or .xyz, can be registered by anyone through an accredited registrar such as Namefi.'
 relatedArticles:
   - /en/blog/what-are-tokenized-domains/
   - /en/blog/what-is-a-tld/
@@ -28,50 +37,113 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-## **What is .airbus?**
+The **.airbus** domain is a **closed brand [top-level domain](/en/glossary/tld/)** operated by **Airbus S.A.S.**, the European aerospace and commercial-aircraft manufacturer. It is not a public extension: unlike [.com](/en/tld/com/) or [.io](/en/tld/io/), you cannot register a `.airbus` name for your own project, because the entire namespace belongs to one company.
 
-The **.airbus** extension is a specialized [Top-Level Domain (TLD)](/en/glossary/tld/) falling under the category of a "Brand TLD." Unlike open extensions like [.com](/en/tld/com/) or [.net](/en/tld/net/), **.airbus** was created specifically for **Airbus S.A.S.**, the European multinational aerospace corporation. It was established as part of [ICANN's new gTLD program](https://newgtlds.icann.org/en/about/program), which allowed organizations to apply for their own branded domain endings to increase digital security and brand visibility.
+If you searched for the ".airbus domain" hoping to buy one, the short answer is that you can't — but this page explains exactly what `.airbus` is, who controls it, why a company runs its own TLD, and what you can register instead.
 
-As a Brand TLD, .airbus represents the pinnacle of corporate digital identity. It allows the company to operate a closed ecosystem, ensuring that every website ending in this extension is authentically owned and verified by the aerospace giant. For domain investors and developers, observing the deployment of TLDs like .airbus offers critical insight into the future of the internet, where specific industries and corporations move away from crowded legacy domains toward dedicated, verified namespaces.
+## .airbus at a glance
 
-## **How People Are Using .airbus**
+| Fact | Detail |
+| --- | --- |
+| TLD type | Brand [new gTLD](/en/glossary/new-gtld/) (closed / "dot-brand") |
+| Registry operator | Airbus S.A.S. (technical back-end by Identity Digital) |
+| Year delegated | 2016 |
+| IDN support | Not relevant — closed namespace |
+| DNSSEC | Supported |
+| Registration restrictions | **Closed** — restricted to Airbus and parties it authorizes; not available to the public |
+| Best for | Airbus's own corporate, product, and campaign websites |
 
-Because .airbus is a restricted Brand TLD, its usage is strategic and focused on corporate governance, product differentiation, and partner ecosystems. It is not generally used by the public for personal blogs, but rather serves as a digital infrastructure tool for the aviation industry.
+## What is .airbus?
 
-*   **Digital Authenticity:** The primary use is to guarantee trust. When a user sees a URL ending in .airbus, they know immediately it is an official channel, mitigating the risk of [phishing](/en/glossary/phishing/) or [cybersquatting](/en/glossary/cybersquatting/).
-*   **Product Showcases:** It is used to highlight specific aircraft families or technological innovations within the Airbus group.
-*   **Internal Infrastructure:** Large corporations use proprietary TLDs for employee portals, cloud systems, and internal developer tools, streamlining their network architecture.
-*   **Partner Portals:** Secure gateways for suppliers and airlines to interact with Airbus logistics and data services.
+`.airbus` is a **[generic top-level domain](/en/glossary/gtld/)** that ICANN delegated to **Airbus S.A.S.** as part of its New gTLD Program. The string is the company's own name: **Airbus**, the European aerospace and commercial-aircraft manufacturer.
 
-## **Notable Entities Using .airbus**
+But `.airbus` is a **brand TLD** — often called a "dot-brand" — not an open extension anyone can buy into. The company applied for the string specifically so that it, and only it, would control every domain ending in `.airbus`. You can confirm the delegation and operator on the authoritative [IANA root-zone record for .airbus](https://www.iana.org/domains/root/db/airbus.html).
 
-As this is a closed [registry](/en/glossary/registry/), the "notable entities" are exclusively divisions and initiatives within the Airbus ecosystem. However, this strategy highlights how major players utilize domain names to assert authority.
+## History of .airbus
 
-*   **Airbus Official Registry:** The core management of the domain infrastructure is handled by Airbus's IT and legal divisions to ensure total compliance.
-*   **nic.airbus:** Often used as the network information center for the TLD, providing technical details about the namespace.
-*   **Campaign Specific Sites:** While specific live URLs change based on marketing campaigns, the TLD allows for clean, intuitive naming conventions like `careers.airbus` or `innovation.airbus` (hypothetical examples of standard Brand TLD usage).
+`.airbus` was **delegated to the DNS [root zone](/en/glossary/root-zone/) on May 26, 2016**, later in the New gTLD Program's rollout than many of the first-wave dot-brands. **Identity Digital** runs the technical back-end on Airbus's behalf, operating the infrastructure that keeps the namespace resolving and secure, while Airbus S.A.S. remains the registry operator of record.
 
-For a broader look at how major corporations manage their internet resources, you can check the [IANA Delegation Record for .airbus](https://www.iana.org/domains/root/db/airbus.html).
+Its registry agreement with [ICANN](/en/glossary/icann/) includes **Specification 13**, the contract clause that formally designates a TLD as a brand and lets the operator keep it closed. The record has stayed active since delegation, unlike several brand TLDs that were later handed back and removed from the root.
 
-## **Why Choose .airbus?**
+## Is .airbus available to register?
 
-While the .airbus TLD is exclusive to the corporation, the *concept* behind it illustrates why choosing the right niche or Brand TLD is vital for any business or investor. Here is why high-value, specific TLDs are a superior choice:
+**No.** `.airbus` is a **closed brand TLD**, so there is no open registration and no [registrar](/en/glossary/registrar/) — including Namefi — can sell you a `.airbus` name. Registrations are limited to Airbus and organizations it authorizes, such as subsidiaries or partners. This is by design: a dot-brand exists precisely so the trademark holder controls the whole namespace and no one else can register a confusing or malicious lookalike.
 
-*   **Unmatched Trust:** A specialized TLD signals to users that the website is legitimate. For .airbus, this means zero tolerance for counterfeit sites.
-*   **SEO and Branding:** Search engines and users alike appreciate short, relevant URLs. A domain that matches the brand name exactly improves recall and click-through rates.
-*   **Security:** Brand TLDs often implement stricter security protocols (like mandatory [DNSSEC](/en/glossary/dnssec/)), ensuring the safety of user data.
-*   **Availability:** For businesses looking at other new gTLDs (like [.tech](/en/tld/tech/), [.xyz](/en/tld/xyz/), or .fly), the availability of short, premium keywords is significantly higher than in the saturated .com market.
+If you have a genuine business relationship with Airbus and a legitimate need for a `.airbus` address, that request would go through Airbus's own corporate channels, not a commercial registrar.
 
-## **Register Your .airbus Domain at Namefi**
+## How Airbus uses .airbus
 
-Are you looking to secure a high-value domain name that offers the same level of prestige and authority as .airbus? While the .airbus registry is currently restricted to the corporation, **Namefi** is your gateway to registering thousands of other premium TLDs and aviation-related domains that define your brand.
+Brand TLDs give a company a private space to organize its web presence. Typical uses for a dot-brand like `.airbus` include:
 
-At Namefi, we are revolutionizing domain registration by bridging the gap between Web2 and [Web3](/en/glossary/web3/).
+- **Product and division sites** on clean, memorable addresses tied directly to the brand.
+- **Campaign and event pages** that are obviously official because only the company can create them.
+- **Internal tools and portals** where a branded suffix signals a trusted, first-party destination.
 
-*   **Seamless Integration:** We are an ICANN-accredited [registrar](/en/glossary/registrar/) that allows you to manage traditional domains with the ease of [blockchain](/en/glossary/blockchain/) technology.
-*   **Tokenized Domains:** When you register a domain with Namefi, you can mint it as an [NFT](/en/glossary/nft/), giving you true ownership, easy transferability, and [liquidity](/en/glossary/domain-liquidity/) for domain investing.
-*   **Bulk Search & AI Tools:** Use our advanced tools to find the perfect alternative to .airbus for your aerospace, travel, or tech business.
+**Who it's not for:** anyone outside Airbus. Because the namespace is closed, there is no scenario in which an independent developer, investor, or business can build on `.airbus`.
 
-Don't let your perfect name fly away. Secure your digital real estate today with the most innovative registrar in the market.
+## Notable sites using .airbus
 
-[**Register your domain at Namefi today**](https://namefi.io)
+There are **no third-party sites** on `.airbus`, and there never will be while it stays a closed brand TLD — every `.airbus` address is controlled by Airbus S.A.S. Airbus continues to run its public presence from its long-established [.com](/en/tld/com/) domain, airbus.com, and uses the brand TLD selectively rather than as a wholesale replacement. Rather than point to a specific address that may change, the honest description is simple: `.airbus` is Airbus's private namespace, used only for the company's own properties.
+
+## What is a dot-brand TLD?
+
+A **dot-brand** (or brand TLD) is a top-level domain that a single company owns and operates for its exclusive use, secured through ICANN's [New gTLD Program](/en/glossary/new-gtld/). Large industrial and manufacturing groups were among the many corporations that applied for their own name as a TLD, and dot-brands share a few defining traits:
+
+- **Closed registration.** Only the brand and its affiliates can hold names.
+- **Specification 13.** A registry-agreement addendum that formally recognizes the TLD as a brand and relaxes some rules that apply to open generics.
+- **Security and control.** The brand eliminates the risk of anyone else registering a `.airbus` lookalike, which strengthens resistance to [phishing](/en/glossary/phishing/) and impersonation.
+
+Some brands invest heavily in their TLD; others register it defensively and barely use it. A number of companies have even terminated their dot-brands after deciding the upkeep was not worth it.
+
+## .airbus vs open domain alternatives
+
+If your goal was a short, brandable name rather than the `.airbus` string specifically, an open extension is the right tool. Here is how a closed brand TLD compares with domains you can actually register:
+
+| Feature | .airbus | [.com](/en/tld/com/) | [.io](/en/tld/io/) | [.xyz](/en/tld/xyz/) |
+| --- | --- | --- | --- | --- |
+| Who can register | Airbus only | Anyone | Anyone | Anyone |
+| Type | Brand new gTLD (closed) | Legacy gTLD | ccTLD used generically | New gTLD |
+| Core use | Airbus's own sites | Universal default | Tech & startups | Generic / Web3 |
+| Available to you | No | Yes | Yes | Yes |
+
+For your own venture, a matching `.com` remains the safest default; [.io](/en/tld/io/) suits technical products; and [.xyz](/en/tld/xyz/) is a flexible, low-cost modern option.
+
+## Reputation and trust
+
+Ironically, the closed nature of `.airbus` is exactly what makes it trustworthy: because only Airbus can create these addresses, a `.airbus` link is verifiably official, which is why brand TLDs are considered strong against impersonation and email spoofing — a meaningful benefit for an aerospace supplier whose partner and procurement communications are frequent phishing targets. That trust, however, benefits Airbus alone — it does not transfer to any name you might register, since you cannot register one. For your own project, deliverability and reputation will come from a well-configured domain on an open extension, not from a brand TLD you don't control.
+
+## Looking for an "airbus" name? Register an alternative at Namefi
+
+You can't buy a `.airbus` domain, but if you want a short, aviation-flavored name of your own, you can secure it on an open extension in minutes:
+
+1. **Search** your desired name across open TLDs like `.com`, `.io`, or `.xyz`.
+2. **Choose** the extension that fits your brand and budget.
+3. **Register** and configure [DNS](/en/glossary/dns/).
+
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and Web3, with transparent pricing, fast DNS, and the option to hold your name as a [tokenized domain](/en/glossary/tokenized-domain/) for provable ownership and easier transfer.
+
+## Frequently asked questions
+
+### Can anyone register a .airbus domain?
+
+No. `.airbus` is a closed brand TLD delegated to Airbus S.A.S. Only Airbus and parties it authorizes can hold a `.airbus` name, so it is not available to the general public through any registrar.
+
+### Who operates the .airbus registry?
+
+Airbus S.A.S. is the registry operator, with Identity Digital providing the technical back-end. The TLD was delegated to the DNS root zone in 2016 under ICANN's New gTLD Program.
+
+### What kind of company is Airbus?
+
+Airbus S.A.S. is the European aerospace and commercial-aircraft manufacturer behind the `.airbus` domain.
+
+### What can I register instead of .airbus?
+
+Because `.airbus` is closed, choose an open extension for your own project. A matching `.com`, or a modern alternative like `.io` or `.xyz`, can be registered by anyone through an accredited registrar such as Namefi.
+
+## Related resources
+
+- [What is a TLD?](/en/blog/what-is-a-tld/) — the fundamentals behind top-level domains.
+- [How a TLD affects domain value](/en/blog/how-tld-affects-domain-value/) — why the extension matters.
+- [.com TLD guide](/en/tld/com/) — the open default to compare against.
+- [.io TLD guide](/en/tld/io/) and [.xyz TLD guide](/en/tld/xyz/) — modern open alternatives.
+- Glossary: [new gTLD](/en/glossary/new-gtld/), [registry](/en/glossary/registry/), [ICANN](/en/glossary/icann/).

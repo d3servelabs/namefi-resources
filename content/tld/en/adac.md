@@ -1,13 +1,22 @@
 ---
-title: 'What is .adac TLD and why choose it?'
-date: '2025-12-10'
+title: 'What Was the .adac Domain? A Terminated Brand TLD'
+date: '2026-07-24'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
-description: 'Discover the power of the .adac TLD. Learn about its origins, its significance in the automotive world, and how it represents trust and security in the domain industry.'
-keywords: ['.adac domains', '.adac TLD', 'top-level domain', 'what is .adac', 'why choose .adac', 'what is the .adac domain', 'why choose the .adac domain', 'ADAC registry', 'automotive domains', 'domain investing', 'blockchain domains', 'tokenized domain', 'brand TLD', 'German internet domains', 'secure domains']
+description: "The .adac domain was a brand TLD for Germany's ADAC motoring club that ICANN terminated in 2022. Learn its history, why it ended, and what to register instead."
+keywords: ['.adac domain', 'what is .adac', '.adac TLD', 'ADAC brand domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .adac available']
+faqs:
+  - question: 'Can I register a .adac domain?'
+    answer: 'No. .adac was terminated in 2022 and removed from the DNS root zone, so it no longer exists as a working extension and cannot be registered through any registrar. Even before that, it was a closed brand TLD never open to the public.'
+  - question: 'What happened to .adac?'
+    answer: 'ICANN removed .adac from the root zone on 26 November 2022 after the registry agreement covering it ended. It had been delegated about seven years earlier, in November 2015.'
+  - question: 'Was .adac ever open to the public?'
+    answer: 'No. .adac was always a closed brand TLD, meaning only ADAC e.V. could ever register names under it. It was never sold to outside individuals or businesses.'
+  - question: 'Did anyone ever use a .adac domain?'
+    answer: 'No public site of note. ADAC never opened the namespace to outside registrants, so nothing was lost when the TLD was removed.'
 relatedArticles:
   - /en/blog/top-tlds-to-secure-for-your-accounting-firm/
   - /en/blog/what-is-a-tld/
@@ -28,55 +37,85 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-## **What is .adac?**
+The **.adac** domain was a **brand [top-level domain](/en/glossary/tld/)** created for **ADAC e.V.** (Allgemeiner Deutscher Automobil-Club), Germany's largest automobile and motoring club. It no longer exists: ICANN **removed `.adac` from the DNS [root zone](/en/glossary/root-zone/) in 2022**, so the extension no longer resolves and cannot be registered.
 
-The **.adac** [Top-Level Domain](/en/glossary/tld/) (TLD) is a specialized "Brand TLD" (dot-brand) delegated to the **Allgemeiner Deutscher Automobil-Club e.V. (ADAC)**, Europe's largest motoring association. Unlike generic extensions like [.com](/en/tld/com/) or [.net](/en/tld/net/), the .adac extension serves as a dedicated digital identity for the organization, offering a unique layer of trust, security, and brand verification.
+If you searched for the ".adac domain," this page explains what it was, why it disappeared, and what the story of a terminated dot-brand means for anyone choosing a domain today.
 
-Introduced during the expansion of the internet's namespace by **[ICANN](https://www.icann.org/)** (Internet Corporation for Assigned Names and Numbers), the .adac TLD was designed to centralize the diverse services offered by the club—ranging from roadside assistance to insurance and travel—under a unified, authentic digital banner.
+## .adac at a glance
 
-For domain investors and tech enthusiasts, .adac represents the evolution of the internet towards **verified digital identity**. In an era where [phishing](/en/glossary/phishing/) and domain spoofing are rampant, a closed Brand TLD like .adac signals to the user that they are interacting with a verified entity. While currently restricted primarily to the organization's use, observing how major entities utilize such TLDs provides valuable insight into the future of **[domain investing](https://namefi.io)** and corporate digital strategy.
+| Fact | Detail |
+| --- | --- |
+| TLD type | Brand [new gTLD](/en/glossary/new-gtld/) (closed / "dot-brand") |
+| Registry operator | ADAC e.V. (Allgemeiner Deutscher Automobil-Club) — agreement now terminated |
+| Year delegated | 2015 |
+| Year terminated | 2022 (removed from the root zone) |
+| Current status | **Terminated** — not present in the DNS root zone |
+| Registration restrictions | **Not available** — the TLD no longer exists |
 
-## **How People Are Using .adac**
+## What was .adac?
 
-Because .adac is a Brand TLD, its usage is highly strategic and focused on user safety and service consolidation. Here is how the namespace is effectively utilized:
+`.adac` was a **closed brand [gTLD](/en/glossary/new-gtld/)**: a top-level domain reserved for a single organization's exclusive use. The string is the acronym of the **Allgemeiner Deutscher Automobil-Club e.V.**, Germany's largest automobile and motoring club. Only ADAC could ever hold names under the extension.
 
-*   **Verified Service Portals:** It is used to host secure login pages for members, ensuring that sensitive data regarding insurance and membership details is transmitted through an authenticated channel.
-*   **Emergency Response:** The TLD helps streamline digital entry points for roadside assistance and air rescue services, providing short, memorable URLs that are easy to recall in stressful situations.
-*   **Corporate Communications:** It serves as a hub for press releases, mobility studies, and automotive testing reports, reinforcing the authority of the content.
-*   **Travel and Mobility Guides:** The extension is used to categorize vast amounts of travel data, maps, and route planning tools distinctively under the club's brand.
+Like other dot-brands, `.adac` was never open to the public. You can confirm its status on the authoritative [IANA root-zone record for .adac](https://www.iana.org/domains/root/db/adac.html), which now shows the domain is not present in the root zone.
 
-## **Notable Entities Using .adac**
+## History of .adac
 
-As a restricted Brand TLD, the "entities" using this domain are primarily internal divisions of the ADAC ecosystem. However, these examples highlight the power of a dedicated TLD structure:
+`.adac` was **delegated on 20 November 2015** as part of ICANN's New gTLD Program, the 2012 expansion that let organizations worldwide apply for their own brand as a suffix. ADAC secured the string that matched its own name.
 
-1.  **ADAC e.V.** – The parent organization uses the TLD to anchor its primary digital presence and membership services.
-2.  **ADAC Luftrettung** – The charitable air rescue service utilizes the domain infrastructure to coordinate and inform regarding their helicopter fleet and emergency operations.
-3.  **ADAC Versicherung** – The insurance arm of the group uses the TLD to provide distinct, secure pathways for policyholders to manage their automotive and travel insurance.
+The club never opened the TLD to outside registrants. On **26 November 2022, ICANN removed `.adac` from the root zone**, about seven years after it was first delegated — one of many closed dot-brands whose owners chose not to keep the registry running long term.
 
-These examples demonstrate how a TLD can be used not just for a website, but as a structural component of a massive organization's digital architecture.
+## Why was .adac discontinued?
 
-## **Why Choose .adac?**
+A brand TLD only earns its keep if the organization builds public-facing use on it, and running one carries ongoing [ICANN](/en/glossary/icann/) fees and technical maintenance regardless of how many names exist under it. When an owner decides that cost is not worth it, it can **voluntarily terminate** its registry agreement; ICANN then removes the TLD from the root zone, and the extension stops resolving worldwide.
 
-While .adac is exclusive to the association, understanding its advantages highlights what you should look for when choosing your own high-value or Brand TLDs for your business or investment portfolio:
+`.adac` is one of many closed dot-brands retired this way. Because it was never open to the public, its termination affected no outside registrants — there were none — but it is still a reminder that a delegated TLD is not a permanent fixture of the internet.
 
-*   **Unmatched Trust and Security:** A domain ending in .adac acts as a seal of approval. Users know immediately that the site is official and not a fraudulent copycat.
-*   **SEO Authority:** Search engines value relevance. For queries related to German automotive services, mobility, and travel safety, the semantic relevance of the TLD reinforces the content's authority.
-*   **Branding Clarity:** It eliminates the need for long, hyphenated domain names (e.g., `adac-insurance-services.com` can simply become `insurance.adac`).
-*   **Control:** The [registry](/en/glossary/registry/) owner has complete control over who registers domains, effectively eliminating [cybersquatting](/en/glossary/cybersquatting/) within that namespace.
+## Can you register a .adac domain?
 
-## **Register Your .adac Domain at Namefi**
+**No.** `.adac` no longer exists in the DNS, so there is nothing to register and no [registrar](/en/glossary/registrar/) can offer it. It was never available to the public even while it was active, because it was a closed brand namespace controlled by the club.
 
-Are you interested in the world of specialized TLDs, domain investment, and [Web3](/en/glossary/web3/) integration?
+If a `.adac` link ever appears again, it would only be because ADAC re-applies in a later ICANN round — there is no public path to owning one today.
 
-While the .adac registry is currently restricted to the ADAC organization, the world of domains is vast. At **Namefi**, we specialize in helping you secure high-value domains and **[tokenized Web3 domains](https://namefi.io)** that offer similar benefits of trust, brevity, and branding power.
+## What .adac teaches about choosing a TLD
 
-Whether you are looking for available brandable domains, new gTLDs that fit your niche (like .auto, .car, or [.club](/en/tld/club/)), or want to [tokenize](/en/glossary/tokenize/) your existing portfolio for easier trading on the [blockchain](/en/glossary/blockchain/), Namefi is your premier partner.
+The rise and removal of `.adac` is a useful reminder for anyone picking a domain:
 
-**Why use Namefi?**
-*   **[ICANN](/en/glossary/icann/)-Accredited** [Registrar](/en/glossary/registrar/).
-*   Seamless integration of **Web2 DNS and Web3 capabilities**.
-*   Transparent pricing and advanced domain management tools.
+- **Brand TLDs are private.** A dot-brand is never something an outside project can build on, no matter how well known the parent organization is.
+- **Not every TLD is permanent.** Delegated strings can be handed back and removed, so long-term projects are safest on well-established, widely used extensions.
+- **Openness matters.** For your own venture, an open extension anyone can register and renew is far more dependable than a single-owner string.
 
-Don't wait for the perfect name to disappear. Secure your digital identity today.
+## What to register instead at Namefi
 
-**[Start your domain search at Namefi](https://namefi.io)**
+Since `.adac` is gone, choose a stable, open extension for your own name:
+
+1. **Search** your desired name across open TLDs such as [.com](/en/tld/com/), [.io](/en/tld/io/), or [.xyz](/en/tld/xyz/).
+2. **Choose** the extension that best fits your brand and budget.
+3. **Register** and configure [DNS](/en/glossary/dns/).
+
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and Web3, with transparent pricing, fast DNS, and the option to hold your name as a [tokenized domain](/en/glossary/tokenized-domain/) for provable ownership and easier transfer.
+
+## Frequently asked questions
+
+### Can I register a .adac domain?
+
+No. `.adac` was terminated in 2022 and removed from the DNS root zone, so it no longer exists as a working extension and cannot be registered through any registrar. Even before that, it was a closed brand TLD never open to the public.
+
+### What happened to .adac?
+
+ICANN removed `.adac` from the root zone on 26 November 2022 after the registry agreement covering it ended. It had been delegated about seven years earlier, in November 2015.
+
+### Was .adac ever open to the public?
+
+No. `.adac` was always a closed brand TLD, meaning only ADAC e.V. could ever register names under it. It was never sold to outside individuals or businesses.
+
+### Did anyone ever use a .adac domain?
+
+No public site of note. ADAC never opened the namespace to outside registrants, so nothing was lost when the TLD was removed.
+
+## Related resources
+
+- [What is a TLD?](/en/blog/what-is-a-tld/) — how top-level domains work.
+- [What are tokenized domains?](/en/blog/what-are-tokenized-domains/) — owning a domain on-chain.
+- [How a TLD affects domain value](/en/blog/how-tld-affects-domain-value/) — why the extension matters.
+- [.com TLD guide](/en/tld/com/), [.io TLD guide](/en/tld/io/), and [.xyz TLD guide](/en/tld/xyz/) — open extensions you can actually register.
+- Glossary: [new gTLD](/en/glossary/new-gtld/), [ICANN](/en/glossary/icann/), [root zone](/en/glossary/root-zone/).
