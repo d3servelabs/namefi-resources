@@ -95,8 +95,55 @@ explanation. Examples that produced the shipped set:
   `.com` bar stands tallest over shorter `.net/.org/.io/.ai` bars, a globe and
   connection lines behind, cursor on `.com`."*
 
-For brand-adjacent stories use brand-inspired colors and motifs (tags, arrows,
-storefronts, keys, receipts, maps) — **not** exact trademark logo recreations.
+For **generic / abstract** brand-adjacent stories use brand-inspired colors and
+motifs (tags, arrows, storefronts, keys, receipts, maps) — not exact trademark
+logo recreations. **But** when the *subject is a specific brand or a domain
+upgrade* (a company rename, a `getX.com → x.com` shortening, a brand history),
+the real brand marks ARE the subject — and, for an upgrade, the domain names too
+— so render them accurately per the next section.
+
+### Domain-upgrade illustrations (domains are the hero)
+
+This section's **two-domain rules apply to a domain *upgrade*** — a piece pairing
+an older/longer domain with a newer/shorter one (e.g. `teslamotors.com →
+tesla.com`, `getdropbox.com → dropbox.com`, `ubercab.com → uber.com`). There the
+**two domain names are the hero** — the largest, most central, most
+attention-grabbing elements — and everything else is a small decorative accent.
+
+- **Two-line, long → short layout.** Domain upgrades usually *shorten*, so stack
+  them vertically: the **older, longer** domain **smaller on top**, a bold arrow
+  pointing **down**, then the **newer, shorter** domain **bigger** below. (Not a
+  single left-to-right row — the size contrast is what tells the story.)
+- **Real trademark colours — colour is part of the trademark.** Render every
+  brand logo, wordmark and mark in its **own correct, real trademark colours**
+  exactly as the company uses them (Box blue, Dropbox blue, Tesla red, Uber
+  black, Snap yellow, Buffer navy). **Never invent or recolour a brand mark**,
+  and do **not** let the house palette cue (the "confident web blue", the
+  no-dark-blue aesthetic) override a brand's real colour — the aesthetic ban is
+  for *decorative* fills, not for a real brand mark that happens to be dark blue.
+  (This colour rule holds for **any** brand piece, upgrade or not.)
+- **Period-accurate marks.** Put the **old-era** logo beside the old domain and
+  the **current** logo beside the new domain, so the mark evolves with the name.
+- **Product / UI / vehicle stays decorative.** Any app screen, device, car or
+  object is a tiny accent tucked low or behind — never larger or more prominent
+  than the domain names.
+- **Spell every domain exactly** (both the old and the new), no missing/extra
+  characters — these locale-neutral strings are the subject and are QC-checked.
+
+**Brand-history / logo-only pieces (no domain pair).** A brand piece that is
+*not* a domain upgrade — a logo evolution, a single-brand explainer — has no old
++ new domain to pair, so the two-line long→short layout, the domain-pairing, and
+the "spell every domain" rule **do not apply**. It still owes the **real
+trademark colours** and (if it shows more than one era of a mark)
+**period-accurate marks**; render whatever domain(s) it *does* name spelled
+exactly, and otherwise compose it like a normal house-style illustration.
+
+> Reserved-zone variant: namefi-astra's `OgCard` demo renders a *text-free*
+> "bleed master" of this same recipe — the top-left title zone and top-right
+> wordmark corner are left as clean cream so a localized headline + logo overlay
+> later. Those masters live in namefi-astra
+> `apps/frontend/.storybook/og-fixtures/bleed-samples/` and are exercised by
+> `apps/resources/src/components/og-card.stories.tsx`.
 
 ## Per-image visual QC (mandatory)
 
@@ -114,6 +161,15 @@ Image models are non-deterministic; open every generated file and check:
 4. **Bottom bleed (covers)** — a cover's bottom ~22% is empty cream (room for the
    social caption); nothing important sits there.
 5. **Spelling** — all in-image text correct and matches the intended strings.
+6. **Brand fidelity (any brand piece)** — every brand mark is in its **real
+   trademark colours** (no invented or recoloured logos); if it shows more than
+   one era of a mark, they are period-accurate.
+   **For a domain *upgrade* also confirm:** the old-era mark sits by the old
+   domain and the current mark by the new, the two **domain names are the hero**
+   (largest/central; product/UI stays a small accent), and the **two-line long →
+   short** layout reads correctly (older/longer smaller on top, arrow down,
+   newer/shorter bigger). (A logo-only brand-history piece with no domain pair is
+   exempt from the pairing/two-line/domain checks.)
 
 If an image fails, regenerate just that one (tweak the prompt: pull content
 toward center, reinforce the empty reserves, shorten/relocate text), re-inspect,
