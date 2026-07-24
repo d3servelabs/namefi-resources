@@ -3,7 +3,7 @@ title: "What Is the .able Domain? Able Inc.'s Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .able domain is the closed brand TLD of Japanese real-estate company Able Inc., not open to the public. Learn what it is, and what to register instead.'

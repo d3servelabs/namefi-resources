@@ -3,7 +3,7 @@ title: "What Is the .alibaba Domain? Alibaba's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .alibaba domain is the closed brand TLD of Alibaba Group, a Chinese e-commerce and technology group, not open to the public. Learn what to register instead.'

@@ -3,7 +3,7 @@ title: "What Is the .alipay Domain? Alipay's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .alipay domain is the closed brand TLD tied to Alibaba Group and its Alipay payments platform, not open to the public. Learn who runs it and what to register instead.'

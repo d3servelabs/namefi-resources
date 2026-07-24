@@ -3,7 +3,7 @@ title: "What Is the .allstate Domain? Allstate's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .allstate domain is the closed brand TLD of insurer Allstate, not open to the public. Learn what it is, who runs it, why it exists, and what to register instead.'

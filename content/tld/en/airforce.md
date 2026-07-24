@@ -3,7 +3,7 @@ title: 'What Is the .airforce Domain? An Open, Non-Military TLD'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .airforce domain is an open gTLD run by Dog Beach, LLC (Identity Digital), not tied to any air force. Learn who actually uses it and who can register.'

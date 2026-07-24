@@ -3,7 +3,7 @@ title: 'What Was the .active Domain? A Terminated Brand TLD'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .active domain was a brand TLD for The Active Network that ICANN terminated in 2019. Learn its history, why it was removed, and what to register instead.'

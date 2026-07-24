@@ -3,7 +3,7 @@ title: 'What Is the .am Domain? Armenia''s Global Domain-Hack ccTLD'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .am domain? Armenia''s open, worldwide ccTLD known for domain hacks like will.i.am. Manager, eligibility, pricing, and registration explained.'

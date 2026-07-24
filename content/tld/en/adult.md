@@ -3,7 +3,7 @@ title: 'What Is the .adult Domain? An Open Adult-Industry TLD'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .adult domain is an open gTLD for the adult-content industry, run by ICM Registry AD LLC. Learn who registers it and its email deliverability trade-offs.'

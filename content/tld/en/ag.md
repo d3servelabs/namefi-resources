@@ -3,7 +3,7 @@ title: "What Is the .ag Domain? Antigua and Barbuda's Global ccTLD"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .ag domain? Antigua and Barbuda''s open ccTLD, known for German AG corporate branding and domain hacks. Manager, eligibility, and pricing.'

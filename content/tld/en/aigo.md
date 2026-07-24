@@ -3,7 +3,7 @@ title: 'What Was the .aigo Domain? A Terminated Brand TLD'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aigo domain was a brand TLD for the Chinese electronics brand aigo that ICANN terminated in 2020. Learn its history and what to register instead.'

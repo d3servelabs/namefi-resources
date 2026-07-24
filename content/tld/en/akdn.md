@@ -3,7 +3,7 @@ title: "What Is the .akdn Domain? AKDN's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .akdn domain is the closed brand TLD of the Aga Khan Development Network, not open to the public. Learn who runs it and what to register instead.'

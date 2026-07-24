@@ -3,7 +3,7 @@ title: "What Is .agakhan? The Aga Khan Foundation's Brand TLD"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .agakhan domain is the closed brand TLD of the Aga Khan Foundation, not open to the public. Learn what it is, who runs it, and what to register instead.'

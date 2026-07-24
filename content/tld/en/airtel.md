@@ -3,7 +3,7 @@ title: "What Is the .airtel Domain? Airtel's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .airtel domain is the closed brand TLD of Bharti Airtel, a major Indian telecom company, not open to the public. Learn who runs it and what to register instead.'

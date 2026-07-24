@@ -3,7 +3,7 @@ title: "What Is the .aig Domain? AIG's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aig domain is the closed brand TLD of American International Group (AIG), a global insurer, not open to the public. Learn who runs it and what to register instead.'

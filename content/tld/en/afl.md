@@ -3,7 +3,7 @@ title: "What Is .afl? The AFL's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .afl domain is the closed brand TLD of the Australian Football League, not open to the public. Learn what it is, who runs it, and what to register instead.'

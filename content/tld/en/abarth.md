@@ -3,7 +3,7 @@ title: 'What Was the .abarth Domain? A Terminated Brand TLD'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abarth domain was a brand TLD for the Abarth car marque that ICANN terminated in 2023. Learn its history, why it was removed, and what to register instead.'

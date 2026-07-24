@@ -3,7 +3,7 @@ title: 'What Is the .alsace Domain? A Geo-TLD for the Alsace Region'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .alsace domain is a geographic gTLD for the Alsace region of eastern France. Learn who runs it, who can register, and how it suits local branding.'

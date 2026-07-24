@@ -3,7 +3,7 @@ title: "What Is the .al Domain? Albania's Two-Tier ccTLD"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .al domain? Albania''s country-code TLD, open at the third level but restricted at second-level. Manager, eligibility, and pricing explained.'

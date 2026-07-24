@@ -3,7 +3,7 @@ title: 'What Is the .abudhabi Domain? A Geo-TLD for Abu Dhabi'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abudhabi domain is a geographic gTLD for the Emirate of Abu Dhabi in the UAE. Learn who operates it, who can register, and whether it suits your brand.'

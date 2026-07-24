@@ -3,7 +3,7 @@ title: "What Is the .ally Domain? Ally Financial's TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .ally domain is the closed brand TLD of Ally Financial, not open to the public despite the common word. Learn who runs it and what to register instead.'

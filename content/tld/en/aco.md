@@ -3,7 +3,7 @@ title: "What Is .aco? ACO's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aco domain is the closed brand TLD of German drainage maker ACO, not a healthcare extension. Learn what it is, who runs it, and what to register instead.'

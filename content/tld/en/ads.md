@@ -3,7 +3,7 @@ title: "What Is .ads? Google's Closed Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .ads domain is a closed brand TLD run by Google, not open to advertisers or the public. Learn what it is, who controls it, and what to register instead.'

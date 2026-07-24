@@ -3,7 +3,7 @@ title: 'What Is the .africa Domain? A Pan-African gTLD'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .africa domain is a geographic gTLD representing the whole African continent. Learn who operates it, who can register, and how it fits pan-African branding.'

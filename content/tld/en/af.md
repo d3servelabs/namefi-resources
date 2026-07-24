@@ -3,7 +3,7 @@ title: "What Is the .af Domain? Afghanistan's Country-Code TLD"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .af domain? Afghanistan''s country-code TLD, managed by AFGNIC. Learn its history, eligibility, and how pricing works before you register.'

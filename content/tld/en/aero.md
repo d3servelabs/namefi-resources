@@ -3,7 +3,7 @@ title: 'What Is the .aero Domain? A Restricted Aviation TLD'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aero domain is a restricted sponsored TLD for the aviation industry, run by SITA. Learn who qualifies for an aero ID and how it compares with .com.'

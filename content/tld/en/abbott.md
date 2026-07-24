@@ -3,7 +3,7 @@ title: "What Is the .abbott Domain? Abbott's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abbott domain is the closed brand TLD of Abbott Laboratories, not open to the public. Learn what it is, who runs it, why it exists, and what to register instead.'

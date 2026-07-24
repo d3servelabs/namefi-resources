@@ -4,7 +4,7 @@ date: '2026-07-24'
 language: 'en'
 priority: P1
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .ad domain? Andorra''s country-code TLD, generally restricted to local trademark or presence holders. Manager, eligibility, and pricing explained.'

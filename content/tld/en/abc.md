@@ -3,7 +3,7 @@ title: "What Is the .abc Domain? Disney/ABC's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abc domain is the closed brand TLD of Disney Enterprises for the ABC television network, not open to the public. Learn what it is and what to register instead.'

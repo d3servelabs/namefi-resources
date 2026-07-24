@@ -3,7 +3,7 @@ title: "What Is the .ac Domain? Ascension Island's Global ccTLD"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .ac domain? Ascension Island''s open, worldwide ccTLD used for academic branding and domain hacks. Manager, eligibility, and pricing explained.'

@@ -3,7 +3,7 @@ title: "What Is .aetna? Aetna's Brand TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aetna domain is health insurer Aetna''s closed brand TLD, not open to the public. Learn what it is, who runs it, why it exists, and what to register instead.'

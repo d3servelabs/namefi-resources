@@ -3,7 +3,7 @@ title: 'What Was the .adac Domain? A Terminated Brand TLD'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: "The .adac domain was a brand TLD for Germany's ADAC motoring club that ICANN terminated in 2022. Learn its history, why it ended, and what to register instead."

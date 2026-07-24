@@ -3,7 +3,7 @@ title: 'What Was the .alfaromeo Domain? A Terminated Brand TLD'
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .alfaromeo domain was a brand TLD for the Italian car marque Alfa Romeo that ICANN terminated in 2023. Learn its history and what to register instead.'
