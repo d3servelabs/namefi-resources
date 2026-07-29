@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abbott domain is the closed brand TLD of Abbott Laboratories, not open to the public. Learn what it is, who runs it, why it exists, and what to register instead.'
-keywords: ['.abbott domain', 'what is .abbott', '.abbott TLD', 'Abbott brand domain', 'dot-brand TLD', 'Abbott Laboratories registry', 'closed generic TLD', 'is .abbott available']
+keywords: ['Abbott brand domain', 'dot-brand TLD', 'Abbott Laboratories registry', 'closed generic TLD', 'is .abbott available']
 faqs:
   - question: 'Can anyone register a .abbott domain?'
     answer: 'No. .abbott is a closed brand TLD delegated to Abbott Laboratories. Only Abbott and parties it authorizes can hold a .abbott name, so it is not available to the general public through any registrar.'

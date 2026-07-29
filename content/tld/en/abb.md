@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abb domain is the closed brand TLD of engineering group ABB Ltd, not open to the public. Learn what it is, who runs it, why it exists, and what to register instead.'
-keywords: ['.abb domain', 'what is .abb', '.abb TLD', 'ABB brand domain', 'dot-brand TLD', 'ABB Ltd registry', 'closed generic TLD', 'is .abb available']
+keywords: ['ABB brand domain', 'dot-brand TLD', 'ABB Ltd registry', 'closed generic TLD', 'is .abb available']
 faqs:
   - question: 'Can anyone register a .abb domain?'
     answer: 'No. .abb is a closed brand TLD delegated to ABB Ltd. Only ABB and parties it authorizes can hold a .abb name, so it is not available to the general public through any registrar.'

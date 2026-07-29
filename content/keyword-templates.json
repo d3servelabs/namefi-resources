@@ -1,0 +1,10 @@
+{
+  "tld": {
+    "en": ["what is .{tld}", ".{tld} domain", ".{tld} TLD"],
+    "de": ["was ist .{tld}", ".{tld} Domain", ".{tld} TLD"]
+  },
+  "glossary": {
+    "en": ["{term}", "what is {term}", "{term} meaning", "{term} definition"],
+    "de": ["{term}", "was ist {term}", "{term} Bedeutung", "{term} Definition"]
+  }
+}

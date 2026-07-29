@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Das hierarchische Namensystem, das menschenlesbare Domainnamen in IP-Adressen übersetzt, die Computer zur Weiterleitung von Datenverkehr im Internet verwenden.
-keywords: ['DNS', 'Domain Name System', 'Namensauflösung', 'DNS-Lookup', 'DNS-Einträge', 'Nameserver', 'Rekursiver Resolver', 'DNSSEC', 'Internetinfrastruktur']
+keywords: ['Domain Name System', 'Namensauflösung', 'DNS-Lookup', 'DNS-Einträge', 'Nameserver', 'Rekursiver Resolver', 'DNSSEC', 'Internetinfrastruktur']
 also_known_as: ['Domain Name System']
 level: 2
 sources:
