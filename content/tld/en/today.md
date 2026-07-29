@@ -78,11 +78,9 @@ Adoption grew steadily from 2014 onward as blogs, news aggregators, and event si
 
 **Who it's not ideal for:** evergreen brands, reference resources, or businesses whose value is permanence rather than recency. A law firm, an archive, or a long-lived SaaS may find "today" implies content that expires. For those, a [.com](/en/tld/com), [.org](/en/tld/org), or a sector suffix is a cleaner fit.
 
-## Notable sites using .today
+## How .today is typically used
 
-- **nintendo.today** — Nintendo's official "Nintendo Today!" service, used to surface daily news, events, and announcements to fans. It is one of the most visible mainstream uses of the suffix and shows how a major brand can deploy a dictionary-word gTLD for a recurring-content product.
-
-Beyond brand deployments, the typical .today registration is a descriptive two-word combination — a city plus "today," an industry plus "today," or a deal/offer phrase — used by independent publishers, local news projects, and marketing campaigns where the word does real work in the name.
+There is no single flagship brand deployment that dominates the extension. The typical .today registration is a descriptive two-word combination — a city plus "today," an industry plus "today," or a deal/offer phrase — used by independent publishers, local news projects, and marketing campaigns where the word does real work in the name.
 
 ## .today vs other domains
 

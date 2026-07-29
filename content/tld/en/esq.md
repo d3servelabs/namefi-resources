@@ -67,7 +67,7 @@ You can confirm the delegation and operator details in the authoritative [IANA r
 
 ## History of .esq
 
-The registry agreement for .esq was signed by ICANN and Charleston Road Registry in 2014, but the string sat largely dormant for years. The pivotal moment came in **May 2023**, when Google announced a batch of eight new top-level domains and opened .esq to the public. As reported by the legal-technology publication [LawSites](https://www.lawnext.com/2023/05/theres-a-new-top-level-domain-for-lawyers-esq.html), .esq reached general availability after a brief Early Access Period in which premium pricing started high and dropped daily until it hit the standard rate.
+The registry agreement for .esq was signed by ICANN and Charleston Road Registry in 2014, but the string sat largely dormant for years. The pivotal moment came in **May 2023**, when Google announced a batch of eight new top-level domains and opened .esq to the public. As reported by the legal-technology publication [LawSites](https://www.lawnext.com/2023/05/theres-a-new-top-level-domain-for-lawyers-esq.html#:~:text=Each%20day%2C%20the%20price%20dropped), .esq reached general availability after a brief Early Access Period in which premium pricing started high and dropped daily until it hit the standard rate.
 
 To launch the extension, Google highlighted real attorneys already using it — **Erika Kullberg** at `erika.esq` and **Ugo Lord** ("the TikTok attorney") at `ugo.esq` — signaling that .esq was aimed at the personal-brand and legal-creator market rather than large institutional firms.
 
@@ -82,9 +82,8 @@ To launch the extension, Google highlighted real attorneys already using it — 
 
 ## Notable sites using .esq
 
-- **erika.esq** — Erika Kullberg, attorney and personal-finance educator, featured by Google at launch.
-- **ugo.esq** — Ugo Lord, an attorney with a large social-media following.
-- **sam.esq** — Sam Higgs, a Houston-based lawyer who uses the domain for his personal site.
+- **erika.esq** — [Erika Kullberg](https://www.lawnext.com/2023/05/theres-a-new-top-level-domain-for-lawyers-esq.html#:~:text=attorney%20and%20personal%20finance%20advisor%20Erika%20Kullberg), attorney and personal-finance educator, featured by Google at launch.
+- **ugo.esq** — [Ugo Lord](https://www.lawnext.com/2023/05/theres-a-new-top-level-domain-for-lawyers-esq.html#:~:text=the%20website%20of%20Ugo%20Lord%2C%20who%20describes%20himself%20as), an attorney who calls himself "the TikTok attorney."
 
 These early adopters share a pattern: individual attorneys using `firstname.esq` as a personal brand, which is exactly the use case the extension was designed to encourage.
 
