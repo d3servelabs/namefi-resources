@@ -1,13 +1,22 @@
 ---
-title: "Unlock the Future of Tech with the .aig TLD"
-date: '2025-12-10'
+title: "What Is the .aig Domain? AIG's Brand TLD Explained"
+date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
-description: "Discover the .aig TLD, the emerging domain choice for Artificial Intelligence and Generative tech. Learn why .aig is the smart choice for your next innovative project."
-keywords: [".aig domains", ".aig TLD", "top-level domain .aig", "what is .aig", "why choose .aig", "what is the .aig domain", "why choose the .aig domain", "artificial intelligence domains", "blockchain domains", "tokenized domains", "generative AI domains", "tech startup branding", "domain investing", "Web3 domains", "AI gaming"]
+description: 'The .aig domain is the closed brand TLD of American International Group (AIG), a global insurer, not open to the public. Learn who runs it and what to register instead.'
+keywords: ['.aig domain', 'what is .aig', '.aig TLD', 'AIG brand domain', 'dot-brand TLD', 'AIG registry operator', 'closed generic TLD', 'is .aig available']
+faqs:
+  - question: 'Can anyone register a .aig domain?'
+    answer: 'No. .aig is a closed brand TLD delegated to American International Group, Inc. Only AIG and parties it authorizes can hold a .aig name, so it is not available to the general public through any registrar.'
+  - question: 'Who operates the .aig registry?'
+    answer: 'American International Group, Inc. is the registry operator, with GoDaddy Registry providing the technical back-end. The TLD was delegated to the DNS root zone in 2015 under ICANN''s New gTLD Program.'
+  - question: 'What does AIG stand for?'
+    answer: 'AIG stands for American International Group, a global insurance and financial-services company.'
+  - question: 'What can I register instead of .aig?'
+    answer: 'Because .aig is closed, choose an open extension for your own project. A matching .com, or a modern alternative like .io or .xyz, can be registered by anyone through an accredited registrar such as Namefi.'
 relatedArticles:
   - /en/blog/ai-vs-io-domain/
   - /en/blog/why-are-io-domains-expensive/
@@ -28,46 +37,113 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-## **What is .aig?**
+The **.aig** domain is a **closed brand [top-level domain](/en/glossary/tld/)** operated by **American International Group, Inc. (AIG)**, a global insurance and financial-services company. It is not a public extension: unlike [.com](/en/tld/com/) or [.io](/en/tld/io/), you cannot register a `.aig` name for your own project, because the entire namespace belongs to one company.
 
-The digital landscape is constantly evolving, and with the explosive growth of technology, the demand for specific, relevant domain extensions has never been higher. The **.aig** [Top-Level Domain (TLD)](/en/glossary/tld/) is emerging as a powerful designation specifically curated for the intersection of **A**rtificial **I**ntelligence and **G**enerative technologies (or **G**aming).
+If you searched for the ".aig domain" hoping to buy one, the short answer is that you can't — but this page explains exactly what `.aig` is, who controls it, why a company runs its own TLD, and what you can register instead.
 
-While country-code TLDs like [.ai (Anguilla)](https://en.wikipedia.org/wiki/.ai) became the standard for the first wave of AI startups, the market has become incredibly saturated. The .aig extension offers a fresh territory for the next generation of innovators. It is designed to signal advanced capability, typically associating a brand with Generative AI, AI Governance, or AI-driven Gaming.
+## .aig at a glance
 
-Whether utilized in a traditional DNS setting or bridged on the [blockchain](/en/glossary/blockchain/) as a [tokenized domain](https://namefi.io), .aig represents the cutting edge of the modern web.
+| Fact | Detail |
+| --- | --- |
+| TLD type | Brand [new gTLD](/en/glossary/new-gtld/) (closed / "dot-brand") |
+| Registry operator | American International Group, Inc. (technical back-end by GoDaddy Registry) |
+| Year delegated | 2015 |
+| IDN support | Not relevant — closed namespace |
+| DNSSEC | Supported |
+| Registration restrictions | **Closed** — restricted to AIG and parties it authorizes; not available to the public |
+| Best for | AIG's own corporate, product, and campaign websites |
 
-## **How People Are Using .aig**
+## What is .aig?
 
-Because of its strong association with future-tech, the .aig TLD is attracting a specific, high-value demographic. Here is how it is currently being utilized:
+`.aig` is a **[generic top-level domain](/en/glossary/gtld/)** that ICANN delegated to **American International Group, Inc.** as part of its New gTLD Program. The three letters are the company's own name: **AIG** is short for **American International Group**, a global insurance and financial-services company.
 
-*   **Generative AI Platforms:** Startups building Large Language Models (LLMs) or image generation tools use .aig to distinguish themselves from general AI aggregators.
-*   **AI Gaming Studios:** Developers creating non-player characters (NPCs) powered by machine learning are adopting .aig to blend "AI" and "Gaming."
-*   **Automated Investment Groups:** Fintech companies using algorithms for trading are leveraging the acronym for trust and modernity.
-*   **[Web3](/en/glossary/web3/) and DAO Governance:** Decentralized Autonomous Organizations focused on AI safety and governance are securing .aig domains to [tokenize](/en/glossary/tokenize/) their brand identity on the blockchain.
+But `.aig` is a **brand TLD** — often called a "dot-brand" — not an open extension anyone can buy into. The company applied for the string specifically so that it, and only it, would control every domain ending in `.aig`. You can confirm the delegation and operator on the authoritative [IANA root-zone record for .aig](https://www.iana.org/domains/root/db/aig.html).
 
-## **Notable Entities Using .aig**
+## History of .aig
 
-As a newer entrant to the domain space compared to legacy extensions like [.com](/en/tld/com/) or [.net](/en/tld/net/), .aig is currently a "land of opportunity" rather than a museum of established giants. However, adoption is accelerating among niche tech sectors:
+`.aig` was **delegated to the DNS [root zone](/en/glossary/root-zone/) on April 9, 2015**, during the same wave of ICANN's New gTLD Program that brought hundreds of corporate names into the domain system. **GoDaddy Registry** runs the technical back-end on AIG's behalf, operating the infrastructure that keeps the namespace resolving and secure, while American International Group, Inc. remains the registry operator of record.
 
-1.  **Generative Art Collectives:** Several decentralized artist communities are migrating to .aig to showcase algorithmic artwork.
-2.  **Next-Gen Tech Incubators:** Forward-thinking accelerators are using the extension to host portfolio sites for their AI-native cohorts.
-3.  **Strategic Domain Investors:** recognizing the scarcity of short [.ai](/en/tld/ai/) domains, investors are securing premium .aig keywords (e.g., *chat.aig*, *draw.aig*, *play.aig*) anticipating the next boom in tech naming conventions.
+Its registry agreement with [ICANN](/en/glossary/icann/) includes **Specification 13**, the contract clause that formally designates a TLD as a brand and lets the operator keep it closed. The record has stayed active since delegation, unlike several brand TLDs that were later handed back and removed from the root.
 
-*Note: As this TLD grows, early adopters have the unique advantage of defining the namespace before major corporations dominate the [registry](/en/glossary/registry/).*
+## Is .aig available to register?
 
-## **Why Choose .aig?**
+**No.** `.aig` is a **closed brand TLD**, so there is no open registration and no [registrar](/en/glossary/registrar/) — including Namefi — can sell you a `.aig` name. Registrations are limited to AIG and organizations it authorizes, such as subsidiaries or partners. This is by design: a dot-brand exists precisely so the trademark holder controls the whole namespace and no one else can register a confusing or malicious lookalike.
 
-Choosing the right domain name is critical for SEO, branding, and user trust. Here is why you should consider registering a .aig domain:
+If you have a genuine business relationship with AIG and a legitimate need for a `.aig` address, that request would go through AIG's own corporate channels, not a commercial registrar.
 
-*   **Availability:** Unlike .com or .ai, where most dictionary words and short names are taken or prohibitively expensive, .aig offers a wide selection of premium, short, and memorable names.
-*   **Targeted Branding:** It immediately tells your audience that you are involved in high-tech, specifically Generative AI or smart gaming. It filters your audience automatically to those interested in innovation.
-*   **Investment Potential:** As the "Generative" aspect of AI becomes the industry standard, owning a relevant .aig domain could yield significant ROI, especially when managed as a digital asset.
-*   **Modern Appeal:** It signals that your business is native to the era of 2025 and beyond, separating you from legacy competitors stuck on older TLDs.
+## How AIG uses .aig
 
-## **Register Your .aig Domain at Namefi**
+Brand TLDs give a company a private space to organize its web presence. Typical uses for a dot-brand like `.aig` include:
 
-Ready to secure your brand's future in the age of artificial intelligence? Don’t wait until the best names are gone. At **Namefi**, we make domain registration seamless, offering you the unique ability to manage your standard domains with the flexibility of Web3 technology.
+- **Product and division sites** on clean, memorable addresses tied directly to the brand.
+- **Campaign and event pages** that are obviously official because only the company can create them.
+- **Internal tools and portals** where a branded suffix signals a trusted, first-party destination.
 
-Whether you are a developer launching a new app, a domain investor scouting for the next big trend, or a business rebranding for the AI era, Namefi is your trusted partner.
+**Who it's not for:** anyone outside AIG. Because the namespace is closed, there is no scenario in which an independent developer, investor, or business can build on `.aig`.
 
-**[Register your .aig domain with Namefi today](https://namefi.io)** and own a piece of the future internet.
+## Notable sites using .aig
+
+There are **no third-party sites** on `.aig`, and there never will be while it stays a closed brand TLD — every `.aig` address is controlled by American International Group, Inc. AIG continues to run its public presence from its long-established [.com](/en/tld/com/) domain, aig.com, and uses the brand TLD selectively rather than as a wholesale replacement. Rather than point to a specific address that may change, the honest description is simple: `.aig` is AIG's private namespace, used only for the company's own properties.
+
+## What is a dot-brand TLD?
+
+A **dot-brand** (or brand TLD) is a top-level domain that a single company owns and operates for its exclusive use, secured through ICANN's [New gTLD Program](/en/glossary/new-gtld/). Financial and insurance groups were among the many large corporations that applied for their own name as a TLD, and dot-brands share a few defining traits:
+
+- **Closed registration.** Only the brand and its affiliates can hold names.
+- **Specification 13.** A registry-agreement addendum that formally recognizes the TLD as a brand and relaxes some rules that apply to open generics.
+- **Security and control.** The brand eliminates the risk of anyone else registering a `.aig` lookalike, which strengthens resistance to [phishing](/en/glossary/phishing/) and impersonation.
+
+Some brands invest heavily in their TLD; others register it defensively and barely use it. A number of companies have even terminated their dot-brands after deciding the upkeep was not worth it.
+
+## .aig vs open domain alternatives
+
+If your goal was a short, brandable name rather than the `.aig` string specifically, an open extension is the right tool. Here is how a closed brand TLD compares with domains you can actually register:
+
+| Feature | .aig | [.com](/en/tld/com/) | [.io](/en/tld/io/) | [.xyz](/en/tld/xyz/) |
+| --- | --- | --- | --- | --- |
+| Who can register | AIG only | Anyone | Anyone | Anyone |
+| Type | Brand new gTLD (closed) | Legacy gTLD | ccTLD used generically | New gTLD |
+| Core use | AIG's own sites | Universal default | Tech & startups | Generic / Web3 |
+| Available to you | No | Yes | Yes | Yes |
+
+For your own venture, a matching `.com` remains the safest default; [.io](/en/tld/io/) suits technical products; and [.xyz](/en/tld/xyz/) is a flexible, low-cost modern option.
+
+## Reputation and trust
+
+Ironically, the closed nature of `.aig` is exactly what makes it trustworthy: because only AIG can create these addresses, a `.aig` link is verifiably official, which is why brand TLDs are considered strong against impersonation and email spoofing — a meaningful benefit for a financial-services brand that scammers regularly try to imitate. That trust, however, benefits AIG alone — it does not transfer to any name you might register, since you cannot register one. For your own project, deliverability and reputation will come from a well-configured domain on an open extension, not from a brand TLD you don't control.
+
+## Looking for an "aig" name? Register an alternative at Namefi
+
+You can't buy a `.aig` domain, but if you want a short name — maybe an "aig" acronym of your own — you can secure it on an open extension in minutes:
+
+1. **Search** your desired name across open TLDs like `.com`, `.io`, or `.xyz`.
+2. **Choose** the extension that fits your brand and budget.
+3. **Register** and configure [DNS](/en/glossary/dns/).
+
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and Web3, with transparent pricing, fast DNS, and the option to hold your name as a [tokenized domain](/en/glossary/tokenized-domain/) for provable ownership and easier transfer.
+
+## Frequently asked questions
+
+### Can anyone register a .aig domain?
+
+No. `.aig` is a closed brand TLD delegated to American International Group, Inc. Only AIG and parties it authorizes can hold a `.aig` name, so it is not available to the general public through any registrar.
+
+### Who operates the .aig registry?
+
+American International Group, Inc. is the registry operator, with GoDaddy Registry providing the technical back-end. The TLD was delegated to the DNS root zone in 2015 under ICANN's New gTLD Program.
+
+### What does AIG stand for?
+
+AIG stands for American International Group, a global insurance and financial-services company.
+
+### What can I register instead of .aig?
+
+Because `.aig` is closed, choose an open extension for your own project. A matching `.com`, or a modern alternative like `.io` or `.xyz`, can be registered by anyone through an accredited registrar such as Namefi.
+
+## Related resources
+
+- [What is a TLD?](/en/blog/what-is-a-tld/) — the fundamentals behind top-level domains.
+- [How a TLD affects domain value](/en/blog/how-tld-affects-domain-value/) — why the extension matters.
+- [.com TLD guide](/en/tld/com/) — the open default to compare against.
+- [.io TLD guide](/en/tld/io/) and [.xyz TLD guide](/en/tld/xyz/) — modern open alternatives.
+- Glossary: [new gTLD](/en/glossary/new-gtld/), [registry](/en/glossary/registry/), [ICANN](/en/glossary/icann/).

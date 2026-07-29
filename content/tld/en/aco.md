@@ -1,13 +1,22 @@
 ---
-title: 'Unlock Potential with the .aco TLD: What You Need to Know'
-date: '2025-12-10'
+title: "What Is .aco? ACO's Brand TLD Explained"
+date: '2026-07-24'
 language: 'en'
 tags: ['tld']
-authors: ['namefiteam']
+authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
-description: 'Discover the .aco TLD! Learn why this unique domain extension is gaining traction for businesses, healthcare, and Web3 portfolios. Secure your .aco at Namefi.'
-keywords: ['.aco domains', '.aco TLD', 'top-level domain .aco', 'what is .aco', 'why choose .aco', 'what is the .aco domain', 'why choose the .aco domain', 'buy .aco domain', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'healthcare domains', 'brand protection', 'new gTLD']
+description: 'The .aco domain is the closed brand TLD of German drainage maker ACO, not a healthcare extension. Learn what it is, who runs it, and what to register instead.'
+keywords: ['.aco domain', 'what is .aco', '.aco TLD', 'ACO brand domain', 'dot-brand TLD', 'ACO Severin Ahlmann registry', 'closed generic TLD', 'is .aco available', 'ACO drainage systems']
+faqs:
+  - question: 'Can anyone register a .aco domain?'
+    answer: 'No. .aco is a closed brand TLD delegated to ACO Severin Ahlmann GmbH & Co. KG. Only ACO and parties it authorizes can hold a .aco name, so it is not available to the general public through any registrar.'
+  - question: 'Who operates the .aco registry?'
+    answer: 'ACO Severin Ahlmann GmbH & Co. KG is the registry operator, with LEMARIT providing the technical back-end. The TLD was delegated to the DNS root zone on July 16, 2015, under ICANN''s New gTLD Program.'
+  - question: 'Does .aco stand for Accountable Care Organization?'
+    answer: 'No. The .aco domain belongs to ACO, a German maker of drainage and civil-engineering systems, not to any healthcare organization. Accountable Care Organizations have no claim on or use of the .aco namespace.'
+  - question: 'What can I register instead of .aco?'
+    answer: 'Because .aco is closed, choose an open extension for your own project. A matching .com, or a modern alternative like .io or .xyz, can be registered by anyone through an accredited registrar such as Namefi.'
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/ai-vs-io-domain/
@@ -28,50 +37,115 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-## **What is .aco?**
+The **.aco** domain is a **closed brand [top-level domain](/en/glossary/tld/)** operated by **ACO Severin Ahlmann GmbH & Co. KG**, a German manufacturer of drainage and construction systems. It is not a public extension, and it is not a healthcare extension either: unlike [.com](/en/tld/com/) or [.io](/en/tld/io/), you cannot register a `.aco` name for your own project or organization, because the entire namespace belongs to one company.
 
-In the expanding universe of the internet, choosing the right digital identity is crucial. The **.aco** extension is a unique [Top-Level Domain](/en/glossary/tld/) (TLD) that has garnered attention for its brevity and specific branding utility. Originally delegated as a [generic Top-Level Domain (gTLD)](https://www.icann.org/resources/pages/tlds-2012-02-25-en) under [ICANN](/en/glossary/icann/)’s [New gTLD](/en/glossary/new-gtld/) Program, .aco represents a modern class of domains designed to move beyond the saturated [.com](/en/tld/com/) market.
+If you searched for the ".aco domain" expecting something related to Accountable Care Organizations, that association does not apply here. This page explains what `.aco` actually is, who controls it, why the company runs its own TLD, and what you can register instead.
 
-While .aco has roots as a "Brand TLD" managed by ACO Severin Ahlmann GmbH & Co. KG, the interest in this extension has grown within the domain investing and development communities due to its versatility. Acronyms drive the internet, and "ACO" is a powerful one. It is widely recognized in the medical field standing for **Accountable Care Organization**, and in the corporate world as a shorthand for "A Company" or "Associated Company."
+## .aco at a glance
 
-As we move toward a more decentralized web, TLDs like .aco are also being evaluated for their potential in **[tokenized domain](/en/blog/what-are-tokenized-domains/)** portfolios, where brevity and distinctiveness translate to higher value on the [blockchain](/en/glossary/blockchain/).
+| Fact | Detail |
+| --- | --- |
+| TLD type | Brand [new gTLD](/en/glossary/new-gtld/) (closed / "dot-brand") |
+| Registry operator | ACO Severin Ahlmann GmbH & Co. KG (technical back-end by LEMARIT) |
+| Year delegated | 2015 |
+| IDN support | Not relevant — closed namespace |
+| DNSSEC | Supported |
+| Registration restrictions | **Closed** — restricted to ACO Severin Ahlmann GmbH & Co. KG and parties it authorizes; not available to the public |
+| Best for | ACO's own corporate and product websites |
 
-## **How People Are Using .aco**
+## What is .aco?
 
-The .aco domain offers specific utility for distinct market sectors. Because it is short (only three letters), it is easy to type and remember. Here is how different groups are utilizing this extension:
+`.aco` is a **[generic top-level domain](/en/glossary/gtld/)** that ICANN delegated to **ACO Severin Ahlmann GmbH & Co. KG** on **July 16, 2015**. ACO is a German company that makes drainage systems and other construction and civil-engineering products, sold under the ACO brand worldwide.
 
-*   **Healthcare Networks:** The primary adoption comes from **Accountable Care Organizations**. Medical groups use .aco to signal their adherence to value-based care models, creating immediate trust with patients and insurers.
-*   **Corporate Branding:** Businesses with names ending in "aco" (e.g., Taco, Draco, Paco) or those using the acronym for "Associated Company" utilize the domain for clever [domain hacks](https://en.wikipedia.org/wiki/Domain_hack) and corporate portals.
-*   **[Web3](/en/glossary/web3/) and Tech Startups:** In the realm of domain investing and blockchain, short 3-letter TLDs are highly coveted. Developers are eyeing .aco for projects where "ACO" signifies "Autonomous" or "Algorithmic" operations.
-*   **Local Businesses:** Companies seeking a local feel often use it to differentiate themselves from global .com competitors, particularly if "ACO" resonates with their specific regional branding.
+`.aco` is a **brand TLD** — a "dot-brand" — not an open extension anyone can buy into. The company applied for the string so that it, and only it, would control every domain ending in `.aco`. You can confirm the delegation and operator on the authoritative [IANA root-zone record for .aco](https://www.iana.org/domains/root/db/aco.html).
 
-## **Notable Entities Using .aco**
+**A note on the acronym:** "ACO" is also used elsewhere as shorthand for "Accountable Care Organization," a US healthcare-coordination model. That usage has no connection to this TLD. `.aco` belongs entirely to the German drainage-systems company; no healthcare group registers or controls any part of the namespace.
 
-While .aco started as a restricted brand [registry](/en/glossary/registry/), its footprint serves as a case study for high-level corporate infrastructure.
+## History of .aco
 
-*   **ACO Group:** As the registry operator, the ACO Group (a world leader in drainage technology) utilizes the domain for its global digital infrastructure, ensuring distinct brand protection and security.
-*   **Healthcare Alliances (Hypothetical/Emerging):** Various healthcare alliances utilize the "ACO" acronym in their sub-branding. While many still sit on [.org](/en/tld/org/) or .com, the migration to exact-match TLDs is a growing trend in the industry.
-*   **Niche Portfolios:** Specialized domain investors hold generic keywords associated with the extension, anticipating future liberalization or tokenized wrapping of these assets.
+`.aco` was delegated to the DNS [root zone](/en/glossary/root-zone/) on **July 16, 2015**, with **LEMARIT** handling the technical operation on ACO's behalf. Its registry agreement with [ICANN](/en/glossary/icann/) includes **Specification 13**, the contract clause that formally designates a TLD as a brand and lets the operator keep it closed.
 
-## **Why Choose .aco?**
+ACO was one of many manufacturers that applied for their own company name as a TLD during ICANN's New gTLD Program. The `.aco` record has remained active since delegation.
 
-Selecting .aco for your next project or investment portfolio offers several distinct advantages:
+## Is .aco available to register?
 
-*   **Industry Authority:** If you are in the healthcare sector, specifically running an Accountable Care Organization, there is no better extension to establish immediate authority and relevance.
-*   **Availability:** Compared to legacy extensions like .com or [.net](/en/tld/net/), where almost every good name is taken, .aco offers a higher probability of securing short, premium keywords.
-*   **SEO Relevance:** For entities where "ACO" is part of the business name, having the keyword in the TLD can send positive signals to search engines regarding the site's relevance.
-*   **Memorability:** Three-letter extensions are inherently easier to remember. In the mobile-first era, shorter URLs improve user experience and click-through rates.
-*   **Asset Tokenization Ready:** At Namefi, we recognize that unique TLDs are excellent candidates for Real World Asset (RWA) tokenization. A rare or industry-specific domain holds intrinsic value that can be leveraged in the [DeFi](/en/glossary/defi/) space.
+**No.** `.aco` is a **closed brand TLD**, so there is no open registration and no [registrar](/en/glossary/registrar/) — including Namefi — can sell you a `.aco` name. Registrations are limited to ACO Severin Ahlmann GmbH & Co. KG and organizations it authorizes, such as subsidiaries or regional divisions. This is by design: a dot-brand exists precisely so the trademark holder controls the whole namespace and no one else can register a confusing or malicious lookalike.
 
-## **Register Your .aco Domain at Namefi**
+If you have a genuine business relationship with ACO and a legitimate need for a `.aco` address, that request would go through ACO's own corporate channels, not a commercial registrar.
 
-Ready to secure a domain that is short, professional, and industry-relevant? Whether you are building a healthcare network, a new tech startup, or expanding your domain investment portfolio, .aco helps you stand out.
+## How ACO uses .aco
 
-At **Namefi**, we make [domain ownership](/en/glossary/domain-ownership/) seamless. We are not just a [registrar](/en/glossary/registrar/); we are your bridge to the future of digital identity.
-*   **ICANN Accredited:** Safe, secure, and compliant registration.
-*   **Web3 Integration:** Mint your domain as an [NFT](/en/glossary/nft/), manage it via your [wallet](/en/glossary/wallet/), and enjoy the [liquidity](/en/glossary/domain-liquidity/) of the blockchain market.
-*   **Instant Setup:** seamless DNS management and easy transfers.
+Brand TLDs give a company a private space to organize its web presence. Typical uses for a dot-brand like `.aco` include:
 
-Don't let the perfect name slip away. Secure your digital identity today.
+- **Product and division sites** on clean, memorable addresses tied directly to the brand.
+- **Campaign and event pages** that are obviously official because only the company can create them.
+- **Internal tools and distributor portals** where a branded suffix signals a trusted, first-party destination.
 
-[**Search and Register Your Domain at Namefi**](https://namefi.io)
+**Who it's not for:** anyone outside ACO, and specifically not healthcare organizations. Because the namespace is closed and unrelated to the Accountable Care Organization model, no independent developer, insurer, or medical group can build on `.aco`.
+
+## Notable sites using .aco
+
+There are **no third-party sites** on `.aco`, and there never will be while it stays a closed brand TLD — every `.aco` address is controlled by ACO Severin Ahlmann GmbH & Co. KG. ACO runs its main public presence from **aco.com** and uses the brand TLD selectively. The honest description is simple: `.aco` is ACO's private namespace — not a healthcare directory, and not open to any Accountable Care Organization.
+
+## What is a dot-brand TLD?
+
+A **dot-brand** (or brand TLD) is a top-level domain that a single company owns and operates for its exclusive use, secured through ICANN's [New gTLD Program](/en/glossary/new-gtld/). Hundreds were delegated — examples in this same alphabetical band include `.abb`, `.accenture`, and `.aetna` — and they share a few defining traits:
+
+- **Closed registration.** Only the brand and its affiliates can hold names.
+- **Specification 13.** A registry-agreement addendum that formally recognizes the TLD as a brand and relaxes some rules that apply to open generics.
+- **Security and control.** The brand eliminates the risk of anyone else registering a `.aco` lookalike, which strengthens resistance to [phishing](/en/glossary/phishing/) and impersonation.
+
+Some brands invest heavily in their TLD; others register it defensively and barely use it. A number of companies have even terminated their dot-brands after deciding the upkeep was not worth it.
+
+## .aco vs open domain alternatives
+
+If your goal was a short, brandable name rather than the `.aco` string specifically, an open extension is the right tool. Here is how a closed brand TLD compares with domains you can actually register:
+
+| Feature | .aco | [.com](/en/tld/com/) | [.io](/en/tld/io/) | [.xyz](/en/tld/xyz/) |
+| --- | --- | --- | --- | --- |
+| Who can register | ACO Severin Ahlmann GmbH & Co. KG only | Anyone | Anyone | Anyone |
+| Type | Brand new gTLD (closed) | Legacy gTLD | ccTLD used generically | New gTLD |
+| Core use | ACO's own sites | Universal default | Tech & startups | Generic / Web3 |
+| Available to you | No | Yes | Yes | Yes |
+
+For your own venture, a matching `.com` remains the safest default; [.io](/en/tld/io/) suits technical products; and [.xyz](/en/tld/xyz/) is a flexible, low-cost modern option.
+
+## Reputation and trust
+
+Ironically, the closed nature of `.aco` is exactly what makes it trustworthy: because only ACO can create these addresses, a `.aco` link is verifiably official, which is why brand TLDs are considered strong against impersonation and email spoofing. That trust benefits ACO alone — it does not transfer to any name you might register, and it does not extend to any healthcare use of "ACO." For your own project, deliverability and reputation will come from a well-configured domain on an open extension, not from a brand TLD you don't control.
+
+## Looking for an "aco" name? Register an alternative at Namefi
+
+You can't buy a `.aco` domain, but if you want a short name — maybe an "aco" acronym of your own — you can secure it on an open extension in minutes:
+
+1. **Search** your desired name across open TLDs like `.com`, `.io`, or `.xyz`.
+2. **Choose** the extension that fits your brand and budget.
+3. **Register** and configure [DNS](/en/glossary/dns/).
+
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and Web3, with transparent pricing, fast DNS, and the option to hold your name as a [tokenized domain](/en/glossary/tokenized-domain/) for provable ownership and easier transfer.
+
+## Frequently asked questions
+
+### Can anyone register a .aco domain?
+
+No. `.aco` is a closed brand TLD delegated to ACO Severin Ahlmann GmbH & Co. KG. Only ACO and parties it authorizes can hold a `.aco` name, so it is not available to the general public through any registrar.
+
+### Who operates the .aco registry?
+
+ACO Severin Ahlmann GmbH & Co. KG is the registry operator, with LEMARIT providing the technical back-end. The TLD was delegated to the DNS root zone on July 16, 2015, under ICANN's New gTLD Program.
+
+### Does .aco stand for Accountable Care Organization?
+
+No. The `.aco` domain belongs to ACO, a German maker of drainage and civil-engineering systems, not to any healthcare organization. Accountable Care Organizations have no claim on or use of the `.aco` namespace.
+
+### What can I register instead of .aco?
+
+Because `.aco` is closed, choose an open extension for your own project. A matching `.com`, or a modern alternative like `.io` or `.xyz`, can be registered by anyone through an accredited registrar such as Namefi.
+
+## Related resources
+
+- [What is a TLD?](/en/blog/what-is-a-tld/) — the fundamentals behind top-level domains.
+- [How a TLD affects domain value](/en/blog/how-tld-affects-domain-value/) — why the extension matters.
+- [.com TLD guide](/en/tld/com/) — the open default to compare against.
+- [.io TLD guide](/en/tld/io/) and [.xyz TLD guide](/en/tld/xyz/) — modern open alternatives.
+- Glossary: [new gTLD](/en/glossary/new-gtld/), [registry](/en/glossary/registry/), [ICANN](/en/glossary/icann/).
