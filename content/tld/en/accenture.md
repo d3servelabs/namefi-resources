@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .accenture domain is Accenture''s closed brand TLD, not open to the public. Learn what it is, who runs it, why it exists, and what to register instead.'
-keywords: ['.accenture domain', 'what is .accenture', '.accenture TLD', 'Accenture brand domain', 'dot-brand TLD', 'Accenture registry operator', 'closed generic TLD', 'is .accenture available']
+keywords: ['Accenture brand domain', 'dot-brand TLD', 'Accenture registry operator', 'closed generic TLD', 'is .accenture available']
 faqs:
   - question: 'Can anyone register a .accenture domain?'
     answer: 'No. .accenture is a closed brand TLD delegated to Accenture plc. Only Accenture and parties it authorizes can hold a .accenture name, so it is not available to the general public through any registrar.'

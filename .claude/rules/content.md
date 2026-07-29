@@ -109,6 +109,35 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 - Each language serves **its own page** — self-canonical + `hreflang` +
   `x-default`. Never canonicalize a translated page back to English.
 
+## Keyword templates (`keywords:` frontmatter)
+
+- **`content/keyword-templates.json`** is the shared, locale-aware base-pattern
+  registry for TLD and glossary `keywords:` boilerplate (see
+  [issue #276](https://github.com/d3servelabs/namefi-resources/issues/276)).
+  `namefi-astra` expands it at render time and merges it with each page's own
+  `keywords:` array (case-insensitive dedupe), so `astra`'s composed
+  `<meta keywords>` and visible chip list are the union of the template
+  expansion + the page's own list — never a change to this file alone.
+- **Shape:** one file, two top-level keys — `tld` and `glossary` — each a map
+  of `locale → string[]` phrase patterns. `{tld}` (the bare slug, e.g. `io`)
+  and `{term}` (the page's own `title`) are the only placeholders; astra
+  substitutes them verbatim.
+- **`keywords:` semantics did not change name, only scope.** For a slug+locale
+  the registry covers, write **only the 2-5 keywords genuinely unique to that
+  page** — the template supplies the rest. A page with no template match (a
+  locale the registry doesn't cover yet, or before the registry existed)
+  renders its `keywords:` literally, exactly as before — **no re-authoring is
+  required** for the existing ~260-file corpus; only newly-authored or
+  deliberately-migrated pages need trimming. This is why one field name works
+  for both eras: dedupe against a legacy full array just collapses the
+  boilerplate that already matches the template output.
+- Only include a boilerplate phrase in the registry if it is true for **every**
+  page of that content type — e.g. `.{tld} domain` fits both open (`.com`) and
+  closed dot-brand (`.abb`) TLDs, but `register .{tld} domain` does not (closed
+  TLDs aren't registrable) — keep type-specific phrasing as a page's own extra.
+- Translate new locale entries the same way as `termbase.json` (native-LQA
+  sign-off, natural register, not word-for-word) — see Translations above.
+
 ## Validation, PRs, and publishing
 
 1. **Per change:** `bun data:validate` + `bun lint:mdx` + `link-audit` (0 broken).

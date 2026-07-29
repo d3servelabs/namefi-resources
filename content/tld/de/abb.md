@@ -13,10 +13,7 @@ translators:
 draft: false
 description: 'Erfahren Sie alles über die .abb Top-Level-Domain (TLD): Ihre Bedeutung, Anwendungsbereiche und warum kurze, prägnante Domains für Marken und Web3 von entscheidender Bedeutung sind.'
 keywords:
-  - .abb domains
-  - .abb TLD
   - top-level domain
-  - was ist .abb
   - warum .abb wählen
   - was ist die .abb domain
   - warum die .abb domain wählen

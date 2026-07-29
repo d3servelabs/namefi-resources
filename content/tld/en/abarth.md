@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abarth domain was a brand TLD for the Abarth car marque that ICANN terminated in 2023. Learn its history, why it was removed, and what to register instead.'
-keywords: ['.abarth domain', 'what is .abarth', '.abarth TLD', 'Abarth brand domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .abarth available']
+keywords: ['Abarth brand domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .abarth available']
 faqs:
   - question: 'Can I register a .abarth domain?'
     answer: 'No. .abarth was terminated in 2023 and removed from the DNS root zone, so it no longer exists as a working extension and cannot be registered through any registrar. Even before that, it was a closed brand TLD never open to the public.'

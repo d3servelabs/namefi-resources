@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aarp domain is the closed brand TLD of the nonprofit AARP, not open to the public. Learn what it is, who runs it, why it exists, and what to register instead.'
-keywords: ['.aarp domain', 'what is .aarp', '.aarp TLD', 'AARP brand domain', 'dot-brand TLD', 'AARP registry', 'closed generic TLD', 'is .aarp available']
+keywords: ['AARP brand domain', 'dot-brand TLD', 'AARP registry', 'closed generic TLD', 'is .aarp available']
 faqs:
   - question: 'Can anyone register a .aarp domain?'
     answer: 'No. .aarp is a closed brand TLD delegated to AARP. Only AARP and parties it authorizes can hold a .aarp name, so it is not available to the general public through any registrar.'
