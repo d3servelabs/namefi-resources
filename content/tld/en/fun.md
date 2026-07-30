@@ -49,7 +49,7 @@ If you are weighing a memorable, on-theme extension against a crowded `.com` mar
 | Fact | Detail |
 | --- | --- |
 | TLD type | Generic top-level domain (new gTLD) |
-| Registry operator | Radix (Radix Technologies / Radix FZC DMCC) |
+| Registry operator | Radix (Radix Technologies Inc., since Feb 2024) |
 | Registration date | 2016-11-30 (delegated; launched late 2016) |
 | IDN support | Yes (internationalized domain names supported) |
 | DNSSEC | Supported |
@@ -64,7 +64,7 @@ Because .fun is generic, search engines treat it that way: there is no geo-targe
 
 ## History of .fun
 
-The .fun registry was delegated on 2016-11-30 and became broadly available shortly after, joining the wave of word-based gTLDs from the mid-2010s. It is operated by **Radix**, which also runs several other well-known new gTLDs, including `.online`, `.store`, `.tech`, `.site`, and `.space`. That portfolio matters: Radix is an established operator with broad [registrar](/en/glossary/registrar/) distribution, so .fun is widely sold rather than a niche extension.
+The .fun registry was delegated on 2016-11-30 and became broadly available shortly after, joining the wave of word-based gTLDs from the mid-2010s. It was [originally run by DotSpace, Inc.](https://www.iana.org/domains/root/db/fun.html), unrelated to its current operator, before transferring to Radix FZC in August 2021 and then to **Radix Technologies Inc.** in February 2024. Radix also runs several other well-known new gTLDs, including `.online`, `.store`, `.tech`, `.site`, and `.space`. That portfolio matters: Radix is an established operator with broad [registrar](/en/glossary/registrar/) distribution, so .fun is widely sold rather than a niche extension.
 
 Adoption has been steady. Figures cited on the [.fun Wikipedia entry](https://en.wikipedia.org/wiki/.fun) put registrations in the hundreds of thousands, and the extension got a major boost from Web3 — pump.fun became one of the most-trafficked applications on Solana and made the suffix instantly recognizable to a crypto-native audience.
 

@@ -55,7 +55,7 @@ If you run a tax practice or build tools for one, a .tax name puts your specialt
 
 ## What is .tax?
 
-.tax is a **new [generic top-level domain](/en/glossary/gtld/) (gTLD)** introduced through [ICANN](/en/glossary/icann/)'s 2012 New gTLD Program, the expansion that brought hundreds of word-based suffixes to the [root zone](/en/glossary/root-zone/). It is not a country-code TLD, so it carries no national association and is not geo-targeted. According to [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/international/managing-multi-regional-sites), generic new gTLDs like .tax are treated as global, with no geographic targeting applied by default.
+.tax is a **new [generic top-level domain](/en/glossary/gtld/) (gTLD)** introduced through [ICANN](/en/glossary/icann/)'s 2012 New gTLD Program, the expansion that brought hundreds of word-based suffixes to the [root zone](/en/glossary/root-zone/). It is not a country-code TLD, so it carries no national association and is not geo-targeted. According to [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations), generic new gTLDs like .tax are treated as global, with no geographic targeting applied by default.
 
 The string itself does the marketing. Where a generic suffix like .com or [.net](/en/tld/net) tells a visitor nothing, *tax* names the subject before the page loads. That self-describing quality is the whole point of topic gTLDs, and it is why the extension concentrates among firms and products in one clear niche.
 

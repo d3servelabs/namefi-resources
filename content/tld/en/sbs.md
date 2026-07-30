@@ -62,8 +62,8 @@ Because it is a generic extension, Google treats .sbs like any other gTLD: there
 
 The .sbs string has an unusually winding history:
 
-- **Original brand TLD (2014–2020):** The Australian public broadcaster **SBS — the Special Broadcasting Service** applied for .sbs during ICANN's New gTLD Program, signing its registry agreement in November 2014. The string was delegated to the root zone in 2015 but was operated as a closed "brand" TLD and never opened to the public. SBS later filed to terminate, and ICANN finalized the termination in 2020.
-- **Acquisition and relaunch (2021):** ShortDot SA acquired the string and relaunched it as an **open generic TLD**, holding a sunrise period for trademark holders in May 2021 before general availability that June. ShortDot also operates other budget-friendly extensions such as .bond, .cfd, and .icu.
+- **Original brand TLD (2014–2020):** The Australian public broadcaster **SBS — the Special Broadcasting Service** applied for .sbs during ICANN's New gTLD Program, signing its registry agreement in November 2014. The string was delegated to the root zone in 2015 but was operated as a closed "brand" TLD and never opened to the public. The agreement itself was never terminated — instead, its [Specification 13 dot-brand designation was voided on 10 August 2020](https://www.icann.org/en/registry-agreements/details/sbs), ending the closed-brand status while the underlying contract stayed in force.
+- **Acquisition and relaunch (2021):** SBS's registry agreement was [assigned to ShortDot SA in February 2021](https://www.icann.org/en/registry-agreements/details/sbs), which relaunched the string as an **open generic TLD**, holding a sunrise period for trademark holders in May 2021 before general availability that June. ShortDot also operates other budget-friendly extensions such as .bond, .cfd, and .icu.
 
 So when people ask "where is .sbs from?", the honest answer is: it began as an Australian broadcaster's unused brand domain and is now a globally available generic extension operated from Luxembourg.
 
@@ -121,7 +121,7 @@ A trademark **sunrise period** ran ahead of general availability in 2021, so the
 
 ## Reputation and email deliverability
 
-This is where buyers most need candor. Because .sbs is cheap and easy to acquire in bulk, it has been repeatedly flagged for abuse. Spamhaus has published reporting calling out .sbs and asking ShortDot to keep the zone clean, noting it entered the ranks of the more abused TLDs with a sharp rise in botnet command-and-control and disposable-domain activity (see [Spamhaus on .sbs](https://www.spamhaus.org/resource-hub/service-providers/we-hope-you-keep-sbs-clean-shortdot/)).
+This is where buyers most need candor. Because .sbs is cheap and easy to acquire in bulk, it has drawn scrutiny for abuse. [Spamhaus reported](https://www.spamhaus.org/resource-hub/service-providers/we-hope-you-keep-sbs-clean-shortdot/#:~:text=In%20the%20past%20month%2C%20our%20analysts%20listed%2010%25%20of%20their%20total%20registered%20domains) that in one recent month it listed 10% of .sbs's registered domains as abused — notably below the 19%–59% rates Spamhaus lists for the actual "Top 10 Most Abused" operators, and by mid-2025 [Spamhaus's own Botnet Threat Update listed .sbs among the departures from its Top 20 most-abused-TLD ranking](https://www.spamhaus.org/resource-hub/botnet-c-c/botnet-threat-update-january-to-june-2025/).
 
 Practically, that means some spam filters, security tools, and cautious users apply extra scrutiny to .sbs traffic. The extension itself is legitimate and ICANN-accredited — being on .sbs does not make a site malicious — but a legitimate .sbs site may have to work harder to earn trust. **Mitigation:** properly configure SPF, DKIM, and DMARC for email; warm up sending domains gradually; keep content clean; and, for anything trust-sensitive, weigh whether a more established extension serves you better.
 

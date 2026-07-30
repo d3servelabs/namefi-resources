@@ -77,7 +77,7 @@ The operator changed hands in 2021: GoDaddy Registry acquired the portfolio of T
 
 ## Notable sites using .law
 
-Because .law is restricted, public examples are concentrated in the legal sector rather than household consumer brands. [Join.Law](https://www.join.law/) is the registry's dedicated .law marketing and registration channel, itself a .law domain, and reports the namespace in active use across thousands of legal practices — from solo attorneys to large firms, law schools, and bar associations. The most representative real-world pattern is a firm or practitioner using a `firmname.law` or `practicearea.law` address for both website and verified email, rather than a single famous flagship site.
+Because .law is restricted, public examples are concentrated in the legal sector rather than household consumer brands. [Join.Law](https://www.join.law/) is the registry's dedicated .law marketing and registration channel, itself a .law domain; independent tracking puts the namespace at [nearly 29,000 registered domains](https://ntldstats.com/tld/law#:~:text=28%2C931), in active use across solo attorneys, large firms, law schools, and bar associations. The most representative real-world pattern is a firm or practitioner using a `firmname.law` or `practicearea.law` address for both website and verified email, rather than a single famous flagship site.
 
 ## .law vs other domains
 

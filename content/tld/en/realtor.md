@@ -66,7 +66,7 @@ This page explains who is eligible, who runs the registry, how the licensing mod
 
 `.realtor` came out of the 2012 round of ICANN's New gTLD Program. Rather than let a third party control a suffix built around its trademark, NAR pursued the extension itself, and it was delegated to the root zone in 2014. The launch was notable for an aggressive adoption push: NAR offered the first `.realtor` domain free for an introductory period to its membership, which drove a large initial wave of registrations.
 
-The registry and exclusive registrar role sits with **Real Estate Domains LLC**, operating under NAR's direction. A companion extension, `.realestate`, was later introduced under the same umbrella for the broader real-estate audience that does not qualify for the membership-gated `.realtor`. Both share the same Real Estate Domain License Agreement and operator: one credential-gated, one broader.
+The registry and exclusive registrar role sits with **Real Estate Domains LLC**, operating under NAR's direction. A companion extension, `.realestate`, was later introduced under the same umbrella for the broader real-estate audience that does not qualify for the membership-gated `.realtor` — but it's run by a [separate sibling entity, dotRealEstate LLC](https://www.iana.org/domains/root/db/realestate.html#:~:text=dotRealEstate%20LLC), not Real Estate Domains LLC itself. Both share the same Real Estate Domain License Agreement structure: one credential-gated, one broader.
 
 ## How people use .realtor
 
@@ -82,7 +82,7 @@ The registry and exclusive registrar role sits with **Real Estate Domains LLC**,
 
 ## Notable sites using .realtor
 
-Adoption is concentrated among individual members, brokerage teams, and association sites rather than a single household-name flagship, so the most accurate picture is the typical pattern. NAR promotes the extension through its `get.realtor` member portal, and a large share of usage is personal-name agent sites (`firstnamelastname.realtor`) and matching member email addresses. Because registrations are tied to a named member in good standing, the namespace skews toward many small, individually branded sites rather than a few large public destinations.
+Adoption is concentrated among individual members, brokerage teams, and association sites rather than a single household-name flagship, so the most accurate picture is the typical pattern. NAR promotes the extension through its [`get.realestate`](https://get.realestate) member portal (formerly `get.realtor`, which now redirects there), and a large share of usage is personal-name agent sites (`firstnamelastname.realtor`) and matching member email addresses. Because registrations are tied to a named member in good standing, the namespace skews toward many small, individually branded sites rather than a few large public destinations.
 
 ## .realtor vs other domains
 
@@ -91,9 +91,9 @@ Adoption is concentrated among individual members, brokerage teams, and associat
 | Type | New gTLD (sponsored) | Legacy gTLD | New gTLD (generic) | New gTLD (generic) |
 | Restrictions | Members only (NAR/CREA) | Open to all | Open (real-estate focus) | Open to all |
 | Real-estate signal | Strong + verified membership | None | Strong | Strong |
-| Ownership model | Licensed, not owned | Owned | Owned | Owned |
+| Ownership model | Licensed, not owned | Owned | [Licensed for most domains](https://www.get.realestate/license-agreement#:~:text=.RealEstate%20is%20also%20the%20registrant%20and%20licensor%20of%20most%20domains%20in%20the%20.realestate%20gTLD) | Owned |
 
-Choose `.com` when broad familiarity and resale value matter most and you do not need a membership signal. Choose `.realestate` or `.homes` when you want a real-estate signal but are not an NAR/CREA member, or want a name you fully own and can resell. Choose `.realtor` when you *are* a member and want the suffix to verify that membership — a signal no open extension can replicate.
+Choose `.com` when broad familiarity and resale value matter most and you do not need a membership signal. Choose `.homes` when you want a real-estate signal, are not an NAR/CREA member, and want a name you fully own and can resell — `.realestate` gives the same open real-estate signal but, like `.realtor`, most names are licensed from the registry rather than owned outright. Choose `.realtor` when you *are* a member and want the suffix to verify that membership — a signal no open extension can replicate.
 
 ## Why choose .realtor?
 

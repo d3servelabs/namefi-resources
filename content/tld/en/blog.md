@@ -74,7 +74,7 @@ Key milestones:
 - **2025** — The registry [migrated its back-end to CIRA](https://my.blog/blog-partners-with-cira-for-new-registry-backend/#:~:text=partnering%20with%20CIRA), with the transition completed around the end of April 2025; the current [IANA record](https://www.iana.org/domains/root/db/blog.html#:~:text=Canadian%20Internet%20Registration%20Authority) lists CIRA as the technical operator.
 - **Ongoing** — Adoption has grown into the hundreds of thousands of registrations, spread across personal, corporate, and news publishing.
 
-The registry's own informational site runs on the suffix at nic.blog, and WordPress's own news has been published under a wordpress.blog address — fitting, given the operator.
+The registry's own informational site runs on the suffix at nic.blog, and wordpress.blog redirects to the WordPress.org project's own news page — fitting, given the operator.
 
 ## How people use .blog
 
@@ -88,7 +88,7 @@ The registry's own informational site runs on the suffix at nic.blog, and WordPr
 
 ## Notable sites using .blog
 
-- **wordpress.blog** — WordPress.com has published company and product news under a .blog address, a natural fit given Automattic operates the registry.
+- **wordpress.blog** — redirects to the open-source WordPress.org project's news page, a natural fit given Automattic operates the registry.
 - **nic.blog** — the registry's own informational site about the extension and its policies.
 
 Beyond these, the suffix is widely used by independent creators and corporate content teams rather than by a small set of household-name sites; its strength is descriptive clarity rather than celebrity adoption. We avoid naming sites whose current status we cannot verify.

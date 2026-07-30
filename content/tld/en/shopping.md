@@ -65,7 +65,7 @@ Because .shopping is a generic gTLD rather than a country-code TLD, it is not ti
 
 The .shopping string was applied for during ICANN's 2012 new-gTLD round and signed a Base Registry Agreement in 2016, the standard contract for non-sponsored generic extensions. It was delegated to the DNS root the same year and entered general availability shortly after, opening to registrants worldwide without restriction.
 
-Operationally, .shopping sits inside one of the largest new-gTLD portfolios on the market. Its registry, Binky Moon, LLC, holds dozens of descriptive extensions, and the back-end is run by Identity Digital — the company formed by the 2022 merger of Donuts and Afilias. That puts .shopping on mature registry infrastructure rather than a one-off operator. It remains a niche, descriptive TLD rather than a mass-market one, so registration volumes are modest compared with .shop, and the namespace still holds many short, exact-match names.
+Operationally, .shopping sits inside one of the largest new-gTLD portfolios on the market. Its registry, Binky Moon, LLC, holds dozens of descriptive extensions, and the back-end is run by Identity Digital — the company formed when [Donuts acquired Afilias in 2020](https://www.prnewswire.com/news-releases/donuts-acquires-afilias-301199019.html#:~:text=it%20has%20completed%20its%20acquisition%20of%20Afilias%2C%20Inc), later rebranded Identity Digital in 2022. That puts .shopping on mature registry infrastructure rather than a one-off operator. It remains a niche, descriptive TLD rather than a mass-market one, so registration volumes are modest compared with .shop, and the namespace still holds many short, exact-match names.
 
 ## How people use .shopping
 

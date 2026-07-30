@@ -49,7 +49,7 @@ If you are a designer, stylist, label, salon, or lifestyle creator, this guide c
 | --- | --- |
 | TLD type | New generic TLD (gTLD) |
 | Registry operator | Binky Moon, LLC (an [Identity Digital](https://www.identity.digital/) company, formerly Donuts) |
-| Year launched | 2015 (delegated February 2015; general availability May 2015) |
+| Year launched | 2015 (delegated late January 2015; general availability May 2015) |
 | IDN support | Yes |
 | DNSSEC | Supported |
 | Registration restrictions | Open to all — no eligibility requirement |
@@ -65,7 +65,7 @@ Because it is a generic rather than a country-code extension, **.style** is gove
 
 ## History of .style
 
-**.style** was one of many descriptive-word strings Donuts applied for during the new gTLD expansion. After a private [auction](/en/glossary/auction/) resolved the contention set in late 2014, the string was delegated to the DNS [root zone](/en/glossary/root-zone/) in February 2015 and reached general availability in May 2015.
+**.style** was one of many descriptive-word strings Donuts applied for during the new gTLD expansion. After a private [auction](/en/glossary/auction/) resolved the contention set in late 2014, the string was delegated to the DNS [root zone](/en/glossary/root-zone/) on [January 29, 2015](https://www.iana.org/domains/root/db/style.html#:~:text=2015-01-29) and reached general availability in May 2015.
 
 Donuts — which ran one of the largest portfolios of new gTLDs — later merged with Afilias to form **Identity Digital**, the company that operates **.style** today through its **Binky Moon, LLC** registry subsidiary. This matters for buyers: it means **.style** sits inside a large, professionally run registry alongside hundreds of sibling extensions, with consistent, well-documented policies rather than the patchwork rules that smaller standalone registries sometimes have.
 

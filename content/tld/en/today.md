@@ -60,7 +60,7 @@ For news outlets, event organizers, daily-deal sites, and anyone publishing on a
 
 .today is a [new gTLD](/en/glossary/new-gtld/) introduced during ICANN's 2012 New gTLD Program, the largest expansion of the domain name space in the Internet's history. Unlike a [country-code TLD](/en/blog/cctld-market-share-by-registration-volume) such as `.uk` or `.de`, .today carries no geographic meaning. It is a dictionary-word gTLD: the suffix simply *is* the word "today," which is why so many registrations read as complete phrases rather than awkward abbreviations.
 
-Because it is a generic extension, [Google](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites) treats .today like any other gTLD — it is not tied to a region for geo-targeting, and it confers no ranking advantage or penalty on its own. You can read the official root-zone record at the [IANA database entry for .today](https://www.iana.org/domains/root/db/today.html).
+Because it is a generic extension, [Google](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) treats .today like any other gTLD — it is not tied to a region for geo-targeting, and it confers no ranking advantage or penalty on its own. You can read the official root-zone record at the [IANA database entry for .today](https://www.iana.org/domains/root/db/today.html).
 
 ## History of .today
 

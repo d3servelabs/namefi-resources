@@ -62,7 +62,7 @@ The .top domain is a [new gTLD](/en/glossary/tld) introduced under [ICANN](/en/g
 
 The string itself is the everyday English word "top." That semantic association with rankings, quality, and being "at the top" is the suffix's main branding hook, and it reads cleanly in many markets — including across Asia, where .top saw especially strong early adoption.
 
-For search, this matters: Google treats new gTLDs like .top as ordinary generic domains. Per [Google Search Central](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level-domains), a TLD such as .top carries no built-in ranking advantage or penalty and is not geo-targeted by default. You can confirm the delegation and operator details on the [IANA root zone database entry for .top](https://www.iana.org/domains/root/db/top.html).
+For search, this matters: Google treats new gTLDs like .top as ordinary generic domains. Per [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations), a TLD such as .top carries no built-in ranking advantage or penalty and is not geo-targeted by default. You can confirm the delegation and operator details on the [IANA root zone database entry for .top](https://www.iana.org/domains/root/db/top.html).
 
 ## History of .top
 

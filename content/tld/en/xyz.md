@@ -58,7 +58,7 @@ If you are weighing a modern extension against a legacy one, .xyz is the referen
 
 The .xyz domain is a generic top-level domain (gTLD) introduced through [ICANN's New gTLD Program](https://newgtlds.icann.org/). The string "xyz" was chosen precisely because it has no semantic baggage: the last three letters of the Latin alphabet, often framed as a nod to Generations X, Y, and Z. Where [.org](/en/tld/org/) implies an organization and .io has come to read as "tech," .xyz signals nothing in particular, which is the entire point — it lets the second-level name carry all the meaning.
 
-Because it is a generic rather than a country-code TLD, Google does not geo-target .xyz to any region. According to [Google Search Central](https://developers.google.com/search/docs/specialty/international/locale-adaptive-pages), generic new TLDs are treated like any other gTLD for search, so a .xyz site can rank globally without being tied to a country. You can confirm the registry details in the official [IANA root-zone record for .xyz](https://www.iana.org/domains/root/db/xyz.html).
+Because it is a generic rather than a country-code TLD, Google does not geo-target .xyz to any region. According to [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations), generic new TLDs are treated like any other gTLD for search, so a .xyz site can rank globally without being tied to a country. You can confirm the registry details in the official [IANA root-zone record for .xyz](https://www.iana.org/domains/root/db/xyz.html).
 
 ## History of .xyz
 
