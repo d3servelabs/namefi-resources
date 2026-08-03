@@ -30,7 +30,7 @@ relatedGlossary:
   - /en/glossary/ens/
 ---
 
-An [AI agent](/en/glossary/ai-agent/) that connects to the Namefi MCP server receives callable tools generated from the server's supported `/v-next` API surface, covering search, registration, DNS, domain configuration, account operations, and outbound lead finding. The x402 and MPP payment flows use separate HTTP endpoints; they are not MCP tools. This page catalogs the documented MCP surface, explains authentication, and gives three workflows.
+An [AI agent](/en/glossary/ai-agent/) that connects to the Namefi [MCP](/en/glossary/mcp/) server receives callable tools generated from the server's supported `/v-next` API surface, covering search, registration, DNS, domain configuration, account operations, and outbound lead finding. The x402 and MPP payment flows use separate HTTP endpoints; they are not MCP tools. This page catalogs the documented MCP surface, explains authentication, and gives three workflows.
 
 If you haven't connected an agent to Namefi yet, start with [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) for per-client setup, or [Buy a Domain with Claude: Namefi MCP Step-by-Step Guide](/en/blog/claude-mcp-domains/) for a full transcript. This page assumes the connection already exists.
 

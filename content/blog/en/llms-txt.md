@@ -32,7 +32,7 @@ relatedGlossary:
 
 Every [registrar](/en/glossary/registrar/) with an [API](/en/glossary/epp/) has documentation somewhere: a docs site, a reference page, maybe an OpenAPI spec behind a login wall. That's been enough for two decades, because the reader was a human developer who could click around and skim past the navigation chrome to find the one paragraph that mattered. An [AI agent](/en/glossary/ai-agent/) reading the same site at inference time doesn't get that luxury — fixed context budget, no patience for a JavaScript-rendered docs portal, one shot to figure out what an API does before it gives up or hallucinates an endpoint that doesn't exist.
 
-`llms.txt` is the fix for that problem, and Namefi publishes one at [namefi.io/llms.txt](https://namefi.io/llms.txt). This post covers what the convention is, why it exists, what our own file contains section by section, where it deliberately stops, and how it fits alongside the [Model Context Protocol](https://modelcontextprotocol.io) (MCP) rather than competing with it. It's also, by design, an example of the thing it describes: a public API vendor explaining its own machine-readable discovery file in plain prose.
+`llms.txt` is the fix for that problem, and Namefi publishes one at [namefi.io/llms.txt](https://namefi.io/llms.txt). This post covers what the convention is, why it exists, what our own file contains section by section, where it deliberately stops, and how it fits alongside the [Model Context Protocol](/en/glossary/mcp/) (MCP) rather than competing with it. It's also, by design, an example of the thing it describes: a public API vendor explaining its own machine-readable discovery file in plain prose.
 
 ## Why agents can't just crawl your docs site
 
