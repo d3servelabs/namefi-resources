@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Cryptographic signatures on DNS records that let resolvers verify a response is authentic and was not forged or tampered with in transit.
-keywords: ['DNSSEC', 'DNS security', 'domain security', 'DS record', 'chain of trust', 'cryptographic DNS']
+keywords: ['DNS security', 'domain security', 'DS record', 'chain of trust', 'cryptographic DNS']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc4033

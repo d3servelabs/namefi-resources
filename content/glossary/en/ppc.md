@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: An ad model where the owner earns each time a visitor clicks an ad, used to monetize parked domains.
-keywords: ['PPC', 'pay-per-click', 'domain monetization', 'ad revenue', 'parking revenue']
+keywords: ['pay-per-click', 'domain monetization', 'ad revenue', 'parking revenue']
 also_known_as: ['Pay-Per-Click']
 level: 1
 sources:

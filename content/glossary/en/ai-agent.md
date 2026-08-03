@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Software powered by an AI model that acts on a user's behalf — making purchases, calling APIs, and increasingly transacting with other agents.
-keywords: ['AI agent', 'autonomous agent', 'agent identity', 'agent commerce', 'on-chain agent', 'agentic AI']
+keywords: ['autonomous agent', 'agent identity', 'agent commerce', 'on-chain agent', 'agentic AI']
 level: 1
 sources:
   - https://modelcontextprotocol.io/

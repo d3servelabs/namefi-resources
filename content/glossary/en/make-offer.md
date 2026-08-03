@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A domain listing that invites buyers to submit a bid the seller can accept, counter, or decline.
-keywords: ['make offer', 'best offer', 'domain negotiation', 'offer', 'counteroffer']
+keywords: ['best offer', 'domain negotiation', 'offer', 'counteroffer']
 level: 1
 sources:
   - https://www.sedo.com/

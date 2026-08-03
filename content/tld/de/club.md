@@ -15,9 +15,7 @@ draft: false
 description: 'Erfahren Sie alles über die .club Domain: Ideal für Communitys, Unternehmen und Web3-Projekte. Jetzt informieren und Ihre .club Domain bei Namefi sichern.'
 keywords:
   - .club domains
-  - .club TLD
   - top-level domain club
-  - was ist .club
   - warum .club wählen
   - was ist die .club domain
   - warum die .club domain wählen

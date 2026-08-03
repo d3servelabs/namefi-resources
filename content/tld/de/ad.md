@@ -15,9 +15,7 @@ draft: false
 description: 'Erfahren Sie alles über die .ad-Domain: Von der Herkunft in Andorra bis hin zum Potenzial für Werbung und Marketing. Jetzt informieren und bei Namefi registrieren.'
 keywords:
   - .ad domains
-  - .ad TLD
   - top-level domain
-  - was ist .ad
   - warum .ad wählen
   - was ist die .ad domain
   - warum die .ad domain wählen

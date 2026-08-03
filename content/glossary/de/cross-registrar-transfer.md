@@ -7,7 +7,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was sind Cross-Registrar-Transfers und wie vereinfacht die Tokenisierung den Prozess?
-keywords: ["Cross-Registrar-Transfer","Registrar-Transfer","Domain-Migration","Transferprozess","Tokenisierung"]
+keywords: ["Registrar-Transfer", "Domain-Migration", "Transferprozess", "Tokenisierung"]
 relatedArticles:
   - /de/blog/how-to-sell-a-domain-name-you-own/
   - /de/blog/how-tokenization-changes-domain-flipping/

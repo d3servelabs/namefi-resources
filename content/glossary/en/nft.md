@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A Non-Fungible Token is a unique, indivisible blockchain token used to represent ownership of a specific item such as a tokenized domain.
-keywords: ['NFT', 'non-fungible token', 'blockchain', 'unique asset', 'domain NFT']
+keywords: ['non-fungible token', 'blockchain', 'unique asset', 'domain NFT']
 level: 1
 sources:
   - https://eips.ethereum.org/EIPS/eip-721

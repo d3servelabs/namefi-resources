@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A reputation signal estimating how well a domain ranks, driven largely by quality inbound links.
-keywords: ['domain authority', 'backlinks', 'link equity', 'seo', 'ranking signal', 'inbound links']
+keywords: ['backlinks', 'link equity', 'seo', 'ranking signal', 'inbound links']
 level: 1
 sources:
   - https://developers.google.com/search/docs/fundamentals/seo-starter-guide

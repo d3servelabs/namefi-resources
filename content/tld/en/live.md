@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .live domain is an open new gTLD run by Identity Digital, built for streaming, events, and real-time content. Learn who uses it, the rules, and whether it fits you.'
-keywords: ['.live domains', '.live TLD', 'what is .live', 'why choose .live', 'streaming domain', 'live streaming domain name', 'Identity Digital', 'new gTLD']
+keywords: ['.live domains', 'why choose .live', 'streaming domain', 'live streaming domain name', 'Identity Digital', 'new gTLD']
 faqs:
   - question: 'Can anyone register a .live domain?'
     answer: 'Yes. The .live extension is an open generic top-level domain with no eligibility restrictions. Any individual, business, or organization worldwide can register an available .live name on a first-come, first-served basis, with no credential, license, or local-presence requirement.'

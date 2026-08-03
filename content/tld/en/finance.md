@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .finance domain is an open generic gTLD run by Binky Moon (Identity Digital), built for banks, fintech, advisors and finance media. Here is who it suits and why.'
-keywords: ['.finance domain', 'what is .finance', '.finance domains', 'finance TLD', 'fintech domain', 'finance domain name', 'Identity Digital', 'Binky Moon', 'register .finance']
+keywords: ['.finance domains', 'finance TLD', 'fintech domain', 'finance domain name', 'Identity Digital', 'Binky Moon', 'register .finance']
 faqs:
   - question: 'Can anyone register a .finance domain?'
     answer: 'Yes. The .finance TLD is an open generic gTLD with no eligibility restrictions. You do not need a financial licence, professional credential, or local presence to register one. Standard registrar terms and acceptable-use rules still apply.'

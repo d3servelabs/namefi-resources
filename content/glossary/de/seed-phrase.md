@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Eine Liste von 12 oder 24 Wörtern, die den Master-Schlüssel einer Wallet kodiert; wer sie besitzt, kontrolliert die Wallet, weshalb sie das Einzige ist, das unbedingt gesichert werden muss.
-keywords: ['Seed-Phrase', 'Wiederherstellungsphrase', 'Mnemonic-Phrase', 'Wallet-Backup', 'BIP39', '12 Wörter', '24 Wörter', 'Krypto-Wiederherstellung']
+keywords: ['Wiederherstellungsphrase', 'Mnemonic-Phrase', 'Wallet-Backup', 'BIP39', '12 Wörter', '24 Wörter', 'Krypto-Wiederherstellung']
 level: 1
 sources:
   - https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki

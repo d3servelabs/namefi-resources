@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Moving a domain's registration from one ICANN registrar to another using an auth code, while keeping the same owner and the same name.
-keywords: ['cross-registrar transfer', 'registrar transfer', 'domain migration', 'transfer process', 'tokenization']
+keywords: ['registrar transfer', 'domain migration', 'transfer process', 'tokenization']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

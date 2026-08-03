@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: '.dev is Google''s HTTPS-only top-level domain for developers, projects, and tech teams. Learn who can register it, how it affects SEO, and how to buy one.'
-keywords: ['.dev domain', 'what is .dev', 'dev TLD', 'Google Registry dev', 'HSTS preload', 'developer domain', 'register dev domain', 'dev domain SEO']
+keywords: ['dev TLD', 'Google Registry dev', 'HSTS preload', 'developer domain', 'register dev domain', 'dev domain SEO']
 faqs:
   - question: 'Can anyone register a .dev domain?'
     answer: 'Yes. The .dev TLD is open to everyone with no credential, profession, or local-presence requirement. You do not need to be a software developer or a registered company to buy one, though the suffix reads best for technical projects.'

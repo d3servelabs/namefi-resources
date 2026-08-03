@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Splitting a single high-value asset into smaller tradable shares so several people can own portions of it, enabled on-chain by token standards.
-keywords: ['fractional ownership', 'shared ownership', 'domain fractionalization', 'accessibility', 'tokenization']
+keywords: ['shared ownership', 'domain fractionalization', 'accessibility', 'tokenization']
 level: 1
 sources:
   - https://www.investopedia.com/terms/f/fractionalownership.asp

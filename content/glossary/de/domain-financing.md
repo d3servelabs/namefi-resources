@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Der Kauf einer Domain in Raten über die Zeit statt als einmalige Vorauszahlung.
-keywords: ['Domain-Finanzierung', 'Ratenzahlung', 'Zahlungsplan', 'Domain-Erwerb', 'Domain-Investment']
+keywords: ['Ratenzahlung', 'Zahlungsplan', 'Domain-Erwerb', 'Domain-Investment']
 level: 1
 sources:
   - https://www.namebio.com/

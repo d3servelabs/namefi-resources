@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die geheime Zahl, die ein Blockchain-Konto kontrolliert und dessen Transaktionen signiert; sie darf niemals weitergegeben werden.
-keywords: ['privater schlüssel', 'signing key', 'wallet-schlüssel', 'geheimer schlüssel', 'blockchain-konto']
+keywords: ['signing key', 'wallet-schlüssel', 'geheimer schlüssel', 'blockchain-konto']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/accounts/

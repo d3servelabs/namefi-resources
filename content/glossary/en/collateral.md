@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: An asset pledged to secure a loan that the lender can claim on default; a tokenized domain can serve as collateral in NFT-aware lending.
-keywords: ['collateral', 'security', 'lending', 'borrowing', 'domain collateral', 'DeFi']
+keywords: ['security', 'lending', 'borrowing', 'domain collateral', 'DeFi']
 level: 1
 sources:
   - https://www.investopedia.com/terms/c/collateral.asp

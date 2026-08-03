@@ -14,9 +14,7 @@ draft: false
 description: "Erfahren Sie alles über die .abbott Top-Level-Domain: Einblicke in Marken-TLDs, Vorteile für die digitale Identität und wie Namefi die Domain-Welt revolutioniert."
 keywords:
   - .abbott domains
-  - .abbott TLD
   - top-level domain
-  - was ist .abbott
   - warum .abbott wählen
   - was ist die .abbott domain
   - warum die .abbott domain wählen

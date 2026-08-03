@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Was ist die .me-Domain? Montenegros länderspezifische TLD, weltweit als Endung für persönliches Branding und Domain-Hacks vermarktet, bei der der Name mit „me" vervollständigt wird. Erfahren Sie, wer sie betreibt, wer registrieren kann, wie die Preisgestaltung funktioniert und wie es um die SEO steht.'
-keywords: ['.me-Domains', '.me TLD', 'me Domain', 'was ist .me', 'was ist die .me-Domain', '.me vs .com', 'me Domain für persönliches Branding', 'Montenegro Domain', '.me-Domain registrieren', 'Domain-Hack .me', 'about.me']
+keywords: ['.me-Domains', 'me Domain', 'was ist die .me-Domain', '.me vs .com', 'me Domain für persönliches Branding', 'Montenegro Domain', '.me-Domain registrieren', 'Domain-Hack .me', 'about.me']
 faqs:
   - question: 'Kann jeder eine .me-Domain registrieren?'
     answer: 'Ja. Obwohl .me technisch gesehen die länderspezifische TLD Montenegros ist, steht sie seit ihrem öffentlichen Start im Jahr 2008 jedem weltweit offen, ohne Anforderung an lokale Präsenz oder montenegrinischen Wohnsitz. Die Registrierung erfolgt nach dem Prinzip „first-come, first-served" auf der zweiten Ebene.'

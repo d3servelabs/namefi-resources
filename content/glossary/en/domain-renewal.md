@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Paying to extend a domain's registration before it expires, often automatically each term.
-keywords: ['domain renewal', 'auto-renew', 'registration term', 'expiration', 'renewal fee']
+keywords: ['auto-renew', 'registration term', 'expiration', 'renewal fee']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

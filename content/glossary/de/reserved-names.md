@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Domains, die eine Registry von der offenen Registrierung zurückhält, wie Premium-, Richtlinien- oder geschützte Labels.
-keywords: ['Reservierte Namen', 'Gesperrte Namen', 'Registry-reserviert', 'Premium reserviert', 'Kollisionsliste']
+keywords: ['Gesperrte Namen', 'Registry-reserviert', 'Premium reserviert', 'Kollisionsliste']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/tlds-2012-02-25-en

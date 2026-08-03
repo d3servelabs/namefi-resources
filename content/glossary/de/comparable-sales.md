@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Frühere Verkäufe ähnlicher Domains, die als Referenzwerte zur Schätzung des Werts eines Namens herangezogen werden.
-keywords: ['vergleichbare Verkäufe', 'Comps', 'Domain-Verkaufsdaten', 'Domain-Referenzwerte', 'Domain-Preishistorie']
+keywords: ['Comps', 'Domain-Verkaufsdaten', 'Domain-Referenzwerte', 'Domain-Preishistorie']
 also_known_as: ['Comps']
 level: 1
 sources:

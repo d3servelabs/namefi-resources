@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Zeitfenster nach dem Ablauf, in dem eine verfallene Domain gegen eine hohe Wiederherstellungsgebühr noch zurückgeholt werden kann.
-keywords: ['Redemption Period', 'RGP', 'Redemption Grace Period', 'Wiederherstellung abgelaufener Domain', 'Wiederherstellungsgebühr']
+keywords: ['RGP', 'Redemption Grace Period', 'Wiederherstellung abgelaufener Domain', 'Wiederherstellungsgebühr']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/errp-2013-02-28-en

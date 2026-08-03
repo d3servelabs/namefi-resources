@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A US law letting trademark owners sue cybersquatters in federal court, an alternative to the UDRP.
-keywords: ['ACPA', 'anticybersquatting', 'US trademark law', 'domain dispute', 'federal court']
+keywords: ['anticybersquatting', 'US trademark law', 'domain dispute', 'federal court']
 also_known_as: ['Anticybersquatting Consumer Protection Act']
 level: 1
 sources:

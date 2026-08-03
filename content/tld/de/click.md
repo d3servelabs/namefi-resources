@@ -14,9 +14,7 @@ draft: false
 description: 'Entdecken Sie die Vorteile der .click Domain. Erfahren Sie, warum Startups und Marketer diese TLD für starke Handlungsaufforderungen nutzen und wie Sie sie bei Namefi registrieren.'
 keywords:
   - '.click domains'
-  - '.click TLD'
   - '.click top-level domain'
-  - 'was ist .click'
   - 'warum .click wählen'
   - 'was ist die .click domain'
   - 'warum die .click domain wählen'

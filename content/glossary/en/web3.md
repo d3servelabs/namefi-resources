@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A vision of the internet on public blockchains where users own their data, assets, and identity through their own keys, not platform accounts.
-keywords: ['Web3', 'decentralized web', 'blockchain internet', 'user ownership', 'peer-to-peer', 'decentralization', 'cryptocurrency', 'smart contracts', 'DeFi', 'NFT']
+keywords: ['decentralized web', 'blockchain internet', 'user ownership', 'peer-to-peer', 'decentralization', 'cryptocurrency', 'smart contracts', 'DeFi', 'NFT']
 level: 2
 sources:
   - https://ethereum.org/en/web3/

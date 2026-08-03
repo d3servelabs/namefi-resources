@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .accountant domain is an open new gTLD for accountants, bookkeepers, and finance professionals. Learn who runs it, who can register, and whether it suits your brand.'
-keywords: ['.accountant domain', 'what is .accountant', '.accountant TLD', 'accountant domain name', 'finance domain extension', 'new gTLD for accountants', 'register .accountant', 'bookkeeping website domain']
+keywords: ['accountant domain name', 'finance domain extension', 'new gTLD for accountants', 'register .accountant', 'bookkeeping website domain']
 faqs:
   - question: 'Can anyone register a .accountant domain?'
     answer: 'Yes. .accountant is an open, unrestricted new gTLD. You do not need to be a chartered accountant, CPA, or hold any professional credential to register one, and there is no local-presence requirement.'

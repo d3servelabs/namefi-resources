@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Eine Vision des Internets auf öffentlichen Blockchains, bei der Nutzer ihre Daten, Assets und Identität durch eigene Schlüssel kontrollieren – nicht über Plattform-Konten.
-keywords: ['Web3', 'dezentrales Web', 'Blockchain-Internet', 'Nutzereigentum', 'Peer-to-Peer', 'Dezentralisierung', 'Kryptowährung', 'Smart Contracts', 'DeFi', 'NFT']
+keywords: ['dezentrales Web', 'Blockchain-Internet', 'Nutzereigentum', 'Peer-to-Peer', 'Dezentralisierung', 'Kryptowährung', 'Smart Contracts', 'DeFi', 'NFT']
 level: 2
 sources:
   - https://ethereum.org/en/web3/

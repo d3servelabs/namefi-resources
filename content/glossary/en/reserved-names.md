@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Domains a registry withholds from open registration, such as premium, policy, or protected labels.
-keywords: ['reserved names', 'blocked names', 'registry reserved', 'premium reserved', 'collision list']
+keywords: ['blocked names', 'registry reserved', 'premium reserved', 'collision list']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/tlds-2012-02-25-en

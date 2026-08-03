@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Hochsicherheitsdienst, bei dem die Registry eine Domain einfriert, sodass Änderungen eine manuelle Out-of-Band-Genehmigung erfordern.
-keywords: ['registry-sperre', 'domain-sperre', 'hochsicherheitssperre', 'domain-hijacking-prävention', 'out-of-band-verifizierung']
+keywords: ['domain-sperre', 'hochsicherheitssperre', 'domain-hijacking-prävention', 'out-of-band-verifizierung']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en

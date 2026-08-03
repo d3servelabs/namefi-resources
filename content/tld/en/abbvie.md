@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abbvie domain is the closed brand TLD of biopharmaceutical company AbbVie, not open to the public. Learn what it is, who runs it, and what to register instead.'
-keywords: ['.abbvie domain', 'what is .abbvie', '.abbvie TLD', 'AbbVie brand domain', 'dot-brand TLD', 'AbbVie Inc registry', 'closed generic TLD', 'is .abbvie available']
+keywords: ['AbbVie brand domain', 'dot-brand TLD', 'AbbVie Inc registry', 'closed generic TLD', 'is .abbvie available']
 faqs:
   - question: 'Can anyone register a .abbvie domain?'
     answer: 'No. .abbvie is a closed brand TLD delegated to AbbVie Inc. Only AbbVie and parties it authorizes can hold a .abbvie name, so it is not available to the general public through any registrar.'

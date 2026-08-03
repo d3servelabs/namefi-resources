@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Eine Kryptowährung, die darauf ausgelegt ist, einen stabilen Wert gegenüber einer Referenz wie dem US-Dollar zu halten, und die für Zahlungen und Abrechnungen ohne Krypto-Preisvolatilität verwendet wird.
-keywords: ['Stablecoin', 'USDC', 'USDT', 'DAI', 'Fiat-gekoppelt', 'Krypto-Zahlung', 'On-Chain-Dollar']
+keywords: ['USDC', 'USDT', 'DAI', 'Fiat-gekoppelt', 'Krypto-Zahlung', 'On-Chain-Dollar']
 level: 1
 sources:
   - https://ethereum.org/en/stablecoins/

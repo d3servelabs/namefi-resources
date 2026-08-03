@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Name, der über den Punkt hinweg ein Wort unter Einbeziehung der TLD buchstabiert, wie del.icio.us oder examp.le.
-keywords: ['Domain-Hack', 'Kreative Domain', 'TLD-Wortspiel', 'Markenfähige Domain', 'ccTLD']
+keywords: ['Kreative Domain', 'TLD-Wortspiel', 'Markenfähige Domain', 'ccTLD']
 level: 1
 sources:
   - https://www.namebio.com/

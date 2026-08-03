@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: '.website is an open generic top-level domain run by Radix that literally spells out what a site is. Here is who it suits, how it is perceived, and what to weigh.'
-keywords: ['.website domain', 'what is .website', '.website TLD', 'Radix registry', 'generic TLD', 'register .website domain', '.website vs .site', 'new gTLD']
+keywords: ['Radix registry', 'generic TLD', 'register .website domain', '.website vs .site', 'new gTLD']
 faqs:
   - question: 'Can anyone register a .website domain?'
     answer: 'Yes. .website is an unrestricted generic top-level domain operated by Radix. There are no eligibility requirements, credentials, or local-presence rules, and any individual or organization can register an available name on a first-come, first-served basis.'

@@ -8,7 +8,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was bedeutet Domain-Eigentum, wenn es tokenisiert ist?
-keywords: ["Domain-Eigentum","NFT-Domain","Registrar","Custodial","Wallet-Eigentum"]
+keywords: ["NFT-Domain", "Registrar", "Custodial", "Wallet-Eigentum"]
 relatedArticles:
   - /de/blog/why-tokenize-domains/
   - /de/blog/what-are-tokenized-domains/

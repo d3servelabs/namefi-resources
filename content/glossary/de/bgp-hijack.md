@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Umleitung des Internetverkehrs durch falsche Ankündigung von IP-Routen – ein Netzwerkangriff unterhalb der DNS-Ebene.
-keywords: ['BGP-Hijack', 'Route-Hijacking', 'IP-Präfix', 'Netzwerksicherheit', 'Internet-Routing']
+keywords: ['Route-Hijacking', 'IP-Präfix', 'Netzwerksicherheit', 'Internet-Routing']
 level: 1
 sources:
   - https://www.cloudflare.com/learning/security/glossary/bgp-hijacking/

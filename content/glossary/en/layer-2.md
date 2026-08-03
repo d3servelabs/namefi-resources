@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A network built on top of a blockchain to make transactions faster and cheaper, like Base on Ethereum.
-keywords: ['layer 2', 'rollup', 'scaling', 'optimistic rollup', 'ZK rollup']
+keywords: ['rollup', 'scaling', 'optimistic rollup', 'ZK rollup']
 level: 1
 sources:
   - https://ethereum.org/en/layer-2/

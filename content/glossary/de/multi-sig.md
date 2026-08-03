@@ -7,7 +7,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was ist Multi-Sig und wie verbessert es die Domain-Sicherheit?
-keywords: ["Multi-Sig","Multisig","mehrere Signaturen","verbesserte Sicherheit","geteilte Verwahrung"]
+keywords: ["Multisig", "mehrere Signaturen", "verbesserte Sicherheit", "geteilte Verwahrung"]
 relatedArticles:
   - /de/blog/do-multisig-wallets-actually-improve-security/
   - /de/blog/onchain-domain-custody-and-recovery/

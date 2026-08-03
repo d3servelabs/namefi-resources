@@ -7,7 +7,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was sind Protokoll-Assets und wie fungieren tokenisierte Domains als Protokoll-Assets?
-keywords: ["Protokoll-Asset","Blockchain-Protokoll","Infrastruktur-Asset","Netzwerk-Asset","Utility Token"]
+keywords: ["Blockchain-Protokoll", "Infrastruktur-Asset", "Netzwerk-Asset", "Utility Token"]
 relatedArticles:
   - /de/blog/what-are-tokenized-domains/
   - /de/blog/why-tokenize-domains/

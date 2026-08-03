@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A short window right after a domain expires when you can still renew it at the normal price.
-keywords: ['grace period', 'auto-renew grace period', 'domain expiration', 'renewal', 'RGP']
+keywords: ['auto-renew grace period', 'domain expiration', 'renewal', 'RGP']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/errp-2013-02-28-en

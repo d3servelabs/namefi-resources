@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'How a 1985 afterthought became the internet''s default address — and the most valuable two-and-a-half letters in business. The full story of .com: its birth, its monopoly, its million-dollar heists, and what it means for anyone buying one today.'
-keywords: ['.com domains', 'what is .com', '.com TLD', '.com domain extension', 'register .com domain', 'com domain meaning', '.com vs .net', 'business domains', '.com price', '.com aftermarket', 'history of .com']
+keywords: ['.com domains', '.com domain extension', 'register .com domain', 'com domain meaning', '.com vs .net', 'business domains', '.com price', '.com aftermarket', 'history of .com']
 faqs:
   - question: 'Can anyone register a .com domain?'
     answer: 'Yes. The .com namespace is open to everyone worldwide with no local-presence, business, credential, or community requirement. The original commercial intent has never been enforced, so individuals, nonprofits, and companies alike can register one.'

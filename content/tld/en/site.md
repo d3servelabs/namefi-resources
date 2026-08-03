@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .site domain is an open, globally understood new gTLD by Radix. Learn who uses it, its SEO and deliverability profile, and how to register one at Namefi.'
-keywords: ['.site domains', 'what is .site', '.site TLD', '.site domain registration', 'Radix registry', 'new gTLD', 'buy .site domain', 'is .site good for SEO']
+keywords: ['.site domains', '.site domain registration', 'Radix registry', 'new gTLD', 'buy .site domain', 'is .site good for SEO']
 faqs:
   - question: 'Can anyone register a .site domain?'
     answer: 'Yes. The .site extension is an open generic top-level domain with no eligibility restrictions. There is no credential, trademark, business, or local-presence requirement, so individuals and organizations anywhere in the world can register an available .site name on a first-come, first-served basis.'

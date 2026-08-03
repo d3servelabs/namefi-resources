@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Das Datum, an dem die Registrierungslaufzeit einer Domain endet; wird sie nicht verlängert, beginnt ein Verfallsprozess bis zur Löschung.
-keywords: ['Domain-Ablauf', 'abgelaufene Domain', 'Verlängerung', 'Grace Period', 'Redemption']
+keywords: ['abgelaufene Domain', 'Verlängerung', 'Grace Period', 'Redemption']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

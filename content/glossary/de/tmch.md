@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: ICANNs zentrale Markendatenbank, die Sunrise-Vorregistrierungen und Markenbenachrichtigungen in neuen gTLDs ermöglicht.
-keywords: ['TMCH', 'Trademark Clearinghouse', 'Sunrise-Periode', 'Markenschutz', 'neues gTLD']
+keywords: ['TMCH', 'Sunrise-Periode', 'Markenschutz', 'neues gTLD']
 also_known_as: ['TMCH']
 level: 1
 sources:

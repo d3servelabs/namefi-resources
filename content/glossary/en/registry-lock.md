@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A high-security service where the registry freezes a domain so changes need manual out-of-band approval.
-keywords: ['registry lock', 'domain lock', 'high-security lock', 'domain hijacking prevention', 'out-of-band verification']
+keywords: ['domain lock', 'high-security lock', 'domain hijacking prevention', 'out-of-band verification']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en

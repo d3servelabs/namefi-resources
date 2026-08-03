@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Was ist die .tv-Domain? Tuvalus länderspezifische TLD, weltweit als Heimat von Fernsehen, Video und Live-Streaming vermarktet. Erfahren Sie, wer sie betreibt, wer registrieren kann, wie die Preisgestaltung funktioniert und wie es um die SEO steht.'
-keywords: ['.tv-Domains', '.tv TLD', 'tv Domain', 'was ist .tv', 'was ist die .tv-Domain', '.tv für Streaming', 'tv Domain für Video', 'Tuvalu Domain', '.tv-Domain registrieren', 'twitch.tv', 'Video-Streaming-Domain']
+keywords: ['.tv-Domains', 'tv Domain', 'was ist die .tv-Domain', '.tv für Streaming', 'tv Domain für Video', 'Tuvalu Domain', '.tv-Domain registrieren', 'twitch.tv', 'Video-Streaming-Domain']
 faqs:
   - question: 'Kann jeder eine .tv-Domain registrieren?'
     answer: 'Ja. Obwohl .tv technisch gesehen die länderspezifische TLD Tuvalus ist, steht sie seit Jahrzehnten jedem weltweit offen, ohne Anforderung an lokale Präsenz oder tuvaluischen Wohnsitz. Die Registrierung erfolgt nach dem Prinzip „first-come, first-served" auf der zweiten Ebene, auch wenn viele kurze oder Wörterbuch-Namen als Premium klassifiziert sind.'

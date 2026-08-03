@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Eine generische Top-Level-Domain, die durch das Erweiterungsprogramm von ICANN eingeführt wurde, wie .app, .xyz oder .shop.
-keywords: ['New gTLD', 'ICANN-Erweiterung', '.app', '.xyz', '.shop', 'Domain-Endung']
+keywords: ['ICANN-Erweiterung', '.app', '.xyz', '.shop', 'Domain-Endung']
 level: 1
 sources:
   - https://newgtlds.icann.org/en/

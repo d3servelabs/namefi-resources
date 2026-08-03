@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Der Diebstahl einer Domain durch unbefugte Übernahme des Registrar-Kontos oder der Registrierung.
-keywords: ['Domain-Hijacking', 'Kontoübernahme', 'Domain-Diebstahl', 'Registrar-Sicherheit', 'Unbefugter Transfer']
+keywords: ['Kontoübernahme', 'Domain-Diebstahl', 'Registrar-Sicherheit', 'Unbefugter Transfer']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aero domain is a restricted sponsored TLD for the aviation industry, run by SITA. Learn who qualifies for an aero ID and how it compares with .com.'
-keywords: ['.aero domain', 'what is .aero', '.aero TLD', 'SITA registry', 'aviation domain names', 'aero ID eligibility', 'sponsored TLD aviation', 'restricted gTLD']
+keywords: ['SITA registry', 'aviation domain names', 'aero ID eligibility', 'sponsored TLD aviation', 'restricted gTLD']
 faqs:
   - question: 'Who can register a .aero domain?'
     answer: 'Only members of the aviation and air-transport community, such as airlines, airports, and aviation businesses and professionals. Registrants must obtain an aero ID from the registry verifying that eligibility before a name can be registered.'

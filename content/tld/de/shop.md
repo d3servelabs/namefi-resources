@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Die .shop-Domain ist eine offene neue gTLD, die vom GMO Registry betrieben wird und signalisiert: „Hier kann man kaufen." Erfahre, wer sie nutzt, welche Regeln gelten, wie sich die Preise entwickeln und was sie für SEO bedeutet.'
-keywords: ['.shop-Domains', 'was ist .shop', '.shop TLD', '.shop-Domain-Registrierung', 'E-Commerce-Domain', 'GMO Registry', 'neue gTLD für den Handel', '.shop-Domain kaufen']
+keywords: ['.shop-Domains', '.shop-Domain-Registrierung', 'E-Commerce-Domain', 'GMO Registry', 'neue gTLD für den Handel', '.shop-Domain kaufen']
 faqs:
   - question: 'Kann jeder eine .shop-Domain registrieren?'
     answer: 'Ja. .shop ist eine offene generische Top-Level-Domain ohne Berechtigungsvoraussetzungen. Jede Einzelperson oder jedes Unternehmen weltweit kann einen verfügbaren Namen nach dem Prinzip „Wer zuerst kommt, mahlt zuerst" registrieren. Es gibt keine Anforderungen an Qualifikationen, lokale Präsenz oder Mitgliedschaft in einer Gemeinschaft.'

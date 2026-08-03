@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Der Investor-zu-Investor-Bodenpreis einer Domain – was ein Domainer akzeptiert, um schnell zu liquidieren, unter dem Einzelhandelspreis.
-keywords: ['Großhandelspreis', 'Investorenpreis', 'Domain-Großhandel', 'Liquidationspreis', 'Domainer-Preisgestaltung']
+keywords: ['Investorenpreis', 'Domain-Großhandel', 'Liquidationspreis', 'Domainer-Preisgestaltung']
 also_known_as: ['Investorenpreis']
 level: 1
 sources:

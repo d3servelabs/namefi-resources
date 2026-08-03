@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .realty domain is an open generic TLD for property professionals. No NAR membership needed, unlike .realtor. See who can register, pricing, and SEO.'
-keywords: ['.realty domains', 'what is .realty', '.realty TLD', '.realty vs .realtor', 'real estate domain names', 'property website domain', 'Internet Naming Co', 'new gTLD for realtors']
+keywords: ['.realty domains', '.realty vs .realtor', 'real estate domain names', 'property website domain', 'Internet Naming Co', 'new gTLD for realtors']
 faqs:
   - question: 'Can anyone register a .realty domain?'
     answer: 'Yes. .realty is an open generic TLD with no eligibility restrictions. Any individual, business, or organization can register one without proving membership, a license, or local presence. This is the key difference from .realtor, which requires National Association of Realtors or Canadian Real Estate Association membership.'

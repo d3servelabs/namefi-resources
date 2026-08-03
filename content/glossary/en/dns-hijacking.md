@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Redirecting a domain's traffic by tampering with DNS resolution rather than its registration.
-keywords: ['DNS hijacking', 'cache poisoning', 'DNS spoofing', 'DNSSEC', 'traffic redirection']
+keywords: ['cache poisoning', 'DNS spoofing', 'DNSSEC', 'traffic redirection']
 level: 1
 sources:
   - https://www.cloudflare.com/learning/dns/dns-cache-poisoning/

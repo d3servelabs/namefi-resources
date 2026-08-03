@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aetna domain is health insurer Aetna''s closed brand TLD, not open to the public. Learn what it is, who runs it, why it exists, and what to register instead.'
-keywords: ['.aetna domain', 'what is .aetna', '.aetna TLD', 'Aetna brand domain', 'dot-brand TLD', 'Aetna registry operator', 'closed generic TLD', 'is .aetna available']
+keywords: ['Aetna brand domain', 'dot-brand TLD', 'Aetna registry operator', 'closed generic TLD', 'is .aetna available']
 faqs:
   - question: 'Can anyone register a .aetna domain?'
     answer: 'No. .aetna is a closed brand TLD delegated to Aetna Life Insurance Company. Only Aetna and parties it authorizes can hold a .aetna name, so it is not available to the general public through any registrar.'

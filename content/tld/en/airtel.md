@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .airtel domain is the closed brand TLD of Bharti Airtel, a major Indian telecom company, not open to the public. Learn who runs it and what to register instead.'
-keywords: ['.airtel domain', 'what is .airtel', '.airtel TLD', 'Airtel brand domain', 'dot-brand TLD', 'Bharti Airtel registry', 'closed generic TLD', 'is .airtel available']
+keywords: ['Airtel brand domain', 'dot-brand TLD', 'Bharti Airtel registry', 'closed generic TLD', 'is .airtel available']
 faqs:
   - question: 'Can anyone register a .airtel domain?'
     answer: 'No. .airtel is a closed brand TLD delegated to Bharti Airtel Limited. Only Airtel and parties it authorizes can hold a .airtel name, so it is not available to the general public through any registrar.'

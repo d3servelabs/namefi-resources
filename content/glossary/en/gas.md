@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The fee paid to process a transaction on a blockchain, priced in the network's native asset and rising with congestion; Layer 2s charge far less.
-keywords: ['gas', 'gas fee', 'transaction fee', 'gwei', 'Ethereum gas', 'Base gas', 'L2 fees', 'mint cost']
+keywords: ['gas fee', 'transaction fee', 'gwei', 'Ethereum gas', 'Base gas', 'L2 fees', 'mint cost']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/gas/

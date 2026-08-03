@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: An intermediary who negotiates a domain sale between buyer and seller, usually for a commission.
-keywords: ['domain broker', 'domain brokerage', 'domain negotiation', 'domain intermediary', 'domain commission']
+keywords: ['domain brokerage', 'domain negotiation', 'domain intermediary', 'domain commission']
 level: 1
 sources:
   - https://www.investopedia.com/terms/b/broker.asp

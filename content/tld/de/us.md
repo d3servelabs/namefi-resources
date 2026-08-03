@@ -8,7 +8,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Was ist die .us-Domain? Die offizielle länderspezifische TLD der Vereinigten Staaten, beschränkt auf Registranten mit einer echten US-Präsenz. Erfahren Sie, wer sie betreibt, was das Nexus-Erfordernis ist, wie die Preisgestaltung funktioniert und wie es um SEO und E-Mail-Zustellbarkeit steht.'
-keywords: ['.us-Domains', '.us TLD', 'us Domain', 'was ist .us', 'was ist die .us-Domain', '.us vs .com', 'US-Nexus-Erfordernis', 'Vereinigte-Staaten-Domain', '.us-Domain registrieren', 'amerikanische Domain-Endung', 'del.icio.us']
+keywords: ['.us-Domains', 'us Domain', 'was ist die .us-Domain', '.us vs .com', 'US-Nexus-Erfordernis', 'Vereinigte-Staaten-Domain', '.us-Domain registrieren', 'amerikanische Domain-Endung', 'del.icio.us']
 faqs:
   - question: 'Kann jeder eine .us-Domain registrieren?'
     answer: 'Nein. Anders als die meisten vermarkteten ccTLDs erzwingt .us ein US-Nexus-Erfordernis: Registranten müssen US-Bürger oder -Einwohner, in den USA gegründete Einrichtungen oder ausländische Organisationen mit einer echten Präsenz in den Vereinigten Staaten sein. Es gibt keine offene Registrierung für jeden überall.'

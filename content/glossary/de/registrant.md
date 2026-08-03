@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die Person oder Organisation, die die Rechte an einem registrierten Domainnamen hält — der eingetragene Inhaber.
-keywords: ['Registrant', 'Domain-Inhaber', 'Registered Name Holder', 'RNH', 'Domain-Eigentum']
+keywords: ['Domain-Inhaber', 'Registered Name Holder', 'RNH', 'Domain-Eigentum']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

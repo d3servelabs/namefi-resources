@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .deals domain is an open new gTLD run by Binky Moon (Identity Digital), built for coupon sites, bargain hunters, and e-commerce promotions. Here is who it suits and why.'
-keywords: ['.deals domain', 'what is .deals', '.deals TLD', '.deals domain registration', 'coupon domain', 'deals website domain', 'Binky Moon', 'Identity Digital gTLD']
+keywords: ['.deals domain registration', 'coupon domain', 'deals website domain', 'Binky Moon', 'Identity Digital gTLD']
 faqs:
   - question: 'Can anyone register a .deals domain?'
     answer: 'Yes. The .deals domain is an open generic top-level domain with no eligibility restrictions. Any individual or business can register an available .deals name through an ICANN-accredited registrar, with no credential, membership, or local-presence requirement.'

@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Käufer, der eine Domain tatsächlich für ein Unternehmen oder Projekt nutzen möchte, nicht um sie weiterzuverkaufen.
-keywords: ['Endnutzer', 'Domain-Käufer', 'Domain-Einsatz', 'Unternehmens-Domain', 'Domain-Deployment']
+keywords: ['Domain-Käufer', 'Domain-Einsatz', 'Unternehmens-Domain', 'Domain-Deployment']
 level: 1
 sources:
   - https://en.wikipedia.org/wiki/End_user

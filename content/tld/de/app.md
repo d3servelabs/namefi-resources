@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Erfahren Sie alles über die .app Domain: Die sichere Wahl für Apps und Entwickler. Entdecken Sie Vorteile, SEO-Potenzial und wie Sie sie bei Namefi registrieren.'
-keywords: ['.app domains', '.app TLD', '.app top-level domain', 'was ist .app', 'warum .app wählen', 'was ist die .app domain', 'warum die .app domain wählen', 'domain investing', 'tokenisierte domains', 'blockchain domains', 'app entwickler', 'sichere domains', 'google registry', 'web3 domains', 'namefi']
+keywords: ['.app domains', '.app top-level domain', 'warum .app wählen', 'was ist die .app domain', 'warum die .app domain wählen', 'domain investing', 'tokenisierte domains', 'blockchain domains', 'app entwickler', 'sichere domains', 'google registry', 'web3 domains', 'namefi']
 relatedArticles:
   - /de/blog/top-tlds-to-secure-for-your-startup/
   - /de/blog/top-tlds-to-secure-for-your-saas/

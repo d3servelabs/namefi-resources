@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abudhabi domain is a geographic gTLD for the Emirate of Abu Dhabi in the UAE. Learn who operates it, who can register, and whether it suits your brand.'
-keywords: ['.abudhabi domains', '.abudhabi TLD', 'what is .abudhabi', 'Abu Dhabi domain name', 'geographic gTLD', 'UAE domain extension', 'Abu Dhabi government domain', 'geo-targeted domain']
+keywords: ['.abudhabi domains', 'Abu Dhabi domain name', 'geographic gTLD', 'UAE domain extension', 'Abu Dhabi government domain', 'geo-targeted domain']
 faqs:
   - question: 'Can anyone register a .abudhabi domain?'
     answer: 'Not without a connection to the emirate. Registration expects a genuine nexus to Abu Dhabi, such as a local business, institution, or government affiliation, under rules set by the registry operator. It is not an open, anyone-anywhere gTLD like .com.'

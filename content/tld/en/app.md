@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .app domain is Google Registry''s gTLD for software and apps, with HTTPS required on every site. Learn who it suits, how it ranks, and how to register one.'
-keywords: ['.app domain', 'what is .app', '.app TLD', '.app domains', 'app domain extension', 'Google Registry .app', '.app HTTPS required', 'register .app domain', 'developer domains']
+keywords: ['.app domains', 'app domain extension', 'Google Registry .app', '.app HTTPS required', 'register .app domain', 'developer domains']
 faqs:
   - question: 'Can anyone register a .app domain?'
     answer: 'Yes. The .app TLD is an open generic top-level domain with no eligibility restrictions, so anyone can register an available name. The one practical condition is technical, not legal: a .app site needs a valid HTTPS certificate to load in browsers.'

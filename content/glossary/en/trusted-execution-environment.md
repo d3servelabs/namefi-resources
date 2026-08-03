@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A hardware-isolated region of a processor that runs code and holds data securely, shielded from the rest of the system including the operating system.
-keywords: ['trusted execution environment', 'tee', 'secure enclave', 'intel sgx', 'confidential computing']
+keywords: ['tee', 'secure enclave', 'intel sgx', 'confidential computing']
 also_known_as: ['TEE', 'Secure Enclave']
 level: 1
 sources:

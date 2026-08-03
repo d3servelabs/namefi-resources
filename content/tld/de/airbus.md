@@ -14,9 +14,7 @@ draft: false
 description: "Erfahren Sie alles über die .airbus Top-Level-Domain: Eine exklusive Marken-TLD, ihre Bedeutung für die digitale Identität und was Domain-Investoren wissen müssen."
 keywords:
   - .airbus domains
-  - .airbus TLD
   - top-level domain
-  - was ist .airbus
   - warum .airbus wählen
   - was ist die .airbus domain
   - warum die .airbus domain wählen

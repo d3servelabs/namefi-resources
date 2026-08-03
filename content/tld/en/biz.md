@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .biz domain is an open, business-oriented gTLD run by GoDaddy Registry. Learn who it suits, how it compares to .com, and what to know before buying.'
-keywords: ['.biz', '.biz domains', '.biz TLD', 'what is .biz', 'business domain extension', 'biz vs com', 'GoDaddy Registry', 'bona fide business use']
+keywords: ['.biz', '.biz domains', 'business domain extension', 'biz vs com', 'GoDaddy Registry', 'bona fide business use']
 faqs:
   - question: 'Can anyone register a .biz domain?'
     answer: 'Almost. The .biz namespace is open worldwide with no credential, trademark, or local-presence gate, but registrations are meant for bona fide business or commercial use. Non-commercial or purely speculative registrations can in principle be challenged, though enforcement in practice is light.'

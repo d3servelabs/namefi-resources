@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .alipay domain is the closed brand TLD tied to Alibaba Group and its Alipay payments platform, not open to the public. Learn who runs it and what to register instead.'
-keywords: ['.alipay domain', 'what is .alipay', '.alipay TLD', 'Alipay brand domain', 'dot-brand TLD', 'Alibaba Group registry', 'closed generic TLD', 'is .alipay available']
+keywords: ['Alipay brand domain', 'dot-brand TLD', 'Alibaba Group registry', 'closed generic TLD', 'is .alipay available']
 faqs:
   - question: 'Can anyone register a .alipay domain?'
     answer: 'No. .alipay is a closed brand TLD delegated to Alibaba Group Holding Limited for the Alipay payments platform. Only Alibaba Group and parties it authorizes can hold a .alipay name, so it is not available to the public through any registrar.'

@@ -7,7 +7,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was ist Mietkauf und wie kann er auf den Domain-Erwerb angewendet werden?
-keywords: ["Mietkauf","schrittweiser Eigentumserwerb","Zahlungspläne","Domain-Erwerb","Smart Contracts"]
+keywords: ["schrittweiser Eigentumserwerb", "Zahlungspläne", "Domain-Erwerb", "Smart Contracts"]
 relatedArticles:
   - /de/blog/taxes-and-accounting-for-domain-investors/
   - /de/blog/why-tokenize-domains/

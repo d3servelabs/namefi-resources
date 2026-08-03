@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A short, catchy, often invented name that works as a memorable brand, like a made-up word.
-keywords: ['brandable domain', 'brand domain', 'invented domain', 'made-up word domain', 'memorable domain']
+keywords: ['brand domain', 'invented domain', 'made-up word domain', 'memorable domain']
 level: 1
 sources:
   - https://moz.com/learn/seo/domain

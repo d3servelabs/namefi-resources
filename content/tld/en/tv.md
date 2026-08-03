@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .tv domain? Tuvalu''s country-code TLD, marketed worldwide as the home of television, video, and live streaming. Learn who runs it, who can register, pricing, and SEO.'
-keywords: ['.tv domains', '.tv TLD', 'tv domain', 'what is .tv', 'what is the .tv domain', '.tv for streaming', 'tv domain for video', 'Tuvalu domain', 'register .tv domain', 'twitch.tv', 'video streaming domain']
+keywords: ['.tv domains', 'tv domain', 'what is the .tv domain', '.tv for streaming', 'tv domain for video', 'Tuvalu domain', 'register .tv domain', 'twitch.tv', 'video streaming domain']
 faqs:
   - question: 'Can anyone register a .tv domain?'
     answer: 'Yes. Although .tv is technically Tuvalu''s country-code TLD, it has been open to anyone in the world for decades, with no local-presence or Tuvaluan-residency requirement. Registration is first-come, first-served at the second level, though many short or dictionary names are classified as premium.'

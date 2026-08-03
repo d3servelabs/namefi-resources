@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Eine weitgehend veraltete Praxis, Domains zu registrieren und innerhalb der kostenlosen Add Grace Period wieder zu stornieren.
-keywords: ['Domain Tasting', 'AGP', 'Add Grace Period', 'Domain Kiting', 'ICANN-Richtlinie']
+keywords: ['AGP', 'Add Grace Period', 'Domain Kiting', 'ICANN-Richtlinie']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/agp-policy-2008-06-25-en

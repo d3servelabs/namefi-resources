@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A scaling technique that splits a blockchain's validation work across multiple parallel subsets of nodes instead of one.
-keywords: ['sharding', 'shard', 'scalability trilemma', 'data availability sampling', 'ethereum sharding']
+keywords: ['shard', 'scalability trilemma', 'data availability sampling', 'ethereum sharding']
 level: 1
 sources:
   - https://vitalik.eth.limo/general/2021/04/07/sharding.html

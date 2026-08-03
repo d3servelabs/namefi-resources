@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The unauthorized transfer of a domain out of its rightful owner's control, often via account compromise.
-keywords: ['domain theft', 'unauthorized transfer', 'account compromise', 'domain security', 'recovery']
+keywords: ['unauthorized transfer', 'account compromise', 'domain security', 'recovery']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

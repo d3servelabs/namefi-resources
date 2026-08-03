@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die UN-Behörde, deren Schiedsgerichtszentrum viele UDRP-Domain-Streitigkeiten entscheidet.
-keywords: ['WIPO', 'World Intellectual Property Organization', 'UDRP', 'domain-streit', 'schiedsverfahren']
+keywords: ['World Intellectual Property Organization', 'UDRP', 'domain-streit', 'schiedsverfahren']
 also_known_as: ['World Intellectual Property Organization']
 level: 1
 sources:

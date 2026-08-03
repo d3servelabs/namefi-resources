@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Registering or using a domain to exploit a trademark, a required element to win a UDRP case.
-keywords: ['bad faith', 'UDRP', 'domain dispute', 'cybersquatting', 'trademark abuse']
+keywords: ['UDRP', 'domain dispute', 'cybersquatting', 'trademark abuse']
 level: 1
 sources:
   - https://www.wipo.int/amc/en/domains/

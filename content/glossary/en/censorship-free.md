@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A property where no single authority can unilaterally seize, block, or alter ownership, because control rests with the holder's keys on a public ledger.
-keywords: ['censorship-free', 'censorship resistance', 'decentralized', 'freedom', 'unstoppable']
+keywords: ['censorship resistance', 'decentralized', 'freedom', 'unstoppable']
 level: 1
 sources:
   - https://ethereum.org/en/web3/

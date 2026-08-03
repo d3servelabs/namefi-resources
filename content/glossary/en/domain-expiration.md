@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The date a domain's registration ends; if not renewed, it begins a lapse process toward deletion.
-keywords: ['domain expiration', 'expired domain', 'renewal', 'grace period', 'redemption']
+keywords: ['expired domain', 'renewal', 'grace period', 'redemption']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

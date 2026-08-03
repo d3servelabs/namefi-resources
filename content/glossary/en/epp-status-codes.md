@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The standardized flags on a domain that show its state — locked, on hold, pending transfer, and more.
-keywords: ['EPP status codes', 'clientHold', 'serverTransferProhibited', 'domain status', 'pending delete']
+keywords: ['clientHold', 'serverTransferProhibited', 'domain status', 'pending delete']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en

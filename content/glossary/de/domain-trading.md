@@ -8,7 +8,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was ist Domain-Handel und wie verbessert die Tokenisierung das Handelserlebnis?
-keywords: ["Domain-Handel","Domain-Investition","digitales Immobilien","Sekundärmarkt","Liquidität"]
+keywords: ["Domain-Investition", "digitales Immobilien", "Sekundärmarkt", "Liquidität"]
 relatedArticles:
   - /de/blog/onchain-domain-flipping/
   - /de/blog/end-user-vs-reseller-domain-pricing/

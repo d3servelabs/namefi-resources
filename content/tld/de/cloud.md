@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: "Entdecken Sie die Vorteile der .cloud-Domain für Ihr Business. Erfahren Sie mehr über Nutzungsmöglichkeiten und registrieren Sie Ihre .cloud-Domain bei Namefi."
-keywords: [".cloud domains", ".cloud TLD", "top-level domain .cloud", "was ist .cloud", "warum .cloud wählen", "was ist die .cloud domain", "warum die .cloud domain wählen", "cloud domain kaufen", "domain investing", "blockchain domains", "tokenisierte domains", "web3 domains", "SaaS domains", "cloud computing trends", "neue gTLDs"]
+keywords: [".cloud domains", "top-level domain .cloud", "warum .cloud wählen", "was ist die .cloud domain", "warum die .cloud domain wählen", "cloud domain kaufen", "domain investing", "blockchain domains", "tokenisierte domains", "web3 domains", "SaaS domains", "cloud computing trends", "neue gTLDs"]
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/ai-vs-io-domain/

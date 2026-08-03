@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die Textdatei, die alle DNS-Einträge einer Domain enthält, einschließlich Glue Records für ihre Nameserver.
-keywords: ['Zone-File', 'Glue Record', 'DNS-Zone', 'autoritative Einträge', 'Nameserver']
+keywords: ['Glue Record', 'DNS-Zone', 'autoritative Einträge', 'Nameserver']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1035

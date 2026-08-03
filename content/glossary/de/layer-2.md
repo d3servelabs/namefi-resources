@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Netzwerk auf einer Blockchain, das Transaktionen schneller und günstiger macht, wie Base auf Ethereum.
-keywords: ['layer 2', 'rollup', 'skalierung', 'optimistic rollup', 'ZK rollup']
+keywords: ['rollup', 'skalierung', 'optimistic rollup', 'ZK rollup']
 level: 1
 sources:
   - https://ethereum.org/en/layer-2/

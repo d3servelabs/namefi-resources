@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .agakhan domain is the closed brand TLD of the Aga Khan Foundation, not open to the public. Learn what it is, who runs it, and what to register instead.'
-keywords: ['.agakhan domain', 'what is .agakhan', '.agakhan TLD', 'Aga Khan Foundation domain', 'Fondation Aga Khan', 'dot-brand TLD', 'closed generic TLD', 'is .agakhan available']
+keywords: ['Aga Khan Foundation domain', 'Fondation Aga Khan', 'dot-brand TLD', 'closed generic TLD', 'is .agakhan available']
 faqs:
   - question: 'Can anyone register a .agakhan domain?'
     answer: 'No. .agakhan is a closed brand TLD delegated to Fondation Aga Khan, the Aga Khan Foundation. Only the Foundation and parties it authorizes can hold a .agakhan name, so it is not available to the general public through any registrar.'

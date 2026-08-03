@@ -8,7 +8,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .sbs domain is a low-cost open generic gTLD run by ShortDot, often read as "side by side." Learn its origin, real uses, reputation, and whether to buy.'
-keywords: ['.sbs domain', 'what is .sbs', '.sbs domain meaning', 'sbs tld', 'is .sbs safe', 'ShortDot .sbs', 'side by side domain', 'new gTLD']
+keywords: ['.sbs domain meaning', 'sbs tld', 'is .sbs safe', 'ShortDot .sbs', 'side by side domain', 'new gTLD']
 faqs:
   - question: 'Can anyone register a .sbs domain?'
     answer: 'Yes. .sbs is an open, unrestricted generic top-level domain operated by ShortDot SA. There are no credential, membership, or local-presence requirements, so individuals and businesses anywhere in the world can register a .sbs name through any accredited registrar.'

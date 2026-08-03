@@ -8,7 +8,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was ist ein NFT und wie hängt es mit der Domain-Tokenisierung zusammen?
-keywords: ["NFT","non-fungible token","blockchain","einzigartiger Vermögenswert","Domain-NFT"]
+keywords: ["non-fungible token", "blockchain", "einzigartiger Vermögenswert", "Domain-NFT"]
 relatedArticles:
   - /de/blog/selling-domains-as-nfts/
   - /de/blog/what-are-tokenized-domains/

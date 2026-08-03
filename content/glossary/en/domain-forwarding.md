@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Sending visitors from one domain automatically to another address, often via a 301 redirect.
-keywords: ['domain forwarding', '301 redirect', 'URL redirect', 'DNS', 'domain management']
+keywords: ['301 redirect', 'URL redirect', 'DNS', 'domain management']
 level: 1
 sources:
   - https://developers.google.com/search/docs/crawling-indexing/301-redirects

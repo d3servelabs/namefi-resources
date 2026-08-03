@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Unternehmen, das Domains unter der Akkreditierung eines größeren Registrars verkauft, ohne eine eigene zu besitzen.
-keywords: ['reseller', 'domain-reseller', 'white-label-registrar', 'ICANN-akkreditierung', 'registrar']
+keywords: ['domain-reseller', 'white-label-registrar', 'ICANN-akkreditierung', 'registrar']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/what-2012-02-25-en

@@ -8,7 +8,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .airtel Top-Level-Domain. Entdecken Sie die Vorteile, Anwendungsfälle und wie Sie Premium-Domains und Blockchain-Assets bei Namefi sichern."
-keywords: [".airtel domains", ".airtel TLD", "top-level domain", "was ist .airtel", "warum .airtel wählen", "was ist die .airtel domain", "warum die .airtel domain wählen", "domain investing", "blockchain domains", "tokenized domain", "marken domains", "airtel registrierung", "telekommunikation domains"]
+keywords: [".airtel domains", "top-level domain", "warum .airtel wählen", "was ist die .airtel domain", "warum die .airtel domain wählen", "domain investing", "blockchain domains", "tokenized domain", "marken domains", "airtel registrierung", "telekommunikation domains"]
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/top-tlds-to-secure-for-your-business/

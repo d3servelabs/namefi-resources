@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Rerouting internet traffic by falsely announcing IP routes, a network-layer attack that sits below DNS.
-keywords: ['BGP hijack', 'route hijacking', 'IP prefix', 'network security', 'internet routing']
+keywords: ['route hijacking', 'IP prefix', 'network security', 'internet routing']
 level: 1
 sources:
   - https://www.cloudflare.com/learning/security/glossary/bgp-hijacking/

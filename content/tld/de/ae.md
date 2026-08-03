@@ -15,9 +15,7 @@ draft: false
 description: 'Erfahren Sie alles über die .ae Domain. Perfekt für Unternehmen in den VAE, SEO und globale Marken. Sichern Sie sich Ihre digitale Identität jetzt mit Namefi.'
 keywords:
   - .ae domains
-  - .ae TLD
   - .ae top-level domain
-  - was ist .ae
   - warum .ae wählen
   - was ist die .ae domain
   - warum die .ae domain wählen

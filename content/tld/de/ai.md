@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: '.ai ist Anguilas Ländercode-Domain, die zur globalen KI-Branding-Erweiterung geworden ist. Erfahren Sie, wer sie betreibt, welche Registrierungsregeln gelten, wie sie sich auf SEO auswirkt und wie Sie .ai bei Namefi registrieren.'
-keywords: ['.ai Domain', 'Was ist .ai', '.ai TLD', 'Anguilla ccTLD', '.ai Domain registrieren', 'KI-Startup-Domain', '.ai vs .io', 'wer besitzt .ai']
+keywords: ['Anguilla ccTLD', '.ai Domain registrieren', 'KI-Startup-Domain', '.ai vs .io', 'wer besitzt .ai']
 faqs:
   - question: 'Kann jeder eine .ai-Domain registrieren?'
     answer: 'Ja. Das .ai-Register ist weltweit für alle offen, ohne Anforderungen an lokale Präsenz oder Nachweise. Der wesentliche Unterschied zu den meisten TLDs besteht darin, dass .ai in einer Mindestlaufzeit von zwei Jahren statt in Einjahresabschnitten verkauft wird.'

@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die Praxis, in Domainnamen zu investieren – sie zu registrieren, zu kaufen und mit Gewinn zu verkaufen.
-keywords: ['Domaining', 'Domainer', 'Domain-Investition', 'Domain-Flipping', 'Domain-Spekulation']
+keywords: ['Domainer', 'Domain-Investition', 'Domain-Flipping', 'Domain-Spekulation']
 level: 1
 sources:
   - https://www.namebio.com/

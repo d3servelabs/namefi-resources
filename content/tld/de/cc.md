@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Was ist die .cc-Domain? Die länderspezifische TLD der Kokosinseln (Keelinginseln), betrieben von Verisign und weltweit als kurze, markenfähige Alternative zu .com vermarktet. Erfahren Sie, wer sie betreibt, wer registrieren kann, wie die Preisgestaltung funktioniert und wie es um die SEO steht.'
-keywords: ['.cc-Domains', '.cc TLD', 'cc Domain', 'was ist .cc', 'was ist die .cc-Domain', '.cc vs .com', 'cc Domain Bedeutung', 'Kokosinseln Keelinginseln Domain', '.cc-Domain registrieren', 'kurze markenfähige Domain', 'Domain-Hack cc']
+keywords: ['.cc-Domains', 'cc Domain', 'was ist die .cc-Domain', '.cc vs .com', 'cc Domain Bedeutung', 'Kokosinseln Keelinginseln Domain', '.cc-Domain registrieren', 'kurze markenfähige Domain', 'Domain-Hack cc']
 faqs:
   - question: 'Kann jeder eine .cc-Domain registrieren?'
     answer: 'Ja. Obwohl .cc technisch gesehen die länderspezifische TLD der Kokosinseln (Keelinginseln) ist, steht sie jedem weltweit offen, ohne Anforderung an lokale Präsenz oder Wohnsitz. Die Registrierung erfolgt nach dem Prinzip „first-come, first-served" auf der zweiten Ebene.'

@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Der Ethereum Name Service ordnet menschenlesbare Namen wie alice.eth Wallet-Adressen und Einträgen zu und wird vollständig durch On-Chain-Smart-Contracts verwaltet.
-keywords: ['ENS', 'Ethereum Name Service', '.eth', 'Web3-Name', 'On-Chain-Naming', 'Wallet-Alias', 'Krypto-Identität']
+keywords: ['Ethereum Name Service', '.eth', 'Web3-Name', 'On-Chain-Naming', 'Wallet-Alias', 'Krypto-Identität']
 level: 1
 sources:
   - https://docs.ens.domains/

@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: "Entdecken Sie die Bedeutung und Vorteile der .top-TLD. Erfahren Sie, warum sie für Marken und Investoren attraktiv ist. Jetzt .top bei Namefi registrieren!"
-keywords: [".top domains", ".top TLD", "top-level domain", "was ist .top", "warum .top wählen", "was ist die .top domain", "warum die .top domain wählen", "domain investing", "blockchain domains", "tokenized domain", ".top registrieren", "günstige domains", "domain endung top", "namefi domains", "web3 domains"]
+keywords: [".top domains", "top-level domain", "warum .top wählen", "was ist die .top domain", "warum die .top domain wählen", "domain investing", "blockchain domains", "tokenized domain", ".top registrieren", "günstige domains", "domain endung top", "namefi domains", "web3 domains"]
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/

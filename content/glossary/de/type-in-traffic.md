@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Besucher, die eine Website durch direktes Eintippen einer vermuteten Domain erreichen – die Grundlage der Domain-Parking-Einnahmen.
-keywords: ['type-in-traffic', 'direktnavigation', 'domain parking', 'exact-match-domain', 'domain-wert']
+keywords: ['direktnavigation', 'domain parking', 'exact-match-domain', 'domain-wert']
 level: 1
 sources:
   - https://www.namebio.com/

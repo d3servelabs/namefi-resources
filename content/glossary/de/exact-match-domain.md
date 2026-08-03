@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Eine Domain, die exakt einem Suchbegriff entspricht, wie besthotels.com – früher hoch geschätzt für SEO.
-keywords: ['Exact-Match Domain', 'EMD', 'Keyword-Match-Domain', 'SEO-Domain', 'Suchrankig-Domain']
+keywords: ['EMD', 'Keyword-Match-Domain', 'SEO-Domain', 'Suchrankig-Domain']
 also_known_as: ['EMD']
 level: 1
 sources:

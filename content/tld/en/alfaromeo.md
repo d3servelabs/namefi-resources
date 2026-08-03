@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .alfaromeo domain was a brand TLD for the Italian car marque Alfa Romeo that ICANN terminated in 2023. Learn its history and what to register instead.'
-keywords: ['.alfaromeo domain', 'what is .alfaromeo', '.alfaromeo TLD', 'Alfa Romeo brand domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .alfaromeo available']
+keywords: ['Alfa Romeo brand domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .alfaromeo available']
 faqs:
   - question: 'Can I register a .alfaromeo domain?'
     answer: 'No. .alfaromeo was terminated in 2023 and removed from the DNS root zone, so it no longer exists as a working extension and cannot be registered through any registrar. Even before that, it was a closed brand TLD never open to the public.'

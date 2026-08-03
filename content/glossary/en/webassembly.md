@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A portable, near-native-speed binary instruction format that several blockchains use as their smart contract execution engine.
-keywords: ['webassembly', 'wasm', 'cosmwasm', 'wasm smart contracts', 'stack-based virtual machine']
+keywords: ['wasm', 'cosmwasm', 'wasm smart contracts', 'stack-based virtual machine']
 also_known_as: ['Wasm']
 level: 1
 sources:

@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Dezentrale Finanzen bieten Kredite, Darlehen und Handel über Smart Contracts auf öffentlichen Blockchains an, ohne Banken oder Makler als Vermittler.
-keywords: ['DeFi', 'dezentrale Finanzen', 'Kreditvergabe', 'Kreditaufnahme', 'Sicherheit', 'DEX', 'Geldmärkte', 'On-Chain-Finanzen']
+keywords: ['dezentrale Finanzen', 'Kreditvergabe', 'Kreditaufnahme', 'Sicherheit', 'DEX', 'Geldmärkte', 'On-Chain-Finanzen']
 level: 1
 sources:
   - https://ethereum.org/en/defi/

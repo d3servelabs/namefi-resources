@@ -8,7 +8,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was bedeutet "On-Chain" im Kontext von Domains?
-keywords: ["On-Chain","Blockchain","Smart Contracts","Domain-NFT","Dezentralisierung"]
+keywords: ["Blockchain", "Smart Contracts", "Domain-NFT", "Dezentralisierung"]
 relatedArticles:
   - /de/blog/how-tokenization-changes-domain-flipping/
   - /de/blog/what-are-tokenized-domains/

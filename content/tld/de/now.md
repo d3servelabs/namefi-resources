@@ -8,7 +8,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Entdecken Sie die .now Domain: Die perfekte Endung für Echtzeit-Dienste, Events und moderne Marken. Erfahren Sie Vorteile und Anwendungsfälle bei Namefi.'
-keywords: ['.now domains', '.now TLD', 'top-level domain', 'was ist .now', 'warum .now wählen', 'was ist die .now domain', 'warum die .now domain wählen', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'echtzeit business', 'neue gTLD', 'domain registrierung', 'digitale identität', 'web3 integration', 'namefi']
+keywords: ['.now domains', 'top-level domain', 'warum .now wählen', 'was ist die .now domain', 'warum die .now domain wählen', 'domain investing', 'blockchain domains', 'tokenized domains', 'Web3 domains', 'echtzeit business', 'neue gTLD', 'domain registrierung', 'digitale identität', 'web3 integration', 'namefi']
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/how-to-sell-a-domain-name-you-own/

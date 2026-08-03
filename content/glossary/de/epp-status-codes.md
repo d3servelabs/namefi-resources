@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die standardisierten Flags einer Domain, die ihren Zustand anzeigen – gesperrt, zurückgehalten, ausstehender Transfer und mehr.
-keywords: ['EPP-Statuscodes', 'clientHold', 'serverTransferProhibited', 'Domain-Status', 'Pending Delete']
+keywords: ['clientHold', 'serverTransferProhibited', 'Domain-Status', 'Pending Delete']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en

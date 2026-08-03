@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .net domain is one of the internet''s original gTLDs, run by Verisign and open to anyone. Learn who uses it, how it compares to .com, and when to register it.'
-keywords: ['.net domain', 'what is .net', '.net TLD', '.net vs .com', 'register .net domain', 'Verisign .net registry', 'is .net good for SEO', 'tech startup domains']
+keywords: ['.net vs .com', 'register .net domain', 'Verisign .net registry', 'is .net good for SEO', 'tech startup domains']
 faqs:
   - question: 'Can anyone register a .net domain?'
     answer: '.net is an open generic top-level domain with no registration restrictions. Anyone, anywhere can register an available .net name without proving membership, credentials, or a local presence. Standard ICANN rules on syntax, trademark sunrise history, and renewal apply.'

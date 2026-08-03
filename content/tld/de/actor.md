@@ -8,7 +8,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Entdecken Sie die .actor Domain: Die perfekte digitale Bühne für Schauspieler und Künstler. Erfahren Sie alles über Vorteile, Verfügbarkeit und Registrierung.'
-keywords: ['.actor domains', '.actor TLD', '.actor top-level domain', 'what is .actor', 'why choose .actor', 'what is the .actor domain', 'why choose the .actor domain', 'domain investing', 'tokenized domains', 'blockchain domains', 'schauspieler webseite', 'online portfolio', 'digital identity', 'namefi', 'domain registrierung']
+keywords: ['.actor domains', '.actor top-level domain', 'what is .actor', 'why choose .actor', 'what is the .actor domain', 'why choose the .actor domain', 'domain investing', 'tokenized domains', 'blockchain domains', 'schauspieler webseite', 'online portfolio', 'digital identity', 'namefi', 'domain registrierung']
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/what-are-tokenized-domains/

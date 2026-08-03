@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The delay before a DNS change is seen everywhere, as cached old records expire across resolvers.
-keywords: ['DNS propagation', 'DNS update delay', 'TTL', 'DNS cache', 'nameserver change']
+keywords: ['DNS update delay', 'TTL', 'DNS cache', 'nameserver change']
 level: 1
 sources:
   - https://www.cloudflare.com/learning/dns/glossary/time-to-live-ttl/

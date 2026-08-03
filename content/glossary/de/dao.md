@@ -7,7 +7,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was ist ein DAO und wie kann es mit der Domainverwaltung in Verbindung stehen?
-keywords: ["DAO","dezentrale autonome Organisation","Governance","kollektives Eigentum","Smart Contracts"]
+keywords: ["dezentrale autonome Organisation", "Governance", "kollektives Eigentum", "Smart Contracts"]
 relatedArticles:
   - /de/blog/why-a-dao-should-control-the-main-domain/
   - /de/blog/tokenized-domain-use-cases-2026/

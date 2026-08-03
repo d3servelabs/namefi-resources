@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .af domain? Afghanistan''s country-code TLD, managed by AFGNIC. Learn its history, eligibility, and how pricing works before you register.'
-keywords: ['.af domain', '.af TLD', 'what is .af', 'Afghanistan domain', 'AFGNIC registry', 'country code top level domain', 'ccTLD registration', 'register .af domain']
+keywords: ['Afghanistan domain', 'AFGNIC registry', 'country code top level domain', 'ccTLD registration', 'register .af domain']
 faqs:
   - question: 'Can anyone register a .af domain?'
     answer: 'The registry, AFGNIC, sets current eligibility rules for .af, and they can differ from an open global gTLD. Before planning a brand around .af, confirm current registration requirements directly with AFGNIC rather than assuming worldwide open registration.'

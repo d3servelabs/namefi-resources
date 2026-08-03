@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A rollup that submits a cryptographic validity proof with every batch of transactions instead of relying on a fraud-proof challenge window.
-keywords: ['zk rollup', 'zero-knowledge rollup', 'validity proof', 'zk-snark', 'zk-stark', 'zksync', 'starknet']
+keywords: ['zero-knowledge rollup', 'validity proof', 'zk-snark', 'zk-stark', 'zksync', 'starknet']
 also_known_as: ['Zero-Knowledge Rollup', 'Validity Rollup']
 level: 1
 sources:

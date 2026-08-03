@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A server that answers DNS queries for a domain; its NS records name the authoritative servers.
-keywords: ['nameserver', 'NS record', 'authoritative server', 'DNS delegation', 'DNS hosting']
+keywords: ['NS record', 'authoritative server', 'DNS delegation', 'DNS hosting']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034

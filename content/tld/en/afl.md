@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .afl domain is the closed brand TLD of the Australian Football League, not open to the public. Learn what it is, who runs it, and what to register instead.'
-keywords: ['.afl domain', 'what is .afl', '.afl TLD', 'Australian Football League domain', 'AFL brand TLD', 'dot-brand TLD', 'closed generic TLD', 'is .afl available']
+keywords: ['Australian Football League domain', 'AFL brand TLD', 'dot-brand TLD', 'closed generic TLD', 'is .afl available']
 faqs:
   - question: 'Can anyone register a .afl domain?'
     answer: 'No. .afl is a closed brand TLD delegated to the Australian Football League. Only the AFL and parties it authorizes can hold a .afl name, so it is not available to the general public through any registrar.'

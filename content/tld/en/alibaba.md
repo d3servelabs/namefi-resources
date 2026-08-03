@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .alibaba domain is the closed brand TLD of Alibaba Group, a Chinese e-commerce and technology group, not open to the public. Learn what to register instead.'
-keywords: ['.alibaba domain', 'what is .alibaba', '.alibaba TLD', 'Alibaba brand domain', 'dot-brand TLD', 'Alibaba Group registry', 'closed generic TLD', 'is .alibaba available']
+keywords: ['Alibaba brand domain', 'dot-brand TLD', 'Alibaba Group registry', 'closed generic TLD', 'is .alibaba available']
 faqs:
   - question: 'Can anyone register a .alibaba domain?'
     answer: 'No. .alibaba is a closed brand TLD delegated to Alibaba Group Holding Limited. Only Alibaba Group and parties it authorizes can hold a .alibaba name, so it is not available to the general public through any registrar.'

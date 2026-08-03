@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Der niedrigste Preis, den ein Verkäufer akzeptiert, oft verborgen – darunter wird ein Gebot oder Auktionsgebot abgelehnt.
-keywords: ['Mindestpreis', 'Mindestgebot', 'Reservepreis', 'Bodenpreis', 'Domain-Auktionsreserve']
+keywords: ['Mindestgebot', 'Reservepreis', 'Bodenpreis', 'Domain-Auktionsreserve']
 level: 1
 sources:
   - https://www.investopedia.com/terms/r/reserveprice.asp

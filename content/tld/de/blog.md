@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .blog Domain: Vorteile für SEO, Branding und warum diese Endung perfekt für Content-Creator und Unternehmen ist. Jetzt bei Namefi registrieren."
-keywords: [".blog domains", ".blog TLD", "top-level domain", "was ist .blog", "warum .blog wählen", "was ist die .blog domain", "warum die .blog domain wählen", "Domain investieren", "Blockchain Domains", "tokenisierte Domains", "Web3 Domains", "Blog starten", "Content Marketing", "Domain registrieren", "Namefi"]
+keywords: [".blog domains", "top-level domain", "warum .blog wählen", "was ist die .blog domain", "warum die .blog domain wählen", "Domain investieren", "Blockchain Domains", "tokenisierte Domains", "Web3 Domains", "Blog starten", "Content Marketing", "Domain registrieren", "Namefi"]
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/ai-vs-io-domain/

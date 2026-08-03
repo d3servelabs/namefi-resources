@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Das Platzieren von Anzeigen oder einem Verkaufshinweis auf einer unentwickelten Domain, um Einnahmen zu erzielen oder die Verfügbarkeit zu signalisieren.
-keywords: ['Domain-Parking', 'Geparkte Domain', 'Monetarisierung', 'Domain-Investment', 'Passives Einkommen']
+keywords: ['Geparkte Domain', 'Monetarisierung', 'Domain-Investment', 'Passives Einkommen']
 also_known_as: ['Geparkte Domain']
 level: 1
 sources:

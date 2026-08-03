@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .academy domain is an open gTLD for schools, courses, training centers and coaching brands. Learn who uses it, the rules, pricing dynamics and how to register.'
-keywords: ['.academy domain', 'what is .academy', '.academy TLD', 'academy domain registration', 'education domain extension', 'online course domain', 'training website domain', 'new gTLD']
+keywords: ['academy domain registration', 'education domain extension', 'online course domain', 'training website domain', 'new gTLD']
 faqs:
   - question: 'Can anyone register a .academy domain?'
     answer: 'Yes. The .academy domain is an open generic TLD with no eligibility requirements. There is no residency, business-type, accreditation, or credential check, so individuals and organizations alike can register names on a first-come, first-served basis.'

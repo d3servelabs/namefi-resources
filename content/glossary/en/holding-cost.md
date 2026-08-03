@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The ongoing renewal fees an investor pays to keep a domain until it sells.
-keywords: ['holding cost', 'carrying cost', 'domain renewal cost', 'domain investment cost', 'annual renewal fee']
+keywords: ['carrying cost', 'domain renewal cost', 'domain investment cost', 'annual renewal fee']
 also_known_as: ['Carrying Cost']
 level: 1
 sources:

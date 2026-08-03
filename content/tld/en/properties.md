@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .properties domain is an open generic gTLD run by Binky Moon (Identity Digital), built for real estate listings, brokers, and property portfolios worldwide.'
-keywords: ['.properties domain', 'what is .properties', '.properties TLD', 'real estate domain', 'property domain name', 'Binky Moon properties', 'Identity Digital real estate gTLD', 'register .properties']
+keywords: ['real estate domain', 'property domain name', 'Binky Moon properties', 'Identity Digital real estate gTLD', 'register .properties']
 faqs:
   - question: 'Can anyone register a .properties domain?'
     answer: 'Yes. The .properties TLD is an open generic gTLD with no eligibility restrictions. Anyone worldwide — agents, developers, property managers, or businesses outside real estate — can register an available name, subject to standard trademark and acceptable-use rules.'

@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A shared, append-only ledger maintained across many computers, the foundation of tokenized ownership.
-keywords: ['blockchain', 'distributed ledger', 'decentralized', 'immutable', 'consensus']
+keywords: ['distributed ledger', 'decentralized', 'immutable', 'consensus']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/intro-to-ethereum/

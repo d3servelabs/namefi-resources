@@ -7,7 +7,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was sind Internet-native Assets und wie passen Domains in diese Kategorie?
-keywords: ["Internet-natives Asset","digitales Asset","Blockchain","natives Internet","tokenisierte Domains"]
+keywords: ["digitales Asset", "Blockchain", "natives Internet", "tokenisierte Domains"]
 relatedArticles:
   - /de/blog/why-tokenize-domains/
   - /de/blog/from-snapchat-com-to-snap-com/

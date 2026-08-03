@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Search Engine Optimization is the practice of improving a site's content and structure so it ranks higher in search results and draws more visitors.
-keywords: ['SEO', 'search engine optimization', 'domain value', 'search rankings', 'digital marketing']
+keywords: ['search engine optimization', 'domain value', 'search rankings', 'digital marketing']
 level: 1
 sources:
   - https://developers.google.com/search/docs/fundamentals/seo-starter-guide

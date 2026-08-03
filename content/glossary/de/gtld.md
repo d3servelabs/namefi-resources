@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Eine nicht länderspezifische Top-Level-Domain wie .com, .org oder .xyz, die unter ICANN-Vertrag betrieben wird.
-keywords: ['gTLD', 'generische TLD', '.com', '.org', '.xyz', 'ICANN']
+keywords: ['generische TLD', '.com', '.org', '.xyz', 'ICANN']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/tlds-2012-02-25-en

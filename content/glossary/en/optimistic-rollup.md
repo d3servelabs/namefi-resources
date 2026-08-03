@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A rollup that assumes off-chain transactions are valid by default and relies on a fraud-proof challenge window instead of cryptographic proofs.
-keywords: ['optimistic rollup', 'fraud proof', 'challenge window', 'rollup', 'layer 2', 'arbitrum', 'optimism', 'base']
+keywords: ['fraud proof', 'challenge window', 'rollup', 'layer 2', 'arbitrum', 'optimism', 'base']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/

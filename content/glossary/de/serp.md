@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die Ergebnisseite, die eine Suchmaschine für eine Anfrage zurückgibt und auf der Domains um Sichtbarkeit konkurrieren.
-keywords: ['serp', 'suchergebnisse', 'seo', 'suchmaschine', 'organisches ranking', 'suchsichtbarkeit']
+keywords: ['suchergebnisse', 'seo', 'suchmaschine', 'organisches ranking', 'suchsichtbarkeit']
 also_known_as: ['Search Engine Results Page']
 level: 1
 sources:

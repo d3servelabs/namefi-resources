@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .accountants domain is an open gTLD for CPAs, bookkeepers, and accounting firms. Learn who can register it, how it is priced, and how it affects trust.'
-keywords: ['.accountants domain', 'what is .accountants', '.accountants TLD', 'accounting firm domain', 'CPA domain name', 'Identity Digital gTLD', 'bookkeeping website domain', 'niche TLD for accountants']
+keywords: ['accounting firm domain', 'CPA domain name', 'Identity Digital gTLD', 'bookkeeping website domain', 'niche TLD for accountants']
 faqs:
   - question: 'Can anyone register a .accountants domain?'
     answer: 'Yes. The .accountants extension is an open generic top-level domain with no credential check. You do not need to be a licensed CPA, a registered firm, or a member of any professional body to register one, so accountants and non-accountants alike are eligible.'

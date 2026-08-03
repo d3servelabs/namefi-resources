@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: '.eth is not an ICANN domain but an Ethereum Name Service (ENS) name held as an NFT on-chain. Learn how it works, who can register one, and its real limits.'
-keywords: ['.eth domains', 'what is .eth', 'ENS domain', 'Ethereum Name Service', '.eth name NFT', 'register .eth', 'is .eth a real domain', '.eth vs DNS domain']
+keywords: ['.eth domains', 'ENS domain', 'Ethereum Name Service', '.eth name NFT', 'register .eth', 'is .eth a real domain', '.eth vs DNS domain']
 faqs:
   - question: 'Can anyone register a .eth name?'
     answer: 'Yes. Registering a .eth name is permissionless and open to anyone with an Ethereum wallet and enough ETH to cover the annual rent plus gas. There is no credential check, no identity verification, and no ICANN-accredited registrar involved; the rules are enforced entirely by the ENS smart contracts on Ethereum.'

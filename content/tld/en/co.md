@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .co domain? Colombia''s country-code TLD, marketed worldwide as a short ".com" or "company" alternative. Learn who runs it, who can register, pricing, and SEO.'
-keywords: ['.co domains', '.co TLD', 'co domain', 'what is .co', 'what is the .co domain', '.co vs .com', 'co domain for startups', 'Colombia domain', 'register .co domain', 'short company domain']
+keywords: ['.co domains', 'co domain', 'what is the .co domain', '.co vs .com', 'co domain for startups', 'Colombia domain', 'register .co domain', 'short company domain']
 faqs:
   - question: 'Can anyone register a .co domain?'
     answer: 'Yes. Although .co is technically Colombia''s country-code TLD, it has been open to anyone in the world since its 2010 relaunch, with no local-presence or Colombian-residency requirement. Registration is first-come, first-served at the second level.'

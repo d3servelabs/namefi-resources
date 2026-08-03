@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein kurzer, einprägsamer, oft erfundener Name, der als Marke funktioniert – ähnlich einem Kunstwort.
-keywords: ['Brandable Domain', 'Marken-Domain', 'erfundene Domain', 'Kunstwort-Domain', 'einprägsame Domain']
+keywords: ['Marken-Domain', 'erfundene Domain', 'Kunstwort-Domain', 'einprägsame Domain']
 level: 1
 sources:
   - https://moz.com/learn/seo/domain

@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Die .xyz-Domain ist eine offene generische TLD, die 2014 eingeführt wurde und durch Alphabets abc.xyz weltbekannt wurde. Erfahren Sie, für wen sie geeignet ist, wie sie bepreist wird und wie man sie registriert.'
-keywords: ['.xyz-Domains', 'was ist .xyz', '.xyz TLD', '.xyz-Domain-Bedeutung', 'abc.xyz Alphabet', '.xyz vs .com', '.xyz-Domain registrieren', 'ist .xyz gut für SEO']
+keywords: ['.xyz-Domains', '.xyz-Domain-Bedeutung', 'abc.xyz Alphabet', '.xyz vs .com', '.xyz-Domain registrieren', 'ist .xyz gut für SEO']
 faqs:
   - question: 'Kann jeder eine .xyz-Domain registrieren?'
     answer: 'Ja. Die .xyz-Domain ist eine uneingeschränkte generische Top-Level-Domain, sodass jeder weltweit eine auf First-Come-First-Served-Basis registrieren kann – ohne Nachweis-, Unternehmens- oder lokale Präsenzanforderung. Registrierungen werden über ICANN-akkreditierte Registrare abgewickelt, nicht direkt über die Registry.'

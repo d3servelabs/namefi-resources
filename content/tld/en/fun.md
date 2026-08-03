@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .fun domain is an open new gTLD run by Radix, popular with games, events, and Web3 projects like pump.fun. Here is who uses it, the rules, and its value.'
-keywords: ['.fun domain', '.fun TLD', 'what is .fun', '.fun domains', 'Radix registry', 'new gTLD', 'gaming domains', 'pump.fun']
+keywords: ['.fun domains', 'Radix registry', 'new gTLD', 'gaming domains', 'pump.fun']
 faqs:
   - question: 'Can anyone register a .fun domain?'
     answer: 'Yes. The .fun domain is an open new gTLD with no eligibility restrictions, so individuals, businesses, and projects worldwide can register one on a first-come, first-served basis. The only exceptions are ICANN-mandated and registry-reserved names, such as two-character labels and certain premium names.'

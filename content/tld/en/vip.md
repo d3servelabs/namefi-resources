@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .vip domain is an open new gTLD meaning Very Important Person, built for membership, loyalty, and premium brands. Learn its rules, value, and how to register at Namefi.'
-keywords: ['.vip domain', 'vip domain', '.vip domain meaning', 'what is .vip', '.vip TLD', 'is .vip domain safe', 'register .vip domain', 'membership domains', 'premium domain names', 'new gTLD']
+keywords: ['vip domain', '.vip domain meaning', 'is .vip domain safe', 'register .vip domain', 'membership domains', 'premium domain names', 'new gTLD']
 faqs:
   - question: 'Can anyone register a .vip domain?'
     answer: 'Yes. .vip is an open, unrestricted new gTLD with no eligibility requirements. Individuals, brands, creators, and communities can all register one, subject only to standard availability and the registry policies that apply to every domain.'

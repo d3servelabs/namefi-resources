@@ -8,7 +8,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .abogado-Domain: Die ideale TLD für Rechtsanwälte und den juristischen Markt. Entdecken Sie Vorteile, Nutzung und Registrierung bei Namefi."
-keywords: [".abogado domains", "TLD", "top-level domain", "was ist .abogado", "warum .abogado wählen", "was ist die .abogado domain", "warum die .abogado domain wählen", "Rechtsanwalt Domain", "juristische Domains", "Anwalt Marketing", "Namefi", "Domain Investment", "Blockchain Domains", "tokenisierte Domains", "Domainregistrierung für Anwälte"]
+keywords: [".abogado domains", "TLD", "top-level domain", "warum .abogado wählen", "was ist die .abogado domain", "warum die .abogado domain wählen", "Rechtsanwalt Domain", "juristische Domains", "Anwalt Marketing", "Namefi", "Domain Investment", "Blockchain Domains", "tokenisierte Domains", "Domainregistrierung für Anwälte"]
 relatedArticles:
   - /de/blog/top-tlds-to-secure-for-your-law-firm/
   - /de/blog/top-tlds-to-secure-for-your-accounting-firm/

@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .allstate domain is the closed brand TLD of insurer Allstate, not open to the public. Learn what it is, who runs it, why it exists, and what to register instead.'
-keywords: ['.allstate domain', 'what is .allstate', '.allstate TLD', 'Allstate brand domain', 'dot-brand TLD', 'Allstate registry operator', 'closed generic TLD', 'is .allstate available']
+keywords: ['Allstate brand domain', 'dot-brand TLD', 'Allstate registry operator', 'closed generic TLD', 'is .allstate available']
 faqs:
   - question: 'Can anyone register a .allstate domain?'
     answer: 'No. .allstate is a closed brand TLD delegated to Allstate. Only Allstate and parties it authorizes can hold a .allstate name, so it is not available to the general public through any registrar.'

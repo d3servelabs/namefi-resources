@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .legal domain is an open generic TLD for the legal field. Learn who runs it, who can register, how it compares to .law, and whether it suits your firm.'
-keywords: ['.legal domains', 'what is .legal', '.legal TLD', 'legal domain extension', 'law firm domain names', 'lawyer website domain', 'Identity Digital TLD', 'Binky Moon registry']
+keywords: ['.legal domains', 'legal domain extension', 'law firm domain names', 'lawyer website domain', 'Identity Digital TLD', 'Binky Moon registry']
 faqs:
   - question: 'Can anyone register a .legal domain?'
     answer: 'Yes. The .legal domain is an open generic TLD with no credential, license, or bar-membership requirement, so anyone can register one. This is the key difference from .law, which verifies that the registrant is part of the legal profession before it activates the name.'

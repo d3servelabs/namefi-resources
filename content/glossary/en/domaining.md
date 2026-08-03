@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The practice of investing in domain names — registering, buying, and selling them for profit.
-keywords: ['domaining', 'domainer', 'domain investing', 'domain flipping', 'domain speculation']
+keywords: ['domainer', 'domain investing', 'domain flipping', 'domain speculation']
 level: 1
 sources:
   - https://www.namebio.com/

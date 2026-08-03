@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein kurzes Zeitfenster direkt nach dem Ablauf einer Domain, in dem man sie noch zum normalen Preis verlängern kann.
-keywords: ['Grace Period', 'Auto-Renew Grace Period', 'Domain-Ablauf', 'Verlängerung', 'RGP']
+keywords: ['Auto-Renew Grace Period', 'Domain-Ablauf', 'Verlängerung', 'RGP']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/errp-2013-02-28-en

@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .now domain is a closed Amazon brand TLD (dotBrand), not open for public registration. Here is what .now really is and what to buy instead.'
-keywords: ['.now domain', 'what is .now', '.now TLD', '.now top-level domain', 'Amazon Registry Services', 'brand TLD', 'dotBrand', 'Specification 13']
+keywords: ['.now top-level domain', 'Amazon Registry Services', 'brand TLD', 'dotBrand', 'Specification 13']
 faqs:
   - question: 'Can anyone register a .now domain?'
     answer: 'No. .now is a closed Specification 13 brand TLD operated by Amazon Registry Services. Only Amazon, its affiliates, and authorized partners can register .now names, so the suffix is not available to the general public through any registrar.'

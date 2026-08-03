@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Das Registrieren von Schreibfehlervarianten populärer Domains, um falsch getippten Traffic abzufangen – oft für Anzeigen oder Phishing.
-keywords: ['typosquatting', 'tipp-domain', 'phishing', 'markenmissbrauch', 'cybersquatting']
+keywords: ['tipp-domain', 'phishing', 'markenmissbrauch', 'cybersquatting']
 level: 1
 sources:
   - https://www.cloudflare.com/learning/ssl/what-is-typosquatting/

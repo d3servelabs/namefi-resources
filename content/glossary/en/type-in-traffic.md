@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Visitors who reach a site by typing a guessed domain directly, the basis of domain parking revenue.
-keywords: ['type-in traffic', 'direct navigation', 'domain parking', 'exact match domain', 'domain value']
+keywords: ['direct navigation', 'domain parking', 'exact match domain', 'domain value']
 level: 1
 sources:
   - https://www.namebio.com/

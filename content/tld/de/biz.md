@@ -8,7 +8,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Die .biz-Domain ist eine offene, geschäftsorientierte gTLD, die von GoDaddy Registry betrieben wird. Erfahren Sie, für wen sie geeignet ist, wie sie im Vergleich zu .com abschneidet und was Sie vor dem Kauf wissen sollten.'
-keywords: ['.biz', '.biz-Domains', '.biz TLD', 'was ist .biz', 'Business-Domain-Endung', 'biz vs com', 'GoDaddy Registry', 'echte geschäftliche Nutzung']
+keywords: ['.biz', '.biz-Domains', 'Business-Domain-Endung', 'biz vs com', 'GoDaddy Registry', 'echte geschäftliche Nutzung']
 faqs:
   - question: 'Kann jeder eine .biz-Domain registrieren?'
     answer: 'Fast. Der .biz-Namensraum ist weltweit offen, ohne Hürden bei Qualifikation, Marke oder lokaler Präsenz, aber Registrierungen sind für echte geschäftliche oder kommerzielle Nutzung gedacht. Nicht-kommerzielle oder rein spekulative Registrierungen können im Prinzip angefochten werden, auch wenn die Durchsetzung in der Praxis gering ist.'

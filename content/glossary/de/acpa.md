@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein US-Gesetz, das Markeninhabern erlaubt, Cybersquatter vor einem Bundesgericht zu verklagen – eine Alternative zur UDRP.
-keywords: ['ACPA', 'Anticybersquatting', 'US-Markenrecht', 'Domain-Streit', 'Bundesgericht']
+keywords: ['Anticybersquatting', 'US-Markenrecht', 'Domain-Streit', 'Bundesgericht']
 also_known_as: ['Anticybersquatting Consumer Protection Act']
 level: 1
 sources:

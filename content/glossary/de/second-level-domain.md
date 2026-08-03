@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Das Label direkt links von der TLD — das „example" in example.com — der Teil, den man tatsächlich registriert.
-keywords: ['Second-Level-Domain', 'SLD', 'Root-Domain', 'Apex-Domain', 'registrierbarer Name']
+keywords: ['SLD', 'Root-Domain', 'Apex-Domain', 'registrierbarer Name']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034

@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .tax domain is an open generic gTLD run by Binky Moon. Learn who uses it, the registration rules, pricing dynamics, reputation, and whether it fits your firm.'
-keywords: ['.tax domain', 'what is .tax', '.tax TLD', 'tax domain extension', '.tax registration', 'accounting domain', 'tax preparer website', 'new gTLD']
+keywords: ['tax domain extension', '.tax registration', 'accounting domain', 'tax preparer website', 'new gTLD']
 faqs:
   - question: 'Can anyone register a .tax domain?'
     answer: 'Yes. The .tax registry is open to everyone with no credential, license, or local-presence requirement. You do not need to be an accountant, tax preparer, or registered firm. Names are sold first-come, first-served, subject only to standard syntax rules and any reserved or premium names the registry holds back.'
