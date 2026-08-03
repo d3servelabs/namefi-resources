@@ -1,22 +1,22 @@
 ---
-title: "What Is .ads? Google's Closed Brand TLD Explained"
+title: "What Is .ads? Google's Unmarketed TLD Explained"
 date: '2026-07-24'
 language: 'en'
 tags: ['tld']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
-description: 'The .ads domain is a closed brand TLD run by Google, not open to advertisers or the public. Learn what it is, who controls it, and what to register instead.'
-keywords: ['Google brand TLD', 'Charleston Road Registry', 'dot-brand TLD', 'closed generic TLD', 'is .ads available']
+description: 'The .ads domain belongs to Google. It carries no ICANN dot-brand restriction, but Google has never opened it to advertisers, agencies, or any registrar. Learn what it is, and what to register instead.'
+keywords: ['Google TLD', 'Charleston Road Registry', 'unregistered TLD', 'is .ads available']
 faqs:
   - question: 'Can anyone register a .ads domain?'
-    answer: 'No. .ads is a closed brand TLD delegated to Charleston Road Registry Inc., a Google entity. Only Google and parties it authorizes can hold a .ads name, so it is not available to advertisers, agencies, or the general public.'
+    answer: 'Not in practice, though not because of any formal ICANN restriction. .ads has no Specification 13 dot-brand designation and no Code-of-Conduct exemption on file — it is a standard, unrestricted registry agreement — but no registrar offers it, and only a couple of names have ever been registered, both by Google itself.'
   - question: 'Who operates the .ads registry?'
     answer: 'Charleston Road Registry Inc., a Google entity, is the registry operator, and Google runs the technical back-end itself. The TLD was delegated to the DNS root zone on February 5, 2015, under ICANN''s New gTLD Program.'
   - question: 'Is .ads open to advertising agencies or adtech companies?'
-    answer: 'No. Despite the name, .ads is not an industry extension for advertising businesses. It is a closed brand TLD controlled entirely by Google, with no public registration path for agencies, adtech firms, or anyone else.'
+    answer: 'No, in practice. Despite the name, .ads is not an industry extension for advertising businesses, and no registrar currently sells it. That is a market reality rather than a formal restriction, since Google has simply never brought the extension to market.'
   - question: 'What can I register instead of .ads?'
-    answer: 'Because .ads is closed, choose an open extension for your own project. A matching .com, or a modern alternative like .io or .xyz, can be registered by anyone through an accredited registrar such as Namefi.'
+    answer: 'Since no registrar currently offers .ads, choose an open extension for your own project. A matching .com, or a modern alternative like .io or .xyz, can be registered by anyone through an accredited registrar such as Namefi.'
 relatedArticles:
   - /en/blog/top-tlds-to-secure-for-your-startup/
   - /en/blog/what-is-a-tld/
@@ -37,27 +37,27 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-The **.ads** domain is a **closed brand [top-level domain](/en/glossary/tld/)** operated by **Charleston Road Registry Inc.**, a Google entity. Despite the generic-sounding name, it is not an open extension for the advertising industry: unlike [.com](/en/tld/com/) or [.io](/en/tld/io/), you cannot register a `.ads` name for your agency, adtech product, or campaign, because the entire namespace belongs to Google.
+The **.ads** domain belongs to **Charleston Road Registry Inc.**, a Google entity. Unlike a genuine dot-brand TLD, its registry agreement carries **no formal ICANN restriction** — but in practice, no registrar sells it and only two names have ever been registered, both by Google itself. Despite the generic-sounding name, it functions as unavailable to the advertising industry, agencies, or anyone else, regardless of what ICANN's rules technically permit.
 
-If you searched for the ".ads domain" hoping to build an advertising brand on it, the short answer is that you can't — but this page explains what `.ads` actually is, who controls it, and what you can register instead.
+If you searched for the ".ads domain" hoping to build an advertising brand on it, the short answer is that no registrar currently offers it — but this page explains what `.ads` actually is, who controls it, and what you can register instead.
 
 ## .ads at a glance
 
 | Fact | Detail |
 | --- | --- |
-| TLD type | Brand [new gTLD](/en/glossary/new-gtld/) (closed / "dot-brand") |
+| TLD type | Generic [new gTLD](/en/glossary/new-gtld/) — standard agreement, no Specification 13 dot-brand designation |
 | Registry operator | Charleston Road Registry Inc. (a Google entity; Google runs the back-end) |
 | Year delegated | 2015 |
-| IDN support | Not relevant — closed namespace |
+| IDN support | Unclear — no registrar currently carries the extension to check |
 | DNSSEC | Supported |
-| Registration restrictions | **Closed** — restricted to Google and parties it authorizes; not available to the public |
+| Registration restrictions | **No formal restriction, but practically unavailable** — no registrar lists it, and only two names have ever been registered |
 | Best for | Google's own internal and product-related use |
 
 ## What is .ads?
 
-`.ads` is a **[generic top-level domain](/en/glossary/gtld/)** string that ICANN delegated to **Charleston Road Registry Inc.** on **February 5, 2015**. Charleston Road Registry is the entity Google uses to hold several of its dot-brand and generic TLD delegations.
+`.ads` is a **[generic top-level domain](/en/glossary/gtld/)** string that ICANN delegated to **Charleston Road Registry Inc.** on **February 5, 2015**. Charleston Road Registry is the entity Google uses to hold several of its TLD delegations.
 
-Even though "ads" is an ordinary English word, this is not an open industry extension. `.ads` is a **closed brand TLD**: Google applied for and controls the entire string, and no advertising agency, adtech vendor, or marketer can register a name on it. You can confirm the delegation and operator on the authoritative [IANA root-zone record for .ads](https://www.iana.org/domains/root/db/ads.html).
+Even though "ads" is an ordinary English word, this is not an open industry extension in practice — but not because ICANN forbids it. Its [registry agreement with ICANN](https://www.icann.org/en/registry-agreements/details/ads) is a standard "Base, Non-Sponsored" agreement, with no Specification 13 dot-brand designation and no Specification 9 Code-of-Conduct exemption on file. What actually keeps `.ads` out of reach is simpler: Google has never brought it to market, and [industry tracking shows only two domains ever registered](https://ntldstats.com/tld/ads), both evidently held by Google. You can confirm the delegation and operator on the authoritative [IANA root-zone record for .ads](https://www.iana.org/domains/root/db/ads.html).
 
 ## History of .ads
 
@@ -67,54 +67,50 @@ Google applied for a wide range of strings during ICANN's New gTLD Program, from
 
 ## Is .ads available to register?
 
-**No.** `.ads` is a **closed brand TLD**, so there is no open registration and no [registrar](/en/glossary/registrar/) — including Namefi — can sell you a `.ads` name. Registrations are limited to Google and organizations it authorizes. This is by design: keeping the string closed means Google, not the public, decides how the "ads" namespace is used, and no one can register a confusing or malicious lookalike under it.
+**In practice, no** — though not because ICANN's rules forbid it. No [registrar](/en/glossary/registrar/) — including Namefi — currently lists `.ads` for sale. That's a market reality, not a contractual one: the registry agreement itself imposes no eligibility gate, but Google has never opened the extension to consumer registrars, so there's no ordinary channel through which to buy one today.
 
 If you work in advertising and want a short, keyword-rich domain, that name has to come from an open extension instead — `.ads` itself is not on the table.
 
 ## How Google uses .ads
 
-Brand TLDs give a company a private space to organize part of its web presence. For a closed, generic-word TLD like `.ads` that a company holds defensively or for narrow internal purposes, typical uses include:
+A private, largely-unmarketed extension like `.ads` gives a company a space to organize part of its web presence, even without any contractual restriction forcing it to stay that way. Typical uses seen for a namespace like `.ads` include:
 
-- **Reserved namespace control**, so no outside party can register `.ads` names that might imply an official advertising product or service.
+- **Reserved namespace control**, so no outside party registers `.ads` names that might imply an official advertising product or service.
 - **Selective internal or product-linked addresses**, at Google's discretion, rather than broad public-facing use.
 - **Registry-information pages**, such as the listings Google maintains at registry.google for the TLDs it operates.
 
-**Who it's not for:** advertising agencies, adtech companies, publishers, or domain investors. Because the namespace is closed, none of the industry use cases the string might suggest are actually available to anyone but Google.
+**Who it's not for:** advertising agencies, adtech companies, publishers, or domain investors. Because no registrar carries the extension, none of the industry use cases the string might suggest are actually reachable, even though nothing in ICANN's rules forbids them.
 
 ## Notable sites using .ads
 
-There are **no third-party sites** on `.ads`, and there never will be while it stays a closed brand TLD — every `.ads` address is controlled by Google through Charleston Road Registry Inc. Google's own registry-operator information for its TLD portfolio, including `.ads`, is published at **registry.google**; this is a registry-information page, not a public advertising platform. Rather than point to a specific address that may change, the honest description is simple: `.ads` is Google's private namespace, held closed rather than opened to the advertising industry its name suggests.
+There are **no third-party sites** on `.ads` — [industry tracking shows only two domains ever registered](https://ntldstats.com/tld/ads), both evidently held by Google. Google's own registry-operator information for its TLD portfolio, including `.ads`, is published at **registry.google**; this is a registry-information page, not a public advertising platform. Rather than point to a specific address that may change, the honest description is simple: `.ads` sits almost entirely unused.
 
-## What is a dot-brand TLD?
+## Why is .ads unreachable if it isn't formally restricted?
 
-A **dot-brand** (or brand TLD) is a top-level domain that a single company owns and operates for its exclusive use, secured through ICANN's [New gTLD Program](/en/glossary/new-gtld/). Hundreds were delegated, including strings that are ordinary words rather than company names — `.ads` is one such case — and they share a few defining traits:
+Some new gTLDs are genuinely closed **dot-brand** TLDs, secured through ICANN's [New gTLD Program](/en/glossary/new-gtld/) with a **Specification 13** designation attached to the registry agreement, or a **Specification 9 Notice of Exemption** approved for single-registrant use. `.ads` is neither: its agreement carries no Specification 13 and no Specification 9 exemption on file, so ICANN itself treats it as an ordinary, unrestricted registry.
 
-- **Closed registration.** Only the operator and its affiliates can hold names, regardless of what the string itself means.
-- **Specification 13.** A registry-agreement addendum that formally recognizes the TLD as a brand and relaxes some rules that apply to open generics.
-- **Security and control.** The operator eliminates the risk of anyone else registering a `.ads` lookalike, which strengthens resistance to [phishing](/en/glossary/phishing/) and impersonation.
-
-Some companies invest heavily in their dot-brand; others register it defensively and barely use it. `.ads` falls closer to the latter: a generic-sounding string kept closed rather than developed into a public product.
+What keeps `.ads` unreachable is a market decision, not a contractual one — Google has simply never brought it to consumer registrars or opened it for public registration. That distinction matters: a genuine Specification 13 dot-brand can *never* be sold to outside registrants under any circumstances, while `.ads`'s absence from the market is a choice the operator could reverse. A string looking like an ordinary word does not mean the extension is open in practice — always check whether any registrar actually carries a TLD before planning a domain hack around it.
 
 ## .ads vs open domain alternatives
 
-If your goal was a short, advertising-flavored name rather than the `.ads` string specifically, an open extension is the right tool. Here is how a closed brand TLD compares with domains you can actually register:
+If your goal was a short, advertising-flavored name rather than the `.ads` string specifically, an open extension is the right tool. Here is how the practically-unreachable `.ads` compares with domains you can actually register:
 
 | Feature | .ads | [.com](/en/tld/com/) | [.io](/en/tld/io/) | [.xyz](/en/tld/xyz/) |
 | --- | --- | --- | --- | --- |
-| Who can register | Google only | Anyone | Anyone | Anyone |
-| Type | Brand new gTLD (closed) | Legacy gTLD | ccTLD used generically | New gTLD |
-| Core use | Google's own, narrow use | Universal default | Tech & startups | Generic / Web3 |
-| Available to you | No | Yes | Yes | Yes |
+| Who can register | No registrar offers it | Anyone | Anyone | Anyone |
+| Type | New gTLD, no registrar distribution | Legacy gTLD | ccTLD used generically | New gTLD |
+| Core use | Google's own, narrow use (rarely) | Universal default | Tech & startups | Generic / Web3 |
+| Available to you | No, in practice | Yes | Yes | Yes |
 
 For an advertising or marketing brand, a matching `.com` remains the safest default; [.io](/en/tld/io/) suits ad-tech products; and [.xyz](/en/tld/xyz/) is a flexible, low-cost modern option.
 
 ## Reputation and trust
 
-Ironically, the closed nature of `.ads` is exactly what makes any address on it trustworthy: because only Google can create these names, a `.ads` link is verifiably official, which is why brand TLDs are considered strong against impersonation and email spoofing. That trust, however, benefits Google alone — it does not transfer to any advertising business you run, since you cannot register a `.ads` name. For your own project, deliverability and reputation will come from a well-configured domain on an open extension, not from a brand TLD you don't control.
+With only two registrations ever, `.ads` has no meaningful reputation to speak of, good or bad — there's simply too little activity under the suffix to judge. For your own project, deliverability and reputation will come from a well-configured domain on an extension you can actually register, not from a namespace that no registrar sells.
 
 ## Looking for an "ads" name? Register an alternative at Namefi
 
-You can't buy a `.ads` domain, but if you want a short, advertising-flavored name of your own, you can secure it on an open extension in minutes:
+No registrar currently sells `.ads` domains, but if you want a short, advertising-flavored name of your own, you can secure it on an open extension in minutes:
 
 1. **Search** your desired name across open TLDs like `.com`, `.io`, or `.xyz`.
 2. **Choose** the extension that fits your brand and budget.
@@ -126,7 +122,7 @@ You can't buy a `.ads` domain, but if you want a short, advertising-flavored nam
 
 ### Can anyone register a .ads domain?
 
-No. `.ads` is a closed brand TLD delegated to Charleston Road Registry Inc., a Google entity. Only Google and parties it authorizes can hold a `.ads` name, so it is not available to advertisers, agencies, or the general public.
+Not in practice, though not because of any formal ICANN restriction. `.ads` has no Specification 13 dot-brand designation and no Code-of-Conduct exemption on file — it is a standard, unrestricted registry agreement — but no registrar offers it, and only a couple of names have ever been registered, both by Google itself.
 
 ### Who operates the .ads registry?
 
@@ -134,11 +130,11 @@ Charleston Road Registry Inc., a Google entity, is the registry operator, and Go
 
 ### Is .ads open to advertising agencies or adtech companies?
 
-No. Despite the name, `.ads` is not an industry extension for advertising businesses. It is a closed brand TLD controlled entirely by Google, with no public registration path for agencies, adtech firms, or anyone else.
+No, in practice. Despite the name, `.ads` is not an industry extension for advertising businesses, and no registrar currently sells it. That is a market reality rather than a formal restriction, since Google has simply never brought the extension to market.
 
 ### What can I register instead of .ads?
 
-Because `.ads` is closed, choose an open extension for your own project. A matching `.com`, or a modern alternative like `.io` or `.xyz`, can be registered by anyone through an accredited registrar such as Namefi.
+Since no registrar currently offers `.ads`, choose an open extension for your own project. A matching `.com`, or a modern alternative like `.io` or `.xyz`, can be registered by anyone through an accredited registrar such as Namefi.
 
 ## Related resources
 

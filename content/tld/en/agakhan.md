@@ -14,7 +14,7 @@ faqs:
   - question: 'Who operates the .agakhan registry?'
     answer: 'Fondation Aga Khan, the Aga Khan Foundation, is the registry operator, with Afilias providing the technical back-end. The TLD was delegated to the DNS root zone on March 31, 2016, under ICANN''s New gTLD Program.'
   - question: 'What is the Aga Khan Foundation?'
-    answer: 'The Aga Khan Foundation is a non-profit international development organization. Its .agakhan domain is reserved for its own use and is separate from the similarly named .akdn TLD held by the wider Aga Khan Development Network.'
+    answer: 'The Aga Khan Foundation is a non-profit international development organization. Its .agakhan domain is reserved for its own use and is a separate delegation from the similarly named .akdn TLD, which the same Foundation holds on behalf of the wider Aga Khan Development Network.'
   - question: 'What can I register instead of .agakhan?'
     answer: 'Because .agakhan is closed, choose an open extension for your own project. A matching .com, or a modern alternative like .io or .xyz, can be registered by anyone through an accredited registrar such as Namefi.'
 relatedArticles:
@@ -63,7 +63,7 @@ If you searched for the ".agakhan domain" hoping to buy one, the short answer is
 
 ## History of .agakhan
 
-`.agakhan` was delegated to the DNS [root zone](/en/glossary/root-zone/) on **March 31, 2016**, with **Afilias** handling the technical operation on the Foundation's behalf. Its registry agreement with [ICANN](/en/glossary/icann/) includes **Specification 13**, the contract clause that formally designates a TLD as a brand and lets the operator keep it closed.
+`.agakhan` was delegated to the DNS [root zone](/en/glossary/root-zone/) on **March 31, 2016**, with **Afilias** handling the technical operation on the Foundation's behalf. Unlike most dot-brands, its [registry agreement with ICANN](https://www.icann.org/en/registry-agreements/details/agakhan) is listed as a standard "Base, Non-Sponsored" agreement — it does not carry a Specification 13 brand designation. Instead, the Foundation holds a **Specification 9 Notice of Exemption** from the Registry Operator Code of Conduct, the mechanism ICANN uses to approve single-registrant use of a TLD outside the formal dot-brand track. The practical effect is the same closed registry, just under a different contractual mechanism than most brand TLDs use.
 
 Fondation Aga Khan applied for its own name as a TLD during ICANN's New gTLD Program, one of a small number of non-profit and institutional registrants to do so alongside the far more common corporate applicants. The `.agakhan` record has remained active since delegation.
 
@@ -92,10 +92,10 @@ There are **no third-party sites** on `.agakhan`, and there never will be while 
 A **dot-brand** (or brand TLD) is a top-level domain that a single organization owns and operates for its exclusive use, secured through ICANN's [New gTLD Program](/en/glossary/new-gtld/). Hundreds were delegated — examples in this same alphabetical band include `.abb`, `.accenture`, and `.aetna` — and they share a few defining traits:
 
 - **Closed registration.** Only the registrant and its affiliates can hold names.
-- **Specification 13.** A registry-agreement addendum that formally recognizes the TLD as a brand and relaxes some rules that apply to open generics.
+- **Specification 13, usually.** Most brand TLDs carry this registry-agreement addendum, which formally recognizes the TLD as a brand and relaxes some rules that apply to open generics. `.agakhan` is a notable exception — it achieves the same closed result through a Specification 9 Code-of-Conduct exemption instead.
 - **Security and control.** The Foundation eliminates the risk of anyone else registering a `.agakhan` lookalike, which strengthens resistance to [phishing](/en/glossary/phishing/) and impersonation — a real concern for an organization that solicits donations and works with beneficiaries worldwide.
 
-Most brands are corporations, but institutional and non-profit registrants like Fondation Aga Khan show the same closed-registry model applies outside the commercial world.
+Most brands are corporations, but institutional and non-profit registrants like Fondation Aga Khan show the same closed-registry model applies outside the commercial world, even when the underlying contractual mechanism differs.
 
 ## .agakhan vs open domain alternatives
 

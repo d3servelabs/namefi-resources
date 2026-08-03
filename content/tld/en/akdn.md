@@ -63,7 +63,7 @@ But `.akdn` is a **brand TLD** — often called a "dot-brand" — not an open ex
 
 `.akdn` was **delegated to the DNS [root zone](/en/glossary/root-zone/) on March 31, 2016**, part of the same New gTLD Program that let hundreds of organizations apply for their own name as a TLD. **Afilias** ran the technical back-end on the network's behalf, operating the infrastructure that keeps the namespace resolving and secure, while the Fondation Aga Khan remains the registry operator of record. The network also operates a sibling brand TLD, `.agakhan`, delegated separately.
 
-Its registry agreement with [ICANN](/en/glossary/icann/) includes **Specification 13**, the contract clause that formally designates a TLD as a brand and lets the operator keep it closed. The record has stayed active since delegation, unlike several brand TLDs that were later handed back and removed from the root.
+Unlike most dot-brands, its [registry agreement with ICANN](https://www.icann.org/en/registry-agreements/details/akdn) is listed as a standard "Base, Non-Sponsored" agreement rather than one carrying a Specification 13 brand designation. The Foundation instead holds a **Specification 9 Notice of Exemption** from the Registry Operator Code of Conduct — the same mechanism its sibling `.agakhan` uses — which achieves the same closed result through a different contractual route. The record has stayed active since delegation, unlike several brand TLDs that were later handed back and removed from the root.
 
 ## Is .akdn available to register?
 
@@ -90,7 +90,7 @@ There are **no third-party sites** on `.akdn`, and there never will be while it 
 A **dot-brand** (or brand TLD) is a top-level domain that a single organization owns and operates for its exclusive use, secured through ICANN's [New gTLD Program](/en/glossary/new-gtld/). Not every dot-brand belongs to a for-profit corporation — non-profit networks and foundations applied too — and dot-brands share a few defining traits:
 
 - **Closed registration.** Only the network and its affiliated agencies can hold names.
-- **Specification 13.** A registry-agreement addendum that formally recognizes the TLD as a brand and relaxes some rules that apply to open generics.
+- **Specification 13, usually.** Most brand TLDs carry this registry-agreement addendum, which formally recognizes the TLD as a brand and relaxes some rules that apply to open generics. `.akdn` and its sibling `.agakhan` are exceptions — both achieve the same closed result through a Specification 9 Code-of-Conduct exemption instead.
 - **Security and control.** The closed namespace eliminates the risk of anyone else registering a `.akdn` lookalike, which strengthens resistance to [phishing](/en/glossary/phishing/) and impersonation — a real concern for a network that solicits donations and manages sensitive institutional relationships.
 
 Some brands invest heavily in their TLD; others register it defensively and barely use it. A number of organizations have even terminated their dot-brands after deciding the upkeep was not worth it.
