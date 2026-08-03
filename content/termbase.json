@@ -1433,6 +1433,13 @@
     },
     "level": 1
   },
+  "mcp": {
+    "en": "MCP",
+    "titles": {
+      "en": "MCP"
+    },
+    "level": 1
+  },
   "merkle-tree": {
     "en": "Merkle Tree",
     "titles": {
