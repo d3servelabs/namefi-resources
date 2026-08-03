@@ -1,10 +1,26 @@
 {
   "tld": {
     "en": ["what is .{tld}", ".{tld} domain", ".{tld} TLD"],
-    "de": ["was ist .{tld}", ".{tld} Domain", ".{tld} TLD"]
+    "de": ["was ist .{tld}", ".{tld} Domain", ".{tld} TLD"],
+    "es": ["qué es .{tld}", "dominio .{tld}", "TLD .{tld}"],
+    "fr": ["qu'est-ce que .{tld}", "domaine .{tld}", "TLD .{tld}"],
+    "zh-CN": ["什么是 .{tld}", ".{tld} 域名", ".{tld} TLD"],
+    "ar": ["ما هو .{tld}", "نطاق .{tld}", ".{tld} TLD"],
+    "hi": [".{tld} क्या है", ".{tld} डोमेन", ".{tld} TLD"],
+    "ko": [".{tld}(이)란 무엇인가", ".{tld} 도메인", ".{tld} TLD"],
+    "ja": [".{tld}とは", ".{tld}ドメイン", ".{tld} TLD"],
+    "ta": [".{tld} என்றால் என்ன", ".{tld} டொமைன்", ".{tld} TLD"]
   },
   "glossary": {
     "en": ["{term}", "what is {term}", "{term} meaning", "{term} definition"],
-    "de": ["{term}", "was ist {term}", "{term} Bedeutung", "{term} Definition"]
+    "de": ["{term}", "was ist {term}", "{term} Bedeutung", "{term} Definition"],
+    "es": ["{term}", "qué es {term}", "significado de {term}", "definición de {term}"],
+    "fr": ["{term}", "qu'est-ce que {term}", "signification de {term}", "définition de {term}"],
+    "zh-CN": ["{term}", "什么是 {term}", "{term}的含义", "{term}的定义"],
+    "ar": ["{term}", "ما هو {term}", "معنى {term}", "تعريف {term}"],
+    "hi": ["{term}", "{term} क्या है", "{term} का अर्थ", "{term} की परिभाषा"],
+    "ko": ["{term}", "{term}(이)란 무엇인가", "{term} 의미", "{term} 정의"],
+    "ja": ["{term}", "{term}とは", "{term}の意味", "{term}の定義"],
+    "ta": ["{term}", "{term} என்றால் என்ன", "{term} பொருள்", "{term} வரையறை"]
   }
 }
