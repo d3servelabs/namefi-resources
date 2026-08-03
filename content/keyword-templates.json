@@ -17,7 +17,7 @@
     "es": ["{term}", "qué es {term}", "significado de {term}", "definición de {term}"],
     "fr": ["{term}", "qu'est-ce que {term}", "signification de {term}", "définition de {term}"],
     "zh-CN": ["{term}", "什么是 {term}", "{term}的含义", "{term}的定义"],
-    "ar": ["{term}", "ما هو {term}", "معنى {term}", "تعريف {term}"],
+    "ar": ["{term}", "شرح {term}", "معنى {term}", "تعريف {term}"],
     "hi": ["{term}", "{term} क्या है", "{term} का अर्थ", "{term} की परिभाषा"],
     "ko": ["{term}", "{term}(이)란 무엇인가", "{term} 의미", "{term} 정의"],
     "ja": ["{term}", "{term}とは", "{term}の意味", "{term}の定義"],
