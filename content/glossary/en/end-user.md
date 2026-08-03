@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A buyer who wants a domain to actually use for a business or project, not to resell it.
-keywords: ['end user', 'domain buyer', 'domain end use', 'business domain', 'domain deployment']
+keywords: ['domain buyer', 'domain end use', 'business domain', 'domain deployment']
 level: 1
 sources:
   - https://en.wikipedia.org/wiki/End_user

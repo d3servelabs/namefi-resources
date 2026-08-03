@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Werbemodell, bei dem der Eigentümer bei jedem Klick eines Besuchers auf eine Anzeige verdient – genutzt zur Monetarisierung geparkter Domains.
-keywords: ['PPC', 'pay-per-click', 'domain-monetarisierung', 'werbeeinnahmen', 'parking-einnahmen']
+keywords: ['pay-per-click', 'domain-monetarisierung', 'werbeeinnahmen', 'parking-einnahmen']
 also_known_as: ['Pay-Per-Click']
 level: 1
 sources:

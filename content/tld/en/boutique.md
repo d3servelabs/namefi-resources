@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .boutique domain is an open generic extension built for curated shops and small specialty brands. Learn who uses it, how it is priced, and whether it suits you.'
-keywords: ['.boutique domain', 'what is .boutique', 'boutique TLD', 'boutique domain registration', 'domains for small shops', 'curated brand domain', 'new gTLD', 'Binky Moon']
+keywords: ['boutique TLD', 'boutique domain registration', 'domains for small shops', 'curated brand domain', 'new gTLD', 'Binky Moon']
 faqs:
   - question: 'Can anyone register a .boutique domain?'
     answer: 'Yes. .boutique is an open generic top-level domain with no eligibility restrictions. There is no requirement to own a retail store, sell physical goods, or prove any credential, so individuals, brands, and agencies worldwide can register an available name.'

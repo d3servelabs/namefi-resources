@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Dienst, der versucht, eine Domain im Moment ihrer Freigabe zu registrieren, damit man einen ablaufenden Namen beanspruchen kann.
-keywords: ['Backorder', 'Drop-Catching', 'abgelaufene Domain', 'Pending Delete', 'Domain-Erwerb']
+keywords: ['Drop-Catching', 'abgelaufene Domain', 'Pending Delete', 'Domain-Erwerb']
 level: 1
 sources:
   - https://www.namebio.com/

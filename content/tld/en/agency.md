@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .agency domain is an open new gTLD from Identity Digital, ideal for marketing, creative, real-estate, and consulting firms wanting a descriptive, brandable web address.'
-keywords: ['.agency domain', 'what is .agency', '.agency TLD', '.agency domains', 'agency domain name', 'new gTLD for agencies', 'marketing agency domain', 'creative agency website', 'Identity Digital TLD', 'register .agency']
+keywords: ['.agency domains', 'agency domain name', 'new gTLD for agencies', 'marketing agency domain', 'creative agency website', 'Identity Digital TLD', 'register .agency']
 faqs:
   - question: 'Can anyone register a .agency domain?'
     answer: 'Yes. The .agency domain is an open, unrestricted new gTLD with no credential, membership, or local-presence requirement. Anyone in the world can register an available .agency name through an accredited registrar on a first-come, first-served basis.'

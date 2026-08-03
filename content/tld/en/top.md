@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .top domain is an open, low-cost new gTLD popular for short, keyword-rich names. Learn who runs it, who can register, its SEO and reputation trade-offs.'
-keywords: ['.top domains', 'what is .top', '.top TLD', '.top domain meaning', 'is .top good for SEO', '.top vs .com', 'buy .top domain', 'new gTLD']
+keywords: ['.top domains', '.top domain meaning', 'is .top good for SEO', '.top vs .com', 'buy .top domain', 'new gTLD']
 faqs:
   - question: 'Can anyone register a .top domain?'
     answer: 'Yes. The .top domain is an open generic top-level domain with no eligibility requirements. There is no local presence, credential, trademark, or community membership needed, so individuals and businesses anywhere can register an available name on a first-come, first-served basis.'

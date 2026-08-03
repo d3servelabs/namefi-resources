@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .shopping domain is an open e-commerce gTLD from Binky Moon (Identity Digital). Learn who it suits, how it compares to .shop and .store, and how to register it.'
-keywords: ['.shopping domains', 'what is .shopping', '.shopping TLD', '.shopping domain', 'e-commerce domain', 'retail domain name', 'Binky Moon', 'Identity Digital', 'shopping domain extension', 'buy .shopping domain']
+keywords: ['.shopping domains', 'e-commerce domain', 'retail domain name', 'Binky Moon', 'Identity Digital', 'shopping domain extension', 'buy .shopping domain']
 faqs:
   - question: 'Can anyone register a .shopping domain?'
     answer: 'Yes. The .shopping TLD is an open generic domain with no eligibility restrictions. Any individual or business in any country can register an available name on a first-come, first-served basis, with no credential, trademark, or local-presence requirement.'

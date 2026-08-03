@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .alsace domain is a geographic gTLD for the Alsace region of eastern France. Learn who runs it, who can register, and how it suits local branding.'
-keywords: ['.alsace domains', '.alsace TLD', 'what is .alsace', 'Alsace region domain', 'geographic gTLD', 'French regional domain', 'Alsace wine domain', 'Region Grand Est']
+keywords: ['.alsace domains', 'Alsace region domain', 'geographic gTLD', 'French regional domain', 'Alsace wine domain', 'Region Grand Est']
 faqs:
   - question: 'Can anyone register a .alsace domain?'
     answer: 'Registration expects a link to the Alsace region, such as a local business, residence, or institution. It is not a fully open, anyone-anywhere gTLD like .com, but a suffix built specifically for Alsace-connected registrants.'

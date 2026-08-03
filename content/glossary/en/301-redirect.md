@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: An HTTP status telling browsers and search engines that a page has permanently moved to a new URL.
-keywords: ['301 redirect', 'permanent redirect', 'http redirect', 'seo', 'domain forwarding', 'link equity']
+keywords: ['permanent redirect', 'http redirect', 'seo', 'domain forwarding', 'link equity']
 also_known_as: ['Permanent Redirect']
 level: 1
 sources:

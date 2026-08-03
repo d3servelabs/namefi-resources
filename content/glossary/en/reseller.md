@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A company that sells domains under a larger registrar's accreditation rather than holding its own.
-keywords: ['reseller', 'domain reseller', 'white-label registrar', 'ICANN accreditation', 'registrar']
+keywords: ['domain reseller', 'white-label registrar', 'ICANN accreditation', 'registrar']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/what-2012-02-25-en

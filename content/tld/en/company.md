@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .company domain is an open generic gTLD anyone can register. Learn who runs it, how it compares to .com, its SEO impact, and whether it suits your business.'
-keywords: ['.company domain', 'what is .company', '.company TLD', '.company vs .com', 'register .company domain', 'business domain extension', 'new gTLD for business', 'Identity Digital TLD']
+keywords: ['.company vs .com', 'register .company domain', 'business domain extension', 'new gTLD for business', 'Identity Digital TLD']
 faqs:
   - question: 'Can anyone register a .company domain?'
     answer: 'Yes. The .company TLD is an open generic gTLD with no eligibility restrictions. There is no requirement to be an incorporated business, hold a trademark, or have a local presence, so individuals, startups, and established firms can all register names on a first-come, first-served basis.'

@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .online domain is an open, unrestricted new gTLD by Radix that any person or business can register. Learn who it suits, how it ranks, and what to consider.'
-keywords: ['.online domain', 'what is .online', '.online TLD', 'register .online domain', 'Radix registry', 'new gTLD', 'online domain extension', 'is .online good for SEO']
+keywords: ['register .online domain', 'Radix registry', 'new gTLD', 'online domain extension', 'is .online good for SEO']
 faqs:
   - question: 'Can anyone register a .online domain?'
     answer: 'Yes. .online is an open, unrestricted generic top-level domain. There is no credential, trademark, business, or local-presence requirement, so any individual or organization worldwide can register an available name on a first-come, first-served basis.'

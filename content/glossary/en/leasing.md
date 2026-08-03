@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Renting the use of a domain for a recurring fee while keeping ownership, with smart contracts able to enforce terms and automate the payments.
-keywords: ['leasing', 'domain rental', 'passive income', 'smart contract leasing', 'automated payments']
+keywords: ['domain rental', 'passive income', 'smart contract leasing', 'automated payments']
 level: 1
 sources:
   - https://www.investopedia.com/terms/l/lease.asp

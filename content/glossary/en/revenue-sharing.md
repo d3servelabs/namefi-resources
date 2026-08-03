@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: An arrangement that automatically splits income from an asset among parties by preset percentages, enforceable on-chain by smart contracts.
-keywords: ['revenue-sharing', 'passive income', 'domain monetization', 'profit distribution', 'smart contracts']
+keywords: ['passive income', 'domain monetization', 'profit distribution', 'smart contracts']
 level: 1
 sources:
   - https://www.investopedia.com/terms/r/revenue-sharing.asp

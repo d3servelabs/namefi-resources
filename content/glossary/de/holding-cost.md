@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die laufenden Verlängerungsgebühren, die ein Investor zahlt, um eine Domain bis zum Verkauf zu behalten.
-keywords: ['Haltekosten', 'Tragekosten', 'Domain-Verlängerungskosten', 'Domain-Investitionskosten', 'jährliche Verlängerungsgebühr']
+keywords: ['Tragekosten', 'Domain-Verlängerungskosten', 'Domain-Investitionskosten', 'jährliche Verlängerungsgebühr']
 also_known_as: ['Tragekosten']
 level: 1
 sources:

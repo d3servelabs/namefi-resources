@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A peer-to-peer protocol that addresses files by their content, used to host decentralized web data.
-keywords: ['IPFS', 'content addressing', 'peer-to-peer', 'decentralized storage', 'CID']
+keywords: ['content addressing', 'peer-to-peer', 'decentralized storage', 'CID']
 also_known_as: ['InterPlanetary File System']
 level: 1
 sources:

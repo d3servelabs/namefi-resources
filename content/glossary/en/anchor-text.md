@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The visible, clickable words of a hyperlink, a signal search engines use to understand the target.
-keywords: ['anchor text', 'link text', 'backlinks', 'seo', 'hyperlink', 'ranking signals']
+keywords: ['link text', 'backlinks', 'seo', 'hyperlink', 'ranking signals']
 level: 1
 sources:
   - https://developers.google.com/search/docs/crawling-indexing/links-crawlable

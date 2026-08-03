@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .world domain is an open generic gTLD run by Identity Digital, ideal for global brands, international projects, and community sites. Here is how it works.'
-keywords: ['.world domain', 'what is .world', 'world TLD', 'world domain registration', 'global domain extension', 'Identity Digital', 'generic top-level domain', 'register .world']
+keywords: ['world TLD', 'world domain registration', 'global domain extension', 'Identity Digital', 'generic top-level domain', 'register .world']
 faqs:
   - question: 'Can anyone register a .world domain?'
     answer: 'Yes. The .world domain is an open generic gTLD with no eligibility restrictions. Any individual, business, or organization anywhere can register an available .world name on a first-come, first-served basis without proving location, profession, or community membership.'

@@ -16,7 +16,6 @@ keywords:
   - '.accenture domains'
   - 'TLD'
   - 'top-level domain'
-  - 'was ist .accenture'
   - 'warum .accenture wählen'
   - 'was ist die .accenture domain'
   - 'warum die .accenture domain wählen'

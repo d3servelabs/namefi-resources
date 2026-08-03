@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A legally protected mark identifying a brand's goods or services, central to many domain disputes.
-keywords: ['trademark', 'brand protection', 'intellectual property', 'domain dispute', 'UDRP', 'WIPO']
+keywords: ['brand protection', 'intellectual property', 'domain dispute', 'UDRP', 'WIPO']
 level: 1
 sources:
   - https://www.wipo.int/trademarks/en/

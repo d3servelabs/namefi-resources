@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A domain built around a valuable search keyword or phrase, valued for descriptive clarity.
-keywords: ['keyword domain', 'keyword-rich domain', 'descriptive domain', 'search keyword domain', 'SEO domain name']
+keywords: ['keyword-rich domain', 'descriptive domain', 'search keyword domain', 'SEO domain name']
 level: 1
 sources:
   - https://developers.google.com/search/docs/fundamentals/seo-starter-guide

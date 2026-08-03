@@ -14,9 +14,7 @@ draft: false
 description: 'Entdecken Sie das Potenzial der .abc Domain. Erfahren Sie, warum diese TLD für Einfachheit und Innovation steht und wie Sie sie bei Namefi registrieren.'
 keywords:
   - .abc domains
-  - .abc TLD
   - .abc top-level domain
-  - was ist .abc
   - warum .abc wählen
   - was ist die .abc domain
   - warum die .abc domain wählen

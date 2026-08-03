@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .airbus domain is the closed brand TLD of Airbus S.A.S., the European aerospace manufacturer, not open to the public. Learn who runs it and what to register instead.'
-keywords: ['.airbus domain', 'what is .airbus', '.airbus TLD', 'Airbus brand domain', 'dot-brand TLD', 'Airbus registry operator', 'closed generic TLD', 'is .airbus available']
+keywords: ['Airbus brand domain', 'dot-brand TLD', 'Airbus registry operator', 'closed generic TLD', 'is .airbus available']
 faqs:
   - question: 'Can anyone register a .airbus domain?'
     answer: 'No. .airbus is a closed brand TLD delegated to Airbus S.A.S. Only Airbus and parties it authorizes can hold a .airbus name, so it is not available to the general public through any registrar.'

@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The rights to control, use, and transfer a domain; tokenization records those rights on-chain in a wallet instead of only in a registrar account.
-keywords: ['domain ownership', 'NFT domain', 'registrar', 'custodial', 'wallet ownership']
+keywords: ['NFT domain', 'registrar', 'custodial', 'wallet ownership']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

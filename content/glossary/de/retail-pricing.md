@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Der Preis, den ein Endnutzer für eine Domain zahlt, die er nutzen möchte – typischerweise weit über dem Großhandels-Investorbodenpreis.
-keywords: ['Einzelhandelspreis', 'Endnutzerpreis', 'Domain-Einzelhandel', 'Endnutzer-Preis', 'Vollpreis']
+keywords: ['Endnutzerpreis', 'Domain-Einzelhandel', 'Endnutzer-Preis', 'Vollpreis']
 also_known_as: ['Endnutzerpreis']
 level: 1
 sources:

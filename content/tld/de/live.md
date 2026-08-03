@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: "Alles über die .live TLD: Vorteile, Nutzungstrends und SEO-Tipps. Erfahren Sie, warum .live ideal für Streaming und Events ist, und registrieren Sie sie bei Namefi."
-keywords: [".live domains", ".live TLD", ".live top-level domain", "was ist .live", "warum .live wählen", "was ist die .live domain", "warum die .live domain wählen", "Live-Streaming Domains", "Echtzeit-Content", "Domain Investing", "Web3 Domains", "Tokenisierte Domains", "Blockchain Assets", "Identity Digital", "Content Creator Domains"]
+keywords: [".live domains", ".live top-level domain", "warum .live wählen", "was ist die .live domain", "warum die .live domain wählen", "Live-Streaming Domains", "Echtzeit-Content", "Domain Investing", "Web3 Domains", "Tokenisierte Domains", "Blockchain Assets", "Identity Digital", "Content Creator Domains"]
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/what-are-tokenized-domains/

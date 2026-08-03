@@ -8,7 +8,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was sind NFT-Marktplätze und wie erleichtern sie den Domain-Handel?
-keywords: ["Marktplatz","OpenSea","Blur","NFT-Handel","Domain-Marktplatz","Sekundärmarkt"]
+keywords: ["OpenSea", "Blur", "NFT-Handel", "Domain-Marktplatz", "Sekundärmarkt"]
 relatedArticles:
   - /de/blog/onchain-domain-marketplaces-compared/
   - /de/blog/how-tokenized-marketplaces-replace-escrow/

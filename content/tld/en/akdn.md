@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .akdn domain is the closed brand TLD of the Aga Khan Development Network, not open to the public. Learn who runs it and what to register instead.'
-keywords: ['.akdn domain', 'what is .akdn', '.akdn TLD', 'AKDN brand domain', 'dot-brand TLD', 'Aga Khan Development Network domain', 'closed generic TLD', 'is .akdn available']
+keywords: ['AKDN brand domain', 'dot-brand TLD', 'Aga Khan Development Network domain', 'closed generic TLD', 'is .akdn available']
 faqs:
   - question: 'Can anyone register a .akdn domain?'
     answer: 'No. .akdn is a closed brand TLD delegated to the Fondation Aga Khan for the Aga Khan Development Network. Only AKDN entities and parties they authorize can hold a .akdn name, so it is not available to the general public through any registrar.'

@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .africa domain is a geographic gTLD representing the whole African continent. Learn who operates it, who can register, and how it fits pan-African branding.'
-keywords: ['.africa domains', '.africa TLD', 'what is .africa', 'pan-African domain name', 'geographic gTLD', 'African continent domain', 'Registry Africa', 'African business domain']
+keywords: ['.africa domains', 'pan-African domain name', 'geographic gTLD', 'African continent domain', 'Registry Africa', 'African business domain']
 faqs:
   - question: 'Can anyone register a .africa domain?'
     answer: 'Registration is broadly open but expects a connection to Africa. The registry has kept eligibility broad rather than narrowly gatekept, and the namespace has been adopted continent-wide by businesses, governments, media, and pan-African organizations.'

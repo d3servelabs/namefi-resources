@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .airforce domain is an open gTLD run by Dog Beach, LLC (Identity Digital), not tied to any air force. Learn who actually uses it and who can register.'
-keywords: ['.airforce domain', 'what is .airforce', '.airforce TLD', 'Dog Beach registry', 'Identity Digital TLD', 'military-themed domain names', 'veteran community domain', 'aviation enthusiast domain']
+keywords: ['Dog Beach registry', 'Identity Digital TLD', 'military-themed domain names', 'veteran community domain', 'aviation enthusiast domain']
 faqs:
   - question: 'Can anyone register a .airforce domain?'
     answer: 'Yes. The .airforce domain is an open generic TLD with no military, veteran, or government affiliation required to register. Any individual or organization can register one through an accredited registrar.'

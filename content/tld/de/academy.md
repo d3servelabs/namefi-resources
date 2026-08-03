@@ -8,7 +8,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: "Erfahren Sie alles über die .academy Domain: Ideal für Bildung, Kurse und Coaching. Sichern Sie sich Ihre digitale Identität jetzt bei Namefi."
-keywords: [".academy domains", ".academy TLD", ".academy top-level domain", "was ist .academy", "warum .academy wählen", "was ist die .academy domain", "warum die .academy domain wählen", "Bildungs-Domain", "Online-Kurs Domain", "domain investing", "blockchain domains", "tokenized domains", "Web3 domains", "Namefi", "Domain Registrierung"]
+keywords: [".academy domains", ".academy top-level domain", "warum .academy wählen", "was ist die .academy domain", "warum die .academy domain wählen", "Bildungs-Domain", "Online-Kurs Domain", "domain investing", "blockchain domains", "tokenized domains", "Web3 domains", "Namefi", "Domain Registrierung"]
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/what-are-tokenized-domains/

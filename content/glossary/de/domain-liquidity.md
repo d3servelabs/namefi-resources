@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Wie schnell eine Domain nahe ihrem geschätzten Wert verkauft werden kann – hoch bei großartigen Namen, niedrig bei Nischen-Domains.
-keywords: ['Domain-Liquidität', 'Liquidität', 'Domain-Marktgängigkeit', 'Domain-Verkaufsgeschwindigkeit', 'Domain-Markttiefe']
+keywords: ['Domain-Liquidität', 'Domain-Marktgängigkeit', 'Domain-Verkaufsgeschwindigkeit', 'Domain-Markttiefe']
 level: 1
 sources:
   - https://www.investopedia.com/terms/l/liquidity.asp

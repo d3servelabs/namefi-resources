@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die numerische Adresse, die ein Gerät im Netzwerk identifiziert und auf die DNS einen Domainnamen abbildet.
-keywords: ['IP-Adresse', 'IPv4', 'IPv6', 'A-Record', 'AAAA-Record', 'Netzwerk']
+keywords: ['IPv4', 'IPv6', 'A-Record', 'AAAA-Record', 'Netzwerk']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc791

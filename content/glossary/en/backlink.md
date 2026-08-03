@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: An inbound hyperlink from another website to yours; the primary driver of search ranking and domain authority.
-keywords: ['backlink', 'inbound link', 'link building', 'link equity', 'seo']
+keywords: ['inbound link', 'link building', 'link equity', 'seo']
 also_known_as: ['Inbound Link']
 level: 1
 sources:

@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Software, die von einem KI-Modell angetrieben wird und im Auftrag eines Nutzers handelt – Käufe tätigt, APIs aufruft und zunehmend mit anderen Agenten interagiert.
-keywords: ['KI-Agent', 'autonomer Agent', 'Agenten-Identität', 'Agenten-Handel', 'On-Chain-Agent', 'agentische KI']
+keywords: ['autonomer Agent', 'Agenten-Identität', 'Agenten-Handel', 'On-Chain-Agent', 'agentische KI']
 level: 1
 sources:
   - https://modelcontextprotocol.io/

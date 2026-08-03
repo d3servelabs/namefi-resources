@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abogado domain is a credential-gated TLD for verified lawyers, meaning "abogado" (lawyer) in Spanish — ideal for Hispanic-market legal branding.'
-keywords: ['.abogado domains', 'what is .abogado', '.abogado TLD', 'lawyer domain extension', 'legal domain names', 'Spanish lawyer domain', 'abogado domain registration', 'verified legal TLD']
+keywords: ['.abogado domains', 'lawyer domain extension', 'legal domain names', 'Spanish lawyer domain', 'abogado domain registration', 'verified legal TLD']
 faqs:
   - question: 'Can anyone register a .abogado domain?'
     answer: 'No. The .abogado TLD is credential-gated. You must be a licensed lawyer or an authorized legal institution (law firm, law school, court, or bar association), and an independent third party verifies your status against public legal records before registration is approved.'

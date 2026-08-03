@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: "Entdecken Sie das Potenzial der .today-Domain für News, Blogs und zeitkritische Inhalte. Erfahren Sie mehr über Vorteile, SEO und die Registrierung bei Namefi."
-keywords: [".today domains", ".today TLD", ".today top-level domain", "was ist .today", "warum .today wählen", "was ist die .today domain", "warum die .today domain wählen", "domain investieren", "blockchain domains", "tokenisierte domains", "nachrichten domains", "zeitungs domains", "neue gTLDs", "domain kaufen", "Namefi"]
+keywords: [".today domains", ".today top-level domain", "warum .today wählen", "was ist die .today domain", "warum die .today domain wählen", "domain investieren", "blockchain domains", "tokenisierte domains", "nachrichten domains", "zeitungs domains", "neue gTLDs", "domain kaufen", "Namefi"]
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/

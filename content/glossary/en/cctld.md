@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A two-letter top-level domain assigned to a country or territory, such as .uk, .de, or .jp.
-keywords: ['ccTLD', 'country-code TLD', 'country domain', '.uk', '.de', 'ISO 3166']
+keywords: ['country-code TLD', 'country domain', '.uk', '.de', 'ISO 3166']
 level: 1
 sources:
   - https://www.iana.org/domains/root/db

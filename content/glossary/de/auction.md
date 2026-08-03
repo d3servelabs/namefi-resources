@@ -8,7 +8,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Welche verschiedenen Auktionsarten werden für Domainverkäufe verwendet?
-keywords: ["Auktion","holländische Auktion","englische Auktion","dynamische Auktion","Preisfindung","Domainverkäufe"]
+keywords: ["holländische Auktion", "englische Auktion", "dynamische Auktion", "Preisfindung", "Domainverkäufe"]
 relatedArticles:
   - /de/blog/how-to-win-domain-auctions/
   - /de/blog/domain-terminology-guide/

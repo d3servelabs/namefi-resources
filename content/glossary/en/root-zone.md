@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The top of the DNS hierarchy, listing every TLD and the servers authoritative for it.
-keywords: ['root zone', 'root servers', 'DNS hierarchy', 'TLD delegation', 'IANA']
+keywords: ['root servers', 'DNS hierarchy', 'TLD delegation', 'IANA']
 level: 1
 sources:
   - https://www.iana.org/domains/root

@@ -14,7 +14,6 @@ draft: false
 description: 'Erfahren Sie alles über die .alstom Top-Level-Domain. Einblicke in diese exklusive Marken-TLD, ihre Bedeutung für den Schienenverkehr und Domain-Trends.'
 keywords:
   - .alstom domains
-  - .alstom TLD
   - top-level domain
   - what is .alstom
   - why choose .alstom

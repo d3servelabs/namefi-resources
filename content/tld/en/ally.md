@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .ally domain is the closed brand TLD of Ally Financial, not open to the public despite the common word. Learn who runs it and what to register instead.'
-keywords: ['.ally domain', 'what is .ally', '.ally TLD', 'Ally Financial domain', 'dot-brand TLD', 'Ally Financial registry', 'closed generic TLD', 'is .ally available']
+keywords: ['Ally Financial domain', 'dot-brand TLD', 'Ally Financial registry', 'closed generic TLD', 'is .ally available']
 faqs:
   - question: 'Can anyone register a .ally domain?'
     answer: 'No. .ally is a closed brand TLD delegated to Ally Financial Inc. Only Ally Financial and parties it authorizes can hold a .ally name, so it is not available to the general public through any registrar.'

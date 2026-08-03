@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aigo domain was a brand TLD for the Chinese electronics brand aigo that ICANN terminated in 2020. Learn its history and what to register instead.'
-keywords: ['.aigo domain', 'what is .aigo', '.aigo TLD', 'aigo brand domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .aigo available']
+keywords: ['aigo brand domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .aigo available']
 faqs:
   - question: 'Can I register a .aigo domain?'
     answer: 'No. .aigo was terminated in 2020 and removed from the DNS root zone, so it no longer exists as a working extension and cannot be registered through any registrar. Even before that, it was a closed brand TLD never open to the public.'

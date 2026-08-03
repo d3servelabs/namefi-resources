@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Das bösgläubige Registrieren einer Domain, die einer fremden Marke entspricht, in der Absicht, davon zu profitieren.
-keywords: ['Cybersquatting', 'Bösgläubigkeit', 'Domain-Streit', 'Markenverletzung', 'UDRP']
+keywords: ['Bösgläubigkeit', 'Domain-Streit', 'Markenverletzung', 'UDRP']
 level: 1
 sources:
   - https://www.wipo.int/amc/en/domains/

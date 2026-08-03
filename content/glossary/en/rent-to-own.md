@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A purchase arrangement where the buyer pays in installments while using the domain and gains full ownership once the agreed total is paid.
-keywords: ['rent-to-own', 'gradual ownership', 'payment plans', 'domain acquisition', 'smart contracts']
+keywords: ['gradual ownership', 'payment plans', 'domain acquisition', 'smart contracts']
 level: 1
 sources:
   - https://www.investopedia.com/terms/l/lease-option.asp

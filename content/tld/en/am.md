@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .am domain? Armenia''s open, worldwide ccTLD known for domain hacks like will.i.am. Manager, eligibility, pricing, and registration explained.'
-keywords: ['.am domain', '.am TLD', 'what is .am', 'Armenia domain', 'domain hack TLDs', 'AM radio domain', 'generic ccTLD', 'register .am domain']
+keywords: ['Armenia domain', 'domain hack TLDs', 'AM radio domain', 'generic ccTLD', 'register .am domain']
 faqs:
   - question: 'Can anyone register a .am domain?'
     answer: 'Yes. .am is Armenia''s ccTLD, but it has been open to registrants worldwide for decades, with no local-presence requirement. Registration is first-come, first-served through any participating registrar.'

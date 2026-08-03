@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Registering a domain matching someone else's trademark in bad faith, hoping to profit from it.
-keywords: ['cybersquatting', 'bad faith', 'domain dispute', 'trademark infringement', 'UDRP']
+keywords: ['bad faith', 'domain dispute', 'trademark infringement', 'UDRP']
 level: 1
 sources:
   - https://www.wipo.int/amc/en/domains/

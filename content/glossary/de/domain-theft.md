@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Der unbefugte Transfer einer Domain aus der Kontrolle ihres rechtmäßigen Eigentümers, oft durch Kontoübernahme.
-keywords: ['Domain-Diebstahl', 'Unbefugter Transfer', 'Kontoübernahme', 'Domain-Sicherheit', 'Wiederherstellung']
+keywords: ['Unbefugter Transfer', 'Kontoübernahme', 'Domain-Sicherheit', 'Wiederherstellung']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

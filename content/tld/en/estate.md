@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .estate domain is an open generic extension built for real estate agents, brokerages, and property businesses. Learn who uses it, how it is priced, and whether it fits.'
-keywords: ['.estate domain', 'what is .estate', 'estate TLD', 'real estate domain', 'estate domain registration', 'property domain', 'new gTLD', 'Binky Moon']
+keywords: ['estate TLD', 'real estate domain', 'estate domain registration', 'property domain', 'new gTLD', 'Binky Moon']
 faqs:
   - question: 'Can anyone register a .estate domain?'
     answer: 'Yes. .estate is an open generic top-level domain with no eligibility restrictions. You do not need a real estate license, a brokerage, or any credential, so individuals, agents, and companies worldwide can register an available name on a first-come, first-served basis.'

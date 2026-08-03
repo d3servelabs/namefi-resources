@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Die .com-Domain ist die Standard-Adresse des kommerziellen Internets. Erfahren Sie mehr über ihre Geschichte, wer eine registrieren kann, wie die Preisgestaltung funktioniert und warum sie nach wie vor führend ist.'
-keywords: ['.com-Domains', 'was ist .com', '.com TLD', '.com Domain-Endung', '.com-Domain registrieren', 'com Domain Bedeutung', '.com vs .net', 'Geschäftsdomains']
+keywords: ['.com-Domains', '.com Domain-Endung', '.com-Domain registrieren', 'com Domain Bedeutung', '.com vs .net', 'Geschäftsdomains']
 faqs:
   - question: 'Kann jeder eine .com-Domain registrieren?'
     answer: 'Ja. Der .com-Namensraum steht jedem weltweit offen, ohne Anforderungen an lokale Präsenz, Geschäftstätigkeit, Qualifikationen oder Zugehörigkeit zu einer Gemeinschaft. Die ursprüngliche kommerzielle Absicht wird nicht mehr durchgesetzt, sodass Privatpersonen, gemeinnützige Organisationen und Unternehmen gleichermaßen eine registrieren können.'

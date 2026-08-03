@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die sichtbaren, anklickbaren Wörter eines Hyperlinks – ein Signal, das Suchmaschinen verwenden, um das Linkziel zu verstehen.
-keywords: ['Ankertext', 'Linktext', 'Backlinks', 'SEO', 'Hyperlink', 'Ranking-Signale']
+keywords: ['Linktext', 'Backlinks', 'SEO', 'Hyperlink', 'Ranking-Signale']
 level: 1
 sources:
   - https://developers.google.com/search/docs/crawling-indexing/links-crawlable

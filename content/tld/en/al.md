@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .al domain? Albania''s country-code TLD, open at the third level but restricted at second-level. Manager, eligibility, and pricing explained.'
-keywords: ['.al domain', '.al TLD', 'what is .al', 'Albania domain', 'domain hack TLDs', 'local presence requirement', 'com.al third level domain', 'register .al domain']
+keywords: ['Albania domain', 'domain hack TLDs', 'local presence requirement', 'com.al third level domain', 'register .al domain']
 faqs:
   - question: 'Can anyone register a .al domain?'
     answer: 'Second-level .al domains (yourname.al) generally require a local presence or a registered entity in Albania. Third-level domains such as yourname.com.al are more open. Check current requirements with AKEP, the registry, before choosing which tier fits your situation.'

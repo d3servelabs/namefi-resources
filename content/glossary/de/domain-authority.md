@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Reputationssignal, das abschätzt, wie gut eine Domain rankt – hauptsächlich bestimmt durch qualitativ hochwertige eingehende Links.
-keywords: ['Domain-Autorität', 'Backlinks', 'Link-Equity', 'SEO', 'Ranking-Signal', 'Eingehende Links']
+keywords: ['Backlinks', 'Link-Equity', 'SEO', 'Ranking-Signal', 'Eingehende Links']
 level: 1
 sources:
   - https://developers.google.com/search/docs/fundamentals/seo-starter-guide

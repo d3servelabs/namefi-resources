@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The theft of a domain by gaining unauthorized control of its registrar account or registration.
-keywords: ['domain hijacking', 'account compromise', 'domain theft', 'registrar security', 'unauthorized transfer']
+keywords: ['account compromise', 'domain theft', 'registrar security', 'unauthorized transfer']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

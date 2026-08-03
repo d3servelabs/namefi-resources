@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .homes domain is an open new gTLD run by XYZ Registry, ideal for real estate, property, and housing brands that want a clear, descriptive web address.'
-keywords: ['.homes domain', 'what is .homes', '.homes TLD', 'real estate domain', 'property domain name', 'XYZ Registry', 'new gTLD', 'homes domain registration']
+keywords: ['real estate domain', 'property domain name', 'XYZ Registry', 'new gTLD', 'homes domain registration']
 faqs:
   - question: 'Can anyone register a .homes domain?'
     answer: 'Yes. The .homes TLD is open to everyone with no eligibility checks. The original 2014 launch limited it to verified housing-industry professionals, but the registry removed those restrictions when it relaunched the extension, so any individual or business can register a .homes name today.'

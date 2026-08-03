@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A prefix added to a domain to create a separate address, such as blog.example.com or app.example.com.
-keywords: ['subdomain', 'host', 'blog.example.com', 'DNS', 'second-level domain']
+keywords: ['host', 'blog.example.com', 'DNS', 'second-level domain']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034

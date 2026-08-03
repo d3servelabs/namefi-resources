@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .cloud domain is an open gTLD operated by Aruba PEC S.p.A., built for cloud, SaaS, and tech brands. Learn who it suits, its pricing dynamics, and reputation.'
-keywords: ['.cloud domain', 'what is .cloud', '.cloud TLD', 'cloud computing domain', 'SaaS domain name', 'Aruba .cloud registry', 'new gTLD', 'tech domain extension']
+keywords: ['cloud computing domain', 'SaaS domain name', 'Aruba .cloud registry', 'new gTLD', 'tech domain extension']
 faqs:
   - question: 'Can anyone register a .cloud domain?'
     answer: 'Yes. The .cloud TLD is an open generic top-level domain with no eligibility restrictions. Any individual, business, or organization worldwide can register an available .cloud name on a first-come, first-served basis, with no credential, industry, or local-presence requirement.'

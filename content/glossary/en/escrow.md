@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A neutral third party or smart contract that holds funds or assets until both sides meet the agreed terms, then releases them, cutting counterparty risk.
-keywords: ['escrow', 'trusted third party', 'smart contract escrow', 'trustless', 'secure transactions']
+keywords: ['trusted third party', 'smart contract escrow', 'trustless', 'secure transactions']
 level: 1
 sources:
   - https://www.investopedia.com/terms/e/escrow.asp

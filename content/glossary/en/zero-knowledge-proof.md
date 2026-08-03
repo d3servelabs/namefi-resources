@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A cryptographic method that lets one party prove a statement is true without revealing any information beyond its validity.
-keywords: ['zero-knowledge proof', 'zkp', 'zk proof', 'zk-snark', 'zk rollup', 'validity proof']
+keywords: ['zkp', 'zk proof', 'zk-snark', 'zk rollup', 'validity proof']
 also_known_as: ['ZK Proof', 'ZKP']
 level: 1
 sources:

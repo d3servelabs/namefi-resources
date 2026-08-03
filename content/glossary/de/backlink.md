@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein eingehender Hyperlink von einer anderen Website auf die eigene – der wichtigste Treiber für Suchranking und Domain-Autorität.
-keywords: ['Backlink', 'Eingehender Link', 'Linkaufbau', 'Link-Equity', 'SEO']
+keywords: ['Eingehender Link', 'Linkaufbau', 'Link-Equity', 'SEO']
 also_known_as: ['Eingehender Link']
 level: 1
 sources:

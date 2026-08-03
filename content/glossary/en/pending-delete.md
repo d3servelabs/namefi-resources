@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The final status before an unrenewed domain is released back to the public for registration.
-keywords: ['pending delete', 'domain drop', 'drop catching', 'expired domain', 'release']
+keywords: ['domain drop', 'drop catching', 'expired domain', 'release']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en

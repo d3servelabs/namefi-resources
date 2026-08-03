@@ -8,7 +8,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was ist DID und welche Rolle spielen Domains bei der dezentralen Identität?
-keywords: ["DID","dezentrale Identität","selbstsouveräne Identität","Blockchain-Identität","Web3-Identität"]
+keywords: ["dezentrale Identität", "selbstsouveräne Identität", "Blockchain-Identität", "Web3-Identität"]
 relatedArticles:
   - /de/blog/what-are-tokenized-domains/
   - /de/blog/the-2020-twitter-bitcoin-account-takeover/

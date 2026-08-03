@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The secret number that controls a blockchain account and signs its transactions; it must never be shared.
-keywords: ['private key', 'signing key', 'wallet key', 'secret key', 'blockchain account']
+keywords: ['signing key', 'wallet key', 'secret key', 'blockchain account']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/accounts/

@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Der Wiederverkaufsmarkt für bereits registrierte Domains, auf dem Namen zwischen Eigentümern gehandelt werden.
-keywords: ['Aftermarket', 'Sekundärmarkt', 'Domain-Wiederverkauf', 'Domain-Investition', 'Domain-Verkäufe']
+keywords: ['Sekundärmarkt', 'Domain-Wiederverkauf', 'Domain-Investition', 'Domain-Verkäufe']
 also_known_as: ['Sekundärmarkt']
 level: 1
 sources:

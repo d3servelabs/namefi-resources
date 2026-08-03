@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .adult domain is an open gTLD for the adult-content industry, run by ICM Registry AD LLC. Learn who registers it and its email deliverability trade-offs.'
-keywords: ['.adult domain', 'what is .adult', '.adult TLD', 'adult industry domain names', 'ICM Registry AD LLC', 'GoDaddy Registry', 'adult content TLD', 'defensive domain registration']
+keywords: ['adult industry domain names', 'ICM Registry AD LLC', 'GoDaddy Registry', 'adult content TLD', 'defensive domain registration']
 faqs:
   - question: 'Can anyone register a .adult domain?'
     answer: 'Yes. The .adult domain is an open generic TLD with no age-verification or industry-membership requirement to register, so anyone can hold one. Most registrants are either adult-content businesses or mainstream brands registering their own name defensively.'

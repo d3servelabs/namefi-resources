@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .ads domain is a closed brand TLD run by Google, not open to advertisers or the public. Learn what it is, who controls it, and what to register instead.'
-keywords: ['.ads domain', 'what is .ads', '.ads TLD', 'Google brand TLD', 'Charleston Road Registry', 'dot-brand TLD', 'closed generic TLD', 'is .ads available']
+keywords: ['Google brand TLD', 'Charleston Road Registry', 'dot-brand TLD', 'closed generic TLD', 'is .ads available']
 faqs:
   - question: 'Can anyone register a .ads domain?'
     answer: 'No. .ads is a closed brand TLD delegated to Charleston Road Registry Inc., a Google entity. Only Google and parties it authorizes can hold a .ads name, so it is not available to advertisers, agencies, or the general public.'

@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Die .io-Domain ist der De-facto-Standard für Startups, Entwickler und Web3-Projekte. Erfahren Sie mehr über ihren Ursprung, die Registrierungsmöglichkeiten, Preisdynamik und Reputation.'
-keywords: ['.io-Domains', 'was ist .io', '.io TLD', '.io-Domain-Endung', '.io-Domain registrieren', 'io-Domain-Bedeutung', '.io vs .ai', 'Tech-Startup-Domains']
+keywords: ['.io-Domains', '.io-Domain-Endung', '.io-Domain registrieren', 'io-Domain-Bedeutung', '.io vs .ai', 'Tech-Startup-Domains']
 faqs:
   - question: 'Kann jeder eine .io-Domain registrieren?'
     answer: 'Ja. Der .io-Namensraum steht jedem weltweit offen, ohne Anforderungen an lokale Präsenz, Geschäftstätigkeit oder Nachweise. Sie benötigen keine Verbindung zum Britischen Territorium im Indischen Ozean, um eine Domain zu registrieren.'

@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Das Registrieren oder Verwenden einer Domain zur Ausnutzung einer Marke – ein erforderliches Element für einen UDRP-Erfolg.
-keywords: ['Bösgläubigkeit', 'UDRP', 'Domain-Streit', 'Cybersquatting', 'Markenmissbrauch']
+keywords: ['UDRP', 'Domain-Streit', 'Cybersquatting', 'Markenmissbrauch']
 level: 1
 sources:
   - https://www.wipo.int/amc/en/domains/

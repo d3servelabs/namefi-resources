@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The leading smart-contract blockchain, and the network most tokenized domains are issued on.
-keywords: ['ethereum', 'ETH', 'smart contract', 'EVM', 'decentralized applications']
+keywords: ['ETH', 'smart contract', 'EVM', 'decentralized applications']
 also_known_as: ['ETH']
 level: 1
 sources:

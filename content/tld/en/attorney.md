@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .attorney domain is an open new gTLD built for the legal profession. Learn who runs it, who can register, how it ranks, and whether it suits your firm.'
-keywords: ['.attorney domains', 'what is .attorney', '.attorney TLD', 'attorney domain extension', 'legal domain names', 'law firm domains', 'lawyer website domain', 'Identity Digital TLD']
+keywords: ['.attorney domains', 'attorney domain extension', 'legal domain names', 'law firm domains', 'lawyer website domain', 'Identity Digital TLD']
 faqs:
   - question: 'Can anyone register a .attorney domain?'
     answer: 'Yes. The .attorney domain is an open generic TLD with no credential or bar-membership requirement. Anyone can register one, though it is naturally aimed at attorneys, law firms, and legal-service providers. This makes it different from gated legal TLDs that verify licensure.'

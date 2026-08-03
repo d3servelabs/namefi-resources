@@ -9,7 +9,7 @@ translators: ['kai-kunstmann']
 draft: false
 selfCanonical: true
 description: 'Die .de-Domain ist die offizielle Länderendung für Deutschland, betrieben von DENIC. Erfahren Sie, wer sie registrieren darf, welche DENIC-Regeln gelten und worauf Sie achten sollten.'
-keywords: ['.de Domain', 'was ist .de', 'DENIC', 'ccTLD Deutschland', '.de registrieren', 'deutsche Domain', 'Länder-Top-Level-Domain', 'Domain Deutschland', 'Zustellungsbevollmächtigter .de', '.de vs .com']
+keywords: ['DENIC', 'ccTLD Deutschland', '.de registrieren', 'deutsche Domain', 'Länder-Top-Level-Domain', 'Domain Deutschland', 'Zustellungsbevollmächtigter .de', '.de vs .com']
 faqs:
   - question: 'Kann jeder eine .de-Domain registrieren?'
     answer: 'Ja. Die .de-Endung ist für alle offen, ob Privatperson, Verein oder Unternehmen, mit Sitz in Deutschland oder im Ausland. Es gibt keine Wohnsitzpflicht. Wer keinen deutschen Wohnsitz hat, muss auf Verlangen von DENIC innerhalb von zwei Wochen einen in Deutschland ansässigen Zustellungsbevollmächtigten benennen.'

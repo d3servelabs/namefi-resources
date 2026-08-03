@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: An ICANN-accredited company authorized to register domain names on behalf of the public, acting as the interface between registrants and registries.
-keywords: ['registrar', 'domain registrar', 'ICANN accreditation', 'domain registration', 'RAA', 'EPP', 'auth code', 'transfer lock', 'domain transfer']
+keywords: ['domain registrar', 'ICANN accreditation', 'domain registration', 'RAA', 'EPP', 'auth code', 'transfer lock', 'domain transfer']
 level: 2
 sources:
   - https://www.icann.org/en/accredited-registrars

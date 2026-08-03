@@ -8,7 +8,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .ad domain? Andorra''s country-code TLD, generally restricted to local trademark or presence holders. Manager, eligibility, and pricing explained.'
-keywords: ['.ad domain', '.ad TLD', 'what is .ad', 'Andorra domain', 'restricted ccTLD', 'local presence requirement', 'Andorra Telecom registry', 'register .ad domain']
+keywords: ['Andorra domain', 'restricted ccTLD', 'local presence requirement', 'Andorra Telecom registry', 'register .ad domain']
 faqs:
   - question: 'Can anyone register a .ad domain?'
     answer: 'Generally, no. .ad registration typically requires an Andorran trademark or a genuine local commercial presence in Andorra. It is not an open, global namespace the way some other ccTLDs are, so check current eligibility with the registry before planning a brand around it.'

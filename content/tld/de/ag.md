@@ -14,9 +14,7 @@ draft: false
 description: 'Entdecken Sie die Bedeutung der .ag Domain: Ideal für Aktiengesellschaften im deutschsprachigen Raum und Unternehmen in Antigua. Sichern Sie sich Ihre .ag TLD bei Namefi.'
 keywords:
   - '.ag domains'
-  - '.ag TLD'
   - '.ag top-level domain'
-  - 'was ist .ag'
   - 'warum .ag wählen'
   - 'was ist die .ag domain'
   - 'warum die .ag domain wählen'

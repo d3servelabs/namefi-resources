@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .ag domain? Antigua and Barbuda''s open ccTLD, known for German AG corporate branding and domain hacks. Manager, eligibility, and pricing.'
-keywords: ['.ag domain', '.ag TLD', 'what is .ag', 'Antigua and Barbuda domain', 'Aktiengesellschaft domain', 'agriculture domain extension', 'domain hack TLDs', 'register .ag domain']
+keywords: ['Antigua and Barbuda domain', 'Aktiengesellschaft domain', 'agriculture domain extension', 'domain hack TLDs', 'register .ag domain']
 faqs:
   - question: 'Can anyone register a .ag domain?'
     answer: 'Yes. .ag is Antigua and Barbuda''s ccTLD, but it has been open to registrants worldwide for years, with no local-presence requirement. Registration is first-come, first-served through any participating registrar.'

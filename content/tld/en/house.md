@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .house domain is an open generic TLD run by Binky Moon (Identity Digital). See who it suits, how it ranks, registration rules, and pricing dynamics.'
-keywords: ['.house domain', 'what is .house', '.house TLD', 'real estate domain', 'home domain extension', 'Binky Moon', 'Identity Digital', 'generic TLD', 'domain registration']
+keywords: ['real estate domain', 'home domain extension', 'Binky Moon', 'Identity Digital', 'generic TLD', 'domain registration']
 faqs:
   - question: 'Can anyone register a .house domain?'
     answer: 'Yes. The .house TLD is an open, unrestricted generic top-level domain. There are no credential, industry, or local-presence requirements, so any individual or organization worldwide can register an available .house name on a first-come, first-served basis.'

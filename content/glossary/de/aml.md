@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Anti-Money-Laundering – die laufende Transaktionsüberwachung und Meldepflicht, die regulierte Dienste zur Aufdeckung illegaler Gelder einsetzen.
-keywords: ['AML', 'Anti-Money-Laundering', 'Geldwäschebekämpfung', 'Transaktionsüberwachung', 'Sanctions-Screening', 'Compliance']
+keywords: ['Anti-Money-Laundering', 'Geldwäschebekämpfung', 'Transaktionsüberwachung', 'Sanctions-Screening', 'Compliance']
 also_known_as: ['Anti-Money-Laundering']
 level: 1
 sources:

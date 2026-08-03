@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .active domain was a brand TLD for The Active Network that ICANN terminated in 2019. Learn its history, why it was removed, and what to register instead.'
-keywords: ['.active domain', 'what is .active', '.active TLD', 'The Active Network domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .active available']
+keywords: ['The Active Network domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .active available']
 faqs:
   - question: 'Can I register a .active domain?'
     answer: 'No. .active was terminated in 2019 and removed from the DNS root zone, so it no longer exists as a working extension and cannot be registered through any registrar. Even before that, it was a closed brand TLD never open to the public.'

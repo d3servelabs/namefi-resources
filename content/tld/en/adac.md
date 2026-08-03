@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: "The .adac domain was a brand TLD for Germany's ADAC motoring club that ICANN terminated in 2022. Learn its history, why it ended, and what to register instead."
-keywords: ['.adac domain', 'what is .adac', '.adac TLD', 'ADAC brand domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .adac available']
+keywords: ['ADAC brand domain', 'terminated TLD', 'discontinued gTLD', 'dot-brand TLD', 'is .adac available']
 faqs:
   - question: 'Can I register a .adac domain?'
     answer: 'No. .adac was terminated in 2022 and removed from the DNS root zone, so it no longer exists as a working extension and cannot be registered through any registrar. Even before that, it was a closed brand TLD never open to the public.'

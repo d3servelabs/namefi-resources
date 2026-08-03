@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The numeric address that identifies a device on a network, which DNS maps a domain name to.
-keywords: ['IP address', 'IPv4', 'IPv6', 'A record', 'AAAA record', 'networking']
+keywords: ['IPv4', 'IPv6', 'A record', 'AAAA record', 'networking']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc791

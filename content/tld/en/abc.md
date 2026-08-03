@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .abc domain is the closed brand TLD of Disney Enterprises for the ABC television network, not open to the public. Learn what it is and what to register instead.'
-keywords: ['.abc domain', 'what is .abc', '.abc TLD', 'ABC brand domain', 'dot-brand TLD', 'Disney Enterprises registry', 'closed generic TLD', 'is .abc available']
+keywords: ['ABC brand domain', 'dot-brand TLD', 'Disney Enterprises registry', 'closed generic TLD', 'is .abc available']
 faqs:
   - question: 'Can anyone register a .abc domain?'
     answer: 'No. .abc is a closed brand TLD delegated to Disney Enterprises, Inc. Only Disney and parties it authorizes can hold a .abc name, so it is not available to the general public through any registrar.'

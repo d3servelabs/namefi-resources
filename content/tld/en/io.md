@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .io domain is the de facto standard for startups, developers, and Web3 projects. Learn its origin, who can register one, pricing dynamics, and reputation.'
-keywords: ['.io domains', 'what is .io', '.io TLD', '.io domain extension', 'register .io domain', 'io domain meaning', '.io vs .ai', 'tech startup domains']
+keywords: ['.io domains', '.io domain extension', 'register .io domain', 'io domain meaning', '.io vs .ai', 'tech startup domains']
 faqs:
   - question: 'Can anyone register a .io domain?'
     answer: 'Yes. The .io namespace is open to everyone worldwide with no local-presence, business, or credential requirements. You do not need any connection to the British Indian Ocean Territory to register one.'

@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die Schätzung des Marktwerts einer Domain anhand vergleichbarer Verkäufe, Keyword-Nachfrage, Länge und Endung.
-keywords: ['Domain-Bewertung', 'Domain-Wertermittlung', 'Domain-Wert', 'Domain-Preisgestaltung', 'vergleichbare Verkäufe']
+keywords: ['Domain-Wertermittlung', 'Domain-Wert', 'Domain-Preisgestaltung', 'vergleichbare Verkäufe']
 also_known_as: ['Domain-Wertermittlung']
 level: 1
 sources:

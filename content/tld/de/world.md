@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: "Entdecken Sie die globale Reichweite der .world Domain. Erfahren Sie, warum Communities, Marken und Web3-Projekte diese TLD wählen. Jetzt bei Namefi registrieren!"
-keywords: [".world domains", ".world TLD", ".world top-level domain", "what is .world", "why choose .world", "what is the .world domain", "why choose the .world domain", ".world Domain kaufen", "Domain Investieren", "Blockchain Domains", "tokenisierte Domains", "Web3 Domains", "gTLD", "Markenschutz", "internationale Domains"]
+keywords: [".world domains", ".world top-level domain", "what is .world", "why choose .world", "what is the .world domain", "why choose the .world domain", ".world Domain kaufen", "Domain Investieren", "Blockchain Domains", "tokenisierte Domains", "Web3 Domains", "gTLD", "Markenschutz", "internationale Domains"]
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/top-tlds-to-secure-for-your-business/

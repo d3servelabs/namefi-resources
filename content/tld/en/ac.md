@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .ac domain? Ascension Island''s open, worldwide ccTLD used for academic branding and domain hacks. Manager, eligibility, and pricing explained.'
-keywords: ['.ac domain', '.ac TLD', 'what is .ac', 'Ascension Island domain', 'academic domain extension', 'domain hack TLDs', 'generic ccTLD', 'register .ac domain']
+keywords: ['Ascension Island domain', 'academic domain extension', 'domain hack TLDs', 'generic ccTLD', 'register .ac domain']
 faqs:
   - question: 'Can anyone register a .ac domain?'
     answer: 'Yes. Although .ac is the country-code TLD for Ascension Island, registration carries no local-presence or residency requirement. Names are available first-come, first-served through any participating registrar, with no need for a genuine Ascension Island connection.'

@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .law domain is a restricted, credential-gated extension reserved for licensed lawyers, law firms, law schools, and legal regulators, verified at registration and renewal.'
-keywords: ['.law domain', 'what is .law', 'law domain registration', 'restricted TLD', 'lawyer domain', 'law firm domain', 'legal domain name', 'credential-gated TLD']
+keywords: ['law domain registration', 'restricted TLD', 'lawyer domain', 'law firm domain', 'legal domain name', 'credential-gated TLD']
 faqs:
   - question: 'Can anyone register a .law domain?'
     answer: 'No. .law is a restricted, credential-gated TLD. Only qualified lawyers licensed to practice, law firms, law schools, and legal regulators may register, and an independent validation provider verifies your legal credentials both at registration and on an ongoing basis throughout the domain lifecycle.'

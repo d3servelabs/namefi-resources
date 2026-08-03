@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: An asset that originates and lives on the internet itself, like a domain or token, rather than being a digital record of a physical or legal object.
-keywords: ['internet-native asset', 'digital asset', 'blockchain', 'native internet', 'tokenized domains']
+keywords: ['digital asset', 'blockchain', 'native internet', 'tokenized domains']
 level: 1
 sources:
   - https://ethereum.org/en/nft/

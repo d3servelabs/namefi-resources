@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A tree of hashes that commits to a large dataset in one root hash, letting anyone verify a single item with a short proof.
-keywords: ['merkle tree', 'hash tree', 'merkle root', 'merkle proof', 'merkle branch', 'SPV']
+keywords: ['hash tree', 'merkle root', 'merkle proof', 'merkle branch', 'SPV']
 also_known_as: ['Hash Tree']
 level: 1
 sources:

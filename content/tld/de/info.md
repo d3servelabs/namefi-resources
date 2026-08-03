@@ -15,9 +15,7 @@ draft: false
 description: 'Erfahren Sie alles über die .info Domain: Bedeutung, Geschichte und Vorteile. Entdecken Sie, warum .info ideal für Informationsseiten und Branding ist.'
 keywords:
   - .info domains
-  - .info TLD
   - top-level domain
-  - was ist .info
   - warum .info wählen
   - was ist die .info domain
   - warum die .info domain wählen

@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Know Your Customer — the identity-verification checks a regulated financial or crypto service runs before onboarding a user.
-keywords: ['KYC', 'Know Your Customer', 'identity verification', 'onboarding', 'compliance']
+keywords: ['Know Your Customer', 'identity verification', 'onboarding', 'compliance']
 also_known_as: ['Know Your Customer']
 level: 1
 sources:

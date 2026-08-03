@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Domain-Angebot, das Käufer einlädt, ein Gebot einzureichen, das der Verkäufer annehmen, gegenbieten oder ablehnen kann.
-keywords: ['Preisverhandlung', 'Bestgebot', 'Domain-Verhandlung', 'Angebot', 'Gegenangebot']
+keywords: ['Bestgebot', 'Domain-Verhandlung', 'Angebot', 'Gegenangebot']
 level: 1
 sources:
   - https://www.sedo.com/

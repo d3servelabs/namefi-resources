@@ -14,9 +14,7 @@ draft: false
 description: 'Entdecken Sie die .aig Domain: Die perfekte Wahl für KI-Innovationen und Web3. Erfahren Sie alles über Vorteile, Nutzung und Registrierung bei Namefi.'
 keywords:
   - .aig domains
-  - .aig TLD
   - top-level domain
-  - was ist .aig
   - warum .aig wählen
   - was ist die .aig domain
   - warum die .aig domain wählen

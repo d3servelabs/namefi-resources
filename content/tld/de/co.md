@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Was ist die .co-Domain? Die länderspezifische TLD Kolumbiens, weltweit als kurze „.com"- oder „Company"-Alternative vermarktet. Erfahren Sie, wer sie betreibt, wer registrieren kann, wie die Preisgestaltung funktioniert und wie es um die SEO steht.'
-keywords: ['.co-Domains', '.co TLD', 'co Domain', 'was ist .co', 'was ist die .co-Domain', '.co vs .com', 'co Domain für Startups', 'Kolumbien Domain', '.co-Domain registrieren', 'kurze Company-Domain']
+keywords: ['.co-Domains', 'co Domain', 'was ist die .co-Domain', '.co vs .com', 'co Domain für Startups', 'Kolumbien Domain', '.co-Domain registrieren', 'kurze Company-Domain']
 faqs:
   - question: 'Kann jeder eine .co-Domain registrieren?'
     answer: 'Ja. Obwohl .co technisch gesehen die länderspezifische TLD Kolumbiens ist, steht sie seit ihrem Neustart im Jahr 2010 jedem weltweit offen, ohne Anforderung an lokale Präsenz oder kolumbianischen Wohnsitz. Die Registrierung erfolgt nach dem Prinzip „first-come, first-served" auf der zweiten Ebene.'

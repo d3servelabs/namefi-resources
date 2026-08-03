@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Dienst, der die persönlichen Kontaktdaten eines Registranten in öffentlichen WHOIS- oder RDAP-Einträgen maskiert.
-keywords: ['WHOIS-datenschutz', 'datenschutz', 'RDAP', 'registrant-datenschutz', 'kontaktmaskierung']
+keywords: ['datenschutz', 'RDAP', 'registrant-datenschutz', 'kontaktmaskierung']
 also_known_as: ['Datenschutz']
 level: 1
 sources:

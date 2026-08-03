@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .alstom domain is the closed brand TLD of rail transport group Alstom, not open to the public. Learn what it is, who runs it, and what to register instead.'
-keywords: ['.alstom domain', 'what is .alstom', '.alstom TLD', 'Alstom brand domain', 'dot-brand TLD', 'Alstom registry operator', 'closed generic TLD', 'is .alstom available']
+keywords: ['Alstom brand domain', 'dot-brand TLD', 'Alstom registry operator', 'closed generic TLD', 'is .alstom available']
 faqs:
   - question: 'Can anyone register a .alstom domain?'
     answer: 'No. .alstom is a closed brand TLD delegated to Alstom. Only Alstom and parties it authorizes can hold a .alstom name, so it is not available to the general public through any registrar.'

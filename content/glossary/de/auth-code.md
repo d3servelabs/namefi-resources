@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein kurzes domainspezifisches Geheimnis, das ein Registrar ausstellt, um die Übertragung einer Domain zu einem anderen Registrar zu autorisieren, auch EPP-Code oder Transfer-Code genannt.
-keywords: ['Auth-Code', 'EPP-Code', 'Transfer-Code', 'Domain-Transfer', 'Autorisierungscode', 'AuthInfo-Code']
+keywords: ['EPP-Code', 'Transfer-Code', 'Domain-Transfer', 'Autorisierungscode', 'AuthInfo-Code']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc5731

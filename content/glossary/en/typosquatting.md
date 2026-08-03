@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Registering misspellings of popular domains to catch mistyped traffic, often for ads or phishing.
-keywords: ['typosquatting', 'typo domain', 'phishing', 'brand abuse', 'cybersquatting']
+keywords: ['typo domain', 'phishing', 'brand abuse', 'cybersquatting']
 level: 1
 sources:
   - https://www.cloudflare.com/learning/ssl/what-is-typosquatting/

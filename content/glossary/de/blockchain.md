@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein gemeinsames, nur erweitertes Hauptbuch, das auf vielen Computern gespeichert wird – das Fundament tokenisierter Eigentumsrechte.
-keywords: ['Blockchain', 'Verteiltes Hauptbuch', 'Dezentralisiert', 'Unveränderlich', 'Konsens']
+keywords: ['Verteiltes Hauptbuch', 'Dezentralisiert', 'Unveränderlich', 'Konsens']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/intro-to-ethereum/

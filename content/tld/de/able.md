@@ -14,9 +14,7 @@ draft: false
 description: 'Entdecken Sie die .able Domain: Eine vielseitige Endung für kreative Marken und Web3-Innovationen. Erfahren Sie alles über Vorteile, Nutzung und Registrierung.'
 keywords:
   - '.able domains'
-  - '.able TLD'
   - 'top-level domain'
-  - 'was ist .able'
   - 'warum .able wählen'
   - 'was ist die .able domain'
   - 'domain investing'

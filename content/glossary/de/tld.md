@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Eine Top-Level-Domain (TLD) ist das rechteste Label eines Domainnamens, z. B. .com, .org oder .de, delegiert über die IANA-Root-Zone unter ICANN-Aufsicht.
-keywords: ['TLD', 'Top-Level-Domain', 'gTLD', 'ccTLD', 'neue gTLD', 'DNS', 'IANA', 'ICANN', 'Root-Zone', 'Domain-Registry']
+keywords: ['Top-Level-Domain', 'gTLD', 'ccTLD', 'neue gTLD', 'DNS', 'IANA', 'ICANN', 'Root-Zone', 'Domain-Registry']
 also_known_as: ['Top-Level-Domain']
 level: 2
 sources:

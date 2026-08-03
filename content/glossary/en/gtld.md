@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A top-level domain not tied to a country, such as .com, .org, or .xyz, run under ICANN contract.
-keywords: ['gTLD', 'generic TLD', '.com', '.org', '.xyz', 'ICANN']
+keywords: ['generic TLD', '.com', '.org', '.xyz', 'ICANN']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/tlds-2012-02-25-en

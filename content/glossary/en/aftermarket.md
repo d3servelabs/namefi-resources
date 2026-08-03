@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The resale market for already-registered domains, where names are bought and sold between owners.
-keywords: ['aftermarket', 'secondary market', 'domain resale', 'domain investing', 'domain sales']
+keywords: ['secondary market', 'domain resale', 'domain investing', 'domain sales']
 also_known_as: ['Secondary Market']
 level: 1
 sources:

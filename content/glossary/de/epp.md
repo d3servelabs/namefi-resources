@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Das Standardprotokoll, das Registrare nutzen, um Domains mit einer Registry zu registrieren und zu verwalten.
-keywords: ['EPP', 'Extensible Provisioning Protocol', 'Domain-Verwaltung', 'Registry-Protokoll', 'RFC 5730']
+keywords: ['Extensible Provisioning Protocol', 'Domain-Verwaltung', 'Registry-Protokoll', 'RFC 5730']
 also_known_as: ['Extensible Provisioning Protocol']
 level: 1
 sources:

@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein von ICANN akkreditiertes Unternehmen, das berechtigt ist, Domainnamen im Auftrag der Öffentlichkeit zu registrieren und als Schnittstelle zwischen Registranten und Registries fungiert.
-keywords: ['Registrar', 'Domain-Registrar', 'ICANN-Akkreditierung', 'Domainregistrierung', 'RAA', 'EPP', 'Auth-Code', 'Transfer-Sperre', 'Domain-Transfer']
+keywords: ['Domain-Registrar', 'ICANN-Akkreditierung', 'Domainregistrierung', 'RAA', 'EPP', 'Auth-Code', 'Transfer-Sperre', 'Domain-Transfer']
 level: 2
 sources:
   - https://www.icann.org/en/accredited-registrars

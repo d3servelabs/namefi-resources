@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Peer-to-Peer-Protokoll, das Dateien anhand ihres Inhalts adressiert und dezentrale Web-Daten hostet.
-keywords: ['IPFS', 'Inhaltsadressierung', 'Peer-to-Peer', 'dezentraler Speicher', 'CID']
+keywords: ['Inhaltsadressierung', 'Peer-to-Peer', 'dezentraler Speicher', 'CID']
 also_known_as: ['InterPlanetary File System']
 level: 1
 sources:

@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The lowest price a seller will accept, often hidden, below which an offer or auction bid is rejected.
-keywords: ['reserve price', 'minimum offer', 'reserve bid', 'floor price', 'domain auction reserve']
+keywords: ['minimum offer', 'reserve bid', 'floor price', 'domain auction reserve']
 level: 1
 sources:
   - https://www.investopedia.com/terms/r/reserveprice.asp

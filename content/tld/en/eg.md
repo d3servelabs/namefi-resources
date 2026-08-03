@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'What is the .eg domain? Egypt''s official country-code TLD, run by the Egyptian Universities Network since 1990. Learn eligibility rules, structure, SEO impact, and who should register.'
-keywords: ['.eg domain', '.eg TLD', 'Egypt domain', 'what is .eg', 'com.eg registration', 'Egypt ccTLD', 'register .eg domain', 'Egyptian Universities Network', '.eg eligibility', 'Egypt domain requirements']
+keywords: ['Egypt domain', 'com.eg registration', 'Egypt ccTLD', 'register .eg domain', 'Egyptian Universities Network', '.eg eligibility', 'Egypt domain requirements']
 faqs:
   - question: 'Can anyone register a .eg domain?'
     answer: 'No. The .eg registry requires that registrants either have a local representative inside Egypt or host their domain on Egyptian DNS servers. Companies outside Egypt must also hold a trademark registered in Egypt or internationally via the Madrid Convention with WIPO, and must appoint a local agent.'

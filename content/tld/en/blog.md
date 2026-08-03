@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .blog domain is an open gTLD run by Automattic that instantly signals a content site. Learn who it suits, how it is priced, and its email reputation.'
-keywords: ['.blog domain', 'what is .blog', '.blog TLD', 'blog domain name', 'Automattic .blog', 'gTLD for blogs', 'register .blog domain', 'content website domain']
+keywords: ['blog domain name', 'Automattic .blog', 'gTLD for blogs', 'register .blog domain', 'content website domain']
 faqs:
   - question: 'Can anyone register a .blog domain?'
     answer: 'Yes. The .blog TLD is open to everyone with no eligibility, credential, or local-presence requirement. You do not need to run a blog or use WordPress to register one. The only exception is premium-tier names, which carry higher registry pricing but no extra qualification.'

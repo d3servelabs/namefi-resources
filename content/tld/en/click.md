@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .click domain is an open new gTLD built around the web''s core action. Learn who runs it, who it suits, its pricing dynamics, and how it compares.'
-keywords: ['.click domain', 'what is .click', '.click TLD', 'click domain extension', 'call to action domain', 'URL shortener domain', 'new gTLD', 'register .click domain']
+keywords: ['click domain extension', 'call to action domain', 'URL shortener domain', 'new gTLD', 'register .click domain']
 faqs:
   - question: 'Can anyone register a .click domain?'
     answer: 'Yes. .click is an open generic top-level domain with no eligibility restrictions. Anyone, anywhere can register an available .click name on a first-come, first-served basis, with no credential, trademark, or local-presence requirement.'

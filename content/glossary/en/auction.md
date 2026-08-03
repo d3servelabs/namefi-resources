@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A competitive sale format where buyers bid to set the price, run as English (ascending), Dutch (descending), or dynamic timed auctions.
-keywords: ['auction', 'Dutch auction', 'English auction', 'dynamic auction', 'price discovery', 'domain sales']
+keywords: ['Dutch auction', 'English auction', 'dynamic auction', 'price discovery', 'domain sales']
 level: 1
 sources:
   - https://www.investopedia.com/terms/a/auction.asp

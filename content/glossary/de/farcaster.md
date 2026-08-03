@@ -7,7 +7,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was ist Farcaster und wie stehen Domains im Zusammenhang mit dezentralen sozialen Netzwerken?
-keywords: ["Farcaster","dezentrales soziales Netzwerk","Web3-Sozial","Blockchain-Identität","soziales Protokoll"]
+keywords: ["dezentrales soziales Netzwerk", "Web3-Sozial", "Blockchain-Identität", "soziales Protokoll"]
 relatedArticles:
   - /de/blog/what-are-tokenized-domains/
   - /de/blog/why-tokenize-domains/

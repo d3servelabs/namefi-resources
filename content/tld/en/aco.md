@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aco domain is the closed brand TLD of German drainage maker ACO, not a healthcare extension. Learn what it is, who runs it, and what to register instead.'
-keywords: ['.aco domain', 'what is .aco', '.aco TLD', 'ACO brand domain', 'dot-brand TLD', 'ACO Severin Ahlmann registry', 'closed generic TLD', 'is .aco available', 'ACO drainage systems']
+keywords: ['ACO brand domain', 'dot-brand TLD', 'ACO Severin Ahlmann registry', 'closed generic TLD', 'is .aco available', 'ACO drainage systems']
 faqs:
   - question: 'Can anyone register a .aco domain?'
     answer: 'No. .aco is a closed brand TLD delegated to ACO Severin Ahlmann GmbH & Co. KG. Only ACO and parties it authorizes can hold a .aco name, so it is not available to the general public through any registrar.'

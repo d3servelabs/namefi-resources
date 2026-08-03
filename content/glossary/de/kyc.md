@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Know Your Customer — die Identitätsprüfungen, die ein regulierter Finanz- oder Kryptodienst vor der Nutzeraufnahme durchführt.
-keywords: ['KYC', 'Know Your Customer', 'Identitätsverifizierung', 'Onboarding', 'Compliance']
+keywords: ['Know Your Customer', 'Identitätsverifizierung', 'Onboarding', 'Compliance']
 also_known_as: ['Know Your Customer']
 level: 1
 sources:

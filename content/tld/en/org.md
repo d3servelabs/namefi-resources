@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .org domain is an open legacy gTLD run by the nonprofit Public Interest Registry, trusted by charities, open-source projects, and communities worldwide.'
-keywords: ['.org domains', 'what is .org', '.org domain meaning', 'org TLD', 'Public Interest Registry', 'nonprofit domain', 'register .org domain', 'is .org good for SEO']
+keywords: ['.org domains', '.org domain meaning', 'org TLD', 'Public Interest Registry', 'nonprofit domain', 'register .org domain', 'is .org good for SEO']
 faqs:
   - question: 'Can anyone register a .org domain?'
     answer: 'Yes. The .org extension is open and unrestricted, so any individual, business, nonprofit, or project can register an available name. There is no proof-of-nonprofit-status requirement and no local-presence rule.'

@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .info domain is an open, unrestricted gTLD launched in 2001 for information-led sites. Learn who uses it, its SEO and reputation, and whether to register one.'
-keywords: ['.info', '.info domain', '.info TLD', 'what is .info', 'register .info domain', 'info domain meaning', 'Identity Digital', 'unrestricted gTLD']
+keywords: ['.info', 'register .info domain', 'info domain meaning', 'Identity Digital', 'unrestricted gTLD']
 faqs:
   - question: 'Can anyone register a .info domain?'
     answer: 'Yes. The .info domain is an open, unrestricted gTLD with no eligibility requirements. Anyone, anywhere can register an available .info name without proving a credential, business type, or local presence.'

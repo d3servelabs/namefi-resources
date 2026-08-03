@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: An encryption scheme that allows computation directly on encrypted data, producing an encrypted result without ever decrypting the inputs.
-keywords: ['fully homomorphic encryption', 'fhe', 'confidential computing', 'encrypted computation', 'lattice cryptography']
+keywords: ['fhe', 'confidential computing', 'encrypted computation', 'lattice cryptography']
 also_known_as: ['FHE']
 level: 1
 sources:

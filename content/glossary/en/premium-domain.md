@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A high-value domain priced above standard rates for its memorability, brevity, or keyword strength.
-keywords: ['premium domain', 'premium name', 'registry premium', 'aftermarket', 'domain value']
+keywords: ['premium name', 'registry premium', 'aftermarket', 'domain value']
 level: 1
 sources:
   - https://www.namebio.com/

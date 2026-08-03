@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A group of related domain names sold or managed together as one package, often covering multiple TLDs or spelling variants of a single brand.
-keywords: ['domain bundle', 'portfolio', 'bulk trading', 'domain collection', 'asset management']
+keywords: ['portfolio', 'bulk trading', 'domain collection', 'asset management']
 level: 1
 sources:
   - https://www.namebio.com/

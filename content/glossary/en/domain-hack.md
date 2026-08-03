@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A name that spans the dot to spell a word using the TLD, like del.icio.us or examp.le.
-keywords: ['domain hack', 'creative domain', 'TLD wordplay', 'brandable domain', 'ccTLD']
+keywords: ['creative domain', 'TLD wordplay', 'brandable domain', 'ccTLD']
 level: 1
 sources:
   - https://www.namebio.com/

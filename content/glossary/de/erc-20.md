@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Der Ethereum-Standard für fungible Token wie Stablecoins – das Pendant zum ERC-721-NFT-Standard.
-keywords: ['ERC-20', 'Fungibler Token', 'Token-Standard', 'Stablecoin', 'Ethereum-Token']
+keywords: ['Fungibler Token', 'Token-Standard', 'Stablecoin', 'Ethereum-Token']
 level: 1
 sources:
   - https://eips.ethereum.org/EIPS/eip-20

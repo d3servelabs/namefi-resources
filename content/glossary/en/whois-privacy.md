@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A service that masks a registrant's personal contact details in public WHOIS or RDAP records.
-keywords: ['WHOIS privacy', 'privacy protection', 'RDAP', 'registrant privacy', 'contact masking']
+keywords: ['privacy protection', 'RDAP', 'registrant privacy', 'contact masking']
 also_known_as: ['Privacy Protection']
 level: 1
 sources:

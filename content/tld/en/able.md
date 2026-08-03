@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .able domain is the closed brand TLD of Japanese real-estate company Able Inc., not open to the public. Learn what it is, and what to register instead.'
-keywords: ['.able domain', 'what is .able', '.able TLD', 'Able Inc brand domain', 'dot-brand TLD', 'Able Inc registry', 'closed generic TLD', 'is .able available']
+keywords: ['Able Inc brand domain', 'dot-brand TLD', 'Able Inc registry', 'closed generic TLD', 'is .able available']
 faqs:
   - question: 'Can anyone register a .able domain?'
     answer: 'No. .able is a closed brand TLD delegated to Able Inc. Only Able Inc. and parties it authorizes can hold a .able name, so it is not available to the general public through any registrar.'

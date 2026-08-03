@@ -7,7 +7,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was sind Lending-Protokolle und wie können Domains im DeFi-Lending verwendet werden?
-keywords: ["Lending-Protokoll","DeFi","Sicherheit","Ausleihe","Domain-Finanzierung","Rendite"]
+keywords: ["DeFi", "Sicherheit", "Ausleihe", "Domain-Finanzierung", "Rendite"]
 relatedArticles:
   - /de/blog/tokenized-domain-use-cases-2026/
   - /de/blog/what-are-tokenized-domains/

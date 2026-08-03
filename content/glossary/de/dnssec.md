@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Kryptografische Signaturen auf DNS-Einträgen, die es Resolvern ermöglichen zu überprüfen, ob eine Antwort authentisch ist und nicht gefälscht oder während der Übertragung manipuliert wurde.
-keywords: ['DNSSEC', 'DNS-Sicherheit', 'Domain-Sicherheit', 'DS-Eintrag', 'Vertrauenskette', 'kryptografisches DNS']
+keywords: ['DNS-Sicherheit', 'Domain-Sicherheit', 'DS-Eintrag', 'Vertrauenskette', 'kryptografisches DNS']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc4033

@@ -8,7 +8,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was ist eine Krypto-Wallet und wie speichert sie tokenisierte Domains?
-keywords: ["Wallet","Krypto-Wallet","privater Schlüssel","Speicherung digitaler Assets","Domain-Speicherung"]
+keywords: ["Krypto-Wallet", "privater Schlüssel", "Speicherung digitaler Assets", "Domain-Speicherung"]
 relatedArticles:
   - /de/blog/recovering-a-tokenized-domain-after-wallet-loss/
   - /de/blog/do-multisig-wallets-actually-improve-security/

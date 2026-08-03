@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Ein Server, der DNS-Anfragen für eine Domain beantwortet; seine NS Records benennen die autoritativen Server.
-keywords: ['Nameserver', 'NS Record', 'autoritativer Server', 'DNS-Delegierung', 'DNS-Hosting']
+keywords: ['NS Record', 'autoritativer Server', 'DNS-Delegierung', 'DNS-Hosting']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034

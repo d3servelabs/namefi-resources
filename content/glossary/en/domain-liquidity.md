@@ -7,7 +7,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: How quickly a domain can be sold near its estimated value — high for great names, low for niche ones.
-keywords: ['domain liquidity', 'liquidity', 'domain marketability', 'domain sell speed', 'domain market depth']
+keywords: ['domain liquidity', 'domain marketability', 'domain sell speed', 'domain market depth']
 level: 1
 sources:
   - https://www.investopedia.com/terms/l/liquidity.asp

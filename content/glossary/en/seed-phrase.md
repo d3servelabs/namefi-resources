@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: A list of 12 or 24 words that encodes a wallet's master key; anyone holding it controls the wallet, so it is the one thing you must back up.
-keywords: ['seed phrase', 'recovery phrase', 'mnemonic phrase', 'wallet backup', 'BIP39', '12 words', '24 words', 'crypto recovery']
+keywords: ['recovery phrase', 'mnemonic phrase', 'wallet backup', 'BIP39', '12 words', '24 words', 'crypto recovery']
 level: 1
 sources:
   - https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki

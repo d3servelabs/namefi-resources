@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: 'Entdecken Sie die Vorteile der .tech-Domain für Startups, Entwickler und Web3. Erfahren Sie, warum .tech die perfekte Wahl für Ihre digitale Identität bei Namefi ist.'
-keywords: ['.tech domains', '.tech TLD', 'top-level domain', 'was ist .tech', 'warum .tech wählen', 'was ist die .tech domain', 'warum die .tech domain wählen', 'domain investing', 'blockchain domains', 'tokenisierte domains', 'technologie domain', 'tech startup namen', 'namefi', 'neue gTLD', 'radix registry']
+keywords: ['.tech domains', 'top-level domain', 'warum .tech wählen', 'was ist die .tech domain', 'warum die .tech domain wählen', 'domain investing', 'blockchain domains', 'tokenisierte domains', 'technologie domain', 'tech startup namen', 'namefi', 'neue gTLD', 'radix registry']
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/top-tlds-to-secure-for-your-startup/

@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die teilbare Hälfte eines Blockchain-Schlüsselpaares, aus dem privaten Schlüssel abgeleitet; dient zum Empfangen von Geldern und zur Signaturverifizierung.
-keywords: ['öffentlicher schlüssel', 'adresse', 'verifikationsschlüssel', 'asymmetrische kryptographie', 'blockchain-konto']
+keywords: ['adresse', 'verifikationsschlüssel', 'asymmetrische kryptographie', 'blockchain-konto']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/accounts/

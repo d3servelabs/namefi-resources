@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: The label directly left of the TLD — the "example" in example.com — the part you actually register.
-keywords: ['second-level domain', 'SLD', 'root domain', 'apex domain', 'registrable name']
+keywords: ['SLD', 'root domain', 'apex domain', 'registrable name']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034

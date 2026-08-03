@@ -14,9 +14,7 @@ draft: false
 description: 'Entdecken Sie alles über die .akdn Domain: Eine exklusive TLD für das Aga Khan Development Network. Erfahren Sie mehr über Vorteile, Nutzung und Bedeutung.'
 keywords:
   - .akdn domains
-  - .akdn TLD
   - top-level domain
-  - was ist .akdn
   - warum .akdn wählen
   - was ist die .akdn domain
   - warum die .akdn domain wählen

@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Lens Protocol is a decentralized social graph where profiles, follows, and posts are owned by users as on-chain assets they can carry between apps.
-keywords: ['Lens', 'Lens Protocol', 'decentralized social', 'NFT profiles', 'social graph', 'Web3 identity']
+keywords: ['Lens Protocol', 'decentralized social', 'NFT profiles', 'social graph', 'Web3 identity']
 level: 1
 sources:
   - https://www.lens.xyz/

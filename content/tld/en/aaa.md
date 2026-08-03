@@ -7,7 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 description: 'The .aaa domain is the closed brand TLD of the American Automobile Association, not open to the public. Learn what it is, who runs it, and what to register instead.'
-keywords: ['.aaa domain', 'what is .aaa', '.aaa TLD', 'AAA brand domain', 'dot-brand TLD', 'American Automobile Association registry', 'closed generic TLD', 'is .aaa available']
+keywords: ['AAA brand domain', 'dot-brand TLD', 'American Automobile Association registry', 'closed generic TLD', 'is .aaa available']
 faqs:
   - question: 'Can anyone register a .aaa domain?'
     answer: 'No. .aaa is a closed brand TLD delegated to the American Automobile Association, Inc. Only AAA and its authorized motor clubs and affiliates can hold a .aaa name, so it is not available to the general public through any registrar.'

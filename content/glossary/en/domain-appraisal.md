@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Estimating a domain's market value from comparable sales, keyword demand, length, and extension.
-keywords: ['domain appraisal', 'domain valuation', 'domain worth', 'domain pricing', 'comparable sales']
+keywords: ['domain valuation', 'domain worth', 'domain pricing', 'comparable sales']
 also_known_as: ['Domain Valuation']
 level: 1
 sources:

@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .lawyer domain is an open generic gTLD for legal professionals and firms. Learn who can register it, how it compares to .law and .attorney, and whether it fits.'
-keywords: ['lawyer domain', 'what is .lawyer', '.lawyer domains', '.lawyer vs .law', 'legal domain extensions', 'domains for law firms', 'lawyer TLD', 'register .lawyer']
+keywords: ['lawyer domain', '.lawyer domains', '.lawyer vs .law', 'legal domain extensions', 'domains for law firms', 'lawyer TLD', 'register .lawyer']
 faqs:
   - question: 'Can anyone register a .lawyer domain?'
     answer: 'Yes. .lawyer is an open generic top-level domain sold first-come, first-served, with no bar membership, law license, or credential check required to register. This is the main practical difference from .law, which verifies that the registrant is a licensed legal professional.'

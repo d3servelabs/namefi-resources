@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die Zahlung zur Verlängerung einer Domain-Registrierung vor deren Ablauf, häufig automatisch für jede Laufzeit.
-keywords: ['Domain-Verlängerung', 'Auto-Renew', 'Registrierungslaufzeit', 'Ablauf', 'Verlängerungsgebühr']
+keywords: ['Auto-Renew', 'Registrierungslaufzeit', 'Ablauf', 'Verlängerungsgebühr']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en

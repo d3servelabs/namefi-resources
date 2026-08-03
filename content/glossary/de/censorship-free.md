@@ -7,7 +7,7 @@ authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Was bedeutet "zensurfrei" für Domain-Eigentum und -Verwaltung?
-keywords: ["zensurfrei","Zensurresistenz","dezentralisiert","Freiheit","nicht aufzuhalten"]
+keywords: ["Zensurresistenz", "dezentralisiert", "Freiheit", "nicht aufzuhalten"]
 relatedArticles:
   - /de/blog/why-tokenize-domains/
   - /de/blog/onchain-domain-flipping/

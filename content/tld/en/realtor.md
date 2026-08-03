@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .realtor domain is a restricted real-estate TLD limited to NAR and CREA members. Learn who can register, who runs it, and how it works for agents.'
-keywords: ['.realtor domains', 'what is .realtor', '.realtor TLD', 'realtor domain extension', 'real estate domain names', 'NAR domain', 'realtor website domain', 'Real Estate Domains LLC']
+keywords: ['.realtor domains', 'realtor domain extension', 'real estate domain names', 'NAR domain', 'realtor website domain', 'Real Estate Domains LLC']
 faqs:
   - question: 'Can anyone register a .realtor domain?'
     answer: 'No. The .realtor domain is restricted to members of the National Association of REALTORS (NAR), members of the Canadian Real Estate Association (CREA), their member boards and associations, and NAR affiliates and licensees in good standing. The general public cannot register one, and NAR determines eligibility at its sole discretion.'

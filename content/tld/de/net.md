@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 description: "Alles über die .net TLD: Erfahren Sie, warum diese Endung für Netzwerke und Tech-Firmen steht und wie Sie Ihre .net-Domain sicher bei Namefi registrieren."
-keywords: [".net domains", ".net TLD", "top-level domain", "was ist .net", "warum .net wählen", "was ist die .net domain", "warum die .net domain wählen", "domain investieren", "blockchain domains", "tokenisierte domains", "gTLD", "netzwerk domains", "domain registrierung", "internet infrastruktur", "web3 domains"]
+keywords: [".net domains", "top-level domain", "warum .net wählen", "was ist die .net domain", "warum die .net domain wählen", "domain investieren", "blockchain domains", "tokenisierte domains", "gTLD", "netzwerk domains", "domain registrierung", "internet infrastruktur", "web3 domains"]
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/ai-vs-io-domain/

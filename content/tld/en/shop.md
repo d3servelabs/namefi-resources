@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .shop domain is an open new gTLD run by GMO Registry that signals "this is a place to buy." Learn who uses it, the rules, pricing dynamics, and SEO.'
-keywords: ['.shop domains', 'what is .shop', '.shop TLD', '.shop domain registration', 'e-commerce domain', 'GMO Registry', 'new gTLD for retail', 'buy .shop domain']
+keywords: ['.shop domains', '.shop domain registration', 'e-commerce domain', 'GMO Registry', 'new gTLD for retail', 'buy .shop domain']
 faqs:
   - question: 'Can anyone register a .shop domain?'
     answer: 'Yes. .shop is an open generic top-level domain with no eligibility restrictions, so any individual or business worldwide can register an available name on a first-come, first-served basis. There is no credential, local-presence, or community requirement.'

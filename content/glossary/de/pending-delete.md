@@ -8,7 +8,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Der letzte Status, bevor eine nicht verlängerte Domain wieder für die öffentliche Registrierung freigegeben wird.
-keywords: ['Pending Delete', 'Domain Drop', 'Drop Catching', 'abgelaufene Domain', 'Freigabe']
+keywords: ['Domain Drop', 'Drop Catching', 'abgelaufene Domain', 'Freigabe']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en

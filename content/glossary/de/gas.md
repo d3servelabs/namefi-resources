@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Die Gebühr, die für die Verarbeitung einer Transaktion auf einer Blockchain gezahlt wird, in der nativen Währung des Netzwerks berechnet und steigt mit der Auslastung; Layer-2-Netzwerke verlangen deutlich weniger.
-keywords: ['Gas', 'Gasgebühr', 'Transaktionsgebühr', 'Gwei', 'Ethereum-Gas', 'Base-Gas', 'L2-Gebühren', 'Mint-Kosten']
+keywords: ['Gasgebühr', 'Transaktionsgebühr', 'Gwei', 'Ethereum-Gas', 'Base-Gas', 'L2-Gebühren', 'Mint-Kosten']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/gas/

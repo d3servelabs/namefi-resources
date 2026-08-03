@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 description: Eine Sammlung von Domains, die ein Eigentümer als Investition hält und mit Verlängerungen, Verkäufen und Bewertungen verwaltet.
-keywords: ['Domain-Portfolio', 'Domain-Investition', 'Domain-Verwaltung', 'Domain-Bewertung', 'Domain-Assets']
+keywords: ['Domain-Investition', 'Domain-Verwaltung', 'Domain-Bewertung', 'Domain-Assets']
 level: 1
 sources:
   - https://www.investopedia.com/terms/p/portfolio.asp

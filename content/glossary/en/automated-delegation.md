@@ -6,7 +6,7 @@ tags: ['glossary']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 description: Handing control of a domain or its records to a smart contract that enforces rules automatically, with no human approving each change.
-keywords: ['automated delegation', 'smart contracts', 'domain management', 'programmable control', 'automation']
+keywords: ['smart contracts', 'domain management', 'programmable control', 'automation']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/smart-contracts/

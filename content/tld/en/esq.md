@@ -7,7 +7,7 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 description: 'The .esq domain is a Google Registry extension built for lawyers and law firms. Learn who can register, how it is perceived, and whether it fits your practice.'
-keywords: ['.esq domain', 'what is .esq', '.esq domains', 'esq TLD for lawyers', 'esquire domain', 'Charleston Road Registry', 'Google Registry TLD', 'law firm domain']
+keywords: ['.esq domains', 'esq TLD for lawyers', 'esquire domain', 'Charleston Road Registry', 'Google Registry TLD', 'law firm domain']
 faqs:
   - question: 'Can anyone register a .esq domain?'
     answer: 'Yes. Despite being marketed for the legal profession, .esq is open to everyone on a first-come, first-served basis. The registry does not verify bar membership or legal credentials, so registration is not gated the way .law and .cpa are.'
