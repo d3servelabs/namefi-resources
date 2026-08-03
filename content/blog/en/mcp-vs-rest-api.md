@@ -176,5 +176,3 @@ The fastest way to evaluate any of this is to point a client at a server that im
 - Namefi — [api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json) (the OpenAPI 3.1.1 document measured at 415,601 bytes / 41 paths / 49 operations on August 3, 2026)
 - Namefi — [namefi.io/llms.txt](https://namefi.io/llms.txt) (the mandatory agent policy quoted in the opening, the REST/curl fallback rules, and the search-only exception)
 - Namefi — [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json) (MCP discovery descriptor: transport, OAuth 2.1 + PKCE, dynamic client registration, `x-api-key`)
-</content>
-</invoke>
