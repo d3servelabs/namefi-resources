@@ -12,7 +12,7 @@ faqs:
   - question: 'Can anyone register a .ac domain?'
     answer: 'Yes. Although .ac is the country-code TLD for Ascension Island, registration carries no local-presence or residency requirement. Names are available first-come, first-served through any participating registrar, with no need for a genuine Ascension Island connection.'
   - question: 'Does a .ac domain affect SEO?'
-    answer: 'No. Google lists .ac among the ccTLDs it treats as generic rather than geo-targeted, so a .ac site is not tied to Ascension Island search results and can rank for a global audience like a standard gTLD.'
+    answer: 'Yes, potentially. .ac does not appear on Google''s published list of ccTLDs it treats as generic, so Google may geo-target a .ac site toward Ascension Island rather than ranking it globally by default.'
   - question: 'Why is .ac associated with academics?'
     answer: '"AC" is the common abbreviation for "academic," and it echoes familiar university addresses such as .ac.uk and .ac.jp. Ascension Island''s registry leans into that association, which is why education and research projects gravitate to the extension.'
   - question: 'Who should register a .ac domain?'
@@ -49,7 +49,7 @@ This guide covers what .ac really is, who runs it, who can register one, how it 
 | Registry operator | Internet Computer Bureau Limited (nic.ac) |
 | Year delegated | 1997 (December 19) |
 | Registration restrictions | Open to all — no local presence required |
-| Google treatment | Listed among the ccTLDs Google treats as generic, not geo-targeted |
+| Google treatment | Not on Google's generic-ccTLD list — may be geo-targeted to Ascension Island |
 | Best for | Academic and education-adjacent projects, plus domain-hack branding |
 
 ## What is .ac?
@@ -58,7 +58,7 @@ This guide covers what .ac really is, who runs it, who can register one, how it 
 
 Unlike many ccTLDs that restrict registration to residents or local entities, .ac has been run as an open [registry](/en/glossary/registry/): anyone, anywhere, can register a second-level .ac name. That openness, combined with the fact that "AC" is the standard shorthand for "academic," is why the extension is marketed toward education and research projects — echoing the familiar look of academic addresses like `.ac.uk` or `.ac.jp` without the formal accreditation those actually require.
 
-Google includes .ac on its list of ccTLDs it [treats as generic rather than country-specific](https://developers.google.com/search/docs/crawling-indexing/manage-international-sites) for search purposes, so a .ac site is not boxed into Ascension Island results and can target a global audience.
+Google's [current list of ccTLDs it treats as generic rather than country-specific](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=more%20generic%20than%20country-targeted) does **not** include `.ac` — so, unlike its close cousin `.as` (American Samoa), a `.ac` site may be treated as geo-targeted to Ascension Island rather than ranking globally by default.
 
 ## History of .ac
 
@@ -95,11 +95,11 @@ Choose **.com** when the exact name is available — it remains the default choi
 - **Open worldwide.** No local-presence or residency requirement, unlike many other ccTLDs.
 - **Academic shorthand.** "AC" reads instantly as "academic," which suits education, research, and learning-adjacent projects.
 - **Domain-hack potential.** Words ending in "ac" can be completed cleanly by the extension.
-- **Treated as generic by Google.** Search visibility is not confined to Ascension Island.
 
 ## Things to consider
 
 - **A ccTLD by nature.** Because .ac technically belongs to Ascension Island, its long-term rules are set by Internet Computer Bureau Limited under national policy, not by an [ICANN](/en/glossary/icann/) registry agreement.
+- **Possible geo-targeting.** .ac does not appear on Google's published list of ccTLDs treated as generic, so a .ac site may be associated with Ascension Island in search rather than ranking globally by default.
 - **No marquee example.** Unlike some ccTLDs with a famous flagship adopter, .ac has no single well-known site that anchors the extension in the public mind — recognition rests on the string's own meaning.
 - **Niche connotation.** The academic association is a strength for education and research brands, but can feel mismatched for ventures with no learning or wordplay angle.
 
@@ -148,7 +148,7 @@ Yes. Although .ac is the country-code TLD for Ascension Island, registration car
 
 ### Does a .ac domain affect SEO?
 
-No. Google lists .ac among the ccTLDs it treats as generic rather than geo-targeted, so a .ac site is not tied to Ascension Island search results and can rank for a global audience like a standard gTLD.
+Yes, potentially. .ac does not appear on Google's published list of ccTLDs it treats as generic, so Google may geo-target a .ac site toward Ascension Island rather than ranking it globally by default.
 
 ### Why is .ac associated with academics?
 

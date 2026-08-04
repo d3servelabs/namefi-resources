@@ -60,7 +60,7 @@ This guide covers what .tv really is, who runs it (the backend operator changed 
 
 In practice, the **.tv domain** is used almost entirely as a **generic, global** extension. The string "tv" carries one overwhelming meaning in every market — it is the universal abbreviation for **television** — and increasingly, by extension, for **video**, **streaming**, and **live content** of every kind. That linguistic windfall is exactly what Tuvalu and its operators leaned into when they licensed the namespace to the world.
 
-Crucially for international businesses, search engines do **not** treat .tv as a geo-targeted ccTLD. Google lists .tv among the ccTLDs it [treats as generic rather than country-specific](https://developers.google.com/search/docs/crawling-indexing/manage-international-sites), so a .tv site is not tied to Tuvaluan search results and is well suited to global audiences and international SEO.
+Crucially for international businesses, search engines do **not** treat .tv as a geo-targeted ccTLD. Google lists .tv among the ccTLDs it [treats as generic rather than country-specific](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs), so a .tv site is not tied to Tuvaluan search results and is well suited to global audiences and international SEO.
 
 ## History of .tv
 

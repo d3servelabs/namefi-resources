@@ -83,7 +83,6 @@ The namespace opened to the public in 2018. After a sunrise period for [trademar
 ## Notable sites using .app
 
 - **cash.app** — Block's peer-to-peer payments service, the highest-profile .app brand, with name and URL perfectly aligned.
-- **google.app** — Google Registry, the operator itself, uses the namespace for projects and redirects.
 - **ohdear.app** — a well-known website-monitoring service that Google Registry has featured as a flagship .app site.
 
 These are products that handle real users, logins, and payments — a reasonable signal that .app is trusted for serious applications, not just experiments.

@@ -19,7 +19,7 @@ faqs:
   - question: 'Is .online a good alternative to .com?'
     answer: 'It can be. Because the .com namespace is largely exhausted, .online often lets you register an exact-match keyword or brand name you could not get on .com. The trade-off is lower default recognition, so reinforce the full domain in your branding.'
   - question: 'Does .online support WHOIS privacy and DNSSEC?'
-    answer: 'Yes. As a CentralNic-backed Radix TLD, .online supports DNSSEC for cryptographic DNS integrity, and most registrars including Namefi offer WHOIS privacy so your personal contact details are not published publicly.'
+    answer: 'Yes. .online supports DNSSEC for cryptographic DNS integrity, and most registrars including Namefi offer WHOIS privacy so your personal contact details are not published publicly.'
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/top-tlds-to-secure-for-your-business/
@@ -49,7 +49,7 @@ This guide covers what .online is, who runs it, how it performs for SEO and emai
 | Fact | Detail |
 | --- | --- |
 | TLD type | New gTLD (generic, non-geographic) |
-| Registry operator | Radix (Radix Technologies Inc. SEZC); backend by CentralNic |
+| Registry operator | Radix ([Radix Technologies Inc. SEZC](https://www.iana.org/domains/root/db/online.html#:~:text=Radix%20Technologies%20Inc.%20SEZC)); backend by [Tucows Registry](https://www.iana.org/domains/root/db/online.html#:~:text=Tucows.com%2C%20Co) |
 | Year launched | 2015 |
 | IDN support | Yes (internationalized domain names supported) |
 | DNSSEC | Supported |
@@ -62,13 +62,13 @@ This guide covers what .online is, who runs it, how it performs for SEO and emai
 
 The string is plain English and widely recognized: "online" appears in or is borrowed by many languages to mean "connected to the internet." That makes the suffix self-explanatory in a way most new extensions are not — a visitor seeing `yourbrand.online` immediately understands it is a web destination.
 
-You can confirm the delegation details on the official [IANA root-zone entry for .online](https://www.iana.org/domains/root/db/online.html), the authoritative record of who operates the TLD and when it entered the root zone. On the search side, Google has stated that new gTLDs like .online are treated the same as any other generic domain for ranking purposes; see [Google Search Central on new TLDs](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level-domains).
+You can confirm the delegation details on the official [IANA root-zone entry for .online](https://www.iana.org/domains/root/db/online.html), the authoritative record of who operates the TLD and when it entered the root zone. On the search side, Google has stated that new gTLDs like .online are treated the same as any other generic domain for ranking purposes; see [Google Search Central on new TLDs](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations).
 
 ## History of .online
 
-.online was delegated to the [root zone](/en/glossary/root-zone/) in 2015 as part of [ICANN's New gTLD Program](https://newgtlds.icann.org/en/about/program), the expansion that introduced hundreds of new extensions beyond the original handful. After early rights consolidation in the industry, [Radix](https://radix.website/) emerged as the registry operator and has run it since launch, with technical registry services provided by CentralNic.
+.online was delegated to the [root zone](/en/glossary/root-zone/) in 2015 as part of [ICANN's New gTLD Program](https://newgtlds.icann.org/en/about/program), the expansion that introduced hundreds of new extensions beyond the original handful. After early rights consolidation in the industry, [Radix](https://radix.website/) emerged as the registry operator and has run it since launch. Technical registry services were provided by CentralNic (later rebranded Team Internet) from launch until Radix [migrated its backend to Tucows Registry in November 2025](https://radix.website/news/radix-to-migrate-10-million-domains-to-tucows-registry#:~:text=Radix%20will%20move%20its%20backend%20registry%20operations%20from%20Team%20Internet%20Group%20to%20Tucows%20Registry), which the current [IANA record for .online](https://www.iana.org/domains/root/db/online.html#:~:text=Tucows.com%2C%20Co) reflects.
 
-Among new gTLDs, .online has been one of the higher-volume extensions, consistently sitting in the upper tier by registration count. Its most cited milestone is a landmark secondary-market sale: in 2017 Radix announced that **casino.online** changed hands for **$201,250**, which it described as the largest single-domain sale recorded among new gTLDs at the time. The transaction, brokered via Sedo, is documented in [Radix's own announcement](https://radix.website/radix-announces-largest-new-gtld-sale-with-casino-online) and signaled that exact-match keyword names on .online could command premium prices.
+Among new gTLDs, .online has been one of the higher-volume extensions, consistently sitting in the upper tier by registration count. Its most cited milestone is a landmark secondary-market sale: in 2017 Radix announced that **casino.online** changed hands for **$201,250**, which it described as the largest single-domain sale recorded among new gTLDs at the time. The transaction, brokered via Sedo, is documented in [Radix's own announcement](https://www.prnewswire.com/news-releases/radix-announces-largest-domain-name-sale-with-casinoonline-617166013.html#:~:text=announced%20the%20sale%20of%20casino.online%20to%20an%20anonymous%20buyer%20for%20%24%20201%2C250) and signaled that exact-match keyword names on .online could command premium prices.
 
 ## How people use .online
 
@@ -162,7 +162,7 @@ It can be. Because the .com namespace is largely exhausted, .online often lets y
 
 ### Does .online support WHOIS privacy and DNSSEC?
 
-Yes. As a CentralNic-backed Radix TLD, .online supports DNSSEC for cryptographic DNS integrity, and most registrars including Namefi offer WHOIS privacy so your personal contact details are not published publicly.
+Yes. .online supports DNSSEC for cryptographic DNS integrity, and most registrars including Namefi offer WHOIS privacy so your personal contact details are not published publicly.
 
 ## Related resources
 

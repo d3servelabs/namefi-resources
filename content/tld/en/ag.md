@@ -12,7 +12,7 @@ faqs:
   - question: 'Can anyone register a .ag domain?'
     answer: 'Yes. .ag is Antigua and Barbuda''s ccTLD, but it has been open to registrants worldwide for years, with no local-presence requirement. Registration is first-come, first-served through any participating registrar.'
   - question: 'Does a .ag domain affect SEO?'
-    answer: 'No, not inherently. Google lists .ag among the ccTLDs it treats as generic rather than geo-targeted, so a .ag site is not confined to Antigua and Barbuda search results and can rank for a global audience.'
+    answer: 'Possibly. .ag does not appear on Google''s published list of ccTLDs it treats as generic, so a .ag site may be geo-targeted toward Antigua and Barbuda in search rather than ranking globally by default.'
   - question: 'Why do German companies use .ag domains?'
     answer: 'In Germany, Austria, and Switzerland, "AG" is the abbreviation for Aktiengesellschaft, meaning a public stock corporation. That linguistic overlap with Antigua and Barbuda''s country code has made .ag a recognizable extension for German-market corporate branding.'
   - question: 'Who should register a .ag domain?'
@@ -49,14 +49,14 @@ This guide covers what .ag really is, who runs it, who can register one, how it 
 | Registry operator | UHSA School of Medicine, operating as nic.ag |
 | Year delegated | 1991 (September 3) |
 | Registration restrictions | Open to all — no local presence required |
-| Google treatment | Listed among the ccTLDs Google treats as generic, not geo-targeted |
+| Google treatment | Not on Google's generic-ccTLD list — may be geo-targeted to Antigua and Barbuda |
 | Best for | German-market corporate branding, agriculture/AgTech, and domain-hack names |
 
 ## What is .ag?
 
 **.ag** is the country-code [Top-Level Domain](/en/glossary/tld/) assigned under the ISO 3166-1 system to **Antigua and Barbuda**, listed by [IANA](https://www.iana.org/domains/root/db/ag.html) with the **UHSA School of Medicine** as the registry manager, operating through [nic.ag](https://www.nic.ag/).
 
-.ag has been run as an **open registry** with no local-presence requirement, and that openness combined with a linguistic coincidence has driven most of its adoption outside Antigua and Barbuda: in Germany, Austria, and Switzerland, "AG" is the standard abbreviation for *Aktiengesellschaft*, a public stock corporation. The letters also read naturally as short for "agriculture." Google includes .ag on its list of ccTLDs it [treats as generic rather than country-specific](https://developers.google.com/search/docs/crawling-indexing/manage-international-sites), so a .ag site is not tied to Antigua and Barbuda search results.
+.ag has been run as an **open registry** with no local-presence requirement, and that openness combined with a linguistic coincidence has driven most of its adoption outside Antigua and Barbuda: in Germany, Austria, and Switzerland, "AG" is the standard abbreviation for *Aktiengesellschaft*, a public stock corporation. The letters also read naturally as short for "agriculture." `.ag` does **not** appear on Google's [current list of ccTLDs it treats as generic rather than country-specific](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=more%20generic%20than%20country-targeted), so a `.ag` site may still be geo-targeted toward Antigua and Barbuda in search.
 
 ## History of .ag
 
@@ -97,6 +97,7 @@ Choose **.com** when the exact name is available — it remains the default for 
 ## Things to consider
 
 - **A ccTLD by nature.** Because .ag technically belongs to Antigua and Barbuda, its long-term rules are set by the UHSA School of Medicine under national policy, not by an [ICANN](/en/glossary/icann/) registry agreement.
+- **Possible geo-targeting.** .ag does not appear on Google's published list of ccTLDs treated as generic, so a .ag site may be associated with Antigua and Barbuda in search rather than ranking globally by default.
 - **Mixed audiences share the namespace.** Corporate, agricultural, and domain-hack registrants all use .ag for different reasons, so the extension carries no single dominant connotation.
 - **No marquee example.** There is no single, widely recognized site anchoring .ag the way some extensions have a famous flagship adopter.
 
@@ -145,7 +146,7 @@ Yes. .ag is Antigua and Barbuda's ccTLD, but it has been open to registrants wor
 
 ### Does a .ag domain affect SEO?
 
-No, not inherently. Google lists .ag among the ccTLDs it treats as generic rather than geo-targeted, so a .ag site is not confined to Antigua and Barbuda search results and can rank for a global audience.
+Possibly. .ag does not appear on Google's published list of ccTLDs it treats as generic, so a .ag site may be geo-targeted toward Antigua and Barbuda in search rather than ranking globally by default.
 
 ### Why do German companies use .ag domains?
 

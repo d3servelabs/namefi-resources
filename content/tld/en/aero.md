@@ -6,7 +6,7 @@ tags: ['tld']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
-description: 'The .aero domain is a restricted sponsored TLD for the aviation industry, run by SITA. Learn who qualifies for an aero ID and how it compares with .com.'
+description: 'The .aero domain is a restricted sponsored TLD for the aviation industry, sponsored by SITA and operated by Identity Digital. Learn who qualifies for an aero ID and how it compares with .com.'
 keywords: ['SITA registry', 'aviation domain names', 'aero ID eligibility', 'sponsored TLD aviation', 'restricted gTLD']
 faqs:
   - question: 'Who can register a .aero domain?'
@@ -16,7 +16,7 @@ faqs:
   - question: 'Does a .aero domain affect SEO?'
     answer: 'Google treats .aero like any other top-level domain, with no automatic ranking boost or penalty. Its main practical effect is trust signaling, since visitors know the registrant cleared an industry eligibility check.'
   - question: 'Who operates the .aero registry?'
-    answer: 'The .aero registry is sponsored and operated by SITA, with Identity Digital providing the technical back-end. It was delegated to the DNS root zone on December 21, 2001, making it one of the earliest sponsored top-level domains.'
+    answer: 'SITA sponsors .aero and sets its aviation-community eligibility policy, but Identity Digital (via its Jolly Host, LLC entity) has been the contracted registry operator since a November 2024 agreement. It was delegated to the DNS root zone on December 21, 2001, making it one of the earliest sponsored top-level domains.'
   - question: 'Is .aero better than .com for an airline?'
     answer: 'They serve different purposes. A .com domain offers broad, unrestricted reach, while a .aero domain proves aviation-industry membership through its eligibility check. Many airlines and airports use both rather than choosing one.'
 relatedArticles:
@@ -46,7 +46,7 @@ The **.aero** domain is a **sponsored top-level domain** (sTLD) reserved for the
 | Fact | Detail |
 | --- | --- |
 | TLD type | Sponsored TLD (sTLD), restricted |
-| Sponsor / registry operator | SITA ([Société Internationale de Télécommunications Aéronautiques](https://www.sita.aero/)); technical back-end by Identity Digital |
+| Sponsor / registry operator | Sponsor: SITA ([Société Internationale de Télécommunications Aéronautiques](https://www.sita.aero/)); Registry Operator: Identity Digital (via Jolly Host, LLC), since November 2024 |
 | Year launched | Delegated to the root zone December 21, 2001 — one of the earliest sponsored TLDs |
 | Registry site | [information.aero](https://information.aero) |
 | Registration restrictions | **Restricted** — registrant must belong to the aviation/air-transport community and hold a valid aero ID |
@@ -54,13 +54,13 @@ The **.aero** domain is a **sponsored top-level domain** (sTLD) reserved for the
 
 ## What is .aero?
 
-"Aero" is short for aeronautical, and as a domain suffix it is reserved specifically for that industry. `.aero` is a sponsored top-level domain, a category distinct from an open generic gTLD, delegated to the DNS root zone on **December 21, 2001**, per its [IANA root-zone entry](https://www.iana.org/domains/root/db/aero.html) — one of the earliest sponsored TLDs in the namespace. It is sponsored and operated by **SITA**, an organization that provides IT and telecom services to the air-transport sector, with **Identity Digital** providing the technical back-end. The registry publishes its policy and eligibility information at [information.aero](https://information.aero).
+"Aero" is short for aeronautical, and as a domain suffix it is reserved specifically for that industry. `.aero` is a sponsored top-level domain, a category distinct from an open generic gTLD, delegated to the DNS root zone on **December 21, 2001**, per its [IANA root-zone entry](https://www.iana.org/domains/root/db/aero.html) — one of the earliest sponsored TLDs in the namespace. It is sponsored by **SITA**, an organization that provides IT and telecom services to the air-transport sector, which sets and enforces the aviation-community eligibility policy. Since a [November 2024 agreement with ICANN](https://www.icann.org/en/registry-agreements/details/aero), the contracted **Registry Operator** of record is **Identity Digital**, operating through its Jolly Host, LLC entity — a distinct role from SITA's sponsorship, even though both now sit within the same overall arrangement. The registry publishes its policy and eligibility information at [information.aero](https://information.aero).
 
-Because a sponsor represents its community's interests to ICANN, `.aero`'s rules are set by SITA rather than opened to any registrant, which is the key structural difference from a generic gTLD like `.com` or an open new gTLD.
+Because a sponsor represents its community's interests to ICANN, `.aero`'s eligibility rules are set by SITA rather than opened to any registrant, which is the key structural difference from a generic gTLD like `.com` or an open new gTLD — that governance role is separate from, and unaffected by, which company runs the technical registry infrastructure.
 
 ## History of .aero
 
-`.aero` was delegated in December 2001, during an early wave of new TLDs ICANN approved after `.com`, `.net`, and `.org` — a group that introduced the sponsored-TLD model itself. Being sponsored means an organization representing a defined community, here SITA for aviation, sets and enforces eligibility policy, rather than the registry accepting any registrant the way an open gTLD would. `.aero` has operated on this restricted, community-verified basis since launch, with Identity Digital now providing the technical back-end behind SITA's sponsorship.
+`.aero` was delegated in December 2001, during an early wave of new TLDs ICANN approved after `.com`, `.net`, and `.org` — a group that introduced the sponsored-TLD model itself. Being sponsored means an organization representing a defined community, here SITA for aviation, sets and enforces eligibility policy, rather than the registry accepting any registrant the way an open gTLD would. `.aero` has operated on this restricted, community-verified basis since launch. Identity Digital became the contracted registry operator in November 2024, taking over the technical and operational role that SITA itself, or an earlier back-end provider, previously held — SITA's sponsorship and policy-setting role continues unchanged.
 
 ## How people use .aero
 
@@ -150,7 +150,7 @@ Google treats `.aero` like any other top-level domain, with no automatic ranking
 
 ### Who operates the .aero registry?
 
-The `.aero` registry is sponsored and operated by SITA, with Identity Digital providing the technical back-end. It was delegated to the DNS root zone on December 21, 2001, making it one of the earliest sponsored top-level domains.
+SITA sponsors .aero and sets its aviation-community eligibility policy, but Identity Digital (via its Jolly Host, LLC entity) has been the contracted registry operator since a November 2024 agreement. It was delegated to the DNS root zone on December 21, 2001, making it one of the earliest sponsored top-level domains.
 
 ### Is .aero better than .com for an airline?
 

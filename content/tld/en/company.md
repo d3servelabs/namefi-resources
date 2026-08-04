@@ -65,7 +65,7 @@ The **.company** domain is a generic top-level domain introduced under [ICANN's 
 
 The .company string was applied for during the 2012 [new gTLD](/en/glossary/new-gtld/) round and delegated to the DNS root in December 2013, making it one of the earlier business-themed extensions to reach general availability. Its underlying ICANN [Registry Agreement](https://www.icann.org/en/registry-agreements/details/company) is dated 7 November 2013.
 
-The operator history mirrors a major industry consolidation. The TLD was originally launched by Donuts Inc., the company behind the largest portfolio of new gTLDs. Donuts later moved its hundreds of strings under a single contracting entity, **Binky Moon, LLC**, and the broader business rebranded as **Identity Digital** after merging with Afilias. Today .company is one of more than 200 generic gTLDs Identity Digital runs through Binky Moon, which gives it the stability of a large, established registry rather than a single-purpose startup operator.
+The operator history mirrors a major industry consolidation. The TLD was originally launched by Donuts Inc., the company behind the largest portfolio of new gTLDs. Donuts later moved its hundreds of strings under a single contracting entity, **Binky Moon, LLC**, and the broader business rebranded as **Identity Digital** after merging with Afilias. Today .company is one of [nearly 200 generic gTLDs Identity Digital runs through Binky Moon](https://ntldstats.com/registry/binky-moon-llc), part of Identity Digital's broader ~270-TLD portfolio, which gives it the stability of a large, established registry rather than a single-purpose startup operator.
 
 ## How people use .company
 

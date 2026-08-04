@@ -6,17 +6,17 @@ tags: ['tld']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
-description: 'What is the .al domain? Albania''s country-code TLD, open at the third level but restricted at second-level. Manager, eligibility, and pricing explained.'
-keywords: ['Albania domain', 'domain hack TLDs', 'local presence requirement', 'com.al third level domain', 'register .al domain']
+description: 'What is the .al domain? Albania''s country-code TLD, open at the second level but restricted for categorized names like com.al. Manager, eligibility, and pricing explained.'
+keywords: ['Albania domain', 'domain hack TLDs', 'local presence requirement', 'com.al domain', 'register .al domain']
 faqs:
   - question: 'Can anyone register a .al domain?'
-    answer: 'Second-level .al domains (yourname.al) generally require a local presence or a registered entity in Albania. Third-level domains such as yourname.com.al are more open. Check current requirements with AKEP, the registry, before choosing which tier fits your situation.'
+    answer: 'Yes, at the direct second level (yourname.al) — open worldwide with no local presence required since a 2013 liberalization. Categorized names such as yourname.com.al are the restricted tier, requiring proof of Albanian citizenship or business registration.'
   - question: 'Does a .al domain affect SEO?'
     answer: 'Google geo-targets .al to Albania, so a .al site is generally treated as relevant to Albanian search results rather than as a globally generic domain. It suits an Albania-focused audience more than international SEO.'
   - question: 'What is the difference between .al and com.al?'
-    answer: 'yourname.al is a second-level domain, which typically requires a local presence or registered Albanian entity. yourname.com.al is a third-level domain under the .al namespace and is generally more accessible, making it the more open option for registrants without an Albanian presence.'
+    answer: 'yourname.al is open to anyone worldwide with no local presence required. yourname.com.al (and the equivalent .net.al, .org.al, .edu.al) is the restricted, categorized tier, requiring proof of Albanian citizenship or a business registered in Albania.'
   - question: 'Who should register a .al domain?'
-    answer: 'Businesses and institutions with a registered presence in Albania are the natural fit for second-level .al names. Others should look at the third-level com.al space, which carries fewer restrictions.'
+    answer: 'Anyone worldwide can register a direct yourname.al name. Albanian citizens and locally registered businesses have the additional option of a categorized com.al-style name if that framing fits their organization better.'
 relatedArticles:
   - /en/blog/ai-vs-io-domain/
   - /en/blog/what-is-a-tld/
@@ -37,7 +37,7 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-The **.al** domain is the [ccTLD](/en/glossary/cctld/) for the **Republic of Albania**, and it works on two tiers: second-level names (`yourname.al`) generally require a local presence or a registered Albanian entity, while third-level names under a category like `.com.al` are more accessible. Understanding that split matters more than any other single fact if you are weighing .al for a brand.
+The **.al** domain is the [ccTLD](/en/glossary/cctld/) for the **Republic of Albania**, and it works on two tiers: direct second-level names (`yourname.al`) are **open to anyone worldwide**, while categorized names under a label like `.com.al` are the **restricted** tier, reserved for Albanian citizens and locally registered businesses. That split — the opposite of what the naming pattern might suggest — matters more than any other single fact if you are weighing .al for a brand.
 
 This guide covers what .al really is, who runs it, the eligibility split between its two tiers, and how it is perceived for SEO and email.
 
@@ -48,59 +48,59 @@ This guide covers what .al really is, who runs it, the eligibility split between
 | TLD type | Country-code TLD (ccTLD) for Albania |
 | Registry operator | Electronic and Postal Communications Authority (AKEP), akep.al |
 | Year delegated | 1992 (April 21) |
-| Registration restrictions | Second-level generally requires local presence or a registered entity; third-level (e.g. com.al) is more open |
+| Registration restrictions | Direct second-level (yourname.al) open worldwide, no local presence required; categorized names (com.al, net.al, org.al, edu.al) restricted to Albanian citizens and registered businesses |
 | Google treatment | Geo-targeted to Albania |
-| Best for | Albania-based businesses and institutions, plus third-level registrants without a local presence |
+| Best for | Anyone worldwide (direct .al names); Albanian entities that prefer a categorized com.al-style name |
 
 ## What is .al?
 
 **.al** is the country-code [Top-Level Domain](/en/glossary/tld/) assigned under the ISO 3166-1 system to **Albania**, listed by [IANA](https://www.iana.org/domains/root/db/al.html) with the **Electronic and Postal Communications Authority (AKEP)** as the manager, operating the registry through [akep.al](https://www.akep.al/).
 
-.al is not a single flat namespace. Second-level registrations (a name directly before `.al`) generally require a **local presence or a registered entity in Albania**, while third-level registrations under categories such as `com.al` are **more open**. Google [geo-targets .al to Albania](https://developers.google.com/search/docs/crawling-indexing/manage-international-sites), consistent with a domain built primarily for a national audience.
+.al is not a single flat namespace. A direct second-level registration (a name immediately before `.al`) has been **open to any person or entity worldwide since a 2013 liberalization**, with no local-presence requirement. It's the categorized names — under `com.al`, `net.al`, `org.al`, or `edu.al` — that carry the restriction: those require proof of Albanian citizenship or a business registered in Albania. Google [geo-targets .al to Albania](https://developers.google.com/search/docs/crawling-indexing/manage-international-sites), consistent with a domain built primarily for a national audience.
 
 ## History of .al
 
-The .al ccTLD was delegated on **April 21, 1992**. It is managed by AKEP, Albania's electronic and postal communications regulator, which runs the two-tier structure — a more restricted second level and a more open third level — through akep.al.
+The .al ccTLD was delegated on **April 21, 1992**. It is managed by AKEP, Albania's electronic and postal communications regulator, through akep.al. Registration was originally organized around categorized third-level names (`com.al`, `net.al`, `org.al`, `edu.al`), each restricted to the appropriate Albanian organization type. A 2013 liberalization opened direct second-level registration (`yourname.al`) to the general public worldwide, while the categorized tier kept its original, Albania-specific eligibility requirement.
 
 ## How people use .al
 
-Because of the eligibility split between tiers, .al usage falls into two clear categories:
+Because of the eligibility split between tiers, .al usage spans two groups:
 
-- **Albania-based businesses and institutions**, which use second-level `yourname.al` names to establish an official local identity, generally backed by a registered entity in the country.
-- **Registrants without a local presence**, who use the more open third-level structure (such as `yourname.com.al`) when a second-level name is not available to them.
+- **Registrants worldwide**, who use the open direct second-level tier (`yourname.al`) for a short, brandable ccTLD with no local-presence requirement.
+- **Albanian businesses and institutions**, which use the categorized tier (`yourname.com.al`, `.org.al`, and similar) when that classification fits their organization, backed by proof of Albanian registration.
 
-**Who it's not ideal for:** buyers outside Albania hoping to register a short second-level `.al` name purely for a domain hack — that tier generally requires the local-presence or registered-entity condition first.
+**Who it's not ideal for:** buyers hoping to register a name under `com.al`, `net.al`, `org.al`, or `edu.al` without a genuine Albanian citizenship or business registration — that categorized tier is the one that's actually gated.
 
 ## Notable sites using .al
 
-We have no pre-verified examples to cite here. What can be said honestly is that .al's two-tier structure shapes who registers where: local Albanian entities at the second level, and a broader set of registrants at the more open third level, rather than one dominant brand defining the extension.
+We have no pre-verified examples to cite here. What can be said honestly is that .al's two-tier structure shapes who registers where: a broad, worldwide base at the open direct second level, and Albanian entities specifically at the restricted categorized tier, rather than one dominant brand defining the extension.
 
 ## .al vs other domains
 
 | Feature | .al | [.com](/en/tld/com/) | [.co](/en/tld/co/) | [.xyz](/en/tld/xyz/) |
 | --- | --- | --- | --- | --- |
-| Type | ccTLD (two-tier: restricted second level, open third level) | Legacy gTLD | ccTLD (used globally) | New gTLD |
+| Type | ccTLD (two-tier: open second level, restricted categorized tier) | Legacy gTLD | ccTLD (used globally) | New gTLD |
 | Core association | Albania | The default web standard | Generic, short alternative to .com | Generic / modern |
-| Registration eligibility | Second level restricted; third level open | Open worldwide | Open worldwide | Open worldwide |
-| Typical audience | Albania-focused (second level) | Global | Global | Global |
+| Registration eligibility | Second level open worldwide; categorized tier restricted | Open worldwide | Open worldwide | Open worldwide |
+| Typical audience | Global (second level) or Albania-specific (categorized tier) | Global | Global | Global |
 
-If you have no Albanian presence and want a short, open name, **[.com](/en/tld/com/)**, **[.co](/en/tld/co/)**, or **[.xyz](/en/tld/xyz/)** are more straightforward than trying for a second-level `.al` name. Reach for **.al** at the second level only if you have a genuine Albanian registered entity, or consider the third-level `com.al` space for a more open option.
+If you want a short, open name with no eligibility check, a direct **`yourname.al`** works the same as **[.com](/en/tld/com/)**, **[.co](/en/tld/co/)**, or **[.xyz](/en/tld/xyz/)** in that respect — all are open worldwide. Reach for the categorized `com.al`-style tier only if you have a genuine Albanian registered entity and prefer that classification.
 
 ## Why choose .al?
 
-- **Clear Albanian identity.** Second-level .al names signal genuine local presence to Albanian audiences.
-- **A more open alternative exists.** The third-level structure (such as com.al) offers a path for registrants without a local entity.
+- **Open worldwide at the second level.** No local-presence or citizenship requirement for a direct `yourname.al` name.
+- **Clear Albanian identity when needed.** The categorized tier (`com.al` and similar) signals genuine local registration to Albanian audiences, for entities that qualify.
 - **Short extension.** At two letters, it keeps a URL compact.
 
 ## Things to consider
 
-- **Know which tier you are registering.** Second-level and third-level .al names carry different eligibility rules — confirm which applies before committing to a name.
+- **Know which tier you are registering.** The open direct second level and the restricted categorized tier carry very different eligibility rules — confirm which one a name falls under before committing.
 - **A ccTLD by nature.** Because .al belongs to Albania, its rules are set by AKEP under national policy, not by an [ICANN](/en/glossary/icann/) registry agreement.
-- **Not a flat, globally open namespace.** Unlike some two-letter ccTLDs, .al's most desirable tier (second level) is not first-come, first-served for the general public worldwide.
+- **The categorized tier is the gated one.** If your plan depends on a `com.al`-style name specifically, confirm you can meet the Albanian citizenship or business-registration requirement first.
 
 ## Who can register a .al domain?
 
-**Registration restrictions: mixed by tier.** Second-level `.al` domains generally require a **local presence or a registered entity in Albania**. Third-level domains, such as those under `com.al`, are **more open** and the more practical route for registrants without an Albanian presence.
+**Registration restrictions: mixed by tier.** A direct second-level `.al` domain (`yourname.al`) is **open to anyone worldwide**, with no local-presence or citizenship requirement. Categorized names under `com.al`, `net.al`, `org.al`, or `edu.al` are the **restricted** tier, requiring proof of Albanian citizenship or a business registered in Albania.
 
 Because .al is a ccTLD, it is governed by AKEP's registry policy rather than an ICANN registry agreement. The authoritative sources for current eligibility rules at each tier are the [IANA root-zone entry](https://www.iana.org/domains/root/db/al.html) and the registry's own site, [akep.al](https://www.akep.al/).
 
@@ -108,7 +108,7 @@ Because .al is a ccTLD, it is governed by AKEP's registry policy rather than an 
 
 This page intentionally quotes no numbers, but a few dynamics matter:
 
-- **Tier affects process, not just price.** A second-level name may involve an eligibility or documentation step that a third-level name does not.
+- **Tier affects process, not just price.** A categorized `com.al`-style name involves an eligibility or documentation step that a direct second-level name does not.
 - **First-year vs. renewal pricing can differ.** As with most TLDs, confirm the standard renewal rate rather than assuming an introductory rate continues.
 - **What drives cost.** Name desirability, tier, and registry wholesale pricing are the main factors shaping what a given .al name costs.
 
@@ -120,13 +120,13 @@ We are not aware of .al carrying any negative bulk-mail or spam reputation. As w
 
 ## Branding and naming tips
 
-- **Confirm your tier first.** Decide whether a second-level or third-level name fits your eligibility before settling on a brand.
-- **Lean into local identity if you qualify.** Second-level .al names read as genuinely Albanian to local audiences.
+- **Confirm your tier first.** Decide whether a direct second-level or a categorized name fits your situation before settling on a brand.
+- **Lean into local identity if you qualify.** A categorized `com.al`-style name reads as genuinely Albanian to local audiences.
 - **Keep it short and clear.** A two-letter ccTLD rewards a name that stands on its own.
 
 ## How to register a .al domain at Namefi
 
-1. **Confirm eligibility** — check whether a second-level or third-level .al name fits your situation.
+1. **Confirm eligibility** — check whether a direct second-level or categorized .al name fits your situation.
 2. **Search** for your desired name at the appropriate tier.
 3. **Register** and configure DNS.
 
@@ -136,7 +136,7 @@ We are not aware of .al carrying any negative bulk-mail or spam reputation. As w
 
 ### Can anyone register a .al domain?
 
-Second-level .al domains (yourname.al) generally require a local presence or a registered entity in Albania. Third-level domains such as yourname.com.al are more open. Check current requirements with AKEP, the registry, before choosing which tier fits your situation.
+Yes, at the direct second level (`yourname.al`) — open worldwide with no local presence required since a 2013 liberalization. Categorized names such as `yourname.com.al` are the restricted tier, requiring proof of Albanian citizenship or business registration.
 
 ### Does a .al domain affect SEO?
 
@@ -144,11 +144,11 @@ Google geo-targets .al to Albania, so a .al site is generally treated as relevan
 
 ### What is the difference between .al and com.al?
 
-yourname.al is a second-level domain, which typically requires a local presence or registered Albanian entity. yourname.com.al is a third-level domain under the .al namespace and is generally more accessible, making it the more open option for registrants without an Albanian presence.
+`yourname.al` is open to anyone worldwide with no local presence required. `yourname.com.al` (and the equivalent `.net.al`, `.org.al`, `.edu.al`) is the restricted, categorized tier, requiring proof of Albanian citizenship or a business registered in Albania.
 
 ### Who should register a .al domain?
 
-Businesses and institutions with a registered presence in Albania are the natural fit for second-level .al names. Others should look at the third-level com.al space, which carries fewer restrictions.
+Anyone worldwide can register a direct `yourname.al` name. Albanian citizens and locally registered businesses have the additional option of a categorized `com.al`-style name if that framing fits their organization better.
 
 ## Related resources
 

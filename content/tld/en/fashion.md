@@ -63,7 +63,7 @@ Because it is a generic extension, Google does **not** geo-target .fashion to an
 
 ## History of .fashion
 
-.fashion was **delegated to the DNS root in December 2014** and reached general availability in 2015, during the first major wave of new gTLD launches. It was originally introduced by Minds + Machines (MMX), a registry operator that ran a portfolio of lifestyle and interest-based extensions.
+.fashion was **delegated to the DNS root on [October 23, 2014](https://www.iana.org/domains/root/db/fashion.html#:~:text=2014-10-23)** and reached general availability in 2015, during the first major wave of new gTLD launches. It was originally introduced by Minds + Machines (MMX), a registry operator that ran a portfolio of lifestyle and interest-based extensions.
 
 Operational control later consolidated under **GoDaddy Registry** as part of GoDaddy's acquisition of the MMX portfolio. Today the [IANA record](https://www.iana.org/domains/root/db/fashion.html) names the sponsoring organization as Registry Services, LLC, with administrative contact details at GoDaddy Registry in Tempe, Arizona. The shift to a large, well-capitalized registry operator gave the extension more stable long-term backing than many niche new gTLDs received.
 

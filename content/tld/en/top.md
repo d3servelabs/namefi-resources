@@ -49,7 +49,7 @@ That popularity comes with a complicated reputation. This page covers what .top 
 | Fact | Detail |
 | --- | --- |
 | TLD type | New gTLD (generic, not geo-targeted) |
-| Registry operator | Jiangsu Bangning Science & Technology Co., Ltd. |
+| Registry operator | [Hong Kong Zhongze International Limited](https://www.iana.org/domains/root/db/top.html#:~:text=Hong%20Kong%20Zhongze%20International%20Limited) (Jiangsu Bangning Science & Technology Co., Ltd. remains admin/technical contact) |
 | Year launched | Delegated 2014; general availability November 2014 |
 | IDN support | Yes (internationalized domain names supported) |
 | DNSSEC | Supported |
@@ -62,13 +62,15 @@ The .top domain is a [new gTLD](/en/glossary/tld) introduced under [ICANN](/en/g
 
 The string itself is the everyday English word "top." That semantic association with rankings, quality, and being "at the top" is the suffix's main branding hook, and it reads cleanly in many markets — including across Asia, where .top saw especially strong early adoption.
 
-For search, this matters: Google treats new gTLDs like .top as ordinary generic domains. Per [Google Search Central](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level-domains), a TLD such as .top carries no built-in ranking advantage or penalty and is not geo-targeted by default. You can confirm the delegation and operator details on the [IANA root zone database entry for .top](https://www.iana.org/domains/root/db/top.html).
+For search, this matters: Google treats new gTLDs like .top as ordinary generic domains. Per [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations), a TLD such as .top carries no built-in ranking advantage or penalty and is not geo-targeted by default. You can confirm the delegation and operator details on the [IANA root zone database entry for .top](https://www.iana.org/domains/root/db/top.html).
 
 ## History of .top
 
 ICANN delegated .top to the [root zone](/en/glossary/root-zone/) in 2014, with general availability opening in November of that year. The registry priced the extension aggressively from the start, and growth was rapid: .top quickly became one of the highest-volume new gTLDs by total registrations, frequently appearing near the top of new-gTLD zone-size rankings throughout the late 2010s and into the 2020s.
 
 That scale has been a double-edged sword. The same low prices and easy, unrestricted registration that fueled adoption also attracted abuse. In 2024, security researchers and ICANN flagged .top as a heavily abused namespace (covered in the reputation section below), making its history as much about volume management as about brand-building. Beyond aggregate registration counts, the registry does not publish independently verified milestone figures, so we avoid quoting specific sales or counts here.
+
+More recently, IANA's root-zone record shows the sponsoring organization [transferred to Hong Kong Zhongze International Limited on January 20, 2026](https://www.iana.org/domains/root/db/top.html#:~:text=Hong%20Kong%20Zhongze%20International%20Limited); Jiangsu Bangning Science & Technology Co., Ltd., the original operator, remains listed as the administrative and technical contact.
 
 ## How people use .top
 

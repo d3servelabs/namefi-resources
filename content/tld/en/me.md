@@ -61,7 +61,7 @@ This guide covers what .me really is, who runs it, who can register one, how it 
 
 In practice, the **.me domain** is used almost entirely as a **generic, global** extension. The string "me" is the English first-person pronoun, and that single fact gives it a warmth and directness no other mainstream suffix can match. "about.me," "hire.me," "follow.me," "read.me" — the suffix completes a sentence, which is exactly the angle its operators leaned into when they opened the namespace to the world.
 
-Crucially for international audiences, search engines do **not** treat .me as a geo-targeted ccTLD. Google lists .me among the ccTLDs it [treats as generic rather than country-specific](https://developers.google.com/search/docs/crawling-indexing/manage-international-sites), so a .me site is not tied to Montenegrin search results and is well suited to global audiences and international SEO.
+Crucially for international audiences, search engines do **not** treat .me as a geo-targeted ccTLD. Google lists .me among the ccTLDs it [treats as generic rather than country-specific](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs), so a .me site is not tied to Montenegrin search results and is well suited to global audiences and international SEO.
 
 ## History of .me
 
@@ -69,7 +69,7 @@ Montenegro became an independent country in **2006**, following the dissolution 
 
 Rather than run the namespace as a purely national registry, the government issued a request for proposals to find a commercial operator. The contract was awarded to **doMEn d.o.o.**, a Montenegrin joint venture whose partners included **Afilias**, **GoDaddy**, and the local company **ME-net**. With Afilias providing the technical registry backend, .me **opened to the global public in 2008** on a first-come, first-served basis, supported by a marketing push that emphasized personal expression and domain hacks.
 
-The most significant recent change is at the **technical-backend level**: in **December 2021**, **Identity Digital** (formerly Donuts) **acquired Afilias**, so the registry infrastructure that has long powered .me now sits within Identity Digital's platform. The Government of Montenegro remains the sponsoring registry manager of record, and doMEn d.o.o. continues to operate the namespace commercially. Over its first decade, .me grew into a recognized global extension, crossing the **one-million-registration** mark and becoming a meaningful contributor to Montenegro's economy.
+The most significant recent change is at the **technical-backend level**: in [**December 2020**, **Donuts** **acquired Afilias**](https://www.prnewswire.com/news-releases/donuts-acquires-afilias-301199019.html#:~:text=it%20has%20completed%20its%20acquisition%20of%20Afilias%2C%20Inc), and the combined company [rebranded as **Identity Digital** in June 2022](https://www.prnewswire.com/news-releases/donuts-inc-and-afilias-inc-rebrand-to-identity-digital-301572401.html#:~:text=Donuts%20Inc.%20and%20Afilias%2C%20Inc.%20Rebrand%20to%20Identity%20Digital), so the registry infrastructure that has long powered .me now sits within Identity Digital's platform. The Government of Montenegro remains the sponsoring registry manager of record, and doMEn d.o.o. continues to operate the namespace commercially. Over its first decade, .me grew into a recognized global extension, crossing the **one-million-registration** mark and becoming a meaningful contributor to Montenegro's economy.
 
 ## How people use .me
 
@@ -86,7 +86,6 @@ Because "me" maps so cleanly onto personal language, .me attracts a distinctly i
 ## Notable sites using .me
 
 - **about.me** — the personal-homepage platform launched in 2010 (and briefly acquired by AOL just days after launch). It is the canonical .me success story and effectively defined the extension's personal-branding identity.
-- **read.me / readme.com** — the developer-documentation company built its brand around the "readme" file concept, helping cement .me's association with clean, human-readable naming.
 - A long tail of **personal portfolios** by well-known designers, engineers, and creators who use "firstname.me" or "firstnamelastname.me" as their professional home.
 
 These cases show .me being trusted not just as a fallback, but as a deliberate, identity-forward brand choice.

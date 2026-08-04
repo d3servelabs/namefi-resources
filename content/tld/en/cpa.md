@@ -65,7 +65,8 @@ The AICPA applied for and won the .cpa string through ICANN's new gTLD expansion
 
 - **September 2020:** licensed CPA firms gained access first.
 - **Early 2021:** individually licensed CPAs became eligible.
-- **Later in 2021:** availability expanded beyond the United States to select additional countries.
+- **Late 2021:** availability [expanded to Canada](https://www.cpapracticeadvisor.com/2021/10/27/cpa-website-domain-names-now-available-to-canadian-firms/46119/#:~:text=officially%20launches%20in%20Canada%20at%2011%20a.m.%20Eastern%20time%20on%20Nov.%202).
+- **December 2022:** availability [expanded to Ireland](https://www.cpa.com/news/popular-cpa-web-domain-now-available-cpas-ireland#:~:text=CPAs%20and%20CPA%20firms%20in%20Ireland%20can%20today%20apply%20for%20.cpa%20web%20domains), the second non-US expansion.
 
 Adoption among established practices was notably strong early on. According to the *Journal of Accountancy*, by mid-2021 more than 6,000 .cpa domains had been registered, including registrations from roughly 90% of firms in the AICPA Major Firms Group. That concentration among large, well-known firms is unusual for a young TLD and reflects the suffix's positioning as a credibility asset rather than a speculative one.
 

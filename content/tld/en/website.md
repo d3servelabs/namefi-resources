@@ -60,7 +60,7 @@ That literalness is both its strength and its limit. This page covers what .webs
 
 The word "website" itself is the whole pitch. Where suffixes like .io or .xyz require explanation, .website is self-evident — a non-technical visitor instantly understands that the address points to a web presence. That makes it one of the most descriptive options in the entire namespace.
 
-For the authoritative record, see the [IANA root-zone entry for .website](https://www.iana.org/domains/root/db/website.html). On the SEO question, Google's [Search Central guidance](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level-domains) confirms that new gTLDs like .website receive no inherent ranking boost or penalty.
+For the authoritative record, see the [IANA root-zone entry for .website](https://www.iana.org/domains/root/db/website.html). On the SEO question, Google's [Search Central guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) confirms that new gTLDs like .website receive no inherent ranking boost or penalty.
 
 ## History of .website
 

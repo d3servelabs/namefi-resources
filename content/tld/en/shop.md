@@ -17,7 +17,7 @@ faqs:
   - question: 'Who should register a .shop domain?'
     answer: 'It suits online stores, direct-to-consumer brands, creators selling merchandise, and physical retailers building a transactional site. It is a strong fit when the matching .com is taken or expensive and you want a name that says "shop here" at a glance.'
   - question: 'Is .shop good for an online store?'
-    answer: 'Yes. The word "shop" is understood globally and instantly communicates commercial intent, which is why brands like Netflix and MrBeast run merchandise stores on it. The large, newer namespace also makes short, exact-match retail names easier to secure.'
+    answer: 'Yes. The word "shop" is understood globally and instantly communicates commercial intent, which is why brands like Netflix run merchandise stores on it. The large, newer namespace also makes short, exact-match retail names easier to secure.'
   - question: 'Does .shop support WHOIS privacy and DNSSEC?'
     answer: 'Yes. .shop supports DNSSEC at the registry level, and most registrars offer free WHOIS privacy that masks personal contact details in public records. Availability of privacy depends on your registrar rather than the registry.'
 relatedArticles:
@@ -82,10 +82,9 @@ Real-world **.shop** usage clusters around transactional intent:
 
 ## Notable sites using .shop
 
-- **Netflix.shop** — the streaming company's official merchandise store for apparel and collectibles.
-- **MrBeast.shop** — the creator's large direct-to-consumer merchandise operation, a clear proof point for the creator economy.
+- **[Netflix.shop](https://about.netflix.com/en/news/introducing-netflix-shop#:~:text=we%27re%20launching%20Netflix.shop)** — the streaming company's official merchandise store for apparel and collectibles.
 
-These are real, active commercial sites. When a major brand runs its merch on `.shop`, it lends the extension visible legitimacy for the smaller storefronts that use it the same way.
+This is a real, active commercial site. When a major brand runs its merch on `.shop`, it lends the extension visible legitimacy for the smaller storefronts that use it the same way.
 
 ## .shop vs other domains
 
@@ -104,7 +103,7 @@ Pick `.com` when default recognition outweighs everything and you can get the ex
 - **Real availability.** A newer, large namespace means short, exact-match retail names are far more attainable than on `.com`.
 - **Global legibility.** "Shop" is understood across most markets without translation.
 - **Brand protection.** Established companies register the `.shop` version of a [trademark](/en/glossary/trademark/) defensively, to control how their name appears in the commerce space.
-- **Proven by major brands.** Adoption by names like Netflix and MrBeast demonstrates it works for serious storefronts.
+- **Proven by major brands.** Adoption by names like Netflix demonstrates it works for serious storefronts.
 
 ## Things to consider
 
@@ -162,7 +161,7 @@ Online stores, direct-to-consumer brands, creators selling merchandise, and phys
 
 ### Is .shop good for an online store?
 
-Yes. "Shop" is understood globally and instantly communicates commercial intent — which is why brands like Netflix and MrBeast run merchandise stores on it. The large, newer namespace also makes short, exact-match retail names easier to secure than on legacy extensions.
+Yes. "Shop" is understood globally and instantly communicates commercial intent — which is why brands like Netflix run merchandise stores on it. The large, newer namespace also makes short, exact-match retail names easier to secure than on legacy extensions.
 
 ### Does .shop support WHOIS privacy and DNSSEC?
 

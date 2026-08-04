@@ -1,22 +1,22 @@
 ---
-title: 'What Is the .now Domain? Amazon''s Brand TLD Explained'
+title: 'What Is the .now Domain? Amazon Registry''s Open gTLD Explained'
 date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
-description: 'The .now domain is a closed Amazon brand TLD (dotBrand), not open for public registration. Here is what .now really is and what to buy instead.'
-keywords: ['.now top-level domain', 'Amazon Registry Services', 'brand TLD', 'dotBrand', 'Specification 13']
+description: 'The .now domain is an open, unrestricted gTLD run by Amazon Registry Services. Anyone can register one since general availability in September 2024 — here is how.'
+keywords: ['.now top-level domain', 'Amazon Registry Services', 'buy .now domain', 'register .now domain', 'action domain name']
 faqs:
   - question: 'Can anyone register a .now domain?'
-    answer: 'No. .now is a closed Specification 13 brand TLD operated by Amazon Registry Services. Only Amazon, its affiliates, and authorized partners can register .now names, so the suffix is not available to the general public through any registrar.'
+    answer: 'Yes. .now is an open, unrestricted gTLD operated by Amazon Registry Services. There is no credential, trademark, or affiliation requirement, and it has been available to the public through accredited registrars since general availability on September 30, 2024.'
   - question: 'Does a .now domain affect SEO?'
-    answer: 'The question is moot for most people because .now is not openly registrable. As a generic new gTLD it carries no built-in ranking penalty, but Google treats new gTLDs the same as legacy ones, so the extension itself neither helps nor hurts rankings.'
+    answer: 'No. Google treats .now like any other generic top-level domain, with no inherent ranking advantage or penalty. Rankings depend on content, links, and user experience rather than the suffix itself.'
   - question: 'Who should register a .now domain?'
-    answer: 'Effectively only Amazon and its authorized entities, since .now is a brand-restricted TLD. If you want a short, action-oriented name, consider an open generic extension such as .io, .app, or .xyz instead.'
+    answer: 'Anyone who wants a short, action-oriented address for urgency-driven content — a sale, a launch, a real-time service, or a call to action like "buy.now" or "act.now."'
   - question: 'Is .now available for purchase anywhere?'
-    answer: 'Not for the public. Because .now is a dotBrand controlled by Amazon, no accredited registrar can sell .now names to outside buyers, regardless of any listings you might see elsewhere.'
+    answer: 'Yes. Multiple ICANN-accredited registrars sell .now domains at standard retail pricing, including Namecheap, Porkbun, and Dynadot, on a first-come, first-served basis.'
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/how-to-sell-a-domain-name-you-own/
@@ -37,122 +37,113 @@ relatedGlossary:
   - /en/glossary/dns/
 ---
 
-The **.now domain** is one of the most misunderstood entries in the domain world. It looks like a punchy, action-ready extension perfect for marketing — but in reality it is a **closed brand TLD** operated by Amazon, and you cannot register a `.now` name no matter how badly you want `buy.now` or `act.now`. Understanding **what .now is** matters precisely because it is so often described incorrectly.
-
-This page explains what `.now` actually is, who controls it, why it is not for sale, and which open alternatives give you the same sense of immediacy if that is what you are after.
+The **.now domain** is a short, action-ready extension operated by **Amazon Registry Services** — and despite what you may have read elsewhere (including on an earlier version of this page), it is **not** a closed brand TLD. Anyone can register a `.now` name today, the same way you would register a `.com` or `.io`. This page explains what `.now` actually is, who runs it, how to register one, and where the "Amazon-only" misconception came from.
 
 ## .now at a glance
 
 | Fact | Detail |
 | --- | --- |
-| TLD type | Generic new gTLD (dotBrand / Specification 13) |
+| TLD type | Generic new gTLD (open, non-geographic) |
 | Registry operator | Amazon Registry Services, Inc. |
-| Year delegated | 2016 |
-| IDN support | Not applicable for public use |
-| DNSSEC | Supported at the registry level |
-| Registration restrictions | **Closed brand TLD — only the registry operator (Amazon) and its affiliates may register** |
-| Best for | Amazon's own products and campaigns; not available to outside registrants |
+| Year launched | Delegated 2016; general availability September 30, 2024 |
+| IDN support | Yes |
+| DNSSEC | Supported |
+| Registration restrictions | Open to all — no credential, trademark, or affiliation requirement |
+| Best for | Short, action-oriented names — calls to action, launches, time-sensitive offers |
 
 ## What is .now?
 
-`.now` is a **generic top-level domain** delegated to the internet's root zone in 2016. According to the [IANA root-zone database](https://www.iana.org/domains/root/db/now.html), the sponsoring organization is **Amazon Registry Services, Inc.**, the registry arm of Amazon.com headquartered in Seattle. Back-end registry services are provided by Nominet.
+`.now` is a **generic top-level domain** delegated to the internet's [root zone](/en/glossary/root-zone/) in 2016. According to the [IANA root-zone database](https://www.iana.org/domains/root/db/now.html), the sponsoring organization is **Amazon Registry Services, Inc.**, headquartered in Seattle, with back-end registry services provided by Nominet in the UK.
 
-Although the string "now" reads like a generic English word, `.now` is not a generic open namespace. It was applied for and secured by Amazon during ICANN's [new gTLD program](https://newgtlds.icann.org/en/about/program) and is operated as a **dotBrand** — a top-level domain reserved for a single trademark owner. That single distinction changes everything about how the suffix can be used.
+The string reads like an ordinary English word, and that is exactly what it is here: `.now` is an **open, unrestricted** namespace, not a single-registrant "dotBrand." Amazon's own registry site groups `.now` with its other publicly registrable extensions, stating that ["Amazon Registry allows customers to own domains specifically branded to their space, such as .bot, .now, and .you"](https://www.registry.amazon/) — a different category entirely from Amazon's genuinely closed dot-brand TLDs (`.amazon`, `.kindle`, `.audible`), none of which appear on that public-facing list. The [executed ICANN Registry Agreement for .now](https://itp.cdn.icann.org/en/files/registry-agreements/now/now-agmt-html-25jun15-en.htm) confirms this contractually: the document contains Specifications 1 through 11 only — **no Specification 13**, the clause that would formally designate it as a single-registrant brand TLD.
 
-Because `.now` is a generic-style string rather than a country code, Google does not geo-target it. But for the overwhelming majority of readers the SEO question is academic: there is no public `.now` website to optimize, because the public cannot get a `.now` name in the first place.
+Because `.now` is a generic gTLD rather than a country code, Google does not geo-target it — a `.now` site competes globally on the same footing as any other generic extension.
 
 ## History of .now
 
-Amazon applied for several short, evocative strings during the 2012 new gTLD application round, including `.now`. The string was delegated to the root zone in **2016** and assigned to Amazon Registry Services. Industry coverage at the time noted that Amazon positioned `.now` partly around immediacy and real-time services, with some speculation it could support Amazon Prime's streaming and instant-delivery messaging.
-
-In practice, the milestone that defines `.now`'s history is what has *not* happened: years after delegation, the suffix remains effectively dormant, with names held by the registry rather than launched into general availability. There are no notable public domain sales or open-market transactions to report, because there is no open market for it.
+Amazon applied for `.now` during ICANN's 2012 new gTLD application round, and the string was delegated to the root zone in 2016. For years afterward it sat reserved and largely dormant, which is likely where the "Amazon-only" reputation came from — but that changed in 2024. Amazon ran a full public launch: a [Sunrise period for trademark holders from August 22 to September 21, 2024](https://domainnamewire.com/2024/08/22/amazon-launches-deal-and-now-top-level-domains/#:~:text=Trademark%20holders%20will%20be%20able%20to%20register%20the%20domains%20from%20now%20until%20September%2021), an Early Access Period from September 23–28, and [general availability beginning September 30, 2024](https://domainnamewire.com/2024/08/22/amazon-launches-deal-and-now-top-level-domains/#:~:text=General%20availability%20begins%20September%2030). `.deal`, another Amazon-operated extension, launched on the same schedule.
 
 ## How people use .now
 
-The honest answer is that almost no one outside Amazon uses `.now`, because almost no one else can. Within the registry's control, the intended uses skew toward:
+Because general availability only began in September 2024, `.now` is still an early-adoption extension without a long registration history. The pattern so far, consistent with its meaning, skews toward:
 
-- Amazon's own promotional, product, or campaign pages where a short "now" call-to-action fits.
-- Time-sensitive or real-time service messaging controlled internally by Amazon.
-- Defensive registry holdings that keep the namespace under brand control.
+- **Calls to action and urgency-driven pages** — `shop.now`, `buy.now`, `act.now`-style domain hacks.
+- **Launch and campaign microsites** where "available now" is the whole pitch.
+- **Real-time or time-sensitive services** — status pages, live updates, limited-time offers.
 
-**Who it's not ideal for:** everyone else. If you are an indie developer, founder, agency, or domain investor hoping to build on `clip.now`, `order.now`, or `learn.now`, this suffix is a dead end — those names are not yours to register, and never will be through a normal registrar.
+**Who it's not ideal for:** brands that need maximum default trust and recognition (a `.com` still carries more built-in familiarity), or projects where "now" doesn't naturally fit the name.
 
 ## Notable sites using .now
 
-There are no well-known, publicly accessible `.now` websites in active independent use. Because the suffix is a closed brand TLD, any `.now` resolution that exists is controlled by Amazon Registry Services rather than by third-party brands or creators. Rather than invent examples, the accurate statement is simple: `.now` has no public showcase sites, and you should be skeptical of any source that claims otherwise.
+Because general availability is recent, there is no widely recognized flagship `.now` site yet in the way `.io` has GitHub Pages or `.app` has Cash App. Rather than name an example we can't independently verify, the honest statement is that adoption is still early — the extension's real test will be which brands claim it over the next few years.
 
 ## .now vs other domains
 
-If what attracted you to `.now` was the short, action-oriented feel, the right move is to choose an **open** extension. Here is how `.now` compares to alternatives you can actually register:
-
 | Extension | Open to public? | Typical use | Vibe |
 | --- | --- | --- | --- |
-| [.now](/en/tld/now) | No (Amazon brand TLD) | Amazon-internal only | Immediacy — but unavailable |
+| [.now](/en/tld/now) | Yes (since Sept 2024) | Action-oriented calls to action, launches | Immediacy, urgency |
 | [.io](/en/tld/io) | Yes | Tech, startups, SaaS | Developer-favored, premium |
 | [.app](/en/tld/app) | Yes | Apps, web products | Modern, HTTPS-enforced |
 | [.xyz](/en/tld/xyz) | Yes | Generic, Web3, creative | Flexible, low-cost, broad |
 
-When to pick which: choose [.io](/en/tld/io) for a technical or startup brand, [.app](/en/tld/app) when you want a secure, product-focused name, and [.xyz](/en/tld/xyz) when you want maximum availability and creative freedom. None of these carries `.now`'s fatal restriction.
+Pick [.io](/en/tld/io) for a technical or startup brand, [.app](/en/tld/app) for a secure product-focused name, [.xyz](/en/tld/xyz) for maximum availability and creative freedom, and `.now` specifically when the word "now" does real work in your name.
 
 ## Why choose .now?
 
-For nearly all readers, you cannot choose `.now` — and that is the most important fact on this page. The only entity for whom `.now` is a genuine advantage is **Amazon**, which gains a fully controlled, brand-exclusive namespace with no third-party registrants, no abuse from unrelated parties, and complete authority over how the suffix appears. Those are real benefits of a dotBrand, but they accrue to the brand owner, not to the public.
+- **Genuine domain-hack value.** `act.now`, `buy.now`, and `shop.now` read as complete phrases, which is rare among new gTLDs.
+- **Backed by Amazon's registry infrastructure.** Amazon Registry Services runs the namespace, giving it a well-resourced, stable operator.
+- **Open registration.** No credential, trademark, or affiliation requirement stands between you and a `.now` name.
+- **Still uncrowded.** Because general availability is recent, short and common names remain more available than on legacy extensions.
 
 ## Things to consider
 
-The decisive trade-off with `.now` is availability: it is **not for sale to you**. Other points worth knowing:
-
-- Listings or price quotes you see for `.now` on aggregator sites do not reflect actual public availability. A closed dotBrand cannot be sold through accredited registrars to outside buyers.
-- The word "now" is appealing precisely because it implies urgency — which is exactly why Amazon locked it down. Demand does not create access here.
-- Building a brand strategy around a domain you cannot own is a costly mistake; verify a suffix is open *before* you fall in love with a name.
+- **Short track record.** With general availability only since September 2024, `.now` has less brand recognition than established extensions — some visitors may not immediately trust an unfamiliar suffix.
+- **Transfer lock at registration.** Amazon Registry's policy locks new `.now` registrations against transfer for 60 days, longer than some registrars' defaults for other TLDs.
+- **Narrow literal meaning.** The suffix reads clearly for urgency and action, but can feel like a mismatch for a brand with no time-sensitive angle.
 
 ## Who can register a .now domain?
 
-**Registration restrictions: closed.** `.now` is governed under **Specification 13** of its [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/now), the provision that defines a **dotBrand** TLD. Under Specification 13, the registry operator's trademark *is* the TLD string, and registrations are limited to the operator and a small set of affiliated or authorized parties. In concrete terms, only **Amazon Registry Services and Amazon-affiliated entities** can hold `.now` domains.
+**Registration restrictions: open to all.** `.now` carries no eligibility gate. Per registrar policy documentation, Amazon Registry's TLDs (`.bot`, `.deal`, `.moi`, `.now`) have ["no registration requirements"](https://support.opensrs.com/support/solutions/articles/201000063030-managing-amazon-registry-domain-policies#:~:text=No%20registration%20requirements) — any individual or organization can register an available name on a first-come, first-served basis. This is confirmed directly by the [ICANN Registry Agreement for .now](https://www.icann.org/en/registry-agreements/details/now), a standard Base, Non-Sponsored agreement with no Specification 13 restriction attached.
 
-That means there are no sunrise periods, no landrush, and no general availability for the public. Length rules, IDN options, [WHOIS privacy](/en/glossary/whois-privacy/), and renewal/redemption behavior are managed internally by the registry rather than exposed to outside registrants, because there are no outside registrants. If you need an authoritative confirmation, the Registry Agreement and its Specification 13 designation are the source of truth.
+The extension completed its Sunrise and Early Access phases in 2024 and has been in ordinary general availability since. Standard new-gTLD mechanics apply: length rules, IDN support, [DNSSEC](/en/glossary/dnssec), and [WHOIS privacy](/en/glossary/whois-privacy/) through participating registrars — with one notable operator-specific rule, a 60-day post-registration transfer lock.
 
 ## .now pricing and value
 
-There is no meaningful public **pricing** for `.now`, and any number you encounter should be treated with suspicion. In open gTLDs, pricing dynamics involve first-year versus renewal differences, premium-tier names, and registry wholesale fees passed through by registrars. None of that applies to a closed brand TLD: because the public cannot register `.now`, there is no retail price, no premium tier you can buy, and no resale value for outside parties. The "value" of `.now` is entirely captured by its single brand owner.
+`.now` prices like a standard new gTLD rather than a premium or restricted namespace. Expect the usual dynamics: an introductory first-year rate that doesn't predict the renewal price, and a registry premium-name tier for short or high-demand strings that carries higher registration and renewal fees than ordinary names. Because pricing varies by registrar and changes over time, check the current rate at the point of registration rather than a figure you read elsewhere.
 
 ## Reputation and email deliverability
 
-`.now` does not carry the spam-prone reputation that has dogged some cheap, freely registrable new gTLDs, simply because no one outside Amazon can register it to send mail or host content. As a tightly controlled brand namespace, it has no history of open abuse. The flip side is that mailbox providers and users rarely encounter `.now` at all, so it has minimal recognition — which, again, is irrelevant for a suffix you cannot use for your own email.
+As a newly opened extension with a short public track record, `.now` has no established reputation for either trust or abuse. That cuts both ways: there's no baggage from spam history, but also less built-in recognition than a decade-old TLD. The standard mitigation applies to any newer extension — configure SPF, DKIM, and DMARC, and warm up sending domains gradually.
 
 ## Branding and naming tips
 
-`.now` is a textbook [**domain-hack**](/en/glossary/domain-hack/) string — `act.now`, `buy.now`, `shop.now` all read cleanly — and that is exactly why it is so tempting and so frustrating. The branding lesson here is broader than `.now` itself: a perfect domain hack is worthless if the suffix is closed. Before designing a brand around any clever extension, confirm it is openly registrable. If immediacy is your theme, open suffixes like [.app](/en/tld/app), [.io](/en/tld/io), or even an action word on [.xyz](/en/tld/xyz) let you build the same energy on a name you can actually own.
+`.now` is a genuine [**domain-hack**](/en/glossary/domain-hack/) suffix: `act.now`, `buy.now`, `shop.now`, and `call.now` all read as natural English phrases. Keep the second-level word short and the combination speakable aloud — the whole appeal collapses if a listener can't parse where the word ends and the suffix begins.
 
 ## How to register a .now domain at Namefi
 
-You cannot — and we would rather tell you the truth than sell you a name that does not exist. Because `.now` is a closed Amazon brand TLD, no ICANN-accredited registrar, including Namefi, can register it on your behalf.
+1. **Search** for your desired `.now` name using the [Namefi](https://namefi.io) domain search.
+2. **Choose** an available name — short, action-oriented words work best.
+3. **Register** and configure your DNS; note the registry's 60-day transfer lock before planning any transfer.
 
-If you want a short, action-oriented domain you *can* own, here is the practical path:
-
-1. **Search** an open alternative — try [.io](/en/tld/io), [.app](/en/tld/app), or [.xyz](/en/tld/xyz) — on [Namefi](https://namefi.io).
-2. **Choose** the name that best fits your brand and confirm it is available.
-3. **Register** it with transparent pricing, fast DNS, and optional Web3 tokenization so you hold a verifiable, ownable asset.
-
-[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that also supports tokenized domains — a real path to ownership, unlike a brand TLD that will never be yours.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing and fast DNS, and it also supports [Web3](/en/glossary/web3/) tokenization if you want to hold your domain as an on-chain asset.
 
 ## Frequently asked questions
 
 ### Can anyone register a .now domain?
 
-No. `.now` is a closed Specification 13 brand TLD operated by Amazon Registry Services. Only Amazon, its affiliates, and authorized partners can register `.now` names, so the suffix is not available to the general public through any registrar, regardless of price quotes you may see elsewhere.
+Yes. `.now` is an open, unrestricted gTLD operated by Amazon Registry Services. There is no credential, trademark, or affiliation requirement, and it has been available to the public through accredited registrars since general availability on September 30, 2024.
 
 ### Does a .now domain affect SEO?
 
-The question is moot for most people because `.now` is not openly registrable. As a generic new gTLD it carries no built-in ranking penalty, and Google treats new gTLDs the same as legacy extensions, so the suffix itself neither helps nor hurts rankings.
+No. Google treats `.now` like any other generic top-level domain, with no inherent ranking advantage or penalty. Rankings depend on content, links, and user experience rather than the suffix itself.
 
 ### Who should register a .now domain?
 
-Effectively only Amazon and its authorized entities, since `.now` is a brand-restricted TLD. If you want a short, action-oriented name, consider an open generic extension such as [.io](/en/tld/io), [.app](/en/tld/app), or [.xyz](/en/tld/xyz) instead.
+Anyone who wants a short, action-oriented address for urgency-driven content — a sale, a launch, a real-time service, or a call to action like "buy.now" or "act.now."
 
 ### Is .now available for purchase anywhere?
 
-Not for the public. Because `.now` is a dotBrand controlled by Amazon, no accredited registrar can sell `.now` names to outside buyers. Any listing suggesting otherwise does not reflect real availability.
+Yes. Multiple ICANN-accredited registrars sell `.now` domains at standard retail pricing, including Namecheap, Porkbun, and Dynadot, on a first-come, first-served basis.
 
 ## Related resources
 

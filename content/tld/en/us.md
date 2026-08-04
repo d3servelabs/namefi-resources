@@ -48,7 +48,7 @@ This guide covers what .us really is, who runs it (the operator changed in recen
 | TLD type | Country-code TLD (ccTLD) for the United States |
 | Registry operator | Registry Services, LLC (a GoDaddy Registry company), under US Department of Commerce / NTIA oversight |
 | Year delegated | 1985 (one of the earliest ccTLDs) |
-| IDN support | Limited / standard ASCII focus |
+| IDN support | [Not offered](https://www.about.us/faqs#:~:text=.US%20does%20not%20currently%20offer%20IDN%20registrations) — ASCII only |
 | DNSSEC | Supported |
 | Registration restrictions | **Restricted — US Nexus Requirement applies** (US citizens, residents, US entities, or foreign orgs with a bona fide US presence) |
 | Best for | US businesses, brands, and organizations wanting an explicitly American identity; domain hacks |

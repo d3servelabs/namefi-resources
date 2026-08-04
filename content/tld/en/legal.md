@@ -65,7 +65,7 @@ The single most important fact to understand about `.legal` is that it is **open
 
 `.legal` emerged from the 2012 round of ICANN's New gTLD Program, the expansion that introduced hundreds of new suffixes beyond legacy options like `.com` and `.net`. It came out of the **Donuts** portfolio — the prolific operator behind dozens of profession- and interest-themed extensions — and was delegated to the root zone in November 2014.
 
-Donuts later rebranded as **Identity Digital**, and the registry agreement for `.legal` is held by its subsidiary **Binky Moon, LLC**, which holds the contracts for a large share of the former Donuts portfolio. The same operator runs a cluster of legal-adjacent open extensions — including [`.attorney`](/en/tld/attorney), `.lawyer`, and [`.abogado`](/en/tld/abogado) — so `.legal` sits inside a coherent family of legal suffixes rather than standing alone.
+Donuts later rebranded as **Identity Digital**, and the registry agreement for `.legal` is held by its subsidiary **Binky Moon, LLC**, which holds the contracts for a large share of the former Donuts portfolio. The same operator runs a cluster of legal-adjacent open extensions — including [`.attorney`](/en/tld/attorney) and `.lawyer`. [`.abogado`](/en/tld/abogado), the Spanish-language sibling, is a separate case: it's run by **GoDaddy Registry** — [the same operator as `.law`](https://www.iana.org/domains/root/db/abogado.html#:~:text=Registry%20Services%2C%20LLC), not Identity Digital.
 
 ## How people use .legal
 
@@ -172,7 +172,7 @@ The `.legal` registry is operated by Binky Moon, LLC, a subsidiary of Identity D
 
 - [.com domain](/en/tld/com) — the legacy benchmark to compare against.
 - [.attorney domain](/en/tld/attorney) — the open legal counterpart focused on lawyers.
-- [.abogado domain](/en/tld/abogado) — the Spanish-language legal extension from the same operator.
+- [.abogado domain](/en/tld/abogado) — the Spanish-language legal extension, run by GoDaddy Registry.
 - [What is a domain?](/en/blog/what-is-domain) — the fundamentals, if you are new to domains.
 - [Domain terminology guide](/en/blog/domain-terminology-guide) — a glossary of the terms used above.
 - [ICANN](/en/glossary/icann), [registrar](/en/glossary/registrar), [DNS](/en/glossary/dns), and [DNSSEC](/en/glossary/dnssec) glossary entries.

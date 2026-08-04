@@ -17,7 +17,7 @@ faqs:
   - question: 'Who should register a .blog domain?'
     answer: 'It suits bloggers, writers, journalists, marketing teams, and companies running a content or news hub who want the URL to state its purpose. It works especially well as a brandable second-level word, such as a company name followed by .blog.'
   - question: 'Who operates the .blog registry?'
-    answer: 'The registry operator is Knock Knock WHOIS There, LLC, a subsidiary of Automattic, the company behind WordPress.com. The TLD was delegated in 2016 and reached general availability in November of that year. CentralNic provides the back-end registry services.'
+    answer: 'The registry operator is Knock Knock WHOIS There, LLC, a subsidiary of Automattic, the company behind WordPress.com. The TLD was delegated in 2016 and reached general availability in November of that year. The Canadian Internet Registration Authority (CIRA) provides the back-end registry services.'
   - question: 'Is .blog good for email deliverability?'
     answer: 'It is generally fine. As an established gTLD it is not broadly blocklisted, but any newer extension can draw slightly more scrutiny from spam filters than .com. Authenticate mail with SPF, DKIM, and DMARC and warm up a new sending domain gradually.'
 relatedArticles:
@@ -51,7 +51,7 @@ This page covers what .blog is, who runs it, who can register it, how its pricin
 | TLD type | Generic top-level domain (gTLD) |
 | Registry operator | Knock Knock WHOIS There, LLC (an Automattic subsidiary) |
 | Year launched | 2016 (general availability November 2016) |
-| Back-end registry | CentralNic |
+| Back-end registry | [Canadian Internet Registration Authority (CIRA)](https://www.iana.org/domains/root/db/blog.html#:~:text=Canadian%20Internet%20Registration%20Authority) |
 | IDN support | Yes |
 | DNSSEC | Supported |
 | Registration restrictions | Open to all — no credential or local presence required |
@@ -71,9 +71,10 @@ Key milestones:
 
 - **2016** — Sunrise for [trademark](/en/glossary/trademark/) holders began in August, followed by a landrush phase, with general availability opening on 21 November 2016.
 - **2019** — The registry moved its back-end technical provider to CentralNic, having previously used Nominet, as reported by industry outlets such as [Domain Name Wire](https://domainnamewire.com/).
+- **2025** — The registry [migrated its back-end to CIRA](https://my.blog/blog-partners-with-cira-for-new-registry-backend/#:~:text=partnering%20with%20CIRA), with the transition completed around the end of April 2025; the current [IANA record](https://www.iana.org/domains/root/db/blog.html#:~:text=Canadian%20Internet%20Registration%20Authority) lists CIRA as the technical operator.
 - **Ongoing** — Adoption has grown into the hundreds of thousands of registrations, spread across personal, corporate, and news publishing.
 
-The registry's own informational site runs on the suffix at nic.blog, and WordPress's own news has been published under a wordpress.blog address — fitting, given the operator.
+The registry's own informational site runs on the suffix at nic.blog, and wordpress.blog redirects to the WordPress.org project's own news page — fitting, given the operator.
 
 ## How people use .blog
 
@@ -87,7 +88,7 @@ The registry's own informational site runs on the suffix at nic.blog, and WordPr
 
 ## Notable sites using .blog
 
-- **wordpress.blog** — WordPress.com has published company and product news under a .blog address, a natural fit given Automattic operates the registry.
+- **wordpress.blog** — redirects to the open-source WordPress.org project's news page, a natural fit given Automattic operates the registry.
 - **nic.blog** — the registry's own informational site about the extension and its policies.
 
 Beyond these, the suffix is widely used by independent creators and corporate content teams rather than by a small set of household-name sites; its strength is descriptive clarity rather than celebrity adoption. We avoid naming sites whose current status we cannot verify.
@@ -166,7 +167,7 @@ It suits bloggers, writers, journalists, marketing teams, and companies running 
 
 ### Who operates the .blog registry?
 
-The registry operator is Knock Knock WHOIS There, LLC, a subsidiary of Automattic, the company behind WordPress.com. The TLD was delegated in 2016 and reached general availability in November of that year. CentralNic provides the back-end registry services.
+The registry operator is Knock Knock WHOIS There, LLC, a subsidiary of Automattic, the company behind WordPress.com. The TLD was delegated in 2016 and reached general availability in November of that year. The Canadian Internet Registration Authority (CIRA) provides the back-end registry services.
 
 ### Is .blog good for email deliverability?
 

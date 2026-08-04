@@ -82,8 +82,7 @@ The word's "happening now" connotation makes it versatile across any real-time o
 
 ## Notable sites using .live
 
-- **amazon.live** — Amazon uses the name in connection with its livestream shopping experience, separating shoppable live video from its standard catalog.
-- Many broadcasters, sports clubs, and festivals register the .live version of their brand to host "watch live" portals and event hubs.
+- Many broadcasters, sports clubs, and festivals register the .live version of their brand to host "watch live" portals and event hubs — Amazon itself holds `amazon.live` as a defensive registration that redirects to its main site rather than a dedicated live-shopping destination.
 
 Beyond a handful of large brands, the bulk of .live registrations are held by independent creators and event organizers, which reflects the suffix's grassroots, creator-driven character rather than blue-chip corporate adoption.
 

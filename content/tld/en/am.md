@@ -12,7 +12,7 @@ faqs:
   - question: 'Can anyone register a .am domain?'
     answer: 'Yes. .am is Armenia''s ccTLD, but it has been open to registrants worldwide for decades, with no local-presence requirement. Registration is first-come, first-served through any participating registrar.'
   - question: 'Does a .am domain affect SEO?'
-    answer: 'No, not inherently. Google lists .am among the ccTLDs it treats as generic rather than geo-targeted, so a .am site is not confined to Armenia search results and can rank for a global audience.'
+    answer: 'Possibly. .am does not appear on Google''s published list of ccTLDs it treats as generic, so a .am site may be geo-targeted toward Armenia in search rather than ranking globally by default.'
   - question: 'Why do people use .am for domain hacks?'
     answer: '"AM" is also the English first-person verb "am," which lets a name ending in "i" or a similar sound complete a full phrase across the dot, as in will.i.am. That wordplay, combined with open worldwide registration, has made .am a recurring domain-hack choice.'
   - question: 'Who should register a .am domain?'
@@ -49,14 +49,14 @@ This guide covers what .am really is, who runs it, who can register one, how it 
 | Registry operator | "Internet Society" NGO, operating AMNIC (amnic.net) |
 | Year delegated | 1994 (August 26) |
 | Registration restrictions | Open to all — no local presence required |
-| Google treatment | Listed among the ccTLDs Google treats as generic, not geo-targeted |
+| Google treatment | Not on Google's generic-ccTLD list — may be geo-targeted to Armenia |
 | Best for | Domain-hack branding, AM radio/broadcast-adjacent projects, open global registration |
 
 ## What is .am?
 
 **.am** is the country-code [Top-Level Domain](/en/glossary/tld/) assigned under the ISO 3166-1 system to **Armenia**, listed by [IANA](https://www.iana.org/domains/root/db/am.html) with the **"Internet Society" NGO** as the manager, operating the registry as [AMNIC](https://amnic.net/).
 
-.am has been run as an **open registry** with no local-presence requirement, and that openness combined with a linguistic coincidence explains most of its use outside Armenia: "AM" is the English first-person verb "am," which lets a domain complete a phrase across the dot, and it is also the standard abbreviation for AM radio broadcasting. Google includes .am on its list of ccTLDs it [treats as generic rather than country-specific](https://developers.google.com/search/docs/crawling-indexing/manage-international-sites), so a .am site is not tied to Armenia search results.
+.am has been run as an **open registry** with no local-presence requirement, and that openness combined with a linguistic coincidence explains most of its use outside Armenia: "AM" is the English first-person verb "am," which lets a domain complete a phrase across the dot, and it is also the standard abbreviation for AM radio broadcasting. `.am` does **not** appear on Google's [current list of ccTLDs it treats as generic rather than country-specific](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=more%20generic%20than%20country-targeted), so a `.am` site may still be geo-targeted toward Armenia in search.
 
 ## History of .am
 
@@ -92,11 +92,11 @@ Choose **.com** when the exact name is available — it remains the default for 
 - **Open worldwide.** No local-presence requirement, unlike many other ccTLDs.
 - **Proven domain hack.** will.i.am gives the extension a real, recognizable example of the wordplay working.
 - **Broadcast fit.** A natural short form for AM radio and broadcast-adjacent branding.
-- **Treated as generic by Google.** Search visibility is not confined to Armenia.
 
 ## Things to consider
 
 - **A ccTLD by nature.** Because .am technically belongs to Armenia, its long-term rules are set by the "Internet Society" NGO and AMNIC under national policy, not by an [ICANN](/en/glossary/icann/) registry agreement.
+- **Possible geo-targeting.** .am does not appear on Google's published list of ccTLDs treated as generic, so a .am site may be associated with Armenia in search rather than ranking globally by default.
 - **The wordplay only works for the right name.** A domain hack ending in "am" needs a name that actually completes a word or phrase — it does not suit every brand.
 - **One flagship example, not a category.** will.i.am is a real, well-known .am domain, but it does not mean the extension carries broad mainstream recognition beyond that.
 
@@ -144,7 +144,7 @@ Yes. .am is Armenia's ccTLD, but it has been open to registrants worldwide for d
 
 ### Does a .am domain affect SEO?
 
-No, not inherently. Google lists .am among the ccTLDs it treats as generic rather than geo-targeted, so a .am site is not confined to Armenia search results and can rank for a global audience.
+Possibly. .am does not appear on Google's published list of ccTLDs it treats as generic, so a .am site may be geo-targeted toward Armenia in search rather than ranking globally by default.
 
 ### Why do people use .am for domain hacks?
 
