@@ -1,6 +1,6 @@
 ---
 name: content-authoring
-description: Draft (write) NEW English Namefi resources content — blog posts, glossary terms, TLD pages — in namefi-resources. Use this whenever authoring new English content, before publishing. To TRANSLATE English content into the other locales (single files or bulk batches, plus translation QA), use the `article-translation` skill instead. Covers the model/scale choices, the en-first drafting playbook, citation verification, frontmatter/taxonomy rules, post-draft QA, and the dev-vs-prod publish cadence. Authoritative rules live in `.claude/rules/content.md`.
+description: Draft (write) NEW English Namefi resources content, AND fact-audit/re-verify EXISTING English content (TLD pages, glossary terms, blog posts) against authoritative sources — in namefi-resources. Use this whenever authoring new English content before publishing, OR when asked to fact-check, audit, or correct already-published content (including a reader/customer/vendor-reported error). To TRANSLATE English content into the other locales (single files or bulk batches, plus translation QA), use the `article-translation` skill instead. Covers the model/scale choices, the en-first drafting playbook, citation verification (see `article-writing`'s "Auditing existing content" rules — same bar for a re-audit as for a new draft), frontmatter/taxonomy rules, post-draft QA, and the dev-vs-prod publish cadence. Authoritative rules live in `.claude/rules/content.md`.
 ---
 
 # content-authoring

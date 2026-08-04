@@ -34,6 +34,40 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 - **Only act on Cursor Bugbot** in PR review. **Ignore CodeRabbit** entirely.
 - **Never force-push** a shared branch without explicit approval.
 
+## Fact-auditing existing content
+
+Triggered whenever you fact-check, audit, or correct **already-published** content — a
+scheduled sweep, or a reader/customer/vendor-reported error. Same skill as drafting
+(`content-authoring` → `article-writing`'s "Auditing existing content" rules), same bar, no
+exceptions found in a real incident:
+
+- **Route each claim to the source type that can actually answer it.** A registry/database
+  record (e.g. IANA root-zone data) answers "who operates this / is it delegated" — it does
+  **not** answer a legal/contractual status (e.g. registration-restriction, dot-brand /
+  Specification 13 status), which only the actual registry agreement, a regulator, or the
+  operator's own current public statement can confirm. Checking the wrong source and finding
+  it "consistent" verifies nothing about a claim that source doesn't cover.
+- **A 403/paywall/login-wall/timeout is zero evidence, never a pass-through.** It does not back
+  a claim and it does not clear one. Escalate to a real browser render (a page that 403s a bot
+  fetch often loads fine in an actual browser — try before giving up) or a different source
+  that can answer the same question. If nothing reachable confirms it, say so explicitly —
+  **UNVERIFIED**, not silently kept as-is, not reported as "checked."
+- **A re-audit means every claim gets checked, not a sample.** Delegating for coverage/speed
+  (parallel subagents) is fine; delegating *trust* is not — a subagent's or a prior pass's
+  "clean" verdict is a lead to personally follow up on, not a result to forward as your own
+  finding. Only say a claim was fact-checked if you personally opened the primary source.
+- **Writing quality is not a correctness signal.** Confident, well-hedged, internally
+  consistent prose and a fabricated claim read identically from the outside. Judge only
+  whether a primary source, actually opened, contains the claim — never let tone raise or
+  lower your confidence.
+
+(Root incident: a TLD page asserted a Specification 13 "closed dot-brand" registration
+restriction, citing the correct ICANN registry agreement URL — nobody had opened that
+document, which contains no Specification 13 at all; a customer was misinformed as a direct
+result. A parallel audit of 63 sibling pages marked the page "clean" because it checked IANA,
+which cannot answer that claim, and the checker's ICANN fetch 403'd and was dropped instead of
+escalated.)
+
 ## Translations
 
 - **Translate with Claude** (one focused pass per locale), **not** a Gemini batch
