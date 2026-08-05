@@ -55,7 +55,7 @@ The **.ltd domain** borrows the company suffix used across the UK, much of the C
 
 ## What is .ltd?
 
-.ltd is a [generic top-level domain](/en/glossary/gtld) delegated under ICANN's 2012 New gTLD Program. As a generic string, it carries no inherent geographic tie in Google's system — per Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=A%20generic%20top-level%20domain%20%28gTLD%29), a gTLD like .ltd needs hreflang, URL structure, or Search Console settings to signal a target country; the suffix itself does not, even though "Ltd." reads as distinctly British in everyday usage.
+.ltd is a [generic top-level domain](/en/glossary/gtld) delegated under ICANN's 2012 New gTLD Program. As a generic string, it carries no inherent geographic tie in Google's system — per Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations), a gTLD like .ltd needs hreflang, URL structure, or Search Console settings to signal a target country; the suffix itself does not, even though "Ltd." reads as distinctly British in everyday usage.
 
 The registry is Binky Moon, LLC, part of the [Identity Digital](https://www.iana.org/domains/root/db/ltd.html) group. You can confirm the current sponsoring organization and delegation record in the [IANA root-zone entry for .ltd](https://www.iana.org/domains/root/db/ltd.html).
 

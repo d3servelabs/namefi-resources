@@ -56,7 +56,7 @@ The **.pro domain** has the most unusual biography of any top-level domain cover
 
 ## What is .pro?
 
-.pro is a [generic top-level domain](/en/glossary/gtld), short for "professional." It carries no geographic meaning, so Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=A%20generic%20top-level%20domain%20%28gTLD%29) treats it like any other generic suffix — you'd need hreflang, URL structure, or Search Console geo-targeting to signal a specific country, the domain itself does not do that for you.
+.pro is a [generic top-level domain](/en/glossary/gtld), short for "professional." It carries no geographic meaning, so Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) treats it like any other generic suffix — you'd need hreflang, URL structure, or Search Console geo-targeting to signal a specific country, the domain itself does not do that for you.
 
 What sets .pro apart from same-era peers like [.biz](/en/tld/biz) or [.info](/en/tld/info) is that it wasn't approved in the 2012 New gTLD Program at all. It belongs to ICANN's much earlier **2000-round expansion**, the first set of new TLDs approved after .com, .net, and .org — a cohort that also produced .biz, .info, .name, .coop, .museum, and .aero. You can confirm the delegation record, current sponsoring organization, and IANA's category label for .pro directly in the [IANA root-zone database entry for .pro](https://www.iana.org/domains/root/db/pro.html).
 

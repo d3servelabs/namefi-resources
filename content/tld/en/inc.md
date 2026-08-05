@@ -56,7 +56,7 @@ The **.inc domain** spells out the word most American companies already have in 
 
 ## What is .inc?
 
-.inc is a [generic top-level domain](/en/glossary/gtld) delegated through ICANN's 2012 New gTLD Program. As a generic suffix with no country tie, Google's [multi-regional site guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=A%20generic%20top-level%20domain%20%28gTLD%29) treats it exactly like any other gTLD — no automatic geo-targeting, and no inherent SEO advantage from the string itself.
+.inc is a [generic top-level domain](/en/glossary/gtld) delegated through ICANN's 2012 New gTLD Program. As a generic suffix with no country tie, Google's [multi-regional site guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) treats it exactly like any other gTLD — no automatic geo-targeting, and no inherent SEO advantage from the string itself.
 
 The registry is [Intercap Registry Inc.](https://www.iana.org/domains/root/db/inc.html), a Cayman Islands company that also runs the related [.dealer](https://www.iana.org/domains/root/db/dealer.html) and .box extensions, with CentralNic providing back-end registry infrastructure. You can confirm the current sponsoring organization and delegation record directly in the [IANA root-zone entry for .inc](https://www.iana.org/domains/root/db/inc.html).
 

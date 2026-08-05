@@ -55,7 +55,7 @@ The **.llc domain** takes the most common US small-business entity type — the 
 
 ## What is .llc?
 
-.llc is a [generic top-level domain](/en/glossary/gtld) delegated under ICANN's 2012 New gTLD Program. Like any generic suffix, it carries no geographic meaning, so Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=A%20generic%20top-level%20domain%20%28gTLD%29) treats .llc the same as .com or any other gTLD — there is no automatic ranking effect and no built-in country association.
+.llc is a [generic top-level domain](/en/glossary/gtld) delegated under ICANN's 2012 New gTLD Program. Like any generic suffix, it carries no geographic meaning, so Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) treats .llc the same as .com or any other gTLD — there is no automatic ranking effect and no built-in country association.
 
 The registry is Identity Digital Domains Limited, formerly Afilias — one of the industry's larger registry operators, also behind extensions like [.info](/en/tld/info) and [.llc](/en/tld/llc)'s corporate sibling [.ltd](/en/tld/ltd). You can confirm the current operator and delegation date in the [IANA root-zone entry for .llc](https://www.iana.org/domains/root/db/llc.html).
 
