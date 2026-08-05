@@ -2,6 +2,7 @@
 title: '什么是 .cn 域名？中国国家顶级域名注册全指南'
 date: '2026-06-15'
 language: 'zh-CN'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 editors: ['victor-zhou']
@@ -22,11 +23,11 @@ faqs:
   - question: '.cn 域名支持中文吗？'
     answer: '支持。.cn 支持国际化域名（IDN），可以注册中文字符的域名。中国还拥有对应的中文国家顶级域名 .中国，于 2010 年正式纳入根区。'
 relatedArticles:
-  - /zh-CN/blog/what-is-a-tld/
   - /zh-CN/blog/cctld-market-share-by-registration-volume/
-  - /zh-CN/blog/what-is-domain/
-  - /zh-CN/blog/how-tld-affects-domain-value/
+  - /zh-CN/blog/short-llll-and-numeric-domains-chinese-market/
+  - /zh-CN/blog/what-is-a-tld/
   - /zh-CN/blog/domain-terminology-guide/
+  - /zh-CN/blog/what-are-tokenized-domains/
 relatedTopics:
   - /zh-CN/topics/choosing-a-tld/
   - /zh-CN/topics/domain-basics/
@@ -34,11 +35,11 @@ relatedSeries:
   - /zh-CN/series/domain-flipping-skills/
   - /zh-CN/series/name-change-game-change/
 relatedGlossary:
-  - /zh-CN/glossary/tld/
-  - /zh-CN/glossary/dns/
+  - /zh-CN/glossary/cctld/
+  - /zh-CN/glossary/idn/
+  - /zh-CN/glossary/registrar/
   - /zh-CN/glossary/icann/
-  - /zh-CN/glossary/web3/
-  - /zh-CN/glossary/registry/
+  - /zh-CN/glossary/dnssec/
 ---
 
 为面向中国市场的项目挑选域名时，后缀的选择往往决定了第一印象。**.cn** 作为中国的国家代码顶级域名（ccTLD），是中国本土身份最直接、最权威的数字标识。它由中国互联网络信息中心（CNNIC）运营，目前是全球注册量最大的国家顶级域名。
