@@ -138,7 +138,7 @@ Pick .com for universal recognition; pick [.llc](/en/tld/llc) or [.co](/en/tld/c
 2. **Choose** the exact name and review the term.
 3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and [Web3](/en/glossary/web3/). Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a [blockchain](/en/glossary/blockchain/) asset you truly own, with easier transfers and added security — all with transparent pricing and fast DNS.
+[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and [Web3](/en/glossary/web3/). Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a [blockchain](/en/glossary/blockchain/) asset you own outright, with easier transfers and added security — all with transparent pricing and fast DNS.
 
 ## Frequently asked questions
 

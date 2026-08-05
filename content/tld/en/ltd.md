@@ -92,7 +92,7 @@ Pick .com for maximum universal recognition; pick [.company](/en/tld/company) fo
 
 ## Why choose .ltd?
 
-- **Internationally recognized entity term.** "Limited" is understood across the UK, Ireland, much of the Commonwealth, and by export-focused businesses in China — arguably broader recognition than the US-specific "LLC" or "Inc."
+- **Internationally recognized entity term.** "Limited" is understood across the UK, Ireland, much of the Commonwealth, and by export-focused businesses in China — broader international recognition than the US-specific "LLC" or "Inc."
 - **Verified registrar-level adoption.** The Alibaba Cloud concentration is a real, checkable data point, not marketing copy.
 - **Backed by an established registry group.** Identity Digital (formerly Donuts/Binky Moon) is one of the larger, longer-tenured new-gTLD operators.
 - **No formation prerequisite.** As with sibling extensions .llc and .inc, you can register before your company is formally incorporated.
@@ -129,7 +129,7 @@ Pick .com for maximum universal recognition; pick [.company](/en/tld/company) fo
 2. **Choose** the exact name and review the term.
 3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and [Web3](/en/glossary/web3/). Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a [blockchain](/en/glossary/blockchain/) asset you truly own, with easier transfers and added security — all with transparent pricing and fast DNS.
+[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and [Web3](/en/glossary/web3/). Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a [blockchain](/en/glossary/blockchain/) asset you own outright, with easier transfers and added security — all with transparent pricing and fast DNS.
 
 ## Frequently asked questions
 

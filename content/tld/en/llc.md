@@ -18,7 +18,7 @@ faqs:
   - question: 'Who should register a .llc domain?'
     answer: 'US-style limited liability companies, freelancers planning to incorporate as an LLC, and small businesses wanting a domain that matches their actual legal entity type. It suits founders who specifically want the LLC structure reflected in their web address.'
   - question: 'How is .llc different from .inc?'
-    answer: '.llc and .inc are both open, 2012-round corporate-identity gTLDs with no eligibility gate, but they target different entity types and sit at very different price points, with .inc positioned as the premium, higher-priced option of the two.'
+    answer: '.llc and .inc are both open, 2012-round corporate-identity gTLDs with no eligibility gate, but they target different entity types and sit at different price points, with .inc positioned as the premium, higher-priced option of the two.'
 relatedArticles:
   - /en/blog/top-tlds-to-secure-for-your-startup/
   - /en/blog/top-tlds-to-secure-for-your-business/
@@ -130,7 +130,7 @@ Pick .com for maximum universal recognition; pick [.inc](/en/tld/inc) if your en
 2. **Choose** the exact name and review the term.
 3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and [Web3](/en/glossary/web3/). Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a [blockchain](/en/glossary/blockchain/) asset you truly own, with easier transfers and added security — all with transparent pricing and fast DNS.
+[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and [Web3](/en/glossary/web3/). Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a [blockchain](/en/glossary/blockchain/) asset you own outright, with easier transfers and added security — all with transparent pricing and fast DNS.
 
 ## Frequently asked questions
 
@@ -152,7 +152,7 @@ US-style limited liability companies, freelancers planning to incorporate as an 
 
 ### How is .llc different from .inc?
 
-.llc and .inc are both open, 2012-round corporate-identity gTLDs with no eligibility gate, but they target different entity types and sit at very different price points, with .inc positioned as the premium, higher-priced option of the two.
+.llc and .inc are both open, 2012-round corporate-identity gTLDs with no eligibility gate, but they target different entity types and sit at different price points, with .inc positioned as the premium, higher-priced option of the two.
 
 ## Related resources
 
