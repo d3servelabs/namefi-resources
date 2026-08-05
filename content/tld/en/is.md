@@ -37,7 +37,7 @@ relatedGlossary:
   - /en/glossary/tld/
 ---
 
-The **.is domain** is the country-code top-level domain for **Iceland**, and it has built an outsized reputation for something Iceland never planned: **domain hacks**. Because "is" is a common English word ending, brands worldwide register `.is` names to spell out a phrase across the dot — the WHOIS lookup tool [who.is](https://who.is) and the URL-shortening service [this.is](https://this.is) are both live, working products built entirely around the trick. This page covers what .is really is, who runs it, the rules for registering, and how Google treats it — so you can judge whether the hack is worth it for your project.
+The **.is domain** is the country-code top-level domain for **Iceland**, and it has built an outsized reputation for something Iceland never planned: **domain hacks**. Because "is" is a common English word ending, brands worldwide register `.is` names to spell out a phrase across the dot — the WHOIS lookup tool [who.is](https://who.is) and the URL-shortening service [this.is](https://this.is) are both live, working products built entirely around the trick. This page covers what .is is, who runs it, the rules for registering, and how Google treats it — so you can judge whether the hack is worth it for your project.
 
 ## .is at a glance
 
@@ -78,7 +78,7 @@ Real, specific niches where .is shows up:
 
 - **[who.is](https://who.is)** — a WHOIS and RDAP domain-lookup tool whose name is a literal question, "who is [this domain]," completed by the .is suffix.
 - **[this.is](https://this.is)** — a URL-shortening and custom-link service built entirely around the "this.is/yourname" wordplay, actively marketed and maintained as of 2026.
-- **hi.is** — the University of Iceland's own domain, one of the very first .is registrations and still in use by Iceland's national academic institution.
+- **hi.is** — the University of Iceland's own domain, one of the first .is registrations and still in use by Iceland's national academic institution.
 
 ## .is vs other domains
 

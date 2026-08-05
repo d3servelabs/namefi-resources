@@ -37,7 +37,7 @@ relatedGlossary:
   - /en/glossary/tld/
 ---
 
-The **.im domain** is the country-code top-level domain for the **Isle of Man**, a self-governing Crown dependency in the British Isles — but its real popularity worldwide comes from two other readings: **"instant messaging"** and simply **"I'm."** Both make .im a natural fit for chat products, personal domains, and word-completing brand hacks, on top of its role as the Isle of Man's own national suffix. This page covers what .im really is, who administers it, the registration rules, and how Google treats it for search.
+The **.im domain** is the country-code top-level domain for the **Isle of Man**, a self-governing Crown dependency in the British Isles — but its real popularity worldwide comes from two other readings: **"instant messaging"** and **"I'm."** Both make .im a natural fit for chat products, personal domains, and word-completing brand hacks, on top of its role as the Isle of Man's own national suffix. This page covers what .im is, who administers it, the registration rules, and how Google treats it for search.
 
 ## .im at a glance
 
@@ -59,7 +59,7 @@ The Isle of Man itself is a self-governing Crown dependency, constitutionally se
 
 ## History of .im
 
-.im was delegated to the root zone on **September 11, 1996**. For its first decade the namespace remained relatively closed, used mainly for genuinely Isle of Man-connected registrants. The pivotal change came on **July 1, 2006**, when the Isle of Man Government authorized **unrestricted worldwide registration**, opening the door to registrants with no connection to the island — including highly sought-after one-, two-, and three-letter names directly under `.im`, a rarity most ccTLDs reserve or ration.
+.im was delegated to the root zone on **September 11, 1996**. For its first decade the namespace remained relatively closed, used mainly for genuinely Isle of Man-connected registrants. The turning point came on **July 1, 2006**, when the Isle of Man Government authorized **unrestricted worldwide registration**, opening the door to registrants with no connection to the island — including highly sought-after one-, two-, and three-letter names directly under `.im`, a rarity most ccTLDs reserve or ration.
 
 That 2006 opening is what turned .im from a purely national suffix into a globally repurposed one. Because the string reads naturally as "instant message" or "I'm," and separately doubles as an abbreviation for "immobilier" (French for real estate) in some European markets, .im picked up adoption well beyond the island's roughly 85,000 residents, alongside its continued use by genuine Isle of Man businesses, trademark holders, and the government itself under reserved names like `gov.im`.
 

@@ -37,7 +37,7 @@ relatedGlossary:
   - /en/glossary/tld/
 ---
 
-The **.so domain** is the country-code top-level domain for **Somalia**, and it has become a recognizable pick in tech branding for one simple reason: it completes the word **"so."** The most famous example was [Notion](https://www.notion.com), whose `notion.so` address defined the company for years — though as of June 2026, Notion has actually moved off `.so` entirely, a twist that says a lot about how this suffix's real-world story keeps evolving. This page covers what .so really is, its unusually turbulent registry history, the current registration rules, and how it behaves for SEO.
+The **.so domain** is the country-code top-level domain for **Somalia**, and it has become a recognizable pick in tech branding for one simple reason: it completes the word **"so."** The most famous example was [Notion](https://www.notion.com), whose `notion.so` address defined the company for years — though as of June 2026, Notion has actually moved off `.so` entirely, a twist that says a lot about how this suffix's real-world story keeps evolving. This page covers what .so is, its unusually turbulent registry history, the current registration rules, and how it behaves for SEO.
 
 ## .so at a glance
 

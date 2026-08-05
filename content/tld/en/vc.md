@@ -37,7 +37,7 @@ relatedGlossary:
   - /en/glossary/tld/
 ---
 
-The **.vc domain** is the country-code top-level domain for **Saint Vincent and the Grenadines**, but almost nobody outside the Caribbean registers it for that reason. Its real-world pull comes from the letters themselves: **"VC" is the universal shorthand for venture capital**, and funds like [Hustle Fund](https://www.hustlefund.vc) have built their entire web identity on `.vc` instead of `.com`. This page covers what .vc really is, who administers it, the actual registration rules, and how it behaves for SEO — so you can decide if the wordplay earns its place in your brand.
+The **.vc domain** is the country-code top-level domain for **Saint Vincent and the Grenadines**, but almost nobody outside the Caribbean registers it for that reason. Its real-world pull comes from the letters themselves: **"VC" is the universal shorthand for venture capital**, and funds like [Hustle Fund](https://www.hustlefund.vc) have built their entire web identity on `.vc` instead of `.com`. This page covers what .vc is, who administers it, the actual registration rules, and how it behaves for SEO — so you can decide if the wordplay earns its place in your brand.
 
 ## .vc at a glance
 
@@ -70,7 +70,7 @@ Real, specific niches where .vc shows up:
 - **Venture capital funds and startup investors**, using the exact-match "VC" reading — [Hustle Fund](https://www.hustlefund.vc) is a live example.
 - **Startup-adjacent tools and media** covering fundraising, cap tables, or investor relations, where the suffix reinforces the subject matter.
 - **Domain hacks completing "VC"** in a firm or product name, similar in spirit to how [.io](/en/tld/io/) gets read as "input/output."
-- **Saint Vincent and the Grenadines businesses and organizations**, for whom .vc is simply the national identity, with com.vc, org.vc, and net.vc available as categorized alternatives.
+- **Saint Vincent and the Grenadines businesses and organizations**, for whom .vc is the national identity, with com.vc, org.vc, and net.vc available as categorized alternatives.
 
 **Who it's not ideal for:** a business with no natural tie to venture capital, investing, or Saint Vincent and the Grenadines — the abbreviation reads oddly without that context, and the domain carries a country-targeting signal by default.
 

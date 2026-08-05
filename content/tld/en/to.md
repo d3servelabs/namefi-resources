@@ -37,9 +37,9 @@ relatedGlossary:
   - /en/glossary/dnssec/
 ---
 
-The **.to domain** is the [country-code Top-Level Domain](/en/glossary/cctld/) (ccTLD) of the **Kingdom of Tonga** — and one of the very first country codes ever marketed to the whole world. Since 1997 its registry, **Tonic** (the Tonga Network Information Center), has sold `.to` names to anyone, anywhere, with no local-presence requirement. Because "to" is one of the most common words in English, the suffix became a natural canvas for [domain hacks](/en/glossary/domain-hack/) and short links: Amazon's **amzn.to** share links are probably the most-clicked .to names on the planet.
+The **.to domain** is the [country-code Top-Level Domain](/en/glossary/cctld/) (ccTLD) of the **Kingdom of Tonga** — and one of the first country codes ever marketed to the whole world. Since 1997 its registry, **Tonic** (the Tonga Network Information Center), has sold `.to` names to anyone, anywhere, with no local-presence requirement. Because "to" is one of the most common words in English, the suffix became a natural canvas for [domain hacks](/en/glossary/domain-hack/) and short links: Amazon's **amzn.to** share links are probably the most-clicked .to names on the planet.
 
-This page covers what .to really is, its unusually early open-registration history, its distinctive WHOIS privacy stance, its complicated relationship with URL shorteners, and the honest trade-offs.
+This page covers what .to is, its unusually early open-registration history, its distinctive WHOIS privacy stance, its complicated relationship with URL shorteners, and the honest trade-offs.
 
 ## .to at a glance
 
