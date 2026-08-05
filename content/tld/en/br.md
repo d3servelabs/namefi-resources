@@ -38,7 +38,7 @@ relatedGlossary:
   - /en/glossary/idn/
 ---
 
-The **.br domain** is Brazil's official [country-code top-level domain](/en/glossary/cctld/) (ccTLD), and one of the largest ccTLDs in the world by registration volume. Every .br registration — whether under the dominant `.com.br` category or a direct second-level name — requires a valid Brazilian tax ID: a **CPF** for individuals or a **CNPJ** for companies. This page covers what .br really is, who runs it, exactly who is eligible (including the documented path for foreign companies), and the honest trade-offs on pricing, SEO, and reputation.
+The **.br domain** is Brazil's official [country-code top-level domain](/en/glossary/cctld/) (ccTLD), and one of the largest ccTLDs in the world by registration volume. Every .br registration — whether under the dominant `.com.br` category or a direct second-level name — requires a valid Brazilian tax ID: a **CPF** for individuals or a **CNPJ** for companies. This page covers what .br is, who runs it, exactly who is eligible (including the documented path for foreign companies), and the honest trade-offs on pricing, SEO, and reputation.
 
 ## .br at a glance
 
@@ -135,7 +135,7 @@ Because every .br registration requires a verified CPF or CNPJ (or the documente
 2. **Confirm eligibility** — a valid CPF or CNPJ, or the documented foreign-company representative process.
 3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you truly own, with easier transfers and added security — all with transparent pricing and fast DNS.
+[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you own outright, with easier transfers and added security — all with transparent pricing and fast DNS.
 
 ## Frequently asked questions
 

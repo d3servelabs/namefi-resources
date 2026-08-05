@@ -38,7 +38,7 @@ relatedGlossary:
   - /en/glossary/dnssec/
 ---
 
-The **.mx domain** is Mexico's official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) — and, unusually among major national ccTLDs, one with **no local-presence requirement**. Anyone worldwide can register a `.mx` or `.com.mx` name. Operated by **NIC Mexico** under the trading name **Registry .MX**, with roots tracing back to a technical-university delegation in the 1980s, .mx combines an open eligibility policy with a distinctive category structure. This page covers what .mx really is, its history through a 13-year freeze and 2009 reopening, who is actually eligible, and the honest trade-offs on pricing, SEO, and reputation.
+The **.mx domain** is Mexico's official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) — and, unusually among major national ccTLDs, one with **no local-presence requirement**. Anyone worldwide can register a `.mx` or `.com.mx` name. Operated by **NIC Mexico** under the trading name **Registry .MX**, with roots tracing back to a technical-university delegation in the 1980s, .mx combines an open eligibility policy with a distinctive category structure. This page covers what .mx is, its history through a 13-year freeze and 2009 reopening, who is actually eligible, and the honest trade-offs on pricing, SEO, and reputation.
 
 ## .mx at a glance
 
@@ -132,7 +132,7 @@ Pick `.com` for a global, non-geographic brand; pick `.mx` (as `.com.mx` or dire
 2. **Choose** the category that fits — direct `.mx`, `.com.mx`, or another category you qualify for.
 3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you truly own, with easier transfers and added security — all with transparent pricing and fast DNS.
+[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you own outright, with easier transfers and added security — all with transparent pricing and fast DNS.
 
 ## Frequently asked questions
 

@@ -38,7 +38,7 @@ relatedGlossary:
   - /en/glossary/dns/
 ---
 
-The **.au domain** is Australia's official [country-code top-level domain](/en/glossary/cctld/) (ccTLD). For decades, an Australian web address meant `.com.au`; since March 2022, it can also mean a shorter **direct .au** name (`yourname.au`). Both paths run through the same gate — the **Australian Presence** requirement — administered by the policy body **auDA** and operated on the back end by **Identity Digital**. This page covers what .au really is, exactly who is eligible, how direct .au registration works, and the honest trade-offs on pricing, SEO, and reputation.
+The **.au domain** is Australia's official [country-code top-level domain](/en/glossary/cctld/) (ccTLD). For decades, an Australian web address meant `.com.au`; since March 2022, it can also mean a shorter **direct .au** name (`yourname.au`). Both paths run through the same gate — the **Australian Presence** requirement — administered by the policy body **auDA** and operated on the back end by **Identity Digital**. This page covers what .au is, exactly who is eligible, how direct .au registration works, and the honest trade-offs on pricing, SEO, and reputation.
 
 ## .au at a glance
 
@@ -139,7 +139,7 @@ Because .au requires a verified Australian Presence for every registration, the 
 2. **Confirm eligibility** under the Australian Presence requirement — citizenship/residency, ABN/ACN, or an exact-match Australian trade mark.
 3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you truly own, with easier transfers and added security — all with transparent pricing and fast DNS.
+[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you own outright, with easier transfers and added security — all with transparent pricing and fast DNS.
 
 ## Frequently asked questions
 

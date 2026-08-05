@@ -38,7 +38,7 @@ relatedGlossary:
   - /en/glossary/dnssec/
 ---
 
-The **.de domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for **Germany**, and one of the largest ccTLDs on the internet by registration count. Run by the Frankfurt-based cooperative [DENIC eG](https://www.denic.de/en/about-us/who-we-are/), .de is open to registrants anywhere in the world, not just Germany — but it carries an unmistakable "made for Germany" signal that shapes how both users and search engines read it. This guide covers who really runs .de, its history, who it suits, and the honest trade-offs, sourced directly from DENIC's own registration terms.
+The **.de domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for **Germany**, and one of the largest ccTLDs on the internet by registration count. Run by the Frankfurt-based cooperative [DENIC eG](https://www.denic.de/en/about-us/who-we-are/), .de is open to registrants anywhere in the world, not just Germany — but it carries an unmistakable "made for Germany" signal that shapes how both users and search engines read it. This guide covers who runs .de, its history, who it suits, and the honest trade-offs, sourced directly from DENIC's own registration terms.
 
 ## .de at a glance
 
@@ -76,7 +76,7 @@ The zone's growth has been dramatic: DENIC's own count stood at roughly 14.6 mil
 
 ## Notable sites using .de
 
-Major, everyday examples of active .de sites include **bild.de** (Germany's largest tabloid newspaper), **spiegel.de** (Der Spiegel, one of Germany's leading news magazines), **zeit.de** (the national weekly Die Zeit), and **otto.de** (OTTO, one of Germany's largest e-commerce retailers). These sit alongside countless German small and mid-sized businesses (the "Mittelstand") for whom a .de address is simply the default way to be found online in Germany.
+Major, everyday examples of active .de sites include **bild.de** (Germany's largest tabloid newspaper), **spiegel.de** (Der Spiegel, one of Germany's leading news magazines), **zeit.de** (the national weekly Die Zeit), and **otto.de** (OTTO, one of Germany's largest e-commerce retailers). These sit alongside countless German small and mid-sized businesses (the "Mittelstand") for whom a .de address is the default way to be found online in Germany.
 
 ## .de vs other domains
 

@@ -40,7 +40,7 @@ relatedGlossary:
 
 The **.es domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for **Spain**, operated by **Red.es**, a Spanish public business entity. Unlike the strict residency gates of some neighboring ccTLDs, .es has been deliberately opened up since a 2005 policy overhaul: registration only requires an "interest or link" to Spain, a test interpreted broadly enough that it functions close to open registration in practice.
 
-This page covers what .es really is, how its eligibility rules loosened over time, its second- and third-level domain structure, and the honest trade-offs for SEO, branding, and email — so you can decide whether it fits your project.
+This page covers what .es is, how its eligibility rules loosened over time, its second- and third-level domain structure, and the honest trade-offs for SEO, branding, and email — so you can decide whether it fits your project.
 
 ## .es at a glance
 

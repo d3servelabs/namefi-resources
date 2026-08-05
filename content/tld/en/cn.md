@@ -38,7 +38,7 @@ relatedGlossary:
   - /en/glossary/dnssec/
 ---
 
-The **.cn domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for the **People's Republic of China**, run by the China Internet Network Information Center (CNNIC). It is one of the world's largest national namespaces, and it is also one of the most procedurally distinctive: every registrant, wherever they live, must clear a mandatory **real-name verification** check before a .cn name goes live. This page covers what .cn really is, how CNNIC's identity rules work in practice, the separate ICP-licensing question that trips up newcomers, and who genuinely benefits from registering one.
+The **.cn domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for the **People's Republic of China**, run by the China Internet Network Information Center (CNNIC). It is one of the world's largest national namespaces, and it is also one of the most procedurally distinctive: every registrant, wherever they live, must clear a mandatory **real-name verification** check before a .cn name goes live. This page covers what .cn is, how CNNIC's identity rules work in practice, the separate ICP-licensing question that trips up newcomers, and who genuinely benefits from registering one.
 
 ## .cn at a glance
 
@@ -122,7 +122,7 @@ DNSSEC is supported at the registry level, and [WHOIS](/en/glossary/whois/) data
 
 ## Reputation and email deliverability
 
-.cn does not carry the documented spam-abuse reputation associated with some unrestricted, ultra-cheap new gTLDs — real-name verification raises the cost of bulk, anonymous registration. That said, mail and security systems outside China sometimes apply extra scrutiny to .cn-originating traffic simply because it is a less familiar namespace to non-Chinese recipients. As with any domain, proper SPF, DKIM, and DMARC configuration matters more to deliverability than the extension itself.
+.cn does not carry the documented spam-abuse reputation associated with some unrestricted, ultra-cheap new gTLDs — real-name verification raises the cost of bulk, anonymous registration. That said, mail and security systems outside China sometimes apply extra scrutiny to .cn-originating traffic because it is a less familiar namespace to non-Chinese recipients. As with any domain, proper SPF, DKIM, and DMARC configuration matters more to deliverability than the extension itself.
 
 ## Branding and naming tips
 

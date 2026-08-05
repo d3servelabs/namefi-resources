@@ -38,7 +38,7 @@ relatedGlossary:
   - /en/glossary/dnssec/
 ---
 
-The **.in domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for **India**, administered by the National Internet Exchange of India (NIXI). Unlike the local-presence rules that gate .jp and .kr, .in has been run as an **open, liberalized namespace** since 2005 — anyone, anywhere, can register one. It also anchors one of the largest internationalized-domain programs of any ccTLD, spanning more than a dozen Indian scripts under the **.bharat** family. This page covers what .in really is, its second-level structure, the IDN program, and who should register one.
+The **.in domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for **India**, administered by the National Internet Exchange of India (NIXI). Unlike the local-presence rules that gate .jp and .kr, .in has been run as an **open, liberalized namespace** since 2005 — anyone, anywhere, can register one. It also anchors one of the largest internationalized-domain programs of any ccTLD, spanning more than a dozen Indian scripts under the **.bharat** family. This page covers what .in is, its second-level structure, the IDN program, and who should register one.
 
 ## .in at a glance
 

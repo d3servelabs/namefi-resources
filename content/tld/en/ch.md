@@ -40,7 +40,7 @@ relatedGlossary:
 
 The **.ch domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for **Switzerland**, run by the non-profit foundation **SWITCH** under a mandate from the Swiss Federal Office of Communications (OFCOM). Unlike neighboring restricted ccTLDs such as [.fr](/en/tld/fr) or [.it](/en/tld/it), .ch has **no residency requirement at all** — anyone in the world can register one — which makes it closer in eligibility to a marketed vanity ccTLD like [.me](/en/tld/me) than to a gatekept national domain, even though it remains a genuinely Swiss-administered namespace.
 
-This page covers what .ch really is, where the two-letter code comes from, its history as one of the earliest ccTLDs, and the honest trade-offs for SEO, branding, and email — so you can decide whether it fits your project.
+This page covers what .ch is, where the two-letter code comes from, its history as one of the earliest ccTLDs, and the honest trade-offs for SEO, branding, and email — so you can decide whether it fits your project.
 
 ## .ch at a glance
 

@@ -60,7 +60,7 @@ For search visibility, Google's own [multi-regional sites guidance](https://deve
 
 ## History of .nl
 
-.nl has an unusually well-documented origin. On **25 April 1986**, the creation of a top-level domain for the Netherlands was approved, and — as SIDN's own [40th-anniversary retrospective](https://www.sidn.nl/en/news-and-blogs/40-years-of-the-nl-domain) states — **.nl became the first active country-code domain outside the United States**. Six days later, on 1 May 1986, **cwi.nl** was registered by the Centrum Wiskunde & Informatica (CWI), becoming the very first .nl domain ever issued. The person behind it, **Piet Beertema**, personally handled domain registration by hand for the next decade, registering roughly the first 10,000 .nl names himself before **SIDN was founded in 1996** by CWI, SURFnet, and NLnet to take over as a dedicated registry.
+.nl has an unusually well-documented origin. On **25 April 1986**, the creation of a top-level domain for the Netherlands was approved, and — as SIDN's own [40th-anniversary retrospective](https://www.sidn.nl/en/news-and-blogs/40-years-of-the-nl-domain) states — **.nl became the first active country-code domain outside the United States**. Six days later, on 1 May 1986, **cwi.nl** was registered by the Centrum Wiskunde & Informatica (CWI), becoming the first .nl domain ever issued. The person behind it, **Piet Beertema**, personally handled domain registration by hand for the next decade, registering roughly the first 10,000 .nl names himself before **SIDN was founded in 1996** by CWI, SURFnet, and NLnet to take over as a dedicated registry.
 
 Growth accelerated sharply after **2003**, when SIDN opened .nl registration to private individuals for the first time — until then, names had been reserved for companies and organizations registered with the Dutch Chamber of Commerce. From just over 1 million names in 2003, .nl grew to 4 million by 2010, 5 million by 2012, and passed its 6-millionth registration in 2020. Today [SIDN Labs](https://stats.sidnlabs.nl/en/) confirms .nl has **over 6 million registered domain names**, making it, in SIDN's own words, "the world's fourth-largest country-code domain."
 
@@ -76,7 +76,7 @@ Growth accelerated sharply after **2003**, when SIDN opened .nl registration to 
 
 ## Notable sites using .nl
 
-Well-known active .nl sites include **nu.nl** (one of the Netherlands' most-visited news sites) and **marktplaats.nl** (the country's dominant online classifieds and marketplace platform). And there's the historical anchor for the whole namespace: **cwi.nl**, the very first .nl domain ever registered, still run by the Centrum Wiskunde & Informatica research institute that registered it back in 1986.
+Well-known active .nl sites include **nu.nl** (one of the Netherlands' most-visited news sites) and **marktplaats.nl** (the country's dominant online classifieds and marketplace platform). And there's the historical anchor for the whole namespace: **cwi.nl**, the first .nl domain ever registered, still run by the Centrum Wiskunde & Informatica research institute that registered it back in 1986.
 
 ## .nl vs other domains
 

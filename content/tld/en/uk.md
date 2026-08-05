@@ -38,7 +38,7 @@ relatedGlossary:
   - /en/glossary/second-level-domain/
 ---
 
-The **.uk domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for the **United Kingdom**, operated by the registry [Nominet](https://nominet.uk). It is also one of the internet's oldest ccTLDs, registered just seven months after the first generic domains went live. For decades, "having a .uk domain" really meant a third-level name like `example.co.uk` — direct second-level registration only opened in 2014. This guide covers that history, who can register today, and the honest trade-offs between the shorter .uk and the still-dominant .co.uk.
+The **.uk domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for the **United Kingdom**, operated by the registry [Nominet](https://nominet.uk). It is also one of the internet's oldest ccTLDs, registered just seven months after the first generic domains went live. For decades, "having a .uk domain" in practice meant a third-level name like `example.co.uk` — direct second-level registration only opened in 2014. This guide covers that history, who can register today, and the honest trade-offs between the shorter .uk and the still-dominant .co.uk.
 
 ## .uk at a glance
 

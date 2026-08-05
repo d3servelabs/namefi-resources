@@ -40,7 +40,7 @@ relatedGlossary:
 
 The **.ca domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for **Canada**, and one of the oldest ccTLDs on the internet — delegated in 1987, years before the modern commercial web existed. Unlike an open, marketed ccTLD, .ca is deliberately gated: only registrants with a genuine connection to Canada, defined precisely by the **Canadian Presence Requirements**, can hold one. For a Canadian business, non-profit, or individual, .ca is the clearest way to signal "this is Canadian" in a web address.
 
-This page covers what .ca really is, who is eligible to register one, its history, and the honest trade-offs on pricing, SEO, and reputation.
+This page covers what .ca is, who is eligible to register one, its history, and the honest trade-offs on pricing, SEO, and reputation.
 
 ## .ca at a glance
 
@@ -142,7 +142,7 @@ Foreign companies without one of these qualifying ties generally cannot register
 2. **Confirm eligibility** under one of the Canadian Presence Requirements categories, and choose the matching registrant type.
 3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you truly own, with easier transfers and added security — all with transparent pricing and fast DNS.
+[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you own outright, with easier transfers and added security — all with transparent pricing and fast DNS.
 
 ## Frequently asked questions
 

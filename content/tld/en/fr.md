@@ -40,7 +40,7 @@ relatedGlossary:
 
 The **.fr domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for **France**, operated by the non-profit registry [Afnic](https://www.afnic.fr/en/). Unlike open-to-anyone ccTLDs such as [.co](/en/tld/co) or [.me](/en/tld/me), .fr is deliberately gated to registrants connected to the European Union and a handful of neighboring countries — making it a genuine national-identity signal rather than a borderless ".com" substitute.
 
-This page covers what .fr really is, its winding history from a research-institute project to a modern EU-scoped registry, exactly who is eligible to register one, and the honest trade-offs for SEO, branding, and email — so you can decide whether it fits your project.
+This page covers what .fr is, its winding history from a research-institute project to a modern EU-scoped registry, exactly who is eligible to register one, and the honest trade-offs for SEO, branding, and email — so you can decide whether it fits your project.
 
 ## .fr at a glance
 

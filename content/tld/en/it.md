@@ -40,7 +40,7 @@ relatedGlossary:
 
 The **.it domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for **Italy**, run by a research institute rather than a commercial registry: the **Institute of Informatics and Telematics (IIT)** at Italy's **National Research Council (CNR)** in Pisa. Unlike wide-open ccTLDs marketed as global ".com" substitutes, .it keeps a European-area eligibility gate, making it a genuine statement of Italian or wider-European connection rather than a borderless brand suffix.
 
-This page covers what .it really is, its history from a single research-network address to Italy's national namespace, exactly who can register one today, and the honest trade-offs for SEO, branding, and email — so you can decide whether it fits your project.
+This page covers what .it is, its history from a single research-network address to Italy's national namespace, exactly who can register one today, and the honest trade-offs for SEO, branding, and email — so you can decide whether it fits your project.
 
 ## .it at a glance
 
@@ -62,7 +62,7 @@ This page covers what .it really is, its history from a single research-network 
 
 ## History of .it
 
-- **1987 — delegation.** .it was delegated to Italy on December 23, 1987; the very first Italian domain, `cnuce.cnr.it`, went active on January 1, 1988, registered by CNUCE, a CNR institute that later became part of IIT-CNR.
+- **1987 — delegation.** .it was delegated to Italy on December 23, 1987; the first Italian domain, `cnuce.cnr.it`, went active on January 1, 1988, registered by CNUCE, a CNR institute that later became part of IIT-CNR.
 - **1999 — liberalization for organizations.** The Naming Authority removed the limit on how many domain names an organization of any kind could register, opening .it beyond a handful of gatekept names.
 - **2004 — liberalization for individuals.** Restrictions on the number of registrations by natural persons were removed, putting individuals on equal footing with organizations.
 - **2005 — governance restructuring.** Regulatory and implementation functions consolidated under an internal Steering Committee at the registry.
