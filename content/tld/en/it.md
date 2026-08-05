@@ -58,7 +58,7 @@ This page covers what .it is, its history from a single research-network address
 
 **.it** is the [ccTLD](/en/glossary/cctld/) assigned to Italy under the ISO 3166-1 country code standard, recorded in the [IANA root-zone entry for .it](https://www.iana.org/domains/root/db/it.html). Unlike a generic [gTLD](/en/glossary/tld/) such as [.com](/en/tld/com), .it represents a single nation's namespace and is administered under Italian and European policy rather than a standard ICANN registry agreement.
 
-.it does not appear on Google's short list of ccTLDs treated as generic (a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co)), so [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs%20(such%20as%20.tv%20and%20.me)%20as%20gTLDs) treats .it as genuinely country-targeted. A .it site signals an Italian audience, which is an advantage for local relevance and a constraint for anyone chasing a global, non-Italian audience.
+.it does not appear on Google's short list of ccTLDs treated as generic (a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co)), so [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs) treats .it as genuinely country-targeted. A .it site signals an Italian audience, which is an advantage for local relevance and a constraint for anyone chasing a global, non-Italian audience.
 
 ## History of .it
 

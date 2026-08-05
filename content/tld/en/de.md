@@ -56,7 +56,7 @@ The **.de domain** is the official [country-code top-level domain](/en/glossary/
 
 .de is Germany's [ccTLD](/en/glossary/cctld/), delegated under the ISO 3166-1 country code for Germany. Its delegation record is public in the [IANA root-zone database](https://www.iana.org/domains/root/db/de.html), which lists **DENIC eG** as the sponsoring organization. Unlike a generic [TLD](/en/glossary/tld/) such as [.com](/en/tld/com/), .de is administered under DENIC's own German-law contract rather than a standard ICANN registry agreement — ccTLDs are outside ICANN's registry-agreement framework entirely.
 
-For search visibility, Google's own guidance on [managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=These%20are%20tied%20to%20a%20specific%20country%20\(for%20example%20.de%20for%20Germany) names .de explicitly as an example of a ccTLD "tied to a specific country" — Google does not treat .de as one of its generic vanity ccTLDs (a short list that includes .co, .io, and .tv). A .de site sends a real, explicit signal that the content targets German users.
+For search visibility, Google's own guidance on [managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=tied%20to%20a%20specific%20country%20%28for%20example%20.de%20for%20Germany) names .de explicitly as an example of a ccTLD "tied to a specific country" — Google does not treat .de as one of its generic vanity ccTLDs (a short list that includes .co, .io, and .tv). A .de site sends a real, explicit signal that the content targets German users.
 
 ## History of .de
 

@@ -56,7 +56,7 @@ The **.jp domain** is the official [country-code top-level domain](/en/glossary/
 
 .jp is the [ccTLD](/en/glossary/cctld/) assigned to Japan under ISO 3166-1 (country code JP), delegated through the [IANA root-zone database](https://www.iana.org/domains/root/db/jp.html), which lists JPRS as both registry operator and sponsoring organization. As with any ccTLD, .jp sits under Japanese domain-name policy rather than a standard ICANN registry agreement.
 
-Google does **not** classify .jp among the small set of ccTLDs it treats as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs%20\(such%20as%20.tv%20and%20.me\)%20as%20gTLDs)). .jp is absent from that list, so it functions as a genuine geo-targeting signal for Japan.
+Google does **not** classify .jp among the small set of ccTLDs it treats as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)). .jp is absent from that list, so it functions as a genuine geo-targeting signal for Japan.
 
 ## History of .jp
 

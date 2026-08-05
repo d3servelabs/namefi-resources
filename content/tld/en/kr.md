@@ -56,7 +56,7 @@ The **.kr domain** is the official [country-code top-level domain](/en/glossary/
 
 .kr is the [ccTLD](/en/glossary/cctld/) assigned to South Korea under ISO 3166-1 (country code KR), delegated through the [IANA root-zone database](https://www.iana.org/domains/root/db/kr.html), which lists KISA as registry operator and the Korea Network Information Center (KRNIC) — KISA's domain-registry function — as sponsoring organization. As a ccTLD, .kr operates under Korean domain-name policy rather than a standard ICANN registry agreement.
 
-Google does **not** treat .kr as one of the ccTLDs it re-classifies as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs%20\(such%20as%20.tv%20and%20.me\)%20as%20gTLDs)). .kr is absent from it, so Google reads a .kr site as targeted at South Korea specifically.
+Google does **not** treat .kr as one of the ccTLDs it re-classifies as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)). .kr is absent from it, so Google reads a .kr site as targeted at South Korea specifically.
 
 ## History of .kr
 

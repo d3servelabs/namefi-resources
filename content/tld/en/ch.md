@@ -58,7 +58,7 @@ This page covers what .ch is, where the two-letter code comes from, its history 
 
 **.ch** is the [ccTLD](/en/glossary/cctld/) assigned to Switzerland, and the two letters stand for **Confoederatio Helvetica** — the Latin name for the Swiss Confederation. Switzerland deliberately chose the Latin form for its country code, per the [IANA root-zone entry for .ch](https://www.iana.org/domains/root/db/ch.html), rather than a code drawn from any one of its four official languages (German, French, Italian, Romansh), keeping the abbreviation linguistically neutral — a very Swiss solution to a very Swiss problem.
 
-.ch does not appear on Google's short list of ccTLDs treated as generic (a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co)), so [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs%20(such%20as%20.tv%20and%20.me)%20as%20gTLDs) treats .ch as genuinely country-targeted, even though registration itself is open worldwide. That combination — open eligibility, but a real geo-signal — is unusual and worth understanding before you register.
+.ch does not appear on Google's short list of ccTLDs treated as generic (a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co)), so [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs) treats .ch as genuinely country-targeted, even though registration itself is open worldwide. That combination — open eligibility, but a real geo-signal — is unusual and worth understanding before you register.
 
 ## History of .ch
 
@@ -72,7 +72,7 @@ This page covers what .ch is, where the two-letter code comes from, its history 
 Real, specific niches where .ch shows up:
 
 - **Swiss businesses, banks, and institutions** that want their national identity — and the trust cues that come with it — baked into the address.
-- **Domain hacks ending in "ch,"** completing English words across the dot: TechCrunch's own shortener [tcrn.ch](https://tcrn.ch) and the University of Michigan research portal `umresear.ch` are well-known examples.
+- **Domain hacks ending in "ch,"** completing English words across the dot: TechCrunch's own shortener `tcrn.ch` and the University of Michigan research portal `umresear.ch` are well-known examples.
 - **Global brands seeking neutral Swiss trust cues**, since Switzerland's reputation for stability and precision carries over even for registrants with no Swiss address.
 - **Government and public-service sites**, such as the federal portal `admin.ch` and public broadcaster `srf.ch`.
 - **Media in multiple Swiss languages**, including outlets like `nzz.ch`, reflecting the country's multilingual structure.
@@ -84,7 +84,7 @@ Real, specific niches where .ch shows up:
 - **[admin.ch](https://www.admin.ch/)** — the Swiss federal government's official portal.
 - **[nzz.ch](https://www.nzz.ch/)** — the site of the *Neue Zürcher Zeitung*, one of Switzerland's most established newspapers.
 - **[srf.ch](https://www.srf.ch/)** — Swiss Radio and Television (SRF), the German-language arm of Switzerland's public broadcaster.
-- **[tcrn.ch](https://tcrn.ch)** — TechCrunch's own official link-shortener, a widely cited non-Swiss domain-hack example.
+- **`tcrn.ch`** — TechCrunch's own official link-shortener, a widely cited non-Swiss domain-hack example.
 
 ## .ch vs other domains
 

@@ -47,7 +47,7 @@ The **.cn domain** is the official [country-code top-level domain](/en/glossary/
 | TLD type | Country-code TLD (ccTLD) for the People's Republic of China |
 | Registry operator | [China Internet Network Information Center (CNNIC)](https://www.iana.org/domains/root/db/cn.html) |
 | Year delegated | 1990 |
-| IDN support | Yes — a parallel Chinese-script ccTLD, [.中国](https://www.iana.org/domains/root/db/%E4%B8%AD%E5%9B%BD.html), was delegated in 2010 |
+| IDN support | Yes — a parallel Chinese-script ccTLD, [.中国](https://www.iana.org/domains/root/db/xn--fiqs8s.html), was delegated in 2010 |
 | DNSSEC | Supported |
 | Registration restrictions | **Real-name verification required** for every registrant — identity documents must be submitted and approved before activation |
 | Best for | Businesses and brands targeting mainland Chinese users; entities that already need a China-market presence |
@@ -56,7 +56,7 @@ The **.cn domain** is the official [country-code top-level domain](/en/glossary/
 
 .cn is the [ccTLD](/en/glossary/cctld/) assigned to China under ISO 3166-1 (country code CN), delegated through the [IANA root-zone database](https://www.iana.org/domains/root/db/cn.html), which lists CNNIC as both the registry operator and sponsoring organization. Unlike a borderless [gTLD](/en/glossary/gtld/) such as [.com](/en/tld/com/), .cn is administered under Chinese domain-name policy rather than a standard ICANN registry agreement — the norm for every ccTLD.
 
-Google does **not** treat .cn as one of the small set of ccTLDs it re-classifies as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs%20\(such%20as%20.tv%20and%20.me\)%20as%20gTLDs)). .cn is absent from it, so it is treated as a country-targeted signal for China — useful when that is exactly your audience, less useful otherwise.
+Google does **not** treat .cn as one of the small set of ccTLDs it re-classifies as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)). .cn is absent from it, so it is treated as a country-targeted signal for China — useful when that is exactly your audience, less useful otherwise.
 
 ## History of .cn
 
@@ -65,7 +65,7 @@ Google does **not** treat .cn as one of the small set of ccTLDs it re-classifies
 - A **2012 rule change** from the Ministry of Industry and Information Technology (MIIT) expanded who could register a .cn name — eligibility had previously covered organizations only; the amended rules explicitly extended registration to "any natural person or organization that can independently bear civil liabilities."
 - CNNIC's current **[Implementing Rules of Domain Name Registration](https://www.cnnic.com.cn/PublicS/fwzxxgzcfg/201907/t20190726_70776.htm)** require identity materials from every applicant, and registrants must attest to the "authenticity, accuracy and integrity" of what they submit.
 - Since **August 1, 2022**, CNNIC has run random real-name-verification audits across the registered base; domains that fail are placed on **serverHold** until they pass.
-- China's Chinese-script IDN ccTLD, **[.中国](https://www.iana.org/domains/root/db/%E4%B8%AD%E5%9B%BD.html)**, was delegated in 2010, giving Chinese-market registrants a native-script counterpart to the Latin .cn string.
+- China's Chinese-script IDN ccTLD, **[.中国](https://www.iana.org/domains/root/db/xn--fiqs8s.html)**, was delegated in 2010, giving Chinese-market registrants a native-script counterpart to the Latin .cn string.
 
 ## How people use .cn
 
