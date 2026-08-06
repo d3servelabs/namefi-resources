@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "data:validate": "bun scripts/validate-data.ts && bun .agents/skills/cross-link/link-audit.ts --locale-only",
+    "data:validate": "bun scripts/validate-data.ts && bun .agents/skills/cross-link/link-audit.ts --locale-only && bun scripts/check-tld-faq-sync.ts",
     "related:build": "bun scripts/add-related-content.ts",
     "termbase:build": "bun scripts/build-termbase.ts",
     "termbase:check": "bun scripts/build-termbase.ts --check",
