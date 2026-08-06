@@ -11,15 +11,15 @@ description: 'The .shop domain is an open new gTLD run by GMO Registry that sign
 keywords: ['.shop domains', '.shop domain registration', 'e-commerce domain', 'GMO Registry', 'new gTLD for retail', 'buy .shop domain']
 faqs:
   - question: 'Can anyone register a .shop domain?'
-    answer: 'Yes. .shop is an open generic top-level domain with no eligibility restrictions, so any individual or business worldwide can register an available name on a first-come, first-served basis. There is no credential, local-presence, or community requirement.'
+    answer: 'Yes. .shop is an open generic top-level domain with no eligibility restrictions. Any individual or business worldwide can register an available name on a first-come, first-served basis. There is no credential, local-presence, or community requirement to qualify.'
   - question: 'Does a .shop domain affect SEO?'
-    answer: 'No. Google treats .shop the same as .com and other gTLDs, with no ranking penalty or bonus from the extension itself. A descriptive .shop name can lift click-through rates on commercial searches because the suffix signals a place to buy.'
+    answer: 'No. Google treats .shop the same as .com and other gTLDs, with no ranking penalty or bonus from the extension. A descriptive .shop name can lift click-through rates on commercial searches, because the suffix signals a place to buy.'
   - question: 'Who should register a .shop domain?'
-    answer: 'It suits online stores, direct-to-consumer brands, creators selling merchandise, and physical retailers building a transactional site. It is a strong fit when the matching .com is taken or expensive and you want a name that says "shop here" at a glance.'
+    answer: 'Online stores, direct-to-consumer brands, creators selling merchandise, and physical retailers building a transactional site. It is an especially strong fit when the matching .com is taken or expensive and you want a name that says "shop here" at a glance.'
   - question: 'Is .shop good for an online store?'
-    answer: 'Yes. The word "shop" is understood globally and instantly communicates commercial intent, which is why brands like Netflix run merchandise stores on it. The large, newer namespace also makes short, exact-match retail names easier to secure.'
+    answer: 'Yes. "Shop" is understood globally and instantly communicates commercial intent — which is why brands like Netflix run merchandise stores on it. The large, newer namespace also makes short, exact-match retail names easier to secure than on legacy extensions.'
   - question: 'Does .shop support WHOIS privacy and DNSSEC?'
-    answer: 'Yes. .shop supports DNSSEC at the registry level, and most registrars offer free WHOIS privacy that masks personal contact details in public records. Availability of privacy depends on your registrar rather than the registry.'
+    answer: 'Yes. .shop supports DNSSEC at the registry level, and most registrars offer free WHOIS privacy that masks personal contact details in public records. Whether privacy is included depends on your registrar rather than the registry.'
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/top-tlds-to-secure-for-your-ecommerce-store/

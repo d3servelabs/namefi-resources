@@ -10,7 +10,7 @@ description: 'The .fashion domain is an open gTLD for designers, apparel labels,
 keywords: ['fashion TLD', 'fashion brand domain', 'apparel domain name', 'style domain extension', 'register .fashion', 'GoDaddy Registry']
 faqs:
   - question: 'Can anyone register a .fashion domain?'
-    answer: 'Yes. The .fashion domain is an open generic TLD with no credential, industry, or local-presence requirements, so individuals and businesses anywhere can register one on a first-come, first-served basis. Some labels, such as most two-character names, are reserved by the registry.'
+    answer: 'Yes. The .fashion domain is an open generic TLD with no credential, industry, or local-presence requirements, so individuals and businesses anywhere can register one on a first-come, first-served basis. Some labels, such as most two-character names and certain premium strings, are reserved by the registry.'
   - question: 'Does a .fashion domain affect SEO?'
     answer: 'No. Google treats .fashion as a generic top-level domain and ranks it on the same signals as .com. The extension itself gives no ranking boost or penalty, though a clear, relevant name can help click-through from search results.'
   - question: 'Who should register a .fashion domain?'

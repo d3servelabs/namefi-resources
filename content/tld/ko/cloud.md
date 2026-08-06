@@ -20,7 +20,7 @@ faqs:
   - question: '.cloud는 SaaS 및 개발자 제품에 적합한가요?'
     answer: '네. 이 접미사는 현대적이고 기술적인 인상을 주며, .com에 비해 짧고 관련성 있는 이름이 아직 많이 남아 있습니다. 많은 팀이 서비스의 성격을 강조하는 제품·인프라·환경 서브도메인에 .cloud를 활용합니다.'
   - question: '.cloud는 DNSSEC과 WHOIS 개인정보 보호를 지원하나요?'
-    answer: '네. .cloud 레지스트리는 암호화 서명 DNS를 위한 DNSSEC을 지원하며, WHOIS 개인정보 보호는 레지스트리가 아닌 등록 대행사(레지스트라)를 통해 제공되므로 이용 가능 여부는 선택한 레지스트라에 따라 다릅니다.'
+    answer: '네. .cloud 레지스트리는 암호화 서명 DNS를 위한 DNSSEC을 지원하며, WHOIS 개인정보 보호는 레지스트리가 아닌 레지스트라를 통해 제공되므로 이용 가능 여부는 선택한 레지스트라에 따라 다릅니다.'
 relatedArticles:
   - /ko/blog/what-is-a-tld/
   - /ko/blog/ai-vs-io-domain/

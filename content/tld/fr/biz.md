@@ -11,15 +11,15 @@ description: "Le domaine .biz est un gTLD ouvert, orienté entreprise, géré pa
 keywords: ['.biz', 'domaines .biz', '.biz TLD', "qu'est-ce que .biz", 'extension de domaine professionnelle', 'biz vs com', 'GoDaddy Registry', 'usage commercial de bonne foi']
 faqs:
   - question: "N'importe qui peut-il enregistrer un domaine .biz ?"
-    answer: "Presque. L'espace de noms .biz est ouvert dans le monde entier sans barrière de qualification, de marque déposée ou de présence locale, mais les enregistrements sont destinés à un usage professionnel ou commercial de bonne foi. Les enregistrements non commerciaux ou purement spéculatifs peuvent en principe être contestés, bien que l'application soit légère en pratique."
+    answer: "Presque. L'espace de noms .biz est ouvert dans le monde entier sans barrière de qualification, de marque déposée ou de présence locale, mais les enregistrements sont destinés à un usage professionnel ou commercial de bonne foi. Les enregistrements non commerciaux ou purement spéculatifs peuvent en principe être contestés au titre de la politique de litige historique du registre, bien que l'application soit légère en pratique et que le suffixe fonctionne comme un TLD ouvert."
   - question: 'Un domaine .biz a-t-il un impact sur le référencement (SEO) ?'
-    answer: "Non. Google traite le .biz comme un domaine générique de premier niveau standard, sans pénalité ni avantage intrinsèque au classement. Votre classement provient de la qualité du contenu, des liens et de l'expérience utilisateur, et non du suffixe .biz lui-même."
+    answer: "Non. Google traite le .biz comme un domaine générique de premier niveau standard, sans pénalité ni avantage intrinsèque au classement. Votre classement provient de la qualité du contenu, des liens entrants et de l'expérience utilisateur, et non du suffixe. Un site .biz bien construit rivalise sur un pied d'égalité avec un .com."
   - question: 'Qui devrait enregistrer un domaine .biz ?'
-    answer: "Les petites entreprises, les startups, les services locaux et les marques B2B dont le nom .com idéal est pris ou inabordable. C'est une solution de repli claire, signalant l'activité professionnelle, qui se marie bien avec un .com correspondant si vous pouvez sécuriser les deux."
+    answer: "Les petites entreprises, les startups, les services locaux et les marques B2B dont le nom .com idéal est déjà pris ou trop coûteux. C'est une solution de repli claire, signalant l'activité professionnelle. Si vous pouvez aussi sécuriser le .com correspondant, posséder les deux vous offre la protection et le rappel les plus solides."
   - question: 'Le .biz est-il perçu comme du spam ?'
-    answer: "Il porte une réputation mitigée. Les promotions bon marché ont historiquement attiré quelques enregistrements de faible qualité et de spam, de sorte que quelques filtres agressifs l'examinent de plus près. Un vrai site, une authentification de messagerie correcte et de bonnes habitudes d'envoi règlent cela pour les entreprises légitimes."
+    answer: "Il porte une réputation mitigée. Les promotions bon marché ont historiquement attiré quelques enregistrements de faible qualité et de spam, de sorte que quelques filtres agressifs l'examinent de plus près. Exploiter un vrai site et configurer SPF, DKIM et DMARC règle toute préoccupation de délivrabilité pour les entreprises légitimes."
   - question: 'Le .biz prend-il en charge la confidentialité WHOIS et le DNSSEC ?'
-    answer: "Oui. Les bureaux d'enregistrement proposent la confidentialité WHOIS sur le .biz comme sur les autres gTLD, et le registre prend en charge le DNSSEC pour un DNS cryptographiquement signé, ce qui vous permet de durcir votre zone contre la falsification."
+    answer: "Oui. Les bureaux d'enregistrement proposent la confidentialité WHOIS sur le .biz comme sur les autres gTLD, et le registre prend en charge le DNSSEC, ce qui vous permet de signer cryptographiquement votre zone DNS pour vous prémunir contre la falsification et l'empoisonnement de cache."
 relatedArticles:
   - /fr/blog/top-tlds-to-secure-for-your-business/
   - /fr/blog/what-is-a-tld/

@@ -10,11 +10,11 @@ description: 'The .boutique domain is an open generic extension built for curate
 keywords: ['boutique TLD', 'boutique domain registration', 'domains for small shops', 'curated brand domain', 'new gTLD', 'Binky Moon']
 faqs:
   - question: 'Can anyone register a .boutique domain?'
-    answer: 'Yes. .boutique is an open generic top-level domain with no eligibility restrictions. There is no requirement to own a retail store, sell physical goods, or prove any credential, so individuals, brands, and agencies worldwide can register an available name.'
+    answer: 'Yes. .boutique is an open generic top-level domain with no eligibility restrictions. There is no requirement to own a retail store, sell physical goods, or prove any credential, so individuals, brands, and agencies worldwide can register an available name on a first-come, first-served basis.'
   - question: 'Does a .boutique domain affect SEO?'
-    answer: 'No. Google treats .boutique as a generic top-level domain with no inherent ranking advantage or penalty. Search rankings depend on content quality, links, and user experience, not the suffix. A well-built .boutique site can rank as well as any .com.'
+    answer: 'No. Google treats .boutique as a generic top-level domain with no inherent ranking advantage or penalty. Search rankings depend on content quality, backlinks, and user experience, not on the suffix. A well-built .boutique site can rank just as well as a .com one.'
   - question: 'Who should register a .boutique domain?'
-    answer: 'Small specialty retailers, fashion and lifestyle labels, designers, and curated online shops that want a descriptive, exact-match name. It also suits agencies, studios, and consultancies that present themselves as small, hand-picked operations.'
+    answer: 'Small specialty retailers, fashion and lifestyle labels, designers, and curated online shops that want a descriptive, exact-match name. It also suits agencies, studios, and consultancies that present themselves as small, hand-picked, boutique operations.'
   - question: 'Is .boutique good for an online store?'
     answer: 'It can be, for a small curated catalog where the word "boutique" reinforces the brand. For a large general marketplace, broader suffixes like .shop or .store usually read better, since "boutique" implies a narrow, selective range of products.'
 relatedArticles:

@@ -14,7 +14,7 @@ faqs:
   - question: 'Who operates the .agakhan registry?'
     answer: 'Fondation Aga Khan, the Aga Khan Foundation, is the registry operator, with Afilias providing the technical back-end. The TLD was delegated to the DNS root zone on March 31, 2016, under ICANN''s New gTLD Program.'
   - question: 'What is the Aga Khan Foundation?'
-    answer: 'The Aga Khan Foundation is a non-profit international development organization. Its .agakhan domain is reserved for its own use and is a separate delegation from the similarly named .akdn TLD, which the same Foundation holds on behalf of the wider Aga Khan Development Network.'
+    answer: 'The Aga Khan Foundation is a non-profit international development organization. Its .agakhan domain is reserved for its own use and is separate from the similarly named .akdn TLD held by the wider Aga Khan Development Network.'
   - question: 'What can I register instead of .agakhan?'
     answer: 'Because .agakhan is closed, choose an open extension for your own project. A matching .com, or a modern alternative like .io or .xyz, can be registered by anyone through an accredited registrar such as Namefi.'
 relatedArticles:

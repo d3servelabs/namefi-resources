@@ -16,9 +16,9 @@ faqs:
   - question: '¿Afecta el dominio .io al SEO?'
     answer: 'No negativamente. Google trata .io como un dominio de nivel superior genérico en lugar de uno orientado a un país, por lo que un sitio .io puede posicionarse globalmente y no está restringido geográficamente a ninguna región.'
   - question: '¿Quién debería registrar un dominio .io?'
-    answer: 'Startups de software, productos SaaS, herramientas para desarrolladores, proyectos de código abierto, servicios de API, estudios de juegos de navegador, y equipos de Web3 o blockchain que quieran un nombre que se lea como Entrada/Salida y señale un enfoque tecnológico.'
+    answer: 'Startups de software, productos SaaS, herramientas para desarrolladores, proyectos de código abierto, servicios de API, estudios de juegos de navegador y equipos de Web3 o blockchain. La lectura "Entrada/Salida" encaja donde un enfoque tecnológico forme parte de la marca.'
   - question: '¿Va a desaparecer el dominio .io por el acuerdo de soberanía sobre las Chagos?'
-    answer: 'No es un hecho establecido. A partir de 2026, .io está completamente operativo. Cualquier retirada requeriría primero que cambiara el código de país ISO, y luego seguiría una transición de varios años en la IANA, por lo que es una situación a seguir de cerca antes que motivo de pánico.'
+    answer: 'No es un hecho establecido. A partir de 2026, .io está completamente operativo, con registros y renovaciones que continúan con normalidad. Cualquier retirada requeriría primero que el código de país ISO cambiara y luego seguiría una transición de varios años en la IANA, así que síguelo de cerca en lugar de alarmarte.'
 relatedArticles:
   - /es/blog/why-are-io-domains-expensive/
   - /es/blog/ai-vs-io-domain/

@@ -14,7 +14,7 @@ faqs:
   - question: 'Who operates the .alipay registry?'
     answer: 'Alibaba Group Holding Limited is the registry operator, with Afilias providing the technical back-end. The TLD was delegated to the DNS root zone on January 8, 2016 under ICANN''s New gTLD Program.'
   - question: 'What does the .alipay domain represent?'
-    answer: 'The string combines Ali, from Alibaba, with pay, for payments. It represents Alipay, the digital-payments platform associated with Ant Group and the wider Alibaba ecosystem, rather than an open word anyone can register.'
+    answer: 'The string combines "Ali," from Alibaba, with "pay," for payments. It represents Alipay, the digital-payments platform associated with Ant Group and the wider Alibaba ecosystem, rather than an open word anyone can register.'
   - question: 'What can I register instead of .alipay?'
     answer: 'Because .alipay is closed, choose an open extension for your own project. A matching .com, or a modern alternative like .io or .xyz, can be registered by anyone through an accredited registrar such as Namefi.'
 relatedArticles:

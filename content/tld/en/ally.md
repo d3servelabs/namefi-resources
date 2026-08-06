@@ -14,7 +14,7 @@ faqs:
   - question: 'Who operates the .ally registry?'
     answer: 'Ally Financial Inc. is the registry operator, with GoDaddy Registry providing the technical back-end. The TLD was delegated to the DNS root zone on October 22, 2015 under ICANN''s New gTLD Program.'
   - question: 'Is .ally open because ally is a common word?'
-    answer: 'No. Ally is an ordinary English word, but the .ally domain is a closed dot-brand controlled by Ally Financial Inc., a United States digital financial-services company. That everyday meaning does not make the TLD open to the public.'
+    answer: 'No. "Ally" is an ordinary English word, but the .ally domain is a closed dot-brand controlled by Ally Financial Inc., a United States digital financial-services company. That everyday meaning does not make the TLD open to the public.'
   - question: 'What can I register instead of .ally?'
     answer: 'Because .ally is closed, choose an open extension for your own project. A matching .com, or a modern alternative like .io or .xyz, can be registered by anyone through an accredited registrar such as Namefi.'
 relatedArticles:

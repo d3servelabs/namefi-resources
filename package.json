@@ -10,6 +10,7 @@
     "glossary:mentions": "bun scripts/glossary-mentions.ts",
     "priority:list": "bun scripts/list-priority.ts",
     "check:termbase": "bun scripts/check-termbase.ts",
+    "check:faq-sync": "bun scripts/check-tld-faq-sync.ts",
     "brandkit:build": "python3 scripts/build-brand-kit-assets.py",
     "lint:mdx": "bunx eslint \"content/**/*.{md,mdx}\"",
     "links:audit": "bun .agents/skills/cross-link/link-audit.ts",

@@ -11,15 +11,15 @@ description: 'Die .biz-Domain ist eine offene, geschäftsorientierte gTLD, die v
 keywords: ['.biz', '.biz-Domains', 'Business-Domain-Endung', 'biz vs com', 'GoDaddy Registry', 'echte geschäftliche Nutzung']
 faqs:
   - question: 'Kann jeder eine .biz-Domain registrieren?'
-    answer: 'Fast. Der .biz-Namensraum ist weltweit offen, ohne Hürden bei Qualifikation, Marke oder lokaler Präsenz, aber Registrierungen sind für echte geschäftliche oder kommerzielle Nutzung gedacht. Nicht-kommerzielle oder rein spekulative Registrierungen können im Prinzip angefochten werden, auch wenn die Durchsetzung in der Praxis gering ist.'
+    answer: 'Fast. Der .biz-Namensraum ist weltweit offen, ohne Hürden bei Qualifikation, Marke oder lokaler Präsenz, aber Registrierungen sind für echte geschäftliche oder kommerzielle Nutzung gedacht. Nicht-kommerzielle oder rein spekulative Registrierungen können im Prinzip nach der historischen Streitrichtlinie der Registry angefochten werden, auch wenn die Durchsetzung in der Praxis gering ist und die Endung als offene TLD funktioniert.'
   - question: 'Beeinflusst eine .biz-Domain die SEO?'
-    answer: 'Nein. Google behandelt .biz als gewöhnliche generische Top-Level-Domain ohne inhärente Ranking-Strafe oder -Vorteil. Ihr Ranking ergibt sich aus Inhaltsqualität, Links und Nutzererlebnis, nicht aus der .biz-Endung selbst.'
+    answer: 'Nein. Google behandelt .biz als gewöhnliche generische Top-Level-Domain ohne inhärente Ranking-Strafe oder -Vorteil. Ihr Ranking ergibt sich aus Inhaltsqualität, Backlinks und Nutzererlebnis, nicht aus der Endung. Eine gut gebaute .biz-Website konkurriert auf Augenhöhe mit einer .com.'
   - question: 'Wer sollte eine .biz-Domain registrieren?'
-    answer: 'Kleine Unternehmen, Startups, lokale Dienstleister und B2B-Marken, deren idealer .com-Name vergeben oder unbezahlbar ist. Es ist eine klare, geschäftssignalisierende Ausweichlösung, die sich gut mit einer passenden .com kombinieren lässt, wenn Sie beide sichern können.'
+    answer: 'Kleine Unternehmen, Startups, lokale Dienstleister und B2B-Marken, deren idealer .com-Name bereits vergeben oder zu teuer ist. Es ist eine klare, geschäftssignalisierende Ausweichlösung. Wenn Sie auch die passende .com sichern können, bietet Ihnen der Besitz beider den stärksten Schutz und die beste Wiedererkennung.'
   - question: 'Wird .biz als spammig angesehen?'
-    answer: 'Sie trägt eine gemischte Reputation. Günstige Aktionen zogen in der Vergangenheit einige minderwertige und Spam-Registrierungen an, sodass einige aggressive Filter sie genauer prüfen. Eine echte Website, korrekte E-Mail-Authentifizierung und gute Versandgewohnheiten lösen dies für seriöse Unternehmen.'
+    answer: 'Sie trägt eine gemischte Reputation. Günstige Aktionen zogen in der Vergangenheit einige minderwertige und Spam-Registrierungen an, sodass einige aggressive Filter sie genauer prüfen. Eine echte Website zu betreiben und SPF, DKIM und DMARC zu konfigurieren löst jedes Zustellbarkeitsbedenken für seriöse Unternehmen.'
   - question: 'Unterstützt .biz WHOIS-Datenschutz und DNSSEC?'
-    answer: 'Ja. Registrare bieten WHOIS-Datenschutz für .biz wie bei anderen gTLDs an, und die Registry unterstützt DNSSEC für kryptografisch signiertes DNS, sodass Sie Ihre Zone gegen Manipulationen härten können.'
+    answer: 'Ja. Registrare bieten WHOIS-Datenschutz für .biz an, wie sie es bei anderen gTLDs tun, und die Registry unterstützt DNSSEC, sodass Sie Ihre DNS-Zone kryptografisch signieren können, um sie gegen Manipulationen und Cache-Poisoning zu schützen.'
 relatedArticles:
   - /de/blog/top-tlds-to-secure-for-your-business/
   - /de/blog/what-is-a-tld/

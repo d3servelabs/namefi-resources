@@ -14,13 +14,13 @@ faqs:
   - question: 'Kann jeder eine .shop-Domain registrieren?'
     answer: 'Ja. .shop ist eine offene generische Top-Level-Domain ohne Berechtigungsvoraussetzungen. Jede Einzelperson oder jedes Unternehmen weltweit kann einen verfügbaren Namen nach dem Prinzip „Wer zuerst kommt, mahlt zuerst" registrieren. Es gibt keine Anforderungen an Qualifikationen, lokale Präsenz oder Mitgliedschaft in einer Gemeinschaft.'
   - question: 'Beeinflusst eine .shop-Domain das SEO?'
-    answer: 'Nein. Google behandelt .shop genauso wie .com und andere gTLDs – die Endung selbst führt weder zu einer Ranking-Strafe noch zu einem Bonus. Ein beschreibender .shop-Name kann die Klickrate bei kommerziellen Suchanfragen steigern, da die Endung auf einen Ort zum Kaufen hinweist.'
+    answer: 'Nein. Google behandelt .shop genauso wie .com und andere gTLDs, ohne Ranking-Strafe oder -Bonus durch die Endung. Ein beschreibender .shop-Name kann die Klickrate bei kommerziellen Suchanfragen steigern, da die Endung auf einen Ort zum Kaufen hinweist.'
   - question: 'Wer sollte eine .shop-Domain registrieren?'
-    answer: 'Sie eignet sich für Online-Shops, Direct-to-Consumer-Marken, Creator, die Merchandise verkaufen, sowie stationäre Händler, die eine Transaktionswebsite aufbauen. Sie ist besonders geeignet, wenn die passende .com vergeben oder teuer ist und ein Name gewünscht wird, der auf den ersten Blick „hier kaufen" vermittelt.'
+    answer: 'Online-Shops, Direct-to-Consumer-Marken, Creator, die Merchandise verkaufen, und stationäre Händler, die eine Transaktionswebsite aufbauen. Sie ist besonders geeignet, wenn die passende .com vergeben oder teuer ist und ein Name gewünscht wird, der auf den ersten Blick „hier kaufen" vermittelt.'
   - question: 'Ist .shop gut für einen Online-Shop?'
-    answer: 'Ja. Das Wort „shop" ist weltweit verständlich und kommuniziert sofort kommerzielle Absicht – weshalb Marken wie Netflix und MrBeast ihre Merchandise-Stores darauf betreiben. Der große, neuere Namespace macht es auch leichter, kurze, exakt passende Handelsnamen zu sichern.'
+    answer: 'Ja. „Shop" wird weltweit verstanden und kommuniziert sofort kommerzielle Absicht – weshalb Marken wie Netflix und MrBeast ihre Merchandise-Stores darauf betreiben. Der große, neuere Namespace macht es auch leichter, kurze, exakt passende Handelsnamen zu sichern als bei älteren Endungen.'
   - question: 'Unterstützt .shop WHOIS-Datenschutz und DNSSEC?'
-    answer: 'Ja. .shop unterstützt DNSSEC auf Registry-Ebene, und die meisten Registrare bieten kostenlosen WHOIS-Datenschutz an, der persönliche Kontaktdaten in öffentlichen Einträgen verbirgt. Die Verfügbarkeit des Datenschutzes hängt vom Registrar und nicht von der Registry ab.'
+    answer: 'Ja. .shop unterstützt DNSSEC auf Registry-Ebene, und die meisten Registrare bieten kostenlosen WHOIS-Datenschutz an, der persönliche Kontaktdaten in öffentlichen Einträgen verbirgt. Ob Datenschutz inbegriffen ist, hängt vom Registrar und nicht von der Registry ab.'
 relatedArticles:
   - /de/blog/what-is-a-tld/
   - /de/blog/top-tlds-to-secure-for-your-ecommerce-store/

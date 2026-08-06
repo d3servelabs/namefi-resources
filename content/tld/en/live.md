@@ -19,7 +19,7 @@ faqs:
   - question: 'Is .live good for email and deliverability?'
     answer: 'A .live domain can send and receive email reliably when you authenticate it properly with SPF, DKIM, and DMARC and warm it up gradually. As a newer suffix it carries less default trust than .com, so correct configuration matters more than the extension itself.'
   - question: 'When was the .live domain launched?'
-    answer: 'The .live top-level domain was delegated to the DNS root in June 2015 as part of ICANN New gTLD Program and reached general availability later that year. It is now operated by Identity Digital, the registry formerly known as Donuts.'
+    answer: 'The .live top-level domain was delegated to the DNS root in June 2015 as part of ICANN''s New gTLD Program and reached general availability later that year. It is now operated by Identity Digital, the registry formerly known as Donuts.'
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/what-are-tokenized-domains/

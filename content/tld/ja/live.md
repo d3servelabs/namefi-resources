@@ -20,7 +20,7 @@ faqs:
   - question: '.liveはメール送受信・到達率の面で問題ありませんか？'
     answer: 'SPF・DKIM・DMARCで適切に認証し、段階的にウォームアップすれば、.liveドメインでも確実にメールを送受信できます。新しい拡張子のため.comより初期信頼度は低い傾向がありますが、正しく設定することが拡張子の選択よりも重要です。'
   - question: '.liveドメインはいつ開始されましたか？'
-    answer: '.liveトップレベルドメインは、ICANNの新gTLDプログラムの一環として2015年6月にDNSルートへ委任され、同年中に一般登録が開始されました。現在はかつてDonuts社として知られていたIdentity Digitalが運営しています。'
+    answer: '.liveトップレベルドメインはICANNの新gTLDプログラムの一環として2015年6月にDNSルートへ委任され、同年中に一般登録が開始されました。現在はかつてDonuts社として知られていたIdentity Digitalが運営しています。'
 relatedArticles:
   - /ja/blog/what-is-a-tld/
   - /ja/blog/what-are-tokenized-domains/

@@ -11,13 +11,13 @@ description: '.now 도메인은 일반 등록이 불가능한 Amazon의 폐쇄�
 keywords: ['.now 도메인', '.now란 무엇인가', '.now TLD', '.now 최상위 도메인', 'Amazon Registry Services', '브랜드 TLD', 'dotBrand', 'Specification 13']
 faqs:
   - question: '누구나 .now 도메인을 등록할 수 있습니까?'
-    answer: '아닙니다. .now는 Amazon Registry Services가 운영하는 폐쇄형 Specification 13 브랜드 TLD입니다. Amazon과 그 계열사, 승인된 파트너만 .now 도메인을 등록할 수 있으며, 일반 대중은 어떤 등록 기관을 통해서도 .now를 등록할 수 없습니다.'
+    answer: '아닙니다. .now는 Amazon Registry Services가 운영하는 폐쇄형 Specification 13 브랜드 TLD입니다. Amazon과 그 계열사, 승인된 파트너만 .now 도메인을 등록할 수 있으며, 다른 곳에서 가격 견적을 보더라도 어떤 등록 기관을 통해서도 일반 대중에게는 제공되지 않습니다.'
   - question: '.now 도메인은 SEO에 영향을 줍니까?'
-    answer: '대부분의 사람들에게는 의미 없는 질문입니다. .now 자체가 공개 등록이 불가능하기 때문입니다. 일반 신규 gTLD로서 내재된 순위 불이익은 없으며, Google은 신규 gTLD를 기존 도메인과 동일하게 취급하므로 확장자 자체가 순위에 유리하거나 불리하게 작용하지 않습니다.'
+    answer: '대부분의 사람들에게는 의미 없는 질문입니다. .now 자체가 공개 등록이 불가능하기 때문입니다. 일반 신규 gTLD로서 내재된 순위 불이익은 없으며, Google은 신규 gTLD를 기존 확장자와 동일하게 취급하므로 확장자 자체가 순위에 유리하거나 불리하게 작용하지 않습니다.'
   - question: '.now 도메인은 누가 등록해야 합니까?'
-    answer: '사실상 Amazon과 Amazon이 승인한 법인만 등록할 수 있습니다. .now는 브랜드 전용 TLD이기 때문입니다. 짧고 행동 지향적인 도메인명을 원한다면 .io, .app, .xyz 같은 공개 일반 확장자를 대신 검토해 보시기 바랍니다.'
+    answer: '사실상 Amazon과 Amazon이 승인한 법인만 등록할 수 있습니다. .now는 브랜드 전용 TLD이기 때문입니다. 짧고 행동 지향적인 도메인명을 원한다면 .io, .app, .xyz 같은 공개 일반 확장자를 대신 검토해 보십시오.'
   - question: '.now 도메인을 어디서든 구매할 수 있습니까?'
-    answer: '일반 대중에게는 불가능합니다. .now는 Amazon이 관리하는 dotBrand이므로, 어떤 공인 등록 기관도 외부 구매자에게 .now 도메인을 판매할 수 없습니다. 다른 곳에서 매물 목록을 보더라도 실제 공개 가용성을 반영한 것이 아닙니다.'
+    answer: '일반 대중에게는 불가능합니다. .now는 Amazon이 관리하는 dotBrand이므로, 어떤 공인 등록 기관도 외부 구매자에게 .now 도메인을 판매할 수 없습니다. 다른 곳의 매물 목록은 실제 가용성을 반영하지 않습니다.'
 relatedArticles:
   - /ko/blog/what-is-a-tld/
   - /ko/blog/how-to-sell-a-domain-name-you-own/

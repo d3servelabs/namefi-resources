@@ -10,13 +10,13 @@ description: 'The .law domain is a restricted, credential-gated extension reserv
 keywords: ['law domain registration', 'restricted TLD', 'lawyer domain', 'law firm domain', 'legal domain name', 'credential-gated TLD']
 faqs:
   - question: 'Can anyone register a .law domain?'
-    answer: 'No. .law is a restricted, credential-gated TLD. Only qualified lawyers licensed to practice, law firms, law schools, and legal regulators may register, and an independent validation provider verifies your legal credentials both at registration and on an ongoing basis throughout the domain lifecycle.'
+    answer: 'No. .law is a restricted, credential-gated TLD. Only qualified lawyers licensed to practice, law firms, law schools, and legal regulators may register. An independent validation provider verifies your legal credentials at registration, and eligibility must be maintained throughout the domain''s lifecycle, not just at purchase.'
   - question: 'Does a .law domain affect SEO?'
-    answer: 'A TLD choice is not a direct Google ranking factor, so .law neither helps nor hurts rankings on its own. Its value is trust: a .law address signals a verified legal professional, which can lift click-through and reduce impersonation, indirectly helping performance.'
+    answer: 'A TLD choice is not a direct Google ranking factor, so .law neither helps nor hurts rankings on its own. Its real value is trust and credibility: a verified .law address signals a genuine legal professional, which can improve click-through and reduce impersonation — indirect benefits rather than a ranking boost.'
   - question: 'Who should register a .law domain?'
-    answer: 'Practicing lawyers, law firms, law schools, and bar associations that want a verified, profession-specific web and email identity. It suits practices that value a credibility signal and anti-impersonation security over a short generic name.'
+    answer: 'Practicing lawyers, law firms, law schools, and bar associations that want a verified, profession-specific web and email identity. It suits practices that value a credibility signal and anti-impersonation security more than a short, generic name, and that can maintain their legal credentials over time.'
   - question: 'What happens to my .law domain if I lose my license to practice?'
-    answer: 'Eligibility must be maintained for the life of the registration, not just at purchase. A lawyer with inactive, suspended, or non-practicing status who is no longer authorized to provide legal services may fail re-verification and be unable to keep or renew the domain.'
+    answer: 'Eligibility must be maintained for the life of the registration, not only at purchase. A lawyer with inactive, suspended, or non-practicing status who is no longer authorized to provide legal services may fail re-verification and be unable to keep or renew the domain.'
 relatedArticles:
   - /en/blog/top-tlds-to-secure-for-your-law-firm/
   - /en/blog/what-is-a-tld/

@@ -14,7 +14,7 @@ faqs:
   - question: 'Who operates the .abbvie registry?'
     answer: 'AbbVie Inc. is the registry operator, with Nominet providing the technical back-end. The TLD was delegated to the DNS root zone on February 26, 2016.'
   - question: 'Is AbbVie related to Abbott?'
-    answer: 'Yes. AbbVie Inc. is a biopharmaceutical company that was spun off from Abbott Laboratories in 2013, and it operates its own separate .abbvie brand TLD distinct from Abbott dot-brand .abbott.'
+    answer: 'Yes. AbbVie Inc. is a biopharmaceutical company that was spun off from Abbott Laboratories in 2013, and it operates its own separate .abbvie brand TLD distinct from Abbott''s .abbott.'
   - question: 'What can I register instead of .abbvie?'
     answer: 'Because .abbvie is closed, choose an open extension for your own project. A matching .com, or a modern alternative like .io or .xyz, can be registered by anyone through an accredited registrar such as Namefi.'
 relatedArticles:

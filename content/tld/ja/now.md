@@ -11,13 +11,13 @@ description: '.nowドメインはAmazonが運営する非公開のブランドTL
 keywords: ['.nowドメイン', '.nowとは', '.now TLD', '.nowトップレベルドメイン', 'Amazon Registry Services', 'ブランドTLD', 'dotBrand', 'Specification 13']
 faqs:
   - question: '誰でも.nowドメインを登録できますか？'
-    answer: 'いいえ。.nowはAmazon Registry ServicesによってSpecification 13に基づき運営されている非公開のブランドTLDです。Amazon・その関連会社・認定パートナーのみが.now名を登録でき、一般のレジストラを通じた一般公開登録はできません。'
+    answer: 'いいえ。.nowはAmazon Registry ServicesによってSpecification 13に基づき運営されている非公開のブランドTLDです。Amazon・その関連会社・認定パートナーのみが.now名を登録でき、他所に価格表示があるかどうかにかかわらず、一般のレジストラを通じた一般公開登録はできません。'
   - question: '.nowドメインはSEOに影響しますか？'
-    answer: 'ほとんどの方にとって、この問いは実質的に意味をなしません。.nowは一般登録ができないからです。汎用的な新gTLDとして本質的な検索順位ペナルティはなく、Googleは新gTLDを従来の拡張子と同様に扱うため、この拡張子自体がランキングを上げも下げもしません。'
+    answer: '.nowは一般登録ができないため、ほとんどの方にとってこの問いは実質的に意味をなしません。汎用的な新gTLDとして本質的な検索順位ペナルティはなく、Googleは新gTLDを従来の拡張子と同様に扱うため、この拡張子自体がランキングを上げも下げもしません。'
   - question: '.nowドメインを登録すべきなのは誰ですか？'
-    answer: '.nowはブランド限定のTLDであるため、実質的にAmazonおよびその認定事業体のみが対象です。短くアクション指向のドメインが欲しい場合は、.io、.app、.xyzなどの公開汎用拡張子を検討してください。'
+    answer: '.nowはブランド限定のTLDであるため、実質的にAmazonおよびその認定事業体のみが対象です。短くアクション指向の名前が欲しい場合は、代わりに.io、.app、.xyzなどの公開汎用拡張子を検討してください。'
   - question: '.nowはどこかで購入できますか？'
-    answer: '一般向けには購入できません。.nowはAmazonが管理するdotBrandであるため、認定レジストラが外部の購入者に.now名を販売することはできません。他所に掲載があっても、実際の一般公開状況を反映したものではありません。'
+    answer: '一般向けには購入できません。.nowはAmazonが管理するdotBrandであるため、認定レジストラが外部の購入者に.now名を販売することはできません。そうでないことを示唆する掲載情報は、実際の公開状況を反映していません。'
 relatedArticles:
   - /ja/blog/what-is-a-tld/
   - /ja/blog/how-to-sell-a-domain-name-you-own/

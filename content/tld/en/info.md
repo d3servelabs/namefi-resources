@@ -11,15 +11,15 @@ description: 'The .info domain is an open, unrestricted gTLD launched in 2001 fo
 keywords: ['.info', 'register .info domain', 'info domain meaning', 'Identity Digital', 'unrestricted gTLD']
 faqs:
   - question: 'Can anyone register a .info domain?'
-    answer: 'Yes. The .info domain is an open, unrestricted gTLD with no eligibility requirements. Anyone, anywhere can register an available .info name without proving a credential, business type, or local presence.'
+    answer: 'Yes. .info is an open, unrestricted gTLD with no eligibility requirements. Anyone, anywhere can register an available .info name without proving a credential, business type, or local presence — it was, in fact, the first genuinely unrestricted generic TLD launched after .com.'
   - question: 'Does a .info domain affect SEO?'
-    answer: 'No. Google treats .info as a standard generic top-level domain with no inherent ranking penalty or boost. Rankings depend on content quality, links, and user experience, not the suffix itself.'
+    answer: 'No. Google treats .info as a standard generic top-level domain with no inherent ranking penalty or boost. As a generic suffix it is not geo-targeted to any country. Your rankings come from content quality, links, and user experience — not from the extension you chose.'
   - question: 'Who should register a .info domain?'
-    answer: 'It suits knowledge bases, documentation hubs, public-information portals, event pages, and reference sites where the goal is to inform rather than sell. It is also a practical way to secure a name that is taken on .com.'
+    answer: 'It suits knowledge bases, documentation hubs, public-information portals, reference sites, and event pages — anywhere the goal is to inform rather than sell. It is also a practical way to secure a meaningful name when the .com is already taken.'
   - question: 'Why do some spam filters distrust .info domains?'
-    answer: 'Because .info has historically been low cost and unrestricted, it was used heavily for throwaway and spam sites, so some email filters score it cautiously. A warmed-up domain, proper SPF, DKIM, and DMARC, and a clean sending history overcome this.'
+    answer: 'Because .info has historically been low cost and unrestricted, it saw heavy use by throwaway and spam sites, so some email filters score it cautiously. A warmed-up domain with correct SPF, DKIM, and DMARC and a clean sending history overcomes this.'
   - question: 'Does .info support internationalized domain names and DNSSEC?'
-    answer: 'Yes. The .info registry supports internationalized domain names (IDNs) across multiple scripts and has supported DNSSEC since the zone was signed in 2010.'
+    answer: 'Yes. The registry supports internationalized domain names across multiple scripts, and DNSSEC has been available since the .info zone was signed in 2010, letting you cryptographically protect your DNS responses.'
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/top-tlds-to-secure-for-your-business/

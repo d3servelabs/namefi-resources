@@ -12,13 +12,13 @@ description: "Le domaine .com est l'adresse par défaut du web commercial. Déco
 keywords: ['domaines .com', "qu'est-ce que .com", '.com TLD', 'extension de domaine .com', 'enregistrer un domaine .com', 'signification domaine com', '.com vs .net', "domaines d'entreprise"]
 faqs:
   - question: "N'importe qui peut-il enregistrer un domaine .com ?"
-    answer: "Oui. L'espace de noms .com est ouvert à tous dans le monde entier, sans exigence de présence locale, d'activité commerciale, de qualification ou d'appartenance à une communauté. L'intention commerciale d'origine n'est plus appliquée, si bien que les particuliers, les organisations à but non lucratif et les entreprises peuvent tous en enregistrer un."
+    answer: "Oui. L'espace de noms .com est ouvert à tous dans le monde entier, sans exigence de présence locale, d'activité commerciale, de qualification ou d'appartenance à une communauté. L'intention commerciale d'origine n'est plus appliquée, de sorte que les particuliers, les organisations à but non lucratif et les entreprises peuvent tous en enregistrer un, sous réserve uniquement de disponibilité standard."
   - question: 'Un domaine .com a-t-il un impact sur le référencement (SEO) ?'
-    answer: "Google traite le .com comme un domaine générique de premier niveau sans avantage ni pénalité intrinsèque au classement. L'avantage concret est humain : les utilisateurs font davantage confiance aux résultats en .com et cliquent plus volontiers dessus, ce qui peut améliorer les taux de clics réels."
+    answer: "Google traite le .com comme un domaine générique de premier niveau sans avantage ni pénalité intrinsèque au classement. L'avantage concret est humain plutôt qu'algorithmique : les utilisateurs font davantage confiance aux résultats en .com et cliquent plus volontiers dessus, ce qui peut améliorer les taux de clics réels."
   - question: 'Qui devrait enregistrer un domaine .com ?'
-    answer: "Presque toute entreprise, marque ou projet souhaitant l'adresse la plus universellement reconnue et fiable, en particulier les entreprises qui s'adressent à un public mondial ou grand public, et toute personne qui protège une marque sur le long terme."
+    answer: "Presque toute entreprise, marque ou projet souhaitant l'adresse la plus universellement reconnue et fiable. C'est particulièrement intéressant pour les entreprises qui s'adressent à un public mondial ou grand public, et pour toute personne qui protège une marque sur le long terme."
   - question: 'Pourquoi les bons domaines .com sont-ils si difficiles à trouver ?'
-    answer: "Avec plus de 160 millions de noms .com enregistrés, l'offre de noms courts, de dictionnaire et correspondant exactement à une marque est en grande partie épuisée. La plupart des noms .com premium sont déjà détenus et ne sont donc disponibles que sur le marché secondaire."
+    answer: "Avec plus de 160 millions de noms .com enregistrés, l'offre de noms courts, de dictionnaire et correspondant exactement à une marque est en grande partie épuisée. La plupart des noms .com premium sont déjà détenus et ne sont donc généralement disponibles que via le marché secondaire plutôt qu'au prix standard d'enregistrement."
 relatedArticles:
   - /fr/blog/the-12-dollar-minute-someone-owned-google-com/
   - /fr/blog/the-sex-com-heist-the-forged-letter/

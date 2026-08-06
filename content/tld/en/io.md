@@ -13,11 +13,11 @@ faqs:
   - question: 'Can anyone register a .io domain?'
     answer: 'Yes. The .io namespace is open to everyone worldwide with no local-presence, business, or credential requirements. You do not need any connection to the British Indian Ocean Territory to register one.'
   - question: 'Does a .io domain affect SEO?'
-    answer: 'No negatively. Google treats .io as a generic top-level domain rather than a country-targeted one, so a .io site can rank globally and is not geo-restricted to any single region.'
+    answer: 'Not negatively. Google treats .io as a generic top-level domain rather than a country-targeted one, so a .io site can rank globally and is not geo-restricted to any single region.'
   - question: 'Who should register a .io domain?'
-    answer: 'Software startups, SaaS products, developer tools, open-source projects, API services, browser game studios, and Web3 or blockchain teams that want a name reading as Input/Output and signaling a technology focus.'
+    answer: 'Software startups, SaaS products, developer tools, open-source projects, API services, browser game studios, and Web3 or blockchain teams. The "Input/Output" reading fits wherever a technology focus is part of the brand.'
   - question: 'Is the .io domain going away because of the Chagos sovereignty deal?'
-    answer: 'Not as a settled fact. As of 2026 .io is fully operational. Any retirement would require the ISO country code to change first and would then follow a multi-year IANA transition, so it is an evolving situation to monitor rather than panic over.'
+    answer: 'Not as a settled fact. As of 2026 .io is fully operational, with registrations and renewals continuing normally. Any retirement would require the ISO country code to change first and then follow a multi-year IANA transition, so monitor it rather than panic.'
 relatedArticles:
   - /en/blog/why-are-io-domains-expensive/
   - /en/blog/ai-vs-io-domain/
