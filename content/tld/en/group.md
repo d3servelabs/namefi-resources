@@ -45,7 +45,7 @@ The **.group domain** is an open, unrestricted generic top-level domain built fo
 | --- | --- |
 | TLD type | Generic top-level domain (new gTLD, 2012 round) |
 | Registry operator | Binky Moon, LLC, c/o Identity Digital Inc. |
-| Year launched | Delegated August 2015; general availability July 30, 2015 |
+| Year launched | Delegated August 2015 |
 | IDN support | Yes |
 | DNSSEC | Supported |
 | Registration restrictions | Open to all — no credential, community, or local-presence requirement |
@@ -60,7 +60,7 @@ Because it is a plain generic extension, Google Search Central treats [new gTLDs
 ## History of .group
 
 - **Contested string, private auction (2014).** Multiple applicants sought the .group string during ICANN's New gTLD Program; the rights were won by **Donuts Inc.** through a private auction among the competing applicants in July 2014. Donuts signed the underlying [ICANN Registry Agreement for .group on 15 August 2014](https://www.icann.org/en/registry-agreements/details/group).
-- **Delegation and launch (2015).** IANA's report shows the .group domain was delegated to **Romeo Town, LLC** — one of Donuts's many single-TLD registry subsidiaries — on 2015-08-05, with general availability effectively beginning 2015-07-30.
+- **Delegation and launch (2015).** IANA's report shows the .group domain was delegated to **Romeo Town, LLC** — one of Donuts's many single-TLD registry subsidiaries — on 2015-08-05.
 - **Consolidation under Binky Moon (2018).** As part of a broader restructuring, Donuts transferred .group and 195 other strings (including .academy) into a single operating entity, **Binky Moon, LLC**, simplifying what had been nearly 200 separate single-purpose registry subsidiaries.
 - **Identity Digital era (present).** Binky Moon remains the contracted registry operator of record, now operating as part of the **Identity Digital** family of companies (the rebranded, merged Donuts/Afilias registry group), which runs the technical back-end and registration services for .group today.
 
