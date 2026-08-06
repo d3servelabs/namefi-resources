@@ -2,6 +2,7 @@
 title: '¿Qué es el dominio .es? La extensión oficial de España'
 date: '2026-06-15'
 language: 'es'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 editors: ['victor-zhou']
@@ -20,11 +21,11 @@ faqs:
   - question: '¿El dominio .es admite tildes y la letra eñe?'
     answer: 'Sí. El registro de .es admite nombres de dominio internacionalizados (IDN), por lo que se pueden usar tildes, diéresis y la eñe. Internamente estos caracteres se codifican en formato Punycode (por ejemplo, españa.es se convierte en xn--espaa-rta.es).'
 relatedArticles:
+  - /es/blog/what-is-a-tld/
+  - /es/blog/domain-terminology-guide/
+  - /es/blog/cctld-market-share-by-registration-volume/
+  - /es/blog/what-is-domain/
   - /es/blog/top-tlds-to-secure-for-your-business/
-  - /es/blog/the-perl-com-domain-theft/
-  - /es/blog/the-2024-squarespace-defi-domain-hijacks/
-  - /es/blog/how-tokenized-marketplaces-replace-escrow/
-  - /es/blog/the-malaysia-airlines-dns-hijack/
 relatedTopics:
   - /es/topics/domain-security/
   - /es/topics/choosing-a-tld/
@@ -32,11 +33,11 @@ relatedSeries:
   - /es/series/domain-apocalypse/
   - /es/series/tokenize-your-com/
 relatedGlossary:
-  - /es/glossary/tld/
+  - /es/glossary/cctld/
   - /es/glossary/registrar/
-  - /es/glossary/dns/
-  - /es/glossary/web3/
-  - /es/glossary/registry/
+  - /es/glossary/icann/
+  - /es/glossary/dnssec/
+  - /es/glossary/idn/
 ---
 
 El dominio **.es** es la extensión oficial de Internet de España, su dominio de nivel superior de código de país (ccTLD). Si su negocio, proyecto o marca se dirige al público español, registrar un **dominio .es** es una de las señales más claras y reconocibles de que está en casa en el mercado español.

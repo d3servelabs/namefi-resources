@@ -2,6 +2,7 @@
 title: 'Domaine .fr : guide complet du ccTLD de la France'
 date: '2026-06-15'
 language: 'fr'
+priority: P1
 tags: ['tld']
 authors: ['namefiteam']
 editors: ['victor-zhou']
@@ -22,11 +23,11 @@ faqs:
   - question: 'Le .fr prend-il en charge les noms de domaine internationalisés (IDN) ?'
     answer: 'Oui. Le .fr accepte les caractères accentués propres à la langue française (comme é, è, à, ç) dans le cadre des règles de l''Afnic, ce qui permet d''enregistrer des noms reflétant fidèlement une marque ou une expression française.'
 relatedArticles:
-  - /fr/blog/cctld-market-share-by-registration-volume/
   - /fr/blog/what-is-a-tld/
-  - /fr/blog/from-del-icio-us-to-delicious-com/
-  - /fr/blog/ai-vs-io-domain/
-  - /fr/blog/from-ctrip-com-to-trip-com/
+  - /fr/blog/domain-terminology-guide/
+  - /fr/blog/domain-hacks-explained/
+  - /fr/blog/cctld-market-share-by-registration-volume/
+  - /fr/blog/what-is-domain/
 relatedTopics:
   - /fr/topics/choosing-a-tld/
   - /fr/topics/domain-investing/
@@ -34,11 +35,11 @@ relatedSeries:
   - /fr/series/name-change-game-change/
   - /fr/series/domain-investor-field-guide/
 relatedGlossary:
-  - /fr/glossary/tld/
+  - /fr/glossary/cctld/
+  - /fr/glossary/registrar/
   - /fr/glossary/icann/
-  - /fr/glossary/dns/
-  - /fr/glossary/web3/
-  - /fr/glossary/registry/
+  - /fr/glossary/dnssec/
+  - /fr/glossary/idn/
 ---
 
 L'extension **.fr** est le domaine national de premier niveau (ccTLD) de la France. C'est le symbole numérique le plus immédiat d'une présence française : un visiteur, un client ou un moteur de recherche comprend instantanément qu'un site en .fr s'adresse au public français. Pour une entreprise, une association, un indépendant ou un particulier qui veut s'ancrer sur le marché national, le **domaine .fr** est souvent le choix de confiance par défaut.
