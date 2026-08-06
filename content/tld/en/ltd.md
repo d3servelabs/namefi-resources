@@ -55,7 +55,7 @@ The **.ltd domain** borrows the company suffix used across the UK, much of the C
 
 ## What is .ltd?
 
-.ltd is a [generic top-level domain](/en/glossary/gtld) delegated under ICANN's 2012 New gTLD Program. As a generic string, it carries no inherent geographic tie in Google's system — per Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations), a gTLD like .ltd needs hreflang, URL structure, or Search Console settings to signal a target country; the suffix itself does not, even though "Ltd." reads as distinctly British in everyday usage.
+.ltd is a [generic top-level domain](/en/glossary/gtld) delegated under ICANN's 2012 New gTLD Program. As a generic string, it carries no inherent geographic tie in Google's system — per Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#targeting-site-content-to-a-specific-country-geotargeting), a gTLD like .ltd needs locale-specific URLs, `hreflang`, or sitemaps to signal a target country; the suffix itself does not, even though "Ltd." reads as distinctly British in everyday usage.
 
 Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 

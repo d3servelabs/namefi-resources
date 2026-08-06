@@ -105,7 +105,7 @@ Choose **.com** for a globally neutral default, **.uk** (or the still-dominant .
 
 ## Who can register a .uk domain?
 
-**Registration restrictions: open for the general namespaces.** Nominet's current [.UK Registration Policy](https://registrars.nominet.uk/registry/dot-uk/policies/#:~:text=This%20.UK%20Registration%20Policy%20(Policy)%20governs%20the%20registration%20of%20Domains%20in%20the%20.UK%20namespace) contains no citizenship or residency requirement for direct `.uk`, `.co.uk`, or `.org.uk` registrations. It does set explicit category rules for specialist sub-namespaces such as `.ltd.uk`, `.plc.uk`, `.net.uk`, and `.sch.uk`, so those should not be described as unrestricted. [DNSSEC](/en/glossary/dnssec/) is supported registry-wide, and disputes over UK domains run through Nominet's own Dispute Resolution Service rather than the generic [UDRP](/en/glossary/udrp/).
+**Registration restrictions: open for the general namespaces.** Current registrar guidance lists [non-UK individuals, corporations, and other entities as accepted registrant types](https://registrars.nominet.uk/uk-namespace/registration-and-domain-management/field-definitions-and-registrant-types/#:~:text=FIND,Non%2DUK%20Entity%20that%20does%20not%20fit%20into%20any%20of%20the%20above), so direct `.uk`, `.co.uk`, and `.org.uk` registrations do not require UK citizenship or residency. Nominet's current registrar documentation links to the [legacy registration rules](https://nominet.uk/wp-content/uploads/2018/05/22141819/dotUK-Rules-of-Registration.pdf#page=3), under which specialist sub-namespaces such as `.ltd.uk`, `.plc.uk`, `.net.uk`, and `.sch.uk` have category-specific eligibility rules and should not be described as unrestricted. [DNSSEC](/en/glossary/dnssec/) is supported registry-wide, and disputes over UK domains run through Nominet's own Dispute Resolution Service rather than the generic [UDRP](/en/glossary/udrp/).
 
 ## .uk pricing and value
 
@@ -158,7 +158,8 @@ It suits UK-based businesses, brands, and organizations that want an unambiguous
 ## Sources and further reading
 
 - IANA — [IANA root-zone record](https://www.iana.org/domains/root/db/uk.html)
-- registrars.nominet.uk — [.UK policies](https://registrars.nominet.uk/registry/dot-uk/policies/#:~:text=This%20.UK%20Registration%20Policy%20(Policy)%20governs%20the%20registration%20of%20Domains%20in%20the%20.UK%20namespace)
+- registrars.nominet.uk — [current legacy-platform registrant types](https://registrars.nominet.uk/uk-namespace/registration-and-domain-management/field-definitions-and-registrant-types/#:~:text=FIND,Non%2DUK%20Entity%20that%20does%20not%20fit%20into%20any%20of%20the%20above)
+- Nominet — [legacy .uk registration rules](https://nominet.uk/wp-content/uploads/2018/05/22141819/dotUK-Rules-of-Registration.pdf#page=3)
 - Google Search Central — [multi-regional sites guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
 - Namecheap — [ended at 06:00 BST on 25 June 2019](https://www.namecheap.com/support/knowledgebase/article.aspx/251/36/uk-domain-registration-requirements/#:~:text=The%20deadline%20to%20claim%20reserved%20.UK%20domain%20names%20ended%20at%206am%20BST%20(UTC%2B1)%20on%20the%2025th%20of%20June%202019.)
 - registrars.nominet.uk — [.UK pricing schedule](https://registrars.nominet.uk/uk-namespace/managing-account/payments/fee-schedule/#:~:text=Domain%20name%20registration%20and%20renewal%20fee%20payable%20by%20Nominet%20Registrars)

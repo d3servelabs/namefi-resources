@@ -135,7 +135,7 @@ Technically, .ly is [DNSSEC](/en/glossary/dnssec/)-signed in the root zone, with
 
 ## How to register a .ly domain
 
-1. **Search** for your desired "-ly" name (four or more characters) and check availability.
+1. **Search** for your desired "-ly" name and check availability; if it is shorter than four characters, confirm that you can satisfy the local-presence route.
 2. **Screen** the name and your planned content against NIC.LY's restrictions.
 3. **Register** and configure [DNS](/en/glossary/dns/) for your site and email.
 
