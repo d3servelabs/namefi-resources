@@ -12,13 +12,13 @@ faqs:
   - question: 'Can anyone register a .esq domain?'
     answer: 'Yes. Despite being marketed for the legal profession, .esq is open to everyone on a first-come, first-served basis. The registry does not verify bar membership or legal credentials, so registration is not gated the way .law and .cpa are.'
   - question: 'Does a .esq domain affect SEO?'
-    answer: 'No. Google treats .esq as a generic top-level domain with no inherent ranking advantage or penalty. As a new gTLD it carries no geographic targeting, so rankings depend on content, links, and user experience rather than the suffix itself.'
+    answer: 'No. Google treats .esq as a generic top-level domain with no inherent ranking advantage or penalty. As a new gTLD it carries no geographic targeting, so rankings depend on content, backlinks, and user experience rather than the suffix.'
   - question: 'Who should register a .esq domain?'
-    answer: 'Practicing attorneys, solo lawyers, and law firms who want a domain that signals their profession at a glance. It also suits legal professionals building a personal brand around their name, such as firstname.esq.'
+    answer: 'Practicing attorneys, solo lawyers, and law firms who want a domain that signals their profession at a glance. It suits legal professionals building a personal brand around their own name, using the firstname.esq pattern early adopters popularized.'
   - question: 'Why do .esq sites always need HTTPS?'
-    answer: 'Charleston Road Registry placed the entire .esq namespace on the HSTS preload list, so browsers force HTTPS on every .esq site. You must install a valid TLS certificate or the site will not load in modern browsers.'
+    answer: 'Charleston Road Registry placed the entire .esq namespace on the HSTS preload list, so browsers force HTTPS on every .esq site. You must install a valid TLS certificate or the site will refuse to load in modern browsers, with no opt-out.'
   - question: 'Is .esq better than .law or .attorney for a law firm?'
-    answer: '.esq is the shortest and most universally recognized of the legal extensions, but unlike .law it is open to anyone, which slightly dilutes its credentialing value. .law and .attorney are longer; the best choice depends on your name and budget.'
+    answer: '.esq is the shortest and most recognizable legal extension, but unlike .law it is open to anyone, which slightly dilutes its credentialing value. .law requires verified bar membership; .attorney is longer but also open. The best choice depends on your name, branding goals, and budget.'
 relatedArticles:
   - /en/blog/top-tlds-to-secure-for-your-law-firm/
   - /en/blog/what-is-a-tld/

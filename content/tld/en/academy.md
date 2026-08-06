@@ -16,7 +16,7 @@ faqs:
   - question: 'Who should register a .academy domain?'
     answer: 'It suits schools, online course creators, coding and trading bootcamps, sports and arts academies, corporate training portals, and any brand whose identity centers on teaching. It is less ideal for general businesses, e-commerce stores, or projects with no educational angle.'
   - question: 'Who operates the .academy registry?'
-    answer: 'The .academy registry is operated by Binky Moon, LLC, a subsidiary in the Identity Digital portfolio (formerly Donuts). It was delegated in the root zone in December 2013 and reached general availability in March 2014 as part of ICANN new gTLD program.'
+    answer: 'The .academy registry is operated by Binky Moon, LLC, a subsidiary in the Identity Digital portfolio (formerly Donuts). It was delegated in the root zone in December 2013 and reached general availability in March 2014 as part of ICANN''s new gTLD program.'
   - question: 'Does .academy support WHOIS privacy and DNSSEC?'
     answer: 'Yes. Because .academy has no special verification rules, most registrars offer WHOIS privacy on it like any standard gTLD, and the registry supports DNSSEC for cryptographic protection of DNS responses.'
 relatedArticles:

@@ -11,15 +11,15 @@ description: '.realtorドメインはNARおよびCREA会員に限定された不
 keywords: ['.realtorドメイン', '.realtorとは', '.realtor TLD', 'realtorドメイン拡張子', '不動産ドメイン名', 'NARドメイン', '不動産業者ウェブサイトドメイン', 'Real Estate Domains LLC']
 faqs:
   - question: '誰でも.realtorドメインを登録できますか？'
-    answer: 'いいえ。.realtorドメインは全米不動産業者協会（NAR）会員、カナダ不動産協会（CREA）会員、それらの加盟団体・協会、およびNARの関連会社・ライセンシーのみに限定されています。一般の方は登録できず、資格の判断はNARの単独裁量によります。'
+    answer: 'いいえ。.realtorドメインは全米不動産業者協会®（NAR）会員、カナダ不動産協会（CREA）会員、それらの加盟団体・協会、およびNARの関連会社・ライセンシーのみに限定されています。一般の方は登録できず、資格の判断はNARの単独裁量によります。'
   - question: '.realtorドメインはSEOに影響しますか？'
-    answer: 'Googleは.realtorをジェネリックTLDとして扱うため、ドメイン拡張子自体に順位向上やペナルティの効果はありません。検索順位はコンテンツ、リンク、ユーザー体験によって決まります。わかりやすい.realtorのドメイン名は、認定不動産専門家であることを明確に示すことでクリック率の向上につながる可能性があります。'
+    answer: 'Googleは.realtorを他のジェネリックTLDと同様に扱うため、拡張子自体に順位向上やペナルティの効果はありません。検索順位はコンテンツ、リンク、ユーザー体験によって決まります。わかりやすい.realtorのドメイン名は、認定不動産専門家であることを明確に示すことでクリック率の向上につながる可能性があります。'
   - question: '.realtorドメインはどのような人に向いていますか？'
     answer: 'NARまたはCREA会員である個人REALTOR、仲介業者、チーム、不動産団体のうち、会員資格を示すウェブアドレスを求める方に適しています。不動産業界の認定団体への加盟をドメイン拡張子で証明したい場合に最も効果的です。'
   - question: '.realtorドメインは本当に所有できますか？'
     answer: 'いいえ。不動産ドメインライセンス契約（Real Estate Domain License Agreement）の下では、.realtorドメインを「所有」するのではなく「ライセンス使用」することになります。ドメインの登録名義人はReal Estate Domains LLCのままであり、利用者はライセンシーとして資格維持と良好な会員状態を条件に権利を持ちます。'
   - question: '.realtorレジストリを運営しているのはどこですか？'
-    answer: '.realtorレジストリはReal Estate Domains LLCが運営しており、同社が唯一のレジストラでもあります。このTLDは全米不動産業者協会（NAR）の指示のもとで運営されており、NARがこの拡張子をスポンサーとして支援し、登録資格を管理しています。'
+    answer: '.realtorレジストリはReal Estate Domains LLCが運営しており、同社が唯一のレジストラでもあります。このTLDは全米不動産業者協会®（NAR）の指示のもとで運営されており、NARがこの拡張子をスポンサーとして支援し、登録資格を管理しています。'
 relatedArticles:
   - /ja/blog/top-tlds-to-secure-for-your-real-estate-business/
   - /ja/blog/how-to-sell-a-domain-name-you-own/

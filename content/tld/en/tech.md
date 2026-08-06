@@ -11,7 +11,7 @@ description: 'The .tech domain is an open new gTLD run by Radix for technology b
 keywords: ['tech domain extension', 'Radix registry', 'new gTLD for startups', 'developer portfolio domain', 'register .tech domain']
 faqs:
   - question: 'Can anyone register a .tech domain?'
-    answer: 'Yes. The .tech domain is an open generic top-level domain with no eligibility restrictions. There is no credential, industry membership, or local-presence requirement, so individuals, startups, and established companies anywhere can register one on a first-come, first-served basis.'
+    answer: 'Yes. .tech is an open generic top-level domain with no eligibility restrictions. There is no credential, industry membership, or local-presence requirement, so individuals, startups, and established companies anywhere can register one on a first-come, first-served basis.'
   - question: 'Does a .tech domain affect SEO?'
     answer: 'No. Google treats .tech the same as .com and other generic top-level domains; the extension itself carries no ranking advantage or penalty. Rankings depend on content, links, and user experience, not on the suffix you choose.'
   - question: 'Who should register a .tech domain?'

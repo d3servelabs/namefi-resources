@@ -10,15 +10,15 @@ description: 'The .realtor domain is a restricted real-estate TLD limited to NAR
 keywords: ['.realtor domains', 'realtor domain extension', 'real estate domain names', 'NAR domain', 'realtor website domain', 'Real Estate Domains LLC']
 faqs:
   - question: 'Can anyone register a .realtor domain?'
-    answer: 'No. The .realtor domain is restricted to members of the National Association of REALTORS (NAR), members of the Canadian Real Estate Association (CREA), their member boards and associations, and NAR affiliates and licensees in good standing. The general public cannot register one, and NAR determines eligibility at its sole discretion.'
+    answer: 'No. The .realtor domain is restricted to members of the National Association of REALTORS® (NAR), members of the Canadian Real Estate Association (CREA), their member boards and associations, and NAR affiliates and licensees in good standing. The general public cannot register one, and NAR determines eligibility at its sole discretion.'
   - question: 'Does a .realtor domain affect SEO?'
-    answer: 'Google treats .realtor as a generic TLD, so the suffix itself gives no inherent ranking boost or penalty. Rankings come from content, links, and user experience. A descriptive .realtor name can improve click-through by clearly signaling a verified real-estate professional.'
+    answer: 'Google treats .realtor like any other generic TLD, so the extension itself gives no inherent ranking boost or penalty. Rankings come from content, links, and user experience. A descriptive .realtor name can improve click-through by clearly signaling a verified real-estate professional.'
   - question: 'Who should register a .realtor domain?'
     answer: 'It suits individual REALTORS, brokerages, teams, and real-estate associations who are NAR or CREA members and want a credential-signaling web address. It is a strong fit when you want the suffix itself to prove membership in an organized real-estate body.'
   - question: 'Do you actually own a .realtor domain?'
     answer: 'No. Under the Real Estate Domain License Agreement you license rather than own a .realtor domain. Real Estate Domains LLC remains the registered holder, and your rights are those of a licensee tied to maintaining eligibility and good standing.'
   - question: 'Who operates the .realtor registry?'
-    answer: 'The .realtor registry is operated by Real Estate Domains LLC, which is also the sole registrar. It runs the TLD under the direction of the National Association of REALTORS, which sponsors the extension and controls eligibility.'
+    answer: 'The .realtor registry is operated by Real Estate Domains LLC, which is also the sole registrar. It runs the TLD under the direction of the National Association of REALTORS®, which sponsors the extension and controls eligibility.'
 relatedArticles:
   - /en/blog/top-tlds-to-secure-for-your-real-estate-business/
   - /en/blog/how-to-sell-a-domain-name-you-own/

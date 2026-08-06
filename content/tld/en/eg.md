@@ -10,15 +10,15 @@ description: 'What is the .eg domain? Egypt''s official country-code TLD, run by
 keywords: ['Egypt domain', 'com.eg registration', 'Egypt ccTLD', 'register .eg domain', 'Egyptian Universities Network', '.eg eligibility', 'Egypt domain requirements']
 faqs:
   - question: 'Can anyone register a .eg domain?'
-    answer: 'No. The .eg registry requires that registrants either have a local representative inside Egypt or host their domain on Egyptian DNS servers. Companies outside Egypt must also hold a trademark registered in Egypt or internationally via the Madrid Convention with WIPO, and must appoint a local agent.'
+    answer: 'No. The .eg registry requires that every registrant either maintain a local representative inside Egypt or host their domain on Egyptian DNS servers. Foreign companies must additionally hold a trademark registered in Egypt or internationally via the Madrid Convention with WIPO, and must appoint a local agent. This makes .eg one of the more restrictive ccTLDs for non-Egyptian registrants.'
   - question: 'Does a .eg domain affect SEO?'
-    answer: 'Yes, in a geo-specific way. Google treats .eg as a country-targeted ccTLD, not a generic one, so a .eg site is strongly associated with Egypt in search results. This is an advantage for businesses targeting Egyptian users but limits global ranking potential for international audiences.'
+    answer: 'Yes, in a geo-specific way. Google treats .eg as a country-targeted ccTLD — not a generic one like .co or .io — so a .eg site is strongly associated with Egypt in search results. According to Google Search Central''s international targeting guidelines, this is an advantage for businesses targeting Egyptian users but limits visibility for international audiences searching outside Egypt.'
   - question: 'Who should register a .eg domain?'
-    answer: 'Businesses, government bodies, and organizations with genuine ties to Egypt — companies operating there, brands with Egyptian trademark registrations, educational institutions, and NGOs serving Egyptian audiences. It is not suited to purely international ventures with no Egyptian presence.'
+    answer: 'Businesses and organizations with genuine Egyptian ties: companies incorporated in Egypt, multinational brands holding Egyptian trademark registrations, government bodies, universities, NGOs, and telecoms serving Egyptian markets. It is not suited to international ventures without Egyptian presence or a registered Egyptian trademark.'
   - question: 'What is the second-level domain structure of .eg?'
-    answer: 'Most .eg registrations happen at the third level, beneath a second-level category label such as com.eg (commercial), org.eg (non-profits), gov.eg (government), edu.eg (education), ac.eg (academic), net.eg (networking), and mil.eg (military), among others.'
+    answer: 'Most .eg registrations happen at the third level, beneath a mandatory second-level category label. The main categories are: .com.eg (commercial), .org.eg (non-profits), .gov.eg (government), .edu.eg (education), .ac.eg (academic), .net.eg (networking and IT), .mil.eg (military), .sci.eg (scientific), .tv.eg (visual media), and .name.eg (personal names), among others. Choosing the right category is part of the registration process.'
   - question: 'Is there an Arabic-script version of .eg?'
-    answer: 'Yes. Egypt also has .مصر (romanized as "Misr," meaning Egypt in Arabic), an internationalized ccTLD delegated in April 2010 by ICANN and managed by the National Telecommunications Regulatory Authority (NTRA). It is a fully separate TLD from .eg.'
+    answer: 'Yes. Egypt''s Arabic internationalized ccTLD is .مصر (Misr, meaning Egypt), delegated by ICANN in April 2010 and managed by the National Telecommunications Regulatory Authority (NTRA) — a separate organization from the EUN which runs .eg. The two TLDs serve parallel audiences and can be registered independently.'
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/what-are-tokenized-domains/

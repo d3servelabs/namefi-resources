@@ -19,7 +19,7 @@ faqs:
   - question: '.academy 레지스트리는 누가 운영하나요?'
     answer: '.academy 레지스트리는 Identity Digital 포트폴리오(구 Donuts)의 자회사인 Binky Moon, LLC가 운영합니다. 2013년 12월에 루트 존에 위임되었으며, ICANN 신규 gTLD 프로그램의 일환으로 2014년 3월에 일반 등록이 시작되었습니다.'
   - question: '.academy는 WHOIS 개인정보 보호와 DNSSEC을 지원하나요?'
-    answer: '네. .academy는 특별한 인증 규정이 없으므로 대부분의 등록 대행사(레지스트라)가 일반 gTLD와 동일하게 WHOIS 개인정보 보호를 제공하며, 레지스트리는 DNS 응답의 암호화 보호를 위한 DNSSEC도 지원합니다.'
+    answer: '네. .academy는 특별한 인증 규정이 없으므로 대부분의 레지스트라가 일반 gTLD와 동일하게 WHOIS 개인정보 보호를 제공하며, 레지스트리는 DNS 응답의 암호화 보호를 위한 DNSSEC도 지원합니다.'
 relatedArticles:
   - /ko/blog/what-is-a-tld/
   - /ko/blog/what-are-tokenized-domains/

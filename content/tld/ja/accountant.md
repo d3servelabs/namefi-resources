@@ -13,13 +13,13 @@ faqs:
   - question: '誰でも.accountantドメインを登録できますか？'
     answer: 'はい。.accountantはオープンで制限のないnew gTLDです。公認会計士やCPA、その他の専門資格は不要であり、現地拠点の要件もありません。'
   - question: '.accountantドメインはSEOに影響しますか？'
-    answer: 'いいえ。GoogleはnewgTLDである.accountantを.comなどの従来の拡張子と同等に扱い、順位の向上やペナルティは一切ありません。ランキングはコンテンツ・リンク・ユーザー体験によって決まり、サフィックスによるものではありません。'
+    answer: 'いいえ。Googleはnew gTLDである.accountantを.comなどの従来の拡張子と同等に扱い、順位の向上やペナルティは一切ありません。ランキングはコンテンツ・リンク・ユーザー体験によって決まり、サフィックスによるものではありません。'
   - question: '.accountantドメインを登録すべき対象者は？'
     answer: '会計士、経理担当者、税務申告者、監査法人、そして好みの.com名が取得済みまたは高価なためわかりやすいキーワードを含むウェブアドレスを求める財務系ソフトウェア・コンテンツ事業者。'
   - question: '.accountantと.accountantsは同じですか？'
     answer: 'いいえ。両者は別々のトップレベルドメインです。.accountantは単数形、.accountantsは複数形で、それぞれ異なるレジストリオペレーターと独立した名前一覧を持っています。一方で取得可能な名前が他方では取得済みまたは利用不可の場合があります。'
   - question: '.accountantレジストリの運営者は誰ですか？'
-    answer: '.accountantのICANN登録契約はdot Accountant Limited（Famous Four Mediaグループのジブラルタル法人）が締結しています。技術的なレジストリ運営はその後Global Registry Services（GRS Domains）が担っています。'
+    answer: '.accountantのICANN登録契約はdot Accountant Limited（Famous Four MediaポートフォリオのジブラルタルLtd）が締結しています。技術的なレジストリ運営はその後Global Registry Services（GRS Domains）が担っています。'
 relatedArticles:
   - /ja/blog/top-tlds-to-secure-for-your-accounting-firm/
   - /ja/blog/what-is-a-tld/

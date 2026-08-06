@@ -11,7 +11,7 @@ description: 'The .net domain is one of the internet''s original gTLDs, run by V
 keywords: ['.net vs .com', 'register .net domain', 'Verisign .net registry', 'is .net good for SEO', 'tech startup domains']
 faqs:
   - question: 'Can anyone register a .net domain?'
-    answer: '.net is an open generic top-level domain with no registration restrictions. Anyone, anywhere can register an available .net name without proving membership, credentials, or a local presence. Standard ICANN rules on syntax, trademark sunrise history, and renewal apply.'
+    answer: 'Yes. .net is an open generic top-level domain with no registration restrictions. Anyone, anywhere can register an available .net name without proving membership, credentials, or a local presence. Standard ICANN rules on syntax, trademark sunrise history, and renewal apply.'
   - question: 'Does a .net domain affect SEO?'
     answer: 'No. Google treats .net as a standard generic gTLD with no inherent ranking advantage or penalty. Rankings depend on content, links, and user experience, not the suffix. As a non-geographic gTLD, .net is not tied to any single country for geo-targeting.'
   - question: 'Who should register a .net domain?'

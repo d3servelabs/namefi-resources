@@ -14,11 +14,11 @@ faqs:
   - question: "N'importe qui peut-il enregistrer un domaine .io ?"
     answer: "Oui. L'espace de noms .io est ouvert à tous dans le monde entier, sans exigence de présence locale, d'entreprise ou de justificatif. Vous n'avez pas besoin d'avoir un lien avec le Territoire britannique de l'océan Indien pour en enregistrer un."
   - question: "Un domaine .io affecte-t-il le référencement ?"
-    answer: "Non, pas négativement. Google traite .io comme un domaine de premier niveau générique plutôt que ciblé par pays, donc un site .io peut se classer à l'échelle mondiale et n'est pas géo-restreint à une seule région."
+    answer: "Pas négativement. Google traite .io comme un domaine de premier niveau générique plutôt que ciblé par pays, donc un site .io peut se classer à l'échelle mondiale et n'est pas géo-restreint à une seule région."
   - question: "Qui devrait enregistrer un domaine .io ?"
-    answer: "Les startups logicielles, les produits SaaS, les outils pour développeurs, les projets open-source, les services API, les studios de jeux navigateur, et les équipes Web3 ou blockchain qui souhaitent un nom évoquant l'Entrée/Sortie et signalant une orientation technologique."
+    answer: "Les startups logicielles, les produits SaaS, les outils pour développeurs, les projets open-source, les services API, les studios de jeux navigateur, et les équipes Web3 ou blockchain. La lecture « Entrée/Sortie » convient partout où l'orientation technologique fait partie de la marque."
   - question: "Le domaine .io va-t-il disparaître en raison de l'accord sur la souveraineté des Chagos ?"
-    answer: "Pas comme un fait établi. En 2026, .io est entièrement opérationnel. Tout retrait nécessiterait d'abord une modification du code pays ISO, puis suivrait une transition IANA de plusieurs années — c'est donc une situation à surveiller plutôt qu'une raison de paniquer."
+    answer: "Pas comme un fait établi. En 2026, .io est entièrement opérationnel, les enregistrements et les renouvellements se poursuivant normalement. Tout retrait nécessiterait d'abord une modification du code pays ISO, puis suivrait une transition IANA de plusieurs années — surveillez la situation plutôt que de paniquer."
 relatedArticles:
   - /fr/blog/why-are-io-domains-expensive/
   - /fr/blog/ai-vs-io-domain/

@@ -12,15 +12,15 @@ description: 'El dominio .shop es un nuevo gTLD abierto operado por GMO Registry
 keywords: ['dominios .shop', 'qué es .shop', 'TLD .shop', 'registro de dominio .shop', 'dominio de comercio electrónico', 'GMO Registry', 'nuevo gTLD para minoristas', 'comprar dominio .shop']
 faqs:
   - question: '¿Puede cualquiera registrar un dominio .shop?'
-    answer: 'Sí. .shop es un dominio genérico de nivel superior abierto sin restricciones de elegibilidad, por lo que cualquier individuo o empresa en todo el mundo puede registrar un nombre disponible por orden de llegada. No se requiere credencial, presencia local ni pertenencia a ninguna comunidad.'
+    answer: 'Sí. .shop es un dominio genérico de nivel superior abierto sin restricciones de elegibilidad. Cualquier individuo o empresa en todo el mundo puede registrar un nombre disponible por orden de llegada. No se requiere credencial, presencia local ni pertenencia a ninguna comunidad para calificar.'
   - question: '¿Afecta un dominio .shop al SEO?'
-    answer: 'No. Google trata .shop igual que .com y otros gTLD, sin penalización ni bonificación en el posicionamiento por la extensión en sí. Un nombre descriptivo en .shop puede mejorar las tasas de clics en búsquedas comerciales porque el sufijo indica un lugar para comprar.'
+    answer: 'No. Google trata .shop igual que .com y otros gTLD, sin penalización ni bonificación en el posicionamiento por la extensión. Un nombre descriptivo en .shop puede mejorar las tasas de clics en búsquedas comerciales, porque el sufijo indica un lugar para comprar.'
   - question: '¿Quién debería registrar un dominio .shop?'
-    answer: 'Es adecuado para tiendas en línea, marcas directas al consumidor, creadores que venden merchandising y minoristas físicos que construyen un sitio transaccional. Es una opción ideal cuando el .com correspondiente está tomado o es costoso y quieres un nombre que diga "compra aquí" de un vistazo.'
+    answer: 'Tiendas en línea, marcas directas al consumidor, creadores que venden merchandising y minoristas físicos que construyen un sitio transaccional. Es especialmente adecuado cuando el .com correspondiente está tomado o es costoso y quieres un nombre que diga "compra aquí" de un vistazo.'
   - question: '¿Es .shop bueno para una tienda en línea?'
-    answer: 'Sí. La palabra "shop" se entiende globalmente y comunica instantáneamente la intención comercial, razón por la cual marcas como Netflix y MrBeast utilizan .shop para sus tiendas de merchandising. El amplio y nuevo espacio de nombres también facilita obtener nombres cortos y de coincidencia exacta para minoristas.'
+    answer: 'Sí. "Shop" se entiende globalmente y comunica instantáneamente la intención comercial — razón por la cual marcas como Netflix y MrBeast gestionan sus tiendas de merchandising en él. El amplio y nuevo espacio de nombres también facilita la obtención de nombres cortos y de coincidencia exacta para minoristas más que en extensiones heredadas.'
   - question: '¿Admite .shop privacidad WHOIS y DNSSEC?'
-    answer: 'Sí. .shop admite DNSSEC a nivel de registro, y la mayoría de los registradores ofrecen privacidad WHOIS gratuita que oculta los datos de contacto personales en los registros públicos. La disponibilidad de privacidad depende de tu registrador y no del registro.'
+    answer: 'Sí. .shop admite DNSSEC a nivel de registro, y la mayoría de los registradores ofrecen privacidad WHOIS gratuita que oculta los datos de contacto personales en los registros públicos. Si la privacidad está incluida depende de tu registrador y no del registro.'
 relatedArticles:
   - /es/blog/what-is-a-tld/
   - /es/blog/top-tlds-to-secure-for-your-ecommerce-store/

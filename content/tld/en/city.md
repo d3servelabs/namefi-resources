@@ -15,7 +15,7 @@ faqs:
   - question: 'Does a .city domain affect SEO?'
     answer: 'No. Google treats .city as a generic domain, so it carries no inherent ranking penalty or boost. Search rankings depend on content, links, and user experience, not on the suffix you choose.'
   - question: 'Who should register a .city domain?'
-    answer: 'Local businesses, city guides, tourism sites, community portals, neighborhood directories, and local events benefit most, especially when the exact .com is taken. It pairs a place name or keyword with the literal word city for an instantly clear address.'
+    answer: 'Local businesses, city guides, tourism sites, community portals, neighborhood directories, and local events benefit most, especially when the exact .com is taken. It pairs a place name or keyword with the literal word "city" for an instantly clear address.'
   - question: 'Is .city good for a local business website?'
     answer: 'Yes, when the name reads naturally. A domain like yourtown.city or coffee.city signals local relevance at a glance. It works best for businesses, guides, and services tied to a specific place rather than global brands.'
   - question: 'Does .city support WHOIS privacy and DNSSEC?'

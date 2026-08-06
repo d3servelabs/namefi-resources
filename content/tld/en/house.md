@@ -16,7 +16,7 @@ faqs:
   - question: 'Who should register a .house domain?'
     answer: 'Real estate agencies, property developers, home-improvement and construction businesses, interior designers, vacation-rental hosts, and house-music projects benefit most, because the word "house" describes their offering directly in the domain.'
   - question: 'Is .house good for a real estate business?'
-    answer: 'Yes. The suffix reads as a complete word, so a name like a brokerage or a single-property site communicates the category instantly. It is best for residential and home-focused brands rather than commercial or land-only ventures.'
+    answer: 'Yes. The suffix reads as a complete word, so a name for a brokerage or a single-property site communicates the category instantly. It is best for residential and home-focused brands rather than commercial or land-only ventures.'
   - question: 'Does .house support WHOIS privacy and DNSSEC?'
     answer: 'Yes. As an Identity Digital (Binky Moon) gTLD, .house supports DNSSEC at the registry level, and most registrars including Namefi offer WHOIS privacy so your personal contact details are not published publicly.'
 relatedArticles:

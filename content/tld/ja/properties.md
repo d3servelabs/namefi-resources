@@ -11,15 +11,15 @@ description: '.propertiesドメインは、Binky Moon（Identity Digital）が�
 keywords: ['.propertiesドメイン', '.propertiesとは', '.properties TLD', '不動産ドメイン', 'プロパティドメイン名', 'Binky Moon properties', 'Identity Digital 不動産 gTLD', '.propertiesを登録する']
 faqs:
   - question: '.propertiesドメインは誰でも登録できますか？'
-    answer: 'はい。.properties TLDは資格要件のないオープンな汎用gTLDです。エージェント、デベロッパー、プロパティマネージャー、不動産以外のビジネスを含む世界中の誰もが、標準的な商標・利用規約に従って利用可能なドメイン名を登録できます。'
+    answer: 'はい。.propertiesは資格要件のないオープンな汎用gTLDです。エージェント、デベロッパー、プロパティマネージャー、不動産以外のビジネスを含む世界中の誰もが、標準的な商標保護と利用規約に従って利用可能なドメイン名を登録できます。'
   - question: '.propertiesドメインはSEOに影響しますか？'
-    answer: 'いいえ。Googleは.propertiesを汎用の非地理的gTLDとして扱うため、本質的なランキング上の優位性もペナルティもありません。ランキングはコンテンツ、リンク、ユーザー体験によって決まり、サフィックス自体は関係ありません。'
+    answer: 'いいえ。Googleは.propertiesを汎用の非地理的gTLDとして扱うため、本質的なランキング上の優位性もペナルティもありません。ランキングはコンテンツの質、被リンク、ユーザー体験によって決まり、選んだサフィックスには依存しません。'
   - question: '.propertiesドメインは誰が登録すべきですか？'
-    answer: '説明的でキーワードを活かしたウェブアドレスを求める不動産会社、仲介業者、プロパティマネージャー、デベロッパー、物件掲載ポータルに適しています。不動産と無関係なブランドや、短い単一ワードの名前が必要なプロジェクトには向いていません。'
+    answer: '説明的でキーワードを活かしたウェブアドレスを求める不動産会社、仲介業者、プロパティマネージャー、デベロッパー、物件掲載ポータルに適しています。不動産以外のブランドや、短い単一ワードの名前が必要なプロジェクトには向いていません。'
   - question: '.propertiesドメインは.comより高いですか？'
-    answer: '多くの場合そうです。ニッチな新gTLDとして、.propertiesは通常.comより高い標準料金・更新料金が設定されており、人気の不動産キーワードの多くはプレミアム名として割増料金がかかります。'
+    answer: '多くの場合そうです。ニッチな新gTLDとして、.propertiesは通常.comより高い標準料金・更新料金が設定されており、人気の不動産キーワードの多くはプレミアム名として割増料金が設定されています。'
   - question: '.propertiesはWHOISプライバシーとDNSSECに対応していますか？'
-    answer: 'はい。登録はWHOISプライバシーを提供しているICANN認定レジストラを通じて管理され、レジストリはDNSSECによる暗号署名DNSをサポートしているため、他のIdentity Digital TLDと同等のセキュリティ水準が得られます。'
+    answer: 'はい。登録はWHOISプライバシーを提供するICANN認定レジストラを通じて処理され、レジストリはDNSSECをサポートしているため、他のIdentity Digital TLDと同じセキュリティ基準が確保されます。'
 relatedArticles:
   - /ja/blog/what-is-a-tld/
   - /ja/blog/top-tlds-to-secure-for-your-real-estate-business/

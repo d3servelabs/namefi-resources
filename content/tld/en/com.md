@@ -11,15 +11,15 @@ description: 'How a 1985 afterthought became the internet''s default address —
 keywords: ['.com domains', '.com domain extension', 'register .com domain', 'com domain meaning', '.com vs .net', 'business domains', '.com price', '.com aftermarket', 'history of .com']
 faqs:
   - question: 'Can anyone register a .com domain?'
-    answer: 'Yes. The .com namespace is open to everyone worldwide with no local-presence, business, credential, or community requirement. The original commercial intent has never been enforced, so individuals, nonprofits, and companies alike can register one.'
+    answer: 'Yes. The .com namespace is open to everyone worldwide with no local-presence, business, credential, or community requirement. The original commercial intent has never been enforced, so individuals, nonprofits, and companies alike can register one, subject only to availability.'
   - question: 'Does a .com domain affect SEO?'
-    answer: 'Google treats .com as a generic top-level domain with no inherent ranking advantage or penalty. The real benefit is human: users trust and click .com results more readily, which can lift real-world click-through rates.'
+    answer: 'Google treats .com as a generic top-level domain with no inherent ranking advantage or penalty. The practical benefit is human rather than algorithmic: users trust and click .com results more readily, which can lift real-world click-through rates.'
   - question: 'Why are good .com domains so hard to find?'
-    answer: 'With more than 161 million .com names registered, the supply of short, dictionary, and exact-match brand names is largely exhausted. Most premium .com names are already owned, so many are only available on the secondary market.'
+    answer: 'With more than 161 million .com names registered, the supply of short, dictionary, and exact-match brand names is largely exhausted. Most premium names are already owned, so they are typically available only on the secondary market rather than at standard registration price.'
   - question: 'How much does a .com cost, and does the price keep rising?'
-    answer: 'Registrars set their own retail prices, but the registry wholesale price is regulated by ICANN and the U.S. government. Since 2018 Verisign has been allowed to raise it by up to 7% in four of every six years, taking it from $7.85 to $10.97 — so budget for gradual renewal increases.'
+    answer: 'Registrars set their own retail prices, but the registry wholesale price is regulated. Since a 2018 U.S. government amendment, Verisign may raise it by up to 7% in four of every six years — it has climbed from $7.85 to $10.97 — so plan around the renewal, not just the first-year signup rate.'
   - question: 'Who should register a .com domain?'
-    answer: 'Almost any business, brand, or project that wants the most universally recognized and trusted address — especially companies serving a global or mainstream audience, and anyone protecting a brand for the long term.'
+    answer: 'Almost any business, brand, or project that wants the most universally recognized and trusted address. It is especially worthwhile for companies serving a global or mainstream audience and for anyone protecting a brand over the long term.'
 relatedArticles:
   - /en/blog/the-12-dollar-minute-someone-owned-google-com/
   - /en/blog/the-sex-com-heist-the-forged-letter/

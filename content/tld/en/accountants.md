@@ -10,9 +10,9 @@ description: 'The .accountants domain is an open gTLD for CPAs, bookkeepers, and
 keywords: ['accounting firm domain', 'CPA domain name', 'Identity Digital gTLD', 'bookkeeping website domain', 'niche TLD for accountants']
 faqs:
   - question: 'Can anyone register a .accountants domain?'
-    answer: 'Yes. The .accountants extension is an open generic top-level domain with no credential check. You do not need to be a licensed CPA, a registered firm, or a member of any professional body to register one, so accountants and non-accountants alike are eligible.'
+    answer: 'Yes. .accountants is an open generic top-level domain with no credential check. You do not need to be a licensed CPA, a registered firm, or a member of any professional body to register one, so accountants and non-accountants alike are eligible. This contrasts with credential-gated suffixes such as .cpa.'
   - question: 'Does a .accountants domain affect SEO?'
-    answer: 'No. Google treats new gTLDs like .accountants the same as .com and gives no inherent ranking boost or penalty for the suffix. Rankings come from content, links, and user experience, not from the keyword in the extension.'
+    answer: 'No. Google treats new gTLDs like .accountants the same as .com and gives no inherent ranking boost or penalty for the suffix. Rankings come from content, links, and user experience — not from having the keyword in your extension.'
   - question: 'Who should register a .accountants domain?'
     answer: 'It suits accounting firms, solo CPAs, bookkeepers, tax preparers, and auditing or fintech businesses that want a descriptive, on-topic web address. It is a strong fit when the matching .com is taken or expensive, or as a defensive registration for an established brand.'
   - question: 'Is .accountants more expensive than .com?'

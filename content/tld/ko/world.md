@@ -12,7 +12,7 @@ description: '.world 도메인은 Identity Digital이 운영하는 개방형 일
 keywords: ['.world 도메인', '.world란', 'world TLD', 'world 도메인 등록', '글로벌 도메인 확장자', 'Identity Digital', '일반 최상위 도메인', '.world 등록']
 faqs:
   - question: '누구나 .world 도메인을 등록할 수 있나요?'
-    answer: '네. .world 도메인은 자격 제한이 없는 개방형 일반 gTLD입니다. 위치, 직업, 커뮤니티 회원 여부를 증명하지 않아도 전 세계 어디서든 개인·기업·단체가 선착순으로 사용 가능한 .world 이름을 등록할 수 있습니다.'
+    answer: '네. .world 도메인은 자격 제한이 없는 개방형 일반 gTLD입니다. 위치·직업·커뮤니티 회원 여부를 증명하지 않아도 전 세계 어디서든 개인·기업·단체가 선착순으로 사용 가능한 .world 이름을 등록할 수 있습니다.'
   - question: '.world 도메인이 SEO에 영향을 미치나요?'
     answer: '아니요. Google은 .world를 비지리적 일반 gTLD로 취급하므로, 국가 타깃팅이 적용되지 않으며 순위 상승이나 하락 요인이 되지 않습니다. 검색 순위는 선택한 확장자가 아니라 콘텐츠·링크·사이트 품질에 달려 있습니다.'
   - question: '.world 도메인은 누구에게 적합한가요?'
