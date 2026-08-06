@@ -58,7 +58,7 @@ The **.sh domain** is the [country-code top-level domain](/en/glossary/cctld/) (
 
 Its cultural meaning, though, has little to do with the island. In Unix and Linux, `sh` is the Bourne shell and `.sh` the conventional extension for shell scripts — so a .sh domain reads to any developer like an executable command. That coincidence turned a tiny-territory ccTLD into a niche favorite for command-line tools, the repurposing path also taken by [.io](/en/tld/io/) ("input/output") and [.ai](/en/tld/ai/) ("artificial intelligence").
 
-One nuance separates .sh from those neighbors: **Google's published list of ccTLDs it treats as generic** — which includes .io, [.co](/en/tld/co/), [.me](/en/tld/me/), [.tv](/en/tld/tv/), and [.fm](/en/tld/fm/) — [does not include .sh](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs). By default, then, .sh can be read as geo-targeted to Saint Helena rather than globally neutral (more under "Things to consider").
+One nuance separates .sh from those neighbors: **Google's published list of ccTLDs it treats as generic** — which includes .io, [.co](/en/tld/co/), [.me](/en/tld/me/), [.tv](/en/tld/tv/), and [.fm](/en/tld/fm/) — [does not include .sh](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs). By default, then, .sh can be read as geo-targeted to Saint Helena rather than globally neutral (more under "Things to consider").
 
 ## History of .sh
 
@@ -170,3 +170,15 @@ Because .sh is also the file extension for Unix shell scripts, the suffix reads 
 - [Domain terminology guide](/en/blog/domain-terminology-guide/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [domain hack](/en/glossary/domain-hack/), [registry](/en/glossary/registry/), [DNSSEC](/en/glossary/dnssec/)
 - Compare TLDs: [.io](/en/tld/io/), [.dev](/en/tld/dev/), [.ai](/en/tld/ai/), [.gg](/en/tld/gg/), [.fm](/en/tld/fm/)
+
+## Sources and further reading
+
+- IANA — [IANA root-zone entry for .sh](https://www.iana.org/domains/root/db/sh.html)
+- Google Search Central — [does not include .sh](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)
+- domainincite.com — [paid $70.17 million in cash](https://domainincite.com/23650-afilias-bought-io-for-70-million#:~:text=%2470.17%20million%20cash)
+- identity.digital — [rebranded as Identity Digital](https://identity.digital/company)
+- brew.sh — [brew.sh](https://brew.sh/)
+- ohmyz.sh — [ohmyz.sh](https://ohmyz.sh/)
+- bun.sh — [bun.sh](https://bun.sh/)
+- nic.sh — [NIC.SH registration rules](https://www.nic.sh/rules.htm#:~:text=An%20applicant%20may%20reside%20in%20any%20legal%20jurisdiction)
+- nic.sh — [free of charge to Saint Helena residents and companies](https://www.nic.sh/free-domain-for-saint-helena-residents.htm)

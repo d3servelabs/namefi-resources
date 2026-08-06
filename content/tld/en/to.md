@@ -59,7 +59,7 @@ This page covers what .to is, its unusually early open-registration history, its
 
 In practice, though, .to has behaved like a global extension for nearly its entire life. Registrations are made directly at the second level (`yourname.to`), there is no residency requirement, and Tonic's [FAQ describes .to as "the first country code to be offered globally through an automated registry"](https://www.tonic.to/faq.htm#:~:text=first%20country%20code%20to%20be%20offered%20globally%20through%20an%20automated%20registry), running since June 1997.
 
-One important SEO nuance: Google maintains a published list of ccTLDs it treats as generic (not geo-targeted), and [.to is not on that list](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) — the roster includes .ai, .co, .fm, .io, .me, and .tv, but not .to. Many .to sites still rank globally, but unlike [.io](/en/tld/io/) or [.co](/en/tld/co/), you cannot point to Google's documentation for a generic-treatment guarantee.
+One important SEO nuance: Google maintains a published list of ccTLDs it treats as generic (not geo-targeted), and [.to is not on that list](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en) — the roster includes .ai, .co, .fm, .io, .me, and .tv, but not .to. Many .to sites still rank globally, but unlike [.io](/en/tld/io/) or [.co](/en/tld/co/), you cannot point to Google's documentation for a generic-treatment guarantee.
 
 ## History of .to
 
@@ -183,3 +183,11 @@ Because "to" is a common English preposition, names like amzn.to read as natural
 - [What are tokenized domains?](/en/blog/what-are-tokenized-domains/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [domain hack](/en/glossary/domain-hack/), [WHOIS](/en/glossary/whois/), [registry](/en/glossary/registry/), [DNSSEC](/en/glossary/dnssec/)
 - Compare TLDs: [.io](/en/tld/io/), [.co](/en/tld/co/), [.tv](/en/tld/tv/), [.me](/en/tld/me/), [.ly](/en/tld/ly/), [.us](/en/tld/us/)
+
+## Sources and further reading
+
+- IANA — [IANA delegation record](https://www.iana.org/domains/root/db/to.html)
+- tonic.to — [Tonic](https://www.tonic.to/)
+- tonic.to — [tonic.to](https://www.tonic.to/faq.htm#:~:text=first%20country%20code%20to%20be%20offered%20globally%20through%20an%20automated%20registry)
+- Google Search Central — [.to is not on that list](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
+- en.wikipedia.org — [history recorded on Wikipedia](https://en.wikipedia.org/wiki/.to)

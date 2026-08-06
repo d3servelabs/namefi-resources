@@ -57,6 +57,8 @@ The **.bond domain** started as an Australian university's unused dot-brand and 
 
 .bond is a [generic top-level domain](/en/glossary/tld) with no country tie. The string evokes both a **financial bond** (a debt instrument) and, informally, the **James Bond** film franchise — associations ShortDot's marketing leans on, though neither is licensed or official. As a generic extension, Google treats .bond like any other gTLD: no automatic ranking boost or penalty and no geo-targeting bias. You can verify the delegation record directly in the [IANA root-zone entry for .bond](https://www.iana.org/domains/root/db/bond.html).
 
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
 ## History of .bond
 
 .bond's ownership history is unusual even among ShortDot's portfolio of acquired strings:
@@ -121,7 +123,7 @@ A trademark sunrise period ran ahead of general availability in 2019, so today r
 
 ## Reputation and email deliverability
 
-This is the section every prospective .bond buyer should read carefully. As the churn statistics above show, Spamhaus's analysts have flagged .bond by name across three consecutive reports, not just by statistic — and the extension also appears among the top TLDs by absolute count of domains listed as malicious or suspicious in its current report. The prior six-month report (October 2023–March 2024) told the same story: .bond ranked #1 among all gTLDs for "percentage of zone newly observed" at over 210%, meaning more domains were newly registered in that period than the entire zone's steady-state size.
+This is the section every prospective .bond buyer should read carefully. The [current Spamhaus report, covering October 2025–March 2026](https://content.spamhaus.org/4d83c22f-84c5-4f82-95ab-4e6b39f73db5.pdf), ranks `.bond` **#1 among gTLDs by share of the zone newly observed**, at **98.57%** (1,130,779 new domains out of a 1,147,185-domain zone). It also ranks `.bond` **#4 by malicious or suspicious domain count** with 59,271, and **#8 by share of zone listed** at 5.17%.
 
 Practically, that means .bond traffic draws real scrutiny from mail providers and security tools, independent of any individual site's actual content. **Mitigation:** configure SPF, DKIM, and DMARC properly for any email sent from a .bond domain, warm up sending volume gradually, keep content clean, and for anything trust-sensitive, weigh whether a more established extension serves you better.
 
@@ -170,3 +172,16 @@ It suits finance-adjacent branding, short domain hacks, and budget projects that
 - [Avoiding domain sale scams](/en/blog/avoiding-domain-sale-scams)
 - Glossary: [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [new gTLD](/en/glossary/new-gtld), [phishing](/en/glossary/phishing)
 - Compare TLDs: [.com](/en/tld/com), [.sbs](/en/tld/sbs), [.icu](/en/tld/icu), [.cyou](/en/tld/cyou)
+
+## Sources and further reading
+
+- spamhaus.org — [Spamhaus](https://www.spamhaus.org/)
+- shortdot.bond — [ShortDot SA](https://shortdot.bond/)
+- IANA — [IANA root-zone entry for .bond](https://www.iana.org/domains/root/db/bond.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- bond.edu.au — [Bond University](https://bond.edu.au/)
+- ICANN — [ICANN Registry Agreement on 5 June 2014](https://www.icann.org/en/registry-agreements/details/bond)
+- domainincite.com — [Domain Incite reported](https://domainincite.com/24277-dot-brand-bond-has-been-acquired-and-will-relaunch-as-a-generic-this-july)
+- prnewswire.com — [ShortDot's own launch announcement](https://www.prnewswire.com/news-releases/shortdot-to-launch-bond-domain-extension-on-october-17-to-trademark-holders-and-to-all-end-users-on-november-18-300925429.html)
+- ntldstats.com — [ntldstats.com](https://ntldstats.com/tld/bond)
+- Spamhaus — [Domain Reputation Update for October 2025–March 2026](https://content.spamhaus.org/4d83c22f-84c5-4f82-95ab-4e6b39f73db5.pdf)

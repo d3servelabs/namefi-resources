@@ -55,7 +55,9 @@ The **.best domain** turns a single superlative word into a top-level domain, le
 
 .best is a [generic top-level domain](/en/glossary/tld), not a country-code extension, so it carries no geographic meaning. The string itself is the ordinary English superlative "best," which makes it one of the more directly usable words in the new gTLD expansion — a name reads naturally when the word "best" completes it, the way `hosting.best` reads as "hosting, best" or "best hosting."
 
-Because it is a generic gTLD, Google treats .best like any other new extension: no automatic ranking advantage or penalty, and no geo-targeting applied, per [Google Search Central's guidance on generic vs. country-targeted domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=more%20generic%20than%20country-targeted). You can confirm the delegation record and current operator on the [IANA root-zone entry for .best](https://www.iana.org/domains/root/db/best.html).
+Because it is a generic gTLD, Google treats .best like any other new extension: no automatic ranking advantage or penalty, and no geo-targeting applied, per [Google Search Central's guidance on generic vs. country-targeted domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=more%20generic%20than%20country-targeted). You can confirm the delegation record and current operator on the [IANA root-zone entry for .best](https://www.iana.org/domains/root/db/best.html).
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 ## History of .best
 
@@ -162,3 +164,12 @@ It suits businesses and products built around a superlative domain hack, such as
 - [What makes a domain valuable?](/en/blog/what-makes-a-domain-valuable)
 - Glossary: [TLD](/en/glossary/tld), [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [premium domain](/en/glossary/premium-domain)
 - Compare TLDs: [.com](/en/tld/com), [.top](/en/tld/top), [.sbs](/en/tld/sbs), [.xyz](/en/tld/xyz)
+
+## Sources and further reading
+
+- Google Search Central — [Google Search Central's guidance on generic vs. country-targeted domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=more%20generic%20than%20country-targeted)
+- IANA — [IANA root-zone entry for .best](https://www.iana.org/domains/root/db/best.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement for .best](https://www.icann.org/en/registry-agreements/details/best)
+- GoDaddy — [GoDaddy's .best domain policy summary](https://www.godaddy.com/help/about-best-domains-12451)
+- interisle.net — [Cybercrime Supply Chain 2025 research](https://interisle.net/insights/cybercrimesupplychain2025#:~:text=though%20they%20hold%20just%2012%25%20of%20the%20market%2C%20they%20accounted%20for%20nearly%20half%20of%20all%20cybercrime%20domains%20reported)

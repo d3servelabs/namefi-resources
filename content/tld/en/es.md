@@ -58,7 +58,7 @@ This page covers what .es is, how its eligibility rules loosened over time, its 
 
 **.es** is the [ccTLD](/en/glossary/cctld/) assigned to Spain under the ISO 3166-1 country code standard, recorded in the [IANA root-zone entry for .es](https://www.iana.org/domains/root/db/es.html). Unlike a generic [gTLD](/en/glossary/tld/) such as [.com](/en/tld/com), .es represents a single nation's namespace and is administered under Spanish public policy rather than a standard ICANN registry agreement.
 
-.es does not appear on Google's short list of ccTLDs treated as generic (a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co)), so [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs) treats .es as genuinely country-targeted. A .es site signals a Spanish audience, which is an advantage for local relevance and a constraint for anyone chasing a global, non-Spanish audience.
+.es does not appear on Google's short list of ccTLDs treated as generic (a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co)), so [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs) treats .es as genuinely country-targeted. A .es site signals a Spanish audience, which is an advantage for local relevance and a constraint for anyone chasing a global, non-Spanish audience.
 
 ## History of .es
 
@@ -118,7 +118,7 @@ Choose **.com** for a globally neutral default with no eligibility test. Choose 
 
 ## .es pricing and value
 
-.es pricing follows the same shape as most ccTLDs rather than any single quoted figure. **First-year and renewal pricing typically differ** — introductory rates are often promotional, while the standing renewal rate is what a brand pays long-term. Registrars may apply **premium classifications** to short, dictionary, or high-demand names, carrying higher registration and sometimes renewal costs. Name length, desirability, and registrar margin on top of Red.es's wholesale rate are the other main drivers. This page intentionally quotes no figures — check current rates with an accredited registrar at the point of purchase.
+Dominios.es publishes standard registry tariffs for assignment and renewal, including a [single annual rate for second-level names submitted through an accredited registrar](https://www.dominios.es/es/sobre-dominios/normativa/instruccion-director-general-tarifas-aplicables#:~:text=Tarifa%20cuarta.%20Asignaci%C3%B3n%20anual%20inicial%20o%20renovaci%C3%B3n%20anual%20de%20nombres%20de%20dominio%20de%20segundo%20nivel). Registrars set the customer-facing package and may offer promotions. A registered short name may carry an **aftermarket** asking price, but this is separate from registry registration and renewal fees; do not assume an available `.es` label has a registry premium tier.
 
 ## Reputation and email deliverability
 
@@ -133,14 +133,13 @@ For email deliverability, the suffix itself rarely decides outcomes — modern s
 - **Use accents deliberately.** IDN support means Spanish accented forms and ñ are registrable directly — verify your audience can type and display them correctly before committing a brand to one.
 - **Avoid reserved-term collisions.** Check Red.es's prohibited and reserved lists before finalizing a name tied to institutions or territorial names.
 
-## How to register a .es domain at Namefi
+## How to register a .es domain
 
 1. **Confirm** you have a genuine interest or link to Spain (residency, business target market, or Spain-related content all qualify).
 2. **Search** for your desired name under the .es extension, or the relevant `com.es` / `org.es` / `nom.es` category.
 3. **Choose** an available name and review any reserved-term restrictions.
 4. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and [Web3](/en/glossary/web3/), with transparent pricing, fast DNS management, and the option to hold eligible domains as a [tokenized domain](/en/glossary/tokenized-domain/) for easier transfer and provable ownership. New to how extensions work? Start with [what is a domain](/en/blog/what-is-domain/) and the broader [domain terminology guide](/en/blog/domain-terminology-guide/).
 
 ## Frequently asked questions
 
@@ -169,3 +168,13 @@ A .es domain registers directly at the second level (yourname.es). Third-level v
 - [Domain terminology guide](/en/blog/domain-terminology-guide)
 - [Top TLDs to secure for your business](/en/blog/top-tlds-to-secure-for-your-business)
 - Glossary: [ccTLD](/en/glossary/cctld), [DNSSEC](/en/glossary/dnssec), [IDN](/en/glossary/idn), [registrar](/en/glossary/registrar)
+
+## Sources and further reading
+
+- IANA — [Red.es](https://www.iana.org/domains/root/db/es.html)
+- Google Search Central — [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)
+- elmundo.es — [elmundo.es](https://www.elmundo.es/)
+- rtve.es — [rtve.es](https://www.rtve.es/)
+- dominios.es — [Red.es's official Naming Policy Instruction](https://www.dominios.es/es/sobre-dominios/normativa/instruccion-director-general-red#:~:text=tengan%20intereses%20o%20mantengan%20v%C3%ADnculos%20con%20Espa%C3%B1a)
+- dominios.es — [Red.es](https://www.dominios.es/en)
+- dominios.es — [single annual rate for second-level names submitted through an accredited registrar](https://www.dominios.es/es/sobre-dominios/normativa/instruccion-director-general-tarifas-aplicables#:~:text=Tarifa%20cuarta.%20Asignaci%C3%B3n%20anual%20inicial%20o%20renovaci%C3%B3n%20anual%20de%20nombres%20de%20dominio%20de%20segundo%20nivel)

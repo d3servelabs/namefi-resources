@@ -55,7 +55,9 @@ The **.icu domain** is one of the cheapest and, at its 2019 peak, one of the lar
 
 ## What is .icu?
 
-.icu is a [generic top-level domain](/en/glossary/tld) with no country tie. ShortDot markets the three letters as **"I See You,"** though the string also reads naturally as the medical abbreviation for "intensive care unit," a coincidence ShortDot has never tried to hide. As a generic extension, .icu is treated by Google like any other gTLD — no automatic ranking boost, no penalty, and no geo-targeting bias, per [Google Search Central's guidance on generic domains](https://developers.google.com/search/docs/crawling-indexing/special-tags). You can verify the delegation record directly in the [IANA root-zone entry for .icu](https://www.iana.org/domains/root/db/icu.html).
+.icu is a [generic top-level domain](/en/glossary/tld) with no country tie. ShortDot markets the three letters as **"I See You,"** though the string also reads naturally as the medical abbreviation for "intensive care unit," a coincidence ShortDot has never tried to hide. As a generic extension, .icu is treated by Google like any other gTLD — no automatic ranking boost, no penalty, and no geo-targeting bias, per [Google Search Central's guidance on generic domains](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.). You can verify the delegation record directly in the [IANA root-zone entry for .icu](https://www.iana.org/domains/root/db/icu.html).
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 ## History of .icu
 
@@ -170,3 +172,14 @@ It suits short-term campaigns, low-budget side projects, and buyers who specific
 - [Avoiding domain sale scams](/en/blog/avoiding-domain-sale-scams)
 - Glossary: [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [new gTLD](/en/glossary/new-gtld), [phishing](/en/glossary/phishing)
 - Compare TLDs: [.com](/en/tld/com), [.sbs](/en/tld/sbs), [.cyou](/en/tld/cyou), [.bond](/en/tld/bond)
+
+## Sources and further reading
+
+- shortdot.bond — [ShortDot SA](https://shortdot.bond/)
+- Google Search Central — [Google Search Central's guidance on generic domains](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- IANA — [IANA root-zone entry for .icu](https://www.iana.org/domains/root/db/icu.html)
+- ICANN — [ICANN Registry Agreement signed 8 January 2015](https://www.icann.org/en/registry-agreements/details/icu)
+- domainincite.com — [industry tracking by Domain Incite](https://domainincite.com/24469-icu-joins-the-million-domains-club-in-one-year-but-spam-triples)
+- domainincite.com — [Domain Incite's 2021 industry analysis](https://domainincite.com/26980-domain-industry-shrinks-again-except-of-course-it-doesnt)
+- ntldstats.com — [ntldstats.com](https://ntldstats.com/tld/icu)
+- Spamhaus — [Domain Reputation Update](https://content.spamhaus.org/4d83c22f-84c5-4f82-95ab-4e6b39f73db5.pdf)

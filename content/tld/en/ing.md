@@ -55,7 +55,9 @@ The **.ing domain** is a generic top-level domain built around a linguistic tric
 
 .ing is a [generic top-level domain](/en/glossary/tld) (gTLD), not a country-code TLD, so it carries no geographic association. Its entire value proposition is wordplay: because so many English words end in "-ing," registering `word.ing` frequently spells out a real term — `go.ing`, `mak.ing`, `adapt.ing`. Google's own registry describes it plainly: build your website "in a single word with .ing." You can confirm the delegation record and operator in the [IANA root-zone database entry for .ing](https://www.iana.org/domains/root/db/ing.html).
 
-Because .ing is a generic extension, [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.) confirms gTLDs "aren't associated with specific locations," so .ing carries no automatic geo-targeting signal and no inherent ranking boost or penalty.
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
+Because .ing is a generic extension, [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.) confirms gTLDs "aren't associated with specific locations," so .ing carries no automatic geo-targeting signal and no inherent ranking boost or penalty.
 
 ## History of .ing
 
@@ -166,3 +168,17 @@ It suits brands, products, and personal sites whose name genuinely ends in "-ing
 - [How TLD affects domain value](/en/blog/how-tld-affects-domain-value)
 - Glossary: [domain hack](/en/glossary/domain-hack), [gTLD](/en/glossary/gtld), [registrar](/en/glossary/registrar)
 - Compare TLDs: [.com](/en/tld/com), [.io](/en/tld/io), [.app](/en/tld/app), [.meme](/en/tld/meme), [.page](/en/tld/page)
+
+## Sources and further reading
+
+- registry.google — [Charleston Road Registry](https://www.registry.google)
+- IANA — [IANA root-zone database entry for .ing](https://www.iana.org/domains/root/db/ing.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- Google Search Central — [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.)
+- ICANN — [ICANN Registry Agreement for .ing](https://www.icann.org/en/registry-agreements/details/ing)
+- registry.google — [general availability from December 5, 2023](https://www.registry.google/announcements/launch-details-for-ing-and-meme/)
+- registry.google — [over 20,000 .ing registrations and "thousands of new websites"](https://www.registry.google/announcements/ing-one-year/)
+- get.ing — [get.ing showcase](https://get.ing/)
+- design.ing — [design.ing](https://design.ing)
+- bank.ing — [bank.ing](https://bank.ing)
+- registry.google — [Domain Registration Policy](https://www.registry.google/policies/)

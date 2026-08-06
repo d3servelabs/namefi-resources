@@ -55,7 +55,9 @@ The **.meme domain** is Google Registry's generic top-level domain built for int
 
 .meme is a [generic top-level domain](/en/glossary/tld) (gTLD), not a country-code TLD, so it carries no geographic association. Its string is the plainest possible signal of intent: a site built on memes, internet humor, and shareable culture. Google Registry's own positioning is direct — ".meme is for the culture," meant to help brands "spread humor, ideas, style, and culture." You can confirm the delegation record and operator in the [IANA root-zone database entry for .meme](https://www.iana.org/domains/root/db/meme.html).
 
-Because .meme is a generic extension, [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.) confirms gTLDs "aren't associated with specific locations," so it carries no automatic geo-targeting signal, and no inherent ranking boost or penalty.
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
+Because .meme is a generic extension, [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.) confirms gTLDs "aren't associated with specific locations," so it carries no automatic geo-targeting signal, and no inherent ranking boost or penalty.
 
 ## History of .meme
 
@@ -166,3 +168,15 @@ It suits meme databases, internet-culture brands, entertainment and media pages,
 - [What makes a domain valuable?](/en/blog/what-makes-a-domain-valuable)
 - Glossary: [brandable domain](/en/glossary/brandable-domain), [gTLD](/en/glossary/gtld), [registrar](/en/glossary/registrar)
 - Compare TLDs: [.com](/en/tld/com), [.xyz](/en/tld/xyz), [.fun](/en/tld/fun), [.ing](/en/tld/ing), [.page](/en/tld/page)
+
+## Sources and further reading
+
+- registry.google — [Charleston Road Registry](https://www.registry.google)
+- IANA — [IANA root-zone database entry for .meme](https://www.iana.org/domains/root/db/meme.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- Google Search Central — [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.)
+- ICANN — [ICANN Registry Agreement for .meme](https://www.icann.org/en/registry-agreements/details/meme)
+- registry.google — [general availability from December 5, 2023](https://www.registry.google/announcements/launch-details-for-ing-and-meme/)
+- get.meme — [get.meme showcase](https://get.meme/)
+- knowyour.meme — [knowyour.meme](https://knowyour.meme)
+- registry.google — [Domain Registration Policy](https://www.registry.google/policies/)

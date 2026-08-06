@@ -56,7 +56,7 @@ The **.de domain** is the official [country-code top-level domain](/en/glossary/
 
 .de is Germany's [ccTLD](/en/glossary/cctld/), delegated under the ISO 3166-1 country code for Germany. Its delegation record is public in the [IANA root-zone database](https://www.iana.org/domains/root/db/de.html), which lists **DENIC eG** as the sponsoring organization. Unlike a generic [TLD](/en/glossary/tld/) such as [.com](/en/tld/com/), .de is administered under DENIC's own German-law contract rather than a standard ICANN registry agreement — ccTLDs are outside ICANN's registry-agreement framework entirely.
 
-For search visibility, Google's own guidance on [managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=tied%20to%20a%20specific%20country%20%28for%20example%20.de%20for%20Germany) names .de explicitly as an example of a ccTLD "tied to a specific country" — Google does not treat .de as one of its generic vanity ccTLDs (a short list that includes .co, .io, and .tv). A .de site sends a real, explicit signal that the content targets German users.
+For search visibility, Google's own guidance on [managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=tied%20to%20a%20specific%20country%20%28for%20example%20.de%20for%20Germany) names .de explicitly as an example of a ccTLD "tied to a specific country" — Google does not treat .de as one of its generic vanity ccTLDs (a short list that includes .co, .io, and .tv). A .de site sends a real, explicit signal that the content targets German users.
 
 ## History of .de
 
@@ -111,7 +111,7 @@ There is one conditional obligation worth knowing about. Under **§3(4) of DENIC
 
 ## .de pricing and value
 
-.de pricing dynamics follow the pattern common across mature TLDs: **premium names** exist for short, dictionary, or high-demand strings, and **first-year promotional pricing typically differs from the standing renewal rate**, so budget for the renewal rather than an introductory offer. Because the namespace is heavily registered, expect the aftermarket for concise, brandable .de names to carry a real premium over registering a fresh string. This page intentionally quotes no specific figures — check current rates at the point of registration.
+.de retail pricing depends on the provider and service bundle. DENICdirect publishes a [standard annual domain-management fee](https://www.denic.de/preisliste/#:~:text=Domainverwaltung%20f%C3%BCr%20ein%20Jahr%20inkl.%20Domainregistrierung) rather than a label-based registry premium schedule. A registrar may still offer introductory discounts, and an already registered short or dictionary name can command a higher **aftermarket** price from its owner; neither should be described as registry premium registration or renewal pricing. Compare the registrar's first-year and renewal fees before buying.
 
 ## Reputation and email deliverability
 
@@ -127,7 +127,7 @@ There is one conditional obligation worth knowing about. Under **§3(4) of DENIC
 ## How to register a .de domain at Namefi
 
 1. **Search** your desired `.de` name to check availability.
-2. **Review** whether the name is standard or premium-priced.
+2. **Review** the registrar's first-year and renewal fees, and distinguish a new registration from an aftermarket purchase.
 3. **Register** and configure [DNS](/en/glossary/dns) for your site or email.
 
 [Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and [Web3](/en/glossary/web3/), with transparent pricing, fast DNS management, and the option to [tokenize your domain](/en/blog/what-are-tokenized-domains) into a blockchain-backed asset for easier transfers and provable ownership.
@@ -157,3 +157,13 @@ Yes. DENIC supports internationalized domain names (IDNs) for .de, so registrant
 - [How TLD affects domain value](/en/blog/how-tld-affects-domain-value)
 - Glossary: [ccTLD](/en/glossary/cctld), [registrar](/en/glossary/registrar), [DNSSEC](/en/glossary/dnssec)
 - Compare TLDs: [.com](/en/tld/com), [.eu](/en/tld/eu), [.co](/en/tld/co), [.uk](/en/tld/uk)
+
+## Sources and further reading
+
+- denic.de — [DENIC eG](https://www.denic.de/en/about-us/who-we-are/)
+- IANA — [IANA root-zone database](https://www.iana.org/domains/root/db/de.html)
+- Google Search Central — [managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=tied%20to%20a%20specific%20country%20%28for%20example%20.de%20for%20Germany)
+- denic.de — [25th-anniversary retrospective](https://www.denic.de/en/news/press-releases-archive/article/de-turns-twenty-five/)
+- denic.de — [registration page](https://www.denic.de/en/products/de-domains/registration/#:~:text=Open%20to%20everyone)
+- denic.de — [Domain Terms and Conditions](https://www.denic.de/en/domain-terms-and-conditions/)
+- denic.de — [standard annual domain-management fee](https://www.denic.de/preisliste/#:~:text=Domainverwaltung%20f%C3%BCr%20ein%20Jahr%20inkl.%20Domainregistrierung)

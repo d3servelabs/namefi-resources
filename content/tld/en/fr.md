@@ -58,7 +58,7 @@ This page covers what .fr is, its winding history from a research-institute proj
 
 **.fr** is the [ccTLD](/en/glossary/cctld/) assigned to France under the ISO 3166-1 country code standard, the same delegation system the [Internet Assigned Numbers Authority (IANA) tracks in its .fr root-zone entry](https://www.iana.org/domains/root/db/fr.html). Unlike a generic [gTLD](/en/glossary/tld/) such as [.com](/en/tld/com), .fr represents a single nation's namespace and is administered under French and EU policy rather than a standard ICANN registry agreement.
 
-Because .fr does not appear on Google's short list of ccTLDs it treats as generic — a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co) — [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs) treats .fr as a genuinely country-targeted domain. A .fr site sends a clear signal that its audience is France (and, by extension, French-speaking Europe), which is an asset for local relevance and a constraint for anyone chasing a global audience.
+Because .fr does not appear on Google's short list of ccTLDs it treats as generic — a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co) — [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs) treats .fr as a genuinely country-targeted domain. A .fr site sends a clear signal that its audience is France (and, by extension, French-speaking Europe), which is an asset for local relevance and a constraint for anyone chasing a global audience.
 
 ## History of .fr
 
@@ -85,7 +85,7 @@ Real, specific niches where .fr shows up:
 
 ## Notable sites using .fr
 
-- **[leboncoin.fr](https://www.leboncoin.fr/)** — France's dominant classifieds marketplace and one of the most-visited websites in the country, founded in 2006.
+- **`leboncoin.fr`** — France's dominant classifieds marketplace and one of the most-visited websites in the country, founded in 2006.
 - **[lemonde.fr](https://www.lemonde.fr/)** — the website of *Le Monde*, one of France's newspapers of record.
 - **service-public.fr** and the `gouv.fr` family — the French government's official public-service portals, reinforcing .fr as the credible "official French" namespace.
 
@@ -116,13 +116,13 @@ Choose **.com** when you want a globally neutral default with no eligibility hur
 
 ## Who can register a .fr domain?
 
-**Registration restrictions: EU/EEA/Swiss nexus.** Per Afnic's [official FAQ](https://www.afnic.fr/en/domain-names-and-support/faq-the-answers-to-your-questions/#:~:text=resident%20in%20one%20of%20the%20Member%20States%20of%20the%20European%20Union), a private individual must be **resident in an EU member state, Switzerland, Liechtenstein, Norway, or Iceland**; an organization must have its **registered office or main place of business** in one of those countries. This is place of residence or establishment, not nationality — a non-French citizen living in Paris qualifies, and a French citizen living outside the EU/EEA/Switzerland generally does not, without an eligible entity to register through.
+**Registration restrictions: EU/EEA/Swiss nexus.** Per Afnic's [official FAQ](https://www.afnic.fr/en/domain-names-and-support/faq-the-answers-to-your-questions/#:~:text=As%20a%20private%20individual%2C%20do%20I%20have%20the%20right%20to%20register%20a%20domain%20name%20under%20the%20TLDs%20managed%20by%20Afnic%3F), a private individual must be **resident in an EU member state, Switzerland, Liechtenstein, Norway, or Iceland**; an organization must have its **registered office or main place of business** in one of those countries. This is place of residence or establishment, not nationality — a non-French citizen living in Paris qualifies, and a French citizen living outside the EU/EEA/Switzerland generally does not, without an eligible entity to register through.
 
 The same eligibility rule applies uniformly across all six Afnic-managed TLDs: .fr plus the five French overseas-territory extensions **.re** (Réunion), **.pm** (Saint Pierre and Miquelon), **.tf** (French Southern and Antarctic Lands), **.wf** (Wallis and Futuna), and **.yt** (Mayotte). Afnic performs verification checks — legal existence and EU establishment for organizations, residential address for individuals — and failure to pass them can lead to suspension or deletion. [DNSSEC](/en/glossary/dnssec/) has been supported since September 2010, and [internationalized domain names (IDN)](/en/glossary/idn/) with accented characters have been available since May 2012. The binding rules are published in [Afnic's current Naming Policy](https://www.afnic.fr/wp-media/uploads/2026/07/afnic-naming-policy-2026-07-06.pdf).
 
 ## .fr pricing and value
 
-.fr pricing dynamics follow the same shape as most ccTLDs rather than any single quoted figure. **First-year and renewal pricing typically differ** — introductory rates are often promotional, while the standing renewal rate is what a brand pays long-term, so budget for the renewal rather than the teaser. Afnic and registrars may also apply **premium classifications** to short, dictionary, or high-demand names, which can carry higher registration and renewal costs. Registrar margin, on top of Afnic's wholesale rate, is the other variable. This page intentionally quotes no figures — check current rates with an accredited registrar at the point of purchase.
+.fr registrations are sold through accredited registrars: Afnic says it [does not accept registration or renewal requests directly](https://www.afnic.fr/en/domain-names-and-support/faq-the-answers-to-your-questions/#:~:text=Why%20can%E2%80%99t%20I%20register%20my%20domain%20name%20directly%20with%20Afnic%3F). The registrar sets the retail package and may offer introductory discounts, so compare its first-year and renewal fees. A short `.fr` name already held by someone else may carry a higher **aftermarket** asking price, but this page found no authoritative basis for describing ordinary available `.fr` labels as registry premium registrations with premium renewal tiers.
 
 ## Reputation and email deliverability
 
@@ -173,3 +173,13 @@ Yes. Since May 3, 2012, Afnic has supported internationalized domain names (IDN)
 - [Domain hacks explained](/en/blog/domain-hacks-explained)
 - [Domain terminology guide](/en/blog/domain-terminology-guide)
 - Glossary: [ccTLD](/en/glossary/cctld), [DNSSEC](/en/glossary/dnssec), [IDN](/en/glossary/idn), [registrar](/en/glossary/registrar)
+
+## Sources and further reading
+
+- afnic.fr — [Afnic](https://www.afnic.fr/en/)
+- IANA — [Afnic](https://www.iana.org/domains/root/db/fr.html)
+- Google Search Central — [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)
+- afnic.fr — [Afnic published an updated Naming Policy for .fr](https://www.afnic.fr/en/observatory-and-resources/news/afnic-launches-the-new-naming-policy-applicable-to-the-fr-tld/)
+- lemonde.fr — [lemonde.fr](https://www.lemonde.fr/)
+- afnic.fr — [FAQ](https://www.afnic.fr/en/domain-names-and-support/faq-the-answers-to-your-questions/)
+- afnic.fr — [Afnic's current Naming Policy](https://www.afnic.fr/wp-media/uploads/2026/07/afnic-naming-policy-2026-07-06.pdf)

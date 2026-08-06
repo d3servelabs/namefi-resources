@@ -55,7 +55,9 @@ The **.work domain** is a plain-English top-level domain built for jobs, recruit
 
 .work is a [generic top-level domain](/en/glossary/tld), not a country-code extension, so it carries no geographic meaning. The string is the ordinary English word for employment or labor, which makes it directly legible for job boards, recruiters, and career-focused brands — and a natural fit for the domain-hack pattern where the suffix completes the word, as in `frame.work`.
 
-Because it is a generic gTLD, Google treats .work like any other new extension: no automatic ranking advantage or penalty, and no geo-targeting applied, per [Google Search Central's guidance on generic vs. country-targeted domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=more%20generic%20than%20country-targeted). You can confirm the delegation record and current operator on the [IANA root-zone entry for .work](https://www.iana.org/domains/root/db/work.html).
+Because it is a generic gTLD, Google treats .work like any other new extension: no automatic ranking advantage or penalty, and no geo-targeting applied, per [Google Search Central's guidance on generic vs. country-targeted domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=more%20generic%20than%20country-targeted). You can confirm the delegation record and current operator on the [IANA root-zone entry for .work](https://www.iana.org/domains/root/db/work.html).
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 ## History of .work
 
@@ -73,14 +75,14 @@ Real, specific niches where .work shows up:
 - **Recruiting and HR** — agencies and internal talent-acquisition teams building a career-portal domain distinct from the corporate main site.
 - **Job boards and freelance marketplaces** — platforms connecting employers and workers, where the suffix reinforces the site's purpose.
 - **Career coaching and professional-development brands** — consultants and coaches whose services are literally about work.
-- **The "[word].work" domain hack** — the clearest real example is laptop maker **Framework Computer**, which runs its primary site at [frame.work](https://frame.work) rather than a .com.
+- **The "[word].work" domain hack** — the clearest real example is laptop maker **Framework Computer**, which runs its primary site at `frame.work` rather than a .com.
 - **Short, brandable names** — the .work namespace still has real availability for concise strings long gone on legacy zones.
 
 **Who it's not ideal for:** consumer brands, e-commerce stores, and other businesses with no career, employment, or literal "work" angle — the meaning is specific enough that it reads oddly outside that context.
 
 ## Notable sites using .work
 
-The clearest verifiable example is **[frame.work](https://frame.work)**, the primary domain for Framework Computer, the modular and repairable laptop and desktop maker — a genuine domain hack where "frame" plus ".work" spells the company's name. Beyond that flagship case, .work's visible footprint mostly consists of recruiting portals, job boards, and small career-services sites rather than a broad roster of major consumer brands.
+The clearest verifiable example is **`frame.work`**, the primary domain for Framework Computer, the modular and repairable laptop and desktop maker — a genuine domain hack where "frame" plus ".work" spells the company's name. Beyond that flagship case, .work's visible footprint mostly consists of recruiting portals, job boards, and small career-services sites rather than a broad roster of major consumer brands.
 
 ## .work vs other domains
 
@@ -165,3 +167,13 @@ It suits recruiters, HR departments, job boards, freelancers, and career-coachin
 - [How to name your project](/en/blog/how-to-name-your-project)
 - Glossary: [TLD](/en/glossary/tld), [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [domain hack](/en/glossary/domain-hack)
 - Compare TLDs: [.com](/en/tld/com), [.xyz](/en/tld/xyz)
+
+## Sources and further reading
+
+- Google Search Central — [Google Search Central's guidance on generic vs. country-targeted domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=more%20generic%20than%20country-targeted)
+- IANA — [IANA root-zone entry for .work](https://www.iana.org/domains/root/db/work.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement for .work](https://www.icann.org/en/registry-agreements/details/work)
+- GoDaddy — [GoDaddy's .work domain policy summary](https://www.godaddy.com/help/about-work-domains-12354)
+- dig.watch — [Spamhaus reported](https://dig.watch/updates/spamhaus-lists-top-10-worst-tlds-terms-spam#:~:text=According%20to%20this%20list%2C%20.diet%2C%20.click%2C%20.download%2C%20.review%2C%20.work%2C%20and%20.tokyo%20are%20the%20five%20TLDs%20with%20more%20than%20%2050%25%20%E2%80%98bad%20domains%E2%80%99%20each)
+- interisle.net — [Cybercrime Supply Chain 2025 research](https://interisle.net/insights/cybercrimesupplychain2025#:~:text=though%20they%20hold%20just%2012%25%20of%20the%20market%2C%20they%20accounted%20for%20nearly%20half%20of%20all%20cybercrime%20domains%20reported)

@@ -57,6 +57,8 @@ The **.media domain** is an open generic top-level domain built for exactly what
 
 Because it is a generic string, Google has no special geo-targeting rule for .media — it is evaluated like any other gTLD. You can confirm the delegation record directly in the [IANA root-zone entry for .media](https://www.iana.org/domains/root/db/media.html), the authoritative source for any delegated TLD's operator and status.
 
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
 ## History of .media
 
 - **Delegation (2014):** .media was delegated to the root zone on **April 9, 2014** (registration date April 3, 2014), initially assigned to **Grand Glen, LLC** — one of the many single-purpose entities that Donuts Inc. used to file its 2012-round gTLD applications. The underlying [ICANN Registry Agreement for .media](https://www.icann.org/en/registry-agreements/details/media) was signed **March 6, 2014**.
@@ -161,3 +163,11 @@ It can be, and several real publishers use it, but the string reads as broad "me
 - [What are tokenized domains?](/en/blog/what-are-tokenized-domains/)
 - Glossary: [registrar](/en/glossary/registrar/), [ICANN](/en/glossary/icann/), [registry](/en/glossary/registry/), [DNS](/en/glossary/dns/)
 - Compare TLDs: [.com](/en/tld/com/), [.tv](/en/tld/tv/), [.news](/en/tld/news/)
+
+## Sources and further reading
+
+- identity.digital — [Identity Digital](https://www.identity.digital/)
+- IANA — [IANA root-zone entry for .media](https://www.iana.org/domains/root/db/media.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement for .media](https://www.icann.org/en/registry-agreements/details/media)
+- en.wikipedia.org — [PA Media](https://en.wikipedia.org/wiki/PA_Media)

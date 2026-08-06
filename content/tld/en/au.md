@@ -57,7 +57,7 @@ The **.au domain** is Australia's official [country-code top-level domain](/en/g
 
 **.au** is the [ccTLD](/en/glossary/cctld/) delegated to Australia under the ISO 3166-1 country-code system used by [IANA](https://www.iana.org/domains/root/db/au.html). Unlike a generic top-level domain such as [.com](/en/tld/com/), it has no [ICANN](/en/glossary/icann/) Registry Agreement — ccTLDs are governed by the national manager's own rules. IANA lists **.au Domain Administration (auDA)** as the ccTLD manager: a not-for-profit, industry self-regulatory body endorsed by the Australian government. auDA does not run the technical registry itself; **Identity Digital Australia** (formerly Afilias Australia) has held the operator contract since a 2017 tender, reappointed after a 2023 Request for Tender, with the current agreement running from July 1, 2024.
 
-Because .au functions as a genuine national namespace, Google treats it as country-targeted rather than generic: it is absent from [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), unlike vanity extensions such as [.tv](/en/tld/tv/) or [.me](/en/tld/me/).
+Because .au functions as a genuine national namespace, Google treats it as country-targeted rather than generic: it is absent from [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en), unlike vanity extensions such as [.tv](/en/tld/tv/) or [.me](/en/tld/me/).
 
 ## History of .au
 
@@ -133,13 +133,12 @@ Because .au requires a verified Australian Presence for every registration, the 
 - **Use the Australian signal on purpose** — .au is a strong local-trust cue; lean into it if your audience is Australia-first.
 - **Mind the exact-match trade mark rule** — if qualifying via a trade mark, the domain name must match that mark exactly, which constrains creative spelling.
 
-## How to register a .au domain at Namefi
+## How to register a .au domain
 
 1. **Search** for your desired `.au` or `.com.au` name to check availability.
 2. **Confirm eligibility** under the Australian Presence requirement — citizenship/residency, ABN/ACN, or an exact-match Australian trade mark.
 3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you own outright, with easier transfers and added security — all with transparent pricing and fast DNS.
 
 ## Frequently asked questions
 
@@ -167,3 +166,9 @@ auDA (.au Domain Administration) is the industry self-regulatory body that sets 
 - [Top TLDs to secure for your e-commerce store](/en/blog/top-tlds-to-secure-for-your-ecommerce-store)
 - Glossary: [ccTLD](/en/glossary/cctld), [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [registry](/en/glossary/registry), [DNS](/en/glossary/dns)
 - Compare TLDs: [.com](/en/tld/com), [.ca](/en/tld/ca), [.br](/en/tld/br), [.mx](/en/tld/mx)
+
+## Sources and further reading
+
+- IANA — [.au Domain Administration (auDA)](https://www.iana.org/domains/root/db/au.html)
+- Google Search Central — [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
+- auda.org.au — [.au Domain Administration Rules: Licensing](https://www.auda.org.au/au-domain-names/au-rules-and-policies/au-domain-administration-rules-licensing-2/)

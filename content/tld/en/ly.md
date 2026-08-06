@@ -57,7 +57,7 @@ The **.ly domain** is the [country-code top-level domain](/en/glossary/cctld/) (
 
 Outside Libya, almost nobody registers .ly for its geography. Its appeal is linguistic: "-ly" is the standard English adverb ending, so `bit.ly`-style names read as single words with the dot hidden inside — putting .ly in the first wave of ccTLDs repurposed for global branding, alongside [.io](/en/tld/io/), [.tv](/en/tld/tv/), [.me](/en/tld/me/), [.fm](/en/tld/fm/), and [.gg](/en/tld/gg/).
 
-One nuance separates .ly from most of that club: Google's Search Central keeps a published list of ccTLDs it [treats as generic rather than country-targeted](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs) — .ai, .co, .io, .fm, .tv, .me, and others — and **.ly is not on it**. By default, then, search engines can read a .ly site as targeted at Libya — an honest asterisk for SEO-sensitive projects, though global .ly brands rank fine on links and reputation.
+One nuance separates .ly from most of that club: Google's Search Central keeps a published list of ccTLDs it [treats as generic rather than country-targeted](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs) — .ai, .co, .io, .fm, .tv, .me, and others — and **.ly is not on it**. By default, then, search engines can read a .ly site as targeted at Libya — an honest asterisk for SEO-sensitive projects, though global .ly brands rank fine on links and reputation.
 
 ## History of .ly
 
@@ -113,7 +113,7 @@ Pick .ly when your name genuinely ends in "-ly" and your content is uncontrovers
 **Registration restrictions: content-restricted, plus a length rule.** Three layers to know:
 
 1. **Content and morality rules.** The registry's regulations state that a name [must not be "obscene, scandalous, indecent, or contrary to Libyan law or Islamic morality"](https://www.nic.ly/regulations.php#:~:text=Islamic%20morality), and registrar-facing policy extends this to names insulting religion or politics and names [related to gambling and the lottery industry](https://my.register.ly/knowledgebase/2/Which-.ly-domain-names-that-are-NOT-allowed-for-registration.html). Applicants certify the domain is not registered for activities Libyan law does not permit — and the vb.ly case showed the rules reach *site content*, not just the name.
-2. **The four-character rule.** Direct second-level names of **four or more characters are open to registrants worldwide** — no Libyan presence needed. Strings **shorter than four characters** are registered **only through Libya Telecom and Technology, to guarantee local presence** — famous short names like `bit.ly` predate this rule.
+2. **The four-character rule.** Direct second-level names of **four or more characters are open to registrants worldwide**. NIC.LY's current help page says that names [shorter than four characters require local presence in Libya](https://www.nic.ly/help.php#:~:text=for%20those%20less%20than%204%20characters%20long%20in%20the%20top%20level%20must%20have%20local%20presence%20in%20Libya); famous short names such as `bit.ly` predate this rule.
 3. **Third-level zones.** A structured hierarchy — `com.ly`, `net.ly`, `org.ly`, `edu.ly`, `sch.ly`, `med.ly`, `gov.ly`, `plc.ly`, `id.ly` — serves specific registrant categories, with government and institutional zones reserved.
 
 Technically, .ly is [DNSSEC](/en/glossary/dnssec/)-signed in the root zone, with RDAP at `rdap.nic.ly`; [WHOIS privacy](/en/glossary/whois-privacy/) handling varies by [registrar](/en/glossary/registrar/). ccTLD policy is set nationally — check the current NIC.LY regulations before building a brand on the suffix.
@@ -133,13 +133,12 @@ Technically, .ly is [DNSSEC](/en/glossary/dnssec/)-signed in the root zone, with
 - **Screen your name and content against the rules.** For .ly this is real diligence, not boilerplate — check the NIC.LY restrictions above before committing.
 - **Mind the four-character floor.** New two- and three-character registrations require Libyan presence, so plan on a four-plus-character name.
 
-## How to register a .ly domain at Namefi
+## How to register a .ly domain
 
-1. **Search** for your desired "-ly" name (four or more characters) and check availability.
+1. **Search** for your desired "-ly" name and check availability; if it is shorter than four characters, confirm that you can satisfy the local-presence route.
 2. **Screen** the name and your planned content against NIC.LY's restrictions.
 3. **Register** and configure [DNS](/en/glossary/dns/) for your site and email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann/)-accredited registrar bridging Web2 and Web3, with transparent pricing, fast DNS, and the option to hold your name as a [tokenized domain](/en/blog/what-are-tokenized-domains/) for provable, transferable ownership. New to extensions? Start with [what is a TLD](/en/blog/what-is-a-tld/).
 
 ## Frequently asked questions
 
@@ -167,3 +166,14 @@ Since 2025 the .ly registry has been managed by the General Authority of Communi
 - [What are tokenized domains?](/en/blog/what-are-tokenized-domains/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [domain hack](/en/glossary/domain-hack/), [registry](/en/glossary/registry/), [DNSSEC](/en/glossary/dnssec/)
 - Compare TLDs: [.io](/en/tld/io/), [.fm](/en/tld/fm/), [.gg](/en/tld/gg/), [.tv](/en/tld/tv/), [.me](/en/tld/me/), [.us](/en/tld/us/)
+
+## Sources and further reading
+
+- IANA — [IANA root database entry for .ly](https://www.iana.org/domains/root/db/ly.html)
+- Google Search Central — [treats as generic rather than country-targeted](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs)
+- techcrunch.com — ["Trouble in clever domain land"](https://techcrunch.com/2010/10/06/trouble-in-clever-domain-land-bit-ly-and-others-risk-losing-theirs-swift-ly)
+- circleid.com — [seized vb.ly](https://circleid.com/posts/libyan_government_has_seized_vbly_domain/)
+- IANA — [transfer of .ly to the General Authority of Communications and Informatics](https://www.iana.org/reports/2025/ly-report-20251030.html)
+- NIC.LY — [must not be "obscene, scandalous, indecent, or contrary to Libyan law or Islamic morality"](https://www.nic.ly/regulations.php#:~:text=Islamic%20morality)
+- my.register.ly — [related to gambling and the lottery industry](https://my.register.ly/knowledgebase/2/Which-.ly-domain-names-that-are-NOT-allowed-for-registration.html)
+- NIC.LY — [shorter than four characters require local presence in Libya](https://www.nic.ly/help.php#:~:text=for%20those%20less%20than%204%20characters%20long%20in%20the%20top%20level%20must%20have%20local%20presence%20in%20Libya)

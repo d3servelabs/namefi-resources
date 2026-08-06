@@ -58,7 +58,7 @@ This page covers what .it is, its history from a single research-network address
 
 **.it** is the [ccTLD](/en/glossary/cctld/) assigned to Italy under the ISO 3166-1 country code standard, recorded in the [IANA root-zone entry for .it](https://www.iana.org/domains/root/db/it.html). Unlike a generic [gTLD](/en/glossary/tld/) such as [.com](/en/tld/com), .it represents a single nation's namespace and is administered under Italian and European policy rather than a standard ICANN registry agreement.
 
-.it does not appear on Google's short list of ccTLDs treated as generic (a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co)), so [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs) treats .it as genuinely country-targeted. A .it site signals an Italian audience, which is an advantage for local relevance and a constraint for anyone chasing a global, non-Italian audience.
+.it does not appear on Google's short list of ccTLDs treated as generic (a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co)), so [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs) treats .it as genuinely country-targeted. A .it site signals an Italian audience, which is an advantage for local relevance and a constraint for anyone chasing a global, non-Italian audience.
 
 ## History of .it
 
@@ -113,13 +113,13 @@ Choose **.com** for a globally neutral default with no eligibility gate. Choose 
 
 ## Who can register a .it domain?
 
-**Registration restrictions: EEA nexus.** Per [Registro .it's official FAQ](https://www.nic.it/en/find-your-it/faq#:~:text=adults%20who%20have%20citizenship%2C%20residence%20or%20a%20registered%20office), registration is permitted only to **adults who have citizenship, residence, or a registered office in a country of the European Economic Area, the Vatican City State, the Republic of San Marino, the Swiss Confederation, or the United Kingdom**. Registrants who do not meet this criteria — for example, someone based solely in the United States — typically need to register through a trustee/proxy service offered by some registrars rather than registering directly.
+**Registration restrictions: EEA nexus.** Per [Registro .it's official FAQ](https://www.nic.it/en/find-your-it/faq#:~:text=Who%20can%20register%20a%20.it%20domain%3F), registration is permitted only to **adults who have citizenship, residence, or a registered office in a country of the European Economic Area, the Vatican City State, the Republic of San Marino, the Swiss Confederation, or the United Kingdom**. Registrants who do not meet this criteria — for example, someone based solely in the United States — typically need to register through a trustee/proxy service offered by some registrars rather than registering directly.
 
 Beyond eligibility, registrant contact data is subject to verification under EU NIS 2-driven rules: incomplete or inaccurate information gets flagged and must be corrected, generally within about 75 days, or the domain is at risk. [DNSSEC](/en/glossary/dnssec/) is supported, and [internationalized domain names (IDN)](/en/glossary/idn/) with accented characters have been available since July 2012. The authoritative source for current eligibility and technical rules is [Registro .it](https://www.nic.it/en), the registry operated by IIT-CNR.
 
 ## .it pricing and value
 
-.it pricing follows the same shape as most ccTLDs rather than any single quoted figure. **First-year and renewal pricing typically differ** — introductory rates are often promotional, while the standing renewal rate is what a brand pays long-term. Registrars and the registry may apply **premium classifications** to short, dictionary, or high-demand names, carrying higher registration and sometimes renewal costs. Name length, desirability, and registrar margin on top of the registry's wholesale rate are the other main drivers. This page intentionally quotes no figures — check current rates with an accredited registrar at the point of purchase.
+Registro .it does not sell directly to end users; its registrar guidance says [each registrar independently establishes registration and maintenance costs](https://www.nic.it/en/registrars#:~:text=Each%20Registrar%20independently%20establishes%20the%20costs%20of%20registration%20and%20maintenance). Registrars may bundle other services or offer introductory discounts, so compare first-year and renewal fees. A concise `.it` name already owned by someone else may carry an **aftermarket** asking price, but that is separate from registry registration and renewal pricing.
 
 ## Reputation and email deliverability
 
@@ -170,3 +170,14 @@ Yes. Registro .it has supported internationalized domain names (IDN) with accent
 - [Domain hacks explained](/en/blog/domain-hacks-explained)
 - [Domain terminology guide](/en/blog/domain-terminology-guide)
 - Glossary: [ccTLD](/en/glossary/cctld), [DNSSEC](/en/glossary/dnssec), [IDN](/en/glossary/idn), [registrar](/en/glossary/registrar)
+
+## Sources and further reading
+
+- IANA — [IIT-CNR](https://www.iana.org/domains/root/db/it.html)
+- Google Search Central — [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)
+- redd.it — [redd.it](https://redd.it)
+- repubblica.it — [repubblica.it](https://www.repubblica.it/)
+- corriere.it — [corriere.it](https://www.corriere.it/)
+- nic.it — [Registro .it's official FAQ](https://www.nic.it/en/find-your-it/faq#:~:text=Who%20can%20register%20a%20.it%20domain%3F)
+- nic.it — [Registro .it](https://www.nic.it/en)
+- nic.it — [each registrar independently establishes registration and maintenance costs](https://www.nic.it/en/registrars#:~:text=Each%20Registrar%20independently%20establishes%20the%20costs%20of%20registration%20and%20maintenance)

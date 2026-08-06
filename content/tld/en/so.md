@@ -55,7 +55,7 @@ The **.so domain** is the country-code top-level domain for **Somalia**, and it 
 
 **.so** is the [ccTLD](/en/glossary/cctld/) assigned to Somalia under the ISO 3166-1 country-code system. The [IANA root-zone database entry for .so](https://www.iana.org/domains/root/db/so.html) lists Somalia's **Ministry of Post and Telecommunications** as the sponsoring organization, though on-the-ground operational authority has shifted repeatedly, most recently to Somalia's **National Communications Authority (NCA)**.
 
-Because .so is a ccTLD, not a gTLD, it carries no ICANN registry agreement of the kind that governs `.com` or new gTLDs. And despite its popularity in tech branding, Google does not treat .so as generic: it is absent from [Google's explicit list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=.ad%2C%20.ai%2C%20.as%2C%20.bz%2C%20.cc%2C%20.cd%2C%20.co%2C%20.dj%2C%20.fm%2C%20.io%2C%20.la%2C%20.me%2C%20.ms%2C%20.nu%2C%20.sc%2C%20.sr%2C%20.su%2C%20.tv%2C%20.tk%2C%20.ws) (which includes lookalike vanity ccTLDs like .cc, .co, and .tv), meaning a .so site is geo-targeted toward Somalia by default rather than being read as a neutral "so" suffix.
+Because .so is a ccTLD, not a gTLD, it carries no ICANN registry agreement of the kind that governs `.com` or new gTLDs. And despite its popularity in tech branding, Google does not treat .so as generic: it is absent from [Google's explicit list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs) (which includes lookalike vanity ccTLDs like .cc, .co, and .tv), meaning a .so site is geo-targeted toward Somalia by default rather than being read as a neutral "so" suffix.
 
 ## History of .so
 
@@ -72,7 +72,7 @@ Through all of this, .so's international reputation grew from an unrelated direc
 
 Real, specific niches where .so shows up:
 
-- **Developer tools and platforms whose name ends in "so,"** such as [Hiro](https://hiro.so), a Bitcoin-layer developer tools company that markets itself on `hiro.so`.
+- **Developer tools and platforms whose name ends in "so,"** such as [Hiro](https://www.hiro.so/), a Bitcoin-layer developer tools company that markets itself on `hiro.so`.
 - **Startups seeking a short, sentence-completing domain hack** in the tradition Notion popularized, even after Notion's own move to `.com`.
 - **Somalia-connected institutions and organizations**, the suffix's original and continuing use case, with second-level structures such as `.com.so`, `.org.so`, `.edu.so`, and `.gov.so`.
 
@@ -80,7 +80,7 @@ Real, specific niches where .so shows up:
 
 ## Notable sites using .so
 
-- **[hiro.so](https://hiro.so)** — Hiro Systems PBC's live site for its Bitcoin-layer developer tools (Chainhook, the Hiro Platform, the Stacks Blockchain API), actively maintained with 2026 blog activity and a public status page at `status.hiro.so`.
+- **[hiro.so](https://www.hiro.so/)** — Hiro Systems PBC's live site for its Bitcoin-layer developer tools (Chainhook, the Hiro Platform, the Stacks Blockchain API), actively maintained with 2026 blog activity and a public status page at `status.hiro.so`.
 - **notion.so** — for years the definitive .so brand hack, home to workspace tool Notion. As of **June 3, 2026**, Notion completed a move to `notion.com` — an acquisition its co-founder said had been in motion since 2018 — and `notion.so` now **redirects (HTTP 307) to notion.com**. It is the clearest cautionary tale in the ccTLD-hack world: even the flagship "so" brand eventually traded the wordplay for a `.com`.
 
 ## .so vs other domains
@@ -110,7 +110,7 @@ Choose **.io** or **.co** when you want a hack-friendly ccTLD with a stable regi
 
 ## Who can register a .so domain?
 
-**Registration restrictions: confirm before you commit.** Current registrar documentation from major providers, including GoDaddy's and Rebel.com's help centers, reports that .so registration today has **no residency, citizenship, or local-presence requirement** and runs first-come, first-served. This is not how the registry has always operated: from **2015 to 2018**, operator SONIC restricted registration to "institutions and organizations in Somalia, residents of Somalia, and others who have a legitimate, clear and provable connection to Somalia," causing several international registrars to pause .so sales. Since the **National Communications Authority (NCA)** took control in March 2018, the open policy in current registrar materials has held — but given this track record, verify current eligibility with your registrar or the [IANA-listed sponsoring authority](https://www.iana.org/domains/root/db/so.html) before building a brand on `.so`.
+**Registration restrictions: confirm before you commit.** 101domain's current .so registration page says [the extension is open to any individual or entity worldwide](https://www.101domain.com/so.htm#:~:text=The%20.so%20domain%20is%20open%20for%20registration%20by%20any%20individual%20or%20entity%20worldwide). This is not how the registry has always operated: from **2015 to 2018**, operator SONIC restricted registration to institutions, residents, and others with a provable connection to Somalia, causing several international registrars to pause .so sales. The namespace later reopened globally, but given this track record, verify the current rule with your registrar before building a long-term brand on `.so`; the [IANA record](https://www.iana.org/domains/root/db/so.html) can confirm the sponsoring organization but not registrant eligibility.
 
 Domain names generally run **3 to 63 alphanumeric characters or hyphens**; [IDN](/en/glossary/idn/) registrations are **not supported**. Reserved second-level structures include `.com.so`, `.org.so`, `.net.so`, `.edu.so`, and `.gov.so`. Because .so is a ccTLD, it is not governed by a standard [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements) — the sponsoring authority remains Somalia's Ministry of Post and Telecommunications per IANA, with the NCA holding current operational control.
 
@@ -162,3 +162,12 @@ It suits developer tools and brands whose name naturally ends in "so," following
 - [Top TLDs to secure for your startup](/en/blog/top-tlds-to-secure-for-your-startup/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [domain hack](/en/glossary/domain-hack/), [registrar](/en/glossary/registrar/), [registry](/en/glossary/registry/)
 - Compare TLDs: [.io](/en/tld/io/), [.co](/en/tld/co/), [.is](/en/tld/is/)
+
+## Sources and further reading
+
+- notion.com — [Notion](https://www.notion.com)
+- IANA — [IANA root-zone database entry for .so](https://www.iana.org/domains/root/db/so.html)
+- Google Search Central — [Google's explicit list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs)
+- hiro.so — [Hiro](https://www.hiro.so/)
+- 101domain — [the extension is open to any individual or entity worldwide](https://www.101domain.com/so.htm#:~:text=The%20.so%20domain%20is%20open%20for%20registration%20by%20any%20individual%20or%20entity%20worldwide)
+- ICANN — [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements)

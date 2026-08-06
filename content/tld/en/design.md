@@ -57,6 +57,8 @@ The **.design domain** is an open generic top-level domain purpose-built for one
 
 Because it is a plain generic extension, Google Search Central treats [new gTLDs](/en/glossary/new-gtld) like .design the same as legacy generics such as [.com](/en/tld/com): there is no automatic ranking benefit or penalty tied to the suffix, and no geo-targeting signal is applied.
 
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
 ## History of .design
 
 - **Founded by designers, for designers (2014–2015).** [Top Level Design](https://en.wikipedia.org/wiki/.design), a Portland, Oregon-based company led by CEO Ray King, won the right to operate .design in a private auction against six other applicants in September 2014. IANA's delegation report shows the domain was formally delegated to Top Level Design, LLC on **2015-01-20**; general availability opened **May 12, 2015**, with more than 5,200 .design domains registered on that first day alone. The underlying [ICANN Registry Agreement for .design was signed on 7 November 2014](https://www.icann.org/en/registry-agreements/details/design).
@@ -159,3 +161,12 @@ Generally no. The suffix signals design work specifically, so a company outside 
 - [How to name your project](/en/blog/how-to-name-your-project)
 - Glossary: [gTLD](/en/glossary/gtld), [new gTLD](/en/glossary/new-gtld), [ICANN](/en/glossary/icann), [brandable domain](/en/glossary/brandable-domain)
 - Compare TLDs: [.com](/en/tld/com), [.studio](/en/tld/studio), [.group](/en/tld/group)
+
+## Sources and further reading
+
+- IANA — [IANA root-zone entry for .design](https://www.iana.org/domains/root/db/design.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- en.wikipedia.org — [Top Level Design](https://en.wikipedia.org/wiki/.design)
+- ICANN — [ICANN Registry Agreement for .design was signed on 7 November 2014](https://www.icann.org/en/registry-agreements/details/design)
+- prnewswire.com — [GoDaddy Registry announced it was acquiring the .club and .design domain extensions](https://www.prnewswire.com/news-releases/godaddy-registry-agrees-to-acquire-club-design-and-minds--machines-tlds-to-offer-more-choice-and-value-in-digital-name-options-301264501.html)
+- atlassian.design — [atlassian.design](https://atlassian.design)

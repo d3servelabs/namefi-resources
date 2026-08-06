@@ -55,7 +55,9 @@ The **.zip domain** is a generic top-level domain from Google Registry that beca
 
 .zip is a [generic top-level domain](/en/glossary/tld) (gTLD), not a country-code TLD, so it carries no geographic association. Google Registry's own positioning leans into the technical, developer-facing meaning of the string: ".zip is for tying things together or moving really fast." You can confirm the delegation record and operator in the [IANA root-zone database entry for .zip](https://www.iana.org/domains/root/db/zip.html).
 
-Because .zip is a generic extension, [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.) confirms gTLDs "aren't associated with specific locations," so .zip carries no automatic geo-targeting signal and no inherent SEO boost or penalty. What .zip does carry — uniquely among these extensions — is a real, documented file-extension collision.
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
+Because .zip is a generic extension, [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.) confirms gTLDs "aren't associated with specific locations," so .zip carries no automatic geo-targeting signal and no inherent SEO boost or penalty. What .zip does carry — uniquely among these extensions — is a real, documented file-extension collision.
 
 ## History of .zip
 
@@ -78,7 +80,7 @@ Real, specific niches where .zip shows up:
 
 Google Registry's own [developer-focused showcase](https://registry.google) (covering .zip alongside .foo, .dev, .app, and .mov) lists real, currently active adopters:
 
-- **[download.zip](https://download.zip)** — creator David Imel's monthly curated-download newsletter, "Unzip the internet."
+- **`download.zip`** — a domain previously used by creator David Imel for a curated-download newsletter, "Unzip the internet." The site was not reachable during this review, so do not treat it as a current live-use example.
 - **hadi.zip** — Android developer Hadi Tok's personal site.
 
 Beyond Google's own examples, [BleepingComputer](https://www.bleepingcomputer.com/news/security/clever-file-archiver-in-the-browser-phishing-trick-uses-zip-domains/) and [Talos Intelligence](https://blog.talosintelligence.com/zip-tld-information-leak/) documented .zip domains actively used in phishing campaigns shortly after launch — the honest counterpoint to any showcase of legitimate use.
@@ -165,3 +167,16 @@ It suits developers, file-sharing tools, and technical audiences who understand 
 - [Avoiding domain sale scams](/en/blog/avoiding-domain-sale-scams)
 - Glossary: [phishing](/en/glossary/phishing), [gTLD](/en/glossary/gtld), [registrar](/en/glossary/registrar)
 - Compare TLDs: [.com](/en/tld/com), [.app](/en/tld/app), [.dev](/en/tld/dev), [.ing](/en/tld/ing), [.meme](/en/tld/meme)
+
+## Sources and further reading
+
+- IANA — [IANA root-zone database entry for .zip](https://www.iana.org/domains/root/db/zip.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- Google Search Central — [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.)
+- ICANN — [ICANN Registry Agreement for .zip](https://www.icann.org/en/registry-agreements/details/zip)
+- bleepingcomputer.com — [BleepingComputer's coverage of the launch debate](https://www.bleepingcomputer.com/news/security/new-zip-domains-spark-debate-among-cybersecurity-experts/)
+- bleepingcomputer.com — [published a proof-of-concept](https://www.bleepingcomputer.com/news/security/clever-file-archiver-in-the-browser-phishing-trick-uses-zip-domains/)
+- registry.google — [developer-focused showcase](https://registry.google)
+- blog.talosintelligence.com — [Talos Intelligence](https://blog.talosintelligence.com/zip-tld-information-leak/)
+- thehackernews.com — [The Hacker News](https://thehackernews.com/2023/05/dont-click-that-zip-file-phishers.html)
+- registry.google — [Domain Name Abuse Policy](https://www.registry.google/policies/)

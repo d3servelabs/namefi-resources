@@ -56,7 +56,7 @@ The **.mx domain** is Mexico's official [country-code top-level domain](/en/glos
 
 **.mx** is the [ccTLD](/en/glossary/cctld/) assigned to Mexico under the ISO 3166-1 country-code system used by [IANA](https://www.iana.org/domains/root/db/mx.html). As with other ccTLDs, .mx has no [ICANN](/en/glossary/icann/) Registry Agreement — governance comes from the national registry's own policy. That registry, **Network Information Center Mexico, S.A. de C.V.**, trades as **Registry .MX** and operates under a delegation originally granted to **ITESM** (Instituto Tecnológico y de Estudios Superiores de Monterrey), Mexico's leading technical university, in November 2003.
 
-What sets .mx apart from most major national ccTLDs is its open eligibility policy: unlike [.ca](/en/tld/ca/), [.au](/en/tld/au/), or [.br](/en/tld/br/), registering `.mx` or `.com.mx` does **not** require Mexican citizenship, residency, or a local presence. Even so, because .mx functions as a genuine national namespace, Google treats it as country-targeted rather than generic — it does not appear on [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), unlike vanity extensions such as [.tv](/en/tld/tv/) or [.me](/en/tld/me/).
+What sets .mx apart from most major national ccTLDs is its open eligibility policy: unlike [.ca](/en/tld/ca/), [.au](/en/tld/au/), or [.br](/en/tld/br/), registering `.mx` or `.com.mx` does **not** require Mexican citizenship, residency, or a local presence. Even so, because .mx functions as a genuine national namespace, Google treats it as country-targeted rather than generic — it does not appear on [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en), unlike vanity extensions such as [.tv](/en/tld/tv/) or [.me](/en/tld/me/).
 
 ## History of .mx
 
@@ -160,3 +160,9 @@ Network Information Center Mexico, S.A. de C.V. ("Registry .MX") operates the re
 - [Top TLDs to secure for your startup](/en/blog/top-tlds-to-secure-for-your-startup)
 - Glossary: [ccTLD](/en/glossary/cctld), [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [registry](/en/glossary/registry), [DNSSEC](/en/glossary/dnssec)
 - Compare TLDs: [.com](/en/tld/com), [.br](/en/tld/br), [.ca](/en/tld/ca), [.au](/en/tld/au)
+
+## Sources and further reading
+
+- IANA — [NIC-Mexico / Registry .MX](https://www.iana.org/domains/root/db/mx.html)
+- Google Search Central — [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
+- beta.dominios.nic.mx — [Registry .MX's own policy documentation](https://beta.dominios.nic.mx/policies/)

@@ -55,7 +55,9 @@ The **.life domain** is a plain-English top-level domain aimed at wellness, life
 
 .life is a [generic top-level domain](/en/glossary/tld), not a country-code extension, so it carries no geographic meaning. The string is the ordinary English word for life, which gives it broad, immediately legible use across health, wellness, personal-development, and cause-driven branding without requiring an explanation of what the letters stand for — unlike acronym-based new gTLDs.
 
-Because it is a generic gTLD, Google treats .life like any other new extension: no automatic ranking advantage or penalty, and no geo-targeting applied, per [Google Search Central's guidance on generic vs. country-targeted domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=more%20generic%20than%20country-targeted). You can confirm the delegation record and current operator on the [IANA root-zone entry for .life](https://www.iana.org/domains/root/db/life.html).
+Because it is a generic gTLD, Google treats .life like any other new extension: no automatic ranking advantage or penalty, and no geo-targeting applied, per [Google Search Central's guidance on generic vs. country-targeted domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=more%20generic%20than%20country-targeted). You can confirm the delegation record and current operator on the [IANA root-zone entry for .life](https://www.iana.org/domains/root/db/life.html).
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 ## History of .life
 
@@ -120,7 +122,7 @@ Names can run from 1–63 characters, use letters, numbers, and hyphens (not in 
 
 ## Reputation and email deliverability
 
-Buyers deserve candor here. We could not find a current, fetchable Spamhaus or Interisle report that names .life specifically among its worst- or most-abused TLD lists — if you find one, treat it as more current than this page. What is well documented at the category level: Interisle's [Cybercrime Supply Chain 2025 research](https://interisle.net/insights/cybercrimesupplychain2025#:~:text=though%20they%20hold%20just%2012%25%20of%20the%20market%2C%20they%20accounted%20for%20nearly%20half%20of%20all%20cybercrime%20domains%20reported) (sponsored by APWG, CAUCE, and M3AAWG) found that new gTLDs as a category hold just 12% of the domain market yet accounted for nearly half of all reported cybercrime domains — a reminder that low-cost, easy-to-bulk-register extensions draw disproportionate abuse as a category, even without a .life-specific figure to cite.
+Buyers deserve candor here. The current [Spamhaus Domain Reputation Update for October 2025–March 2026](https://content.spamhaus.org/4d83c22f-84c5-4f82-95ab-4e6b39f73db5.pdf) lists `.life` at **#20 among gTLDs by malicious or suspicious domain count**, with **12,204** listed domains. The same report ranks it **#19 by share of the zone listed**, at **2.99%** (12,204 out of 407,624 domains). Those figures do not mean every `.life` site is risky, but they do show measurable abuse within the zone.
 
 Practically, that means some spam filters and cautious users may apply extra scrutiny to unfamiliar .life links. The extension itself is legitimate and ICANN-accredited, and being operated by an established registry like Identity Digital is a point in its favor — being on .life does not make a site untrustworthy. **Mitigation:** configure SPF, DKIM, and DMARC correctly for any email sent from a .life domain, warm up new sending domains gradually, and keep registrant information clean and verifiable — vital for nonprofit and health-related sites where trust is central.
 
@@ -165,3 +167,12 @@ It suits wellness and health coaches, lifestyle and personal-development brands,
 - [What makes a domain valuable?](/en/blog/what-makes-a-domain-valuable)
 - Glossary: [TLD](/en/glossary/tld), [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [new gTLD](/en/glossary/new-gtld)
 - Compare TLDs: [.com](/en/tld/com), [.today](/en/tld/today)
+
+## Sources and further reading
+
+- Google Search Central — [Google Search Central's guidance on generic vs. country-targeted domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=more%20generic%20than%20country-targeted)
+- IANA — [IANA root-zone entry for .life](https://www.iana.org/domains/root/db/life.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement for .life](https://www.icann.org/en/registry-agreements/details/life)
+- GoDaddy — [GoDaddy's .life domain policy summary](https://www.godaddy.com/help/about-life-domains-12109)
+- Spamhaus — [Spamhaus Domain Reputation Update for October 2025–March 2026](https://content.spamhaus.org/4d83c22f-84c5-4f82-95ab-4e6b39f73db5.pdf)

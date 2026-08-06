@@ -57,6 +57,8 @@ The **.digital domain** is an open generic top-level domain aimed squarely at th
 
 Because it's a generic string, Google applies no geo-targeting rule to .digital — it's evaluated like any other gTLD. You can confirm the delegation record directly in the [IANA root-zone entry for .digital](https://www.iana.org/domains/root/db/digital.html).
 
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
 ## History of .digital
 
 - **Delegation (2014):** .digital was delegated to the root zone on **May 2, 2014** (registration date April 17, 2014), initially assigned to **Dash Park, LLC** — one of the single-purpose entities Donuts Inc. used to file its 2012-round gTLD applications (the same pattern used for sibling strings like .media, filed under "Grand Glen, LLC"). The underlying [ICANN Registry Agreement for .digital](https://www.icann.org/en/registry-agreements/details/digital) was signed **March 6, 2014**.
@@ -158,3 +160,10 @@ Identity Digital, the company that runs the .digital registry through its Binky 
 - [From Facebook.com to Meta.com](/en/blog/from-facebook-com-to-meta-com/)
 - Glossary: [registrar](/en/glossary/registrar/), [ICANN](/en/glossary/icann/), [registry](/en/glossary/registry/), [DNS](/en/glossary/dns/)
 - Compare TLDs: [.com](/en/tld/com/), [.tech](/en/tld/tech/), [.agency](/en/tld/agency/)
+
+## Sources and further reading
+
+- identity.digital — [Identity Digital](https://www.identity.digital/)
+- IANA — [IANA root-zone entry for .digital](https://www.iana.org/domains/root/db/digital.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement for .digital](https://www.icann.org/en/registry-agreements/details/digital)

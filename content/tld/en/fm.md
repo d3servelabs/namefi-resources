@@ -60,7 +60,7 @@ This page covers who operates .fm, its unusual history, which real brands use it
 
 In practice, almost nobody registers a .fm name to signal Micronesia. The letters spell the **FM radio band**, and the [registry](/en/glossary/registry/) leaned into that reading decades ago: **dotFM**, a division of San Francisco-based BRS Media, markets .fm worldwide to broadcasters, podcasters, and streaming services — the "repurposed ccTLD" pattern that also gave the world [.io](/en/tld/io), [.tv](/en/tld/tv), and [.ai](/en/tld/ai).
 
-Search engines have caught up with reality. Google's multi-regional documentation places .fm on its short list of ccTLDs it [treats as generic domains rather than country-targeted ones](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=more%20generic%20than%20country%2Dtargeted), alongside .io, .tv, .me, and .co — because users and site owners see these extensions as generic. A .fm site can therefore rank for audiences anywhere, with no built-in geographic bias.
+Search engines have caught up with reality. Google's multi-regional documentation places .fm on its short list of ccTLDs it [treats as generic domains rather than country-targeted ones](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=more%20generic%20than%20country%2Dtargeted), alongside .io, .tv, .me, and .co — because users and site owners see these extensions as generic. A .fm site can therefore rank for audiences anywhere, with no built-in geographic bias.
 
 ## History of .fm
 
@@ -177,3 +177,14 @@ It suits podcasts, radio stations, streaming and music services, and audio-first
 - [What are tokenized domains?](/en/blog/what-are-tokenized-domains/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [registry](/en/glossary/registry/), [registrar](/en/glossary/registrar/), [UDRP](/en/glossary/udrp/), [WHOIS privacy](/en/glossary/whois-privacy/)
 - Compare TLDs: [.tv](/en/tld/tv), [.am](/en/tld/am), [.io](/en/tld/io), [.ai](/en/tld/ai), [.gg](/en/tld/gg), [.sh](/en/tld/sh), [.ly](/en/tld/ly), [.to](/en/tld/to)
+
+## Sources and further reading
+
+- IANA — [IANA root-zone entry for .fm](https://www.iana.org/domains/root/db/fm.html)
+- Google Search Central — [treats as generic domains rather than country-targeted ones](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=more%20generic%20than%20country%2Dtargeted)
+- brsmedia.com — [signed a new agreement in November 2024](https://brsmedia.com/30yrs/)
+- last.fm — [Last.fm](https://www.last.fm/about)
+- transistor.fm — [Transistor.fm](https://transistor.fm/)
+- overcast.fm — [Overcast.fm](https://overcast.fm/)
+- dot.fm — [dotFM registration policy](https://dot.fm/policy.cfm#:~:text=first%20come%2C%20first%20served)
+- dot.fm — [the registry offers emoji domains](https://dot.fm/)
