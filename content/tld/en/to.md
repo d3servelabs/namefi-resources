@@ -37,7 +37,7 @@ relatedGlossary:
   - /en/glossary/dnssec/
 ---
 
-The **.to domain** is the [country-code Top-Level Domain](/en/glossary/cctld/) (ccTLD) of the **Kingdom of Tonga** — and one of the first country codes ever marketed to the whole world. Since 1997 its registry, **Tonic** (the Tonga Network Information Center), has sold `.to` names to anyone, anywhere, with no local-presence requirement. Because "to" is one of the most common words in English, the suffix became a natural canvas for [domain hacks](/en/glossary/domain-hack/) and short links: Amazon's **amzn.to** share links are probably the most-clicked .to names on the planet.
+The **.to domain** is the [country-code Top-Level Domain](/en/glossary/cctld/) (ccTLD) of the **Kingdom of Tonga** — and one of the first country codes ever marketed to the whole world. Since 1997 its registry, **Tonic** (the Tonga Network Information Center), has sold `.to` names to anyone, anywhere, with no local-presence requirement. Because "to" is one of the most common words in English, the suffix became a natural canvas for [domain hacks](/en/glossary/domain-hack/) and short links: Amazon's **amzn.to** share links are the best-known .to names in circulation.
 
 This page covers what .to is, its unusually early open-registration history, its distinctive WHOIS privacy stance, its complicated relationship with URL shorteners, and the honest trade-offs.
 
@@ -84,7 +84,7 @@ Because registrations were open and readable as the English word "to," the names
 
 ## Notable sites using .to
 
-- **amzn.to** — Amazon's short-link domain, generated when users share product links; almost certainly the highest-traffic use of the suffix.
+- **amzn.to** — Amazon's short-link domain, generated when users share product links; the best-known use of the suffix.
 - **cr.yp.to** — the long-running home of cryptographer Daniel J. Bernstein (djb); the domain itself spells "crypto."
 - **uloz.to** — the Czech file-hosting brand built on the Slavic-language reading of "to."
 

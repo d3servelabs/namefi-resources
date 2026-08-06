@@ -117,7 +117,7 @@ Domain names can run from roughly 2 to 63 characters, and registrants can choose
 
 ## Reputation and email deliverability
 
-.vc does not carry a notable spam or abuse reputation in the way some ultra-cheap new gTLDs do — it is a longer-established ccTLD with a specific, well-understood niche use case rather than a bulk-registration bargain extension. That said, as with any suffix, actual [deliverability](/en/blog/email-sender-reputation-arms-race/) depends far more on sender reputation, [SPF/DKIM/DMARC authentication](/en/glossary/dnssec/), and list hygiene than on the TLD itself. A properly authenticated .vc sender should reach inboxes normally; the main practical consideration is that recipients unfamiliar with the "venture capital" reading may need brand context on first contact.
+.vc does not carry a notable spam or abuse reputation in the way some ultra-cheap new gTLDs do — it is a longer-established ccTLD with a specific, well-understood niche use case rather than a bulk-registration bargain extension. That said, as with any suffix, actual [deliverability](/en/blog/email-sender-reputation-arms-race/) depends far more on sender reputation, SPF/DKIM/DMARC authentication, and list hygiene than on the TLD itself. A properly authenticated .vc sender should reach inboxes normally; the main practical consideration is that recipients unfamiliar with the "venture capital" reading may need brand context on first contact.
 
 ## Branding and naming tips
 

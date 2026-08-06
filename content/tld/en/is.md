@@ -16,7 +16,7 @@ faqs:
   - question: 'Who should register a .is domain?'
     answer: 'It suits brands and tools that can form a real word or phrase by ending in "is" (who.is, this.is), plus anyone building for an Icelandic audience. It is a weaker choice for a global brand with no natural ".is" wordplay.'
   - question: 'Does .is support internationalized domain names?'
-    answer: 'Yes. ISNIC allows the Icelandic letters a, e, y, u, i, o, th, ae, o with stroke, and eth in addition to the standard ASCII alphabet, numerals, and hyphens, with a shorter maximum length for names using those extra characters.'
+    answer: 'Yes. ISNIC allows the Icelandic letters á, é, ý, ú, í, ó, þ, æ, ö, and ð in addition to the standard ASCII alphabet, numerals, and hyphens, with a shorter maximum length for names using those extra characters.'
 relatedArticles:
   - /en/blog/domain-hacks-explained/
   - /en/blog/what-is-a-tld/
@@ -109,7 +109,7 @@ Choose **.io** or **.co** when you want a hack-friendly ccTLD that Google won't 
 
 **Registration restrictions: open to all.** ISNIC's [official domain rules](https://www.isnic.is/en/domain/rules) state that any person or legal entity may register a .is domain, and if someone registers on behalf of a rights holder, "that party shall have a clear mandate to bind the right holder" — but there is no citizenship, residency, or local-presence test for the registrant.
 
-Every registration requires a designated **administrative contact**, who is authorized to manage the registration, and a technical contact; neither is required to be based in Iceland. **[IDN](/en/glossary/dns/)** names may use the Icelandic letters á, é, ý, ú, í, ó, þ, æ, ö, and ð alongside standard ASCII letters, numerals, and hyphens — names using those extra characters have a maximum length of 59 characters versus 66 for ASCII-only names. **[DNSSEC](/en/glossary/dnssec/)** is supported. Six second-level names are reserved for institutional use (net.is, com.is, edu.is, gov.is, org.is, int.is). The authoritative source for current eligibility and technical rules is ISNIC's [domain rules page](https://www.isnic.is/en/domain/rules), the ccTLD manager's own policy, since ccTLDs like .is are not governed by an ICANN registry agreement.
+Every registration requires a designated **administrative contact**, who is authorized to manage the registration, and a technical contact; neither is required to be based in Iceland. **[IDN](/en/glossary/idn/)** names may use the Icelandic letters á, é, ý, ú, í, ó, þ, æ, ö, and ð alongside standard ASCII letters, numerals, and hyphens — names using those extra characters have a maximum length of 59 characters versus 66 for ASCII-only names. **[DNSSEC](/en/glossary/dnssec/)** is supported. Six second-level names are reserved for institutional use (net.is, com.is, edu.is, gov.is, org.is, int.is). The authoritative source for current eligibility and technical rules is ISNIC's [domain rules page](https://www.isnic.is/en/domain/rules), the ccTLD manager's own policy, since ccTLDs like .is are not governed by an ICANN registry agreement.
 
 ## .is pricing and value
 
@@ -152,7 +152,7 @@ It suits brands and tools that can form a real word or phrase by ending in "is" 
 
 ### Does .is support internationalized domain names?
 
-Yes. ISNIC allows the Icelandic letters a, e, y, u, i, o, th, ae, o with stroke, and eth in addition to the standard ASCII alphabet, numerals, and hyphens, with a shorter maximum length for names using those extra characters.
+Yes. ISNIC allows the Icelandic letters á, é, ý, ú, í, ó, þ, æ, ö, and ð in addition to the standard ASCII alphabet, numerals, and hyphens, with a shorter maximum length for names using those extra characters.
 
 ## Related resources
 
