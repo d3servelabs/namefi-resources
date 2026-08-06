@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { collectBodyFaqs, stripInline } from './check-tld-faq-sync';
+import { collectBodyFaqs, matchQuestion, stripInline } from './check-tld-faq-sync';
 
 describe('stripInline', () => {
   test('strips code spans, bold, and links down to rendered text', () => {
@@ -63,5 +63,27 @@ describe('collectBodyFaqs', () => {
     expect(collectBodyFaqs(body, fmQuestions)).toEqual([
       { question: 'Unrelated heading', answer: 'Text.' },
     ]);
+  });
+});
+
+describe('matchQuestion', () => {
+  const qas = [{ question: '誰でも .test ドメインを登録できますか？', answer: 'はい。' }];
+
+  test('exact match is not flagged as whitespace-only', () => {
+    expect(matchQuestion(qas, '誰でも .test ドメインを登録できますか？')).toEqual({
+      hit: qas[0],
+      whitespaceOnly: false,
+    });
+  });
+
+  test('whitespace-only drift still pairs, flagged so the gate reports it as drift', () => {
+    expect(matchQuestion(qas, '誰でも.testドメインを登録できますか？')).toEqual({
+      hit: qas[0],
+      whitespaceOnly: true,
+    });
+  });
+
+  test('genuinely missing question returns no hit', () => {
+    expect(matchQuestion(qas, 'Completely different?')).toEqual({ hit: undefined, whitespaceOnly: false });
   });
 });

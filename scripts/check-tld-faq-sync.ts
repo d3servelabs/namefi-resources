@@ -82,6 +82,21 @@ export function collectBodyFaqs(body: string, fmQuestions: string[]): QA[] {
   return best;
 }
 
+// Pair a frontmatter question with a body QA. Section location above is
+// whitespace-tolerant so drift is reported against the right block, but the
+// gate itself stays strict: a whitespace-only question difference is still
+// frontmatter/body drift (this sweep fixed several, e.g. ja/us.md) — it is
+// just reported as such instead of as "not found".
+export function matchQuestion(
+  bodyQAs: QA[],
+  strippedQuestion: string,
+): { hit?: QA; whitespaceOnly: boolean } {
+  const exact = bodyQAs.find((b) => b.question === strippedQuestion);
+  if (exact) return { hit: exact, whitespaceOnly: false };
+  const loose = bodyQAs.find((b) => nospace(b.question) === nospace(strippedQuestion));
+  return { hit: loose, whitespaceOnly: Boolean(loose) };
+}
+
 if (import.meta.main) {
   let filesChecked = 0;
   let faqsChecked = 0;
@@ -123,9 +138,15 @@ if (import.meta.main) {
         faqsChecked++;
         const q = stripInline(String(faq.question ?? ''));
         const a = stripInline(String(faq.answer ?? ''));
-        const hit = bodyQAs.find((b) => b.question === q);
+        const { hit, whitespaceOnly } = matchQuestion(bodyQAs, q);
         if (!hit) {
           problems.push(`${rel} faq[${idx}]: question not found in body FAQ section: "${q}"`);
+          continue;
+        }
+        if (whitespaceOnly) {
+          problems.push(
+            `${rel} faq[${idx}]: question differs from body by whitespace only\n    frontmatter: ${q}\n    body:        ${hit.question}`,
+          );
           continue;
         }
         if (hit.answer !== a) {
