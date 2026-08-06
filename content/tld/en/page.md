@@ -55,7 +55,9 @@ The **.page domain** is Google's generic top-level domain for exactly what it so
 
 .page is a [generic top-level domain](/en/glossary/tld) (gTLD), not a country-code TLD, so it carries no geographic association. The string is deliberately plain-spoken: Google Registry describes it as fitting anyone building "a simple, more secure online presence," from a business launching a site to "an author telling your story." You can confirm the delegation record and operator in the [IANA root-zone database entry for .page](https://www.iana.org/domains/root/db/page.html).
 
-Because .page is a generic extension, [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.) confirms gTLDs "aren't associated with specific locations," so .page carries no automatic geo-targeting signal, and no inherent ranking boost or penalty from the extension itself.
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
+Because .page is a generic extension, [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.) confirms gTLDs "aren't associated with specific locations," so .page carries no automatic geo-targeting signal, and no inherent ranking boost or penalty from the extension itself.
 
 ## History of .page
 
@@ -164,3 +166,15 @@ It suits personal portfolios, writers and publishers, landing pages, documentati
 - [How to name your project](/en/blog/how-to-name-your-project)
 - Glossary: [domain landing page](/en/glossary/domain-landing-page), [gTLD](/en/glossary/gtld), [registrar](/en/glossary/registrar)
 - Compare TLDs: [.com](/en/tld/com), [.site](/en/tld/site), [.blog](/en/tld/blog), [.ing](/en/tld/ing), [.meme](/en/tld/meme)
+
+## Sources and further reading
+
+- registry.google — [Charleston Road Registry](https://www.registry.google)
+- IANA — [IANA root-zone database entry for .page](https://www.iana.org/domains/root/db/page.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- Google Search Central — [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20(gTLDs)%20are%20domains%20that%20aren't%20associated%20with%20specific%20locations.)
+- ICANN — [ICANN Registry Agreement for .page](https://www.icann.org/en/registry-agreements/details/page)
+- registry.google — [general availability began October 9, 2018](https://www.registry.google/announcements/launch-details-for-page/)
+- get.page — [get.page showcase](https://get.page/)
+- mmm.page — [mmm.page](https://mmm.page)
+- registry.google — [Domain Registration Policy](https://www.registry.google/policies/)

@@ -55,7 +55,9 @@ The **.lol domain** takes the internet's most recognizable shorthand — "laugh 
 
 .lol is a [generic top-level domain](/en/glossary/tld) approved through ICANN's 2012-round New gTLD Program, not a country-code extension, so it carries no built-in geographic meaning. The registry positions .lol as "the go-to online destination for everything fun and entertaining," aimed at comedy shows, entertainment venues, meme accounts, and playful URL shortening, according to the [official .lol registry site](https://nic.lol/).
 
-Because it is a generic gTLD, Google treats .lol like any other new extension: there is no automatic ranking advantage or penalty, and no geo-targeting is applied, per [Google Search Central's guidance on multi-regional and generic domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=more%20generic%20than%20country-targeted). You can confirm the delegation record and current operator on the [IANA root-zone entry for .lol](https://www.iana.org/domains/root/db/lol.html).
+Because it is a generic gTLD, Google treats .lol like any other new extension: there is no automatic ranking advantage or penalty, and no geo-targeting is applied, per [Google Search Central's guidance on multi-regional and generic domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=more%20generic%20than%20country-targeted). You can confirm the delegation record and current operator on the [IANA root-zone entry for .lol](https://www.iana.org/domains/root/db/lol.html).
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 ## History of .lol
 
@@ -165,3 +167,14 @@ It suits comedians, meme creators, entertainment brands, and informal community 
 - [The email sender reputation arms race](/en/blog/email-sender-reputation-arms-race)
 - Glossary: [TLD](/en/glossary/tld), [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [new gTLD](/en/glossary/new-gtld)
 - Compare TLDs: [.xyz](/en/tld/xyz), [.fun](/en/tld/fun), [.com](/en/tld/com)
+
+## Sources and further reading
+
+- nic.lol — [official .lol registry site](https://nic.lol/)
+- Google Search Central — [Google Search Central's guidance on multi-regional and generic domains](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=more%20generic%20than%20country-targeted)
+- IANA — [IANA root-zone entry for .lol](https://www.iana.org/domains/root/db/lol.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement page for .lol](https://www.icann.org/en/registry-agreements/details/lol)
+- ICANN — [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/xyz)
+- GoDaddy — [GoDaddy's .lol domain policy summary](https://www.godaddy.com/help/about-lol-domains-19076)
+- interisle.net — [Cybercrime Supply Chain 2025 research](https://interisle.net/insights/cybercrimesupplychain2025#:~:text=though%20they%20hold%20just%2012%25%20of%20the%20market%2C%20they%20accounted%20for%20nearly%20half%20of%20all%20cybercrime%20domains%20reported)

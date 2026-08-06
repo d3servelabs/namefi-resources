@@ -38,14 +38,14 @@ relatedGlossary:
   - /en/glossary/second-level-domain/
 ---
 
-The **.uk domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for the **United Kingdom**, operated by the registry [Nominet](https://nominet.uk). It is also one of the internet's oldest ccTLDs, registered just seven months after the first generic domains went live. For decades, "having a .uk domain" in practice meant a third-level name like `example.co.uk` — direct second-level registration only opened in 2014. This guide covers that history, who can register today, and the honest trade-offs between the shorter .uk and the still-dominant .co.uk.
+The **.uk domain** is the official [country-code top-level domain](/en/glossary/cctld/) (ccTLD) for the **United Kingdom**, operated by the registry Nominet. It is also one of the internet's oldest ccTLDs, registered just seven months after the first generic domains went live. For decades, "having a .uk domain" in practice meant a third-level name like `example.co.uk` — direct second-level registration only opened in 2014. This guide covers that history, who can register today, and the honest trade-offs between the shorter .uk and the still-dominant .co.uk.
 
 ## .uk at a glance
 
 | Fact | Detail |
 | --- | --- |
 | TLD type | Country-code top-level domain (ccTLD) for the United Kingdom |
-| Registry operator | [Nominet UK](https://nominet.uk), based in Oxford |
+| Registry operator | Nominet UK, based in Oxford |
 | Year launched | Delegated by IANA on 24 July 1985 |
 | IDN support | No — .uk names are restricted to ASCII letters, numbers, and hyphens |
 | DNSSEC | Supported |
@@ -54,15 +54,15 @@ The **.uk domain** is the official [country-code top-level domain](/en/glossary/
 
 ## What is .uk?
 
-.uk is the United Kingdom's [ccTLD](/en/glossary/cctld/), and its [IANA root-zone record](https://www.iana.org/domains/root/db/uk.html) lists Nominet as the sponsoring organization. It is administered under Nominet's own [.UK Policy](https://nominet.uk/uk-registry/uk-policy/) framework rather than a standard ICANN registry agreement, since ccTLDs sit outside ICANN's registry-agreement system entirely.
+.uk is the United Kingdom's [ccTLD](/en/glossary/cctld/), and its [IANA root-zone record](https://www.iana.org/domains/root/db/uk.html) lists Nominet as the sponsoring organization. It is administered under Nominet's publicly accessible [.UK policies](https://registrars.nominet.uk/registry/dot-uk/policies/#:~:text=This%20.UK%20Registration%20Policy%20(Policy)%20governs%20the%20registration%20of%20Domains%20in%20the%20.UK%20namespace) rather than a standard ICANN registry agreement, since ccTLDs sit outside ICANN's registry-agreement system.
 
-.uk was actually meant to be **.gb**, following the same two-letter ISO 3166 scheme most countries use. But the UK academic network's own naming scheme had already settled on "UK" months earlier, and .uk went live first — so .gb was reserved but never put into general use. For SEO, Google's own [multi-regional sites guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) treats most ccTLDs, including .uk, as country-targeted signals by default; .uk is not on Google's short list of ccTLDs (like .co or .io) that it treats as generic.
+.uk was actually meant to be **.gb**, following the same two-letter ISO 3166 scheme most countries use. But the UK academic network's own naming scheme had already settled on "UK" months earlier, and .uk went live first — so .gb was reserved but never put into general use. For SEO, Google's own [multi-regional sites guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en) treats most ccTLDs, including .uk, as country-targeted signals by default; .uk is not on Google's short list of ccTLDs (like .co or .io) that it treats as generic.
 
 ## History of .uk
 
 .uk was registered on **24 July 1985**, the first country-code domain delegated after .us and just seven months behind the original generic domains such as .com. For its first years it was run informally by academic volunteers; **Nominet UK was formed in 1996** as a not-for-profit company to take over administration on a more structured, commercial-grade basis.
 
-The single biggest change to .uk's structure came on **10 June 2014**, when Nominet began accepting direct second-level registrations (`example.uk`) for the first time — before that date, a .uk presence was only possible as a third-level name such as `example.co.uk` or `example.org.uk`. To manage the transition fairly, Nominet ran a five-year **"Right of Registration"** reservation: anyone who held a matching `.co.uk`, `.org.uk`, `.me.uk`, `.net.uk`, `.ltd.uk`, or `.plc.uk` name before **23:59 UTC on 28 October 2013** had the right to claim the equivalent `.uk` name first. That right expired at **06:00 BST on 25 June 2019**, as confirmed on [Nominet's own FAQ page](https://nominet.uk/reserved-uk-rights-faqs/#:~:text=When%20exactly%20did%20the%20rights%20expire). By the close of that window, over **8 million of the original 10 million** eligible rights had either been exercised or allowed to lapse; unclaimed names were released to the public in staged batches through July 2019.
+The single biggest change to .uk's structure came on **10 June 2014**, when Nominet began accepting direct second-level registrations (`example.uk`) for the first time — before that date, a .uk presence was only possible as a third-level name such as `example.co.uk` or `example.org.uk`. To manage the transition, Nominet ran a five-year **"Right of Registration"** reservation for holders of matching legacy third-level names. Namecheap's registrar guidance records that the reservation [ended at 06:00 BST on 25 June 2019](https://www.namecheap.com/support/knowledgebase/article.aspx/251/36/uk-domain-registration-requirements/#:~:text=The%20deadline%20to%20claim%20reserved%20.UK%20domain%20names%20ended%20at%206am%20BST%20(UTC%2B1)%20on%20the%2025th%20of%20June%202019.), after which unclaimed names moved toward general availability.
 
 ## How people use .uk
 
@@ -105,11 +105,11 @@ Choose **.com** for a globally neutral default, **.uk** (or the still-dominant .
 
 ## Who can register a .uk domain?
 
-**Registration restrictions: open to all.** Nominet operates .uk with no general citizenship, residency, or business-registration requirement — registrations are accepted worldwide on a first-come, first-served basis, governed by Nominet's [.UK Policy](https://nominet.uk/uk-registry/uk-policy/) and Terms & Conditions of Domain Name Registration. A handful of specific sub-namespaces carry their own rules — for example `.sch.uk` is reserved for schools under Nominet's Schools Domain Name Rules — but the general `.uk` and `.co.uk`/`.org.uk` namespaces are unrestricted. [DNSSEC](/en/glossary/dnssec/) is supported registry-wide, and disputes over UK domains run through Nominet's own Dispute Resolution Service rather than the generic [UDRP](/en/glossary/udrp/).
+**Registration restrictions: open for the general namespaces.** Nominet's current [.UK Registration Policy](https://registrars.nominet.uk/registry/dot-uk/policies/#:~:text=This%20.UK%20Registration%20Policy%20(Policy)%20governs%20the%20registration%20of%20Domains%20in%20the%20.UK%20namespace) contains no citizenship or residency requirement for direct `.uk`, `.co.uk`, or `.org.uk` registrations. It does set explicit category rules for specialist sub-namespaces such as `.ltd.uk`, `.plc.uk`, `.net.uk`, and `.sch.uk`, so those should not be described as unrestricted. [DNSSEC](/en/glossary/dnssec/) is supported registry-wide, and disputes over UK domains run through Nominet's own Dispute Resolution Service rather than the generic [UDRP](/en/glossary/udrp/).
 
 ## .uk pricing and value
 
-.uk pricing follows familiar TLD dynamics rather than any fixed figure: **premium names** — short, dictionary, or high-demand strings — typically carry higher registration and renewal costs, and **first-year promotional pricing commonly differs from the standing renewal rate**. Because the shorter direct `.uk` namespace only opened in 2014, well-formed short names can still be found more easily there than in the much older `.co.uk` zone. This page intentionally quotes no specific prices — check current rates at the point of registration.
+Nominet's published [.UK pricing schedule](https://registrars.nominet.uk/uk-namespace/managing-account/payments/fee-schedule/#:~:text=Domain%20name%20registration%20and%20renewal%20fee%20payable%20by%20Nominet%20Registrars) sets standard registry fees by term and registrar membership, not by the desirability of the label. Registrars set the retail package and may offer promotions. An already registered short `.uk` name may also carry an aftermarket asking price from its owner, but that is separate from registry registration and renewal pricing. Check the registrar's first-year and renewal fees before purchase.
 
 ## Reputation and email deliverability
 
@@ -122,13 +122,12 @@ Choose **.com** for a globally neutral default, **.uk** (or the still-dominant .
 - **Keep it ASCII.** No accented or IDN characters are supported, so plan names accordingly.
 - **Lean into "UK" as a trust cue.** For UK-facing services, finance, or government-adjacent work, the ccTLD itself communicates legitimacy.
 
-## How to register a .uk domain at Namefi
+## How to register a .uk domain
 
 1. **Search** for your desired `.uk` name, and check the `.co.uk` equivalent too.
-2. **Review** whether the name is standard or premium-priced.
+2. **Review** the registrar's first-year and renewal fees, and distinguish a new registration from an aftermarket purchase.
 3. **Register** and configure [DNS](/en/glossary/dns) for your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and [Web3](/en/glossary/web3/), with transparent pricing, fast DNS management, and the option to [tokenize your domain](/en/blog/what-are-tokenized-domains) into a blockchain-backed asset for easier transfers and provable ownership.
 
 ## Frequently asked questions
 
@@ -155,3 +154,11 @@ It suits UK-based businesses, brands, and organizations that want an unambiguous
 - [Domain hacks explained](/en/blog/domain-hacks-explained)
 - Glossary: [ccTLD](/en/glossary/cctld), [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann)
 - Compare TLDs: [.com](/en/tld/com), [.eu](/en/tld/eu), [.io](/en/tld/io), [.de](/en/tld/de)
+
+## Sources and further reading
+
+- IANA — [IANA root-zone record](https://www.iana.org/domains/root/db/uk.html)
+- registrars.nominet.uk — [.UK policies](https://registrars.nominet.uk/registry/dot-uk/policies/#:~:text=This%20.UK%20Registration%20Policy%20(Policy)%20governs%20the%20registration%20of%20Domains%20in%20the%20.UK%20namespace)
+- Google Search Central — [multi-regional sites guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
+- Namecheap — [ended at 06:00 BST on 25 June 2019](https://www.namecheap.com/support/knowledgebase/article.aspx/251/36/uk-domain-registration-requirements/#:~:text=The%20deadline%20to%20claim%20reserved%20.UK%20domain%20names%20ended%20at%206am%20BST%20(UTC%2B1)%20on%20the%2025th%20of%20June%202019.)
+- registrars.nominet.uk — [.UK pricing schedule](https://registrars.nominet.uk/uk-namespace/managing-account/payments/fee-schedule/#:~:text=Domain%20name%20registration%20and%20renewal%20fee%20payable%20by%20Nominet%20Registrars)

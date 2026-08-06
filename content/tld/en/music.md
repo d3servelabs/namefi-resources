@@ -10,13 +10,13 @@ description: 'The .music domain is a community-gated gTLD for the music industry
 keywords: ['.music domain eligibility', 'DotMusic Limited registry', 'id.MUSIC verification', 'music community domain', '.music domain restrictions']
 faqs:
   - question: 'Can anyone register a .music domain?'
-    answer: 'Not without qualifying. .music is a community-restricted gTLD operated by DotMusic Limited. You must self-attest that you are a verifiable member of the global music community — an artist, band, songwriter, label, venue, radio station, or similar — and then complete identity verification through id.MUSIC after registration.'
+    answer: 'No. .music is a community-restricted gTLD operated by DotMusic Limited. Registration and use are exclusive to verified members of the global music community, and registrants must complete the current identity-verification process.'
   - question: 'Does a .music domain affect SEO?'
     answer: 'No. Google treats .music as a generic top-level domain with no geographic bias and no built-in ranking boost or penalty. Its community restriction affects who can register it, not how Google ranks it.'
   - question: 'Who should register a .music domain?'
-    answer: 'Musicians, bands, songwriters, record labels, music publishers, venues, radio stations, recording studios, promoters, and other genuine music-industry participants who can pass the id.MUSIC verification process.'
+    answer: 'Music artists, creators, songwriters, industry professionals, organizations, and brands that can complete the registry''s identity-verification process.'
   - question: 'What happens if I do not complete .music identity verification?'
-    answer: 'As of the current registry policy, you have up to one year from registration to complete verification at id.MUSIC. Domains that remain unverified past that period may be suspended, locked, or ultimately cancelled by the registry.'
+    answer: 'Identity verification is mandatory. The public registry materials cited on this page do not specify a universal deadline or fixed enforcement sequence, so follow the current instructions from your registrar and id.MUSIC and complete verification promptly.'
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/what-is-domain/
@@ -56,7 +56,9 @@ The **.music domain** is one of the few new gTLDs where the extension itself is 
 
 .music is a [generic top-level domain](/en/glossary/tld) (gTLD) with an ICANN **Community designation (Specification 12)** attached to its registry agreement — a status only a small number of new gTLDs hold. The [ICANN Registry Agreement for .music](https://www.icann.org/en/registry-agreements/details/music) confirms the operator as **DotMusic Limited**, agreement date **4 May 2021**, type "Base, Community (Spec 12), Non-Sponsored." The [IANA root-zone entry for .music](https://www.iana.org/domains/root/db/music.html) lists a registration date of 2021-10-14 and delegation date of 2021-10-29.
 
-Because it is a generic gTLD rather than a country-code extension, [Google treats any TLD resolving through the IANA DNS root zone as a gTLD unless ICANN lists it as a ccTLD](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), so .music carries no geo-targeting bias — its restriction is about *who* can register, not how it ranks.
+Because it is a generic gTLD rather than a country-code extension, [Google treats any TLD resolving through the IANA DNS root zone as a gTLD unless ICANN lists it as a ccTLD](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en), so .music carries no geo-targeting bias — its restriction is about *who* can register, not how it ranks.
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 ## History of .music
 
@@ -105,16 +107,15 @@ Pick .com for a music-adjacent business that doesn't want a registration gate; p
 
 ## Things to consider
 
-- **You must qualify — and prove it.** This is the central trade-off: .music is not available to the general public, and the verification step is mandatory, not optional.
-- **Ongoing compliance risk.** The registry can audit eligibility at any time during a domain's life, not just at registration.
+- **You must qualify — and prove it.** This is the central trade-off: .music is reserved for verified members of the global music community, so identity verification is mandatory.
+- **Verification adds onboarding work.** Follow the current instructions from your registrar and the registry's identity provider before relying on the domain for a launch.
 - **New and unproven for general recognition.** With general availability only since October 2024, .music has not yet built mainstream familiarity the way legacy extensions have.
-- **Not for domain investing.** The registry's anti-warehousing policy explicitly targets bulk speculative registration, which rules out a common gTLD use case.
 
 ## Who can register a .music domain?
 
-**Registration restrictions: community-restricted.** Unlike most new gTLDs, .music is not open to the general public. Per the registry's own [.music domain policy](https://support.enom.com/support/solutions/articles/201000081248--music-domain-policy), eligible registrants include musicians and artists, bands and creators, music-industry professionals, and music-related companies, associations, and organizations — listed in more detail by the registry as artists, radio stations, recording studios, songwriters, influencers, music publishers, bands, promoters, venues, music websites, and live-sound professionals, per [getadotmusicdomain.com](https://getadotmusicdomain.com/).
+**Registration restrictions: community-restricted.** Unlike most new gTLDs, `.music` is not open to the general public. The registry's launch announcement says registration and use are [exclusive to verified members of the global music community](https://www.registry.music/press/global-music-industry-launches-its-verified-music-domain-name-and-musicid#:~:text=The%20registration%20and%20use%20of%20.MUSIC%20is%20exclusive%20to%20verified%20members%20of%20the%20global%20music%20community), including music artists, creators, songwriters, industry professionals, organizations, and brands.
 
-Registration is a **two-step process**: applicants self-attest eligibility at registration, then complete identity verification through [id.MUSIC](https://id.music/), the namespace's dedicated non-profit identity-verification service. Registrants currently have **up to one year from registration** to complete verification; unverified domains past that window may be suspended, server-locked, or cancelled — a change from the registry's earlier approach of holding domains immediately until verification finished. The registry may also audit eligibility at any point in a domain's lifecycle. The binding contractual basis is the [ICANN Registry Agreement for .music](https://www.icann.org/en/registry-agreements/details/music), which carries the Community (Specification 12) designation.
+Applicants register through a certified registrar and then follow the registry's identity-verification process through [id.MUSIC](https://id.music/). The registry describes id.MUSIC as the exclusive identity provider and says that [identity verification is mandatory for `.music` registrants](https://www.registry.music/press/global-music-industry-launches-its-verified-music-domain-name-and-musicid#:~:text=By%20mandating%20identity%20verification%20for%20.MUSIC%20registrants). Because the publicly accessible registry materials cited here do not specify a universal verification deadline or automatic enforcement sequence, follow the current instructions presented by the registrar and identity provider. The binding contractual basis is the [ICANN Registry Agreement for .music](https://www.icann.org/en/registry-agreements/details/music), which carries the Community (Specification 12) designation.
 
 DNSSEC is supported; IDN support varies by registrar, so confirm availability before registering a non-ASCII name. [WHOIS privacy](/en/glossary/whois-privacy/) availability also varies by registrar.
 
@@ -124,20 +125,19 @@ DNSSEC is supported; IDN support varies by registrar, so confirm availability be
 
 ## Reputation and email deliverability
 
-Because .music requires verified community membership rather than open self-service registration, it does not carry the bulk-abuse reputation risk associated with cheap, unrestricted new gTLDs — the registry's anti-warehousing and identity-verification policies work against the mass, disposable-registration pattern that typically draws spam-filter scrutiny. Being new to general availability, long-term deliverability data is still limited. Standard **SPF, DKIM, and DMARC** configuration remains good practice for any domain used for email, .music included.
+Because `.music` only reached general availability in October 2024, long-term independent abuse and deliverability data remains limited. Its mandatory identity-verification model is designed to discourage anonymous, disposable registrations, but it is not evidence that every `.music` sender or site is trustworthy. Standard **SPF, DKIM, and DMARC** configuration remains good practice for any domain used for email.
 
 ## Branding and naming tips
 
 - **Lean into the credibility signal.** Because not everyone can register .music, using it well can itself communicate "verified music professional" to an informed audience.
 - **Match the name to your verifiable identity.** Since eligibility ties to your actual music-industry role, names that clearly match your artist, band, or company identity are the safest choice.
 - **Plan for the verification step.** Budget time after registration to complete id.MUSIC identity verification — don't treat it as optional paperwork.
-- **Don't buy speculatively.** The registry's anti-warehousing policy means .music is a poor fit for a portfolio of names you don't intend to use.
 
 ## How to register a .music domain at Namefi
 
 1. **Search** for your desired `.music` name to check availability.
 2. **Choose** the exact name and confirm you meet the music-community eligibility criteria.
-3. **Register**, then complete identity verification at id.MUSIC and configure [DNS](/en/glossary/dns) to point your site or email.
+3. **Register**, follow the current identity-verification instructions provided during checkout, and configure [DNS](/en/glossary/dns) for your site or email.
 
 [Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and [Web3](/en/glossary/web3/). Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a [blockchain](/en/glossary/blockchain/) asset you own outright, with easier transfers and added security — all with transparent pricing and fast DNS.
 
@@ -145,7 +145,7 @@ Because .music requires verified community membership rather than open self-serv
 
 ### Can anyone register a .music domain?
 
-Not without qualifying. .music is a community-restricted gTLD operated by DotMusic Limited. You must self-attest that you are a verifiable member of the global music community — an artist, band, songwriter, label, venue, radio station, or similar — and then complete identity verification through id.MUSIC after registration.
+No. `.music` is a community-restricted gTLD operated by DotMusic Limited. Registration and use are exclusive to verified members of the global music community, and registrants must complete the current identity-verification process.
 
 ### Does a .music domain affect SEO?
 
@@ -153,11 +153,11 @@ No. Google treats .music as a generic top-level domain with no geographic bias a
 
 ### Who should register a .music domain?
 
-Musicians, bands, songwriters, record labels, music publishers, venues, radio stations, recording studios, promoters, and other genuine music-industry participants who can pass the id.MUSIC verification process.
+Music artists, creators, songwriters, industry professionals, organizations, and brands that can complete the registry's identity-verification process.
 
 ### What happens if I do not complete .music identity verification?
 
-As of the current registry policy, you have up to one year from registration to complete verification at id.MUSIC. Domains that remain unverified past that period may be suspended, locked, or ultimately cancelled by the registry.
+Identity verification is mandatory. The public registry materials cited on this page do not specify a universal deadline or fixed enforcement sequence, so follow the current instructions from your registrar and id.MUSIC and complete verification promptly.
 
 ## Related resources
 
@@ -167,3 +167,15 @@ As of the current registry policy, you have up to one year from registration to 
 - [Domain name terminology guide](/en/blog/domain-terminology-guide)
 - Glossary: [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [registry](/en/glossary/registry), [trademark](/en/glossary/trademark)
 - Compare TLDs: [.com](/en/tld/com), [.live](/en/tld/live)
+
+## Sources and further reading
+
+- ICANN — [ICANN Registry Agreement for .music](https://www.icann.org/en/registry-agreements/details/music)
+- IANA — [IANA root-zone entry for .music](https://www.iana.org/domains/root/db/music.html)
+- Google Search Central — [developers.google.com](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- en.wikipedia.org — [Wikipedia history](https://en.wikipedia.org/wiki/.music)
+- newgtlds.icann.org — [ICANN's official .music launch phase record](https://newgtlds.icann.org/en/program-status/sunrise-claims-periods/music)
+- domainincite.com — [Domain Incite reported](https://domainincite.com/30373-moment-of-truth-as-music-domains-finally-go-on-sale)
+- .MUSIC Registry — [exclusive to verified members of the global music community](https://www.registry.music/press/global-music-industry-launches-its-verified-music-domain-name-and-musicid#:~:text=The%20registration%20and%20use%20of%20.MUSIC%20is%20exclusive%20to%20verified%20members%20of%20the%20global%20music%20community)
+- id.music — [id.MUSIC](https://id.music/)

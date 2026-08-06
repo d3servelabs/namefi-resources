@@ -56,7 +56,9 @@ The **.pro domain** has the most unusual biography of any top-level domain cover
 
 ## What is .pro?
 
-.pro is a [generic top-level domain](/en/glossary/gtld), short for "professional." It carries no geographic meaning, so Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) treats it like any other generic suffix — you'd need hreflang, URL structure, or Search Console geo-targeting to signal a specific country, the domain itself does not do that for you.
+.pro is a [generic top-level domain](/en/glossary/gtld), short for "professional." It carries no geographic meaning, so Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) treats it like any other generic suffix — you'd need hreflang, URL structure, or Search Console geo-targeting to signal a specific country, the domain itself does not do that for you.
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 What sets .pro apart from same-era peers like [.biz](/en/tld/biz) or [.info](/en/tld/info) is that it wasn't approved in the 2012 New gTLD Program at all. It belongs to ICANN's much earlier **2000-round expansion**, the first set of new TLDs approved after .com, .net, and .org — a cohort that also produced .biz, .info, .name, .coop, .museum, and .aero. You can confirm the delegation record, current sponsoring organization, and IANA's category label for .pro directly in the [IANA root-zone database entry for .pro](https://www.iana.org/domains/root/db/pro.html).
 
@@ -120,7 +122,7 @@ There is no trademark sunrise currently running (the 2015 policy change was a re
 
 ## Reputation and email deliverability
 
-.pro carries a comparatively clean reputation among gTLDs. Because it launched as a gated, professional-only namespace and only opened in 2015, it did not accumulate the bulk-registration spam history that some budget new gTLDs (like [.sbs](/en/tld/sbs)) picked up during rapid open launches. That said, since 2015 it is registered the same way any open gTLD is, so ordinary email-deliverability hygiene still applies: configure SPF, DKIM, and DMARC correctly, and warm up new sending domains gradually regardless of suffix.
+.pro's professional origin should not be mistaken for a current reputation guarantee. The [Spamhaus Domain Reputation Update for October 2025–March 2026](https://content.spamhaus.org/4d83c22f-84c5-4f82-95ab-4e6b39f73db5.pdf) lists **17,005 malicious or suspicious `.pro` domains**, #16 among gTLDs by absolute count. It also records **349,498 newly observed `.pro` domains**, equal to **31.45%** of the 1,111,213-domain zone and #14 among gTLDs by newly observed share. These aggregate figures do not judge an individual site, but they mean `.pro` should not be described as categorically clean. Configure SPF, DKIM, and DMARC correctly, and warm up new sending domains gradually regardless of suffix.
 
 ## Branding and naming tips
 
@@ -167,3 +169,12 @@ IANA's root-zone database still classifies .pro under its original registration-
 - [Domain terminology guide](/en/blog/domain-terminology-guide)
 - Glossary: [gTLD](/en/glossary/gtld), [ICANN](/en/glossary/icann), [registrar](/en/glossary/registrar), [TMCH](/en/glossary/tmch)
 - Compare TLDs: [.com](/en/tld/com), [.attorney](/en/tld/attorney), [.law](/en/tld/law), [.cpa](/en/tld/cpa)
+
+## Sources and further reading
+
+- Google Search Central — [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- IANA — [IANA root-zone database entry for .pro](https://www.iana.org/domains/root/db/pro.html)
+- ICANN — [archived 3 May 2002 agreement](https://www.icann.org/en/registry-agreements/pro/pro-registry-agreement-signed-3-may-2002-3-5-2002-en)
+- ICANN — [ICANN Registry Agreement for .pro](https://www.icann.org/en/registry-agreements/details/pro)
+- Spamhaus — [Spamhaus Domain Reputation Update for October 2025–March 2026](https://content.spamhaus.org/4d83c22f-84c5-4f82-95ab-4e6b39f73db5.pdf)

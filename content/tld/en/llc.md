@@ -55,7 +55,9 @@ The **.llc domain** takes the most common US small-business entity type — the 
 
 ## What is .llc?
 
-.llc is a [generic top-level domain](/en/glossary/gtld) delegated under ICANN's 2012 New gTLD Program. Like any generic suffix, it carries no geographic meaning, so Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) treats .llc the same as .com or any other gTLD — there is no automatic ranking effect and no built-in country association.
+.llc is a [generic top-level domain](/en/glossary/gtld) delegated under ICANN's 2012 New gTLD Program. Like any generic suffix, it carries no geographic meaning, so Google's [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) treats .llc the same as .com or any other gTLD — there is no automatic ranking effect and no built-in country association.
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 The registry is Identity Digital Domains Limited, formerly Afilias — one of the industry's larger registry operators, also behind extensions like [.info](/en/tld/info) and [.llc](/en/tld/llc)'s corporate sibling [.ltd](/en/tld/ltd). You can confirm the current operator and delegation date in the [IANA root-zone entry for .llc](https://www.iana.org/domains/root/db/llc.html).
 
@@ -162,3 +164,14 @@ US-style limited liability companies, freelancers planning to incorporate as an 
 - [What is a domain?](/en/blog/what-is-domain)
 - Glossary: [new gTLD](/en/glossary/new-gtld), [gTLD](/en/glossary/gtld), [ICANN](/en/glossary/icann), [registrar](/en/glossary/registrar)
 - Compare TLDs: [.com](/en/tld/com), [.inc](/en/tld/inc), [.co](/en/tld/co)
+
+## Sources and further reading
+
+- Google Search Central — [multi-regional targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- IANA — [IANA root-zone entry for .llc](https://www.iana.org/domains/root/db/llc.html)
+- ICANN — [ICANN Registry Agreement details for .llc](https://www.icann.org/en/registry-agreements/details/llc)
+- afilias.info — [Afilias' official launch announcement](https://afilias.info/news/2018/07/09/new-llc-domain-landrush-period-begins-july-9-general-availability-begins-july-23rd)
+- prnewswire.com — [press release](https://www.prnewswire.com/news-releases/new-llc-domain-landrush-period-begins-july-9-300677484.html)
+- ntldstats.com — [nTLDstats' .llc registry data](https://ntldstats.com/tld/llc)
+- domainnamewire.com — [industry launch coverage](https://domainnamewire.com/2018/06/12/llc-and-inc-domain-names-are-on-their-way/)

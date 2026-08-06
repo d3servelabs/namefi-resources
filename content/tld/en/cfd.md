@@ -55,7 +55,9 @@ The **.cfd domain** carries two entirely different meanings depending on who reg
 
 ## What is .cfd?
 
-.cfd is a [generic top-level domain](/en/glossary/tld) with no country tie. Under its current registry, ShortDot markets the string as **"Clothing & Fashion Design"** — but "CFD" is also the standard abbreviation for **contracts for difference**, a leveraged derivative product that financial regulators including the UK's [FCA](https://www.fca.org.uk/) and the [North American Securities Administrators Association](https://www.nasaa.org/52192/informed-investor-advisory-contracts-for-difference/) have repeatedly warned carries a high risk of losses for retail investors. As a generic extension, Google treats .cfd like any other gTLD: no automatic ranking boost or penalty and no geo-targeting bias. You can verify the delegation record directly in the [IANA root-zone entry for .cfd](https://www.iana.org/domains/root/db/cfd.html).
+.cfd is a [generic top-level domain](/en/glossary/tld) with no country tie. Under its current registry, ShortDot markets the string as **"Clothing & Fashion Design"** — but "CFD" is also the standard abbreviation for **contracts for difference**, a leveraged derivative product that the UK's Financial Conduct Authority describes as [high-risk and unsuitable for some retail consumers](https://www.fca.org.uk/firms/contract-for-differences#:~:text=CFDs%20are%20high%2Drisk%20products%2C%20which%20are%20not%20suitable%20for%20all%20retail%20consumers). As a generic extension, Google treats .cfd like any other gTLD: no automatic ranking boost or penalty and no geo-targeting bias. You can verify the delegation record directly in the [IANA root-zone entry for .cfd](https://www.iana.org/domains/root/db/cfd.html).
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 ## History of .cfd
 
@@ -65,8 +67,6 @@ The **.cfd domain** carries two entirely different meanings depending on who reg
 - **Five unused years:** [Domain Incite reported](https://domainincite.com/26256-shortdot-adds-fourth-gtld-to-its-stable-plans-march-launch) that .cfd sat in the DNS root for roughly five years without properly launching or selling a single domain.
 - **Acquisition and rebrand (2021):** ShortDot acquired .cfd from DotCFD in early 2021. Its COO Kevin Kopas told Domain Incite: "We're branding .cfd for the Clothing & Fashion Design industry and will be marketing it to entrepreneurs, bloggers, vloggers and others that are on the cutting edge of the fashion industry."
 - **Relaunch dates:** Per [ShortDot's launch announcement](https://www.prnewswire.com/news-releases/shortdot-is-all-set-to-launch-the-cfd-domain-extension---tailored-for-the-future-of-clothing--fashion-design-301225057.html), sunrise ran 10 March–12 April 2021, followed by a seven-day Early Access Program, with general availability on 13 April 2021.
-- **Where it stands now:** [ntldstats.com](https://ntldstats.com/tld/cfd) reports .cfd at roughly 1.05 million registered domains, with about 544,000 — just over half — live in the zone file.
-
 Despite the fashion rebrand, the original financial meaning never went away — and, as the reputation section below shows, it is very much alive among abusive registrants.
 
 ## How people use .cfd
@@ -171,3 +171,14 @@ It suits fashion, apparel, and design brands drawn to ShortDot's intended brandi
 - [Avoiding domain sale scams](/en/blog/avoiding-domain-sale-scams)
 - Glossary: [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [new gTLD](/en/glossary/new-gtld), [phishing](/en/glossary/phishing)
 - Compare TLDs: [.com](/en/tld/com), [.sbs](/en/tld/sbs), [.icu](/en/tld/icu), [.bond](/en/tld/bond)
+
+## Sources and further reading
+
+- Financial Conduct Authority — [CFDs are high-risk products](https://www.fca.org.uk/firms/contract-for-differences#:~:text=CFDs%20are%20high%2Drisk%20products%2C%20which%20are%20not%20suitable%20for%20all%20retail%20consumers)
+- IANA — [IANA root-zone entry for .cfd](https://www.iana.org/domains/root/db/cfd.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement signed 11 December 2014](https://www.icann.org/en/registry-agreements/details/cfd)
+- domainincite.com — [Domain Incite reported](https://domainincite.com/26256-shortdot-adds-fourth-gtld-to-its-stable-plans-march-launch)
+- prnewswire.com — [ShortDot's launch announcement](https://www.prnewswire.com/news-releases/shortdot-is-all-set-to-launch-the-cfd-domain-extension---tailored-for-the-future-of-clothing--fashion-design-301225057.html)
+- Spamhaus — [Domain Reputation Update for October 2025–March 2026](https://content.spamhaus.org/4d83c22f-84c5-4f82-95ab-4e6b39f73db5.pdf)
+- domainnamewire.com — [Interisle's Phishing Landscape 2025 report](https://domainnamewire.com/2025/09/11/report-names-commonly-used-tlds-for-phishing-attacks/)

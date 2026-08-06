@@ -56,7 +56,7 @@ The **.br domain** is Brazil's official [country-code top-level domain](/en/glos
 
 **.br** is the [ccTLD](/en/glossary/cctld/) assigned to Brazil under the ISO 3166-1 country-code system used by [IANA](https://www.iana.org/domains/root/db/br.html). Like other ccTLDs, it has no [ICANN](/en/glossary/icann/) Registry Agreement — the governing rules come from Brazil's own internet-governance structure instead. Policy authority sits with the **Comitê Gestor da Internet no Brasil (CGI.br)**, the multistakeholder Brazilian Internet Steering Committee; its executive arm, **Núcleo de Informação e Coordenação do Ponto BR (NIC.br)**, handles both administrative and operational duties, and its **Registro.br** department is the operational registry that IANA lists as the ccTLD manager.
 
-Because .br functions as a genuine national namespace, Google treats it as country-targeted rather than generic — it does not appear on [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), unlike vanity extensions such as [.tv](/en/tld/tv/) or [.me](/en/tld/me/).
+Because .br functions as a genuine national namespace, Google treats it as country-targeted rather than generic — it does not appear on [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en), unlike vanity extensions such as [.tv](/en/tld/tv/) or [.me](/en/tld/me/).
 
 ## History of .br
 
@@ -129,13 +129,12 @@ Because every .br registration requires a verified CPF or CNPJ (or the documente
 - **Keep foreign-registration paperwork in mind early.** If you're a non-Brazilian company, budget time for the notarized, consular-legalized documentation process before you need the domain live.
 - **Consider direct `.br` only deliberately.** It exists and is shorter, but `.com.br` remains the namespace most Brazilian users recognize by default.
 
-## How to register a .br domain at Namefi
+## How to register a .br domain
 
 1. **Search** for your desired `.br` or `.com.br` name to check availability.
 2. **Confirm eligibility** — a valid CPF or CNPJ, or the documented foreign-company representative process.
 3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar that bridges Web2 and Web3. Beyond standard registration, you can optionally [tokenize your domain](/en/blog/what-are-tokenized-domains) — turning it into a blockchain asset you own outright, with easier transfers and added security — all with transparent pricing and fast DNS.
 
 ## Frequently asked questions
 
@@ -163,3 +162,10 @@ The Brazilian Internet Steering Committee (CGI.br) sets policy for .br. Its exec
 - [Top TLDs to secure for your business](/en/blog/top-tlds-to-secure-for-your-business)
 - Glossary: [ccTLD](/en/glossary/cctld), [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [registry](/en/glossary/registry), [IDN](/en/glossary/idn)
 - Compare TLDs: [.com](/en/tld/com), [.mx](/en/tld/mx), [.ca](/en/tld/ca), [.au](/en/tld/au)
+
+## Sources and further reading
+
+- IANA — [Comitê Gestor da Internet no Brasil (CGI.br)](https://www.iana.org/domains/root/db/br.html)
+- Google Search Central — [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
+- registro.br — [Registro.br's domain rules](https://registro.br/dominio/regras/)
+- registro.br — [rules for foreign companies](https://registro.br/dominio/regras/empresas-estrangeiras)

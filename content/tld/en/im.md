@@ -55,7 +55,7 @@ The **.im domain** is the country-code top-level domain for the **Isle of Man**,
 
 **.im** is the [ccTLD](/en/glossary/cctld/) assigned to the Isle of Man under the ISO 3166-1 country-code system. The [IANA root-zone database entry for .im](https://www.iana.org/domains/root/db/im.html) lists the **Isle of Man Government** as the ccTLD manager, while day-to-day registry operations are run by **[Domicilium (IOM) Limited](https://www.nic.im/)**, an Isle of Man-based internet services company — a common split for smaller ccTLDs, where the government retains ultimate policy authority and a specialist operator handles the technical and commercial infrastructure.
 
-The Isle of Man itself is a self-governing Crown dependency, constitutionally separate from the United Kingdom, which is why it holds its own ccTLD delegation independent of the UK's `.uk`. For search purposes, Google does not treat .im as generic: it is absent from [Google's explicit list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=.ad%2C%20.ai%2C%20.as%2C%20.bz%2C%20.cc%2C%20.cd%2C%20.co%2C%20.dj%2C%20.fm%2C%20.io%2C%20.la%2C%20.me%2C%20.ms%2C%20.nu%2C%20.sc%2C%20.sr%2C%20.su%2C%20.tv%2C%20.tk%2C%20.ws), meaning a .im site is geo-targeted toward the Isle of Man by default rather than being read as a borderless "instant messaging" suffix.
+The Isle of Man itself is a self-governing Crown dependency, constitutionally separate from the United Kingdom, which is why it holds its own ccTLD delegation independent of the UK's `.uk`. For search purposes, Google does not treat .im as generic: it is absent from [Google's explicit list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs), meaning a .im site is geo-targeted toward the Isle of Man by default rather than being read as a borderless "instant messaging" suffix.
 
 ## History of .im
 
@@ -157,3 +157,12 @@ No. Unlike many modern ccTLDs, .im does not currently support DNSSEC, so registr
 - [Top TLDs to secure for your startup](/en/blog/top-tlds-to-secure-for-your-startup/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [domain hack](/en/glossary/domain-hack/), [registrar](/en/glossary/registrar/), [DNSSEC](/en/glossary/dnssec/)
 - Compare TLDs: [.io](/en/tld/io/), [.me](/en/tld/me/), [.is](/en/tld/is/)
+
+## Sources and further reading
+
+- IANA — [IANA root-zone database entry for .im](https://www.iana.org/domains/root/db/im.html)
+- nic.im — [Domicilium (IOM) Limited](https://www.nic.im/)
+- Google Search Central — [Google's explicit list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs)
+- gov.im — [gov.im](https://www.gov.im)
+- ICANN — [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements)
+- nic.im — [domain rules document](https://www.nic.im/pdfs/imrules.pdf)

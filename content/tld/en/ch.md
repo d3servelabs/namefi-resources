@@ -58,7 +58,7 @@ This page covers what .ch is, where the two-letter code comes from, its history 
 
 **.ch** is the [ccTLD](/en/glossary/cctld/) assigned to Switzerland, and the two letters stand for **Confoederatio Helvetica** — the Latin name for the Swiss Confederation. Switzerland deliberately chose the Latin form for its country code, per the [IANA root-zone entry for .ch](https://www.iana.org/domains/root/db/ch.html), rather than a code drawn from any one of its four official languages (German, French, Italian, Romansh), keeping the abbreviation linguistically neutral — a very Swiss solution to a very Swiss problem.
 
-.ch does not appear on Google's short list of ccTLDs treated as generic (a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co)), so [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs) treats .ch as genuinely country-targeted, even though registration itself is open worldwide. That combination — open eligibility, but a real geo-signal — is unusual and worth understanding before you register.
+.ch does not appear on Google's short list of ccTLDs treated as generic (a list that includes strings like [.io](/en/tld/io) and [.co](/en/tld/co)), so [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs) treats .ch as genuinely country-targeted, even though registration itself is open worldwide. That combination — open eligibility, but a real geo-signal — is unusual and worth understanding before you register.
 
 ## History of .ch
 
@@ -119,7 +119,7 @@ Registration runs through accredited [registrars](/en/glossary/registrar/) rathe
 
 ## .ch pricing and value
 
-.ch pricing follows the same shape as most ccTLDs rather than any single quoted figure. **First-year and renewal pricing typically differ** — introductory rates are often promotional, while the standing renewal rate is what a brand pays long-term. Registrars may apply **premium classifications** to short, dictionary, or high-demand names, carrying higher registration and sometimes renewal costs. Name length, desirability, and registrar margin on top of SWITCH's wholesale rate are the other main drivers. This page intentionally quotes no figures — check current rates with an accredited registrar at the point of purchase.
+.ch registrations are sold through accredited registrars, and SWITCH states that [the cost depends on the registrar you choose](https://www.nic.ch/support/general/#:~:text=The%20cost%20of%20registering%20a%20domain%20name%20ending%20in%20.ch%20depends%20on%20the%20registrar%20you%20choose.). Registrars may bundle hosting or offer introductory discounts, so compare first-year and renewal fees. A concise `.ch` name already owned by someone else may have a higher **aftermarket** asking price, but that is separate from registry registration and renewal pricing.
 
 ## Reputation and email deliverability
 
@@ -169,3 +169,13 @@ The letters CH stand for "Confoederatio Helvetica," the Latin name for the Swiss
 - [Domain hacks explained](/en/blog/domain-hacks-explained)
 - [Domain terminology guide](/en/blog/domain-terminology-guide)
 - Glossary: [ccTLD](/en/glossary/cctld), [DNSSEC](/en/glossary/dnssec), [WHOIS privacy](/en/glossary/whois-privacy), [registrar](/en/glossary/registrar)
+
+## Sources and further reading
+
+- IANA — [SWITCH](https://www.iana.org/domains/root/db/ch.html)
+- Google Search Central — [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)
+- admin.ch — [admin.ch](https://www.admin.ch/)
+- nzz.ch — [nzz.ch](https://www.nzz.ch/)
+- srf.ch — [srf.ch](https://www.srf.ch/)
+- nic.ch — [SWITCH's own registration FAQ](https://www.nic.ch/support/general/#:~:text=Do%20I%20have%20to%20be%20Swiss%20to%20register%20.ch%20domain%20names)
+- bakom.admin.ch — [OFCOM](https://www.bakom.admin.ch/en/ch-internet-domain-names)

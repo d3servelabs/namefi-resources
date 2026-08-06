@@ -56,7 +56,9 @@ The **.inc domain** spells out the word most American companies already have in 
 
 ## What is .inc?
 
-.inc is a [generic top-level domain](/en/glossary/gtld) delegated through ICANN's 2012 New gTLD Program. As a generic suffix with no country tie, Google's [multi-regional site guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) treats it exactly like any other gTLD — no automatic geo-targeting, and no inherent SEO advantage from the string itself.
+.inc is a [generic top-level domain](/en/glossary/gtld) delegated through ICANN's 2012 New gTLD Program. As a generic suffix with no country tie, Google's [multi-regional site guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations) treats it exactly like any other gTLD — no automatic geo-targeting, and no inherent SEO advantage from the string itself.
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 The registry is [Intercap Registry Inc.](https://www.iana.org/domains/root/db/inc.html), a Cayman Islands company that also runs the related [.dealer](https://www.iana.org/domains/root/db/dealer.html) and .box extensions, with CentralNic providing back-end registry infrastructure. You can confirm the current sponsoring organization and delegation record directly in the [IANA root-zone entry for .inc](https://www.iana.org/domains/root/db/inc.html).
 
@@ -170,3 +172,15 @@ Yes. The registry's own published adopter list includes redirect or investor-rel
 - [Brandable vs keyword domains](/en/blog/brandable-vs-keyword-domains)
 - Glossary: [new gTLD](/en/glossary/new-gtld), [ICANN](/en/glossary/icann), [registrar](/en/glossary/registrar), [trademark](/en/glossary/trademark)
 - Compare TLDs: [.com](/en/tld/com), [.llc](/en/tld/llc), [.co](/en/tld/co)
+
+## Sources and further reading
+
+- Google Search Central — [multi-regional site guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20top-level%20domains%20%28gTLDs%29%20are%20domains%20that%20aren%27t%20associated%20with%20specific%20locations)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- IANA — [Intercap Registry Inc.](https://www.iana.org/domains/root/db/inc.html)
+- IANA — [.dealer](https://www.iana.org/domains/root/db/dealer.html)
+- ICANN — [ICANN Registry Agreement details for .inc](https://www.icann.org/en/registry-agreements/details/inc)
+- globenewswire.com — [launch release](https://www.globenewswire.com/news-release/2019/03/27/1773783/0/en/inc-Launches-as-the-Domain-Ending-that-Means-Business.html)
+- globenewswire.com — [general-availability announcement](https://www.globenewswire.com/news-release/2019/05/07/1818693/0/en/Over-20-Percent-of-Forbes-Most-Valuable-Brands-Have-Purchased-inc-Domains.html)
+- get.inc — [registry itself](https://www.get.inc/companies)
+- domainnamewire.com — [Industry coverage at launch](https://domainnamewire.com/2018/06/12/llc-and-inc-domain-names-are-on-their-way/)

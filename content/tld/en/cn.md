@@ -56,7 +56,7 @@ The **.cn domain** is the official [country-code top-level domain](/en/glossary/
 
 .cn is the [ccTLD](/en/glossary/cctld/) assigned to China under ISO 3166-1 (country code CN), delegated through the [IANA root-zone database](https://www.iana.org/domains/root/db/cn.html), which lists CNNIC as both the registry operator and sponsoring organization. Unlike a borderless [gTLD](/en/glossary/gtld/) such as [.com](/en/tld/com/), .cn is administered under Chinese domain-name policy rather than a standard ICANN registry agreement — the norm for every ccTLD.
 
-Google does **not** treat .cn as one of the small set of ccTLDs it re-classifies as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)). .cn is absent from it, so it is treated as a country-targeted signal for China — useful when that is exactly your audience, less useful otherwise.
+Google does **not** treat .cn as one of the small set of ccTLDs it re-classifies as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)). .cn is absent from it, so it is treated as a country-targeted signal for China — useful when that is exactly your audience, less useful otherwise.
 
 ## History of .cn
 
@@ -166,3 +166,14 @@ The China Internet Network Information Center (CNNIC) is the registry operator f
 - [Domain terminology guide](/en/blog/domain-terminology-guide/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [IDN](/en/glossary/idn/), [registrar](/en/glossary/registrar/), [ICANN](/en/glossary/icann/), [DNSSEC](/en/glossary/dnssec/)
 - Compare TLDs: [.com](/en/tld/com/), [.jp](/en/tld/jp/), [.kr](/en/tld/kr/), [.in](/en/tld/in/)
+
+## Sources and further reading
+
+- IANA — [China Internet Network Information Center (CNNIC)](https://www.iana.org/domains/root/db/cn.html)
+- IANA — [.中国](https://www.iana.org/domains/root/db/xn--fiqs8s.html)
+- Google Search Central — [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)
+- cnnic.com.cn — [Implementing Rules of Domain Name Registration](https://www.cnnic.com.cn/PublicS/fwzxxgzcfg/201907/t20190726_70776.htm)
+- sina.com.cn — [sina.com.cn](https://www.sina.com.cn/)
+- en.wikipedia.org — [people.com.cn](https://en.wikipedia.org/wiki/People%27s_Daily)
+- gov.cn — [gov.cn](https://www.gov.cn/)
+- news.gandi.net — [Gandi](https://news.gandi.net/en/2021/11/new-cn-verification-rules-starting-january-1-2022-what-impact-will-it-have-on-your-domain-names/)

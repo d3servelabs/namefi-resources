@@ -55,7 +55,7 @@ The **.is domain** is the country-code top-level domain for **Iceland**, and it 
 
 **.is** is the [ccTLD](/en/glossary/cctld/) assigned to Iceland under the ISO 3166-1 country-code system. It is managed by [**ISNIC — Internet á Íslandi hf.**](https://www.isnic.is/en), a Reykjavík-based company, as confirmed in the [IANA root-zone database entry for .is](https://www.iana.org/domains/root/db/is.html). ISNIC is a for-profit company, not a government agency or nonprofit — it operates the registry under an agreement with IANA/ICANN following RFC 1591 and ICP-1, the standard framework for ccTLD delegations.
 
-Because .is is a ccTLD tied to a specific country, Google's own guidance explains that country-code domains ["provide a strong signal to both users and search engines that your site is explicitly intended for a certain country"](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=These%20are%20tied%20to%20a%20specific%20country). Google maintains a short list of ccTLDs it treats as generic instead — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — and **.is is not on it**. In practice a .is site is geo-targeted toward Iceland by default, which matters for anyone chasing global rankings rather than a wordplay domain used purely for direct traffic.
+Because .is is a ccTLD tied to a specific country, Google's own guidance explains that country-code domains ["provide a strong signal to both users and search engines that your site is explicitly intended for a certain country"](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=These%20are%20tied%20to%20a%20specific%20country). Google maintains a short list of ccTLDs it treats as generic instead — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — and **.is is not on it**. In practice a .is site is geo-targeted toward Iceland by default, which matters for anyone chasing global rankings rather than a wordplay domain used purely for direct traffic.
 
 ## History of .is
 
@@ -128,13 +128,12 @@ For email deliverability specifically, sender reputation, [SPF/DKIM/DMARC authen
 - **Keep the second-level part short.** Domain hacks lose their charm past a handful of characters; the shortest, punchiest options work best.
 - **Check Icelandic character availability separately** if your name could use þ, æ, ö, or ð for a more authentic Icelandic identity.
 
-## How to register a .is domain at Namefi
+## How to register a .is domain
 
 1. **Search** for your desired name and confirm it forms the phrase you want with the .is ending.
 2. **Choose** the exact name and review ISNIC's registration terms.
 3. **Register** and configure [DNS](/en/glossary/dns/) to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/registrar/) that bridges Web2 and [Web3](/en/glossary/web3/), with the option to [tokenize your domain](/en/blog/what-are-tokenized-domains/) for provable on-chain ownership and easier transfers — all with transparent pricing and fast DNS management.
 
 ## Frequently asked questions
 
@@ -161,3 +160,12 @@ Yes. ISNIC allows the Icelandic letters á, é, ý, ú, í, ó, þ, æ, ö, and 
 - [What is a domain?](/en/blog/what-is-domain/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [domain hack](/en/glossary/domain-hack/), [registrar](/en/glossary/registrar/), [DNSSEC](/en/glossary/dnssec/)
 - Compare TLDs: [.io](/en/tld/io/), [.co](/en/tld/co/), [.me](/en/tld/me/), [.us](/en/tld/us/)
+
+## Sources and further reading
+
+- who.is — [who.is](https://who.is)
+- this.is — [this.is](https://this.is)
+- isnic.is — [ISNIC — Internet á Íslandi hf.](https://www.isnic.is/en)
+- IANA — [IANA root-zone database entry for .is](https://www.iana.org/domains/root/db/is.html)
+- Google Search Central — [developers.google.com](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=These%20are%20tied%20to%20a%20specific%20country)
+- isnic.is — [official domain rules](https://www.isnic.is/en/domain/rules)

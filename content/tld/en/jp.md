@@ -56,7 +56,7 @@ The **.jp domain** is the official [country-code top-level domain](/en/glossary/
 
 .jp is the [ccTLD](/en/glossary/cctld/) assigned to Japan under ISO 3166-1 (country code JP), delegated through the [IANA root-zone database](https://www.iana.org/domains/root/db/jp.html), which lists JPRS as both registry operator and sponsoring organization. As with any ccTLD, .jp sits under Japanese domain-name policy rather than a standard ICANN registry agreement.
 
-Google does **not** classify .jp among the small set of ccTLDs it treats as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)). .jp is absent from that list, so it functions as a genuine geo-targeting signal for Japan.
+Google does **not** classify .jp among the small set of ccTLDs it treats as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)). .jp is absent from that list, so it functions as a genuine geo-targeting signal for Japan.
 
 ## History of .jp
 
@@ -126,14 +126,13 @@ DNSSEC is supported, and JPRS's registrar network handles the identity and eligi
 - **Consider a native-script name.** Japanese-script JP domains can strengthen recall and trust with a Japan-based audience.
 - **Plan for one .co.jp only.** If your company operates multiple Japan-facing brands, general-use .jp is the workaround for names beyond the single .co.jp slot.
 
-## How to register a .jp domain at Namefi
+## How to register a .jp domain
 
 1. **Confirm eligibility** — a permanent Japan postal address for general-use .jp, or Japanese corporate registration for .co.jp.
 2. **Search** for your desired name across the JP domain type that fits your entity.
 3. **Register** and complete JPRS's eligibility verification.
 4. **Configure [DNS](/en/glossary/dns/)** to point your site or email.
 
-[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and Web3, with transparent pricing and the option to hold eligible domains as [tokenized assets](/en/blog/what-are-tokenized-domains/) for provable ownership and easier transfers.
 
 ## Frequently asked questions
 
@@ -161,3 +160,12 @@ Japan Registry Services Co., Ltd. (JPRS) is the registry operator for .jp, liste
 - [Domain hacks explained](/en/blog/domain-hacks-explained/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [IDN](/en/glossary/idn/), [registrar](/en/glossary/registrar/), [ICANN](/en/glossary/icann/), [DNSSEC](/en/glossary/dnssec/)
 - Compare TLDs: [.com](/en/tld/com/), [.cn](/en/tld/cn/), [.kr](/en/tld/kr/), [.in](/en/tld/in/)
+
+## Sources and further reading
+
+- IANA — [Japan Registry Services Co., Ltd. (JPRS)](https://www.iana.org/domains/root/db/jp.html)
+- Google Search Central — [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)
+- jprs.co.jp — [.JP Q&A](https://jprs.co.jp/en/regist.html)
+- jprs.co.jp — [Guide to JP Domain Name](https://jprs.co.jp/en/jpdomain.html)
+- sony.co.jp — [sony.co.jp](https://www.sony.co.jp/en/index.html)
+- toyota.co.jp — [toyota.co.jp](https://www.toyota.co.jp/)

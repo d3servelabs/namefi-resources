@@ -60,7 +60,7 @@ This page covers what .gg actually is, who runs it, why gaming claimed it, the r
 
 Unlike a [gTLD](/en/glossary/tld/), a ccTLD has no ICANN registry agreement; its rules are set by the national manager. For .gg that is the **Channel Isles registry** operated by Island Networks, which [was founded in August 1996 by Nigel Roberts and Laurie Brown](https://channelisles.net/#:~:text=founded%20in%20August%201996) to run both .gg and .je, the ccTLD of neighbouring Jersey — two islands, one registry.
 
-One SEO nuance deserves precision. Google maintains a published list of ccTLDs it treats as generic (non-geo-targeted), and [.gg is not on that list](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs) — the documented generic set includes .io, .tv, .me, .co, and .fm, but not .gg. By Google's own documentation, then, .gg is country-targeted to Guernsey. In practice, globally successful .gg platforms show that content and links dominate the suffix signal — but if worldwide organic search is mission-critical, know this fact rather than assume it away.
+One SEO nuance deserves precision. Google maintains a published list of ccTLDs it treats as generic (non-geo-targeted), and [.gg is not on that list](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs) — the documented generic set includes .io, .tv, .me, .co, and .fm, but not .gg. By Google's own documentation, then, .gg is country-targeted to Guernsey. In practice, globally successful .gg platforms show that content and links dominate the suffix signal — but if worldwide organic search is mission-critical, know this fact rather than assume it away.
 
 ## History of .gg
 
@@ -171,3 +171,10 @@ The .gg registry is operated by Island Networks, founded in August 1996 by Nigel
 - [Domain terminology guide](/en/blog/domain-terminology-guide/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [domain hack](/en/glossary/domain-hack/), [registry](/en/glossary/registry/), [DNSSEC](/en/glossary/dnssec/)
 - Compare TLDs: [.io](/en/tld/io/), [.tv](/en/tld/tv/), [.us](/en/tld/us/), [.com](/en/tld/com/)
+
+## Sources and further reading
+
+- IANA — [IANA root-database entry for .gg](https://www.iana.org/domains/root/db/gg.html)
+- channelisles.net — [was founded in August 1996 by Nigel Roberts and Laurie Brown](https://channelisles.net/#:~:text=founded%20in%20August%201996)
+- Google Search Central — [.gg is not on that list](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs)
+- channelisles.net — ["in general, there are no restrictions whatsoever"](https://www.channelisles.net/legal/terms-and-conditions-1#:~:text=no%20restrictions%20whatsoever)

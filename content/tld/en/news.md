@@ -57,6 +57,8 @@ The **.news domain** is an open generic top-level domain built specifically for 
 
 Because it's a generic string, Google applies no geo-targeting rule to .news — it's evaluated like any other gTLD. You can confirm the delegation record directly in the [IANA root-zone entry for .news](https://www.iana.org/domains/root/db/news.html).
 
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
 ## History of .news
 
 - **Delegation (2015):** .news was delegated to the root zone on **March 16, 2015** (registration date March 12, 2015), initially assigned to **United TLD Holdco, Ltd** — a Donuts Inc. entity from the same 2012-round application wave that later became known through the Rightside/Donuts registry brand. The underlying [ICANN Registry Agreement for .news](https://www.icann.org/en/registry-agreements/details/news) was signed **December 18, 2014**.
@@ -159,3 +161,10 @@ Publishers, independent journalists, newsletters, news aggregators, and any outl
 - [Domain terminology guide](/en/blog/domain-terminology-guide/)
 - Glossary: [registrar](/en/glossary/registrar/), [ICANN](/en/glossary/icann/), [registry](/en/glossary/registry/), [DNS](/en/glossary/dns/)
 - Compare TLDs: [.com](/en/tld/com/), [.media](/en/tld/media/), [.blog](/en/tld/blog/)
+
+## Sources and further reading
+
+- identity.digital — [Identity Digital](https://www.identity.digital/)
+- IANA — [IANA root-zone entry for .news](https://www.iana.org/domains/root/db/news.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement for .news](https://www.icann.org/en/registry-agreements/details/news)

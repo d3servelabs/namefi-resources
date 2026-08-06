@@ -55,7 +55,7 @@ The **.vc domain** is the country-code top-level domain for **Saint Vincent and 
 
 **.vc** is the [ccTLD](/en/glossary/cctld/) assigned to Saint Vincent and the Grenadines under the ISO 3166-1 country-code system. The [IANA root-zone database entry for .vc](https://www.iana.org/domains/root/db/vc.html) lists the **Ministry of Telecommunications, Science, Technology and Industry** as the sponsoring organization, with technical and WHOIS services run through **Identity Digital Inc.** (the company formerly known as Afilias), reflecting the common ccTLD pattern where a small nation's government retains policy authority while a specialist registry-services company runs the day-to-day infrastructure.
 
-Because .vc is a ccTLD rather than a [gTLD](/en/glossary/tld/), it is not covered by an ICANN registry agreement the way `.com` or new gTLDs are. And despite its popularity as a venture-capital brand element, Google does not treat .vc as generic: it is absent from [Google's explicit list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=.ad%2C%20.ai%2C%20.as%2C%20.bz%2C%20.cc%2C%20.cd%2C%20.co%2C%20.dj%2C%20.fm%2C%20.io%2C%20.la%2C%20.me%2C%20.ms%2C%20.nu%2C%20.sc%2C%20.sr%2C%20.su%2C%20.tv%2C%20.tk%2C%20.ws) (.ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws). By default, then, Google reads a .vc site as targeting Saint Vincent and the Grenadines specifically, not as a borderless "venture capital" suffix.
+Because .vc is a ccTLD rather than a [gTLD](/en/glossary/tld/), it is not covered by an ICANN registry agreement the way `.com` or new gTLDs are. And despite its popularity as a venture-capital brand element, Google does not treat .vc as generic: it is absent from [Google's explicit list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs) (.ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws). By default, then, Google reads a .vc site as targeting Saint Vincent and the Grenadines specifically, not as a borderless "venture capital" suffix.
 
 ## History of .vc
 
@@ -107,7 +107,7 @@ Choose **.com** when the exact name is available and global neutrality matters m
 
 ## Who can register a .vc domain?
 
-**Registration restrictions: open to all.** Registrar documentation for .vc consistently reports no eligibility limits tied to residency, citizenship, or company registration — individuals and organizations worldwide can register. The only standard restrictions are the usual prohibitions on names that infringe third-party trademark rights or relate to illegal activity.
+**Registration restrictions: open to all.** GoDaddy's current .vc registration guide states that [anyone can register a .vc domain](https://www.godaddy.com/en/help/about-vc-domains-41605#:~:text=Anyone%20can%20register%20.vc%20domain%20names.), with no residency, citizenship, or company-registration test. Registrants still have to follow the registrar and registry terms, including rules against unlawful use and infringement.
 
 Domain names can run from roughly 2 to 63 characters, and registrants can choose either direct second-level registration (`yourname.vc`) or a categorized structure such as `.com.vc`, `.org.vc`, or `.net.vc`. Because .vc is a ccTLD, it is not governed by a standard [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements) the way gTLDs are; the sponsoring authority is the **Ministry of Telecommunications, Science, Technology and Industry** of Saint Vincent and the Grenadines, per the [IANA delegation record for .vc](https://www.iana.org/domains/root/db/vc.html), with Identity Digital handling registry operations and WHOIS. Confirm current DNSSEC and IDN support directly with your chosen [registrar](/en/glossary/registrar/), since neither is independently documented on the registry's own public materials.
 
@@ -159,3 +159,11 @@ Alongside direct second-level registration (yourname.vc), the registry also supp
 - [Top TLDs to secure for your startup](/en/blog/top-tlds-to-secure-for-your-startup/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [domain hack](/en/glossary/domain-hack/), [registrar](/en/glossary/registrar/), [registry](/en/glossary/registry/)
 - Compare TLDs: [.io](/en/tld/io/), [.co](/en/tld/co/), [.is](/en/tld/is/)
+
+## Sources and further reading
+
+- hustlefund.vc — [Hustle Fund](https://www.hustlefund.vc)
+- IANA — [IANA root-zone database entry for .vc](https://www.iana.org/domains/root/db/vc.html)
+- Google Search Central — [Google's explicit list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Google%20treats%20some%20ccTLDs)
+- GoDaddy — [anyone can register a .vc domain](https://www.godaddy.com/en/help/about-vc-domains-41605#:~:text=Anyone%20can%20register%20.vc%20domain%20names.)
+- ICANN — [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements)

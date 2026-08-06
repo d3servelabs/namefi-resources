@@ -57,6 +57,8 @@ The **.studio domain** is an open generic top-level domain built for anyone runn
 
 Because it is a plain generic extension, Google Search Central treats [new gTLDs](/en/glossary/new-gtld) like .studio the same as legacy generics such as [.com](/en/tld/com): there is no automatic ranking benefit or penalty tied to the suffix, and no geo-targeting signal is applied.
 
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
 ## History of .studio
 
 - **Original launch under Rightside (2015).** IANA's delegation report shows .studio was delegated to **United TLD Holdco, Ltd.** — the registry-services arm of **Rightside Group** — on **2015-07-06**. The underlying [ICANN Registry Agreement for .studio was signed on 11 February 2015](https://www.icann.org/en/registry-agreements/details/studio). A trademark [sunrise period ran from August 18 to October 17, 2015](https://www.americaregistry.com/domains/studio-domain-registration), followed by a landrush phase from October 21–28, before **general availability opened on October 28, 2015**.
@@ -160,3 +162,12 @@ It can still work if the business is fundamentally creative or production-based,
 - [How to name your project](/en/blog/how-to-name-your-project)
 - Glossary: [gTLD](/en/glossary/gtld), [new gTLD](/en/glossary/new-gtld), [ICANN](/en/glossary/icann), [registrar](/en/glossary/registrar)
 - Compare TLDs: [.com](/en/tld/com), [.design](/en/tld/design), [.group](/en/tld/group)
+
+## Sources and further reading
+
+- IANA — [IANA root-zone entry for .studio](https://www.iana.org/domains/root/db/studio.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement for .studio was signed on 11 February 2015](https://www.icann.org/en/registry-agreements/details/studio)
+- americaregistry.com — [sunrise period ran from August 18 to October 17, 2015](https://www.americaregistry.com/domains/studio-domain-registration)
+- globenewswire.com — [globenewswire.com](https://www.globenewswire.com/news-release/2017/06/14/1018714/0/en/Rightside-and-Donuts-Announce-Definitive-Merger-Agreement.html)
+- identity.digital — [domain policies](https://identity.digital/policies)

@@ -57,6 +57,8 @@ The **.cyou domain** is a short, budget generic top-level domain that [ShortDot 
 
 .cyou is a [generic top-level domain](/en/glossary/tld) with no country tie. ShortDot markets the string as **"See You,"** pitched at creators, influencers, and younger, digital-native brands. As a generic extension, Google treats .cyou like any other gTLD — no automatic ranking boost or penalty and no geo-targeting bias. You can verify the delegation record directly in the [IANA root-zone entry for .cyou](https://www.iana.org/domains/root/db/cyou.html).
 
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
 ## History of .cyou
 
 .cyou's history is one of the stranger stories among new gTLDs:
@@ -169,3 +171,14 @@ It suits creators, influencers, and youth-oriented brands drawn to the short, ca
 - [Avoiding domain sale scams](/en/blog/avoiding-domain-sale-scams)
 - Glossary: [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [new gTLD](/en/glossary/new-gtld), [phishing](/en/glossary/phishing)
 - Compare TLDs: [.com](/en/tld/com), [.sbs](/en/tld/sbs), [.icu](/en/tld/icu), [.bond](/en/tld/bond)
+
+## Sources and further reading
+
+- shortdot.bond — [ShortDot SA](https://shortdot.bond/)
+- IANA — [IANA root-zone entry for .cyou](https://www.iana.org/domains/root/db/cyou.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement was signed 22 January 2015](https://www.icann.org/en/registry-agreements/details/cyou)
+- domainincite.com — [Domain Incite's coverage of the deal](https://domainincite.com/25221-possibly-the-strangest-new-gtld-acquisition-yet)
+- prnewswire.com — [ShortDot reported](https://www.prnewswire.com/news-releases/more-than-30-000-gen-z-brands-and-individuals-from-across-the-globe-have-selected-a-cyou-domain-301159177.html)
+- ntldstats.com — [ntldstats.com](https://ntldstats.com/tld/cyou)
+- Spamhaus — [Domain Reputation Update for October 2025–March 2026](https://content.spamhaus.org/4d83c22f-84c5-4f82-95ab-4e6b39f73db5.pdf)

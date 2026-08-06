@@ -57,7 +57,9 @@ The **.art domain** is a generic top-level domain built for the global creative 
 
 .art is a [generic top-level domain](/en/glossary/tld) (gTLD), not a country-code extension, so it carries no geographic association. Its registry, **UK Creative Ideas Limited**, entered into a **Base, Non-Sponsored** registry agreement with ICANN on **24 March 2016** — you can confirm the operator and agreement details on the [ICANN Registry Agreement for .art](https://www.icann.org/en/registry-agreements/details/art) and the delegation record on the [IANA root-zone entry for .art](https://www.iana.org/domains/root/db/art.html), which lists a registration date of 2016-06-09 and delegation date of 2016-06-22.
 
-Because .art is generic rather than geographic, [Google treats any TLD resolving through the IANA DNS root zone as a gTLD unless ICANN specifically lists it as a ccTLD](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), so a .art site is not geo-targeted to any single country by default.
+Because .art is generic rather than geographic, [Google treats any TLD resolving through the IANA DNS root zone as a gTLD unless ICANN specifically lists it as a ccTLD](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en), so a .art site is not geo-targeted to any single country by default.
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 ## History of .art
 
@@ -171,3 +173,13 @@ Yes. Major institutions including the Louvre and Tate have registered .art domai
 - [How to name your project](/en/blog/how-to-name-your-project)
 - Glossary: [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [NFT](/en/glossary/nft), [registry](/en/glossary/registry)
 - Compare TLDs: [.com](/en/tld/com), [.xyz](/en/tld/xyz)
+
+## Sources and further reading
+
+- ICANN — [ICANN Registry Agreement for .art](https://www.icann.org/en/registry-agreements/details/art)
+- IANA — [IANA root-zone entry for .art](https://www.iana.org/domains/root/db/art.html)
+- Google Search Central — [developers.google.com](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- en.wikipedia.org — [Wikipedia's history of the .art TLD](https://en.wikipedia.org/wiki/.art_(top-level_domain))
+- art.art — [UK Creative Ideas Limited](https://www.art.art/about)
+- aam-us.org — [American Alliance of Museums](https://www.aam-us.org/member-benefit-claim-a-complimentary-art-domain/)

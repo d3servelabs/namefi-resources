@@ -56,7 +56,7 @@ The **.in domain** is the official [country-code top-level domain](/en/glossary/
 
 .in is the [ccTLD](/en/glossary/cctld/) assigned to India under ISO 3166-1 (country code IN), delegated through the [IANA root-zone database](https://www.iana.org/domains/root/db/in.html), which lists NIXI as both registry operator and sponsoring organization. As with any ccTLD, .in operates under Indian domain-name policy rather than a standard ICANN registry agreement.
 
-Google does **not** classify .in among the small set of ccTLDs it treats as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)). .in is absent from that list, so Google treats it as a genuine India-targeting signal.
+Google does **not** classify .in among the small set of ccTLDs it treats as generic (that list — .ad, .ai, .as, .bz, .cc, .cd, .co, .dj, .fm, .io, .la, .me, .ms, .nu, .sc, .sr, .su, .tv, .tk, .ws — is published in [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)). .in is absent from that list, so Google treats it as a genuine India-targeting signal.
 
 ## History of .in
 
@@ -159,3 +159,12 @@ The National Internet Exchange of India (NIXI) is the registry operator for .in,
 - [Domain terminology guide](/en/blog/domain-terminology-guide/)
 - Glossary: [ccTLD](/en/glossary/cctld/), [IDN](/en/glossary/idn/), [registrar](/en/glossary/registrar/), [ICANN](/en/glossary/icann/), [DNSSEC](/en/glossary/dnssec/)
 - Compare TLDs: [.com](/en/tld/com/), [.cn](/en/tld/cn/), [.jp](/en/tld/jp/), [.kr](/en/tld/kr/)
+
+## Sources and further reading
+
+- IANA — [National Internet Exchange of India (NIXI)](https://www.iana.org/domains/root/db/in.html)
+- Google Search Central — [Google Search Central's guidance on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=We%20also%20treat%20some%20vanity%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs)
+- registry.in — [about-the-registry page](https://www.registry.in/about-registry)
+- IANA — [.भारत (.bharat, Devanagari script)](https://www.iana.org/reports/2009/in-report-27nov2009.html)
+- en.wikipedia.org — [india.gov.in](https://en.wikipedia.org/wiki/India.gov.in)
+- registry.in — [Internationalized Domain Names program](https://www.registry.in/internationalized-domain-names-idns)

@@ -56,7 +56,7 @@ The **.nl domain** is the official [country-code top-level domain](/en/glossary/
 
 .nl is the Netherlands' [ccTLD](/en/glossary/cctld/), and its [IANA root-zone record](https://www.iana.org/domains/root/db/nl.html) lists SIDN as the registry manager. As a ccTLD it sits outside ICANN's standard registry-agreement system, governed instead by SIDN's own [registration terms](https://www.sidn.nl/en/nl-domain-name/registering-a-domain-name).
 
-For search visibility, Google's own [multi-regional sites guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) treats ccTLDs as country-targeted signals by default, and .nl is not on Google's short list of ccTLDs (such as .co or .io) that it treats as generic. A .nl site sends Google — and Dutch users — a genuine signal that the content is meant for the Netherlands.
+For search visibility, Google's own [multi-regional sites guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en) treats ccTLDs as country-targeted signals by default, and .nl is not on Google's short list of ccTLDs (such as .co or .io) that it treats as generic. A .nl site sends Google — and Dutch users — a genuine signal that the content is meant for the Netherlands.
 
 ## History of .nl
 
@@ -111,7 +111,7 @@ One administrative detail is worth knowing: under SIDN's [domicile address proce
 
 ## .nl pricing and value
 
-.nl pricing follows familiar TLD dynamics: **premium names** — short, dictionary, or high-demand strings — typically carry higher registration and renewal costs, and **first-year promotional pricing commonly differs from the standing renewal rate**. Because the namespace has been open since 1986 and grew rapidly after 2003, exact-match short Dutch words are largely taken, pushing more of the market toward compound or brandable names. This page intentionally quotes no specific prices — check current rates at the point of registration.
+SIDN publishes a basic wholesale price for every `.nl` registration and explains that [each registrar or reseller is free to decide what to charge customers](https://www.sidn.nl/en/our-prices#:~:text=Each%20registrar%20and%20reseller%20is%20free%20to%20decide%20what%20to%20charge%20their%20customers.). Registrars may package hosting or offer introductory discounts. Because many concise Dutch terms are already registered, buyers may encounter higher **aftermarket** asking prices from existing owners; that is not a registry premium registration or renewal tier. Compare the registrar's first-year and renewal fees before purchase.
 
 ## Reputation and email deliverability
 
@@ -127,7 +127,7 @@ One administrative detail is worth knowing: under SIDN's [domicile address proce
 ## How to register a .nl domain at Namefi
 
 1. **Search** for your desired `.nl` name to check availability.
-2. **Review** whether the name is standard or premium-priced.
+2. **Review** the registrar's first-year and renewal fees, and distinguish a new registration from an aftermarket purchase.
 3. **Register** and configure [DNS](/en/glossary/dns) for your site or email.
 
 [Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and [Web3](/en/glossary/web3/), with transparent pricing, fast DNS management, and the option to [tokenize your domain](/en/blog/what-are-tokenized-domains) into a blockchain-backed asset for easier transfers and provable ownership.
@@ -157,3 +157,15 @@ No. Under SIDN's technical requirements, .nl domain names may only use the lette
 - [ccTLD market share by registration volume](/en/blog/cctld-market-share-by-registration-volume)
 - Glossary: [ccTLD](/en/glossary/cctld), [registrar](/en/glossary/registrar), [WHOIS privacy](/en/glossary/whois-privacy)
 - Compare TLDs: [.com](/en/tld/com), [.de](/en/tld/de), [.eu](/en/tld/eu)
+
+## Sources and further reading
+
+- sidn.nl — [SIDN](https://www.sidn.nl/)
+- IANA — [IANA root-zone record](https://www.iana.org/domains/root/db/nl.html)
+- sidn.nl — [registration terms](https://www.sidn.nl/en/nl-domain-name/registering-a-domain-name)
+- Google Search Central — [multi-regional sites guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
+- sidn.nl — [40th-anniversary retrospective](https://www.sidn.nl/en/news-and-blogs/40-years-of-the-nl-domain)
+- stats.sidnlabs.nl — [SIDN Labs](https://stats.sidnlabs.nl/en/)
+- sidn.nl — [domicile address procedure](https://www.sidn.nl/en/nl-domain-name/domicile-address)
+- sidn.nl — [technical requirements](https://www.sidn.nl/en/nl-domain-name/technical-requirements-for-the-registration-and-use-of-nl-domain-names)
+- sidn.nl — [each registrar or reseller is free to decide what to charge customers](https://www.sidn.nl/en/our-prices#:~:text=Each%20registrar%20and%20reseller%20is%20free%20to%20decide%20what%20to%20charge%20their%20customers.)

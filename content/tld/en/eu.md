@@ -56,7 +56,7 @@ The **.eu domain** is the regional top-level domain for the **European Union**, 
 
 .eu is a **generic regional top-level domain**, not a national ccTLD — its [IANA root-zone record](https://www.iana.org/domains/root/db/eu.html) lists **EURid vzw**, a Belgium-based non-profit, as the sponsoring organization. EURid was itself founded on 8 April 2003 by the national registries of Belgium, Italy, and Sweden, and the European Commission designated it to run .eu shortly after.
 
-.eu's Google treatment is genuinely unusual among region-associated extensions. Google's own [multi-regional sites guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20regional%20top-level%20domains) places .eu in a specific category — **"generic regional top-level domains"** — stating that although these domains are associated with a geographical region, "they are generally treated as generic top-level domains (much like .com or .org)." So unlike .de or .uk, a .eu site does not automatically read to Google as targeting a single country.
+.eu's Google treatment is genuinely unusual among region-associated extensions. Google's own [multi-regional sites guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20regional%20top-level%20domains) places .eu in a specific category — **"generic regional top-level domains"** — stating that although these domains are associated with a geographical region, "they are generally treated as generic top-level domains (much like .com or .org)." So unlike .de or .uk, a .eu site does not automatically read to Google as targeting a single country.
 
 ## History of .eu
 
@@ -157,3 +157,12 @@ Yes. Alongside the standard Latin-script .eu, EURid operates a Cyrillic-script v
 - [Domain terminology guide](/en/blog/domain-terminology-guide)
 - Glossary: [ccTLD](/en/glossary/cctld), [ICANN](/en/glossary/icann), [IDN](/en/glossary/idn)
 - Compare TLDs: [.com](/en/tld/com), [.de](/en/tld/de), [.uk](/en/tld/uk), [.nl](/en/tld/nl)
+
+## Sources and further reading
+
+- eurid.eu — [EURid](https://eurid.eu/)
+- IANA — [IANA root-zone record](https://www.iana.org/domains/root/db/eu.html)
+- Google Search Central — [multi-regional sites guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en#:~:text=Generic%20regional%20top-level%20domains)
+- eurid.eu — [company timeline](https://eurid.eu/en/about-eurid/timeline/)
+- eurid.eu — [10 February 2021 update](https://eurid.eu/en/news/update-on-brexit-related-domain-names/)
+- eurid.eu — [Rules for domain names](https://eurid.eu/en/knowledge-centre/rules-for-eu-domains/#:~:text=Eligibility%20criteria)

@@ -58,7 +58,7 @@ This page covers what .ca is, who is eligible to register one, its history, and 
 
 **.ca** is the [ccTLD](/en/glossary/cctld/) assigned to Canada under the ISO 3166-1 two-letter country-code system that [IANA](https://www.iana.org/domains/root/db/ca.html) uses to delegate national domains. Unlike a generic top-level domain such as [.com](/en/tld/com/), .ca has no [ICANN](/en/glossary/icann/) Registry Agreement at all — governing rules come from the national registry itself.
 
-That registry is the **Canadian Internet Registration Authority (CIRA)**, a member-based non-profit that IANA lists as the ccTLD manager. Because .ca genuinely functions as a national namespace, Google treats it as country-targeted rather than generic: it is absent from [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), a list that includes vanity extensions like [.tv](/en/tld/tv/) and [.me](/en/tld/me/). A .ca site sends a genuine "this is for Canada" signal — an asset for Canada-focused projects, a constraint for anyone chasing a global audience.
+That registry is the **Canadian Internet Registration Authority (CIRA)**, a member-based non-profit that IANA lists as the ccTLD manager. Because .ca genuinely functions as a national namespace, Google treats it as country-targeted rather than generic: it is absent from [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en), a list that includes vanity extensions like [.tv](/en/tld/tv/) and [.me](/en/tld/me/). A .ca site sends a genuine "this is for Canada" signal — an asset for Canada-focused projects, a constraint for anyone chasing a global audience.
 
 ## History of .ca
 
@@ -111,7 +111,7 @@ Pick .com for a global, non-geographic brand; pick .ca when a Canadian identity 
 
 ## Who can register a .ca domain?
 
-**Registration restrictions: gated by the Canadian Presence Requirements (CPR).** Every registrant must select one of roughly 18 defined categories at registration, administered by [CIRA](https://www.cira.ca/en/resources/documents/domains/canadian-presence-requirements-registrants/). The main categories include:
+**Registration restrictions: gated by the Canadian Presence Requirements (CPR).** Every registrant must select one of 18 defined categories under CIRA's official [Canadian Presence Requirements for Registrants](https://www.cira.ca/uploads/2019/04/canadian-presence-requirements-for-registrants.pdf). The main categories include:
 
 - **Canadian citizens** of the age of majority.
 - **Permanent residents** who are "ordinarily resident in Canada" — defined as residing in Canada more than 183 days in the twelve months before applying, and in every twelve-month period thereafter.
@@ -119,7 +119,7 @@ Pick .com for a global, non-geographic brand; pick .ca when a Canadian identity 
 - **Educational institutions, libraries, hospitals, Indigenous governing bodies, and government entities** located in Canada.
 - **Trademark holders** — a narrower allowance for owners of a trademark registered under Canada's *Trade-marks Act*, limited to the exact word component of that mark, even without otherwise meeting the CPR.
 
-Foreign companies without one of these qualifying ties generally cannot register a .ca name directly. IDN registrations (French accented characters) are supported, [DNSSEC](/en/glossary/dnssec) has been available since 2013, and CIRA offers WHOIS privacy protection for individual registrants by default. The authoritative rules live in CIRA's [Canadian Presence Requirements for Registrants](https://www.cira.ca/en/resources/documents/domains/canadian-presence-requirements-registrants/) policy document.
+Foreign companies without one of these qualifying ties generally cannot register a .ca name directly. IDN registrations (French accented characters) are supported, [DNSSEC](/en/glossary/dnssec) has been available since 2013, and CIRA offers WHOIS privacy protection for individual registrants by default. The authoritative rules live in CIRA's [Canadian Presence Requirements for Registrants](https://www.cira.ca/uploads/2019/04/canadian-presence-requirements-for-registrants.pdf) policy document.
 
 ## .ca pricing and value
 
@@ -170,3 +170,10 @@ The Canadian Presence Requirements (CPR) are CIRA's eligibility rules for .ca. R
 - [Top TLDs to secure for your business](/en/blog/top-tlds-to-secure-for-your-business)
 - Glossary: [ccTLD](/en/glossary/cctld), [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [registry](/en/glossary/registry), [DNS](/en/glossary/dns)
 - Compare TLDs: [.com](/en/tld/com), [.us](/en/tld/us), [.au](/en/tld/au), [.br](/en/tld/br), [.mx](/en/tld/mx)
+
+## Sources and further reading
+
+- IANA — [Canadian Internet Registration Authority (CIRA)](https://www.iana.org/domains/root/db/ca.html)
+- Google Search Central — [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
+- IANA — [IANA redelegation report](https://www.iana.org/reports/2000/ca-report-01dec00.html)
+- CIRA — [Canadian Presence Requirements for Registrants](https://www.cira.ca/uploads/2019/04/canadian-presence-requirements-for-registrants.pdf)

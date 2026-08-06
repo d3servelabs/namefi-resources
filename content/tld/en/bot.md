@@ -56,7 +56,9 @@ The **.bot domain** is a generic top-level domain that says exactly what it is: 
 
 .bot is a [generic top-level domain](/en/glossary/tld) (gTLD), not a country-code extension, so it carries no geographic association. Its registry operator is **Amazon Registry Services, Inc.**, under a **Base, Non-Sponsored** registry agreement with ICANN signed **18 December 2014** — confirmed on the [ICANN Registry Agreement for .bot](https://www.icann.org/en/registry-agreements/details/bot). The [IANA root-zone entry for .bot](https://www.iana.org/domains/root/db/bot.html) lists a registration date of 2015-11-12 and delegation date of 2015-12-02, with Nominet UK handling back-end technical operations.
 
-Because it is generic rather than geographic, [Google treats any TLD resolving through the IANA DNS root zone as a gTLD unless ICANN lists it as a ccTLD](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), so a .bot site carries no automatic geo-targeting.
+Because it is generic rather than geographic, [Google treats any TLD resolving through the IANA DNS root zone as a gTLD unless ICANN lists it as a ccTLD](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en), so a .bot site carries no automatic geo-targeting.
+
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
 
 ## History of .bot
 
@@ -164,3 +166,13 @@ No. From its 2017 launch until October 2023, Amazon required registrants to demo
 - [How to register a domain with your AI agent](/en/blog/ai-agent-register)
 - Glossary: [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [AI agent](/en/glossary/ai-agent), [MCP](/en/glossary/mcp)
 - Compare TLDs: [.ai](/en/tld/ai), [.app](/en/tld/app)
+
+## Sources and further reading
+
+- ICANN — [ICANN Registry Agreement for .bot](https://www.icann.org/en/registry-agreements/details/bot)
+- IANA — [IANA root-zone entry for .bot](https://www.iana.org/domains/root/db/bot.html)
+- Google Search Central — [developers.google.com](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- newgtlds.icann.org — [.bot sunrise and claims period record](https://newgtlds.icann.org/en/program-status/sunrise-claims-periods/bot)
+- domainnamewire.com — [Domain Name Wire](https://domainnamewire.com/2023/11/01/amazon-makes-bot-domain-names-easier-to-register/)
+- m.media-amazon.com — [.bot Registration Policy (last updated June 20, 2024)](https://m.media-amazon.com/images/G/01/arsi/documents/2024.06.20_.BOT_GA_Registration_Policy_-_FINAL.pdf)

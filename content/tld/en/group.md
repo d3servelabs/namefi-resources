@@ -57,6 +57,8 @@ The **.group domain** is an open, unrestricted generic top-level domain built fo
 
 Because it is a plain generic extension, Google Search Central treats [new gTLDs](/en/glossary/new-gtld) like .group the same as legacy generics such as [.com](/en/tld/com): there is no automatic ranking benefit or penalty tied to the suffix itself, and no geo-targeting signal is applied.
 
+Google also states that [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.), so the extension itself receives no inherent ranking boost or penalty.
+
 ## History of .group
 
 - **Contested string, private auction (2014).** Multiple applicants sought the .group string during ICANN's New gTLD Program; the rights were won by **Donuts Inc.** through a private auction among the competing applicants in July 2014. Donuts signed the underlying [ICANN Registry Agreement for .group on 15 August 2014](https://www.icann.org/en/registry-agreements/details/group).
@@ -160,3 +162,10 @@ Generally no. The word "group" implies plurality and organization, so it reads o
 - [Top TLDs to secure for your startup](/en/blog/top-tlds-to-secure-for-your-startup)
 - Glossary: [gTLD](/en/glossary/gtld), [new gTLD](/en/glossary/new-gtld), [ICANN](/en/glossary/icann), [registrar](/en/glossary/registrar)
 - Compare TLDs: [.com](/en/tld/com), [.company](/en/tld/company), [.design](/en/tld/design), [.studio](/en/tld/studio)
+
+## Sources and further reading
+
+- IANA — [IANA root-zone entry for .group](https://www.iana.org/domains/root/db/group.html)
+- Google Search Central — [keywords in a TLD do not give any advantage or disadvantage in search](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level?hl=en#:~:text=Keywords%20in%20a%20TLD%20do%20not%20give%20any%20advantage%20or%20disadvantage%20in%20search.)
+- ICANN — [ICANN Registry Agreement for .group on 15 August 2014](https://www.icann.org/en/registry-agreements/details/group)
+- identity.digital — [domain policies](https://identity.digital/policies)
