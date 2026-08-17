@@ -90,6 +90,8 @@ Only after the judge promotes a company does the workflow spend money finding a 
 
 **Domain profile → lean discovery → targeted escalation → evidence merge → LLM judge → contact research → outreach**
 
+![Split editorial diagram contrasting seven isolated buyer-research paths that repeat searches and begin contact work early with a stateful pipeline that shares evidence, merges candidates, judges opportunities, and researches contacts last](../../assets/progressive-ai-buyer-discovery-method-01-fanout-vs-shared-evidence.jpg)
+
 ## Escalate model capability progressively
 
 Buyer discovery is not one uniform reasoning task. The first pass usually needs to test the clearest commercial interpretations, identify official company websites, and collect basic evidence. A stronger pass becomes useful when the domain is ambiguous, an initial buyer thesis remains underexplored, or early evidence suggests a less obvious acquisition case.
@@ -120,6 +122,8 @@ Directories, [marketplaces](/en/glossary/marketplace/), social profiles, review 
 Signals are normalized and merged before evaluation. If the same company appears as an exact-name match, a growth event, and a domain-upgrade case, that becomes one buyer with three pieces of evidence, not three leads.
 
 This is where much of the efficiency gain comes from. The system stops paying multiple agents to rediscover, re-explain, and rerank the same organization.
+
+![Editorial evidence-flow diagram showing an exact-name match, domain-upgrade case, and growth signal merging into one canonical company buyer, passing through an absolute opportunity rubric, and reaching contact research only when promoted](../../assets/progressive-ai-buyer-discovery-method-02-evidence-judge.jpg)
 
 ## Use an LLM judge for semantic quality
 
@@ -199,6 +203,8 @@ The resulting loop is:
 
 **Trace a real run → identify waste or a quality failure → add a reviewed eval case → change one architectural variable → compare baseline and candidate → inspect regressions → ship or reject**
 
+![Circular trace-to-evaluation methodology showing a run being traced for tokens, searches, latency, and cost, followed by waste identification, human case review, architecture comparison, regression inspection, and a ship-or-reject decision](../../assets/progressive-ai-buyer-discovery-method-03-trace-evaluation-loop.jpg)
+
 This keeps optimization evidence-driven and reduces the temptation to patch one domain with brittle production rules.
 
 ## Rank before researching contacts
@@ -228,6 +234,8 @@ Both runs used the same seller domain and opportunity-scoring rubric. The table 
 | Discovery latency | 356.64 seconds | 175.44 seconds | -50.8% |
 | Mean opportunity score | 62.0 | 75.8 | +13.8 points |
 | Median opportunity score | 61 | 77 | +16 points |
+
+![Paired horizontal bars for the single floatlabsolutions.com high-effort case on 2026-08-13, comparing discovery cost, tokens, web searches, latency, and the separately identified internal opportunity-judge mean before and after the architecture change](../../assets/progressive-ai-buyer-discovery-method-04-single-case-benchmark.jpg)
 
 The result supports an architectural conclusion, not a universal performance claim: allocating model capability progressively can remove duplicated work without forcing buyer discovery into deterministic shortcuts.
 
