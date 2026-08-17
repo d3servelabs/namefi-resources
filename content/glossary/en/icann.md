@@ -38,6 +38,8 @@ relatedGlossary:
 
 **ICANN (Internet Corporation for Assigned Names and Numbers)**, also known as the **Internet Corporation for Assigned Names and Numbers**, is a nonprofit, multi-stakeholder organization incorporated under California law in 1998. It is responsible for coordinating the technical policies and databases that make the global internet function as a single, unified network. Specifically, ICANN manages the allocation of [IP addresses](/en/glossary/ip-address/), the assignment of [DNS](/en/glossary/dns/) names, and the distribution of protocol identifiers — tasks collectively known as the [IANA functions](/en/glossary/iana/). Without this coordination, the global [DNS](/en/glossary/dns/) would fragment, making web addresses unresolvable across networks.
 
+For domain owners, ICANN's role is usually indirect. Its contracts and consensus policies shape how accredited registrars and registries handle registrations, transfers, registration data, and disputes, while customer accounts and individual domain transactions remain with those service providers.
+
 ## What ICANN does
 
 ICANN's mandate covers three main areas:
