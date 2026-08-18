@@ -66,4 +66,7 @@ aliasesByLocale:    # per-locale non-canonical variants to normalise away
 ## Automation
 
 - On every push to `main`, a workflow dispatches a `resources-updated` event to `namefi-astra`.
+- A manual dispatch checks out the requested Resources ref and sends its exact
+  resolved commit to Astra, so recovery runs cannot accidentally sync the
+  workflow branch instead of the selected ref.
 - The main repo then updates the `apps/resources/data` submodule, runs validation, and opens a PR with the new content and merges if all checks succeed.

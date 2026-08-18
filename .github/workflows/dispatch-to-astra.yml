@@ -11,11 +11,24 @@ on:
         required: false
         default: ''
 
+permissions:
+  contents: read
+
 jobs:
   dispatch:
     name: Dispatch resources update
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout requested Resources ref
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.inputs.ref || github.sha }}
+
+      - name: Resolve requested Resources commit
+        id: target
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Create NameFi bot token
         id: app-token
         uses: actions/create-github-app-token@v2
@@ -29,7 +42,7 @@ jobs:
       - name: Trigger Astra sync workflow
         env:
           TARGET_REF: ${{ github.event.inputs.ref || github.ref_name }}
-          TARGET_SHA: ${{ github.sha }}
+          TARGET_SHA: ${{ steps.target.outputs.sha }}
           DISPATCH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           set -euo pipefail
