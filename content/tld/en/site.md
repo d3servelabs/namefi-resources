@@ -58,7 +58,7 @@ For founders, indie developers, and brand owners who find their ideal name alrea
 
 .site is a generic top-level domain delegated to the DNS root in 2015 as part of [ICANN's New gTLD Program](https://newgtlds.icann.org/), the 2012-round expansion that added hundreds of new endings to the namespace. Unlike a country-code TLD such as [.io](/en/tld/io/) or .de, .site has no geographic meaning — it is fully generic and globally targeted.
 
-That distinction matters for international projects. According to [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites), generic new TLDs like .site are treated as global by default, so a .site site is not geo-locked to any single country the way a [ccTLD](/en/glossary/cctld/) often is. The [IANA root-zone record for .site](https://www.iana.org/domains/root/db/site.html) lists Radix as the current operator and shows its delegation history.
+That distinction matters for international projects. According to [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites), generic new TLDs like .site are treated as global by default, so a .site website is not geo-locked to any single country the way a [ccTLD](/en/glossary/cctld/) often is. The [IANA root-zone record for .site](https://www.iana.org/domains/root/db/site.html) lists Radix as the current operator and shows its delegation history.
 
 ## History of .site
 
