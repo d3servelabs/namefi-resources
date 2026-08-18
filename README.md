@@ -1,19 +1,19 @@
 # NameFi Resources Content
 
-This repository holds the content that powers the resources site (blog posts, glossary, partners, authors, and TLDs). It is consumed as a git submodule at `apps/resources/data` inside [`d3servelabs/namefi-astra`](https://github.com/d3servelabs/namefi-astra).
+This repository holds the content that powers the resources site (blog posts, glossary, partners, authors, careers, and TLDs). It is consumed as a git submodule at `apps/resources/data` inside [`d3servelabs/namefi-astra`](https://github.com/d3servelabs/namefi-astra).
 
 All content lives under the `content/` directory (e.g., `content/blog/en/...`).
 
 ## Editing content
 
-- Keep the existing folder structure: `authors/`, `blog/`, `glossary/`, `partners/`, and `tld/`, each with language subfolders inside `content/`.
+- Keep the existing folder structure: `authors/`, `blog/`, `careers/`, `glossary/`, `partners/`, and `tld/`, each with language subfolders inside `content/`.
 - Add or edit Markdown/MDX files directly.
 - Open a PR to `main` once your changes are ready and merge it.
 
 ## Validation
 
 - Run `bun install` once, then:
-  - `bun data:validate` to check frontmatter, dates, and the same-locale internal-link invariant.
+  - `bun data:validate` to check frontmatter and dates across every supported locale and collection, plus the same-locale internal-link invariant.
   - `bun lint:mdx` to lint markdown/MDX frontmatter and formatting.
   - `bun links:locale` for the focused locale-route and related-metadata check (`--fix` repairs prefixes and restores English-source relationship routes).
   - `bun links:audit` for the full broken-link, missing-locale, and locale-prefix audit.

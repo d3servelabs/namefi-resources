@@ -4,10 +4,27 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-const locales = ['en', 'es', 'de', 'fr', 'zh-CN', 'ar', 'hi', 'ko', 'ja'] as const;
+const locales = [
+  'en',
+  'es',
+  'de',
+  'fr',
+  'zh-CN',
+  'ar',
+  'hi',
+  'ko',
+  'ja',
+  'ta',
+] as const;
 type Locale = (typeof locales)[number];
 
-type Collection = 'blog' | 'tld' | 'partners' | 'glossary' | 'authors';
+type Collection =
+  | 'blog'
+  | 'tld'
+  | 'partners'
+  | 'glossary'
+  | 'authors'
+  | 'careers';
 
 const TOPIC_SLUGS = new Set([
   'domain-tokenization',
@@ -52,6 +69,7 @@ const COLLECTION_ROOTS: Record<Collection, string> = {
   partners: path.join(DATA_ROOT, 'partners'),
   glossary: path.join(DATA_ROOT, 'glossary'),
   authors: path.join(DATA_ROOT, 'authors'),
+  careers: path.join(DATA_ROOT, 'careers'),
 };
 
 function toRelative(filePath: string) {
@@ -507,6 +525,7 @@ async function main() {
     'partners',
     'glossary',
     'authors',
+    'careers',
   ];
 
   let filesChecked = 0;
