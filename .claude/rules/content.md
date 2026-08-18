@@ -27,8 +27,9 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 ## Golden rules
 
 - **English is the source of truth.** Author in `en` first; translate from
-  English, never chain language→language. Every collection is English-first, then
-  translated to all 8 locales (`en ar de es fr hi zh ko`).
+  English, never chain language→language. Every collection is English-first,
+  then translated across the 10 supported locales (`en es de fr zh-CN ar hi ko
+  ja ta`).
 - **Validate before you push:** `bun data:validate` + `bun lint:mdx` +
   cross-link audit (0 broken).
 - **Only act on Cursor Bugbot** in PR review. **Ignore CodeRabbit** entirely.
@@ -182,9 +183,10 @@ escalated.)
    to green, address real findings, then merge (non-author approval or admin
    override per repo policy).
 4. **Publish:** merging to `main` auto-dispatches an `apps/resources/data`
-   submodule bump to **astra dev**. Production is a **deliberate** release
-   (`release-resources` workflow) — verify the release tag pins your merged
-   resources `HEAD` before trusting prod (watch for the release-race).
+   submodule bump. Astra waits for that exact pointer to merge, then publishes
+   supported data-only changes to dev followed by production through full-page
+   ISR. Unsupported content changes require the normal `release-resources`
+   application release.
 
 ## Tooling (run from repo root)
 
