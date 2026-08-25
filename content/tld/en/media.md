@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .media domain is an open new gTLD run by Binky Moon (Identity Digital) for journalists, broadcasters, and creators. Learn its origin, real users, and value.'
-keywords: ['.media domain meaning', 'media tld', 'Binky Moon .media', 'Grand Glen .media', '.media for journalists']
+keywords: ['.media domain meaning', 'Binky Moon .media', 'Grand Glen .media', '.media for journalists']
 faqs:
   - question: 'Can anyone register a .media domain?'
     answer: 'Yes. .media is an open, unrestricted generic top-level domain operated by Binky Moon, LLC. There is no credential, membership, or local-presence requirement, so any individual or organization worldwide can register a .media name through an accredited registrar.'

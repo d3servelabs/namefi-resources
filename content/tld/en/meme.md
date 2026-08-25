@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: '.meme is Google Registry''s internet-culture gTLD, home to Know Your Meme and Grumpy Cat. Learn its launch history, real adopters, and if it fits your brand.'
-keywords: ['.meme domain', 'Charleston Road Registry .meme', 'internet culture domain', 'meme brand domain']
+keywords: ['knowyour.meme domain hack', 'Charleston Road Registry .meme', 'internet culture domain', 'meme brand domain']
 faqs:
   - question: 'Can anyone register a .meme domain?'
     answer: 'Yes, today. .meme launched with a temporary limited-registration phase reserved for meme content-creation platforms, but that restriction ended before general availability, and .meme has been an open, unrestricted generic top-level domain since December 5, 2023, registerable by anyone through an accredited registrar.'

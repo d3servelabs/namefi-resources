@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .digital domain is an open new gTLD run by Binky Moon (Identity Digital) for digital agencies and transformation-era brands. Learn its origin and value.'
-keywords: ['.digital domain meaning', 'digital tld', 'Binky Moon .digital', 'Dash Park .digital', '.digital for agencies']
+keywords: ['.digital domain meaning', 'Binky Moon .digital', 'Dash Park .digital', '.digital for agencies']
 faqs:
   - question: 'Can anyone register a .digital domain?'
     answer: 'Yes. .digital is an open, unrestricted generic top-level domain operated by Binky Moon, LLC. There is no credential, membership, or local-presence requirement, so any individual or organization worldwide can register a .digital name through an accredited registrar.'

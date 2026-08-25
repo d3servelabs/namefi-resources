@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: 'The .news domain is an open new gTLD run by Dog Beach (Identity Digital), used by Apple News, Ground News, and Puck. Learn its origin, users, and reputation.'
-keywords: ['.news domain meaning', 'news tld', 'Dog Beach .news', 'Rightside Donuts .news', 'does .news mean real news']
+keywords: ['.news domain meaning', 'Dog Beach .news', 'Rightside Donuts .news', 'does .news mean real news']
 faqs:
   - question: 'Can anyone register a .news domain?'
     answer: 'Yes. .news is an open, unrestricted generic top-level domain operated by Dog Beach, LLC. There is no credential, membership, journalistic-standards, or local-presence requirement, so any individual or organization worldwide can register a .news name through an accredited registrar.'
