@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 description: '.page is Google Registry''s HSTS-secured gTLD for personal sites, portfolios, and landing pages, launched in 2018. Learn its history, real adopters, and fit.'
-keywords: ['.page domain', 'Charleston Road Registry .page', 'personal landing page domain', 'HTTPS-only domain']
+keywords: ['.page HSTS preload', 'Charleston Road Registry .page', 'personal landing page domain', 'HTTPS-only domain']
 faqs:
   - question: 'Can anyone register a .page domain?'
     answer: 'Yes. .page is an open, unrestricted generic top-level domain operated by Charleston Road Registry, a Google subsidiary. There are no credential, membership, or local-presence requirements, so anyone worldwide can register a .page name through an accredited registrar.'
