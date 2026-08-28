@@ -114,9 +114,9 @@ Ce n'est pas sans risque — cela déplace simplement les risques. Au lieu de fa
 Cela dépend de ce que vous négociez :
 
 - **Achat ou vente d'un domaine traditionnel non tokenisé entre inconnus ?** Oui — utilisez un service de séquestre réputé. Les frais en valent la peine, et ignorer le séquestre est la façon dont les gens se font arnaquer.
-- **Transaction d'un domaine tokenisé sur une place de marché ?** Le règlement atomique en chaîne vous offre déjà la garantie fondamentale du séquestre. Votre attention se porte alors sur la vérification du contrat et de l'adresse du destinataire.
+- **Transaction d'un domaine tokenisé sur une place de marché ?** Dans un règlement atomique en chaîne, il n'existe aucun intervalle où une partie a exécuté et l'autre non : il ne reste donc rien qu'un tiers doive conserver. Votre attention se porte alors sur la vérification du contrat et de l'adresse du destinataire.
 
-Namefi travaille avec des domaines tokenisés afin que les achats et les ventes puissent se régler en chaîne — vous offrant la sécurité que procure le séquestre sans l'attente ni le pourcentage. Si vous voulez voir comment cela fonctionne en pratique, rendez-vous sur [namefi.io](https://namefi.io).
+Namefi tokenise de vrais noms de domaine ICANN afin qu'une vente puisse se régler directement entre l'acheteur et le vendeur via un contrat de place de marché public tel que Seaport. Namefi n'est pas partie à cette transaction et ne détient jamais les fonds : le paiement et le jeton circulent dans une seule transaction qui aboutit intégralement ou est entièrement annulée. À aucun moment un tiers ne détient l'argent — nous compris. Si vous voulez voir comment la tokenisation fonctionne en pratique, rendez-vous sur [namefi.io](https://namefi.io).
 
 ---
 
@@ -158,4 +158,4 @@ Oui, pour les actifs tokenisés. Un contrat intelligent peut régler le paiement
 - Dans une vente de domaine, le séquestre conserve l'argent de l'acheteur pendant que le domaine est transféré via le registrar et le code auth, puis paie le vendeur une fois que l'acheteur confirme la réception.
 - Le séquestre est important car il **supprime la nécessité de faire confiance à l'autre partie**, neutralisant les fraudes les plus courantes dans la vente de domaines.
 - Le séquestre traditionnel fonctionne mais coûte des frais, prend du temps et nécessite toujours de faire confiance à un intermédiaire.
-- **Les domaines tokenisés + les contrats intelligents** peuvent remplacer le séquestre par un règlement atomique en chaîne — le paiement et l'actif se déplacent ensemble ou pas du tout — offrant la même sécurité sans l'attente ni la commission.
+- **Les domaines tokenisés + les contrats intelligents** peuvent régler une vente de manière atomique en chaîne — le paiement et l'actif se déplacent ensemble ou pas du tout — de sorte qu'aucun tiers n'a besoin de conserver les fonds. Le risque se déplace en revanche vers votre portefeuille et l'adresse du destinataire.

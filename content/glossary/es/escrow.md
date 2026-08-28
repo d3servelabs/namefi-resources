@@ -7,7 +7,7 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['iria-maquieira']
-description: ¿Qué es el depósito en garantía y cómo los contratos inteligentes proporcionan un depósito en garantía sin confianza para los dominios?
+description: Un tercero neutral o un contrato inteligente que retiene fondos o activos hasta que ambas partes cumplen las condiciones acordadas y entonces los libera, lo que reduce el riesgo de contraparte.
 keywords: ["depósito en garantía","tercero de confianza","escrow de contrato inteligente","sin confianza","transacciones seguras"]
 relatedArticles:
   - /es/blog/domain-escrow-explained/

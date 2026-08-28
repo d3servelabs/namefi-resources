@@ -114,9 +114,9 @@ Dies ist nicht risikofrei — es verlagert die Risiken nur. Anstatt einem Treuha
 Das hängt davon ab, was Sie handeln:
 
 - **Kaufen oder verkaufen Sie eine traditionelle, nicht-[tokenisierte Domain](/de/glossary/tokenized-domain/) zwischen Fremden?** Ja — nutzen Sie einen seriösen Treuhanddienst. Die Gebühren sind es wert, und das Weglassen der Treuhand ist der Weg, auf dem Menschen betrogen werden.
-- **Handeln Sie eine tokenisierte Domain auf einem [Marktplatz](/de/glossary/marketplace/)?** Die atomare On-Chain-Abwicklung bietet Ihnen bereits die Kerngarantie der Treuhand. Ihr Fokus verlagert sich auf die Überprüfung des Vertrags und der Empfängeradresse.
+- **Handeln Sie eine tokenisierte Domain auf einem [Marktplatz](/de/glossary/marketplace/)?** Bei einer atomaren On-Chain-Abwicklung gibt es keinen Zeitraum, in dem eine Seite geleistet hat und die andere nicht — es bleibt also nichts, was ein Dritter halten müsste. Ihr Fokus verlagert sich auf die Überprüfung des Vertrags und der Empfängeradresse.
 
-Namefi arbeitet mit tokenisierten Domains, sodass Kauf und Verkauf On-Chain abgewickelt werden können — Sie erhalten die Sicherheit, die Treuhand bietet, ohne das Warten oder den Prozentsatz. Wenn Sie sehen möchten, wie es in der Praxis funktioniert, gehen Sie zu [namefi.io](https://namefi.io).
+Namefi tokenisiert echte ICANN-Domains, sodass ein Verkauf direkt zwischen Käufer und Verkäufer über einen öffentlichen Marktplatz-Vertrag wie Seaport abgewickelt werden kann. Namefi ist an diesem Handel nicht beteiligt und hält zu keinem Zeitpunkt die Gelder: Zahlung und Token bewegen sich in einer einzigen Transaktion, die entweder vollständig ausgeführt oder komplett zurückgerollt wird. Zu keinem Zeitpunkt hält ein Dritter das Geld — auch wir nicht. Wenn Sie sehen möchten, wie Tokenisierung in der Praxis funktioniert, gehen Sie zu [namefi.io](https://namefi.io).
 
 ---
 
@@ -158,4 +158,4 @@ Ja, für tokenisierte Vermögenswerte. Ein Smart Contract kann Zahlung und Verm�
 - Bei einem Domain-Verkauf hält die Treuhand das Geld des Käufers, während die Domain über den Registrar und Auth-Code übertragen wird, und zahlt den Verkäufer, sobald der Käufer den Eingang bestätigt.
 - Treuhand ist wichtig, weil sie **die Notwendigkeit beseitigt, der anderen Partei zu vertrauen**, und die häufigsten Betrugsformen beim Domain-Verkauf neutralisiert.
 - Traditionelle Treuhand funktioniert, aber kostet Gebühren, braucht Zeit und erfordert immer noch Vertrauen in einen Vermittler.
-- **Tokenisierte Domains + Smart Contracts** können die Treuhand durch atomare On-Chain-Abwicklung ersetzen — Zahlung und Vermögenswert bewegen sich gemeinsam oder gar nicht — und bieten die gleiche Sicherheit ohne Wartezeit oder Provisionsabzug.
+- **Tokenisierte Domains + Smart Contracts** können einen Verkauf atomar On-Chain abwickeln — Zahlung und Vermögenswert bewegen sich gemeinsam oder gar nicht — sodass kein Dritter die Gelder halten muss. Das Risiko verlagert sich stattdessen auf Ihre Wallet und die Empfängeradresse.

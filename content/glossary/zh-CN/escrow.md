@@ -7,7 +7,7 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['fenwei-bian']
-description: 什么是托管以及智能合约如何为域名提供无需信任的托管？
+description: 由中立第三方或智能合约持有资金或资产，直到双方履行约定条件后再释放，从而降低对手方风险。
 keywords: ["托管","受信任的第三方","智能合约托管","无需信任","安全交易"]
 relatedArticles:
   - /zh-CN/blog/domain-escrow-explained/

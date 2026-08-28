@@ -193,6 +193,12 @@ function keywordOk(k: string): boolean {
 
 type Phrase = { text: string; confidence: Confidence; kind: 'term' | 'keyword' };
 
+// Glossary titles whose everyday sense in that locale is unrelated to the term —
+// suggesting them produces wrong links (zh-CN 托管 reads as "hosting" / "custody" /
+// "managed" far more often than as escrow, and had auto-linked plain hosting prose
+// on TLD pages to the escrow entry). Never offer these as anchors.
+const AMBIGUOUS_TERMS = new Set<string>(['zh-cn::托管']);
+
 // Distinctive phrases: terms (always) + keywords the page solely owns or that
 // live in its slug. Generic shared keywords are excluded — they can't point
 // at a unique destination.
@@ -203,6 +209,7 @@ function distinctivePhrases(p: Page): Phrase[] {
     const t = text.trim();
     const key = t.toLowerCase();
     if (t.length < 2 || seen.has(key)) return;
+    if (AMBIGUOUS_TERMS.has(`${p.locale.toLowerCase()}::${key}`)) return;
     seen.add(key);
     out.push({ text: t, confidence, kind });
   };

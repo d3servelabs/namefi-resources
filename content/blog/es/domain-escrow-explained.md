@@ -116,9 +116,9 @@ Esto no está libre de riesgos — solo los traslada. En lugar de confiar en una
 Depende de qué estés transaccionando:
 
 - **¿Compras o vendes un dominio tradicional, no tokenizado, entre desconocidos?** Sí — usa un servicio de escrow de confianza. Las comisiones valen la pena, y saltarse el escrow es la forma en que la gente termina estafada.
-- **¿Transaccionas un [dominio tokenizado](/es/glossary/tokenized-domain/) en un [mercado](/es/glossary/marketplace/)?** La liquidación atómica en cadena ya te da la garantía esencial del escrow. Tu atención se desplaza a verificar el contrato y la dirección del destinatario.
+- **¿Transaccionas un [dominio tokenizado](/es/glossary/tokenized-domain/) en un [mercado](/es/glossary/marketplace/)?** En una liquidación atómica en cadena no hay ningún intervalo en el que una parte haya cumplido y la otra no, así que no queda nada que un tercero deba retener. Tu atención se desplaza a verificar el contrato y la dirección del destinatario.
 
-Namefi trabaja con dominios tokenizados para que la compra y la venta puedan liquidarse en cadena — dándote la seguridad que ofrece el escrow sin la espera ni el porcentaje. Si quieres ver cómo funciona en la práctica, visita [namefi.io](https://namefi.io).
+Namefi tokeniza dominios ICANN reales para que una venta pueda liquidarse directamente entre comprador y vendedor a través de un contrato de mercado público como Seaport. Namefi no es parte de esa operación y nunca custodia los fondos: el pago y el token se mueven en una única transacción que se completa por entero o se revierte por entero. En ningún momento hay un tercero reteniendo el dinero, nosotros incluidos. Si quieres ver cómo funciona la tokenización en la práctica, visita [namefi.io](https://namefi.io).
 
 ---
 
@@ -160,4 +160,4 @@ Sí, para activos tokenizados. Un contrato inteligente puede liquidar el pago y 
 - En la venta de un dominio, el escrow retiene el dinero del comprador mientras el dominio se transfiere mediante el registrador y el código de autorización, y luego paga al vendedor cuando el comprador confirma la recepción.
 - El escrow importa porque **elimina la necesidad de confiar en la otra parte**, neutralizando los fraudes más comunes en la venta de dominios.
 - El escrow tradicional funciona, pero cuesta una comisión, lleva tiempo y aún exige confiar en un intermediario.
-- Los **dominios tokenizados + los contratos inteligentes** pueden reemplazar el escrow con liquidación atómica en cadena — el pago y el activo se mueven juntos o no se mueven — ofreciendo la misma seguridad sin la espera ni la comisión.
+- Los **dominios tokenizados + los contratos inteligentes** pueden liquidar una venta de forma atómica en cadena — el pago y el activo se mueven juntos o no se mueven — de modo que ningún tercero necesita retener los fondos. A cambio, el riesgo se traslada a tu monedero y a la dirección del destinatario.

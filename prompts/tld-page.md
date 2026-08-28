@@ -95,7 +95,7 @@ exhaustive and will grow):
 - Blog: `what-is-domain`, `domain-terminology-guide`, `cctld-market-share-by-registration-volume`,
   `how-to-sell-a-domain-name-you-own`, `what-are-tokenized-domains`, `how-to-tokenize-your-com`,
   `why-tokenize-domains`, `tokenized-domain-use-cases-2026`
-- Glossary: `icann`, `registrar`, `dns`, `dnssec`, `nft`, `escrow`, `domain-ownership`
+- Glossary: `icann`, `registrar`, `dns`, `dnssec`, `nft`, `domain-ownership`
 
 Do NOT invent slugs or link to TLD/blog/glossary pages you have not verified.
 
