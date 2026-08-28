@@ -115,9 +115,9 @@ This isn't risk-free — it just moves the risks. Instead of trusting an escrow 
 It depends on what you're transacting:
 
 - **Buying or selling a traditional, non-tokenized domain between strangers?** Yes — use a reputable escrow service. The fees are worth it, and skipping escrow is how people get defrauded.
-- **Transacting a [tokenized domain](/en/glossary/tokenized-domain/) on a [marketplace](/en/glossary/marketplace/)?** Atomic on-chain settlement already gives you escrow's core guarantee. Your focus shifts to verifying the contract and the recipient address.
+- **Transacting a [tokenized domain](/en/glossary/tokenized-domain/) on a [marketplace](/en/glossary/marketplace/)?** In an atomic on-chain settlement there is no interval in which one side has performed and the other has not, so there is nothing for a third party to hold. Your focus shifts to verifying the contract and the recipient address.
 
-Namefi works with tokenized domains so that buying and selling can settle on-chain — getting you the safety escrow provides without the wait or the percentage. If you want to see how it works in practice, head to [namefi.io](https://namefi.io).
+Namefi tokenizes real ICANN domains so that a sale can settle directly between buyer and seller through a public marketplace contract such as Seaport. Namefi is not a party to that trade and never holds the funds: the payment and the token move in a single transaction that either completes in full or reverts. No third party holds the money at any point — including us. If you want to see how tokenization works in practice, head to [namefi.io](https://namefi.io).
 
 ---
 
@@ -159,4 +159,4 @@ Yes, for tokenized assets. A smart contract can settle payment and asset transfe
 - In a domain sale, escrow holds the buyer's money while the domain transfers via the registrar and auth code, then pays the seller once the buyer confirms receipt.
 - Escrow matters because it **removes the need to trust the other party**, neutralizing the most common domain-sale frauds.
 - Traditional escrow works but costs a fee, takes time, and still requires trusting an intermediary.
-- **Tokenized domains + smart contracts** can replace escrow with atomic on-chain settlement — payment and asset move together or not at all — giving the same safety without the wait or the cut.
+- **Tokenized domains + smart contracts** can settle a sale atomically on-chain — payment and asset move together or not at all — so no third party needs to hold the funds. The risk shifts instead to your wallet and the recipient address.

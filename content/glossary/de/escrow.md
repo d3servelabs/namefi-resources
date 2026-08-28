@@ -7,7 +7,7 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
-description: Was ist Treuhand und wie bieten Smart Contracts eine vertrauenslose Treuhand für Domains?
+description: Eine neutrale dritte Partei oder ein Smart Contract, die Gelder oder Vermögenswerte halten, bis beide Seiten die vereinbarten Bedingungen erfüllen, und sie dann freigeben — das senkt das Gegenparteirisiko.
 keywords: ["vertrauenswürdige dritte Partei", "Smart Contract Treuhand", "Trustless", "sichere Transaktionen"]
 relatedArticles:
   - /de/blog/domain-escrow-explained/

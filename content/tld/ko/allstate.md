@@ -79,7 +79,7 @@ Allstate 기업의 관리자가 아니라면 `.allstate` 도메인을 등록할 
 
 *   **토큰화 도메인:** 도메인을 실물 자산(RWA)으로 취급하여 더 쉬운 거래와 [유동성](/ko/glossary/domain-liquidity/)을 위해 NFT로 발행할 수 있습니다.
 *   **원활한 Web3 통합:** [지갑](/ko/glossary/wallet/)을 연결하고 [블록체인](/ko/glossary/blockchain/) 기술의 보안으로 DNS 레코드를 관리하세요.
-*   **즉각적인 이전:** 긴 [에스크로](/ko/glossary/escrow/) 기간에 작별을 고하세요. Namefi를 통한 [도메인 소유권](/ko/glossary/domain-ownership/) 이전은 토큰을 전송하는 것만큼 빠릅니다.
+*   **즉각적인 이전:** Namefi에서 [도메인 소유권](/ko/glossary/domain-ownership/) 이전은 토큰 전송으로 완료됩니다.
 
 완벽한 이름이 사라지기 전에 기다리지 마세요. 지금 바로 브랜드의 미래를 확보하세요.
 

@@ -78,7 +78,7 @@ Allstate社の管理者でない限り `.allstate` ドメインを登録する�
 **Namefiで登録する理由**
 *   **トークン化ドメイン：** ドメインをリアルワールド資産（RWA）として扱い、NFTとしてミントすることで、より簡単な取引と[流動性](/ja/glossary/domain-liquidity/)を実現します。
 *   **シームレスなWeb3統合：** [ウォレット](/ja/glossary/wallet/)を接続し、[ブロックチェーン](/ja/glossary/blockchain/)技術のセキュリティでDNSレコードを管理できます。
-*   **即時移転：** 長い[エスクロー](/ja/glossary/escrow/)期間とはもうお別れです。Namefiを使えば、[ドメイン所有権](/ja/glossary/domain-ownership/)の移転はトークンを送るのと同じくらい迅速に行えます。
+*   **即時移転：** Namefiでは、[ドメイン所有権](/ja/glossary/domain-ownership/)の移転はトークンの送付として完了します。
 
 理想のドメイン名が手放される前に確保しましょう。今日、ブランドの未来を守るための一歩を踏み出してください。
 

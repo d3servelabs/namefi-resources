@@ -7,7 +7,7 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['alan-machin']
-description: Qu'est-ce que le séquestre et comment les contrats intelligents fournissent-ils un séquestre sans confiance pour les domaines ?
+description: Un tiers neutre ou un contrat intelligent qui conserve des fonds ou des actifs jusqu'à ce que les deux parties remplissent les conditions convenues, puis les libère, ce qui réduit le risque de contrepartie.
 keywords: ["séquestre","tiers de confiance","séquestre via contrat intelligent","sans confiance","transactions sécurisées"]
 relatedArticles:
   - /fr/blog/domain-escrow-explained/

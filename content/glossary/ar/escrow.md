@@ -7,7 +7,7 @@ tags: ["glossary"]
 authors: ["namefiteam"]
 editors: ['victor-zhou']
 translators: ['zakia-al-sinai']
-description: ما هو الضمان وكيف توفر العقود الذكية ضماناً لا يحتاج إلى ثقة للدومينات؟
+description: طرف ثالث محايد أو عقد ذكي يحتفظ بالأموال أو الأصول إلى أن يستوفي الطرفان الشروط المتفق عليها، ثم يُفرج عنها، مما يقلل مخاطر الطرف المقابل.
 keywords: ["الضمان","طرف ثالث موثوق به","ضمان العقد الذكي","عديم الثقة","معاملات آمنة"]
 relatedArticles:
   - /ar/blog/domain-escrow-explained/
