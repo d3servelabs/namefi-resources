@@ -70,3 +70,7 @@ aliasesByLocale:    # per-locale non-canonical variants to normalise away
   resolved commit to Astra, so recovery runs cannot accidentally sync the
   workflow branch instead of the selected ref.
 - The main repo then updates the `apps/resources/data` submodule, runs validation, and opens a PR with the new content and merges if all checks succeed.
+
+## Disclaimer
+
+This repository — including its history and planning documents — may contain privileged information and work in progress, may include errors introduced by AI, and is subject to change.
