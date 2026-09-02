@@ -11,16 +11,16 @@ Registrar ID **4337**, listed by IANA as *D3Serve Labs Inc. dba Namefi*, status
 *Accredited*. We advertise our own products on Google Ads.
 
 This tool is an **internal script**, run from our own code repository by our
-marketing and content team. It retrieves keyword search volume from the Google
-Ads API and writes it to a local JSON file, which our team then uses to plan
-campaigns and the pages those campaigns point to.
+marketing and content team. It will retrieve keyword search volume from the
+Google Ads API and write it to a local JSON file, which our team will use to
+plan campaigns and the pages those campaigns point to.
 
 It is not a product, not a service, and not accessible to anyone outside the
 company.
 
 ## 2. Why we need the API
 
-We use it for two connected parts of running our Google Ads campaigns.
+We will use it for two connected parts of running our Google Ads campaigns.
 
 **Campaign planning.** Which search terms to bid on, how to group them into ad
 groups, and how to write ad copy in the language customers actually use.
@@ -30,7 +30,7 @@ feature, or an explainer answering the industry question behind that group's
 keywords — so that the page a user arrives on answers what they searched for.
 This improves ad relevance and landing page experience, and lifts conversion.
 
-The second part is why keyword data reaches our editorial process: search terms
+The second part is why keyword data will reach our editorial process: search terms
 tell us which questions prospective customers are actually asking, and those
 questions determine which pages we write and how we structure them. The pages
 exist to serve users who arrive from our ads; they are not written to be
@@ -43,9 +43,6 @@ redirects, and each carries original content that stands on its own.
 | `KeywordPlanIdeaService` | `GenerateKeywordIdeas` | keyword ideas for a seed set |
 | `KeywordPlanIdeaService` | `GenerateKeywordHistoricalMetrics` | average monthly searches, monthly history |
 
-We do **not** call campaign, ad group, ad, budget or account mutation services.
-The tool is read-only with respect to the Google Ads account: it creates
-nothing, modifies nothing and deletes nothing.
 
 ## 4. Architecture
 
@@ -87,7 +84,7 @@ Four files, roughly 500 lines in total:
 
 Small and bursty, not a polling loop. Our full editorial backlog is 100
 candidate topics carrying 640 unique (query, locale) pairs, which groups into
-**two requests** — one per market. We run this when the backlog is re-planned,
+**two requests** — one per market. We will run this when the backlog is re-planned,
 on the order of once a month, not continuously.
 
 There is no scheduled job, no retry storm and no per-user traffic: a person runs
@@ -115,11 +112,11 @@ outside the repository tree.
 
 ## 8. Data handling
 
-- **Storage.** Results are written to a local JSON file used by our own team.
-- **Retention.** Superseded on each run; we keep only the current planning cycle.
-- **Sharing.** We do **not** display, redistribute, resell or otherwise expose
-  Google Ads data to any third party. It is never rendered on our website, never
-  sent to another service, and never included in anything we publish.
+- **Storage.** Results will be written to a local JSON file used by our own team.
+- **Retention.** Superseded on each run; we will keep only the current planning cycle.
+- **Sharing.** We will **not** display, redistribute, resell or otherwise expose
+  Google Ads data to any third party. It will never be rendered on our website,
+  sent to another service, or included in anything we publish.
 - **No invented figures.** A failed request, a keyword absent from the response,
   and an unconfigured provider are three distinct states, and all three are
   recorded as `null` with a stated reason. None of them is recorded as a zero.
@@ -128,7 +125,7 @@ outside the repository tree.
 ## 9. Compliance notes
 
 - The tool falls under the API's **"researching keywords and recommendations"**
-  permissible use: it accesses `KeywordPlanIdeaService` to obtain suggestions
+  permissible use: it will access `KeywordPlanIdeaService` to obtain suggestions
   that facilitate the creation and management of our own Google Ads campaigns.
 - **Required Minimum Functionality does not apply**: RMF governs Standard access
   and tools serving external users. This is an internal tool on our own accounts
