@@ -1,0 +1,434 @@
+<title>Namefi 内容目录</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Sans+SC:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#ECEEF2; --surface:#FAFBFC; --surface-2:#F1F3F7; --hollow:#E7EAEF;
+    --ink:#171A21; --ink-2:#4C5462; --ink-3:#767E8C;
+    --rule:#D2D7DF; --rule-strong:#B9C0CC;
+    --accent:#2A4B9B; --accent-soft:rgba(42,75,155,.10); --on-accent:#FAFBFC;
+    --bar:#2A4B9B; --ok:#2F6B4F; --warn:#9C5511;
+    --f-disp:'IBM Plex Sans Condensed','IBM Plex Sans SC','PingFang SC','Hiragino Sans GB',sans-serif;
+    --f-body:'IBM Plex Sans SC','PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;
+    --f-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#131519; --surface:#1A1D23; --surface-2:#20242B; --hollow:#171A20;
+      --ink:#E5E8EE; --ink-2:#9BA3B2; --ink-3:#79818F;
+      --rule:#2B303A; --rule-strong:#3B424F;
+      --accent:#8AA5EA; --accent-soft:rgba(138,165,234,.14); --on-accent:#131519;
+      --bar:#7E9BE6; --ok:#5FA882; --warn:#D8974A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#131519; --surface:#1A1D23; --surface-2:#20242B; --hollow:#171A20;
+    --ink:#E5E8EE; --ink-2:#9BA3B2; --ink-3:#79818F;
+    --rule:#2B303A; --rule-strong:#3B424F;
+    --accent:#8AA5EA; --accent-soft:rgba(138,165,234,.14); --on-accent:#131519;
+    --bar:#7E9BE6; --ok:#5FA882; --warn:#D8974A;
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px 96px}
+
+  .masthead{padding:52px 0 26px}
+  .eyebrow{font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+  h1{font-family:var(--f-disp);font-weight:600;font-size:clamp(34px,5.2vw,52px);line-height:1.06;letter-spacing:-.01em;margin:0 0 16px;text-wrap:balance}
+  .lede{margin:0;max-width:66ch;color:var(--ink-2);font-size:16px}
+  .rule-quote{margin:26px 0 0;padding:16px 20px;border-left:3px solid var(--accent);background:var(--surface);font-size:15.5px;line-height:1.6;max-width:70ch}
+
+  .controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 0;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule);position:sticky;top:0;background:var(--ground);z-index:5}
+  .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  select#lang{font-family:var(--f-mono);font-size:12px;padding:5px 26px 5px 10px;border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink);cursor:pointer;border-radius:0;-webkit-appearance:none;appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+    background-position:calc(100% - 14px) 51%,calc(100% - 9px) 51%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+  .navlinks{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
+  .navlinks a{font-family:var(--f-mono);font-size:11.5px;padding:5px 9px;text-decoration:none;color:var(--ink-2);border:1px solid transparent}
+  .navlinks a:hover{color:var(--accent);border-color:var(--rule-strong)}
+
+  section.blk{margin-top:44px;scroll-margin-top:72px}
+  .blk>h2{font-family:var(--f-disp);font-weight:600;font-size:25px;letter-spacing:-.005em;margin:0 0 6px;display:flex;align-items:baseline;gap:12px}
+  .blk>h2 .hn{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--accent);letter-spacing:.08em}
+  .blk>.sub{margin:0 0 18px;color:var(--ink-2);font-size:14.5px;max-width:76ch}
+
+  /* ---------- grid ---------- */
+  .gridwrap{overflow-x:auto;border:1px solid var(--rule-strong);background:var(--surface)}
+  table.mx{border-collapse:collapse;width:100%;min-width:660px}
+  table.mx th,table.mx td{border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);padding:0;text-align:left}
+  table.mx thead th{font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);padding:10px 14px;background:var(--surface-2);vertical-align:bottom}
+  table.mx thead th.stg{text-align:center}
+  table.mx tbody th{font-weight:500;font-size:14px;padding:12px 14px;background:var(--surface-2);white-space:nowrap}
+  table.mx tbody th small{display:block;font-family:var(--f-mono);font-weight:400;font-size:10.5px;color:var(--ink-3);letter-spacing:.04em;margin-top:2px}
+  td.cell{padding:11px 14px 13px;vertical-align:top;min-width:96px}
+  td.cell .v{font-family:var(--f-mono);font-size:19px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1;display:block}
+  td.cell .bar{display:block;height:3px;background:var(--bar);margin-top:7px;min-width:2px}
+  td.zero{background:var(--hollow)}
+  td.zero .v{color:var(--ink-3);font-weight:400}
+  td.tot,th.tot{background:var(--surface-2)}
+  td.tot .v{color:var(--ink)}
+  td.tot .bar{display:none}
+  tr.totrow th,tr.totrow td{background:var(--surface-2);border-top:1px solid var(--rule-strong)}
+  tr.totrow td .v{font-size:16px}
+  table.mx tr:last-child th,table.mx tr:last-child td{border-bottom:0}
+  table.mx th:last-child,table.mx td:last-child{border-right:0}
+  .gridnote{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0;border:1px solid var(--rule-strong);border-top:0;background:var(--surface)}
+  .gridnote>div{padding:13px 16px;border-right:1px solid var(--rule);font-size:13.5px;color:var(--ink-2);line-height:1.55}
+  .gridnote>div:last-child{border-right:0}
+  .gridnote b{color:var(--ink);font-weight:500}
+  .derive{margin:12px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.6;max-width:88ch}
+  .derive code{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2)}
+
+  /* ---------- generic table ---------- */
+  .tbl{border:1px solid var(--rule-strong);background:var(--surface);overflow-x:auto}
+  .tbl table{border-collapse:collapse;width:100%;min-width:560px}
+  .tbl th,.tbl td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14px;line-height:1.55}
+  .tbl thead th{font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);background:var(--surface-2);white-space:nowrap}
+  .tbl tbody tr:last-child td{border-bottom:0}
+  .tbl td.k{font-weight:500;white-space:nowrap}
+  .tbl td.k small,.tbl td small.m{display:block;font-family:var(--f-mono);font-weight:400;font-size:10.5px;color:var(--ink-3);letter-spacing:.04em;margin-top:2px;white-space:normal}
+  .tbl td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+  .tbl td.dim{color:var(--ink-2)}
+  .pill{display:inline-block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--rule-strong);color:var(--ink-3);white-space:nowrap}
+  .pill.req{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .pill.gap{border-color:var(--warn);color:var(--warn)}
+
+  /* ---------- axis cards ---------- */
+  /* 4 required across the top, the derived one full width beneath: the layout states the split */
+  .axes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule-strong)}
+  .axes>.ax:last-child{grid-column:1/-1}
+  .ax{background:var(--surface);padding:16px 18px}
+  .ax .axq{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+  .ax h3{font-family:var(--f-disp);font-weight:600;font-size:19px;margin:0 0 8px}
+  .ax .vals{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:0 0 10px}
+  .ax .drv{font-size:13px;color:var(--ink);line-height:1.55;margin:0;padding-top:10px;border-top:1px solid var(--rule)}
+  .ax .drv b{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:500;display:block;margin-bottom:3px}
+
+  /* ---------- not-a-taxonomy ---------- */
+  .nots{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule-strong)}
+  .not{background:var(--surface);padding:15px 18px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;align-items:start}
+  .not h3{font-family:var(--f-disp);font-weight:600;font-size:17px;margin:0}
+  .not h3 small{display:block;font-family:var(--f-mono);font-weight:400;font-size:10.5px;color:var(--warn);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+  .not p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.6}
+  .not p em{color:var(--ink);font-style:normal;font-weight:500}
+
+  ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;border:1px solid var(--rule-strong);background:var(--surface)}
+  ol.steps li{counter-increment:s;display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;padding:13px 18px;border-bottom:1px solid var(--rule);font-size:14px;line-height:1.6;color:var(--ink-2)}
+  ol.steps li:last-child{border-bottom:0}
+  ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--f-mono);font-size:11.5px;color:var(--accent);padding-top:3px}
+  ol.steps li b{color:var(--ink);font-weight:500}
+
+  footer.note{margin-top:40px;padding-top:16px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);max-width:80ch;line-height:1.7}
+  footer.note code{font-family:var(--f-mono);font-size:11.5px}
+
+  @media (max-width:1000px){ .axes{grid-template-columns:repeat(2,minmax(0,1fr))} }
+  @media (max-width:760px){
+    .axes{grid-template-columns:1fr}
+    .not{grid-template-columns:1fr;gap:8px}
+    .navlinks{margin-left:0;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow" data-en="Namefi Resources · Content model · 2026-09-01">Namefi Resources · 内容模型 · 2026-09-01</p>
+    <h1 data-en="Namefi Content Catalog">Namefi 内容目录</h1>
+    <p class="lede" data-en="A classification with four axes, each kept only because it changes a decision. Subject decides how readers browse. Format decides who writes it and how often it must be rewritten. Reader decides who it sells to. Decay decides when it gets refreshed. Stage is derived from format. A series is not a category, it is packaging.">一套只留四条轴的分类，每条轴的存在理由都是它会改变某个决策。主题决定读者怎么浏览，体裁决定谁来写、多久要重写，读者决定卖给谁，时效决定什么时候刷新。阶段从体裁派生。系列不是分类，是包装。</p>
+    <p class="rule-quote" data-en="An axis answers exactly one question, and it earns its place by changing a decision. An axis that changes no decision is decoration.">一条轴只回答一个问题，而且必须改变某个决策。不改变任何决策的轴是装饰。</p>
+  </header>
+
+  <div class="controls">
+    <span class="lbl" for="lang">语言 / Lang</span>
+    <select id="lang"><option value="en">English</option><option value="zh">中文</option></select>
+    <nav class="navlinks" id="nav"></nav>
+  </div>
+
+  <section class="blk" id="grid"><h2><span class="hn">01</span><span data-en="Subject × Stage">主题 × 阶段</span></h2>
+    <p class="sub" data-en="The one picture worth putting on a wall. Where the portfolio is thick, and where it is not.">唯一值得挂在墙上的一张图。内容堆在哪里，又空在哪里。</p>
+    <div class="gridwrap"><table class="mx" id="mx"></table></div>
+    <div class="gridnote" id="gridnote"></div>
+    <p class="derive" id="derive"></p>
+  </section>
+
+  <section class="blk" id="axes"><h2><span class="hn">02</span><span data-en="The four axes">四条轴</span></h2>
+    <p class="sub" data-en="Four fields filled at authoring time, plus one derived. Nothing else is stored.">写稿时填四个字段，加一个派生字段。此外不再存别的。</p>
+    <div class="axes" id="axgrid"></div>
+  </section>
+
+  <section class="blk" id="subjects"><h2><span class="hn">03</span><span data-en="Six subjects">六个主题</span></h2>
+    <p class="sub" data-en="Cut along the life of a name as an asset: choose it, know what it is worth, keep it, put it on chain, let machines use it, understand what sits underneath. Every article lands in exactly one.">按一个名字作为资产的生命周期来切：选出来、知道它值多少、守住它、搬上链、让机器用它、理解它底下是什么。每篇文章只落一格。</p>
+    <div class="tbl"><table id="subjtbl"></table></div>
+  </section>
+
+  <section class="blk" id="readers"><h2><span class="hn">04</span><span data-en="Five readers">五类读者</span></h2>
+    <p class="sub" data-en="Cut by what they already hold, not by demographics, because what they hold predicts what we can sell them. This axis does not exist in the schema today.">按他手里已经有什么来切，不按人群标签，因为手里有什么直接决定我们能卖他什么。这条轴目前 schema 里完全没有。</p>
+    <div class="tbl"><table id="readtbl"></table></div>
+  </section>
+
+  <section class="blk" id="formats"><h2><span class="hn">05</span><span data-en="Format and decay">体裁与时效</span></h2>
+    <p class="sub" data-en="Format earns its own axis for one reason: comparisons and news carry a refresh obligation and the rest mostly do not. Pairing the two turns intent into a schedule.">体裁值得单独成轴，理由只有一个：评比和时事带刷新义务，其余基本不带。两者配对，就把自觉变成了排期。</p>
+    <div class="tbl"><table id="fmttbl"></table></div>
+  </section>
+
+  <section class="blk" id="series"><h2><span class="hn">06</span><span data-en="Series, the packaging layer">系列，包装层</span></h2>
+    <p class="sub" data-en="A series is a name readers follow, like a newspaper column. The only test is whether it carries a promise a reader could repeat back. It may cross subjects freely, and two of the seven do.">系列是读者会追的一个名字，像报纸的专栏。判据只有一条：它有没有一个读者能复述的承诺。它可以自由横跨主题，七个里有两个确实横跨。</p>
+    <div class="tbl"><table id="sertbl"></table></div>
+  </section>
+
+  <section class="blk" id="nots"><h2><span class="hn">07</span><span data-en="Three things that are not classification">三样不是分类的东西</span></h2>
+    <p class="sub" data-en="Each of these was treated as a category at some point. None of them is one.">这三样都曾被当成分类看待。它们都不是。</p>
+    <div class="nots" id="notlist"></div>
+  </section>
+
+  <section class="blk" id="land"><h2><span class="hn">08</span><span data-en="Landing it on the existing 154">落到现有 154 篇上</span></h2>
+    <p class="sub" data-en="A one-time backfill, then three extra fields per new draft. That is the whole ongoing cost.">一次性回填，之后每篇新稿多填三个字段。持续成本就这些。</p>
+    <ol class="steps" id="steps"></ol>
+  </section>
+
+  <footer class="note" id="foot"></footer>
+</div>
+<script>
+(function(){
+  var L='en';
+  var esc=function(s){var d=document.createElement('div');d.textContent=String(s);return d.innerHTML;};
+  var t=function(o){return o[L];};
+
+  // ---------- 01 grid ----------
+  var STAGES=[
+    {k:'aware',   zh:'认知', en:'Aware',    zhq:'不知道有这个问题', enq:'does not know the problem exists'},
+    {k:'solving', zh:'求解', en:'Solving',  zhq:'有问题，在比方法', enq:'has the problem, comparing approaches'},
+    {k:'choosing',zh:'选型', en:'Choosing', zhq:'在挑供应商',       enq:'picking a vendor'},
+    {k:'using',   zh:'在用', en:'Using',    zhq:'已经是客户',       enq:'already a customer'}
+  ];
+  var SUBJ=[
+    {k:'naming',     zh:'命名与选择', en:'Naming and choosing',   n:[9,30,1,0]},
+    {k:'trading',    zh:'估值与交易', en:'Value and trading',     n:[13,18,5,0]},
+    {k:'ownership',  zh:'所有权与安全',en:'Ownership and security',n:[6,22,1,0]},
+    {k:'onchain',    zh:'上链与通证化',en:'On-chain and tokenized',n:[6,5,2,0]},
+    {k:'machines',   zh:'机器与代理', en:'Machines and agents',   n:[16,7,3,0]},
+    {k:'foundations',zh:'底层原理',   en:'Underlying mechanics',  n:[8,0,0,0]},
+    {k:'sitewide',   zh:'站点级立场', en:'Site-level position',   n:[2,0,0,0]}
+  ];
+
+  function grid(){
+    var max=0; SUBJ.forEach(function(s){s.n.forEach(function(v){if(v>max)max=v;});});
+    var h='<thead><tr><th>'+(L==='zh'?'主题 \\ 阶段':'Subject \\ Stage')+'</th>';
+    STAGES.forEach(function(s){h+='<th class="stg">'+esc(t(s))+'<br><span style="font-weight:400;text-transform:none;letter-spacing:0">'+esc(L==='zh'?s.zhq:s.enq)+'</span></th>';});
+    h+='<th class="stg tot">'+(L==='zh'?'合计':'Total')+'</th></tr></thead><tbody>';
+    var colT=[0,0,0,0], all=0;
+    SUBJ.forEach(function(s){
+      h+='<tr><th>'+esc(t(s))+'<small>'+s.k+'</small></th>';
+      var rt=0;
+      s.n.forEach(function(v,i){
+        colT[i]+=v; rt+=v; all+=v;
+        h+='<td class="cell'+(v===0?' zero':'')+'"><span class="v">'+v+'</span>'
+          + (v>0?'<span class="bar" style="width:'+Math.max(4,Math.round(v/max*100))+'%"></span>':'')+'</td>';
+      });
+      h+='<td class="cell tot"><span class="v">'+rt+'</span></td></tr>';
+    });
+    h+='<tr class="totrow"><th>'+(L==='zh'?'合计':'Total')+'</th>';
+    colT.forEach(function(v){h+='<td class="cell'+(v===0?' zero':'')+'"><span class="v">'+v+'</span></td>';});
+    h+='<td class="cell tot"><span class="v">'+all+'</span></td></tr></tbody>';
+    document.getElementById('mx').innerHTML=h;
+
+    var notes = L==='zh'
+      ? [['选型层只有 12 篇','读者已经在挑供应商，我们几乎没有东西给他。命名与选择、所有权与安全各只有 1 篇。'],
+         ['在用层是 0','面向已付费客户的参考内容全在 docs.namefi.io，resources 上一篇没有。这一格空得有一半是设计使然，另一半不是。'],
+         ['底层原理只有 8 篇且全在认知','区块链科普刚起步。它和 DNS 协议现在合成一格，任一半过 20 篇就拆开。']]
+      : [['Only 12 pieces at Choosing','The reader is picking a vendor and we have almost nothing for them. Naming and Ownership have one each.'],
+         ['Using is zero','Reference content for paying customers all sits on docs.namefi.io and none on resources. Half of that emptiness is by design and half is not.'],
+         ['Underlying mechanics is 8, all at Aware','Blockchain explainers have barely started. They share a cell with DNS protocol for now; split when either half passes 20.']];
+    document.getElementById('gridnote').innerHTML=notes.map(function(n){
+      return '<div><b>'+esc(n[0])+'</b><br>'+esc(n[1])+'</div>';}).join('');
+
+    document.getElementById('derive').innerHTML = L==='zh'
+      ? '推导规则，可复现：<code>机器与代理</code> = 带 <code>ai-agents</code> 标签，或 slug 命中 agent / mcp / x402 / llms-txt / vibe-coding / wallet-checkout；其余按现有 <code>cluster</code> 映射；<code>改名，改命</code> 系列归入命名与选择；阶段由 <code>format</code> 派生（explainer、roundup、opinion、news、analysis → 认知；guide、case-study、faq → 求解；comparison → 选型）。这是一轮机械映射的首轮结果，不是人工分类，回填时应逐篇复核。'
+      : 'Derivation, reproducible: <code>Machines</code> = carries the <code>ai-agents</code> tag, or the slug matches agent / mcp / x402 / llms-txt / vibe-coding / wallet-checkout. Everything else maps from the existing <code>cluster</code>. The <code>name-change-game-change</code> series lands in Naming. Stage is derived from <code>format</code> (explainer, roundup, opinion, news, analysis go to Aware; guide, case-study, faq to Solving; comparison to Choosing). This is a first mechanical pass, not human classification, and every article should be re-checked during backfill.';
+  }
+
+  // ---------- 02 axes ----------
+  var AX=[
+    {q:{zh:'讲什么',en:'What is it about'},h:{zh:'主题',en:'Subject'},
+     v:{zh:'六个值，单选。命名与选择 · 估值与交易 · 所有权与安全 · 上链与通证化 · 机器与代理 · 底层原理',en:'Six values, single. Naming · Trading · Ownership · On-chain · Machines · Mechanics'},
+     d:{zh:'读者浏览的唯一一条轴。每个值撑起一个 hub 页和一圈内链。',en:'The only axis readers browse. Each value carries a hub page and its ring of internal links.'},req:true},
+    {q:{zh:'长什么样',en:'What shape is it'},h:{zh:'体裁',en:'Format'},
+     v:{zh:'八个值，单选。定义 · 解释 · 操作 · 评比 · 案例 · 观点 · 时事 · 参考',en:'Eight values, single. Definition · Explainer · How-to · Comparison · Case study · Opinion · News · Reference'},
+     d:{zh:'决定模板、工时和谁来写，并直接决出刷新义务。',en:'Sets the template, the effort, and who writes it, and settles the refresh obligation.'},req:true},
+    {q:{zh:'写给谁',en:'Who is it for'},h:{zh:'读者',en:'Reader'},
+     v:{zh:'五个值，最多选两个。持名者 · 持币者 · 两者皆有 · 建造者 · 代管者',en:'Five values, at most two. Holds names · Holds crypto · Holds both · Builds · Stewards'},
+     d:{zh:'半年后能回答“哪类读者真的转化”。在还没找到 PMF 的阶段，这是仪器不是元数据。',en:'In six months it answers which reader actually converts. While PMF is still open, this is an instrument, not metadata.'},req:true},
+    {q:{zh:'什么时候会过期',en:'When does it go stale'},h:{zh:'时效',en:'Decay'},
+     v:{zh:'四个值，单选。常青 · 年审 · 季审 · 速朽',en:'Four values, single. Evergreen · Annual · Quarterly · Perishable'},
+     d:{zh:'这个字段本身就是刷新队列。它把“我们应该保持更新”变成一条可查询的排期。',en:'The field is the refresh queue. It turns "we should keep things current" into a query.'},req:true},
+    {q:{zh:'他走到哪一步了',en:'How far along is the reader'},h:{zh:'阶段',en:'Stage'},
+     v:{zh:'四个值，从体裁派生，可手工覆盖。认知 · 求解 · 选型 · 在用',en:'Four values, derived from format, overridable. Aware · Solving · Choosing · Using'},
+     d:{zh:'决定 CTA 是什么、拿什么指标衡量、内容放主站还是 resources。派生是为了把填表成本压在四个字段。',en:'Sets the CTA, the metric, and whether it belongs on the main site or resources. Derived so authoring stays at four fields.'},req:false}
+  ];
+  function axes(){
+    document.getElementById('axgrid').innerHTML=AX.map(function(a){
+      return '<div class="ax"><p class="axq">'+esc(t(a.q))+'</p><h3>'+esc(t(a.h))
+        +' <span class="pill '+(a.req?'req':'')+'">'+(a.req?(L==='zh'?'必填':'required'):(L==='zh'?'派生':'derived'))+'</span></h3>'
+        +'<p class="vals">'+esc(t(a.v))+'</p><p class="drv"><b>'+(L==='zh'?'它改变什么决策':'the decision it changes')+'</b>'+esc(t(a.d))+'</p></div>';
+    }).join('');
+  }
+
+  // ---------- 03 subjects ----------
+  var SUBJD=[
+    {k:'naming',n:40,zh:'命名与选择',en:'Naming and choosing',
+     s:{zh:'域名是什么、TLD、怎么起名、可品牌化与关键词、domain hack、改名迁移',en:'What a domain is, TLDs, how to name, brandable versus keyword, domain hacks, renames'},
+     note:{zh:'吸收了原来的 domain-basics 和 choosing-a-tld，以及改名，改命 整个系列。',en:'Absorbs the old domain-basics and choosing-a-tld, plus the whole rename series.'}},
+    {k:'trading',n:36,zh:'估值与交易',en:'Value and trading',
+     s:{zh:'估值、可比成交、翻新、市场与经纪、拍卖、外联、税务',en:'Appraisal, comparable sales, flipping, marketplaces and brokers, auctions, outbound, tax'},
+     note:{zh:'原 domain-investing 拆掉命名那一半之后剩下的部分，从 57 降到 36，不再是万能桶。',en:'What is left of domain-investing once naming is pulled out. Down from 57 to 36 and no longer a catch-all.'}},
+    {k:'ownership',n:29,zh:'所有权与安全',en:'Ownership and security',
+     s:{zh:'劫持、盗窃、恢复、托管、registry lock、DNSSEC、多签、钱包丢失',en:'Hijacking, theft, recovery, custody, registry lock, DNSSEC, multisig, wallet loss'},
+     note:{zh:'口径不变，只是把名字从“安全”扩到“所有权与安全”，好收纳链上归属那部分。',en:'Scope unchanged; the name widens from security to ownership so on-chain title fits.'}},
+    {k:'onchain',n:13,zh:'上链与通证化',en:'On-chain and tokenized',
+     s:{zh:'通证化、ERC-721、域名作为 RWA、子域名发行、DAO 与组织治理',en:'Tokenizing, ERC-721, domains as RWA, subdomain issuance, DAO and org governance'},
+     note:{zh:'产品的核心差异点，却是六格里第二薄的。13 篇撑不起这个位置。',en:'The product differentiator, and the second-thinnest cell. Thirteen posts do not carry that job.'}},
+    {k:'machines',n:26,zh:'机器与代理',en:'Machines and agents',
+     s:{zh:'MCP、agent 注册域名、x402 与机器支付、llms.txt、agentic commerce 协议',en:'MCP, agents registering domains, x402 and machine payments, llms.txt, agentic commerce protocols'},
+     note:{zh:'现有六簇里没有这一格，所以这 26 篇今天整个掉在体系外面。新模型的主要修复点。',en:'The current six clusters have no home for this, so all 26 sit outside the taxonomy today. This is the main repair.'}},
+    {k:'foundations',n:8,zh:'底层原理',en:'Underlying mechanics',
+     s:{zh:'DNS 内部机制、EPP、DoH、共识、密码学原语、扩容、隐私',en:'DNS internals, EPP, DoH, consensus, cryptographic primitives, scaling, privacy'},
+     note:{zh:'唯一的妥协。DNS 协议和区块链原理确实是两种东西，现在合并只因区块链那半仅 5 篇。任一半过 20 篇就拆，别留“以后再说”。',en:'The one compromise. DNS protocol and blockchain mechanics are two things; they share a cell only because the blockchain half is five posts. Split when either half passes 20. Do not leave it open-ended.'}},
+    {k:'sitewide',n:2,zh:'站点级立场',en:'Site-level position',
+     s:{zh:'宣言、公司立场',en:'Manifestos, company position'},
+     note:{zh:'不是第七个主题。一篇宣言属于这个站，不属于任何主题 hub，所以它可以没有主题。154 篇里只有 2 篇。',en:'Not a seventh subject. A manifesto belongs to the site, not to any subject hub, so it is allowed to have none. Two of 154.'}}
+  ];
+  function subjects(){
+    var h='<thead><tr><th>'+(L==='zh'?'主题':'Subject')+'</th><th>'+(L==='zh'?'收什么':'What it holds')+'</th><th style="text-align:right">'+(L==='zh'?'现有':'Now')+'</th><th>'+(L==='zh'?'说明':'Note')+'</th></tr></thead><tbody>';
+    SUBJD.forEach(function(s){
+      h+='<tr><td class="k">'+esc(L==='zh'?s.zh:s.en)+'<small>'+s.k+'</small></td><td class="dim">'+esc(t(s.s))+'</td><td class="n">'+s.n+'</td><td class="dim">'+esc(t(s.note))+'</td></tr>';
+    });
+    document.getElementById('subjtbl').innerHTML=h+'</tbody>';
+  }
+
+  // ---------- 04 readers ----------
+  var READ=[
+    {zh:'持名者',en:'Holds names',have:{zh:'域名，没有币',en:'Domains, no crypto'},need:{zh:'注册、DNS 管理、安全与恢复',en:'Registration, DNS management, security and recovery'}},
+    {zh:'持币者',en:'Holds crypto',have:{zh:'钱包和 NFT，没有域名',en:'A wallet and NFTs, no domains'},need:{zh:'通证化、市场与挂牌、域名作为 RWA',en:'Tokenization, marketplace and listings, domains as RWA'}},
+    {zh:'两者皆有',en:'Holds both',have:{zh:'域名和币都有',en:'Both domains and crypto'},need:{zh:'全线。这是核心的核心。',en:'The whole line. This is the core of the core.'}},
+    {zh:'建造者',en:'Builds',have:{zh:'代码，需要程序化拿到名字',en:'Code, and needs a name programmatically'},need:{zh:'MCP、API、OAuth、x402',en:'MCP, API, OAuth, x402'}},
+    {zh:'代管者',en:'Stewards',have:{zh:'替别人管名字，DAO、组织、品牌、代理商',en:'Manages names for others: DAOs, orgs, brands, agencies'},need:{zh:'多签与治理、白标、批量操作、审计',en:'Multisig and governance, white label, bulk operations, audit'}}
+  ];
+  function readers(){
+    var h='<thead><tr><th>'+(L==='zh'?'读者':'Reader')+'</th><th>'+(L==='zh'?'手里已经有什么':'What they already hold')+'</th><th>'+(L==='zh'?'他需要的产品面':'The product surface they need')+'</th><th>'+(L==='zh'?'现有标注':'Tagged today')+'</th></tr></thead><tbody>';
+    READ.forEach(function(r){
+      h+='<tr><td class="k">'+esc(L==='zh'?r.zh:r.en)+'</td><td class="dim">'+esc(t(r.have))+'</td><td class="dim">'+esc(t(r.need))+'</td><td><span class="pill gap">'+(L==='zh'?'无字段':'no field')+'</span></td></tr>';
+    });
+    document.getElementById('readtbl').innerHTML=h+'</tbody>';
+  }
+
+  // ---------- 05 formats ----------
+  var FMT=[
+    {zh:'定义',en:'Definition',from:'glossary · tld',n:'161 + 153',decay:{zh:'年审',en:'Annual'},stg:{zh:'认知',en:'Aware'},d:{zh:'读者查一个词就走',en:'Reader looks one thing up and leaves'}},
+    {zh:'解释',en:'Explainer',from:'explainer + analysis',n:'42',decay:{zh:'常青',en:'Evergreen'},stg:{zh:'认知',en:'Aware'},d:{zh:'读者建一个心智模型',en:'Reader builds a mental model'}},
+    {zh:'操作',en:'How-to',from:'guide + faq',n:'39',decay:{zh:'年审',en:'Annual'},stg:{zh:'求解',en:'Solving'},d:{zh:'读者照着做一件事',en:'Reader does something'}},
+    {zh:'评比',en:'Comparison',from:'comparison + roundup',n:'23',decay:{zh:'季审',en:'Quarterly'},stg:{zh:'选型',en:'Choosing'},d:{zh:'读者要做一个选择',en:'Reader makes a choice'}},
+    {zh:'案例',en:'Case study',from:'case-study',n:'43',decay:{zh:'常青',en:'Evergreen'},stg:{zh:'求解',en:'Solving'},d:{zh:'读者从一个真实故事里学',en:'Reader learns from a real story'}},
+    {zh:'观点',en:'Opinion',from:'opinion',n:'6',decay:{zh:'常青',en:'Evergreen'},stg:{zh:'认知',en:'Aware'},d:{zh:'读者知道我们是谁',en:'Reader learns who we are'}},
+    {zh:'时事',en:'News',from:'news',n:'1',decay:{zh:'速朽',en:'Perishable'},stg:{zh:'认知',en:'Aware'},d:{zh:'读者取当下，永不回炉',en:'Reader gets the moment; never refreshed'}},
+    {zh:'参考',en:'Reference',from:'—',n:'0',decay:{zh:'随产品',en:'With the product'},stg:{zh:'在用',en:'Using'},d:{zh:'读者反复回来查。目前全在 docs.namefi.io。',en:'Reader comes back repeatedly. All of it lives on docs.namefi.io today.'}}
+  ];
+  function formats(){
+    var h='<thead><tr><th>'+(L==='zh'?'体裁':'Format')+'</th><th>'+(L==='zh'?'读者拿它做什么':'What the reader does with it')+'</th><th>'+(L==='zh'?'刷新义务':'Refresh obligation')+'</th><th>'+(L==='zh'?'默认阶段':'Default stage')+'</th><th style="text-align:right">'+(L==='zh'?'现有':'Now')+'</th></tr></thead><tbody>';
+    FMT.forEach(function(f){
+      h+='<tr><td class="k">'+esc(L==='zh'?f.zh:f.en)+'<small>'+esc(f.from)+'</small></td><td class="dim">'+esc(t(f.d))+'</td><td>'+esc(t(f.decay))+'</td><td class="dim">'+esc(t(f.stg))+'</td><td class="n">'+esc(f.n)+'</td></tr>';
+    });
+    document.getElementById('fmttbl').innerHTML=h+'</tbody>';
+  }
+
+  // ---------- 06 series ----------
+  var SER=[
+    {slug:'domain-flipping-skills',zh:'（中文名待定）',en:'Domain Flipping Skills',n:41,sp:4,
+     p:{zh:'低买高卖这门手艺的一招',en:'One move in the craft of buying low and selling high'}},
+    {slug:'domain-apocalypse',zh:'域名浩劫',en:'Domain Apocalypse',n:23,sp:3,
+     p:{zh:'一场真实的域名灾难，以及本可以拦下它的那道控制',en:'One real domain disaster, and the control that would have stopped it'}},
+    {slug:'name-change-game-change',zh:'改名，改命',en:'Name Change, Game Change',n:20,sp:1,
+     p:{zh:'一次改名踩着溢价域名升级完成，并改变了此后的公司',en:'A rename riding a premium-domain upgrade, and the company it changed'}},
+    {slug:'best-tlds-by-industry',zh:'各行业最佳 TLD',en:'Best TLDs for Your Industry',n:8,sp:1,
+     p:{zh:'你这一行该拿下哪几个后缀',en:'Which extensions your industry should secure'}},
+    {slug:'blockchain-concepts',zh:'区块链概念',en:'Blockchain Concepts',n:5,sp:1,
+     p:{zh:'一张表讲清一类底层技术',en:'One table that settles one family of underlying technology'}},
+    {slug:'tokenize-your-com',zh:'通证化你的 .com',en:'Tokenize Your .com',n:4,sp:1,
+     p:{zh:'把一个传统 .com 搬上链的下一步',en:'The next step in bringing a traditional .com on chain'}},
+    {slug:'domain-investor-field-guide',zh:'域名投资人手册',en:"Domain Investor's Field Guide",n:4,sp:1,
+     p:{zh:'投资人该知道的一件实务',en:'One practical thing an investor should know'}}
+  ];
+  function series(){
+    var h='<thead><tr><th>'+(L==='zh'?'系列':'Series')+'</th><th>'+(L==='zh'?'它对读者的承诺':'The promise it makes')+'</th><th style="text-align:right">'+(L==='zh'?'篇数':'Posts')+'</th><th style="text-align:right">'+(L==='zh'?'横跨主题':'Subjects')+'</th></tr></thead><tbody>';
+    SER.forEach(function(s){
+      h+='<tr><td class="k">'+esc(L==='zh'?s.zh:s.en)+'<small>'+esc(s.slug)+'</small></td><td class="dim">'+esc(t(s.p))+'</td><td class="n">'+s.n+'</td><td class="n">'+s.sp+'</td></tr>';
+    });
+    h+='</tbody>';
+    document.getElementById('sertbl').innerHTML=h;
+  }
+
+  // ---------- 07 not classification ----------
+  var NOT=[
+    {h:{zh:'介质',en:'Medium'},w:{zh:'是集合，不是标签',en:'a collection, not a tag'},
+     p:{zh:'一条讲域名劫持的短视频，它的主题、读者、阶段和那篇文章完全相同，只有介质不同。所以视频是一个平行集合，共享同一套四个字段，并能指回它的源文章。把介质写成分类，会让同一件事在体系里出现两次。',
+        en:'A short video about domain hijacking has the same subject, reader and stage as the article; only the medium differs. So video is a parallel collection sharing the same four fields, able to point back at its source article. Making medium a category files one thing twice.'}},
+    {h:{zh:'站点位置',en:'Surface'},w:{zh:'是派生的，不该存',en:'derived, not stored'},
+     p:{zh:'它从阶段落下来：选型和在用去主站，认知和求解留在 resources。存成字段就会和阶段打架，总有一天两者说的不是一回事。',
+        en:'It falls out of stage: Choosing and Using go to the main site, Aware and Solving stay on resources. Stored as a field it will eventually disagree with stage.'}},
+    {h:{zh:'工作道',en:'Lanes'},w:{zh:'是保存查询，不是分类',en:'saved queries, not categories'},
+     p:{zh:'“竞品对比”就是 体裁=评比。“短视频”就是 介质=视频。“用例页”就是 体裁=操作 × 读者=某一类 × 阶段=选型。工作道是排期单位，可以自由混合属性，因为它的单位是“一批有同一个负责人和同一个节奏的活”。之前那份十三条清单的正确身份就是这个。',
+        en:'"Comparisons" is format=comparison. "Short video" is medium=video. "Use-case pages" is format=how-to × reader=one of them × stage=choosing. A lane is a scheduling unit and may mix facets freely, because its unit is a batch of work with one owner and one cadence. That is what the earlier list of thirteen actually was.'}}
+  ];
+  function nots(){
+    document.getElementById('notlist').innerHTML=NOT.map(function(n){
+      return '<div class="not"><h3>'+esc(t(n.h))+'<small>'+esc(t(n.w))+'</small></h3><p>'+esc(t(n.p))+'</p></div>';
+    }).join('');
+  }
+
+  // ---------- 08 steps ----------
+  var STEP={
+    zh:['<b>重切主题，一次性。</b>六格重新分配，26 篇 agent 内容归位，2 篇宣言标为站点级、允许无主题。上面网格里那份机械映射就是这一步的起点，但每篇都要人工复核。',
+        '<b>补读者字段，全量。</b>五个值，每篇最多两个。这是新增字段，没有历史值可继承，只能人工过一遍。',
+        '<b>补时效字段，可半自动。</b>先按体裁灌默认值，再人工挑出例外。灌完之后刷新队列就自动存在了。',
+        '<b>体裁沿用现值，顺手清 tags。</b>八种新体裁由现有九种合并而来，映射是确定的。同时删掉 tags 里那 85 处体裁词，其中 21 处正和 format 字段说的不是一回事。',
+        '<b>阶段不填，派生。</b>只有覆盖时才写进 frontmatter。',
+        '<b>本地化改按阶段排优先级。</b>选型层最先翻，因为它转化；认知层最后翻。不按日期翻。'],
+    en:['<b>Re-cut subject, once.</b> Redistribute into six cells, house the 26 agent posts, and mark the two manifestos site-level with no subject. The mechanical pass in the grid above is the starting point, but every article needs a human check.',
+        '<b>Backfill reader, all of it.</b> Five values, at most two per article. This is a new field with no history to inherit, so it has to be done by hand.',
+        '<b>Backfill decay, semi-automatically.</b> Seed defaults from format, then hand-pick the exceptions. Once seeded, the refresh queue exists on its own.',
+        '<b>Keep format, and clean tags while you are there.</b> The eight new formats merge deterministically from the current nine. Drop the 85 format words sitting in tags, 21 of which currently contradict the format field.',
+        '<b>Do not fill stage; derive it.</b> Write it into frontmatter only to override.',
+        '<b>Prioritize localization by stage.</b> Choosing translates first because it converts; Aware translates last. Not by date.']
+  };
+  function steps(){ document.getElementById('steps').innerHTML=STEP[L].map(function(s){return '<li>'+s+'</li>';}).join(''); }
+
+  // ---------- nav + chrome ----------
+  var NAV=[['grid',{zh:'网格',en:'Grid'}],['axes',{zh:'四条轴',en:'Axes'}],['subjects',{zh:'主题',en:'Subjects'}],
+           ['readers',{zh:'读者',en:'Readers'}],['formats',{zh:'体裁',en:'Formats'}],['series',{zh:'系列',en:'Series'}],
+           ['nots',{zh:'不是分类',en:'Not categories'}],['land',{zh:'落地',en:'Landing'}]];
+  var FOOT={
+    zh:'篇数取自 namefi-resources 仓库 origin/main，2026-09-01 读取：英文博客 154，词汇条目 161，TLD 单页 153，10 个语言。网格里主题与阶段的分配，是按本页写明的规则从现有 cluster、series、tags、format 机械推导的首轮结果，不是人工分类，回填时须逐篇复核。读者与时效两个字段今天不存在，所有相关格子标为“无字段”。',
+    en:'Counts read from origin/main of the namefi-resources repository on 2026-09-01: 154 English posts, 161 glossary terms, 153 TLD pages, 10 locales. The subject and stage assignments in the grid are a first mechanical pass derived from the existing cluster, series, tags and format fields by the rules stated on this page, not human classification, and every article should be re-checked during backfill. The reader and decay fields do not exist today, so every cell about them is marked no field.'
+  };
+
+  function render(){
+    grid(); axes(); subjects(); readers(); formats(); series(); nots(); steps();
+    document.getElementById('nav').innerHTML=NAV.map(function(n){
+      return '<a href="#'+n[0]+'">'+esc(t(n[1]))+'</a>';}).join('');
+    document.getElementById('foot').textContent=FOOT[L];
+    Array.prototype.forEach.call(document.querySelectorAll('[data-en]'),function(el){
+      if(!el.hasAttribute('data-zh')) el.setAttribute('data-zh',el.textContent);
+      el.textContent = (L==='en') ? el.getAttribute('data-en') : el.getAttribute('data-zh');
+    });
+    document.documentElement.lang = (L==='en')?'en':'zh-CN';
+  }
+
+  var sel=document.getElementById('lang');
+  try{var s=localStorage.getItem('namefi-catalog-lang'); if(s==='en'||s==='zh') L=s;}catch(e){}
+  sel.value=L;
+  sel.addEventListener('change',function(){L=sel.value; try{localStorage.setItem('namefi-catalog-lang',L);}catch(e){} render();});
+  render();
+})();
+</script>
