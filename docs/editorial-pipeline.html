@@ -627,6 +627,82 @@ flowchart LR
     </ul>
   </div>
 
+  <div class="desk">
+    <h3><span class="en">National Geographic · the research desk</span><span class="zh">《国家地理》· 研究编辑台</span><span class="mono-tag">→ S2 · S6 · S10</span></h3>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Assignment or Society grant"] --> B["Field reporting"] --> C["Draft with source list"] --> D["Research editor: primary sources"] --> E["Photo desk: nothing added or removed"] --> F["Published"]
+  D -.-> G["Quotes paraphrased, no text shared"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class D,E human
+  class A,B,C,F,G agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["派题或协会资助项目"] --> B["实地采访：作者与摄影师"] --> C["附信源清单的初稿"] --> D["研究编辑：一手信源，致电当事人"] --> E["图片台：不增不减"] --> F["发布"]
+  D -.-> G["向受访者复述引语只作转述，不给原文"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class D,E human
+  class A,B,C,F,G agent
+</pre>
+</div>
+</div>
+    <ul class="plain">
+    <li><span class="tip" data-tip="ng1"><span class="en">The checker starts from the writer’s source list and goes to the primary source.</span><span class="zh">核查员从作者的信源清单出发，一路追到一手信源。</span></span><span class="to">S2 ledger · S6</span></li>
+    <li><span class="tip" data-tip="ng2"><span class="en">Checkers call sources with questions; quotes are paraphrased, text is no longer shared.</span><span class="zh">核查员致电当事人提问；引语只转述，不再把原文发给对方。</span></span><span class="to">S6</span></li>
+    <li><span class="tip" data-tip="ng3"><span class="en">Research is insurance: it prevents bad things, and is only missed after a disaster.</span><span class="zh">研究部是保险：它防止坏事发生，只有出事后才知道值钱。</span></span><span class="to">Principle 5</span></li>
+    <li><span class="tip" data-tip="ng4"><span class="en">Images: correcting color is fine; adding or removing elements is not; disclose how the image was made.</span><span class="zh">图片：调色可以；增删元素不行；说明图片是怎么拍的。</span></span><span class="to">S10 images</span></li>
+    <li><span class="tip" data-tip="ng5"><span class="en">Topics upstream: the Society funds science, conservation, storytelling, education and technology projects; TV proposals get a research assessment before green-light.</span><span class="zh">选题在上游：协会资助科学、保护、叙事、教育与技术项目；电视提案在立项前先做研究评估。</span></span><span class="to">S1 · S2 verdict</span></li>
+    </ul>
+  </div>
+
+  <div class="desk">
+    <h3><span class="en">Encyclopaedias · Britannica, and who still publishes one</span><span class="zh">百科全书 · 大英百科，以及今天谁还在出版</span><span class="mono-tag">→ T12 glossary · S12</span></h3>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Expert writes"] --> B["Subject editor"] --> C["Fact-checker"] --> D["Supervisory editor"] --> E["Copy editor"] --> F["Published: contributors, sources, revision date"]
+  F -. 10% of articles reviewed yearly .-> A
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C,D,E human
+  class A,F agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["专家撰稿"] --> B["学科编辑"] --> C["核查员：逐条对照来源"] --> D["主管编辑"] --> E["文字编辑"] --> F["发布，附撰稿人、来源、最后修订日期"]
+  F -. 每年至少 10% 条目复审 .-> A
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C,D,E human
+  class A,F agent
+</pre>
+</div>
+</div>
+    <ul class="plain">
+    <li><span class="tip" data-tip="eb1"><span class="en">Britannica: written and reviewed by outside experts, every fact verified against reputable sources, then subject, supervisory and copy editors.</span><span class="zh">大英百科：由外部专家撰写与审阅，每条事实对照可靠来源核实，再经学科编辑、主管编辑、文字编辑。</span></span><span class="to">T12 · S6</span></li>
+    <li><span class="tip" data-tip="eb2"><span class="en">Every article names its contributors, its sources and its last revision date.</span><span class="zh">每篇条目标明撰稿人、来源和最后修订日期。</span></span><span class="to">Bylines · updated</span></li>
+    <li><span class="tip" data-tip="eb3"><span class="en">Print ended with the 2010 edition; online since, with at least a tenth of articles considered for revision each year and a “Britannica Checked” stamp on staff-reviewed material.</span><span class="zh">2010 年版后停印；此后只在线上出版，每年至少十分之一条目列入复审，员工审过的内容加“Britannica Checked”标记。</span></span><span class="to">S12 evergreen</span></li>
+    <li><span class="tip" data-tip="eb4"><span class="en">World Book still prints a new edition every year: 22 volumes, hundreds of articles updated per edition, mostly bought by schools.</span><span class="zh">World Book 仍每年印一版新书：22 卷，每版更新数百条，主要由学校购买。</span></span><span class="to">S12 annual sweep</span></li>
+    <li><span class="tip" data-tip="eb5"><span class="en">China’s Encyclopaedia, third edition: an online release of 500,000 entries in 2023, compiled and reviewed by discipline in batches. Not opened from here.</span><span class="zh">《中国大百科全书》第三版：2023 年网络版集中发布 50 万条，按学科分批编纂审定。此处未打开原文。</span></span><span class="to">not verified</span></li>
+    <li><span class="tip" data-tip="eb6"><span class="en">Wikipedia: the only encyclopaedia whose editing process itself is public: talk pages, sourcing policies, a perennial-sources list.</span><span class="zh">维基百科：唯一把编辑过程本身公开的百科：讨论页、来源政策、常见来源可靠性清单。</span></span><span class="to">Tiers</span></li>
+    </ul>
+    <p class="note"><span class="en">So yes, encyclopaedias are still edited and published: Britannica online with a staff of over a hundred, World Book on paper every year, the Chinese third edition online, Wikipedia by volunteers. What they share, and what our glossary and TLD pages copy, is the trio on every entry: who wrote it, what it rests on, when it was last checked.</span><span class="zh">所以，百科全书今天仍在编辑出版：大英百科在线上、编辑团队上百人；World Book 每年印刷；《中国大百科全书》第三版在线上；维基百科靠志愿者。它们的共同点，也是我们词汇表与 TLD 页照搬的：每个条目都写明谁写的、依据什么、上次核对是什么时候。</span></p>
+  </div>
+
   <h3 class="en">How they choose and green-light stories</h3><h3 class="zh">他们怎么选题与立项</h3>
   <p class="note"><span class="en">A pattern: desks that buy stories from outside (freelancers, independent producers) have to write the pitch-to-green-light process down, so the most detailed public sources are submission and commissioning guides, not newsroom handbooks. The flow below is composed from NPR, 99% Invisible and ProPublica; each node’s source is in the notes.</span><span class="zh">一个规律：要从外部买稿的编辑部（自由记者、独立制作公司）被迫把 pitch 到立项的流程写成文档，所以最详细的公开来源是投稿与委制指南，而不是编辑部手册。下图由 NPR、99% Invisible、ProPublica 三家的做法合成，各节点出处见注解。</span></p>
 <div class="diagram">
@@ -724,6 +800,10 @@ flowchart LR
     <li><span><span class="en">Attribute other outlets; attribution is not a license</span><span class="zh">注明其他媒体出处；注明不等于许可</span></span><span class="src">NYT · AP · Reuters</span><span class="to">Tiers</span></li>
     <li><span><span class="en">One weekly meeting for green-lights</span><span class="zh">每周一次立项会</span></span><span class="src">The Economist</span><span class="to">S3</span></li>
     <li><span><span class="en">Open debate on every pitch, run as a multi-persona agent debate</span><span class="zh">每个 pitch 都公开辩论，以多 persona agent 辩论实现</span></span><span class="src">The Economist</span><span class="to">S3</span></li>
+    <li><span><span class="en">The checker starts from the writer’s source list and prefers the primary source</span><span class="zh">核查员从作者信源清单出发，优先一手信源</span></span><span class="src">National Geographic</span><span class="to">S2 · S6</span></li>
+    <li><span><span class="en">Image honesty: nothing added or removed; say how it was made</span><span class="zh">图片诚实：不增不减；说明制作方式</span></span><span class="src">National Geographic</span><span class="to">S10</span></li>
+    <li><span><span class="en">Contributors, sources and last revision date on every entry; a yearly revision quota</span><span class="zh">每条目标明撰稿人、来源、最后修订日期；年度复审配额</span></span><span class="src">Britannica</span><span class="to">T12 · S12</span></li>
+    <li><span><span class="en">A dated annual edition sweep</span><span class="zh">带日期的年度版本扫描</span></span><span class="src">World Book</span><span class="to">S12</span></li>
     <li><span><span class="en">Preliminary reporting before a pitch is heard</span><span class="zh">pitch 之前先做初步采访</span></span><span class="src">NPR · ProPublica</span><span class="to">S2</span></li>
     <li><span><span class="en">A paid development stage between pitch and green-light</span><span class="zh">pitch 与立项之间的付费开发阶段</span></span><span class="src">99% Invisible</span><span class="to">S2 THIN</span></li>
     <li><span><span class="en">On green-light: slug, length and budget assigned at once</span><span class="zh">立项即分配 slug、字数与预算</span></span><span class="src">NPR</span><span class="to">S3 brief</span></li>
@@ -832,6 +912,17 @@ flowchart LR
     <li>Channel 4, Code of Practice for Commissioning (PDF) — https://www.channel4.com/media/documents/corporate/foi-docs/CofP.pdf</li>
     <li>BBC Commissioning (blocked from here) — https://www.bbc.co.uk/commissioning/</li>
     <li>Kurzgesagt, How research and factchecking work (not opened) — https://medium.com/@Kurzgesagt/how-research-and-factchecking-work-at-kurzgesagt-f5b239188255</li>
+    <li>Knight Science Journalism at MIT, The State of Fact-Checking in Science Journalism (2018, PDF) — https://www.moore.org/docs/default-source/default-document-library/fact-checking-in-science-journalism_mit-ksj.pdf</li>
+    <li>Hidden Compass, How do you check a fact? (Marisa Larson) — https://hiddencompass.net/how-do-you-check-a-fact/</li>
+    <li>National Geographic Society, grants — https://www.nationalgeographic.org/funding-opportunities/grants/</li>
+    <li>National Geographic Society, Code of Ethics — https://www.nationalgeographic.org/society/code-of-ethics/</li>
+    <li>National Geographic, How to photograph wildlife ethically (2019) — https://www.nationalgeographic.com/animals/article/ethical-wildlife-photography</li>
+    <li>Britannica Education, Editorial Process — https://britannicaeducation.com/editorial-process/</li>
+    <li>Britannica Education, Who writes the Britannica articles? — https://elearn.eb.com/who-writes-britannica-articles/</li>
+    <li>Wikipedia, Encyclopædia Britannica — https://en.wikipedia.org/wiki/Encyclop%C3%A6dia_Britannica</li>
+    <li>World Book Encyclopedia 2025 — https://www.worldbook.com/world-book-encyclopedia-2025</li>
+    <li>Wikipedia, World Book Encyclopedia — https://en.wikipedia.org/wiki/World_Book_Encyclopedia</li>
+    <li>人民日报海外版，《中国大百科全书》第三版集中发布 (2023, not opened) — http://paper.people.com.cn/rmrbhwb/html/2023-02/22/content_25966482.htm</li>
     <li>BBC synthetic voice labeling — https://voicebot.ai/2020/11/17/bbc-releases-synthetic-voice-newsreader-for-online-articles/</li>
   </ul>
 </details>
@@ -842,6 +933,28 @@ flowchart LR
 <script>
 (function(){
   var TIPS = {
+    ng1:{en:"Marisa Larson, former Senior Editorial Researcher at National Geographic, in Hidden Compass: “Usually the author has sent me their sources, so I’ll look at what they used to get their facts.” and “I always try to go with the primary source… I use primary sources as much as possible.” Our source ledger travels from S2 to S6 for the same reason.<span class='src'>hiddencompass.net/how-do-you-check-a-fact</span>",
+         zh:"《国家地理》前高级编辑研究员 Marisa Larson 在 Hidden Compass 访谈中：“通常作者已经把信源发给我，我会看他们据以得出事实的材料。”以及“我总是尽量找一手信源……尽可能用一手信源。”我们的信源账本从 S2 一路带到 S6，理由相同。<span class='src'>hiddencompass.net/how-do-you-check-a-fact</span>"},
+    ng2:{en:"Larson: “I introduce myself, explain that I’m fact-checking this article and have a few questions.” The Knight Science Journalism report (MIT, June 2018) records that National Geographic no longer lets checkers share text with sources; magazine fact-checker Heidi Schultz: “I would like to go back to being able to send out quotes over e-mail as well as sections of text without having to paraphrase them.” We do not call sources at all; see the differences list.<span class='src'>hiddencompass.net · moore.org, The State of Fact-Checking in Science Journalism (2018), section 5.3.c</span>",
+         zh:"Larson：“我自我介绍，说明我在核查这篇文章，有几个问题。”MIT 奈特科学新闻项目的报告（2018 年 6 月）记录：《国家地理》已不再允许核查员把原文发给受访者；杂志核查员 Heidi Schultz：“我希望能回到可以用邮件发引语和段落原文、而不必转述的时候。”我们完全不致电当事人；见“有意不同”一节。<span class='src'>hiddencompass.net · moore.org, The State of Fact-Checking in Science Journalism (2018), section 5.3.c</span>"},
+    ng3:{en:"Brad Scriber, Deputy Research Director at National Geographic magazine, in the same 2018 report: “A lot of what we do is prevent bad things from happening. It’s like lowering your insurance policy — a somewhat painless cost-cutting measure, until you have a disaster you need insurance for.” He wanted “a sign from the industry that this function is valuable and worth preserving and paying for.” This is why S6 runs on the strongest model in budget.<span class='src'>moore.org, The State of Fact-Checking in Science Journalism (2018)</span>",
+         zh:"《国家地理》杂志研究部副主任 Brad Scriber 在同一份 2018 年报告中：“我们做的很多事是防止坏事发生。就像降低保险额度——一个不太疼的省钱办法，直到你遇上需要保险的灾难。”他希望“行业给出一个信号：这项职能有价值、值得保留和付费”。这就是 S6 用预算内最强模型的原因。<span class='src'>moore.org, The State of Fact-Checking in Science Journalism (2018)</span>"},
+    ng4:{en:"National Geographic (Melissa Groo, 2019-07-31): “Correcting color, for example, is fine.” “If you alter the reality of a scene by cloning out or adding elements that weren’t there to begin with, you’re crossing a line in photojournalism.” “Tell them the backstory if there’s something about how the image was made that isn’t obvious just by viewing it.” Our images are illustrations, never fake screenshots or fake photographs, and their generation is disclosed on the editorial-standards page proposed in Q6.<span class='src'>nationalgeographic.com/animals/article/ethical-wildlife-photography</span>",
+         zh:"《国家地理》（Melissa Groo，2019-07-31）：“比如调色是可以的。”“如果你通过克隆掉或添加原本不存在的元素改变了场景的真实，你就越过了新闻摄影的界线。”“如果图片的制作方式有不显而易见之处，就把来龙去脉告诉读者。”我们的图片是插画，绝不做假截图或假照片，生成方式在 Q6 提议的编辑标准页上披露。<span class='src'>nationalgeographic.com/animals/article/ethical-wildlife-photography</span>"},
+    ng5:{en:"National Geographic Society grants: “We fund individuals working on projects in science, conservation, storytelling, education and technology that align with one or more of our focus areas.” A Society job listing for a Factual Research and Standards Researcher (Glassdoor, not opened; text as indexed) describes writing Editorial Research Assessments for new program proposals as part of the greenlight process. Secondary sources add that a storytelling grant does not guarantee publication by National Geographic media (IJNet, not opened). The Society’s Code of Ethics is “grounded in honesty, fairness, transparency, respect, dignity and sensitivity.”<span class='src'>nationalgeographic.org/funding-opportunities/grants · nationalgeographic.org/society/code-of-ethics · glassdoor.com (not opened) · ijnet.org (not opened)</span>",
+         zh:"国家地理学会资助：“我们资助从事科学、保护、叙事、教育和技术项目、且与我们至少一个重点领域一致的个人。”学会一则“事实研究与标准研究员”招聘（Glassdoor，未打开；按索引文本）描述为新节目提案撰写“编辑研究评估”，作为立项流程的一部分。二手来源补充：叙事类资助不保证在国家地理媒体上发表（IJNet，未打开）。学会的伦理准则“建立在诚实、公正、透明、尊重、尊严与敏感之上”。<span class='src'>nationalgeographic.org/funding-opportunities/grants · nationalgeographic.org/society/code-of-ethics · glassdoor.com（未打开）· ijnet.org（未打开）</span>"},
+    eb1:{en:"Britannica Education, Editorial Process: “Content is written and reviewed by scholars, educators, and specialists from around the world.” “Each fact is verified against reputable sources to ensure objectivity and reliability.” The process wheel runs Subject Editors, Supervisory Editors, Copy Editors. Contributors: “4,500 and counting”; staff: “an editorial team that is 100+ members strong, with copy editors, fact-checkers, and even children’s editors.” A search snippet of britannica.com (page returned 403) adds that a fact-checker must give every new article a passing grade before a supervisory editor reviews it.<span class='src'>britannicaeducation.com/editorial-process · elearn.eb.com/who-writes-britannica-articles</span>",
+         zh:"Britannica Education《编辑流程》：“内容由世界各地的学者、教育者和专家撰写与审阅。”“每条事实都对照可靠来源核实，以保证客观与可靠。”流程轮依次是学科编辑、主管编辑、文字编辑。撰稿人“4,500 人且仍在增加”；团队“100 多人，含文字编辑、核查员，甚至儿童版编辑”。britannica.com 的检索摘要（页面返回 403）补充：每篇新条目须先由核查员给出合格评级，再由主管编辑审阅。<span class='src'>britannicaeducation.com/editorial-process · elearn.eb.com/who-writes-britannica-articles</span>"},
+    eb2:{en:"Britannica Education: “Every Britannica article clearly identifies its contributors, sources, and last revision date.” and “New discoveries, research, and perspectives are integrated regularly to keep our resources relevant.” Our glossary and TLD pages carry authors, editors and translators, a Sources section, and the existing updated field; lastVerified is the proposed addition.<span class='src'>britannicaeducation.com/editorial-process</span>",
+         zh:"Britannica Education：“每篇大英百科条目都清楚标明撰稿人、来源和最后修订日期。”以及“新发现、新研究和新观点会定期整合进来，保持资源的时效。”我们的词汇表和 TLD 页有作者、编辑、译者署名、来源段和现有的 updated 字段；lastVerified 是提议新增的字段。<span class='src'>britannicaeducation.com/editorial-process</span>"},
+    eb3:{en:"Wikipedia’s article on Britannica: the 2010 15th edition was the last printed, the company announced in March 2012 it would “no longer publish printed editions”, and since 2016 it has been published online at Britannica.com; a standing policy since 1936 has “at least 10% of the articles considered for revision each year”; user-submitted contributions are “reviewed and checked” by staff and official material carries a “Britannica Checked” stamp. Our evergreen class re-audits every page within 12 months, a stricter quota.<span class='src'>en.wikipedia.org/wiki/Encyclopædia_Britannica</span>",
+         zh:"维基百科“大英百科全书”条目：2010 年第 15 版是最后的印刷版，公司于 2012 年 3 月宣布“不再出版印刷版”，2016 年起在 Britannica.com 线上出版；自 1936 年起的常设政策是“每年至少 10% 的条目列入复审”；用户投稿由员工“审阅并核对”，官方内容带“Britannica Checked”标记。我们的 evergreen 等级要求每页 12 个月内重审，配额更严。<span class='src'>en.wikipedia.org/wiki/Encyclopædia_Britannica</span>"},
+    eb4:{en:"World Book’s own 2025 edition page calls it “the only general reference encyclopedia still published today”, 22 volumes, with “Hundreds of articles have been updated”. Wikipedia: “New editions have since appeared every year except 1920, 1924, and 1932”; “World Book is currently the only American encyclopedia which also still provides a print edition.”; a company representative said in 2018 that “thousands” of print sets are ordered annually, mostly by schools. A 2026 edition is listed by retailers (not opened). The lesson is the dated edition: a visible yearly sweep of snapshot pages.<span class='src'>worldbook.com/world-book-encyclopedia-2025 · en.wikipedia.org/wiki/World_Book_Encyclopedia</span>",
+         zh:"World Book 自己的 2025 年版页面称其为“今天仍在出版的唯一综合性参考百科”，22 卷，“数百条目已更新”。维基百科：“此后每年都出新版，只有 1920、1924 和 1932 年例外”；“World Book 是目前唯一仍提供印刷版的美国百科全书”；公司代表 2018 年称每年仍有“数千套”印刷版订单，主要来自学校。零售商已上架 2026 年版（未打开）。可借鉴的是“带日期的版本”：对快照页做一次可见的年度扫描。<span class='src'>worldbook.com/world-book-encyclopedia-2025 · en.wikipedia.org/wiki/World_Book_Encyclopedia</span>"},
+    eb5:{en:"Search summaries of People’s Daily and Xinhua coverage (pages not opened): the third edition of the Encyclopaedia of China had a concentrated online release in February 2023 with 500,000 entries in professional, special-topic and general sections, compiled and reviewed by discipline and released in batches, with nearly 30,000 experts participating. Treat the figures as unverified until a primary page is opened.<span class='src'>paper.people.com.cn 2023-02-22 (not opened) · xinhuanet.com 2021-07-24 (not opened)</span>",
+         zh:"人民日报与新华网报道的检索摘要（页面未打开）：《中国大百科全书》第三版于 2023 年 2 月集中发布网络版，50 万条目分专业版、专题版、大众版，按学科编纂审定、分批发布，近 3 万名专家学者参与。在打开原始页面前，这些数字视为未核实。<span class='src'>paper.people.com.cn 2023-02-22（未打开）· xinhuanet.com 2021-07-24（未打开）</span>"},
+    eb6:{en:"Wikipedia publishes not only its sourcing policies (Reliable sources, No original research, the perennial-sources list, all opened earlier in these notes) but the editing itself: every article’s talk page, revision history and dispute process are public. It is the model for a secondary publication deciding whether a topic is sourceable, and the reason our source tiers look the way they do.<span class='src'>en.wikipedia.org/wiki/Wikipedia:Reliable_sources · Wikipedia:No_original_research · Wikipedia:Reliable_sources/Perennial_sources</span>",
+         zh:"维基百科公开的不只是来源政策（《可靠来源》《非原创研究》《常见来源清单》，本注解前文均已打开），还有编辑本身：每个条目的讨论页、修订历史和争议处理流程都公开。它是二手媒体判断“一个题目能否找到信源”的范本，也是我们信源分级的来源。<span class='src'>en.wikipedia.org/wiki/Wikipedia:Reliable_sources · Wikipedia:No_original_research · Wikipedia:Reliable_sources/Perennial_sources</span>"},
     "ts-npr":{en:"NPR News Submission Guidelines (2011-08-22, mirrored by SEJ): “The key is knowing WHAT the story is and WHY it would interest a national NPR audience.” “Don’t simply contact us with an idea that you want to investigate. Make some phone calls first.” “Once a pitch is accepted, you’ll be given an intake number and a story slug (title)”, and you agree “a length and the fee”. “The edit of a story actually begins with the pitch.” “There is a HUGE demand for stories that are 3:00-3:30 minutes long.” NPR Training (2025-05-30) adds the 3–4 sentence pitch and the one-sentence focus statement. A companion piece, “From pitch to story: These 32 questions can help editors guide reporters” (2025-05-31), timed out on every fetch and is cited by title only.<span class='src'>sej.org NPRPitchGuidelines101912.pdf · npr.org/sections/npr-training/2025/05/30</span>",
              zh:"NPR《新闻投稿指南》（2011-08-22，SEJ 镜像）：“关键是知道故事是什么，以及为什么全国听众会感兴趣。”“别只带着一个想调查的想法来找我们。先打几个电话。”“pitch 被接受后，你会拿到 intake 编号和故事 slug”，并商定“时长和稿费”。“一篇稿子的编辑其实从 pitch 就开始了。”“3:00–3:30 的稿子需求量巨大。”NPR Training（2025-05-30）补充了 3–4 句 pitch 和一句话聚焦句。配套文章《From pitch to story: 32 questions editors ask》（2025-05-31）每次抓取都超时，只按标题引用。<span class='src'>sej.org NPRPitchGuidelines101912.pdf · npr.org/sections/npr-training/2025/05/30</span>"},
     "ts-99pi":{en:"99% Invisible pitch page: they want “stories that inspire wonder and reveal something surprising about the built world”; “Try to keep pitches to a page or less.”; a pitch should carry “a sense of the overall narrative arc for your story: where it will start, who the main characters are, how the narrative will develop over various scenes, and what big ideas the story will explore”; “We read every single pitch. Seriously.”; turnaround three to four weeks; and when an idea needs work, “one of our editors may approve a budget for further research” before green-lighting. That paid development stage is our THIN verdict.<span class='src'>99percentinvisible.org/about/pitch</span>",
