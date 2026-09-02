@@ -43,7 +43,15 @@ export interface VolumeProvider {
   fetch(specs: QuerySpec[]): Promise<VolumeResult[]>;
 }
 
+/**
+ * The single funnel for every unmeasured result. Going through here guarantees
+ * two things no caller has to remember: the value is `null` rather than a zero,
+ * and a zh-CN row carries the Baidu caveat even when the reason it is null is
+ * something unrelated, such as an unconfigured provider or a failed request.
+ */
 export function unknown(spec: QuerySpec, source: string, note: string): VolumeResult {
+  const withCaveat =
+    spec.locale === 'zh-CN' && !note.includes('Baidu') ? `${note} ${BAIDU_GAP}` : note;
   return {
     ...spec,
     avgMonthlySearches: null,
@@ -51,7 +59,7 @@ export function unknown(spec: QuerySpec, source: string, note: string): VolumeRe
     competition: null,
     source,
     fetchedAt: new Date().toISOString(),
-    note,
+    note: withCaveat,
   };
 }
 

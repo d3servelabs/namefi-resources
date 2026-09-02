@@ -124,9 +124,7 @@ export class DataForSeoProvider implements VolumeProvider {
         return unknown(
           s,
           this.id,
-          ['no row returned for this keyword — absent from the response, not measured as zero', zhNote]
-            .filter(Boolean)
-            .join(' '),
+          'no row returned for this keyword — absent from the response, not measured as zero',
         );
       }
       return {

@@ -23,7 +23,22 @@ bun keywords:volume --providers     # what is configured, what is missing
 
 | provider | env vars | what it answers |
 | --- | --- | --- |
-| `dataforseo` | `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` | Google Ads search volume, resold |
+| `google-ads` | `GOOGLE_ADS_DEVELOPER_TOKEN`, `GOOGLE_ADS_CLIENT_ID`, `GOOGLE_ADS_CLIENT_SECRET`, `GOOGLE_ADS_REFRESH_TOKEN`, `GOOGLE_ADS_LOGIN_CUSTOMER_ID` | **primary** — KeywordPlanIdeaService, free |
+| `dataforseo` | `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` | stopgap — the same data, resold |
+
+A **Test-level** Google Ads developer token cannot return real volume: test
+accounts hold no real data. **Basic access is the prerequisite.**
+
+## Calling it from code
+
+`api.ts` is the library entry point; the CLI is one caller of it.
+
+```ts
+import { searchVolume, toSpecs } from './scripts/keyword-volume/api.ts';
+
+const specs = toSpecs([{ id: 'C036', en: ['dns records for ai agents'] }]);
+const rows  = await searchVolume(specs);          // or { locale: 'zh-CN' }
+```
 
 The DataForSEO **password is the API password** generated in the dashboard's
 API Access tab, not the account password.

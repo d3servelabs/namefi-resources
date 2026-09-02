@@ -20,39 +20,14 @@
 // absent row and an unconfigured provider all produce `null` with a `note`.
 
 import { DataForSeoProvider } from './dataforseo.ts';
-import { LOCALE_MARKET, type QuerySpec, type VolumeProvider } from './provider.ts';
-
-const PROVIDERS: VolumeProvider[] = [new DataForSeoProvider()];
+import { GoogleAdsProvider } from './googleads.ts';
+import { activeProvider, measuredCount, providers as PROVIDERS, toSpecs } from './api.ts';
 
 function arg(name: string): string | undefined {
   const i = process.argv.indexOf(`--${name}`);
   return i !== -1 ? process.argv[i + 1] : undefined;
 }
 const has = (name: string) => process.argv.includes(`--${name}`);
-
-function specsFrom(input: Record<string, any>[], only?: string): QuerySpec[] {
-  const out: QuerySpec[] = [];
-  for (const row of input) {
-    for (const [locale, queries] of Object.entries(row)) {
-      if (locale === 'id' || !Array.isArray(queries)) continue;
-      if (only && locale !== only) continue;
-      const country = LOCALE_MARKET[locale];
-      if (!country) continue;
-      for (const q of queries) {
-        if (typeof q !== 'string' || q === 'LOW-DEMAND') continue;
-        out.push({ query: q, locale, country });
-      }
-    }
-  }
-  // de-duplicate identical (query, locale) pairs
-  const seen = new Set<string>();
-  return out.filter((s) => {
-    const k = `${s.locale}|${s.query.toLowerCase()}`;
-    if (seen.has(k)) return false;
-    seen.add(k);
-    return true;
-  });
-}
 
 async function main() {
   if (has('providers')) {
@@ -75,22 +50,27 @@ async function main() {
 
   const input: Record<string, any>[] = inPath
     ? JSON.parse(await Bun.file(inPath).text())
-    : [{ id: 'SAMPLE', en: ['tokenized domain'], 'zh-CN': ['域名代币化'] }];
+    : [{ id: 'SAMPLE', en: ['domain name registration'], 'zh-CN': ['域名注册'] }];
 
-  const specs = specsFrom(input, arg('locale'));
-  const provider = PROVIDERS.find((p) => p.configured()) ?? PROVIDERS[0];
+  const specs = toSpecs(input, arg('locale'));
+  const provider = activeProvider({ provider: arg('provider') });
 
   if (has('dry-run')) {
     console.log(`provider: ${provider.id} (${provider.configured() ? 'configured' : 'NOT configured'})`);
     console.log(`${specs.length} unique (query, locale) pairs\n`);
     if (provider instanceof DataForSeoProvider) {
       console.log(JSON.stringify(provider.buildTasks(specs), null, 2));
+    } else if (provider instanceof GoogleAdsProvider) {
+      const reqs = provider
+        .markets(specs)
+        .map((m) => provider.buildRequest(m.specs, m.locale, m.country));
+      console.log(JSON.stringify(reqs, null, 2));
     }
     return;
   }
 
   const results = await provider.fetch(specs);
-  const measured = results.filter((r) => r.avgMonthlySearches !== null).length;
+  const { measured } = measuredCount(results);
   const out = arg('out') ?? 'keyword-volume.json';
   await Bun.write(out, JSON.stringify(results, null, 1));
   console.error(
