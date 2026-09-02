@@ -25,7 +25,9 @@ anything under `content/`.
 
 - **Self-contained files.** An HTML page inlines its own CSS and JS. External
   resources are limited to a Google Fonts stylesheet, so a page opens correctly
-  from a `file://` path with no build step and no network beyond fonts.
+  from a `file://` path with no build step and no network beyond fonts. A
+  third-party library a page needs (Mermaid, for diagrams) is vendored under
+  `vendor/` and referenced by relative path, never loaded from a CDN.
 - **State the as-of date and how numbers were obtained.** Measured counts and
   judgment calls are different things and must be labeled as such.
 - **Update in place** for living documents. Git history is the version record.
@@ -37,3 +39,4 @@ anything under `content/`.
 | File | What it is |
 | --- | --- |
 | `content-catalog.html` | The content model: four authored axes (subject, format, reader, decay) plus a derived stage, the subject-by-stage grid over the 154 English posts, the series packaging layer, and the backfill plan. Bilingual. Open it in a browser. |
+| `editorial-pipeline.html` | The editorial pipeline: four phases, twelve stations and five human gates with conventional newsroom titles (humans marked), backlog ranking by expected clicks, the keyword data stack, source tiers and refresh classes, localization, the publish package, corrections policy, metrics, open decisions, and an appendix on how top newsrooms, National Geographic and encyclopaedias operate. Bilingual (English default, Chinese via the dropdown); long notes live in tooltips with their sources. Diagrams render with the vendored `vendor/mermaid-11.17.2.min.js`, so the page opens from `file://`. |
