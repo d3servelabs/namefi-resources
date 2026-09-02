@@ -627,6 +627,80 @@ flowchart LR
     </ul>
   </div>
 
+  <h3 class="en">How they choose and green-light stories</h3><h3 class="zh">他们怎么选题与立项</h3>
+  <p class="note"><span class="en">A pattern: desks that buy stories from outside (freelancers, independent producers) have to write the pitch-to-green-light process down, so the most detailed public sources are submission and commissioning guides, not newsroom handbooks. The flow below is composed from NPR, 99% Invisible and ProPublica; each node’s source is in the notes.</span><span class="zh">一个规律：要从外部买稿的编辑部（自由记者、独立制作公司）被迫把 pitch 到立项的流程写成文档，所以最详细的公开来源是投稿与委制指南，而不是编辑部手册。下图由 NPR、99% Invisible、ProPublica 三家的做法合成，各节点出处见注解。</span></p>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Idea"] --> B["Preliminary reporting"] --> C["Pitch: what, why, peg, evidence"] --> D{"Editor decides"}
+  D -- reject, say why --> A
+  D -- promising --> E["Small budget to develop"] --> C
+  D -- green-light --> F["Slug, length, fee"] --> G["Focus statement, outline"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class D,F human
+  class A,B,C,E,G agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["想法"] --> B["先做初步采访"] --> C["pitch：是什么、为何这群读者在乎、由头、证据"] --> D{"编辑决定"}
+  D -- 毙掉并说明原因 --> A
+  D -- 有潜力 --> E["批小预算继续开发"] --> C
+  D -- 立项 --> F["分配 slug、时长、稿费"] --> G["聚焦句，再写大纲"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class D,F human
+  class A,B,C,E,G agent
+</pre>
+</div>
+</div>
+  <ul class="plain">
+    <li><span class="tip" data-tip="ts-npr"><span class="en">NPR: no idea without phone calls first; a 3–4 sentence pitch; on acceptance a slug, a length and a fee; then a one-sentence focus statement.</span><span class="zh">NPR：先打几个电话再来谈想法；3–4 句 pitch；接受即分配 slug、时长、稿费；再写一句话聚焦句。</span></span><span class="to">S2 · S3 brief</span></li>
+    <li><span class="tip" data-tip="ts-99pi"><span class="en">99% Invisible: a one-page pitch with a narrative arc; every pitch is read; a research budget can be approved before green-light.</span><span class="zh">99% Invisible：一页以内、带叙事弧的 pitch；每条都读；立项前可先批一笔研究预算。</span></span><span class="to">S2 THIN</span></li>
+    <li><span class="tip" data-tip="ts-tal"><span class="en">This American Life: producers research, then pitch the room; most stories die; the facts decide, not the wish.</span><span class="zh">This American Life：制作人先研究再向全组 pitch；多数故事中途夭折；事实说了算，不是愿望。</span></span><span class="to">S2 · S8 kill rule</span></li>
+    <li><span class="tip" data-tip="ts-pp"><span class="en">ProPublica: a clear hypothesis of wrongdoing, who is harmed, who is responsible, what must change; feasibility evidence; why you.</span><span class="zh">ProPublica：清晰的不法假设、谁受害、谁负责、要改什么；可行性证据；为什么是你。</span></span><span class="to">S2 verdict · brief</span></li>
+    <li><span class="tip" data-tip="ts-gu"><span class="en">The Guardian, 2011: a daily public newslist so readers help decide what deserves reporting resources.</span><span class="zh">《卫报》2011：每日公开选题单，让读者帮忙判断什么值得投入采编资源。</span></span><span class="to">S1 intake (experiment)</span></li>
+    <li><span class="tip" data-tip="ts-aj"><span class="en">Al Jazeera The Stream, 2016: the pitch meeting broadcast live; the audience pitches by hashtag.</span><span class="zh">半岛电视台 The Stream，2016：选题会直播，观众用话题标签投稿。</span></span><span class="to">S1 (experiment)</span></li>
+    <li><span class="tip" data-tip="ts-c4"><span class="en">Channel 4: published briefs per genre, one commissioning editor per idea, a rolling portal, a regulator-approved code of practice.</span><span class="zh">Channel 4：按类型公开委制简报，一个想法只投一位委制编辑，滚动受理门户，监管机构批准的行为准则。</span></span><span class="to">S1 calendar · brief</span></li>
+    <li><span class="tip" data-tip="ts-bbc"><span class="en">BBC: a commissioning site with briefs and a pitch tool, certified suppliers only. Not opened from here.</span><span class="zh">BBC：委制站点有简报与 pitch 工具，只接受认证供应商。此处未能打开。</span></span><span class="to">not verified</span></li>
+    <li><span class="tip" data-tip="ts-kz"><span class="en">Kurzgesagt: a long topic list, pick what excites, deep dive, experts, script, fact-check, a sources sheet per video. Not opened from here.</span><span class="zh">Kurzgesagt：长期选题列表，挑当下最兴奋的，深挖、专家、脚本、核查、每期来源表。此处未能打开。</span></span><span class="to">T11 · not verified</span></li>
+  </ul>
+  <p class="note"><span class="en">Television commissioning at Channel 4, the most fully documented public process found:</span><span class="zh">Channel 4 的电视委制，是找到的公开得最完整的流程：</span></p>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Published briefs"] --> B["Pitch via 4ideas to one editor"] --> C["Reply with next steps"] --> D["Finance and legal"] --> E["Contract under the code"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C human
+  class A,D,E agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["公开的委制简报：我们在找什么"] --> B["通过 4ideas 投给一位委制编辑"] --> C["编辑答复下一步"] --> D["制片财务与法务"] --> E["按监管机构批准的准则签约"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C human
+  class A,D,E agent
+</pre>
+</div>
+</div>
+  <ul class="plain">
+    <li><span class="tip" data-tip="ts-r1"><span class="en">Rule 1: no green-light without preliminary reporting; the sufficiency verdict comes before G1.</span><span class="zh">规则一：没有初步采访不立项；信源充分度判定先于 G1。</span></span><span class="to">S2 → G1</span></li>
+    <li><span class="tip" data-tip="ts-r2"><span class="en">Rule 2: green-light is not binary; a small development budget sits between pitch and approval.</span><span class="zh">规则二：立项不是二值决定；pitch 与批准之间有一笔小额开发预算。</span></span><span class="to">THIN</span></li>
+    <li><span class="tip" data-tip="ts-r3"><span class="en">Rule 3: a pitch has a fixed shape: what, why this reader, peg, evidence in hand, feasibility, why us.</span><span class="zh">规则三：pitch 有固定形状：是什么、为何这群读者在乎、由头、已掌握的证据、可行性、为什么是我们。</span></span><span class="to">S2 pitch memo</span></li>
+  </ul>
+
   <h3 class="en">More desks, one line each</h3><h3 class="zh">其他编辑部，各一行</h3>
   <ul class="plain">
     <li><span class="tip" data-tip="ap1"><span class="en">AP: pickups are re-reported or confirmed, rewritten and credited; corrections are labeled corrections.</span><span class="zh">AP：转载稿要自行核实或确认、重写并注明出处；更正必须标明为更正。</span></span><span class="to">S2 · Corrections</span></li>
@@ -650,6 +724,10 @@ flowchart LR
     <li><span><span class="en">Attribute other outlets; attribution is not a license</span><span class="zh">注明其他媒体出处；注明不等于许可</span></span><span class="src">NYT · AP · Reuters</span><span class="to">Tiers</span></li>
     <li><span><span class="en">One weekly meeting for green-lights</span><span class="zh">每周一次立项会</span></span><span class="src">The Economist</span><span class="to">S3</span></li>
     <li><span><span class="en">Open debate on every pitch, run as a multi-persona agent debate</span><span class="zh">每个 pitch 都公开辩论，以多 persona agent 辩论实现</span></span><span class="src">The Economist</span><span class="to">S3</span></li>
+    <li><span><span class="en">Preliminary reporting before a pitch is heard</span><span class="zh">pitch 之前先做初步采访</span></span><span class="src">NPR · ProPublica</span><span class="to">S2</span></li>
+    <li><span><span class="en">A paid development stage between pitch and green-light</span><span class="zh">pitch 与立项之间的付费开发阶段</span></span><span class="src">99% Invisible</span><span class="to">S2 THIN</span></li>
+    <li><span><span class="en">On green-light: slug, length and budget assigned at once</span><span class="zh">立项即分配 slug、字数与预算</span></span><span class="src">NPR</span><span class="to">S3 brief</span></li>
+    <li><span><span class="en">Open the topic list or the pitch meeting to readers, as an experiment</span><span class="zh">把选题单或选题会向读者开放，作为实验</span></span><span class="src">The Guardian · Al Jazeera</span><span class="to">S1</span></li>
     <li><span><span class="en">Pitch memo plus a one-sentence focus statement</span><span class="zh">立项稿加一句话聚焦</span></span><span class="src">NPR</span><span class="to">S2 · brief</span></li>
     <li><span><span class="en">Nut graf right after the lead: what the story is and why it matters</span><span class="zh">导语之后紧跟 nut graf：故事是什么、为何重要</span></span><span class="src">The Wall Street Journal</span><span class="to">S3 · S7</span></li>
     <li><span><span class="en">As short as it needs to be; repetitive anecdotes and spare quotes cut</span><span class="zh">能多短就多短；重复的轶事和多余引语一律砍</span></span><span class="src">The Wall Street Journal</span><span class="to">S7</span></li>
@@ -742,6 +820,18 @@ flowchart LR
     <li>Talking Biz News, WSJ newsroom restructures (Emma Tucker, 2025) — https://talkingbiznews.com/media-news/wsj-newsroom-restructures-cuts-bureau-chiefs/</li>
     <li>Talking Biz News, WSJ promotes its standards and ethics (2021) — https://talkingbiznews.com/they-talk-biz-news/wsj-promotes-its-standards-and-ethics/</li>
     <li>Slate, Dow Jones Code of Conduct excerpts (Jack Shafer, 2007) — https://slate.com/news-and-politics/2007/05/would-rupert-murdoch-uphold-the-dow-jones-code-of-conduct.html</li>
+    <li>NPR News Submission Guidelines (2011, SEJ mirror) — https://www.sej.org/sites/default/files/NPRPitchGuidelines101912.pdf</li>
+    <li>NPR Training, 32 questions from pitch to story (2025, not opened) — https://www.npr.org/sections/npr-training/2025/05/31/g-s1-65255/from-pitch-to-story-these-32-questions-can-help-editors-guide-reporters</li>
+    <li>99% Invisible, Pitch — https://99percentinvisible.org/about/pitch/</li>
+    <li>BuzzFeed, Ira Glass on 500 episodes (2013) — https://www.buzzfeed.com/adambvary/ira-glass-this-american-life-500-episodes</li>
+    <li>ProPublica Local Reporting Network, how to apply — https://www.propublica.org/how-to-apply/local-reporting-network</li>
+    <li>ProPublica Illinois, where story ideas come from (2018) — https://www.propublica.org/article/ask-propublica-illinois-finding-story-ideas</li>
+    <li>Press Gazette, Guardian opens up newslist (2011) — https://pressgazette.co.uk/guardian-opens-up-newslist-to-the-public/</li>
+    <li>Al Jazeera, The Stream #OpenEditorial (2016) — https://www.aljazeera.com/video/the-stream/2016/11/15/openeditorial-participate-in-a-stream-pitch-meeting</li>
+    <li>Channel 4, Pitching to us — https://www.channel4.com/4producers/working-with-us/pitching-us</li>
+    <li>Channel 4, Code of Practice for Commissioning (PDF) — https://www.channel4.com/media/documents/corporate/foi-docs/CofP.pdf</li>
+    <li>BBC Commissioning (blocked from here) — https://www.bbc.co.uk/commissioning/</li>
+    <li>Kurzgesagt, How research and factchecking work (not opened) — https://medium.com/@Kurzgesagt/how-research-and-factchecking-work-at-kurzgesagt-f5b239188255</li>
     <li>BBC synthetic voice labeling — https://voicebot.ai/2020/11/17/bbc-releases-synthetic-voice-newsreader-for-online-articles/</li>
   </ul>
 </details>
@@ -752,6 +842,30 @@ flowchart LR
 <script>
 (function(){
   var TIPS = {
+    "ts-npr":{en:"NPR News Submission Guidelines (2011-08-22, mirrored by SEJ): “The key is knowing WHAT the story is and WHY it would interest a national NPR audience.” “Don’t simply contact us with an idea that you want to investigate. Make some phone calls first.” “Once a pitch is accepted, you’ll be given an intake number and a story slug (title)”, and you agree “a length and the fee”. “The edit of a story actually begins with the pitch.” “There is a HUGE demand for stories that are 3:00-3:30 minutes long.” NPR Training (2025-05-30) adds the 3–4 sentence pitch and the one-sentence focus statement. A companion piece, “From pitch to story: These 32 questions can help editors guide reporters” (2025-05-31), timed out on every fetch and is cited by title only.<span class='src'>sej.org NPRPitchGuidelines101912.pdf · npr.org/sections/npr-training/2025/05/30</span>",
+             zh:"NPR《新闻投稿指南》（2011-08-22，SEJ 镜像）：“关键是知道故事是什么，以及为什么全国听众会感兴趣。”“别只带着一个想调查的想法来找我们。先打几个电话。”“pitch 被接受后，你会拿到 intake 编号和故事 slug”，并商定“时长和稿费”。“一篇稿子的编辑其实从 pitch 就开始了。”“3:00–3:30 的稿子需求量巨大。”NPR Training（2025-05-30）补充了 3–4 句 pitch 和一句话聚焦句。配套文章《From pitch to story: 32 questions editors ask》（2025-05-31）每次抓取都超时，只按标题引用。<span class='src'>sej.org NPRPitchGuidelines101912.pdf · npr.org/sections/npr-training/2025/05/30</span>"},
+    "ts-99pi":{en:"99% Invisible pitch page: they want “stories that inspire wonder and reveal something surprising about the built world”; “Try to keep pitches to a page or less.”; a pitch should carry “a sense of the overall narrative arc for your story: where it will start, who the main characters are, how the narrative will develop over various scenes, and what big ideas the story will explore”; “We read every single pitch. Seriously.”; turnaround three to four weeks; and when an idea needs work, “one of our editors may approve a budget for further research” before green-lighting. That paid development stage is our THIN verdict.<span class='src'>99percentinvisible.org/about/pitch</span>",
+              zh:"99% Invisible 的 pitch 页：他们要“激发好奇、揭示人造世界中令人意外之处的故事”；“pitch 尽量控制在一页以内”；pitch 要有“整体叙事弧：从哪开始、主要人物是谁、如何通过场景推进、探讨什么大观念”；“我们每一条 pitch 都读。真的。”；三到四周回复；想法需要打磨时，“编辑可以批一笔预算做进一步研究”再决定立项。这个付费开发阶段就是我们的 THIN 判定。<span class='src'>99percentinvisible.org/about/pitch</span>"},
+    "ts-tal":{en:"Ira Glass, BuzzFeed (2013-07-11): when a story falls short, “Often, we’ll just kill the story, or we’ll just take the one part we like.”; “we don’t just need characters; we need the forward motion of suspense and plot.”; “Sometimes the problem is the facts simply don’t live up to what you would want them to, and you’re stuck with the facts.” The show’s submissions page returned 403; the pitch-meeting description (producers research, then pitch; some rejected, some sent back, some advanced; most attempts die) is second-hand from search summaries and is not quoted.<span class='src'>buzzfeed.com/adambvary/ira-glass-this-american-life-500-episodes</span>",
+             zh:"Ira Glass，BuzzFeed（2013-07-11）：故事撑不住时，“我们常常直接毙掉，或者只留我们喜欢的那一段。”；“我们不只需要人物，需要悬念和情节的前推力。”；“有时问题是事实本身撑不起你想要的故事，而你只能接受事实。”节目投稿页返回 403；选题会的描述（制作人先研究再 pitch；有的毙、有的退回、有的推进；多数尝试夭折）来自检索摘要，是二手信息，未引用原文。<span class='src'>buzzfeed.com/adambvary/ira-glass-this-american-life-500-episodes</span>"},
+    "ts-pp":{en:"ProPublica Local Reporting Network, how to apply: “Does the proposal have a clear hypothesis of wrongdoing?”; the four questions “What’s wrong? Who is harmed? Who or what is responsible? What needs to be changed?”; “Evidence that your idea is feasible and deserves a spot over other worthy proposals. Anecdotes, preliminary data, documents and whistleblowers can all help”; “Why are you and your news organization best positioned to tell this story?” Jodi S. Cohen (2018-11-20) on where ideas come from: tips, public meetings, “I often think, ‘Is this a story I would want to read?’”, and “regular brainstorming lunches”.<span class='src'>propublica.org/how-to-apply/local-reporting-network · propublica.org/article/ask-propublica-illinois-finding-story-ideas</span>",
+            zh:"ProPublica Local Reporting Network 申请说明：“提案是否有清晰的不法行为假设？”；四个问题“哪里出错？谁受害？谁或什么负责？要改什么？”；“证明你的想法可行、值得优先于其他提案的证据。轶事、初步数据、文件和吹哨人都有帮助”；“为什么你和你的机构最适合讲这个故事？”Jodi S. Cohen（2018-11-20）谈选题从哪来：线索、公开会议、“我常问自己：这是我想读的故事吗？”、“定期的头脑风暴午餐”。<span class='src'>propublica.org/how-to-apply/local-reporting-network · propublica.org/article/ask-propublica-illinois-finding-story-ideas</span>"},
+    "ts-gu":{en:"Press Gazette (2011-10-10): the Guardian published “a carefully-selected portion of the national, international and business newslists on a daily blog” so readers could help decide “which stories were worth investing precious reporting resources in”; it was “not planning to list all our exclusives or embargoed content”; readers could “get in touch with reporters and editors via Twitter if they have ideas”; national news editor Dan Roberts called it a short trial. For us this is a Discourse-side experiment, not a standing process.<span class='src'>pressgazette.co.uk/guardian-opens-up-newslist-to-the-public</span>",
+            zh:"Press Gazette（2011-10-10）：《卫报》每天在博客上公开“精选的一部分国内、国际和商业选题单”，让读者帮忙判断“哪些故事值得投入宝贵的采编资源”；“不会列出全部独家或有禁运期的内容”；读者可以“通过 Twitter 联系记者和编辑提供想法”；国内新闻编辑 Dan Roberts 称之为短期试验。对我们而言这是 Discourse 侧的实验，不是常设流程。<span class='src'>pressgazette.co.uk/guardian-opens-up-newslist-to-the-public</span>"},
+    "ts-aj":{en:"Al Jazeera, The Stream (2016-11-15), #OpenEditorial for the show’s tenth year: the editorial meeting was broadcast live; “Community members will be joined by some of the network’s senior editors who will vet story pitches.”; “You can still share stories that matter to you with #OpenEditorial.”; “Whether it is show pitches, guests suggestions, or digital participation, our audience is the driving force.” A one-off, but a working template for opening a pitch meeting.<span class='src'>aljazeera.com/video/the-stream/2016/11/15/openeditorial-participate-in-a-stream-pitch-meeting</span>",
+            zh:"半岛电视台 The Stream（2016-11-15），十周年的 #OpenEditorial：选题会直播；“社区成员将与本台资深编辑一起审 pitch。”；“你仍可以用 #OpenEditorial 分享对你重要的故事。”；“无论是节目 pitch、嘉宾建议还是数字参与，观众都是驱动力。”一次性活动，但是把选题会开放出去的可用模板。<span class='src'>aljazeera.com/video/the-stream/2016/11/15/openeditorial-participate-in-a-stream-pitch-meeting</span>"},
+    "ts-c4":{en:"Channel 4, Pitching to us: “4ideas is now your standard route for submitting ideas in all Channel 4 genres, apart from News & Current Affairs, and Sport.”; full proposals answer a published genre brief (see All Current Briefs); “Commissioning Editors will do their best to respond with an indication of next steps as soon as possible.”; one idea to one commissioning editor at a time; after interest, production finance and legal; only registered companies may pitch. The relationship runs under a Code of Practice approved by Ofcom and Pact. The publicly posted briefs are the closest thing to our industry calendar plus category targets.<span class='src'>channel4.com/4producers/working-with-us/pitching-us · channel4.com/4producers/all-current-briefs · channel4.com CofP.pdf</span>",
+            zh:"Channel 4《向我们 pitch》：“4ideas 是向 Channel 4 所有类型投稿的标准通道，新闻时事与体育除外。”；完整提案须回应已公开的类型简报（见 All Current Briefs）；“委制编辑会尽快答复下一步。”；一个想法同时只投一位委制编辑；表达兴趣后进入制片财务与法务；只有注册公司可投。双方关系受 Ofcom 与 Pact 批准的行为准则约束。公开发布的简报最接近我们的行业日历加类别目标。<span class='src'>channel4.com/4producers/working-with-us/pitching-us · channel4.com/4producers/all-current-briefs · channel4.com CofP.pdf</span>"},
+    "ts-bbc":{en:"The BBC commissioning site (bbc.co.uk/commissioning) publishes briefs and a pitch tool for TV, radio and Sounds, but every fetch from here was blocked, so nothing is quoted. Search summaries of a 2021 interview with a BBC Sounds commissioner say BBC Sounds takes commissions only from certified suppliers and helps individuals find a production company; that page also could not be opened. Treat as unverified.<span class='src'>bbc.co.uk/commissioning (blocked) · micmedia.co.uk 2021 (not opened)</span>",
+             zh:"BBC 委制站点（bbc.co.uk/commissioning）发布电视、广播和 Sounds 的简报与 pitch 工具，但此处每次抓取都被拦截，故不引用。2021 年一位 BBC Sounds 委制人访谈的检索摘要称，BBC Sounds 只接受认证供应商的委制，并帮助个人寻找制作公司；该页也未能打开。视为未核实。<span class='src'>bbc.co.uk/commissioning（被拦截）· micmedia.co.uk 2021（未打开）</span>"},
+    "ts-kz":{en:"Kurzgesagt’s Medium post “How research and factchecking work at Kurzgesagt” returned 403 here. Search summaries describe: a long list of potential topics from which they pick what excites them at the time; a deep dive into books and papers; expert consultation and a lengthy fact-check after a rough script; a sources sheet published per video; a six-person research team. Relevant to the T11 explainer lane, but unverified until the post is opened.<span class='src'>medium.com/@Kurzgesagt/how-research-and-factchecking-work-at-kurzgesagt (not opened)</span>",
+            zh:"Kurzgesagt 的 Medium 文《How research and factchecking work at Kurzgesagt》此处返回 403。检索摘要描述：从长期选题列表里挑当下最兴奋的；深读书籍与论文；粗稿后咨询专家并做漫长核查；每期发布来源表；研究组六人。与 T11 explainer 线相关，但在打开原文前视为未核实。<span class='src'>medium.com/@Kurzgesagt/how-research-and-factchecking-work-at-kurzgesagt（未打开）</span>"},
+    "ts-r1":{en:"NPR: “Make some phone calls first.” ProPublica: a proposal must already have “a clear hypothesis of wrongdoing”, not a wish to explore. Our S2 source-scout is that preliminary reporting, and G1 never sees a pitch without a sufficiency verdict.",
+            zh:"NPR：“先打几个电话。”ProPublica：提案必须已有“清晰的不法行为假设”，而不是想去探索。我们的 S2 信源勘探就是这个初步采访，没有充分度判定的 pitch 不进 G1。"},
+    "ts-r2":{en:"99% Invisible approves “a budget for further research” before green-lighting; NPR assigns a slug, a length and a fee the moment a pitch is accepted. Our THIN verdict funds a targeted top-up, and the brief fixes length and effort units at G1.",
+            zh:"99% Invisible 在立项前先批“进一步研究的预算”；NPR 在 pitch 被接受的那一刻就分配 slug、时长和稿费。我们的 THIN 判定资助一次定向补充，简报在 G1 时锁定字数与工作量单位。"},
+    "ts-r3":{en:"The three pitch guides overlap almost completely: what the story is and why this audience cares (NPR), the arc, characters and big idea (99% Invisible), the evidence in hand, feasibility and why us (ProPublica). The S2 pitch memo carries exactly those fields plus the focus statement.",
+            zh:"三份 pitch 指南几乎完全重叠：故事是什么、为何这群受众在乎（NPR），叙事弧、人物与大观念（99% Invisible），已掌握的证据、可行性与为什么是我们（ProPublica）。S2 立项稿正是这些字段加上聚焦句。"},
     s3d:{en:"Borrowed from The Economist’s open debate, where “Anyone can ask you questions or challenge your argument”, and run as a multi-persona agent debate on the pitch before the human reads it. Roles reuse the existing editorial-board skill (editor-in-chief, planning editor, fact-checker, devil’s advocate, reader representative, plus one domain expert chosen per topic); the reader representative speaks for the brief’s persona. Output: a one-page summary with the strongest case for, the strongest objection, what evidence would change the verdict, and a recommended angle. The human reads pitch plus summary, never the transcript. Cost about 0.5 agent units per pitch, so it runs only on pitches that passed sufficiency.<span class='src'>atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals · ~/.claude/skills/xinbenlv-lifeos-editorial-board/references/roles</span>",
          zh:"借自《经济学人》的公开辩论——“任何人都可以质疑或挑战你的论点”——在人阅读之前，对 pitch 跑一轮多 persona 的 agent 辩论。角色复用现有 editorial-board skill（主编、策划编辑、事实核查员、反方辩手、读者代表，再按题目加一位领域专家）；读者代表替简报中的 persona 发声。产物：一页摘要，含最强的支持理由、最强的反对意见、什么证据会改变结论、推荐角度。人只读立项稿加摘要，不读辩论记录。每个 pitch 约 0.5 个 agent 单位，所以只对通过充分度判定的 pitch 运行。<span class='src'>atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals · ~/.claude/skills/xinbenlv-lifeos-editorial-board/references/roles</span>"},
     wsj1:{en:"Dow Jones Code of Conduct, as reproduced by Slate (Jack Shafer, 2007-05-29; dowjones.com blocked our fetch): “Our facts are accurate and fairly presented; Our analyses represent our best independent judgments rather than our preferences, or those of our sources, advertisers or information providers.” and “There are no hidden agendas in any of our journalistic undertakings.” Our Tier X rule (a vendor speaks only for itself) and the ANALYSIS label in the fact-check report follow the same line.<span class='src'>slate.com/news-and-politics/2007/05/would-rupert-murdoch-uphold-the-dow-jones-code-of-conduct.html</span>",
