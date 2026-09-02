@@ -1,519 +1,434 @@
 <title>Namefi 内容目录</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Sans+SC:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Sans+SC:wght@400;500;600&display=swap">
 <style>
   :root{
-    --ground:#ECEEF2; --surface:#FAFBFC; --surface-2:#F2F4F7;
+    --ground:#ECEEF2; --surface:#FAFBFC; --surface-2:#F1F3F7; --hollow:#E7EAEF;
     --ink:#171A21; --ink-2:#4C5462; --ink-3:#767E8C;
     --rule:#D2D7DF; --rule-strong:#B9C0CC;
     --accent:#2A4B9B; --accent-soft:rgba(42,75,155,.10); --on-accent:#FAFBFC;
-    --ok:#2F6B4F; --warn:#9C5511;
-    --focus:#2A4B9B;
+    --bar:#2A4B9B; --ok:#2F6B4F; --warn:#9C5511;
     --f-disp:'IBM Plex Sans Condensed','IBM Plex Sans SC','PingFang SC','Hiragino Sans GB',sans-serif;
     --f-body:'IBM Plex Sans SC','PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;
     --f-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   }
   @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){
-      --ground:#131519; --surface:#1A1D23; --surface-2:#20242B;
-      --ink:#E5E8EE; --ink-2:#9BA3B2; --ink-3:#7B8494;
+      --ground:#131519; --surface:#1A1D23; --surface-2:#20242B; --hollow:#171A20;
+      --ink:#E5E8EE; --ink-2:#9BA3B2; --ink-3:#79818F;
       --rule:#2B303A; --rule-strong:#3B424F;
       --accent:#8AA5EA; --accent-soft:rgba(138,165,234,.14); --on-accent:#131519;
-      --ok:#5FA882; --warn:#D8974A;
-      --focus:#8AA5EA;
+      --bar:#7E9BE6; --ok:#5FA882; --warn:#D8974A;
     }
   }
   :root[data-theme="dark"]{
-    --ground:#131519; --surface:#1A1D23; --surface-2:#20242B;
-    --ink:#E5E8EE; --ink-2:#9BA3B2; --ink-3:#7B8494;
+    --ground:#131519; --surface:#1A1D23; --surface-2:#20242B; --hollow:#171A20;
+    --ink:#E5E8EE; --ink-2:#9BA3B2; --ink-3:#79818F;
     --rule:#2B303A; --rule-strong:#3B424F;
     --accent:#8AA5EA; --accent-soft:rgba(138,165,234,.14); --on-accent:#131519;
-    --ok:#5FA882; --warn:#D8974A;
-    --focus:#8AA5EA;
+    --bar:#7E9BE6; --ok:#5FA882; --warn:#D8974A;
   }
 
   *{box-sizing:border-box}
   body{background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
-  a{color:var(--accent)}
-  :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px 96px}
 
-  .wrap{max-width:1180px;margin:0 auto;padding:0 24px 96px}
-
-  .masthead{padding:52px 0 28px;border-bottom:1px solid var(--rule-strong)}
+  .masthead{padding:52px 0 26px}
   .eyebrow{font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
-  h1{font-family:var(--f-disp);font-weight:600;font-size:clamp(34px,5.2vw,52px);line-height:1.06;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
-  .lede{margin:0;max-width:64ch;color:var(--ink-2);font-size:16px}
+  h1{font-family:var(--f-disp);font-weight:600;font-size:clamp(34px,5.2vw,52px);line-height:1.06;letter-spacing:-.01em;margin:0 0 16px;text-wrap:balance}
+  .lede{margin:0;max-width:66ch;color:var(--ink-2);font-size:16px}
+  .rule-quote{margin:26px 0 0;padding:16px 20px;border-left:3px solid var(--accent);background:var(--surface);font-size:15.5px;line-height:1.6;max-width:70ch}
 
-  .facts{display:flex;flex-wrap:wrap;gap:0;margin-top:28px;border:1px solid var(--rule);background:var(--surface)}
-  .fact{flex:1 1 132px;padding:12px 16px;border-right:1px solid var(--rule)}
-  .fact:last-child{border-right:0}
-  .fact b{display:block;font-family:var(--f-mono);font-weight:500;font-size:21px;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.2}
-  .fact span{display:block;font-size:12px;color:var(--ink-3);margin-top:2px}
-
-  .controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--rule);position:sticky;top:0;background:var(--ground);z-index:5}
-  .controls .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-right:2px}
-  .chip{font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;padding:5px 11px;border:1px solid var(--rule-strong);background:transparent;color:var(--ink-2);cursor:pointer;line-height:1.4}
-  .chip:hover{border-color:var(--accent);color:var(--accent)}
-  .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--ground)}
-  .langbox{display:flex;align-items:center;gap:8px;margin-left:auto}
-  select#lang{font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;padding:5px 26px 5px 10px;border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.4;border-radius:0;-webkit-appearance:none;appearance:none;
+  .controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 0;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule);position:sticky;top:0;background:var(--ground);z-index:5}
+  .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  select#lang{font-family:var(--f-mono);font-size:12px;padding:5px 26px 5px 10px;border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink);cursor:pointer;border-radius:0;-webkit-appearance:none;appearance:none;
     background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
     background-position:calc(100% - 14px) 51%,calc(100% - 9px) 51%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
-  select#lang:hover{border-color:var(--accent)}
-  .count-live{font-family:var(--f-mono);font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;flex-basis:100%;order:9}
+  .navlinks{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
+  .navlinks a{font-family:var(--f-mono);font-size:11.5px;padding:5px 9px;text-decoration:none;color:var(--ink-2);border:1px solid transparent}
+  .navlinks a:hover{color:var(--accent);border-color:var(--rule-strong)}
 
-  .grid{display:grid;grid-template-columns:214px minmax(0,1fr);gap:48px;margin-top:36px;align-items:start}
-  nav.rail{position:sticky;top:78px;font-size:13px}
-  nav.rail .rail-h{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding-bottom:10px;border-bottom:1px solid var(--rule);margin-bottom:8px}
-  nav.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
-  nav.rail a{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:5px 8px 5px 10px;text-decoration:none;color:var(--ink-2);border-left:2px solid transparent}
-  nav.rail a:hover{color:var(--ink);background:var(--surface-2)}
-  nav.rail a.on{color:var(--ink);border-left-color:var(--accent);background:var(--surface-2)}
-  nav.rail .n{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);padding-top:2px}
-  nav.rail a.on .n{color:var(--accent)}
+  section.blk{margin-top:44px;scroll-margin-top:72px}
+  .blk>h2{font-family:var(--f-disp);font-weight:600;font-size:25px;letter-spacing:-.005em;margin:0 0 6px;display:flex;align-items:baseline;gap:12px}
+  .blk>h2 .hn{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--accent);letter-spacing:.08em}
+  .blk>.sub{margin:0 0 18px;color:var(--ink-2);font-size:14.5px;max-width:76ch}
 
-  main{min-width:0;display:flex;flex-direction:column;gap:2px}
+  /* ---------- grid ---------- */
+  .gridwrap{overflow-x:auto;border:1px solid var(--rule-strong);background:var(--surface)}
+  table.mx{border-collapse:collapse;width:100%;min-width:660px}
+  table.mx th,table.mx td{border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);padding:0;text-align:left}
+  table.mx thead th{font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);padding:10px 14px;background:var(--surface-2);vertical-align:bottom}
+  table.mx thead th.stg{text-align:center}
+  table.mx tbody th{font-weight:500;font-size:14px;padding:12px 14px;background:var(--surface-2);white-space:nowrap}
+  table.mx tbody th small{display:block;font-family:var(--f-mono);font-weight:400;font-size:10.5px;color:var(--ink-3);letter-spacing:.04em;margin-top:2px}
+  td.cell{padding:11px 14px 13px;vertical-align:top;min-width:96px}
+  td.cell .v{font-family:var(--f-mono);font-size:19px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1;display:block}
+  td.cell .bar{display:block;height:3px;background:var(--bar);margin-top:7px;min-width:2px}
+  td.zero{background:var(--hollow)}
+  td.zero .v{color:var(--ink-3);font-weight:400}
+  td.tot,th.tot{background:var(--surface-2)}
+  td.tot .v{color:var(--ink)}
+  td.tot .bar{display:none}
+  tr.totrow th,tr.totrow td{background:var(--surface-2);border-top:1px solid var(--rule-strong)}
+  tr.totrow td .v{font-size:16px}
+  table.mx tr:last-child th,table.mx tr:last-child td{border-bottom:0}
+  table.mx th:last-child,table.mx td:last-child{border-right:0}
+  .gridnote{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0;border:1px solid var(--rule-strong);border-top:0;background:var(--surface)}
+  .gridnote>div{padding:13px 16px;border-right:1px solid var(--rule);font-size:13.5px;color:var(--ink-2);line-height:1.55}
+  .gridnote>div:last-child{border-right:0}
+  .gridnote b{color:var(--ink);font-weight:500}
+  .derive{margin:12px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.6;max-width:88ch}
+  .derive code{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2)}
 
-  .cat{background:var(--surface);border:1px solid var(--rule);scroll-margin-top:84px}
-  .cat.core{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
-  .cat-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:18px 20px 14px;border-bottom:1px solid var(--rule)}
-  .cat-n{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--accent);letter-spacing:.06em}
-  .cat-t{font-family:var(--f-disp);font-weight:600;font-size:22px;letter-spacing:-.005em;margin:0;line-height:1.25}
-  .cat-role{display:block;font-family:var(--f-body);font-weight:400;font-size:13.5px;color:var(--ink-2);margin-top:3px;line-height:1.5}
-  .tags{display:flex;gap:6px;align-items:center;flex-shrink:0}
-  .tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border:1px solid var(--rule-strong);color:var(--ink-3);white-space:nowrap}
-  .tag.site{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-  .tag.core-tag{border-color:var(--accent);background:var(--accent);color:var(--on-accent)}
+  /* ---------- generic table ---------- */
+  .tbl{border:1px solid var(--rule-strong);background:var(--surface);overflow-x:auto}
+  .tbl table{border-collapse:collapse;width:100%;min-width:560px}
+  .tbl th,.tbl td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14px;line-height:1.55}
+  .tbl thead th{font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);background:var(--surface-2);white-space:nowrap}
+  .tbl tbody tr:last-child td{border-bottom:0}
+  .tbl td.k{font-weight:500;white-space:nowrap}
+  .tbl td.k small,.tbl td small.m{display:block;font-family:var(--f-mono);font-weight:400;font-size:10.5px;color:var(--ink-3);letter-spacing:.04em;margin-top:2px;white-space:normal}
+  .tbl td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+  .tbl td.dim{color:var(--ink-2)}
+  .pill{display:inline-block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--rule-strong);color:var(--ink-3);white-space:nowrap}
+  .pill.req{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .pill.gap{border-color:var(--warn);color:var(--warn)}
 
-  ul.items{list-style:none;margin:0;padding:0}
-  li.item{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:12px;padding:10px 20px;border-bottom:1px solid var(--rule);align-items:start}
-  li.item:last-child{border-bottom:0}
-  li.item.hide{display:none}
-  .mk{width:10px;height:10px;margin-top:6px;border:1.5px solid var(--rule-strong);background:transparent;flex-shrink:0}
-  .s-have .mk{background:var(--ok);border-color:var(--ok)}
-  .s-thin .mk{border-color:var(--warn);background:linear-gradient(135deg,var(--warn) 0 50%,transparent 50% 100%)}
-  .i-name{font-weight:500;font-size:14.5px;line-height:1.5}
-  .i-note{display:block;font-weight:400;font-size:13px;color:var(--ink-2);line-height:1.5;margin-top:1px}
-  .i-state{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-align:right;color:var(--ink-3);padding-top:3px;white-space:nowrap;min-width:56px}
-  .s-have .i-state{color:var(--ok)}
-  .s-thin .i-state{color:var(--warn)}
+  /* ---------- axis cards ---------- */
+  /* 4 required across the top, the derived one full width beneath: the layout states the split */
+  .axes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule-strong)}
+  .axes>.ax:last-child{grid-column:1/-1}
+  .ax{background:var(--surface);padding:16px 18px}
+  .ax .axq{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+  .ax h3{font-family:var(--f-disp);font-weight:600;font-size:19px;margin:0 0 8px}
+  .ax .vals{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:0 0 10px}
+  .ax .drv{font-size:13px;color:var(--ink);line-height:1.55;margin:0;padding-top:10px;border-top:1px solid var(--rule)}
+  .ax .drv b{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:500;display:block;margin-bottom:3px}
 
-  .empty{padding:14px 20px;font-size:13px;color:var(--ink-3);font-family:var(--f-mono);margin:0}
+  /* ---------- not-a-taxonomy ---------- */
+  .nots{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule-strong)}
+  .not{background:var(--surface);padding:15px 18px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;align-items:start}
+  .not h3{font-family:var(--f-disp);font-weight:600;font-size:17px;margin:0}
+  .not h3 small{display:block;font-family:var(--f-mono);font-weight:400;font-size:10.5px;color:var(--warn);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+  .not p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.6}
+  .not p em{color:var(--ink);font-style:normal;font-weight:500}
 
-  .sx{margin-top:40px;border:1px solid var(--rule-strong);background:var(--surface)}
-  .sx h2{font-family:var(--f-disp);font-weight:600;font-size:19px;margin:0;padding:16px 20px 4px}
-  .sx .sx-sub{margin:0;padding:0 20px 14px;font-size:13.5px;color:var(--ink-2);max-width:78ch;border-bottom:1px solid var(--rule)}
-  .srow{display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1.55fr) minmax(0,.72fr);gap:16px;padding:11px 20px;border-bottom:1px solid var(--rule);align-items:baseline}
-  .srow:last-of-type{border-bottom:0}
-  .srow.shead{background:var(--surface-2);font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding-top:8px;padding-bottom:8px}
-  .s-name{font-weight:500;font-size:14.5px;line-height:1.45}
-  .s-name small{display:block;font-family:var(--f-mono);font-weight:400;font-size:11.5px;color:var(--ink-3);letter-spacing:.02em;margin-top:2px}
-  .s-n{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
-  .s-desc{font-size:13.5px;color:var(--ink-2);line-height:1.55}
-  .s-cats{font-family:var(--f-mono);font-size:11.5px;color:var(--accent);letter-spacing:.04em}
-  .sx-foot{margin:0;padding:12px 20px;border-top:1px solid var(--rule);font-size:13px;color:var(--ink-3)}
-  @media (max-width:880px){
-    .srow{grid-template-columns:minmax(0,1fr) 52px;row-gap:6px}
-    .srow .s-desc,.srow .s-cats{grid-column:1/-1}
-    .srow.shead{display:none}
+  ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;border:1px solid var(--rule-strong);background:var(--surface)}
+  ol.steps li{counter-increment:s;display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;padding:13px 18px;border-bottom:1px solid var(--rule);font-size:14px;line-height:1.6;color:var(--ink-2)}
+  ol.steps li:last-child{border-bottom:0}
+  ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--f-mono);font-size:11.5px;color:var(--accent);padding-top:3px}
+  ol.steps li b{color:var(--ink);font-weight:500}
+
+  footer.note{margin-top:40px;padding-top:16px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);max-width:80ch;line-height:1.7}
+  footer.note code{font-family:var(--f-mono);font-size:11.5px}
+
+  @media (max-width:1000px){ .axes{grid-template-columns:repeat(2,minmax(0,1fr))} }
+  @media (max-width:760px){
+    .axes{grid-template-columns:1fr}
+    .not{grid-template-columns:1fr;gap:8px}
+    .navlinks{margin-left:0;width:100%}
   }
-
-  .xc{margin-top:40px;border:1px solid var(--rule-strong);background:var(--surface)}
-  .xc h2{font-family:var(--f-disp);font-weight:600;font-size:19px;margin:0;padding:16px 20px;border-bottom:1px solid var(--rule)}
-  .xc dl{margin:0;display:grid;grid-template-columns:190px minmax(0,1fr)}
-  .xc dt{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);padding:12px 20px;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule)}
-  .xc dd{margin:0;padding:12px 20px;font-size:14px;color:var(--ink-2);border-bottom:1px solid var(--rule)}
-  .xc dl>dt:last-of-type{border-bottom:0}
-  .xc dl>dd:last-of-type{border-bottom:0}
-
-  footer.note{margin-top:28px;padding-top:16px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);max-width:72ch}
-  footer.note code{font-family:var(--f-mono);font-size:12px}
-
-  .legend{display:flex;gap:18px;flex-wrap:wrap;align-items:center;padding:14px 0 0;font-size:12.5px;color:var(--ink-3)}
-  .legend span{display:flex;align-items:center;gap:7px}
-  .legend .mk{margin-top:0}
-
-  @media (max-width:880px){
-    .grid{grid-template-columns:1fr;gap:24px}
-    nav.rail{position:static}
-    nav.rail ol{flex-direction:row;flex-wrap:wrap;gap:4px}
-    nav.rail a{border-left:0;border:1px solid var(--rule);padding:4px 9px;grid-template-columns:auto auto}
-    nav.rail a.on{border-color:var(--accent)}
-    .cat-head{grid-template-columns:auto minmax(0,1fr)}
-    .tags{grid-column:1/-1}
-    .xc dl{grid-template-columns:1fr}
-    .xc dt{border-right:0;border-bottom:0;padding-bottom:0}
-    .langbox{margin-left:0}
-  }
-  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 
 <div class="wrap">
   <header class="masthead">
-    <p class="eyebrow" data-en="Namefi Resources · Content strategy · 2026-09-01">Namefi Resources · 内容战略 · 2026-09-01</p>
+    <p class="eyebrow" data-en="Namefi Resources · Content model · 2026-09-01">Namefi Resources · 内容模型 · 2026-09-01</p>
     <h1 data-en="Namefi Content Catalog">Namefi 内容目录</h1>
-    <p class="lede" data-en="Thirteen categories, seventy-eight subcategories, organized by audience and search intent. This axis is orthogonal to the three already registered on the site: six topic clusters, seven editorial series, and nine content formats. The core audience is people interested in domains, NFTs, and RWAs all at once, with eight adjacent roles around them.">十三个大类，七十八个小类，按受众与搜索意图划分。这条轴与站上已注册的三条轴正交：六个主题簇、七个专题系列、九种内容体裁。核心受众是对域名、NFT、RWA 三者都感兴趣的人，外延覆盖八类周边角色。</p>
-    <div class="facts">
-      <div class="fact"><b>154</b><span data-en="English posts">英文博客</span></div>
-      <div class="fact"><b>105</b><span data-en="In a series">已归入系列</span></div>
-      <div class="fact"><b>161</b><span data-en="Glossary terms">词汇条目</span></div>
-      <div class="fact"><b>153</b><span data-en="TLD pages">TLD 单页</span></div>
-      <div class="fact"><b>12</b><span data-en="Comparisons">竞品对比</span></div>
-      <div class="fact"><b>1</b><span data-en="News pieces">新闻评论</span></div>
-      <div class="fact"><b>10</b><span data-en="Locales">语言</span></div>
-    </div>
+    <p class="lede" data-en="A classification with four axes, each kept only because it changes a decision. Subject decides how readers browse. Format decides who writes it and how often it must be rewritten. Reader decides who it sells to. Decay decides when it gets refreshed. Stage is derived from format. A series is not a category, it is packaging.">一套只留四条轴的分类，每条轴的存在理由都是它会改变某个决策。主题决定读者怎么浏览，体裁决定谁来写、多久要重写，读者决定卖给谁，时效决定什么时候刷新。阶段从体裁派生。系列不是分类，是包装。</p>
+    <p class="rule-quote" data-en="An axis answers exactly one question, and it earns its place by changing a decision. An axis that changes no decision is decoration.">一条轴只回答一个问题，而且必须改变某个决策。不改变任何决策的轴是装饰。</p>
   </header>
 
   <div class="controls">
-    <span class="lbl" data-en="Filter">筛选</span>
-    <button class="chip" type="button" data-f="all" data-en="All" aria-pressed="true">全部</button>
-    <button class="chip" type="button" data-f="have" data-en="Covered" aria-pressed="false">已有</button>
-    <button class="chip" type="button" data-f="thin" data-en="Thin" aria-pressed="false">少量</button>
-    <button class="chip" type="button" data-f="todo" data-en="To build" aria-pressed="false">待建</button>
-    <span class="langbox">
-      <label class="lbl" for="lang">语言 / Lang</label>
-      <select id="lang">
-        <option value="zh">中文</option>
-        <option value="en">English</option>
-      </select>
-    </span>
-    <span class="count-live" id="live"></span>
+    <span class="lbl" for="lang">语言 / Lang</span>
+    <select id="lang"><option value="zh">中文</option><option value="en">English</option></select>
+    <nav class="navlinks" id="nav"></nav>
   </div>
 
-  <div class="legend" id="legend"></div>
-
-  <div class="grid">
-    <nav class="rail" aria-label="Category index">
-      <div class="rail-h" data-en="Thirteen categories">十三大类</div>
-      <ol id="rail"></ol>
-    </nav>
-    <main id="main"></main>
-  </div>
-
-  <section class="sx">
-    <h2 data-en="Editorial series">专题系列</h2>
-    <p class="sx-sub" data-en="A series is a third axis, not a category. It is a branded, sequential run that pulls its episodes from one or more categories, and an article can belong to a category and a series at once. Seven are registered today.">系列是第三条轴，不是分类。它是有品牌、有顺序的连载，选题可以横跨若干大类；一篇文章可以同时属于一个大类和一个系列。目前注册了七个。</p>
-    <div id="sx"></div>
+  <section class="blk" id="grid"><h2><span class="hn">01</span><span data-en="Subject × Stage">主题 × 阶段</span></h2>
+    <p class="sub" data-en="The one picture worth putting on a wall. Where the portfolio is thick, and where it is not.">唯一值得挂在墙上的一张图。内容堆在哪里，又空在哪里。</p>
+    <div class="gridwrap"><table class="mx" id="mx"></table></div>
+    <div class="gridnote" id="gridnote"></div>
+    <p class="derive" id="derive"></p>
   </section>
 
-  <section class="xc">
-    <h2 data-en="Cross-cutting rules">横切规则</h2>
-    <dl id="xc"></dl>
+  <section class="blk" id="axes"><h2><span class="hn">02</span><span data-en="The four axes">四条轴</span></h2>
+    <p class="sub" data-en="Four fields filled at authoring time, plus one derived. Nothing else is stored.">写稿时填四个字段，加一个派生字段。此外不再存别的。</p>
+    <div class="axes" id="axgrid"></div>
   </section>
 
-  <footer class="note">
-    <span data-en="Counts on this page were read on 2026-09-01 from origin/main of the namefi-resources repository: file counts from the git tree, series and format counts from article frontmatter. The coverage state on each subcategory is a judgment made from that same listing, not an exact count. The editorial pipeline design has been dispatched to its own session, and will land as">本页数量于 2026-09-01 读自 namefi-resources 仓库的 origin/main：文件数取自 git 树，系列与体裁数取自文章 frontmatter。各小类的覆盖状态是依据同一份清单做出的判断，不是精确计数。创作流水线的设计已派发到独立会话，产出为</span>
-    <code>docs/editorial-pipeline.md</code> <span data-en="and">与</span> <code>docs/content-taxonomy.md</code><span data-en=" in the namefi-resources repository.">。</span>
-  </footer>
+  <section class="blk" id="subjects"><h2><span class="hn">03</span><span data-en="Six subjects">六个主题</span></h2>
+    <p class="sub" data-en="Cut along the life of a name as an asset: choose it, know what it is worth, keep it, put it on chain, let machines use it, understand what sits underneath. Every article lands in exactly one.">按一个名字作为资产的生命周期来切：选出来、知道它值多少、守住它、搬上链、让机器用它、理解它底下是什么。每篇文章只落一格。</p>
+    <div class="tbl"><table id="subjtbl"></table></div>
+  </section>
+
+  <section class="blk" id="readers"><h2><span class="hn">04</span><span data-en="Five readers">五类读者</span></h2>
+    <p class="sub" data-en="Cut by what they already hold, not by demographics, because what they hold predicts what we can sell them. This axis does not exist in the schema today.">按他手里已经有什么来切，不按人群标签，因为手里有什么直接决定我们能卖他什么。这条轴目前 schema 里完全没有。</p>
+    <div class="tbl"><table id="readtbl"></table></div>
+  </section>
+
+  <section class="blk" id="formats"><h2><span class="hn">05</span><span data-en="Format and decay">体裁与时效</span></h2>
+    <p class="sub" data-en="Format earns its own axis for one reason: comparisons and news carry a refresh obligation and the rest mostly do not. Pairing the two turns intent into a schedule.">体裁值得单独成轴，理由只有一个：评比和时事带刷新义务，其余基本不带。两者配对，就把自觉变成了排期。</p>
+    <div class="tbl"><table id="fmttbl"></table></div>
+  </section>
+
+  <section class="blk" id="series"><h2><span class="hn">06</span><span data-en="Series, the packaging layer">系列，包装层</span></h2>
+    <p class="sub" data-en="A series is a name readers follow, like a newspaper column. The only test is whether it carries a promise a reader could repeat back. It may cross subjects freely, and two of the seven do.">系列是读者会追的一个名字，像报纸的专栏。判据只有一条：它有没有一个读者能复述的承诺。它可以自由横跨主题，七个里有两个确实横跨。</p>
+    <div class="tbl"><table id="sertbl"></table></div>
+  </section>
+
+  <section class="blk" id="nots"><h2><span class="hn">07</span><span data-en="Three things that are not classification">三样不是分类的东西</span></h2>
+    <p class="sub" data-en="Each of these was treated as a category at some point. None of them is one.">这三样都曾被当成分类看待。它们都不是。</p>
+    <div class="nots" id="notlist"></div>
+  </section>
+
+  <section class="blk" id="land"><h2><span class="hn">08</span><span data-en="Landing it on the existing 154">落到现有 154 篇上</span></h2>
+    <p class="sub" data-en="A one-time backfill, then three extra fields per new draft. That is the whole ongoing cost.">一次性回填，之后每篇新稿多填三个字段。持续成本就这些。</p>
+    <ol class="steps" id="steps"></ol>
+  </section>
+
+  <footer class="note" id="foot"></footer>
 </div>
-
 <script>
 (function(){
-  var D = [
-    {n:"01",
-     t:{zh:"域名基础与 TLD",en:"Domain Basics and TLDs"},
-     role:{zh:"最广的搜索意图入口，流量底盘",en:"The widest search intent, and the traffic floor"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"have",name:{zh:"what-is 解释文",en:"What-is explainers"},note:{zh:"域名、DNS、注册商与注册局、转移、续费与到期周期、WHOIS 隐私",en:"Domains, DNS, registrars and registries, transfers, renewal and expiry cycles, WHOIS privacy"}},
-      {s:"thin",name:{zh:"TLD 单页",en:"TLD pages"},note:{zh:"已覆盖 153 个，根区有一千四百余个；含真实价格与注册政策，programmatic SEO 的主战场",en:"153 covered, against more than fourteen hundred in the root zone. Real prices and registration policy. The main ground for programmatic SEO."}},
-      {s:"have",name:{zh:"行业与场景最佳 TLD",en:"Best TLDs by industry"},note:{zh:"已有八篇系列，可扩到更多行业",en:"Eight posts already published, extendable to more industries"}},
-      {s:"have",name:{zh:"命名与品牌",en:"Naming and branding"},note:{zh:"起名方法论，改名改命案例系列",en:"Naming methodology, plus the rename case-study series"}},
-      {s:"have",name:{zh:"域名价值与估值",en:"Domain value and appraisal"},note:{zh:"估值方法、可比成交解读、TLD 对价值的影响",en:"Appraisal methods, reading comparable sales, how the TLD moves value"}},
-      {s:"thin",name:{zh:"普通用户操作指南",en:"Guides for ordinary owners"},note:{zh:"购买、转入、指向网站或邮箱、隐私保护",en:"Buying, transferring in, pointing at a site or mailbox, privacy protection"}}
-     ]},
-    {n:"02",core:true,
-     t:{zh:"域名通证化：作为 NFT 与 RWA",en:"Tokenization: Domains as NFTs and RWAs"},
-     role:{zh:"产品的核心差异点，也是核心受众的交汇处",en:"The product's differentiator, and where the core audience meets"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"have",name:{zh:"概念与原理",en:"Concepts and mechanics"},note:{zh:"通证化域名是什么，与 Web3 域名的区别，ERC-721 与 DNS 的关系",en:"What a tokenized domain is, how it differs from a Web3 domain, how ERC-721 relates to DNS"}},
-      {s:"have",name:{zh:"为什么通证化",en:"Why tokenize"},note:{zh:"流动性、可组合性、原子交割、去托管",en:"Liquidity, composability, atomic settlement, self-custody"}},
-      {s:"have",name:{zh:"操作指南",en:"How-to guides"},note:{zh:"如何通证化 .com、claim、钱包准备、free mints",en:"Tokenizing a .com, claiming, wallet setup, free mints"}},
-      {s:"thin",name:{zh:"域名作为 RWA 资产类别",en:"Domains as an RWA class"},note:{zh:"与代币化股票、国债、房产对比；链上定价；合规与税务",en:"Against tokenized equities, treasuries, and property. On-chain pricing. Compliance and tax."}},
-      {s:"thin",name:{zh:"NFT 视角",en:"The NFT lens"},note:{zh:"作为 NFT 的交易与收藏、市场机制、元数据与展示",en:"Trading and collecting, market mechanics, metadata and display"}},
-      {s:"have",name:{zh:"托管、安全与恢复",en:"Custody, security, recovery"},note:{zh:"钱包丢失、多签、registry lock 与链上所有权的关系",en:"Wallet loss, multisig, and how registry lock relates to on-chain ownership"}},
-      {s:"todo",name:{zh:"子域名发行",en:"Subdomain issuance"},note:{zh:"面向社区、项目、品牌的子域分发与治理",en:"Distributing and governing subdomains for communities, projects, and brands"}},
-      {s:"thin",name:{zh:"DAO 与组织的域名治理",en:"DAO and organization governance"},note:{zh:"多签控制主域、权限分离、交接与审计",en:"Multisig control of the primary domain, separation of duties, handover, audit"}}
-     ]},
-    {n:"03",
-     t:{zh:"域名安全与事故",en:"Domain Security and Incidents"},
-     role:{zh:"内容最厚的一块，缺的是通向功能的桥",en:"The thickest body of work; what is missing is the bridge to product"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"have",name:{zh:"事故案例",en:"Incident case studies"},note:{zh:"域名浩劫系列，二十余篇，持续更新",en:"The Domain Apocalypse series, over twenty pieces, ongoing"}},
-      {s:"thin",name:{zh:"防御指南",en:"Defensive guides"},note:{zh:"DNSSEC、registry lock、双因素、SPF 与 DKIM 与 DMARC",en:"DNSSEC, registry lock, two-factor, SPF and DKIM and DMARC"}},
-      {s:"thin",name:{zh:"恢复手册",en:"Recovery playbooks"},note:{zh:"被劫持、被盗、过期误删、钱包丢失",en:"Hijacked, stolen, expired by mistake, wallet lost"}},
-      {s:"todo",name:{zh:"案例到功能的桥接页",en:"Incident-to-feature bridges"},note:{zh:"把每类事故对应到 Namefi 的具体防御能力",en:"Map each class of incident to the specific defense Namefi offers"}}
-     ]},
-    {n:"04",
-     t:{zh:"Agent-native 与 AI 时代的域名",en:"Agent-Native Domains"},
-     role:{zh:"搜索量在涨而竞争最少，最适合发声",en:"Rising search volume and the least competition; the best place to have a voice"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"have",name:{zh:"MCP 与 API 上手",en:"MCP and API onboarding"},note:{zh:"quickstart、认证方式、MCP 与 REST 的取舍",en:"Quickstart, authentication options, MCP versus REST"}},
-      {s:"have",name:{zh:"Agent 买域名与管 DNS",en:"Agents buying domains and running DNS"},note:{zh:"实践与最佳实践",en:"Practice and best practice"}},
-      {s:"thin",name:{zh:"机器支付",en:"Machine payments"},note:{zh:"x402、钱包结账、NFSC、稳定币",en:"x402, wallet checkout, NFSC, stablecoins"}},
-      {s:"have",name:{zh:"Agent 身份与自有域名",en:"Agent identity and owned domains"},note:{zh:"agent 拥有域名，llms.txt 等约定",en:"Agents that own a domain, and conventions like llms.txt"}},
-      {s:"thin",name:{zh:"agentic commerce 协议评论",en:"Agentic commerce protocols"},note:{zh:"UCP、AP2、A2A 等协议解读",en:"Reading UCP, AP2, A2A and their peers"}},
-      {s:"thin",name:{zh:"Vibe coding 用户指南",en:"Guides for vibe coders"},note:{zh:"从生成一个应用到拥有一个域名",en:"From generating an app to owning a domain"}}
-     ]},
-    {n:"05",
-     t:{zh:"产品功能页",en:"Product Feature Pages"},
-     role:{zh:"面向已知需求的转化页，一功能一页",en:"Conversion pages for known intent, one feature per page"},
-     site:{zh:"主站 /features",en:"main site /features"},
-     items:[
-      {s:"todo",name:{zh:"搜索与注册",en:"Search and registration"},note:{zh:"含 AI 名称建议",en:"Including AI name suggestions"}},
-      {s:"todo",name:{zh:"结账方式",en:"Checkout methods"},note:{zh:"钱包结账、x402、NFSC、法币卡",en:"Wallet checkout, x402, NFSC, card"}},
-      {s:"todo",name:{zh:"通证化与 claim",en:"Tokenize and claim"},note:{zh:"含 free mints",en:"Including free mints"}},
-      {s:"todo",name:{zh:"DNS 管理",en:"DNS management"},note:{zh:"记录编辑、DoH、auto-ENS",en:"Record editing, DoH, auto-ENS"}},
-      {s:"todo",name:{zh:"市场与挂牌",en:"Marketplace and listings"},note:{zh:"mart、listing、报价、原子交割",en:"Mart, listings, offers, atomic settlement"}},
-      {s:"todo",name:{zh:"组合展示",en:"Portfolio display"},note:{zh:"gallery、owner 页、DomainerHQ",en:"Gallery, owner pages, DomainerHQ"}},
-      {s:"todo",name:{zh:"发现与运营",en:"Discovery and operations"},note:{zh:"hunt 活动、wishlist、schedule、monitors、domain-tools",en:"Hunt campaigns, wishlist, schedule, monitors, domain tools"}},
-      {s:"have",name:{zh:"增长工具",en:"Growth tools"},note:{zh:"outbound 外联、brand studio、feed，三页已上线",en:"Outbound, brand studio, feed. Three pages already live."}},
-      {s:"todo",name:{zh:"Park 页与落地页",en:"Park and landing pages"},note:{zh:"停放页与待售落地页",en:"Parked pages and for-sale landers"}},
-      {s:"todo",name:{zh:"Powered-by-Namefi",en:"Powered by Namefi"},note:{zh:"白标与分销",en:"White label and distribution"}},
-      {s:"todo",name:{zh:"开发者",en:"Developer surface"},note:{zh:"API、MCP、OAuth、x402 分析",en:"API, MCP, OAuth, x402 analytics"}}
-     ]},
-    {n:"06",
-     t:{zh:"用例页",en:"Use-Case Pages"},
-     role:{zh:"一类人加一个场景，串起三到五个功能",en:"One persona and one job, threading three to five features together"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"todo",name:{zh:"域名 × NFT × RWA 三栖用户",en:"Domain, NFT, and RWA generalists"},note:{zh:"把域名当链上资产来配置与交易",en:"Holding domains as an on-chain asset to allocate and trade"}},
-      {s:"todo",name:{zh:"域名炒家与投资人",en:"Domainers and investors"},note:{zh:"通证化以卖、组合管理、外联成交",en:"Tokenize to sell, portfolio management, closing through outbound"}},
-      {s:"todo",name:{zh:"域名收藏家",en:"Collectors"},note:{zh:"展示、稀缺域名、gallery",en:"Display, scarce names, gallery"}},
-      {s:"todo",name:{zh:"普通域名用户",en:"Ordinary domain owners"},note:{zh:"个人站、邮箱、小生意",en:"Personal sites, mailboxes, small businesses"}},
-      {s:"todo",name:{zh:"开发者与 AI 开发者",en:"Developers and AI builders"},note:{zh:"agent 自动注册、编程化 DNS、在 CI 中管域名",en:"Agent registration, programmatic DNS, managing domains in CI"}},
-      {s:"todo",name:{zh:"NFT 与 RWA 关注者",en:"NFT and RWA followers"},note:{zh:"域名作为 RWA 的市场与机制",en:"The market and mechanics of domains as RWA"}},
-      {s:"todo",name:{zh:"子域名发行者",en:"Subdomain issuers"},note:{zh:"社区与项目发子域",en:"Communities and projects handing out subdomains"}},
-      {s:"todo",name:{zh:"DAO 与组织域名管理者",en:"DAO and org domain managers"},note:{zh:"治理、多签、交接、审计",en:"Governance, multisig, handover, audit"}},
-      {s:"todo",name:{zh:"品牌与创业者",en:"Brands and founders"},note:{zh:"起名、防抢注、改名迁移",en:"Naming, defensive registration, migrating after a rename"}},
-      {s:"todo",name:{zh:"经纪与分销商",en:"Brokers and resellers"},note:{zh:"白标、批量操作",en:"White label and bulk operations"}}
-     ]},
-    {n:"07",
-     t:{zh:"竞品对比与替代方案",en:"Comparisons and Alternatives"},
-     role:{zh:"高转化意图，也是引用纪律最吃紧的一类",en:"High commercial intent, and where citation discipline bites hardest"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"thin",name:{zh:"传统注册商 vs Namefi",en:"Traditional registrars versus Namefi"},note:{zh:"GoDaddy、Namecheap、Porkbun、Dynadot、Spaceship、Cloudflare、Name.com",en:"GoDaddy, Namecheap, Porkbun, Dynadot, Spaceship, Cloudflare, Name.com"}},
-      {s:"thin",name:{zh:"Web3 命名系统",en:"Web3 naming systems"},note:{zh:"ENS、Unstoppable、D3 与 Doma、Freename、Base names、SNS",en:"ENS, Unstoppable, D3 and Doma, Freename, Base names, SNS"}},
-      {s:"thin",name:{zh:"二级市场与经纪",en:"Aftermarkets and brokers"},note:{zh:"Sedo、Afternic、Dan、Atom、OpenSea",en:"Sedo, Afternic, Dan, Atom, OpenSea"}},
-      {s:"have",name:{zh:"API 与 agent-native 注册商",en:"API and agent-native registrars"},note:{zh:"已有两篇，是目前最完整的一组",en:"Two posts already, the most complete set today"}},
-      {s:"todo",name:{zh:"DNS 托管商",en:"DNS hosts"},note:{zh:"Cloudflare DNS、Route 53 等",en:"Cloudflare DNS, Route 53 and peers"}},
-      {s:"thin",name:{zh:"选择指南与替代方案页",en:"Buyer's guides and alternative pages"},note:{zh:"通证化平台怎么选，以及各家的 alternative 页",en:"How to choose a tokenization platform, plus an alternative page per competitor"}}
-     ]},
-    {n:"08",
-     t:{zh:"开发者与技术深文",en:"Developer and Technical Depth"},
-     role:{zh:"参考文档在 docs 站，这里讲原理与取舍",en:"Reference lives on the docs site; this is mechanics and trade-offs"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"thin",name:{zh:"协议与基础设施",en:"Protocols and infrastructure"},note:{zh:"EPP、DNS 内部机制、DoH、DNSSEC",en:"EPP, DNS internals, DoH, DNSSEC"}},
-      {s:"thin",name:{zh:"链上机制",en:"On-chain mechanics"},note:{zh:"ERC-721 域名合约、EIP-712 与 SIWE、原子交割、跨链",en:"ERC-721 domain contracts, EIP-712 and SIWE, atomic settlement, cross-chain"}},
-      {s:"have",name:{zh:"架构观点",en:"Architecture opinion"},note:{zh:"DNS 是控制平面、MCP 与 REST 之争",en:"DNS as the control plane, MCP versus REST"}},
-      {s:"todo",name:{zh:"集成教程",en:"Integration tutorials"},note:{zh:"与 Vercel、Cloudflare 及各框架的集成",en:"With Vercel, Cloudflare, and the common frameworks"}},
-      {s:"todo",name:{zh:"标准与提案解读",en:"Standards and proposals"},note:{zh:"EIP 与 ERC，从编辑视角",en:"EIPs and ERCs, read from an editor's chair"}}
-     ]},
-    {n:"09",
-     t:{zh:"区块链科普",en:"Blockchain Explainers"},
-     role:{zh:"顶层漏斗，讲技术、应用与社会价值",en:"Top of funnel: the technology, the applications, the social value"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"have",name:{zh:"技术",en:"Technology"},note:{zh:"共识、虚拟机、密码学原语、隐私、扩容，五篇 roundup 已发",en:"Consensus, virtual machines, cryptographic primitives, privacy, scaling. Five roundups published."}},
-      {s:"thin",name:{zh:"应用",en:"Applications"},note:{zh:"稳定币、代币化资产、支付轨道、身份与 DID、DAO",en:"Stablecoins, tokenized assets, payment rails, identity and DID, DAOs"}},
-      {s:"todo",name:{zh:"社会价值",en:"Social value"},note:{zh:"产权、抗审查、金融包容、数字信任",en:"Property rights, censorship resistance, financial inclusion, digital trust"}},
-      {s:"thin",name:{zh:"与命名和域名的交叉",en:"Ties back to naming"},note:{zh:"每篇回链到域名主题，避免稀释权威",en:"Every piece links home, so the topical authority is not diluted"}}
-     ]},
-    {n:"10",
-     t:{zh:"新闻评论与行业动态",en:"News and Industry Commentary"},
-     role:{zh:"需要固定节奏的流水线，目前只有一篇",en:"Needs a pipeline with a fixed cadence; one piece exists today"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"todo",name:{zh:"ICANN 与注册局政策",en:"ICANN and registry policy"},note:{zh:"新一轮 gTLD、价格上限、ccTLD 变动",en:"The next gTLD round, price caps, ccTLD changes"}},
-      {s:"todo",name:{zh:"市场动态",en:"Market movements"},note:{zh:"大额成交、拍卖、行业报告解读",en:"Large sales, auctions, reading industry reports"}},
-      {s:"todo",name:{zh:"安全事件快评",en:"Rapid security commentary"},note:{zh:"劫持与盗窃事件的四十八小时评论",en:"Hijacks and thefts, within forty-eight hours"}},
-      {s:"thin",name:{zh:"AI 与 agentic 协议发布",en:"AI and agentic protocol launches"},note:{zh:"已有一篇，是目前唯一的新闻体裁文章",en:"One piece published, the only news-format article so far"}},
-      {s:"todo",name:{zh:"加密与 RWA 监管",en:"Crypto and RWA regulation"},note:{zh:"影响通证化资产的政策动向",en:"Policy that moves tokenized assets"}},
-      {s:"todo",name:{zh:"Namefi 发布与更新日志",en:"Namefi releases"},note:{zh:"自身产品动态",en:"Our own product changelog"}}
-     ]},
-    {n:"11",
-     t:{zh:"短视频",en:"Short Video"},
-     role:{zh:"路由与结构化数据已就位，缺内容",en:"Routes and structured data are in place; the content is not"},
-     site:{zh:"resources /watch",en:"resources /watch"},
-     items:[
-      {s:"thin",name:{zh:"产品操作演示",en:"Product walkthroughs"},note:{zh:"购买、DNS、挂牌、通证化、MCP；已有带旁白的录制脚本可直接转",en:"Buying, DNS, listing, tokenizing, MCP. Narrated recording scripts already exist."}},
-      {s:"todo",name:{zh:"趣味行业知识科普",en:"Industry explainers"},note:{zh:"案例故事、概念动画、一分钟系列",en:"Case stories, concept animation, a one-minute series"}},
-      {s:"todo",name:{zh:"新闻快评短视频",en:"News reaction clips"},note:{zh:"挂在新闻流水线之后，可选",en:"Downstream of the news pipeline, optional"}}
-     ]},
-    {n:"12",
-     t:{zh:"词汇表与参考",en:"Glossary and Reference"},
-     role:{zh:"顶层漏斗的落地网，承接概念类搜索",en:"The landing net under the funnel, catching concept searches"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"have",name:{zh:"术语条目",en:"Term entries"},note:{zh:"161 条已上线，需补 agentic、RWA、子域名相关词条",en:"161 live, needing agentic, RWA, and subdomain terms"}},
-      {s:"thin",name:{zh:"一句话条目升级",en:"Stub upgrades"},note:{zh:"把 level 1 存根扩成带例子的完整页",en:"Grow one-line entries into full pages with examples"}},
-      {s:"todo",name:{zh:"对照条目",en:"A versus B entries"},note:{zh:"A 与 B 的差别，直接命中比较型搜索",en:"The difference between two things, aimed straight at comparison searches"}},
-      {s:"have",name:{zh:"FAQ",en:"FAQ"},note:{zh:"已有独立路由",en:"Already has its own route"}},
-      {s:"have",name:{zh:"TLD 参考",en:"TLD reference"},note:{zh:"与第一类共享数据",en:"Shares data with the first category"}}
-     ]},
-    {n:"13",
-     t:{zh:"品牌观点与公司",en:"Brand Voice and Company"},
-     role:{zh:"非簇内容，建立立场与可信度",en:"Outside the clusters; builds position and credibility"},
-     site:{zh:"resources",en:"resources"},
-     items:[
-      {s:"have",name:{zh:"Manifesto 与建设理念",en:"Manifesto and building philosophy"},note:{zh:"数字信任宣言、为人而非钱包而建",en:"The digital trust manifesto, building for people and not wallets"}},
-      {s:"thin",name:{zh:"创始人观点",en:"Founder perspective"},note:{zh:"以 EIP 编辑视角谈标准与命名",en:"Standards and naming, from an EIP editor's chair"}},
-      {s:"thin",name:{zh:"合作伙伴与案例",en:"Partners and case studies"},note:{zh:"目前只有一个伙伴页",en:"One partner page today"}},
-      {s:"have",name:{zh:"招聘",en:"Careers"},note:{zh:"已有独立路由",en:"Already has its own route"}}
-     ]}
+  var L='zh';
+  var esc=function(s){var d=document.createElement('div');d.textContent=String(s);return d.innerHTML;};
+  var t=function(o){return o[L];};
+
+  // ---------- 01 grid ----------
+  var STAGES=[
+    {k:'aware',   zh:'认知', en:'Aware',    zhq:'不知道有这个问题', enq:'does not know the problem exists'},
+    {k:'solving', zh:'求解', en:'Solving',  zhq:'有问题，在比方法', enq:'has the problem, comparing approaches'},
+    {k:'choosing',zh:'选型', en:'Choosing', zhq:'在挑供应商',       enq:'picking a vendor'},
+    {k:'using',   zh:'在用', en:'Using',    zhq:'已经是客户',       enq:'already a customer'}
+  ];
+  var SUBJ=[
+    {k:'naming',     zh:'命名与选择', en:'Naming and choosing',   n:[9,30,1,0]},
+    {k:'trading',    zh:'估值与交易', en:'Value and trading',     n:[13,18,5,0]},
+    {k:'ownership',  zh:'所有权与安全',en:'Ownership and security',n:[6,22,1,0]},
+    {k:'onchain',    zh:'上链与通证化',en:'On-chain and tokenized',n:[6,5,2,0]},
+    {k:'machines',   zh:'机器与代理', en:'Machines and agents',   n:[16,7,3,0]},
+    {k:'foundations',zh:'底层原理',   en:'Underlying mechanics',  n:[8,0,0,0]},
+    {k:'sitewide',   zh:'站点级立场', en:'Site-level position',   n:[2,0,0,0]}
   ];
 
-  var XC = [
-    {k:{zh:"受众",en:"Audience"},v:{zh:"核心的核心是对域名、NFT、RWA 三者都感兴趣的用户。外延包括域名炒家、开发者、普通域名用户、域名收藏家、NFT 与 RWA 关注者、子域名发行者、DAO 与组织的域名管理者、需要域名的 AI 开发者。目标是增加用户。",en:"The core of the core is people interested in domains, NFTs, and RWAs together. The periphery covers domainers, developers, ordinary domain owners, collectors, NFT and RWA followers, subdomain issuers, DAO and organization domain managers, and AI developers who need domains. The goal is to grow users."}},
-    {k:{zh:"站点分工",en:"Site split"},v:{zh:"功能页放主站 namefi.io 的 features 路径下，承担转化；用例页与竞品对比放 resources，承担教育。两侧交叉链接。",en:"Feature pages live under the features path on the main site and carry conversion. Use-case pages and competitor comparisons live on resources and carry education. The two sides cross-link."}},
-    {k:{zh:"引用纪律",en:"Citation discipline"},v:{zh:"每条事实必须给出来源。能用文本片段锚点就用，PDF 给页码或章节位置，两者都要附具体引文。规则以 article-writing 技能的引用链要求为准。",en:"Every fact carries a source. Use a text-fragment anchor where one works, and a page or section locator for PDFs. Both forms require a verbatim quote. The rules follow the citation chain in the article-writing skill."}},
-    {k:{zh:"时效标注",en:"Data timestamps"},v:{zh:"实时性强的文章在文首标注数据抽取截止时间，并由创作流水线规定刷新周期。价格、功能、市场数据均适用。",en:"Time-sensitive pieces state the data cutoff at the top, and the editorial pipeline sets the refresh cadence. This applies to prices, features, and market figures alike."}},
-    {k:{zh:"多语言",en:"Localization"},v:{zh:"英文为唯一事实源。其余九种语言不做逐字翻译，而是从英文事实清单出发，按目标语言的表达习惯重组逻辑与结构整体重写，重要事实与主旨到位即可。",en:"English is the single source of truth. The other nine languages are not literal translations. Each is rewritten whole from the English fact list and reorganized to read natively, as long as the key facts and the thesis survive."}},
-    {k:{zh:"视频",en:"Video"},v:{zh:"只做短视频。两条独立流水线：产品操作演示随产品更新重录，行业知识科普独立选题。",en:"Short form only. Two separate pipelines: product walkthroughs re-recorded when the product changes, and industry explainers selected on their own."}}
-  ];
+  function grid(){
+    var max=0; SUBJ.forEach(function(s){s.n.forEach(function(v){if(v>max)max=v;});});
+    var h='<thead><tr><th>'+(L==='zh'?'主题 \\ 阶段':'Subject \\ Stage')+'</th>';
+    STAGES.forEach(function(s){h+='<th class="stg">'+esc(t(s))+'<br><span style="font-weight:400;text-transform:none;letter-spacing:0">'+esc(L==='zh'?s.zhq:s.enq)+'</span></th>';});
+    h+='<th class="stg tot">'+(L==='zh'?'合计':'Total')+'</th></tr></thead><tbody>';
+    var colT=[0,0,0,0], all=0;
+    SUBJ.forEach(function(s){
+      h+='<tr><th>'+esc(t(s))+'<small>'+s.k+'</small></th>';
+      var rt=0;
+      s.n.forEach(function(v,i){
+        colT[i]+=v; rt+=v; all+=v;
+        h+='<td class="cell'+(v===0?' zero':'')+'"><span class="v">'+v+'</span>'
+          + (v>0?'<span class="bar" style="width:'+Math.max(4,Math.round(v/max*100))+'%"></span>':'')+'</td>';
+      });
+      h+='<td class="cell tot"><span class="v">'+rt+'</span></td></tr>';
+    });
+    h+='<tr class="totrow"><th>'+(L==='zh'?'合计':'Total')+'</th>';
+    colT.forEach(function(v){h+='<td class="cell'+(v===0?' zero':'')+'"><span class="v">'+v+'</span></td>';});
+    h+='<td class="cell tot"><span class="v">'+all+'</span></td></tr></tbody>';
+    document.getElementById('mx').innerHTML=h;
 
-  var SX = [
-    {slug:"domain-flipping-skills", zh:"（中文名待定）", en:"Domain Flipping Skills", n:41,
-     d:{zh:"低买高卖这门手艺：找货、估值、起名、护盘、卖出。",en:"The craft of buying low and selling high: sourcing, appraising, naming, protecting, selling."},
-     c:{zh:"一 · 六",en:"1 · 6"}},
-    {slug:"domain-apocalypse", zh:"域名浩劫", en:"Domain Apocalypse", n:23,
-     d:{zh:"真实的域名灾难，按事故故事讲，并指出本可以拦下它的那道控制。",en:"Real domain disasters told as incident stories, each naming the control that would have stopped it."},
-     c:{zh:"三",en:"3"}},
-    {slug:"name-change-game-change", zh:"改名，改命", en:"Name Change, Game Change", n:20,
-     d:{zh:"一次定义品牌的改名踩着溢价域名升级完成，并改变了此后的公司。",en:"A brand-defining rename riding a premium-domain upgrade, and the company it changed."},
-     c:{zh:"一",en:"1"}},
-    {slug:"best-tlds-by-industry", zh:"各行业最佳 TLD", en:"Best TLDs for Your Industry", n:8,
-     d:{zh:"逐个行业讲该挑哪些后缀、该保护哪些。",en:"Which extensions to pick and secure, industry by industry."},
-     c:{zh:"一",en:"1"}},
-    {slug:"blockchain-concepts", zh:"区块链概念", en:"Blockchain Concepts", n:5,
-     d:{zh:"用通俗语言梳理区块链背后的核心技术。",en:"Plain-language roundups of the core technologies behind blockchains."},
-     c:{zh:"九",en:"9"}},
-    {slug:"tokenize-your-com", zh:"通证化你的 .com", en:"Tokenize Your .com", n:4,
-     d:{zh:"把传统 .com 上链的分步指南：通证化、DNS、市场、税务、恢复。",en:"A step-by-step walkthrough of bringing a traditional .com on-chain."},
-     c:{zh:"二",en:"2"}},
-    {slug:"domain-investor-field-guide", zh:"域名投资人手册", en:"Domain Investor's Field Guide", n:4,
-     d:{zh:"给域名投资人的实用手册：出售、行业媒体、资讯与社区。",en:"A practical field guide: selling, the trade media, the newsletters, the communities."},
-     c:{zh:"一 · 六",en:"1 · 6"}}
-  ];
+    var notes = L==='zh'
+      ? [['选型层只有 12 篇','读者已经在挑供应商，我们几乎没有东西给他。命名与选择、所有权与安全各只有 1 篇。'],
+         ['在用层是 0','面向已付费客户的参考内容全在 docs.namefi.io，resources 上一篇没有。这一格空得有一半是设计使然，另一半不是。'],
+         ['底层原理只有 8 篇且全在认知','区块链科普刚起步。它和 DNS 协议现在合成一格，任一半过 20 篇就拆开。']]
+      : [['Only 12 pieces at Choosing','The reader is picking a vendor and we have almost nothing for them. Naming and Ownership have one each.'],
+         ['Using is zero','Reference content for paying customers all sits on docs.namefi.io and none on resources. Half of that emptiness is by design and half is not.'],
+         ['Underlying mechanics is 8, all at Aware','Blockchain explainers have barely started. They share a cell with DNS protocol for now; split when either half passes 20.']];
+    document.getElementById('gridnote').innerHTML=notes.map(function(n){
+      return '<div><b>'+esc(n[0])+'</b><br>'+esc(n[1])+'</div>';}).join('');
 
-  var SXT = {
-    zh:{h:["系列","篇数","定位","归属大类"], foot:"另有 49 篇英文文章未归入任何系列。Domain Flipping Skills 在注册表里还没有中文名，需要在翻译轮补上。"},
-    en:{h:["Series","Posts","What it is","Categories"], foot:"Another 49 English posts belong to no series. Domain Flipping Skills has no Chinese title in the registry yet, and needs one in the translation pass."}
+    document.getElementById('derive').innerHTML = L==='zh'
+      ? '推导规则，可复现：<code>机器与代理</code> = 带 <code>ai-agents</code> 标签，或 slug 命中 agent / mcp / x402 / llms-txt / vibe-coding / wallet-checkout；其余按现有 <code>cluster</code> 映射；<code>改名，改命</code> 系列归入命名与选择；阶段由 <code>format</code> 派生（explainer、roundup、opinion、news、analysis → 认知；guide、case-study、faq → 求解；comparison → 选型）。这是一轮机械映射的首轮结果，不是人工分类，回填时应逐篇复核。'
+      : 'Derivation, reproducible: <code>Machines</code> = carries the <code>ai-agents</code> tag, or the slug matches agent / mcp / x402 / llms-txt / vibe-coding / wallet-checkout. Everything else maps from the existing <code>cluster</code>. The <code>name-change-game-change</code> series lands in Naming. Stage is derived from <code>format</code> (explainer, roundup, opinion, news, analysis go to Aware; guide, case-study, faq to Solving; comparison to Choosing). This is a first mechanical pass, not human classification, and every article should be re-checked during backfill.';
+  }
+
+  // ---------- 02 axes ----------
+  var AX=[
+    {q:{zh:'讲什么',en:'What is it about'},h:{zh:'主题',en:'Subject'},
+     v:{zh:'六个值，单选。命名与选择 · 估值与交易 · 所有权与安全 · 上链与通证化 · 机器与代理 · 底层原理',en:'Six values, single. Naming · Trading · Ownership · On-chain · Machines · Mechanics'},
+     d:{zh:'读者浏览的唯一一条轴。每个值撑起一个 hub 页和一圈内链。',en:'The only axis readers browse. Each value carries a hub page and its ring of internal links.'},req:true},
+    {q:{zh:'长什么样',en:'What shape is it'},h:{zh:'体裁',en:'Format'},
+     v:{zh:'八个值，单选。定义 · 解释 · 操作 · 评比 · 案例 · 观点 · 时事 · 参考',en:'Eight values, single. Definition · Explainer · How-to · Comparison · Case study · Opinion · News · Reference'},
+     d:{zh:'决定模板、工时和谁来写，并直接决出刷新义务。',en:'Sets the template, the effort, and who writes it, and settles the refresh obligation.'},req:true},
+    {q:{zh:'写给谁',en:'Who is it for'},h:{zh:'读者',en:'Reader'},
+     v:{zh:'五个值，最多选两个。持名者 · 持币者 · 两者皆有 · 建造者 · 代管者',en:'Five values, at most two. Holds names · Holds crypto · Holds both · Builds · Stewards'},
+     d:{zh:'半年后能回答“哪类读者真的转化”。在还没找到 PMF 的阶段，这是仪器不是元数据。',en:'In six months it answers which reader actually converts. While PMF is still open, this is an instrument, not metadata.'},req:true},
+    {q:{zh:'什么时候会过期',en:'When does it go stale'},h:{zh:'时效',en:'Decay'},
+     v:{zh:'四个值，单选。常青 · 年审 · 季审 · 速朽',en:'Four values, single. Evergreen · Annual · Quarterly · Perishable'},
+     d:{zh:'这个字段本身就是刷新队列。它把“我们应该保持更新”变成一条可查询的排期。',en:'The field is the refresh queue. It turns "we should keep things current" into a query.'},req:true},
+    {q:{zh:'他走到哪一步了',en:'How far along is the reader'},h:{zh:'阶段',en:'Stage'},
+     v:{zh:'四个值，从体裁派生，可手工覆盖。认知 · 求解 · 选型 · 在用',en:'Four values, derived from format, overridable. Aware · Solving · Choosing · Using'},
+     d:{zh:'决定 CTA 是什么、拿什么指标衡量、内容放主站还是 resources。派生是为了把填表成本压在四个字段。',en:'Sets the CTA, the metric, and whether it belongs on the main site or resources. Derived so authoring stays at four fields.'},req:false}
+  ];
+  function axes(){
+    document.getElementById('axgrid').innerHTML=AX.map(function(a){
+      return '<div class="ax"><p class="axq">'+esc(t(a.q))+'</p><h3>'+esc(t(a.h))
+        +' <span class="pill '+(a.req?'req':'')+'">'+(a.req?(L==='zh'?'必填':'required'):(L==='zh'?'派生':'derived'))+'</span></h3>'
+        +'<p class="vals">'+esc(t(a.v))+'</p><p class="drv"><b>'+(L==='zh'?'它改变什么决策':'the decision it changes')+'</b>'+esc(t(a.d))+'</p></div>';
+    }).join('');
+  }
+
+  // ---------- 03 subjects ----------
+  var SUBJD=[
+    {k:'naming',n:40,zh:'命名与选择',en:'Naming and choosing',
+     s:{zh:'域名是什么、TLD、怎么起名、可品牌化与关键词、domain hack、改名迁移',en:'What a domain is, TLDs, how to name, brandable versus keyword, domain hacks, renames'},
+     note:{zh:'吸收了原来的 domain-basics 和 choosing-a-tld，以及改名，改命 整个系列。',en:'Absorbs the old domain-basics and choosing-a-tld, plus the whole rename series.'}},
+    {k:'trading',n:36,zh:'估值与交易',en:'Value and trading',
+     s:{zh:'估值、可比成交、翻新、市场与经纪、拍卖、外联、税务',en:'Appraisal, comparable sales, flipping, marketplaces and brokers, auctions, outbound, tax'},
+     note:{zh:'原 domain-investing 拆掉命名那一半之后剩下的部分，从 57 降到 36，不再是万能桶。',en:'What is left of domain-investing once naming is pulled out. Down from 57 to 36 and no longer a catch-all.'}},
+    {k:'ownership',n:29,zh:'所有权与安全',en:'Ownership and security',
+     s:{zh:'劫持、盗窃、恢复、托管、registry lock、DNSSEC、多签、钱包丢失',en:'Hijacking, theft, recovery, custody, registry lock, DNSSEC, multisig, wallet loss'},
+     note:{zh:'口径不变，只是把名字从“安全”扩到“所有权与安全”，好收纳链上归属那部分。',en:'Scope unchanged; the name widens from security to ownership so on-chain title fits.'}},
+    {k:'onchain',n:13,zh:'上链与通证化',en:'On-chain and tokenized',
+     s:{zh:'通证化、ERC-721、域名作为 RWA、子域名发行、DAO 与组织治理',en:'Tokenizing, ERC-721, domains as RWA, subdomain issuance, DAO and org governance'},
+     note:{zh:'产品的核心差异点，却是六格里第二薄的。13 篇撑不起这个位置。',en:'The product differentiator, and the second-thinnest cell. Thirteen posts do not carry that job.'}},
+    {k:'machines',n:26,zh:'机器与代理',en:'Machines and agents',
+     s:{zh:'MCP、agent 注册域名、x402 与机器支付、llms.txt、agentic commerce 协议',en:'MCP, agents registering domains, x402 and machine payments, llms.txt, agentic commerce protocols'},
+     note:{zh:'现有六簇里没有这一格，所以这 26 篇今天整个掉在体系外面。新模型的主要修复点。',en:'The current six clusters have no home for this, so all 26 sit outside the taxonomy today. This is the main repair.'}},
+    {k:'foundations',n:8,zh:'底层原理',en:'Underlying mechanics',
+     s:{zh:'DNS 内部机制、EPP、DoH、共识、密码学原语、扩容、隐私',en:'DNS internals, EPP, DoH, consensus, cryptographic primitives, scaling, privacy'},
+     note:{zh:'唯一的妥协。DNS 协议和区块链原理确实是两种东西，现在合并只因区块链那半仅 5 篇。任一半过 20 篇就拆，别留“以后再说”。',en:'The one compromise. DNS protocol and blockchain mechanics are two things; they share a cell only because the blockchain half is five posts. Split when either half passes 20. Do not leave it open-ended.'}},
+    {k:'sitewide',n:2,zh:'站点级立场',en:'Site-level position',
+     s:{zh:'宣言、公司立场',en:'Manifestos, company position'},
+     note:{zh:'不是第七个主题。一篇宣言属于这个站，不属于任何主题 hub，所以它可以没有主题。154 篇里只有 2 篇。',en:'Not a seventh subject. A manifesto belongs to the site, not to any subject hub, so it is allowed to have none. Two of 154.'}}
+  ];
+  function subjects(){
+    var h='<thead><tr><th>'+(L==='zh'?'主题':'Subject')+'</th><th>'+(L==='zh'?'收什么':'What it holds')+'</th><th style="text-align:right">'+(L==='zh'?'现有':'Now')+'</th><th>'+(L==='zh'?'说明':'Note')+'</th></tr></thead><tbody>';
+    SUBJD.forEach(function(s){
+      h+='<tr><td class="k">'+esc(L==='zh'?s.zh:s.en)+'<small>'+s.k+'</small></td><td class="dim">'+esc(t(s.s))+'</td><td class="n">'+s.n+'</td><td class="dim">'+esc(t(s.note))+'</td></tr>';
+    });
+    document.getElementById('subjtbl').innerHTML=h+'</tbody>';
+  }
+
+  // ---------- 04 readers ----------
+  var READ=[
+    {zh:'持名者',en:'Holds names',have:{zh:'域名，没有币',en:'Domains, no crypto'},need:{zh:'注册、DNS 管理、安全与恢复',en:'Registration, DNS management, security and recovery'}},
+    {zh:'持币者',en:'Holds crypto',have:{zh:'钱包和 NFT，没有域名',en:'A wallet and NFTs, no domains'},need:{zh:'通证化、市场与挂牌、域名作为 RWA',en:'Tokenization, marketplace and listings, domains as RWA'}},
+    {zh:'两者皆有',en:'Holds both',have:{zh:'域名和币都有',en:'Both domains and crypto'},need:{zh:'全线。这是核心的核心。',en:'The whole line. This is the core of the core.'}},
+    {zh:'建造者',en:'Builds',have:{zh:'代码，需要程序化拿到名字',en:'Code, and needs a name programmatically'},need:{zh:'MCP、API、OAuth、x402',en:'MCP, API, OAuth, x402'}},
+    {zh:'代管者',en:'Stewards',have:{zh:'替别人管名字，DAO、组织、品牌、代理商',en:'Manages names for others: DAOs, orgs, brands, agencies'},need:{zh:'多签与治理、白标、批量操作、审计',en:'Multisig and governance, white label, bulk operations, audit'}}
+  ];
+  function readers(){
+    var h='<thead><tr><th>'+(L==='zh'?'读者':'Reader')+'</th><th>'+(L==='zh'?'手里已经有什么':'What they already hold')+'</th><th>'+(L==='zh'?'他需要的产品面':'The product surface they need')+'</th><th>'+(L==='zh'?'现有标注':'Tagged today')+'</th></tr></thead><tbody>';
+    READ.forEach(function(r){
+      h+='<tr><td class="k">'+esc(L==='zh'?r.zh:r.en)+'</td><td class="dim">'+esc(t(r.have))+'</td><td class="dim">'+esc(t(r.need))+'</td><td><span class="pill gap">'+(L==='zh'?'无字段':'no field')+'</span></td></tr>';
+    });
+    document.getElementById('readtbl').innerHTML=h+'</tbody>';
+  }
+
+  // ---------- 05 formats ----------
+  var FMT=[
+    {zh:'定义',en:'Definition',from:'glossary · tld',n:'161 + 153',decay:{zh:'年审',en:'Annual'},stg:{zh:'认知',en:'Aware'},d:{zh:'读者查一个词就走',en:'Reader looks one thing up and leaves'}},
+    {zh:'解释',en:'Explainer',from:'explainer + analysis',n:'42',decay:{zh:'常青',en:'Evergreen'},stg:{zh:'认知',en:'Aware'},d:{zh:'读者建一个心智模型',en:'Reader builds a mental model'}},
+    {zh:'操作',en:'How-to',from:'guide + faq',n:'39',decay:{zh:'年审',en:'Annual'},stg:{zh:'求解',en:'Solving'},d:{zh:'读者照着做一件事',en:'Reader does something'}},
+    {zh:'评比',en:'Comparison',from:'comparison + roundup',n:'23',decay:{zh:'季审',en:'Quarterly'},stg:{zh:'选型',en:'Choosing'},d:{zh:'读者要做一个选择',en:'Reader makes a choice'}},
+    {zh:'案例',en:'Case study',from:'case-study',n:'43',decay:{zh:'常青',en:'Evergreen'},stg:{zh:'求解',en:'Solving'},d:{zh:'读者从一个真实故事里学',en:'Reader learns from a real story'}},
+    {zh:'观点',en:'Opinion',from:'opinion',n:'6',decay:{zh:'常青',en:'Evergreen'},stg:{zh:'认知',en:'Aware'},d:{zh:'读者知道我们是谁',en:'Reader learns who we are'}},
+    {zh:'时事',en:'News',from:'news',n:'1',decay:{zh:'速朽',en:'Perishable'},stg:{zh:'认知',en:'Aware'},d:{zh:'读者取当下，永不回炉',en:'Reader gets the moment; never refreshed'}},
+    {zh:'参考',en:'Reference',from:'—',n:'0',decay:{zh:'随产品',en:'With the product'},stg:{zh:'在用',en:'Using'},d:{zh:'读者反复回来查。目前全在 docs.namefi.io。',en:'Reader comes back repeatedly. All of it lives on docs.namefi.io today.'}}
+  ];
+  function formats(){
+    var h='<thead><tr><th>'+(L==='zh'?'体裁':'Format')+'</th><th>'+(L==='zh'?'读者拿它做什么':'What the reader does with it')+'</th><th>'+(L==='zh'?'刷新义务':'Refresh obligation')+'</th><th>'+(L==='zh'?'默认阶段':'Default stage')+'</th><th style="text-align:right">'+(L==='zh'?'现有':'Now')+'</th></tr></thead><tbody>';
+    FMT.forEach(function(f){
+      h+='<tr><td class="k">'+esc(L==='zh'?f.zh:f.en)+'<small>'+esc(f.from)+'</small></td><td class="dim">'+esc(t(f.d))+'</td><td>'+esc(t(f.decay))+'</td><td class="dim">'+esc(t(f.stg))+'</td><td class="n">'+esc(f.n)+'</td></tr>';
+    });
+    document.getElementById('fmttbl').innerHTML=h+'</tbody>';
+  }
+
+  // ---------- 06 series ----------
+  var SER=[
+    {slug:'domain-flipping-skills',zh:'（中文名待定）',en:'Domain Flipping Skills',n:41,sp:4,
+     p:{zh:'低买高卖这门手艺的一招',en:'One move in the craft of buying low and selling high'}},
+    {slug:'domain-apocalypse',zh:'域名浩劫',en:'Domain Apocalypse',n:23,sp:3,
+     p:{zh:'一场真实的域名灾难，以及本可以拦下它的那道控制',en:'One real domain disaster, and the control that would have stopped it'}},
+    {slug:'name-change-game-change',zh:'改名，改命',en:'Name Change, Game Change',n:20,sp:1,
+     p:{zh:'一次改名踩着溢价域名升级完成，并改变了此后的公司',en:'A rename riding a premium-domain upgrade, and the company it changed'}},
+    {slug:'best-tlds-by-industry',zh:'各行业最佳 TLD',en:'Best TLDs for Your Industry',n:8,sp:1,
+     p:{zh:'你这一行该拿下哪几个后缀',en:'Which extensions your industry should secure'}},
+    {slug:'blockchain-concepts',zh:'区块链概念',en:'Blockchain Concepts',n:5,sp:1,
+     p:{zh:'一张表讲清一类底层技术',en:'One table that settles one family of underlying technology'}},
+    {slug:'tokenize-your-com',zh:'通证化你的 .com',en:'Tokenize Your .com',n:4,sp:1,
+     p:{zh:'把一个传统 .com 搬上链的下一步',en:'The next step in bringing a traditional .com on chain'}},
+    {slug:'domain-investor-field-guide',zh:'域名投资人手册',en:"Domain Investor's Field Guide",n:4,sp:1,
+     p:{zh:'投资人该知道的一件实务',en:'One practical thing an investor should know'}}
+  ];
+  function series(){
+    var h='<thead><tr><th>'+(L==='zh'?'系列':'Series')+'</th><th>'+(L==='zh'?'它对读者的承诺':'The promise it makes')+'</th><th style="text-align:right">'+(L==='zh'?'篇数':'Posts')+'</th><th style="text-align:right">'+(L==='zh'?'横跨主题':'Subjects')+'</th></tr></thead><tbody>';
+    SER.forEach(function(s){
+      h+='<tr><td class="k">'+esc(L==='zh'?s.zh:s.en)+'<small>'+esc(s.slug)+'</small></td><td class="dim">'+esc(t(s.p))+'</td><td class="n">'+s.n+'</td><td class="n">'+s.sp+'</td></tr>';
+    });
+    h+='</tbody>';
+    document.getElementById('sertbl').innerHTML=h;
+  }
+
+  // ---------- 07 not classification ----------
+  var NOT=[
+    {h:{zh:'介质',en:'Medium'},w:{zh:'是集合，不是标签',en:'a collection, not a tag'},
+     p:{zh:'一条讲域名劫持的短视频，它的主题、读者、阶段和那篇文章完全相同，只有介质不同。所以视频是一个平行集合，共享同一套四个字段，并能指回它的源文章。把介质写成分类，会让同一件事在体系里出现两次。',
+        en:'A short video about domain hijacking has the same subject, reader and stage as the article; only the medium differs. So video is a parallel collection sharing the same four fields, able to point back at its source article. Making medium a category files one thing twice.'}},
+    {h:{zh:'站点位置',en:'Surface'},w:{zh:'是派生的，不该存',en:'derived, not stored'},
+     p:{zh:'它从阶段落下来：选型和在用去主站，认知和求解留在 resources。存成字段就会和阶段打架，总有一天两者说的不是一回事。',
+        en:'It falls out of stage: Choosing and Using go to the main site, Aware and Solving stay on resources. Stored as a field it will eventually disagree with stage.'}},
+    {h:{zh:'工作道',en:'Lanes'},w:{zh:'是保存查询，不是分类',en:'saved queries, not categories'},
+     p:{zh:'“竞品对比”就是 体裁=评比。“短视频”就是 介质=视频。“用例页”就是 体裁=操作 × 读者=某一类 × 阶段=选型。工作道是排期单位，可以自由混合属性，因为它的单位是“一批有同一个负责人和同一个节奏的活”。之前那份十三条清单的正确身份就是这个。',
+        en:'"Comparisons" is format=comparison. "Short video" is medium=video. "Use-case pages" is format=how-to × reader=one of them × stage=choosing. A lane is a scheduling unit and may mix facets freely, because its unit is a batch of work with one owner and one cadence. That is what the earlier list of thirteen actually was.'}}
+  ];
+  function nots(){
+    document.getElementById('notlist').innerHTML=NOT.map(function(n){
+      return '<div class="not"><h3>'+esc(t(n.h))+'<small>'+esc(t(n.w))+'</small></h3><p>'+esc(t(n.p))+'</p></div>';
+    }).join('');
+  }
+
+  // ---------- 08 steps ----------
+  var STEP={
+    zh:['<b>重切主题，一次性。</b>六格重新分配，26 篇 agent 内容归位，2 篇宣言标为站点级、允许无主题。上面网格里那份机械映射就是这一步的起点，但每篇都要人工复核。',
+        '<b>补读者字段，全量。</b>五个值，每篇最多两个。这是新增字段，没有历史值可继承，只能人工过一遍。',
+        '<b>补时效字段，可半自动。</b>先按体裁灌默认值，再人工挑出例外。灌完之后刷新队列就自动存在了。',
+        '<b>体裁沿用现值，顺手清 tags。</b>八种新体裁由现有九种合并而来，映射是确定的。同时删掉 tags 里那 85 处体裁词，其中 21 处正和 format 字段说的不是一回事。',
+        '<b>阶段不填，派生。</b>只有覆盖时才写进 frontmatter。',
+        '<b>本地化改按阶段排优先级。</b>选型层最先翻，因为它转化；认知层最后翻。不按日期翻。'],
+    en:['<b>Re-cut subject, once.</b> Redistribute into six cells, house the 26 agent posts, and mark the two manifestos site-level with no subject. The mechanical pass in the grid above is the starting point, but every article needs a human check.',
+        '<b>Backfill reader, all of it.</b> Five values, at most two per article. This is a new field with no history to inherit, so it has to be done by hand.',
+        '<b>Backfill decay, semi-automatically.</b> Seed defaults from format, then hand-pick the exceptions. Once seeded, the refresh queue exists on its own.',
+        '<b>Keep format, and clean tags while you are there.</b> The eight new formats merge deterministically from the current nine. Drop the 85 format words sitting in tags, 21 of which currently contradict the format field.',
+        '<b>Do not fill stage; derive it.</b> Write it into frontmatter only to override.',
+        '<b>Prioritize localization by stage.</b> Choosing translates first because it converts; Aware translates last. Not by date.']
   };
+  function steps(){ document.getElementById('steps').innerHTML=STEP[L].map(function(s){return '<li>'+s+'</li>';}).join(''); }
 
-  var T = {
-    zh:{have:"已有",thin:"少量",todo:"待建",
-        legend:[["have","已有 — 站内已有成规模的内容"],["thin","少量 — 有零星几篇，未成体系"],["todo","待建 — 尚无内容"]],
-        sub:function(n){return n+" 小类"}, core:"核心", empty:"该筛选下无小类",
-        live:function(a,b){return "显示 "+a+" / "+b+" 个小类"}},
-    en:{have:"Covered",thin:"Thin",todo:"To build",
-        legend:[["have","Covered — substantial content already on the site"],["thin","Thin — a few scattered pieces, not yet a body of work"],["todo","To build — nothing published yet"]],
-        sub:function(n){return n+" subcategories"}, core:"Core", empty:"No subcategories match this filter",
-        live:function(a,b){return "Showing "+a+" of "+b+" subcategories"}}
+  // ---------- nav + chrome ----------
+  var NAV=[['grid',{zh:'网格',en:'Grid'}],['axes',{zh:'四条轴',en:'Axes'}],['subjects',{zh:'主题',en:'Subjects'}],
+           ['readers',{zh:'读者',en:'Readers'}],['formats',{zh:'体裁',en:'Formats'}],['series',{zh:'系列',en:'Series'}],
+           ['nots',{zh:'不是分类',en:'Not categories'}],['land',{zh:'落地',en:'Landing'}]];
+  var FOOT={
+    zh:'篇数取自 namefi-resources 仓库 origin/main，2026-09-01 读取：英文博客 154，词汇条目 161，TLD 单页 153，10 个语言。网格里主题与阶段的分配，是按本页写明的规则从现有 cluster、series、tags、format 机械推导的首轮结果，不是人工分类，回填时须逐篇复核。读者与时效两个字段今天不存在，所有相关格子标为“无字段”。',
+    en:'Counts read from origin/main of the namefi-resources repository on 2026-09-01: 154 English posts, 161 glossary terms, 153 TLD pages, 10 locales. The subject and stage assignments in the grid are a first mechanical pass derived from the existing cluster, series, tags and format fields by the rules stated on this page, not human classification, and every article should be re-checked during backfill. The reader and decay fields do not exist today, so every cell about them is marked no field.'
   };
-
-  var main=document.getElementById('main'), rail=document.getElementById('rail'),
-      legend=document.getElementById('legend'), xcEl=document.getElementById('xc'),
-      sxEl=document.getElementById('sx'),
-      live=document.getElementById('live'), sel=document.getElementById('lang');
-  var esc=function(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;};
-  var lang='zh', filter='all';
 
   function render(){
-    var L=T[lang], html='', railHtml='';
-    D.forEach(function(c){
-      var id='c'+c.n;
-      railHtml+='<li><a href="#'+id+'" data-id="'+id+'"><span class="n">'+c.n+'</span><span>'+esc(c.t[lang])+'</span></a></li>';
-      html+='<section class="cat'+(c.core?' core':'')+'" id="'+id+'">';
-      html+='<div class="cat-head"><span class="cat-n">'+c.n+'</span><h2 class="cat-t">'+esc(c.t[lang])+'<span class="cat-role">'+esc(c.role[lang])+'</span></h2>';
-      html+='<span class="tags">'+(c.core?'<span class="tag core-tag">'+L.core+'</span>':'')+'<span class="tag site">'+esc(c.site[lang])+'</span><span class="tag">'+L.sub(c.items.length)+'</span></span></div><ul class="items">';
-      c.items.forEach(function(it){
-        html+='<li class="item s-'+it.s+'" data-s="'+it.s+'"><i class="mk" aria-hidden="true"></i>';
-        html+='<span class="i-name">'+esc(it.name[lang])+'<span class="i-note">'+esc(it.note[lang])+'</span></span>';
-        html+='<span class="i-state">'+L[it.s]+'</span></li>';
-      });
-      html+='</ul><p class="empty" hidden>'+L.empty+'</p></section>';
-    });
-    main.innerHTML=html; rail.innerHTML=railHtml;
-
-    legend.innerHTML=L.legend.map(function(p){
-      return '<span class="s-'+p[0]+'"><i class="mk"></i>'+esc(p[1])+'</span>';
-    }).join('');
-
-    var SH=SXT[lang];
-    sxEl.innerHTML='<div class="srow shead"><span>'+SH.h[0]+'</span><span class="s-n">'+SH.h[1]+'</span><span>'+SH.h[2]+'</span><span>'+SH.h[3]+'</span></div>'
-      + SX.map(function(r){
-          var primary = (lang==='en') ? r.en : r.zh, secondary = (lang==='en') ? r.slug : r.en;
-          return '<div class="srow"><span class="s-name">'+esc(primary)+'<small>'+esc(secondary)+'</small></span>'
-               + '<span class="s-n">'+r.n+'</span><span class="s-desc">'+esc(r.d[lang])+'</span>'
-               + '<span class="s-cats">'+esc(r.c[lang])+'</span></div>';
-        }).join('')
-      + '<p class="sx-foot">'+esc(SH.foot)+'</p>';
-
-    xcEl.innerHTML=XC.map(function(r){
-      return '<dt>'+esc(r.k[lang])+'</dt><dd>'+esc(r.v[lang])+'</dd>';
-    }).join('');
-
-    // static chrome
+    grid(); axes(); subjects(); readers(); formats(); series(); nots(); steps();
+    document.getElementById('nav').innerHTML=NAV.map(function(n){
+      return '<a href="#'+n[0]+'">'+esc(t(n[1]))+'</a>';}).join('');
+    document.getElementById('foot').textContent=FOOT[L];
     Array.prototype.forEach.call(document.querySelectorAll('[data-en]'),function(el){
-      if(!el.hasAttribute('data-zh')) el.setAttribute('data-zh', el.textContent);
-      el.textContent = (lang==='en') ? el.getAttribute('data-en') : el.getAttribute('data-zh');
+      if(!el.hasAttribute('data-zh')) el.setAttribute('data-zh',el.textContent);
+      el.textContent = (L==='en') ? el.getAttribute('data-en') : el.getAttribute('data-zh');
     });
-    document.documentElement.lang = (lang==='en') ? 'en' : 'zh-CN';
-
-    applyFilter();
-    spy();
+    document.documentElement.lang = (L==='en')?'en':'zh-CN';
   }
 
-  function applyFilter(){
-    var L=T[lang], shown=0, total=0;
-    Array.prototype.forEach.call(main.querySelectorAll('section.cat'),function(sec){
-      var vis=0;
-      Array.prototype.forEach.call(sec.querySelectorAll('li.item'),function(li){
-        var ok=(filter==='all'||li.getAttribute('data-s')===filter);
-        li.classList.toggle('hide',!ok); total++; if(ok){vis++;shown++;}
-      });
-      sec.querySelector('.empty').hidden = vis>0;
-    });
-    live.textContent = L.live(shown,total);
-  }
-
-  var chips=Array.prototype.slice.call(document.querySelectorAll('.chip'));
-  chips.forEach(function(b){
-    b.addEventListener('click',function(){
-      chips.forEach(function(o){o.setAttribute('aria-pressed',String(o===b));});
-      filter=b.getAttribute('data-f'); applyFilter();
-    });
-  });
-
-  var io=null;
-  function spy(){
-    if(!('IntersectionObserver' in window)) return;
-    if(io) io.disconnect();
-    var links={};
-    Array.prototype.forEach.call(rail.querySelectorAll('a'),function(a){links[a.getAttribute('data-id')]=a;});
-    var seen={};
-    io=new IntersectionObserver(function(entries){
-      entries.forEach(function(e){seen[e.target.id]=e.isIntersecting?e.intersectionRatio:0;});
-      var best=null,bv=0;
-      Object.keys(seen).forEach(function(k){if(seen[k]>bv){bv=seen[k];best=k;}});
-      Object.keys(links).forEach(function(k){links[k].classList.toggle('on',k===best);});
-    },{rootMargin:'-74px 0px -55% 0px',threshold:[0,.25,.6,1]});
-    Array.prototype.forEach.call(main.querySelectorAll('section.cat'),function(s){io.observe(s);});
-  }
-
-  try{ var saved=localStorage.getItem('namefi-catalog-lang'); if(saved==='en'||saved==='zh') lang=saved; }catch(e){}
-  sel.value=lang;
-  sel.addEventListener('change',function(){
-    lang=sel.value; try{localStorage.setItem('namefi-catalog-lang',lang);}catch(e){}
-    render();
-  });
+  var sel=document.getElementById('lang');
+  try{var s=localStorage.getItem('namefi-catalog-lang'); if(s==='en'||s==='zh') L=s;}catch(e){}
+  sel.value=L;
+  sel.addEventListener('change',function(){L=sel.value; try{localStorage.setItem('namefi-catalog-lang',L);}catch(e){} render();});
   render();
 })();
 </script>

@@ -36,4 +36,4 @@ anything under `content/`.
 
 | File | What it is |
 | --- | --- |
-| `content-catalog.html` | The thirteen content categories and their ninety-one subcategories, bilingual, with a coverage state on every subcategory and the cross-cutting editorial rules. Open it in a browser. |
+| `content-catalog.html` | The content model: four authored axes (subject, format, reader, decay) plus a derived stage, the subject-by-stage grid over the 154 English posts, the series packaging layer, and the backfill plan. Bilingual. Open it in a browser. |
