@@ -188,7 +188,7 @@ window.__SLATE__={"cands":[{"id":"C019","rank":1,"score":72,"wp":40,"hp":20,"gp"
     rec:['Recommendation','建议'], expert:['Domain expert seated','列席的领域专家'],
     all:['All','全部'], showing:['showing','显示'], of:['of','/'],
     tier:['Tier','级别'], doc:['Document','文件'], acc:['Access','抓取'], fetched:['Fetched','抓取日期'],
-    queries:['Target queries','目标 query'], wikizh:['zh.wikipedia monthly views (floor)','zh.wikipedia 月均访问（下限）'], qnote:['judgment, not measured','判断，非实测'], lowdem:['no Chinese-language demand found','未找到中文搜索需求']
+    queries:['Target queries','目标 query'], wikizh:['zh.wikipedia monthly views (floor)','zh.wikipedia 月均访问（下限）'], qnote:['judgment, not measured','判断，非实测'], lowdem:['no Chinese lead found \u2014 absence is not evidence of absence','\u672a\u627e\u5230\u4e2d\u6587\u7ebf\u7d22 \u2014\u2014 \u6ca1\u627e\u5230\u4e0d\u7b49\u4e8e\u6ca1\u9700\u6c42']
   };
   function lb(k){return t(T[k][0],T[k][1]);}
 
@@ -222,9 +222,9 @@ window.__SLATE__={"cands":[{"id":"C019","rank":1,"score":72,"wp":40,"hp":20,"gp"
       ['Corpus counts','语料计数',
        '154 English blog posts, 161 glossary terms, 153 TLD pages, read from <code>origin/main</code> on 2026-09-01. Cluster, format and series distributions counted from frontmatter.',
        '154 篇英文博客、161 条词汇表、153 个 TLD 单页，2026-09-01 从 <code>origin/main</code> 读取。cluster、format、series 分布由 frontmatter 统计得出。'],
-      ['Per-locale concept demand','各语种概念热度',
-       'The same Wikimedia API, per language. Across the 59 concepts on this slate that exist on both the English and Chinese Wikipedias, the en:zh monthly-pageview ratio runs from 5:1 to 143:1, median 27:1, and a further 21 of 86 concepts have no Chinese article at all. Read the Chinese side as a floor, not a measurement: zh.wikipedia is blocked in mainland China and its automatic script conversion makes titles ambiguous. It is a relative signal across concepts and it does not enter the rank key.',
-       '同一个 Wikimedia API，按语言分别取。这份榜单上有 59 个概念中英文维基都有条目，月均访问量的中英比从 5:1 到 143:1，中位数 27:1；另有 86 个概念里的 21 个根本没有中文条目。中文那一侧只能当下限读，不能当测量值：zh.wikipedia 在中国大陆被封，繁简自动转换也让条目名不唯一。它是概念之间的相对信号，不进入排序键。'],
+      ['Per-locale concept coverage','各语种概念覆盖度',
+       'The same Wikimedia API, per language. <b>This is not a demand ratio and must not be read as one.</b> en.wikipedia serves a global readership \u2014 a great many people who would search in their own language read the encyclopedia in English \u2014 so the figure conflates the language someone reads in with the language they search in. Coverage and editor-base size differ per project too, and zh.wikipedia is blocked in mainland China. Across the 59 concepts on this slate that exist on both the English and Chinese Wikipedias, the en:zh monthly-pageview ratio runs from 5:1 to 143:1, median 27:1, and a further 21 of 86 concepts have no Chinese article at all. Read the Chinese side as a floor, not a measurement: zh.wikipedia is blocked in mainland China and its automatic script conversion makes titles ambiguous. It is a relative signal across concepts and it does not enter the rank key.',
+       '同一个 Wikimedia API，按语言分别取。<b>这不是需求比，也绝不能当需求比读。</b>en.wikipedia 服务的是全球读者——大量会用母语搜索的人，日常读的是英文百科——所以这个数字混淆了「用什么语言阅读」和「用什么语言搜索」。各语言版本的条目覆盖度和编者规模也不同，zh.wikipedia 还在中国大陆被封。它唯一站得住的用法，是证明这个比值在 5:1 到 143:1 之间剧烈波动、中位数 27:1，因而<b>不存在可外推的系数</b>；另有 86 个概念里的 21 个根本没有中文条目。不进入排序键。'],
       ['Source ledgers','信源账本',
        'Every ledger row in the ten pitch memos records a URL, a locator, a verbatim quote and an access status, fetched 2026-09-01. Failed fetches are recorded as failures, not dropped.',
        '十份立项稿的信源账本每一行都记录 URL、定位、原文引语与抓取状态，抓取日期 2026-09-01。抓取失败的记录为失败，不删除。']
@@ -239,6 +239,9 @@ window.__SLATE__={"cands":[{"id":"C019","rank":1,"score":72,"wp":40,"hp":20,"gp"
       ['The target queries','目标 query',
        'Each row carries the queries the piece would compete for, one set per locale, shown in whichever language you are reading. They are what a real person would plausibly type — a judgment, and the input list for keyword research that has not happened yet. No volume is attached to any of them, because none is available here. The two sets are written independently rather than translated, which is why their counts and shapes differ; 31 of the 100 came back with essentially no Chinese-language demand behind them and are marked as such.',
        '每一行都带上这篇稿子将要竞争的 query，按语种各一套，你读哪个语言就显示哪一套。它们是「一个真人会怎么输入」的判断，是关键词调研的输入清单——而那次调研还没发生。任何一条都不附搜索量，因为这里根本拿不到。两套各自独立写而不是互译，所以条数和形状都不一样；100 条里有 31 条中文侧几乎没有搜索需求，已按实标注。'],
+      ['Presence counts, absence does not','有算数，没有不算数',
+       'Every free signal on this page \u2014 Wikipedia, Hacker News \u2014 is a <b>positive-only</b> signal. A high number is weak evidence that people look a concept up. A low or missing number is <b>no information at all</b>: it may mean nobody searches, or it may mean the encyclopedia has no article, or the community does not discuss it there, or the market uses a different platform entirely. The pipeline page already classified these sources as momentum leads only; ranking on them was a substitution made because no volume API is provisioned, and it is the weakest thing on this page. The rows marked as having no Chinese lead should be read as \u201cwe found nothing here\u201d, never as \u201cthere is no demand\u201d.',
+       '这一页上所有免费信号——Wikipedia、Hacker News——都是<b>只在阳性方向有效</b>的信号。数字高，是「有人查这个概念」的弱证据；数字低或者没有，<b>不包含任何信息</b>：可能没人搜，也可能只是百科没这个条目、社区不在那里讨论、或者这个市场根本用另一个平台。流水线页本来就把这些来源归为「只作势头线索」；拿它们排序是因为没有搜索量 API 而做的替代，也是本页最弱的一环。标注「未找到中文线索」的行，只能读作「我们在这里没找到」，绝不能读作「不存在需求」。'],
       ['Effort units','工作量单位',
        'A 1–8 estimate by the reporter who scouted the topic. Used only for capacity fitting, never in the rank key, per the pipeline’s rule.',
        '由勘探该选题的记者给出的 1–8 估计。按流水线规则，只用于产能装箱，绝不进入排序键。'],
