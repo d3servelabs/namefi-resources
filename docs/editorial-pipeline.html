@@ -137,43 +137,42 @@ body.lang-zh{font-size:16px}
 <pre class="mermaid">
 %%{init: {"flowchart": {"nodeSpacing": 28, "rankSpacing": 36, "padding": 10}}}%%
 flowchart TB
-  subgraph P1["PLAN · planning desk"]
+  subgraph P1["PLAN · assignment desk"]
     direction LR
     S1["`**S1 Discover**
 briefs + open intake
-Planning editor · agent`"] --> S2["`**S2 Source-scout**
+Assignment editor`"] --> S2["`**S2 Source-scout**
 pitch memo + focus statement
-Researcher · agent`"] --> S3["`**S3 Debate, green-light · G1**
+Reporter, with a researcher`"] --> S3["`**S3 Pitch meeting, green-light · G1**
 slug, length, budget on approval
-Editorial board → Editor-in-chief`"]
+Editorial meeting → Editor-in-chief · HUMAN`"]
     S3 -. THIN: small budget to develop .-> S2
   end
-  subgraph P2["MAKE · writing and research desks"]
+  subgraph P2["MAKE · news desk, research desk, copy desk"]
     direction LR
     S4["`**S4 Outline**
-Backfield editor · agent`"] --> S5["`**S5 Draft (en)**
-Staff writer · agent`"] --> S6["`**S6 Fact-check**
-Research editor · agent
-Standards editor · G3`"] --> S7["`**S7 Copy edit**
-Copy editor · agent`"] --> S8["`**S8 Sign-off · G2**
-Editor-in-chief · human`"]
+Assigning editor`"] --> S5["`**S5 Draft (en)**
+Staff writer`"] --> S6["`**S6 Fact-check**
+Fact-checker
+Standards editor + counsel · HUMAN · G3`"] --> S7["`**S7 Copy edit**
+Copy editor`"] --> S8["`**S8 Sign-off · G2**
+Editor-in-chief · HUMAN`"]
   end
-  subgraph P3["SHIP · locale, production and audience desks"]
+  subgraph P3["SHIP · language editions, production, audience"]
     direction LR
     S9["`**S9 Localize ×9**
-Locale editors · agent
-zh-CN editor · G4`"] --> S10["`**S10 Package + release**
-Production and art desk · agent
-Managing editor · G5`"] --> S11["`**S11 Distribute**
-Audience editor · agent
-human posts`"]
+Language edition editors
+zh-CN editor · HUMAN · G4`"] --> S10["`**S10 Package + release**
+Production editor + art director
+Managing editor · HUMAN · G5`"] --> S11["`**S11 Distribute**
+Audience editor
+posting by a HUMAN`"]
   end
   subgraph P4["MAINTAIN · readers’ editor"]
     direction LR
     S12["`**S12 Refresh, corrections**
 yearly sweep
-Readers’ editor · agent
-Editor-in-chief approves`"]
+Readers’ editor · corrections approved by Editor-in-chief · HUMAN`"]
   end
   P1 --> P2 --> P3 --> P4
   P4 -. refresh-due .-> P1
@@ -181,51 +180,50 @@ Editor-in-chief approves`"]
   classDef part fill:#F9F9F7,stroke:#B5301F,color:#1B1D1F,stroke-dasharray:4 3
   classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
   class S3,S8 human
-  class S9,S10 part
-  class S1,S2,S4,S5,S6,S7,S11,S12 agent
+  class S6,S9,S10 part
+  class S1,S2,S4,S5,S7,S11,S12 agent
 </pre>
     </div>
     <div class="dg dg-zh off">
 <pre class="mermaid">
 %%{init: {"flowchart": {"nodeSpacing": 28, "rankSpacing": 36, "padding": 10}}}%%
 flowchart TB
-  subgraph P1["选题 · 策划台"]
+  subgraph P1["选题 · 派题台"]
     direction LR
     S1["`**S1 发现**
 简报 + 公开征题
-策划编辑 · agent`"] --> S2["`**S2 信源勘探**
+派题编辑`"] --> S2["`**S2 信源勘探**
 立项稿 + 聚焦句
-研究员 · agent`"] --> S3["`**S3 辩论、立项 · G1**
+记者，研究员协助`"] --> S3["`**S3 选题会、立项 · G1**
 立项即分配 slug、字数、预算
-编委会 → 主编`"]
+选题会 → 主编 · 人`"]
     S3 -. THIN：小预算继续开发 .-> S2
   end
-  subgraph P2["创作 · 写作与研究台"]
+  subgraph P2["创作 · 采编台、研究台、文字台"]
     direction LR
     S4["`**S4 大纲**
-后场编辑 · agent`"] --> S5["`**S5 撰稿（英文）**
-撰稿人 · agent`"] --> S6["`**S6 事实勘定**
-研究编辑 · agent
-标准编辑 · G3`"] --> S7["`**S7 行文修辞**
-文字编辑 · agent`"] --> S8["`**S8 审阅定稿 · G2**
+责任编辑`"] --> S5["`**S5 撰稿（英文）**
+撰稿记者`"] --> S6["`**S6 事实勘定**
+事实核查员
+标准编辑 + 法务 · 人 · G3`"] --> S7["`**S7 行文修辞**
+文字编辑`"] --> S8["`**S8 审阅定稿 · G2**
 主编 · 人`"]
   end
-  subgraph P3["发布 · 语言、制作与受众台"]
+  subgraph P3["发布 · 语言版、制作、受众"]
     direction LR
     S9["`**S9 本地化 ×9**
-各语言编辑 · agent
-zh-CN 编辑 · G4`"] --> S10["`**S10 发布包 + 上线**
-制作与美术编辑 · agent
-执行主编 · G5`"] --> S11["`**S11 分发**
-受众编辑 · agent 起草
-人发布`"]
+语言版编辑
+zh-CN 编辑 · 人 · G4`"] --> S10["`**S10 发布包 + 上线**
+制作编辑 + 美术总监
+执行主编 · 人 · G5`"] --> S11["`**S11 分发**
+受众编辑
+由人发布`"]
   end
   subgraph P4["维护 · 读者编辑"]
     direction LR
     S12["`**S12 刷新、更正**
 年度扫描
-读者编辑 · agent
-主编批准`"]
+读者编辑 · 更正由主编（人）批准`"]
   end
   P1 --> P2 --> P3 --> P4
   P4 -. 刷新到期 .-> P1
@@ -233,49 +231,51 @@ zh-CN 编辑 · G4`"] --> S10["`**S10 发布包 + 上线**
   classDef part fill:#F9F9F7,stroke:#B5301F,color:#1B1D1F,stroke-dasharray:4 3
   classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
   class S3,S8 human
-  class S9,S10 part
-  class S1,S2,S4,S5,S6,S7,S11,S12 agent
+  class S6,S9,S10 part
+  class S1,S2,S4,S5,S7,S11,S12 agent
 </pre>
     </div>
   </div>
-  <p class="legend"><span class="gate">G1–G5</span> <span class="en">red = a human decides. The plan row borrows from the desks in the appendix: category briefs and an open intake (Channel 4, the Guardian), preliminary reporting and a pitch with a focus statement (NPR, ProPublica), a small development budget for a THIN verdict (99% Invisible), a multi-persona debate before the editor (The Economist), and slug, length and budget assigned on green-light (NPR). S8 can send a piece back to S5 or S6 (two loops at most); S6 adds G3 legal review on comparison pages. Everything else runs on agents behind machine gates (<code>data:validate</code>, link-audit, termbase, fact-check report). The deep lane runs the existing <span class="tip" data-tip="eb">editorial-board skill</span> for S2–S7.</span><span class="zh">红色 = 人拍板。选题行借自附录里的编辑台：类别简报与公开征题入口（Channel 4、《卫报》）、先做初步采访并写带聚焦句的立项稿（NPR、ProPublica）、THIN 判定给一笔小额开发预算（99% Invisible）、编辑看稿前先跑多 persona 辩论（《经济学人》）、立项即分配 slug、字数与预算（NPR）。S8 可退回 S5 或 S6（最多两轮）；S6 对竞品对比页追加 G3 法务审读。其余由 agent 在机器门禁（<code>data:validate</code>、link-audit、termbase、勘定报告）之后自动运行。深度稿用现有的 <span class="tip" data-tip="eb">editorial-board skill</span> 跑 S2–S7。</span></p>
+  <p class="legend"><span class="gate">G1–G5</span> <span class="en">red = a human decides; every role not marked HUMAN is an agent. Titles are industry convention (see the masthead note). The plan row borrows from the desks in the appendix: category briefs and an open intake (Channel 4, the Guardian), preliminary reporting and a pitch with a focus statement (NPR, ProPublica), a small development budget for a THIN verdict (99% Invisible), a multi-persona debate before the editor (The Economist), and slug, length and budget assigned on green-light (NPR). S8 can send a piece back to S5 or S6 (two loops at most); S6 adds G3 legal review on comparison pages. Everything else runs on agents behind machine gates (<code>data:validate</code>, link-audit, termbase, fact-check report). The deep lane runs the existing <span class="tip" data-tip="eb">editorial-board skill</span> for S2–S7.</span><span class="zh">红色 = 人拍板；没有标“人”的角色都是 agent。头衔采用行业通用叫法（见名单注解）。选题行借自附录里的编辑台：类别简报与公开征题入口（Channel 4、《卫报》）、先做初步采访并写带聚焦句的立项稿（NPR、ProPublica）、THIN 判定给一笔小额开发预算（99% Invisible）、编辑看稿前先跑多 persona 辩论（《经济学人》）、立项即分配 slug、字数与预算（NPR）。S8 可退回 S5 或 S6（最多两轮）；S6 对竞品对比页追加 G3 法务审读。其余由 agent 在机器门禁（<code>data:validate</code>、link-audit、termbase、勘定报告）之后自动运行。深度稿用现有的 <span class="tip" data-tip="eb">editorial-board skill</span> 跑 S2–S7。</span></p>
   <h3 class="tip en" data-tip="mast">Masthead</h3><h3 class="tip zh" data-tip="mast">编辑部名单</h3>
   <ul class="map">
-    <li><span><span class="en">Editor-in-chief</span><span class="zh">主编</span></span><span class="src">S3 G1 · S8 G2 · corrections</span><span class="to">Victor Zhou · <span class="en">human</span><span class="zh">人</span></span></li>
-    <li><span><span class="en">Standards editor (legal review)</span><span class="zh">标准编辑（法务审读）</span></span><span class="src">S6 G3</span><span class="to"><span class="en">human, see Q2</span><span class="zh">人，见 Q2</span></span></li>
-    <li><span><span class="en">Managing editor (release)</span><span class="zh">执行主编（发布）</span></span><span class="src">S10 G5</span><span class="to"><span class="en">human</span><span class="zh">人</span></span></li>
-    <li><span><span class="en">zh-CN editor (titles)</span><span class="zh">zh-CN 编辑（标题）</span></span><span class="src">S9 G4</span><span class="to"><span class="en">maintainer</span><span class="zh">维护者</span></span></li>
-    <li><span><span class="en">Planning editor</span><span class="zh">策划编辑</span></span><span class="src">S1</span><span class="to">agent</span></li>
-    <li><span><span class="en">Researcher</span><span class="zh">研究员</span></span><span class="src">S2</span><span class="to">agent</span></li>
-    <li><span><span class="en">Editorial board (debate): editor-in-chief, planning editor, fact-checker, devil’s advocate, reader representative, domain expert</span><span class="zh">编委会（辩论）：主编、策划编辑、事实核查员、反方辩手、读者代表、领域专家</span></span><span class="src">S3</span><span class="to">agent personas</span></li>
-    <li><span><span class="en">Backfield editor</span><span class="zh">后场编辑</span></span><span class="src">S4</span><span class="to">agent</span></li>
-    <li><span><span class="en">Staff writers</span><span class="zh">撰稿人</span></span><span class="src">S5</span><span class="to">Aileen Wright · Fenwei Bian</span></li>
-    <li><span><span class="en">Research editor (fact-checker)</span><span class="zh">研究编辑（核查员）</span></span><span class="src">S6 · S12</span><span class="to">agent, <span class="en">fresh context</span><span class="zh">新 context</span></span></li>
-    <li><span><span class="en">Copy editor</span><span class="zh">文字编辑</span></span><span class="src">S7</span><span class="to">agent</span></li>
-    <li><span><span class="en">Locale editors</span><span class="zh">各语言编辑</span></span><span class="src">S9</span><span class="to">Zakia al-Sina’i (ar) · Kai Kunstmann (de) · Iria Maquieira (es) · Alan Machin (fr) · Nirmit Buddhiraja (hi) · Chie Kudō (ja) · Gong Ji-hye (ko) · Arivu Iyandhiran (ta) · Fenwei Bian (zh-CN)</span></li>
-    <li><span><span class="en">Production and art desk</span><span class="zh">制作与美术编辑</span></span><span class="src">S10</span><span class="to">agent</span></li>
-    <li><span><span class="en">Audience editor</span><span class="zh">受众编辑</span></span><span class="src">S11</span><span class="to"><span class="en">agent drafts, human posts</span><span class="zh">agent 起草，人发布</span></span></li>
-    <li><span><span class="en">Readers’ editor (corrections desk)</span><span class="zh">读者编辑（更正台）</span></span><span class="src">S12</span><span class="to"><span class="en">agent sweeps, editor-in-chief approves</span><span class="zh">agent 巡检，主编批准</span></span></li>
+    <li><span><b><span class="en">Editor-in-chief · human</span><span class="zh">主编 · 人</span></b></span><span class="src">S3 G1 · S8 G2 · corrections</span><span class="to">Victor Zhou</span></li>
+    <li><span><b><span class="en">Managing editor · human</span><span class="zh">执行主编 · 人</span></b></span><span class="src">S10 G5 (release)</span><span class="to">Victor Zhou</span></li>
+    <li><span><b><span class="en">Standards editor + media counsel · human</span><span class="zh">标准编辑 + 法务 · 人</span></b></span><span class="src">S6 G3</span><span class="to"><span class="en">open, see Q2</span><span class="zh">待定，见 Q2</span></span></li>
+    <li><span><b><span class="en">zh-CN edition editor · human</span><span class="zh">zh-CN 版编辑 · 人</span></b></span><span class="src">S9 G4 (titles)</span><span class="to"><span class="en">maintainer</span><span class="zh">维护者</span></span></li>
+    <li><span><b><span class="en">Posting · human</span><span class="zh">发布 · 人</span></b></span><span class="src">S11</span><span class="to"><span class="en">until posting automation is approved</span><span class="zh">直到自动发布获批</span></span></li>
+    <li><span><span class="en">Assignment editor</span><span class="zh">派题编辑</span></span><span class="src">S1</span><span class="to">—</span></li>
+    <li><span><span class="en">Reporter and researcher</span><span class="zh">记者与研究员</span></span><span class="src">S2</span><span class="to">—</span></li>
+    <li><span><span class="en">Editorial meeting personas: editor’s chair, assignment editor, fact-checker, devil’s advocate, reader representative, domain expert</span><span class="zh">选题会 persona：主编席、派题编辑、事实核查员、反方辩手、读者代表、领域专家</span></span><span class="src">S3</span><span class="to"><span class="en">from the editorial-board skill</span><span class="zh">来自 editorial-board skill</span></span></li>
+    <li><span><span class="en">Assigning editor</span><span class="zh">责任编辑</span></span><span class="src">S4</span><span class="to">—</span></li>
+    <li><span><span class="en">Staff writers</span><span class="zh">撰稿记者</span></span><span class="src">S5</span><span class="to">Aileen Wright · Fenwei Bian</span></li>
+    <li><span><span class="en">Fact-checker (research desk)</span><span class="zh">事实核查员（研究台）</span></span><span class="src">S6 · S12 sweeps</span><span class="to"><span class="en">fresh context per piece</span><span class="zh">每篇新 context</span></span></li>
+    <li><span><span class="en">Copy editor</span><span class="zh">文字编辑</span></span><span class="src">S7</span><span class="to">—</span></li>
+    <li><span><span class="en">Language edition editors</span><span class="zh">语言版编辑</span></span><span class="src">S9</span><span class="to">Zakia al-Sina’i (ar) · Kai Kunstmann (de) · Iria Maquieira (es) · Alan Machin (fr) · Nirmit Buddhiraja (hi) · Chie Kudō (ja) · Gong Ji-hye (ko) · Arivu Iyandhiran (ta) · Fenwei Bian (zh-CN)</span></li>
+    <li><span><span class="en">Production editor + art director</span><span class="zh">制作编辑 + 美术总监</span></span><span class="src">S10</span><span class="to">—</span></li>
+    <li><span><span class="en">Audience editor</span><span class="zh">受众编辑</span></span><span class="src">S11</span><span class="to">—</span></li>
+    <li><span><span class="en">Readers’ editor</span><span class="zh">读者编辑</span></span><span class="src">S12</span><span class="to">—</span></li>
   </ul>
+  <p class="note"><span class="en">Rows in bold are people; everything else is an agent.</span><span class="zh">加粗的是人；其余都是 agent。</span></p>
 </section>
 
 <section>
   <p class="eyebrow"><span class="en">Stations</span><span class="zh">工位</span></p>
   <div class="tblwrap"><table>
-    <thead><tr><th><span class="en">Station</span><span class="zh">工位</span></th><th><span class="en">Output</span><span class="zh">产物</span></th><th><span class="en">Role · owner</span><span class="zh">角色 · 负责</span></th></tr></thead>
+    <thead><tr><th><span class="en">Station</span><span class="zh">工位</span></th><th><span class="en">Output</span><span class="zh">产物</span></th><th><span class="en">Role (humans marked)</span><span class="zh">角色（标出人类）</span></th></tr></thead>
     <tbody>
-      <tr><td><span class="tip" data-tip="s1">S1 <span class="en">Discover</span><span class="zh">发现</span></span></td><td><span class="en">candidates with raw signals · a standing brief per category (what we are looking for) · an open intake for readers</span><span class="zh">带原始信号的候选清单 · 每个类别一份常设简报（我们在找什么）· 面向读者的公开征题入口</span></td><td><span class="role"><span class="en">Planning editor</span><span class="zh">策划编辑</span></span> <span class="agent">agent</span></td></tr>
-      <tr><td><span class="tip" data-tip="s2">S2 <span class="en">Source-scout</span><span class="zh">信源勘探</span></span></td><td><span class="en">fact list · source ledger · pitch memo: focus statement + 3–4 sentences + evidence in hand + feasibility · verdict PASS / THIN (small development budget) / FAIL</span><span class="zh">事实清单 · 信源账本 · 立项稿：聚焦句 + 3–4 句 + 已掌握的证据 + 可行性 · 判定 PASS / THIN（小额开发预算）/ FAIL</span></td><td><span class="role"><span class="en">Researcher</span><span class="zh">研究员</span></span> <span class="agent">agent</span></td></tr>
-      <tr><td><span class="tip" data-tip="s3">S3 <span class="en">Green-light</span><span class="zh">立项</span></span></td><td><span class="tip" data-tip="s3d"><span class="en">multi-persona debate summary</span><span class="zh">多 persona 辩论摘要</span></span><span class="en"> · editorial brief with slug, length, effort budget and due date</span><span class="zh"> · 编辑简报，含 slug、字数、工作量预算与截止日</span></td><td><span class="role"><span class="en">Editorial board, then editor-in-chief</span><span class="zh">编委会，再由主编</span></span> <span class="agent">agent</span> <span class="gate tip" data-tip="g1">G1</span></td></tr>
-      <tr><td><span class="tip" data-tip="s4">S4 <span class="en">Outline</span><span class="zh">大纲</span></span></td><td><span class="en">outline with source coverage per section</span><span class="zh">每节标注信源覆盖的大纲</span></td><td><span class="role"><span class="en">Backfield editor</span><span class="zh">后场编辑</span></span> <span class="agent">agent</span></td></tr>
-      <tr><td><span class="tip" data-tip="s5">S5 <span class="en">Draft</span><span class="zh">撰稿</span></span></td><td><span class="en">English draft v1 with inline citations</span><span class="zh">带内联引用的英文初稿</span></td><td><span class="role"><span class="en">Staff writer</span><span class="zh">撰稿人</span></span> <span class="agent">agent · Sonnet</span></td></tr>
-      <tr><td><span class="tip" data-tip="s6">S6 <span class="en">Fact-check</span><span class="zh">事实勘定</span></span></td><td><span class="en">fact-check report: per claim VERIFIED / CORRECTED / UNVERIFIED / ANALYSIS / REMOVED</span><span class="zh">勘定报告：逐条 VERIFIED / CORRECTED / UNVERIFIED / ANALYSIS / REMOVED</span></td><td><span class="role"><span class="en">Research editor (fact-checker); standards editor for G3</span><span class="zh">研究编辑（核查员）；G3 由标准编辑</span></span> <span class="agent">agent · fresh context</span> <span class="gate tip" data-tip="g3">G3</span></td></tr>
-      <tr><td><span class="tip" data-tip="s7">S7 <span class="en">Copy edit</span><span class="zh">行文修辞</span></span></td><td><span class="en">draft v3 with the focus statement as nut graf, cut to length · headline family</span><span class="zh">三稿：聚焦句成为 nut graf、按目标字数删减 · 标题族</span></td><td><span class="role"><span class="en">Copy editor</span><span class="zh">文字编辑</span></span> <span class="agent">agent</span></td></tr>
-      <tr><td><span class="tip" data-tip="s8">S8 <span class="en">Sign-off</span><span class="zh">审阅定稿</span></span></td><td><span class="en">frozen English master</span><span class="zh">冻结的英文母本</span></td><td><span class="role"><span class="en">Editor-in-chief</span><span class="zh">主编</span></span> <span class="gate tip" data-tip="g2">G2</span></td></tr>
-      <tr><td><span class="tip" data-tip="s9">S9 <span class="en">Localize</span><span class="zh">本地化</span></span></td><td><span class="en">nine locale files</span><span class="zh">九个语言文件</span></td><td><span class="role"><span class="en">Locale editors; zh-CN editor for G4</span><span class="zh">各语言编辑；G4 由 zh-CN 编辑</span></span> <span class="agent">agent × 9</span> <span class="gate tip" data-tip="g4">G4</span></td></tr>
-      <tr><td><span class="tip" data-tip="s10">S10 <span class="en">Package + release</span><span class="zh">发布包 + 上线</span></span></td><td><span class="en">PR · live verification · distribution package</span><span class="zh">PR · 上线核验 · 分发包</span></td><td><span class="role"><span class="en">Production and art desk; managing editor for G5</span><span class="zh">制作与美术编辑；G5 由执行主编</span></span> <span class="agent">agent</span> <span class="gate tip" data-tip="g5">G5</span></td></tr>
-      <tr><td><span class="tip" data-tip="s11">S11 <span class="en">Distribute</span><span class="zh">分发</span></span></td><td><span class="en">per-platform posts · Discourse thread · metrics baseline</span><span class="zh">各平台帖子 · Discourse 帖 · 指标基线</span></td><td><span class="role"><span class="en">Audience editor</span><span class="zh">受众编辑</span></span> <span class="agent">agent drafts · human posts</span></td></tr>
-      <tr><td><span class="tip" data-tip="s12">S12 <span class="en">Maintain</span><span class="zh">维护</span></span></td><td><span class="en">re-verified, corrected or retired page · a yearly revision quota and a dated annual sweep</span><span class="zh">重审、更正或下线的页面 · 年度复审配额与带日期的年度扫描</span></td><td><span class="role"><span class="en">Readers’ editor</span><span class="zh">读者编辑</span></span> <span class="agent">agent sweeps</span> <span class="en">· human approves corrections</span><span class="zh">· 人批更正</span></td></tr>
+      <tr><td><span class="tip" data-tip="s1">S1 <span class="en">Discover</span><span class="zh">发现</span></span></td><td><span class="en">candidates with raw signals · a standing brief per category (what we are looking for) · an open intake for readers</span><span class="zh">带原始信号的候选清单 · 每个类别一份常设简报（我们在找什么）· 面向读者的公开征题入口</span></td><td><span class="role"><span class="en">Assignment editor</span><span class="zh">派题编辑</span></span></td></tr>
+      <tr><td><span class="tip" data-tip="s2">S2 <span class="en">Source-scout</span><span class="zh">信源勘探</span></span></td><td><span class="en">fact list · source ledger · pitch memo: focus statement + 3–4 sentences + evidence in hand + feasibility · verdict PASS / THIN (small development budget) / FAIL</span><span class="zh">事实清单 · 信源账本 · 立项稿：聚焦句 + 3–4 句 + 已掌握的证据 + 可行性 · 判定 PASS / THIN（小额开发预算）/ FAIL</span></td><td><span class="role"><span class="en">Reporter, with a researcher</span><span class="zh">记者，研究员协助</span></span></td></tr>
+      <tr><td><span class="tip" data-tip="s3">S3 <span class="en">Green-light</span><span class="zh">立项</span></span></td><td><span class="tip" data-tip="s3d"><span class="en">multi-persona debate summary</span><span class="zh">多 persona 辩论摘要</span></span><span class="en"> · editorial brief with slug, length, effort budget and due date</span><span class="zh"> · 编辑简报，含 slug、字数、工作量预算与截止日</span></td><td><span class="role"><span class="en">Editorial meeting, then <b>Editor-in-chief · human</b></span><span class="zh">选题会，再由<b>主编 · 人</b></span></span> <span class="gate tip" data-tip="g1">G1</span></td></tr>
+      <tr><td><span class="tip" data-tip="s4">S4 <span class="en">Outline</span><span class="zh">大纲</span></span></td><td><span class="en">outline with source coverage per section</span><span class="zh">每节标注信源覆盖的大纲</span></td><td><span class="role"><span class="en">Assigning editor</span><span class="zh">责任编辑</span></span></td></tr>
+      <tr><td><span class="tip" data-tip="s5">S5 <span class="en">Draft</span><span class="zh">撰稿</span></span></td><td><span class="en">English draft v1 with inline citations</span><span class="zh">带内联引用的英文初稿</span></td><td><span class="role"><span class="en">Staff writer</span><span class="zh">撰稿记者</span></span></td></tr>
+      <tr><td><span class="tip" data-tip="s6">S6 <span class="en">Fact-check</span><span class="zh">事实勘定</span></span></td><td><span class="en">fact-check report: per claim VERIFIED / CORRECTED / UNVERIFIED / ANALYSIS / REMOVED</span><span class="zh">勘定报告：逐条 VERIFIED / CORRECTED / UNVERIFIED / ANALYSIS / REMOVED</span></td><td><span class="role"><span class="en">Fact-checker; <b>standards editor + media counsel · human</b> at G3</span><span class="zh">事实核查员；G3 由<b>标准编辑 + 法务 · 人</b></span></span> <span class="gate tip" data-tip="g3">G3</span></td></tr>
+      <tr><td><span class="tip" data-tip="s7">S7 <span class="en">Copy edit</span><span class="zh">行文修辞</span></span></td><td><span class="en">draft v3 with the focus statement as nut graf, cut to length · headline family</span><span class="zh">三稿：聚焦句成为 nut graf、按目标字数删减 · 标题族</span></td><td><span class="role"><span class="en">Copy editor</span><span class="zh">文字编辑</span></span></td></tr>
+      <tr><td><span class="tip" data-tip="s8">S8 <span class="en">Sign-off</span><span class="zh">审阅定稿</span></span></td><td><span class="en">frozen English master</span><span class="zh">冻结的英文母本</span></td><td><span class="role"><span class="en"><b>Editor-in-chief · human</b></span><span class="zh"><b>主编 · 人</b></span></span> <span class="gate tip" data-tip="g2">G2</span></td></tr>
+      <tr><td><span class="tip" data-tip="s9">S9 <span class="en">Localize</span><span class="zh">本地化</span></span></td><td><span class="en">nine locale files</span><span class="zh">九个语言文件</span></td><td><span class="role"><span class="en">Language edition editors; <b>zh-CN editor · human</b> at G4</span><span class="zh">语言版编辑；G4 由 <b>zh-CN 编辑 · 人</b></span></span> <span class="gate tip" data-tip="g4">G4</span></td></tr>
+      <tr><td><span class="tip" data-tip="s10">S10 <span class="en">Package + release</span><span class="zh">发布包 + 上线</span></span></td><td><span class="en">PR · live verification · distribution package</span><span class="zh">PR · 上线核验 · 分发包</span></td><td><span class="role"><span class="en">Production editor + art director; <b>managing editor · human</b> at G5</span><span class="zh">制作编辑 + 美术总监；G5 由<b>执行主编 · 人</b></span></span> <span class="gate tip" data-tip="g5">G5</span></td></tr>
+      <tr><td><span class="tip" data-tip="s11">S11 <span class="en">Distribute</span><span class="zh">分发</span></span></td><td><span class="en">per-platform posts · Discourse thread · metrics baseline</span><span class="zh">各平台帖子 · Discourse 帖 · 指标基线</span></td><td><span class="role"><span class="en">Audience editor; <b>a human posts</b></span><span class="zh">受众编辑；<b>由人发布</b></span></span></td></tr>
+      <tr><td><span class="tip" data-tip="s12">S12 <span class="en">Maintain</span><span class="zh">维护</span></span></td><td><span class="en">re-verified, corrected or retired page · a yearly revision quota and a dated annual sweep</span><span class="zh">重审、更正或下线的页面 · 年度复审配额与带日期的年度扫描</span></td><td><span class="role"><span class="en">Readers’ editor; <b>editor-in-chief · human</b> approves corrections</span><span class="zh">读者编辑；更正由<b>主编 · 人</b>批准</span></span></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -987,6 +987,16 @@ flowchart LR
     <li>World Book Encyclopedia 2025 — https://www.worldbook.com/world-book-encyclopedia-2025</li>
     <li>Wikipedia, World Book Encyclopedia — https://en.wikipedia.org/wiki/World_Book_Encyclopedia</li>
     <li>人民日报海外版，《中国大百科全书》第三版集中发布 (2023, not opened) — http://paper.people.com.cn/rmrbhwb/html/2023-02/22/content_25966482.htm</li>
+    <li>Wikipedia, Editor-in-chief — https://en.wikipedia.org/wiki/Editor-in-chief</li>
+    <li>Wikipedia, Managing editor — https://en.wikipedia.org/wiki/Managing_editor</li>
+    <li>Wikipedia, Assignment editor — https://en.wikipedia.org/wiki/Assignment_editor</li>
+    <li>Wikipedia, Copy editing — https://en.wikipedia.org/wiki/Copy_editing</li>
+    <li>Wikipedia, Fact-checking — https://en.wikipedia.org/wiki/Fact-checking</li>
+    <li>Wikipedia, Art director — https://en.wikipedia.org/wiki/Art_director</li>
+    <li>Wikipedia, Editorial board — https://en.wikipedia.org/wiki/Editorial_board</li>
+    <li>The Globe and Mail, What does a standards editor do? (2023) — https://www.theglobeandmail.com/standards-editor/article-what-does-a-standards-editor-do/</li>
+    <li>Reporters Committee, A Reporter’s Guide to Pre-Publication Review — https://www.rcfp.org/resources/pre-publication-review-guide/</li>
+    <li>Nieman Lab, Audience development roles broaden further (2021) — https://www.niemanlab.org/2021/12/audience-development-roles-broaden-further/</li>
     <li>BBC synthetic voice labeling — https://voicebot.ai/2020/11/17/bbc-releases-synthetic-voice-newsreader-for-online-articles/</li>
   </ul>
 </details>
@@ -997,8 +1007,8 @@ flowchart LR
 <script>
 (function(){
   var TIPS = {
-    mast:{en:"Role names follow the desks in the appendix: the editor-in-chief and the Monday meeting (The Economist), the backfield editor and copy desk (The New York Times), the standards editor (NYT, The Wall Street Journal), the research editor and checker (The New Yorker, National Geographic), the readers’ editor (The Guardian), the audience editor (a common digital-newsroom title). Agent roles are personas with profile pages: the staff writers and locale editors are the existing author and translator personas; the editorial-board personas come from the editorial-board skill. Humans hold the five gates. The standards editor for G3 is the open decision in Q2.",
-          zh:"角色名沿用附录里的编辑台：主编与周一晨会（《经济学人》），后场编辑与文字台（《纽约时报》），标准编辑（NYT、《华尔街日报》），研究编辑与核查员（《纽约客》、《国家地理》），读者编辑（《卫报》），受众编辑（数字编辑部常见职位）。agent 角色都是有个人页的 persona：撰稿人与各语言编辑是现有的作者与译者 persona；编委会 persona 来自 editorial-board skill。五个闸口由人把守。G3 的标准编辑由谁担任是 Q2 待定项。"},
+    mast:{en:"Titles follow newsroom convention, checked against public definitions. Editor-in-chief: “A publication’s editorial leader who has final responsibility for its operations and policies”, also styled executive editor (Wikipedia). Managing editor: “oversees production of a publication”, “reports directly to the editor-in-chief”, enforces deadlines and approves stories (Wikipedia). Assignment editor: one “who selects, develops, and plans reporting assignments” (Wikipedia); the Times’ word for the editor who shapes a story is backfield editor, a house term for an assigning editor (Poynter 2017). Copy editor, sub-editor in the UK: grammar, style, accuracy and “headline writing” (Wikipedia). Fact-checker: “verify that the names, dates, and facts in an article or book are correct”; The New Yorker had 16 checkers in 2003, Der Spiegel a 70-person department (Wikipedia); National Geographic calls the role research editor. Standards editor: works “independently from the newsroom” on reader questions, sourcing disputes and corrections; the same job is “ombudsman or ombud, as at the CBC; readers’ editor, as at The Guardian” (The Globe and Mail, 2023). Legal review is pre-publication review by media counsel: “reviewing news articles, scripts, and footage to address legal concerns prior to publication” (Reporters Committee). Art director: “mostly responsible for the visual look and feel of the publication” (Wikipedia). Audience editor: the audience-development role that gets “stories in front of more readers” (Nieman Lab). One correction to an earlier draft: a newspaper’s editorial board is “charged with implementing a publication’s approach to editorials and other opinion pieces” (Wikipedia), so the story-vetting session here is called the editorial meeting or pitch meeting, as at The Economist, NPR and This American Life.<span class='src'>en.wikipedia.org (Editor-in-chief · Managing editor · Assignment editor · Copy editing · Fact-checking · Art director · Editorial board) · poynter.org 2017 · theglobeandmail.com 2023 · rcfp.org · niemanlab.org 2021</span>",
+         zh:"头衔按编辑部通用叫法，并对照公开定义核实。主编（Editor-in-chief）：“对出版物的运作与政策负最终责任的编辑负责人”，也称 executive editor（维基百科）。执行主编（Managing editor）：“统筹出版物的生产”，“直接向主编汇报”，执行截稿并批准稿件（维基百科）。派题编辑（Assignment editor）：“遴选、发展并规划采访任务”的编辑（维基百科）；《纽约时报》把负责塑造一篇稿子的编辑叫 backfield editor，是 assigning editor 的内部叫法（Poynter 2017），中文对应责任编辑。文字编辑（Copy editor，英国称 sub-editor）：文法、风格、准确性与“标题写作”（维基百科）。事实核查员（Fact-checker）：“核实文章或书中的人名、日期与事实是否正确”；《纽约客》2003 年有 16 名核查员，《明镜》有 70 人的核查部门（维基百科）；《国家地理》称之为研究编辑。标准编辑（Standards editor）：“独立于编辑部”处理读者疑问、信源争议与更正；同一职位“在 CBC 叫 ombudsman，在《卫报》叫 readers’ editor”（《环球邮报》2023）。法务审读即媒体律师的发布前审读：“在发布前审阅稿件、脚本与素材以处理法律风险”（记者委员会）。美术总监（Art director）：“主要负责出版物的视觉观感”（维基百科）。受众编辑（Audience editor）：让“报道触达更多读者”的受众发展职位（Nieman Lab）。对前一版的一处更正：报社的 editorial board 是“负责社论与评论立场”的机构（维基百科），所以这里审选题的会议改称选题会（editorial meeting / pitch meeting），如《经济学人》、NPR、This American Life 的叫法。<span class='src'>en.wikipedia.org（Editor-in-chief · Managing editor · Assignment editor · Copy editing · Fact-checking · Art director · Editorial board）· poynter.org 2017 · theglobeandmail.com 2023 · rcfp.org · niemanlab.org 2021</span>"},
     ng1:{en:"Marisa Larson, former Senior Editorial Researcher at National Geographic, in Hidden Compass: “Usually the author has sent me their sources, so I’ll look at what they used to get their facts.” and “I always try to go with the primary source… I use primary sources as much as possible.” Our source ledger travels from S2 to S6 for the same reason.<span class='src'>hiddencompass.net/how-do-you-check-a-fact</span>",
          zh:"《国家地理》前高级编辑研究员 Marisa Larson 在 Hidden Compass 访谈中：“通常作者已经把信源发给我，我会看他们据以得出事实的材料。”以及“我总是尽量找一手信源……尽可能用一手信源。”我们的信源账本从 S2 一路带到 S6，理由相同。<span class='src'>hiddencompass.net/how-do-you-check-a-fact</span>"},
     ng2:{en:"Larson: “I introduce myself, explain that I’m fact-checking this article and have a few questions.” The Knight Science Journalism report (MIT, June 2018) records that National Geographic no longer lets checkers share text with sources; magazine fact-checker Heidi Schultz: “I would like to go back to being able to send out quotes over e-mail as well as sections of text without having to paraphrase them.” We do not call sources at all; see the differences list.<span class='src'>hiddencompass.net · moore.org, The State of Fact-Checking in Science Journalism (2018), section 5.3.c</span>",
@@ -1045,8 +1055,8 @@ flowchart LR
             zh:"99% Invisible 在立项前先批“进一步研究的预算”；NPR 在 pitch 被接受的那一刻就分配 slug、时长和稿费。我们的 THIN 判定资助一次定向补充，简报在 G1 时锁定字数与工作量单位。"},
     "ts-r3":{en:"The three pitch guides overlap almost completely: what the story is and why this audience cares (NPR), the arc, characters and big idea (99% Invisible), the evidence in hand, feasibility and why us (ProPublica). The S2 pitch memo carries exactly those fields plus the focus statement.",
             zh:"三份 pitch 指南几乎完全重叠：故事是什么、为何这群受众在乎（NPR），叙事弧、人物与大观念（99% Invisible），已掌握的证据、可行性与为什么是我们（ProPublica）。S2 立项稿正是这些字段加上聚焦句。"},
-    s3d:{en:"Borrowed from The Economist’s open debate, where “Anyone can ask you questions or challenge your argument”, and run as a multi-persona agent debate on the pitch before the human reads it. Roles reuse the existing editorial-board skill (editor-in-chief, planning editor, fact-checker, devil’s advocate, reader representative, plus one domain expert chosen per topic); the reader representative speaks for the brief’s persona. Output: a one-page summary with the strongest case for, the strongest objection, what evidence would change the verdict, and a recommended angle. The human reads pitch plus summary, never the transcript. Cost about 0.5 agent units per pitch, so it runs only on pitches that passed sufficiency.<span class='src'>atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals · ~/.claude/skills/xinbenlv-lifeos-editorial-board/references/roles</span>",
-         zh:"借自《经济学人》的公开辩论——“任何人都可以质疑或挑战你的论点”——在人阅读之前，对 pitch 跑一轮多 persona 的 agent 辩论。角色复用现有 editorial-board skill（主编、策划编辑、事实核查员、反方辩手、读者代表，再按题目加一位领域专家）；读者代表替简报中的 persona 发声。产物：一页摘要，含最强的支持理由、最强的反对意见、什么证据会改变结论、推荐角度。人只读立项稿加摘要，不读辩论记录。每个 pitch 约 0.5 个 agent 单位，所以只对通过充分度判定的 pitch 运行。<span class='src'>atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals · ~/.claude/skills/xinbenlv-lifeos-editorial-board/references/roles</span>"},
+    s3d:{en:"Borrowed from The Economist’s open debate, where “Anyone can ask you questions or challenge your argument”, and run as a multi-persona editorial meeting on the pitch before the human reads it. Personas reuse the existing editorial-board skill’s role prompts (an editor’s chair, an assignment editor, a fact-checker, a devil’s advocate, a reader representative, plus one domain expert chosen per topic); the reader representative speaks for the brief’s persona. Output: a one-page summary with the strongest case for, the strongest objection, what evidence would change the verdict, and a recommended angle. The human reads pitch plus summary, never the transcript. Cost about 0.5 agent units per pitch, so it runs only on pitches that passed sufficiency.<span class='src'>atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals · ~/.claude/skills/xinbenlv-lifeos-editorial-board/references/roles</span>",
+         zh:"借自《经济学人》的公开辩论——“任何人都可以质疑或挑战你的论点”——在人阅读之前，对 pitch 开一场多 persona 的选题会。persona 复用现有 editorial-board skill 的角色提示（主编席、派题编辑、事实核查员、反方辩手、读者代表，再按题目加一位领域专家）；读者代表替简报中的 persona 发声。产物：一页摘要，含最强的支持理由、最强的反对意见、什么证据会改变结论、推荐角度。人只读立项稿加摘要，不读辩论记录。每个 pitch 约 0.5 个 agent 单位，所以只对通过充分度判定的 pitch 运行。<span class='src'>atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals · ~/.claude/skills/xinbenlv-lifeos-editorial-board/references/roles</span>"},
     wsj1:{en:"Dow Jones Code of Conduct, as reproduced by Slate (Jack Shafer, 2007-05-29; dowjones.com blocked our fetch): “Our facts are accurate and fairly presented; Our analyses represent our best independent judgments rather than our preferences, or those of our sources, advertisers or information providers.” and “There are no hidden agendas in any of our journalistic undertakings.” Our Tier X rule (a vendor speaks only for itself) and the ANALYSIS label in the fact-check report follow the same line.<span class='src'>slate.com/news-and-politics/2007/05/would-rupert-murdoch-uphold-the-dow-jones-code-of-conduct.html</span>",
           zh:"Dow Jones 行为准则（经 Slate 转引，Jack Shafer，2007-05-29；dowjones.com 拦截了抓取）：“我们的事实准确且公允呈现；我们的分析是最佳独立判断，而不是我们的偏好，或信源、广告商、信息提供方的偏好。”以及“我们的任何新闻工作都没有隐藏议程。”我们的 X 级信源规则（厂商只能替自己说话）和勘定报告里的 ANALYSIS 标签遵循同一原则。<span class='src'>slate.com/news-and-politics/2007/05/would-rupert-murdoch-uphold-the-dow-jones-code-of-conduct.html</span>"},
     wsj2:{en:"Chip Scanlan, Poynter (2003-05-19): “The Wall Street Journal is home to a form best known as the ‘nut graf’ story”; “The nut graf tells the reader what the writer is up to; it delivers a promise of the story’s content and message.”; “It justifies the story by telling readers why they should care.” In our chain the S3 focus statement is the nut graf in embryo; S7 places it right after the lead, which also satisfies the rule that the lede answers the search intent in the first 80 words.<span class='src'>poynter.org/archive/2003/the-nut-graf-part-i</span>",
