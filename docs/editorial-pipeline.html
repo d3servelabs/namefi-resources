@@ -139,23 +139,43 @@ body.lang-zh{font-size:16px}
 flowchart TB
   subgraph P1["PLAN · planning desk"]
     direction LR
-    S1["S1 Discover: briefs + open intake"] --> S2["S2 Source-scout: pitch + focus statement"] --> S3["S3 Debate, green-light · G1"]
+    S1["`**S1 Discover**
+briefs + open intake
+Planning editor · agent`"] --> S2["`**S2 Source-scout**
+pitch memo + focus statement
+Researcher · agent`"] --> S3["`**S3 Debate, green-light · G1**
+slug, length, budget on approval
+Editorial board → Editor-in-chief`"]
     S3 -. THIN: small budget to develop .-> S2
   end
   subgraph P2["MAKE · writing and research desks"]
     direction LR
-    S4["S4 Outline"] --> S5["S5 Draft (en)"] --> S6["S6 Fact-check report"] --> S7["S7 Copy edit"] --> S8["S8 Sign-off · G2"]
+    S4["`**S4 Outline**
+Backfield editor · agent`"] --> S5["`**S5 Draft (en)**
+Staff writer · agent`"] --> S6["`**S6 Fact-check**
+Research editor · agent
+Standards editor · G3`"] --> S7["`**S7 Copy edit**
+Copy editor · agent`"] --> S8["`**S8 Sign-off · G2**
+Editor-in-chief · human`"]
   end
   subgraph P3["SHIP · locale, production and audience desks"]
     direction LR
-    S9["S9 Localize ×9 · G4"] --> S10["S10 Package + release · G5"] --> S11["S11 Distribute"]
+    S9["`**S9 Localize ×9**
+Locale editors · agent
+zh-CN editor · G4`"] --> S10["`**S10 Package + release**
+Production and art desk · agent
+Managing editor · G5`"] --> S11["`**S11 Distribute**
+Audience editor · agent
+human posts`"]
   end
   subgraph P4["MAINTAIN · readers’ editor"]
     direction LR
-    S12["S12 Refresh, corrections, yearly sweep"]
+    S12["`**S12 Refresh, corrections**
+yearly sweep
+Readers’ editor · agent
+Editor-in-chief approves`"]
   end
-  P1 -- green-light: slug, length, budget --> P2
-  P2 --> P3 --> P4
+  P1 --> P2 --> P3 --> P4
   P4 -. refresh-due .-> P1
   classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
   classDef part fill:#F9F9F7,stroke:#B5301F,color:#1B1D1F,stroke-dasharray:4 3
@@ -171,23 +191,43 @@ flowchart TB
 flowchart TB
   subgraph P1["选题 · 策划台"]
     direction LR
-    S1["S1 发现：简报 + 公开征题"] --> S2["S2 信源勘探：立项稿 + 聚焦句"] --> S3["S3 辩论、立项 · G1"]
+    S1["`**S1 发现**
+简报 + 公开征题
+策划编辑 · agent`"] --> S2["`**S2 信源勘探**
+立项稿 + 聚焦句
+研究员 · agent`"] --> S3["`**S3 辩论、立项 · G1**
+立项即分配 slug、字数、预算
+编委会 → 主编`"]
     S3 -. THIN：小预算继续开发 .-> S2
   end
   subgraph P2["创作 · 写作与研究台"]
     direction LR
-    S4["S4 大纲"] --> S5["S5 撰稿（英文）"] --> S6["S6 事实勘定 · 勘定报告"] --> S7["S7 行文修辞"] --> S8["S8 审阅定稿 · G2"]
+    S4["`**S4 大纲**
+后场编辑 · agent`"] --> S5["`**S5 撰稿（英文）**
+撰稿人 · agent`"] --> S6["`**S6 事实勘定**
+研究编辑 · agent
+标准编辑 · G3`"] --> S7["`**S7 行文修辞**
+文字编辑 · agent`"] --> S8["`**S8 审阅定稿 · G2**
+主编 · 人`"]
   end
   subgraph P3["发布 · 语言、制作与受众台"]
     direction LR
-    S9["S9 本地化 ×9 · G4"] --> S10["S10 发布包 + 上线 · G5"] --> S11["S11 分发"]
+    S9["`**S9 本地化 ×9**
+各语言编辑 · agent
+zh-CN 编辑 · G4`"] --> S10["`**S10 发布包 + 上线**
+制作与美术编辑 · agent
+执行主编 · G5`"] --> S11["`**S11 分发**
+受众编辑 · agent 起草
+人发布`"]
   end
   subgraph P4["维护 · 读者编辑"]
     direction LR
-    S12["S12 刷新、更正、年度扫描"]
+    S12["`**S12 刷新、更正**
+年度扫描
+读者编辑 · agent
+主编批准`"]
   end
-  P1 -- 立项：分配 slug、字数、预算 --> P2
-  P2 --> P3 --> P4
+  P1 --> P2 --> P3 --> P4
   P4 -. 刷新到期 .-> P1
   classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
   classDef part fill:#F9F9F7,stroke:#B5301F,color:#1B1D1F,stroke-dasharray:4 3
