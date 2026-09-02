@@ -85,6 +85,17 @@ body.lang-zh{font-size:16px}
 #tipbox a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 #tipbox .src{display:block;margin-top:8px;font:400 12px/1.5 var(--mono);opacity:.8}
 .note{font-size:14px;color:var(--muted)}
+.desk{margin:30px 0 6px}
+.desk h3{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin:0 0 4px}
+.mono-tag{font:500 11px/1 var(--mono);color:var(--accent);letter-spacing:.04em}
+.plain li{padding:6px 0;font-size:15px;line-height:1.5}
+.plain .to{font:500 11px/1 var(--mono);color:var(--muted);margin-left:8px;white-space:nowrap}
+.map li{display:grid;grid-template-columns:1fr 13em 9em;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14.5px;align-items:baseline}
+.map li:first-child{border-top:1px solid var(--ink)}
+.map .src{color:var(--muted)}
+.map .to{font:500 12px/1.4 var(--mono);color:var(--accent)}
+@media (max-width:640px){.map li{grid-template-columns:1fr}}
+
 @media (prefers-reduced-motion: reduce){#tipbox{transition:none}}
 @media (max-width:640px){h1{font-size:34px}.page{padding:36px 18px 72px}header{flex-direction:column}.langsel{align-items:flex-start}}
 </style>
@@ -335,6 +346,278 @@ effort     → capacity fitting only    (never in the rank key)</div>
   </ul>
 </section>
 
+
+<section id="appendix">
+  <p class="eyebrow"><span class="en">Appendix</span><span class="zh">附录</span></p>
+  <h2><span class="en">Lessons from other newsrooms: how the best desks operate</span><span class="zh">他山之石：别的编辑部怎样运作</span></h2>
+  <p class="note"><span class="en">Chosen for their resemblance to our model: a small desk, secondary material, a separate check before publication, public corrections. Red nodes are where a person decides. Each line names the station that borrows it.</span><span class="zh">选取标准是与我们模式的相似度：小编辑台、二手素材、发布前独立核查、公开更正。红色节点是人拍板的环节。每条末尾标注我们哪个工位借鉴了它。</span></p>
+
+  <div class="desk">
+    <h3><span class="en">The New Yorker · the checking department</span><span class="zh">《纽约客》· 事实核查部</span><span class="mono-tag">→ S6</span></h3>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Writer's galley"] --> B["Checker marks every fact"] --> C["Re-verifies from the sources"] --> D{"Holds up?"}
+  D -- yes --> E["Pencil tick"]
+  D -- no --> F["Deleted"]
+  E --> G["Back to writer and editor"]
+  F --> G
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C,D human
+  class A,E,F,G agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["作者清样"] --> B["核查员标出每个含事实的词"] --> C["从信源重新核实"] --> D{"站得住？"}
+  D -- 是 --> E["铅笔勾"]
+  D -- 否 --> F["删除"]
+  E --> G["清样退回作者与编辑"]
+  F --> G
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C,D human
+  class A,E,F,G agent
+</pre>
+</div>
+</div>
+    <ul class="plain">
+    <li><span class="tip" data-tip="ny1"><span class="en">A checker who is not the writer reads with a pencil.</span><span class="zh">核查员不是作者本人，拿着铅笔逐词读。</span></span><span class="to">S6</span></li>
+    <li><span class="tip" data-tip="ny2"><span class="en">Unverifiable means deleted, not softened.</span><span class="zh">核实不了就删，不是改软。</span></span><span class="to">S6 REMOVED</span></li>
+    <li><span class="tip" data-tip="ny3"><span class="en">Re-verify from the source, not from the draft; never read quotes back.</span><span class="zh">从信源重新核实，而不是从草稿；不向受访者复述引语。</span></span><span class="to">S6</span></li>
+    <li><span class="tip" data-tip="ny4"><span class="en">The writer hands over the sources; the checker asks what worries them most.</span><span class="zh">作者交出信源，核查员问作者最担心哪一处。</span></span><span class="to">S2 · S6</span></li>
+    </ul>
+  </div>
+
+  <div class="desk">
+    <h3><span class="en">Reuters · the desk</span><span class="zh">路透社 · 编辑台</span><span class="mono-tag">→ S8 · corrections</span></h3>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Reporter files"] --> B["Desk coaches, does not rewrite"] --> C{"Substantive change?"}
+  C -- yes --> R["Back to the reporter"] --> B
+  C -- no --> D["Published"] --> E{"Error found?"}
+  E -- substantive --> F["CORRECTED"]
+  E -- minor --> G["REFILE"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C,E human
+  class A,R,D,F,G agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["记者发稿"] --> B["编辑台引导：教练式，不代写"] --> C{"实质改动？"}
+  C -- 是 --> R["交回记者"] --> B
+  C -- 否 --> D["发布"] --> E{"发现错误？"}
+  E -- 实质错误 --> F["CORRECTED"]
+  E -- 轻微 --> G["REFILE"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C,E human
+  class A,R,D,F,G agent
+</pre>
+</div>
+</div>
+    <ul class="plain">
+    <li><span class="tip" data-tip="re1"><span class="en">First, but above all right.</span><span class="zh">抢先，但首先要对。</span></span><span class="to">Principle 2</span></li>
+    <li><span class="tip" data-tip="re2"><span class="en">Two sources beat one; a single-source story needs a named approver.</span><span class="zh">两个信源胜过一个；单一信源稿件需要具名批准。</span></span><span class="to">S3 THIN</span></li>
+    <li><span class="tip" data-tip="re3"><span class="en">The desk coaches; substantive changes go back to the reporter.</span><span class="zh">编辑台是教练；实质改动交回记者。</span></span><span class="to">S8</span></li>
+    <li><span class="tip" data-tip="re4"><span class="en">CORRECTED for substantive errors, REFILE for minor ones; an update never overwrites a mistake.</span><span class="zh">实质错误发 CORRECTED，轻微错误发 REFILE；更新绝不覆盖错误。</span></span><span class="to">Corrections</span></li>
+    <li><span class="tip" data-tip="re5"><span class="en">Name the rival outlet when you use its reporting.</span><span class="zh">引用同行媒体的报道时点名出处。</span></span><span class="to">Tiers</span></li>
+    </ul>
+  </div>
+
+  <div class="desk">
+    <h3><span class="en">The New York Times · editing layers</span><span class="zh">《纽约时报》· 编辑层级</span><span class="mono-tag">→ S5 · S8 · corrections</span></h3>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Reporter checks own facts"] --> B["Backfield editor: structure"] --> C["Copy desk: accuracy, headline"] --> D["Standards editor"] --> E["Published"]
+  E --> F["Correction: errors of fact"]
+  E --> G["Editors' note: judgment, fairness"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C,D human
+  class A,E,F,G agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["记者自查事实"] --> B["后场编辑：结构"] --> C["文字台：准确性、标题"] --> D["标准编辑"] --> E["发布"]
+  E --> F["更正：事实错误"]
+  E --> G["编者按：判断与公正"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C,D human
+  class A,E,F,G agent
+</pre>
+</div>
+</div>
+    <ul class="plain">
+    <li><span class="tip" data-tip="nyt1"><span class="en">Writers are their own principal fact checkers; the desk verifies on request.</span><span class="zh">作者是自己的首要核查人；编辑台按需核实。</span></span><span class="to">S5 · S6</span></li>
+    <li><span class="tip" data-tip="nyt2"><span class="en">Anonymous sourcing needs a department head and an editor who knows the source.</span><span class="zh">匿名信源须部门主管批准，且至少一位编辑知道信源身份。</span></span><span class="to">S3 THIN</span></li>
+    <li><span class="tip" data-tip="nyt3"><span class="en">Attribution to another outlet is not a license to publish unverified material.</span><span class="zh">注明出自其他媒体，不等于可以发布未经核实的材料。</span></span><span class="to">Tiers</span></li>
+    <li><span class="tip" data-tip="nyt4"><span class="en">Corrections for errors of fact; editors’ notes for judgment and fairness.</span><span class="zh">更正针对事实错误；编者按针对判断与公正。</span></span><span class="to">Corrections</span></li>
+    </ul>
+  </div>
+
+  <div class="desk">
+    <h3><span class="en">The Economist · the Monday meeting</span><span class="zh">《经济学人》· 周一晨会</span><span class="mono-tag">→ S3 · S7</span></h3>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Monday meeting: anyone pitches"] --> B["Open debate: anyone can challenge the argument"] --> C["Written"] --> D["Editor edits"] --> E["Published unsigned: one collective voice"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class A,B,D human
+  class C,E agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["周一晨会：任何人都可以 pitch"] --> B["公开辩论：任何人都可以挑战论点"] --> C["写稿"] --> D["主编编辑"] --> E["不署名发布：一个集体声音"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class A,B,D human
+  class C,E agent
+</pre>
+</div>
+</div>
+    <ul class="plain">
+    <li><span class="tip" data-tip="ec1"><span class="en">One weekly meeting where anyone pitches and anyone can challenge.</span><span class="zh">每周一次会议，任何人可以 pitch，任何人可以挑战。</span></span><span class="to">S3 G1</span></li>
+    <li><span class="tip" data-tip="ec2"><span class="en">One collective voice, no bylines.</span><span class="zh">一个集体声音，不署名。</span></span><span class="to">House voice</span></li>
+    <li><span class="tip" data-tip="ec3"><span class="en">Clarity of writing follows clarity of thought.</span><span class="zh">文字清晰来自思路清晰。</span></span><span class="to">S7</span></li>
+    </ul>
+  </div>
+
+  <div class="desk">
+    <h3><span class="en">NPR · pitch to air</span><span class="zh">NPR · 从 pitch 到播出</span><span class="mono-tag">→ S2 · S4 · S7 · S8</span></h3>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Pitch: 3 to 4 sentences"] --> B["Focus statement: one sentence"] --> C["Outline"] --> D["Draft"] --> E["Macro edit"] --> F["Micro edit"] --> G["Flow edit"]
+  D -. drifted? check in .-> B
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,E,F,G human
+  class A,C,D agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Pitch：3 到 4 句"] --> B["聚焦句：一句话"] --> C["大纲"] --> D["初稿"] --> E["宏观编辑"] --> F["微观编辑"] --> G["流畅度编辑"]
+  D -. 跑偏？回头对齐 .-> B
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,E,F,G human
+  class A,C,D agent
+</pre>
+</div>
+</div>
+    <ul class="plain">
+    <li><span class="tip" data-tip="np1"><span class="en">A pitch is three or four sentences: what is at stake, what is surprising, the peg.</span><span class="zh">pitch 只有三四句：利害何在、惊奇何在、新闻由头。</span></span><span class="to">S2 pitch memo</span></li>
+    <li><span class="tip" data-tip="np2"><span class="en">A one-sentence focus statement before writing; check in if the story drifts.</span><span class="zh">动笔前一句话聚焦；稿子跑偏就回头对齐。</span></span><span class="to">S3 brief</span></li>
+    <li><span class="tip" data-tip="np3"><span class="en">Two edits at different altitudes: macro first, then micro.</span><span class="zh">两次不同高度的编辑：先宏观，后微观。</span></span><span class="to">S7 · S8</span></li>
+    <li><span class="tip" data-tip="np4"><span class="en">No fact-checkers; reporters check their own facts and editors help.</span><span class="zh">没有专职核查员；记者自查，编辑协助。</span></span><span class="to">S6 added</span></li>
+    </ul>
+  </div>
+
+  <div class="desk">
+    <h3><span class="en">Cloudflare · launch-week content</span><span class="zh">Cloudflare · 发布周内容</span><span class="mono-tag">→ S1 · S8 · S10 · S12</span></h3>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Call for ideas, months ahead"] --> B["Early peer review with demos"] --> C["Preview per commit"] --> D["Launch week"] --> E["Modified date shown"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B human
+  class A,C,D,E agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["提前数月征集选题"] --> B["早期同行评审，附 demo"] --> C["每次提交有预览"] --> D["发布周"] --> E["显示修改日期"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B human
+  class A,C,D,E agent
+</pre>
+</div>
+</div>
+    <ul class="plain">
+    <li><span class="tip" data-tip="cf1"><span class="en">Launch-week topics are collected months ahead across teams.</span><span class="zh">发布周选题提前数月向各团队征集。</span></span><span class="to">S1 calendar</span></li>
+    <li><span class="tip" data-tip="cf2"><span class="en">Early peer review from other product areas, engineers and leadership, with demos.</span><span class="zh">来自其他产品线、工程师和高管的早期评审，附 demo。</span></span><span class="to">S8 reviewers</span></li>
+    <li><span class="tip" data-tip="cf3"><span class="en">A preview build on every commit; no bot closes stale drafts.</span><span class="zh">每次提交都有预览；不用机器人关闭久置草稿。</span></span><span class="to">S10</span></li>
+    <li><span class="tip" data-tip="cf4"><span class="en">Updated posts show their modified date.</span><span class="zh">更新过的文章显示修改日期。</span></span><span class="to">S12</span></li>
+    </ul>
+  </div>
+
+  <h3 class="en">More desks, one line each</h3><h3 class="zh">其他编辑部，各一行</h3>
+  <ul class="plain">
+    <li><span class="tip" data-tip="ap1"><span class="en">AP: pickups are re-reported or confirmed, rewritten and credited; corrections are labeled corrections.</span><span class="zh">AP：转载稿要自行核实或确认、重写并注明出处；更正必须标明为更正。</span></span><span class="to">S2 · Corrections</span></li>
+    <li><span class="tip" data-tip="ap2"><span class="en">AP: generative AI output is unvetted source material; a journalist edits everything before readers see it.</span><span class="zh">AP：生成式 AI 输出是未经核实的素材；任何内容到读者手上之前必须由记者编辑。</span></span><span class="to">S6 · S8</span></li>
+    <li><span class="tip" data-tip="bbc1"><span class="en">BBC: due accuracy over speed; say what you could not verify; AI use transparent; a public corrections log.</span><span class="zh">BBC：应有的准确性优先于速度；说明哪些没能核实；AI 使用透明；公开更正日志。</span></span><span class="to">UNVERIFIED · Q6</span></li>
+    <li><span class="tip" data-tip="wp1"><span class="en">Wikipedia: mainly secondary sources; primary only for descriptive facts; a press release stays a press release; a perennial-sources list.</span><span class="zh">维基百科：以二手可靠信源为主；一手信源只用于描述性事实；转载的新闻稿仍是新闻稿；维护一份常见信源可靠性清单。</span></span><span class="to">Tiers</span></li>
+    <li><span class="tip" data-tip="gu1"><span class="en">Guardian and Washington Post: a readers’ editor outside the writing chain; six triage criteria; fix the text and append the note.</span><span class="zh">《卫报》与《华盛顿邮报》：写作链之外的读者编辑；六项分级标准；改正文并附说明。</span></span><span class="to">Corrections</span></li>
+    <li><span class="tip" data-tip="st1"><span class="en">Stripe: writing is reviewed like code; starter docs so no one faces a blank page.</span><span class="zh">Stripe：文字像代码一样评审；提供起始模板，没人面对空白页。</span></span><span class="to">Templates</span></li>
+    <li><span class="tip" data-tip="gh1"><span class="en">GitHub Docs: an author self-review checklist, then a label routes the PR to the review board.</span><span class="zh">GitHub Docs：作者先过自审清单，再由标签把 PR 送进评审看板。</span></span><span class="to">S10 pre-flight</span></li>
+    <li><span class="tip" data-tip="bb1"><span class="en">Bloomberg: write the headline before the lead; first, factual, fastest, final, future.</span><span class="zh">彭博：先写标题再写导语；Five Fs。</span></span><span class="to">S7</span></li>
+    <li><span class="tip" data-tip="gs1"><span class="en">Google and Microsoft style guides: a public, dated changelog governs the style guide.</span><span class="zh">Google 与 Microsoft 风格指南：用公开、带日期的变更日志治理风格指南。</span></span><span class="to">Skills changelog</span></li>
+  </ul>
+
+  <h3 class="en">What we borrow, and from whom</h3><h3 class="zh">我们借了什么，借自谁</h3>
+  <ul class="map">
+    <li><span><span class="en">Independent checker in a fresh context; unverifiable is removed</span><span class="zh">独立核查员、全新 context；核实不了就删</span></span><span class="src">The New Yorker</span><span class="to">S6</span></li>
+    <li><span><span class="en">Source ledger travels with the draft; a residual-risk section</span><span class="zh">信源账本随稿走；报告有残余风险段</span></span><span class="src">The Atlantic</span><span class="to">S2 · S6</span></li>
+    <li><span><span class="en">Substantive changes go back to the writer; two rework loops at most</span><span class="zh">实质改动退回作者；最多返工两轮</span></span><span class="src">Reuters</span><span class="to">S8</span></li>
+    <li><span><span class="en">Correction taxonomy; an update never overwrites a mistake</span><span class="zh">更正分类；更新绝不覆盖错误</span></span><span class="src">Reuters · AP</span><span class="to">Corrections</span></li>
+    <li><span><span class="en">Single-source items need a named approver</span><span class="zh">单一信源需具名批准</span></span><span class="src">Reuters · NYT · AP</span><span class="to">S3 THIN</span></li>
+    <li><span><span class="en">Attribute other outlets; attribution is not a license</span><span class="zh">注明其他媒体出处；注明不等于许可</span></span><span class="src">NYT · AP · Reuters</span><span class="to">Tiers</span></li>
+    <li><span><span class="en">One weekly meeting for green-lights</span><span class="zh">每周一次立项会</span></span><span class="src">The Economist</span><span class="to">S3</span></li>
+    <li><span><span class="en">Pitch memo plus a one-sentence focus statement</span><span class="zh">立项稿加一句话聚焦</span></span><span class="src">NPR</span><span class="to">S2 · brief</span></li>
+    <li><span><span class="en">Macro edit, then micro edit</span><span class="zh">先宏观编辑，后微观编辑</span></span><span class="src">NPR · NYT</span><span class="to">S8 · S7</span></li>
+    <li><span><span class="en">Calendar-driven topic calls; early cross-team review; preview per commit; visible modified date</span><span class="zh">按日历征题；早期跨团队评审；每次提交预览；可见修改日期</span></span><span class="src">Cloudflare</span><span class="to">S1 · S8 · S10 · S12</span></li>
+    <li><span><span class="en">Templates so no one starts blank</span><span class="zh">模板起步，不面对空白页</span></span><span class="src">Stripe</span><span class="to">brief · fact list · report</span></li>
+    <li><span><span class="en">Self-review checklist before review</span><span class="zh">送审前先自审清单</span></span><span class="src">GitHub Docs</span><span class="to">S10</span></li>
+    <li><span><span class="en">Say what you could not verify; AI use transparent</span><span class="zh">说明哪些没能核实；AI 使用透明</span></span><span class="src">BBC</span><span class="to">UNVERIFIED · Q6</span></li>
+    <li><span><span class="en">Secondary-source hierarchy; a perennial-sources list</span><span class="zh">二手信源层级；常见信源可靠性清单</span></span><span class="src">Wikipedia</span><span class="to">Tiers</span></li>
+    <li><span><span class="en">Six-criteria triage; a readers’ editor</span><span class="zh">六项分级标准；读者编辑</span></span><span class="src">Guardian · Washington Post</span><span class="to">Corrections</span></li>
+  </ul>
+
+  <h3 class="en">Where we deliberately differ</h3><h3 class="zh">我们有意不同的地方</h3>
+  <ul class="plain">
+    <li><span class="tip" data-tip="df1"><span class="en">Agents draft, which AP forbids for publishable copy; our answer is that every claim passes an independent checker and a human signs.</span><span class="zh">由 agent 起草，这是 AP 明令禁止用于可发布内容的做法；我们的对策是每条论断都经独立核查、由人签发。</span></span></li>
+    <li><span class="tip" data-tip="df2"><span class="en">No phone re-reporting: as a secondary publication, verification means opening the primary document, not calling the source.</span><span class="zh">不做电话回访：作为二手媒体，核实指打开原始文件，而不是致电当事人。</span></span></li>
+    <li><span class="tip" data-tip="df3"><span class="en">Persona bylines with a named human editor, rather than Economist anonymity or NYT reporter bylines; a settled decision.</span><span class="zh">用 persona 署名加具名人类编辑，而不是《经济学人》的匿名或 NYT 的记者署名；这是已定事项。</span></span></li>
+  </ul>
+</section>
+
 <details>
   <summary><span class="en">Sources behind the notes</span><span class="zh">注解引用的来源</span></summary>
   <ul>
@@ -383,6 +666,24 @@ effort     → capacity fitting only    (never in the rank key)</div>
     <li>Mailchimp subject lines — https://mailchimp.com/help/best-practices-for-email-subject-lines/</li>
     <li>FTC, 16 CFR 14.15 — https://www.law.cornell.edu/cfr/text/16/14.15</li>
     <li>UK CAP Code section 3 — https://www.asa.org.uk/type/non_broadcast/code_section/03.html</li>
+    <li>Reuters, Handbook of Journalism (mirror), pp. ~62 and ~68 — https://mediakar.wordpress.com/wp-content/uploads/2012/10/handbook-of-journalism-reuters.pdf</li>
+    <li>CJR, Peter Canby Delacorte lecture — https://www.cjr.org/the_delacorte_lectures/new-yorkers-fact-checker-post-truth-facts-fake-news-trump.php</li>
+    <li>The Atlantic fact-checking process (Yvonne Rolzhausen, PDF) — https://rollins.pressbooks.pub/app/uploads/sites/3/2024/08/Fact-Checking-Process-The-Atlantic-9-10-23.pdf</li>
+    <li>Poynter, NYT anonymous-sources memo 2016 — https://www.poynter.org/ethics-trust/2016/new-york-times-cracks-down-on-anonymous-sources/</li>
+    <li>Poynter, NYT copy desk 2017 — https://www.poynter.org/reporting-editing/2017/by-dismantling-its-copy-desk-the-new-york-times-is-making-a-mistake-thats-been-made-before/</li>
+    <li>Economist explainer on anonymity (via Talking Biz News) — https://talkingbiznews.com/they-talk-biz-news/why-are-there-no-bylines-in-the-economist/</li>
+    <li>Atlassian interview, Zanny Minton Beddoes — https://www.atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals</li>
+    <li>The Economist Style Guide 2015 (PDF) — http://cdn.static-economist.com/sites/default/files/store/Style_Guide_2015.pdf</li>
+    <li>Poynter, AP on anonymous sources in pickups 2011 — https://www.poynter.org/reporting-editing/2011/ap-no-opinion-or-speculation-from-anonymous-sources/</li>
+    <li>BBC corrections and clarifications log — https://www.bbc.co.uk/helpandfeedback/corrections_clarifications</li>
+    <li>Wikipedia, No original research — https://en.wikipedia.org/wiki/Wikipedia:No_original_research</li>
+    <li>Wikipedia, Perennial sources — https://en.wikipedia.org/wiki/Wikipedia:Reliable_sources/Perennial_sources</li>
+    <li>Cloudflare, Birthday Week 2024 wrap-up — https://blog.cloudflare.com/birthday-week-2024-wrap-up/</li>
+    <li>Cloudflare docs style guide, Reviews — https://developers.cloudflare.com/style-guide/how-we-docs/reviews/</li>
+    <li>GitHub docs review workflow — https://github.com/github/docs/blob/main/.github/workflows/ready-for-doc-review.yml</li>
+    <li>Knowledge at Wharton, The Bloomberg Way — https://knowledge.wharton.upenn.edu/article/the-bloomberg-way-an-inside-look-at-how-the-news-organization-covers-news/</li>
+    <li>Google style guide changelog — https://developers.google.com/style/whats-new</li>
+    <li>Microsoft Writing Style Guide — https://learn.microsoft.com/en-us/style-guide/welcome/</li>
     <li>BBC synthetic voice labeling — https://voicebot.ai/2020/11/17/bbc-releases-synthetic-voice-newsreader-for-online-articles/</li>
   </ul>
 </details>
@@ -393,6 +694,78 @@ effort     → capacity fitting only    (never in the rank key)</div>
 <script>
 (function(){
   var TIPS = {
+    ny1:{en:"John McPhee on checker Sara Lippincott: “Each word in the piece that has even a shred of fact clinging to it is scrutinized”; a fact that passes gets “a tiny pencil tick”. A 60,000-word piece “received her full-time attention for three or four weeks.” The rationale: “turning a pack of professional skeptics loose on its own galley proofs”.<span class='src'>newyorker.com/magazine/2009/02/09/checkpoints</span>",
+         zh:"John McPhee 写核查员 Sara Lippincott：“文中每个沾一点事实的词都要审查”，通过的事实得到“一个小小的铅笔勾”。一篇六万词的稿子“占用了她三四周的全部工作时间”。理由：“把一群职业怀疑论者放到自己的清样上”。<span class='src'>newyorker.com/magazine/2009/02/09/checkpoints</span>"},
+    ny2:{en:"McPhee: “If unverifiable, it would be deleted.” The writer’s TK placeholders are “forms of promissory note, and a checker is expected to pay it.” Our S6 status REMOVED is the same rule: a claim without a reachable source leaves the piece.<span class='src'>newyorker.com/magazine/2009/02/09/checkpoints</span>",
+         zh:"McPhee：“核实不了的，就删掉。”作者留下的 TK 占位是“一种期票，核查员要负责兑付”。我们 S6 的 REMOVED 状态就是这条规则：没有可达信源的论断退出稿件。<span class='src'>newyorker.com/magazine/2009/02/09/checkpoints</span>"},
+    ny3:{en:"Peter Canby, head of checking: “We then essentially take the piece apart and put it back together again.” and “When we call people on the phone, which we do all the time, we never read them their quotes.” Reading back quotes “is a surefire way to have a subject ask to rewrite them.” Our equivalent: the checker starts from the ledger and the primary document, not from the writer’s draft or reasoning.<span class='src'>cjr.org/critical_eye/fact-checking_at_the_new_yorker.php · cjr.org Delacorte lecture</span>",
+         zh:"核查部主管 Peter Canby：“我们把稿子整个拆开，再重新装回去。”以及“我们经常打电话给当事人，但从不向他们复述引语。”复述引语“必然导致对方要求改写”。我们的对应做法：核查员从账本和原始文件出发，而不是从作者草稿或推理出发。<span class='src'>cjr.org/critical_eye/fact-checking_at_the_new_yorker.php · cjr.org Delacorte lecture</span>"},
+    ny4:{en:"The Atlantic’s Yvonne Rolzhausen describes seven steps: “the author either annotates the piece with sources in footnotes or simply walks me through it”, the first question is “What is the author most worried about?”, then “underline all the facts that have to be checked in red pencil” and “Offer suggestions for alternative language that would solve each checking issue.” Our fact list and source ledger are the annotation; the report’s residual-risk section answers the worry question.<span class='src'>rollins.pressbooks.pub, Fact-Checking Process, The Atlantic (PDF)</span>",
+         zh:"《大西洋月刊》的 Yvonne Rolzhausen 描述七个步骤：“作者要么用脚注标出信源，要么直接带我过一遍”，第一个问题是“作者最担心哪一处？”，然后“用红铅笔划出所有需要核查的事实”，并“为每个核查问题提出替代表述”。我们的事实清单与信源账本就是那份标注；勘定报告的残余风险段回答“最担心哪一处”。<span class='src'>rollins.pressbooks.pub, Fact-Checking Process, The Atlantic (PDF)</span>"},
+    re1:{en:"Reuters Standards and Values: “It is our job to get it first but it is above all our job to get it right.” and “It’s better to be late than wrong.” Also “Be explicit about what you don’t know.”<span class='src'>reutersagency.com/en/about/standards-values</span>",
+         zh:"路透社《标准与价值》：“抢先是我们的工作，但首先要做对。”以及“晚一点好过错一点。”还有“明确说出你不知道的。”<span class='src'>reutersagency.com/en/about/standards-values</span>"},
+    re2:{en:"“Two or more sources are better than one.” “Single-source stories are subject to a special authorisation procedure.” Never “cite sources in the plural when we have only one.” The handbook adds that single-source approval is recorded “in the ‘edited by’ sign-off” and the informant must have first-hand knowledge. Our THIN verdict at S3 requires the same named editor approval.<span class='src'>reutersagency.com/en/about/standards-values · Reuters Handbook of Journalism</span>",
+         zh:"“两个以上信源优于一个。”“单一信源稿件需特别授权程序。”不得“只有一个信源却用复数说法”。手册补充：单一信源的批准记录在“edited by”签发栏，且线人必须有第一手信息。我们 S3 的 THIN 判定同样要求具名编辑批准。<span class='src'>reutersagency.com/en/about/standards-values · Reuters Handbook of Journalism</span>"},
+    re3:{en:"Reuters Handbook, The Desk: “The desk’s job is to guide the story as it emerges from the field. It is not the role of the desk to engage in gratuitous sub-editing.” “A great desker ‘coaches’ rather than ‘fixes’.” And: “significant changes to the factual content, interpretation, or structure of a story must be referred to the reporter.” Hence S8 sends structural problems back to S5 instead of patching them.<span class='src'>Reuters Handbook of Journalism (mirror PDF), p. ~62</span>",
+         zh:"路透手册《编辑台》：“编辑台的职责是引导稿件从一线成形，而不是随意改稿。”“优秀的编辑是‘教练’而不是‘修理工’。”并且：“对事实内容、解读或结构的重大改动必须交回记者。”所以 S8 把结构问题退回 S5，而不是就地打补丁。<span class='src'>Reuters Handbook of Journalism (mirror PDF), p. ~62</span>"},
+    re4:{en:"Handbook taxonomy: CORRECTED “whenever a substantive, factual error appears in a story or table”; REFILE for “minor factual errors … without burying them in repeats”; STORY WITHDRAWN for kills. Rule: “Repeats (or updates) should never be used to overwrite mistakes or inaccuracies.” Every correction “must always be issued by the desk”. Our four kinds map onto this.<span class='src'>Reuters Handbook of Journalism (mirror PDF), p. ~68</span>",
+         zh:"手册分类：CORRECTED 用于“稿件或表格出现实质性事实错误时”；REFILE 用于“轻微事实错误……不能埋在重发里”；STORY WITHDRAWN 用于撤稿。规则：“重发或更新绝不能用来覆盖错误。”每条更正“必须由编辑台发出”。我们的四类更正与之对应。<span class='src'>Reuters Handbook of Journalism (mirror PDF), p. ~68</span>"},
+    re5:{en:"Standards and Values: information from elsewhere is “clearly attributed in stories to the source, including when that source is a rival organisation.” Also “Reuters aims to report the facts, not rumours.”<span class='src'>reutersagency.com/en/about/standards-values</span>",
+         zh:"《标准与价值》：来自他处的信息“在稿件中明确注明来源，包括来源是竞争对手机构时”。还有“路透报道事实，不报道传言。”<span class='src'>reutersagency.com/en/about/standards-values</span>"},
+    nyt1:{en:"Guidelines on Integrity: “Writers at The Times are their own principal fact checkers and often their only ones.” On deadline a writer flags “desk, please verify”; “More obscure checks may be referred to the research desk.” The 2017 copy-desk letter called copy editors “the immune system of this newspaper”. Because our drafts come from agents, we do not rely on the writer: S6 is a separate checker.<span class='src'>nytimes.com/editorial-standards/guidelines-on-integrity · nyguild.org</span>",
+         zh:"《诚信准则》：“时报的作者是自己的首要核查人，而且往往是唯一的。”截稿时作者可标注“desk, please verify”；“更冷门的核查可交给研究台。”2017 年文字编辑的公开信称他们是“这份报纸的免疫系统”。因为我们的草稿来自 agent，不能依赖作者自查：S6 是独立核查员。<span class='src'>nytimes.com/editorial-standards/guidelines-on-integrity · nyguild.org</span>"},
+    nyt2:{en:"2016 memo (Baquet, Purdy, Corbett): “Every other use of anonymous sourcing anywhere in any story must be personally approved in advance by the department head or deputy.” “At least one editor must know the specific identity of any anonymous source before publication.” Anonymity is “reserved for situations in which the newspaper could not otherwise print information it considers newsworthy and reliable.”<span class='src'>poynter.org 2016 · nytimes.com/editorial-standards/guidelines-on-integrity</span>",
+         zh:"2016 年备忘录（Baquet、Purdy、Corbett）：“任何稿件中任何匿名信源的使用都必须事先由部门主管或副手亲自批准。”“发布前至少一位编辑必须知道匿名信源的具体身份。”匿名“仅限于否则无法刊登其认为有新闻价值且可靠的信息的情形”。<span class='src'>poynter.org 2016 · nytimes.com/editorial-standards/guidelines-on-integrity</span>"},
+    nyt3:{en:"Ethical Journalism: “When we include facts reported by another publication … but has not yet confirmed, we have a clear obligation to attribute them”; “we should credit major scoops or exclusives to the organization that broke the news”; “Attribution to another publication should not serve as license to publish unverified material”. Even AP wire copy: “we do not treat its reporting as our own.”<span class='src'>nytimes.com/editorial-standards/ethical-journalism</span>",
+         zh:"《新闻伦理》：“当我们引用其他媒体报道但尚未确认的事实时，有明确义务注明出处”；“重大独家应归功于首发机构”；“注明出自其他媒体，不能成为发布未经核实材料的许可”。即便是 AP 电稿：“我们也不把它的报道当成自己的。”<span class='src'>nytimes.com/editorial-standards/ethical-journalism</span>"},
+    nyt4:{en:"Standards editor Phil Corbett, via CJR: corrections are for “errors of fact”; editors’ notes address “questions of news judgment and fairness” and run “at the top of the original story”. Guidelines on Integrity: when unsure, “we can acknowledge that a statement was ‘imprecise’ or ‘incomplete’ even if we are not sure it was wrong.”<span class='src'>cjr.org/public_editor/nyt-correction-factual-errors-editors-note.php</span>",
+         zh:"标准编辑 Phil Corbett（经 CJR）：更正针对“事实错误”；编者按处理“新闻判断与公正性问题”，并“置于原稿顶部”。《诚信准则》：不确定时“即使不确定是否有错，也可以承认某表述‘不精确’或‘不完整’。”<span class='src'>cjr.org/public_editor/nyt-correction-factual-errors-editors-note.php</span>"},
+    ec1:{en:"Editor-in-chief Zanny Minton Beddoes: “On Monday morning people pitch ideas, they lay out what they want to say and we have a big discussion about it.” “The stories are then written and I edit them.” Elsewhere: “Anyone can pitch to write one on any subject”; “Anyone can ask you questions or challenge your argument”. Our G1 is one weekly slate reviewed the same way, on pitch memos.<span class='src'>alainelkanninterviews.com/zanny-minton-beddoes · atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals</span>",
+         zh:"主编 Zanny Minton Beddoes：“周一早上大家 pitch 想法，说明想表达什么，然后大讨论。”“稿子随后写出来，由我编辑。”另一处：“任何人都可以就任何题目 pitch”；“任何人都可以质疑或挑战你的论点”。我们的 G1 就是每周一次、基于立项稿的同类评审。<span class='src'>alainelkanninterviews.com/zanny-minton-beddoes · atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals</span>"},
+    ec2:{en:"The Economist’s own explainer: “what is written is more important than who writes it”; anonymity lets “many writers to speak with a collective voice”. Minton Beddoes: “The collective sense of values of The Economist would be undermined if you got rid of the anonymity.” We keep a house voice but chose persona bylines with a named human editor; see the differences list.<span class='src'>talkingbiznews.com/they-talk-biz-news/why-are-there-no-bylines-in-the-economist</span>",
+         zh:"《经济学人》自己的说明：“写了什么比谁写的更重要”；匿名让“许多作者以集体声音发言”。Minton Beddoes：“取消匿名会削弱《经济学人》的集体价值观。”我们保留统一的 house voice，但选择 persona 署名加具名人类编辑；见“有意不同”一节。<span class='src'>talkingbiznews.com/they-talk-biz-news/why-are-there-no-bylines-in-the-economist</span>"},
+    ec3:{en:"The Economist Style Guide (2015 edition): “Clarity of writing usually follows clarity of thought. So think what you want to say, then say it as simply as possible.” Followed by Orwell’s six rules. Our S7 pass and the deslop catalog serve the same end.<span class='src'>cdn.static-economist.com Style_Guide_2015.pdf, p. ~7</span>",
+         zh:"《经济学人风格指南》（2015 版）：“文字清晰通常来自思路清晰。先想清楚要说什么，再尽可能简单地说出来。”随后是奥威尔六条规则。我们的 S7 与 deslop 目录服务于同一目的。<span class='src'>cdn.static-economist.com Style_Guide_2015.pdf, p. ~7</span>"},
+    np1:{en:"NPR bureau chiefs: a pitch is “a 3-4 sentence treatment of the story” that must answer “What’s at stake? What’s surprising?” and include “a possible airdate and news peg”. Our pitch memo is longer (300–500 words) because it also carries the sufficiency verdict, but the questions are the same.<span class='src'>npr.org/sections/npr-training/2025/05/30/g-s1-66830</span>",
+         zh:"NPR 分社主任：pitch 是“3–4 句的处理稿”，必须回答“利害何在？惊奇何在？”并给出“可能的播出日期和新闻由头”。我们的立项稿更长（300–500 字），因为还要带信源充分度判定，但问题是一样的。<span class='src'>npr.org/sections/npr-training/2025/05/30/g-s1-66830</span>"},
+    np2:{en:"After the pitch, an initial conversation produces a “focus statement”: “ONE sentence that describes your story”, then a check-in “especially if the story begins to vary significantly from the original pitch”. Our brief carries the thesis line, and S4 sends gaps back to S2 rather than drifting.<span class='src'>npr.org/sections/npr-training/2025/05/30/g-s1-66830</span>",
+         zh:"pitch 之后先有一次谈话产出“聚焦句”：“一句话描述你的故事”，之后“尤其当稿子开始明显偏离原 pitch 时”要回头对齐。我们的简报带论点句，S4 把缺口退回 S2 而不是任其跑偏。<span class='src'>npr.org/sections/npr-training/2025/05/30/g-s1-66830</span>"},
+    np3:{en:"NPR names the passes: “First Edit (Big Picture/Macro Edit)”, “Second Edit (Finer Points/Micro Edit)”, and a third “to check for time and flow”. Poynter describes the same split at the Times: the backfield editor for structure, the copy desk for “the mechanics of writing, clarity and style, as well as accuracy”. Our S8 is the macro read, S7 the micro.<span class='src'>npr.org NPR Training · poynter.org 2017</span>",
+         zh:"NPR 给各轮命名：“第一轮（大局／宏观编辑）”，“第二轮（细节／微观编辑）”，第三轮“检查时长与流畅度”。Poynter 描述时报同样的分工：后场编辑管结构，文字台管“写作技法、清晰度、风格与准确性”。我们的 S8 是宏观读，S7 是微观读。<span class='src'>npr.org NPR Training · poynter.org 2017</span>"},
+    np4:{en:"“NPR doesn’t employ fact-checkers! Reporters check their own facts, and editors help the process.” The Times says the same of its writers. Newsrooms with human reporters can afford that; a desk whose drafts come from agents cannot, which is why S6 exists as a separate station.<span class='src'>npr.org/sections/npr-training/2025/05/30/g-s1-66830</span>",
+         zh:"“NPR 没有专职核查员！记者自己核实，编辑协助。”时报对其作者的说法相同。有人类记者的编辑部负担得起这种做法；草稿来自 agent 的编辑台不行，所以 S6 作为独立工位存在。<span class='src'>npr.org/sections/npr-training/2025/05/30/g-s1-66830</span>"},
+    cf1:{en:"Birthday Week 2024 wrap-up: “Months before Birthday Week, we invited teams to submit ideas for what to announce.” The week itself ships “dozens of blog posts”. Our S1 keeps a dated industry calendar and pre-opens prepared packages for the same reason.<span class='src'>blog.cloudflare.com/birthday-week-2024-wrap-up · birthday-week-2025-wrap-up</span>",
+         zh:"2024 年 Birthday Week 总结：“在 Birthday Week 前几个月，我们就邀请各团队提交想发布什么的想法。”那一周会发“数十篇博客”。我们的 S1 出于同样理由维护带日期的行业日历并提前开好预制包。<span class='src'>blog.cloudflare.com/birthday-week-2024-wrap-up · birthday-week-2025-wrap-up</span>"},
+    cf2:{en:"Reagan Russell (Sr. Manager, PM) on Cloudflare TV: “doing peer reviews, letting different folks from maybe other product areas, engineers, even JGC and sometimes even Dane will review blogs very early”, plus “We did demos for both Dane and John of this is something we plan on announcing at birthday week”.<span class='src'>cloudflare.tv/this-week-in-net/birthday-week-2024-behind-the-scenes-with-project-management</span>",
+         zh:"Reagan Russell（产品管理高级经理）在 Cloudflare TV：“做同行评审，让其他产品线的人、工程师，甚至 JGC，有时 Dane 本人，很早就审阅博客”，并且“我们给 Dane 和 John 都演示了准备在 birthday week 发布的东西”。<span class='src'>cloudflare.tv/this-week-in-net/birthday-week-2024-behind-the-scenes-with-project-management</span>"},
+    cf3:{en:"Cloudflare docs style guide, Reviews: “We use a GitHub action to publish preview builds for every commit on a pull request” and “We intentionally avoid the stale workflow that closes pull requests or issues that have been inactive for a specific period of time”. A reviewer may “tag others for technical or content reviews or feedback”.<span class='src'>developers.cloudflare.com/style-guide/how-we-docs/reviews</span>",
+         zh:"Cloudflare 文档风格指南《评审》：“我们用 GitHub action 为 PR 的每次提交发布预览”，并且“我们有意不用那种把一段时间不活跃的 PR 或 issue 自动关闭的 stale 流程”。评审者可以“@其他人做技术或内容评审”。<span class='src'>developers.cloudflare.com/style-guide/how-we-docs/reviews</span>"},
+    cf4:{en:"Cloudflare blog posts expose both dates: the EmDash migration post shows published 2026-08-24 and modified 2026-08-31; “How we build software at Cloudflare” shows published 2021-11-02, last modified 2026-07-15. Google asks for the same visible “Last updated” label with matching dateModified.<span class='src'>blog.cloudflare.com/cloudflare-blog-uses-emdash · blog.cloudflare.com/building-software-at-cloudflare</span>",
+         zh:"Cloudflare 博客同时显示两个日期：EmDash 迁移文显示发布于 2026-08-24、修改于 2026-08-31；“How we build software at Cloudflare”显示发布于 2021-11-02、最后修改 2026-07-15。Google 要求同样可见的“Last updated”并与 dateModified 一致。<span class='src'>blog.cloudflare.com/cloudflare-blog-uses-emdash · blog.cloudflare.com/building-software-at-cloudflare</span>"},
+    ap1:{en:"AP Statement of News Values: “AP’s basic rules for anonymous-source material apply to pickups as they do in our own reporting”; before picking up such a story “we must make a bona fide effort to get it on the record, or, at a minimum, confirm it through our own sources”; other outlets’ material is rewritten “so that the approach, content, structure and length meet our requirements” and “When the material is exclusive, controversial or sensitive, we always credit it.” Corrections: “fully, quickly and ungrudgingly”, always labeled a correction.<span class='src'>AP Statement of News Values and Principles · poynter.org 2011</span>",
+         zh:"AP《新闻价值声明》：“AP 关于匿名信源的基本规则同样适用于转载稿”；转载前“必须真诚努力取得公开表态，至少通过自己的信源确认”；他家素材要重写“使方法、内容、结构和篇幅符合我们的要求”，并且“素材为独家、有争议或敏感时，我们一律注明出处”。更正要“完整、迅速、毫不勉强”，且必须标明为更正。<span class='src'>AP Statement of News Values and Principles · poynter.org 2011</span>"},
+    ap2:{en:"AP 2023 (Amanda Barrett, VP Standards): “Any output from a generative AI tool should be treated as unvetted source material.” Staff “do not use it to create publishable content.” A 2026 update, reported second-hand: “Every AI-generated output must be reviewed and edited by an AP journalist before anything reaches readers” and disclosure “when generative AI materially contributes to published work”.<span class='src'>poynter.org 2023 · mediacopilot.ai 2026-07-24 (secondary)</span>",
+         zh:"AP 2023 年（标准副总裁 Amanda Barrett）：“生成式 AI 的任何输出都应视为未经核实的素材。”员工“不用它生产可发布内容”。2026 年更新（二手报道）：“任何 AI 生成内容在到达读者之前必须由 AP 记者审阅编辑”，并在“生成式 AI 实质参与发布内容时”披露。<span class='src'>poynter.org 2023 · mediacopilot.ai 2026-07-24 (secondary)</span>"},
+    bbc1:{en:"BBC Editorial Guidelines, Accuracy: 3.2.5 “achieving due accuracy is more important than speed”; 3.4.4 “reluctant to rely on a single source”; 3.4.6 “If content producers have been unable to verify material, they should usually say so and attribute the information”; 3.4.29 “Any use of AI by the BBC must be transparent and clear to the audience”; 3.4.36 corrections should “acknowledge what was wrong, correct the error, and make it clear that the article has been amended”. The BBC keeps a public corrections and clarifications log.<span class='src'>bbc.com/editorialguidelines/guidelines/accuracy/guidelines · bbc.co.uk/helpandfeedback/corrections_clarifications</span>",
+         zh:"BBC 编辑准则《准确性》：3.2.5“达到应有的准确性比速度更重要”；3.4.4“不愿依赖单一信源”；3.4.6“若无法核实材料，通常应说明并注明出处”；3.4.29“BBC 的任何 AI 使用必须对受众透明清晰”；3.4.36 更正应“承认错在哪里、改正错误并说明文章已修改”。BBC 维护公开的更正与澄清日志。<span class='src'>bbc.com/editorialguidelines/guidelines/accuracy/guidelines · bbc.co.uk/helpandfeedback/corrections_clarifications</span>"},
+    wp1:{en:"Reliable sources: articles are “based mainly on reliable secondary sources”; “Self-published sources are largely not acceptable”; press releases reprinted by outlets “should not be treated differently than the underlying press release”. No original research: primary sources “only to make straightforward, descriptive statements of facts”; “Do not analyze, evaluate, interpret, or synthesize material found in a primary source yourself”. The perennial-sources list tiers outlets as generally reliable, no consensus, generally unreliable, deprecated, blacklisted; a Namefi equivalent is a follow-up.<span class='src'>en.wikipedia.org/wiki/Wikipedia:Reliable_sources · Wikipedia:No_original_research · Wikipedia:Reliable_sources/Perennial_sources</span>",
+         zh:"《可靠来源》：条目“主要基于可靠的二手来源”；“自行发表的来源大多不可接受”；媒体转载的新闻稿“不应与原新闻稿区别对待”。《非原创研究》：一手来源“只用于直接、描述性的事实陈述”；“不要自己分析、评价、解读或综合一手来源的材料”。常见来源清单把媒体分为普遍可靠、无共识、普遍不可靠、弃用、黑名单；Namefi 的对应清单是 follow-up。<span class='src'>en.wikipedia.org/wiki/Wikipedia:Reliable_sources · Wikipedia:No_original_research · Wikipedia:Reliable_sources/Perennial_sources</span>"},
+    gu1:{en:"Guardian readers’ editor Paul Chadwick lists six criteria: “seriousness of any potential harm; consequences if item misunderstood; urgency/timeliness/elapse of time since publication; prominence of item when first published; legal considerations; degree of reputational risk”; minor items get an online “footnote of amendment”; the column has run daily since 1997. Washington Post: “Correction: An earlier version of this story incorrectly reported …”; “revise the story to make it accurate AND append a correction”; serious at top, minor at bottom “and noted next to the error in the text”.<span class='src'>theguardian.com 2017-11-19 · poynter.org 2013</span>",
+         zh:"《卫报》读者编辑 Paul Chadwick 列出六项标准：“潜在伤害的严重性；被误解的后果；紧迫性／时效／距发布的时间；首次发布时的显著程度；法律考量；声誉风险程度”；轻微问题在线上加“修改脚注”；专栏自 1997 年起每日刊出。《华盛顿邮报》：“更正：本文早前版本错误地报道……”；“修正正文使其准确，并附上更正”；严重的置顶，轻微的置底“并在正文错误处标注”。<span class='src'>theguardian.com 2017-11-19 · poynter.org 2013</span>"},
+    st1:{en:"Dave Nunez, Stripe documentation manager: “You wouldn’t ship code without having it reviewed; your words are just as important.” Starter docs exist so “engineers aren’t forced to stare at a blank page.” Shaun Young: “I’ve never encountered a tech company of this size where writing is such a center of gravity.” Our templates: the brief, the fact list, the ledger, the fact-check report.<span class='src'>slab.com/blog/stripe-writing-culture</span>",
+         zh:"Stripe 文档经理 Dave Nunez：“代码不经评审不会上线，文字同样重要。”起始文档的存在是为了“工程师不必盯着空白页”。Shaun Young：“我没见过这种规模的科技公司把写作当成重心。”我们的模板：简报、事实清单、账本、勘定报告。<span class='src'>slab.com/blog/stripe-writing-culture</span>"},
+    gh1:{en:"GitHub Docs contributing guide: “Review the content for technical accuracy”; “Check your changes for grammar, spelling, and adherence to the Style guide”; then “A Technical Content team member will review following our standard review process.” A workflow fires on the label ready-for-doc-review and “Adds pull requests … to the docs-content review” board. Our S10 pre-flight is that checklist, and the PR is the routing.<span class='src'>docs.github.com/en/contributing · github.com/github/docs .github/workflows/ready-for-doc-review.yml</span>",
+         zh:"GitHub Docs 贡献指南：“检查内容的技术准确性”；“检查语法、拼写和风格指南符合度”；然后“技术内容团队成员按标准流程评审”。一个工作流在标签 ready-for-doc-review 出现时触发，“把 PR 加入 docs-content 评审看板”。我们的 S10 起飞检查就是那份清单，PR 就是路由。<span class='src'>docs.github.com/en/contributing · github.com/github/docs .github/workflows/ready-for-doc-review.yml</span>"},
+    bb1:{en:"The Bloomberg Way, via Knowledge at Wharton: the Five Fs are “First, Factual, Fastest, Final and take Future events into account”; “Before reporters write a word of narrative — even the lead — they should write the headline”; “There is no such thing as being first with news if we’re wrong.” Book excerpt: “Factual word. Be the most factual. Rely on nouns and verbs.”<span class='src'>knowledge.wharton.upenn.edu, The Bloomberg Way</span>",
+         zh:"《彭博之道》（经沃顿知识在线）：Five Fs 是“第一、事实、最快、最终、并考虑未来事件”；“记者在写任何叙述之前，哪怕是导语，都应先写标题”；“如果错了，就不存在第一。”书摘：“事实的文字。做最讲事实的那个。依靠名词和动词。”<span class='src'>knowledge.wharton.upenn.edu, The Bloomberg Way</span>"},
+    gs1:{en:"Google developer documentation style guide keeps a public “What’s new” page: “This page provides a summary of significant changes to the style guide”, with dated entries. Microsoft’s guide states “It replaces the Microsoft Manual of Style”, publishes a feedback address and shows its update dates. Our equivalent: date-stamped changes to the rules files and skills when a correction generalizes.<span class='src'>developers.google.com/style/whats-new · learn.microsoft.com/en-us/style-guide/welcome</span>",
+         zh:"Google 开发者文档风格指南维护公开的“What’s new”页：“本页汇总风格指南的重大变更”，条目带日期。Microsoft 指南写明“它取代了《Microsoft 风格手册》”，公布反馈邮箱并显示更新日期。我们的对应做法：更正可推广时，对规则文件和 skill 做带日期的变更。<span class='src'>developers.google.com/style/whats-new · learn.microsoft.com/en-us/style-guide/welcome</span>"},
+    df1:{en:"AP’s 2023 rule forbids using generative AI “to create publishable content” and treats its output as “unvetted source material”. We keep the second half and drop the first: agent drafts are unvetted until S6 has opened every source and G2 has signed, and Google’s guidance is followed by disclosing how content is made (Q6).<span class='src'>poynter.org 2023 · developers.google.com/search/docs/fundamentals/using-gen-ai-content</span>",
+         zh:"AP 2023 年规则禁止用生成式 AI“生产可发布内容”，并把其输出视为“未经核实的素材”。我们保留后半句、放弃前半句：agent 草稿在 S6 打开每个信源、G2 签发之前都算未核实，并按 Google 指南披露内容制作方式（Q6）。<span class='src'>poynter.org 2023 · developers.google.com/search/docs/fundamentals/using-gen-ai-content</span>"},
+    df2:{en:"The New Yorker checker’s “telephone calls ricocheted all over the United States” and Canby’s desk “will endeavor to speak to every person mentioned”. A secondary publication does not re-report; our S6 verifies by opening the registry record, the filing, the standard, the vendor’s own page. Where a claim can only be confirmed by a person, it is UNVERIFIED and does not ship.<span class='src'>newyorker.com Checkpoints · cjr.org Delacorte lecture</span>",
+         zh:"《纽约客》核查员的“电话打遍全美”，Canby 的团队“力求与文中提到的每个人对话”。二手媒体不做再采访；我们的 S6 靠打开注册局记录、法院文件、标准、厂商自家页面来核实。只能由当事人确认的论断标为 UNVERIFIED，不发。<span class='src'>newyorker.com Checkpoints · cjr.org Delacorte lecture</span>"},
+    df3:{en:"The Economist publishes unsigned; the Times signs reporters; Google’s helpful-content guidance asks “Is it self-evident to your visitors who authored your content?” and wants bylines that lead to author information. Namefi’s choice (persona authors, a named human editor, a translator per locale, all with profile pages) was decided before this plan and is not reopened here.<span class='src'>developers.google.com/search/docs/fundamentals/creating-helpful-content</span>",
+         zh:"《经济学人》不署名；时报署记者名；Google 的 helpful content 指南问“访客能否一眼看出内容作者是谁”，并希望署名能链到作者信息。Namefi 的选择（persona 作者、具名人类编辑、每语言一位译者，均有个人页）在本方案之前已定，此处不重开。<span class='src'>developers.google.com/search/docs/fundamentals/creating-helpful-content</span>"},
     p1:{en:"Namefi Resources is a secondary publication: it compiles what reliable sources already say and verifies it. Wikipedia’s sourcing policy makes the same call for tertiary work: articles are “based mainly on reliable secondary sources”. The NYT adds that attributing a fact to another outlet “should not serve as license to publish unverified material”. So S2 produces a source-sufficiency verdict before S3 can green-light anything.<span class='src'>en.wikipedia.org/wiki/Wikipedia:Reliable_sources · nytimes.com/editorial-standards/ethical-journalism</span>",
         zh:"Namefi Resources 是二手整理型媒体：整理可靠信源已经说过的内容并核实。维基百科对三手内容的规定相同：文章“based mainly on reliable secondary sources”。NYT 补充：把事实归因给其他媒体“不能成为发布未经核实材料的许可”。因此 S2 必须先给出信源充分度判定，S3 才能立项。<span class='src'>en.wikipedia.org/wiki/Wikipedia:Reliable_sources · nytimes.com/editorial-standards/ethical-journalism</span>"},
     p2:{en:"Reuters: “It is our job to get it first but it is above all our job to get it right.” BBC 3.2.5: “achieving due accuracy is more important than speed.” For the timely lane this means a piece that cannot be verified inside the SLA ships later, or as “what we know” with explicit unknowns.<span class='src'>reutersagency.com/en/about/standards-values · bbc.com/editorialguidelines</span>",
@@ -513,8 +886,9 @@ effort     → capacity fitting only    (never in the rank key)</div>
   function apply(l){
     lang=l; body.classList.toggle('lang-zh', l==='zh'); document.documentElement.lang = l==='zh'?'zh-CN':'en';
     sel.value=l;
-    var en=document.querySelector('.dg-en'), zh=document.querySelector('.dg-zh');
-    if(en&&zh){ en.classList.toggle('off', l==='zh'); zh.classList.toggle('off', l!=='zh'); }
+    var ens=document.querySelectorAll('.dg-en'), zhs=document.querySelectorAll('.dg-zh'), i;
+    for(i=0;i<ens.length;i++) ens[i].classList.toggle('off', l==='zh');
+    for(i=0;i<zhs.length;i++) zhs[i].classList.toggle('off', l!=='zh');
     try{ localStorage.setItem('np-lang', l); }catch(e){}
     if(current) render(current);
   }
