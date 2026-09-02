@@ -137,7 +137,7 @@ body.lang-zh{font-size:16px}
 flowchart TB
   subgraph P1["PLAN"]
     direction LR
-    S1["S1 Discover"] --> S2["S2 Source-scout"] --> S3["S3 Green-light · G1"]
+    S1["S1 Discover"] --> S2["S2 Source-scout"] --> S3["S3 Debate, green-light · G1"]
   end
   subgraph P2["MAKE"]
     direction LR
@@ -167,7 +167,7 @@ flowchart TB
 flowchart TB
   subgraph P1["选题"]
     direction LR
-    S1["S1 发现"] --> S2["S2 信源勘探"] --> S3["S3 立项 · G1"]
+    S1["S1 发现"] --> S2["S2 信源勘探"] --> S3["S3 辩论、立项 · G1"]
   end
   subgraph P2["创作"]
     direction LR
@@ -201,8 +201,8 @@ flowchart TB
     <thead><tr><th><span class="en">Station</span><span class="zh">工位</span></th><th><span class="en">Output</span><span class="zh">产物</span></th><th><span class="en">Owner</span><span class="zh">负责</span></th></tr></thead>
     <tbody>
       <tr><td><span class="tip" data-tip="s1">S1 <span class="en">Discover</span><span class="zh">发现</span></span></td><td><span class="en">candidates with raw signals</span><span class="zh">带原始信号的候选清单</span></td><td><span class="agent">agent</span></td></tr>
-      <tr><td><span class="tip" data-tip="s2">S2 <span class="en">Source-scout</span><span class="zh">信源勘探</span></span></td><td><span class="en">fact list · source ledger · pitch memo · verdict PASS / THIN / FAIL</span><span class="zh">事实清单 · 信源账本 · 立项稿 · 判定 PASS / THIN / FAIL</span></td><td><span class="agent">agent</span></td></tr>
-      <tr><td><span class="tip" data-tip="s3">S3 <span class="en">Green-light</span><span class="zh">立项</span></span></td><td><span class="en">editorial brief</span><span class="zh">编辑简报</span></td><td><span class="agent">agent</span> <span class="gate tip" data-tip="g1">G1</span></td></tr>
+      <tr><td><span class="tip" data-tip="s2">S2 <span class="en">Source-scout</span><span class="zh">信源勘探</span></span></td><td><span class="en">fact list · source ledger · pitch: 3–4 sentences + a one-sentence focus statement · verdict PASS / THIN / FAIL</span><span class="zh">事实清单 · 信源账本 · 立项稿：3–4 句 + 一句话聚焦句 · 判定 PASS / THIN / FAIL</span></td><td><span class="agent">agent</span></td></tr>
+      <tr><td><span class="tip" data-tip="s3">S3 <span class="en">Green-light</span><span class="zh">立项</span></span></td><td><span class="tip" data-tip="s3d"><span class="en">multi-persona debate summary</span><span class="zh">多 persona 辩论摘要</span></span><span class="en"> · editorial brief</span><span class="zh"> · 编辑简报</span></td><td><span class="agent">agent</span> <span class="gate tip" data-tip="g1">G1</span></td></tr>
       <tr><td><span class="tip" data-tip="s4">S4 <span class="en">Outline</span><span class="zh">大纲</span></span></td><td><span class="en">outline with source coverage per section</span><span class="zh">每节标注信源覆盖的大纲</span></td><td><span class="agent">agent</span></td></tr>
       <tr><td><span class="tip" data-tip="s5">S5 <span class="en">Draft</span><span class="zh">撰稿</span></span></td><td><span class="en">English draft v1 with inline citations</span><span class="zh">带内联引用的英文初稿</span></td><td><span class="agent">agent · Sonnet</span></td></tr>
       <tr><td><span class="tip" data-tip="s6">S6 <span class="en">Fact-check</span><span class="zh">事实勘定</span></span></td><td><span class="en">fact-check report: per claim VERIFIED / CORRECTED / UNVERIFIED / ANALYSIS / REMOVED</span><span class="zh">勘定报告：逐条 VERIFIED / CORRECTED / UNVERIFIED / ANALYSIS / REMOVED</span></td><td><span class="agent">agent · fresh context</span> <span class="gate tip" data-tip="g3">G3</span></td></tr>
@@ -502,7 +502,7 @@ flowchart LR
 </div>
 </div>
     <ul class="plain">
-    <li><span class="tip" data-tip="ec1"><span class="en">One weekly meeting where anyone pitches and anyone can challenge.</span><span class="zh">每周一次会议，任何人可以 pitch，任何人可以挑战。</span></span><span class="to">S3 G1</span></li>
+    <li><span class="tip" data-tip="ec1"><span class="en">One weekly meeting where anyone pitches and anyone can challenge.</span><span class="zh">每周一次会议，任何人可以 pitch，任何人可以挑战。</span></span><span class="to">S3 debate · G1</span></li>
     <li><span class="tip" data-tip="ec2"><span class="en">One collective voice, no bylines.</span><span class="zh">一个集体声音，不署名。</span></span><span class="to">House voice</span></li>
     <li><span class="tip" data-tip="ec3"><span class="en">Clarity of writing follows clarity of thought.</span><span class="zh">文字清晰来自思路清晰。</span></span><span class="to">S7</span></li>
     </ul>
@@ -578,6 +578,55 @@ flowchart LR
     </ul>
   </div>
 
+  <div class="desk">
+    <h3><span class="en">The Wall Street Journal · the bulletproofing desk</span><span class="zh">《华尔街日报》· 加固型编辑台</span><span class="mono-tag">→ S3 · S7 · lanes · corrections</span></h3>
+<div class="diagram">
+<div class="dg dg-en">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["Reporter"] --> B["News editor bulletproofs"] --> C{"Speed?"}
+  C -- breaking --> D["Breaking-news editor"]
+  C -- enterprise --> E["Enterprise editor"]
+  D --> F["Published, as short as needed"]
+  E --> F
+  F --> G["Corrections column"]
+  B -.-> H["Standards editor"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C,D,E,H human
+  class A,F,G agent
+</pre>
+</div>
+<div class="dg dg-zh off">
+<pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 30, "padding": 8}}}%%
+flowchart LR
+  A["条线记者"] --> B["新闻编辑护稿并加固"] --> C{"速度？"}
+  C -- 突发 --> D["突发新闻编辑"]
+  C -- 深度 --> E["深度报道编辑"]
+  D --> F["发布，能多短就多短"]
+  E --> F
+  F --> G["更正与补充栏"]
+  B -.-> H["标准与伦理编辑"]
+  classDef human fill:#FBECE9,stroke:#B5301F,color:#1B1D1F,stroke-width:1.5px
+  classDef agent fill:#F3F4F1,stroke:#8A8F95,color:#1B1D1F
+  class B,C,D,E,H human
+  class A,F,G agent
+</pre>
+</div>
+</div>
+    <ul class="plain">
+    <li><span class="tip" data-tip="wsj1"><span class="en">Facts accurate and fairly presented; analyses are independent judgments, not the sources’ preferences.</span><span class="zh">事实准确且公允呈现；分析是独立判断，不是信源的偏好。</span></span><span class="to">Tiers · ANALYSIS</span></li>
+    <li><span class="tip" data-tip="wsj2"><span class="en">The nut graf: right after the anecdotal lead, one paragraph that says what the story is and why the reader should care.</span><span class="zh">nut graf：轶事导语之后，用一段说清故事是什么、读者为何该在乎。</span></span><span class="to">S3 · S7</span></li>
+    <li><span class="tip" data-tip="wsj3"><span class="en">Every story as short as it needs to be; repetitive anecdotes and unnecessary quotes are cut.</span><span class="zh">每篇能多短就多短；重复的轶事和多余引语一律砍掉。</span></span><span class="to">S7</span></li>
+    <li><span class="tip" data-tip="wsj4"><span class="en">Publish when readers read, not when the print edition closes.</span><span class="zh">按读者阅读高峰发布，而不是按印刷截稿时间。</span></span><span class="to">S10 · S11</span></li>
+    <li><span class="tip" data-tip="wsj5"><span class="en">Two speeds under one desk: a breaking-news editor and an enterprise editor.</span><span class="zh">一个编辑台两种速度：突发新闻编辑与深度报道编辑。</span></span><span class="to">Lanes</span></li>
+    <li><span class="tip" data-tip="wsj6"><span class="en">A news editor shepherds and bulletproofs each story on deadline for sourcing, legal and ethical issues; a standards editor sits beside the desk.</span><span class="zh">新闻编辑在截稿前护稿并加固：信源、法律、伦理；标准编辑就在编辑台旁。</span></span><span class="to">S6 · G3</span></li>
+    <li><span class="tip" data-tip="wsj7"><span class="en">A standing column, Corrections and Amplifications, that names the article and says what was wrong.</span><span class="zh">常设栏目「更正与补充」，点名文章并说明错在哪里。</span></span><span class="to">Corrections</span></li>
+    </ul>
+  </div>
+
   <h3 class="en">More desks, one line each</h3><h3 class="zh">其他编辑部，各一行</h3>
   <ul class="plain">
     <li><span class="tip" data-tip="ap1"><span class="en">AP: pickups are re-reported or confirmed, rewritten and credited; corrections are labeled corrections.</span><span class="zh">AP：转载稿要自行核实或确认、重写并注明出处；更正必须标明为更正。</span></span><span class="to">S2 · Corrections</span></li>
@@ -600,7 +649,11 @@ flowchart LR
     <li><span><span class="en">Single-source items need a named approver</span><span class="zh">单一信源需具名批准</span></span><span class="src">Reuters · NYT · AP</span><span class="to">S3 THIN</span></li>
     <li><span><span class="en">Attribute other outlets; attribution is not a license</span><span class="zh">注明其他媒体出处；注明不等于许可</span></span><span class="src">NYT · AP · Reuters</span><span class="to">Tiers</span></li>
     <li><span><span class="en">One weekly meeting for green-lights</span><span class="zh">每周一次立项会</span></span><span class="src">The Economist</span><span class="to">S3</span></li>
+    <li><span><span class="en">Open debate on every pitch, run as a multi-persona agent debate</span><span class="zh">每个 pitch 都公开辩论，以多 persona agent 辩论实现</span></span><span class="src">The Economist</span><span class="to">S3</span></li>
     <li><span><span class="en">Pitch memo plus a one-sentence focus statement</span><span class="zh">立项稿加一句话聚焦</span></span><span class="src">NPR</span><span class="to">S2 · brief</span></li>
+    <li><span><span class="en">Nut graf right after the lead: what the story is and why it matters</span><span class="zh">导语之后紧跟 nut graf：故事是什么、为何重要</span></span><span class="src">The Wall Street Journal</span><span class="to">S3 · S7</span></li>
+    <li><span><span class="en">As short as it needs to be; repetitive anecdotes and spare quotes cut</span><span class="zh">能多短就多短；重复的轶事和多余引语一律砍</span></span><span class="src">The Wall Street Journal</span><span class="to">S7</span></li>
+    <li><span><span class="en">Two speeds under one desk: breaking and enterprise</span><span class="zh">一个编辑台两种速度：突发与深度</span></span><span class="src">The Wall Street Journal</span><span class="to">Lanes</span></li>
     <li><span><span class="en">Macro edit, then micro edit</span><span class="zh">先宏观编辑，后微观编辑</span></span><span class="src">NPR · NYT</span><span class="to">S8 · S7</span></li>
     <li><span><span class="en">Calendar-driven topic calls; early cross-team review; preview per commit; visible modified date</span><span class="zh">按日历征题；早期跨团队评审；每次提交预览；可见修改日期</span></span><span class="src">Cloudflare</span><span class="to">S1 · S8 · S10 · S12</span></li>
     <li><span><span class="en">Templates so no one starts blank</span><span class="zh">模板起步，不面对空白页</span></span><span class="src">Stripe</span><span class="to">brief · fact list · report</span></li>
@@ -684,6 +737,11 @@ flowchart LR
     <li>Knowledge at Wharton, The Bloomberg Way — https://knowledge.wharton.upenn.edu/article/the-bloomberg-way-an-inside-look-at-how-the-news-organization-covers-news/</li>
     <li>Google style guide changelog — https://developers.google.com/style/whats-new</li>
     <li>Microsoft Writing Style Guide — https://learn.microsoft.com/en-us/style-guide/welcome/</li>
+    <li>Poynter, The nut graf, Part I (Chip Scanlan, 2003) — https://www.poynter.org/archive/2003/the-nut-graf-part-i/</li>
+    <li>Poynter, WSJ reorganizes its newsroom (Gerard Baker memo, 2016) — https://www.poynter.org/business-work/2016/the-wall-street-journal-is-reorganizing-its-newsroom-and-cutting-down-on-flabby-stories/</li>
+    <li>Talking Biz News, WSJ newsroom restructures (Emma Tucker, 2025) — https://talkingbiznews.com/media-news/wsj-newsroom-restructures-cuts-bureau-chiefs/</li>
+    <li>Talking Biz News, WSJ promotes its standards and ethics (2021) — https://talkingbiznews.com/they-talk-biz-news/wsj-promotes-its-standards-and-ethics/</li>
+    <li>Slate, Dow Jones Code of Conduct excerpts (Jack Shafer, 2007) — https://slate.com/news-and-politics/2007/05/would-rupert-murdoch-uphold-the-dow-jones-code-of-conduct.html</li>
     <li>BBC synthetic voice labeling — https://voicebot.ai/2020/11/17/bbc-releases-synthetic-voice-newsreader-for-online-articles/</li>
   </ul>
 </details>
@@ -694,6 +752,22 @@ flowchart LR
 <script>
 (function(){
   var TIPS = {
+    s3d:{en:"Borrowed from The Economist’s open debate, where “Anyone can ask you questions or challenge your argument”, and run as a multi-persona agent debate on the pitch before the human reads it. Roles reuse the existing editorial-board skill (editor-in-chief, planning editor, fact-checker, devil’s advocate, reader representative, plus one domain expert chosen per topic); the reader representative speaks for the brief’s persona. Output: a one-page summary with the strongest case for, the strongest objection, what evidence would change the verdict, and a recommended angle. The human reads pitch plus summary, never the transcript. Cost about 0.5 agent units per pitch, so it runs only on pitches that passed sufficiency.<span class='src'>atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals · ~/.claude/skills/xinbenlv-lifeos-editorial-board/references/roles</span>",
+         zh:"借自《经济学人》的公开辩论——“任何人都可以质疑或挑战你的论点”——在人阅读之前，对 pitch 跑一轮多 persona 的 agent 辩论。角色复用现有 editorial-board skill（主编、策划编辑、事实核查员、反方辩手、读者代表，再按题目加一位领域专家）；读者代表替简报中的 persona 发声。产物：一页摘要，含最强的支持理由、最强的反对意见、什么证据会改变结论、推荐角度。人只读立项稿加摘要，不读辩论记录。每个 pitch 约 0.5 个 agent 单位，所以只对通过充分度判定的 pitch 运行。<span class='src'>atlassian.com/blog/leadership/zanny-minton-beddoes-team-rituals · ~/.claude/skills/xinbenlv-lifeos-editorial-board/references/roles</span>"},
+    wsj1:{en:"Dow Jones Code of Conduct, as reproduced by Slate (Jack Shafer, 2007-05-29; dowjones.com blocked our fetch): “Our facts are accurate and fairly presented; Our analyses represent our best independent judgments rather than our preferences, or those of our sources, advertisers or information providers.” and “There are no hidden agendas in any of our journalistic undertakings.” Our Tier X rule (a vendor speaks only for itself) and the ANALYSIS label in the fact-check report follow the same line.<span class='src'>slate.com/news-and-politics/2007/05/would-rupert-murdoch-uphold-the-dow-jones-code-of-conduct.html</span>",
+          zh:"Dow Jones 行为准则（经 Slate 转引，Jack Shafer，2007-05-29；dowjones.com 拦截了抓取）：“我们的事实准确且公允呈现；我们的分析是最佳独立判断，而不是我们的偏好，或信源、广告商、信息提供方的偏好。”以及“我们的任何新闻工作都没有隐藏议程。”我们的 X 级信源规则（厂商只能替自己说话）和勘定报告里的 ANALYSIS 标签遵循同一原则。<span class='src'>slate.com/news-and-politics/2007/05/would-rupert-murdoch-uphold-the-dow-jones-code-of-conduct.html</span>"},
+    wsj2:{en:"Chip Scanlan, Poynter (2003-05-19): “The Wall Street Journal is home to a form best known as the ‘nut graf’ story”; “The nut graf tells the reader what the writer is up to; it delivers a promise of the story’s content and message.”; “It justifies the story by telling readers why they should care.” In our chain the S3 focus statement is the nut graf in embryo; S7 places it right after the lead, which also satisfies the rule that the lede answers the search intent in the first 80 words.<span class='src'>poynter.org/archive/2003/the-nut-graf-part-i</span>",
+          zh:"Chip Scanlan，Poynter（2003-05-19）：“《华尔街日报》是‘nut graf’体的大本营”；“nut graf 告诉读者作者要干什么；它承诺了故事的内容与要旨。”；“它通过告诉读者为何该在乎来证明这篇故事的价值。”在我们的链条里，S3 的聚焦句就是 nut graf 的胚胎；S7 把它放在导语之后，同时满足“导语前 80 词回答搜索意图”的规则。<span class='src'>poynter.org/archive/2003/the-nut-graf-part-i</span>"},
+    wsj3:{en:"Gerard Baker’s 2016 newsroom memo, via Poynter (Benjamin Mullin, 2016-10-11): “Every story should be as short as it needs to be. There’s no excuse for a single otiose word.” and “Too many stories have repetitive anecdotes or unnecessary quotes. We will cut them.” Our brief sets a target length per lane and S7 cuts to it.<span class='src'>poynter.org/business-work/2016/the-wall-street-journal-is-reorganizing-its-newsroom-and-cutting-down-on-flabby-stories</span>",
+          zh:"Gerard Baker 2016 年编辑部备忘录（经 Poynter，Benjamin Mullin，2016-10-11）：“每篇故事都应该恰到好处地短。多一个赘字都没有借口。”以及“太多故事有重复的轶事或不必要的引语。我们会砍掉。”我们的简报按 lane 设定目标字数，S7 照此删减。<span class='src'>poynter.org/business-work/2016/the-wall-street-journal-is-reorganizing-its-newsroom-and-cutting-down-on-flabby-stories</span>"},
+    wsj4:{en:"The same 2016 memo splits editing into a digital desk and a print desk and asks the newsroom to produce “higher-quality stories much earlier in the day”, publishing when readership peaks rather than around the print cycle. For us: release timing at S10 and per-channel posting times at S11 follow when each audience reads, not when a batch finishes.<span class='src'>poynter.org/business-work/2016/the-wall-street-journal-is-reorganizing-its-newsroom-and-cutting-down-on-flabby-stories</span>",
+          zh:"同一份 2016 年备忘录把编辑拆成数字台与印刷台，并要求编辑部“在一天更早的时候产出更高质量的故事”，按读者高峰而非印刷周期发布。对我们：S10 的上线时间和 S11 各渠道的发布时间跟随各受众的阅读时段，而不是批次完成的时间。<span class='src'>poynter.org/business-work/2016/the-wall-street-journal-is-reorganizing-its-newsroom-and-cutting-down-on-flabby-stories</span>"},
+    wsj5:{en:"Emma Tucker’s 2025-01-29 restructuring (Talking Biz News): coverage teams under Business, Finance and Economics, with two coordinating editors above them, an Enterprise Editor (Marcelo Prince) and a Live Markets and Breaking News editor. Our timely lane and evergreen or deep lanes share one backlog and one desk but carry different SLAs and effort units.<span class='src'>talkingbiznews.com/media-news/wsj-newsroom-restructures-cuts-bureau-chiefs</span>",
+          zh:"Emma Tucker 2025-01-29 的重组（Talking Biz News）：商业、金融与经济之下设条线团队，上面两位协调编辑：深度报道编辑（Marcelo Prince）和实时市场与突发新闻编辑。我们的快评 lane 与常青、深度 lane 共用一个 backlog 和一个编辑台，但 SLA 与工作量单位不同。<span class='src'>talkingbiznews.com/media-news/wsj-newsroom-restructures-cuts-bureau-chiefs</span>"},
+    wsj6:{en:"A WSJ news-editor listing (wsj.jobs, text as indexed; the page itself did not render for us) describes working “hand-in-glove with the bureau chief of each team to shepherd and bulletproof assignments” and the ability to “bulletproof fast-moving news stories on deadline with sourcing, legal and ethical considerations”. Talking Biz News (2021-06-15): standards editor Emma Moody’s team keeps coverage “fair, accurate and impartial”. Our S6 checker plus G3 legal review is that bulletproofing, done by an agent and a human instead of one editor.<span class='src'>wsj.jobs (News Editor, Property and Style) · talkingbiznews.com/they-talk-biz-news/wsj-promotes-its-standards-and-ethics</span>",
+          zh:"一则 WSJ 新闻编辑招聘（wsj.jobs，按索引文本；页面本身未能渲染）描述“与各团队的分社主任紧密配合，护稿并加固选题”，以及“在截稿前用信源、法律和伦理考量加固快速新闻”的能力。Talking Biz News（2021-06-15）：标准编辑 Emma Moody 的团队确保报道“公正、准确、不偏不倚”。我们的 S6 核查加 G3 法务审读就是这种加固，只是由 agent 加一个人完成，而不是一位编辑。<span class='src'>wsj.jobs (News Editor, Property and Style) · talkingbiznews.com/they-talk-biz-news/wsj-promotes-its-standards-and-ethics</span>"},
+    wsj7:{en:"The Journal’s standing column is titled Corrections and Amplifications. Its page and the Dow Jones code could not be opened from here (paywall and blocked fetch), so no wording is quoted; secondary reports describe items that name the article, its date and what was wrong, in the form “was incorrectly described” or “incorrectly quoted”. Our corrections note keeps that shape: what was wrong, what is right, dated.<span class='src'>wsj.com/news/column/Corrections-Amplifications (not opened) · thehill.com 2023 (not opened)</span>",
+          zh:"该报常设栏目名为 Corrections and Amplifications（更正与补充）。栏目页与 Dow Jones 准则在此都打不开（付费墙与拦截），因此不引用措辞；二手报道描述其条目会点名文章、日期与错误内容，形式如“被错误地描述为”“错误地引用”。我们的更正说明保持同样形状：错在哪里、正确是什么、标注日期。<span class='src'>wsj.com/news/column/Corrections-Amplifications（未能打开）· thehill.com 2023（未能打开）</span>"},
     ny1:{en:"John McPhee on checker Sara Lippincott: “Each word in the piece that has even a shred of fact clinging to it is scrutinized”; a fact that passes gets “a tiny pencil tick”. A 60,000-word piece “received her full-time attention for three or four weeks.” The rationale: “turning a pack of professional skeptics loose on its own galley proofs”.<span class='src'>newyorker.com/magazine/2009/02/09/checkpoints</span>",
          zh:"John McPhee 写核查员 Sara Lippincott：“文中每个沾一点事实的词都要审查”，通过的事实得到“一个小小的铅笔勾”。一篇六万词的稿子“占用了她三四周的全部工作时间”。理由：“把一群职业怀疑论者放到自己的清样上”。<span class='src'>newyorker.com/magazine/2009/02/09/checkpoints</span>"},
     ny2:{en:"McPhee: “If unverifiable, it would be deleted.” The writer’s TK placeholders are “forms of promissory note, and a checker is expected to pay it.” Our S6 status REMOVED is the same rule: a claim without a reachable source leaves the piece.<span class='src'>newyorker.com/magazine/2009/02/09/checkpoints</span>",
@@ -784,10 +858,10 @@ flowchart LR
         zh:"xinbenlv-lifeos-editorial-board skill 已模拟十个编辑部阶段（探索 → 选题 → 角度 → 信源 → 核实 → 素材 → 大纲 → 撰稿 → 复核 → 定稿），在角度、大纲、定稿后暂停。映射：其 ①–⑥ 即我们的 S2，⑦ 即 S4，⑧ 即 S5，⑨ 即 S6，⑩ 即 S7；三个暂停点对应 G1、可选的大纲审阅、G2。唯一改动：把信源阶段挪到角度暂停之前，因为二手媒体不能对没有信源的选题立项。作为对该 skill 的小改动提案，不另造一套。"},
     s1:{en:"Entry: weekly cron or an event trigger. Signals in priority order: keyword demand per locale; Search Console queries where we rank 5–20 or get impressions without a page; refresh-due pages; the industry calendar (ICANN meetings, new-gTLD round milestones, registry price notices, Verisign DNIB, IETF, Ethereum upgrades, RWA regulation dates, Namefi releases); product roadmap; reader questions from Discourse and support; competitor gaps; trend leads (Wikipedia pageviews, HN, Reddit) as leads only. Exit: every candidate has a working title, category, persona, lane and its raw signals.",
         zh:"进入：每周定时或事件触发。信号按优先级：各语言关键词需求；Search Console 中排名 5–20 或有曝光无页面的 query；刷新到期页；行业日历（ICANN 会议、新 gTLD 轮次节点、注册局调价通知、Verisign DNIB、IETF、以太坊升级、RWA 监管日期、Namefi 发布）；产品路线；Discourse 与客服的读者提问；竞品空缺；趋势线索（Wikipedia 浏览量、HN、Reddit）只作线索。退出：每个候选有工作标题、类别、persona、lane 和原始信号。"},
-    s2:{en:"The user’s “preliminary draft” step, kept deliberately short so a rejected topic costs little. Work: open every source; build the fact list (10–40 atomic statements tagged fact / figure / quote / opinion-of-source) and the source ledger (tier, URL with locator, verbatim quote, fetch date, archive, access status); compute the sufficiency verdict against the per-format minimum; write the pitch memo (300–500 words: angle, thesis, why now, who for, what the reader can do afterwards, the product bridge, what could not be sourced). NPR’s bureau chiefs ask a pitch to be “a 3-4 sentence treatment” answering “What’s at stake? What’s surprising?”. A FAIL closes the candidate for 90 days with the reason recorded.<span class='src'>npr.org/sections/npr-training/2025/05/30</span>",
-        zh:"即用户说的“初步撰稿”，故意短，让被毙的选题成本低。工作：打开每个信源；建事实清单（10–40 条原子陈述，标记事实 / 数字 / 引语 / 信源观点）和信源账本（级别、带定位符的 URL、原文引句、抓取日期、存档、可访问状态）；按每种 format 的下限算充分度判定；写立项稿（300–500 字：角度、论点、为何现在、给谁、读者读完能做什么、产品桥接、哪些查不到）。NPR 的分社主任要求 pitch 是“3–4 句的处理”，回答“利害何在？惊奇何在？”。FAIL 的候选关闭 90 天并记录原因。<span class='src'>npr.org/sections/npr-training/2025/05/30</span>"},
-    s3:{en:"The agent computes the rank and proposes the week’s slate within capacity; the editor reads pitch memos, not drafts, and green-lights, defers or kills each, fixing format, angle, persona, refresh class, byline, length, legal flag, illustration count, channels, localization tier and due date. Batch it into one weekly meeting, the Economist’s Monday model: “On Monday morning people pitch ideas … and we have a big discussion about it.” Kill reasons and overrides are logged.<span class='src'>alainelkanninterviews.com/zanny-minton-beddoes</span>",
-        zh:"agent 算出名次并在产能内提出本周排片；编辑读的是立项稿而非草稿，逐条通过、推迟或毙掉，并定 format、角度、persona、刷新等级、署名、字数、法务标记、插图数、渠道、本地化档位与截止日。集中到每周一次会议，即《经济学人》的周一模式：“周一早上大家 pitch 想法……然后大讨论。”毙稿理由与插队都记录。<span class='src'>alainelkanninterviews.com/zanny-minton-beddoes</span>"},
+    s2:{en:"The user’s “preliminary draft” step, kept deliberately short so a rejected topic costs little. Work: open every source; build the fact list (10–40 atomic statements tagged fact / figure / quote / opinion-of-source) and the source ledger (tier, URL with locator, verbatim quote, fetch date, archive, access status); compute the sufficiency verdict against the per-format minimum; write the pitch in NPR’s shape: “a 3-4 sentence treatment of the story” that answers “What’s at stake? What’s surprising?” and names the peg, followed by a one-sentence focus statement, “ONE sentence that describes your story”. The focus statement is the line the whole piece must serve; at S7 it becomes the nut graf. A FAIL closes the candidate for 90 days with the reason recorded.<span class='src'>npr.org/sections/npr-training/2025/05/30 · poynter.org/archive/2003/the-nut-graf-part-i</span>",
+         zh:"即用户说的“初步撰稿”，故意短，让被毙的选题成本低。工作：打开每个信源；建事实清单（10–40 条原子陈述，标记事实 / 数字 / 引语 / 信源观点）和信源账本（级别、带定位符的 URL、原文引句、抓取日期、存档、可访问状态）；按每种 format 的下限算充分度判定；按 NPR 的形状写 pitch：“3–4 句的处理稿”，回答“利害何在？惊奇何在？”并给出由头，再加一句话聚焦句：“用一句话描述你的故事”。聚焦句是全篇必须服务的那一句；到 S7 它变成 nut graf。FAIL 的候选关闭 90 天并记录原因。<span class='src'>npr.org/sections/npr-training/2025/05/30 · poynter.org/archive/2003/the-nut-graf-part-i</span>"},
+    s3:{en:"Two steps before the human. First the ranking (section on backlog ranking). Then, for every pitch that passed sufficiency, a multi-persona debate (see the debate note) that yields a one-page summary. The editor reads pitch plus summary, not drafts, and green-lights, defers or kills each item, fixing format, angle, persona, refresh class, byline, length, legal flag, illustration count, channels, localization tier and due date. Batch it into one weekly meeting, the Economist’s Monday model: “On Monday morning people pitch ideas … and we have a big discussion about it.” Kill reasons and overrides are logged.<span class='src'>alainelkanninterviews.com/zanny-minton-beddoes</span>",
+         zh:"人拍板前有两步。先排序（见选题排序一节）。然后对每个通过充分度判定的 pitch 跑一轮多 persona 辩论（见辩论注解），产出一页摘要。编辑读的是立项稿加摘要而非草稿，逐条通过、推迟或毙掉，并定 format、角度、persona、刷新等级、署名、字数、法务标记、插图数、渠道、本地化档位与截止日。集中到每周一次会议，即《经济学人》的周一模式：“周一早上大家 pitch 想法……然后大讨论。”毙稿理由与插队都记录。<span class='src'>alainelkanninterviews.com/zanny-minton-beddoes</span>"},
     s4:{en:"Section-by-section outline; every section names the fact-list items it will use; gaps go back to S2 for a targeted top-up; the illustration manifest is sketched. Exit when every section has source coverage and planned length fits the brief. For the deep lane the editor may look (editorial-board pause ⑦).",
         zh:"逐节大纲；每节标出要用的事实清单条目；缺口回 S2 定向补充；插图清单先画草图。退出条件：每节都有信源覆盖，计划字数符合简报。深度稿编辑可选看（editorial-board 暂停点 ⑦）。"},
     s5:{en:"content-authoring → article-writing on Sonnet, per the standing model rule in content.md. Inline citations point at ledger rows; the Sources section is generated from the ledger; frontmatter per the enforced contract (relatedArticles ×5, relatedGlossary ×5, relatedTopics ×2, relatedSeries ×2); internal links per cross-link; illustration manifest per namefi-resource-images. Snapshot pages get a visible “Data as of” line; timely pages carry the event date in the dek. Exit: validators pass and no claim outside the fact list is unmarked.",
