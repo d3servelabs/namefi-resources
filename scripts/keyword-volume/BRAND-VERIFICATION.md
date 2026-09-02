@@ -58,7 +58,7 @@ Verified against IANA's registrar-ids list. Use verbatim.
 | App name | `Namefi` |
 | Application home page | `https://namefi.io` |
 | Terms of service link | `https://namefi.io/tos` |
-| Privacy policy link | **see the blocker below** |
+| Privacy policy link | `https://namefi.io/privacy` — **only once it is live, see below** |
 | Authorized domain | `namefi.io` |
 | Developer contact | `dev-team@namefi.io` |
 | User support email | `dev-team@namefi.io` if the dropdown offers it, otherwise `zzn@d3serve.xyz` |
@@ -73,20 +73,27 @@ Two standing rules for anything typed into a Google form:
   ICANN-accredited domain registrar; that is the whole answer to "who are you".
   Where a form *does* ask something directly, answer it fully.
 
-### Known blocker: there is no privacy policy page
+### Gate: the privacy policy must be **live**, not merged
 
-Checked 2026-09-02: `https://namefi.io/tos` exists and renders (title *"Namefi
-Terms of Service"*, last updated 2026-01-13). **No privacy policy page could be
-found** — not at `/privacy`, `/privacy-policy`, `/policy`, `/legal/privacy` or
-any variant tried (all 404), not linked from the home page or the ToS, and not
-present in `https://namefi.io/sitemap/sitemap.xml`. The ToS text itself never
-uses the word *privacy*.
+There was no privacy policy page at all when this runbook was first written —
+every conventional path 404'd, nothing appeared in the sitemap, and the ToS never
+used the word. That has been fixed in
+[namefi-astra#5779](https://github.com/d3servelabs/namefi-astra/pull/5779)
+(the page, plus ToS §20 pointing at it) and
+[#5783](https://github.com/d3servelabs/namefi-astra/pull/5783) (the footer link).
 
-The Branding form asks for a privacy policy link, and brand verification checks
-the links it is given. **If the form will not save without one, publishing a
-privacy policy page is a prerequisite to step 6** and nothing in this runbook
-can substitute for it. Do not invent a URL to get past the field — a link that
-404s is exactly what verification fails on.
+**Merged is not deployed, and brand verification reads the live URL.** Before
+step 6, confirm it yourself:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' -L https://namefi.io/privacy
+```
+
+**`200` or do not proceed.** A `404` here fails verification, and because
+**branding cannot be edited while verification is in progress**, a premature
+click costs a whole cycle rather than a retry. If it 404s, the astra app needs a
+production release — merging to `main` does not deploy it. Never substitute a URL
+that does not resolve just to get past the field.
 
 ---
 
@@ -106,13 +113,15 @@ Already true, verified 2026-09-02 — no need to redo:
 
 Two things to check yourself before you start:
 
-1. **Is `namefi.io` verified in Google Search Console under the account you will
+1. **Does `https://namefi.io/privacy` return 200?** See the gate above — this is
+   the one pre-flight check that has actually blocked in practice.
+2. **Is `namefi.io` verified in Google Search Console under the account you will
    be signed in as?** Brand verification requires ownership of every authorized
    domain to be verified there. `namefi.io` does publish a
    `google-site-verification` TXT record, which is consistent with a verified
    domain property — but the record does not say *which* account holds it, so
    confirm in Search Console rather than assuming.
-2. **What else lives in the `d3serve-labs` OAuth consent screen?** The consent
+3. **What else lives in the `d3serve-labs` OAuth consent screen?** The consent
    screen and its branding are **per project, not per client**. If another app in
    this project already presents its own name to users, step 2 and step 6 change
    what those users see. Look at *APIs & Services → Credentials* first, and if
