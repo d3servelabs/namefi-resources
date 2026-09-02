@@ -26,7 +26,7 @@ import {
   type VolumeResult,
 } from './provider.ts';
 
-const API_VERSION = 'v21';
+export const API_VERSION = 'v21';
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 
 /** Google Ads geo target constant ids. Only the markets this repo publishes to. */
@@ -74,8 +74,13 @@ export class GoogleAdsProvider implements VolumeProvider {
     return this.envVars.every((v) => Boolean(process.env[v]));
   }
 
-  /** Exchange the long-lived refresh token for a short-lived access token. */
-  private async accessToken(): Promise<string> {
+  /**
+   * Exchange the long-lived refresh token for a short-lived access token.
+   *
+   * Public because `associate-token.ts` needs the same exchange and there must
+   * be exactly one implementation of it in this directory.
+   */
+  async accessToken(): Promise<string> {
     const body = new URLSearchParams({
       client_id: process.env.GOOGLE_ADS_CLIENT_ID!,
       client_secret: process.env.GOOGLE_ADS_CLIENT_SECRET!,

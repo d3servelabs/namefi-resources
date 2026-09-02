@@ -13,9 +13,7 @@ all. This tool replaces them for the volume term.
 
 ## Credentials
 
-Nothing here has any. Put them in **`~/ws/d3servelabs/namefi-resources/.env.local`**
-— the repo-container root, *not* a worktree — so a `grep` from inside a worktree
-cannot find them. They are read from the environment and never logged.
+Nothing here has any. They are read from the environment and never logged.
 
 ```
 bun keywords:volume --providers     # what is configured, what is missing
@@ -26,8 +24,51 @@ bun keywords:volume --providers     # what is configured, what is missing
 | `google-ads` | `GOOGLE_ADS_DEVELOPER_TOKEN`, `GOOGLE_ADS_CLIENT_ID`, `GOOGLE_ADS_CLIENT_SECRET`, `GOOGLE_ADS_REFRESH_TOKEN`, `GOOGLE_ADS_LOGIN_CUSTOMER_ID` | **primary** — KeywordPlanIdeaService, free |
 | `dataforseo` | `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` | stopgap — the same data, resold |
 
+**Google Ads credentials live in the local secrets broker, never in a file.**
+They are injected for the duration of one run and exist nowhere on disk in
+plaintext:
+
+```
+secretctl ls                                          # names only, never values
+secretctl run --with '^GOOGLE_ADS_.*$=&' -- bun keywords:volume --in queries.json
+```
+
+DataForSEO's two values may sit in **`~/ws/d3servelabs/namefi-resources/.env.local`**
+— the repo-container root, *not* a worktree — so a `grep` from inside a worktree
+cannot find them.
+
+### Getting the Google Ads credentials
+
+Four of the five come out of a console; **the refresh token cannot**, because it
+only exists as the product of one interactive consent. The full path — including
+the developer-token-to-Cloud-project association that brand verification
+requires, and the order the steps have to happen in — is
+[`BRAND-VERIFICATION.md`](BRAND-VERIFICATION.md).
+
+| step | command | needs credentials? |
+| --- | --- | --- |
+| one consent → refresh token | `bun scripts/keyword-volume/get-refresh-token.ts` | client id + secret |
+| …preview it first | `bun scripts/keyword-volume/get-refresh-token.ts --dry-run` | no |
+| associate the developer token with the Cloud project | `bun scripts/keyword-volume/associate-token.ts` | all five |
+| …preview it first | `bun scripts/keyword-volume/associate-token.ts --dry-run` | no |
+
+`get-refresh-token.ts` prints the refresh token to **stdout and nowhere else**;
+every human-facing line goes to stderr. That is what makes this safe, and it is
+the only way the token should ever be moved:
+
+```
+secretctl run --with '^GOOGLE_ADS_CLIENT_(ID|SECRET)$=&' -- bun scripts/keyword-volume/get-refresh-token.ts | secretctl set GOOGLE_ADS_REFRESH_TOKEN
+```
+
+`associate-token.ts` makes the single API call that ties the developer token to
+the Cloud project. **A non-2xx from it is still a success** — Google's doc states
+that it does not matter whether the call succeeds or fails, only that one was
+made — so it reports `ASSOCIATED` on any real response and exits non-zero only
+when the request never reached Google at all.
+
 A **Test-level** Google Ads developer token cannot return real volume: test
-accounts hold no real data. **Basic access is the prerequisite.**
+accounts hold no real data. **Basic access is the prerequisite**, and an empty
+result while the token is Test level is this tool working, not failing.
 
 ## Calling it from code
 
