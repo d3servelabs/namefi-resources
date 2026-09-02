@@ -32,7 +32,10 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
   ja ta`).
 - **Validate before you push:** `bun data:validate` + `bun lint:mdx` +
   cross-link audit (0 broken).
-- **Only act on Cursor Bugbot** in PR review. **Ignore CodeRabbit** entirely.
+- **Bugbot is opt-in, not automatic.** Do **not** run, wait on, or drive Cursor
+  Bugbot by default — only when the maintainer explicitly asks for a review.
+  When asked, trigger it by commenting `bugbot run` (or `cursor review`) on the
+  PR. **Ignore CodeRabbit** entirely, always.
 - **Never force-push** a shared branch without explicit approval.
 
 ## Fact-auditing existing content
@@ -179,9 +182,12 @@ escalated.)
 2. **PR description:** a Summary/Solution section, a Test plan, and — when a Claude
    session authored it — a redacted Claude session summary with ISO-8601 UTC
    timestamps. No secrets/PII.
-3. **Review:** act only on **Cursor Bugbot**; **ignore CodeRabbit**. Drive Bugbot
-   to green, address real findings, then merge (non-author approval or admin
-   override per repo policy).
+3. **Review:** **ignore CodeRabbit** entirely. **Do not trigger or wait on Cursor
+   Bugbot unless the maintainer explicitly asks** — the account setting is
+   "Run only when mentioned", so a PR gets no automatic Bugbot review. If asked,
+   comment `bugbot run` on the PR, then act on real findings. Otherwise rely on
+   the local gate (`data:validate`, `lint:mdx`, link-audit) plus CI, and merge
+   (non-author approval or admin override per repo policy).
 4. **Publish:** merging to `main` auto-dispatches an `apps/resources/data`
    submodule bump. Astra waits for that exact pointer to merge, then publishes
    supported data-only changes to dev followed by production through full-page
