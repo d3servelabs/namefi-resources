@@ -23,7 +23,8 @@ Related skills: **`article-translation`** (translate EN → other locales), **`c
   `@google/generative-ai` dep). Drafting is a focused Claude pass per post.
 - **Locales are repo-defined and growing** (`en ar de es fr hi zh`, and `ta`/others are being added). Don't
   hardcode the list — derive it from the content tree / `content.md`.
-- **Only act on Cursor Bugbot** in review; ignore CodeRabbit. Never force-push a shared branch without approval.
+- **Bugbot is opt-in:** don't trigger or wait on Cursor Bugbot unless the maintainer explicitly asks (then comment
+  `bugbot run` on the PR). Ignore CodeRabbit entirely. Never force-push a shared branch without approval.
 
 ## Model & scale (per `content.md` — authoritative)
 
@@ -52,7 +53,7 @@ rather than rewriting).
 2. `TMPDIR=/private/tmp bun run data:validate` (pass + ~19 pre-existing warnings) and `bun run lint:mdx`.
    (Fresh worktree? run `bun install` first or eslint can't resolve `@eslint/eslintrc`.)
 3. `bun .agents/skills/cross-link/link-audit.ts <paths>` → **0 broken, 0 locale-mismatch**.
-4. **Bugbot handling:** it reviews a *sample/diff*, so **one flag often means several siblings** — when it flags
+4. **Bugbot handling (only if the maintainer asked for a Bugbot review):** it reviews a *sample/diff*, so **one flag often means several siblings** — when it flags
    an issue, grep the rest of the corpus for the same pattern and fix them all. Reply to each thread in a human
    voice and **resolve threads one-by-one as you fix them — never bulk-auto-resolve** (a bulk resolver once
    closed a thread before the fix, hiding a real finding; caught only via the comment-count delta).
@@ -71,5 +72,5 @@ namefi.io/r serves the `apps/resources/data` **submodule pin** in namefi-astra �
 ## PR & review
 
 PR body per `.rulesync` standards (Summary/Solution + Test plan + redacted Claude session summary, ISO-8601 UTC).
-Drive **Bugbot** to green (act on it, ignore CodeRabbit), then merge per repo policy. The pre-push hook can fail on a
+Only run **Bugbot** when the maintainer explicitly asks (comment `bugbot run`); act on its real findings when you do, and ignore CodeRabbit either way. Then merge per repo policy. The pre-push hook can fail on a
 TTY error in non-interactive shells — run the validators by hand and `git push --no-verify`.

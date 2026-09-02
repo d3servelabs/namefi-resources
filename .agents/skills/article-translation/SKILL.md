@@ -37,7 +37,8 @@ Related: **`content-authoring`** (drafting English content), **`cross-link`** (i
   "addition" error — as serious as omission), unless the brief explicitly authorizes transcreation.
 - **Independent review beats self-review.** The monolingual edit and QA passes should run with a fresh
   context, not the same agent that drafted. Self-review is anchored to its own choices and to the source.
-- **Only act on Cursor Bugbot** in review; ignore CodeRabbit. Never force-push a shared branch without approval.
+- **Bugbot is opt-in:** don't trigger or wait on Cursor Bugbot unless the maintainer explicitly asks (then comment
+  `bugbot run` on the PR). Ignore CodeRabbit entirely. Never force-push a shared branch without approval.
 
 ## Model & scale (per `content.md` — authoritative; learned the expensive way)
 
@@ -239,7 +240,7 @@ clear errors — no restyling). Classes to check:
    citation URLs, table-shape drift). It proves coverage, **not** idiomatic quality — it does not replace the
    human passes above.
 7. **Dedicated Arabic accuracy QA pass** (see error catalog) — non-negotiable for bulk batches.
-8. **Bugbot handling:** it reviews a *sample/diff*, so **one flag often means several siblings** — when it flags
+8. **Bugbot handling (only if the maintainer asked for a Bugbot review):** it reviews a *sample/diff*, so **one flag often means several siblings** — when it flags
    an issue, grep the rest of the corpus for the same pattern and fix them all. Reply to each thread in a human
    voice and **resolve threads one-by-one as you fix them — never bulk-auto-resolve** (a bulk resolver once
    closed a thread before the fix, hiding a real finding; caught only via the comment-count delta).
@@ -267,5 +268,5 @@ or a deliberate manual run with explicit OK). Verify with a provably-unique mark
 
 ## PR & review
 PR body per `.rulesync` standards (Summary/Solution + Test plan + redacted Claude session summary, ISO-8601 UTC).
-Drive **Bugbot** to green (act on it, ignore CodeRabbit), then merge per repo policy. The pre-push hook can fail
+Only run **Bugbot** when the maintainer explicitly asks (comment `bugbot run`); act on its real findings when you do, and ignore CodeRabbit either way. Then merge per repo policy. The pre-push hook can fail
 on a TTY error in non-interactive shells — run the validators by hand and `git push --no-verify`.
