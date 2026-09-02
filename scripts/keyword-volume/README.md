@@ -64,9 +64,27 @@ endpoint is $0.06 but takes 1–3 hours). Tasks are chunked to that cap.
 
 The September 2026 slate — 100 candidates, 671 target queries, 640 unique
 `(query, locale)` pairs after de-duplication — fits in **2 tasks: $0.18** to
-measure the whole slate in both languages. DataForSEO's minimum account funding
-is $50, which is the real cost; at that rate it covers the entire slate a few
-hundred times over.
+measure the whole slate in both languages.
+
+**You probably do not need to fund the account at all.** Signup carries **$1 in
+trial credits** (observed on the registration page, 2026-09-02), which covers the
+entire slate roughly five times over. The $50 figure is the minimum *deposit*, not
+a cost of entry.
+
+## This provider is meant to be temporary
+
+For search volume, **the Google Ads API supersedes this one**: it is the same
+upstream data, and it is free. The only thing DataForSEO buys is time — Google Ads
+needs a manager account, an approved developer token (~5 business days for Basic),
+a Google Cloud project and OAuth2 credentials, where DataForSEO needs a signup and
+an API password. Use this to unblock the backlog now; drop it once Google Ads is
+approved.
+
+**Neither closes the Baidu gap.** Checked on 2026-09-02: DataForSEO supports Baidu
+for **SERP results only** — it has no Baidu search-volume endpoint, and its keyword
+data sources are Google Ads, Bing Ads and Google Trends. Mainland-China demand
+remains unmeasured by anything in this stack, and no `zh-CN` number produced here
+should be read as covering it.
 
 ## Adding a provider
 
