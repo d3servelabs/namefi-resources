@@ -101,6 +101,24 @@
 
   .empty{padding:14px 20px;font-size:13px;color:var(--ink-3);font-family:var(--f-mono);margin:0}
 
+  .sx{margin-top:40px;border:1px solid var(--rule-strong);background:var(--surface)}
+  .sx h2{font-family:var(--f-disp);font-weight:600;font-size:19px;margin:0;padding:16px 20px 4px}
+  .sx .sx-sub{margin:0;padding:0 20px 14px;font-size:13.5px;color:var(--ink-2);max-width:78ch;border-bottom:1px solid var(--rule)}
+  .srow{display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1.55fr) minmax(0,.72fr);gap:16px;padding:11px 20px;border-bottom:1px solid var(--rule);align-items:baseline}
+  .srow:last-of-type{border-bottom:0}
+  .srow.shead{background:var(--surface-2);font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding-top:8px;padding-bottom:8px}
+  .s-name{font-weight:500;font-size:14.5px;line-height:1.45}
+  .s-name small{display:block;font-family:var(--f-mono);font-weight:400;font-size:11.5px;color:var(--ink-3);letter-spacing:.02em;margin-top:2px}
+  .s-n{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
+  .s-desc{font-size:13.5px;color:var(--ink-2);line-height:1.55}
+  .s-cats{font-family:var(--f-mono);font-size:11.5px;color:var(--accent);letter-spacing:.04em}
+  .sx-foot{margin:0;padding:12px 20px;border-top:1px solid var(--rule);font-size:13px;color:var(--ink-3)}
+  @media (max-width:880px){
+    .srow{grid-template-columns:minmax(0,1fr) 52px;row-gap:6px}
+    .srow .s-desc,.srow .s-cats{grid-column:1/-1}
+    .srow.shead{display:none}
+  }
+
   .xc{margin-top:40px;border:1px solid var(--rule-strong);background:var(--surface)}
   .xc h2{font-family:var(--f-disp);font-weight:600;font-size:19px;margin:0;padding:16px 20px;border-bottom:1px solid var(--rule)}
   .xc dl{margin:0;display:grid;grid-template-columns:190px minmax(0,1fr)}
@@ -135,15 +153,15 @@
   <header class="masthead">
     <p class="eyebrow" data-en="Namefi Resources · Content strategy · 2026-09-01">Namefi Resources · 内容战略 · 2026-09-01</p>
     <h1 data-en="Namefi Content Catalog">Namefi 内容目录</h1>
-    <p class="lede" data-en="Thirteen categories, ninety-one subcategories. Organized by audience and search intent, orthogonal to the topic clusters and content formats already on the site. The core audience is people interested in domains, NFTs, and RWAs all at once, with eight adjacent roles around them.">十三个大类，九十一个小类。按受众与搜索意图分类，与站内已有的主题簇和内容体裁两条轴正交。核心受众是对域名、NFT、RWA 三者都感兴趣的人，外延覆盖八类周边角色。</p>
+    <p class="lede" data-en="Thirteen categories, seventy-eight subcategories, organized by audience and search intent. This axis is orthogonal to the three already registered on the site: six topic clusters, seven editorial series, and nine content formats. The core audience is people interested in domains, NFTs, and RWAs all at once, with eight adjacent roles around them.">十三个大类，七十八个小类，按受众与搜索意图划分。这条轴与站上已注册的三条轴正交：六个主题簇、七个专题系列、九种内容体裁。核心受众是对域名、NFT、RWA 三者都感兴趣的人，外延覆盖八类周边角色。</p>
     <div class="facts">
-      <div class="fact"><b>151</b><span data-en="English posts">英文博客</span></div>
+      <div class="fact"><b>154</b><span data-en="English posts">英文博客</span></div>
+      <div class="fact"><b>105</b><span data-en="In a series">已归入系列</span></div>
       <div class="fact"><b>161</b><span data-en="Glossary terms">词汇条目</span></div>
       <div class="fact"><b>153</b><span data-en="TLD pages">TLD 单页</span></div>
-      <div class="fact"><b>7</b><span data-en="Comparisons">竞品对比</span></div>
+      <div class="fact"><b>12</b><span data-en="Comparisons">竞品对比</span></div>
       <div class="fact"><b>1</b><span data-en="News pieces">新闻评论</span></div>
       <div class="fact"><b>10</b><span data-en="Locales">语言</span></div>
-      <div class="fact"><b>6 / 7</b><span data-en="Clusters / series">主题簇 / 系列</span></div>
     </div>
   </header>
 
@@ -173,13 +191,19 @@
     <main id="main"></main>
   </div>
 
+  <section class="sx">
+    <h2 data-en="Editorial series">专题系列</h2>
+    <p class="sx-sub" data-en="A series is a third axis, not a category. It is a branded, sequential run that pulls its episodes from one or more categories, and an article can belong to a category and a series at once. Seven are registered today.">系列是第三条轴，不是分类。它是有品牌、有顺序的连载，选题可以横跨若干大类；一篇文章可以同时属于一个大类和一个系列。目前注册了七个。</p>
+    <div id="sx"></div>
+  </section>
+
   <section class="xc">
     <h2 data-en="Cross-cutting rules">横切规则</h2>
     <dl id="xc"></dl>
   </section>
 
   <footer class="note">
-    <span data-en="The seven figures at the top were measured from the namefi-resources repository on 2026-09-01. The coverage state on each subcategory is a judgment made from that same file listing, not an exact count. The editorial pipeline design has been dispatched to its own session, and will land as">顶部七项数量为 2026-09-01 从 namefi-resources 仓库实测。各小类的覆盖状态是依据同一份文件清单做出的判断，不是精确计数。创作流水线的设计已派发到独立会话，产出为</span>
+    <span data-en="Counts on this page were read on 2026-09-01 from origin/main of the namefi-resources repository: file counts from the git tree, series and format counts from article frontmatter. The coverage state on each subcategory is a judgment made from that same listing, not an exact count. The editorial pipeline design has been dispatched to its own session, and will land as">本页数量于 2026-09-01 读自 namefi-resources 仓库的 origin/main：文件数取自 git 树，系列与体裁数取自文章 frontmatter。各小类的覆盖状态是依据同一份清单做出的判断，不是精确计数。创作流水线的设计已派发到独立会话，产出为</span>
     <code>docs/editorial-pipeline.md</code> <span data-en="and">与</span> <code>docs/content-taxonomy.md</code><span data-en=" in the namefi-resources repository.">。</span>
   </footer>
 </div>
@@ -354,6 +378,35 @@
     {k:{zh:"视频",en:"Video"},v:{zh:"只做短视频。两条独立流水线：产品操作演示随产品更新重录，行业知识科普独立选题。",en:"Short form only. Two separate pipelines: product walkthroughs re-recorded when the product changes, and industry explainers selected on their own."}}
   ];
 
+  var SX = [
+    {slug:"domain-flipping-skills", zh:"（中文名待定）", en:"Domain Flipping Skills", n:41,
+     d:{zh:"低买高卖这门手艺：找货、估值、起名、护盘、卖出。",en:"The craft of buying low and selling high: sourcing, appraising, naming, protecting, selling."},
+     c:{zh:"一 · 六",en:"1 · 6"}},
+    {slug:"domain-apocalypse", zh:"域名浩劫", en:"Domain Apocalypse", n:23,
+     d:{zh:"真实的域名灾难，按事故故事讲，并指出本可以拦下它的那道控制。",en:"Real domain disasters told as incident stories, each naming the control that would have stopped it."},
+     c:{zh:"三",en:"3"}},
+    {slug:"name-change-game-change", zh:"改名，改命", en:"Name Change, Game Change", n:20,
+     d:{zh:"一次定义品牌的改名踩着溢价域名升级完成，并改变了此后的公司。",en:"A brand-defining rename riding a premium-domain upgrade, and the company it changed."},
+     c:{zh:"一",en:"1"}},
+    {slug:"best-tlds-by-industry", zh:"各行业最佳 TLD", en:"Best TLDs for Your Industry", n:8,
+     d:{zh:"逐个行业讲该挑哪些后缀、该保护哪些。",en:"Which extensions to pick and secure, industry by industry."},
+     c:{zh:"一",en:"1"}},
+    {slug:"blockchain-concepts", zh:"区块链概念", en:"Blockchain Concepts", n:5,
+     d:{zh:"用通俗语言梳理区块链背后的核心技术。",en:"Plain-language roundups of the core technologies behind blockchains."},
+     c:{zh:"九",en:"9"}},
+    {slug:"tokenize-your-com", zh:"通证化你的 .com", en:"Tokenize Your .com", n:4,
+     d:{zh:"把传统 .com 上链的分步指南：通证化、DNS、市场、税务、恢复。",en:"A step-by-step walkthrough of bringing a traditional .com on-chain."},
+     c:{zh:"二",en:"2"}},
+    {slug:"domain-investor-field-guide", zh:"域名投资人手册", en:"Domain Investor's Field Guide", n:4,
+     d:{zh:"给域名投资人的实用手册：出售、行业媒体、资讯与社区。",en:"A practical field guide: selling, the trade media, the newsletters, the communities."},
+     c:{zh:"一 · 六",en:"1 · 6"}}
+  ];
+
+  var SXT = {
+    zh:{h:["系列","篇数","定位","归属大类"], foot:"另有 49 篇英文文章未归入任何系列。Domain Flipping Skills 在注册表里还没有中文名，需要在翻译轮补上。"},
+    en:{h:["Series","Posts","What it is","Categories"], foot:"Another 49 English posts belong to no series. Domain Flipping Skills has no Chinese title in the registry yet, and needs one in the translation pass."}
+  };
+
   var T = {
     zh:{have:"已有",thin:"少量",todo:"待建",
         legend:[["have","已有 — 站内已有成规模的内容"],["thin","少量 — 有零星几篇，未成体系"],["todo","待建 — 尚无内容"]],
@@ -367,6 +420,7 @@
 
   var main=document.getElementById('main'), rail=document.getElementById('rail'),
       legend=document.getElementById('legend'), xcEl=document.getElementById('xc'),
+      sxEl=document.getElementById('sx'),
       live=document.getElementById('live'), sel=document.getElementById('lang');
   var esc=function(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;};
   var lang='zh', filter='all';
@@ -391,6 +445,16 @@
     legend.innerHTML=L.legend.map(function(p){
       return '<span class="s-'+p[0]+'"><i class="mk"></i>'+esc(p[1])+'</span>';
     }).join('');
+
+    var SH=SXT[lang];
+    sxEl.innerHTML='<div class="srow shead"><span>'+SH.h[0]+'</span><span class="s-n">'+SH.h[1]+'</span><span>'+SH.h[2]+'</span><span>'+SH.h[3]+'</span></div>'
+      + SX.map(function(r){
+          var primary = (lang==='en') ? r.en : r.zh, secondary = (lang==='en') ? r.slug : r.en;
+          return '<div class="srow"><span class="s-name">'+esc(primary)+'<small>'+esc(secondary)+'</small></span>'
+               + '<span class="s-n">'+r.n+'</span><span class="s-desc">'+esc(r.d[lang])+'</span>'
+               + '<span class="s-cats">'+esc(r.c[lang])+'</span></div>';
+        }).join('')
+      + '<p class="sx-foot">'+esc(SH.foot)+'</p>';
 
     xcEl.innerHTML=XC.map(function(r){
       return '<dt>'+esc(r.k[lang])+'</dt><dd>'+esc(r.v[lang])+'</dd>';
