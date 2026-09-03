@@ -112,6 +112,10 @@ is free. Before the account was verified the same body failed with HTTP 403 /
 `40104` instead, which named account state, not batching — two different problems
 that produce the same symptom, and the 403 masked the other one.
 
+**12 tasks per minute, account-wide.** Over it, each excess task comes back
+`40202` at HTTP 200 — refused, not queued, and not billed. Firing 100 tasks
+concurrently lost 88 of them. One request every 5.5s is inside the limit.
+
 **One bad keyword kills the whole task.** Google Ads caps a keyword at 10 words
 and 80 characters, and DataForSEO fails the entire task if any single keyword
 breaks it. Three 11-word questions zeroed out a 400-keyword task. Over-limit

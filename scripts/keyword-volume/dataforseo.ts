@@ -29,6 +29,12 @@ const ENDPOINT = 'https://api.dataforseo.com/v3/keywords_data/google_ads/search_
 // 11-word questions in a 400-keyword task returned zero rows for all 400.
 // Over-limit queries are therefore held back and reported as unmeasurable
 // rather than submitted.
+// 12 tasks per minute, account-wide. Exceeding it returns status_code 40202 per
+// rejected task at HTTP 200 — the tasks are refused, not queued, and refused
+// tasks are not billed. Firing 100 tasks at once loses 88 of them.
+export const TASKS_PER_MINUTE = 12;
+export const MIN_TASK_INTERVAL_MS = Math.ceil(60_000 / TASKS_PER_MINUTE);
+
 const MAX_WORDS = 10;
 const MAX_CHARS = 80;
 
@@ -167,7 +173,10 @@ export class DataForSeoProvider implements VolumeProvider {
       return anyResult;
     };
 
-    for (const task of tasks) await post([task]);
+    for (const [i, task] of tasks.entries()) {
+      if (i > 0) await new Promise((r) => setTimeout(r, MIN_TASK_INTERVAL_MS));
+      await post([task]);
+    }
     this.transport = `${tasks.length} task(s), one request each`;
 
     if (found.size === 0 && failures.length) {
