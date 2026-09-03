@@ -153,6 +153,51 @@ one candidate whose term is `dns` absorbs all 1,161 generic DNS queries, and six
 unrelated ICANN articles tie at exactly the same number. Sound attribution needs
 one seed per candidate — 100 seeds, 5 tasks, $0.45.
 
+### Attribution: one task per candidate, not one task per batch
+
+Harvesting many seeds in one task pools the results — you cannot tell which seed
+produced which query, and matching them back by shared glossary term gives
+term-level demand wearing an article-level label (one candidate absorbs all
+1,161 generic DNS queries; six unrelated ICANN articles tie at the same number).
+Running **one task per seed** makes the API do the attribution. 100 candidates,
+100 tasks, $9.00, paced at the 12/min limit — about nine minutes.
+
+Two rules that survived contact with the data:
+
+- **Never seed on a bare acronym.** `did` returns "did george washington signed
+  the constitution" (880/mo); `mcp server` (60,500/mo) cannot be separated from
+  Minecraft or managed-care intent by the string alone. Qualify the seed
+  (`did document`, `model context protocol`) and exclude the bare form from
+  matching too.
+- **Read the top queries of every row you intend to rank on.** The filter caught
+  most contamination; reading the rows caught the rest.
+
+### What the measured slate showed
+
+Eight of the September slate's original top ten have **zero** measurable Google
+demand, and the highest-demand candidate had ranked 96th of 100. Of all 100, 49
+carry measurable demand and 51 carry none — concentrated in domain-tokenization
+(20 of 35) and agentic-domains (15 of 22). The nulls are real: same method, same
+day, `domain name registration` returns 1,496 queries. A zero means search-click
+arithmetic cannot justify the piece, not that the piece is worthless.
+
+### Other locales, probed once each
+
+English only for now. One seed per market, 2026-09-02, brand-navigational terms
+noted because they are not editorial demand:
+
+| locale | generic head term | vol/mo | ideas returned |
+| --- | --- | --- | --- |
+| en | `domain registration` | 110,000 | 1,496 |
+| ja | `ドメイン 取得` | 12,100 | 577 |
+| es | `comprar dominio` | 8,100 | 824 |
+| de | `domain registrierung` | 2,400 | 39 |
+
+Japanese and Spanish carry real signal and a deep idea pool; German is thin.
+Both es and ja totals are dominated by registrar brand names (`dondominios`
+33,100, `ムームードメイン` 40,500) that we cannot win — discount them before
+comparing markets.
+
 ## Adding a provider
 
 Implement `VolumeProvider` in `provider.ts` and add it to the list in `index.ts`.
