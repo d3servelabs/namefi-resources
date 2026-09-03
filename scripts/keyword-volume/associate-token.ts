@@ -20,8 +20,8 @@
 //
 // Usage:
 //   bun scripts/keyword-volume/associate-token.ts --dry-run     # no credentials needed
-//   secretctl run --with '^GOOGLE_ADS_.*$=&' -- \
-//     bun scripts/keyword-volume/associate-token.ts
+//   secretctl run --with '^GOOGLE_ADS_DEVELOPER_TOKEN$=GOOGLE_ADS_DEVELOPER_TOKEN' \
+//     … one --with per secret, all five … -- bun scripts/keyword-volume/associate-token.ts
 //
 // Reads the same five env vars as the provider and logs none of them.
 //
@@ -71,7 +71,8 @@ async function main() {
     const missing = provider.envVars.filter((v) => !process.env[v]);
     console.error(`not configured: missing ${missing.join(', ')}`);
     console.error('');
-    console.error("Run under: secretctl run --with '^GOOGLE_ADS_.*$=&' -- bun scripts/keyword-volume/associate-token.ts");
+    console.error('Run under secretctl with one --with per secret:');
+    for (const v of provider.envVars) console.error(`  --with '^${v}$=${v}'`);
     console.error('If GOOGLE_ADS_REFRESH_TOKEN is the one missing, get it first with');
     console.error('  bun scripts/keyword-volume/get-refresh-token.ts');
     process.exit(1);
@@ -116,6 +117,20 @@ async function main() {
   }
 
   const text = await res.text();
+
+  // A response is not proof the Google Ads API saw the request. A sunset or
+  // mistyped version is routed nowhere and Google's edge answers with a generic
+  // HTML 404 — the developer-token header is never read, so nothing is
+  // associated. The API itself always answers JSON, even when it rejects us.
+  // Treating "any HTTP status" as success reported a false ASSOCIATED once; the
+  // body's shape is what separates the two.
+  let reachedApi = true;
+  try {
+    JSON.parse(text);
+  } catch {
+    reachedApi = false;
+  }
+
   console.log(`HTTP ${res.status} ${res.statusText}`);
   const requestId = res.headers.get('request-id');
   if (requestId) console.log(`request-id: ${requestId}`);
@@ -125,6 +140,19 @@ async function main() {
   // credentials, so printing it is both safe and the proof a call landed.
   console.log(text.length > 4000 ? `${text.slice(0, 4000)}\n… (${text.length} bytes total, truncated)` : text);
   console.log('');
+
+  if (!reachedApi) {
+    console.error(
+      `NOT ASSOCIATED — HTTP ${res.status}, but the body is not JSON, so this never ` +
+        'reached the Google Ads API.',
+    );
+    console.error('');
+    console.error(`That is what a sunset API version looks like: ${API_VERSION} routed to`);
+    console.error("Google's generic error page and the developer-token header was never read.");
+    console.error('Check the current version at developers.google.com/google-ads/api/docs/sunset-dates');
+    console.error('and update API_VERSION in googleads.ts. Do not run brand verification yet.');
+    process.exit(1);
+  }
 
   if (res.ok) {
     console.log('ASSOCIATED — the call succeeded, so the developer token is now associated');

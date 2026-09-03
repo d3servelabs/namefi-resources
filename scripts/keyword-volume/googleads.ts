@@ -16,7 +16,7 @@
 // because test accounts hold no real data. Basic access is the real prerequisite.
 //
 // Nothing here logs a credential. Read them from the local secrets broker
-// (`secretctl run --with '^GOOGLE_ADS_.*$=&' -- …`) rather than a plaintext file.
+// (one `secretctl run --with '^NAME$=NAME'` per secret) rather than a plaintext file.
 
 import {
   BAIDU_GAP,
@@ -26,7 +26,9 @@ import {
   type VolumeResult,
 } from './provider.ts';
 
-export const API_VERSION = 'v21';
+// Current as of 2026-09-03. v21 and earlier are sunset and return a generic
+// HTML 404 from Google's edge — the request never reaches the API at all.
+export const API_VERSION = 'v25';
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 
 /** Google Ads geo target constant ids. Only the markets this repo publishes to. */

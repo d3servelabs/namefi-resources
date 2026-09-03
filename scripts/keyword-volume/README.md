@@ -30,8 +30,18 @@ plaintext:
 
 ```
 secretctl ls                                          # names only, never values
-secretctl run --with '^GOOGLE_ADS_.*$=&' -- bun keywords:volume --in queries.json
+secretctl run \
+  --with '^GOOGLE_ADS_DEVELOPER_TOKEN$=GOOGLE_ADS_DEVELOPER_TOKEN' \
+  --with '^GOOGLE_ADS_CLIENT_ID$=GOOGLE_ADS_CLIENT_ID' \
+  --with '^GOOGLE_ADS_CLIENT_SECRET$=GOOGLE_ADS_CLIENT_SECRET' \
+  --with '^GOOGLE_ADS_REFRESH_TOKEN$=GOOGLE_ADS_REFRESH_TOKEN' \
+  --with '^GOOGLE_ADS_LOGIN_CUSTOMER_ID$=GOOGLE_ADS_LOGIN_CUSTOMER_ID' \
+  -- bun keywords:volume --in queries.json
 ```
+
+One `--with` per secret: this `secretctl` requires each pattern to resolve to
+**exactly one** name, and the alias must be a valid identifier — there is no
+`=&` shorthand and no regex that fans out across several secrets.
 
 DataForSEO's two values may sit in **`~/ws/d3servelabs/namefi-resources/.env.local`**
 — the repo-container root, *not* a worktree — so a `grep` from inside a worktree
@@ -57,7 +67,10 @@ every human-facing line goes to stderr. That is what makes this safe, and it is
 the only way the token should ever be moved:
 
 ```
-secretctl run --with '^GOOGLE_ADS_CLIENT_(ID|SECRET)$=&' -- bun scripts/keyword-volume/get-refresh-token.ts | secretctl set GOOGLE_ADS_REFRESH_TOKEN
+secretctl run \
+  --with '^GOOGLE_ADS_CLIENT_ID$=GOOGLE_ADS_CLIENT_ID' \
+  --with '^GOOGLE_ADS_CLIENT_SECRET$=GOOGLE_ADS_CLIENT_SECRET' \
+  -- bun scripts/keyword-volume/get-refresh-token.ts | secretctl set GOOGLE_ADS_REFRESH_TOKEN
 ```
 
 `associate-token.ts` makes the single API call that ties the developer token to

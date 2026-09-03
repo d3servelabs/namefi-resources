@@ -8,7 +8,8 @@
 //
 // Usage:
 //   bun scripts/keyword-volume/get-refresh-token.ts --dry-run   # print the URL, bind the listener, exit
-//   secretctl run --with '^GOOGLE_ADS_CLIENT_(ID|SECRET)$=&' -- \
+//   secretctl run --with '^GOOGLE_ADS_CLIENT_ID$=GOOGLE_ADS_CLIENT_ID' \
+//     --with '^GOOGLE_ADS_CLIENT_SECRET$=GOOGLE_ADS_CLIENT_SECRET' -- \
 //     bun scripts/keyword-volume/get-refresh-token.ts | secretctl set GOOGLE_ADS_REFRESH_TOKEN
 //
 // The refresh token goes to **stdout and nowhere else**. Every human-facing line
@@ -209,8 +210,12 @@ async function main() {
   say('Next: associate the developer token with the Cloud project, which is the');
   say('prerequisite for brand verification —');
   say('');
-  say("  secretctl run --with '^GOOGLE_ADS_.*$=&' -- \\");
-  say('    bun scripts/keyword-volume/associate-token.ts');
+  say('  secretctl run \\');
+  for (const v of [
+    'GOOGLE_ADS_DEVELOPER_TOKEN','GOOGLE_ADS_CLIENT_ID','GOOGLE_ADS_CLIENT_SECRET',
+    'GOOGLE_ADS_REFRESH_TOKEN','GOOGLE_ADS_LOGIN_CUSTOMER_ID',
+  ]) say(`    --with '^${v}$=${v}' \\`);
+  say('    -- bun scripts/keyword-volume/associate-token.ts');
 }
 
 main();

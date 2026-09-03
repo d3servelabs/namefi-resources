@@ -242,7 +242,10 @@ Then the real run. This pipes the token from the helper straight into the
 encrypted store — it never lands in a file, a log or your shell history:
 
 ```bash
-secretctl run --with '^GOOGLE_ADS_CLIENT_(ID|SECRET)$=&' -- bun scripts/keyword-volume/get-refresh-token.ts | secretctl set GOOGLE_ADS_REFRESH_TOKEN
+secretctl run \
+  --with '^GOOGLE_ADS_CLIENT_ID$=GOOGLE_ADS_CLIENT_ID' \
+  --with '^GOOGLE_ADS_CLIENT_SECRET$=GOOGLE_ADS_CLIENT_SECRET' \
+  -- bun scripts/keyword-volume/get-refresh-token.ts | secretctl set GOOGLE_ADS_REFRESH_TOKEN
 ```
 
 It prints a consent URL and waits on `127.0.0.1`. **Open the URL yourself**,
@@ -269,7 +272,13 @@ That prints the exact request — URL, header names with values redacted, JSON
 body — and sends nothing. Then make the call for real:
 
 ```bash
-secretctl run --with '^GOOGLE_ADS_.*$=&' -- bun scripts/keyword-volume/associate-token.ts
+secretctl run \
+  --with '^GOOGLE_ADS_DEVELOPER_TOKEN$=GOOGLE_ADS_DEVELOPER_TOKEN' \
+  --with '^GOOGLE_ADS_CLIENT_ID$=GOOGLE_ADS_CLIENT_ID' \
+  --with '^GOOGLE_ADS_CLIENT_SECRET$=GOOGLE_ADS_CLIENT_SECRET' \
+  --with '^GOOGLE_ADS_REFRESH_TOKEN$=GOOGLE_ADS_REFRESH_TOKEN' \
+  --with '^GOOGLE_ADS_LOGIN_CUSTOMER_ID$=GOOGLE_ADS_LOGIN_CUSTOMER_ID' \
+  -- bun scripts/keyword-volume/associate-token.ts
 ```
 
 **Read the output before moving on.** You are looking for a real HTTP status and
@@ -279,11 +288,34 @@ a response body from `googleads.googleapis.com`, followed by a line beginning
 - **A non-2xx is a success here.** `403 DEVELOPER_TOKEN_NOT_APPROVED` is the
   expected answer while the token is Test level, and it associates the project
   exactly as a `200` would. The script says so and exits `0`.
-- **The one real failure is a request that never reached Google.** A refused
-  OAuth token exchange, or a network error, prints `NOT ASSOCIATED —` and exits
-  `1`. Nothing was associated; fix the credentials and run it again. Starting
-  step 6 after a `NOT ASSOCIATED` is how brand verification fails for reasons
-  the error message will not explain.
+- **The one real failure is a request that never reached the Google Ads API.** A
+  refused OAuth token exchange, a network error, or a **non-JSON body** all print
+  `NOT ASSOCIATED —` and exit `1`. Nothing was associated; fix it and run again.
+
+### The trap: a 404 that looks like a rejection but is a routing miss
+
+Hit on 2026-09-03. The first association run returned **HTTP 404**, and by the
+rule above — any status is fine — that read as success. It was not. The body was
+Google's generic HTML error page:
+
+> The requested URL `/v21/customers/…:generateKeywordIdeas` was not found on this server.
+
+**`v21` had been sunset.** The request was routed nowhere, the `developer-token`
+header was never read, and nothing was associated. The tell is the body, not the
+status: the Google Ads API answers **JSON** even when it rejects you, so an HTML
+body means the API never saw the request. `associate-token.ts` now checks exactly
+that and refuses to report `ASSOCIATED` without a JSON response.
+
+Versions in service on 2026-09-03 were **v22–v25**, v25 newest and the one pinned
+in `googleads.ts`; v21 and earlier are gone. When this breaks again — it will,
+these sunset on a schedule — check
+[sunset dates](https://developers.google.com/google-ads/api/docs/sunset-dates)
+and bump `API_VERSION`.
+
+What a genuine association looks like: **HTTP 403**, a `request-id` header, and a
+JSON `GoogleAdsFailure` naming `DEVELOPER_TOKEN_NOT_APPROVED`. That is the API
+itself, having read the token, telling you the token is Test level. It is the
+expected, correct outcome here.
 
 ---
 
