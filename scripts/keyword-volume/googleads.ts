@@ -39,7 +39,7 @@
 // because test accounts hold no real data. Basic access is the real prerequisite.
 //
 // Nothing here logs a credential. Read them from the local secrets broker
-// (`secretctl run --with '^GOOGLE_ADS_.*$=&' -- …`) rather than a plaintext file.
+// (one `secretctl run --with '^NAME$=NAME'` per secret) rather than a plaintext file.
 
 import {
   BAIDU_GAP,
@@ -49,7 +49,9 @@ import {
   type VolumeResult,
 } from './provider.ts';
 
-const API_VERSION = 'v21';
+// Current as of 2026-09-03. v21 and earlier are sunset and return a generic
+// HTML 404 from Google's edge — the request never reaches the API at all.
+export const API_VERSION = 'v25';
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 
 /**
@@ -158,8 +160,13 @@ export class GoogleAdsProvider implements VolumeProvider {
     return this.envVars.every((v) => Boolean(process.env[v]));
   }
 
-  /** Exchange the long-lived refresh token for a short-lived access token. */
-  private async accessToken(): Promise<string> {
+  /**
+   * Exchange the long-lived refresh token for a short-lived access token.
+   *
+   * Public because `associate-token.ts` needs the same exchange and there must
+   * be exactly one implementation of it in this directory.
+   */
+  async accessToken(): Promise<string> {
     const body = new URLSearchParams({
       client_id: process.env.GOOGLE_ADS_CLIENT_ID!,
       client_secret: process.env.GOOGLE_ADS_CLIENT_SECRET!,
