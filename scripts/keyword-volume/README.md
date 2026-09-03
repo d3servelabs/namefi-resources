@@ -101,6 +101,54 @@ data sources are Google Ads, Bing Ads and Google Trends. Mainland-China demand
 remains unmeasured by anything in this stack, and no `zh-CN` number produced here
 should be read as covering it.
 
+## What the first real run showed (2026-09-02)
+
+Measured, not inferred. Four findings, each one a trap for the next person.
+
+**One task per request.** The endpoint takes a JSON array and looks like a batch
+API. It is not: it processes the first task and returns `40000 You can set only
+one task at a time` for the rest, at HTTP 200. Billing is per task, so splitting
+is free. Before the account was verified the same body failed with HTTP 403 /
+`40104` instead, which named account state, not batching — two different problems
+that produce the same symptom, and the 403 masked the other one.
+
+**One bad keyword kills the whole task.** Google Ads caps a keyword at 10 words
+and 80 characters, and DataForSEO fails the entire task if any single keyword
+breaks it. Three 11-word questions zeroed out a 400-keyword task. Over-limit
+queries are now held back and reported as unmeasurable rather than submitted.
+
+**Our own target queries were the wrong shape.** Of 400 English queries written
+for the September slate, hit rate by length: 3 words 41%, 4 words 10%, 5 words
+7%, **6+ words 0%**. 168 of them were 6 words or longer — article titles and
+noun piles (`ICANN registration data policy autonomous registrant`), not things
+a person types. A null against a query like that measures the query's authoring,
+not the demand, so **do not rank a backlog on hand-written long-tail queries**.
+Harvest real ones with `keywords_for_keywords` instead: one task, 20 short seeds,
+$0.09, returned 8,920 real queries at a 3-word median.
+
+**Short seeds import demand that is not ours.** Harvested on the seeds above,
+4,203 of 8,520 queries — 4.37M searches/month, more than half the total — belong
+to other industries that share our acronyms: `did` is dissociative identity
+disorder (201,000/mo), `registry` is baby and wedding registries (90,500/mo),
+`mcp` and `seo` likewise. Filter to industry anchors before attributing anything.
+
+### The Baidu gap, now with a number
+
+Same harvest run against the Chinese market: **40,390 searches/month** across
+1,183 Chinese queries, against **1,806,160/month** for English — Google's view of
+Chinese demand is roughly **2% the size** of its English one, and `域名注册`
+shows 1,600/mo where `domain name registration` shows 33,100 in the US. That is
+the Baidu gap measured rather than asserted. **A zh-CN volume from this stack
+must never be ranked against an en volume**: they are not the same quantity.
+
+### What this data cannot do yet
+
+It cannot re-rank the slate. Attributing harvested queries to candidates by
+shared glossary term gives term-level demand wearing an article-level label: the
+one candidate whose term is `dns` absorbs all 1,161 generic DNS queries, and six
+unrelated ICANN articles tie at exactly the same number. Sound attribution needs
+one seed per candidate — 100 seeds, 5 tasks, $0.45.
+
 ## Adding a provider
 
 Implement `VolumeProvider` in `provider.ts` and add it to the list in `index.ts`.

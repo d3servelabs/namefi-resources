@@ -77,6 +77,8 @@ async function main() {
     `${measured} of ${results.length} rows carry a measured volume; ` +
       `${results.length - measured} are null with a stated reason. -> ${out}`,
   );
+  const transport = (provider as { transport?: string | null }).transport;
+  if (transport) console.error(`transport: ${transport}`);
 }
 
 main();
