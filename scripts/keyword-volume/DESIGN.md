@@ -40,8 +40,8 @@ redirects, and each carries original content that stands on its own.
 
 | Service | Method | What we read |
 | --- | --- | --- |
-| `KeywordPlanIdeaService` | `GenerateKeywordIdeas` | keyword ideas for a seed set |
-| `KeywordPlanIdeaService` | `GenerateKeywordHistoricalMetrics` | average monthly searches, monthly history |
+| `KeywordPlanIdeaService` | `GenerateKeywordIdeas` | keyword ideas for a seed set (at most 20 seeds; returns *other* keywords) |
+| `KeywordPlanIdeaService` | `GenerateKeywordHistoricalMetrics` | average monthly searches and monthly history **for exactly the keywords asked about** (up to 10,000) |
 
 
 ## 4. Architecture
@@ -63,7 +63,7 @@ redirects, and each carries original content that stands on its own.
             v
   +---------------------------+
   |  googleads.ts             |   OAuth2 refresh -> access token
-  |  GoogleAdsProvider        |   POST :generateKeywordIdeas
+  |  GoogleAdsProvider        |   POST :generateKeywordHistoricalMetrics
   +---------------------------+
             |
             v

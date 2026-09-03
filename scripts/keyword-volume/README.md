@@ -23,7 +23,7 @@ bun keywords:volume --providers     # what is configured, what is missing
 
 | provider | env vars | what it answers |
 | --- | --- | --- |
-| `google-ads` | `GOOGLE_ADS_DEVELOPER_TOKEN`, `GOOGLE_ADS_CLIENT_ID`, `GOOGLE_ADS_CLIENT_SECRET`, `GOOGLE_ADS_REFRESH_TOKEN`, `GOOGLE_ADS_LOGIN_CUSTOMER_ID` | **primary** — KeywordPlanIdeaService, free |
+| `google-ads` | `GOOGLE_ADS_DEVELOPER_TOKEN`, `GOOGLE_ADS_CLIENT_ID`, `GOOGLE_ADS_CLIENT_SECRET`, `GOOGLE_ADS_REFRESH_TOKEN`, `GOOGLE_ADS_LOGIN_CUSTOMER_ID` | **primary** — `KeywordPlanIdeaService.GenerateKeywordHistoricalMetrics`, free |
 | `dataforseo` | `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` | stopgap — the same data, resold |
 
 A **Test-level** Google Ads developer token cannot return real volume: test

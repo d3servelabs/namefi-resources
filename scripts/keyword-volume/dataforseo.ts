@@ -75,6 +75,31 @@ const LANG_NAME: Record<string, string> = {
   ta: 'Tamil',
 };
 
+/**
+ * A keyword is only meaningful together with the market it was asked about:
+ * `域名注册` in zh-CN/CN and in zh-CN/TW are two different questions, and the
+ * same English string asked of the US and of Spain returns two different
+ * numbers. Every lookup in this file is keyed on all three so a row can never
+ * inherit a figure measured for a different market.
+ */
+function marketKey(locale: string, country: string, query: string): string {
+  return `${locale}|${country}|${String(query).toLowerCase()}`;
+}
+
+/**
+ * One submittable task, kept next to the market that produced it. The response
+ * items carry only the keyword back — not the language or location they were
+ * looked up for — so attribution has to come from the request side.
+ */
+export interface TaskPlan {
+  locale: string;
+  country: string;
+  /** The specs this task covers, over-limit queries already held back. */
+  specs: QuerySpec[];
+  /** The exact JSON body posted for this task. */
+  body: Record<string, unknown>;
+}
+
 export class DataForSeoProvider implements VolumeProvider {
   readonly id = 'dataforseo';
   readonly scope =
@@ -85,6 +110,12 @@ export class DataForSeoProvider implements VolumeProvider {
   /** Which request shape the last fetch actually used. Diagnostic only. */
   transport: string | null = null;
 
+  /**
+   * Gap between tasks, to stay under the account-wide 12-per-minute limit.
+   * Settable so tests can drive the request loop without waiting on the clock.
+   */
+  minTaskIntervalMs = MIN_TASK_INTERVAL_MS;
+
   configured(): boolean {
     return Boolean(process.env.DATAFORSEO_LOGIN && process.env.DATAFORSEO_PASSWORD);
   }
@@ -94,8 +125,8 @@ export class DataForSeoProvider implements VolumeProvider {
     return `Basic ${Buffer.from(raw).toString('base64')}`;
   }
 
-  /** The exact request body, exposed so `--dry-run` can print it without credentials. */
-  buildTasks(specs: QuerySpec[]): unknown[] {
+  /** The tasks to submit, each carrying the market it belongs to. */
+  planTasks(specs: QuerySpec[]): TaskPlan[] {
     const byMarket = new Map<string, QuerySpec[]>();
     for (const s of specs) {
       if (rejectReason(s.query)) continue;
@@ -107,19 +138,30 @@ export class DataForSeoProvider implements VolumeProvider {
     // 2026-09-02: $0.09 per live task, up to 1,000 keywords). Chunk so a large
     // market cannot silently overflow the cap.
     const MAX_PER_TASK = 1000;
-    const tasks: unknown[] = [];
+    const plans: TaskPlan[] = [];
     for (const [key, group] of byMarket) {
       const [locale, country] = key.split('|');
       for (let i = 0; i < group.length; i += MAX_PER_TASK) {
-        tasks.push({
-          keywords: group.slice(i, i + MAX_PER_TASK).map((g) => g.query),
-          location_name: COUNTRY_NAME[country] ?? country,
-          language_name: LANG_NAME[locale] ?? locale,
-          search_partners: false,
+        const chunk = group.slice(i, i + MAX_PER_TASK);
+        plans.push({
+          locale,
+          country,
+          specs: chunk,
+          body: {
+            keywords: chunk.map((g) => g.query),
+            location_name: COUNTRY_NAME[country] ?? country,
+            language_name: LANG_NAME[locale] ?? locale,
+            search_partners: false,
+          },
         });
       }
     }
-    return tasks;
+    return plans;
+  }
+
+  /** The exact request bodies, exposed so `--dry-run` can print them without credentials. */
+  buildTasks(specs: QuerySpec[]): unknown[] {
+    return this.planTasks(specs).map((p) => p.body);
   }
 
   async fetch(specs: QuerySpec[]): Promise<VolumeResult[]> {
@@ -138,60 +180,81 @@ export class DataForSeoProvider implements VolumeProvider {
     // Before the account was verified the same body failed earlier, with HTTP
     // 403 / 40104 ("please verify your account"). That was a separate problem
     // and it masked this one; do not read a 403 here as a batching error.
-    const tasks = this.buildTasks(specs);
+    const plans = this.planTasks(specs);
     const found = new Map<string, any>();
-    const failures: string[] = [];
+    // Failures are recorded against the task that suffered them, never pooled:
+    // a keyword missing from a task that SUCCEEDED was looked up and came back
+    // absent, which is a different fact from a keyword whose task never ran.
+    const taskFailures = new Map<number, string[]>();
+    // Which task each spec was submitted in, so a spec can be told about its own
+    // task and no other.
+    const taskOf = new Map<string, number>();
+    for (const [i, plan] of plans.entries()) {
+      for (const s of plan.specs) taskOf.set(marketKey(s.locale, s.country, s.query), i);
+    }
 
-    const post = async (batch: unknown[]): Promise<boolean> => {
-      const res = await globalThis.fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { Authorization: this.authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(batch),
-      });
+    const post = async (plan: TaskPlan, index: number): Promise<void> => {
+      const fail = (why: string) =>
+        taskFailures.set(index, [...(taskFailures.get(index) ?? []), why]);
+      let res: Response;
+      try {
+        res = await globalThis.fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { Authorization: this.authHeader(), 'Content-Type': 'application/json' },
+          body: JSON.stringify([plan.body]),
+        });
+      } catch (e) {
+        // A transport error is zero evidence, never a zero volume.
+        fail(`request failed: ${(e as Error).message}`);
+        return;
+      }
       if (!res.ok) {
         // A non-200 is zero evidence, never a zero volume.
-        failures.push(`HTTP ${res.status}`);
-        return false;
+        fail(`HTTP ${res.status}`);
+        return;
       }
       const body = (await res.json()) as any;
-      let anyResult = false;
-      for (const t of body.tasks ?? []) {
+      const tasks = body?.tasks ?? [];
+      if (!Array.isArray(tasks) || tasks.length === 0) {
+        fail('no task in the response body');
+        return;
+      }
+      for (const t of tasks) {
         // A task can fail while the HTTP call succeeds. Record it: a failed task
         // means its keywords were never looked up, which is not the same as a
         // keyword that was looked up and came back absent.
         if (t?.status_code !== 20000) {
-          failures.push(`task ${t?.status_code} ${t?.status_message ?? ''}`.trim());
+          fail(`task ${t?.status_code} ${t?.status_message ?? ''}`.trim());
           continue;
         }
+        // The response repeats the keyword but not the market, so the market
+        // comes from the plan that produced this request.
         for (const item of t.result ?? []) {
-          if (item?.keyword) {
-            found.set(String(item.keyword).toLowerCase(), item);
-            anyResult = true;
-          }
+          if (item?.keyword) found.set(marketKey(plan.locale, plan.country, item.keyword), item);
         }
       }
-      return anyResult;
     };
 
-    for (const [i, task] of tasks.entries()) {
-      if (i > 0) await new Promise((r) => setTimeout(r, MIN_TASK_INTERVAL_MS));
-      await post([task]);
+    for (const [i, plan] of plans.entries()) {
+      if (i > 0 && this.minTaskIntervalMs > 0)
+        await new Promise((r) => setTimeout(r, this.minTaskIntervalMs));
+      await post(plan, i);
     }
-    this.transport = `${tasks.length} task(s), one request each`;
+    this.transport = `${plans.length} task(s), one request each`;
 
-    if (found.size === 0 && failures.length) {
-      return specs.map((s) =>
-        unknown(s, this.id, `${failures.join(', ')} — no data, not a zero`),
-      );
-    }
     const at = new Date().toISOString();
     return specs.map((s) => {
-      const hit = found.get(s.query.toLowerCase());
-      const zhNote = s.locale === 'zh-CN' ? BAIDU_GAP : null;
+      // An over-limit query was never submitted at all, so its own reason stands
+      // ahead of anything that happened to the tasks that did run.
       const rejected = rejectReason(s.query);
       if (rejected) return unknown(s, this.id, rejected);
+
+      const key = marketKey(s.locale, s.country, s.query);
+      const hit = found.get(key);
       if (!hit) {
-        const why = failures.length
+        const index = taskOf.get(key);
+        const failures = index === undefined ? undefined : taskFailures.get(index);
+        const why = failures?.length
           ? `its task failed (${failures.join('; ')}) — never looked up, not a zero`
           : 'no row returned for this keyword — absent from the response, not measured as zero';
         return unknown(s, this.id, why);
@@ -216,7 +279,7 @@ export class DataForSeoProvider implements VolumeProvider {
         competition: typeof hit.competition_index === 'number' ? hit.competition_index : null,
         source: this.id,
         fetchedAt: at,
-        note: zhNote,
+        note: s.locale === 'zh-CN' ? BAIDU_GAP : null,
       };
     });
   }
