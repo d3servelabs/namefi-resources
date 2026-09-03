@@ -569,8 +569,12 @@ window.__SLATE__={"cands":[{"id":"C019","rank":1,"score":72,"wp":40,"hp":20,"gp"
     D.cands.forEach(function(c){if(vals.indexOf(c[key])<0)vals.push(c[key]);});
     vals.sort();
     var el=document.getElementById(sel);
+    var prev=el.value;
     el.innerHTML='<option value="">'+esc(label)+': '+esc(lb('all'))+'</option>'
       +vals.map(function(v){return '<option value="'+esc(v)+'">'+esc(g(v))+'</option>';}).join('');
+    // relabelling on a language switch must not silently clear the active filter
+    el.value=prev;
+    if(el.selectedIndex<0)el.value='';
   }
 
   D.byId={}; D.cands.forEach(function(c){D.byId[c.id]=c;});
