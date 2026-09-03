@@ -35,10 +35,23 @@ So there is no useful order other than this one:
 | 5 | **associate the developer token with the project** | script | `associate-token.ts` |
 | 6 | Branding → **Verify branding** → **Publish branding** | **you (Console)** | [below](#6-branding) |
 
-**Step 5 must actually have run before step 6.** Not "should have" — the
-verification in step 6 reads the association. Confirm it from the script's own
-output (an `ASSOCIATED —` line and an HTTP status printed from a real response),
-not from memory.
+**Step 5 must actually have run before step 6.**
+
+Learned the hard way on 2026-09-03: **brand verification passes on its own with
+no association whatsoever.** The Branding page will happily report *"Your
+branding has been verified and is being shown to users"* while the developer
+token and the project have never exchanged a single packet. They are two
+independent gates — the green badge is a statement about your logo, homepage and
+policy links, and it is **not** evidence that the Google Ads prerequisite is met.
+
+What the association buys is the link Google Ads itself needs: it *"uses the
+brand verification status of Google Cloud projects **associated with a developer
+token**"*. With no association, there is no project for the Basic Access review
+to look at, and a verified badge expedites nothing.
+
+So confirm step 5 from the script's own output — an `ASSOCIATED —` line and an
+HTTP status printed from a real response — and never from the Console's
+verification badge, which cannot tell you anything about it.
 
 Steps 2 and 3–5 are in this order for a reason beyond Google's page order.
 An External app whose publishing status is still **Testing** is issued a
