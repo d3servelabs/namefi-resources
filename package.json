@@ -15,7 +15,9 @@
     "lint:mdx": "bunx eslint \"content/**/*.{md,mdx}\"",
     "links:audit": "bun .agents/skills/cross-link/link-audit.ts",
     "links:locale": "bun .agents/skills/cross-link/link-audit.ts --locale-only",
-    "links:test": "bun test ./.agents/skills/cross-link/link-audit.test.ts"
+    "links:test": "bun test ./.agents/skills/cross-link/link-audit.test.ts",
+    "keywords:volume": "bun scripts/keyword-volume/index.ts",
+    "keywords:test": "bun test ./scripts/keyword-volume/"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
