@@ -27,7 +27,10 @@ function provider(handler: (body: any) => Response): { p: GoogleAdsProvider; cal
   const calls: Call[] = [];
   globalThis.fetch = (async (url: any, init: any) => {
     const href = String(url);
-    if (href.includes('oauth2.googleapis.com')) return Response.json({ access_token: 'test-token' });
+    // Match the host itself, not a substring of the URL: `includes` would also
+    // fire on https://evil.example/?x=oauth2.googleapis.com.
+    if (new URL(href).hostname === 'oauth2.googleapis.com')
+      return Response.json({ access_token: 'test-token' });
     const body = JSON.parse(init.body);
     calls.push({ url: href, body });
     return handler(body);
