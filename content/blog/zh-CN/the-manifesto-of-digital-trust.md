@@ -5,8 +5,7 @@ updated: '2023-09-04'
 originalUrl: 'https://hackmd.io/@d3servelabs/vision'
 language: zh-CN
 tags: ['vision', 'digital-trust']
-authors: ['fenwei-bian']
-editors: ['victor-zhou']
+authors: ['victor-zhou']
 translators: ['fenwei-bian']
 draft: false
 description: D3Serve 的愿景宣言——阐述为何将信任数字化，正如此前信息的数字化一样，必将带来生产力的飞跃、无损的精确性、更低的成本以及高度的自动化。

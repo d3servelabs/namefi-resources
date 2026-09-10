@@ -5,8 +5,7 @@ updated: '2023-09-04'
 originalUrl: 'https://hackmd.io/@d3servelabs/vision'
 language: hi
 tags: ['vision', 'digital-trust']
-authors: ['fenwei-bian']
-editors: ['victor-zhou']
+authors: ['victor-zhou']
 translators: ['nirmit-buddhiraja']
 draft: false
 description: D3Serve का एक दृष्टिकोण वक्तव्य — डिजिटल विश्वास को अपनाना, जैसे पहले सूचना का डिजिटलीकरण हुआ था, उसी प्रकार यह उत्पादकता में छलांग, हानि-रहित परिशुद्धता, कम लागत और स्वचालन का वादा करता है।

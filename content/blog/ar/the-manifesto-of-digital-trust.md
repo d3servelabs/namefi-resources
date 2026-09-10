@@ -5,8 +5,7 @@ updated: '2023-09-04'
 originalUrl: 'https://hackmd.io/@d3servelabs/vision'
 language: ar
 tags: ['vision', 'digital-trust']
-authors: ['fenwei-bian']
-editors: ['victor-zhou']
+authors: ['victor-zhou']
 translators: ['zakia-al-sinai']
 draft: false
 description: بيان رؤية D3Serve — لماذا يُعدّ تحويل الثقة إلى صيغة رقمية، على غرار ما جرى مع المعلومات من قبل، وعدًا بقفزة نوعية في الإنتاجية والدقة وخفض التكاليف وتحقيق الأتمتة.

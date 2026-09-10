@@ -5,8 +5,7 @@ updated: '2023-09-04'
 originalUrl: 'https://hackmd.io/@d3servelabs/vision'
 language: ko
 tags: ['vision', 'digital-trust']
-authors: ['fenwei-bian']
-editors: ['victor-zhou']
+authors: ['victor-zhou']
 translators: ['gong-jihye']
 draft: false
 format: opinion
