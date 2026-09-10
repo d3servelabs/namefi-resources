@@ -85,3 +85,5 @@ The real-world applications unlocked by digitized trust offer a glimpse into a t
 Traditional systems struggle with efficiently establishing trust for groups due to the complexities and nuances of interpersonal relationships and hierarchies. With digital trust, innovative applications such as distributing assets to a designated group based on collective criteria or implementing access controls predicated on group dynamics become not only feasible but efficient. Imagine a scenario where an inheritance is seamlessly and transparently divided among a family group based on predefined trust metrics, or a secure facility that grants access based on the collective trustworthiness of a team rather than individual credentials.
 
 These are just a couple of examples, but they underline the vast potential of applications that were previously inconceivable or highly impractical before the advent of digitized trust.
+
+Originally published as [The Manifesto of Digital Trust, a vision statement of D3Serve](https://hackmd.io/@d3servelabs/vision) on HackMD.
