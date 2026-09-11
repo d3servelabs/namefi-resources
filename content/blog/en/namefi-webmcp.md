@@ -30,7 +30,13 @@ relatedGlossary:
   - /en/glossary/registrant/
 ---
 
+![A person and an agent work together on a domain page, with a domain card and shopping cart.](../../assets/namefi-webmcp-og.jpg)
+
+*Bring your agent to the domain page you’re already using.*
+
 Namefi already has an MCP server, a CLI, and authentication for agents and automation. WebMCP brings that work onto the website, where you and your agent can use the same page.
+
+## From MCP and the CLI to the website
 
 We already give agents several ways to work with Namefi. Our [MCP server](https://namefi.io/mcp) exposes domain operations as callable tools, and our [command-line tool](https://namefi.io/cli) lets people, scripts, and agents work from the terminal. The CLI includes domain and dynamic DNS workflows, plus commands generated from our API for operations beyond those everyday tasks.
 
@@ -42,9 +48,7 @@ We wanted people to be able to use their agents directly on our website as well.
 
 That’s where WebMCP comes in.
 
-![A person and an agent work together on a domain page, with a domain card and shopping cart.](../../assets/namefi-webmcp-og.jpg)
-
-*Bring your agent to the domain page you’re already using.*
+## What WebMCP brings to Namefi
 
 WebMCP is a proposed web standard that lets a website tell an [AI agent](/en/glossary/ai-agent/) what it can do and how to do it. A domain registrar can expose actions such as searching for a name, reading DNS records, or updating a cart. The agent gets a defined operation with clear inputs, reducing the work of interpreting buttons, opening menus, and filling out forms. [Google Chrome’s WebMCP overview](https://developer.chrome.com/docs/ai/webmcp) explains the approach and its current experimental status.
 
@@ -53,6 +57,8 @@ As a domain registrar and AI tool provider, we want the work of finding, using, 
 OpenAI calls this capability **site tools** in the ChatGPT desktop app. Its [official guide to using site tools](https://help.openai.com/en/articles/20001423-using-site-tools-in-the-chatgpt-desktop-app) describes how ChatGPT discovers tools on the page and works with its current state and signed-in session. Availability depends on your account, selected model, and the website. ChatGPT’s site tools run in its built-in browser; Chrome’s WebMCP implementation is a separate way to explore the standard.
 
 Namefi’s WebMCP tools cover two workflows: [DNS management](/en/glossary/dns/) and domain search with cart operations.
+
+## Shared contracts across interfaces
 
 The implementation builds on the same contract-driven approach as our remote MCP server, whose tools are derived from existing API procedures. A contract is the definition of an operation: what information it accepts and the rules that information must satisfy. Keeping those definitions together helps us avoid maintaining a separate version of the same rules for every interface.
 
@@ -64,15 +70,17 @@ The remote MCP connection and the browser integration still have different jobs.
 
 *Shared contracts provide a foundation for different interfaces; each keeps its own way of connecting.*
 
+## Preparing DNS changes for review
+
 DNS made the benefit especially easy to see.
 
 In our first recording, we asked an agent to add the DNS records supplied for a Gmail setup without WebMCP available. It succeeded, but it had to inspect the interface, work out the form controls, and add the records individually. Anyone who has copied an email provider’s setup instructions into a registrar dashboard will recognize the process.
 
-[Watch: setting up Gmail DNS without WebMCP](https://www.loom.com/share/af6636b401984c7bbdf4f0e49977464e)
+[Watch: setting up Gmail DNS without WebMCP](https://www.loom.com/share/af6636b401984c7bbdf4f0e49977464e "video")
 
 With WebMCP available, the same kind of request takes a more direct path. The agent could read the current DNS records and settings through a tool, then submit the proposed changes to Namefi’s existing review flow. It no longer had to enter every proposed record through an individual form.
 
-[Watch: setting up Gmail DNS with WebMCP](https://www.loom.com/share/a96e2775e66e43f683fd8747af6e1e05)
+[Watch: setting up Gmail DNS with WebMCP](https://www.loom.com/share/a96e2775e66e43f683fd8747af6e1e05 "video")
 
 The DNS tool stages a plan. It doesn’t apply that plan itself. Namefi validates the proposals, puts accepted changes into the visible review panel, and keeps applying them as a separate, explicit action in the interface. That distinction matters when a change can affect someone’s website or email.
 
@@ -86,13 +94,17 @@ These recordings show the difference in interaction. They use different environm
 
 For a domain owner, the request becomes straightforward: give your agent the records your provider supplied and ask it to prepare the changes on the domain page. You can then review what will change before applying it. For someone managing domains regularly, that removes repetitive entry while keeping the decision visible.
 
+## Searching domains and managing the cart
+
 Search and cart management follow the same idea. In the other demo, we first asked the agent to clear the cart. Then we asked it to search for a specific domain and add it for the requested registration period if it was available. The agent used the tools, and the result appeared in the app without it typing into the search box or clicking an add-to-cart button.
 
-[Watch: domain search and cart operations with WebMCP](https://www.loom.com/share/e61f989959c9443680cedacb2424a8b3)
+[Watch: domain search and cart operations with WebMCP](https://www.loom.com/share/e61f989959c9443680cedacb2424a8b3 "video")
 
 The tools can search, read the cart, add a domain, update an item, and remove items. Search checks live availability and pricing. Before adding a domain, Namefi checks availability again, verifies the price, and checks the registrar’s allowed registration duration. If the information can’t be verified, the tool reports that instead of filling in a plausible answer. Prices shown in this development demo aren’t production quotes.
 
 For domainers, this makes an agent useful during the practical work of checking names and assembling a cart. The cart stays visible and editable, and adding a name doesn’t reserve it or buy it. Checkout remains a separate step.
+
+## Keeping the integration light and state consistent
 
 We also wanted this integration to be light for people who aren’t using an agent. Namefi checks whether the browser supports WebMCP before loading the tool components. Those components load lazily on the relevant pages, so the search page doesn’t need to load the DNS tools and unsupported browsers don’t load the integration.
 
