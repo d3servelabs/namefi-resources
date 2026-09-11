@@ -76,11 +76,11 @@ DNS made the benefit especially easy to see.
 
 In our first recording, we asked an agent to add the DNS records supplied for a Gmail setup without WebMCP available. It succeeded, but it had to inspect the interface, work out the form controls, and add the records individually. Anyone who has copied an email provider’s setup instructions into a registrar dashboard will recognize the process.
 
-[Watch: setting up Gmail DNS without WebMCP](https://www.loom.com/share/af6636b401984c7bbdf4f0e49977464e "video")
+[Watch: setting up Gmail DNS without WebMCP](https://www.loom.com/share/af6636b401984c7bbdf4f0e49977464e)
 
 With WebMCP available, the same kind of request takes a more direct path. The agent could read the current DNS records and settings through a tool, then submit the proposed changes to Namefi’s existing review flow. It no longer had to enter every proposed record through an individual form.
 
-[Watch: setting up Gmail DNS with WebMCP](https://www.loom.com/share/a96e2775e66e43f683fd8747af6e1e05 "video")
+[Watch: setting up Gmail DNS with WebMCP](https://www.loom.com/share/a96e2775e66e43f683fd8747af6e1e05)
 
 The DNS tool stages a plan. It doesn’t apply that plan itself. Namefi validates the proposals, puts accepted changes into the visible review panel, and keeps applying them as a separate, explicit action in the interface. That distinction matters when a change can affect someone’s website or email.
 
@@ -98,7 +98,7 @@ For a domain owner, the request becomes straightforward: give your agent the rec
 
 Search and cart management follow the same idea. In the other demo, we first asked the agent to clear the cart. Then we asked it to search for a specific domain and add it for the requested registration period if it was available. The agent used the tools, and the result appeared in the app without it typing into the search box or clicking an add-to-cart button.
 
-[Watch: domain search and cart operations with WebMCP](https://www.loom.com/share/e61f989959c9443680cedacb2424a8b3 "video")
+[Watch: domain search and cart operations with WebMCP](https://www.loom.com/share/e61f989959c9443680cedacb2424a8b3)
 
 The tools can search, read the cart, add a domain, update an item, and remove items. Search checks live availability and pricing. Before adding a domain, Namefi checks availability again, verifies the price, and checks the registrar’s allowed registration duration. If the information can’t be verified, the tool reports that instead of filling in a plausible answer. Prices shown in this development demo aren’t production quotes.
 
