@@ -4,7 +4,7 @@ date: '2026-09-11'
 language: en
 tags: ['ai-agents', 'domains', 'dns', 'webmcp']
 authors: ['sid-jain']
-draft: true
+draft: false
 cluster: web3-foundations
 format: explainer
 description: "How Namefi brings agents onto its website with WebMCP, shared MCP contracts, domain search, cart tools, and DNS plans you can review."
