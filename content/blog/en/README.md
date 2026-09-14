@@ -7,7 +7,7 @@ authors: [namefiteam]
 draft: true
 cluster: domain-investing
 format: guide
-description: "Contributor inventory and relationships for English source articles and the search-opportunity draft set."
+description: "Contributor inventory and relationships for English source articles and the search-opportunity article set."
 keywords: ["transfer domain to buyer", "domain sale transfer", "domain handoff", "registrar push", "account push", "AuthInfo code", "domain transfer lock", "domain escrow", "change of registrant", "DNS continuity"]
 ogImage: ../../assets/how-to-transfer-a-domain-to-a-buyer-og.jpg
 relatedArticles:
@@ -42,4 +42,4 @@ en/
   <existing-slug>.md                     Published articles and other drafts
 ```
 
-The new articles keep draft status and use shared images from `../../assets/`. Their outbound links use existing same-locale resources. Inbound links, translations, and final publication dates belong to the publishing pass after editorial approval. No membership in a numbered series is assigned.
+The three articles are approved for publication on September 14, 2026 (UTC publication date), and use shared images from `../../assets/`. Their outbound links use existing same-locale resources. Translations can be added from these English sources. No membership in a numbered series is assigned.

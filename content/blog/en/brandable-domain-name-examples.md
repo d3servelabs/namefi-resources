@@ -1,10 +1,10 @@
 ---
 title: "Brandable Domain Name Examples: A Buyer’s Evaluation Checklist"
-date: '2026-09-10'
+date: '2026-09-14'
 language: en
 tags: [domains, guide]
 authors: [namefiteam]
-draft: true
+draft: false
 cluster: domain-basics
 format: guide
 description: "Study real brand names, test pronunciation and spelling, and evaluate a domain shortlist before committing to a name for your business."

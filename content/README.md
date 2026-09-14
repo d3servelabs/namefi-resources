@@ -13,4 +13,4 @@ content/
   careers/    Job listings
 ```
 
-The three search-opportunity articles are English editorial drafts. See `blog/en/README.md` for their scope. Publishing and translation follow the root agent guide and `.claude/rules/content.md`.
+The three search-opportunity articles are English articles. See `blog/en/README.md` for their scope. Publishing and translation follow the root agent guide and `.claude/rules/content.md`.

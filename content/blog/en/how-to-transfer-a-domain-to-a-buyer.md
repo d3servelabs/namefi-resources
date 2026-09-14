@@ -1,10 +1,10 @@
 ---
 title: "How to Transfer a Domain to a Buyer After a Sale"
-date: '2026-09-10'
+date: '2026-09-14'
 language: en
 tags: [domains, guide]
 authors: [namefiteam]
-draft: true
+draft: false
 cluster: domain-investing
 format: guide
 description: "A seller’s handoff checklist: choose an account push or registrar transfer, confirm payment, protect website and email service, and verify delivery."

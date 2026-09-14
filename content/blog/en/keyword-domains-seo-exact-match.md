@@ -1,10 +1,10 @@
 ---
 title: "Keyword Domains and SEO: When Is an Exact-Match Name Worth Buying?"
-date: '2026-09-10'
+date: '2026-09-14'
 language: en
 tags: [domains, guide]
 authors: [namefiteam]
-draft: true
+draft: false
 cluster: domain-investing
 format: guide
 description: "Separate a keyword domain’s business value from ranking claims, evaluate a seller’s evidence, and decide what the name is worth to your project."

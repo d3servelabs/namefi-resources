@@ -2,7 +2,7 @@
 
 This repository holds the content that powers the resources site (blog posts, glossary, partners, authors, careers, and TLDs). It is consumed as a git submodule at `apps/resources/data` inside [`d3servelabs/namefi-astra`](https://github.com/d3servelabs/namefi-astra).
 
-All content lives under the `content/` directory (e.g., `content/blog/en/...`). See [the content guide](content/README.md) for collection relationships and the English editorial draft inventory.
+All content lives under the `content/` directory (e.g., `content/blog/en/...`). See [the content guide](content/README.md) for collection relationships and the English editorial inventory.
 
 ## Editing content
 

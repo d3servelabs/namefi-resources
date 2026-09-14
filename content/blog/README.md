@@ -4,8 +4,8 @@ Articles are organized by locale and share a slug across translations. Images ar
 
 ```text
 blog/
-  en/       English source articles and draft inventory
+  en/       English source articles and editorial inventory
   <locale>/ Translated counterparts
 ```
 
-See `en/README.md` for the current search-opportunity draft set. Drafts retain `draft: true`; translation and inbound links from published pages are deferred until editorial approval. The application supplies headings and bylines from frontmatter.
+See `en/README.md` for the search-opportunity article set. Approved English articles are published first; translated counterparts can be added from these sources. The application supplies headings and bylines from frontmatter.
