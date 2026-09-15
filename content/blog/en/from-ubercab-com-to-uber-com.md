@@ -32,9 +32,9 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-**Uber's original brand was UberCab.** Its public brand shortened during the October 2010 regulatory dispute, according to [contemporary coverage](#ref-uber-rebrand). In branding terms, removing “Cab” makes the name less tied to one transport category. That interpretation does not mean the rename resolved the underlying operating questions.
+**Uber's original brand was UberCab.** Its public brand shortened during the October 2010 regulatory dispute, according to [contemporary coverage](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/). In branding terms, removing “Cab” makes the name less tied to one transport category. That interpretation does not mean the rename resolved the underlying operating questions.
 
-The corporate rename came later: Uber's [SEC prospectus](#ref-uber-corporate-name) says it incorporated as **Ubercab, Inc. in July 2010** and became **Uber Technologies, Inc. in February 2011**. The public brand, legal company name, and acquisition of Uber.com are related events with different timelines.
+The corporate rename came later: Uber's [SEC prospectus](https://www.sec.gov/Archives/edgar/data/1543151/000155278125000272/e25315_uber-424b3usd.htm#:~:text=In%20February%202011) says it incorporated as **Ubercab, Inc. in July 2010** and became **Uber Technologies, Inc. in February 2011**. The public brand, legal company name, and acquisition of Uber.com are related events with different timelines.
 
 Before "Uber" became a verb, a logistics empire, and a synonym for an entire category of on-demand services, it was a more literal, more cautious thing: **UberCab.com**.
 
@@ -188,9 +188,9 @@ Uber.com looks inevitable now because Uber became enormous. But the lesson lands
 
 ## Sources and further reading
 
-- <span id="ref-uber-rebrand"></span>TechCrunch — [UberCab Ordered to Cease And Desist](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/), October 24, 2010, opening update on the public logo — fetched 2026-09-15.
+- TechCrunch — [UberCab Ordered to Cease And Desist](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/), October 24, 2010, opening update on the public logo — fetched 2026-09-15.
 
-- <span id="ref-uber-corporate-name"></span>Uber — [2025 prospectus supplement](https://www.sec.gov/Archives/edgar/data/1543151/000155278125000272/e25315_uber-424b3usd.htm#:~:text=In%20February%202011), “Corporate Information,” p. S-1 — fetched 2026-09-15.
+- Uber — [2025 prospectus supplement](https://www.sec.gov/Archives/edgar/data/1543151/000155278125000272/e25315_uber-424b3usd.htm#:~:text=In%20February%202011), “Corporate Information,” p. S-1 — fetched 2026-09-15.
 
 - TechCrunch — [UberCab Ordered To Cease And Desist](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=the%20San%20Francisco%20Metro%20Transit%20Authority%20%26%20the%20Public%20Utilities%20Commission%20of%20California%20have%20ordered%20the%20startup%20to%20cease%20and%20desist)
 - TechCrunch — [UberCab Closes Uber Angel Round](https://techcrunch.com/2010/10/15/ubercab-closes-uber-angel-round#:~:text=an%20app%20that%20lets%20users%20request%20a%20car%20service%20to%20pick%20them%20up%20wherever%20they%20are%20right%20now)

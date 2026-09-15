@@ -44,11 +44,11 @@ The goal is to find a name you can use comfortably, with a meaning and identity 
 
 Consider two different naming patterns.
 
-**Stripe uses an ordinary word outside the product category.** Stripe’s product page describes a payments platform. [See Stripe Payments.](#ref-stripe) The name itself does not explain payment processing. As a naming exercise, that makes it useful: the word can carry a visual association while a separate product description explains the service.
+**Stripe uses an ordinary word outside the product category.** Stripe’s product page describes a payments platform. [See Stripe Payments.](https://stripe.com/payments) The name itself does not explain payment processing. As a naming exercise, that makes it useful: the word can carry a visual association while a separate product description explains the service.
 
 For your shortlist, try the same separation. Put each candidate next to a plain description of what you sell. Does the pair make sense without a paragraph explaining the name? A suggestive name has room for interpretation, but your customer should not have to solve a puzzle to understand the offer.
 
-**Mailchimp combines a category cue with an unexpected word.** Its current marketing platform includes email marketing among other tools. [See Mailchimp’s platform description.](#ref-mailchimp) In the name, “mail” supplies a recognizable association and “chimp” gives you something distinctive to picture. That is a structural observation, not a claim about why the business succeeded.
+**Mailchimp combines a category cue with an unexpected word.** Its current marketing platform includes email marketing among other tools. [See Mailchimp’s platform description.](https://mailchimp.com/marketing-platform/) In the name, “mail” supplies a recognizable association and “chimp” gives you something distinctive to picture. That is a structural observation, not a claim about why the business succeeded.
 
 A compound can give a new business an explanatory starting point. Test whether both parts still feel appropriate for the product you intend to build. An amusing second word might suit your tone, or it might get in the way during a serious sales conversation.
 
@@ -99,9 +99,9 @@ Avoid collapsing everything into an invented universal score. A spelling problem
 
 A domain search answers an acquisition question. It does not settle whether you can use the name as a brand.
 
-In the United States, the USPTO explains that conflicting marks can be similar in sound, appearance, meaning, or commercial impression; the relationship between the goods and services also matters. [Read its likelihood-of-confusion guidance.](#ref-confusion) An exact-spelling search alone is therefore too narrow.
+In the United States, the USPTO explains that conflicting marks can be similar in sound, appearance, meaning, or commercial impression; the relationship between the goods and services also matters. [Read its likelihood-of-confusion guidance.](https://www.uspto.gov/trademarks/search/likelihood-confusion) An exact-spelling search alone is therefore too narrow.
 
-Search relevant variations and related products. The USPTO’s clearance guidance also includes sources beyond its federal database, including internet searches for common-law use. [See the clearance-search guidance.](#ref-clearance) If the purchase is material to your launch, have qualified counsel interpret the results for your intended markets and goods or services.
+Search relevant variations and related products. The USPTO’s clearance guidance also includes sources beyond its federal database, including internet searches for common-law use. [See the clearance-search guidance.](https://www.uspto.gov/trademarks/search/comprehensive-clearance-search-similar-trademarks) If the purchase is material to your launch, have qualified counsel interpret the results for your intended markets and goods or services.
 
 Then confirm the acquisition facts separately: whether the exact domain can be obtained, its quoted purchase price, recurring renewal cost, transfer conditions, and who will control the registration. Record quotes with their currency and date. This article does not provide availability checks or price estimates for the example names.
 
@@ -111,7 +111,7 @@ If you are evaluating names for resale rather than for your own company, the rel
 
 ## Sources and further reading
 
-- <span id="ref-stripe"></span>Stripe — [Stripe Payments](https://stripe.com/payments), opening product description. Fetched 2026-09-15; redirected to the Malaysia regional page. No archive snapshot verified.
-- <span id="ref-mailchimp"></span>Mailchimp — [Marketing platform](https://mailchimp.com/marketing-platform/), platform features and email-marketing sections. Fetched 2026-09-15. No archive snapshot verified.
-- <span id="ref-confusion"></span>USPTO — [Likelihood of confusion](https://www.uspto.gov/trademarks/search/likelihood-confusion), similarity examples and “Related goods and services.” Fetched 2026-09-15. No archive snapshot verified.
-- <span id="ref-clearance"></span>USPTO — [Comprehensive clearance search for similar trademarks](https://www.uspto.gov/trademarks/search/comprehensive-clearance-search-similar-trademarks), search sources and common-law use. Fetched 2026-09-15. No archive snapshot verified.
+- Stripe — [Stripe Payments](https://stripe.com/payments), opening product description. Fetched 2026-09-15; redirected to the Malaysia regional page. No archive snapshot verified.
+- Mailchimp — [Marketing platform](https://mailchimp.com/marketing-platform/), platform features and email-marketing sections. Fetched 2026-09-15. No archive snapshot verified.
+- USPTO — [Likelihood of confusion](https://www.uspto.gov/trademarks/search/likelihood-confusion), similarity examples and “Related goods and services.” Fetched 2026-09-15. No archive snapshot verified.
+- USPTO — [Comprehensive clearance search for similar trademarks](https://www.uspto.gov/trademarks/search/comprehensive-clearance-search-similar-trademarks), search sources and common-law use. Fetched 2026-09-15. No archive snapshot verified.

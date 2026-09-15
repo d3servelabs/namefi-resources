@@ -64,7 +64,7 @@ A common worry: "If it's a country code, will my site only rank in the Caribbean
 
 Google maintains a list of ccTLDs it treats as **generic** (gccTLDs) because they're used worldwide rather than for one country. Both `.ai` and `.io` are on that list, so Google does **not** geotarget them by default. Google [retired Search Console's International Targeting report in 2022](https://developers.google.com/search/blog/2022/12/thanks-2022), so there is no longer a Search Console country-targeting setting to configure. If you want to focus on a specific market, Google's current guidance is to use locale-specific URLs and identify regional or language variants with `hreflang` annotations or sitemaps; visible local content and signals such as addresses, currencies, and links from local sites can also help Google understand the intended audience. See [Google's documentation on managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#geotargeting).
 
-**SEO takeaway:** Google lists both extensions as generic for geographic targeting. That classification does not guarantee indexing, rankings, or equal performance for two actual sites. [Read Google's list.](#ref-google-geotargeting)
+**SEO takeaway:** Google lists both extensions as generic for geographic targeting. That classification does not guarantee indexing, rankings, or equal performance for two actual sites. [Read Google's list.](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#generic-domains)
 
 ---
 
@@ -77,7 +77,7 @@ Compare the exact registration and renewal terms rather than assuming that every
 | `.ai` | USD 179.96 for two years | USD 229.96 for two years | Page specifies a two-year minimum for both operations |
 | `.io` | USD 34.98 for one promotional first year | USD 75.98 for one year | Page offers a one-year term |
 
-Sources: [Namecheap `.ai`](#ref-ai-price) and [Namecheap `.io`](#ref-io-price). These are one provider's quotes, not an industry average or Namefi pricing. They show why the invoice term matters: a two-year charge is not an annual price.
+Sources: [Namecheap `.ai`](https://www.namecheap.com/domains/registration/cctld/ai/#:~:text=Discover%20.ai%20domain%20prices) and [Namecheap `.io`](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices). These are one provider's quotes, not an industry average or Namefi pricing. They show why the invoice term matters: a two-year charge is not an annual price.
 
 For an already-registered name, acquisition from its current holder is a separate negotiation. For registry-premium names, ask whether premium pricing also applies to renewal. Higher registration cost does not establish better availability or brand quality.
 
@@ -96,9 +96,9 @@ These are editorial interpretations of the letters, not measured promises about 
 
 ## The `.io` Sovereignty Question
 
-Country-code eligibility is part of the comparison. IANA lists [`.ai` under the Government of Anguilla](#ref-ai-delegation) and [`.io` under Internet Computer Bureau Limited](#ref-io-delegation). These are country-code delegations, even though Google treats them generically for search targeting.
+Country-code eligibility is part of the comparison. IANA lists [`.ai` under the Government of Anguilla](https://www.iana.org/domains/root/db/ai.html) and [`.io` under Internet Computer Bureau Limited](https://www.iana.org/domains/root/db/io.html). These are country-code delegations, even though Google treats them generically for search targeting.
 
-As checked September 15, 2026, IANA's `.io` record does not display a retirement date. Its [ccTLD retirement process](#ref-retirement) explains that loss of eligibility follows removal of the associated country or territory from ISO 3166-1; IANA then issues a Notice of Removal. The default period is five years, with an approved extension of up to five more years possible.
+As checked September 15, 2026, IANA's `.io` record does not display a retirement date. Its [ccTLD retirement process](https://www.iana.org/help/cctld-retirement) explains that loss of eligibility follows removal of the associated country or territory from ISO 3166-1; IANA then issues a Notice of Removal. The default period is five years, with an approved extension of up to five more years possible.
 
 That process is not a prediction that `.io` will close or continue forever. Chagos-related political developments need to be distinguished from an actual IANA retirement notice. For a long-lived brand, review the current delegation and policy alongside the practical cost of a future migration. Do not treat a claim that the extension is “perfectly safe” as a substitute for that decision.
 
@@ -171,9 +171,9 @@ Tokenizing adds an on-chain ownership token to your real ICANN domain, so you ca
 
 ## Sources and further reading
 
-- <span id="ref-ai-price"></span>Namecheap — [`.ai` pricing](https://www.namecheap.com/domains/registration/cctld/ai/#:~:text=Discover%20.ai%20domain%20prices), registration and renewal table, two-year minimum. Fetched 2026-09-15.
-- <span id="ref-io-price"></span>Namecheap — [`.io` pricing](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices), one-year registration and renewal table. Fetched 2026-09-15.
-- <span id="ref-google-geotargeting"></span>Google Search Central — [Managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#generic-domains), generic ccTLD list. Fetched 2026-09-15.
-- <span id="ref-ai-delegation"></span>IANA — [`.ai` delegation](https://www.iana.org/domains/root/db/ai.html), manager and registration date. Fetched 2026-09-15.
-- <span id="ref-io-delegation"></span>IANA — [`.io` delegation](https://www.iana.org/domains/root/db/io.html), manager and current record. Fetched 2026-09-15.
-- <span id="ref-retirement"></span>IANA — [ccTLD retirement](https://www.iana.org/help/cctld-retirement), General Principles and Initial Process. Fetched 2026-09-15.
+- Namecheap — [`.ai` pricing](https://www.namecheap.com/domains/registration/cctld/ai/#:~:text=Discover%20.ai%20domain%20prices), registration and renewal table, two-year minimum. Fetched 2026-09-15.
+- Namecheap — [`.io` pricing](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices), one-year registration and renewal table. Fetched 2026-09-15.
+- Google Search Central — [Managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#generic-domains), generic ccTLD list. Fetched 2026-09-15.
+- IANA — [`.ai` delegation](https://www.iana.org/domains/root/db/ai.html), manager and registration date. Fetched 2026-09-15.
+- IANA — [`.io` delegation](https://www.iana.org/domains/root/db/io.html), manager and current record. Fetched 2026-09-15.
+- IANA — [ccTLD retirement](https://www.iana.org/help/cctld-retirement), General Principles and Initial Process. Fetched 2026-09-15.

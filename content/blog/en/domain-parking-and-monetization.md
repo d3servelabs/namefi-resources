@@ -45,7 +45,7 @@ People park names while preparing a site, reserving a future name, or evaluating
 | Advertising parking page | Earn under a provider's advertising terms from eligible traffic | That revenue will cover renewals |
 | For-sale landing page | Invite offers or present a purchase path | That a sale will occur |
 
-These choices can overlap. Sedo, for example, distinguishes an [ads page and a sales landing page](#ref-sedo-parking) within its parking and marketplace terms. Decide whether your immediate goal is a placeholder, ad revenue, or buyer inquiries before configuring the domain.
+These choices can overlap. Sedo, for example, distinguishes an [ads page and a sales landing page](https://sedo.com/us/what-we-offer/price-list/#:~:text=ads%20page%20or%20the%20sales%20landing%20page) within its parking and marketplace terms. Decide whether your immediate goal is a placeholder, ad revenue, or buyer inquiries before configuring the domain.
 
 ## Earning ad and affiliate revenue while you hold
 
@@ -104,4 +104,4 @@ This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenized owners
 - Wikipedia — [Domain name speculation (PPC revenue from parked domains; registrar parking systems)](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20ease%20with%20which%20PPC%20revenue%20could%20be%20derived%20from%20parked%20domains)
 - WIPO — [Overview of WIPO Panel Views on Selected UDRP Questions, Third Edition, version 3.1](https://www.wipo.int/en/web/amc/domain-name-disputes/search/overview/index)
 
-- <span id="ref-sedo-parking"></span>Sedo — [Price list](https://sedo.com/us/what-we-offer/price-list/#:~:text=ads%20page%20or%20the%20sales%20landing%20page), parked ads pages versus sales landing pages. Fetched 2026-09-15.
+- Sedo — [Price list](https://sedo.com/us/what-we-offer/price-list/#:~:text=ads%20page%20or%20the%20sales%20landing%20page), parked ads pages versus sales landing pages. Fetched 2026-09-15.

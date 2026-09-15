@@ -66,8 +66,8 @@ The following are Namecheap public list-page examples checked **September 15, 20
 
 | Extension | First-year registration | One-year renewal | Transfer-in price | Source |
 | --- | --- | --- | --- | --- |
-| `.com` | USD 11.28 promotional | USD 18.48 | USD 11.48 promotional | [Namecheap `.com`](#ref-namecheap-com) |
-| `.io` | USD 34.98 promotional | USD 75.98 | USD 65.98 | [Namecheap `.io`](#ref-namecheap-io) |
+| `.com` | USD 11.28 promotional | USD 18.48 | USD 11.48 promotional | [Namecheap `.com`](https://www.namecheap.com/domains/registration/gtld/com/#:~:text=Prices%20for%20.COM%20domains) |
+| `.io` | USD 34.98 promotional | USD 75.98 | USD 65.98 | [Namecheap `.io`](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices) |
 
 The same provider quotes different amounts for the first term, a later renewal, and a transfer. A transfer price also needs its own term-extension rules checked.
 
@@ -170,5 +170,5 @@ That is the number to compare. Compare the total cost of keeping control for as 
 
 - ICANN — [Expired Registration Recovery Policy](https://www.icann.org/resources/pages/errp-2013-02-28-en), sections 3.1 and 4.1: redemption period and fee disclosure. Fetched 2026-09-15.
 
-- <span id="ref-namecheap-com"></span>Namecheap — [`.com` prices](https://www.namecheap.com/domains/registration/gtld/com/#:~:text=Prices%20for%20.COM%20domains), registration, renewal, transfer, and disclaimers. Fetched 2026-09-15.
-- <span id="ref-namecheap-io"></span>Namecheap — [`.io` prices](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices), registration, renewal, transfer, and disclaimers. Fetched 2026-09-15.
+- Namecheap — [`.com` prices](https://www.namecheap.com/domains/registration/gtld/com/#:~:text=Prices%20for%20.COM%20domains), registration, renewal, transfer, and disclaimers. Fetched 2026-09-15.
+- Namecheap — [`.io` prices](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices), registration, renewal, transfer, and disclaimers. Fetched 2026-09-15.

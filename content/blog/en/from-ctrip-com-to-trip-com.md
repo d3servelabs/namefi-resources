@@ -32,7 +32,7 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-**Trip.com is part of Trip.com Group Limited, the publicly traded travel group formerly called Ctrip.com International, Ltd.** As checked September 15, 2026, the group's [investor FAQ](#ref-trip-ownership) lists Trip.com and Ctrip as separate brands in the same family, alongside Qunar and Skyscanner.
+**Trip.com is part of Trip.com Group Limited, the publicly traded travel group formerly called Ctrip.com International, Ltd.** As checked September 15, 2026, the group's [investor FAQ](https://investors.trip.com/shareholder-services/investor-faqs) lists Trip.com and Ctrip as separate brands in the same family, alongside Qunar and Skyscanner.
 
 | Name | What it refers to |
 | --- | --- |
@@ -41,7 +41,7 @@ relatedGlossary:
 | Trip.com Group Limited | The listed parent company, incorporated in the Cayman Islands and headquartered in Shanghai |
 | Trip.com Travel Singapore Pte. Ltd. | A Singapore company listed among the group's significant subsidiaries |
 
-The [corporate FAQ](#ref-trip-ownership) and [subsidiary disclosure](#ref-trip-subsidiaries) distinguish the brand, parent, and operating entities. The parent has public shareholders; “who owns Trip.com?” is not the same question as who owns a particular block of its shares. A customer's contracting entity depends on the service terms, not simply the brand name or the parent's incorporation location.
+The [corporate FAQ](https://investors.trip.com/shareholder-services/investor-faqs) and [subsidiary disclosure](https://www.sec.gov/Archives/edgar/data/1269238/000119312526183379/d27369dex81.htm) distinguish the brand, parent, and operating entities. The parent has public shareholders; “who owns Trip.com?” is not the same question as who owns a particular block of its shares. A customer's contracting entity depends on the service terms, not simply the brand name or the parent's incorporation location.
 
 The history below explains how acquiring the Trip.com business in 2017 led to the parent's 2019 name change. Ctrip continued as a brand; it did not disappear when the group adopted the new name.
 
@@ -166,8 +166,8 @@ Trip.com looks inevitable now because Trip.com Group became enormous. But the le
 
 ## Sources and further reading
 
-- <span id="ref-trip-ownership"></span>Trip.com Group — [Investor FAQs](https://investors.trip.com/shareholder-services/investor-faqs), brand portfolio, incorporation, listing, and name-change questions — fetched 2026-09-15.
-- <span id="ref-trip-subsidiaries"></span>Trip.com Group — [List of Significant Consolidated Entities, Exhibit 8.1](https://www.sec.gov/Archives/edgar/data/1269238/000119312526183379/d27369dex81.htm), “Significant Subsidiaries” — fetched 2026-09-15.
+- Trip.com Group — [Investor FAQs](https://investors.trip.com/shareholder-services/investor-faqs), brand portfolio, incorporation, listing, and name-change questions — fetched 2026-09-15.
+- Trip.com Group — [List of Significant Consolidated Entities, Exhibit 8.1](https://www.sec.gov/Archives/edgar/data/1269238/000119312526183379/d27369dex81.htm), “Significant Subsidiaries” — fetched 2026-09-15.
 
 - South China Morning Post — [Exclusive: China travel giant Ctrip wants to go global with Trip.com brand](https://www.scmp.com/tech/article/2156222/china-travel-giant-ctrip-wants-book-bigger-seat-international-markets-tripcom#:~:text=plans%20to%20boost%20the%20proportion%20of%20total%20revenue%20it%20makes%20from%20overseas%20customers%20from%202%20per%20cent%20to%20at%20least%2020%20per%20cent)
 - ChinaTravelNews — [Ctrip to further global expansion by acquiring US travel site Trip.com](https://www.chinatravelnews.com/article/118274/#:~:text=Ctrip%20has%20recently%20completed%20its%20acquisition%20of%20US%20travel%20booking%20platform%20Trip.com%20%28formerly%20Gogobot%29)

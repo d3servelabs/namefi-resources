@@ -32,15 +32,15 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-**DNS propagation** is the delay in observing a [DNS](/en/glossary/dns/) update while [resolvers](/en/glossary/dns-resolver/) refresh cached answers. Different caches can hold different versions of the same answer. The [time to live (TTL)](/en/glossary/ttl/) tells a resolver how long an answer may normally remain cached before it needs refreshing. [1](#ref-ttl)
+**DNS propagation** is the delay in observing a [DNS](/en/glossary/dns/) update while [resolvers](/en/glossary/dns-resolver/) refresh cached answers. Different caches can hold different versions of the same answer. The [time to live (TTL)](/en/glossary/ttl/) tells a resolver how long an answer may normally remain cached before it needs refreshing. [1](https://datatracker.ietf.org/doc/html/rfc1035#section-4.1.3)
 
 ## How long does DNS propagation take?
 
-There is no single completion time for every resolver. Start with the previous record’s TTL and when each resolver cached it. Changing the TTL now does not rewrite answers already cached elsewhere. Lower it before a planned change and allow the previous cache lifetime to pass before changing the destination. [1](#ref-ttl)
+There is no single completion time for every resolver. Start with the previous record’s TTL and when each resolver cached it. Changing the TTL now does not rewrite answers already cached elsewhere. Lower it before a planned change and allow the previous cache lifetime to pass before changing the destination. [1](https://datatracker.ietf.org/doc/html/rfc1035#section-4.1.3)
 
-A previously missing name can also remain missing in a cache after you create it. DNS caches negative answers, with their own expiry derived from the zone’s SOA record. [2](#ref-negative)
+A previously missing name can also remain missing in a cache after you create it. DNS caches negative answers, with their own expiry derived from the zone’s SOA record. [2](https://datatracker.ietf.org/doc/html/rfc2308#section-5)
 
-TTL expiry is not an absolute worldwide deadline: some resolvers can serve stale data when authoritative servers cannot be reached. [3](#ref-stale)
+TTL expiry is not an absolute worldwide deadline: some resolvers can serve stale data when authoritative servers cannot be reached. [3](https://datatracker.ietf.org/doc/html/rfc8767#section-1)
 
 ## What to check when a change is not visible
 
@@ -50,6 +50,6 @@ For a nameserver move, check both delegation and the records at the destination 
 
 ## Sources and further reading
 
-- <span id="ref-ttl"></span>**1.** IETF — [RFC 1035, resource-record TTL](https://datatracker.ietf.org/doc/html/rfc1035#section-4.1.3) — fetched 2026-09-15.
-- <span id="ref-negative"></span>**2.** IETF — [RFC 2308, caching negative answers](https://datatracker.ietf.org/doc/html/rfc2308#section-5) — fetched 2026-09-15.
-- <span id="ref-stale"></span>**3.** IETF — [RFC 8767, serve-stale behavior](https://datatracker.ietf.org/doc/html/rfc8767#section-1) — fetched 2026-09-15.
+- **1.** IETF — [RFC 1035, resource-record TTL](https://datatracker.ietf.org/doc/html/rfc1035#section-4.1.3) — fetched 2026-09-15.
+- **2.** IETF — [RFC 2308, caching negative answers](https://datatracker.ietf.org/doc/html/rfc2308#section-5) — fetched 2026-09-15.
+- **3.** IETF — [RFC 8767, serve-stale behavior](https://datatracker.ietf.org/doc/html/rfc8767#section-1) — fetched 2026-09-15.

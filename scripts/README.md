@@ -10,6 +10,7 @@ scripts/
   build-termbase.test.ts    Draft exclusion regression
   glossary-fs.ts            Shared glossary source resolution
   check-tld-faq-sync*       Frontmatter/body FAQ consistency
+  check-published-citations.ts  Post-publish citation fragment regression
   other scripts            Related content, priorities, and assets
 ```
 
@@ -21,3 +22,5 @@ while retaining malformed-metadata, wrong-locale, and broken-target failures.
 `bun data:validate` command runs these before validating the corpus. The separate
 `bun links:test` suite covers link prefixes and ordered relationship slugs.
 See the [validation commands](../README.md#validation) for corpus-wide checks.
+
+After publishing citation changes, run `bun scripts/check-published-citations.ts <article-url> ...`. This read-only check requires real article HTML and fails when a `#ref-` link has no rendered target. Inline citations can link directly to the original source; HTML-only anchors may be removed by the application renderer.

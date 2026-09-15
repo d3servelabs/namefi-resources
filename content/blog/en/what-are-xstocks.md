@@ -32,7 +32,7 @@ relatedGlossary:
   - /en/glossary/tld/
 ---
 
-**xStocks are blockchain tokens that provide economic exposure to selected stocks and ETFs. They are not direct ownership of those companies' shares.** The [issuer's documentation](#ref-xstocks-overview) describes backing by the underlying securities, while the [exchange risk disclosure](#ref-xstocks-risks) explains the rights holders do not receive.
+**xStocks are blockchain tokens that provide economic exposure to selected stocks and ETFs. They are not direct ownership of those companies' shares.** The [issuer's documentation](https://docs.xstocks.fi/docs#overview) describes backing by the underlying securities, while the [exchange risk disclosure](https://www.kraken.com/legal/xstocks) explains the rights holders do not receive.
 
 This guide covers the mechanism, differences from shares, custody and trading risks, and eligibility limits. xStocks are not a Namefi product; their relevance here is the broader discussion of real-world asset tokenization, including [tokenized domains](/en/blog/what-are-tokenized-domains/).
 
@@ -44,9 +44,9 @@ In plain terms:
 
 > An xStock is a crypto token that mirrors the economic value of an underlying security (for example, `AAPLx` tracks Apple and `TSLAx` tracks Tesla). On supported chains, it can be held in a self-custodial [wallet](/en/glossary/wallet/) and traded through eligible exchanges or decentralized protocols, subject to venue, liquidity, and jurisdiction restrictions.
 
-**As checked September 15, 2026**, the [product disclosure](#ref-xstocks-products) names **Backed Assets (JE) Limited**, a Jersey company, as issuer. It identifies Payward Digital Solutions Ltd. for eligible Kraken customers and Payward Europe Digital Solutions (CY) Ltd. for eligible EU/EEA customers. These distribution entities are distinct from the underlying companies whose securities the tokens track.
+**As checked September 15, 2026**, the [product disclosure](https://xstocks.com/products) names **Backed Assets (JE) Limited**, a Jersey company, as issuer. It identifies Payward Digital Solutions Ltd. for eligible Kraken customers and Payward Europe Digital Solutions (CY) Ltd. for eligible EU/EEA customers. These distribution entities are distinct from the underlying companies whose securities the tokens track.
 
-The [issuer-wide documentation](#ref-xstocks-overview) lists Ethereum, Solana, Arbitrum, Mantle, TON, Ink, and other EVM-compatible networks. That list does not mean every exchange supports deposits or withdrawals on every chain. Check the exact token contract, network, and receiving platform before transferring.
+The [issuer-wide documentation](https://docs.xstocks.fi/docs#overview) lists Ethereum, Solana, Arbitrum, Mantle, TON, Ink, and other EVM-compatible networks. That list does not mean every exchange supports deposits or withdrawals on every chain. Check the exact token contract, network, and receiving platform before transferring.
 
 ---
 
@@ -61,7 +61,7 @@ The mechanics are simpler than the marketing sometimes makes them sound:
 3. **Trading hours depend on the venue.** Kraken describes xStocks trading as **24/5**, while on-chain venues can operate continuously; actual execution still depends on liquidity, market conditions, and platform access.
 4. **Some venues integrate xStocks into DeFi.** Depending on the token and protocol, xStocks may be paired in liquidity pools, accepted as [collateral](/en/glossary/collateral/), or used in other on-chain strategies. Support is protocol-specific, not automatic.
 
-On **dividends**: xStocks do not send a cash dividend to the holder's wallet. The [dividend and stock-split documentation](#ref-xstocks-dividends) describes a token-rebasing mechanism; dividends are reinvested net of applicable withholding taxes and reflected in an increased equity-adjusted balance. On Solana and TON, wallet software applies a metadata multiplier rather than receiving an increased raw token balance. Splits and other corporate actions are also reflected through the rebasing design.
+On **dividends**: xStocks do not send a cash dividend to the holder's wallet. The [dividend and stock-split documentation](https://docs.xstocks.fi/docs/dividends-and-stock-splits) describes a token-rebasing mechanism; dividends are reinvested net of applicable withholding taxes and reflected in an increased equity-adjusted balance. On Solana and TON, wallet software applies a metadata multiplier rather than receiving an increased raw token balance. Splits and other corporate actions are also reflected through the rebasing design.
 
 The catalog and reported volume have continued to change since the initial 60-asset launch. Use the [current xStocks product list](https://xstocks.com/products) and the issuer's legal documents for the current instruments, contracts, and terms rather than relying on a fixed count in an article.
 
@@ -93,7 +93,7 @@ xStocks are an interesting innovation, but they are not risk-free, and a balance
 - **Issuer & counterparty risk.** Your token's value depends on the issuer actually holding and maintaining the backing shares with its custodians. You take on the issuer's creditworthiness, operational, and solvency risk.
 - **No ordinary shareholder rights.** No voting or direct shareholder claim against the underlying public company. Separate contractual token and redemption rights, if any, depend on the issuer's prospectus and applicable terms.
 - **Liquidity risk.** On-chain markets for a given xStock may be thin, making it hard to exit at a fair price when you want to.
-- **Legal and eligibility restrictions.** Tokenized-security rules and offering terms vary by country and venue. The [product disclosure](#ref-xstocks-products) excludes the United States and U.S. persons. [Kraken's disclosure](#ref-xstocks-risks) also identifies Canada, the UK, and Australia as unavailable on its platform. Eligibility and offering entities can change, so consult the applicable prospectus and risk disclosure.
+- **Legal and eligibility restrictions.** Tokenized-security rules and offering terms vary by country and venue. The [product disclosure](https://xstocks.com/products) excludes the United States and U.S. persons. [Kraken's disclosure](https://www.kraken.com/legal/xstocks) also identifies Canada, the UK, and Australia as unavailable on its platform. Eligibility and offering entities can change, so consult the applicable prospectus and risk disclosure.
 - **Smart-contract & platform risk.** As with any on-chain asset, bugs, exploits, or platform downtime are possible.
 
 Always check current eligibility and the issuer's risk disclosures for your jurisdiction before acting.
@@ -143,8 +143,8 @@ If you want to go deeper on the domain side of this trend, start with [What Are 
 
 ## Sources and further reading
 
-- <span id="ref-xstocks-overview"></span>xStocks — [Introduction](https://docs.xstocks.fi/docs#overview), collateral, native networks, and venue-dependent availability — fetched 2026-09-15.
-- <span id="ref-xstocks-dividends"></span>xStocks — [Dividends and Stock Splits](https://docs.xstocks.fi/docs/dividends-and-stock-splits), rebasing mechanism — fetched 2026-09-15.
-- <span id="ref-xstocks-risks"></span>Kraken — [xStocks Risk Disclosure](https://www.kraken.com/legal/xstocks), rights, custody risks, and eligibility FAQ — fetched 2026-09-15.
-- <span id="ref-xstocks-products"></span>xStocks — [Current product list](https://xstocks.com/products), footer issuer and distribution disclosure — fetched 2026-09-15.
+- xStocks — [Introduction](https://docs.xstocks.fi/docs#overview), collateral, native networks, and venue-dependent availability — fetched 2026-09-15.
+- xStocks — [Dividends and Stock Splits](https://docs.xstocks.fi/docs/dividends-and-stock-splits), rebasing mechanism — fetched 2026-09-15.
+- Kraken — [xStocks Risk Disclosure](https://www.kraken.com/legal/xstocks), rights, custody risks, and eligibility FAQ — fetched 2026-09-15.
+- xStocks — [Current product list](https://xstocks.com/products), footer issuer and distribution disclosure — fetched 2026-09-15.
 - Namefi — [Terms of Service](https://namefi.io/tos) (domain-token limits, ICANN compliance, and platform rights)
