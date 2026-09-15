@@ -76,6 +76,8 @@ function readEntry(locale: Locale, slug: string): { title: string; data: Record<
   const file = resolveEntryFile(path.join(GLOSSARY_ROOT, locale), slug);
   if (!file) return null;
   const data = matter(readFileSync(file, 'utf8')).data as Record<string, unknown>;
+  // Draft source pages and translations are not canonical published terms.
+  if (data.draft === true || data.draft === 'true') return null;
   const title = typeof data.title === 'string' ? data.title.trim() : '';
   if (!title) return null;
   return { title, data };

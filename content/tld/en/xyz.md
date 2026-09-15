@@ -1,5 +1,5 @@
 ---
-title: 'What Is the .xyz Domain? The Generic TLD Explained'
+title: "What Is an .xyz Domain? Meaning, Uses, and Considerations"
 date: '2026-06-15'
 language: 'en'
 priority: P1
@@ -7,8 +7,8 @@ tags: ['tld']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
-description: 'The .xyz domain is an open generic TLD launched in 2014 and famously used by Alphabet at abc.xyz. Learn who it suits, how it is priced, and how to register.'
-keywords: ['.xyz domains', '.xyz domain meaning', 'abc.xyz Alphabet', '.xyz vs .com', 'register .xyz domain', 'is .xyz good for SEO']
+description: "Learn what .xyz means, how the extension is used, and what to consider when choosing an .xyz domain for a website or project."
+keywords: ["xyz domain meaning", "generic domain extension", "abc.xyz Alphabet", "xyz domain uses"]
 faqs:
   - question: 'Can anyone register a .xyz domain?'
     answer: 'Yes. The .xyz domain is an unrestricted generic top-level domain, so anyone worldwide can register one on a first-come, first-served basis with no credential, business, or local-presence requirement. Registrations are handled through ICANN-accredited registrars rather than directly with the registry.'
@@ -87,11 +87,9 @@ These are real, high-profile deployments rather than vanity redirects, which is 
 ## .xyz vs other domains
 
 | Extension | Type | Meaning | Typical use |
-| --- | --- | --- | --- |
-| [.com](/en/tld/com) | Legacy gTLD | None (universal default) | Any commercial or general site |
-| .xyz | New gTLD | None (deliberately generic) | Startups, Web3, blank-slate brands |
-| [.io](/en/tld/io) | ccTLD (used as tech gTLD) | "Tech/startup" by convention | SaaS, developer tools, crypto |
-| [.app](/en/tld/app) | New gTLD | Apps/software | Product and app sites |
+| --- | --- | --- | ---
+
+The **.xyz domain** is a [generic top-level domain sponsored by XYZ.COM LLC](https://www.iana.org/domains/root/db/xyz.html). It is not a country code. The letters do not identify a particular profession or industry, so the name to the left of the dot can carry the main brand message.
 
 Pick **.com** when universal familiarity matters most and the name is available. Choose **.xyz** when you want a short, neutral, affordable name and the .com is gone. Reach for **.io** or **.app** when you specifically want the audience to read "software" from the suffix alone.
 
@@ -162,3 +160,7 @@ Its low pricing and open registration have attracted bulk and abusive registrati
 - [What are tokenized domains?](/en/blog/what-are-tokenized-domains)
 - [.com domain](/en/tld/com) · [.io domain](/en/tld/io) · [.app domain](/en/tld/app)
 - Glossary: [ICANN](/en/glossary/icann) · [registrar](/en/glossary/registrar) · [SEO](/en/glossary/seo)
+
+## Source retrieval note
+
+- IANA — [.xyz delegation record](https://www.iana.org/domains/root/db/xyz.html) — fetched 2026-09-15; supports the extension type and delegated organization.

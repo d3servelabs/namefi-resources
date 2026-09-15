@@ -1,5 +1,5 @@
 ---
-title: 'What Is the .io Domain? The Tech and Web3 Extension Explained'
+title: "What Is an .io Domain? Meaning, Origin, and Uses"
 date: '2026-06-15'
 language: 'en'
 priority: P1
@@ -7,8 +7,8 @@ tags: ['tld']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
-description: 'The .io domain is the de facto standard for startups, developers, and Web3 projects. Learn its origin, who can register one, pricing dynamics, and reputation.'
-keywords: ['.io domains', '.io domain extension', 'register .io domain', 'io domain meaning', '.io vs .ai', 'tech startup domains']
+description: "Learn what .io means, where the domain extension comes from, and how technology companies use it, with practical considerations for choosing one."
+keywords: ["io domain meaning", "British Indian Ocean Territory ccTLD", "input output domain", "technology domain extension"]
 faqs:
   - question: 'Can anyone register a .io domain?'
     answer: 'Yes. The .io namespace is open to everyone worldwide with no local-presence, business, or credential requirements. You do not need any connection to the British Indian Ocean Territory to register one.'
@@ -91,11 +91,9 @@ These span developer infrastructure, Web3, indie publishing, and gaming, illustr
 ## .io vs other domains
 
 | Feature | .io | .com | .ai | .dev |
-| --- | --- | --- | --- | --- |
-| Type | ccTLD (generic) | gTLD | ccTLD (generic) | gTLD |
-| Primary signal | Tech / Input-Output | Universal / default | Artificial intelligence | Developers / code |
-| Short-name availability | Good | Very scarce | Good | Good |
-| Typical price tier | Premium | Standard | Premium+ | Standard+ |
+| --- | --- | --- | --- | ---
+
+The **.io domain** is the [country-code top-level domain associated with the British Indian Ocean Territory](https://www.iana.org/domains/root/db/io.html). Technology brands also read its letters as “input/output”; that branding association is distinct from the extension’s geographic origin.
 
 Pick [.com](/en/tld/com/) for the universal default when you can find or afford the name. Choose [.ai](/en/tld/ai/) when your product is explicitly about artificial intelligence, or [.dev](/en/tld/dev/) for developer tools and documentation. Choose **.io** for general tech, SaaS, infrastructure, gaming, and Web3 where the Input/Output association fits and short names are still attainable.
 
@@ -182,3 +180,7 @@ DNSSEC is supported by the .io registry. WHOIS privacy availability depends on y
 - [Tokenized domain use cases (2026)](/en/blog/tokenized-domain-use-cases-2026/)
 - TLD guides: [.com](/en/tld/com/), [.ai](/en/tld/ai/), [.dev](/en/tld/dev/), [.app](/en/tld/app/), [.tech](/en/tld/tech/)
 - Glossary: [ICANN](/en/glossary/icann/), [registrar](/en/glossary/registrar/), [DNS](/en/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
+
+## Source retrieval note
+
+- IANA — [.io delegation record](https://www.iana.org/domains/root/db/io.html) — fetched 2026-09-15; supports the extension type and delegated organization.

@@ -1,14 +1,15 @@
 ---
-title: "Why MCP Exists When We Already Have REST APIs and CLIs"
+title: "MCP vs REST API vs CLI: Differences and When to Use Each"
 date: '2026-08-03'
 language: 'en'
 tags: ['ai-agents', 'domains', 'explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
+ogImage: ../../assets/mcp-vs-rest-api-og.jpg
 format: explainer
-description: "Agents can already call REST and run shell commands. The design case for MCP — runtime discovery, typed tools, auth — and where curl is still right."
-keywords: ["MCP vs REST API", "why does MCP exist", "Model Context Protocol rationale", "MCP vs OpenAPI", "MCP vs CLI", "why not just use an API for AI agents", "tools/list", "JSON Schema tool calling", "MCP capability negotiation", "MCP OAuth 2.1", "agent tool discovery", "runtime API discovery for LLMs", "MCP protocol design", "shell out to CLI AI agent", "MCP session state"]
+description: "Compare MCP, REST APIs, and CLIs for AI agents: tool discovery, context use, authentication, and the cases where each approach fits."
+keywords: ["mcp vs api", "mcp vs rest api", "mcp vs cli", "why use mcp", "mcp vs openapi"]
 relatedArticles:
   - /en/blog/agent-native/
   - /en/blog/ai-domain-platforms/
@@ -29,17 +30,31 @@ relatedGlossary:
   - /en/glossary/x402/
 ---
 
-Namefi's own machine-readable policy file, published at [namefi.io/llms.txt](https://namefi.io/llms.txt), tells any agent that reads it: "**REST/curl is a fallback only** when: your client cannot install MCP, the MCP install failed or is blocked, or the user explicitly asks for raw HTTP." It even lists an anti-pattern — "Don't lead with curl when MCP can be installed."
+**MCP gives AI clients a shared way to discover and call tools. A REST API exposes HTTP operations, while a CLI exposes commands in a host environment.** They can reach the same underlying service. The choice depends on the client's capabilities and how much integration work is already in place.
+
+| Question | MCP | REST API | CLI |
+| --- | --- | --- | --- |
+| How does a caller discover operations? | Standard `tools/list` response | API documentation, an OpenAPI document, or provider-specific discovery | Help output and command documentation |
+| How are inputs described? | JSON Schema for tool arguments | Endpoint contract; often described with OpenAPI | Flags and arguments; structured schemas depend on the CLI |
+| What enters the model's context? | Selected tool descriptions and results, as managed by the client | Documentation and responses supplied by the integration | Help text and command output supplied by the host |
+| How does authorization work? | An optional standardized authorization framework for HTTP; local servers use their own credential setup | Provider-supported OAuth, keys, or other schemes | CLI login or credentials supported by that tool |
+| When is it a useful fit? | A compatible AI client needs to use tools across services | A fixed integration, direct HTTP request, or debugging task | Local development, shell automation, or an established command workflow |
+
+The MCP rows follow the [tool specification](#ref-comparison-tools) and [authorization specification](#ref-comparison-auth), checked September 15, 2026. The fit recommendations are practical judgments, not a universal performance ranking. OpenAPI-aware agents and CLIs with structured output can also support discovery; MCP standardizes an interface across compatible clients and servers.
+
+Namefi's own machine-readable policy file, published at [namefi.io/llms.txt](https://namefi.io/llms.txt), expresses a preference for MCP and documents REST/curl fallbacks.
 
 That is an instruction, not an argument. It asserts a preference without saying why the preference is correct, and the objection writes itself: HTTP has worked for thirty years, every language ships a client for it, and a language model can already emit a `curl` command. Adding a protocol on top of a protocol looks like a tax.
 
-This post is the missing argument. It is not a setup guide — [How to Register a Domain with Your AI Agent](/en/blog/ai-agent-register/) covers configuration for six clients, and [the Namefi MCP server catalog](/en/blog/namefi-mcp/) covers the tool surface. This is the design rationale: what problem the [Model Context Protocol](/en/glossary/mcp/) solves that a REST API and a shell prompt structurally cannot, and — the part most MCP advocacy skips — where raw HTTP genuinely remains the better answer.
+This post explains that design rationale in detail. For configuration, use [How to Register a Domain with Your AI Agent](/en/blog/ai-agent-register/) and [the Namefi MCP server catalog](/en/blog/namefi-mcp/). Here the question is what the [Model Context Protocol](/en/glossary/mcp/) standardizes, how that differs from a REST API or shell command, and when the extra protocol is useful.
 
 It is also deliberately the *protocol* question, sitting upstream of two adjacent ones: what a [registrar](/en/glossary/registrar/) has to ship before an agent can use it at all ([What Is an Agent-Native Domain Registrar?](/en/blog/agent-native/)) and which platforms expose which interface today ([AI-Agentic Domain Platforms: The 2026 Guide](/en/blog/ai-domain-platforms/)).
 
 ## The premise: an integration nobody wrote
 
-Every REST API on the internet assumes a specific sequence: a developer finds the docs, reads them once, writes client code by hand, and ships it. After that the integration runs unattended — but only because a person already did the interpretive work, months ago, off the clock.
+![MCP and REST expose different interfaces to tools and services.](../../assets/mcp-vs-rest-api-01-interfaces.jpg)
+
+A common REST integration follows a familiar sequence: a developer finds the docs, reads them once, writes client code by hand, and ships it. After that the integration runs unattended — but only because a person already did the interpretive work, months ago, off the clock.
 
 An [AI agent](/en/glossary/ai-agent/) breaks that assumption at the root. It arrives with no prior integration, and it arrives again on the next conversation, and the next. That cold-start framing is developed in full in [What Is an Agent-Native Domain Registrar?](/en/blog/agent-native/); the short version is that every session is effectively a new developer with seconds of context budget and no ability to go read a docs site properly.
 
@@ -71,11 +86,11 @@ Read that as a design statement rather than a schema detail: MCP has a category 
 
 ## Tool descriptions are context, not documentation
 
-Here is the part with no REST analogue at all.
+MCP makes tool descriptions part of a shared interface for AI clients.
 
 A tool's `description` field is not read by a developer at design time. It is loaded into the model's context window at tool-selection time, on every turn where those tools are available. That makes its length a runtime cost and its phrasing part of the interface — a distinction the specification acknowledges directly when it asks servers to return tools in a stable order, because "deterministic ordering enables clients to reliably cache the tool list and [improves LLM prompt cache hit rates](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#:~:text=improves%20LLM%20prompt%20cache%20hit%20rates) when tools are included in model context."
 
-That sentence is quietly remarkable. A wire protocol is making a normative recommendation about the *inference cost* of the thing on the other end. No REST specification has ever had a reason to care whether your endpoint names cache well in a language model's prompt.
+That sentence is quietly remarkable. A wire protocol is making a normative recommendation about the *inference cost* of the thing on the other end. An API can also be optimized for model consumption; MCP makes that concern explicit in its tool-discovery guidance.
 
 The same logic runs through the rest of the surface. Servers can return an `instructions` string described as "optional natural-language guidance for LLMs on how to use this server effectively." When guidance about state lifetime is needed, the spec says to put it in the creation tool's description — "e.g., 'baskets expire after 24 hours of inactivity'" — explicitly "so the model can see it when deciding to create state."
 
@@ -97,7 +112,7 @@ The 2026-07-28 revision states it flatly: "[MCP has no protocol-level session](h
 
 MCP started with implicit session state and moved *toward* REST's statelessness, for the same reasons REST had it: connections drop, processes restart, and load balancers exist. What it kept is the part that actually helps a model: state is now explicit and typed. A server that needs continuity returns a handle from a creation tool and accepts it as an argument on later calls, with the specification setting out guidance on authorization ("a handle is a name, not a capability"), opacity, lifetime, and expiry errors that "say so, so the model can recover by creating a new one."
 
-There is one genuinely stateful thing MCP added that HTTP has no vocabulary for: a tool call can come back `input_required`, carrying a request for more information — a login, a disambiguation, a confirmation — plus an opaque `requestState` blob the client returns with the retry. A REST endpoint that needs one more field from the user can only fail and hope the caller reads the message.
+There is one genuinely stateful thing MCP added that HTTP has no vocabulary for: a tool call can come back `input_required`, carrying a request for more information — a login, a disambiguation, a confirmation — plus an opaque `requestState` blob the client returns with the retry. An HTTP API can implement a comparable workflow, but its client needs to understand that API's response contract.
 
 ## Why not just shell out to a CLI?
 
@@ -111,7 +126,7 @@ Five reasons, and one concession that matters.
 
 **Streams get contaminated.** MCP's stdio transport had to legislate what a normal CLI does casually: the server "**MUST NOT** write anything to its `stdout` that is not a valid MCP message," while clients "**SHOULD NOT** assume `stderr` output indicates error conditions" ([MCP specification](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/stdio#:~:text=write%20anything%20to%20its)). Every progress bar, deprecation notice, and update nag a normal CLI prints to stdout is noise a model has to interpret.
 
-**The blast radius is the whole machine.** A tool call reaches exactly the operations a server exposes. A shell command reaches the filesystem, the network, the environment, and every other binary installed. Sandboxing shell access is a genuinely hard problem; enumerating a tool list is not.
+**Permissions depend on the implementation.** A broad shell can expose files, environment variables, and network access. An MCP server can also expose powerful operations. A tool list helps describe the surface, but safety still depends on server authorization, client permissions, and the privileges of any local process.
 
 **And it doesn't compose.** Two MCP servers connected to one client present one merged tool list in one vocabulary, and the spec anticipates the obvious failure — clients aggregating tools from multiple servers "**SHOULD** implement a [disambiguation strategy such as prefixing tool names](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#:~:text=disambiguation%20strategy%20such%20as%20prefixing%20tool%20names) with a server identifier." Two CLIs present two sets of undocumented conventions and no shared error vocabulary.
 
@@ -163,6 +178,8 @@ The fastest way to evaluate any of this is to point a client at a server that im
 
 ## Sources and further reading
 
+- <span id="ref-comparison-tools"></span>Model Context Protocol — [Tools, 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#listing-tools), “Listing Tools” and “Tool” sections — fetched 2026-09-15.
+- <span id="ref-comparison-auth"></span>Model Context Protocol — [Authorization, 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization), introduction and transport applicability — fetched 2026-09-15.
 - Model Context Protocol — [Versioning](https://modelcontextprotocol.io/specification/versioning#:~:text=protocol%20version%20is) (establishes 2026-07-28 as the current revision and the dated-revision scheme)
 - Model Context Protocol — [Tools (2026-07-28)](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#:~:text=MCP%20has%20no%20protocol%2Dlevel%20session) (`tools/list`, `inputSchema`/`outputSchema`, per-authorization tool sets, the two error categories, prompt-cache guidance, and the "no protocol-level session" statement)
 - Model Context Protocol — [Versioning and Compatibility (2026-07-28)](https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning#:~:text=There%20is%20no%20negotiation%20handshake) (per-request version declaration replacing the `initialize` handshake; modern/legacy compatibility matrix)

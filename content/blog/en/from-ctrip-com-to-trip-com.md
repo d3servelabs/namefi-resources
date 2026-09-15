@@ -1,5 +1,5 @@
 ---
-title: 'From Ctrip.com to Trip.com: How China''s Travel Giant Bought a 1996 Domain to Go Global'
+title: "Who Owns Trip.com? Ctrip, Trip.com Group, and the Rebrand"
 date: '2026-06-17'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
@@ -10,8 +10,8 @@ cluster: domain-investing
 series: name-change-game-change
 seriesOrder: 10
 format: case-study
-description: 'How Ctrip, China''s largest online travel agency, acquired the premium Trip.com domain in 2017 from a startup called Gogobot, relaunched its global brand around it, and in 2019 renamed the entire parent company Trip.com Group to expand internationally.'
-keywords: ['ctrip.com', 'trip.com', 'ctrip rebrand', 'trip.com group', 'trip.com domain', 'domain upgrade', 'chinese brand global expansion', 'gogobot trip.com', 'james liang ctrip', 'premium travel domain', 'startup naming', 'brand naming', 'domain acquisition']
+description: "Understand how Trip.com relates to Ctrip and Trip.com Group, and trace the acquisition and company-name changes behind the travel brand."
+keywords: ["who owns trip.com", "is trip.com ctrip", "ctrip vs trip.com", "trip.com company"]
 relatedArticles:
   - /en/blog/from-snapchat-com-to-snap-com/
   - /en/blog/from-ubercab-com-to-uber-com/
@@ -31,6 +31,19 @@ relatedGlossary:
   - /en/glossary/dns/
   - /en/glossary/web3/
 ---
+
+**Trip.com is part of Trip.com Group Limited, the publicly traded travel group formerly called Ctrip.com International, Ltd.** As checked September 15, 2026, the group's [investor FAQ](#ref-trip-ownership) lists Trip.com and Ctrip as separate brands in the same family, alongside Qunar and Skyscanner.
+
+| Name | What it refers to |
+| --- | --- |
+| Trip.com | The group's travel-booking brand for global consumers |
+| Ctrip | A travel-booking brand serving mainland China |
+| Trip.com Group Limited | The listed parent company, incorporated in the Cayman Islands and headquartered in Shanghai |
+| Trip.com Travel Singapore Pte. Ltd. | A Singapore company listed among the group's significant subsidiaries |
+
+The [corporate FAQ](#ref-trip-ownership) and [subsidiary disclosure](#ref-trip-subsidiaries) distinguish the brand, parent, and operating entities. The parent has public shareholders; “who owns Trip.com?” is not the same question as who owns a particular block of its shares. A customer's contracting entity depends on the service terms, not simply the brand name or the parent's incorporation location.
+
+The history below explains how acquiring the Trip.com business in 2017 led to the parent's 2019 name change. Ctrip continued as a brand; it did not disappear when the group adopted the new name.
 
 For nearly twenty years, a company that would become one of the world's largest online travel platforms answered to a name that worked beautifully in one country and almost nowhere else: **Ctrip.com**.
 
@@ -152,6 +165,9 @@ The strategic decision was never really in doubt — of course a company chasing
 Trip.com looks inevitable now because Trip.com Group became enormous. But the lesson lands long before that scale: when a name is going to carry a company across borders, the domain isn't decoration. It's the load-bearing piece — and for a brand that wanted the whole world, it was the part worth chasing for two years before the rename ever happened.
 
 ## Sources and further reading
+
+- <span id="ref-trip-ownership"></span>Trip.com Group — [Investor FAQs](https://investors.trip.com/shareholder-services/investor-faqs), brand portfolio, incorporation, listing, and name-change questions — fetched 2026-09-15.
+- <span id="ref-trip-subsidiaries"></span>Trip.com Group — [List of Significant Consolidated Entities, Exhibit 8.1](https://www.sec.gov/Archives/edgar/data/1269238/000119312526183379/d27369dex81.htm), “Significant Subsidiaries” — fetched 2026-09-15.
 
 - South China Morning Post — [Exclusive: China travel giant Ctrip wants to go global with Trip.com brand](https://www.scmp.com/tech/article/2156222/china-travel-giant-ctrip-wants-book-bigger-seat-international-markets-tripcom#:~:text=plans%20to%20boost%20the%20proportion%20of%20total%20revenue%20it%20makes%20from%20overseas%20customers%20from%202%20per%20cent%20to%20at%20least%2020%20per%20cent)
 - ChinaTravelNews — [Ctrip to further global expansion by acquiring US travel site Trip.com](https://www.chinatravelnews.com/article/118274/#:~:text=Ctrip%20has%20recently%20completed%20its%20acquisition%20of%20US%20travel%20booking%20platform%20Trip.com%20%28formerly%20Gogobot%29)

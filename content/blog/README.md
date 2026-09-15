@@ -8,4 +8,4 @@ blog/
   <locale>/ Translated counterparts
 ```
 
-See `en/README.md` for the search-opportunity article set. Approved English articles are published first; translated counterparts can be added from these sources. The application supplies headings and bylines from frontmatter.
+See `en/README.md` for the existing search-opportunity article set and the four new setup/comparison articles. Approved English articles are published first; translated counterparts can be added from these sources. The application supplies headings and bylines from frontmatter.
