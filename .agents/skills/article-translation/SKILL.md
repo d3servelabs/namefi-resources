@@ -5,6 +5,8 @@ description: Translate existing Namefi resources content (blog posts, glossary t
 
 # article-translation
 
+<!-- The workflow and error catalog stay together beyond 5KB so translation QA has one reference. -->
+
 The playbook for **translating** Namefi resources content from the English source into the
 other locales, at the quality bar of a professional translation studio. This is the *how-to +
 lessons*; the **authoritative rules live in [`.claude/rules/content.md`](../../../.claude/rules/content.md)**
@@ -54,6 +56,15 @@ truth for the current choice; this skill defers to it.
   lines rather than re-translating.
 
 ## Workflow
+
+### 0. Confirm the selected scope
+For a **new** translation, read
+[Translation selection](../../../.claude/rules/content.md#translation-selection) and attach the
+[decision record](../../../docs/translation-decision-template.md) naming the source revision, target
+locale/region, demand evidence, costs, and decision. Work only on selected pairs; never fan out across
+all locales because English was published. If demand evidence is `UNKNOWN`, defer that translation
+and name the missing evidence; English publication remains independent. Repairs to existing
+translations retain the quality gates below and need no new demand qualification.
 
 ### 1. Translation brief
 Before drafting, fix: target locale **variant** (e.g. `zh-CN` vs `zh-TW`, `ar` = modern Egyptian Arabic
@@ -122,9 +133,11 @@ single-shot drafting is the top trigger of summarizing-omission. What varies is 
   human phrases; keep brand/standard names). Keep **verbatim**: `date`, `tags`, `authors`, `draft`, `cluster`,
   `series`, `seriesOrder`, `format`, `ogImage` (image path). The translated **`title` is the canonical term**
   for that concept in that locale — pick deliberately from `termbase.json`; **`zh` titles are maintainer-reviewed**.
-- **Internal links:** rewrite the prefix `/en/…` → `/<locale>/…`, **never change the slug**. Anchor text = the
-  linked term's canonical title in that locale (use `termbase.json`). Prefer same-locale targets; English
-  fallback must be intentional, not accidental.
+- **Internal links:** rewrite the prefix `/en/…` → `/<locale>/…`, **never change the slug**. Use the
+  linked term's canonical locale title when available (`termbase.json`); otherwise use a natural
+  translated term without creating the missing target. Keep the same-locale route for English fallback.
+  `relatedArticles` and `relatedGlossary` preserve the English source's ordered slugs with only
+  the locale replaced, including when a linked translation is absent.
 - **Keep verbatim:** citation URLs (incl. `#:~:text=` fragments), code/inline-code, brand/protocol/standard
   names (UDRP, ACPA, ICANN, ENS, NFT, ERC-721, OpenSea, Seaport, Afternic, Sedo, GoDaddy, NameBio, SEO),
   domain names.
@@ -219,7 +232,7 @@ clear errors — no restyling). Classes to check:
 1. **Artifact scan** all touched files: first line is `---`; frontmatter parses; NO ``` fences; NO `</content>` /
    `</invoke>` / `<parameter` / tool tags (especially the *last* lines — the truncation marker); every `](/en/`
    rewritten to `](/<locale>/`; `language:` correct; length sanity (not truncated).
-2. `TMPDIR=/private/tmp bun run data:validate` (pass + ~19 pre-existing warnings) and `bun run lint:mdx`.
+2. `TMPDIR=/private/tmp bun run data:validate` and `bun run lint:mdx`; report actual warning counts.
    (Fresh worktree? run `bun install` first or eslint can't resolve `@eslint/eslintrc`.)
 3. `bun .agents/skills/cross-link/link-audit.ts <paths>` → **0 broken, 0 locale-mismatch** (a `missing-translation`
    warning is OK — the app serves the en fallback).
@@ -237,7 +250,7 @@ clear errors — no restyling). Classes to check:
 6. **Coverage validator** (semantic translation-unit coverage, [issue #143](https://github.com/d3servelabs/namefi-resources/issues/143))
    — when available, run it to prove structural/unit coverage (missing headings/paragraphs/FAQs, dropped
    citation URLs, table-shape drift). It proves coverage, **not** idiomatic quality — it does not replace the
-   human passes above.
+   human passes above. Scope it to selected or existing translations, not missing locale files.
 7. **Dedicated Arabic accuracy QA pass** (see error catalog) — non-negotiable for bulk batches.
 8. **Bugbot handling:** it reviews a *sample/diff*, so **one flag often means several siblings** — when it flags
    an issue, grep the rest of the corpus for the same pattern and fix them all. Reply to each thread in a human
@@ -254,6 +267,8 @@ the marker matches stale content and you wrongly conclude "deployed."
   release, not a failed build.
 
 ## Quality gate (Definition of Done)
+This gate applies to translations being delivered; it is not an English publication gate or a
+requirement to translate every article. Run `bun links:test` and `bun links:audit` before pushing.
 A translation is publishable only when: semantic coverage + structural checks pass (no missing units / drift);
 glossary/terminology checks pass; same-locale link correctness holds (any en fallback marked intentional); no
 open **S0/S1** findings remain; and the required LQA flag is set for content whose risk level needs native
