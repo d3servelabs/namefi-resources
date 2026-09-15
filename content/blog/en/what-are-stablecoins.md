@@ -1,5 +1,5 @@
 ---
-title: 'What Are Stablecoins? The Foundation of Stability in the Web3 Economy'
+title: "What Are Stablecoins? Types, How They Work, and Risks"
 date: '2025-12-11'
 language: 'en'
 tags: ['web3', 'cryptocurrency', 'defi', 'blockchain', 'finance']
@@ -8,8 +8,8 @@ editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
 format: explainer
-description: 'Discover how stablecoins bridge the gap between traditional fiat and cryptocurrency, offering stability for Web3 transactions and domain investing.'
-keywords: ['what are stablecoins', 'stablecoin definition', 'USDT vs USDC', 'crypto volatility', 'web3 payments', 'blockchain domains', 'decentralized finance', 'fiat-collateralized', 'buy domains with crypto', 'namefi']
+description: "Learn how stablecoins aim to track a reference asset, compare fiat-backed, crypto-backed, and algorithmic designs, and understand their risks."
+keywords: ["stablecoins", "what is a stablecoin", "types of stablecoins", "how stablecoins work"]
 relatedArticles:
   - /en/blog/what-are-xstocks/
   - /en/blog/what-are-tokenized-domains/
@@ -30,15 +30,15 @@ relatedGlossary:
   - /en/glossary/tld/
 ---
 
-In the fast-paced, often turbulent world of cryptocurrency, prices can swing wildly in a matter of minutes. Bitcoin and [Ethereum](/en/glossary/ethereum/) might power the ecosystem, but their volatility makes them difficult to use for everyday transactions, business settlements, or pricing real-world assets. Enter **[stablecoins](/en/glossary/stablecoin/)**—the crucial bridge between the stability of traditional fiat currency and the technological innovation of [blockchain](/en/glossary/blockchain/).
+A **[stablecoin](/en/glossary/stablecoin/)** is a cryptocurrency designed to track a reference value, commonly one U.S. dollar. “Stable” describes the target, not a guarantee. A token can trade below its peg, and exchanging it for dollars depends on its redemption terms and the services available to the holder.
 
-For anyone navigating the [Web3](https://en.wikipedia.org/wiki/Web3) landscape—whether you are a developer, a domain investor, or a business owner—understanding stablecoins is no longer optional. They are the [liquidity](/en/glossary/domain-liquidity/) engine of the decentralized internet.
+Stablecoins differ in what backs them and how they try to maintain that target. This guide compares fiat-backed, crypto-backed, and algorithmic designs, then explains the reserve, redemption, and depeg risks that matter when using them.
 
-## The Core Concept: Stability Amidst Volatility
+## The Core Concept: A Target Price and a Way Back to It
 
-At its simplest, a **stablecoin** is a type of cryptocurrency designed to track a reference asset, most commonly the US Dollar (USD). A dollar-pegged stablecoin generally targets $1.00, but that target is not a guarantee: secondary-market prices can move above or below the peg, and redemption terms vary by issuer and product.
+For a redeemable dollar token, the peg depends partly on eligible participants being able to exchange tokens for dollars. That mechanism can encourage trading toward the target, but it does not ensure that every holder can redeem directly with the issuer.
 
-Stablecoins can reduce exposure to the price swings of unpegged crypto assets, but they do not remove financial risk. They can face depegging, redemption, reserve, issuer, custodian, network, and smart-contract risks. The [Federal Reserve](https://www.federalreserve.gov/newsevents/speech/waller20250212a.htm) notes that stablecoins are private money, have experienced depegs, and remain subject to run and payment-system risks.
+For example, [Circle's USDC terms for users outside the EEA](#ref-usdc-terms) condition direct redemption on eligibility and a Circle Mint account in good standing. Selling USDC on an exchange is a separate transaction at an available market price. A wallet balance, a reserve report, and a direct redemption right answer different questions.
 
 ## How Do Stablecoins Maintain Their Value?
 
@@ -50,17 +50,28 @@ These tokens are issued against reserves intended to support redemption at or ne
 *   **Why it matters**: Reserve composition, liquidity, custody, attestations, legal redemption rights, and issuer risk all matter. For example, [Circle's current disclosures](https://www.circle.com/transparency) describe USDC reserves as cash and highly liquid cash-equivalent assets, with most of the reserve held in a government money-market fund that may hold short-dated US Treasuries and overnight Treasury repurchase agreements.
 
 ### 2. Crypto-Collateralized Stablecoins
-These are backed by other cryptocurrencies rather than fiat in a bank. Because the backing asset (like Ethereum) is volatile, these stablecoins are "over-collateralized." For example, to mint $100 worth of a stablecoin, you might need to lock up $150 worth of ETH.
-*   **Example**: [DAI](https://sky.money/) in the Sky ecosystem.
+These use crypto assets as collateral, often with a buffer above the value of the tokens issued. If collateral prices fall, a protocol may liquidate the position under its rules; [Sky's liquidation documentation](#ref-sky-liquidation) describes this for insufficiently collateralized vaults. Requirements vary by asset and system; a crypto-backed label does not establish a universal collateral ratio.
+*   **Design caveat**: Systems can mix crypto assets, stablecoins, and off-chain assets. Check the actual collateral composition instead of assuming that every token marketed as decentralized uses only crypto collateral.
 *   **Why it matters**: On-chain collateral and smart contracts can make parts of the system transparent and programmable, but governance, collateral composition, price oracles, custodians, and centralized assets may still introduce dependencies.
 
 ### 3. Algorithmic Stablecoins
 These rely substantially on smart-contract incentives, supply changes, arbitrage, or a related token rather than only on directly redeemable fiat reserves. Some are uncollateralized; others are partially collateralized or hybrid, so "algorithmic" is not one uniform design.
 *   **Note**: These mechanisms can fail abruptly if confidence and arbitrage incentives collapse. The [Federal Reserve's study of algorithmic-stablecoin runs](https://www.federalreserve.gov/econres/notes/feds-notes/runs-on-algorithmic-stablecoins-evidence-from-iron-titan-and-steel-20220602.html) explains that a peg can break and trigger run dynamics.
 
-## Why Stablecoins Are Essential for the Future of the Web
+## What Can Make a Stablecoin Lose Its Peg?
 
-Stablecoins have grown into a multi-billion dollar market because they solve practical problems that raw cryptocurrencies cannot.
+A depeg occurs when the market price diverges from the target. The [Federal Reserve's analysis of algorithmic-stablecoin runs](#ref-algorithmic-runs) shows how large sell orders and flaws in the arbitrage mechanism contributed to the IRON token losing its peg. Reserve-backed tokens have different mechanisms, but reserve liquidity, custody, redemption access, and market confidence still matter.
+
+Before relying on a stablecoin, distinguish:
+
+- **Reserve value from reserve liquidity.** Assets may exist but be difficult to sell or access quickly.
+- **Disclosure from a guarantee.** [Circle publishes reserve information and monthly third-party assurance](#ref-usdc-reserves); a report does not promise an unchanged secondary-market price.
+- **Redemption from exchange liquidity.** Direct issuer redemption can have eligibility requirements; an exchange needs a willing counterparty.
+- **A token from the platform holding it.** A custodian, bridge, lending protocol, or wallet can add risks beyond the stablecoin itself.
+
+## Common Uses of Stablecoins
+
+Stablecoins can be useful where participants want a blockchain-based payment or settlement asset that targets a familiar unit of account.
 
 *   **On-chain settlement**: Supported networks can operate outside bank hours and may settle quickly, but actual time and cost depend on the chain, congestion, bridges, exchanges, compliance checks, and the issuer's minting or redemption process.
 *   **[DeFi](/en/glossary/defi/) (Decentralized Finance)**: Stablecoins are widely used for trading, lending, and collateral in [DeFi](https://ethereum.org/en/defi/). Advertised yields are not bank interest or guaranteed returns; users can lose funds through depegs, liquidations, smart-contract failures, protocol insolvency, or counterparty risk.
@@ -73,7 +84,7 @@ At **Namefi**, we are bridging the gap between the traditional internet (DNS) an
 ### 1. Price Predictability
 When you buy a premium [domain name](/en/blog/what-is-domain/), quoting the price in a dollar-pegged asset can reduce the checkout's exposure to ETH price movements. It still does not guarantee a fiat-dollar value: the stablecoin can depeg, and network or settlement conditions can change.
 
-### 2. Frictionless Global Commerce
+### 2. Cross-Border Payments
 Domain investing is a global industry. Traditionally, buying a high-value domain may involve [Escrow](/en/glossary/escrow/) services, bank wires, and currency conversion. Namefi currently documents a wallet-signed **USDC** checkout for supported domain registrations through its [x402 flow](/en/blog/wallet-checkout/). Availability, accepted networks and assets, finality, fees, registration completion, and compliance requirements depend on the live product and transaction; this article does not establish a general USDT checkout or instant secondary-market settlement.
 
 ### 3. Future DeFi Integrations
@@ -85,6 +96,13 @@ Stablecoins are widely used as settlement and trading assets in crypto markets a
 
 Whether you are buying a domain through a supported wallet-payment flow or managing digital assets, evaluate the specific stablecoin, issuer, reserve and redemption terms, network, protocol, and jurisdiction before relying on it.
 
-**Ready to explore [domain ownership](/en/glossary/domain-ownership/)? Review the live payment terms, supported assets, and risks before you transact.**
+For the domain-specific context, see [what tokenized domains are](/en/blog/what-are-tokenized-domains/) and the supported [wallet-checkout flow](/en/blog/wallet-checkout/).
 
-**[Start your journey with Namefi](https://namefi.io)**
+## Sources and further reading
+
+- <span id="ref-sky-liquidation"></span>Sky Protocol — [Collateral Liquidation](https://developers.skyeco.com/protocol/vaults/collateral-liquidation/), opening definition and “Vault Liquidation” — fetched 2026-09-15.
+
+- <span id="ref-usdc-terms"></span>Circle — [USDC Terms](https://www.circle.com/legal/usdc-terms), sections 1–2, 4 and 8; these terms apply outside the EEA — fetched 2026-09-15.
+- <span id="ref-usdc-reserves"></span>Circle — [Transparency](https://www.circle.com/transparency), “Monthly assurance and transparency” and “How we manage USDC” — fetched 2026-09-15.
+- <span id="ref-algorithmic-runs"></span>Federal Reserve — [Runs on Algorithmic Stablecoins](https://www.federalreserve.gov/econres/notes/feds-notes/runs-on-algorithmic-stablecoins-evidence-from-iron-titan-and-steel-20220602.html), June 2, 2022, analysis of the Iron/Titan run — fetched 2026-09-15.
+- Federal Reserve — [Christopher Waller on stablecoins](https://www.federalreserve.gov/newsevents/speech/waller20250212a.htm), February 12, 2025, payment uses and risks — fetched 2026-09-15.

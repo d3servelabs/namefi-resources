@@ -1,5 +1,5 @@
 ---
-title: 'From UberCab.com to Uber.com: Trading Equity for the Domain Before Uber Became a Verb'
+title: "Uber’s Original Name: Why UberCab Became Uber"
 date: '2026-06-16'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
@@ -10,8 +10,8 @@ cluster: domain-investing
 series: name-change-game-change
 seriesOrder: 7
 format: case-study
-description: 'How UberCab dropped "Cab" as it faced a 2010 cease-and-desist, how reports say Uber acquired Uber.com from Universal Music for 2% equity, and why the exact historical dollar values remain uncertain.'
-keywords: ['ubercab.com', 'uber.com', 'uber domain name', 'domain upgrade', 'ubercab cease and desist', 'universal music uber domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'uber history', 'equity for domain', 'domain acquisition', 'category-defining domain']
+description: "Discover Uber’s original name, why UberCab became Uber, and how its domain change supported a broader brand."
+keywords: ["uber original name", "ubercab", "why did uber change its name"]
 relatedArticles:
   - /en/blog/from-urbancompass-com-to-compass-com/
   - /en/blog/from-massdrop-com-to-drop-com/
@@ -31,6 +31,10 @@ relatedGlossary:
   - /en/glossary/icann/
   - /en/glossary/web3/
 ---
+
+**Uber's original brand was UberCab.** Its public brand shortened during the October 2010 regulatory dispute, according to [contemporary coverage](#ref-uber-rebrand). In branding terms, removing “Cab” makes the name less tied to one transport category. That interpretation does not mean the rename resolved the underlying operating questions.
+
+The corporate rename came later: Uber's [SEC prospectus](#ref-uber-corporate-name) says it incorporated as **Ubercab, Inc. in July 2010** and became **Uber Technologies, Inc. in February 2011**. The public brand, legal company name, and acquisition of Uber.com are related events with different timelines.
 
 Before "Uber" became a verb, a logistics empire, and a synonym for an entire category of on-demand services, it was a more literal, more cautious thing: **UberCab.com**.
 
@@ -56,7 +60,7 @@ But the ambition was already wider than the name. The founders weren't trying to
 
 UberCab.com was the right domain for the first stage. It was the wrong domain for the company underneath it.
 
-## October 2010: the cease-and-desist that forced the issue
+## October 2010: the rebrand during a regulatory dispute
 
 The trigger came from the government, not the marketing department.
 
@@ -64,7 +68,7 @@ On October 20, 2010, UberCab was hand-delivered a cease-and-desist order. TechCr
 
 The cited report does not say the word "Cab" was the legal basis for the order. It lists concrete operating concerns: UberCab acted like a cab company without a taxi license, its cars did not carry taxi-equivalent insurance, the model threatened taxi dispatchers, and it offered immediate pickups despite rules that generally required limousines to be prebooked. The name change happened in the same regulatory window, but removing a word did not resolve those compliance questions.
 
-So Uber did. Almost immediately, the logo changed. TechCrunch noted that [Ubercab's logo now reads simply "Uber,"](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=Ubercab%E2%80%99s%20logo%20now%20reads%20simply%20%E2%80%9CUber%2C%E2%80%9D) and the company told its own Facebook community, in a line that captured the whole pivot, that it was [more uber than cab](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=more%20uber%20than%20cab). Smart Branding summarized the sequence: [On the same day, Uber officially changed its name from UberCab to Uber.](https://smartbranding.com/ubercab-com-to-uber-com/#:~:text=On%20the%20same%20day%2C%20Uber%20officially%20changed%20its%20name%20from%20UberCab%20to%20Uber.)
+So Uber did. Almost immediately, the logo changed. TechCrunch noted that [Ubercab's logo now reads simply "Uber,"](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=Ubercab%E2%80%99s%20logo%20now%20reads%20simply%20%E2%80%9CUber%2C%E2%80%9D) and the company told its own Facebook community, in a line that captured the whole pivot, that it was [more uber than cab](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=more%20uber%20than%20cab). Smart Branding summarized the public-brand sequence: [On the same day, Uber officially changed its name from UberCab to Uber.](https://smartbranding.com/ubercab-com-to-uber-com/#:~:text=On%20the%20same%20day%2C%20Uber%20officially%20changed%20its%20name%20from%20UberCab%20to%20Uber.)
 
 The rename came amid that pressure. It also pointed at a domain the company didn't yet own.
 
@@ -183,6 +187,10 @@ The strategic appeal is easy to understand — a company called Uber benefits fr
 Uber.com looks inevitable now because Uber became enormous. But the lesson lands long before that scale: when a name is going to carry the business — and especially when the old name has become a liability — the domain isn't decoration. It's the part of the brand worth trading a slice of the company to get right.
 
 ## Sources and further reading
+
+- <span id="ref-uber-rebrand"></span>TechCrunch — [UberCab Ordered to Cease And Desist](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/), October 24, 2010, opening update on the public logo — fetched 2026-09-15.
+
+- <span id="ref-uber-corporate-name"></span>Uber — [2025 prospectus supplement](https://www.sec.gov/Archives/edgar/data/1543151/000155278125000272/e25315_uber-424b3usd.htm#:~:text=In%20February%202011), “Corporate Information,” p. S-1 — fetched 2026-09-15.
 
 - TechCrunch — [UberCab Ordered To Cease And Desist](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=the%20San%20Francisco%20Metro%20Transit%20Authority%20%26%20the%20Public%20Utilities%20Commission%20of%20California%20have%20ordered%20the%20startup%20to%20cease%20and%20desist)
 - TechCrunch — [UberCab Closes Uber Angel Round](https://techcrunch.com/2010/10/15/ubercab-closes-uber-angel-round#:~:text=an%20app%20that%20lets%20users%20request%20a%20car%20service%20to%20pick%20them%20up%20wherever%20they%20are%20right%20now)

@@ -1,5 +1,5 @@
 ---
-title: 'From TheFacebook.com to Facebook.com: The $200K Domain Upgrade That Made a Campus App Feel Inevitable'
+title: "From TheFacebook to Facebook: Why the Name and Domain Changed"
 date: '2026-06-10'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
@@ -10,8 +10,8 @@ cluster: domain-investing
 series: name-change-game-change
 seriesOrder: 1
 format: case-study
-description: 'How Facebook dropped TheFacebook.com, bought Facebook.com for $200K, later paid $8.5M for FB.com, and turned domain upgrades into brand infrastructure.'
-keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'facebook domain name', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'facebook history', 'domain acquisition', 'company rebrand', 'category-defining domain']
+description: "Explore why TheFacebook became Facebook, how the domain acquisition fit the rebrand, and what the move changed for the growing company."
+keywords: ["thefacebook.com", "facebook original name", "why did facebook drop the the", "thefacebook domain"]
 relatedArticles:
   - /en/blog/from-ubercab-com-to-uber-com/
   - /en/blog/from-teslamotors-com-to-tesla-com/
@@ -31,6 +31,10 @@ relatedGlossary:
   - /en/glossary/tld/
   - /en/glossary/web3/
 ---
+
+**Facebook's original name was TheFacebook, and its early web address was TheFacebook.com. It dropped “the” in 2005 as the name and domain became Facebook and Facebook.com.** Meta's [company-history timeline](#ref-facebook-timeline) records the official naming milestone on September 20, 2005. Historical accounts below place the domain acquisition in August; the purchase and official branding milestone should not be treated as one precisely dated event.
+
+The shorter name made the spoken brand and web address more compact. That is the branding interpretation explored here, rather than a claim that the domain purchase alone caused Facebook's growth. The reported acquisition amounts and later FB.com purchase remain separate parts of the story.
 
 Before Facebook became one of the default verbs of the internet, it was a narrower, more literal thing: **TheFacebook.com**.
 
@@ -209,6 +213,8 @@ The hard part is often not deciding that the better domain matters. It is making
 Facebook's upgrade is obvious now because the company became enormous. But the strategic lesson applies much earlier: when a name is going to carry the business, the domain is not decoration. It is part of the brand's foundation.
 
 ## Sources and further reading
+
+- <span id="ref-facebook-timeline"></span>Meta — [Company history, Portuguese edition](https://about.fb.com/br/company.info/#:~:text=thefacebook.com%20oficialmente%20elimina), timeline entries for February 4, 2004 and September 20, 2005 — fetched 2026-09-15.
 
 - The Harvard Crimson — [Ten Years Later, Facebook's First Users Look Back at Site's Earliest Days](https://www.thecrimson.com/article/2014/2/4/facebook-ten-years-feature-1/#:~:text=got%20its%20start%20in%20a%20Kirkland%20House%20dorm%20room%20on%20Feb.%204%2C%202004%20as%20an%20internal%20directory%20for%20Harvard%20undergraduates)
 - The Harvard Crimson — [Firm Invests $13M in Facebook](https://www.thecrimson.com/article/2005/5/27/firm-invests-13m-in-facebook-a/#:~:text=invest%20%2413%20million%20into%20thefacebook.com)

@@ -1,5 +1,5 @@
 ---
-title: 'From Mr. Chewy to Chewy.com: A $3.35B Pet Brand’s One-Word Upgrade'
+title: "From Mr. Chewy to Chewy: The Name and Domain Change"
 date: '2026-06-17'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
@@ -10,8 +10,8 @@ cluster: domain-investing
 series: name-change-game-change
 seriesOrder: 18
 format: case-study
-description: 'How a 2011 pet startup founded as "Mr. Chewy" became Chewy on the exact-match Chewy.com, and why that one-word domain upgrade quietly became part of a company PetSmart bought for $3.35 billion.'
-keywords: ['mrchewy.com', 'chewy.com', 'chewy domain name', 'mr chewy', 'domain upgrade', 'ryan cohen', 'michael day', 'frank schilling', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'pet ecommerce']
+description: "Learn how Mr. Chewy became Chewy and how the shorter name and domain fit the company’s brand evolution."
+keywords: ["mr chewy", "mrchewy", "chewy original name", "when was chewy founded"]
 relatedArticles:
   - /en/blog/from-urbancompass-com-to-compass-com/
   - /en/blog/from-ubercab-com-to-uber-com/
@@ -31,6 +31,10 @@ relatedGlossary:
   - /en/glossary/icann/
   - /en/glossary/web3/
 ---
+
+**Mr. Chewy was the original brand of the pet retailer later known as Chewy.** A [domain-industry retrospective](#ref-chewy-name) records the simplification to Chewy and Chewy.com. The sources reviewed here do not establish an exact rename or domain-acquisition date, so there is no supported day or year to attach to that change.
+
+The useful timeline is narrower: the business began in 2011, and by the [May 31, 2017 acquisition-completion announcement](#ref-chewy-acquisition), PetSmart identified it as Chewy, Inc. The company acquisition is separate from the earlier, privately priced domain purchase. This article follows that name and domain history, including the limits of the available record.
 
 Before Chewy was the customer-service legend of pet e-commerce — before the handwritten cards, the condolence flowers, and the $3.35 billion exit — it had a slightly cuddlier, more cautious name. It was **Mr. Chewy**. Public accounts disagree on whether its early web address was **MrChewy.com** or **MyChewy.com**, but they agree on the original brand and the eventual move to **Chewy.com**.
 
@@ -152,6 +156,9 @@ The strategic appeal is easy to see — a pet store called Chewy benefits from o
 Chewy.com looks inevitable now because Chewy became enormous. But the lesson applies before that scale: when a name is going to ride on every box you ship, the domain isn't decoration. It is worth evaluating and securing cleanly before the company has to grow out of a name already taught to the market.
 
 ## Sources and further reading
+
+- <span id="ref-chewy-name"></span>Smart Branding — [Brands simplified their names](https://smartbranding.com/2010-2020-a-decade-in-domains-part-1-brands-simplified-their-names/#:~:text=Chewy%20was%20founded), Chewy section; secondary account — fetched 2026-09-15.
+- <span id="ref-chewy-acquisition"></span>Chewy/PetSmart — [PetSmart Completes Acquisition of Chewy](https://investor.chewy.com/news-and-events/news/news-details/2017/PetSmart-Completes-Acquisition-of-Chewy/default.aspx), May 31, 2017 — fetched 2026-09-15.
 
 - Wikipedia — [Chewy (company)](https://en.wikipedia.org/wiki/Chewy_(company)#:~:text=Chewy%20was%20founded%20with%20the%20name%20%22Mr.%20Chewy%22%20in%20June%202011%20by%20Ryan%20Cohen%20and%20Michael%20Day)
 - Harvard Business Review — [The Founder of Chewy.com on Finding the Financing to Achieve Scale](https://hbr.org/2020/01/the-founder-of-chewy-com-on-finding-the-financing-to-achieve-scale)
