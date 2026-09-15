@@ -1,5 +1,5 @@
 ---
-title: "Domain Flipping: How to Buy and Sell Domains for Profit"
+title: "Domain Flipping: How It Works, Costs, Risks, and Selling Basics"
 date: '2026-06-20'
 language: en
 tags: ['domains', 'domain-investing', 'domain-flipping', 'guide']
@@ -10,9 +10,9 @@ cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 1
 format: guide
-description: "What domain flipping really is — buying names low and selling high — and the stack of skills behind the trade, from sourcing and appraisal to selling."
+description: "Learn how domain flipping works, from finding and valuing names to selling them, with realistic costs, risks, and holding-period tradeoffs."
 ogImage: ../../assets/domain-flipping-og.jpg
-keywords: ['domain flipping', 'how to flip domains', 'flipping domains for profit', 'domain flipping for beginners', 'buy and sell domains', 'domain investing', 'make money with domains', 'domain flipping guide', 'how to value a domain', 'find domains to flip', 'domain portfolio', 'domain reseller', 'is domain flipping legal', 'domain aftermarket']
+keywords: ["domain flipping", "how to flip domains", "is domain flipping profitable", "domain flipping guide", "domain investing", "domain acquisition costs", "domain renewal costs", "domain appraisal", "domain selling", "domain holding period", "domain flipping risks"]
 relatedArticles:
   - /en/blog/domain-renewal-costs-and-sell-through-rate/
   - /en/blog/how-to-sell-domains-for-profit/
@@ -33,9 +33,9 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-The pitch is the oldest one in commerce: buy low, sell high. Register or acquire a domain name for a few dollars, find someone who needs it more than you do, and sell it for many multiples of what you paid. Done well, it looks effortless — a clever name bought cheap, a five-figure check months later. That story is real. It is also the highlight reel.
+**Domain flipping means acquiring a domain with the intention of reselling it for more than the total cost of the trade.** A profit requires a buyer, a completed sale, and proceeds that exceed acquisition, renewal, marketplace or broker, and transfer costs. A name can remain unsold while those costs continue.
 
-Underneath that "simple" trade sits a stack of genuine skills, and the gap between the people who make money flipping domains and the people who quietly renew a graveyard of names every year is almost entirely a gap in those skills. This guide is the map. It explains what domain flipping actually is, gives you an honest reality check on the odds, and then walks the full arc of the craft — sourcing, appraisal, naming, legal protection, selling, portfolio management, and marketing — pointing you to a deeper guide for each stage as you go.
+This guide follows the work from sourcing and appraisal through selling and portfolio management. Treat it as a way to evaluate a risky activity, not a promise of income.
 
 ## What domain flipping is (and an honest reality check)
 
@@ -43,11 +43,9 @@ Underneath that "simple" trade sits a stack of genuine skills, and the gap betwe
 
 Domain flipping is the short-turnaround corner of domain investing. The broader practice has a precise definition: as Wikipedia puts it, [domain name speculation ... is the practice of identifying and registering or acquiring generic Internet domain names as an investment with the intent of selling them later for a profit](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=is%20the%20practice%20of%20identifying%20and%20registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment). Flipping is the fast version of that: [quick turnaround in the resale of domains is often called domain flipping](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=Quick%20turnaround%20in%20the%20resale%20of%20domains%20is%20often%20called%20domain%20flipping). You are a middle-person in the [domain aftermarket](/en/glossary/domain-trading/) — buying names you think are underpriced and reselling them to a buyer who values them more.
 
-The headlines make it look like a lottery you could win. The most famous one is real: in 2019, MicroStrategy sold `Voice.com` to [blockchain](/en/glossary/blockchain/) company Block.one, and per the official `.nl` [registry](/en/glossary/registry/) SIDN, [blockchain provider Block.one paid 30 million US dollars for the domain name voice.com](https://www.sidn.nl/en/news-and-blogs/voice-com-sold-for-usd-30-million#:~:text=blockchain%20provider%20Block.one%20paid%2030%20million%20US%20dollars%20for%20the%20domain%20name%20voice.com) — still, SIDN notes, [the highest publicly disclosed sum ever paid for a domain name](https://www.sidn.nl/en/news-and-blogs/voice-com-sold-for-usd-30-million#:~:text=the%20highest%20publicly%20disclosed%20sum%20ever%20paid%20for%20a%20domain%20name). It beat the prior record set in 2010, when, as Wikipedia records, [Sedo reportedly completed the auction ... for $13 million](https://en.wikipedia.org/wiki/Sex.com#:~:text=Sedo%20reportedly%20completed%20the%20auction) of `Sex.com`.
+A large sale can make the activity look easier than it is. MicroStrategy's own announcement records its **USD 30 million cash sale of Voice.com**, completed May 30, 2019. [Read the seller's announcement.](#ref-voice-sale) That is evidence of one transaction, not an expected outcome for a new portfolio.
 
-Now the reality check. Those are one-word, dictionary-grade `.com`s sold to deep-pocketed buyers with an existential need for the name. They are not a business model — they are the outliers that survive into headlines precisely because they are rare. The honest framing of domain flipping is that it is a **portfolio game, not a lottery ticket**. The unglamorous truth, well understood across the industry: most individual domains you register on speculation will never sell at all. The ones that don't sell sit in your account costing you renewal fees every year. Flipping works, when it works, because a small number of good sales more than cover the carrying cost of a much larger number of names that go nowhere. If you are not comfortable with that shape — many small losses, occasional outsized wins — this is the wrong hobby to mistake for a guaranteed income.
-
-The good news is that the odds are not random. Every stage of the craft below is a lever you can pull to move them in your favor.
+There is no guaranteed profit or holding period. Record the full cost of each name and the costs of names that never sell. A profitable sale can coexist with an unprofitable portfolio when renewals and acquisition losses elsewhere exceed it.
 
 ## Find: sourcing names worth flipping
 
@@ -91,9 +89,13 @@ A great name with no audience is just a renewal bill. Marketing is how you short
 
 ![Editorial illustration of a balance scale where a single large gold coin outweighs a tall stack of many tiny renewal coins, with small circular-arrow renewal icons beside the small coins](../../assets/domain-flipping-02-economics.jpg)
 
-Strip the headlines away and domain flipping is an inventory business with a steady carrying cost. The single biggest drag is renewal. A domain isn't bought outright; it's registered for a term and must be renewed to keep it, and [gTLD](/en/glossary/gtld/) registrations max out at, per Wikipedia, [the maximum period of registration for a gTLD domain name is 10 years](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years). [Retail pricing](/en/glossary/retail-pricing/) for a plain `.com` is modest but real — Wikipedia notes that as of 2023, [the retail cost generally ranges from a low of about $9.70 per year to about $35 per year](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year) for a simple `.com` registration. Multiply that by a few hundred names and the annual nut becomes the number every flipper organizes around.
+Domain flipping has a recurring carrying cost. Before buying, write down the acquisition quote, renewal quote, selling fees, and any transfer or recovery charges. Our [domain cost guide](/en/blog/how-much-is-a-domain-understanding-holding-cost/) separates those operations and includes dated registrar examples.
 
-This is where the "portfolio game" framing turns into arithmetic. The industry rule of thumb — and it is a rule of thumb, not a measured statistic, so treat it as an estimate — is that a hand-registered portfolio's annual **[sell-through rate](/en/glossary/sell-through-rate/)** (the share of your names that actually sell in a year) is low, often in the low single-digit percentages. The math only works because the *price* of the sales is so skewed: one good four- or five-figure sale can fund the renewals on hundreds of names for years. The mental model that experienced domainers live by is "one sale funds many renewals." If your portfolio's expected sales can't comfortably cover its yearly renewal bill, you don't have an investment — you have a subscription. Knowing your real numbers (cost basis, [holding cost](/en/glossary/holding-cost/), realistic sell-through) is what separates investing from hoarding, and it's the reason the [portfolio management](/en/blog/domain-portfolio-management/) discipline above isn't optional.
+**Net result = sale proceeds minus acquisition, renewals, selling fees, and other transaction costs.** Keep the currency consistent and include unsold inventory when assessing the whole portfolio.
+
+Track your own annual **[sell-through rate](/en/glossary/sell-through-rate/)** rather than assuming an industry average applies to your names. Test a scenario with no sales during the holding period: can you afford the renewals, and when would you drop a name? A listing price or automated appraisal does not cover a bill. Actual sales and [holding costs](/en/glossary/holding-cost/) belong in the decision.
+
+
 
 ## Is it legal and ethical?
 
@@ -107,7 +109,7 @@ That boundary is enforceable. Under [ICANN](/en/glossary/icann/)'s [Uniform Doma
 
 The skill stack above is mostly about deciding *what* to buy and sell. The other half of every flip is the mechanics of actually moving the name — and that's where high-value trades get nervous. The classic standoff is simple: the seller doesn't want to transfer before getting paid, and the buyer doesn't want to pay before receiving the domain. That friction is the whole reason escrow exists, and it gets sharper the more a name is worth.
 
-This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenized ownership makes control of a real ICANN domain easier to verify and transfer, with DNS continuity so the name keeps resolving cleanly through the handover — no dark hours where a live site goes down mid-deal. For a flipper, less settlement friction means more trades that actually close, on names whose ownership is auditable rather than taken on trust.
+This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenized ownership makes control of a real ICANN domain easier to verify and transfer, while the underlying registrar and DNS configuration still require separate checks during handover. For a flipper, less settlement friction means more trades that actually close, on names whose ownership is auditable rather than taken on trust.
 
 ## Friendly Disclaimer (Read Me!)
 
@@ -118,8 +120,6 @@ This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenized owners
 ## Sources and further reading
 
 - Wikipedia — [Domain name speculation (definition of domaining and domain flipping)](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=is%20the%20practice%20of%20identifying%20and%20registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment)
-- SIDN — [Voice.com sold for USD 30 million (Block.one, 2019; highest publicly disclosed sale)](https://www.sidn.nl/en/news-and-blogs/voice-com-sold-for-usd-30-million#:~:text=blockchain%20provider%20Block.one%20paid%2030%20million%20US%20dollars%20for%20the%20domain%20name%20voice.com)
-- Wikipedia — [Sex.com ($13 million sale, 2010)](https://en.wikipedia.org/wiki/Sex.com#:~:text=Sedo%20reportedly%20completed%20the%20auction)
-- Wikipedia — [Domain name registrar (10-year max term; retail `.com` renewal pricing)](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years)
+- <span id="ref-voice-sale"></span>MicroStrategy — [Voice.com sale announcement, SEC Exhibit 99.1](https://www.sec.gov/Archives/edgar/data/1050446/000119312519175320/d724928dex991.htm#:~:text=consummated%20on%20May), transaction amount and completion date. Fetched 2026-09-15.
 - ICANN — [Uniform Domain-Name Dispute-Resolution Policy (the three elements of a UDRP claim)](https://www.icann.org/resources/pages/policy-2012-02-25-en)
 - WIPO — [Overview of WIPO Panel Views on Selected UDRP Questions, Third Edition, version 3.1](https://www.wipo.int/en/web/amc/domain-name-disputes/search/overview/index)

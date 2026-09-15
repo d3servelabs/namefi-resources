@@ -1,5 +1,5 @@
 ---
-title: 'How Domain Hijacking Actually Happens: Five Attack Paths and Controls That Reduce the Risk'
+title: "Domain Hijacking vs DNS Hijacking: How Attacks Happen"
 date: '2026-05-10'
 language: en
 tags: ['security', 'domains', 'registrar', 'incident-response', 'domain-flipping']
@@ -10,9 +10,9 @@ cluster: domain-security
 series: domain-apocalypse
 seriesOrder: 1
 format: case-study
-description: A practical walk-through of five ways attackers take over domains in the real world—social engineering, registrar account compromise, DNS provider takeover, NS hijacks, and expired-domain reclamation—and controls that prevent, limit, or detect them.
+description: "Understand how domain and DNS hijacking happen, where control can be lost, and which protections address the common attack paths."
 ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
-keywords: ['domain hijacking', 'domain security', 'registrar lock', 'transfer lock', 'dnssec', 'two factor authentication', 'social engineering', 'dangling dns', 'namefi']
+keywords: ["domain hijacking", "dns hijacking", "how does domain hijacking work", "domain hijacking prevention", "registrar account takeover", "DNS provider compromise", "DNSSEC limits", "registry lock", "dangling DNS", "domain renewal security"]
 relatedArticles:
   - /en/blog/the-fox-it-dns-hijack/
   - /en/blog/the-godaddy-multi-year-breach/
@@ -33,11 +33,17 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-"[Domain hijacking](/en/glossary/domain-hijacking/)" is one of those phrases that sounds dramatic but means very different things depending on how it happens. A [registrar](/en/glossary/registrar/) account taken over by a [phishing](/en/glossary/phishing/) email is a hijack. A [nameserver](/en/glossary/nameserver/) record quietly swapped at a [DNS](/en/glossary/dns/) provider is a hijack. An expired domain that someone else grabs and re-points is, in a sense, also a hijack.
+**Domain hijacking concerns unauthorized control of a domain registration; DNS hijacking concerns unauthorized changes to where a name resolves.** They can overlap: someone who compromises a registrar account may change the nameservers and thereby redirect DNS. But an attacker can also alter DNS at a separate provider without transferring the domain.
 
-In every case, the result is the same: someone else is now telling the world where your name points. Email, payments, login flows, and SaaS integrations all start sending traffic to the attacker. Recovery often takes days, sometimes weeks. If the domain was transferred to another registrar, [ICANN](/en/glossary/icann/)'s [Transfer Dispute Resolution Policy (TDRP)](https://www.icann.org/en/contracted-parties/consensus-policies/uniform-domain-name-dispute-resolution-policy/domain-name-dispute-resolution-policies-25-02-2012-en#:~:text=The%20Transfer%20Dispute%20Resolution%20Policy%20(TDRP)%20applies%20to%20transactions%20in%20which%20a%20domain%2Dname%20holder%20transfers%20or%20attempts%20to%20transfer%20a%20domain%20name%20to%20a%20new%20registrar.) may be relevant; other cases often require registrar escalation, [registry](/en/glossary/registry/) escalation, platform recovery, or a court order. The fastest fix is to never get into that position in the first place.
+| Attack target | What the attacker changes | Where to investigate first |
+| --- | --- | --- |
+| Registration or registrar account | Registrant details, account control, transfer status, or nameserver delegation | Registrar account history, recovery channels, and registry records |
+| DNS service or DNS answers | A, MX, NS, or other answers that direct traffic | Authoritative DNS configuration, provider access logs, and resolver behavior |
+| Abandoned registration or subdomain dependency | A previously trusted name or external resource after its owner lets it go | Renewal records and the inventory of DNS dependencies |
 
-This post walks through five recurring attack paths, what each one looks like from the defender's side, and controls that can prevent, limit, or detect them.
+The third row is related operational risk, not automatically theft of an active registration. These distinctions tell you which account or service needs recovery. A transfer lock alone does not secure an external DNS account.
+
+Mandiant's [DNS hijacking investigation](#ref-mandiant-dns) documents both compromised DNS-provider credentials used to change A records and compromised registrar or ccTLD access used to change NS records. Attackers also obtained certificates for redirected services. Its response guidance includes MFA, checks of DNS records, and certificate monitoring. The five paths below apply those distinctions to practical controls.
 
 ## 1. Social engineering against the registrar's support team
 
@@ -47,7 +53,7 @@ The pattern: an attacker collects enough information about a target—[WHOIS](/e
 
 This path does not require a vulnerability in the registrar's code; it exploits the human in the loop.
 
-**What stops it:**
+**Controls that reduce the risk:**
 
 - **A hard registrar-side rule** that ownership changes require either a notarized document or a multi-factor challenge against the [registrant](/en/glossary/registrant/)'s existing channel.
 - **[Registry lock](/en/glossary/registry-lock/)** (separate from registrar lock), where the registry operator itself refuses to act on transfer or contact changes without an out-of-band confirmation. Available on `.com`, `.net`, and many ccTLDs.
@@ -57,7 +63,7 @@ This path does not require a vulnerability in the registrar's code; it exploits 
 
 The technical cousin of social engineering. The attacker phishes the registrar account credentials, or finds them in a credential-stuffing dump, and logs in directly. From there they unlock the domain, change the contact email, and request a transfer.
 
-**What stops it:**
+**Controls that reduce the risk:**
 
 - **Phishing-resistant 2FA on the registrar account.** TOTP via an authenticator app is stronger than password-only access; hardware keys using WebAuthn/FIDO2 are the strongest widely available option. SMS-based 2FA remains vulnerable to SIM swapping. The U.S. government's [CISA guidance](https://www.cisa.gov/secure-our-world/turn-mfa) recommends phishing-resistant MFA where available.
 - **A registrar that supports per-domain locks** in addition to per-account locks, so a single account compromise cannot unlock everything at once.
@@ -69,7 +75,7 @@ Even if the registrar account is locked down, the *name servers* that the regist
 
 This is often the easier path for attackers, because brands invest in registrar security but treat the DNS provider as "infrastructure" with weaker controls.
 
-**What stops it:**
+**Controls that reduce the risk:**
 
 - **The same 2FA rigor on the DNS provider account as on the registrar.** Treat it as equally sensitive. It is.
 - **[DNSSEC](/en/glossary/dnssec/)**, signed at the zone level. DNSSEC does not prevent a DNS provider account compromise: if an attacker can publish records through the provider and the provider signs them with the zone's active keys, validating resolvers will treat those answers as authentic. What DNSSEC does block is in-path tampering, cache poisoning, and forged answers that are unsigned or wrongly signed, assuming the parent publishes the correct DS records. See [RFC 4033-4035](https://datatracker.ietf.org/doc/html/rfc4033) for the protocol details.
@@ -86,7 +92,7 @@ Examples:
 
 These are catalogued under the umbrella term **dangling DNS**. The risk grows with large, poorly inventoried subdomain estates because abandoned third-party mappings can remain live after the underlying resource is removed.
 
-**What stops it:**
+**Controls that reduce the risk:**
 
 - **A complete inventory of every NS, CNAME, and ALIAS record** in every zone you own, with an owner for each.
 - **Automated dangling-DNS scanners** that re-resolve every record on a schedule and flag the ones pointing at third-party services that no longer respond. [GitHub's blog](https://github.blog/2021-12-13-securing-our-home-labs-frigate-version-bump/) and [Detectify Labs](https://labs.detectify.com/2014/10/21/hostile-subdomain-takeover-using-herokugithubdesk-more/) have long-running write-ups of this attack class.
@@ -98,9 +104,9 @@ The simplest and least sympathetic attack: the registrant forgot to renew. The [
 
 This sounds like an operational failure, not a security incident, but the impact is identical—someone else now controls the name, and all of the trust signals that were built up over years (SPF, DKIM, OAuth callbacks, password reset emails, payment integrations) start flowing to a stranger. Several public incidents involved attackers buying [expired domains](/en/blog/expired-domains-and-the-drop-cycle/) specifically because the previous owner had registered them as the `iss` claim in OAuth tokens or as the sender for transactional email.
 
-**What stops it:**
+**Controls that reduce the risk:**
 
-- **Multi-year renewal** (5-10 years) on any domain that touches authentication, payments, or production traffic. The cost is trivial; the protection is significant.
+- **Multi-year renewal** (5-10 years) on any domain that touches authentication, payments, or production traffic. Check the allowed term and recurring cost for the TLD; advance renewal reduces one source of expiry risk.
 - **Auto-renewal with monitored payment and failure alerts.** Cards expire and payment attempts fail, so auto-renewal is only effective when a team watches the failure channel.
 - **Calendar reminders** at 90, 60, 30, and 7 days that fire to a *team* address, not the inbox of one person who might leave the company.
 
@@ -127,6 +133,8 @@ Most of the controls above exist as features at one registrar, one DNS provider,
 That can reduce exposure to registrar-dashboard credential theft or support-driven changes when the workflow actually requires wallet authorization. It does not make social engineering impossible or remove path 1 entirely: the domain still depends on registrar and registry processes, the wallet introduces its own key-management and recovery risks, and DNS-provider accounts remain separate attack surfaces. DNSSEC, renewal controls, account security, and incident recovery are still required.
 
 ## Sources and further reading
+
+- <span id="ref-mandiant-dns"></span>Mandiant — [Global DNS Hijacking Campaign: DNS Record Manipulation at Scale](https://cloud.google.com/blog/topics/threat-intelligence/global-dns-hijacking-campaign-dns-record-manipulation-at-scale#:~:text=Technique%201), techniques 1–2 and detection/mitigation recommendations. Fetched 2026-09-15.
 
 - ICANN — [Transfer Dispute Resolution Policy scope](https://www.icann.org/en/contracted-parties/consensus-policies/uniform-domain-name-dispute-resolution-policy/domain-name-dispute-resolution-policies-25-02-2012-en#:~:text=The%20Transfer%20Dispute%20Resolution%20Policy%20(TDRP)%20applies%20to%20transactions%20in%20which%20a%20domain%2Dname%20holder%20transfers%20or%20attempts%20to%20transfer%20a%20domain%20name%20to%20a%20new%20registrar.).
 - IETF — [DNSSEC RFCs 4033/4034/4035](https://datatracker.ietf.org/doc/html/rfc4033) and [multi-signer DNSSEC RFC 8901](https://www.rfc-editor.org/rfc/rfc8901#:~:text=The%20central%20requirement%20for%20both%20of%20the%20multiple%2Dsigner%20models%20is%20to%20ensure%20that%20the%20ZSKs%20from%20all%20providers%20are%20present%20in%20each%20provider's%20apex%20DNSKEY%20RRset.).

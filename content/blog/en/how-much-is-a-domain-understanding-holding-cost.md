@@ -1,5 +1,5 @@
 ---
-title: "How Much Is a Domain? Understanding the Holding Cost"
+title: "How Much Does a Domain Name Cost? Registration and Renewal"
 date: '2026-06-29'
 language: en
 tags: ['domains', 'domain-investing', 'domain-pricing', 'guide']
@@ -10,8 +10,8 @@ cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 41
 format: guide
-description: "A practical guide to domain holding cost: first-year price, renewal, transfer, restore fees, privacy, taxes, payment methods, and registrar pricing models."
-keywords: ['how much is a domain', 'domain holding cost', 'domain renewal cost', 'domain registration price', 'domain transfer fee', 'domain restore fee', 'domain privacy cost', 'registrar pricing', 'first year domain price', 'domain renewal price', 'domain redemption fee', 'domain pricing model', 'domain total cost', 'domain ownership cost', 'domain carrying cost']
+description: "Compare domain registration, renewal, transfer, and recovery costs, and learn how to spot introductory prices that hide a higher ongoing bill."
+keywords: ["how much does a domain name cost", "domain name cost", "domain renewal cost", "how much is a domain", "domain holding cost", "domain transfer fees", "domain redemption fees", "introductory domain pricing", "registrar pricing", "domain privacy costs"]
 relatedArticles:
   - /en/blog/domain-renewal-costs-and-sell-through-rate/
   - /en/blog/domain-portfolio-management/
@@ -32,11 +32,11 @@ relatedGlossary:
   - /en/glossary/retail-pricing/
 ---
 
-The cheapest domain is rarely the cheapest domain to *hold*.
+**A domain name has a registration price and a recurring renewal price; the two can differ substantially.** The extension, registrar, registration term, and whether the name is already owned or priced as premium determine the quote.
 
 That is the first thing to understand before you register a name. The checkout price is only one line in the ledger. A domain has a first-year registration price, a renewal price, a transfer price, possible restore or redemption fees, privacy settings, taxes, payment-method costs, and sometimes surrounding product fees for DNS, email, hosting, or account services.
 
-That is why a $1 first-year domain can be perfectly legitimate and still become a $30, $60, or $80 annual commitment later. The first-year price gets you in the door. The renewal price is what decides the long-term [holding cost](/en/glossary/holding-cost/).
+A promotional first year can be legitimate and still lead to a higher annual commitment. Compare both prices before checkout to understand the long-term [holding cost](/en/glossary/holding-cost/).
 
 ## The number you see first is not the cost
 
@@ -57,7 +57,18 @@ Here is the cost stack.
 
 The line that trips people most often is renewal. ICANN's Expired Registration Recovery Policy requires registrars to make [renewal, post-expiration renewal, and redemption/restore fees reasonably available](https://www.icann.org/resources/pages/errp-2013-02-28-en#Notice), but the buyer still has to compare them before checkout. A low first-year number is not misleading by itself. It becomes a problem when the buyer treats it as the annual cost.
 
-## Why a $1 domain can renew at $30 to $80
+## Registration vs. renewal: a dated price comparison
+
+The following are Namecheap public list-page examples checked **September 15, 2026**, in **USD per one-year term**. They are not Namefi quotes or a market average. Premium names, taxes, eligible promotions, and applicable checkout fees can change the total.
+
+| Extension | First-year registration | One-year renewal | Transfer-in price | Source |
+| --- | --- | --- | --- | --- |
+| `.com` | USD 11.28 promotional | USD 18.48 | USD 11.48 promotional | [Namecheap `.com`](#ref-namecheap-com) |
+| `.io` | USD 34.98 promotional | USD 75.98 | USD 65.98 | [Namecheap `.io`](#ref-namecheap-io) |
+
+The same provider quotes different amounts for the first term, a later renewal, and a transfer. A transfer price also needs its own term-extension rules checked.
+
+## Why introductory pricing differs from renewal
 
 Introductory pricing is common because the first year and the renewal year are different economic events.
 
@@ -65,7 +76,7 @@ The first year may be discounted because the registry or registrar wants adoptio
 
 This is normal across many industries: acquisition pricing is often lower than retention pricing. The domain-specific risk is that renewals are not optional if the name matters. If your website, email, brand, app, or portfolio depends on a domain, the renewal bill is the cost of keeping control.
 
-The practical habit is simple: before you register, write down both numbers. If the first-year price is $1 and the renewal is $40, think of the domain as a $40-per-year asset with a discounted first year, not as a $1 asset.
+The practical habit is simple: before you register, write down both numbers. Use the recurring renewal quote as your planning baseline and record the introductory discount separately.
 
 ## Registration, renewal, transfer, restore
 
@@ -73,7 +84,7 @@ The four domain operations to compare are registration, renewal, transfer, and r
 
 **Registration** is the first term. It is the number marketing pages emphasize because it is the easiest one to understand. A discounted first year can be useful if you are testing an idea, but it is not the right number for long-term planning.
 
-**Renewal** is the cost of continuing control. If you are registering one domain for a side project, the difference between $15 and $30 may be tolerable. If you are holding 200 names, a $15 renewal difference becomes $3,000 per year. This is why domain investors obsess over [renewal cost and sell-through rate](/en/blog/domain-renewal-costs-and-sell-through-rate/).
+**Renewal** is the cost of continuing control. A small per-domain difference becomes more significant when multiplied across a portfolio. This is why domain investors obsess over [renewal cost and sell-through rate](/en/blog/domain-renewal-costs-and-sell-through-rate/).
 
 **Transfer** is what you pay to move the domain to another registrar. A transfer may include a one-year term extension, but that is not a universal shortcut you should assume without checking. Also watch transfer locks, recent-registration limits, authorization-code handling, and whether the transfer changes your DNS or privacy settings.
 
@@ -144,14 +155,17 @@ For one personal project, the answer may be "pick the registrar you trust and ke
 
 So, how much is a domain?
 
-For a common TLD, it may be roughly the price of lunch for the first year. For a promoted new gTLD, it may be $1 today and $30 to $80 next year. For a high-priced ccTLD or premium registry tier, it may be much more. If you miss the renewal and have to restore it, the bill can jump into the hundreds.
+The dated table above gives concrete standard-price examples. For the name you want, obtain its exact registration and renewal quotes; an aftermarket purchase or premium registry tier needs a separate quote. If recovery becomes necessary, confirm the applicable restore fee with the registrar.
 
 The practical answer is not the first-year price. It is:
 
 > **Domain holding cost = registration + renewals + transfers + restore risk + privacy + taxes + payment costs + surrounding product fees.**
 
-That is the number to compare. A domain is not expensive because the first year costs $60, and it is not cheap because the first year costs $1. It is cheap or expensive based on the cost of keeping control for as long as the name matters.
+That is the number to compare. Compare the total cost of keeping control for as long as the name matters.
 
 ## Sources and further reading
 
-- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/resources/pages/errp-2013-02-28-en)
+- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/resources/pages/errp-2013-02-28-en), sections 3.1 and 4.1: redemption period and fee disclosure. Fetched 2026-09-15.
+
+- <span id="ref-namecheap-com"></span>Namecheap — [`.com` prices](https://www.namecheap.com/domains/registration/gtld/com/#:~:text=Prices%20for%20.COM%20domains), registration, renewal, transfer, and disclaimers. Fetched 2026-09-15.
+- <span id="ref-namecheap-io"></span>Namecheap — [`.io` prices](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices), registration, renewal, transfer, and disclaimers. Fetched 2026-09-15.

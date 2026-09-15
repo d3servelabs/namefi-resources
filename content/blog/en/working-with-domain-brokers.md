@@ -1,5 +1,5 @@
 ---
-title: "Working With Domain Brokers: When and How"
+title: "What Does a Domain Broker Do? Fees, Services, and How to Choose"
 date: '2026-06-21'
 language: en
 tags: ['domains', 'domain-investing', 'domain-flipping', 'explainer']
@@ -10,9 +10,9 @@ cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 23
 format: explainer
-description: "When a domain broker earns their cut, what good brokers actually do, inbound vs outbound brokerage, typical commissions, and how to vet one."
+description: "Learn when a domain broker helps, how buyer and seller representation differ, and which fees, incentives, and terms to check before hiring one."
 ogImage: ../../assets/working-with-domain-brokers-og.jpg
-keywords: ['domain broker', 'domain brokerage', 'how to work with a domain broker', 'domain broker commission', 'sell domain with broker', 'buyer broker domains', 'seller broker domains', 'inbound domain broker', 'outbound domain broker', 'when to use a domain broker', 'vet a domain broker', 'domain broker fees', 'best domain brokers', 'domain acquisition broker', 'hire a domain broker']
+keywords: ["domain broker", "domain broker services", "domain broker fees", "buyer domain broker", "seller domain broker", "domain broker commission", "broker exclusivity", "broker conflicts of interest", "domain acquisition"]
 relatedArticles:
   - /en/blog/how-to-sell-domains-for-profit/
   - /en/blog/end-user-vs-reseller-domain-pricing/
@@ -33,7 +33,7 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-Most of the names you flip, you should sell yourself. List it, set a price, answer the inbound, close in escrow. A broker on a $400 name is a stranger taking a cut of money you could have kept. But there is a band of deals where a broker stops being overhead and starts being the difference between a sale and a stalemate, and knowing where that band starts is its own skill. This is the broker chapter of our [domain flipping](/en/blog/domain-flipping/) series, and it sits one level down from the selling pillar, [how to sell domains for profit](/en/blog/how-to-sell-domains-for-profit/). Here we'll cover when to hand a name to a broker, what a good one actually does, the difference between buy-side and sell-side brokerage, what commissions look like, and how to tell a real broker from someone who just wants your listing.
+A **domain broker** helps a buyer acquire a registered domain or helps its owner find and negotiate with buyers. The engagement can include research, outreach, negotiation, and coordination of the transfer. Its value depends on the agreed work and fees, not a universal minimum domain price. This is the broker chapter of our [domain flipping](/en/blog/domain-flipping/) series, alongside the selling pillar, [how to sell domains for profit](/en/blog/how-to-sell-domains-for-profit/).
 
 ## When a broker is worth the cut
 
@@ -66,6 +66,15 @@ The word "broker" undersells the job. A good one is not a middleman who forwards
 
 ## Sell-side vs buy-side brokerage
 
+| Question | Buyer representation | Seller representation |
+| --- | --- | --- |
+| Who hires the broker? | Someone seeking a domain they do not own | The current domain holder |
+| Main assignment | Contact the holder and negotiate an acquisition | Identify interested buyers and negotiate a sale |
+| Terms to settle | Spending limit, identity disclosure, upfront and success fees | Asking strategy, exclusivity, commission, and any post-engagement fee obligation |
+| Incentive to examine | A percentage of purchase price can rise as the buyer spends more | A commission rewards a completed sale; speed and highest price may conflict |
+
+Sedo's [published brokerage services](#ref-sedo-brokerage) illustrate the two roles. The incentive comparison is a reason to ask how your interests are represented, not an allegation about any provider. Ask who the broker represents, who pays them, and whether they receive any payment from the other side or a recommended service.
+
 ![Editorial illustration of two mirrored brokerage flows: on the left a sell-side broker reaching out to a buyer, on the right a buy-side broker working anonymously for a masked client to acquire a held domain](../../assets/working-with-domain-brokers-03-inbound-outbound.jpg)
 
 "Broker" covers two distinct jobs, and the one you need depends on which side of the table you're on. That is separate from the [inbound vs outbound](/en/blog/inbound-vs-outbound-domain-sales/) distinction: a sell-side broker can respond to inbound demand or conduct outbound outreach, while a buy-side broker can approach a seller on the buyer's behalf.
@@ -78,9 +87,7 @@ If you are the flipper, you are usually on the sell side. A broker who approache
 
 ## What commissions look like
 
-Treat every number here as a rule of thumb, not a posted rate. Brokerage commissions are negotiated and vary by broker, deal size, and how much work the name requires, so the figures below are industry norms rather than fixed tariffs.
-
-The common structure is a percentage of the final sale price, paid by the seller on a successful deal. The often-quoted range sits in the low-to-mid double digits in percent, frequently scaling down as the deal grows: a broker who takes a larger cut of a $10,000 sale will usually take a smaller percentage of a $500,000 one. Many set a minimum commission so small deals are still worth their time, another reason brokerage rarely makes sense on cheap names. Buy-side engagements are sometimes a flat fee, a success fee, or a percentage of the acquisition price.
+There is no universal brokerage rate. As a dated example, Sedo's price list, checked September 15, 2026, lists a **USD 99 one-time buyer brokerage fee plus 20% of the gross sale price**, subject to its minimum fee. Its seller brokerage lists **15% of the gross sale price on a successful sale and no upfront cost**. Minimums, taxes, and optional publicity-waiver charges also apply. These are [Sedo's brokerage terms](#ref-sedo-brokerage), not a market average or its separate self-service marketplace rates.
 
 A few things to pin down in writing before you sign anything:
 
@@ -114,6 +121,8 @@ High-value handovers involve counterparty, escrow, registrar, DNS, and legal ris
 > For any important decision, **please consult a real professional (seriously!)**. Or if that's not your vibe, ask a friend, ask Twitter, ask Reddit, ask an AI, or ask a psychic. In short: **DOYR - Do Your Own Research**. Let's learn and have fun.
 
 ## Sources and further reading
+
+- <span id="ref-sedo-brokerage"></span>Sedo — [Price list](https://sedo.com/us/what-we-offer/price-list/#:~:text=Brokerage%20Services), “Brokerage Services,” buyer and seller fees and exclusions. Fetched 2026-09-15.
 
 - Wikipedia — [Domain aftermarket](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=the%20secondary%20resale%20market%20for%20Internet%20domain%20names) (definition of the secondary resale market where brokers operate)
 - Wikipedia — [Domain name transfer](https://en.wikipedia.org/wiki/Domain_name_transfer#:~:text=A%20domain%20name%20transfer%20is%20the%20process%20of%20changing%20the%20designated%20registrar%20of%20a%20domain%20name) (transfer process and the authentication code handover a broker coordinates)
