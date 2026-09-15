@@ -1,5 +1,5 @@
 ---
-title: 'What Is the .ai Domain? How a Caribbean Island Became AI''s Home'
+title: "What Is an .ai Domain? Meaning, Country, and Uses"
 date: '2026-06-15'
 language: 'en'
 priority: P0
@@ -7,8 +7,8 @@ tags: ['tld']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
-description: 'A cypherpunk, a tiny Caribbean island, and the most valuable two letters in tech. The full story of the .ai domain — who runs it, how Anguilla now funds nearly half its government from it, what it costs, and whether you should build on it.'
-keywords: ['Anguilla ccTLD', 'register .ai domain', 'AI startup domain', '.ai vs .io', 'who owns .ai', '.ai domain price', '.ai two year minimum', 'Vince Cate', 'Anguilla AI domain']
+description: "Find out what .ai means, which country it belongs to, why AI companies use it, and what to check before choosing an .ai domain."
+keywords: ["ai domain meaning", "ai domain country", "Anguilla ccTLD", "AI startup domain"]
 faqs:
   - question: 'Can anyone register a .ai domain?'
     answer: 'Yes. The .ai registry is open to anyone worldwide with no local-presence or credential requirement. The main difference from most TLDs is that .ai is sold in a minimum two-year term rather than one-year increments, which raises the upfront cost.'
@@ -144,7 +144,11 @@ This page doesn't quote live retail prices — check current rates when you regi
 ## .ai vs the alternatives
 
 | | **.ai** | **.io** | **.com** |
-| --- | --- | --- | --- |
+| --- | --- | --- | ---
+
+The **.ai domain** is the [country-code top-level domain for Anguilla](https://www.iana.org/domains/root/db/ai.html), a Caribbean territory. Its letters also read as the abbreviation for artificial intelligence, which explains its appeal to AI-focused brands. This guide covers the extension’s country, meaning, history, and practical considerations.
+
+|
 | Origin | Anguilla ccTLD | Indian Ocean ccTLD | Original generic gTLD |
 | Connotation | Artificial intelligence | Input/output, dev/SaaS | Universal, default |
 | Google treatment | Generic (gccTLD) | Generic (gccTLD) | Generic |
@@ -243,3 +247,7 @@ The Anguilla registry sets the policy: .ai domains register and renew in terms o
 - [What are tokenized domains?](/en/blog/what-are-tokenized-domains/)
 - [.io domain](/en/tld/io/) · [.com domain](/en/tld/com/) · [.dev domain](/en/tld/dev/)
 - Glossary: [registrar](/en/glossary/registrar/) · [ICANN](/en/glossary/icann/) · [DNSSEC](/en/glossary/dnssec/) · [domain hack](/en/glossary/domain-hack/)
+
+## Source retrieval note
+
+- IANA — [.ai delegation record](https://www.iana.org/domains/root/db/ai.html) — fetched 2026-09-15; supports the extension type and delegated organization.

@@ -562,12 +562,12 @@
       "ja": "DNS伝播",
       "ta": "DNS பரவல்"
     },
-    "level": 1
+    "level": 2
   },
   "dns-record-types": {
-    "en": "DNS Record Types (A, AAAA, CNAME, MX, TXT)",
+    "en": "DNS Record Types",
     "titles": {
-      "en": "DNS Record Types (A, AAAA, CNAME, MX, TXT)",
+      "en": "DNS Record Types",
       "es": "Tipos de registros DNS (A, AAAA, CNAME, MX, TXT)",
       "de": "DNS-Eintragstypen (A, AAAA, CNAME, MX, TXT)",
       "fr": "Types d'enregistrements DNS (A, AAAA, CNAME, MX, TXT)",
@@ -578,7 +578,7 @@
       "ja": "DNSレコードタイプ（A、AAAA、CNAME、MX、TXT）",
       "ta": "DNS பதிவு வகைகள் (A, AAAA, CNAME, MX, TXT)"
     },
-    "level": 1
+    "level": 2
   },
   "dns-resolver": {
     "en": "DNS Resolver (Recursive Resolver)",
