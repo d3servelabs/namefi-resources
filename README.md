@@ -16,11 +16,13 @@ All content lives under the `content/` directory (e.g., `content/blog/en/...`). 
 ## Validation
 
 - Run `bun install` once, then:
-  - `bun data:validate` to check frontmatter and dates across every supported locale and collection, plus the same-locale internal-link invariant.
+  - `bun data:validate` to run validator fixtures, then check frontmatter and dates across every supported locale and collection, plus the same-locale internal-link invariant.
   - `bun lint:mdx` to lint markdown/MDX frontmatter and formatting.
   - `bun links:locale` for the focused locale-route and related-metadata check (`--fix` repairs prefixes and restores English-source relationship routes).
   - `bun links:audit` for the full broken-link, missing-locale, and locale-prefix audit.
   - `bun links:test` for deterministic offline regression fixtures.
+  - `bun data:test` for validator and FAQ tests, including English-only publishing
+    and selective translations with untranslated authors and related targets.
 - CI runs these validation, test, lint, and link-audit gates on every pull request.
 - Partial translation coverage is valid. Missing-translation fallback warnings are accepted;
   broken links, missing/wrong locale prefixes, and relationship mismatches remain blocking.

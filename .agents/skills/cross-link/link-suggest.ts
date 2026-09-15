@@ -360,8 +360,8 @@ function analyze(target: Page): Report {
 }
 
 // --- --term mode: per-locale anchor + counterpart table -------------------
-// Supports the "apply the link in every language" step: discovery is English
-// only, but the link must be mirrored into each locale. For a link target this
+// Supports mirroring a link into existing translations: discovery is English
+// only, but authored routes stay in the file's locale. For a link target this
 // prints, per locale, whether a counterpart exists, its href, and the anchor
 // text to look for (that locale's title of the target).
 type TermLocale = { locale: string; exists: boolean; href: string; anchor: string | null };
@@ -412,7 +412,7 @@ if (termArgs.length) {
       console.log(c('1', `\n# ${tr.collection}/${tr.slug}  `) + (tr.enTitle ? c('2', `(en: ${tr.enTitle})`) : c('31', '(no en page!)')));
       for (const l of tr.locales) {
         if (l.exists) console.log(`  ${l.locale}  ${c('32', '✓')}  ${l.href}  ${c('2', '→ anchor:')} "${l.anchor}"`);
-        else console.log(`  ${l.locale}  ${c('31', '✗')}  ${c('2', `no counterpart → keep /en/${tr.collection}/${tr.slug}/`)}`);
+        else console.log(`  ${l.locale}  ${c('31', '✗')}  ${c('2', tr.enTitle ? `no counterpart → keep ${l.href} (English runtime fallback)` : 'no counterpart or English source → unresolved target')}`);
       }
     }
     console.log('');
