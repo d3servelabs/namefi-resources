@@ -47,3 +47,5 @@ The three articles are approved for publication on September 14, 2026 (UTC publi
 ## Search writing plan
 
 Four new English articles cover domain versus hosting, custom-domain email setup, subdomain versus subdirectory, and registrar transfers. They are marked publishable in the proposed branch and remain subject to PR review; existing articles are updated in place for their assigned search questions. Source dates and citations appear in each article.
+
+Inline citations link directly to their original sources. Keep the detailed source notes at the end of each article; do not depend on raw HTML citation anchors, which the production renderer may strip.

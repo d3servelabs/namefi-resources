@@ -53,7 +53,7 @@ It works because ccTLDs were never designed to be word endings — that's an acc
 | `youtu.be` | `youtu` + `be` → “YouTube” | The extension completes the recognizable name |
 | `pistach.io` | `pistach` + `io` → “pistachio” | A word ending can fit a country-code extension |
 
-These illustrate spelling, not availability or permission to use an existing brand. Namecheap uses [`pistach.io` as an example](#ref-hack-example); for the extension's origin and rules, see the existing [`.io` reference](/en/tld/io/). A short address such as `t.co` is a shortener, but it does not form a word across the dot in the same way.
+These illustrate spelling, not availability or permission to use an existing brand. Namecheap uses [`pistach.io` as an example](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=pistach.io); for the extension's origin and rules, see the existing [`.io` reference](/en/tld/io/). A short address such as `t.co` is a shortener, but it does not form a word across the dot in the same way.
 
 ## How it works: ccTLDs that double as English suffixes
 
@@ -89,7 +89,7 @@ Here is the part most "10 clever domain hacks" listicles skip, and it's the part
 
 The starkest example is `.ly`. It's the ccTLD for Libya, and Libyan law applies to what sits on it. In 2010 that stopped being theoretical. As Wikipedia records, [in October 2010, the domain of "sex-positive" URL shortening service vb.ly ... was seized by the Libyan web authorities for not being compliant with the law of Libya](https://en.wikipedia.org/wiki/.ly#:~:text=the%20domain%20of%20%22sex%2Dpositive%22%20URL%20shortening%20service%20vb.ly), with the [registry](/en/glossary/registry/)'s explanation reported as blunt: [pornography and adult material aren't allowed under Libyan Law ... Therefore, we removed the domain](https://en.wikipedia.org/wiki/.ly#:~:text=Pornography%20and%20adult%20material%20aren%27t%20allowed%20under%20Libyan%20Law). The domain didn't expire and it wasn't sold. It was taken, because of what it pointed to, under rules that had nothing to do with the open internet and everything to do with one country's content law.
 
-The second flavor of risk is the country or territory code's continued eligibility. As checked September 15, 2026, [IANA's `.io` record](#ref-io-delegation) still lists the ccTLD and does not display a retirement date. Under the [retirement process](#ref-cctld-retirement), removal from ISO 3166-1 leads to a Notice of Removal and a default five-year transition, with a possible extension of up to five additional years. A political announcement alone is not that notice, and this policy does not predict the outcome for `.io`. We discuss the purchasing implications in [why .io domains are expensive](/en/blog/why-are-io-domains-expensive/).
+The second flavor of risk is the country or territory code's continued eligibility. As checked September 15, 2026, [IANA's `.io` record](https://www.iana.org/domains/root/db/io.html) still lists the ccTLD and does not display a retirement date. Under the [retirement process](https://www.iana.org/help/cctld-retirement), removal from ISO 3166-1 leads to a Notice of Removal and a default five-year transition, with a possible extension of up to five additional years. A political announcement alone is not that notice, and this policy does not predict the outcome for `.io`. We discuss the purchasing implications in [why .io domains are expensive](/en/blog/why-are-io-domains-expensive/).
 
 There's a third, separate risk, and `goo.gl` illustrates it: a service built on a domain can be deprecated even when the underlying registry and domain delegation remain healthy. Google stopped creating new short links in 2018 and later limited deactivation to previously flagged inactive links; IANA still lists the `.gl` manager. That is service-operator dependency, not evidence that the `.gl` registry walked away. The lesson for a flipper isn't "never touch a ccTLD." It is to evaluate both layers independently: the ccTLD manager's registration policies and stability, and the durability of the particular product or redirect service using the domain. This distinction is part of understanding [how the TLD affects domain value](/en/blog/how-tld-affects-domain-value/).
 
@@ -115,9 +115,9 @@ This is the gap [Namefi](https://namefi.io) is built to narrow: tokenized owners
 
 ## Sources and further reading
 
-- <span id="ref-hack-example"></span>Namecheap — [`.io` domain examples](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=pistach.io), word-spelling examples. Fetched 2026-09-15.
-- <span id="ref-io-delegation"></span>IANA — [`.io` delegation record](https://www.iana.org/domains/root/db/io.html), current delegation. Fetched 2026-09-15.
-- <span id="ref-cctld-retirement"></span>IANA — [ccTLD retirement process](https://www.iana.org/help/cctld-retirement), General Principles and Initial Process. Fetched 2026-09-15.
+- Namecheap — [`.io` domain examples](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=pistach.io), word-spelling examples. Fetched 2026-09-15.
+- IANA — [`.io` delegation record](https://www.iana.org/domains/root/db/io.html), current delegation. Fetched 2026-09-15.
+- IANA — [ccTLD retirement process](https://www.iana.org/help/cctld-retirement), General Principles and Initial Process. Fetched 2026-09-15.
 
 - Wikipedia — [Domain hack](https://en.wikipedia.org/wiki/Domain_hack#:~:text=A%20domain%20hack%20is%20a%20domain%20name%20that%20suggests%20a%20word)
 - Wikipedia — [.ly (Libya, and the vb.ly seizure)](https://en.wikipedia.org/wiki/.ly#:~:text=the%20domain%20of%20%22sex%2Dpositive%22%20URL%20shortening%20service%20vb.ly)

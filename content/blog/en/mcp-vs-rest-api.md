@@ -40,7 +40,7 @@ relatedGlossary:
 | How does authorization work? | An optional standardized authorization framework for HTTP; local servers use their own credential setup | Provider-supported OAuth, keys, or other schemes | CLI login or credentials supported by that tool |
 | When is it a useful fit? | A compatible AI client needs to use tools across services | A fixed integration, direct HTTP request, or debugging task | Local development, shell automation, or an established command workflow |
 
-The MCP rows follow the [tool specification](#ref-comparison-tools) and [authorization specification](#ref-comparison-auth), checked September 15, 2026. The fit recommendations are practical judgments, not a universal performance ranking. OpenAPI-aware agents and CLIs with structured output can also support discovery; MCP standardizes an interface across compatible clients and servers.
+The MCP rows follow the [tool specification](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#listing-tools) and [authorization specification](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization), checked September 15, 2026. The fit recommendations are practical judgments, not a universal performance ranking. OpenAPI-aware agents and CLIs with structured output can also support discovery; MCP standardizes an interface across compatible clients and servers.
 
 Namefi's own machine-readable policy file, published at [namefi.io/llms.txt](https://namefi.io/llms.txt), expresses a preference for MCP and documents REST/curl fallbacks.
 
@@ -178,8 +178,8 @@ The fastest way to evaluate any of this is to point a client at a server that im
 
 ## Sources and further reading
 
-- <span id="ref-comparison-tools"></span>Model Context Protocol — [Tools, 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#listing-tools), “Listing Tools” and “Tool” sections — fetched 2026-09-15.
-- <span id="ref-comparison-auth"></span>Model Context Protocol — [Authorization, 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization), introduction and transport applicability — fetched 2026-09-15.
+- Model Context Protocol — [Tools, 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#listing-tools), “Listing Tools” and “Tool” sections — fetched 2026-09-15.
+- Model Context Protocol — [Authorization, 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization), introduction and transport applicability — fetched 2026-09-15.
 - Model Context Protocol — [Versioning](https://modelcontextprotocol.io/specification/versioning#:~:text=protocol%20version%20is) (establishes 2026-07-28 as the current revision and the dated-revision scheme)
 - Model Context Protocol — [Tools (2026-07-28)](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#:~:text=MCP%20has%20no%20protocol%2Dlevel%20session) (`tools/list`, `inputSchema`/`outputSchema`, per-authorization tool sets, the two error categories, prompt-cache guidance, and the "no protocol-level session" statement)
 - Model Context Protocol — [Versioning and Compatibility (2026-07-28)](https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning#:~:text=There%20is%20no%20negotiation%20handshake) (per-request version declaration replacing the `initialize` handshake; modern/legacy compatibility matrix)

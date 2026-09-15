@@ -39,7 +39,7 @@ Stablecoins differ in what backs them and how they try to maintain that target. 
 
 For a redeemable dollar token, the peg depends partly on eligible participants being able to exchange tokens for dollars. That mechanism can encourage trading toward the target, but it does not ensure that every holder can redeem directly with the issuer.
 
-For example, [Circle's USDC terms for users outside the EEA](#ref-usdc-terms) condition direct redemption on eligibility and a Circle Mint account in good standing. Selling USDC on an exchange is a separate transaction at an available market price. A wallet balance, a reserve report, and a direct redemption right answer different questions.
+For example, [Circle's USDC terms for users outside the EEA](https://www.circle.com/legal/usdc-terms) condition direct redemption on eligibility and a Circle Mint account in good standing. Selling USDC on an exchange is a separate transaction at an available market price. A wallet balance, a reserve report, and a direct redemption right answer different questions.
 
 ## How Do Stablecoins Maintain Their Value?
 
@@ -53,7 +53,7 @@ These tokens are issued against reserves intended to support redemption at or ne
 *   **Why it matters**: Reserve composition, liquidity, custody, attestations, legal redemption rights, and issuer risk all matter. For example, [Circle's current disclosures](https://www.circle.com/transparency) describe USDC reserves as cash and highly liquid cash-equivalent assets, with most of the reserve held in a government money-market fund that may hold short-dated US Treasuries and overnight Treasury repurchase agreements.
 
 ### 2. Crypto-Collateralized Stablecoins
-These use crypto assets as collateral, often with a buffer above the value of the tokens issued. If collateral prices fall, a protocol may liquidate the position under its rules; [Sky's liquidation documentation](#ref-sky-liquidation) describes this for insufficiently collateralized vaults. Requirements vary by asset and system; a crypto-backed label does not establish a universal collateral ratio.
+These use crypto assets as collateral, often with a buffer above the value of the tokens issued. If collateral prices fall, a protocol may liquidate the position under its rules; [Sky's liquidation documentation](https://developers.skyeco.com/protocol/vaults/collateral-liquidation/) describes this for insufficiently collateralized vaults. Requirements vary by asset and system; a crypto-backed label does not establish a universal collateral ratio.
 *   **Design caveat**: Systems can mix crypto assets, stablecoins, and off-chain assets. Check the actual collateral composition instead of assuming that every token marketed as decentralized uses only crypto collateral.
 *   **Why it matters**: On-chain collateral and smart contracts can make parts of the system transparent and programmable, but governance, collateral composition, price oracles, custodians, and centralized assets may still introduce dependencies.
 
@@ -63,12 +63,12 @@ These rely substantially on smart-contract incentives, supply changes, arbitrage
 
 ## What Can Make a Stablecoin Lose Its Peg?
 
-A depeg occurs when the market price diverges from the target. The [Federal Reserve's analysis of algorithmic-stablecoin runs](#ref-algorithmic-runs) shows how large sell orders and flaws in the arbitrage mechanism contributed to the IRON token losing its peg. Reserve-backed tokens have different mechanisms, but reserve liquidity, custody, redemption access, and market confidence still matter.
+A depeg occurs when the market price diverges from the target. The [Federal Reserve's analysis of algorithmic-stablecoin runs](https://www.federalreserve.gov/econres/notes/feds-notes/runs-on-algorithmic-stablecoins-evidence-from-iron-titan-and-steel-20220602.html) shows how large sell orders and flaws in the arbitrage mechanism contributed to the IRON token losing its peg. Reserve-backed tokens have different mechanisms, but reserve liquidity, custody, redemption access, and market confidence still matter.
 
 Before relying on a stablecoin, distinguish:
 
 - **Reserve value from reserve liquidity.** Assets may exist but be difficult to sell or access quickly.
-- **Disclosure from a guarantee.** [Circle publishes reserve information and monthly third-party assurance](#ref-usdc-reserves); a report does not promise an unchanged secondary-market price.
+- **Disclosure from a guarantee.** [Circle publishes reserve information and monthly third-party assurance](https://www.circle.com/transparency); a report does not promise an unchanged secondary-market price.
 - **Redemption from exchange liquidity.** Direct issuer redemption can have eligibility requirements; an exchange needs a willing counterparty.
 - **A token from the platform holding it.** A custodian, bridge, lending protocol, or wallet can add risks beyond the stablecoin itself.
 
@@ -103,9 +103,9 @@ For the domain-specific context, see [what tokenized domains are](/en/blog/what-
 
 ## Sources and further reading
 
-- <span id="ref-sky-liquidation"></span>Sky Protocol — [Collateral Liquidation](https://developers.skyeco.com/protocol/vaults/collateral-liquidation/), opening definition and “Vault Liquidation” — fetched 2026-09-15.
+- Sky Protocol — [Collateral Liquidation](https://developers.skyeco.com/protocol/vaults/collateral-liquidation/), opening definition and “Vault Liquidation” — fetched 2026-09-15.
 
-- <span id="ref-usdc-terms"></span>Circle — [USDC Terms](https://www.circle.com/legal/usdc-terms), sections 1–2, 4 and 8; these terms apply outside the EEA — fetched 2026-09-15.
-- <span id="ref-usdc-reserves"></span>Circle — [Transparency](https://www.circle.com/transparency), “Monthly assurance and transparency” and “How we manage USDC” — fetched 2026-09-15.
-- <span id="ref-algorithmic-runs"></span>Federal Reserve — [Runs on Algorithmic Stablecoins](https://www.federalreserve.gov/econres/notes/feds-notes/runs-on-algorithmic-stablecoins-evidence-from-iron-titan-and-steel-20220602.html), June 2, 2022, analysis of the Iron/Titan run — fetched 2026-09-15.
+- Circle — [USDC Terms](https://www.circle.com/legal/usdc-terms), sections 1–2, 4 and 8; these terms apply outside the EEA — fetched 2026-09-15.
+- Circle — [Transparency](https://www.circle.com/transparency), “Monthly assurance and transparency” and “How we manage USDC” — fetched 2026-09-15.
+- Federal Reserve — [Runs on Algorithmic Stablecoins](https://www.federalreserve.gov/econres/notes/feds-notes/runs-on-algorithmic-stablecoins-evidence-from-iron-titan-and-steel-20220602.html), June 2, 2022, analysis of the Iron/Titan run — fetched 2026-09-15.
 - Federal Reserve — [Christopher Waller on stablecoins](https://www.federalreserve.gov/newsevents/speech/waller20250212a.htm), February 12, 2025, payment uses and risks — fetched 2026-09-15.

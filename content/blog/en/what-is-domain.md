@@ -67,7 +67,7 @@ A **domain name** identifies a name in DNS. A **URL** identifies a resource and 
 
 For a site-organization decision such as `blog.example.com` versus `example.com/blog`, see [subdomains versus subdirectories](/en/blog/subdomain-vs-subdirectory/).
 
-The path and query are not part of the domain name. Changing them can request a different page without changing the domain. MDN explains these [URL components](#ref-url-parts) in its web mechanics guide.
+The path and query are not part of the domain name. Changing them can request a different page without changing the domain. MDN explains these [URL components](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#scheme) in its web mechanics guide.
 
 ---
 
@@ -107,4 +107,4 @@ Choose a domain that people can recognize and use, then keep its registration an
 
 ## Sources and further reading
 
-- <span id="ref-url-parts"></span>MDN — [What is a URL?](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#scheme), sections on scheme, authority, path, and parameters. Fetched 2026-09-15.
+- MDN — [What is a URL?](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#scheme), sections on scheme, authority, path, and parameters. Fetched 2026-09-15.

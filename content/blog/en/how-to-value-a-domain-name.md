@@ -92,7 +92,7 @@ Search public sales records for names structurally like yours: the same length c
 
 Two cautions keep comps honest. First, **the public record contains only the transactions reported to it.** Missing private deals limit what you can infer from the available examples. Second, **no two domains are truly identical**, so every comp needs adjustment — `flowers.com` is not `flowerz.net`, even though a naive match would pair them. The skill is in the adjusting, which is why we wrote a dedicated guide on [how to read comparable domain sales](/en/blog/how-to-read-comparable-domain-sales/) without fooling yourself.
 
-A famous sale needs the same source discipline. GetYourDomain.com [announced a USD 70 million AI.com sale](#ref-ai-sale) in February 2026; [AI.com's own launch announcement](#ref-ai-acquisition) places its acquisition in 2025. MicroStrategy's [Voice.com announcement](#ref-voice-sale) records USD 30 million in cash and a May 30, 2019 completion date. Keep announcement dates separate from acquisition dates, and treat these as exceptional transactions rather than automatic comparables for an ordinary name.
+A famous sale needs the same source discipline. GetYourDomain.com [announced a USD 70 million AI.com sale](https://www.prnewswire.com/news-releases/getyourdomaincom-brokers-the-70-million-sale-of-aicom-the-largest-domain-name-transaction-in-history-302682315.html#:~:text=successfully%20brokered) in February 2026; [AI.com's own launch announcement](https://ai.com/company-news/ai-com-launch#:~:text=Since%20acquiring) places its acquisition in 2025. MicroStrategy's [Voice.com announcement](https://www.sec.gov/Archives/edgar/data/1050446/000119312519175320/d724928dex991.htm#:~:text=consummated%20on%20May) records USD 30 million in cash and a May 30, 2019 completion date. Keep announcement dates separate from acquisition dates, and treat these as exceptional transactions rather than automatic comparables for an ordinary name.
 
 ## End-user price vs. reseller price: why one name has two numbers
 
@@ -121,9 +121,9 @@ This is the gap [Namefi](https://namefi.io) is built to close. Tokenizing a real
 
 ## Sources and further reading
 
-- <span id="ref-ai-sale"></span>GetYourDomain.com — [AI.com sale announcement](https://www.prnewswire.com/news-releases/getyourdomaincom-brokers-the-70-million-sale-of-aicom-the-largest-domain-name-transaction-in-history-302682315.html#:~:text=successfully%20brokered), broker-reported amount and February 2026 announcement. Fetched 2026-09-15.
-- <span id="ref-ai-acquisition"></span>AI.com — [Launch announcement](https://ai.com/company-news/ai-com-launch#:~:text=Since%20acquiring), 2025 acquisition date. Fetched 2026-09-15.
-- <span id="ref-voice-sale"></span>MicroStrategy — [Voice.com sale announcement, SEC Exhibit 99.1](https://www.sec.gov/Archives/edgar/data/1050446/000119312519175320/d724928dex991.htm#:~:text=consummated%20on%20May), price and completion date. Fetched 2026-09-15.
+- GetYourDomain.com — [AI.com sale announcement](https://www.prnewswire.com/news-releases/getyourdomaincom-brokers-the-70-million-sale-of-aicom-the-largest-domain-name-transaction-in-history-302682315.html#:~:text=successfully%20brokered), broker-reported amount and February 2026 announcement. Fetched 2026-09-15.
+- AI.com — [Launch announcement](https://ai.com/company-news/ai-com-launch#:~:text=Since%20acquiring), 2025 acquisition date. Fetched 2026-09-15.
+- MicroStrategy — [Voice.com sale announcement, SEC Exhibit 99.1](https://www.sec.gov/Archives/edgar/data/1050446/000119312519175320/d724928dex991.htm#:~:text=consummated%20on%20May), price and completion date. Fetched 2026-09-15.
 
 - GetYourDomain.com via PR Newswire — [AI.com sale announced at $70M](https://www.prnewswire.com/news-releases/getyourdomaincom-brokers-the-70-million-sale-of-aicom-the-largest-domain-name-transaction-in-history-302682315.html)
 - AI.com — [2026 launch announcement (domain acquired in 2025)](https://ai.com/company-news/ai-com-launch)

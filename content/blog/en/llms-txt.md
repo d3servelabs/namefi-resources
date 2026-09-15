@@ -30,7 +30,7 @@ relatedGlossary:
   - /en/glossary/seo/
 ---
 
-**`llms.txt` is a proposed Markdown format that gives AI agents a concise guide to a website and links to useful source material.** It helps a reader find documentation; it does not execute API calls or grant access. The [current proposal](#ref-llms-format) supports both `/llms.txt` and files within a subpath, such as `/docs/llms.txt`.
+**`llms.txt` is a proposed Markdown format that gives AI agents a concise guide to a website and links to useful source material.** It helps a reader find documentation; it does not execute API calls or grant access. The [current proposal](https://llmstxt.org/#format) supports both `/llms.txt` and files within a subpath, such as `/docs/llms.txt`.
 
 This article explains the format, shows how to create a small example, and walks through [Namefi's public API guide](https://namefi.io/llms.txt). The domain example shows how documentation can point an [AI agent](/en/glossary/ai-agent/) toward a [registrar](/en/glossary/registrar/)'s API or [Model Context Protocol](/en/glossary/mcp/) tools.
 
@@ -38,17 +38,17 @@ This article explains the format, shows how to create a small example, and walks
 
 A documentation page often mixes its useful instructions with menus, advertising, and scripts. A short index helps an agent choose which page to read next. It still needs accurate linked material and a client capable of retrieving it.
 
-The [August 2026 revision](#ref-llms-v2) clarifies discovery: HTML links or HTTP `Link` headers can identify a page's Markdown alternative and its applicable `llms.txt`. A file covers pages below its path; the most specific applicable file takes precedence. Agents are expected to follow relevant links, rather than expand every linked page into one prompt.
+The [August 2026 revision](https://llmstxt.org/changes.html#v2-august-2026) clarifies discovery: HTML links or HTTP `Link` headers can identify a page's Markdown alternative and its applicable `llms.txt`. A file covers pages below its path; the most specific applicable file takes precedence. Agents are expected to follow relevant links, rather than expand every linked page into one prompt.
 
 ## llms.txt vs robots.txt
 
 `robots.txt` tells cooperating crawlers which URLs they may crawl. `llms.txt` supplies a reading guide. Neither is an access-control mechanism: keep private content behind authentication.
 
-Crawling also differs from indexing. [Google explains](#ref-robots) that a blocked URL can still appear in search results if other pages link to it. A `robots.txt` restriction does not mean “never index this page.” Publishing an `llms.txt` file, meanwhile, is not evidence that a search engine will read it or improve a page's ranking.
+Crawling also differs from indexing. [Google explains](https://developers.google.com/search/docs/crawling-indexing/robots/intro#understand-the-limitations-of-a-robotstxt-file) that a blocked URL can still appear in search results if other pages link to it. A `robots.txt` restriction does not mean “never index this page.” Publishing an `llms.txt` file, meanwhile, is not evidence that a search engine will read it or improve a page's ranking.
 
 ## Format and a minimal llms.txt example
 
-The [format](#ref-llms-format) uses an H1 project name, an optional summary and notes, then H2 sections containing links. The H1 is the only required section. Here is an illustrative file, using placeholder URLs:
+The [format](https://llmstxt.org/#format) uses an H1 project name, an optional summary and notes, then H2 sections containing links. The H1 is the only required section. Here is an illustrative file, using placeholder URLs:
 
 ```markdown
 # Example Documentation
@@ -64,7 +64,7 @@ The [format](#ref-llms-format) uses an H1 project name, an optional summary and 
 - [Release notes](https://example.com/docs/releases.md): Older changes.
 ```
 
-In v2, **Optional is a convention for secondary links**, not a directive that requires software to exclude them. The [change notes](#ref-llms-v2) explicitly remove its earlier mechanical meaning.
+In v2, **Optional is a convention for secondary links**, not a directive that requires software to exclude them. The [change notes](https://llmstxt.org/changes.html#v2-august-2026) explicitly remove its earlier mechanical meaning.
 
 To create your own file, replace the placeholders with public documentation you maintain, publish it at the appropriate path, and check that every link opens. Give an agent the file and a real question, then check whether it finds the right source. Update the guide when your documentation changes.
 
@@ -170,9 +170,9 @@ Yes — it's plain Markdown, legible to a person as well as a model. [namefi.io/
 
 ## Sources and further reading
 
-- <span id="ref-llms-format"></span>Jeremy Howard — [The /llms.txt file, v2](https://llmstxt.org/#format), “Proposal” and “Format” — fetched 2026-09-15.
-- <span id="ref-llms-v2"></span>Jeremy Howard — [v2 changes](https://llmstxt.org/changes.html#v2-august-2026), discovery, path scope, and Optional semantics — fetched 2026-09-15.
-- <span id="ref-robots"></span>Google Search Central — [Introduction to robots.txt](https://developers.google.com/search/docs/crawling-indexing/robots/intro#understand-the-limitations-of-a-robotstxt-file), crawling versus indexing and access control — fetched 2026-09-15.
+- Jeremy Howard — [The /llms.txt file, v2](https://llmstxt.org/#format), “Proposal” and “Format” — fetched 2026-09-15.
+- Jeremy Howard — [v2 changes](https://llmstxt.org/changes.html#v2-august-2026), discovery, path scope, and Optional semantics — fetched 2026-09-15.
+- Google Search Central — [Introduction to robots.txt](https://developers.google.com/search/docs/crawling-indexing/robots/intro#understand-the-limitations-of-a-robotstxt-file), crawling versus indexing and access control — fetched 2026-09-15.
 - robotstxt.org — [About /robots.txt: "In a nutshell"](https://www.robotstxt.org/robotstxt.html#:~:text=Web%20site%20owners%20use%20the%20/robots.txt%20file%20to%20give%20instructions%20about%20their%20site%20to%20web%20robots%3B%20this%20is%20called%20The%20Robots%20Exclusion%20Protocol)
 - modelcontextprotocol.io — [What is the Model Context Protocol (MCP)?](https://modelcontextprotocol.io/#:~:text=MCP%20%28Model%20Context%20Protocol%29%20is%20an%20open-source%20standard%20for%20connecting%20AI%20applications%20to%20external%20systems)
 - Namefi — [namefi.io/llms.txt](https://namefi.io/llms.txt) (primary source for every annotated excerpt in this article)

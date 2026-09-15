@@ -32,9 +32,9 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-**Twitter became X in July 2023 as part of the company's stated plan to expand beyond its earlier social-network identity into an “everything app.”** X's [own retrospective](#ref-x-rationale) connects the change to consuming media, interacting, watching video, and eventually transacting in one interface. That is management's explanation of the strategy, not proof that the rebrand achieved those ambitions.
+**Twitter became X in July 2023 as part of the company's stated plan to expand beyond its earlier social-network identity into an “everything app.”** X's [own retrospective](https://blog.x.com/en_us/topics/company/2023/one-year-in#:~:text=From%20Twitter%20to%20X) connects the change to consuming media, interacting, watching video, and eventually transacting in one interface. That is management's explanation of the strategy, not proof that the rebrand achieved those ambitions.
 
-The company's [launch timeline](#ref-x-timeline) dates X's introduction to July 24, 2023. The new name and the website migration were separate steps: the sections below trace the initial redirect to Twitter, the later move to X.com, and the domain's earlier history.
+The company's [launch timeline](https://blog.x.com/en_us/topics/company/2023/building-the-future-of-x#:~:text=X%20is%20introduced%20to%20the%20world) dates X's introduction to July 24, 2023. The new name and the website migration were separate steps: the sections below trace the initial redirect to Twitter, the later move to X.com, and the domain's earlier history.
 
 Most domain-upgrade stories run in a straight line: a company starts on a descriptive name, grows up, and buys the clean exact-match. **Twitter.com to X.com** is stranger than that. It is a round trip. The destination domain — **X.com** — was the *first* domain in the story, used by the online bank Musk co-founded in 1999, retained by the company that became PayPal, bought back by Musk in 2017 for sentimental value, and finally attached to a global social network in 2023.
 
@@ -162,8 +162,8 @@ X.com looks inevitable now only because Musk's history with the name began in 19
 
 ## Sources and further reading
 
-- <span id="ref-x-rationale"></span>X — [One year in, the future of X is bright](https://blog.x.com/en_us/topics/company/2023/one-year-in#:~:text=From%20Twitter%20to%20X), October 26, 2023, item 9, “From Twitter to X” — fetched 2026-09-15.
-- <span id="ref-x-timeline"></span>X — [Building the future of X](https://blog.x.com/en_us/topics/company/2023/building-the-future-of-x#:~:text=X%20is%20introduced%20to%20the%20world), July 2023 timeline — fetched 2026-09-15.
+- X — [One year in, the future of X is bright](https://blog.x.com/en_us/topics/company/2023/one-year-in#:~:text=From%20Twitter%20to%20X), October 26, 2023, item 9, “From Twitter to X” — fetched 2026-09-15.
+- X — [Building the future of X](https://blog.x.com/en_us/topics/company/2023/building-the-future-of-x#:~:text=X%20is%20introduced%20to%20the%20world), July 2023 timeline — fetched 2026-09-15.
 
 - Wikipedia — [X.com (bank)](https://en.wikipedia.org/wiki/X.com_(bank)#:~:text=X.com%20was%20an%20American%20online%20bank%20founded%20by)
 - Wikipedia — [Confinity](https://en.wikipedia.org/wiki/Confinity#:~:text=Confinity%20launched%20its%20milestone%20product%2C%20PayPal%2C%20in%20late%201999)

@@ -43,7 +43,7 @@ This guide follows the work from sourcing and appraisal through selling and port
 
 Domain flipping is the short-turnaround corner of domain investing. The broader practice has a precise definition: as Wikipedia puts it, [domain name speculation ... is the practice of identifying and registering or acquiring generic Internet domain names as an investment with the intent of selling them later for a profit](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=is%20the%20practice%20of%20identifying%20and%20registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment). Flipping is the fast version of that: [quick turnaround in the resale of domains is often called domain flipping](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=Quick%20turnaround%20in%20the%20resale%20of%20domains%20is%20often%20called%20domain%20flipping). You are a middle-person in the [domain aftermarket](/en/glossary/domain-trading/) — buying names you think are underpriced and reselling them to a buyer who values them more.
 
-A large sale can make the activity look easier than it is. MicroStrategy's own announcement records its **USD 30 million cash sale of Voice.com**, completed May 30, 2019. [Read the seller's announcement.](#ref-voice-sale) That is evidence of one transaction, not an expected outcome for a new portfolio.
+A large sale can make the activity look easier than it is. MicroStrategy's own announcement records its **USD 30 million cash sale of Voice.com**, completed May 30, 2019. [Read the seller's announcement.](https://www.sec.gov/Archives/edgar/data/1050446/000119312519175320/d724928dex991.htm#:~:text=consummated%20on%20May) That is evidence of one transaction, not an expected outcome for a new portfolio.
 
 There is no guaranteed profit or holding period. Record the full cost of each name and the costs of names that never sell. A profitable sale can coexist with an unprofitable portfolio when renewals and acquisition losses elsewhere exceed it.
 
@@ -120,6 +120,6 @@ This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenized owners
 ## Sources and further reading
 
 - Wikipedia — [Domain name speculation (definition of domaining and domain flipping)](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=is%20the%20practice%20of%20identifying%20and%20registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment)
-- <span id="ref-voice-sale"></span>MicroStrategy — [Voice.com sale announcement, SEC Exhibit 99.1](https://www.sec.gov/Archives/edgar/data/1050446/000119312519175320/d724928dex991.htm#:~:text=consummated%20on%20May), transaction amount and completion date. Fetched 2026-09-15.
+- MicroStrategy — [Voice.com sale announcement, SEC Exhibit 99.1](https://www.sec.gov/Archives/edgar/data/1050446/000119312519175320/d724928dex991.htm#:~:text=consummated%20on%20May), transaction amount and completion date. Fetched 2026-09-15.
 - ICANN — [Uniform Domain-Name Dispute-Resolution Policy (the three elements of a UDRP claim)](https://www.icann.org/resources/pages/policy-2012-02-25-en)
 - WIPO — [Overview of WIPO Panel Views on Selected UDRP Questions, Third Edition, version 3.1](https://www.wipo.int/en/web/amc/domain-name-disputes/search/overview/index)
