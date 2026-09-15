@@ -1,3 +1,4 @@
+<!-- Kept together beyond 5KB so publication policy and content-quality invariants have one authoritative entry point. -->
 # Content & workflow rules — `namefi-resources` (repo-wide)
 
 This repo holds the **content** behind the Namefi resources site (blog, glossary,
@@ -26,10 +27,11 @@ older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 
 ## Golden rules
 
-- **English is the source of truth.** Author in `en` first; translate from
-  English, never chain language→language. Every collection is English-first,
-  then translated across the 10 supported locales (`en es de fr zh-CN ar hi ko
-  ja ta`).
+- **English is the source of truth and can publish independently.** Author in
+  `en` first; translate from English, never chain language→language. A primary
+  English article needs no translation or translation-demand record to publish.
+  Supported locales are capabilities, not a per-article coverage requirement.
+  Select new translations under [Translation selection](#translation-selection).
 - **Validate before you push:** `bun data:validate` + `bun lint:mdx` +
   cross-link audit (0 broken).
 - **Only act on Cursor Bugbot** in PR review. **Ignore CodeRabbit** entirely.
@@ -69,7 +71,54 @@ result. A parallel audit of 63 sibling pages marked the page "clean" because it 
 which cannot answer that claim, and the checker's ICANN fetch 403'd and was dropped instead of
 escalated.)
 
+## Translation selection
+
+- **Evaluate each article × target locale × region separately.** Translate only
+  selected articles with evidence of relevant search demand in that market.
+  A language's population, another region's volume, English performance, or a
+  missing-translation warning is not sufficient evidence. Do not schedule the
+  whole corpus or every supported locale by default.
+- **Current objective: upper-funnel search exposure and Namefi awareness.**
+  Prioritize useful answers to relevant searches; current purchase-conversion
+  data is too sparse to gate topic or translation selection. Review impressions,
+  query coverage, and organic visibility as evidence accumulates.
+- **Primary demand evidence: Google Ads API Keyword Planner historical metrics**
+  for actual target-market queries/keywords. Record the request language and
+  geographic targets separately from the content locale, the search network,
+  retrieval date, reporting period, returned keyword/close variants, average
+  monthly searches, and monthly volumes. These are approximate search estimates,
+  not guaranteed visits. Do not sum overlapping close-variant groups. Use
+  [Google's historical-metrics method](https://developers.google.com/google-ads/api/docs/keyword-planning/generate-historical-metrics).
+- **Supplement with Search Console and a local SERP review.** Check relevant
+  queries/pages and countries in GSC, then inspect the target market's search
+  results for intent fit, competing pages, and a specific gap the article can
+  answer. Ads competition/bid metrics describe advertising; they are **not SEO
+  difficulty**. GSC measures our observed visibility, not the whole market, and
+  [does not return every query row](https://developers.google.com/webmaster-tools/v1/searchanalytics/query).
+- **Missing data is `UNKNOWN`, never zero demand.** Distinguish an unsubmitted
+  query, failed request, absent row, and missing metric. Preserve a returned zero
+  as a reported estimate with its source and limits; do not infer no demand.
+  When evidence is insufficient, defer that translation and record what would
+  resolve the uncertainty. English publication proceeds through its normal QA.
+- **Record the decision before new translation work.** Use the
+  [translation decision template](../../docs/translation-decision-template.md)
+  in the editorial task or PR. Weigh demand, SERP opportunity, and sourced
+  translation/review/maintenance costs; do not invent a numeric threshold or
+  cost. A decision covers only its named article, locale, and region.
+- **Keep existing translations.** This policy authorizes no bulk deletion or
+  lowered quality bar. Maintain their accuracy, terminology, citations, and link
+  invariants; report stale prose when English changes. New translation selection
+  does not gate repairs to existing translations. Link-only changes should mirror
+  links into existing counterparts without automatically re-translating them.
+
+This section governs translation scope over older plans and generic workspace
+growth advice, including older `content-seo-engine` versions that suggest corpus translation.
+
 ## Translations
+
+The following quality requirements apply to selected translations and repairs
+of existing translations. Completeness means fidelity within those files, not
+the existence of a file for every supported locale.
 
 - **Translate with Claude** (one focused pass per locale), **not** a Gemini batch
   script. There is no `translate-glossary` program — it was removed for implying a
@@ -141,8 +190,12 @@ escalated.)
   inbound links are **curated, ≤ 5 most-relevant pages per term**. Every internal
   link must resolve: `bun .agents/skills/cross-link/link-audit.ts <paths>` →
   **0 broken, 0 locale-mismatch**.
-- Each language serves **its own page** — self-canonical + `hreflang` +
-  `x-default`. Never canonicalize a translated page back to English.
+- Each **existing translation** serves its own page — self-canonical with
+  reciprocal `hreflang` for available versions and an English `x-default`.
+  Never canonicalize a genuine translation back to English or advertise an
+  English fallback as a translation. Missing locale files are allowed; alternate
+  links do not require creating them. See
+  [Google's localized-version guidance](https://developers.google.com/search/docs/specialty/international/localized-versions).
 
 ## Keyword templates (`keywords:` frontmatter)
 
@@ -175,7 +228,10 @@ escalated.)
 
 ## Validation, PRs, and publishing
 
-1. **Per change:** `bun data:validate` + `bun lint:mdx` + `link-audit` (0 broken).
+1. **Per change:** `bun data:validate` + `bun lint:mdx` + `bun links:test` +
+   `bun links:audit`. Missing translations are accepted fallback warnings;
+   `BROKEN`, `MISSING_LOCALE`, `LOCALE_MISMATCH`, and `RELATIONSHIP_MISMATCH`
+   remain blocking. Do not disable these checks to allow partial coverage.
 2. **PR description:** a Summary/Solution section, a Test plan, and — when a Claude
    session authored it — a redacted Claude session summary with ISO-8601 UTC
    timestamps. No secrets/PII.
@@ -221,9 +277,11 @@ escalated.)
   ordering content (translation order, featuring, SEO focus). Applies to
   glossary, TLD, and blog (incl. FAQ-selected articles). **Absent = P2**
   (normal) — only `P0`/`P1` are written explicitly; don't write `P2`.
-- **Same value across all locales** — a concept's priority doesn't change by
-  language. Set it on `en`, copy the identical value to every locale's same-slug
-  file. `bun data:validate` enforces the `P0/P1/P2` enum.
+- **Same value across existing locales** — a concept's priority doesn't change
+  by language. Set it on `en`, copy it to existing same-slug translations; do
+  not create missing files. This editorial tier does not replace the separate
+  article/locale/region translation decision. `bun data:validate` enforces the
+  `P0/P1/P2` enum.
 - Build-time-only metadata; the astra renderer does not consume it yet. Seed
   buckets are signal-derived: glossary by `bun glossary:mentions` demand + `level`,
   TLDs by registration popularity, FAQ by foundational-ness.

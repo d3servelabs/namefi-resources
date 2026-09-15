@@ -1,9 +1,11 @@
 ---
 name: cross-link
-description: Cross-link Namefi resources content whenever a blog post, glossary term, TLD page, or partner page is created or updated. Discovers links on the ENGLISH page only (outbound to relevant existing pages, inbound from pages that should mention it), then propagates the same links into every translated locale (each pointing at its own-locale counterpart) and keeps all internal links locale-correct. Use this in the namefi-resources repository after writing or editing any content under content/{blog,glossary,tld,partners}/.
+description: Cross-link Namefi resources content whenever a blog post, glossary term, TLD page, or partner page is created or updated. Discover links on the ENGLISH page only, then mirror them into existing translated counterparts with same-locale routes. Never create missing translations as a cross-linking prerequisite. Use this in the namefi-resources repository after writing or editing any content under content/{blog,glossary,tld,partners}/.
 ---
 
 # cross-link
+
+<!-- Discovery, mirroring, and audit semantics stay together beyond 5KB so the link invariant has one playbook. -->
 
 Use this skill in `namefi-resources` after any content is **created or updated** to keep the
 internal link graph dense, relevant, and locale-correct. Cross-linking is what turns a pile of
@@ -11,7 +13,7 @@ isolated articles into a hub-and-spoke knowledge base that readers (and LLM/Goog
 traverse — and it is the easiest thing to forget when you add or edit one page.
 
 **English is the single source of truth for the link graph.** Do all link *discovery* on the `en`
-pages only — the other seven locales are *derived* from English, not cross-linked independently. This
+pages only — existing translated counterparts are *derived* from English, not cross-linked independently. This
 mirrors how the repo already works: `en` is the translation source, locales are translated from English
 with Claude (see `.claude/rules/content.md`), and the renderer doesn't auto-localize hrefs.
 
@@ -21,10 +23,14 @@ So a pass works in **two discovery directions on English, then one derivation st
    pages (glossary terms it mentions, the cluster cornerstone, series siblings, related TLDs).
 2. **Inbound** (en) — existing `en` pages that naturally reference this page's topic should link
    *in* to it.
-3. **Derive locales** — propagate the English link set into the translated counterparts (via
-   re-translation or by mirroring the same links), then run the auditor's `--fix` so every internal
+3. **Mirror existing translations** — propagate the English link set into counterparts that
+   already exist, then run the auditor's scoped `--fix` so every internal
    link points at its **own-locale route**, even when the translation is absent
    and the runtime must fall back to English. You never hand-discover links in a non-English page.
+
+An English page with no translations completes this workflow after English linking and validation.
+Missing translations are not a backlog created by this skill; new translation work follows
+[Translation selection](../../../.claude/rules/content.md#translation-selection).
 
 ## Repository conventions (read before editing)
 
@@ -39,7 +45,7 @@ So a pass works in **two discovery directions on English, then one derivation st
   literal href to `next/link`). So the locale in the href is authoritative: a `/en/...` link inside a
   `zh` page sends a Chinese reader to the English page — a real bug, not cosmetic.
 - **Not every slug exists in every locale.** Still keep `/<file-locale>/...`:
-  the resources runtime serves the English entry through that same-locale route
+  the resources runtime resolves the English entry through that same-locale route
   when the translation is absent. Never replace it with `/en/...`, and never
   change the slug.
 - **Don't independently curate translated rails.** Breadcrumb, topic-cluster,
@@ -69,10 +75,10 @@ pre-push hook), so `BROKEN`, `MISSING_LOCALE`, `LOCALE_MISMATCH`, and
 `RELATIONSHIP_MISMATCH` findings fail the build.
 
 It classifies every internal link. The resources app **falls back to the default locale (`en`)
-at runtime** — requesting `/<loc>/.../<slug>` when that locale lacks the slug serves the English
-entry (HTTP 200) with `rel=canonical` → the `en` URL (the `load*Entry` fallback in
-`apps/resources/src/lib/content.ts`). So a missing translation is **not** a 404; only the absence of
-the `en` fallback is. The severities mirror that:
+at runtime** — requesting `/<loc>/.../<slug>` when that locale lacks the slug can resolve through
+the English entry (`load*Entry` in `apps/resources/src/lib/content.ts`). A collection may redirect
+to the source-language page; keep authored links in their file locale either way. A missing
+translation with an English fallback is **not** a broken target. The severities mirror that:
 
 - **`BROKEN`** — slug exists in neither the link locale **nor** the `en` fallback → genuine 404.
   **Must be fixed by hand** (create the term, or repoint to a locale that has it). Never auto-fixed
@@ -92,8 +98,8 @@ the `en` fallback is. The severities mirror that:
   and auto-fixable when each existing frontmatter value can be replaced safely;
   the repaired route uses the file locale even if that translation is missing.
 - **`MISSING_TRANSLATION`** — a same-locale route lacks the translated file but
-  `en` has the slug, so the app renders the English fallback at that route. A
-  warning, not a 404, and never a reason to change the route to `/en/`.
+  `en` has the slug, so the route resolves through the English fallback. A
+  warning, not a 404, and never a reason to change the route to `/en/` or create a translation.
 
 The full audit treats every `LOCALE_MISMATCH` and `RELATIONSHIP_MISMATCH` as
 blocking. Scope `--fix` to the paths you created or edited during ordinary
@@ -163,34 +169,31 @@ directly against a glossary term you just added to find every `en` post that sho
 Prioritize the cluster cornerstone and same-cluster/same-series posts. **Cap the blast radius** — pick
 the few most relevant pages (typically ≤5), not every match. Report what you linked and skipped.
 
-### 3. Derive the other locales — apply the SAME links, per language
+### 3. Mirror the SAME links into existing translations
 For **every** English page you edited in steps 1–2 (the changed page *and* any `en` pages that gained
-an inbound link), propagate the new links into all translated counterparts. Don't re-discover — apply
-the exact same link set, localized. Two paths:
+an inbound link), enumerate its **existing** translated counterparts. Skip absent files; do not
+create them. Don't re-discover links or regenerate a whole translation for a link-only change.
 
-- **Re-translate (preferred, mechanical).** Regenerate the locale files from the now-linked English —
-  translate with Claude per `.claude/rules/content.md` (one focused pass per locale) — so the markdown
-  links carry over verbatim, then repoint prefixes:
-  ```bash
-  bun .agents/skills/cross-link/link-audit.ts --fix content/<collection>/<L>/<slug>.md   # per locale
-  ```
-- **Mirror by hand (no re-translation).** In each existing locale counterpart of the article, find the
-  translated term and link it. The anchor in locale `L` is the **target page's title in `L`** (e.g.
-  `/en/glossary/smart-contract/` → zh title `智能合约`, so link `智能合约` → `/zh/glossary/smart-contract/`).
-  Point at `/<L>/<collection>/<slug>/` whether or not that counterpart exists;
-  the runtime fallback handles missing translations.
+- Find the translated mention and mirror the link. Use the target's canonical locale title from
+  the termbase when available; otherwise use a natural translated term and flag terminology needing
+  review, without creating a target translation. Keep `/<L>/<collection>/<slug>/` even when the
+  **linked target** has no translation; the runtime fallback resolves that route.
+- If the source meaning also changed, follow `article-translation` change management for affected
+  units and report stale prose explicitly. Preserve reviewed translation text elsewhere.
+- Mirror `relatedArticles` and `relatedGlossary` as the English source's **ordered slugs**, changing
+  only the locale. Missing target translations never justify substituting another slug.
 
-Either way, finish with `link-audit.ts --fix` on the locale paths to guarantee every link points at
-its own-locale counterpart, and resolve any `BROKEN` by hand. Concretely: if the English edit linked
-`smart contract` → `/en/glossary/smart-contract/`, then the `zh`, `ar`, `de`, … counterparts of that
-article must each link their translation of the term to their own locale route;
-the runtime fallback handles a missing counterpart.
+Finish with `link-audit.ts --fix` scoped to the existing locale paths you touched, then inspect the
+diff and resolve `BROKEN` findings by hand. A missing source-page translation needs no file; a
+missing linked-target translation needs no new target and keeps the same-locale route.
 
 ### 4. Validate
 ```bash
 TMPDIR=/private/tmp bun run data:validate
 TMPDIR=/private/tmp bun run lint:mdx
 bun .agents/skills/cross-link/link-audit.ts <changed-paths>   # 0 broken on touched files
+bun links:test
+bun links:audit                                            # no blocking findings repo-wide
 ```
 
 ## Guardrails
@@ -205,7 +208,7 @@ bun .agents/skills/cross-link/link-audit.ts <changed-paths>   # 0 broken on touc
   which the runtime uses as fallback. Always keep the route in the file locale.
 - **Idempotent.** Re-running must not double-link an already-linked first mention.
 - **Scope `--fix` to changed paths**, never the whole repo, inside a content PR.
-- **Discover on English only; apply to every locale.** Never scan each locale for candidates. Find
+- **Discover on English only; apply to existing translations.** Never scan each locale for candidates. Find
   the link on `en`, then mirror it into every translated counterpart using its
   own-locale route. `bun .agents/skills/cross-link/link-suggest.ts --term=/en/<coll>/<slug>/` prints each
   locale's anchor term + counterpart href for the mirror. Never force-push.

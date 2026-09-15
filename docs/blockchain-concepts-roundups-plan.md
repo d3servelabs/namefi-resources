@@ -1,5 +1,7 @@
 # Blockchain Concepts — "Top N" Roundup Initiative
 
+<!-- This initiative stays together beyond 5KB to preserve the relationship between its tiers and follow-ups. -->
+
 **Audience:** people *learning* blockchain (developers, curious newcomers, would-be
 builders) — **not** domain investors. Top-of-funnel authority content.
 **Format:** ranked/compared "Top N" roundups (`format: roundup`).
@@ -21,7 +23,8 @@ reader toward Namefi. The roundups are the wide net; the glossary is the landing
   primary/authoritative (ethereum.org, project docs, papers, Vitalik's writing).
 - **Thread back to Namefi** without being salesy — a project's real domain, a "web3-native
   projects name themselves on-chain" aside, a link to a tokenized-domain explainer.
-- **English is source of truth.** Translations to the 9 other locales are a follow-up pass.
+- **English is source of truth and can publish independently.** Optional translations follow
+  [the current selection policy](../.claude/rules/content.md#translation-selection).
 
 ## Frontmatter contract (enforced by `scripts/validate-data.ts`)
 
@@ -100,7 +103,8 @@ and a review cadence. Seed 2–3 flagships first to test maintenance burden.
    per `##` section for each article, saved to `content/assets/` **before** referencing
    (static-import build breaks on dangling refs). Needs `OPENAI_API_KEY` (astra Infisical,
    `gpt-image-2`).
-3. **Translations.** Fan out one Sonnet agent per locale (`ar de es fr hi ja ko zh-CN ta`)
-   for the 5 articles + 17 stubs; English-source-first, then `bun run termbase:build`.
+3. **Selected translations.** Evaluate article/locale/region candidates with the
+   [decision record](translation-decision-template.md). Translate only supported selections;
+   preserve existing translations and regenerate the termbase if glossary translations change.
 4. **Promote priority.** Once indexed/performing, bump the strongest 1–2 to `P1`/`P0`.
 5. **Work down Tier 2, then seed Tier 3 flagships.**

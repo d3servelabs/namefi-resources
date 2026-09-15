@@ -5,6 +5,8 @@ description: Draft (write) NEW English Namefi resources content, AND fact-audit/
 
 # content-authoring
 
+<!-- This playbook stays together beyond 5KB to keep drafting and its QA handoff reviewable in one place. -->
+
 The playbook for **drafting English** Namefi resources content. This is the *how-to + lessons*;
 the **authoritative rules live in [`.claude/rules/content.md`](../../../.claude/rules/content.md)** (and
 `.claude/rules/glossary.md` for glossary). When they conflict, the rules file wins — update it, then this skill.
@@ -19,6 +21,11 @@ Related skills: **`article-translation`** (translate EN → other locales), **`c
 ## Golden rules (don't relearn these the hard way)
 
 - **English is the source of truth.** Author in `en` first; everything else is translated *from English*.
+- **English can publish on its own.** No translation or translation-demand record is required for an
+  English primary article. New translations follow
+  [Translation selection](../../../.claude/rules/content.md#translation-selection); supported locales
+  are not a checklist to fill. Current topic selection targets upper-funnel search exposure and
+  brand awareness, without a purchase-conversion gate.
 - **Draft with Claude — never Gemini.** The Gemini tooling was deleted (`generate-blog.ts`, the
   `@google/generative-ai` dep). Drafting is a focused Claude pass per post.
 - **Locales are repo-defined and growing** (`en ar de es fr hi zh`, and `ta`/others are being added). Don't
@@ -44,14 +51,19 @@ rather than rewriting).
    **`seriesOrder` must be a positive integer (1-based)** — astra's build rejects `0`; standalone `data:validate`
    does NOT catch it (build-only failure). Keep series order contiguous.
 4. Internal links per the `cross-link` skill. Illustrations per `namefi-resource-images`.
+5. Keep translation selection separate from the English publication handoff. If proposing a new
+   translation, attach the [decision record](../../../docs/translation-decision-template.md) for that
+   article/locale/region. Missing evidence defers the translation, not the English article.
 
 ## QA & verification (after drafting, before merge)
 
 1. **Artifact scan** all touched files: first line is `---`; frontmatter parses; NO ``` fences; NO `</content>` /
    `</invoke>` / `<parameter` / tool tags (especially the *last* lines — the truncation marker); length sanity.
-2. `TMPDIR=/private/tmp bun run data:validate` (pass + ~19 pre-existing warnings) and `bun run lint:mdx`.
+2. `TMPDIR=/private/tmp bun run data:validate` and `bun run lint:mdx`; report actual warning counts.
    (Fresh worktree? run `bun install` first or eslint can't resolve `@eslint/eslintrc`.)
-3. `bun .agents/skills/cross-link/link-audit.ts <paths>` → **0 broken, 0 locale-mismatch**.
+3. `bun links:test` + `bun links:audit` → no blocking link or relationship findings.
+   Missing-translation fallback warnings are accepted and do not trigger translation work.
+   Preserve existing translations and mirror changed relationships per `cross-link`.
 4. **Bugbot handling:** it reviews a *sample/diff*, so **one flag often means several siblings** — when it flags
    an issue, grep the rest of the corpus for the same pattern and fix them all. Reply to each thread in a human
    voice and **resolve threads one-by-one as you fix them — never bulk-auto-resolve** (a bulk resolver once
