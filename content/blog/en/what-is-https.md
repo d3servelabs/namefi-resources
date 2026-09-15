@@ -1,5 +1,5 @@
 ---
-title: 'What Is HTTPS? Encryption, Certificates, Ports, and ACME, Explained'
+title: "HTTP vs HTTPS: Encryption, Certificates, and How HTTPS Works"
 date: '2026-08-25'
 language: en
 tags: ['https', 'tls', 'certificates', 'security', 'networking']
@@ -8,9 +8,9 @@ editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 format: explainer
-description: HTTPS is HTTP inside a TLS tunnel. How encryption, certificates, certificate authorities, port 443, and the ACME protocol secure the modern web.
+description: "Compare HTTP and HTTPS, then learn how TLS encryption, certificates, ports, and automated certificate renewal protect web connections."
 ogImage: ../../assets/what-is-https-og.jpg
-keywords: ['what is https', 'https vs http', 'tls', 'ssl certificate', 'certificate authority', 'port 443', 'encryption', 'acme protocol', 'lets encrypt', 'tls handshake', 'certificate transparency', 'hsts', 'dns-01 challenge', 'https for domain owners', 'namefi']
+keywords: ["http vs https", "what is https", "https meaning", "TLS encryption", "HTTPS certificates", "HTTP port 80", "HTTPS port 443", "ACME certificate renewal", "certificate authorities", "DNS-01 challenge"]
 relatedArticles:
   - /en/blog/the-myetherwallet-bgp-dns-attack/
   - /en/blog/how-domain-hijacking-actually-happens/
@@ -31,11 +31,22 @@ relatedGlossary:
   - /en/glossary/dnssec/
 ---
 
-Every time a browser shows a padlock, a whole machine of cryptography, bureaucracy, and automation has just run to completion in a few hundred milliseconds. HTTPS is the name of that machine. Technically it is nothing more exotic than ordinary HTTP carried inside an encrypted TLS session — the specification says to use it [precisely as you would use HTTP over TCP](https://datatracker.ietf.org/doc/html/rfc2818#:~:text=Simply%20use%20HTTP%20over%20TLS%20precisely%20as%20you%20would%20use%20HTTP%20over%20TCP) — but that one wrapper changes what the web is: from a network where every message is a postcard anyone can read, to one where the envelope is sealed and the recipient proves who they are.
+**HTTPS is HTTP protected by TLS encryption and server authentication.** Plain HTTP provides no comparable protection for traffic in transit. With HTTPS, the browser checks the server's certificate and establishes an encrypted connection before exchanging protected web requests and responses. [RFC 9110](#ref-http-semantics) defines the two URL schemes and their security requirements.
 
 This article explains what HTTPS actually does, and walks through the concepts it is built from: encryption, ports, certificates, certificate authorities, and the ACME protocol that now automates the issuance of most of the world's certificates. It ends where every HTTPS chain ends if you follow it far enough down: at control of a domain name.
 
 ## What plain HTTP leaves exposed
+
+| Connection property | HTTP | HTTPS |
+| --- | --- | --- |
+| URL scheme | `http://` | `https://` |
+| Default port | 80 | 443 |
+| Encryption in transit | None supplied by HTTP itself | TLS protects traffic on the connection |
+| Detection of changed traffic | No cryptographic integrity protection from HTTP itself | TLS detects tampering with protected traffic |
+| Server authentication | No certificate check from HTTP itself | The client validates the certificate for the requested host |
+| What it says about the business | No trust guarantee | Still no guarantee that the business or content is honest |
+
+These are [connection properties](#ref-http-semantics), not a promise that a site is safe to buy from. HTTPS protects communication with the named host; a phishing site can also use HTTPS.
 
 HTTP, the protocol browsers and web servers speak, was designed as cleartext. A request for a page, the cookies attached to it, the form data in it, and the page that comes back all travel across the network as readable bytes. Anyone positioned on the path — the operator of a coffee-shop Wi-Fi network, an ISP, a backbone carrier, a compromised router — can read all of it.
 
@@ -46,10 +57,10 @@ Worse, they can change it. Cleartext HTTP has no integrity protection, so an int
 HTTPS wraps HTTP in TLS — Transport Layer Security — whose current version, TLS 1.3, was standardized in 2018 as RFC 8446. The specification states the goal directly: TLS lets applications communicate in a way [designed to prevent eavesdropping, tampering, and message forgery](https://datatracker.ietf.org/doc/html/rfc8446#:~:text=eavesdropping%2C%20tampering%2C%20and%20message%20forgery). Those three verbs map to three concrete guarantees:
 
 - **Confidentiality.** The traffic is encrypted, so an observer on the path sees only which server you connected to and roughly how much data moved — not the URLs, cookies, credentials, or content.
-- **Integrity.** Every record is protected by a [hash function](/en/glossary/hash-function/)-based cryptographic check, so a modified byte anywhere in transit is detected and the connection fails rather than silently delivering tampered data.
-- **Authentication.** The server proves, using a certificate and a [private key](/en/glossary/private-key/), that it is the legitimate holder of the domain name you asked for — this is the guarantee the padlock actually represents.
+- **Integrity.** TLS authenticates protected traffic with a cryptographic integrity check, so altered data is rejected rather than silently delivered. Modern TLS uses authenticated encryption; this is more specific than simply attaching a [hash](/en/glossary/hash-function/) to a message.
+- **Authentication.** The server proves possession of the [private key](/en/glossary/private-key/) for a certificate the browser trusts for the requested hostname. That is [authentication of the connection](#ref-https-authentication), not proof of rightful domain ownership or an honest business. Mandiant documented [DNS hijackers obtaining valid certificates](#ref-mandiant-certificates) for redirected services, allowing browsers to connect without certificate errors.
 
-A useful way to remember the division of labor: encryption seals the envelope, integrity checks catch a resealed envelope, and authentication confirms you are talking to the right address at all.
+A useful way to remember the division of labor: encryption seals the envelope, integrity checks detect alterations, and authentication checks the recipient's certificate and proof of its private key against the requested hostname.
 
 ## Ports: the internet's door numbers
 
@@ -125,6 +136,10 @@ That is why domain security is not adjacent to HTTPS — it is underneath it. Pr
 The padlock is the last link in the chain. The domain is the first.
 
 ## Sources and further reading
+
+- <span id="ref-http-semantics"></span>IETF — [RFC 9110, sections 4.2.1–4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2), HTTP/HTTPS schemes, default ports, confidentiality, integrity, and authentication. Fetched 2026-09-15.
+- <span id="ref-https-authentication"></span>IETF — [RFC 9110, section 4.3.3](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.3.3), HTTPS authority based on certificate trust and use of the corresponding private key. Fetched 2026-09-15.
+- <span id="ref-mandiant-certificates"></span>Mandiant — [Global DNS Hijacking Campaign: DNS Record Manipulation at Scale](https://cloud.google.com/blog/topics/threat-intelligence/global-dns-hijacking-campaign-dns-record-manipulation-at-scale#:~:text=certbot%20is%20used), technique 1, steps 6–7: attackers obtaining certificates after changing DNS records. Fetched 2026-09-15.
 
 - IETF — [RFC 2818: HTTP Over TLS](https://datatracker.ietf.org/doc/html/rfc2818) — defines HTTPS and the default port 443.
 - IETF — [RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3](https://datatracker.ietf.org/doc/html/rfc8446) (August 2018).

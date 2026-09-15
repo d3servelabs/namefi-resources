@@ -1,18 +1,23 @@
-# Content tooling
+# Content maintenance scripts
 
-Run these scripts from the repository root with Bun, except for the Python
-brand-kit asset builder.
+Validation and generated-data tools for the Resources content repository. Run them from the repository root using the package scripts.
 
-- `validate-data.ts` checks frontmatter and related routes in existing files.
-  Its fixtures accept English-only and selective translation coverage while
-  retaining malformed-metadata, wrong-locale, and broken-target failures.
-- `check-tld-faq-sync.ts` keeps structured FAQ answers aligned with page prose.
-- `add-related-content.ts` maintains related-content metadata.
-- `glossary-fs.ts`, `build-termbase.ts`, `check-termbase.ts`, and
-  `glossary-mentions.ts` share glossary data and terminology checks.
-- `list-priority.ts` reports editorial priorities;
-  `build-brand-kit-assets.py` builds brand-kit assets.
+```text
+scripts/
+  validate-data.ts          Frontmatter and date checks
+  validate-data.test.ts     English-only and selective translation fixtures
+  build-termbase.ts         Published glossary titles and aliases
+  build-termbase.test.ts    Draft exclusion regression
+  glossary-fs.ts            Shared glossary source resolution
+  check-tld-faq-sync*       Frontmatter/body FAQ consistency
+  other scripts            Related content, priorities, and assets
+```
 
-`bun data:test` runs the validator and FAQ regression tests. The separate
+The termbase generator excludes draft English entries and draft translations. This also keeps draft contributor READMEs out of the public canonical vocabulary. Run `bun test scripts/build-termbase.test.ts` and `bun termbase:check` after changing it.
+
+The validator fixtures accept English-only and selective translation coverage
+while retaining malformed-metadata, wrong-locale, and broken-target failures.
+`bun data:test` runs the validator, termbase, and FAQ regression tests; the normal
+`bun data:validate` command runs these before validating the corpus. The separate
 `bun links:test` suite covers link prefixes and ordered relationship slugs.
 See the [validation commands](../README.md#validation) for corpus-wide checks.

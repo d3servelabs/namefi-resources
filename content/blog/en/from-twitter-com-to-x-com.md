@@ -1,5 +1,5 @@
 ---
-title: 'From Twitter.com to X.com: The 24-Year Round Trip of a Single-Letter Domain'
+title: "Why Did Twitter Become X? The Rebrand and X.com Story"
 date: '2026-06-17'
 language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
@@ -10,8 +10,8 @@ cluster: domain-investing
 series: name-change-game-change
 seriesOrder: 19
 format: case-study
-description: 'How Elon Musk co-founded the online bank X.com in 1999, saw the domain remain with the company that became PayPal, bought it back in 2017 for sentimental value, and finally moved a $44B social network onto it.'
-keywords: ['twitter.com', 'x.com', 'twitter rebrand x', 'elon musk x.com', 'x.com history', 'paypal x.com domain', 'twitter to x name change', 'domain redirect', 'domain upgrade', 'single letter domain', 'everything app', 'brand naming', 'premium domain']
+description: "Trace Twitter’s change to X, the history of X.com, and how the name, domain, and redirect changes fit into the rebrand."
+keywords: ["why did twitter change to x", "twitter rebrand", "why is twitter called x", "twitter name change"]
 relatedArticles:
   - /en/blog/from-mona-co-to-crypto-com/
   - /en/blog/from-ubercab-com-to-uber-com/
@@ -31,6 +31,10 @@ relatedGlossary:
   - /en/glossary/tld/
   - /en/glossary/web3/
 ---
+
+**Twitter became X in July 2023 as part of the company's stated plan to expand beyond its earlier social-network identity into an “everything app.”** X's [own retrospective](#ref-x-rationale) connects the change to consuming media, interacting, watching video, and eventually transacting in one interface. That is management's explanation of the strategy, not proof that the rebrand achieved those ambitions.
+
+The company's [launch timeline](#ref-x-timeline) dates X's introduction to July 24, 2023. The new name and the website migration were separate steps: the sections below trace the initial redirect to Twitter, the later move to X.com, and the domain's earlier history.
 
 Most domain-upgrade stories run in a straight line: a company starts on a descriptive name, grows up, and buys the clean exact-match. **Twitter.com to X.com** is stranger than that. It is a round trip. The destination domain — **X.com** — was the *first* domain in the story, used by the online bank Musk co-founded in 1999, retained by the company that became PayPal, bought back by Musk in 2017 for sentimental value, and finally attached to a global social network in 2023.
 
@@ -157,6 +161,9 @@ X.com remained with the company through the X.com–Confinity merger and the shi
 X.com looks inevitable now only because Musk's history with the name began in 1999 and he reacquired the domain in 2017. But the lesson lands long before the rebrand: a domain can outlive the company that used it, survive a corporate renaming, and later return to define another business. When a name is going to carry the business, the domain isn't decoration; it is durable infrastructure whose ownership history should be described precisely.
 
 ## Sources and further reading
+
+- <span id="ref-x-rationale"></span>X — [One year in, the future of X is bright](https://blog.x.com/en_us/topics/company/2023/one-year-in#:~:text=From%20Twitter%20to%20X), October 26, 2023, item 9, “From Twitter to X” — fetched 2026-09-15.
+- <span id="ref-x-timeline"></span>X — [Building the future of X](https://blog.x.com/en_us/topics/company/2023/building-the-future-of-x#:~:text=X%20is%20introduced%20to%20the%20world), July 2023 timeline — fetched 2026-09-15.
 
 - Wikipedia — [X.com (bank)](https://en.wikipedia.org/wiki/X.com_(bank)#:~:text=X.com%20was%20an%20American%20online%20bank%20founded%20by)
 - Wikipedia — [Confinity](https://en.wikipedia.org/wiki/Confinity#:~:text=Confinity%20launched%20its%20milestone%20product%2C%20PayPal%2C%20in%20late%201999)

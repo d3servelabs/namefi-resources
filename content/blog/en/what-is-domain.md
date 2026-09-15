@@ -1,5 +1,5 @@
 ---
-title: What is a Domain Name?
+title: "What Is a Domain Name? Examples, Structure, and URLs"
 date: '2025-06-19'
 language: en
 priority: P0
@@ -9,8 +9,8 @@ editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: explainer
-description: A domain name is the foundation of your online presence.
-keywords: ['domain name', 'DNS', 'Domain Name System', 'IP address', 'web address', 'internet basics', 'domain registration', 'website address', 'URL', 'namefi']
+description: "Learn what a domain name is, how its parts work, and how a domain differs from a full URL, with clear examples of websites and subdomains."
+keywords: ["what is a domain", "what is a domain name", "domain name examples", "domain vs url", "domain structure", "hostname", "second-level domain", "subdomain", "URL path", "URL query", "DNS"]
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/what-are-tokenized-domains/
@@ -37,6 +37,8 @@ A **domain name** is the easy-to-remember address you type into a web browser to
 
 The internet relies on a system called the **[Domain Name System](/en/glossary/dns/) (DNS)**, which functions like a giant phonebook. Every website is hosted on a server with a numerical [IP address](/en/glossary/ip-address/) (like `192.0.2.1`), but numbers are hard to remember—so we use domain names instead. When you type a domain name into your browser, the DNS translates it into the corresponding IP address, allowing your browser to load the correct website.
 
+Registration provides the name; [web hosting provides the service behind the website](/en/blog/domain-vs-hosting/). Registering the name alone does not supply a website or mailbox.
+
 ---
 
 ## **Understanding Domain Structure**
@@ -47,7 +49,25 @@ A domain name is made up of several parts:
 *   **[Second-Level Domain](/en/glossary/second-level-domain/) (SLD):** This is the core part of the name—the `google` in `google.com`.
 *   **[Subdomain](/en/glossary/subdomain/):** These are optional prefixes that help organize content, like `blog.example.com` or `mail.example.org`.
 
-Every domain name is unique—once someone registers `example.com`, no one else can use it.
+A registered name has one registration at a time in its namespace. Its registrant can authorize other people or services to use it; registration does not prevent similar names under other extensions.
+
+## Domain name vs. URL: an example
+
+A **domain name** identifies a name in DNS. A **URL** identifies a resource and also tells the browser how to request it. Consider this illustrative address:
+
+**`https://blog.example.com/guides/domains?lang=en`**
+
+| Part | Example | What it tells the browser |
+| --- | --- | --- |
+| Scheme | `https` | Use HTTPS for the connection |
+| Hostname | `blog.example.com` | Connect to this host; `blog` is a subdomain of `example.com` |
+| Registrable domain | `example.com` | The registered name used in this example |
+| Path | `/guides/domains` | Request this resource from the host |
+| Query | `lang=en` | Pass a parameter whose meaning the website defines |
+
+For a site-organization decision such as `blog.example.com` versus `example.com/blog`, see [subdomains versus subdirectories](/en/blog/subdomain-vs-subdirectory/).
+
+The path and query are not part of the domain name. Changing them can request a different page without changing the domain. MDN explains these [URL components](#ref-url-parts) in its web mechanics guide.
 
 ---
 
@@ -55,7 +75,7 @@ Every domain name is unique—once someone registers `example.com`, no one else 
 
 The global coordination of domain names is overseen by a non-profit organization called **[ICANN](/en/glossary/icann/)** (**Internet Corporation for Assigned Names and Numbers**). Founded in 1998, ICANN manages the allocation of domain names and IP addresses. It works with [registrars](/en/glossary/registrar/) (like GoDaddy, Namecheap, and Namefi) who sell domain names to the public.
 
-ICANN also accredits registries—the organizations responsible for managing specific TLDs. For example, Verisign operates `.com` and `.net`, while the Public Interest Registry manages `.org`.
+Registries operate specific TLDs; registrars offer registrations to customers. ICANN accredits registrars and has contracts with gTLD registry operators. Country-code TLDs have their own management arrangements. The [TLD guide](/en/blog/what-is-a-tld/) explains these roles and extension types.
 
 ---
 
@@ -83,4 +103,8 @@ Domain names are crucial for:
 *   **[Search Engine Optimization](/en/glossary/seo/)** (SEO).
 *   **Control and ownership** over your digital presence.
 
-As more of the world moves online, owning the right domain name is like having prime real estate in the digital world.
+Choose a domain that people can recognize and use, then keep its registration and DNS settings under your control.
+
+## Sources and further reading
+
+- <span id="ref-url-parts"></span>MDN — [What is a URL?](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#scheme), sections on scheme, authority, path, and parameters. Fetched 2026-09-15.

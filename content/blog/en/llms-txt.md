@@ -1,5 +1,5 @@
 ---
-title: "llms.txt for Domains: An API Any AI Agent Can Read"
+title: "What Is llms.txt? Format, Examples, and How It Works"
 date: '2026-07-10'
 language: 'en'
 tags: ['ai-agents', 'domains', 'explainer']
@@ -8,8 +8,8 @@ editors: ['victor-zhou']
 draft: false
 format: explainer
 ogImage: ../../assets/llms-txt-og.jpg
-description: "A walkthrough of namefi.io/llms.txt: how a plain-text file lets any AI agent discover and use a registrar's full API, and how it pairs with MCP."
-keywords: ["llms.txt", "llms.txt example", "what is llms.txt", "AI-readable API docs", "API discoverability", "robots.txt for AI", "llms.txt vs MCP", "namefi.io/llms.txt", "machine-readable API reference", "agent-native API", "structured docs for LLMs", "plain-text API discovery", "MCP discovery descriptor", "AI agent domain registration"]
+description: "Learn what llms.txt does, how its format works, and how it differs from robots.txt and MCP, with a real domain API example."
+keywords: ["llms txt", "what is llms.txt", "llms.txt example", "llms.txt vs robots.txt", "how to create llms.txt"]
 relatedArticles:
   - /en/blog/ai-agent-register/
   - /en/blog/claude-mcp-domains/
@@ -30,25 +30,43 @@ relatedGlossary:
   - /en/glossary/seo/
 ---
 
-Every [registrar](/en/glossary/registrar/) with an [API](/en/glossary/epp/) has documentation somewhere: a docs site, a reference page, maybe an OpenAPI spec behind a login wall. That's been enough for two decades, because the reader was a human developer who could click around and skim past the navigation chrome to find the one paragraph that mattered. An [AI agent](/en/glossary/ai-agent/) reading the same site at inference time doesn't get that luxury — fixed context budget, no patience for a JavaScript-rendered docs portal, one shot to figure out what an API does before it gives up or hallucinates an endpoint that doesn't exist.
+**`llms.txt` is a proposed Markdown format that gives AI agents a concise guide to a website and links to useful source material.** It helps a reader find documentation; it does not execute API calls or grant access. The [current proposal](#ref-llms-format) supports both `/llms.txt` and files within a subpath, such as `/docs/llms.txt`.
 
-`llms.txt` is the fix for that problem, and Namefi publishes one at [namefi.io/llms.txt](https://namefi.io/llms.txt). This post covers what the convention is, why it exists, what our own file contains section by section, where it deliberately stops, and how it fits alongside the [Model Context Protocol](/en/glossary/mcp/) (MCP) rather than competing with it. It's also, by design, an example of the thing it describes: a public API vendor explaining its own machine-readable discovery file in plain prose.
+This article explains the format, shows how to create a small example, and walks through [Namefi's public API guide](https://namefi.io/llms.txt). The domain example shows how documentation can point an [AI agent](/en/glossary/ai-agent/) toward a [registrar](/en/glossary/registrar/)'s API or [Model Context Protocol](/en/glossary/mcp/) tools.
 
-## Why agents can't just crawl your docs site
+## Why provide a guide for agents?
 
-The rationale for `llms.txt` isn't speculative — it's stated directly in the proposal. [Jeremy Howard's original write-up](https://llmstxt.org) opens with the constraint that motivated it: "Large language models increasingly rely on website information, but face a critical limitation: context windows are too small to handle most websites in their entirety. Converting complex HTML pages with navigation, ads, and JavaScript into LLM-friendly plain text is both difficult and imprecise."
+A documentation page often mixes its useful instructions with menus, advertising, and scripts. A short index helps an agent choose which page to read next. It still needs accurate linked material and a client capable of retrieving it.
 
-That's two problems stacked together. A real docs site — nav, changelog, marketing copy, cookie banner — is mostly noise relative to the handful of paragraphs an agent needs for one task. And a lot of that noise lives behind JavaScript a headless fetch never executes, so what an agent's HTTP client sees isn't even the page a human sees. `llms.txt` sidesteps both: a single plain-text Markdown file, meant to be read whole rather than crawled and reduced.
+The [August 2026 revision](#ref-llms-v2) clarifies discovery: HTML links or HTTP `Link` headers can identify a page's Markdown alternative and its applicable `llms.txt`. A file covers pages below its path; the most specific applicable file takes precedence. Agents are expected to follow relevant links, rather than expand every linked page into one prompt.
 
-## The `robots.txt` analogy, and where it breaks down
+## llms.txt vs robots.txt
 
-The comparison to [`robots.txt`](https://www.robotstxt.org) is the fastest way to place `llms.txt` for anyone who knows web infrastructure, and it's fair as far as it goes. `robots.txt` exists to give instructions to web crawlers — in the site's own words, "Web site owners use the /robots.txt file to give instructions about their site to web robots; this is called *The Robots Exclusion Protocol*." Both files sit at a predictable root path, both are plain text, both address automated readers rather than humans.
+`robots.txt` tells cooperating crawlers which URLs they may crawl. `llms.txt` supplies a reading guide. Neither is an access-control mechanism: keep private content behind authentication.
 
-Where the analogy breaks is intent. `robots.txt` is almost entirely a **negative** instruction — `Disallow: /some-path` tells a crawler what *not* to touch. `llms.txt` is **positive**: here's what this site is, here's where the parts worth reading live. Less a fence, more a table of contents for a reader who can't skim the whole book. The two are complementary, and Namefi's site runs both.
+Crawling also differs from indexing. [Google explains](#ref-robots) that a blocked URL can still appear in search results if other pages link to it. A `robots.txt` restriction does not mean “never index this page.” Publishing an `llms.txt` file, meanwhile, is not evidence that a search engine will read it or improve a page's ranking.
 
-## What the spec actually asks for
+## Format and a minimal llms.txt example
 
-`llms.txt` isn't free-form; the proposal defines a specific Markdown structure, in order: an optional byte-order mark, a required H1 with the site name, a blockquote summary, zero or more unheaded detail sections, and zero or more H2-delimited "file list" sections of `[name](url): notes` links. One H2 heading carries special meaning: a section named **Optional** signals "the URLs here can be skipped if you need a shorter context." Namefi's file uses that exact heading, doing exactly what the spec describes.
+The [format](#ref-llms-format) uses an H1 project name, an optional summary and notes, then H2 sections containing links. The H1 is the only required section. Here is an illustrative file, using placeholder URLs:
+
+```markdown
+# Example Documentation
+
+> Documentation for the Example project.
+
+## Guides
+
+- [Getting started](https://example.com/docs/start.md): Setup instructions.
+
+## Optional
+
+- [Release notes](https://example.com/docs/releases.md): Older changes.
+```
+
+In v2, **Optional is a convention for secondary links**, not a directive that requires software to exclude them. The [change notes](#ref-llms-v2) explicitly remove its earlier mechanical meaning.
+
+To create your own file, replace the placeholders with public documentation you maintain, publish it at the appropriate path, and check that every link opens. Give an agent the file and a real question, then check whether it finds the right source. Update the guide when your documentation changes.
 
 ## Walking through namefi.io/llms.txt
 
@@ -56,7 +74,7 @@ The file changes as Namefi's API and authentication options evolve. The table be
 
 | Section (as it appears in the file) | What it says | Why it's shaped that way |
 | --- | --- | --- |
-| H1 + blockquote | `# Namefi API` / `> Namefi lets you register traditional domains as NFTs and manage their DNS records via API.` | The required opening the spec calls for — one line an agent can act on even if it reads nothing else. |
+| H1 + blockquote | `# Namefi API` / `> Namefi lets you register traditional domains as NFTs and manage their DNS records via API.` | An H1 title followed by an optional summary, giving the reader an immediate orientation. |
 | MCP pointer, inline in the summary | `MCP server (every operation below as MCP tools): https://api.namefi.io/mcp — discovery descriptor at https://namefi.io/.well-known/mcp/servers.json` | Puts the fastest path — a live protocol connection — ahead of the plain-text one, in the first three lines. |
 | `## Base URLs` | `https://api.namefi.io/v-next/` | One line, no prose — an agent constructing raw HTTP calls needs exactly this. |
 | `## Agent policy (mandatory)` | Prefer MCP when the client can connect it; use REST or `curl` only when MCP is unavailable, installation fails, or the user explicitly requests raw HTTP | Keeps capable agents on the typed MCP path while preserving an explicit REST fallback. |
@@ -65,9 +83,9 @@ The file changes as Namefi's API and authentication options evolve. The table be
 | `## Buy a domain (MCP-first happy path)` and REST fallback | Connect MCP, search, register, and poll with typed tools; if MCP is unavailable, use the documented three-step `curl` sequence | Separates the preferred tool path from the raw-HTTP fallback without removing either. |
 | `## DNS Record Management` | A table of eleven endpoints (`GET`/`POST`/`PUT`/`DELETE` on `/v-next/dns/records`, `/v-next/dns/park`, `/v-next/dns/forwarding`, etc.) with method, path, auth, and one-line description | Reference data — many similar endpoints — goes in a table rather than eleven paragraphs. |
 | Troubleshooting note | "**UNAUTHORIZED (401):** Your API key is invalid, expired, or not associated with the domain owner's wallet… **Record validation errors:** Check that `zoneName` has no trailing dot, `rdata` for CNAME/MX/NS types has a trailing dot…" | Anticipates the failure modes an agent is most likely to hit first, as cause-and-fix rather than a generic status table. |
-| `## Optional` | Links to the TypeScript SDK docs, the `@namefi/api-client` npm package, a machine-readable OpenAPI 3 spec, the outbound-agent guide, and a GitHub repo of signer-neutral helper scripts | The spec's own "skip this if you need a shorter context" section — deeper resources, not prerequisites for the core flow above. |
+| `## Optional` | Links to the TypeScript SDK docs, the `@namefi/api-client` npm package, a machine-readable OpenAPI 3 spec, the outbound-agent guide, and a GitHub repo of signer-neutral helper scripts | Secondary links by convention; v2 no longer assigns the heading mechanical exclusion behavior. |
 
-The file closes by pointing to `namefi.io/llms-full.txt`, the same content inlined into one document, including the Web3 payment flows and outbound guide the root file only links to. That split mirrors the spec's own two-tier pattern: keep the entry point short enough to fit comfortably in context, and let an agent that needs more follow one link.
+The file closes by pointing to `namefi.io/llms-full.txt`, the same content inlined into one document, including the Web3 payment flows and outbound guide the root file only links to. That expansion is a Namefi publishing choice. The v2 proposal expects agents to follow relevant links and no longer specifies context-expansion tooling.
 
 ## The companion files: web3 and MCP discovery
 
@@ -113,7 +131,7 @@ A few choices look deliberate. The mandatory agent policy and MCP setup come bef
 
 ## llms.txt and MCP: discovery versus connection
 
-It's worth being precise about what each piece does. `llms.txt` is a document — an agent fetches it once and knows what the API is and where the deeper resources live; it's inert text until something acts on what it says. [MCP](https://modelcontextprotocol.io), in the protocol's own description, is "an open-source standard for connecting AI applications to external systems" — a live session a client opens to a server, over which it lists and invokes callable tools.
+It's worth being precise about what each piece does. `llms.txt` is a document — an agent fetches it once and knows what the API is and where the deeper resources live; it's inert text until something acts on what it says. [MCP](https://modelcontextprotocol.io), in the protocol's own description, is "an open-source standard for connecting AI applications to external systems" — a protocol through which a compatible client discovers and invokes callable tools.
 
 Namefi's file demonstrates the relationship directly: `llms.txt` tells an agent an MCP server exists at `api.namefi.io/mcp` and gives it the `claude mcp add` command to connect. Read the file, learn there's a live tool interface, connect, act. An agent that skips straight to MCP can still find the server through `.well-known/mcp/servers.json` — but that descriptor's `documentation` field points back at `llms.txt`, so the two rarely operate in true isolation.
 
@@ -125,22 +143,22 @@ Publishing a working `llms.txt` doesn't require rebuilding your documentation:
 2. **Lead with the fastest supported connection, then show a runnable fallback.** If you offer MCP, document the typed path first; preserve concrete HTTP examples for clients that cannot connect it.
 3. **Split by size, not by team structure.** A short root file plus a fuller expansion, and separate files for concerns like payments, keeps the common path short.
 4. **Document actual failure modes**, not just status codes — why a call returns 401 versus 403 matters more than the numbers.
-5. **Use the `## Optional` heading for anything skippable**, per the spec's own convention.
+5. **Use `## Optional` for secondary links if useful**, without relying on automatic exclusion.
 6. **Publish an MCP discovery descriptor alongside llms.txt if you run an MCP server** — include current authentication and OAuth-discovery metadata, not only the server URL.
 
 ## Frequently Asked Questions
 
 ### What is llms.txt?
 
-A proposed convention — not a formal IETF or W3C standard — for publishing a plain-text Markdown file at a website's root that tells an AI agent what the site or API is and where to find more detail. It defines a specific order: an H1 title, a blockquote summary, optional detail paragraphs, and H2-delimited link lists, with an "Optional" heading reserved for skippable material.
+A proposed Markdown guide for agents, published at a site root or within a subpath. See the format and example above; v2 also explains how pages can advertise the guide that applies to them.
 
 ### How is llms.txt different from robots.txt?
 
-`robots.txt` is a negative instruction to web crawlers — what not to index, under the Robots Exclusion Protocol. `llms.txt` is positive — what a site is and what's worth reading. They serve different automated readers and typically coexist on the same site.
+`robots.txt` governs cooperative crawling; `llms.txt` guides reading. A crawl restriction does not necessarily prevent indexing, and neither file replaces authentication.
 
 ### Does llms.txt replace MCP?
 
-No. `llms.txt` is a document an agent reads once to understand what an API does; MCP is a live protocol connection its client opens to actually call that API's operations. Namefi publishes both, and `llms.txt` is what tells an agent the MCP server exists in the first place.
+No. `llms.txt` is a document an agent reads once to understand what an API does; MCP is a protocol a compatible client uses to discover and call tools. Namefi publishes both, and `llms.txt` is what tells an agent the MCP server exists in the first place.
 
 ### What's in Namefi's llms.txt file?
 
@@ -152,7 +170,9 @@ Yes — it's plain Markdown, legible to a person as well as a model. [namefi.io/
 
 ## Sources and further reading
 
-- llmstxt.org — [The /llms.txt file: background, proposal, and format spec](https://llmstxt.org/#:~:text=Large%20language%20models%20increasingly%20rely%20on%20website%20information%2C%20but%20face%20a%20critical%20limitation)
+- <span id="ref-llms-format"></span>Jeremy Howard — [The /llms.txt file, v2](https://llmstxt.org/#format), “Proposal” and “Format” — fetched 2026-09-15.
+- <span id="ref-llms-v2"></span>Jeremy Howard — [v2 changes](https://llmstxt.org/changes.html#v2-august-2026), discovery, path scope, and Optional semantics — fetched 2026-09-15.
+- <span id="ref-robots"></span>Google Search Central — [Introduction to robots.txt](https://developers.google.com/search/docs/crawling-indexing/robots/intro#understand-the-limitations-of-a-robotstxt-file), crawling versus indexing and access control — fetched 2026-09-15.
 - robotstxt.org — [About /robots.txt: "In a nutshell"](https://www.robotstxt.org/robotstxt.html#:~:text=Web%20site%20owners%20use%20the%20/robots.txt%20file%20to%20give%20instructions%20about%20their%20site%20to%20web%20robots%3B%20this%20is%20called%20The%20Robots%20Exclusion%20Protocol)
 - modelcontextprotocol.io — [What is the Model Context Protocol (MCP)?](https://modelcontextprotocol.io/#:~:text=MCP%20%28Model%20Context%20Protocol%29%20is%20an%20open-source%20standard%20for%20connecting%20AI%20applications%20to%20external%20systems)
 - Namefi — [namefi.io/llms.txt](https://namefi.io/llms.txt) (primary source for every annotated excerpt in this article)
@@ -163,4 +183,4 @@ Yes — it's plain Markdown, legible to a person as well as a model. [namefi.io/
 
 ## Read the file yourself
 
-The fastest way to understand `llms.txt` is to open one. [namefi.io/llms.txt](https://namefi.io/llms.txt) is public, unauthenticated, and short enough to read in the time it took to read this article — the same file every AI agent connecting to Namefi reads first. For what the MCP tools behind it actually do, see [Namefi MCP Server: Domain Tools for AI Agents](/en/blog/namefi-mcp/); to connect from an editor, the [MCP Quickstart](/en/blog/mcp-quickstart/); to watch an agent run the whole flow, [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/).
+The fastest way to understand `llms.txt` is to open one. [namefi.io/llms.txt](https://namefi.io/llms.txt) is public, unauthenticated, and short enough to read in the time it took to read this article — a concrete example to compare with the format above. For what the MCP tools behind it actually do, see [Namefi MCP Server: Domain Tools for AI Agents](/en/blog/namefi-mcp/); to connect from an editor, the [MCP Quickstart](/en/blog/mcp-quickstart/); to watch an agent run the whole flow, [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/).

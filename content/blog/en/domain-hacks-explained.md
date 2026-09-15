@@ -1,5 +1,5 @@
 ---
-title: "Domain Hacks: How a Web Address Spells a Word Across the Dot"
+title: "What Is a Domain Hack? Examples and Extension Tradeoffs"
 date: '2026-06-20'
 language: en
 tags: ['domains', 'domain-investing', 'branding', 'domain-flipping']
@@ -10,9 +10,9 @@ cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 13
 format: explainer
-description: "What a domain hack is, why brands and flippers prize these clever short domains, the ccTLD risks behind them, and how to value one."
+description: "See how domain hacks form words across the dot, explore examples, and learn what country-code rules can mean for choosing one."
 ogImage: ../../assets/domain-hacks-explained-og.jpg
-keywords: ['domain hack', 'domain hacks', 'what is a domain hack', 'clever domain names', 'del.icio.us', 'bit.ly domain', 'ccTLD domain hack', 'short domain names', 'brandable domains', 'domain hack examples', 'youtu.be', 'instagr.am', 'goo.gl', 'vb.ly seizure']
+keywords: ["domain hacks", "domain hack examples", "what is a domain hack", "ccTLD domain hacks", "words across the dot", "domain hack pronunciation", "country-code registration rules", "domain hack valuation", "domain extension tradeoffs"]
 relatedArticles:
   - /en/blog/how-tld-affects-domain-value/
   - /en/blog/what-makes-a-domain-valuable/
@@ -44,6 +44,16 @@ A domain hack is a domain name where the extension itself becomes part of the wo
 The mechanism is the [top-level domain](/en/glossary/tld/) — the part after the final dot. Most famous domain hacks borrow a **country code top-level domain** (a [ccTLD](/en/glossary/cctld/)), the two-letter extension a country gets in the global [DNS](/en/glossary/dns/), and use it as if it were the last syllable of an English word. `del.icio.us` did exactly this: it took `.us` (the United States ccTLD), registered `icio.us`, stacked `del` in front as a [subdomain](/en/glossary/subdomain/), and the whole thing read as "delicious." We pulled that one apart in [the del.icio.us case study](/en/blog/from-del-icio-us-to-delicious-com/), and it remains the textbook example.
 
 It works because ccTLDs were never designed to be word endings — that's an accident of which two letters each country happened to get. (If you've never thought about where these extensions come from, our explainer on [what a TLD is](/en/blog/what-is-a-tld/) covers the ground.) A domain hack is what happens when someone notices that a country's two-letter code also spells a useful suffix and decides to build a brand on the coincidence.
+
+### Read the word across the dot
+
+| Example | How the parts read together | Naming lesson |
+| --- | --- | --- |
+| `del.icio.us` | `del` + `icio` + `us` → “delicious” | A subdomain can participate, but extra dots need explaining aloud |
+| `youtu.be` | `youtu` + `be` → “YouTube” | The extension completes the recognizable name |
+| `pistach.io` | `pistach` + `io` → “pistachio” | A word ending can fit a country-code extension |
+
+These illustrate spelling, not availability or permission to use an existing brand. Namecheap uses [`pistach.io` as an example](#ref-hack-example); for the extension's origin and rules, see the existing [`.io` reference](/en/tld/io/). A short address such as `t.co` is a shortener, but it does not form a word across the dot in the same way.
 
 ## How it works: ccTLDs that double as English suffixes
 
@@ -79,7 +89,7 @@ Here is the part most "10 clever domain hacks" listicles skip, and it's the part
 
 The starkest example is `.ly`. It's the ccTLD for Libya, and Libyan law applies to what sits on it. In 2010 that stopped being theoretical. As Wikipedia records, [in October 2010, the domain of "sex-positive" URL shortening service vb.ly ... was seized by the Libyan web authorities for not being compliant with the law of Libya](https://en.wikipedia.org/wiki/.ly#:~:text=the%20domain%20of%20%22sex%2Dpositive%22%20URL%20shortening%20service%20vb.ly), with the [registry](/en/glossary/registry/)'s explanation reported as blunt: [pornography and adult material aren't allowed under Libyan Law ... Therefore, we removed the domain](https://en.wikipedia.org/wiki/.ly#:~:text=Pornography%20and%20adult%20material%20aren%27t%20allowed%20under%20Libyan%20Law). The domain didn't expire and it wasn't sold. It was taken, because of what it pointed to, under rules that had nothing to do with the open internet and everything to do with one country's content law.
 
-The second flavor of risk is the one a `.com` does not carry: the country or territory code itself can eventually lose eligibility. That is a possible—but not currently active—issue for `.io`. The UK and Mauritius signed a treaty concerning the Chagos Archipelago in May 2025, but the UK Parliament page for the implementing bill says the 2024–2026 session ended on April 29, 2026, so that bill will make no further progress. `.io` remains delegated, and IANA's retirement process is not triggered merely by a treaty announcement. It begins when the associated country or territory is removed from ISO 3166-1 and IANA issues a Notice of Removal. The default retirement period is five years, with a possible extension of up to five more. We lay out the measured version in [why .io domains are expensive](/en/blog/why-are-io-domains-expensive/).
+The second flavor of risk is the country or territory code's continued eligibility. As checked September 15, 2026, [IANA's `.io` record](#ref-io-delegation) still lists the ccTLD and does not display a retirement date. Under the [retirement process](#ref-cctld-retirement), removal from ISO 3166-1 leads to a Notice of Removal and a default five-year transition, with a possible extension of up to five additional years. A political announcement alone is not that notice, and this policy does not predict the outcome for `.io`. We discuss the purchasing implications in [why .io domains are expensive](/en/blog/why-are-io-domains-expensive/).
 
 There's a third, separate risk, and `goo.gl` illustrates it: a service built on a domain can be deprecated even when the underlying registry and domain delegation remain healthy. Google stopped creating new short links in 2018 and later limited deactivation to previously flagged inactive links; IANA still lists the `.gl` manager. That is service-operator dependency, not evidence that the `.gl` registry walked away. The lesson for a flipper isn't "never touch a ccTLD." It is to evaluate both layers independently: the ccTLD manager's registration policies and stability, and the durability of the particular product or redirect service using the domain. This distinction is part of understanding [how the TLD affects domain value](/en/blog/how-tld-affects-domain-value/).
 
@@ -105,6 +115,10 @@ This is the gap [Namefi](https://namefi.io) is built to narrow: tokenized owners
 
 ## Sources and further reading
 
+- <span id="ref-hack-example"></span>Namecheap — [`.io` domain examples](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=pistach.io), word-spelling examples. Fetched 2026-09-15.
+- <span id="ref-io-delegation"></span>IANA — [`.io` delegation record](https://www.iana.org/domains/root/db/io.html), current delegation. Fetched 2026-09-15.
+- <span id="ref-cctld-retirement"></span>IANA — [ccTLD retirement process](https://www.iana.org/help/cctld-retirement), General Principles and Initial Process. Fetched 2026-09-15.
+
 - Wikipedia — [Domain hack](https://en.wikipedia.org/wiki/Domain_hack#:~:text=A%20domain%20hack%20is%20a%20domain%20name%20that%20suggests%20a%20word)
 - Wikipedia — [.ly (Libya, and the vb.ly seizure)](https://en.wikipedia.org/wiki/.ly#:~:text=the%20domain%20of%20%22sex%2Dpositive%22%20URL%20shortening%20service%20vb.ly)
 - Wikipedia — [Bitly](https://en.wikipedia.org/wiki/Bitly#:~:text=Bitly%20is%20a%20URL%20shortening%20service)
@@ -116,9 +130,6 @@ This is the gap [Namefi](https://namefi.io) is built to narrow: tokenized owners
 - Wikipedia — [.gg (Guernsey)](https://en.wikipedia.org/wiki/.gg#:~:text=Multiple%20video%20games%2C%20streamers%20and%20esports%20websites%20use%20Guernsey%27s%20domain)
 - Wikipedia — [.sh (Saint Helena)](https://en.wikipedia.org/wiki/.sh#:~:text=Since%20the%20.sh%20filename%20extension%20is%20also%20used%20by%20Unix%20shell%20scripts)
 - Wikipedia — [.tv (Tuvalu)](https://en.wikipedia.org/wiki/.tv#:~:text=because%20TV%20also%20happens%20to%20be%20an%20abbreviation%20of%20the%20word%20television)
-- Wikipedia — [.io (British Indian Ocean Territory / IANA phase-out)](https://en.wikipedia.org/wiki/.io#:~:text=current%20IANA%20rules%20may%20require%20the%20.io%20domain%20to%20be%20phased%20out)
-- Wikipedia — [Chagos Archipelago sovereignty dispute (UK–Mauritius agreement signed 22 May 2025)](https://en.wikipedia.org/wiki/Chagos_Archipelago_sovereignty_dispute#:~:text=the%20agreement%20was%20signed%20by%20the%20UK%20and%20Mauritius)
 - ICANN ccNSO — [ccTLD management and the varying role of governments](https://ccnso.icann.org/sites/default/files/field-attached/cctld-agenda-faqs-19oct17-en.pdf)
-- UK Parliament — [Status of the Diego Garcia implementing bill after the 2024–2026 session ended](https://www.parliament.uk/business/news/2026/jan-2026/diego-garcia-bill-third-reading/)
 - IANA — [ccTLD retirement process](https://www.iana.org/help/cctld-retirement) and [`.gl` delegation record](https://www.iana.org/domains/root/db/gl.html)
 - Google Developers Blog — [`goo.gl` deprecation and the August 2025 preservation update](https://developers.googleblog.com/google-url-shortener-links-will-no-longer-be-available/)

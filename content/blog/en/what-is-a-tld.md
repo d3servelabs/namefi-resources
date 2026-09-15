@@ -1,5 +1,5 @@
 ---
-title: What Is a TLD (Top-Level Domain)? A Complete Guide
+title: "What Is a Top-Level Domain (TLD)? Types and Examples"
 date: '2026-06-10'
 language: en
 tags: ['guide']
@@ -8,8 +8,8 @@ editors: ['victor-zhou']
 draft: false
 cluster: choosing-a-tld
 format: explainer
-description: A TLD is the part of a domain after the last dot, like .com or .io. Learn what a TLD is, the types (gTLD, ccTLD, sponsored, new gTLD, IDN), and how to choose one.
-keywords: ['tld', 'tld meaning', 'what is a tld', 'what is a top level domain', 'top-level domain', 'tld def', 'tld definition', 'que es un tld', "qu'est-ce qu'un tld", 'types of tld', 'gtld vs cctld', 'tld examples', 'what is a domain extension', 'domain extension', 'gTLD', 'ccTLD', 'sponsored TLD', 'new gTLD', 'IDN TLD', 'ICANN', 'IANA', 'domain registry', 'domain registrar', 'choosing a TLD', 'popular TLDs', 'namefi']
+description: "Understand what a TLD is, where it appears in a domain name, and how generic, country-code, and branded extensions differ."
+keywords: ["top level domain", "what is a tld", "tld meaning", "top level domain examples", "generic top-level domain", "country-code top-level domain", "brand TLD", "sponsored TLD", "internationalized domain name", "domain extension"]
 relatedArticles:
   - /en/blog/what-are-tokenized-domains/
   - /en/blog/ai-vs-io-domain/
@@ -38,7 +38,6 @@ That's the whole **TLD definition** in one sentence: the rightmost label of a [d
 
 > **TLD meaning, quickly:** *Top-Level Domain* — the suffix at the end of a web address (`.com`, `.org`, `.io`, `.ai`, `.xyz`) that identifies the highest level of the [Domain Name System (DNS)](/en/glossary/dns/).
 
-If you've searched for **"que es un TLD"** (Spanish) or **"qu'est-ce qu'un TLD"** (French), the answer is the same in any language: a TLD is the ending of a domain name, and it's managed by a global system of registries under the oversight of [ICANN](/en/glossary/icann/).
 
 ---
 
@@ -72,7 +71,17 @@ For a deeper walkthrough of how domains are structured, see [What Is a Domain Na
 
 ## The Types of TLD
 
-Not all TLDs are the same. ICANN and [IANA](/en/glossary/iana/) classify them into a handful of categories. Here are the main **types of TLD** you'll encounter.
+The broad distinction is between generic and country-code TLDs. Other labels describe a TLD's purpose, introduction round, or script; they are not all mutually exclusive categories.
+
+| Type or label | Example | What to check |
+| --- | --- | --- |
+| Generic TLD (gTLD) | `.com`, `.org` | The registry's registration policy; “generic” does not always mean open registration |
+| Country-code TLD (ccTLD) | `.uk`, `.ai`, `.io` | Local eligibility, registration terms, and the ccTLD manager's policies |
+| Brand TLD | `.google` | The operator's brand-specific use and registry agreement |
+| Sponsored TLD | `.aero` | The sponsored community's eligibility rules |
+| Internationalized TLD | `.中国` | The script and underlying TLD's registration rules |
+
+ICANN defines a [.Brand TLD](#ref-brand-definition) as one using the owner's brand in the extension, and its [.google agreement record](#ref-google-agreement) specifically identifies Brand (Specification 13) status. A brand-shaped string alone is not proof of that contractual status. [IANA](/en/glossary/iana/) delegation records identify TLD managers and classifications; eligibility questions require the relevant registration policy or agreement.
 
 ### 1. Generic TLDs (gTLDs)
 
@@ -83,7 +92,7 @@ Not all TLDs are the same. ICANN and [IANA](/en/glossary/iana/) classify them in
 - [`.org`](/en/tld/org/) — originally for organizations and nonprofits
 - [`.info`](/en/tld/info/) — informational sites; introduced in the 2000 expansion round and delegated in 2001, not one of the original 1980s gTLDs
 
-These are open to anyone and remain the most trusted, liquid endings on the internet.
+These familiar examples serve different audiences. Confirm the exact name, price, and registration policy rather than treating familiarity as a guarantee of value.
 
 ### 2. Country-Code TLDs (ccTLDs)
 
@@ -95,7 +104,7 @@ Here's the interesting part — many ccTLDs have been repurposed far beyond thei
 - [`.io`](/en/tld/io/) belongs to the British Indian Ocean Territory, yet dominates tech and startup branding ("I/O").
 - `.co` (Colombia) is widely used as a short stand-in for `.com`.
 
-This is the **[gTLD](/en/glossary/gtld/) vs ccTLD** distinction in a nutshell: gTLDs are governed directly under ICANN contracts and open globally, while ccTLDs are delegated to national authorities, each with its own rules (some require local presence, some don't).
+This is the **[gTLD](/en/glossary/gtld/) vs ccTLD** distinction in a nutshell: gTLDs operate under ICANN registry contracts, while ccTLD managers use their own policy arrangements. Neither category alone tells you whether anyone can register; restrictions vary by extension.
 
 ### 3. Sponsored TLDs (sTLDs)
 
@@ -131,7 +140,7 @@ Behind every TLD is a layered system of governance. Here's who does what:
 
 - **ICANN** — the [Internet Corporation for Assigned Names and Numbers](/en/glossary/icann/) is the nonprofit that coordinates the global namespace, sets policy for gTLDs, and accredits registrars. Founded in 1998, it's the closest thing the domain world has to a referee.
 - **IANA** — the Internet Assigned Numbers Authority (operated under ICANN) maintains the authoritative **[root zone](/en/glossary/root-zone/)**: the master list of every valid TLD and which [registry](/en/glossary/registry/) runs it.
-- **Registries** — each TLD is operated by a *registry*, the organization that runs the central database for that ending. For example, **Verisign** operates `.com` and `.net`, and the **Public Interest Registry (PIR)** runs `.org`. ccTLD registries are typically national bodies — for instance, [`.ae`](/en/tld/ae/) is administered by the UAE's TDRA.
+- **Registries** — each TLD is operated by a *registry*, the organization that runs the central database for that ending. For example, **Verisign** operates `.com` and `.net`, and the **Public Interest Registry (PIR)** runs `.org`. ccTLD managers can have different organizational forms; for instance, [`.ae`](/en/tld/ae/) is administered by the UAE's TDRA.
 - **Registrars** — a [registrar](/en/glossary/registrar/) is the retailer you buy from. ICANN-accredited registrars (like Namefi, GoDaddy, and Namecheap) sell names to the public and pass registrations up to the registry.
 
 So the chain looks like this: **ICANN/IANA** sets the rules and the root → **registries** operate each TLD → **registrars** sell names to **you**. When you register `yourname.com`, you're buying from a registrar, who records it with the registry (Verisign), all under ICANN policy.
@@ -206,10 +215,10 @@ TLD stands for **Top-Level Domain**. It refers to the suffix at the end of a web
 A *domain* is the full registrable name, usually the second-level name plus the TLD (e.g., `namefi.io`). The *TLD* is just the shared ending (`.io`). You register and own a domain; you register names *under* a TLD but don't own the TLD itself.
 
 ### What are the main types of TLD?
-The main types are generic TLDs (gTLDs) like `.com`, country-code TLDs (ccTLDs) like `.uk` and `.ai`, sponsored TLDs (sTLDs) like `.edu` and `.gov`, new gTLDs like `.xyz` and `.app`, and internationalized TLDs (IDNs) written in non-Latin scripts.
+The main types are generic TLDs (gTLDs) like `.com`, country-code TLDs (ccTLDs) like `.uk` and `.ai`, sponsored TLDs (sTLDs) like `.edu` and `.gov`, new gTLDs like `.xyz` and `.app`, brand TLDs such as `.google`, and internationalized TLDs (IDNs) written in non-Latin scripts.
 
 ### What is the difference between gTLD and ccTLD?
-A gTLD is a generic, globally available ending governed directly under ICANN contracts (e.g., `.com`, `.org`). A ccTLD is a two-letter ending tied to a country or territory and delegated to a national authority (e.g., `.uk`, `.de`, `.ai`), each with its own registration rules.
+A gTLD is a generic ending governed under an ICANN registry contract. A ccTLD is associated with a country or territory and has a designated manager. Registration eligibility varies within both groups; a brand gTLD is different from an open retail extension.
 
 ### What are some examples of TLDs?
 Common examples include `.com`, `.org`, `.net`, `.io`, `.ai`, `.app`, `.dev`, `.tech`, `.xyz`, `.shop`, and `.vip`. There are well over 1,000 TLDs available today.
@@ -224,6 +233,9 @@ If your exact `.com` is available and affordable, it's usually the safest choice
 
 ## Sources and further reading
 
+- <span id="ref-brand-definition"></span>ICANN — [What is a .Brand TLD?](https://newgtldprogram.icann.org/en/application-rounds/round2/2026-round-general/application-types/faqs/brand-tlds/what-is-a-brand-tld), definition and Specification 13. Fetched 2026-09-15.
+- <span id="ref-google-agreement"></span>ICANN — [`.google` registry agreement](https://www.icann.org/en/registry-agreements/details/google#:~:text=Agreement%20Type), agreement type and operator. Fetched 2026-09-15.
+
 - ICANN — [New gTLD Program history](https://www.icann.org/resources/pages/newgtlds-history-2023-04-05-en) (the original seven gTLDs and the 2000 expansion round)
 - IANA — [`.info` delegation record](https://www.iana.org/domains/root/db/info.html) (`.info` type and 2001 delegation date)
 - IANA — [`.io` delegation record](https://www.iana.org/domains/root/db/io.html) (`.io` classification as a country-code TLD)
@@ -236,7 +248,7 @@ If your exact `.com` is available and affordable, it's usually the safest choice
 
 - A **TLD (top-level domain)** is the part of a domain after the last dot — `.com`, `.org`, `.io`, and so on. It's also called a domain extension.
 - Read right to left, a domain breaks into **TLD → second-level domain → subdomain**.
-- The main **types of TLD** are gTLDs, ccTLDs, sponsored TLDs, new gTLDs, and internationalized (IDN) TLDs.
+- TLD labels include generic, country-code, sponsored, new generic, brand, and internationalized; several labels can apply to the same extension.
 - TLDs are governed by **ICANN** and **IANA** at the top, **registries** that operate each ending, and **[registrars](/en/glossary/registrar/)** that sell names to you.
 - Choosing a TLD is about trust, fit, cost, and — increasingly — whether it can be brought **on-chain** as a [tokenized domain](/en/blog/what-are-tokenized-domains/).
 

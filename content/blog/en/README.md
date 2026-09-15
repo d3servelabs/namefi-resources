@@ -43,3 +43,7 @@ en/
 ```
 
 The three articles are approved for publication on September 14, 2026 (UTC publication date), and use shared images from `../../assets/`. Their outbound links use existing same-locale resources. Translations can be added from these English sources. No membership in a numbered series is assigned.
+
+## Search writing plan
+
+Four new English articles cover domain versus hosting, custom-domain email setup, subdomain versus subdirectory, and registrar transfers. They are marked publishable in the proposed branch and remain subject to PR review; existing articles are updated in place for their assigned search questions. Source dates and citations appear in each article.

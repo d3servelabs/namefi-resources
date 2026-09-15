@@ -70,6 +70,8 @@ aliasesByLocale:    # per-locale non-canonical variants to normalise away
   de: ['Registrierungsdienst']
 ```
 
+See [maintenance scripts](scripts/README.md) for generated-data behavior and the draft-exclusion regression check.
+
 ## Automation
 
 - On every push to `main`, a workflow dispatches a `resources-updated` event to `namefi-astra`.
