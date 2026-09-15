@@ -32,9 +32,9 @@ relatedGlossary:
   - /en/glossary/web3/
 ---
 
-**Mr. Chewy was the original brand of the pet retailer later known as Chewy.** A [domain-industry retrospective](#ref-chewy-name) records the simplification to Chewy and Chewy.com. The sources reviewed here do not establish an exact rename or domain-acquisition date, so there is no supported day or year to attach to that change.
+**Mr. Chewy was the original brand of the pet retailer later known as Chewy.** A [domain-industry retrospective](https://smartbranding.com/2010-2020-a-decade-in-domains-part-1-brands-simplified-their-names/#:~:text=Chewy%20was%20founded) records the simplification to Chewy and Chewy.com. The sources reviewed here do not establish an exact rename or domain-acquisition date, so there is no supported day or year to attach to that change.
 
-The useful timeline is narrower: the business began in 2011, and by the [May 31, 2017 acquisition-completion announcement](#ref-chewy-acquisition), PetSmart identified it as Chewy, Inc. The company acquisition is separate from the earlier, privately priced domain purchase. This article follows that name and domain history, including the limits of the available record.
+The useful timeline is narrower: the business began in 2011, and by the [May 31, 2017 acquisition-completion announcement](https://investor.chewy.com/news-and-events/news/news-details/2017/PetSmart-Completes-Acquisition-of-Chewy/default.aspx), PetSmart identified it as Chewy, Inc. The company acquisition is separate from the earlier, privately priced domain purchase. This article follows that name and domain history, including the limits of the available record.
 
 Before Chewy was the customer-service legend of pet e-commerce — before the handwritten cards, the condolence flowers, and the $3.35 billion exit — it had a slightly cuddlier, more cautious name. It was **Mr. Chewy**. Public accounts disagree on whether its early web address was **MrChewy.com** or **MyChewy.com**, but they agree on the original brand and the eventual move to **Chewy.com**.
 
@@ -157,8 +157,8 @@ Chewy.com looks inevitable now because Chewy became enormous. But the lesson app
 
 ## Sources and further reading
 
-- <span id="ref-chewy-name"></span>Smart Branding — [Brands simplified their names](https://smartbranding.com/2010-2020-a-decade-in-domains-part-1-brands-simplified-their-names/#:~:text=Chewy%20was%20founded), Chewy section; secondary account — fetched 2026-09-15.
-- <span id="ref-chewy-acquisition"></span>Chewy/PetSmart — [PetSmart Completes Acquisition of Chewy](https://investor.chewy.com/news-and-events/news/news-details/2017/PetSmart-Completes-Acquisition-of-Chewy/default.aspx), May 31, 2017 — fetched 2026-09-15.
+- Smart Branding — [Brands simplified their names](https://smartbranding.com/2010-2020-a-decade-in-domains-part-1-brands-simplified-their-names/#:~:text=Chewy%20was%20founded), Chewy section; secondary account — fetched 2026-09-15.
+- Chewy/PetSmart — [PetSmart Completes Acquisition of Chewy](https://investor.chewy.com/news-and-events/news/news-details/2017/PetSmart-Completes-Acquisition-of-Chewy/default.aspx), May 31, 2017 — fetched 2026-09-15.
 
 - Wikipedia — [Chewy (company)](https://en.wikipedia.org/wiki/Chewy_(company)#:~:text=Chewy%20was%20founded%20with%20the%20name%20%22Mr.%20Chewy%22%20in%20June%202011%20by%20Ryan%20Cohen%20and%20Michael%20Day)
 - Harvard Business Review — [The Founder of Chewy.com on Finding the Financing to Achieve Scale](https://hbr.org/2020/01/the-founder-of-chewy-com-on-finding-the-financing-to-achieve-scale)

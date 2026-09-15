@@ -81,7 +81,7 @@ The broad distinction is between generic and country-code TLDs. Other labels des
 | Sponsored TLD | `.aero` | The sponsored community's eligibility rules |
 | Internationalized TLD | `.中国` | The script and underlying TLD's registration rules |
 
-ICANN defines a [.Brand TLD](#ref-brand-definition) as one using the owner's brand in the extension, and its [.google agreement record](#ref-google-agreement) specifically identifies Brand (Specification 13) status. A brand-shaped string alone is not proof of that contractual status. [IANA](/en/glossary/iana/) delegation records identify TLD managers and classifications; eligibility questions require the relevant registration policy or agreement.
+ICANN defines a [.Brand TLD](https://newgtldprogram.icann.org/en/application-rounds/round2/2026-round-general/application-types/faqs/brand-tlds/what-is-a-brand-tld) as one using the owner's brand in the extension, and its [.google agreement record](https://www.icann.org/en/registry-agreements/details/google#:~:text=Agreement%20Type) specifically identifies Brand (Specification 13) status. A brand-shaped string alone is not proof of that contractual status. [IANA](/en/glossary/iana/) delegation records identify TLD managers and classifications; eligibility questions require the relevant registration policy or agreement.
 
 ### 1. Generic TLDs (gTLDs)
 
@@ -233,8 +233,8 @@ If your exact `.com` is available and affordable, it's usually the safest choice
 
 ## Sources and further reading
 
-- <span id="ref-brand-definition"></span>ICANN — [What is a .Brand TLD?](https://newgtldprogram.icann.org/en/application-rounds/round2/2026-round-general/application-types/faqs/brand-tlds/what-is-a-brand-tld), definition and Specification 13. Fetched 2026-09-15.
-- <span id="ref-google-agreement"></span>ICANN — [`.google` registry agreement](https://www.icann.org/en/registry-agreements/details/google#:~:text=Agreement%20Type), agreement type and operator. Fetched 2026-09-15.
+- ICANN — [What is a .Brand TLD?](https://newgtldprogram.icann.org/en/application-rounds/round2/2026-round-general/application-types/faqs/brand-tlds/what-is-a-brand-tld), definition and Specification 13. Fetched 2026-09-15.
+- ICANN — [`.google` registry agreement](https://www.icann.org/en/registry-agreements/details/google#:~:text=Agreement%20Type), agreement type and operator. Fetched 2026-09-15.
 
 - ICANN — [New gTLD Program history](https://www.icann.org/resources/pages/newgtlds-history-2023-04-05-en) (the original seven gTLDs and the 2000 expansion round)
 - IANA — [`.info` delegation record](https://www.iana.org/domains/root/db/info.html) (`.info` type and 2001 delegation date)

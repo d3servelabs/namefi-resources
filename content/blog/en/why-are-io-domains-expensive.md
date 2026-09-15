@@ -41,7 +41,7 @@ Separate the standard **[wholesale price](/en/glossary/wholesale-pricing/)**, th
 
 ## A registration and renewal price example
 
-Namecheap's `.io` list page, checked **September 15, 2026**, quotes **USD 34.98 for a promotional first year**, **USD 75.98 for a one-year renewal**, and **USD 65.98 for a transfer**. These are [one registrar's public prices](#ref-io-retail), not a market average or a quote for a premium or already-owned name. Confirm taxes, fees, eligibility, and the term before paying.
+Namecheap's `.io` list page, checked **September 15, 2026**, quotes **USD 34.98 for a promotional first year**, **USD 75.98 for a one-year renewal**, and **USD 65.98 for a transfer**. These are [one registrar's public prices](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices), not a market average or a quote for a premium or already-owned name. Confirm taxes, fees, eligibility, and the term before paying.
 
 | Price layer | What to compare |
 | --- | --- |
@@ -56,7 +56,7 @@ For the extension's meaning and origin, use the [`.io` TLD guide](/en/tld/io/). 
 
 Every domain has two price layers: the **wholesale price** the registry charges [registrars](/en/glossary/registrar/), and the **retail markup** your registrar adds. For `.io`, the wholesale floor sits well above commodity extensions.
 
-IANA's current [delegation record](https://www.iana.org/domains/root/db/io.html) names **Internet Computer Bureau Limited** as the `.io` sponsoring organization. Identity Digital identifies ICB as part of its registry portfolio. Unlike `.com`, whose registry agreement constrains wholesale pricing, `.io` pricing is set under a different ccTLD arrangement. NetEarth's [December 2025 notice](#ref-io-increase) lists a **USD 7.00 `.io` price increase** under an Identity Digital January 16, 2026 heading, while stating that NetEarth would apply its pricing on January 19 at 14:00 UTC. Keep the registry announcement and the registrar's implementation date separate; this notice is not a current wholesale price list.
+IANA's current [delegation record](https://www.iana.org/domains/root/db/io.html) names **Internet Computer Bureau Limited** as the `.io` sponsoring organization. Identity Digital identifies ICB as part of its registry portfolio. Unlike `.com`, whose registry agreement constrains wholesale pricing, `.io` pricing is set under a different ccTLD arrangement. NetEarth's [December 2025 notice](https://blog.netearthgroup.com/identity-digital-pricing-increase-january-16th-2026/#:~:text=January%2019th) lists a **USD 7.00 `.io` price increase** under an Identity Digital January 16, 2026 heading, while stating that NetEarth would apply its pricing on January 19 at 14:00 UTC. Keep the registry announcement and the registrar's implementation date separate; this notice is not a current wholesale price list.
 
 Wholesale changes affect registrar costs, but retail prices need not move by the same amount or on the same date. Registrar markup, promotions, currency, tax, and premium-name rules can still produce meaningful differences, especially between first-year registration and renewal.
 
@@ -89,9 +89,9 @@ For a single brand domain this may be manageable. For anyone holding a **portfol
 
 ## 5. Registry context is a separate purchasing consideration
 
-The Chagos sovereignty question concerns `.io`'s future country-code eligibility, not a separately itemized registrar fee. As checked September 15, 2026, [IANA's `.io` delegation record](#ref-io-current) lists Internet Computer Bureau Limited and does not display a retirement date.
+The Chagos sovereignty question concerns `.io`'s future country-code eligibility, not a separately itemized registrar fee. As checked September 15, 2026, [IANA's `.io` delegation record](https://www.iana.org/domains/root/db/io.html) lists Internet Computer Bureau Limited and does not display a retirement date.
 
-IANA's [retirement process](#ref-io-retirement) says removal of the associated country or territory from ISO 3166-1 ends eligibility, followed by a Notice of Removal. The default transition is five years, with an approved extension of up to five additional years possible. A political announcement alone does not start that clock.
+IANA's [retirement process](https://www.iana.org/help/cctld-retirement) says removal of the associated country or territory from ISO 3166-1 ends eligibility, followed by a Notice of Removal. The default transition is five years, with an approved extension of up to five additional years possible. A political announcement alone does not start that clock.
 
 Account for this policy uncertainty if the name will anchor a long-lived brand. There is no evidence here that assigns it a probability, a shutdown date, or a measurable contribution to today's price.
 
@@ -144,10 +144,10 @@ Common alternatives include `.com` (a widely recognized gTLD with contractually 
 
 ## Sources and further reading
 
-- <span id="ref-io-retail"></span>Namecheap — [`.io` pricing](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices), registration, renewal, transfer, and exclusions. Fetched 2026-09-15.
-- <span id="ref-io-increase"></span>NetEarth Group — [January 2026 price notice](https://blog.netearthgroup.com/identity-digital-pricing-increase-january-16th-2026/#:~:text=January%2019th), price-increase table and registrar implementation time. Fetched 2026-09-15.
-- <span id="ref-io-current"></span>IANA — [`.io` delegation](https://www.iana.org/domains/root/db/io.html), current record. Fetched 2026-09-15.
-- <span id="ref-io-retirement"></span>IANA — [ccTLD retirement process](https://www.iana.org/help/cctld-retirement), General Principles and Initial Process. Fetched 2026-09-15.
+- Namecheap — [`.io` pricing](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices), registration, renewal, transfer, and exclusions. Fetched 2026-09-15.
+- NetEarth Group — [January 2026 price notice](https://blog.netearthgroup.com/identity-digital-pricing-increase-january-16th-2026/#:~:text=January%2019th), price-increase table and registrar implementation time. Fetched 2026-09-15.
+- IANA — [`.io` delegation](https://www.iana.org/domains/root/db/io.html), current record. Fetched 2026-09-15.
+- IANA — [ccTLD retirement process](https://www.iana.org/help/cctld-retirement), General Principles and Initial Process. Fetched 2026-09-15.
 
 - ICANN — [The Chagos Archipelago and the `.io` domain](https://www.icann.org/en/blogs/details/the-chagos-archipelago-and-the-io-domain-14-11-2024-en)
 - Namefi — [Terms of Service](https://namefi.io/tos) (token-control and platform limits)

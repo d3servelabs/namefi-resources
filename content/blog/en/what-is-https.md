@@ -31,7 +31,7 @@ relatedGlossary:
   - /en/glossary/dnssec/
 ---
 
-**HTTPS is HTTP protected by TLS encryption and server authentication.** Plain HTTP provides no comparable protection for traffic in transit. With HTTPS, the browser checks the server's certificate and establishes an encrypted connection before exchanging protected web requests and responses. [RFC 9110](#ref-http-semantics) defines the two URL schemes and their security requirements.
+**HTTPS is HTTP protected by TLS encryption and server authentication.** Plain HTTP provides no comparable protection for traffic in transit. With HTTPS, the browser checks the server's certificate and establishes an encrypted connection before exchanging protected web requests and responses. [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2) defines the two URL schemes and their security requirements.
 
 This article explains what HTTPS actually does, and walks through the concepts it is built from: encryption, ports, certificates, certificate authorities, and the ACME protocol that now automates the issuance of most of the world's certificates. It ends where every HTTPS chain ends if you follow it far enough down: at control of a domain name.
 
@@ -46,7 +46,7 @@ This article explains what HTTPS actually does, and walks through the concepts i
 | Server authentication | No certificate check from HTTP itself | The client validates the certificate for the requested host |
 | What it says about the business | No trust guarantee | Still no guarantee that the business or content is honest |
 
-These are [connection properties](#ref-http-semantics), not a promise that a site is safe to buy from. HTTPS protects communication with the named host; a phishing site can also use HTTPS.
+These are [connection properties](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2), not a promise that a site is safe to buy from. HTTPS protects communication with the named host; a phishing site can also use HTTPS.
 
 HTTP, the protocol browsers and web servers speak, was designed as cleartext. A request for a page, the cookies attached to it, the form data in it, and the page that comes back all travel across the network as readable bytes. Anyone positioned on the path — the operator of a coffee-shop Wi-Fi network, an ISP, a backbone carrier, a compromised router — can read all of it.
 
@@ -58,7 +58,7 @@ HTTPS wraps HTTP in TLS — Transport Layer Security — whose current version, 
 
 - **Confidentiality.** The traffic is encrypted, so an observer on the path sees only which server you connected to and roughly how much data moved — not the URLs, cookies, credentials, or content.
 - **Integrity.** TLS authenticates protected traffic with a cryptographic integrity check, so altered data is rejected rather than silently delivered. Modern TLS uses authenticated encryption; this is more specific than simply attaching a [hash](/en/glossary/hash-function/) to a message.
-- **Authentication.** The server proves possession of the [private key](/en/glossary/private-key/) for a certificate the browser trusts for the requested hostname. That is [authentication of the connection](#ref-https-authentication), not proof of rightful domain ownership or an honest business. Mandiant documented [DNS hijackers obtaining valid certificates](#ref-mandiant-certificates) for redirected services, allowing browsers to connect without certificate errors.
+- **Authentication.** The server proves possession of the [private key](/en/glossary/private-key/) for a certificate the browser trusts for the requested hostname. That is [authentication of the connection](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.3.3), not proof of rightful domain ownership or an honest business. Mandiant documented [DNS hijackers obtaining valid certificates](https://cloud.google.com/blog/topics/threat-intelligence/global-dns-hijacking-campaign-dns-record-manipulation-at-scale#:~:text=certbot%20is%20used) for redirected services, allowing browsers to connect without certificate errors.
 
 A useful way to remember the division of labor: encryption seals the envelope, integrity checks detect alterations, and authentication checks the recipient's certificate and proof of its private key against the requested hostname.
 
@@ -137,9 +137,9 @@ The padlock is the last link in the chain. The domain is the first.
 
 ## Sources and further reading
 
-- <span id="ref-http-semantics"></span>IETF — [RFC 9110, sections 4.2.1–4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2), HTTP/HTTPS schemes, default ports, confidentiality, integrity, and authentication. Fetched 2026-09-15.
-- <span id="ref-https-authentication"></span>IETF — [RFC 9110, section 4.3.3](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.3.3), HTTPS authority based on certificate trust and use of the corresponding private key. Fetched 2026-09-15.
-- <span id="ref-mandiant-certificates"></span>Mandiant — [Global DNS Hijacking Campaign: DNS Record Manipulation at Scale](https://cloud.google.com/blog/topics/threat-intelligence/global-dns-hijacking-campaign-dns-record-manipulation-at-scale#:~:text=certbot%20is%20used), technique 1, steps 6–7: attackers obtaining certificates after changing DNS records. Fetched 2026-09-15.
+- IETF — [RFC 9110, sections 4.2.1–4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2), HTTP/HTTPS schemes, default ports, confidentiality, integrity, and authentication. Fetched 2026-09-15.
+- IETF — [RFC 9110, section 4.3.3](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.3.3), HTTPS authority based on certificate trust and use of the corresponding private key. Fetched 2026-09-15.
+- Mandiant — [Global DNS Hijacking Campaign: DNS Record Manipulation at Scale](https://cloud.google.com/blog/topics/threat-intelligence/global-dns-hijacking-campaign-dns-record-manipulation-at-scale#:~:text=certbot%20is%20used), technique 1, steps 6–7: attackers obtaining certificates after changing DNS records. Fetched 2026-09-15.
 
 - IETF — [RFC 2818: HTTP Over TLS](https://datatracker.ietf.org/doc/html/rfc2818) — defines HTTPS and the default port 443.
 - IETF — [RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3](https://datatracker.ietf.org/doc/html/rfc8446) (August 2018).

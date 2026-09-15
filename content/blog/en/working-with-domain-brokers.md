@@ -73,7 +73,7 @@ The word "broker" undersells the job. A good one is not a middleman who forwards
 | Terms to settle | Spending limit, identity disclosure, upfront and success fees | Asking strategy, exclusivity, commission, and any post-engagement fee obligation |
 | Incentive to examine | A percentage of purchase price can rise as the buyer spends more | A commission rewards a completed sale; speed and highest price may conflict |
 
-Sedo's [published brokerage services](#ref-sedo-brokerage) illustrate the two roles. The incentive comparison is a reason to ask how your interests are represented, not an allegation about any provider. Ask who the broker represents, who pays them, and whether they receive any payment from the other side or a recommended service.
+Sedo's [published brokerage services](https://sedo.com/us/what-we-offer/price-list/#:~:text=Brokerage%20Services) illustrate the two roles. The incentive comparison is a reason to ask how your interests are represented, not an allegation about any provider. Ask who the broker represents, who pays them, and whether they receive any payment from the other side or a recommended service.
 
 ![Editorial illustration of two mirrored brokerage flows: on the left a sell-side broker reaching out to a buyer, on the right a buy-side broker working anonymously for a masked client to acquire a held domain](../../assets/working-with-domain-brokers-03-inbound-outbound.jpg)
 
@@ -87,7 +87,7 @@ If you are the flipper, you are usually on the sell side. A broker who approache
 
 ## What commissions look like
 
-There is no universal brokerage rate. As a dated example, Sedo's price list, checked September 15, 2026, lists a **USD 99 one-time buyer brokerage fee plus 20% of the gross sale price**, subject to its minimum fee. Its seller brokerage lists **15% of the gross sale price on a successful sale and no upfront cost**. Minimums, taxes, and optional publicity-waiver charges also apply. These are [Sedo's brokerage terms](#ref-sedo-brokerage), not a market average or its separate self-service marketplace rates.
+There is no universal brokerage rate. As a dated example, Sedo's price list, checked September 15, 2026, lists a **USD 99 one-time buyer brokerage fee plus 20% of the gross sale price**, subject to its minimum fee. Its seller brokerage lists **15% of the gross sale price on a successful sale and no upfront cost**. Minimums, taxes, and optional publicity-waiver charges also apply. These are [Sedo's brokerage terms](https://sedo.com/us/what-we-offer/price-list/#:~:text=Brokerage%20Services), not a market average or its separate self-service marketplace rates.
 
 A few things to pin down in writing before you sign anything:
 
@@ -122,7 +122,7 @@ High-value handovers involve counterparty, escrow, registrar, DNS, and legal ris
 
 ## Sources and further reading
 
-- <span id="ref-sedo-brokerage"></span>Sedo — [Price list](https://sedo.com/us/what-we-offer/price-list/#:~:text=Brokerage%20Services), “Brokerage Services,” buyer and seller fees and exclusions. Fetched 2026-09-15.
+- Sedo — [Price list](https://sedo.com/us/what-we-offer/price-list/#:~:text=Brokerage%20Services), “Brokerage Services,” buyer and seller fees and exclusions. Fetched 2026-09-15.
 
 - Wikipedia — [Domain aftermarket](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=the%20secondary%20resale%20market%20for%20Internet%20domain%20names) (definition of the secondary resale market where brokers operate)
 - Wikipedia — [Domain name transfer](https://en.wikipedia.org/wiki/Domain_name_transfer#:~:text=A%20domain%20name%20transfer%20is%20the%20process%20of%20changing%20the%20designated%20registrar%20of%20a%20domain%20name) (transfer process and the authentication code handover a broker coordinates)
