@@ -4,8 +4,9 @@ date: '2026-09-15'
 language: en
 tags: ['domains', 'guide']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-basics
+ogImage: ../../assets/set-up-email-with-your-own-domain-og.jpg
 format: guide
 description: "Set up email on your domain by choosing an email host, verifying ownership, adding the required DNS records, and testing sending and receiving."
 keywords: ['how to create an email with your own domain', 'custom email domain', 'how to set up email with your own domain', 'domain email setup', 'email hosting', 'MX records', 'SPF', 'DKIM', 'DMARC', 'email domain verification', 'custom domain mailbox']
@@ -51,6 +52,8 @@ For an existing mail service, decide how to preserve old messages, recreate alia
 
 ## Verify the domain, then route incoming mail
 
+![MX records identify the receiving mail host for a custom-domain address.](../../assets/set-up-email-with-your-own-domain-01-routing.jpg)
+
 Domain verification proves control to the email provider. In Google's documented TXT method, copy the unique verification value from **Account → Domains → Manage domains**, add it in DNS, and return to the Admin console to verify. Keep the exact record name and value supplied to your account. [Follow Google's TXT-verification procedure.](#ref-verification)
 
 Verification does not route mail. When the mailboxes are ready, make the planned **MX-record** change. Preserve unrelated TXT, A, AAAA, and CNAME records.
@@ -62,6 +65,8 @@ Google's normal setup calls for removing other MX records during the switch. Do 
 Check public MX answers against the intended values. Google documents Admin Toolbox Dig for this check and allows up to 72 hours for recognition. Fix incorrect records rather than waiting on them. [See its troubleshooting steps.](#ref-mx-setup)
 
 ## Authenticate outgoing mail
+
+![SPF, DKIM, and DMARC address different parts of outgoing email authentication.](../../assets/set-up-email-with-your-own-domain-02-authentication.jpg)
 
 Receiving a message proves only one direction works. Configure the mechanisms your host supplies for sending, and account for other legitimate senders too.
 

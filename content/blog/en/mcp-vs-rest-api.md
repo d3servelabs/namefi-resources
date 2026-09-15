@@ -6,6 +6,7 @@ tags: ['ai-agents', 'domains', 'explainer']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
+ogImage: ../../assets/mcp-vs-rest-api-og.jpg
 format: explainer
 description: "Compare MCP, REST APIs, and CLIs for AI agents: tool discovery, context use, authentication, and the cases where each approach fits."
 keywords: ["mcp vs api", "mcp vs rest api", "mcp vs cli", "why use mcp", "mcp vs openapi"]
@@ -50,6 +51,8 @@ This post explains that design rationale in detail. For configuration, use [How 
 It is also deliberately the *protocol* question, sitting upstream of two adjacent ones: what a [registrar](/en/glossary/registrar/) has to ship before an agent can use it at all ([What Is an Agent-Native Domain Registrar?](/en/blog/agent-native/)) and which platforms expose which interface today ([AI-Agentic Domain Platforms: The 2026 Guide](/en/blog/ai-domain-platforms/)).
 
 ## The premise: an integration nobody wrote
+
+![MCP and REST expose different interfaces to tools and services.](../../assets/mcp-vs-rest-api-01-interfaces.jpg)
 
 A common REST integration follows a familiar sequence: a developer finds the docs, reads them once, writes client code by hand, and ships it. After that the integration runs unattended — but only because a person already did the interpretive work, months ago, off the clock.
 

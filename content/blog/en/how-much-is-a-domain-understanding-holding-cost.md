@@ -9,6 +9,7 @@ draft: false
 cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 41
+ogImage: ../../assets/how-much-is-a-domain-understanding-holding-cost-og.jpg
 format: guide
 description: "Compare domain registration, renewal, transfer, and recovery costs, and learn how to spot introductory prices that hide a higher ongoing bill."
 keywords: ["how much does a domain name cost", "domain name cost", "domain renewal cost", "how much is a domain", "domain holding cost", "domain transfer fees", "domain redemption fees", "introductory domain pricing", "registrar pricing", "domain privacy costs"]
@@ -39,6 +40,8 @@ That is the first thing to understand before you register a name. The checkout p
 A promotional first year can be legitimate and still lead to a higher annual commitment. Compare both prices before checkout to understand the long-term [holding cost](/en/glossary/holding-cost/).
 
 ## The number you see first is not the cost
+
+![Compare registration and renewal alongside transfer and recovery charges.](../../assets/how-much-is-a-domain-understanding-holding-cost-01-bills.jpg)
 
 Most people ask "how much is a domain?" and expect one answer. A better question is: "What will this name cost if I keep it for three years and something goes wrong once?"
 
@@ -86,7 +89,7 @@ The four domain operations to compare are registration, renewal, transfer, and r
 
 **Renewal** is the cost of continuing control. A small per-domain difference becomes more significant when multiplied across a portfolio. This is why domain investors obsess over [renewal cost and sell-through rate](/en/blog/domain-renewal-costs-and-sell-through-rate/).
 
-**Transfer** is what you pay to move the domain to another registrar. A transfer may include a one-year term extension, but that is not a universal shortcut you should assume without checking. Also watch transfer locks, recent-registration limits, authorization-code handling, and whether the transfer changes your DNS or privacy settings.
+**Transfer** is what you pay to [move the domain to another registrar](/en/blog/transfer-domain-to-another-registrar/). A transfer may include a one-year term extension, but that is not a universal shortcut you should assume without checking. Also watch transfer locks, recent-registration limits, authorization-code handling, and whether the transfer changes your DNS or privacy settings.
 
 **Restore or redemption** is the expensive panic button. ICANN's recovery policy says gTLD registries generally must offer a [30-day Redemption Grace Period](https://www.icann.org/resources/pages/errp-2013-02-28-en#Redemption) after deletion, during which the deleted registration may be restored through the deleting registrar. During that period, recovery can cost much more than a normal renewal. The lesson is simple: auto-renew is cheaper than rescue.
 

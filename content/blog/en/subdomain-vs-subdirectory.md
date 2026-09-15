@@ -4,8 +4,9 @@ date: '2026-09-15'
 language: en
 tags: ['domains', 'guide', 'seo']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-basics
+ogImage: ../../assets/subdomain-vs-subdirectory-og.jpg
 format: guide
 description: "Compare subdomains and subdirectories for content, apps, and international sites, with practical management tradeoffs and Google's stated SEO guidance."
 keywords: ['subdomain vs subdirectory', 'subdomain vs subfolder', 'subdomain or subdirectory', 'subdomain SEO', 'subdirectory SEO', 'blog subdomain', 'website URL structure', 'international website URLs', 'subdomain migration', 'subfolder vs subdomain SEO']
@@ -34,6 +35,8 @@ relatedGlossary:
 For a blog run inside the same publishing system as your main site, a subdirectory is a reasonable starting point. For an independently operated application, a subdomain may fit better. Those are practical planning judgments, not predictions about search performance. Start with the work each choice creates for your team.
 
 ## Compare the URLs and the management work
+
+![The blog label appears before the domain in a subdomain and after it in a subdirectory.](../../assets/subdomain-vs-subdirectory-01-structure.jpg)
 
 Here is an illustrative pair for the same article:
 

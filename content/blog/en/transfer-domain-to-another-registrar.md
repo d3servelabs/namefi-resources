@@ -4,8 +4,9 @@ date: '2026-09-15'
 language: en
 tags: ['domains', 'guide']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-basics
+ogImage: ../../assets/transfer-domain-to-another-registrar-og.jpg
 format: guide
 description: "Plan a registrar transfer, check eligibility and locks, obtain the required authorization, and verify website and email continuity after the move."
 keywords: ['how to transfer a domain to another registrar', 'domain transfer', 'cross registrar transfer', 'registrar transfer checklist', 'switch domain registrar', 'domain transfer lock', 'AuthInfo code', 'EPP code', 'domain transfer DNS', 'domain transfer email continuity', 'registrar change']
@@ -55,6 +56,8 @@ Ask the current registrar to identify the lock and its release condition before 
 Also inspect the expiration date. ICANN says expiration alone is not grounds to deny a transfer, while a domain in the Redemption Grace Period must first be restored by its current registrar. [See the expiration FAQ.](#ref-expiration) If time is tight, resolve the domain's current status and renewal options before assuming a transfer will finish in time.
 
 ## Prepare DNS and account access
+
+![One domain holder changes registrars while website and email services are checked separately.](../../assets/transfer-domain-to-another-registrar-01-continuity.jpg)
 
 Create a before-transfer record containing the nameservers, active DNS provider, DNS records, DNSSEC status, and the accounts responsible for the website and mail. Confirm you can sign in to both registrar accounts and receive the current registrar's messages.
 

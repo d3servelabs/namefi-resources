@@ -8,6 +8,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
+ogImage: ../../assets/what-are-xstocks-og.jpg
 format: explainer
 description: "Understand what xStocks are, how they work, how they differ from owning shares, and the custody, trading, and eligibility risks to check."
 keywords: ["xstocks", "what are xstocks", "tokenized stocks", "xstocks vs stocks"]
@@ -50,6 +51,8 @@ The [issuer-wide documentation](#ref-xstocks-overview) lists Ethereum, Solana, A
 ---
 
 ## How xStocks Work
+
+![Read the token terms to understand the connection between custody, shares, and token rights.](../../assets/what-are-xstocks-01-rights.jpg)
 
 The mechanics are simpler than the marketing sometimes makes them sound:
 

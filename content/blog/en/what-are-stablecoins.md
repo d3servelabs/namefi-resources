@@ -7,6 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 cluster: web3-foundations
+ogImage: ../../assets/what-are-stablecoins-og.jpg
 format: explainer
 description: "Learn how stablecoins aim to track a reference asset, compare fiat-backed, crypto-backed, and algorithmic designs, and understand their risks."
 keywords: ["stablecoins", "what is a stablecoin", "types of stablecoins", "how stablecoins work"]
@@ -41,6 +42,8 @@ For a redeemable dollar token, the peg depends partly on eligible participants b
 For example, [Circle's USDC terms for users outside the EEA](#ref-usdc-terms) condition direct redemption on eligibility and a Circle Mint account in good standing. Selling USDC on an exchange is a separate transaction at an available market price. A wallet balance, a reserve report, and a direct redemption right answer different questions.
 
 ## How Do Stablecoins Maintain Their Value?
+
+![Fiat-backed, crypto-backed, and algorithmic mechanisms expose holders to different risks.](../../assets/what-are-stablecoins-01-mechanisms.jpg)
 
 Not all stablecoins are created equal. To try to maintain a peg, they use different reserve, collateral, redemption, and incentive mechanisms. Three broad categories are useful, although some products use hybrid designs:
 

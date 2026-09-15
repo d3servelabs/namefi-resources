@@ -37,6 +37,8 @@ A **domain name** is the easy-to-remember address you type into a web browser to
 
 The internet relies on a system called the **[Domain Name System](/en/glossary/dns/) (DNS)**, which functions like a giant phonebook. Every website is hosted on a server with a numerical [IP address](/en/glossary/ip-address/) (like `192.0.2.1`), but numbers are hard to remember—so we use domain names instead. When you type a domain name into your browser, the DNS translates it into the corresponding IP address, allowing your browser to load the correct website.
 
+Registration provides the name; [web hosting provides the service behind the website](/en/blog/domain-vs-hosting/). Registering the name alone does not supply a website or mailbox.
+
 ---
 
 ## **Understanding Domain Structure**
@@ -62,6 +64,8 @@ A **domain name** identifies a name in DNS. A **URL** identifies a resource and 
 | Registrable domain | `example.com` | The registered name used in this example |
 | Path | `/guides/domains` | Request this resource from the host |
 | Query | `lang=en` | Pass a parameter whose meaning the website defines |
+
+For a site-organization decision such as `blog.example.com` versus `example.com/blog`, see [subdomains versus subdirectories](/en/blog/subdomain-vs-subdirectory/).
 
 The path and query are not part of the domain name. Changing them can request a different page without changing the domain. MDN explains these [URL components](#ref-url-parts) in its web mechanics guide.
 

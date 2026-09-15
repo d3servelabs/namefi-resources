@@ -65,7 +65,7 @@ The technical cousin of social engineering. The attacker phishes the registrar a
 
 **Controls that reduce the risk:**
 
-- **Phishing-resistant 2FA on the registrar account.** TOTP via an authenticator app is stronger than password-only access; hardware keys using WebAuthn/FIDO2 are the strongest widely available option. SMS-based 2FA remains vulnerable to SIM swapping. The U.S. government's [CISA guidance](https://www.cisa.gov/secure-our-world/turn-mfa) recommends phishing-resistant MFA where available.
+- **Phishing-resistant MFA on the registrar account.** Use FIDO2/WebAuthn authentication, such as a security key, where supported. It binds authentication to the site's name to resist phishing. If that option is unavailable, TOTP from an authenticator app adds protection beyond a password alone, but the code can still be phished: it is a fallback, not phishing-resistant authentication. [NIST distinguishes WebAuthn's phishing resistance from OTP authentication](#ref-nist-mfa). SMS-based 2FA also remains vulnerable to SIM swapping.
 - **A registrar that supports per-domain locks** in addition to per-account locks, so a single account compromise cannot unlock everything at once.
 - **Audit trail and alerting** on contact changes, nameserver changes, and transfer requests. The attacker's first move is to silence those alerts; if they fire to a channel the attacker does not control, you get warning time.
 
@@ -134,6 +134,7 @@ That can reduce exposure to registrar-dashboard credential theft or support-driv
 
 ## Sources and further reading
 
+- <span id="ref-nist-mfa"></span>NIST — [SP 800-63B-4, Authenticator and Verifier Requirements](https://pages.nist.gov/800-63-4/sp800-63b/authenticators/#sfotp), sections 3.1.4 and 3.2.5: OTP authentication is not phishing-resistant; WebAuthn uses verifier name binding. Fetched 2026-09-15.
 - <span id="ref-mandiant-dns"></span>Mandiant — [Global DNS Hijacking Campaign: DNS Record Manipulation at Scale](https://cloud.google.com/blog/topics/threat-intelligence/global-dns-hijacking-campaign-dns-record-manipulation-at-scale#:~:text=Technique%201), techniques 1–2 and detection/mitigation recommendations. Fetched 2026-09-15.
 
 - ICANN — [Transfer Dispute Resolution Policy scope](https://www.icann.org/en/contracted-parties/consensus-policies/uniform-domain-name-dispute-resolution-policy/domain-name-dispute-resolution-policies-25-02-2012-en#:~:text=The%20Transfer%20Dispute%20Resolution%20Policy%20(TDRP)%20applies%20to%20transactions%20in%20which%20a%20domain%2Dname%20holder%20transfers%20or%20attempts%20to%20transfer%20a%20domain%20name%20to%20a%20new%20registrar.).

@@ -58,9 +58,9 @@ HTTPS wraps HTTP in TLS — Transport Layer Security — whose current version, 
 
 - **Confidentiality.** The traffic is encrypted, so an observer on the path sees only which server you connected to and roughly how much data moved — not the URLs, cookies, credentials, or content.
 - **Integrity.** TLS authenticates protected traffic with a cryptographic integrity check, so altered data is rejected rather than silently delivered. Modern TLS uses authenticated encryption; this is more specific than simply attaching a [hash](/en/glossary/hash-function/) to a message.
-- **Authentication.** The server proves, using a certificate and a [private key](/en/glossary/private-key/), that it is the legitimate holder of the domain name you asked for — this is the guarantee the padlock actually represents.
+- **Authentication.** The server proves possession of the [private key](/en/glossary/private-key/) for a certificate the browser trusts for the requested hostname. That is [authentication of the connection](#ref-https-authentication), not proof of rightful domain ownership or an honest business. Mandiant documented [DNS hijackers obtaining valid certificates](#ref-mandiant-certificates) for redirected services, allowing browsers to connect without certificate errors.
 
-A useful way to remember the division of labor: encryption seals the envelope, integrity checks catch a resealed envelope, and authentication confirms you are talking to the right address at all.
+A useful way to remember the division of labor: encryption seals the envelope, integrity checks detect alterations, and authentication checks the recipient's certificate and proof of its private key against the requested hostname.
 
 ## Ports: the internet's door numbers
 
@@ -138,6 +138,8 @@ The padlock is the last link in the chain. The domain is the first.
 ## Sources and further reading
 
 - <span id="ref-http-semantics"></span>IETF — [RFC 9110, sections 4.2.1–4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2), HTTP/HTTPS schemes, default ports, confidentiality, integrity, and authentication. Fetched 2026-09-15.
+- <span id="ref-https-authentication"></span>IETF — [RFC 9110, section 4.3.3](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.3.3), HTTPS authority based on certificate trust and use of the corresponding private key. Fetched 2026-09-15.
+- <span id="ref-mandiant-certificates"></span>Mandiant — [Global DNS Hijacking Campaign: DNS Record Manipulation at Scale](https://cloud.google.com/blog/topics/threat-intelligence/global-dns-hijacking-campaign-dns-record-manipulation-at-scale#:~:text=certbot%20is%20used), technique 1, steps 6–7: attackers obtaining certificates after changing DNS records. Fetched 2026-09-15.
 
 - IETF — [RFC 2818: HTTP Over TLS](https://datatracker.ietf.org/doc/html/rfc2818) — defines HTTPS and the default port 443.
 - IETF — [RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3](https://datatracker.ietf.org/doc/html/rfc8446) (August 2018).

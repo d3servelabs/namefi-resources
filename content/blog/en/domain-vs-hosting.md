@@ -4,8 +4,9 @@ date: '2026-09-15'
 language: en
 tags: ['domains', 'guide']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-basics
+ogImage: ../../assets/domain-vs-hosting-og.jpg
 format: guide
 description: "Understand the difference between a domain name and web hosting, what each provides, and how to connect them when using different providers."
 keywords: ['domain vs hosting', 'domain name vs web hosting', 'do I need hosting if I have a domain', 'domain and hosting difference', 'connect domain to hosting', 'website hosting', 'domain registration', 'DNS hosting', 'email hosting', 'custom domain']
@@ -35,6 +36,8 @@ If you already have a domain, the next question is whether your website builder 
 
 ## Domain, hosting, DNS, and email: what each provides
 
+![A domain name identifies the site; hosting provides the files and service.](../../assets/domain-vs-hosting-01-comparison.jpg)
+
 Think of these as separate jobs, even when one company sells them in a bundle:
 
 | Service | What it provides | What to look for in your account |
@@ -51,6 +54,8 @@ The web-hosting role includes both straightforward file delivery and sites whose
 Use the table to inspect a bundle before buying an extra plan. Ask whether it includes a published website, supports your custom domain, and provides actual mailboxes. A domain listed in the account does not answer those questions.
 
 ## Separate providers and the request path
+
+![The browser first looks up the address through DNS, then requests the page from the web host.](../../assets/domain-vs-hosting-02-request-path.jpg)
 
 Consider an illustrative setup: you keep `example.com` at your registrar, publish a site with GitHub Pages, and use an email provider for `hello@example.com`. The names are examples, not accounts to configure.
 

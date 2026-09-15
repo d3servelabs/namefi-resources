@@ -45,6 +45,8 @@ relatedGlossary:
 
 A, CNAME, MX, and TXT are defined in RFC 1035. AAAA is defined in RFC 3596. [1](#ref-records) [2](#ref-ipv6)
 
+A [custom-domain email setup](/en/blog/set-up-email-with-your-own-domain/) uses these records together: MX directs incoming mail, while provider-supplied records support domain verification and sender authentication.
+
 ## Reading an A record and a CNAME
 
 An A record points to an IPv4 [IP address](/en/glossary/ip-address/); a CNAME points to another name whose records must then be resolved. A CNAME is a DNS alias, not a web-page redirect: it does not specify an HTTP redirect destination or a URL path. Choose the record your hosting provider asks for rather than treating these types as interchangeable. [1](#ref-records)
