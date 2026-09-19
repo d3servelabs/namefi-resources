@@ -14,3 +14,5 @@ The search-opportunity set uses prefixes `how-to-transfer-a-domain-to-a-buyer`, 
 ## Exposure writing plan
 
 The September 15, 2026 English content batch adds covers and inline illustrations for `domain-vs-hosting`, `set-up-email-with-your-own-domain`, `subdomain-vs-subdirectory`, `transfer-domain-to-another-registrar`, `mcp-vs-rest-api`, `what-are-xstocks`, `what-are-stablecoins`, and `how-much-is-a-domain-understanding-holding-cost`. Covers are 1200 × 630 pixels. Inline illustrations are 1200 × 675 pixels, except the two `domain-vs-hosting` diagrams at 1200 × 800 pixels to preserve their labels. The same house style and official-logo compositing apply.
+
+The September 19, 2026 Blockchain Concepts Tier-2 batch adds `top-zk-proof-systems`, `top-fhe-schemes`, and `top-rollup-types` prefixes: one 1200 × 630 cover and one 1200 × 675 illustration per comparison section (five, five, and four respectively). These use the same house-style harness and official-logo compositing.

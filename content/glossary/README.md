@@ -9,3 +9,5 @@ glossary/
 ```
 
 Follow the root agent guide and `.claude/rules/content.md`. Glossary titles are canonical terms; follow `.claude/rules/glossary.md` and regenerate `content/termbase.json` when they change.
+
+The English inventory records the Blockchain Concepts Tier-2 stubs and their source articles.

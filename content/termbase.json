@@ -223,6 +223,13 @@
     },
     "level": 1
   },
+  "bfv": {
+    "en": "BFV",
+    "titles": {
+      "en": "BFV"
+    },
+    "level": 1
+  },
   "bgp-hijack": {
     "en": "BGP Hijack",
     "titles": {
@@ -236,6 +243,13 @@
       "ko": "BGP 하이재킹",
       "ja": "BGPハイジャック",
       "ta": "BGP கைப்பற்றல்"
+    },
+    "level": 1
+  },
+  "bgv": {
+    "en": "BGV",
+    "titles": {
+      "en": "BGV"
     },
     "level": 1
   },
@@ -316,6 +330,13 @@
       "ko": "검열 불가",
       "ja": "検閲耐性",
       "ta": "தணிக்கை-இல்லா சுதந்திரம்"
+    },
+    "level": 1
+  },
+  "ckks": {
+    "en": "CKKS",
+    "titles": {
+      "en": "CKKS"
     },
     "level": 1
   },
@@ -1138,6 +1159,13 @@
     },
     "level": 1
   },
+  "groth16": {
+    "en": "Groth16",
+    "titles": {
+      "en": "Groth16"
+    },
+    "level": 1
+  },
   "gtld": {
     "en": "gTLD (Generic Top-Level Domain)",
     "titles": {
@@ -1151,6 +1179,13 @@
       "ko": "gTLD (일반 최상위 도메인)",
       "ja": "gTLD（ジェネリックトップレベルドメイン）",
       "ta": "gTLD (பொதுவான உச்ச-நிலை டொமெயின்)"
+    },
+    "level": 1
+  },
+  "halo2": {
+    "en": "Halo2",
+    "titles": {
+      "en": "Halo2"
     },
     "level": 1
   },
@@ -1527,6 +1562,13 @@
     },
     "level": 1
   },
+  "nova": {
+    "en": "Nova",
+    "titles": {
+      "en": "Nova"
+    },
+    "level": 1
+  },
   "on-chain": {
     "en": "On-chain",
     "titles": {
@@ -1595,6 +1637,13 @@
       "ko": "피싱",
       "ja": "フィッシング",
       "ta": "ஃபிஷிங் (Phishing)"
+    },
+    "level": 1
+  },
+  "plonk": {
+    "en": "PLONK",
+    "titles": {
+      "en": "PLONK"
     },
     "level": 1
   },
@@ -2057,6 +2106,13 @@
     },
     "level": 1
   },
+  "stark": {
+    "en": "STARK",
+    "titles": {
+      "en": "STARK"
+    },
+    "level": 1
+  },
   "subdomain": {
     "en": "Subdomain",
     "titles": {
@@ -2070,6 +2126,13 @@
       "ko": "서브도메인",
       "ja": "サブドメイン",
       "ta": "துணை-டொமைன்"
+    },
+    "level": 1
+  },
+  "tfhe": {
+    "en": "TFHE",
+    "titles": {
+      "en": "TFHE"
     },
     "level": 1
   },
@@ -2269,6 +2332,20 @@
       "ko": "URS",
       "ja": "URS（統一迅速停止手続）",
       "ta": "URS"
+    },
+    "level": 1
+  },
+  "validium": {
+    "en": "Validium",
+    "titles": {
+      "en": "Validium"
+    },
+    "level": 1
+  },
+  "volition": {
+    "en": "Volition",
+    "titles": {
+      "en": "Volition"
     },
     "level": 1
   },
