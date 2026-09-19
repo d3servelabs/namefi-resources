@@ -49,3 +49,7 @@ The three articles are approved for publication on September 14, 2026 (UTC publi
 Four new English articles cover domain versus hosting, custom-domain email setup, subdomain versus subdirectory, and registrar transfers. They are marked publishable in the proposed branch and remain subject to PR review; existing articles are updated in place for their assigned search questions. Source dates and citations appear in each article.
 
 Inline citations link directly to their original sources. Keep the detailed source notes at the end of each article; do not depend on raw HTML citation anchors, which the production renderer may strip.
+
+## Blockchain Concepts Tier 2
+
+The September 19, 2026 English batch adds `top-zk-proof-systems.md`, `top-fhe-schemes.md`, and `top-rollup-types.md` to the Blockchain Concepts series at orders 60, 70, and 80. Each comparison names its trade-offs, cites primary technical sources in the body, and links to the associated glossary definitions. The illustrations live in `../../assets/`. These English articles publish independently of future translations.

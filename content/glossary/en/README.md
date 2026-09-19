@@ -38,3 +38,7 @@ en/
 ```
 
 The search writing plan expands `dns-propagation` and `dns-record-types` in place. Their titles remain canonical concept names; descriptions and body sections answer search questions. Sources are specific primary references.
+
+## Blockchain Concepts Tier 2
+
+The September 19, 2026 comparison articles add eleven English level-1 stubs: `groth16`, `plonk`, `stark`, `halo2`, `nova`, `bfv`, `bgv`, `ckks`, `tfhe`, `validium`, and `volition`. Each defines its own concept, records primary sources, and links to its comparison article. Regenerate `../../termbase.json` when these entries change.

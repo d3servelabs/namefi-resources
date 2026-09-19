@@ -9,3 +9,5 @@ blog/
 ```
 
 See `en/README.md` for the existing search-opportunity article set and the four new setup/comparison articles. Approved English articles are published first; translated counterparts can be added from these sources. The application supplies headings and bylines from frontmatter.
+
+The English inventory also tracks the Blockchain Concepts Tier-2 comparison batch and its shared illustrations.
