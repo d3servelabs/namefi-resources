@@ -37,7 +37,7 @@ relatedGlossary:
 
 ## ما هو سيرفر Namefi MCP؟
 
-Namefi بتشغّل سيرفر MCP واحد لكل واجهة API بتاعتها، على `https://api.namefi.io/mcp`، من خلال نقل Streamable HTTP. بدل ما الوكيل يكتب استدعاءات REST يدويًا اعتمادًا على توثيق متلصق في محادثة، بيتصل مرة واحدة وبيستلم أداة مكتوبة الأنواع لكل عملية بتحددها واجهة API، ومتولدة مباشرة من مواصفات OpenAPI 3 الخاصة بـ Namefi على [api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json)، وبالتالي كتالوج MCP وREST API ما يقدروش يخرجوا عن بعض.
+Namefi بتشغّل [سيرفر MCP](https://namefi.io/mcp) واحد لكل واجهة API بتاعتها، على `https://api.namefi.io/mcp`، من خلال نقل Streamable HTTP. بدل ما الوكيل يكتب استدعاءات REST يدويًا اعتمادًا على توثيق متلصق في محادثة، بيتصل مرة واحدة وبيستلم أداة مكتوبة الأنواع لكل عملية بتحددها واجهة API، ومتولدة مباشرة من مواصفات OpenAPI 3 الخاصة بـ Namefi على [api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json)، وبالتالي كتالوج MCP وREST API ما يقدروش يخرجوا عن بعض.
 
 واصف اكتشاف قابل للقراءة آليًا على [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json) بيسمح للوكيل يلاقي السيرفر من غير ما إنسان ينسخ رابطًا يدويًا في ملف إعداد: بيسمي السيرفر `namefi-api`، وبيبلغ عن نقل `streamable-http`، وبيعلن `apiKey`/`x-api-key` كمصادقة للاتصال. Namefi، وهي [مُسجِّل](/ar/glossary/registrar/) معتمد من [ICANN](/ar/glossary/icann/)، بتنشر كمان العمليات نفسها كنقاط نهاية HTTPS عادية على [namefi.io/llms.txt](https://namefi.io/llms.txt)، للوكلاء والسكريبتات اللي ما بتتكلمش MCP.
 

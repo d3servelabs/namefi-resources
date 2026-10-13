@@ -46,7 +46,7 @@ The tell: does the AI ever tell you a domain is *registered*, with an order you 
 
 ## What You Need Before You Start
 
-You need two things: an agent connected to a domain registrar's API, and a way to pay. On Namefi, that means an MCP-capable client — Claude, Cursor, Windsurf, and several others all work — pointed at Namefi's MCP server, authenticated with an API key or a crypto [wallet](/en/glossary/wallet/). The exact configuration is client-specific and out of scope here; [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) is the canonical setup guide, and [Buy a Domain with Claude: Namefi MCP Step-by-Step Guide](/en/blog/claude-mcp-domains/) is the command-by-command version for Claude specifically. This article assumes that part is done, and picks up where those leave off: the conversation itself.
+You need two things: an agent connected to a domain registrar's API, and a way to pay. On Namefi, that means an MCP-capable client — Claude, Cursor, Windsurf, and several others all work — pointed at Namefi's [MCP server](https://namefi.io/mcp), authenticated with an API key or a crypto [wallet](/en/glossary/wallet/). The exact configuration is client-specific and out of scope here; [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) is the canonical setup guide, and [Buy a Domain with Claude: Namefi MCP Step-by-Step Guide](/en/blog/claude-mcp-domains/) is the command-by-command version for Claude specifically. This article assumes that part is done, and picks up where those leave off: the conversation itself.
 
 ## The Full Conversation, Step by Step
 

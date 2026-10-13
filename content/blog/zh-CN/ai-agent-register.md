@@ -41,7 +41,7 @@ relatedGlossary:
 
 要让智能体代你注册域名、而无需你亲自填写表单，必须同时满足两项条件。第一，智能体需要一种*发现并调用* Namefi API 的方式：可以是让 AI 客户端连接外部工具服务器并查看已定义可调用操作清单的开放标准 [Model Context Protocol](https://modelcontextprotocol.io)（MCP）；若智能体是脚本而不是对话式工具，也可以直接发出 HTTP 请求。第二，智能体需要*支出授权*：一个关联有资金余额的 API 密钥，或一个可当场签署付款的加密[钱包](/zh-CN/glossary/wallet/)。本指南的全部内容都围绕这两部分展开。
 
-Namefi 为整个 API 运行一个 MCP 服务器，地址为 `https://api.namefi.io/mcp`，使用 Streamable HTTP 传输。智能体——或配置它的人——无需读到这一页也能发现它：我们在 [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json) 发布机器可读的描述文件，其中将服务器命名为 `namefi-api`，并将其传输方式列为 `streamable-http`。下文的每个客户端都连接到同一个 URL；不同之处只在于各客户端的配置文件或命令行如何让你指向它。
+Namefi 为整个 API 运行一个 [MCP 服务器](https://namefi.io/mcp)，地址为 `https://api.namefi.io/mcp`，使用 Streamable HTTP 传输。智能体——或配置它的人——无需读到这一页也能发现它：我们在 [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json) 发布机器可读的描述文件，其中将服务器命名为 `namefi-api`，并将其传输方式列为 `streamable-http`。下文的每个客户端都连接到同一个 URL；不同之处只在于各客户端的配置文件或命令行如何让你指向它。
 
 ## 通用的五步流程
 

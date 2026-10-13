@@ -105,7 +105,7 @@ MCP 另有独立的发现文件，与 `llms.txt` 完全分开：[namefi.io/.well
 
 这里值得准确说明两者各自的作用。`llms.txt` 是一份文档：智能体抓取一次后，就知道 API 是什么以及更深层资源在哪里；在某个主体根据它采取行动之前，它只是静态文本。[MCP](https://modelcontextprotocol.io) 按该协议自己的描述，是“一项用于将 AI 应用连接到外部系统的开源标准”——客户端会与服务器建立实时会话，并在此会话中列出和调用可执行工具。
 
-Namefi 的文件直接展示了这种关系：`llms.txt` 告诉智能体，`api.namefi.io/mcp` 上存在 MCP 服务器，并提供 `claude mcp add` 命令以建立连接。读取文件，得知存在实时工具接口，连接，然后行动。跳过 `llms.txt`、直接使用 MCP 的智能体仍可以通过 `.well-known/mcp/servers.json` 找到该服务器——但该描述符的 `documentation` 字段会指回 `llms.txt`，因此两者很少真正彼此孤立运行。
+Namefi 的文件直接展示了这种关系：`llms.txt` 告诉智能体，`api.namefi.io/mcp` 上存在 [MCP 服务器](https://namefi.io/mcp)，并提供 `claude mcp add` 命令以建立连接。读取文件，得知存在实时工具接口，连接，然后行动。跳过 `llms.txt`、直接使用 MCP 的智能体仍可以通过 `.well-known/mcp/servers.json` 找到该服务器——但该描述符的 `documentation` 字段会指回 `llms.txt`，因此两者很少真正彼此孤立运行。
 
 ## 给其他 API 供应商的建议
 

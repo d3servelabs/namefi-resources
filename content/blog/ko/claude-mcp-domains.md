@@ -31,7 +31,7 @@ relatedGlossary:
   - /ko/glossary/x402/
 ---
 
-이 가이드를 끝까지 따라 하면 [ICANN](/ko/glossary/icann/)에 실제 도메인을 등록하고, DNS가 자신이 구축 중인 서비스로 향하도록 설정할 수 있습니다. 이 모든 과정은 브라우저 결제, 장바구니, CAPTCHA 없이 Claude와의 대화만으로 완료됩니다. 이 글은 Namefi 팀이 직접 작성한 [Namefi](https://namefi.io) MCP 서버 설정 가이드로, [namefi.io/llms.txt](https://namefi.io/llms.txt)와 [docs.namefi.io](https://docs.namefi.io)에서 에이전트용으로 공개한 동일한 API를 사람이 이해하기 쉽게 설명합니다. 아직 확정되거나 공개되지 않은 세부 사항은 추측하지 않고 명확하게 미확정이라고 표시합니다.
+이 가이드를 끝까지 따라 하면 [ICANN](/ko/glossary/icann/)에 실제 도메인을 등록하고, DNS가 자신이 구축 중인 서비스로 향하도록 설정할 수 있습니다. 이 모든 과정은 브라우저 결제, 장바구니, CAPTCHA 없이 Claude와의 대화만으로 완료됩니다. 이 글은 Namefi 팀이 직접 작성한 [Namefi](https://namefi.io) [MCP 서버](https://namefi.io/mcp) 설정 가이드로, [namefi.io/llms.txt](https://namefi.io/llms.txt)와 [docs.namefi.io](https://docs.namefi.io)에서 에이전트용으로 공개한 동일한 API를 사람이 이해하기 쉽게 설명합니다. 아직 확정되거나 공개되지 않은 세부 사항은 추측하지 않고 명확하게 미확정이라고 표시합니다.
 
 “[AI 에이전트](/ko/glossary/ai-agent/)로 도메인 등록하기”를 다루는 서드파티 가이드도 있습니다. [널리 알려진 한 예시](https://dev.to/marsheer/how-to-register-a-domain-name-with-your-ai-agent-no-human-needed-h26)는 Cloudflare Registrar API를 기반으로 리셀러가 구축한 다른 MCP 서버를 사용해 이 방식을 보여 줍니다. MCP 자체의 작동 원리는 공급자에 관계없이 같습니다. 하지만 이 가이드는 Namefi 자체 MCP 서버와 인증 모델, [토큰화 도메인](/ko/glossary/tokenized-domain/) 옵션에만 초점을 맞추며, 서드파티 설명이 아니라 Namefi 문서를 기준으로 검증했습니다.
 

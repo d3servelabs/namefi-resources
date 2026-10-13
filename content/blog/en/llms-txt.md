@@ -133,7 +133,7 @@ A few choices look deliberate. The mandatory agent policy and MCP setup come bef
 
 It's worth being precise about what each piece does. `llms.txt` is a document — an agent fetches it once and knows what the API is and where the deeper resources live; it's inert text until something acts on what it says. [MCP](https://modelcontextprotocol.io), in the protocol's own description, is "an open-source standard for connecting AI applications to external systems" — a protocol through which a compatible client discovers and invokes callable tools.
 
-Namefi's file demonstrates the relationship directly: `llms.txt` tells an agent an MCP server exists at `api.namefi.io/mcp` and gives it the `claude mcp add` command to connect. Read the file, learn there's a live tool interface, connect, act. An agent that skips straight to MCP can still find the server through `.well-known/mcp/servers.json` — but that descriptor's `documentation` field points back at `llms.txt`, so the two rarely operate in true isolation.
+Namefi's file demonstrates the relationship directly: `llms.txt` tells an agent an [MCP server](https://namefi.io/mcp) exists at `api.namefi.io/mcp` and gives it the `claude mcp add` command to connect. Read the file, learn there's a live tool interface, connect, act. An agent that skips straight to MCP can still find the server through `.well-known/mcp/servers.json` — but that descriptor's `documentation` field points back at `llms.txt`, so the two rarely operate in true isolation.
 
 ## Guidance for other API vendors
 

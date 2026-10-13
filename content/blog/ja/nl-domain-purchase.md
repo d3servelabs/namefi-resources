@@ -47,7 +47,7 @@ relatedGlossary:
 
 ## 始める前に必要なもの
 
-必要なものは二つです。ドメインレジストラのAPIに接続したエージェントと、決済手段です。Namefiでは、Claude、Cursor、WindsurfなどのMCP対応クライアントをNamefi MCPサーバーへ接続し、APIキーまたは暗号資産[ウォレット](/ja/glossary/wallet/)で認証します。正確な設定はクライアントごとに異なり、この記事の対象外です。[NamefiでAIエージェントを使ってドメインを登録する方法](/ja/blog/ai-agent-register/)が基本の設定ガイドで、[Claudeでドメインを購入する：Namefi MCPステップ別ガイド](/ja/blog/claude-mcp-domains/)はClaude向けにコマンド単位で解説します。この記事ではその設定が完了したものとし、両ガイドの続きに当たる実際の会話から始めます。
+必要なものは二つです。ドメインレジストラのAPIに接続したエージェントと、決済手段です。Namefiでは、Claude、Cursor、WindsurfなどのMCP対応クライアントをNamefi [MCPサーバー](https://namefi.io/mcp)へ接続し、APIキーまたは暗号資産[ウォレット](/ja/glossary/wallet/)で認証します。正確な設定はクライアントごとに異なり、この記事の対象外です。[NamefiでAIエージェントを使ってドメインを登録する方法](/ja/blog/ai-agent-register/)が基本の設定ガイドで、[Claudeでドメインを購入する：Namefi MCPステップ別ガイド](/ja/blog/claude-mcp-domains/)はClaude向けにコマンド単位で解説します。この記事ではその設定が完了したものとし、両ガイドの続きに当たる実際の会話から始めます。
 
 ## 会話全体を段階ごとに見る
 

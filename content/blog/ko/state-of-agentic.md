@@ -68,7 +68,7 @@ relatedGlossary:
 
 | 플랫폼 | 기능 | 상태 | 근거 |
 | --- | --- | --- | --- |
-| Namefi | MCP 서버(`api.namefi.io/mcp`, Streamable HTTP, `/.well-known/mcp/servers.json`에서 검색 가능) | **출시됨** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
+| Namefi | [MCP 서버](https://namefi.io/mcp)(`api.namefi.io/mcp`, Streamable HTTP, `/.well-known/mcp/servers.json`에서 검색 가능) | **출시됨** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | [x402](/ko/glossary/x402/)를 통한 지갑 서명 USDC 결제(EIP-3009 `transferWithAuthorization`, 계정 불필요) | **출시됨** | [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) |
 | Namefi | 에이전트 도구와 REST 참고 자료를 찾을 수 있게 하는 `llms.txt` 기반 탐색 지원 | **출시됨** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | API 계층의 지출 한도 또는 구매 확인 기능 | **미출시** — 이 글 작성 시점에 문서화된 차단 장치가 없으며, 현재 안전장치는 서버가 아니라 MCP 클라이언트에 있음 | 자체 [에이전트 네이티브 체크리스트 분석](/ko/blog/agent-native/)과 이 글을 위해 `namefi.io/llms.txt`, `namefi.io/web3/llms.txt`를 직접 교차 확인한 결과 |

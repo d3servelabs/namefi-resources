@@ -77,7 +77,7 @@ relatedGlossary:
 
 ### Namefi：MCPサーバーとウォレット決済
 
-Namefi自身の機械可読な機能索引である[namefi.io/llms.txt](https://namefi.io/llms.txt)は、上記で説明した三つ目の形態そのものです。以下の情報については、これが唯一の正確な情報源です。Namefiは`api.namefi.io/mcp`でStreamable HTTP方式のMCPサーバーを運用し、登録、空き状況の確認、DNS管理のための型付きツールを公開しています。Claude Codeには一つのコマンド（`claude mcp add --transport http namefi https://api.namefi.io/mcp`）で追加できます。その基盤には、`x-api-key`ヘッダーで認証するREST API（`api.namefi.io/v-next/`）があります。APIキーはドメインを所有するウォレットから生成する必要があるため、APIへのアクセスは、別のアカウント復旧フローではなくオンチェーン上のカストディに直接結び付いています。
+Namefi自身の機械可読な機能索引である[namefi.io/llms.txt](https://namefi.io/llms.txt)は、上記で説明した三つ目の形態そのものです。以下の情報については、これが唯一の正確な情報源です。Namefiは`api.namefi.io/mcp`でStreamable HTTP方式の[MCPサーバー](https://namefi.io/mcp)を運用し、登録、空き状況の確認、DNS管理のための型付きツールを公開しています。Claude Codeには一つのコマンド（`claude mcp add --transport http namefi https://api.namefi.io/mcp`）で追加できます。その基盤には、`x-api-key`ヘッダーで認証するREST API（`api.namefi.io/v-next/`）があります。APIキーはドメインを所有するウォレットから生成する必要があるため、APIへのアクセスは、別のアカウント復旧フローではなくオンチェーン上のカストディに直接結び付いています。
 
 違いが明確に表れるのは決済です。Namefiは二つの経路を説明しています。一つは、前払いしたNFSC（Namefi Service Credits）残高から請求される標準的なAPIキー方式です。もう一つは、SIWE（Sign-In With Ethereum）を含むウォレット署名を使う暗号資産ネイティブな方式で、ドキュメントがWeb3利用者や「エージェント型ウォレット」と呼ぶ対象に向け、レジストラのアカウントを一切作成せず購入を承認できます。登録後は、DNSレコードの完全なCRUD（A、AAAA、CNAME、MX、TXTなど）、自動更新、ドメインパーキングと転送、ENSレコードの自動生成に対応します。そして、この三つのプラットフォームの中で構造上の違いとなる機能が[トークン化](/ja/glossary/tokenized-domain/)です。実在するICANN登録ドメインを、オンチェーン上で[ウォレット](/ja/glossary/wallet/)が保有する資産として表します。Claude、Codex、Cursorと、ほか三つのエージェントを対象にした手順は、[NamefiでAIエージェントを使ってドメインを登録する方法](/ja/blog/ai-agent-register/)で紹介しています。Claudeに特化した詳細は、[Claudeでドメインを購入：Namefi MCPステップバイステップガイド](/ja/blog/claude-mcp-domains/)にあります。自然言語による依頼が実際にどのようなものかは、[自然言語でドメインを購入する方法（2026年）](/ja/blog/nl-domain-purchase/)を参照してください。
 

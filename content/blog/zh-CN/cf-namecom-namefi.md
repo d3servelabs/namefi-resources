@@ -31,7 +31,7 @@ relatedGlossary:
   - /zh-CN/glossary/wallet/
 ---
 
-如今，三家[注册商](/zh-CN/glossary/registrar/)都让非人类主体可以填写结账表单。Cloudflare 于 2026 年 4 月推出一项 beta API，让 [AI 智能体](/zh-CN/glossary/ai-agent/)无需浏览器会话即可注册域名。Name.com 围绕同一理念重构了 API，并自称为首个 AI 原生域名平台。Namefi 则构建了 Model Context Protocol（MCP）服务器和钱包签名结账流程，完全跳过创建账户这一步。三者都瞄准同一转变：域名注册正从人类在浏览器中完成的操作，变成智能体通过 API 调用完成的操作。
+如今，三家[注册商](/zh-CN/glossary/registrar/)都让非人类主体可以填写结账表单。Cloudflare 于 2026 年 4 月推出一项 beta API，让 [AI 智能体](/zh-CN/glossary/ai-agent/)无需浏览器会话即可注册域名。Name.com 围绕同一理念重构了 API，并自称为首个 AI 原生域名平台。Namefi 则构建了 [Model Context Protocol（MCP）服务器](https://namefi.io/mcp)和钱包签名结账流程，完全跳过创建账户这一步。三者都瞄准同一转变：域名注册正从人类在浏览器中完成的操作，变成智能体通过 API 调用完成的操作。
 
 不过，它们不是换了不同标识的同一种产品。三者对定价、"智能体原生"实际需要什么，以及买方如何证明自己有付款能力，都做了不同的取舍。本文会逐项对比三者，包括 Cloudflare 的定价在哪些方面确实难以匹敌，以及 Name.com 的定位在哪些方面超前于已交付的能力。
 

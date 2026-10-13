@@ -110,7 +110,7 @@ NameBuddy 是一款更聚焦的单一用途工具：按其首页所述，它[是
 
 ### 这些工具中有能被外部 AI 智能体（如 Claude 或编程助手）调用的吗？
 
-只有第 3 层平台——Cloudflare 的 Registrar API、Name.com 的 AI-native API，以及 Namefi 的 MCP 服务器和 REST API。GoDaddy、Namecheap 和 Wix 的 AI 工具（包括较新的 GoDaddy Airo.ai 智能体）均运行在各自的网站或控制面板内；它们目前都没有发布供外部 AI 客户端驱动购买的 API 或协议。
+只有第 3 层平台——Cloudflare 的 Registrar API、Name.com 的 AI-native API，以及 Namefi 的 [MCP 服务器](https://namefi.io/mcp)和 REST API。GoDaddy、Namecheap 和 Wix 的 AI 工具（包括较新的 GoDaddy Airo.ai 智能体）均运行在各自的网站或控制面板内；它们目前都没有发布供外部 AI 客户端驱动购买的 API 或协议。
 
 ### 哪个工具最便宜？
 

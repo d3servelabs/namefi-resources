@@ -110,7 +110,7 @@ Están relacionados, pero no son idénticos. Airo es la experiencia original de 
 
 ### ¿Puede un agente de IA externo, como Claude o un asistente de programación, llamar a alguna de estas herramientas?
 
-Solo a las plataformas de Nivel 3: la Registrar API de Cloudflare, la API nativa para IA de Name.com y el servidor MCP y la API REST de Namefi. Las herramientas de IA de GoDaddy, Namecheap y Wix, incluidos los nuevos agentes Airo.ai de GoDaddy, se ejecutan dentro del sitio web o panel de cada empresa; ninguna publica actualmente una API o protocolo pensado para que un cliente de IA externo controle una compra.
+Solo a las plataformas de Nivel 3: la Registrar API de Cloudflare, la API nativa para IA de Name.com y el [servidor MCP](https://namefi.io/mcp) y la API REST de Namefi. Las herramientas de IA de GoDaddy, Namecheap y Wix, incluidos los nuevos agentes Airo.ai de GoDaddy, se ejecutan dentro del sitio web o panel de cada empresa; ninguna publica actualmente una API o protocolo pensado para que un cliente de IA externo controle una compra.
 
 ### ¿Qué herramienta es la más barata?
 

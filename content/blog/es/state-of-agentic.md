@@ -68,7 +68,7 @@ Leído en orden, el patrón es este: un protocolo de aprovisionamiento con veint
 
 | Plataforma | Capacidad | Estado | Evidencia |
 | --- | --- | --- | --- |
-| Namefi | Servidor MCP (`api.namefi.io/mcp`, Streamable HTTP, detectable en `/.well-known/mcp/servers.json`) | **Lanzado** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
+| Namefi | [Servidor MCP](https://namefi.io/mcp) (`api.namefi.io/mcp`, Streamable HTTP, detectable en `/.well-known/mcp/servers.json`) | **Lanzado** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | Proceso de compra de USDC firmado con billetera mediante [x402](/es/glossary/x402/) (EIP-3009 `transferWithAuthorization`, sin necesidad de cuenta) | **Lanzado** | [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) |
 | Namefi | Descubrimiento basado en `llms.txt` para herramientas de agentes y referencia REST | **Lanzado** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | Mecanismo de límite de gasto o de confirmación de compra en la capa API | **No lanzado**: a la fecha de este artículo no hay una puerta documentada; la salvaguarda reside hoy en el cliente MCP, no en el servidor | Nuestro propio análisis [¿Qué es un registrador de dominios nativo para agentes?](/es/blog/agent-native/), contrastado directamente con `namefi.io/llms.txt` y `namefi.io/web3/llms.txt` para este artículo |

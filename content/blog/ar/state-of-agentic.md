@@ -68,7 +68,7 @@ relatedGlossary:
 
 | المنصة | الإمكانية | الحالة | الدليل |
 | --- | --- | --- | --- |
-| Namefi | خادم MCP (`api.namefi.io/mcp`، وStreamable HTTP، ويمكن اكتشافه في `/.well-known/mcp/servers.json`) | **أُطلق** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
+| Namefi | [خادم MCP](https://namefi.io/mcp) (`api.namefi.io/mcp`، وStreamable HTTP، ويمكن اكتشافه في `/.well-known/mcp/servers.json`) | **أُطلق** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | دفع USDC موقّع بالمحفظة عبر [x402](/ar/glossary/x402/) (‏EIP-3009 `transferWithAuthorization`، من غير حاجة إلى حساب) | **أُطلق** | [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) |
 | Namefi | اكتشاف مبني على `llms.txt` لأدوات الوكلاء ومرجع REST | **أُطلق** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | آلية لسقف الإنفاق أو تأكيد الشراء على طبقة API | **لم تُطلق**؛ لا توجد بوابة موثقة وقت الكتابة، والحاجز الوقائي حاليًا عند عميل MCP، لا الخادم | [تحليلنا لقائمة فحص المُسجِّل المصمَّم للوكلاء](/ar/blog/agent-native/)، جرى تدقيقه مباشرةً مقابل `namefi.io/llms.txt` و`namefi.io/web3/llms.txt` لهذا المقال |

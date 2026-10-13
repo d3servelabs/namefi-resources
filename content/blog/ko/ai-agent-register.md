@@ -41,7 +41,7 @@ relatedGlossary:
 
 직접 양식을 작성하지 않고 에이전트가 사용자를 대신해 도메인을 등록하려면 두 가지 조건이 충족되어야 합니다. 첫째, 에이전트가 Namefi API를 *발견하고 호출할 방법*이 필요합니다. 여기에는 AI 클라이언트가 외부 도구 서버에 연결해 호출 가능한 작업 목록을 확인할 수 있게 하는 개방형 표준인 [Model Context Protocol](https://modelcontextprotocol.io)(MCP)을 사용하거나, 대화형이 아닌 스크립트형 에이전트라면 일반 HTTP 요청을 사용하는 방법이 있습니다. 둘째, 에이전트에 *지출 권한*이 필요합니다. 자금이 충전된 잔액에 연결된 API 키나 즉석에서 결제에 서명할 수 있는 암호화폐 [지갑](/ko/glossary/wallet/)이 이에 해당합니다. 이 가이드의 모든 내용은 이 두 요소 중 하나를 다룹니다.
 
-Namefi는 전체 API에 대해 `https://api.namefi.io/mcp`에서 Streamable HTTP 전송 방식으로 단일 MCP 서버를 운영합니다. 에이전트 또는 이를 설정하는 사람은 이 페이지를 전혀 읽지 않고도 서버를 찾을 수 있습니다. [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)에 서버 이름을 `namefi-api`, 전송 방식을 `streamable-http`로 명시한 기계 판독형 설명자를 공개하고 있기 때문입니다. 아래의 모든 클라이언트는 같은 URL에 연결됩니다. 차이는 각 클라이언트의 설정 파일이나 명령줄에서 해당 URL을 지정하는 방식뿐입니다.
+Namefi는 전체 API에 대해 `https://api.namefi.io/mcp`에서 Streamable HTTP 전송 방식으로 단일 [MCP 서버](https://namefi.io/mcp)를 운영합니다. 에이전트 또는 이를 설정하는 사람은 이 페이지를 전혀 읽지 않고도 서버를 찾을 수 있습니다. [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)에 서버 이름을 `namefi-api`, 전송 방식을 `streamable-http`로 명시한 기계 판독형 설명자를 공개하고 있기 때문입니다. 아래의 모든 클라이언트는 같은 URL에 연결됩니다. 차이는 각 클라이언트의 설정 파일이나 명령줄에서 해당 URL을 지정하는 방식뿐입니다.
 
 ## 공통 다섯 단계 흐름
 

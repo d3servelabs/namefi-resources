@@ -30,7 +30,7 @@ relatedGlossary:
   - /en/glossary/wallet/
 ---
 
-Three [registrars](/en/glossary/registrar/) now let something other than a human fill out a checkout form. Cloudflare opened a beta API in April 2026 that lets an [AI agent](/en/glossary/ai-agent/) register a domain without a browser session. Name.com rebuilt its API around the same idea and calls itself the first AI-native domain platform. Namefi built a Model Context Protocol (MCP) server and a wallet-signed checkout that skips the account-creation step entirely. All three are aiming at the same shift: domain registration moving from something a person does in a browser to something an agent does through an API call.
+Three [registrars](/en/glossary/registrar/) now let something other than a human fill out a checkout form. Cloudflare opened a beta API in April 2026 that lets an [AI agent](/en/glossary/ai-agent/) register a domain without a browser session. Name.com rebuilt its API around the same idea and calls itself the first AI-native domain platform. Namefi built a [Model Context Protocol (MCP) server](https://namefi.io/mcp) and a wallet-signed checkout that skips the account-creation step entirely. All three are aiming at the same shift: domain registration moving from something a person does in a browser to something an agent does through an API call.
 
 They are not the same product wearing different logos, though. Each one made different bets on pricing, on what "agent-native" actually requires, and on how a buyer proves they can pay. This is a feature-by-feature comparison of the three, including the places where Cloudflare's pricing is genuinely hard to beat and where Name.com's positioning is ahead of what it has shipped.
 

@@ -31,7 +31,7 @@ relatedGlossary:
   - /ar/glossary/x402/
 ---
 
-بنهاية الدليل ده، هيكون عندك دومين حقيقي مسجَّل لدى [ICANN](/ar/glossary/icann/)، وموجَّه DNS بتاعه للحاجة اللي بتبنيها، وكل التسجيل تم من خلال محادثة مع Claude — من غير إتمام شراء في المتصفح، ولا سلة، ولا CAPTCHA. ده دليل إعداد فريق Namefi لسيرفر [Namefi](https://namefi.io) MCP — شرح واضح للبشر لنفس الـ API اللي بننشره للوكلاء على [namefi.io/llms.txt](https://namefi.io/llms.txt) و[docs.namefi.io](https://docs.namefi.io). ولما تكون أي تفصيلة لسه ما اتثبتتش أو ما اتنشرتش، الدليل بيقول ده بوضوح بدل ما يخمّن.
+بنهاية الدليل ده، هيكون عندك دومين حقيقي مسجَّل لدى [ICANN](/ar/glossary/icann/)، وموجَّه DNS بتاعه للحاجة اللي بتبنيها، وكل التسجيل تم من خلال محادثة مع Claude — من غير إتمام شراء في المتصفح، ولا سلة، ولا CAPTCHA. ده دليل إعداد فريق Namefi لسيرفر [Namefi](https://namefi.io) [MCP](https://namefi.io/mcp) — شرح واضح للبشر لنفس الـ API اللي بننشره للوكلاء على [namefi.io/llms.txt](https://namefi.io/llms.txt) و[docs.namefi.io](https://docs.namefi.io). ولما تكون أي تفصيلة لسه ما اتثبتتش أو ما اتنشرتش، الدليل بيقول ده بوضوح بدل ما يخمّن.
 
 فيه شروحات من جهات تانية لفكرة «سجّل دومين باستخدام [وكيل الذكاء الاصطناعي](/ar/glossary/ai-agent/) بتاعك» — [مثال مشهور](https://dev.to/marsheer/how-to-register-a-domain-name-with-your-ai-agent-no-human-needed-h26) بيعرض النمط ده باستخدام سيرفر MCP مختلف مبني كجهة إعادة بيع فوق Registrar API الخاص بـ Cloudflare. آلية MCP نفسها هي نفس الفكرة عند مقدمي الخدمة المختلفين؛ لكن الدليل ده مخصص لسيرفر MCP الخاص بـ Namefi، ونموذج المصادقة الخاص بيها، وخيار [الدومين المُرمَّز](/ar/glossary/tokenized-domain/) الخاص بيها، ومراجَع على توثيق Namefi بدل وصف طرف ثالث له.
 

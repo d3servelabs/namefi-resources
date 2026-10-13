@@ -110,7 +110,7 @@ Sie sind verwandt, aber nicht identisch. Airo ist das ursprüngliche KI-Angebot 
 
 ### Kann ein externer KI-Agent wie Claude oder ein Coding-Assistent eines dieser Werkzeuge aufrufen?
 
-Nur die Plattformen der Stufe 3: die Registrar-API von Cloudflare, die KI-native API von Name.com sowie MCP-Server und REST-API von Namefi. Die KI-Werkzeuge von GoDaddy, Namecheap und Wix, einschließlich der neueren Airo.ai-Agenten von GoDaddy, laufen auf der jeweiligen Website oder im Dashboard des Unternehmens. Keines von ihnen veröffentlicht derzeit eine API oder ein Protokoll, das ein externer KI-Client zum Auslösen eines Kaufs nutzen kann.
+Nur die Plattformen der Stufe 3: die Registrar-API von Cloudflare, die KI-native API von Name.com sowie [MCP-Server](https://namefi.io/mcp) und REST-API von Namefi. Die KI-Werkzeuge von GoDaddy, Namecheap und Wix, einschließlich der neueren Airo.ai-Agenten von GoDaddy, laufen auf der jeweiligen Website oder im Dashboard des Unternehmens. Keines von ihnen veröffentlicht derzeit eine API oder ein Protokoll, das ein externer KI-Client zum Auslösen eines Kaufs nutzen kann.
 
 ### Welches Werkzeug ist am günstigsten?
 

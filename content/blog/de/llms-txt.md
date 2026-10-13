@@ -105,7 +105,7 @@ Einige Entscheidungen wirken bewusst. Fast jede Operation ist ein ausführbarer 
 
 Es lohnt sich, genau zu unterscheiden, was die beiden leisten. `llms.txt` ist ein Dokument — ein Agent ruft es einmal ab und weiß, was die API ist und wo vertiefende Ressourcen liegen; es bleibt träger Text, bis etwas nach seinen Anweisungen handelt. [MCP](https://modelcontextprotocol.io) ist laut seiner eigenen Protokollbeschreibung „ein Open-Source-Standard, um KI-Anwendungen mit externen Systemen zu verbinden“ — eine aktive Sitzung, die ein Client zu einem Server öffnet und über die er aufrufbare Tools auflistet und ausführt.
 
-Namefis Datei zeigt die Beziehung unmittelbar: `llms.txt` teilt einem Agenten mit, dass unter `api.namefi.io/mcp` ein MCP-Server existiert, und gibt ihm den Befehl `claude mcp add` zum Verbinden. Datei lesen, lernen, dass es eine aktive Toolschnittstelle gibt, verbinden, handeln. Ein Agent, der direkt zu MCP springt, kann den Server auch über `.well-known/mcp/servers.json` finden — doch das Feld `documentation` dieses Deskriptors verweist zurück auf `llms.txt`; daher arbeiten die beiden selten völlig isoliert.
+Namefis Datei zeigt die Beziehung unmittelbar: `llms.txt` teilt einem Agenten mit, dass unter `api.namefi.io/mcp` ein [MCP-Server](https://namefi.io/mcp) existiert, und gibt ihm den Befehl `claude mcp add` zum Verbinden. Datei lesen, lernen, dass es eine aktive Toolschnittstelle gibt, verbinden, handeln. Ein Agent, der direkt zu MCP springt, kann den Server auch über `.well-known/mcp/servers.json` finden — doch das Feld `documentation` dieses Deskriptors verweist zurück auf `llms.txt`; daher arbeiten die beiden selten völlig isoliert.
 
 ## Hinweise für andere API-Anbieter
 

@@ -69,7 +69,7 @@ relatedGlossary:
 
 | தளம் | திறன் | நிலை | ஆதாரம் |
 | --- | --- | --- | --- |
-| Namefi | MCP சேவையகம் (`api.namefi.io/mcp`, Streamable HTTP, `/.well-known/mcp/servers.json`-ல் கண்டறியக்கூடியது) | **வெளியிடப்பட்டது** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
+| Namefi | [MCP சேவையகம்](https://namefi.io/mcp) (`api.namefi.io/mcp`, Streamable HTTP, `/.well-known/mcp/servers.json`-ல் கண்டறியக்கூடியது) | **வெளியிடப்பட்டது** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | [x402](/ta/glossary/x402/) வழியாக வாலெட்டில் கையொப்பமிடப்பட்ட USDC செக் அவுட் (EIP-3009 `transferWithAuthorization`, கணக்கு தேவையில்லை) | **வெளியிடப்பட்டது** | [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) |
 | Namefi | ஏஜென்ட் கருவிகள் மற்றும் REST குறிப்புக்கான `llms.txt` அடிப்படையிலான கண்டறிதல் | **வெளியிடப்பட்டது** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | API அடுக்கில் செலவு வரம்பு அல்லது கொள்முதல் உறுதிப்படுத்தல் கூறு | **வெளியிடப்படவில்லை** — இதை எழுதும் நேரத்தில் ஆவணப்படுத்தப்பட்ட கட்டுப்பாடு இல்லை; பாதுகாப்பு வரம்பு தற்போது சேவையகத்தில் அல்ல, MCP கிளையன்ட்டில்தான் உள்ளது | எங்களின் சொந்த [ஏஜென்ட்-நேட்டிவ் சரிபார்ப்புப் பட்டியல் பகுப்பாய்வு](/ta/blog/agent-native/); இந்தக் கட்டுரைக்காக `namefi.io/llms.txt` மற்றும் `namefi.io/web3/llms.txt` ஆகியவற்றுடன் நேரடியாக ஒப்பிட்டுச் சரிபார்க்கப்பட்டது |

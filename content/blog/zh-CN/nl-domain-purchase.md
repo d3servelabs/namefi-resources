@@ -47,7 +47,7 @@ relatedGlossary:
 
 ## 开始前需要准备什么
 
-你需要两样东西：一个连接到域名注册商 API 的智能体，以及一种付款方式。在 Namefi 上，这意味着让支持 MCP 的客户端——Claude、Cursor、Windsurf 以及其他若干客户端都可以——指向 Namefi 的 MCP 服务器，并使用 API 密钥或加密[钱包](/zh-CN/glossary/wallet/)完成认证。具体配置因客户端而异，超出本文范围；[如何在 Namefi 上通过 AI 智能体注册域名](/zh-CN/blog/ai-agent-register/)是权威设置指南，而[使用 Claude 购买域名：Namefi MCP 分步指南](/zh-CN/blog/claude-mcp-domains/)则专门逐条讲解 Claude 命令。本文假定你已完成这部分，并从两篇文章结束之处继续：也就是对话本身。
+你需要两样东西：一个连接到域名注册商 API 的智能体，以及一种付款方式。在 Namefi 上，这意味着让支持 MCP 的客户端——Claude、Cursor、Windsurf 以及其他若干客户端都可以——指向 Namefi 的 [MCP 服务器](https://namefi.io/mcp)，并使用 API 密钥或加密[钱包](/zh-CN/glossary/wallet/)完成认证。具体配置因客户端而异，超出本文范围；[如何在 Namefi 上通过 AI 智能体注册域名](/zh-CN/blog/ai-agent-register/)是权威设置指南，而[使用 Claude 购买域名：Namefi MCP 分步指南](/zh-CN/blog/claude-mcp-domains/)则专门逐条讲解 Claude 命令。本文假定你已完成这部分，并从两篇文章结束之处继续：也就是对话本身。
 
 ## 完整对话：逐步讲解
 

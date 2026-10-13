@@ -78,7 +78,7 @@ relatedGlossary:
 
 ## 如今谁在提供这项服务，以及“经销商”论点
 
-Cloudflare 的公测版是这一转变中报道最多的案例，但并非唯一。Name.com 自 2025 年年中起围绕同样的 MCP 与 OpenAPI 方法构建了类似 API；Namefi 则运行 MCP 服务器，并提供跳过账户创建的、由钱包签名的结账流程。它们在功能上的差异——定价模式、TLD 覆盖范围、付款是否需要已有账户——请参阅[Cloudflare、Name.com 与 Namefi 对比](/zh-CN/blog/cf-namecom-namefi/)；完整格局（包括大型面向消费者的注册商在哪些方面尚未进入这一类别）请参阅[AI 智能体域名平台：2026 指南](/zh-CN/blog/ai-domain-platforms/)。
+Cloudflare 的公测版是这一转变中报道最多的案例，但并非唯一。Name.com 自 2025 年年中起围绕同样的 MCP 与 OpenAPI 方法构建了类似 API；Namefi 则运行 [MCP 服务器](https://namefi.io/mcp)，并提供跳过账户创建的、由钱包签名的结账流程。它们在功能上的差异——定价模式、TLD 覆盖范围、付款是否需要已有账户——请参阅[Cloudflare、Name.com 与 Namefi 对比](/zh-CN/blog/cf-namecom-namefi/)；完整格局（包括大型面向消费者的注册商在哪些方面尚未进入这一类别）请参阅[AI 智能体域名平台：2026 指南](/zh-CN/blog/ai-domain-platforms/)。
 
 比任何单一平台都更新的是：智能体获得这项能力后，开始用它做什么。CircleID 在 2026 年年中的域名行业调查如此表述：[“AI 智能体日益充当域名经销商，在没有人工干预的情况下检查可用性、注册域名并配置 DNS。”](https://circleid.com/posts/the-domain-universe-in-2026-ai-security-market-maturity-and-the-new-gtld-frontier#:~:text=AI%20agents%20are%20increasingly%20acting%20as%20domain%20resellers%20checking%20availability%2C%20registering%20names%2C%20and%20configuring%20DNS%20without%20human%20intervention)“[经销商](/zh-CN/glossary/reseller/)”是刻意的用词——这是一个既有角色，指在注册商的认证授权下销售或提供域名的一方，而不是自己持有该项认证。将智能体视为非正式经销商，而非一种新类别，意味着尽管操作者不是人类，这套工作流仍然可辨认：代表他人进行搜索、定价、注册、配置，并且可批量执行。我们在[2026 年智能体域名管理现状](/zh-CN/blog/state-of-agentic/)中追踪了这种模式实际发展到了什么程度、哪些仍只停留在发布阶段；[Namefi 自己的 MCP 服务器](/zh-CN/blog/namefi-mcp/)则是经销商式智能体会调用的工具的一个具体例子。
 

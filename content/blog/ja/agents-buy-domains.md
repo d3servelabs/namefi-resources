@@ -78,7 +78,7 @@ relatedGlossary:
 
 ## 現在の提供事業者とリセラーという見方
 
-Cloudflareのベータ版は、この変化の中で最も広く報じられた事例ですが、唯一のものではありません。Name.comは2025年半ばから、同様のMCPとOpenAPIを軸にしたAPIを構築しました。NamefiはMCPサーバーに加え、アカウント作成を完全に省略できるウォレット署名型の購入フローを運用しています。料金モデル、TLDの対応範囲、決済に既存アカウントが必要かといった機能ごとの差は、[Cloudflare vs Name.com vs Namefi：エージェントネイティブなレジストラ](/ja/blog/cf-namecom-namefi/)で比較しています。大手の消費者向けレジストラがこの領域のどこまで対応しているかを含む全体像は、[AIエージェント対応ドメインプラットフォーム：2026年版ガイド](/ja/blog/ai-domain-platforms/)を参照してください。
+Cloudflareのベータ版は、この変化の中で最も広く報じられた事例ですが、唯一のものではありません。Name.comは2025年半ばから、同様のMCPとOpenAPIを軸にしたAPIを構築しました。Namefiは[MCPサーバー](https://namefi.io/mcp)に加え、アカウント作成を完全に省略できるウォレット署名型の購入フローを運用しています。料金モデル、TLDの対応範囲、決済に既存アカウントが必要かといった機能ごとの差は、[Cloudflare vs Name.com vs Namefi：エージェントネイティブなレジストラ](/ja/blog/cf-namecom-namefi/)で比較しています。大手の消費者向けレジストラがこの領域のどこまで対応しているかを含む全体像は、[AIエージェント対応ドメインプラットフォーム：2026年版ガイド](/ja/blog/ai-domain-platforms/)を参照してください。
 
 個々のプラットフォームより新しいのは、エージェントがこの能力を手にした後、それをどのように使い始めているかです。CircleIDが2026年半ばに行ったドメイン業界の調査は、[「AIエージェントは、空き状況の確認、名前の登録、DNSの設定を人間の介入なしで行うドメインリセラーとして、ますます活動するようになっている」](https://circleid.com/posts/the-domain-universe-in-2026-ai-security-market-maturity-and-the-new-gtld-frontier#:~:text=AI%20agents%20are%20increasingly%20acting%20as%20domain%20resellers%20checking%20availability%2C%20registering%20names%2C%20and%20configuring%20DNS%20without%20human%20intervention)と説明しています。ここで[リセラー](/ja/glossary/reseller/)という言葉を使っているのは意図的です。リセラーは、自ら認定を受ける代わりに、レジストラの認定の下でドメインを販売またはプロビジョニングする既存の役割です。エージェントを新たな分類ではなく非公式のリセラーと捉えると、担当者が人間でなくても、検索、価格確認、登録、設定を他者のために大規模に行うという、見慣れたワークフローだと分かります。このパターンが実際にどこまで普及し、どこからが発表段階にとどまっているのかは、[エージェント型ドメイン管理の現状（2026年）](/ja/blog/state-of-agentic/)で追跡しています。[NamefiのMCPサーバー](/ja/blog/namefi-mcp/)は、リセラーのように動くエージェントが呼び出すツールの具体例です。
 

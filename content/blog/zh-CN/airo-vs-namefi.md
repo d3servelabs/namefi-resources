@@ -61,7 +61,7 @@ GoDaddy 和 Namecheap 在这里提供的产品没有实质性的架构差异。�
 
 Namefi 对注册商中的“AI”采取了不同的理解，其差异是架构上的，而不是表面上的。它并不构建一个为人类推荐名称、供人逐一点选的聊天式助手，而是把注册商的核心操作——搜索、注册、DNS 配置——作为可由 AI 智能体直接调用的工具开放，让智能体本身在你预先设定的策略限制内完成交易。
 
-根据 Namefi 自己发布在 [namefi.io/llms.txt](https://namefi.io/llms.txt) 的机器可读 API 描述，这通过位于 `api.namefi.io/mcp` 的 MCP（Model Context Protocol）服务器实现；该服务器被描述为将“每项操作都作为带类型的工具”暴露出来——包括搜索、注册、DNS 和域名配置——面向支持该协议的 Claude 等 AI 客户端；不支持该协议的客户端则可使用 REST API。认证可通过 API 密钥完成（在 namefi.io/api-key 生成，作为 `x-api-key` 请求头发送，文档将其称为“推荐给智能体”的方式）；对于基于[钱包](/zh-CN/glossary/wallet/)的工作流，则可用加密钱包签名授权购买，无需存储任何密钥。注册本身是一个简短的异步序列：检查可用性，提交带域名和期限的订单，然后轮询订单直至完成。
+根据 Namefi 自己发布在 [namefi.io/llms.txt](https://namefi.io/llms.txt) 的机器可读 API 描述，这通过位于 `api.namefi.io/mcp` 的 [MCP（Model Context Protocol）服务器](https://namefi.io/mcp)实现；该服务器被描述为将“每项操作都作为带类型的工具”暴露出来——包括搜索、注册、DNS 和域名配置——面向支持该协议的 Claude 等 AI 客户端；不支持该协议的客户端则可使用 REST API。认证可通过 API 密钥完成（在 namefi.io/api-key 生成，作为 `x-api-key` 请求头发送，文档将其称为“推荐给智能体”的方式）；对于基于[钱包](/zh-CN/glossary/wallet/)的工作流，则可用加密钱包签名授权购买，无需存储任何密钥。注册本身是一个简短的异步序列：检查可用性，提交带域名和期限的订单，然后轮询订单直至完成。
 
 另一项结构性差异在于你最终拥有的东西。通过 Namefi 注册的域名会与标准 ICANN 注册一同表示为链上代币——即[代币化域名](/zh-CN/glossary/tokenized-domain/)——这使得所有权可以通过钱包而非仅通过注册商账户登录来验证和转移。完整了解其运作方式及其对托管的影响，请参阅[什么是代币化域名？域名代币化指南](/zh-CN/blog/what-are-tokenized-domains/)。这并不会取代偏好在网站上自行点击的普通注册商体验；它是在获得认证的注册商功能之上增加的一层可供智能体使用的能力。
 
