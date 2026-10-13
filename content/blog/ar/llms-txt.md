@@ -71,7 +71,7 @@ relatedGlossary:
 
 ## الملفات المصاحبة: Web3 واكتشاف MCP
 
-ملف الجذر بيربط بملفات شقيقة لأجزاء من الـ API ما تنفعش تكون في نقطة دخول عامة. [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) بيوثق مسارات دفع يحتاجها وكيل ماسك محفظة بدل مفتاح API: مسار [x402](/ar/glossary/x402/) حيث `GET /x402/domain/{domainName}` بيرجع `402 Payment Required` مع السعر إلى أن يُرفق هيدر `X-PAYMENT` موقّع، ونسخة challenge-response من MPP (Machine Payable Protocol) موقعة عبر CLI اسمه `mppx`، ومسار توقيع EIP-712 يدوي يغطي محافظ العقود الذكية. الملف بيقول صراحة إن تسجيل x402 لا يحتاج "No Namefi account or EIP-712 signing required — the buyer's wallet signs an EIP-3009 `transferWithAuthorization`." الوكيل اللي محتاج مفتاح API فقط مش مضطر يحمّل أي حاجة من ده.
+ملف الجذر بيربط بملفات شقيقة لأجزاء من الـ API ما تنفعش تكون في نقطة دخول عامة. [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) بيوثق مسارات دفع يحتاجها وكيل ماسك محفظة بدل [مفتاح API](https://namefi.io/api-key): مسار [x402](/ar/glossary/x402/) حيث `GET /x402/domain/{domainName}` بيرجع `402 Payment Required` مع السعر إلى أن يُرفق هيدر `X-PAYMENT` موقّع، ونسخة challenge-response من MPP (Machine Payable Protocol) موقعة عبر CLI اسمه `mppx`، ومسار توقيع EIP-712 يدوي يغطي محافظ العقود الذكية. الملف بيقول صراحة إن تسجيل x402 لا يحتاج "No Namefi account or EIP-712 signing required — the buyer's wallet signs an EIP-3009 `transferWithAuthorization`." الوكيل اللي محتاج مفتاح API فقط مش مضطر يحمّل أي حاجة من ده.
 
 جانب MCP له ملف اكتشاف خاص به، منفصل تماماً عن `llms.txt`: [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)، وهو واصف JSON صغير بدل Markdown:
 

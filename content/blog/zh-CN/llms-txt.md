@@ -71,7 +71,7 @@ relatedGlossary:
 
 ## 配套文件：Web3 与 MCP 发现
 
-根文件会链接到同级文件，承载不适合放进通用入口的 API 部分。[namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) 记录的是持有钱包的智能体可采用、而非使用 API 密钥的支付路径：一个 [x402](/zh-CN/glossary/x402/) 流程，其中 `GET /x402/domain/{domainName}` 在附加已签名的 `X-PAYMENT` 标头之前，会返回带有定价信息的 `402 Payment Required`；还有一种通过 `mppx` CLI 签名的 MPP（Machine Payable Protocol）挑战—响应变体，以及覆盖智能合约钱包的手动 EIP-712 签名路径。该文件明确写道，x402 注册“无需 Namefi 账户或 EIP-712 签名——买方的钱包签署 EIP-3009 `transferWithAuthorization`。”只需要 API 密钥的智能体完全不必加载这些内容。
+根文件会链接到同级文件，承载不适合放进通用入口的 API 部分。[namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) 记录的是持有钱包的智能体可采用、而非使用 [API 密钥](https://namefi.io/api-key)的支付路径：一个 [x402](/zh-CN/glossary/x402/) 流程，其中 `GET /x402/domain/{domainName}` 在附加已签名的 `X-PAYMENT` 标头之前，会返回带有定价信息的 `402 Payment Required`；还有一种通过 `mppx` CLI 签名的 MPP（Machine Payable Protocol）挑战—响应变体，以及覆盖智能合约钱包的手动 EIP-712 签名路径。该文件明确写道，x402 注册“无需 Namefi 账户或 EIP-712 签名——买方的钱包签署 EIP-3009 `transferWithAuthorization`。”只需要 API 密钥的智能体完全不必加载这些内容。
 
 MCP 另有独立的发现文件，与 `llms.txt` 完全分开：[namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)。它是一个小型 JSON 描述符，而不是 Markdown：
 

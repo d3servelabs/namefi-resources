@@ -69,7 +69,7 @@ Namefi también registra dominios como [NFT](/es/glossary/nft/) —[Dominios Tok
 | --- | --- | --- | --- |
 | Búsqueda de disponibilidad | Sí | Sí | Sí (`search/availability`, por lotes) |
 | Consulta de precios | Sí | Sí (documentada, no detallada) | Sí (se devuelve en la respuesta x402 402; también mediante API) |
-| Compra / registro | Sí, sincrónico, en segundos | Sí (código de integración generado por el agente) | Sí — clave de API o USDC firmado por billetera mediante x402/MPP |
+| Compra / registro | Sí, sincrónico, en segundos | Sí (código de integración generado por el agente) | Sí — [clave de API](https://namefi.io/api-key) o USDC firmado por billetera mediante x402/MPP |
 | Gestión de DNS | No en la beta actual | No se detalla en el anuncio | Sí — CRUD completo, operaciones por lotes, A/CNAME/TXT/MX y más |
 | Automatización de renovaciones | No en la beta actual (prevista para más adelante en 2026) | No se detalla en el anuncio | Sí — conmutador de renovación automática por dominio |
 | Pago con criptomonedas | No | No | Sí — USDC mediante x402, sin necesidad de cuenta |

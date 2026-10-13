@@ -62,7 +62,7 @@ AI名前生成ツールに、たとえば「観葉植物のサブスクリプシ
 |---|---|---|---|
 | 1. 提案 | プロンプトからブランド向けの名前を提案する | 名前が決まった後のすべて | GoDaddy AiroとNamecheapのVisualジェネレーターは、一行の説明から名前とロゴを生成します。[Airoは「登録後に、名前、ロゴ、初期サイトも提案できる」](https://www.hostinger.com/tutorials/best-domain-registrars/#:~:text=GoDaddy%20Airo%2C%20its%20AI%20setup%20assistant%2C%20can%20also%20suggest%20a%20name%2C%20logo%2C%20and%20starter%20site%20once%20you%20register)とされています |
 | 2. 検索 | 特定の名前について、リアルタイムの空き状況と価格を確認する | 「購入」をクリックし、その後の設定を行うこと | 空き状況の照会によって、候補リストが古くなっている場合でも、その名前が本当に取得可能か確認できます。しかし結果から移動する先は、人がクリックして購入するページのままです |
-| 3. 設定 | すでに所有しているドメインのDNSレコードを読み書きする | APIが書き込み操作まで網羅していれば、なし | NamefiのDNSエンドポイントでは、APIキーを使ってA、CNAME、MX、TXTレコードを作成、更新、削除できます。そのため、ダッシュボードを開かず、新しいドメインを稼働中のデプロイ先へ接続できます |
+| 3. 設定 | すでに所有しているドメインのDNSレコードを読み書きする | APIが書き込み操作まで網羅していれば、なし | NamefiのDNSエンドポイントでは、[APIキー](https://namefi.io/api-key)を使ってA、CNAME、MX、TXTレコードを作成、更新、削除できます。そのため、ダッシュボードを開かず、新しいドメインを稼働中のデプロイ先へ接続できます |
 | 4. 取引 | チェックアウトページを使わず、APIまたはプロトコルの呼び出しだけで登録を完了する | 事前に支出上限を承認すること | 独立系メディアの報道によると、CloudflareのRegistrar APIベータ版は、[「AIエージェントがドメインの空き状況を検索し、価格を確認し、ブラウザ操作や手動承認なしでプログラムから登録を完了できる」](https://webhosting.today/2026/04/22/ai-agents-can-now-register-domains-no-human-required/)ものです。Namefiの[MCPサーバー](https://namefi.io/mcp)も、同じ段階を呼び出し可能なツールとして公開しています |
 | 5. ライフサイクル管理 | ダッシュボードを開き直すことなく、何年にもわたって更新、DNS変更、[移管](/ja/glossary/transfer-lock/)を処理する | ポリシーを一度設定すること | NamefiのAPIでは、エージェントが登録日に有効化できる切り替え項目として[自動更新](/ja/glossary/domain-renewal/)を公開しています。一方、Cloudflare自身のベータ版については、[「移管、更新、連絡先の更新など、登録後の管理は現在のベータ版に含まれていない」](https://webhosting.today/2026/04/22/ai-agents-can-now-register-domains-no-human-required/)とされています |
 

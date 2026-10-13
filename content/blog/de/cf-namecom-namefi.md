@@ -69,7 +69,7 @@ Namefi registriert Domains außerdem als [NFTs](/de/glossary/nft/) — [tokenisi
 |---|---|---|---|
 | Verfügbarkeitssuche | Ja | Ja | Ja (`search/availability`, im Batch) |
 | Preisabfrage | Ja | Ja (dokumentiert, nicht detailliert aufgeschlüsselt) | Ja (in der x402-`402`-Antwort; auch über API) |
-| Kauf / Registrierung | Ja, synchron, Sekunden | Ja (vom Agenten erzeugter Integrationscode) | Ja — API-Key oder per Wallet-Signatur autorisiertes USDC über x402/MPP |
+| Kauf / Registrierung | Ja, synchron, Sekunden | Ja (vom Agenten erzeugter Integrationscode) | Ja — [API-Key](https://namefi.io/api-key) oder per Wallet-Signatur autorisiertes USDC über x402/MPP |
 | DNS-Verwaltung | Nicht in der aktuellen Beta | In der Ankündigung nicht detailliert | Ja — vollständiges CRUD, Batch-Vorgänge, A/CNAME/TXT/MX und mehr |
 | Automatisierte Verlängerung | Nicht in der aktuellen Beta (später 2026 geplant) | In der Ankündigung nicht detailliert | Ja — Auto-Renew-Schalter pro Domain |
 | Krypto-Zahlung | Nein | Nein | Ja — USDC über x402, kein Konto erforderlich |

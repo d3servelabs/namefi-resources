@@ -71,7 +71,7 @@ relatedGlossary:
 
 ## 関連ファイル：Web3とMCPディスカバリー
 
-ルートファイルは、汎用の入口に含める必要がないAPI部分を関連ファイルへ分けています。[namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt)では、APIキーの代わりにウォレットを持つエージェントが必要とする決済経路を説明します。`GET /x402/domain/{domainName}`が、価格情報を含む`402 Payment Required`を返し、署名済み`X-PAYMENT`ヘッダーを付けて支払う[x402](/ja/glossary/x402/)フロー、`mppx` CLIで署名するMPP（Machine Payable Protocol）のチャレンジ・レスポンス方式、スマートコントラクトウォレットにも対応する手動EIP-712署名経路です。ファイルには、x402での登録について明確にこう書かれています。「NamefiアカウントもEIP-712署名も不要です。購入者のウォレットがEIP-3009の`transferWithAuthorization`に署名します。」APIキーだけが必要なエージェントは、これらを読み込む必要がありません。
+ルートファイルは、汎用の入口に含める必要がないAPI部分を関連ファイルへ分けています。[namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt)では、[APIキー](https://namefi.io/api-key)の代わりにウォレットを持つエージェントが必要とする決済経路を説明します。`GET /x402/domain/{domainName}`が、価格情報を含む`402 Payment Required`を返し、署名済み`X-PAYMENT`ヘッダーを付けて支払う[x402](/ja/glossary/x402/)フロー、`mppx` CLIで署名するMPP（Machine Payable Protocol）のチャレンジ・レスポンス方式、スマートコントラクトウォレットにも対応する手動EIP-712署名経路です。ファイルには、x402での登録について明確にこう書かれています。「NamefiアカウントもEIP-712署名も不要です。購入者のウォレットがEIP-3009の`transferWithAuthorization`に署名します。」APIキーだけが必要なエージェントは、これらを読み込む必要がありません。
 
 MCP側には`llms.txt`とは完全に別のディスカバリーファイルがあります。[namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)です。Markdownではなく、小さなJSONディスクリプターになっています。
 

@@ -79,7 +79,7 @@ Namefi 并未在其机器可读的 API 文档中发布可与 Cloudflare 相比�
 
 ## 使用编程智能体注册 `.ai`
 
-如果你已在支持 MCP 的客户端中工作——Claude Code、Cursor、Windsurf、Gemini CLI 或类似工具——为项目注册所需的 `.ai` 域名，并不意味着必须离开编辑器去填写注册商的结账表单。[如何使用 AI 智能体在 Namefi 注册域名](/zh-CN/blog/ai-agent-register/)提供完整步骤：获取 API 密钥或连接钱包，将你的智能体指向 Namefi 的 MCP 服务器，请它检查可用性，并在你正在构建该域名所服务产品的同一段对话中确认注册。同一指南还涵盖不支持 MCP 的智能体如何走原始 REST 路径，并把 [namefi.io/llms.txt](https://namefi.io/llms.txt) 作为纯文本入口。
+如果你已在支持 MCP 的客户端中工作——Claude Code、Cursor、Windsurf、Gemini CLI 或类似工具——为项目注册所需的 `.ai` 域名，并不意味着必须离开编辑器去填写注册商的结账表单。[如何使用 AI 智能体在 Namefi 注册域名](/zh-CN/blog/ai-agent-register/)提供完整步骤：获取 [API 密钥](https://namefi.io/api-key)或连接钱包，将你的智能体指向 Namefi 的 MCP 服务器，请它检查可用性，并在你正在构建该域名所服务产品的同一段对话中确认注册。同一指南还涵盖不支持 MCP 的智能体如何走原始 REST 路径，并把 [namefi.io/llms.txt](https://namefi.io/llms.txt) 作为纯文本入口。
 
 无论你最终因价格选择哪家注册商，都值得在确定之前核实它是否达到上文所述的 AI 原生门槛——每两年都必须通过浏览器结账来续费的 `.ai` 域名，是一项虽小却反复出现的手动工作；可供智能体调用的注册商能将其完全消除。
 

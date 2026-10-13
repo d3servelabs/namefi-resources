@@ -71,7 +71,7 @@ relatedGlossary:
 
 ## 보조 파일: web3와 MCP 검색
 
-루트 파일은 범용 진입점에 포함할 필요가 없는 API 영역을 별도 파일로 연결합니다. [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt)는 API 키 대신 지갑을 보유한 에이전트에게 필요한 결제 경로를 설명합니다. 여기에는 [x402](/ko/glossary/x402/) 흐름이 포함됩니다. 이 흐름에서 `GET /x402/domain/{domainName}`은 서명된 `X-PAYMENT` 헤더가 첨부될 때까지 가격 정보와 함께 `402 Payment Required`를 반환합니다. 또한 `mppx` CLI로 서명하는 MPP(Machine Payable Protocol) 챌린지-응답 방식과 스마트 계약 지갑을 포괄하는 수동 EIP-712 서명 경로도 설명합니다. 파일에는 x402 등록에 관해 “Namefi 계정이나 EIP-712 서명이 필요하지 않습니다. 구매자의 지갑이 EIP-3009 `transferWithAuthorization`에 서명합니다.”라고 명확히 적혀 있습니다. API 키만 필요한 에이전트는 이 내용을 전혀 불러올 필요가 없습니다.
+루트 파일은 범용 진입점에 포함할 필요가 없는 API 영역을 별도 파일로 연결합니다. [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt)는 [API 키](https://namefi.io/api-key) 대신 지갑을 보유한 에이전트에게 필요한 결제 경로를 설명합니다. 여기에는 [x402](/ko/glossary/x402/) 흐름이 포함됩니다. 이 흐름에서 `GET /x402/domain/{domainName}`은 서명된 `X-PAYMENT` 헤더가 첨부될 때까지 가격 정보와 함께 `402 Payment Required`를 반환합니다. 또한 `mppx` CLI로 서명하는 MPP(Machine Payable Protocol) 챌린지-응답 방식과 스마트 계약 지갑을 포괄하는 수동 EIP-712 서명 경로도 설명합니다. 파일에는 x402 등록에 관해 “Namefi 계정이나 EIP-712 서명이 필요하지 않습니다. 구매자의 지갑이 EIP-3009 `transferWithAuthorization`에 서명합니다.”라고 명확히 적혀 있습니다. API 키만 필요한 에이전트는 이 내용을 전혀 불러올 필요가 없습니다.
 
 MCP 측에는 `llms.txt`와 완전히 별개인 자체 검색 파일이 있습니다. [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)은 Markdown이 아니라 작은 JSON 디스크립터입니다.
 

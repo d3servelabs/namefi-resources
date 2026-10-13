@@ -49,7 +49,7 @@ GoDaddy Airo and Namecheap's AI naming and branding tools both live here, and th
 The second meaning is newer, and it's the one Namefi is built around. Here the "AI" isn't a suggestion box embedded in a checkout page — it's an [AI agent](/en/glossary/ai-agent/): software that calls an API on your behalf, not a person clicking through results. The shape:
 
 1. **An agent, not a form, initiates the request.** A coding assistant, a scheduled script, or a chat client asks "is this name available, what does it cost" through an API call, not a search box.
-2. **The agent calls the registrar's API directly.** For Namefi that's an [MCP (Model Context Protocol) server](https://namefi.io/mcp) at `api.namefi.io/mcp`, or a plain REST API for agents that don't speak MCP, authenticated with an API key sent as an `x-api-key` header, or a wallet signature that authorizes payment with no account at all.
+2. **The agent calls the registrar's API directly.** For Namefi that's an [MCP (Model Context Protocol) server](https://namefi.io/mcp) at `api.namefi.io/mcp`, or a plain REST API for agents that don't speak MCP, authenticated with an [API key](https://namefi.io/api-key) sent as an `x-api-key` header, or a wallet signature that authorizes payment with no account at all.
 3. **The domain gets registered without a browser checkout.** The agent submits the order, polls it to completion, and can configure [DNS](/en/glossary/dns/) in the same flow — no card form, no "click here to confirm."
 4. **You set the policy up front, not the click in the moment.** Instead of approving each purchase by hand, you decide in advance what the agent may spend and on what.
 

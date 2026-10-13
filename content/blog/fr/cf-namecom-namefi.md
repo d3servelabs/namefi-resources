@@ -69,7 +69,7 @@ Namefi enregistre également les domaines sous forme de [NFT](/fr/glossary/nft/)
 |---|---|---|---|
 | Recherche de disponibilité | Oui | Oui | Oui (`search/availability`, par lots) |
 | Consultation des tarifs | Oui | Oui (documentée, sans détail par poste) | Oui (prix renvoyé dans la réponse x402 402, également disponible via l’API) |
-| Achat / enregistrement | Oui, synchrone, en quelques secondes | Oui (code d’intégration généré par l’agent) | Oui — clé d’API, ou paiement en USDC signé par portefeuille via x402/MPP |
+| Achat / enregistrement | Oui, synchrone, en quelques secondes | Oui (code d’intégration généré par l’agent) | Oui — [clé d’API](https://namefi.io/api-key), ou paiement en USDC signé par portefeuille via x402/MPP |
 | Gestion DNS | Absente de la bêta actuelle | Non détaillée dans l’annonce | Oui — CRUD complet, opérations par lots, A/CNAME/TXT/MX et plus encore |
 | Automatisation du renouvellement | Absente de la bêta actuelle (prévue plus tard en 2026) | Non détaillée dans l’annonce | Oui — activation du renouvellement automatique pour chaque domaine |
 | Paiement en cryptomonnaie | Non | Non | Oui — USDC via x402, sans compte requis |
