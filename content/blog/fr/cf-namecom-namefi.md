@@ -31,7 +31,7 @@ relatedGlossary:
   - /fr/glossary/wallet/
 ---
 
-Trois [bureaux d’enregistrement](/fr/glossary/registrar/) permettent désormais à un agent, et non plus seulement à un humain, de remplir un formulaire de paiement. Cloudflare a ouvert en avril 2026 une API en bêta qui permet à un [agent IA](/fr/glossary/ai-agent/) d’enregistrer un domaine sans session de navigation. Name.com a repensé son API autour de la même idée et se présente comme la première plateforme de domaines native pour l’IA. Namefi a conçu un serveur Model Context Protocol (MCP) et un paiement signé par portefeuille qui supprime entièrement l’étape de création de compte. Les trois entreprises misent sur la même évolution : l’enregistrement d’un domaine, jusqu’ici effectué par une personne dans un navigateur, devient une opération qu’un agent réalise au moyen d’un appel d’API.
+Trois [bureaux d’enregistrement](/fr/glossary/registrar/) permettent désormais à un agent, et non plus seulement à un humain, de remplir un formulaire de paiement. Cloudflare a ouvert en avril 2026 une API en bêta qui permet à un [agent IA](/fr/glossary/ai-agent/) d’enregistrer un domaine sans session de navigation. Name.com a repensé son API autour de la même idée et se présente comme la première plateforme de domaines native pour l’IA. Namefi a conçu un [serveur Model Context Protocol (MCP)](https://namefi.io/mcp) et un paiement signé par portefeuille qui supprime entièrement l’étape de création de compte. Les trois entreprises misent sur la même évolution : l’enregistrement d’un domaine, jusqu’ici effectué par une personne dans un navigateur, devient une opération qu’un agent réalise au moyen d’un appel d’API.
 
 Il ne s’agit toutefois pas d’un même produit décliné sous trois logos. Chacune a fait des choix différents en matière de tarifs, de critères réellement nécessaires pour être « conçu pour les agents » et de preuve de la capacité de paiement de l’acheteur. Voici une comparaison fonctionnalité par fonctionnalité des trois offres, y compris les domaines où les tarifs de Cloudflare sont véritablement difficiles à battre et ceux où le positionnement de Name.com devance ce que l’entreprise a effectivement livré.
 
@@ -69,7 +69,7 @@ Namefi enregistre également les domaines sous forme de [NFT](/fr/glossary/nft/)
 |---|---|---|---|
 | Recherche de disponibilité | Oui | Oui | Oui (`search/availability`, par lots) |
 | Consultation des tarifs | Oui | Oui (documentée, sans détail par poste) | Oui (prix renvoyé dans la réponse x402 402, également disponible via l’API) |
-| Achat / enregistrement | Oui, synchrone, en quelques secondes | Oui (code d’intégration généré par l’agent) | Oui — clé d’API, ou paiement en USDC signé par portefeuille via x402/MPP |
+| Achat / enregistrement | Oui, synchrone, en quelques secondes | Oui (code d’intégration généré par l’agent) | Oui — [clé d’API](https://namefi.io/api-key), ou paiement en USDC signé par portefeuille via x402/MPP |
 | Gestion DNS | Absente de la bêta actuelle | Non détaillée dans l’annonce | Oui — CRUD complet, opérations par lots, A/CNAME/TXT/MX et plus encore |
 | Automatisation du renouvellement | Absente de la bêta actuelle (prévue plus tard en 2026) | Non détaillée dans l’annonce | Oui — activation du renouvellement automatique pour chaque domaine |
 | Paiement en cryptomonnaie | Non | Non | Oui — USDC via x402, sans compte requis |

@@ -68,7 +68,7 @@ Read in order, the pattern is: a twenty-year-old provisioning protocol, then two
 
 | Platform | Capability | Status | Evidence |
 | --- | --- | --- | --- |
-| Namefi | MCP server (`api.namefi.io/mcp`, Streamable HTTP, discoverable at `/.well-known/mcp/servers.json`) | **Shipped** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
+| Namefi | [MCP server](https://namefi.io/mcp) (`api.namefi.io/mcp`, Streamable HTTP, discoverable at `/.well-known/mcp/servers.json`) | **Shipped** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | Wallet-signed USDC checkout via [x402](/en/glossary/x402/) (EIP-3009 `transferWithAuthorization`, no account required) | **Shipped** | [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) |
 | Namefi | `llms.txt`-based discovery for agent tooling and REST reference | **Shipped** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | Spend-cap or purchase-confirmation primitive at the API layer | **Not shipped** — no documented gate as of this writing; the guardrail currently lives on the MCP client, not the server | Our own [agent-native checklist analysis](/en/blog/agent-native/), cross-checked directly against `namefi.io/llms.txt` and `namefi.io/web3/llms.txt` for this piece |

@@ -59,7 +59,7 @@ relatedGlossary:
 | **Namecheap** | 首年约 $93 | 约 $115/年 | 2 年（注册局强制） | 没有专属智能体 API——AI 工具可推荐名称，结账仍由人完成 |
 | **GoDaddy** | 首年促销价 $49.99 | 第二年起 $159.99 | 2 年（注册局强制） | 不可以——Airo 是面向消费者的入门助手，不是可供智能体调用的接口（请参阅 [GoDaddy Airo、Namecheap AI 与 Namefi 的对比](/zh-CN/blog/airo-vs-namefi/)） |
 | **Porkbun** | 统一约 $82.70/年 | 统一约 $82.70/年 | 2 年（注册局强制） | 未有文档说明——有标准注册商 API，但公开来源未发现智能体专用工具 |
-| **Namefi** | 定价不固定，请查实时价格<!-- TODO: confirm — Namefi .ai pricing --> | 定价不固定，请查实时价格 | 2 年（注册局强制） | 可以——MCP 服务器加钱包签名结账，无需账户（参阅[如何使用 AI 智能体注册域名](/zh-CN/blog/ai-agent-register/)） |
+| **Namefi** | 定价不固定，请查实时价格<!-- TODO: confirm — Namefi .ai pricing --> | 定价不固定，请查实时价格 | 2 年（注册局强制） | 可以——[MCP 服务器](https://namefi.io/mcp)加钱包签名结账，无需账户（参阅[如何使用 AI 智能体注册域名](/zh-CN/blog/ai-agent-register/)） |
 
 Cloudflare 的定价是其中说明最明确的：公司直接表示，[`.ai` 域名的注册和续费按批发价提供，不额外加价](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/)，而在那里注册的每个 `.ai` 域名都默认附带[免费 DNSSEC、免费 SSL、双重身份验证和域名锁](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/)，以及免费 WHOIS 信息遮蔽，而非把这些服务作为附加项出售。一份成功抓取到的注册商汇总也独立印证了这一模式——本文直接核查时，GoDaddy 与 Namecheap 自己的 `.ai` 页面返回了访问受阻的响应——其中指出 Cloudflare[仅收取注册局费用，注册和续费均为零加价](https://www.unite.ai/registrars/)，Namecheap[首年约 $93、续费约 $115/年](https://www.unite.ai/registrars/)，GoDaddy 在强制两年期限内[首年促销价为 $49.99、第二年计费 $159.99](https://www.unite.ai/registrars/)，而 Porkbun[注册与续费均稳定为 $82.70/年](https://www.unite.ai/registrars/)。同一汇总还提醒了每位买家都需理解的机制：[所有 `.ai` 域名最短注册期均为两年](https://www.unite.ai/registrars/)，因此看似很低的“每年”标价，仍意味着一张实际的预付账单。由于 GoDaddy 和 Namecheap 的自有定价页面未能抓取，上述数字应视为来自汇总文章；购买前请直接获取实时价格。
 
@@ -79,7 +79,7 @@ Namefi 并未在其机器可读的 API 文档中发布可与 Cloudflare 相比�
 
 ## 使用编程智能体注册 `.ai`
 
-如果你已在支持 MCP 的客户端中工作——Claude Code、Cursor、Windsurf、Gemini CLI 或类似工具——为项目注册所需的 `.ai` 域名，并不意味着必须离开编辑器去填写注册商的结账表单。[如何使用 AI 智能体在 Namefi 注册域名](/zh-CN/blog/ai-agent-register/)提供完整步骤：获取 API 密钥或连接钱包，将你的智能体指向 Namefi 的 MCP 服务器，请它检查可用性，并在你正在构建该域名所服务产品的同一段对话中确认注册。同一指南还涵盖不支持 MCP 的智能体如何走原始 REST 路径，并把 [namefi.io/llms.txt](https://namefi.io/llms.txt) 作为纯文本入口。
+如果你已在支持 MCP 的客户端中工作——Claude Code、Cursor、Windsurf、Gemini CLI 或类似工具——为项目注册所需的 `.ai` 域名，并不意味着必须离开编辑器去填写注册商的结账表单。[如何使用 AI 智能体在 Namefi 注册域名](/zh-CN/blog/ai-agent-register/)提供完整步骤：获取 [API 密钥](https://namefi.io/api-key)或连接钱包，将你的智能体指向 Namefi 的 MCP 服务器，请它检查可用性，并在你正在构建该域名所服务产品的同一段对话中确认注册。同一指南还涵盖不支持 MCP 的智能体如何走原始 REST 路径，并把 [namefi.io/llms.txt](https://namefi.io/llms.txt) 作为纯文本入口。
 
 无论你最终因价格选择哪家注册商，都值得在确定之前核实它是否达到上文所述的 AI 原生门槛——每两年都必须通过浏览器结账来续费的 `.ai` 域名，是一项虽小却反复出现的手动工作；可供智能体调用的注册商能将其完全消除。
 

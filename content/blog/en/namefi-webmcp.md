@@ -40,7 +40,7 @@ Namefi already has an MCP server, a CLI, and authentication for agents and autom
 
 We already give agents several ways to work with Namefi. Our [MCP server](https://namefi.io/mcp) exposes domain operations as callable tools, and our [command-line tool](https://namefi.io/cli) lets people, scripts, and agents work from the terminal. The CLI includes domain and dynamic DNS workflows, plus commands generated from our API for operations beyond those everyday tasks.
 
-Authentication is already part of that setup. MCP clients can connect using OAuth or an API key. The CLI supports browser-based login, a headless login option, and API keys for automation. Those paths let users authorize access to their account and give developers a practical foundation to build on.
+Authentication is already part of that setup. MCP clients can connect using OAuth or an [API key](https://namefi.io/api-key). The CLI supports browser-based login, a headless login option, and API keys for automation. Those paths let users authorize access to their account and give developers a practical foundation to build on.
 
 We also package the MCP connection with guidance for agents in our plugins for [Codex](https://github.com/d3servelabs/namefi-codex-plugins), [Claude Code](https://github.com/d3servelabs/namefi-claude-plugins), [ZCode](https://github.com/d3servelabs/namefi-zcode-plugins), and [Antigravity](https://github.com/d3servelabs/namefi-antigravity-plugins). Our [plugin setup guide](https://namefi.io/mcp#plugins) includes installation steps and the shared marketplace setup for opencode.
 

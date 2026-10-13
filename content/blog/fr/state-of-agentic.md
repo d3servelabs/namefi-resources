@@ -68,7 +68,7 @@ L’expression « conçu pour les agents » est employée de manière assez vagu
 
 | Plateforme | Fonctionnalité | État | Preuve |
 | --- | --- | --- | --- |
-| Namefi | Serveur MCP (`api.namefi.io/mcp`, Streamable HTTP, découvrable à l’adresse `/.well-known/mcp/servers.json`) | **Livré** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
+| Namefi | [Serveur MCP](https://namefi.io/mcp) (`api.namefi.io/mcp`, Streamable HTTP, découvrable à l’adresse `/.well-known/mcp/servers.json`) | **Livré** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | Paiement en USDC signé par portefeuille via [x402](/fr/glossary/x402/) (`transferWithAuthorization` d’EIP-3009, aucun compte requis) | **Livré** | [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) |
 | Namefi | Découverte fondée sur `llms.txt` pour les outils d’agents et la référence REST | **Livré** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | Plafond de dépenses ou mécanisme de confirmation d’achat au niveau de l’API | **Non livré** — aucun contrôle documenté au moment de la rédaction ; la protection se trouve actuellement dans le client MCP, pas sur le serveur | Notre propre [analyse selon la checklist des plateformes conçues pour les agents](/fr/blog/agent-native/), vérifiée directement pour cet article à partir de `namefi.io/llms.txt` et `namefi.io/web3/llms.txt` |

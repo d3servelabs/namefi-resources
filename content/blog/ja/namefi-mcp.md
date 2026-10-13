@@ -37,7 +37,7 @@ Namefi MCPサーバーへ接続するすべての[AIエージェント](/ja/glos
 
 ## Namefi MCPサーバーとは
 
-NamefiはAPI全体に対応する単一のMCPサーバーを、`https://api.namefi.io/mcp`でStreamable HTTP転送方式により運用しています。エージェントがチャットに貼り付けられたドキュメントを基にREST呼び出しを一つずつ自作するのではなく、一度接続するとAPIが定義するすべての操作に対応した型付きツールを受け取ります。これらはNamefi自身のOpenAPI 3仕様である[api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json)から直接生成されるため、MCPカタログとREST APIが食い違うことはありません。
+NamefiはAPI全体に対応する単一の[MCPサーバー](https://namefi.io/mcp)を、`https://api.namefi.io/mcp`でStreamable HTTP転送方式により運用しています。エージェントがチャットに貼り付けられたドキュメントを基にREST呼び出しを一つずつ自作するのではなく、一度接続するとAPIが定義するすべての操作に対応した型付きツールを受け取ります。これらはNamefi自身のOpenAPI 3仕様である[api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json)から直接生成されるため、MCPカタログとREST APIが食い違うことはありません。
 
 [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)にある機械可読ディスカバリーディスクリプターを使うと、人間が設定ファイルへURLを手で貼り付けなくてもエージェントがサーバーを見つけられます。サーバー名は`namefi-api`、転送方式は`streamable-http`、接続認証は`apiKey`/`x-api-key`と記載されています。[ICANN](/ja/glossary/icann/)認定[レジストラ](/ja/glossary/registrar/)のNamefiは、MCPを利用しないエージェントやスクリプト向けに、同じ操作を通常のHTTPSエンドポイントとして[namefi.io/llms.txt](https://namefi.io/llms.txt)でも公開しています。
 

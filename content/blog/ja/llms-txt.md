@@ -71,7 +71,7 @@ relatedGlossary:
 
 ## 関連ファイル：Web3とMCPディスカバリー
 
-ルートファイルは、汎用の入口に含める必要がないAPI部分を関連ファイルへ分けています。[namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt)では、APIキーの代わりにウォレットを持つエージェントが必要とする決済経路を説明します。`GET /x402/domain/{domainName}`が、価格情報を含む`402 Payment Required`を返し、署名済み`X-PAYMENT`ヘッダーを付けて支払う[x402](/ja/glossary/x402/)フロー、`mppx` CLIで署名するMPP（Machine Payable Protocol）のチャレンジ・レスポンス方式、スマートコントラクトウォレットにも対応する手動EIP-712署名経路です。ファイルには、x402での登録について明確にこう書かれています。「NamefiアカウントもEIP-712署名も不要です。購入者のウォレットがEIP-3009の`transferWithAuthorization`に署名します。」APIキーだけが必要なエージェントは、これらを読み込む必要がありません。
+ルートファイルは、汎用の入口に含める必要がないAPI部分を関連ファイルへ分けています。[namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt)では、[APIキー](https://namefi.io/api-key)の代わりにウォレットを持つエージェントが必要とする決済経路を説明します。`GET /x402/domain/{domainName}`が、価格情報を含む`402 Payment Required`を返し、署名済み`X-PAYMENT`ヘッダーを付けて支払う[x402](/ja/glossary/x402/)フロー、`mppx` CLIで署名するMPP（Machine Payable Protocol）のチャレンジ・レスポンス方式、スマートコントラクトウォレットにも対応する手動EIP-712署名経路です。ファイルには、x402での登録について明確にこう書かれています。「NamefiアカウントもEIP-712署名も不要です。購入者のウォレットがEIP-3009の`transferWithAuthorization`に署名します。」APIキーだけが必要なエージェントは、これらを読み込む必要がありません。
 
 MCP側には`llms.txt`とは完全に別のディスカバリーファイルがあります。[namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)です。Markdownではなく、小さなJSONディスクリプターになっています。
 
@@ -105,7 +105,7 @@ MCP側には`llms.txt`とは完全に別のディスカバリーファイルが�
 
 それぞれの役割を正確に区別することが重要です。`llms.txt`はドキュメントです。エージェントは一度取得すると、APIが何であり、詳しいリソースがどこにあるかを理解します。誰かが記載内容に基づいて行動するまでは、静的なテキストです。[MCP](https://modelcontextprotocol.io)は、プロトコル自身の説明によれば、「AIアプリケーションを外部システムに接続するためのオープンソース標準」です。クライアントがサーバーとの間に開く実際のセッションであり、呼び出し可能なツールを一覧にして実行できます。
 
-Namefiのファイルは両者の関係を直接示しています。`llms.txt`は、MCPサーバーが`api.namefi.io/mcp`に存在するとエージェントに伝え、接続用の`claude mcp add`コマンドを示します。ファイルを読み、実際のツールインターフェースがあることを知り、接続し、実行するという流れです。最初からMCPを使うエージェントも`.well-known/mcp/servers.json`でサーバーを見つけられます。ただし、そのディスクリプターの`documentation`フィールドは`llms.txt`を参照するため、両者が完全に独立して動作することはほとんどありません。
+Namefiのファイルは両者の関係を直接示しています。`llms.txt`は、[MCPサーバー](https://namefi.io/mcp)が`api.namefi.io/mcp`に存在するとエージェントに伝え、接続用の`claude mcp add`コマンドを示します。ファイルを読み、実際のツールインターフェースがあることを知り、接続し、実行するという流れです。最初からMCPを使うエージェントも`.well-known/mcp/servers.json`でサーバーを見つけられます。ただし、そのディスクリプターの`documentation`フィールドは`llms.txt`を参照するため、両者が完全に独立して動作することはほとんどありません。
 
 ## ほかのAPI提供者への指針
 

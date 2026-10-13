@@ -71,7 +71,7 @@ relatedGlossary:
 
 ## 配套文件：Web3 与 MCP 发现
 
-根文件会链接到同级文件，承载不适合放进通用入口的 API 部分。[namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) 记录的是持有钱包的智能体可采用、而非使用 API 密钥的支付路径：一个 [x402](/zh-CN/glossary/x402/) 流程，其中 `GET /x402/domain/{domainName}` 在附加已签名的 `X-PAYMENT` 标头之前，会返回带有定价信息的 `402 Payment Required`；还有一种通过 `mppx` CLI 签名的 MPP（Machine Payable Protocol）挑战—响应变体，以及覆盖智能合约钱包的手动 EIP-712 签名路径。该文件明确写道，x402 注册“无需 Namefi 账户或 EIP-712 签名——买方的钱包签署 EIP-3009 `transferWithAuthorization`。”只需要 API 密钥的智能体完全不必加载这些内容。
+根文件会链接到同级文件，承载不适合放进通用入口的 API 部分。[namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) 记录的是持有钱包的智能体可采用、而非使用 [API 密钥](https://namefi.io/api-key)的支付路径：一个 [x402](/zh-CN/glossary/x402/) 流程，其中 `GET /x402/domain/{domainName}` 在附加已签名的 `X-PAYMENT` 标头之前，会返回带有定价信息的 `402 Payment Required`；还有一种通过 `mppx` CLI 签名的 MPP（Machine Payable Protocol）挑战—响应变体，以及覆盖智能合约钱包的手动 EIP-712 签名路径。该文件明确写道，x402 注册“无需 Namefi 账户或 EIP-712 签名——买方的钱包签署 EIP-3009 `transferWithAuthorization`。”只需要 API 密钥的智能体完全不必加载这些内容。
 
 MCP 另有独立的发现文件，与 `llms.txt` 完全分开：[namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)。它是一个小型 JSON 描述符，而不是 Markdown：
 
@@ -105,7 +105,7 @@ MCP 另有独立的发现文件，与 `llms.txt` 完全分开：[namefi.io/.well
 
 这里值得准确说明两者各自的作用。`llms.txt` 是一份文档：智能体抓取一次后，就知道 API 是什么以及更深层资源在哪里；在某个主体根据它采取行动之前，它只是静态文本。[MCP](https://modelcontextprotocol.io) 按该协议自己的描述，是“一项用于将 AI 应用连接到外部系统的开源标准”——客户端会与服务器建立实时会话，并在此会话中列出和调用可执行工具。
 
-Namefi 的文件直接展示了这种关系：`llms.txt` 告诉智能体，`api.namefi.io/mcp` 上存在 MCP 服务器，并提供 `claude mcp add` 命令以建立连接。读取文件，得知存在实时工具接口，连接，然后行动。跳过 `llms.txt`、直接使用 MCP 的智能体仍可以通过 `.well-known/mcp/servers.json` 找到该服务器——但该描述符的 `documentation` 字段会指回 `llms.txt`，因此两者很少真正彼此孤立运行。
+Namefi 的文件直接展示了这种关系：`llms.txt` 告诉智能体，`api.namefi.io/mcp` 上存在 [MCP 服务器](https://namefi.io/mcp)，并提供 `claude mcp add` 命令以建立连接。读取文件，得知存在实时工具接口，连接，然后行动。跳过 `llms.txt`、直接使用 MCP 的智能体仍可以通过 `.well-known/mcp/servers.json` 找到该服务器——但该描述符的 `documentation` 字段会指回 `llms.txt`，因此两者很少真正彼此孤立运行。
 
 ## 给其他 API 供应商的建议
 

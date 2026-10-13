@@ -31,7 +31,7 @@ relatedGlossary:
   - /ja/glossary/x402/
 ---
 
-このガイドを最後まで読むと、[ICANN](/ja/glossary/icann/)に実在するドメインを登録し、構築中のサービスにDNSを向けるところまで、Claudeとの会話だけで完了できます。ブラウザーでの決済も、カートも、CAPTCHAも必要ありません。これは[Namefi](https://namefi.io) MCPサーバーに関するNamefiチーム公式のセットアップガイドです。[namefi.io/llms.txt](https://namefi.io/llms.txt)と[docs.namefi.io](https://docs.namefi.io)でエージェント向けに公開している同じAPIを、人が読みやすい形で説明します。まだ確定または公開されていない詳細については、推測せず、その旨を明記します。
+このガイドを最後まで読むと、[ICANN](/ja/glossary/icann/)に実在するドメインを登録し、構築中のサービスにDNSを向けるところまで、Claudeとの会話だけで完了できます。ブラウザーでの決済も、カートも、CAPTCHAも必要ありません。これは[Namefi](https://namefi.io) [MCPサーバー](https://namefi.io/mcp)に関するNamefiチーム公式のセットアップガイドです。[namefi.io/llms.txt](https://namefi.io/llms.txt)と[docs.namefi.io](https://docs.namefi.io)でエージェント向けに公開している同じAPIを、人が読みやすい形で説明します。まだ確定または公開されていない詳細については、推測せず、その旨を明記します。
 
 「[AIエージェント](/ja/glossary/ai-agent/)でドメインを登録する」方法を解説する第三者のガイドも存在します。[よく知られた一例](https://dev.to/marsheer/how-to-register-a-domain-name-with-your-ai-agent-no-human-needed-h26)では、Cloudflare Registrar API上にリセラーとして構築された別のMCPサーバーを使って、このパターンを紹介しています。MCP自体の仕組みはどのプロバイダーでも同じ発想に基づきますが、このガイドではNamefi独自のMCPサーバー、認証モデル、[トークン化ドメイン](/ja/glossary/tokenized-domain/)のオプションに絞り、第三者による説明ではなくNamefiのドキュメントに照らして検証しています。
 

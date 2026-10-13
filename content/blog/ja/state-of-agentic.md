@@ -68,7 +68,7 @@ relatedGlossary:
 
 | プラットフォーム | 機能 | 状態 | 根拠 |
 | --- | --- | --- | --- |
-| Namefi | MCPサーバー（`api.namefi.io/mcp`、Streamable HTTP、`/.well-known/mcp/servers.json`で発見可能） | **提供済み** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
+| Namefi | [MCPサーバー](https://namefi.io/mcp)（`api.namefi.io/mcp`、Streamable HTTP、`/.well-known/mcp/servers.json`で発見可能） | **提供済み** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | [x402](/ja/glossary/x402/)によるウォレット署名USDC決済（EIP-3009 `transferWithAuthorization`、アカウント不要） | **提供済み** | [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) |
 | Namefi | エージェントツールとRESTリファレンスのための`llms.txt`ベースのディスカバリー | **提供済み** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | API層における支出上限または購入確認機能 | **未提供** — この執筆時点で文書化された制御機構はなく、安全策は現在、サーバーではなくMCPクライアント側にある | 独自の[エージェントネイティブ評価表の分析](/ja/blog/agent-native/)と、この記事のために`namefi.io/llms.txt`、`namefi.io/web3/llms.txt`を直接照合した結果 |

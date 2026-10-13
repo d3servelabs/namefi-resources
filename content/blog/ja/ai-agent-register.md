@@ -41,7 +41,7 @@ relatedGlossary:
 
 フォームを自分で入力せず、エージェントに代わってドメインを登録してもらうには、二つの条件を満たす必要があります。まず、エージェントがNamefiのAPIを*見つけて呼び出す*方法を持っていることです。会話型のAIクライアントを外部ツールサーバーに接続し、呼び出せる操作の一覧を認識させるオープン標準、[Model Context Protocol](https://modelcontextprotocol.io)（MCP）を使うか、会話型ではなくスクリプト型のエージェントなら通常のHTTPリクエストを使います。次に、エージェントが*支出の承認*を得ていることです。入金済み残高に紐づくAPIキー、またはその場で支払いに署名できる暗号資産[ウォレット](/ja/glossary/wallet/)が必要です。このガイドで説明する内容は、すべてこの二つのいずれかに当たります。
 
-NamefiはAPI全体に対して単一のMCPサーバーを運用しており、Streamable HTTPトランスポートを使って`https://api.namefi.io/mcp`で提供しています。エージェント自身、またはそれを設定する人は、このページを読まなくてもサーバーを見つけられます。[namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)で機械可読の記述子を公開しており、サーバー名を`namefi-api`、トランスポートを`streamable-http`として記載しています。以下のクライアントはすべて同じURLに接続します。違うのは、そのURLを指定するために各クライアントの設定ファイルやコマンドラインで使う書式だけです。
+NamefiはAPI全体に対して単一の[MCPサーバー](https://namefi.io/mcp)を運用しており、Streamable HTTPトランスポートを使って`https://api.namefi.io/mcp`で提供しています。エージェント自身、またはそれを設定する人は、このページを読まなくてもサーバーを見つけられます。[namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)で機械可読の記述子を公開しており、サーバー名を`namefi-api`、トランスポートを`streamable-http`として記載しています。以下のクライアントはすべて同じURLに接続します。違うのは、そのURLを指定するために各クライアントの設定ファイルやコマンドラインで使う書式だけです。
 
 ## 共通の五つのステップ
 

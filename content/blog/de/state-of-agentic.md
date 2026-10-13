@@ -68,7 +68,7 @@ In dieser Reihenfolge gelesen ergibt sich folgendes Muster: ein zwanzig Jahre al
 
 | Plattform | Fähigkeit | Status | Nachweis |
 | --- | --- | --- | --- |
-| Namefi | MCP-Server (`api.namefi.io/mcp`, Streamable HTTP, auffindbar unter `/.well-known/mcp/servers.json`) | **Ausgeliefert** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
+| Namefi | [MCP-Server](https://namefi.io/mcp) (`api.namefi.io/mcp`, Streamable HTTP, auffindbar unter `/.well-known/mcp/servers.json`) | **Ausgeliefert** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | Per Wallet-Signatur autorisierter USDC-Checkout über [x402](/de/glossary/x402/) (EIP-3009 `transferWithAuthorization`, kein Konto erforderlich) | **Ausgeliefert** | [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) |
 | Namefi | `llms.txt`-basierte Auffindbarkeit für Agenten-Tools und REST-Referenz | **Ausgeliefert** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | Primitive für Ausgabenlimit oder Kaufbestätigung auf der API-Schicht | **Nicht ausgeliefert** — zum Zeitpunkt dieses Beitrags gibt es keine dokumentierte Schranke; die Leitplanke liegt derzeit beim MCP-Client, nicht beim Server | Unsere eigene [Analyse der agent-nativen Checkliste](/de/blog/agent-native/), für diesen Beitrag direkt gegen `namefi.io/llms.txt` und `namefi.io/web3/llms.txt` gegengeprüft |

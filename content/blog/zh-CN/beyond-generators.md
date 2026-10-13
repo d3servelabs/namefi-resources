@@ -62,8 +62,8 @@ relatedGlossary:
 |---|---|---|---|
 | 1. 建议 | 根据提示词提出品牌型名称 | 名称之后的所有事情 | GoDaddy Airo 和 Namecheap 的 Visual 生成器会将一句描述变成名称和 logo——[Airo 还可在您注册后建议名称、logo 和初版网站](https://www.hostinger.com/tutorials/best-domain-registrars/#:~:text=GoDaddy%20Airo%2C%20its%20AI%20setup%20assistant%2C%20can%20also%20suggest%20a%20name%2C%20logo%2C%20and%20starter%20site%20once%20you%20register) |
 | 2. 搜索 | 查询某个具体名称的实时可用性和价格 | 点击“购买”并完成后续配置 | 可用性查询会确认名称确实仍未被注册——候选清单到这时可能已过期——但结果仍会落在需要人逐步点击购买的页面上 |
-| 3. 配置 | 读取和写入您已经持有的域名的 DNS 记录 | 如果 API 支持写入，则无需人工操作 | Namefi 的 DNS 端点允许调用方使用 API 密钥创建、更新和删除 A、CNAME、MX 与 TXT 记录，因此新注册的域名无需打开后台也能指向已上线的部署 |
-| 4. 交易 | 通过 API 或协议调用完成注册，无需结账页 | 预先批准一项支出上限 | 据独立报道，Cloudflare 的 Registrar API beta [“让 AI 智能体无需任何浏览器交互或人工批准，即可搜索域名可用性、查询价格并以编程方式完成注册”](https://webhosting.today/2026/04/22/ai-agents-can-now-register-domains-no-human-required/)；Namefi 的 MCP 服务器也将同一步骤作为可调用工具提供 |
+| 3. 配置 | 读取和写入您已经持有的域名的 DNS 记录 | 如果 API 支持写入，则无需人工操作 | Namefi 的 DNS 端点允许调用方使用 [API 密钥](https://namefi.io/api-key)创建、更新和删除 A、CNAME、MX 与 TXT 记录，因此新注册的域名无需打开后台也能指向已上线的部署 |
+| 4. 交易 | 通过 API 或协议调用完成注册，无需结账页 | 预先批准一项支出上限 | 据独立报道，Cloudflare 的 Registrar API beta [“让 AI 智能体无需任何浏览器交互或人工批准，即可搜索域名可用性、查询价格并以编程方式完成注册”](https://webhosting.today/2026/04/22/ai-agents-can-now-register-domains-no-human-required/)；Namefi 的 [MCP 服务器](https://namefi.io/mcp)也将同一步骤作为可调用工具提供 |
 | 5. 管理生命周期 | 多年内处理续期、DNS 变更和[转移](/zh-CN/glossary/transfer-lock/)，无需重新打开后台 | 只需设置一次策略 | Namefi 的 API 将[自动续期](/zh-CN/glossary/domain-renewal/)作为可切换的选项，智能体可在注册当日开启；相比之下，Cloudflare 自己的 beta 明确表示，[“包括转移、续期和联系信息更新在内的注册后管理”尚未包含在当前 beta 中](https://webhosting.today/2026/04/22/ai-agents-can-now-register-domains-no-human-required/) |
 
 从上到下阅读这个阶梯，规律很明显：第 1、2 层处理的是*信息*——我该叫什么、是否可用、价格是多少；第 3 至 5 层处理的是*行动*——配置、购买并让它持续运行。2026 年，几乎所有以“AI 域名”为卖点的产品都还完全停留在信息这半边。

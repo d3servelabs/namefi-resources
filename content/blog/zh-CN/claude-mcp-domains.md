@@ -31,7 +31,7 @@ relatedGlossary:
   - /zh-CN/glossary/x402/
 ---
 
-读完本指南后，你将能通过与 Claude 的一次对话，向经 [ICANN](/zh-CN/glossary/icann/) 认证的注册商注册一个真实域名，并将其 DNS 指向你正在构建的任何项目，全程无需浏览器结账、购物车或 CAPTCHA。这是 Namefi 团队为 [Namefi](https://namefi.io) MCP 服务器编写的配置指南：它以人类可读的方式讲解我们面向智能体发布在 [namefi.io/llms.txt](https://namefi.io/llms.txt) 和 [docs.namefi.io](https://docs.namefi.io) 的同一套 API。凡是尚未定案或尚未公开的信息，本文都会明确说明，而不会猜测。
+读完本指南后，你将能通过与 Claude 的一次对话，向经 [ICANN](/zh-CN/glossary/icann/) 认证的注册商注册一个真实域名，并将其 DNS 指向你正在构建的任何项目，全程无需浏览器结账、购物车或 CAPTCHA。这是 Namefi 团队为 [Namefi](https://namefi.io) [MCP 服务器](https://namefi.io/mcp)编写的配置指南：它以人类可读的方式讲解我们面向智能体发布在 [namefi.io/llms.txt](https://namefi.io/llms.txt) 和 [docs.namefi.io](https://docs.namefi.io) 的同一套 API。凡是尚未定案或尚未公开的信息，本文都会明确说明，而不会猜测。
 
 已有第三方教程讲解如何让你的[AI 智能体](/zh-CN/glossary/ai-agent/)“注册域名”——[其中一个热门示例](https://dev.to/marsheer/how-to-register-a-domain-name-with-your-ai-agent-no-human-needed-h26)使用了另一个构建在 Cloudflare Registrar API 之上的转售商 MCP 服务器，展示了这一模式。不同提供商使用 MCP 的机制本质相同；本文则专门介绍 Namefi 自己的 MCP 服务器、认证模型和[代币化域名](/zh-CN/glossary/tokenized-domain/)选项，且所有内容均根据 Namefi 文档核验，而非依据第三方描述。
 

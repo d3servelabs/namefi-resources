@@ -75,7 +75,7 @@ NameBuddy 是一款更聚焦的单一用途工具：按其首页所述，它[是
 
 ## 第 3 层：智能体平台简评
 
-到了第 3 层，买方不再是人。目前有三家注册商把域名注册作为可供外部 AI 智能体——而非注册商内部助手——直接调用的能力开放出来：**Cloudflare 的 Registrar API**（beta 版，于 2026 年 4 月推出，[以批发价提供且不加任何额外加价](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/#:~:text=Cloudflare%20offers%20.ai%20domain%20registrations%20and%20renewals%20at%20wholesale%20prices%2C%20with%20no%20additional%20markups)，并且可嵌入 Cursor 和 Claude Code 等编辑器）；**Name.com 的 AI-native API**，其重建理念是[平台支持 Model Context Protocol (MCP) 和 OpenAPI specification 等现代标准](https://www.name.com/blog/the-first-ai-native-domain-platform#:~:text=our%20platform%20is%20supported%20by%20modern%20standards%20like%20Model%20Context%20Protocol%20%28MCP%29%20and%20OpenAPI%20specification)，让 AI 智能体能直接与域名操作交互；以及 **Namefi**，它在 `api.namefi.io/mcp` 运行 [MCP](/zh-CN/blog/namefi-mcp/) 服务器，将搜索、注册、DNS 和域名配置作为可调用工具开放。该服务器通过 API 密钥或钱包签名进行认证，最终域名也可作为[代币化域名](/zh-CN/blog/what-are-tokenized-domains/)持有，而不只是账户数据库中的一条记录。
+到了第 3 层，买方不再是人。目前有三家注册商把域名注册作为可供外部 AI 智能体——而非注册商内部助手——直接调用的能力开放出来：**Cloudflare 的 Registrar API**（beta 版，于 2026 年 4 月推出，[以批发价提供且不加任何额外加价](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/#:~:text=Cloudflare%20offers%20.ai%20domain%20registrations%20and%20renewals%20at%20wholesale%20prices%2C%20with%20no%20additional%20markups)，并且可嵌入 Cursor 和 Claude Code 等编辑器）；**Name.com 的 AI-native API**，其重建理念是[平台支持 Model Context Protocol (MCP) 和 OpenAPI specification 等现代标准](https://www.name.com/blog/the-first-ai-native-domain-platform#:~:text=our%20platform%20is%20supported%20by%20modern%20standards%20like%20Model%20Context%20Protocol%20%28MCP%29%20and%20OpenAPI%20specification)，让 AI 智能体能直接与域名操作交互；以及 **Namefi**，它在 `api.namefi.io/mcp` 运行 [MCP](/zh-CN/blog/namefi-mcp/) 服务器，将搜索、注册、DNS 和域名配置作为可调用工具开放。该服务器通过 [API 密钥](https://namefi.io/api-key)或钱包签名进行认证，最终域名也可作为[代币化域名](/zh-CN/blog/what-are-tokenized-domains/)持有，而不只是账户数据库中的一条记录。
 
 三者都跨过了第 3 层的基本门槛：智能体能搜索、定价并完成注册，无需人填写结账表单。但此后的差异很大——价格透明度、DNS 管理深度、付款方式和所有权模型皆不相同。我们已经写过完整对比，不在这里重复：功能逐项矩阵请参阅[Cloudflare、Name.com 与 Namefi：智能体原生注册商](/zh-CN/blog/cf-namecom-namefi/)；第 1/2 层既有厂商与 Namefi 的正面对比请参阅[GoDaddy Airo、Namecheap AI 与 Namefi：关键差异](/zh-CN/blog/airo-vs-namefi/)。
 
@@ -110,7 +110,7 @@ NameBuddy 是一款更聚焦的单一用途工具：按其首页所述，它[是
 
 ### 这些工具中有能被外部 AI 智能体（如 Claude 或编程助手）调用的吗？
 
-只有第 3 层平台——Cloudflare 的 Registrar API、Name.com 的 AI-native API，以及 Namefi 的 MCP 服务器和 REST API。GoDaddy、Namecheap 和 Wix 的 AI 工具（包括较新的 GoDaddy Airo.ai 智能体）均运行在各自的网站或控制面板内；它们目前都没有发布供外部 AI 客户端驱动购买的 API 或协议。
+只有第 3 层平台——Cloudflare 的 Registrar API、Name.com 的 AI-native API，以及 Namefi 的 [MCP 服务器](https://namefi.io/mcp)和 REST API。GoDaddy、Namecheap 和 Wix 的 AI 工具（包括较新的 GoDaddy Airo.ai 智能体）均运行在各自的网站或控制面板内；它们目前都没有发布供外部 AI 客户端驱动购买的 API 或协议。
 
 ### 哪个工具最便宜？
 

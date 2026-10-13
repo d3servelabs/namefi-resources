@@ -31,7 +31,7 @@ relatedGlossary:
   - /zh-CN/glossary/wallet/
 ---
 
-如今，三家[注册商](/zh-CN/glossary/registrar/)都让非人类主体可以填写结账表单。Cloudflare 于 2026 年 4 月推出一项 beta API，让 [AI 智能体](/zh-CN/glossary/ai-agent/)无需浏览器会话即可注册域名。Name.com 围绕同一理念重构了 API，并自称为首个 AI 原生域名平台。Namefi 则构建了 Model Context Protocol（MCP）服务器和钱包签名结账流程，完全跳过创建账户这一步。三者都瞄准同一转变：域名注册正从人类在浏览器中完成的操作，变成智能体通过 API 调用完成的操作。
+如今，三家[注册商](/zh-CN/glossary/registrar/)都让非人类主体可以填写结账表单。Cloudflare 于 2026 年 4 月推出一项 beta API，让 [AI 智能体](/zh-CN/glossary/ai-agent/)无需浏览器会话即可注册域名。Name.com 围绕同一理念重构了 API，并自称为首个 AI 原生域名平台。Namefi 则构建了 [Model Context Protocol（MCP）服务器](https://namefi.io/mcp)和钱包签名结账流程，完全跳过创建账户这一步。三者都瞄准同一转变：域名注册正从人类在浏览器中完成的操作，变成智能体通过 API 调用完成的操作。
 
 不过，它们不是换了不同标识的同一种产品。三者对定价、"智能体原生"实际需要什么，以及买方如何证明自己有付款能力，都做了不同的取舍。本文会逐项对比三者，包括 Cloudflare 的定价在哪些方面确实难以匹敌，以及 Name.com 的定位在哪些方面超前于已交付的能力。
 
@@ -69,7 +69,7 @@ Namefi 还会将域名注册为 [NFT（非同质化代币）](/zh-CN/glossary/nf
 |---|---|---|---|
 | 可用性搜索 | 是 | 是 | 是（`search/availability`、批量） |
 | 价格查询 | 是 | 是（有文档说明，但未逐项列出） | 是（在 x402 的 402 响应中返回；也可通过 API 查询） |
-| 购买／注册 | 是，同步，数秒内完成 | 是（由智能体生成集成代码） | 是——API 密钥，或经 x402/MPP 由钱包签名的 USDC |
+| 购买／注册 | 是，同步，数秒内完成 | 是（由智能体生成集成代码） | 是——[API 密钥](https://namefi.io/api-key)，或经 x402/MPP 由钱包签名的 USDC |
 | DNS 管理 | 当前 beta 版不支持 | 公告未逐项列出 | 是——完整 CRUD、批量操作、A/CNAME/TXT/MX 等 |
 | 续费自动化 | 当前 beta 版不支持（计划于 2026 年晚些时候推出） | 公告未逐项列出 | 是——每个域名均可切换自动续费 |
 | 加密货币支付 | 否 | 否 | 是——通过 x402 支付 USDC，无需账户 |

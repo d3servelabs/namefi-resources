@@ -68,7 +68,7 @@ relatedGlossary:
 
 | 平台 | 能力 | 状态 | 证据 |
 | --- | --- | --- | --- |
-| Namefi | MCP 服务器（`api.namefi.io/mcp`、Streamable HTTP，可在 `/.well-known/mcp/servers.json` 发现） | **已交付** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
+| Namefi | [MCP 服务器](https://namefi.io/mcp)（`api.namefi.io/mcp`、Streamable HTTP，可在 `/.well-known/mcp/servers.json` 发现） | **已交付** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | 通过 [x402](/zh-CN/glossary/x402/) 的钱包签名 USDC 结账（EIP-3009 `transferWithAuthorization`，无需账户） | **已交付** | [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) |
 | Namefi | 基于 `llms.txt` 的智能体工具与 REST 参考发现机制 | **已交付** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | API 层的支出上限或购买确认原语 | **未交付**——截至撰文时没有已记录的门控；护栏目前位于 MCP 客户端，而非服务器 | 本文直接依据 `namefi.io/llms.txt` 与 `namefi.io/web3/llms.txt` 交叉核对的[智能体原生检查清单分析](/zh-CN/blog/agent-native/) |

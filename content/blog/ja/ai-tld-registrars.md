@@ -59,7 +59,7 @@ AIネイティブ企業にとってのドメイン購入は、実際には2つ�
 | **Namecheap** | 初年度約$93 | 約$115/年 | 2年（レジストリ指定） | 専用のエージェントAPIなし——AIツールは名前を提案するが、人間が購入を完了する |
 | **GoDaddy** | 初年度のプロモーション価格$49.99 | 2年目以降$159.99 | 2年（レジストリ指定） | 不可——Airoは消費者向けの導入支援ツールであり、エージェントから呼び出せるインターフェースではない（[GoDaddy Airo vs Namecheap AI vs Namefi](/ja/blog/airo-vs-namefi/)を参照） |
 | **Porkbun** | 一律約$82.70/年 | 一律約$82.70/年 | 2年（レジストリ指定） | 文書化なし——標準的なレジストラAPIはあるが、公開情報ではエージェント専用ツールは見当たらない |
-| **Namefi** | 価格は変動——最新価格を確認<!-- TODO: confirm — Namefi .ai pricing --> | 価格は変動——最新価格を確認 | 2年（レジストリ指定） | 可能——MCPサーバーとウォレット署名による購入手続きに対応し、アカウント不要（[AIエージェントで登録する方法](/ja/blog/ai-agent-register/)を参照） |
+| **Namefi** | 価格は変動——最新価格を確認<!-- TODO: confirm — Namefi .ai pricing --> | 価格は変動——最新価格を確認 | 2年（レジストリ指定） | 可能——[MCPサーバー](https://namefi.io/mcp)とウォレット署名による購入手続きに対応し、アカウント不要（[AIエージェントで登録する方法](/ja/blog/ai-agent-register/)を参照） |
 
 この中でCloudflareの価格は、最も明確に文書化されています。同社は[.aiドメインの登録と更新を追加の上乗せなしの卸売価格で提供している](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/)と明記しています。さらに、Cloudflareで登録したすべての.aiドメインには、追加料金のオプションとしてではなく、[無料のDNSSEC、無料のSSL、2要素認証、初期設定で有効なドメインロック](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/)に加え、無料のWHOIS情報秘匿化も付属します。本記事の確認時、GoDaddyとNamecheapの`.ai`ページはアクセスを拒否して取得できませんでしたが、取得できたレジストラ比較記事もこの傾向を独立して裏付けています。その記事では、Cloudflareは[登録料・更新料ともにレジストリの請求額をそのまま課し、上乗せは一切ない](https://www.unite.ai/registrars/)と説明されています。さらに、Namecheapは[初年度約$93、更新は約$115/年](https://www.unite.ai/registrars/)、GoDaddyは[2年契約が必須で初年度のプロモーション価格が$49.99、2年目が$159.99](https://www.unite.ai/registrars/)、Porkbunは[登録・更新ともに一律$82.70/年](https://www.unite.ai/registrars/)とされています。同じ比較記事は、すべての購入者が理解すべき仕組みも指摘しています。[すべての.aiドメインには最低2年間の登録が必要](https://www.unite.ai/registrars/)なため、見出しの「年額」が安くても、実際にはその分を前払いすることになります。GoDaddyとNamecheapの公式価格ページは取得できなかったため、上記の価格は比較記事に基づくものとして扱い、購入前に最新価格を直接確認してください。
 
@@ -79,7 +79,7 @@ Namefiは、Cloudflareのように原価での提供を約束する価格方針�
 
 ## コーディングAIエージェントで.aiを登録する
 
-Claude Code、Cursor、Windsurf、Gemini CLIなど、MCP対応クライアントをすでに使っているなら、プロジェクトに必要な.aiドメインを登録するためにエディタを離れ、レジストラの購入フォームへ入力する必要はありません。[NamefiでAIエージェントを使ってドメインを登録する方法](/ja/blog/ai-agent-register/)では、全手順を解説しています。APIキーを取得するかウォレットを接続し、エージェントをNamefiのMCPサーバーへ接続して、空き状況の確認を依頼し、そのドメインを使う製品を開発しているのと同じ会話の中で登録を確定します。MCPに対応していないエージェント向けのRESTによる方法も紹介しており、プレーンテキストの入口として[namefi.io/llms.txt](https://namefi.io/llms.txt)を使用します。
+Claude Code、Cursor、Windsurf、Gemini CLIなど、MCP対応クライアントをすでに使っているなら、プロジェクトに必要な.aiドメインを登録するためにエディタを離れ、レジストラの購入フォームへ入力する必要はありません。[NamefiでAIエージェントを使ってドメインを登録する方法](/ja/blog/ai-agent-register/)では、全手順を解説しています。[APIキー](https://namefi.io/api-key)を取得するかウォレットを接続し、エージェントをNamefiのMCPサーバーへ接続して、空き状況の確認を依頼し、そのドメインを使う製品を開発しているのと同じ会話の中で登録を確定します。MCPに対応していないエージェント向けのRESTによる方法も紹介しており、プレーンテキストの入口として[namefi.io/llms.txt](https://namefi.io/llms.txt)を使用します。
 
 価格を理由にどのレジストラを選ぶ場合でも、決定前に、前述のエージェントネイティブの基準を満たしているか確認する価値があります。2年ごとにブラウザの購入画面を操作しなければ更新できない.aiドメインは、小さいながら繰り返し発生する手作業です。エージェントから呼び出せるレジストラなら、その作業を完全になくせます。
 

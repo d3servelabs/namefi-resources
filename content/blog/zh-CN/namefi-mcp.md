@@ -37,7 +37,7 @@ relatedGlossary:
 
 ## 什么是 Namefi MCP 服务器
 
-Namefi 为整个 API 运行一台 MCP 服务器，地址为 `https://api.namefi.io/mcp`，使用 Streamable HTTP 传输。智能体不必根据粘贴到聊天中的文档手工拼装 REST 调用；只需连接一次，就会获得 API 所定义每项操作对应的类型化工具。这些工具直接由 Namefi 自己的 OpenAPI 3 规范 [api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json)生成，因此 MCP 工具目录与 REST API 不会彼此漂移。
+Namefi 为整个 API 运行一台 [MCP 服务器](https://namefi.io/mcp)，地址为 `https://api.namefi.io/mcp`，使用 Streamable HTTP 传输。智能体不必根据粘贴到聊天中的文档手工拼装 REST 调用；只需连接一次，就会获得 API 所定义每项操作对应的类型化工具。这些工具直接由 Namefi 自己的 OpenAPI 3 规范 [api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json)生成，因此 MCP 工具目录与 REST API 不会彼此漂移。
 
 位于 [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json) 的机器可读发现描述文件，让智能体无需人工手动将 URL 粘贴进配置文件也能找到服务器：它将服务器命名为 `namefi-api`，报告传输方式为 `streamable-http`，并声明使用 `apiKey`/`x-api-key` 进行连接认证。Namefi 是一家[获 ICANN 认证的](/zh-CN/glossary/icann/)[注册商](/zh-CN/glossary/registrar/)，也会在 [namefi.io/llms.txt](https://namefi.io/llms.txt) 将同一批操作作为普通 HTTPS 端点发布，供不使用 MCP 的智能体和脚本调用。
 

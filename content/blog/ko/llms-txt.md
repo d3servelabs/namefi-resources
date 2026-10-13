@@ -71,7 +71,7 @@ relatedGlossary:
 
 ## 보조 파일: web3와 MCP 검색
 
-루트 파일은 범용 진입점에 포함할 필요가 없는 API 영역을 별도 파일로 연결합니다. [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt)는 API 키 대신 지갑을 보유한 에이전트에게 필요한 결제 경로를 설명합니다. 여기에는 [x402](/ko/glossary/x402/) 흐름이 포함됩니다. 이 흐름에서 `GET /x402/domain/{domainName}`은 서명된 `X-PAYMENT` 헤더가 첨부될 때까지 가격 정보와 함께 `402 Payment Required`를 반환합니다. 또한 `mppx` CLI로 서명하는 MPP(Machine Payable Protocol) 챌린지-응답 방식과 스마트 계약 지갑을 포괄하는 수동 EIP-712 서명 경로도 설명합니다. 파일에는 x402 등록에 관해 “Namefi 계정이나 EIP-712 서명이 필요하지 않습니다. 구매자의 지갑이 EIP-3009 `transferWithAuthorization`에 서명합니다.”라고 명확히 적혀 있습니다. API 키만 필요한 에이전트는 이 내용을 전혀 불러올 필요가 없습니다.
+루트 파일은 범용 진입점에 포함할 필요가 없는 API 영역을 별도 파일로 연결합니다. [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt)는 [API 키](https://namefi.io/api-key) 대신 지갑을 보유한 에이전트에게 필요한 결제 경로를 설명합니다. 여기에는 [x402](/ko/glossary/x402/) 흐름이 포함됩니다. 이 흐름에서 `GET /x402/domain/{domainName}`은 서명된 `X-PAYMENT` 헤더가 첨부될 때까지 가격 정보와 함께 `402 Payment Required`를 반환합니다. 또한 `mppx` CLI로 서명하는 MPP(Machine Payable Protocol) 챌린지-응답 방식과 스마트 계약 지갑을 포괄하는 수동 EIP-712 서명 경로도 설명합니다. 파일에는 x402 등록에 관해 “Namefi 계정이나 EIP-712 서명이 필요하지 않습니다. 구매자의 지갑이 EIP-3009 `transferWithAuthorization`에 서명합니다.”라고 명확히 적혀 있습니다. API 키만 필요한 에이전트는 이 내용을 전혀 불러올 필요가 없습니다.
 
 MCP 측에는 `llms.txt`와 완전히 별개인 자체 검색 파일이 있습니다. [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)은 Markdown이 아니라 작은 JSON 디스크립터입니다.
 
@@ -105,7 +105,7 @@ MCP 측에는 `llms.txt`와 완전히 별개인 자체 검색 파일이 있습�
 
 각 요소가 하는 일을 정확히 구분할 필요가 있습니다. `llms.txt`는 문서입니다. 에이전트가 한 번 가져오면 API가 무엇이고 더 자세한 자료가 어디에 있는지 알 수 있지만, 누군가 그 내용을 토대로 행동하기 전까지는 정적인 텍스트일 뿐입니다. 프로토콜 자체의 설명에 따르면 [MCP](https://modelcontextprotocol.io)는 “AI 애플리케이션을 외부 시스템에 연결하기 위한 오픈 소스 표준”입니다. 클라이언트가 서버에 여는 실시간 세션이며, 이 세션을 통해 호출 가능한 도구의 목록을 가져오고 실행합니다.
 
-Namefi의 파일은 이 관계를 직접 보여줍니다. `llms.txt`는 에이전트에게 `api.namefi.io/mcp`에 MCP 서버가 있음을 알려주고, 연결에 필요한 `claude mcp add` 명령을 제공합니다. 파일을 읽고, 실시간 도구 인터페이스가 있다는 사실을 파악한 뒤, 연결하고, 행동하는 흐름입니다. 곧바로 MCP로 이동하는 에이전트도 `.well-known/mcp/servers.json`을 통해 서버를 찾을 수 있습니다. 하지만 이 디스크립터의 `documentation` 필드가 다시 `llms.txt`를 가리키므로 두 요소가 완전히 분리되어 작동하는 경우는 드뭅니다.
+Namefi의 파일은 이 관계를 직접 보여줍니다. `llms.txt`는 에이전트에게 `api.namefi.io/mcp`에 [MCP 서버](https://namefi.io/mcp)가 있음을 알려주고, 연결에 필요한 `claude mcp add` 명령을 제공합니다. 파일을 읽고, 실시간 도구 인터페이스가 있다는 사실을 파악한 뒤, 연결하고, 행동하는 흐름입니다. 곧바로 MCP로 이동하는 에이전트도 `.well-known/mcp/servers.json`을 통해 서버를 찾을 수 있습니다. 하지만 이 디스크립터의 `documentation` 필드가 다시 `llms.txt`를 가리키므로 두 요소가 완전히 분리되어 작동하는 경우는 드뭅니다.
 
 ## 다른 API 제공업체를 위한 지침
 

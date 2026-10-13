@@ -37,7 +37,7 @@ Namefi MCP सर्वर से जुड़ने वाले हर [AI ए
 
 ## Namefi MCP सर्वर क्या है
 
-Namefi अपने पूरे API के लिए Streamable HTTP ट्रांसपोर्ट पर `https://api.namefi.io/mcp` में एक MCP सर्वर चलाता है। चैट में चिपकाए गए दस्तावेज़ों से एजेंट के स्वयं REST कॉल बनाने के बजाय वह एक बार जुड़ता है और API द्वारा परिभाषित हर ऑपरेशन के लिए टाइप किया हुआ टूल पाता है। ये टूल सीधे Namefi के अपने OpenAPI 3 स्पेसिफ़िकेशन, [api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json), से बनाए जाते हैं, इसलिए MCP सूची और REST API एक-दूसरे से अलग नहीं हो सकते।
+Namefi अपने पूरे API के लिए Streamable HTTP ट्रांसपोर्ट पर `https://api.namefi.io/mcp` में एक [MCP सर्वर](https://namefi.io/mcp) चलाता है। चैट में चिपकाए गए दस्तावेज़ों से एजेंट के स्वयं REST कॉल बनाने के बजाय वह एक बार जुड़ता है और API द्वारा परिभाषित हर ऑपरेशन के लिए टाइप किया हुआ टूल पाता है। ये टूल सीधे Namefi के अपने OpenAPI 3 स्पेसिफ़िकेशन, [api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json), से बनाए जाते हैं, इसलिए MCP सूची और REST API एक-दूसरे से अलग नहीं हो सकते।
 
 [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json) पर मशीन-पठनीय खोज डिस्क्रिप्टर किसी एजेंट को कॉन्फ़िगरेशन फ़ाइल में मानव द्वारा URL चिपकाए बिना सर्वर खोजने देता है: यह सर्वर का नाम `namefi-api` बताता है, `streamable-http` ट्रांसपोर्ट दर्ज करता है और कनेक्शन प्रमाणीकरण के रूप में `apiKey`/`x-api-key` घोषित करता है। [ICANN](/hi/glossary/icann/) से मान्यता प्राप्त [रजिस्ट्रार](/hi/glossary/registrar/) Namefi उन्हीं ऑपरेशनों को [namefi.io/llms.txt](https://namefi.io/llms.txt) पर साधारण HTTPS एंडपॉइंट के रूप में भी प्रकाशित करता है, उन एजेंटों और स्क्रिप्ट के लिए जो MCP नहीं समझते।
 

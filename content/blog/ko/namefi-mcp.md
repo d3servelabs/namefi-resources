@@ -37,7 +37,7 @@ Namefi MCP 서버에 연결하는 모든 [AI 에이전트](/ko/glossary/ai-agent
 
 ## Namefi MCP 서버란
 
-Namefi는 전체 API를 위한 단일 MCP 서버를 `https://api.namefi.io/mcp`에서 Streamable HTTP 전송 방식으로 운영합니다. 에이전트가 채팅에 붙여 넣은 문서를 바탕으로 REST 호출을 일일이 직접 만드는 대신, 한 번 연결하면 API에 정의된 모든 작업에 대한 타입 지정 도구를 받습니다. 이 도구들은 Namefi의 자체 OpenAPI 3 명세인 [api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json)에서 직접 생성되므로 MCP 카탈로그와 REST API가 서로 어긋날 수 없습니다.
+Namefi는 전체 API를 위한 단일 [MCP 서버](https://namefi.io/mcp)를 `https://api.namefi.io/mcp`에서 Streamable HTTP 전송 방식으로 운영합니다. 에이전트가 채팅에 붙여 넣은 문서를 바탕으로 REST 호출을 일일이 직접 만드는 대신, 한 번 연결하면 API에 정의된 모든 작업에 대한 타입 지정 도구를 받습니다. 이 도구들은 Namefi의 자체 OpenAPI 3 명세인 [api.namefi.io/v-next/openapi/doc.json](https://api.namefi.io/v-next/openapi/doc.json)에서 직접 생성되므로 MCP 카탈로그와 REST API가 서로 어긋날 수 없습니다.
 
 [namefi.io/.well-known/mcp/servers.json](https://namefi.io/.well-known/mcp/servers.json)의 기계 판독형 검색 설명자를 사용하면 사람이 설정 파일에 URL을 직접 붙여 넣지 않아도 에이전트가 서버를 찾을 수 있습니다. 이 설명자는 서버 이름을 `namefi-api`로 지정하고, 전송 방식은 `streamable-http`, 연결 인증은 `apiKey`/`x-api-key`라고 명시합니다. [ICANN](/ko/glossary/icann/) 인증 [등록대행자](/ko/glossary/registrar/)인 Namefi는 MCP를 사용하지 않는 에이전트와 스크립트를 위해 동일한 작업을 일반 HTTPS 엔드포인트로도 [namefi.io/llms.txt](https://namefi.io/llms.txt)에 공개합니다.
 

@@ -59,7 +59,7 @@ AI 네이티브 기업의 도메인 구매는 사실 두 가지 결정이 겹쳐
 | **Namecheap** | 첫해 약 $93 | 연간 약 $115 | 2년(레지스트리 의무 규정) | 전용 에이전트 API 없음 — AI 도구가 이름을 제안하고 사람이 결제 완료 |
 | **GoDaddy** | 프로모션 첫해 $49.99 | 2년 차부터 $159.99 | 2년(레지스트리 의무 규정) | 아니요 — Airo는 소비자용 온보딩 도우미이며 에이전트가 호출하는 인터페이스가 아님([GoDaddy Airo vs Namecheap AI vs Namefi](/ko/blog/airo-vs-namefi/) 참고) |
 | **Porkbun** | 연간 약 $82.70의 고정 가격 | 연간 약 $82.70의 고정 가격 | 2년(레지스트리 의무 규정) | 문서화되지 않음 — 표준 등록대행자 API는 있지만 공개 출처에서 에이전트 전용 도구를 찾지 못함 |
-| **Namefi** | 가격 변동 — 실시간 확인 필요<!-- TODO: confirm — Namefi .ai pricing --> | 가격 변동 — 실시간 확인 필요 | 2년(레지스트리 의무 규정) | 예 — MCP 서버와 지갑 서명 결제, 계정 불필요([AI 에이전트로 등록하는 방법](/ko/blog/ai-agent-register/) 참고) |
+| **Namefi** | 가격 변동 — 실시간 확인 필요<!-- TODO: confirm — Namefi .ai pricing --> | 가격 변동 — 실시간 확인 필요 | 2년(레지스트리 의무 규정) | 예 — [MCP 서버](https://namefi.io/mcp)와 지갑 서명 결제, 계정 불필요([AI 에이전트로 등록하는 방법](/ko/blog/ai-agent-register/) 참고) |
 
 Cloudflare의 수치는 이 중 가장 명시적으로 문서화되어 있습니다. Cloudflare는 [.ai 도메인 등록과 갱신을 추가 마진 없이 도매가로 제공한다고 직접 밝히고 있습니다](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/). 또한 그곳에서 등록하는 모든 .ai 도메인에는 [무료 DNSSEC, 무료 SSL, 2단계 인증, 기본 활성화된 도메인 잠금이 제공되며](https://www.cloudflare.com/application-services/products/registrar/buy-ai-domains/), WHOIS 정보 비공개도 유료 부가 기능이 아니라 무료입니다. 이번 글을 조사할 때 GoDaddy와 Namecheap의 자체 `.ai` 페이지는 접근 차단 응답을 반환했지만, 정상적으로 조회된 한 등록대행자 종합 자료에서도 같은 가격 구조를 독립적으로 확인할 수 있었습니다. 이 자료는 Cloudflare가 [등록 및 갱신 수수료에 마진을 전혀 붙이지 않고 레지스트리 청구액과 정확히 같은 금액을 받는다고 설명하며](https://www.unite.ai/registrars/), Namecheap은 [첫해 약 $93, 갱신 시 연간 약 $115](https://www.unite.ai/registrars/), GoDaddy는 [2년 의무 기간 중 프로모션 첫해 $49.99, 2년 차 $159.99](https://www.unite.ai/registrars/), Porkbun은 [등록과 갱신 모두 연간 $82.70의 일관된 가격](https://www.unite.ai/registrars/)으로 제시합니다. 이 자료는 모든 구매자가 반드시 알아야 할 조건도 강조합니다. [모든 .ai 도메인은 최소 2년 등록이 필요하므로](https://www.unite.ai/registrars/), 눈에 띄는 저렴한 “연간” 가격도 실제로는 상당한 선결제 금액을 뜻합니다. GoDaddy와 Namecheap의 자체 가격 페이지를 조회하지 못했으므로 위 수치는 종합 자료를 출처로 한 것이며, 구매 전에는 실시간 가격을 직접 확인하세요.
 
@@ -79,7 +79,7 @@ Namefi는 기계 판독형 API 문서에서 Cloudflare와 같은 원가 가격 �
 
 ## 코딩 에이전트로 .ai 등록하기
 
-Claude Code, Cursor, Windsurf, Gemini CLI 또는 이와 비슷한 MCP 지원 클라이언트에서 이미 작업하고 있다면, 프로젝트에 필요한 .ai 도메인을 등록하기 위해 에디터를 떠나 등록대행자의 결제 양식을 작성할 필요가 없습니다. [Namefi에서 AI 에이전트로 도메인을 등록하는 방법](/ko/blog/ai-agent-register/)은 전체 과정을 안내합니다. API 키를 받거나 지갑을 연결하고, 에이전트가 Namefi의 MCP 서버를 가리키도록 설정한 다음, 도메인 사용 가능 여부를 확인하도록 요청하고, 그 도메인으로 제품을 개발하던 바로 그 대화에서 등록을 확정하면 됩니다. MCP를 지원하지 않는 에이전트를 위한 원시 REST 방식도 같은 가이드에서 다루며, 일반 텍스트 진입점으로 [namefi.io/llms.txt](https://namefi.io/llms.txt)를 사용합니다.
+Claude Code, Cursor, Windsurf, Gemini CLI 또는 이와 비슷한 MCP 지원 클라이언트에서 이미 작업하고 있다면, 프로젝트에 필요한 .ai 도메인을 등록하기 위해 에디터를 떠나 등록대행자의 결제 양식을 작성할 필요가 없습니다. [Namefi에서 AI 에이전트로 도메인을 등록하는 방법](/ko/blog/ai-agent-register/)은 전체 과정을 안내합니다. [API 키](https://namefi.io/api-key)를 받거나 지갑을 연결하고, 에이전트가 Namefi의 MCP 서버를 가리키도록 설정한 다음, 도메인 사용 가능 여부를 확인하도록 요청하고, 그 도메인으로 제품을 개발하던 바로 그 대화에서 등록을 확정하면 됩니다. MCP를 지원하지 않는 에이전트를 위한 원시 REST 방식도 같은 가이드에서 다루며, 일반 텍스트 진입점으로 [namefi.io/llms.txt](https://namefi.io/llms.txt)를 사용합니다.
 
 가격을 기준으로 어느 등록대행자를 선택하든, 확정하기 전에 위에서 설명한 에이전트 네이티브 기준을 충족하는지 확인해 볼 가치가 있습니다. 2년마다 브라우저의 결제 화면을 클릭해야 갱신할 수 있는 .ai 도메인은 작지만 반복되는 수작업이며, 에이전트가 호출할 수 있는 등록대행자는 이를 완전히 없애 줍니다.
 

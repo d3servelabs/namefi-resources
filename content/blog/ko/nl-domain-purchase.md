@@ -47,7 +47,7 @@ relatedGlossary:
 
 ## 시작하기 전에 필요한 것
 
-두 가지가 필요합니다. 도메인 등록대행자의 API에 연결된 에이전트와 결제 수단입니다. Namefi에서는 Claude, Cursor, Windsurf 등 여러 MCP 지원 클라이언트를 Namefi MCP 서버에 연결한 뒤 API 키 또는 암호화폐 [지갑](/ko/glossary/wallet/)으로 인증하면 됩니다. 정확한 설정은 클라이언트마다 다르므로 이 글의 범위를 벗어납니다. [AI 에이전트로 Namefi에서 도메인을 등록하는 방법](/ko/blog/ai-agent-register/)은 표준 설정 가이드이고, [Claude로 도메인 구매하기: Namefi MCP 단계별 가이드](/ko/blog/claude-mcp-domains/)는 Claude에 맞춰 명령어 하나하나를 설명한 버전입니다. 이 글은 해당 설정이 이미 끝났다고 가정하고, 그다음 단계인 실제 대화부터 시작합니다.
+두 가지가 필요합니다. 도메인 등록대행자의 API에 연결된 에이전트와 결제 수단입니다. Namefi에서는 Claude, Cursor, Windsurf 등 여러 MCP 지원 클라이언트를 Namefi [MCP 서버](https://namefi.io/mcp)에 연결한 뒤 API 키 또는 암호화폐 [지갑](/ko/glossary/wallet/)으로 인증하면 됩니다. 정확한 설정은 클라이언트마다 다르므로 이 글의 범위를 벗어납니다. [AI 에이전트로 Namefi에서 도메인을 등록하는 방법](/ko/blog/ai-agent-register/)은 표준 설정 가이드이고, [Claude로 도메인 구매하기: Namefi MCP 단계별 가이드](/ko/blog/claude-mcp-domains/)는 Claude에 맞춰 명령어 하나하나를 설명한 버전입니다. 이 글은 해당 설정이 이미 끝났다고 가정하고, 그다음 단계인 실제 대화부터 시작합니다.
 
 ## 전체 대화 단계별 살펴보기
 

@@ -31,7 +31,7 @@ relatedGlossary:
   - /es/glossary/wallet/
 ---
 
-Tres [registradores](/es/glossary/registrar/) permiten ahora que algo distinto de una persona complete un formulario de pago. En abril de 2026, Cloudflare abrió una API beta que permite a un [Agente de IA](/es/glossary/ai-agent/) registrar un dominio sin sesión de navegador. Name.com reconstruyó su API en torno a la misma idea y se presenta como la primera plataforma de dominios nativa para IA. Namefi creó un servidor Model Context Protocol (MCP) y un proceso de pago firmado por billetera que elimina por completo el paso de crear una cuenta. Los tres apuntan al mismo cambio: el registro de dominios pasa de ser algo que una persona hace en un navegador a algo que un agente hace mediante una llamada de API.
+Tres [registradores](/es/glossary/registrar/) permiten ahora que algo distinto de una persona complete un formulario de pago. En abril de 2026, Cloudflare abrió una API beta que permite a un [Agente de IA](/es/glossary/ai-agent/) registrar un dominio sin sesión de navegador. Name.com reconstruyó su API en torno a la misma idea y se presenta como la primera plataforma de dominios nativa para IA. Namefi creó un [servidor Model Context Protocol (MCP)](https://namefi.io/mcp) y un proceso de pago firmado por billetera que elimina por completo el paso de crear una cuenta. Los tres apuntan al mismo cambio: el registro de dominios pasa de ser algo que una persona hace en un navegador a algo que un agente hace mediante una llamada de API.
 
 Sin embargo, no son el mismo producto con logotipos distintos. Cada uno ha apostado de manera diferente por los precios, por lo que realmente exige ser «nativo para agentes» y por cómo demuestra un comprador que puede pagar. Esta es una comparación función por función de los tres, incluidos los casos en que los precios de Cloudflare son realmente difíciles de superar y aquellos en los que el posicionamiento de Name.com va por delante de lo que ha puesto en producción.
 
@@ -69,7 +69,7 @@ Namefi también registra dominios como [NFT](/es/glossary/nft/) —[Dominios Tok
 | --- | --- | --- | --- |
 | Búsqueda de disponibilidad | Sí | Sí | Sí (`search/availability`, por lotes) |
 | Consulta de precios | Sí | Sí (documentada, no detallada) | Sí (se devuelve en la respuesta x402 402; también mediante API) |
-| Compra / registro | Sí, sincrónico, en segundos | Sí (código de integración generado por el agente) | Sí — clave de API o USDC firmado por billetera mediante x402/MPP |
+| Compra / registro | Sí, sincrónico, en segundos | Sí (código de integración generado por el agente) | Sí — [clave de API](https://namefi.io/api-key) o USDC firmado por billetera mediante x402/MPP |
 | Gestión de DNS | No en la beta actual | No se detalla en el anuncio | Sí — CRUD completo, operaciones por lotes, A/CNAME/TXT/MX y más |
 | Automatización de renovaciones | No en la beta actual (prevista para más adelante en 2026) | No se detalla en el anuncio | Sí — conmutador de renovación automática por dominio |
 | Pago con criptomonedas | No | No | Sí — USDC mediante x402, sin necesidad de cuenta |

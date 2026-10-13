@@ -33,7 +33,7 @@ relatedGlossary:
 
 你已经在编辑器里了。应用脚手架已搭好，首次部署也刚刚发布到了平台子域名；现在只差一个真实域名，就能让用户访问它。本快速入门会教你如何在构建应用的同一次 [AI 智能体](/zh-CN/glossary/ai-agent/) 会话中完成注册：无需打开浏览器标签页、填写结账表单或离开编辑器。内容包括 Claude Code、Cursor 与 Windsurf 的精确 [MCP](https://modelcontextprotocol.io) 连接配置、精简的五步流程，以及大多数域名指南都会略过的部分：如何将刚注册的域名真正指向刚刚发布的部署。
 
-本指南特意覆盖三种编辑器。如果你使用的是 OpenAI Codex、Gemini CLI 或 Claude Desktop，请参考[如何在 Namefi 上通过 AI 智能体注册域名](/zh-CN/blog/ai-agent-register/)；这是覆盖全部六种客户端的权威指南，也提供了不支持原生 MCP 的工具可用的原始 REST 路径。这里的所有配置都连接到同一个 [Namefi](https://namefi.io) MCP 服务器，因此与该指南完全一致；本页只是为开发者工具优先的使用方式提供了精简版流程，并补充了该指南未覆盖的部署步骤。
+本指南特意覆盖三种编辑器。如果你使用的是 OpenAI Codex、Gemini CLI 或 Claude Desktop，请参考[如何在 Namefi 上通过 AI 智能体注册域名](/zh-CN/blog/ai-agent-register/)；这是覆盖全部六种客户端的权威指南，也提供了不支持原生 MCP 的工具可用的原始 REST 路径。这里的所有配置都连接到同一个 [Namefi](https://namefi.io) [MCP 服务器](https://namefi.io/mcp)，因此与该指南完全一致；本页只是为开发者工具优先的使用方式提供了精简版流程，并补充了该指南未覆盖的部署步骤。
 
 ## 为什么要在编辑器内注册域名
 

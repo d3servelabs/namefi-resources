@@ -31,7 +31,7 @@ relatedGlossary:
   - /de/glossary/wallet/
 ---
 
-Drei [Registrare](/de/glossary/registrar/) ermöglichen es inzwischen etwas anderem als einem Menschen, ein Checkout-Formular auszufüllen. Cloudflare eröffnete im April 2026 eine Beta-API, mit der ein [KI-Agent](/de/glossary/ai-agent/) eine Domain ohne Browser-Sitzung registrieren kann. Name.com hat seine API rund um dieselbe Idee neu aufgebaut und bezeichnet sich als erste KI-native Domain-Plattform. Namefi hat einen Model Context Protocol (MCP)-Server und einen per Wallet-Signatur autorisierten Checkout entwickelt, der die Kontoerstellung vollständig überspringt. Alle drei zielen auf denselben Wandel: Domain-Registrierung wird von etwas, das eine Person im Browser erledigt, zu etwas, das ein Agent über einen API-Aufruf erledigt.
+Drei [Registrare](/de/glossary/registrar/) ermöglichen es inzwischen etwas anderem als einem Menschen, ein Checkout-Formular auszufüllen. Cloudflare eröffnete im April 2026 eine Beta-API, mit der ein [KI-Agent](/de/glossary/ai-agent/) eine Domain ohne Browser-Sitzung registrieren kann. Name.com hat seine API rund um dieselbe Idee neu aufgebaut und bezeichnet sich als erste KI-native Domain-Plattform. Namefi hat einen [Model Context Protocol (MCP)-Server](https://namefi.io/mcp) und einen per Wallet-Signatur autorisierten Checkout entwickelt, der die Kontoerstellung vollständig überspringt. Alle drei zielen auf denselben Wandel: Domain-Registrierung wird von etwas, das eine Person im Browser erledigt, zu etwas, das ein Agent über einen API-Aufruf erledigt.
 
 Sie sind jedoch nicht dasselbe Produkt mit unterschiedlichen Logos. Jedes setzt andere Schwerpunkte bei der Preisgestaltung, bei der Frage, was „agent-native“ tatsächlich erfordert, und dabei, wie ein Käufer seine Zahlungsfähigkeit nachweist. Dies ist ein Funktionsvergleich der drei — einschließlich der Punkte, an denen Cloudflares Preisgestaltung wirklich schwer zu übertreffen ist, und der Punkte, an denen die Positionierung von Name.com dem ausgelieferten Produkt voraus ist.
 
@@ -69,7 +69,7 @@ Namefi registriert Domains außerdem als [NFTs](/de/glossary/nft/) — [tokenisi
 |---|---|---|---|
 | Verfügbarkeitssuche | Ja | Ja | Ja (`search/availability`, im Batch) |
 | Preisabfrage | Ja | Ja (dokumentiert, nicht detailliert aufgeschlüsselt) | Ja (in der x402-`402`-Antwort; auch über API) |
-| Kauf / Registrierung | Ja, synchron, Sekunden | Ja (vom Agenten erzeugter Integrationscode) | Ja — API-Key oder per Wallet-Signatur autorisiertes USDC über x402/MPP |
+| Kauf / Registrierung | Ja, synchron, Sekunden | Ja (vom Agenten erzeugter Integrationscode) | Ja — [API-Key](https://namefi.io/api-key) oder per Wallet-Signatur autorisiertes USDC über x402/MPP |
 | DNS-Verwaltung | Nicht in der aktuellen Beta | In der Ankündigung nicht detailliert | Ja — vollständiges CRUD, Batch-Vorgänge, A/CNAME/TXT/MX und mehr |
 | Automatisierte Verlängerung | Nicht in der aktuellen Beta (später 2026 geplant) | In der Ankündigung nicht detailliert | Ja — Auto-Renew-Schalter pro Domain |
 | Krypto-Zahlung | Nein | Nein | Ja — USDC über x402, kein Konto erforderlich |

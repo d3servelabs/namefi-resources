@@ -68,7 +68,7 @@ relatedGlossary:
 
 | प्लेटफ़ॉर्म | क्षमता | स्थिति | साक्ष्य |
 | --- | --- | --- | --- |
-| Namefi | MCP सर्वर (`api.namefi.io/mcp`, Streamable HTTP, `/.well-known/mcp/servers.json` पर खोजा जा सकता है) | **उपलब्ध** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
+| Namefi | [MCP सर्वर](https://namefi.io/mcp) (`api.namefi.io/mcp`, Streamable HTTP, `/.well-known/mcp/servers.json` पर खोजा जा सकता है) | **उपलब्ध** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | [x402](/hi/glossary/x402/) के जरिए वॉलेट-हस्ताक्षरित USDC चेकआउट (EIP-3009 `transferWithAuthorization`, खाते की जरूरत नहीं) | **उपलब्ध** | [namefi.io/web3/llms.txt](https://namefi.io/web3/llms.txt) |
 | Namefi | एजेंट टूलिंग और REST संदर्भ के लिए `llms.txt`-आधारित डिस्कवरी | **उपलब्ध** | [namefi.io/llms.txt](https://namefi.io/llms.txt) |
 | Namefi | API लेयर पर खर्च सीमा या खरीद-पुष्टि का मूल नियंत्रण | **अभी उपलब्ध नहीं**—इस लेखन के समय कोई दस्तावेज़ित नियंत्रण नहीं; सुरक्षा नियंत्रण फिलहाल सर्वर पर नहीं, MCP क्लाइंट पर है | हमारा अपना [एजेंट-नेटिव चेकलिस्ट विश्लेषण](/hi/blog/agent-native/), जिसे इस लेख के लिए सीधे `namefi.io/llms.txt` और `namefi.io/web3/llms.txt` से मिलाया गया |
