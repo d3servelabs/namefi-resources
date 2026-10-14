@@ -93,7 +93,7 @@ Run that once from a terminal with your real key swapped in. By default this wri
 
 ## OpenAI Codex CLI
 
-Codex CLI stores MCP configuration in a TOML file, by default `~/.codex/config.toml` (or a project-scoped `.codex/config.toml` for trusted projects). Each server gets its own table, and the transport is inferred from which keys are present: a `command` key means a local stdio server, a `url` key means Streamable HTTP. Codex's docs are specific that the table name must be `mcp_servers` with an underscore — `mcp-servers` or similar variants are silently ignored.
+[Codex CLI](/en/blog/codex-mcp-domains/) stores MCP configuration in a TOML file, by default `~/.codex/config.toml` (or a project-scoped `.codex/config.toml` for trusted projects). Each server gets its own table, and the transport is inferred from which keys are present: a `command` key means a local stdio server, a `url` key means Streamable HTTP. Codex's docs are specific that the table name must be `mcp_servers` with an underscore — `mcp-servers` or similar variants are silently ignored.
 
 ```toml
 # ~/.codex/config.toml
