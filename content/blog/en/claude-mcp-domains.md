@@ -46,7 +46,7 @@ The [Model Context Protocol](https://modelcontextprotocol.io) (MCP) is an open s
 
 ## Step 1: Get a Namefi API key
 
-The [API key](https://namefi.io/api-key) is the simplest authentication path, and it's the one this guide uses throughout: a single header covers every operation — registration, DNS record creation, updates, and deletes. One detail worth internalizing before you generate a key: **the key inherits the permissions of the wallet that generated it.** If you want to manage DNS for a domain you already own, generate the key from the wallet that owns that domain's NFT — a key generated from a different wallet won't have write access to a domain whose [registrant](/en/glossary/registrant/) is someone else.
+The [API key](https://namefi.io/api-key) is the simplest authentication path, and it's the one this guide uses throughout: a [single header](/en/blog/namefi-api-guide/) covers every operation — registration, DNS record creation, updates, and deletes. One detail worth internalizing before you generate a key: **the key inherits the permissions of the wallet that generated it.** If you want to manage DNS for a domain you already own, generate the key from the wallet that owns that domain's NFT — a key generated from a different wallet won't have write access to a domain whose [registrant](/en/glossary/registrant/) is someone else.
 
 Once generated, the key is a `nfk_`-prefixed string. You'll pass it as the `x-api-key` header on every write operation; read-only operations, like an availability check, don't require it at all.
 

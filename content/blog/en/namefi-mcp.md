@@ -143,7 +143,7 @@ An MCP client must first authenticate the server connection. The current discove
 
 The descriptor also says certain read-only tools need no authentication. However, an unauthenticated MCP `initialize` request returned `401 Unauthorized` when verified on **July 14, 2026**. Because initialization comes before any tool call, treat the live MCP connection as authentication-required until the implementation and descriptor agree.
 
-For direct REST calls, Namefi documents additional request-level authentication modes. These are not a promise that an MCP client will automatically obtain a wallet signature for every tool call:
+For [direct REST calls](/en/blog/namefi-api-guide/), Namefi documents additional request-level authentication modes. These are not a promise that an MCP client will automatically obtain a wallet signature for every tool call:
 
 **EIP-712 typed-data signature.** For programmatic use without a stored key, sign each request with an Ethereum [wallet](/en/glossary/wallet/): headers `x-namefi-signer`, `x-namefi-signature`, and `x-namefi-eip712-type` wrap the payload in an envelope with a timestamp and single-use nonce that expires after 300 seconds — the mode operations like `toggleDomainParking`, `createDnsRecord`, and `registerDomain` require without an API key. The domain and type definitions come from live endpoints (`GET /v-next/eip712/domain`, `/eip712/types`) rather than a hardcoded constant, since Namefi's docs note they can change. Smart-contract wallets can't sign directly, so an approved externally-owned account signs on the contract's behalf, with `x-namefi-erc1271-account` or `x-namefi-eip7702-account` naming which contract is authorizing the request.
 
