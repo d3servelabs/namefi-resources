@@ -169,7 +169,7 @@ One pattern worth knowing about if your client only supports **local (stdio) MCP
 
 ## No MCP at all: the raw REST path
 
-Every operation described above is also a plain HTTPS endpoint, documented endpoint-by-endpoint at [namefi.io/llms.txt](https://namefi.io/llms.txt) and in full at [docs.namefi.io](https://docs.namefi.io). An agent framework that can make HTTP calls but doesn't speak MCP — a custom script, a different agent runtime, a CI job — can drive the same flow directly:
+Every operation described above is also a [plain HTTPS endpoint](/en/blog/namefi-api-guide/), documented endpoint-by-endpoint at [namefi.io/llms.txt](https://namefi.io/llms.txt) and in full at [docs.namefi.io](https://docs.namefi.io). An agent framework that can make HTTP calls but doesn't speak MCP — a custom script, a different agent runtime, a CI job — can drive the same flow directly:
 
 ```bash
 # 1. Check availability (no auth required)
