@@ -7,6 +7,9 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 format: guide
+cluster: buy-domains-with-ai-agents
+series: ai-agent-setup
+seriesOrder: 2
 ogImage: ../../assets/claude-mcp-domains-og.jpg
 description: "Connect Claude to the Namefi MCP server and register a real domain from one conversation. Exact config, an annotated transcript, and troubleshooting."
 keywords: ["namefi mcp", "claude mcp domain", "mcp server setup", "buy domain claude", "x-api-key", "step-by-step tutorial", "namefi mcp domain registration", "claude desktop register domain", "claude code buy domain", "namefi claude integration", "mcp domain registrar", "ai agent buy domain claude", "streamable http mcp"]
@@ -17,11 +20,11 @@ relatedArticles:
   - /en/blog/agent-native/
   - /en/blog/airo-vs-namefi/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/domain-tokenization/
-  - /en/topics/domain-basics/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/tokenize-your-com/
-  - /en/series/blockchain-concepts/
 relatedGlossary:
   - /en/glossary/ai-agent/
   - /en/glossary/registrar/

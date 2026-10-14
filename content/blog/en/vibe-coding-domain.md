@@ -7,6 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 format: opinion
+cluster: buy-domains-with-ai-agents
 ogImage: ../../assets/vibe-coding-domain-og.jpg
 description: "Many vibe-coded apps deploy to a hosting-platform subdomain. How the same agent that built your app can name it and register a domain without breaking flow."
 keywords: ["vibe coding domain", "vibe coding custom domain", "register domain from cursor", "AI built my app now I need a domain", "custom domain for AI generated app", "vibe coded app domain name", "platform subdomain", "domain registration without leaving editor", "coding agent domain registration", "namefi mcp vibe coding", "AI agent registers domain", "in-context domain registration", "deploy custom domain AI app", "availability-aware domain brainstorming"]
@@ -17,11 +18,11 @@ relatedArticles:
   - /en/blog/nl-domain-purchase/
   - /en/blog/best-ai-tools-2026/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/domain-tokenization/
-  - /en/topics/domain-basics/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/tokenize-your-com/
-  - /en/series/blockchain-concepts/
 relatedGlossary:
   - /en/glossary/subdomain/
   - /en/glossary/nameserver/

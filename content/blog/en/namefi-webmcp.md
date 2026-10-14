@@ -5,7 +5,7 @@ language: en
 tags: ['ai-agents', 'domains', 'dns', 'webmcp']
 authors: ['sid-jain']
 draft: false
-cluster: web3-foundations
+cluster: buy-domains-with-ai-agents
 format: explainer
 description: "How Namefi brings agents onto its website with WebMCP, shared MCP contracts, domain search, cart tools, and DNS plans you can review."
 ogImage: ../../assets/namefi-webmcp-og.jpg
@@ -17,11 +17,11 @@ relatedArticles:
   - /en/blog/claude-mcp-domains/
   - /en/blog/dns-on-tokenized-domains/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/web3-foundations/
-  - /en/topics/domain-security/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/domain-investor-field-guide/
-  - /en/series/tokenize-your-com/
 relatedGlossary:
   - /en/glossary/mcp/
   - /en/glossary/ai-agent/

@@ -7,6 +7,9 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 format: guide
+cluster: buy-domains-with-ai-agents
+series: ai-agent-setup
+seriesOrder: 1
 ogImage: ../../assets/namefi-api-guide-og.jpg
 description: "Get a Namefi API key, authenticate with x-api-key, search availability, register a domain, manage DNS records, and handle errors and payment."
 keywords: ["namefi api", "namefi api key", "x-api-key", "domain registration api", "domain availability api", "dns records api", "namefi rest api", "register domain via api", "nfsc balance", "namefi api rate limit", "namefi openapi"]
@@ -17,11 +20,11 @@ relatedArticles:
   - /en/blog/claude-mcp-domains/
   - /en/blog/wallet-checkout/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/domain-tokenization/
-  - /en/topics/domain-basics/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/tokenize-your-com/
-  - /en/series/blockchain-concepts/
 relatedGlossary:
   - /en/glossary/dns-record-types/
   - /en/glossary/registrar/

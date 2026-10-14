@@ -33,6 +33,7 @@ const TOPIC_SLUGS = new Set([
   'choosing-a-tld',
   'domain-investing',
   'web3-foundations',
+  'buy-domains-with-ai-agents',
 ]);
 
 const SERIES_SLUGS = new Set([
@@ -43,6 +44,7 @@ const SERIES_SLUGS = new Set([
   'best-tlds-by-industry',
   'domain-investor-field-guide',
   'domain-flipping-skills',
+  'ai-agent-setup',
 ]);
 
 // Editorial priority tier for surfacing/ordering content. Optional; when a file

@@ -7,6 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 format: guide
+cluster: buy-domains-with-ai-agents
 ogImage: ../../assets/nl-domain-purchase-og.jpg
 description: "A step-by-step walkthrough from a natural-language prompt to a registered domain with DNS configured — no browser checkout, with guardrails you control."
 keywords: ["natural language domain purchase", "conversational domain registration", "buy domain with ai", "register domain natural language", "ai domain checkout", "prompt to registered domain", "talk to ai buy domain", "mcp domain tutorial", "conversational commerce domain", "namefi mcp conversation", "human in the loop domain purchase", "spend cap ai agent domain", "ai agent buy domain"]
@@ -17,11 +18,11 @@ relatedArticles:
   - /en/blog/agent-native/
   - /en/blog/ai-domain-platforms/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/domain-tokenization/
-  - /en/topics/domain-basics/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/tokenize-your-com/
-  - /en/series/blockchain-concepts/
 relatedGlossary:
   - /en/glossary/ai-agent/
   - /en/glossary/registrar/

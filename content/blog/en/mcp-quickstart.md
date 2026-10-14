@@ -7,6 +7,9 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 format: guide
+cluster: buy-domains-with-ai-agents
+series: ai-agent-setup
+seriesOrder: 4
 ogImage: ../../assets/mcp-quickstart-og.jpg
 description: "Per-editor OAuth and API-key MCP setup for Claude Code, Cursor, and Windsurf, then a five-step quickstart from a new app to a live custom domain."
 keywords: ["claude code mcp domain", "cursor mcp domain", "windsurf mcp domain", "in-editor domain registration", "coding agent domain registration", "register domain from editor", "mcp quickstart", "namefi mcp config", "MCP OAuth PKCE", "vercel custom domain namefi", "cloudflare pages custom domain namefi", "deploy custom domain ai agent", "domain registration quickstart", "x-api-key mcp config", "point domain at deployment"]
@@ -17,11 +20,11 @@ relatedArticles:
   - /en/blog/wallet-checkout/
   - /en/blog/vibe-coding-domain/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/domain-tokenization/
-  - /en/topics/domain-basics/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/tokenize-your-com/
-  - /en/series/blockchain-concepts/
 relatedGlossary:
   - /en/glossary/ai-agent/
   - /en/glossary/registrar/
