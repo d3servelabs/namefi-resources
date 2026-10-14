@@ -2,7 +2,7 @@
 title: "Buy a Domain with Claude: Namefi MCP Step-by-Step Guide"
 date: '2026-07-10'
 language: 'en'
-tags: ['ai-agents', 'domains', 'guide']
+tags: ['ai-agents', 'domains', 'guide', 'faq']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
