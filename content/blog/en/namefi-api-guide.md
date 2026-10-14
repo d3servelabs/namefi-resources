@@ -4,6 +4,7 @@ date: '2026-10-14'
 language: 'en'
 tags: ['ai-agents', 'guide', 'faq']
 authors: ['namefiteam']
+editors: ['victor-zhou']
 draft: false
 format: guide
 ogImage: ../../assets/namefi-api-guide-og.jpg
