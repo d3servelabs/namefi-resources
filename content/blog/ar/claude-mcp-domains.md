@@ -2,7 +2,7 @@
 title: "اشترِ دومين باستخدام Claude: دليل Namefi MCP خطوة بخطوة"
 date: '2026-07-10'
 language: ar
-tags: ['ai-agents', 'domains', 'guide']
+tags: ['ai-agents', 'domains', 'guide', 'faq']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
 translators: ['zakia-al-sinai']

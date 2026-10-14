@@ -2,7 +2,7 @@
 title: "使用 Claude 购买域名：Namefi MCP 分步指南"
 date: '2026-07-10'
 language: 'zh-CN'
-tags: ['ai-agents', 'domains', 'guide']
+tags: ['ai-agents', 'domains', 'guide', 'faq']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
 translators: ['fenwei-bian']
