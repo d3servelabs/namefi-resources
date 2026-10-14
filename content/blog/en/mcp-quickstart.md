@@ -168,7 +168,7 @@ Namefi's MCP server covers the full lifecycle today — registration, DNS, [auto
 ## Frequently Asked Questions
 
 ### Does this cover Codex or Gemini CLI too?
-Not here — this guide is deliberately scoped to Claude Code, Cursor, and Windsurf. [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) has the same exact, verified config for Codex CLI, Gemini CLI, and Claude Desktop.
+Not here — this guide is deliberately scoped to Claude Code, Cursor, and Windsurf. [How to Register a Domain with Your AI Agent on Namefi](/en/blog/ai-agent-register/) has the same exact, verified config for Codex CLI, Gemini CLI, and Claude Desktop, and [How to Use Namefi in OpenAI Codex](/en/blog/codex-mcp-domains/) goes deeper on Codex.
 
 ### Do I need a Namefi account before I can try this?
 You need an authenticated MCP session before the current live endpoint will initialize. Use OAuth, or provide an API key. The availability call itself is read-only and does not require funds, but do not rely on the discovery descriptor's unauthenticated-read claim until it matches live behavior.
