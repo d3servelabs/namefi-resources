@@ -2,7 +2,7 @@
 title: "Claude से डोमेन खरीदें: Namefi MCP चरण-दर-चरण गाइड"
 date: '2026-07-10'
 language: 'hi'
-tags: ['ai-agents', 'domains', 'guide']
+tags: ['ai-agents', 'domains', 'guide', 'faq']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
 translators: ['nirmit-buddhiraja']

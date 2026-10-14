@@ -2,7 +2,7 @@
 title: "Claudeでドメインを購入：Namefi MCPのステップ別ガイド"
 date: '2026-07-10'
 language: 'ja'
-tags: ['ai-agents', 'domains', 'guide']
+tags: ['ai-agents', 'domains', 'guide', 'faq']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
 translators: ['chie-kudo']

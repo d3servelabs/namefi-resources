@@ -2,7 +2,7 @@
 title: "Claude மூலம் ஒரு டொமைன் வாங்குதல்: Namefi MCP படிப்படியான வழிகாட்டி"
 date: '2026-07-10'
 language: 'ta'
-tags: ['ai-agents', 'domains', 'guide']
+tags: ['ai-agents', 'domains', 'guide', 'faq']
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
 translators: ['arivu-iyandhiran']
