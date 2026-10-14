@@ -7,6 +7,7 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 format: explainer
+cluster: buy-domains-with-ai-agents
 ogImage: ../../assets/wallet-checkout-og.jpg
 description: "How Namefi's wallet-signed checkout lets an AI agent buy a domain with crypto, no account required — flow, security model, and spend policies."
 keywords: ["crypto domain payment", "wallet checkout domain registration", "buy domain with crypto wallet no account", "pay for domain with usdc", "ai agent pay for domain crypto", "x402 domain registration", "eip-3009 transferwithauthorization", "domain registrar accepts crypto", "wallet-signed checkout", "namefi x402", "agentic payments", "stablecoin domain purchase", "no account domain registration", "eip-712 wallet signature"]
@@ -17,11 +18,11 @@ relatedArticles:
   - /en/blog/namefi-mcp/
   - /en/blog/agent-own-domain/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/domain-tokenization/
-  - /en/topics/web3-foundations/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/blockchain-concepts/
-  - /en/series/tokenize-your-com/
 relatedGlossary:
   - /en/glossary/x402/
   - /en/glossary/wallet/

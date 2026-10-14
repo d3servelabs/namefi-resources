@@ -7,6 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 format: explainer
+cluster: buy-domains-with-ai-agents
 ogImage: ../../assets/namefi-mcp-og.jpg
 description: "The Namefi MCP server's current /v-next tool surface: search, registration, DNS, renewals, outbound workflows, OAuth and API-key authentication, plus separate x402 and MPP HTTP payment paths."
 keywords: ["namefi mcp server", "mcp tools list", "namefi mcp capabilities", "mcp server domain management", "domain registrar mcp server", "Namefi MCP OAuth", "OAuth 2.1 PKCE MCP", "namefi api key scopes", "dns mcp tools", "register domain mcp", "tokenize domain mcp", "x402 domain payment", "siwe authentication domains", "eip-712 domain signing", "outbound lead finding domains", "namefi openapi", "ai agent domain tools"]
@@ -17,11 +18,11 @@ relatedArticles:
   - /en/blog/llms-txt/
   - /en/blog/mcp-quickstart/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/domain-tokenization/
-  - /en/topics/web3-foundations/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/blockchain-concepts/
-  - /en/series/tokenize-your-com/
 relatedGlossary:
   - /en/glossary/ai-agent/
   - /en/glossary/registrar/

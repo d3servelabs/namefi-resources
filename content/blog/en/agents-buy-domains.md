@@ -7,6 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
 format: explainer
+cluster: buy-domains-with-ai-agents
 ogImage: ../../assets/agents-buy-domains-og.jpg
 description: "In April 2026, domain registration moved into the agent layer. How AI agents search, price, and register domains — and the guardrails that still matter."
 keywords: ["AI agents register domains", "no human required domain registration", "autonomous domain registration", "agent layer domain registration", "Cloudflare Registrar API beta", "agentic guardrails", "AI agent domain registration 2026", "is it safe to let AI buy domains", "agents as domain resellers", "MCP domain registration", "llms.txt domain discovery", "spend cap AI agent", "EPP registry provisioning"]
@@ -17,11 +18,11 @@ relatedArticles:
   - /en/blog/namefi-mcp/
   - /en/blog/state-of-agentic/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/domain-basics/
-  - /en/topics/domain-security/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/blockchain-concepts/
-  - /en/series/domain-apocalypse/
 relatedGlossary:
   - /en/glossary/ai-agent/
   - /en/glossary/epp/

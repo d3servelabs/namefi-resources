@@ -18,6 +18,7 @@ const TOPICS = [
   'choosing-a-tld',
   'domain-investing',
   'web3-foundations',
+  'buy-domains-with-ai-agents',
 ] as const;
 
 const SERIES = [
@@ -28,6 +29,7 @@ const SERIES = [
   'best-tlds-by-industry',
   'domain-investor-field-guide',
   'domain-flipping-skills',
+  'ai-agent-setup',
 ] as const;
 
 const TOPIC_TEXT: Record<string, string> = {
@@ -43,6 +45,8 @@ const TOPIC_TEXT: Record<string, string> = {
     'domain investing flipping sale valuation appraisal aftermarket broker auction portfolio domaining marketplace',
   'web3-foundations':
     'web3 crypto blockchain stablecoin tokenized assets xstocks zero knowledge AI agents DAO payments',
+  'buy-domains-with-ai-agents':
+    'AI agent buy register domain Claude Codex Cursor Windsurf MCP server REST API key CLI WebMCP wallet checkout NFSC DNS',
 };
 
 const SERIES_TEXT: Record<string, string> = {
@@ -60,6 +64,8 @@ const SERIES_TEXT: Record<string, string> = {
     'domain investor media newsletters forums sell domain community field guide',
   'domain-flipping-skills':
     'domain flipping skills source appraise value sell portfolio marketplace broker law escrow scams',
+  'ai-agent-setup':
+    'set up AI agent API key Claude Code Claude Desktop Codex CLI Cursor Windsurf MCP config connect Namefi register domain',
 };
 
 const STOP_WORDS = new Set(

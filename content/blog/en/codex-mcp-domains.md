@@ -7,6 +7,9 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
 format: guide
+cluster: buy-domains-with-ai-agents
+series: ai-agent-setup
+seriesOrder: 3
 ogImage: ../../assets/codex-mcp-domains-og.jpg
 description: "Connect OpenAI Codex (CLI, IDE extension, desktop app) to Namefi over MCP, then search, register and manage DNS for a domain. Exact config and fixes."
 keywords: ["namefi codex", "codex mcp domain", "openai codex mcp server", "codex config.toml mcp_servers", "codex register domain", "codex cli buy domain", "codex mcp add streamable http", "codex plugin marketplace namefi", "namefi mcp codex setup", "ai agent register domain codex", "codex dns records", "x-api-key codex", "codex mcp oauth login"]
@@ -17,11 +20,11 @@ relatedArticles:
   - /en/blog/namefi-mcp/
   - /en/blog/namefi-webmcp/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/domain-tokenization/
-  - /en/topics/domain-basics/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/tokenize-your-com/
-  - /en/series/blockchain-concepts/
 relatedGlossary:
   - /en/glossary/mcp/
   - /en/glossary/ai-agent/

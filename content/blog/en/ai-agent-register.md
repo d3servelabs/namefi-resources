@@ -7,6 +7,9 @@ authors: ['fenwei-bian']
 editors: ['victor-zhou']
 draft: false
 format: guide
+cluster: buy-domains-with-ai-agents
+series: ai-agent-setup
+seriesOrder: 5
 ogImage: ../../assets/ai-agent-register-og.jpg
 description: "The canonical guide to registering a domain on Namefi with any AI agent — Claude, Codex, Cursor, and more — via MCP, REST, or wallet checkout."
 keywords: ["register domain ai agent", "namefi tutorial", "claude domain registration", "codex domain registration", "cursor mcp domain", "windsurf mcp domain", "gemini cli mcp domain", "agent domain how-to", "x-api-key", "mcp server", "wallet checkout", "namefi mcp domain registration", "ai agent buy domain namefi", "domain registration mcp tutorial"]
@@ -17,11 +20,11 @@ relatedArticles:
   - /en/blog/agent-native/
   - /en/blog/airo-vs-namefi/
 relatedTopics:
+  - /en/topics/buy-domains-with-ai-agents/
   - /en/topics/domain-tokenization/
-  - /en/topics/domain-basics/
 relatedSeries:
+  - /en/series/ai-agent-setup/
   - /en/series/tokenize-your-com/
-  - /en/series/blockchain-concepts/
 relatedGlossary:
   - /en/glossary/ai-agent/
   - /en/glossary/registrar/
