@@ -24,6 +24,11 @@ jobs:
       - name: Test internal link checker
         run: bun links:test
 
+      # Regression tests for the keyword-volume providers. They stub the HTTP
+      # layer: no credentials, no billable calls.
+      - name: Test keyword-volume providers
+        run: bun keywords:test
+
       - name: Lint MDX
         run: bun lint:mdx
 
