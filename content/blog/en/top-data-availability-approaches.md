@@ -100,14 +100,26 @@ This model can scale data publication without a small fixed committee, but it in
 
 ## The comparison separates publication from historical retrieval
 
-| Approach | Where recovery data is published | Who must keep it available during the critical window | Historical retrieval | Relative publication cost | Main trust/operational trade-off |
-|---|---|---|---|---|---|
-| **Ethereum calldata** | Ethereum transaction history | Ethereum validators and nodes | Transaction history; historical serving still needs retained copies | Uses execution gas | Pays execution blockspace for direct Ethereum DA |
-| **Ethereum blobs** | Temporary Ethereum consensus-layer blob data | Ethereum network during blob retention | External archiving needed after protocol retention | Separate blob fee market | Time-bounded availability; operators must capture data promptly |
-| **DAC** | Committee-operated off-chain storage | Enough honest, reachable members to recover the data | Defined by committee policy and backups | Lower L1 publication footprint | Data withholding can block exits despite valid execution proofs |
-| **Sampling-based external DA** | Separate DA network, such as Celestia | That network's producers, samplers, and retrievers | Separate archival providers or nodes | Depends on the DA network and bridge | Additional consensus and settlement-verification assumptions |
+### The first table compares publication and availability
 
-The table isolates DA. It does not score the proof system, sequencer, upgrade keys, token bridge, or user escape path. A real risk assessment needs all of them.
+| Approach | Data path | Who serves data |
+|---|---|---|
+| **Ethereum calldata** | Ethereum transaction history | Ethereum validators and nodes |
+| **Ethereum blobs** | Temporary Ethereum consensus-layer blob data | Ethereum network during blob retention |
+| **DAC** | Committee-operated off-chain storage | Enough honest, reachable members to recover the data |
+| **Sampling-based external DA** | Separate DA network, such as Celestia | That network's producers, samplers, and retrievers |
+
+### The second table compares archives, fees, and remaining risks
+
+| Approach | Archive | Cost and risk |
+|---|---|---|
+| **Ethereum calldata** | Transaction history; historical serving still needs retained copies | Uses execution gas. Pays execution blockspace for direct Ethereum DA. |
+| **Ethereum blobs** | External archiving needed after protocol retention | Separate blob fee market. Operators must capture data during time-bounded availability. |
+| **DAC** | Committee policy and backups define retention | Lower L1 publication footprint. Data withholding can block exits despite valid execution proofs. |
+| **Sampling-based external DA** | Separate archival providers or nodes | Fees depend on the DA network and bridge. Additional consensus and settlement-verification assumptions apply. |
+
+
+The tables isolate DA. It does not score the proof system, sequencer, upgrade keys, token bridge, or user escape path. A real risk assessment needs all of them.
 
 ---
 
@@ -124,7 +136,7 @@ The following questions form an evaluation checklist. They are practical review 
 
 Keep the evidence for each answer beside the design decision. An architecture diagram should distinguish data publication, execution verification, settlement, and historical storage. One arrow labeled “secured by Ethereum” cannot describe all four responsibilities.
 
-When estimating cost, compare the same workload over a stated period. Include publication fees, retention, retrieval, and any integration service. The comparison table describes mechanisms; it does not report a benchmark or promise a fixed saving.
+When estimating cost, compare the same workload over a stated period. Include publication fees, retention, retrieval, and any integration service. The comparison tables describe mechanisms; it does not report a benchmark or promise a fixed saving.
 
 A recovery exercise can also expose dependencies outside DA. A complete data archive does not by itself supply a working decoder, a valid withdrawal proof, or an accessible exit contract. Treat those components as separate checks.
 
