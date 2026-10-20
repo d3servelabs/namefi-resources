@@ -1,10 +1,11 @@
 ---
 title: "Los ejemplos de dominios de marca ayudan a evaluar un nombre"
 date: '2026-09-14'
+updated: '2026-10-20'
 language: es
 tags: [domains, guide]
 authors: [namefiteam]
-draft: true
+draft: false
 cluster: domain-basics
 format: guide
 description: "Evalúa ejemplos de dominios de marca por su pronunciación, escritura, facilidad para recordarlos, flexibilidad y afinidad con el producto."

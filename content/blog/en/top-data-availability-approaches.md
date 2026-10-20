@@ -4,11 +4,12 @@ date: '2026-10-20'
 language: en
 tags: ['guide']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: web3-foundations
 series: blockchain-concepts
 seriesOrder: 90
 format: roundup
+ogImage: ../../assets/top-data-availability-approaches-og.jpg
 description: Compare Ethereum calldata and blobs, data-availability committees, and sampling-based networks by recovery guarantee, cost, and trust assumptions.
 keywords: ['data availability', 'Ethereum calldata', 'EIP-4844 blobs', 'blobspace', 'data availability committee', 'DAC', 'data availability sampling', 'DAS', 'Celestia', 'validium', 'rollup data', 'state recovery', 'off-chain data availability', 'modular blockchain']
 relatedArticles:
@@ -41,6 +42,8 @@ This is a comparison of **where recovery data lives and who can attest to its av
 
 ## Ethereum calldata puts recovery data in transaction history
 
+![Batch data enters Ethereum transaction history, while a separate archive serves historical records.](../../assets/top-data-availability-approaches-01-calldata.jpg)
+
 Calldata is bytes attached to an Ethereum transaction. If a rollup publishes its compressed batches there, Ethereum nodes receive the data as part of the chain's transaction history. Ethereum's DA guide contrasts calldata's persistent chain history with temporary blob storage ([ethereum.org](https://ethereum.org/en/developers/docs/data-availability/#data-availability-and-layer-2-rollups)).
 
 The security advantage is direct: the rollup's users and challengers rely on Ethereum's own publication and consensus path for the information needed to reconstruct state. The downside is competition with ordinary Ethereum execution for blockspace. It is usually an expensive way to publish large amounts of batch data compared with purpose-built blobspace.
@@ -52,6 +55,8 @@ The security advantage is direct: the rollup's users and challengers rely on Eth
 ---
 
 ## Ethereum blobs provide availability for a limited retention period
+
+![A blob remains available during its retention window and needs a separate archival copy for later retrieval.](../../assets/top-data-availability-approaches-02-blobs.jpg)
 
 EIP-4844 introduced blob-carrying transactions so rollups could publish batch data in a separate fee market. Blob contents are not directly readable by the [Ethereum Virtual Machine](/en/glossary/ethereum-virtual-machine/); the transaction references a blob commitment through its versioned hash, while Ethereum's consensus layer makes the blob data available for a bounded period ([EIP-4844](https://eips.ethereum.org/EIPS/eip-4844#abstract)).
 
@@ -67,6 +72,8 @@ Blobs therefore keep the **Ethereum DA security domain** while reducing the cost
 
 ## Data-availability committees add a disclosed trust assumption
 
+![Committee members retain data copies and provide signatures, while users need the actual recovery data.](../../assets/top-data-availability-approaches-03-committee.jpg)
+
 A data-availability committee (DAC) is a named set of parties that stores off-chain batch data and signs or attests that it can be retrieved. A validium can publish a validity proof on Ethereum while asking the committee—not Ethereum—to retain the recovery data. StarkEx documents separate Rollup and Validium DA modes, with committee-held data in the latter ([StarkEx data-availability documentation](https://docs.starkware.co/starkex/con_data_availability.html)).
 
 This can avoid much of the L1 publication cost, but it changes the failure mode. If enough committee members withhold data, users may not be able to construct withdrawal proofs even though Ethereum accepted a valid state-transition proof. Ethereum's validium guide explicitly warns about funds becoming frozen under data withholding ([ethereum.org](https://ethereum.org/en/developers/docs/scaling/validium/#data-availability-managers)).
@@ -78,6 +85,8 @@ This can avoid much of the L1 publication cost, but it changes the failure mode.
 ---
 
 ## Separate DA networks let light nodes sample published data
+
+![Light nodes check selected data shares; historical storage remains a separate responsibility.](../../assets/top-data-availability-approaches-04-sampling.jpg)
 
 A separate DA chain can publish data commitments and let light nodes check availability by requesting random shares. In Celestia's design, producers erasure-code block data, commit to the encoded shares, and light nodes sample coordinates with proofs built from [Merkle trees](/en/glossary/merkle-tree/). Namespaces help an application retrieve only its own data ([Celestia documentation](https://docs.celestia.org/learn/celestia-101/data-availability/)).
 

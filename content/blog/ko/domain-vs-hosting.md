@@ -1,10 +1,11 @@
 ---
 title: "도메인과 호스팅의 차이: 웹사이트 공개에 필요한 서비스"
 date: '2026-09-15'
+updated: '2026-10-20'
 language: ko
 tags: ['domains', 'guide']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-basics
 ogImage: ../../assets/domain-vs-hosting-og.jpg
 format: guide
