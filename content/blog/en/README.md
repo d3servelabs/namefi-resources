@@ -53,3 +53,10 @@ Inline citations link directly to their original sources. Keep the detailed sour
 ## Blockchain Concepts Tier 2
 
 The September 19, 2026 English batch adds `top-zk-proof-systems.md`, `top-fhe-schemes.md`, and `top-rollup-types.md` to the Blockchain Concepts series at orders 60, 70, and 80. Each comparison names its trade-offs, cites primary technical sources in the body, and links to the associated glossary definitions. The illustrations live in `../../assets/`. These English articles publish independently of future translations.
+
+## The October batch adds a comparison and two selected translations
+
+The October 20, 2026 pilot continues `top-data-availability-approaches.md` at series order 90.
+The comparison distinguishes publication guarantees, historical retrieval, committee trust, and external DA settlement integration.
+The text has primary-source and independent technical reviews. The article includes a cover and four mechanism illustrations.
+The batch also publishes Mexican Spanish brandable-domain examples and a Korean domain-versus-hosting guide.
