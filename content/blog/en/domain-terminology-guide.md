@@ -9,8 +9,9 @@ editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: faq
-description: Master domain investing with our comprehensive guide to essential domain terminology. From basic concepts to advanced trading strategies, learn the language of domain professionals.
-keywords: ['domain terminology', 'domain investing', 'domain names', 'domain trading', 'domain glossary', 'TLD', 'registrar', 'domain auction', 'domain portfolio', 'domain valuation', 'premium domains', 'domain flipping']
+ogImage: ../../assets/domain-terminology-guide-og.jpg
+description: Learn domain terminology, including domain names, URLs, hostnames and the domain name space, plus essential domain investing terms.
+keywords: ['domain terminology', 'domain name and URL', 'hostname', 'domain name space', 'domain investing', 'domain names', 'domain trading', 'domain glossary', 'TLD', 'registrar', 'domain auction', 'domain portfolio', 'domain valuation', 'premium domains', 'domain flipping']
 relatedArticles:
   - /en/blog/how-to-sell-a-domain-name-you-own/
   - /en/blog/domain-flipping/
@@ -36,6 +37,40 @@ relatedGlossary:
 Whether you're a beginner exploring domain investing or an experienced professional, understanding domain terminology is crucial for success. This comprehensive guide covers all essential terms used in the domain industry, organized by category for easy reference.
 
 ---
+
+## Domain names, hostnames and URLs describe different things
+
+A domain name identifies a name in a naming hierarchy. A hostname identifies a host in context. A URL identifies a resource and describes access to that resource. For an HTTPS address, the hostname can be a domain name. The terms overlap, but the terms do not mean the same thing. [RFC 9499 defines DNS names](https://www.rfc-editor.org/rfc/rfc9499.html#section-2), while [RFC 3986 separates URL components](https://www.rfc-editor.org/rfc/rfc3986.html#section-3).
+
+Consider `https://shop.example.com:8443/catalog?q=tea#details`:
+
+| Term | Example | Meaning in this address |
+| --- | --- | --- |
+| URL | The complete address above | The resource address, including scheme, hostname, port, path, query and fragment |
+| Scheme | `https` | The access scheme |
+| Hostname | `shop.example.com` | The domain name in the host component |
+| Registered domain | `example.com` | The registration-level name in this example |
+| Subdomain | `shop.example.com` | A domain below `example.com` |
+| Port | `8443` | The explicit port number |
+| Path | `/catalog` | The resource path |
+| Query | `q=tea` | Additional request data |
+| Fragment | `details` | A reference within the resource |
+
+The URL API makes a useful distinction: `hostname` excludes the port, but `host` includes a non-default port. For this example, `hostname` returns `shop.example.com` and `host` returns `shop.example.com:8443`. [MDN documents the hostname property](https://developer.mozilla.org/en-US/docs/Web/API/URL/hostname). A URL host can also be an IP address, so a URL does not always contain a domain name.
+
+A hostname can include a subdomain. The bare domain `example.com` can also serve as a hostname. In operating-system settings, “hostname” can instead mean a short local name, such as `printer`. [RFC 9499 explains the different uses](https://www.rfc-editor.org/rfc/rfc9499.html#section-2). Check the field instructions before entering a complete URL into a hostname field.
+
+![URL components distinguish the scheme, hostname and explicit port](../../assets/domain-terminology-guide-01-url-parts.jpg)
+
+## The domain name space organizes names in a hierarchy
+
+The **domain name space** means the naming structure, not a blank character inside a name. [RFC 1034 describes a tree](https://www.rfc-editor.org/rfc/rfc1034.html#section-3.1) with a root and labels. Read `shop.example.com` from right to left: root, `com`, `example`, then `shop`. The top-level domain is `com`; `example` is the second-level label; `shop.example.com` is a subdomain of `example.com`.
+
+A fully qualified domain name includes the complete route to the root. DNS presentation format makes the root explicit with a final dot: `shop.example.com.`. Everyday text usually omits the final dot. [RFC 9499 distinguishes those formats](https://www.rfc-editor.org/rfc/rfc9499.html#section-2).
+
+The registered domain is not always the last two labels. Some registration structures use a suffix with several labels. Use the [Public Suffix List](https://publicsuffix.org/list/) when software needs to identify a public suffix, rather than splitting every name at the second dot.
+
+The remaining sections explain the investment and operating terms that domain buyers encounter.
 
 ## **🎯 Domain Investment & Trading**
 
@@ -115,8 +150,8 @@ The part of a domain name that comes after the last dot (e.g., [.com](/en/tld/co
 
 **Categories**:
 - **Generic TLDs**: .com, .org, .net, [.info](/en/tld/info/)
-- **Country Code TLDs**: [.us](/en/tld/us/), .uk, .de, .cn
-- **New TLDs**: .ai, [.io](/en/tld/io/), [.tech](/en/tld/tech/), [.shop](/en/tld/shop/)
+- **Country Code TLDs**: [.us](/en/tld/us/), .uk, .de, .cn, [.ai](/en/tld/ai/), [.io](/en/tld/io/)
+- **New TLDs**: [.tech](/en/tld/tech/), [.shop](/en/tld/shop/)
 
 ### **Subdomain**
 A domain that is part of a larger domain. For example, "blog.example.com" is a subdomain of "example.com." Subdomains can be used to organize different sections of a website.
@@ -126,7 +161,7 @@ A domain that is part of a larger domain. For example, "blog.example.com" is a s
 ### **DNS (Domain Name System)**
 The system that translates human-readable domain names into IP addresses that computers use to communicate with each other. It is often referred to as the "phonebook" of the internet.
 
-**Function**: Converts `namefi.io` to `192.168.1.1` for browser communication
+**Illustrative DNS example**: `example.com` → `192.0.2.1`. [RFC 5737 §3](https://www.rfc-editor.org/rfc/rfc5737.html#section-3).
 
 ### **WHOIS**
 A protocol used to query databases that store registered domain name information. [WHOIS](/en/glossary/whois/) provides details like the domain's owner, registration dates, and contact information.
@@ -221,4 +256,15 @@ Master these terms, understand the market, and make informed decisions in your d
 
 ---
 
-*Last updated: June 2025 | This guide covers the most current domain terminology and industry practices.*
+*Technical terminology updated October 21, 2026. Investment examples remain illustrative.*
+
+## These sources define the technical terms
+
+- [IETF RFC 9499, section 2](https://www.rfc-editor.org/rfc/rfc9499.html#section-2) — fetched October 21, 2026.
+- [IETF RFC 3986, section 3](https://www.rfc-editor.org/rfc/rfc3986.html#section-3) — fetched October 21, 2026.
+- [IETF RFC 1034, section 3.1](https://www.rfc-editor.org/rfc/rfc1034.html#section-3.1) — fetched October 21, 2026.
+- [MDN URL.hostname](https://developer.mozilla.org/en-US/docs/Web/API/URL/hostname) — fetched October 21, 2026.
+- [Public Suffix List](https://publicsuffix.org/list/) — fetched October 21, 2026.
+- [IANA .ai](https://www.iana.org/domains/root/db/ai.html) — fetched October 21, 2026.
+- [IANA .io](https://www.iana.org/domains/root/db/io.html) — fetched October 21, 2026.
+- [IETF RFC 5737, section 3](https://www.rfc-editor.org/rfc/rfc5737.html#section-3) — fetched October 21, 2026.

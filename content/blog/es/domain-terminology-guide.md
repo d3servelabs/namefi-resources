@@ -7,8 +7,8 @@ tags: ["faq","domains"]
 authors: ['fenwei-bian']
 editors: ['victor-zhou']
 translators: ['iria-maquieira']
-description: Domina la inversión en dominios con nuestra guía completa de terminología esencial de dominios. Desde conceptos básicos hasta estrategias de trading avanzadas, aprende el lenguaje de los profesionales de dominios.
-keywords: ["terminología de dominios","inversión de dominios","nombres de dominio","trading de dominios","glosario de dominios","TLD","registrador","subasta de dominios","cartera de dominios","valoración de dominios","dominios premium","flipping de dominios"]
+description: Aprende la diferencia entre dominio, URL y nombre de host, el espacio de nombres de dominio y los términos básicos de inversión en dominios.
+keywords: ['dominio y URL', 'nombre de host', 'espacio de nombres de dominio', "terminología de dominios","inversión de dominios","nombres de dominio","trading de dominios","glosario de dominios","TLD","registrador","subasta de dominios","cartera de dominios","valoración de dominios","dominios premium","flipping de dominios"]
 relatedArticles:
   - /es/blog/how-to-sell-a-domain-name-you-own/
   - /es/blog/domain-flipping/
@@ -35,6 +35,40 @@ relatedGlossary:
 Ya sea que seas un principiante explorando la inversión en dominios o un profesional experimentado, comprender la terminología de los dominios es crucial para el éxito. Esta guía completa cubre todos los términos esenciales utilizados en la industria de los dominios, organizados por categoría para una fácil referencia.
 
 ---
+
+## Los dominios, los nombres de host y las URL describen conceptos distintos
+
+Un nombre de dominio identifica un nombre dentro de una jerarquía. Un nombre de host identifica un equipo o servicio según el contexto. Una URL identifica un recurso e indica cómo acceder al recurso. En una dirección HTTPS, el nombre de host puede ser un nombre de dominio. Los conceptos se relacionan, pero tienen significados distintos. [RFC 9499 define los nombres del DNS](https://www.rfc-editor.org/rfc/rfc9499.html#section-2) y [RFC 3986 distingue los componentes de una URL](https://www.rfc-editor.org/rfc/rfc3986.html#section-3).
+
+Consideremos `https://shop.example.com:8443/catalog?q=tea#details`:
+
+| Término | Ejemplo | Significado en la dirección |
+| --- | --- | --- |
+| URL | La dirección completa anterior | La dirección del recurso, con esquema, nombre de host, puerto, ruta, consulta y fragmento |
+| Esquema | `https` | El esquema de acceso |
+| Nombre de host | `shop.example.com` | El nombre de dominio del componente de host |
+| Dominio registrado | `example.com` | El nombre que corresponde al registro en el ejemplo |
+| Subdominio | `shop.example.com` | Un dominio bajo `example.com` |
+| Puerto | `8443` | El número de puerto explícito |
+| Ruta | `/catalog` | La ruta del recurso |
+| Consulta | `q=tea` | Datos adicionales de la solicitud |
+| Fragmento | `details` | Una referencia dentro del recurso |
+
+La API de URL distingue dos propiedades: `hostname` excluye el puerto y `host` incluye un puerto distinto del predeterminado. En el ejemplo, `hostname` devuelve `shop.example.com` y `host` devuelve `shop.example.com:8443`. [MDN documenta la propiedad hostname](https://developer.mozilla.org/en-US/docs/Web/API/URL/hostname). El host de una URL también puede ser una dirección IP. Por tanto, una URL no siempre contiene un nombre de dominio.
+
+Un nombre de host puede incluir un subdominio. El dominio `example.com` también puede funcionar como nombre de host. En la configuración de un sistema operativo, «nombre de host» puede indicar un nombre local corto, como `printer`. [RFC 9499 explica los distintos usos](https://www.rfc-editor.org/rfc/rfc9499.html#section-2). Lee las instrucciones del campo antes de introducir una URL completa donde se solicita un nombre de host.
+
+![Los componentes de una URL distinguen el esquema, el nombre de host y el puerto explícito](../../assets/domain-terminology-guide-01-url-parts.jpg)
+
+## El espacio de nombres de dominio organiza los nombres en una jerarquía
+
+El **espacio de nombres de dominio** es la estructura de nombres. La expresión no indica un espacio en blanco dentro del nombre. [RFC 1034 describe un árbol](https://www.rfc-editor.org/rfc/rfc1034.html#section-3.1) con una raíz y etiquetas. Lee `shop.example.com` de derecha a izquierda: raíz, `com`, `example` y `shop`. El dominio de nivel superior es `com`. La etiqueta de segundo nivel es `example`. El nombre `shop.example.com` es un subdominio de `example.com`.
+
+Un nombre de dominio completo incluye toda la ruta hasta la raíz. El formato de presentación del DNS representa la raíz con un punto final: `shop.example.com.`. El texto cotidiano suele omitir el punto final. [RFC 9499 distingue ambos formatos](https://www.rfc-editor.org/rfc/rfc9499.html#section-2).
+
+El dominio registrado no siempre corresponde a las dos últimas etiquetas. Algunas estructuras de registro utilizan sufijos con varias etiquetas. Usa la [lista de sufijos públicos](https://publicsuffix.org/list/) cuando un programa necesite identificar un sufijo público. No separes todos los nombres por el segundo punto.
+
+Las secciones siguientes explican los términos de inversión y operación que encuentran quienes compran dominios.
 
 ## **🎯 Inversión y Trading de Dominios**
 
@@ -114,8 +148,8 @@ La parte de un nombre de dominio que viene después del último punto (por ejemp
 
 **Categorías**:
 - **TLD Genéricos**: .com, .org, .net, [.info](/es/tld/info/)
-- **TLD de Código de País**: [.us](/es/tld/us/), .uk, .de, .cn
-- **Nuevos TLDs**: .ai, [.io](/es/tld/io/), [.tech](/es/tld/tech/), [.shop](/es/tld/shop/)
+- **TLD de Código de País**: [.us](/es/tld/us/), .uk, .de, .cn, [.ai](/es/tld/ai/), [.io](/es/tld/io/)
+- **Nuevos TLDs**: [.tech](/es/tld/tech/), [.shop](/es/tld/shop/)
 
 ### **Subdominio**
 Un dominio que forma parte de un dominio más grande. Por ejemplo, "blog.example.com" es un subdominio de "example.com". Los subdominios se pueden utilizar para organizar diferentes secciones de un sitio web.
@@ -125,7 +159,7 @@ Un dominio que forma parte de un dominio más grande. Por ejemplo, "blog.example
 ### **DNS (Sistema de Nombres de Dominio)**
 El sistema que traduce los nombres de dominio legibles por humanos en direcciones IP que las computadoras utilizan para comunicarse entre sí. A menudo se le conoce como la "agenda telefónica" de Internet.
 
-**Función**: Convierte `namefi.io` a `192.168.1.1` para la comunicación del navegador
+**Ejemplo ilustrativo del DNS**: `example.com` → `192.0.2.1`. [RFC 5737 §3](https://www.rfc-editor.org/rfc/rfc5737.html#section-3).
 
 ### **WHOIS**
 Un protocolo utilizado para consultar bases de datos que almacenan información de nombres de dominio registrados. [WHOIS](/es/glossary/whois/) proporciona detalles como el propietario del dominio, las fechas de registro y la información de contacto.
@@ -220,4 +254,15 @@ Domina estos términos, comprende el mercado y toma decisiones informadas en tu 
 
 ---
 
-*Última actualización: junio de 2025 | Esta guía cubre la terminología de dominios y las prácticas de la industria más actuales.*
+*Terminología técnica actualizada el 21 de octubre de 2026. Los ejemplos de inversión son ilustrativos.*
+
+## Las fuentes definen los términos técnicos
+
+- [IETF RFC 9499, sección 2](https://www.rfc-editor.org/rfc/rfc9499.html#section-2) — consulta del 21 de octubre de 2026.
+- [IETF RFC 3986, sección 3](https://www.rfc-editor.org/rfc/rfc3986.html#section-3) — consulta del 21 de octubre de 2026.
+- [IETF RFC 1034, sección 3.1](https://www.rfc-editor.org/rfc/rfc1034.html#section-3.1) — consulta del 21 de octubre de 2026.
+- [MDN URL.hostname](https://developer.mozilla.org/en-US/docs/Web/API/URL/hostname) — consulta del 21 de octubre de 2026.
+- [Lista de sufijos públicos](https://publicsuffix.org/list/) — consulta del 21 de octubre de 2026.
+- [IANA .ai](https://www.iana.org/domains/root/db/ai.html) — consulta del 21 de octubre de 2026.
+- [IANA .io](https://www.iana.org/domains/root/db/io.html) — consulta del 21 de octubre de 2026.
+- [IETF RFC 5737, sección 3](https://www.rfc-editor.org/rfc/rfc5737.html#section-3) — consulta del 21 de octubre de 2026.
