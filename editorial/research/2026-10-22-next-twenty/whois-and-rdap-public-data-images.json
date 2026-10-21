@@ -1,0 +1,37 @@
+{
+  "slug": "whois-and-rdap-public-data",
+  "title": "WHOIS and RDAP Expose Different Views of Registration Data",
+  "cover": {
+    "h1": "WHOIS and RDAP Expose Different Views",
+    "h2": "of Registration Data",
+    "subtitle": "Protocol access does not make every identity public.",
+    "visual": "Two lookup views share one registration card while personal fields remain hidden."
+  },
+  "sections": [
+    {
+      "name": "01-protocol",
+      "heading": "RDAP changes the access method without promising a public identity directory",
+      "scene": "Three layers show protocol, authoritative source, and client presentation. Personal contact card remains visibly restricted.",
+      "alt": "Protocol, source, and presentation form separate parts of a lookup."
+    },
+    {
+      "name": "02-fields",
+      "heading": "Public fields support registration checks rather than complete ownership conclusions",
+      "scene": "A public result card connects registrar and event fields to supported questions, with identity question kept separate.",
+      "alt": "Public registration fields support limited conclusions."
+    },
+    {
+      "name": "03-redaction",
+      "heading": "Redaction notices explain an information limit rather than an empty registration",
+      "scene": "A complete registration file has a public view with clearly marked hidden personal fields, without displaying personal values.",
+      "alt": "A redacted public view differs from an absent registration."
+    },
+    {
+      "name": "04-request",
+      "heading": "Contact and disclosure requests need a separate purpose and process",
+      "scene": "Four labeled routes separate purchase inquiry, abuse report, account recovery, and nonpublic-data request.",
+      "alt": "Different registration questions follow different contact routes."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

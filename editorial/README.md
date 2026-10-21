@@ -45,3 +45,7 @@ anything under `content/`.
 | `2026-10-21-ten-article-batch.md` | The ten-article continuation records user authorization, actual per-article research and writing token boundaries, checks and publication evidence. |
 
 The twenty-article continuation records its existing assignments and actual phase counters in `2026-10-21-twenty-article-batch.md`. Its assignment snapshot lives in `2026-10-21-twenty-assignments.json`.
+
+## The October batch records preserve execution evidence
+
+The dated batch Markdown files record authorized scope and publication checks. The matching assignment JSON files retain existing topic IDs. The `research/` and `usage/` directories retain source evidence and actual writer counters. Those files remain editorial records and do not publish as site pages.

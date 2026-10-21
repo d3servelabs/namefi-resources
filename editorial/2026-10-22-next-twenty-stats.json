@@ -1,0 +1,86 @@
+{
+  "method": "English lexical word groups after removing frontmatter, sources, fenced code, image syntax and link destinations. Inline code and numeric examples remain.",
+  "body_lexical_words": 30959,
+  "articles": [
+    {
+      "slug": "icann-domain-lookup",
+      "body_lexical_words": 1534
+    },
+    {
+      "slug": "subdomain-examples",
+      "body_lexical_words": 1649
+    },
+    {
+      "slug": "whois-and-rdap-public-data",
+      "body_lexical_words": 1563
+    },
+    {
+      "slug": "isp-dns-vs-public-resolver",
+      "body_lexical_words": 1594
+    },
+    {
+      "slug": "run-your-own-dns-resolver",
+      "body_lexical_words": 1566
+    },
+    {
+      "slug": "bulk-domain-availability-checks",
+      "body_lexical_words": 1593
+    },
+    {
+      "slug": "free-business-email-options",
+      "body_lexical_words": 1644
+    },
+    {
+      "slug": "benchmark-dns-for-gaming",
+      "body_lexical_words": 1525
+    },
+    {
+      "slug": "dnssec-for-domain-owners",
+      "body_lexical_words": 1539
+    },
+    {
+      "slug": "txt-records-spf-dkim-verification",
+      "body_lexical_words": 1538
+    },
+    {
+      "slug": "maintain-dns-on-tokenized-domains",
+      "body_lexical_words": 1558
+    },
+    {
+      "slug": "name-domains-for-nft-display",
+      "body_lexical_words": 1534
+    },
+    {
+      "slug": "dns-records-for-ai-agent-authority",
+      "body_lexical_words": 1559
+    },
+    {
+      "slug": "revoke-domain-nft-approvals",
+      "body_lexical_words": 1481
+    },
+    {
+      "slug": "audit-agent-domain-purchases",
+      "body_lexical_words": 1590
+    },
+    {
+      "slug": "delegate-domain-agent-permissions",
+      "body_lexical_words": 1464
+    },
+    {
+      "slug": "harden-domain-registrar-account",
+      "body_lexical_words": 1501
+    },
+    {
+      "slug": "llms-txt-agents-md-robots-txt",
+      "body_lexical_words": 1528
+    },
+    {
+      "slug": "ttl-and-dns-propagation",
+      "body_lexical_words": 1500
+    },
+    {
+      "slug": "glue-records-explained",
+      "body_lexical_words": 1499
+    }
+  ]
+}

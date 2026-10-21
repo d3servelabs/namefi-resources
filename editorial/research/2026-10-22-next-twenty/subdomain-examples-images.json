@@ -1,0 +1,37 @@
+{
+  "slug": "subdomain-examples",
+  "title": "Subdomain Examples Explain How Services Share a Domain",
+  "cover": {
+    "h1": "Subdomain Examples Explain",
+    "h2": "How Services Share a Domain",
+    "subtitle": "Names, DNS, hosting, and HTTPS work together.",
+    "visual": "One domain branches to four service cards for www, blog, app, and support."
+  },
+  "sections": [
+    {
+      "name": "01-hierarchy",
+      "heading": "Subdomain names show a hierarchy rather than a page path",
+      "scene": "A DNS name tree highlights blog.example.com while a separate URL path card shows /blog.",
+      "alt": "A DNS hierarchy distinguishes a subdomain from a page path."
+    },
+    {
+      "name": "02-services",
+      "heading": "Useful subdomains separate services with clear responsibilities",
+      "scene": "Four service cards for website, app, support, and status connect to one domain with owner labels.",
+      "alt": "Separate services share a domain and keep operational owners."
+    },
+    {
+      "name": "03-setup",
+      "heading": "A working subdomain needs DNS and an accepting destination",
+      "scene": "Three stages show hostname verification, DNS target, and hosting acceptance before an HTTPS test.",
+      "alt": "A subdomain requires DNS configuration and a receiving service."
+    },
+    {
+      "name": "04-lifecycle",
+      "heading": "Certificates and retirement complete the subdomain lifecycle",
+      "scene": "An inventory card connects certificate checks, monitoring, and a retired-service cleanup step.",
+      "alt": "A hostname inventory includes certificate checks and retirement."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

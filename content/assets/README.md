@@ -30,3 +30,7 @@ The October 21 batch uses ten `top-*` prefixes for the approved Blockchain Conce
 ## The twenty-article continuation adds one hundred final images
 
 The next October 21 batch adds twenty covers at 1200 × 630 and eighty section illustrations at 1200 × 675. The batch record lists the article prefixes. The coordinator reviews every final image for text, framing, official-logo placement and factual diagram meaning. The image review manifest records corrections and final file hashes.
+
+## The next twenty articles add another reviewed image set
+
+The next-twenty batch adds twenty 1200 × 630 covers and eighty 1200 × 675 section illustrations. Every image uses the repository gpt-image-2 generators and the official Namefi logo. The dated editorial batch record preserves the article prefixes, visual corrections and final file hashes.

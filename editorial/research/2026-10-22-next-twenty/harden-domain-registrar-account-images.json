@@ -1,0 +1,37 @@
+{
+  "slug": "harden-domain-registrar-account",
+  "title": "A Registrar Account Needs Strong Login and Independent Recovery",
+  "cover": {
+    "h1": "A Registrar Account Needs",
+    "h2": "Strong Login and Independent Recovery",
+    "subtitle": "A practical domain operations guide",
+    "visual": "A registrar account guarded by a security key with a separate recovery mailbox connected by a separate path"
+  },
+  "sections": [
+    {
+      "name": "01-section",
+      "heading": "Login protection starts with the account and its recovery email",
+      "scene": "A registrar account guarded by a security key with a separate recovery mailbox connected by a separate path",
+      "alt": "Login protection starts with the account and its recovery email."
+    },
+    {
+      "name": "02-section",
+      "heading": "Recovery procedures must survive staff and device changes",
+      "scene": "A company administrator and backup contact beside a secure recovery document and spare key",
+      "alt": "Recovery procedures must survive staff and device changes."
+    },
+    {
+      "name": "03-section",
+      "heading": "Transfer restrictions and registry controls protect different operations",
+      "scene": "Separate transfer gate and DNS edit gate show different protected operations",
+      "alt": "Transfer restrictions and registry controls protect different operations."
+    },
+    {
+      "name": "04-section",
+      "heading": "Access reviews and renewal checks keep the account usable",
+      "scene": "A portfolio review sheet combines access identities, alert bell, renewal calendar and payment check",
+      "alt": "Access reviews and renewal checks keep the account usable."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

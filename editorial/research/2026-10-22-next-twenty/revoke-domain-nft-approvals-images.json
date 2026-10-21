@@ -1,0 +1,37 @@
+{
+  "slug": "revoke-domain-nft-approvals",
+  "title": "Domain NFT Owners Can Review and Revoke Token Approvals",
+  "cover": {
+    "h1": "Domain NFT Owners Can",
+    "h2": "Review and Revoke Token Approvals",
+    "subtitle": "Verify the permission that the contract records.",
+    "visual": "A tiny domain token card and a small operator permission switch set to off. No private keys, wallet addresses or numeric claims."
+  },
+  "sections": [
+    {
+      "name": "01-token-approvals-and-operator-approvals-grant-different-scope",
+      "heading": "Token approvals and operator approvals grant different scope",
+      "scene": "One token card has one approved address. A separate operator bracket covers three token cards within one contract boundary. Another contract stays outside.",
+      "alt": "Token approvals and operator approvals grant different scope."
+    },
+    {
+      "name": "02-a-review-identifies-the-exact-asset-and-current-permission",
+      "heading": "A review identifies the exact asset and current permission",
+      "scene": "Chain, contract, token ID, owner, and operator fields form a review checklist beside contract-read results. No real wallet addresses or brand logos.",
+      "alt": "A review identifies the exact asset and current permission."
+    },
+    {
+      "name": "03-revocation-must-change-the-intended-contract-state",
+      "heading": "Revocation must change the intended contract state",
+      "scene": "A transaction card reads setApprovalForAll(operator,false), then confirmed state reads false. A wallet-disconnect icon sits separately, without a revocation checkmark.",
+      "alt": "Revocation must change the intended contract state."
+    },
+    {
+      "name": "04-cleanup-and-incident-recovery-require-separate-follow-up",
+      "heading": "Cleanup and incident recovery require separate follow-up",
+      "scene": "Two paths separate routine unused-approval removal from compromised-key recovery. Domain DNS, account access, and token ownership receive separate final checks.",
+      "alt": "Cleanup and incident recovery require separate follow-up."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

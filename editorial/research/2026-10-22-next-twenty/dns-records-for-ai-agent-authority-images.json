@@ -1,0 +1,37 @@
+{
+  "slug": "dns-records-for-ai-agent-authority",
+  "title": "DNS Helps Agents Find Services While Applications Enforce Authority",
+  "cover": {
+    "h1": "DNS Helps Agents Find",
+    "h2": "Services While Applications Enforce Authority",
+    "subtitle": "Discovery finds services. Authorization controls actions.",
+    "visual": "Two separate tiny panels: discovery compass and policy gate. No arrows suggesting DNS automatically grants permission."
+  },
+  "sections": [
+    {
+      "name": "01-discovery-locates-an-endpoint-without-granting-an-action",
+      "heading": "Discovery locates an endpoint without granting an action",
+      "scene": "A domain resolves to an agent endpoint and public card. A separate locked action endpoint requires authorization. Discovery arrow stops before the permission gate.",
+      "alt": "Discovery locates an endpoint without granting an action."
+    },
+    {
+      "name": "02-domain-control-supports-a-claim-with-a-defined-scope",
+      "heading": "Domain control supports a claim with a defined scope",
+      "scene": "An administrator publishes a service-specific TXT challenge. A verifier links only the named domain and service account, with no blanket authority badge.",
+      "alt": "Domain control supports a claim with a defined scope."
+    },
+    {
+      "name": "03-authorization-checks-bind-identity-to-a-permitted-operation",
+      "heading": "Authorization checks bind identity to a permitted operation",
+      "scene": "An authenticated request carries a resource-specific token through a server permission check. Read operation passes, transfer operation stops at a separate approval gate.",
+      "alt": "Authorization checks bind identity to a permitted operation."
+    },
+    {
+      "name": "04-rotation-and-revocation-must-reach-the-enforcement-system",
+      "heading": "Rotation and revocation must reach the enforcement system",
+      "scene": "A discovery record retires in one lane while credential revocation occurs at a resource server in another lane. A denied request verifies the revoked permission.",
+      "alt": "Rotation and revocation must reach the enforcement system."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

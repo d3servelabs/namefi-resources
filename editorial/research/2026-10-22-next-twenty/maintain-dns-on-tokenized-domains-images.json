@@ -1,0 +1,37 @@
+{
+  "slug": "maintain-dns-on-tokenized-domains",
+  "title": "Tokenized Domains Need a DNS Maintenance and Handoff Checklist",
+  "cover": {
+    "h1": "Tokenized Domains Need a",
+    "h2": "DNS Maintenance and Handoff Checklist",
+    "subtitle": "Maintain records, permissions and service continuity.",
+    "visual": "A tiny domain token icon sits beside a separate DNS zone checklist. No claim that token ownership alone configures DNS."
+  },
+  "sections": [
+    {
+      "name": "01-an-operating-inventory-identifies-every-control-point",
+      "heading": "An operating inventory identifies every control point",
+      "scene": "Two parallel inventories: a wallet and registrar/DNS accounts above, website/mail/TXT services below. Connect each service to its responsible account without implying NFT transfers DNS packets.",
+      "alt": "An operating inventory identifies every control point."
+    },
+    {
+      "name": "02-routine-changes-preserve-the-active-zone-and-service-owners",
+      "heading": "Routine changes preserve the active zone and service owners",
+      "scene": "A generic zone document shows only labels A, MX, TXT and blank line placeholders for all values. Highlight only the A row. A small rollback arrow points only at the highlighted A row. MX and TXT rows remain unchanged. No IP addresses, domains, actual policy strings or record values.",
+      "alt": "Routine changes preserve the active zone and service owners."
+    },
+    {
+      "name": "03-ownership-changes-require-a-separate-access-review",
+      "heading": "Ownership changes require a separate access review",
+      "scene": "A token moves between owner wallets while separate DNS user, API key, and recovery-contact cards pass through an access review gate.",
+      "alt": "Ownership changes require a separate access review."
+    },
+    {
+      "name": "04-monitoring-and-recovery-verify-the-complete-service",
+      "heading": "Monitoring and recovery verify the complete service",
+      "scene": "A monitor checks DNS, HTTPS, and mail separately. A saved zone inventory connects to a recovery checklist with a verified-result checkmark.",
+      "alt": "Monitoring and recovery verify the complete service."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

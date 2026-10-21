@@ -1,0 +1,37 @@
+{
+  "slug": "glue-records-explained",
+  "title": "DNS Glue Records Give Resolvers a Nameserver Address",
+  "cover": {
+    "h1": "DNS Glue Records Give Resolvers",
+    "h2": "a Nameserver Address",
+    "subtitle": "A practical domain operations guide",
+    "visual": "A parent DNS referral hands an address card to a resolver before the resolver contacts the child nameserver"
+  },
+  "sections": [
+    {
+      "name": "01-section",
+      "heading": "Glue gives the resolver an address before the child can answer",
+      "scene": "A parent DNS referral hands an address card to a resolver before the resolver contacts the child nameserver",
+      "alt": "Glue gives the resolver an address before the child can answer."
+    },
+    {
+      "name": "02-section",
+      "heading": "The nameserver relationship determines which glue case applies",
+      "scene": "Three compact hierarchy diagrams compare in-domain sibling and unrelated nameserver locations",
+      "alt": "The nameserver relationship determines which glue case applies."
+    },
+    {
+      "name": "03-section",
+      "heading": "A safe address change updates the parent and child deliberately",
+      "scene": "Two synchronized address cards at parent and child change from an old server to a prepared new server",
+      "alt": "A safe address change updates the parent and child deliberately."
+    },
+    {
+      "name": "04-section",
+      "heading": "Referral checks distinguish glue failures from other DNS faults",
+      "scene": "A diagnostic comparison shows a parent referral additional section and direct authoritative server response",
+      "alt": "Referral checks distinguish glue failures from other DNS faults."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

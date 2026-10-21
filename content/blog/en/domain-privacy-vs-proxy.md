@@ -70,7 +70,7 @@ This comparison also concerns registration services, not an HTTP proxy or a netw
 
 Older guides often describe a choice between publishing every personal detail in [WHOIS](/en/glossary/whois/) and buying a privacy service. That framing misses the current gTLD registration-data system.
 
-On January 28, 2025, RDAP became the definitive source for gTLD registration information in place of WHOIS. [ICANN announced that transition and directs users to its RDAP-based Lookup service](https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en). Some services still use “WHOIS privacy” as a familiar label.
+On January 28, 2025, [RDAP](/en/blog/whois-and-rdap-public-data/) became the definitive source for gTLD registration information in place of WHOIS. [ICANN announced that transition and directs users to its RDAP-based Lookup service](https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en). Some services still use “WHOIS privacy” as a familiar label.
 
 Separately, ICANN's Registration Data Policy took effect on August 21, 2025. [The policy replaced the Interim Registration Data Policy for contracted parties](https://www.icann.org/en/announcements/details/icann-registration-data-policy-now-in-effect-for-contracted-parties-21-08-2025-en). A protocol change and a data-publication policy change answer different questions.
 

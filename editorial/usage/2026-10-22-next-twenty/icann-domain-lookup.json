@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "article": "icann-domain-lookup",
+  "session_id": "01a16042-3741-7b53-ac1b-6b44ece0cc18",
+  "agent_path": "/root/next20_a",
+  "boundaries": {
+    "start": {
+      "timestamp": "2026-10-21T20:58:57.943Z",
+      "cumulative": {
+        "input_tokens": 285612,
+        "cached_input_tokens": 242176,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 892,
+        "reasoning_output_tokens": 63,
+        "total_tokens": 286504
+      }
+    },
+    "research_end": {
+      "timestamp": "2026-10-21T20:59:08.844Z",
+      "cumulative": {
+        "input_tokens": 357088,
+        "cached_input_tokens": 308352,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1361,
+        "reasoning_output_tokens": 125,
+        "total_tokens": 358449
+      }
+    },
+    "end": {
+      "timestamp": "2026-10-21T21:00:34.845Z",
+      "cumulative": {
+        "input_tokens": 529611,
+        "cached_input_tokens": 463232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5518,
+        "reasoning_output_tokens": 250,
+        "total_tokens": 535129
+      }
+    }
+  },
+  "research_delta": {
+    "input_tokens": 71476,
+    "cached_input_tokens": 66176,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 469,
+    "reasoning_output_tokens": 62,
+    "total_tokens": 71945
+  },
+  "writing_and_text_review_delta": {
+    "input_tokens": 172523,
+    "cached_input_tokens": 154880,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 4157,
+    "reasoning_output_tokens": 125,
+    "total_tokens": 176680
+  },
+  "combined_delta": {
+    "input_tokens": 243999,
+    "cached_input_tokens": 221056,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 4626,
+    "reasoning_output_tokens": 187,
+    "total_tokens": 248625
+  },
+  "scope": "Sequential dedicated writer interval. Includes repeated context and metering overhead within each phase. Excludes initialization before start, handoff after end, coordinator work, illustrations, shared checks, PRs and publication.",
+  "accounting": "Cached input is a subset of input. Reasoning output is a subset of output. This measurement does not attribute account quota.",
+  "models_observed": [
+    "gpt-6.1-sol"
+  ],
+  "excluded_postboundary_integration_edits": [
+    "Publication date and fetched-source date corrected from October 22 to actual October 21 after the original prose end boundary."
+  ]
+}

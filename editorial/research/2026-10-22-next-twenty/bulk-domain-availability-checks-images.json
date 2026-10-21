@@ -1,0 +1,37 @@
+{
+  "slug": "bulk-domain-availability-checks",
+  "title": "Bulk Domain Availability Checks Need Clean Inputs and Final Rechecks",
+  "cover": {
+    "h1": "Bulk Domain Availability Checks",
+    "h2": "Need Clean Inputs and Final Rechecks",
+    "subtitle": "Turn a list into a reviewed shortlist.",
+    "visual": "A domain candidate list narrows through cleanup, status review, and a final recheck."
+  },
+  "sections": [
+    {
+      "name": "01-inputs",
+      "heading": "Clean inputs keep a bulk search focused on the intended names",
+      "scene": "A candidate spreadsheet passes through spelling cleanup and deduplication to a smaller exact-domain list. No real availability claims.",
+      "alt": "A clean domain list preserves exact intended spellings."
+    },
+    {
+      "name": "02-states",
+      "heading": "Availability results need more than a yes-or-no column",
+      "scene": "Four result bins with exact labels Candidate, Unavailable, Needs review, Unknown. A small clock icon beside each bin indicates checking time, but no numeric timestamp or actual domain result. No guarantee badge.",
+      "alt": "Availability review preserves unknown and special states."
+    },
+    {
+      "name": "03-api",
+      "heading": "An API workflow must preserve limits and per-domain errors",
+      "scene": "A bounded batch pipeline keeps successful rows and error rows in separate visible paths without secrets or request URLs.",
+      "alt": "A documented API workflow preserves row-level results and errors."
+    },
+    {
+      "name": "04-purchase",
+      "heading": "A purchase decision needs pricing and a fresh final check",
+      "scene": "A small shortlist passes registration, renewal, eligibility, and final spelling checks before a clearly separate approval gate.",
+      "alt": "A shortlist needs full cost review and a fresh final check."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

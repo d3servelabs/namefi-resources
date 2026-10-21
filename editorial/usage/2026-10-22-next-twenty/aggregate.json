@@ -1,0 +1,218 @@
+{
+  "articles_verified": 20,
+  "raw_boundary_events_verified": 86,
+  "models_observed": [
+    "gpt-6.1-sol"
+  ],
+  "scope": "Observed writer research, initial writing/text review and tracked author revisions. Cached input is part of input; reasoning output is part of output. Shared orchestration, unmetered integration corrections, illustrations, validation and publication excluded. No account-wide Pro quota attribution.",
+  "totals": {
+    "research_delta": {
+      "input_tokens": 3777499,
+      "cached_input_tokens": 3661184,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 8472,
+      "reasoning_output_tokens": 891,
+      "total_tokens": 3785971,
+      "uncached_input_tokens": 116315
+    },
+    "writing_and_text_review_delta": {
+      "input_tokens": 6427563,
+      "cached_input_tokens": 6152192,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 63475,
+      "reasoning_output_tokens": 980,
+      "total_tokens": 6491038,
+      "uncached_input_tokens": 275371
+    },
+    "revision_delta": {
+      "input_tokens": 4708433,
+      "cached_input_tokens": 4681856,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 5706,
+      "reasoning_output_tokens": 648,
+      "total_tokens": 4714139,
+      "uncached_input_tokens": 26577
+    },
+    "combined_delta": {
+      "input_tokens": 14913495,
+      "cached_input_tokens": 14495232,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 77653,
+      "reasoning_output_tokens": 2519,
+      "total_tokens": 14991148,
+      "uncached_input_tokens": 418263
+    },
+    "writing_including_revisions_delta": {
+      "input_tokens": 11135996,
+      "cached_input_tokens": 10834048,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 69181,
+      "reasoning_output_tokens": 1628,
+      "total_tokens": 11205177,
+      "uncached_input_tokens": 301948
+    }
+  },
+  "articles": [
+    {
+      "article": "icann-domain-lookup",
+      "research_tokens": 71945,
+      "initial_writing_tokens": 176680,
+      "revision_tokens": 0,
+      "writing_including_revisions_tokens": 176680,
+      "combined_tokens": 248625
+    },
+    {
+      "article": "subdomain-examples",
+      "research_tokens": 93536,
+      "initial_writing_tokens": 315242,
+      "revision_tokens": 0,
+      "writing_including_revisions_tokens": 315242,
+      "combined_tokens": 408778
+    },
+    {
+      "article": "whois-and-rdap-public-data",
+      "research_tokens": 108257,
+      "initial_writing_tokens": 235354,
+      "revision_tokens": 0,
+      "writing_including_revisions_tokens": 235354,
+      "combined_tokens": 343611
+    },
+    {
+      "article": "isp-dns-vs-public-resolver",
+      "research_tokens": 122105,
+      "initial_writing_tokens": 394734,
+      "revision_tokens": 0,
+      "writing_including_revisions_tokens": 394734,
+      "combined_tokens": 516839
+    },
+    {
+      "article": "run-your-own-dns-resolver",
+      "research_tokens": 135867,
+      "initial_writing_tokens": 436029,
+      "revision_tokens": 0,
+      "writing_including_revisions_tokens": 436029,
+      "combined_tokens": 571896
+    },
+    {
+      "article": "bulk-domain-availability-checks",
+      "research_tokens": 305261,
+      "initial_writing_tokens": 331271,
+      "revision_tokens": 0,
+      "writing_including_revisions_tokens": 331271,
+      "combined_tokens": 636532
+    },
+    {
+      "article": "free-business-email-options",
+      "research_tokens": 347273,
+      "initial_writing_tokens": 557678,
+      "revision_tokens": 0,
+      "writing_including_revisions_tokens": 557678,
+      "combined_tokens": 904951
+    },
+    {
+      "article": "benchmark-dns-for-gaming",
+      "research_tokens": 75048,
+      "initial_writing_tokens": 178473,
+      "revision_tokens": 610300,
+      "writing_including_revisions_tokens": 788773,
+      "combined_tokens": 863821
+    },
+    {
+      "article": "dnssec-for-domain-owners",
+      "research_tokens": 198386,
+      "initial_writing_tokens": 116609,
+      "revision_tokens": 409855,
+      "writing_including_revisions_tokens": 526464,
+      "combined_tokens": 724850
+    },
+    {
+      "article": "txt-records-spf-dkim-verification",
+      "research_tokens": 358587,
+      "initial_writing_tokens": 408992,
+      "revision_tokens": 419104,
+      "writing_including_revisions_tokens": 828096,
+      "combined_tokens": 1186683
+    },
+    {
+      "article": "maintain-dns-on-tokenized-domains",
+      "research_tokens": 288301,
+      "initial_writing_tokens": 308720,
+      "revision_tokens": 428690,
+      "writing_including_revisions_tokens": 737410,
+      "combined_tokens": 1025711
+    },
+    {
+      "article": "name-domains-for-nft-display",
+      "research_tokens": 155852,
+      "initial_writing_tokens": 333172,
+      "revision_tokens": 429604,
+      "writing_including_revisions_tokens": 762776,
+      "combined_tokens": 918628
+    },
+    {
+      "article": "dns-records-for-ai-agent-authority",
+      "research_tokens": 168757,
+      "initial_writing_tokens": 366439,
+      "revision_tokens": 649799,
+      "writing_including_revisions_tokens": 1016238,
+      "combined_tokens": 1184995
+    },
+    {
+      "article": "revoke-domain-nft-approvals",
+      "research_tokens": 187286,
+      "initial_writing_tokens": 399698,
+      "revision_tokens": 439363,
+      "writing_including_revisions_tokens": 839061,
+      "combined_tokens": 1026347
+    },
+    {
+      "article": "audit-agent-domain-purchases",
+      "research_tokens": 239067,
+      "initial_writing_tokens": 210322,
+      "revision_tokens": 220674,
+      "writing_including_revisions_tokens": 430996,
+      "combined_tokens": 670063
+    },
+    {
+      "article": "delegate-domain-agent-permissions",
+      "research_tokens": 111888,
+      "initial_writing_tokens": 260586,
+      "revision_tokens": 220924,
+      "writing_including_revisions_tokens": 481510,
+      "combined_tokens": 593398
+    },
+    {
+      "article": "harden-domain-registrar-account",
+      "research_tokens": 283128,
+      "initial_writing_tokens": 478578,
+      "revision_tokens": 221129,
+      "writing_including_revisions_tokens": 699707,
+      "combined_tokens": 982835
+    },
+    {
+      "article": "llms-txt-agents-md-robots-txt",
+      "research_tokens": 163194,
+      "initial_writing_tokens": 176830,
+      "revision_tokens": 221346,
+      "writing_including_revisions_tokens": 398176,
+      "combined_tokens": 561370
+    },
+    {
+      "article": "ttl-and-dns-propagation",
+      "research_tokens": 177155,
+      "initial_writing_tokens": 382527,
+      "revision_tokens": 221568,
+      "writing_including_revisions_tokens": 604095,
+      "combined_tokens": 781250
+    },
+    {
+      "article": "glue-records-explained",
+      "research_tokens": 195078,
+      "initial_writing_tokens": 423104,
+      "revision_tokens": 221783,
+      "writing_including_revisions_tokens": 644887,
+      "combined_tokens": 839965
+    }
+  ],
+  "accounting": "combined_delta already includes research, initial writing/text review and tracked revisions. writing_including_revisions_delta is a convenience sum, not an additional charge. Cached input is part of input; reasoning output is part of output."
+}

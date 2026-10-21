@@ -1,0 +1,37 @@
+{
+  "slug": "audit-agent-domain-purchases",
+  "title": "An Agent Domain Purchase Audit Connects Approval to Registration",
+  "cover": {
+    "h1": "An Agent Domain Purchase Audit",
+    "h2": "Connects Approval to Registration",
+    "subtitle": "A practical domain operations guide",
+    "visual": "A human approval card connected to a domain purchase receipt and a registration inventory, conceptual diagram"
+  },
+  "sections": [
+    {
+      "name": "01-section",
+      "heading": "An audit begins with the authority that permitted the purchase",
+      "scene": "A human approval card connected to a domain purchase receipt and a registration inventory, conceptual diagram",
+      "alt": "An audit begins with the authority that permitted the purchase."
+    },
+    {
+      "name": "02-section",
+      "heading": "Transaction evidence separates attempts from completed registrations",
+      "scene": "A sequence of five simple cards showing permission, request, provider order, receipt and domain, no tiny text",
+      "alt": "Transaction evidence separates attempts from completed registrations."
+    },
+    {
+      "name": "03-section",
+      "heading": "Registration and configuration checks establish the resulting state",
+      "scene": "An account inventory and DNS zone shown as separate inspection panels",
+      "alt": "Registration and configuration checks establish the resulting state."
+    },
+    {
+      "name": "04-section",
+      "heading": "A compact audit report records exceptions and follow-up owners",
+      "scene": "An audit checklist with one amber exception assigned to a responsible person",
+      "alt": "A compact audit report records exceptions and follow-up owners."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

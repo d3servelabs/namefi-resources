@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "article": "subdomain-examples",
+  "session_id": "01a16042-3741-7b53-ac1b-6b44ece0cc18",
+  "agent_path": "/root/next20_a",
+  "models_observed": [
+    "gpt-6.1-sol"
+  ],
+  "boundaries": {
+    "start": {
+      "timestamp": "2026-10-21T21:00:34.845Z",
+      "cumulative": {
+        "input_tokens": 529611,
+        "cached_input_tokens": 463232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5518,
+        "reasoning_output_tokens": 250,
+        "total_tokens": 535129
+      }
+    },
+    "research_end": {
+      "timestamp": "2026-10-21T21:00:49.932Z",
+      "cumulative": {
+        "input_tokens": 622379,
+        "cached_input_tokens": 551808,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6286,
+        "reasoning_output_tokens": 365,
+        "total_tokens": 628665
+      }
+    },
+    "end": {
+      "timestamp": "2026-10-21T21:02:10.671Z",
+      "cumulative": {
+        "input_tokens": 933785,
+        "cached_input_tokens": 847488,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10122,
+        "reasoning_output_tokens": 410,
+        "total_tokens": 943907
+      }
+    }
+  },
+  "research_delta": {
+    "input_tokens": 92768,
+    "cached_input_tokens": 88576,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 768,
+    "reasoning_output_tokens": 115,
+    "total_tokens": 93536
+  },
+  "writing_and_text_review_delta": {
+    "input_tokens": 311406,
+    "cached_input_tokens": 295680,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3836,
+    "reasoning_output_tokens": 45,
+    "total_tokens": 315242
+  },
+  "combined_delta": {
+    "input_tokens": 404174,
+    "cached_input_tokens": 384256,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 4604,
+    "reasoning_output_tokens": 160,
+    "total_tokens": 408778
+  },
+  "scope": "Sequential dedicated writer interval. Includes repeated context and metering overhead within each phase. Excludes initialization before start, handoff after end, coordinator work, illustrations, shared checks, PRs and publication.",
+  "accounting": "Cached input is a subset of input. Reasoning output is a subset of output. This measurement does not attribute account quota.",
+  "excluded_postboundary_integration_edits": [
+    "Two nonexistent relatedGlossary targets replaced by existing dns-record-types and dnssec during subsequent integration check."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "slug": "delegate-domain-agent-permissions",
+  "title": "Domain Agent Permissions Need Enforced Limits and a Revocation Plan",
+  "cover": {
+    "h1": "Domain Agent Permissions Need",
+    "h2": "Enforced Limits and a Revocation Plan",
+    "subtitle": "A practical domain operations guide",
+    "visual": "Four separate domain capability cards for search, purchase, DNS and transfer, each with its own small key"
+  },
+  "sections": [
+    {
+      "name": "01-section",
+      "heading": "A permission inventory starts with actions and domain boundaries",
+      "scene": "Four separate domain capability cards for search, purchase, DNS and transfer, each with its own small key",
+      "alt": "A permission inventory starts with actions and domain boundaries."
+    },
+    {
+      "name": "02-section",
+      "heading": "Authentication and authorization establish different controls",
+      "scene": "Two gates show identity checking followed by action-specific authorization, no logos",
+      "alt": "Authentication and authorization establish different controls."
+    },
+    {
+      "name": "03-section",
+      "heading": "The enforcing service must check each requested operation",
+      "scene": "An approval card and a policy checker stand before a domain mutation, rejected branch clearly separate",
+      "alt": "The enforcing service must check each requested operation."
+    },
+    {
+      "name": "04-section",
+      "heading": "Expiration and revocation complete the delegation process",
+      "scene": "A temporary key expires while an independent recovery administrator retains a separate key",
+      "alt": "Expiration and revocation complete the delegation process."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

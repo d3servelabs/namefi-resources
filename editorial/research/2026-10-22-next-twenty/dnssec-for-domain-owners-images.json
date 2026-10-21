@@ -1,0 +1,37 @@
+{
+  "slug": "dnssec-for-domain-owners",
+  "title": "Domain Owners Must Coordinate DNSSEC Signing and Delegation",
+  "cover": {
+    "h1": "Domain Owners Must Coordinate",
+    "h2": "DNSSEC Signing and Delegation",
+    "subtitle": "Keep signing keys and parent records aligned.",
+    "visual": "Two small cards, parent DS and child DNSKEY, joined by a short verification link. Compact strip no taller than130pixels and strictlyinsidey310-450."
+  },
+  "sections": [
+    {
+      "name": "01-understand-the-trust-relationship-before-enabling-signatures",
+      "heading": "DNSSEC validation requires a complete trust relationship",
+      "scene": "Two cards exactly Parent DS and Child DNSKEY connected by a verification line. A separate signed answer card has a small signature icon. No encryption padlock or privacy claims.",
+      "alt": "DNSSEC validation requires a complete trust relationship."
+    },
+    {
+      "name": "02-prepare-a-complete-deployment-and-verify-the-result",
+      "heading": "A complete deployment verifies signing and parent records",
+      "scene": "A DNS operator publishes a signed zone card. A separate registrar account submits a parent DS card. A third verification card checks the relationship. No numeric example keys.",
+      "alt": "A complete deployment verifies signing and parent records."
+    },
+    {
+      "name": "03-coordinate-dnssec-during-provider-and-key-changes",
+      "heading": "Provider changes require a coordinated DNSSEC transition",
+      "scene": "Old DNS operator and New DNS operator cards sit side by side, with a separate Parent DS card above. A checklist between the cards indicates coordinated migration, no fixed step arrows or timing claims.",
+      "alt": "Provider changes require a coordinated DNSSEC transition."
+    },
+    {
+      "name": "04-investigate-validation-failures-without-hiding-the-cause",
+      "heading": "A validation investigation identifies the failed relationship",
+      "scene": "An amber broken link lies between Parent DS and Child DNSKEY cards. A magnifying glass inspects that link, while website and mail record cards remain unchanged beside it.",
+      "alt": "A validation investigation identifies the failed relationship."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}
