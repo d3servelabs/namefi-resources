@@ -43,3 +43,5 @@ anything under `content/`.
 | `2026-10-20-batch-one.md` | The first pilot records selected Mexican Spanish and South Korean translations, market-specific keyword estimates, country-filtered GSC evidence, review findings, validation, and quota-measurement limits. The publication follow-up records the approved transition from drafts to publishable content. |
 
 | `2026-10-21-ten-article-batch.md` | The ten-article continuation records user authorization, actual per-article research and writing token boundaries, checks and publication evidence. |
+
+The twenty-article continuation records its existing assignments and actual phase counters in `2026-10-21-twenty-article-batch.md`. Its assignment snapshot lives in `2026-10-21-twenty-assignments.json`.

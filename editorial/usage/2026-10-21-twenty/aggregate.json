@@ -1,0 +1,579 @@
+{
+  "articles_verified": 20,
+  "raw_boundary_events_verified": 60,
+  "models_observed": [
+    "gpt-6.1-sol"
+  ],
+  "totals": {
+    "research_delta": {
+      "input_tokens": 7434811,
+      "cached_input_tokens": 6455552,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 21349,
+      "reasoning_output_tokens": 1523,
+      "total_tokens": 7456160,
+      "uncached_input_tokens": 979259
+    },
+    "writing_and_text_review_delta": {
+      "input_tokens": 7203571,
+      "cached_input_tokens": 6847232,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 101895,
+      "reasoning_output_tokens": 1932,
+      "total_tokens": 7305466,
+      "uncached_input_tokens": 356339
+    },
+    "combined_delta": {
+      "input_tokens": 14638382,
+      "cached_input_tokens": 13302784,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 123244,
+      "reasoning_output_tokens": 3455,
+      "total_tokens": 14761626,
+      "uncached_input_tokens": 1335598
+    }
+  },
+  "exclusions": "Initialization before start and handoff after end; coordinator fact corrections, cross-links, images, shared tests and publication. Writer intervals include repeated context, tool calls and metering interactions within the saved boundaries. No account-wide quota attribution.",
+  "articles": [
+    {
+      "article": "cname-vs-a-record",
+      "research_delta": {
+        "input_tokens": 559605,
+        "cached_input_tokens": 497792,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1562,
+        "reasoning_output_tokens": 122,
+        "total_tokens": 561167
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 228449,
+        "cached_input_tokens": 219648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5046,
+        "reasoning_output_tokens": 26,
+        "total_tokens": 233495
+      },
+      "combined_delta": {
+        "input_tokens": 788054,
+        "cached_input_tokens": 717440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6608,
+        "reasoning_output_tokens": 148,
+        "total_tokens": 794662
+      }
+    },
+    {
+      "article": "choose-public-dns-resolver",
+      "research_delta": {
+        "input_tokens": 379038,
+        "cached_input_tokens": 326656,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 977,
+        "reasoning_output_tokens": 35,
+        "total_tokens": 380015
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 213535,
+        "cached_input_tokens": 202880,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4868,
+        "reasoning_output_tokens": 9,
+        "total_tokens": 218403
+      },
+      "combined_delta": {
+        "input_tokens": 592573,
+        "cached_input_tokens": 529536,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5845,
+        "reasoning_output_tokens": 44,
+        "total_tokens": 598418
+      }
+    },
+    {
+      "article": "aaaa-record-explained",
+      "research_delta": {
+        "input_tokens": 409910,
+        "cached_input_tokens": 350848,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1495,
+        "reasoning_output_tokens": 76,
+        "total_tokens": 411405
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 316612,
+        "cached_input_tokens": 305280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4885,
+        "reasoning_output_tokens": 67,
+        "total_tokens": 321497
+      },
+      "combined_delta": {
+        "input_tokens": 726522,
+        "cached_input_tokens": 656128,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6380,
+        "reasoning_output_tokens": 143,
+        "total_tokens": 732902
+      }
+    },
+    {
+      "article": "primary-secondary-dns",
+      "research_delta": {
+        "input_tokens": 446783,
+        "cached_input_tokens": 385024,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1305,
+        "reasoning_output_tokens": 74,
+        "total_tokens": 448088
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 579610,
+        "cached_input_tokens": 554240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4682,
+        "reasoning_output_tokens": 154,
+        "total_tokens": 584292
+      },
+      "combined_delta": {
+        "input_tokens": 1026393,
+        "cached_input_tokens": 939264,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5987,
+        "reasoning_output_tokens": 228,
+        "total_tokens": 1032380
+      }
+    },
+    {
+      "article": "root-dns-servers",
+      "research_delta": {
+        "input_tokens": 353956,
+        "cached_input_tokens": 299776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1103,
+        "reasoning_output_tokens": 95,
+        "total_tokens": 355059
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 336294,
+        "cached_input_tokens": 309120,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6005,
+        "reasoning_output_tokens": 154,
+        "total_tokens": 342299
+      },
+      "combined_delta": {
+        "input_tokens": 690250,
+        "cached_input_tokens": 608896,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7108,
+        "reasoning_output_tokens": 249,
+        "total_tokens": 697358
+      }
+    },
+    {
+      "article": "domain-privacy-vs-proxy",
+      "research_delta": {
+        "input_tokens": 674457,
+        "cached_input_tokens": 608512,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1151,
+        "reasoning_output_tokens": 106,
+        "total_tokens": 675608
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 343071,
+        "cached_input_tokens": 338560,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5545,
+        "reasoning_output_tokens": 83,
+        "total_tokens": 348616
+      },
+      "combined_delta": {
+        "input_tokens": 1017528,
+        "cached_input_tokens": 947072,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6696,
+        "reasoning_output_tokens": 189,
+        "total_tokens": 1024224
+      }
+    },
+    {
+      "article": "dns-over-https-vs-dns-over-tls",
+      "research_delta": {
+        "input_tokens": 165215,
+        "cached_input_tokens": 143104,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 604,
+        "reasoning_output_tokens": 81,
+        "total_tokens": 165819
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 197758,
+        "cached_input_tokens": 185728,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4396,
+        "reasoning_output_tokens": 33,
+        "total_tokens": 202154
+      },
+      "combined_delta": {
+        "input_tokens": 362973,
+        "cached_input_tokens": 328832,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5000,
+        "reasoning_output_tokens": 114,
+        "total_tokens": 367973
+      }
+    },
+    {
+      "article": "dhcp-vs-dns",
+      "research_delta": {
+        "input_tokens": 176845,
+        "cached_input_tokens": 145920,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 876,
+        "reasoning_output_tokens": 58,
+        "total_tokens": 177721
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 268258,
+        "cached_input_tokens": 241536,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4519,
+        "reasoning_output_tokens": 107,
+        "total_tokens": 272777
+      },
+      "combined_delta": {
+        "input_tokens": 445103,
+        "cached_input_tokens": 387456,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5395,
+        "reasoning_output_tokens": 165,
+        "total_tokens": 450498
+      }
+    },
+    {
+      "article": "reverse-dns-ptr-records",
+      "research_delta": {
+        "input_tokens": 337308,
+        "cached_input_tokens": 285952,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1283,
+        "reasoning_output_tokens": 122,
+        "total_tokens": 338591
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 303272,
+        "cached_input_tokens": 288896,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4945,
+        "reasoning_output_tokens": 43,
+        "total_tokens": 308217
+      },
+      "combined_delta": {
+        "input_tokens": 640580,
+        "cached_input_tokens": 574848,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6228,
+        "reasoning_output_tokens": 165,
+        "total_tokens": 646808
+      }
+    },
+    {
+      "article": "wildcard-dns-records",
+      "research_delta": {
+        "input_tokens": 258420,
+        "cached_input_tokens": 214912,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 901,
+        "reasoning_output_tokens": 73,
+        "total_tokens": 259321
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 297344,
+        "cached_input_tokens": 283904,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5652,
+        "reasoning_output_tokens": 183,
+        "total_tokens": 302996
+      },
+      "combined_delta": {
+        "input_tokens": 555764,
+        "cached_input_tokens": 498816,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6553,
+        "reasoning_output_tokens": 256,
+        "total_tokens": 562317
+      }
+    },
+    {
+      "article": "dns-record-types-guide",
+      "research_delta": {
+        "input_tokens": 278888,
+        "cached_input_tokens": 240128,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1060,
+        "reasoning_output_tokens": 55,
+        "total_tokens": 279948
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 751876,
+        "cached_input_tokens": 710272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7474,
+        "reasoning_output_tokens": 243,
+        "total_tokens": 759350
+      },
+      "combined_delta": {
+        "input_tokens": 1030764,
+        "cached_input_tokens": 950400,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8534,
+        "reasoning_output_tokens": 298,
+        "total_tokens": 1039298
+      }
+    },
+    {
+      "article": "fully-qualified-domain-name",
+      "research_delta": {
+        "input_tokens": 261339,
+        "cached_input_tokens": 227328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 952,
+        "reasoning_output_tokens": 60,
+        "total_tokens": 262291
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 187456,
+        "cached_input_tokens": 167936,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3751,
+        "reasoning_output_tokens": 61,
+        "total_tokens": 191207
+      },
+      "combined_delta": {
+        "input_tokens": 448795,
+        "cached_input_tokens": 395264,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4703,
+        "reasoning_output_tokens": 121,
+        "total_tokens": 453498
+      }
+    },
+    {
+      "article": "nslookup-specific-dns-server",
+      "research_delta": {
+        "input_tokens": 403412,
+        "cached_input_tokens": 349952,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1033,
+        "reasoning_output_tokens": 82,
+        "total_tokens": 404445
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 589710,
+        "cached_input_tokens": 573568,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6329,
+        "reasoning_output_tokens": 119,
+        "total_tokens": 596039
+      },
+      "combined_delta": {
+        "input_tokens": 993122,
+        "cached_input_tokens": 923520,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7362,
+        "reasoning_output_tokens": 201,
+        "total_tokens": 1000484
+      }
+    },
+    {
+      "article": "check-domain-age",
+      "research_delta": {
+        "input_tokens": 780239,
+        "cached_input_tokens": 691968,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1643,
+        "reasoning_output_tokens": 115,
+        "total_tokens": 781882
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 397962,
+        "cached_input_tokens": 387968,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5048,
+        "reasoning_output_tokens": 96,
+        "total_tokens": 403010
+      },
+      "combined_delta": {
+        "input_tokens": 1178201,
+        "cached_input_tokens": 1079936,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6691,
+        "reasoning_output_tokens": 211,
+        "total_tokens": 1184892
+      }
+    },
+    {
+      "article": "custom-domain-github-pages",
+      "research_delta": {
+        "input_tokens": 174875,
+        "cached_input_tokens": 145024,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 750,
+        "reasoning_output_tokens": 67,
+        "total_tokens": 175625
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 265674,
+        "cached_input_tokens": 238976,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4540,
+        "reasoning_output_tokens": 222,
+        "total_tokens": 270214
+      },
+      "combined_delta": {
+        "input_tokens": 440549,
+        "cached_input_tokens": 384000,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5290,
+        "reasoning_output_tokens": 289,
+        "total_tokens": 445839
+      }
+    },
+    {
+      "article": "free-domain-offers",
+      "research_delta": {
+        "input_tokens": 406548,
+        "cached_input_tokens": 360704,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 809,
+        "reasoning_output_tokens": 44,
+        "total_tokens": 407357
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 212052,
+        "cached_input_tokens": 205824,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4142,
+        "reasoning_output_tokens": 26,
+        "total_tokens": 216194
+      },
+      "combined_delta": {
+        "input_tokens": 618600,
+        "cached_input_tokens": 566528,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4951,
+        "reasoning_output_tokens": 70,
+        "total_tokens": 623551
+      }
+    },
+    {
+      "article": "top-intent-solver-networks",
+      "research_delta": {
+        "input_tokens": 356300,
+        "cached_input_tokens": 311808,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 930,
+        "reasoning_output_tokens": 89,
+        "total_tokens": 357230
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 307891,
+        "cached_input_tokens": 289152,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5527,
+        "reasoning_output_tokens": 40,
+        "total_tokens": 313418
+      },
+      "combined_delta": {
+        "input_tokens": 664191,
+        "cached_input_tokens": 600960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6457,
+        "reasoning_output_tokens": 129,
+        "total_tokens": 670648
+      }
+    },
+    {
+      "article": "change-domain-nameservers",
+      "research_delta": {
+        "input_tokens": 387950,
+        "cached_input_tokens": 338048,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 732,
+        "reasoning_output_tokens": 76,
+        "total_tokens": 388682
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 545323,
+        "cached_input_tokens": 530048,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4278,
+        "reasoning_output_tokens": 67,
+        "total_tokens": 549601
+      },
+      "combined_delta": {
+        "input_tokens": 933273,
+        "cached_input_tokens": 868096,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5010,
+        "reasoning_output_tokens": 143,
+        "total_tokens": 938283
+      }
+    },
+    {
+      "article": "renew-ssl-certificate",
+      "research_delta": {
+        "input_tokens": 269011,
+        "cached_input_tokens": 232576,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 893,
+        "reasoning_output_tokens": 23,
+        "total_tokens": 269904
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 292167,
+        "cached_input_tokens": 272256,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4094,
+        "reasoning_output_tokens": 56,
+        "total_tokens": 296261
+      },
+      "combined_delta": {
+        "input_tokens": 561178,
+        "cached_input_tokens": 504832,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4987,
+        "reasoning_output_tokens": 79,
+        "total_tokens": 566165
+      }
+    },
+    {
+      "article": "domain-forwarding-redirects",
+      "research_delta": {
+        "input_tokens": 354712,
+        "cached_input_tokens": 299520,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1290,
+        "reasoning_output_tokens": 70,
+        "total_tokens": 356002
+      },
+      "writing_and_text_review_delta": {
+        "input_tokens": 569257,
+        "cached_input_tokens": 541440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6169,
+        "reasoning_output_tokens": 143,
+        "total_tokens": 575426
+      },
+      "combined_delta": {
+        "input_tokens": 923969,
+        "cached_input_tokens": 840960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7459,
+        "reasoning_output_tokens": 213,
+        "total_tokens": 931428
+      }
+    }
+  ]
+}

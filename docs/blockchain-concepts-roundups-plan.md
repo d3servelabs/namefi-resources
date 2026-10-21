@@ -114,3 +114,7 @@ and a review cadence. Seed 2–3 flagships first to test maintenance burden.
 The user confirmed the first ten remaining topics in plan order. The batch finishes EVM-compatible chains and account-abstraction standards, then covers FHE projects, ZK rollups, modular DA providers, rollup frameworks, restaking, oracle networks, interoperability/bridges and DePIN. Intent/solver networks remain outside the batch. The content and usage record is `editorial/2026-10-21-ten-article-batch.md`.
 
 Each project comparison records an October 21 source check. Review the comparisons after material protocol, product, support or sunset changes, and no later than January 21, 2027. A historical announcement or source-code repository alone does not establish current deployment readiness. Future updates should retain these status distinctions.
+
+## The twenty-article continuation completes the intent comparison
+
+The October 21 twenty-article batch adds `top-intent-solver-networks.md` at series order 200. The comparison separates authorization, competition, settlement and recovery across CoW Protocol, UniswapX and Across. The remaining nineteen articles continue the existing domain and DNS demand slate. The batch and actual phase records are indexed in `editorial/2026-10-21-twenty-article-batch.md`.

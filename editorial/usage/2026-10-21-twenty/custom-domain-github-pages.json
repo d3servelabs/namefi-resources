@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "article": "custom-domain-github-pages",
+  "session_id": "01a1600e-74d6-7fc0-8f90-f3e881c8e134",
+  "agent_path": "/root/w20_18",
+  "models_observed": [
+    "gpt-6.1-sol"
+  ],
+  "boundaries": {
+    "start": {
+      "timestamp": "2026-10-21T20:02:06.965Z",
+      "cumulative": {
+        "input_tokens": 39532,
+        "cached_input_tokens": 39168,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 64,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 39596
+      }
+    },
+    "research_end": {
+      "timestamp": "2026-10-21T20:02:26.137Z",
+      "cumulative": {
+        "input_tokens": 214407,
+        "cached_input_tokens": 184192,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 814,
+        "reasoning_output_tokens": 67,
+        "total_tokens": 215221
+      }
+    },
+    "end": {
+      "timestamp": "2026-10-21T20:04:18.451Z",
+      "cumulative": {
+        "input_tokens": 480081,
+        "cached_input_tokens": 423168,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5354,
+        "reasoning_output_tokens": 289,
+        "total_tokens": 485435
+      }
+    }
+  },
+  "scope": "Observed dedicated writer intervals: research start to research end, then drafting/text review to end. Includes repeated context and tool-call overhead within each interval; metering interactions are not separately subtracted. Excludes initialization before start, handoff after end, coordinator work, images, shared checks and publication.",
+  "accounting": "Cached input is a subset of input; reasoning output is a subset of output. No account-quota attribution.",
+  "research_delta": {
+    "input_tokens": 174875,
+    "cached_input_tokens": 145024,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 750,
+    "reasoning_output_tokens": 67,
+    "total_tokens": 175625
+  },
+  "writing_and_text_review_delta": {
+    "input_tokens": 265674,
+    "cached_input_tokens": 238976,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 4540,
+    "reasoning_output_tokens": 222,
+    "total_tokens": 270214
+  },
+  "combined_delta": {
+    "input_tokens": 440549,
+    "cached_input_tokens": 384000,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 5290,
+    "reasoning_output_tokens": 289,
+    "total_tokens": 445839
+  }
+}

@@ -64,3 +64,7 @@ The batch also publishes Mexican Spanish brandable-domain examples and a Korean 
 ## The October continuation adds ten English comparisons
 
 The October 21, 2026 batch continues the existing Blockchain Concepts plan at orders 100–190. The articles compare EVM-compatible chains, account-abstraction standards, FHE projects, ZK rollups, modular DA providers, rollup frameworks, restaking, oracle networks, interoperability and DePIN. Current-status checks distinguish live products, legacy systems and planned features. Each manuscript has a primary-source record and observed writing-session token boundaries under `editorial/`. Covers and four section illustrations per article use the repository house style.
+
+## The next October batch adds twenty existing topics
+
+The twenty-article continuation adds the intent/solver comparison at Blockchain Concepts order 200 and nineteen standalone domain and DNS guides. The existing September demand slate supplies those nineteen subjects. Each article preserves opened-source notes and separate observed research and writing counters under the dated `editorial/` directories. Each article has a cover and four section illustrations. Account-wide quota changes cannot identify this batch because other tasks run concurrently.
