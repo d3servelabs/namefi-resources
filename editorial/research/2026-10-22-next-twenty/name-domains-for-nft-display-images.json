@@ -1,0 +1,37 @@
+{
+  "slug": "name-domains-for-nft-display",
+  "title": "Clear NFT Metadata Keeps the Complete Domain Name Visible",
+  "cover": {
+    "h1": "Clear NFT Metadata Keeps",
+    "h2": "the Complete Domain Name Visible",
+    "subtitle": "Preserve readable names and verifiable identifiers.",
+    "visual": "One small NFT display card labeled example.com, beside a tiny metadata document icon. No invented verification seal."
+  },
+  "sections": [
+    {
+      "name": "01-the-domain-label-and-the-token-identity-serve-different-jobs",
+      "heading": "The domain label and the token identity serve different jobs",
+      "scene": "A readable example.com card sits beside chain, contract, and token-ID identifiers. The full suffix remains visible, with name and identity shown as distinct fields.",
+      "alt": "The domain label and the token identity serve different jobs."
+    },
+    {
+      "name": "02-metadata-connects-the-readable-label-to-the-displayed-asset",
+      "heading": "Metadata connects the readable label to the displayed asset",
+      "scene": "A tokenURI arrow leads to JSON name/image/external_url fields, then to an NFT card and asset inspection page. No third-party logos.",
+      "alt": "Metadata connects the readable label to the displayed asset."
+    },
+    {
+      "name": "03-a-consistent-image-layout-keeps-complete-names-readable",
+      "heading": "A consistent image layout keeps complete names readable",
+      "scene": "Four equal-sized generic token thumbnail cards show typography tests. Only readable labels Short, Long, Hyphenated, Internationalized. A separate magnifier highlights a complete example.com label. No other domain strings, no verification badges.",
+      "alt": "A consistent image layout keeps complete names readable."
+    },
+    {
+      "name": "04-display-updates-need-verification-across-separate-caches",
+      "heading": "Display updates need verification across separate caches",
+      "scene": "Four separate boxes show current tokenURI, metadata JSON, image file, and marketplace cache. A metadata update event triggers refresh arrows without instant-update claims.",
+      "alt": "Display updates need verification across separate caches."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

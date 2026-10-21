@@ -68,3 +68,7 @@ The October 21, 2026 batch continues the existing Blockchain Concepts plan at or
 ## The next October batch adds twenty existing topics
 
 The twenty-article continuation adds the intent/solver comparison at Blockchain Concepts order 200 and nineteen standalone domain and DNS guides. The existing September demand slate supplies those nineteen subjects. Each article preserves opened-source notes and separate observed research and writing counters under the dated `editorial/` directories. Each article has a cover and four section illustrations. Account-wide quota changes cannot identify this batch because other tasks run concurrently.
+
+## The next twenty articles extend the existing demand and editorial slates
+
+The next October 21 batch adds twenty standalone English guides from the existing September slates. Subjects cover DNS operations, registration lookup, email, agent permissions and domain NFT maintenance. The dated next-twenty directories under `editorial/` preserve source evidence, image manifests and observed research, writing and revision counters. These counters do not identify a share of the account's Pro allowance.

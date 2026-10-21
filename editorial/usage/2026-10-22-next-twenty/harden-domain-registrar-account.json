@@ -1,0 +1,126 @@
+{
+  "slug": "harden-domain-registrar-account",
+  "model": "gpt-6.1-sol",
+  "measurement_note": "Actual cumulative token_count events; initialization before start and coordinator/images/publishing excluded. Cached input and reasoning output are subsets.",
+  "start": {
+    "timestamp": "2026-10-21T21:02:13.100Z",
+    "ordinal": 121,
+    "counters": {
+      "input_tokens": 1193010,
+      "cached_input_tokens": 1103616,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 8404,
+      "reasoning_output_tokens": 183,
+      "total_tokens": 1201414
+    }
+  },
+  "research_end": {
+    "timestamp": "2026-10-21T21:02:38.439Z",
+    "ordinal": 137,
+    "counters": {
+      "input_tokens": 1475731,
+      "cached_input_tokens": 1374208,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 8811,
+      "reasoning_output_tokens": 238,
+      "total_tokens": 1484542
+    }
+  },
+  "research_delta": {
+    "input_tokens": 282721,
+    "cached_input_tokens": 270592,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 407,
+    "reasoning_output_tokens": 55,
+    "total_tokens": 283128,
+    "uncached_input_tokens": 12129
+  },
+  "end": {
+    "timestamp": "2026-10-21T21:03:54.894Z",
+    "ordinal": 157,
+    "counters": {
+      "input_tokens": 1951501,
+      "cached_input_tokens": 1835264,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 11619,
+      "reasoning_output_tokens": 269,
+      "total_tokens": 1963120
+    }
+  },
+  "writing_and_text_review_delta": {
+    "input_tokens": 475770,
+    "cached_input_tokens": 461056,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2808,
+    "reasoning_output_tokens": 31,
+    "total_tokens": 478578,
+    "uncached_input_tokens": 14714
+  },
+  "combined_delta": {
+    "input_tokens": 758491,
+    "cached_input_tokens": 731648,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3215,
+    "reasoning_output_tokens": 86,
+    "total_tokens": 761706,
+    "uncached_input_tokens": 26843
+  },
+  "revision_intervals": [
+    {
+      "purpose": "Topic-specific keywords, publication-date correction where needed, tighter related content, and sentence review",
+      "start": {
+        "timestamp": "2026-10-21T21:08:11.437Z",
+        "ordinal": 250,
+        "counters": {
+          "input_tokens": 4337694,
+          "cached_input_tokens": 4158720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 22571,
+          "reasoning_output_tokens": 921,
+          "total_tokens": 4360265
+        }
+      },
+      "end": {
+        "timestamp": "2026-10-21T21:08:16.346Z",
+        "ordinal": 255,
+        "counters": {
+          "input_tokens": 4558708,
+          "cached_input_tokens": 4379264,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 22686,
+          "reasoning_output_tokens": 921,
+          "total_tokens": 4581394
+        }
+      },
+      "delta": {
+        "input_tokens": 221014,
+        "cached_input_tokens": 220544,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 115,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 221129,
+        "uncached_input_tokens": 470
+      }
+    }
+  ],
+  "writing_and_text_review_including_revisions_delta": {
+    "input_tokens": 696784,
+    "cached_input_tokens": 681600,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2923,
+    "reasoning_output_tokens": 31,
+    "total_tokens": 699707,
+    "uncached_input_tokens": 15184
+  },
+  "combined_including_revisions_delta": {
+    "input_tokens": 979505,
+    "cached_input_tokens": 952192,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3330,
+    "reasoning_output_tokens": 86,
+    "total_tokens": 982835,
+    "uncached_input_tokens": 27313
+  },
+  "session_log_basename": "rollout-2026-10-21T13-58-56-01a16042-8aee-7812-a5b7-e5d21a9ccc5a.jsonl",
+  "session_id": "01a16042-8aee-7812-a5b7-e5d21a9ccc5a"
+}

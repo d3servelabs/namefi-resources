@@ -1,0 +1,37 @@
+{
+  "slug": "txt-records-spf-dkim-verification",
+  "title": "TXT Records Serve SPF, DKIM, and Separate Verification Checks",
+  "cover": {
+    "h1": "TXT Records Serve SPF,",
+    "h2": "DKIM, and Separate Verification Checks",
+    "subtitle": "Keep each record tied to its service.",
+    "visual": "Three small cards for SPF, DKIM and Verification, each with a distinct icon and no DNS values."
+  },
+  "sections": [
+    {
+      "name": "01-match-each-txt-record-to-a-named-consumer",
+      "heading": "Each TXT record serves a named consumer",
+      "scene": "Three separate TXT envelopes at apex, selector._domainkey, and verification name lead to three distinct service readers. Use labels TXT, SPF, DKIM, Verify only.",
+      "alt": "Each TXT record serves a named consumer."
+    },
+    {
+      "name": "02-maintain-one-valid-spf-policy-for-each-sending-identity",
+      "heading": "Each sending identity needs one valid SPF policy",
+      "scene": "Two SPF policy cards marked conflict collapse into one policy connected to two authorized mail senders. Keep unrelated verification TXT separate.",
+      "alt": "Each sending identity needs one valid SPF policy."
+    },
+    {
+      "name": "03-publish-dkim-keys-at-the-selector-that-signs-mail",
+      "heading": "DKIM retrieves the public key through a selector",
+      "scene": "A signed message shows d=example.com and s=selector1 pointing to selector1._domainkey.example.com, where a public key answers. Private key stays at sender.",
+      "alt": "DKIM retrieves the public key through a selector."
+    },
+    {
+      "name": "04-verify-service-challenges-and-remove-records-deliberately",
+      "heading": "Service verification requires deliberate publication and retirement",
+      "scene": "A requested verification token travels from service account to exact DNS name, then a checker confirms it. A retired service exits through a deliberate review gate.",
+      "alt": "Service verification requires deliberate publication and retirement."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

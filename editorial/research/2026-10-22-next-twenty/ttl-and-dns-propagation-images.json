@@ -1,0 +1,37 @@
+{
+  "slug": "ttl-and-dns-propagation",
+  "title": "DNS TTL Explains Cache Timing During a Record Change",
+  "cover": {
+    "h1": "DNS TTL Explains Cache Timing",
+    "h2": "During a Record Change",
+    "subtitle": "A practical domain operations guide",
+    "visual": "One authoritative DNS source feeds three resolver caches with clocks showing different ages, no global countdown"
+  },
+  "sections": [
+    {
+      "name": "01-section",
+      "heading": "TTL limits cache reuse rather than broadcasting an update",
+      "scene": "One authoritative DNS source feeds three resolver caches with clocks showing different ages, no global countdown",
+      "alt": "TTL limits cache reuse rather than broadcasting an update."
+    },
+    {
+      "name": "02-section",
+      "heading": "A planned migration lowers TTL before changing the destination",
+      "scene": "A timeline shows lower TTL first, old cache expiry second, then new destination and validation",
+      "alt": "A planned migration lowers TTL before changing the destination."
+    },
+    {
+      "name": "03-section",
+      "heading": "Negative answers and stale answers need separate explanations",
+      "scene": "A negative answer card and an expired answer card sit beside separate cache clocks",
+      "alt": "Negative answers and stale answers need separate explanations."
+    },
+    {
+      "name": "04-section",
+      "heading": "Direct queries turn propagation reports into actionable checks",
+      "scene": "A diagnostic lens compares an authoritative server answer with a resolver cache and a working website",
+      "alt": "Direct queries turn propagation reports into actionable checks."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

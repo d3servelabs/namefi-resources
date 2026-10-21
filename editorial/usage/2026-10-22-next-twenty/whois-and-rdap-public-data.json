@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "article": "whois-and-rdap-public-data",
+  "session_id": "01a16042-3741-7b53-ac1b-6b44ece0cc18",
+  "agent_path": "/root/next20_a",
+  "models_observed": [
+    "gpt-6.1-sol"
+  ],
+  "boundaries": {
+    "start": {
+      "timestamp": "2026-10-21T21:02:10.671Z",
+      "cumulative": {
+        "input_tokens": 933785,
+        "cached_input_tokens": 847488,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10122,
+        "reasoning_output_tokens": 410,
+        "total_tokens": 943907
+      }
+    },
+    "research_end": {
+      "timestamp": "2026-10-21T21:02:20.791Z",
+      "cumulative": {
+        "input_tokens": 1041806,
+        "cached_input_tokens": 955136,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10358,
+        "reasoning_output_tokens": 410,
+        "total_tokens": 1052164
+      }
+    },
+    "end": {
+      "timestamp": "2026-10-21T21:03:47.734Z",
+      "cumulative": {
+        "input_tokens": 1273422,
+        "cached_input_tokens": 1176320,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 14096,
+        "reasoning_output_tokens": 439,
+        "total_tokens": 1287518
+      }
+    }
+  },
+  "research_delta": {
+    "input_tokens": 108021,
+    "cached_input_tokens": 107648,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 236,
+    "reasoning_output_tokens": 0,
+    "total_tokens": 108257
+  },
+  "writing_and_text_review_delta": {
+    "input_tokens": 231616,
+    "cached_input_tokens": 221184,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3738,
+    "reasoning_output_tokens": 29,
+    "total_tokens": 235354
+  },
+  "combined_delta": {
+    "input_tokens": 339637,
+    "cached_input_tokens": 328832,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3974,
+    "reasoning_output_tokens": 29,
+    "total_tokens": 343611
+  },
+  "scope": "Sequential dedicated writer interval. Includes repeated context and metering overhead within each phase. Excludes initialization before start, handoff after end, coordinator work, illustrations, shared checks, PRs and publication.",
+  "accounting": "Cached input is a subset of input. Reasoning output is a subset of output. This measurement does not attribute account quota."
+}

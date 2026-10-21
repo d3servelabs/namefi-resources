@@ -1,0 +1,37 @@
+{
+  "slug": "icann-domain-lookup",
+  "title": "ICANN Domain Lookup Shows Registration Data and Its Limits",
+  "cover": {
+    "h1": "ICANN Domain Lookup",
+    "h2": "Shows Registration Data and Its Limits",
+    "subtitle": "Read the fields. Keep the evidence bounded.",
+    "visual": "A domain search result card beside a small evidence checklist. No real lookup values."
+  },
+  "sections": [
+    {
+      "name": "01-search",
+      "heading": "A precise search starts with the registered domain",
+      "scene": "A URL bar separates protocol, registered domain, subdomain, and path with the registered domain highlighted.",
+      "alt": "A URL example highlights the registered domain for a lookup."
+    },
+    {
+      "name": "02-fields",
+      "heading": "Registration fields answer different operational questions",
+      "scene": "Five labeled result rows connect to registrar, dates, nameservers, status, and contact question cards.",
+      "alt": "Registration fields answer separate operational questions."
+    },
+    {
+      "name": "03-status",
+      "heading": "Status codes guide the next troubleshooting action",
+      "scene": "Two paths separate a transfer lock and a DNS hold, each leading to its appropriate registrar inquiry.",
+      "alt": "A transfer lock and a DNS hold require different actions."
+    },
+    {
+      "name": "04-evidence",
+      "heading": "A useful lookup report states the evidence gaps",
+      "scene": "A checklist separates observed public fields from unresolved identity and account-control questions.",
+      "alt": "A lookup report separates observations from unresolved questions."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

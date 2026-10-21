@@ -1,0 +1,37 @@
+{
+  "slug": "free-business-email-options",
+  "title": "Free Business Email Options Separate Mailboxes from Forwarding",
+  "cover": {
+    "h1": "Free Business Email Options",
+    "h2": "Separate Mailboxes from Forwarding",
+    "subtitle": "Check incoming mail, replies, limits, and recovery.",
+    "visual": "A custom address branches to a stored inbox and a forwarding route, with sending clearly separate."
+  },
+  "sections": [
+    {
+      "name": "01-model",
+      "heading": "A mailbox and a forwarding address solve different problems",
+      "scene": "A mailbox stores messages while a separate forwarding arrow routes mail to an existing mailbox, with outbound reply drawn as a distinct path.",
+      "alt": "A mailbox differs from an incoming forwarding address."
+    },
+    {
+      "name": "02-limits",
+      "heading": "Current free plans need a dated check of their actual limits",
+      "scene": "Two generic plan cards show user, storage, region, and protocol checks with a dated review stamp, no prices or provider logos.",
+      "alt": "Free email plans need checks for limits and eligibility."
+    },
+    {
+      "name": "03-testing",
+      "heading": "Receiving and sending need separate DNS and authentication checks",
+      "scene": "Two lanes show incoming MX routing and outgoing authenticated mail, ending at separate verified test checklists.",
+      "alt": "Incoming delivery and outgoing authentication need separate tests."
+    },
+    {
+      "name": "04-exit",
+      "heading": "A usable free setup includes recovery and an exit plan",
+      "scene": "An account inventory connects domain renewal, recovery method, message export, and a controlled migration path.",
+      "alt": "An email operating plan includes recovery and migration."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

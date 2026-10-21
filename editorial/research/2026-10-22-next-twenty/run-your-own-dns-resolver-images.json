@@ -1,0 +1,37 @@
+{
+  "slug": "run-your-own-dns-resolver",
+  "title": "Running Your Own DNS Resolver Requires a Clear Operating Plan",
+  "cover": {
+    "h1": "Running Your Own DNS Resolver",
+    "h2": "Requires a Clear Operating Plan",
+    "subtitle": "Choose the architecture. Test privately. Plan recovery.",
+    "visual": "A local resolver sits inside a private network beside operation and recovery cards."
+  },
+  "sections": [
+    {
+      "name": "01-architecture",
+      "heading": "Recursion and forwarding create different operating responsibilities",
+      "scene": "Three distinct diagrams show local recursion toward authoritative servers, forwarding toward a selected resolver, and a separate dynamic DNS address update.",
+      "alt": "Recursion, forwarding, and dynamic DNS perform different tasks."
+    },
+    {
+      "name": "02-pilot",
+      "heading": "A private pilot starts with supported installation and limited access",
+      "scene": "One test device connects to a local resolver behind a private access boundary and configuration checklist.",
+      "alt": "A private pilot limits listener and client access."
+    },
+    {
+      "name": "03-verification",
+      "heading": "Validation and privacy settings need separate verification",
+      "scene": "Two independent check cards show DNSSEC authenticity and authenticated transport encryption beside a query log setting.",
+      "alt": "DNSSEC validation and transport encryption need separate checks."
+    },
+    {
+      "name": "04-operation",
+      "heading": "A network rollout needs availability and abuse controls",
+      "scene": "A small private network uses a maintained resolver with reboot recovery, update, and access review checklist. No public inbound port appears.",
+      "alt": "A network resolver requires maintenance and limited access."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

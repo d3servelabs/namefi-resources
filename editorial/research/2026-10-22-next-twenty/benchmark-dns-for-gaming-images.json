@@ -1,0 +1,37 @@
+{
+  "slug": "benchmark-dns-for-gaming",
+  "title": "A Local DNS Benchmark Helps Gamers Compare Resolvers",
+  "cover": {
+    "h1": "A Local DNS Benchmark",
+    "h2": "Helps Gamers Compare Resolvers",
+    "subtitle": "Compare local lookup speed and reliability.",
+    "visual": "A stopwatch beside two resolver cards, with a separate game controller. No speed scores, no winner badge."
+  },
+  "sections": [
+    {
+      "name": "01-separate-lookup-time-from-the-game-connection",
+      "heading": "Lookup time and game latency measure different operations",
+      "scene": "Two separate rows. Top: laptop asks resolver for a hostname. Bottom: game controller connects to game server. No arrow between resolver and gameplay latency. Only labels DNS lookup and Game connection.",
+      "alt": "Lookup time and game latency measure different operations."
+    },
+    {
+      "name": "02-build-a-controlled-comparison-on-one-device",
+      "heading": "A controlled comparison keeps device conditions consistent",
+      "scene": "One laptop connects to two side-by-side candidate resolver cards. A worksheet records duration and answer. Equal visual prominence, no winner.",
+      "alt": "A controlled comparison keeps device conditions consistent."
+    },
+    {
+      "name": "03-repeat-queries-and-retain-failures-in-the-results",
+      "heading": "Repeated queries reveal slow answers and failures",
+      "scene": "A timing worksheet contains rows of dots for repeated trials. One amber timeout marker remains visible beside successful trials. No invented numeric measurements.",
+      "alt": "Repeated queries reveal slow answers and failures."
+    },
+    {
+      "name": "04-verify-the-application-and-preserve-an-easy-rollback",
+      "heading": "Application checks confirm the resolver change works",
+      "scene": "A settings card has a saved original configuration beside a trial configuration. A curved return arrow links trial to original. A game controller sits separately.",
+      "alt": "Application checks confirm the resolver change works."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "article": "revoke-domain-nft-approvals",
+  "session_id": "01a16042-5e09-7223-916b-3fa77c32fd92",
+  "agent_path": "/root/next20_b",
+  "models_observed": [
+    "gpt-6.1-sol"
+  ],
+  "boundaries": {
+    "start": {
+      "timestamp": "2026-10-21T21:07:14.133Z",
+      "cumulative": {
+        "input_tokens": 3317222,
+        "cached_input_tokens": 3171328,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 20334,
+        "reasoning_output_tokens": 691,
+        "total_tokens": 3337556
+      }
+    },
+    "research_end": {
+      "timestamp": "2026-10-21T21:07:20.521Z",
+      "cumulative": {
+        "input_tokens": 3504334,
+        "cached_input_tokens": 3355776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 20508,
+        "reasoning_output_tokens": 691,
+        "total_tokens": 3524842
+      }
+    },
+    "end": {
+      "timestamp": "2026-10-21T21:08:18.553Z",
+      "cumulative": {
+        "input_tokens": 3901559,
+        "cached_input_tokens": 3740032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 22981,
+        "reasoning_output_tokens": 706,
+        "total_tokens": 3924540
+      }
+    }
+  },
+  "scope": "Sequential dedicated writer intervals: research start to research end, then drafting/text review to end. Includes repeated context and tool-call overhead within each interval. Excludes initialization, handoff, coordinator work, images, shared checks and publication.",
+  "accounting": "Cached input is a subset of input; reasoning output is a subset of output. No account-quota attribution.",
+  "research_delta": {
+    "input_tokens": 187112,
+    "cached_input_tokens": 184448,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 174,
+    "reasoning_output_tokens": 0,
+    "total_tokens": 187286
+  },
+  "writing_and_text_review_delta": {
+    "input_tokens": 397225,
+    "cached_input_tokens": 384256,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2473,
+    "reasoning_output_tokens": 15,
+    "total_tokens": 399698
+  },
+  "combined_delta": {
+    "input_tokens": 584337,
+    "cached_input_tokens": 568704,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2647,
+    "reasoning_output_tokens": 15,
+    "total_tokens": 586984
+  },
+  "revision_intervals": [
+    {
+      "purpose": "Author text review: specific keywords, complete headings, concrete illustration mechanisms, and source precision.",
+      "start": {
+        "timestamp": "2026-10-21T21:23:18.510Z",
+        "cumulative": {
+          "input_tokens": 6845155,
+          "cached_input_tokens": 6661888,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 26737,
+          "reasoning_output_tokens": 1151,
+          "total_tokens": 6871892
+        }
+      },
+      "end": {
+        "timestamp": "2026-10-21T21:23:25.710Z",
+        "cumulative": {
+          "input_tokens": 7284267,
+          "cached_input_tokens": 7100160,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 26988,
+          "reasoning_output_tokens": 1167,
+          "total_tokens": 7311255
+        }
+      },
+      "delta": {
+        "input_tokens": 439112,
+        "cached_input_tokens": 438272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 251,
+        "reasoning_output_tokens": 16,
+        "total_tokens": 439363
+      }
+    }
+  ]
+}

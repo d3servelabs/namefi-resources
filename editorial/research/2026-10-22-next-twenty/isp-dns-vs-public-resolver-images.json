@@ -1,0 +1,37 @@
+{
+  "slug": "isp-dns-vs-public-resolver",
+  "title": "ISP DNS and Public Resolvers Need a Local Comparison",
+  "cover": {
+    "h1": "ISP DNS and Public Resolvers",
+    "h2": "Need a Local Comparison",
+    "subtitle": "Test your connection and preserve a rollback path.",
+    "visual": "Two resolver routes connect to a neutral local test checklist."
+  },
+  "sections": [
+    {
+      "name": "01-path",
+      "heading": "Resolver choice changes the lookup operator and its dependencies",
+      "scene": "A laptop sends DNS through a router to an ISP resolver or an alternative public resolver. No speed winner appears.",
+      "alt": "A device can reach an ISP resolver or a public resolver."
+    },
+    {
+      "name": "02-privacy",
+      "heading": "Privacy depends on the operator and the actual transport",
+      "scene": "A transport lock protects the network link while a separate resolver-policy card remains visible at the endpoint.",
+      "alt": "Transport encryption and resolver policy answer different privacy questions."
+    },
+    {
+      "name": "03-test",
+      "heading": "A local test compares reliability and useful tasks before speed claims",
+      "scene": "A neutral comparison worksheet records correct answers, failures, cache state, and application checks without numerical performance scores.",
+      "alt": "A local test checks answer quality and useful tasks."
+    },
+    {
+      "name": "04-rollout",
+      "heading": "A reversible rollout protects local services and future troubleshooting",
+      "scene": "One test laptop changes settings while other devices retain the baseline, with a clear restore arrow.",
+      "alt": "A single-device rollout preserves a documented rollback path."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

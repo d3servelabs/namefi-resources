@@ -3,3 +3,5 @@
 Verified source notes for the October 21 English article batch. Each article records the original URLs, actual fetch date, supported claims and any limits. These notes are not published site content.
 
 The `2026-10-21-twenty/` subdirectory preserves the next twenty-article batch. Its records separate research and writing/text-review intervals and exclude account-wide quota attribution.
+
+The `2026-10-22-next-twenty/` directory preserves the subsequent twenty-article continuation. The directory label separates batches; notes record actual October 21 retrieval dates. Each article has source notes and a four-section image manifest.

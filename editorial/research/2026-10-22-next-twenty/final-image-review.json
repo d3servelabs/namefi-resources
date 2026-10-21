@@ -1,0 +1,1114 @@
+{
+  "reviewed_at": "2026-10-21T21:59:04.481264+00:00",
+  "model": "gpt-image-2",
+  "quality": "high",
+  "reviewer": "coordinator visually inspected every final image",
+  "initial_plan_note": "Per-article image JSON files retain the initial plans; this manifest identifies the actual reviewed final bytes.",
+  "image_count": 100,
+  "visual_corrections": [
+    {
+      "file": "icann-domain-lookup-og.jpg",
+      "reason": "bottom caption reserve contained illustration",
+      "attempt": 2
+    },
+    {
+      "file": "icann-domain-lookup-01-section.jpg",
+      "reason": "generated a different domain rather than reserved example",
+      "attempt": 2
+    },
+    {
+      "file": "icann-domain-lookup-02-section.jpg",
+      "reason": "invented lookup values and misleading availability statuses",
+      "attempt": 2
+    },
+    {
+      "file": "icann-domain-lookup-04-section.jpg",
+      "reason": "replaced registration fields with unrelated profile/activity fields",
+      "attempt": 2
+    },
+    {
+      "file": "benchmark-dns-for-gaming-01-section.jpg",
+      "reason": "generated non-reserved game domain",
+      "attempt": 2
+    },
+    {
+      "file": "audit-agent-domain-purchases-og.jpg",
+      "reason": "invented prices absent from article",
+      "attempt": 2
+    },
+    {
+      "file": "audit-agent-domain-purchases-01-section.jpg",
+      "reason": "generated non-reserved brand domains",
+      "attempt": 2
+    },
+    {
+      "file": "audit-agent-domain-purchases-03-section.jpg",
+      "reason": "invented detailed zone values obscure separation of inventory and configuration",
+      "attempt": 2
+    },
+    {
+      "file": "whois-and-rdap-public-data-og.jpg",
+      "attempt": 2,
+      "reason": "Remove fabricated field values or unrelated interface controls; simplify diagram to supported distinctions"
+    },
+    {
+      "file": "whois-and-rdap-public-data-01-section.jpg",
+      "attempt": 2,
+      "reason": "Remove fabricated field values or unrelated interface controls; simplify diagram to supported distinctions"
+    },
+    {
+      "file": "whois-and-rdap-public-data-02-section.jpg",
+      "attempt": 2,
+      "reason": "Remove fabricated field values or unrelated interface controls; simplify diagram to supported distinctions"
+    },
+    {
+      "file": "whois-and-rdap-public-data-03-section.jpg",
+      "attempt": 2,
+      "reason": "Remove fabricated field values or unrelated interface controls; simplify diagram to supported distinctions"
+    },
+    {
+      "file": "isp-dns-vs-public-resolver-og.jpg",
+      "attempt": 2,
+      "reason": "Remove fabricated field values or unrelated interface controls; simplify diagram to supported distinctions"
+    },
+    {
+      "file": "isp-dns-vs-public-resolver-04-section.jpg",
+      "attempt": 2,
+      "reason": "Remove fabricated field values or unrelated interface controls; simplify diagram to supported distinctions"
+    },
+    {
+      "file": "dnssec-for-domain-owners-03-section.jpg",
+      "attempt": 2,
+      "reason": "Remove invented rollover sequence and wrong DNSSEC insecure/unaffected labels"
+    },
+    {
+      "file": "dnssec-for-domain-owners-04-section.jpg",
+      "attempt": 2,
+      "reason": "Remove invented rollover sequence and wrong DNSSEC insecure/unaffected labels"
+    },
+    {
+      "file": "txt-records-spf-dkim-verification-og.jpg",
+      "attempt": 2,
+      "reason": "Remove invented record values, selector-as-signer claim and unsafe automatic verification-record deletion"
+    },
+    {
+      "file": "txt-records-spf-dkim-verification-01-section.jpg",
+      "attempt": 2,
+      "reason": "Remove invented record values, selector-as-signer claim and unsafe automatic verification-record deletion"
+    },
+    {
+      "file": "txt-records-spf-dkim-verification-03-section.jpg",
+      "attempt": 2,
+      "reason": "Remove invented record values, selector-as-signer claim and unsafe automatic verification-record deletion"
+    },
+    {
+      "file": "txt-records-spf-dkim-verification-04-section.jpg",
+      "attempt": 2,
+      "reason": "Remove invented record values, selector-as-signer claim and unsafe automatic verification-record deletion"
+    },
+    {
+      "file": "delegate-domain-agent-permissions-03-section.jpg",
+      "attempt": 2,
+      "reason": "Rejected request incorrectly branched after mutation rather than before action"
+    },
+    {
+      "file": "llms-txt-agents-md-robots-txt-01-section.jpg",
+      "attempt": 2,
+      "reason": "Separate file readers and scope; remove robots.txt-as-coding-instructions mixup"
+    },
+    {
+      "file": "llms-txt-agents-md-robots-txt-02-section.jpg",
+      "attempt": 2,
+      "reason": "Separate file readers and scope; remove robots.txt-as-coding-instructions mixup"
+    },
+    {
+      "file": "llms-txt-agents-md-robots-txt-04-section.jpg",
+      "attempt": 2,
+      "reason": "Separate file readers and scope; remove robots.txt-as-coding-instructions mixup"
+    },
+    {
+      "file": "run-your-own-dns-resolver-01-section.jpg",
+      "attempt": 2,
+      "reason": "Remove implied root-to-TLD forwarding and unsupported filtering setup step"
+    },
+    {
+      "file": "run-your-own-dns-resolver-02-section.jpg",
+      "attempt": 2,
+      "reason": "Remove implied root-to-TLD forwarding and unsupported filtering setup step"
+    },
+    {
+      "file": "bulk-domain-availability-checks-og.jpg",
+      "attempt": 2,
+      "reason": "Remove fabricated domain availability and ambiguous automatic spelling corrections"
+    },
+    {
+      "file": "bulk-domain-availability-checks-01-section.jpg",
+      "attempt": 2,
+      "reason": "Remove fabricated domain availability and ambiguous automatic spelling corrections"
+    },
+    {
+      "file": "bulk-domain-availability-checks-02-section.jpg",
+      "attempt": 2,
+      "reason": "Remove fabricated domain availability and ambiguous automatic spelling corrections"
+    },
+    {
+      "file": "free-business-email-options-og.jpg",
+      "attempt": 2,
+      "reason": "Use reserved-neutral examples and remove reply-through-forwarder implication"
+    },
+    {
+      "file": "free-business-email-options-01-section.jpg",
+      "attempt": 2,
+      "reason": "Use reserved-neutral examples and remove reply-through-forwarder implication"
+    },
+    {
+      "file": "maintain-dns-on-tokenized-domains-01-section.jpg",
+      "attempt": 2,
+      "reason": "Remove wallet-to-website/mail dependency arrows; separate control inventory from services"
+    },
+    {
+      "file": "name-domains-for-nft-display-01-section.jpg",
+      "attempt": 2,
+      "reason": "Remove wrong full-suffix identifier and unrelated NFT names; use blank identity values and bounded typography examples"
+    },
+    {
+      "file": "name-domains-for-nft-display-02-section.jpg",
+      "attempt": 2,
+      "reason": "Remove wrong full-suffix identifier and unrelated NFT names; use blank identity values and bounded typography examples"
+    },
+    {
+      "file": "name-domains-for-nft-display-03-section.jpg",
+      "attempt": 2,
+      "reason": "Remove wrong full-suffix identifier and unrelated NFT names; use blank identity values and bounded typography examples"
+    },
+    {
+      "file": "revoke-domain-nft-approvals-04-section.jpg",
+      "attempt": 2,
+      "reason": "Recovery arrows implied approval removal restores DNS and account control"
+    },
+    {
+      "file": "ttl-and-dns-propagation-03-section.jpg",
+      "attempt": 2,
+      "reason": "Replace ambiguous expired-cache status with separate negative-cache and serve-stale concepts"
+    },
+    {
+      "file": "glue-records-explained-og.jpg",
+      "attempt": 2,
+      "reason": "Generated child suffix contradicted the displayed nameserver suffix"
+    },
+    {
+      "file": "glue-records-explained-02-section.jpg",
+      "attempt": 2,
+      "reason": "Provider ownership does not define in-domain, sibling and unrelated DNS relationships"
+    },
+    {
+      "file": "glue-records-explained-03-section.jpg",
+      "attempt": 2,
+      "reason": "Generated parent and child record hostnames described website records rather than nameserver address consistency"
+    }
+  ],
+  "transport_failures_observed": 36,
+  "transport_failure_note": "Failed requests produced no saved image. Transport failures do not establish whether an API request incurred charges.",
+  "images": [
+    {
+      "file": "content/assets/icann-domain-lookup-og.jpg",
+      "sha256": "a6d007159640d4d609ececc10ed897e287dc598462e0a29bdf71a1b3410b7026",
+      "bytes": 92584,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; final visual inspection confirms text, bounds, logo and diagram meaning",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/icann-domain-lookup-01-section.jpg",
+      "sha256": "5d34e26c9082f3f985a11568d0d3ce6562b78c90c4082ea7f6354cc28db928a3",
+      "bytes": 34678,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms text, bounds, logo and diagram meaning",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/icann-domain-lookup-02-section.jpg",
+      "sha256": "5673c6e467417908caae887766cbb04742084f447c7bfb08bbf0d08b6430e1b8",
+      "bytes": 31963,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms text, bounds, logo and diagram meaning",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/icann-domain-lookup-03-section.jpg",
+      "sha256": "8f9820d143e0a9fea9cb1c7b29271da4ac281ead84460526533142ca76f1ddb4",
+      "bytes": 33823,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms text, bounds, logo and diagram meaning",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/icann-domain-lookup-04-section.jpg",
+      "sha256": "33fa4bf7bf7848d66b109e6912b1a883c4910266c7ed1c313d584ebe980b6476",
+      "bytes": 26703,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms text, bounds, logo and diagram meaning",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/subdomain-examples-og.jpg",
+      "sha256": "19ff0f35d567a50a93c589066465a5295e129d61db3aa5a77de5612b69e1b68d",
+      "bytes": 105108,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; final visual inspection confirms text, bounds, logo and diagram meaning",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/subdomain-examples-01-section.jpg",
+      "sha256": "0a8ae763ee82c2d47fa2c475ba7f52646df76483e96775034d1aa6767a80cc03",
+      "bytes": 32513,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms text, bounds, logo and diagram meaning",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/subdomain-examples-02-section.jpg",
+      "sha256": "3cc65a7365d48b6494b3e74f0655b2b3e35871a65e4a03faaabccb8ae2c33e79",
+      "bytes": 35571,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms text, bounds, logo and diagram meaning",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/subdomain-examples-03-section.jpg",
+      "sha256": "c1f537359565213b4c86533419636cfa603ea17fc7101bceab787e1666336608",
+      "bytes": 40021,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms text, bounds, logo and diagram meaning",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/subdomain-examples-04-section.jpg",
+      "sha256": "f0f689b2a7279ba4c6e421dd7705aa166b61f5d17eb2bace90a03eb5e6502b7f",
+      "bytes": 39274,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms text, bounds, logo and diagram meaning",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/whois-and-rdap-public-data-og.jpg",
+      "sha256": "92541e09774933e1ea494e1a5b2bf7a77eab2b3f69c546c7e205e7ce537c1fe7",
+      "bytes": 102506,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; corrected protocol/source/presentation and public-data limits match prose",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/whois-and-rdap-public-data-01-section.jpg",
+      "sha256": "cd8c3c4a9edd226a64c0e069ee3ac9932405dc2a3342db03753e3a55a3379190",
+      "bytes": 35515,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected protocol/source/presentation and public-data limits match prose",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/whois-and-rdap-public-data-02-section.jpg",
+      "sha256": "3516f9f48eb6bfb5b2f1d653d709efa5336917e0c01894fe5cab7fbd15a426d2",
+      "bytes": 20981,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected protocol/source/presentation and public-data limits match prose",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/whois-and-rdap-public-data-03-section.jpg",
+      "sha256": "810a84858a86deb651eb89ab466e64fc27dfb1e985a98ab6ccb6de2cbeb1ebc6",
+      "bytes": 27537,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected protocol/source/presentation and public-data limits match prose",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/whois-and-rdap-public-data-04-section.jpg",
+      "sha256": "6f55592bcdc2f2f34dd7bec2f5f92fd8766efd0d46d2955f806662c495b87a1e",
+      "bytes": 39027,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms bounded diagram and readable layout",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/isp-dns-vs-public-resolver-og.jpg",
+      "sha256": "b367a566c5b37a4d24f99ae773dd7f62b959a63d8921e771e42bc81896a50d03",
+      "bytes": 105156,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; final corrected figure preserves scope and transition semantics",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/isp-dns-vs-public-resolver-01-section.jpg",
+      "sha256": "d460ca8c8f1fb206b1edcc8e3c8b97dbc30a04c209b399691fc68ca31fdafa88",
+      "bytes": 31755,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms bounded diagram and readable layout",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/isp-dns-vs-public-resolver-02-section.jpg",
+      "sha256": "f1693d055315b1679da7bd9c0e80876080947351803c1b1f45d8eaad7a6915c0",
+      "bytes": 33329,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms bounded diagram and readable layout",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/isp-dns-vs-public-resolver-03-section.jpg",
+      "sha256": "61d6d6a89b5e3094a9085d8ca147a3d529b687ac75d8de490cdb91a76dc57062",
+      "bytes": 51135,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final visual inspection confirms bounded diagram and readable layout",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/isp-dns-vs-public-resolver-04-section.jpg",
+      "sha256": "11b5462207d033e52afcf43d6e9cea7e4dc68a9f9afd025f648619fd04240179",
+      "bytes": 29103,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final corrected figure preserves scope and transition semantics",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/run-your-own-dns-resolver-og.jpg",
+      "sha256": "2bfe25dd5324690da75b3076b7b0c54822d46af5f2cb281ed0d989b5443b6cc4",
+      "bytes": 123009,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; private operation, independent checks and maintained access remain explicit",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/run-your-own-dns-resolver-01-section.jpg",
+      "sha256": "0d156f72772203ba77089d0a3ef022e14ab34942bb1c0d2fa68bdf19246d9c1d",
+      "bytes": 26295,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected diagram keeps resolution paths, private access and exact input review distinct",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/run-your-own-dns-resolver-02-section.jpg",
+      "sha256": "40d390e131fa378dc1113bb695d777aa4d0d7169540e7b7c5b0bfb4b229349c7",
+      "bytes": 35011,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected diagram keeps resolution paths, private access and exact input review distinct",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/run-your-own-dns-resolver-03-section.jpg",
+      "sha256": "ba756440e392fd9a16b408988b24ac30a671fab68a4941eb9b66d9c74797cd53",
+      "bytes": 35846,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; private operation, independent checks and maintained access remain explicit",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/run-your-own-dns-resolver-04-section.jpg",
+      "sha256": "7b1747f3ba6cf26dce7ae328f3e89d593780a74130bd2da543eb3cbd44c38dd8",
+      "bytes": 37964,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; private operation, independent checks and maintained access remain explicit",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/bulk-domain-availability-checks-og.jpg",
+      "sha256": "5525a21f4c78147629a26809f292c25acffa351c09c570138c4e5ff1eafebc9e",
+      "bytes": 106643,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; corrected diagram keeps resolution paths, private access and exact input review distinct",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/bulk-domain-availability-checks-01-section.jpg",
+      "sha256": "3ec92a5e9ca8b06ffb2d54b7e9292e4ef82276026f8b90fd0d8197ec720505ee",
+      "bytes": 32110,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected diagram keeps resolution paths, private access and exact input review distinct",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/bulk-domain-availability-checks-02-section.jpg",
+      "sha256": "64018a347c38935dfcedab138a7e7a826ac5e1b033df97d94b68b9b4b440a0f9",
+      "bytes": 26220,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; separate categories, sending and control inventories avoid unsupported state or permission claims",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/bulk-domain-availability-checks-03-section.jpg",
+      "sha256": "8bffe4b5defc137629c5b1d743ea5ed3145cc7d2cb8321a4b416bb025e9b33df",
+      "bytes": 40379,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; row errors and independent purchase approval remain visible",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/bulk-domain-availability-checks-04-section.jpg",
+      "sha256": "5fe676424a1706671a26797bb375ba6ea3759abf45719676817b0fcff4656d36",
+      "bytes": 39623,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; row errors and independent purchase approval remain visible",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/free-business-email-options-og.jpg",
+      "sha256": "f8a897dbafbe3edd241ef83578253603cb4ba2b3ed9d4d1975f18cd6da0bb40a",
+      "bytes": 100269,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; separate categories, sending and control inventories avoid unsupported state or permission claims",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/free-business-email-options-01-section.jpg",
+      "sha256": "5ed96c73de404c9d829c0d1bcd11ad77b8612e251bce62c813319f9239deb7eb",
+      "bytes": 28880,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; separate categories, sending and control inventories avoid unsupported state or permission claims",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/free-business-email-options-02-section.jpg",
+      "sha256": "c60742584db06703c773e7244979f5e385a6c725f10faff2c211db68d2711d7a",
+      "bytes": 40362,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; illustrative plan review and independent incoming/outgoing tests match text",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/free-business-email-options-03-section.jpg",
+      "sha256": "1d1b4936fe1643599d9fea59c389de7bad8236e5690fa4c82bd03b144f81c1c6",
+      "bytes": 40313,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; illustrative plan review and independent incoming/outgoing tests match text",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/free-business-email-options-04-section.jpg",
+      "sha256": "547a7094e7e2b3be7f40cce957cebb17d56632752ab040f8a75694a73eef3d2c",
+      "bytes": 39537,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; recovery, renewal, export and migration remain explicit responsibilities",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/benchmark-dns-for-gaming-og.jpg",
+      "sha256": "f35dd7d610452a30ea2a21ac1f43da9cf9228967d71b9e09177b0efedeb8067a",
+      "bytes": 119632,
+      "width": 1200,
+      "height": 630,
+      "review": "pass",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/benchmark-dns-for-gaming-01-section.jpg",
+      "sha256": "42a42c45bf48942a6820ecd48a0074e9d6366e4771020467a3893560d8b1e4b4",
+      "bytes": 38961,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; reader scope and application boundaries match text",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/benchmark-dns-for-gaming-02-section.jpg",
+      "sha256": "32c113720b5d67527f179cce022ef9dacf2eb1bae25b743e88c37960009f9623",
+      "bytes": 36436,
+      "width": 1200,
+      "height": 675,
+      "review": "pass",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/benchmark-dns-for-gaming-03-section.jpg",
+      "sha256": "f473c61536edd26c95eb21c12e8c0d5a56e003b1c630613f05ad8e64eef89bce",
+      "bytes": 34893,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; conceptual trial marks, no measured claim",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/benchmark-dns-for-gaming-04-section.jpg",
+      "sha256": "250f6c8f6dbe77b65b4559fc4c4ebc9b964c10eb8a81901cf3d5d42d600df3d8",
+      "bytes": 36947,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; conceptual rollback settings",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/dnssec-for-domain-owners-og.jpg",
+      "sha256": "882b1fb71a75625dbf61c5c1ff73eb33441b03479f271e6bce6faf4a8da83bb0",
+      "bytes": 107469,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; signature and parent-child roles remain bounded",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/dnssec-for-domain-owners-01-section.jpg",
+      "sha256": "8aad606a570df9f23bfb9fb2f1e8254cb273d32e3d69443711ad4e5741b83e65",
+      "bytes": 31638,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; signature and parent-child roles remain bounded",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/dnssec-for-domain-owners-02-section.jpg",
+      "sha256": "779a5917e1d3316e972ab7a39ef5218ee84973d04fdd0135a25bde19e00bfc43",
+      "bytes": 45243,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; signature and parent-child roles remain bounded",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/dnssec-for-domain-owners-03-section.jpg",
+      "sha256": "419243aa3fc18014779fade24f202e34a1f7a9e17434aea10009eb252b6eb4be",
+      "bytes": 32574,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final corrected figure preserves scope and transition semantics",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/dnssec-for-domain-owners-04-section.jpg",
+      "sha256": "c6f704f001c7ef762c3b61cde6de180f2a96e0b52c46d854135b316f6416259e",
+      "bytes": 28510,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final corrected figure preserves scope and transition semantics",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/txt-records-spf-dkim-verification-og.jpg",
+      "sha256": "5eb1a46143b33fa49826a41079e19ca4b7cca6f078cf7574baadedda3fb27683",
+      "bytes": 97154,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; corrected field roles, key roles and enforcement precede the relevant action",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/txt-records-spf-dkim-verification-01-section.jpg",
+      "sha256": "e265c10339de061d1833be31f1bbda9f96a70ba1041a9e95619669fc19c5ac66",
+      "bytes": 31024,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected field roles, key roles and enforcement precede the relevant action",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/txt-records-spf-dkim-verification-02-section.jpg",
+      "sha256": "852097e168605840390a0ceb9af991c30089ec3b8d23c77818a71c7087ff028c",
+      "bytes": 36163,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; separate sending identities retain separate SPF policies",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/txt-records-spf-dkim-verification-03-section.jpg",
+      "sha256": "ffdc269c1cab21edfd0a5e33ad9d68b63ae953f60dd73bf5c58aea2288fcc182",
+      "bytes": 32081,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected field roles, key roles and enforcement precede the relevant action",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/txt-records-spf-dkim-verification-04-section.jpg",
+      "sha256": "8af1305cfad16d1d8a45398adba70499ca50c318f22251510a9c16d90a45e701",
+      "bytes": 36725,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected field roles, key roles and enforcement precede the relevant action",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/maintain-dns-on-tokenized-domains-og.jpg",
+      "sha256": "28a60a1571ecb46564615d588f3991419eacd5e11eef33e5fb818e0ac261b234",
+      "bytes": 99568,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; isolated record edit, ownership review and service recovery remain distinct",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/maintain-dns-on-tokenized-domains-01-section.jpg",
+      "sha256": "97cae06b47e6d2bfcb61eb094cfc751c21720e3085d748cef504f04c93fbbd68",
+      "bytes": 35027,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; separate categories, sending and control inventories avoid unsupported state or permission claims",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/maintain-dns-on-tokenized-domains-02-section.jpg",
+      "sha256": "47c9c879ce5c18fbda9e13ad6072e180d5320a68e4302e644803f26892c73782",
+      "bytes": 24535,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; isolated record edit, ownership review and service recovery remain distinct",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/maintain-dns-on-tokenized-domains-03-section.jpg",
+      "sha256": "0eb0130135c70bdc5343ba417cb30b61d0576ad78a41b11036413955a9ec2431",
+      "bytes": 35075,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; isolated record edit, ownership review and service recovery remain distinct",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/maintain-dns-on-tokenized-domains-04-section.jpg",
+      "sha256": "406aeae806e9eeb332b419b30865d874025ab83594300732e2c19c1517c75a39",
+      "bytes": 33964,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; isolated record edit, ownership review and service recovery remain distinct",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/name-domains-for-nft-display-og.jpg",
+      "sha256": "3afc8c192023a8df910c96ab4b941d35e9795a6951717f06e558611e6a3a7b26",
+      "bytes": 107979,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; readable domain cover and separate metadata/media/cache checks remain supported",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/name-domains-for-nft-display-01-section.jpg",
+      "sha256": "5ed75649db110d1ab0bc5d9a649f215b19e5e598ecc8374106b238687159c87d",
+      "bytes": 28067,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected display identity and metadata fields remain legible and operator permission is explicitly off",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/name-domains-for-nft-display-02-section.jpg",
+      "sha256": "a3b80ac97ced3d6ce17705289f1a2efea8a05f937694b00c53d4125fa450743a",
+      "bytes": 31568,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected display identity and metadata fields remain legible and operator permission is explicitly off",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/name-domains-for-nft-display-03-section.jpg",
+      "sha256": "8efa1156bef88a35f611ba8dd26253800008ec6f682ae51004e6309d9066d5fa",
+      "bytes": 31076,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected display identity and metadata fields remain legible and operator permission is explicitly off",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/name-domains-for-nft-display-04-section.jpg",
+      "sha256": "2f110a7f84d8f74a437c2dbdba9c4bf751d45764eec78d8ff42180e69bda7192",
+      "bytes": 51990,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; readable domain cover and separate metadata/media/cache checks remain supported",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/dns-records-for-ai-agent-authority-og.jpg",
+      "sha256": "32271403557b1cd846d9e5700a2142a6a8d2583547a52fdd1cdab12562d22b25",
+      "bytes": 113632,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; service-specific discovery and verification remain separate from authorization and revocation",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/dns-records-for-ai-agent-authority-01-section.jpg",
+      "sha256": "4eebcff347adcd3a3557536af6a4752e8d7f3e4d6972a025ee1b4c1b905c72ec",
+      "bytes": 31857,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; service-specific discovery and verification remain separate from authorization and revocation",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/dns-records-for-ai-agent-authority-02-section.jpg",
+      "sha256": "23f798aa1a2ede75b6c3a23a89301ba6c5ecc86cd395ddb86bba132271f73ea4",
+      "bytes": 33994,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; service-specific discovery and verification remain separate from authorization and revocation",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/dns-records-for-ai-agent-authority-03-section.jpg",
+      "sha256": "be3bc50fe2f5b31f9aa0f8654c5d2c07a7bba8c106a991f8d0b783875de60e83",
+      "bytes": 37517,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; service-specific discovery and verification remain separate from authorization and revocation",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/dns-records-for-ai-agent-authority-04-section.jpg",
+      "sha256": "6c5949ea045c8090199f950c78c266801327fedaa67bbfb5715abcade8223d88",
+      "bytes": 36507,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; service-specific discovery and verification remain separate from authorization and revocation",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/revoke-domain-nft-approvals-og.jpg",
+      "sha256": "2c05ab0233d3bdd4021ebe9ea5952950c9a779c6ab134775bb69a463af4718ac",
+      "bytes": 97017,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; corrected display identity and metadata fields remain legible and operator permission is explicitly off",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/revoke-domain-nft-approvals-01-section.jpg",
+      "sha256": "2af73b4a427912552886fee271e31cf004bdabdbf522264d82b8b118bb60ae43",
+      "bytes": 38089,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; visual review confirms readable, bounded conceptual illustration consistent with article",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/revoke-domain-nft-approvals-02-section.jpg",
+      "sha256": "f5bc6a025c8995dbe8f17b9d039f093459550bbff4ee47938590999e8c07198c",
+      "bytes": 45102,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; visual review confirms readable, bounded conceptual illustration consistent with article",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/revoke-domain-nft-approvals-03-section.jpg",
+      "sha256": "bca6bc3ce4ae4514144424aa0995ccf78902555f08b5a659ea74b03899b6e307",
+      "bytes": 38052,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; visual review confirms readable, bounded conceptual illustration consistent with article",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/revoke-domain-nft-approvals-04-section.jpg",
+      "sha256": "4d27c2edc61c63c9a4b2fa3f46d5bfb7ee5a7c1ffb56a2cfceda5f6be9733ebc",
+      "bytes": 32905,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; final image keeps independent follow-up tasks and parent-supplied nameserver addresses explicit",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/audit-agent-domain-purchases-og.jpg",
+      "sha256": "2fbd397281d19a7101a441cec5f51725ea555b97cc79443137198564ddd29f7b",
+      "bytes": 106812,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; corrected illustration removes fabricated values and keeps evidence stages distinct",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/audit-agent-domain-purchases-01-section.jpg",
+      "sha256": "b72e14aa314e98c57d6f44f0cd611e2ab853d4205a8d7ee318b2469a03b1de4f",
+      "bytes": 26730,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected illustration removes fabricated values and keeps evidence stages distinct",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/audit-agent-domain-purchases-02-section.jpg",
+      "sha256": "8e5dc7267367247955c6c6745681b0513010a1a25b6a4ae121c7407b399f14ec",
+      "bytes": 41032,
+      "width": 1200,
+      "height": 675,
+      "review": "pass",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/audit-agent-domain-purchases-03-section.jpg",
+      "sha256": "260d38e33828ba35fb7dc9b3adb1df85a2d81265e78983c08a6ab41420a18e28",
+      "bytes": 33306,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected illustration removes fabricated values and keeps evidence stages distinct",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/audit-agent-domain-purchases-04-section.jpg",
+      "sha256": "6505350b263db8a5d172adad25198c315f108b7c53e4c80e5d4ff0505d157a0b",
+      "bytes": 28808,
+      "width": 1200,
+      "height": 675,
+      "review": "pass",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/delegate-domain-agent-permissions-og.jpg",
+      "sha256": "616b80f45ed115b0c861761f03c1565286ce6621b7ecec7f09da6fd3f6b57164",
+      "bytes": 107188,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; scoped capability, identity and revocation distinctions remain clear",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/delegate-domain-agent-permissions-01-section.jpg",
+      "sha256": "969248d5c5fe7154b81c4ac5233fac241d121d8be5e6fa79216f837d534a6834",
+      "bytes": 53334,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; scoped capability, identity and revocation distinctions remain clear",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/delegate-domain-agent-permissions-02-section.jpg",
+      "sha256": "a9ce647957111cfc537061f46a6659353643c4cb08edbc10c169f7b5723edf53",
+      "bytes": 47497,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; scoped capability, identity and revocation distinctions remain clear",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/delegate-domain-agent-permissions-03-section.jpg",
+      "sha256": "413ec6ec471ebf7a85256b9f44166540083ee049070e7777a87988647c560798",
+      "bytes": 33860,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; corrected field roles, key roles and enforcement precede the relevant action",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/delegate-domain-agent-permissions-04-section.jpg",
+      "sha256": "1e77bdd6615ddcf5e621db3de05007b27e2ced5246e767af88103a04be098c0f",
+      "bytes": 32241,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; scoped capability, identity and revocation distinctions remain clear",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/harden-domain-registrar-account-og.jpg",
+      "sha256": "ce737d77e698cbc7363a97728175c8636bde6205f8722975db91dfc604437911",
+      "bytes": 116011,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; conceptual account, recovery and operational controls remain separate and legible",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/harden-domain-registrar-account-01-section.jpg",
+      "sha256": "6cbbd63791cc4de1e757e3f254665c32a7ed7da76540da0a5d08f29b32d023bc",
+      "bytes": 35767,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; conceptual account, recovery and operational controls remain separate and legible",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/harden-domain-registrar-account-02-section.jpg",
+      "sha256": "0b44c7f0e4928dfc466552110638c4f7672b2d50590b2f1ae30338a448e5ae0e",
+      "bytes": 37581,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; conceptual account, recovery and operational controls remain separate and legible",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/harden-domain-registrar-account-03-section.jpg",
+      "sha256": "2bb675dc6e70dbfa3e8b60612a3a8d99d8007d89d4afb49e799e00f494945956",
+      "bytes": 47084,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; conceptual account, recovery and operational controls remain separate and legible",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/harden-domain-registrar-account-04-section.jpg",
+      "sha256": "cde085a3ae187c73a0807c7c6276a52c933fe0b2bd4b9a3f3685f25b8d8af20d",
+      "bytes": 62828,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; conceptual account, recovery and operational controls remain separate and legible",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/llms-txt-agents-md-robots-txt-og.jpg",
+      "sha256": "7b33533fcbbde9ca0b9366a75e31e4df20854b8b75874ad437ded7d81b4fc5a2",
+      "bytes": 103713,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; reader scope and application boundaries match text",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/llms-txt-agents-md-robots-txt-01-section.jpg",
+      "sha256": "c93a97927f82a6fc7e3bd95b36518790c0a886be9c7525eb6228795a6c6c4d1b",
+      "bytes": 36512,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; three file readers, scope boundaries and tests remain distinct",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/llms-txt-agents-md-robots-txt-02-section.jpg",
+      "sha256": "058f51e1022b5c210cf5de925fe137b1673bd2d7a481fe240be06081a56248f8",
+      "bytes": 40093,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; three file readers, scope boundaries and tests remain distinct",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/llms-txt-agents-md-robots-txt-03-section.jpg",
+      "sha256": "bc589a8ee740a6040be19e40b33c04060b8f6ea61bedf8084811521cd7b44a43",
+      "bytes": 41011,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; reader scope and application boundaries match text",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/llms-txt-agents-md-robots-txt-04-section.jpg",
+      "sha256": "e5667eafe7c74e11e8dd4f6ae05a5b4aa65118f66995110730300dcee75f03bc",
+      "bytes": 37745,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; three file readers, scope boundaries and tests remain distinct",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/ttl-and-dns-propagation-og.jpg",
+      "sha256": "22e0fe7758dc9e7b09852eb3e8dcd25dd9d71c6736e87ada3dab50f6ad62199a",
+      "bytes": 115479,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; visual review confirms readable, bounded conceptual illustration consistent with article",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/ttl-and-dns-propagation-01-section.jpg",
+      "sha256": "f60e6ae39c210905960567b392d673736140d2d950f9251fc098925019e95f0f",
+      "bytes": 40181,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; visual review confirms readable, bounded conceptual illustration consistent with article",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/ttl-and-dns-propagation-02-section.jpg",
+      "sha256": "96b950c5fd0f3bf82aec6111e346e19ecd1216a6dcc6ef9c84a00797c812f09b",
+      "bytes": 37381,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; visual review confirms readable, bounded conceptual illustration consistent with article",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/ttl-and-dns-propagation-03-section.jpg",
+      "sha256": "a784ac823ca0653577b1a5f92e5ad37b9a222b050766fa6b28125b75f58c1f0c",
+      "bytes": 34559,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; separate cache behaviors and delegation-relationship categories match the adjacent explanations",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/ttl-and-dns-propagation-04-section.jpg",
+      "sha256": "84df45c0173a58223c58910170d8f04c6821445cbc14924bf0ff2aaefdcc482c",
+      "bytes": 41839,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; visual review confirms readable, bounded conceptual illustration consistent with article",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/glue-records-explained-og.jpg",
+      "sha256": "45436be9edbdee0f8eb179a59ed8bde7f28bd1769c24fa522090c1dc3a19bdd9",
+      "bytes": 115782,
+      "width": 1200,
+      "height": 630,
+      "review": "pass; final image keeps independent follow-up tasks and parent-supplied nameserver addresses explicit",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/glue-records-explained-01-section.jpg",
+      "sha256": "c4d7dc2dddcffe1d461f6cd915f8b176ebc4e5208c8417322fc547b506d29925",
+      "bytes": 35288,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; visual review confirms readable, bounded conceptual illustration consistent with article",
+      "visual_attempt": 1
+    },
+    {
+      "file": "content/assets/glue-records-explained-02-section.jpg",
+      "sha256": "713a95e3e7d5debfbfffa28db6ca949b28362924475215110477826284a679ee",
+      "bytes": 31888,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; separate cache behaviors and delegation-relationship categories match the adjacent explanations",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/glue-records-explained-03-section.jpg",
+      "sha256": "9ab463a6a9156cdceda4984e206d5a133bcbf574b6c2bf8f4bab0d4aff330be1",
+      "bytes": 35092,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; parent-side and authoritative host-data checks remain independent without invented record values",
+      "visual_attempt": 2
+    },
+    {
+      "file": "content/assets/glue-records-explained-04-section.jpg",
+      "sha256": "ce19aa8cc321f308e661c7e7172b8b6a83231840968e27ff409debcb2f45c25c",
+      "bytes": 35253,
+      "width": 1200,
+      "height": 675,
+      "review": "pass; parent-referral and direct-authoritative checks remain distinct",
+      "visual_attempt": 1
+    }
+  ]
+}

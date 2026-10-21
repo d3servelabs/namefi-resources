@@ -1,0 +1,37 @@
+{
+  "slug": "llms-txt-agents-md-robots-txt",
+  "title": "llms.txt, AGENTS.md, and robots.txt Serve Different Readers",
+  "cover": {
+    "h1": "llms.txt, AGENTS.md, and robots.txt",
+    "h2": "Serve Different Readers",
+    "subtitle": "A practical domain operations guide",
+    "visual": "Three distinct document cards connect to a website reader, coding agent and crawler, no code paragraphs"
+  },
+  "sections": [
+    {
+      "name": "01-section",
+      "heading": "The three files answer different operational questions",
+      "scene": "Three distinct document cards connect to a website reader, coding agent and crawler, no code paragraphs",
+      "alt": "The three files answer different operational questions."
+    },
+    {
+      "name": "02-section",
+      "heading": "File scope follows the host and the client's documented rules",
+      "scene": "A website host with documentation subpath beside a repository directory tree and a separate origin boundary",
+      "alt": "File scope follows the host and the client's documented rules."
+    },
+    {
+      "name": "03-section",
+      "heading": "Documentation guidance does not replace transaction or privacy controls",
+      "scene": "A public documentation page sits outside a locked customer account, clear separate paths",
+      "alt": "Documentation guidance does not replace transaction or privacy controls."
+    },
+    {
+      "name": "04-section",
+      "heading": "A small test matrix reveals whether each file serves its purpose",
+      "scene": "A compact test matrix has three rows with link check, instruction check and crawler path check icons",
+      "alt": "A small test matrix reveals whether each file serves its purpose."
+    }
+  ],
+  "purpose": "Initial illustration plan. The final image review manifest records actual asset hashes and visual revisions."
+}

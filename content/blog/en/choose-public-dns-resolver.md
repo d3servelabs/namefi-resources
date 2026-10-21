@@ -30,7 +30,7 @@ relatedSeries:
   - /en/series/domain-apocalypse/
 ---
 
-Start with the policy you want, then choose a resolver and test the complete connection. An easy-to-remember address does not settle the decision.
+Start with the policy you want, then choose a resolver and [test the complete connection](/en/blog/isp-dns-vs-public-resolver/). An easy-to-remember address does not settle the decision.
 
 Cloudflare's standard service suits readers who want a documented option without content filtering. Quad9's secure service suits readers who want threat blocking. Google Public DNS offers another documented option with DNSSEC validation and encrypted transports. These are conditional starting points, not a universal ranking.
 
