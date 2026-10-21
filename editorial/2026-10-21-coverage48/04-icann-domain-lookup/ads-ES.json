@@ -1,0 +1,250 @@
+{
+  "fetched_utc": "2026-10-21T23:32:21.094151+00:00",
+  "request": {
+    "language": "languageConstants/1003",
+    "geoTargetConstants": [
+      "geoTargetConstants/2724"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "icann lookup",
+      "consulta icann",
+      "buscar dominio icann",
+      "consulta de dominios icann",
+      "whois icann",
+      "consultar propietario de dominio",
+      "datos de registro de dominio"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "icann lookup",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "880"
+            }
+          ],
+          "avgMonthlySearches": "720",
+          "competitionIndex": "38",
+          "lowTopOfPageBidMicros": "808145",
+          "highTopOfPageBidMicros": "3649337"
+        }
+      },
+      {
+        "text": "whois icann",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "480"
+            }
+          ],
+          "avgMonthlySearches": "480",
+          "competitionIndex": "20",
+          "lowTopOfPageBidMicros": "1890647",
+          "highTopOfPageBidMicros": "6422931"
+        }
+      },
+      {
+        "text": "datos de registro de dominio",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "86"
+        }
+      },
+      {
+        "text": "consulta icann"
+      },
+      {
+        "text": "buscar dominio icann"
+      },
+      {
+        "text": "consulta de dominios icann"
+      },
+      {
+        "text": "consultar propietario de dominio"
+      }
+    ]
+  }
+}
