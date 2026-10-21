@@ -1,6 +1,7 @@
 ---
 title: '什么是 .io 域名？科技与 Web3 后缀详解'
 date: '2026-06-15'
+updated: '2026-10-21'
 language: 'zh-CN'
 priority: P1
 tags: ['tld']
@@ -12,13 +13,13 @@ description: '.io 域名已成为初创企业、开发者和 Web3 项目的事�
 keywords: ['.io 域名', '什么是 .io', '.io TLD', '.io 域名后缀', '注册 .io 域名', 'io 域名含义', '.io 与 .ai 对比', '科技初创公司域名']
 faqs:
   - question: '任何人都可以注册 .io 域名吗？'
-    answer: '可以。.io 命名空间向全球所有人开放，无需本地存在、商业资质或任何凭证要求。注册时无需与英属印度洋领地有任何关联。'
+    answer: '对于 example.io，任何司法辖区的申请人均可申请。对于 example.com.io，规则要求申请人居住在领地内。注册条款和使用规则仍然适用。'
   - question: '.io 域名会影响 SEO 吗？'
-    answer: '不会产生负面影响。Google 将 .io 视为通用顶级域名而非国家定向域名，因此 .io 网站可以在全球范围内排名，不受任何单一地区的地理限制。'
+    answer: 'Google 在地理定位方面将 .io 视为通用域名。.io 后缀不会自动将网站定位至领地，也不保证搜索排名。'
   - question: '谁应该注册 .io 域名？'
     answer: '软件初创公司、SaaS 产品、开发者工具、开源项目、API 服务、浏览器游戏工作室，以及 Web3 或区块链团队。凡是将技术专注作为品牌一部分的场景，"输入/输出"的读法都非常契合。'
   - question: '由于查戈斯主权协议，.io 域名会消失吗？'
-    answer: '这并非确定事实。截至 2026 年，.io 运行完全正常，注册和续费照常进行。任何退役都需要先更改 ISO 国家代码，随后经历多年的 IANA 过渡期，因此请持续关注而非过度担忧。'
+    answer: '2026 年 10 月 21 日，IANA 将 .io 列为活跃状态，未列退役日期。国家代码资格丧失后，IANA 退役程序将适用。本文不保证 .io 的未来。'
 relatedArticles:
   - /zh-CN/blog/why-are-io-domains-expensive/
   - /zh-CN/blog/ai-vs-io-domain/
@@ -51,16 +52,15 @@ relatedGlossary:
 | 注册局运营方 | Internet Computer Bureau Ltd（Identity Digital 旗下子公司） |
 | 委派年份 | 1997 年 |
 | 分配地区 | 英属印度洋领地（BIOT） |
-| IDN 支持 | 是 |
 | DNSSEC | 是 |
-| 注册限制 | 向所有人开放——无本地存在、凭证或商业要求 |
+| 注册限制 | 对于 example.io，任何司法辖区的申请人均可申请。对于 example.com.io，规则要求申请人居住在领地内。注册条款和使用规则仍然适用。 |
 | 最适合 | 科技初创公司、SaaS、开发者工具、API、浏览器游戏、Web3 |
 
 ## 什么是 .io？
 
 **.io 顶级域名**是一个[国家代码顶级域名（ccTLD）](/zh-CN/blog/cctld-market-share-by-registration-volume/)，分配给查戈斯群岛的**英属印度洋领地**。它于 1997 年依据 ISO 3166-1 标准委派，相关记录可见于 [IANA 根区 .io 条目](https://www.iana.org/domains/root/db/io.html)。注册局管理方为 **Internet Computer Bureau Ltd**，现为注册局服务提供商 [Identity Digital](https://www.identity.digital/) 的子公司。
 
-尽管 .io 在名义上是 ccTLD，但在所有对购买者重要的层面上，它的行为与通用后缀无异。Google 明确将 .io 归类为**通用顶级域名**进行搜索处理，并指出用户和网站所有者将其视为通用域名而非国家定向域名。因此，与 `.fr` 或 `.jp` 不同，.io 网站**不会被地理定向**到某一特定地区，是面向全球受众的理想选择。
+[Google](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) 在地理定位方面将 .io 视为通用域名。.io 后缀不会自动将网站定位至领地，也不保证搜索排名。
 
 ## .io 的历史
 
@@ -116,13 +116,13 @@ relatedGlossary:
 
 ## 谁可以注册 .io 域名？
 
-**注册限制：向所有人开放。** 全球任何人均可注册 .io 域名。**无本地存在要求**，无商业资质审核，无凭证门槛——您无需与英属印度洋领地有任何关联。域名长度为 **3–63 个字符**，支持字母、数字和连字符（不可位于开头或结尾），并**支持国际化域名（IDN）**。
+对于 `example.io`，NIC.IO 允许任何司法辖区的申请人注册。对于 `example.com.io`，[分配规则](https://nic.io/rules.htm)要求申请人居住在领地内。部分短名称实行受控分配。因此，三个字符不是注册局的统一长度下限。
 
-注册局支持 **DNSSEC**，适用标准的转移、续费和赎回宽限期规则。唯一值得注意的内容限制是长期以来的可接受使用规则，禁止性或色情内容以及违反适用法律的使用。由于 .io 是 ccTLD 而非 ICANN gTLD，权威规则来自运营商而非 ICANN 注册局协议——具体政策由 [NIC.IO 注册局（域名规则）](https://nic.io/rules.htm)发布。
+规则要求申请人提供准确联系资料。规则禁止垃圾邮件及特定违法或性内容用途。[注册条款](https://nic.io/terms.htm)规定转移和续费条件。购买前，请向注册商确认到期日、恢复期限和费用。请勿假定 ICANN 通用顶级域的所有宽限期均适用。
 
 ### 查戈斯主权问题
 
-2024 年，英国宣布计划将查戈斯群岛主权移交给毛里求斯，并于 2025 年 5 月 22 日签署协议。由于 .io 依赖于"IO"这一 ISO 3166-1 代码，此事引发了关于退役的猜测。截至 2026 年，**.io 运行完全正常**——注册和续费照常进行。任何退役都需要先更改 ISO 代码，随后触发多年的 IANA 过渡期（通常约为五年），因此这是一个需要持续关注的动态局势，而非回避该后缀的理由。
+截至 2026 年 10 月 21 日，[IANA 将 .io 列为活跃状态](https://www.iana.org/domains/root/db/io.html)，未列退役日期。政治协议本身不构成域名关闭公告。域名失去国家代码资格后，[IANA 退役程序](https://www.iana.org/help/cctld-retirement)要求公开通知，默认在五年后移除。获准延期最多可增加五年。管理方可以提前退役。规则不保证 .io 永久保留，也不预测 .io 必将关闭。长期项目应关注官方通知，并评估迁移成本。
 
 ## .io 定价与价值
 
@@ -156,11 +156,11 @@ relatedGlossary:
 
 ### 任何人都可以注册 .io 域名吗？
 
-可以。.io 命名空间向全球所有人开放，无需本地存在、商业资质或任何凭证要求。注册时无需与英属印度洋领地有任何关联。
+对于 example.io，任何司法辖区的申请人均可申请。对于 example.com.io，规则要求申请人居住在领地内。注册条款和使用规则仍然适用。
 
 ### .io 域名会影响 SEO 吗？
 
-不会产生负面影响。Google 将 .io 视为通用顶级域名而非国家定向域名，因此 .io 网站可以在全球范围内排名，不受任何单一地区的地理限制。
+Google 在地理定位方面将 .io 视为通用域名。.io 后缀不会自动将网站定位至领地，也不保证搜索排名。
 
 ### 谁应该注册 .io 域名？
 
@@ -168,7 +168,7 @@ relatedGlossary:
 
 ### 由于查戈斯主权协议，.io 域名会消失吗？
 
-这并非确定事实。截至 2026 年，.io 运行完全正常，注册和续费照常进行。任何退役都需要先更改 ISO 国家代码，随后经历多年的 IANA 过渡期，因此请持续关注而非过度担忧。
+2026 年 10 月 21 日，IANA 将 .io 列为活跃状态，未列退役日期。国家代码资格丧失后，IANA 退役程序将适用。本文不保证 .io 的未来。
 
 ### .io 支持 WHOIS 隐私保护和 DNSSEC 吗？
 
@@ -183,3 +183,5 @@ relatedGlossary:
 - [代币化域名使用案例（2026）](/zh-CN/blog/tokenized-domain-use-cases-2026/)
 - TLD 指南：.com、.ai、.dev、[.app](/zh-CN/tld/app/)、[.tech](/zh-CN/tld/tech/)
 - 术语表：ICANN、注册商、DNS、[DNSSEC](/zh-CN/glossary/dnssec/)
+
+- 2026-10-21: [NIC.IO](https://nic.io/rules.htm), [NIC.IO](https://nic.io/terms.htm), [IANA](https://www.iana.org/domains/root/db/io.html), [IANA](https://www.iana.org/help/cctld-retirement), [Google](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites).

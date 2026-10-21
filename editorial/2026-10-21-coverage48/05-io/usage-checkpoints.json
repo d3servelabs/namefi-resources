@@ -1,0 +1,66 @@
+[
+  {
+    "agent_path": "/root/coverage48_05_o01",
+    "phase": "sanity_start",
+    "captured_utc": "2026-10-21T23:42:43.835747+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160d2-50ac-7863-8839-cac21c10548b",
+        "session_log_name": "rollout-2026-10-21T16-35-58-01a160d2-50ac-7863-8839-cac21c10548b.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-21T23:42:33.076Z",
+          "total_token_usage": {
+            "input_tokens": 2939992,
+            "cached_input_tokens": 2803584,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 17574,
+            "reasoning_output_tokens": 1744,
+            "total_tokens": 2957566
+          },
+          "last_token_usage": {
+            "input_tokens": 170154,
+            "cached_input_tokens": 169216,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2639,
+            "reasoning_output_tokens": 187,
+            "total_tokens": 172793
+          }
+        }
+      }
+    ]
+  },
+  {
+    "agent_path": "/root/coverage48_05_o01",
+    "phase": "local_sanity_end",
+    "captured_utc": "2026-10-21T23:44:37.037187+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160d2-50ac-7863-8839-cac21c10548b",
+        "session_log_name": "rollout-2026-10-21T16-35-58-01a160d2-50ac-7863-8839-cac21c10548b.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-21T23:44:11.668Z",
+          "total_token_usage": {
+            "input_tokens": 4360119,
+            "cached_input_tokens": 4217984,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 21871,
+            "reasoning_output_tokens": 2967,
+            "total_tokens": 4381990
+          },
+          "last_token_usage": {
+            "input_tokens": 181361,
+            "cached_input_tokens": 180992,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 54,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 181415
+          }
+        }
+      }
+    ]
+  }
+]

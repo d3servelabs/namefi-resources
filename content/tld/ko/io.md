@@ -1,6 +1,7 @@
 ---
 title: '.io 도메인이란? 테크 및 Web3 확장자 완벽 가이드'
 date: '2026-06-15'
+updated: '2026-10-21'
 language: ko
 priority: P1
 tags: ['tld']
@@ -12,13 +13,13 @@ description: '.io 도메인은 스타트업, 개발자, Web3 프로젝트의 사
 keywords: ['.io 도메인', '.io란', '.io TLD', '.io 도메인 확장자', '.io 도메인 등록', 'io 도메인 의미', '.io vs .ai', '테크 스타트업 도메인']
 faqs:
   - question: '누구나 .io 도메인을 등록할 수 있나요?'
-    answer: '네. .io 네임스페이스는 현지 거주 요건, 사업체 요건, 자격 요건 없이 전 세계 누구에게나 개방되어 있습니다. 영국령 인도양 영토와 아무런 관련이 없어도 등록할 수 있습니다.'
+    answer: 'example.io에는 어느 관할 지역의 신청자든 신청할 수 있습니다. example.com.io에는 해당 영토 거주 요건이 있습니다. 등록 약관과 사용 규칙도 적용됩니다.'
   - question: '.io 도메인은 SEO에 영향을 미치나요?'
-    answer: '부정적인 영향은 없습니다. Google은 .io를 국가 대상 도메인이 아닌 일반 최상위 도메인으로 취급하므로, .io 사이트는 전 세계적으로 검색 순위에 오를 수 있으며 특정 지역에 한정되지 않습니다.'
+    answer: 'Google은 지역 타기팅에서 .io를 일반 도메인으로 취급합니다. .io가 자동으로 해당 영토를 타기팅하지 않으며 검색 순위를 보장하지도 않습니다.'
   - question: '누가 .io 도메인을 등록해야 하나요?'
     answer: '소프트웨어 스타트업, SaaS 제품, 개발자 도구, 오픈소스 프로젝트, API 서비스, 브라우저 게임 스튜디오, 그리고 Web3 또는 블록체인 팀에게 적합합니다. 기술 중심 브랜드 이미지를 원하는 곳이라면 어디서든 "Input/Output"이라는 연상이 잘 어울립니다.'
   - question: 'Chagos 주권 협정으로 인해 .io 도메인이 폐지될 수 있나요?'
-    answer: '확정된 사실이 아닙니다. 2026년 현재 .io는 완전히 운영 중이며 등록과 갱신이 정상적으로 이루어지고 있습니다. 폐지가 이루어지려면 먼저 ISO 국가 코드가 변경되어야 하고, 이후 수년에 걸친 IANA 전환 절차가 필요하므로, 당장 걱정하기보다는 모니터링하는 것이 적절합니다.'
+    answer: '2026년 10월 21일 IANA 기록은 .io를 활성 상태로 표시하며 폐지 날짜를 제시하지 않습니다. 자격을 잃으면 IANA 폐지 절차가 적용됩니다. .io의 미래를 보장하는 설명은 아닙니다.'
 relatedArticles:
   - /ko/blog/why-are-io-domains-expensive/
   - /ko/blog/ai-vs-io-domain/
@@ -51,16 +52,15 @@ SaaS 제품, API, 오픈소스 프로젝트, 또는 [블록체인](/ko/glossary/
 | 레지스트리 운영자 | Internet Computer Bureau Ltd (Identity Digital의 자회사) |
 | 위임 연도 | 1997년 |
 | 배정 지역 | 영국령 인도양 영토 (BIOT) |
-| IDN 지원 | 지원 |
 | DNSSEC | 지원 |
-| 등록 제한 | 완전 개방 — 현지 거주, 자격 증명, 사업체 요건 없음 |
+| 등록 제한 | example.io에는 어느 관할 지역의 신청자든 신청할 수 있습니다. example.com.io에는 해당 영토 거주 요건이 있습니다. 등록 약관과 사용 규칙도 적용됩니다. |
 | 최적 용도 | 테크 스타트업, SaaS, 개발자 도구, API, 브라우저 게임, Web3 |
 
 ## .io란 무엇인가?
 
 **.io 최상위 도메인**은 Chagos 제도의 **영국령 인도양 영토**에 배정된 [국가 코드 TLD (ccTLD)](/ko/blog/cctld-market-share-by-registration-volume/)입니다. 1997년 ISO 3166-1 표준에 따라 위임되었으며, [IANA 루트 존 .io 등록 정보](https://www.iana.org/domains/root/db/io.html)에 문서화되어 있습니다. 현재 ccTLD 관리자는 **Internet Computer Bureau Ltd**로, 레지스트리 서비스 제공업체인 [Identity Digital](https://www.identity.digital/)의 자회사입니다.
 
-서류상으로는 ccTLD이지만, .io는 구매자에게 실질적으로 중요한 모든 면에서 일반 확장자처럼 작동합니다. Google은 .io를 **일반 최상위 도메인**으로 명시적으로 분류하며, 사용자와 사이트 운영자가 이를 국가 특정보다는 일반적인 도메인으로 인식한다고 밝히고 있습니다. 따라서 `.fr`이나 `.jp`와 달리, .io 사이트는 **특정 지역으로 지오타겟팅되지 않으며** 전 세계 이용자를 대상으로 하는 현명한 선택입니다.
+[Google](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites)은 지역 타기팅에서 .io를 일반 도메인으로 취급합니다. .io가 자동으로 해당 영토를 타기팅하지 않으며 검색 순위를 보장하지도 않습니다.
 
 ## .io의 역사
 
@@ -116,13 +116,15 @@ SaaS 제품, API, 오픈소스 프로젝트, 또는 [블록체인](/ko/glossary/
 
 ## .io 도메인 등록 자격
 
-**등록 제한: 완전 개방.** 전 세계 누구나 .io 도메인을 등록할 수 있습니다. **현지 거주 요건**이 없으며, 사업체 자격 심사나 자격 증명 요건도 없습니다. 영국령 인도양 영토와 아무런 관련이 없어도 됩니다. 이름은 **3~63자**로 구성되며, 문자, 숫자, 하이픈(시작과 끝 제외)을 사용할 수 있고, **국제화 도메인 이름 (IDN)**도 지원됩니다.
+`example.io`는 어느 관할 지역의 신청자든 신청할 수 있습니다. `example.com.io` 등록에는 [배정 규칙](https://nic.io/rules.htm)에 따라 해당 영토 거주 요건이 적용됩니다. 일부 짧은 이름은 통제된 배정 절차를 따릅니다. 따라서 최소 3자라는 기준은 보편적인 레지스트리 규칙이 아닙니다.
 
-레지스트리는 **DNSSEC**를 지원하며, 표준 이전, 갱신, 유예 기간 정책이 적용됩니다. 주목할 만한 콘텐츠 제한으로는 성인물이나 포르노그래픽 콘텐츠 및 관련 법률을 위반하는 사용을 금지하는 오래된 이용 약관이 있습니다. .io는 ICANN gTLD가 아닌 ccTLD이므로, 공식 규정은 ICANN 레지스트리 계약이 아닌 운영자에서 비롯됩니다. 구속력 있는 정책은 [NIC.IO 레지스트리 (도메인 이름 규정)](https://nic.io/rules.htm)에 공개되어 있습니다.
+규칙은 정확한 연락처를 요구하며 스팸과 특정 불법 또는 성적 용도를 금지합니다. [등록 약관](https://nic.io/terms.htm)은 이전과 갱신을 규정합니다. 구매 전에 등록기관에 만료일, 복구 기한과 수수료를 확인하세요. ICANN gTLD의 모든 유예 기간이 적용된다고 가정하지 마세요.
 
 ### Chagos 주권 문제
 
-2024년 영국은 Chagos 제도의 주권을 모리셔스에 이전할 계획을 발표했으며, 2025년 5월 22일 협정이 체결되었습니다. .io가 "IO" ISO 3166-1 코드에 기반하기 때문에, 이로 인해 폐지 추측이 제기되었습니다. 2026년 현재 **.io는 완전히 운영 중**이며 등록과 갱신이 정상적으로 이루어지고 있습니다. 폐지가 이루어지려면 먼저 ISO 코드가 변경되어야 하고, 이후 수년에 걸친 [IANA](/ko/glossary/iana/) 전환 절차(통상 약 5년으로 알려짐)가 필요합니다. 따라서 이는 피해야 할 이유가 아니라 모니터링해야 할 상황입니다.
+2026년 10월 21일 확인 기준으로 [IANA는 .io를 활성 상태로 표시](https://www.iana.org/domains/root/db/io.html)하며 폐지 날짜를 제시하지 않습니다. 정치적 합의만으로 도메인 종료가 공지되지는 않습니다. 국가 코드 자격을 잃으면 [IANA 폐지 절차](https://www.iana.org/help/cctld-retirement)는 공개 통지 후 기본적으로 5년 뒤 제거하도록 규정합니다. 승인된 연장은 최대 5년을 추가할 수 있습니다. 관리자는 더 일찍 폐지할 수도 있습니다.
+
+규칙은 존속이나 폐지를 보장하지 않습니다. 장기 사업은 공식 통지와 이전 비용을 검토해야 합니다.
 
 ## .io 가격과 가치
 
@@ -156,11 +158,11 @@ SaaS 제품, API, 오픈소스 프로젝트, 또는 [블록체인](/ko/glossary/
 
 ### 누구나 .io 도메인을 등록할 수 있나요?
 
-네. .io 네임스페이스는 현지 거주 요건, 사업체 요건, 자격 요건 없이 전 세계 누구에게나 개방되어 있습니다. 영국령 인도양 영토와 아무런 관련이 없어도 등록할 수 있습니다.
+example.io에는 어느 관할 지역의 신청자든 신청할 수 있습니다. example.com.io에는 해당 영토 거주 요건이 있습니다. 등록 약관과 사용 규칙도 적용됩니다.
 
 ### .io 도메인은 SEO에 영향을 미치나요?
 
-부정적인 영향은 없습니다. Google은 .io를 국가 대상 도메인이 아닌 일반 최상위 도메인으로 취급하므로, .io 사이트는 전 세계적으로 검색 순위에 오를 수 있으며 특정 지역에 한정되지 않습니다.
+Google은 지역 타기팅에서 .io를 일반 도메인으로 취급합니다. .io가 자동으로 해당 영토를 타기팅하지 않으며 검색 순위를 보장하지도 않습니다.
 
 ### 누가 .io 도메인을 등록해야 하나요?
 
@@ -168,7 +170,7 @@ SaaS 제품, API, 오픈소스 프로젝트, 또는 [블록체인](/ko/glossary/
 
 ### Chagos 주권 협정으로 인해 .io 도메인이 폐지될 수 있나요?
 
-확정된 사실이 아닙니다. 2026년 현재 .io는 완전히 운영 중이며 등록과 갱신이 정상적으로 이루어지고 있습니다. 폐지가 이루어지려면 먼저 ISO 국가 코드가 변경되어야 하고, 이후 수년에 걸친 IANA 전환 절차가 필요하므로, 당장 걱정하기보다는 모니터링하는 것이 적절합니다.
+2026년 10월 21일 IANA 기록은 .io를 활성 상태로 표시하며 폐지 날짜를 제시하지 않습니다. 자격을 잃으면 IANA 폐지 절차가 적용됩니다. .io의 미래를 보장하는 설명은 아닙니다.
 
 ### .io는 WHOIS 개인정보 보호와 DNSSEC를 지원하나요?
 
@@ -183,3 +185,5 @@ DNSSEC는 .io 레지스트리에서 지원됩니다. WHOIS 개인정보 보호 �
 - [토큰화 도메인 활용 사례 (2026)](/ko/blog/tokenized-domain-use-cases-2026/)
 - TLD 가이드: [.com](/ko/tld/com/), [.ai](/ko/tld/ai/), [.dev](/ko/tld/dev/), [.app](/ko/tld/app/), [.tech](/ko/tld/tech/)
 - 용어집: [ICANN](/ko/glossary/icann/), [레지스트라](/ko/glossary/registrar/), [DNS](/ko/glossary/dns/), [DNSSEC](/ko/glossary/dnssec/)
+
+- 2026-10-21: [NIC.IO](https://nic.io/rules.htm), [NIC.IO](https://nic.io/terms.htm), [IANA](https://www.iana.org/domains/root/db/io.html), [IANA](https://www.iana.org/help/cctld-retirement), [Google](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites).

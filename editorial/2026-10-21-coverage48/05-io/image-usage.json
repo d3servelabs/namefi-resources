@@ -1,0 +1,50 @@
+{
+  "image-usage.json": {
+    "usage": {
+      "input_tokens": 453,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 453
+      },
+      "output_tokens": 5488,
+      "output_tokens_details": {
+        "image_tokens": 5488,
+        "text_tokens": 0
+      },
+      "total_tokens": 5941
+    },
+    "created": 1792625926
+  },
+  "cover-attempt-1-usage.json": {
+    "usage": {
+      "input_tokens": 724,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 724
+      },
+      "output_tokens": 3401,
+      "output_tokens_details": {
+        "image_tokens": 3401,
+        "text_tokens": 0
+      },
+      "total_tokens": 4125
+    },
+    "created": 1792626110
+  },
+  "cover-attempt-2-usage.json": {
+    "usage": {
+      "input_tokens": 767,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 767
+      },
+      "output_tokens": 3401,
+      "output_tokens_details": {
+        "image_tokens": 3401,
+        "text_tokens": 0
+      },
+      "total_tokens": 4168
+    },
+    "created": 1792626249
+  }
+}
