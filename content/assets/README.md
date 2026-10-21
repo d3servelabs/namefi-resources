@@ -22,3 +22,7 @@ The September 19, 2026 Blockchain Concepts Tier-2 batch adds `top-zk-proof-syste
 The October 20, 2026 batch adds the `top-data-availability-approaches` prefix.
 The cover is 1200 × 630 pixels. Four 1200 × 675 illustrations explain calldata, blobs, committees, and sampling.
 The images use the repository generators and the official Namefi logotype.
+
+## The October continuation adds ten illustrated comparisons
+
+The October 21 batch uses ten `top-*` prefixes for the approved Blockchain Concepts continuation. Each prefix has a 1200 × 630 cover and four 1200 × 675 section illustrations. The source text and image manifest determine diagram meanings; visual checks reject unsupported compatibility scores, privacy guarantees and invented execution modes. The batch record documents regenerations.

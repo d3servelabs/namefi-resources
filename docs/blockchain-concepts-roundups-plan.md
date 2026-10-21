@@ -108,3 +108,9 @@ and a review cadence. Seed 2–3 flagships first to test maintenance burden.
    preserve existing translations and regenerate the termbase if glossary translations change.
 4. **Promote priority.** Once indexed/performing, bump the strongest 1–2 to `P1`/`P0`.
 5. **Work down Tier 2, then seed Tier 3 flagships.**
+
+## The October 21 continuation completes ten approved backlog topics
+
+The user confirmed the first ten remaining topics in plan order. The batch finishes EVM-compatible chains and account-abstraction standards, then covers FHE projects, ZK rollups, modular DA providers, rollup frameworks, restaking, oracle networks, interoperability/bridges and DePIN. Intent/solver networks remain outside the batch. The content and usage record is `editorial/2026-10-21-ten-article-batch.md`.
+
+Each project comparison records an October 21 source check. Review the comparisons after material protocol, product, support or sunset changes, and no later than January 21, 2027. A historical announcement or source-code repository alone does not establish current deployment readiness. Future updates should retain these status distinctions.
