@@ -49,3 +49,5 @@ The twenty-article continuation records its existing assignments and actual phas
 ## The October batch records preserve execution evidence
 
 The dated batch Markdown files record authorized scope and publication checks. The matching assignment JSON files retain existing topic IDs. The `research/` and `usage/` directories retain source evidence and actual writer counters. Those files remain editorial records and do not publish as site pages.
+
+The 48-target continuation records its queue, initial content map, and PR stack contract in [2026-10-21-coverage48/](2026-10-21-coverage48/README.md).
