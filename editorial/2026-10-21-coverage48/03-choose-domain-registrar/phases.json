@@ -1,0 +1,13 @@
+{
+  "research_start": "2026-10-21T23:31:36.684894+00:00",
+  "model": "gpt-6.1-sol",
+  "actual_text_tokens": "See actual-usage.json. Session metadata became accessible after drafting; retrospective nearest-prior actual snapshots are preserved, not exact phase-boundary counters.",
+  "images_start": "2026-10-21T23:32:52.958229+00:00",
+  "research_end": "2026-10-21T23:33:04.598714+00:00",
+  "writing_start": "2026-10-21T23:33:04.598773+00:00",
+  "writing_end": "2026-10-21T23:34:04.571486+00:00",
+  "translation_de_start": "2026-10-21T23:34:04.571559+00:00",
+  "translation_de_end": "2026-10-21T23:34:55.746276+00:00",
+  "images_end": "2026-10-21T23:36:26.573691+00:00",
+  "images_retry_start": "2026-10-21T23:35:26.327772+00:00"
+}

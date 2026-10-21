@@ -1,0 +1,146 @@
+{
+  "models": [
+    "gpt-6.1-sol"
+  ],
+  "method": "Read only turn_context model and event_msg token_count metadata. Retrospective samples use the latest actual cumulative event at or before each recorded UTC phase checkpoint. Samples can precede a boundary and are not exact phase deltas. Input includes cached tokens. Output includes reasoning tokens.",
+  "boundaries": {
+    "research_start": {
+      "phase_checkpoint": "2026-10-21T23:31:36.684894+00:00",
+      "actual_prior_snapshot": {
+        "timestamp": "2026-10-21T23:31:21.267Z",
+        "total_token_usage": {
+          "input_tokens": 600114,
+          "cached_input_tokens": 531712,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1552,
+          "reasoning_output_tokens": 67,
+          "total_tokens": 601666
+        }
+      }
+    },
+    "images_start": {
+      "phase_checkpoint": "2026-10-21T23:32:52.958229+00:00",
+      "actual_prior_snapshot": {
+        "timestamp": "2026-10-21T23:32:26.758Z",
+        "total_token_usage": {
+          "input_tokens": 1435155,
+          "cached_input_tokens": 1339520,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 3884,
+          "reasoning_output_tokens": 305,
+          "total_tokens": 1439039
+        }
+      }
+    },
+    "research_end": {
+      "phase_checkpoint": "2026-10-21T23:33:04.598714+00:00",
+      "actual_prior_snapshot": {
+        "timestamp": "2026-10-21T23:32:54.014Z",
+        "total_token_usage": {
+          "input_tokens": 1575305,
+          "cached_input_tokens": 1378688,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 5140,
+          "reasoning_output_tokens": 376,
+          "total_tokens": 1580445
+        }
+      }
+    },
+    "writing_start": {
+      "phase_checkpoint": "2026-10-21T23:33:04.598773+00:00",
+      "actual_prior_snapshot": {
+        "timestamp": "2026-10-21T23:32:54.014Z",
+        "total_token_usage": {
+          "input_tokens": 1575305,
+          "cached_input_tokens": 1378688,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 5140,
+          "reasoning_output_tokens": 376,
+          "total_tokens": 1580445
+        }
+      }
+    },
+    "writing_end": {
+      "phase_checkpoint": "2026-10-21T23:34:04.571486+00:00",
+      "actual_prior_snapshot": {
+        "timestamp": "2026-10-21T23:33:09.620Z",
+        "total_token_usage": {
+          "input_tokens": 1864257,
+          "cached_input_tokens": 1661568,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 5771,
+          "reasoning_output_tokens": 563,
+          "total_tokens": 1870028
+        }
+      }
+    },
+    "translation_de_start": {
+      "phase_checkpoint": "2026-10-21T23:34:04.571559+00:00",
+      "actual_prior_snapshot": {
+        "timestamp": "2026-10-21T23:33:09.620Z",
+        "total_token_usage": {
+          "input_tokens": 1864257,
+          "cached_input_tokens": 1661568,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 5771,
+          "reasoning_output_tokens": 563,
+          "total_tokens": 1870028
+        }
+      }
+    },
+    "translation_de_end": {
+      "phase_checkpoint": "2026-10-21T23:34:55.746276+00:00",
+      "actual_prior_snapshot": {
+        "timestamp": "2026-10-21T23:34:04.601Z",
+        "total_token_usage": {
+          "input_tokens": 2016041,
+          "cached_input_tokens": 1809024,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 8382,
+          "reasoning_output_tokens": 572,
+          "total_tokens": 2024423
+        }
+      }
+    },
+    "images_end": {
+      "phase_checkpoint": "2026-10-21T23:36:26.573691+00:00",
+      "actual_prior_snapshot": {
+        "timestamp": "2026-10-21T23:36:04.052Z",
+        "total_token_usage": {
+          "input_tokens": 2987097,
+          "cached_input_tokens": 2767744,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 14048,
+          "reasoning_output_tokens": 1147,
+          "total_tokens": 3001145
+        }
+      }
+    },
+    "images_retry_start": {
+      "phase_checkpoint": "2026-10-21T23:35:26.327772+00:00",
+      "actual_prior_snapshot": {
+        "timestamp": "2026-10-21T23:35:09.974Z",
+        "total_token_usage": {
+          "input_tokens": 2487856,
+          "cached_input_tokens": 2279168,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 11808,
+          "reasoning_output_tokens": 604,
+          "total_tokens": 2499664
+        }
+      }
+    }
+  },
+  "latest": {
+    "timestamp": "2026-10-21T23:38:16.867Z",
+    "total_token_usage": {
+      "input_tokens": 4229162,
+      "cached_input_tokens": 4003840,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 20604,
+      "reasoning_output_tokens": 2099,
+      "total_tokens": 4249766
+    }
+  },
+  "recorded_at": "2026-10-21T23:38:37.671291+00:00"
+}

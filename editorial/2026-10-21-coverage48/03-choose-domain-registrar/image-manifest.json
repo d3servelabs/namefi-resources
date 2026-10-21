@@ -1,0 +1,147 @@
+[
+  {
+    "path": "content/assets/choose-domain-registrar-og.jpg",
+    "dimensions": [
+      1200,
+      630
+    ],
+    "bytes": 83198,
+    "sha256": "21156292a6d5d81a3de607125ba7e28c68c60cb05bf7f04358c3abb2126fc337",
+    "attempts": 2,
+    "qc": "Final image opened and visually inspected. Spelling, no clipping, cream background and margins, official top-right logo pass. Cover bottom reserve passes. Illustrative costs agree with text.",
+    "returned_usage": {
+      "model": null,
+      "usage": {
+        "input_tokens": 755,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 755
+        },
+        "output_tokens": 3401,
+        "output_tokens_details": {
+          "image_tokens": 3401,
+          "text_tokens": 0
+        },
+        "total_tokens": 4156
+      },
+      "created": 1792625782
+    },
+    "missing_usage": "First discarded attempt usage was overwritten by retry and is unavailable."
+  },
+  {
+    "path": "content/assets/choose-domain-registrar-01-costs.jpg",
+    "dimensions": [
+      1200,
+      675
+    ],
+    "bytes": 37055,
+    "sha256": "678d565b7ad607861e67113ae58c66eb0c8cbbeb107dc760d9c2b4c8bdd4b944",
+    "attempts": 1,
+    "qc": "Final image opened and visually inspected. Spelling, no clipping, cream background and margins, official top-right logo pass. Cover bottom reserve passes. Illustrative costs agree with text.",
+    "returned_usage": {
+      "model": null,
+      "usage": {
+        "input_tokens": 418,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 418
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5906
+      },
+      "created": 1792625637
+    },
+    "missing_usage": null
+  },
+  {
+    "path": "content/assets/choose-domain-registrar-02-security.jpg",
+    "dimensions": [
+      1200,
+      675
+    ],
+    "bytes": 34481,
+    "sha256": "713a25c618fef3a06859e5451a28d565e56d75bd83337003c261afca2470ce54",
+    "attempts": 1,
+    "qc": "Final image opened and visually inspected. Spelling, no clipping, cream background and margins, official top-right logo pass. Cover bottom reserve passes. Illustrative costs agree with text.",
+    "returned_usage": {
+      "model": null,
+      "usage": {
+        "input_tokens": 413,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 413
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5901
+      },
+      "created": 1792625639
+    },
+    "missing_usage": null
+  },
+  {
+    "path": "content/assets/choose-domain-registrar-03-dns.jpg",
+    "dimensions": [
+      1200,
+      675
+    ],
+    "bytes": 32532,
+    "sha256": "40eeac2d9635205fb4f8934c4be070d40627d9c8aeff70ea08d3d54ee929e494",
+    "attempts": 2,
+    "qc": "Final image opened and visually inspected. Spelling, no clipping, cream background and margins, official top-right logo pass. Cover bottom reserve passes. Illustrative costs agree with text.",
+    "returned_usage": {
+      "model": null,
+      "usage": {
+        "input_tokens": 425,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 425
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5913
+      },
+      "created": 1792625786
+    },
+    "missing_usage": "First discarded attempt usage was overwritten by retry and is unavailable."
+  },
+  {
+    "path": "content/assets/choose-domain-registrar-04-exit.jpg",
+    "dimensions": [
+      1200,
+      675
+    ],
+    "bytes": 39958,
+    "sha256": "d636020ed9fa6525bd4244c463619d01003e27ae170350ef9fea4f4cb2fae4e3",
+    "attempts": 1,
+    "qc": "Final image opened and visually inspected. Spelling, no clipping, cream background and margins, official top-right logo pass. Cover bottom reserve passes. Illustrative costs agree with text.",
+    "returned_usage": {
+      "model": null,
+      "usage": {
+        "input_tokens": 396,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 396
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5884
+      },
+      "created": 1792625704
+    },
+    "missing_usage": null
+  }
+]

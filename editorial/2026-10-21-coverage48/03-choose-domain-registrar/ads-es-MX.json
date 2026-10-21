@@ -1,0 +1,236 @@
+{
+  "fetched": "2026-10-21T23:32:07.095184+00:00",
+  "request": {
+    "language": "languageConstants/1003",
+    "geoTargetConstants": [
+      "geoTargetConstants/2484"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "mejor registrador de dominios",
+      "mejores registradores de dominios",
+      "donde comprar dominio",
+      "mejor proveedor de dominios"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "mejor registrador de dominios",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "86"
+        },
+        "closeVariants": [
+          "mejores registradores de dominios"
+        ]
+      },
+      {
+        "text": "donde comprar dominio",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "170"
+            }
+          ],
+          "avgMonthlySearches": "170",
+          "competitionIndex": "77",
+          "lowTopOfPageBidMicros": "1728603",
+          "highTopOfPageBidMicros": "9065955"
+        }
+      },
+      {
+        "text": "mejor proveedor de dominios",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "86"
+        }
+      }
+    ]
+  }
+}
