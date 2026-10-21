@@ -1,0 +1,68 @@
+[
+  {
+    "file": "content/assets/choose-public-dns-resolver-01-resolver-boundaries.jpg",
+    "dimensions": [
+      1200,
+      675
+    ],
+    "sha256": "b4b7a7d98c60fc1ff88b80bb8e6f4cf0089a6280559fd55ba5d22d9424309e50",
+    "action": "reused",
+    "qc": "Opened and inspected. Text readable, logo top-right, scene complete. Existing policy-shortlist laptop reaches lower edge but remains complete; retained established asset.",
+    "attempts": null
+  },
+  {
+    "file": "content/assets/choose-public-dns-resolver-02-policy-shortlist.jpg",
+    "dimensions": [
+      1200,
+      675
+    ],
+    "sha256": "270fe99ef4d3ecdc13c5fb62d0cdf2cb27e8cb6edf2c83c123d56792c4b02bac",
+    "action": "reused",
+    "qc": "Opened and inspected. Text readable, logo top-right, scene complete. Existing policy-shortlist laptop reaches lower edge but remains complete; retained established asset.",
+    "attempts": null
+  },
+  {
+    "file": "content/assets/choose-public-dns-resolver-03-failure-diagnosis.jpg",
+    "dimensions": [
+      1200,
+      675
+    ],
+    "sha256": "42454af28ca09eeecf4e237cedf2b254220d2ff4a06ae6b484efb58c87bb7f4f",
+    "action": "reused",
+    "qc": "Opened and inspected. Text readable, logo top-right, scene complete. Existing policy-shortlist laptop reaches lower edge but remains complete; retained established asset.",
+    "attempts": null
+  },
+  {
+    "file": "content/assets/choose-public-dns-resolver-04-reversible-trial.jpg",
+    "dimensions": [
+      1200,
+      675
+    ],
+    "sha256": "410d041e6bde4331441baae16e50d1a994b0232a42da5ccefec19870d22aa5d6",
+    "action": "reused",
+    "qc": "Opened and inspected. Text readable, logo top-right, scene complete. Existing policy-shortlist laptop reaches lower edge but remains complete; retained established asset.",
+    "attempts": null
+  },
+  {
+    "file": "content/assets/choose-public-dns-resolver-05-choice-steps.jpg",
+    "dimensions": [
+      1200,
+      675
+    ],
+    "sha256": "1a53ef3aec15cde8bb9f1117a0fc04687e634e92f1d343c2d53f6f34bcc58cf8",
+    "action": "generated",
+    "qc": "Opened and inspected. Text readable, logo top-right, scene complete. Existing policy-shortlist laptop reaches lower edge but remains complete; retained established asset.",
+    "attempts": 1
+  },
+  {
+    "file": "content/assets/choose-public-dns-resolver-og.jpg",
+    "dimensions": [
+      1200,
+      630
+    ],
+    "sha256": "f2f50d186b124afe32886a84a8db61a95da4ed86ea84056e35767c750c0ec757",
+    "action": "reused",
+    "qc": "Opened and inspected. Text readable, logo top-right, scene complete. Existing policy-shortlist laptop reaches lower edge but remains complete; retained established asset.",
+    "attempts": null
+  }
+]

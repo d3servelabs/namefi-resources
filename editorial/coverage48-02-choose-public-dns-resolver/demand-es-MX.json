@@ -1,0 +1,230 @@
+{
+  "fetched_at": "2026-10-21T23:24:03Z",
+  "request": {
+    "language": "languageConstants/1003",
+    "geoTargetConstants": [
+      "geoTargetConstants/2484"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "mejor servidor dns",
+      "dns más rápido",
+      "dns público"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "mejor servidor dns",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "40"
+            }
+          ],
+          "avgMonthlySearches": "40",
+          "competitionIndex": "1"
+        }
+      },
+      {
+        "text": "dns más rápido",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "140"
+            }
+          ],
+          "avgMonthlySearches": "110",
+          "competitionIndex": "0"
+        }
+      },
+      {
+        "text": "dns público",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "260"
+            }
+          ],
+          "avgMonthlySearches": "260",
+          "competitionIndex": "1"
+        }
+      }
+    ]
+  }
+}

@@ -8,7 +8,7 @@ authors: ['namefiteam']
 draft: false
 format: guide
 cluster: domain-security
-keywords: ['public DNS resolver', 'choose DNS resolver', 'Cloudflare DNS', 'Google Public DNS', 'Quad9 DNS', 'DNS privacy', 'DNSSEC validation', 'DNS filtering', 'encrypted DNS', 'DNS fallback', 'DNS troubleshooting', 'recursive DNS']
+keywords: ['public DNS resolver', 'choose DNS resolver', 'Cloudflare DNS', 'Google Public DNS', 'Quad9 DNS', 'DNS privacy', 'DNSSEC validation', 'DNS filtering', 'encrypted DNS', 'DNS fallback', 'DNS troubleshooting', 'best DNS servers', 'fastest DNS servers', 'DNS speed test']
 ogImage: ../../assets/choose-public-dns-resolver-og.jpg
 relatedArticles:
   - /en/blog/dns-over-https-vs-dns-over-tls/
@@ -62,7 +62,7 @@ For a managed work device, begin with the administrator's configuration. Treat t
 
 Compare the exact service variant, not just the company. Cloudflare's standard resolver has no content filtering. Cloudflare publishes separate Families services for malware filtering and adult-content filtering. The [official address list identifies each variant](https://developers.cloudflare.com/1.1.1.1/ip-addresses/).
 
-The following shortlist focuses on choices that the current documentation supports. The final column states what a reader should verify before deployment.
+The following shortlist focuses on documented choices. The final column states what a reader should verify before deployment.
 
 | Service | Useful starting point | Check first |
 | --- | --- | --- |
@@ -71,7 +71,19 @@ The following shortlist focuses on choices that the current documentation suppor
 | Quad9 secure | Threat blocking | False-positive recovery |
 | Google Public DNS | Validating public DNS | Data policy and local tests |
 
-Cloudflare lists `1.1.1.1` and `1.0.0.1` for its standard IPv4 service. Quad9 lists `9.9.9.9` and `149.112.112.112` for its secure service. Google lists `8.8.8.8` and `8.8.4.4`. These pairs identify services, but entering an address alone does not establish an encrypted connection. Follow the provider's instructions for the chosen transport and platform.
+Use the exact address pair for the service you select. The table lists standard Cloudflare, secure Quad9, and Google Public DNS.
+
+| Service | IPv4 addresses | IPv6 addresses | DoT hostname |
+| --- | --- | --- | --- |
+| Cloudflare standard | `1.1.1.1`, `1.0.0.1` | `2606:4700:4700::1111`, `2606:4700:4700::1001` | `one.one.one.one` |
+| Quad9 secure | `9.9.9.9`, `149.112.112.112` | `2620:fe::fe`, `2620:fe::9` | `dns.quad9.net` |
+| Google Public DNS | `8.8.8.8`, `8.8.4.4` | `2001:4860:4860::8888`, `2001:4860:4860::8844` | `dns.google` |
+
+The providers publish these [Cloudflare addresses](https://developers.cloudflare.com/1.1.1.1/ip-addresses/), [Quad9 settings](https://docs.quad9.net/services/#9999-secure), and [Google addresses](https://developers.google.com/speed/public-dns/docs/using#google_public_dns_ip_addresses). Cloudflare documents its [DoT hostname](https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-tls/#how-it-works). Google documents its [encrypted endpoints](https://developers.google.com/speed/public-dns/docs/secure-transports#endpoints). Quad9 includes its encrypted endpoints in the service table.
+
+For Cloudflare Families, the malware-filtering IPv4 pair is `1.1.1.2` and `1.0.0.2`. The malware-and-adult-content pair is `1.1.1.3` and `1.0.0.3`. Use the corresponding service instructions for encrypted DNS. The standard service's endpoint does not select a Families filter.
+
+An ordinary DNS address field accepts an IP address. A DoT hostname field requires the provider hostname. A custom DoH field requires a provider-supported HTTPS endpoint. Entering an IP address alone does not establish encryption. Our [DoH and DoT comparison](/en/blog/dns-over-https-vs-dns-over-tls/) explains the difference.
 
 Read privacy commitments as policies with defined scope. Cloudflare describes limited resolver logs, deletion commitments, and an exception for sampled network packets. Cloudflare also describes APNIC's access to anonymized query metadata. These qualifications make [the published policy](https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/) more informative than a blanket “no logs” label.
 
@@ -81,9 +93,33 @@ Quad9's [privacy policy](https://quad9.net/privacy/policy/) distinguishes normal
 
 For validation, Google explicitly documents [DNSSEC support](https://developers.google.com/speed/public-dns/docs/security#dnssec). Quad9 documents DNSSEC failures in its troubleshooting guidance. Check the chosen variant's current documentation rather than assuming that every address from one operator has identical behavior.
 
-Performance requires a local trial. Measure lookup behavior on the network that will use the service, at more than one time. Compare normal application use alongside DNS timings. This guide supplies no measured basis for declaring one provider universally faster.
+## Your requirements determine which resolver enters the trial
 
-A useful trial includes repeated queries and names that the client has not recently requested. Cached answers can make a repeated lookup look fast. Record failures as carefully as response times. A small timing advantage has little practical value if required applications stop resolving names.
+![The selection process compares policy, transport, and local results.](../../assets/choose-public-dns-resolver-05-choice-steps.jpg)
+
+Policy comes first, supported transport comes second, and local results settle the final choice. Apply the following checks before changing a router.
+
+| Requirement | Candidate to test | Acceptance check |
+| --- | --- | --- |
+| Public DNS without content filtering | Cloudflare standard or Google Public DNS | Required public names resolve and the data policy fits |
+| Threat blocking | Quad9 secure or Cloudflare Families malware service | The exact filter works and the correction process is acceptable |
+| Adult-content filtering | Cloudflare Families adult-content service | The intended category filter works on the tested device |
+| Encrypted lookups | A documented DoH or DoT endpoint supported by the client | The configured path uses encryption and has acceptable fallback |
+| Workplace internal names | The administrator's approved configuration | Required internal names still resolve through the approved path |
+
+A household can follow a simple sequence:
+
+1. Write down the required filtering policy.
+2. Choose two candidates that meet the same requirement.
+3. Check the client's supported encrypted transport.
+4. Test both candidates on the same device and connection.
+5. Keep the candidate that meets the requirements reliably.
+
+Performance requires a local trial at more than one time. Google's [performance explanation](https://developers.google.com/speed/public-dns/docs/performance#introduction_causes_and_mitigations_of_dns_latency) separates network delay from cache misses. A name new to your device can already exist in a public resolver's cache. A first query therefore does not prove an empty resolver cache.
+
+Record the hostname, record type, selected service, transport, response code, lookup duration, time, and network. Separate first-query results from repeated-query results. Compare failures before small timing differences. The guide provides no measurements that establish a universally fastest DNS server.
+
+A DNS speed test measures lookup behavior. Keep application outcomes in a separate column and test the applications you actually need. Readers comparing gaming results can use the [local DNS benchmark guide](/en/blog/benchmark-dns-for-gaming/) for the detailed measurement procedure.
 
 ## Filtering and validation require different recovery decisions
 
@@ -147,4 +183,7 @@ All sources below were fetched on 2026-10-21 UTC. Product policies and platform 
 - IETF: [RFC 4033](https://www.rfc-editor.org/rfc/rfc4033.html#section-4), sections 3–5 and 12.
 - IETF: [RFC 7858](https://www.rfc-editor.org/rfc/rfc7858.html#section-1), introduction and TLS sessions.
 - IETF: [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034.html#section-5.3.3), resolver algorithm and cache behavior.
+- Google: [Performance benefits](https://developers.google.com/speed/public-dns/docs/performance), network latency and cache misses.
+- Cloudflare: [DNS over TLS](https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-tls/), standard-service hostname.
+- Google: [Secure transports](https://developers.google.com/speed/public-dns/docs/secure-transports#endpoints), DoH and DoT endpoints.
 - Google: [Troubleshooting](https://developers.google.com/speed/public-dns/docs/troubleshooting), domain failures and incorrect answers.
