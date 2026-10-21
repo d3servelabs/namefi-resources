@@ -60,3 +60,7 @@ The October 20, 2026 pilot continues `top-data-availability-approaches.md` at se
 The comparison distinguishes publication guarantees, historical retrieval, committee trust, and external DA settlement integration.
 The text has primary-source and independent technical reviews. The article includes a cover and four mechanism illustrations.
 The batch also publishes Mexican Spanish brandable-domain examples and a Korean domain-versus-hosting guide.
+
+## The October continuation adds ten English comparisons
+
+The October 21, 2026 batch continues the existing Blockchain Concepts plan at orders 100–190. The articles compare EVM-compatible chains, account-abstraction standards, FHE projects, ZK rollups, modular DA providers, rollup frameworks, restaking, oracle networks, interoperability and DePIN. Current-status checks distinguish live products, legacy systems and planned features. Each manuscript has a primary-source record and observed writing-session token boundaries under `editorial/`. Covers and four section illustrations per article use the repository house style.

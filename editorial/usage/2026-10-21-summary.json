@@ -1,0 +1,93 @@
+{
+  "articles": 10,
+  "scope": "Sum of measured dedicated-writer intervals only; excludes shared coordinator work, images and publication.",
+  "totals": {
+    "input_tokens": 10537968,
+    "cached_input_tokens": 9889792,
+    "output_tokens": 73127,
+    "reasoning_output_tokens": 2895,
+    "total_tokens": 10611095
+  },
+  "per_article": [
+    {
+      "article": "top-account-abstraction-standards",
+      "input_tokens": 408321,
+      "cached_input_tokens": 374656,
+      "output_tokens": 5936,
+      "reasoning_output_tokens": 163,
+      "total_tokens": 414257
+    },
+    {
+      "article": "top-depin-networks",
+      "input_tokens": 1552019,
+      "cached_input_tokens": 1466624,
+      "output_tokens": 10227,
+      "reasoning_output_tokens": 620,
+      "total_tokens": 1562246
+    },
+    {
+      "article": "top-evm-compatible-chains",
+      "input_tokens": 1072281,
+      "cached_input_tokens": 1006464,
+      "output_tokens": 6911,
+      "reasoning_output_tokens": 369,
+      "total_tokens": 1079192
+    },
+    {
+      "article": "top-fhe-projects",
+      "input_tokens": 996026,
+      "cached_input_tokens": 943232,
+      "output_tokens": 7472,
+      "reasoning_output_tokens": 265,
+      "total_tokens": 1003498
+    },
+    {
+      "article": "top-interoperability-bridges",
+      "input_tokens": 648804,
+      "cached_input_tokens": 590464,
+      "output_tokens": 6058,
+      "reasoning_output_tokens": 134,
+      "total_tokens": 654862
+    },
+    {
+      "article": "top-modular-data-availability-layers",
+      "input_tokens": 1643592,
+      "cached_input_tokens": 1536768,
+      "output_tokens": 7865,
+      "reasoning_output_tokens": 433,
+      "total_tokens": 1651457
+    },
+    {
+      "article": "top-oracle-networks",
+      "input_tokens": 573844,
+      "cached_input_tokens": 537984,
+      "output_tokens": 6246,
+      "reasoning_output_tokens": 84,
+      "total_tokens": 580090
+    },
+    {
+      "article": "top-restaking-shared-security",
+      "input_tokens": 1885315,
+      "cached_input_tokens": 1792512,
+      "output_tokens": 8550,
+      "reasoning_output_tokens": 382,
+      "total_tokens": 1893865
+    },
+    {
+      "article": "top-rollup-frameworks",
+      "input_tokens": 759382,
+      "cached_input_tokens": 704512,
+      "output_tokens": 6032,
+      "reasoning_output_tokens": 87,
+      "total_tokens": 765414
+    },
+    {
+      "article": "top-zk-rollups",
+      "input_tokens": 998384,
+      "cached_input_tokens": 936576,
+      "output_tokens": 7830,
+      "reasoning_output_tokens": 358,
+      "total_tokens": 1006214
+    }
+  ]
+}

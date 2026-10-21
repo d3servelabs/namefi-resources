@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "article": "top-account-abstraction-standards",
+  "session_id": "01a15f64-d05a-74b1-8839-c7c4fc937553",
+  "agent_path": "/root/write_aa",
+  "models_observed": [
+    "gpt-6.1-sol"
+  ],
+  "measurement": "Actual emitted cumulative Codex token_count boundaries, independently matched to the local session log.",
+  "scope": "Dedicated writer research, drafting, evidence notes and textual review. Repeated inputs and tool context count. Shared coordinator review, images, validation, GitHub and deployment are separate overhead.",
+  "boundaries": [
+    {
+      "phase": "before_research",
+      "timestamp": "2026-10-21T16:57:01.410Z",
+      "cumulative": {
+        "input_tokens": 197430,
+        "cached_input_tokens": 175360,
+        "output_tokens": 451,
+        "reasoning_output_tokens": 7,
+        "total_tokens": 197881
+      }
+    },
+    {
+      "phase": "after_manuscript_review",
+      "timestamp": "2026-10-21T16:59:37.777Z",
+      "cumulative": {
+        "input_tokens": 605751,
+        "cached_input_tokens": 550016,
+        "output_tokens": 6387,
+        "reasoning_output_tokens": 170,
+        "total_tokens": 612138
+      }
+    }
+  ],
+  "combined_delta": {
+    "input_tokens": 408321,
+    "cached_input_tokens": 374656,
+    "output_tokens": 5936,
+    "reasoning_output_tokens": 163,
+    "total_tokens": 414257
+  },
+  "research_delta": null,
+  "writing_and_text_review_delta": null,
+  "accounting": "Cached input is a subset of input. Reasoning output is a subset of output. Total equals input plus output; subsets are not added twice. Boundaries exclude subsequent accounting and handoff calls. These are not subscription-percentage or invoice measurements.",
+  "phase_split_limit": "No middle boundary was captured; separate research and writing actuals are unavailable."
+}

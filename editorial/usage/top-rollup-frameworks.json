@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "article": "top-rollup-frameworks",
+  "session_id": "01a15f6a-c9d8-7d11-99f5-9f7ee15857d0",
+  "agent_path": "/root/write_frameworks",
+  "models_observed": [
+    "gpt-6.1-sol"
+  ],
+  "measurement": "Actual emitted cumulative Codex token_count boundaries, independently matched to the local session log.",
+  "scope": "Dedicated writer research, drafting, evidence notes and textual review. Repeated inputs and tool context count. Shared coordinator review, images, validation, GitHub and deployment are separate overhead.",
+  "boundaries": [
+    {
+      "phase": "before_research",
+      "timestamp": "2026-10-21T17:03:33.609Z",
+      "cumulative": {
+        "input_tokens": 212586,
+        "cached_input_tokens": 189056,
+        "output_tokens": 520,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 213106
+      }
+    },
+    {
+      "phase": "after_research_before_writing",
+      "timestamp": "2026-10-21T17:04:19.227Z",
+      "cumulative": {
+        "input_tokens": 745103,
+        "cached_input_tokens": 671744,
+        "output_tokens": 1780,
+        "reasoning_output_tokens": 40,
+        "total_tokens": 746883
+      }
+    },
+    {
+      "phase": "after_manuscript_review",
+      "timestamp": "2026-10-21T17:06:21.079Z",
+      "cumulative": {
+        "input_tokens": 971968,
+        "cached_input_tokens": 893568,
+        "output_tokens": 6552,
+        "reasoning_output_tokens": 87,
+        "total_tokens": 978520
+      }
+    }
+  ],
+  "combined_delta": {
+    "input_tokens": 759382,
+    "cached_input_tokens": 704512,
+    "output_tokens": 6032,
+    "reasoning_output_tokens": 87,
+    "total_tokens": 765414
+  },
+  "research_delta": {
+    "input_tokens": 532517,
+    "cached_input_tokens": 482688,
+    "output_tokens": 1260,
+    "reasoning_output_tokens": 40,
+    "total_tokens": 533777
+  },
+  "writing_and_text_review_delta": {
+    "input_tokens": 226865,
+    "cached_input_tokens": 221824,
+    "output_tokens": 4772,
+    "reasoning_output_tokens": 47,
+    "total_tokens": 231637
+  },
+  "accounting": "Cached input is a subset of input. Reasoning output is a subset of output. Total equals input plus output; subsets are not added twice. Boundaries exclude subsequent accounting and handoff calls. These are not subscription-percentage or invoice measurements.",
+  "phase_split_limit": null
+}
