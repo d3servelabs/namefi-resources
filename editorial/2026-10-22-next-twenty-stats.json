@@ -1,6 +1,6 @@
 {
   "method": "English lexical word groups after removing frontmatter, sources, fenced code, image syntax and link destinations. Inline code and numeric examples remain.",
-  "body_lexical_words": 30959,
+  "body_lexical_words": 30978,
   "articles": [
     {
       "slug": "icann-domain-lookup",
@@ -72,7 +72,7 @@
     },
     {
       "slug": "llms-txt-agents-md-robots-txt",
-      "body_lexical_words": 1528
+      "body_lexical_words": 1547
     },
     {
       "slug": "ttl-and-dns-propagation",

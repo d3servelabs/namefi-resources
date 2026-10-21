@@ -46,11 +46,9 @@ The [AGENTS.md project describes a predictable place for coding-agent context an
 
 The [Robots Exclusion Protocol defines crawler rules](https://www.rfc-editor.org/rfc/rfc9309.html#section-1). The protocol explicitly states that those rules do not provide access authorization. A crawler that ignores the rules can still request a public URL unless another control blocks the request.
 
-| File | Primary question | Typical location | Important limit |
-| --- | --- | --- | --- |
-| llms.txt | Which documentation should an agent read? | Website root or documentation path | Does not grant API access |
-| AGENTS.md | How should a coding agent work in this project? | Repository root or relevant subdirectory | Depends on client instruction handling |
-| robots.txt | Which paths should a cooperating crawler request? | Origin root | Does not secure private content |
+- **llms.txt** answers which documentation an agent should read. The file usually lives at the website root or a documentation path. The file does not grant API access.
+- **AGENTS.md** explains how a coding agent should work in the project. The file lives at the repository root or a relevant subdirectory. Client instruction handling determines the effect.
+- **robots.txt** describes which paths a cooperating crawler should request. The file lives at the origin root. The file does not secure private content.
 
 Consider a hypothetical registrar with public documentation at docs.example.com and an application at app.example.com. The documentation reading guide can help an agent locate an API reference. The application must still authenticate and authorize registration requests.
 

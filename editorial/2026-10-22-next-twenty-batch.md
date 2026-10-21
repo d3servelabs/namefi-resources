@@ -60,7 +60,7 @@ The coordinator curated related articles and glossary terms for each manuscript.
 
 Data validation passed with thirty-seven existing warnings. Markdown lint passed. All eighteen deterministic link fixtures passed. The full audit found zero broken links, missing locale prefixes, locale mismatches or relationship mismatches. The existing 512 missing-translation fallbacks remain accepted warnings. Twenty manuscripts compiled with MDX and GFM tables. The 390-pixel text preview found no page overflow or section-count error. The preview does not replace production-renderer verification.
 
-The manuscripts contain 30,959 lexical body words under the committed counting method. Source sections, frontmatter, image syntax, code blocks and link destinations are excluded. Numeric examples and inline code remain.
+The manuscripts contain 30,978 lexical body words under the committed counting method. Source sections, frontmatter, image syntax, code blocks and link destinations are excluded. Numeric examples and inline code remain.
 
 ## The final visual audit identifies all one hundred assets
 
@@ -69,3 +69,7 @@ The coordinator visually inspected twenty covers and eighty section illustration
 ## The complete local preview passes the publication checks
 
 The final twenty manuscripts compile with MDX and GFM tables. All eighty inline images decode in the 390-pixel preview. Every page retains five article headings without page overflow. Final data validation, Markdown lint, eighteen link fixtures and the full link audit pass. The existing thirty-seven data warnings and 512 translation-fallback warnings remain unchanged. The preview remains a local check, not production publication evidence.
+
+## The real mobile renderer exposed one comparison-table overflow
+
+The first complete development build passed twenty page checks and all one hundred image hashes. The actual 390-pixel browser review decoded all one hundred images and found one page overflow. The four-column llms.txt comparison exceeded the viewport by twenty-four pixels. The coordinator replaced that comparison with three concise list items. The replacement preserves each file's purpose, location and access-control limit. No other page overflow appeared. This integration correction remains outside the recorded writer intervals. The correction leaves all image hashes and writer counters unchanged.
