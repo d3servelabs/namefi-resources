@@ -1,0 +1,484 @@
+[
+  {
+    "fetched_utc": "2026-10-21T23:50:44.582818+00:00",
+    "api_version": "v26",
+    "request": {
+      "language": "languageConstants/1001",
+      "geoTargetConstants": [
+        "geoTargetConstants/2276"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "aaaa record",
+        "aaaa eintrag",
+        "dns aaaa eintrag",
+        "aaaa record löschen"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "aaaa record",
+          "keywordMetrics": {
+            "competition": "LOW",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "260"
+              }
+            ],
+            "avgMonthlySearches": "260",
+            "competitionIndex": "2"
+          }
+        },
+        {
+          "text": "aaaa eintrag",
+          "keywordMetrics": {
+            "competition": "LOW",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "20"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "20"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "10"
+              }
+            ],
+            "avgMonthlySearches": "10",
+            "competitionIndex": "0"
+          }
+        },
+        {
+          "text": "dns aaaa eintrag",
+          "keywordMetrics": {
+            "competition": "LOW",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "10"
+              }
+            ],
+            "avgMonthlySearches": "10",
+            "competitionIndex": "0"
+          }
+        },
+        {
+          "text": "aaaa record löschen",
+          "keywordMetrics": {
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "0"
+              }
+            ],
+            "avgMonthlySearches": "10"
+          }
+        }
+      ]
+    },
+    "decision": "DEFER"
+  },
+  {
+    "fetched_utc": "2026-10-21T23:50:45.008686+00:00",
+    "api_version": "v26",
+    "request": {
+      "language": "languageConstants/1005",
+      "geoTargetConstants": [
+        "geoTargetConstants/2392"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "aaaaレコード",
+        "aaaaレコードとは",
+        "aaaaレコード 設定",
+        "aaaaレコード 削除"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "aaaa レコード",
+          "keywordMetrics": {
+            "competition": "LOW",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "320"
+              }
+            ],
+            "avgMonthlySearches": "320",
+            "competitionIndex": "1"
+          },
+          "closeVariants": [
+            "aaaaレコード"
+          ]
+        },
+        {
+          "text": "aaaa レコード と は",
+          "keywordMetrics": {
+            "competition": "LOW",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "40"
+              }
+            ],
+            "avgMonthlySearches": "30",
+            "competitionIndex": "4"
+          },
+          "closeVariants": [
+            "aaaaレコードとは"
+          ]
+        },
+        {
+          "text": "aaaa レコード 設定",
+          "closeVariants": [
+            "aaaaレコード 設定"
+          ]
+        },
+        {
+          "text": "aaaa レコード 削除",
+          "closeVariants": [
+            "aaaaレコード 削除"
+          ]
+        }
+      ]
+    },
+    "decision": "DEFER"
+  }
+]

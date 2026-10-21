@@ -54,6 +54,8 @@ Compare addresses carefully when a DNS dashboard changes the display format. A s
 
 One AAAA record stores one IPv6 address. A hostname can have multiple AAAA records when the service uses several IPv6 addresses. [RFC 3596 describes both the single-address format and multiple-record use](https://www.rfc-editor.org/rfc/rfc3596.html#section-2). Treat every published destination as a destination that requires testing.
 
+An AAAA record can share a hostname with an A record. An ordinary CNAME cannot share its owner name with an AAAA record. [RFC 2181 defines the CNAME exclusivity rule](https://www.rfc-editor.org/rfc/rfc2181.html#section-10.1). If the provider requests a CNAME, follow the provider’s alias instructions. Do not add an AAAA record beside that CNAME. See the [CNAME and A comparison](/en/blog/cname-vs-a-record/) for alias configuration details.
+
 The hostname matters as much as the value. A record for `www.example.com` does not automatically configure `example.com`. Make an inventory of the names visitors use before editing records. Include the bare domain and any application subdomains that the deployment actually serves.
 
 A successful AAAA lookup also says nothing about the transport used for the lookup. A [DNS resolver](/en/glossary/dns-resolver/) can retrieve AAAA data over IPv4. [RFC 3596 explicitly separates DNS transport from the returned address family](https://www.rfc-editor.org/rfc/rfc3596.html#section-1). Therefore, seeing an IPv6 address in a lookup does not demonstrate working IPv6 connectivity from the testing computer.
@@ -99,7 +101,18 @@ Begin with read-only queries. On a computer with `dig`, run `dig www.example.com
 
 The [BIND dig manual documents type-specific queries and server selection](https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility). Keep the complete response during diagnosis. `+short` provides compact output, but compact output removes useful context. A blank compact answer does not identify the cause.
 
-Inspect the response status and answer section. `NXDOMAIN` indicates a missing name. A response can instead indicate that the name exists without records of the requested type. [RFC 2308 distinguishes name errors from missing-type answers](https://www.rfc-editor.org/rfc/rfc2308.html#section-2). Neither result means that the web server rejected a connection.
+Inspect the response status and answer section together. [RFC 2308 distinguishes name errors from missing-type answers](https://www.rfc-editor.org/rfc/rfc2308.html#section-2). Neither result means that the web server rejected a connection.
+
+| Full AAAA response | Meaning | Next check |
+| --- | --- | --- |
+| Answer includes AAAA | The answer supplies an IPv6 address | Compare every address with the provider’s instructions |
+| `NOERROR`, no AAAA, SOA in authority | The response can indicate NODATA for the requested type | Check the queried name and any alias target |
+| `NXDOMAIN` | The queried name, or the final alias target, does not exist | Inspect spelling and the complete CNAME chain |
+| `SERVFAIL` | The server could not process the query | Diagnose the DNS failure before changing website addresses |
+
+`NODATA` describes a response condition, not a separate status code. A referral can also contain `NOERROR` and no answer. Check the authority section before concluding that the hostname lacks AAAA data. [RFC 2308, section 2.2, explains the distinction](https://www.rfc-editor.org/rfc/rfc2308.html#section-2.2). [RFC 1035 defines SERVFAIL as a server failure](https://www.rfc-editor.org/rfc/rfc1035.html#section-4.1.1).
+
+A CNAME in an AAAA answer identifies an alias. Check the final target before adding or deleting records at the original name. [RFC 2308 explains negative responses through CNAME chains](https://www.rfc-editor.org/rfc/rfc2308.html#section-2.1).
 
 Next, compare the published answer with the intended configuration. If necessary, query the service's authoritative [nameserver](/en/glossary/nameserver/) using `dig @ns1.example.net. www.example.com. AAAA`. The server name here is a placeholder. Obtain the actual authoritative server from the domain's verified DNS configuration.
 
@@ -142,7 +155,8 @@ Finish by checking the application again from an IPv6-capable network and the ex
 ## Sources and further reading
 
 - [RFC 3596: DNS Extensions to Support IPv6](https://www.rfc-editor.org/rfc/rfc3596.html#section-2), sections 1–2.4. Fetched 2026-10-21.
-- [RFC 1035: Domain Names, Implementation and Specification](https://www.rfc-editor.org/rfc/rfc1035.html#section-3.2.1), sections 3.2.1, 3.4.1, and 5.1. Fetched 2026-10-21.
+- [RFC 2181: Clarifications to the DNS Specification](https://www.rfc-editor.org/rfc/rfc2181.html#section-10.1), section 10.1. Fetched 2026-10-21.
+- [RFC 1035: Domain Names, Implementation and Specification](https://www.rfc-editor.org/rfc/rfc1035.html#section-3.2.1), sections 3.2.1, 3.4.1, 4.1.1, and 5.1. Fetched 2026-10-21.
 - [RFC 3849: IPv6 Address Prefix Reserved for Documentation](https://www.rfc-editor.org/rfc/rfc3849.html#section-2), sections 2–3. Fetched 2026-10-21.
 - [RFC 5952: IPv6 Address Text Representation](https://www.rfc-editor.org/rfc/rfc5952.html#section-4), sections 4.1–4.3. Fetched 2026-10-21.
 - [RFC 4213: Basic Transition Mechanisms](https://www.rfc-editor.org/rfc/rfc4213.html#section-2), sections 2–2.2. Fetched 2026-10-21.

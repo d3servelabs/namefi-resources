@@ -1,0 +1,88 @@
+{
+  "topic": "G10",
+  "model_requested": "gpt-image-2",
+  "quality_requested": "high",
+  "generation_attempts": [
+    {
+      "created": 1792626796,
+      "usage": {
+        "input_tokens": 734,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 734
+        },
+        "output_tokens": 3401,
+        "output_tokens_details": {
+          "image_tokens": 3401,
+          "text_tokens": 0
+        },
+        "total_tokens": 4135
+      },
+      "model": null,
+      "size": "1216x640",
+      "quality": "high",
+      "error": null
+    }
+  ],
+  "attempt_count": 1,
+  "regenerations": 0,
+  "images": [
+    {
+      "path": "content/assets/aaaa-record-explained-01-record-fields.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "4c605aaa77a65a3709a49f7af36bbe6b7bd2ff1bdcf4af0274cde89bce089b30",
+      "bytes": 31621,
+      "action": "reused",
+      "visual_qc": "PASS: correct labels, no cutoff, official top-right logo, cream dot-grid background; cover bottom reserve empty"
+    },
+    {
+      "path": "content/assets/aaaa-record-explained-02-dual-stack-readiness.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "ea02606fefc7e060fcb9220f976c0c72a4bb805c44c4779d4583085d968904d6",
+      "bytes": 34534,
+      "action": "reused",
+      "visual_qc": "PASS: correct labels, no cutoff, official top-right logo, cream dot-grid background; cover bottom reserve empty"
+    },
+    {
+      "path": "content/assets/aaaa-record-explained-03-separate-tests.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "4a7c433f51a0036941c99cd80da8e17c7b0d9e205bafae370bf6c64db27b5b01",
+      "bytes": 37801,
+      "action": "reused",
+      "visual_qc": "PASS: correct labels, no cutoff, official top-right logo, cream dot-grid background; cover bottom reserve empty"
+    },
+    {
+      "path": "content/assets/aaaa-record-explained-04-targeted-recovery.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "7e66901669cbcaa192bf4afafff76618c1b06ca8ae6f550268acd9a8bc667d84",
+      "bytes": 39526,
+      "action": "reused",
+      "visual_qc": "PASS: correct labels, no cutoff, official top-right logo, cream dot-grid background; cover bottom reserve empty"
+    },
+    {
+      "path": "content/assets/aaaa-record-explained-og.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "f139ee3a05a9cf7390c145762049d983be3e4b37788b0a8193c7faea37b407ac",
+      "bytes": 93223,
+      "action": "generated",
+      "visual_qc": "PASS: correct labels, no cutoff, official top-right logo, cream dot-grid background; cover bottom reserve empty"
+    }
+  ],
+  "returned_model_note": "API model field was absent; requested model retained separately.",
+  "historical_usage_note": "Reused-image historical generation usage unavailable; no new usage assigned to reused images."
+}
