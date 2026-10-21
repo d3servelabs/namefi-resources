@@ -1,0 +1,70 @@
+{
+  "source_id": "G29",
+  "decision_utc": "2026-10-21T23:48:00Z",
+  "source_keywords_note": "The source slate mixes provider navigation, country-code lookups and privacy/history intent. The update serves public-data boundaries, not vendor navigation.",
+  "selected": [],
+  "candidates": [
+    {
+      "locale": "de",
+      "region": "DE",
+      "decision": "defer",
+      "evidence": "ads-de-DE.json",
+      "reason": "The broad owner-finding term returns 110 average monthly searches, while whois datenschutz returns 10. The target-language result set favors lookup tools and service privacy instructions. This narrow gTLD field-policy guide needs stronger distinct policy demand before adding ongoing German maintenance.",
+      "serp_queries": [
+        "whois datenschutz domain inhaber"
+      ],
+      "serp_primary_urls": [
+        "https://www.dynadot.com/de/domain/whois",
+        "https://support.squarespace.com/hc/de/articles/205812438-Whois-Datenschutz"
+      ]
+    },
+    {
+      "locale": "es",
+      "region": "MX",
+      "decision": "defer",
+      "evidence": "ads-es-MX.json",
+      "reason": "The broad saber propietario dominio term returns 10 average monthly searches. The three privacy/history/RDAP phrases return no metrics. Missing metrics remain unknown. Results favor lookup and privacy services, with Mexican .mx-specific results beyond this guide scope.",
+      "serp_queries": [
+        "whois privacidad propietario dominio México",
+        "site.mx whois privacidad dominio",
+        "saber propietario dominio whois"
+      ],
+      "serp_primary_urls": [
+        "https://www.icann.org/resources/pages/search-2013-03-22-es",
+        "https://www.dominios.mx/docs/Aviso_de_Privacidad.pdf"
+      ]
+    }
+  ],
+  "serp_limit": "Live search queries indicate target-language intent. The search tool does not guarantee a country-located Google SERP. This limitation favors deferral, not an unsupported selection.",
+  "ads_method": {
+    "account": "Namefi MCC 3505976042",
+    "api": "Google Ads v26 generateKeywordHistoricalMetrics",
+    "period": "October 2025 through September 2026",
+    "network": "GOOGLE_SEARCH",
+    "geo_language_separate": true,
+    "close_variants": "No closeVariants returned in either response. All returned monthly series remain in companion JSON.",
+    "missing_metrics": "Unknown, not zero"
+  },
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "topic": {
+      "source_id": "G29",
+      "slug": "whois-and-rdap-public-data",
+      "path_match": "/blog/whois-and-rdap-public-data/",
+      "matched_rows": 0,
+      "observed_impressions": 0,
+      "observed_clicks": 0,
+      "countries": {}
+    },
+    "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand."
+  },
+  "existing_translations": [],
+  "other_locales": "Not selected. No article-specific regional evidence supports expansion to the remaining locales in this pass.",
+  "expected_urls": [
+    "https://namefi.io/r/en/blog/whois-and-rdap-public-data/"
+  ],
+  "canonical_contract": "One real English page. Existing renderer supplies self canonical and English x-default. No new locale alternates."
+}
