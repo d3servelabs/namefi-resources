@@ -17,7 +17,7 @@ relatedArticles:
   - /en/blog/top-oracle-networks/
   - /en/blog/top-rollup-frameworks/
   - /en/blog/top-zk-rollups/
-  - /en/blog/onchain-domain-custody-and-recovery/
+  - /en/blog/top-intent-solver-networks/
 relatedGlossary:
   - /en/glossary/cross-chain-bridge/
   - /en/glossary/blockchain/

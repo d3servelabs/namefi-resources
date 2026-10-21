@@ -1,0 +1,122 @@
+[
+  {
+    "article": "top-intent-solver-networks",
+    "lexical_body_words_excluding_code_images_sources": 1859,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "choose-public-dns-resolver",
+    "lexical_body_words_excluding_code_images_sources": 1803,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "aaaa-record-explained",
+    "lexical_body_words_excluding_code_images_sources": 1810,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "check-domain-age",
+    "lexical_body_words_excluding_code_images_sources": 1839,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "fully-qualified-domain-name",
+    "lexical_body_words_excluding_code_images_sources": 1768,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "free-domain-offers",
+    "lexical_body_words_excluding_code_images_sources": 1825,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "renew-ssl-certificate",
+    "lexical_body_words_excluding_code_images_sources": 1772,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "dns-record-types-guide",
+    "lexical_body_words_excluding_code_images_sources": 1795,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "dns-over-https-vs-dns-over-tls",
+    "lexical_body_words_excluding_code_images_sources": 1815,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "reverse-dns-ptr-records",
+    "lexical_body_words_excluding_code_images_sources": 1762,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "nslookup-specific-dns-server",
+    "lexical_body_words_excluding_code_images_sources": 1812,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "cname-vs-a-record",
+    "lexical_body_words_excluding_code_images_sources": 1705,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "change-domain-nameservers",
+    "lexical_body_words_excluding_code_images_sources": 1821,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "wildcard-dns-records",
+    "lexical_body_words_excluding_code_images_sources": 1616,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "domain-privacy-vs-proxy",
+    "lexical_body_words_excluding_code_images_sources": 1800,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "root-dns-servers",
+    "lexical_body_words_excluding_code_images_sources": 1797,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "domain-forwarding-redirects",
+    "lexical_body_words_excluding_code_images_sources": 1842,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "custom-domain-github-pages",
+    "lexical_body_words_excluding_code_images_sources": 1647,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "primary-secondary-dns",
+    "lexical_body_words_excluding_code_images_sources": 1718,
+    "body_sections": 4,
+    "inline_images": 4
+  },
+  {
+    "article": "dhcp-vs-dns",
+    "lexical_body_words_excluding_code_images_sources": 1802,
+    "body_sections": 4,
+    "inline_images": 4
+  }
+]

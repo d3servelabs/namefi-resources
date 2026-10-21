@@ -1,0 +1,206 @@
+{
+  "source_snapshot": "e9d64bc424047e4f986ab5bef5207c086778e6d5",
+  "source_branch": "editorial/topic-slate-2026-09",
+  "assignments": [
+    {
+      "order": 1,
+      "source_id": "BC",
+      "slug": "top-intent-solver-networks",
+      "brief": "Intent and solver networks: compare signed intent, solver execution, settlement and recovery",
+      "existing_title": "Top intent/solver networks",
+      "source": "docs/blockchain-concepts-roundups-plan.md",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_01"
+    },
+    {
+      "order": 2,
+      "source_id": "G01",
+      "slug": "choose-public-dns-resolver",
+      "brief": "Choose a public DNS resolver by privacy, validation, filtering and failure behavior",
+      "existing_title": "Which public DNS resolver should you actually use?",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_02"
+    },
+    {
+      "order": 3,
+      "source_id": "G10",
+      "slug": "aaaa-record-explained",
+      "brief": "AAAA records connect names to IPv6 addresses",
+      "existing_title": "The AAAA record, explained without the IPv6 lecture",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_03"
+    },
+    {
+      "order": 4,
+      "source_id": "G27",
+      "slug": "check-domain-age",
+      "brief": "Check domain age without confusing registration, website and ownership history",
+      "existing_title": "How old is this domain, and why anyone cares",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_04"
+    },
+    {
+      "order": 5,
+      "source_id": "G35",
+      "slug": "fully-qualified-domain-name",
+      "brief": "Fully qualified domain names distinguish absolute names from search-list guesses",
+      "existing_title": "Fully qualified domain name: the part most people get wrong",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_05"
+    },
+    {
+      "order": 6,
+      "source_id": "G21",
+      "slug": "free-domain-offers",
+      "brief": "Free domain offers trade upfront savings for eligibility, renewals and control",
+      "existing_title": "\"Free domain\" offers: what you give up to get one",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_06"
+    },
+    {
+      "order": 7,
+      "source_id": "G41",
+      "slug": "renew-ssl-certificate",
+      "brief": "Renew a TLS certificate without breaking validation or deployment",
+      "existing_title": "Renewing an SSL certificate before it takes your site down",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_07"
+    },
+    {
+      "order": 8,
+      "source_id": "G11",
+      "slug": "dns-record-types-guide",
+      "brief": "DNS record types perform different jobs in a practical zone",
+      "existing_title": "Every DNS record type, and when you actually need each",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_08"
+    },
+    {
+      "order": 9,
+      "source_id": "G17",
+      "slug": "dns-over-https-vs-dns-over-tls",
+      "brief": "DNS over HTTPS and DNS over TLS protect the resolver connection differently",
+      "existing_title": "DNS over HTTPS and DNS over TLS: what each actually hides",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_09"
+    },
+    {
+      "order": 10,
+      "source_id": "G15",
+      "slug": "reverse-dns-ptr-records",
+      "brief": "PTR records provide reverse DNS but do not establish ownership",
+      "existing_title": "Reverse DNS: what a PTR record proves and what it doesn't",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_10"
+    },
+    {
+      "order": 11,
+      "source_id": "G16",
+      "slug": "nslookup-specific-dns-server",
+      "brief": "Use nslookup against a specific server to isolate DNS answers",
+      "existing_title": "nslookup against a specific server, and why you'd want to",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_11"
+    },
+    {
+      "order": 12,
+      "source_id": "G12",
+      "slug": "cname-vs-a-record",
+      "brief": "CNAME and A records connect a name through different resolution paths",
+      "existing_title": "CNAME versus A record: the choice that breaks apex domains",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_12"
+    },
+    {
+      "order": 13,
+      "source_id": "G40",
+      "slug": "change-domain-nameservers",
+      "brief": "Change nameservers while preserving web and email service",
+      "existing_title": "Nameservers: what changing them actually does",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_13"
+    },
+    {
+      "order": 14,
+      "source_id": "G13",
+      "slug": "wildcard-dns-records",
+      "brief": "Wildcard DNS records match missing names under specific rules",
+      "existing_title": "Wildcard DNS records: what `*` really matches",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_14"
+    },
+    {
+      "order": 15,
+      "source_id": "G31",
+      "slug": "domain-privacy-vs-proxy",
+      "brief": "Domain privacy and proxy services protect different registration-data boundaries",
+      "existing_title": "Domain privacy and proxy services: what they hide from whom",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_15"
+    },
+    {
+      "order": 16,
+      "source_id": "G07",
+      "slug": "root-dns-servers",
+      "brief": "Root DNS servers direct resolvers toward top-level domains",
+      "existing_title": "Root nameservers: the thirteen addresses everything starts from",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_16"
+    },
+    {
+      "order": 17,
+      "source_id": "G38",
+      "slug": "domain-forwarding-redirects",
+      "brief": "Domain forwarding uses HTTP redirects after DNS resolution",
+      "existing_title": "URL forwarding and redirects: 301, 302, and domain masking",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_17"
+    },
+    {
+      "order": 18,
+      "source_id": "G39",
+      "slug": "custom-domain-github-pages",
+      "brief": "Connect a custom domain to GitHub Pages and verify HTTPS",
+      "existing_title": "Pointing a custom domain at GitHub Pages",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_18"
+    },
+    {
+      "order": 19,
+      "source_id": "G06",
+      "slug": "primary-secondary-dns",
+      "brief": "Primary and secondary DNS servers replicate authoritative zone data",
+      "existing_title": "Primary and secondary DNS: what the second box is for",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_19"
+    },
+    {
+      "order": 20,
+      "source_id": "G08",
+      "slug": "dhcp-vs-dns",
+      "brief": "DHCP configures network clients while DNS resolves names",
+      "existing_title": "DHCP and DNS: which one hands out what",
+      "source": "editorial/topic-slate-2-demand-first.html on editorial/topic-slate-2026-09",
+      "image_sections": 4,
+      "writer_agent": "/root/w20_20"
+    }
+  ]
+}

@@ -26,3 +26,7 @@ The images use the repository generators and the official Namefi logotype.
 ## The October continuation adds ten illustrated comparisons
 
 The October 21 batch uses ten `top-*` prefixes for the approved Blockchain Concepts continuation. Each prefix has a 1200 × 630 cover and four 1200 × 675 section illustrations. The source text and image manifest determine diagram meanings; visual checks reject unsupported compatibility scores, privacy guarantees and invented execution modes. The batch record documents regenerations.
+
+## The twenty-article continuation adds one hundred final images
+
+The next October 21 batch adds twenty covers at 1200 × 630 and eighty section illustrations at 1200 × 675. The batch record lists the article prefixes. The coordinator reviews every final image for text, framing, official-logo placement and factual diagram meaning. The image review manifest records corrections and final file hashes.
