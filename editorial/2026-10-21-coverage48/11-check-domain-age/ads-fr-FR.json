@@ -1,0 +1,103 @@
+{
+  "fetched_utc": "2026-10-21T23:56:03.620494+00:00",
+  "locale_region": "fr-FR",
+  "request": {
+    "language": "languageConstants/1002",
+    "geoTargetConstants": [
+      "geoTargetConstants/2250"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "âge domaine",
+      "vérifier âge nom de domaine",
+      "date création nom de domaine",
+      "comment connaître âge site internet"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "date création nom de domaine",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "30"
+            }
+          ],
+          "avgMonthlySearches": "40",
+          "competitionIndex": "16",
+          "lowTopOfPageBidMicros": "144259",
+          "highTopOfPageBidMicros": "1289292"
+        }
+      },
+      {
+        "text": "âge domaine"
+      },
+      {
+        "text": "vérifier âge nom de domaine"
+      },
+      {
+        "text": "comment connaître âge site internet"
+      }
+    ]
+  }
+}

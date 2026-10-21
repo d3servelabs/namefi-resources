@@ -38,6 +38,20 @@ The distinction matters when a seller advertises an “aged domain,” a website
 
 This guide explains how to collect the dates, resolve apparent contradictions, and write a conclusion that matches the evidence.
 
+## A quick domain age check starts with the registration event
+
+1. Enter the registered domain in [ICANN Lookup](https://lookup.icann.org/en).
+2. Find the domain's registration event and copy the complete timestamp.
+3. Calculate the interval from that timestamp to the checking date.
+4. Search the exact website address in the [Wayback Machine](https://web.archive.org/).
+5. Report registration age, observed website history, and supported owner tenure separately.
+
+ICANN provides a [free browser-based RDAP client](https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en). No purchase is necessary for that lookup.
+
+A domain age checker should identify the event behind the displayed age. Compare the result with the source record before relying on a summary.
+
+For example, “created” or “registered on” can describe registration in a tool's interface. Confirm the underlying event instead of assuming every interface uses identical labels.
+
 ## Registration data gives the domain a specific starting date
 
 ![Registration data gives the domain a specific starting date.](../../assets/check-domain-age-01-registration-date.jpg)
@@ -61,6 +75,24 @@ The [IANA event definitions](https://www.iana.org/assignments/rdap-json-values) 
 | `transfer` | Registrar-to-registrar transfer | Not an ownership timeline |
 | `expiration` | Scheduled or recorded removal time | Not the registration date |
 | `last update of RDAP database` | Database synchronization | Not the domain's birthday |
+
+![A registration event starts the age calculation, while update and expiration dates answer different questions.](../../assets/check-domain-age-05-event-selection.jpg)
+
+The following hypothetical extract places three events in one domain object. The event order does not determine the age calculation:
+
+```json
+{
+  "objectClassName": "domain",
+  "ldhName": "example.com",
+  "events": [
+    {"eventAction": "last changed", "eventDate": "2026-10-01T09:00:00Z"},
+    {"eventAction": "registration", "eventDate": "2018-04-10T12:00:00Z"},
+    {"eventAction": "expiration", "eventDate": "2027-04-10T12:00:00Z"}
+  ]
+}
+```
+
+Select `2018-04-10T12:00:00Z` for the registration-age calculation. The [RDAP event structure](https://datatracker.ietf.org/doc/html/rfc9083#section-4.5) associates each date with its own action.
 
 Record the exact event label and timestamp before calculating an age. Add the lookup date, source URL, and domain spelling. A screenshot helps preserve context, but retain the underlying text when the service provides it.
 
@@ -169,6 +201,16 @@ That conclusion gives another reviewer enough context to challenge the evidence.
 If new evidence changes a finding, update the finding and its source date. Keep earlier observations when the observations explain the discrepancy. A research record should show why the conclusion changed.
 
 A completed age check can end with uncertainty. The useful outcome is a defensible account of what each date means, followed by an appropriate next step.
+
+## Common age-checking questions need different evidence
+
+**Can a domain age checker establish the age of a page?** No. Registration data describes the domain object. Check the specific page's captures and dated publication evidence separately.
+
+**Does an update date show a sale?** No. IANA defines [`last changed` as an information change](https://www.iana.org/assignments/rdap-json-values). The date alone does not identify the change or buyer.
+
+**Can an archive capture predate the current registration?** Yes. Investigate deletion and registration continuity before combining the dates into one age.
+
+**Can a missing registration date prove that a domain is new?** No. Record the missing field and consult the responsible registry or registrar.
 
 ## Sources and further reading
 

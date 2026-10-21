@@ -1,0 +1,68 @@
+{
+  "requested_model": "gpt-image-2",
+  "quality": "high",
+  "new_attempts": 1,
+  "regenerations": 0,
+  "assets": [
+    {
+      "path": "content/assets/check-domain-age-01-registration-date.jpg",
+      "action": "reused",
+      "size": [
+        1200,
+        675
+      ],
+      "sha256": "72519dab591fbcc8285052072b91bf627da46416724965c1a303fdca3cce60dc",
+      "qc": "PASS: viewed final asset; labels and objects inside frame; official logo top-right on empty cream"
+    },
+    {
+      "path": "content/assets/check-domain-age-02-archive-gaps.jpg",
+      "action": "reused",
+      "size": [
+        1200,
+        675
+      ],
+      "sha256": "acbba3b704609f30e6024a07533a5805562d7241531bd1ed2dc4d2ec36e6d470",
+      "qc": "PASS: viewed final asset; labels and objects inside frame; official logo top-right on empty cream"
+    },
+    {
+      "path": "content/assets/check-domain-age-03-transfer-continuity.jpg",
+      "action": "reused",
+      "size": [
+        1200,
+        675
+      ],
+      "sha256": "0337dcf4bcf3684af7eb59c5fc572ac612b274406984dc7f05c6bd7dc6bd1a05",
+      "qc": "PASS: viewed final asset; labels and objects inside frame; official logo top-right on empty cream"
+    },
+    {
+      "path": "content/assets/check-domain-age-04-evidence-checklist.jpg",
+      "action": "reused",
+      "size": [
+        1200,
+        675
+      ],
+      "sha256": "398879926ec72cd87c1bebeae6b454f2b142d0c96bc5effb8ecdfb6e29f1269a",
+      "qc": "PASS: viewed final asset; labels and objects inside frame; official logo top-right on empty cream"
+    },
+    {
+      "path": "content/assets/check-domain-age-05-event-selection.jpg",
+      "action": "generated",
+      "size": [
+        1200,
+        675
+      ],
+      "sha256": "7f041550b09b2f107a6e4b9cbe5d96e1dd8b2e146388f3319c3238ea838e6ede",
+      "qc": "PASS: viewed final asset; labels and objects inside frame; official logo top-right on empty cream"
+    },
+    {
+      "path": "content/assets/check-domain-age-og.jpg",
+      "action": "reused",
+      "size": [
+        1200,
+        630
+      ],
+      "sha256": "72745289ebaa045fa5ea3c56fc0cbb1b470324817a7146d809c4c7d8ca820054",
+      "qc": "PASS: viewed final asset; text readable, all objects inside frame, official logo top-right; cover caption band clear"
+    }
+  ]
+}

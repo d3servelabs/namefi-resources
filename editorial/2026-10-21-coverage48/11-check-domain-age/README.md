@@ -1,0 +1,24 @@
+# The local package improves the existing domain-age guide
+
+- Topic: order 11, source G27, `check-domain-age`.
+- Branch: `codex/coverage48-11-check-domain-age`.
+- Worktree: `/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/codex-coverage48-11-check-domain-age`.
+- Base: `4ec5cb8f88ae9f08eba4e522f88c3ed0b59a305e`.
+- English action: update existing recent guide. The title, date and slug remain appropriate.
+- Additions: five-step lookup workflow, hypothetical RDAP field example, four direct questions and one field-selection illustration.
+- Source verification: nine reference URLs opened. Source notes record supported claims.
+- Translations: de/Germany, es/Spain and fr/France each DEFER. Evidence preserves exact Ads requests and monthly responses.
+- Existing translations: none. Other market pairs remain unassessed.
+- Generated asset: `content/assets/check-domain-age-05-event-selection.jpg`, 1200 × 675.
+- Reused assets: existing cover and four inline illustrations. The final contact sheet passed visual checks.
+- Image model and quality: requested gpt-image-2 high. API response omitted model identifier.
+- Image API usage: 463 input, 5488 output, 5951 total tokens. Attempt-specific sidecar preserves details.
+- Local sanity: data:validate passed, 13 tests, 37 existing coverage warnings, 0 locale mismatches, 0 relationship mismatches. lint:mdx passed.
+- Expected production URL: `https://namefi.io/r/en/blog/check-domain-age/`.
+- Expected development URL: `https://namefi.dev/r/en/blog/check-domain-age/`.
+- Canonical and alternate expectation: English self-canonical and English x-default. No new alternate locale files exist. Renderer behavior remains unchanged.
+- README assessment: existing directory descriptions remain accurate. No shared README changes are needed.
+- Remote actions: none. No PR exists for this topic. The hard remote gate remains closed.
+- Sanity log paths: `/private/tmp/namefi-stack48/11-check-domain-age/data-validate.log` and `lint-mdx.log`.
+- Source limitation: local-language web search did not expose a pinned country/device. Spanish and French competitor page opens failed. Translation decisions preserve these limits.
+- Usage limitation: phase work overlapped. The combined research-end/writing-start capture occurred after initial draft edits. Counters are actual cumulative observations, not exact isolated phase totals.
