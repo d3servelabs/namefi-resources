@@ -1,0 +1,1955 @@
+{
+  "source_snapshot": "e9d64bc424047e4f986ab5bef5207c086778e6d5",
+  "inventory_snapshot": "437c6ff1acc1088d9c98992dc61c65fe2968ae55",
+  "assignments": [
+    {
+      "order": 1,
+      "source_id": "G37",
+      "collection": "blog",
+      "slug": "domain-terminology-guide",
+      "english_path": "content/blog/en/domain-terminology-guide.md",
+      "action": "update_existing",
+      "brief": "Domain, URL and hostname: three words people use interchangeably",
+      "source_monthly_volume": 120520,
+      "source_keywords": [
+        {
+          "k": "domain name space",
+          "v": 110000,
+          "kd": 29
+        },
+        {
+          "k": "domain what is",
+          "v": 6600,
+          "kd": 20
+        },
+        {
+          "k": "domain name and url",
+          "v": 1600,
+          "kd": 8
+        },
+        {
+          "k": "url domain name",
+          "v": 1600,
+          "kd": 30
+        },
+        {
+          "k": "domain name space in computer networks",
+          "v": 720,
+          "kd": 30
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 2,
+      "source_id": "G01",
+      "collection": "blog",
+      "slug": "choose-public-dns-resolver",
+      "english_path": "content/blog/en/choose-public-dns-resolver.md",
+      "action": "update_existing",
+      "brief": "Which public DNS resolver should you actually use?",
+      "source_monthly_volume": 47020,
+      "source_keywords": [
+        {
+          "k": "best dns address",
+          "v": 6600,
+          "kd": 20
+        },
+        {
+          "k": "best dns servers",
+          "v": 6600,
+          "kd": 10
+        },
+        {
+          "k": "good dns servers",
+          "v": 6600,
+          "kd": 23
+        },
+        {
+          "k": "recommended dns servers",
+          "v": 6600,
+          "kd": 29
+        },
+        {
+          "k": "best dns",
+          "v": 2900,
+          "kd": 20
+        },
+        {
+          "k": "good dns",
+          "v": 2900,
+          "kd": 20
+        },
+        {
+          "k": "dns speedtest",
+          "v": 2900,
+          "kd": 28
+        },
+        {
+          "k": "fastest dns servers",
+          "v": 2400,
+          "kd": 16
+        },
+        {
+          "k": "best dns servers for gaming",
+          "v": 1900,
+          "kd": 0
+        },
+        {
+          "k": "dns benchmark",
+          "v": 1900,
+          "kd": 28
+        },
+        {
+          "k": "fastest dns",
+          "v": 1600,
+          "kd": 15
+        },
+        {
+          "k": "best dns for gaming",
+          "v": 1000,
+          "kd": 0
+        },
+        {
+          "k": "grc dns benchmark",
+          "v": 720,
+          "kd": 5
+        },
+        {
+          "k": "best dns for xbox",
+          "v": 480,
+          "kd": 0
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 3,
+      "source_id": "G19",
+      "collection": "blog",
+      "slug": "choose-domain-registrar",
+      "english_path": "content/blog/en/choose-domain-registrar.md",
+      "action": "new_page",
+      "brief": "Choosing a domain registrar: what actually differs between them",
+      "source_monthly_volume": 21990,
+      "source_keywords": [
+        {
+          "k": "best domain name provider",
+          "v": 3600,
+          "kd": 22
+        },
+        {
+          "k": "best domain name register",
+          "v": 3600,
+          "kd": 30
+        },
+        {
+          "k": "best domain name registrar",
+          "v": 3600,
+          "kd": 18
+        },
+        {
+          "k": "best domain registrar",
+          "v": 3600,
+          "kd": 21
+        },
+        {
+          "k": "best website registrar",
+          "v": 3600,
+          "kd": 21
+        },
+        {
+          "k": "best domain registrars",
+          "v": 3600,
+          "kd": 21
+        },
+        {
+          "k": "best domain registrar reddit",
+          "v": 390,
+          "kd": 0
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 4,
+      "source_id": "G28",
+      "collection": "blog",
+      "slug": "icann-domain-lookup",
+      "english_path": "content/blog/en/icann-domain-lookup.md",
+      "action": "update_existing",
+      "brief": "Looking a domain up at ICANN, and reading what comes back",
+      "source_monthly_volume": 21580,
+      "source_keywords": [
+        {
+          "k": "icann lookup",
+          "v": 18100,
+          "kd": 25
+        },
+        {
+          "k": "icann domain name search",
+          "v": 1300,
+          "kd": 26
+        },
+        {
+          "k": "domain name search icann",
+          "v": 1300,
+          "kd": 26
+        },
+        {
+          "k": "icann lookup tool",
+          "v": 880,
+          "kd": 26
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 5,
+      "source_id": "O01",
+      "collection": "tld",
+      "slug": "io",
+      "english_path": "content/tld/en/io.md",
+      "action": "update_existing",
+      "brief": ".io — British Indian Ocean Territory, and the default for developer tools",
+      "source_monthly_volume": 20810,
+      "source_keywords": [
+        {
+          "k": "io domain",
+          "v": 4400,
+          "kd": 22
+        },
+        {
+          "k": "io domain name",
+          "v": 4400,
+          "kd": 18
+        },
+        {
+          "k": "io domain tld",
+          "v": 4400,
+          "kd": 18
+        },
+        {
+          "k": "io internet domain",
+          "v": 4400,
+          "kd": 19
+        },
+        {
+          "k": "register io domain",
+          "v": 720,
+          "kd": 26
+        },
+        {
+          "k": "register io domain name",
+          "v": 720,
+          "kd": 12
+        },
+        {
+          "k": "io domain country",
+          "v": 590,
+          "kd": 17
+        },
+        {
+          "k": "io tld",
+          "v": 590,
+          "kd": 18
+        },
+        {
+          "k": "cctld io",
+          "v": 590,
+          "kd": 18
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 6,
+      "source_id": "G36",
+      "collection": "blog",
+      "slug": "subdomain-examples",
+      "english_path": "content/blog/en/subdomain-examples.md",
+      "action": "update_existing",
+      "brief": "What a subdomain is, with examples you can copy",
+      "source_monthly_volume": 16420,
+      "source_keywords": [
+        {
+          "k": "subdomain example",
+          "v": 6600,
+          "kd": 29
+        },
+        {
+          "k": "subdomain",
+          "v": 5400,
+          "kd": 24
+        },
+        {
+          "k": "sub domain example",
+          "v": 1000,
+          "kd": 29
+        },
+        {
+          "k": "subdomain url example",
+          "v": 1000,
+          "kd": 15
+        },
+        {
+          "k": "find subdomains of a domain",
+          "v": 720,
+          "kd": 29
+        },
+        {
+          "k": "free subdomain",
+          "v": 720,
+          "kd": 15
+        },
+        {
+          "k": "subdomain example url",
+          "v": 590,
+          "kd": 18
+        },
+        {
+          "k": "subdomain meaning",
+          "v": 390,
+          "kd": 29
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 7,
+      "source_id": "O02",
+      "collection": "tld",
+      "slug": "ai",
+      "english_path": "content/tld/en/ai.md",
+      "action": "update_existing",
+      "brief": ".ai — Anguilla, now the default for AI companies",
+      "source_monthly_volume": 14840,
+      "source_keywords": [
+        {
+          "k": "ai domain",
+          "v": 5400,
+          "kd": 9
+        },
+        {
+          "k": "ai top level domain",
+          "v": 1600,
+          "kd": 24
+        },
+        {
+          "k": "ai domain country",
+          "v": 1600,
+          "kd": 21
+        },
+        {
+          "k": "ai tld",
+          "v": 1600,
+          "kd": 24
+        },
+        {
+          "k": "register ai domain",
+          "v": 1600,
+          "kd": 18
+        },
+        {
+          "k": "register ai domain name",
+          "v": 1600,
+          "kd": 18
+        },
+        {
+          "k": "buy ai domain",
+          "v": 720,
+          "kd": 15
+        },
+        {
+          "k": "buy ai domain name",
+          "v": 720,
+          "kd": 15
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 8,
+      "source_id": "G29",
+      "collection": "blog",
+      "slug": "whois-and-rdap-public-data",
+      "english_path": "content/blog/en/whois-and-rdap-public-data.md",
+      "action": "update_existing",
+      "brief": "WHOIS in 2026: what is still public and what is not",
+      "source_monthly_volume": 12330,
+      "source_keywords": [
+        {
+          "k": "am whois",
+          "v": 1900,
+          "kd": 29
+        },
+        {
+          "k": "whois sa",
+          "v": 1600,
+          "kd": 0
+        },
+        {
+          "k": "domaintools whois",
+          "v": 1600,
+          "kd": 21
+        },
+        {
+          "k": "domain tools whois",
+          "v": 1600,
+          "kd": 21
+        },
+        {
+          "k": "alibaba whois",
+          "v": 1300,
+          "kd": 2
+        },
+        {
+          "k": "whois domaintools",
+          "v": 1300,
+          "kd": 19
+        },
+        {
+          "k": "netsol whois",
+          "v": 720,
+          "kd": 15
+        },
+        {
+          "k": "whois domain tools",
+          "v": 480,
+          "kd": 21
+        },
+        {
+          "k": "whois domain privacy",
+          "v": 480,
+          "kd": 27
+        },
+        {
+          "k": "whois eu",
+          "v": 390,
+          "kd": 19
+        },
+        {
+          "k": "historical whois lookup",
+          "v": 320,
+          "kd": 10
+        },
+        {
+          "k": "internic whois",
+          "v": 320,
+          "kd": 27
+        },
+        {
+          "k": "verisign whois",
+          "v": 320,
+          "kd": 24
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 9,
+      "source_id": "G10",
+      "collection": "blog",
+      "slug": "aaaa-record-explained",
+      "english_path": "content/blog/en/aaaa-record-explained.md",
+      "action": "update_existing",
+      "brief": "The AAAA record, explained without the IPv6 lecture",
+      "source_monthly_volume": 11600,
+      "source_keywords": [
+        {
+          "k": "aaaa dns",
+          "v": 2900,
+          "kd": 2
+        },
+        {
+          "k": "dns aaaa",
+          "v": 2900,
+          "kd": 5
+        },
+        {
+          "k": "dns aaaa record",
+          "v": 2900,
+          "kd": 8
+        },
+        {
+          "k": "aaaa record in dns",
+          "v": 2900,
+          "kd": 10
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 10,
+      "source_id": "O03",
+      "collection": "tld",
+      "slug": "ch",
+      "english_path": "content/tld/en/ch.md",
+      "action": "update_existing",
+      "brief": ".ch — Switzerland",
+      "source_monthly_volume": 11600,
+      "source_keywords": [
+        {
+          "k": "ch domain",
+          "v": 2900,
+          "kd": 12
+        },
+        {
+          "k": "ch domain country",
+          "v": 2900,
+          "kd": 4
+        },
+        {
+          "k": "ch domain name",
+          "v": 2900,
+          "kd": 4
+        },
+        {
+          "k": "ch top level domain",
+          "v": 2900,
+          "kd": 6
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 11,
+      "source_id": "G27",
+      "collection": "blog",
+      "slug": "check-domain-age",
+      "english_path": "content/blog/en/check-domain-age.md",
+      "action": "update_existing",
+      "brief": "How old is this domain, and why anyone cares",
+      "source_monthly_volume": 10400,
+      "source_keywords": [
+        {
+          "k": "domain age checker",
+          "v": 4400,
+          "kd": 24
+        },
+        {
+          "k": "domain name age checker",
+          "v": 4400,
+          "kd": 24
+        },
+        {
+          "k": "website age checker",
+          "v": 1600,
+          "kd": 19
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 12,
+      "source_id": "G35",
+      "collection": "blog",
+      "slug": "fully-qualified-domain-name",
+      "english_path": "content/blog/en/fully-qualified-domain-name.md",
+      "action": "update_existing",
+      "brief": "Fully qualified domain name: the part most people get wrong",
+      "source_monthly_volume": 9900,
+      "source_keywords": [
+        {
+          "k": "fully qualified domain name",
+          "v": 9900,
+          "kd": 13
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 13,
+      "source_id": "G21",
+      "collection": "blog",
+      "slug": "free-domain-offers",
+      "english_path": "content/blog/en/free-domain-offers.md",
+      "action": "update_existing",
+      "brief": "\"Free domain\" offers: what you give up to get one",
+      "source_monthly_volume": 9720,
+      "source_keywords": [
+        {
+          "k": "free domain name and website",
+          "v": 3600,
+          "kd": 24
+        },
+        {
+          "k": "register domain for free",
+          "v": 1300,
+          "kd": 30
+        },
+        {
+          "k": "free domain name registration",
+          "v": 1300,
+          "kd": 29
+        },
+        {
+          "k": "free domain registration",
+          "v": 880,
+          "kd": 25
+        },
+        {
+          "k": "get free domain",
+          "v": 880,
+          "kd": 21
+        },
+        {
+          "k": "lifetime domain",
+          "v": 880,
+          "kd": 3
+        },
+        {
+          "k": "get a domain for free",
+          "v": 880,
+          "kd": 21
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 14,
+      "source_id": "G24",
+      "collection": "blog",
+      "slug": "expired-domains-and-the-drop-cycle",
+      "english_path": "content/blog/en/expired-domains-and-the-drop-cycle.md",
+      "action": "update_existing",
+      "brief": "What happens to an expired domain, day by day",
+      "source_monthly_volume": 9580,
+      "source_keywords": [
+        {
+          "k": "expired domain names",
+          "v": 3600,
+          "kd": 30
+        },
+        {
+          "k": "cek domain expired",
+          "v": 1300,
+          "kd": 29
+        },
+        {
+          "k": "domain expiry checker",
+          "v": 1300,
+          "kd": 9
+        },
+        {
+          "k": "domain expiry lookup",
+          "v": 1300,
+          "kd": 9
+        },
+        {
+          "k": "domain expired check",
+          "v": 1300,
+          "kd": 18
+        },
+        {
+          "k": "purchase expired domain",
+          "v": 390,
+          "kd": 20
+        },
+        {
+          "k": "purchase expired domain names",
+          "v": 390,
+          "kd": 30
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 15,
+      "source_id": "G23",
+      "collection": "blog",
+      "slug": "renew-domain-name",
+      "english_path": "content/blog/en/renew-domain-name.md",
+      "action": "new_page",
+      "brief": "Renewing a domain: auto-renew, grace periods, and the day it lapses",
+      "source_monthly_volume": 8700,
+      "source_keywords": [
+        {
+          "k": "domain renew",
+          "v": 2900,
+          "kd": 16
+        },
+        {
+          "k": "renew a domain",
+          "v": 2900,
+          "kd": 16
+        },
+        {
+          "k": "renew domain name",
+          "v": 2900,
+          "kd": 16
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 16,
+      "source_id": "G49",
+      "collection": "blog",
+      "slug": "register-domain-name",
+      "english_path": "content/blog/en/register-domain-name.md",
+      "action": "new_page",
+      "brief": "Registering a domain: the whole process, once",
+      "source_monthly_volume": 8480,
+      "source_keywords": [
+        {
+          "k": "ai domain registration",
+          "v": 1600,
+          "kd": 14
+        },
+        {
+          "k": "domain registration ai",
+          "v": 1600,
+          "kd": 14
+        },
+        {
+          "k": "cc domain registration",
+          "v": 720,
+          "kd": 5
+        },
+        {
+          "k": "gg domain registration",
+          "v": 590,
+          "kd": 1
+        },
+        {
+          "k": "ru domain registration",
+          "v": 590,
+          "kd": 6
+        },
+        {
+          "k": "org domain registration",
+          "v": 590,
+          "kd": 7
+        },
+        {
+          "k": "rs domain registration",
+          "v": 480,
+          "kd": 10
+        },
+        {
+          "k": "cn domain registration",
+          "v": 480,
+          "kd": 3
+        },
+        {
+          "k": "dns register",
+          "v": 480,
+          "kd": 10
+        },
+        {
+          "k": "australian domain registration",
+          "v": 390,
+          "kd": 22
+        },
+        {
+          "k": "cl domain registration",
+          "v": 320,
+          "kd": 1
+        },
+        {
+          "k": "ro domain registration",
+          "v": 320,
+          "kd": 0
+        },
+        {
+          "k": "domain registration and email",
+          "v": 320,
+          "kd": 2
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 17,
+      "source_id": "G41",
+      "collection": "blog",
+      "slug": "renew-ssl-certificate",
+      "english_path": "content/blog/en/renew-ssl-certificate.md",
+      "action": "update_existing",
+      "brief": "Renewing an SSL certificate before it takes your site down",
+      "source_monthly_volume": 8180,
+      "source_keywords": [
+        {
+          "k": "renew ssl certificate",
+          "v": 2400,
+          "kd": 0
+        },
+        {
+          "k": "san ssl certificate",
+          "v": 1300,
+          "kd": 30
+        },
+        {
+          "k": "self signed ssl certificate",
+          "v": 1300,
+          "kd": 20
+        },
+        {
+          "k": "create self signed ssl certificate",
+          "v": 720,
+          "kd": 27
+        },
+        {
+          "k": "invalid ssl certificate",
+          "v": 720,
+          "kd": 0
+        },
+        {
+          "k": "comodo ssl certificate",
+          "v": 390,
+          "kd": 24
+        },
+        {
+          "k": "ssl certificate cost",
+          "v": 390,
+          "kd": 26
+        },
+        {
+          "k": "create ssl certificate openssl",
+          "v": 320,
+          "kd": 11
+        },
+        {
+          "k": "sectigo ssl certificate",
+          "v": 320,
+          "kd": 25
+        },
+        {
+          "k": "ssl certificate expired",
+          "v": 320,
+          "kd": 2
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 18,
+      "source_id": "O04",
+      "collection": "tld",
+      "slug": "me",
+      "english_path": "content/tld/en/me.md",
+      "action": "update_existing",
+      "brief": ".me — Montenegro, read everywhere as the English word",
+      "source_monthly_volume": 7640,
+      "source_keywords": [
+        {
+          "k": "me domain",
+          "v": 2900,
+          "kd": 9
+        },
+        {
+          "k": "me domain name",
+          "v": 2900,
+          "kd": 9
+        },
+        {
+          "k": "register me domain",
+          "v": 880,
+          "kd": 8
+        },
+        {
+          "k": "me domain country",
+          "v": 480,
+          "kd": 4
+        },
+        {
+          "k": "me tld",
+          "v": 480,
+          "kd": 14
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 19,
+      "source_id": "G11",
+      "collection": "blog",
+      "slug": "dns-record-types-guide",
+      "english_path": "content/blog/en/dns-record-types-guide.md",
+      "action": "update_existing",
+      "brief": "Every DNS record type, and when you actually need each",
+      "source_monthly_volume": 7260,
+      "source_keywords": [
+        {
+          "k": "aaa record dns",
+          "v": 2900,
+          "kd": 0
+        },
+        {
+          "k": "dns record types",
+          "v": 1600,
+          "kd": 27
+        },
+        {
+          "k": "c record dns",
+          "v": 1000,
+          "kd": 25
+        },
+        {
+          "k": "dns record types examples",
+          "v": 880,
+          "kd": 26
+        },
+        {
+          "k": "domain levels",
+          "v": 880,
+          "kd": 25
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 20,
+      "source_id": "G32",
+      "collection": "blog",
+      "slug": "set-up-email-with-your-own-domain",
+      "english_path": "content/blog/en/set-up-email-with-your-own-domain.md",
+      "action": "update_existing",
+      "brief": "Getting email on your own domain, without a mail server",
+      "source_monthly_volume": 6810,
+      "source_keywords": [
+        {
+          "k": "email domain purchase",
+          "v": 1600,
+          "kd": 12
+        },
+        {
+          "k": "purchase email domain",
+          "v": 1600,
+          "kd": 18
+        },
+        {
+          "k": "domain email address",
+          "v": 880,
+          "kd": 25
+        },
+        {
+          "k": "email domain name",
+          "v": 590,
+          "kd": 0
+        },
+        {
+          "k": "free business domain email",
+          "v": 590,
+          "kd": 27
+        },
+        {
+          "k": "microsoft domain email",
+          "v": 590,
+          "kd": 30
+        },
+        {
+          "k": "icloud custom email domain",
+          "v": 480,
+          "kd": 14
+        },
+        {
+          "k": "icloud custom domain email",
+          "v": 480,
+          "kd": 14
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 21,
+      "source_id": "G04",
+      "collection": "blog",
+      "slug": "isp-dns-vs-public-resolver",
+      "english_path": "content/blog/en/isp-dns-vs-public-resolver.md",
+      "action": "update_existing",
+      "brief": "Your ISP's DNS versus a third-party resolver",
+      "source_monthly_volume": 6270,
+      "source_keywords": [
+        {
+          "k": "spectrum dns servers",
+          "v": 880,
+          "kd": 0
+        },
+        {
+          "k": "comcast dns",
+          "v": 720,
+          "kd": 0
+        },
+        {
+          "k": "comcast dns server",
+          "v": 720,
+          "kd": 0
+        },
+        {
+          "k": "comcast dns servers",
+          "v": 720,
+          "kd": 0
+        },
+        {
+          "k": "xfinity dns",
+          "v": 720,
+          "kd": 0
+        },
+        {
+          "k": "xfinity dns server",
+          "v": 720,
+          "kd": 0
+        },
+        {
+          "k": "xfinity dns servers",
+          "v": 720,
+          "kd": 0
+        },
+        {
+          "k": "att dns servers",
+          "v": 590,
+          "kd": 16
+        },
+        {
+          "k": "spectrum dns",
+          "v": 480,
+          "kd": 0
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 22,
+      "source_id": "G17",
+      "collection": "blog",
+      "slug": "dns-over-https-vs-dns-over-tls",
+      "english_path": "content/blog/en/dns-over-https-vs-dns-over-tls.md",
+      "action": "update_existing",
+      "brief": "DNS over HTTPS and DNS over TLS: what each actually hides",
+      "source_monthly_volume": 6260,
+      "source_keywords": [
+        {
+          "k": "dns over https",
+          "v": 2900,
+          "kd": 21
+        },
+        {
+          "k": "private dns for android",
+          "v": 1600,
+          "kd": 24
+        },
+        {
+          "k": "dns over tls",
+          "v": 880,
+          "kd": 19
+        },
+        {
+          "k": "encrypted dns",
+          "v": 880,
+          "kd": 9
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 23,
+      "source_id": "G15",
+      "collection": "blog",
+      "slug": "reverse-dns-ptr-records",
+      "english_path": "content/blog/en/reverse-dns-ptr-records.md",
+      "action": "update_existing",
+      "brief": "Reverse DNS: what a PTR record proves and what it doesn't",
+      "source_monthly_volume": 5880,
+      "source_keywords": [
+        {
+          "k": "check reverse dns",
+          "v": 5400,
+          "kd": 21
+        },
+        {
+          "k": "reverse dns does not match smtp banner",
+          "v": 480,
+          "kd": 0
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 24,
+      "source_id": "O05",
+      "collection": "tld",
+      "slug": "de",
+      "english_path": "content/tld/en/de.md",
+      "action": "update_existing",
+      "brief": ".de — Germany",
+      "source_monthly_volume": 5680,
+      "source_keywords": [
+        {
+          "k": "de domain",
+          "v": 2400,
+          "kd": 15
+        },
+        {
+          "k": "de domain country",
+          "v": 2400,
+          "kd": 11
+        },
+        {
+          "k": "register de domain",
+          "v": 880,
+          "kd": 6
+        }
+      ],
+      "existing_locales": [
+        "de"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 25,
+      "source_id": "G02",
+      "collection": "blog",
+      "slug": "public-dns-privacy-comparison",
+      "english_path": "content/blog/en/public-dns-privacy-comparison.md",
+      "action": "new_page",
+      "brief": "Quad9, Cloudflare and Google DNS compared on privacy",
+      "source_monthly_volume": 5400,
+      "source_keywords": [
+        {
+          "k": "quad9 dns",
+          "v": 4400,
+          "kd": 10
+        },
+        {
+          "k": "quad9 dns servers",
+          "v": 1000,
+          "kd": 12
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 26,
+      "source_id": "G05",
+      "collection": "blog",
+      "slug": "run-your-own-dns-resolver",
+      "english_path": "content/blog/en/run-your-own-dns-resolver.md",
+      "action": "update_existing",
+      "brief": "Running your own resolver: Technitium, Pi-hole, Duck DNS",
+      "source_monthly_volume": 4800,
+      "source_keywords": [
+        {
+          "k": "duck dns",
+          "v": 1900,
+          "kd": 19
+        },
+        {
+          "k": "technitium dns",
+          "v": 1300,
+          "kd": 0
+        },
+        {
+          "k": "configuring dns",
+          "v": 880,
+          "kd": 0
+        },
+        {
+          "k": "technitium dns server",
+          "v": 720,
+          "kd": 0
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 27,
+      "source_id": "G50",
+      "collection": "blog",
+      "slug": "what-is-domain",
+      "english_path": "content/blog/en/what-is-domain.md",
+      "action": "update_existing",
+      "brief": "Domain levels: root, TLD, second level, subdomain",
+      "source_monthly_volume": 4640,
+      "source_keywords": [
+        {
+          "k": "country level domain",
+          "v": 1000,
+          "kd": 30
+        },
+        {
+          "k": "country code tld",
+          "v": 1000,
+          "kd": 25
+        },
+        {
+          "k": "generic top level domain name",
+          "v": 880,
+          "kd": 30
+        },
+        {
+          "k": "domain generic",
+          "v": 880,
+          "kd": 24
+        },
+        {
+          "k": "domain level",
+          "v": 880,
+          "kd": 25
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 28,
+      "source_id": "G48",
+      "collection": "blog",
+      "slug": "how-to-sell-a-domain-name-you-own",
+      "english_path": "content/blog/en/how-to-sell-a-domain-name-you-own.md",
+      "action": "update_existing",
+      "brief": "Selling a domain: where the buyers actually are",
+      "source_monthly_volume": 4590,
+      "source_keywords": [
+        {
+          "k": "sell domain",
+          "v": 1600,
+          "kd": 22
+        },
+        {
+          "k": "domain broker",
+          "v": 1300,
+          "kd": 27
+        },
+        {
+          "k": "domain brokers",
+          "v": 1300,
+          "kd": 29
+        },
+        {
+          "k": "domain broker service",
+          "v": 390,
+          "kd": 14
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 29,
+      "source_id": "O06",
+      "collection": "tld",
+      "slug": "cc",
+      "english_path": "content/tld/en/cc.md",
+      "action": "update_existing",
+      "brief": ".cc — Cocos (Keeling) Islands",
+      "source_monthly_volume": 4520,
+      "source_keywords": [
+        {
+          "k": "cc domain",
+          "v": 1900,
+          "kd": 5
+        },
+        {
+          "k": "cctld cc",
+          "v": 1900,
+          "kd": 5
+        },
+        {
+          "k": "register cc domain",
+          "v": 720,
+          "kd": 5
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 30,
+      "source_id": "G16",
+      "collection": "blog",
+      "slug": "nslookup-specific-dns-server",
+      "english_path": "content/blog/en/nslookup-specific-dns-server.md",
+      "action": "update_existing",
+      "brief": "nslookup against a specific server, and why you'd want to",
+      "source_monthly_volume": 4060,
+      "source_keywords": [
+        {
+          "k": "name server lookup",
+          "v": 1900,
+          "kd": 27
+        },
+        {
+          "k": "nslookup from specific dns server",
+          "v": 720,
+          "kd": 7
+        },
+        {
+          "k": "nslookup specific dns server",
+          "v": 720,
+          "kd": 5
+        },
+        {
+          "k": "nslookup to specific dns server",
+          "v": 720,
+          "kd": 5
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 31,
+      "source_id": "G12",
+      "collection": "blog",
+      "slug": "cname-vs-a-record",
+      "english_path": "content/blog/en/cname-vs-a-record.md",
+      "action": "update_existing",
+      "brief": "CNAME versus A record: the choice that breaks apex domains",
+      "source_monthly_volume": 4020,
+      "source_keywords": [
+        {
+          "k": "cname domain",
+          "v": 1300,
+          "kd": 22
+        },
+        {
+          "k": "dns cname",
+          "v": 1000,
+          "kd": 19
+        },
+        {
+          "k": "dns cname record",
+          "v": 1000,
+          "kd": 24
+        },
+        {
+          "k": "cname record for subdomain",
+          "v": 720,
+          "kd": 15
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 32,
+      "source_id": "G20",
+      "collection": "blog",
+      "slug": "how-much-is-a-domain-understanding-holding-cost",
+      "english_path": "content/blog/en/how-much-is-a-domain-understanding-holding-cost.md",
+      "action": "update_existing",
+      "brief": "What a domain really costs, first year and every year after",
+      "source_monthly_volume": 3960,
+      "source_keywords": [
+        {
+          "k": "domain name cost",
+          "v": 1000,
+          "kd": 24
+        },
+        {
+          "k": "domain cost",
+          "v": 1000,
+          "kd": 29
+        },
+        {
+          "k": "domain name charges",
+          "v": 1000,
+          "kd": 29
+        },
+        {
+          "k": "website domain cost",
+          "v": 480,
+          "kd": 29
+        },
+        {
+          "k": "cost of website domain",
+          "v": 480,
+          "kd": 29
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 33,
+      "source_id": "T01",
+      "collection": "tld",
+      "slug": "se",
+      "english_path": "content/tld/en/se.md",
+      "action": "new_page",
+      "brief": ".se — the country domain for Sweden",
+      "source_monthly_volume": 3680,
+      "source_keywords": [
+        {
+          "k": "se domain",
+          "v": 1600,
+          "kd": 6
+        },
+        {
+          "k": "se domain country",
+          "v": 1600,
+          "kd": 6
+        },
+        {
+          "k": "register se domain",
+          "v": 480,
+          "kd": 4
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 34,
+      "source_id": "G40",
+      "collection": "blog",
+      "slug": "change-domain-nameservers",
+      "english_path": "content/blog/en/change-domain-nameservers.md",
+      "action": "update_existing",
+      "brief": "Nameservers: what changing them actually does",
+      "source_monthly_volume": 3670,
+      "source_keywords": [
+        {
+          "k": "nameserver",
+          "v": 1900,
+          "kd": 23
+        },
+        {
+          "k": "nameservers for domain",
+          "v": 590,
+          "kd": 29
+        },
+        {
+          "k": "nameserver for domain",
+          "v": 590,
+          "kd": 29
+        },
+        {
+          "k": "nameservers domain",
+          "v": 590,
+          "kd": 29
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 35,
+      "source_id": "O07",
+      "collection": "tld",
+      "slug": "gg",
+      "english_path": "content/tld/en/gg.md",
+      "action": "update_existing",
+      "brief": ".gg — Guernsey, adopted by gaming",
+      "source_monthly_volume": 3190,
+      "source_keywords": [
+        {
+          "k": "gg domain",
+          "v": 1300,
+          "kd": 0
+        },
+        {
+          "k": "gg domain name",
+          "v": 1300,
+          "kd": 0
+        },
+        {
+          "k": "register gg domain",
+          "v": 590,
+          "kd": 0
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 36,
+      "source_id": "G13",
+      "collection": "blog",
+      "slug": "wildcard-dns-records",
+      "english_path": "content/blog/en/wildcard-dns-records.md",
+      "action": "update_existing",
+      "brief": "Wildcard DNS records: what `*` really matches",
+      "source_monthly_volume": 2940,
+      "source_keywords": [
+        {
+          "k": "wildcard dns",
+          "v": 720,
+          "kd": 19
+        },
+        {
+          "k": "dns a record wildcard",
+          "v": 720,
+          "kd": 9
+        },
+        {
+          "k": "dns wildcard a record",
+          "v": 720,
+          "kd": 9
+        },
+        {
+          "k": "cheapest wildcard ssl certificate",
+          "v": 390,
+          "kd": 17
+        },
+        {
+          "k": "cheap wildcard ssl",
+          "v": 390,
+          "kd": 17
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 37,
+      "source_id": "O08",
+      "collection": "tld",
+      "slug": "dev",
+      "english_path": "content/tld/en/dev.md",
+      "action": "update_existing",
+      "brief": ".dev — a Google-run gTLD that is HTTPS-only",
+      "source_monthly_volume": 2900,
+      "source_keywords": [
+        {
+          "k": "dev domain",
+          "v": 2900,
+          "kd": 21
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 38,
+      "source_id": "G31",
+      "collection": "blog",
+      "slug": "domain-privacy-vs-proxy",
+      "english_path": "content/blog/en/domain-privacy-vs-proxy.md",
+      "action": "update_existing",
+      "brief": "Domain privacy and proxy services: what they hide from whom",
+      "source_monthly_volume": 2740,
+      "source_keywords": [
+        {
+          "k": "domain by proxy",
+          "v": 1300,
+          "kd": 0
+        },
+        {
+          "k": "domain privacy",
+          "v": 480,
+          "kd": 27
+        },
+        {
+          "k": "domain privacy protection",
+          "v": 480,
+          "kd": 27
+        },
+        {
+          "k": "domain name privacy protection",
+          "v": 480,
+          "kd": 24
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 39,
+      "source_id": "G30",
+      "collection": "blog",
+      "slug": "bulk-domain-availability-checks",
+      "english_path": "content/blog/en/bulk-domain-availability-checks.md",
+      "action": "update_existing",
+      "brief": "Bulk domain checking without getting rate-limited",
+      "source_monthly_volume": 2600,
+      "source_keywords": [
+        {
+          "k": "bulk domain name checker",
+          "v": 1300,
+          "kd": 28
+        },
+        {
+          "k": "bulk domain name search",
+          "v": 1300,
+          "kd": 28
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 40,
+      "source_id": "G26",
+      "collection": "blog",
+      "slug": "domain-backorders-and-drop-catching",
+      "english_path": "content/blog/en/domain-backorders-and-drop-catching.md",
+      "action": "update_existing",
+      "brief": "Backordering a domain: what you're really buying",
+      "source_monthly_volume": 2400,
+      "source_keywords": [
+        {
+          "k": "backorder domain",
+          "v": 480,
+          "kd": 6
+        },
+        {
+          "k": "backorder domain name",
+          "v": 480,
+          "kd": 11
+        },
+        {
+          "k": "domain name backorder",
+          "v": 480,
+          "kd": 9
+        },
+        {
+          "k": "domain backorder",
+          "v": 480,
+          "kd": 7
+        },
+        {
+          "k": "domain backordering",
+          "v": 480,
+          "kd": 6
+        }
+      ],
+      "existing_locales": [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "status": "queued"
+    },
+    {
+      "order": 41,
+      "source_id": "O09",
+      "collection": "tld",
+      "slug": "to",
+      "english_path": "content/tld/en/to.md",
+      "action": "update_existing",
+      "brief": ".to — Tonga",
+      "source_monthly_volume": 2380,
+      "source_keywords": [
+        {
+          "k": "to domain",
+          "v": 1900,
+          "kd": 5
+        },
+        {
+          "k": "to domain country",
+          "v": 480,
+          "kd": 20
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 42,
+      "source_id": "T02",
+      "collection": "tld",
+      "slug": "ie",
+      "english_path": "content/tld/en/ie.md",
+      "action": "new_page",
+      "brief": ".ie — the country domain for Ireland",
+      "source_monthly_volume": 2110,
+      "source_keywords": [
+        {
+          "k": "ie domain",
+          "v": 880,
+          "kd": 24
+        },
+        {
+          "k": "register ie domain",
+          "v": 590,
+          "kd": 13
+        },
+        {
+          "k": "ie domain country",
+          "v": 320,
+          "kd": 19
+        },
+        {
+          "k": "ie tld",
+          "v": 320,
+          "kd": 19
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 43,
+      "source_id": "G33",
+      "collection": "blog",
+      "slug": "free-business-email-options",
+      "english_path": "content/blog/en/free-business-email-options.md",
+      "action": "update_existing",
+      "brief": "Free business email: what the no-cost options actually cost",
+      "source_monthly_volume": 2000,
+      "source_keywords": [
+        {
+          "k": "free business email without domain",
+          "v": 1000,
+          "kd": 10
+        },
+        {
+          "k": "business email free without domain",
+          "v": 1000,
+          "kd": 10
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 44,
+      "source_id": "O10",
+      "collection": "tld",
+      "slug": "br",
+      "english_path": "content/tld/en/br.md",
+      "action": "update_existing",
+      "brief": ".br — Brazil",
+      "source_monthly_volume": 2000,
+      "source_keywords": [
+        {
+          "k": "br domain",
+          "v": 1000,
+          "kd": 15
+        },
+        {
+          "k": "br domain country",
+          "v": 1000,
+          "kd": 15
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 45,
+      "source_id": "T03",
+      "collection": "tld",
+      "slug": "ru",
+      "english_path": "content/tld/en/ru.md",
+      "action": "new_page",
+      "brief": ".ru — the country domain for Russia",
+      "source_monthly_volume": 2000,
+      "source_keywords": [
+        {
+          "k": "ru domain",
+          "v": 1000,
+          "kd": 9
+        },
+        {
+          "k": "ru internet domain",
+          "v": 1000,
+          "kd": 9
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 46,
+      "source_id": "G07",
+      "collection": "blog",
+      "slug": "root-dns-servers",
+      "english_path": "content/blog/en/root-dns-servers.md",
+      "action": "update_existing",
+      "brief": "Root nameservers: the thirteen addresses everything starts from",
+      "source_monthly_volume": 1920,
+      "source_keywords": [
+        {
+          "k": "root dns server",
+          "v": 480,
+          "kd": 21
+        },
+        {
+          "k": "root dns servers",
+          "v": 480,
+          "kd": 17
+        },
+        {
+          "k": "root nameserver",
+          "v": 480,
+          "kd": 20
+        },
+        {
+          "k": "dns root name server",
+          "v": 480,
+          "kd": 19
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 47,
+      "source_id": "G38",
+      "collection": "blog",
+      "slug": "domain-forwarding-redirects",
+      "english_path": "content/blog/en/domain-forwarding-redirects.md",
+      "action": "update_existing",
+      "brief": "URL forwarding and redirects: 301, 302, and domain masking",
+      "source_monthly_volume": 1900,
+      "source_keywords": [
+        {
+          "k": "url forwarding",
+          "v": 1900,
+          "kd": 27
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    },
+    {
+      "order": 48,
+      "source_id": "G09",
+      "collection": "blog",
+      "slug": "ipv6-and-dns",
+      "english_path": "content/blog/en/ipv6-and-dns.md",
+      "action": "new_page",
+      "brief": "IPv6 and DNS: what changes when you get an AAAA record",
+      "source_monthly_volume": 1890,
+      "source_keywords": [
+        {
+          "k": "ipv6 dns",
+          "v": 1300,
+          "kd": 27
+        },
+        {
+          "k": "ipv6 dns server",
+          "v": 590,
+          "kd": 24
+        }
+      ],
+      "existing_locales": [],
+      "status": "queued"
+    }
+  ]
+}

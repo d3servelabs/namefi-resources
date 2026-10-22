@@ -116,8 +116,8 @@ relatedGlossary:
 
 **분류**:
 - **일반 TLD**: .com, .org, .net, [.info](/ko/tld/info/)
-- **국가 코드 TLD**: [.us](/ko/tld/us/), .uk, .de, .cn
-- **신규 TLD**: .ai, [.io](/ko/tld/io/), [.tech](/ko/tld/tech/), [.shop](/ko/tld/shop/)
+- **국가 코드 TLD**: [.us](/ko/tld/us/), .uk, .de, .cn, [.ai](/ko/tld/ai/), [.io](/ko/tld/io/)
+- **신규 TLD**: [.tech](/ko/tld/tech/), [.shop](/ko/tld/shop/)
 
 ### **서브도메인**
 더 큰 도메인의 일부를 구성하는 도메인입니다. 예를 들어, "blog.example.com"은 "example.com"의 서브도메인입니다. 서브도메인은 웹사이트의 다양한 섹션을 구성하는 데 활용됩니다.
@@ -127,7 +127,7 @@ relatedGlossary:
 ### **DNS (도메인 네임 시스템)**
 사람이 읽을 수 있는 도메인 이름을 컴퓨터가 상호 통신에 사용하는 IP 주소로 변환하는 시스템입니다. 흔히 인터넷의 "전화번호부"로 불립니다.
 
-**기능**: `namefi.io`를 `192.168.1.1`로 변환하여 브라우저 통신을 가능하게 합니다.
+**DNS 설명용 예시**: `example.com` → `192.0.2.1`. [RFC 5737 §3](https://www.rfc-editor.org/rfc/rfc5737.html#section-3).
 
 ### **WHOIS**
 등록된 도메인 이름 정보를 저장하는 데이터베이스를 조회하는 데 사용되는 프로토콜입니다. [WHOIS](/ko/glossary/whois/)는 도메인 소유자, 등록 날짜, 연락처 정보 등의 세부 정보를 제공합니다.

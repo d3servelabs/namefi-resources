@@ -1,0 +1,244 @@
+{
+  "locale": "ja-JP",
+  "fetch_utc": "2026-10-22T00:26:14.304459+00:00",
+  "request": {
+    "language": "languageConstants/1005",
+    "geoTargetConstants": [
+      "geoTargetConstants/2392"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "DNSレコード 種類",
+      "DNSレコード 一覧",
+      "DNSレコード 設定 例"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "dns レコード 種類",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "320"
+            }
+          ],
+          "avgMonthlySearches": "320",
+          "competitionIndex": "11",
+          "lowTopOfPageBidMicros": "144474",
+          "highTopOfPageBidMicros": "810515"
+        },
+        "closeVariants": [
+          "DNSレコード 種類"
+        ]
+      },
+      {
+        "text": "dns レコード 一覧",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "70"
+            }
+          ],
+          "avgMonthlySearches": "70",
+          "competitionIndex": "6",
+          "lowTopOfPageBidMicros": "493133",
+          "highTopOfPageBidMicros": "1435270"
+        },
+        "closeVariants": [
+          "DNSレコード 一覧"
+        ]
+      },
+      {
+        "text": "dns レコード 設定 例",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "11"
+        },
+        "closeVariants": [
+          "DNSレコード 設定 例"
+        ]
+      }
+    ]
+  }
+}

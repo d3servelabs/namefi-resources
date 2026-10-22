@@ -114,8 +114,8 @@ La partie d'un nom de domaine qui vient après le dernier point (par exemple, [.
 
 **Catégories**:
 - **TLD Génériques**: .com, .org, .net, [.info](/fr/tld/info/)
-- **TLD de Codes de Pays**: [.us](/fr/tld/us/), .uk, .de, .cn
-- **Nouveaux TLDs**: .ai, [.io](/fr/tld/io/), [.tech](/fr/tld/tech/), [.shop](/fr/tld/shop/)
+- **TLD de Codes de Pays**: [.us](/fr/tld/us/), .uk, .de, .cn, [.ai](/fr/tld/ai/), [.io](/fr/tld/io/)
+- **Nouveaux TLDs**: [.tech](/fr/tld/tech/), [.shop](/fr/tld/shop/)
 
 ### **Sous-domaine**
 Un domaine qui fait partie d'un domaine plus grand. Par exemple, "blog.example.com" est un sous-domaine de "example.com". Les sous-domaines peuvent être utilisés pour organiser différentes sections d'un site web.
@@ -125,7 +125,7 @@ Un domaine qui fait partie d'un domaine plus grand. Par exemple, "blog.example.c
 ### **DNS (Système de Noms de Domaine)**
 Le système qui traduit les noms de domaine lisibles par l'homme en adresses IP que les ordinateurs utilisent pour communiquer entre eux. Il est souvent appelé l'"annuaire téléphonique" d'Internet.
 
-**Fonction**: Convertit `namefi.io` en `192.168.1.1` pour la communication du navigateur
+**Exemple DNS fictif**: `example.com` → `192.0.2.1`. [RFC 5737 §3](https://www.rfc-editor.org/rfc/rfc5737.html#section-3).
 
 ### **WHOIS**
 Un protocole utilisé pour interroger des bases de données qui stockent des informations sur les noms de domaine enregistrés. [WHOIS](/fr/glossary/whois/) fournit des détails tels que le propriétaire du domaine, les dates d'enregistrement et les informations de contact.

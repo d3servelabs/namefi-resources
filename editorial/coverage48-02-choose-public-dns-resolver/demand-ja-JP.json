@@ -1,0 +1,232 @@
+{
+  "fetched_at": "2026-10-21T23:24:03Z",
+  "request": {
+    "language": "languageConstants/1005",
+    "geoTargetConstants": [
+      "geoTargetConstants/2392"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "おすすめ dns サーバー",
+      "パブリック dns 比較",
+      "最速 dns"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "おすすめ dns サーバー",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "140"
+            }
+          ],
+          "avgMonthlySearches": "140",
+          "competitionIndex": "8",
+          "lowTopOfPageBidMicros": "10352",
+          "highTopOfPageBidMicros": "203379"
+        }
+      },
+      {
+        "text": "パブリック dns 比較",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "0"
+        }
+      },
+      {
+        "text": "最速 dns",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "110"
+            }
+          ],
+          "avgMonthlySearches": "110",
+          "competitionIndex": "3"
+        }
+      }
+    ]
+  }
+}

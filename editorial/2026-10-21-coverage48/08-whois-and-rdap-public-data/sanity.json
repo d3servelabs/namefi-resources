@@ -1,0 +1,40 @@
+{
+  "checks": [
+    {
+      "command": "TMPDIR=/private/tmp bun run data:validate",
+      "result": "pass",
+      "scope": "Full local content validation, validator fixtures, locale relationships and FAQ sync."
+    },
+    {
+      "command": "bun run lint:mdx",
+      "result": "pass"
+    },
+    {
+      "command": "bun .agents/skills/cross-link/link-audit.ts content/blog/en/whois-and-rdap-public-data.md",
+      "result": "pass",
+      "broken": 0,
+      "locale_mismatch": 0,
+      "relationship_mismatch": 0
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "check": "Referenced image presence and dimensions",
+      "result": "pass",
+      "cover": [
+        1200,
+        630
+      ],
+      "inline": [
+        1200,
+        675
+      ]
+    }
+  ],
+  "hosted_ci": "Not run: local-only gate",
+  "code_review": "Not run: expressly waived",
+  "third_party_review": "Not run: expressly waived",
+  "scratch_logs": "/private/tmp/namefi-stack48/08-whois-and-rdap-public-data/"
+}

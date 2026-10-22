@@ -57,7 +57,7 @@ When synthesis applies, the authoritative server places the requested name in th
 
 The record type still controls the answer. An A record supplies an IPv4 address. A wildcard A record does not manufacture an IPv6 address or a mail-routing policy. Review the [DNS record types](/en/glossary/dns-record-types/) before choosing the wildcard's data.
 
-A wildcard CNAME supplies an alias when matching permits synthesis. A provider interface might accept `*` relative to the zone, or require a complete owner name. Confirm the saved owner name before testing. Cloudflare, for example, documents `*` in the Name field and `*.www` for a wildcard under `www.example.com`. [Cloudflare documents wildcard creation.](https://developers.cloudflare.com/dns/manage-dns-records/reference/wildcard-dns-records/#create-a-wildcard-record)
+A wildcard CNAME supplies an alias when matching permits synthesis. For an A query, the server can synthesize the CNAME and continue resolution at the target. The target still needs usable address data. [RFC 4592 specifies wildcard CNAME processing.](https://www.rfc-editor.org/rfc/rfc4592.html#section-3.3.3) A provider interface might accept `*` relative to the zone, or require a complete owner name. Confirm the saved owner name before testing. Cloudflare, for example, documents `*` in the Name field and `*.www` for a wildcard under `www.example.com`. [Cloudflare documents wildcard creation.](https://developers.cloudflare.com/dns/manage-dns-records/reference/wildcard-dns-records/#create-a-wildcard-record)
 
 Keep the intended service boundary narrower than the entire domain when possible. For customer pages, consider `*.customers.example.com` rather than `*.example.com`. That recommendation expresses an operational preference: the narrower name makes the purpose and exception list easier to explain. The choice still requires compatible DNS, certificates, and application routing.
 
@@ -123,6 +123,21 @@ Create a small test matrix with intended results before querying. Include a fres
 
 Query the authoritative servers first, then compare answers through the recursive resolver used by the affected client. Keep the query name and record type identical across comparisons. Record the server, response status, answer section, and authority section. One successful response from one path does not establish consistent behavior across the deployment.
 
+Use `dig` without `+short` while diagnosing an empty answer. The full response preserves the status and authority information. Replace the example names with names from a zone you control. Replace `ns1.example.net` with an authoritative server for that zone.
+
+| Purpose | Example command |
+| --- | --- |
+| Query the authoritative server | `dig @ns1.example.net new.example.com. A +norecurse` |
+| Check an existing TXT-only name | `dig @ns1.example.net status.example.com. A +norecurse` |
+| Check the branch below an existing name | `dig @ns1.example.net blue.shop.example.com. A +norecurse` |
+| Compare the client's default resolver | `dig new.example.com. A` |
+
+The `+norecurse` option clears the request for recursion. A zero `dig` exit code means a DNS response arrived, including an NXDOMAIN response. Inspect the DNS status rather than treating the command's exit code as proof of an address. [The BIND manual documents query options and return codes.](https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility)
+
+![Three example queries distinguish a wildcard address, no A data, and a name error.](../../assets/wildcard-dns-records-05-query-results.jpg)
+
+The illustration assumes the wildcard A record above, TXT at `status.example.com`, A at `shop.example.com`, and no other relevant records. Those assumptions produce different failures: an existing name without A data differs from a missing name beneath an existing branch.
+
 Read empty answers carefully. A NODATA response uses `NOERROR` without relevant answer data. NXDOMAIN indicates a name error. A referral can also lack an answer, so inspect authority information before drawing a conclusion. [RFC 2308 explains NODATA and referral distinctions.](https://www.rfc-editor.org/rfc/rfc2308.html#section-2.2)
 
 If a new TXT entry coincides with a missing address, compare the tree before and after that change. Do not delete a verification record merely to restore broad matching. An explicit address at the affected name, or a deliberate wildcard beneath that branch, may express the intended configuration more clearly. Review the service requirement before choosing either repair.
@@ -131,10 +146,12 @@ If authoritative answers look correct but a recursive resolver still returns an 
 
 Finish with real HTTPS requests for the intended hostname shapes. Confirm the certificate, page selection, unknown-customer response, and existing exceptions. Repeat the matrix after adding a deeper name or changing providers. Those changes can alter the boundary that an earlier successful wildcard test established.
 
-## Sources and further reading
+## These sources define matching and diagnostic behavior
 
 - [RFC 4592: The Role of Wildcards in the Domain Name System](https://www.rfc-editor.org/rfc/rfc4592.html). Fetched 2026-10-21. Sections 2.1, 2.2.1–2.2.3, and 3.3 explain syntax, existing nodes, and synthesis.
 - [Cloudflare: Wildcard DNS records](https://developers.cloudflare.com/dns/manage-dns-records/reference/wildcard-dns-records/). Fetched 2026-10-21. “Create a Wildcard record” and “Specific DNS records take precedence” document configuration and the implicit-parent exception.
 - [RFC 9525: Service Identity in TLS](https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3). Fetched 2026-10-21. Section 6.3 limits TLS wildcard matching to one label.
 - [NGINX: Server names](https://nginx.org/en/docs/http/server_names.html). Fetched 2026-10-21. “Wildcard names” and “Virtual server selection” describe independent web-server routing.
 - [RFC 2308: Negative Caching of DNS Queries](https://www.rfc-editor.org/rfc/rfc2308.html#section-2.2). Fetched 2026-10-21. Sections 2.2, 3, and 5 explain NODATA and negative-response caching.
+
+- [ISC BIND 9: dig manual](https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility). Fetched 2026-10-21. Query options and return codes distinguish DNS response status from command success.

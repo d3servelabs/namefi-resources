@@ -1,0 +1,40 @@
+{
+  "model": "gpt-image-2",
+  "quality": "high",
+  "attempts": [
+    {
+      "asset": "io-01-registration-levels.jpg",
+      "attempt": 1,
+      "result": "pass",
+      "findings": "Correct labels, two registration levels, cream margin, official top-right logo, no crop."
+    },
+    {
+      "asset": "io-og.jpg",
+      "attempt": 1,
+      "result": "rejected",
+      "findings": "Invented .com/.net labels fell into the bottom caption reserve. Preserved scratch image and attempt usage before regeneration."
+    },
+    {
+      "asset": "io-og.jpg",
+      "attempt": 2,
+      "result": "pass",
+      "findings": "Correct headline and .io label, no invented extension labels, official top-right logo, empty bottom band, no crop."
+    }
+  ],
+  "final_assets": [
+    {
+      "path": "content/assets/io-og.jpg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 107538,
+      "sha256": "c4aa256b0b6cc28c4f887557e64c8dd2b54586039d0bec1ee03528e200e1f1e3"
+    },
+    {
+      "path": "content/assets/io-01-registration-levels.jpg",
+      "width": 1200,
+      "height": 675,
+      "bytes": 42835,
+      "sha256": "cb3b87a77da48c4fff560c792859073a42bd7773f85ea2221e8b7855055e52de"
+    }
+  ]
+}

@@ -58,6 +58,23 @@ Do not translate a failed request into “unregistered.” A missing result can 
 
 Avoid entering passwords, transfer authorization codes, or account recovery information. A public registration lookup needs a domain name. The public search field does not need the credentials that control a domain.
 
+## A missing or incomplete result needs a separate check
+
+![A domain lookup recovery sequence checks spelling, source, and the registrar.](../../assets/icann-domain-lookup-05-result-check.jpg)
+
+A successful response can omit a contact field. A failed request can return no registration record at all. Record the difference.
+
+| Observed result | Next check | Conclusion to avoid |
+| --- | --- | --- |
+| Record with redacted contacts | Read the notice and available contact route | The domain has no registrant |
+| Error or timeout | Check spelling, preserve the message, and retry later | The domain is available |
+| Different timestamps | Compare event labels and the objects containing those events | One timestamp must be false |
+| Different registrar names | Check whether one name belongs to a reseller | An unfamiliar name proves an unauthorized transfer |
+
+Treat the table as an investigation checklist, rather than a list of guaranteed causes. The public result alone may not explain the difference.
+
+For missing nonpublic contact data, start with the [public lookup before requesting disclosure](https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en). ICANN identifies RDRS and direct contact with the sponsoring registrar as request routes. A request does not guarantee disclosure.
+
 ## Registration fields answer different operational questions
 
 ![Registration fields answer separate operational questions.](../../assets/icann-domain-lookup-02-section.jpg)
@@ -94,6 +111,15 @@ When an RDAP result includes nested contact or nameserver objects, check the obj
 ![A transfer lock and a DNS hold require different actions.](../../assets/icann-domain-lookup-03-section.jpg)
 
 A domain can have several status codes at once. Read each code before changing settings. A transfer restriction can provide expected account protection, while a hold can affect DNS operation.
+
+The interface may show spaced RDAP labels instead of compact EPP codes. ICANN's [status table provides the mapping](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en#:~:text=RDAP%20Status%20Mapping).
+
+| EPP code | RDAP label | Operation to investigate |
+| --- | --- | --- |
+| `clientTransferProhibited` | `client transfer prohibited` | Transfer to another registrar |
+| `clientHold` | `client hold` | Domain activation in DNS |
+
+Copy the displayed label exactly. Use the mapping to find the matching definition, rather than treating the spacing as a different restriction.
 
 ICANN's [EPP status reference](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en#:~:text=clientTransferProhibited) explains that `clientTransferProhibited` prevents a transfer to another registrar. The code does not by itself establish a website outage. If you intend to transfer your own domain, use your registrar's documented unlocking process.
 
@@ -153,4 +179,5 @@ Sources checked on October 21, 2026. The examples describe hypothetical workflow
 - [ICANN: Information for RDAP Users](https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en). The lookup-client section documents the free browser tool.
 - [RFC 9083, sections 4.5 and 5.3](https://datatracker.ietf.org/doc/html/rfc9083#section-4.5). The standard defines events and domain objects.
 - [ICANN: EPP status codes](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en). The client status table distinguishes transfer restrictions and holds.
+- [ICANN: RDAP transition announcement](https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en). The announcement separates public lookup from nonpublic data requests.
 - [ICANN: Registration Data Request Service](https://www.icann.org/rdrs-en). Consult the current request guidance for nonpublic data.

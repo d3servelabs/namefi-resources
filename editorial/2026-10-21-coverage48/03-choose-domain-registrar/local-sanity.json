@@ -1,0 +1,31 @@
+{
+  "external_url_multiset_equal": true,
+  "body_exact_copy": false,
+  "structure": {
+    "en": {
+      "H2": 5,
+      "table_rows": 10,
+      "numbered_steps": 5,
+      "body_words": 1313,
+      "inline_images": 4
+    },
+    "de": {
+      "H2": 5,
+      "table_rows": 10,
+      "numbered_steps": 5,
+      "body_words": 1274,
+      "inline_images": 4
+    }
+  },
+  "artifact_scan_clean": true,
+  "images_exist": true,
+  "notes": "Bilingual segment pass preserved all examples, qualifications, question lists and sources. German prose received a separate fluency reread within this session. No independent native review is claimed.",
+  "validator": {
+    "data_validate": "PASS, 37 existing warnings",
+    "locale_audit": "4057 files, zero locale or relationship mismatch",
+    "faqs": "1633 FAQs in 369 pages, pass",
+    "mdx": "PASS",
+    "scoped_links": "2 files, zero broken/missing-locale/locale-mismatch/relationship-mismatch; 4 accepted missing-translation fallbacks"
+  },
+  "cross_link_selection": "English discovery retained relevant body links. No inbound edits: suggested matches concern generic registrar support, not registrar selection. No other topic files changed."
+}

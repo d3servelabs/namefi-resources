@@ -1,0 +1,47 @@
+{
+  "external_citations": {
+    "match": true,
+    "english": 37,
+    "german": 37,
+    "en_only": [],
+    "de_only": []
+  },
+  "code_spans": {
+    "match": true,
+    "english": 26,
+    "german": 26,
+    "en_only": [],
+    "de_only": []
+  },
+  "image_paths": {
+    "match": true,
+    "english": 5,
+    "german": 5,
+    "en_only": [],
+    "de_only": []
+  },
+  "headings": {
+    "english": 6,
+    "german": 6
+  },
+  "procedure_steps": {
+    "english": 5,
+    "german": 5
+  },
+  "tables": {
+    "english_rows": 18,
+    "german_rows": 18
+  },
+  "body_length": {
+    "english_chars": 19756,
+    "german_chars": 22366
+  },
+  "english_body_copy": false,
+  "translation_notes": "Complete native German prose drafted from final English. No independent/native-human review or hosted rendering performed under sanity-only instruction. English diagram labels remain shared image content; German captions and all article text are localized.",
+  "sanity": {
+    "data_validate": "pass; 37 warnings; 0 locale or relationship mismatch",
+    "lint_mdx": "pass",
+    "focused_link_audit": "0 broken, 0 missing-locale, 0 locale-mismatch, 0 relationship-mismatch; 3 intentional same-locale English fallback targets",
+    "images": "six referenced images exist; cover 1200x630; five inline 1200x675; all visually opened"
+  }
+}

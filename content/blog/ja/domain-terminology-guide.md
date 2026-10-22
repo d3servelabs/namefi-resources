@@ -116,8 +116,8 @@ relatedGlossary:
 
 **カテゴリ**:
 - **汎用TLD**: .com、.org、.net、[.info](/ja/tld/info/)
-- **国別コードTLD**: [.us](/ja/tld/us/)、.uk、.de、.cn
-- **新TLD**: .ai、[.io](/ja/tld/io/)、[.tech](/ja/tld/tech/)、[.shop](/ja/tld/shop/)
+- **国別コードTLD**: [.us](/ja/tld/us/)、.uk、.de、.cn, [.ai](/ja/tld/ai/), [.io](/ja/tld/io/)
+- **新TLD**: [.tech](/ja/tld/tech/)、[.shop](/ja/tld/shop/)
 
 ### **サブドメイン（Subdomain）**
 より大きなドメインの一部として機能するドメインです。たとえば「blog.example.com」は「example.com」のサブドメインです。サブドメインはウェブサイトの異なるセクションを整理するために使われます。
@@ -127,7 +127,7 @@ relatedGlossary:
 ### **DNS（ドメインネームシステム）**
 人が読めるドメイン名を、コンピュータ間の通信に使われるIPアドレスに変換するシステムです。インターネットの「電話帳」とも呼ばれます。
 
-**機能**: `namefi.io` を `192.168.1.1` に変換してブラウザが通信できるようにする
+**DNSの説明用の例**: `example.com` → `192.0.2.1`. [RFC 5737 §3](https://www.rfc-editor.org/rfc/rfc5737.html#section-3).
 
 ### **WHOIS**
 登録されたドメイン名の情報を格納するデータベースへの問い合わせに使われるプロトコルです。[WHOIS](/ja/glossary/whois/)では、ドメインの所有者、登録日、連絡先情報などを確認できます。

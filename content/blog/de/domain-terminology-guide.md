@@ -114,8 +114,8 @@ Der Teil eines Domainnamens, der nach dem letzten Punkt kommt (z.B. [.com](/de/t
 
 **Kategorien**:
 - **Generische TLDs**: .com, .org, .net, [.info](/de/tld/info/)
-- **Länderspezifische TLDs**: [.us](/de/tld/us/), .uk, .de, .cn
-- **Neue TLDs**: .ai, [.io](/de/tld/io/), [.tech](/de/tld/tech/), [.shop](/de/tld/shop/)
+- **Länderspezifische TLDs**: [.us](/de/tld/us/), .uk, .de, .cn, [.ai](/de/tld/ai/), [.io](/de/tld/io/)
+- **Neue TLDs**: [.tech](/de/tld/tech/), [.shop](/de/tld/shop/)
 
 ### **Subdomain**
 Eine Domain, die Teil einer größeren Domain ist. Zum Beispiel ist "blog.example.com" eine Subdomain von "example.com". Subdomains können verwendet werden, um verschiedene Abschnitte einer Website zu organisieren.
@@ -125,7 +125,7 @@ Eine Domain, die Teil einer größeren Domain ist. Zum Beispiel ist "blog.exampl
 ### **DNS (Domain Name System)**
 Das System, das menschenlesbare Domainnamen in IP-Adressen übersetzt, die Computer zur Kommunikation miteinander verwenden. Es wird oft als das "Telefonbuch" des Internets bezeichnet.
 
-**Funktion**: Konvertiert `namefi.io` in `192.168.1.1` für die Browserkommunikation
+**Illustratives DNS-Beispiel**: `example.com` → `192.0.2.1`. [RFC 5737 §3](https://www.rfc-editor.org/rfc/rfc5737.html#section-3).
 
 ### **WHOIS**
 Ein Protokoll zur Abfrage von Datenbanken, die Informationen über registrierte Domainnamen speichern. [WHOIS](/de/glossary/whois/) liefert Details wie den Domaininhaber, Registrierungsdaten und Kontaktinformationen.
