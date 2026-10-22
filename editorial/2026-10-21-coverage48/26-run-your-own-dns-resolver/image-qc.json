@@ -1,0 +1,67 @@
+{
+  "inspected_utc": "2026-10-22T01:00:43.741521+00:00",
+  "attempts": 1,
+  "attempt1_api_usage_file": "image-attempt1-usage.json",
+  "images": [
+    {
+      "file": "content/assets/run-your-own-dns-resolver-01-section.jpg",
+      "status": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "0d156f72772203ba77089d0a3ef022e14ab34942bb1c0d2fa68bdf19246d9c1d",
+      "visual_qc": "PASS: inspected final image; full cream background, generous margins, complete labels, official logo top-right; factual diagram matches adjacent text. Cover bottom reserve clear."
+    },
+    {
+      "file": "content/assets/run-your-own-dns-resolver-02-section.jpg",
+      "status": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "40d390e131fa378dc1113bb695d777aa4d0d7169540e7b7c5b0bfb4b229349c7",
+      "visual_qc": "PASS: inspected final image; full cream background, generous margins, complete labels, official logo top-right; factual diagram matches adjacent text. Cover bottom reserve clear."
+    },
+    {
+      "file": "content/assets/run-your-own-dns-resolver-03-section.jpg",
+      "status": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "ba756440e392fd9a16b408988b24ac30a671fab68a4941eb9b66d9c74797cd53",
+      "visual_qc": "PASS: inspected final image; full cream background, generous margins, complete labels, official logo top-right; factual diagram matches adjacent text. Cover bottom reserve clear."
+    },
+    {
+      "file": "content/assets/run-your-own-dns-resolver-04-section.jpg",
+      "status": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "7b1747f3ba6cf26dce7ae328f3e89d593780a74130bd2da543eb3cbd44c38dd8",
+      "visual_qc": "PASS: inspected final image; full cream background, generous margins, complete labels, official logo top-right; factual diagram matches adjacent text. Cover bottom reserve clear."
+    },
+    {
+      "file": "content/assets/run-your-own-dns-resolver-05-pihole-unbound.jpg",
+      "status": "new",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "5ad1de8a7ee4bff22d22bc5b14d8a93ae347612ee9e227fd860f8ebcf8ca8cc3",
+      "visual_qc": "PASS: inspected final image; full cream background, generous margins, complete labels, official logo top-right; factual diagram matches adjacent text. Cover bottom reserve clear."
+    },
+    {
+      "file": "content/assets/run-your-own-dns-resolver-og.jpg",
+      "status": "reused",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "2bfe25dd5324690da75b3076b7b0c54822d46af5f2cb281ed0d989b5443b6cc4",
+      "visual_qc": "PASS: inspected final image; full cream background, generous margins, complete labels, official logo top-right; factual diagram matches adjacent text. Cover bottom reserve clear."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+content/blog/de/run-your-own-dns-resolver.md
+  MISSING-TR L43 actual=/de/blog/isp-dns-vs-public-resolver/
+  MISSING-TR L116 actual=/de/blog/nslookup-specific-dns-server/
+  MISSING-TR L134 actual=/de/blog/dns-over-https-vs-dns-over-tls/
+  MISSING-TR L178 actual=/de/blog/primary-secondary-dns/
+
+Audited 2 file(s): 0 broken, 0 missing-locale, 0 locale-mismatch, 0 relationship-mismatch, 4 missing-translation fallback.

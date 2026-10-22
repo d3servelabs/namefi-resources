@@ -8,7 +8,7 @@ authors: ['namefiteam']
 draft: false
 format: guide
 cluster: domain-basics
-keywords: ["run your own DNS resolver", "self hosted DNS", "Unbound resolver", "home DNS server", "recursive DNS", "DNS forwarding", "DuckDNS vs DNS resolver", "private DNS resolver", "DNS resolver security", "local DNS cache"]
+keywords: ["run your own DNS resolver", "self hosted DNS", "Unbound resolver", "Technitium DNS Server", "Pi-hole Unbound", "home DNS server", "recursive DNS", "DNS forwarding", "DuckDNS vs DNS resolver", "private DNS resolver", "DNS resolver security", "local DNS cache"]
 relatedArticles:
   - /en/blog/isp-dns-vs-public-resolver/
   - /en/blog/choose-public-dns-resolver/
@@ -64,6 +64,27 @@ For a hypothetical home lab, a dynamic DNS name might help the owner find a chan
 Do not open inbound DNS service merely because a dynamic DNS hostname exists. Remote access needs an intentional design. A VPN to an authorized network can provide a different access path from an openly reachable recursive service.
 
 Write down the users, networks, host, architecture, and recovery owner. A personal experiment has different availability requirements from a resolver that every household device will depend on.
+
+## Technitium and Pi-hole support different setup paths
+
+![Pi-hole filters client queries before Unbound resolves allowed names through authoritative DNS.](../../assets/run-your-own-dns-resolver-05-pihole-unbound.jpg)
+
+Choose software after choosing the DNS path. [Technitium DNS Server](https://technitium.com/dns/) combines recursive resolution, authoritative zones, block lists, and a browser management console. Technitium also supports encrypted forwarding. Those features do not mean that every deployment needs public authoritative service or a public administration interface.
+
+[Pi-hole's Unbound guide](https://docs.pi-hole.net/guides/dns/unbound/) describes a different arrangement. Pi-hole filters client queries, then sends allowed queries to a local Unbound instance for recursive resolution. Pi-hole can also use an external upstream. Installing Pi-hole alone does not establish that Unbound performs recursion.
+
+| Starting requirement | Relevant option | Decision to verify |
+| --- | --- | --- |
+| Recursive cache without a filtering dashboard | Unbound | Listener, access rules, validation, and service recovery |
+| Filtering with a separate recursive component | Pi-hole with Unbound | Both services and the actual upstream path |
+| Recursion, filtering, and zone management in one console | Technitium | Enabled roles, recursion policy, and management access |
+| A hostname that follows a changing public address | DuckDNS | Address updates, separate from client DNS resolution |
+
+For a Pi-hole and Unbound pilot on the same host, the official guide uses Unbound on `127.0.0.1:5335`. Pi-hole's custom upstream field represents that endpoint as `127.0.0.1#5335`. The guide disables other upstream selections so queries use the intended Unbound path. The host's loopback address does not identify a separate container or a second machine.
+
+Test Unbound directly before changing Pi-hole's upstream. Then test through Pi-hole and confirm both filtering and ordinary resolution. Keep the two services' ports distinct. Do not configure Unbound to forward back to Pi-hole, which would create a forwarding loop.
+
+Use the official guide's paired DNSSEC tests: a deliberately invalid name should produce `SERVFAIL`, while the valid comparison should produce `NOERROR`. A timeout does not demonstrate successful validation. Preserve the exact commands and results with the deployment notes.
 
 ## A private pilot starts with supported installation and limited access
 
@@ -169,6 +190,8 @@ Sources checked on October 21, 2026. The article provides a planning workflow ra
 - [NLnet Labs: Resolver for Home Networks](https://unbound.docs.nlnetlabs.nl/en/latest/use-cases/home-resolver.html). The guide describes Unbound's home-network use case.
 - [Unbound configuration manual](https://unbound.docs.nlnetlabs.nl/en/latest/manpages/unbound.conf.html). The manual defines listeners, access controls, forwarding, and TLS options.
 - [Unbound configuration checker](https://unbound.docs.nlnetlabs.nl/en/latest/manpages/unbound-checkconf.html). The command checks a configuration file.
+- [Technitium DNS Server](https://technitium.com/dns/). The project describes recursion, authoritative zones, filtering, and encrypted forwarding.
+- [Pi-hole: Unbound guide](https://docs.pi-hole.net/guides/dns/unbound/). The guide documents the local upstream endpoint, separate ports, and validation tests.
 - [DuckDNS: HTTP API specification](https://www.duckdns.org/spec.jsp). The specification documents dynamic address updates.
 - [RFC 5358, section 4](https://datatracker.ietf.org/doc/html/rfc5358#section-4). The guidance covers restricted recursive service.
 - [RFC 9076, section 6](https://datatracker.ietf.org/doc/html/rfc9076#section-6). The analysis distinguishes resolver and authoritative-server visibility.
