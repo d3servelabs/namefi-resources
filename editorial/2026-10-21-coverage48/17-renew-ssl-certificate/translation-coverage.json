@@ -1,0 +1,13 @@
+{
+  "source_id": "G41",
+  "date": "2026-10-21",
+  "language": "ja-JP",
+  "code_blocks_identical": true,
+  "external_url_sets_identical": true,
+  "english_body_characters": 20716,
+  "japanese_body_characters": 11848,
+  "headings_equal_count": true,
+  "table_shapes_equal": true,
+  "method": "All source blocks mapped one-to-one, except source bibliography whitespace. Japanese rewrite preserves cautions, examples, code, dates, citations and localized metadata. Self-check only. No independent or native-human review requested or performed.",
+  "rendered_lqa": "Not performed. Final application and deployed canonical/hreflang checks remain coordinator work after the remote gate opens."
+}

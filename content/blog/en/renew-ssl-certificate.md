@@ -32,7 +32,7 @@ relatedSeries:
 
 **To renew an SSL certificate, identify the certificate manager, confirm domain validation, obtain a replacement, and verify deployment.** A successful certificate request does not prove that visitors receive the replacement.
 
-People still search for “SSL certificate renewal,” although modern [HTTPS](/en/blog/what-is-https/) uses TLS. This guide covers renewal operations for an existing website. The steps depend on whether a hosting provider, a cloud service, or a local ACME client manages certificates.
+People still search for “SSL certificate renewal,” although modern [HTTPS](/en/blog/what-is-https/) uses TLS. Renewal obtains a replacement certificate. Renewal does not extend the signed validity dates of the existing certificate. This guide covers renewal operations for an existing website. The steps depend on whether a hosting provider, a cloud service, or a local ACME client manages certificates.
 
 Consider a hypothetical website, `shop.example.com`. An administrator sees a fresh certificate in the hosting dashboard, but customers still receive an expiration warning. The administrator needs evidence from the public connection before ordering another replacement.
 
@@ -65,11 +65,27 @@ Build a small inventory before changing anything:
 
 Record the responsible person alongside each location. A managed service can automate certificate work, while a separate team still controls domain validation. The [domain-versus-hosting guide](/en/blog/domain-vs-hosting/) explains why the domain account and hosting account can differ.
 
-Check the actual certificate lifetime rather than copying an old schedule. Let's Encrypt's October 7, 2026 announcement schedules 64-day default certificates for February 10, 2027. The announcement also identifies shorter 45-day and six-day options. Those figures describe Let's Encrypt profiles, not every certificate authority. [Let's Encrypt, 64-day announcement](https://letsencrypt.org/2026/10/07/64-day-certs)
+### Your renewal schedule must follow the actual certificate lifetime
 
-The earlier transition schedule identifies the opt-in `tlsserver` profile and the later change to 45-day default certificates in February 2028. Read the current profile configuration before setting alerts. [Let's Encrypt, timeline of changes](https://letsencrypt.org/2025/12/02/from-90-to-45#timeline-of-changes)
+![ARI renewal, deployment, and public verification finish before certificate expiry.](../../assets/renew-ssl-certificate-05-renewal-timing.jpg)
 
-Choose an alert schedule that leaves time for diagnosis, validation, and deployment. Document the actual expiry date in UTC. Do not assume a yearly payment renews the certificate currently serving traffic.
+Check the actual certificate lifetime rather than copying an old schedule. As of October 21, 2026, the public TLS maximum is 200 days for certificates issued since March 15, 2026. A certificate authority can issue certificates with shorter lifetimes.
+
+| Public certificate issuance date | Maximum validity |
+| --- | --- |
+| March 15, 2026–March 14, 2027 | 200 days |
+| March 15, 2027–March 14, 2029 | 100 days |
+| March 15, 2029 onward | 47 days |
+
+These limits apply to publicly trusted TLS server certificates. They do not set the schedule for an enterprise's private certificate authority. [CA/Browser Forum, Baseline Requirements 2.3.1, sections 1.1 and 6.3.2](https://cabforum.org/working-groups/server/baseline-requirements/requirements/#632-certificate-operational-periods-and-key-pair-usage-periods)
+
+Let's Encrypt currently uses a 90-day default lifetime. Its October 7 announcement schedules 64-day default certificates for February 10, 2027. The announcement also identifies 45-day and six-day options. These lifetimes describe Let's Encrypt profiles, not every certificate authority. [Let's Encrypt, 64-day announcement](https://letsencrypt.org/2026/10/07/64-day-certs)
+
+The opt-in `tlsserver` profile already issues 45-day certificates. Let's Encrypt schedules 45-day default certificates for February 16, 2028. Read the configured profile before setting alerts. [Let's Encrypt, timeline of changes](https://letsencrypt.org/2025/12/02/from-90-to-45#timeline-of-changes)
+
+Prefer the authority's ACME Renewal Information (ARI) window when the client supports ARI. Without ARI, Let's Encrypt recommends renewal approximately two-thirds through the certificate lifetime. A fixed 60-day interval cannot support a 45-day certificate. [Let's Encrypt, automation guidance](https://letsencrypt.org/2025/12/02/from-90-to-45#action-required)
+
+Choose alerts that leave time for diagnosis, validation, and deployment. Document the expiry date in UTC. Check renewal failures when they happen, even when the certificate still has time remaining. A yearly payment or domain renewal does not update the certificate serving traffic.
 
 ## Your validation method determines what renewal must preserve
 
@@ -119,7 +135,9 @@ A targeted test takes the following form:
 certbot renew --cert-name example.com --dry-run
 ```
 
-Use the actual stored certificate name and the installation's required privileges. Certbot documents renewal dry runs and certificate selection. A dry run performs an active test, so review configured hooks before execution. The test is not a read-only certificate inspection. [Certbot, renewing certificates](https://eff-certbot.readthedocs.io/en/stable/using.html#renewing-certificates)
+Use the actual stored certificate name and the installation's required privileges. Certbot documents renewal dry runs and certificate selection. A dry run performs an active test. Inspect the ACME server setting and configured hooks before execution. The test is not a read-only certificate inspection. [Certbot, renewing certificates](https://eff-certbot.readthedocs.io/en/stable/using.html#renewing-certificates)
+
+A normal dry run does not run deployment hooks. Certbot provides `--run-deploy-hooks` to test those hooks with the current active certificate after a successful dry run. Use that option only after checking each hook's effects. A dry run alone does not prove successful production deployment. [Certbot, deploy-hook testing](https://eff-certbot.readthedocs.io/en/stable/using.html#certbot-command-line-options)
 
 After a successful test, use the installation's normal renewal procedure. Confirm the scheduled task exists and examine recent execution results. Certbot's installation method determines how automatic renewal runs. [Certbot, automated renewals](https://eff-certbot.readthedocs.io/en/stable/using.html#automated-renewals)
 
@@ -157,16 +175,31 @@ Suppose the dashboard shows a replacement, but the listener still references a m
 
 Suppose the listener already references the replacement, but one check still shows an older certificate. Record the destination from that check. Compare the destination with the routing inventory, then inspect any overlooked proxy or regional endpoint. This approach gives each change a specific purpose and an observable result.
 
+For a stricter connection check, OpenSSL 3.5 supports hostname verification and failure on certificate verification errors:
+
+```bash
+openssl s_client -connect shop.example.com:443 -servername shop.example.com -verify_hostname shop.example.com -verify_return_error </dev/null
+```
+
+Use the appropriate trust store for the checking machine. OpenSSL results can differ from a browser's trust policy. The earlier `-showcerts` command only displays the server's supplied chain. [OpenSSL, verification options and notes](https://docs.openssl.org/3.5/man1/openssl-s_client/#options)
+
 Also test the website in a browser. Confirm that normal navigation and important application requests work without certificate warnings. Check the apex domain, `www`, and application hostnames according to the inventory.
 
 When results disagree, preserve the evidence. Record the hostname, observation time, connection destination, certificate identity, and error. Those details help separate an incomplete deployment from a check against the wrong endpoint.
 
-Use the failure stage to choose recovery:
+Use the observed symptom to choose recovery:
 
-- **Validation failed:** repair the challenge route, DNS access, or required provider record.
-- **Issuance failed:** read the authority's error and follow the documented retry guidance.
-- **Deployment failed:** repair the certificate association, file reference, permissions, or reload operation.
-- **Public verification failed:** compare the observed endpoint with the intended deployment target.
+| Symptom | Investigate first | Completion evidence |
+| --- | --- | --- |
+| Challenge fails | HTTP route, DNS zone, credentials, or provider validation record | Authority accepts domain validation |
+| Renewal command returns success without a replacement | Whether renewal was due and whether issuance occurred | New certificate identity and validity dates |
+| Manager shows a replacement, but public expiry stays unchanged | Listener association, file path, reload, and regional endpoints | Intended public endpoints send the replacement |
+| Certificate dates are current, but a browser reports a name error | Subject Alternative Name (SAN) coverage for the requested hostname | Certificate covers the exact requested hostname |
+| Browser rejects the issuer or chain | Required intermediate certificates and client trust store | Browser accepts the intended chain |
+
+Certificate expiry is only one certificate error. OpenSSL separates hostname verification, trust-chain verification, and time checks. A later expiry date cannot repair every verification failure. [OpenSSL, certificate verification options](https://docs.openssl.org/3.5/man1/openssl-verification-options/)
+
+A self-signed certificate needs a separate trust plan. Creating a replacement with OpenSSL does not make browsers trust an ordinary website certificate automatically. Private systems must distribute trust through their established procedure. Public websites should recover their publicly trusted certificate through the existing certificate manager. [OpenSSL, trust anchors](https://docs.openssl.org/3.5/man1/openssl-verification-options/#trust-anchors)
 
 Treat an expired certificate as an incident with an assigned owner. Restore validation and deploy a valid replacement through the supported recovery procedure. Do not ask visitors to bypass certificate warnings as an operating plan.
 
@@ -176,6 +209,7 @@ The practical completion test is straightforward: the intended endpoints serve v
 
 ## Sources and further reading
 
+- CA/Browser Forum, [TLS Baseline Requirements 2.3.1](https://cabforum.org/working-groups/server/baseline-requirements/requirements/#632-certificate-operational-periods-and-key-pair-usage-periods), sections 1.1 and 6.3.2, public scope and validity schedule. Fetched 2026-10-21.
 - Let's Encrypt, [64-Day Certificate Lifetimes Coming Feb 2027](https://letsencrypt.org/2026/10/07/64-day-certs), opening announcement and ARI guidance. Fetched 2026-10-21.
 - Let's Encrypt, [Decreasing Certificate Lifetimes to 45 Days](https://letsencrypt.org/2025/12/02/from-90-to-45#timeline-of-changes), “Timeline of Changes.” Fetched 2026-10-21.
 - IETF, [RFC 8555](https://www.rfc-editor.org/rfc/rfc8555.html#section-8), section 8, identifier validation challenges. Fetched 2026-10-21.
@@ -186,3 +220,5 @@ The practical completion test is straightforward: the intended endpoints serve v
 - IETF, [RFC 9773](https://www.rfc-editor.org/rfc/rfc9773.html#section-4.2), sections 4.2–4.3, suggested windows and polling. Fetched 2026-10-21.
 - OpenSSL, [s_client](https://docs.openssl.org/3.5/man1/openssl-s_client/#options), destination, SNI, and certificate display options. Fetched 2026-10-21.
 - OpenSSL, [x509](https://docs.openssl.org/3.5/man1/openssl-x509/#certificate-printing-options), certificate printing options. Fetched 2026-10-21.
+
+- OpenSSL, [Certificate verification options](https://docs.openssl.org/3.5/man1/openssl-verification-options/), certificate extensions, trust anchors, hostname and time checks. Fetched 2026-10-21.

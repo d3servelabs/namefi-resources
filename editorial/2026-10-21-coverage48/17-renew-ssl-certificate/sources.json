@@ -1,0 +1,152 @@
+[
+  {
+    "source": "OpenSSL s_client",
+    "url": "https://docs.openssl.org/3.5/man1/openssl-s_client/",
+    "used_locators": [
+      "https://docs.openssl.org/3.5/man1/openssl-s_client/#options"
+    ],
+    "support": "Destination, SNI, showcerts, verify_hostname and verify_return_error; inspection differs from strict verification.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "CA/Browser Forum",
+    "url": "https://cabforum.org/working-groups/server/baseline-requirements/requirements/",
+    "used_locators": [
+      "https://cabforum.org/working-groups/server/baseline-requirements/requirements/#632-certificate-operational-periods-and-key-pair-usage-periods"
+    ],
+    "support": "Sections 1.1 and 6.3.2: public scope, current 200-day maximum and future 100/47-day schedule.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "Let's Encrypt 64-day announcement",
+    "url": "https://letsencrypt.org/2026/10/07/64-day-certs",
+    "used_locators": [
+      "https://letsencrypt.org/2026/10/07/64-day-certs"
+    ],
+    "support": "2027-02-10 default64, current90, shorter45/6, ARI and lifetime-relative scheduling.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "Let's Encrypt lifetime timeline",
+    "url": "https://letsencrypt.org/2025/12/02/from-90-to-45",
+    "used_locators": [
+      "https://letsencrypt.org/2025/12/02/from-90-to-45#timeline-of-changes",
+      "https://letsencrypt.org/2025/12/02/from-90-to-45#action-required"
+    ],
+    "support": "tlsserver45 opt-in; default45 on 2028-02-16; renew around two-thirds without ARI.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "RFC8555",
+    "url": "https://www.rfc-editor.org/rfc/rfc8555.html",
+    "used_locators": [
+      "https://www.rfc-editor.org/rfc/rfc8555.html#section-8"
+    ],
+    "support": "Sections7/8: automated issuance and challenges.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "Let's Encrypt challenge types",
+    "url": "https://letsencrypt.org/docs/challenge-types/",
+    "used_locators": [
+      "https://letsencrypt.org/docs/challenge-types/#http-01-challenge",
+      "https://letsencrypt.org/docs/challenge-types/#dns-01-challenge",
+      "https://letsencrypt.org/docs/challenge-types/"
+    ],
+    "support": "HTTP-01 port80, no wildcard, multiple frontends; DNS-01 TXT, wildcard, narrow credentials and delegation.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "AWS DNS renewal",
+    "url": "https://docs.aws.amazon.com/acm/latest/userguide/dns-renewal-validation.html",
+    "used_locators": [
+      "https://docs.aws.amazon.com/acm/latest/userguide/dns-renewal-validation.html"
+    ],
+    "support": "Required public CNAME records and service-use criteria.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "AWS managed renewal",
+    "url": "https://docs.aws.amazon.com/acm/latest/userguide/managed-renewal.html",
+    "used_locators": [
+      "https://docs.aws.amazon.com/acm/latest/userguide/managed-renewal.html"
+    ],
+    "support": "Imported/expired ineligible, ACME renewal client responsibility.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "Certbot guide",
+    "url": "https://eff-certbot.readthedocs.io/en/stable/using.html",
+    "used_locators": [
+      "https://eff-certbot.readthedocs.io/en/stable/using.html#renewing-certificates",
+      "https://eff-certbot.readthedocs.io/en/stable/using.html#certbot-command-line-options",
+      "https://eff-certbot.readthedocs.io/en/stable/using.html#automated-renewals"
+    ],
+    "support": "Stored certificate names, dry-run, command selection, scheduled renewals, zero status without renewal, deployment hook behavior.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "RFC9773",
+    "url": "https://www.rfc-editor.org/rfc/rfc9773.html",
+    "used_locators": [
+      "https://www.rfc-editor.org/rfc/rfc9773.html#section-4.2"
+    ],
+    "support": "Suggested renewal windows, random client selection, polling.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "OpenSSL x509",
+    "url": "https://docs.openssl.org/3.5/man1/openssl-x509/",
+    "used_locators": [
+      "https://docs.openssl.org/3.5/man1/openssl-x509/#certificate-printing-options"
+    ],
+    "support": "Printing dates, issuer, serial and SAN extensions.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  },
+  {
+    "source": "OpenSSL verification options",
+    "url": "https://docs.openssl.org/3.5/man1/openssl-verification-options/",
+    "used_locators": [
+      "https://docs.openssl.org/3.5/man1/openssl-verification-options/",
+      "https://docs.openssl.org/3.5/man1/openssl-verification-options/#trust-anchors"
+    ],
+    "support": "Trust anchors, time checks, hostname and chain validation.",
+    "opened": true,
+    "fetch_date_local": "2026-10-21",
+    "timezone": "America/Los_Angeles",
+    "method": "Opened primary source with web tool and read relevant passages. No blocked source used as evidence."
+  }
+]
