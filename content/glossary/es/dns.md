@@ -69,7 +69,7 @@ Este patrón — en el que el resolvedor hace el trabajo iterativo y el cliente 
 
 El DNS está organizado como un árbol invertido. La raíz (`.`) está en la cima; debajo de ella están los TLDs (`.com`, `.net`, `.io`, códigos de país como `.de`); debajo de cada TLD están los dominios de segundo nivel (`example.com`); y estos pueden tener subdominios anidados (`mail.example.com`).
 
-Una **zona** es una parte del árbol DNS bajo administración común, no un nodo individual. Una delegación separa la zona hija de la zona superior. El servidor autoritativo conserva los **registros de recursos** de la zona ([RFC 1034, sección 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Los [tipos de registros DNS](/es/glossary/dns-record-types/) más frecuentes son:
+Una **zona** es una parte del árbol DNS bajo administración común. No todos los nodos forman una zona independiente. Una delegación separa la zona hija de la zona superior. El servidor autoritativo conserva los **registros de recursos** de la zona ([RFC 1034, sección 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Los [tipos de registros DNS](/es/glossary/dns-record-types/) más frecuentes son:
 
 | Registro | Propósito | Valor de ejemplo |
 |----------|-----------|-----------------|

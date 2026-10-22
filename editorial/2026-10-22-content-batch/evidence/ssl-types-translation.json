@@ -1,0 +1,104 @@
+{
+  "source": "content/blog/en/ssl-certificate-types.md",
+  "source_base": "20ebd689856bcc138037a07e871ca8f4c2c5df27",
+  "decision": "TRANSLATE",
+  "target_locale": "de-DE",
+  "content_locale": "de",
+  "region": "Germany",
+  "api_version": "v26",
+  "language": "German 1001",
+  "geo": "Germany 2276",
+  "network": "GOOGLE_SEARCH",
+  "fetched_utc": "2026-10-22T04:54:04.832064+00:00",
+  "period": "API default, actual months preserved in ads-de-DE.json",
+  "actual_months": [
+    {
+      "month": "OCTOBER",
+      "year": "2025",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "NOVEMBER",
+      "year": "2025",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "DECEMBER",
+      "year": "2025",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "JANUARY",
+      "year": "2026",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "FEBRUARY",
+      "year": "2026",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "MARCH",
+      "year": "2026",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "APRIL",
+      "year": "2026",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "MAY",
+      "year": "2026",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "JUNE",
+      "year": "2026",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "JULY",
+      "year": "2026",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "AUGUST",
+      "year": "2026",
+      "monthlySearches": "10"
+    },
+    {
+      "month": "SEPTEMBER",
+      "year": "2026",
+      "monthlySearches": "10"
+    }
+  ],
+  "rationale": "Relevant German certificate-type and wildcard queries have returned demand. Explain identity validation and hostname coverage as independent decisions, including exact wildcard limits. Do not sum query groups.",
+  "gsc": "UNKNOWN; not requested",
+  "serp": {
+    "queries": [
+      "SSL Zertifikat Arten DV OV EV Wildcard"
+    ],
+    "engine": "tool web search",
+    "region_control": "UNKNOWN; German query, not a verified geolocated Google Germany SERP",
+    "observed_primary_urls": [
+      "https://www.digicert.com/de/difference-between-dv-ov-and-ev-ssl-certificates",
+      "https://www.ionos.de/hilfe/ssl-zertifikate/vor-der-einrichtung/welche-ssl-zertifikate-bietet-ionos-an/"
+    ],
+    "gap": "Separate hostname coverage from identity validation and show apex/deep-name wildcard exclusions. Competitive feasibility remains uncertain.",
+    "checked_utc": "2026-10-22T05:00:00Z",
+    "timestamp_precision": "Minute marker of personal web review; exact tool-response timestamp UNKNOWN"
+  },
+  "cost": {
+    "translation": "UNKNOWN",
+    "native_review": "UNKNOWN",
+    "maintenance": "UNKNOWN"
+  },
+  "deferred_locales": "All other supported non-English locales lack topic-language-region demand evidence; no zero-demand inference.",
+  "follow_up": "Monitor German query coverage and impressions after publication; native language review remains unmeasured.",
+  "terminology_sources_opened": [
+    "https://www.digicert.com/de/difference-between-dv-ov-and-ev-ssl-certificates",
+    "https://letsencrypt.org/de/getting-started/"
+  ],
+  "source_revision": "598e65b20bc5c57cc5a4fb74e16208dd95edc5b5"
+}

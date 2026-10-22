@@ -100,7 +100,9 @@ TLDはすべて同じではありません。ICANNと[IANA](/ja/glossary/iana/)�
 
 ### 3. スポンサードTLD（sTLD）
 
-**スポンサードTLD**には、特定のコミュニティを代表するスポンサーがいます。[ICANN は `.aero`、`.coop`、`.museum` を例に挙げています](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=The%20.aero%2C%20.coop%2C%20and%20.museum)。登録条件は各拡張子の現行ポリシーによって異なります。登録制限があるだけでスポンサードTLDになるわけではありません。
+**スポンサードTLD**には、特定のコミュニティを代表するスポンサーがいます。[ICANN は現行の契約で `.aero` と `.coop` をスポンサードと分類しています](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type)。登録条件は各拡張子の現行ポリシーによって異なります。登録制限があるだけでスポンサードTLDになるわけではありません。
+
+[ICANN — .coop](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type).
 
 ### 4. 新gTLD
 
