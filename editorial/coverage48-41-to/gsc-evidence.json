@@ -1,0 +1,462 @@
+{
+  "period": [
+    "2026-09-21",
+    "2026-10-18"
+  ],
+  "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+  "topic": {
+    "source_id": "O09",
+    "slug": "to",
+    "path_match": "/tld/to/",
+    "matched_rows": 419,
+    "observed_impressions": 1585,
+    "observed_clicks": 0,
+    "countries": {
+      "usa": {
+        "rows": 62,
+        "impressions": 777,
+        "clicks": 0
+      },
+      "blr": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "ind": {
+        "rows": 12,
+        "impressions": 55,
+        "clicks": 0
+      },
+      "zaf": {
+        "rows": 6,
+        "impressions": 7,
+        "clicks": 0
+      },
+      "aus": {
+        "rows": 21,
+        "impressions": 47,
+        "clicks": 0
+      },
+      "can": {
+        "rows": 20,
+        "impressions": 98,
+        "clicks": 0
+      },
+      "deu": {
+        "rows": 19,
+        "impressions": 45,
+        "clicks": 0
+      },
+      "kor": {
+        "rows": 3,
+        "impressions": 5,
+        "clicks": 0
+      },
+      "nld": {
+        "rows": 8,
+        "impressions": 20,
+        "clicks": 0
+      },
+      "rus": {
+        "rows": 7,
+        "impressions": 10,
+        "clicks": 0
+      },
+      "cze": {
+        "rows": 8,
+        "impressions": 12,
+        "clicks": 0
+      },
+      "tur": {
+        "rows": 6,
+        "impressions": 6,
+        "clicks": 0
+      },
+      "gbr": {
+        "rows": 31,
+        "impressions": 155,
+        "clicks": 0
+      },
+      "ita": {
+        "rows": 6,
+        "impressions": 10,
+        "clicks": 0
+      },
+      "alb": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "arg": {
+        "rows": 6,
+        "impressions": 6,
+        "clicks": 0
+      },
+      "bel": {
+        "rows": 6,
+        "impressions": 8,
+        "clicks": 0
+      },
+      "bgr": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "bra": {
+        "rows": 6,
+        "impressions": 30,
+        "clicks": 0
+      },
+      "chn": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "cyp": {
+        "rows": 3,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "dnk": {
+        "rows": 8,
+        "impressions": 13,
+        "clicks": 0
+      },
+      "est": {
+        "rows": 1,
+        "impressions": 7,
+        "clicks": 0
+      },
+      "fin": {
+        "rows": 4,
+        "impressions": 13,
+        "clicks": 0
+      },
+      "gha": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "hkg": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "hti": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "hun": {
+        "rows": 5,
+        "impressions": 9,
+        "clicks": 0
+      },
+      "idn": {
+        "rows": 5,
+        "impressions": 9,
+        "clicks": 0
+      },
+      "irn": {
+        "rows": 1,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "isr": {
+        "rows": 3,
+        "impressions": 6,
+        "clicks": 0
+      },
+      "kaz": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "ken": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "khm": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "lbn": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "ltu": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "lva": {
+        "rows": 1,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "mar": {
+        "rows": 2,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "mlt": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "mys": {
+        "rows": 3,
+        "impressions": 5,
+        "clicks": 0
+      },
+      "nor": {
+        "rows": 5,
+        "impressions": 7,
+        "clicks": 0
+      },
+      "nzl": {
+        "rows": 10,
+        "impressions": 21,
+        "clicks": 0
+      },
+      "pan": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "phl": {
+        "rows": 6,
+        "impressions": 9,
+        "clicks": 0
+      },
+      "pol": {
+        "rows": 8,
+        "impressions": 12,
+        "clicks": 0
+      },
+      "prt": {
+        "rows": 4,
+        "impressions": 11,
+        "clicks": 0
+      },
+      "rou": {
+        "rows": 6,
+        "impressions": 11,
+        "clicks": 0
+      },
+      "sgp": {
+        "rows": 8,
+        "impressions": 13,
+        "clicks": 0
+      },
+      "svk": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "svn": {
+        "rows": 2,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "swe": {
+        "rows": 7,
+        "impressions": 13,
+        "clicks": 0
+      },
+      "tha": {
+        "rows": 5,
+        "impressions": 7,
+        "clicks": 0
+      },
+      "tun": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "ukr": {
+        "rows": 3,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "vnm": {
+        "rows": 1,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "aut": {
+        "rows": 4,
+        "impressions": 4,
+        "clicks": 0
+      },
+      "irl": {
+        "rows": 6,
+        "impressions": 9,
+        "clicks": 0
+      },
+      "che": {
+        "rows": 6,
+        "impressions": 11,
+        "clicks": 0
+      },
+      "are": {
+        "rows": 2,
+        "impressions": 4,
+        "clicks": 0
+      },
+      "esp": {
+        "rows": 6,
+        "impressions": 8,
+        "clicks": 0
+      },
+      "geo": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "hrv": {
+        "rows": 3,
+        "impressions": 4,
+        "clicks": 0
+      },
+      "lka": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "mda": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "mex": {
+        "rows": 3,
+        "impressions": 4,
+        "clicks": 0
+      },
+      "mus": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "nam": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "nga": {
+        "rows": 3,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "npl": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "pak": {
+        "rows": 1,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "per": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "syr": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "jpn": {
+        "rows": 3,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "grc": {
+        "rows": 3,
+        "impressions": 4,
+        "clicks": 0
+      },
+      "chl": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "dom": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "arm": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "bgd": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "fra": {
+        "rows": 3,
+        "impressions": 5,
+        "clicks": 0
+      },
+      "srb": {
+        "rows": 3,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "col": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "dza": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "egy": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "sau": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "ago": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "twn": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "hnd": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "zwe": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "lca": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      }
+    }
+  }
+}
