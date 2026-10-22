@@ -76,7 +76,7 @@ relatedGlossary:
 
 心理学者はこれを [**processing fluency（処理流暢性）**](https://people.uncw.edu/tothj/Extra-Credit-Papers/Oppenheimer-The%20Secret%20Life%20of%20Fluency-TICS-2008.pdf) と呼ぶ。人間は無意識のうちに、知覚しやすく発音しやすいものを好み、その好感をそのもの自体に転嫁する。この効果は金融市場を動かすほど強い。*Proceedings of the National Academy of Sciences* に掲載された研究で、Adam AlterとDaniel Oppenheimerは、[発音しやすい名前とティッカーシンボルを持つ新規上場企業が、発音しにくいものより上場初日のパフォーマンスが高い](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1482615/) ことを示した。「BAL」が「BDL」に勝るのは、流暢さ以外に理由がない。
 
-株式市場だけではない。["The Name-Pronunciation Effect"](https://ppw.kuleuven.be/okp/_pdf/Laham2012TNPEW.pdf)（Laham, Koval & Alter, 2012）では、発音しやすい名前の人が、より好意的に評価された ―― 現実のデータでも、政治職に選ばれやすく、法律事務所の階層を速く昇る傾向が見られた。発音のしやすさは、あなたの有利な方向に判断を静かに傾ける。
+[The Name-Pronunciation Effect](https://ppw.kuleuven.be/okp/_pdf/Laham2012TNPEW.pdf)（Laham、Koval、Alter、2012）では、参加者は発音しやすい名前をより好意的に評価しました。政治に関する実験は模擬投票と架空の候補者を使い、実際の選挙結果は調べていません。別の観察研究では、発音しやすい姓と法律事務所での高い地位に関連がありました。発音が昇進を速めるという因果関係は示していません。研究結果は発音の確認を勧める根拠になりますが、名前の商業的成功は予測できません。
 
 *音そのもの* に意味がある。["A Sound Idea"](https://pages.stern.nyu.edu/~gmenon/A%20Sound%20Idea.pdf)（Yorkston & Menon, 2004）では、柔らかく丸みのある母音（「Frosh」）をつけた架空のアイスクリームブランドが、同じ製品に「Frish」という名前をつけた場合よりもクリーミーで滑らかと判断された。私たちは音韻から属性を自動的に推測する。高く鋭い母音（*i*）は小さく、速く、軽い印象を与える。広く丸い母音（*o, a*）は大きく、滑らかで、重い印象を与える。望む感覚に合った音を選べ。
 

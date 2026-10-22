@@ -1,0 +1,148 @@
+{
+  "reviewer_model": "gpt-6.1-sol",
+  "reviewed_utc": "2026-10-22T05:21:41.296629+00:00",
+  "review_type": "Independent read-only Arabic accuracy review",
+  "reviewed_head": "60a1f960d620b8443764d23af9963a5a67f40eae",
+  "baseline": "20ebd689856bcc138037a07e871ca8f4c2c5df27",
+  "arabic_path": "content/blog/ar/how-much-is-a-domain-understanding-holding-cost.md",
+  "english_path": "content/blog/en/how-much-is-a-domain-understanding-holding-cost.md",
+  "scope": "Only the batch addition at Arabic lines 42–50 and the equivalent new English section. Arabic diff adds ten lines and deletes none. Older English/Arabic differences remain outside this review.",
+  "overall_verdict": "PASS_WITH_OPTIONAL_STYLE_CLARIFICATIONS",
+  "blocking_issues": [],
+  "validated_accuracy_issues": [],
+  "checks": [
+    {
+      "id": "same-purchase",
+      "arabic_lines": [
+        42,
+        44
+      ],
+      "verdict": "PASS",
+      "reason": "The Arabic requires the same exact name, extension, currency, and registration term across registrars. No different-suffix comparison enters the text."
+    },
+    {
+      "id": "registration-versus-renewal",
+      "arabic_lines": [
+        44
+      ],
+      "verdict": "PASS",
+      "reason": "The Arabic keeps registration and renewal prices separate. The first-year context remains in the immediately preceding existing paragraph. The added section does not claim that promotional registration equals renewal."
+    },
+    {
+      "id": "premium-versus-standard",
+      "arabic_lines": [
+        44
+      ],
+      "verdict": "PASS_WITH_OPTIONAL_CLARIFICATION",
+      "reason": "The prohibition on comparing a premium name with a standard-price name survives. The informal phrase اسم مميز can describe a desirable name, so an explicit price qualification would help. The repository Arabic premium-domain glossary also uses a related established term; no reversed category is present."
+    },
+    {
+      "id": "transfer-columns-and-total",
+      "arabic_lines": [
+        46,
+        48
+      ],
+      "verdict": "PASS",
+      "reason": "Porkbun registration, renewal, and transfer remain separate columns. The Arabic adds needed services to the total and does not add a renewal twice, treat transfer as mandatory annual spending, or assert a new transfer duration."
+    },
+    {
+      "id": "cloudflare-markup",
+      "arabic_lines": [
+        46
+      ],
+      "verdict": "PASS_WITH_OPTIONAL_CLARIFICATION",
+      "reason": "The negation and registration/renewal scope survive. The phrase هامش ربح للمُسجِّل is slightly literal; removing the indirect phrase makes the meaning clearer without changing the claim."
+    },
+    {
+      "id": "cloudflare-dns-restriction",
+      "arabic_lines": [
+        46
+      ],
+      "verdict": "PASS",
+      "reason": "The Arabic retains the required Cloudflare nameservers and tells readers to consider DNS flexibility. The sentence does not turn the restriction into an optional feature. The adjacent registrar-pricing context supplies the service scope."
+    },
+    {
+      "id": "currency-and-figures",
+      "arabic_lines": [
+        44,
+        50
+      ],
+      "verdict": "PASS",
+      "reason": "The Arabic explicitly requires the same currency. The new section introduces no monetary amount or conversion. The date correctly renders October 22, 2026."
+    },
+    {
+      "id": "taxes-and-optional-products",
+      "arabic_lines": [
+        48
+      ],
+      "verdict": "PASS",
+      "reason": "The Arabic tells readers to review taxes and optional products in the final cart. The Arabic adds only services the reader needs and does not imply every optional product is required."
+    },
+    {
+      "id": "negation-and-uncertainty",
+      "arabic_lines": [
+        44,
+        46,
+        48,
+        50
+      ],
+      "verdict": "PASS",
+      "reason": "ما تقارنش preserves the prohibition; ما بيضيفش preserves no markup; لوحده ما يحددش preserves that the promotional price alone cannot establish the cheapest long-term choice. ممكن تتغير preserves changing quotes and terms."
+    },
+    {
+      "id": "egyptian-register",
+      "arabic_lines": [
+        42,
+        44,
+        46,
+        48,
+        50
+      ],
+      "verdict": "PASS",
+      "reason": "بتساعدك، بيعرض، ما بيضيفش، خُد الشرط ده، محتاجها، and ما يحددش maintain modern Egyptian Arabic. The added section does not shift to a formal MSA register."
+    },
+    {
+      "id": "links",
+      "arabic_lines": [
+        46
+      ],
+      "verdict": "PASS",
+      "reason": "All three external source URLs match English exactly. No added internal route requires a locale change."
+    }
+  ],
+  "optional_replacements": [
+    {
+      "severity": "S3",
+      "line": 44,
+      "original": "ما تقارنش اسم مميز باسم سعره عادي.",
+      "suggested": "ما تقارنش اسم مميز سعره أعلى باسم سعره عادي.",
+      "reason": "The explicit price qualification distinguishes premium pricing from subjective name quality. This suggestion adds no new pricing claim and preserves Egyptian Arabic. No blocking factual mismatch requires the change."
+    },
+    {
+      "severity": "S3",
+      "line": 46,
+      "original": "[Cloudflare](https://www.cloudflare.com/domains/) بيقول إنه ما بيضيفش هامش ربح للمُسجِّل على التسجيل والتجديد.",
+      "suggested": "[Cloudflare](https://www.cloudflare.com/domains/) بيقول إنه ما بيضيفش هامش ربح على أسعار التسجيل والتجديد.",
+      "reason": "The replacement removes a literal indirect phrase. The no-markup claim and operation scope stay unchanged."
+    }
+  ],
+  "primary_sources_personally_opened": [
+    {
+      "url": "https://porkbun.com/products/domains",
+      "support": "The table labels extension, registration, renewal, and transfer separately. The nearby note states USD, non-premium prices, and single-year terms. No new numeric quote appears in the reviewed addition.",
+      "locator": "Pricing table labels and note immediately above the table."
+    },
+    {
+      "url": "https://www.cloudflare.com/domains/",
+      "support": "The pricing FAQ states that Cloudflare does not mark up registration and renewal prices.",
+      "locator": "FAQ: How does Cloudflare Registrar offer domains at cost?"
+    },
+    {
+      "url": "https://developers.cloudflare.com/registrar/get-started/register-domain/",
+      "support": "The prerequisites require Cloudflare nameservers and say Registrar users cannot change to another DNS provider’s nameservers.",
+      "locator": "Prerequisites and restrictions → Cloudflare nameservers."
+    }
+  ],
+  "unchanged_material_limit": "The current English article already contains older quoted prices, a three-year example, and transfer-year double-counting guidance that the existing Arabic article lacks. Baseline 20ebd689 already had those English sections. This targeted review does not attribute that pre-existing translation drift to this batch and does not certify the entire older Arabic article.",
+  "actions": "No worktree edits, PR creation, or CI execution. The coordinator decides whether to accept the optional S3 wording."
+}

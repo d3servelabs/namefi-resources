@@ -98,7 +98,9 @@ blog . namefi . io
 
 ### 3. 赞助型顶级域名（sTLD）
 
-**赞助型 TLD** 是由特定社区或组织支持的受限通用顶级域名，该组织负责制定注册资格规则。通常需要满足一定条件才能注册。经典示例包括：`.gov`（美国政府）、`.edu`（美国认证教育机构）、`.mil`（美国军队）、`.aero`（航空业）和 `.museum`。
+**赞助型 TLD** 由代表特定社群的赞助方支持。[ICANN 在现行协议中把 `.aero` 和 `.coop` 列为赞助型 TLD](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type)。注册要求取决于具体后缀的现行政策。注册限制本身不决定 TLD 是否属于赞助型。
+
+[ICANN — .coop](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type).
 
 ### 4. 新通用顶级域名（新 gTLD）
 
@@ -169,7 +171,7 @@ blog . namefi . io
 3. **你是否针对特定国家或地区？** 像 [`.ae`](/zh-CN/tld/ae/) 这样的 ccTLD 能彰显本地存在感，有助于提升本地搜索可见性——但请先确认注册资格要求。
 4. **域名是否易记且具有品牌价值？** 在现代 TLD（[`.xyz`](/zh-CN/tld/xyz/)、[`.app`](/zh-CN/tld/app/)）下注册一个简短的二级域名，往往胜过一个冗长别扭的 `.com`。
 5. **续费费用如何？** 有些 TLD 首年优惠价格低廉，但续费价格较高。务必确认长期价格，而非只看促销价。
-6. **是否有限制条件？** 赞助型 TLD（`.gov`、`.edu`）和部分 ccTLD 有注册资格要求。新 gTLD 如 [`.app`](/zh-CN/tld/app/) 和 [`.dev`](/zh-CN/tld/dev/) 默认强制使用 HTTPS。
+6. **是否有限制条件？** 赞助型 TLD（`.coop`、`.aero`）和部分 ccTLD 有注册资格要求。新 gTLD 如 [`.app`](/zh-CN/tld/app/) 和 [`.dev`](/zh-CN/tld/dev/) 默认强制使用 HTTPS。
 
 一个实用原则：**选择你的目标受众信任且容易记住的 TLD**，然后确认价格和规则符合你的规划。
 
@@ -207,7 +209,7 @@ TLD 代表 **Top-Level Domain（顶级域名）**。它指的是位于网址末�
 *域名*是完整的可注册名称，通常是二级域名加上 TLD 的组合（例如 `namefi.io`）。*TLD* 只是共享的结尾（`.io`）。你注册并拥有域名；你在 TLD *下*注册名称，但并不拥有 TLD 本身。
 
 ### TLD 的主要类型有哪些？
-主要类型包括：通用顶级域名（gTLD），如 `.com`；国家代码顶级域名（ccTLD），如 `.uk` 和 `.ai`；赞助型顶级域名（sTLD），如 `.edu` 和 `.gov`；新通用顶级域名，如 `.xyz` 和 `.app`；以及以非拉丁文字书写的国际化顶级域名（IDN）。
+主要类型包括：通用顶级域名（gTLD），如 `.com`；国家代码顶级域名（ccTLD），如 `.uk` 和 `.ai`；赞助型顶级域名（sTLD），如 `.aero` 和 `.coop`；新通用顶级域名，如 `.xyz` 和 `.app`；以及以非拉丁文字书写的国际化顶级域名（IDN）。
 
 ### gTLD 和 ccTLD 有什么区别？
 gTLD 是通用的、全球可用的后缀，直接受 ICANN 合同框架管理（例如 `.com`、`.org`）。ccTLD 是与某个国家或地区绑定的两字母后缀，委托给国家主管机构管理（例如 `.uk`、`.de`、`.ai`），各有其自己的注册规则。

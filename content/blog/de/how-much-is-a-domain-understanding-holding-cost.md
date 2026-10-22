@@ -39,6 +39,16 @@ Das ist das Erste, was du verstehen solltest, bevor du einen Namen registrierst.
 
 Ein günstiger Registrierungspreis bestimmt nicht den Verlängerungspreis. Vergleiche die langfristigen [Haltekosten](/de/glossary/holding-cost/).
 
+## Du findest eine günstige Domain durch den Vergleich desselben Kaufs
+
+Vergleiche bei Registraren denselben Namen, dieselbe Endung, Währung und Registrierungsdauer. Notiere Registrierung und Verlängerung getrennt. Vergleiche keinen Premiumnamen mit einem Namen zum Standardpreis.
+
+[Porkbun](https://porkbun.com/products/domains) veröffentlicht getrennte Spalten für Registrierung, Verlängerung und Transfer. [Cloudflare](https://www.cloudflare.com/domains/) erklärt, Registrierung und Verlängerung ohne Registraraufschlag anzubieten. Cloudflare verlangt [Cloudflare-Nameserver](https://developers.cloudflare.com/registrar/get-started/register-domain/). Berücksichtige diese Vorgabe beim Vergleich der DNS-Flexibilität.
+
+Addiere die benötigten Dienste, bevor du die niedrigste Gesamtsumme auswählst. Prüfe Steuern und optionale Produkte im Warenkorb. Ein Registrierungsrabatt allein zeigt nicht die langfristig günstigste Option.
+
+Quellen am 22. Oktober 2026 geprüft. Preise und Bedingungen können sich ändern.
+
 ## Die Zahl, die du zuerst siehst, ist nicht der Preis
 
 Die meisten Menschen fragen: „Was kostet eine Domain?“ und erwarten eine einzige Antwort. Die bessere Frage lautet: „Was kostet mich dieser Name, wenn ich ihn drei Jahre behalte und einmal etwas schiefgeht?“

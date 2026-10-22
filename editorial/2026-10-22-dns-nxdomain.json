@@ -1,0 +1,66 @@
+{
+  "topic": "dns-nxdomain",
+  "english": [
+    "content/blog/en/fix-dns-probe-finished-nxdomain.md",
+    "content/blog/en/nslookup-specific-dns-server.md"
+  ],
+  "translation": "ja-JP selected from Japanese/Japan Google Ads topic evidence, lang1005 geo2392. German demand qualified but this package defers German translation. Other markets UNKNOWN.",
+  "primary_sources": [
+    "https://raw.githubusercontent.com/chromium/chromium/main/components/error_page/common/net_error_info.h",
+    "https://www.rfc-editor.org/rfc/rfc1035.html",
+    "https://www.rfc-editor.org/rfc/rfc2308.html",
+    "https://www.rfc-editor.org/rfc/rfc8020.html",
+    "https://docs.quad9.net/FAQs/",
+    "https://support.google.com/chrome/answer/6098869?hl=en",
+    "https://support.google.com/chrome/answer/10468685?hl=en",
+    "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup",
+    "https://bind9.readthedocs.io/en/latest/manpages.html",
+    "https://developers.google.com/speed/public-dns/docs/troubleshooting"
+  ],
+  "evidence_directory": "/Users/zzn/ws/d3servelabs/namefi-resources-batch-20261022/artifacts/dns-nxdomain",
+  "model": "gpt-6.1-sol",
+  "images": [
+    {
+      "path": "content/assets/fix-dns-probe-finished-nxdomain-01-status.jpg",
+      "dimensions_px": [
+        1200,
+        675
+      ],
+      "sha256": "eed4f5a137d3fbde564dc319b9b8e9b35485c18f0a0bcc47a475330be57dba09",
+      "visual_qc": "PASS: final opened file, cream full bleed, official top-right logo, no cutoff, readable correct labels. Cover has empty lower caption band.",
+      "attempts": 2
+    },
+    {
+      "path": "content/assets/fix-dns-probe-finished-nxdomain-02-comparison.jpg",
+      "dimensions_px": [
+        1200,
+        675
+      ],
+      "sha256": "043301adbe605d3bb637b8adff8de71110fdb9e0ad2ea49a6a46c6673973ba69",
+      "visual_qc": "PASS: final opened file, cream full bleed, official top-right logo, no cutoff, readable correct labels. Cover has empty lower caption band.",
+      "attempts": 2
+    },
+    {
+      "path": "content/assets/fix-dns-probe-finished-nxdomain-03-owner.jpg",
+      "dimensions_px": [
+        1200,
+        675
+      ],
+      "sha256": "1ee19baa2480ac8c6596ab6fcbfe628ffc616723615c5718d2960472fdb52bd9",
+      "visual_qc": "PASS: final opened file, cream full bleed, official top-right logo, no cutoff, readable correct labels. Cover has empty lower caption band.",
+      "attempts": 1
+    },
+    {
+      "path": "content/assets/fix-dns-probe-finished-nxdomain-og.jpg",
+      "dimensions_px": [
+        1200,
+        630
+      ],
+      "sha256": "8d2da7083f611c5ad764a9f0c5301f7ba87fea97b0e640a5e4baa8bb73e997b3",
+      "visual_qc": "PASS: final opened file, cream full bleed, official top-right logo, no cutoff, readable correct labels. Cover has empty lower caption band.",
+      "attempts": 3
+    }
+  ],
+  "checks": "PASS frozen install, data:validate, lint:mdx, links:test, links:audit, referenced image and dimension checks, Japanese source/citation/code parity. All five required commands also passed after rebasing onto the reserved stack SHA.",
+  "access_control": "Deliberately public resource articles and images. No application endpoint or ACL change. Internal lookup evidence belongs in approved support channels."
+}
