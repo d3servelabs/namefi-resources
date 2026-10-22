@@ -1,0 +1,794 @@
+{
+  "ssl-types": {
+    "model": "gpt-image-2",
+    "calls_including_rejected_generations": 5,
+    "raw_usage_totals": {
+      "input_tokens": 2690,
+      "output_tokens": 23266,
+      "total_tokens": 25956
+    },
+    "receipts": [
+      {
+        "receipt": "artifacts/ssl-types/image-usage.jsonl:1",
+        "date": "2026-10-22T04:53:39.430004+00:00",
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 714,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 714
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4115
+        },
+        "id": "UNKNOWN",
+        "cost_usd": "UNKNOWN",
+        "success": true
+      },
+      {
+        "receipt": "artifacts/ssl-types/image-usage.jsonl:2",
+        "date": "2026-10-22T04:54:37.934322+00:00",
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 417,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 417
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5905
+        },
+        "id": "UNKNOWN",
+        "cost_usd": "UNKNOWN",
+        "success": true
+      },
+      {
+        "receipt": "artifacts/ssl-types/image-usage.jsonl:3",
+        "date": "2026-10-22T04:54:49.354736+00:00",
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 420,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 420
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5908
+        },
+        "id": "UNKNOWN",
+        "cost_usd": "UNKNOWN",
+        "success": true
+      },
+      {
+        "receipt": "artifacts/ssl-types/image-usage.jsonl:4",
+        "date": "2026-10-22T04:55:11.567696+00:00",
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 724,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 724
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4125
+        },
+        "id": "UNKNOWN",
+        "cost_usd": "UNKNOWN",
+        "success": true
+      },
+      {
+        "receipt": "artifacts/ssl-types/image-usage.jsonl:5",
+        "date": "2026-10-22T04:56:33.740759+00:00",
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 415,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 415
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5903
+        },
+        "id": "UNKNOWN",
+        "cost_usd": "UNKNOWN",
+        "success": true
+      }
+    ],
+    "cost_usd": "UNKNOWN"
+  },
+  "ssl-free": {
+    "model": "gpt-image-2",
+    "calls_including_rejected_generations": 3,
+    "raw_usage_totals": {
+      "input_tokens": 1530,
+      "output_tokens": 14377,
+      "total_tokens": 15907
+    },
+    "receipts": [
+      {
+        "receipt": "artifacts/ssl-free/image-usage.jsonl:1",
+        "date": "2026-10-22T04:57:32.877754+00:00",
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 723,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 723
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4124
+        },
+        "id": "UNKNOWN",
+        "cost_usd": "UNKNOWN",
+        "success": true
+      },
+      {
+        "receipt": "artifacts/ssl-free/image-usage.jsonl:2",
+        "date": "2026-10-22T04:57:59.194373+00:00",
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 400,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 400
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5888
+        },
+        "id": "UNKNOWN",
+        "cost_usd": "UNKNOWN",
+        "success": true
+      },
+      {
+        "receipt": "artifacts/ssl-free/image-usage.jsonl:3",
+        "date": "2026-10-22T04:58:14.180767+00:00",
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 407,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 407
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5895
+        },
+        "id": "UNKNOWN",
+        "cost_usd": "UNKNOWN",
+        "success": true
+      }
+    ],
+    "cost_usd": "UNKNOWN"
+  },
+  "ssl-install": {
+    "model": "gpt-image-2",
+    "calls_including_rejected_generations": 1,
+    "raw_usage_totals": {
+      "input_tokens": 696,
+      "output_tokens": 3401,
+      "total_tokens": 4097
+    },
+    "receipts": [
+      {
+        "receipt": "artifacts/ssl-install/image-usage.json",
+        "id": null,
+        "created": 1792644819,
+        "usage": {
+          "input_tokens": 696,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 696
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4097
+        },
+        "error": null
+      }
+    ],
+    "cost_usd": "UNKNOWN"
+  },
+  "domain-cheap": {
+    "model": "gpt-image-2",
+    "calls_including_rejected_generations": 3,
+    "raw_usage_totals": {
+      "input_tokens": 2196,
+      "output_tokens": 10203,
+      "total_tokens": 12399
+    },
+    "receipts": [
+      {
+        "receipt": "artifacts/domain-cheap/image-usage-attempt1.json",
+        "id": null,
+        "created": 1792645069,
+        "usage": {
+          "input_tokens": 703,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 703
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4104
+        },
+        "error": null
+      },
+      {
+        "receipt": "artifacts/domain-cheap/image-usage-attempt2.json",
+        "id": null,
+        "created": 1792645215,
+        "usage": {
+          "input_tokens": 733,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 733
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4134
+        },
+        "error": null
+      },
+      {
+        "receipt": "artifacts/domain-cheap/image-usage-attempt3.json",
+        "attempt": 3,
+        "captured_utc": "2026-10-22T05:27:36.330759+00:00",
+        "model": "gpt-image-2",
+        "transport": "Canonical repository image request; environment-only HTTP authorization",
+        "id": null,
+        "created": 1792646914,
+        "usage": {
+          "input_tokens": 760,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 760
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4161
+        },
+        "error": null
+      }
+    ],
+    "cost_usd": "UNKNOWN"
+  },
+  "dns-dmarc": {
+    "model": "gpt-image-2",
+    "calls_including_rejected_generations": 5,
+    "raw_usage_totals": {
+      "input_tokens": 2424,
+      "output_tokens": 25353,
+      "total_tokens": 27777
+    },
+    "receipts": [
+      {
+        "receipt": "artifacts/dns-dmarc/dmarc-record-setup-01-alignment.jpg.usage.attempt2.json",
+        "created": 1792645062,
+        "usage": {
+          "input_tokens": 456,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 456
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5944
+        },
+        "error": null
+      },
+      {
+        "receipt": "artifacts/dns-dmarc/dmarc-record-setup-01-alignment.jpg.usage.json",
+        "created": 1792644883,
+        "usage": {
+          "input_tokens": 433,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 433
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5921
+        },
+        "error": null
+      },
+      {
+        "receipt": "artifacts/dns-dmarc/dmarc-record-setup-02-rollout.jpg.usage.attempt2.json",
+        "created": 1792645062,
+        "usage": {
+          "input_tokens": 419,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 419
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5907
+        },
+        "error": null
+      },
+      {
+        "receipt": "artifacts/dns-dmarc/dmarc-record-setup-02-rollout.jpg.usage.json",
+        "created": 1792644903,
+        "usage": {
+          "input_tokens": 417,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 417
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5905
+        },
+        "error": null
+      },
+      {
+        "receipt": "artifacts/dns-dmarc/dmarc-record-setup-og.jpg.usage.json",
+        "created": 1792644846,
+        "usage": {
+          "input_tokens": 699,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 699
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4100
+        },
+        "error": null
+      }
+    ],
+    "cost_usd": "UNKNOWN"
+  },
+  "dns-dynamic": {
+    "model": "gpt-image-2",
+    "calls_including_rejected_generations": 4,
+    "raw_usage_totals": {
+      "input_tokens": 2329,
+      "output_tokens": 17778,
+      "total_tokens": 20107
+    },
+    "receipts": [
+      {
+        "receipt": "artifacts/dns-dynamic/dynamic-dns-setup-01-update.jpg.usage.json",
+        "created": 1792645284,
+        "usage": {
+          "input_tokens": 421,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 421
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5909
+        },
+        "error": null
+      },
+      {
+        "receipt": "artifacts/dns-dynamic/dynamic-dns-setup-02-reachability.jpg.usage.json",
+        "created": 1792645294,
+        "usage": {
+          "input_tokens": 429,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 429
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5917
+        },
+        "error": null
+      },
+      {
+        "receipt": "artifacts/dns-dynamic/dynamic-dns-setup-og.jpg.usage.attempt2.json",
+        "created": 1792645509,
+        "usage": {
+          "input_tokens": 770,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 770
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4171
+        },
+        "error": null
+      },
+      {
+        "receipt": "artifacts/dns-dynamic/dynamic-dns-setup-og.jpg.usage.json",
+        "created": 1792645279,
+        "usage": {
+          "input_tokens": 709,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 709
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4110
+        },
+        "error": null
+      }
+    ],
+    "cost_usd": "UNKNOWN"
+  },
+  "dns-flush": {
+    "model": "gpt-image-2",
+    "calls_including_rejected_generations": 5,
+    "raw_usage_totals": {
+      "input_tokens": 2308,
+      "output_tokens": 25353,
+      "total_tokens": 27661
+    },
+    "receipts": [
+      {
+        "receipt": "artifacts/dns-flush/flush-dns-cache-01-windows-attempt1-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 1,
+        "fetched_utc": "2026-10-22T04:54:45.996307+00:00",
+        "usage": {
+          "input_tokens": 394,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 394
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5882
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-flush/flush-dns-cache-01-windows-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 2,
+        "fetched_utc": "2026-10-22T04:57:44.450587+00:00",
+        "usage": {
+          "input_tokens": 408,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 408
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5896
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-flush/flush-dns-cache-02-platform-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 1,
+        "fetched_utc": "2026-10-22T04:54:47.527062+00:00",
+        "usage": {
+          "input_tokens": 392,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 392
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5880
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-flush/flush-dns-cache-03-boundaries-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 1,
+        "fetched_utc": "2026-10-22T04:54:48.805145+00:00",
+        "usage": {
+          "input_tokens": 401,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 401
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5889
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-flush/flush-dns-cache-og-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 1,
+        "fetched_utc": "2026-10-22T04:54:37.507099+00:00",
+        "usage": {
+          "input_tokens": 713,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 713
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4114
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      }
+    ],
+    "cost_usd": "UNKNOWN"
+  },
+  "dns-nxdomain": {
+    "model": "gpt-image-2",
+    "calls_including_rejected_generations": 8,
+    "raw_usage_totals": {
+      "input_tokens": 4373,
+      "output_tokens": 37643,
+      "total_tokens": 42016
+    },
+    "receipts": [
+      {
+        "receipt": "artifacts/dns-nxdomain/fix-dns-probe-finished-nxdomain-01-status-attempt1-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 1,
+        "fetched_utc": "2026-10-22T05:00:50.917930+00:00",
+        "usage": {
+          "input_tokens": 420,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 420
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5908
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-nxdomain/fix-dns-probe-finished-nxdomain-01-status-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 2,
+        "fetched_utc": "2026-10-22T05:04:59.779921+00:00",
+        "usage": {
+          "input_tokens": 437,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 437
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5925
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-nxdomain/fix-dns-probe-finished-nxdomain-02-comparison-attempt1-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 1,
+        "fetched_utc": "2026-10-22T05:00:51.692732+00:00",
+        "usage": {
+          "input_tokens": 410,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 410
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5898
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-nxdomain/fix-dns-probe-finished-nxdomain-02-comparison-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 2,
+        "fetched_utc": "2026-10-22T05:05:01.283331+00:00",
+        "usage": {
+          "input_tokens": 445,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 445
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5933
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-nxdomain/fix-dns-probe-finished-nxdomain-03-owner-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 1,
+        "fetched_utc": "2026-10-22T05:00:47.328565+00:00",
+        "usage": {
+          "input_tokens": 411,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 411
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5899
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-nxdomain/fix-dns-probe-finished-nxdomain-og-attempt1-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 1,
+        "fetched_utc": "2026-10-22T05:00:42.177024+00:00",
+        "usage": {
+          "input_tokens": 722,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 722
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4123
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-nxdomain/fix-dns-probe-finished-nxdomain-og-attempt2-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 2,
+        "fetched_utc": "2026-10-22T05:04:48.203627+00:00",
+        "usage": {
+          "input_tokens": 753,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 753
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4154
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      },
+      {
+        "receipt": "artifacts/dns-nxdomain/fix-dns-probe-finished-nxdomain-og-usage.json",
+        "model": "gpt-image-2",
+        "quality": "high",
+        "attempt": 3,
+        "fetched_utc": "2026-10-22T05:06:44.891142+00:00",
+        "usage": {
+          "input_tokens": 775,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 775
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4176
+        },
+        "error": null,
+        "cost_usd": "UNKNOWN"
+      }
+    ],
+    "cost_usd": "UNKNOWN"
+  }
+}

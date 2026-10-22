@@ -1,0 +1,81 @@
+{
+  "reviewer_model": "gpt-6.1-sol",
+  "review_utc": "2026-10-22T05:21:06.196247+00:00",
+  "mode": "Independent Arabic accuracy review; read-only worktree; no PR, CI, or publication action.",
+  "baseline": "20ebd689856bcc138037a07e871ca8f4c2c5df27",
+  "file": "content/blog/ar/how-to-name-your-project.md",
+  "file_sha256": "1603a6f600789bee4daa7e93695361aea4ced16e5e79e9fcd11f72d873116818",
+  "source_file": "content/blog/en/how-to-name-your-project.md",
+  "scope": "Only the changed paragraph beginning في [دراسة تأثير نطق الاسم], at line 77. Neighboring unchanged paragraphs were read for context but not audited.",
+  "verdict": "PASS: no S0, S1, or S2 accuracy finding in the changed Arabic paragraph.",
+  "checks": [
+    {
+      "item": "与英文及基线差异的对应关系",
+      "verdict": "PASS",
+      "reason": "阿拉伯语保留英文新增段落的全部限定。基线将政治实验写成现实数据，并将律师职位关联写成更快晋升。新段落删除两项过度推断。",
+      "replacement_required": false
+    },
+    {
+      "item": "政治实验与真实选举的区分",
+      "verdict": "PASS",
+      "arabic_span": "الدراسات السياسية استخدمت تصويت تجريبي ومرشحين خياليين، مش نتائج انتخابات حقيقية.",
+      "reason": "阿拉伯语明确指出实验性投票与虚构候选人。阿拉伯语明确排除真实选举结果。论文研究二采用模拟选票；研究三采用虚构报纸中的候选人。",
+      "source_locator": "PDF page 2, Study 2 Method; PDF page 3, Study 3 Method.",
+      "replacement_required": false
+    },
+    {
+      "item": "律师职位与晋升因果的区分",
+      "verdict": "PASS",
+      "arabic_span": "دراسة رصدية منفصلة لقت ارتباط بين سهولة نطق اسم العيلة والمناصب الأعلى في مكاتب المحاماة. الدراسة ما أثبتتش إن سهولة النطق سببت ترقية أسرع.",
+      "reason": "ارتباط 表达关联；ما أثبتتش 否定因果证明。المناصب الأعلى 表达较高职位，没有断言晋升速度。论文研究五使用律所网站职位数据与回归分析，没有跟踪晋升过程。",
+      "source_locator": "PDF page 4, Study 5 Method and Results.",
+      "replacement_required": false
+    },
+    {
+      "item": "实验评价与商业成功的区分",
+      "verdict": "PASS",
+      "reason": "首句保留较正面的评价结果。末句把建议限定为测试名称发音，并排除据名称预测商业成功。末句属于编辑建议，没有冒充论文商业结论。",
+      "arabic_span": "النتائج بتدعم اختبار نطق الاسم، مش توقع نجاحه التجاري.",
+      "replacement_required": false
+    },
+    {
+      "item": "现代埃及阿拉伯语与专业术语",
+      "verdict": "PASS",
+      "reason": "لقت、اسم العيلة、ما أثبتتش、بتدعم、مش 符合现代埃及阿拉伯语。دراسة رصدية 和 ارتباط 准确表达研究设计与统计关系。",
+      "replacement_required": false
+    },
+    {
+      "item": "来源及姓名、年份的保持",
+      "verdict": "PASS",
+      "reason": "阿拉伯语与英文保留同一论文链接及三名作者。论文期刊卷期年份为2012；在线发布日期为2011不构成年份冲突。",
+      "replacement_required": false
+    }
+  ],
+  "verified_issues": [],
+  "replacement_suggestions": [
+    {
+      "severity": "S3 optional precision only",
+      "location": "Changed paragraph, political-studies sentence",
+      "current": "الدراسات السياسية استخدمت تصويت تجريبي ومرشحين خياليين، مش نتائج انتخابات حقيقية.",
+      "suggested": "التجارب الخاصة بالاختيار السياسي استخدمت اقتراع تجريبي ومرشحين خياليين، مش نتائج انتخابات حقيقية.",
+      "reason": "可选用 الاقتراع 强调模拟选票。现句已经正确传达实验与真实选举的区别。根代理无需为准确性采用建议。"
+    }
+  ],
+  "source_evidence": {
+    "url": "https://ppw.kuleuven.be/okp/_pdf/Laham2012TNPEW.pdf",
+    "read_method": "web open; full extracted five-page original research paper read",
+    "retrieved_utc_date": "2026-10-22",
+    "important_sections": [
+      "Study 2 Method, printed page 753",
+      "Study 3 Method, printed page 754",
+      "Study 5 Method and Results, printed page 755"
+    ]
+  },
+  "limitations": [
+    "Machine bilingual review; no claim of native-human sign-off.",
+    "Review does not clear unchanged claims or paragraphs elsewhere in the article."
+  ],
+  "worktree_mutations": false,
+  "ci_runs": 0,
+  "usage_artifact": "final-ar-naming-usage.json"
+}

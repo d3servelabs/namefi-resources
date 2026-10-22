@@ -107,7 +107,7 @@ Die Minimierung begrenzt unnötige Offenlegung gegenüber autoritativen Servern.
 
 Diese Einzelheiten verändern Datenschutz- und Leistungsfragen. Prüfen Sie, welcher Resolver die ursprüngliche Anfrage erhält, welche Delegierungen der Resolver bereits kennt und ob der Resolver vorgelagerte Namen minimiert. Eine Root-Server-Verkehrszahl belegt keinen vollständigen Browserverlauf.
 
-Bewahren Sie bei der Fehlersuche den Zustand des Zwischenspeichers möglichst auf. Das Leeren des Zwischenspeichers verändert die Untersuchungsbedingungen. Dokumentieren Sie den ersten Fehler vor einem Resolver-Neustart oder dem Löschen nützlicher Informationen. Eine spätere erfolgreiche Abfrage kann sonst verdecken, ob der ursprüngliche Fehler die Ermittlung, gespeicherte Daten oder eine andere Ebene betraf.
+Bewahren Sie bei der Fehlersuche den Zustand des Zwischenspeichers möglichst auf. [Das Leeren des Zwischenspeichers](/de/blog/flush-dns-cache/) verändert die Untersuchungsbedingungen. Dokumentieren Sie den ersten Fehler vor einem Resolver-Neustart oder dem Löschen nützlicher Informationen. Eine spätere erfolgreiche Abfrage kann sonst verdecken, ob der ursprüngliche Fehler die Ermittlung, gespeicherte Daten oder eine andere Ebene betraf.
 
 ## DNSSEC und Diagnose beantworten unterschiedliche Fragen
 

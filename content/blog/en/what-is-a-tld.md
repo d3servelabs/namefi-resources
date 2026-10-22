@@ -108,7 +108,9 @@ This is the **[gTLD](/en/glossary/gtld/) vs ccTLD** distinction in a nutshell: g
 
 ### 3. Sponsored TLDs (sTLDs)
 
-**Sponsored TLDs** are restricted gTLDs backed by a specific community or organization that sets eligibility rules. You generally have to qualify to register one. Classic examples: `.gov` (US government), `.edu` (accredited US educational institutions), `.mil` (US military), `.aero` (the aviation industry), and `.museum`.
+**Sponsored TLDs** have a sponsor that represents a particular community. [ICANN classifies `.aero` and `.coop` as sponsored in current agreements](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type). Registration requirements depend on the extension and its current policies. A registration restriction alone does not make a TLD sponsored.
+
+[ICANN — .coop](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type).
 
 ### 4. New gTLDs
 
@@ -179,7 +181,7 @@ With well over a thousand options, picking the right ending comes down to a few 
 3. **Are you targeting a specific country?** A ccTLD like [`.ae`](/en/tld/ae/) signals local presence and can help with local search visibility — but check eligibility rules first.
 4. **Is the name memorable and brandable?** A short SLD on a modern TLD ([`.xyz`](/en/tld/xyz/), [`.app`](/en/tld/app/)) often beats a long, awkward `.com`.
 5. **What does renewal cost?** Some TLDs have low first-year promos but higher renewals. Always check the long-term price, not just the intro price.
-6. **Any restrictions?** Sponsored TLDs (`.gov`, `.edu`) and some ccTLDs require eligibility. New gTLDs like [`.app`](/en/tld/app/) and [`.dev`](/en/tld/dev/) enforce HTTPS by default.
+6. **Any restrictions?** Sponsored TLDs (`.coop`, `.aero`) and some ccTLDs require eligibility. New gTLDs like [`.app`](/en/tld/app/) and [`.dev`](/en/tld/dev/) enforce HTTPS by default.
 
 A good rule of thumb: **choose the TLD your audience will trust and remember**, then make sure the price and rules fit your plans.
 
@@ -215,7 +217,7 @@ TLD stands for **Top-Level Domain**. It refers to the suffix at the end of a web
 A *domain* is the full registrable name, usually the second-level name plus the TLD (e.g., `namefi.io`). The *TLD* is just the shared ending (`.io`). You register and own a domain; you register names *under* a TLD but don't own the TLD itself.
 
 ### What are the main types of TLD?
-The main types are generic TLDs (gTLDs) like `.com`, country-code TLDs (ccTLDs) like `.uk` and `.ai`, sponsored TLDs (sTLDs) like `.edu` and `.gov`, new gTLDs like `.xyz` and `.app`, brand TLDs such as `.google`, and internationalized TLDs (IDNs) written in non-Latin scripts.
+The main types are generic TLDs (gTLDs) like `.com`, country-code TLDs (ccTLDs) like `.uk` and `.ai`, sponsored TLDs (sTLDs) like `.aero` and `.coop`, new gTLDs like `.xyz` and `.app`, brand TLDs such as `.google`, and internationalized TLDs (IDNs) written in non-Latin scripts.
 
 ### What is the difference between gTLD and ccTLD?
 A gTLD is a generic ending governed under an ICANN registry contract. A ccTLD is associated with a country or territory and has a designated manager. Registration eligibility varies within both groups; a brand gTLD is different from an open retail extension.

@@ -56,3 +56,5 @@ The 48-target continuation records its queue, initial content map, and PR stack 
 
 [The US-English reconciliation](2026-10-22-remaining-demand/README.md) records remaining article candidates, existing-page checks, and translation limits.
 The audit preserves the original demand model and does not start another writing batch.
+
+[The approved demand batch](2026-10-22-content-batch/README.md) records seven new English guides, selected translations, existing-page reviews, and the final review.

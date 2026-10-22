@@ -98,7 +98,9 @@ C'est la distinction **[gTLD](/fr/glossary/gtld/) vs ccTLD** en résumé : les g
 
 ### 3. TLD sponsorisés (sTLD)
 
-Les **TLD sponsorisés** sont des gTLD restreints soutenus par une communauté ou organisation spécifique qui fixe les règles d'éligibilité. En général, vous devez remplir des conditions pour en enregistrer un. Exemples classiques : `.gov` (gouvernement américain), `.edu` (établissements d'enseignement américains accrédités), `.mil` (armée américaine), `.aero` (industrie de l'aviation), et `.museum`.
+Les **TLD sponsorisés** ont un organisme parrain qui représente une communauté particulière. [ICANN classe `.aero` et `.coop` comme sponsorisés dans les accords actuels](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type). Les conditions d’enregistrement dépendent de l’extension et de ses règles actuelles. Une restriction d’enregistrement ne suffit pas à faire d’un TLD une extension sponsorisée.
+
+[ICANN — .coop](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type).
 
 ### 4. Nouveaux gTLD
 
@@ -169,7 +171,7 @@ Avec bien plus d'un millier d'options, choisir la bonne extension se résume à 
 3. **Ciblez-vous un pays spécifique ?** Un ccTLD comme [`.ae`](/fr/tld/ae/) signale une présence locale et peut améliorer la visibilité dans les recherches locales — mais vérifiez d'abord les règles d'éligibilité.
 4. **Le nom est-il mémorable et brandable ?** Un SLD court sur un TLD moderne ([`.xyz`](/fr/tld/xyz/), [`.app`](/fr/tld/app/)) est souvent préférable à un `.com` long et difficile à retenir.
 5. **Quel est le coût de renouvellement ?** Certains TLD ont des promotions à bas prix la première année mais des renouvellements plus élevés. Vérifiez toujours le prix à long terme, pas seulement le prix d'introduction.
-6. **Y a-t-il des restrictions ?** Les TLD sponsorisés (`.gov`, `.edu`) et certains ccTLD requièrent une éligibilité. Les nouveaux gTLD comme [`.app`](/fr/tld/app/) et [`.dev`](/fr/tld/dev/) imposent le HTTPS par défaut.
+6. **Y a-t-il des restrictions ?** Les TLD sponsorisés (`.coop`, `.aero`) et certains ccTLD requièrent une éligibilité. Les nouveaux gTLD comme [`.app`](/fr/tld/app/) et [`.dev`](/fr/tld/dev/) imposent le HTTPS par défaut.
 
 Une bonne règle de base : **choisissez le TLD en lequel votre audience aura confiance et qu'elle retiendra**, puis assurez-vous que le prix et les règles correspondent à vos projets.
 
@@ -205,7 +207,7 @@ TLD signifie **Top-Level Domain** (domaine de premier niveau). Il désigne le su
 Un *domaine* est le nom complet enregistrable, généralement le nom de deuxième niveau plus le TLD (par exemple, `namefi.io`). Le *TLD* est simplement la terminaison partagée (`.io`). Vous enregistrez et possédez un domaine ; vous enregistrez des noms *sous* un TLD mais vous ne possédez pas le TLD lui-même.
 
 ### Quels sont les principaux types de TLD ?
-Les principaux types sont les TLD génériques (gTLD) comme `.com`, les TLD de code de pays (ccTLD) comme `.uk` et `.ai`, les TLD sponsorisés (sTLD) comme `.edu` et `.gov`, les nouveaux gTLD comme `.xyz` et `.app`, et les TLD internationalisés (IDN) écrits dans des scripts non latins.
+Les principaux types sont les TLD génériques (gTLD) comme `.com`, les TLD de code de pays (ccTLD) comme `.uk` et `.ai`, les TLD sponsorisés (sTLD) comme `.aero` et `.coop`, les nouveaux gTLD comme `.xyz` et `.app`, et les TLD internationalisés (IDN) écrits dans des scripts non latins.
 
 ### Quelle est la différence entre gTLD et ccTLD ?
 Un gTLD est une extension générique disponible dans le monde entier, régie directement par les contrats de l'ICANN (par exemple, `.com`, `.org`). Un ccTLD est une extension à deux lettres liée à un pays ou territoire et déléguée à une autorité nationale (par exemple, `.uk`, `.de`, `.ai`), chacune avec ses propres règles d'enregistrement.
