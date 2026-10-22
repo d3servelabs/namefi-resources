@@ -1,6 +1,6 @@
 ---
 title: "How to Set Up Email With Your Own Domain"
-date: '2026-09-15'
+date: '2026-10-21'
 language: en
 tags: ['domains', 'guide']
 authors: ['namefiteam']
@@ -34,6 +34,28 @@ relatedGlossary:
 
 This guide uses Google Workspace as a worked documentation example while explaining the decisions that apply across providers. Always take record values from your own provider's setup screen.
 
+## Choose a service that supports your sending needs
+
+![A hosted mailbox handles incoming and outgoing mail, while forwarding routes incoming mail to an existing inbox.](../../assets/set-up-email-with-your-own-domain-03-service-choice.jpg)
+
+A domain purchase and a mail service perform different jobs. Check whether a domain bundle includes mailboxes before buying another service. A website is not a prerequisite for this setup. You need control of the domain and its active DNS zone.
+
+Choose the service before copying DNS records:
+
+| Your requirement | Service to investigate | Check before changing DNS |
+| --- | --- | --- |
+| Individual inboxes and replies from the domain | A hosted mailbox service, such as Google Workspace or Microsoft 365 | Users, aliases, client access, recovery, and migration |
+| Personal or family addresses in iCloud Mail | Custom Email Domain with iCloud+ | Subscription, Apple Account requirements, and sharing needs |
+| Incoming mail delivered to an existing inbox | A forwarding service | Verified destination and a separate supported method for outgoing replies |
+
+Microsoft 365 supports automatic domain verification and record setup through Domain Connect, or manual setup when the registrar lacks support. [Read Microsoft's custom-domain procedure.](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain?view=o365-worldwide)
+
+Apple requires iCloud+ for its custom-domain feature, plus an Apple Account with two-factor authentication and iCloud Mail enabled. Check the current eligibility before choosing iCloud Mail. [Read Apple's requirements.](https://support.apple.com/en-us/102540)
+
+Cloudflare distinguishes incoming Email Routing from outbound transactional Email Sending. Treat a routing rule as an incoming route, rather than assuming the rule provides a complete mailbox. [See Cloudflare's service overview.](https://developers.cloudflare.com/email-service/)
+
+For plan limits and the separate question of free service, read [free business email options](/en/blog/free-business-email-options/). This guide focuses on the setup sequence after choosing a service.
+
 ## Prepare the mailbox and DNS access
 
 First decide whether you need a **mailbox** or **forwarding**. A mailbox service gives each user an account and address. Forwarding routes incoming messages to an existing inbox; for example, Cloudflare documents rules that forward mail for a custom address to a verified destination. [Compare Google's user-account setup](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company) with [Cloudflare's forwarding workflow](https://developers.cloudflare.com/email-service/get-started/route-emails/). If you want to reply using the custom address, explicitly confirm how your chosen service supports outgoing mail before relying on forwarding alone.
@@ -50,7 +72,7 @@ Keep the website records in that saved copy too. The [DNS record types reference
 
 For an existing mail service, decide how to preserve old messages, recreate aliases, and handle mail arriving during the transition before moving delivery. Treat the old mailbox's contents as a separate migration job. Google's checklist links importing existing mail as an additional setup task. [See the setup checklist.](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company)
 
-## Verify the domain, then route incoming mail
+## Verify the domain before you route incoming mail
 
 ![MX records identify the receiving mail host for a custom-domain address.](../../assets/set-up-email-with-your-own-domain-01-routing.jpg)
 
@@ -64,7 +86,7 @@ Google's normal setup calls for removing other MX records during the switch. Do 
 
 Check public MX answers against the intended values. Google documents Admin Toolbox Dig for this check and allows up to 72 hours for recognition. Fix incorrect records rather than waiting on them. [See its troubleshooting steps.](https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace)
 
-## Authenticate outgoing mail
+## Authenticate every service that sends outgoing mail
 
 ![SPF, DKIM, and DMARC address different parts of outgoing email authentication.](../../assets/set-up-email-with-your-own-domain-02-authentication.jpg)
 
@@ -84,7 +106,7 @@ For **DMARC**, a passing message needs SPF with alignment or DKIM with alignment
 
 If a domain already has an enforced DMARC policy, preserve that policy while planning the migration. Do not automatically replace it with a tutorial example. Check the new host and every other sender against the existing policy first, then make any policy change deliberately.
 
-## Test both directions and investigate the failing step
+## Test both directions before you finish the migration
 
 Use external accounts you control or cooperating testers. Send from the new mailbox to an external inbox, reply, and separately send a fresh message into the custom address. Include aliases and the actual website or billing tools on your preparation sheet.
 
@@ -104,14 +126,18 @@ Keep the previous service available until your migration checks are complete. Sa
 
 For the narrower question of how these records relate to tokenization, see [DNS on a tokenized domain](/en/blog/dns-on-tokenized-domains/).
 
-## Sources and further reading
+## These sources support the setup instructions
 
-- Google Workspace — [Activate Gmail with Google Workspace](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company), required checklist and additional migration options. Fetched 2026-09-15.
-- Cloudflare — [Route emails](https://developers.cloudflare.com/email-service/get-started/route-emails/), incoming routing and destination-address workflow. Fetched 2026-09-15.
-- DNSimple — [DNSimple Services](https://support.dnsimple.com/articles/dnsimple-services/#domain-registration-transfer-and-renewal), using hosted DNS with another registrar. Fetched 2026-09-15.
-- Google Workspace — [Verify your domain with a TXT record](https://knowledge.workspace.google.com/admin/domains/verify-your-domain-with-a-txt-record), steps 1–3. Fetched 2026-09-15.
-- Google Workspace — [Set up MX records](https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace), record table, legacy-record note, Gmail activation, and troubleshooting. Fetched 2026-09-15.
-- Google Workspace — [Set up SPF](https://knowledge.workspace.google.com/admin/security/set-up-spf), “Before you begin” and “Determine your SPF record.” Fetched 2026-09-15.
-- Google Workspace — [Troubleshoot SPF issues](https://knowledge.workspace.google.com/admin/security/troubleshoot-spf-issues#:~:text=Note%20that%20each%20domain), “Make sure you have an SPF record (and only one)” and third-party senders. Fetched 2026-09-15.
-- Google Workspace — [Set up DKIM](https://knowledge.workspace.google.com/admin/security/set-up-dkim), key generation, public-key publication, and “Turn on & verify DKIM.” Fetched 2026-09-15.
-- Google Workspace — [Set up DMARC](https://knowledge.workspace.google.com/admin/security/set-up-dmarc#:~:text=When%20you%20start%20using%20DMARC), recommended starting policy, alignment, and prerequisites to publishing the record. Fetched 2026-09-15.
+- Google Workspace — [Activate Gmail with Google Workspace](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company), required checklist and additional migration options. Fetched 2026-10-21.
+- Cloudflare — [Route emails](https://developers.cloudflare.com/email-service/get-started/route-emails/), incoming routing and destination-address workflow. Fetched 2026-10-21.
+- DNSimple — [DNSimple Services](https://support.dnsimple.com/articles/dnsimple-services/#domain-registration-transfer-and-renewal), using hosted DNS with another registrar. Fetched 2026-10-21.
+- Google Workspace — [Verify your domain with a TXT record](https://knowledge.workspace.google.com/admin/domains/verify-your-domain-with-a-txt-record), steps 1–3. Fetched 2026-10-21.
+- Google Workspace — [Set up MX records](https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace), record table, legacy-record note, Gmail activation, and troubleshooting. Fetched 2026-10-21.
+- Google Workspace — [Set up SPF](https://knowledge.workspace.google.com/admin/security/set-up-spf), “Before you begin” and “Determine your SPF record.” Fetched 2026-10-21.
+- Google Workspace — [Troubleshoot SPF issues](https://knowledge.workspace.google.com/admin/security/troubleshoot-spf-issues#:~:text=Note%20that%20each%20domain), “Make sure you have an SPF record (and only one)” and third-party senders. Fetched 2026-10-21.
+- Google Workspace — [Set up DKIM](https://knowledge.workspace.google.com/admin/security/set-up-dkim), key generation, public-key publication, and “Turn on & verify DKIM.” Fetched 2026-10-21.
+- Google Workspace — [Set up DMARC](https://knowledge.workspace.google.com/admin/security/set-up-dmarc#:~:text=When%20you%20start%20using%20DMARC), recommended starting policy, alignment, and prerequisites to publishing the record. Fetched 2026-10-21.
+
+- Microsoft — [Add a custom domain to Microsoft 365](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain?view=o365-worldwide), automatic and manual domain setup. Fetched 2026-10-21.
+- Apple — [Use Custom Email Domain with iCloud Mail](https://support.apple.com/en-us/102540), subscription and account requirements. Fetched 2026-10-21.
+- Cloudflare — [Email Service](https://developers.cloudflare.com/email-service/), incoming routing and outbound transactional sending. Fetched 2026-10-21.

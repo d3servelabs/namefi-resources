@@ -1,0 +1,70 @@
+{
+  "images": [
+    {
+      "path": "content/assets/set-up-email-with-your-own-domain-og.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "a9db2e13195febdffa327109bb2338b1f509b67051476988683222f21498876c",
+      "action": "reused",
+      "qc": "Visually opened. Spelling, full framing, cream margins and official top-right logo pass. Cover bottom reserve passes. Diagram meanings match text."
+    },
+    {
+      "path": "content/assets/set-up-email-with-your-own-domain-01-routing.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "269146a4facf2d4cb3ecbb5a1796b8ef62d90d7baa5494dbe45b57cce83d612d",
+      "action": "reused",
+      "qc": "Visually opened. Spelling, full framing, cream margins and official top-right logo pass. Cover bottom reserve passes. Diagram meanings match text."
+    },
+    {
+      "path": "content/assets/set-up-email-with-your-own-domain-02-authentication.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "a0cd4ebd78aedda0ee192fe76d5af718f5751f69f8f91503c5804320577d9db0",
+      "action": "reused",
+      "qc": "Visually opened. Spelling, full framing, cream margins and official top-right logo pass. Cover bottom reserve passes. Diagram meanings match text."
+    },
+    {
+      "path": "content/assets/set-up-email-with-your-own-domain-03-service-choice.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "05480a9e2cc66e6c9af4ab215fa4d8f184b3f88970c8e64750fe379e98bcb942",
+      "action": "generated",
+      "qc": "Visually opened. Spelling, full framing, cream margins and official top-right logo pass. Cover bottom reserve passes. Diagram meanings match text."
+    }
+  ],
+  "attempts": [
+    {
+      "image": "content/assets/set-up-email-with-your-own-domain-03-service-choice.jpg",
+      "attempt": 1,
+      "requested_model": "gpt-image-2",
+      "quality": "high",
+      "response_metadata": {
+        "created": 1792629238,
+        "usage": {
+          "input_tokens": 411,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 411
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5899
+        },
+        "model": null
+      },
+      "complete_response": "Unavailable: original script EXIT cleanup removed full response after successful parse. Immutable usage sidecar survived. No retry."
+    }
+  ]
+}
