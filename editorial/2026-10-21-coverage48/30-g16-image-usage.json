@@ -1,0 +1,83 @@
+{
+  "model": "gpt-image-2",
+  "quality": "high",
+  "attempt": 1,
+  "fetched_utc": "2026-10-22T01:14:58.920729+00:00",
+  "usage": {
+    "input_tokens": 462,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 462
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+      "image_tokens": 5488,
+      "text_tokens": 0
+    },
+    "total_tokens": 5950
+  },
+  "error": null,
+  "images": [
+    {
+      "path": "content/assets/nslookup-specific-dns-server-01-explicit-query.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 35395,
+      "action": "reused",
+      "visual_qc": "Opened final image. Labels are legible; no clipping; cream margins and official upper-right logo remain clear."
+    },
+    {
+      "path": "content/assets/nslookup-specific-dns-server-05-transport.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 35777,
+      "action": "generated attempt1",
+      "visual_qc": "Opened final image. Labels are legible; no clipping; cream margins and official upper-right logo remain clear."
+    },
+    {
+      "path": "content/assets/nslookup-specific-dns-server-03-controlled-comparison.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 32041,
+      "action": "reused",
+      "visual_qc": "Opened final image. Labels are legible; no clipping; cream margins and official upper-right logo remain clear."
+    },
+    {
+      "path": "content/assets/nslookup-specific-dns-server-04-dns-error-decisions.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 43621,
+      "action": "reused",
+      "visual_qc": "Opened final image. Labels are legible; no clipping; cream margins and official upper-right logo remain clear."
+    },
+    {
+      "path": "content/assets/nslookup-specific-dns-server-02-server-roles.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 34349,
+      "action": "reused",
+      "visual_qc": "Opened final image. Labels are legible; no clipping; cream margins and official upper-right logo remain clear."
+    },
+    {
+      "path": "content/assets/nslookup-specific-dns-server-og.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "bytes": 108867,
+      "action": "reused",
+      "visual_qc": "Opened final image. Labels are legible; no clipping; cream margins and official upper-right logo remain clear."
+    }
+  ],
+  "response_preservation": "Complete successful response persists in private scratch image-attempt1-private/resp.json before parsing; no retry."
+}

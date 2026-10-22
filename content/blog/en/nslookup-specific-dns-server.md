@@ -231,6 +231,40 @@ For a hypothetical email incident, compare the domain-level MX question before i
 That sequence helps distinguish a missing mail destination from an address lookup problem for an already identified destination.
 Keep the mail delivery test as a separate result.
 
+## The port and transport narrow a timeout investigation
+
+![The same DNS question reaches the same server through UDP port 53 or TCP port 53.](../../assets/nslookup-specific-dns-server-05-transport.jpg)
+
+The server address alone does not describe the complete test.
+Record the destination port and transport when a query times out.
+Microsoft documents port 53 as the [default TCP/UDP DNS port](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup-set-port).
+Use another port only when the server administrator confirms that configuration.
+
+For a controlled TCP test, start a fresh interactive session:
+
+```text
+nslookup - 192.0.2.53
+set type=A
+set port=53
+set vc
+example.com.
+exit
+```
+
+The first line starts nslookup from the shell.
+The remaining lines select the type, port, and TCP transport before submitting the name.
+Microsoft calls the [TCP selector a virtual circuit](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup-set-vc).
+Check the installed BIND manual before carrying session settings between implementations.
+
+Compare the result with the earlier query to the same address, name, type, and port.
+If TCP succeeds while the earlier request times out, investigate transport-specific reachability before editing DNS records.
+The comparison does not identify which firewall or endpoint caused the difference.
+[RFC 9520, Section 3.1](https://www.rfc-editor.org/rfc/rfc9520.html#section-3.1) treats another DNS transport as a distinct retry path.
+
+A chosen server affects the nslookup test.
+The command does not establish which resolver a browser or another application uses.
+Preserve the separate application test when reporting a recovery.
+
 ## Error categories guide the next recovery check
 
 ![Error categories guide the next recovery check.](../../assets/nslookup-specific-dns-server-04-dns-error-decisions.jpg)
@@ -286,3 +320,6 @@ The useful outcome is a documented answer to a specific question, with enough co
 - RFC Editor, [RFC 1035](https://www.rfc-editor.org/rfc/rfc1035.html#section-4.1.1), Section 4.1.1, header flags and response codes. Fetched 2026-10-21.
 - RFC Editor, [RFC 2308](https://www.rfc-editor.org/rfc/rfc2308.html), Sections 1, 2.1, 2.2, and 5, negative responses and caching. Fetched 2026-10-21.
 - RFC Editor, [RFC 9520](https://www.rfc-editor.org/rfc/rfc9520.html#section-2), Sections 2.1–2.6, resolution failure conditions. Fetched 2026-10-21.
+
+- Microsoft Learn, [nslookup set port](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup-set-port), default port and syntax. Fetched 2026-10-21.
+- Microsoft Learn, [nslookup set vc](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup-set-vc), virtual-circuit selector. Fetched 2026-10-21.
