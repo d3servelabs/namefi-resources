@@ -37,7 +37,7 @@ Die günstigste Domain ist selten auch die günstigste Domain zum *Halten*.
 
 Das ist das Erste, was du verstehen solltest, bevor du einen Namen registrierst. Der Preis im Checkout ist nur eine Zeile in der Rechnung. Zu einer Domain gehören ein Registrierungspreis im ersten Jahr, ein Verlängerungspreis, ein Transferpreis, mögliche Wiederherstellungs- oder Redemption-Gebühren, Datenschutzeinstellungen, Steuern, Kosten der Zahlungsmethode und manchmal Gebühren für begleitende Produkte wie DNS, E-Mail, Hosting oder Kontodienste.
 
-Deshalb kann eine Domain für $1 im ersten Jahr völlig seriös sein und später dennoch eine jährliche Verpflichtung von $30, $60 oder $80 werden. Der Preis im ersten Jahr verschafft dir den Einstieg. Der Verlängerungspreis bestimmt die langfristigen [Haltekosten](/de/glossary/holding-cost/).
+Ein günstiger Registrierungspreis bestimmt nicht den Verlängerungspreis. Vergleiche die langfristigen [Haltekosten](/de/glossary/holding-cost/).
 
 ## Die Zahl, die du zuerst siehst, ist nicht der Preis
 
@@ -56,9 +56,9 @@ Hier ist die Kostenstruktur.
 | Zahlungskosten | Wechselkursaufschlag bei Karten, Kosten für Überweisungen, Krypto-Netzwerkgebühren, verzögerte Zahlungsmethoden, Reibung bei Rückerstattungen | Der Registrar-Preis muss nicht dem Betrag entsprechen, der dein Konto tatsächlich verlässt |
 | DNS- / Produktgebühren | Kosten für Hosted Zones, Abfragen, E-Mail, Weiterleitung, SSL oder gebündelte Dienste | Eine Domain kann günstig sein, während das zugehörige Konto es nicht ist |
 
-Die Zeile, über die Menschen am häufigsten stolpern, ist die Verlängerung. Die Expired Registration Recovery Policy von ICANN verpflichtet Registrare, [Gebühren für Verlängerung, Verlängerung nach Ablauf sowie Redemption/Wiederherstellung angemessen verfügbar zu machen](https://www.icann.org/resources/pages/errp-2013-02-28-en#Notice). Käufer müssen sie jedoch vor dem Checkout weiterhin vergleichen. Ein niedriger Preis im ersten Jahr ist für sich genommen nicht irreführend. Er wird zum Problem, wenn der Käufer ihn mit den jährlichen Kosten verwechselt.
+Die Zeile, über die Menschen am häufigsten stolpern, ist die Verlängerung. Die Expired Registration Recovery Policy von ICANN verpflichtet Registrare, [Gebühren für Verlängerung, Verlängerung nach Ablauf sowie Redemption/Wiederherstellung angemessen verfügbar zu machen](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en). Käufer müssen sie jedoch vor dem Checkout weiterhin vergleichen. Ein niedriger Preis im ersten Jahr ist für sich genommen nicht irreführend. Er wird zum Problem, wenn der Käufer ihn mit den jährlichen Kosten verwechselt.
 
-## Warum eine $1-Domain mit $30 bis $80 verlängert werden kann
+## Ein Einführungspreis kann höhere Verlängerungskosten verdecken
 
 Einführungspreise sind verbreitet, weil das erste Jahr und das Verlängerungsjahr wirtschaftlich unterschiedliche Ereignisse sind.
 
@@ -78,7 +78,9 @@ Die vier Domain-Vorgänge, die du vergleichen solltest, sind Registrierung, Verl
 
 **Transfer** ist, was du bezahlst, um die Domain zu einem anderen Registrar zu verschieben. Ein Transfer kann eine Verlängerung der Laufzeit um ein Jahr einschließen, aber das ist keine allgemeingültige Abkürzung, die du ohne Prüfung annehmen solltest. Achte außerdem auf Transfer-Sperren, Beschränkungen nach einer kürzlichen Registrierung, den Umgang mit Auth-Codes und darauf, ob der Transfer deine DNS- oder Datenschutzeinstellungen verändert.
 
-**Wiederherstellung oder Redemption** ist der teure Panikknopf. Die Wiederherstellungsrichtlinie von ICANN besagt, dass gTLD-Registries nach der Löschung im Allgemeinen eine [30-tägige Redemption Grace Period](https://www.icann.org/resources/pages/errp-2013-02-28-en#Redemption) anbieten müssen, während der die gelöschte Registrierung über den löschenden Registrar wiederhergestellt werden kann. In diesem Zeitraum kann die Wiederherstellung deutlich mehr kosten als eine normale Verlängerung. Die Lehre ist einfach: Auto-Renew ist günstiger als Rettung.
+**Wiederherstellung oder Redemption** ist der teure Panikknopf. Die Wiederherstellungsrichtlinie von ICANN besagt, dass gTLD-Registries nach der Löschung im Allgemeinen eine [30-tägige Redemption Grace Period](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en) anbieten müssen, während der die gelöschte Registrierung über den löschenden Registrar wiederhergestellt werden kann. In diesem Zeitraum kann die Wiederherstellung deutlich mehr kosten als eine normale Verlängerung. Die Lehre ist einfach: Auto-Renew ist günstiger als Rettung.
+
+Die 30-Tage-Regel gilt für nicht gesponserte gTLD-Registries. Löschungen innerhalb einer anwendbaren Add Grace Period sind ausgenommen. Für ccTLDs gelten eigene Regeln.
 
 ## Datenschutz, Steuern und Kosten der Zahlungsmethode
 
@@ -145,7 +147,7 @@ Für ein persönliches Projekt kann die Antwort lauten: „Wähle den Registrar,
 
 Was kostet also eine Domain?
 
-Bei einer verbreiteten TLD kann sie im ersten Jahr ungefähr so viel kosten wie ein Mittagessen. Bei einer beworbenen neuen gTLD kann sie heute $1 und im nächsten Jahr $30 bis $80 kosten. Bei einer hochpreisigen ccTLD oder einer Premium-Stufe der Registry kann sie deutlich mehr kosten. Verpasst du die Verlängerung und musst die Domain wiederherstellen, kann die Rechnung in die Hunderte gehen.
+Die Kosten hängen von Endung, Registrar, Name und Leistungen ab. Prüfe ein aktuelles Angebot für den konkreten Namen.
 
 Die praktische Antwort ist nicht der Preis im ersten Jahr. Sie lautet:
 
@@ -155,4 +157,4 @@ Das ist die Zahl, die du vergleichen solltest. Eine Domain ist nicht teuer, weil
 
 ## Quellen und weiterführende Lektüre
 
-- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/resources/pages/errp-2013-02-28-en)
+- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en)

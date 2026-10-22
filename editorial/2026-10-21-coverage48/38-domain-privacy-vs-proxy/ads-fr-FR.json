@@ -1,0 +1,173 @@
+{
+  "fetched_utc": "2026-10-22T01:43:45Z",
+  "request": {
+    "language": "languageConstants/1002",
+    "geoTargetConstants": [
+      "geoTargetConstants/2250"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "confidentialit\u00e9 nom de domaine",
+      "protection confidentialit\u00e9 domaine",
+      "whois anonyme",
+      "nom de domaine anonyme",
+      "proxy nom de domaine"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "whois anonyme",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "0"
+        }
+      },
+      {
+        "text": "nom de domaine anonyme",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "47",
+          "lowTopOfPageBidMicros": "1822226",
+          "highTopOfPageBidMicros": "4346678"
+        }
+      },
+      {
+        "text": "confidentialit\u00e9 nom de domaine"
+      },
+      {
+        "text": "protection confidentialit\u00e9 domaine"
+      },
+      {
+        "text": "proxy nom de domaine"
+      }
+    ]
+  }
+}
