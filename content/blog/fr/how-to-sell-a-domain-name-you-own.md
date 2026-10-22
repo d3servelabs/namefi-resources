@@ -129,6 +129,8 @@ Si le domaine est proche de sa date d'expiration, renouvelez-le avant d'entamer 
 
 L'[ICANN](/fr/glossary/icann/) explique que les bureaux d'enregistrement peuvent refuser les transferts dans certains cas, notamment lorsque le domaine est verrouillé, qu'il a été enregistré pour la première fois il y a moins de 60 jours, ou qu'il a été transféré il y a moins de 60 jours. Vous aurez également besoin d'un [code d'autorisation (AuthInfo/auth code)](/fr/glossary/auth-code/) pour de nombreux transferts entre différents bureaux d'enregistrement. L'ICANN précise que ces derniers doivent soit vous permettre d'en créer un, soit vous le fournir dans un délai de cinq jours civils après votre demande.
 
+Un changement de nom, d’organisation ou d’adresse électronique du titulaire peut aussi déclencher un blocage de 60 jours du transfert vers un autre bureau. Certains bureaux permettent de refuser ce blocage avant le changement. Un déplacement entre comptes dépend des règles du bureau et ne contourne ni les litiges ni les décisions judiciaires. [ICANN](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en).
+
 Cela ne signifie pas que chaque vente doit attendre. Si l'acheteur est prêt à recevoir le domaine chez le bureau d'enregistrement actuel, un transfert interne au même bureau (account push) ou un changement de propriétaire peut être possible. Mais vous devez connaître les possibilités de transfert avant de promettre une date de conclusion.
 
 ### Décidez de ce qui est inclus
@@ -169,7 +171,7 @@ Commencez avec un domaine que vous possédez ou représentez. Outbound permet d'
 - Les angles d'approche des acheteurs que vous pouvez examiner.
 - Les contacts publics lorsqu'ils sont disponibles.
 - Des brouillons de prospection éditables lorsqu'il y a suffisamment de contexte.
-- Des notes de recherche exportables pour votre propre suivi.
+- Des notes de recherche pour votre propre suivi.
 
 Utilisez-le comme outil de recherche, pas comme un pilote automatique. Un bon processus de prospection nécessite toujours du jugement humain.
 
@@ -272,7 +274,7 @@ Attention aux arnaques. La [FTC](https://consumer.ftc.gov/articles/how-avoid-sca
 
 Ne cliquez pas sur des liens de séquestre provenant d'un acheteur en supposant qu'ils sont authentiques. Tapez l'URL du service de séquestre ou de paiement vous-même. Confirmez la transaction depuis votre propre compte. Ne transférez pas le domaine tant que le système de paiement n'indique pas que les fonds sont sécurisés.
 
-Pour un transfert entre différents bureaux d'enregistrement, le vendeur déverrouille généralement le domaine et fournit le code d'autorisation (auth code), puis l'acheteur lance le transfert chez le bureau d'enregistrement destinataire. Pour un transfert interne (push), les deux parties utilisent des comptes chez le bureau actuel. Escrow.com note qu'un transfert interne peut être utile lorsqu'un blocage de transfert de 60 jours de l'ICANN empêche un déplacement vers un autre bureau d'enregistrement.
+Pour changer de bureau d’enregistrement, suivez les instructions du prestataire vérifié concernant le déverrouillage et le code d’autorisation. Pour un déplacement interne, confirmez la procédure et le compte destinataire auprès du bureau. Ne communiquez jamais le mot de passe du compte vendeur.
 
 Après la conclusion :
 

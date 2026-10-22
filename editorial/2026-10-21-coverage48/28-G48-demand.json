@@ -1,0 +1,1527 @@
+{
+  "source_id": "G48",
+  "official_language_id_source": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "official_language_id_checked_utc": "2026-10-22T01:02Z",
+  "metrics": {
+    "ar-EG": {
+      "request": {
+        "language": "languageConstants/1019",
+        "geoTargetConstants": [
+          "geoTargetConstants/2818"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "بيع دومين",
+          "بيع اسم نطاق"
+        ],
+        "includeAdultKeywords": false
+      },
+      "fetched_utc": "2026-10-22T01:04:48.034419+00:00",
+      "response": {
+        "results": [
+          {
+            "text": "بيع دومين",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                }
+              ],
+              "avgMonthlySearches": "20",
+              "competitionIndex": "66",
+              "lowTopOfPageBidMicros": "142056",
+              "highTopOfPageBidMicros": "1439960"
+            }
+          },
+          {
+            "text": "بيع اسم نطاق"
+          }
+        ]
+      }
+    },
+    "de-DE": {
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "domain verkaufen",
+          "domain verkaufen preis",
+          "domain broker",
+          "domain verkaufen wo"
+        ],
+        "includeAdultKeywords": false
+      },
+      "fetched_utc": "2026-10-22T01:03:51.241698+00:00",
+      "response": {
+        "results": [
+          {
+            "text": "domain verkaufen",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "1900"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "1600"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "1600"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                }
+              ],
+              "avgMonthlySearches": "1300",
+              "competitionIndex": "71",
+              "lowTopOfPageBidMicros": "311067",
+              "highTopOfPageBidMicros": "1511540"
+            }
+          },
+          {
+            "text": "domain verkaufen preis",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "57",
+              "lowTopOfPageBidMicros": "334904",
+              "highTopOfPageBidMicros": "893894"
+            }
+          },
+          {
+            "text": "domain broker",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                }
+              ],
+              "avgMonthlySearches": "110",
+              "competitionIndex": "73",
+              "lowTopOfPageBidMicros": "2436150",
+              "highTopOfPageBidMicros": "6765065"
+            }
+          },
+          {
+            "text": "domain verkaufen wo",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "77",
+              "lowTopOfPageBidMicros": "186569",
+              "highTopOfPageBidMicros": "960026"
+            }
+          }
+        ]
+      }
+    },
+    "es-ES": {
+      "request": {
+        "language": "languageConstants/1003",
+        "geoTargetConstants": [
+          "geoTargetConstants/2724"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "vender dominio",
+          "vender un dominio",
+          "donde vender dominios"
+        ],
+        "includeAdultKeywords": false
+      },
+      "fetched_utc": "2026-10-22T01:04:18.508750+00:00",
+      "response": {
+        "results": [
+          {
+            "text": "vender dominio",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                }
+              ],
+              "avgMonthlySearches": "90",
+              "competitionIndex": "58",
+              "lowTopOfPageBidMicros": "399007",
+              "highTopOfPageBidMicros": "1833586"
+            },
+            "closeVariants": [
+              "vender un dominio"
+            ]
+          },
+          {
+            "text": "donde vender dominios",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "84",
+              "lowTopOfPageBidMicros": "342219",
+              "highTopOfPageBidMicros": "1326097"
+            }
+          }
+        ]
+      }
+    },
+    "fr-FR": {
+      "request": {
+        "language": "languageConstants/1002",
+        "geoTargetConstants": [
+          "geoTargetConstants/2250"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "vendre nom de domaine",
+          "vendre un nom de domaine",
+          "courtier nom de domaine"
+        ],
+        "includeAdultKeywords": false
+      },
+      "fetched_utc": "2026-10-22T01:03:51.618030+00:00",
+      "response": {
+        "results": [
+          {
+            "text": "vendre nom de domaine",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                }
+              ],
+              "avgMonthlySearches": "170",
+              "competitionIndex": "49",
+              "lowTopOfPageBidMicros": "229217",
+              "highTopOfPageBidMicros": "1660000"
+            }
+          },
+          {
+            "text": "vendre un nom de domaine",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                }
+              ],
+              "avgMonthlySearches": "170",
+              "competitionIndex": "49",
+              "lowTopOfPageBidMicros": "229217",
+              "highTopOfPageBidMicros": "1660000"
+            }
+          },
+          {
+            "text": "courtier nom de domaine",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "63",
+              "lowTopOfPageBidMicros": "910618",
+              "highTopOfPageBidMicros": "2307573"
+            }
+          }
+        ]
+      }
+    },
+    "hi-IN": {
+      "request": {
+        "language": "languageConstants/1023",
+        "geoTargetConstants": [
+          "geoTargetConstants/2356"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "डोमेन कैसे बेचें",
+          "डोमेन बेचें"
+        ],
+        "includeAdultKeywords": false
+      },
+      "fetched_utc": "2026-10-22T01:04:55.395109+00:00",
+      "response": {
+        "results": [
+          {
+            "text": "डोमेन कैसे बेचें"
+          },
+          {
+            "text": "डोमेन बेचें"
+          }
+        ]
+      }
+    },
+    "ja-JP": {
+      "request": {
+        "language": "languageConstants/1005",
+        "geoTargetConstants": [
+          "geoTargetConstants/2392"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "ドメイン 売却",
+          "ドメイン 販売 方法"
+        ],
+        "includeAdultKeywords": false
+      },
+      "fetched_utc": "2026-10-22T01:04:25.911131+00:00",
+      "response": {
+        "results": [
+          {
+            "text": "ドメイン 売却",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                }
+              ],
+              "avgMonthlySearches": "90",
+              "competitionIndex": "20",
+              "lowTopOfPageBidMicros": "1556304",
+              "highTopOfPageBidMicros": "4539819"
+            }
+          },
+          {
+            "text": "ドメイン 販売 方法",
+            "keywordMetrics": {
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                }
+              ],
+              "avgMonthlySearches": "10"
+            }
+          }
+        ]
+      }
+    },
+    "ko-KR": {
+      "request": {
+        "language": "languageConstants/1012",
+        "geoTargetConstants": [
+          "geoTargetConstants/2410"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "도메인 판매",
+          "도메인 매매"
+        ],
+        "includeAdultKeywords": false
+      },
+      "fetched_utc": "2026-10-22T01:04:33.221966+00:00",
+      "response": {
+        "results": [
+          {
+            "text": "도메인 판매",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                }
+              ],
+              "avgMonthlySearches": "70",
+              "competitionIndex": "54",
+              "lowTopOfPageBidMicros": "425882",
+              "highTopOfPageBidMicros": "1222607"
+            }
+          },
+          {
+            "text": "도메인 매매",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "20",
+              "competitionIndex": "31"
+            }
+          }
+        ]
+      }
+    },
+    "ta-IN": {
+      "request": {
+        "language": "languageConstants/1130",
+        "geoTargetConstants": [
+          "geoTargetConstants/2356"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "டொமைன் விற்பனை",
+          "டொமைன் விற்பது எப்படி"
+        ],
+        "includeAdultKeywords": false
+      },
+      "fetched_utc": "2026-10-22T01:05:02.648050+00:00",
+      "response": {
+        "results": [
+          {
+            "text": "டொமைன் விற்பனை"
+          },
+          {
+            "text": "டொமைன் விற்பது எப்படி"
+          }
+        ]
+      }
+    },
+    "zh-CN-SG": {
+      "request": {
+        "language": "languageConstants/1017",
+        "geoTargetConstants": [
+          "geoTargetConstants/2702"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "出售域名",
+          "域名出售",
+          "域名交易"
+        ],
+        "includeAdultKeywords": false
+      },
+      "fetched_utc": "2026-10-22T01:04:40.638515+00:00",
+      "response": {
+        "results": [
+          {
+            "text": "出售 域名",
+            "keywordMetrics": {
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                }
+              ],
+              "avgMonthlySearches": "10"
+            },
+            "closeVariants": [
+              "出售域名"
+            ]
+          },
+          {
+            "text": "域名 出售",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "82",
+              "lowTopOfPageBidMicros": "1165417",
+              "highTopOfPageBidMicros": "2499515"
+            },
+            "closeVariants": [
+              "域名出售"
+            ]
+          },
+          {
+            "text": "域名 交易",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "68",
+              "lowTopOfPageBidMicros": "922373",
+              "highTopOfPageBidMicros": "7200000"
+            },
+            "closeVariants": [
+              "域名交易"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+    "topic": {
+      "source_id": "G48",
+      "slug": "how-to-sell-a-domain-name-you-own",
+      "path_match": "/blog/how-to-sell-a-domain-name-you-own/",
+      "matched_rows": 91,
+      "observed_impressions": 191,
+      "observed_clicks": 0,
+      "countries": {
+        "fra": {
+          "rows": 6,
+          "impressions": 9,
+          "clicks": 0
+        },
+        "usa": {
+          "rows": 54,
+          "impressions": 126,
+          "clicks": 0
+        },
+        "aus": {
+          "rows": 2,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "can": {
+          "rows": 4,
+          "impressions": 16,
+          "clicks": 0
+        },
+        "esp": {
+          "rows": 2,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "sgp": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "ind": {
+          "rows": 4,
+          "impressions": 6,
+          "clicks": 0
+        },
+        "bra": {
+          "rows": 2,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "gbr": {
+          "rows": 6,
+          "impressions": 9,
+          "clicks": 0
+        },
+        "ita": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "nld": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "rus": {
+          "rows": 2,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "aut": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "idn": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "mex": {
+          "rows": 1,
+          "impressions": 6,
+          "clicks": 0
+        },
+        "dza": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "chn": {
+          "rows": 2,
+          "impressions": 5,
+          "clicks": 0
+        }
+      }
+    }
+  },
+  "ads_retry": "Initial run returned account RESOURCE_EXHAUSTED after de-DE and fr-FR. Retry skipped persisted results and waited seven seconds before every request. No missing result was assigned zero."
+}

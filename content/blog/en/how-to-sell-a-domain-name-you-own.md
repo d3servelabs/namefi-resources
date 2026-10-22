@@ -130,7 +130,9 @@ If the domain is close to expiration, renew it before serious outreach. A buyer 
 
 ### Check transfer status
 
-ICANN explains that registrars may deny transfers in certain cases, including when a domain is in lock status, within 60 days of initial registration, or within 60 days of a previous transfer. You will also need an [AuthInfo/auth code](/en/glossary/auth-code/) for many [cross-registrar transfers](/en/glossary/cross-registrar-transfer/), and [ICANN](/en/glossary/icann/) says registrars must either let you create one or provide it within five calendar days of request.
+ICANN explains that registrars may deny transfers in certain cases, including when a domain is in lock status, within 60 days of initial registration, or within 60 days of a previous transfer. You will also need an [AuthInfo/auth code](/en/glossary/auth-code/) for many [cross-registrar transfers](/en/glossary/cross-registrar-transfer/), and [ICANN](/en/glossary/icann/) says registrars must either let you create one or provide it within five calendar days of request. See the [ICANN transfer FAQ](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en) for the applicable conditions.
+
+A change to the registrant name, organization, or email can also trigger a 60-day restriction on changing registrars. Some registrars offer an opt-out before the change. A same-registrar account move depends on the registrar's rules and does not override disputes or court orders.
 
 That does not mean every sale has to wait. If the buyer is willing to receive the domain at the current registrar, a same-registrar account push or change of ownership may be possible. But you need to know the transfer path before you promise a closing date.
 
@@ -161,6 +163,41 @@ Most sellers should do both:
 
 The fastest way to make domain outreach feel spammy is to treat "has the keyword somewhere on their website" as enough. It is not. Buyer fit is the work.
 
+### Match the sale channel to the buyer
+
+![Three paths connect registrar searches, direct domain visitors, and researched outreach with a domain sale](../../assets/how-to-sell-a-domain-name-you-own-01-buyer-channels.jpg)
+
+Start with where the buyer will look. A marketplace listing, a broker, and a private checkout perform different jobs.
+
+| Buyer situation | Practical route | What to verify before listing |
+| --- | --- | --- |
+| A buyer searches for a name at a registrar | A marketplace with registrar distribution, such as Afternic or SedoMLS | Eligible TLDs, registrar participation, price, commission, and transfer authorization |
+| A buyer visits your domain directly | A for-sale page with a clear inquiry or purchase path | DNS continuity, contact delivery, checkout provider, and fees |
+| A business could use the name but has not searched for it | A small researched prospect list and lawful outreach | Independent buyer fit, contact accuracy, and applicable messaging rules |
+| A valuable name needs negotiation or confidential representation | A sell-side broker | Accepted inventory, exclusivity, minimum commission, and fees after the engagement ends |
+| A buyer already agreed to buy | A verified marketplace checkout or escrow transaction | Fund verification, transfer instructions, inspection, and payout terms |
+
+[Afternic](https://www.afternic.com/sell-domains) distributes listings through registrar resellers. Its [Fast Transfer](https://www.afternic.com/fast-transfer) option requires eligibility and advance authorization for automatic delivery. A listing does not automatically qualify for Fast Transfer. [Sedo](https://sedo.com/us/what-we-offer/price-list/) distinguishes direct marketplace sales from sales through its SedoMLS partner network.
+
+A broker can help find or negotiate with a buyer. Escrow manages a transaction after the parties agree. Do not expect either service to guarantee demand. Use the [broker guide](/en/blog/working-with-domain-brokers/) before signing a representation agreement.
+
+### Calculate the proceeds before accepting an offer
+
+The following posted rates were checked on October 21, 2026. Providers can change rates and conditions. Confirm the applicable terms in your account before accepting a sale.
+
+| Provider and sale path | Posted seller commission | Conditions that change the calculation |
+| --- | --- | --- |
+| [Afternic](https://www.afternic.com/sell-domains), Buy It Now | Basic: 15% with qualifying GoDaddy Aftermarket nameservers, otherwise 25%. Boost: 20% or 30% respectively | $15 minimum commission. Confirm the active plan and nameservers |
+| [Sedo](https://sedo.com/us/what-we-offer/price-list/), direct marketplace sale | 10% for qualifying Buy Now listings with Sedo parking or a sales landing page. Other direct marketplace sales: 15% | SedoMLS sales: 20%. Minimums depend on TLD and service. Quoted commissions exclude taxes |
+
+Changing nameservers for a commission discount can interrupt a live website or email. Compare the saving with the DNS work before changing anything.
+
+For an illustrative $2,000 sale, a 15% commission leaves $1,700. A 25% commission leaves $1,500. Both figures exclude other fees and taxes. Write down the expected proceeds, not only the asking price.
+
+Check payment and payout eligibility before committing. Ask which countries, currencies, payment methods, identity checks, and bank fees apply to both parties. [Escrow.com](https://www.escrow.com/domains) lists payment methods with restrictions. A provider's checkout availability does not establish that every buyer or seller can use every method.
+
+Keep prices and availability consistent across venues. Remove competing listings promptly after a sale. An automatic-transfer listing requires particular care because the platform can deliver the domain without another manual approval.
+
 ## 5. Use Namefi Outbound to Research Buyer Fit
 
 [Namefi Outbound](https://namefi.io/outbound) is built for the buyer-research part of the process.
@@ -172,9 +209,9 @@ Start with a domain you own or represent. Outbound helps explore:
 - Buyer angles you can review.
 - Public contacts when available.
 - Editable outreach drafts when there is enough context.
-- Exportable research notes for your own process.
+- Research notes for your own process.
 
-Use it as research, not as autopilot. A good outbound process still needs human judgment.
+The [Namefi Outbound documentation](https://docs.namefi.io/docs/openapi/outbound/listOutboundLeads) describes ranked prospects, public rationale, contacts, and outreach drafts when available. Check each source and company match before sending a message. Research results do not establish consent, buyer interest, or a guaranteed sale.
 
 When reviewing prospects, ask:
 
@@ -275,7 +312,9 @@ Be careful with scams. The [FTC](https://consumer.ftc.gov/articles/how-avoid-sca
 
 Do not click escrow links from a buyer and assume they are real. Type the escrow or checkout URL yourself. Confirm the transaction inside your own account. Do not transfer the domain until the payment path says funds are secured.
 
-For a cross-registrar transfer, the seller usually unlocks the domain and provides the auth code, then the buyer starts the transfer at the receiving registrar. For a same-registrar push, both sides use accounts at the current registrar. Escrow.com notes that a same-registrar push can be useful when an ICANN 60-day [transfer lock](/en/glossary/transfer-lock/) prevents a cross-registrar move.
+For a cross-registrar transfer, follow the verified provider's instructions for unlocking the domain and supplying the auth code. For a same-registrar move, confirm the registrar's account-change process and the buyer's receiving account. Never share the seller's account password.
+
+[Escrow.com explains](https://www.escrow.com/domains/how-it-works) that it verifies and secures payment before instructing the seller to transfer. Its [inspection period](https://www.escrow.com/inspection-period) starts after receipt, not when the buyer first sends money. Agree on the inspection terms and evidence of delivery before funding. A payment screenshot or an email saying that a wire is coming does not replace the provider's transfer instruction.
 
 After closing:
 
@@ -328,3 +367,16 @@ Most domain sales are not won by clever tricks. They are won by matching the rig
 - Watch transfer locks, auth codes, DNS continuity, stale listings, and tax records.
 
 If you are ready to research possible buyers for a domain you own or represent, start with [Namefi Outbound](https://namefi.io/outbound).
+
+
+## These sources explain the sale conditions
+
+Sources checked on October 21, 2026:
+
+- [Afternic selling and commissions](https://www.afternic.com/sell-domains) and [Fast Transfer](https://www.afternic.com/fast-transfer).
+- [Sedo price list](https://sedo.com/us/what-we-offer/price-list/).
+- [ICANN transfer FAQ](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en) and [UDRP](https://www.icann.org/resources/pages/policy-2024-02-21-en).
+- [Escrow.com domain process](https://www.escrow.com/domains/how-it-works), [payment restrictions](https://www.escrow.com/domains), and [inspection period](https://www.escrow.com/inspection-period).
+- [Namefi Outbound prospect documentation](https://docs.namefi.io/docs/openapi/outbound/listOutboundLeads).
+- [FTC commercial email guidance](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business) and [scam guidance](https://consumer.ftc.gov/articles/how-avoid-scam).
+- [IRS Publication 544](https://www.irs.gov/publications/p544).

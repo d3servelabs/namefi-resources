@@ -7,7 +7,7 @@ authors: ['aileen-wright']
 editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
-description: "Eine praktische Checkliste aus Verkäufersicht für die Preisfindung einer Domain, das Finden potenzieller Käufer, die Kontaktaufnahme, die Vermeidung von Betrug und den sicheren Abschluss des Transfers."
+description: "So verkaufen Sie Ihre Domain: Käufer finden, Verkaufskanäle und Provisionen vergleichen und Zahlung sowie Transfer sicher abwickeln."
 ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png
 keywords: ['wie man einen domainnamen verkauft', 'domainnamen verkaufen', 'checkliste domainverkauf', 'domainbewertung', 'treuhandkonto domainverkauf', 'domaintransfer', 'outbound-domainverkäufe', 'domainkäufer finden', 'domainverhandlung', 'eigene domain verkaufen', 'Namefi Outbound', 'domain-zweitmarkt', 'domainverkaufsprozess', 'domainverkaufsansprache', 'leitfaden für domainverkäufer']
 relatedArticles:
@@ -84,7 +84,7 @@ Das ist kein Grund zur Panik. Es ist ein Grund, unbedenkliche Namen auf saubere 
 
 ## 2. Setzen Sie den Preis nach dem Markt an, nicht nach Lust und Laune
 
-Die Bewertung von Domains ist kompliziert, weil Domains keine Rohstoffe (Commodities) sind. Es gibt keinen universellen Preis für „eine fünfstellige `.com`“ oder „ein KI-Keyword“. Dieselbe Domain kann für einen Käufer wertlos und für einen anderen strategisch nützlich sein.
+Die Bewertung von Domains ist kompliziert, weil Domains keine Rohstoffe (Commodities) sind. Es gibt keinen universellen Preis für „eine `.com` mit fünf Buchstaben“ oder „ein KI-Keyword“. Dieselbe Domain kann für einen Käufer wertlos und für einen anderen strategisch nützlich sein.
 
 Dennoch ergibt sich ein vertretbarer Preis in der Regel aus fünf Faktoren:
 
@@ -129,6 +129,8 @@ Wenn die Domain kurz vor dem Ablauf steht, verlängern Sie sie vor einer ernstha
 
 [ICANN](/de/glossary/icann/) erklärt, dass Registrare Transfers in bestimmten Fällen ablehnen können, unter anderem, wenn sich eine Domain im Sperrstatus (Lock-Status) befindet, innerhalb von 60 Tagen nach der Erstregistrierung oder innerhalb von 60 Tagen nach einem vorherigen Transfer. Für viele Transfers zwischen verschiedenen Registraren benötigen Sie außerdem einen [AuthInfo/Auth-Code](/de/glossary/auth-code/), und laut ICANN müssen Registrare Ihnen entweder erlauben, einen zu erstellen, oder ihn innerhalb von fünf Kalendertagen nach der Beantragung bereitstellen.
 
+Ein Wechsel von Registrantenname, Organisation oder E-Mail-Adresse kann ebenfalls eine 60-tägige Sperre für einen Registrarwechsel auslösen. Manche Registrare erlauben vor der Änderung einen Verzicht auf diese Sperre. Ein interner Kontowechsel folgt den Regeln des Registrars und umgeht keine Streitverfahren oder Gerichtsbeschlüsse. [ICANN](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en).
+
 Das bedeutet nicht, dass jeder Verkauf warten muss. Wenn der Käufer bereit ist, die Domain beim aktuellen Registrar zu empfangen, ist möglicherweise ein kontoübergreifender Push (beim selben Registrar) oder ein Inhaberwechsel möglich. Aber Sie müssen den Transferweg kennen, bevor Sie ein Abschlussdatum versprechen.
 
 ### Entscheiden Sie, was inbegriffen ist
@@ -158,6 +160,41 @@ Die meisten Verkäufer sollten beides tun:
 
 Der schnellste Weg, um Domain-Outreach wie Spam wirken zu lassen, ist die Annahme, dass es ausreicht, wenn „das Keyword irgendwo auf deren Website steht“. Das ist nicht der Fall. Die richtige Passung für den Käufer zu finden, ist die eigentliche Arbeit.
 
+### Wählen Sie den Verkaufsweg nach der Käufersuche
+
+![Drei Wege verbinden die Suche beim Registrar, direkte Domainbesuche und gezielte Kontaktaufnahme mit einem Domainverkauf](../../assets/how-to-sell-a-domain-name-you-own-01-buyer-channels.jpg)
+
+Überlegen Sie zuerst, wo der Käufer suchen wird. Ein Marktplatzangebot, ein Broker und eine private Zahlungsabwicklung erfüllen unterschiedliche Aufgaben.
+
+| Situation des Käufers | Geeigneter Weg | Prüfpunkte vor dem Inserieren |
+| --- | --- | --- |
+| Ein Käufer sucht beim Registrar nach einem Namen | Ein Marktplatz mit Registrar-Vertrieb, etwa Afternic oder SedoMLS | Zugelassene TLDs, beteiligte Registrare, Preis, Provision und Transferfreigabe |
+| Ein Käufer besucht Ihre Domain direkt | Eine Verkaufsseite mit klarer Anfrage- oder Kaufmöglichkeit | DNS-Kontinuität, Zustellung der Anfragen, Zahlungsanbieter und Gebühren |
+| Ein Unternehmen könnte den Namen nutzen, hat aber noch nicht danach gesucht | Eine kleine recherchierte Interessentenliste und zulässige Kontaktaufnahme | Eigenständiger Nutzen für den Käufer, korrekte Kontaktdaten und geltende Regeln für Nachrichten |
+| Ein wertvoller Name erfordert Verhandlung oder vertrauliche Vertretung | Ein Broker auf Verkäuferseite | Angenommene Domains, Exklusivität, Mindestprovision und Gebühren nach Vertragsende |
+| Ein Käufer hat dem Kauf bereits zugestimmt | Eine geprüfte Marktplatzabwicklung oder Treuhandtransaktion | Zahlungsprüfung, Transferanweisungen, Prüfung des Kaufgegenstands und Auszahlung |
+
+[Afternic](https://www.afternic.com/sell-domains) vertreibt Angebote über Registrar-Partner. Die Option [Fast Transfer](https://www.afternic.com/fast-transfer) setzt die Teilnahmeberechtigung und eine vorherige Freigabe für die automatische Übertragung voraus. Ein Inserat erfüllt nicht automatisch die Voraussetzungen für Fast Transfer. [Sedo](https://sedo.com/us/what-we-offer/price-list/) unterscheidet direkte Marktplatzverkäufe von Verkäufen über das Partnernetz SedoMLS.
+
+Ein Broker kann Käufer suchen oder Verhandlungen führen. Ein Treuhanddienst übernimmt die Abwicklung nach der Einigung. Keiner der beiden Dienste garantiert Nachfrage. Lesen Sie den [Broker-Leitfaden](/de/blog/working-with-domain-brokers/), bevor Sie einen Vertretungsvertrag unterschreiben.
+
+### Berechnen Sie den Erlös vor der Angebotsannahme
+
+Die folgenden veröffentlichten Tarife wurden am 21. Oktober 2026 geprüft. Anbieter können Tarife und Bedingungen ändern. Prüfen Sie vor der Annahme eines Verkaufs die geltenden Bedingungen in Ihrem Konto.
+
+| Anbieter und Verkaufsweg | Veröffentlichte Verkäuferprovision | Bedingungen für die Berechnung |
+| --- | --- | --- |
+| [Afternic](https://www.afternic.com/sell-domains), Sofortkauf | Basic: 15 % mit den vorgeschriebenen GoDaddy-Aftermarket-Nameservern, sonst 25 %. Boost: entsprechend 20 % oder 30 % | Mindestprovision: 15 USD. Prüfen Sie den aktiven Tarif und die Nameserver |
+| [Sedo](https://sedo.com/us/what-we-offer/price-list/), direkter Marktplatzverkauf | 10 % für qualifizierte Sofortkaufangebote mit Sedo-Parking oder Verkaufsseite. Andere direkte Marktplatzverkäufe: 15 % | SedoMLS-Verkäufe: 20 %. Mindestgebühren hängen von TLD und Dienst ab. Die genannten Provisionen verstehen sich ohne Steuern |
+
+Ein Nameserverwechsel für eine niedrigere Provision kann eine aktive Website oder E-Mail unterbrechen. Vergleichen Sie die Ersparnis mit dem Aufwand für die DNS-Umstellung.
+
+Bei einem beispielhaften Verkauf für 2.000 USD verbleiben nach 15 % Provision 1.700 USD. Nach 25 % Provision verbleiben 1.500 USD. Beide Beträge berücksichtigen keine weiteren Gebühren oder Steuern. Notieren Sie den erwarteten Erlös und nicht nur den Angebotspreis.
+
+Prüfen Sie vor einer Zusage die Voraussetzungen für Zahlung und Auszahlung. Klären Sie für beide Parteien Länder, Währungen, Zahlungsmethoden, Identitätsprüfungen und Bankgebühren. [Escrow.com](https://www.escrow.com/domains) nennt Zahlungsmethoden mit Einschränkungen. Eine verfügbare Zahlungsabwicklung bedeutet nicht, dass jeder Käufer oder Verkäufer jede Zahlungsmethode nutzen kann.
+
+Halten Sie Preise und Verfügbarkeit auf allen Verkaufsplattformen aktuell. Entfernen Sie konkurrierende Angebote nach einem Verkauf umgehend. Angebote mit automatischem Transfer erfordern besondere Sorgfalt: Die Plattform kann die Domain ohne weitere manuelle Freigabe übertragen.
+
 ## 5. Nutzen Sie Namefi Outbound, um die Passgenauigkeit für Käufer zu recherchieren
 
 [Namefi Outbound](https://namefi.io/outbound) wurde speziell für den Rechercheteil des Prozesses entwickelt.
@@ -169,9 +206,9 @@ Beginnen Sie mit einer Domain, die Sie besitzen oder vertreten. Outbound hilft b
 - Käuferansätzen, die Sie überprüfen können.
 - Öffentlichen Kontakten (sofern verfügbar).
 - Bearbeitbaren Entwürfen für die Kontaktaufnahme, wenn genügend Kontext vorhanden ist.
-- Exportierbaren Recherche-Notizen für Ihren eigenen Prozess.
+- Recherche-Notizen für Ihren eigenen Prozess.
 
-Nutzen Sie es als Recherchetool, nicht als Autopilot. Ein guter Outbound-Prozess erfordert immer noch menschliches Urteilsvermögen.
+Die [Dokumentation von Namefi Outbound](https://docs.namefi.io/docs/openapi/outbound/listOutboundLeads) beschreibt geordnete Interessenten, öffentliche Begründungen, Kontakte und Nachrichtenentwürfe, sofern verfügbar. Prüfen Sie vor dem Versand jede Quelle und jede Unternehmenszuordnung. Rechercheergebnisse belegen weder eine Einwilligung noch Kaufinteresse und garantieren keinen Verkauf.
 
 Fragen Sie sich bei der Prüfung von Interessenten:
 
@@ -272,7 +309,9 @@ Hüten Sie sich vor Betrug. Die [FTC](https://consumer.ftc.gov/articles/how-avoi
 
 Klicken Sie nicht auf Escrow-Links eines Käufers und gehen Sie nicht davon aus, dass diese echt sind. Tippen Sie die Escrow- oder Checkout-URL selbst ein. Bestätigen Sie die Transaktion innerhalb Ihres eigenen Kontos. Transferieren Sie die Domain erst, wenn der Zahlungsweg anzeigt, dass die Gelder gesichert sind.
 
-Bei einem Transfer zwischen verschiedenen Registraren entsperrt der Verkäufer normalerweise die Domain und stellt den Auth-Code bereit. Anschließend startet der Käufer den Transfer beim empfangenden Registrar. Bei einem Push beim selben Registrar nutzen beide Seiten Konten beim aktuellen Registrar. Escrow.com weist darauf hin, dass ein Push beim selben Registrar nützlich sein kann, wenn eine 60-tägige ICANN-Transfersperre einen Wechsel zwischen Registraren verhindert.
+Befolgen Sie bei einem Registrarwechsel die Anweisungen des geprüften Anbieters zum Entsperren und zur Weitergabe des Auth-Codes. Bestätigen Sie bei einem internen Wechsel den Ablauf und das Empfängerkonto beim Registrar. Geben Sie niemals Ihr Kontopasswort weiter.
+
+[Escrow.com erklärt](https://www.escrow.com/domains/how-it-works), dass der Anbieter die Zahlung prüft und sichert, bevor er den Verkäufer zum Transfer auffordert. Die [Prüfungsfrist](https://www.escrow.com/inspection-period) beginnt nach dem Empfang und nicht mit der ersten Zahlung des Käufers. Vereinbaren Sie die Prüfungsbedingungen und den Zustellnachweis vor der Einzahlung. Ein Zahlungsbildschirmfoto oder eine angekündigte Überweisung ersetzt keine Transferanweisung des Anbieters.
 
 Nach dem Abschluss:
 
@@ -325,3 +364,15 @@ Die meisten Domainverkäufe werden nicht durch clevere Tricks gewonnen. Sie werd
 - Achten Sie auf Transfersperren, Auth-Codes, DNS-Kontinuität, veraltete Inserate und Steuerunterlagen.
 
 Wenn Sie bereit sind, mögliche Käufer für eine Domain zu recherchieren, die Sie besitzen oder vertreten, starten Sie mit [Namefi Outbound](https://namefi.io/outbound).
+
+## Diese Quellen erläutern die Verkaufsbedingungen
+
+Die folgenden Quellen wurden am 21. Oktober 2026 geprüft:
+
+- [Afternic: Verkauf und Provisionen](https://www.afternic.com/sell-domains) und [Fast Transfer](https://www.afternic.com/fast-transfer).
+- [Sedo: Preisliste](https://sedo.com/us/what-we-offer/price-list/).
+- [ICANN: Fragen zum Transfer](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en) und [UDRP](https://www.icann.org/resources/pages/policy-2024-02-21-en).
+- [Escrow.com: Domainabwicklung](https://www.escrow.com/domains/how-it-works), [Zahlungseinschränkungen](https://www.escrow.com/domains) und [Prüfungsfrist](https://www.escrow.com/inspection-period).
+- [Namefi Outbound: Dokumentation der Interessenten](https://docs.namefi.io/docs/openapi/outbound/listOutboundLeads).
+- [FTC: Regeln für Werbe-E-Mails](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business) und [Hinweise zu Betrug](https://consumer.ftc.gov/articles/how-avoid-scam).
+- [IRS: Publikation 544](https://www.irs.gov/publications/p544).
