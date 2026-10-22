@@ -1,0 +1,504 @@
+{
+  "ads-zh-CN": {
+    "request": {
+      "language": "languageConstants/1017",
+      "geoTargetConstants": [
+        "geoTargetConstants/2156"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "cc域名",
+        "cc域名注册",
+        "cc域名是什么意思"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "cc 域名",
+          "keywordMetrics": {
+            "competition": "MEDIUM",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "110"
+              }
+            ],
+            "avgMonthlySearches": "70",
+            "competitionIndex": "50",
+            "lowTopOfPageBidMicros": "551994",
+            "highTopOfPageBidMicros": "2081899"
+          },
+          "closeVariants": [
+            "cc域名"
+          ]
+        },
+        {
+          "text": "cc 域名 注册",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "10"
+              }
+            ],
+            "avgMonthlySearches": "10",
+            "competitionIndex": "67",
+            "lowTopOfPageBidMicros": "1184041",
+            "highTopOfPageBidMicros": "2650653"
+          },
+          "closeVariants": [
+            "cc域名注册"
+          ]
+        },
+        {
+          "text": "cc 域名 是 什么 意思",
+          "keywordMetrics": {
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "0"
+              }
+            ],
+            "avgMonthlySearches": "10"
+          },
+          "closeVariants": [
+            "cc域名是什么意思"
+          ]
+        }
+      ]
+    },
+    "fetched_utc": "2026-10-22T01:05:34Z"
+  },
+  "ads-es": {
+    "request": {
+      "language": "languageConstants/1003",
+      "geoTargetConstants": [
+        "geoTargetConstants/2724"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "dominio cc",
+        "registrar dominio cc",
+        "qué es dominio cc"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "dominio cc",
+          "keywordMetrics": {
+            "competition": "LOW",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "90"
+              }
+            ],
+            "avgMonthlySearches": "140",
+            "competitionIndex": "20",
+            "lowTopOfPageBidMicros": "1306327",
+            "highTopOfPageBidMicros": "3637939"
+          }
+        },
+        {
+          "text": "registrar dominio cc",
+          "keywordMetrics": {
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "0"
+              }
+            ],
+            "avgMonthlySearches": "10"
+          }
+        },
+        {
+          "text": "qué es dominio cc"
+        }
+      ]
+    },
+    "fetched_utc": "2026-10-22T01:05:35Z"
+  },
+  "ads-ko": {
+    "request": {
+      "language": "languageConstants/1012",
+      "geoTargetConstants": [
+        "geoTargetConstants/2410"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "cc 도메인",
+        "cc 도메인 등록",
+        "cc 도메인 뜻"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "cc 도메인",
+          "keywordMetrics": {
+            "competition": "LOW",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "140"
+              }
+            ],
+            "avgMonthlySearches": "140",
+            "competitionIndex": "16",
+            "lowTopOfPageBidMicros": "423731",
+            "highTopOfPageBidMicros": "2053198"
+          }
+        },
+        {
+          "text": "cc 도메인 등록"
+        },
+        {
+          "text": "cc 도메인 뜻"
+        }
+      ]
+    },
+    "fetched_utc": "2026-10-22T01:05:34Z"
+  }
+}

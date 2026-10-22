@@ -1,0 +1,174 @@
+{
+  "locale": "zh-CN",
+  "country": "SG",
+  "fetched_utc": "2026-10-22T00:41:24.791570+00:00",
+  "request": {
+    "language": "languageConstants/1017",
+    "geoTargetConstants": [
+      "geoTargetConstants/2702"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "加密DNS",
+      "DNS over HTTPS",
+      "安卓私人DNS"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "加密 dns",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "0"
+        },
+        "closeVariants": [
+          "加密DNS"
+        ]
+      },
+      {
+        "text": "dns over https",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "170"
+            }
+          ],
+          "avgMonthlySearches": "320",
+          "competitionIndex": "0"
+        },
+        "closeVariants": [
+          "DNS over HTTPS"
+        ]
+      },
+      {
+        "text": "安 卓 私人 dns",
+        "closeVariants": [
+          "安卓私人DNS"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "period": [
+    "2026-09-21",
+    "2026-10-18"
+  ],
+  "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+  "topic": {
+    "source_id": "G17",
+    "slug": "dns-over-https-vs-dns-over-tls",
+    "path_match": "/blog/dns-over-https-vs-dns-over-tls/",
+    "matched_rows": 0,
+    "observed_impressions": 0,
+    "observed_clicks": 0,
+    "countries": {}
+  }
+}
