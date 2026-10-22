@@ -1,0 +1,46 @@
+{
+  "model": "gpt-image-2",
+  "quality": "high",
+  "asset": "content/assets/domain-privacy-vs-proxy-05-access-boundaries.jpg",
+  "dimensions": [
+    1200,
+    675
+  ],
+  "sha256": "17976c25c0fdea2a1cbfbeb0fb8ed74e534c5edeb4a9dccf52b3bb61951bf6ed",
+  "attempts": [
+    {
+      "attempt": 1,
+      "usage_file": "image-attempt1-usage.json",
+      "qc": "Rejected: model added Data shared only after a request is reviewed, which could imply a universal restriction on all provider disclosures. All other margins/logo/spelling checks passed.",
+      "private_response": "/private/tmp/namefi-stack48/38-domain-privacy-vs-proxy/image-attempt1-response-private.json",
+      "script_sha256": "1eda46da3a955bc9076ab1ee9c19093a99f87b0689a06f20c409db80350f1830"
+    },
+    {
+      "attempt": 2,
+      "usage_file": "image-attempt2-usage.json",
+      "qc": "Accepted after opening actual final JPG: cream full bleed, generous side margins, no cutoff, official composited top-right logo, exact crisp wording and no unsupported guarantee. The image distinguishes disclosure requests from all disclosures. Inline has no cover bottom-band requirement.",
+      "private_response": "/private/tmp/namefi-stack48/38-domain-privacy-vs-proxy/image-attempt2-response-private.json",
+      "script_sha256": "4bcd4069ced87ccddcc892d8bfedae801f1f5f2f92dbb6c77e3c504165a71809"
+    }
+  ],
+  "reused_assets": [
+    "domain-privacy-vs-proxy-og.jpg",
+    "domain-privacy-vs-proxy-01-registration-roles.jpg",
+    "domain-privacy-vs-proxy-02-rdap-display.jpg",
+    "domain-privacy-vs-proxy-04-contract-recovery.jpg"
+  ],
+  "old_asset_retained_unreferenced": "domain-privacy-vs-proxy-03-disclosure-boundaries.jpg",
+  "selected_translation_phase": "Not applicable; no selected translation.",
+  "usage_note": "Actual API attempt usages are independent. Session counters are cumulative emitted values and overlapping phase checkpoints, not additive phase totals. Input includes cached input; output includes reasoning.",
+  "sanity": {
+    "data_validate": "Passed; 37 existing warnings; 4055 locale files checked, zero locale/relationship mismatches.",
+    "mdx_lint": "Passed.",
+    "focused_links": "One file; zero broken/missing-locale/locale-mismatch/relationship-mismatch/missing-translation fallback.",
+    "image_references": "All Markdown and frontmatter assets exist. New image 1200x675; reused cover1200x630."
+  },
+  "missing_items": [
+    "No remote PR: coordinator owns push and draft creation.",
+    "No deployment verification: publishing is outside writer scope.",
+    "No selected translations; other markets remain unmeasured."
+  ]
+}

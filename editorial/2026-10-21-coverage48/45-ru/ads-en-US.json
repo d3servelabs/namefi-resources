@@ -1,0 +1,235 @@
+{
+  "request": {
+    "language": "languageConstants/1000",
+    "geoTargetConstants": [
+      "geoTargetConstants/2840"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "ru domain",
+      "ru internet domain",
+      "register ru domain"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "ru domain",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "1600"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "1000"
+            }
+          ],
+          "avgMonthlySearches": "1000",
+          "competitionIndex": "7",
+          "lowTopOfPageBidMicros": "1432345",
+          "highTopOfPageBidMicros": "11346678"
+        }
+      },
+      {
+        "text": "ru internet domain",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "1600"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "1000"
+            }
+          ],
+          "avgMonthlySearches": "1000",
+          "competitionIndex": "7",
+          "lowTopOfPageBidMicros": "1432345",
+          "highTopOfPageBidMicros": "11346678"
+        }
+      },
+      {
+        "text": "register ru domain",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "260"
+            }
+          ],
+          "avgMonthlySearches": "480",
+          "competitionIndex": "4",
+          "lowTopOfPageBidMicros": "2992090",
+          "highTopOfPageBidMicros": "9750914"
+        }
+      }
+    ]
+  }
+}

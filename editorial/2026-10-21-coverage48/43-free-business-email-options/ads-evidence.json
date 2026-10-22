@@ -1,0 +1,814 @@
+[
+  {
+    "market": "de-DE",
+    "request": {
+      "language": "languageConstants/1001",
+      "geoTargetConstants": [
+        "geoTargetConstants/2276"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "kostenlose geschäftliche e mail",
+        "business email kostenlos",
+        "eigene domain email kostenlos"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "business email kostenlos",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "90"
+              }
+            ],
+            "avgMonthlySearches": "140",
+            "competitionIndex": "68",
+            "lowTopOfPageBidMicros": "2783911",
+            "highTopOfPageBidMicros": "10326164"
+          }
+        },
+        {
+          "text": "eigene domain email kostenlos",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "390"
+              }
+            ],
+            "avgMonthlySearches": "480",
+            "competitionIndex": "74",
+            "lowTopOfPageBidMicros": "1479264",
+            "highTopOfPageBidMicros": "5669640"
+          }
+        },
+        {
+          "text": "kostenlose geschäftliche e mail"
+        }
+      ]
+    },
+    "fetch_utc": "2026-10-22T02:09:55.287049+00:00",
+    "fetch_utc_precision": "response persisted timestamp from filesystem"
+  },
+  {
+    "market": "es-MX",
+    "request": {
+      "language": "languageConstants/1003",
+      "geoTargetConstants": [
+        "geoTargetConstants/2484"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "correo empresarial gratis",
+        "correo corporativo gratis sin dominio",
+        "correo con dominio propio gratis"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "correo empresarial gratis",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "90"
+              }
+            ],
+            "avgMonthlySearches": "110",
+            "competitionIndex": "73",
+            "lowTopOfPageBidMicros": "1663309",
+            "highTopOfPageBidMicros": "10946858"
+          }
+        },
+        {
+          "text": "correo corporativo gratis sin dominio",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "20"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "20"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "20"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "30"
+              }
+            ],
+            "avgMonthlySearches": "10",
+            "competitionIndex": "72",
+            "lowTopOfPageBidMicros": "921630",
+            "highTopOfPageBidMicros": "4465180"
+          }
+        },
+        {
+          "text": "correo con dominio propio gratis",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "70"
+              }
+            ],
+            "avgMonthlySearches": "70",
+            "competitionIndex": "70",
+            "lowTopOfPageBidMicros": "960889",
+            "highTopOfPageBidMicros": "6080020"
+          }
+        }
+      ]
+    },
+    "fetch_utc": "2026-10-22T02:09:54.845499+00:00",
+    "fetch_utc_precision": "response persisted timestamp from filesystem"
+  },
+  {
+    "market": "fr-FR",
+    "request": {
+      "language": "languageConstants/1002",
+      "geoTargetConstants": [
+        "geoTargetConstants/2250"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "adresse mail professionnelle gratuite",
+        "mail professionnel gratuit sans nom de domaine",
+        "email domaine gratuit"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "adresse mail professionnelle gratuite",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "720"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "320"
+              }
+            ],
+            "avgMonthlySearches": "480",
+            "competitionIndex": "78",
+            "lowTopOfPageBidMicros": "1532267",
+            "highTopOfPageBidMicros": "6002357"
+          }
+        },
+        {
+          "text": "email domaine gratuit",
+          "keywordMetrics": {
+            "competition": "MEDIUM",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "10"
+              }
+            ],
+            "avgMonthlySearches": "10",
+            "competitionIndex": "52"
+          }
+        },
+        {
+          "text": "mail professionnel gratuit sans nom de domaine"
+        }
+      ]
+    },
+    "fetch_utc": "2026-10-22T02:09:55.777253+00:00",
+    "fetch_utc_precision": "response persisted timestamp from filesystem"
+  },
+  {
+    "market": "en-US",
+    "request": {
+      "language": "languageConstants/1000",
+      "geoTargetConstants": [
+        "geoTargetConstants/2840"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "free business email without domain",
+        "business email free without domain",
+        "free custom domain email"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "free business email without domain",
+          "keywordMetrics": {
+            "competition": "MEDIUM",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "1300"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "1300"
+              }
+            ],
+            "avgMonthlySearches": "1000",
+            "competitionIndex": "62",
+            "lowTopOfPageBidMicros": "6605941",
+            "highTopOfPageBidMicros": "25389128"
+          }
+        },
+        {
+          "text": "business email free without domain",
+          "keywordMetrics": {
+            "competition": "MEDIUM",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "1300"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "1300"
+              }
+            ],
+            "avgMonthlySearches": "1000",
+            "competitionIndex": "62",
+            "lowTopOfPageBidMicros": "6605941",
+            "highTopOfPageBidMicros": "25389128"
+          }
+        },
+        {
+          "text": "free custom domain email",
+          "keywordMetrics": {
+            "competition": "MEDIUM",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "720"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "1000"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "1000"
+              }
+            ],
+            "avgMonthlySearches": "880",
+            "competitionIndex": "47",
+            "lowTopOfPageBidMicros": "4569406",
+            "highTopOfPageBidMicros": "16350048"
+          }
+        }
+      ]
+    },
+    "fetch_utc": "2026-10-22T02:09:54.484952+00:00",
+    "fetch_utc_precision": "response persisted timestamp from filesystem"
+  }
+]
