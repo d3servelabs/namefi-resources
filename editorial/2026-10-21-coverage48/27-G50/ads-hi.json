@@ -1,0 +1,29 @@
+{
+  "request": {
+    "language": "languageConstants/1023",
+    "geoTargetConstants": [
+      "geoTargetConstants/2356"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "डोमेन के स्तर",
+      "शीर्ष स्तर डोमेन",
+      "द्वितीय स्तर डोमेन"
+    ],
+    "includeAdultKeywords": false
+  },
+  "fetched_utc": "2026-10-22T00:58:01.116606+00:00",
+  "response": {
+    "results": [
+      {
+        "text": "डोमेन के स्तर"
+      },
+      {
+        "text": "शीर्ष स्तर डोमेन"
+      },
+      {
+        "text": "द्वितीय स्तर डोमेन"
+      }
+    ]
+  }
+}

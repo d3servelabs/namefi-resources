@@ -1,0 +1,29 @@
+{
+  "request": {
+    "language": "languageConstants/1130",
+    "geoTargetConstants": [
+      "geoTargetConstants/2356"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "டொமைன் நிலைகள்",
+      "மேல் நிலை டொமைன்",
+      "இரண்டாம் நிலை டொமைன்"
+    ],
+    "includeAdultKeywords": false
+  },
+  "fetched_utc": "2026-10-22T00:58:01.456089+00:00",
+  "response": {
+    "results": [
+      {
+        "text": "டொமைன் நிலைகள்"
+      },
+      {
+        "text": "மேல் நிலை டொமைன்"
+      },
+      {
+        "text": "இரண்டாம் நிலை டொமைன்"
+      }
+    ]
+  }
+}

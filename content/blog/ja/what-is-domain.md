@@ -10,7 +10,7 @@ translators: ['chie-kudo']
 draft: false
 cluster: domain-basics
 format: explainer
-description: ドメイン名は、あなたのオンラインプレゼンスの基盤です。
+description: ドメイン名の階層をルートからサブドメインまで解説します。登録できる範囲と URL の構成要素の違いも確認できます。
 keywords: ['ドメイン名', 'DNS', 'ドメインネームシステム', 'IPアドレス', 'ウェブアドレス', 'インターネット基礎', 'ドメイン登録', 'ウェブサイトアドレス', 'URL', 'namefi']
 relatedArticles:
   - /ja/blog/what-is-a-tld/
@@ -32,56 +32,71 @@ relatedGlossary:
   - /ja/glossary/registry/
 ---
 
-## **ドメイン名とは何か？**
+## ドメイン名は DNS 上の名前を表します
 
-**ドメイン名**とは、ウェブサイトを訪問するためにブラウザに入力する、覚えやすいアドレスのことです。たとえば `google.com`、`wikipedia.org`、`namefi.io` などがその例です。インターネット上の住所のようなものと考えるとわかりやすく、あなたのコンピュータに「どこにアクセスすればそのサイトが見つかるか」を教える役割を果たします。
+**ドメイン名**は、`example.com` や `namefi.io` のような名前です。利用者はドメイン名を使ってウェブサイトやメールサービスにアクセスします。ドメイン名には `https://` やページのパスを含めません。
 
-インターネットは**[ドメインネームシステム](/ja/glossary/dns/)（DNS）**と呼ばれる仕組みに依存しており、これは巨大な電話帳のような役割を担っています。すべてのウェブサイトは、`192.0.2.1` のような数字の[IPアドレス](/ja/glossary/ip-address/)を持つサーバー上にホストされていますが、数字の羅列は覚えにくいため、代わりにドメイン名を使用します。ブラウザにドメイン名を入力すると、DNSがそれを対応するIPアドレスに変換し、ブラウザが正しいウェブサイトを読み込めるようにします。
+**[DNS](/ja/glossary/dns/)** は名前とレコードを対応付けます。アドレスレコードは、ウェブサイトへの接続に必要な [IP アドレス](/ja/glossary/ip-address/)を提供できます。メールなどのサービスを支えるレコードもあります。ドメイン名を登録するだけでは、ウェブサイトのホスティングやメールボックスは用意できません。[RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-2.4) は、名前、レコード、ネームサーバー、リゾルバーの役割を説明しています。
 
----
+## ドメインの階層はルートから具体的な名前へと続きます
 
-## **ドメインの構造を理解する**
+`blog.example.com.` を右から左へ読むと、階層を確認できます。ドットはラベルを区切り、末尾のドットはルートを表します。通常のウェブアドレスでは、末尾のドットを省略します。[RFC 1034 の第3.1節](https://www.rfc-editor.org/rfc/rfc1034#section-3.1) は、この階層構造を定義しています。
 
-ドメイン名はいくつかの部分で構成されています。
+![ルートから com、example.com、blog.example.com へと続く DNS の階層](../../assets/what-is-domain-01-hierarchy.jpg)
 
-*   **[トップレベルドメイン](/ja/glossary/tld/)（TLD）：** アドレスの末尾につくサフィックスで、`.com`、`.org`、`.net` のほか、近年では `.xyz`、`.app`、`.ninja` などがあります。汎用的なもの（gTLD）と、国・地域固有のもの（ccTLD：`.us`、`.uk`、`.cn` など）に分けられます。
-*   **[セカンドレベルドメイン](/ja/glossary/second-level-domain/)（SLD）：** ドメイン名の中核部分で、`google.com` における `google` に相当します。
-*   **[サブドメイン](/ja/glossary/subdomain/)：** コンテンツを整理するためのオプションのプレフィックスで、`blog.example.com` や `mail.example.org` のように使われます。
+| 階層 | 完全な名前 | 意味 |
+| --- | --- | --- |
+| ルート | `.` | すべてのトップレベルドメインの上にある共通の起点 |
+| 第1レベル | `com.` | ルートの直下にあるドメイン |
+| 第2レベル | `example.com.` | `com.` の直下にあるドメイン |
+| 第3レベル | `blog.example.com.` | `example.com.` の直下にあるドメイン |
 
-ドメイン名はすべてユニークであり、誰かが `example.com` を登録すると、他の誰もそれを使用することはできません。
+`example` というラベルは、`com` の下にある名前を選びます。完全な第2レベルのドメイン名は `example.com` です。ラベル単独の `example` ではありません。さらに下には、`support.blog.example.com` のような第4レベルの名前も作れます。
 
----
+**[サブドメイン](/ja/glossary/subdomain/)** は、親ドメインとの関係を表す言葉です。`blog.example.com` は `example.com` のサブドメインです。広い意味では、`example.com` も `com` の下にあります。サブドメインが必ず別のウェブサイトを指すとは限りません。[JPNIC はドメイン名の階層と DNS の委任を説明しています](https://www.nic.ad.jp/ja/dom/system.html)。
 
-## **ドメイン名を管理しているのは誰か？**
+## TLD の種類は階層の深さを変えません
 
-ドメイン名のグローバルな調整は、**[ICANN](/ja/glossary/icann/)（Internet Corporation for Assigned Names and Numbers）**という非営利組織が監督しています。1998年に設立されたICANNは、ドメイン名とIPアドレスの割り当てを管理し、一般向けにドメイン名を販売する[レジストラ](/ja/glossary/registrar/)（GoDaddy、Namecheap、Namefiなど）と協力して運営されています。
+**[トップレベルドメイン](/ja/glossary/tld/)** はルートの直下にあります。`.com` や `.org` は分野別トップレベルドメインです。`.uk`、`.de`、`.jp` は国別トップレベルドメインです。[IANA のルートデータベース](https://www.iana.org/domains/root/db) で、種類と管理組織を確認できます。
 
-ICANNはまた、特定のTLDを管理する組織であるレジストリの認定も行っています。たとえば、`.com` と `.net` はVeriSignが運営し、`.org` はPublic Interest Registryが管理しています。
+国別トップレベルドメインも、第1レベルのドメインです。「国別」は分類を示し、別の階層を追加する言葉ではありません。[TLD の解説](/ja/blog/what-is-a-tld/)では、拡張子の種類と選び方を詳しく説明しています。
 
----
+## 登録できるドメインは第2レベルに限りません
 
-## **ドメイン名を登録する方法**
+DNS の階層と登録の境界は別の概念です。`example.com` では、登録するドメイン名は2つのラベルで構成されます。`example.co.uk` では、`uk` が第1レベル、`co.uk` が第2レベル、`example.co.uk` が第3レベルです。[Nominet は `.uk` と `.co.uk` の両形式を案内しています](https://nominet.uk/lookup/)。
 
-ドメイン名を取得するには、**[ICANN認定レジストラ](/ja/glossary/accredited-registrar/)**を利用します。希望するドメインを検索し、登録料（通常は年払い）を支払うことで、そのドメインを更新し続ける限り利用権を「所有」することができます。
+末尾の2つのラベルが常に登録対象を示すと考えてはいけません。登録方針が境界を決めます。**パブリックサフィックス**は複数のラベルを含む場合があります。[RFC 9499](https://www.rfc-editor.org/rfc/rfc9499.html#section-9) は、名前だけではパブリックサフィックスを判定できない理由を説明しています。
 
-手順は以下のとおりです。
+## URL はドメイン名以外の情報も含みます
 
-1.  [Namefi](https://namefi.io) のようなレジストラのウェブサイトにアクセスします。
-2.  希望するドメイン名を検索します。
-3.  利用可能であれば、登録することができます。
-4.  登録後は、そのドメインがどこを指すかを自分でコントロールできます（例：自分のウェブサイトやメールアドレスなど）。
+`https://blog.example.com/guides/domains?lang=en` を例に確認しましょう。
 
-他のレジストラと比較して、[Namefi](https://namefi.io) はサブドメイン管理、DNSセキュリティツール、そして[ブロックチェーン](/ja/glossary/blockchain/)ドメインのような分散型システムとの統合など、先進的な機能を提供しています。
+| 構成要素 | 例 | 役割 |
+| --- | --- | --- |
+| スキーム | `https` | 接続方式を指定する |
+| ホスト名 | `blog.example.com` | この例の接続先を示す |
+| 登録可能なドメイン | `example.com` | この例の登録境界を示す |
+| パス | `/guides/domains` | ホスト上のリソースを示す |
+| クエリー | `lang=en` | ウェブサイトにパラメーターを渡す |
 
----
+パスとクエリーは DNS の階層を変えません。[MDN は URL の構成要素を説明しています](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#scheme)。サイト構成を決める場合は、[サブドメインとサブディレクトリの比較](/ja/blog/subdomain-vs-subdirectory/)を参照してください。
 
-## **ドメイン名はなぜ重要なのか？**
+## レジストリとレジストラは異なる役割を担います
 
-ドメイン名は以下の点で非常に重要です。
+**[レジストリ](/ja/glossary/registry/)** はドメインの登録簿を運営します。**[レジストラ](/ja/glossary/registrar/)** は顧客の登録手続きを扱います。ICANN はレジストラを認定し、[gTLD レジストリとの契約](https://www.icann.org/en/contracted-parties/registry-operators/resources/listings)を管理します。国別トップレベルドメインには、それぞれの管理体制があります。
 
-*   **オンラインアイデンティティとブランディング**（企業、クリエイター、スタートアップなどに不可欠）。
-*   **信頼性と発見可能性**：独自ドメインはランダムなURLよりもプロフェッショナルな印象を与えます。
-*   **[検索エンジン最適化](/ja/glossary/seo/)（SEO）**への貢献。
-*   デジタルプレゼンスに対する**コントロールと所有権**の確保。
+gTLD を登録する場合は、[ICANN 認定レジストラ](https://www.icann.org/en/contracted-parties/accredited-registrars)、または認定レジストラを通じて手続きするリセラーを利用します。支払い前に、空き状況、登録資格、契約条件、更新費用を確認してください。登録契約が利用権を定めます。登録を維持し、必要なサービスに合わせて DNS を設定してください。
 
-世界のあらゆる活動がオンラインへ移行する中、適切なドメイン名を所有することは、デジタル世界における一等地の不動産を持つことに等しいと言えます。
+ドメインの登録者は、同じ時点では1人です。登録者は、別の人やサービスに名前の利用を許可できます。登録によって、他の TLD の下にある同じラベルまで確保できるわけではありません。
+
+## 以下の資料がドメイン名と登録境界を説明しています
+
+資料の確認日：2026年10月21日。
+
+- IETF：[RFC 1034、第2.4節と第3.1節](https://www.rfc-editor.org/rfc/rfc1034)。
+- IETF：[RFC 9499、第9節](https://www.rfc-editor.org/rfc/rfc9499.html#section-9)。
+- JPNIC：[ドメイン名のしくみ](https://www.nic.ad.jp/ja/dom/system.html)。
+- IANA：[ルートゾーンデータベース](https://www.iana.org/domains/root/db)。
+- Nominet：[ドメイン検索の例](https://nominet.uk/lookup/)。
+- MDN：[URL の解説](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL)。
+- ICANN：[認定レジストラ](https://www.icann.org/en/contracted-parties/accredited-registrars)と[レジストリ一覧](https://www.icann.org/en/contracted-parties/registry-operators/resources/listings)。

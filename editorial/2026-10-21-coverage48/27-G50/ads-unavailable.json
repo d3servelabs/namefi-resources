@@ -1,0 +1,24 @@
+{
+  "ko": {
+    "language": 1012,
+    "country": 2410,
+    "queries": [
+      "도메인 계층",
+      "최상위 도메인",
+      "2차 도메인"
+    ],
+    "status": "UNKNOWN",
+    "cause": "HTTPError; response body was not persisted. No zero-volume inference."
+  },
+  "zh-CN": {
+    "language": 1017,
+    "country": 2156,
+    "queries": [
+      "域名层级",
+      "顶级域名",
+      "二级域名"
+    ],
+    "status": "UNKNOWN",
+    "cause": "HTTPError; response body was not persisted. No zero-volume inference."
+  }
+}

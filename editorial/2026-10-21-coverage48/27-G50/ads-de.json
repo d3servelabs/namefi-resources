@@ -1,0 +1,167 @@
+{
+  "request": {
+    "language": "languageConstants/1001",
+    "geoTargetConstants": [
+      "geoTargetConstants/2276"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "domain ebenen",
+      "second level domain",
+      "top level domain"
+    ],
+    "includeAdultKeywords": false
+  },
+  "fetched_utc": "2026-10-22T00:57:59.418297+00:00",
+  "response": {
+    "results": [
+      {
+        "text": "second level domain",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "170"
+            }
+          ],
+          "avgMonthlySearches": "210",
+          "competitionIndex": "12",
+          "lowTopOfPageBidMicros": "670689",
+          "highTopOfPageBidMicros": "3108653"
+        }
+      },
+      {
+        "text": "top level domain",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "33100"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "5400"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "3600"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "3600"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "3600"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "3600"
+            }
+          ],
+          "avgMonthlySearches": "6600",
+          "competitionIndex": "22",
+          "lowTopOfPageBidMicros": "778281",
+          "highTopOfPageBidMicros": "2507260"
+        }
+      },
+      {
+        "text": "domain ebenen"
+      }
+    ]
+  }
+}

@@ -1,0 +1,262 @@
+{
+  "period": [
+    "2026-09-21",
+    "2026-10-18"
+  ],
+  "topic": {
+    "source_id": "G50",
+    "slug": "what-is-domain",
+    "path_match": "/blog/what-is-domain/",
+    "matched_rows": 187,
+    "observed_impressions": 866,
+    "observed_clicks": 1,
+    "countries": {
+      "usa": {
+        "rows": 49,
+        "impressions": 363,
+        "clicks": 1
+      },
+      "idn": {
+        "rows": 11,
+        "impressions": 18,
+        "clicks": 0
+      },
+      "che": {
+        "rows": 3,
+        "impressions": 4,
+        "clicks": 0
+      },
+      "kor": {
+        "rows": 30,
+        "impressions": 315,
+        "clicks": 0
+      },
+      "bra": {
+        "rows": 10,
+        "impressions": 18,
+        "clicks": 0
+      },
+      "egy": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "esp": {
+        "rows": 6,
+        "impressions": 6,
+        "clicks": 0
+      },
+      "brn": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "ind": {
+        "rows": 11,
+        "impressions": 19,
+        "clicks": 0
+      },
+      "nld": {
+        "rows": 4,
+        "impressions": 30,
+        "clicks": 0
+      },
+      "isr": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "mys": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "rus": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "lva": {
+        "rows": 2,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "tur": {
+        "rows": 3,
+        "impressions": 7,
+        "clicks": 0
+      },
+      "fin": {
+        "rows": 3,
+        "impressions": 17,
+        "clicks": 0
+      },
+      "phl": {
+        "rows": 2,
+        "impressions": 5,
+        "clicks": 0
+      },
+      "bgr": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "bwa": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "ken": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "can": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "fji": {
+        "rows": 1,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "hkg": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "sle": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "aut": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "deu": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "gbr": {
+        "rows": 4,
+        "impressions": 6,
+        "clicks": 0
+      },
+      "lka": {
+        "rows": 2,
+        "impressions": 5,
+        "clicks": 0
+      },
+      "mar": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "pol": {
+        "rows": 3,
+        "impressions": 4,
+        "clicks": 0
+      },
+      "sau": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "mda": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "pak": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "tun": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "nga": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "jpn": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "ukr": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "fra": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "ita": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "swe": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "twn": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "bgd": {
+        "rows": 1,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "irn": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "mmr": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "zaf": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "dnk": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "aus": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "are": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "rou": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      }
+    }
+  },
+  "limitation": "Observed query/page/country rows only. Missing rows do not mean zero demand."
+}
