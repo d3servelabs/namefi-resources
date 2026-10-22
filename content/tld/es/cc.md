@@ -8,13 +8,14 @@ authors: ['namefiteam']
 editors: ['victor-zhou']
 translators: ['iria-maquieira']
 draft: false
+ogImage: ../../assets/cc-og.jpg
 description: '¿Qué es el dominio .cc? El TLD de código de país de las Islas Cocos (Keeling), gestionado por Verisign y comercializado en todo el mundo como una alternativa corta y con potencial de marca a .com. Conoce quién lo gestiona, quién puede registrarlo, su precio y su SEO.'
 keywords: ['dominios .cc', 'TLD .cc', 'dominio cc', 'qué es .cc', 'qué es el dominio .cc', '.cc vs .com', 'significado del dominio cc', 'dominio de las Islas Cocos Keeling', 'registrar dominio .cc', 'dominio corto con potencial de marca', 'domain hack cc']
 faqs:
   - question: '¿Puede cualquiera registrar un dominio .cc?'
-    answer: 'Sí. Aunque .cc es técnicamente el TLD de código de país de las Islas Cocos (Keeling), está abierto a cualquier persona en el mundo sin requisito de presencia local ni de residencia. El registro es por orden de llegada en el segundo nivel.'
+    answer: 'Verisign ofrece .cc mediante registradores. WebNIC acepta actualmente particulares y empresas de cualquier país. El solicitante debe confirmar el contrato vigente con su registrador.'
   - question: '¿Afecta un dominio .cc al SEO?'
-    answer: 'No, .cc no perjudica el posicionamiento de forma inherente. Google trata .cc como un ccTLD genérico sin orientación geográfica, por lo que un sitio .cc no queda encasillado en ningún país concreto y puede posicionarse a nivel mundial. La calidad del contenido, los enlaces y la experiencia de usuario importan mucho más que el sufijo.'
+    answer: 'Google incluye .cc entre los dominios territoriales que trata como genéricos. La clasificación no garantiza indexación ni posiciones. El contenido, el idioma y otras señales siguen influyendo.'
   - question: '¿Qué significa "cc"?'
     answer: 'Oficialmente "cc" es el código de país ISO de las Islas Cocos (Keeling). En la práctica se lee de forma flexible como "commercial company", "creative commons", "carbon copy" o, sencillamente, un par memorable de iniciales coincidentes, que es exactamente por lo que es popular como una extensión corta y con potencial de marca.'
   - question: '¿Quién opera el dominio .cc?'
@@ -49,27 +50,20 @@ Esta guía cubre qué es realmente .cc, quién lo gestiona, quién puede registr
 | --- | --- |
 | Tipo de [TLD](/es/glossary/tld/) | TLD de código de país (ccTLD) de las Islas Cocos (Keeling) |
 | Operador del registro | eNIC Cocos (Keeling) Islands Pty. Ltd. (operando como Island Internet Services), una subsidiaria de Verisign |
-| Año de delegación | 1997 |
 | Soporte IDN | Sí (admite nombres de dominio internacionalizados) |
 | DNSSEC | Sí |
-| Restricciones de registro | Abierto a todos — sin requisito de presencia local ni de residencia |
+| Restricciones de registro | [WebNIC](https://faq.webnic.cc/kb/cc/) |
 | Ideal para | Marcas cortas y memorables, domain hacks y proyectos globales que buscan una alternativa a ".com" |
 
 ## ¿Qué es .cc?
 
 **.cc** es el [dominio de nivel superior](/es/glossary/tld/) de código de país (ccTLD) asignado a las **Islas Cocos (Keeling)** según el estándar ISO 3166-1, el mismo sistema de dos letras que la [Autoridad de Números Asignados de Internet (IANA)](https://www.iana.org/domains/root/db/cc.html) utiliza para delegar códigos de país. Sobre el papel es el espacio de nombres nacional de un remoto territorio externo australiano de unos pocos cientos de residentes en el océano Índico.
 
-En la práctica, el **dominio .cc** se ha usado casi por completo como una extensión **genérica y global** desde finales de los años noventa. Como las islas mismas generan casi nula demanda local, el operador abrió el espacio de nombres al mundo y lo comercializó ampliamente. La cadena "cc" no tiene un único significado fijo, que es precisamente su atractivo: se lee como "commercial company", evoca "creative commons" y "carbon copy", y funciona limpiamente como dos iniciales coincidentes. Esa ambigüedad la hace inusualmente adaptable para el branding.
+Google incluye .cc entre los dominios territoriales que trata como genéricos. La clasificación no garantiza indexación ni posiciones. El contenido, el idioma y otras señales siguen influyendo. [Google Search](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites)
 
-Algo crucial para los negocios internacionales: los motores de búsqueda **no** tratan .cc como un ccTLD con orientación geográfica. Google incluye .cc entre los ccTLD que [trata como genéricos en lugar de específicos de un país](https://developers.google.com/search/docs/crawling-indexing/manage-international-sites), por lo que un sitio .cc no queda ligado a los resultados de búsqueda de ningún país en particular y es muy adecuado para audiencias globales y SEO internacional.
+## La IANA identifica al administrador del registro
 
-## Historia de .cc
-
-El TLD .cc fue **delegado en 1997**, según el [registro de la zona raíz de la IANA](https://www.iana.org/domains/root/db/cc.html). Desde el principio se gestionó no como un registro nacional estrictamente restringido sino como un espacio de nombres comercial abierto a registrantes globales — un ejemplo temprano de un pequeño territorio monetizando su código de país.
-
-El operador que convirtió a .cc en una marca reconocible fue **eNIC**, que comercializó .cc agresivamente como "el próximo .com" y como un lugar para encontrar nombres cortos que hacía tiempo que se habían ido en los gTLD heredados. Ese posicionamiento, combinado con el registro global por orden de llegada, impulsó una adopción constante entre marcas, proyectos e inversores en dominios que buscaban direcciones compactas y memorables.
-
-El hito estructural más relevante fue la **adquisición de eNIC por parte de Verisign**, que colocó el registro .cc bajo la misma empresa que opera **.com** y **[.net](/es/tld/net/)**. Hoy la base de datos de la IANA lista a la organización patrocinadora y administrador del registro como **eNIC Cocos (Keeling) Islands Pty. Ltd. (operando como Island Internet Services)** — una subsidiaria de propiedad total de Verisign. Ese linaje significa que .cc funciona sobre la misma infraestructura de registro probada y de alta disponibilidad que impulsa los espacios de nombres más grandes del mundo.
+El [registro de la IANA](https://www.iana.org/domains/root/db/cc.html) identifica como administrador a eNIC Cocos (Keeling) Islands Pty. Ltd., que opera como Island Internet Services. El contacto técnico es Verisign Global Registry Services. [Verisign ofrece .cc en su web](https://www.verisign.com/domain-names/cc-domains/). La delegación identifica al administrador. Los contratos aplicables del operador y registrador determinan las condiciones de registro.
 
 ## Cómo se usa .cc
 
@@ -85,9 +79,7 @@ Como "cc" se corresponde con tantas lecturas, .cc atrae a un público amplio e i
 
 ## Sitios destacados que usan .cc
 
-.cc ha sido durante mucho tiempo una opción popular para nombres cortos y con potencial de marca, acortadores de enlaces y proyectos comunitarios en lugar de una única categoría de sitios corporativos insignia. Como el espacio de nombres es abierto y se usa en todo el mundo, su uso abarca marcas personales, proyectos creativos, comunidades técnicas y dominios de redirección.
-
-En lugar de nombrar sitios específicos que pueden cambiar de manos o caducar con el tiempo, la conclusión es esta: .cc es una extensión **probada y ampliamente adoptada** que ha sido registrada por cientos de miles de usuarios a nivel global. Su credibilidad proviene menos de una sola marca destacada que de un uso sostenido, diverso y a largo plazo — respaldado por el mismo operador de registro que gestiona .com y .net.
+[Arduino utiliza arduino.cc](https://www.arduino.cc/) para su web oficial, con enlaces a productos, documentación y comunidad. Arduino muestra un proyecto técnico que utiliza .cc. La elección de un proyecto no demuestra la reputación, disponibilidad ni rendimiento en buscadores de otros dominios .cc.
 
 ## .cc frente a otros dominios
 
@@ -95,8 +87,6 @@ En lugar de nombrar sitios específicos que pueden cambiar de manos o caducar co
 | --- | --- | --- | --- | --- |
 | Tipo | ccTLD (usado globalmente) | gTLD heredado | ccTLD (usado globalmente) | ccTLD (usado globalmente) |
 | Asociación principal | Flexible / iniciales coincidentes | El estándar web predeterminado | Company / corporation | Tecnología / "Entrada-Salida" |
-| Disponibilidad de nombres cortos | Buena | Muy escasa | Buena | Moderada |
-| Nivel de precio típico | Bajo-medio | Bajo-medio | Medio | Alto |
 
 Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el predeterminado de confianza. Recurre a **.cc** cuando quieras un sufijo corto, flexible y con potencial de marca y una construcción ingeniosa o un domain hack, especialmente si el .com está tomado. Considera **.co** cuando quieras específicamente connotaciones de "company", y **.io** para marcas tecnológicas centradas en desarrolladores e infraestructura.
 
@@ -104,8 +94,8 @@ Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el pred
 
 - **Corto y con potencial de marca.** Dos letras limpias que se leen como iniciales coincidentes producen URL compactas y memorables.
 - **Significado flexible.** "cc" se adapta para encajar — commercial company, creative commons, carbon copy o lo que sea que tu marca quiera que diga.
-- **Disponibilidad mucho mejor.** Nombres de una sola palabra y cortos que hace tiempo que se fueron en .com a menudo siguen libres en .cc.
-- **Global, no bloqueado geográficamente.** A pesar de ser el ccTLD de un territorio, los motores de búsqueda lo tratan como genérico y está abierto a todos.
+- Comprueba el nombre exacto y el precio de renovación antes de pagar.
+- Google incluye .cc entre los dominios territoriales que trata como genéricos. La clasificación no garantiza indexación ni posiciones. El contenido, el idioma y otras señales siguen influyendo.
 - **Respaldado por Verisign.** Funciona sobre la misma infraestructura de registro robusta que .com y .net.
 
 ## Aspectos a considerar
@@ -116,25 +106,21 @@ Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el pred
 
 ## ¿Quién puede registrar un dominio .cc?
 
-**Restricciones de registro: abierto a todos.** **No hay requisito de presencia local, residencia ni nacionalidad** para registrar un dominio .cc de segundo nivel. No necesitas ninguna conexión con las Islas Cocos (Keeling). El registro es **por orden de llegada** y está disponible para particulares y organizaciones de cualquier parte del mundo a través de cualquier [registrador](/es/glossary/registrar/) participante.
+[Verisign ofrece .cc mediante registradores](https://www.verisign.com/domain-names/cc-domains/). [WebNIC indica que pueden registrar particulares y empresas de cualquier país](https://faq.webnic.cc/kb/cc/). WebNIC publica plazos de 1–10 años y nombres de 1–63 caracteres. Estas son las condiciones de servicio publicadas por WebNIC. Antes de pagar, consulta el contrato, los caracteres admitidos, los datos de contacto exigidos, el vencimiento y las condiciones de transferencia del registrador elegido.
 
-Se aplican las prácticas estándar: los nombres siguen las reglas convencionales de longitud y caracteres, se admiten **nombres de dominio internacionalizados (IDN)** y **[DNSSEC](/es/glossary/dnssec/)** está disponible para mayor seguridad del DNS. La privacidad [WHOIS](/es/glossary/whois/), la transferencia, la renovación y el manejo del período de gracia de redención siguen las convenciones estándar de registradores y registros. Como .cc es un ccTLD, la fuente autorizada para las reglas vigentes es el operador del registro bajo su delegación de la IANA — [eNIC / Island Internet Services](https://www.iana.org/domains/root/db/cc.html), una subsidiaria de Verisign.
+Las [preguntas frecuentes de Verisign](https://www.verisign.com/resources/become-a-registrar) también describen plazos de 1–10 años. La disponibilidad no concede derechos de marca. Una búsqueda no reserva el nombre. Lee el contrato aplicable antes de registrar.
 
 ## Precios y valor de .cc
 
-.cc se sitúa generalmente en una **banda de precio de gama baja-media** — competitiva con o cercana a .com, y muy por debajo de las extensiones premium escasas. Algunas dinámicas determinan lo que pagarás:
+Compara el precio inicial, la renovación anual, la transferencia y cualquier restauración del nombre exacto. Revisa los impuestos y los servicios incluidos. Una promoción inicial no determina el coste a largo plazo.
 
-- **Existen nombres premium.** El registro clasifica muchos nombres .cc cortos, de diccionario o de alta demanda como **premium**, con tarifas de registro más altas y, a veces, tarifas de renovación más elevadas.
-- **El precio del primer año y el de renovación difieren.** Como en la mayoría de los TLD, una tarifa introductoria del primer año no es la tarifa de renovación; comprueba siempre la renovación estándar antes de comprometer una marca.
-- **Qué determina el coste.** La longitud y el atractivo del nombre, la clasificación premium y el precio mayorista del registro son los factores principales. Los valores de reventa en el mercado secundario para nombres .cc cortos y con potencial de marca — especialmente de dos y tres caracteres o palabras de diccionario — pueden ser considerables.
-
-Para cifras exactas y actuales, consulta los precios en tiempo real al momento del registro — esta página no cita ningún número de forma intencionada.
+El precio de reventa del titular difiere de las tarifas de registro. Una etiqueta “premium” no demuestra una tarifa especial recurrente del registro. Solicita el precio exacto de renovación antes de comprar. Esta guía no afirma que .cc tenga un sistema de renovación premium del registro.
 
 ## Reputación y entregabilidad del correo electrónico
 
-.cc disfruta de una **reputación sólida y neutral**. Décadas de uso legítimo y la operación bajo una subsidiaria de Verisign hacen que se perciba en general como una extensión creíble y consolidada en lugar de una desechable. Evita la connotación de ganga que ha perseguido a algunos nuevos gTLD ultrabaratos.
+El operador del registro no garantiza la fiabilidad de una web ni la entrega del correo. Evalúa cada sitio y remitente sin depender solo de la extensión.
 
-Para la entregabilidad del correo, el sufijo en sí mismo rara vez es el factor decisivo — los filtros de spam modernos ponderan la **reputación de envío, la autenticación SPF/DKIM/DMARC y la higiene de listas** mucho más que el TLD. Un remitente .cc correctamente autenticado debería llegar a las bandejas de entrada con normalidad. Como con cualquier extensión que no sea .com, la principal salvedad es humana: asegúrate de que los destinatarios puedan leer y recordar la dirección con facilidad.
+Sigue los requisitos del proveedor del destinatario. Las [directrices de Gmail](https://support.google.com/mail/answer/81126) incluyen autenticación, DNS, tasas de spam y requisitos adicionales para envíos masivos. SPF, DKIM y DMARC ayudan a autenticar al remitente. La autenticación no garantiza llegar a la bandeja de entrada. Prueba el servicio antes de trasladar el correo empresarial.
 
 ## Consejos de marca y nomenclatura
 
@@ -146,7 +132,7 @@ Para la entregabilidad del correo, el sufijo en sí mismo rara vez es el factor 
 ## Cómo registrar un dominio .cc en Namefi
 
 1. **Busca** el nombre que deseas y la extensión .cc.
-2. **Elige** un nombre disponible (y comprueba si está clasificado como premium).
+2. Comprueba el nombre exacto y el precio de renovación antes de pagar.
 3. **Registra** y configura el DNS.
 
 [Namefi](https://namefi.io) es un registrador acreditado por la ICANN que conecta Web2 y [Web3](/es/glossary/web3/), con precios transparentes, gestión rápida de DNS y la opción de mantener tu nombre como un dominio tokenizado para una transferencia más sencilla y una propiedad demostrable.
@@ -155,11 +141,11 @@ Para la entregabilidad del correo, el sufijo en sí mismo rara vez es el factor 
 
 ### ¿Puede cualquiera registrar un dominio .cc?
 
-Sí. Aunque .cc es técnicamente el TLD de código de país de las Islas Cocos (Keeling), está abierto a cualquier persona en el mundo sin requisito de presencia local ni de residencia. El registro es por orden de llegada en el segundo nivel.
+Verisign ofrece .cc mediante registradores. WebNIC acepta actualmente particulares y empresas de cualquier país. El solicitante debe confirmar el contrato vigente con su registrador.
 
 ### ¿Afecta un dominio .cc al SEO?
 
-No, .cc no perjudica el posicionamiento de forma inherente. Google trata .cc como un ccTLD genérico sin orientación geográfica, por lo que un sitio .cc no queda encasillado en ningún país concreto y puede posicionarse a nivel mundial. La calidad del contenido, los enlaces y la experiencia de usuario importan mucho más que el sufijo.
+Google incluye .cc entre los dominios territoriales que trata como genéricos. La clasificación no garantiza indexación ni posiciones. El contenido, el idioma y otras señales siguen influyendo.
 
 ### ¿Qué significa "cc"?
 
@@ -178,3 +164,15 @@ El registro .cc es operado por eNIC Cocos (Keeling) Islands Pty. Ltd. (que opera
 - [Domain hacks explicados](/es/blog/domain-hacks-explained/)
 - [¿Qué es un dominio?](/es/blog/what-is-domain/)
 - Glosario: registrador
+
+## Las siguientes fuentes respaldan los datos actualizados
+
+- [IANA .cc](https://www.iana.org/domains/root/db/cc.html)
+- [Verisign .cc](https://www.verisign.com/domain-names/cc-domains/)
+- [Verisign FAQ](https://www.verisign.com/resources/become-a-registrar)
+- [WebNIC .cc](https://faq.webnic.cc/kb/cc/)
+- [Google Search](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites)
+- [Arduino](https://www.arduino.cc/)
+- [Gmail](https://support.google.com/mail/answer/81126)
+
+Fuentes consultadas: 2026-10-21.

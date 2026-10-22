@@ -1,0 +1,83 @@
+{
+  "model_requested": "gpt-image-2",
+  "attempts": [
+    {
+      "asset": "content/assets/subdomain-examples-05-url-anatomy.jpg",
+      "returned_metadata": {
+        "created": 1792626111,
+        "background": "opaque",
+        "output_format": "png",
+        "quality": "high",
+        "safety_identifier": null,
+        "size": "1536x1024",
+        "usage": {
+          "input_tokens": 465,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 465
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5953
+        }
+      }
+    }
+  ],
+  "regenerations": 0,
+  "manifest": [
+    {
+      "path": "content/assets/subdomain-examples-og.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "19ff0f35d567a50a93c589066465a5295e129d61db3aa5a77de5612b69e1b68d",
+      "visual_qc": "Passed: cream full bleed, correct labels, complete framing, official top-right logo. Cover has empty bottom band."
+    },
+    {
+      "path": "content/assets/subdomain-examples-02-section.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "3cc65a7365d48b6494b3e74f0655b2b3e35871a65e4a03faaabccb8ae2c33e79",
+      "visual_qc": "Passed: cream full bleed, correct labels, complete framing, official top-right logo. Diagram remains consistent with updated prose."
+    },
+    {
+      "path": "content/assets/subdomain-examples-03-section.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "c1f537359565213b4c86533419636cfa603ea17fc7101bceab787e1666336608",
+      "visual_qc": "Passed: cream full bleed, correct labels, complete framing, official top-right logo. Diagram remains consistent with updated prose."
+    },
+    {
+      "path": "content/assets/subdomain-examples-04-section.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "f0f689b2a7279ba4c6e421dd7705aa166b61f5d17eb2bace90a03eb5e6502b7f",
+      "visual_qc": "Passed: cream full bleed, correct labels, complete framing, official top-right logo. Diagram remains consistent with updated prose."
+    },
+    {
+      "path": "content/assets/subdomain-examples-05-url-anatomy.jpg",
+      "action": "generated",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "8181f893708698f2e9968b2630646090249291c5f239b89904c856e056cffdd4",
+      "visual_qc": "Passed: cream full bleed, correct labels, complete framing, official top-right logo. Diagram remains consistent with updated prose."
+    }
+  ],
+  "unused_existing_asset": "subdomain-examples-01-section.jpg remains in repository; the more specific new URL diagram replaces its article reference."
+}
