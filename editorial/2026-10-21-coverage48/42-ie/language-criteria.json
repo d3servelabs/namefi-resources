@@ -1,0 +1,23 @@
+{
+  "source": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "fetched_utc": "2026-10-22T02:02:00Z",
+  "retrieval_note": "Approximate fetch timestamp from the research phase; exact per-request fetch timestamps are in Ads request records.",
+  "rows": [
+    {
+      "name": "English",
+      "language_code": "en",
+      "criterion_id": "1000"
+    },
+    {
+      "name": "German",
+      "language_code": "de",
+      "criterion_id": "1001"
+    },
+    {
+      "name": "French",
+      "language_code": "fr",
+      "criterion_id": "1002"
+    }
+  ],
+  "irish_criterion": "unavailable: Irish is absent from this table"
+}

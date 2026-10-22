@@ -1,0 +1,742 @@
+{
+  "source_id": "G26",
+  "order": 40,
+  "google_ads": {
+    "es-ES": {
+      "fetched_utc": "2026-10-22T01:51:02.843908+00:00",
+      "request": {
+        "language": "languageConstants/1003",
+        "geoTargetConstants": [
+          "geoTargetConstants/2724"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "backorder dominios",
+          "capturar dominios expirados",
+          "reservar dominio expirado"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "backorder dominios",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "63",
+              "lowTopOfPageBidMicros": "1667704",
+              "highTopOfPageBidMicros": "5502931"
+            }
+          },
+          {
+            "text": "capturar dominios expirados"
+          },
+          {
+            "text": "reservar dominio expirado"
+          }
+        ]
+      }
+    },
+    "ja-JP": {
+      "fetched_utc": "2026-10-22T01:51:03.200986+00:00",
+      "request": {
+        "language": "languageConstants/1005",
+        "geoTargetConstants": [
+          "geoTargetConstants/2392"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "ドメイン バックオーダー",
+          "期限切れ ドメイン 取得",
+          "ドメイン ドロップキャッチ"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "ドメイン バック オーダー",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                }
+              ],
+              "avgMonthlySearches": "90",
+              "competitionIndex": "29",
+              "lowTopOfPageBidMicros": "1392841",
+              "highTopOfPageBidMicros": "18722972"
+            },
+            "closeVariants": [
+              "ドメイン バックオーダー"
+            ]
+          },
+          {
+            "text": "期限切れ ドメイン 取得",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "37"
+            }
+          },
+          {
+            "text": "ドメイン ドロップ キャッチ",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                }
+              ],
+              "avgMonthlySearches": "110",
+              "competitionIndex": "4",
+              "lowTopOfPageBidMicros": "4169473",
+              "highTopOfPageBidMicros": "23707356"
+            },
+            "closeVariants": [
+              "ドメイン ドロップキャッチ"
+            ]
+          }
+        ]
+      }
+    },
+    "de-DE": {
+      "fetched_utc": "2026-10-22T01:51:02.143923+00:00",
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "domain backorder",
+          "domain sichern nach löschung",
+          "domain backorder service",
+          "gelöschte domains kaufen"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "domain backorder",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                }
+              ],
+              "avgMonthlySearches": "90",
+              "competitionIndex": "63",
+              "lowTopOfPageBidMicros": "922079",
+              "highTopOfPageBidMicros": "3649648"
+            }
+          },
+          {
+            "text": "domain backorder service",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                }
+              ],
+              "avgMonthlySearches": "20",
+              "competitionIndex": "59",
+              "lowTopOfPageBidMicros": "581463",
+              "highTopOfPageBidMicros": "2829735"
+            }
+          },
+          {
+            "text": "domain sichern nach löschung"
+          },
+          {
+            "text": "gelöschte domains kaufen"
+          }
+        ]
+      }
+    },
+    "fr-FR": {
+      "fetched_utc": "2026-10-22T01:51:02.500526+00:00",
+      "request": {
+        "language": "languageConstants/1002",
+        "geoTargetConstants": [
+          "geoTargetConstants/2250"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "backorder domaine",
+          "récupérer un nom de domaine expiré",
+          "réservation domaine expiré"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "backorder domaine",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                }
+              ],
+              "avgMonthlySearches": "40",
+              "competitionIndex": "36",
+              "lowTopOfPageBidMicros": "1323936",
+              "highTopOfPageBidMicros": "3380657"
+            }
+          },
+          {
+            "text": "récupérer un nom de domaine expiré",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "32",
+              "lowTopOfPageBidMicros": "1065147",
+              "highTopOfPageBidMicros": "2931255"
+            }
+          },
+          {
+            "text": "réservation domaine expiré"
+          }
+        ]
+      }
+    }
+  },
+  "gsc_supplement": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "topic": [
+      {
+        "source_id": "G26",
+        "slug": "domain-backorders-and-drop-catching",
+        "path_match": "/blog/domain-backorders-and-drop-catching/",
+        "matched_rows": 4,
+        "observed_impressions": 10,
+        "observed_clicks": 0,
+        "countries": {
+          "fra": {
+            "rows": 1,
+            "impressions": 5,
+            "clicks": 0
+          },
+          "usa": {
+            "rows": 3,
+            "impressions": 5,
+            "clicks": 0
+          }
+        }
+      }
+    ],
+    "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand."
+  },
+  "language_id_verification": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "supported_locales": [
+    "en",
+    "es",
+    "de",
+    "fr",
+    "zh-CN",
+    "ar",
+    "hi",
+    "ko",
+    "ja",
+    "ta"
+  ],
+  "decision": {
+    "new_locales": [],
+    "reason": "All supported locales already have the article. Preserve existing translations. Correct material factual contradictions in all nine. No evidence supports adding an unsupported locale. This update does not commission a full retranslation.",
+    "measured_markets": [
+      "de-DE",
+      "fr-FR",
+      "es-ES",
+      "ja-JP"
+    ],
+    "unmeasured_existing_locales": [
+      "ar",
+      "hi",
+      "ko",
+      "ta",
+      "zh-CN"
+    ],
+    "unknown_is_not_zero": true
+  }
+}

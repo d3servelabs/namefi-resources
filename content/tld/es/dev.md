@@ -31,7 +31,7 @@ relatedGlossary:
 
 ## **¿Qué es .dev?**
 
-La extensión de dominio **.dev** es un dominio de nivel superior (TLD, un sufijo de dominio que viene después del último punto en una dirección de internet) seguro, operado por **Google** y diseñado específicamente para **desarrolladores, proyectos de desarrollo y empresas tecnológicas**. Al igual que `.app`, `.dev` requiere **cifrado HTTPS** para todos los sitios web, garantizando la máxima seguridad para el contenido relacionado con el desarrollo.
+La extensión de dominio **.dev** es un dominio de nivel superior (TLD, un sufijo de dominio que viene después del último punto en una dirección de internet) seguro, operado por **Google** y diseñado específicamente para **desarrolladores, proyectos de desarrollo y empresas tecnológicas**. Al igual que `.app`, `.dev` requiere **cifrado HTTPS** para todos los sitios web.
 
 La extensión `.dev` es la **elección natural para los desarrolladores**, lo que indica inmediatamente que su sitio web está relacionado con el desarrollo de software, la programación o la tecnología.
 
@@ -67,3 +67,9 @@ Los dominios `.dev` son perfectos para:
 Registre su **dominio .dev hoy mismo en [Namefi](https://namefi.io)** y únase a la comunidad de desarrolladores.
 
 👉 **Visite [namefi.io](https://namefi.io) y asegure su .dev hoy.**
+
+## Los navegadores necesitan HTTPS, pero HSTS no garantiza la seguridad de la aplicación
+
+Los navegadores que aplican la lista HSTS necesitan HTTPS funcional para cada nombre de host, incluidos los subdominios internos. HSTS no emite certificados ni garantiza la seguridad del código o la autenticidad del correo.
+
+[Google Registry](https://www.registry.google/policies/registration/dev/) · [HSTS](https://hstspreload.org/) · [Mozilla](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security) (2026-10-21).
