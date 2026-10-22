@@ -1,0 +1,51 @@
+{
+  "source_id": "G31",
+  "order": 38,
+  "fetch_date_local": "2026-10-21",
+  "selected_locales": [],
+  "deferred_measured_markets": [
+    "de-DE",
+    "fr-FR"
+  ],
+  "unmeasured_locales": "Other supported locales were not tested and remain UNKNOWN, not zero.",
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "topic": {
+      "source_id": "G31",
+      "slug": "domain-privacy-vs-proxy",
+      "path_match": "/blog/domain-privacy-vs-proxy/",
+      "matched_rows": 0,
+      "observed_impressions": 0,
+      "observed_clicks": 0,
+      "countries": {}
+    },
+    "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand."
+  },
+  "official_language_id_source": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "verified_language_ids": {
+    "de": 1001,
+    "fr": 1002
+  },
+  "network": "GOOGLE_SEARCH",
+  "period": "2025-10 through 2026-09",
+  "close_variants": "No closeVariants arrays returned in either response. Do not sum possible related-query intent as unique people.",
+  "supported_locales": [
+    "en",
+    "es",
+    "de",
+    "fr",
+    "zh-CN",
+    "ar",
+    "hi",
+    "ko",
+    "ja",
+    "ta"
+  ],
+  "expected_real_urls": [
+    "https://namefi.io/r/en/blog/domain-privacy-vs-proxy"
+  ],
+  "missing_metrics": "fr: confidentialité nom de domaine, protection confidentialité domaine, proxy nom de domaine returned text without keywordMetrics. UNKNOWN."
+}

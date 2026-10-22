@@ -1,0 +1,100 @@
+[
+  {
+    "url": "https://www.zoho.com/mail/zohomail-pricing.html",
+    "supports": "Free-plan users, domain, storage, excluded protocols. Web retrieval redirected to Brazilian Portuguese pricing. French pricing independently opened.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://www.zoho.com/mail/help/adminconsole/subscription.html",
+    "supports": "Free access, selected data centers, trial 15 days, regional downgrade and deletion windows.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://developers.cloudflare.com/email-service/",
+    "supports": "Routing and transactional sending are separate capabilities.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://developers.cloudflare.com/email-service/platform/pricing/",
+    "supports": "Routing free/paid, arbitrary-recipient sending paid, verified-destination exception.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://developers.cloudflare.com/email-service/platform/limits/",
+    "supports": "200 rules per domain, 200 destinations per account, 25 MiB inbound limit.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://developers.cloudflare.com/email-service/get-started/route-emails/",
+    "supports": "Cloudflare DNS prerequisite, MX records, verified destinations, external test account.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://support.google.com/mail/answer/81126?hl=en",
+    "supports": "Ordinary/bulk authentication distinctions, recommendation for SPF/DKIM/DMARC, no guaranteed delivery.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://support.google.com/mail/answer/56256?hl=en",
+    "supports": "Work/business signup and separate professional Workspace address offering.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://proton.me/mail/pricing",
+    "supports": "Free 1 user, 1 address, up to 1 GB, 150 daily messages, no custom domain.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://proton.me/support/custom-domain",
+    "supports": "Custom-domain prerequisite is paid plan plus domain.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://www.namecheap.com/hosting/email/",
+    "supports": "Current Launch trial first month, 1 mailbox/5 GB, $14.88/year renewal. No purchase made.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://proton.me/fr/mail/pricing",
+    "supports": "French provider terminology and native free-versus-paid search intent.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://www.zoho.com/fr/mail/zohomail-pricing.html",
+    "supports": "French free-plan presentation still restricts data centers; no France eligibility guarantee.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "url": "https://developers.google.com/google-ads/api/data/codes-formats",
+    "supports": "Language criteria en1000/es1003/de1001/fr1002 personally verified before Ads request.",
+    "access": "Opened public primary source through web tool; relevant passage read",
+    "fetched_local_date": "2026-10-21",
+    "timezone": "America/Los_Angeles"
+  }
+]
