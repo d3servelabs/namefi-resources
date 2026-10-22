@@ -1,0 +1,69 @@
+{
+  "model_requested": "gpt-image-2",
+  "quality_requested": "high",
+  "returned_model": "unknown (response omits model)",
+  "attempt_count": 1,
+  "attempt_usage": "image-attempt-1-usage.json",
+  "assets": [
+    {
+      "path": "content/assets/whois-and-rdap-public-data-01-section.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "cd8c3c4a9edd226a64c0e069ee3ac9932405dc2a3342db03753e3a55a3379190",
+      "qc": "Passed visual inspection: spelling, complete objects and labels, empty margins, cream grid and official top-right logo. Cover has empty bottom caption band."
+    },
+    {
+      "path": "content/assets/whois-and-rdap-public-data-02-section.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "3516f9f48eb6bfb5b2f1d653d709efa5336917e0c01894fe5cab7fbd15a426d2",
+      "qc": "Passed visual inspection: spelling, complete objects and labels, empty margins, cream grid and official top-right logo. Cover has empty bottom caption band."
+    },
+    {
+      "path": "content/assets/whois-and-rdap-public-data-03-section.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "810a84858a86deb651eb89ab466e64fc27dfb1e985a98ab6ccb6de2cbeb1ebc6",
+      "qc": "Passed visual inspection: spelling, complete objects and labels, empty margins, cream grid and official top-right logo. Cover has empty bottom caption band."
+    },
+    {
+      "path": "content/assets/whois-and-rdap-public-data-04-section.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "6f55592bcdc2f2f34dd7bec2f5f92fd8766efd0d46d2955f806662c495b87a1e",
+      "qc": "Passed visual inspection: spelling, complete objects and labels, empty margins, cream grid and official top-right logo. Cover has empty bottom caption band."
+    },
+    {
+      "path": "content/assets/whois-and-rdap-public-data-05-field-boundaries.jpg",
+      "action": "generated",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "ef2e4075d4f213f362d5b90b7e075f17a36cb237321c1be8f803aa1af1f8a007",
+      "qc": "Passed visual inspection: spelling, complete objects and labels, empty margins, cream grid and official top-right logo. Cover has empty bottom caption band."
+    },
+    {
+      "path": "content/assets/whois-and-rdap-public-data-og.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "92541e09774933e1ea494e1a5b2bf7a77eab2b3f69c546c7e205e7ce537c1fe7",
+      "qc": "Passed visual inspection: spelling, complete objects and labels, empty margins, cream grid and official top-right logo. Cover has empty bottom caption band."
+    }
+  ]
+}

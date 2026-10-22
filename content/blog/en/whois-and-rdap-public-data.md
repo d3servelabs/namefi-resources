@@ -42,7 +42,7 @@ The practical question is rarely “Which tool shows the most fields?” Ask whi
 
 RDAP means Registration Data Access Protocol. ICANN describes RDAP as the [replacement for the WHOIS protocol](https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en). A service can still use the familiar WHOIS label while presenting registration information through a different technical interface.
 
-The transition has a defined scope. ICANN's current user guidance says gTLD registries and registrars must provide RDAP. The guidance also identifies the January 28, 2025 WHOIS obligation change and names exceptions. Do not simplify the transition into “WHOIS disappeared everywhere.”
+ICANN requires gTLD registries and registrars to provide RDAP. Since January 28, 2025, ICANN no longer requires WHOIS services, except for `.com`, `.name`, and `.post`. The [current user guidance](https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en) states those exceptions. The obligation change does not mean that every WHOIS server stopped operating.
 
 Country-code extensions and individual service implementations need their own documentation. A gTLD policy statement cannot establish identical behavior for every country-code registry. Check the responsible operator before generalizing from one extension.
 
@@ -69,6 +69,18 @@ The protocol tells you how data travels. Publication policy tells you which data
 ![Public registration fields support limited conclusions.](../../assets/whois-and-rdap-public-data-02-section.jpg)
 
 ICANN's [Registration Data Policy, section 9](https://www.icann.org/en/contracted-parties/consensus-policies/registration-data-policy#:~:text=Publication%20of%20Domain%20Name%20Registration%20Data), sets publication requirements for its covered contracted parties. The policy distinguishes operational data, conditional fields, and redaction requirements. Read the current text before treating a missing field as a compliance finding.
+
+The policy separates required public fields from conditional publication and redaction. Use the following reading aid for covered gTLD services. The table summarizes [sections 9.1 and 9.2](https://www.icann.org/en/contracted-parties/consensus-policies/registration-data-policy).
+
+| Field group | Publication boundary | Reading limit |
+| --- | --- | --- |
+| Domain, registrar, registrar IANA ID, registrar URL, status and abuse contact | Required public data | Registrar details identify the provider, rather than the website operator |
+| Creation and expiry dates | Required, with different expiry requirements for registry and registrar responses | Keep the exact event label and source |
+| Updated date, nameservers and DNSSEC elements | Required when collected, transferred or generated | A missing conditional field needs context |
+| Registrant name, street, phone and email | Publication depends on the redaction rules | A public response need not expose direct personal contact details |
+| Registrant organization | Publication depends on the applicable rules and agreement to publish | A blank organization field does not prove an individual registration |
+
+![Public operational fields and limited personal fields require different interpretations.](../../assets/whois-and-rdap-public-data-05-field-boundaries.jpg)
 
 For ordinary research, start with the domain, registrar, status, relevant dates, and published contact route. Those fields help identify the registration's operational context. The fields do not establish every contractual or beneficial ownership relationship.
 
@@ -133,7 +145,9 @@ For a purchase inquiry, use the published contact mechanism or a documented mark
 
 For your own account recovery, start from the registrar's trusted website and documented support route. The public record can help identify the provider, but recovery usually requires account-specific evidence. Do not send credentials to an address copied from an unverified third-party page.
 
-For nonpublic registration data, consult ICANN's current [Registration Data Request Service](https://www.icann.org/rdrs-en). The service provides a standardized route to participating registrars. Participation and the applicable process require a current check before submission.
+For nonpublic gTLD registration data, consult ICANN's current [Registration Data Request Service](https://www.icann.org/rdrs-en). RDRS routes standardized requests to participating registrars. ICANN continued RDRS after its November 2025 pilot, so an old pilot end date does not establish current unavailability.
+
+If a registrar does not participate, find the registrar's direct disclosure process. [Policy section 10.1](https://www.icann.org/en/contracted-parties/consensus-policies/registration-data-policy) requires covered providers to publish a link to that process on their homepage. A response obligation does not guarantee disclosure. Section 10.6 permits a reasoned refusal.
 
 Prepare a request around a defined need, rather than a general wish to uncover a person. State the domain, purpose, requested information, and relevant supporting material. Follow the provider's instructions and applicable requirements. A request does not itself establish entitlement or promise disclosure.
 
@@ -149,6 +163,10 @@ Keep a short decision record:
 
 A hypothetical analyst might conclude: “The public record identifies the registrar and a redacted registrant contact. The analyst has not verified the current controller.” That conclusion remains useful because the conclusion states both the evidence and the limit.
 
+Historical WHOIS products answer a different question from current registration services. [DomainTools documents timestamped historical records](https://docs.domaintools.com/iris/investigate/data-panels/whois-history/) and privacy filtering in its WHOIS History panel. A subscription does not turn an archived record into a current identity check.
+
+Record the historical observation date separately from the date of your search. Compare the archived source with the current registry or registrar response. Treat any proposed ownership change as an inference until independent evidence supports the change.
+
 Review old reports before reusing them. A past public name, an archived screenshot, or an old aggregator export can describe a historical observation. A historical observation cannot silently become a current identity claim.
 
 Use WHOIS and RDAP results as bounded registration evidence. Preserve source and time, distinguish public data from held data, and route requests through the appropriate process. A careful report can remain actionable without pretending that every identity is public.
@@ -162,3 +180,5 @@ Sources checked on October 21, 2026. The policy page includes a May 12, 2026 rev
 - [RFC 9082, section 3.1.3](https://datatracker.ietf.org/doc/html/rfc9082#section-3.1.3). The standard defines domain-query syntax.
 - [RFC 9537, section 3](https://datatracker.ietf.org/doc/html/rfc9537#section-3). The standard defines redaction methods in RDAP responses.
 - [ICANN: Registration Data Request Service](https://www.icann.org/rdrs-en). The page describes the request service and participating registrars.
+
+- [DomainTools: WHOIS History panel](https://docs.domaintools.com/iris/investigate/data-panels/whois-history/). The operator documents timestamped historical records and privacy filtering. Fetched October 21, 2026.

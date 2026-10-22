@@ -1,0 +1,69 @@
+{
+  "property": "sc-domain:namefi.io",
+  "startDate": "2026-09-21",
+  "endDate": "2026-10-18",
+  "type": "web",
+  "dataState": "final",
+  "dimensions": [
+    "query",
+    "page",
+    "country"
+  ],
+  "retrieved_utc": "2026-10-21T23:27:19.408267+00:00",
+  "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+  "markets": {
+    "deu": {
+      "broad_topic_rows": 11,
+      "broad_topic_impressions": 53,
+      "broad_topic_clicks": 0,
+      "selection_query_rows": [
+        {
+          "keys": [
+            "bester domain registrar",
+            "https://namefi.io/r/de/blog/ai-tld-registrars",
+            "deu"
+          ],
+          "clicks": 0,
+          "impressions": 1,
+          "ctr": 0,
+          "position": 5
+        },
+        {
+          "keys": [
+            "bester domain registrar",
+            "https://namefi.io/r/de/blog/best-ai-tools-2026",
+            "deu"
+          ],
+          "clicks": 0,
+          "impressions": 21,
+          "ctr": 0,
+          "position": 5.619047619047619
+        }
+      ]
+    },
+    "mex": {
+      "broad_topic_rows": 6,
+      "broad_topic_impressions": 43,
+      "broad_topic_clicks": 0,
+      "selection_query_rows": [
+        {
+          "keys": [
+            "¿cuáles son los mejores registradores de dominios?",
+            "https://namefi.io/r/es/blog/ai-tld-registrars",
+            "mex"
+          ],
+          "clicks": 0,
+          "impressions": 1,
+          "ctr": 0,
+          "position": 4
+        }
+      ]
+    },
+    "jpn": {
+      "broad_topic_rows": 125,
+      "broad_topic_impressions": 1264,
+      "broad_topic_clicks": 6,
+      "selection_query_rows": []
+    }
+  }
+}

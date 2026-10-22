@@ -1,0 +1,1627 @@
+{
+  "source_id": "O01",
+  "collection": "tld",
+  "slug": "io",
+  "markets": [
+    {
+      "retrieved_utc": "2026-10-21T23:37:49.217852+00:00",
+      "locale": "ar",
+      "region": "Egypt",
+      "request": {
+        "language": "languageConstants/1019",
+        "geoTargetConstants": [
+          "geoTargetConstants/2818"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "دومين io",
+          "ما هو نطاق io"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "دومين io"
+          },
+          {
+            "text": "ما هو نطاق io"
+          }
+        ]
+      }
+    },
+    {
+      "retrieved_utc": "2026-10-21T23:37:37.870445+00:00",
+      "locale": "de",
+      "region": "Germany",
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "io domain bedeutung",
+          "io domain kaufen"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "io domain bedeutung",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                }
+              ],
+              "avgMonthlySearches": "90",
+              "competitionIndex": "12",
+              "lowTopOfPageBidMicros": "1891196",
+              "highTopOfPageBidMicros": "10392163"
+            }
+          },
+          {
+            "text": "io domain kaufen",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                }
+              ],
+              "avgMonthlySearches": "50",
+              "competitionIndex": "75",
+              "lowTopOfPageBidMicros": "2400211",
+              "highTopOfPageBidMicros": "9523306"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "retrieved_utc": "2026-10-21T23:37:40.805193+00:00",
+      "locale": "es",
+      "region": "Spain",
+      "request": {
+        "language": "languageConstants/1003",
+        "geoTargetConstants": [
+          "geoTargetConstants/2724"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "dominio io",
+          "que significa dominio io"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "dominio io",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "260"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                }
+              ],
+              "avgMonthlySearches": "260",
+              "competitionIndex": "44",
+              "lowTopOfPageBidMicros": "1135885",
+              "highTopOfPageBidMicros": "5074893"
+            }
+          },
+          {
+            "text": "que significa dominio io",
+            "keywordMetrics": {
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                }
+              ],
+              "avgMonthlySearches": "10"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "retrieved_utc": "2026-10-21T23:37:39.376199+00:00",
+      "locale": "fr",
+      "region": "France",
+      "request": {
+        "language": "languageConstants/1002",
+        "geoTargetConstants": [
+          "geoTargetConstants/2250"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "nom de domaine io",
+          "extension io signification"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "nom de domaine io",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                }
+              ],
+              "avgMonthlySearches": "140",
+              "competitionIndex": "46",
+              "lowTopOfPageBidMicros": "872761",
+              "highTopOfPageBidMicros": "3997320"
+            }
+          },
+          {
+            "text": "extension io signification",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "0"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "retrieved_utc": "2026-10-21T23:37:46.519028+00:00",
+      "locale": "hi",
+      "region": "India",
+      "request": {
+        "language": "languageConstants/1023",
+        "geoTargetConstants": [
+          "geoTargetConstants/2356"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "आईओ डोमेन",
+          "io डोमेन क्या है"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "आईओ डोमेन"
+          },
+          {
+            "text": "io डोमेन क्या है"
+          }
+        ]
+      }
+    },
+    {
+      "retrieved_utc": "2026-10-21T23:37:43.794796+00:00",
+      "locale": "ja",
+      "region": "Japan",
+      "request": {
+        "language": "languageConstants/1005",
+        "geoTargetConstants": [
+          "geoTargetConstants/2392"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "io ドメイン",
+          "io ドメイン 意味"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "io ドメイン",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "3600"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "1600"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "1600"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                }
+              ],
+              "avgMonthlySearches": "1300",
+              "competitionIndex": "14",
+              "lowTopOfPageBidMicros": "1400456",
+              "highTopOfPageBidMicros": "4461867"
+            }
+          },
+          {
+            "text": "io ドメイン 意味",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                }
+              ],
+              "avgMonthlySearches": "30",
+              "competitionIndex": "15",
+              "lowTopOfPageBidMicros": "5748827",
+              "highTopOfPageBidMicros": "19857046"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "retrieved_utc": "2026-10-21T23:37:45.140801+00:00",
+      "locale": "ko",
+      "region": "South Korea",
+      "request": {
+        "language": "languageConstants/1012",
+        "geoTargetConstants": [
+          "geoTargetConstants/2410"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "io 도메인",
+          "io 도메인 뜻"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "io 도메인",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                }
+              ],
+              "avgMonthlySearches": "320",
+              "competitionIndex": "39",
+              "lowTopOfPageBidMicros": "364368",
+              "highTopOfPageBidMicros": "1729148"
+            }
+          },
+          {
+            "text": "io 도메인 뜻",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                }
+              ],
+              "avgMonthlySearches": "40",
+              "competitionIndex": "4"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "retrieved_utc": "2026-10-21T23:37:47.878961+00:00",
+      "locale": "ta",
+      "region": "India",
+      "request": {
+        "language": "languageConstants/1130",
+        "geoTargetConstants": [
+          "geoTargetConstants/2356"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "io டொமைன்",
+          "io டொமைன் என்றால் என்ன"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "io டொமைன்"
+          },
+          {
+            "text": "io டொமைன் என்றால் என்ன"
+          }
+        ]
+      }
+    },
+    {
+      "retrieved_utc": "2026-10-21T23:37:42.246179+00:00",
+      "locale": "zh-CN",
+      "region": "China",
+      "request": {
+        "language": "languageConstants/1017",
+        "geoTargetConstants": [
+          "geoTargetConstants/2156"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "io域名",
+          "io域名含义"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "io 域名",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                }
+              ],
+              "avgMonthlySearches": "40",
+              "competitionIndex": "71",
+              "lowTopOfPageBidMicros": "1191318",
+              "highTopOfPageBidMicros": "2766671"
+            },
+            "closeVariants": [
+              "io域名"
+            ]
+          },
+          {
+            "text": "io 域名 含义",
+            "closeVariants": [
+              "io域名含义"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "dimensions": [
+      "query",
+      "page",
+      "country"
+    ],
+    "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+    "matching": "collection/slug path substring across actual reported locale URL paths; reported query/page/country rows only",
+    "topics": [
+      {
+        "source_id": "O01",
+        "slug": "io",
+        "path_match": "/tld/io/",
+        "matched_rows": 1246,
+        "observed_impressions": 6174,
+        "observed_clicks": 0,
+        "countries": {
+          "arg": {
+            "rows": 11,
+            "impressions": 17,
+            "clicks": 0
+          },
+          "bel": {
+            "rows": 12,
+            "impressions": 17,
+            "clicks": 0
+          },
+          "usa": {
+            "rows": 339,
+            "impressions": 4431,
+            "clicks": 0
+          },
+          "are": {
+            "rows": 9,
+            "impressions": 11,
+            "clicks": 0
+          },
+          "aus": {
+            "rows": 34,
+            "impressions": 51,
+            "clicks": 0
+          },
+          "bgd": {
+            "rows": 7,
+            "impressions": 7,
+            "clicks": 0
+          },
+          "bra": {
+            "rows": 18,
+            "impressions": 19,
+            "clicks": 0
+          },
+          "can": {
+            "rows": 31,
+            "impressions": 71,
+            "clicks": 0
+          },
+          "cze": {
+            "rows": 9,
+            "impressions": 10,
+            "clicks": 0
+          },
+          "deu": {
+            "rows": 33,
+            "impressions": 63,
+            "clicks": 0
+          },
+          "ecu": {
+            "rows": 4,
+            "impressions": 5,
+            "clicks": 0
+          },
+          "esp": {
+            "rows": 28,
+            "impressions": 36,
+            "clicks": 0
+          },
+          "fin": {
+            "rows": 5,
+            "impressions": 7,
+            "clicks": 0
+          },
+          "gbr": {
+            "rows": 58,
+            "impressions": 132,
+            "clicks": 0
+          },
+          "grc": {
+            "rows": 6,
+            "impressions": 6,
+            "clicks": 0
+          },
+          "grl": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "hkg": {
+            "rows": 21,
+            "impressions": 65,
+            "clicks": 0
+          },
+          "ita": {
+            "rows": 12,
+            "impressions": 13,
+            "clicks": 0
+          },
+          "jpn": {
+            "rows": 14,
+            "impressions": 34,
+            "clicks": 0
+          },
+          "ken": {
+            "rows": 6,
+            "impressions": 8,
+            "clicks": 0
+          },
+          "mac": {
+            "rows": 3,
+            "impressions": 6,
+            "clicks": 0
+          },
+          "nga": {
+            "rows": 8,
+            "impressions": 17,
+            "clicks": 0
+          },
+          "nld": {
+            "rows": 34,
+            "impressions": 50,
+            "clicks": 0
+          },
+          "nor": {
+            "rows": 11,
+            "impressions": 11,
+            "clicks": 0
+          },
+          "npl": {
+            "rows": 5,
+            "impressions": 5,
+            "clicks": 0
+          },
+          "per": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "rou": {
+            "rows": 9,
+            "impressions": 10,
+            "clicks": 0
+          },
+          "srb": {
+            "rows": 5,
+            "impressions": 5,
+            "clicks": 0
+          },
+          "swe": {
+            "rows": 23,
+            "impressions": 39,
+            "clicks": 0
+          },
+          "tha": {
+            "rows": 7,
+            "impressions": 49,
+            "clicks": 0
+          },
+          "tkm": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "twn": {
+            "rows": 16,
+            "impressions": 118,
+            "clicks": 0
+          },
+          "zaf": {
+            "rows": 14,
+            "impressions": 109,
+            "clicks": 0
+          },
+          "aut": {
+            "rows": 10,
+            "impressions": 17,
+            "clicks": 0
+          },
+          "ind": {
+            "rows": 46,
+            "impressions": 120,
+            "clicks": 0
+          },
+          "mar": {
+            "rows": 4,
+            "impressions": 5,
+            "clicks": 0
+          },
+          "phl": {
+            "rows": 20,
+            "impressions": 36,
+            "clicks": 0
+          },
+          "pri": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "hun": {
+            "rows": 4,
+            "impressions": 4,
+            "clicks": 0
+          },
+          "irl": {
+            "rows": 16,
+            "impressions": 21,
+            "clicks": 0
+          },
+          "pak": {
+            "rows": 14,
+            "impressions": 18,
+            "clicks": 0
+          },
+          "mli": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "nam": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "sgp": {
+            "rows": 16,
+            "impressions": 20,
+            "clicks": 0
+          },
+          "blr": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "dnk": {
+            "rows": 12,
+            "impressions": 15,
+            "clicks": 0
+          },
+          "fra": {
+            "rows": 40,
+            "impressions": 74,
+            "clicks": 0
+          },
+          "vnm": {
+            "rows": 7,
+            "impressions": 12,
+            "clicks": 0
+          },
+          "col": {
+            "rows": 7,
+            "impressions": 16,
+            "clicks": 0
+          },
+          "cyp": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "isr": {
+            "rows": 11,
+            "impressions": 15,
+            "clicks": 0
+          },
+          "mex": {
+            "rows": 13,
+            "impressions": 16,
+            "clicks": 0
+          },
+          "mys": {
+            "rows": 22,
+            "impressions": 52,
+            "clicks": 0
+          },
+          "tur": {
+            "rows": 16,
+            "impressions": 20,
+            "clicks": 0
+          },
+          "egy": {
+            "rows": 6,
+            "impressions": 6,
+            "clicks": 0
+          },
+          "tza": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "lux": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "bgr": {
+            "rows": 6,
+            "impressions": 6,
+            "clicks": 0
+          },
+          "rus": {
+            "rows": 11,
+            "impressions": 11,
+            "clicks": 0
+          },
+          "idn": {
+            "rows": 19,
+            "impressions": 21,
+            "clicks": 0
+          },
+          "nzl": {
+            "rows": 8,
+            "impressions": 12,
+            "clicks": 0
+          },
+          "pan": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "che": {
+            "rows": 12,
+            "impressions": 20,
+            "clicks": 0
+          },
+          "dza": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "est": {
+            "rows": 4,
+            "impressions": 4,
+            "clicks": 0
+          },
+          "irn": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "isl": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "khm": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "prt": {
+            "rows": 3,
+            "impressions": 4,
+            "clicks": 0
+          },
+          "svk": {
+            "rows": 3,
+            "impressions": 3,
+            "clicks": 0
+          },
+          "ukr": {
+            "rows": 9,
+            "impressions": 9,
+            "clicks": 0
+          },
+          "chn": {
+            "rows": 14,
+            "impressions": 73,
+            "clicks": 0
+          },
+          "kor": {
+            "rows": 4,
+            "impressions": 6,
+            "clicks": 0
+          },
+          "lbn": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "dom": {
+            "rows": 3,
+            "impressions": 3,
+            "clicks": 0
+          },
+          "lao": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "slv": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "eth": {
+            "rows": 4,
+            "impressions": 5,
+            "clicks": 0
+          },
+          "mmr": {
+            "rows": 4,
+            "impressions": 5,
+            "clicks": 0
+          },
+          "hrv": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "irq": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "chl": {
+            "rows": 3,
+            "impressions": 4,
+            "clicks": 0
+          },
+          "lva": {
+            "rows": 1,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "imn": {
+            "rows": 1,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "pol": {
+            "rows": 11,
+            "impressions": 18,
+            "clicks": 0
+          },
+          "gha": {
+            "rows": 2,
+            "impressions": 4,
+            "clicks": 0
+          },
+          "ner": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "rwa": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "sle": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "syr": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "aze": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "gtm": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "kgz": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "mda": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "pse": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "mus": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "sau": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "svn": {
+            "rows": 3,
+            "impressions": 3,
+            "clicks": 0
+          },
+          "geo": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "tto": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "bdi": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "ltu": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "jor": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "omn": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "qat": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "bhr": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "hnd": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "bol": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "nic": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "lby": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "bih": {
+            "rows": 2,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "bhs": {
+            "rows": 3,
+            "impressions": 3,
+            "clicks": 0
+          },
+          "ven": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "cri": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "ssd": {
+            "rows": 1,
+            "impressions": 2,
+            "clicks": 0
+          },
+          "alb": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "brn": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "mlt": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "kwt": {
+            "rows": 1,
+            "impressions": 5,
+            "clicks": 0
+          }
+        }
+      }
+    ]
+  }
+}

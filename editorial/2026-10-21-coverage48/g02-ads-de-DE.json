@@ -1,0 +1,37 @@
+{
+  "request": {
+    "language": "languageConstants/1001",
+    "geoTargetConstants": [
+      "geoTargetConstants/2276"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "quad9 datenschutz",
+      "dns anbieter datenschutz",
+      "cloudflare oder quad9",
+      "google dns datenschutz",
+      "dns server ohne logs"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "quad9 datenschutz"
+      },
+      {
+        "text": "dns anbieter datenschutz"
+      },
+      {
+        "text": "cloudflare oder quad9"
+      },
+      {
+        "text": "google dns datenschutz"
+      },
+      {
+        "text": "dns server ohne logs"
+      }
+    ]
+  },
+  "fetched_utc": "2026-10-22T00:52:43.296133+00:00"
+}

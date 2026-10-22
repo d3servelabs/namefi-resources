@@ -9,18 +9,18 @@ editors: ['victor-zhou']
 translators: ['fenwei-bian']
 draft: false
 description: '一个密码朋克、一座微型加勒比岛屿，以及科技界最有价值的两个字母。.ai 域名的完整故事——谁在运营它、安圭拉如何靠它撑起近半政府预算、注册费用，以及你是否应该把品牌建在它上面。'
-keywords: ['.ai 域名', '什么是 .ai', '.ai TLD', '安圭拉 ccTLD', '注册 .ai 域名', 'AI 初创公司域名', '.ai 与 .io', '谁拥有 .ai', '.ai 域名价格', '.ai 两年最短注册期', 'Vince Cate', '安圭拉 AI 域名']
+keywords: ['.ai 域名', '什么是 .ai', '.ai TLD', '安圭拉 ccTLD', '注册 .ai 域名', 'AI 初创公司域名', '.ai 与 .io', '谁拥有 .ai', '.ai 域名价格', 'Vince Cate', '安圭拉 AI 域名']
 faqs:
   - question: '任何人都可以注册 .ai 域名吗？'
-    answer: '可以。.ai 注册局向全球所有人开放，无需本地存在或资质要求。与大多数 TLD 的主要区别在于，.ai 最短注册期为两年（而非一年），这会提高前期成本。'
+    answer: 'GoDaddy 表示，任何人都可以注册 .ai 域名。购买前，请核对所选注册商的条款。'
   - question: '.ai 域名会影响 SEO 吗？'
     answer: '不会。Google 将 .ai 视为通用顶级域名，而非将其地理定位到安圭拉，因此 .ai 网站可以在全球范围内排名。该后缀本身既不会提升排名，也不会造成降权；内容、链接和用户体验仍然决定排名。'
   - question: '谁适合注册 .ai 域名？'
-    answer: '它适合希望将"AI"含义融入名称的人工智能初创公司、机器学习产品、AI 智能体和开发者工具。对于预算有限的项目或本地非科技企业而言，考虑到较高的价格和两年最短注册期，.ai 并不是理想选择。'
+    answer: '人工智能初创公司、机器学习产品、AI 智能体和开发者工具可以考虑 .ai。选择时，请同时考虑名称含义与项目预算。'
   - question: '谁拥有并运营 .ai 注册局？'
     answer: '安圭拉政府持有 .ai 的 IANA 授权。自 2025 年 1 月起，技术注册后端由 Identity Digital 运营。但你注册的每个 .ai 域名归你（注册人）所有。'
-  - question: '为什么 .ai 最短注册期为两年？'
-    answer: '安圭拉注册局制定了这一政策：.ai 域名以两年至十年为期注册和续期，而非 .com 等常见的一年周期。这提高了前期成本，但降低了因错过一次续期而丢失域名的风险。'
+  - question: 'GoDaddy 列出了哪些 .ai 注册期限？'
+    answer: 'GoDaddy 列出的 .ai 注册和续费期限为 2、4、6、8、10 年。请核对所选注册商提供的期限。'
 relatedArticles:
   - /zh-CN/blog/ai-vs-io-domain/
   - /zh-CN/blog/why-are-io-domains-expensive/
@@ -54,10 +54,9 @@ relatedGlossary:
 | TLD 类型 | ccTLD（安圭拉国家代码）；Google 将其视为通用域名 |
 | 注册局运营方 | 安圭拉政府；技术后端由 Identity Digital 运营（自 2025 年 1 月起） |
 | 授权年份 | 1995 年 |
-| 注册期限 | 最短两年；可选 2–10 年 |
-| IDN 支持 | 否——历史上仅支持 ASCII 字符 a–z、0–9 和连字符 |
+
 | DNSSEC | 注册局层面支持 |
-| 注册限制 | 向所有人开放；无本地存在要求 |
+
 | 适用场景 | AI/ML 初创公司、智能体产品、开发者工具、优质科技品牌 |
 
 ## 最不可思议的科技之都
@@ -133,11 +132,8 @@ Cate 不是一个安静的观察者。以极低的成本抵达，他创立了安
 
 ## 费用是多少，好名字能卖出什么价
 
-.ai 是一个蓄意的溢价后缀，几个机制驱动着价格：
+购买前，请比较完整注册费用、续费报价和所含服务。本页不提供现行批发价，也不认定注册局的溢价分级。
 
-- **两年最短注册期。** 你无法按一年注册或续费；注册期从两年到十年，因此前期成本在结构上就高于一年期的 [.com](/zh-CN/tld/com/)。好的一面是真实存在的：你更不容易因错过一次续费而丢失域名。
-- **上涨的基础价格。** 多年来注册局为必须的两年期收取约 $140；2026 年初，在 Identity Digital 管理下，[批发价再次上涨——每年涨了 $10](https://domainnamewire.com/2026/02/02/ai-domain-name-prices-going-up-20/#:~:text=the%20wholesale%20cost%20will%20increase%20by%20%2410%20per%20year)（两年约 $160）。它是溢价后缀，定价也如此。
-- **溢价分层。** 简短、词典词和类别定义性的域名被归为溢价，定价远高于标准注册费。
 - **活跃的二级市场。** 二级市场已产生真实的头条成交：[**you.ai** 于 2023 年以 $700,000 售出](https://domaininvesting.com/dharmesh-shah-comments-on-you-ai-acquisition/#:~:text=Sedo%20announced%20the%20%24700%2C000%20sale%20of%20You.ai)（买家是 HubSpot 联合创始人 Dharmesh Shah），[**bot.ai** 据报于 2026 年以 $1.2 million 成交](https://cognitive.ai/dotaisales.html)，[**fin.ai** 据报于 2025 年 3 月以约 $1 million 成交](https://en.wikipedia.org/wiki/.ai#:~:text=was%20sold%20for%20%241%2C000%2C000%20in%20March%202025)（广泛报道，但未经当事方官方确认）。作为背景参照，[.ai 是 2025 年上半年按报告成交额排名第二活跃的后缀](https://www.namepros.com/threads/domain-name-sales-reported-at-namebio-during-first-six-months-of-2025-strength-for-legacy-extensions-ai.1356803/#:~:text=second%20highest%20performer%20in%20the%20first%20half%20of%202025%20was%20.ai)——仅次于 .com。
 
 本页不提供实时零售价格——注册时请查询最新费率。对买家而言，关键是：.ai 是对行业定位信号的主动投资，而非普通商品注册。
@@ -149,8 +145,6 @@ Cate 不是一个安静的观察者。以极低的成本抵达，他创立了安
 | 来源 | 安圭拉 ccTLD | 印度洋 ccTLD | 原始通用 gTLD |
 | 含义联想 | 人工智能 | 输入/输出、开发/SaaS | 通用、默认 |
 | Google 处理方式 | 通用（gccTLD） | 通用（gccTLD） | 通用 |
-| 典型价格 | 高，溢价 | 中高 | 低，但短名称稀缺 |
-| 最短注册期 | 两年 | 一年 | 一年 |
 
 当人工智能*本身就是*你的产品且你希望把含义烙入名称时，选择 **.ai**。选择 [.io](/zh-CN/tld/io/) 适用于更广泛的开发者或 SaaS 场景，那里"输入/输出"的含义更合适，价格也往往更低——参见[为什么 .io 域名这么贵](/zh-CN/blog/why-are-io-domains-expensive/)。将 [.com](/zh-CN/tld/com/) 作为通用默认选项也不应忘记；很多团队会在持有 .ai 的同时防御性地注册 .com。深入的对比请阅读[.ai 与 .io：哪个域名更适合你的初创公司？](/zh-CN/blog/ai-vs-io-domain/)
 
@@ -167,7 +161,6 @@ Cate 不是一个安静的观察者。以极低的成本抵达，他创立了安
 
 **反对的理由（睁眼看清楚）：**
 
-- **溢价定价和两年最低注册期**使 .ai 成为一种主动消费，而非随意之举。
 - **不支持 IDN**，因此非拉丁字符的域名不是选项。
 - **趋势风险。** 把身份焊接到"AI"上，意味着把品牌绑定在一个快速演变的周期上（详见下一节）。
 - **它是细分，而非默认。** 如果你的产品与 AI 关系不大，.ai 可能读起来像是牵强——很多团队无论如何都会防御性地注册匹配的 .com。
@@ -188,27 +181,25 @@ Cate 不是一个安静的观察者。以极低的成本抵达，他创立了安
 
 还有更深层的结构性问题。[ICANN 已向美国法院声明，ccTLD **不是财产**](https://domainnamewire.com/2014/07/30/icann-court-cctlds/)——没有人"拥有"它们。实际上，安圭拉的控制权极为稳定：ccTLD 只在其 ISO 国家代码消失时才会被注销，即便是[苏联本身已经解体……`.su` 顶级域名至今仍在使用](https://en.wikipedia.org/wiki/.su#:~:text=the%20Soviet%20Union%20itself%20was%20dissolved%2015%20months%20later%2C%20the%20.su%20top%2Dlevel%20domain%20remains%20in%20use%20to%20the%20present%20day)。作为拥有独立 ISO 条目的公认领地，安圭拉哪儿也不会去。但这个哲学点位很重要：当你购买 .ai 时，你买的是在一个小政府管理的命名空间内某个名称的长期、安全的租赁——而非这两个字母的永久产权。
 
-这并非纯粹学术——从 .ai 的姊妹后缀 **.io** 上可以清楚地看到。赋予 .io 字母的英属印度洋领地[最近被移交给毛里求斯，而后者已有自己的 ccTLD](https://www.afnic.fr/en/observatory-and-resources/expert-papers/ai-io-and-tv-and-their-surprising-stories/#:~:text=territory%20was%20recently%20transferred%20to%20Mauritius%20which%20already%20has%20its%20own%20ccTLD)——使 .io 的长期前途出现了开放性疑问，令建立在它上面的开发者品牌人心惶惶。安圭拉的情况远比这稳定（它没有改变主权），但 .io 事件提醒我们：两字母 ccTLD 骑在注册人无法掌控的地缘政治之上。对于买家，实际的对冲策略与大品牌已在采用的一样：同时持有匹配的 [.com](/zh-CN/tld/com/)，让你的 .ai 成为前门，而不是唯一的门。
-
 这一切都不是回避 .ai 的理由。这是出于正确理由购买它的理由：因为你的产品真的*就是* AI，你想让全世界一眼便知——而不是因为这个后缀正时髦。
 
 ## .ai 今天的实际运作
 
-**任何人都可以注册。** 注册 .ai 域名无需本地存在、国籍或资质要求——通过认证的[注册商](/zh-CN/glossary/registrar/)即可注册。核心规则是**两年最短注册期**（续费和注册均以两年至十年为单位）。域名使用标准 ASCII 字符；注册局历史上**不支持国际化域名**，因此非拉丁字符的脚本不是选项。它支持 [DNSSEC](/zh-CN/glossary/dnssec/)，现代 WHOIS/RDAP 查询通过 Identity Digital 的基础设施运行。权威政策由安圭拉注册局在 [nic.ai](https://nic.ai/) 发布。由于 .ai 是 ccTLD，它处于 [ICANN](/zh-CN/glossary/icann/) 的 gTLD 注册局协议框架之外——安圭拉自行制定政策。
+GoDaddy 表示，任何人都可以注册 .ai 域名。购买前，请核对所选注册商的条款。 GoDaddy 列出的 .ai 注册和续费期限为 2、4、6、8、10 年。请核对所选注册商提供的期限。 [GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220). 来源核对日期：2026-10-21.
 
 在 **SEO** 方面，关键事实是：Google [将部分 ccTLD（包括 .ai）视为通用域名](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs)，而非将其地理定向到本国。.ai 网站可以全球排名；这个后缀既不加分也不减分。
 
-在**品牌命名**方面，最有力的模式是[域名创意拼接](/zh-CN/glossary/domain-hack/)，让后缀完成一个词组——`scale.ai`、`fin.ai`，任何读起来自然流畅的"名词.ai"——意义存在于名称与后缀的组合之中。.ai 的全部吸引力在于它让你拥有一个简短、有意义的名字，而对应的 [.com](/zh-CN/tld/com/) 早已不见踪影，所以不要浪费它：避免连字符和数字替代，保持易于发音，口头表达时请逐字母说"dot A-I"，而非让人误听成某个词。把两年注册期的费用提前算好，而非在结账时被打一个措手不及——这是第一次购买 .ai 的人最容易踩的那个坑。
+在**品牌命名**方面，最有力的模式是[域名创意拼接](/zh-CN/glossary/domain-hack/)，让后缀完成一个词组——`scale.ai`、`fin.ai`，任何读起来自然流畅的"名词.ai"——意义存在于名称与后缀的组合之中。.ai 的全部吸引力在于它让你拥有一个简短、有意义的名字，而对应的 [.com](/zh-CN/tld/com/) 早已不见踪影，所以不要浪费它：避免连字符和数字替代，保持易于发音，口头表达时请逐字母说"dot A-I"，而非让人误听成某个词。
 
 ## 长期持有 .ai
 
-和任何域名一样，.ai 可以通过传统 [DNS](/zh-CN/glossary/dns/) 持有，也可以作为[代币化域名](/zh-CN/blog/what-are-tokenized-domains/)持有——一枚[链上](/zh-CN/glossary/on-chain/) [NFT](/zh-CN/glossary/nft/)，使[所有权](/zh-CN/glossary/domain-ownership/)可验证、转让简单，同时保持正常解析。作为连接 Web2 与 [Web3](/zh-CN/glossary/web3/) 的 [ICANN 认证注册商](/zh-CN/glossary/accredited-registrar/)，[Namefi](https://namefi.io) 让你注册 .ai（记住两年最低注册期）、管理它，并可选择在一个平台上代币化。在 [Namefi](https://namefi.io) 搜索域名开始。
+和任何域名一样，.ai 可以通过传统 [DNS](/zh-CN/glossary/dns/) 持有，也可以作为[代币化域名](/zh-CN/blog/what-are-tokenized-domains/)持有——一枚[链上](/zh-CN/glossary/on-chain/) [NFT](/zh-CN/glossary/nft/)，使[所有权](/zh-CN/glossary/domain-ownership/)可验证、转让简单，同时保持正常解析。作为连接 Web2 与 [Web3](/zh-CN/glossary/web3/) 的 [ICANN 认证注册商](/zh-CN/glossary/accredited-registrar/)，[Namefi](https://namefi.io) 让你注册 .ai、管理它，并可选择在一个平台上代币化。在 [Namefi](https://namefi.io) 搜索域名开始。
 
 ## 常见问题
 
 ### 任何人都可以注册 .ai 域名吗？
 
-可以。.ai 注册局向全球所有人开放，无需本地存在或资质要求。与大多数 TLD 的主要区别在于，.ai 最短注册期为两年（而非一年），这会提高前期成本。
+[GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220) 表示，任何人都可以注册 .ai 域名。购买前，请核对所选注册商的条款。
 
 ### .ai 域名会影响 SEO 吗？
 
@@ -216,15 +207,15 @@ Cate 不是一个安静的观察者。以极低的成本抵达，他创立了安
 
 ### 谁适合注册 .ai 域名？
 
-它适合希望将"AI"含义融入名称的人工智能初创公司、机器学习产品、AI 智能体和开发者工具。对于预算有限的项目或本地非科技企业而言，考虑到较高的价格和两年最短注册期，.ai 并不是理想选择。
+人工智能初创公司、机器学习产品、AI 智能体和开发者工具可以考虑 .ai。选择时，请同时考虑名称含义与项目预算。
 
 ### 谁拥有并运营 .ai 注册局？
 
 安圭拉政府持有 .ai 的 [IANA](/zh-CN/glossary/iana/) 授权。自 2025 年 1 月起，技术注册后端由 Identity Digital 运营。但你注册的每个 .ai 域名归你（[注册人](/zh-CN/glossary/registrant/)）所有。
 
-### 为什么 .ai 最短注册期为两年？
+### GoDaddy 列出了哪些 .ai 注册期限？
 
-安圭拉注册局制定了这一政策：.ai 域名以两年至十年为期注册和续期，而非 .com 等常见的一年周期。这提高了前期成本，但降低了因错过一次续期而丢失域名的风险。
+[GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220) 列出的 .ai 注册和续费期限为 2、4、6、8、10 年。请核对所选注册商提供的期限。
 
 ## 来源
 
@@ -244,3 +235,5 @@ Cate 不是一个安静的观察者。以极低的成本抵达，他创立了安
 - [什么是代币化域名？](/zh-CN/blog/what-are-tokenized-domains/)
 - [.io 域名](/zh-CN/tld/io/) · [.com 域名](/zh-CN/tld/com/) · [.dev 域名](/zh-CN/tld/dev/)
 - 术语表：[注册商](/zh-CN/glossary/registrar/) · [ICANN](/zh-CN/glossary/icann/) · [DNSSEC](/zh-CN/glossary/dnssec/) · [域名创意拼接](/zh-CN/glossary/domain-hack/)
+
+- [GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220) — 来源核对日期：2026-10-21.

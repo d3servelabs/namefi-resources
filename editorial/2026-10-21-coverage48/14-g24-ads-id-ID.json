@@ -1,0 +1,241 @@
+{
+  "request": {
+    "language": "languageConstants/1025",
+    "geoTargetConstants": [
+      "geoTargetConstants/2360"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "domain expired",
+      "cek domain expired",
+      "beli domain expired",
+      "domain kedaluwarsa"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "domain expired",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "1600"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "1600"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "1600"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "1600"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "1600"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "1900"
+            }
+          ],
+          "avgMonthlySearches": "1900",
+          "competitionIndex": "39",
+          "lowTopOfPageBidMicros": "550000",
+          "highTopOfPageBidMicros": "4040000"
+        }
+      },
+      {
+        "text": "cek domain expired",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "590"
+            }
+          ],
+          "avgMonthlySearches": "480",
+          "competitionIndex": "25",
+          "lowTopOfPageBidMicros": "62822",
+          "highTopOfPageBidMicros": "1022863"
+        }
+      },
+      {
+        "text": "beli domain expired",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "60",
+          "lowTopOfPageBidMicros": "576478",
+          "highTopOfPageBidMicros": "2740000"
+        }
+      },
+      {
+        "text": "domain kedaluwarsa"
+      }
+    ]
+  },
+  "fetched_utc": "2026-10-22T00:06:22.795721+00:00",
+  "fetch_time_basis": "Local response-file modification timestamp"
+}
