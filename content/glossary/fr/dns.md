@@ -14,6 +14,8 @@ level: 2
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://datatracker.ietf.org/doc/html/rfc1035
+  - https://www.rfc-editor.org/rfc/rfc4033.html#section-5
+  - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
@@ -65,9 +67,9 @@ Ce schéma — où le résolveur effectue le travail itératif et le client ne p
 
 ## La hiérarchie DNS et les types d'enregistrements clés
 
-Le DNS est organisé comme un arbre inversé. La racine (`.`) se trouve au sommet ; en dessous se trouvent les TLD (`.com`, `.net`, `.io`, les codes de pays comme `.de`) ; sous chaque TLD se trouvent les domaines de deuxième niveau (`example.com`) ; et ceux-ci peuvent avoir des sous-domaines d'une profondeur arbitraire (`mail.example.com`).
+Le DNS est organisé comme un arbre inversé. La racine (`.`) se trouve au sommet ; en dessous se trouvent les TLD (`.com`, `.net`, `.io`, les codes de pays comme `.de`) ; sous chaque TLD se trouvent les domaines de deuxième niveau (`example.com`) ; et ceux-ci peuvent avoir des sous-domaines imbriqués (`mail.example.com`).
 
-Chaque nœud de cet arbre est appelé une **zone**, et le serveur de noms faisant autorité pour une zone détient les **enregistrements de ressources** de cette zone. Les [types d'enregistrements DNS](/fr/glossary/dns-record-types/) les plus couramment rencontrés sont :
+Une **zone** est une partie de l’arbre DNS placée sous une administration commune. Chaque nœud ne constitue pas nécessairement une zone distincte. Une délégation sépare une zone enfant de sa zone parente. Le serveur faisant autorité conserve les **enregistrements de ressources** de la zone ([RFC 1034, section 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Les [types d’enregistrements DNS](/fr/glossary/dns-record-types/) courants sont :
 
 | Enregistrement | Rôle | Exemple de valeur |
 |--------|---------|---------------|
@@ -101,9 +103,9 @@ Les spécifications DNS originales ont été conçues pour la fiabilité et l'ex
 
 **Empoisonnement du cache.** Un attaquant capable d'injecter une réponse DNS falsifiée dans le cache d'un résolveur peut rediriger les utilisateurs de sites légitimes vers des sites malveillants à leur insu. L'attaque Kaminsky (2008) l'a démontré à grande échelle, conduisant à une adoption plus large de la randomisation des ports et du [DNSSEC](/fr/glossary/dnssec/).
 
-**DNSSEC.** Les extensions de sécurité DNS, définies dans les RFC 4033–4035, ajoutent des signatures cryptographiques aux enregistrements DNS. Un résolveur qui valide les signatures [DNSSEC](/fr/glossary/dnssec/) peut détecter les réponses falsifiées. L'adoption progresse mais de manière inégale : en 2024, environ 90 % de la zone racine et des principaux TLD sont signés, mais la validation de bout en bout dépend de la signature de toutes les zones de la chaîne et de la vérification des signatures par les résolveurs.
+**DNSSEC.** Les extensions de sécurité DNS ajoutent des signatures cryptographiques aux ensembles d’enregistrements DNS. Un résolveur validant vérifie les signatures par une chaîne d’authentification jusqu’à une ancre de confiance configurée. Une racine signée n’authentifie pas à elle seule une zone enfant non signée. [RFC 4033, section 5](https://www.rfc-editor.org/rfc/rfc4033.html#section-5) distingue les résultats sûrs, non sécurisés, invalides et indéterminés.
 
-**Détournement DNS.** Des attaquants qui compromettent un compte de registraire, les systèmes de registre ou le résolveur d'un fournisseur d'accès peuvent rediriger les réponses DNS à grande échelle. Les défenses comprennent l'authentification à plusieurs facteurs au niveau du registraire, les verrous de registre (EPP `serverTransferProhibited`) et la surveillance des changements inattendus d'enregistrements NS ou A.
+**Détournement DNS.** Des attaquants qui compromettent un compte de registraire, les systèmes de registre ou le résolveur d'un fournisseur d'accès peuvent rediriger les réponses DNS à grande échelle. Les défenses comprennent l'authentification à plusieurs facteurs au niveau du registraire, les restrictions du registre sur les transferts et les mises à jour (EPP `serverTransferProhibited` et `serverUpdateProhibited`) et la surveillance des changements inattendus d'enregistrements NS ou A ([ICANN](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)).
 
 **DNS sur HTTPS / DNS sur TLS (DoH / DoT).** Ces protocoles chiffrent les requêtes DNS entre les clients et les résolveurs, empêchant l'écoute clandestine et la modification en transit des requêtes — une protection complémentaire au DNSSEC, qui traite de l'intégrité des données plutôt que de la vie privée.
 

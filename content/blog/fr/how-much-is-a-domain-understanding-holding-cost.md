@@ -39,6 +39,16 @@ C’est la première chose à comprendre avant d’enregistrer un nom. Le prix a
 
 Le prix promotionnel du premier enregistrement ne détermine pas le prix du renouvellement. Comparez le [coût de détention](/fr/glossary/holding-cost/) à long terme.
 
+## Vous trouvez un domaine bon marché en comparant le même achat
+
+Comparez le même nom, la même extension, la même devise et la même durée chez chaque registrar. Notez séparément l’enregistrement et le renouvellement. Ne comparez pas un nom premium à un nom au tarif standard.
+
+[Porkbun](https://porkbun.com/products/domains) publie des colonnes distinctes pour l’enregistrement, le renouvellement et le transfert. [Cloudflare](https://www.cloudflare.com/domains/) déclare ne pas ajouter de marge aux enregistrements et renouvellements. Cloudflare impose [ses serveurs de noms](https://developers.cloudflare.com/registrar/get-started/register-domain/). Tenez compte de cette exigence pour comparer la souplesse du DNS.
+
+Ajoutez les services nécessaires avant de choisir le total le plus bas. Vérifiez les taxes et produits facultatifs dans le panier final. Un tarif promotionnel ne suffit pas pour déterminer l’option la moins chère à long terme.
+
+Sources consultées le 22 octobre 2026. Les prix et conditions peuvent changer.
+
 ## Le premier chiffre affiché n’est pas le coût
 
 La plupart des gens demandent « combien coûte un domaine ? » et attendent une seule réponse. Une meilleure question est : « Combien ce nom me coûtera-t-il si je le garde trois ans et qu’un problème survient une fois ? »

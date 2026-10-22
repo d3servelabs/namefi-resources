@@ -1,0 +1,118 @@
+{
+  "reviewer": "/root",
+  "review_model": "gpt-6.1-sol",
+  "review_method": "Personally viewed all final image pixels; visual checks include spelling, meaning, logo, clipping and og bottom safe area.",
+  "images": [
+    {
+      "path": "content/assets/dmarc-record-setup-01-alignment.jpg",
+      "sha256": "d00e404149d1ea862567767f1392432fb0e5d6b1acdba1a94e04a57153054003",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/dmarc-record-setup-02-rollout.jpg",
+      "sha256": "0a9d3e30d66ca281d8458ae86ad7cdc7ff7fd1f791d3935e815b7c5656a02d54",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/dmarc-record-setup-og.jpg",
+      "sha256": "df284eebd1a561756c17d413086f0ecdfea294080ef7f1f00edeb7ca6ccf0836",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/dynamic-dns-setup-01-update.jpg",
+      "sha256": "f201a0b33f48939fe68617e6754a8567687383f603d811aebd4bb6ecfe69c942",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/dynamic-dns-setup-02-reachability.jpg",
+      "sha256": "d86e6f9370f837479d19c9ee70355c889e3d9cc56b9094ab57574ce232c974f0",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/dynamic-dns-setup-og.jpg",
+      "sha256": "e61dea8c196ce6c29dd3cc1c7959a1865dc962510922fd4f7fa2ba65f70039f7",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/fix-dns-probe-finished-nxdomain-01-status.jpg",
+      "sha256": "eed4f5a137d3fbde564dc319b9b8e9b35485c18f0a0bcc47a475330be57dba09",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/fix-dns-probe-finished-nxdomain-02-comparison.jpg",
+      "sha256": "043301adbe605d3bb637b8adff8de71110fdb9e0ad2ea49a6a46c6673973ba69",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/fix-dns-probe-finished-nxdomain-03-owner.jpg",
+      "sha256": "1ee19baa2480ac8c6596ab6fcbfe628ffc616723615c5718d2960472fdb52bd9",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/fix-dns-probe-finished-nxdomain-og.jpg",
+      "sha256": "8d2da7083f611c5ad764a9f0c5301f7ba87fea97b0e640a5e4baa8bb73e997b3",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/flush-dns-cache-01-windows.jpg",
+      "sha256": "a385d829d6efe0e9860a29d759944b2b402c5957b90a25119d677decb5131a6b",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/flush-dns-cache-02-platform.jpg",
+      "sha256": "9dbe41c32b5017a87a40a7ada24e991f130813d3729af79af4957ab0287259dc",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/flush-dns-cache-03-boundaries.jpg",
+      "sha256": "c1de519e9e3c69b44643e361dad8c0d76b4c3247f3a295ffea44d85d8f7632d4",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/flush-dns-cache-og.jpg",
+      "sha256": "1e3d42725ae29a4e928ef69aa3071b1478d5546557e883689128943de4f1f383",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/free-ssl-certificate-01-manager.jpg",
+      "sha256": "5048da6d2c1f219309a708007628deb9256c0ab4a9122c5f00f31a945b94d765",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/free-ssl-certificate-02-validation.jpg",
+      "sha256": "a21a0dbf7044d8675cf3d5598faf930253ec44cdd68a94af7f6e0a7624136e48",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/free-ssl-certificate-og.jpg",
+      "sha256": "f650a24c50a0cb5afded73154dca2f0cdf5f30a3432cb1daa4c392b9f77aa143",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/how-much-is-a-domain-understanding-holding-cost-og.jpg",
+      "sha256": "5bebba6dfbbbec84bee20fab2f8068ae8a6658b5ec931179adfe543e02c27938",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/how-to-install-an-ssl-certificate-og.jpg",
+      "sha256": "0b23e63c50d536adc78cb109600691c0ff545af94e2e29e801526975d1293506",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/ssl-certificate-types-01-identity.jpg",
+      "sha256": "347d03adddad5cf608379b4248041d0788419eaa2f3f4373423ecbfa00c672b8",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/ssl-certificate-types-02-coverage.jpg",
+      "sha256": "77dd65cb6482eaee8af6f89365e9ac1d80546e21764ad51f5c98e65c8fab8252",
+      "verdict": "PASS"
+    },
+    {
+      "path": "content/assets/ssl-certificate-types-og.jpg",
+      "sha256": "12aebcd915c89924d3553528f64af143ea0b55cf8871796a335c1a0775269c10",
+      "verdict": "PASS"
+    }
+  ],
+  "rejected_attempts": "Raw image receipts preserve all attempts. Domain cost cover attempt 2 intruded into bottom safe area; attempt 3 replaced the image and passes root inspection."
+}
