@@ -1,0 +1,44 @@
+[
+  {
+    "model": "gpt-image-2",
+    "quality": "high",
+    "captured_utc": "2026-10-22T01:59:39.131780+00:00",
+    "usage": {
+      "input_tokens": 701,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 701
+      },
+      "output_tokens": 3401,
+      "output_tokens_details": {
+        "image_tokens": 3401,
+        "text_tokens": 0
+      },
+      "total_tokens": 4102
+    },
+    "error": false,
+    "attempt": 1,
+    "qc": "Rejected: .com/.net/.org decorative objects intruded into required bottom band."
+  },
+  {
+    "model": "gpt-image-2",
+    "quality": "high",
+    "captured_utc": "2026-10-22T02:01:58.121238+00:00",
+    "usage": {
+      "input_tokens": 745,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 745
+      },
+      "output_tokens": 3401,
+      "output_tokens_details": {
+        "image_tokens": 3401,
+        "text_tokens": 0
+      },
+      "total_tokens": 4146
+    },
+    "error": false,
+    "attempt": 2,
+    "qc": "Accepted after opening final JPG: 1200x630, cream full bleed, exact headline/subtitle, official top-right logo, no clipping, clear bottom band."
+  }
+]
