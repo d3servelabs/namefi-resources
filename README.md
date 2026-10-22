@@ -74,6 +74,10 @@ See [maintenance scripts](scripts/README.md) for generated-data behavior and the
 
 ## Automation
 
+The optional [content batch coordinator](scripts/content-batch/README.md) keeps
+PR status messages to three fields and gates batch merges on final-tree CI.
+
+
 - On every push to `main`, a workflow dispatches a `resources-updated` event to `namefi-astra`.
 - A manual dispatch checks out the requested Resources ref and sends its exact
   resolved commit to Astra, so recovery runs cannot accidentally sync the

@@ -1,0 +1,73 @@
+{
+  "basis": "Existing Google Ads US-English model; inventory reconciliation, not a ranking audit",
+  "content_commit": "91dbd445c19d1c90358068f947ec64b25bf19b06",
+  "completed_topics": 48,
+  "completed_unique_english_pages": 47,
+  "approved_batch_remaining": 0,
+  "all_intents": {
+    "selected_clusters": 37,
+    "new_article_candidates": [
+      "dns-flush",
+      "domain-cheap",
+      "dns-nxdomain",
+      "ssl-types",
+      "dns-dmarc",
+      "ssl-install"
+    ],
+    "existing_pages_to_recheck": [
+      "content/blog/en/benchmark-dns-for-gaming.md",
+      "content/blog/en/domain-vs-hosting.md",
+      "content/blog/en/how-to-name-your-project.md",
+      "content/blog/en/txt-records-spf-dkim-verification.md",
+      "content/blog/en/what-is-a-tld.md",
+      "content/blog/en/what-is-https.md",
+      "content/glossary/en/dns.md",
+      "content/tld/en/com.md"
+    ],
+    "product_intents_to_audit": [
+      "domain-register",
+      "whois-tool",
+      "domain-availability",
+      "dns-check",
+      "spf-check",
+      "mx-check",
+      "dns-leak",
+      "ssl-check"
+    ],
+    "unresolved_intents": [
+      "ssl-buy"
+    ]
+  },
+  "article_reference_only": {
+    "selected_clusters": 36,
+    "new_article_candidates": [
+      "dns-flush",
+      "domain-cheap",
+      "dns-nxdomain",
+      "ssl-types",
+      "dns-dmarc",
+      "ssl-free",
+      "dns-dynamic",
+      "ssl-install"
+    ],
+    "existing_pages_to_recheck": [
+      "content/blog/en/benchmark-dns-for-gaming.md",
+      "content/blog/en/domain-vs-hosting.md",
+      "content/blog/en/how-to-name-your-project.md",
+      "content/blog/en/how-to-value-a-domain-name.md",
+      "content/blog/en/ttl-and-dns-propagation.md",
+      "content/blog/en/txt-records-spf-dkim-verification.md",
+      "content/blog/en/what-is-a-tld.md",
+      "content/blog/en/what-is-https.md",
+      "content/glossary/en/dns.md",
+      "content/tld/en/com.md"
+    ],
+    "product_intents_to_audit": [],
+    "unresolved_intents": [
+      "ssl-buy"
+    ]
+  },
+  "translations_required_for_us_english_scope": 0,
+  "remaining_demand_qualified_translations": null,
+  "translation_limit": "No multi-market keyword denominator exists; unknown does not mean zero."
+}
