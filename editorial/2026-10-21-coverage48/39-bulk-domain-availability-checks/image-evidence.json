@@ -1,0 +1,30 @@
+{
+  "created": 1792633919,
+  "model": null,
+  "usage": {
+    "input_tokens": 429,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 429
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+      "image_tokens": 5488,
+      "text_tokens": 0
+    },
+    "total_tokens": 5917
+  },
+  "error": null,
+  "attempt": 1,
+  "requested_model": "gpt-image-2",
+  "quality": "high",
+  "generation_size": "1536x1024",
+  "final_size": [
+    1200,
+    675
+  ],
+  "sha256": "eea047dfc247666398967160952cb2008c5f0352c4717f07610be77e5b208c66",
+  "response_persisted_before_parsing": "/private/tmp/namefi-stack48/39-bulk-domain-availability-checks/image-attempt1-response-private.json",
+  "immutable_script": "/private/tmp/namefi-stack48/39-bulk-domain-availability-checks/inline-attempt1.sh",
+  "qc": "PASS: cream dot grid full bleed; no clipped objects or labels; Queue, Check, Wait, Resume spelled correctly; official logo top-right on empty cream; bounded retry loop supports section. Not a cover, bottom caption reserve does not apply."
+}
