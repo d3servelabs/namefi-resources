@@ -18,6 +18,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Test content batch coordination
+        run: python3 -m unittest discover -s scripts/content-batch -p 'test_*.py'
+
       - name: Validate data
         run: bun data:validate
 

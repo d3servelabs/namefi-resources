@@ -24,3 +24,9 @@ while retaining malformed-metadata, wrong-locale, and broken-target failures.
 See the [validation commands](../README.md#validation) for corpus-wide checks.
 
 After publishing citation changes, run `bun scripts/check-published-citations.ts <article-url> ...`. This read-only check requires real article HTML and fails when a `#ref-` link has no rendered target. Inline citations can link directly to the original source; HTML-only anchors may be removed by the application renderer.
+
+## The content batch coordinator keeps status messages small
+
+[The batch coordinator](content-batch/README.md) exchanges PR number, SHA, and status only.
+Python handles metadata polling, final CI gates, stack merges, and the existing release workflow.
+Article bodies and source evidence remain explicit, bounded artifact reads.
