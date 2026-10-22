@@ -1,0 +1,23 @@
+{
+  "source": "https://developers.google.com/static/google-ads/api/data/geo/geotargets-2026-10-06.csv.zip",
+  "rows": [
+    {
+      "Criteria ID": "2250",
+      "Name": "France",
+      "Canonical Name": "France",
+      "Parent ID": "",
+      "Country Code": "FR",
+      "Target Type": "Country",
+      "Status": "Active"
+    },
+    {
+      "Criteria ID": "2276",
+      "Name": "Germany",
+      "Canonical Name": "Germany",
+      "Parent ID": "",
+      "Country Code": "DE",
+      "Target Type": "Country",
+      "Status": "Active"
+    }
+  ]
+}

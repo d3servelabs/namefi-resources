@@ -1,0 +1,16 @@
+[
+  {
+    "file": "content/assets/ie-og.jpg",
+    "sha256": "dcb9f2d8bd717b3f67c841832e689a1720f05b3c6555f7c1980f6ac486c1acee",
+    "final_attempt": 2,
+    "visual_qc": "PASS: opened final file; cream margins, correct text, official top-right logo, no clipping; cover bottom band empty",
+    "attempt1_rejection": "cover scene crossed bottom reserve"
+  },
+  {
+    "file": "content/assets/ie-01-eligibility.jpg",
+    "sha256": "f006677db284c4cd0b63ae49cbea83bbd8c2f894ba2c03e947347a51bcb1d574",
+    "final_attempt": 2,
+    "visual_qc": "PASS: opened final file; cream margins, correct text, official top-right logo, no clipping; cover bottom band empty",
+    "attempt1_rejection": "inline heading too near upper crop edge and browser card too near bottom edge"
+  }
+]
