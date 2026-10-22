@@ -85,11 +85,29 @@ Bei Cloudflare Families lautet das IPv4-Paar für den Schadsoftwarefilter `1.1.1
 
 Ein gewöhnliches DNS-Adressfeld erwartet eine IP-Adresse. Ein DoT-Hostname-Feld erwartet den Hostnamen des Anbieters. Ein Feld für benutzerdefiniertes DoH erwartet einen unterstützten HTTPS-Endpunkt des Anbieters. Eine IP-Adresse allein aktiviert keine Verschlüsselung. Der [Vergleich von DoH und DoT](/de/blog/dns-over-https-vs-dns-over-tls/) erläutert den Unterschied.
 
-Lesen Sie Datenschutzversprechen mit dem jeweiligen Geltungsbereich. Cloudflare beschreibt eingeschränkte Resolver-Protokolle, Löschzusagen und eine Ausnahme für Stichproben von Netzwerkpaketen. Cloudflare beschreibt außerdem den Zugriff von APNIC auf anonymisierte Abfragemetadaten. Die Einschränkungen machen die [veröffentlichte Richtlinie](https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/) aussagekräftiger als die pauschale Aussage „keine Protokolle“.
+## Datenschutzvergleiche müssen Datenfelder und Ausnahmen unterscheiden
 
-Google unterscheidet vorübergehende und dauerhafte DNS-Protokolle. Laut Google beginnen die Löschverfahren für vorübergehende Protokolle mit Client-Adressen und Anfragen innerhalb von 24–48 Stunden. Sicherheits- und Missbrauchsfälle können die Speicherung verlängern. Dauerhafte Stichprobenprotokolle ersetzen laut Google die Client-Adresse durch Standortinformationen. Google erklärt außerdem, dass persönliche DNS-Informationen nicht für gezielte Werbung dienen. Lesen Sie vor der Entscheidung die [vollständige Richtlinie](https://developers.google.com/speed/public-dns/privacy).
+![Datenschutzprüfungen unterscheiden vorübergehende Protokolle, zusammengefasste Statistiken und Vorfallsdaten.](../../assets/choose-public-dns-resolver-06-privacy-fields.jpg)
 
-Die [Datenschutzrichtlinie von Quad9](https://quad9.net/privacy/policy/) unterscheidet normale Betriebsbedingungen von außergewöhnlichen Bedingungen mit eigenen Regeln. Die Unterscheidung zählt beim Vergleich einer knappen Datenschutzbehauptung mit den vollständigen Betriebsbedingungen. Eine Anbieterrichtlinie bleibt eine Zusage des Anbieters. Die Richtlinie ist keine Protokolleigenschaft und keine Anonymitätsgarantie.
+Jeder Anbieter legt eigene Erfassungsregeln für die dargestellten Datenkategorien fest.
+
+Auch eine verschlüsselte Verbindung übermittelt die Anfrage an den Resolver. Vergleichen Sie gespeicherte Daten, Speicherfristen, Weitergaben und Ausnahmen getrennt. Die Aussage „keine Protokolle“ beschreibt nicht jede Datenkategorie.
+
+| Anbieterrichtlinie | Gewöhnlicher Umgang mit Adressen | Mögliche dauerhafte Daten | Zu prüfende Ausnahme |
+| --- | --- | --- | --- |
+| Öffentlicher Cloudflare-Resolver | Gekürzte Adressen verfallen innerhalb von 25 Stunden | Begrenzte Stichproben für Auswertungen und unbefristete zusammengefasste Statistiken | Zufällige Stichproben von Netzwerkpaketen |
+| Google Public DNS | Vorübergehende Protokolle verbinden Client-Adressen mit Anfragen | Dauerhafte Stichproben ersetzen Adressen durch Stadt oder Region | Speicherung bei Sicherheits- und Missbrauchsfällen |
+| Quad9 | Die normale Verarbeitung hält Antwortadressen im flüchtigen Arbeitsspeicher | Zusammengefasste Zähler und Statistiken zu abgefragten Namen | Diagnosedaten bei außergewöhnlichen Bedingungen |
+
+Cloudflare nennt abgefragte Namen, Zeitstempel, Antwortdetails, Netzwerknummern und Länder als Resolver-Protokollfelder. Cloudflare sagt die Löschung gewöhnlicher Resolver-Protokolle innerhalb von 25 Stunden zu. Begrenzte Stichproben für zusammengefasste Auswertungen fallen nicht unter diese Regel. Zusammengefasste Daten darf Cloudflare unbefristet speichern. Cloudflare erlaubt außerdem zufällige Paketstichproben aus höchstens 0,05 % des Verkehrs zur eigenen Netzwerkinfrastruktur. Die Ausnahme dient der Fehlerdiagnose und der Abwehr von Überlastungsangriffen. APNIC erhält Zugriff auf anonymisierte Abfragemetadaten einschließlich abgefragter Namen, jedoch nicht auf Client-IP-Adressen. Prüfen Sie [Cloudflares vollständige Datenkategorien](https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/), bevor Sie 25 Stunden als allgemeine Speichergrenze verstehen.
+
+Googles vorübergehende Protokolle enthalten Client-Adressen und Abfragedetails. Google unterzieht die Protokolle innerhalb von 24–48 Stunden Löschverfahren. Sicherheits- und Missbrauchsfälle erlauben längere Speicherung. Dauerhafte Stichproben ersetzen Adressen durch Stadt- oder Regionsangaben. Die dauerhaften Felder umfassen abgefragte Namen, Zeitstempel, Übertragungsverfahren und die Nummer des autonomen Systems des Clients. Google schließt die Nutzung persönlicher DNS-Daten für gezielte Werbung aus. Die Zusage gegen eine Verknüpfung mit persönlichen Daten anderer Google-Dienste enthält ebenfalls eine Ausnahme für Sicherheits- und Missbrauchsfälle. Die [Richtlinie von Google Public DNS](https://developers.google.com/speed/public-dns/privacy) nennt die Grenzen getrennt.
+
+Quad9s normale Richtlinie hält Antwortadressen während der Verarbeitung oder der zustandsbehafteten Verbindung im flüchtigen Arbeitsspeicher. Laut Quad9 speichert der Dienst keine Nutzer-IP-Adressen oder Ersatzmerkmale zur Identifizierung einzelner Personen dauerhaft. Quad9 darf zusammengefasste Zähler und Statistiken zu abgefragten Namen dauerhaft aufbewahren. Quad9 darf außerdem zusammengefasste Verkehrsübersichten lizenzieren, auch gegen Entgelt, ohne personenbezogene Informationen weiterzugeben. Die Zusagen betreffen unterschiedliche Datenklassen. Die [normale Quad9-Richtlinie](https://quad9.net/privacy/policy/) erläutert die Unterschiede.
+
+Quad9s [Richtlinie für außergewöhnliche Bedingungen](https://quad9.net/privacy/anomalous-conditions/) umfasst neben Angriffen und missbräuchlicher Nutzung auch Softwarefehler und Protokollfehler. Die Diagnose kann zugehörige IP-Adressen erfassen. Anfragen mit Bezug zur ermittelten Ursache können einschließlich Quelladressen, Namen und Zeitstempeln in dauerhafte Archive gelangen. Die knappe Aussage „speichert niemals Adressen“ benötigt deshalb die Einschränkung auf normale Bedingungen.
+
+Bestimmen Sie die Anforderung vor der Anbieterwahl. Eine Anforderung gegen routinemäßige dauerhafte Nutzeradressprotokolle unterscheidet sich von einer Anforderung gegen dauerhafte zusammengefasste Statistiken. Eine Anforderung gegen die Speicherung von Vorfallsdaten erfordert einen weiteren Vergleich. Keine der Richtlinien garantiert Anonymität. Der Resolver sieht die Anfrage weiterhin während der Verarbeitung.
 
 Google dokumentiert ausdrücklich die [DNSSEC-Unterstützung](https://developers.google.com/speed/public-dns/docs/security#dnssec). Quad9 beschreibt DNSSEC-Fehler in der Anleitung zur Fehlerbehebung. Prüfen Sie die aktuelle Dokumentation der gewählten Variante. Nicht jede Adresse eines Betreibers muss dasselbe Verhalten aufweisen.
 
@@ -169,7 +187,7 @@ Das Ergebnis sollte ein kurzer Konfigurationsnachweis sein: gewählter Dienst, g
 
 ## Die Quellen belegen die Angaben des Artikels
 
-Alle folgenden Quellen wurden am 21. Oktober 2026 UTC abgerufen. Produktregeln und Plattformverhalten können sich ändern.
+Die Datenschutzrichtlinien wurden am 22. Oktober 2026 UTC erneut abgerufen. Die übrigen Quellen wurden am 21. Oktober 2026 UTC abgerufen. Produktregeln und Plattformverhalten können sich ändern.
 
 - Cloudflare: [IP-Adressen](https://developers.cloudflare.com/1.1.1.1/ip-addresses/), „1.1.1.1“ und „1.1.1.1 for Families“.
 - Cloudflare: [Datenschutz des öffentlichen DNS-Resolvers](https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/), Datenschutzzusagen und Datenweitergabe an APNIC.
@@ -177,6 +195,7 @@ Alle folgenden Quellen wurden am 21. Oktober 2026 UTC abgerufen. Produktregeln u
 - Google: [Einrichtung](https://developers.google.com/speed/public-dns/docs/using), Vorbereitung und IP-Adressen.
 - Google: [Sicherheitsvorteile](https://developers.google.com/speed/public-dns/docs/security#dnssec), DNSSEC und verschlüsselte Übertragungsverfahren.
 - Quad9: [Dienste](https://docs.quad9.net/services/), sicherer Dienst und weitere Varianten.
+- Quad9: [Außergewöhnliche Bedingungen](https://quad9.net/privacy/anomalous-conditions/), Diagnoseerfassung und dauerhafte Vorfallsarchive.
 - Quad9: [Daten- und Datenschutzrichtlinie](https://quad9.net/privacy/policy/), Geltungsbereich und Umgang mit IP-Adressen.
 - Quad9: [Häufige Fragen](https://docs.quad9.net/FAQs/), Protokolltest, Erkennung von Blockierungen und ECS.
 - Mozilla: [DoH-Schutzstufen in Firefox](https://support.mozilla.org/en-US/kb/dns-over-https#w_protection-levels-explained).

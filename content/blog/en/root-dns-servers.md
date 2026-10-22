@@ -127,6 +127,41 @@ dig . NS
 
 The command asks the configured resolver. The response can come from the resolver's cache. A successful answer therefore does not prove a fresh direct exchange with a root instance. Save the response flags, TTLs, server information, and timestamp before drawing a conclusion.
 
+### Direct queries distinguish a root answer from a TLD referral
+
+Use direct queries only where network policy permits external DNS traffic. The following address belongs to A-root in [IANA's root-server list](https://www.iana.org/domains/root/servers). The address selects a service endpoint, not one physical instance.
+
+First, ask that endpoint for the root zone's own NS records:
+
+```bash
+dig @198.41.0.4 . NS +norecurse
+```
+
+Next, ask the same endpoint for the `.com` delegation:
+
+```bash
+dig @198.41.0.4 com. NS +norecurse
+```
+
+The `@` argument selects the server. The `+norecurse` option clears the recursion-desired flag. [BIND documents the option and query syntax.](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility) Keep the full output, including response sections and flags.
+
+![A direct root NS query returns root server names in ANSWER, while a com NS query returns a referral in AUTHORITY.](../../assets/root-dns-servers-05-answer-referral.jpg)
+
+The table describes expected protocol behavior, not captured command output. Actual results depend on reachability and the responding service.
+
+| Query | Expected successful response | Interpretation |
+| --- | --- | --- |
+| `. NS` | Root NS records in `ANSWER`, with `aa` | The server answers authoritatively for the root name |
+| `com. NS` | Delegation NS records in `AUTHORITY`, usually with address records in `ADDITIONAL` and no `aa` | The server directs the next query toward `.com` servers |
+
+The `aa` flag means authoritative answer for the queried name. A root server can answer authoritatively for `.` while referring a `.com` question elsewhere. [RFC 1035 defines AA.](https://www.rfc-editor.org/rfc/rfc1035.html#section-4.1.1) The heading `AUTHORITY` names a response section. The heading does not establish that the response has the `aa` flag.
+
+Read the response status as well as the section counts. A successful referral can have `NOERROR` and an empty `ANSWER` section. The empty section alone does not mean `NXDOMAIN`. [RFC 1034 puts referral NS records in the authority section](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.3.2), while [RFC 1035 defines the Name Error response code](https://www.rfc-editor.org/rfc/rfc1035.html#section-4.1.1).
+
+A timeout supplies no DNS response status. Compare the timeout with the approved resolver's result and network policy before reporting a root-service failure.
+
+### Iterative tracing follows the delegation path
+
 For a separate delegation investigation, use a reserved example name:
 
 ```bash
@@ -159,3 +194,6 @@ Root servers provide an important shared discovery layer. Practical troubleshoot
 - IETF, [RFC 4033, Sections 2–4](https://www.rfc-editor.org/rfc/rfc4033.html#section-2), trust anchors and DNSSEC limits. Fetched 2026-10-21.
 - IANA, [Trust Anchors and Rollovers](https://www.iana.org/dnssec/files), introduction and Root Zone Trust Anchors. Fetched 2026-10-21.
 - Internet Systems Consortium, [BIND dig manual](https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility), query syntax and `+trace`. Fetched 2026-10-21.
+
+- IETF, [RFC 1035, Section 4.1.1](https://www.rfc-editor.org/rfc/rfc1035.html#section-4.1.1), AA flag and response codes. Fetched 2026-10-21.
+- Internet Systems Consortium, [BIND stable dig manual](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility), server selection and `+norecurse`. Fetched 2026-10-21.

@@ -1,0 +1,16 @@
+{
+  "period": [
+    "2026-09-21",
+    "2026-10-18"
+  ],
+  "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+  "topic": {
+    "source_id": "T02",
+    "slug": "ie",
+    "path_match": "/tld/ie/",
+    "matched_rows": 0,
+    "observed_impressions": 0,
+    "observed_clicks": 0,
+    "countries": {}
+  }
+}

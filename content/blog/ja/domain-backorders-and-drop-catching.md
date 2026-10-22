@@ -42,11 +42,11 @@ relatedGlossary:
 
 ![ドメイン名がグレースピリオドの各段階を経て空きプールに落ちるまでのタイムラインを示したエディトリアルイラスト](../../assets/domain-backorders-and-drop-catching-01-drop-cycle.jpg)
 
-ドメインは一度買えば永久に手元に残るものではない。一定期間で[登録](/ja/glossary/registrar/)され、更新が必要であり、オーナーが支払いをやめても名前は即座に消えるわけではない。決まったグレースピリオドのサイクルを経て、ようやく市場に戻ってくる。このタイムラインこそがドロップキャッチの土台となる仕組みだ。全サイクルについては[期限切れドメインとドロップサイクル](/ja/blog/expired-domains-and-the-drop-cycle/)で詳しく解説しているが、ここではドロップキャッチに直接関係する部分だけを取り上げる。
+ドメインの有効期限が切れても、すぐに一般登録へ戻るとは限りません。レジストリ、レジストラ、拡張子によって手続きが異なります。一般削除の前に期限切れオークションへ進むドメインもあります。
 
-有効期限が切れると、[レジストリ](/ja/glossary/registry/)はその名前を回復ウィンドウにかける。Wikipediaによると、[レデンプショングレースピリオド（Redemption Grace Period）](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=an%20addition%20to%20ICANN%27s%20Registrar%20Accreditation%20Agreement%20%28RAA%29%20which%20allows%20a%20registrant%20to%20reclaim%20their%20domain%20name%20for%20a%20number%20of%20days%20after%20it%20has%20expired)は、ICANNのレジストラ認定契約（RAA）への追加条項であり、登録者が期限切れ後も一定日数、自分のドメイン名を取り戻せるように設けられたものだ。この回復期間中は、オーナーは名前を取り戻すことができるが、安くはない——Wikipediaによれば、[再有効化に手数料（通常約100米ドル）が必要になる場合がある](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=may%20be%20required%20to%20pay%20a%20fee%20%28typically%20around%20US%24100%29)とされている。この期間の長さは拡張子によって異なり、Wikipediaでは[TLDによって異なり、通常30〜90日程度](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=This%20length%20of%20time%20varies%20by%20TLD%2C%20and%20is%20usually%20around%2030%20to%2090%20days)とされている。
+対象のgTLDでは、[ICANNの方針](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en)が削除後30日間の復旧猶予期間を求めています。スポンサー付きgTLDのレジストリは、この要件の対象外です。元の登録者は、削除を行ったレジストラに復旧を申請できます。レジストラは復旧料金を公表する必要があります。国別ドメインには別の規則が適用される場合があります。
 
-その後、名前はいよいよ最後のカウントダウンに入る。Wikipediaによれば、[「ペンディングデリート」フェーズの5日間が終わると、そのドメインはICANNデータベースから削除される](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=At%20the%20end%20of%20the%20%22pending%20delete%22%20phase%20of%205%20days%2C%20the%20domain%20will%20be%20dropped)。この[ドロップ](/ja/glossary/pending-delete/)こそが、誰もが待ち望む瞬間だ。名前がデータベースから消えた瞬間、それは普通の未登録文字列に戻り、最初に登録した者が所有権を得る。ただし、「最初に」という競争はミリ秒単位で決まることもある。
+復旧しない場合、ドメインは最終的な削除待ち段階へ進むことがあります。[ICANNの状態コード説明](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)によると、最終的な`pendingDelete`状態が５暦日続いた後、レジストリがドメインを削除します。その後、一般登録が可能になります。有効期限だけでは公開日を確定できません。
 
 ## ドロップキャッチ：ミリ秒の勝負
 
@@ -56,17 +56,15 @@ relatedGlossary:
 
 これを手作業で勝つことはできない。良いドメイン名は予測可能なスケジュールで削除され、プロのサービス勢が同じ瞬間にレジストリを叩いている。ドメイン投機の文献には、[レジストリによって削除されたドメイン名を登録するビジネスはドロップキャッチとして知られており、非常に競争の激しいビジネスだ](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20business%20of%20registering%20the%20domain%20names%20as%20they%20are%20deleted%20by%20the%20registries%20is%20known%20as%20drop%20catching.%20It%20is%20a%20highly%20competitive%20business)とある。そのスピードは残酷なほど速く、[ドロップからキャプチャまでの時間は、多くの場合、数秒またはそれ以下で測られる](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20time%20between%20a%20drop%20and%20a%20capture%20is%20often%20measured%20in%20seconds%20or%20fractions%20thereof)。
 
-だからこそドロップキャッチサービスが存在し、普通の[レジストラ](/ja/glossary/registrar/)のチェックアウトページからでは到底取れない名前を獲得できる。本格的なキャッチャーはレジストラ認定を多数取得し、レジストリの削除キューに向けたサーバーファームを運営している。Wikipediaはそのモデルを端的に説明している——これらのサービスは[通常オークション価格で、名前が利用可能になった際にそれを確保するためにサーバーを専用に使う](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=offer%20to%20dedicate%20their%20servers%20to%20securing%20a%20domain%20name%20upon%20its%20availability%2C%20usually%20at%20an%20auction%20price)と。この最後の一文を初心者は見落としがちだ。複数の顧客が同じ名前をバックオーダーしていた場合、登録費用だけで取得できるわけではない——関心を持つバックオーダー者の間で[オークション](/ja/glossary/auction/)にかけられ、人気のある名前では数百ドルから数千ドルに達することもある。その入札戦の仕組みは独自のスキルであり、[ドメインオークションで勝つ方法](/ja/blog/how-to-win-domain-auctions/)で詳しく解説している。
+最終価格をオークションが決める場合があります。[NameJet](https://www.namejet.com/userguide.action)と[SnapNames](https://www.snapnames.com/userguide.action)のガイドは、事前依頼のない参加者を含む公開オークションの可能性を明記しています。対象の出品を確認してください。バックオーダーだけでは、参加者を限定できません。
 
-## バックオーダー：ドロップ前に席を確保する
+## バックオーダーは取得の試行を依頼する注文です
 
-![ロープで仕切られた列の先頭で予約チケットを持つ人物が、待ち構える群衆の前で優先スポットを確保しているエディトリアルイラスト](../../assets/domain-backorders-and-drop-catching-03-reserve-spot.jpg)
+![取得経路、オークション規則、予算を示す注文前の確認表](../../assets/domain-backorders-and-drop-catching-04-order-checks.jpg)
 
-バックオーダーとは、事前に入れておく予約だ。ドロップの瞬間に必死に登録しようとする代わりに、「この名前が使えるようになったら、私のために取得を試みてください」とサービスに伝える仕組みで、通常は事前払いの定額料金が発生する。Wikipediaはその違いをわかりやすく説明している——バックオーダーは優先権を与えるものであり、[バックオーダーのオーナーは、ドメイン名が削除されて誰でも取れる状態になる前に、最初にそのドメインを取得する機会を与えられる。このようにバックオーダーは通常、ドロップキャッチより優先される](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=the%20owner%20of%20the%20back%2Dorder%20will%20be%20given%20the%20first%20opportunity%20to%20acquire%20the%20domain%20name)。
+バックオーダーは、サービスにドメイン取得の試行を依頼する注文です。一般削除では、サービスも他の登録システムと競争します。バックオーダーは、他社に対する共通の優先権を与えません。前払い、決済承認、入札の義務は各社の規則に従います。
 
-裏側では、バックオーダーは同じドロップキャッチの仕組みで処理されることが多く、単にあなたのリクエストに向けられているだけだ。ドメイン投機の文献には、レジストラのネットワークがその力を結集する仕組みが説明されている——[バックオーダーを処理しようとするレジストラの連合がドメインをキャッチした場合、どのレジストラがキャッチしたかにかかわらず、そのドメインはバックオーダーを入れたエンティティに登録される](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=If%20the%20domain%20is%20caught%20by%20a%20confederation%20of%20registrars%20attempting%20to%20fulfill%20a%20domain%20backorder)。つまり、保証を買っているわけではない。利用可能な最も強力なキャッチ試行へのアクセス権と、オープンな争奪戦より先の順番を買っているのだ。
-
-知っておくべきもう一つのモデルがある。それによって誰と競争しているかが変わるからだ。一部のレジストラは、名前を公開プールにドロップさせることを一切しない。文献によると、一部のレジストラは[通常の方法でドメインをドロップさせず、削除前にドメインをオークションにかける仲介者（SnapNamesやNamejetなど）を間に置く](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=do%20not%20allow%20domains%20to%20drop%20in%20the%20normal%20fashion%2C%20instead%20introducing%20an%20intermediary)。そうなった場合、名前はレジストリの削除キューに到達しないため、そのレジストラのパートナーオークションプラットフォームを通じるしか取得方法がない。名前が公開ドロップするのか、プライベートな有効期限切れオークションに回されるのかを把握することで、どのサービスにバックオーダーを入れるべきかがわかり、場合によっては「キャッチではなく入札しか手段がない」とわかることもある。
+[Dynadot](https://www.dynadot.com/help/question/place-a-backorder)は取得成功を保証していません。複数の依頼があると、オークションになる場合があります。[NameJet](https://www.namejet.com/userguide.action)は提携レジストラの期限切れ在庫と一般削除待ちの在庫を区別しています。一般公開されないドメインを、独立したサービスが新規登録することはできません。
 
 ## あなたの代わりに競争するサービス
 
@@ -77,7 +75,7 @@ relatedGlossary:
 - **Dynadot**は通常のレジストラ機能にバックオーダーや有効期限切れオークションサービスも備えており、普段登録するのと同じ場所でキャッチを予約できる。ちなみにWikipediaによれば、[ICANNの認定を受けたドメインレジストラ兼ウェブホスティング会社で、2002年にソフトウェアエンジニアのTodd Hanが設立した](https://en.wikipedia.org/wiki/Dynadot#:~:text=is%20an%20ICANN%2Daccredited%20domain%20registrar%20and%20web%20host%20company%20founded%20by%20software%20engineer%20Todd%20Han%20in%202002)とされている。
 - **Park.io**は、新しい拡張子や国コード拡張子のキャッチで評判を築いた——汎用キャッチャーのカバレッジが薄くなる種類の名前だ。メジャーでないTLDの名前を狙っているなら、スペシャリストが唯一の現実的な選択肢になることが多い。
 
-実践的な動き方は、誰かにお金を払う前に、*その特定の名前*がどうやって利用可能になるかを把握することだ。公開レジストリの削除に向かっているか（ドロップキャッチャーを使う）、それともレジストラがプライベートな有効期限切れオークションに回すか（そのプラットフォームが必要）？同じ公開ドロップを狙う2つのサービスに同じバックオーダーを入れるのはほぼ無駄金だ。その名前が通る経路を管理している1つのサービスに絞ること——それが本当のスキルだ。
+注文前に取得経路と支払い義務を確認してください。一般削除では、独立した複数のサービスを使うと、登録システムの選択肢が増えます。独占在庫では、出品を管理するプラットフォームを利用します。複数への依頼が必ず無駄な支出になるわけではありません。
 
 ## バックオーダーに実際にお金を払う価値があるケース
 
@@ -101,7 +99,7 @@ relatedGlossary:
 
 ## まとめ
 
-ドロップキャッチとは、名前が削除された瞬間に登録するレースだ。バックオーダーとは、そのレースにおける優先権付きの予約枠であり、通常は同じ仕組みで実行される。バックオーダーにお金を払うべきなのは、*その特定の名前*が希少で、実際の用途があるときだ。その名前が実際にどう解放されるかを管理しているサービスに絞り込み、名前が移転されてクリーンになるまでは「キャッチ＝取得完了」とは絶対に思わないこと。ほとんどの場合、答えは諦めることだ——そのような規律こそが、ポートフォリオと更新費用の請求書を分けるものだ。
+バックオーダーは取得の試行を依頼する注文です。成功や全サービスに対する優先権を保証しません。取得経路、オークション規則、総予算を確認してください。割り当ての完了とアカウントへのアクセスを確認してから、取得成功と判断してください。
 
 ## 免責事項（必ずお読みください）
 
@@ -109,8 +107,12 @@ relatedGlossary:
 >
 > 重要な判断には、**必ず実際のプロに相談してください（本当に！）。** それが好みでなければ、友人に聞いても、Twitterに聞いても、Redditに聞いても、AIに聞いても、占い師に聞いても構いません。要するに、**DOYR — Do Your Own Research（自分でリサーチせよ）**。一緒に学んで、楽しみましょう。
 
-## 出典・参考文献
+## これらの資料で注文条件を確認できます
 
-- Wikipedia — [Domain drop catching（定義、レデンプショングレースピリオド、ペンディングデリート、バックオーダーの優先順位）](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=is%20the%20practice%20of%20registering%20a%20domain%20name%20once%20registration%20has%20lapsed%2C%20immediately%20after%20expiry)
-- Wikipedia — [Domain name speculation（競争の激しいビジネスとしてのドロップキャッチ、バックオーダーの連合、有効期限切れオークション仲介業者）](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20business%20of%20registering%20the%20domain%20names%20as%20they%20are%20deleted%20by%20the%20registries%20is%20known%20as%20drop%20catching.%20It%20is%20a%20highly%20competitive%20business)
-- Wikipedia — [Dynadot（ICANN認定レジストラ、2002年設立）](https://en.wikipedia.org/wiki/Dynadot#:~:text=is%20an%20ICANN%2Daccredited%20domain%20registrar%20and%20web%20host%20company%20founded%20by%20software%20engineer%20Todd%20Han%20in%202002)
+資料の確認日：2026年10月21日。
+
+- [ICANN](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en)
+- [ICANN EPP](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)
+- [Dynadot](https://www.dynadot.com/help/question/place-a-backorder)
+- [NameJet](https://www.namejet.com/userguide.action)
+- [SnapNames](https://www.snapnames.com/userguide.action)

@@ -1,0 +1,60 @@
+{
+  "asset": "content/assets/gg-og.jpg",
+  "model_requested": "gpt-image-2",
+  "quality_requested": "high",
+  "final_dimensions": [
+    1200,
+    630
+  ],
+  "final_attempt": 2,
+  "attempts": [
+    {
+      "created": 1792632770,
+      "usage": {
+        "input_tokens": 705,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 705
+        },
+        "output_tokens": 3401,
+        "output_tokens_details": {
+          "image_tokens": 3401,
+          "text_tokens": 0
+        },
+        "total_tokens": 4106
+      },
+      "model": null,
+      "size": "1216x640",
+      "quality": "high",
+      "error": null,
+      "attempt": 1,
+      "response_private_path": "/private/tmp/namefi-stack48/35-gg/image-attempt1-response.json",
+      "qc": "Rejected: small pixelated heart conflicts with house rule."
+    },
+    {
+      "created": 1792632942,
+      "usage": {
+        "input_tokens": 737,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 737
+        },
+        "output_tokens": 3401,
+        "output_tokens_details": {
+          "image_tokens": 3401,
+          "text_tokens": 0
+        },
+        "total_tokens": 4138
+      },
+      "model": null,
+      "size": "1216x640",
+      "quality": "high",
+      "error": null,
+      "attempt": 2,
+      "response_private_path": "/private/tmp/namefi-stack48/35-gg/image-attempt2-response.json",
+      "qc": "Accepted after visual inspection."
+    }
+  ],
+  "final_visual_check": "Opened final 1200x630 JPEG. Correct headline, subtitle and .gg. Official logo top-right without overlap. Cream dot grid fills frame. All elements inside margins. Bottom band empty. Smooth vectors and coral/green scene. Decorative .com/.net labels are correctly spelled. Shared art text remains English across locales.",
+  "reuse": "Existing cover replaced; no other assets needed for the updated reference page."
+}

@@ -1,0 +1,423 @@
+{
+  "fetched_utc": "2026-10-22T01:50–01:51Z",
+  "language_ids_verified_at": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "period": "2025-10 through 2026-09",
+  "network": "GOOGLE_SEARCH",
+  "markets": [
+    {
+      "market": "de-DE-native",
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "massen domainsuche",
+          "massen domain suche",
+          "domain massenabfrage",
+          "mehrere domains prüfen",
+          "bulk domain check"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "mehrere domains prüfen",
+            "keywordMetrics": {
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                }
+              ],
+              "avgMonthlySearches": "10"
+            }
+          },
+          {
+            "text": "bulk domain check",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                }
+              ],
+              "avgMonthlySearches": "210",
+              "competitionIndex": "58",
+              "lowTopOfPageBidMicros": "648382",
+              "highTopOfPageBidMicros": "3034306"
+            }
+          },
+          {
+            "text": "massen domainsuche"
+          },
+          {
+            "text": "massen domain suche"
+          },
+          {
+            "text": "domain massenabfrage"
+          }
+        ]
+      }
+    },
+    {
+      "market": "de-DE",
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "bulk domain check",
+          "domain bulk check",
+          "mehrere domains prüfen",
+          "domain sammelabfrage",
+          "domain verfügbarkeit prüfen liste"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "bulk domain check",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                }
+              ],
+              "avgMonthlySearches": "210",
+              "competitionIndex": "58",
+              "lowTopOfPageBidMicros": "648382",
+              "highTopOfPageBidMicros": "3034306"
+            },
+            "closeVariants": [
+              "domain bulk check"
+            ]
+          },
+          {
+            "text": "mehrere domains prüfen",
+            "keywordMetrics": {
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                }
+              ],
+              "avgMonthlySearches": "10"
+            }
+          },
+          {
+            "text": "domain sammelabfrage"
+          },
+          {
+            "text": "domain verfügbarkeit prüfen liste"
+          }
+        ]
+      }
+    },
+    {
+      "market": "es-ES",
+      "request": {
+        "language": "languageConstants/1003",
+        "geoTargetConstants": [
+          "geoTargetConstants/2724"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "comprobar dominios masivamente",
+          "buscador de dominios masivo",
+          "verificar varios dominios",
+          "disponibilidad de dominios en lote"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "comprobar dominios masivamente"
+          },
+          {
+            "text": "buscador de dominios masivo"
+          },
+          {
+            "text": "verificar varios dominios"
+          },
+          {
+            "text": "disponibilidad de dominios en lote"
+          }
+        ]
+      }
+    },
+    {
+      "market": "fr-FR",
+      "request": {
+        "language": "languageConstants/1002",
+        "geoTargetConstants": [
+          "geoTargetConstants/2250"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "vérifier plusieurs noms de domaine",
+          "recherche domaine en masse",
+          "vérification domaines en masse",
+          "disponibilité noms de domaine liste"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "vérifier plusieurs noms de domaine"
+          },
+          {
+            "text": "recherche domaine en masse"
+          },
+          {
+            "text": "vérification domaines en masse"
+          },
+          {
+            "text": "disponibilité noms de domaine liste"
+          }
+        ]
+      }
+    }
+  ],
+  "missing_metrics": "UNKNOWN, not zero",
+  "gsc": {
+    "period": "2026-09-21 through 2026-10-18",
+    "source_id": "G30",
+    "matched_rows": 0,
+    "limitation": "No observed rows is not zero market demand."
+  }
+}
