@@ -1,0 +1,125 @@
+{
+  "model": "gpt-image-2",
+  "quality": "high",
+  "attempts": [
+    {
+      "file": "expired-domains-and-the-drop-cycle-04-two-clocks.jpg",
+      "attempt": 1,
+      "outcome": "Rejected: heading clipped after center crop; model printed prompt instruction as label.",
+      "usage": {
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 459,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 459
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5947
+        },
+        "created": 1792627656
+      }
+    },
+    {
+      "file": "expired-domains-and-the-drop-cycle-04-two-clocks.jpg",
+      "attempt": 2,
+      "outcome": "Accepted: no cropped text, generous margins, official top-right logo, ordinary .com scope.",
+      "usage": {
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 466,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 466
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5954
+        },
+        "created": 1792627756
+      }
+    },
+    {
+      "file": "expired-domains-and-the-drop-cycle-og.jpg",
+      "attempt": 1,
+      "outcome": "Accepted after opening: complete heading, subtitle, scene and official top-right logo. Empty lower band.",
+      "usage": {
+        "model": "gpt-image-2",
+        "usage": {
+          "input_tokens": 729,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 729
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4130
+        },
+        "created": 1792627955
+      }
+    }
+  ],
+  "legacy_assets": [
+    "expired-domains-and-the-drop-cycle-01-redemption.jpg",
+    "expired-domains-and-the-drop-cycle-02-release-scramble.jpg",
+    "expired-domains-and-the-drop-cycle-03-where-surface.jpg"
+  ],
+  "legacy_note": "Opened all existing assets. Existing inline illustrations still depict restoration, release competition and sourcing channels. Retained as legacy artwork. Legacy cover has bottom-right logo and a clipped object; replacing cover with house harness.",
+  "final_assets": [
+    {
+      "path": "content/assets/expired-domains-and-the-drop-cycle-og.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "a3dc32cac09f6ce63389c2043f24af729b5abc620783717bd7c9dd92ed0389f4",
+      "bytes": 105464
+    },
+    {
+      "path": "content/assets/expired-domains-and-the-drop-cycle-04-two-clocks.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "0effbc4c8788535a47027f50d8340b7cfe663a33f8ba8e29c9eac339a74e4d16",
+      "bytes": 35730
+    },
+    {
+      "path": "content/assets/expired-domains-and-the-drop-cycle-01-redemption.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "0da59c3b351866dba3928df1cc78c85b90df86ccd6c970434c930effa4061c46",
+      "bytes": 80538
+    },
+    {
+      "path": "content/assets/expired-domains-and-the-drop-cycle-02-release-scramble.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "3059175c1b255f710f8f0bf4c98098a86ac4e5bc93d51016b12fe2704690d004",
+      "bytes": 96137
+    },
+    {
+      "path": "content/assets/expired-domains-and-the-drop-cycle-03-where-surface.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "fa1ccd61dbb5e0d2cd039b180e675914f598acf76fd003bd220f83643796e36a",
+      "bytes": 79180
+    }
+  ]
+}

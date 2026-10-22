@@ -1,0 +1,54 @@
+{
+  "period": [
+    "2026-09-21",
+    "2026-10-18"
+  ],
+  "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+  "topics": [
+    {
+      "source_id": "G24",
+      "slug": "expired-domains-and-the-drop-cycle",
+      "path_match": "/blog/expired-domains-and-the-drop-cycle/",
+      "matched_rows": 9,
+      "observed_impressions": 13,
+      "observed_clicks": 0,
+      "countries": {
+        "fra": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "usa": {
+          "rows": 2,
+          "impressions": 5,
+          "clicks": 0
+        },
+        "tun": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "esp": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "chn": {
+          "rows": 2,
+          "impressions": 3,
+          "clicks": 0
+        },
+        "gbr": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "jpn": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        }
+      }
+    }
+  ]
+}

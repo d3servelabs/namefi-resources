@@ -1,0 +1,322 @@
+[
+  {
+    "agent_path": "/root/coverage48_14_g24",
+    "phase": "research-start",
+    "captured_utc": "2026-10-22T00:05:36.299670+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+        "session_log_name": "rollout-2026-10-21T17-04-57-01a160ec-dbe5-74b2-9d6c-3d15a6008fe3.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T00:05:19.947Z",
+          "total_token_usage": {
+            "input_tokens": 198664,
+            "cached_input_tokens": 176000,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 635,
+            "reasoning_output_tokens": 10,
+            "total_tokens": 199299
+          },
+          "last_token_usage": {
+            "input_tokens": 61715,
+            "cached_input_tokens": 50560,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 149,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 61864
+          }
+        }
+      }
+    ]
+  },
+  {
+    "agent_path": "/root/coverage48_14_g24",
+    "phase": "images-start",
+    "captured_utc": "2026-10-22T00:06:24.645472+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+        "session_log_name": "rollout-2026-10-21T17-04-57-01a160ec-dbe5-74b2-9d6c-3d15a6008fe3.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T00:06:05.191Z",
+          "total_token_usage": {
+            "input_tokens": 537904,
+            "cached_input_tokens": 474752,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2118,
+            "reasoning_output_tokens": 106,
+            "total_tokens": 540022
+          },
+          "last_token_usage": {
+            "input_tokens": 102477,
+            "cached_input_tokens": 90112,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 654,
+            "reasoning_output_tokens": 48,
+            "total_tokens": 103131
+          }
+        }
+      }
+    ]
+  },
+  {
+    "agent_path": "/root/coverage48_14_g24",
+    "phase": "research-end",
+    "captured_utc": "2026-10-22T00:06:54.710518+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+        "session_log_name": "rollout-2026-10-21T17-04-57-01a160ec-dbe5-74b2-9d6c-3d15a6008fe3.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T00:06:45.505Z",
+          "total_token_usage": {
+            "input_tokens": 903934,
+            "cached_input_tokens": 812928,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3544,
+            "reasoning_output_tokens": 350,
+            "total_tokens": 907478
+          },
+          "last_token_usage": {
+            "input_tokens": 131627,
+            "cached_input_tokens": 122880,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 322,
+            "reasoning_output_tokens": 158,
+            "total_tokens": 131949
+          }
+        }
+      }
+    ]
+  },
+  {
+    "agent_path": "/root/coverage48_14_g24",
+    "phase": "writing-start",
+    "captured_utc": "2026-10-22T00:06:54.754330+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+        "session_log_name": "rollout-2026-10-21T17-04-57-01a160ec-dbe5-74b2-9d6c-3d15a6008fe3.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T00:06:45.505Z",
+          "total_token_usage": {
+            "input_tokens": 903934,
+            "cached_input_tokens": 812928,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3544,
+            "reasoning_output_tokens": 350,
+            "total_tokens": 907478
+          },
+          "last_token_usage": {
+            "input_tokens": 131627,
+            "cached_input_tokens": 122880,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 322,
+            "reasoning_output_tokens": 158,
+            "total_tokens": 131949
+          }
+        }
+      }
+    ]
+  },
+  {
+    "agent_path": "/root/coverage48_14_g24",
+    "phase": "images-end",
+    "captured_utc": "2026-10-22T00:07:58.865063+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+        "session_log_name": "rollout-2026-10-21T17-04-57-01a160ec-dbe5-74b2-9d6c-3d15a6008fe3.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T00:07:52.903Z",
+          "total_token_usage": {
+            "input_tokens": 1481495,
+            "cached_input_tokens": 1375488,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6830,
+            "reasoning_output_tokens": 737,
+            "total_tokens": 1488325
+          },
+          "last_token_usage": {
+            "input_tokens": 149134,
+            "cached_input_tokens": 148992,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 392,
+            "reasoning_output_tokens": 238,
+            "total_tokens": 149526
+          }
+        }
+      }
+    ]
+  },
+  {
+    "agent_path": "/root/coverage48_14_g24",
+    "phase": "existing-translation-repairs-start",
+    "captured_utc": "2026-10-22T00:07:58.915360+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+        "session_log_name": "rollout-2026-10-21T17-04-57-01a160ec-dbe5-74b2-9d6c-3d15a6008fe3.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T00:07:52.903Z",
+          "total_token_usage": {
+            "input_tokens": 1481495,
+            "cached_input_tokens": 1375488,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6830,
+            "reasoning_output_tokens": 737,
+            "total_tokens": 1488325
+          },
+          "last_token_usage": {
+            "input_tokens": 149134,
+            "cached_input_tokens": 148992,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 392,
+            "reasoning_output_tokens": 238,
+            "total_tokens": 149526
+          }
+        }
+      }
+    ]
+  },
+  {
+    "agent_path": "/root/coverage48_14_g24",
+    "phase": "existing-translation-repairs-end",
+    "captured_utc": "2026-10-22T00:12:15.673218+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+        "session_log_name": "rollout-2026-10-21T17-04-57-01a160ec-dbe5-74b2-9d6c-3d15a6008fe3.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T00:11:58.894Z",
+          "total_token_usage": {
+            "input_tokens": 2597965,
+            "cached_input_tokens": 2482304,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 19332,
+            "reasoning_output_tokens": 1751,
+            "total_tokens": 2617297
+          },
+          "last_token_usage": {
+            "input_tokens": 170042,
+            "cached_input_tokens": 169856,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 745,
+            "reasoning_output_tokens": 324,
+            "total_tokens": 170787
+          }
+        }
+      }
+    ]
+  },
+  {
+    "agent_path": "/root/coverage48_14_g24",
+    "phase": "writing-end",
+    "captured_utc": "2026-10-22T00:12:15.720662+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+        "session_log_name": "rollout-2026-10-21T17-04-57-01a160ec-dbe5-74b2-9d6c-3d15a6008fe3.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T00:11:58.894Z",
+          "total_token_usage": {
+            "input_tokens": 2597965,
+            "cached_input_tokens": 2482304,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 19332,
+            "reasoning_output_tokens": 1751,
+            "total_tokens": 2617297
+          },
+          "last_token_usage": {
+            "input_tokens": 170042,
+            "cached_input_tokens": 169856,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 745,
+            "reasoning_output_tokens": 324,
+            "total_tokens": 170787
+          }
+        }
+      }
+    ]
+  },
+  {
+    "agent_path": "/root/coverage48_14_g24",
+    "phase": "images-final-end",
+    "captured_utc": "2026-10-22T00:13:22.876378+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+        "session_log_name": "rollout-2026-10-21T17-04-57-01a160ec-dbe5-74b2-9d6c-3d15a6008fe3.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T00:13:12.714Z",
+          "total_token_usage": {
+            "input_tokens": 3304812,
+            "cached_input_tokens": 3183232,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 22396,
+            "reasoning_output_tokens": 2268,
+            "total_tokens": 3327208
+          },
+          "last_token_usage": {
+            "input_tokens": 178680,
+            "cached_input_tokens": 178432,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 383,
+            "reasoning_output_tokens": 54,
+            "total_tokens": 179063
+          }
+        }
+      }
+    ]
+  },
+  {
+    "agent_path": "/root/coverage48_14_g24",
+    "phase": "sanity-complete",
+    "captured_utc": "2026-10-22T00:14:11.076797+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+        "session_log_name": "rollout-2026-10-21T17-04-57-01a160ec-dbe5-74b2-9d6c-3d15a6008fe3.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T00:13:22.990Z",
+          "total_token_usage": {
+            "input_tokens": 3484175,
+            "cached_input_tokens": 3362176,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 22934,
+            "reasoning_output_tokens": 2324,
+            "total_tokens": 3507109
+          },
+          "last_token_usage": {
+            "input_tokens": 179363,
+            "cached_input_tokens": 178944,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 538,
+            "reasoning_output_tokens": 56,
+            "total_tokens": 179901
+          }
+        }
+      }
+    ]
+  }
+]

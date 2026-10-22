@@ -1,0 +1,46 @@
+{
+  "opened_date_utc": "2026-10-22",
+  "sources": [
+    {
+      "name": "2024 .com agreement",
+      "url": "https://itp.cdn.icann.org/en/files/registry-agreements/com/com-agreement-html-01-12-2024-en.htm",
+      "supports": "Appendix 7 sections 3.1.3, 3.1.6, 3.3.2: 45-day registry accounting, 30-day redemption after deletion, final five-day pending delete. Ordinary .com scope. Section 8.2 contains o.com exceptions."
+    },
+    {
+      "name": "Current ERRP",
+      "url": "https://www.icann.org/resources/pages/errp-2024-02-21-en",
+      "supports": "Updated February 2024; mandatory August 2025. Sections 2.2, 3 and 4: deletion subject to applicable rules, DNS interruption renewal protections, nonsponsored gTLD 30-day redemption with add-grace exception, deleting registrar recovery and fee disclosure."
+    },
+    {
+      "name": "ICANN EPP guide",
+      "url": "https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en",
+      "supports": "pendingDelete can coexist with redemptionPeriod or pendingRestore. Combined codes follow redemption/restoration description. Registry policy governs re-registration."
+    },
+    {
+      "name": "ICANN expiration FAQ",
+      "url": "https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en",
+      "supports": "Registrant recovery and five-day pending delete, and first-come registration after release."
+    },
+    {
+      "name": "GoDaddy timeline",
+      "url": "https://www.godaddy.com/help/standard-domain-expiration-timeline-609",
+      "supports": "Standard process: parking +5 and auction +26, bid/purchase conditions, ccTLD exceptions, no registry release timing advice."
+    },
+    {
+      "name": "Dynadot backorder FAQ",
+      "url": "https://www.dynadot.com/help/question/backorder-auction",
+      "supports": "Successful catch plus multiple backorders causes public auction. Corrects original claim that competing services each catch and trigger private auction."
+    }
+  ],
+  "rejected_sources": [
+    {
+      "url": "https://www.verisign.com/en_US/channel-resources/domain-registry-products/registration-grace/index.xhtml",
+      "reason": "Web access failed. Not evidence."
+    },
+    {
+      "url": "https://investor.verisign.com/static-files/cb4f3ac1-51fd-4578-b05b-b4c3c69b53e3",
+      "reason": "Opened PDF proves a 2001 filing despite fresh search metadata. Not current evidence."
+    }
+  ],
+  "legacy_source": "Opened 2012 Appendix 7; replaced published citation with current 2024 agreement."
+}
