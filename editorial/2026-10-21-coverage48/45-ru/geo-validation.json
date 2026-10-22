@@ -1,0 +1,42 @@
+{
+  "results": [
+    {
+      "geoTargetConstant": {
+        "resourceName": "geoTargetConstants/2276",
+        "status": "ENABLED",
+        "id": "2276",
+        "name": "Germany",
+        "countryCode": "DE"
+      }
+    },
+    {
+      "geoTargetConstant": {
+        "resourceName": "geoTargetConstants/2398",
+        "status": "ENABLED",
+        "id": "2398",
+        "name": "Kazakhstan",
+        "countryCode": "KZ"
+      }
+    },
+    {
+      "geoTargetConstant": {
+        "resourceName": "geoTargetConstants/2643",
+        "status": "ENABLED",
+        "id": "2643",
+        "name": "Russia",
+        "countryCode": "RU"
+      }
+    },
+    {
+      "geoTargetConstant": {
+        "resourceName": "geoTargetConstants/2840",
+        "status": "ENABLED",
+        "id": "2840",
+        "name": "United States",
+        "countryCode": "US"
+      }
+    }
+  ],
+  "fieldMask": "geoTargetConstant.id,geoTargetConstant.name,geoTargetConstant.countryCode,geoTargetConstant.status",
+  "queryResourceConsumption": "90"
+}

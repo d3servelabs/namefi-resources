@@ -1,0 +1,292 @@
+{
+  "results": [
+    {
+      "text": "ie domain",
+      "keywordMetrics": {
+        "competition": "HIGH",
+        "monthlySearchVolumes": [
+          {
+            "month": "OCTOBER",
+            "year": "2025",
+            "monthlySearches": "1600"
+          },
+          {
+            "month": "NOVEMBER",
+            "year": "2025",
+            "monthlySearches": "1300"
+          },
+          {
+            "month": "DECEMBER",
+            "year": "2025",
+            "monthlySearches": "1000"
+          },
+          {
+            "month": "JANUARY",
+            "year": "2026",
+            "monthlySearches": "1600"
+          },
+          {
+            "month": "FEBRUARY",
+            "year": "2026",
+            "monthlySearches": "1600"
+          },
+          {
+            "month": "MARCH",
+            "year": "2026",
+            "monthlySearches": "1300"
+          },
+          {
+            "month": "APRIL",
+            "year": "2026",
+            "monthlySearches": "1300"
+          },
+          {
+            "month": "MAY",
+            "year": "2026",
+            "monthlySearches": "1300"
+          },
+          {
+            "month": "JUNE",
+            "year": "2026",
+            "monthlySearches": "1300"
+          },
+          {
+            "month": "JULY",
+            "year": "2026",
+            "monthlySearches": "1000"
+          },
+          {
+            "month": "AUGUST",
+            "year": "2026",
+            "monthlySearches": "1000"
+          },
+          {
+            "month": "SEPTEMBER",
+            "year": "2026",
+            "monthlySearches": "1000"
+          }
+        ],
+        "avgMonthlySearches": "1300",
+        "competitionIndex": "69",
+        "lowTopOfPageBidMicros": "2816311",
+        "highTopOfPageBidMicros": "10000000"
+      }
+    },
+    {
+      "text": "register ie domain",
+      "keywordMetrics": {
+        "competition": "MEDIUM",
+        "monthlySearchVolumes": [
+          {
+            "month": "OCTOBER",
+            "year": "2025",
+            "monthlySearches": "140"
+          },
+          {
+            "month": "NOVEMBER",
+            "year": "2025",
+            "monthlySearches": "140"
+          },
+          {
+            "month": "DECEMBER",
+            "year": "2025",
+            "monthlySearches": "170"
+          },
+          {
+            "month": "JANUARY",
+            "year": "2026",
+            "monthlySearches": "210"
+          },
+          {
+            "month": "FEBRUARY",
+            "year": "2026",
+            "monthlySearches": "140"
+          },
+          {
+            "month": "MARCH",
+            "year": "2026",
+            "monthlySearches": "170"
+          },
+          {
+            "month": "APRIL",
+            "year": "2026",
+            "monthlySearches": "140"
+          },
+          {
+            "month": "MAY",
+            "year": "2026",
+            "monthlySearches": "110"
+          },
+          {
+            "month": "JUNE",
+            "year": "2026",
+            "monthlySearches": "110"
+          },
+          {
+            "month": "JULY",
+            "year": "2026",
+            "monthlySearches": "110"
+          },
+          {
+            "month": "AUGUST",
+            "year": "2026",
+            "monthlySearches": "110"
+          },
+          {
+            "month": "SEPTEMBER",
+            "year": "2026",
+            "monthlySearches": "110"
+          }
+        ],
+        "avgMonthlySearches": "140",
+        "competitionIndex": "65",
+        "lowTopOfPageBidMicros": "4016532",
+        "highTopOfPageBidMicros": "14303754"
+      }
+    },
+    {
+      "text": "ie domain country",
+      "keywordMetrics": {
+        "competition": "MEDIUM",
+        "monthlySearchVolumes": [
+          {
+            "month": "OCTOBER",
+            "year": "2025",
+            "monthlySearches": "20"
+          },
+          {
+            "month": "NOVEMBER",
+            "year": "2025",
+            "monthlySearches": "20"
+          },
+          {
+            "month": "DECEMBER",
+            "year": "2025",
+            "monthlySearches": "10"
+          },
+          {
+            "month": "JANUARY",
+            "year": "2026",
+            "monthlySearches": "10"
+          },
+          {
+            "month": "FEBRUARY",
+            "year": "2026",
+            "monthlySearches": "30"
+          },
+          {
+            "month": "MARCH",
+            "year": "2026",
+            "monthlySearches": "20"
+          },
+          {
+            "month": "APRIL",
+            "year": "2026",
+            "monthlySearches": "20"
+          },
+          {
+            "month": "MAY",
+            "year": "2026",
+            "monthlySearches": "20"
+          },
+          {
+            "month": "JUNE",
+            "year": "2026",
+            "monthlySearches": "10"
+          },
+          {
+            "month": "JULY",
+            "year": "2026",
+            "monthlySearches": "20"
+          },
+          {
+            "month": "AUGUST",
+            "year": "2026",
+            "monthlySearches": "10"
+          },
+          {
+            "month": "SEPTEMBER",
+            "year": "2026",
+            "monthlySearches": "10"
+          }
+        ],
+        "avgMonthlySearches": "20",
+        "competitionIndex": "33",
+        "lowTopOfPageBidMicros": "1850446",
+        "highTopOfPageBidMicros": "7059172"
+      }
+    },
+    {
+      "text": "irish domain",
+      "keywordMetrics": {
+        "competition": "MEDIUM",
+        "monthlySearchVolumes": [
+          {
+            "month": "OCTOBER",
+            "year": "2025",
+            "monthlySearches": "1000"
+          },
+          {
+            "month": "NOVEMBER",
+            "year": "2025",
+            "monthlySearches": "880"
+          },
+          {
+            "month": "DECEMBER",
+            "year": "2025",
+            "monthlySearches": "720"
+          },
+          {
+            "month": "JANUARY",
+            "year": "2026",
+            "monthlySearches": "1000"
+          },
+          {
+            "month": "FEBRUARY",
+            "year": "2026",
+            "monthlySearches": "880"
+          },
+          {
+            "month": "MARCH",
+            "year": "2026",
+            "monthlySearches": "1000"
+          },
+          {
+            "month": "APRIL",
+            "year": "2026",
+            "monthlySearches": "880"
+          },
+          {
+            "month": "MAY",
+            "year": "2026",
+            "monthlySearches": "880"
+          },
+          {
+            "month": "JUNE",
+            "year": "2026",
+            "monthlySearches": "880"
+          },
+          {
+            "month": "JULY",
+            "year": "2026",
+            "monthlySearches": "720"
+          },
+          {
+            "month": "AUGUST",
+            "year": "2026",
+            "monthlySearches": "880"
+          },
+          {
+            "month": "SEPTEMBER",
+            "year": "2026",
+            "monthlySearches": "880"
+          }
+        ],
+        "avgMonthlySearches": "880",
+        "competitionIndex": "51",
+        "lowTopOfPageBidMicros": "2423347",
+        "highTopOfPageBidMicros": "7002946"
+      }
+    }
+  ]
+}

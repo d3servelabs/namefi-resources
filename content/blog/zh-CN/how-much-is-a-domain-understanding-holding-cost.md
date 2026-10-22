@@ -37,7 +37,7 @@ relatedGlossary:
 
 这是注册一个域名之前首先要明白的事。结账价格只是账本中的一项。域名有首年注册价格、续期价格、转移价格、可能的恢复或赎回费用、隐私设置、税费、支付方式成本，有时还会有 DNS、电子邮件、托管或账户服务等周边产品费用。
 
-因此，首年 $1 的域名完全可能是正当的优惠，却仍会在之后变成每年 $30、$60 或 $80 的支出。首年价格让你入门；决定长期[持有成本](/zh-CN/glossary/holding-cost/)的是续期价格。
+首年优惠不决定续期价格。买家应比较长期[持有成本](/zh-CN/glossary/holding-cost/)。
 
 ## 你最先看到的数字并不等于成本
 
@@ -56,9 +56,9 @@ relatedGlossary:
 | 支付成本 | 银行卡外汇价差、电汇成本、加密货币网络费用、延迟支付方式、退款阻碍 | 注册商的标价未必是实际从你账户中扣除的金额 |
 | DNS / 产品费用 | 托管区域、查询、电子邮件、转发、SSL 或捆绑服务的成本 | 域名本身可能便宜，周边账户却未必便宜 |
 
-最常让人措手不及的一项是续期。ICANN 的《过期注册恢复政策》要求注册商以合理方式提供[续期、到期后续期以及赎回/恢复费用](https://www.icann.org/resources/pages/errp-2013-02-28-en#Notice)，但买家仍须在结账前自行比较。较低的首年价格本身并不具有误导性；当买家把它当作年度成本时，问题才会出现。
+最常让人措手不及的一项是续期。ICANN 的《过期注册恢复政策》要求注册商以合理方式提供[续期、到期后续期以及赎回/恢复费用](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en)，但买家仍须在结账前自行比较。较低的首年价格本身并不具有误导性；当买家把它当作年度成本时，问题才会出现。
 
-## 为什么 $1 的域名可以按 $30 到 $80 续期
+## 首年优惠可能掩盖较高的续期价格
 
 引导性定价很常见，因为首年和续期年属于不同的经济事件。
 
@@ -78,7 +78,9 @@ relatedGlossary:
 
 **转移**是把域名迁移到另一家注册商所支付的费用。转移可能包含一年的注册期延长，但不要未经核实就把它当成普遍适用的捷径。还要留意转移锁、近期注册限制、授权码处理，以及转移是否会改变你的 DNS 或隐私设置。
 
-**恢复或赎回**是昂贵的应急按钮。ICANN 的恢复政策指出，gTLD 注册局通常必须在删除后提供一个[30 天的赎回宽限期](https://www.icann.org/resources/pages/errp-2013-02-28-en#Redemption)，在此期间可通过执行删除的注册商恢复已删除的注册。这个期间的恢复费用可能远高于普通续期。教训很简单：自动续期比事后补救便宜。
+**恢复或赎回**是昂贵的应急按钮。ICANN 的恢复政策指出，gTLD 注册局通常必须在删除后提供一个[30 天的赎回宽限期](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en)，在此期间可通过执行删除的注册商恢复已删除的注册。这个期间的恢复费用可能远高于普通续期。教训很简单：自动续期比事后补救便宜。
+
+30 天规则适用于非赞助类 gTLD 注册局。政策排除了适用的初始注册宽限期内的删除。ccTLD 使用各自的规则。
 
 ## 隐私、税费和支付方式成本
 
@@ -145,7 +147,7 @@ WHOIS 隐私应纳入成本比较，因为它会改变套餐的实际价值。�
 
 那么，域名多少钱？
 
-对于常见 TLD，首年价格可能大致相当于一顿午饭。对于促销中的新 gTLD，今天可能是 $1，明年则是 $30 到 $80。对于高价 ccTLD 或注册局的溢价层级，价格可能高得多。如果错过续期而必须恢复，账单可能跃升到数百美元。
+域名费用取决于后缀、注册商、具体名称和服务。买家应核对所选名称的当前报价。
 
 实用答案不是首年价格，而是：
 
@@ -155,4 +157,4 @@ WHOIS 隐私应纳入成本比较，因为它会改变套餐的实际价值。�
 
 ## 来源与延伸阅读
 
-- ICANN — [过期注册恢复政策](https://www.icann.org/resources/pages/errp-2013-02-28-en)
+- ICANN — [过期注册恢复政策](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en)
