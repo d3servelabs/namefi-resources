@@ -1,0 +1,708 @@
+{
+  "source_id": "O07",
+  "order": 35,
+  "slug": "gg",
+  "as_of": "2026-10-21 America/Los_Angeles",
+  "fetched_utc_date": "2026-10-22",
+  "selected": [
+    "de-DE"
+  ],
+  "deferred": [
+    "ko-KR",
+    "fr-FR"
+  ],
+  "unmeasured_locales": "Other supported locales were not measured and are not assumed to have zero demand.",
+  "period": "2025-10 through 2026-09",
+  "network": "GOOGLE_SEARCH",
+  "language_id_verification": "https://developers.google.com/google-ads/api/data/codes-formats opened before requests: de 1001, ko 1012, fr 1002.",
+  "markets": {
+    "de-DE": {
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "gg domain",
+          "gg domain kaufen",
+          "gg domain registrieren",
+          "gg domain bedeutung"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "gg domain",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                }
+              ],
+              "avgMonthlySearches": "480",
+              "competitionIndex": "54",
+              "lowTopOfPageBidMicros": "1079590",
+              "highTopOfPageBidMicros": "3918225"
+            }
+          },
+          {
+            "text": "gg domain kaufen",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "20",
+              "competitionIndex": "82",
+              "lowTopOfPageBidMicros": "1930326",
+              "highTopOfPageBidMicros": "5789443"
+            }
+          },
+          {
+            "text": "gg domain registrieren",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "86"
+            }
+          },
+          {
+            "text": "gg domain bedeutung"
+          }
+        ]
+      },
+      "fetch_date": "2026-10-22"
+    },
+    "ko-KR": {
+      "request": {
+        "language": "languageConstants/1012",
+        "geoTargetConstants": [
+          "geoTargetConstants/2410"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "gg 도메인",
+          "gg 도메인 구매",
+          "gg 도메인 등록",
+          "gg 도메인 뜻"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "gg 도메인",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                }
+              ],
+              "avgMonthlySearches": "110",
+              "competitionIndex": "44",
+              "lowTopOfPageBidMicros": "387821",
+              "highTopOfPageBidMicros": "1720000"
+            }
+          },
+          {
+            "text": "gg 도메인 구매"
+          },
+          {
+            "text": "gg 도메인 등록"
+          },
+          {
+            "text": "gg 도메인 뜻"
+          }
+        ]
+      },
+      "fetch_date": "2026-10-22"
+    },
+    "fr-FR": {
+      "request": {
+        "language": "languageConstants/1002",
+        "geoTargetConstants": [
+          "geoTargetConstants/2250"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "nom de domaine gg",
+          "domaine gg",
+          "acheter domaine gg"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "nom de domaine gg",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                }
+              ],
+              "avgMonthlySearches": "20",
+              "competitionIndex": "63",
+              "lowTopOfPageBidMicros": "781921",
+              "highTopOfPageBidMicros": "2177307"
+            }
+          },
+          {
+            "text": "domaine gg",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                }
+              ],
+              "avgMonthlySearches": "20",
+              "competitionIndex": "56",
+              "lowTopOfPageBidMicros": "1040043",
+              "highTopOfPageBidMicros": "2787780"
+            }
+          },
+          {
+            "text": "acheter domaine gg"
+          }
+        ]
+      },
+      "fetch_date": "2026-10-22"
+    }
+  },
+  "decision": "Select German for Germany: 480 broad gg domain searches plus explicit native purchase 20 and registration 10 support the existing buyer reference job. Do not sum broad and specific terms as unique users. Korean broad 110 lacks measured buyer-specific terms; French has 20 each on two broad terms and no purchase metric. Defer both to limit ongoing policy-translation maintenance. UNKNOWN metrics are unavailable, not zero. No universal cutoff applies.",
+  "serp_intent": {
+    "query": "gg domain kaufen",
+    "observed_primary_service_pages": [
+      "https://www.ovhcloud.com/de/domains/tld/gg/",
+      "https://www.strato.de/domains/gg-domain/",
+      "https://www.united-domains.de/gg-domain/"
+    ],
+    "interpretation": "German registrar pages combine purchase with eligibility and gaming meaning. English and German references satisfy buyer intent without reproducing vendor prices."
+  },
+  "routing": {
+    "actual_supported": [
+      "en",
+      "es",
+      "de",
+      "fr",
+      "zh-CN",
+      "ar",
+      "hi",
+      "ko",
+      "ja",
+      "ta"
+    ],
+    "source": "namefi-astra/main/apps/resources/src/i18n-config.ts and src/app/[lang]/tld/[slug]/page.tsx read locally.",
+    "urls": [
+      "https://namefi.io/r/en/tld/gg",
+      "https://namefi.io/r/de/tld/gg"
+    ],
+    "canonical": "Each actual locale self-canonical. Reciprocal en/de hreflang and English x-default follow renderer detection of actual sourceLanguage. No custom SEO keys added."
+  },
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+    "topic": {
+      "source_id": "O07",
+      "slug": "gg",
+      "path_match": "/tld/gg/",
+      "matched_rows": 53,
+      "observed_impressions": 76,
+      "observed_clicks": 0,
+      "countries": {
+        "isr": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "nor": {
+          "rows": 1,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "yem": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "usa": {
+          "rows": 16,
+          "impressions": 30,
+          "clicks": 0
+        },
+        "mco": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "deu": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "can": {
+          "rows": 8,
+          "impressions": 14,
+          "clicks": 0
+        },
+        "mkd": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "npl": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "rus": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "ind": {
+          "rows": 3,
+          "impressions": 3,
+          "clicks": 0
+        },
+        "bel": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "fra": {
+          "rows": 3,
+          "impressions": 3,
+          "clicks": 0
+        },
+        "fin": {
+          "rows": 1,
+          "impressions": 3,
+          "clicks": 0
+        },
+        "uzb": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "aut": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "bgd": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "cze": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "ita": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "bgr": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "phl": {
+          "rows": 2,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "irl": {
+          "rows": 2,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "gbr": {
+          "rows": 2,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "sgp": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        }
+      }
+    }
+  },
+  "translation": {
+    "method": "gpt-6.1-sol focused German pass from updated English; no external reviewer per user instruction.",
+    "register": "Standard German for German domain buyers, formal Sie.",
+    "termbase": [
+      "ccTLD (Country-Code Top-Level-Domain)",
+      "Domain-Hack",
+      "Registry",
+      "Registrar",
+      "DNSSEC (Domain Name System Security Extensions)"
+    ],
+    "coverage": "Every English section, FAQ, table, citation, image and relationship retained in German. Human native LQA and deployed rendering remain unavailable in local-only scope.",
+    "existing_translations": "None at base."
+  },
+  "close_variants": "The returned results do not contain closeVariants fields. No extra close variants are inferred."
+}

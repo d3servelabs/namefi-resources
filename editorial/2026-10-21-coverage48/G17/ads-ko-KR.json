@@ -1,0 +1,21 @@
+{
+  "locale": "ko",
+  "country": "KR",
+  "fetched_utc": "2026-10-22T00:40:42.777252+00:00",
+  "request": {
+    "language": "languageConstants/1012",
+    "geoTargetConstants": [
+      "geoTargetConstants/2410"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "암호화 DNS",
+      "DNS over HTTPS",
+      "안드로이드 프라이빗 DNS"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "error_http": 429
+  }
+}

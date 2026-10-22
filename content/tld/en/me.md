@@ -7,17 +7,18 @@ tags: ['tld']
 authors: ['namefiteam']
 editors: ['victor-zhou']
 draft: false
-description: 'What is the .me domain? Montenegro''s country-code TLD, marketed worldwide as a personal-branding and domain-hack extension where the name completes with "me." Learn who runs it, who can register, pricing, and SEO.'
-keywords: ['.me domains', 'me domain', 'what is the .me domain', '.me vs .com', 'me domain for personal branding', 'Montenegro domain', 'register .me domain', 'domain hack .me', 'about.me']
+description: 'Learn what .me means, who can register, how reserved and premium names work, and why renewal prices and Google targeting need separate checks.'
+keywords: ['Montenegro domain', 'me domain for personal branding', 'register me domain', 'me premium renewal']
+ogImage: ../../assets/me-og.jpg
 faqs:
   - question: 'Can anyone register a .me domain?'
-    answer: 'Yes. Although .me is technically Montenegro''s country-code TLD, it has been open to anyone in the world since its 2008 public launch, with no local-presence or Montenegrin-residency requirement. Registration is first-come, first-served at the second level.'
+    answer: 'Individuals and companies worldwide can register second-level .me names without a Montenegrin presence. Reserved names remain unavailable, and registry third-level zones have separate eligibility rules.'
   - question: 'Does a .me domain affect SEO?'
-    answer: 'No, .me does not inherently hurt rankings. Google treats .me as a generic, non-geotargeted TLD, so a .me site is not boxed into Montenegro and can rank globally. Content quality, links, and user experience matter far more than the suffix.'
+    answer: 'Google treats .me as generic for geographic targeting. The extension does not by itself target Montenegro or guarantee search rankings.'
   - question: 'Who should register a .me domain?'
-    answer: 'Individuals building a personal brand, portfolio, or resume site, and anyone crafting a domain hack where the name reads as a phrase ending in "me" — such as about.me or "call.me." It reads instantly as the English pronoun, making it warm and personal.'
+    answer: 'Consider .me for a personal brand, portfolio, biography page, or a phrase that naturally ends in the English word “me.” Check the exact name and renewal quote first.'
   - question: 'Is .me a good domain for a personal website?'
-    answer: 'Yes. .me is arguably the most personal mainstream extension. Because "me" is the first-person pronoun, "yourname.me" or "hire.me" feels like a direct invitation, which is why it is a favorite for portfolios, bios, and individual brands.'
+    answer: '.me can suit a personal website when the full address is clear and memorable. Compare the exact name, spoken clarity, and long-term cost with alternatives.'
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/ai-vs-io-domain/
@@ -38,145 +39,131 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-The **.me** domain is one of the clearest examples of a country-code extension that found a second life as a global brand. Officially the [ccTLD](/en/glossary/cctld/) for **Montenegro**, it has been marketed and adopted worldwide as the internet's most **personal** extension — because "me" is the English first-person pronoun, "yourname.me" reads instantly as *you*. For individuals building a portfolio, a resume site, or a bio page — and for anyone crafting a clever **[domain hack](/en/glossary/domain-hack/)** that completes with "me" — it is often the first place they look.
+The **.me domain** is Montenegro’s country-code [top-level domain](/en/glossary/tld/). The English word “me” also makes the extension a natural choice for personal brands, portfolios, and [domain hacks](/en/glossary/domain-hack/). **Individuals and companies worldwide can register second-level names such as `yourname.me`.** The registry applies different eligibility rules to third-level registrations such as `yourname.net.me`.
 
-This guide covers what .me really is, who runs it, who can register one, how it is priced, and how it is perceived for SEO and email — so you can decide whether it fits your brand.
+The practical questions concern the exact name: Is the name available, reserved, or premium? What does renewal cost? Does the address suit the intended audience? The [registry’s policies](https://domain.me/policies/#:~:text=Second-Level%20Registrations) answer eligibility questions. A registrar’s live quote answers the retail-price question.
 
-## .me at a glance
+## .me combines a country code with a personal meaning
 
 | Fact | Detail |
 | --- | --- |
-| TLD type | Country-code TLD (ccTLD) for Montenegro |
-| Registry manager (IANA) | Government of Montenegro |
-| Commercial operator | doMEn d.o.o. (with Identity Digital, formerly Afilias, as technical backend) |
-| Year delegated | 2007 (opened to the global public in 2008) |
-| IDN support | Yes (internationalized domain names supported) |
-| DNSSEC | Supported |
-| Registration restrictions | Open to all — no local presence or Montenegrin residency required |
-| Best for | Personal brands, portfolios, bios, and domain hacks ending in "me" |
+| Country and type | Montenegro’s country-code TLD, or ccTLD |
+| Delegated manager | Government of Montenegro, according to [IANA](https://www.iana.org/domains/root/db/me.html) |
+| Commercial operator | doMEn d.o.o., with an Identity Digital technical platform |
+| Public launch | 2008, according to the [registry’s history](https://domain.me/about-me/#:~:text=2008) |
+| Second-level eligibility | Individuals and companies worldwide |
+| Registration term | One to ten years under the general registration policies |
+| Internationalized domain names | The registry supports listed scripts, subject to registrar support |
+| DNSSEC | Available, according to the [registry](https://domain.me/dnssec/) |
+| Google Search treatment | Generic for geographic targeting, despite the ccTLD classification |
 
-## What is .me?
+The [IANA record](https://www.iana.org/domains/root/db/me.html) establishes delegation and management. The registry’s [general policies and available-name rules](https://domain.me/policies/) establish registration terms and eligibility. The registry [identifies Identity Digital as its technical platform](https://domain.me/#:~:text=powered%20by%20Identity%20Digital).
 
-**.me** is the country-code [Top-Level Domain](/en/glossary/tld/) (ccTLD) assigned to **Montenegro** under the ISO 3166-1 standard, the same two-letter system the [Internet Assigned Numbers Authority (IANA)](https://www.iana.org/domains/root/db/me.html) uses to delegate country codes. On paper it is Montenegro's national namespace: IANA lists the **Government of Montenegro** as the sponsoring organization and registry manager, with the University of Montenegro's Faculty of Electrical Engineering as the administrative contact.
+## .me suits portfolios and phrases that end in “me”
 
-In practice, the **.me domain** is used almost entirely as a **generic, global** extension. The string "me" is the English first-person pronoun, and that single fact gives it a warmth and directness no other mainstream suffix can match. "about.me," "hire.me," "follow.me," "read.me" — the suffix completes a sentence, which is exactly the angle its operators leaned into when they opened the namespace to the world.
+A portfolio address such as `yourname.me` puts the person at the center of the name. A phrase that ends in “me” can make the suffix part of the message. The registry itself [markets .me for personal identity and calls to action](https://domain.me/).
 
-Crucially for international audiences, search engines do **not** treat .me as a geo-targeted ccTLD. Google lists .me among the ccTLDs it [treats as generic rather than country-specific](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs%20%28such%20as%20.tv%20and%20.me%29%20as%20gTLDs), so a .me site is not tied to Montenegrin search results and is well suited to global audiences and international SEO.
+Useful applications include:
 
-## History of .me
+- A portfolio or resume website for a designer, developer, writer, or freelancer.
+- A personal biography page that connects projects and social accounts.
+- A small project whose name works naturally with the English word “me.”
+- A memorable phrase that readers can spell and repeat aloud.
 
-Montenegro became an independent country in **2006**, following the dissolution of its union with Serbia, and was assigned the ISO 3166-1 code **ME**. The corresponding ccTLD was **delegated in 2007** — IANA records a domain registration date of **September 24, 2007** — with the Government of Montenegro as the sponsoring authority.
+[About.me](https://about.me/) demonstrates the personal-page use directly. Treat illustrative names elsewhere in this guide as naming examples, without assuming availability or permission to use another party’s brand.
 
-Rather than run the namespace as a purely national registry, the government issued a request for proposals to find a commercial operator. The contract was awarded to **doMEn d.o.o.**, a Montenegrin joint venture whose partners included **Afilias**, **GoDaddy**, and the local company **ME-net**. With Afilias providing the technical registry backend, .me **opened to the global public in 2008** on a first-come, first-served basis, supported by a marketing push that emphasized personal expression and domain hacks.
+Choose the whole address for the audience. A personal association can help a solo professional. A company may prefer a name that emphasizes its product or business instead. Test the address aloud before committing to a name.
 
-The most significant recent change is at the **technical-backend level**: in [**December 2020**, **Donuts** **acquired Afilias**](https://www.prnewswire.com/news-releases/donuts-acquires-afilias-301199019.html#:~:text=it%20has%20completed%20its%20acquisition%20of%20Afilias%2C%20Inc), and the combined company [rebranded as **Identity Digital** in June 2022](https://www.prnewswire.com/news-releases/donuts-inc-and-afilias-inc-rebrand-to-identity-digital-301572401.html#:~:text=Donuts%20Inc.%20and%20Afilias%2C%20Inc.%20Rebrand%20to%20Identity%20Digital), so the registry infrastructure that has long powered .me now sits within Identity Digital's platform. The Government of Montenegro remains the sponsoring registry manager of record, and doMEn d.o.o. continues to operate the namespace commercially. Over its first decade, .me grew into a recognized global extension, crossing the **one-million-registration** mark and becoming a meaningful contributor to Montenegro's economy.
+## Second-level registration is global, but some names have separate rules
 
-## How people use .me
+The registry’s [Available Names policy](https://domain.me/policies/#:~:text=Available%20Names) opens second-level `.me` registration to individuals and corporations worldwide. A registrant does not need a Montenegrin address or nationality for `yourname.me`.
 
-Because "me" maps so cleanly onto personal language, .me attracts a distinctly individual, identity-focused crowd:
+The same policy limits third-level registrations under registry zones such as `net.me`, `org.me`, and `co.me` to Montenegrin individuals and entities. The policy assigns educational, academic, and government zones to designated institutions. Those rules concern registrations beneath those zones, not a subdomain that a registrant creates under an existing `yourname.me` domain.
 
-- **Personal brand and bio pages**, where "yourname.me" is the whole pitch.
-- **Portfolios and resume sites** for designers, developers, writers, and freelancers.
-- **Domain hacks**, where the suffix completes a word or phrase — for example "hire**.me**," "call**.me**," or the famous **about.me**.
-- **Link-in-bio and "about" landing pages** that point followers to a single, memorable address.
-- **Small projects and side hustles** that want a friendly, approachable URL.
+Open eligibility also does not make every string available. The [Reserved & Premium Names policy](https://domain.me/policies/#:~:text=Reserved%20%26%20Premium%20Names) distinguishes two groups:
 
-**Who it's not ideal for:** Large corporations or institutional brands that need a formal, neutral suffix, and businesses that depend on customers typing the address from memory in contexts where ".com" is the assumed default.
+- **Reserved names:** the registry holds names for government and registry use outside public registration.
+- **Premium names:** the public can register names through accredited registrars or their resellers, subject to the premium offer.
 
-## Notable sites using .me
+Search the exact name before planning a launch. A short name may already have a registrant, a premium classification, or a reservation.
 
-- **about.me** — the personal-homepage platform launched in 2010 (and briefly acquired by AOL just days after launch). It is the canonical .me success story and effectively defined the extension's personal-branding identity.
-- A long tail of **personal portfolios** by well-known designers, engineers, and creators who use "firstname.me" or "firstnamelastname.me" as their professional home.
+## Premium registration does not imply premium renewal
 
-These cases show .me being trusted not just as a fallback, but as a deliberate, identity-forward brand choice.
+The registry’s [premium-domain offer](https://domain.me/premium-domains/#:~:text=high-create%20and%20regular-renew) explicitly describes **higher creation fees and regular renewal fees** for all .ME premium domains in that offer. Check the quoted renewal price separately from the higher initial registration charge.
 
-## .me vs other domains
+This statement describes the registry’s offer. A registrar supplies the customer’s retail quote. Confirm the exact registration price, renewal price, currency, taxes, and term before paying. Regular renewal also does not promise that prices will never change.
 
-| Feature | .me | [.com](/en/tld/com/) | [.io](/en/tld/io/) | [.co](/en/tld/co/) | [.xyz](/en/tld/xyz/) |
-| --- | --- | --- | --- | --- | --- |
-| Type | ccTLD (used globally) | Legacy gTLD | ccTLD (used globally) | ccTLD (used globally) | New gTLD |
-| Core association | Personal / "me" the pronoun | The default web standard | Tech / "Input-Output" | Company / corporation | Generic / Web3 |
-| Availability of short names | Excellent | Very poor | Moderate | Good | Excellent |
-| Typical price tier | Mid | Low-to-mid | High | Mid | Low |
+Distinguish three costs:
 
-Choose **.com** when you can get the exact name — it remains the trust default for businesses. Reach for **.me** when the project is *personal* — a portfolio, a bio, a one-person brand — or when the name forms a natural phrase ending in "me." Pick **[.io](/en/tld/io/)** for developer- and infrastructure-focused tech brands, **[.co](/en/tld/co/)** for the closest business-credible substitute to .com, and **[.xyz](/en/tld/xyz/)** for generic or [Web3](/en/glossary/web3/)-native projects.
+| Purchase situation | Cost to confirm |
+| --- | --- |
+| Available standard name | Registration price and subsequent renewal price |
+| Registry-premium name | Higher creation price and the registrar’s regular renewal quote |
+| Existing registrant sells a name | Seller’s purchase price, transaction costs, and subsequent registrar renewal |
 
-## Why choose .me?
+An [aftermarket](/en/glossary/aftermarket/) sale price pays for the existing name. The sale price alone does not establish the annual renewal charge. Compare the total cost over the planned holding period, rather than the first-year advertisement alone.
 
-- **The most personal extension.** "me" is the first-person pronoun, so "yourname.me" reads as a direct, human invitation rather than a corporate address.
-- **Excellent availability.** Short, one-word, and first-name names that vanished from .com years ago are frequently still open in .me.
-- **Built for domain hacks.** Few suffixes complete a phrase as naturally — "follow.me," "call.me," "read.me" — making genuinely memorable URLs.
-- **Global, not geo-locked.** Despite being Montenegro's ccTLD, it is treated as generic by search engines and open to everyone.
+## Registration terms and renewal deadlines need separate checks
 
-## Things to consider
+The registry’s [General Registration Policies](https://domain.me/policies/#:~:text=General%20Registration%20Policies) allow registration terms from one to ten years. The policies require accurate contact information and describe renewal at expiration, with registrar-specific details.
 
-- **Personal, not corporate.** The pronoun framing is a strength for individuals and a slight mismatch for large or institutional brands, which may want a more neutral suffix.
-- **A ccTLD by nature.** Because .me technically belongs to Montenegro and is administered under national policy, its long-term rules are set by the Government of Montenegro and its appointed operator, doMEn d.o.o., not by [ICANN](/en/glossary/icann/) registry agreements.
-- **Spoken clarity.** ".me" is clear in writing, but in fast speech "name dot me" can occasionally be misheard, so choose a name that is unambiguous when said aloud.
+The [registry FAQ](https://domain.me/faq/#:~:text=What%20happens%20if%20I) explains that expiration can lead to deletion and a 30-day redemption period. Redemption costs more than ordinary renewal. Ask the registrar for the applicable payment deadline and recovery charge. Do not treat a registry grace period as a promise that the website or email will continue working.
 
-## Who can register a .me domain?
+For ordinary ASCII names, the registry permits letters, digits, and hyphens, without a leading or trailing hyphen. The [same policies](https://domain.me/policies/#:~:text=Allowable%20characters) also list supported internationalized-domain scripts, including Chinese, Japanese, Arabic, and others. Confirm that the chosen registrar supports the required script before relying on an internationalized name.
 
-**Registration restrictions: open to all.** There is **no local-presence, residency, or Montenegrin-nationality requirement** to register a second-level .me domain. Since the 2008 public launch, registration has been **first-come, first-served** and available to individuals and organizations anywhere in the world.
+## Google treats .me as generic for geographic targeting
 
-Standard practices apply: [trademark](/en/glossary/trademark/) holders could participate in sunrise phases during the original launch, names follow conventional length and character rules, **internationalized domain names (IDNs)** are supported, and **[DNSSEC](/en/glossary/dnssec/)** is available for added DNS security. [WHOIS](/en/glossary/whois/) privacy, transfer, renewal, and redemption-grace handling follow standard [registrar](/en/glossary/registrar/) and registry conventions. Because .me is a ccTLD, it is governed by Montenegrin policy under the Government of Montenegro, with doMEn d.o.o. as the operator — the authoritative source for current rules is the operator's official site, [domain.me](https://domain.me/).
+Google explicitly includes `.me` among the [ccTLDs it treats as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Generic%20Country%20Code%20Top%20Level%20Domains). A `.me` address therefore does not create the country-targeting signal that a country-specific extension normally supplies.
 
-## .me pricing and value
+This treatment supports an international audience. The treatment does not promise search rankings. Choose the domain for clear branding, then build content and language targeting for the intended readers.
 
-.me generally sits in a **mid-tier price band** — more than the cheapest promotional gTLDs, but well below scarce premium extensions. A few dynamics shape what you'll pay:
+## Trademark and abuse policies still apply
 
-- **Premium names exist.** The registry classifies many short, dictionary, first-name, or high-demand .me names as **premium**, carrying higher registration and sometimes higher renewal fees.
-- **First-year vs. renewal pricing differ.** As with most TLDs, an introductory first-year rate is not the renewal rate; always check the standard renewal before committing a brand.
-- **What drives cost.** Name length and desirability, premium classification, and registry [wholesale pricing](/en/glossary/wholesale-pricing/) are the main factors. [Aftermarket](/en/glossary/aftermarket/) resale values for common first names and clean domain hacks in .me can be substantial.
+Global eligibility does not remove third-party rights. The registry’s [.ME UDRP Policy, paragraph 4(a)](https://domain.me/files/ME-UDRP-Policy.pdf#page=2) requires a complainant to establish three elements. The domain must be identical or confusingly similar to a mark in which the complainant has rights. The registrant must lack rights or legitimate interests. The complainant must also prove registration and use in bad faith. Consult the policy for the exact legal tests.
 
-For exact, current figures, check live pricing at registration time — this page intentionally quotes no numbers.
+The [Domain Name Abuse policy](https://domain.me/policies/#:~:text=Domain%20Name%20Abuse) also permits registry action against abusive use. A personal-looking domain is not a guarantee of trustworthy content or email delivery. Assess the site or sender itself.
 
-## Reputation and email deliverability
+## A short checklist helps compare .me with other extensions
 
-.me enjoys a **solid, mainstream reputation**. Its long association with personal brands and credible adoption by platforms like about.me mean it is generally perceived as legitimate rather than spammy. It does not carry the bargain-bin connotation that has dogged some ultra-cheap new gTLDs.
+For a personal website, compare the full `.me` name with the available [.com](/en/tld/com/), [.co](/en/tld/co/), [.io](/en/tld/io/), or [.xyz](/en/tld/xyz/) alternatives. Avoid assuming that one extension always has cheaper prices or better short-name availability.
 
-For email deliverability, the suffix itself is rarely the deciding factor — modern spam filters weigh **sending reputation, SPF/DKIM/DMARC authentication, and list hygiene** far more than the TLD. A properly authenticated .me sender should reach inboxes normally, and a personal address like "hi@yourname.me" can feel warmer and more memorable than a generic free-mail account.
+1. Say the full address aloud and ask a reader to spell the address.
+2. Check the exact name’s availability, reservation status, and premium classification.
+3. Compare registration and renewal quotes for the planned term.
+4. Check relevant trademarks before building a brand around the name.
+5. Confirm the registrar’s DNS, security, email, and renewal options.
 
-## Branding and naming tips
+Search for the desired name through [Namefi](https://namefi.io) and confirm the available offer before registration. If a portfolio address is the goal, prioritize a clear personal name over a complicated phrase that needs explanation.
 
-- **Lean into the pronoun.** .me shines when the name reads as a phrase about *you* — "yourname.me," "hire.me," "follow.me."
-- **Domain hacks are the killer feature.** Look for words and calls-to-action that end in "me," then split them at the dot for a compact, memorable URL.
-- **Pair it with your real name.** "firstnamelastname.me" is often available when the .com is long gone, and it makes an excellent professional home.
-- **Say it out loud.** Confirm the full address is clear when spoken, since the brevity of a domain hack only helps if people can repeat it.
-
-## How to register a .me domain at Namefi
-
-1. **Search** for your desired name and the .me extension.
-2. **Choose** an available name (and check whether it is classified as premium).
-3. **Register** and configure DNS.
-
-[Namefi](https://namefi.io) is an ICANN-accredited [registrar](/en/glossary/registrar/) that bridges Web2 and Web3, with transparent pricing, fast DNS management, and the option to hold your name as a [tokenized domain](/en/glossary/tokenized-domain/) for easier transfer and provable ownership.
-
-## Frequently asked questions
+## These answers address common .me questions
 
 ### Can anyone register a .me domain?
 
-Yes. Although .me is technically Montenegro's country-code TLD, it has been open to anyone in the world since its 2008 public launch, with no local-presence or Montenegrin-residency requirement. Registration is first-come, first-served at the second level.
+Individuals and companies worldwide can register second-level .me names without a Montenegrin presence. Reserved names remain unavailable, and registry third-level zones have separate eligibility rules.
 
 ### Does a .me domain affect SEO?
 
-No, .me does not inherently hurt rankings. Google treats .me as a generic, non-geotargeted TLD, so a .me site is not boxed into Montenegro and can rank globally. Content quality, links, and user experience matter far more than the suffix.
+Google treats .me as generic for geographic targeting. The extension does not by itself target Montenegro or guarantee search rankings.
 
 ### Who should register a .me domain?
 
-Individuals building a personal brand, portfolio, or resume site, and anyone crafting a domain hack where the name reads as a phrase ending in "me" — such as about.me or "call.me." It reads instantly as the English pronoun, making it warm and personal.
+Consider .me for a personal brand, portfolio, biography page, or a phrase that naturally ends in the English word “me.” Check the exact name and renewal quote first.
 
 ### Is .me a good domain for a personal website?
 
-Yes. .me is arguably the most personal mainstream extension. Because "me" is the first-person pronoun, "yourname.me" or "hire.me" feels like a direct invitation, which is why it is a favorite for portfolios, bios, and individual brands.
+.me can suit a personal website when the full address is clear and memorable. Compare the exact name, spoken clarity, and long-term cost with alternatives.
 
-## Related resources
+## These sources document the current rules
 
-- [.com TLD guide](/en/tld/com/)
-- [.io TLD guide](/en/tld/io/)
-- [.co TLD guide](/en/tld/co/)
-- [.xyz TLD guide](/en/tld/xyz/)
-- [Domain hacks explained](/en/blog/domain-hacks-explained/)
-- [What is a domain?](/en/blog/what-is-domain/)
-- [Domain terminology guide](/en/blog/domain-terminology-guide/)
-- [Glossary: registrar](/en/glossary/registrar/)
-- [Glossary: ICANN](/en/glossary/icann/)
+The source fetch date is 2026-10-22 UTC, corresponding to October 21 in Los Angeles.
+
+- IANA — [.me delegation record](https://www.iana.org/domains/root/db/me.html), manager and delegation.
+- doMEn — [About .ME](https://domain.me/about-me/), public launch and background.
+- doMEn — [Registry homepage](https://domain.me/), technical platform and positioning.
+- doMEn — [Policies](https://domain.me/policies/), sections 1–5 on terms, eligibility, reservations, and disputes.
+- doMEn — [Premium Domains](https://domain.me/premium-domains/), higher creation fees and regular renewals.
+- doMEn — [FAQ](https://domain.me/faq/), expiration and supported characters.
+- doMEn — [DNSSEC](https://domain.me/dnssec/), DNS security support.
+- doMEn — [.ME UDRP Policy](https://domain.me/files/ME-UDRP-Policy.pdf), paragraph 4(a).
+- Google Search Central — [Managing multi-regional and multilingual sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), generic ccTLD treatment.
+- About.me — [Personal-page platform](https://about.me/), current product example.
