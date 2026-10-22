@@ -1,0 +1,14 @@
+{
+  "scope": "Local sanity only; no code review, third-party review, hosted CI, remote writes or subagents",
+  "data_validate": {"result": "PASS", "tests_passed": 13, "tests_failed": 0, "warnings": 37, "files_checked": 4055, "locale_mismatch": 0, "relationship_mismatch": 0, "faqs_checked": 1633},
+  "lint_mdx": {"result": "PASS", "diagnostics": 0},
+  "links_audit": {"broken": 0, "missing_locale": 0, "locale_mismatch": 0, "relationship_mismatch": 0, "missing_translation_fallback": 512},
+  "git_diff_check": "PASS",
+  "images": "Final generated replacement and four reused references inspected; all assets exist and final dimensions verified in images.json",
+  "expected_urls": ["https://namefi.io/r/en/blog/free-domain-offers/"],
+  "existing_translations": [],
+  "selected_translations": [],
+  "deferred_markets": ["es-MX", "de-DE", "ja-JP"],
+  "publication": "Local commit only; remote publication gate remains with coordinator",
+  "limits": ["No deployed canonical/hreflang check during local-only preparation", "Other locale-region markets remain unassessed", "Observed writing counters can lag phase checkpoints; image usage is separately reported"]
+}

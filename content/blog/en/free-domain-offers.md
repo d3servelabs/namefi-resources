@@ -58,21 +58,28 @@ The table describes offer categories, not promises about every provider. A stude
 
 For a short demonstration, a provider address can meet the entire requirement. The project may need only a link that participants can open. A project that expects printed materials or long-term customer email has a different requirement. Record that requirement before comparing promotions.
 
-Consider a hypothetical neighborhood workshop. Organizers need a registration page for one event and will close the page afterward. A provider address may avoid an unnecessary registration task. Organizers should still preserve attendee records according to their obligations and check the service's permitted uses.
-
-Now consider a hypothetical repair business choosing a permanent public address. The business expects customers to save the address and return next year. The business should evaluate continued control and renewal independently from the website subscription. The same free offer can produce different decisions for these two projects.
-
 Read our [domain and hosting comparison](/en/blog/domain-vs-hosting/) if a checkout combines the address, website editor, hosting, and email. Write each service on a separate line. A service bundle can simplify administration, but a bundle does not erase the distinction between services.
 
 ## The checkout terms determine the actual savings
 
-![The checkout terms determine the actual savings.](../../assets/free-domain-offers-02-offer-terms.jpg)
+![First-year discounts, ongoing plan benefits, and registration expiration have different renewal conditions.](../../assets/free-domain-offers-05-renewal-conditions.jpg)
 
 Read the promotion before choosing the billing period. A monthly price shown on a marketing page may describe an annual commitment. Record the amount due today and the length of the commitment from the checkout itself.
 
 Wix offers a current example of a conditional registration promotion. Selected first-time yearly or multi-year site plans include a one-year domain voucher. Wix gives the voucher a two-month redemption window and requires payment details for subsequent renewal. The voucher excludes privacy protection. Check [Wix's voucher terms and FAQs](https://support.wix.com/en/article/free-domain-voucher) for the eligible extensions and purchase conditions.
 
 WordPress.com uses different terms. A new annual plan includes a credit for a first registration year or an eligible incoming transfer. Monthly plans do not qualify, and the credit does not expire. The credit cannot renew a domain already registered at WordPress.com. See [WordPress.com's free-domain credit rules](https://wordpress.com/support/domains/register-a-free-domain/#receive-a-free-domain-credit).
+
+The following comparison reflects the providers' published terms checked on October 21, 2026. The linked terms govern the exact purchase.
+
+| Decision | Wix voucher | WordPress.com credit |
+| --- | --- | --- |
+| Redemption deadline | Two months after plan purchase | Credit does not expire |
+| Existing domain | Eligible transfer into Wix | Eligible transfer adds a registration year |
+| Domain bought before plan | No retroactive voucher or refund | `.com`, `.blog`, `.net`, and `.org` can receive an upgrade credit |
+| Later registration years | First year only | Standard renewal price after the first year |
+
+Sources: [Wix voucher FAQs](https://support.wix.com/en/article/free-domain-voucher) and [WordPress.com credit terms](https://wordpress.com/support/domains/register-a-free-domain/). The purchase-order difference matters: buying a domain before choosing the plan can change the discount.
 
 These examples show why a generic free-domain checklist needs provider-specific answers. One promotion's deadline cannot stand in for another promotion's deadline. Save the terms that apply to the actual plan and purchase date.
 
@@ -87,6 +94,8 @@ Use a simple worksheet without guessing future prices:
 | Required website plan | Commitment and renewal quote | Host selected separately |
 | Optional services | Only required additions | Same required additions |
 
+A simple calculation can reveal the commitment. Suppose a fictional bundle costs $120 for one year and includes the domain's first year. Suppose equivalent separate hosting costs $80 and the registration costs $15. The separate total is $95, so the bundle costs $25 more despite the free domain. These figures illustrate arithmetic, not provider prices. Compare actual features and renewal quotes before choosing.
+
 Current quotes support a planning scenario, not a guarantee of future charges. Record the quote date and currency beside the worksheet. Recheck the amounts before renewal or a new commitment.
 
 The comparison also needs a cancellation scenario. Ask what the provider refunds if the website plan proves unsuitable. Ask whether keeping the domain reduces the plan refund. Ask whether a promotion requires a particular purchase order or a separate redemption step.
@@ -96,6 +105,14 @@ WordPress.com states that customers who cancel a qualifying plan can keep the do
 A hypothetical team might already prefer the qualifying website plan after testing the editor. The domain credit then reduces an expense associated with the chosen setup. Another team might purchase an unsuitable annual plan solely for the credit. The second team should compare the extra commitment with the registration saving before paying.
 
 Do not choose a spelling or extension solely because a voucher covers the name. Read the proposed address aloud and ask another person to type the address. Check whether the exact name qualifies before approving payment. A promotional extension list does not establish availability for a particular registration.
+
+### A lifetime claim needs a defined renewal obligation
+
+Treat “lifetime” as a term to investigate. Ask whose lifetime the contract means, which subscription must remain active, and who pays each domain renewal. Ask what happens after cancellation or a provider shutdown. Keep the answers with the registration agreement.
+
+A long prepaid registration is also a different arrangement from perpetual registration. WordPress.com, for example, permits most domain registrations to extend to a maximum of ten years. See [the multi-year renewal instructions](https://wordpress.com/support/domains/renew-a-domain/#renew-a-domain-manually). The account still has an expiration date after a multi-year payment.
+
+For an offer that includes renewals while hosting continues, add the required hosting renewals to the cost worksheet. A continuing bundle benefit can be useful. The benefit still needs a cancellation plan and a named person responsible for keeping the registration active.
 
 ## The account determines who can keep and move the domain
 

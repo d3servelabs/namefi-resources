@@ -1,0 +1,22 @@
+{
+  "captured_utc": "2026-10-22T00:02:57.926108+00:00",
+  "model_requested": "gpt-image-2",
+  "quality": "high",
+  "size": "1536x1024",
+  "attempt": 1,
+  "usage": {
+    "input_tokens": 485,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 485
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+      "image_tokens": 5488,
+      "text_tokens": 0
+    },
+    "total_tokens": 5973
+  },
+  "created": 1792627377,
+  "error_present": false
+}

@@ -1,0 +1,236 @@
+{
+  "fetched_utc": "2026-10-22T00:00:28.221515+00:00",
+  "request": {
+    "language": "languageConstants/1003",
+    "geoTargetConstants": [
+      "geoTargetConstants/2484"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "dominio gratis",
+      "dominio gratis para siempre",
+      "registrar dominio gratis"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "dominio gratis",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "1000"
+            }
+          ],
+          "avgMonthlySearches": "1000",
+          "competitionIndex": "70",
+          "lowTopOfPageBidMicros": "636383",
+          "highTopOfPageBidMicros": "2878123"
+        }
+      },
+      {
+        "text": "dominio gratis para siempre",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "50"
+            }
+          ],
+          "avgMonthlySearches": "50",
+          "competitionIndex": "69",
+          "lowTopOfPageBidMicros": "467721",
+          "highTopOfPageBidMicros": "1820044"
+        }
+      },
+      {
+        "text": "registrar dominio gratis",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "30",
+          "competitionIndex": "50",
+          "lowTopOfPageBidMicros": "896176",
+          "highTopOfPageBidMicros": "2477000"
+        }
+      }
+    ]
+  }
+}

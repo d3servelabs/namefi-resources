@@ -1,0 +1,245 @@
+{
+  "fetched_utc": "2026-10-22T00:00:40.486502+00:00",
+  "request": {
+    "language": "languageConstants/1005",
+    "geoTargetConstants": [
+      "geoTargetConstants/2392"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "無料ドメイン",
+      "独自ドメイン 無料",
+      "ドメイン 永久無料"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "無料 ドメイン",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "2900"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "1600"
+            }
+          ],
+          "avgMonthlySearches": "1900",
+          "competitionIndex": "47",
+          "lowTopOfPageBidMicros": "612663",
+          "highTopOfPageBidMicros": "19494344"
+        },
+        "closeVariants": [
+          "無料ドメイン"
+        ]
+      },
+      {
+        "text": "独自 ドメイン 無料",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "480"
+            }
+          ],
+          "avgMonthlySearches": "590",
+          "competitionIndex": "56",
+          "lowTopOfPageBidMicros": "465248",
+          "highTopOfPageBidMicros": "9193396"
+        },
+        "closeVariants": [
+          "独自ドメイン 無料"
+        ]
+      },
+      {
+        "text": "ドメイン 永久 無料",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "40",
+          "competitionIndex": "49",
+          "lowTopOfPageBidMicros": "578184",
+          "highTopOfPageBidMicros": "4426598"
+        },
+        "closeVariants": [
+          "ドメイン 永久無料"
+        ]
+      }
+    ]
+  }
+}
