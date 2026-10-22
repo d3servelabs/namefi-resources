@@ -74,7 +74,7 @@ relatedGlossary:
 
 心理学家称之为[**处理流畅性**](https://people.uncw.edu/tothj/Extra-Credit-Papers/Oppenheimer-The%20Secret%20Life%20of%20Fluency-TICS-2008.pdf)——我们会无意识地偏好那些易于感知和发音的事物，并将这种好感转移到事物本身。这种效应强到足以影响金钱流向。在《美国国家科学院院刊》发表的一项研究中，Adam Alter 和 Daniel Oppenheimer 发现，[名称和股票代码更易发音的新上市公司在上市初期的表现优于发音更难的公司](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1482615/)——比如"BAL"这样的代码仅仅因为比"BDL"更流畅就胜过了后者。
 
-不仅仅是股票。在["名字发音效应"](https://ppw.kuleuven.be/okp/_pdf/Laham2012TNPEW.pdf)（Laham、Koval & Alter，2012）中，发音更容易的名字获得了更正面的评价——在真实世界数据中，发音容易的名字更受政治选举青睐，在律所层级中晋升更快。发音的流畅性会悄悄地将判断推向你的有利方向。
+[《名字发音效应》](https://ppw.kuleuven.be/okp/_pdf/Laham2012TNPEW.pdf)（Laham、Koval 和 Alter，2012）发现，参与者更认可容易发音的名字。政治实验使用模拟选票和虚构候选人，没有分析真实选举结果。另一项观察研究发现，姓氏容易发音的律师职位较高。研究没有证明容易发音会加快晋升。研究结果支持检查名字的发音，不能预测名字的商业成效。
 
 *声音本身*也携带含义。在["声音创意"](https://pages.stern.nyu.edu/~gmenon/A%20Sound%20Idea.pdf)（Yorkston & Menon，2004）中，消费者认为使用柔和圆润元音命名的虚构冰淇淋品牌（"Frosh"）比同一产品的另一个名字（"Frish"）更顺滑绵密。我们在思考之前就会自动从语音中推断属性。尖锐的高元音（*i*）传递小、快、轻的感觉；宽广圆润的元音（*o、a*）传递大、顺滑、厚重的感觉。选择与你想要的感觉相匹配的声音。
 

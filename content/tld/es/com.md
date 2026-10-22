@@ -124,7 +124,7 @@ Los nombres tienen entre **1 y 63 caracteres**, permiten letras, dígitos y guio
 
 Esta página nunca cita precios en tiempo real, pero las **dinámicas** de precios merecen entenderse:
 
-- **Un precio mayorista mínimo regulado.** El precio mayorista de .com de Verisign se establece en su acuerdo de registro con la ICANN, que permite aumentos periódicos, por lo que los precios de los registradores tienden a moverse dentro de una banda predecible en lugar de fluctuar libremente.
+- Al 22 de octubre de 2026, Verisign cobra una tarifa mayorista de USD 10.26 por año de registro. [Verisign anunció una tarifa de USD 10.97 para nuevos registros y renovaciones a partir del 1 de noviembre de 2026](https://www.sec.gov/Archives/edgar/data/1014473/000101447326000019/q12026earningsrelease.htm#:~:text=effective%20Nov.). Los registradores fijan sus precios minoristas. Comprueba la tarifa de renovación en lugar de suponer que pagarás la tarifa mayorista.
 - **El precio del primer año difiere del de renovación.** Una tarifa introductoria del primer año puede ser inferior a la tarifa de renovación recurrente, así que presupuesta la renovación, no solo el precio de alta.
 - **El verdadero premium está en el mercado secundario.** El registro estándar cubre cualquier .com disponible, pero la mayoría de los nombres cortos, de diccionario y de marca ya tienen dueño. Su coste lo determina la demanda del mercado secundario y puede superar con creces el precio base.
 

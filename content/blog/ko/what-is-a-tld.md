@@ -100,7 +100,9 @@ blog . namefi . io
 
 ### 3. 스폰서드 최상위 도메인(sTLD)
 
-**스폰서드 TLD**는 자격 요건을 정하는 특정 커뮤니티나 단체가 후원하는 제한적 gTLD입니다. 일반적으로 등록하려면 자격을 갖춰야 합니다. 대표적인 예로 `.gov`(미국 정부), `.edu`(미국 인가 교육 기관), `.mil`(미국 군), `.aero`(항공 산업), `.museum` 등이 있습니다.
+**스폰서드 TLD**에는 특정 커뮤니티를 대표하는 후원 기관이 있습니다. [ICANN은 현행 계약에서 `.aero`와 `.coop`를 스폰서드 TLD로 분류합니다](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type). 등록 요건은 확장자와 현행 정책에 따라 다릅니다. 등록 제한이 있다는 이유만으로 스폰서드 TLD가 되지는 않습니다.
+
+[ICANN — .coop](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type).
 
 ### 4. 신규 gTLD
 
@@ -171,7 +173,7 @@ blog . namefi . io
 3. **특정 국가를 타겟으로 하나요?** [`.ae`](/ko/tld/ae/) 같은 ccTLD는 현지 존재감을 나타내고 로컬 검색 가시성에 도움이 될 수 있습니다. 단, 먼저 자격 요건을 확인하세요.
 4. **이름이 기억하기 쉽고 브랜딩에 적합한가요?** 현대적인 TLD([`.xyz`](/ko/tld/xyz/), [`.app`](/ko/tld/app/))에 짧은 SLD를 조합하면 길고 어색한 `.com`보다 나은 경우가 많습니다.
 5. **갱신 비용은 얼마인가요?** 일부 TLD는 첫 해 프로모션 가격이 저렴하지만 갱신 비용이 높습니다. 초기 가격이 아닌 장기 비용을 반드시 확인하세요.
-6. **제한 사항이 있나요?** 스폰서드 TLD(`.gov`, `.edu`)와 일부 ccTLD는 자격 요건이 필요합니다. [`.app`](/ko/tld/app/)과 [`.dev`](/ko/tld/dev/) 같은 신규 gTLD는 기본적으로 HTTPS를 강제합니다.
+6. **제한 사항이 있나요?** 스폰서드 TLD(`.coop`, `.aero`)와 일부 ccTLD는 자격 요건이 필요합니다. [`.app`](/ko/tld/app/)과 [`.dev`](/ko/tld/dev/) 같은 신규 gTLD는 기본적으로 HTTPS를 강제합니다.
 
 좋은 원칙 하나를 정리하자면, **사용자가 신뢰하고 기억할 수 있는 TLD를 선택한 다음, 가격과 규정이 계획에 맞는지 확인하세요**.
 
@@ -207,7 +209,7 @@ TLD는 **Top-Level Domain(최상위 도메인)**의 약자입니다. 인터넷 �
 *도메인*은 등록 가능한 전체 이름, 즉 2차 이름과 TLD를 합친 것(예: `namefi.io`)입니다. *TLD*는 공유되는 끝 부분(`.io`)일 뿐입니다. 도메인은 직접 등록하고 소유하지만, TLD 아래에 이름을 등록하는 것이며 TLD 자체를 소유하는 것은 아닙니다.
 
 ### TLD의 주요 종류는 무엇인가요?
-주요 종류로는 `.com` 같은 일반 TLD(gTLD), `.uk`나 `.ai` 같은 국가 코드 TLD(ccTLD), `.edu`나 `.gov` 같은 스폰서드 TLD(sTLD), `.xyz`나 `.app` 같은 신규 gTLD, 그리고 라틴 문자가 아닌 문자로 표기되는 국제화 TLD(IDN)가 있습니다.
+주요 종류로는 `.com` 같은 일반 TLD(gTLD), `.uk`나 `.ai` 같은 국가 코드 TLD(ccTLD), `.aero`나 `.coop` 같은 스폰서드 TLD(sTLD), `.xyz`나 `.app` 같은 신규 gTLD, 그리고 라틴 문자가 아닌 문자로 표기되는 국제화 TLD(IDN)가 있습니다.
 
 ### gTLD와 ccTLD의 차이는 무엇인가요?
 gTLD는 ICANN 계약 아래 직접 관리되는 전 세계에서 사용 가능한 일반 확장자입니다(예: `.com`, `.org`). ccTLD는 국가나 지역에 연결된 두 글자 확장자로 각국 기관에 위임되어 있으며(예: `.uk`, `.de`, `.ai`), 각자 고유한 등록 규정을 가집니다.

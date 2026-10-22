@@ -107,7 +107,7 @@ Minimization reduces unnecessary disclosure to authoritative servers. Minimizati
 
 These details change privacy and performance questions. Ask which resolver receives the original request, which delegation information the resolver already holds, and whether the resolver minimizes upstream names. Avoid inferring a complete browsing history from a root-server traffic count.
 
-For troubleshooting, preserve cache state when possible. An investigator who clears caches changes the conditions under investigation. Record the first failure before restarting a resolver or flushing useful information. A later successful lookup can otherwise obscure whether the original failure involved discovery, cached data, or another layer.
+For troubleshooting, preserve cache state when possible. An investigator who [clears caches](/en/blog/flush-dns-cache/) changes the conditions under investigation. Record the first failure before restarting a resolver or flushing useful information. A later successful lookup can otherwise obscure whether the original failure involved discovery, cached data, or another layer.
 
 ## DNSSEC and diagnostics answer different questions
 

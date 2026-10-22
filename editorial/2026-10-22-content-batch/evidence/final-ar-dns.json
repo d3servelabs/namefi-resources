@@ -1,0 +1,107 @@
+{
+  "reviewer": "/root/review_domain",
+  "model": "gpt-6.1-sol",
+  "review_date_utc": "2026-10-22",
+  "head_sha": "60a1f960d620b8443764d23af9963a5a67f40eae",
+  "baseline_sha": "20ebd689856bcc138037a07e871ca8f4c2c5df27",
+  "path": "content/glossary/ar/dns.md",
+  "english_path": "content/glossary/en/dns.md",
+  "scope": "只读比较本批新增或改动段落；不对整篇旧文背书。不修改工作树、不运行CI、不开PR。",
+  "verdict": "新增阿拉伯语段落忠实保留英文技术要点，没有发现遗漏、否定翻转、DNSSEC隐私能力误写或registrar/registry混淆。区域定义存在一处与英文共有的边界表述歧义，建议根代理裁决小幅澄清。",
+  "blocking_translation_issues": [],
+  "checks": [
+    {
+      "id": "hierarchy-depth",
+      "line": 70,
+      "result": "pass",
+      "conclusion": "删除无限嵌套深度的旧表述，保留根、TLD、二级域名、嵌套子域示例；与英文改动一致。"
+    },
+    {
+      "id": "zone-node",
+      "line": 72,
+      "result": "pass_with_precision_note",
+      "conclusion": "译文已纠正每个节点就是一个区域的旧错误。区域作为管理单元、子区域委派边界、权威服务器保存区域资源记录均未遗漏。见下方Z1。"
+    },
+    {
+      "id": "rrset-signatures",
+      "line": 106,
+      "result": "pass",
+      "conclusion": "مجموعات سجلات DNS准确对应record sets；译文没有把DNSSEC写成加密查询。"
+    },
+    {
+      "id": "validation-chain",
+      "line": 106,
+      "result": "pass",
+      "conclusion": "验证解析器、签名核查、认证链和预配置可信锚点四项均存在。نقطة ثقة مضبوطة عنده保留configured trust anchor的含义。"
+    },
+    {
+      "id": "unsigned-child-negation",
+      "line": 106,
+      "result": "pass",
+      "conclusion": "لوحده、مش بيوثق、مش موقعة准确保留根已签名仍不能认证未签名子区域的限制。不存在否定反转。"
+    },
+    {
+      "id": "validation-states",
+      "line": 106,
+      "result": "pass",
+      "conclusion": "آمنة / غير آمنة / باطلة / غير محددة按顺序对应secure / insecure / bogus / indeterminate。这里四词表示验证状态，没有将insecure与bogus合并。"
+    },
+    {
+      "id": "hijacking-controls",
+      "line": 108,
+      "result": "pass",
+      "conclusion": "新增registry restrictions on transfers and updates准确译为قيود السجل على النقل والتحديث；两个EPP状态码逐字保留，没有把注册商和注册局互换。"
+    },
+    {
+      "id": "citations-and-links",
+      "result": "pass",
+      "conclusion": "新增来源URL与英文一致，RFC节号一致，ICANN来源保留。区域段的内部链接仍为/ar/同slug路径。"
+    },
+    {
+      "id": "egyptian-register",
+      "result": "pass",
+      "conclusion": "新增区域段和DNSSEC段使用مش、بيفصل、بيحتفظ、بتضيف、اللي、لحد、لوحده，符合现代埃及技术读者语体。DNS劫持段仍保留既有书面语框架，不建议为局部审阅重写整段。"
+    }
+  ],
+  "issues": [
+    {
+      "id": "Z1",
+      "severity": "S2",
+      "category": "技术表述边界歧义；英文源文同样存在",
+      "line": 72,
+      "original": "مش عقدة منفردة",
+      "reason": "该短语可读成区域不能只含一个节点。RFC1034第4.2节说区域至少包含一个节点，并不要求多个节点。实际要区分区域与节点两个概念，而非排除单节点区域。英文not an individual node也有相同潜在歧义，因此这不是新增译文擅自改变语义。",
+      "evidence_url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2",
+      "evidence_locator": "RFC1034 section4.2 lines1015-1023: at least one node, and explicit possibility of each domain name occupying a separate zone.",
+      "suggested_arabic_first_sentence": "**المنطقة** جزء من شجرة DNS بيتدار كوحدة إدارية، ومش كل عقدة في الشجرة منطقة مستقلة.",
+      "suggested_english_first_sentence": "A **zone** is an administratively managed portion of the DNS tree. Not every node forms a separate zone.",
+      "back_translation": "A zone is part of the DNS tree managed as an administrative unit; not every node in the tree is a separate zone.",
+      "recommendation": "根代理可只替换区域段首句，并同步英文及其他已有翻译中的同一歧义。无需改动后续委派或资源记录句。"
+    }
+  ],
+  "optional_suggestions": [
+    {
+      "line": 106,
+      "suggestion": "若根代理希望消除验证状态与一般网站安全性的混淆，可以在四个阿拉伯语状态后附secure、insecure、bogus、indeterminate标准标签。当前译法忠实，不构成必须修改的问题。"
+    }
+  ],
+  "sources_personally_opened": [
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2",
+      "supports": "区域由DNS树中连通部分组成；至少一个节点；委派形成边界。"
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc4033.html#section-5",
+      "supports": "第5节列出四种解析器验证状态；可信锚点与签名链决定验证状态。"
+    },
+    {
+      "url": "https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en",
+      "supports": "serverUpdateProhibited限制更新；serverTransferProhibited限制转移。"
+    }
+  ],
+  "usage_path": "final-ar-dns-usage.json",
+  "native_reviewer": false,
+  "changes_made": false,
+  "ci_run": false,
+  "incremental_usage_path": "final-ar-dns-usage-delta.json"
+}
