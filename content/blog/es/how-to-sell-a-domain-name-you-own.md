@@ -129,6 +129,8 @@ Si el dominio está a punto de caducar, renuévalo antes de hacer contactos seri
 
 La [ICANN](/es/glossary/icann/) explica que los registradores pueden denegar las transferencias en ciertos casos, como cuando un dominio está en estado de bloqueo, dentro de los 60 días posteriores al registro inicial o dentro de los 60 días posteriores a una transferencia anterior. También necesitarás un [código AuthInfo/auth](/es/glossary/auth-code/) para muchas transferencias entre registradores, y la ICANN estipula que los registradores deben permitirte crear uno o proporcionártelo en un plazo de cinco días calendario desde la solicitud.
 
+Cambiar el nombre, la organización o el correo del titular también puede activar un bloqueo de 60 días para cambiar de registrador. Algunos registradores permiten renunciar al bloqueo antes del cambio. Un traslado entre cuentas depende de las reglas del registrador y no anula disputas ni órdenes judiciales. [ICANN](https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en).
+
 Eso no significa que cada venta tenga que esperar. Si el comprador está dispuesto a recibir el dominio en el registrador actual, es posible hacer un *push* (transferencia de cuenta en el mismo registrador) o un cambio de titularidad. Pero necesitas conocer la vía de transferencia antes de prometer una fecha de cierre.
 
 ### Decide qué está incluido
@@ -169,7 +171,7 @@ Comienza con un dominio que poseas o representes. Outbound ayuda a explorar:
 - Enfoques para el comprador que puedes revisar.
 - Contactos públicos cuando estén disponibles.
 - Borradores de contacto editables cuando hay suficiente contexto.
-- Notas de investigación exportables para tu propio proceso.
+- Notas de investigación para tu propio proceso.
 
 Úsalo como investigación, no como piloto automático. Un buen proceso de *outbound* sigue necesitando del criterio humano.
 
@@ -272,7 +274,7 @@ Ten cuidado con las estafas. La [FTC](https://consumer.ftc.gov/articles/how-avoi
 
 No hagas clic en enlaces de *escrow* de un comprador asumiendo que son reales. Escribe tú mismo la URL del servicio de *escrow* o de pago. Confirma la transacción dentro de tu propia cuenta. No transfieras el dominio hasta que la plataforma de pago indique que los fondos están asegurados.
 
-Para una transferencia entre registradores, el vendedor generalmente desbloquea el dominio y proporciona el código de autorización (AuthInfo), y luego el comprador inicia la transferencia en el registrador receptor. Para un *push* en el mismo registrador, ambas partes usan cuentas en el registrador actual. Escrow.com señala que un *push* en el mismo registrador puede ser útil cuando un [bloqueo de transferencia](/es/glossary/transfer-lock/) de 60 días de la ICANN impide un movimiento entre registradores.
+Para cambiar de registrador, sigue las instrucciones del proveedor verificado para desbloquear el dominio y entregar el código de autorización. Para un traslado interno, confirma el procedimiento y la cuenta receptora con el registrador. Nunca compartas la contraseña de tu cuenta.
 
 Después del cierre:
 

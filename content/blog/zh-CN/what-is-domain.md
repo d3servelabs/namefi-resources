@@ -55,11 +55,9 @@ relatedGlossary:
 
 一个域名由几个部分组成：
 
-*   **[顶级域名](/zh-CN/glossary/tld/)（TLD）：** 即地址末尾的后缀，如 `.com`、`.org`、`.net`，以及新兴的 `.xyz`、`.app` 甚至 `.ninja`。有些是通用顶级域名（gTLD），另一些则是国家和地区顶级域名（ccTLD，如 `.us`、`.uk` 或 `.cn`）。
-*   **[二级域名](/zh-CN/glossary/second-level-domain/)（SLD）：** 域名的核心部分，例如 `google.com` 中的 `google`。
-*   **[子域名](/zh-CN/glossary/subdomain/)：** 可选的前缀，用于组织内容，例如 `blog.example.com` 或 `mail.example.org`。
+DNS 层级从根域 `.` 开始。根域下方依次是顶级域名 `com`、二级域名 `example.com` 和子域名 `blog.example.com`。`example` 单独只是一个标签。在 `example.co.uk` 中，`uk` 是顶级域名，`co.uk` 是二级域名，`example.co.uk` 是三级域名。因此，可注册域名不一定处于第二级。 [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-3.1).
 
-每个域名都是独一无二的——一旦有人注册了 `example.com`，其他人便无法再使用。
+一个域名在同一时间只有一个注册人。注册人可以授权其他人或服务使用域名。注册不会同时保留其他后缀下的同名域名。 [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 ---
 
@@ -67,13 +65,13 @@ relatedGlossary:
 
 域名的全球协调工作由非营利组织 **[ICANN](/zh-CN/glossary/icann/)**（**互联网名称与数字地址分配机构**）负责监管。ICANN 成立于 1998 年，负责管理域名和 IP 地址的分配。它与[注册商](/zh-CN/glossary/registrar/)（如 GoDaddy、Namecheap 和 Namefi）合作，由这些注册商向公众出售域名。
 
-ICANN 还对注册局进行认证，注册局负责管理特定的 TLD。例如，Verisign 运营 `.com` 和 `.net`，而公共利益注册局（Public Interest Registry）则管理 `.org`。
+注册局管理域名注册数据库。注册商为客户办理注册。ICANN 认证注册商，并与通用顶级域名注册局签订合同。国家和地区顶级域名采用各自的管理安排。 [ICANN](https://www.icann.org/en/contracted-parties/registry-operators/resources/listings).
 
 ---
 
 ## **如何注册域名**
 
-要获得一个域名，你需要通过**ICANN 认证的注册商**注册。你搜索可用的域名，支付注册费（通常按年支付），只要持续续费，你就“拥有”该域名的使用权。
+注册通用顶级域名时，可以选择 ICANN 认证注册商或相关经销商。付款前应核对可用性、注册资格、合同条款和续费价格。注册合同规定域名使用权。 [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 操作流程如下：
 
@@ -82,7 +80,7 @@ ICANN 还对注册局进行认证，注册局负责管理特定的 TLD。例如�
 3.  如果可用，即可注册。
 4.  注册后，你就可以控制域名指向哪里（例如，指向你的网站或邮箱）。
 
-与其他注册商相比，[Namefi](https://namefi.io) 提供了更高级的功能，例如子域名管理、DNS 安全工具以及与[区块链](/zh-CN/glossary/blockchain/)域名等去中心化系统的集成。
+
 
 ---
 

@@ -58,6 +58,18 @@ A VPN also addresses a different scope. DoH and DoT carry DNS traffic, rather th
 
 The practical question is precise: which client sends which queries to which resolver through which protected connection? Answering that question prevents a browser setting from becoming an unsupported claim about the whole device.
 
+### Each observer retains a different view of the connection
+
+![An encrypted DNS connection hides the query from the network but reveals the query to the selected resolver.](../../assets/dns-over-https-vs-dns-over-tls-05-visibility-boundary.jpg)
+
+| Observer | What authenticated DoH or DoT protects | What remains visible |
+| --- | --- | --- |
+| Local Wi-Fi or ISP observer | DNS question and answer contents on the protected connection | Resolver destination, connection timing, and traffic sizes |
+| Selected resolver operator | No concealment from the service answering the query | DNS question and connection information |
+| Authoritative server | No automatic encryption of the resolver's separate upstream exchange | Questions that the resolver sends to that server |
+
+The table describes the [privacy boundaries in RFC 9076](https://www.rfc-editor.org/rfc/rfc9076.html#section-6.1.4). The table does not claim that every observer can identify every visited website. Caching, shared addresses, and other connection protections affect that inference.
+
 ## DoH and DoT use different transport and configuration details
 
 ![DoH and DoT use different transport and configuration details.](../../assets/dns-over-https-vs-dns-over-tls-02-transport-paths.jpg)
@@ -110,6 +122,16 @@ Resolver startup introduces another boundary. A client configured with a resolve
 
 Choose the intended failure outcome before an outage. If confidential DNS transport is mandatory, test whether failed authentication stops lookups. If continued connectivity matters more, document the allowed fallback and understand the reduced protection. Neither outcome should surprise the person who operates the device.
 
+## Android Private DNS requires a hostname and a scope check
+
+Android exposes **Off**, **Automatic**, and **Private DNS provider hostname** under its Private DNS setting. Google's [Android instructions](https://support.google.com/android/answer/9654714) place the setting under **Network & internet → Private DNS**. Device manufacturers can change the menu location.
+
+For Google's documented service, enter `dns.google` in the provider-hostname field, then save. Enter a hostname, rather than `8.8.8.8` or an HTTPS URL. Google's [Android configuration instructions](https://developers.google.com/speed/public-dns/docs/using#android) provide that example. Provider selection still requires the policy and fallback checks above.
+
+Do not infer the active transport solely from the Private DNS label. Android 9 introduced DoT support. Google later [announced DoH over HTTP/3 upgrades](https://security.googleblog.com/2022/07/dns-over-http3-in-android.html) for supported, well-known resolvers on eligible Android 11 and later devices. The announcement describes an update-dependent transport change, rather than universal support for arbitrary DoH endpoint URLs in the hostname field.
+
+Check the installed Android version, system updates, resolver documentation, and actual connection. A browser with a separate secure-DNS setting also needs a separate check. Private DNS protects DNS questions and answers, rather than all device traffic. An internal-name failure can require the managed resolver or VPN configuration instead of a different public hostname.
+
 ## A controlled test reveals which DNS connection the client uses
 
 ![A controlled test reveals which DNS connection the client uses.](../../assets/dns-over-https-vs-dns-over-tls-04-verify-connection.jpg)
@@ -152,3 +174,5 @@ Keep the final record short: intended resolver, protected client scope, authenti
 - IETF — [RFC 4033](https://www.rfc-editor.org/rfc/rfc4033.html#section-1), introduction: DNSSEC integrity and confidentiality distinction. Fetched 2026-10-21.
 - Mozilla — [Configure DNS over HTTPS protection levels in Firefox](https://support.mozilla.org/en-US/kb/dns-over-https), “Protection levels explained” and status FAQ. Fetched 2026-10-21.
 - Google — [Secure transports for DNS](https://developers.google.com/speed/public-dns/docs/secure-transports#endpoints), “Endpoints.” Fetched 2026-10-21.
+
+- Google — [Android Private DNS settings](https://support.google.com/android/answer/9654714), [Google Public DNS Android setup](https://developers.google.com/speed/public-dns/docs/using#android), and [DNS-over-HTTP/3 in Android](https://security.googleblog.com/2022/07/dns-over-http3-in-android.html): hostname fields, scope, and version-dependent transports. Fetched 2026-10-21.

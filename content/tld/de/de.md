@@ -9,17 +9,17 @@ editors: ['victor-zhou']
 translators: ['kai-kunstmann']
 draft: false
 selfCanonical: true
-description: 'Die .de-Domain ist die offizielle Länderendung für Deutschland, betrieben von DENIC. Erfahren Sie, wer sie registrieren darf, welche DENIC-Regeln gelten und worauf Sie achten sollten.'
+description: 'Die .de-Domain gehört zu Deutschland. Lesen Sie DENICs Regeln zur Registrierung, Datenprüfung, Vertragslaufzeit und Preisgestaltung.'
 keywords: ['DENIC', 'ccTLD Deutschland', '.de registrieren', 'deutsche Domain', 'Länder-Top-Level-Domain', 'Domain Deutschland', 'Zustellungsbevollmächtigter .de', '.de vs .com']
 faqs:
   - question: 'Kann jeder eine .de-Domain registrieren?'
     answer: 'Ja. Die .de-Endung ist für alle offen, ob Privatperson, Verein oder Unternehmen, mit Sitz in Deutschland oder im Ausland. Es gibt keine Wohnsitzpflicht. Wer keinen deutschen Wohnsitz hat, muss auf Verlangen von DENIC innerhalb von zwei Wochen einen in Deutschland ansässigen Zustellungsbevollmächtigten benennen.'
   - question: 'Beeinflusst eine .de-Domain das SEO-Ranking?'
-    answer: 'Google behandelt .de als länderspezifische Endung mit klarem Bezug zu Deutschland. Das ist ein Vorteil, wenn Sie deutsche Nutzer ansprechen, kann aber die internationale Sichtbarkeit einschränken. Für ein rein deutsches Publikum ist .de ein starkes geografisches Signal.'
+    answer: 'Google behandelt .de als länderspezifische Endung mit klarem Bezug zu Deutschland. Die Endung signalisiert das Zielland. Die Endung garantiert keine besseren Rankings und verhindert keine internationale Sichtbarkeit.'
   - question: 'Wer sollte eine .de-Domain registrieren?'
     answer: 'Unternehmen, Vereine, Behörden und Privatpersonen, die sich primär an deutsche Nutzer richten. Die Endung schafft sofort Vertrauen und Ortsbezug. Auch internationale Marken sichern .de oft zum Schutz ihres Namens auf dem deutschen Markt.'
   - question: 'Brauche ich einen Admin-C oder eine deutsche Adresse für eine .de-Domain?'
-    answer: 'Nein. Seit der DSGVO 2018 erfasst DENIC keinen Admin-C mehr. Eine deutsche Adresse ist für die Registrierung nicht erforderlich. Nur im Streitfall müssen Inhaber ohne Wohnsitz in Deutschland auf Verlangen einen Zustellungsbevollmächtigten mit deutscher Anschrift benennen.'
+    answer: 'Nein. Seit der DSGVO 2018 erfasst DENIC keinen Admin-C mehr. Eine deutsche Adresse ist für die Registrierung nicht erforderlich. DENIC kann unter den Voraussetzungen von §3(4) der Domainbedingungen einen Zustellungsbevollmächtigten mit deutscher Anschrift verlangen. Die Frist beträgt zwei Wochen.'
   - question: 'Unterstützt .de Umlaute und DNSSEC?'
     answer: 'Ja. .de unterstützt internationalisierte Domainnamen mit ä, ö, ü und ß sowie viele weitere Sonderzeichen. Außerdem kann jede .de-Domain per DNSSEC kryptografisch abgesichert werden, um Manipulationen bei der DNS-Auflösung zu verhindern.'
 relatedArticles:
@@ -30,10 +30,10 @@ relatedArticles:
   - /de/blog/what-are-tokenized-domains/
 relatedTopics:
   - /de/topics/choosing-a-tld/
-  - /de/topics/domain-basics/
+  - /de/topics/domain-investing/
 relatedSeries:
-  - /de/series/name-change-game-change/
-  - /de/series/domain-apocalypse/
+  - /de/series/best-tlds-by-industry/
+  - /de/series/domain-investor-field-guide/
 relatedGlossary:
   - /de/glossary/tld/
   - /de/glossary/cctld/
@@ -65,7 +65,7 @@ Wenn Sie ein deutsches Publikum ansprechen wollen, ist .de oft die naheliegendst
 
 Die Endung wurde bereits 1986 delegiert, wie der [IANA-Root-Zone-Eintrag für .de](https://www.iana.org/domains/root/db/de.html) dokumentiert. Damit gehört .de zu den ältesten Länderendungen im Internet und ist seit Jahrzehnten fester Bestandteil der deutschen Online-Landschaft.
 
-Aus SEO-Sicht ist wichtig: Suchmaschinen wie Google werten .de als geografisch gebundene Endung mit eindeutigem Bezug zu Deutschland. Das ist ein klarer Vorteil, wenn Ihre Zielgruppe in Deutschland sitzt, denn die Endung sendet ein starkes lokales Signal. Wer jedoch global wachsen will, sollte bedenken, dass dieses Signal die internationale Ausrichtung erschweren kann. Hinweise dazu finden Sie in der [Google Search Central Dokumentation zu multiregionalen Websites](https://developers.google.com/search/docs/crawling-indexing/managing-multiregional-sites?hl=de).
+Aus SEO-Sicht ist wichtig: Suchmaschinen wie Google werten .de als geografisch gebundene Endung mit eindeutigem Bezug zu Deutschland. Die Endung nennt das geografische Ziel. Die Endung garantiert keine besseren Rankings und schließt internationale Besucher nicht aus. Hinweise dazu finden Sie in der [Google Search Central Dokumentation zu multiregionalen Websites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=de).
 
 ## Geschichte von .de
 
@@ -77,7 +77,7 @@ Die .de-Endung wurde 1986 ins Leben gerufen, in den frühen Jahren des öffentli
 
 Die .de-Endung ist extrem vielseitig und in nahezu jeder Branche in Deutschland anzutreffen. Typische Einsatzbereiche sind:
 
-- **Unternehmenswebsites:** Vom Mittelstand bis zum Konzern nutzt fast jedes deutsche Unternehmen .de als primäre Adresse.
+- **Unternehmenswebsites:** Unternehmen können mit .de eine deutsche Zielgruppe ansprechen.
 - **Lokale Anbieter und Dienstleister:** Handwerksbetriebe, Restaurants, Praxen und Geschäfte signalisieren mit .de sofort ihren regionalen Bezug.
 - **Vereine und Organisationen:** Sport-, Kultur- und Sozialvereine setzen traditionell auf die Landesendung.
 - **Behörden und öffentliche Einrichtungen:** Viele kommunale und staatliche Stellen sind unter .de erreichbar.
@@ -109,27 +109,35 @@ Wählen Sie .de, wenn Ihr Schwerpunkt eindeutig in Deutschland liegt und Sie lok
 
 ## Warum .de wählen?
 
-- **Höchstes Vertrauen in Deutschland:** Deutsche Nutzer erwarten und bevorzugen .de und empfinden die Endung als seriös und etabliert.
+- **Klarer Deutschlandbezug:** Die Endung nennt das geografische Ziel direkt.
 - **Starker Ortsbezug:** Für lokale und nationale Angebote signalisiert .de unmittelbar geografische Relevanz, was sich positiv auf das lokale SEO auswirken kann.
 - **Etabliertes, stabiles Registry:** DENIC betreibt die Endung als nicht gewinnorientierte Genossenschaft seit 1996 mit hoher technischer Zuverlässigkeit.
 - **Moderne technische Standards:** Unterstützung für DNSSEC und internationalisierte Domainnamen mit Umlauten gehören zum Standard.
 
 ## Was Sie beachten sollten
 
-- **Begrenzte internationale Reichweite:** Das starke deutsche Signal kann nachteilig sein, wenn Sie ein globales Publikum ansprechen wollen.
+- **Internationale Ausrichtung:** Planen Sie Sprach- und Länderadressen gezielt, wenn Sie mehrere Märkte bedienen.
 - **Knappe Verfügbarkeit kurzer Namen:** Aufgrund der hohen Beliebtheit sind viele kurze, generische .de-Domains seit Langem vergeben.
 - **Verpflichtung im Streitfall:** Inhaber ohne deutschen Wohnsitz müssen im Konfliktfall einen Zustellungsbevollmächtigten in Deutschland benennen können (siehe unten).
-- **Reduzierte WHOIS-Daten:** Seit der DSGVO veröffentlicht DENIC kaum noch personenbezogene Inhaberdaten, was die öffentliche Recherche einschränkt.
+- **Veröffentlichung von Inhaberdaten:** DENIC unterscheidet natürliche Personen und Organisationen. Abschnitt VII der Domainrichtlinien beschreibt die Veröffentlichung und Weitergabe.
 
 ## Wer darf eine .de-Domain registrieren?
 
-**Registrierungsbeschränkungen:** Die .de-Endung ist für alle offen. Laut [DENIC](https://www.denic.de/en/products/de-domains/registration/) kann jede Privatperson, jeder Verein und jedes Unternehmen eine .de-Domain registrieren, unabhängig davon, ob der Sitz in Deutschland oder im Ausland liegt. Es gibt keine Wohnsitz- oder Staatsangehörigkeitspflicht.
+**Registrierungsbeschränkungen:** Die .de-Endung ist für alle offen. Laut [DENIC](https://www.denic.de/en/products/de-domains/registration) kann jede Privatperson, jeder Verein und jedes Unternehmen eine .de-Domain registrieren, unabhängig davon, ob der Sitz in Deutschland oder im Ausland liegt. Es gibt keine Wohnsitz- oder Staatsangehörigkeitspflicht. Antragsteller müssen geschäftsfähig sein, korrekte Inhaberdaten angeben und fremde Marken- oder Namensrechte beachten.
 
-Es gibt jedoch eine wichtige Besonderheit für Inhaber im Ausland: Hat der Domaininhaber keinen Wohnsitz oder Sitz in Deutschland, muss er auf Verlangen von DENIC innerhalb von zwei Wochen einen **Zustellungsbevollmächtigten** mit Anschrift in Deutschland benennen. Diese Person nimmt im Streitfall förmliche Zustellungen im Sinne von §184 der Zivilprozessordnung entgegen. Eine Postfachadresse genügt dafür nicht; erforderlich ist eine ladungsfähige Anschrift. Details und das entsprechende Formular stellt DENIC auf seiner [Seite zum Zustellungsbevollmächtigten für Inhaber im Ausland](https://www.denic.de/en/services/dispute-verfahren/authorised-recipient-for-the-service-of-documents/) bereit.
+![Eine Weltkugel verbindet eine .de-Adresse mit einer deutschen Flagge und zeigt die weltweite Registrierung für eine deutsche Zielgruppe](../../assets/de-01-worldwide-registration.jpg)
 
-Wichtig zu wissen: Seit dem Inkrafttreten der DSGVO im Mai 2018 erfasst DENIC aus Gründen der Datensparsamkeit **keinen administrativen Ansprechpartner (Admin-C) mehr**. Die frühere Pflicht, einen Admin-C mit deutscher Adresse zu benennen, entfällt damit. Lediglich die korrekten und vollständigen Daten des Inhabers, einschließlich einer E-Mail-Adresse, müssen angegeben werden.
+**Inhaber im Ausland:** DENIC kann einen Zustellungsbevollmächtigten in Deutschland für behördliche oder gerichtliche Schriftstücke verlangen. Der Inhaber muss die Person innerhalb von zwei Wochen benennen. Eine Postfachadresse genügt nicht. Der Antrag einer zustellungswilligen Person und die Voraussetzungen für einen DISPUTE-Eintrag müssen vorliegen. [§3(4) der DENIC-Domainbedingungen](https://www.denic.de/en/domain-terms-and-conditions/) beschreibt die Voraussetzungen.
 
-Technisch gilt: Eine .de-Domain darf bis zu 63 Zeichen lang sein. Internationalisierte Domainnamen mit den Umlauten ä, ö, ü, dem Eszett ß sowie zahlreichen weiteren Sonderzeichen sind möglich. DNSSEC zur kryptografischen Absicherung der DNS-Auflösung steht für jede Domain zur Verfügung.
+**Inhaberdaten:** Inhaber müssen korrekte Identitäts- und Kontaktdaten angeben, Änderungen melden und bei der Verifizierung mitwirken. Fehlerhafte oder nicht bestätigte Daten können zur Unterbrechung der Erreichbarkeit oder zur Kündigung führen. Die [DENIC-Domainbedingungen, §§2–3 und 7](https://www.denic.de/en/domain-terms-and-conditions/) regeln die Pflichten. Die Registrierung verlangt keinen vorsorglich benannten Admin-C mit deutscher Adresse.
+
+**Namensregeln:** DENIC erlaubt 1–63 Zeichen und unterstützte IDN-Zeichen, darunter ä, ö, ü und ß. Ein Name darf nicht mit einem Bindestrich beginnen oder enden. Ein Name darf auch keine Bindestriche gleichzeitig an dritter und vierter Stelle enthalten. Bei IDNs zählt die ACE-kodierte Form für die Höchstlänge. Die [DENIC-Domainrichtlinien, Abschnitt V](https://www.denic.de/en/domain-guidelines/) enthalten die Einzelheiten. DENIC unterstützt außerdem [DNSSEC](https://www.denic.de/en/products/dnssec/).
+
+## DENIC trennt Vertragslaufzeit und jährliche Abrechnung
+
+Der Domainvertrag mit DENIC läuft nach [§7(1) der Domainbedingungen](https://www.denic.de/en/domain-terms-and-conditions/) **auf unbestimmte Zeit**. Eine jährliche Rechnung des Anbieters beschreibt einen Abrechnungszeitraum. Prüfen Sie die Verlängerungs- und Kündigungsbedingungen des Anbieters gesondert.
+
+Das Passwort für einen Providerwechsel gilt normalerweise **30 Tage** und erlaubt eine einmalige Verwendung. Ein DISPUTE-Eintrag verhindert den Wechsel zu einem anderen Inhaber. Die [DENIC-Domainbedingungen, §§1(4), 2(3) und 6](https://www.denic.de/en/domain-terms-and-conditions/) erläutern die Regeln. Auch eine Übertragung über einen Token oder Marktplatz muss die Anforderungen der Registry erfüllen.
 
 ## Preise und Wert von .de
 
@@ -141,11 +149,9 @@ Bei den Preisen folgt .de einer eigenen Dynamik. Generell gelten Länderendungen
 
 Da ein Großteil der naheliegenden .de-Domains bereits vergeben ist, kann der Erwerb eines Wunschnamens über den Zweitmarkt ein eigener Kostenfaktor sein.
 
-## Reputation und E-Mail-Zustellbarkeit
+## E-Mail-Absender müssen ihre Domain authentifizieren
 
-Die .de-Endung genießt eine ausgezeichnete Reputation. Als langjährig etablierte und stark regulierte Länderendung gilt sie weder als billig noch als spam-anfällig. E-Mails von .de-Domains werden von Spam-Filtern in der Regel nicht aufgrund der Endung selbst benachteiligt, was sie zu einer verlässlichen Basis für geschäftliche Kommunikation in Deutschland macht.
-
-Wie bei jeder Domain hängt die tatsächliche Zustellbarkeit jedoch weniger von der Endung ab als von der korrekten Konfiguration. Richten Sie SPF-, DKIM- und DMARC-Einträge sorgfältig ein, pflegen Sie eine saubere Versandreputation und vermeiden Sie typische Spam-Muster. Eine .de-Domain bietet dafür einen vertrauenswürdigen Ausgangspunkt.
+Eine .de-Domain allein belegt nicht die Vertrauenswürdigkeit des Absenders. Richten Sie SPF, DKIM und DMARC ein. Senden Sie nur an Empfänger mit Einwilligung und prüfen Sie die Zustellergebnisse. Googles [Richtlinien für E-Mail-Absender](https://support.google.com/a/answer/81126?hl=en) erklären die Anforderungen für Nachrichten an private Gmail-Konten.
 
 ## Branding- und Namenstipps
 
@@ -171,7 +177,7 @@ Ja. Die .de-Endung ist für alle offen, ob Privatperson, Verein oder Unternehmen
 
 ### Beeinflusst eine .de-Domain das SEO-Ranking?
 
-Google behandelt .de als länderspezifische Endung mit klarem Bezug zu Deutschland. Das ist ein Vorteil, wenn Sie deutsche Nutzer ansprechen, kann aber die internationale Sichtbarkeit einschränken. Für ein rein deutsches Publikum ist .de ein starkes geografisches Signal.
+Google behandelt .de als länderspezifische Endung mit klarem Bezug zu Deutschland. Die Endung signalisiert das Zielland. Die Endung garantiert keine besseren Rankings und verhindert keine internationale Sichtbarkeit.
 
 ### Wer sollte eine .de-Domain registrieren?
 
@@ -179,7 +185,7 @@ Unternehmen, Vereine, Behörden und Privatpersonen, die sich primär an deutsche
 
 ### Brauche ich einen Admin-C oder eine deutsche Adresse für eine .de-Domain?
 
-Nein. Seit der DSGVO 2018 erfasst DENIC keinen Admin-C mehr. Eine deutsche Adresse ist für die Registrierung nicht erforderlich. Nur im Streitfall müssen Inhaber ohne Wohnsitz in Deutschland auf Verlangen einen Zustellungsbevollmächtigten mit deutscher Anschrift benennen.
+Nein. Seit der DSGVO 2018 erfasst DENIC keinen Admin-C mehr. Eine deutsche Adresse ist für die Registrierung nicht erforderlich. DENIC kann unter den Voraussetzungen von §3(4) der Domainbedingungen einen Zustellungsbevollmächtigten mit deutscher Anschrift verlangen. Die Frist beträgt zwei Wochen.
 
 ### Unterstützt .de Umlaute und DNSSEC?
 
@@ -192,3 +198,17 @@ Ja. .de unterstützt internationalisierte Domainnamen mit ä, ö, ü und ß sowi
 - [Was ist die .io-Domain?](/de/tld/io)
 - [Was ist die .net-Domain?](/de/tld/net)
 - [Was ist die .app-Domain?](/de/tld/app)
+
+## Die Quellen erläutern die Regeln für .de
+
+Die Quellenprüfung erfolgte am 21. Oktober 2026 (America/Los_Angeles).
+
+- DENIC — [Registrierung](https://www.denic.de/en/products/de-domains/registration)
+- DENIC — [Domainbedingungen](https://www.denic.de/en/domain-terms-and-conditions/)
+- DENIC — [Domainrichtlinien](https://www.denic.de/en/domain-guidelines/)
+- DENIC — [Genossenschaft und Betrieb](https://www.denic.de/en/about-us/who-we-are)
+- DENIC — [Preisliste für die direkte Verwaltung](https://www.denic.de/preisliste/)
+- DENIC — [DNSSEC](https://www.denic.de/en/products/dnssec/)
+- IANA — [Delegierung von .de](https://www.iana.org/domains/root/db/de.html)
+- Google — [Mehrregionale Websites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=de)
+- Google — [Richtlinien für E-Mail-Absender](https://support.google.com/a/answer/81126?hl=en)

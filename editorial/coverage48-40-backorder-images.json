@@ -1,0 +1,72 @@
+{
+  "source_id": "G26",
+  "attempts": [
+    {
+      "attempt": "image-attempt1",
+      "asset": "content/assets/domain-backorders-and-drop-catching-04-order-checks.jpg",
+      "requested_model": "gpt-image-2",
+      "requested_quality": "high",
+      "api_metadata": {
+        "created": 1792633926,
+        "usage": {
+          "input_tokens": 451,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 451
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5939
+        },
+        "model": null,
+        "error": null
+      },
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "70f37f3bac1f36476f8b76d55c65c907aac860963be00ad8b02057ab0ac8cda0",
+      "qc": "PASS: final file opened; exact spelling, official top-right logo, cream bleed, safe reserves, no clipped objects. Cover bottom band empty.",
+      "private_response": "/private/tmp/namefi-stack48/40-domain-backorders-and-drop-catching/image-attempt1/resp.json"
+    },
+    {
+      "attempt": "cover-attempt1",
+      "asset": "content/assets/domain-backorders-and-drop-catching-og.jpg",
+      "requested_model": "gpt-image-2",
+      "requested_quality": "high",
+      "api_metadata": {
+        "created": 1792634268,
+        "usage": {
+          "input_tokens": 722,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 722
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4123
+        },
+        "model": null,
+        "error": null
+      },
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "5453166d72bbdec7415527b60baaf2667020e076d89af35622827a4b8717971e",
+      "qc": "PASS: final file opened; exact spelling, official top-right logo, cream bleed, safe reserves, no clipped objects. Cover bottom band empty.",
+      "private_response": "/private/tmp/namefi-stack48/40-domain-backorders-and-drop-catching/cover-attempt1/resp.json"
+    }
+  ],
+  "missing_usage": [],
+  "reused_assets": [
+    "content/assets/domain-backorders-and-drop-catching-01-drop-cycle.jpg",
+    "content/assets/domain-backorders-and-drop-catching-02-millisecond-race.jpg"
+  ]
+}
