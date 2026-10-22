@@ -1,0 +1,64 @@
+{
+  "topic": "dns-flush",
+  "english": [
+    "content/blog/en/flush-dns-cache.md",
+    "content/blog/en/root-dns-servers.md"
+  ],
+  "translation": "ja-JP selected from Google Ads native-query evidence (language1005,geo2392). German evidence qualified but this package defers German translation. Other markets UNKNOWN.",
+  "primary_sources": [
+    "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig",
+    "https://support.apple.com/en-us/101481",
+    "https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html",
+    "https://www.rfc-editor.org/rfc/rfc2308.html",
+    "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup",
+    "https://support.google.com/chrome/answer/10468685?hl=en",
+    "https://support.google.com/chrome/answer/6098869?hl=en",
+    "https://developers.google.com/speed/public-dns/cache"
+  ],
+  "evidence_directory": "/Users/zzn/ws/d3servelabs/namefi-resources-batch-20261022/artifacts/dns-flush",
+  "model": "gpt-6.1-sol",
+  "images": [
+    {
+      "path": "content/assets/flush-dns-cache-01-windows.jpg",
+      "dimensions_px": [
+        1200,
+        675
+      ],
+      "sha256": "a385d829d6efe0e9860a29d759944b2b402c5957b90a25119d677decb5131a6b",
+      "visual_qc": "PASS: visually opened final file. Cream full bleed, centered scene, no cutoff, official top-right logo, correct labels. Cover has empty bottom band.",
+      "attempts": 2
+    },
+    {
+      "path": "content/assets/flush-dns-cache-02-platform.jpg",
+      "dimensions_px": [
+        1200,
+        675
+      ],
+      "sha256": "9dbe41c32b5017a87a40a7ada24e991f130813d3729af79af4957ab0287259dc",
+      "visual_qc": "PASS: visually opened final file. Cream full bleed, centered scene, no cutoff, official top-right logo, correct labels. Cover has empty bottom band.",
+      "attempts": 1
+    },
+    {
+      "path": "content/assets/flush-dns-cache-03-boundaries.jpg",
+      "dimensions_px": [
+        1200,
+        675
+      ],
+      "sha256": "c1de519e9e3c69b44643e361dad8c0d76b4c3247f3a295ffea44d85d8f7632d4",
+      "visual_qc": "PASS: visually opened final file. Cream full bleed, centered scene, no cutoff, official top-right logo, correct labels. Cover has empty bottom band.",
+      "attempts": 1
+    },
+    {
+      "path": "content/assets/flush-dns-cache-og.jpg",
+      "dimensions_px": [
+        1200,
+        630
+      ],
+      "sha256": "1e3d42725ae29a4e928ef69aa3071b1478d5546557e883689128943de4f1f383",
+      "visual_qc": "PASS: visually opened final file. Cream full bleed, centered scene, no cutoff, official top-right logo, correct labels. Cover has empty bottom band.",
+      "attempts": 1
+    }
+  ],
+  "checks": "PASS install frozen, data:validate, lint:mdx, links:test, links:audit, referenced asset and dimension checks. Initial schema failures fixed before final checks.",
+  "scope": "Deliberately public resource article and images; private investigation output should stay in approved support channels. No application endpoint or ACL change."
+}

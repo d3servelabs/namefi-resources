@@ -124,7 +124,7 @@ Les noms comportent **1 à 63 caractères**, autorisent les lettres, chiffres et
 
 Cette page ne cite jamais de prix en temps réel, mais la **dynamique** de tarification mérite d'être comprise :
 
-- **Un plancher de gros réglementé.** Le prix de gros du .com par Verisign est fixé par son accord de registre avec l'ICANN, qui permet des augmentations périodiques, de sorte que la tarification des bureaux d'enregistrement tend à évoluer dans une fourchette prévisible plutôt qu'à fluctuer librement.
+- Au 22 octobre 2026, Verisign facture USD 10.26 par année d’enregistrement au niveau du registre. [Verisign a annoncé un tarif de USD 10.97 pour les nouveaux enregistrements et renouvellements à partir du 1er novembre 2026](https://www.sec.gov/Archives/edgar/data/1014473/000101447326000019/q12026earningsrelease.htm#:~:text=effective%20Nov.). Les bureaux d’enregistrement fixent leurs prix de détail. Vérifiez le tarif de renouvellement sans supposer que le prix de gros sera votre prix final.
 - **Le prix de la première année diffère du prix de renouvellement.** Un tarif introductif pour la première année peut être inférieur au tarif de renouvellement récurrent, il convient donc de prévoir le budget du renouvellement — et pas seulement le prix d'inscription.
 - **La vraie prime est sur le marché secondaire.** L'enregistrement standard couvre tout .com disponible, mais la plupart des noms courts, de dictionnaire et brandables sont déjà détenus. Leur coût est déterminé par la demande sur le marché secondaire et peut largement dépasser le prix de base.
 
