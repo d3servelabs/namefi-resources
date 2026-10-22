@@ -27,6 +27,7 @@ relatedGlossary:
   - /es/glossary/tld/
   - /es/glossary/icann/
   - /es/glossary/registry/
+ogImage: ../../assets/what-is-domain-og.jpg
 ---
 
 

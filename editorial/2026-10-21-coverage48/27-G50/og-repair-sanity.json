@@ -1,0 +1,66 @@
+{
+  "asset": "content/assets/what-is-domain-og.jpg",
+  "size": [
+    1200,
+    630
+  ],
+  "format": "JPEG",
+  "progressive": true,
+  "bytes": 99479,
+  "references": [
+    {
+      "locale": "ja",
+      "only_change": "ogImage",
+      "body_and_other_frontmatter_unchanged": true
+    },
+    {
+      "locale": "zh-CN",
+      "only_change": "ogImage",
+      "body_and_other_frontmatter_unchanged": true
+    },
+    {
+      "locale": "ar",
+      "only_change": "ogImage",
+      "body_and_other_frontmatter_unchanged": true
+    },
+    {
+      "locale": "hi",
+      "only_change": "ogImage",
+      "body_and_other_frontmatter_unchanged": true
+    },
+    {
+      "locale": "de",
+      "only_change": "ogImage",
+      "body_and_other_frontmatter_unchanged": true
+    },
+    {
+      "locale": "ko",
+      "only_change": "ogImage",
+      "body_and_other_frontmatter_unchanged": true
+    },
+    {
+      "locale": "fr",
+      "only_change": "ogImage",
+      "body_and_other_frontmatter_unchanged": true
+    },
+    {
+      "locale": "es",
+      "only_change": "ogImage",
+      "body_and_other_frontmatter_unchanged": true
+    },
+    {
+      "locale": "en",
+      "only_change": "ogImage",
+      "body_and_other_frontmatter_unchanged": true
+    },
+    {
+      "locale": "ta",
+      "only_change": "ogImage",
+      "body_and_other_frontmatter_unchanged": true
+    }
+  ],
+  "qc": {
+    "attempt1": "rejected: lower Domain label enters bottom caption reserve",
+    "attempt2": "accepted: correct text and domain highlighting, full bleed cream dot grid, official top-right logo, all content visible, empty bottom reserve"
+  }
+}

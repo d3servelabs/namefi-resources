@@ -29,6 +29,7 @@ relatedGlossary:
   - /en/glossary/tld/
   - /en/glossary/icann/
   - /en/glossary/registry/
+ogImage: ../../assets/what-is-domain-og.jpg
 ---
 
 ## A domain name identifies a place in DNS

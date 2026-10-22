@@ -30,6 +30,7 @@ relatedGlossary:
   - /ja/glossary/tld/
   - /ja/glossary/icann/
   - /ja/glossary/registry/
+ogImage: ../../assets/what-is-domain-og.jpg
 ---
 
 ## ドメイン名は DNS 上の名前を表します

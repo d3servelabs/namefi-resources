@@ -30,6 +30,7 @@ relatedGlossary:
   - /ko/glossary/tld/
   - /ko/glossary/icann/
   - /ko/glossary/registry/
+ogImage: ../../assets/what-is-domain-og.jpg
 ---
 
 ## **도메인 이름이란 무엇인가?**
