@@ -1,0 +1,17 @@
+{
+  "model": "gpt-image-2",
+  "usage": {
+    "input_tokens": 734,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 734
+    },
+    "output_tokens": 3401,
+    "output_tokens_details": {
+      "image_tokens": 3401,
+      "text_tokens": 0
+    },
+    "total_tokens": 4135
+  },
+  "created": 1792635558
+}
