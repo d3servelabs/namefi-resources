@@ -1,0 +1,372 @@
+{
+  "request": {
+    "language": "languageConstants/1001",
+    "geoTargetConstants": [
+      "geoTargetConstants/2276"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "eigenen dns server einrichten",
+      "dns server selber hosten",
+      "pi hole unbound einrichten",
+      "technitium dns einrichten",
+      "duckdns einrichten"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "eigenen dns server einrichten",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "19"
+        }
+      },
+      {
+        "text": "dns server selber hosten",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "5"
+        }
+      },
+      {
+        "text": "pi hole unbound einrichten",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "0"
+        }
+      },
+      {
+        "text": "technitium dns einrichten",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "0"
+        }
+      },
+      {
+        "text": "duckdns einrichten",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "30"
+            }
+          ],
+          "avgMonthlySearches": "30",
+          "competitionIndex": "3"
+        }
+      }
+    ]
+  },
+  "fetched_utc": "2026-10-22T00:56:57.912014+00:00"
+}

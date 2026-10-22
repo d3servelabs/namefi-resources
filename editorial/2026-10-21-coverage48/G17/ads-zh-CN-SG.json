@@ -1,0 +1,21 @@
+{
+  "locale": "zh-CN",
+  "country": "SG",
+  "fetched_utc": "2026-10-22T00:40:42.963088+00:00",
+  "request": {
+    "language": "languageConstants/1017",
+    "geoTargetConstants": [
+      "geoTargetConstants/2702"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "加密DNS",
+      "DNS over HTTPS",
+      "安卓私人DNS"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "error_http": 429
+  }
+}

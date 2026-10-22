@@ -1,0 +1,42 @@
+[
+  {
+    "asset": "content/assets/isp-dns-vs-public-resolver-og.jpg",
+    "exists": true,
+    "dimensions": [
+      1200,
+      630
+    ]
+  },
+  {
+    "asset": "content/assets/isp-dns-vs-public-resolver-01-section.jpg",
+    "exists": true,
+    "dimensions": [
+      1200,
+      675
+    ]
+  },
+  {
+    "asset": "content/assets/isp-dns-vs-public-resolver-02-section.jpg",
+    "exists": true,
+    "dimensions": [
+      1200,
+      675
+    ]
+  },
+  {
+    "asset": "content/assets/isp-dns-vs-public-resolver-03-section.jpg",
+    "exists": true,
+    "dimensions": [
+      1200,
+      675
+    ]
+  },
+  {
+    "asset": "content/assets/isp-dns-vs-public-resolver-05-device-test.jpg",
+    "exists": true,
+    "dimensions": [
+      1200,
+      675
+    ]
+  }
+]

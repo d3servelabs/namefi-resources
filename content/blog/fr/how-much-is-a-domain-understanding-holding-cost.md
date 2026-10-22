@@ -37,7 +37,7 @@ Le domaine le moins cher est rarement celui qui coûte le moins cher à *déteni
 
 C’est la première chose à comprendre avant d’enregistrer un nom. Le prix affiché au paiement n’est qu’une ligne du grand livre. Un domaine a un prix d’enregistrement la première année, un prix de renouvellement, un prix de transfert, d’éventuels frais de restauration ou de rédemption, des réglages de confidentialité, des taxes, des coûts liés au moyen de paiement et parfois des frais de produit périphériques pour le DNS, l’e-mail, l’hébergement ou les services de compte.
 
-C’est pourquoi un domaine à $1 la première année peut être parfaitement légitime et devenir tout de même un engagement annuel de $30, $60 ou $80 par la suite. Le prix de la première année vous ouvre la porte. Le prix de renouvellement détermine le [coût de détention](/fr/glossary/holding-cost/) à long terme.
+Le prix promotionnel du premier enregistrement ne détermine pas le prix du renouvellement. Comparez le [coût de détention](/fr/glossary/holding-cost/) à long terme.
 
 ## Le premier chiffre affiché n’est pas le coût
 
@@ -56,9 +56,9 @@ Voici les composantes du coût.
 | Coûts de paiement | Marge de change de carte, frais de virement, frais de réseau crypto, moyens de paiement différés, friction sur les remboursements | Le prix du registrar peut ne pas être exactement le montant qui sort de votre compte |
 | Frais DNS / produits | Coûts des zones hébergées, des requêtes, de l’e-mail, de la redirection, du SSL ou de services groupés | Un domaine peut être bon marché alors que le compte environnant ne l’est pas |
 
-La ligne qui surprend le plus souvent est le renouvellement. La politique ICANN de récupération des enregistrements expirés impose aux registrars de rendre les [frais de renouvellement, de renouvellement après expiration et de rédemption/restauration raisonnablement disponibles](https://www.icann.org/resources/pages/errp-2013-02-28-en#Notice), mais l’acheteur doit tout de même les comparer avant le paiement. Un petit prix la première année n’est pas trompeur en soi. Il devient un problème lorsque l’acheteur le traite comme un coût annuel.
+La ligne qui surprend le plus souvent est le renouvellement. La politique ICANN de récupération des enregistrements expirés impose aux registrars de rendre les [frais de renouvellement, de renouvellement après expiration et de rédemption/restauration raisonnablement disponibles](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en), mais l’acheteur doit tout de même les comparer avant le paiement. Un petit prix la première année n’est pas trompeur en soi. Il devient un problème lorsque l’acheteur le traite comme un coût annuel.
 
-## Pourquoi un domaine à $1 peut se renouveler à $30 à $80
+## Un prix promotionnel peut masquer un renouvellement plus cher
 
 La tarification d’introduction est courante, car la première année et l’année de renouvellement sont deux événements économiques distincts.
 
@@ -78,7 +78,9 @@ Le **renouvellement** est le coût de la poursuite du contrôle. Si vous enregis
 
 Le **transfert** est ce que vous payez pour déplacer le domaine vers un autre registrar. Un transfert peut inclure une prolongation d’un an, mais ce n’est pas un raccourci universel qu’il faut présumer sans vérification. Surveillez également les verrous de transfert, les limites liées à un enregistrement récent, la gestion du code d’autorisation et la question de savoir si le transfert modifie vos réglages DNS ou de confidentialité.
 
-La **restauration ou rédemption** est le coûteux bouton de panique. La politique de récupération de l’ICANN indique que les registres de gTLD doivent généralement proposer une [période de grâce de rédemption de 30 jours](https://www.icann.org/resources/pages/errp-2013-02-28-en#Redemption) après la suppression, durant laquelle l’enregistrement supprimé peut être restauré par l’intermédiaire du registrar qui l’a supprimé. Pendant cette période, la récupération peut coûter bien plus qu’un renouvellement normal. La leçon est simple : le renouvellement automatique coûte moins cher que le sauvetage.
+La **restauration ou rédemption** est le coûteux bouton de panique. La politique de récupération de l’ICANN indique que les registres de gTLD doivent généralement proposer une [période de grâce de rédemption de 30 jours](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en) après la suppression, durant laquelle l’enregistrement supprimé peut être restauré par l’intermédiaire du registrar qui l’a supprimé. Pendant cette période, la récupération peut coûter bien plus qu’un renouvellement normal. La leçon est simple : le renouvellement automatique coûte moins cher que le sauvetage.
+
+La règle des 30 jours concerne les registres de gTLD non sponsorisés. La politique exclut les suppressions pendant une période de grâce initiale applicable. Les ccTLD suivent leurs propres règles.
 
 ## Coûts de confidentialité, de taxes et de moyens de paiement
 
@@ -145,7 +147,7 @@ Pour un projet personnel, la réponse peut être : « choisissez le registrar au
 
 Alors, combien coûte un domaine ?
 
-Pour un TLD courant, il peut coûter environ le prix d’un déjeuner la première année. Pour un nouveau gTLD en promotion, il peut coûter $1 aujourd’hui et $30 à $80 l’année prochaine. Pour un ccTLD onéreux ou un niveau premium de registre, il peut coûter bien davantage. Si vous manquez le renouvellement et devez le restaurer, la facture peut atteindre plusieurs centaines de dollars.
+Le coût dépend de l’extension, du bureau d’enregistrement, du nom et des services. Vérifiez un devis actuel pour le nom choisi.
 
 La réponse pratique n’est pas le prix de première année. C’est :
 
@@ -155,4 +157,4 @@ C’est le chiffre à comparer. Un domaine n’est pas cher parce que sa premiè
 
 ## Sources et lectures complémentaires
 
-- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/resources/pages/errp-2013-02-28-en)
+- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en)
