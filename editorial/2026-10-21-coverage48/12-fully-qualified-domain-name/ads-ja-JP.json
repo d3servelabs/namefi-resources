@@ -1,0 +1,240 @@
+{
+  "fetched_utc": "2026-10-21T23:59:56Z",
+  "api": "v26",
+  "request": {
+    "language": "languageConstants/1005",
+    "geoTargetConstants": [
+      "geoTargetConstants/2392"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "fqdn とは",
+      "完全修飾ドメイン名",
+      "fqdn 確認",
+      "fqdn 末尾 ドット"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "fqdn とは",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "5400"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "5400"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "5400"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "5400"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "4400"
+            }
+          ],
+          "avgMonthlySearches": "4400",
+          "competitionIndex": "7",
+          "lowTopOfPageBidMicros": "20412",
+          "highTopOfPageBidMicros": "360105"
+        }
+      },
+      {
+        "text": "完全 修飾 ドメイン 名",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "110"
+            }
+          ],
+          "avgMonthlySearches": "210",
+          "competitionIndex": "2"
+        },
+        "closeVariants": [
+          "完全修飾ドメイン名"
+        ]
+      },
+      {
+        "text": "fqdn 確認",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "90"
+            }
+          ],
+          "avgMonthlySearches": "110",
+          "competitionIndex": "0"
+        }
+      },
+      {
+        "text": "fqdn 末尾 ドット"
+      }
+    ]
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "fetched_utc": "2026-10-21T23:59:55Z",
+  "api": "v26",
+  "request": {
+    "language": "languageConstants/1001",
+    "geoTargetConstants": [
+      "geoTargetConstants/2276"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "fqdn was ist das",
+      "vollqualifizierter domainname",
+      "vollständig qualifizierter domainname",
+      "fqdn beispiel"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "fqdn was ist das",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "1"
+        }
+      },
+      {
+        "text": "fqdn beispiel",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "40"
+            }
+          ],
+          "avgMonthlySearches": "30",
+          "competitionIndex": "1"
+        }
+      },
+      {
+        "text": "vollqualifizierter domainname"
+      },
+      {
+        "text": "vollständig qualifizierter domainname"
+      }
+    ]
+  }
+}

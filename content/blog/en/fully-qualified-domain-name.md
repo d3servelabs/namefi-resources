@@ -95,7 +95,24 @@ DNS zone files have their own explicit name-completion rules. A name ending with
 
 Imagine a hypothetical zone file with `$ORIGIN example.com.`. An owner name of `www` denotes `www.example.com.`. An owner name of `www.example.com.` denotes the same name directly. However, the relative owner `www.example.com` expands to `www.example.com.example.com.`.
 
-The repeated suffix follows the configured origin. Counting the visible dots would not detect the error. A reviewer must determine whether the parser treats the value as relative or absolute.
+The following hypothetical zone-file excerpt makes the owner and target rules visible together. The records illustrate name expansion, not a deployable zone.
+
+```text
+$ORIGIN example.com.
+www 300 IN CNAME app.example.net.
+mail 300 IN CNAME app.example.net
+```
+
+| Field | Saved absolute name |
+| --- | --- |
+| First owner `www` | `www.example.com.` |
+| First target `app.example.net.` | `app.example.net.` |
+| Second owner `mail` | `mail.example.com.` |
+| Second target `app.example.net` | `app.example.net.example.com.` |
+
+The missing final dot changes the second target, even though both targets contain several labels. The same origin rule governs owners and domain-name record data. [RFC 1035, section 5.1, specifies the expansion](https://www.rfc-editor.org/rfc/rfc1035.html#section-5.1).
+
+![A relative name acquires the origin, while an absolute name keeps its existing endpoint.](../../assets/fully-qualified-domain-name-05-absolute-relative.jpg)
 
 Domain names also appear inside record data. For a hypothetical CNAME line, `www IN CNAME app.example.net.` names an absolute target. Without the final dot, the target becomes `app.example.net.example.com.` under the example origin. The rule applies to domain-name fields, not arbitrary text or address fields. [RFC 1035 describes master-file domain names and CNAME data](https://www.rfc-editor.org/rfc/rfc1035.html#section-5.1).
 
@@ -115,7 +132,9 @@ If the interface produces a duplicated suffix, stop repeating the same input. Re
 
 Start with a read-only DNS test using BIND's `dig`, if the tool is available. Run `dig example.com. A +nosearch`. Keep the full output during diagnosis. Record the question, response status, returned data, and responding server. Do not invent an expected address for the example domain.
 
-Next, test a hypothetical search suffix explicitly with `dig printer +domain=office.example.com +showsearch`. The `+domain` option sets one search suffix and enables search processing. The `+showsearch` option displays intermediate results. These options let the test expose candidate names without editing the machine's resolver configuration. [BIND documents both options](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility).
+Look at the `QUESTION SECTION` before interpreting an answer. The question should contain `example.com.`, class `IN`, and type `A`. An answer at a different owner can follow an alias, so the answer alone does not identify the original question. [The BIND manual documents dig's question and answer output](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility).
+
+Next, test a hypothetical search suffix explicitly with `dig printer A +domain=office.example.com +showsearch`. The `+domain` option sets one search suffix and enables search processing. The `+showsearch` option displays intermediate results. These options let the test expose candidate names without editing the machine's resolver configuration. [BIND documents both options](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility).
 
 The example does not imply that `printer.office.example.com.` exists. Substitute an intended name and approved suffix from the actual environment. An unsuccessful result can still help establish which name the tool attempted.
 
