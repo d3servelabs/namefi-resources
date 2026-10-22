@@ -1,0 +1,23 @@
+{
+  "reviewer": "gpt-6.1-sol same-session self-review",
+  "native_human_review": false,
+  "rendered_lqa": "Local production heading plugin rendering verified; full page layout deferred to root live checks",
+  "external_urls_equal": true,
+  "code_spans_equal": true,
+  "paragraph_meaning_review": "All English paragraphs, source references, caveats, nine steps and record distinctions preserved",
+  "new_locales": [
+    "de"
+  ],
+  "deferred_locales": {
+    "es": "UNKNOWN topic/region evidence",
+    "fr": "UNKNOWN topic/region evidence",
+    "ar": "UNKNOWN topic/region evidence",
+    "hi": "UNKNOWN topic/region evidence",
+    "ja": "UNKNOWN topic/region evidence",
+    "ko": "UNKNOWN topic/region evidence",
+    "ta": "UNKNOWN topic/region evidence",
+    "zh-CN": "UNKNOWN topic/region evidence"
+  },
+  "demand_source": "ads-de-DE.json",
+  "selection": "Germany geo2276, German lang1001 measured topic demand. No conversions or expected traffic claimed."
+}

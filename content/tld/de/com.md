@@ -124,7 +124,7 @@ Namen umfassen **1–63 Zeichen**, erlauben Buchstaben, Ziffern und Bindestriche
 
 Diese Seite nennt keine Live-Preise, aber die Preis-**dynamik** ist es wert, verstanden zu werden:
 
-- **Ein regulierter Großhandelspreis.** Der .com-Großhandelspreis von Verisign ist im ICANN-Registry-Agreement festgelegt, das periodische Erhöhungen erlaubt, sodass die Registrar-Preise dazu neigen, sich innerhalb eines vorhersehbaren Bandes zu bewegen, anstatt frei zu schwanken.
+- Am 22. Oktober 2026 beträgt Verisigns Großhandelsgebühr USD 10.26 je Registrierungsjahr. [Verisign kündigte für Neuregistrierungen und Verlängerungen eine Gebühr von USD 10.97 ab dem 1. November 2026 an](https://www.sec.gov/Archives/edgar/data/1014473/000101447326000019/q12026earningsrelease.htm#:~:text=effective%20Nov.). Registrare legen ihre Endkundenpreise selbst fest. Prüfen Sie den Verlängerungspreis, statt die Großhandelsgebühr als Endpreis anzunehmen.
 - **Erstjahres- vs. Verlängerungspreise unterscheiden sich.** Ein einführendes Erstjahresangebot kann unter dem wiederkehrenden Verlängerungspreis liegen, daher sollten Sie für die Verlängerung budgetieren – nicht nur für den Anmeldepreis.
 - **Die eigentliche Prämie ist der Aftermarket.** Die Standard-Registrierung deckt jede verfügbare .com ab, aber die meisten kurzen, lexikalischen und markenfähigen Namen sind bereits vergeben. Deren Kosten werden durch die Sekundärmarktnachfrage bestimmt und können den Basispreis um ein Vielfaches übersteigen.
 

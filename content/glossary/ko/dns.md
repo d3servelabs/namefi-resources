@@ -14,6 +14,8 @@ level: 2
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://datatracker.ietf.org/doc/html/rfc1035
+  - https://www.rfc-editor.org/rfc/rfc4033.html#section-5
+  - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
@@ -65,9 +67,9 @@ DNS는 업데이트보다 조회가 훨씬 빈번하게 이루어지기 때문�
 
 ## DNS 계층 구조와 주요 레코드 유형
 
-DNS는 역전된 트리 구조로 구성됩니다. 최상단에는 루트(`.`)가 있고, 그 아래에 TLD(`.com`, `.net`, `.io`, `.de` 같은 국가 코드)가 있으며, 각 TLD 아래에는 2단계 도메인(`example.com`)이, 그리고 임의 깊이의 서브도메인(`mail.example.com`)이 존재합니다.
+DNS는 역전된 트리 구조로 구성됩니다. 최상단에는 루트(`.`)가 있고, 그 아래에 TLD(`.com`, `.net`, `.io`, `.de` 같은 국가 코드)가 있으며, 각 TLD 아래에는 2단계 도메인(`example.com`)이, 그리고 중첩된 서브도메인(`mail.example.com`)이 존재합니다.
 
-이 트리의 각 노드를 **존(zone)**이라 하며, 존의 권위 네임서버가 해당 존의 **리소스 레코드**를 보유합니다. 자주 접하게 되는 [DNS 레코드 유형](/ko/glossary/dns-record-types/)은 다음과 같습니다.
+**존(zone)**은 하나의 관리 체계에 속하는 DNS 트리의 일부입니다. 모든 노드가 별도의 존을 형성하는 것은 아닙니다. 위임은 하위 존을 상위 존과 구분합니다. 권위 네임서버는 존의 **리소스 레코드**를 보유합니다([RFC 1034, 4.2절](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). 일반적인 [DNS 레코드 유형](/ko/glossary/dns-record-types/)은 다음과 같습니다.
 
 | 레코드 | 용도 | 값 예시 |
 |--------|------|---------|
@@ -101,9 +103,9 @@ DNS의 거버넌스와 운영은 여러 계층의 주체에 분산되어 있습�
 
 **캐시 오염(Cache poisoning).** 공격자가 리졸버의 캐시에 위조된 DNS 응답을 삽입하면, 사용자가 인지하지 못한 채 정상 사이트 대신 악의적인 사이트로 연결될 수 있습니다. 2008년의 Kaminsky 공격은 이를 대규모로 입증했으며, 이로 인해 포트 무작위화와 [DNSSEC](/ko/glossary/dnssec/) 도입이 확산되었습니다.
 
-**DNSSEC.** RFC 4033–4035에 정의된 DNS 보안 확장(DNS Security Extensions)은 DNS 레코드에 암호화 서명을 추가합니다. [DNSSEC](/ko/glossary/dnssec/) 서명을 검증하는 리졸버는 변조된 응답을 탐지할 수 있습니다. 도입률은 높아지고 있지만 균일하지는 않습니다. 2024년 기준으로 루트 존과 주요 TLD의 약 90%가 서명되어 있지만, 종단 간 검증이 이루어지려면 체인의 모든 존이 서명되고 리졸버가 서명을 실제로 확인해야 합니다.
+**DNSSEC.** DNS 보안 확장은 DNS 레코드 집합에 암호 서명을 추가합니다. 검증 리졸버는 인증 체인을 따라 설정된 신뢰 앵커까지 서명을 확인합니다. 루트 존의 서명만으로는 서명되지 않은 하위 존을 인증할 수 없습니다. [RFC 4033, 5절](https://www.rfc-editor.org/rfc/rfc4033.html#section-5)은 안전, 비보안, 오류, 미확정 결과를 구분합니다.
 
-**DNS 하이재킹(DNS hijacking).** 레지스트라 계정, 레지스트리 시스템, 또는 ISP의 리졸버를 장악한 공격자는 DNS 응답을 대규모로 리디렉션할 수 있습니다. 방어 수단으로는 레지스트라 수준의 다중 인증, 레지스트리 잠금(EPP `serverTransferProhibited`), 예상치 못한 NS 또는 A 레코드 변경에 대한 모니터링이 있습니다.
+**DNS 하이재킹(DNS hijacking).** 레지스트라 계정, 레지스트리 시스템, 또는 ISP의 리졸버를 장악한 공격자는 DNS 응답을 대규모로 리디렉션할 수 있습니다. 방어 수단으로는 레지스트라 수준의 다중 인증, 이전 및 업데이트에 대한 레지스트리 제한(EPP `serverTransferProhibited` 및 `serverUpdateProhibited`), 예상치 못한 NS 또는 A 레코드 변경에 대한 모니터링이 있습니다 ([ICANN](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)).
 
 **DNS over HTTPS / DNS over TLS (DoH / DoT).** 이 프로토콜들은 클라이언트와 리졸버 사이의 DNS 쿼리를 암호화하여 전송 중 도청과 경로상 변조를 방지합니다. 이는 데이터 프라이버시 측면의 보호로, 데이터 무결성을 다루는 DNSSEC와 상호 보완적인 역할을 합니다.
 

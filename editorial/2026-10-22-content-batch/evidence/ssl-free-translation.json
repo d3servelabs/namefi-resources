@@ -1,0 +1,109 @@
+{
+  "source": "content/blog/en/free-ssl-certificate.md",
+  "source_base": "20ebd689856bcc138037a07e871ca8f4c2c5df27",
+  "decision": "TRANSLATE",
+  "target_locale": "de-DE",
+  "content_locale": "de",
+  "region": "Germany",
+  "api_version": "v26",
+  "language": "German 1001",
+  "geo": "Germany 2276",
+  "network": "GOOGLE_SEARCH",
+  "fetched_utc": "2026-10-22T04:54:05.281280+00:00",
+  "period": "API default, actual months preserved in ads-de-DE.json",
+  "actual_months": [
+    {
+      "month": "OCTOBER",
+      "year": "2025",
+      "monthlySearches": "1000"
+    },
+    {
+      "month": "NOVEMBER",
+      "year": "2025",
+      "monthlySearches": "880"
+    },
+    {
+      "month": "DECEMBER",
+      "year": "2025",
+      "monthlySearches": "880"
+    },
+    {
+      "month": "JANUARY",
+      "year": "2026",
+      "monthlySearches": "1000"
+    },
+    {
+      "month": "FEBRUARY",
+      "year": "2026",
+      "monthlySearches": "1000"
+    },
+    {
+      "month": "MARCH",
+      "year": "2026",
+      "monthlySearches": "1300"
+    },
+    {
+      "month": "APRIL",
+      "year": "2026",
+      "monthlySearches": "720"
+    },
+    {
+      "month": "MAY",
+      "year": "2026",
+      "monthlySearches": "720"
+    },
+    {
+      "month": "JUNE",
+      "year": "2026",
+      "monthlySearches": "480"
+    },
+    {
+      "month": "JULY",
+      "year": "2026",
+      "monthlySearches": "590"
+    },
+    {
+      "month": "AUGUST",
+      "year": "2026",
+      "monthlySearches": "590"
+    },
+    {
+      "month": "SEPTEMBER",
+      "year": "2026",
+      "monthlySearches": "590"
+    }
+  ],
+  "rationale": "Relevant German free-certificate queries returned demand. Cover manager choice, no issuance fee versus operational work, and exact coverage and validation constraints. Do not sum synonymous query groups.",
+  "gsc": "UNKNOWN; not requested",
+  "serp": {
+    "queries": [
+      "SSL Zertifikat kostenlos"
+    ],
+    "engine": "tool web search",
+    "region_control": "UNKNOWN; German-language query, no verified geolocated Google Germany SERP",
+    "observed_primary_urls": [
+      "https://letsencrypt.org/de/docs/faq/",
+      "https://www.ionos.de/sicherheit/kostenloses-ssl"
+    ],
+    "gap": "Provide a concise manager-choice checklist with deployment and renewal responsibility; competitive feasibility remains uncertain.",
+    "checked_utc": "2026-10-22T05:00:00Z",
+    "timestamp_precision": "Minute marker of personal web review; exact tool-response timestamp UNKNOWN",
+    "domains_filter": [
+      "letsencrypt.org",
+      "ionos.de",
+      "strato.de"
+    ]
+  },
+  "cost": {
+    "translation": "UNKNOWN",
+    "native_review": "UNKNOWN",
+    "maintenance": "UNKNOWN"
+  },
+  "deferred_locales": "All other supported non-English locales lack topic-language-region demand evidence; no zero-demand inference.",
+  "follow_up": "Monitor German query coverage and impressions after publication; native language review remains unmeasured.",
+  "terminology_sources_opened": [
+    "https://www.digicert.com/de/difference-between-dv-ov-and-ev-ssl-certificates",
+    "https://letsencrypt.org/de/getting-started/"
+  ],
+  "source_revision": "3f54819032b7fa527f81c60b2fc89d8e0927c290"
+}
