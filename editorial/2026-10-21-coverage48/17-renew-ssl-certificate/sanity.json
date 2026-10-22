@@ -1,0 +1,134 @@
+{
+  "data_validate": {
+    "exit": 0,
+    "warnings": 37
+  },
+  "lint_mdx": {
+    "exit": 0
+  },
+  "scoped_links": {
+    "broken": 0,
+    "missing_locale": 0,
+    "locale_mismatch": 0,
+    "relationship_mismatch": 0,
+    "intentional_fallback": 2
+  },
+  "links_test": {
+    "passed": 18,
+    "failed": 0,
+    "assertions": 95
+  },
+  "diff_check": {
+    "exit": 0
+  },
+  "assets": [
+    {
+      "locale": "en",
+      "asset": "renew-ssl-certificate-og.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        630
+      ]
+    },
+    {
+      "locale": "en",
+      "asset": "renew-ssl-certificate-01-public-certificate.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        675
+      ]
+    },
+    {
+      "locale": "en",
+      "asset": "renew-ssl-certificate-05-renewal-timing.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        675
+      ]
+    },
+    {
+      "locale": "en",
+      "asset": "renew-ssl-certificate-02-validation-paths.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        675
+      ]
+    },
+    {
+      "locale": "en",
+      "asset": "renew-ssl-certificate-03-renewal-deployment.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        675
+      ]
+    },
+    {
+      "locale": "en",
+      "asset": "renew-ssl-certificate-04-public-verification.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        675
+      ]
+    },
+    {
+      "locale": "ja",
+      "asset": "renew-ssl-certificate-og.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        630
+      ]
+    },
+    {
+      "locale": "ja",
+      "asset": "renew-ssl-certificate-01-public-certificate.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        675
+      ]
+    },
+    {
+      "locale": "ja",
+      "asset": "renew-ssl-certificate-05-renewal-timing.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        675
+      ]
+    },
+    {
+      "locale": "ja",
+      "asset": "renew-ssl-certificate-02-validation-paths.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        675
+      ]
+    },
+    {
+      "locale": "ja",
+      "asset": "renew-ssl-certificate-03-renewal-deployment.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        675
+      ]
+    },
+    {
+      "locale": "ja",
+      "asset": "renew-ssl-certificate-04-public-verification.jpg",
+      "exists": true,
+      "dimensions": [
+        1200,
+        675
+      ]
+    }
+  ]
+}

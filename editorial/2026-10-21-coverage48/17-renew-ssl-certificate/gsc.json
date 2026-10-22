@@ -1,0 +1,22 @@
+{
+  "period": [
+    "2026-09-21",
+    "2026-10-18"
+  ],
+  "dimensions": [
+    "query",
+    "page",
+    "country"
+  ],
+  "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+  "matching": "collection/slug path substring across actual reported locale URL paths; reported query/page/country rows only",
+  "topic": {
+    "source_id": "G41",
+    "slug": "renew-ssl-certificate",
+    "path_match": "/blog/renew-ssl-certificate/",
+    "matched_rows": 0,
+    "observed_impressions": 0,
+    "observed_clicks": 0,
+    "countries": {}
+  }
+}

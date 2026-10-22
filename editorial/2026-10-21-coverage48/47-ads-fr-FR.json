@@ -1,0 +1,240 @@
+{
+  "fetched_utc": "2026-10-22T02:20:11Z",
+  "request": {
+    "language": "languageConstants/1002",
+    "geoTargetConstants": [
+      "geoTargetConstants/2250"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "redirection nom de domaine",
+      "redirection domaine",
+      "redirection url",
+      "masquage domaine"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "redirection nom de domaine",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "40",
+          "competitionIndex": "44",
+          "lowTopOfPageBidMicros": "935540",
+          "highTopOfPageBidMicros": "3638635"
+        }
+      },
+      {
+        "text": "redirection domaine",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "64",
+          "lowTopOfPageBidMicros": "1153403",
+          "highTopOfPageBidMicros": "8310001"
+        }
+      },
+      {
+        "text": "redirection url",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "170"
+            }
+          ],
+          "avgMonthlySearches": "170",
+          "competitionIndex": "5",
+          "lowTopOfPageBidMicros": "729497",
+          "highTopOfPageBidMicros": "5660000"
+        }
+      },
+      {
+        "text": "masquage domaine"
+      }
+    ]
+  }
+}

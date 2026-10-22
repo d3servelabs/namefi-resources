@@ -1,0 +1,10 @@
+{
+  "attempt": 1,
+  "model_requested": "gpt-image-2",
+  "quality_requested": "high",
+  "observed_result": "Local shell parse failure after the API request, caused by editing a running scratch script. Temporary response cleanup removed the response before metadata capture.",
+  "api_outcome": "unknown",
+  "returned_usage": "unavailable",
+  "reason": "No attempt1 usage response survived. Do not report zero tokens or invent usage.",
+  "observed_utc": "2026-10-22T00:35:03.229222+00:00"
+}

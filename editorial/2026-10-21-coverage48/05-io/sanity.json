@@ -1,0 +1,32 @@
+{
+  "scope": "Local sanity only; no code review, third-party review, remote writes or hosted CI.",
+  "data_validate": {
+    "exit_code": 0,
+    "warnings": 37,
+    "locale_files_checked": 4055,
+    "locale_mismatch": 0,
+    "relationship_mismatch": 0,
+    "faqs_checked": 1633,
+    "faq_pages": 369,
+    "locales": 10
+  },
+  "lint_mdx": {
+    "exit_code": 0
+  },
+  "final_tamil_targeted_lint": {
+    "exit_code": 0,
+    "reason": "Repaired one existing Unicode replacement character in Identity Digital Tamil suffix."
+  },
+  "faq_sync_final": {
+    "exit_code": 0
+  },
+  "focused_topic_sanity": {
+    "pages": 10,
+    "replacement_characters": 0,
+    "unresolved_placeholders": 0,
+    "unsupported_IDN_assertions": 0,
+    "old_three_character_minimum_assertions": 0
+  },
+  "images": "Both final assets opened and visually inspected; dimensions and hashes recorded in image-qc.json.",
+  "limitations": "Untouched history was not fully audited. Deployed canonical/hreflang verification waits for authorized publication. No exact registry recovery timeline was asserted."
+}
