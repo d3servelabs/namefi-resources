@@ -42,11 +42,9 @@ Internet repose sur un système appelé le **Domain Name System ([DNS](/fr/gloss
 
 Un nom de domaine est composé de plusieurs parties:
 
-*   **[Domaine de premier niveau](/fr/glossary/tld/) (TLD):** C'est le suffixe à la fin de l'adresse, comme `.com`, `.org`, `.net`, ou plus récemment, `.xyz`, `.app`, et même `.ninja`. Certains sont génériques (gTLDs), tandis que d'autres sont spécifiques à un pays (ccTLDs, comme `.us`, `.uk`, ou `.cn`).
-*   **Domaine de second niveau ([SLD](/fr/glossary/second-level-domain/)):** C'est la partie principale du nom — le `google` dans `google.com`.
-*   **[Sous-domaine](/fr/glossary/subdomain/):** Ce sont des préfixes facultatifs qui aident à organiser le contenu, comme `blog.example.com` ou `mail.example.org`.
+La hiérarchie DNS commence par la racine `.`. Viennent ensuite le domaine de premier niveau `com`, le domaine de deuxième niveau `example.com` et le sous-domaine `blog.example.com`. `example` seul constitue une étiquette. Dans `example.co.uk`, `uk` occupe le premier niveau, `co.uk` le deuxième et `example.co.uk` le troisième. La limite du domaine enregistrable ne correspond donc pas toujours au deuxième niveau. [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-3.1).
 
-Chaque nom de domaine est unique — une fois que quelqu'un enregistre `example.com`, personne d'autre ne peut l'utiliser.
+Un domaine possède un seul titulaire à la fois. Le titulaire peut autoriser une autre personne ou un service à utiliser le domaine. Un enregistrement ne réserve pas la même étiquette sous les autres extensions. [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 ---
 
@@ -54,13 +52,13 @@ Chaque nom de domaine est unique — une fois que quelqu'un enregistre `example.
 
 La coordination mondiale des noms de domaine est supervisée par une organisation à but non lucratif appelée **[ICANN](/fr/glossary/icann/)** (**Internet Corporation for Assigned Names and Numbers**). Fondée en 1998, l'ICANN gère l'allocation des noms de domaine et des adresses IP. Elle travaille avec des registraires (comme GoDaddy, Namecheap et Namefi) qui vendent des noms de domaine au public.
 
-L'ICANN accrédite également les registres — les organisations responsables de la gestion de TLDs spécifiques. Par exemple, Verisign opère `.com` et `.net`, tandis que le Public Interest Registry gère `.org`.
+Les registres administrent les bases de domaines. Les bureaux d’enregistrement traitent les demandes des clients. ICANN accrédite les bureaux d’enregistrement et conclut des contrats avec les opérateurs de registres gTLD. Les domaines nationaux suivent leurs propres modalités de gestion. [ICANN](https://www.icann.org/en/contracted-parties/registry-operators/resources/listings).
 
 ---
 
 ## **Comment enregistrer un nom de domaine**
 
-Pour obtenir un nom de domaine, vous utilisez un **registraire accrédité par l'ICANN**. Vous recherchez un domaine disponible, payez des frais d'enregistrement (généralement annuels), et vous "possédez" les droits d'utiliser ce domaine tant que vous continuez à le renouveler.
+Pour un gTLD, choisissez un bureau d’enregistrement accrédité par ICANN ou un revendeur associé. Vérifiez la disponibilité, les conditions d’attribution, le contrat et les frais de renouvellement. Le contrat définit les droits d’utilisation. [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 Voici comment cela fonctionne:
 
@@ -69,7 +67,7 @@ Voici comment cela fonctionne:
 3.  S'il est disponible, vous pouvez l'enregistrer.
 4.  Vous avez maintenant le contrôle sur l'endroit où le domaine pointe (par exemple, vers votre site web ou votre e-mail).
 
-Comparé à d'autres registraires, [Namefi](https://namefi.io/fr) offre des fonctionnalités avancées telles que la gestion des sous-domaines, les outils de sécurité DNS et l'intégration avec des systèmes décentralisés comme les domaines [blockchain](/fr/glossary/blockchain/).
+
 
 ---
 

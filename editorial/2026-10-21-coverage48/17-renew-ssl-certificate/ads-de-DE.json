@@ -1,0 +1,235 @@
+{
+  "locale": "de-DE",
+  "fetch_utc": "2026-10-22T00:16:55.890458+00:00",
+  "request": {
+    "language": "languageConstants/1001",
+    "geoTargetConstants": [
+      "geoTargetConstants/2276"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "ssl zertifikat erneuern",
+      "ssl zertifikat abgelaufen",
+      "letsencrypt zertifikat erneuern"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "ssl zertifikat erneuern",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "70"
+            }
+          ],
+          "avgMonthlySearches": "70",
+          "competitionIndex": "31",
+          "lowTopOfPageBidMicros": "1186344",
+          "highTopOfPageBidMicros": "3300847"
+        }
+      },
+      {
+        "text": "ssl zertifikat abgelaufen",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "40"
+            }
+          ],
+          "avgMonthlySearches": "50",
+          "competitionIndex": "16",
+          "lowTopOfPageBidMicros": "741472",
+          "highTopOfPageBidMicros": "2675819"
+        }
+      },
+      {
+        "text": "letsencrypt zertifikat erneuern",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "50"
+            }
+          ],
+          "avgMonthlySearches": "70",
+          "competitionIndex": "5"
+        }
+      }
+    ]
+  }
+}

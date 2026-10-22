@@ -11,14 +11,15 @@ No equivalent article was created.
 ## The writer defers Hindi and Tamil translations for India
 
 The direct Ads v26 requests used Namefi MCC 3505976042 and `GOOGLE_SEARCH`.
-The writer fetched the results on 2026-10-21 UTC.
+The writer fetched the initial results on 2026-10-21 UTC.
+The coordinator repeated the Hindi request with the correct language on 2026-10-22 UTC.
 The raw sanitized request and response records live beside this file.
 The records preserve every submitted and returned query, monthly estimate, and close-variant field returned by Ads.
 Ads did not return a close-variant group for these requests.
 
 | Locale and country | Separate targets | Returned demand | Decision |
 | --- | --- | --- | --- |
-| Hindi, India | languageConstants/1009; geoTargetConstants/2356 | `subdomain kya hai`: average 10, all twelve months 10. `subdomain kaise banaye`: average 10, August 2026 20, other months 10. Period October 2025–September 2026. | Defer. The measured terms fit introductory/setup intent, but the small observed demand does not yet justify maintaining a complete Hindi guide and its DNS/provider instructions. |
+| Hindi, India | languageConstants/1023; geoTargetConstants/2356 | `subdomain kya hai`: average 10, all twelve months 10. `subdomain kaise banaye`: average 10, August 2026 20, other months 10. Period October 2025–September 2026. | Defer. The measured terms fit introductory/setup intent, but the small observed demand does not yet justify maintaining a complete Hindi guide and its DNS/provider instructions. |
 | Tamil, India | languageConstants/1130; geoTargetConstants/2356 | Four native-script query rows returned without keywordMetrics. The missing average and monthly series are UNKNOWN. | Defer. Ads provides no usable estimate for the submitted native queries. Terminology and actual query coverage need further market evidence before selection. |
 
 Hindi native-script rows also lack keywordMetrics, so the writer does not treat Hindi native-script demand as zero.
@@ -34,7 +35,7 @@ The results include Hindi provider help and Romanized Hindi guides.
 [Tumblr's Hindi DNS instructions](https://help.tumblr.com/hi/dns-%E0%A4%AE%E0%A5%88%E0%A4%A8%E0%A5%87%E0%A4%9C%E0%A4%AE%E0%A5%87%E0%A4%82%E0%A4%9F/) supply blog and gallery examples beneath a parent domain.
 The results also include cPanel setup tutorials and introductory lists.
 An operationally precise examples guide could address the gap between a label, DNS, hosting and HTTPS.
-The current small measured Romanized query demand supports revisiting Hindi after stronger relevant query or site visibility evidence.
+The corrected request's small measured Romanized query demand supports revisiting Hindi after stronger relevant query or site visibility evidence.
 
 The writer searched `துணை டொமைன் எடுத்துக்காட்டு` and `"சப்டொமைன்" இந்தியா`.
 The first search returned mostly unrelated Tamil material; the second returned no relevant result in the tool response.
@@ -71,3 +72,17 @@ The only real locale is English, with English self-canonical and English x-defau
 The update does not add unsupported SEO frontmatter keys.
 The existing README inventory remains accurate at its current level of detail.
 The coordinator owns shared README changes.
+
+## The coordinator corrected the Hindi request language
+
+The initial Hindi record used Danish criterion `1009`.
+Google lists Hindi as `1023`, Danish as `1009`, and Tamil as `1130` in its [official language table](https://developers.google.com/google-ads/api/data/codes-formats).
+The coordinator marks the original response `INVALID_FOR_HINDI` in `ads-hi-invalid-danish-1009.json`.
+The coordinator repeated the same five queries with Hindi `1023`, India `2356`, and `GOOGLE_SEARCH`.
+The corrected response in `ads-hi.json` retains the returned twelve-month series and every omitted metric.
+The corrected response still gives each Romanized query an average of 10 monthly searches.
+The three native-script queries still omit metrics and remain UNKNOWN.
+The corrected evidence retains the Hindi deferral and does not establish zero demand.
+The English article, Tamil evidence, and published locale set do not change.
+The correction uses one read-only historical-metrics request and creates no campaign, PR, or review.
+The coordinator records actual cumulative usage checkpoints in `hindi-correction-usage.json`; these counters include shared coordination work and do not isolate an API bill.

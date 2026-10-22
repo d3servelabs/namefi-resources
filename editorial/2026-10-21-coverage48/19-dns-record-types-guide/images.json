@@ -1,0 +1,81 @@
+{
+  "generation_attempts_this_topic": [
+    {
+      "attempt": 1,
+      "record": "selection-attempt1-failure.json",
+      "usage": "unavailable; API result unknown after local shell failure"
+    },
+    {
+      "attempt": 2,
+      "record": "selection-attempt2-usage.json",
+      "model_requested": "gpt-image-2",
+      "quality_requested": "high",
+      "model_returned": "unavailable; API returned null",
+      "visual_qc": "PASS after opening final JPEG: all labels correct, clear three-row selection paths, no cutoff, cream edge margins, official logo top-right without overlap. Both bilingual references use this final image."
+    }
+  ],
+  "image_api_usage": "Attempt2 API returned input_tokens 509, output_tokens 5488, total_tokens 5997. Attempt1 usage unavailable; do not sum 5997 as the complete topic image cost.",
+  "qc_start_checkpoint": "Unavailable; inspection occurred before images-reuse-qc-end. No reconstructed start counter.",
+  "assets": [
+    {
+      "path": "content/assets/dns-record-types-guide-01-website-record-paths.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "20f7f845a256a5c42ab506a21c4e622ae5b4167e60aa198a662531035073bd06",
+      "action": "reuse existing generated house-style asset",
+      "visual_qc": "Opened final file. Labels correct, subject fits, cream edge margins intact, official logo top-right unobstructed. Cover bottom band clear. Image still matches revised section."
+    },
+    {
+      "path": "content/assets/dns-record-types-guide-02-email-dependencies.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "ac97fbbc9fa7cfd6e9648a2d985f2e5ab8fe514ecb2801f3d3b8bc1ceda67e6c",
+      "action": "reuse existing generated house-style asset",
+      "visual_qc": "Opened final file. Labels correct, subject fits, cream edge margins intact, official logo top-right unobstructed. Cover bottom band clear. Image still matches revised section."
+    },
+    {
+      "path": "content/assets/dns-record-types-guide-03-authority-policy.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "4fc912228bf592c12aecab40ffba8c5dee6b059123db48a1f083fa56333bbd56",
+      "action": "reuse existing generated house-style asset",
+      "visual_qc": "Opened final file. Labels correct, subject fits, cream edge margins intact, official logo top-right unobstructed. Cover bottom band clear. Image still matches revised section."
+    },
+    {
+      "path": "content/assets/dns-record-types-guide-04-change-verification.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "ec66c2410c7ce7be1baa1f325cc5fa916d6a3bb8eedf44ba1ce7695f9f75d8d9",
+      "action": "reuse existing generated house-style asset",
+      "visual_qc": "Opened final file. Labels correct, subject fits, cream edge margins intact, official logo top-right unobstructed. Cover bottom band clear. Image still matches revised section."
+    },
+    {
+      "path": "content/assets/dns-record-types-guide-og.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "9c1d495e70df812a566d778c7c9c2c58fd3f98c2b71e259b01ffe82fc0b1b4cf",
+      "action": "reuse existing generated house-style asset",
+      "visual_qc": "Opened final file. Labels correct, subject fits, cream edge margins intact, official logo top-right unobstructed. Cover bottom band clear. Image still matches revised section."
+    },
+    {
+      "path": "content/assets/dns-record-types-guide-05-record-selection.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "e59b1de5fbb44b8e33a3bfb5ad168105534ccfa1813e1eaf0f2af10eee181c2b",
+      "action": "new generated record-selection illustration",
+      "visual_qc": "PASS; final JPEG opened and inspected, then inspected in desktop and mobile Japanese previews."
+    }
+  ]
+}

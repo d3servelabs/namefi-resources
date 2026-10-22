@@ -49,7 +49,7 @@ relatedGlossary:
 | --- | --- |
 | TLD 유형 | 일반 최상위 도메인 (gTLD) |
 | 레지스트리 운영자 | Charleston Road Registry Inc. (Google) |
-| 출시 연도 | 2014년 위임; 2019년 3월 1일 일반 공개 |
+| 출시 연도 | 2014년 위임; 2019년 2월 28일 일반 공개 |
 | IDN 지원 | 지원 |
 | DNSSEC | 지원 |
 | 등록 제한 | 누구나 가능 — 자격증 또는 현지 거주 요건 없음 |
@@ -66,7 +66,7 @@ relatedGlossary:
 
 Google은 ICANN의 새 gTLD 프로그램을 통해 .dev를 신청했으며, 해당 문자열은 2014년 [루트 존](/ko/glossary/root-zone/)에 위임되었습니다. 이후 수년간 Google은 이를 내부적으로만 보유했으며, 많은 엔지니어들은 `*.dev`를 로컬 개발 환경의 호스트명으로 친숙하게 사용해 왔습니다(예: 개발자 자신의 컴퓨터에서 `myapp.dev`). 이는 나중에 다소 희한한 충돌을 야기했습니다.
 
-Google이 .dev를 일반에 공개하기로 결정했을 때, 출시 전에 TLD 전체를 브라우저의 **HSTS 프리로드 목록**에 등록했습니다. 이로 인해 Chrome을 비롯한 브라우저들이 .dev로 끝나는 모든 주소에 HTTPS를 강제하게 되었고, 일반 HTTP로 `.dev` 호스트명을 사용해 온 수많은 로컬 개발 환경이 중단되었습니다. 개발자들은 로컬 환경을 `.test` 또는 `.localhost`로 이전했으며, .dev는 실제로 공개되고 기본적으로 보안이 적용된 확장자로 자리잡게 되었습니다. 짧은 초기 접근 기간(Early Access Period)을 거쳐 **2019년 3월 1일** 일반 등록이 개시되었습니다. 해당 문자열의 ICANN 레지스트리 협약은 [icann.org](https://www.icann.org/en/registry-agreements/details/dev)에서 확인할 수 있습니다.
+Google이 .dev를 일반에 공개하기로 결정했을 때, 출시 전에 TLD 전체를 브라우저의 **HSTS 프리로드 목록**에 등록했습니다. 이로 인해 Chrome을 비롯한 브라우저들이 .dev로 끝나는 모든 주소에 HTTPS를 강제하게 되었고, 일반 HTTP로 `.dev` 호스트명을 사용해 온 수많은 로컬 개발 환경이 중단되었습니다. 개발자들은 로컬 환경을 `.test` 또는 `.localhost`로 이전했으며, .dev는 실제로 공개되고 기본적으로 보안이 적용된 확장자로 자리잡게 되었습니다. 짧은 초기 접근 기간(Early Access Period)을 거쳐 **2019년 2월 28일** 일반 등록이 개시되었습니다. 해당 문자열의 ICANN 레지스트리 협약은 [icann.org](https://www.icann.org/en/registry-agreements/details/dev)에서 확인할 수 있습니다.
 
 ## .dev 활용 사례
 
@@ -101,7 +101,6 @@ Google이 .dev를 일반에 공개하기로 결정했을 때, 출시 전에 TLD 
 ## .dev를 선택해야 하는 이유
 
 - **명확한 대상 신호.** 이 접미사는 방문자에게 즉시 사이트가 기술적이라는 것을 알려주어, 도구, 문서, 포트폴리오의 포지셔닝을 더욱 선명하게 합니다.
-- **TLD 수준에서 강제되는 보안.** .dev는 HSTS 프리로드되어 있으므로, 브라우저는 HTTPS로만 이를 로드합니다. 실수로 보안이 적용되지 않은 .dev 사이트를 출시할 수 없으며, 방문자는 혼합 콘텐츠 다운그레이드를 경험하지 않습니다.
 - **짧은 도메인 이름의 높은 가용성.** 포화 상태인 **.com** 영역과 비교했을 때, 간결하고 브랜드화 가능한 .dev 이름들이 아직 많이 등록 가능합니다.
 - **Google 레지스트리 인프라의 지원.** TLD는 안정적이고 충분한 자원을 갖춘 [네임서버](/ko/glossary/nameserver/) 인프라에서 운영됩니다.
 
@@ -126,13 +125,11 @@ Google이 .dev를 일반에 공개하기로 결정했을 때, 출시 전에 TLD 
 
 ## .dev 가격과 가치
 
-이 페이지에서는 실시간 가격을 제공하지 않지만, 가격 **구조**를 이해하는 것은 중요합니다. .dev는 개발자 프리미엄 포지셔닝을 반영하여 일반적으로 일반 gTLD보다 비용이 높습니다. 레지스트리는 또한 짧거나 일반적이거나 수요가 높은 문자열에 표준 이름보다 높은 정기 수수료를 부과하는 **프리미엄 계층 이름**을 지정합니다. **첫해와 갱신 가격이 다를 수 있으므로**, 소개 가격이 아닌 갱신 요금을 기준으로 예산을 수립하세요. 주요 비용 요인은 이름의 계층(표준 대 프리미엄), [레지스트라](/ko/glossary/registrar/)의 마진, 그리고 선택한 개인 정보 보호 또는 부가 서비스입니다.
+Google Registry의 [가격 정책](https://www.registry.google/policies/pricing/dev/)은 일반 등록, 프리미엄 등록, 갱신, 이전, 복구 요금을 구분합니다. 구매 전에 해당 이름의 첫 등록 요금, 갱신 요금, 등록 기간과 세금을 확인하세요. 첫 등록 할인이 갱신에도 적용된다고 가정하지 마세요.
 
-## 신뢰도와 이메일 발송 가능성
+## 평판과 이메일 전달성
 
-모든 .dev 사이트는 HTTPS 전용이고 TLD가 Google 레지스트리에 의해 운영되므로, .dev는 일부 저렴한 새 gTLD에 붙는 스팸 이미지 없이 신뢰할 수 있는 기술적 평판을 갖고 있습니다. **프리미엄하고 개발자답다**는 인상을 주며 일회용 도메인으로 인식되지 않습니다.
-
-이메일의 경우, .dev는 광범위하게 악용되지는 않지만, 다른 비-.com 확장자와 마찬가지로 발송 가능성은 접미사보다 자신의 설정에 달려 있습니다. **SPF, DKIM, DMARC**를 올바르게 구성하고, 발송 도메인을 단계적으로 워밍업하며, 목록 위생을 유지하세요. 이를 제대로 수행하면 .dev 주소는 주류 도메인과 동일하게 발송 및 수신됩니다.
+HTTPS는 전송 요건입니다. Google의 레지스트리 운영과 HSTS는 웹사이트의 신뢰성이나 이메일 도착을 보장하지 않습니다. [HSTS 설명](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security)을 참고하세요.
 
 ## 브랜딩 및 이름 짓기 팁
 
@@ -178,3 +175,11 @@ Namefi는 투명한 가격, 빠른 DNS, 그리고 도메인을 온체인 자산�
 - [.app 도메인](/ko/tld/app)
 - [.io 도메인](/ko/tld/io)
 - [.tech 도메인](/ko/tld/tech)
+
+[Google Registry](https://www.registry.google/announcements/launch-details-for-dev/) — 2019-02-28.
+
+## HSTS는 브라우저 전송을 보호하며 애플리케이션 전체의 보안을 보장하지 않습니다
+
+HSTS 프리로드 목록을 적용하는 브라우저는 내부 하위 도메인을 포함한 각 호스트 이름에 정상적인 HTTPS 연결을 요구합니다. HSTS는 인증서를 발급하지 않으며 애플리케이션 코드의 보안이나 이메일 발신자의 진위를 보장하지 않습니다.
+
+[Google Registry](https://www.registry.google/policies/registration/dev/) · [HSTS](https://hstspreload.org/) · [Mozilla](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security) (2026-10-21).

@@ -1,0 +1,866 @@
+{
+  "ads-sv-SE": {
+    "fetched_utc": "2026-10-22T01:29:29.129700+00:00",
+    "request": {
+      "language": "languageConstants/1015",
+      "geoTargetConstants": [
+        "geoTargetConstants/2752"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "se domän",
+        "se domännamn",
+        "registrera se domän",
+        "köpa se domän",
+        "svensk domän"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "se domän",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "480"
+              }
+            ],
+            "avgMonthlySearches": "480",
+            "competitionIndex": "69",
+            "lowTopOfPageBidMicros": "3139717",
+            "highTopOfPageBidMicros": "14578837"
+          }
+        },
+        {
+          "text": "se domännamn",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "10"
+              }
+            ],
+            "avgMonthlySearches": "10",
+            "competitionIndex": "80",
+            "lowTopOfPageBidMicros": "2560990",
+            "highTopOfPageBidMicros": "14909325"
+          }
+        },
+        {
+          "text": "registrera se domän",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "30"
+              }
+            ],
+            "avgMonthlySearches": "50",
+            "competitionIndex": "72",
+            "lowTopOfPageBidMicros": "5777620",
+            "highTopOfPageBidMicros": "18567116"
+          }
+        },
+        {
+          "text": "köpa se domän",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "110"
+              }
+            ],
+            "avgMonthlySearches": "110",
+            "competitionIndex": "73",
+            "lowTopOfPageBidMicros": "4827310",
+            "highTopOfPageBidMicros": "20574904"
+          }
+        },
+        {
+          "text": "svensk domän",
+          "keywordMetrics": {
+            "competition": "MEDIUM",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "20"
+              }
+            ],
+            "avgMonthlySearches": "50",
+            "competitionIndex": "65",
+            "lowTopOfPageBidMicros": "5369413",
+            "highTopOfPageBidMicros": "15649126"
+          }
+        }
+      ]
+    }
+  },
+  "ads-en-SE": {
+    "fetched_utc": "2026-10-22T01:29:29.602538+00:00",
+    "request": {
+      "language": "languageConstants/1000",
+      "geoTargetConstants": [
+        "geoTargetConstants/2752"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "se domain",
+        "register se domain",
+        "sweden domain"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "se domain",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "260"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "260"
+              }
+            ],
+            "avgMonthlySearches": "260",
+            "competitionIndex": "69",
+            "lowTopOfPageBidMicros": "4022385",
+            "highTopOfPageBidMicros": "17663956"
+          }
+        },
+        {
+          "text": "register se domain",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "20"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "30"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "40"
+              }
+            ],
+            "avgMonthlySearches": "40",
+            "competitionIndex": "71",
+            "lowTopOfPageBidMicros": "6410718",
+            "highTopOfPageBidMicros": "28030960"
+          }
+        },
+        {
+          "text": "sweden domain",
+          "keywordMetrics": {
+            "competition": "MEDIUM",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "10"
+              }
+            ],
+            "avgMonthlySearches": "10",
+            "competitionIndex": "64",
+            "lowTopOfPageBidMicros": "4427899",
+            "highTopOfPageBidMicros": "15175863"
+          }
+        }
+      ]
+    }
+  },
+  "ads-de-DE": {
+    "fetched_utc": "2026-10-22T01:29:30.019771+00:00",
+    "request": {
+      "language": "languageConstants/1001",
+      "geoTargetConstants": [
+        "geoTargetConstants/2276"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "se domain",
+        "se domain registrieren",
+        "schwedische domain"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "se domain",
+          "keywordMetrics": {
+            "competition": "LOW",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "720"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "720"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "880"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "720"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "720"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "590"
+              }
+            ],
+            "avgMonthlySearches": "720",
+            "competitionIndex": "18",
+            "lowTopOfPageBidMicros": "1602694",
+            "highTopOfPageBidMicros": "7163825"
+          }
+        },
+        {
+          "text": "se domain registrieren",
+          "keywordMetrics": {
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "0"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "10"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "0"
+              }
+            ],
+            "avgMonthlySearches": "10"
+          }
+        },
+        {
+          "text": "schwedische domain",
+          "keywordMetrics": {
+            "competition": "LOW",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "40"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "50"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "40"
+              }
+            ],
+            "avgMonthlySearches": "50",
+            "competitionIndex": "14"
+          }
+        }
+      ]
+    }
+  },
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+    "topic": {
+      "source_id": "T01",
+      "slug": "se",
+      "path_match": "/tld/se/",
+      "matched_rows": 0,
+      "observed_impressions": 0,
+      "observed_clicks": 0,
+      "countries": {}
+    }
+  }
+}
