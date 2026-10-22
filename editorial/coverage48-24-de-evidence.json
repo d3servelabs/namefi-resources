@@ -1,0 +1,923 @@
+{
+  "source_id": "O05",
+  "order": 24,
+  "source_revision": "4ec5cb8f88ae9f08eba4e522f88c3ed0b59a305e",
+  "official_ads_language_reference": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "ads": [
+    {
+      "fetched_utc": "2026-10-22T00:47:38Z",
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "de domain kaufen",
+          "de domain registrieren",
+          "de domain kosten",
+          "was bedeutet de domain",
+          "de domain ausland"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "de domain kaufen",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                }
+              ],
+              "avgMonthlySearches": "590",
+              "competitionIndex": "72",
+              "lowTopOfPageBidMicros": "4533305",
+              "highTopOfPageBidMicros": "17094344"
+            }
+          },
+          {
+            "text": "de domain registrieren",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                }
+              ],
+              "avgMonthlySearches": "90",
+              "competitionIndex": "76",
+              "lowTopOfPageBidMicros": "5023072",
+              "highTopOfPageBidMicros": "13962778"
+            }
+          },
+          {
+            "text": "de domain kosten",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                }
+              ],
+              "avgMonthlySearches": "90",
+              "competitionIndex": "72",
+              "lowTopOfPageBidMicros": "1705805",
+              "highTopOfPageBidMicros": "5513233"
+            }
+          },
+          {
+            "text": "was bedeutet de domain"
+          },
+          {
+            "text": "de domain ausland"
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:47:39Z",
+      "request": {
+        "language": "languageConstants/1002",
+        "geoTargetConstants": [
+          "geoTargetConstants/2250"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "nom de domaine de",
+          "domaine allemand",
+          "acheter domaine de",
+          "extension de allemagne"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "nom de domaine de",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "20",
+              "competitionIndex": "58",
+              "lowTopOfPageBidMicros": "1149534",
+              "highTopOfPageBidMicros": "4001917"
+            }
+          },
+          {
+            "text": "domaine allemand",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                }
+              ],
+              "avgMonthlySearches": "590",
+              "competitionIndex": "4"
+            }
+          },
+          {
+            "text": "acheter domaine de"
+          },
+          {
+            "text": "extension de allemagne"
+          }
+        ]
+      }
+    }
+  ],
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+    "topic": {
+      "source_id": "O05",
+      "slug": "de",
+      "path_match": "/tld/de/",
+      "matched_rows": 16,
+      "observed_impressions": 18,
+      "observed_clicks": 0,
+      "countries": {
+        "can": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "usa": {
+          "rows": 5,
+          "impressions": 6,
+          "clicks": 0
+        },
+        "gbr": {
+          "rows": 2,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "fra": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "deu": {
+          "rows": 4,
+          "impressions": 5,
+          "clicks": 0
+        },
+        "mys": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "pak": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "ury": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        }
+      }
+    }
+  },
+  "image_attempt1": {
+    "created": 1792630129,
+    "usage": {
+      "input_tokens": 412,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 412
+      },
+      "output_tokens": 5488,
+      "output_tokens_details": {
+        "image_tokens": 5488,
+        "text_tokens": 0
+      },
+      "total_tokens": 5900
+    },
+    "model": null,
+    "size": "1536x1024",
+    "quality": "high",
+    "error": null
+  },
+  "usage_checkpoints": [
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "research-start",
+      "captured_utc": "2026-10-22T00:46:56.830481+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:46:48.917Z",
+            "total_token_usage": {
+              "input_tokens": 197595,
+              "cached_input_tokens": 176128,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 523,
+              "reasoning_output_tokens": 9,
+              "total_tokens": 198118
+            },
+            "last_token_usage": {
+              "input_tokens": 60489,
+              "cached_input_tokens": 50176,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 131,
+              "reasoning_output_tokens": 0,
+              "total_tokens": 60620
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "images-start",
+      "captured_utc": "2026-10-22T00:47:41.387859+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:47:14.350Z",
+            "total_token_usage": {
+              "input_tokens": 434799,
+              "cached_input_tokens": 384000,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1269,
+              "reasoning_output_tokens": 41,
+              "total_tokens": 436068
+            },
+            "last_token_usage": {
+              "input_tokens": 89754,
+              "cached_input_tokens": 78976,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 335,
+              "reasoning_output_tokens": 32,
+              "total_tokens": 90089
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "research-end",
+      "captured_utc": "2026-10-22T00:48:02.419839+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:47:51.831Z",
+            "total_token_usage": {
+              "input_tokens": 639188,
+              "cached_input_tokens": 576128,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2627,
+              "reasoning_output_tokens": 104,
+              "total_tokens": 641815
+            },
+            "last_token_usage": {
+              "input_tokens": 102945,
+              "cached_input_tokens": 102272,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 352,
+              "reasoning_output_tokens": 10,
+              "total_tokens": 103297
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "writing-start",
+      "captured_utc": "2026-10-22T00:48:02.463586+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:47:51.831Z",
+            "total_token_usage": {
+              "input_tokens": 639188,
+              "cached_input_tokens": 576128,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2627,
+              "reasoning_output_tokens": 104,
+              "total_tokens": 641815
+            },
+            "last_token_usage": {
+              "input_tokens": 102945,
+              "cached_input_tokens": 102272,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 352,
+              "reasoning_output_tokens": 10,
+              "total_tokens": 103297
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "writing-end",
+      "captured_utc": "2026-10-22T00:49:46.384470+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:49:11.766Z",
+            "total_token_usage": {
+              "input_tokens": 2166988,
+              "cached_input_tokens": 2056192,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4902,
+              "reasoning_output_tokens": 567,
+              "total_tokens": 2171890
+            },
+            "last_token_usage": {
+              "input_tokens": 151321,
+              "cached_input_tokens": 149888,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 256,
+              "reasoning_output_tokens": 77,
+              "total_tokens": 151577
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "translation-start",
+      "captured_utc": "2026-10-22T00:49:46.429283+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:49:11.766Z",
+            "total_token_usage": {
+              "input_tokens": 2166988,
+              "cached_input_tokens": 2056192,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4902,
+              "reasoning_output_tokens": 567,
+              "total_tokens": 2171890
+            },
+            "last_token_usage": {
+              "input_tokens": 151321,
+              "cached_input_tokens": 149888,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 256,
+              "reasoning_output_tokens": 77,
+              "total_tokens": 151577
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "translation-end",
+      "captured_utc": "2026-10-22T00:50:27.300499+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:49:47.467Z",
+            "total_token_usage": {
+              "input_tokens": 2324714,
+              "cached_input_tokens": 2207616,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6592,
+              "reasoning_output_tokens": 668,
+              "total_tokens": 2331306
+            },
+            "last_token_usage": {
+              "input_tokens": 157726,
+              "cached_input_tokens": 151424,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1690,
+              "reasoning_output_tokens": 101,
+              "total_tokens": 159416
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "images-end",
+      "captured_utc": "2026-10-22T00:50:27.348224+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:49:47.467Z",
+            "total_token_usage": {
+              "input_tokens": 2324714,
+              "cached_input_tokens": 2207616,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 6592,
+              "reasoning_output_tokens": 668,
+              "total_tokens": 2331306
+            },
+            "last_token_usage": {
+              "input_tokens": 157726,
+              "cached_input_tokens": 151424,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 1690,
+              "reasoning_output_tokens": 101,
+              "total_tokens": 159416
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "sanity-end",
+      "captured_utc": "2026-10-22T00:51:49.500545+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:50:56.809Z",
+            "total_token_usage": {
+              "input_tokens": 2824464,
+              "cached_input_tokens": 2701056,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 9410,
+              "reasoning_output_tokens": 937,
+              "total_tokens": 2833874
+            },
+            "last_token_usage": {
+              "input_tokens": 167858,
+              "cached_input_tokens": 167552,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 408,
+              "reasoning_output_tokens": 178,
+              "total_tokens": 168266
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "cover-regeneration-start-observed",
+      "captured_utc": "2026-10-22T00:53:26.521391+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:53:17.564Z",
+            "total_token_usage": {
+              "input_tokens": 3916444,
+              "cached_input_tokens": 3776768,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 14453,
+              "reasoning_output_tokens": 2331,
+              "total_tokens": 3930897
+            },
+            "last_token_usage": {
+              "input_tokens": 188138,
+              "cached_input_tokens": 187904,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 813,
+              "reasoning_output_tokens": 323,
+              "total_tokens": 188951
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "cover-regeneration-end",
+      "captured_utc": "2026-10-22T00:53:48.782789+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:53:31.335Z",
+            "total_token_usage": {
+              "input_tokens": 4297306,
+              "cached_input_tokens": 4154880,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 14893,
+              "reasoning_output_tokens": 2488,
+              "total_tokens": 4312199
+            },
+            "last_token_usage": {
+              "input_tokens": 191821,
+              "cached_input_tokens": 189312,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 95,
+              "reasoning_output_tokens": 7,
+              "total_tokens": 191916
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/stack48_coordinator/coverage48_24_o05",
+      "phase": "local-package-ready",
+      "captured_utc": "2026-10-22T00:54:40.527924+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16112-e208-7b61-9610-212f46afea51",
+          "session_log_name": "rollout-2026-10-21T17-46-29-01a16112-e208-7b61-9610-212f46afea51.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T00:54:31.514Z",
+            "total_token_usage": {
+              "input_tokens": 5271398,
+              "cached_input_tokens": 5124608,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 16902,
+              "reasoning_output_tokens": 3121,
+              "total_tokens": 5288300
+            },
+            "last_token_usage": {
+              "input_tokens": 197184,
+              "cached_input_tokens": 195200,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 292,
+              "reasoning_output_tokens": 23,
+              "total_tokens": 197476
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "cover_attempt1": {
+    "created": 1792630400,
+    "usage": {
+      "input_tokens": 735,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 735
+      },
+      "output_tokens": 3401,
+      "output_tokens_details": {
+        "image_tokens": 3401,
+        "text_tokens": 0
+      },
+      "total_tokens": 4136
+    },
+    "model": null,
+    "size": "1216x640",
+    "quality": "high",
+    "error": null
+  },
+  "images": {
+    "inline": {
+      "file": "content/assets/de-01-worldwide-registration.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "qc": "pass: cream full bleed; generous margins; no clipping; official top-right logo; .de text correct"
+    },
+    "cover": {
+      "file": "content/assets/de-og.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "qc": "pass: correct headline and subtitle; German flag; official top-right logo; entire bottom caption band empty",
+      "reason": "Existing cover had artwork in bottom caption reserve"
+    }
+  }
+}
