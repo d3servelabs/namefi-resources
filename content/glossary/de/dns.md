@@ -14,6 +14,8 @@ level: 2
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://datatracker.ietf.org/doc/html/rfc1035
+  - https://www.rfc-editor.org/rfc/rfc4033.html#section-5
+  - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
@@ -65,9 +67,9 @@ Dieses Muster – bei dem der Resolver die iterative Arbeit erledigt und der Cli
 
 ## Die DNS-Hierarchie und wichtige Eintragstypen
 
-DNS ist als invertierter Baum organisiert. Die Wurzel (`.`) steht an der Spitze; darunter befinden sich TLDs (`.com`, `.net`, `.io`, Länderkürzel wie `.de`); darunter Second-Level-Domains (`example.com`); und diese können beliebig tiefe Subdomains haben (`mail.example.com`).
+DNS ist als invertierter Baum organisiert. Die Wurzel (`.`) steht an der Spitze; darunter befinden sich TLDs (`.com`, `.net`, `.io`, Länderkürzel wie `.de`); darunter Second-Level-Domains (`example.com`); und diese können verschachtelte Subdomains haben (`mail.example.com`).
 
-Jeder Knoten in diesem Baum wird als **Zone** bezeichnet, und der autoritative Nameserver für eine Zone enthält die **Ressourceneinträge** dieser Zone. Die am häufigsten anzutreffenden [DNS-Eintragstypen](/de/glossary/dns-record-types/) sind:
+Eine **Zone** ist ein gemeinsam verwalteter Teil des DNS-Baums, kein einzelner Knoten. Eine Delegation trennt eine untergeordnete Zone von ihrer übergeordneten Zone. Der autoritative Nameserver hält die **Ressourceneinträge** der Zone ([RFC 1034, Abschnitt 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Häufige [DNS-Eintragstypen](/de/glossary/dns-record-types/) sind:
 
 | Eintrag | Zweck | Beispielwert |
 |---------|-------|--------------|
@@ -101,9 +103,9 @@ Die ursprünglichen DNS-Spezifikationen wurden auf Zuverlässigkeit und Skalierb
 
 **Cache Poisoning.** Ein Angreifer, der eine gefälschte DNS-Antwort in den Cache eines Resolvers einschleusen kann, kann Nutzer ohne deren Wissen von legitimen Seiten auf bösartige umleiten. Der Kaminsky-Angriff (2008) demonstrierte dies in großem Maßstab und führte zur weiteren Verbreitung von Port-Randomisierung und [DNSSEC](/de/glossary/dnssec/).
 
-**DNSSEC.** Die DNS Security Extensions, in RFC 4033–4035 definiert, fügen kryptografische Signaturen zu DNS-Einträgen hinzu. Ein Resolver, der [DNSSEC](/de/glossary/dnssec/)-Signaturen validiert, kann manipulierte Antworten erkennen. Die Verbreitung wächst, ist aber ungleichmäßig: Stand 2024 sind etwa 90 % der Root-Zone und der großen TLDs signiert, aber die End-to-End-Validierung hängt davon ab, dass alle Zonen in der Kette signiert sind und Resolver Signaturen prüfen.
+**DNSSEC.** Die DNS Security Extensions ergänzen DNS-Eintragsgruppen um kryptografische Signaturen. Ein validierender Resolver prüft Signaturen über eine Authentifizierungskette bis zu einem konfigurierten Vertrauensanker. Eine signierte Root-Zone authentifiziert allein keine unsignierte untergeordnete Zone. [RFC 4033, Abschnitt 5](https://www.rfc-editor.org/rfc/rfc4033.html#section-5) unterscheidet sichere, unsichere, fehlerhafte und unbestimmte Ergebnisse.
 
-**DNS-Hijacking.** Angreifer, die ein Registrar-Konto, Registry-Systeme oder den Resolver eines ISPs kompromittieren, können DNS-Antworten in großem Maßstab umleiten. Schutzmaßnahmen umfassen Multi-Faktor-Authentifizierung auf Registrar-Ebene, Registry-Sperren (EPP `serverTransferProhibited`) und die Überwachung auf unerwartete NS- oder A-Eintragsänderungen.
+**DNS-Hijacking.** Angreifer, die ein Registrar-Konto, Registry-Systeme oder den Resolver eines ISPs kompromittieren, können DNS-Antworten in großem Maßstab umleiten. Schutzmaßnahmen umfassen Multi-Faktor-Authentifizierung auf Registrar-Ebene, Registry-Sperren für Transfers und Aktualisierungen (EPP `serverTransferProhibited` und `serverUpdateProhibited`) und die Überwachung auf unerwartete NS- oder A-Eintragsänderungen ([ICANN](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)).
 
 **DNS over HTTPS / DNS over TLS (DoH / DoT).** Diese Protokolle verschlüsseln DNS-Anfragen zwischen Clients und Resolvern, verhindern das Abhören und die pfadbasierte Modifikation von Anfragen während der Übertragung – ein ergänzender Schutz zu DNSSEC, der Datenintegrität statt Privatsphäre adressiert.
 

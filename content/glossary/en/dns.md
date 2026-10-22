@@ -13,6 +13,8 @@ level: 2
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://datatracker.ietf.org/doc/html/rfc1035
+  - https://www.rfc-editor.org/rfc/rfc4033.html#section-5
+  - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
@@ -64,9 +66,9 @@ This pattern—where the resolver does the iterative legwork and the client only
 
 ## The DNS hierarchy and key record types
 
-DNS is organized as an inverted tree. The root (`.`) sits at the top; beneath it are TLDs (`.com`, `.net`, `.io`, country codes such as `.de`); beneath each TLD are second-level domains (`example.com`); and these can have arbitrarily deep subdomains (`mail.example.com`).
+DNS is organized as an inverted tree. The root (`.`) sits at the top; beneath it are TLDs (`.com`, `.net`, `.io`, country codes such as `.de`); beneath each TLD are second-level domains (`example.com`); and these can have nested subdomains (`mail.example.com`).
 
-Each node in this tree is called a **zone**, and the authoritative nameserver for a zone holds that zone's **resource records**. The most commonly encountered [DNS record types](/en/glossary/dns-record-types/) are:
+A **zone** is an administratively managed portion of the DNS tree, not an individual node. Delegation separates a child zone from its parent. The authoritative nameserver holds the zone's **resource records** ([RFC 1034, section 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Common [DNS record types](/en/glossary/dns-record-types/) include:
 
 | Record | Purpose | Example value |
 |--------|---------|---------------|
@@ -100,9 +102,9 @@ The original DNS specifications were designed for reliability and scale, not sec
 
 **Cache poisoning.** An attacker who can inject a forged DNS response into a resolver's cache can redirect users from legitimate sites to malicious ones without their knowledge. The Kaminsky attack (2008) demonstrated this at scale, leading to wider adoption of port randomization and [DNSSEC](/en/glossary/dnssec/).
 
-**DNSSEC.** DNS Security Extensions, defined in RFC 4033–4035, adds cryptographic signatures to DNS records. A resolver that validates [DNSSEC](/en/glossary/dnssec/) signatures can detect tampered responses. Adoption is growing but uneven: as of 2024, roughly 90 % of the root zone and major TLDs are signed, but end-to-end validation depends on all zones in the chain being signed and resolvers checking signatures.
+**DNSSEC.** DNS Security Extensions add cryptographic signatures to DNS record sets. A validating resolver checks signatures through an authentication chain to a configured trust anchor. A signed root alone does not authenticate an unsigned child zone. [RFC 4033, section 5](https://www.rfc-editor.org/rfc/rfc4033.html#section-5) distinguishes secure, insecure, bogus, and indeterminate results.
 
-**DNS hijacking.** Attackers who compromise a registrar account, registry systems, or an ISP's resolver can redirect DNS responses at scale. Defenses include registrar-level multi-factor authentication, registry locks (EPP `serverTransferProhibited`), and monitoring for unexpected NS or A record changes.
+**DNS hijacking.** Attackers who compromise a registrar account, registry systems, or an ISP's resolver can redirect DNS responses at scale. Defenses include registrar-level multi-factor authentication, registry restrictions on transfers and updates (EPP `serverTransferProhibited` and `serverUpdateProhibited`), and monitoring for unexpected NS or A record changes ([ICANN](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)).
 
 **DNS over HTTPS / DNS over TLS (DoH / DoT).** These protocols encrypt DNS queries between clients and resolvers, preventing eavesdropping and on-path modification of queries in transit—a complementary protection to DNSSEC, which addresses data integrity rather than privacy.
 

@@ -14,6 +14,8 @@ level: 2
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://datatracker.ietf.org/doc/html/rfc1035
+  - https://www.rfc-editor.org/rfc/rfc4033.html#section-5
+  - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
@@ -65,9 +67,9 @@ DNS は更新よりも参照の頻度がはるかに高いため、即時の一�
 
 ## DNS の階層構造と主なレコードタイプ
 
-DNS は逆ツリー構造として編成されている。頂点にはルート（`.`）があり、その下に TLD（`.com`、`.net`、`.io`、`.de` などの国別コード）が続く。各 TLD の下にはセカンドレベルドメイン（`example.com`）があり、さらに任意の深さのサブドメイン（`mail.example.com`）を持てる。
+DNS は逆ツリー構造として編成されている。頂点にはルート（`.`）があり、その下に TLD（`.com`、`.net`、`.io`、`.de` などの国別コード）が続く。各 TLD の下にはセカンドレベルドメイン（`example.com`）があり、さらに入れ子になったサブドメイン（`mail.example.com`）を持てる。
 
-このツリーの各ノードを**ゾーン**と呼び、あるゾーンの権威ネームサーバーはそのゾーンの**リソースレコード**を保持する。よく使われる[DNS レコードタイプ](/ja/glossary/dns-record-types/)は以下のとおりだ。
+**ゾーン**は共通の管理下にある DNS ツリーの一部であり、個々のノードではない。委任によって子ゾーンと親ゾーンを分ける。権威ネームサーバーはゾーンの**リソースレコード**を保持する（[RFC 1034、4.2節](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)）。主な[DNS レコードタイプ](/ja/glossary/dns-record-types/)は以下のとおりだ。
 
 | レコード | 用途 | 値の例 |
 |--------|---------|---------------|
@@ -101,9 +103,9 @@ DNS の元々の仕様は信頼性とスケールを重視して設計されて�
 
 **キャッシュポイズニング。** リゾルバーのキャッシュに偽造した DNS 応答を注入できた場合、攻撃者は利用者を正規サイトから悪意あるサイトへ気づかせることなく誘導できる。2008年のカミンスキー攻撃はこれを大規模に実証し、ポートランダム化と [DNSSEC](/ja/glossary/dnssec/) の普及を後押しした。
 
-**DNSSEC。** RFC 4033〜4035 で定義される DNS Security Extensions は、DNS レコードに暗号署名を追加する。[DNSSEC](/ja/glossary/dnssec/) 署名を検証するリゾルバーは改ざんされた応答を検出できる。普及は進んでいるものの均一ではなく、2024年時点でルートゾーンと主要 TLD の約 90% が署名済みだが、エンドツーエンドの検証にはチェーン内のすべてのゾーンが署名されていること、およびリゾルバーが署名を検証することが必要だ。
+**DNSSEC。** DNS Security Extensions は DNS レコードセットに暗号署名を追加する。検証リゾルバーは認証チェーンをたどり、設定済みのトラストアンカーまで署名を検証する。ルートゾーンの署名だけでは、署名のない子ゾーンを認証できない。[RFC 4033、5節](https://www.rfc-editor.org/rfc/rfc4033.html#section-5)は、安全、非保護、不正、不確定の検証結果を区別する。
 
-**DNS ハイジャック。** レジストラーのアカウント、レジストリのシステム、または ISP のリゾルバーが侵害された攻撃者は、DNS 応答を大規模にリダイレクトできる。防御策としては、レジストラー側の多要素認証、レジストリロック（EPP の `serverTransferProhibited`）、予期しない NS や A レコードの変更に対する監視が挙げられる。
+**DNS ハイジャック。** レジストラーのアカウント、レジストリのシステム、または ISP のリゾルバーが侵害された攻撃者は、DNS 応答を大規模にリダイレクトできる。防御策としては、レジストラー側の多要素認証、移管と更新に対するレジストリの制限（EPP の `serverTransferProhibited` と `serverUpdateProhibited`）、予期しない NS や A レコードの変更に対する監視が挙げられる。 ([ICANN](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)).
 
 **DNS over HTTPS / DNS over TLS（DoH / DoT）。** これらのプロトコルはクライアントとリゾルバー間の DNS クエリを暗号化し、通信経路上での盗聴やクエリの改ざんを防ぐ。データの整合性を扱う DNSSEC を補完するプライバシー保護の仕組みだ。
 
