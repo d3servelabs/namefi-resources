@@ -1,0 +1,2040 @@
+{
+  "captured_utc": "2026-10-22T02:36:38.507674+00:00",
+  "topic_packages": 48,
+  "unique_english_urls": 47,
+  "inventory_snapshot": "437c6ff1acc1088d9c98992dc61c65fe2968ae55",
+  "complete_content_stack_head": "518a11dacbbce6f3c426716fec8c7d7e904fea1c",
+  "basis": "Actual final cumulative counters of distinct fresh one-topic writer sessions. Input includes cached input; output includes reasoning output. These subsets are not added again. Counters include setup, research, prose, selected translation, image handling, sanity and handoff; they are not strict independently attributable research/writing phase bills. Separate image API usage is retained in each topic evidence, with three known missing attempt values. Shared orchestration and subsequent CI/release work are outside writer totals. These counters are not a Pro quota measure or an API invoice.",
+  "actual_writer_total": {
+    "input_tokens": 192878743,
+    "cached_input_tokens": 186950272,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 838443,
+    "reasoning_output_tokens": 81090,
+    "total_tokens": 193717186
+  },
+  "topics": [
+    {
+      "order": 1,
+      "source_id": "G37",
+      "english_path": "content/blog/en/domain-terminology-guide.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/domain-terminology-guide/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [
+        "es"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/335",
+      "stacked_head_sha": "2e99c25e9409397a693dffc4f34c16ce138be34f",
+      "original_local_sha": null,
+      "writer_agent": "/root/coverage48_01_g37",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160c6-3bc0-77e2-9d7e-58af48070272",
+      "writer_counter_timestamp": "2026-10-21T23:29:23.754Z",
+      "actual_writer_input_tokens": 4074672,
+      "actual_writer_cached_input_tokens_subset": 3952000,
+      "actual_writer_uncached_input_tokens": 122672,
+      "actual_writer_output_tokens": 15353,
+      "actual_writer_reasoning_tokens_subset": 1316,
+      "actual_writer_total_tokens": 4090025,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48-01-domain-terminology-guide.md",
+        "editorial/coverage48-01-de-DE.json",
+        "editorial/coverage48-01-es-MX.json",
+        "editorial/coverage48-01-gsc-aggregate.json",
+        "editorial/coverage48-01-usage.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/domain-terminology-guide-01-url-parts.jpg",
+        "content/assets/domain-terminology-guide-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 2,
+      "source_id": "G01",
+      "english_path": "content/blog/en/choose-public-dns-resolver.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/choose-public-dns-resolver/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/336",
+      "stacked_head_sha": "bb56dde30df1eda05eabc488f8707cfc915a0d93",
+      "original_local_sha": "c1ebd3f0b55db06cb765d84a7e5ea6648fa925e5",
+      "writer_agent": "/root/coverage48_02_g01",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160c6-5646-7b31-8e04-0c2f16f06308",
+      "writer_counter_timestamp": "2026-10-21T23:30:52.600Z",
+      "actual_writer_input_tokens": 3901098,
+      "actual_writer_cached_input_tokens_subset": 3756800,
+      "actual_writer_uncached_input_tokens": 144298,
+      "actual_writer_output_tokens": 21738,
+      "actual_writer_reasoning_tokens_subset": 1746,
+      "actual_writer_total_tokens": 3922836,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/coverage48-02-choose-public-dns-resolver/README.md",
+        "editorial/coverage48-02-choose-public-dns-resolver/demand-de-DE.json",
+        "editorial/coverage48-02-choose-public-dns-resolver/demand-es-MX.json",
+        "editorial/coverage48-02-choose-public-dns-resolver/demand-ja-JP.json",
+        "editorial/coverage48-02-choose-public-dns-resolver/gsc-aggregate.json",
+        "editorial/coverage48-02-choose-public-dns-resolver/image-manifest.json",
+        "editorial/coverage48-02-choose-public-dns-resolver/image-usage.json",
+        "editorial/coverage48-02-choose-public-dns-resolver/sanity.json",
+        "editorial/coverage48-02-choose-public-dns-resolver/source-notes.md",
+        "editorial/coverage48-02-choose-public-dns-resolver/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/choose-public-dns-resolver-05-choice-steps.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 3,
+      "source_id": "G19",
+      "english_path": "content/blog/en/choose-domain-registrar.md",
+      "english_action": "new_page",
+      "url": "https://namefi.io/r/en/blog/choose-domain-registrar/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/338",
+      "stacked_head_sha": "1583036c9ef82ee0787dd2532bc40fd53b9c2952",
+      "original_local_sha": "43e5c035fcecad8250a2e3d47a05175e9e5b4199",
+      "writer_agent": "/root/coverage48_03_g19",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160cd-2352-7693-b98f-486deda75b4f",
+      "writer_counter_timestamp": "2026-10-21T23:39:21.202Z",
+      "actual_writer_input_tokens": 5155501,
+      "actual_writer_cached_input_tokens_subset": 4928384,
+      "actual_writer_uncached_input_tokens": 227117,
+      "actual_writer_output_tokens": 23528,
+      "actual_writer_reasoning_tokens_subset": 2748,
+      "actual_writer_total_tokens": 5179029,
+      "known_missing_image_attempt_usage": 2,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/README.md",
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/actual-usage.json",
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/ads-es-MX.json",
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/ads-ja-JP.json",
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/decision.md",
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/gsc-summary.json",
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/image-manifest.json",
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/local-sanity.json",
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/phases.json",
+        "editorial/2026-10-21-coverage48/03-choose-domain-registrar/source-evidence.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/choose-domain-registrar-01-costs.jpg",
+        "content/assets/choose-domain-registrar-02-security.jpg",
+        "content/assets/choose-domain-registrar-03-dns.jpg",
+        "content/assets/choose-domain-registrar-04-exit.jpg",
+        "content/assets/choose-domain-registrar-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 4,
+      "source_id": "G28",
+      "english_path": "content/blog/en/icann-domain-lookup.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/icann-domain-lookup/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/337",
+      "stacked_head_sha": "b36d7c2432209ff55dcde7a24d46899bef4244d4",
+      "original_local_sha": "0e9168305665506045ee9376f8c158e611da3aac",
+      "writer_agent": "/root/coverage48_04_g28",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160ce-0b4d-7e43-b30d-fcc7523e1206",
+      "writer_counter_timestamp": "2026-10-21T23:35:42.348Z",
+      "actual_writer_input_tokens": 2689326,
+      "actual_writer_cached_input_tokens_subset": 2495488,
+      "actual_writer_uncached_input_tokens": 193838,
+      "actual_writer_output_tokens": 10717,
+      "actual_writer_reasoning_tokens_subset": 1158,
+      "actual_writer_total_tokens": 2700043,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/04-icann-domain-lookup/README.md",
+        "editorial/2026-10-21-coverage48/04-icann-domain-lookup/ads-ES.json",
+        "editorial/2026-10-21-coverage48/04-icann-domain-lookup/ads-MX.json",
+        "editorial/2026-10-21-coverage48/04-icann-domain-lookup/gsc-supplement.json",
+        "editorial/2026-10-21-coverage48/04-icann-domain-lookup/image-usage.json",
+        "editorial/2026-10-21-coverage48/04-icann-domain-lookup/images.json",
+        "editorial/2026-10-21-coverage48/04-icann-domain-lookup/phases.json",
+        "editorial/2026-10-21-coverage48/04-icann-domain-lookup/sanity.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/icann-domain-lookup-05-result-check.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 5,
+      "source_id": "O01",
+      "english_path": "content/tld/en/io.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/tld/io/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/340",
+      "stacked_head_sha": "da9b33f95b8976b8468695eb4e2764faa61a96d5",
+      "original_local_sha": "acf5f66964e07bcea78e74a245c185511fe911aa",
+      "writer_agent": "/root/coverage48_05_o01",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160d2-50ac-7863-8839-cac21c10548b",
+      "writer_counter_timestamp": "2026-10-21T23:45:17.691Z",
+      "actual_writer_input_tokens": 5282513,
+      "actual_writer_cached_input_tokens_subset": 5138048,
+      "actual_writer_uncached_input_tokens": 144465,
+      "actual_writer_output_tokens": 24782,
+      "actual_writer_reasoning_tokens_subset": 3525,
+      "actual_writer_total_tokens": 5307295,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/05-io/README.md",
+        "editorial/2026-10-21-coverage48/05-io/demand.json",
+        "editorial/2026-10-21-coverage48/05-io/evidence.md",
+        "editorial/2026-10-21-coverage48/05-io/image-qc.json",
+        "editorial/2026-10-21-coverage48/05-io/image-usage.json",
+        "editorial/2026-10-21-coverage48/05-io/sanity.json",
+        "editorial/2026-10-21-coverage48/05-io/usage-checkpoints.json",
+        "editorial/2026-10-21-coverage48/05-io/usage.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/io-01-registration-levels.jpg",
+        "content/assets/io-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 6,
+      "source_id": "G36",
+      "english_path": "content/blog/en/subdomain-examples.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/subdomain-examples/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/339",
+      "stacked_head_sha": "b3fe4882e0c2e01e69b0e3df24a9263675dcbd0a",
+      "original_local_sha": "ba73c617466473c18c8271914fc4d6a9399fbe76",
+      "writer_agent": "/root/coverage48_06_g36",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160d5-9648-7181-b80e-1cfff7279fe6",
+      "writer_counter_timestamp": "2026-10-21T23:43:51.502Z",
+      "actual_writer_input_tokens": 2694716,
+      "actual_writer_cached_input_tokens_subset": 2602368,
+      "actual_writer_uncached_input_tokens": 92348,
+      "actual_writer_output_tokens": 10536,
+      "actual_writer_reasoning_tokens_subset": 593,
+      "actual_writer_total_tokens": 2705252,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/06-subdomain-examples/ads-hi.json",
+        "editorial/2026-10-21-coverage48/06-subdomain-examples/ads-ta.json",
+        "editorial/2026-10-21-coverage48/06-subdomain-examples/decision.md",
+        "editorial/2026-10-21-coverage48/06-subdomain-examples/gsc-supplement.json",
+        "editorial/2026-10-21-coverage48/06-subdomain-examples/image-usage.json",
+        "editorial/2026-10-21-coverage48/06-subdomain-examples/sanity.md",
+        "editorial/2026-10-21-coverage48/06-subdomain-examples/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/subdomain-examples-05-url-anatomy.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 7,
+      "source_id": "O02",
+      "english_path": "content/tld/en/ai.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/tld/ai/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/342",
+      "stacked_head_sha": "723ae6d28b0dbccc0cc0241b007dd0c5270a1b38",
+      "original_local_sha": "ea6a65c6708ddf88f76a2537faa8c3e8aa93457c",
+      "writer_agent": "/root/coverage48_07_o02",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160d9-ccb2-7491-9a52-032bdc061178",
+      "writer_counter_timestamp": "2026-10-21T23:53:18.496Z",
+      "actual_writer_input_tokens": 7397037,
+      "actual_writer_cached_input_tokens_subset": 7235584,
+      "actual_writer_uncached_input_tokens": 161453,
+      "actual_writer_output_tokens": 23900,
+      "actual_writer_reasoning_tokens_subset": 4674,
+      "actual_writer_total_tokens": 7420937,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/07-ai-demand.json",
+        "editorial/2026-10-21-coverage48/07-ai.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/ai-05-registration-checks.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 8,
+      "source_id": "G29",
+      "english_path": "content/blog/en/whois-and-rdap-public-data.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/whois-and-rdap-public-data/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/341",
+      "stacked_head_sha": "5959c9b5d043c48357f22066b2dcb073c103be93",
+      "original_local_sha": "6b53fb40fb0376aedf64ce2a9771a64e3b436f7b",
+      "writer_agent": "/root/coverage48_08_g29",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160db-3fec-7233-97a1-6725f793eec0",
+      "writer_counter_timestamp": "2026-10-21T23:49:38.356Z",
+      "actual_writer_input_tokens": 2476352,
+      "actual_writer_cached_input_tokens_subset": 2369664,
+      "actual_writer_uncached_input_tokens": 106688,
+      "actual_writer_output_tokens": 9727,
+      "actual_writer_reasoning_tokens_subset": 686,
+      "actual_writer_total_tokens": 2486079,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/08-whois-and-rdap-public-data/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/08-whois-and-rdap-public-data/ads-es-MX.json",
+        "editorial/2026-10-21-coverage48/08-whois-and-rdap-public-data/handoff.md",
+        "editorial/2026-10-21-coverage48/08-whois-and-rdap-public-data/image-attempt-1-usage.json",
+        "editorial/2026-10-21-coverage48/08-whois-and-rdap-public-data/image-manifest.json",
+        "editorial/2026-10-21-coverage48/08-whois-and-rdap-public-data/sanity.json",
+        "editorial/2026-10-21-coverage48/08-whois-and-rdap-public-data/sources.md",
+        "editorial/2026-10-21-coverage48/08-whois-and-rdap-public-data/translation-decision.json",
+        "editorial/2026-10-21-coverage48/08-whois-and-rdap-public-data/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/whois-and-rdap-public-data-05-field-boundaries.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 9,
+      "source_id": "G10",
+      "english_path": "content/blog/en/aaaa-record-explained.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/aaaa-record-explained/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/343",
+      "stacked_head_sha": "75ade1ab3ae2b8fdf42cdc123c338975be6cbd61",
+      "original_local_sha": "b8b094edec10984e5863b80787c97dd7899a85e5",
+      "writer_agent": "/root/coverage48_09_g10",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160df-0158-73d0-a79d-cc6ae447763e",
+      "writer_counter_timestamp": "2026-10-21T23:54:27.231Z",
+      "actual_writer_input_tokens": 3049209,
+      "actual_writer_cached_input_tokens_subset": 2941568,
+      "actual_writer_uncached_input_tokens": 107641,
+      "actual_writer_output_tokens": 11056,
+      "actual_writer_reasoning_tokens_subset": 887,
+      "actual_writer_total_tokens": 3060265,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/09-aaaa-record-explained-demand.json",
+        "editorial/2026-10-21-coverage48/09-aaaa-record-explained-images.json",
+        "editorial/2026-10-21-coverage48/09-aaaa-record-explained-usage.json",
+        "editorial/2026-10-21-coverage48/09-aaaa-record-explained.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/aaaa-record-explained-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 10,
+      "source_id": "O03",
+      "english_path": "content/tld/en/ch.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/tld/ch/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/345",
+      "stacked_head_sha": "29064ecf85c3e90990df0ef9d06fea84df4e66bf",
+      "original_local_sha": "efb78eb2636ab66bc60150536ece8827c65f7c64",
+      "writer_agent": "/root/coverage48_10_o03",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160e2-6911-72b2-94c3-cb367606418d",
+      "writer_counter_timestamp": "2026-10-21T23:58:57.704Z",
+      "actual_writer_input_tokens": 4817617,
+      "actual_writer_cached_input_tokens_subset": 4685568,
+      "actual_writer_uncached_input_tokens": 132049,
+      "actual_writer_output_tokens": 14194,
+      "actual_writer_reasoning_tokens_subset": 1452,
+      "actual_writer_total_tokens": 4831811,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/10-ch-demand.json",
+        "editorial/2026-10-21-coverage48/10-ch-evidence.md",
+        "editorial/2026-10-21-coverage48/10-ch-image-attempt-1-usage.json",
+        "editorial/2026-10-21-coverage48/10-ch-usage.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/ch-01-registry-registrar.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 11,
+      "source_id": "G27",
+      "english_path": "content/blog/en/check-domain-age.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/check-domain-age/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/344",
+      "stacked_head_sha": "817844f83a398c4fc6caa3dcf49d7788a8ce1c25",
+      "original_local_sha": "a82245c6fe10d538d5f4de3333d8905beda77d0c",
+      "writer_agent": "/root/coverage48_11_g27",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160e3-78b7-7520-8ef2-36f3c85ed9d0",
+      "writer_counter_timestamp": "2026-10-21T23:58:47.269Z",
+      "actual_writer_input_tokens": 2821699,
+      "actual_writer_cached_input_tokens_subset": 2716928,
+      "actual_writer_uncached_input_tokens": 104771,
+      "actual_writer_output_tokens": 10979,
+      "actual_writer_reasoning_tokens_subset": 978,
+      "actual_writer_total_tokens": 2832678,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/11-check-domain-age/README.md",
+        "editorial/2026-10-21-coverage48/11-check-domain-age/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/11-check-domain-age/ads-es-ES.json",
+        "editorial/2026-10-21-coverage48/11-check-domain-age/ads-fr-FR.json",
+        "editorial/2026-10-21-coverage48/11-check-domain-age/gsc-topic.json",
+        "editorial/2026-10-21-coverage48/11-check-domain-age/image-attempt-1-usage.json",
+        "editorial/2026-10-21-coverage48/11-check-domain-age/image-manifest.json",
+        "editorial/2026-10-21-coverage48/11-check-domain-age/source-notes.md",
+        "editorial/2026-10-21-coverage48/11-check-domain-age/translation-decision.md",
+        "editorial/2026-10-21-coverage48/11-check-domain-age/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/check-domain-age-05-event-selection.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 12,
+      "source_id": "G35",
+      "english_path": "content/blog/en/fully-qualified-domain-name.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/fully-qualified-domain-name/",
+      "real_locales": [
+        "en",
+        "ja"
+      ],
+      "selected_locale_work": [
+        "ja"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/347",
+      "stacked_head_sha": "1771120026c34db98758d112891caceec5b72d7f",
+      "original_local_sha": "ab7487347c4b4279587f9c7dfe4d680d104dc7fb",
+      "writer_agent": "/root/coverage48_12_g35",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160e7-6bd0-73e3-a1c6-191dc60d883d",
+      "writer_counter_timestamp": "2026-10-22T00:04:32.133Z",
+      "actual_writer_input_tokens": 2971715,
+      "actual_writer_cached_input_tokens_subset": 2866432,
+      "actual_writer_uncached_input_tokens": 105283,
+      "actual_writer_output_tokens": 17632,
+      "actual_writer_reasoning_tokens_subset": 1021,
+      "actual_writer_total_tokens": 2989347,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/12-fully-qualified-domain-name/README.md",
+        "editorial/2026-10-21-coverage48/12-fully-qualified-domain-name/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/12-fully-qualified-domain-name/ads-es-MX.json",
+        "editorial/2026-10-21-coverage48/12-fully-qualified-domain-name/ads-ja-JP.json",
+        "editorial/2026-10-21-coverage48/12-fully-qualified-domain-name/decision.md",
+        "editorial/2026-10-21-coverage48/12-fully-qualified-domain-name/image-attempt-1-usage.json",
+        "editorial/2026-10-21-coverage48/12-fully-qualified-domain-name/sources-and-sanity.md",
+        "editorial/2026-10-21-coverage48/12-fully-qualified-domain-name/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/fully-qualified-domain-name-05-absolute-relative.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 13,
+      "source_id": "G21",
+      "english_path": "content/blog/en/free-domain-offers.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/free-domain-offers/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/346",
+      "stacked_head_sha": "ae882109d6dc5c0d7acb3b846f57be9e53c7cd5a",
+      "original_local_sha": "2dd374065c8951fcfc8b370c75175c35831d0242",
+      "writer_agent": "/root/coverage48_13_g21",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160e7-8628-7f40-9814-5a469c9916e5",
+      "writer_counter_timestamp": "2026-10-22T00:04:20.252Z",
+      "actual_writer_input_tokens": 3828080,
+      "actual_writer_cached_input_tokens_subset": 3713792,
+      "actual_writer_uncached_input_tokens": 114288,
+      "actual_writer_output_tokens": 11838,
+      "actual_writer_reasoning_tokens_subset": 1686,
+      "actual_writer_total_tokens": 3839918,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/13-free-domain-offers/README.md",
+        "editorial/2026-10-21-coverage48/13-free-domain-offers/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/13-free-domain-offers/ads-es-MX.json",
+        "editorial/2026-10-21-coverage48/13-free-domain-offers/ads-ja-JP.json",
+        "editorial/2026-10-21-coverage48/13-free-domain-offers/checks.json",
+        "editorial/2026-10-21-coverage48/13-free-domain-offers/image-attempt-01-usage.json",
+        "editorial/2026-10-21-coverage48/13-free-domain-offers/images.json",
+        "editorial/2026-10-21-coverage48/13-free-domain-offers/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/free-domain-offers-05-renewal-conditions.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 14,
+      "source_id": "G24",
+      "english_path": "content/blog/en/expired-domains-and-the-drop-cycle.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/expired-domains-and-the-drop-cycle/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/348",
+      "stacked_head_sha": "49e03eb8e0731198aaa1588fa67dc3480cea04dd",
+      "original_local_sha": "e2fa5653259efe7dd156976f0873b7dfc8389974",
+      "writer_agent": "/root/coverage48_14_g24",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160ec-dbe5-74b2-9d6c-3d15a6008fe3",
+      "writer_counter_timestamp": "2026-10-22T00:15:05.628Z",
+      "actual_writer_input_tokens": 4777267,
+      "actual_writer_cached_input_tokens_subset": 4651264,
+      "actual_writer_uncached_input_tokens": 126003,
+      "actual_writer_output_tokens": 27180,
+      "actual_writer_reasoning_tokens_subset": 2692,
+      "actual_writer_total_tokens": 4804447,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/14-g24-ads-id-ID.json",
+        "editorial/2026-10-21-coverage48/14-g24-ads-language.json",
+        "editorial/2026-10-21-coverage48/14-g24-gsc.json",
+        "editorial/2026-10-21-coverage48/14-g24-images.json",
+        "editorial/2026-10-21-coverage48/14-g24-sources.json",
+        "editorial/2026-10-21-coverage48/14-g24-usage.json",
+        "editorial/2026-10-21-coverage48/14-g24.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/expired-domains-and-the-drop-cycle-04-two-clocks.jpg",
+        "content/assets/expired-domains-and-the-drop-cycle-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 15,
+      "source_id": "G23",
+      "english_path": "content/blog/en/renew-domain-name.md",
+      "english_action": "new_page",
+      "url": "https://namefi.io/r/en/blog/renew-domain-name/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/349",
+      "stacked_head_sha": "1c9bbe5f03c4436578f31e5c8bfe580464f9ab03",
+      "original_local_sha": "db30a9d9956914fef1d33e6b28d0c21b1763ab0b",
+      "writer_agent": "/root/coverage48_15_g23",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160ed-08cf-7090-b356-1fe2752bd8c2",
+      "writer_counter_timestamp": "2026-10-22T00:10:05.741Z",
+      "actual_writer_input_tokens": 3081958,
+      "actual_writer_cached_input_tokens_subset": 2978688,
+      "actual_writer_uncached_input_tokens": 103270,
+      "actual_writer_output_tokens": 11176,
+      "actual_writer_reasoning_tokens_subset": 577,
+      "actual_writer_total_tokens": 3093134,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/coverage48-15-renew-domain-name-evidence.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/renew-domain-name-01-confirm-renewal.jpg",
+        "content/assets/renew-domain-name-02-auto-renew-check.jpg",
+        "content/assets/renew-domain-name-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 16,
+      "source_id": "G49",
+      "english_path": "content/blog/en/register-domain-name.md",
+      "english_action": "new_page",
+      "url": "https://namefi.io/r/en/blog/register-domain-name/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/350",
+      "stacked_head_sha": "6a1a958ca101ca1303e0e6bdabd30dee810a7f98",
+      "original_local_sha": "4e0262ac7b3aa51c54bd4584ed6579d69835fca6",
+      "writer_agent": "/root/coverage48_16_g49",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160f1-c0c0-7681-86f8-03b9574492fd",
+      "writer_counter_timestamp": "2026-10-22T00:19:37.913Z",
+      "actual_writer_input_tokens": 5858709,
+      "actual_writer_cached_input_tokens_subset": 5707648,
+      "actual_writer_uncached_input_tokens": 151061,
+      "actual_writer_output_tokens": 22289,
+      "actual_writer_reasoning_tokens_subset": 2024,
+      "actual_writer_total_tokens": 5880998,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/coverage48-16-register-domain-name-demand.json",
+        "editorial/coverage48-16-register-domain-name-evidence.md",
+        "editorial/coverage48-16-register-domain-name-usage.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/register-domain-name-01-checkout.jpg",
+        "content/assets/register-domain-name-02-verify.jpg",
+        "content/assets/register-domain-name-03-dns.jpg",
+        "content/assets/register-domain-name-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 17,
+      "source_id": "G41",
+      "english_path": "content/blog/en/renew-ssl-certificate.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/renew-ssl-certificate/",
+      "real_locales": [
+        "en",
+        "ja"
+      ],
+      "selected_locale_work": [
+        "ja"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/351",
+      "stacked_head_sha": "21bf283b8d779ca494c368e87af390706790bc62",
+      "original_local_sha": "64a7d2fa65c33252ce53441f8712faec3ffb1924",
+      "writer_agent": "/root/coverage48_17_g41",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160f6-50d3-7960-846a-e63364920af8",
+      "writer_counter_timestamp": "2026-10-22T00:24:15.790Z",
+      "actual_writer_input_tokens": 4871279,
+      "actual_writer_cached_input_tokens_subset": 4730368,
+      "actual_writer_uncached_input_tokens": 140911,
+      "actual_writer_output_tokens": 24689,
+      "actual_writer_reasoning_tokens_subset": 2429,
+      "actual_writer_total_tokens": 4895968,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/README.md",
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/ads-es-MX.json",
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/ads-ja-JP.json",
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/evidence.md",
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/gsc.json",
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/image-usage.json",
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/sanity.json",
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/sources.json",
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/translation-coverage.json",
+        "editorial/2026-10-21-coverage48/17-renew-ssl-certificate/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/renew-ssl-certificate-02-validation-paths.jpg",
+        "content/assets/renew-ssl-certificate-05-renewal-timing.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 18,
+      "source_id": "O04",
+      "english_path": "content/tld/en/me.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/tld/me/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/352",
+      "stacked_head_sha": "26143e4a372a960e14676d4b8528b74ae7c08905",
+      "original_local_sha": "78f798c8ea9810271b2e470f4121703539e1f5bc",
+      "writer_agent": "/root/coverage48_18_o04",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160fa-719f-7fa3-be7b-495d367ebe3d",
+      "writer_counter_timestamp": "2026-10-22T00:30:51.115Z",
+      "actual_writer_input_tokens": 8205545,
+      "actual_writer_cached_input_tokens_subset": 8019328,
+      "actual_writer_uncached_input_tokens": 186217,
+      "actual_writer_output_tokens": 27216,
+      "actual_writer_reasoning_tokens_subset": 4926,
+      "actual_writer_total_tokens": 8232761,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/18-me-demand.json",
+        "editorial/2026-10-21-coverage48/18-me-image-usage.json",
+        "editorial/2026-10-21-coverage48/18-me-usage.json",
+        "editorial/2026-10-21-coverage48/18-me.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/me-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 19,
+      "source_id": "G11",
+      "english_path": "content/blog/en/dns-record-types-guide.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/dns-record-types-guide/",
+      "real_locales": [
+        "en",
+        "ja"
+      ],
+      "selected_locale_work": [
+        "ja"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/353",
+      "stacked_head_sha": "899a17211f447e9ba1cff7308ae3e24f9ec6f0a4",
+      "original_local_sha": "290d1db349a354c9b1108b82c2afba216644fc38",
+      "writer_agent": "/root/coverage48_19_g11",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a160fe-b185-7ad1-ab1a-414cc3abb2f6",
+      "writer_counter_timestamp": "2026-10-22T00:38:07.368Z",
+      "actual_writer_input_tokens": 9006579,
+      "actual_writer_cached_input_tokens_subset": 8872832,
+      "actual_writer_uncached_input_tokens": 133747,
+      "actual_writer_output_tokens": 30921,
+      "actual_writer_reasoning_tokens_subset": 3755,
+      "actual_writer_total_tokens": 9037500,
+      "known_missing_image_attempt_usage": 1,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/19-dns-record-types-guide/README.md",
+        "editorial/2026-10-21-coverage48/19-dns-record-types-guide/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/19-dns-record-types-guide/ads-es-MX.json",
+        "editorial/2026-10-21-coverage48/19-dns-record-types-guide/ads-ja-JP.json",
+        "editorial/2026-10-21-coverage48/19-dns-record-types-guide/checks.json",
+        "editorial/2026-10-21-coverage48/19-dns-record-types-guide/images.json",
+        "editorial/2026-10-21-coverage48/19-dns-record-types-guide/selection-attempt1-failure.json",
+        "editorial/2026-10-21-coverage48/19-dns-record-types-guide/selection-attempt2-usage.json",
+        "editorial/2026-10-21-coverage48/19-dns-record-types-guide/sources.json",
+        "editorial/2026-10-21-coverage48/19-dns-record-types-guide/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/dns-record-types-guide-05-record-selection.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 20,
+      "source_id": "G32",
+      "english_path": "content/blog/en/set-up-email-with-your-own-domain.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/set-up-email-with-your-own-domain/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/354",
+      "stacked_head_sha": "6f692e6fba5ed30f6f13c8b6b7f53e3206c5bf67",
+      "original_local_sha": "4b930a1825dc96bde0bde035cef0e6558413e651",
+      "writer_agent": "/root/stack48_coordinator/coverage48_20_g32",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16105-1675-74b0-9b2a-24b645310f83",
+      "writer_counter_timestamp": "2026-10-22T00:38:36.613Z",
+      "actual_writer_input_tokens": 3536722,
+      "actual_writer_cached_input_tokens_subset": 3392384,
+      "actual_writer_uncached_input_tokens": 144338,
+      "actual_writer_output_tokens": 17220,
+      "actual_writer_reasoning_tokens_subset": 1779,
+      "actual_writer_total_tokens": 3553942,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/20-G32-demand.json",
+        "editorial/2026-10-21-coverage48/20-G32-images.json",
+        "editorial/2026-10-21-coverage48/20-G32-notes.md",
+        "editorial/2026-10-21-coverage48/20-G32-usage.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/set-up-email-with-your-own-domain-03-service-choice.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 21,
+      "source_id": "G04",
+      "english_path": "content/blog/en/isp-dns-vs-public-resolver.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/isp-dns-vs-public-resolver/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/355",
+      "stacked_head_sha": "111708466510cc43ad36c0ac040426611bd2e416",
+      "original_local_sha": "c256711b678e54605356ac1560ca2d812d9d6dc6",
+      "writer_agent": "/root/stack48_coordinator/coverage48_21_g04",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1610b-e11f-7c83-94af-7473e3f5b55c",
+      "writer_counter_timestamp": "2026-10-22T00:43:19.388Z",
+      "actual_writer_input_tokens": 2052291,
+      "actual_writer_cached_input_tokens_subset": 1969024,
+      "actual_writer_uncached_input_tokens": 83267,
+      "actual_writer_output_tokens": 10096,
+      "actual_writer_reasoning_tokens_subset": 387,
+      "actual_writer_total_tokens": 2062387,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/G04/assets.json",
+        "editorial/2026-10-21-coverage48/G04/decision.md",
+        "editorial/2026-10-21-coverage48/G04/demand.json",
+        "editorial/2026-10-21-coverage48/G04/gsc.json",
+        "editorial/2026-10-21-coverage48/G04/image-usage.json",
+        "editorial/2026-10-21-coverage48/G04/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/isp-dns-vs-public-resolver-05-device-test.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 22,
+      "source_id": "G17",
+      "english_path": "content/blog/en/dns-over-https-vs-dns-over-tls.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/dns-over-https-vs-dns-over-tls/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/356",
+      "stacked_head_sha": "3c5073bf803d14945c71a11fe38a1d9206f21b40",
+      "original_local_sha": "967e56236b8198499a298f96c9d8ec92a882b40e",
+      "writer_agent": "/root/stack48_coordinator/coverage48_22_g17",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1610c-05fc-70d2-8eff-08bf1f649e93",
+      "writer_counter_timestamp": "2026-10-22T00:46:14.844Z",
+      "actual_writer_input_tokens": 2893174,
+      "actual_writer_cached_input_tokens_subset": 2805632,
+      "actual_writer_uncached_input_tokens": 87542,
+      "actual_writer_output_tokens": 19305,
+      "actual_writer_reasoning_tokens_subset": 1024,
+      "actual_writer_total_tokens": 2912479,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/G17/README.md",
+        "editorial/2026-10-21-coverage48/G17/ads-ar-EG.json",
+        "editorial/2026-10-21-coverage48/G17/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/G17/ads-en-US.json",
+        "editorial/2026-10-21-coverage48/G17/ads-es-ES.json",
+        "editorial/2026-10-21-coverage48/G17/ads-fr-FR-retry.json",
+        "editorial/2026-10-21-coverage48/G17/ads-fr-FR.json",
+        "editorial/2026-10-21-coverage48/G17/ads-hi-IN.json",
+        "editorial/2026-10-21-coverage48/G17/ads-ja-JP-retry.json",
+        "editorial/2026-10-21-coverage48/G17/ads-ja-JP.json",
+        "editorial/2026-10-21-coverage48/G17/ads-ko-KR-retry.json",
+        "editorial/2026-10-21-coverage48/G17/ads-ko-KR.json",
+        "editorial/2026-10-21-coverage48/G17/ads-ta-IN.json",
+        "editorial/2026-10-21-coverage48/G17/ads-zh-CN-SG-retry.json",
+        "editorial/2026-10-21-coverage48/G17/ads-zh-CN-SG.json",
+        "editorial/2026-10-21-coverage48/G17/data-validate.log",
+        "editorial/2026-10-21-coverage48/G17/evidence.md",
+        "editorial/2026-10-21-coverage48/G17/gsc-topic.json",
+        "editorial/2026-10-21-coverage48/G17/image-attempt1-usage.json",
+        "editorial/2026-10-21-coverage48/G17/image-attempt2-usage.json",
+        "editorial/2026-10-21-coverage48/G17/links.log",
+        "editorial/2026-10-21-coverage48/G17/mdx.log",
+        "editorial/2026-10-21-coverage48/G17/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/dns-over-https-vs-dns-over-tls-05-visibility-boundary.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 23,
+      "source_id": "G15",
+      "english_path": "content/blog/en/reverse-dns-ptr-records.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/reverse-dns-ptr-records/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/357",
+      "stacked_head_sha": "09bfbad707ca7505206e2e1234bab9ffbd704870",
+      "original_local_sha": "cce42a6b7ffb972b6ae778eccdffab27304f00f4",
+      "writer_agent": "/root/stack48_coordinator/coverage48_23_g15",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16110-467e-7cd3-af45-cb3e4cd98c2d",
+      "writer_counter_timestamp": "2026-10-22T00:49:18.713Z",
+      "actual_writer_input_tokens": 3102721,
+      "actual_writer_cached_input_tokens_subset": 2978304,
+      "actual_writer_uncached_input_tokens": 124417,
+      "actual_writer_output_tokens": 12578,
+      "actual_writer_reasoning_tokens_subset": 1921,
+      "actual_writer_total_tokens": 3115299,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/23-reverse-dns-ptr-records-demand.json",
+        "editorial/2026-10-21-coverage48/23-reverse-dns-ptr-records-usage.json",
+        "editorial/2026-10-21-coverage48/23-reverse-dns-ptr-records.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/reverse-dns-ptr-records-05-smtp-identity.jpg"
+      ],
+      "limitations": "Image1200x800 is a documented ratio exception to avoid clipping text;do not claim1200x675 compliance."
+    },
+    {
+      "order": 24,
+      "source_id": "O05",
+      "english_path": "content/tld/en/de.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/tld/de/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/358",
+      "stacked_head_sha": "5f1989ebe66ecda820b72617dddb8be5f654e035",
+      "original_local_sha": "30f984effec31f72278054c2ec76c462e995cea6",
+      "writer_agent": "/root/stack48_coordinator/coverage48_24_o05",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16112-e208-7b61-9610-212f46afea51",
+      "writer_counter_timestamp": "2026-10-22T00:55:23.708Z",
+      "actual_writer_input_tokens": 6068800,
+      "actual_writer_cached_input_tokens_subset": 5920128,
+      "actual_writer_uncached_input_tokens": 148672,
+      "actual_writer_output_tokens": 18888,
+      "actual_writer_reasoning_tokens_subset": 3352,
+      "actual_writer_total_tokens": 6087688,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/coverage48-24-de-evidence.json",
+        "editorial/coverage48-24-de-notes.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/de-01-worldwide-registration.jpg",
+        "content/assets/de-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 25,
+      "source_id": "G02",
+      "english_path": "content/blog/en/choose-public-dns-resolver.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/choose-public-dns-resolver/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/359",
+      "stacked_head_sha": "7f47aad5aaa69a6c1880ec06d50e041e1db2b7c9",
+      "original_local_sha": "347ef65fd86d17c1e7bf46bc62b32c3dc46263d1",
+      "writer_agent": "/root/stack48_coordinator/coverage48_25_g02",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16116-593d-7453-9ceb-581da232f156",
+      "writer_counter_timestamp": "2026-10-22T00:56:10.519Z",
+      "actual_writer_input_tokens": 3082545,
+      "actual_writer_cached_input_tokens_subset": 2978432,
+      "actual_writer_uncached_input_tokens": 104113,
+      "actual_writer_output_tokens": 12718,
+      "actual_writer_reasoning_tokens_subset": 846,
+      "actual_writer_total_tokens": 3095263,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/g02-ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/g02-ads-fr-FR.json",
+        "editorial/2026-10-21-coverage48/g02-image-attempt1.usage.json",
+        "editorial/2026-10-21-coverage48/g02-privacy-increment.md",
+        "editorial/2026-10-21-coverage48/g02-usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/choose-public-dns-resolver-06-privacy-fields.jpg"
+      ],
+      "limitations": "Root-approved G02 dedup into G01;48 topic packages47 unique English URLs,not48 distinct pages."
+    },
+    {
+      "order": 26,
+      "source_id": "G05",
+      "english_path": "content/blog/en/run-your-own-dns-resolver.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/run-your-own-dns-resolver/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/360",
+      "stacked_head_sha": "276f5c911bb11dbff18b11c7ea3051191675fec1",
+      "original_local_sha": "7008b69031fed401a6971389913feeca8f3bd027",
+      "writer_agent": "/root/stack48_coordinator/coverage48_26_g05",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1611b-4167-7070-a4ad-14cf40a49ee8",
+      "writer_counter_timestamp": "2026-10-22T01:01:58.170Z",
+      "actual_writer_input_tokens": 2486664,
+      "actual_writer_cached_input_tokens_subset": 2387328,
+      "actual_writer_uncached_input_tokens": 99336,
+      "actual_writer_output_tokens": 15334,
+      "actual_writer_reasoning_tokens_subset": 567,
+      "actual_writer_total_tokens": 2501998,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/26-run-your-own-dns-resolver/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/26-run-your-own-dns-resolver/ads-es-ES.json",
+        "editorial/2026-10-21-coverage48/26-run-your-own-dns-resolver/data-validate.txt",
+        "editorial/2026-10-21-coverage48/26-run-your-own-dns-resolver/decision.md",
+        "editorial/2026-10-21-coverage48/26-run-your-own-dns-resolver/image-attempt1-usage.json",
+        "editorial/2026-10-21-coverage48/26-run-your-own-dns-resolver/image-qc.json",
+        "editorial/2026-10-21-coverage48/26-run-your-own-dns-resolver/link-audit.txt",
+        "editorial/2026-10-21-coverage48/26-run-your-own-dns-resolver/lint-mdx.txt",
+        "editorial/2026-10-21-coverage48/26-run-your-own-dns-resolver/translation-qa.json",
+        "editorial/2026-10-21-coverage48/26-run-your-own-dns-resolver/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/run-your-own-dns-resolver-05-pihole-unbound.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 27,
+      "source_id": "G50",
+      "english_path": "content/blog/en/what-is-domain.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/what-is-domain/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [
+        "ja"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/361",
+      "stacked_head_sha": "c3a43084ef23629ce579d66720da78f7db6b2ded",
+      "original_local_sha": "562c47424dc81d67f6d8d3d1f2a1e947f21aac2d",
+      "writer_agent": "/root/stack48_coordinator/coverage48_27_g50",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1611b-f3fb-7670-8991-8a1136a7b0f3",
+      "writer_counter_timestamp": "2026-10-22T01:03:45.333Z",
+      "actual_writer_input_tokens": 3135825,
+      "actual_writer_cached_input_tokens_subset": 3036416,
+      "actual_writer_uncached_input_tokens": 99409,
+      "actual_writer_output_tokens": 17169,
+      "actual_writer_reasoning_tokens_subset": 1262,
+      "actual_writer_total_tokens": 3152994,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/27-G50/ads-ar.json",
+        "editorial/2026-10-21-coverage48/27-G50/ads-de.json",
+        "editorial/2026-10-21-coverage48/27-G50/ads-es.json",
+        "editorial/2026-10-21-coverage48/27-G50/ads-fr.json",
+        "editorial/2026-10-21-coverage48/27-G50/ads-hi.json",
+        "editorial/2026-10-21-coverage48/27-G50/ads-ja.json",
+        "editorial/2026-10-21-coverage48/27-G50/ads-ta.json",
+        "editorial/2026-10-21-coverage48/27-G50/ads-unavailable.json",
+        "editorial/2026-10-21-coverage48/27-G50/decision.md",
+        "editorial/2026-10-21-coverage48/27-G50/expected-urls.json",
+        "editorial/2026-10-21-coverage48/27-G50/gsc.json",
+        "editorial/2026-10-21-coverage48/27-G50/image-attempt1-usage.json",
+        "editorial/2026-10-21-coverage48/27-G50/image-attempt2-usage.json",
+        "editorial/2026-10-21-coverage48/27-G50/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/what-is-domain-01-hierarchy.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 28,
+      "source_id": "G48",
+      "english_path": "content/blog/en/how-to-sell-a-domain-name-you-own.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/how-to-sell-a-domain-name-you-own/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/362",
+      "stacked_head_sha": "dea77b8f9f16d0a97a5a171943c24bfad258feb2",
+      "original_local_sha": "83e8b30d3c10c80c1a747a09bbcc1d7b0b7fe162",
+      "writer_agent": "/root/stack48_coordinator/coverage48_28_g48",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16121-4396-7e31-8f13-6a9a105a21c3",
+      "writer_counter_timestamp": "2026-10-22T01:12:03.628Z",
+      "actual_writer_input_tokens": 4968793,
+      "actual_writer_cached_input_tokens_subset": 4844544,
+      "actual_writer_uncached_input_tokens": 124249,
+      "actual_writer_output_tokens": 21884,
+      "actual_writer_reasoning_tokens_subset": 2871,
+      "actual_writer_total_tokens": 4990677,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/28-G48-demand.json",
+        "editorial/2026-10-21-coverage48/28-G48-usage.json",
+        "editorial/2026-10-21-coverage48/28-G48.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/how-to-sell-a-domain-name-you-own-01-buyer-channels.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 29,
+      "source_id": "O06",
+      "english_path": "content/tld/en/cc.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/tld/cc/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/363",
+      "stacked_head_sha": "10b984f085dbdfa4666197f38caacba359cc418c",
+      "original_local_sha": "e8676e19054f448e3cdbed4e51ebb91956b33c74",
+      "writer_agent": "/root/stack48_coordinator/coverage48_29_o06",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16122-e13e-7f32-a0d6-35543ca2073c",
+      "writer_counter_timestamp": "2026-10-22T01:14:47.875Z",
+      "actual_writer_input_tokens": 5242293,
+      "actual_writer_cached_input_tokens_subset": 5073536,
+      "actual_writer_uncached_input_tokens": 168757,
+      "actual_writer_output_tokens": 24784,
+      "actual_writer_reasoning_tokens_subset": 3479,
+      "actual_writer_total_tokens": 5267077,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/29-cc/demand.json",
+        "editorial/2026-10-21-coverage48/29-cc/gsc.json",
+        "editorial/2026-10-21-coverage48/29-cc/image-usage.json",
+        "editorial/2026-10-21-coverage48/29-cc/record.md",
+        "editorial/2026-10-21-coverage48/29-cc/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/cc-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 30,
+      "source_id": "G16",
+      "english_path": "content/blog/en/nslookup-specific-dns-server.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/nslookup-specific-dns-server/",
+      "real_locales": [
+        "en",
+        "ja"
+      ],
+      "selected_locale_work": [
+        "ja"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/365",
+      "stacked_head_sha": "592cb899fdede07bafb375b1a3d060460d208168",
+      "original_local_sha": "4023cd9b70ac4cf1a6f09d31df4dd44fbd535564",
+      "writer_agent": "/root/stack48_coordinator/coverage48_30_g16",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1612a-6ee9-7b81-917c-1a72f5088dc9",
+      "writer_counter_timestamp": "2026-10-22T01:20:23.841Z",
+      "actual_writer_input_tokens": 3017187,
+      "actual_writer_cached_input_tokens_subset": 2921472,
+      "actual_writer_uncached_input_tokens": 95715,
+      "actual_writer_output_tokens": 19226,
+      "actual_writer_reasoning_tokens_subset": 1243,
+      "actual_writer_total_tokens": 3036413,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/30-g16-demand.json",
+        "editorial/2026-10-21-coverage48/30-g16-image-usage.json",
+        "editorial/2026-10-21-coverage48/30-g16-nslookup-specific-dns-server.md",
+        "editorial/2026-10-21-coverage48/30-g16-usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/nslookup-specific-dns-server-05-transport.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 31,
+      "source_id": "G12",
+      "english_path": "content/blog/en/cname-vs-a-record.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/cname-vs-a-record/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/364",
+      "stacked_head_sha": "59108629f7fcd2b51d7d002ef955dd7a385e2c8b",
+      "original_local_sha": "c906ec5aa2a9f7394fcca70dcbbec1fc089cbe2f",
+      "writer_agent": "/root/stack48_coordinator/coverage48_31_g12",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1612c-f396-7962-b6e3-0603e1e816cc",
+      "writer_counter_timestamp": "2026-10-22T01:20:04.963Z",
+      "actual_writer_input_tokens": 2433677,
+      "actual_writer_cached_input_tokens_subset": 2333952,
+      "actual_writer_uncached_input_tokens": 99725,
+      "actual_writer_output_tokens": 10369,
+      "actual_writer_reasoning_tokens_subset": 982,
+      "actual_writer_total_tokens": 2444046,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/31-cname-vs-a-record/demand.json",
+        "editorial/2026-10-21-coverage48/31-cname-vs-a-record/evidence.md",
+        "editorial/2026-10-21-coverage48/31-cname-vs-a-record/image-attempt1-usage.json",
+        "editorial/2026-10-21-coverage48/31-cname-vs-a-record/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/cname-vs-a-record-05-apex-decision.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 32,
+      "source_id": "G20",
+      "english_path": "content/blog/en/how-much-is-a-domain-understanding-holding-cost.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/how-much-is-a-domain-understanding-holding-cost/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [
+        "es",
+        "ko"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/366",
+      "stacked_head_sha": "7b124d2a591d446e0908fc8ddffb520e709502f3",
+      "original_local_sha": "b53f548d13b1288e2455b508888dfa950413130b",
+      "writer_agent": "/root/stack48_coordinator/coverage48_32_g20",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16132-07a8-71e2-b362-0a9f425d2913",
+      "writer_counter_timestamp": "2026-10-22T01:28:27.634Z",
+      "actual_writer_input_tokens": 3423558,
+      "actual_writer_cached_input_tokens_subset": 3311872,
+      "actual_writer_uncached_input_tokens": 111686,
+      "actual_writer_output_tokens": 16741,
+      "actual_writer_reasoning_tokens_subset": 1824,
+      "actual_writer_total_tokens": 3440299,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/coverage48-32-holding-cost-evidence.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/how-much-is-a-domain-understanding-holding-cost-01-budget.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 33,
+      "source_id": "T01",
+      "english_path": "content/tld/en/se.md",
+      "english_action": "new_page",
+      "url": "https://namefi.io/r/en/tld/se/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/367",
+      "stacked_head_sha": "b2a207a01af698fc32c70d69a20b7c42ab0ce39b",
+      "original_local_sha": "3e28dec3dc91ba72ec6e705e7ac7faf59a2da2de",
+      "writer_agent": "/root/stack48_coordinator/coverage48_33_t01",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16132-5128-7f60-a2e6-9776378286b7",
+      "writer_counter_timestamp": "2026-10-22T01:30:18.368Z",
+      "actual_writer_input_tokens": 4826664,
+      "actual_writer_cached_input_tokens_subset": 4684544,
+      "actual_writer_uncached_input_tokens": 142120,
+      "actual_writer_output_tokens": 20028,
+      "actual_writer_reasoning_tokens_subset": 1520,
+      "actual_writer_total_tokens": 4846692,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/33-se-demand.json",
+        "editorial/2026-10-21-coverage48/33-se-usage.json",
+        "editorial/2026-10-21-coverage48/33-se.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/se-01-registration.jpg",
+        "content/assets/se-og.jpg"
+      ],
+      "limitations": "Swedish demand exists but runtime does not supportsv;root explicitly deferred infrastructure,not zero demand."
+    },
+    {
+      "order": 34,
+      "source_id": "G40",
+      "english_path": "content/blog/en/change-domain-nameservers.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/change-domain-nameservers/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/368",
+      "stacked_head_sha": "2339995056eb3382462d9b22cb21d8ffc2089a91",
+      "original_local_sha": "508528159900dde205e60fdcdb8a3475e709e0e4",
+      "writer_agent": "/root/stack48_coordinator/coverage48_34_g40",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16139-9c7b-7101-b1ae-f33fbe5e361c",
+      "writer_counter_timestamp": "2026-10-22T01:34:05.110Z",
+      "actual_writer_input_tokens": 2483974,
+      "actual_writer_cached_input_tokens_subset": 2382976,
+      "actual_writer_uncached_input_tokens": 100998,
+      "actual_writer_output_tokens": 10332,
+      "actual_writer_reasoning_tokens_subset": 638,
+      "actual_writer_total_tokens": 2494306,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/34-change-domain-nameservers-demand.json",
+        "editorial/2026-10-21-coverage48/34-change-domain-nameservers-usage.json",
+        "editorial/2026-10-21-coverage48/34-change-domain-nameservers.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/change-domain-nameservers-05-compare-answers.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 35,
+      "source_id": "O07",
+      "english_path": "content/tld/en/gg.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/tld/gg/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/369",
+      "stacked_head_sha": "5cb422342f194914fba4eb14ae699f8ada53b66b",
+      "original_local_sha": "4cedbb85227b84cc186a7c4e3a207662845f8158",
+      "writer_agent": "/root/stack48_coordinator/coverage48_35_o07",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1613b-284f-7ef2-82cb-88c3b0c70949",
+      "writer_counter_timestamp": "2026-10-22T01:39:24.604Z",
+      "actual_writer_input_tokens": 4829680,
+      "actual_writer_cached_input_tokens_subset": 4706688,
+      "actual_writer_uncached_input_tokens": 122992,
+      "actual_writer_output_tokens": 18683,
+      "actual_writer_reasoning_tokens_subset": 1386,
+      "actual_writer_total_tokens": 4848363,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/35-gg-demand.json",
+        "editorial/2026-10-21-coverage48/35-gg-images.json",
+        "editorial/2026-10-21-coverage48/35-gg-sources.md",
+        "editorial/2026-10-21-coverage48/35-gg-usage.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/gg-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 36,
+      "source_id": "G13",
+      "english_path": "content/blog/en/wildcard-dns-records.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/wildcard-dns-records/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/370",
+      "stacked_head_sha": "b1ed3105ff61a33bc6b3975e15ce7823d6f71d69",
+      "original_local_sha": "a677bf273c2ffa69e3b2f2a0d4401b959079ba86",
+      "writer_agent": "/root/stack48_coordinator/coverage48_36_g13",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1613f-00de-7601-b5f2-d8f333ef5263",
+      "writer_counter_timestamp": "2026-10-22T01:41:35.948Z",
+      "actual_writer_input_tokens": 2575311,
+      "actual_writer_cached_input_tokens_subset": 2478080,
+      "actual_writer_uncached_input_tokens": 97231,
+      "actual_writer_output_tokens": 15321,
+      "actual_writer_reasoning_tokens_subset": 561,
+      "actual_writer_total_tokens": 2590632,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/G13-usage-checkpoints.json",
+        "editorial/2026-10-21-coverage48/G13-wildcard-dns-demand.json",
+        "editorial/2026-10-21-coverage48/G13-wildcard-dns-images.json",
+        "editorial/2026-10-21-coverage48/G13-wildcard-dns-records.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/wildcard-dns-records-05-query-results.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 37,
+      "source_id": "O08",
+      "english_path": "content/tld/en/dev.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/tld/dev/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [
+        "de"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/372",
+      "stacked_head_sha": "afed054114459d5545387680215f312477f33b36",
+      "original_local_sha": "cc3fa8687f1d6bc38405ab3e905769e90c822245",
+      "writer_agent": "/root/stack48_coordinator/coverage48_37_o08",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16143-946f-7551-afc3-de54b9d65400",
+      "writer_counter_timestamp": "2026-10-22T01:48:37.090Z",
+      "actual_writer_input_tokens": 3661403,
+      "actual_writer_cached_input_tokens_subset": 3551616,
+      "actual_writer_uncached_input_tokens": 109787,
+      "actual_writer_output_tokens": 18608,
+      "actual_writer_reasoning_tokens_subset": 1477,
+      "actual_writer_total_tokens": 3680011,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/coverage48-37-dev-demand.json",
+        "editorial/coverage48-37-dev-evidence.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/dev-01-https-setup.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 38,
+      "source_id": "G31",
+      "english_path": "content/blog/en/domain-privacy-vs-proxy.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/domain-privacy-vs-proxy/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/371",
+      "stacked_head_sha": "3b68eb8c37a13421007ebe178341f74239548e3d",
+      "original_local_sha": "9a2d635d1cb719c80f7a4e8542aee369aacc1175",
+      "writer_agent": "/root/stack48_coordinator/coverage48_38_g31",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16145-c6cc-7bd2-b158-e6c12043d18b",
+      "writer_counter_timestamp": "2026-10-22T01:48:09.902Z",
+      "actual_writer_input_tokens": 2774768,
+      "actual_writer_cached_input_tokens_subset": 2668032,
+      "actual_writer_uncached_input_tokens": 106736,
+      "actual_writer_output_tokens": 11910,
+      "actual_writer_reasoning_tokens_subset": 1350,
+      "actual_writer_total_tokens": 2786678,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/38-domain-privacy-vs-proxy/README.md",
+        "editorial/2026-10-21-coverage48/38-domain-privacy-vs-proxy/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/38-domain-privacy-vs-proxy/ads-fr-FR.json",
+        "editorial/2026-10-21-coverage48/38-domain-privacy-vs-proxy/demand-decision.json",
+        "editorial/2026-10-21-coverage48/38-domain-privacy-vs-proxy/image-and-sanity.json",
+        "editorial/2026-10-21-coverage48/38-domain-privacy-vs-proxy/image-attempt1-usage.json",
+        "editorial/2026-10-21-coverage48/38-domain-privacy-vs-proxy/image-attempt2-usage.json",
+        "editorial/2026-10-21-coverage48/38-domain-privacy-vs-proxy/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/domain-privacy-vs-proxy-05-access-boundaries.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 39,
+      "source_id": "G30",
+      "english_path": "content/blog/en/bulk-domain-availability-checks.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/bulk-domain-availability-checks/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/373",
+      "stacked_head_sha": "769cd18c8f288035ea27340195a1efd8d1372e3b",
+      "original_local_sha": "e3c153d819511b06c74f8d0f22a8f45f5aee71e0",
+      "writer_agent": "/root/stack48_coordinator/coverage48_39_g30",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1614c-2acb-7cb0-86e0-6ecbd6be84de",
+      "writer_counter_timestamp": "2026-10-22T01:54:30.233Z",
+      "actual_writer_input_tokens": 2328060,
+      "actual_writer_cached_input_tokens_subset": 2242944,
+      "actual_writer_uncached_input_tokens": 85116,
+      "actual_writer_output_tokens": 10228,
+      "actual_writer_reasoning_tokens_subset": 610,
+      "actual_writer_total_tokens": 2338288,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/39-bulk-domain-availability-checks/demand-evidence.json",
+        "editorial/2026-10-21-coverage48/39-bulk-domain-availability-checks/image-evidence.json",
+        "editorial/2026-10-21-coverage48/39-bulk-domain-availability-checks/record.md",
+        "editorial/2026-10-21-coverage48/39-bulk-domain-availability-checks/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/bulk-domain-availability-checks-05-retry-queue.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 40,
+      "source_id": "G26",
+      "english_path": "content/blog/en/domain-backorders-and-drop-catching.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/domain-backorders-and-drop-catching/",
+      "real_locales": [
+        "ar",
+        "de",
+        "en",
+        "es",
+        "fr",
+        "hi",
+        "ja",
+        "ko",
+        "ta",
+        "zh-CN"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/374",
+      "stacked_head_sha": "28f156766d706619bb6fd36cf886fc669c64e274",
+      "original_local_sha": "add3ea6b21f3ee568e4a379487def2c53f12ebdd",
+      "writer_agent": "/root/stack48_coordinator/coverage48_40_g26",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1614c-7c10-75a3-a0cc-2f5bf0572503",
+      "writer_counter_timestamp": "2026-10-22T02:00:24.837Z",
+      "actual_writer_input_tokens": 3814715,
+      "actual_writer_cached_input_tokens_subset": 3698048,
+      "actual_writer_uncached_input_tokens": 116667,
+      "actual_writer_output_tokens": 22486,
+      "actual_writer_reasoning_tokens_subset": 2578,
+      "actual_writer_total_tokens": 3837201,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/coverage48-40-backorder-demand.json",
+        "editorial/coverage48-40-backorder-images.json",
+        "editorial/coverage48-40-backorder-notes.md",
+        "editorial/coverage48-40-backorder-usage.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/domain-backorders-and-drop-catching-04-order-checks.jpg",
+        "content/assets/domain-backorders-and-drop-catching-og.jpg"
+      ],
+      "limitations": []
+    },
+    {
+      "order": 41,
+      "source_id": "O09",
+      "english_path": "content/tld/en/to.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/tld/to/",
+      "real_locales": [
+        "de",
+        "en",
+        "ja"
+      ],
+      "selected_locale_work": [
+        "de-DE",
+        "ja-JP"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/375",
+      "stacked_head_sha": "a1ba66377bc441d07377b77544053f429f7c722b",
+      "original_local_sha": "89bd8ba6744e4d50edece2fe36fa261b603d3808",
+      "writer_agent": "/root/stack48_coordinator/coverage48_41_o09",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16153-b570-7251-8053-1cb5c4fa50fb",
+      "writer_counter_timestamp": "2026-10-22T02:07:31.710Z",
+      "actual_writer_input_tokens": 3643912,
+      "actual_writer_cached_input_tokens_subset": 3540864,
+      "actual_writer_uncached_input_tokens": 103048,
+      "actual_writer_output_tokens": 21193,
+      "actual_writer_reasoning_tokens_subset": 1573,
+      "actual_writer_total_tokens": 3665105,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/coverage48-41-to/README.md",
+        "editorial/coverage48-41-to/ads-cs-CZ.json",
+        "editorial/coverage48-41-to/ads-de-DE.json",
+        "editorial/coverage48-41-to/ads-ja-JP.json",
+        "editorial/coverage48-41-to/evidence.md",
+        "editorial/coverage48-41-to/gsc-evidence.json",
+        "editorial/coverage48-41-to/image-usage.json",
+        "editorial/coverage48-41-to/translation-sanity.json",
+        "editorial/coverage48-41-to/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/to-og.jpg"
+      ],
+      "limitations": [
+        "First image start and setup counters unavailable or overlapping;not an independent phase invoice",
+        "No human native LQA or deployed canonical/hreflang verification",
+        "Czech demand measured but unsupported route;deferred"
+      ]
+    },
+    {
+      "order": 42,
+      "source_id": "T02",
+      "english_path": "content/tld/en/ie.md",
+      "english_action": "new_page",
+      "url": "https://namefi.io/r/en/tld/ie/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de-DE"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/377",
+      "stacked_head_sha": "98840b8d4be60e1bcdcf67d3963494a21aacfbf7",
+      "original_local_sha": "628352ed950fc328f2416fe2845a232770789a03",
+      "writer_agent": "/root/stack48_coordinator/coverage48_42_t02",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16156-e669-7033-a8a4-30f7b6f3ac43",
+      "writer_counter_timestamp": "2026-10-22T02:12:52.587Z",
+      "actual_writer_input_tokens": 4850608,
+      "actual_writer_cached_input_tokens_subset": 4731008,
+      "actual_writer_uncached_input_tokens": 119600,
+      "actual_writer_output_tokens": 24489,
+      "actual_writer_reasoning_tokens_subset": 1709,
+      "actual_writer_total_tokens": 4875097,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/42-ie/ads-de-DE-request.json",
+        "editorial/2026-10-21-coverage48/42-ie/ads-de-DE-response.json",
+        "editorial/2026-10-21-coverage48/42-ie/ads-en-IE-request.json",
+        "editorial/2026-10-21-coverage48/42-ie/ads-en-IE-response.json",
+        "editorial/2026-10-21-coverage48/42-ie/ads-fr-FR-request.json",
+        "editorial/2026-10-21-coverage48/42-ie/ads-fr-FR-response.json",
+        "editorial/2026-10-21-coverage48/42-ie/cover-attempt1-usage.json",
+        "editorial/2026-10-21-coverage48/42-ie/cover-attempt2-usage.json",
+        "editorial/2026-10-21-coverage48/42-ie/decision.md",
+        "editorial/2026-10-21-coverage48/42-ie/gsc-topic.json",
+        "editorial/2026-10-21-coverage48/42-ie/image-manifest.json",
+        "editorial/2026-10-21-coverage48/42-ie/inline-attempt1-usage.json",
+        "editorial/2026-10-21-coverage48/42-ie/inline-attempt2-usage.json",
+        "editorial/2026-10-21-coverage48/42-ie/language-criteria.json",
+        "editorial/2026-10-21-coverage48/42-ie/translation-coverage.json",
+        "editorial/2026-10-21-coverage48/42-ie/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/ie-01-eligibility.jpg",
+        "content/assets/ie-og.jpg"
+      ],
+      "limitations": [
+        "No deployed desktop/mobile/canonical/hreflang verification or human native LQA yet",
+        "Irish ga unsupported runtime and no Ads criterion;demandUNKNOWN;deferred"
+      ]
+    },
+    {
+      "order": 43,
+      "source_id": "G33",
+      "english_path": "content/blog/en/free-business-email-options.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/free-business-email-options/",
+      "real_locales": [
+        "en",
+        "fr"
+      ],
+      "selected_locale_work": [
+        "fr-FR"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/378",
+      "stacked_head_sha": "5f25ae276d2ba419fcce921ac1617176db9ac289",
+      "original_local_sha": "899cd1d0a4bb9de3ed734ef7736bf5c7a5da94ef",
+      "writer_agent": "/root/coverage48_43_g33",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1615d-ded6-73e2-abc9-f2d56dbf7c98",
+      "writer_counter_timestamp": "2026-10-22T02:17:27.390Z",
+      "actual_writer_input_tokens": 4070115,
+      "actual_writer_cached_input_tokens_subset": 3935360,
+      "actual_writer_uncached_input_tokens": 134755,
+      "actual_writer_output_tokens": 17797,
+      "actual_writer_reasoning_tokens_subset": 1653,
+      "actual_writer_total_tokens": 4087912,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/43-free-business-email-options/README.md",
+        "editorial/2026-10-21-coverage48/43-free-business-email-options/ads-evidence.json",
+        "editorial/2026-10-21-coverage48/43-free-business-email-options/image-manifest.json",
+        "editorial/2026-10-21-coverage48/43-free-business-email-options/sources.json",
+        "editorial/2026-10-21-coverage48/43-free-business-email-options/translation-sanity.json",
+        "editorial/2026-10-21-coverage48/43-free-business-email-options/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/free-business-email-options-05-choice-path.jpg"
+      ],
+      "limitations": [
+        "Interleaved phase counters not independent attribution;first checkpoint delayed",
+        "Deployed canonical/hreflang/render verification pending"
+      ]
+    },
+    {
+      "order": 44,
+      "source_id": "O10",
+      "english_path": "content/tld/en/br.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/tld/br/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/379",
+      "stacked_head_sha": "0ce886e26153e99c9ab2aab48554828c9ef5b8bc",
+      "original_local_sha": "77c2ecc6f78b557482c7b1fc99cb59d6ccdb9576",
+      "writer_agent": "/root/coverage48_44_o10",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16161-f2ef-7150-b5aa-415d83ecb41b",
+      "writer_counter_timestamp": "2026-10-22T02:21:16.443Z",
+      "actual_writer_input_tokens": 4399035,
+      "actual_writer_cached_input_tokens_subset": 4254976,
+      "actual_writer_uncached_input_tokens": 144059,
+      "actual_writer_output_tokens": 14611,
+      "actual_writer_reasoning_tokens_subset": 1465,
+      "actual_writer_total_tokens": 4413646,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/44-br.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/br-01-registration-path.jpg"
+      ],
+      "limitations": [
+        "Inline1200x800 acceptedhouse ratioexception to preserve title;not16:9",
+        "PortugueseBrazil measured2900/390/30monthly butunsupportedruntime;deferred",
+        "SpanishArgentina lowmixedintent;deferred",
+        "Some research/image phase counters unavailable oroverlap",
+        "No deployed render/metadata verification orhuman nativeLQA"
+      ]
+    },
+    {
+      "order": 45,
+      "source_id": "T03",
+      "english_path": "content/tld/en/ru.md",
+      "english_action": "new_page",
+      "url": "https://namefi.io/r/en/tld/ru/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de-DE"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/380",
+      "stacked_head_sha": "931c0e1aea663a80e5c18e7fb07d861ccd20d67f",
+      "original_local_sha": "b399a3bc875c411d35dacfd1a5a14dd78fd6854c",
+      "writer_agent": "/root/coverage48_45_t03",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16163-06eb-7520-9d00-7902b5765db7",
+      "writer_counter_timestamp": "2026-10-22T02:23:45.374Z",
+      "actual_writer_input_tokens": 5174305,
+      "actual_writer_cached_input_tokens_subset": 5045248,
+      "actual_writer_uncached_input_tokens": 129057,
+      "actual_writer_output_tokens": 16681,
+      "actual_writer_reasoning_tokens_subset": 813,
+      "actual_writer_total_tokens": 5190986,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/45-ru/ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/45-ru/ads-en-US.json",
+        "editorial/2026-10-21-coverage48/45-ru/ads-ru-KZ.json",
+        "editorial/2026-10-21-coverage48/45-ru/evidence.md",
+        "editorial/2026-10-21-coverage48/45-ru/geo-validation.json",
+        "editorial/2026-10-21-coverage48/45-ru/inline-illustration-attempt1-usage.json",
+        "editorial/2026-10-21-coverage48/45-ru/og-cover-attempt1-usage.json",
+        "editorial/2026-10-21-coverage48/45-ru/og-cover-attempt2-usage.json",
+        "editorial/2026-10-21-coverage48/45-ru/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/ru-01-registration.jpg",
+        "content/assets/ru-og.jpg"
+      ],
+      "limitations": [
+        "Russian runtimeunsupported;deferred",
+        "Russia Ads geo2643 request INVALID_VALUE meansUNKNOWN;KazakhstanRussian measuredseparately",
+        "English registry2021translation stale;usedcurrentRussian2026rulesandgovernment1119 via fullOCR",
+        "No currentprovidercontract guarantees;REG.RU2024offer nottreatedcurrent",
+        "No independent image-start tokenboundary;interleavedphasecounts",
+        "No deployed metadata/renderverification orhuman nativeLQA"
+      ]
+    },
+    {
+      "order": 46,
+      "source_id": "G07",
+      "english_path": "content/blog/en/root-dns-servers.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/root-dns-servers/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de-DE"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/376",
+      "stacked_head_sha": "5b085997d5c7cc72e7fe2e459431f9bec77a65ab",
+      "original_local_sha": "c64944edd5faee102dd23ab4898d476399795307",
+      "writer_agent": "/root/coverage48_46_g07",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16159-5e72-7211-9173-625e76b9ae35",
+      "writer_counter_timestamp": "2026-10-22T02:12:04.748Z",
+      "actual_writer_input_tokens": 3406641,
+      "actual_writer_cached_input_tokens_subset": 3301376,
+      "actual_writer_uncached_input_tokens": 105265,
+      "actual_writer_output_tokens": 18599,
+      "actual_writer_reasoning_tokens_subset": 1146,
+      "actual_writer_total_tokens": 3425240,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/46-root-dns-servers-demand.json",
+        "editorial/2026-10-21-coverage48/46-root-dns-servers-images.json",
+        "editorial/2026-10-21-coverage48/46-root-dns-servers-usage.json",
+        "editorial/2026-10-21-coverage48/46-root-dns-servers.md"
+      ],
+      "changed_asset_paths": [
+        "content/assets/root-dns-servers-05-answer-referral.jpg"
+      ],
+      "limitations": [
+        "First writer checkpoint delayed;independent image-start counter unavailable",
+        "Root preliminary research recorded separately as shared orchestration",
+        "No independent human native LQA or deployed render verification"
+      ]
+    },
+    {
+      "order": 47,
+      "source_id": "G38",
+      "english_path": "content/blog/en/domain-forwarding-redirects.md",
+      "english_action": "update_existing",
+      "url": "https://namefi.io/r/en/blog/domain-forwarding-redirects/",
+      "real_locales": [
+        "en"
+      ],
+      "selected_locale_work": [],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/381",
+      "stacked_head_sha": "ddd0d0e020f49485a8aff7f37b7772b6f769f3c0",
+      "original_local_sha": "705e470cec3ee342c9fd7e3b2b17b3ec5632baa0",
+      "writer_agent": "/root/coverage48_47_g38",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a16166-6e7d-73b2-99dd-6e8e328e0aa9",
+      "writer_counter_timestamp": "2026-10-22T02:24:41.386Z",
+      "actual_writer_input_tokens": 3168277,
+      "actual_writer_cached_input_tokens_subset": 3066368,
+      "actual_writer_uncached_input_tokens": 101909,
+      "actual_writer_output_tokens": 11897,
+      "actual_writer_reasoning_tokens_subset": 947,
+      "actual_writer_total_tokens": 3180174,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/47-ads-de-DE.json",
+        "editorial/2026-10-21-coverage48/47-ads-fr-FR.json",
+        "editorial/2026-10-21-coverage48/47-domain-forwarding-redirects.md",
+        "editorial/2026-10-21-coverage48/47-geo-ids.json",
+        "editorial/2026-10-21-coverage48/47-image-usage.json",
+        "editorial/2026-10-21-coverage48/47-usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/domain-forwarding-redirects-05-fragment-handling.jpg"
+      ],
+      "limitations": [
+        "German/French sampledintent didnotjustifynewcomplete translations;UNKNOWNnotzero",
+        "Writingstart capturedlate;research/image phasesinterleaved",
+        "No deployed metadata/renderverification yet"
+      ]
+    },
+    {
+      "order": 48,
+      "source_id": "G09",
+      "english_path": "content/blog/en/ipv6-and-dns.md",
+      "english_action": "new_page",
+      "url": "https://namefi.io/r/en/blog/ipv6-and-dns/",
+      "real_locales": [
+        "de",
+        "en"
+      ],
+      "selected_locale_work": [
+        "de-DE"
+      ],
+      "pr_url": "https://github.com/d3servelabs/namefi-resources/pull/382",
+      "stacked_head_sha": "518a11dacbbce6f3c426716fec8c7d7e904fea1c",
+      "original_local_sha": "33cd10f40dc510637446b5c172a144310eb9d1d5",
+      "writer_agent": "/root/coverage48_48_g09",
+      "writer_model": "gpt-6.1-sol",
+      "writer_session_id": "01a1616a-2195-71c2-ad48-306e53906d4c",
+      "writer_counter_timestamp": "2026-10-22T02:32:08.145Z",
+      "actual_writer_input_tokens": 4466153,
+      "actual_writer_cached_input_tokens_subset": 4346368,
+      "actual_writer_uncached_input_tokens": 119785,
+      "actual_writer_output_tokens": 19817,
+      "actual_writer_reasoning_tokens_subset": 1254,
+      "actual_writer_total_tokens": 4485970,
+      "known_missing_image_attempt_usage": 0,
+      "editorial_evidence_paths": [
+        "editorial/2026-10-21-coverage48/48-ipv6-and-dns/README.md",
+        "editorial/2026-10-21-coverage48/48-ipv6-and-dns/image-usage.json",
+        "editorial/2026-10-21-coverage48/48-ipv6-and-dns/sanity.json",
+        "editorial/2026-10-21-coverage48/48-ipv6-and-dns/sources.md",
+        "editorial/2026-10-21-coverage48/48-ipv6-and-dns/translation-demand.json",
+        "editorial/2026-10-21-coverage48/48-ipv6-and-dns/usage-checkpoints.json"
+      ],
+      "changed_asset_paths": [
+        "content/assets/ipv6-and-dns-01-independent-choices.jpg",
+        "content/assets/ipv6-and-dns-02-resolver-endpoints.jpg",
+        "content/assets/ipv6-and-dns-03-diagnose-path.jpg",
+        "content/assets/ipv6-and-dns-og.jpg"
+      ],
+      "limitations": [
+        "Phase counters include interleaving and a first-checkpoint gap; strict isolated research versus writing billing unavailable.",
+        "No independent human native-language QA.",
+        "Production render and metadata verification pending."
+      ]
+    }
+  ]
+}

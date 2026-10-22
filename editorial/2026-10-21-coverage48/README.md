@@ -8,7 +8,8 @@ Writers must check semantic overlap before they create a proposed new page.
 
 ## Each writer completes one topic before the writer opens a pull request
 
-Two writers work in separate worktrees.
+The final authoring stage used three writers in separate worktrees.
+The main session took over coordination after the coordinator handoff.
 Each writer owns the English target, selected translations, topic images, and topic evidence.
 Each writer records research and writing token boundaries separately.
 Each writer selects translations from article, language, and country demand evidence.
@@ -50,3 +51,14 @@ The coordinator publishes through the checked-in Resources and Astra release wor
 The live ledger stays outside author branches during production.
 The coordinator copies the final ledger into the final integration commit.
 The committed initial ledger records the starting queue, not live completion status.
+
+## The completed topics cover 47 distinct English pages
+
+All 48 topic packages reached individual draft pull requests.
+G02 extends the existing G01 resolver comparison instead of creating a duplicate.
+The final scope contains 34 distinct blog pages and 13 TLD pages.
+Seven English pages are new; 40 existing English pages receive updates.
+
+The [final metrics](batch-metrics/README.md) link topic PRs and actual writer counters.
+The temporary review-suppression files are absent from the final publication tree.
+The final CI and publication evidence will identify the deployed commits.

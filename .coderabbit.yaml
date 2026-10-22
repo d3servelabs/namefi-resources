@@ -1,7 +1,0 @@
-# This configuration isolates the authorized draft-only content batch.
-reviews:
-  auto_review:
-    enabled: false
-    drafts: false
-    ignore_title_keywords:
-      - "[coverage48]"
