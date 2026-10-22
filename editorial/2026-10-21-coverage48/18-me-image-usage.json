@@ -1,0 +1,85 @@
+{
+  "asset": "content/assets/me-og.jpg",
+  "final_attempt": 3,
+  "attempts": [
+    {
+      "attempt": 1,
+      "request_model": "gpt-image-2",
+      "quality": "high",
+      "response_metadata": {
+        "created": 1792628548,
+        "usage": {
+          "input_tokens": 726,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 726
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4127
+        },
+        "model": null,
+        "error": null
+      },
+      "qc": "bottom reserve too small"
+    },
+    {
+      "attempt": 2,
+      "request_model": "gpt-image-2",
+      "quality": "high",
+      "response_metadata": {
+        "created": 1792628736,
+        "usage": {
+          "input_tokens": 774,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 774
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4175
+        },
+        "model": null,
+        "error": null
+      },
+      "qc": "serif headline and bottom reserve too small"
+    },
+    {
+      "attempt": 3,
+      "request_model": "gpt-image-2",
+      "quality": "high",
+      "response_metadata": {
+        "created": 1792628858,
+        "usage": {
+          "input_tokens": 784,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 784
+          },
+          "output_tokens": 3401,
+          "output_tokens_details": {
+            "image_tokens": 3401,
+            "text_tokens": 0
+          },
+          "total_tokens": 4185
+        },
+        "model": null,
+        "error": null
+      },
+      "qc": "passed: sans-serif text, spelling, official logo top right, compact scene, no clipping, clear bottom band"
+    }
+  ],
+  "dimensions": [
+    1200,
+    630
+  ],
+  "sha256": "5ac60937e2d77f4f38f05208781b5160d58cb9684925d81351f1b0548665577d",
+  "reused_assets": [],
+  "notes": "The original .me page had no existing illustration assets. Every generated final was opened. Attempt sidecars preserve every actual API usage response. Request model is explicit; API model field was null."
+}

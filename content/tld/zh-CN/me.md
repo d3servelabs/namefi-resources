@@ -70,7 +70,7 @@ relatedGlossary:
 
 黑山政府并未将该命名空间作为纯粹的国家注册局运营，而是发布招标书寻找商业运营商。合同被授予 **doMEn d.o.o.**，这是一家黑山合资企业，其合作伙伴包括 **Afilias**、**GoDaddy** 和当地公司 **ME-net**。在 Afilias 提供技术注册局后端的支持下，.me 于 **2008 年向全球公众开放**，采取先到先得原则，并辅以一场强调个人表达和域名拼接的营销推动。
 
-近期最重大的变化发生在**技术后端层面**：**2021 年 12 月**，**Identity Digital**（前身为 Donuts）**收购了 Afilias**，因此长期为 .me 提供支持的注册局基础设施如今归于 Identity Digital 的平台。黑山政府仍是登记在册的发起注册局管理者，doMEn d.o.o. 继续在商业层面运营该命名空间。在最初十年里，.me 成长为一个公认的全球扩展名，突破了**一百万注册量**的门槛，并成为黑山经济的重要贡献者。
+Donuts [于 2020 年 12 月 29 日完成收购 Afilias](https://www.prnewswire.com/news-releases/donuts-acquires-afilias-301199019.html)。Donuts 和 Afilias [于 2022 年 6 月更名为 Identity Digital](https://www.prnewswire.com/news-releases/donuts-inc-and-afilias-inc-rebrand-to-identity-digital-301572401.html)。
 
 ## .me 的使用场景
 
@@ -87,7 +87,6 @@ relatedGlossary:
 ## 使用 .me 的知名网站
 
 - **about.me** — 2010 年推出的个人主页平台（推出仅几天后曾被 AOL 短暂收购）。它是 .me 的经典成功案例，实际上定义了该扩展名的个人品牌身份。
-- **read.me / readme.com** — 这家开发者文档公司围绕 "readme" 文件的概念构建品牌，帮助巩固了 .me 与简洁、人类可读命名之间的关联。
 - 大量**个人作品集**，由知名设计师、工程师和创作者用 "firstname.me" 或 "firstnamelastname.me" 作为他们的专业主页。
 
 这些案例表明，.me 受到信赖并非仅作为退而求其次的选择，而是经过深思熟虑、突显身份的品牌决策。
@@ -126,7 +125,7 @@ relatedGlossary:
 
 .me 通常处于**中等价格区间**——比最便宜的促销型 gTLD 贵，但远低于稀缺的溢价扩展名。有几个动态因素影响您的支出：
 
-- **存在溢价名称。** 注册局将许多简短、词典词、名字类或高需求的 .me 名称归类为**溢价**，承担更高的注册费，有时续费费用也更高。
+- **高级域名的额外费用适用于初次注册。** [.ME 高级域名计划](https://domain.me/premium-domains/#:~:text=high-create%20and%20regular-renew)采用较高的注册费和普通续费。请向注册商确认最终注册价和续费价。
 - **首年价与续费价不同。** 与大多数 TLD 一样，首年优惠价并非续费价；在为品牌投入之前，请务必查看标准续费价。
 - **成本驱动因素。** 名称长度与吸引力、溢价分类，以及注册局[批发定价](/zh-CN/glossary/wholesale-pricing/)是主要因素。常见名字和利落域名拼接在 .me [二级市场](/zh-CN/glossary/aftermarket/)的转售价值可能相当可观。
 
