@@ -136,6 +136,30 @@ Ask which TTLs the registrar or DNS provider actually lets you change. Plan arou
 
 A newly restored missing record can also remain absent from cached answers. [RFC 2308 defines negative caching using SOA information](https://www.rfc-editor.org/rfc/rfc2308.html#section-3). Correct the authoritative zone first, then distinguish cached absence from a continuing configuration error.
 
+## Direct queries compare the replacement zone before delegation changes
+
+![The old and new DNS services need matching service records and a separate DNSSEC plan.](../../assets/change-domain-nameservers-05-compare-answers.jpg)
+
+Use `dig` when the replacement provider permits direct authoritative queries. Replace `ns1.provider.example` with an assigned server. Replace `example.com` with the domain under migration. These examples only read DNS data.
+
+| Check | Example command |
+| --- | --- |
+| Zone authority | `dig @ns1.provider.example example.com SOA +norecurse` |
+| Website address | `dig @ns1.provider.example www.example.com A +norecurse` |
+| IPv6 address | `dig @ns1.provider.example www.example.com AAAA +norecurse` |
+| Mail destinations | `dig @ns1.provider.example example.com MX +norecurse` |
+| Apex text records | `dig @ns1.provider.example example.com TXT +norecurse` |
+
+The `@server` argument selects the server. The `+norecurse` option clears the recursion request. [ISC documents the query syntax and recursion option](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility).
+
+Repeat each relevant query against every assigned server and the previous provider. Compare record values with the approved inventory. Preserve the full response, including status and flags. A timeout or refusal needs investigation before the change.
+
+Query DKIM selectors, `_dmarc`, and verification names separately. An apex TXT query does not enumerate text records at other names. Use the inventory to choose the exact owner name and record type.
+
+Check provider features before requiring identical wire answers. A proxy or alias can intentionally change returned addresses. Confirm that the replacement behavior matches the approved service plan.
+
+Keep the parent delegation check separate. A direct query proves what the selected server answers. A direct query does not prove that public resolvers will find the selected server through the parent.
+
 ## Separate checks verify DNS, website and mail after the change
 
 ![Separate checks verify DNS, website and mail after the change.](../../assets/change-domain-nameservers-04-migration-checks.jpg)
@@ -178,3 +202,4 @@ The useful completion test is operational: visitors reach the intended website, 
 - Cloudflare — [Set up a primary zone](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/), sections 2 and 3, scan limitations, assigned nameservers, and standard DNSSEC migration. Fetched 2026-10-21.
 - Amazon Web Services — [Migrate a domain in use to Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/migrate-dns-domain-in-use.html), steps 2–7, zone preparation, imports, TTLs, DS removal, and delegation. Fetched 2026-10-21.
 - Google Workspace — [Connect your website](https://knowledge.workspace.google.com/admin/domains/connect-your-website-to-a-domain-registered-through-google#if-ns-changed-add-google-workspace-services-to-your-web-host), “If NS changed,” mail and verification continuity. Fetched 2026-10-21.
+- ISC — [BIND 9 dig manual](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility), query syntax, server selection, and recursion options. Fetched 2026-10-21.

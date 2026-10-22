@@ -37,7 +37,7 @@ El dominio más barato rara vez es el más barato de mantener.
 
 Eso es lo primero que conviene entender antes de registrar un nombre. El precio al finalizar la compra es solo una línea del presupuesto. Un dominio tiene un precio de registro para el primer año, un precio de renovación, un precio de transferencia, posibles tarifas de restauración o redención, configuraciones de privacidad, impuestos, costos asociados al método de pago y, a veces, tarifas de productos complementarios como DNS, correo electrónico, alojamiento o servicios de cuenta.
 
-Por eso, un dominio de $1 el primer año puede ser una oferta perfectamente legítima y, aun así, convertirse después en un compromiso anual de $30, $60 u $80. El precio del primer año te permite entrar; el precio de renovación determina el [Costo de mantenimiento](/es/glossary/holding-cost/) a largo plazo.
+El precio promocional del registro no determina el precio de renovación. Compara el [Costo de mantenimiento](/es/glossary/holding-cost/) a largo plazo.
 
 ## El primer número que ves no es el costo
 
@@ -56,9 +56,9 @@ Estos son los componentes del costo.
 | Costos de pago | Margen de cambio de divisas de la tarjeta, costos de transferencias bancarias, tarifas de red de criptomonedas, métodos de pago con demora o dificultades para los reembolsos | El precio del registrador puede no ser el importe exacto que sale de tu cuenta |
 | Costos de DNS / productos | Costos de zona alojada, consultas, correo electrónico, reenvío, SSL o servicios agrupados | Un dominio puede ser barato mientras que la cuenta que lo rodea no lo es |
 
-La partida que más suele sorprender es la renovación. La Política de Recuperación de Registros Expirados de ICANN exige que los registradores pongan a disposición de manera razonable las [tarifas de renovación, renovación posterior a la expiración y redención/restauración](https://www.icann.org/resources/pages/errp-2013-02-28-en#Notice), pero el comprador todavía debe compararlas antes de finalizar la compra. Un precio bajo para el primer año no es engañoso por sí solo. Se convierte en un problema cuando el comprador lo trata como el costo anual.
+La partida que más suele sorprender es la renovación. La Política de Recuperación de Registros Expirados de ICANN exige que los registradores pongan a disposición de manera razonable las [tarifas de renovación, renovación posterior a la expiración y redención/restauración](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en), pero el comprador todavía debe compararlas antes de finalizar la compra. Un precio bajo para el primer año no es engañoso por sí solo. Se convierte en un problema cuando el comprador lo trata como el costo anual.
 
-## Por qué un dominio de $1 puede renovarse por $30 a $80
+## Una promoción puede ocultar renovaciones más caras
 
 Los precios introductorios son habituales porque el primer año y el año de renovación son eventos económicos distintos.
 
@@ -66,7 +66,30 @@ El primer año puede estar rebajado porque el registro o el registrador quieren 
 
 Esto es normal en muchos sectores: los precios de captación suelen ser menores que los de retención. El riesgo específico de los dominios es que las renovaciones no son opcionales si el nombre importa. Si tu sitio web, correo electrónico, marca, aplicación o cartera depende de un dominio, la factura de renovación es el costo de conservar el control.
 
-El hábito práctico es sencillo: antes de registrar, anota ambos números. Si el precio del primer año es $1 y la renovación es de $40, piensa en el dominio como un activo de $40 al año con un primer año rebajado, no como un activo de $1.
+El hábito práctico es sencillo: antes de registrar, anota ambos números. En un ejemplo hipotético, si el precio del primer año es $1 y la renovación es de $40, piensa en el dominio como un activo de $40 al año con un primer año rebajado, no como un activo de $1.
+
+## Los precios actuales muestran la importancia de la renovación
+
+Estas cifras proceden de páginas públicas consultadas el 21 de octubre de 2026. Las cifras no garantizan precios futuros.
+
+| Dominio no prémium en Porkbun | Primer año, USD | Renovación anual, USD |
+| --- | --- | --- |
+| `.com` | $11,08 | $11,08 |
+| `.blog` | $2,57 en promoción | $21,11 |
+
+La [tabla de precios de Porkbun](https://porkbun.com/products/domains) muestra precios de un año para nombres no prémium. Los precios incluyen las tarifas de ICANN y otras tasas. Comprueba el nombre concreto y el total antes de pagar. Los nombres prémium necesitan una cotización específica.
+
+Porkbun también publica una **tarifa de restauración de $200 más la renovación normal** para recuperar nombres durante el período de gracia de redención. Incluye la restauración en un escenario de emergencia, no en todos los presupuestos anuales.
+
+## Un presupuesto de tres años separa los gastos recurrentes y opcionales
+
+![Tres calendarios separan un pago de registro de dos pagos de renovación y una calculadora suma el total](../../assets/how-much-is-a-domain-understanding-holding-cost-01-budget.jpg)
+
+Para un ejemplo hipotético de tres años, supón un registro de $5 y dos renovaciones de $20. El total es **$5 + $20 + $20 = $45**. Estas cifras explican el cálculo y no representan una oferta de un registrador.
+
+Añade únicamente los servicios elegidos. Por ejemplo, [Amazon Route 53](https://aws.amazon.com/route53/pricing/) cobra $0,50 por zona alojada al mes para las primeras 25 zonas. Una zona facturada durante 36 meses añade **$18**, antes de consultas y otros servicios. El cargo por DNS no incluye el registro del dominio.
+
+No sumes otra renovación completa cuando el pago de una transferencia ya cubra el mismo año de registro. Comprueba la oferta de transferencia y la nueva fecha de vencimiento. Separa adquisición, servicios recurrentes, impuestos y recuperación de emergencia.
 
 ## Registro, renovación, transferencia y restauración
 
@@ -78,7 +101,9 @@ Las cuatro operaciones de dominio que debes comparar son el registro, la renovac
 
 **Transferencia** es lo que pagas para mover el dominio a otro registrador. Una transferencia puede incluir una ampliación de un año del período, pero no es un atajo universal que debas dar por sentado sin comprobarlo. También debes vigilar los bloqueos de transferencia, los límites para registros recientes, el manejo del código de autorización y si la transferencia cambia tu configuración de DNS o privacidad.
 
-**Restauración o redención** es el costoso botón de pánico. La política de recuperación de ICANN indica que los registros de gTLD, por lo general, deben ofrecer un [Período de Gracia de Redención de 30 días](https://www.icann.org/resources/pages/errp-2013-02-28-en#Redemption) después de la eliminación, durante el cual la inscripción eliminada puede restaurarse a través del registrador que la eliminó. Durante ese período, la recuperación puede costar mucho más que una renovación normal. La lección es sencilla: la renovación automática cuesta menos que el rescate.
+**Restauración o redención** es el costoso botón de pánico. La política de recuperación de ICANN indica que los registros de gTLD, por lo general, deben ofrecer un [Período de Gracia de Redención de 30 días](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en) después de la eliminación, durante el cual la inscripción eliminada puede restaurarse a través del registrador que la eliminó. Durante ese período, la recuperación puede costar mucho más que una renovación normal. La lección es sencilla: la renovación automática cuesta menos que el rescate.
+
+La regla de los 30 días se aplica a los registros de gTLD no patrocinados. La política excluye las eliminaciones durante un período de gracia inicial aplicable. Los ccTLD tienen sus propias reglas.
 
 ## Privacidad, impuestos y costos del método de pago
 
@@ -94,7 +119,7 @@ Los registradores venden el mismo tipo de producto, pero no la misma experiencia
 
 ### Modelo de traslado de costos
 
-Algunos registradores se posicionan en torno a un margen mínimo. El atractivo es evidente: si el registrador puede trasladar los costos subyacentes que cobra el registro con poco margen adicional, el comprador puede obtener un precio de renovación menor. Este modelo suele funcionar mejor para quienes ya saben lo que necesitan y no requieren mucha asistencia ni productos agrupados.
+[Cloudflare Registrar](https://www.cloudflare.com/domains/) anuncia registro y renovación al costo del registro y de ICANN, sin margen adicional. Cloudflare también incluye ocultación gratuita de datos WHOIS. El atractivo es evidente: si el registrador puede trasladar los costos subyacentes que cobra el registro con poco margen adicional, el comprador puede obtener un precio de renovación menor. Este modelo suele funcionar mejor para quienes ya saben lo que necesitan y no requieren mucha asistencia ni productos agrupados.
 
 La contrapartida es que un margen menor no es la única variable. También importan los TLD compatibles, la recuperación de la cuenta, DNSSEC, los controles masivos, los controles de facturación, los flujos de transferencia, la capacidad de respuesta de la asistencia y el grado en que el registrador se ajusta a tu modelo de seguridad.
 
@@ -145,7 +170,7 @@ Para un proyecto personal, la respuesta puede ser «elige el registrador en el q
 
 Entonces, ¿cuánto cuesta un dominio?
 
-Para un TLD común, el primer año puede costar aproximadamente lo mismo que un almuerzo. Para un gTLD nuevo en promoción, puede costar $1 hoy y entre $30 y $80 el próximo año. Para un ccTLD de precio elevado o un nivel prémium del registro, puede costar mucho más. Si no renuevas a tiempo y tienes que restaurarlo, la factura puede subir a cientos.
+El costo depende de la extensión, el registrador, el nombre y los servicios. Comprueba una oferta actual para el nombre elegido.
 
 La respuesta práctica no es el precio del primer año. Es esta:
 
@@ -155,4 +180,8 @@ Ese es el número que debes comparar. Un dominio no es caro porque el primer añ
 
 ## Fuentes y lecturas adicionales
 
-- ICANN — [Política de Recuperación de Registros Expirados](https://www.icann.org/resources/pages/errp-2013-02-28-en)
+- ICANN — [Política de Recuperación de Registros Expirados](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en)
+
+- Porkbun — [Precios y tarifa de restauración](https://porkbun.com/products/domains), consulta: 21 de octubre de 2026.
+- Cloudflare — [Modelo de precios y servicios incluidos](https://www.cloudflare.com/domains/), consulta: 21 de octubre de 2026.
+- AWS — [Precios de zonas alojadas y consultas de Route 53](https://aws.amazon.com/route53/pricing/), consulta: 21 de octubre de 2026.

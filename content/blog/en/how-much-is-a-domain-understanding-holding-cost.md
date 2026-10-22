@@ -58,18 +58,7 @@ Here is the cost stack.
 | Payment costs | Card foreign-exchange spread, wire costs, crypto network fees, delayed payment methods, refund friction | The registrar price may not be the exact amount that leaves your account |
 | DNS / product fees | Hosted-zone, query, email, forwarding, SSL, or bundled service costs | A domain can be cheap while the surrounding account is not |
 
-The line that trips people most often is renewal. ICANN's Expired Registration Recovery Policy requires registrars to make [renewal, post-expiration renewal, and redemption/restore fees reasonably available](https://www.icann.org/resources/pages/errp-2013-02-28-en#Notice), but the buyer still has to compare them before checkout. A low first-year number is not misleading by itself. It becomes a problem when the buyer treats it as the annual cost.
-
-## Registration vs. renewal: a dated price comparison
-
-The following are Namecheap public list-page examples checked **September 15, 2026**, in **USD per one-year term**. They are not Namefi quotes or a market average. Premium names, taxes, eligible promotions, and applicable checkout fees can change the total.
-
-| Extension | First-year registration | One-year renewal | Transfer-in price | Source |
-| --- | --- | --- | --- | --- |
-| `.com` | USD 11.28 promotional | USD 18.48 | USD 11.48 promotional | [Namecheap `.com`](https://www.namecheap.com/domains/registration/gtld/com/#:~:text=Prices%20for%20.COM%20domains) |
-| `.io` | USD 34.98 promotional | USD 75.98 | USD 65.98 | [Namecheap `.io`](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices) |
-
-The same provider quotes different amounts for the first term, a later renewal, and a transfer. A transfer price also needs its own term-extension rules checked.
+The line that trips people most often is renewal. ICANN's Expired Registration Recovery Policy requires registrars to make [renewal, post-expiration renewal, and redemption/restore fees reasonably available](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en), but the buyer still has to compare them before checkout. A low first-year number is not misleading by itself. It becomes a problem when the buyer treats it as the annual cost.
 
 ## Why introductory pricing differs from renewal
 
@@ -81,6 +70,29 @@ This is normal across many industries: acquisition pricing is often lower than r
 
 The practical habit is simple: before you register, write down both numbers. Use the recurring renewal quote as your planning baseline and record the introductory discount separately.
 
+## Current quotes show why renewal matters
+
+These examples use public prices checked on October 21, 2026. They are snapshots, not future price guarantees.
+
+| Non-premium domain at Porkbun | First year, USD | Renewal per year, USD |
+| --- | --- | --- |
+| `.com` | $11.08 | $11.08 |
+| `.blog` | $2.57 promotional price | $21.11 |
+
+[Porkbun’s price table](https://porkbun.com/products/domains) lists single-year prices for non-premium names and includes ICANN and other fees. Confirm the exact name and checkout total before paying. Premium names require a separate quote.
+
+Porkbun also lists a **$200 restoration fee plus normal renewal** for names recovered through the Redemption Grace Period. A restore fee belongs in an emergency scenario, not every annual budget.
+
+## A three-year budget separates recurring and optional costs
+
+![Three calendar cards separate one registration payment from two renewal payments and a total calculator](../../assets/how-much-is-a-domain-understanding-holding-cost-01-budget.jpg)
+
+For a hypothetical three-year plan, assume registration costs $5 and each renewal costs $20. The registration-and-renewal total is **$5 + $20 + $20 = $45**. These figures illustrate the calculation and do not quote a registrar.
+
+Add only services you select. For example, [Amazon Route 53](https://aws.amazon.com/route53/pricing/) charges $0.50 per hosted zone per month for the first 25 zones. One zone billed for 36 months adds **$18**, before query charges and other services. That DNS charge does not include domain registration.
+
+Do not add a full renewal again when a transfer payment already includes the same registration year. Check the transfer quote and resulting expiration date. Keep acquisition, recurring services, taxes, and emergency recovery as separate budget lines.
+
 ## Registration, renewal, transfer, restore
 
 The four domain operations to compare are registration, renewal, transfer, and restore.
@@ -91,7 +103,7 @@ The four domain operations to compare are registration, renewal, transfer, and r
 
 **Transfer** is what you pay to [move the domain to another registrar](/en/blog/transfer-domain-to-another-registrar/). A transfer may include a one-year term extension, but that is not a universal shortcut you should assume without checking. Also watch transfer locks, recent-registration limits, authorization-code handling, and whether the transfer changes your DNS or privacy settings.
 
-**Restore or redemption** is the expensive panic button. ICANN's recovery policy says gTLD registries generally must offer a [30-day Redemption Grace Period](https://www.icann.org/resources/pages/errp-2013-02-28-en#Redemption) after deletion, during which the deleted registration may be restored through the deleting registrar. During that period, recovery can cost much more than a normal renewal. The lesson is simple: auto-renew is cheaper than rescue.
+**Restore or redemption** is the expensive panic button. ICANN's recovery policy requires non-sponsored gTLD registries to offer a [30-day Redemption Grace Period](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en) after deletion, except for deletions during an applicable add-grace period. The deleting registrar can restore the deleted registration during that period. Recovery can cost much more than a normal renewal. The lesson is simple: auto-renew is cheaper than rescue.
 
 ## Privacy, taxes, and payment method costs
 
@@ -107,7 +119,7 @@ Registrars sell the same general object, but not the same experience. Comparing 
 
 ### Cost-pass-through style
 
-Some registrars position themselves around minimal markup. The appeal is obvious: if the registrar can pass through the underlying registry cost with little extra margin, the buyer may get a lower renewal price. This model tends to work best for buyers who already know what they need and do not require much support or bundling.
+For example, [Cloudflare Registrar](https://www.cloudflare.com/domains/) advertises registration and renewal at registry and ICANN cost, without markup. Cloudflare also includes free WHOIS redaction. The appeal is obvious: if the registrar can pass through the underlying registry cost with little extra margin, the buyer may get a lower renewal price. This model tends to work best for buyers who already know what they need and do not require much support or bundling.
 
 The tradeoff is that lower markup is not the only variable. You still care about supported TLDs, account recovery, DNSSEC, bulk controls, billing controls, transfer workflows, support responsiveness, and how well the registrar fits your security model.
 
@@ -166,9 +178,10 @@ The practical answer is not the first-year price. It is:
 
 That is the number to compare. Compare the total cost of keeping control for as long as the name matters.
 
-## Sources and further reading
+## These sources document the quoted fees and rules
 
-- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/resources/pages/errp-2013-02-28-en), sections 3.1 and 4.1: redemption period and fee disclosure. Fetched 2026-09-15.
+- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en), sections 3.1 and 4.1: redemption period and fee disclosure. Accessed October 21, 2026.
 
-- Namecheap — [`.com` prices](https://www.namecheap.com/domains/registration/gtld/com/#:~:text=Prices%20for%20.COM%20domains), registration, renewal, transfer, and disclaimers. Fetched 2026-09-15.
-- Namecheap — [`.io` prices](https://www.namecheap.com/domains/registration/cctld/io/#:~:text=Discover%20.io%20domain%20prices), registration, renewal, transfer, and disclaimers. Fetched 2026-09-15.
+- Porkbun — [Domain pricing and restoration fee](https://porkbun.com/products/domains), accessed October 21, 2026.
+- Cloudflare — [Registrar pricing model and included services](https://www.cloudflare.com/domains/), accessed October 21, 2026.
+- AWS — [Route 53 hosted-zone and query charges](https://aws.amazon.com/route53/pricing/), accessed October 21, 2026.
