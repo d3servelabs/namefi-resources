@@ -68,7 +68,7 @@ This pattern—where the resolver does the iterative legwork and the client only
 
 DNS is organized as an inverted tree. The root (`.`) sits at the top; beneath it are TLDs (`.com`, `.net`, `.io`, country codes such as `.de`); beneath each TLD are second-level domains (`example.com`); and these can have nested subdomains (`mail.example.com`).
 
-A **zone** is an administratively managed portion of the DNS tree, not an individual node. Delegation separates a child zone from its parent. The authoritative nameserver holds the zone's **resource records** ([RFC 1034, section 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Common [DNS record types](/en/glossary/dns-record-types/) include:
+A **zone** is an administratively managed portion of the DNS tree. Not every node forms a separate zone. Delegation separates a child zone from its parent. The authoritative nameserver holds the zone's **resource records** ([RFC 1034, section 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Common [DNS record types](/en/glossary/dns-record-types/) include:
 
 | Record | Purpose | Example value |
 |--------|---------|---------------|

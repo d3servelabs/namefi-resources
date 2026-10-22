@@ -136,7 +136,7 @@ Interpret the evidence narrowly:
 
 Those observations guide the next check. A single timeout does not prove that DHCP failed. Different answers do not automatically establish that one resolver is wrong. An internal name requires an appropriate internal resolver, so an arbitrary public resolver can make the comparison misleading.
 
-A separate failure occurs when a client receives an address but the client's own hostname still points elsewhere. DHCP and DNS can cooperate through dynamic DNS updates, but the cooperation requires configuration. [RFC 4702 describes how clients and servers coordinate update responsibility](https://www.rfc-editor.org/rfc/rfc4702.html#section-4.1).
+A separate failure occurs when a client receives an address but the client's own hostname still points elsewhere. DHCP and DNS can cooperate through [dynamic DNS updates](/en/blog/dynamic-dns-setup/), but the cooperation requires configuration. [RFC 4702 describes how clients and servers coordinate update responsibility](https://www.rfc-editor.org/rfc/rfc4702.html#section-4.1).
 
 DNS UPDATE is a separate protocol operation that changes zone data. [RFC 2136 defines the update operation](https://www.rfc-editor.org/rfc/rfc2136.html#section-1). A DHCP acknowledgment does not prove that an update succeeded. Check the intended hostname, update responsibility, server logs, and resulting authoritative record separately.
 

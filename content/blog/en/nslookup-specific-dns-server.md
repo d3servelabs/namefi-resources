@@ -273,7 +273,7 @@ Read the response category before changing the domain configuration.
 An empty answer, a negative answer, and an unanswered request require different investigations.
 [RFC 9520, Section 2](https://www.rfc-editor.org/rfc/rfc9520.html#section-2) distinguishes useful negative responses from resolution failures.
 
-**NXDOMAIN means the queried name does not exist in the returned DNS view.**
+**[NXDOMAIN means the queried name does not exist in the returned DNS view](/en/blog/fix-dns-probe-finished-nxdomain/).**
 Check spelling, search suffixes, the selected server, and the exact owner name.
 If a response contains a CNAME chain, the missing name can be the final alias target.
 [RFC 2308's terminology and name-error sections](https://www.rfc-editor.org/rfc/rfc2308.html#section-2.1) describe that distinction.

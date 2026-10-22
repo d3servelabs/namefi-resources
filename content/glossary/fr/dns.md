@@ -69,7 +69,7 @@ Ce schéma — où le résolveur effectue le travail itératif et le client ne p
 
 Le DNS est organisé comme un arbre inversé. La racine (`.`) se trouve au sommet ; en dessous se trouvent les TLD (`.com`, `.net`, `.io`, les codes de pays comme `.de`) ; sous chaque TLD se trouvent les domaines de deuxième niveau (`example.com`) ; et ceux-ci peuvent avoir des sous-domaines imbriqués (`mail.example.com`).
 
-Une **zone** est une partie de l’arbre DNS placée sous une administration commune, pas un nœud individuel. Une délégation sépare une zone enfant de sa zone parente. Le serveur faisant autorité conserve les **enregistrements de ressources** de la zone ([RFC 1034, section 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Les [types d’enregistrements DNS](/fr/glossary/dns-record-types/) courants sont :
+Une **zone** est une partie de l’arbre DNS placée sous une administration commune. Chaque nœud ne constitue pas nécessairement une zone distincte. Une délégation sépare une zone enfant de sa zone parente. Le serveur faisant autorité conserve les **enregistrements de ressources** de la zone ([RFC 1034, section 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Les [types d’enregistrements DNS](/fr/glossary/dns-record-types/) courants sont :
 
 | Enregistrement | Rôle | Exemple de valeur |
 |--------|---------|---------------|
