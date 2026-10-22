@@ -18,8 +18,12 @@ The batch does not create tools or certificate-purchase pages.
 
 Writers update existing semantic matches rather than create competing pages.
 The inexpensive-domain intent already matches the existing holding-cost guide.
-Initial review identifies six existing pages with specific correction needs.
-The final record will distinguish new pages, updates, and unchanged review outcomes.
+The completed batch creates seven English articles and seven demand-selected translations.
+Five of the ten reviewed existing pages receive corrections.
+The holding-cost guide also receives the inexpensive-domain comparison section.
+Five existing pages retain their scoped no-change verdicts.
+Four additional existing English pages receive incoming links only.
+The final content diff covers 17 English pages and 22 image files.
 
 ## The coordinator gates publication on the exact final tree
 
@@ -45,4 +49,7 @@ Publication does not establish rankings or search traffic.
 
 The coordinator keeps the state database and raw receipts outside the content tree.
 The persistent execution directory is `namefi-resources-batch-20261022/` beside this repository.
-The repository will retain the final review and release evidence before completion.
+[The final review](final-review.md) records coordinator findings and local checks.
+[The usage ledger](usage.json) preserves actual image receipts and explicit text-attribution gaps.
+The execution directory retains workflow, synchronization, deployment, and live HTTP evidence.
+Those release receipts become available only after the reviewed content commit exists.
