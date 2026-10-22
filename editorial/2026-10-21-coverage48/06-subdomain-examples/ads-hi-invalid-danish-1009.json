@@ -1,0 +1,177 @@
+{
+  "request": {
+    "language": "languageConstants/1009",
+    "geoTargetConstants": [
+      "geoTargetConstants/2356"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "सबडोमेन",
+      "सबडोमेन क्या है",
+      "सबडोमेन उदाहरण",
+      "subdomain kya hai",
+      "subdomain kaise banaye"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "subdomain kya hai",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "0"
+        }
+      },
+      {
+        "text": "subdomain kaise banaye",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "17"
+        }
+      },
+      {
+        "text": "सबडोमेन"
+      },
+      {
+        "text": "सबडोमेन क्या है"
+      },
+      {
+        "text": "सबडोमेन उदाहरण"
+      }
+    ]
+  },
+  "validation": {
+    "status": "INVALID_FOR_HINDI",
+    "reason": "The request used Danish criterion1009 while the decision mislabeled the request as Hindi. Do not use the estimates as Hindi-market evidence.",
+    "verified_source": "https://developers.google.com/google-ads/api/data/codes-formats",
+    "correct_hindi_criterion": "languageConstants/1023",
+    "replacement_record": "ads-hi.json"
+  }
+}
