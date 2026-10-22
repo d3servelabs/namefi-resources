@@ -17,7 +17,7 @@ faqs:
   - question: 'Why are good .com domains so hard to find?'
     answer: 'With more than 161 million .com names registered, the supply of short, dictionary, and exact-match brand names is largely exhausted. Most premium names are already owned, so they are typically available only on the secondary market rather than at standard registration price.'
   - question: 'How much does a .com cost, and does the price keep rising?'
-    answer: 'Registrars set their own retail prices, but the registry wholesale price is regulated. Since a 2018 U.S. government amendment, Verisign may raise it by up to 7% in four of every six years — it has climbed from $7.85 to $10.97 — so plan around the renewal, not just the first-year signup rate.'
+    answer: 'As of October 22, 2026, Verisign charges USD 10.26 per registration-year at the registry wholesale level. Verisign announced a fee of USD 10.97 effective November 1, 2026 for new registrations and renewals. Registrars set their own retail prices. Check the renewal quote rather than assuming the wholesale fee is your final price.'
   - question: 'Who should register a .com domain?'
     answer: 'Almost any business, brand, or project that wants the most universally recognized and trusted address. It is especially worthwhile for companies serving a global or mainstream audience and for anyone protecting a brand over the long term.'
 relatedArticles:
@@ -54,7 +54,7 @@ That is the strange thing about the **.com domain**: it is so ordinary we forget
 | Registry operator | Verisign (VeriSign Global Registry Services) |
 | Year delegated | 1985 |
 | Registrations | 161+ million — the largest TLD on the internet |
-| Wholesale price | Regulated; raised from $7.85 (2012) to $10.97 (2026) |
+| Wholesale price | USD 10.26 (2026-10-22); USD 10.97 (2026-11-01) |
 | IDN support | Yes |
 | DNSSEC | Yes |
 | Registration restrictions | Open to all — no local presence, credential, or business requirement |
@@ -110,9 +110,8 @@ Here is the part most buyers never see — and the part that most affects what y
 
 That changed in **2018**. The Trump-era NTIA signed [Amendment 35](https://www.ntia.gov/program/verisign-cooperative-agreement), which it said would "repeal Obama-era price controls" and restore Verisign's right to raise the wholesale price by **up to 7% in four of every six years**. Verisign's stock jumped roughly 18% in the days that followed. In 2020, [ICANN agreed to let Verisign increase the price of .com domains by 7% per year in the last four years of each six-year extension](https://domainnamewire.com/2020/03/27/breaking-icann-and-verisign-agree-to-com-extension-with-7-price-hikes/#:~:text=increase%20the%20price%20of%20.com%20domains%20by%207%25%20per%20year%20in%20the%20last%20four%20years%20of%20each%20six-year%20extension) — alongside a payment from Verisign to ICANN of $4 million a year for five years for "DNS security." The public comment period drew roughly 9,000 submissions, the overwhelming majority opposed. ICANN approved it the day after publishing its analysis of those comments.
 
-The result is a steady, contractually-guaranteed climb. The wholesale price has gone $7.85 → $8.39 → $8.97 → $9.59 → $10.26, and it is [rising from $10.26 to $10.97](https://domainnamewire.com/2025/11/19/verisign-can-increase-com-prices-in-2026/#:~:text=increase%20from%20%2410.26%20to%20%2410.97) in 2026.
+As of October 22, 2026, Verisign charges USD 10.26 per registration-year at the registry wholesale level. [Verisign announced a fee of USD 10.97 effective November 1, 2026](https://www.sec.gov/Archives/edgar/data/1014473/000101447326000019/q12026earningsrelease.htm#:~:text=effective%20Nov.) for new registrations and renewals. Registrars set their own retail prices. Check the renewal quote rather than assuming the wholesale fee is your final price.
 
-![A rising staircase of .com price tags from $7.85 to $10.97 marked with a 'regulated' seal — the contractually guaranteed climb of the wholesale price](../../assets/com-03-price-escalator.jpg)
 
 Why this is so contested comes down to economics that are hard to find anywhere else in business. Verisign runs .com under a contract that was never put out for competitive bid — and when other countries *have* bid out their registries, the prices came in a fraction as high (a bid to run India's `.in` came in from [Neustar at just 70 cents per domain name per year](https://circleid.com/posts/20181112_verisigns_attempt_to_increase_fees_unjustified_despite#:~:text=Neustar%20at%20just%2070%20cents%20per%20domain%20name%20per%20year), against Verisign's near-$11). Industry analysts peg Verisign's true cost to operate a .com name at a few dollars at most, and the company's operating margins sit around two-thirds of revenue. The American Economic Liberties Project estimated the post-2018 increases alone [represent an additional $383 million annual windfall for Verisign's shareholders](https://www.economicliberties.us/our-work/a-call-for-com-petition-reining-in-verisigns-monopoly-over-the-internets-most-popular-top-level-domain/#:~:text=represents%20an%20additional%20%24383%20million%20annual%20windfall), and in 2024 [Senator Elizabeth Warren and Rep. Jerry Nadler wrote to the National Telecommunications and Information Administration and Department of Justice](https://www.warren.senate.gov/newsroom/press-releases/warren-nadler-urge-regulators-to-take-action-on-verisigns-monopoly-over-com-website-prices#:~:text=wrote%20to%20the%20National%20Telecommunications%20and%20Information%20Administration) urging action on Verisign's pricing.
 
@@ -211,7 +210,7 @@ With more than 161 million .com names registered, the supply of short, dictionar
 
 ### How much does a .com cost, and does the price keep rising?
 
-Registrars set their own retail prices, but the registry wholesale price is regulated. Since a 2018 U.S. government amendment, Verisign may raise it by up to 7% in four of every six years — it has climbed from $7.85 to $10.97 — so plan around the renewal, not just the first-year signup rate.
+As of October 22, 2026, Verisign charges USD 10.26 per registration-year at the registry wholesale level. Verisign announced a fee of USD 10.97 effective November 1, 2026 for new registrations and renewals. Registrars set their own retail prices. Check the renewal quote rather than assuming the wholesale fee is your final price.
 
 ### Who should register a .com domain?
 
