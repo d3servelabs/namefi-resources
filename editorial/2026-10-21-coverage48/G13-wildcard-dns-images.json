@@ -1,0 +1,92 @@
+{
+  "model_requested": "gpt-image-2",
+  "quality": "high",
+  "attempts": [
+    {
+      "attempt": 1,
+      "script_private": "/private/tmp/namefi-stack48/36-wildcard-dns-records/inline-attempt1.sh",
+      "response_private": "/private/tmp/namefi-stack48/36-wildcard-dns-records/image-attempt1/resp.json",
+      "usage_private": "/private/tmp/namefi-stack48/36-wildcard-dns-records/image-attempt1/usage.json",
+      "api_returned": {
+        "created": 1792633035,
+        "usage": {
+          "input_tokens": 460,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 460
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5948
+        },
+        "model": null
+      },
+      "qc": "PASS: exact domains and NOERROR / no A / NXDOMAIN labels. No clipping, official logo, generous cream margins."
+    }
+  ],
+  "assets": [
+    {
+      "path": "content/assets/wildcard-dns-records-01-wildcard-answers.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "9d7308da85a177e6d54c9d245258625cbb4b05472b1cdbcbb28cf5903e4034fa",
+      "action": "reused",
+      "visual_qc": "Opened final file. Text legible, no cutoff, official logo top-right, cream margins. Diagram remains consistent with article."
+    },
+    {
+      "path": "content/assets/wildcard-dns-records-02-closest-encloser.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "bc6d601a138806e70f7403362497dd4c857d3f9640ec98eb53d849e4dce4951c",
+      "action": "reused",
+      "visual_qc": "Opened final file. Text legible, no cutoff, official logo top-right, cream margins. Diagram remains consistent with article."
+    },
+    {
+      "path": "content/assets/wildcard-dns-records-03-three-checks.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "a1dd2bca75a4cd8cfc9757fcb327d26cfdee0aaafad1cc9838459f7aae0424fa",
+      "action": "reused",
+      "visual_qc": "Opened final file. Text legible, no cutoff, official logo top-right, cream margins. Diagram remains consistent with article."
+    },
+    {
+      "path": "content/assets/wildcard-dns-records-04-test-matrix.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "2634db4f4ca421d7a2de371f80a62965c99bda62a58e554ad0600681b44db446",
+      "action": "reused",
+      "visual_qc": "Opened final file. Text legible, no cutoff, official logo top-right, cream margins. Diagram remains consistent with article."
+    },
+    {
+      "path": "content/assets/wildcard-dns-records-05-query-results.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "4bbd5a1ddfb60ec2486dfeb6c28836f2fad5faf9b7badd01c19b083c5587f74d",
+      "action": "generated",
+      "visual_qc": "Opened final file. Text legible, no cutoff, official logo top-right, cream margins. Diagram remains consistent with article."
+    },
+    {
+      "path": "content/assets/wildcard-dns-records-og.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "6446511a0920b71694f5e21e5a1f232c8393242ffbba2ff6eec0f4abb2a95117",
+      "action": "reused",
+      "visual_qc": "Opened final file. Text legible, no cutoff, official logo top-right, cream margins. Diagram remains consistent with article."
+    }
+  ]
+}
