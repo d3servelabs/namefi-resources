@@ -42,6 +42,7 @@ relatedGlossary:
   - /zh-CN/glossary/tld/
   - /zh-CN/glossary/icann/
   - /zh-CN/glossary/registry/
+ogImage: ../../assets/what-is-domain-og.jpg
 ---
 ## **什么是域名？**
 

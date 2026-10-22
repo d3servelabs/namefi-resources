@@ -30,6 +30,7 @@ relatedGlossary:
   - /ta/glossary/tld/
   - /ta/glossary/icann/
   - /ta/glossary/registry/
+ogImage: ../../assets/what-is-domain-og.jpg
 ---
 
 ## **டொமைன் பெயர் என்றால் என்ன?**
