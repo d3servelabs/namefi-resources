@@ -1,0 +1,1079 @@
+{
+  "source_id": "G04",
+  "language_id_source": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "records": [
+    {
+      "fetched_utc": "2026-10-22T00:40:39Z",
+      "request": {
+        "language": "languageConstants/1019",
+        "geoTargetConstants": [
+          "geoTargetConstants/2818"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "تغيير dns مزود الخدمة",
+          "dns شركة الانترنت"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "تغيير dns مزود الخدمة"
+          },
+          {
+            "text": "dns شركة الانترنت"
+          }
+        ]
+      },
+      "evidence_file": "ads-ar-EG.json"
+    },
+    {
+      "fetched_utc": "2026-10-22T00:40:19Z",
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "provider dns oder google dns",
+          "dns anbieter wechseln",
+          "telekom dns server"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "dns anbieter wechseln",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "29"
+            }
+          },
+          {
+            "text": "telekom dns server",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                }
+              ],
+              "avgMonthlySearches": "880",
+              "competitionIndex": "4",
+              "lowTopOfPageBidMicros": "2881294",
+              "highTopOfPageBidMicros": "7714962"
+            }
+          },
+          {
+            "text": "provider dns oder google dns"
+          }
+        ]
+      },
+      "evidence_file": "ads-de-DE.json"
+    },
+    {
+      "fetched_utc": "2026-10-22T00:40:17Z",
+      "request": {
+        "language": "languageConstants/1000",
+        "geoTargetConstants": [
+          "geoTargetConstants/2840"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "spectrum dns servers",
+          "comcast dns",
+          "xfinity dns",
+          "att dns servers",
+          "isp dns vs public dns"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "spectrum dns servers",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                }
+              ],
+              "avgMonthlySearches": "880",
+              "competitionIndex": "7",
+              "lowTopOfPageBidMicros": "9320571",
+              "highTopOfPageBidMicros": "14750000"
+            }
+          },
+          {
+            "text": "comcast dns",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                }
+              ],
+              "avgMonthlySearches": "720",
+              "competitionIndex": "0"
+            }
+          },
+          {
+            "text": "xfinity dns",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                }
+              ],
+              "avgMonthlySearches": "720",
+              "competitionIndex": "0"
+            }
+          },
+          {
+            "text": "att dns servers",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "1600"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                }
+              ],
+              "avgMonthlySearches": "590",
+              "competitionIndex": "4",
+              "lowTopOfPageBidMicros": "20225664",
+              "highTopOfPageBidMicros": "69979224"
+            }
+          },
+          {
+            "text": "isp dns vs public dns",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "0"
+            }
+          }
+        ]
+      },
+      "evidence_file": "ads-en-US.json"
+    },
+    {
+      "fetched_utc": "2026-10-22T00:40:18Z",
+      "request": {
+        "language": "languageConstants/1003",
+        "geoTargetConstants": [
+          "geoTargetConstants/2484"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "dns del proveedor o google",
+          "cambiar dns del proveedor",
+          "dns telmex"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "dns telmex",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                }
+              ],
+              "avgMonthlySearches": "210",
+              "competitionIndex": "2"
+            }
+          },
+          {
+            "text": "dns del proveedor o google"
+          },
+          {
+            "text": "cambiar dns del proveedor"
+          }
+        ]
+      },
+      "evidence_file": "ads-es-MX.json"
+    },
+    {
+      "fetched_utc": "2026-10-22T00:40:18Z",
+      "request": {
+        "language": "languageConstants/1003",
+        "geoTargetConstants": [
+          "geoTargetConstants/2840"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "dns de xfinity",
+          "cambiar dns xfinity",
+          "dns del proveedor o google"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "dns de xfinity"
+          },
+          {
+            "text": "cambiar dns xfinity"
+          },
+          {
+            "text": "dns del proveedor o google"
+          }
+        ]
+      },
+      "evidence_file": "ads-es-US.json"
+    },
+    {
+      "fetched_utc": "2026-10-22T00:40:19Z",
+      "request": {
+        "language": "languageConstants/1002",
+        "geoTargetConstants": [
+          "geoTargetConstants/2250"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "dns fournisseur ou google",
+          "changer dns fournisseur",
+          "dns orange"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "dns orange",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                }
+              ],
+              "avgMonthlySearches": "720",
+              "competitionIndex": "0"
+            }
+          },
+          {
+            "text": "dns fournisseur ou google"
+          },
+          {
+            "text": "changer dns fournisseur"
+          }
+        ]
+      },
+      "evidence_file": "ads-fr-FR.json"
+    },
+    {
+      "fetched_utc": "2026-10-22T00:40:42Z",
+      "request": {
+        "language": "languageConstants/1023",
+        "geoTargetConstants": [
+          "geoTargetConstants/2356"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "इंटरनेट प्रदाता डीएनएस",
+          "डीएनएस सर्वर बदलें"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "इंटरनेट प्रदाता डीएनएस"
+          },
+          {
+            "text": "डीएनएस सर्वर बदलें"
+          }
+        ]
+      },
+      "evidence_file": "ads-hi-IN.json"
+    },
+    {
+      "fetched_utc": "2026-10-22T00:40:20Z",
+      "request": {
+        "language": "languageConstants/1005",
+        "geoTargetConstants": [
+          "geoTargetConstants/2392"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "プロバイダ dns パブリックdns",
+          "プロバイダ dns 変更"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "プロバイダ dns パブリック dns",
+            "closeVariants": [
+              "プロバイダ dns パブリックdns"
+            ]
+          },
+          {
+            "text": "プロバイダ dns 変更"
+          }
+        ]
+      },
+      "evidence_file": "ads-ja-JP.json"
+    },
+    {
+      "fetched_utc": "2026-10-22T00:40:20Z",
+      "request": {
+        "language": "languageConstants/1012",
+        "geoTargetConstants": [
+          "geoTargetConstants/2410"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "통신사 dns 구글 dns",
+          "통신사 dns 변경"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "통신사 dns 구글 dns"
+          },
+          {
+            "text": "통신사 dns 변경"
+          }
+        ]
+      },
+      "evidence_file": "ads-ko-KR.json"
+    },
+    {
+      "fetched_utc": "2026-10-22T00:41:22Z",
+      "request": {
+        "language": "languageConstants/1130",
+        "geoTargetConstants": [
+          "geoTargetConstants/2356"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "இணைய வழங்குநர் dns",
+          "dns சேவையகம் மாற்றுவது"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "இணைய வழங்குநர் dns"
+          },
+          {
+            "text": "dns சேவையகம் மாற்றுவது"
+          }
+        ]
+      },
+      "evidence_file": "ads-ta-IN.json"
+    },
+    {
+      "fetched_utc": "2026-10-22T00:40:19Z",
+      "request": {
+        "language": "languageConstants/1017",
+        "geoTargetConstants": [
+          "geoTargetConstants/2156"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "运营商dns和公共dns",
+          "运营商dns",
+          "更换dns"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "运营 商 dns",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "0"
+            },
+            "closeVariants": [
+              "运营商dns"
+            ]
+          },
+          {
+            "text": "更换 dns",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "0"
+            },
+            "closeVariants": [
+              "更换dns"
+            ]
+          },
+          {
+            "text": "运营 商 dns 和 公共 dns",
+            "closeVariants": [
+              "运营商dns和公共dns"
+            ]
+          }
+        ]
+      },
+      "evidence_file": "ads-zh-CN.json"
+    }
+  ]
+}
