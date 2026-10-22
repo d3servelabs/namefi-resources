@@ -1,0 +1,584 @@
+{
+  "source_id": "G20",
+  "agent_path": "/root/stack48_coordinator/coverage48_32_g20",
+  "ads": {
+    "request": {
+      "language": "languageConstants/1003",
+      "geoTargetConstants": [
+        "geoTargetConstants/2724"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "cuánto cuesta un dominio",
+        "precio dominio web",
+        "renovar dominio precio"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "cuánto cuesta un dominio",
+          "keywordMetrics": {
+            "competition": "MEDIUM",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "90"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "140"
+              }
+            ],
+            "avgMonthlySearches": "110",
+            "competitionIndex": "63",
+            "lowTopOfPageBidMicros": "941407",
+            "highTopOfPageBidMicros": "2717612"
+          }
+        },
+        {
+          "text": "precio dominio web",
+          "keywordMetrics": {
+            "competition": "HIGH",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "110"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "70"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "90"
+              }
+            ],
+            "avgMonthlySearches": "140",
+            "competitionIndex": "70",
+            "lowTopOfPageBidMicros": "1093519",
+            "highTopOfPageBidMicros": "3823595"
+          }
+        },
+        {
+          "text": "renovar dominio precio"
+        }
+      ]
+    },
+    "fetched_utc": "2026-10-22T01:22:06.218759+00:00"
+  },
+  "gsc": {
+    "source_id": "G20",
+    "slug": "how-much-is-a-domain-understanding-holding-cost",
+    "path_match": "/blog/how-much-is-a-domain-understanding-holding-cost/",
+    "matched_rows": 117,
+    "observed_impressions": 763,
+    "observed_clicks": 10,
+    "countries": {
+      "kor": {
+        "rows": 89,
+        "impressions": 732,
+        "clicks": 10
+      },
+      "jpn": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "are": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "bra": {
+        "rows": 1,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "mex": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "omn": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "egy": {
+        "rows": 4,
+        "impressions": 5,
+        "clicks": 0
+      },
+      "pse": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "tur": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "dza": {
+        "rows": 4,
+        "impressions": 4,
+        "clicks": 0
+      },
+      "kwt": {
+        "rows": 3,
+        "impressions": 3,
+        "clicks": 0
+      },
+      "sau": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "syr": {
+        "rows": 2,
+        "impressions": 2,
+        "clicks": 0
+      },
+      "bhr": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "ecu": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "swe": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "bgd": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      },
+      "ind": {
+        "rows": 1,
+        "impressions": 1,
+        "clicks": 0
+      }
+    }
+  },
+  "selection": {
+    "es-ES": "Update existing Spanish translation. Two relevant native queries average 110 and 140 searches/month. Prices and recurring costs directly answer the intent.",
+    "other_existing_locales": "Preserve seven other existing translations. Repair unsupported price ranges and recovery-policy scope only. Broader updates deferred without market-specific Ads evidence; demand UNKNOWN.",
+    "new_locales": "None. Existing article already covers all ten supported routes.",
+    "ko-KR": "Update existing Korean translation. 도메인 가격 averages 480/month and 도메인 비용 averages 170/month. 도메인 갱신 비용 has no metrics (UNKNOWN). GSC independently shows 732 impressions/10 clicks. Registration/renewal comparison matches local query intent."
+  },
+  "language_validation": {
+    "source": "https://developers.google.com/google-ads/api/data/codes-formats",
+    "Spanish": 1003,
+    "checked": "2026-10-21",
+    "Korean": 1012
+  },
+  "routing": {
+    "source": "namefi-astra/main/apps/resources/src/i18n-config.ts and app/[lang]/blog/[slug]/page.tsx:94-137",
+    "locales": [
+      "en",
+      "es",
+      "de",
+      "fr",
+      "zh-CN",
+      "ar",
+      "hi",
+      "ko",
+      "ja",
+      "ta"
+    ],
+    "self_canonical": true,
+    "actual_translations_only_hreflang": true,
+    "x_default": "en"
+  },
+  "expected_urls": [
+    "https://namefi.io/r/en/blog/how-much-is-a-domain-understanding-holding-cost",
+    "https://namefi.io/r/es/blog/how-much-is-a-domain-understanding-holding-cost",
+    "https://namefi.io/r/de/blog/how-much-is-a-domain-understanding-holding-cost",
+    "https://namefi.io/r/fr/blog/how-much-is-a-domain-understanding-holding-cost",
+    "https://namefi.io/r/zh-CN/blog/how-much-is-a-domain-understanding-holding-cost",
+    "https://namefi.io/r/ar/blog/how-much-is-a-domain-understanding-holding-cost",
+    "https://namefi.io/r/hi/blog/how-much-is-a-domain-understanding-holding-cost",
+    "https://namefi.io/r/ko/blog/how-much-is-a-domain-understanding-holding-cost",
+    "https://namefi.io/r/ja/blog/how-much-is-a-domain-understanding-holding-cost",
+    "https://namefi.io/r/ta/blog/how-much-is-a-domain-understanding-holding-cost"
+  ],
+  "serp_intent": {
+    "query": "cuánto cuesta un dominio precio renovar dominio España",
+    "checked": "2026-10-21",
+    "primary_results": [
+      "https://www.dominios.es/es/registra-un-dominio/cuanto-registrarlo",
+      "https://www.dominios.es/es/gestiona-tu-dominio/renueva-tu-dominio",
+      "https://www.arsys.es/dominios/precios"
+    ],
+    "decision": "Spanish search results separate registration and renewal, matching the article reader task. Search snippets informed intent only; article prices come from opened primary sources."
+  },
+  "source_checks": [
+    {
+      "url": "https://porkbun.com/products/domains",
+      "fetched": "2026-10-21",
+      "supports": "Non-premium one-year .com 11.08 registration/renewal, .blog 2.57 first year/21.11 renewal, USD, ICANN/other fees included; restoration 200 plus renewal."
+    },
+    {
+      "url": "https://www.cloudflare.com/domains/",
+      "fetched": "2026-10-21",
+      "supports": "Registrar registry/ICANN cost and WHOIS redaction."
+    },
+    {
+      "url": "https://aws.amazon.com/route53/pricing/",
+      "fetched": "2026-10-21",
+      "supports": "First 25 hosted zones 0.50/month; query fees separate."
+    },
+    {
+      "url": "https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en",
+      "fetched": "2026-10-21",
+      "supports": "Sections 3.1 and 4.1: non-sponsored gTLD redemption scope, add-grace exclusion, fee publication."
+    },
+    {
+      "url": "https://www.namecheap.com/domains/registration/gtld/com/",
+      "fetched": "2026-10-21",
+      "supports": "Opened prior source; removed old September snapshot in favor of current directly readable table."
+    },
+    {
+      "url": "https://www.namecheap.com/domains/registration/cctld/io/",
+      "fetched": "2026-10-21",
+      "supports": "Opened prior source; no retained price claim."
+    }
+  ],
+  "image": {
+    "new": "content/assets/how-much-is-a-domain-understanding-holding-cost-01-budget.jpg",
+    "model": "gpt-image-2",
+    "quality": "high",
+    "dimensions": [
+      1200,
+      675
+    ],
+    "attempts": 1,
+    "usage": {
+      "model": "gpt-image-2",
+      "quality": "high",
+      "usage": {
+        "input_tokens": 395,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 395
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5883
+      },
+      "created": 1792632185
+    },
+    "qc": {
+      "opened_final_jpeg": true,
+      "cream_full_bleed": true,
+      "no_cutoff": true,
+      "generous_margin": true,
+      "official_logo_top_right": true,
+      "spelling": "REGISTRATION and RENEWAL correct. Model added 2025/2026/2027 to show consecutive example years; article calculation remains explicitly hypothetical.",
+      "scope": "Inline illustration, so cover bottom band requirement does not apply."
+    },
+    "private_response": "/private/tmp/namefi-stack48/32-how-much-is-a-domain-understanding-holding-cost/image-attempt1-response-private.json",
+    "attempt_script": "/private/tmp/namefi-stack48/32-how-much-is-a-domain-understanding-holding-cost/image-attempt1.sh",
+    "sha256": "ae564324d8e3ee55cabf1892ac8bc02b8e2bbba526de7841ecf433ed8fba52b4",
+    "reused": [
+      "content/assets/how-much-is-a-domain-understanding-holding-cost-og.jpg",
+      "content/assets/how-much-is-a-domain-understanding-holding-cost-01-bills.jpg"
+    ]
+  },
+  "sanity": {
+    "data_validate": "PASS; 37 existing warnings; 4055 files; 0 locale/relationship mismatches",
+    "mdx_lint": "PASS",
+    "focused_links": "10 files; 0 broken, missing-locale, locale-mismatch, relationship-mismatch, missing-translation",
+    "translation_qa": "Changed-unit comparison: Spanish and Korean include both new sections, full table, hypothetical arithmetic, DNS charges, transfer double-count warning, Cloudflare model, citations, alt text. All nine existing translations retain full bodies and ordered relationships. Numeric-range repair and recovery-scope caveat reviewed in all nine. Native human/rendered LQA not performed."
+  },
+  "usage_boundaries": {
+    "checkpoints": "/private/tmp/namefi-stack48/32-how-much-is-a-domain-understanding-holding-cost/usage-checkpoints.json",
+    "model": "gpt-6.1-sol",
+    "limitations": "Actual emitted cumulative counters only. Research-start and research-end/writing-start captured. Translation-start and images-start counters were not captured at their transitions and are UNKNOWN; end checkpoint captured. Do not infer missing stage token costs from zero. Image response and per-attempt usage retained before parsing."
+  },
+  "shared_readme_review": "Root/editorial README remain accurate; no shared README changes proposed.",
+  "ads_ko_KR": {
+    "request": {
+      "language": "languageConstants/1012",
+      "geoTargetConstants": [
+        "geoTargetConstants/2410"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "도메인 가격",
+        "도메인 비용",
+        "도메인 갱신 비용"
+      ],
+      "includeAdultKeywords": false
+    },
+    "response": {
+      "results": [
+        {
+          "text": "도메인 가격",
+          "keywordMetrics": {
+            "competition": "MEDIUM",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "320"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "390"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "480"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "590"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "590"
+              }
+            ],
+            "avgMonthlySearches": "480",
+            "competitionIndex": "63",
+            "lowTopOfPageBidMicros": "329842",
+            "highTopOfPageBidMicros": "901125"
+          }
+        },
+        {
+          "text": "도메인 비용",
+          "keywordMetrics": {
+            "competition": "MEDIUM",
+            "monthlySearchVolumes": [
+              {
+                "month": "OCTOBER",
+                "year": "2025",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "NOVEMBER",
+                "year": "2025",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "DECEMBER",
+                "year": "2025",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "JANUARY",
+                "year": "2026",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "FEBRUARY",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "MARCH",
+                "year": "2026",
+                "monthlySearches": "210"
+              },
+              {
+                "month": "APRIL",
+                "year": "2026",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "MAY",
+                "year": "2026",
+                "monthlySearches": "140"
+              },
+              {
+                "month": "JUNE",
+                "year": "2026",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "JULY",
+                "year": "2026",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "AUGUST",
+                "year": "2026",
+                "monthlySearches": "170"
+              },
+              {
+                "month": "SEPTEMBER",
+                "year": "2026",
+                "monthlySearches": "170"
+              }
+            ],
+            "avgMonthlySearches": "170",
+            "competitionIndex": "62",
+            "lowTopOfPageBidMicros": "317639",
+            "highTopOfPageBidMicros": "838093"
+          }
+        },
+        {
+          "text": "도메인 갱신 비용"
+        }
+      ]
+    },
+    "fetched_utc": "2026-10-22T01:25:55.839061+00:00"
+  },
+  "serp_intent_ko": {
+    "query": "도메인 가격 갱신 비용 등록",
+    "checked": "2026-10-21",
+    "primary_result": "https://dynadot.com.cn/ko/domain/prices",
+    "finding": "Korean price pages separate registration, renewal and transfer. Search result used for intent only; no copied price assertion."
+  }
+}
