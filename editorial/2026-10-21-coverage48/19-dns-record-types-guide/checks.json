@@ -1,5 +1,5 @@
 {
-  "data_validate": "PASS; 37 pre-existing warnings; 4056 files; 0 locale mismatch; 0 relationship mismatch",
+  "data_validate": "PASS; 37 pre-existing warnings; 4064 files; 0 locale mismatch; 0 relationship mismatch",
   "lint_mdx": "PASS",
   "topic_links": "PASS; 0 broken, 0 missing-locale, 0 locale mismatch, 0 relationship mismatch, 3 intentional translation fallbacks",
   "links_test": "18 pass, 0 fail, 95 expectations",
@@ -8,7 +8,7 @@
     "headings_ja": 7,
     "table_lines_en": 33,
     "table_lines_ja": 33,
-    "body_link_targets_each": 56,
+    "body_link_targets_each": 57,
     "code_spans_each": 39,
     "external_url_and_code_multisets": "identical",
     "exact_english_body_copy": false
@@ -24,9 +24,11 @@
       844
     ],
     "mobile_page_width": 390,
-    "images_loaded": 4,
+    "images_loaded": 5,
     "screenshots_opened": true,
-    "limitation": "Static content preview, not the application shell. Deployed canonical, hreflang and final mobile layout remain pending the remote gate."
+    "limitation": "Static content preview, not the application shell. Deployed canonical, hreflang and final mobile layout remain pending the remote gate.",
+    "new_selection_screenshots_opened": true,
+    "new_selection_mobile_page_width": 390
   },
   "translation_provenance": "GPT-6.1-sol direct from revised English; complete block-by-block Japanese prose. Author checked semantic coverage and Japanese reading. No human native LQA or independent review requested or claimed.",
   "expected_locale_urls": [
@@ -50,5 +52,6 @@
     },
     "limitation": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand."
   },
-  "remote_actions": "None. No pushes, PR actions, reviews, hosted CI, merge or release."
+  "remote_actions": "None. No pushes, PR actions, reviews, hosted CI, merge or release.",
+  "image_followup": "Root requested one actual new selection illustration after the initial all-reused package. New image has the same bilingual reference and locale-native alt text."
 }

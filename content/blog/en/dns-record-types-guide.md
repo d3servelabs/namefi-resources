@@ -40,6 +40,8 @@ The useful question is more specific than â€œWhich records does a domain need?â€
 
 ## Record types answer different service questions
 
+![Website addresses use A or AAAA, website aliases use CNAME, mail delivery uses MX, SPF uses TXT, and zone authority uses NS with SOA.](../../assets/dns-record-types-guide-05-record-selection.jpg)
+
 Use this table to choose the part of the zone to investigate. The table summarizes the record roles explained and sourced below.
 
 | Type | Data or purpose | Use the record when |

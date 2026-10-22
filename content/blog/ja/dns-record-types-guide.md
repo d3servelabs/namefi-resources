@@ -40,6 +40,8 @@ relatedSeries:
 
 ## レコードタイプはサービスごとの異なる質問に答えます
 
+![ウェブサイトのアドレスには A・AAAA、別名には CNAME、メール配送には MX、SPF には TXT、ゾーンの権威には NS と SOA を使います。](../../assets/dns-record-types-guide-05-record-selection.jpg)
+
 次の表で、調べるべきゾーンの設定を選んでください。各レコードの役割と根拠は、後の節で説明します。
 
 | タイプ | データまたは目的 | 利用する場面 |

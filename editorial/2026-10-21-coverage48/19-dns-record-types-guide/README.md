@@ -1,7 +1,8 @@
 # This package updates the DNS record selection guide
 
 Order 19 owns G11, `dns-record-types-guide`, from base `4ec5cb8f88ae9f08eba4e522f88c3ed0b59a305e`.
-The English page keeps its title, URL, application-dependency structure, and four existing illustrations.
+The English page keeps its title, URL, application-dependency structure, and four existing section illustrations.
+A new illustration explains the added record-selection table.
 The update adds a twelve-row record selection table and five examples with explicit record fields.
 The update distinguishes IANA type names from abbreviated queries and explains legacy SPF type publication.
 The existing English specialist articles retain their independent AAAA, alias, reverse DNS, and TXT jobs.
@@ -53,17 +54,23 @@ Cloudflare rejected the direct Python fetches; the web tool then opened the actu
 No failed fetch counts as evidence.
 The article dates use the actual local retrieval date, October 21, 2026.
 
-`images.json` records five reused assets, SHA-256 hashes, dimensions, and visual checks.
+`images.json` records five reused assets and one newly generated selection diagram, with SHA-256 hashes, dimensions, and visual checks.
 The writer opened every final asset and confirmed relevant content, spelling, margins, logo position, and cover caption space.
-The revision needs no replacement image because the existing section diagrams still describe the same dependencies.
-No new image API attempts occurred, so this package claims no new API usage.
+The existing section diagrams still describe the same dependencies.
+The new selection diagram adds an overview of website, email, and authority decisions.
+The image uses the house inline script with gpt-image-2 at high quality.
+The package preserves available attempt-specific image usage before any retry.
+Attempt 1 failed locally after the API request because the writer modified a running scratch script.
+Cleanup removed the temporary response before capture; attempt 1 API outcome and returned usage remain UNKNOWN.
+The failure record explicitly preserves the missing measurement instead of inventing zero usage.
+Attempt 2 uses a fixed script with usage capture before image decoding.
 English labels remain in the shared diagrams; Japanese alt text explains every diagram.
 
 ## Local sanity checks pass without remote activity
 
 `checks.json` records local validation, locale links, translation invariants, static MDX compilation, and browser preview results.
 The writer opened desktop and mobile screenshots of the local Japanese preview.
-The static preview shows complete Japanese text and four loaded inline images without page overflow at 390 pixels.
+The static preview shows complete Japanese text and five loaded inline images without page overflow at 390 pixels.
 The application shell and deployed canonical/hreflang checks remain future publication checks.
 The existing renderer owns self-canonical and reciprocal language metadata for the two actual locale files.
 The writer added no unsupported SEO frontmatter.
@@ -71,6 +78,7 @@ The writer added no unsupported SEO frontmatter.
 `usage-checkpoints.json` records actual emitted session counters and model metadata.
 Cached input and reasoning output remain subsets rather than additional token charges.
 The initial research checkpoint follows instruction loading, so the initial checkpoint is not a full session-start measurement.
-The image inspection start checkpoint is unavailable; the writer did not invent a counter.
+The initial reused-image inspection start checkpoint is unavailable; the writer did not invent a counter.
+The new image generation has separate start and completion checkpoints.
 The writer made no README edits outside this topic folder because the coordinator owns shared batch inventories.
 No push, PR action, code review, third-party review, hosted CI, merge, or deployment occurred.

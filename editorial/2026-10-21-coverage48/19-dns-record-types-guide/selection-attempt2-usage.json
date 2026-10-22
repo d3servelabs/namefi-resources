@@ -1,0 +1,18 @@
+{
+  "created": 1792629378,
+  "model": null,
+  "usage": {
+    "input_tokens": 509,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 509
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+      "image_tokens": 5488,
+      "text_tokens": 0
+    },
+    "total_tokens": 5997
+  },
+  "error": null
+}
