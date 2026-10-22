@@ -75,6 +75,8 @@ For a permanent move of ordinary content pages, 301 can express the intended mov
 
 Consider a hypothetical contact form that submits to `https://example.com/contact`. A successful home-page redirect tells little about that form. If the destination receives GET instead of POST, the destination may never receive the intended submission. Preserving POST also requires a destination that accepts the submitted request. A status code cannot make two applications compatible.
 
+A preserved method also does not promise preserved authentication. A cross-domain destination changes the request context. RFC 9110 tells clients to reconsider fields such as `Authorization` and `Cookie` during redirection. [Its redirect procedure explains those checks](https://www.rfc-editor.org/rfc/rfc9110.html#section-15.4). Test signed-in flows separately from public GET requests. Confirm which credentials the destination actually receives, without logging secret values.
+
 Before redirecting a form or API, have the application owner define the expected request and response. Use harmless test data in a controlled environment. Check which endpoint receives the request, which method arrives, and whether the application completes the intended action. Avoid testing payment or account-changing actions with real submissions.
 
 Permanence also affects recovery planning. RFC 9110 identifies 301 and 308 as heuristically cacheable. A corrected server rule does not establish that every client immediately forgets a previous response. [The status definitions describe this caching behavior](https://www.rfc-editor.org/rfc/rfc9110.html#section-15.4.9). Verify the mapping before enabling a permanent rule, and inspect cache controls during troubleshooting.
@@ -105,6 +107,18 @@ That arrangement does not perform the same top-level navigation as an HTTP redir
 
 An embedded page can also refuse framing. CSP `frame-ancestors` specifies which parent pages may embed content, and `'none'` disallows parents. [MDN explains that directive](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors). If masking produces an empty frame, inspect the browser console and destination headers. Changing DNS cannot override the destination's framing policy.
 
+## Browsers handle fragments separately from paths and queries
+
+![The browser retains an example fragment while the server receives only the path.](../../assets/domain-forwarding-redirects-05-fragment-handling.jpg)
+
+The fragment after `#` belongs to browser-side processing. The HTTP target URI excludes the fragment. A forwarding server therefore cannot select a rule from the original `#install` alone. [RFC 9110 distinguishes the fragment from the request target](https://www.rfc-editor.org/rfc/rfc9110.html#section-7.1).
+
+For example, a visitor might open `https://example.com/help#install`. Suppose the response contains `Location: https://example.net/docs` without a fragment. The browser must inherit the original fragment when following that redirect. The resulting address becomes `https://example.net/docs#install`. [RFC 9110 specifies fragment inheritance](https://www.rfc-editor.org/rfc/rfc9110.html#section-10.2.2).
+
+That inherited fragment helps only when the destination understands `#install`. If the new page uses a different section identifier, test the resulting section explicitly. A working page response does not prove that the browser selected the intended section. A destination fragment in `Location` changes the inheritance case, so record fragments separately from query parameters.
+
+A canonical annotation serves another purpose. A `rel="canonical"` annotation expresses a preferred URL for search processing. The annotation does not itself navigate a visitor. Google describes canonicalization methods as signals and can choose a different canonical URL. [Google explains canonical selection](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls). Use an HTTP redirect when visitors need to move, and keep the destination's canonical annotation consistent with the intended URL.
+
 ## Testing confirms the redirect before a website move
 
 ![Testing confirms the redirect before a website move.](../../assets/domain-forwarding-redirects-04-acceptance-checks.jpg)
@@ -120,6 +134,25 @@ For a command-line inspection, adapt the following hypothetical request to a dom
     curl --silent --show-error --dump-header - --output /dev/null 'https://example.com/help/setup?lang=en'
 
 The command prints response headers and discards the response body. The command does not automatically follow redirects. [The curl manual documents `--dump-header`](https://curl.se/docs/manpage.html#-D). Compare the returned `Location` with the mapping sheet, then request that target separately. Keep certificate verification enabled during HTTPS checks.
+
+The following acceptance sheet illustrates a hypothetical documentation move. Each expected result requires an actual test against the chosen configuration.
+
+| Example source | Expected destination or check |
+| --- | --- |
+| `http://example.com/` | The final HTTPS landing page |
+| `https://www.example.com/help/setup` | The matching page at `https://example.net/help/setup` |
+| `https://example.com/help/setup?lang=en` | The matching page with the required `lang=en` query |
+| `https://example.com/support/install` | The explicit exception at `https://example.net/docs/getting-started` |
+| `https://example.com/help#install` | The mapped page and the intended browser section |
+| A controlled form submission | The expected method, body handling, authentication, and application result |
+
+Inspect the full chain as well as the first response. A rule can reach an intermediate hostname that sends the visitor back. Google recommends redirecting directly to the final destination because chains add latency. [Its migration guide explains redirect chains](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes#prepare-url-mapping). Combine hostname, scheme, and path decisions where the provider supports the intended direct mapping.
+
+For harmless GET checks, the following example follows redirects and limits the chain to five redirects:
+
+    curl --silent --show-error --location --max-redirs 5 --dump-header - --output /dev/null 'https://example.com/help/setup?lang=en'
+
+The headers show each response. Five redirects form a diagnostic limit for this example, not a protocol requirement or SEO guarantee. [The curl manual defines redirect following](https://curl.se/docs/manpage.html#-L) and [the redirect limit](https://curl.se/docs/manpage.html#--max-redirs). The command does not test a form submission or browser fragment behavior.
 
 Classify failures before changing settings. A certificate error requires source HTTPS investigation. A wrong `Location` requires rule investigation. A correct target that returns a missing page requires destination investigation. Repeated redirects require inspection of every step for a loop. MDN describes redirect loops and their failure behavior. [See its loop guidance](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Redirections#redirection_loops).
 
@@ -138,6 +171,7 @@ Close the move only after the mapping sheet matches observed results. Keep the p
 - MDN — [Redirections in HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Redirections#principle), “Principle” and “Redirection loops.” Fetched 2026-10-21.
 - MDN — [How the web works](https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works#so_what_happens_exactly), browser DNS lookup and HTTP request sequence. Fetched 2026-10-21.
 - RFC Editor — [RFC 1034, section 3.6.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6.2), aliases and canonical names. Fetched 2026-10-21.
+- Google Search Central — [Canonical URL methods](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls), canonical signals and consistent annotations. Fetched 2026-10-21.
 - RFC Editor — [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html#section-15.4.2), sections 4.3.3, 7.4, 15.4.2–15.4.3, and 15.4.8–15.4.9. Fetched 2026-10-21.
 - Google Search Central — [Redirects and Google Search](https://developers.google.com/search/docs/crawling-indexing/301-redirects#overview-of-redirect-types), permanent and temporary signals. Fetched 2026-10-21.
 - Cloudflare — [Single Redirects settings](https://developers.cloudflare.com/rules/url-forwarding/single-redirects/settings/#static-url-redirect), static and dynamic targets, query preservation. Fetched 2026-10-21.
