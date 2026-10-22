@@ -114,8 +114,8 @@ relatedGlossary:
 
 **分类**:
 - **通用顶级域名 (Generic TLDs)**: .com, .org, .net, [.info](/zh-CN/tld/info/)
-- **国家代码顶级域名 (Country Code TLDs)**: [.us](/zh-CN/tld/us/), .uk, .de, .cn
-- **新顶级域名 (New TLDs)**: .ai, [.io](/zh-CN/tld/io/), [.tech](/zh-CN/tld/tech/), [.shop](/zh-CN/tld/shop/)
+- **国家代码顶级域名 (Country Code TLDs)**: [.us](/zh-CN/tld/us/), .uk, .de, .cn, [.ai](/zh-CN/tld/ai/), [.io](/zh-CN/tld/io/)
+- **新顶级域名 (New TLDs)**: [.tech](/zh-CN/tld/tech/), [.shop](/zh-CN/tld/shop/)
 
 ### **子域名 (Subdomain)**
 作为更大域名一部分的域名。例如，“blog.example.com”是“example.com”的子域名。子域名可用于组织网站的不同部分。
@@ -125,7 +125,7 @@ relatedGlossary:
 ### **DNS (域名系统 Domain Name System)**
 将人类可读的域名翻译成计算机之间相互通信所需的 IP 地址的系统。它常被称为互联网的“电话簿”。
 
-**功能**: 将 `namefi.io` 转换为 `192.168.1.1` 以进行浏览器通信
+**DNS 示意示例**: `example.com` → `192.0.2.1`. [RFC 5737 §3](https://www.rfc-editor.org/rfc/rfc5737.html#section-3).
 
 ### **WHOIS**
 一种用于查询存储注册域名信息的数据库的协议。[WHOIS](/zh-CN/glossary/whois/) 提供域名所有者、注册日期和联系信息等详细信息。

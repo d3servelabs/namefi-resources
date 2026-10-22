@@ -1,0 +1,63 @@
+{
+  "assets": [
+    {
+      "path": "content/assets/free-domain-offers-og.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "bytes": 132637,
+      "sha256": "4f3e4c9c7600750ab5a98679be97176fef0d8e0a4b339ad33218877f925008ad",
+      "visual_qc": "PASS: inspected final image; spelling, framing, cream background and official top-right logo clear; cover retains bottom caption space."
+    },
+    {
+      "path": "content/assets/free-domain-offers-01-address-types.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 33742,
+      "sha256": "033daa06df72ea9254c566bf89400fff1e5881b0c32ea6095b3912df5740d6f8",
+      "visual_qc": "PASS: inspected final image; spelling, framing, cream background and official top-right logo clear; cover retains bottom caption space."
+    },
+    {
+      "path": "content/assets/free-domain-offers-03-account-control.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 33341,
+      "sha256": "ea4d0fac9b7564c085a88942f679a85c1802f1d05282141f1e95a7465b84744e",
+      "visual_qc": "PASS: inspected final image; spelling, framing, cream background and official top-right logo clear; cover retains bottom caption space."
+    },
+    {
+      "path": "content/assets/free-domain-offers-04-renewal-exit.jpg",
+      "action": "reused",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 38850,
+      "sha256": "47a0ae94ca3efc35a32b6f594357430d88853d12621dd5f8ca84e942953b04cb",
+      "visual_qc": "PASS: inspected final image; spelling, framing, cream background and official top-right logo clear; cover retains bottom caption space."
+    },
+    {
+      "path": "content/assets/free-domain-offers-05-renewal-conditions.jpg",
+      "action": "generated",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 46603,
+      "sha256": "cedb25ebcc6f02f0df9fbfd084a7fdb08e55fac52b340091c839c790984312c0",
+      "visual_qc": "PASS: inspected final image; spelling, framing, cream background and official top-right logo clear; cover retains bottom caption space."
+    }
+  ],
+  "generation_attempts": 1,
+  "regenerations": 0,
+  "previous_asset_retained_unreferenced": "content/assets/free-domain-offers-02-offer-terms.jpg",
+  "generation": "Repository inline-illustration.sh adapted in scratch solely for private header delivery and immutable attempt usage extraction. gpt-image-2 high; official logo from Namefi Astra."
+}

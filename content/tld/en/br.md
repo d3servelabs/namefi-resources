@@ -7,17 +7,17 @@ tags: ['tld']
 authors: ['aileen-wright']
 editors: ['victor-zhou']
 draft: false
-description: '.br is Brazil''s ccTLD, run by Registro.br/NIC.br under CGI.br. Registration requires a CPF or CNPJ tax ID. Learn eligibility, .com.br dominance, and pricing.'
+description: 'Learn Brazil''s .br domain rules: CPF/CNPJ eligibility, foreign-company documents, .com.br categories, DNSSEC, renewal prices, and disputes.'
 keywords: ['.br domain meaning', 'Registro.br', 'CPF CNPJ domain requirement', '.com.br vs direct .br', 'NIC.br']
 faqs:
   - question: 'Can anyone register a .br domain?'
-    answer: 'No. Registro.br requires every registrant to hold a valid Brazilian tax ID — a CPF for individuals or a CNPJ for legal entities — verified against the Federal Revenue Service. Foreign companies can register only by appointing a legally established representative in Brazil and completing a documented registration process.'
+    answer: 'No. The ordinary route requires an adult individual or legal entity legally established in Brazil, CPF or CNPJ identification, and a contact in Brazil. Foreign companies have a separate documented representative process. A CPF alone does not establish that any foreign individual qualifies.'
   - question: 'Does a .br domain affect SEO?'
-    answer: 'Yes. Google treats .br as a country-code TLD geo-targeted to Brazil, since it is not on Google''s short list of ccTLDs treated as generic. That helps Brazil-focused sites rank for Brazilian searches and works against sites targeting a global audience.'
+    answer: 'Google treats .br as a country-code domain associated with Brazil. The country signal can help Google identify the intended audience, but it does not guarantee higher rankings. A global site should consider whether Brazil-specific targeting matches its audience.'
   - question: 'What is the difference between .com.br and direct .br?'
-    answer: 'Both require the same CPF/CNPJ eligibility. .com.br is by far the dominant category, covering the large majority of all .br registrations. Direct second-level .br registration (yourname.br, without a category) also exists but remains a small fraction of the namespace by comparison.'
+    answer: '.com.br is a commercial category available through ordinary registration to eligible individuals and legal entities. Direct names such as name.br are not a general commercial alternative. NIC.br documents the closure of automatic root registration and preservation of qualifying historical academic names.'
   - question: 'Who runs the .br domain?'
-    answer: 'The Brazilian Internet Steering Committee (CGI.br) sets policy for .br. Its executive arm, the Brazilian Network Information Center (NIC.br), operates the registry through its Registro.br department, which IANA lists as the ccTLD manager.'
+    answer: 'IANA lists Comite Gestor da Internet no Brasil, or CGI.br, as the .br manager. NIC.br provides registration services through Registro.br. Registry rules and the registration contract govern eligibility and maintenance.'
 relatedArticles:
   - /en/blog/what-is-a-tld/
   - /en/blog/cctld-market-share-by-registration-volume/
@@ -38,123 +38,133 @@ relatedGlossary:
   - /en/glossary/idn/
 ---
 
-The **.br domain** is Brazil's official [country-code top-level domain](/en/glossary/cctld/) (ccTLD), and one of the largest ccTLDs in the world by registration volume. Every .br registration — whether under the dominant `.com.br` category or a direct second-level name — requires a valid Brazilian tax ID: a **CPF** for individuals or a **CNPJ** for companies. This page covers what .br is, who runs it, exactly who is eligible (including the documented path for foreign companies), and the honest trade-offs on pricing, SEO, and reputation.
+The **.br domain** is Brazil's [country-code top-level domain](/en/glossary/cctld/) (ccTLD). Most buyers choose a category such as `.com.br`, rather than a name directly under `.br`. Registration requires more than an available name. Applicants must satisfy local eligibility, identification, and category rules.
 
-## .br at a glance
+This guide explains the ordinary CPF/CNPJ route, the separate foreign-company process, and the costs and responsibilities of keeping a Brazilian domain.
+
+## .br identifies Brazil in the domain name system
 
 | Fact | Detail |
 | --- | --- |
-| TLD type | Country-code TLD (ccTLD) for Brazil |
-| Registry operator | [Comitê Gestor da Internet no Brasil (CGI.br)](https://www.iana.org/domains/root/db/br.html), operated by NIC.br / Registro.br |
-| Year delegated | 1989 |
-| IDN support | Yes — Portuguese accented characters (à, á, â, ã, é, ê, í, ó, ô, õ, ú, ü, ç) |
-| DNSSEC | Supported |
-| Registration restrictions | **Restricted — CPF (individual) or CNPJ (legal entity) tax ID required**; foreign entities need a Brazil-based legal representative |
-| Best for | Brazilian businesses, professionals, and organizations; foreign companies with an established Brazilian presence |
+| TLD type | Country-code TLD for Brazil |
+| IANA manager | CGI.br, the Brazilian Internet Steering Committee |
+| Registration service | NIC.br, through Registro.br |
+| Delegation | 1989 |
+| Main commercial category | `.com.br` |
+| Identification | CPF for individuals or CNPJ for legal entities, with a separate foreign-company procedure |
+| IDN support | Specified Portuguese accented characters and cedilla |
+| DNSSEC | Supported, with extra requirements in some categories |
 
-## What is .br?
+[IANA's delegation record](https://www.iana.org/domains/root/db/br.html) identifies CGI.br as the manager and records the 1989 delegation. The [Registro.br contract](https://registro.br/dominio/contrato/) identifies NIC.br as the registration service provider. The delegation record establishes management, rather than registration eligibility.
 
-**.br** is the [ccTLD](/en/glossary/cctld/) assigned to Brazil under the ISO 3166-1 country-code system used by [IANA](https://www.iana.org/domains/root/db/br.html). Like other ccTLDs, it has no [ICANN](/en/glossary/icann/) Registry Agreement — the governing rules come from Brazil's own internet-governance structure instead. Policy authority sits with the **Comitê Gestor da Internet no Brasil (CGI.br)**, the multistakeholder Brazilian Internet Steering Committee; its executive arm, **Núcleo de Informação e Coordenação do Ponto BR (NIC.br)**, handles both administrative and operational duties, and its **Registro.br** department is the operational registry that IANA lists as the ccTLD manager.
+## .com.br is the ordinary commercial choice
 
-Because .br functions as a genuine national namespace, Google treats it as country-targeted rather than generic — it does not appear on [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en), unlike vanity extensions such as [.tv](/en/tld/tv/) or [.me](/en/tld/me/).
+Registro.br offers registrations under [defined categories](https://registro.br/dominio/categorias/). `.com.br` and `.net.br` serve commercial activity. Other categories describe professions, technology, locations, education, or public bodies. A label such as `brand.com.br` therefore contains a registrant-selected name, a category, and the country code.
 
-## History of .br
+The catalogue distinguishes categories that accept CPF, CNPJ, or both. Some categories require supporting documents, institutional authorization, or DNSSEC. For example, `.edu.br` requires proof of higher-education activity, while `.org.br` requires proof of a nonprofit organization. Consult the [category documentation requirements](https://registro.br/ajuda/registro-de-novos-dominios/categorias-envio-documentacao/) before choosing a restricted category.
 
-- **1989 — Delegation.** .br was delegated to Brazil in 1989, one of the earlier ccTLD delegations globally.
-- **1995 — CGI.br formed.** The Brazilian Internet Steering Committee began managing .br policy.
-- **1991–2000 — Early direct registrations.** Universities and research institutions could register directly under .br from 1991, but reported abuse of that open pattern led the committee to restrict and individually evaluate direct requests starting in 2001.
-- **2005 — NIC.br established.** CGI.br created NIC.br to formalize administrative and operational capacity, with Registro.br running day-to-day registry operations.
-- **Category system matures.** Over time the registry grew to roughly 147 defined second-level categories across groups such as generic, business, culture, education, professions, technology, and public authority — with `.com.br` becoming by far the dominant choice.
-- **Today.** Registro.br's own live statistics show the .br namespace has grown to roughly 5.8 million total registered domains, with the generic category (led overwhelmingly by `.com.br`) accounting for over 98% of that group.
+The [registry statistics](https://registro.br/dominio/estatisticas/) displayed 6,028,037 total domains and 5,571,552 `.com.br` domains on October 21, 2026. That makes `.com.br` about 92.4% of the total. The displayed 98.61% figure concerns the **generic category group**, not the entire namespace.
 
-## How people use .br
+Direct `name.br` registration is not a general commercial alternative. NIC.br's [academic-domain clarification](https://www.nic.br/registro-nota-edu/) records the closure of automatic root registration, individual assessment, and preservation of qualifying historical academic names. The current category catalogue does not offer unrestricted direct `.br` registrations. An existing university address under `.br` therefore does not establish that a business can buy an equivalent direct name.
 
-- **Brazilian businesses of every size**, almost all defaulting to `.com.br` as the standard commercial address.
-- **Professionals and freelancers**, who can register under CPF-eligible generic or professional categories.
-- **Non-profits and civil-society organizations**, using categories such as `.org.br`.
-- **Educational and research institutions**, historically among the first direct .br registrants.
-- **Foreign companies establishing a Brazilian footprint**, via the documented legal-representative registration path.
+## Applicants must satisfy Brazilian eligibility requirements
 
-**Who it's not ideal for:** individuals or companies with no Brazilian tax ID and no intention of appointing a legal representative in Brazil — the CPF/CNPJ gate makes casual, presence-free registration impossible — and global-first brands where a Brazil-specific geo signal is unwanted.
+Registro.br's [eligibility guidance](https://registro.br/ajuda/registro-de-novos-dominios/quem-pode-registrar/) describes companies and adult individuals legally established in Brazil, with a contact in Brazil. The [general rules](https://registro.br/dominio/regras/) require regular identification records with the Ministry of Finance.
 
-## Notable sites using .br
+- **Individuals provide a CPF**, the Brazilian individual taxpayer identifier.
+- **Legal entities provide a CNPJ**, the Brazilian legal-entity identifier.
+- **Applicants satisfy category requirements**, in addition to the general eligibility rules.
 
-`.com.br` is so dominant within the Brazilian web that it functions as the de facto local equivalent of `.com`: Registro.br's own statistics put the generic category (almost entirely `.com.br`) at over 98% of all registrations in that group, out of roughly 5.8 million total .br domains. In practice, the large majority of Brazil's major banks, retailers, and media outlets hold their primary web presence on `.com.br` rather than a direct `.br` or `.com` address — a structural fact more durable and verifiable than naming any single brand.
+The CPF is an identification requirement, rather than proof that every foreign individual can register. An individual who lives abroad should obtain an eligibility determination from Registro.br before purchasing services. The published foreign-company process applies to companies, rather than all overseas individuals.
 
-## .br vs other domains
+The [registration contract](https://registro.br/dominio/contrato/) requires truthful, complete, current registrant data. False or invalid identification and failure to provide requested documents can lead to cancellation. Register the domain under the correct holder, rather than borrowing another person's CPF or CNPJ.
 
-| Factor | .br (direct/category) | [.com](/en/tld/com/) | [.mx](/en/tld/mx/) |
-| --- | --- | --- | --- |
-| Eligibility | CPF/CNPJ tax ID required | Open to all | Open to all (no local presence required) |
-| Recognition & trust | Very high within Brazil, especially .com.br | Highest, universal | High within Mexico |
-| Namespace structure | Category-based (.com.br dominant) + direct .br | Flat | Category-based (.com.mx) + direct .mx |
-| Geo bias in SEO | Brazil-targeted | None (generic) | Mexico-targeted |
+![CPF and CNPJ identity cards and a foreign-company document folder connect to a .com.br address over a Brazil map.](../../assets/br-01-registration-path.jpg)
 
-Pick `.com` for a global, non-geographic brand; pick `.br` (almost always as `.com.br`) when your business is genuinely Brazilian and you hold a CPF or CNPJ; compare against [.mx](/en/tld/mx/) if you're weighing another major Latin American ccTLD with a similar category-plus-direct structure but a notably more open eligibility policy.
+## Foreign companies must complete a separate registration process
 
-## Why choose .br?
+A foreign company must appoint a representative legally established in Brazil. Registro.br then creates an identifier that the company uses instead of a CNPJ. The [official foreign-company instructions](https://registro.br/dominio/regras/empresas-estrangeiras/) list these documents:
 
-- **Deep local trust** — `.com.br` is the default, expected address for a Brazilian business, ahead of `.com` in local perception.
-- **Verified registrant base** — the CPF/CNPJ requirement keeps the namespace tied to real, tax-registered individuals and entities.
-- **Native Portuguese support** — full support for Portuguese accented characters in domain names.
-- **Large, active namespace** — one of the largest ccTLDs globally by registration count, evidence of deep, sustained real-world adoption.
+1. A power of attorney with the signature notarized in the company's country of origin.
+2. A notarized declaration of commercial activity, including company and legal-representative details.
+3. A notarized commitment to establish activities permanently in Brazil within 12 months.
+4. Brazilian consular legalization of those three documents.
+5. Sworn translations of those three documents.
+6. A copy of the representative's CPF or CNPJ.
+7. A representative's letter identifying the foreign holder's contact ID.
 
-## Things to consider
+The power of attorney must cover registration, cancellation, ownership transfer, and changes to the holder contact. The representative must also register their own entity if necessary. Domain billing contacts must reside in Brazil. Registro.br handles changes to the foreign holder's corporate name administratively.
 
-- **Tax-ID gate.** A CPF or CNPJ is mandatory; there is no route to register without a valid Brazilian tax identifier or a documented legal representative.
-- **Foreign-registration paperwork.** Non-Brazilian companies must appoint a Brazil-based attorney/representative and submit notarized, consular-legalized, Portuguese-translated documentation — a meaningfully heavier process than most open gTLDs.
-- **Category sprawl.** With roughly 147 second-level categories, choosing the right one can be confusing, though `.com.br` covers the vast majority of cases.
-- **Geo-targeted, not global.** The Brazil-specific SEO signal that builds local trust works against ranking for international, non-Brazil-specific search intent.
+These requirements come from the instructions available on October 21, 2026. Confirm document acceptance with Registro.br before arranging legalization or translation. The process involves a commitment to Brazilian activities, rather than a presence-free way to buy a country-code domain.
 
-## Who can register a .br domain?
+## Name rules also cover accents and hyphens
 
-**Registration restrictions: gated by CPF/CNPJ tax ID.** Under [Registro.br's domain rules](https://registro.br/dominio/regras/), individuals must provide a valid **CPF** (Cadastro de Pessoa Física) and legal entities a valid **CNPJ** (Cadastro Nacional de Pessoa Jurídica), both checked against Brazil's Federal Revenue Service. Some categories accept either ID; others (like `.com.br`) are effectively open to any CPF or CNPJ holder, while a handful of restricted categories require additional proof tied to the category's purpose.
+Under the [current syntax rules](https://registro.br/dominio/regras/), the chosen label must:
 
-**Foreign companies** can register without Brazilian incorporation, but only through a documented process set out on Registro.br's [rules for foreign companies](https://registro.br/dominio/regras/empresas-estrangeiras) page: appointing a legally established representative (procurador) in Brazil, and submitting a notarized power of attorney plus a certified commercial-activity declaration and a declaration committing to establish permanent operations in Brazil within 12 months — all legalized at a Brazilian consulate and translated by a sworn translator. Registro.br then issues an identifier that substitutes for a CNPJ.
+- Contain 2–26 characters, excluding the category.
+- Use letters, digits, hyphens, or the specified Portuguese accented characters.
+- Include at least one character other than a digit.
+- Start and end with a character other than a hyphen.
 
-Domain names must be 2–26 characters (excluding category), support Portuguese accents, and cannot start/end with a hyphen or be all-digit. [DNSSEC](/en/glossary/dnssec) is supported; standard renewal rules apply through accredited registrars.
+Registro.br compares equivalent names by removing accents, replacing `ç` with `c`, and removing hyphens. A different holder's equivalent name blocks registration within the same category. CGI.br's [registration resolution, article 3](https://www.cgi.br/resolucoes/documento/2008/008), states that category boundary.
 
-## .br pricing and value
+Check the accented and unaccented versions together. Registro.br [recommends registering both versions](https://registro.br/ajuda/registro-de-novos-dominios/) for web use when possible. An accented spelling does not provide a way around another holder's equivalent registration.
 
-.br pricing dynamics follow the pattern typical of gated ccTLDs: **first-year and renewal pricing can differ**, so a lower entry rate is not necessarily what you'll pay long term — budget for renewal. Because eligibility is tied to a verified CPF/CNPJ rather than open bidding, .br lacks the large premium-name marketplace of unrestricted gTLDs; cost is driven mainly by category, string length, and registrar margin, with the foreign-company route carrying extra documentation overhead rather than a stated premium fee. We list no figures here; check current rates at the point of purchase.
+## Owners must configure DNS and maintain DNSSEC correctly
 
-## Reputation and email deliverability
+The [registration rules](https://registro.br/dominio/regras/) require at least two authoritative [DNS](/en/glossary/dns/) servers. Applicants can use Registro.br's servers in eligible categories. Applicants who supply external servers must configure those servers for the new domain. The [new-domain guidance](https://registro.br/ajuda/registro-de-novos-dominios/preciso-provedor-para-registrar/) explains the available options and exceptions.
 
-Because every .br registration requires a verified CPF or CNPJ (or the documented foreign-company process), the namespace has not developed the bulk-registration spam reputation seen on some wide-open new gTLDs. Mail providers generally treat `.com.br` and other .br categories no differently from other established ccTLDs — deliverability issues are typically about sender practices, not the extension itself, though correctly configuring SPF, DKIM, and DMARC remains standard practice.
+Registro.br supports [DNSSEC](/en/glossary/dnssec/), as its [DNSSEC guidance](https://registro.br/tecnologia/dnssec/) and live deployment statistics show. Some restricted categories require DNSSEC. Confirm the selected category's requirements and coordinate signing changes with the DNS provider, especially during a provider migration.
 
-## Branding and naming tips
+## Registro.br publishes registration and renewal prices
 
-- **Default to `.com.br` for commercial brands.** It is the namespace Brazilian consumers actually expect and trust.
-- **Use Portuguese accented characters deliberately.** IDN support lets a name read naturally in Portuguese, but confirm the unaccented equivalent isn't already taken by someone else — Registro.br treats accented and unaccented versions as related.
-- **Keep foreign-registration paperwork in mind early.** If you're a non-Brazilian company, budget time for the notarized, consular-legalized documentation process before you need the domain live.
-- **Consider direct `.br` only deliberately.** It exists and is shorter, but `.com.br` remains the namespace most Brazilian users recognize by default.
+Registro.br's [payment page](https://registro.br/ajuda/pagamento-de-dominio/) lists R$40 for one year, R$76 for two years, and R$364 for ten years. Those prices applied to almost all categories when checked on October 21, 2026. `.nom.br` has a different minimum-period schedule, and the service provider sets `.emp.br` pricing.
 
-## How to register a .br domain
+A provider can bundle administration or other services with registration. Compare the provider's total with the direct registry schedule. Do not assume that string length determines the registry's standard maintenance charge.
 
-1. **Search** for your desired `.br` or `.com.br` name to check availability.
-2. **Confirm eligibility** — a valid CPF or CNPJ, or the documented foreign-company representative process.
-3. **Register** and configure [DNS](/en/glossary/dns) to point your site or email.
+The [contract, clauses seven and nine](https://registro.br/dominio/contrato/), links renewal to payment for another 12 months or a longer offered period. The payment guidance warns that nonpayment leads to freezing and eventual release for another registration. Keep billing contacts current and confirm payment before expiry. A reminder email alone does not renew the domain.
 
+## Brazil targeting does not guarantee search rankings
 
-## Frequently asked questions
+Google uses country-code domains as a signal of a site's intended country audience. `.br` does not appear in [Google's list of country-code domains treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites).
+
+Choose `.com.br` when Brazilian customers form the intended audience and the registrant qualifies. Consider [.com](/en/tld/com/) when a geographic signal does not match the business. Neither choice guarantees rankings. The earlier claim that `.br` necessarily improves Brazilian rankings or harms international rankings was too strong.
+
+## Domain holders remain responsible for naming disputes
+
+An available domain can still conflict with another party's rights. The [contract](https://registro.br/dominio/contrato/) places responsibility for the chosen name and its use on the applicant. Eligibility checks do not constitute trademark clearance or guarantee email reputation.
+
+Registro.br's [SACI-Adm page](https://registro.br/dominio/saci-adm/) describes an administrative dispute system for `.br` names registered after October 2010. The contract also addresses SACI-Adm procedures and Brazilian law. Review relevant rights before registration, particularly when a name resembles an established business or trademark.
+
+## Applicants can follow a practical registration sequence
+
+1. Check the holder's eligibility and identification.
+2. Choose `.com.br` or another suitable category.
+3. Search the registry for the name and equivalent spellings.
+4. Complete any category or foreign-company documentation.
+5. Configure authoritative DNS and any required DNSSEC.
+6. Pay the maintenance charge and confirm the registration.
+7. Keep contact details current and monitor renewal dates.
+
+## These answers address common .br questions
 
 ### Can anyone register a .br domain?
 
-No. Registro.br requires every registrant to hold a valid Brazilian tax ID — a CPF for individuals or a CNPJ for legal entities — verified against the Federal Revenue Service. Foreign companies can register only by appointing a legally established representative in Brazil and completing a documented registration process.
+No. The ordinary route requires an adult individual or legal entity legally established in Brazil, CPF or CNPJ identification, and a contact in Brazil. Foreign companies have a separate documented representative process. A CPF alone does not establish that any foreign individual qualifies.
 
 ### Does a .br domain affect SEO?
 
-Yes. Google treats .br as a country-code TLD geo-targeted to Brazil, since it is not on Google's short list of ccTLDs treated as generic. That helps Brazil-focused sites rank for Brazilian searches and works against sites targeting a global audience.
+Google treats .br as a country-code domain associated with Brazil. The country signal can help Google identify the intended audience, but it does not guarantee higher rankings. A global site should consider whether Brazil-specific targeting matches its audience.
 
 ### What is the difference between .com.br and direct .br?
 
-Both require the same CPF/CNPJ eligibility. .com.br is by far the dominant category, covering the large majority of all .br registrations. Direct second-level .br registration (yourname.br, without a category) also exists but remains a small fraction of the namespace by comparison.
+.com.br is a commercial category available through ordinary registration to eligible individuals and legal entities. Direct names such as name.br are not a general commercial alternative. NIC.br documents the closure of automatic root registration and preservation of qualifying historical academic names.
 
 ### Who runs the .br domain?
 
-The Brazilian Internet Steering Committee (CGI.br) sets policy for .br. Its executive arm, the Brazilian Network Information Center (NIC.br), operates the registry through its Registro.br department, which IANA lists as the ccTLD manager.
+IANA lists Comite Gestor da Internet no Brasil, or CGI.br, as the .br manager. NIC.br provides registration services through Registro.br. Registry rules and the registration contract govern eligibility and maintenance.
 
-## Related resources
+## These resources explain related domain choices
 
 - [What is a TLD?](/en/blog/what-is-a-tld)
 - [ccTLD market share by registration volume](/en/blog/cctld-market-share-by-registration-volume)
@@ -163,9 +173,17 @@ The Brazilian Internet Steering Committee (CGI.br) sets policy for .br. Its exec
 - Glossary: [ccTLD](/en/glossary/cctld), [registrar](/en/glossary/registrar), [ICANN](/en/glossary/icann), [registry](/en/glossary/registry), [IDN](/en/glossary/idn)
 - Compare TLDs: [.com](/en/tld/com), [.mx](/en/tld/mx), [.ca](/en/tld/ca), [.au](/en/tld/au)
 
-## Sources and further reading
+## These primary sources document .br rules
 
-- IANA — [Comitê Gestor da Internet no Brasil (CGI.br)](https://www.iana.org/domains/root/db/br.html)
-- Google Search Central — [Google Search Central's short list of ccTLDs treated as generic](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites?hl=en)
-- registro.br — [Registro.br's domain rules](https://registro.br/dominio/regras/)
-- registro.br — [rules for foreign companies](https://registro.br/dominio/regras/empresas-estrangeiras)
+All sources were opened on October 21, 2026, America/Los_Angeles. Registro.br pages required a rendered browser to display their text.
+
+- [IANA .br delegation record](https://www.iana.org/domains/root/db/br.html).
+- [Registro.br general registration rules](https://registro.br/dominio/regras/) and [new-domain guidance](https://registro.br/ajuda/registro-de-novos-dominios/).
+- [Registro.br foreign-company requirements](https://registro.br/dominio/regras/empresas-estrangeiras/).
+- [Registro.br category catalogue](https://registro.br/dominio/categorias/) and [live statistics](https://registro.br/dominio/estatisticas/).
+- [Registro.br contract, dated November 26, 2024](https://registro.br/dominio/contrato/).
+- [Registro.br payment and renewal guidance](https://registro.br/ajuda/pagamento-de-dominio/).
+- [Registro.br DNSSEC guidance](https://registro.br/tecnologia/dnssec/) and [SACI-Adm overview](https://registro.br/dominio/saci-adm/).
+- [CGI.br registration resolution 2008/008](https://www.cgi.br/resolucoes/documento/2008/008).
+- [NIC.br clarification on historical academic .br names](https://www.nic.br/registro-nota-edu/).
+- [Google Search Central's international targeting guidance](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites).

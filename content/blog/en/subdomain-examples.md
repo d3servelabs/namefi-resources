@@ -32,13 +32,15 @@ ogImage: ../../assets/subdomain-examples-og.jpg
 
 A subdomain adds a name beneath another domain. In `blog.example.com`, `blog` identifies a subdomain of `example.com`. Familiar examples include `www`, `shop`, `app`, and `support`.
 
+Yes, `www.example.com` is a subdomain of `example.com`. The name `example.com` itself is the parent domain in this example.
+
 The label suggests a purpose, but the label does not create a website. A working subdomain needs the right DNS records, a configured service, and an appropriate HTTPS certificate.
 
 Use subdomains when separate services need separate hostnames. Use a path when one application can manage the content comfortably. Plan the operational responsibilities before choosing a URL structure.
 
 ## Subdomain names show a hierarchy rather than a page path
 
-![A DNS hierarchy distinguishes a subdomain from a page path.](../../assets/subdomain-examples-01-section.jpg)
+![A URL separates the subdomain label, parent domain, and page path.](../../assets/subdomain-examples-05-url-anatomy.jpg)
 
 Read DNS names from the containing domain toward the more specific name. In `status.example.com`, `status` sits beneath `example.com`. In `api.eu.example.com`, `api.eu.example.com` also sits beneath `eu.example.com`.
 
@@ -47,6 +49,16 @@ The [DNS terminology standard](https://datatracker.ietf.org/doc/html/rfc9499#sec
 A page path begins after the hostname. In `https://example.com/blog/article`, `/blog/article` is a path. In `https://blog.example.com/article`, `blog.example.com` is the hostname and `/article` is the path.
 
 The distinction matters because DNS handles names rather than application paths. You cannot create a DNS record for `/blog`. Your web application or hosting configuration handles that path.
+
+For `https://blog.example.com/post`, separate the address into these parts:
+
+| Part | Value | Role |
+| --- | --- | --- |
+| Scheme | `https` | The browser uses HTTPS |
+| Hostname | `blog.example.com` | DNS identifies the named host |
+| Subdomain label | `blog` | The label sits beneath `example.com` |
+| Parent domain | `example.com` | The domain contains `blog.example.com` |
+| Path | `/post` | The application selects the resource |
 
 The following examples describe hypothetical services. The labels do not require a specific product or hosting provider.
 
@@ -67,7 +79,11 @@ Some registered domains contain several labels before you add a subdomain. Do no
 
 A trailing dot can make an absolute DNS name explicit, as in `blog.example.com.`. Our [fully qualified domain name guide](/en/blog/fully-qualified-domain-name/) explains the distinction between an absolute name and a name interpreted relative to a DNS zone.
 
-For a planning document, write the complete hostname. “Create the blog” leaves room for confusion between `example.com/blog` and `blog.example.com`. An exact hostname gives the DNS administrator and hosting administrator the same target.
+### A familiar label does not prove who controls the address
+
+Read the complete hostname before trusting a link. In `https://example.com.attacker.example/login`, the hostname ends in `attacker.example`. The earlier `example.com` labels do not place the address beneath `example.com`. The whole-label rule in [RFC 9499](https://datatracker.ietf.org/doc/html/rfc9499#section-2) explains this distinction.
+
+The same rule applies to familiar labels. An address beginning with `support` or `secure` does not establish the operator's identity.
 
 ## Useful subdomains separate services with clear responsibilities
 
@@ -98,7 +114,11 @@ Do not assume a subdomain creates complete security isolation. Browser and appli
 
 For a hypothetical customer application and marketing site, ask the application owner whether session cookies require host-only scope. Check actual response headers and application requirements. Do not copy a broad cookie setting simply to make a login problem disappear.
 
-Name conventions also need maintenance. Prefer a small set of labels that people can understand. Document whether `help` and `support` serve different purposes before creating both. A clear inventory helps future operators avoid competing hostnames for the same service.
+### A provider subdomain differs from a domain you register
+
+A hosted platform can supply an address beneath the platform's domain. For example, GitHub Pages uses `<owner>.github.io` for user and organization sites. Project sites normally add `/<repositoryname>`. GitHub documents [these default locations](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#types-of-github-pages-sites) and offers Pages for public repositories with GitHub Free.
+
+A provider address does not give you control of the provider's parent domain. Check naming restrictions, account rules, export options, and custom-domain support before choosing a free subdomain. Hosting charges and domain registration charges describe different services.
 
 ## A working subdomain needs DNS and an accepting destination
 
@@ -106,7 +126,15 @@ Name conventions also need maintenance. Prefer a small set of labels that people
 
 Adding a DNS record provides a route toward a service. The destination must also recognize the hostname. Cloudflare's [subdomain setup guidance](https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-subdomain/#subdomain-records) explicitly starts with a hosting provider that can serve the chosen name.
 
-Obtain the destination details from your hosting provider's current instructions. An IPv4 destination normally calls for an A record. An IPv6 destination calls for an AAAA record. A hostname destination may call for a CNAME record.
+Obtain the destination details from your hosting provider's current instructions. [Cloudflare's record instructions](https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-subdomain/#subdomain-records) distinguish three common targets:
+
+| Provider supplies | Record type | Illustrative target |
+| --- | --- | --- |
+| IPv4 address | A | `192.0.2.1` |
+| IPv6 address | AAAA | `2001:db8::1` |
+| Another hostname | CNAME | `customer.publisher.example` |
+
+The addresses and hostnames above are documentation examples. Copy the actual destination from your provider. Do not add all three records merely because the table lists three options.
 
 Use the record type that the platform requests. Our [CNAME and A record comparison](/en/blog/cname-vs-a-record/) explains the different targets. Do not paste a full URL, including `https://` and a page path, into a field that expects a DNS hostname.
 
@@ -131,7 +159,13 @@ DNS also does not create an HTTP redirect. A CNAME can make one name an alias of
 
 If you need several record types, review our [DNS record guide](/en/blog/dns-record-types-guide/) before making changes. Keep mail, verification, and application records intact. A new website subdomain rarely justifies deleting the domain's entire DNS zone.
 
-Record the previous values and a rollback route. Change one service at a time when practical. Clear ownership and a small change scope make troubleshooting easier than a simultaneous rename of every service.
+### Your DNS account gives you the starting inventory
+
+To find subdomains you operate, inspect your DNS provider's record list or zone export first. Include delegated child zones and custom-domain settings in hosting accounts. A lookup for one hostname answers a question about that hostname, rather than listing every sibling.
+
+For an address you already know, run `dig blog.example.com A`. Replace the illustrative hostname with your hostname. Query the record type your service uses. ISC documents [`dig` queries and record-type selection](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility).
+
+Keep discovery separate from availability. A failed lookup does not establish that you can register the parent domain or claim a provider account.
 
 ## Certificates and retirement complete the subdomain lifecycle
 
@@ -156,7 +190,7 @@ After launch, keep a hostname inventory with practical fields:
 | Certificate method | Operators can check coverage and renewal |
 | Retirement action | Operators can remove unused dependencies |
 
-Retire a hostname when the service ends. Remove obsolete DNS records and complete the provider's custom-domain removal process in the documented order. A stale external target deserves attention even when nobody currently visits the hostname.
+Retire a hostname when the service ends. Remove obsolete DNS records and complete the provider's custom-domain removal process in the documented order. Microsoft describes [subdomain takeover from a dangling DNS record](https://learn.microsoft.com/en-us/azure/security/fundamentals/subdomain-takeover#what-is-a-subdomain-takeover). In Microsoft's Azure example, a CNAME outlives the deleted service, and another account can claim the service name. Follow the receiving provider's retirement instructions before releasing a resource name.
 
 Before removing a record, inspect dependencies. Email links, API clients, bookmarks, monitoring checks, and old documents may still reference the hostname. Decide whether a supported redirect can preserve the user journey.
 
@@ -174,3 +208,7 @@ Sources checked on October 21, 2026. All service names and setup targets in the 
 - [Cloudflare: Create subdomain records](https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-subdomain/#subdomain-records). The guide separates destination support, DNS records, redirects, and HTTPS.
 - [Cloudflare: Universal SSL limitations](https://developers.cloudflare.com/ssl/edge-certificates/universal-ssl/limitations/#full-setup). Coverage depends on hostname depth and setup type.
 - [MDN: Define where cookies are sent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies#define_where_cookies_are_sent). The guide explains cookie domain scope.
+
+- [GitHub: What is GitHub Pages?](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#types-of-github-pages-sites). Default provider hostnames and plan availability. Fetched October 21, 2026.
+- [ISC BIND 9: dig](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility). DNS lookup syntax and record-type selection. Fetched October 21, 2026.
+- [Microsoft: Prevent dangling DNS entries](https://learn.microsoft.com/en-us/azure/security/fundamentals/subdomain-takeover#what-is-a-subdomain-takeover). The Azure example explains the retirement risk. Fetched October 21, 2026.

@@ -1,0 +1,104 @@
+{
+  "request": {
+    "language": "languageConstants/1002",
+    "geoTargetConstants": [
+      "geoTargetConstants/2250"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "quad9 confidentialit\u00e9",
+      "dns vie priv\u00e9e",
+      "comparatif dns confidentialit\u00e9",
+      "cloudflare ou quad9",
+      "google dns confidentialit\u00e9"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "dns vie priv\u00e9e",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "0"
+        }
+      },
+      {
+        "text": "quad9 confidentialit\u00e9"
+      },
+      {
+        "text": "comparatif dns confidentialit\u00e9"
+      },
+      {
+        "text": "cloudflare ou quad9"
+      },
+      {
+        "text": "google dns confidentialit\u00e9"
+      }
+    ]
+  },
+  "fetched_utc": "2026-10-22T00:52:43.861756+00:00"
+}

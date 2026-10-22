@@ -44,11 +44,9 @@ relatedGlossary:
 
 도메인 이름은 여러 부분으로 구성됩니다.
 
-*   **[최상위 도메인](/ko/glossary/tld/) (TLD):** 주소 끝에 오는 접미사로, `.com`, `.org`, `.net`이 대표적이며, 최근에는 `.xyz`, `.app`, 심지어 `.ninja` 같은 것들도 등장했습니다. 일반 최상위 도메인(gTLD)과 국가별 최상위 도메인(ccTLD, 예: `.us`, `.uk`, `.cn`)으로 구분됩니다.
-*   **[2단계 도메인](/ko/glossary/second-level-domain/) (SLD):** 이름의 핵심 부분으로, `google.com`에서 `google`에 해당합니다.
-*   **[서브도메인](/ko/glossary/subdomain/):** `blog.example.com`이나 `mail.example.org`처럼 콘텐츠를 체계적으로 정리하는 데 사용하는 선택적 접두사입니다.
+DNS 계층은 루트 `.`에서 시작합니다. 아래에는 최상위 도메인 `com`, 2단계 도메인 `example.com`, 서브도메인 `blog.example.com`이 있습니다. `example`만으로는 레이블입니다. `example.co.uk`에서는 `uk`가 최상위, `co.uk`가 2단계, `example.co.uk`가 3단계입니다. 등록 가능한 도메인의 경계는 항상 2단계와 일치하지 않습니다. [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-3.1).
 
-모든 도메인 이름은 고유합니다. 누군가 `example.com`을 등록하면 다른 사람은 해당 도메인을 사용할 수 없습니다.
+도메인은 한 시점에 한 명의 등록자를 가집니다. 등록자는 다른 사람이나 서비스에 사용을 허용할 수 있습니다. 등록은 다른 확장자의 같은 이름까지 확보하지 않습니다. [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 ---
 
@@ -56,13 +54,13 @@ relatedGlossary:
 
 도메인 이름의 전 세계적 조율은 **[ICANN](/ko/glossary/icann/)** (**Internet Corporation for Assigned Names and Numbers**)이라는 비영리 기관이 담당합니다. 1998년에 설립된 ICANN은 도메인 이름과 IP 주소의 할당을 관리하며, 대중에게 도메인 이름을 판매하는 [등록 대행사](/ko/glossary/registrar/)(GoDaddy, Namecheap, Namefi 등)와 협력합니다.
 
-또한 ICANN은 특정 TLD를 관리하는 조직인 레지스트리를 인증합니다. 예를 들어, Verisign은 `.com`과 `.net`을 운영하고, Public Interest Registry는 `.org`를 관리합니다.
+레지스트리는 도메인 등록부를 운영합니다. 등록 대행사는 고객의 등록을 처리합니다. ICANN은 등록 대행사를 인증하고 gTLD 레지스트리 운영자와 계약을 체결합니다. 국가별 도메인은 자체 관리 체계를 따릅니다. [ICANN](https://www.icann.org/en/contracted-parties/registry-operators/resources/listings).
 
 ---
 
 ## **도메인 이름 등록 방법**
 
-도메인 이름을 취득하려면 **[ICANN 인증 등록 대행사](/ko/glossary/accredited-registrar/)**를 이용해야 합니다. 원하는 도메인을 검색하고, 등록 수수료(보통 연 단위)를 납부하면 갱신을 유지하는 한 해당 도메인 사용 권리를 '보유'하게 됩니다.
+gTLD 등록에는 ICANN 인증 등록 대행사 또는 관련 리셀러를 이용할 수 있습니다. 등록 가능 여부, 자격, 계약 조건과 갱신 비용을 확인하세요. 등록 계약은 도메인 사용 권리를 정합니다. [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 절차는 다음과 같습니다.
 
@@ -71,7 +69,7 @@ relatedGlossary:
 3.  사용 가능한 경우, 등록을 진행합니다.
 4.  이제 해당 도메인이 가리키는 곳(예: 웹사이트 또는 이메일)을 직접 제어할 수 있습니다.
 
-[Namefi](https://namefi.io)는 다른 등록 대행사와 비교하여 서브도메인 관리, DNS 보안 도구, [블록체인](/ko/glossary/blockchain/) 도메인과 같은 탈중앙화 시스템 연동 등 고급 기능을 제공합니다.
+
 
 ---
 

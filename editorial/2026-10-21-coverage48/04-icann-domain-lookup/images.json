@@ -1,0 +1,63 @@
+{
+  "model_requested": "gpt-image-2",
+  "quality": "high",
+  "generated_attempts": 1,
+  "assets": [
+    {
+      "path": "content/assets/icann-domain-lookup-01-section.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "5d34e26c9082f3f985a11568d0d3ce6562b78c90c4082ea7f6354cc28db928a3",
+      "action": "reused"
+    },
+    {
+      "path": "content/assets/icann-domain-lookup-02-section.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "5673c6e467417908caae887766cbb04742084f447c7bfb08bbf0d08b6430e1b8",
+      "action": "reused"
+    },
+    {
+      "path": "content/assets/icann-domain-lookup-03-section.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "8f9820d143e0a9fea9cb1c7b29271da4ac281ead84460526533142ca76f1ddb4",
+      "action": "reused"
+    },
+    {
+      "path": "content/assets/icann-domain-lookup-04-section.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "33fa4bf7bf7848d66b109e6912b1a883c4910266c7ed1c313d584ebe980b6476",
+      "action": "reused"
+    },
+    {
+      "path": "content/assets/icann-domain-lookup-05-result-check.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "6d831589c5574962abd2b9caf4578d43485708af169d259ddaf80b950be137b3",
+      "action": "generated"
+    },
+    {
+      "path": "content/assets/icann-domain-lookup-og.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "a6d007159640d4d609ececc10ed897e287dc598462e0a29bdf71a1b3410b7026",
+      "action": "reused"
+    }
+  ],
+  "qc": "Generated image opened at full size: all text legible, example.com correct, compact scene, official top-right logo, no clipping. Reused images inspected in existing contact sheet and remain relevant.",
+  "usage": "See image-usage.json, actual API response values."
+}

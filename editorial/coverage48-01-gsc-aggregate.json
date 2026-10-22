@@ -1,0 +1,24 @@
+{
+  "startDate": "2026-09-21",
+  "endDate": "2026-10-18",
+  "retrieved_utc": "2026-10-21T23:27:19.408267+00:00",
+  "type": "web",
+  "dataState": "final",
+  "dimensions": [
+    "query",
+    "page",
+    "country"
+  ],
+  "method": "Exact page slug substring domain-terminology-guide; Mexico country key mex",
+  "all_countries": {
+    "rows": 123,
+    "impressions": 271,
+    "clicks": 0
+  },
+  "Mexico": {
+    "rows": 1,
+    "impressions": 1,
+    "clicks": 0
+  },
+  "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand."
+}

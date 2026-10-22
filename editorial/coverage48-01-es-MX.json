@@ -1,0 +1,303 @@
+{
+  "request": {
+    "language": "languageConstants/1003",
+    "geoTargetConstants": [
+      "geoTargetConstants/2484"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "dominio y url",
+      "diferencia entre dominio y url",
+      "qué es un dominio",
+      "nombre de host"
+    ],
+    "includeAdultKeywords": false
+  },
+  "fetchedUTC": "2026-10-21T23:24:22.287013+00:00",
+  "response": {
+    "results": [
+      {
+        "text": "dominio y url",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "9"
+        }
+      },
+      {
+        "text": "diferencia entre dominio y url",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "1"
+        }
+      },
+      {
+        "text": "qué es un dominio",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "3600"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "4400"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "2900"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "2400"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "3600"
+            }
+          ],
+          "avgMonthlySearches": "2900",
+          "competitionIndex": "5",
+          "lowTopOfPageBidMicros": "122451",
+          "highTopOfPageBidMicros": "1728363"
+        }
+      },
+      {
+        "text": "nombre de host",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "170"
+            }
+          ],
+          "avgMonthlySearches": "210",
+          "competitionIndex": "1"
+        }
+      }
+    ]
+  }
+}

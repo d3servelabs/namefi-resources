@@ -1,0 +1,374 @@
+{
+  "model": [
+    "gpt-6.1-sol"
+  ],
+  "usage_counters": [
+    {
+      "utc": "2026-10-21T23:22:50.706Z",
+      "total_token_usage": {
+        "input_tokens": 39628,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 72,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 39700
+      }
+    },
+    {
+      "utc": "2026-10-21T23:22:55.582Z",
+      "total_token_usage": {
+        "input_tokens": 85800,
+        "cached_input_tokens": 39552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 257,
+        "reasoning_output_tokens": 7,
+        "total_tokens": 86057
+      }
+    },
+    {
+      "utc": "2026-10-21T23:22:59.462Z",
+      "total_token_usage": {
+        "input_tokens": 135344,
+        "cached_input_tokens": 85760,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 353,
+        "reasoning_output_tokens": 7,
+        "total_tokens": 135697
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:03.137Z",
+      "total_token_usage": {
+        "input_tokens": 194963,
+        "cached_input_tokens": 135168,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 516,
+        "reasoning_output_tokens": 7,
+        "total_tokens": 195479
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:09.554Z",
+      "total_token_usage": {
+        "input_tokens": 261285,
+        "cached_input_tokens": 194816,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 702,
+        "reasoning_output_tokens": 17,
+        "total_tokens": 261987
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:15.946Z",
+      "total_token_usage": {
+        "input_tokens": 338389,
+        "cached_input_tokens": 261120,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 894,
+        "reasoning_output_tokens": 69,
+        "total_tokens": 339283
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:22.110Z",
+      "total_token_usage": {
+        "input_tokens": 415697,
+        "cached_input_tokens": 338176,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1135,
+        "reasoning_output_tokens": 69,
+        "total_tokens": 416832
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:23.707Z",
+      "total_token_usage": {
+        "input_tokens": 415697,
+        "cached_input_tokens": 338176,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1135,
+        "reasoning_output_tokens": 69,
+        "total_tokens": 416832
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:29.666Z",
+      "total_token_usage": {
+        "input_tokens": 505942,
+        "cached_input_tokens": 428032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1306,
+        "reasoning_output_tokens": 69,
+        "total_tokens": 507248
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:37.888Z",
+      "total_token_usage": {
+        "input_tokens": 601882,
+        "cached_input_tokens": 518272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1550,
+        "reasoning_output_tokens": 133,
+        "total_tokens": 603432
+      }
+    },
+    {
+      "utc": "2026-10-21T23:24:00.746Z",
+      "total_token_usage": {
+        "input_tokens": 699629,
+        "cached_input_tokens": 614272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2431,
+        "reasoning_output_tokens": 236,
+        "total_tokens": 702060
+      }
+    },
+    {
+      "utc": "2026-10-21T23:24:22.652Z",
+      "total_token_usage": {
+        "input_tokens": 799408,
+        "cached_input_tokens": 712704,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3284,
+        "reasoning_output_tokens": 334,
+        "total_tokens": 802692
+      }
+    },
+    {
+      "utc": "2026-10-21T23:24:31.301Z",
+      "total_token_usage": {
+        "input_tokens": 902374,
+        "cached_input_tokens": 813184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3623,
+        "reasoning_output_tokens": 453,
+        "total_tokens": 905997
+      }
+    },
+    {
+      "utc": "2026-10-21T23:24:48.978Z",
+      "total_token_usage": {
+        "input_tokens": 1012866,
+        "cached_input_tokens": 916352,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4035,
+        "reasoning_output_tokens": 520,
+        "total_tokens": 1016901
+      }
+    },
+    {
+      "utc": "2026-10-21T23:24:57.563Z",
+      "total_token_usage": {
+        "input_tokens": 1127732,
+        "cached_input_tokens": 1027072,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4376,
+        "reasoning_output_tokens": 647,
+        "total_tokens": 1132108
+      }
+    },
+    {
+      "utc": "2026-10-21T23:25:40.966Z",
+      "total_token_usage": {
+        "input_tokens": 1254441,
+        "cached_input_tokens": 1142144,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6657,
+        "reasoning_output_tokens": 683,
+        "total_tokens": 1261098
+      }
+    },
+    {
+      "utc": "2026-10-21T23:25:58.527Z",
+      "total_token_usage": {
+        "input_tokens": 1384056,
+        "cached_input_tokens": 1270912,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7603,
+        "reasoning_output_tokens": 727,
+        "total_tokens": 1391659
+      }
+    },
+    {
+      "utc": "2026-10-21T23:26:02.891Z",
+      "total_token_usage": {
+        "input_tokens": 1514841,
+        "cached_input_tokens": 1401344,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7787,
+        "reasoning_output_tokens": 735,
+        "total_tokens": 1522628
+      }
+    },
+    {
+      "utc": "2026-10-21T23:26:17.609Z",
+      "total_token_usage": {
+        "input_tokens": 1648330,
+        "cached_input_tokens": 1532160,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8408,
+        "reasoning_output_tokens": 833,
+        "total_tokens": 1656738
+      }
+    },
+    {
+      "utc": "2026-10-21T23:26:49.028Z",
+      "total_token_usage": {
+        "input_tokens": 1783117,
+        "cached_input_tokens": 1666176,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10008,
+        "reasoning_output_tokens": 961,
+        "total_tokens": 1793125
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:05.031Z",
+      "total_token_usage": {
+        "input_tokens": 1919785,
+        "cached_input_tokens": 1802496,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10507,
+        "reasoning_output_tokens": 971,
+        "total_tokens": 1930292
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:14.814Z",
+      "total_token_usage": {
+        "input_tokens": 2057206,
+        "cached_input_tokens": 1939584,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10675,
+        "reasoning_output_tokens": 1033,
+        "total_tokens": 2067881
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:22.166Z",
+      "total_token_usage": {
+        "input_tokens": 2194807,
+        "cached_input_tokens": 2077056,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11034,
+        "reasoning_output_tokens": 1033,
+        "total_tokens": 2205841
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:24.223Z",
+      "total_token_usage": {
+        "input_tokens": 2194807,
+        "cached_input_tokens": 2077056,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11034,
+        "reasoning_output_tokens": 1033,
+        "total_tokens": 2205841
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:29.014Z",
+      "total_token_usage": {
+        "input_tokens": 2333802,
+        "cached_input_tokens": 2215680,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11183,
+        "reasoning_output_tokens": 1033,
+        "total_tokens": 2344985
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:33.598Z",
+      "total_token_usage": {
+        "input_tokens": 2473829,
+        "cached_input_tokens": 2354688,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11370,
+        "reasoning_output_tokens": 1084,
+        "total_tokens": 2485199
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:37.992Z",
+      "total_token_usage": {
+        "input_tokens": 2473829,
+        "cached_input_tokens": 2354688,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11370,
+        "reasoning_output_tokens": 1084,
+        "total_tokens": 2485199
+      }
+    }
+  ],
+  "interpretation": "Cumulative real session counters. Phase-specific boundaries were not captured contemporaneously. First counter follows initial reads. Cached input is a subset of input; reasoning output is a subset of output. No component is added twice.",
+  "checkpoints": {
+    "research_end": "2026-10-21T23:25:39.982412+00:00",
+    "writing_start": "2026-10-21T23:25:39.982472+00:00",
+    "model": "GPT-6 (harness identity; exact backend identifier unavailable)",
+    "research_start": "Unavailable: work started before checkpoint capture",
+    "token_boundaries": "Unavailable: session exposes no phase token counters",
+    "writing_end": "2026-10-21T23:26:48.984133+00:00",
+    "translation_start_end": "Spanish changed-unit translation occurred during writing, separate boundary unavailable"
+  },
+  "image_results": {
+    "domain-terminology-guide-01-url-parts.jpg.usage.json": {
+      "usage": {
+        "input_tokens": 472,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 472
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5960
+      },
+      "created": 1792625240
+    },
+    "inline-attempt-1.usage.json": {
+      "usage": {
+        "input_tokens": 446,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 446
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5934
+      },
+      "created": 1792625149
+    },
+    "domain-terminology-guide-og.jpg.usage.json": {
+      "usage": {
+        "input_tokens": 712,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 712
+        },
+        "output_tokens": 3401,
+        "output_tokens_details": {
+          "image_tokens": 3401,
+          "text_tokens": 0
+        },
+        "total_tokens": 4113
+      },
+      "created": 1792625096
+    }
+  },
+  "image_sanity_end_utc": "2026-10-21T23:27:55.978985+00:00",
+  "qc": {
+    "cover": "1200x630, official top-right logo, correct text, cream margins and empty bottom band; one attempt",
+    "inline": "1200x675, official top-right logo, exact URL and labels, cream margins; first attempt rejected for inaccurate brace; second attempt accepted"
+  },
+  "sanity": {
+    "data_validate": "pass, 37 pre-existing warnings, 0 locale and relationship mismatch",
+    "lint_mdx": "pass",
+    "focused_link_audit": "0 broken, 0 missing-locale, 0 locale-mismatch, 0 relationship-mismatch"
+  }
+}

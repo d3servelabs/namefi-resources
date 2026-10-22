@@ -1,0 +1,300 @@
+{
+  "model": "gpt-6.1-sol",
+  "retrieved_utc": "2026-10-21T23:30:06.103125+00:00",
+  "counter_semantics": "Cumulative actual session counters. cached_input_tokens is included in input_tokens. reasoning_output_tokens is included in output_tokens. Do not add subsets again.",
+  "checkpoints": [
+    {
+      "utc": "2026-10-21T23:22:59.723Z",
+      "usage": {
+        "input_tokens": 39605,
+        "cached_input_tokens": 23424,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 94,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 39699
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:03.357Z",
+      "usage": {
+        "input_tokens": 88274,
+        "cached_input_tokens": 62976,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 225,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 88499
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:20.483Z",
+      "usage": {
+        "input_tokens": 137623,
+        "cached_input_tokens": 111616,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 705,
+        "reasoning_output_tokens": 11,
+        "total_tokens": 138328
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:24.440Z",
+      "usage": {
+        "input_tokens": 195257,
+        "cached_input_tokens": 161280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 886,
+        "reasoning_output_tokens": 11,
+        "total_tokens": 196143
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:29.098Z",
+      "usage": {
+        "input_tokens": 263235,
+        "cached_input_tokens": 218880,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1098,
+        "reasoning_output_tokens": 51,
+        "total_tokens": 264333
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:33.016Z",
+      "usage": {
+        "input_tokens": 340145,
+        "cached_input_tokens": 286848,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1226,
+        "reasoning_output_tokens": 51,
+        "total_tokens": 341371
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:40.108Z",
+      "usage": {
+        "input_tokens": 417409,
+        "cached_input_tokens": 363648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1455,
+        "reasoning_output_tokens": 51,
+        "total_tokens": 418864
+      }
+    },
+    {
+      "utc": "2026-10-21T23:23:45.046Z",
+      "usage": {
+        "input_tokens": 505824,
+        "cached_input_tokens": 440960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1631,
+        "reasoning_output_tokens": 69,
+        "total_tokens": 507455
+      }
+    },
+    {
+      "utc": "2026-10-21T23:24:04.223Z",
+      "usage": {
+        "input_tokens": 604917,
+        "cached_input_tokens": 529408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2421,
+        "reasoning_output_tokens": 169,
+        "total_tokens": 607338
+      }
+    },
+    {
+      "utc": "2026-10-21T23:24:10.785Z",
+      "usage": {
+        "input_tokens": 715557,
+        "cached_input_tokens": 629120,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2676,
+        "reasoning_output_tokens": 179,
+        "total_tokens": 718233
+      }
+    },
+    {
+      "utc": "2026-10-21T23:24:19.170Z",
+      "usage": {
+        "input_tokens": 831946,
+        "cached_input_tokens": 739840,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2856,
+        "reasoning_output_tokens": 190,
+        "total_tokens": 834802
+      }
+    },
+    {
+      "utc": "2026-10-21T23:24:46.445Z",
+      "usage": {
+        "input_tokens": 954087,
+        "cached_input_tokens": 856192,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3948,
+        "reasoning_output_tokens": 322,
+        "total_tokens": 958035
+      }
+    },
+    {
+      "utc": "2026-10-21T23:24:51.508Z",
+      "usage": {
+        "input_tokens": 1087177,
+        "cached_input_tokens": 979200,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4129,
+        "reasoning_output_tokens": 340,
+        "total_tokens": 1091306
+      }
+    },
+    {
+      "utc": "2026-10-21T23:25:09.060Z",
+      "usage": {
+        "input_tokens": 1220460,
+        "cached_input_tokens": 1112320,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4832,
+        "reasoning_output_tokens": 407,
+        "total_tokens": 1225292
+      }
+    },
+    {
+      "utc": "2026-10-21T23:25:46.313Z",
+      "usage": {
+        "input_tokens": 1359017,
+        "cached_input_tokens": 1246080,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6504,
+        "reasoning_output_tokens": 485,
+        "total_tokens": 1365521
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:18.322Z",
+      "usage": {
+        "input_tokens": 1499646,
+        "cached_input_tokens": 1386112,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 12314,
+        "reasoning_output_tokens": 539,
+        "total_tokens": 1511960
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:25.027Z",
+      "usage": {
+        "input_tokens": 1646549,
+        "cached_input_tokens": 1532416,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 12642,
+        "reasoning_output_tokens": 571,
+        "total_tokens": 1659191
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:31.371Z",
+      "usage": {
+        "input_tokens": 1795604,
+        "cached_input_tokens": 1679488,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 12920,
+        "reasoning_output_tokens": 675,
+        "total_tokens": 1808524
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:40.981Z",
+      "usage": {
+        "input_tokens": 1951018,
+        "cached_input_tokens": 1828608,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13193,
+        "reasoning_output_tokens": 723,
+        "total_tokens": 1964211
+      }
+    },
+    {
+      "utc": "2026-10-21T23:27:53.370Z",
+      "usage": {
+        "input_tokens": 2116608,
+        "cached_input_tokens": 1984128,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13833,
+        "reasoning_output_tokens": 747,
+        "total_tokens": 2130441
+      }
+    },
+    {
+      "utc": "2026-10-21T23:28:03.741Z",
+      "usage": {
+        "input_tokens": 2284241,
+        "cached_input_tokens": 2150272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 14339,
+        "reasoning_output_tokens": 911,
+        "total_tokens": 2298580
+      }
+    },
+    {
+      "utc": "2026-10-21T23:29:06.872Z",
+      "usage": {
+        "input_tokens": 2453169,
+        "cached_input_tokens": 2318208,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 17850,
+        "reasoning_output_tokens": 1094,
+        "total_tokens": 2471019
+      }
+    },
+    {
+      "utc": "2026-10-21T23:29:23.329Z",
+      "usage": {
+        "input_tokens": 2625707,
+        "cached_input_tokens": 2490496,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 18468,
+        "reasoning_output_tokens": 1240,
+        "total_tokens": 2644175
+      }
+    },
+    {
+      "utc": "2026-10-21T23:29:40.621Z",
+      "usage": {
+        "input_tokens": 2803416,
+        "cached_input_tokens": 2663552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19403,
+        "reasoning_output_tokens": 1346,
+        "total_tokens": 2822819
+      }
+    },
+    {
+      "utc": "2026-10-21T23:29:51.691Z",
+      "usage": {
+        "input_tokens": 2984918,
+        "cached_input_tokens": 2842112,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19789,
+        "reasoning_output_tokens": 1627,
+        "total_tokens": 3004707
+      }
+    }
+  ],
+  "phase_mapping": {
+    "research": "Session start through observed checkpoint 2026-10-21T23:25:09.060Z, including instructions, demand, primary source opening and image launch. Research continued during writing for targeted checks.",
+    "english_writing": "Observed interval 2026-10-21T23:25:09.060Z to 2026-10-21T23:25:46.313Z includes English additions and tools.",
+    "selected_translation": "Observed interval 2026-10-21T23:25:46.313Z to 2026-10-21T23:27:18.322Z includes full German drafting and tools.",
+    "image_sanity": "Image generation ran concurrently. API usage is separate. Image inspection and sanity began after the translation checkpoint. Later checkpoints include evidence and PR preparation."
+  },
+  "boundary_limit": "Phase labels reconstruct nearest actual token-count events from recorded chronology. These are not exact isolated task token budgets. No token estimate substitutes for missing boundaries.",
+  "local_completion_checkpoint": {
+    "utc": "2026-10-21T23:29:51.691Z",
+    "usage": {
+      "input_tokens": 2984918,
+      "cached_input_tokens": 2842112,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 19789,
+      "reasoning_output_tokens": 1627,
+      "total_tokens": 3004707
+    }
+  }
+}
