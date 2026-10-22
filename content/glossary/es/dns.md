@@ -14,6 +14,8 @@ level: 2
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://datatracker.ietf.org/doc/html/rfc1035
+  - https://www.rfc-editor.org/rfc/rfc4033.html#section-5
+  - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
@@ -65,9 +67,9 @@ Este patrón — en el que el resolvedor hace el trabajo iterativo y el cliente 
 
 ## La jerarquía DNS y los principales tipos de registros
 
-El DNS está organizado como un árbol invertido. La raíz (`.`) está en la cima; debajo de ella están los TLDs (`.com`, `.net`, `.io`, códigos de país como `.de`); debajo de cada TLD están los dominios de segundo nivel (`example.com`); y estos pueden tener subdominios de profundidad arbitraria (`mail.example.com`).
+El DNS está organizado como un árbol invertido. La raíz (`.`) está en la cima; debajo de ella están los TLDs (`.com`, `.net`, `.io`, códigos de país como `.de`); debajo de cada TLD están los dominios de segundo nivel (`example.com`); y estos pueden tener subdominios anidados (`mail.example.com`).
 
-Cada nodo de este árbol se denomina **zona**, y el servidor de nombres autoritativo de una zona contiene los **registros de recursos** de esa zona. Los [tipos de registros DNS](/es/glossary/dns-record-types/) más frecuentes son:
+Una **zona** es una parte del árbol DNS bajo administración común. No todos los nodos forman una zona independiente. Una delegación separa la zona hija de la zona superior. El servidor autoritativo conserva los **registros de recursos** de la zona ([RFC 1034, sección 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Los [tipos de registros DNS](/es/glossary/dns-record-types/) más frecuentes son:
 
 | Registro | Propósito | Valor de ejemplo |
 |----------|-----------|-----------------|
@@ -101,9 +103,9 @@ Las especificaciones originales del DNS fueron diseñadas para la fiabilidad y l
 
 **Envenenamiento de caché.** Un atacante que puede inyectar una respuesta DNS falsificada en la caché de un resolvedor puede redirigir a los usuarios desde sitios legítimos a sitios maliciosos sin que lo sepan. El ataque Kaminsky (2008) demostró esto a escala, lo que llevó a una adopción más amplia de la aleatorización de puertos y [DNSSEC](/es/glossary/dnssec/).
 
-**DNSSEC.** Las Extensiones de Seguridad DNS, definidas en los RFC 4033–4035, añaden firmas criptográficas a los registros DNS. Un resolvedor que valida las firmas [DNSSEC](/es/glossary/dnssec/) puede detectar respuestas manipuladas. La adopción crece pero es desigual: en 2024, aproximadamente el 90 % de la zona raíz y los principales TLDs están firmados, pero la validación de extremo a extremo depende de que todas las zonas de la cadena estén firmadas y de que los resolvedores comprueben las firmas.
+**DNSSEC.** Las Extensiones de Seguridad DNS añaden firmas criptográficas a conjuntos de registros DNS. Un resolvedor validador comprueba las firmas mediante una cadena de autenticación hasta un ancla de confianza configurada. La firma de la raíz no autentica por sí sola una zona hija sin firmar. [RFC 4033, sección 5](https://www.rfc-editor.org/rfc/rfc4033.html#section-5) distingue resultados seguros, inseguros, erróneos e indeterminados.
 
-**Secuestro de DNS.** Los atacantes que comprometen una cuenta de registrador, los sistemas del registro o el resolvedor de un ISP pueden redirigir respuestas DNS a escala. Las defensas incluyen la autenticación multifactor a nivel de registrador, los bloqueos de registro (EPP `serverTransferProhibited`) y la monitorización de cambios inesperados en registros NS o A.
+**Secuestro de DNS.** Los atacantes que comprometen una cuenta de registrador, los sistemas del registro o el resolvedor de un ISP pueden redirigir respuestas DNS a escala. Las defensas incluyen la autenticación multifactor a nivel de registrador, las restricciones del registro sobre transferencias y actualizaciones (EPP `serverTransferProhibited` y `serverUpdateProhibited`) y la monitorización de cambios inesperados en registros NS o A ([ICANN](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)).
 
 **DNS sobre HTTPS / DNS sobre TLS (DoH / DoT).** Estos protocolos cifran las consultas DNS entre clientes y resolvedores, evitando la escucha clandestina y la modificación en ruta de las consultas en tránsito — una protección complementaria a DNSSEC, que aborda la integridad de los datos en lugar de la privacidad.
 

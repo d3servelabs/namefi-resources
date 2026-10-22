@@ -98,7 +98,9 @@ blog . namefi . io
 
 ### 3. स्पॉन्सर्ड TLD (sTLDs)
 
-**स्पॉन्सर्ड TLD** का प्रायोजक किसी खास समुदाय का प्रतिनिधित्व करता है। [ICANN `.aero`, `.coop` और `.museum` को स्पॉन्सर्ड उदाहरण बताता है](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=The%20.aero%2C%20.coop%2C%20and%20.museum)। पंजीकरण की शर्तें एक्सटेंशन और उसकी वर्तमान नीतियों पर निर्भर हैं। केवल पंजीकरण पर प्रतिबंध होने से कोई TLD स्पॉन्सर्ड नहीं बनता।
+**स्पॉन्सर्ड TLD** का प्रायोजक किसी खास समुदाय का प्रतिनिधित्व करता है। [ICANN वर्तमान समझौतों में `.aero` और `.coop` को स्पॉन्सर्ड बताता है](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type)। पंजीकरण की शर्तें एक्सटेंशन और उसकी वर्तमान नीतियों पर निर्भर हैं। केवल पंजीकरण पर प्रतिबंध होने से कोई TLD स्पॉन्सर्ड नहीं बनता।
+
+[ICANN — .coop](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type).
 
 ### 4. नए gTLD
 

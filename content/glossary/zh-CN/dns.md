@@ -14,6 +14,8 @@ level: 2
 sources:
   - https://datatracker.ietf.org/doc/html/rfc1034
   - https://datatracker.ietf.org/doc/html/rfc1035
+  - https://www.rfc-editor.org/rfc/rfc4033.html#section-5
+  - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
   - https://www.iana.org/domains/root
   - https://www.cloudflare.com/learning/dns/what-is-dns/
   - https://www.icann.org/resources/pages/what-2012-02-25-en
@@ -65,9 +67,9 @@ DNS 执行**名称解析**：给定一个域名，它返回与该名称关联的
 
 ## DNS 层级与常用记录类型
 
-DNS 被组织为一棵倒置的树。根（`.`）位于顶端；其下是 TLD（`.com`、`.net`、`.io`，以及国家代码如 `.de`）；每个 TLD 下方是二级域（`example.com`）；这些域还可以拥有任意深度的子域（`mail.example.com`）。
+DNS 被组织为一棵倒置的树。根（`.`）位于顶端；其下是 TLD（`.com`、`.net`、`.io`，以及国家代码如 `.de`）；每个 TLD 下方是二级域（`example.com`）；这些域还可以拥有嵌套的子域（`mail.example.com`）。
 
-树中的每个节点称为一个**区**，区的权威名称服务器保存该区的**资源记录**。最常见的 [DNS 记录类型](/zh-CN/glossary/dns-record-types/)如下：
+**区**是统一管理的 DNS 树的一部分。DNS 树的每个节点不一定单独组成一个区。委派将子区与父区分开。权威名称服务器保存区的**资源记录**（[RFC 1034 第 4.2 节](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)）。常见的 [DNS 记录类型](/zh-CN/glossary/dns-record-types/)包括：
 
 | 记录 | 用途 | 示例值 |
 |--------|---------|---------------|
@@ -101,9 +103,9 @@ DNS 的原始规范设计以可靠性和扩展性为主要目标，并未着重�
 
 **缓存投毒。** 能够将伪造 DNS 响应注入解析器缓存的攻击者，可以在用户不知情的情况下将其从合法网站重定向至恶意网站。2008 年的 Kaminsky 攻击大规模演示了这一点，推动了端口随机化和 [DNSSEC](/zh-CN/glossary/dnssec/) 的更广泛采用。
 
-**DNSSEC。** DNS 安全扩展（定义于 RFC 4033–4035）为 DNS 记录添加了密码学签名。能够验证 [DNSSEC](/zh-CN/glossary/dnssec/) 签名的解析器可检测被篡改的响应。其采用率持续增长但参差不齐：截至 2024 年，约 90% 的根区和主要 TLD 已完成签名，但端到端验证需要链中所有区都已签名且解析器主动检查签名。
+**DNSSEC。** DNS 安全扩展为 DNS 资源记录集添加密码学签名。验证解析器沿认证链检查签名，直至配置的信任锚。根区签名本身无法认证未签名的子区。[RFC 4033 第 5 节](https://www.rfc-editor.org/rfc/rfc4033.html#section-5)区分安全、不安全、无效和不确定的结果。
 
-**DNS 劫持。** 攻击者若能攻陷注册商账户、注册局系统或 ISP 的解析器，可大规模重定向 DNS 响应。防御手段包括注册商级多因素认证、注册局锁（EPP `serverTransferProhibited`），以及对意外 NS 或 A 记录变更的监控。
+**DNS 劫持。** 攻击者若能攻陷注册商账户、注册局系统或 ISP 的解析器，可大规模重定向 DNS 响应。防御手段包括注册商级多因素认证、注册局的转移与更新限制（EPP `serverTransferProhibited` 和 `serverUpdateProhibited`），以及对意外 NS 或 A 记录变更的监控。 ([ICANN](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)).
 
 **DNS over HTTPS / DNS over TLS（DoH / DoT）。** 这些协议对客户端与解析器之间的 DNS 查询进行加密，防止在传输途中对查询进行窃听和路径修改——这是对 DNSSEC 的补充性保护，后者解决的是数据完整性问题而非隐私问题。
 
