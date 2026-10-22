@@ -18,7 +18,7 @@ faqs:
   - question: '为什么好的 .com 域名这么难找？'
     answer: '全球已注册超过 1.61 亿个 .com 域名，简短、词典词和精确匹配品牌名的供应已基本耗尽。大多数优质 .com 域名已被持有，因此通常只能通过二级市场而非标准注册价格获得。'
   - question: '.com 的价格是多少？价格会持续上涨吗？'
-    answer: '注册商自行设定零售价，但注册局批发价受监管。根据 2018 年美国政府修正案，Verisign 可在每六年中的四年内将批发费提高至多 7%——价格已从 $7.85 爬升至 $10.97——因此请将续费预算设为逐年小幅增长，而非只考虑首年注册价。'
+    answer: '截至 2026 年 10 月 22 日，Verisign 的注册局批发费为每个注册年 10.26 美元。Verisign 已宣布，新注册和续费将从 2026 年 11 月 1 日起执行每年 10.97 美元的批发费。注册商自行设定零售价。购买者应核对续费报价，不能把批发费当作最终支付价格。'
   - question: '哪些人应该注册 .com 域名？'
     answer: '几乎所有希望拥有最广泛认可和信任地址的企业、品牌或项目。尤其适合面向全球或主流消费者的公司，以及任何希望长期保护品牌的人。'
 relatedArticles:
@@ -55,7 +55,7 @@ relatedGlossary:
 | 注册局运营商 | Verisign（VeriSign Global Registry Services） |
 | 授权年份 | 1985 年 |
 | 注册数量 | 逾 1.61 亿——互联网最大 TLD |
-| 批发价 | 受监管；从 $7.85（2012 年）升至 $10.97（2026 年） |
+| 批发价 | USD 10.26/年 (2026-10-22); USD 10.97/年 (2026-11-01) |
 | IDN 支持 | 是 |
 | DNSSEC | 是 |
 | 注册限制 | 向所有人开放——无本地存在、凭证或营业要求 |
@@ -111,9 +111,8 @@ Symbolics 的故事对任何在 2026 年购买带 AI 标签域名的人都有一
 
 **2018 年**，这一局面改变了。特朗普时代的 NTIA 签署了[第 35 号修正案](https://www.ntia.gov/program/verisign-cooperative-agreement)，声称将"废除奥巴马时代的价格管制"，恢复 Verisign 在**每六年中的四年内将批发价提高至多 7%** 的权利。随后几天里，Verisign 股价大涨约 18%。2020 年，[ICANN 同意允许 Verisign 在每六年延期的最后四年内每年将 .com 域名价格提高 7%](https://domainnamewire.com/2020/03/27/breaking-icann-and-verisign-agree-to-com-extension-with-7-price-hikes/#:~:text=increase%20the%20price%20of%20.com%20domains%20by%207%25%20per%20year%20in%20the%20last%20four%20years%20of%20each%20six-year%20extension)——同时 Verisign 向 ICANN 支付了五年每年 400 万美元用于"DNS 安全"。公开征询意见期收到约 9000 份意见，绝大多数反对。ICANN 在发布意见分析的次日便予以批准。
 
-结果是一条合同保障的稳定上涨曲线。批发价依次经历了 $7.85 → $8.39 → $8.97 → $9.59 → $10.26，2026 年将[从 $10.26 升至 $10.97](https://domainnamewire.com/2025/11/19/verisign-can-increase-com-prices-in-2026/#:~:text=increase%20from%20%2410.26%20to%20%2410.97)。
+截至 2026 年 10 月 22 日，Verisign 的注册局批发费为每个注册年 10.26 美元。[Verisign 已宣布，新注册和续费将从 2026 年 11 月 1 日起执行每年 10.97 美元的批发费](https://www.sec.gov/Archives/edgar/data/1014473/000101447326000019/q12026earningsrelease.htm#:~:text=effective%20Nov.)。注册商自行设定零售价。购买者应核对续费报价，不能把批发费当作最终支付价格。
 
-![一道从 $7.85 升到 $10.97 的 .com 价格台阶，标有“受监管”印章——受合同保障的批发价稳定上涨](../../assets/com-03-price-escalator.jpg)
 
 这件事为何如此具有争议，在于这里存在商业世界中几乎绝无仅有的经济逻辑。Verisign 依据一份从未进行竞争性招标的合同运营 .com——而当其他国家*确实*对注册局进行招标时，价格仅为此处的零头（一份竞标印度 `.in` 的报价显示 [Neustar 的出价仅为每域名每年 70 美分](https://circleid.com/posts/20181112_verisigns_attempt_to_increase_fees_unjustified_despite#:~:text=Neustar%20at%20just%2070%20cents%20per%20domain%20name%20per%20year)，而 Verisign 的批发价接近 $11）。行业分析师估计 Verisign 运营一个 .com 名称的真实成本最多几美元，而公司运营利润率约为营收的三分之二。美国经济自由项目估计，2018 年后的涨价[每年为 Verisign 股东带来约 3.83 亿美元的意外收益](https://www.economicliberties.us/our-work/a-call-for-com-petition-reining-in-verisigns-monopoly-over-the-internets-most-popular-top-level-domain/#:~:text=represents%20an%20additional%20%24383%20million%20annual%20windfall)；2024 年，[参议员 Elizabeth Warren 和众议员 Jerry Nadler 致函美国国家电信和信息管理局及司法部](https://www.warren.senate.gov/newsroom/press-releases/warren-nadler-urge-regulators-to-take-action-on-verisigns-monopoly-over-com-website-prices#:~:text=wrote%20to%20the%20National%20Telecommunications%20and%20Information%20Administration)，敦促监管机构对 Verisign 的定价采取行动。
 
@@ -212,7 +211,7 @@ Google 将 .com 视为通用顶级域名，既无固有排名优势，也无排�
 
 ### .com 的价格是多少？价格会持续上涨吗？
 
-注册商自行设定零售价，但注册局批发价受监管。根据 2018 年美国政府修正案，Verisign 可在每六年中的四年内将批发费提高至多 7%——价格已从 $7.85 爬升至 $10.97——因此请将续费预算设为逐年小幅增长，而非只考虑首年注册价。
+截至 2026 年 10 月 22 日，Verisign 的注册局批发费为每个注册年 10.26 美元。Verisign 已宣布，新注册和续费将从 2026 年 11 月 1 日起执行每年 10.97 美元的批发费。注册商自行设定零售价。购买者应核对续费报价，不能把批发费当作最终支付价格。
 
 ### 哪些人应该注册 .com 域名？
 

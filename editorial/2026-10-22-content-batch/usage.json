@@ -1,0 +1,351 @@
+{
+  "as_of_utc": "2026-10-22T05:37:51.561051+00:00",
+  "topics": [
+    {
+      "topic": "benchmark-dns-for-gaming",
+      "english_paths": [],
+      "review_outcome": "The existing guide separates DNS query time from game telemetry, distinguishes initial/repeated queries from known cache state, retains failures, and includes rollback. No substantive scope or quality gap found.",
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots."
+    },
+    {
+      "topic": "com",
+      "english_paths": [
+        "content/tld/en/com.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots."
+    },
+    {
+      "topic": "dns",
+      "english_paths": [
+        "content/glossary/en/dns.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots."
+    },
+    {
+      "topic": "dns-dmarc",
+      "english_paths": [
+        "content/blog/en/dmarc-record-setup.md",
+        "content/blog/en/set-up-email-with-your-own-domain.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots.",
+      "images": {
+        "model": "gpt-image-2",
+        "calls_including_rejected_generations": 5,
+        "raw_usage_totals": {
+          "input_tokens": 2424,
+          "output_tokens": 25353,
+          "total_tokens": 27777
+        },
+        "cost_usd": "UNKNOWN"
+      }
+    },
+    {
+      "topic": "dns-dynamic",
+      "english_paths": [
+        "content/blog/en/dynamic-dns-setup.md",
+        "content/blog/en/dhcp-vs-dns.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots.",
+      "images": {
+        "model": "gpt-image-2",
+        "calls_including_rejected_generations": 4,
+        "raw_usage_totals": {
+          "input_tokens": 2329,
+          "output_tokens": 17778,
+          "total_tokens": 20107
+        },
+        "cost_usd": "UNKNOWN"
+      }
+    },
+    {
+      "topic": "dns-flush",
+      "english_paths": [
+        "content/blog/en/flush-dns-cache.md",
+        "content/blog/en/root-dns-servers.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots.",
+      "images": {
+        "model": "gpt-image-2",
+        "calls_including_rejected_generations": 5,
+        "raw_usage_totals": {
+          "input_tokens": 2308,
+          "output_tokens": 25353,
+          "total_tokens": 27661
+        },
+        "cost_usd": "UNKNOWN"
+      }
+    },
+    {
+      "topic": "dns-nxdomain",
+      "english_paths": [
+        "content/blog/en/fix-dns-probe-finished-nxdomain.md",
+        "content/blog/en/nslookup-specific-dns-server.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots.",
+      "images": {
+        "model": "gpt-image-2",
+        "calls_including_rejected_generations": 8,
+        "raw_usage_totals": {
+          "input_tokens": 4373,
+          "output_tokens": 37643,
+          "total_tokens": 42016
+        },
+        "cost_usd": "UNKNOWN"
+      }
+    },
+    {
+      "topic": "domain-cheap",
+      "english_paths": [
+        "content/blog/en/how-much-is-a-domain-understanding-holding-cost.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots.",
+      "images": {
+        "model": "gpt-image-2",
+        "calls_including_rejected_generations": 3,
+        "raw_usage_totals": {
+          "input_tokens": 2196,
+          "output_tokens": 10203,
+          "total_tokens": 12399
+        },
+        "cost_usd": "UNKNOWN"
+      }
+    },
+    {
+      "topic": "domain-vs-hosting",
+      "english_paths": [],
+      "review_outcome": "Existing page fully answers domain versus hosting intent, service separation, setup and email migration risks. No substantive gap found. Scope review is not a complete historical fact audit.",
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots."
+    },
+    {
+      "topic": "how-to-name-your-project",
+      "english_paths": [
+        "content/blog/en/how-to-name-your-project.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots."
+    },
+    {
+      "topic": "how-to-value-a-domain-name",
+      "english_paths": [],
+      "review_outcome": "Scope review found complete practical appraisal process, comparable-sales cautions, tool limitations, buyer distinction, costs and cited sale-scope examples. Current baseline already repairs the public-sales-list inference. No rewrite warranted. Not a full historical fact audit.",
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots."
+    },
+    {
+      "topic": "ssl-free",
+      "english_paths": [
+        "content/blog/en/free-ssl-certificate.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots.",
+      "images": {
+        "model": "gpt-image-2",
+        "calls_including_rejected_generations": 3,
+        "raw_usage_totals": {
+          "input_tokens": 1530,
+          "output_tokens": 14377,
+          "total_tokens": 15907
+        },
+        "cost_usd": "UNKNOWN"
+      }
+    },
+    {
+      "topic": "ssl-install",
+      "english_paths": [
+        "content/blog/en/how-to-install-an-ssl-certificate.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots.",
+      "images": {
+        "model": "gpt-image-2",
+        "calls_including_rejected_generations": 1,
+        "raw_usage_totals": {
+          "input_tokens": 696,
+          "output_tokens": 3401,
+          "total_tokens": 4097
+        },
+        "cost_usd": "UNKNOWN"
+      }
+    },
+    {
+      "topic": "ssl-types",
+      "english_paths": [
+        "content/blog/en/ssl-certificate-types.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots.",
+      "images": {
+        "model": "gpt-image-2",
+        "calls_including_rejected_generations": 5,
+        "raw_usage_totals": {
+          "input_tokens": 2690,
+          "output_tokens": 23266,
+          "total_tokens": 25956
+        },
+        "cost_usd": "UNKNOWN"
+      }
+    },
+    {
+      "topic": "ttl-and-dns-propagation",
+      "english_paths": [],
+      "review_outcome": "The existing guide covers prior TTL expiry, negative caching, serve-stale, delegation, alias records, IPv6 and application validation. Hypothetical numbers carry seconds and do not claim measured values. No substantive gap found.",
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots."
+    },
+    {
+      "topic": "txt-records-spf-dkim-verification",
+      "english_paths": [],
+      "review_outcome": "The existing guide distinguishes TXT records and strings, one selected SPF policy, DKIM selectors and private/public keys, service-specific verification retention and migration checks. No substantive gap found.",
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots."
+    },
+    {
+      "topic": "what-is-a-tld",
+      "english_paths": [
+        "content/blog/en/what-is-a-tld.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots."
+    },
+    {
+      "topic": "what-is-https",
+      "english_paths": [
+        "content/blog/en/what-is-https.md"
+      ],
+      "review_outcome": null,
+      "text_model": "gpt-6.1-sol",
+      "text_paid_api_calls": 0,
+      "text_topic_input_tokens": "UNKNOWN",
+      "text_topic_output_tokens": "UNKNOWN",
+      "text_topic_cached_input_tokens": "UNKNOWN",
+      "text_topic_reasoning_output_tokens": "UNKNOWN",
+      "text_topic_cost_usd": "UNKNOWN",
+      "text_phase_attribution": "Research, writing, translation and review shared author sessions without reliable nonoverlapping topic boundaries. Actual cumulative raw counters remain in the execution evidence directory. Do not estimate from words or sum cumulative snapshots."
+    }
+  ],
+  "unknown_is_not_zero": true,
+  "subscription_quota_not_convertible_to_tokens": true
+}

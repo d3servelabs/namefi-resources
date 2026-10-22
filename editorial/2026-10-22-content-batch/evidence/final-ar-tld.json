@@ -1,0 +1,146 @@
+{
+  "task": "Independent Arabic accuracy review of this batch modified TLD paragraphs",
+  "reviewed_utc": "2026-10-22T05:23:14.449015+00:00",
+  "review_model": "gpt-6.1-sol",
+  "worktree": "/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/demand-final-review",
+  "reviewed_head": "60a1f960d620b8443764d23af9963a5a67f40eae",
+  "baseline": "20ebd689856bcc138037a07e871ca8f4c2c5df27",
+  "target": "/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/demand-final-review/content/blog/ar/what-is-a-tld.md",
+  "english_source": "/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/demand-final-review/content/blog/en/what-is-a-tld.md",
+  "target_sha256": "9c230135e836ad7edf0952b5ee17d0b1b428ca70cad03cc57ffa85ac20a80a7a",
+  "english_sha256": "3a8a6e1e7981ad0c0a7c11e3844873b08ae5b5467719556d9035dd223cc58ece",
+  "scope": "只检查阿拉伯语diff的三处改动段落：101、172、208行。英文和基准用于对照。未审计全文。",
+  "worktree_mutations": false,
+  "ci_run": false,
+  "new_pr": false,
+  "verdict": "NEEDS_COORDINATOR_DECISION: 一处当前分类问题影响英文和阿拉伯语。另有一处原有的译文遗漏，位于本批触及的FAQ段落。",
+  "paragraph_results": [
+    {
+      "line": 101,
+      "status": "ISSUE_SHARED_WITH_ENGLISH",
+      "meaning": "新定义正确解释了社群代表关系。新定义正确区分了注册限制和sponsored身份。",
+      "verified_examples": [
+        ".aero：当前ICANN协议标记Sponsored。",
+        ".coop：当前ICANN协议标记Community (Spec12), Sponsored。"
+      ],
+      "issue": "旧FAQ确实列出.museum，但当前.museum协议明确标记Non-Sponsored。改动段落没有标注历史语境，读者会把.museum理解为当前sponsored示例。",
+      "language_register": "ليها、بتمثل、بتعتمد、مش符合现代埃及阿拉伯语。建议保留现有语域。"
+    },
+    {
+      "line": 172,
+      "status": "PASS_CHANGED_EXAMPLES",
+      "meaning": "替换后的.coop和.aero都具有可验证的Sponsored分类。资格限制的方向正确。原有HTTPS短语不是本次新增断言；本次没有把HTTPS写成注册身份资格。",
+      "replacement_required": false,
+      "optional_precision": "6. **في أي قيود؟** امتدادات ممولة زي `.coop` و`.aero` وبعض الـ ccTLDs ليها شروط أهلية للتسجيل. قبل ما تسجّل، راجع سياسة الامتداد الحالية.",
+      "scope_note": "可选建议只改资格句。作者可以保留原有HTTPS句。"
+    },
+    {
+      "line": 208,
+      "status": "PASS_REPLACED_EXAMPLES_WITH_PREEXISTING_PARITY_GAP",
+      "meaning": "新示例.aero和.coop正确。gTLD与ccTLD示例没有因本次替换产生错误。",
+      "parity_gap": "英文对应FAQ包含.google品牌扩展名。阿拉伯语对应FAQ仍省略品牌类别。省略在baseline已经存在，本批没有新引入省略，但本批触及了整段。",
+      "register": "هي、زي与其余段落的埃及阿拉伯语语域兼容。"
+    }
+  ],
+  "findings": [
+    {
+      "id": "AR-TLD-01",
+      "severity": "S2",
+      "type": "outdated_contractual_classification",
+      "line": 101,
+      "english_line": 111,
+      "introduced_or_carried": "baseline已含.museum示例；本批重写并新加旧FAQ引用，仍未修复当前身份。",
+      "problem": "段落把.museum作为当前sponsored示例。当前2025协议为Community (Spec12), Non-Sponsored。旧ICANN FAQ只能证明旧FAQ列举了.museum，不能证明当前契约分类。",
+      "evidence": [
+        {
+          "url": "https://www.icann.org/en/registry-agreements/details/museum#:~:text=Agreement%20Type",
+          "locator": "Agreement Date 11 March 2025；Agreement Type Community (Spec12), Non-Sponsored",
+          "personally_opened": true
+        },
+        {
+          "url": "https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=The%20.aero%2C%20.coop%2C%20and%20.museum",
+          "locator": "General Questions, question7, lists the three as sponsored; conflicts with current museum record",
+          "personally_opened": true
+        }
+      ],
+      "recommended_action": "删除当前示例中的.museum，并引用.aero与.coop的当前ICANN协议。英文同段也需要同步决策。不要只修阿拉伯语而留下同源错误。",
+      "suggested_ar_replacement": "**الامتدادات الممولة** ليها جهة راعية بتمثل مجتمع معيّن. ICANN بتصنّف [`.aero`](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type) و[`.coop`](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type) كامتدادات ممولة في اتفاقياتهم الحالية. شروط التسجيل بتعتمد على الامتداد وسياساته الحالية. وجود قيود على التسجيل لوحده مش معناه إن الامتداد ممول."
+    },
+    {
+      "id": "AR-TLD-02",
+      "severity": "S2",
+      "type": "preexisting_source_translation_omission_in_touched_paragraph",
+      "line": 208,
+      "english_line": 218,
+      "introduced_or_carried": "PREEXISTING；不是本批新增错误。",
+      "problem": "英文FAQ列出brand TLD，例如.google。阿拉伯语FAQ遗漏brand类别。若本次验收要求触及段落与英文完整对应，作者应补齐。",
+      "evidence": [
+        {
+          "local_file": "content/blog/en/what-is-a-tld.md",
+          "line": 218,
+          "observation": "English explicitly includes brand TLDs such as .google."
+        },
+        {
+          "url": "https://www.icann.org/en/registry-agreements/details/google#:~:text=Agreement%20Type",
+          "locator": "Agreement Type Base, Brand (Spec13), Non-Sponsored",
+          "personally_opened": true
+        }
+      ],
+      "recommended_action": "由协调者决定是否在本轮补齐已有遗漏。该建议属于同段修复，不要求重写全文。",
+      "suggested_ar_replacement": "الأنواع والتسميات الرئيسية بتشمل الامتدادات العامة (gTLDs) زي `.com`، وامتدادات رموز الدول (ccTLDs) زي `.uk` و`.ai`، والامتدادات الممولة (sTLDs) زي `.aero` و`.coop`، والـ gTLDs الجديدة زي `.xyz` و`.app`، وامتدادات العلامات التجارية زي `.google`، والامتدادات الدولية (IDNs) المكتوبة بخطوط غير لاتينية. التصنيفات دي مش كلها منفصلة عن بعض، وشروط التسجيل بتختلف حسب الامتداد."
+    }
+  ],
+  "not_raised_as_new_findings": [
+    {
+      "lines": [
+        97,
+        211
+      ],
+      "note": "原有阿拉伯语语境仍把gTLD概括为全球开放，未保留英文brand与资格限制的解释。两段没有出现在本批阿拉伯语diff，本次不把原有问题计为新增改动问题。"
+    },
+    {
+      "term": "الامتدادات الممولة",
+      "note": "该译名在baseline已存在。新段落用جهة راعية明确说明sponsor的含义。本次没有足够的独立母语LQA依据来要求全局换术语。"
+    }
+  ],
+  "source_checks": [
+    {
+      "url": "https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type",
+      "result": "Sponsored；协议页面定义sponsor为相关社群代表。"
+    },
+    {
+      "url": "https://itp.cdn.icann.org/en/files/registry-agreements/aero/aero-agreement-html-26-11-2024-en.htm",
+      "locator": "Sections1.3,3.1(c)(i)",
+      "result": "协议授予sponsor地位，并要求社群成员注册政策及实施。"
+    },
+    {
+      "url": "https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type",
+      "result": "Community (Spec12), Sponsored。"
+    },
+    {
+      "url": "https://itp.cdn.icann.org/en/files/registry-agreements/coop/coop-agreement-html-01-05-2024-en.html",
+      "result": "当前2024协议全文已打开。"
+    },
+    {
+      "url": "https://nic.coop/wp-content/uploads/2020/07/Eligibility-Policy-July-2020.pdf",
+      "locator": "page1, first paragraph and primary eligibility criteria",
+      "result": "注册限符合合作组织及关联组织资格的主体。"
+    },
+    {
+      "url": "https://www.iana.org/domains/root/db/aero.html",
+      "result": "仅用于确认顶级域名及generic分类，未用来推断法律资格。"
+    },
+    {
+      "url": "https://www.iana.org/domains/root/db/coop.html",
+      "result": "仅用于确认顶级域名及generic分类，未用来推断法律资格。"
+    }
+  ],
+  "unverified_fetches": [
+    "Arabic ICANN FAQ endpoint unavailable.",
+    "information.aero eligibility endpoint returned403; no claim relies on the failed fetch.",
+    "Google registry landing URL unavailable; no new HTTPS qualification verdict relies on that fetch."
+  ],
+  "usage_record": "final-ar-tld-usage.json; final-ar-tld-usage-summary.json",
+  "review_limit": "独立模型复核，不代表真人母语审校。根代理应亲自打开当前协议后裁决。",
+  "potential_general_lesson_for_coordinator": "若根代理确认AR-TLD-01，S2通用教训为：旧版ICANN FAQ可能保留旧Sponsored示例。作者应读取当前协议类型，不能用旧FAQ覆盖较新的Non-Sponsored身份。仅作为建议，作者没有修改技能文件。"
+}

@@ -1,0 +1,100 @@
+{
+  "reviewer_agent": "/root/review_dns",
+  "model": "gpt-6.1-sol",
+  "reviewed_at_utc": "2026-10-22T05:20:56.722606+00:00",
+  "review_head_sha": "60a1f960d620b8443764d23af9963a5a67f40eae",
+  "baseline_sha": "20ebd689856bcc138037a07e871ca8f4c2c5df27",
+  "scope": {
+    "target": "content/tld/ar/com.md",
+    "reference": "content/tld/en/com.md",
+    "changed_target_lines": [
+      127
+    ],
+    "only_changed_paragraphs_reviewed": true,
+    "excluded": "Unchanged Arabic prose and baseline omissions were not re-audited."
+  },
+  "verdict": "pass",
+  "requires_change": false,
+  "blocking_findings": [],
+  "checks": [
+    {
+      "item": "current_fee",
+      "verdict": "pass",
+      "arabic_value": "USD 10.26",
+      "english_value": "USD 10.26",
+      "conclusion": "阿拉伯语保留了美元币种和10.26金额，没有变成美分或零售报价。"
+    },
+    {
+      "item": "current_date",
+      "verdict": "pass",
+      "arabic_date": "22 أكتوبر 2026",
+      "english_date": "October 22, 2026",
+      "conclusion": "两个版本使用同一观察日期。当前价格陈述没有提前采用11月价格。"
+    },
+    {
+      "item": "annual_unit",
+      "verdict": "pass",
+      "arabic_phrase": "لكل سنة تسجيل",
+      "english_phrase": "per registration-year",
+      "conclusion": "阿拉伯语表达每个注册年的收费，没有变成按月收费或一次性总价。"
+    },
+    {
+      "item": "future_fee_and_effective_date",
+      "verdict": "pass",
+      "arabic_phrase": "هتبقى USD 10.97 من 1 نوفمبر 2026",
+      "english_phrase": "USD 10.97 effective November 1, 2026",
+      "conclusion": "埃及阿拉伯语的هتبقى明确表示将来状态。1 نوفمبر 2026与英文及主来源一致。"
+    },
+    {
+      "item": "new_and_renewal_scope",
+      "verdict": "pass",
+      "arabic_phrase": "رسوم التسجيل الجديد والتجديد",
+      "conclusion": "阿拉伯语明确覆盖新注册和续费。阿拉伯语没有把价格变化限定为首年促销。"
+    },
+    {
+      "item": "registry_and_retail_boundary",
+      "verdict": "pass",
+      "arabic_phrases": [
+        "بالجملة على مستوى السجل",
+        "شركات التسجيل بتحدد سعر البيع للعميل بنفسها",
+        "ما تعتبرش رسوم الجملة هي السعر النهائي"
+      ],
+      "conclusion": "阿拉伯语区分注册局批发费与注册商零售价，并保留检查续费报价的建议。"
+    },
+    {
+      "item": "egyptian_arabic_register",
+      "verdict": "pass",
+      "reviewed_phrases": [
+        "أعلنت إن",
+        "هتبقى",
+        "بتحدد",
+        "ما تعتبرش"
+      ],
+      "conclusion": "改动采用自然的现代埃及阿拉伯语。技术术语和USD币种代码清楚，不需要为语言风格重写。"
+    },
+    {
+      "item": "citation_target",
+      "verdict": "pass",
+      "conclusion": "新增链接指向Verisign向SEC提交的2026年第一季度新闻稿。该主来源明确列出两项价格、年度单位、业务范围和未来生效日期。"
+    }
+  ],
+  "source_evidence": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1014473/000101447326000019/q12026earningsrelease.htm",
+      "title": "Verisign Reports First Quarter 2026 Results",
+      "published_date": "2026-04-23",
+      "locator": "Business Highlights, final bullet; web extraction line 26",
+      "retrieval_method": "Personally opened and read through web.run on 2026-10-22",
+      "supporting_excerpt": "from $10.26 to $10.97 effective Nov. 1, 2026."
+    }
+  ],
+  "verified_issues": [],
+  "replacement_suggestions": [],
+  "replacement_decision": "无需替换。新增阿拉伯语段落准确保留英文改动的金额、单位、日期、未来时态和零售边界。",
+  "mutation_attestation": {
+    "worktree_modified": false,
+    "pr_created": false,
+    "ci_run": false
+  },
+  "usage_record": "final-ar-com-usage.json"
+}
