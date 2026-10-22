@@ -1,0 +1,47 @@
+{
+  "en": {
+    "characters": 9029,
+    "h2": 10,
+    "h3": 4,
+    "images": 1,
+    "external_urls": [
+      "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites",
+      "https://namefi.io",
+      "https://www.iana.org/domains/root/db/to.html",
+      "https://www.tonic.to/",
+      "https://www.tonic.to/faq.htm",
+      "https://www.tonic.to/newname.htm"
+    ],
+    "wrong_en_links": null
+  },
+  "de": {
+    "characters": 10209,
+    "h2": 10,
+    "h3": 4,
+    "images": 1,
+    "external_urls": [
+      "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites",
+      "https://namefi.io",
+      "https://www.iana.org/domains/root/db/to.html",
+      "https://www.tonic.to/",
+      "https://www.tonic.to/faq.htm",
+      "https://www.tonic.to/newname.htm"
+    ],
+    "wrong_en_links": 0
+  },
+  "ja": {
+    "characters": 5066,
+    "h2": 10,
+    "h3": 4,
+    "images": 1,
+    "external_urls": [
+      "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites",
+      "https://namefi.io",
+      "https://www.iana.org/domains/root/db/to.html",
+      "https://www.tonic.to/",
+      "https://www.tonic.to/faq.htm",
+      "https://www.tonic.to/newname.htm"
+    ],
+    "wrong_en_links": 0
+  }
+}

@@ -10,7 +10,7 @@ cluster: domain-investing
 series: domain-flipping-skills
 seriesOrder: 4
 format: explainer
-description: "What domain backorders and drop-catching are, how services race to grab a name the instant it releases, and when a backorder is worth paying for."
+description: "Learn what a domain backorder commits you to, how drop-catching differs from expiry auctions, and which payment and auction rules to check."
 ogImage: ../../assets/domain-backorders-and-drop-catching-og.jpg
 keywords: ['domain backorder', 'drop catching', 'how to backorder a domain', 'catch expiring domains', 'DropCatch', 'SnapNames', 'NameJet', 'Park.io', 'Dynadot backorder', 'domain drop catching service', 'redemption grace period', 'pending delete domain', 'when do domains drop', 'expired domain auction', 'how to get a registered domain']
 relatedArticles:
@@ -33,9 +33,9 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-A name you want is already taken. The current owner isn't selling, isn't answering, and as far as you can tell isn't even using it. So you do the only thing left: you wait for them to forget to renew it. The moment that registration lapses and the name falls back into the open pool, you want to be the one standing there to grab it.
+A domain backorder asks a service to pursue a name that you cannot register now. The order can also commit you to a payment or opening bid. A backorder does not guarantee acquisition, reserve the domain across registrars, or guarantee a private auction.
 
-That is the whole game behind backorders and [drop-catching](/en/glossary/backorder/). Both are ways of betting on a domain you can't buy today, on the chance you can register it the instant it becomes free. They are not the same thing, the difference matters, and most of the time the honest answer to "should I pay for this?" is no. This explainer covers what each one is, how the race works at the moment a name releases, the main services that run it, and the narrow set of cases where a backorder is worth paying for. It's part of the [domain flipping skill series](/en/blog/domain-flipping/), sitting next to our pillar on [how to find domains to flip](/en/blog/how-to-find-domains-to-flip/).
+The important question is what happens if the service succeeds. Check the acquisition channel, the auction rules, and the total amount you can owe. This article explains those decisions. The [drop-cycle guide](/en/blog/expired-domains-and-the-drop-cycle/) covers expiration stages, and the [auction guide](/en/blog/how-to-win-domain-auctions/) covers bidding strategy.
 
 ## First, why a name "drops" at all
 
@@ -45,38 +45,52 @@ A domain isn't sold once and kept forever. It's [registered](/en/glossary/regist
 
 For gTLDs covered by ICANN's [Expired Registration Recovery Policy](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en), a registrar may delete a registration after it expires. Except for sponsored gTLD registries, the registry must then offer a 30-day [Redemption Grace Period](/en/glossary/redemption-period/) immediately after that deletion. During this period, the previous registrant can ask the deleting registrar to restore the name, and the registrar must disclose its restore fees. This ICANN policy is for gTLDs; country-code TLDs can have different registry-specific expiration and deletion rules.
 
-If a covered gTLD registration is not restored, it can enter the final [pending delete](/en/glossary/pending-delete/) countdown. ICANN's EPP status guidance says a domain in `pendingDelete` after redemption is purged from the registry database after five calendar days and becomes available for registration. That public [drop](/en/glossary/pending-delete/) is the moment catchers wait for. Not every expired name reaches it: some registrars allocate eligible inventory through pre-release or expiry-auction partners before a registry deletion, and ccTLD processes vary.
+If a covered gTLD registration is not restored, it can enter the final [pending delete](/en/glossary/pending-delete/) countdown. [ICANN's EPP status guidance](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en) says a domain in `pendingDelete` after redemption is purged from the registry database after five calendar days and becomes available for registration. That public [drop](/en/glossary/pending-delete/) is the moment catchers wait for. Not every expired name reaches it: some registrars allocate eligible inventory through pre-release or expiry-auction partners before a registry deletion, and ccTLD processes vary.
 
-## Drop-catching: winning the millisecond
+## Drop-catching services compete at registry release
 
-![Editorial illustration of multiple server arms racing to grab a single domain-name tag the instant it releases, with a stopwatch counting fractions of a second](../../assets/domain-backorders-and-drop-catching-02-millisecond-race.jpg)
+![Multiple registration systems compete to register one domain after the registry releases the name](../../assets/domain-backorders-and-drop-catching-02-millisecond-race.jpg)
 
-Drop-catching is the brute-force approach: you (or, realistically, a service acting for you) try to register the name the literal instant it's deleted. Wikipedia's definition is plain — drop catching, also known as domain sniping, is [the practice of registering a domain name once registration has lapsed, immediately after expiry](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=is%20the%20practice%20of%20registering%20a%20domain%20name%20once%20registration%20has%20lapsed%2C%20immediately%20after%20expiry).
+Drop-catching means attempting to register a domain when the registry deletes the previous registration and makes the name available again. Expiration alone does not start that race. The previous registrant may still renew or restore the name before the relevant deadline.
 
-You cannot win this by hand. Good names are deleted on a predictable schedule, and a crowd of professional services is hammering the registry the same second you are. As the domain-speculation literature describes it, [the business of registering the domain names as they are deleted by the registries is known as drop catching. It is a highly competitive business](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20business%20of%20registering%20the%20domain%20names%20as%20they%20are%20deleted%20by%20the%20registries%20is%20known%20as%20drop%20catching.%20It%20is%20a%20highly%20competitive%20business), and the contest is brutally fast: [the time between a drop and a capture is often measured in seconds or fractions thereof](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20time%20between%20a%20drop%20and%20a%20capture%20is%20often%20measured%20in%20seconds%20or%20fractions%20thereof).
+[Dynadot explains](https://www.dynadot.com/help/question/place-a-backorder) that competing registrars can prevent a successful catch. [SnapNames describes](https://www.snapnames.com/legal/legal.action) a network of registrar partners and explicitly declines to guarantee acquisition. A normal checkout provides no protection against those competing registration attempts.
 
-This is why drop-catch services exist and win names you never could from a normal [registrar](/en/glossary/registrar/) checkout page. The serious catchers hold many registrar accreditations and run server farms aimed at the registry's deletion queue. Wikipedia describes the model simply: these services [offer to dedicate their servers to securing a domain name upon its availability, usually at an auction price](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=offer%20to%20dedicate%20their%20servers%20to%20securing%20a%20domain%20name%20upon%20its%20availability%2C%20usually%20at%20an%20auction%20price). That last clause is the part beginners miss. If a service catches a name more than one customer wanted, you don't get it for the registration fee — it goes to [auction](/en/glossary/auction/) among the interested backorderers, and a contested catch on a desirable name can clear for hundreds or thousands of dollars. The mechanics of those bidding wars are their own skill, covered in [how to win domain auctions](/en/blog/how-to-win-domain-auctions/).
+A successful catch also does not establish your final price. Multiple requests can lead to an [auction](/en/glossary/auction/), and eligibility depends on the platform and listing. Do not assume that only the original backorder customers can bid.
 
-## Backorders: reserving your spot before the drop
+## A backorder authorizes a platform to pursue a domain
 
-![Editorial illustration of a person holding a reservation ticket at the front of a roped-off line, securing a priority spot ahead of a waiting crowd](../../assets/domain-backorders-and-drop-catching-03-reserve-spot.jpg)
+![A checklist identifies the acquisition channel, auction rules, and budget before a domain backorder](../../assets/domain-backorders-and-drop-catching-04-order-checks.jpg)
 
 A backorder is an acquisition request you place ahead of time. Instead of trying to register a name manually at the drop, you tell a service, "if this name enters your acquisition channel, try to get it for me." For a public pending-delete name, that request normally instructs the service's own drop-catching system; it does not create industry-wide priority over competing catchers. Payment authorization, minimum bids, and when a charge becomes due vary by platform.
 
 Under the hood, a backorder is often fulfilled by the same drop-catching machinery, just pointed at your request. Dynadot, for example, says it tries to catch a pending-delete domain when it is released, gives no guarantee of success, and sends the name to a backorder auction if multiple customers requested it. NameJet similarly treats a backorder as reserved interest and an opening bid if an auction follows. In other words, you are buying or authorizing an attempt under one platform's rules—not a guaranteed domain and not priority over every other service.
 
-There's a second model worth knowing, because it changes who you're competing against. Some registrars never let a name drop into the public pool at all. As the literature notes, certain registrars [do not allow domains to drop in the normal fashion, instead introducing an intermediary (e.g., Snapnames and Namejet) that auction the domain prior to their deletion](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=do%20not%20allow%20domains%20to%20drop%20in%20the%20normal%20fashion%2C%20instead%20introducing%20an%20intermediary). When that happens, the name never reaches the registry deletion queue you'd be racing for, and the only way to get it is through that registrar's partner auction platform. Knowing whether a name will drop publicly or get diverted to a private expiry auction tells you which service to place your backorder with — and sometimes that you can't catch it at all, only outbid for it.
+A registrar can also send an expired name to an auction partner before public deletion. [NameJet's inventory guide](https://www.namejet.com/userguide.action) distinguishes partner expiry inventory from pending-delete inventory. An independent catcher cannot register a name that never becomes publicly available. Check the actual listing instead of treating the expiration date as a promise of a public drop.
 
-## The services that race for you
+## Each service defines a different purchase commitment
 
-Most flippers interact with drop-catching through a handful of platforms. They overlap and specialize by extension, and the right one depends on where a name is registered and which [TLD](/en/glossary/tld/) it's in.
+These examples describe published rules checked on **October 21, 2026**. Prices, eligible extensions, and order deadlines can change. Use the current listing and checkout for the domain you want.
 
-- **DropCatch** is the best-known pure drop-catch platform for [`.com`](/en/tld/com/) and other legacy gTLDs. You backorder a pending-delete name, the service throws its registrar fleet at the deletion, and if more than one user backordered the same name, it settles by auction. It's the default for catching public deletes at scale.
-- **SnapNames** and **NameJet** are the classic expiry-auction intermediaries — the [Snapnames and Namejet](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=instead%20introducing%20an%20intermediary%20%28e.g.%2C%20Snapnames%20and%20Namejet%29) named above. Their strength is names that never publicly drop because a partner registrar routes its expiring inventory to them first. If a name you want is at one of their partner registrars, this is where it surfaces.
-- **Dynadot** is a full registrar that also runs backorder and expired-auction services, so you can reserve a catch at the same place you'd register normally. For the record, Wikipedia identifies it as [an ICANN-accredited domain registrar and web host company founded by software engineer Todd Han in 2002](https://en.wikipedia.org/wiki/Dynadot#:~:text=is%20an%20ICANN%2Daccredited%20domain%20registrar%20and%20web%20host%20company%20founded%20by%20software%20engineer%20Todd%20Han%20in%202002).
-- **Park.io** built its reputation catching newer and country-code extensions — the kind of names where a generalist catcher's coverage is thinner. If you're chasing a name on a less mainstream TLD, a specialist is often the only realistic shot.
+| Service | What the primary source confirms | What to check before ordering |
+| --- | --- | --- |
+| DropCatch | Its [official introduction](https://pages.dropcatch.com/) says placement costs nothing and a successful acquisition triggers a charge. | Check the listing's price, auction eligibility, and current terms. Free placement does not mean a free domain. |
+| Dynadot | Its [backorder instructions](https://www.dynadot.com/help/question/place-a-backorder) require payment settings and account eligibility. Multiple requests lead to an auction. | Check account requirements, the backorder price, and the rules for participating in the auction. |
+| NameJet and SnapNames | Their [NameJet guide](https://www.namejet.com/userguide.action) and [SnapNames guide](https://www.snapnames.com/userguide.action) cover expiry and pending-delete inventory. Both warn that an acquired domain can enter a public auction, including bidders without a backorder. | Check the inventory type, deadline, and whether the actual auction is public or restricted. |
+| Park.io | Its [support page](https://park.io/support) says payment follows acquisition. Equal-price competing backorders can trigger an auction. Premium-domain orders can require card preauthorization. | Check the extension, premium classification, maximum price, and renewal price. |
 
-The practical move is to figure out, before you authorize an order, *how* a specific name may become available. Is it heading for a public registry delete, where independent catchers compete, or is it listed through a registrar's pre-release or expiry-auction channel? For a public drop, requests at multiple independent services can improve the chance that one of them wins the registry race. First read each platform's payment, auction, and binding-order rules so you understand what a successful catch obligates you to pay. For exclusive or pre-release inventory, use the platform that actually controls that acquisition channel.
+For a public drop, requests at independent services can increase your coverage of competing registration systems. Read each order's obligations first. For exclusive expiry inventory, identify the platform that controls the listing. A second service cannot create access to an exclusive listing.
+
+## You should check five conditions before placing an order
+
+1. **Confirm the channel.** Identify pending-delete, partner expiry, or owner-listed inventory. Record the exact domain and extension.
+2. **Confirm the commitment.** Distinguish a placement fee, account deposit, card authorization, successful-catch charge, and binding bid.
+3. **Confirm the auction audience.** Read the listing and current terms. A backorder does not necessarily exclude later bidders.
+4. **Confirm the ceiling.** Include the winning bid, applicable fees, taxes, and future renewal cost in your budget.
+5. **Confirm delivery.** Check the receiving registrar, payment deadline, account access, and transfer restrictions before planning a move.
+
+For example, a displayed $50 backorder price is not necessarily a $50 spending limit. If the domain enters an auction, your later bid can create a larger obligation. [SnapNames' buyer agreement](https://www.snapnames.com/legal/buyeragreement.action) treats accepted bids as binding purchase commitments. Save the listing, accepted terms, order confirmation, and your budget before the deadline.
+
+A failed catch and a lost auction are different outcomes. In the first case, another registration system may acquire the domain. In the second case, your service acquired the domain but another eligible bidder won. Neither outcome establishes that you own the name.
 
 ## When a backorder is actually worth paying for
 
@@ -86,7 +100,7 @@ Backorders are cheap to place and easy to over-place, which is exactly the trap.
 
 **Skip it when the name isn't really scarce.** If a near-identical string is available to hand-register right now for the price of a normal registration, paying a backorder fee and risking an auction for the expiring version is usually a bad trade. The drop only matters when the *specific* name is the asset and no substitute will do.
 
-**Assume you might lose, and price accordingly.** A backorder is an attempt, not a purchase. On a desirable name you can be outbid in the post-catch auction, or out-caught by a service with more firepower. Budget the fee as the cost of a lottery ticket with decent odds, not as a down payment on a name you already own.
+**Assume you might lose, and price accordingly.** A backorder is an attempt, not a purchase. On a desirable name you can be outbid in the post-catch auction, or out-caught by a service with more firepower. Check whether a failed attempt creates any charge. Do not assume that a displayed backorder price includes an auction win.
 
 **Watch the trademark line.** Catching an expired name doesn't launder its history. If the string is somebody's brand, the fact that it lapsed doesn't make it safe to grab and resell. The [UDRP](/en/glossary/udrp/) framework still applies, and an expired [trademarked](/en/glossary/trademark/) name is exactly the kind of thing that triggers a dispute, as we cover in [what is UDRP](/en/blog/what-is-udrp/). Catch generic and brandable names, not lapsed brands.
 
@@ -108,9 +122,13 @@ Drop-catching is the race to register a name when the registry releases it; a ba
 >
 > For any important decision, **please consult a real professional (seriously!)**. Or if that's not your vibe, ask a friend, ask Twitter, ask Reddit, ask an AI, or ask a psychic. In short: **DYOR - Do Your Own Research**. Let's learn and have fun.
 
-## Sources and further reading
+## These sources explain the current rules
 
-- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en) and [EPP status-code guidance](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en).
-- Dynadot — [How pending-delete backorder requests, failed catches, and multiple-request auctions work](https://www.dynadot.com/help/question/place-a-backorder).
-- NameJet — [Inventory types, pending-delete timing, backorders, auctions, and payment states](https://www.namejet.com/userguide.action).
-- Wikipedia — [Domain drop catching](https://en.wikipedia.org/wiki/Domain_drop_catching) and [domain name speculation](https://en.wikipedia.org/wiki/Domain_name_speculation) for historical terminology and industry context.
+The author opened the following primary sources on October 21, 2026. Platform terms can change after that date.
+
+- ICANN — [Expired Registration Recovery Policy](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en) and [EPP status codes](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en).
+- DropCatch — [Official introduction and payment model](https://pages.dropcatch.com/).
+- Dynadot — [Backorder requirements and competing requests](https://www.dynadot.com/help/question/place-a-backorder).
+- NameJet — [Inventory, backorders, and possible public auctions](https://www.namejet.com/userguide.action).
+- SnapNames — [User guide](https://www.snapnames.com/userguide.action), [service terms](https://www.snapnames.com/legal/legal.action), and [buyer agreement](https://www.snapnames.com/legal/buyeragreement.action).
+- Park.io — [Payment, premium-domain authorization, auctions, and renewal controls](https://park.io/support).
