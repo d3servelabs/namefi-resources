@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "de"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Ein CAA-Eintrag nennt die Zertifizierungsstellen, die eine Domain zur Ausstellung von Zertifikaten autorisiert."
 keywords: ["CAA", "Autorisierung von Zertifizierungsstellen", "TLS-Authentifizierung"]
 also_known_as: ["Autorisierung von Zertifizierungsstellen"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: hi
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-security
 format: explainer
 description: "eMudhra के CA की कुंजियों में सेंध, वेबसाइट की पहचान के दुरुपयोग और DNSSEC, DANE, CAA व CT की अलग सुरक्षा समझें।"

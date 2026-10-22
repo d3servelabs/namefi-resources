@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ko
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-security
 format: explainer
 description: "eMudhra CA 키 침해, 웹사이트 사칭 위험, DNSSEC·DANE·CAA·CT가 제공하는 서로 다른 보호를 설명한다."

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "प्रमाणपत्र प्राधिकरण पहचानों को सार्वजनिक कुंजियों से जोड़ने वाले डिजिटल प्रमाणपत्र जारी करता है।"
 keywords: ["प्रमाणपत्र प्राधिकरण", "CA", "TLS प्रमाणीकरण"]
 also_known_as: ["CA", "प्रमाणन प्राधिकरण"]

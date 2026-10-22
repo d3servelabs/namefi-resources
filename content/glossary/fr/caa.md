@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "fr"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Un enregistrement CAA identifie les autorités de certification qu’un domaine autorise à délivrer des certificats."
 keywords: ["CAA", "autorisation des autorités de certification", "authentification TLS"]
 also_known_as: ["Autorisation des autorités de certification"]

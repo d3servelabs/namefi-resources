@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "இடைமறிப்பு தாக்குதல் தகவல் பரிமாறும் தரப்புகளுக்கு இடையில் தாக்குதலாளரை அமர்த்தி, தகவலை இடைமறிக்கவோ மாற்றவோ செய்கிறது."
 keywords: ["இடைமறிப்பு தாக்குதல்", "MITM", "TLS அடையாளச் சரிபார்ப்பு"]
 also_known_as: ["MITM", "தகவல் பாதைத் தாக்குதல்"]

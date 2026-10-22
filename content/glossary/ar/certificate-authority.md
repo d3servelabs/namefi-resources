@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "جهة إصدار الشهادات بتصدر شهادات رقمية بتربط الهويات بمفاتيح عامة."
 keywords: ["جهة إصدار الشهادات", "CA", "مصادقة TLS"]
 also_known_as: ["CA", "سلطة التصديق"]

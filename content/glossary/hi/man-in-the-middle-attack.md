@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "मध्यस्थ हमला संचार करने वाले पक्षों के बीच हमलावर को रखता है, ताकि हमलावर संचार पकड़ या बदल सके।"
 keywords: ["मध्यस्थ हमला", "MITM", "TLS प्रमाणीकरण"]
 also_known_as: ["MITM", "संचार पथ पर हमला"]

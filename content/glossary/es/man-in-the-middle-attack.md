@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "es"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Un ataque de intermediario sitúa a un atacante entre las partes que se comunican para interceptar o alterar la comunicación."
 keywords: ["ataque de intermediario", "MITM", "autenticación TLS"]
 also_known_as: ["MITM", "Ataque en la ruta de comunicación"]

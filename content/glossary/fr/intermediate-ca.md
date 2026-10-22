@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "fr"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Une autorité de certification intermédiaire reçoit un pouvoir de signature par une chaîne menant à une ancre de confiance."
 keywords: ["CA intermédiaire", "autorité de certification intermédiaire", "authentification TLS"]
 also_known_as: ["CA intermédiaire"]

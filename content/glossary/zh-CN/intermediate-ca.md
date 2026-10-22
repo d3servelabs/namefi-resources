@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "中间证书颁发机构持有经证书链委托、连接到信任锚的证书签名权限。"
 keywords: ["中间证书颁发机构", "中间 CA", "TLS 身份验证"]
 also_known_as: ["中间 CA"]

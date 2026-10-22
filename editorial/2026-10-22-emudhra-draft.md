@@ -55,3 +55,7 @@ Existing repository dependencies loaded successfully and ESLint ran without anot
 The user subsequently requested separate draft pull requests for Namefi and the personal blog. The Namefi PR contains the 70 content drafts and this evidence record. The personal article and cartoons belong to `xinbenlv/zThink`. This task does not publish or deploy either article. The package includes no new cover image. Native-language and rendered desktop/mobile/RTL review remain future publication work. Chinese term titles remain provisional until maintainer review.
 
 The Chinese article uses the approved calm Namefi introduction rather than the personal commentary opening. The remaining technical sections retain their citations and qualifications. This localized editorial adaptation changes the Chinese opening and title, so literal body-link parity does not apply to that opening.
+
+## The owner approved publication on October 22
+
+The owner explicitly requested administrator merges and production publication for both articles. The Namefi package now publishes the ten article locales and the sixty linked glossary entries together. The publication pass rechecked the Google advisory and vendor status page on October 22. The October 27 deadline remains prospective. Prior draft-only notes describe the earlier review stage.

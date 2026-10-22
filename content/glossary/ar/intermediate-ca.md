@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "جهة إصدار شهادات وسيطة معاها صلاحية توقيع شهادات مفوّضة من خلال سلسلة لمرجع ثقة."
 keywords: ["جهة إصدار شهادات وسيطة", "جهة تصديق وسيطة", "مصادقة TLS"]
 also_known_as: ["جهة تصديق وسيطة"]

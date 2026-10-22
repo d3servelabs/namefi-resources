@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "fr"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "DANE authentifie les services TLS par des associations de certificats ou de clés dans des enregistrements TLSA protégés par DNSSEC."
 keywords: ["DANE", "authentification des entités nommées fondée sur le DNS", "authentification TLS"]
 also_known_as: ["Authentification des entités nommées fondée sur le DNS"]

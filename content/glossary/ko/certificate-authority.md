@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "인증 기관은 신원과 공개 키를 연결하는 디지털 인증서를 발급한다."
 keywords: ["인증 기관", "CA", "TLS 인증"]
 also_known_as: ["CA", "인증서 발급 기관"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "CAA レコードは、ドメインが証明書の発行を許可する認証局を指定する。"
 keywords: ["CAA", "認証局認可", "TLS 認証"]
 also_known_as: ["認証局認可"]

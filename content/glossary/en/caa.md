@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "A CAA record identifies the certificate authorities that a domain authorizes to issue certificates."
 keywords: ["CAA", "Certification Authority Authorization", "TLS authentication"]
 also_known_as: ["Certification Authority Authorization"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "es"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "La transparencia de certificados expone la emisión de certificados TLS en registros públicos para su supervisión y auditoría independientes."
 keywords: ["transparencia de certificados", "CT", "autenticación TLS"]
 also_known_as: ["CT"]

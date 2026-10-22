@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "证书透明度通过公开日志披露 TLS 证书签发情况，供独立监测与审计。"
 keywords: ["证书透明度", "CT", "TLS 身份验证"]
 also_known_as: ["CT"]

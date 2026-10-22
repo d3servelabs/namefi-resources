@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-security
 format: explainer
 description: "Understand the eMudhra CA key compromise, website impersonation risks, and the different protections from DNSSEC, DANE, CAA, and CT."

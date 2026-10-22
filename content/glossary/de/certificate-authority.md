@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "de"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Eine Zertifizierungsstelle stellt digitale Zertifikate aus, die Identitäten mit öffentlichen Schlüsseln verknüpfen."
 keywords: ["Zertifizierungsstelle", "CA", "TLS-Authentifizierung"]
 also_known_as: ["CA", "Zertifizierungsautorität"]

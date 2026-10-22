@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "中間者攻撃では、攻撃者が通信する当事者の間に入り、通信を傍受または改変する。"
 keywords: ["中間者攻撃", "MITM", "TLS 認証"]
 also_known_as: ["MITM", "オンパス攻撃"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "de"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Eine Zwischenzertifizierungsstelle erhält über eine Kette zu einem Vertrauensanker die Befugnis zur Zertifikatssignatur."
 keywords: ["Zwischenzertifizierungsstelle", "Intermediate CA", "TLS-Authentifizierung"]
 also_known_as: ["Intermediate CA"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: zh-CN
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-security
 format: explainer
 description: "了解 eMudhra CA 密钥失陷、网站冒充风险，以及 DNSSEC、DANE、CAA 和 CT 提供的不同保护。"

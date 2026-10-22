@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "es"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Una autoridad de certificación emite certificados digitales que vinculan identidades con claves públicas."
 keywords: ["autoridad de certificación", "CA", "autenticación TLS"]
 also_known_as: ["CA", "Autoridad certificadora"]

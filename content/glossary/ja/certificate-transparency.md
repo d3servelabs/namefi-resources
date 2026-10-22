@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "証明書の透明性は、公開ログで TLS 証明書の発行を可視化し、独立した監視と監査を可能にする。"
 keywords: ["証明書の透明性", "CT", "TLS 認証"]
 also_known_as: ["CT"]

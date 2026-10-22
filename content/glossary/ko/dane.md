@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "DANE는 DNSSEC로 보호하는 TLSA 레코드의 인증서 또는 키 연결 정보를 통해 TLS 서비스를 인증한다."
 keywords: ["DANE", "DNS 기반 명명된 개체 인증", "TLS 인증"]
 also_known_as: ["DNS 기반 명명된 개체 인증"]

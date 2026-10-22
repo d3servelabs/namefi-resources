@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "شفافية الشهادات بتستخدم سجلات عامة لكشف إصدار شهادات TLS للمراقبة والمراجعة المستقلة."
 keywords: ["شفافية الشهادات", "CT", "مصادقة TLS"]
 also_known_as: ["CT"]

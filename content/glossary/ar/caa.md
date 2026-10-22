@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "سجل CAA بيحدد جهات إصدار الشهادات اللي الدومين مصرح لها تصدر شهادات."
 keywords: ["CAA", "تفويض جهة إصدار الشهادات", "مصادقة TLS"]
 also_known_as: ["تفويض جهة إصدار الشهادات"]

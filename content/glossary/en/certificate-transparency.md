@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Certificate Transparency uses public logs to expose TLS certificate issuance for independent monitoring and auditing."
 keywords: ["Certificate Transparency", "CT", "TLS authentication"]
 also_known_as: ["CT"]

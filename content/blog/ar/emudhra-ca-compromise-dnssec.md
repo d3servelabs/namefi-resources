@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ar
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-security
 format: explainer
 description: "افهم اختراق مفاتيح CA في eMudhra، ومخاطر انتحال المواقع، واختلاف حماية DNSSEC وDANE وCAA وCT."

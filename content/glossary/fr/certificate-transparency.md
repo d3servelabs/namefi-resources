@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "fr"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "La transparence des certificats rend la délivrance de certificats TLS visible dans des journaux publics pour un contrôle indépendant."
 keywords: ["transparence des certificats", "CT", "authentification TLS"]
 also_known_as: ["CT"]

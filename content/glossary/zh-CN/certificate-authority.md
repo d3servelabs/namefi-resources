@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "证书颁发机构签发数字证书，将身份与公钥关联起来。"
 keywords: ["证书颁发机构", "CA", "TLS 身份验证"]
 also_known_as: ["CA", "认证机构"]

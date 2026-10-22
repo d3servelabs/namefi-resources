@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "fr"
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-security
 format: explainer
 description: "Comprenez la compromission des clés de CA d’eMudhra, les risques d’usurpation de sites et les protections de DNSSEC, DANE, CAA et CT."

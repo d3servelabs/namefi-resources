@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "認証局は、身元情報と公開鍵を関連付けるデジタル証明書を発行する。"
 keywords: ["認証局", "CA", "TLS 認証"]
 also_known_as: ["CA", "証明書認証局"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "CAA रिकॉर्ड उन प्रमाणपत्र प्राधिकरणों को बताता है जिन्हें डोमेन प्रमाणपत्र जारी करने की अनुमति देता है।"
 keywords: ["CAA", "प्रमाणपत्र प्राधिकरण को अनुमति", "TLS प्रमाणीकरण"]
 also_known_as: ["प्रमाणपत्र प्राधिकरण को अनुमति"]

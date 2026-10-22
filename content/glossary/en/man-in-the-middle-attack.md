@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "A man-in-the-middle attack interposes an attacker between communicating parties to intercept or alter communication."
 keywords: ["Man-in-the-Middle Attack", "MITM", "TLS authentication"]
 also_known_as: ["MITM", "On-Path Attack"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "CAA 레코드는 도메인이 인증서 발급을 허용하는 인증 기관을 지정한다."
 keywords: ["CAA", "인증 기관 권한 부여", "TLS 인증"]
 also_known_as: ["인증 기관 권한 부여"]

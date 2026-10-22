@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "A certificate authority issues digital certificates that associate identities with public keys."
 keywords: ["Certificate Authority", "CA", "TLS authentication"]
 also_known_as: ["CA", "Certification Authority"]

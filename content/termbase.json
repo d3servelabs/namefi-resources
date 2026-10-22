@@ -301,6 +301,22 @@
     },
     "level": 1
   },
+  "caa": {
+    "en": "CAA",
+    "titles": {
+      "en": "CAA",
+      "es": "CAA",
+      "de": "CAA",
+      "fr": "CAA",
+      "zh-CN": "CAA",
+      "ar": "CAA",
+      "hi": "CAA",
+      "ko": "CAA",
+      "ja": "CAA",
+      "ta": "CAA"
+    },
+    "level": 1
+  },
   "cctld": {
     "en": "ccTLD (Country-Code Top-Level Domain)",
     "titles": {
@@ -330,6 +346,38 @@
       "ko": "검열 불가",
       "ja": "検閲耐性",
       "ta": "தணிக்கை-இல்லா சுதந்திரம்"
+    },
+    "level": 1
+  },
+  "certificate-authority": {
+    "en": "Certificate Authority",
+    "titles": {
+      "en": "Certificate Authority",
+      "es": "Autoridad de certificación",
+      "de": "Zertifizierungsstelle",
+      "fr": "Autorité de certification",
+      "zh-CN": "证书颁发机构",
+      "ar": "جهة إصدار الشهادات",
+      "hi": "प्रमाणपत्र प्राधिकरण",
+      "ko": "인증 기관",
+      "ja": "認証局",
+      "ta": "சான்றிதழ் ஆணையம்"
+    },
+    "level": 1
+  },
+  "certificate-transparency": {
+    "en": "Certificate Transparency",
+    "titles": {
+      "en": "Certificate Transparency",
+      "es": "Transparencia de certificados",
+      "de": "Zertifikatstransparenz",
+      "fr": "Transparence des certificats",
+      "zh-CN": "证书透明度",
+      "ar": "شفافية الشهادات",
+      "hi": "प्रमाणपत्र पारदर्शिता",
+      "ko": "인증서 투명성",
+      "ja": "証明書の透明性",
+      "ta": "சான்றிதழ் வெளிப்படைத்தன்மை"
     },
     "level": 1
   },
@@ -472,6 +520,22 @@
       "ko": "사이버스쿼팅",
       "ja": "サイバースクワッティング",
       "ta": "சைபர்ஸ்குவாட்டிங்"
+    },
+    "level": 1
+  },
+  "dane": {
+    "en": "DANE",
+    "titles": {
+      "en": "DANE",
+      "es": "DANE",
+      "de": "DANE",
+      "fr": "DANE",
+      "zh-CN": "DANE",
+      "ar": "DANE",
+      "hi": "DANE",
+      "ko": "DANE",
+      "ja": "DANE",
+      "ta": "DANE"
     },
     "level": 1
   },
@@ -1276,6 +1340,22 @@
     },
     "level": 1
   },
+  "intermediate-ca": {
+    "en": "Intermediate CA",
+    "titles": {
+      "en": "Intermediate CA",
+      "es": "Autoridad de certificación intermedia",
+      "de": "Zwischenzertifizierungsstelle",
+      "fr": "Autorité de certification intermédiaire",
+      "zh-CN": "中间证书颁发机构",
+      "ar": "جهة إصدار شهادات وسيطة",
+      "hi": "मध्यवर्ती CA",
+      "ko": "중간 인증 기관",
+      "ja": "中間認証局",
+      "ta": "இடைநிலை CA"
+    },
+    "level": 1
+  },
   "internet-native-asset": {
     "en": "Internet-native asset",
     "titles": {
@@ -1449,6 +1529,22 @@
       "ko": "가격 제안",
       "ja": "オファー提示",
       "ta": "விலை முன்மொழிவு"
+    },
+    "level": 1
+  },
+  "man-in-the-middle-attack": {
+    "en": "Man-in-the-Middle Attack",
+    "titles": {
+      "en": "Man-in-the-Middle Attack",
+      "es": "Ataque de intermediario",
+      "de": "Man-in-the-Middle-Angriff",
+      "fr": "Attaque de l’homme du milieu",
+      "zh-CN": "中间人攻击",
+      "ar": "هجوم الوسيط",
+      "hi": "मध्यस्थ हमला",
+      "ko": "중간자 공격",
+      "ja": "中間者攻撃",
+      "ta": "இடைமறிப்பு தாக்குதல்"
     },
     "level": 1
   },

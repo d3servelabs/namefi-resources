@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ta
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-security
 format: explainer
 description: "eMudhra CA சாவிப் பாதுகாப்பு மீறல், போலி வலைத்தள அடையாள அபாயம், DNSSEC, DANE, CAA, CT வழங்கும் வெவ்வேறு பாதுகாப்புகளை அறியுங்கள்."

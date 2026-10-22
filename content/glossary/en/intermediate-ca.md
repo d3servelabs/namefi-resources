@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "An intermediate CA holds certificate-signing authority delegated through a chain to a trust anchor."
 keywords: ["Intermediate CA", "Intermediate Certificate Authority", "TLS authentication"]
 also_known_as: ["Intermediate Certificate Authority"]

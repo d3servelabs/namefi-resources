@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "es"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Un registro CAA identifica las autoridades de certificación que un dominio autoriza a emitir certificados."
 keywords: ["CAA", "autorización de autoridades de certificación", "autenticación TLS"]
 also_known_as: ["Autorización de autoridades de certificación"]

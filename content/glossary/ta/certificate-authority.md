@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "சான்றிதழ் ஆணையம் அடையாளங்களைப் பொது விசைகளுடன் இணைக்கும் டிஜிட்டல் சான்றிதழ்களை வழங்குகிறது."
 keywords: ["சான்றிதழ் ஆணையம்", "CA", "TLS அடையாளச் சரிபார்ப்பு"]
 also_known_as: ["CA", "சான்றளிப்பு ஆணையம்"]

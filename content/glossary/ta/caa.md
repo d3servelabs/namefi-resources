@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "சான்றிதழ்களை வழங்க டொமைன் அனுமதிக்கும் சான்றிதழ் ஆணையங்களை CAA பதிவு குறிப்பிடுகிறது."
 keywords: ["CAA", "சான்றிதழ் ஆணைய அனுமதி", "TLS அடையாளச் சரிபார்ப்பு"]
 also_known_as: ["சான்றிதழ் ஆணைய அனுமதி"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "هجوم الوسيط بيحط مهاجم بين طرفين بيتواصلوا علشان يعترض الاتصال أو يغيّره."
 keywords: ["هجوم الوسيط", "MITM", "مصادقة TLS"]
 also_known_as: ["MITM", "هجوم على مسار الاتصال"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "TLS சான்றிதழ் வழங்கலைத் தனிக் கண்காணிப்புக்கும் தணிக்கைக்கும் வெளிப்படுத்த சான்றிதழ் வெளிப்படைத்தன்மை பொதுப் பதிவேடுகளைப் பயன்படுத்துகிறது."
 keywords: ["சான்றிதழ் வெளிப்படைத்தன்மை", "CT", "TLS அடையாளச் சரிபார்ப்பு"]
 also_known_as: ["CT"]

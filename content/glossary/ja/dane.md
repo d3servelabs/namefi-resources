@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "DANE は、DNSSEC で保護した TLSA レコード内の証明書や鍵との関連付けを通じて TLS サービスを認証する。"
 keywords: ["DANE", "DNS に基づく名前付きエンティティの認証", "TLS 認証"]
 also_known_as: ["DNS に基づく名前付きエンティティの認証"]

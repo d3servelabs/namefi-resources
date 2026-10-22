@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "प्रमाणपत्र पारदर्शिता स्वतंत्र निगरानी और लेखापरीक्षा के लिए सार्वजनिक अभिलेखों में TLS प्रमाणपत्र जारी करना दिखाती है।"
 keywords: ["प्रमाणपत्र पारदर्शिता", "CT", "TLS प्रमाणीकरण"]
 also_known_as: ["CT"]

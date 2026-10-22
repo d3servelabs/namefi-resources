@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "중간 인증 기관은 신뢰 앵커로 연결되는 인증서 체인을 통해 위임받은 인증서 서명 권한을 보유한다."
 keywords: ["중간 인증 기관", "중간 CA", "TLS 인증"]
 also_known_as: ["중간 CA"]

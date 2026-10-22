@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "인증서 투명성은 공개 로그로 TLS 인증서 발급 내역을 드러내 독립적인 모니터링과 감사를 지원한다."
 keywords: ["인증서 투명성", "CT", "TLS 인증"]
 also_known_as: ["CT"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ja
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-security
 format: explainer
 description: "eMudhra の CA 鍵侵害、ウェブサイトのなりすましリスク、DNSSEC、DANE、CAA、CT が提供する異なる保護を解説する。"

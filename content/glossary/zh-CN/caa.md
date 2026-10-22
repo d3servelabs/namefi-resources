@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "CAA 记录指定域名授权哪些证书颁发机构签发证书。"
 keywords: ["CAA", "证书颁发机构授权", "TLS 身份验证"]
 also_known_as: ["证书颁发机构授权"]

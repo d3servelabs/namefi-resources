@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "de"
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-security
 format: explainer
 description: "Der eMudhra-Vorfall zeigt Risiken gefälschter Website-Zertifikate und die unterschiedlichen Schutzfunktionen von DNSSEC, DANE, CAA und CT."

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ko
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "중간자 공격은 공격자가 통신 당사자 사이에 개입하여 통신을 가로채거나 변경하는 공격이다."
 keywords: ["중간자 공격", "MITM", "TLS 인증"]
 also_known_as: ["MITM", "경로상 공격"]

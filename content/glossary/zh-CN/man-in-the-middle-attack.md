@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "中间人攻击让攻击者介入通信双方之间，以拦截或修改通信。"
 keywords: ["中间人攻击", "MITM", "TLS 身份验证"]
 also_known_as: ["MITM", "路径上攻击"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "de"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Zertifikatstransparenz macht TLS-Zertifikatsausstellungen durch öffentliche Protokolle unabhängig überwachbar und prüfbar."
 keywords: ["Zertifikatstransparenz", "CT", "TLS-Authentifizierung"]
 also_known_as: ["CT"]

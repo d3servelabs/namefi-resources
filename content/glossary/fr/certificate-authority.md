@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "fr"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Une autorité de certification délivre des certificats numériques qui associent des identités à des clés publiques."
 keywords: ["autorité de certification", "CA", "authentification TLS"]
 also_known_as: ["CA", "Autorité certificatrice"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: zh-CN
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "DANE 利用受 DNSSEC 保护的 TLSA 记录中的证书或密钥关联，验证 TLS 服务。"
 keywords: ["DANE", "基于 DNS 的命名实体身份验证", "TLS 身份验证"]
 also_known_as: ["基于 DNS 的命名实体身份验证"]

@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "de"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Ein Man-in-the-Middle-Angriff schaltet einen Angreifer zwischen Kommunikationspartner, um Kommunikation abzufangen oder zu verändern."
 keywords: ["Man-in-the-Middle-Angriff", "MITM", "TLS-Authentifizierung"]
 also_known_as: ["MITM", "On-Path-Angriff"]

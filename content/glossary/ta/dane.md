@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ta
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "DNSSEC பாதுகாக்கும் TLSA பதிவுகளில் உள்ள சான்றிதழ் அல்லது சாவித் தொடர்புகள் மூலம் TLS சேவைகளை DANE உறுதிப்படுத்துகிறது."
 keywords: ["DANE", "DNS அடிப்படையிலான பெயரிடப்பட்ட அமைப்புகளின் அடையாளச் சரிபார்ப்பு", "TLS அடையாளச் சரிபார்ப்பு"]
 also_known_as: ["DNS அடிப்படையிலான பெயரிடப்பட்ட அமைப்புகளின் அடையாளச் சரிபார்ப்பு"]

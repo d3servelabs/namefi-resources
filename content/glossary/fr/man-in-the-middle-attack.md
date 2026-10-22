@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "fr"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Une attaque de l’homme du milieu place un attaquant entre des interlocuteurs pour intercepter ou modifier leurs communications."
 keywords: ["attaque de l’homme du milieu", "MITM", "authentification TLS"]
 also_known_as: ["MITM", "Attaque sur le chemin de communication"]

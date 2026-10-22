@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "मध्यवर्ती CA विश्वास आधार तक पहुँचने वाली शृंखला से प्रत्यायोजित प्रमाणपत्र हस्ताक्षर अधिकार रखता है।"
 keywords: ["मध्यवर्ती CA", "मध्यवर्ती प्रमाणपत्र प्राधिकरण", "TLS प्रमाणीकरण"]
 also_known_as: ["मध्यवर्ती प्रमाणपत्र प्राधिकरण"]

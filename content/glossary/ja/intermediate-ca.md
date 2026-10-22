@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ja
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "中間認証局は、信頼アンカーにつながる証明書チェーンを通じて委任された証明書署名権限を持つ。"
 keywords: ["中間認証局", "中間 CA", "TLS 認証"]
 also_known_as: ["中間 CA"]

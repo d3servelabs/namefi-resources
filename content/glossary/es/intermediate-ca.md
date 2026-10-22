@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: "es"
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "Una autoridad de certificación intermedia recibe facultades de firma mediante una cadena hasta un ancla de confianza."
 keywords: ["CA intermedia", "autoridad de certificación intermedia", "autenticación TLS"]
 also_known_as: ["CA intermedia"]

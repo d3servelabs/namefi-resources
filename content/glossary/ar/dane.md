@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: ar
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "DANE بيثبت هوية خدمات TLS بربط شهادة أو مفتاح في سجلات TLSA محمية بـDNSSEC."
 keywords: ["DANE", "مصادقة الكيانات المسماة المعتمدة على DNS", "مصادقة TLS"]
 also_known_as: ["مصادقة الكيانات المسماة المعتمدة على DNS"]

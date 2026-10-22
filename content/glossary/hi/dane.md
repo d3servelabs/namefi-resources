@@ -4,7 +4,7 @@ date: '2026-10-22'
 language: hi
 tags: ['glossary']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: "DANE, DNSSEC से सुरक्षित TLSA रिकॉर्ड में प्रमाणपत्र या कुंजी संबंधों से TLS सेवाओं का प्रमाणीकरण करता है।"
 keywords: ["DANE", "DNS आधारित नामित इकाई प्रमाणीकरण", "TLS प्रमाणीकरण"]
 also_known_as: ["DNS आधारित नामित इकाई प्रमाणीकरण"]
