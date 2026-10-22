@@ -1,0 +1,251 @@
+{
+  "retrieved_utc": "2026-10-22T02:24:00Z",
+  "provider": "Google Ads API v26 generateKeywordHistoricalMetrics",
+  "language": "German / languageConstants/1001",
+  "language_verified_at": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "geo": "Germany / geoTargetConstants/2276",
+  "geo_verification": "Read-only GeoTargetConstant API returned Germany, DE, Country before metrics request",
+  "network": "GOOGLE_SEARCH",
+  "requested_period": "API default",
+  "returned_period": "2025-10 through 2026-09",
+  "submitted_keywords": [
+    "ipv6 dns",
+    "ipv6 dns server",
+    "dns server ipv6 adresse",
+    "google dns ipv6",
+    "ipv6 dns funktioniert nicht",
+    "ipv6 dns einrichten"
+  ],
+  "results": [
+    {
+      "text": "ipv6 dns",
+      "keywordMetrics": {
+        "competition": "LOW",
+        "monthlySearchVolumes": [
+          {
+            "month": "OCTOBER",
+            "year": "2025",
+            "monthlySearches": "590"
+          },
+          {
+            "month": "NOVEMBER",
+            "year": "2025",
+            "monthlySearches": "720"
+          },
+          {
+            "month": "DECEMBER",
+            "year": "2025",
+            "monthlySearches": "720"
+          },
+          {
+            "month": "JANUARY",
+            "year": "2026",
+            "monthlySearches": "720"
+          },
+          {
+            "month": "FEBRUARY",
+            "year": "2026",
+            "monthlySearches": "720"
+          },
+          {
+            "month": "MARCH",
+            "year": "2026",
+            "monthlySearches": "590"
+          },
+          {
+            "month": "APRIL",
+            "year": "2026",
+            "monthlySearches": "480"
+          },
+          {
+            "month": "MAY",
+            "year": "2026",
+            "monthlySearches": "590"
+          },
+          {
+            "month": "JUNE",
+            "year": "2026",
+            "monthlySearches": "480"
+          },
+          {
+            "month": "JULY",
+            "year": "2026",
+            "monthlySearches": "480"
+          },
+          {
+            "month": "AUGUST",
+            "year": "2026",
+            "monthlySearches": "390"
+          },
+          {
+            "month": "SEPTEMBER",
+            "year": "2026",
+            "monthlySearches": "480"
+          }
+        ],
+        "avgMonthlySearches": "590",
+        "competitionIndex": "1"
+      }
+    },
+    {
+      "text": "ipv6 dns server",
+      "keywordMetrics": {
+        "competition": "LOW",
+        "monthlySearchVolumes": [
+          {
+            "month": "OCTOBER",
+            "year": "2025",
+            "monthlySearches": "480"
+          },
+          {
+            "month": "NOVEMBER",
+            "year": "2025",
+            "monthlySearches": "480"
+          },
+          {
+            "month": "DECEMBER",
+            "year": "2025",
+            "monthlySearches": "590"
+          },
+          {
+            "month": "JANUARY",
+            "year": "2026",
+            "monthlySearches": "590"
+          },
+          {
+            "month": "FEBRUARY",
+            "year": "2026",
+            "monthlySearches": "480"
+          },
+          {
+            "month": "MARCH",
+            "year": "2026",
+            "monthlySearches": "480"
+          },
+          {
+            "month": "APRIL",
+            "year": "2026",
+            "monthlySearches": "390"
+          },
+          {
+            "month": "MAY",
+            "year": "2026",
+            "monthlySearches": "480"
+          },
+          {
+            "month": "JUNE",
+            "year": "2026",
+            "monthlySearches": "390"
+          },
+          {
+            "month": "JULY",
+            "year": "2026",
+            "monthlySearches": "320"
+          },
+          {
+            "month": "AUGUST",
+            "year": "2026",
+            "monthlySearches": "320"
+          },
+          {
+            "month": "SEPTEMBER",
+            "year": "2026",
+            "monthlySearches": "320"
+          }
+        ],
+        "avgMonthlySearches": "480",
+        "competitionIndex": "2"
+      }
+    },
+    {
+      "text": "google dns ipv6",
+      "keywordMetrics": {
+        "competition": "LOW",
+        "monthlySearchVolumes": [
+          {
+            "month": "OCTOBER",
+            "year": "2025",
+            "monthlySearches": "1900"
+          },
+          {
+            "month": "NOVEMBER",
+            "year": "2025",
+            "monthlySearches": "1900"
+          },
+          {
+            "month": "DECEMBER",
+            "year": "2025",
+            "monthlySearches": "1900"
+          },
+          {
+            "month": "JANUARY",
+            "year": "2026",
+            "monthlySearches": "1900"
+          },
+          {
+            "month": "FEBRUARY",
+            "year": "2026",
+            "monthlySearches": "1600"
+          },
+          {
+            "month": "MARCH",
+            "year": "2026",
+            "monthlySearches": "1000"
+          },
+          {
+            "month": "APRIL",
+            "year": "2026",
+            "monthlySearches": "1300"
+          },
+          {
+            "month": "MAY",
+            "year": "2026",
+            "monthlySearches": "1000"
+          },
+          {
+            "month": "JUNE",
+            "year": "2026",
+            "monthlySearches": "880"
+          },
+          {
+            "month": "JULY",
+            "year": "2026",
+            "monthlySearches": "880"
+          },
+          {
+            "month": "AUGUST",
+            "year": "2026",
+            "monthlySearches": "880"
+          },
+          {
+            "month": "SEPTEMBER",
+            "year": "2026",
+            "monthlySearches": "720"
+          }
+        ],
+        "avgMonthlySearches": "1300",
+        "competitionIndex": "0"
+      }
+    },
+    {
+      "text": "dns server ipv6 adresse"
+    },
+    {
+      "text": "ipv6 dns funktioniert nicht"
+    },
+    {
+      "text": "ipv6 dns einrichten"
+    }
+  ],
+  "missing_metrics": "UNKNOWN, returned text without keywordMetrics is not zero",
+  "close_variants": "No closeVariants fields returned. Do not sum groups.",
+  "gsc": {
+    "source_id": "G09",
+    "slug": "ipv6-and-dns",
+    "path_match": "/blog/ipv6-and-dns/",
+    "matched_rows": 0,
+    "observed_impressions": 0,
+    "observed_clicks": 0,
+    "countries": {}
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "results": [
+    {
+      "text": "nom de domaine ie",
+      "keywordMetrics": {
+        "competition": "LOW",
+        "monthlySearchVolumes": [
+          {
+            "month": "OCTOBER",
+            "year": "2025",
+            "monthlySearches": "20"
+          },
+          {
+            "month": "NOVEMBER",
+            "year": "2025",
+            "monthlySearches": "20"
+          },
+          {
+            "month": "DECEMBER",
+            "year": "2025",
+            "monthlySearches": "20"
+          },
+          {
+            "month": "JANUARY",
+            "year": "2026",
+            "monthlySearches": "20"
+          },
+          {
+            "month": "FEBRUARY",
+            "year": "2026",
+            "monthlySearches": "30"
+          },
+          {
+            "month": "MARCH",
+            "year": "2026",
+            "monthlySearches": "10"
+          },
+          {
+            "month": "APRIL",
+            "year": "2026",
+            "monthlySearches": "10"
+          },
+          {
+            "month": "MAY",
+            "year": "2026",
+            "monthlySearches": "10"
+          },
+          {
+            "month": "JUNE",
+            "year": "2026",
+            "monthlySearches": "10"
+          },
+          {
+            "month": "JULY",
+            "year": "2026",
+            "monthlySearches": "10"
+          },
+          {
+            "month": "AUGUST",
+            "year": "2026",
+            "monthlySearches": "10"
+          },
+          {
+            "month": "SEPTEMBER",
+            "year": "2026",
+            "monthlySearches": "20"
+          }
+        ],
+        "avgMonthlySearches": "20",
+        "competitionIndex": "13"
+      }
+    },
+    {
+      "text": "extension ie",
+      "keywordMetrics": {
+        "competition": "LOW",
+        "monthlySearchVolumes": [
+          {
+            "month": "OCTOBER",
+            "year": "2025",
+            "monthlySearches": "90"
+          },
+          {
+            "month": "NOVEMBER",
+            "year": "2025",
+            "monthlySearches": "70"
+          },
+          {
+            "month": "DECEMBER",
+            "year": "2025",
+            "monthlySearches": "90"
+          },
+          {
+            "month": "JANUARY",
+            "year": "2026",
+            "monthlySearches": "90"
+          },
+          {
+            "month": "FEBRUARY",
+            "year": "2026",
+            "monthlySearches": "50"
+          },
+          {
+            "month": "MARCH",
+            "year": "2026",
+            "monthlySearches": "70"
+          },
+          {
+            "month": "APRIL",
+            "year": "2026",
+            "monthlySearches": "70"
+          },
+          {
+            "month": "MAY",
+            "year": "2026",
+            "monthlySearches": "50"
+          },
+          {
+            "month": "JUNE",
+            "year": "2026",
+            "monthlySearches": "50"
+          },
+          {
+            "month": "JULY",
+            "year": "2026",
+            "monthlySearches": "50"
+          },
+          {
+            "month": "AUGUST",
+            "year": "2026",
+            "monthlySearches": "50"
+          },
+          {
+            "month": "SEPTEMBER",
+            "year": "2026",
+            "monthlySearches": "50"
+          }
+        ],
+        "avgMonthlySearches": "70",
+        "competitionIndex": "0"
+      }
+    },
+    {
+      "text": "domaine irlande"
+    },
+    {
+      "text": "acheter domaine ie"
+    }
+  ]
+}
