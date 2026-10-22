@@ -1,0 +1,91 @@
+{
+  "images": [
+    {
+      "path": "content/assets/root-dns-servers-01-referral-path.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "cb603ffb85882ef5409b024355b16068874971a476c95856d17ea7bb65353d98",
+      "action": "reused",
+      "visual_qc": "Opened final image/contact sheet; spelling, full labels, cream margins and official top-right logo passed."
+    },
+    {
+      "path": "content/assets/root-dns-servers-02-identifiers-instances.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "abec03bc03e1bbf211ed2baeb196bf74e4b5877f1ccfbb85364a65ae2b4e8e63",
+      "action": "reused",
+      "visual_qc": "Opened final image/contact sheet; spelling, full labels, cream margins and official top-right logo passed."
+    },
+    {
+      "path": "content/assets/root-dns-servers-03-cache-minimization.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "e356d78bd491a00821d29faf16f5a37fa52f59d136bf38c66f89262f2d50b94f",
+      "action": "reused",
+      "visual_qc": "Opened final image/contact sheet; spelling, full labels, cream margins and official top-right logo passed."
+    },
+    {
+      "path": "content/assets/root-dns-servers-04-trust-diagnostics.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "07e2078fa3b7a0878528f6789264f91d9ab8c9b644d1331d77a3143fc7d49ff6",
+      "action": "reused",
+      "visual_qc": "Opened final image/contact sheet; spelling, full labels, cream margins and official top-right logo passed."
+    },
+    {
+      "path": "content/assets/root-dns-servers-05-answer-referral.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "sha256": "25566dfe954639238f7593adcabefd94e8f7f60401d46f63ccd94ccb0c9901b3",
+      "action": "generated",
+      "visual_qc": "Opened final image/contact sheet; spelling, full labels, cream margins and official top-right logo passed."
+    },
+    {
+      "path": "content/assets/root-dns-servers-og.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "sha256": "beb272314b6864b8f54f11ff3050b8cbc22a7d8082fb0d727971f6184190c3dc",
+      "action": "reused",
+      "visual_qc": "Opened final image/contact sheet; spelling, full labels, cream margins and official top-right logo passed."
+    }
+  ],
+  "model_requested": "gpt-image-2",
+  "quality": "high",
+  "attempts": [
+    {
+      "attempt": 1,
+      "usage": {
+        "created": 1792634767,
+        "model": null,
+        "usage": {
+          "input_tokens": 490,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 490
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5978
+        }
+      },
+      "raw_response": "Private scratch image-attempt1-response.json persisted before parsing",
+      "result": "accepted",
+      "harness": "Immutable scratch copy of repo inline-illustration.sh; only raw-response and usage preservation added before parsing."
+    }
+  ]
+}

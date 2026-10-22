@@ -31,7 +31,7 @@ relatedGlossary:
 
 ## **什么是 .dev？**
 
-**.dev** 域名后缀是一个安全的顶级域名（TLD，即互联网地址中最后一个点后面的域名后缀），由 **Google** 运营，专门为**开发者、开发项目和科技公司**设计。与 `.app` 类似，`.dev` 要求所有网站都采用 **HTTPS 加密**，确保开发相关内容的最大安全性。
+**.dev** 域名后缀是一个安全的顶级域名（TLD，即互联网地址中最后一个点后面的域名后缀），由 **Google** 运营，专门为**开发者、开发项目和科技公司**设计。与 `.app` 类似，`.dev` 要求所有网站都采用 **HTTPS 加密**。
 
 `.dev` 后缀是**开发者的自然选择**，它能立即表明您的网站与软件开发、编程或技术相关。
 
@@ -67,3 +67,9 @@ relatedGlossary:
 立即在 **[Namefi](https://namefi.io) 注册您的 .dev 域名**，加入开发者社区。
 
 👉 **访问 [namefi.io](https://namefi.io) 并立即获取您的 .dev。**
+
+## HSTS 要求浏览器使用 HTTPS，但不保证整个应用安全
+
+采用 HSTS 预加载列表的浏览器要求每个网站主机名提供有效的 HTTPS。内部子域名也适用。HSTS 不签发证书，也不保证应用代码安全或邮件发件人真实。
+
+[Google Registry](https://www.registry.google/policies/registration/dev/) · [HSTS](https://hstspreload.org/) · [Mozilla](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security) (2026-10-21).
