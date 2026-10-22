@@ -58,3 +58,9 @@ The 48-target continuation records its queue, initial content map, and PR stack 
 The audit preserves the original demand model and does not start another writing batch.
 
 [The approved demand batch](2026-10-22-content-batch/README.md) records seven new English guides, selected translations, existing-page reviews, and the final review.
+
+## The eMudhra record preserves the multilingual draft scope
+
+[The October 22 eMudhra draft record](2026-10-22-emudhra-draft.md) documents the incident evidence, nine requested translation locales, six glossary drafts, and the proposed inbound links. Every new content page remains a draft.
+
+The Chinese content draft uses the approved calm Namefi opening. The personal commentary and cartoons belong to a separate `xinbenlv/zThink` draft pull request.
