@@ -1,0 +1,31 @@
+{
+  "created": 1792631202,
+  "usage": {
+    "input_tokens": 707,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 707
+    },
+    "output_tokens": 3401,
+    "output_tokens_details": {
+      "image_tokens": 3401,
+      "text_tokens": 0
+    },
+    "total_tokens": 4108
+  },
+  "model": null,
+  "size": "1216x640",
+  "quality": "high",
+  "attempt": 1,
+  "requested_model": "gpt-image-2",
+  "requested_quality": "high",
+  "final_dimensions": [
+    1200,
+    630
+  ],
+  "asset": "content/assets/cc-og.jpg",
+  "sha256": "32072d6b7adbe6b8e7989f713a6e83eb6376e88f078df62197a5a236e5e24728",
+  "qc": "PASS: inspected actual final image; exact strings, official upper-right logo, no clipping, generous cream margins, lower approximately 22% clear. Existing article had no cc-prefixed image to reuse.",
+  "private_response": "/private/tmp/namefi-stack48/29-cc/cc-cover-attempt1-response.private.json",
+  "response_persisted_before_parse": true
+}

@@ -1,0 +1,294 @@
+{
+  "topic": "G40",
+  "order": 34,
+  "slug": "change-domain-nameservers",
+  "fetched_utc": "2026-10-22T01:30:25Z",
+  "period": [
+    "2025-10",
+    "2026-09"
+  ],
+  "language_code_source": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "markets": {
+    "de-DE": {
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "nameserver ändern",
+          "nameserver wechseln",
+          "domain nameserver ändern",
+          "nameserver umstellen"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "nameserver ändern",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "55",
+              "lowTopOfPageBidMicros": "1451934",
+              "highTopOfPageBidMicros": "5543124"
+            }
+          },
+          {
+            "text": "domain nameserver ändern",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "43"
+            }
+          },
+          {
+            "text": "nameserver wechseln"
+          },
+          {
+            "text": "nameserver umstellen"
+          }
+        ]
+      },
+      "fetched_utc": "2026-10-22T01:30:25Z"
+    },
+    "es-MX": {
+      "request": {
+        "language": "languageConstants/1003",
+        "geoTargetConstants": [
+          "geoTargetConstants/2484"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "cambiar servidores de nombres",
+          "cambiar nameservers",
+          "cambiar dns de dominio",
+          "nameservers dominio"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "cambiar dns de dominio",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "14"
+            }
+          },
+          {
+            "text": "cambiar servidores de nombres"
+          },
+          {
+            "text": "cambiar nameservers"
+          },
+          {
+            "text": "nameservers dominio"
+          }
+        ]
+      },
+      "fetched_utc": "2026-10-22T01:30:25Z"
+    }
+  },
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "source": "private sanitized topic aggregate",
+    "source_id": "G40",
+    "matched_rows": 0,
+    "observed_impressions": 0,
+    "observed_clicks": 0,
+    "limitation": "No observed site rows is not zero market demand."
+  }
+}

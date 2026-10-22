@@ -8,7 +8,7 @@ authors: ['namefiteam']
 draft: false
 format: guide
 cluster: domain-security
-keywords: ['domain privacy vs proxy', 'domain privacy protection', 'proxy registration', 'WHOIS privacy', 'RDAP redaction', 'registered name holder', 'domain contact forwarding', 'registration data disclosure', 'privacy service agreement', 'domain account recovery', 'registrant contact details', 'domain privacy limits']
+keywords: ['domain privacy vs proxy', 'Domains By Proxy', 'domain privacy protection', 'proxy registration', 'WHOIS privacy', 'RDAP redaction', 'registered name holder', 'domain contact forwarding', 'registration data disclosure', 'privacy service agreement', 'domain account recovery', 'registrant contact details', 'domain privacy limits']
 ogImage: ../../assets/domain-privacy-vs-proxy-og.jpg
 relatedArticles:
   - /en/blog/check-domain-age/
@@ -64,6 +64,18 @@ Keep the provider name separate from the [registrar](/en/glossary/registrar/) na
 
 This comparison also concerns registration services, not an HTTP proxy or a network privacy tool. A domain proxy agreement describes a registration relationship. The agreement does not, by itself, describe how website traffic travels.
 
+## Domains By Proxy illustrates why the service agreement matters
+
+Domains By Proxy is a named service, rather than another name for every privacy arrangement. GoDaddy identifies Domains By Proxy as [its Domain Privacy partner](https://www.godaddy.com/help/what-is-domain-privacy-41145). A lookup that names Domains By Proxy does not identify the person who operates the website.
+
+GoDaddy's [Domain Name Proxy Agreement, sections 1 and 2](https://www.godaddy.com/legal/agreements/domain-name-proxy-agreement), describes the proxy registrant and the customer's retained rights. Those rights include controlling use, renewing the registration, and selling or transferring the registration, subject to the agreement. Section 2 requires cancellation of the associated DBP service for a sale, transfer, or assignment.
+
+A proxy registration therefore does not mean that the customer has no contractual rights. Equally, a familiar account dashboard does not replace the agreement. Before selling or transferring a protected domain, ask support which agreement applies and which cancellation sequence preserves protection during the handoff.
+
+Section 4 also permits disclosure or service cancellation under specified conditions. The listed conditions include legal requirements, legal process, and compliance with ICANN rules. The agreement does not promise secrecy until a court orders disclosure. Check the current terms for the specific registration before relying on a narrower promise.
+
+The agreement still uses the term “Whois.” Read that wording alongside current publication policy and the actual RDAP response. Do not infer that every legacy field listed in the agreement appears in every current lookup.
+
 ## RDAP redaction changes what a public lookup reveals
 
 ![RDAP redaction changes what a public lookup reveals.](../../assets/domain-privacy-vs-proxy-02-rdap-display.jpg)
@@ -92,7 +104,7 @@ Compare the service against the outcome actually needed. A customer seeking fewe
 
 ## Public protection leaves provider access and disclosure questions
 
-![Public protection leaves provider access and disclosure questions.](../../assets/domain-privacy-vs-proxy-03-disclosure-boundaries.jpg)
+![Public lookup hides contact details, the provider holds customer information, and disclosure requires a separate decision.](../../assets/domain-privacy-vs-proxy-05-access-boundaries.jpg)
 
 Public redaction does not mean that nobody holds the underlying information. ICANN's policy covers collection, transfers, publication, and disclosure as separate operations. [The policy FAQ explains those separate functions](https://www.icann.org/en/system/files/files/registration-data-policy-faqs-21aug25-en.pdf#page=4).
 
@@ -152,7 +164,7 @@ Do not treat escrow as a personal recovery guarantee. Ask support how the applic
 
 The useful comparison ends with four recorded answers: holder of record, public fields, contact delivery, and recovery procedure. A service fits the need when those answers match the customer's requirements and the contract supports those answers.
 
-## Sources and further reading
+## These sources support the comparison
 
 - [ICANN: About Privacy/Proxy Registration Service](https://www.icann.org/resources/pages/privacy-proxy-registration-2013-03-22-en). Definitions and “2013 RAA” procedures. Fetched 2026-10-21.
 - [ICANN: Registrar Accreditation Agreement, January 21, 2024 version](https://itp.cdn.icann.org/en/files/accredited-registrars/registrar-accreditation-agreement-21jan24-en.htm). Section 1.1, sections 3.7.7.1–3.7.7.2, and Specification on Privacy and Proxy Registrations. Fetched 2026-10-21.
@@ -160,3 +172,5 @@ The useful comparison ends with four recorded answers: holder of record, public 
 - [ICANN: Registration Data Policy now in effect](https://www.icann.org/en/announcements/details/icann-registration-data-policy-now-in-effect-for-contracted-parties-21-08-2025-en). Effective-date announcement. Fetched 2026-10-21.
 - [ICANN: Registration Data Policy](https://www.icann.org/en/contracted-parties/consensus-policies/registration-data-policy). Scope, sections 9.2 and 10. Current page includes a May 2026 revision. Fetched 2026-10-21.
 - [ICANN: Registration Data Policy FAQ](https://www.icann.org/en/system/files/files/registration-data-policy-faqs-21aug25-en.pdf). Questions 1, 5, and 14. Fetched 2026-10-21.
+- [GoDaddy: What is Domain Privacy?](https://www.godaddy.com/help/what-is-domain-privacy-41145). Domains By Proxy partner identification. Fetched 2026-10-21.
+- [GoDaddy: Domain Name Proxy Agreement](https://www.godaddy.com/legal/agreements/domain-name-proxy-agreement). Sections 1, 2, and 4 establish proxy display, retained rights, cancellation, and disclosure conditions. Page states last revision April 1, 2024. Fetched 2026-10-21.

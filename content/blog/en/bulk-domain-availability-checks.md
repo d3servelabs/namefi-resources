@@ -1,6 +1,6 @@
 ---
 title: "Bulk Domain Availability Checks Need Clean Inputs and Final Rechecks"
-description: "Prepare a bulk domain list, preserve uncertain results, compare registration and renewal costs, and recheck the shortlist before buying."
+description: "Clean a bulk domain list, respect API limits, recover from rate limits, preserve unknown results, and recheck prices before buying."
 date: '2026-10-21'
 language: en
 tags: [domains, guide, research]
@@ -100,7 +100,7 @@ A useful shortlist treats uncertainty as work to resolve. The shortlist should n
 
 ## An API workflow must preserve limits and per-domain errors
 
-![A documented API workflow preserves row-level results and errors.](../../assets/bulk-domain-availability-checks-03-section.jpg)
+![A queue checks domains, waits after throttling, and resumes while retaining completed results.](../../assets/bulk-domain-availability-checks-05-retry-queue.jpg)
 
 A web interface suits a modest one-time search. An API can help a repeatable workflow, but API use adds authentication, request limits, error handling, and result storage.
 
@@ -120,7 +120,36 @@ Use a minimal processing sequence:
 6. Retry only the cases that require another check.
 7. Produce a reviewable shortlist.
 
-Keep retries bounded. Follow documented rate limits and retry guidance. Do not create an aggressive loop that treats every unknown result as a reason to send unlimited traffic.
+### A batch limit does not define the allowed request rate
+
+Namecheap limits one check command to 50 domains. AWS checks one domain per request. Neither number establishes the permitted requests per second. Read the provider's current account limits before choosing a sending rate.
+
+For example, 1,000 unique domains need at least 20 Namecheap check commands at 50 domains per command. Retries add requests. The calculation sizes the queue but does not promise a completion time.
+
+Use one shared request limiter when several workers use the same account. Start with sequential requests unless the provider documents a suitable concurrency allowance. Additional workers must share the allowance rather than each assume the full account limit.
+
+### A retry policy must distinguish throttling from bad input
+
+An [HTTP 429 response](https://www.rfc-editor.org/rfc/rfc6585#section-4) signals rate limiting. The response can include a `Retry-After` header. [HTTP semantics](https://www.rfc-editor.org/rfc/rfc9110.html#name-retry-after) allows a delay in seconds or an HTTP date. Parse both forms and wait until the indicated retry time.
+
+If the provider supplies no usable delay, use bounded exponential backoff with random variation between workers. Treat the backoff as a client policy, not a provider guarantee. Set a maximum attempt count and a run deadline before starting.
+
+| Result | Next action |
+| --- | --- |
+| Explicit availability result | Save the result and checking time |
+| Documented pending state | Schedule another check under the provider's rules |
+| HTTP 429 or documented throttle error | Pause affected requests and schedule a bounded retry |
+| Timeout or temporary server failure | Preserve unknown status and retry within the budget |
+| Invalid input or unsupported extension | Correct the input or choose a supported provider |
+| Authentication or account-permission failure | Stop the run and repair access |
+
+Providers can report errors inside a successful HTTP response. Inspect the application response as well as the HTTP status. Do not assume every provider uses HTTP 429 for throttling.
+
+Save each completed batch before submitting the next batch. Record the candidate ID, attempt number, raw status, error, checking time, and earliest retry time. Remove authentication material before saving responses.
+
+Resume only unfinished or deliberately scheduled rows after an interruption. A restart should not repeatedly check every completed row. Keep the final checkout recheck separate because an earlier successful result can become stale.
+
+If a retry budget expires, leave the affected rows unknown and report the incomplete count. Do not relabel unknown rows as unavailable to make the export appear complete.
 
 Avoid writing secrets into query logs or exported URLs. Some APIs use authentication parameters that can leak through a copied request. Store the useful response fields while removing authentication material from any shared record.
 
@@ -173,4 +202,6 @@ Sources checked on October 21, 2026. No live availability results or current ret
 - [Amazon Route 53: CheckDomainAvailability](https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_CheckDomainAvailability.html). The reference distinguishes supported inputs and uncertain or restricted results.
 - [RFC 5731, section 3.1.1](https://datatracker.ietf.org/doc/html/rfc5731#section-3.1.1). The check response describes availability at completion time.
 - [ICANN: Reserved names](https://www.icann.org/en/contracted-parties/registry-operators/services/reserved-names). The guidance links applicable reserved-name categories.
+- [RFC 6585, section 4](https://www.rfc-editor.org/rfc/rfc6585#section-4). The standard defines HTTP 429 and optional retry guidance.
+- [RFC 9110, section 10.2.3](https://www.rfc-editor.org/rfc/rfc9110.html#name-retry-after). The standard defines the two Retry-After value formats.
 - [USPTO: Trademark search resources](https://www.uspto.gov/trademarks/search). The page provides the official United States search starting point.
