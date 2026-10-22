@@ -1,0 +1,130 @@
+{
+  "fetched_local_date": "2026-10-21",
+  "research_agent": "/root/coverage48_19_g11",
+  "sources": [
+    {
+      "url": "https://developers.cloudflare.com/dns/cname-flattening/",
+      "fallback": "Opened successfully with web tool on 2026-10-21 America/Los_Angeles",
+      "verified_sections": "CNAME flattening How it works; DNS record types SOA",
+      "http_fetch_error_retained": "HTTPError"
+    },
+    {
+      "url": "https://developers.cloudflare.com/dns/manage-dns-records/reference/dns-record-types/",
+      "fallback": "Opened successfully with web tool on 2026-10-21 America/Los_Angeles",
+      "verified_sections": "CNAME flattening How it works; DNS record types SOA",
+      "http_fetch_error_retained": "HTTPError"
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc1034.html",
+      "status": 200,
+      "file": "rfc1034.html",
+      "bytes": 142381
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc1035.html",
+      "status": 200,
+      "file": "rfc1035.html",
+      "bytes": 140476
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc2181.html",
+      "status": 200,
+      "file": "rfc2181.html",
+      "bytes": 44298
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc2308.html",
+      "status": 200,
+      "file": "rfc2308.html",
+      "bytes": 46858
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc2782.html",
+      "status": 200,
+      "file": "rfc2782.html",
+      "bytes": 26669
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc3596.html",
+      "status": 200,
+      "file": "rfc3596.html",
+      "bytes": 18558
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc4034.html",
+      "status": 200,
+      "file": "rfc4034.html",
+      "bytes": 83800
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc6376.html",
+      "status": 200,
+      "file": "rfc6376.html",
+      "bytes": 215401
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc7208.html",
+      "status": 200,
+      "file": "rfc7208.html",
+      "bytes": 184314
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc8659.html",
+      "status": 200,
+      "file": "rfc8659.html",
+      "bytes": 95898
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9460.html",
+      "status": 200,
+      "file": "rfc9460.html",
+      "bytes": 247326
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc5737.html",
+      "status": 200,
+      "file": "rfc5737.html",
+      "bytes": 9955
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc3849.html",
+      "status": 200,
+      "file": "rfc3849.html",
+      "bytes": 9851
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc2606.html",
+      "status": 200,
+      "file": "rfc2606.html",
+      "bytes": 9569
+    },
+    {
+      "url": "https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml",
+      "status": 200,
+      "file": "dns-parameters.xhtml",
+      "bytes": 156544
+    },
+    {
+      "url": "https://developers.google.com/google-ads/api/data/codes-formats",
+      "status": 200,
+      "file": "codes-formats",
+      "bytes": 3992789
+    }
+  ],
+  "new_claims": {
+    "iana": "Common versus specialized types; AAA and C are not registered type names",
+    "rfc1035": "Owner, TTL, class, type, value fields and master-file absolute names",
+    "rfc2606": "example.com and example.net reserved for examples",
+    "rfc5737": "192.0.2.0/24 documentation block",
+    "rfc3849": "2001:db8::/32 documentation prefix",
+    "rfc7208_3_1": "SPF policies require TXT rather than obsolete SPF RR publication"
+  },
+  "overlap_read_in_full": [
+    "dns-record-types-guide",
+    "aaaa-record-explained",
+    "cname-vs-a-record",
+    "reverse-dns-ptr-records",
+    "txt-records-spf-dkim-verification"
+  ],
+  "overlap_decision": "Keep the existing general record-selection URL. Add quick reference and shared record-field examples. Retain specialist detail in sibling articles. No new English URL."
+}
