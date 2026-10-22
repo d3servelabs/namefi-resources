@@ -1,0 +1,20 @@
+{
+  "agent_path": "/root/coverage48_04_g28",
+  "model": "GPT-6 (harness identity, exact runtime model unavailable)",
+  "research_start_utc": null,
+  "research_start_note": "Not recorded at phase entry. Session metadata can bound the start.",
+  "observed_checkpoint_utc": "2026-10-21T23:33:08.652904+00:00",
+  "research_end_utc": "2026-10-21T23:33:24Z",
+  "writing_start_utc": null,
+  "writing_start_note": "First write occurred before observed 2026-10-21T23:33:08Z checkpoint.",
+  "writing_end_utc": "2026-10-21T23:33:41.533201+00:00",
+  "translation_start_utc": null,
+  "translation_end_utc": null,
+  "translation_note": "Deferred es-ES and es-MX after direct Ads and SERP evidence.",
+  "images_start_utc": null,
+  "images_start_note": "Image generation launched before observed 2026-10-21T23:33:08Z checkpoint.",
+  "images_end_utc": null,
+  "images_end_note": "Observed completion and final visual inspection completed before 23:34:00Z checkpoint.",
+  "image_qc_checkpoint_utc": "2026-10-21T23:34:00Z",
+  "writer_token_counters": "Unavailable to this agent. Root may derive actual counters from agent_path session logs."
+}

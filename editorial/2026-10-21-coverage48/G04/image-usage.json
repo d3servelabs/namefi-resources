@@ -1,0 +1,23 @@
+{
+  "created": 1792629681,
+  "usage": {
+    "input_tokens": 455,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 455
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+      "image_tokens": 5488,
+      "text_tokens": 0
+    },
+    "total_tokens": 5943
+  },
+  "model": "gpt-image-2",
+  "quality": "high",
+  "attempt": 1,
+  "asset": "content/assets/isp-dns-vs-public-resolver-05-device-test.jpg",
+  "response_retained_private": "/private/tmp/namefi-stack48/21-isp-dns-vs-public-resolver/image-attempt1/resp.json",
+  "sha256": "f6e83a81aa2954e6d0ede0a7d9f3178d22228b34c2f1cf93c8b7d4e47a069728",
+  "qc": "PASS: inspected final 1200x675 JPEG. Exact heading and labels, correct logo top-right, cream full bleed, centered content, no clipping. No performance ranking."
+}

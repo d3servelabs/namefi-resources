@@ -9,18 +9,18 @@ editors: ['victor-zhou']
 translators: ['gong-jihye']
 draft: false
 description: '사이퍼펑크, 작은 카리브해 섬, 그리고 기술 분야에서 가장 가치 있는 두 글자. .ai 도메인의 완전한 이야기 — 누가 운영하는지, 앙귈라가 어떻게 정부 예산의 절반에 가까운 수입을 여기서 얻게 됐는지, 비용은 얼마인지, 그리고 여기에 브랜드를 구축해야 할지.'
-keywords: ['.ai 도메인', '.ai란 무엇인가', '.ai TLD', '앙귈라 ccTLD', '.ai 도메인 등록', 'AI 스타트업 도메인', '.ai vs .io', '.ai 소유자', '.ai 도메인 가격', '.ai 2년 최소 기간', 'Vince Cate', '앙귈라 AI 도메인']
+keywords: ['.ai 도메인', '.ai란 무엇인가', '.ai TLD', '앙귈라 ccTLD', '.ai 도메인 등록', 'AI 스타트업 도메인', '.ai vs .io', '.ai 소유자', '.ai 도메인 가격', 'Vince Cate', '앙귈라 AI 도메인']
 faqs:
   - question: '누구나 .ai 도메인을 등록할 수 있나요?'
-    answer: '네. .ai 레지스트리는 현지 주소 증명이나 자격 요건 없이 전 세계 누구에게나 열려 있습니다. 대부분의 TLD와의 주요 차이점은 .ai가 1년 단위가 아닌 최소 2년 기간으로 판매된다는 점으로, 초기 비용이 더 높아집니다.'
+    answer: 'GoDaddy는 누구나 .ai 도메인을 등록할 수 있다고 안내합니다. 구매 전에 선택한 등록업체의 약관을 확인하세요.'
   - question: '.ai 도메인이 SEO에 영향을 미치나요?'
-    answer: '아니요. Google은 .ai를 앙귈라에 지역 타겟팅하는 일반 최상위 도메인이 아닌 것으로 취급하므로, .ai 사이트는 전 세계적으로 순위를 매길 수 있습니다. 확장자 자체는 순위 상승 요인도 페널티도 아니며, 순위는 여전히 콘텐츠, 링크, 사용자 경험이 결정합니다.'
+    answer: 'Google은 .ai를 앙귈라로 지역 타겟팅하지 않고 일반 최상위 도메인처럼 취급합니다. 따라서 .ai 웹사이트는 전 세계 사용자를 대상으로 할 수 있습니다.'
   - question: '누가 .ai 도메인을 등록해야 하나요?'
-    answer: '인공지능 스타트업, 머신러닝 제품, AI 에이전트, 그리고 이름에 "AI"의 의미를 담고 싶은 개발자 툴에 적합합니다. 높은 가격과 2년 최소 기간을 고려할 때 예산이 제한적인 프로젝트나 비기술 분야의 로컬 비즈니스에는 덜 적합합니다.'
+    answer: 'AI 스타트업, 머신러닝 제품, AI 에이전트, 개발자 도구에 .ai를 고려할 수 있습니다. 이름의 의미와 프로젝트 예산을 함께 살펴보세요.'
   - question: '.ai 레지스트리를 소유하고 운영하는 곳은 어디인가요?'
     answer: '앙귈라 정부가 .ai에 대한 IANA 위임권을 보유하고 있습니다. 2025년 1월부터 기술 레지스트리 백엔드는 Identity Digital이 운영하고 있습니다. 하지만 등록자가 등록한 개별 .ai 도메인은 등록자 본인이 소유합니다.'
-  - question: '왜 .ai 최소 등록 기간이 2년인가요?'
-    answer: '앙귈라 레지스트리가 해당 정책을 설정합니다. .ai 도메인은 .com에서 일반적인 1년 단위 사이클이 아닌 2~10년 기간으로 등록 및 갱신됩니다. 이는 초기 비용을 높이지만, 1년 갱신을 놓쳐 도메인을 잃을 위험을 줄여 줍니다.'
+  - question: 'GoDaddy가 안내하는 .ai 등록 기간은 무엇인가요?'
+    answer: 'GoDaddy는 .ai 등록 및 갱신 기간으로 2년, 4년, 6년, 8년, 10년을 안내합니다. 선택한 등록업체가 제공하는 기간을 확인하세요.'
 relatedArticles:
   - /ko/blog/ai-vs-io-domain/
   - /ko/blog/why-are-io-domains-expensive/
@@ -52,10 +52,9 @@ relatedGlossary:
 | TLD 유형 | ccTLD (앙귈라 국가 코드); Google에서 일반 도메인으로 취급 |
 | 레지스트리 운영 | 앙귈라 정부; 기술 백엔드는 Identity Digital (2025년 1월부터) |
 | 위임 연도 | 1995년 |
-| 등록 기간 | 최소 2년; 2~10년 기간 |
-| IDN 지원 | 없음 — 역사적으로 ASCII a~z, 0~9, 하이픈만 지원 |
+
 | DNSSEC | 레지스트리 수준에서 지원 |
-| 등록 제한 | 누구에게나 개방; 현지 주소 요건 없음 |
+
 | 최적 용도 | AI/ML 스타트업, 에이전트 제품, 개발자 툴, 프리미엄 기술 브랜드 |
 
 ## 가장 예상치 못한 기술 수도
@@ -125,11 +124,8 @@ Cate는 조용한 관찰자가 아니었습니다. 빠듯한 예산으로 도착
 
 ## 가격과 좋은 도메인의 거래 사례
 
-.ai는 의도적으로 프리미엄 확장자이며, 몇 가지 메커니즘이 가격을 높입니다:
+구매 전에 총 등록 비용, 갱신 견적, 포함된 서비스를 비교하세요. 이 페이지는 현재 도매 가격이나 레지스트리 프리미엄 등급을 제시하지 않습니다.
 
-- **최소 2년.** 단 1년으로는 등록하거나 갱신할 수 없습니다. 기간은 2년에서 10년 사이로 운영되므로 초기 비용이 1년 기간의 [.com](/ko/tld/com/)보다 구조적으로 더 높습니다. 반면에 진짜 장점도 있습니다: 갱신을 한 번 놓쳐 도메인을 잃을 가능성이 줄어듭니다.
-- **상승하는 기본 가격.** 수년간 레지스트리는 의무적인 2년 기간에 약 140달러를 청구했습니다. 2026년 초 Identity Digital하에서 [도매 비용이 연간 10달러 더 올라](https://domainnamewire.com/2026/02/02/ai-domain-name-prices-going-up-20/#:~:text=the%20wholesale%20cost%20will%20increase%20by%20%2410%20per%20year)(2년에 약 160달러) 프리미엄 확장자에 걸맞은 가격이 매겨집니다.
-- **프리미엄 등급.** 짧은 이름, 사전 단어, 카테고리 정의 이름은 프리미엄으로 분류되어 표준 등록 가격을 훨씬 웃도는 가격이 책정됩니다.
 - **활발한 애프터마켓.** 2차 시장에서는 실제 헤드라인 거래들이 있었습니다: [**you.ai**는 2023년 700,000달러에 판매](https://domaininvesting.com/dharmesh-shah-comments-on-you-ai-acquisition/#:~:text=Sedo%20announced%20the%20%24700%2C000%20sale%20of%20You.ai)(HubSpot 공동 창업자 Dharmesh Shah에게), [**bot.ai**는 2026년에 보도에 따르면 1,200,000달러에](https://cognitive.ai/dotaisales.html), [**fin.ai**는 2025년 3월에 보도에 따르면 약 100만 달러에](https://en.wikipedia.org/wiki/.ai#:~:text=was%20sold%20for%20%241%2C000%2C000%20in%20March%202025)(당사자들이 공식 확인하지 않았지만 널리 보도됨) 거래되었습니다. 참고로, [.ai는 2025년 상반기 보고된 애프터마켓 판매에서 두 번째로 높은 실적](https://www.namepros.com/threads/domain-name-sales-reported-at-namebio-during-first-six-months-of-2025-strength-for-legacy-extensions-ai.1356803/#:~:text=second%20highest%20performer%20in%20the%20first%20half%20of%202025%20was%20.ai)을 기록했습니다 — .com에 이어.
 
 이 페이지는 현재 소매 가격을 표시하지 않습니다 — 등록 시 현재 요금을 확인하세요. 구매자에게 중요한 점은 .ai가 카테고리 신호에 대한 의도적인 투자이지 일반 등록이 아니라는 것입니다.
@@ -141,8 +137,6 @@ Cate는 조용한 관찰자가 아니었습니다. 빠듯한 예산으로 도착
 | 출처 | 앙귈라 ccTLD | 인도양 ccTLD | 원래 일반 gTLD |
 | 연상 이미지 | 인공지능 | 입력/출력, 개발/SaaS | 범용, 기본값 |
 | Google 처리 | 일반 (gccTLD) | 일반 (gccTLD) | 일반 |
-| 일반적 가격 | 높음, 프리미엄 | 중간~높음 | 낮음, 단 짧은 이름은 희귀 |
-| 최소 기간 | 2년 | 1년 | 1년 |
 
 인공지능이 *당신의 제품 그 자체*이고 이름에 그 의미를 담고 싶다면 **.ai**를 선택하세요. "입력/출력"으로 읽히면서 더 저렴한 경향이 있는 더 넓은 개발자 또는 SaaS 서비스라면 [.io](/ko/tld/io/)를 고려하세요 — [.io 도메인이 왜 비싼지](/ko/blog/why-are-io-domains-expensive/) 참조. [.com](/ko/tld/com/)은 범용 기본값으로 기억해 두세요. 많은 팀이 .ai와 함께 방어적으로 .com도 확보합니다. 더 심층적인 비교는 [.ai 대 .io: 스타트업에 맞는 도메인은?](/ko/blog/ai-vs-io-domain/)을 읽어보세요.
 
@@ -159,8 +153,6 @@ Cate는 조용한 관찰자가 아니었습니다. 빠듯한 예산으로 도착
 
 **반대 측 주장 (솔직하게):**
 
-- **프리미엄 가격과 2년 최소 기간**으로 인해 .ai는 가벼운 지출이 아닌 의도적인 지출이 됩니다.
-- **IDN 지원 없음**으로 라틴 문자 이외의 스크립트는 사용할 수 없습니다.
 - **트렌드 위험.** 정체성을 "AI"에 연결하면 빠르게 변화하는 사이클에 브랜드를 묶는 것입니다 (다음 섹션 참조).
 - **카테고리이지 기본값이 아닙니다.** 제품이 실제로 AI에 관한 것이 아니라면 .ai는 과장처럼 보일 수 있으며, 많은 팀이 여전히 방어적으로 매칭 .com을 확보합니다.
 
@@ -178,43 +170,42 @@ Cate는 조용한 관찰자가 아니었습니다. 빠듯한 예산으로 도착
 
 더 깊은 구조적 요점도 있습니다. [ICANN은 미국 법원에 ccTLD는 **재산이 아니라고**](https://domainnamewire.com/2014/07/30/icann-court-cctlds/) 주장했습니다 — 누구도 ccTLD를 "소유"하지 않습니다. 실제로 앙귈라의 통제는 매우 안정적입니다: ccTLD는 ISO 국가 코드가 사라지는 경우에만 폐기되며, [소련 자체가 해체된 이후에도 `.su` 최상위 도메인은 현재까지 사용 중입니다](https://en.wikipedia.org/wiki/.su#:~:text=the%20Soviet%20Union%20itself%20was%20dissolved%2015%20months%20later%2C%20the%20.su%20top%2Dlevel%20domain%20remains%20in%20use%20to%20the%20present%20day). 자체 ISO 항목을 가진 공인 영토로서 앙귈라는 어디에도 가지 않습니다. 하지만 철학적 요점은 중요합니다: .ai를 구입할 때, 두 글자 자체에 대한 완전한 소유권이 아닌 소국 정부가 관리하는 네임스페이스 내 이름에 대한 장기적이고 안전한 임대권을 구입하는 것입니다.
 
-이것이 순전히 학문적인 문제가 아님은 .ai의 형제 확장자 **.io**에서 명확합니다. .io에 그 글자를 부여한 영국령 인도양 영토는 [최근 자체 ccTLD를 이미 보유한 모리셔스에 이전되었으며](https://www.afnic.fr/en/observatory-and-resources/expert-papers/ai-io-and-tv-and-their-surprising-stories/#:~:text=territory%20was%20recently%20transferred%20to%20Mauritius%20which%20already%20has%20its%20own%20ccTLD), .io의 장기 미래에 대한 열린 의문을 제기하고 그 위에 구축된 개발자 브랜드들을 불안하게 만들었습니다. 앙귈라의 상황은 훨씬 안정적이지만(주권이 바뀌지 않음), .io 사례는 두 글자 ccTLD가 등록자가 통제할 수 없는 지정학에 달려 있다는 유용한 경고입니다. 구매자에게 실용적인 헤지는 대형 브랜드들이 이미 사용하는 것과 같습니다: 매칭 [.com](/ko/tld/com/)도 확보하고, .ai가 유일한 문이 아닌 정문이 되게 하세요.
-
 이것은 .ai를 피해야 할 이유가 아닙니다. 이것은 올바른 이유로 구입해야 할 이유입니다: 제품이 진정으로 *AI*이고 세상이 한눈에 알기를 원하기 때문 — 접미사가 유행하기 때문이 아니라.
 
 ## 오늘날 .ai의 작동 방식 (실용적인 사항)
 
-**누구나 등록할 수 있습니다.** 현지 주소 증명, 시민권, 자격 요건 없이 공인 [레지스트라](/ko/glossary/registrar/)를 통해 등록합니다. 핵심 규칙은 **최소 2년 기간**입니다 (갱신 및 등록은 2~10년 단위로 이루어집니다). 이름은 표준 ASCII 문자를 사용합니다. 레지스트리는 역사적으로 **국제화 도메인 이름을 지원하지 않았으므로** 라틴 문자 이외의 스크립트는 사용할 수 없습니다. [DNSSEC](/ko/glossary/dnssec/)를 지원하며 현대적인 WHOIS/RDAP 조회가 Identity Digital 인프라를 통해 제공됩니다. 공식 정책은 앙귈라 레지스트리에서 [nic.ai](https://nic.ai/)에 게시되어 있습니다. .ai는 ccTLD이므로 [ICANN](/ko/glossary/icann/)의 gTLD 레지스트리 계약 프레임워크 외부에 있습니다 — 앙귈라가 자체 정책을 설정합니다.
+GoDaddy는 누구나 .ai 도메인을 등록할 수 있다고 안내합니다. 구매 전에 선택한 등록업체의 약관을 확인하세요. GoDaddy는 .ai 등록 및 갱신 기간으로 2년, 4년, 6년, 8년, 10년을 안내합니다. 선택한 등록업체가 제공하는 기간을 확인하세요. [GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220). 출처 확인: 2026-10-21.
 
 **SEO**에 관해서는, Google이 [.ai를 포함한 특정 ccTLD를 일반 도메인으로 취급](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Google%20treats%20some%20ccTLDs)하여 본국에 지역 타겟팅하지 않는다는 핵심 사실이 있습니다. .ai 사이트는 전 세계적으로 순위를 매길 수 있으며, 접미사는 상승 요인도 페널티도 아닙니다.
 
-**브랜딩**에 관해서는, 가장 강력한 패턴은 [도메인 핵](/ko/glossary/domain-hack/)입니다. 확장자가 문구를 완성하는 방식 — `scale.ai`, `fin.ai`, 단어와 의미로 읽히는 자연스러운 `명사.ai`. .ai의 전체 매력은 비교 가능한 [.com](/ko/tld/com/)이 이미 사라진 상황에서 짧고 의미 있는 이름을 소유할 수 있다는 것이므로, 어색한 이름으로 그 기회를 낭비하지 마세요: 하이픈과 숫자 대체를 피하고, 발음하기 쉽게 유지하고, 소리 내어 말할 때 "dot A-I"(글자)라고 말해 청중이 "dot eye"로 듣지 않게 하세요. 그리고 결제 시 놀라지 않도록 2년 기간 비용을 미리 예산에 포함하세요 — 이것이 처음 .ai를 구매하는 사람들을 가장 많이 당황하게 하는 메커니즘입니다.
+**브랜딩**에 관해서는, 가장 강력한 패턴은 [도메인 핵](/ko/glossary/domain-hack/)입니다. 확장자가 문구를 완성하는 방식 — `scale.ai`, `fin.ai`, 단어와 의미로 읽히는 자연스러운 `명사.ai`. .ai의 전체 매력은 비교 가능한 [.com](/ko/tld/com/)이 이미 사라진 상황에서 짧고 의미 있는 이름을 소유할 수 있다는 것이므로, 어색한 이름으로 그 기회를 낭비하지 마세요: 하이픈과 숫자 대체를 피하고, 발음하기 쉽게 유지하고, 소리 내어 말할 때 "dot A-I"(글자)라고 말해 청중이 "dot eye"로 듣지 않게 하세요.
 
 ## .ai를 장기 보유하기
 
-다른 도메인과 마찬가지로 .ai는 [DNS](/ko/glossary/dns/)를 통한 일반적인 방식으로, 또는 [토큰화된 도메인](/ko/blog/what-are-tokenized-domains/)으로 — 소유권을 검증 가능하게 하고 이전을 간단하게 만들면서 일반 해석을 유지하는 [온체인](/ko/glossary/on-chain/) [NFT](/ko/glossary/nft/) — 보유할 수 있습니다. Web2와 [Web3](/ko/glossary/web3/)를 연결하는 [ICANN 공인 레지스트라](/ko/glossary/accredited-registrar/)인 [Namefi](https://namefi.io)에서 .ai를 등록(2년 최소 기간 기억)하고, 관리하고, 선택적으로 한 곳에서 토큰화할 수 있습니다. [Namefi](https://namefi.io)에서 이름을 검색하여 시작하세요.
+다른 도메인과 마찬가지로 .ai는 [DNS](/ko/glossary/dns/)를 통한 일반적인 방식으로, 또는 [토큰화된 도메인](/ko/blog/what-are-tokenized-domains/)으로 — 소유권을 검증 가능하게 하고 이전을 간단하게 만들면서 일반 해석을 유지하는 [온체인](/ko/glossary/on-chain/) [NFT](/ko/glossary/nft/) — 보유할 수 있습니다. Web2와 [Web3](/ko/glossary/web3/)를 연결하는 [ICANN 공인 레지스트라](/ko/glossary/accredited-registrar/)인 [Namefi](https://namefi.io)에서 .ai를 등록하고, 관리하고, 선택적으로 한 곳에서 토큰화할 수 있습니다. [Namefi](https://namefi.io)에서 이름을 검색하여 시작하세요.
 
 ## 자주 묻는 질문
 
 ### 누구나 .ai 도메인을 등록할 수 있나요?
 
-네. .ai 레지스트리는 현지 주소 증명이나 자격 요건 없이 전 세계 누구에게나 열려 있습니다. 대부분의 TLD와의 주요 차이점은 .ai가 1년 단위가 아닌 최소 2년 기간으로 판매된다는 점으로, 초기 비용이 더 높아집니다.
+[GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220)는 누구나 .ai 도메인을 등록할 수 있다고 안내합니다. 구매 전에 선택한 등록업체의 약관을 확인하세요.
 
 ### .ai 도메인이 SEO에 영향을 미치나요?
 
-아니요. Google은 .ai를 앙귈라에 지역 타겟팅하는 일반 최상위 도메인이 아닌 것으로 취급하므로, .ai 사이트는 전 세계적으로 순위를 매길 수 있습니다. 확장자 자체는 순위 상승 요인도 페널티도 아니며, 순위는 여전히 콘텐츠, 링크, 사용자 경험이 결정합니다.
+[Google](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites)은 .ai를 앙귈라로 지역 타겟팅하지 않고 일반 최상위 도메인처럼 취급합니다. 따라서 .ai 웹사이트는 전 세계 사용자를 대상으로 할 수 있습니다.
+
 
 ### 누가 .ai 도메인을 등록해야 하나요?
 
-인공지능 스타트업, 머신러닝 제품, AI 에이전트, 그리고 이름에 "AI"의 의미를 담고 싶은 개발자 툴에 적합합니다. 높은 가격과 2년 최소 기간을 고려할 때 예산이 제한적인 프로젝트나 비기술 분야의 로컬 비즈니스에는 덜 적합합니다.
+AI 스타트업, 머신러닝 제품, AI 에이전트, 개발자 도구에 .ai를 고려할 수 있습니다. 이름의 의미와 프로젝트 예산을 함께 살펴보세요.
 
 ### .ai 레지스트리를 소유하고 운영하는 곳은 어디인가요?
 
 앙귈라 정부가 .ai에 대한 [IANA](/ko/glossary/iana/) 위임권을 보유하고 있습니다. 2025년 1월부터 기술 레지스트리 백엔드는 Identity Digital이 운영하고 있습니다. 하지만 등록자가 등록한 개별 .ai 도메인은 [등록자](/ko/glossary/registrant/) 본인이 소유합니다.
 
-### 왜 .ai 최소 등록 기간이 2년인가요?
+### GoDaddy가 안내하는 .ai 등록 기간은 무엇인가요?
 
-앙귈라 레지스트리가 해당 정책을 설정합니다. .ai 도메인은 .com에서 일반적인 1년 단위 사이클이 아닌 2~10년 기간으로 등록 및 갱신됩니다. 이는 초기 비용을 높이지만, 1년 갱신을 놓쳐 도메인을 잃을 위험을 줄여 줍니다.
+[GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220)는 .ai 등록 및 갱신 기간으로 2년, 4년, 6년, 8년, 10년을 안내합니다. 선택한 등록업체가 제공하는 기간을 확인하세요.
 
 ## 출처
 
@@ -234,3 +225,5 @@ Cate는 조용한 관찰자가 아니었습니다. 빠듯한 예산으로 도착
 - [토큰화된 도메인이란?](/ko/blog/what-are-tokenized-domains/)
 - [.io 도메인](/ko/tld/io/) · [.com 도메인](/ko/tld/com/) · [.dev 도메인](/ko/tld/dev/)
 - 용어 사전: [레지스트라](/ko/glossary/registrar/) · [ICANN](/ko/glossary/icann/) · [DNSSEC](/ko/glossary/dnssec/) · [도메인 핵](/ko/glossary/domain-hack/)
+
+- [GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220) — 출처 확인: 2026-10-21.

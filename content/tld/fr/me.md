@@ -70,7 +70,7 @@ Le Monténégro est devenu un pays indépendant en **2006**, à la suite de la d
 
 Plutôt que de gérer l'espace de noms comme un registre purement national, le gouvernement a lancé un appel à propositions pour trouver un opérateur commercial. Le contrat a été attribué à **doMEn d.o.o.**, une coentreprise monténégrine dont les partenaires comprenaient **Afilias**, **GoDaddy** et l'entreprise locale **ME-net**. Avec Afilias fournissant l'infrastructure technique du registre, le .me **s'est ouvert au grand public mondial en 2008** selon le principe du premier arrivé, premier servi, soutenu par une campagne de marketing qui mettait l'accent sur l'expression personnelle et les domain hacks.
 
-Le changement récent le plus significatif se situe au niveau de l'**infrastructure technique** : en **décembre 2021**, **Identity Digital** (anciennement Donuts) **a acquis Afilias**, de sorte que l'infrastructure de registre qui alimente depuis longtemps le .me se trouve désormais au sein de la plateforme d'Identity Digital. Le gouvernement du Monténégro reste le gestionnaire de registre parrainant officiel, et doMEn d.o.o. continue d'exploiter l'espace de noms commercialement. Au cours de sa première décennie, le .me s'est développé en une extension mondiale reconnue, franchissant le cap du **million d'enregistrements** et devenant un contributeur significatif à l'économie du Monténégro.
+Donuts [a finalisé l’acquisition d’Afilias le 29 décembre 2020](https://www.prnewswire.com/news-releases/donuts-acquires-afilias-301199019.html). Donuts et Afilias [ont adopté la marque Identity Digital en juin 2022](https://www.prnewswire.com/news-releases/donuts-inc-and-afilias-inc-rebrand-to-identity-digital-301572401.html).
 
 ## Comment le .me est utilisé
 
@@ -87,7 +87,6 @@ Parce que « me » correspond si parfaitement au langage personnel, le .me attir
 ## Sites notables utilisant le .me
 
 - **about.me** — la plateforme de page d'accueil personnelle lancée en 2010 (et brièvement acquise par AOL quelques jours seulement après son lancement). C'est l'histoire à succès canonique du .me et elle a effectivement défini l'identité de marque personnelle de l'extension.
-- **read.me / readme.com** — l'entreprise de documentation pour développeurs a bâti sa marque autour du concept de fichier « readme », contribuant à cimenter l'association du .me avec un nommage propre et lisible par l'humain.
 - Une longue traîne de **portfolios personnels** par des designers, ingénieurs et créateurs réputés qui utilisent « prenom.me » ou « prenomnom.me » comme leur foyer professionnel.
 
 Ces cas montrent que le .me est adopté en toute confiance non pas seulement comme solution de repli, mais comme un choix de marque délibéré, mettant l'identité en avant.
@@ -126,7 +125,7 @@ Les pratiques standard s'appliquent : les titulaires de marques pouvaient partic
 
 Le .me se situe généralement dans une **fourchette de prix intermédiaire** — plus que les gTLD promotionnels les moins chers, mais bien en deçà des extensions premium rares. Quelques dynamiques façonnent ce que vous paierez :
 
-- **Des noms premium existent.** Le registre classe de nombreux noms .me courts, de dictionnaire, de prénoms ou très demandés comme **premium**, avec des frais d'enregistrement plus élevés et parfois des frais de renouvellement plus élevés.
+- **Le supplément premium concerne la création.** Le [programme premium .ME](https://domain.me/premium-domains/#:~:text=high-create%20and%20regular-renew) prévoit des frais de création élevés et des frais de renouvellement ordinaires. Vérifiez les prix finaux d’enregistrement et de renouvellement auprès du bureau d’enregistrement.
 - **Le prix de la première année diffère du prix de renouvellement.** Comme pour la plupart des TLD, un tarif introductif de première année n'est pas le tarif de renouvellement ; vérifiez toujours le renouvellement standard avant d'engager une marque.
 - **Ce qui détermine le coût.** La longueur et l'attrait du nom, la classification premium et le prix de gros du registre sont les principaux facteurs. Les valeurs de revente sur le marché secondaire pour les prénoms courants et les domain hacks soignés en .me peuvent être substantielles.
 

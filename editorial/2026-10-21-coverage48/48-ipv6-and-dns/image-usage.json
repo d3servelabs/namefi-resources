@@ -1,0 +1,118 @@
+{
+  "attempts": [
+    {
+      "attempt": "ipv6-and-dns-01-independent-choices.jpg.attempt1.usage.json",
+      "model": "gpt-image-2",
+      "quality": "high",
+      "usage": {
+        "input_tokens": 428,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 428
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5916
+      },
+      "created": 1792635928
+    },
+    {
+      "attempt": "ipv6-and-dns-02-resolver-endpoints.jpg.attempt1.usage.json",
+      "model": "gpt-image-2",
+      "quality": "high",
+      "usage": {
+        "input_tokens": 418,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 418
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5906
+      },
+      "created": 1792635928
+    },
+    {
+      "attempt": "ipv6-and-dns-03-diagnose-path-retry.jpg.attempt2.usage.json",
+      "model": "gpt-image-2",
+      "quality": "high",
+      "usage": {
+        "input_tokens": 452,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 452
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5940
+      },
+      "created": 1792636110
+    },
+    {
+      "attempt": "ipv6-and-dns-03-diagnose-path.jpg.attempt1.usage.json",
+      "model": "gpt-image-2",
+      "quality": "high",
+      "usage": {
+        "input_tokens": 430,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 430
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5918
+      },
+      "created": 1792635930
+    },
+    {
+      "attempt": "ipv6-and-dns-og.jpg.attempt1.usage.json",
+      "model": "gpt-image-2",
+      "quality": "high",
+      "usage": {
+        "input_tokens": 717,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 717
+        },
+        "output_tokens": 3401,
+        "output_tokens_details": {
+          "image_tokens": 3401,
+          "text_tokens": 0
+        },
+        "total_tokens": 4118
+      },
+      "created": 1792635913
+    }
+  ],
+  "totals": {
+    "input_tokens": 2445,
+    "output_tokens": 25353,
+    "total_tokens": 27798
+  },
+  "missing_attempts": [],
+  "private_complete_responses": "/private/tmp/namefi-stack48/48-ipv6-and-dns",
+  "qc": {
+    "cover": "Pass: exact title/subtitle, official top-right logo, empty bottom band, no crop. Small purple server accent does not dominate palette.",
+    "01": "Pass: four valid transport/type combinations, correct labels, generous cream margins.",
+    "02": "Pass: two address families lead to same DNS service, no address or speed invention.",
+    "03_attempt1": "Rejected: model added numeric destination address without requested source.",
+    "03_attempt2": "Pass: removed numeric address, separate website connection shows warning, DNS answer check remains separate."
+  },
+  "attempt_safety": "Every attempt used a separate immutable shell script. Complete API response copied to private scratch before decode, usage persisted immediately. No running script edited.",
+  "dimensions": {
+    "cover": "1200x630",
+    "inline": "1200x675"
+  }
+}

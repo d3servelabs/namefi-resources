@@ -1,0 +1,37 @@
+{
+  "startDate": "2026-09-21",
+  "endDate": "2026-10-18",
+  "type": "web",
+  "dataState": "final",
+  "dimensions": [
+    "query",
+    "page",
+    "country"
+  ],
+  "retrieved_utc": "2026-10-21T23:27:19.408267+00:00",
+  "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+  "method": "Filter observed rows where page contains choose-public-dns-resolver; then aggregate all countries and exact deu/mex/jpn country dimensions.",
+  "observed_row_aggregates": {
+    "all": {
+      "matching_observed_rows": 0,
+      "observed_clicks": 0,
+      "observed_impressions": 0
+    },
+    "deu": {
+      "matching_observed_rows": 0,
+      "observed_clicks": 0,
+      "observed_impressions": 0
+    },
+    "mex": {
+      "matching_observed_rows": 0,
+      "observed_clicks": 0,
+      "observed_impressions": 0
+    },
+    "jpn": {
+      "matching_observed_rows": 0,
+      "observed_clicks": 0,
+      "observed_impressions": 0
+    }
+  },
+  "interpretation": "No observed matching rows. This is not zero market demand."
+}
