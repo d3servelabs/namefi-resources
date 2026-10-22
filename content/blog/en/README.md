@@ -72,3 +72,7 @@ The twenty-article continuation adds the intent/solver comparison at Blockchain 
 ## The next twenty articles extend the existing demand and editorial slates
 
 The next October 21 batch adds twenty standalone English guides from the existing September slates. Subjects cover DNS operations, registration lookup, email, agent permissions and domain NFT maintenance. The dated next-twenty directories under `editorial/` preserve source evidence, image manifests and observed research, writing and revision counters. These counters do not identify a share of the account's Pro allowance.
+
+## The eMudhra draft explains CA trust and DNSSEC limits
+
+The October 22, 2026 draft `emudhra-ca-compromise-dnssec.md` explains intermediate CA compromise, MITM requirements, DNSSEC, DANE, CAA, and CT. Six accompanying glossary concepts and nine translations remain drafts. The dated editorial record preserves evidence, model authorization, review limits, and proposed inbound links.
