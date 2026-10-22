@@ -33,7 +33,7 @@ relatedGlossary:
 
 **HTTPS is HTTP protected by TLS encryption and server authentication.** Plain HTTP provides no comparable protection for traffic in transit. With HTTPS, the browser checks the server's certificate and establishes an encrypted connection before exchanging protected web requests and responses. [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2) defines the two URL schemes and their security requirements.
 
-This article explains what HTTPS actually does, and walks through the concepts it is built from: encryption, ports, certificates, certificate authorities, and the ACME protocol that now automates the issuance of most of the world's certificates. It ends where every HTTPS chain ends if you follow it far enough down: at control of a domain name.
+This article explains what HTTPS actually does, and walks through the concepts it is built from: encryption, ports, certificates, certificate authorities, and the ACME protocol that automates certificate issuance. It ends where every HTTPS chain ends if you follow it far enough down: at control of a domain name.
 
 ## What plain HTTP leaves exposed
 
@@ -70,18 +70,22 @@ The [IANA port registry](https://www.iana.org/assignments/service-names-port-num
 
 One caveat worth knowing: encrypting traffic on port 443 does not make the connection invisible. An observer still sees which IP you connected to, and the TLS handshake has historically sent the server's hostname (the SNI field) unencrypted — [any intermediary can view which website you're visiting simply by checking the first packet for a connection](https://blog.cloudflare.com/announcing-encrypted-client-hello/#:~:text=any%20intermediary%20can%20view%20which%20website%20you%27re%20visiting), as Cloudflare puts it. Encrypted Client Hello (ECH) is the emerging fix, and encrypted DNS closes the parallel leak on the lookup side — a shift with its own consequences, which we cover in [DNS over HTTPS vs enterprise split-horizon DNS](/en/blog/dns-over-https-vs-enterprise-split-horizon-dns/).
 
-## Inside the TLS handshake
+## The TLS handshake establishes authenticated keys
 
-![Flat-vector illustration of a laptop and a server exchanging a public key and a certificate across a handshake, producing a shared symmetric session key that seals a tunnel between them](../../assets/what-is-https-01-handshake.jpg)
+![A simplified TLS 1.2 handshake places key exchange after the server certificate](../../assets/what-is-https-01-handshake.jpg)
+
+The illustration summarizes an older TLS 1.2 handshake. TLS 1.3 changes the message order, as the steps below explain.
 
 Encryption comes in two flavors, and HTTPS needs both. **Symmetric** encryption uses one shared key for both sealing and opening messages — fast, but it assumes the two sides already share a secret, which strangers on the internet do not. **Asymmetric** (public-key) cryptography solves that bootstrap problem: the server holds a private key, publishes the matching [public key](/en/glossary/public-key/), and anything encrypted to the public key can only be opened with the private one, while a [digital signature](/en/glossary/digital-signature/) made with the private key can be verified by anyone holding the public one.
 
-The TLS handshake is the choreography that combines them. In brief:
+A typical certificate-based TLS 1.3 handshake combines key agreement and authentication. [RFC 8446, section 2](https://www.rfc-editor.org/rfc/rfc8446.html#section-2) shows the message order:
 
-1. The browser opens a connection and announces what cryptography it supports.
-2. The server responds with its **certificate** — its public key, bound to its domain name, vouched for by a certificate authority.
-3. The browser verifies the certificate (more on that next) and the two sides use asymmetric key-agreement to derive fresh **session keys** that no eavesdropper can compute.
-4. Everything after that — the actual HTTP requests and responses — is encrypted symmetrically with those session keys, at full speed.
+1. The browser sends supported cryptographic parameters and a key share.
+2. The server selects parameters and sends its key share. Both sides derive handshake keys.
+3. The server sends an encrypted certificate and proves possession of its private key with a signature.
+4. The browser verifies the certificate, hostname, and handshake. Both sides use derived traffic keys to protect application data.
+
+HTTP/3 uses QUIC rather than TCP. [RFC 9114, section 2](https://www.rfc-editor.org/rfc/rfc9114.html#section-2) explains how QUIC integrates TLS 1.3 for HTTPS connections.
 
 A note on names: this protocol family began life as SSL (Secure Sockets Layer) in the 1990s, was renamed TLS when standardization moved to the IETF, and modern browsers now speak TLS 1.2 and 1.3 only. The old name survives in everyday phrases like "SSL certificate," which today always means a TLS certificate.
 
@@ -91,11 +95,13 @@ A note on names: this protocol family began life as SSL (Secure Sockets Layer) i
 
 Encryption without identity would be a private conversation with a possible impostor. The identity half of HTTPS rests on **certificates**: signed digital documents that bind a domain name to a public key. The signer is a **certificate authority (CA)** — an organization whose own signing keys are pre-trusted by browsers and operating systems through their *root stores*. Trust flows down a chain: a root CA signs an intermediate, the intermediate signs the certificate for `example.com`, and the browser accepts the site's key because the chain terminates in a root it already trusts — [cryptographic security](/en/glossary/cryptographic-security/) by delegation.
 
-Before signing, the CA must validate that the requester actually controls the domain named in the certificate — that validation is the entire meaning of a standard (domain-validated) certificate. If a browser receives a certificate that doesn't chain to a trusted root, doesn't match the hostname, or has expired, it interrupts the page with a full-screen warning instead of the padlock.
+Before signing, the CA must validate that the requester actually controls the domain named in the certificate — that validation is the entire meaning of a standard (domain-validated) certificate. If a browser receives a certificate that doesn't chain to a trusted root, doesn't match the hostname, or has expired, the browser reports a certificate error. Browser indicators vary: Chrome announced a [replacement for its padlock icon](https://blog.chromium.org/2023/05/an-update-on-lock-icon.html) in 2023.
 
-That warning is not theater. In the [2018 MyEtherWallet attack](/en/blog/the-myetherwallet-bgp-dns-attack/), attackers hijacked internet routing and DNS so thoroughly that victims' browsers fetched a pixel-perfect [phishing](/en/glossary/phishing/) clone from the attackers' server — but the one thing the attackers could not do was get a trusted CA to sign a certificate for `myetherwallet.com`. Every victim saw a certificate warning; the users who lost funds were the ones who clicked through it.
+Certificate warnings require attention because the browser could not establish the expected authenticated connection. Do not bypass a warning to enter credentials or approve a payment. Diagnose the hostname, certificate chain, validity dates, and local clock before continuing.
 
-Two developments keep the CA system honest at scale. **Certificate Transparency** (RFC 6962) records issued certificates in public, append-only logs — a protocol [for publicly logging the existence](https://datatracker.ietf.org/doc/html/rfc6962#:~:text=for%20publicly%20logging%20the%20existence) of TLS certificates — so a domain owner can monitor the logs and detect a certificate issued for their name that they never requested. And certificate **lifetimes keep shrinking**: under CA/Browser Forum Ballot SC-081v3, adopted in April 2025, the maximum validity of a public TLS certificate — 398 days for most of the CA/Browser Forum's history — [dropped to 200 days on March 15, 2026](https://www.digicert.com/blog/tls-certificate-lifetimes-will-officially-reduce-to-47-days#:~:text=the%20maximum%20lifetime%20for%20a%20TLS%20certificate%20will%20be%20200%20days), and steps down again to 100 days in March 2027 and 47 days in March 2029, shrinking the window during which a stolen or mis-issued certificate stays dangerous. Nobody will renew certificates by hand every six weeks — which is why the last piece matters most.
+Two developments keep the CA system honest at scale. **Certificate Transparency** (RFC 6962) records issued certificates in public, append-only logs — a protocol [for publicly logging the existence](https://datatracker.ietf.org/doc/html/rfc6962#:~:text=for%20publicly%20logging%20the%20existence) of TLS certificates — so a domain owner can monitor the logs and detect a certificate issued for their name that they never requested.
+
+Public TLS certificate **lifetimes are shrinking**. [CA/Browser Forum Ballot SC-081v3](https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/) sets maximum validity periods by issuance date. The limit became 200 days on March 15, 2026. The schedule reduces the limit to 100 days on March 15, 2027, then 47 days on March 15, 2029. Shorter lifetimes increase the need for reliable renewal automation.
 
 ## ACME: certificates on autopilot
 
@@ -103,12 +109,12 @@ Two developments keep the CA system honest at scale. **Certificate Transparency*
 
 For the web's first two decades, getting a certificate meant paying a CA, generating a signing request by hand, proving control of the domain over email, and repeating the ritual every year or two. The cost and friction showed: as late as February 2018, Google's telemetry put [Chrome traffic on Android and Windows at just over 68% protected](https://blog.chromium.org/2018/02/a-secure-web-is-here-to-stay.html#:~:text=Over%2068%25%20of%20Chrome%20traffic%20on%20both%20Android%20and%20Windows%20is%20now%20protected).
 
-**ACME** — the Automatic Certificate Management Environment, standardized in 2019 as RFC 8555 and pioneered by the nonprofit CA Let's Encrypt — removed both the cost and the friction. It is a protocol a CA and an applicant use to [automate the process of verification and certificate issuance](https://datatracker.ietf.org/doc/html/rfc8555#:~:text=automate%20the%20process%20of%20verification%20and%20certificate%20issuance). An ACME client (such as EFF's [Certbot](https://certbot.eff.org/)) proves control of a domain by completing a **challenge**, and Let's Encrypt's documentation describes the two that matter:
+**ACME** — the Automatic Certificate Management Environment, standardized in 2019 as RFC 8555 — automates certificate management. Let's Encrypt offers free certificates through ACME. The protocol itself does not set a CA's prices. [RFC 8555](https://datatracker.ietf.org/doc/html/rfc8555#section-1) defines the automated verification and issuance process. An ACME client (such as EFF's [Certbot](https://certbot.eff.org/)) proves control of a domain by completing a **challenge**, and Let's Encrypt's documentation describes the two that matter:
 
-- **HTTP-01:** the CA hands the client a token, and the client [puts a file on your web server](https://letsencrypt.org/docs/challenge-types/#:~:text=puts%20a%20file%20on%20your%20web%20server) at `http://<your-domain>/.well-known/acme-challenge/<token>`. If the CA can fetch it from the public internet, whoever runs that server controls the domain. This challenge [cannot be used to issue wildcard certificates](https://letsencrypt.org/docs/challenge-types/#:~:text=cannot%20be%20used%20to%20issue%20wildcard%20certificates).
-- **DNS-01:** the client proves control of the domain's DNS by [putting a specific value in a TXT record](https://letsencrypt.org/docs/challenge-types/#:~:text=putting%20a%20specific%20value%20in%20a%20TXT%20record) at `_acme-challenge.<your-domain>`. Because it demonstrates control of the zone itself, this is the challenge that can issue wildcard certificates covering every [subdomain](/en/glossary/subdomain/).
+- **HTTP-01:** the CA hands the client a token, and the client [puts a file on your web server](https://letsencrypt.org/docs/challenge-types/#:~:text=puts%20a%20file%20on%20your%20web%20server) at `http://<your-domain>/.well-known/acme-challenge/<token>`. The CA checks the expected response to validate the challenge. This challenge [cannot be used to issue wildcard certificates](https://letsencrypt.org/docs/challenge-types/#:~:text=cannot%20be%20used%20to%20issue%20wildcard%20certificates).
+- **DNS-01:** the client proves control of the domain's DNS by [putting a specific value in a TXT record](https://letsencrypt.org/docs/challenge-types/#:~:text=putting%20a%20specific%20value%20in%20a%20TXT%20record) at `_acme-challenge.<your-domain>`. Successful DNS-01 validation proves the applicant can answer that DNS challenge. DNS-01 supports wildcard issuance. A certificate for `*.example.com` matches `shop.example.com`, but not `example.com` or `a.shop.example.com`. [RFC 9525, section 6.3](https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3) limits wildcard matching to one label.
 
-Issuance and renewal then run on a timer with no human involved. The result is one of the quietest infrastructure victories of the modern internet: Let's Encrypt reports it is now [frequently issuing ten million certificates per day](https://letsencrypt.org/2025/12/09/10-years#:~:text=ten%20million%20certificates%20per%20day) and on track to serve [a billion active sites](https://letsencrypt.org/2025/12/09/10-years#:~:text=a%20billion%20active%20sites). Encryption went from a paid add-on to the default state of the web.
+Issuance and renewal then run on a timer with no human involved. In December 2025, Let's Encrypt reported it was [frequently issuing ten million certificates per day](https://letsencrypt.org/2025/12/09/10-years#:~:text=ten%20million%20certificates%20per%20day) and on track to serve [a billion active sites](https://letsencrypt.org/2025/12/09/10-years#:~:text=a%20billion%20active%20sites). Encryption went from a paid add-on to the default state of the web.
 
 Notice what both challenges have in common: the *only* identity being verified is control of a domain name — via its web server or via its DNS zone. In the HTTPS trust model, the domain is the identity.
 
@@ -125,13 +131,13 @@ Clarity about the guarantees requires clarity about the gaps:
 - **It does not vouch for the site's honesty.** A domain-validated certificate proves you reached the domain in the address bar — not that the domain is trustworthy. Phishing sites routinely serve valid HTTPS on lookalike domains they legitimately registered. The padlock means *private*, not *safe*.
 - **It does not hide that a connection happened.** Destination IPs, timing, traffic volume, and (until ECH is universal) the SNI hostname remain observable metadata.
 - **It does not protect data at rest.** TLS secures the pipe; a breached or malicious server exposes whatever you sent regardless of how well it was encrypted in transit.
-- **It is only as strong as control of the domain.** ACME's challenges are honest about the trust model: whoever controls a domain's DNS or its [registrar](/en/glossary/registrar/) account can pass validation and obtain flawless, browser-trusted certificates for it. A domain hijacker doesn't need to break TLS — they *become* the identity TLS attests to, as our breakdown of [how domain hijacking actually happens](/en/blog/how-domain-hijacking-actually-happens/) shows with real incidents.
+- **It is only as strong as control of the domain.** ACME's challenges are honest about the trust model: an attacker who controls validation responses may obtain a certificate, subject to the CA's issuance checks. A compromised [registrar](/en/glossary/registrar/) account can expose DNS control. A domain hijacker doesn't need to break TLS — they *become* the identity TLS attests to, as our breakdown of [how domain hijacking actually happens](/en/blog/how-domain-hijacking-actually-happens/) shows with real incidents.
 
 ## The domain is the root of the chain
 
 Follow HTTPS all the way down and every guarantee bottoms out in the same place. The certificate names a domain. The CA validated control of that domain. The ACME challenge was answered by that domain's web server or [nameserver](/en/glossary/nameserver/)s. Encryption, integrity, authentication — all of it is anchored not in the server hardware or the company behind the site, but in the domain name and the [DNS that steers it](/en/blog/dns-is-the-control-plane/).
 
-That is why domain security is not adjacent to HTTPS — it is underneath it. Protecting the registrar account, locking transfers, controlling who can edit DNS records: these are certificate-security measures, whether or not they are labeled that way. It is also the lens behind how [Namefi](https://namefi.io) approaches domains: treating the domain as a first-class, verifiable asset — with [tokenized ownership](/en/blog/what-are-tokenized-domains/) that can be cryptographically proven — hardens the layer that every certificate authority, every ACME challenge, and every padlock ultimately relies on.
+That is why domain security is not adjacent to HTTPS — it is underneath it. Protecting the registrar account, locking transfers, controlling who can edit DNS records: these are certificate-security measures, whether or not they are labeled that way. Certificate automation also needs narrow DNS permissions, protected account credentials, and monitoring for unexpected issuance. Tokenized ownership alone does not secure a DNS provider account or an ACME credential.
 
 The padlock is the last link in the chain. The domain is the first.
 
@@ -141,6 +147,9 @@ The padlock is the last link in the chain. The domain is the first.
 - IETF — [RFC 9110, section 4.3.3](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.3.3), HTTPS authority based on certificate trust and use of the corresponding private key. Fetched 2026-09-15.
 - Mandiant — [Global DNS Hijacking Campaign: DNS Record Manipulation at Scale](https://cloud.google.com/blog/topics/threat-intelligence/global-dns-hijacking-campaign-dns-record-manipulation-at-scale#:~:text=certbot%20is%20used), technique 1, steps 6–7: attackers obtaining certificates after changing DNS records. Fetched 2026-09-15.
 
+- IETF — [RFC 9525: Service Identity in TLS](https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3) — wildcard matching limits. Fetched 2026-10-22.
+- IETF — [RFC 9114: HTTP/3](https://www.rfc-editor.org/rfc/rfc9114.html#section-2) — HTTPS over QUIC. Fetched 2026-10-22.
+- Chromium — [An Update on the Lock Icon](https://blog.chromium.org/2023/05/an-update-on-lock-icon.html) — connection indicators and website trust. Fetched 2026-10-22.
 - IETF — [RFC 2818: HTTP Over TLS](https://datatracker.ietf.org/doc/html/rfc2818) — defines HTTPS and the default port 443.
 - IETF — [RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3](https://datatracker.ietf.org/doc/html/rfc8446) (August 2018).
 - IETF — [RFC 8555: Automatic Certificate Management Environment (ACME)](https://datatracker.ietf.org/doc/html/rfc8555) (March 2019).
