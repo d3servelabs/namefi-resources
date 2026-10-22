@@ -1,0 +1,21 @@
+{
+  "en": {
+    "headings": 6,
+    "images": 5,
+    "table_rows": 18,
+    "ordered_items": 16,
+    "paragraphs": 48
+  },
+  "de": {
+    "headings": 6,
+    "images": 5,
+    "table_rows": 18,
+    "ordered_items": 16,
+    "paragraphs": 48
+  },
+  "citation_urls_equal": true,
+  "inline_code_equal": true,
+  "de_has_english_locale_link": false,
+  "native_human_LQA": "unavailable; GPT source-to-target completeness and German prose editing only",
+  "rendered_LQA": "not performed; local content sanity only, remote gate remains closed"
+}

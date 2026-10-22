@@ -42,11 +42,11 @@ relatedGlossary:
 
 ![一幅编辑插画，描绘一个域名穿过一连串宽限期阶段的时间线，最终落入开放池](../../assets/domain-backorders-and-drop-catching-01-drop-cycle.jpg)
 
-域名不是一次卖断、永久持有的。它是按一定期限[注册](/zh-CN/glossary/registrar/)的，必须续费，而当一位所有者停止付费时，名字并不会立刻消失。它会走过一段固定的宽限期生命周期，然后才重返开放市场，而这条时间线正是抢注一个名字的全部根基。我们在[过期域名与删除周期详解](/zh-CN/blog/expired-domains-and-the-drop-cycle/)中介绍了完整的周期；这里讲的是与抢注相关的部分。
+域名到期不会自动触发公开释放。注册局、注册商和域名后缀决定后续流程。部分域名会先进入过期拍卖，根本不会公开删除。
 
-到期之后，[注册局](/zh-CN/glossary/registry/)会让这个名字走过一个恢复窗口期。正如维基百科所描述的，[赎回宽限期](/zh-CN/glossary/redemption-period/)是[ICANN 注册商认证协议（RAA）的一项补充内容，它允许注册人在域名过期后的若干天内将其取回](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=an%20addition%20to%20ICANN%27s%20Registrar%20Accreditation%20Agreement%20%28RAA%29%20which%20allows%20a%20registrant%20to%20reclaim%20their%20domain%20name%20for%20a%20number%20of%20days%20after%20it%20has%20expired)。在赎回期内，所有者仍然可以把名字拿回来，只是代价不低——维基百科指出，所有者[可能需要支付一笔费用（通常约为 100 美元）](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=may%20be%20required%20to%20pay%20a%20fee%20%28typically%20around%20US%24100%29)才能重新激活它。这段时间持续多久取决于扩展名；据维基百科，[这一时长因 TLD 而异，通常约为 30 到 90 天](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=This%20length%20of%20time%20varies%20by%20TLD%2C%20and%20is%20usually%20around%2030%20to%2090%20days)。
+对于适用的通用顶级域名，[ICANN政策](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en)要求注册局在删除后提供30天赎回宽限期。赞助型通用顶级域名注册局不受该项要求约束。原注册人可以向执行删除的注册商申请恢复。注册商必须公开恢复费用。国家和地区顶级域名可以采用其他规则。
 
-只有在这之后，名字才进入它最后的倒计时。正如维基百科所言，[在 5 天的"待删除"阶段结束时，该域名将从 ICANN 数据库中被删除](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=At%20the%20end%20of%20the%20%22pending%20delete%22%20phase%20of%205%20days%2C%20the%20domain%20will%20be%20dropped)。那次[释放](/zh-CN/glossary/pending-delete/)就是所有人都在等待的时刻。名字离开数据库的瞬间，它就重新变回一个普通的未注册字符串，而谁先注册谁就拥有它。问题在于，这个"先"可能是一场以毫秒为单位决出胜负的角逐。
+域名未获恢复时，域名可能进入最后的待删除阶段。[ICANN状态说明](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)指出，注册局会在最终`pendingDelete`状态持续五个日历日后删除域名。域名随后重新开放注册。到期日期不能保证公开释放日期。
 
 ## 抢注：赢下那一毫秒
 
@@ -56,17 +56,15 @@ relatedGlossary:
 
 这场比赛你靠手动是赢不了的。好名字按可预测的时间表被删除，而一群专业服务正和你在同一秒猛烈冲击注册局。正如域名投机方面的文献所描述的，[在域名被注册局删除时把它们注册下来的这门生意，被称为抢注。这是一门竞争极其激烈的生意](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20business%20of%20registering%20the%20domain%20names%20as%20they%20are%20deleted%20by%20the%20registries%20is%20known%20as%20drop%20catching.%20It%20is%20a%20highly%20competitive%20business)，而这场角逐快得残酷：[从释放到捕获之间的时间往往以秒、甚至几分之一秒来计量](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20time%20between%20a%20drop%20and%20a%20capture%20is%20often%20measured%20in%20seconds%20or%20fractions%20thereof)。
 
-这就是为什么抢注服务会存在，并且能赢下那些你从一个普通[注册商](/zh-CN/glossary/registrar/)结账页面永远拿不到的名字。那些认真做这行的抢注方持有许多注册商认证资质，并运营着对准注册局删除队列的服务器农场。维基百科把这套模式描述得很简单：这些服务[提供调动自家服务器、在域名一旦可用时将其拿下的能力，通常以拍卖价成交](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=offer%20to%20dedicate%20their%20servers%20to%20securing%20a%20domain%20name%20upon%20its%20availability%2C%20usually%20at%20an%20auction%20price)。最后那半句正是新手会忽略的地方。如果一项服务抢到的某个名字有不止一位客户想要，你并不能以注册费就拿到它——它会在感兴趣的预订者之间进入[拍卖](/zh-CN/glossary/auction/)，而一个抢手名字上的争夺，成交价可能高达数百乃至数千美元。这些竞价大战的门道自成一门技能，我们在[如何在域名拍卖中获胜](/zh-CN/blog/how-to-win-domain-auctions/)中作了介绍。
+拍卖可能决定最终价格。[NameJet](https://www.namejet.com/userguide.action)与[SnapNames](https://www.snapnames.com/userguide.action)的指南均保留公开拍卖的可能。未提交预订单的人也可能参加竞价。下单者必须核对具体拍卖，不能假定竞价仅限原预订者。
 
-## 预订单：在释放之前先占好你的位置
+## 预订单要求服务商尝试取得域名
 
-![一幅编辑插画，一个人站在被绳索拦起的队伍最前端，手里拿着预约票，抢在等候的人群之前占据了一个优先位置](../../assets/domain-backorders-and-drop-catching-03-reserve-spot.jpg)
+![下单检查表列出取得渠道、拍卖规则与预算](../../assets/domain-backorders-and-drop-catching-04-order-checks.jpg)
 
-预订单是你提前下达的预约。你不必在释放那一刻手忙脚乱地去注册名字，而是告诉一项服务"如果这个名字变得可用，就替我把它抢下来"，通常需要预先支付一笔固定费用。维基百科把两者的区别讲得很清楚：预订单赋予优先权，因为[预订单的持有者将在域名被删除并向所有人开放抢夺之前，获得第一个取得该域名的机会。这样一来，预订单通常会优先于抢注](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=the%20owner%20of%20the%20back%2Dorder%20will%20be%20given%20the%20first%20opportunity%20to%20acquire%20the%20domain%20name)。
+预订单要求服务商尝试取得域名。面对公开删除，服务商仍须与其他注册系统竞争。预订单不会赋予跨服务商的优先权。各平台分别规定预付款、支付授权和竞价承诺。
 
-在底层，一笔预订单往往由同一套抢注机器来完成，只不过把它对准了你的请求。域名投机方面的文献描述了一个注册商网络如何汇集火力：[如果该域名是被一个为完成某笔域名预订单而出动的注册商联盟抢到的，那么无论是哪家注册商抢到，它都会把该域名注册给下了这笔预订单的实体](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=If%20the%20domain%20is%20caught%20by%20a%20confederation%20of%20registrars%20attempting%20to%20fulfill%20a%20domain%20backorder)。换句话说，你买的不是一份保证。你买的是当下能拿到的最强的抢注尝试，外加一个排在公开混战之前的位置。
-
-还有第二种值得了解的模式，因为它会改变你的竞争对手是谁。某些注册商根本不会让一个名字落入公开池。正如文献所指出的，某些注册商[不允许域名以常规方式释放，而是引入一个中间方（例如 Snapnames 和 Namejet），在域名被删除之前对其进行拍卖](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=do%20not%20allow%20domains%20to%20drop%20in%20the%20normal%20fashion%2C%20instead%20introducing%20an%20intermediary)。这种情况发生时，名字根本不会到达你本想争夺的那条注册局删除队列，而拿到它的唯一途径，就是通过那家注册商的合作拍卖平台。弄清楚一个名字会公开释放还是会被转入私有的过期拍卖，能告诉你该把预订单下在哪项服务上——有时还会告诉你，你根本抢不到它，只能竞价把它买下来。
+[Dynadot](https://www.dynadot.com/help/question/place-a-backorder)不保证抢注成功。多人提交请求可能触发拍卖。[NameJet](https://www.namejet.com/userguide.action)区分合作注册商的过期库存与待公开删除库存。独立抢注服务无法注册从未公开释放的域名。
 
 ## 替你赛跑的那些服务
 
@@ -77,7 +75,7 @@ relatedGlossary:
 - **Dynadot** 是一家完整的注册商，同时也运营预订单和过期拍卖服务，所以你可以在平时正常注册的同一个地方预约一次抢注。供记录在案，维基百科把它认定为[一家由软件工程师 Todd Han 于 2002 年创立、获得 ICANN 认证的域名注册商兼网络托管公司](https://en.wikipedia.org/wiki/Dynadot#:~:text=is%20an%20ICANN%2Daccredited%20domain%20registrar%20and%20web%20host%20company%20founded%20by%20software%20engineer%20Todd%20Han%20in%202002)。
 - **Park.io** 凭借抢注较新扩展名和国家代码扩展名建立了名声——这类名字往往是通用型抢注方覆盖较薄弱的地方。如果你追的是一个较冷门 TLD 上的名字，专才往往是唯一现实的机会。
 
-务实的做法是：在你给任何人付钱之前，先搞清楚一个特定的名字将*如何*变得可用。它是要走向公开的注册局删除（用抢注服务），还是它的注册商会把它转入一场私有的过期拍卖（你需要的是那个平台）？把同一笔预订单下在两家瞄准同一次公开释放的服务上，多半是白花钱；把它下在那一家掌控着你的名字将走哪条路径的服务上，才是整门技能所在。
+下单之前，应当核对取得渠道与付款义务。面对公开释放，在多家独立服务商下单可以增加注册系统的覆盖。面对独家库存，应当使用控制挂牌的平台。多家下单并不必然浪费费用。
 
 ## 一笔预订单什么时候才真正值得花钱
 
@@ -101,7 +99,7 @@ relatedGlossary:
 
 ## 一句话版本
 
-抢注是在一个名字被删除的瞬间抢先注册它的赛跑；预订单是你在那场赛跑中预约好的、享有优先权的尝试，通常跑在同一套机器上。当那个*特定的*名字稀缺、而你又对它有真实用途时，才为预订单付钱；把它下到那项掌控着这个名字将如何真正释放的服务上；并且，在名字被转移过来且查清干净之前，永远别把一次抢到当成一次购买。大多数时候，有纪律的答案是放手——而正是这份纪律，把一个投资组合和一张续费账单区分开来。
+预订单要求服务商尝试取得域名。预订单不保证成功，也不赋予普遍优先权。下单者应当核对取得渠道、拍卖规则与总预算。成功分配域名并取得账户控制后，买家才能确认取得域名。
 
 ## 友情免责声明（请阅读！）
 
@@ -110,8 +108,12 @@ relatedGlossary:
 >
 > 对于任何重要决定，**请咨询真正的专业人士（说真的！）**。或者，如果那不合你的口味，去问问朋友、问问 Twitter、问问 Reddit、问问 AI，或者问问算命先生。一句话：**DOYR——自己做研究（Do Your Own Research）**。让我们一起学习，乐在其中。
 
-## 来源与延伸阅读
+## 下列来源说明订单规则
 
-- 维基百科 — [Domain drop catching（定义、赎回宽限期、待删除、预订单优先权）](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=is%20the%20practice%20of%20registering%20a%20domain%20name%20once%20registration%20has%20lapsed%2C%20immediately%20after%20expiry)
-- 维基百科 — [Domain name speculation（抢注作为一门竞争激烈的生意；预订单联盟；过期拍卖中间方）](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20business%20of%20registering%20the%20domain%20names%20as%20they%20are%20deleted%20by%20the%20registries%20is%20known%20as%20drop%20catching.%20It%20is%20a%20highly%20competitive%20business)
-- 维基百科 — [Dynadot（获 ICANN 认证的注册商，创立于 2002 年）](https://en.wikipedia.org/wiki/Dynadot#:~:text=is%20an%20ICANN%2Daccredited%20domain%20registrar%20and%20web%20host%20company%20founded%20by%20software%20engineer%20Todd%20Han%20in%202002)
+作者于2026年10月21日查阅下列来源。
+
+- [ICANN](https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en)
+- [ICANN EPP](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en)
+- [Dynadot](https://www.dynadot.com/help/question/place-a-backorder)
+- [NameJet](https://www.namejet.com/userguide.action)
+- [SnapNames](https://www.snapnames.com/userguide.action)
