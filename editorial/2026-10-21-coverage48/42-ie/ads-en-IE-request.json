@@ -1,0 +1,18 @@
+{
+  "fetched_utc": "2026-10-22T02:03:41Z",
+  "language_criteria_source": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "request": {
+    "language": "languageConstants/1000",
+    "geoTargetConstants": [
+      "geoTargetConstants/2372"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "ie domain",
+      "register ie domain",
+      "ie domain country",
+      "irish domain"
+    ],
+    "includeAdultKeywords": false
+  }
+}
