@@ -1,0 +1,20 @@
+{
+  "en": {
+    "body_words": 1664,
+    "h2": 13,
+    "h3": 4,
+    "images": 1,
+    "table_rows": 21
+  },
+  "de": {
+    "body_words": 1605,
+    "h2": 13,
+    "h3": 4,
+    "images": 1,
+    "table_rows": 21
+  },
+  "external_urls_equal": true,
+  "localized_internal_routes_equal": true,
+  "exact_english_body_copy": false,
+  "method": "GPT-6.1-sol translated the complete English source by section; self-checked eligibility, negations, identity evidence, date, naming limits, all sections, metadata and citations. No native-human or independent review, as user waived review."
+}

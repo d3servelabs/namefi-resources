@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 draft: false
 cluster: domain-basics
 format: explainer
-description: "Learn what a domain name is, how its parts work, and how a domain differs from a full URL, with clear examples of websites and subdomains."
+description: "Understand domain names, root, TLD, second-level domains, subdomains, registration boundaries, and the difference between a domain and a URL."
 keywords: ["what is a domain", "what is a domain name", "domain name examples", "domain vs url", "domain structure", "hostname", "second-level domain", "subdomain", "URL path", "URL query", "DNS"]
 relatedArticles:
   - /en/blog/what-is-a-tld/
@@ -31,80 +31,71 @@ relatedGlossary:
   - /en/glossary/registry/
 ---
 
-## **What is a Domain Name?**
+## A domain name identifies a place in DNS
 
-A **domain name** is the easy-to-remember address you type into a web browser to visit a website—like `google.com`, `wikipedia.org`, or `namefi.io`. You can think of it as a street address for the web: it tells your computer where on the internet to find a specific site.
+A **domain name** is a name such as `example.com` or `namefi.io`. People use domain names to reach websites and email services. A domain name does not include `https://` or a page path.
 
-The internet relies on a system called the **[Domain Name System](/en/glossary/dns/) (DNS)**, which functions like a giant phonebook. Every website is hosted on a server with a numerical [IP address](/en/glossary/ip-address/) (like `192.0.2.1`), but numbers are hard to remember—so we use domain names instead. When you type a domain name into your browser, the DNS translates it into the corresponding IP address, allowing your browser to load the correct website.
+The **[Domain Name System](/en/glossary/dns/) (DNS)** associates names with records. Address records can supply [IP addresses](/en/glossary/ip-address/) for a website. Other records support services such as email. Registration alone does not supply website hosting or a mailbox. [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-2.4) describes names, records, name servers, and resolvers.
 
-Registration provides the name; [web hosting provides the service behind the website](/en/blog/domain-vs-hosting/). Registering the name alone does not supply a website or mailbox.
+## Domain levels run from the root to more specific names
 
----
+Read the following example from right to left: `blog.example.com.`. Each dot separates labels, and the final dot represents the root. Ordinary web addresses usually omit the final dot. [RFC 1034, section 3.1](https://www.rfc-editor.org/rfc/rfc1034#section-3.1), defines the hierarchy.
 
-## **Understanding Domain Structure**
+![The DNS hierarchy runs from the root through com and example.com to blog.example.com](../../assets/what-is-domain-01-hierarchy.jpg)
 
-A domain name is made up of several parts:
-
-*   **[Top-Level Domain](/en/glossary/tld/) (TLD):** This is the suffix at the end of the address, like `.com`, `.org`, `.net`, or more recently, `.xyz`, `.app`, and even `.ninja`. Some are generic (gTLDs), while others are country-specific (ccTLDs, like `.us`, `.uk`, or `.cn`).
-*   **[Second-Level Domain](/en/glossary/second-level-domain/) (SLD):** This is the core part of the name—the `google` in `google.com`.
-*   **[Subdomain](/en/glossary/subdomain/):** These are optional prefixes that help organize content, like `blog.example.com` or `mail.example.org`.
-
-A registered name has one registration at a time in its namespace. Its registrant can authorize other people or services to use it; registration does not prevent similar names under other extensions.
-
-## Domain name vs. URL: an example
-
-A **domain name** identifies a name in DNS. A **URL** identifies a resource and also tells the browser how to request it. Consider this illustrative address:
-
-**`https://blog.example.com/guides/domains?lang=en`**
-
-| Part | Example | What it tells the browser |
+| Level | Complete name | Meaning |
 | --- | --- | --- |
-| Scheme | `https` | Use HTTPS for the connection |
-| Hostname | `blog.example.com` | Connect to this host; `blog` is a subdomain of `example.com` |
-| Registrable domain | `example.com` | The registered name used in this example |
-| Path | `/guides/domains` | Request this resource from the host |
-| Query | `lang=en` | Pass a parameter whose meaning the website defines |
+| Root | `.` | The common starting point above all TLDs |
+| Top level | `com.` | A domain directly below the root |
+| Second level | `example.com.` | A domain directly below `com.` |
+| Third level | `blog.example.com.` | A domain directly below `example.com.` |
 
-For a site-organization decision such as `blog.example.com` versus `example.com/blog`, see [subdomains versus subdirectories](/en/blog/subdomain-vs-subdirectory/).
+The label `example` selects a child under `com`. The complete second-level domain name is `example.com`, rather than the label alone. A fourth level could be `support.blog.example.com`.
 
-The path and query are not part of the domain name. Changing them can request a different page without changing the domain. MDN explains these [URL components](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#scheme) in its web mechanics guide.
+A **[subdomain](/en/glossary/subdomain/)** describes a relationship to a parent domain. `blog.example.com` is a subdomain of `example.com`. More broadly, `example.com` is also below `com`. A subdomain need not identify a separate website. [JPNIC explains domain hierarchy and DNS delegation](https://www.nic.ad.jp/ja/dom/system.html).
 
----
+## TLD categories do not add another domain level
 
-## **Who Manages Domain Names?**
+A **[top-level domain](/en/glossary/tld/)** sits directly below the root. Generic TLDs include `.com` and `.org`. Country-code TLDs include `.uk`, `.de`, and `.jp`. The [IANA root database](https://www.iana.org/domains/root/db) lists TLD types and operators.
 
-The global coordination of domain names is overseen by a non-profit organization called **[ICANN](/en/glossary/icann/)** (**Internet Corporation for Assigned Names and Numbers**). Founded in 1998, ICANN manages the allocation of domain names and IP addresses. It works with [registrars](/en/glossary/registrar/) (like GoDaddy, Namecheap, and Namefi) who sell domain names to the public.
+A country-code TLD is still a top-level domain. The word “country” describes the category, rather than a separate level. The [TLD guide](/en/blog/what-is-a-tld/) covers extension types and selection in more detail.
 
-Registries operate specific TLDs; registrars offer registrations to customers. ICANN accredits registrars and has contracts with gTLD registry operators. Country-code TLDs have their own management arrangements. The [TLD guide](/en/blog/what-is-a-tld/) explains these roles and extension types.
+## The registrable domain can sit below the second level
 
----
+DNS depth and registration boundaries answer different questions. In `example.com`, the registrable domain spans two labels. In `example.co.uk`, `uk` is the TLD, `co.uk` is second level, and `example.co.uk` is third level. [Nominet shows both `.uk` and `.co.uk` registration formats](https://nominet.uk/lookup/).
 
-## **How to Register a Domain Name**
+Do not assume that the last two labels always identify the registrable domain. Registration policy determines the boundary. A **public suffix** can contain several labels. [RFC 9499](https://www.rfc-editor.org/rfc/rfc9499.html#section-9) explains why the name alone cannot identify a public suffix.
 
-To get a domain name, you use an **[ICANN-accredited registrar](/en/glossary/accredited-registrar/)**. You search for an available domain, pay a registration fee (usually annually), and you "own" the rights to use that domain as long as you keep renewing it.
+## A URL includes more than a domain name
 
-Here’s how it works:
+Consider `https://blog.example.com/guides/domains?lang=en`:
 
-1.  Visit a registrar’s website, like [Namefi](https://namefi.io).
-2.  Search for your desired domain name.
-3.  If it’s available, you can register it.
-4.  You now have control over where the domain points (e.g., to your website or email).
+| Component | Example | Purpose |
+| --- | --- | --- |
+| Scheme | `https` | Selects the connection scheme |
+| Hostname | `blog.example.com` | Identifies the host in this example |
+| Registrable domain | `example.com` | Identifies the registration boundary in this example |
+| Path | `/guides/domains` | Identifies a resource on the host |
+| Query | `lang=en` | Supplies a parameter for the website |
 
-Compared to other registrars, [Namefi](https://namefi.io) offers advanced features like subdomain management, DNS security tools, and integration with decentralized systems like [blockchain](/en/glossary/blockchain/) domains.
+The path and query do not change the DNS hierarchy. [MDN describes URL components](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#scheme). For a site layout decision, compare [subdomains and subdirectories](/en/blog/subdomain-vs-subdirectory/).
 
----
+## Registries and registrars have different responsibilities
 
-## **Why Do Domain Names Matter?**
+A **[registry](/en/glossary/registry/)** operates a domain registry. A **[registrar](/en/glossary/registrar/)** handles registrations for customers. ICANN accredits registrars and maintains [gTLD registry agreements](https://www.icann.org/en/contracted-parties/registry-operators/resources/listings). Country-code registries have their own arrangements.
 
-Domain names are crucial for:
+For a gTLD registration, use an [ICANN-accredited registrar](https://www.icann.org/en/contracted-parties/accredited-registrars) or a reseller working through one. Check availability, eligibility, registration terms, and renewal costs before paying. Registration gives rights under the registration agreement. Keep the registration current and configure DNS for the required services.
 
-*   **Online identity and branding** (e.g., for businesses, creators, startups).
-*   **Trust and discoverability**, as a custom domain looks more professional than a random URL.
-*   **[Search Engine Optimization](/en/glossary/seo/)** (SEO).
-*   **Control and ownership** over your digital presence.
+A domain registration has one registrant at a time. The registrant can authorize another person or service to use the name. Registration does not reserve the same label under every TLD.
 
-Choose a domain that people can recognize and use, then keep its registration and DNS settings under your control.
+## These sources explain domain names and their boundaries
 
-## Sources and further reading
+Sources checked on 2026-10-21:
 
-- MDN — [What is a URL?](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#scheme), sections on scheme, authority, path, and parameters. Fetched 2026-09-15.
+- IETF: [RFC 1034, sections 2.4 and 3.1](https://www.rfc-editor.org/rfc/rfc1034).
+- IETF: [RFC 9499, section 9](https://www.rfc-editor.org/rfc/rfc9499.html#section-9).
+- JPNIC: [Domain name structure](https://www.nic.ad.jp/ja/dom/system.html).
+- IANA: [Root zone database](https://www.iana.org/domains/root/db).
+- Nominet: [Domain lookup examples](https://nominet.uk/lookup/).
+- MDN: [What is a URL?](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL).
+- ICANN: [Accredited registrars](https://www.icann.org/en/contracted-parties/accredited-registrars) and [registry listings](https://www.icann.org/en/contracted-parties/registry-operators/resources/listings).
