@@ -8,7 +8,7 @@ authors: ['namefiteam']
 draft: false
 format: guide
 cluster: domain-basics
-keywords: ['reverse DNS', 'PTR record', 'reverse DNS lookup', 'forward confirmed reverse DNS', 'reverse zone delegation', 'in-addr.arpa', 'ip6.arpa', 'mail server PTR', 'PTR ownership', 'IPv6 reverse DNS', 'configure reverse DNS', 'PTR troubleshooting']
+keywords: ['reverse DNS', 'PTR record', 'reverse DNS lookup', 'forward confirmed reverse DNS', 'reverse zone delegation', 'in-addr.arpa', 'ip6.arpa', 'mail server PTR', 'PTR ownership', 'IPv6 reverse DNS', 'configure reverse DNS', 'PTR troubleshooting', 'check reverse DNS', 'reverse DNS does not match SMTP banner']
 ogImage: ../../assets/reverse-dns-ptr-records-og.jpg
 relatedArticles:
   - /en/blog/dns-record-types-guide/
@@ -111,6 +111,32 @@ Use an explicit acceptance checklist for a hypothetical server handover. The add
 
 Store the successful results alongside the change request. A later administrator needs the expected pair, not merely a statement that DNS worked once. Keep separate results for every sending address and address family. A passing IPv4 check says nothing about a different IPv6 sender.
 
+## SMTP banner warnings require a separate identity check
+
+![PTR and SMTP banner checks compare server names, while forward DNS checks the address returned by a hostname.](../../assets/reverse-dns-ptr-records-05-smtp-identity.jpg)
+
+A checker may report “[reverse DNS does not match SMTP banner](https://mxtoolbox.com/problem/smtp/smtp-banner-check).” Start with the checker's recorded IP address and greeting. Do not assume the checker tested the server that sent a rejected message.
+
+The SMTP banner is the receiving server's initial `220` greeting. The sending client identifies itself separately with `EHLO` or `HELO`. [RFC 5321, sections 3.1 and 3.2](https://www.rfc-editor.org/rfc/rfc5321.html#section-3.1), describes the two directions. A test of an incoming mail server can therefore concern a different connection from an outbound delivery failure.
+
+For a hypothetical server, compare these values:
+
+| Check | Hypothetical value | Administrator responsible |
+| --- | --- | --- |
+| IP address under test | `192.0.2.25` | Server or mail-service operator |
+| PTR answer for that address | `mail.example.com.` | Reverse DNS administrator |
+| A answer for the PTR hostname | `192.0.2.25` | Forward DNS administrator |
+| Hostname in the incoming SMTP greeting | `mail.example.com` | Mail-server administrator |
+| Identity used during outbound EHLO | `mail.example.com` | Outbound mail-server administrator |
+
+An online banner test does not establish the outbound EHLO value. Obtain the outbound identity from the sending server's configuration or a controlled receiver's connection log.
+
+If the PTR and forward address agree but the banner names `oldmail.example.com`, investigate the server's greeting configuration. If the intended server name is `mail.example.com`, ask the mail-server administrator to update the greeting. If the PTR names the wrong server, ask the IP provider to correct reverse DNS. Keep the forward record consistent with the intended address.
+
+[MxToolbox's mismatch documentation](https://mxtoolbox.com/problem/smtp/smtp-reverse-dns-mismatch) recommends a PTR that matches the mail server hostname. Treat the checker result as a configuration finding. The checker result does not identify every receiver's policy or establish a delivery failure.
+
+RFC 5321 permits an SMTP server to check the client's EHLO name against the client IP. The RFC prohibits refusal solely because that particular check fails. [Section 4.1.4](https://www.rfc-editor.org/rfc/rfc5321.html#section-4.1.4) states the narrow rule. Gmail separately publishes forward-and-reverse DNS requirements. Preserve the actual rejection response when diagnosing delivery.
+
 ## Mail receivers evaluate PTR records alongside authentication and reputation
 
 ![Mail receivers evaluate PTR records alongside authentication and reputation.](../../assets/reverse-dns-ptr-records-04-mail-checks.jpg)
@@ -148,3 +174,6 @@ When someone presents a PTR answer as ownership evidence, ask what ownership que
 - RFC Editor, [RFC 6376](https://www.rfc-editor.org/rfc/rfc6376.html#section-1), section 1, DKIM domain responsibility. Fetched 2026-10-21.
 - RFC Editor, [RFC 9989](https://www.rfc-editor.org/rfc/rfc9989.html#section-4.4), section 4.4, DMARC identifier alignment. Fetched 2026-10-21.
 - RFC Editor, [RFC 2308](https://www.rfc-editor.org/rfc/rfc2308.html#section-5), section 5, negative answer caching. Fetched 2026-10-21.
+- RFC Editor, [RFC 5321](https://www.rfc-editor.org/rfc/rfc5321.html#section-3.1), sections 3.1, 3.2, and 4.1.4, SMTP greetings, client identity, and EHLO verification limits. Fetched 2026-10-21.
+- MxToolbox, [SMTP Reverse DNS Mismatch](https://mxtoolbox.com/problem/smtp/smtp-reverse-dns-mismatch), forward/reverse mismatch explanation and administrator action. Fetched 2026-10-21.
+- MxToolbox, [SMTP Banner Check](https://mxtoolbox.com/problem/smtp/smtp-banner-check), greeting and PTR-name comparison. Fetched 2026-10-21.
