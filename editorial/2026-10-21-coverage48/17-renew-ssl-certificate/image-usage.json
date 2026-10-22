@@ -1,0 +1,52 @@
+[
+  {
+    "asset": "renew-ssl-certificate-05-renewal-timing.jpg",
+    "attempt": 1,
+    "requested_model": "gpt-image-2",
+    "quality": "high",
+    "api_returned": {
+      "created": 1792628280,
+      "model": null,
+      "usage": {
+        "input_tokens": 476,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 476
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5964
+      }
+    },
+    "sha256": "471215fbe068a55487ff9116aa73f60113a022916d6328dd7c33268acb735163",
+    "qc": "Passed: opened final JPEG; correct labels, unclipped central scene, cream bleed, official top-right logo."
+  },
+  {
+    "asset": "renew-ssl-certificate-02-validation-paths.jpg",
+    "attempt": 1,
+    "requested_model": "gpt-image-2",
+    "quality": "high",
+    "api_returned": {
+      "created": 1792628501,
+      "model": null,
+      "usage": {
+        "input_tokens": 479,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 479
+        },
+        "output_tokens": 5488,
+        "output_tokens_details": {
+          "image_tokens": 5488,
+          "text_tokens": 0
+        },
+        "total_tokens": 5967
+      }
+    },
+    "sha256": "31ecfebdd459eeaafc30df4f0d4ddb5966f7712f66331fec9bdaafab40cc5321",
+    "qc": "Passed: opened final JPEG; correct labels, unclipped central scene, cream bleed, official top-right logo."
+  }
+]

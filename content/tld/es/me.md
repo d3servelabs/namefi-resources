@@ -70,7 +70,7 @@ Montenegro se convirtió en un país independiente en **2006**, tras la disoluci
 
 En lugar de gestionar el espacio de nombres como un registro puramente nacional, el gobierno emitió una solicitud de propuestas para encontrar un operador comercial. El contrato se adjudicó a **doMEn d.o.o.**, una empresa conjunta montenegrina cuyos socios incluían a **Afilias**, **GoDaddy** y la empresa local **ME-net**. Con Afilias proporcionando el backend técnico del registro, .me **se abrió al público global en 2008** por orden de llegada, respaldado por una campaña de marketing que enfatizaba la expresión personal y los domain hacks.
 
-El cambio reciente más significativo está a nivel del **backend técnico**: en **diciembre de 2021**, **Identity Digital** (antes Donuts) **adquirió Afilias**, por lo que la infraestructura de registro que durante mucho tiempo ha impulsado a .me ahora reside dentro de la plataforma de Identity Digital. El Gobierno de Montenegro sigue siendo el administrador del registro patrocinador de referencia, y doMEn d.o.o. continúa operando el espacio de nombres comercialmente. Durante su primera década, .me creció hasta convertirse en una extensión global reconocida, superando la marca del **millón de registros** y convirtiéndose en una contribución significativa a la economía de Montenegro.
+Donuts [completó la adquisición de Afilias el 29 de diciembre de 2020](https://www.prnewswire.com/news-releases/donuts-acquires-afilias-301199019.html). Donuts y Afilias [adoptaron la marca Identity Digital en junio de 2022](https://www.prnewswire.com/news-releases/donuts-inc-and-afilias-inc-rebrand-to-identity-digital-301572401.html).
 
 ## Cómo se usa .me
 
@@ -87,7 +87,6 @@ Como "me" se corresponde tan limpiamente con el lenguaje personal, .me atrae a u
 ## Sitios destacados que usan .me
 
 - **about.me** — la plataforma de página personal lanzada en 2010 (y brevemente adquirida por AOL apenas días después del lanzamiento). Es la historia de éxito canónica de .me y definió de forma efectiva la identidad de marca personal de la extensión.
-- **read.me / readme.com** — la empresa de documentación para desarrolladores construyó su marca en torno al concepto del archivo "readme", ayudando a cimentar la asociación de .me con una nomenclatura limpia y legible para humanos.
 - Una larga cola de **portafolios personales** de diseñadores, ingenieros y creadores conocidos que usan "nombre.me" o "nombreapellido.me" como su hogar profesional.
 
 Estos casos muestran a .me siendo confiado no solo como alternativa de respaldo, sino como una elección de marca deliberada y orientada a la identidad.
@@ -126,7 +125,7 @@ Se aplican las prácticas estándar: los titulares de marcas pudieron participar
 
 .me se sitúa generalmente en una **banda de precio de gama media** — más que los gTLD promocionales más baratos, pero muy por debajo de las extensiones premium escasas. Algunas dinámicas determinan lo que pagarás:
 
-- **Existen nombres premium.** El registro clasifica muchos nombres .me cortos, de diccionario, de nombre de pila o de alta demanda como **premium**, con tarifas de registro más altas y, a veces, tarifas de renovación más elevadas.
+- **Las tarifas premium se aplican al registro inicial.** El [programa premium de .ME](https://domain.me/premium-domains/#:~:text=high-create%20and%20regular-renew) establece una tarifa de creación elevada y una tarifa de renovación normal. Consulta el precio final de registro y renovación con el registrador.
 - **El precio del primer año y el de renovación difieren.** Como en la mayoría de los TLD, una tarifa introductoria del primer año no es la tarifa de renovación; comprueba siempre la renovación estándar antes de comprometer una marca.
 - **Qué determina el coste.** La longitud y el atractivo del nombre, la clasificación premium y el precio mayorista del registro son los factores principales. Los valores de reventa en el mercado secundario para nombres de pila comunes y domain hacks limpios en .me pueden ser considerables.
 

@@ -1,0 +1,2027 @@
+{
+  "source_id": "O04",
+  "order": 18,
+  "slug": "me",
+  "fetch_date_utc": "2026-10-22",
+  "network": "GOOGLE_SEARCH",
+  "period": "2025-10 through 2026-09, API default last 12 complete months",
+  "missing_value_policy": "Missing keywordMetrics/avgMonthlySearches is UNKNOWN, not zero; do not sum overlapping close variants.",
+  "metrics": [
+    {
+      "fetched_utc": "2026-10-22T00:21:24.170087+00:00",
+      "locale": "ar",
+      "region": "EG",
+      "request": {
+        "language": "languageConstants/1019",
+        "geoTargetConstants": [
+          "geoTargetConstants/2818"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "دومين me",
+          "حجز دومين me",
+          "نطاق me"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "دومين me",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "0"
+            }
+          },
+          {
+            "text": "نطاق me",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "86"
+            }
+          },
+          {
+            "text": "حجز دومين me"
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:21:22.066135+00:00",
+      "locale": "de",
+      "region": "DE",
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "me domain",
+          "me domain kaufen",
+          "me domain bedeutung"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "me domain",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "1600"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "1600"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "1600"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                }
+              ],
+              "avgMonthlySearches": "1300",
+              "competitionIndex": "24",
+              "lowTopOfPageBidMicros": "958304",
+              "highTopOfPageBidMicros": "4128626"
+            }
+          },
+          {
+            "text": "me domain kaufen",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "76",
+              "lowTopOfPageBidMicros": "2243577",
+              "highTopOfPageBidMicros": "5614715"
+            }
+          },
+          {
+            "text": "me domain bedeutung",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                }
+              ],
+              "avgMonthlySearches": "30",
+              "competitionIndex": "8"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:21:21.710609+00:00",
+      "locale": "en",
+      "region": "US",
+      "request": {
+        "language": "languageConstants/1000",
+        "geoTargetConstants": [
+          "geoTargetConstants/2840"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "me domain",
+          "me domain name",
+          "register me domain",
+          "me domain country"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "me domain",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "2900"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "2900"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "2900"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "2900"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "2900"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                }
+              ],
+              "avgMonthlySearches": "2400",
+              "competitionIndex": "27",
+              "lowTopOfPageBidMicros": "2009553",
+              "highTopOfPageBidMicros": "14602867"
+            }
+          },
+          {
+            "text": "me domain name",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "2900"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "2900"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "2900"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "2900"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "2900"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "2400"
+                }
+              ],
+              "avgMonthlySearches": "2400",
+              "competitionIndex": "27",
+              "lowTopOfPageBidMicros": "2009553",
+              "highTopOfPageBidMicros": "14602867"
+            }
+          },
+          {
+            "text": "register me domain",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "1000"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                }
+              ],
+              "avgMonthlySearches": "880",
+              "competitionIndex": "18",
+              "lowTopOfPageBidMicros": "2969846",
+              "highTopOfPageBidMicros": "16200001"
+            }
+          },
+          {
+            "text": "me domain country",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "390"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                }
+              ],
+              "avgMonthlySearches": "480",
+              "competitionIndex": "18",
+              "lowTopOfPageBidMicros": "1665279",
+              "highTopOfPageBidMicros": "15869899"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:21:22.415235+00:00",
+      "locale": "es",
+      "region": "ES",
+      "request": {
+        "language": "languageConstants/1003",
+        "geoTargetConstants": [
+          "geoTargetConstants/2724"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "dominio me",
+          "registrar dominio me",
+          "dominio me que es"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "dominio me",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                }
+              ],
+              "avgMonthlySearches": "210",
+              "competitionIndex": "33",
+              "lowTopOfPageBidMicros": "1062225",
+              "highTopOfPageBidMicros": "4033630"
+            }
+          },
+          {
+            "text": "registrar dominio me",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "86"
+            }
+          },
+          {
+            "text": "dominio me que es"
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:21:22.849938+00:00",
+      "locale": "fr",
+      "region": "FR",
+      "request": {
+        "language": "languageConstants/1002",
+        "geoTargetConstants": [
+          "geoTargetConstants/2250"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "domaine me",
+          "nom de domaine me",
+          "acheter domaine me"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "domaine me",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                }
+              ],
+              "avgMonthlySearches": "140",
+              "competitionIndex": "16",
+              "lowTopOfPageBidMicros": "778876",
+              "highTopOfPageBidMicros": "2657370"
+            }
+          },
+          {
+            "text": "nom de domaine me",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "90"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                }
+              ],
+              "avgMonthlySearches": "90",
+              "competitionIndex": "30",
+              "lowTopOfPageBidMicros": "1009753",
+              "highTopOfPageBidMicros": "3587896"
+            }
+          },
+          {
+            "text": "acheter domaine me"
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:22:58.933611+00:00",
+      "locale": "hi",
+      "region": "IN",
+      "request": {
+        "language": "languageConstants/1023",
+        "geoTargetConstants": [
+          "geoTargetConstants/2356"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "me डोमेन",
+          "me डोमेन नाम",
+          "me डोमेन खरीदें"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "me डोमेन"
+          },
+          {
+            "text": "me डोमेन नाम"
+          },
+          {
+            "text": "me डोमेन खरीदें"
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:21:23.647874+00:00",
+      "locale": "ja",
+      "region": "JP",
+      "request": {
+        "language": "languageConstants/1005",
+        "geoTargetConstants": [
+          "geoTargetConstants/2392"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "me ドメイン",
+          "me ドメイン 取得",
+          "me ドメイン 意味"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "me ドメイン",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "720"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "880"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "1300"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                }
+              ],
+              "avgMonthlySearches": "720",
+              "competitionIndex": "19",
+              "lowTopOfPageBidMicros": "1533413",
+              "highTopOfPageBidMicros": "9998204"
+            }
+          },
+          {
+            "text": "me ドメイン 取得",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "71"
+            }
+          },
+          {
+            "text": "me ドメイン 意味",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "20",
+              "competitionIndex": "14"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:22:58.527769+00:00",
+      "locale": "ko",
+      "region": "KR",
+      "request": {
+        "language": "languageConstants/1012",
+        "geoTargetConstants": [
+          "geoTargetConstants/2410"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "me 도메인",
+          "me 도메인 등록",
+          "me 도메인 뜻"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "me 도메인",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                }
+              ],
+              "avgMonthlySearches": "140",
+              "competitionIndex": "36",
+              "lowTopOfPageBidMicros": "427971",
+              "highTopOfPageBidMicros": "1242646"
+            }
+          },
+          {
+            "text": "me 도메인 등록"
+          },
+          {
+            "text": "me 도메인 뜻"
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:22:59.350284+00:00",
+      "locale": "ta",
+      "region": "IN",
+      "request": {
+        "language": "languageConstants/1130",
+        "geoTargetConstants": [
+          "geoTargetConstants/2356"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "me டொமைன்",
+          "me டொமைன் பெயர்",
+          "me டொமைன் பதிவு"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "me டொமைன்"
+          },
+          {
+            "text": "me டொமைன் பெயர்"
+          },
+          {
+            "text": "me டொமைன் பதிவு"
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:22:58.126079+00:00",
+      "locale": "zh-CN",
+      "region": "CN",
+      "request": {
+        "language": "languageConstants/1017",
+        "geoTargetConstants": [
+          "geoTargetConstants/2156"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "me 域名",
+          "me 域名注册",
+          "me 域名是什么"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "me 域名",
+            "keywordMetrics": {
+              "competition": "MEDIUM",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "20"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "30"
+                }
+              ],
+              "avgMonthlySearches": "40",
+              "competitionIndex": "58",
+              "lowTopOfPageBidMicros": "592935",
+              "highTopOfPageBidMicros": "2000000"
+            }
+          },
+          {
+            "text": "me 域名 注册",
+            "keywordMetrics": {
+              "competition": "HIGH",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "80",
+              "lowTopOfPageBidMicros": "521654",
+              "highTopOfPageBidMicros": "2000000"
+            },
+            "closeVariants": [
+              "me 域名注册"
+            ]
+          },
+          {
+            "text": "me 域名 是 什么",
+            "keywordMetrics": {
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                }
+              ],
+              "avgMonthlySearches": "10"
+            },
+            "closeVariants": [
+              "me 域名是什么"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+    "topic": {
+      "source_id": "O04",
+      "slug": "me",
+      "path_match": "/tld/me/",
+      "matched_rows": 135,
+      "observed_impressions": 505,
+      "observed_clicks": 3,
+      "countries": {
+        "kor": {
+          "rows": 12,
+          "impressions": 167,
+          "clicks": 2
+        },
+        "phl": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 1
+        },
+        "can": {
+          "rows": 5,
+          "impressions": 7,
+          "clicks": 0
+        },
+        "jpn": {
+          "rows": 9,
+          "impressions": 32,
+          "clicks": 0
+        },
+        "chn": {
+          "rows": 14,
+          "impressions": 86,
+          "clicks": 0
+        },
+        "aus": {
+          "rows": 3,
+          "impressions": 4,
+          "clicks": 0
+        },
+        "deu": {
+          "rows": 5,
+          "impressions": 29,
+          "clicks": 0
+        },
+        "hkg": {
+          "rows": 5,
+          "impressions": 13,
+          "clicks": 0
+        },
+        "mys": {
+          "rows": 5,
+          "impressions": 7,
+          "clicks": 0
+        },
+        "sgp": {
+          "rows": 6,
+          "impressions": 14,
+          "clicks": 0
+        },
+        "twn": {
+          "rows": 4,
+          "impressions": 5,
+          "clicks": 0
+        },
+        "usa": {
+          "rows": 15,
+          "impressions": 64,
+          "clicks": 0
+        },
+        "uzb": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "vnm": {
+          "rows": 4,
+          "impressions": 5,
+          "clicks": 0
+        },
+        "esp": {
+          "rows": 4,
+          "impressions": 5,
+          "clicks": 0
+        },
+        "isl": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "mac": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "ind": {
+          "rows": 3,
+          "impressions": 6,
+          "clicks": 0
+        },
+        "bra": {
+          "rows": 2,
+          "impressions": 3,
+          "clicks": 0
+        },
+        "arg": {
+          "rows": 2,
+          "impressions": 7,
+          "clicks": 0
+        },
+        "bgr": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "bol": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "chl": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "col": {
+          "rows": 2,
+          "impressions": 11,
+          "clicks": 0
+        },
+        "dom": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "ecu": {
+          "rows": 2,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "gtm": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "mex": {
+          "rows": 1,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "aut": {
+          "rows": 2,
+          "impressions": 3,
+          "clicks": 0
+        },
+        "zzz": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "fro": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "pol": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "bih": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "che": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "nzl": {
+          "rows": 2,
+          "impressions": 3,
+          "clicks": 0
+        },
+        "tha": {
+          "rows": 2,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "ukr": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "jam": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "pak": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "mmr": {
+          "rows": 1,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "are": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "bgd": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "dza": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "idn": {
+          "rows": 1,
+          "impressions": 2,
+          "clicks": 0
+        },
+        "irn": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "rus": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "lao": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        },
+        "fra": {
+          "rows": 1,
+          "impressions": 1,
+          "clicks": 0
+        }
+      }
+    }
+  },
+  "excluded_exploration": {
+    "file": "ads-zh-CN-TW.json in private scratch only",
+    "reason": "Traditional-script Taiwan queries used simplified-Chinese language targeting; excluded from locale selection."
+  },
+  "retry_history": [
+    {
+      "fetched_utc": "2026-10-22T00:21:24.357171+00:00",
+      "locale": "hi",
+      "region": "IN",
+      "request": {
+        "language": "languageConstants/1023",
+        "geoTargetConstants": [
+          "geoTargetConstants/2356"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "me डोमेन",
+          "me डोमेन नाम",
+          "me डोमेन खरीदें"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "error": {
+          "status": 429
+        }
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:21:23.811601+00:00",
+      "locale": "ko",
+      "region": "KR",
+      "request": {
+        "language": "languageConstants/1012",
+        "geoTargetConstants": [
+          "geoTargetConstants/2410"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "me 도메인",
+          "me 도메인 등록",
+          "me 도메인 뜻"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "error": {
+          "status": 429
+        }
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T00:21:24.694268+00:00",
+      "locale": "ta",
+      "region": "IN",
+      "request": {
+        "language": "languageConstants/1130",
+        "geoTargetConstants": [
+          "geoTargetConstants/2356"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "me டொமைன்",
+          "me டொமைன் பெயர்",
+          "me டொமைன் பதிவு"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "error": {
+          "status": 429
+        }
+      }
+    }
+  ]
+}

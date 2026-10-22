@@ -1,0 +1,14 @@
+{
+  "results": [
+    {
+      "languageConstant": {
+        "resourceName": "languageConstants/1025",
+        "id": "1025",
+        "code": "id",
+        "name": "Indonesian"
+      }
+    }
+  ],
+  "fieldMask": "languageConstant.id,languageConstant.name,languageConstant.code",
+  "queryResourceConsumption": "54"
+}

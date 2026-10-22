@@ -1,0 +1,44 @@
+{
+  "generated": [
+    {
+      "path": "content/assets/free-business-email-options-05-choice-path.jpg",
+      "sha256": "2d322de16f911a7d6354e37ca4da23af9b9f5f51c24d9e1f4203cbe5d88931d2",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "attempt": 1,
+      "usage": {
+        "model_requested": "gpt-image-2",
+        "quality": "high",
+        "response_usage": {
+          "input_tokens": 465,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 465
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5953
+        },
+        "created": 1792635068,
+        "captured_utc": "2026-10-22T02:11:09.321514+00:00"
+      },
+      "qc": "PASS: final JPEG opened; no cutoff; labels correct; cream background full bleed; official top-right logo does not overlap content; useful address/mailbox/forwarding distinction.",
+      "raw_response_private_path": "/private/tmp/namefi-stack48/43-free-business-email-options/image-attempt1/resp.json",
+      "immutable_script_private_path": "/private/tmp/namefi-stack48/43-free-business-email-options/image-attempt1.sh"
+    }
+  ],
+  "reused": [
+    "content/assets/free-business-email-options-og.jpg",
+    "content/assets/free-business-email-options-01-section.jpg",
+    "content/assets/free-business-email-options-02-section.jpg",
+    "content/assets/free-business-email-options-03-section.jpg",
+    "content/assets/free-business-email-options-04-section.jpg"
+  ],
+  "reused_qc": "Existing final contact sheet opened; all five remain relevant and legible.",
+  "regenerations": 0
+}

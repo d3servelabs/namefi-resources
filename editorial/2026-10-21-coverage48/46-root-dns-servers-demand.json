@@ -1,0 +1,260 @@
+{
+  "source_id": "G07",
+  "date": "2026-10-21",
+  "language_criterion_source": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "locale": "de",
+  "region": "Germany",
+  "request": {
+    "language": "languageConstants/1001",
+    "geoTargetConstants": [
+      "geoTargetConstants/2276"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "DNS Root Server",
+      "Root Nameserver",
+      "DNS Stammserver",
+      "Root DNS Server"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "dns root server",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "260"
+            }
+          ],
+          "avgMonthlySearches": "390",
+          "competitionIndex": "3",
+          "lowTopOfPageBidMicros": "993851",
+          "highTopOfPageBidMicros": "3017933"
+        },
+        "closeVariants": [
+          "DNS Root Server",
+          "Root DNS Server"
+        ]
+      },
+      {
+        "text": "root nameserver",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "720"
+            }
+          ],
+          "avgMonthlySearches": "880",
+          "competitionIndex": "61",
+          "lowTopOfPageBidMicros": "1920729",
+          "highTopOfPageBidMicros": "6730057"
+        },
+        "closeVariants": [
+          "Root Nameserver"
+        ]
+      },
+      {
+        "text": "dns stammserver",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "0"
+        },
+        "closeVariants": [
+          "DNS Stammserver"
+        ]
+      }
+    ]
+  },
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "matched_rows": 0,
+    "meaning": "No observed matching topic rows; market demand remains UNKNOWN, not zero."
+  },
+  "decision": "Select de for Germany. Relevant measured DNS-specific demand and a reproducible direct-query diagnostic comparison justify one complete translation. Do not sum close-variant groups. Other locale-region pairs were not requested from Ads and remain UNKNOWN/deferred.",
+  "fetch_date_local": "2026-10-21",
+  "fetch_date_utc": "2026-10-22"
+}

@@ -1,0 +1,315 @@
+{
+  "source_id": "O06",
+  "slug": "cc",
+  "path_match": "/tld/cc/",
+  "matched_rows": 344,
+  "observed_impressions": 1502,
+  "observed_clicks": 12,
+  "countries": {
+    "kor": {
+      "rows": 24,
+      "impressions": 358,
+      "clicks": 9
+    },
+    "mex": {
+      "rows": 21,
+      "impressions": 44,
+      "clicks": 1
+    },
+    "chn": {
+      "rows": 17,
+      "impressions": 205,
+      "clicks": 1
+    },
+    "prt": {
+      "rows": 3,
+      "impressions": 4,
+      "clicks": 1
+    },
+    "cub": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "nic": {
+      "rows": 3,
+      "impressions": 4,
+      "clicks": 0
+    },
+    "jpn": {
+      "rows": 14,
+      "impressions": 57,
+      "clicks": 0
+    },
+    "arg": {
+      "rows": 10,
+      "impressions": 75,
+      "clicks": 0
+    },
+    "can": {
+      "rows": 6,
+      "impressions": 12,
+      "clicks": 0
+    },
+    "chl": {
+      "rows": 9,
+      "impressions": 23,
+      "clicks": 0
+    },
+    "col": {
+      "rows": 12,
+      "impressions": 85,
+      "clicks": 0
+    },
+    "cri": {
+      "rows": 4,
+      "impressions": 5,
+      "clicks": 0
+    },
+    "ecu": {
+      "rows": 6,
+      "impressions": 7,
+      "clicks": 0
+    },
+    "esp": {
+      "rows": 28,
+      "impressions": 181,
+      "clicks": 0
+    },
+    "fra": {
+      "rows": 5,
+      "impressions": 9,
+      "clicks": 0
+    },
+    "pan": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "per": {
+      "rows": 5,
+      "impressions": 8,
+      "clicks": 0
+    },
+    "pry": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "ury": {
+      "rows": 2,
+      "impressions": 3,
+      "clicks": 0
+    },
+    "ven": {
+      "rows": 8,
+      "impressions": 12,
+      "clicks": 0
+    },
+    "xkk": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "gtm": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "hnd": {
+      "rows": 3,
+      "impressions": 3,
+      "clicks": 0
+    },
+    "ita": {
+      "rows": 8,
+      "impressions": 27,
+      "clicks": 0
+    },
+    "sgp": {
+      "rows": 10,
+      "impressions": 23,
+      "clicks": 0
+    },
+    "hkg": {
+      "rows": 13,
+      "impressions": 26,
+      "clicks": 0
+    },
+    "mac": {
+      "rows": 2,
+      "impressions": 4,
+      "clicks": 0
+    },
+    "twn": {
+      "rows": 7,
+      "impressions": 15,
+      "clicks": 0
+    },
+    "usa": {
+      "rows": 36,
+      "impressions": 151,
+      "clicks": 0
+    },
+    "bra": {
+      "rows": 11,
+      "impressions": 72,
+      "clicks": 0
+    },
+    "est": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "gbr": {
+      "rows": 2,
+      "impressions": 3,
+      "clicks": 0
+    },
+    "hun": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "mar": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "mmr": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "mys": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "nzl": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "phl": {
+      "rows": 4,
+      "impressions": 5,
+      "clicks": 0
+    },
+    "rus": {
+      "rows": 3,
+      "impressions": 3,
+      "clicks": 0
+    },
+    "che": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "deu": {
+      "rows": 6,
+      "impressions": 7,
+      "clicks": 0
+    },
+    "bel": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "vnm": {
+      "rows": 6,
+      "impressions": 11,
+      "clicks": 0
+    },
+    "ind": {
+      "rows": 4,
+      "impressions": 5,
+      "clicks": 0
+    },
+    "npl": {
+      "rows": 3,
+      "impressions": 3,
+      "clicks": 0
+    },
+    "alb": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "khm": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "lka": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "nld": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "irn": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "tha": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "dom": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "bol": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "slv": {
+      "rows": 4,
+      "impressions": 5,
+      "clicks": 0
+    },
+    "idn": {
+      "rows": 4,
+      "impressions": 5,
+      "clicks": 0
+    },
+    "bgd": {
+      "rows": 4,
+      "impressions": 5,
+      "clicks": 0
+    },
+    "irq": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "gnq": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "tur": {
+      "rows": 2,
+      "impressions": 2,
+      "clicks": 0
+    },
+    "pse": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    },
+    "bgr": {
+      "rows": 1,
+      "impressions": 1,
+      "clicks": 0
+    }
+  }
+}
