@@ -1,0 +1,16 @@
+{
+  "external_url_set_equal": true,
+  "code_spans_equal": true,
+  "en_sections": 6,
+  "fr_sections": 6,
+  "en_images": 5,
+  "fr_images": 5,
+  "exact_body_copy": false,
+  "english_route_leak_in_fr": false,
+  "en_table_rows": 21,
+  "fr_table_rows": 21,
+  "en_numbered_steps": 8,
+  "fr_numbered_steps": 8,
+  "independent_review": false,
+  "rendered_check": "deferred to root publication verification"
+}

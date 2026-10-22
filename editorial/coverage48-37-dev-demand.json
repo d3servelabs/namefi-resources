@@ -1,0 +1,973 @@
+[
+  {
+    "market": "de-DE",
+    "fetchDate": "2026-10-22",
+    "request": {
+      "language": "languageConstants/1001",
+      "geoTargetConstants": [
+        "geoTargetConstants/2276"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "dev domain",
+        "dev domain kaufen",
+        "dev domain registrieren"
+      ],
+      "includeAdultKeywords": false
+    },
+    "results": [
+      {
+        "text": "dev domain",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "390"
+            }
+          ],
+          "avgMonthlySearches": "590",
+          "competitionIndex": "62",
+          "lowTopOfPageBidMicros": "1156735",
+          "highTopOfPageBidMicros": "3866316"
+        }
+      },
+      {
+        "text": "dev domain kaufen",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "70",
+          "lowTopOfPageBidMicros": "2997427",
+          "highTopOfPageBidMicros": "7797602"
+        }
+      },
+      {
+        "text": "dev domain registrieren",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "84",
+          "lowTopOfPageBidMicros": "2537849",
+          "highTopOfPageBidMicros": "6823730"
+        }
+      }
+    ],
+    "aggregateMetrics": {}
+  },
+  {
+    "market": "es-ES",
+    "fetchDate": "2026-10-22",
+    "request": {
+      "language": "languageConstants/1003",
+      "geoTargetConstants": [
+        "geoTargetConstants/2724"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "dominio dev",
+        "comprar dominio dev",
+        "registrar dominio dev"
+      ],
+      "includeAdultKeywords": false
+    },
+    "results": [
+      {
+        "text": "dominio dev",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "90"
+            }
+          ],
+          "avgMonthlySearches": "90",
+          "competitionIndex": "73",
+          "lowTopOfPageBidMicros": "1008636",
+          "highTopOfPageBidMicros": "3697862"
+        }
+      },
+      {
+        "text": "comprar dominio dev",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "77",
+          "lowTopOfPageBidMicros": "1508906",
+          "highTopOfPageBidMicros": "4997122"
+        }
+      },
+      {
+        "text": "registrar dominio dev",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "0"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "86"
+        }
+      }
+    ],
+    "aggregateMetrics": {}
+  },
+  {
+    "market": "fr-FR",
+    "fetchDate": "2026-10-22",
+    "request": {
+      "language": "languageConstants/1002",
+      "geoTargetConstants": [
+        "geoTargetConstants/2250"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "domaine dev",
+        "acheter domaine dev",
+        "nom de domaine dev"
+      ],
+      "includeAdultKeywords": false
+    },
+    "results": [
+      {
+        "text": "domaine dev",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "10",
+          "competitionIndex": "54",
+          "lowTopOfPageBidMicros": "824884",
+          "highTopOfPageBidMicros": "2522092"
+        }
+      },
+      {
+        "text": "nom de domaine dev",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "59",
+          "lowTopOfPageBidMicros": "732555",
+          "highTopOfPageBidMicros": "2794272"
+        }
+      },
+      {
+        "text": "acheter domaine dev"
+      }
+    ],
+    "aggregateMetrics": {}
+  },
+  {
+    "market": "ja-JP",
+    "fetchDate": "2026-10-22",
+    "request": {
+      "language": "languageConstants/1005",
+      "geoTargetConstants": [
+        "geoTargetConstants/2392"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "dev ドメイン",
+        "dev ドメイン 取得",
+        "dev ドメイン 料金"
+      ],
+      "includeAdultKeywords": false
+    },
+    "results": [
+      {
+        "text": "dev ドメイン",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "390"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "480"
+            }
+          ],
+          "avgMonthlySearches": "390",
+          "competitionIndex": "30",
+          "lowTopOfPageBidMicros": "1242225",
+          "highTopOfPageBidMicros": "4450803"
+        }
+      },
+      {
+        "text": "dev ドメイン 取得",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "10"
+            }
+          ],
+          "avgMonthlySearches": "30",
+          "competitionIndex": "68",
+          "lowTopOfPageBidMicros": "703641",
+          "highTopOfPageBidMicros": "5040035"
+        }
+      },
+      {
+        "text": "dev ドメイン 料金"
+      }
+    ],
+    "aggregateMetrics": {}
+  },
+  {
+    "market": "ko-KR",
+    "fetchDate": "2026-10-22",
+    "request": {
+      "language": "languageConstants/1012",
+      "geoTargetConstants": [
+        "geoTargetConstants/2410"
+      ],
+      "keywordPlanNetwork": "GOOGLE_SEARCH",
+      "keywords": [
+        "dev 도메인",
+        "dev 도메인 구매",
+        "dev 도메인 등록"
+      ],
+      "includeAdultKeywords": false
+    },
+    "results": [
+      {
+        "text": "dev 도메인",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "260"
+            }
+          ],
+          "avgMonthlySearches": "170",
+          "competitionIndex": "50",
+          "lowTopOfPageBidMicros": "401148",
+          "highTopOfPageBidMicros": "1707753"
+        }
+      },
+      {
+        "text": "dev 도메인 구매",
+        "keywordMetrics": {
+          "competition": "HIGH",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "20"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "10"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "20"
+            }
+          ],
+          "avgMonthlySearches": "20",
+          "competitionIndex": "68",
+          "lowTopOfPageBidMicros": "568235",
+          "highTopOfPageBidMicros": "2713040"
+        }
+      },
+      {
+        "text": "dev 도메인 등록"
+      }
+    ],
+    "aggregateMetrics": {}
+  }
+]

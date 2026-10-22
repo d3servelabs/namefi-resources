@@ -1,6 +1,7 @@
 ---
 title: "Qu'est-ce que le domaine .io ? L'extension tech et Web3 expliquée"
 date: '2026-06-15'
+updated: '2026-10-21'
 language: 'fr'
 priority: P1
 tags: ['tld']
@@ -12,13 +13,13 @@ description: "Le domaine .io est le standard de facto pour les startups, les dé
 keywords: ['domaines .io', "qu'est-ce que .io", '.io TLD', 'extension de domaine .io', 'enregistrer un domaine .io', 'signification domaine io', '.io vs .ai', 'domaines startups tech']
 faqs:
   - question: "N'importe qui peut-il enregistrer un domaine .io ?"
-    answer: "Oui. L'espace de noms .io est ouvert à tous dans le monde entier, sans exigence de présence locale, d'entreprise ou de justificatif. Vous n'avez pas besoin d'avoir un lien avec le Territoire britannique de l'océan Indien pour en enregistrer un."
+    answer: 'Pour example.io, les candidats peuvent relever de toute juridiction. Pour example.com.io, les règles imposent une résidence dans le territoire. Les conditions et règles d’utilisation restent applicables.'
   - question: "Un domaine .io affecte-t-il le référencement ?"
-    answer: "Pas négativement. Google traite .io comme un domaine de premier niveau générique plutôt que ciblé par pays, donc un site .io peut se classer à l'échelle mondiale et n'est pas géo-restreint à une seule région."
+    answer: 'Google traite .io comme générique pour le ciblage géographique. L’extension ne cible pas automatiquement le territoire et ne garantit aucun classement.'
   - question: "Qui devrait enregistrer un domaine .io ?"
     answer: "Les startups logicielles, les produits SaaS, les outils pour développeurs, les projets open-source, les services API, les studios de jeux navigateur, et les équipes Web3 ou blockchain. La lecture « Entrée/Sortie » convient partout où l'orientation technologique fait partie de la marque."
   - question: "Le domaine .io va-t-il disparaître en raison de l'accord sur la souveraineté des Chagos ?"
-    answer: "Pas comme un fait établi. En 2026, .io est entièrement opérationnel, les enregistrements et les renouvellements se poursuivant normalement. Tout retrait nécessiterait d'abord une modification du code pays ISO, puis suivrait une transition IANA de plusieurs années — surveillez la situation plutôt que de paniquer."
+    answer: 'Le 21 octobre 2026, IANA indiquait que .io était actif, sans date de retrait. Une perte d’éligibilité déclencherait la procédure IANA. Aucune garantie ne couvre l’avenir de .io.'
 relatedArticles:
   - /fr/blog/why-are-io-domains-expensive/
   - /fr/blog/ai-vs-io-domain/
@@ -51,16 +52,15 @@ Si vous lancez un produit SaaS, une API, un projet open-source ou une venture bl
 | Opérateur du registre | Internet Computer Bureau Ltd (filiale d'Identity Digital) |
 | Année de délégation | 1997 |
 | Attribué à | Territoire britannique de l'océan Indien (BIOT) |
-| Support IDN | Oui |
 | DNSSEC | Oui |
-| Restrictions d'enregistrement | Ouvert à tous — aucune exigence de présence locale, de justificatif ou d'entreprise |
+| Restrictions d'enregistrement | Pour example.io, les candidats peuvent relever de toute juridiction. Pour example.com.io, les règles imposent une résidence dans le territoire. Les conditions et règles d’utilisation restent applicables. |
 | Idéal pour | Startups tech, SaaS, outils pour développeurs, API, jeux navigateur, Web3 |
 
 ## Qu'est-ce que .io ?
 
 Le **domaine de premier niveau .io** est un [ccTLD (domaine de premier niveau national)](/fr/blog/cctld-market-share-by-registration-volume/) attribué au **Territoire britannique de l'océan Indien** dans l'archipel des Chagos. Il a été délégué en 1997 selon la norme ISO 3166-1, tel que documenté dans l'[entrée de la zone racine IANA pour .io](https://www.iana.org/domains/root/db/io.html). Le gestionnaire de ccTLD responsable est **Internet Computer Bureau Ltd**, aujourd'hui filiale du fournisseur de services de registre [Identity Digital](https://www.identity.digital/).
 
-Bien qu'étant un ccTLD sur le papier, .io se comporte comme une extension générique dans tous les aspects qui comptent pour un acheteur. Google classe explicitement .io comme un **domaine de premier niveau générique** pour la recherche, précisant que les utilisateurs et les propriétaires de sites le perçoivent comme plus générique que ciblé par pays. Ainsi, contrairement à `.fr` ou `.jp`, un site .io **n'est pas géo-ciblé** vers une région et constitue un choix judicieux pour un public mondial.
+[Google](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) traite .io comme générique pour le ciblage géographique. L’extension ne cible pas automatiquement le territoire et ne garantit aucun classement.
 
 ## Histoire de .io
 
@@ -116,13 +116,15 @@ Choisissez [.com](/fr/tld/com/) comme valeur universelle par défaut lorsque vou
 
 ## Qui peut enregistrer un domaine .io ?
 
-**Restrictions d'enregistrement : ouvert à tous.** N'importe qui dans le monde peut enregistrer un domaine .io. Il n'y a **aucune exigence de présence locale**, aucune vérification d'admissibilité commerciale et aucune condition de justificatif — vous n'avez pas besoin d'un lien avec le Territoire britannique de l'océan Indien. Les noms comportent **3 à 63 caractères**, permettent des lettres, des chiffres et des traits d'union (pas en début ou en fin), et les **noms de domaine internationalisés (IDN)** sont pris en charge.
+Pour un nom comme `example.io`, NIC.IO accepte les candidats de toute juridiction. Pour un enregistrement comme `example.com.io`, les [règles d’attribution](https://nic.io/rules.htm) exigent une résidence dans le territoire. Certains noms courts suivent une attribution contrôlée. Trois caractères ne constituent donc pas un minimum universel.
 
-Le registre prend en charge **DNSSEC**, et le comportement standard de transfert, de renouvellement et de délai de grâce de rachat s'applique. La seule restriction de contenu notable est une règle d'utilisation acceptable de longue date interdisant le contenu sexuel ou pornographique et l'utilisation violant la législation applicable. Étant donné que .io est un ccTLD et non un gTLD ICANN, les règles faisant autorité proviennent de l'opérateur et non d'un accord de registre ICANN — la politique contraignante est publiée par le [registre NIC.IO (règles pour les noms de domaine)](https://nic.io/rules.htm).
+Les règles exigent des coordonnées exactes et interdisent le spam ainsi que certains usages illégaux ou sexuels. Les [conditions d’enregistrement](https://nic.io/terms.htm) encadrent les transferts et renouvellements. Vérifiez les échéances, les délais de récupération et les frais auprès du bureau d’enregistrement. Ne supposez pas que tous les délais de grâce des gTLD ICANN s’appliquent.
 
 ### La question de la souveraineté des Chagos
 
-En 2024, le Royaume-Uni a annoncé des plans pour transférer la souveraineté de l'archipel des Chagos à Maurice, et un accord a été signé le 22 mai 2025. Parce que .io repose sur le code ISO 3166-1 « IO », cela a suscité des spéculations sur son retrait éventuel. En 2026, **.io est entièrement opérationnel** — les enregistrements et les renouvellements se poursuivent normalement. Tout retrait nécessiterait d'abord une modification du code ISO, puis déclencherait une transition IANA de plusieurs années (souvent estimée à environ cinq ans) — il s'agit donc d'une situation à surveiller, pas d'une raison d'éviter le suffixe.
+Au 21 octobre 2026, [IANA indique que .io est actif](https://www.iana.org/domains/root/db/io.html), sans date de retrait. Un accord politique seul ne constitue pas une annonce de fermeture. La perte d’éligibilité déclencherait la [procédure IANA](https://www.iana.org/help/cctld-retirement), avec notification publique et retrait normalement après cinq ans. Une prolongation approuvée peut ajouter cinq ans au maximum. Le gestionnaire peut procéder au retrait plus tôt.
+
+Ces règles ne garantissent ni le maintien ni le retrait de .io. Les projets durables devraient suivre les annonces officielles et évaluer les coûts de migration.
 
 ## Tarification et valeur de .io
 
@@ -156,11 +158,11 @@ En tant que [bureau d'enregistrement](/fr/glossary/registrar/) [accrédité par 
 
 ### N'importe qui peut-il enregistrer un domaine .io ?
 
-Oui. L'espace de noms .io est ouvert à tous dans le monde entier, sans exigence de présence locale, d'entreprise ou de justificatif. Vous n'avez pas besoin d'avoir un lien avec le Territoire britannique de l'océan Indien pour en enregistrer un.
+Pour example.io, les candidats peuvent relever de toute juridiction. Pour example.com.io, les règles imposent une résidence dans le territoire. Les conditions et règles d’utilisation restent applicables.
 
 ### Un domaine .io affecte-t-il le référencement ?
 
-Pas négativement. Google traite .io comme un domaine de premier niveau générique plutôt que ciblé par pays, donc un site .io peut se classer à l'échelle mondiale et n'est pas géo-restreint à une seule région.
+Google traite .io comme générique pour le ciblage géographique. L’extension ne cible pas automatiquement le territoire et ne garantit aucun classement.
 
 ### Qui devrait enregistrer un domaine .io ?
 
@@ -168,7 +170,7 @@ Les startups logicielles, les produits SaaS, les outils pour développeurs, les 
 
 ### Le domaine .io va-t-il disparaître en raison de l'accord sur la souveraineté des Chagos ?
 
-Pas comme un fait établi. En 2026, .io est entièrement opérationnel, les enregistrements et les renouvellements se poursuivant normalement. Tout retrait nécessiterait d'abord une modification du code pays ISO, puis suivrait une transition IANA de plusieurs années — surveillez la situation plutôt que de paniquer.
+Le 21 octobre 2026, IANA indiquait que .io était actif, sans date de retrait. Une perte d’éligibilité déclencherait la procédure IANA. Aucune garantie ne couvre l’avenir de .io.
 
 ### .io prend-il en charge la confidentialité WHOIS et DNSSEC ?
 
@@ -183,3 +185,5 @@ DNSSEC est pris en charge par le registre .io. La disponibilité de la confident
 - [Cas d'utilisation des domaines tokenisés (2026)](/fr/blog/tokenized-domain-use-cases-2026/)
 - Guides TLD : .com, .ai, .dev, [.app](/fr/tld/app/), [.tech](/fr/tld/tech/)
 - Glossaire : ICANN, bureau d'enregistrement, DNS, [DNSSEC](/fr/glossary/dnssec/)
+
+- 2026-10-21: [NIC.IO](https://nic.io/rules.htm), [NIC.IO](https://nic.io/terms.htm), [IANA](https://www.iana.org/domains/root/db/io.html), [IANA](https://www.iana.org/help/cctld-retirement), [Google](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites).

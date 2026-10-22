@@ -1,0 +1,239 @@
+{
+  "fetched": "2026-10-21T23:32:07.949819+00:00",
+  "request": {
+    "language": "languageConstants/1005",
+    "geoTargetConstants": [
+      "geoTargetConstants/2392"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "ドメイン おすすめ",
+      "ドメイン取得 おすすめ",
+      "ドメイン 取得 比較"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "ドメイン おすすめ",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "320"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "210"
+            }
+          ],
+          "avgMonthlySearches": "260",
+          "competitionIndex": "64",
+          "lowTopOfPageBidMicros": "833236",
+          "highTopOfPageBidMicros": "4405148"
+        }
+      },
+      {
+        "text": "ドメイン 取得 おすすめ",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "720"
+            }
+          ],
+          "avgMonthlySearches": "880",
+          "competitionIndex": "61",
+          "lowTopOfPageBidMicros": "1675753",
+          "highTopOfPageBidMicros": "5506965"
+        },
+        "closeVariants": [
+          "ドメイン取得 おすすめ"
+        ]
+      },
+      {
+        "text": "ドメイン 取得 比較",
+        "keywordMetrics": {
+          "competition": "MEDIUM",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "50"
+            }
+          ],
+          "avgMonthlySearches": "70",
+          "competitionIndex": "56",
+          "lowTopOfPageBidMicros": "1164882",
+          "highTopOfPageBidMicros": "14613061"
+        }
+      }
+    ]
+  }
+}

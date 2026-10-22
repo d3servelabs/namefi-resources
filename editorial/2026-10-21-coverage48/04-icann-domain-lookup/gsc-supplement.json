@@ -1,0 +1,105 @@
+{
+  "property": "sc-domain:namefi.io",
+  "startDate": "2026-09-21",
+  "endDate": "2026-10-18",
+  "type": "web",
+  "dataState": "final",
+  "dimensions": [
+    "query",
+    "page",
+    "country"
+  ],
+  "retrieved_utc": "2026-10-21T23:27:19.408267+00:00",
+  "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+  "topic_market_rows": [
+    {
+      "keys": [
+        "icann urs",
+        "https://namefi.io/es/glossary/urs/",
+        "esp"
+      ],
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 1,
+      "position": 2
+    },
+    {
+      "keys": [
+        "diferencia entre icann e iana",
+        "https://namefi.io/r/es/glossary/icann",
+        "esp"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 11
+    },
+    {
+      "keys": [
+        "iana and icann",
+        "https://namefi.io/r/en/glossary/iana",
+        "mex"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 42
+    },
+    {
+      "keys": [
+        "icann",
+        "https://namefi.io/r/es/glossary/icann",
+        "esp"
+      ],
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 21
+    },
+    {
+      "keys": [
+        "icann accredited",
+        "https://namefi.io/r/en/glossary/accredited-registrar",
+        "mex"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 1
+    },
+    {
+      "keys": [
+        "icann accredited registrars",
+        "https://namefi.io/r/en/glossary/accredited-registrar",
+        "mex"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 10
+    },
+    {
+      "keys": [
+        "icann que es",
+        "https://namefi.io/r/es/glossary/icann",
+        "esp"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 31
+    },
+    {
+      "keys": [
+        "icann-accredited registrar",
+        "https://namefi.io/r/en/glossary/accredited-registrar",
+        "esp"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 6
+    }
+  ],
+  "exact_lookup_intent_matching_rows": []
+}
