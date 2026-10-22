@@ -1,0 +1,241 @@
+{
+  "locale": "ja",
+  "country": "JP",
+  "fetched_utc": "2026-10-22T00:41:18.008145+00:00",
+  "request": {
+    "language": "languageConstants/1005",
+    "geoTargetConstants": [
+      "geoTargetConstants/2392"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "DNS 暗号化",
+      "DNS over HTTPS",
+      "プライベートDNS Android"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "dns 暗号 化",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "110"
+            }
+          ],
+          "avgMonthlySearches": "110",
+          "competitionIndex": "1"
+        },
+        "closeVariants": [
+          "DNS 暗号化"
+        ]
+      },
+      {
+        "text": "dns over https",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "1600"
+            }
+          ],
+          "avgMonthlySearches": "720",
+          "competitionIndex": "0"
+        },
+        "closeVariants": [
+          "DNS over HTTPS"
+        ]
+      },
+      {
+        "text": "プライベート dns android",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "260"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "210"
+            }
+          ],
+          "avgMonthlySearches": "210",
+          "competitionIndex": "0"
+        },
+        "closeVariants": [
+          "プライベートDNS Android"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "locale": "ja",
+  "country": "JP",
+  "fetched_utc": "2026-10-22T00:40:42.521007+00:00",
+  "request": {
+    "language": "languageConstants/1005",
+    "geoTargetConstants": [
+      "geoTargetConstants/2392"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "DNS 暗号化",
+      "DNS over HTTPS",
+      "プライベートDNS Android"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "error_http": 429
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "model": "gpt-image-2",
+  "quality": "high",
+  "fetched_utc": "2026-10-22T00:43:01.884340+00:00",
+  "usage": {
+    "input_tokens": 465,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 465
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+      "image_tokens": 5488,
+      "text_tokens": 0
+    },
+    "total_tokens": 5953
+  },
+  "error_present": false
+}

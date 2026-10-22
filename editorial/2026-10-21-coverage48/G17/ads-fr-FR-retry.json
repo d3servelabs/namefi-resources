@@ -1,0 +1,238 @@
+{
+  "locale": "fr",
+  "country": "FR",
+  "fetched_utc": "2026-10-22T00:41:14.718181+00:00",
+  "request": {
+    "language": "languageConstants/1002",
+    "geoTargetConstants": [
+      "geoTargetConstants/2250"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "dns sur https",
+      "dns sur tls",
+      "dns chiffré",
+      "dns privé android"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "dns sur https",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "70"
+            }
+          ],
+          "avgMonthlySearches": "90",
+          "competitionIndex": "0"
+        }
+      },
+      {
+        "text": "dns chiffré",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "50"
+            }
+          ],
+          "avgMonthlySearches": "50",
+          "competitionIndex": "0"
+        }
+      },
+      {
+        "text": "dns privé android",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "590"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "480"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "880"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "590"
+            }
+          ],
+          "avgMonthlySearches": "590",
+          "competitionIndex": "1",
+          "lowTopOfPageBidMicros": "305451",
+          "highTopOfPageBidMicros": "986243"
+        }
+      },
+      {
+        "text": "dns sur tls"
+      }
+    ]
+  }
+}

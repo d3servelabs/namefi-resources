@@ -1,0 +1,71 @@
+$ bun run data:test && bun scripts/validate-data.ts && bun .agents/skills/cross-link/link-audit.ts --locale-only && bun scripts/check-tld-faq-sync.ts
+$ bun test ./scripts
+bun test v1.3.12 (700fc117)
+
+scripts/build-termbase.test.ts:
+(pass) termbase excludes draft English entries and draft translations [35.77ms]
+
+scripts/validate-data.test.ts:
+(pass) English-first publication > accepts en coverage with an English-only author and related targets [287.37ms]
+(pass) English-first publication > accepts fr coverage with an English-only author and related targets [201.42ms]
+(pass) English-first publication > still rejects malformed metadata in a selected translation [30.39ms]
+(pass) English-first publication > still rejects an English relationship URL in a French article [32.26ms]
+(pass) English-first publication > still rejects a target absent from both the selected locale and English [31.48ms]
+
+scripts/check-tld-faq-sync.test.ts:
+(pass) stripInline > strips code spans, bold, and links down to rendered text
+(pass) collectBodyFaqs > scopes to the FAQ section when an earlier ### repeats a question verbatim [0.46ms]
+(pass) collectBodyFaqs > matches the FAQ section across whitespace drift in question text
+(pass) collectBodyFaqs > falls back to a flat scan when no section matches any frontmatter question
+(pass) matchQuestion > exact match is not flagged as whitespace-only
+(pass) matchQuestion > whitespace-only drift still pairs, flagged so the gate reports it as drift
+(pass) matchQuestion > genuinely missing question returns no hit
+
+ 13 pass
+ 0 fail
+ 33 expect() calls
+Ran 13 tests across 3 files. [642.00ms]
+⚠️  37 warning(s):
+   • content/blog/en/building-for-people-not-wallets.md: "keywords" is empty; consider adding for SEO
+   • content/blog/es/building-for-people-not-wallets.md: "keywords" is empty; consider adding for SEO
+   • content/blog/de/building-for-people-not-wallets.md: "keywords" is empty; consider adding for SEO
+   • content/blog/fr/building-for-people-not-wallets.md: "keywords" is empty; consider adding for SEO
+   • content/blog/zh-CN/building-for-people-not-wallets.md: "keywords" is empty; consider adding for SEO
+   • content/blog/ar/building-for-people-not-wallets.md: "keywords" is empty; consider adding for SEO
+   • content/blog/hi/building-for-people-not-wallets.md: "keywords" is empty; consider adding for SEO
+   • content/blog/ko/building-for-people-not-wallets.md: "keywords" is empty; consider adding for SEO
+   • content/blog/ja/building-for-people-not-wallets.md: "keywords" is empty; consider adding for SEO
+   • content/blog/ta/building-for-people-not-wallets.md: "keywords" is empty; consider adding for SEO
+   • content/tld/es/sbs.md: "keywords" is empty; consider adding for SEO
+   • content/tld/de/sbs.md: "keywords" is empty; consider adding for SEO
+   • content/tld/fr/sbs.md: "keywords" is empty; consider adding for SEO
+   • content/tld/zh-CN/abb.md: "keywords" is empty; consider adding for SEO
+   • content/tld/zh-CN/sbs.md: "keywords" is empty; consider adding for SEO
+   • content/tld/zh-CN/abbvie.md: "keywords" is empty; consider adding for SEO
+   • content/tld/ar/sbs.md: "keywords" is empty; consider adding for SEO
+   • content/tld/hi/sbs.md: "keywords" is empty; consider adding for SEO
+   • content/tld/ko/able.md: "keywords" is empty; consider adding for SEO
+   • content/tld/ko/abarth.md: "keywords" is empty; consider adding for SEO
+   • content/tld/ko/aarp.md: "keywords" is empty; consider adding for SEO
+   • content/tld/ja/able.md: "keywords" is empty; consider adding for SEO
+   • content/tld/ja/abarth.md: "keywords" is empty; consider adding for SEO
+   • content/tld/ja/aarp.md: "keywords" is empty; consider adding for SEO
+   • content/partners/en/blockeden.md: "keywords" is empty; consider adding for SEO
+   • content/partners/ko/blockeden.md: "keywords" is empty; consider adding for SEO
+   • content/partners/ja/blockeden.md: "keywords" is empty; consider adding for SEO
+   • partners/ta: locale directory missing (/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/coverage48-22-dns-over-https-vs-dns-over-tls/content/partners/ta)
+   • careers/es: locale directory missing (/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/coverage48-22-dns-over-https-vs-dns-over-tls/content/careers/es)
+   • careers/de: locale directory missing (/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/coverage48-22-dns-over-https-vs-dns-over-tls/content/careers/de)
+   • careers/fr: locale directory missing (/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/coverage48-22-dns-over-https-vs-dns-over-tls/content/careers/fr)
+   • careers/zh-CN: locale directory missing (/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/coverage48-22-dns-over-https-vs-dns-over-tls/content/careers/zh-CN)
+   • careers/ar: locale directory missing (/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/coverage48-22-dns-over-https-vs-dns-over-tls/content/careers/ar)
+   • careers/hi: locale directory missing (/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/coverage48-22-dns-over-https-vs-dns-over-tls/content/careers/hi)
+   • careers/ko: locale directory missing (/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/coverage48-22-dns-over-https-vs-dns-over-tls/content/careers/ko)
+   • careers/ja: locale directory missing (/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/coverage48-22-dns-over-https-vs-dns-over-tls/content/careers/ja)
+   • careers/ta: locale directory missing (/Users/zzn/ws/d3servelabs/namefi-resources/.worktrees/coverage48-22-dns-over-https-vs-dns-over-tls/content/careers/ta)
+
+✅ Data validation passed with 37 warning(s)
+
+Checked 4056 file(s): 0 locale-mismatch, 0 relationship-mismatch.
+Checked 1633 FAQs in 369 pages (503 pages have no faqs frontmatter) across 10 locales.
+✅ All faqs frontmatter matches the body FAQ sections.

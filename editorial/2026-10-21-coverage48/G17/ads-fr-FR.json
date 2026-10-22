@@ -1,0 +1,22 @@
+{
+  "locale": "fr",
+  "country": "FR",
+  "fetched_utc": "2026-10-22T00:40:41.830734+00:00",
+  "request": {
+    "language": "languageConstants/1002",
+    "geoTargetConstants": [
+      "geoTargetConstants/2250"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "dns sur https",
+      "dns sur tls",
+      "dns chiffré",
+      "dns privé android"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "error_http": 429
+  }
+}

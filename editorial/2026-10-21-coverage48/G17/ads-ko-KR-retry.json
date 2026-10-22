@@ -1,0 +1,174 @@
+{
+  "locale": "ko",
+  "country": "KR",
+  "fetched_utc": "2026-10-22T00:41:21.388566+00:00",
+  "request": {
+    "language": "languageConstants/1012",
+    "geoTargetConstants": [
+      "geoTargetConstants/2410"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "암호화 DNS",
+      "DNS over HTTPS",
+      "안드로이드 프라이빗 DNS"
+    ],
+    "includeAdultKeywords": false
+  },
+  "response": {
+    "results": [
+      {
+        "text": "dns over https",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "90"
+            }
+          ],
+          "avgMonthlySearches": "140",
+          "competitionIndex": "0"
+        },
+        "closeVariants": [
+          "DNS over HTTPS"
+        ]
+      },
+      {
+        "text": "안드로이드 프라이빗 dns",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "40"
+            }
+          ],
+          "avgMonthlySearches": "50",
+          "competitionIndex": "0"
+        },
+        "closeVariants": [
+          "안드로이드 프라이빗 DNS"
+        ]
+      },
+      {
+        "text": "암호화 dns",
+        "closeVariants": [
+          "암호화 DNS"
+        ]
+      }
+    ]
+  }
+}
