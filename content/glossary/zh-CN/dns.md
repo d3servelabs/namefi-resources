@@ -69,7 +69,7 @@ DNS 执行**名称解析**：给定一个域名，它返回与该名称关联的
 
 DNS 被组织为一棵倒置的树。根（`.`）位于顶端；其下是 TLD（`.com`、`.net`、`.io`，以及国家代码如 `.de`）；每个 TLD 下方是二级域（`example.com`）；这些域还可以拥有嵌套的子域（`mail.example.com`）。
 
-**区**是统一管理的 DNS 树的一部分。区并非单个节点。委派将子区与父区分开。权威名称服务器保存区的**资源记录**（[RFC 1034 第 4.2 节](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)）。常见的 [DNS 记录类型](/zh-CN/glossary/dns-record-types/)包括：
+**区**是统一管理的 DNS 树的一部分。DNS 树的每个节点不一定单独组成一个区。委派将子区与父区分开。权威名称服务器保存区的**资源记录**（[RFC 1034 第 4.2 节](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)）。常见的 [DNS 记录类型](/zh-CN/glossary/dns-record-types/)包括：
 
 | 记录 | 用途 | 示例值 |
 |--------|---------|---------------|

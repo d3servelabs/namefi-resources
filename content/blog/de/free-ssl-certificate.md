@@ -79,6 +79,8 @@ Das Zertifikat bestätigt eine Verbindungsidentität und empfiehlt kein Vertraue
 6. Bestätigen Sie die automatische Erneuerung und bestimmen Sie einen Verantwortlichen für Fehler.
 7. Prüfen Sie Anwendungsressourcen auf verbleibende HTTP-Anfragen, bevor Sie HTTPS erzwingen.
 
+Bei der Prüfung am 22. Oktober 2026 nennt die [FAQ von Let's Encrypt](https://letsencrypt.org/docs/faq/#what-is-the-lifetime-for-lets-encrypt-certificates-for-how-long-are-they-valid) Standardzertifikate mit 90 Tagen und optionale Zertifikate mit sechs Tagen Gültigkeit. Die FAQ empfiehlt die Erneuerung entsprechend alle 60 Tage beziehungsweise alle drei Tage. Diese Zeiträume beschreiben das aktuelle Angebot von Let's Encrypt, nicht jedes kostenlose Zertifikat. Lassen Sie die automatische Erneuerung aktiviert und überwachen Sie das Zertifikat, das der öffentliche Endpunkt tatsächlich ausliefert.
+
 GitHub beschreibt [Probleme mit gemischten Inhalten](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https#resolving-problems-with-mixed-content), wenn eine HTTPS-Seite Ressourcen über HTTP anfordert. Eine erfolgreiche Zertifikatsausstellung korrigiert keine solchen Anwendungsverweise.
 
 Nutzen Sie den [Leitfaden zur Zertifikatserneuerung](/de/blog/renew-ssl-certificate/) für die Prüfung des öffentlichen Endpunkts und des Zertifikatswechsels. Eine Zertifikatsübersicht kann einen erfolgreichen Antrag anzeigen, während ein anderer Server noch ein altes Zertifikat liefert. Prüfen Sie die Verbindung, die Besucher tatsächlich verwenden.

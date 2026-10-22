@@ -1,0 +1,34 @@
+[
+  {
+    "agent_path": "/root/installation_cost",
+    "phase": "before-independent-arabic-final-qa",
+    "captured_utc": "2026-10-22T05:19:40.255026+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a161f3-2e1c-7ad2-9e21-156aa79d7609",
+        "session_log_name": "rollout-2026-10-21T21-51-29-01a161f3-2e1c-7ad2-9e21-156aa79d7609.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T05:10:57.550Z",
+          "total_token_usage": {
+            "input_tokens": 14104817,
+            "cached_input_tokens": 13944064,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 26416,
+            "reasoning_output_tokens": 4256,
+            "total_tokens": 14131233
+          },
+          "last_token_usage": {
+            "input_tokens": 183149,
+            "cached_input_tokens": 182528,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 42,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 183191
+          }
+        }
+      }
+    ]
+  }
+]

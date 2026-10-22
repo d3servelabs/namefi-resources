@@ -1,0 +1,21 @@
+{
+  "selected": {
+    "es": {
+      "variant": "es-MX",
+      "evidence": "ads-es-MX.json",
+      "terms": [
+        "instalar certificado ssl",
+        "instalar ssl nginx"
+      ],
+      "avg_monthly_searches": [
+        20,
+        10
+      ],
+      "language_id": 1003,
+      "geo_id": 2484
+    }
+  },
+  "other_locales": "Deferred; no topic/language/region evidence acquired.",
+  "lqa": "GPT-6.1 source/target section-by-section self-review, same code and source URLs, both tables and all headings preserved. Human/native review UNKNOWN. Runtime rendering deferred to coordinator final publication checks.",
+  "fallback": "es related HTTPS/glossary routes intentionally retain same-locale fallback."
+}
