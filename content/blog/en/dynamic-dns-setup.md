@@ -1,6 +1,6 @@
 ---
 title: "Dynamic DNS Keeps a Hostname Pointed at a Changing Address"
-description: "Plan dynamic DNS updates for a changing IP address, choose an update client, limit credentials, and check reachability separately from DNS."
+description: "Configure ddclient for changing IPv4 addresses, protect update credentials, and check DNS separately from network reachability."
 date: '2026-10-22'
 language: en
 tags: ['dns', 'networking', 'domains', 'guide']
@@ -72,6 +72,22 @@ With Cloudflare proxying enabled, address lookups return Cloudflare addresses ra
 8. Test the intended service from an outside network.
 9. Confirm that unauthorized users cannot access the service.
 
+For a concrete IPv4 example, suppose Cloudflare already hosts your zone and you use a current `ddclient` release. Create the intended A record first. The project's [Cloudflare example](https://github.com/ddclient/ddclient/blob/main/ddclient.conf.in#L168-L175) requires a token with `Zone:DNS:Edit` and `Zone:Zone:Read`. Limit the token's resources to the intended zone. The example below combines that provider configuration with the documented [IPv4 discovery and environment-variable settings](https://ddclient.net/#using-environment-variables):
+
+```text
+ssl=yes
+usev4=webv4,webv4=ipify-ipv4
+usev6=disabled
+protocol=cloudflare
+zone=example.com
+password_env=CLOUDFLARE_DDNS_TOKEN
+home.example.com
+```
+
+Replace `example.com` and `home.example.com` with names you administer. Use a release with the documented `_env` support. Save the non-secret configuration at the installed package's configuration path, normally `/etc/ddclient/ddclient.conf`. Have your service or secret manager supply `CLOUDFLARE_DDNS_TOKEN` only to the updater process. Do not substitute the token value into the configuration example or a shell argument.
+
+Run `ddclient -daemon 0 -noquiet` through that authorized launcher for an initial update. The zero-second daemon setting disables the background loop for this one run. Inspect the provider's record data and confirm the detected IPv4 address. Then enable the installed package's service or scheduler and confirm subsequent checks. Review the package's instructions before choosing a polling interval. This configuration does not configure an AAAA update or solve carrier-grade NAT.
+
 Cloudflare lets tokens restrict permissions and resources. A zone-scoped token does not necessarily restrict writes to one hostname. Check the provider's available scope instead of assuming per-record isolation. Never put a token into a public repository, screenshot, or shared command. [Cloudflare documents token permissions and resource restrictions](#cloudflare-describes-token-permissions).
 
 Keep update logs free of credentials. Record the target hostname, address family, result, and last successful update time with its timezone. Handle IPv4 and IPv6 separately. An IPv4 update does not verify the IPv6 path.
@@ -90,7 +106,7 @@ IETF — [RFC 2136](https://www.rfc-editor.org/rfc/rfc2136.html#section-1), abst
 
 ### ddclient separates detection from provider updates
 
-ddclient project — [Configuration introduction](https://ddclient.net/#configuration). Fetched 2026-10-22.
+ddclient project — [Configuration introduction](https://ddclient.net/#configuration), environment-variable settings, and [Cloudflare configuration example](https://github.com/ddclient/ddclient/blob/main/ddclient.conf.in#L168-L175). Fetched 2026-10-22.
 
 ### The standard describes shared address space
 

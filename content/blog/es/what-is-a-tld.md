@@ -98,7 +98,9 @@ Esta es la distinción **[gTLD](/es/glossary/gtld/) vs ccTLD** en pocas palabras
 
 ### 3. TLDs Patrocinados (sTLDs)
 
-Los **TLD patrocinados** tienen un patrocinador que representa a una comunidad concreta. [ICANN enumera `.aero`, `.coop` y `.museum` como ejemplos patrocinados](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=The%20.aero%2C%20.coop%2C%20and%20.museum). Los requisitos de registro dependen de la extensión y sus políticas vigentes. Una restricción de registro por sí sola no convierte un TLD en patrocinado.
+Los **TLD patrocinados** tienen un patrocinador que representa a una comunidad concreta. [ICANN clasifica `.aero` y `.coop` como patrocinados en los acuerdos vigentes](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type). Los requisitos de registro dependen de la extensión y sus políticas vigentes. Una restricción de registro por sí sola no convierte un TLD en patrocinado.
+
+[ICANN — .coop](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type).
 
 ### 4. Nuevos gTLDs
 

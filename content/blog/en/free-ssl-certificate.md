@@ -79,6 +79,8 @@ The certificate establishes a connection identity, rather than a recommendation 
 6. Confirm automated renewal and assign an owner to investigate failures.
 7. Check application resources for remaining HTTP requests before enforcing HTTPS.
 
+At the October 22, 2026 check, [Let's Encrypt's FAQ](https://letsencrypt.org/docs/faq/#what-is-the-lifetime-for-lets-encrypt-certificates-for-how-long-are-they-valid) lists 90-day default certificates and optional six-day certificates. The FAQ recommends renewal every 60 days and every three days, respectively. These periods describe Let's Encrypt's current offerings, rather than every free certificate. Keep automated renewal enabled and monitor the certificate actually served by the public endpoint.
+
 GitHub documents [mixed-content problems](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https#resolving-problems-with-mixed-content) when an HTTPS page requests resources through HTTP. A successfully issued certificate does not repair those application references.
 
 Use the [certificate renewal guide](/en/blog/renew-ssl-certificate/) for public-endpoint inspection and replacement checks. A certificate dashboard can show a successful request while a different server still presents an old certificate. Verify the connection that visitors actually use.

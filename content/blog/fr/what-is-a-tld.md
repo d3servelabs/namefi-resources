@@ -98,7 +98,9 @@ C'est la distinction **[gTLD](/fr/glossary/gtld/) vs ccTLD** en résumé : les g
 
 ### 3. TLD sponsorisés (sTLD)
 
-Les **TLD sponsorisés** ont un organisme parrain qui représente une communauté particulière. [ICANN cite `.aero`, `.coop` et `.museum` comme exemples sponsorisés](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=The%20.aero%2C%20.coop%2C%20and%20.museum). Les conditions d’enregistrement dépendent de l’extension et de ses règles actuelles. Une restriction d’enregistrement ne suffit pas à faire d’un TLD une extension sponsorisée.
+Les **TLD sponsorisés** ont un organisme parrain qui représente une communauté particulière. [ICANN classe `.aero` et `.coop` comme sponsorisés dans les accords actuels](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type). Les conditions d’enregistrement dépendent de l’extension et de ses règles actuelles. Une restriction d’enregistrement ne suffit pas à faire d’un TLD une extension sponsorisée.
+
+[ICANN — .coop](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type).
 
 ### 4. Nouveaux gTLD
 

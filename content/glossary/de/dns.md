@@ -69,7 +69,7 @@ Dieses Muster – bei dem der Resolver die iterative Arbeit erledigt und der Cli
 
 DNS ist als invertierter Baum organisiert. Die Wurzel (`.`) steht an der Spitze; darunter befinden sich TLDs (`.com`, `.net`, `.io`, Länderkürzel wie `.de`); darunter Second-Level-Domains (`example.com`); und diese können verschachtelte Subdomains haben (`mail.example.com`).
 
-Eine **Zone** ist ein gemeinsam verwalteter Teil des DNS-Baums, kein einzelner Knoten. Eine Delegation trennt eine untergeordnete Zone von ihrer übergeordneten Zone. Der autoritative Nameserver hält die **Ressourceneinträge** der Zone ([RFC 1034, Abschnitt 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Häufige [DNS-Eintragstypen](/de/glossary/dns-record-types/) sind:
+Eine **Zone** ist ein gemeinsam verwalteter Teil des DNS-Baums. Nicht jeder Knoten bildet eine eigene Zone. Eine Delegation trennt eine untergeordnete Zone von ihrer übergeordneten Zone. Der autoritative Nameserver hält die **Ressourceneinträge** der Zone ([RFC 1034, Abschnitt 4.2](https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2)). Häufige [DNS-Eintragstypen](/de/glossary/dns-record-types/) sind:
 
 | Eintrag | Zweck | Beispielwert |
 |---------|-------|--------------|

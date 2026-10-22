@@ -1,6 +1,6 @@
 ---
 title: "Dynamisches DNS hält einen Hostnamen mit einer wechselnden Adresse verbunden"
-description: "Planen Sie DDNS für wechselnde IP-Adressen. Wählen Sie einen Client, begrenzen Sie Zugangsdaten und prüfen Sie die Erreichbarkeit getrennt vom DNS."
+description: "Konfigurieren Sie ddclient für wechselnde IPv4-Adressen. Schützen Sie Zugangsdaten und prüfen Sie DNS und Netzwerkzugriff getrennt."
 date: '2026-10-22'
 language: de
 tags: ['dns', 'networking', 'domains', 'guide']
@@ -72,6 +72,22 @@ Bei aktiviertem Cloudflare-Proxy liefern Adressabfragen Cloudflare-Adressen stat
 8. Prüfen Sie den vorgesehenen Dienst von einem externen Netz aus.
 9. Prüfen Sie, dass unberechtigte Personen den Dienst nicht nutzen können.
 
+Ein konkretes IPv4-Beispiel setzt voraus, dass Cloudflare Ihre Zone bereits betreibt und Sie eine aktuelle `ddclient`-Version verwenden. Erstellen Sie zuerst den vorgesehenen A-Eintrag. Das [Cloudflare-Beispiel des Projekts](https://github.com/ddclient/ddclient/blob/main/ddclient.conf.in#L168-L175) verlangt ein Token mit `Zone:DNS:Edit` und `Zone:Zone:Read`. Beschränken Sie die Ressourcen des Tokens auf die vorgesehene Zone. Die folgende Konfiguration verbindet diese Anbietereinstellungen mit der dokumentierten [IPv4-Ermittlung und Nutzung von Umgebungsvariablen](https://ddclient.net/#using-environment-variables):
+
+```text
+ssl=yes
+usev4=webv4,webv4=ipify-ipv4
+usev6=disabled
+protocol=cloudflare
+zone=example.com
+password_env=CLOUDFLARE_DDNS_TOKEN
+home.example.com
+```
+
+Ersetzen Sie `example.com` und `home.example.com` durch Namen, die Sie verwalten. Verwenden Sie eine Version mit der dokumentierten `_env`-Unterstützung. Speichern Sie die Konfiguration ohne Geheimnisse im Konfigurationspfad des installierten Pakets, normalerweise `/etc/ddclient/ddclient.conf`. Lassen Sie Ihren Dienst oder Ihre Geheimnisverwaltung `CLOUDFLARE_DDNS_TOKEN` ausschließlich dem Aktualisierungsprozess übergeben. Setzen Sie den Tokenwert weder in das Konfigurationsbeispiel noch in ein Shellargument ein.
+
+Starten Sie `ddclient -daemon 0 -noquiet` über diesen autorisierten Aufruf für eine erste Aktualisierung. Der Daemonwert von null Sekunden deaktiviert die Hintergrundschleife für diesen einzelnen Lauf. Prüfen Sie die Eintragsdaten beim Anbieter und bestätigen Sie die ermittelte IPv4-Adresse. Aktivieren Sie anschließend den Dienst oder Zeitplaner des installierten Pakets und bestätigen Sie weitere Prüfungen. Wählen Sie das Abfrageintervall anhand der Paketanleitung. Diese Konfiguration richtet keine AAAA-Aktualisierung ein und löst kein Carrier-Grade-NAT.
+
 Cloudflare erlaubt die Beschränkung von Tokenberechtigungen und Ressourcen. Ein auf eine Zone beschränktes Token begrenzt Schreibzugriffe nicht zwangsläufig auf einen Hostnamen. Prüfen Sie die verfügbaren Einschränkungen beim Anbieter. Setzen Sie keine Isolation einzelner Einträge voraus. Stellen Sie ein Token niemals in ein öffentliches Repository, einen Screenshot oder einen geteilten Befehl. [Cloudflare dokumentiert Berechtigungen und Ressourcenbeschränkungen](#cloudflare-beschreibt-tokenberechtigungen).
 
 Halten Sie Aktualisierungsprotokolle frei von Zugangsdaten. Erfassen Sie Zielhostname, Adressfamilie, Ergebnis und Zeitpunkt der letzten erfolgreichen Aktualisierung samt Zeitzone. Behandeln Sie IPv4 und IPv6 getrennt. Eine IPv4-Aktualisierung bestätigt nicht den IPv6-Pfad.
@@ -90,7 +106,7 @@ IETF — [RFC 2136](https://www.rfc-editor.org/rfc/rfc2136.html#section-1), Zusa
 
 ### ddclient trennt die Adressermittlung von Anbieteraktualisierungen
 
-ddclient-Projekt — [Einführung in die Konfiguration](https://ddclient.net/#configuration). Abgerufen am 2026-10-22.
+ddclient-Projekt — [Einführung in die Konfiguration](https://ddclient.net/#configuration), Umgebungsvariablen und [Cloudflare-Konfigurationsbeispiel](https://github.com/ddclient/ddclient/blob/main/ddclient.conf.in#L168-L175). Abgerufen am 2026-10-22.
 
 ### Der Standard beschreibt den gemeinsamen Adressraum
 
