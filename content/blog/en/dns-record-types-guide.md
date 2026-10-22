@@ -38,6 +38,31 @@ This guide follows a hypothetical `example.com` zone through those decisions. Ev
 
 The useful question is more specific than “Which records does a domain need?” Ask which application reads each record, where the record belongs, and what other records complete the job.
 
+## Record types answer different service questions
+
+![Website addresses use A or AAAA, website aliases use CNAME, mail delivery uses MX, SPF uses TXT, and zone authority uses NS with SOA.](../../assets/dns-record-types-guide-05-record-selection.jpg)
+
+Use this table to choose the part of the zone to investigate. The table summarizes the record roles explained and sourced below.
+
+| Type | Data or purpose | Use the record when |
+| --- | --- | --- |
+| A | IPv4 address | The service supplies an IPv4 destination |
+| AAAA | IPv6 address | The service supplies a working IPv6 destination |
+| CNAME | Alias target name | The provider requests an alias at a compatible name |
+| MX | Preference and exchanger name | The domain receives email through a mail service |
+| TXT | Application-defined text | A service requests verification or an SPF/DKIM publication |
+| NS | Authoritative server name | A zone delegates authority or declares its servers |
+| SOA | Zone management fields | The authoritative service manages zone metadata |
+| CAA | Certificate issuance policy | The domain restricts certificate authorization |
+| SRV | Priority, weight, port, target | An application supports DNS service discovery |
+| PTR | Name in a reverse zone | An address administrator configures reverse DNS |
+| DNSKEY, DS, RRSIG, NSEC | DNSSEC validation data | The operator deploys a coordinated signed zone |
+| SVCB, HTTPS | Service binding data | The endpoint and client support the relevant binding |
+
+The [IANA resource record registry](https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-4) lists additional, specialized types. A domain does not need every registered type. This guide covers the common operational choices rather than every historical assignment.
+
+If instructions say “AAA record,” confirm whether the provider means AAAA. If instructions say “C record,” confirm whether the provider means CNAME. IANA registers AAAA and CNAME, without types named AAA or C. Do not invent a type from an abbreviated search term.
+
 ## Website records connect names to reachable services
 
 ![Website records connect names to reachable services.](../../assets/dns-record-types-guide-01-website-record-paths.jpg)
@@ -69,6 +94,24 @@ Do not add HTTPS or SVCB from an unrelated tutorial. Follow the service's config
 
 After changing a website record, check the hostname's DNS answer and the website itself. Confirm the intended page and certificate for each public hostname. A correct address alone cannot establish that the web server accepts the requested hostname.
 
+### Example records show the owner name and value separately
+
+Each row below represents a hypothetical zone-file line, not a live answer or a complete zone. The format follows [RFC 1035, section 5](https://www.rfc-editor.org/rfc/rfc1035.html#section-5).
+
+| Owner name | TTL | Class | Type | Value |
+| --- | --- | --- | --- | --- |
+| `example.com.` | `300` | `IN` | `A` | `192.0.2.20` |
+| `example.com.` | `300` | `IN` | `AAAA` | `2001:db8::20` |
+| `www.example.com.` | `300` | `IN` | `CNAME` | `site.example.net.` |
+| `example.com.` | `3600` | `IN` | `MX` | `10 mail.example.net.` |
+| `_verify.example.com.` | `300` | `IN` | `TXT` | `"illustrative-verification-token"` |
+
+The TTL uses seconds. `IN` denotes the Internet class. A terminal dot identifies an absolute domain name in a zone file. Dashboards can use different input conventions, so check the saved full name.
+
+The examples use reserved [example domains](https://www.rfc-editor.org/rfc/rfc2606.html#section-3), [IPv4 documentation addresses](https://www.rfc-editor.org/rfc/rfc5737.html#section-3), and the [IPv6 documentation prefix](https://www.rfc-editor.org/rfc/rfc3849.html#section-2). Do not copy these destinations into production. The MX example still needs address records for its exchanger in the exchanger's zone. The TXT example verifies no actual account.
+
+The [AAAA guide](/en/blog/aaaa-record-explained/) covers IPv6 readiness. The [A and CNAME comparison](/en/blog/cname-vs-a-record/) covers alias constraints in detail.
+
 ## Email records divide delivery from sender authentication
 
 ![Email records divide delivery from sender authentication.](../../assets/dns-record-types-guide-02-email-dependencies.jpg)
@@ -83,7 +126,7 @@ This dependency matters during a website migration. Suppose the existing MX poin
 
 TXT carries text that another protocol interprets. The record type does not identify the text's purpose by itself. A provider verification token and a sending policy can occupy separate TXT records at the same name. The consuming service selects the relevant data. [RFC 1035, section 3.3.14](https://www.rfc-editor.org/rfc/rfc1035.html#section-3.3.14) defines the text container.
 
-SPF publishes sending authorization through TXT. Adding a second SPF policy can make the authorization check fail because the standard prohibits selecting multiple SPF records. Combine authorized senders through the existing policy and review the resulting policy with the mail administrator. [RFC 7208, sections 3.1–3.2](https://www.rfc-editor.org/rfc/rfc7208.html#section-3.1) defines publication rules.
+SPF publishes sending authorization through TXT. The standard requires TXT, even when a DNS console still offers the legacy SPF record type. Adding a second SPF policy can make the authorization check fail because the standard prohibits selecting multiple SPF records. Combine authorized senders through the existing policy and review the resulting policy with the mail administrator. [RFC 7208, sections 3.1–3.2](https://www.rfc-editor.org/rfc/rfc7208.html#section-3.1) defines publication rules.
 
 DKIM uses a selector and signing domain to find a public key. The DNS query uses a name such as `selector1._domainkey.example.com`. A provider might request TXT directly or supply an alias arrangement. Preserve the provider's exact owner name and required type. [RFC 6376, section 3.6.2](https://www.rfc-editor.org/rfc/rfc6376.html#section-3.6.2) describes key retrieval.
 
@@ -144,7 +187,7 @@ Finish with application checks. Load both website hostnames, test intended addre
 
 If the change fails, restore the specific saved records that caused the failure. Preserve unrelated working records. Keep the previous service available when feasible until verification succeeds. A careful record inventory makes recovery a defined operation rather than another round of guesses.
 
-## Sources and further reading
+## These sources support the record selection guide
 
 - IETF — [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034.html), sections 3.6.2 and 4.2.1: aliases, zones, delegation, and glue. Fetched 2026-10-21.
 - IETF — [RFC 1035](https://www.rfc-editor.org/rfc/rfc1035.html), sections 3.3.9–3.3.14, 3.4.1, and 3.5: MX, NS, SOA, TXT, A, and reverse mapping. Fetched 2026-10-21.
@@ -159,3 +202,8 @@ If the change fails, restore the specific saved records that caused the failure.
 - IETF — [RFC 8659](https://www.rfc-editor.org/rfc/rfc8659.html#section-3), section 3: CAA processing. Fetched 2026-10-21.
 - IETF — [RFC 2782](https://www.rfc-editor.org/rfc/rfc2782.html), “The format of the SRV RR”: fields and target restrictions. Fetched 2026-10-21.
 - IETF — [RFC 2308](https://www.rfc-editor.org/rfc/rfc2308.html#section-5), section 5: negative-answer caching. Fetched 2026-10-21.
+
+- IANA — [DNS resource record types](https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-4): registered type names and specialized assignments. Fetched 2026-10-21.
+- IETF — [RFC 2606](https://www.rfc-editor.org/rfc/rfc2606.html#section-3), section 3: reserved example domains. Fetched 2026-10-21.
+- IETF — [RFC 5737](https://www.rfc-editor.org/rfc/rfc5737.html#section-3), section 3: IPv4 documentation ranges. Fetched 2026-10-21.
+- IETF — [RFC 3849](https://www.rfc-editor.org/rfc/rfc3849.html#section-2), section 2: IPv6 documentation prefix. Fetched 2026-10-21.

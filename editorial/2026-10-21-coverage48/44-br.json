@@ -1,0 +1,1143 @@
+{
+  "order": 44,
+  "source_id": "O10",
+  "slug": "br",
+  "action": "update_existing",
+  "model": "gpt-6.1-sol",
+  "fetched_local_date": "2026-10-21",
+  "fetched_utc_date": "2026-10-22",
+  "scope": "English source update, no existing translations found, one new inline image, existing cover retained. Local-only writer package.",
+  "sources": [
+    {
+      "url": "https://www.iana.org/domains/root/db/br.html",
+      "method": "web open",
+      "verified": "Country-code delegation, 1989, CGI.br manager. IANA does not establish eligibility."
+    },
+    {
+      "url": "https://registro.br/dominio/regras/",
+      "method": "rendered browser",
+      "verified": "CPF/CNPJ eligibility tied to legal representation or establishment in Brazil and regular Finance Ministry records, syntax, equivalence, authoritative DNS."
+    },
+    {
+      "url": "https://registro.br/ajuda/registro-de-novos-dominios/",
+      "method": "rendered browser, also opened cited deep links",
+      "verified": "Adult individual/company legally established in Brazil, local contact, tax ID and extra category documentation, DNS options and accented-name guidance."
+    },
+    {
+      "url": "https://registro.br/dominio/regras/empresas-estrangeiras/",
+      "method": "rendered browser",
+      "verified": "Foreign company representative, substitute identifier, all seven document requirements, 12-month commitment, Brazil-resident billing contact."
+    },
+    {
+      "url": "https://registro.br/dominio/categorias/",
+      "method": "rendered browser",
+      "verified": "Current category catalogue and CPF/CNPJ/documentation/DNSSEC distinctions. No unrestricted direct-root option."
+    },
+    {
+      "url": "https://registro.br/dominio/contrato/",
+      "method": "rendered browser",
+      "document_date": "2024-11-26",
+      "verified": "NIC.br service provider, accurate holder data, cancellation, payment renewal, SACI-Adm, Brazilian law. Read complete contract."
+    },
+    {
+      "url": "https://registro.br/ajuda/pagamento-de-dominio/",
+      "method": "rendered browser",
+      "verified": "R$40/one year, R$76/two years, R$364/ten years, NOM.BR/EMP.BR exceptions, expiry reminders and freezing/release."
+    },
+    {
+      "url": "https://registro.br/dominio/estatisticas/",
+      "method": "rendered browser",
+      "snapshot_display_date": "2026-10-21",
+      "verified": "Total6028037; COM.BR5571552; generic group5650080. COM.BR share of total92.427%, group98.61%. Do not confuse denominators."
+    },
+    {
+      "url": "https://www.nic.br/registro-nota-edu/",
+      "method": "web open",
+      "verified": "Historical clarification closes automatic root registrations, preserves qualifying academic names, directs new higher-education requests to edu.br. Used with current catalogue, not as a new commercial availability policy."
+    },
+    {
+      "url": "https://www.nic.br/registro-regras-edu/",
+      "method": "web open",
+      "verified": "Read older transition proposal. Later clarification preserves qualifying historical names; avoid older claim all direct names removed in2002."
+    },
+    {
+      "url": "https://www.cgi.br/resolucoes/documento/2008/008",
+      "method": "rendered browser",
+      "verified": "Article3 equivalence within same category; Article6 foreign-company provisional registration. Article10 struck/revoked provisions not used."
+    },
+    {
+      "url": "https://registro.br/tecnologia/dnssec/",
+      "method": "rendered browser",
+      "verified": "Official DNSSEC resources. Live statistics independently demonstrate active deployment; current category list states some mandatory requirements."
+    },
+    {
+      "url": "https://registro.br/dominio/saci-adm/",
+      "method": "rendered browser",
+      "verified": "System covers br disputes after October2010. No unsupported UDRP equivalence or invented case test."
+    },
+    {
+      "url": "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites",
+      "method": "web open",
+      "verified": "Country-code audience signal and generic ccTLD exceptions. Removed ranking guarantee/penalty claims."
+    }
+  ],
+  "material_corrections": [
+    "Direct name.br is not presented as a routine commercial alternative to com.br.",
+    "IANA manager is CGI.br, not Registro.br.",
+    "98.61% belongs to generic group; COM.BR is about92.4% of total.",
+    "CPF alone does not imply all overseas individuals qualify.",
+    "Removed unsupported string-length premium pricing, blanket low spam reputation, email provider treatment, comparative trust and SEO ranking claims.",
+    "Kept original title/date/slug and ordered related metadata."
+  ],
+  "translations": {
+    "selected": [],
+    "existing": [],
+    "supported_routes": [
+      "en",
+      "es",
+      "de",
+      "fr",
+      "zh-CN",
+      "ar",
+      "hi",
+      "ko",
+      "ja",
+      "ta"
+    ],
+    "runtime_evidence": "namefi-astra/main/apps/resources/src/i18n-config.ts and app/[lang]/tld/[slug]/page.tsx inspected. Actual locale pages self-canonical; no runtime changes.",
+    "ads_language_ids_source": "https://developers.google.com/google-ads/api/data/codes-formats",
+    "language_ids": {
+      "Portuguese": 1014,
+      "Spanish": 1003,
+      "English": 1000
+    },
+    "geo_ids": {
+      "source": "https://developers.google.com/static/google-ads/api/data/geo/geotargets-2026-10-06.csv.zip",
+      "rows": [
+        {
+          "Criteria ID": "2032",
+          "Name": "Argentina",
+          "Canonical Name": "Argentina",
+          "Parent ID": "",
+          "Country Code": "AR",
+          "Target Type": "Country",
+          "Status": "Active"
+        },
+        {
+          "Criteria ID": "2076",
+          "Name": "Brazil",
+          "Canonical Name": "Brazil",
+          "Parent ID": "",
+          "Country Code": "BR",
+          "Target Type": "Country",
+          "Status": "Active"
+        },
+        {
+          "Criteria ID": "2840",
+          "Name": "United States",
+          "Canonical Name": "United States",
+          "Parent ID": "",
+          "Country Code": "US",
+          "Target Type": "Country",
+          "Status": "Active"
+        }
+      ]
+    },
+    "network": "GOOGLE_SEARCH",
+    "period": "2025-10 through 2026-09",
+    "metrics": [
+      {
+        "market": "pt-BR",
+        "request": {
+          "language": "languageConstants/1014",
+          "geoTargetConstants": [
+            "geoTargetConstants/2076"
+          ],
+          "keywordPlanNetwork": "GOOGLE_SEARCH",
+          "keywords": [
+            "domínio br",
+            "domínio com br",
+            "registrar domínio br",
+            "domínio br para estrangeiros"
+          ],
+          "includeAdultKeywords": false
+        },
+        "response": {
+          "results": [
+            {
+              "text": "domínio br",
+              "keywordMetrics": {
+                "competition": "MEDIUM",
+                "monthlySearchVolumes": [
+                  {
+                    "month": "OCTOBER",
+                    "year": "2025",
+                    "monthlySearches": "2400"
+                  },
+                  {
+                    "month": "NOVEMBER",
+                    "year": "2025",
+                    "monthlySearches": "2400"
+                  },
+                  {
+                    "month": "DECEMBER",
+                    "year": "2025",
+                    "monthlySearches": "1900"
+                  },
+                  {
+                    "month": "JANUARY",
+                    "year": "2026",
+                    "monthlySearches": "2900"
+                  },
+                  {
+                    "month": "FEBRUARY",
+                    "year": "2026",
+                    "monthlySearches": "2400"
+                  },
+                  {
+                    "month": "MARCH",
+                    "year": "2026",
+                    "monthlySearches": "2900"
+                  },
+                  {
+                    "month": "APRIL",
+                    "year": "2026",
+                    "monthlySearches": "2900"
+                  },
+                  {
+                    "month": "MAY",
+                    "year": "2026",
+                    "monthlySearches": "2900"
+                  },
+                  {
+                    "month": "JUNE",
+                    "year": "2026",
+                    "monthlySearches": "2400"
+                  },
+                  {
+                    "month": "JULY",
+                    "year": "2026",
+                    "monthlySearches": "2900"
+                  },
+                  {
+                    "month": "AUGUST",
+                    "year": "2026",
+                    "monthlySearches": "2900"
+                  },
+                  {
+                    "month": "SEPTEMBER",
+                    "year": "2026",
+                    "monthlySearches": "2900"
+                  }
+                ],
+                "avgMonthlySearches": "2900",
+                "competitionIndex": "59",
+                "lowTopOfPageBidMicros": "475087",
+                "highTopOfPageBidMicros": "2462251"
+              }
+            },
+            {
+              "text": "domínio com br",
+              "keywordMetrics": {
+                "competition": "HIGH",
+                "monthlySearchVolumes": [
+                  {
+                    "month": "OCTOBER",
+                    "year": "2025",
+                    "monthlySearches": "260"
+                  },
+                  {
+                    "month": "NOVEMBER",
+                    "year": "2025",
+                    "monthlySearches": "320"
+                  },
+                  {
+                    "month": "DECEMBER",
+                    "year": "2025",
+                    "monthlySearches": "210"
+                  },
+                  {
+                    "month": "JANUARY",
+                    "year": "2026",
+                    "monthlySearches": "390"
+                  },
+                  {
+                    "month": "FEBRUARY",
+                    "year": "2026",
+                    "monthlySearches": "320"
+                  },
+                  {
+                    "month": "MARCH",
+                    "year": "2026",
+                    "monthlySearches": "480"
+                  },
+                  {
+                    "month": "APRIL",
+                    "year": "2026",
+                    "monthlySearches": "390"
+                  },
+                  {
+                    "month": "MAY",
+                    "year": "2026",
+                    "monthlySearches": "480"
+                  },
+                  {
+                    "month": "JUNE",
+                    "year": "2026",
+                    "monthlySearches": "390"
+                  },
+                  {
+                    "month": "JULY",
+                    "year": "2026",
+                    "monthlySearches": "390"
+                  },
+                  {
+                    "month": "AUGUST",
+                    "year": "2026",
+                    "monthlySearches": "480"
+                  },
+                  {
+                    "month": "SEPTEMBER",
+                    "year": "2026",
+                    "monthlySearches": "480"
+                  }
+                ],
+                "avgMonthlySearches": "390",
+                "competitionIndex": "72",
+                "lowTopOfPageBidMicros": "548984",
+                "highTopOfPageBidMicros": "2825795"
+              }
+            },
+            {
+              "text": "registrar domínio br",
+              "keywordMetrics": {
+                "competition": "HIGH",
+                "monthlySearchVolumes": [
+                  {
+                    "month": "OCTOBER",
+                    "year": "2025",
+                    "monthlySearches": "20"
+                  },
+                  {
+                    "month": "NOVEMBER",
+                    "year": "2025",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "DECEMBER",
+                    "year": "2025",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "JANUARY",
+                    "year": "2026",
+                    "monthlySearches": "30"
+                  },
+                  {
+                    "month": "FEBRUARY",
+                    "year": "2026",
+                    "monthlySearches": "20"
+                  },
+                  {
+                    "month": "MARCH",
+                    "year": "2026",
+                    "monthlySearches": "20"
+                  },
+                  {
+                    "month": "APRIL",
+                    "year": "2026",
+                    "monthlySearches": "30"
+                  },
+                  {
+                    "month": "MAY",
+                    "year": "2026",
+                    "monthlySearches": "30"
+                  },
+                  {
+                    "month": "JUNE",
+                    "year": "2026",
+                    "monthlySearches": "40"
+                  },
+                  {
+                    "month": "JULY",
+                    "year": "2026",
+                    "monthlySearches": "40"
+                  },
+                  {
+                    "month": "AUGUST",
+                    "year": "2026",
+                    "monthlySearches": "30"
+                  },
+                  {
+                    "month": "SEPTEMBER",
+                    "year": "2026",
+                    "monthlySearches": "40"
+                  }
+                ],
+                "avgMonthlySearches": "30",
+                "competitionIndex": "79",
+                "lowTopOfPageBidMicros": "436271",
+                "highTopOfPageBidMicros": "2382571"
+              }
+            },
+            {
+              "text": "domínio br para estrangeiros"
+            }
+          ]
+        }
+      },
+      {
+        "market": "es-AR",
+        "request": {
+          "language": "languageConstants/1003",
+          "geoTargetConstants": [
+            "geoTargetConstants/2032"
+          ],
+          "keywordPlanNetwork": "GOOGLE_SEARCH",
+          "keywords": [
+            "dominio br",
+            "dominio brasil",
+            "registrar dominio brasil"
+          ],
+          "includeAdultKeywords": false
+        },
+        "response": {
+          "results": [
+            {
+              "text": "dominio br",
+              "keywordMetrics": {
+                "competition": "HIGH",
+                "monthlySearchVolumes": [
+                  {
+                    "month": "OCTOBER",
+                    "year": "2025",
+                    "monthlySearches": "20"
+                  },
+                  {
+                    "month": "NOVEMBER",
+                    "year": "2025",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "DECEMBER",
+                    "year": "2025",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "JANUARY",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "FEBRUARY",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "MARCH",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "APRIL",
+                    "year": "2026",
+                    "monthlySearches": "20"
+                  },
+                  {
+                    "month": "MAY",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "JUNE",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "JULY",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "AUGUST",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "SEPTEMBER",
+                    "year": "2026",
+                    "monthlySearches": "30"
+                  }
+                ],
+                "avgMonthlySearches": "10",
+                "competitionIndex": "74",
+                "lowTopOfPageBidMicros": "990152",
+                "highTopOfPageBidMicros": "3038090"
+              }
+            },
+            {
+              "text": "dominio brasil",
+              "keywordMetrics": {
+                "competition": "MEDIUM",
+                "monthlySearchVolumes": [
+                  {
+                    "month": "OCTOBER",
+                    "year": "2025",
+                    "monthlySearches": "20"
+                  },
+                  {
+                    "month": "NOVEMBER",
+                    "year": "2025",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "DECEMBER",
+                    "year": "2025",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "JANUARY",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "FEBRUARY",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "MARCH",
+                    "year": "2026",
+                    "monthlySearches": "20"
+                  },
+                  {
+                    "month": "APRIL",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "MAY",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "JUNE",
+                    "year": "2026",
+                    "monthlySearches": "20"
+                  },
+                  {
+                    "month": "JULY",
+                    "year": "2026",
+                    "monthlySearches": "20"
+                  },
+                  {
+                    "month": "AUGUST",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "SEPTEMBER",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  }
+                ],
+                "avgMonthlySearches": "10",
+                "competitionIndex": "60",
+                "lowTopOfPageBidMicros": "986631",
+                "highTopOfPageBidMicros": "3080000"
+              }
+            },
+            {
+              "text": "registrar dominio brasil",
+              "keywordMetrics": {
+                "competition": "HIGH",
+                "monthlySearchVolumes": [
+                  {
+                    "month": "OCTOBER",
+                    "year": "2025",
+                    "monthlySearches": "0"
+                  },
+                  {
+                    "month": "NOVEMBER",
+                    "year": "2025",
+                    "monthlySearches": "0"
+                  },
+                  {
+                    "month": "DECEMBER",
+                    "year": "2025",
+                    "monthlySearches": "0"
+                  },
+                  {
+                    "month": "JANUARY",
+                    "year": "2026",
+                    "monthlySearches": "0"
+                  },
+                  {
+                    "month": "FEBRUARY",
+                    "year": "2026",
+                    "monthlySearches": "0"
+                  },
+                  {
+                    "month": "MARCH",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "APRIL",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "MAY",
+                    "year": "2026",
+                    "monthlySearches": "0"
+                  },
+                  {
+                    "month": "JUNE",
+                    "year": "2026",
+                    "monthlySearches": "0"
+                  },
+                  {
+                    "month": "JULY",
+                    "year": "2026",
+                    "monthlySearches": "0"
+                  },
+                  {
+                    "month": "AUGUST",
+                    "year": "2026",
+                    "monthlySearches": "0"
+                  },
+                  {
+                    "month": "SEPTEMBER",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  }
+                ],
+                "avgMonthlySearches": "10",
+                "competitionIndex": "86"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "market": "en-US",
+        "request": {
+          "language": "languageConstants/1000",
+          "geoTargetConstants": [
+            "geoTargetConstants/2840"
+          ],
+          "keywordPlanNetwork": "GOOGLE_SEARCH",
+          "keywords": [
+            "br domain",
+            "br domain country",
+            "register com br domain"
+          ],
+          "includeAdultKeywords": false
+        },
+        "response": {
+          "results": [
+            {
+              "text": "br domain",
+              "keywordMetrics": {
+                "competition": "LOW",
+                "monthlySearchVolumes": [
+                  {
+                    "month": "OCTOBER",
+                    "year": "2025",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "NOVEMBER",
+                    "year": "2025",
+                    "monthlySearches": "880"
+                  },
+                  {
+                    "month": "DECEMBER",
+                    "year": "2025",
+                    "monthlySearches": "880"
+                  },
+                  {
+                    "month": "JANUARY",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "FEBRUARY",
+                    "year": "2026",
+                    "monthlySearches": "1300"
+                  },
+                  {
+                    "month": "MARCH",
+                    "year": "2026",
+                    "monthlySearches": "1300"
+                  },
+                  {
+                    "month": "APRIL",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "MAY",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "JUNE",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "JULY",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "AUGUST",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "SEPTEMBER",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  }
+                ],
+                "avgMonthlySearches": "1000",
+                "competitionIndex": "8",
+                "lowTopOfPageBidMicros": "1480000",
+                "highTopOfPageBidMicros": "10204889"
+              }
+            },
+            {
+              "text": "br domain country",
+              "keywordMetrics": {
+                "competition": "LOW",
+                "monthlySearchVolumes": [
+                  {
+                    "month": "OCTOBER",
+                    "year": "2025",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "NOVEMBER",
+                    "year": "2025",
+                    "monthlySearches": "880"
+                  },
+                  {
+                    "month": "DECEMBER",
+                    "year": "2025",
+                    "monthlySearches": "880"
+                  },
+                  {
+                    "month": "JANUARY",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "FEBRUARY",
+                    "year": "2026",
+                    "monthlySearches": "1300"
+                  },
+                  {
+                    "month": "MARCH",
+                    "year": "2026",
+                    "monthlySearches": "1300"
+                  },
+                  {
+                    "month": "APRIL",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "MAY",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "JUNE",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "JULY",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "AUGUST",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  },
+                  {
+                    "month": "SEPTEMBER",
+                    "year": "2026",
+                    "monthlySearches": "1000"
+                  }
+                ],
+                "avgMonthlySearches": "1000",
+                "competitionIndex": "8",
+                "lowTopOfPageBidMicros": "1480000",
+                "highTopOfPageBidMicros": "10204889"
+              }
+            },
+            {
+              "text": "register com br domain",
+              "keywordMetrics": {
+                "competition": "HIGH",
+                "monthlySearchVolumes": [
+                  {
+                    "month": "OCTOBER",
+                    "year": "2025",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "NOVEMBER",
+                    "year": "2025",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "DECEMBER",
+                    "year": "2025",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "JANUARY",
+                    "year": "2026",
+                    "monthlySearches": "0"
+                  },
+                  {
+                    "month": "FEBRUARY",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "MARCH",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "APRIL",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "MAY",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "JUNE",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "JULY",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "AUGUST",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  },
+                  {
+                    "month": "SEPTEMBER",
+                    "year": "2026",
+                    "monthlySearches": "10"
+                  }
+                ],
+                "avgMonthlySearches": "10",
+                "competitionIndex": "86"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "gsc": {
+      "period": [
+        "2026-09-21",
+        "2026-10-18"
+      ],
+      "limitations": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand.",
+      "topic": {
+        "source_id": "O10",
+        "slug": "br",
+        "path_match": "/tld/br/",
+        "matched_rows": 3,
+        "observed_impressions": 3,
+        "observed_clicks": 0,
+        "countries": {
+          "pak": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "deu": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          },
+          "usa": {
+            "rows": 1,
+            "impressions": 1,
+            "clicks": 0
+          }
+        }
+      }
+    },
+    "decisions": [
+      {
+        "locale_region": "pt-BR",
+        "decision": "defer_unsupported_route",
+        "reason": "Direct relevant queries show2900/390/30 average monthly searches. This supports Portuguese demand, but actual runtime has no pt route. Do not generate unroutable prose or substitute another language. Foreign-company-specific query has UNKNOWN metrics, not0."
+      },
+      {
+        "locale_region": "es-AR",
+        "decision": "defer",
+        "reason": "Three measured queries each return10/month. Search intent inspection finds substantial Argentina-domain noise alongside Brazil-domain explanation. Limited topic demand and no supporting Argentina GSC observations do not justify a complete maintained translation in this batch. No universal volume threshold applied."
+      },
+      {
+        "locale_region": "en-US",
+        "decision": "update_source",
+        "reason": "br domain1000 and br domain country1000/month align with country meaning intent; register com br domain10/month. Queries may overlap; do not add as unique demand."
+      }
+    ],
+    "serp_intent": {
+      "queries": [
+        "domínio br registrar estrangeiros",
+        "dominio brasil registrar dominio br argentina"
+      ],
+      "observed_utc": "2026-10-22",
+      "interpretation": "Portuguese results include official registry eligibility and category pages. Spanish mixed search includes NIC Argentina and .ar registration pages, with .br explanations. Search results provide intent context, not legal evidence."
+    },
+    "unmeasured_locales": "Other supported locales were not requested as substitutes; no direct metrics measured, so UNKNOWN rather than0. Sparse GSC includes one German impression, insufficient for selecting German without direct Ads research."
+  },
+  "images": {
+    "new": "content/assets/br-01-registration-path.jpg",
+    "reused": "content/assets/br-og.jpg",
+    "attempts": [
+      {
+        "model_requested": "gpt-image-2",
+        "quality": "high",
+        "response_usage": {
+          "input_tokens": 464,
+          "input_tokens_details": {
+            "image_tokens": 0,
+            "text_tokens": 464
+          },
+          "output_tokens": 5488,
+          "output_tokens_details": {
+            "image_tokens": 5488,
+            "text_tokens": 0
+          },
+          "total_tokens": 5952
+        },
+        "created": 1792635337,
+        "captured_utc": "2026-10-22T02:15:38.345791+00:00"
+      }
+    ],
+    "dimensions": [
+      1200,
+      800
+    ],
+    "ratio_exception": "House skill allows another inline ratio when needed. Initial16:9crop clipped heading and left poor lower margin. Same successful1536x1024raw response reprocessed to1200x800; no new API call. Official logo composited at top right.",
+    "qc": "Opened final1200x800image and retained1200x630cover. Final inline has clear spelling, correct .com.br/CPF/CNPJ labels, no cropped objects, generous cream margins, official top-right logo. Existing cover remains relevant.",
+    "raw_response_private": "/private/tmp/namefi-stack48/44-br/image-attempt1/resp.json",
+    "script_private": "/private/tmp/namefi-stack48/44-br/image-attempt1.sh",
+    "sha256": "0c1d4636d819c7ae3f3e507cdf8dcbc8152a18097e70a5911513a9902c7594bd"
+  },
+  "usage_checkpoints": [
+    {
+      "agent_path": "/root/coverage48_44_o10",
+      "phase": "research-start",
+      "captured_utc": "2026-10-22T02:13:29.717211+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16161-f2ef-7150-b5aa-415d83ecb41b",
+          "session_log_name": "rollout-2026-10-21T19-12-51-01a16161-f2ef-7150-b5aa-415d83ecb41b.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T02:13:23.819Z",
+            "total_token_usage": {
+              "input_tokens": 359907,
+              "cached_input_tokens": 316800,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 820,
+              "reasoning_output_tokens": 20,
+              "total_tokens": 360727
+            },
+            "last_token_usage": {
+              "input_tokens": 82036,
+              "cached_input_tokens": 73600,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 123,
+              "reasoning_output_tokens": 10,
+              "total_tokens": 82159
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/coverage48_44_o10",
+      "phase": "research-end-writing-start",
+      "captured_utc": "2026-10-22T02:16:16.392403+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16161-f2ef-7150-b5aa-415d83ecb41b",
+          "session_log_name": "rollout-2026-10-21T19-12-51-01a16161-f2ef-7150-b5aa-415d83ecb41b.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T02:16:02.668Z",
+            "total_token_usage": {
+              "input_tokens": 2075522,
+              "cached_input_tokens": 1960704,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 4467,
+              "reasoning_output_tokens": 234,
+              "total_tokens": 2079989
+            },
+            "last_token_usage": {
+              "input_tokens": 154639,
+              "cached_input_tokens": 149888,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 169,
+              "reasoning_output_tokens": 79,
+              "total_tokens": 154808
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/coverage48_44_o10",
+      "phase": "writing-end-images-end",
+      "captured_utc": "2026-10-22T02:18:22.753350+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16161-f2ef-7150-b5aa-415d83ecb41b",
+          "session_log_name": "rollout-2026-10-21T19-12-51-01a16161-f2ef-7150-b5aa-415d83ecb41b.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T02:16:47.871Z",
+            "total_token_usage": {
+              "input_tokens": 2913136,
+              "cached_input_tokens": 2779136,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 5664,
+              "reasoning_output_tokens": 467,
+              "total_tokens": 2918800
+            },
+            "last_token_usage": {
+              "input_tokens": 174423,
+              "cached_input_tokens": 172288,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 136,
+              "reasoning_output_tokens": 13,
+              "total_tokens": 174559
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/coverage48_44_o10",
+      "phase": "sanity-end",
+      "captured_utc": "2026-10-22T02:20:09.415816+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16161-f2ef-7150-b5aa-415d83ecb41b",
+          "session_log_name": "rollout-2026-10-21T19-12-51-01a16161-f2ef-7150-b5aa-415d83ecb41b.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T02:19:02.221Z",
+            "total_token_usage": {
+              "input_tokens": 3637254,
+              "cached_input_tokens": 3495936,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 10211,
+              "reasoning_output_tokens": 787,
+              "total_tokens": 3647465
+            },
+            "last_token_usage": {
+              "input_tokens": 185630,
+              "cached_input_tokens": 181376,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 282,
+              "reasoning_output_tokens": 28,
+              "total_tokens": 185912
+            }
+          }
+        }
+      ]
+    },
+    {
+      "agent_path": "/root/coverage48_44_o10",
+      "phase": "handoff",
+      "captured_utc": "2026-10-22T02:20:38.384558+00:00",
+      "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+      "sessions": [
+        {
+          "session_id": "01a16161-f2ef-7150-b5aa-415d83ecb41b",
+          "session_log_name": "rollout-2026-10-21T19-12-51-01a16161-f2ef-7150-b5aa-415d83ecb41b.jsonl",
+          "model": "gpt-6.1-sol",
+          "latest_emitted_counter": {
+            "timestamp": "2026-10-22T02:20:09.476Z",
+            "total_token_usage": {
+              "input_tokens": 3824580,
+              "cached_input_tokens": 3681792,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 12715,
+              "reasoning_output_tokens": 1027,
+              "total_tokens": 3837295
+            },
+            "last_token_usage": {
+              "input_tokens": 187326,
+              "cached_input_tokens": 185856,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 2504,
+              "reasoning_output_tokens": 240,
+              "total_tokens": 189830
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "usage_limitations": [
+    "Research start checkpoint occurred after initial brief and skill reads.",
+    "Image generation and research interleaved, so separate exact token deltas for images and research are unavailable.",
+    "Writing-end capture reflected latest emitted counter and can lag current turn.",
+    "Translation phase not applicable.",
+    "Input includes cached input; output includes reasoning, never add subsets again."
+  ],
+  "checks": {
+    "data_validate": "PASS;37 pre-existing warnings;4055files zero locale/relationship mismatch;1633FAQs synchronized",
+    "lint_mdx": "PASS",
+    "focused_links": "PASS;1file zero broken/missing-locale/locale-mismatch/relationship-mismatch",
+    "git_diff_check": "PASS",
+    "images": "PASS;new1200x800 and reused1200x630 opened and checked"
+  },
+  "expected_urls": [
+    "https://namefi.io/r/en/tld/br"
+  ],
+  "deferred_gap": "Portuguese Brazil demand is real, but pt routing is unsupported. Root owns any later infrastructure decision.",
+  "readme_consideration": "Reviewed repository/content/tld/assets/editorial ancestors. Shared README ownership stays with root. Suggested note: br inline1200x800 preserves heading and labels under the house ratio exception.",
+  "remote_operations": "NONE; writer did not push, create PR, run review or hosted CI.",
+  "phase_times_utc": {
+    "research_start_checkpoint": "2026-10-22T02:13:29.717211+00:00",
+    "research_end_writing_start_checkpoint": "2026-10-22T02:16:16.392403+00:00",
+    "writing_end_images_end_checkpoint": "2026-10-22T02:18:22.753350+00:00",
+    "sanity_end_checkpoint": "2026-10-22T02:20:09.415816+00:00",
+    "image_api_created_epoch": 1792635337,
+    "image_usage_persisted": "2026-10-22T02:15:38.345791+00:00",
+    "image_start_exact": "UNKNOWN; generation ran during research and no separate capture checkpoint exists",
+    "selected_translation": "NOT_APPLICABLE"
+  }
+}

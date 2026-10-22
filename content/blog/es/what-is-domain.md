@@ -42,11 +42,9 @@ Internet se basa en un sistema llamado **[Sistema de Nombres de Dominio](/es/glo
 
 Un nombre de dominio se compone de varias partes:
 
-*   **[Dominio de Nivel Superior](/es/glossary/tld/) (TLD):** Este es el sufijo al final de la dirección, como `.com`, `.org`, `.net`, o más recientemente, `.xyz`, `.app`, e incluso `.ninja`. Algunos son genéricos (gTLDs), mientras que otros son específicos de un país (ccTLDs, como `.us`, `.uk`, o `.cn`).
-*   **[Dominio de Segundo Nivel](/es/glossary/second-level-domain/) (SLD):** Esta es la parte central del nombre — el `google` en `google.com`.
-*   **[Subdominio](/es/glossary/subdomain/):** Estos son prefijos opcionales que ayudan a organizar el contenido, como `blog.example.com` o `mail.example.org`.
+La jerarquía del DNS empieza en la raíz `.`. Debajo aparecen el dominio de nivel superior `com`, el dominio de segundo nivel `example.com` y el subdominio `blog.example.com`. `example` por sí solo es una etiqueta. En `example.co.uk`, `uk` ocupa el primer nivel, `co.uk` el segundo y `example.co.uk` el tercero. El límite de registro no siempre coincide con el segundo nivel. [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-3.1).
 
-Cada nombre de dominio es único: una vez que alguien registra `example.com`, nadie más puede usarlo.
+Un dominio tiene un solo titular de registro a la vez. El titular puede autorizar su uso a otras personas o servicios. El registro no reserva la misma etiqueta bajo otras extensiones. [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 ---
 
@@ -54,13 +52,13 @@ Cada nombre de dominio es único: una vez que alguien registra `example.com`, na
 
 La coordinación global de los nombres de dominio está supervisada por una organización sin fines de lucro llamada **[ICANN](/es/glossary/icann/)** (**Corporación de Internet para la Asignación de Nombres y Números**). Fundada en 1998, ICANN gestiona la asignación de nombres de dominio y direcciones IP. Trabaja con registradores (como GoDaddy, Namecheap y Namefi) que venden nombres de dominio al público.
 
-ICANN también acredita a los registros, las organizaciones responsables de gestionar TLDs específicos. Por ejemplo, Verisign opera `.com` y `.net`, mientras que el Public Interest Registry gestiona `.org`.
+Los registros administran los registros de dominios. Los registradores tramitan registros para sus clientes. ICANN acredita a los registradores y mantiene contratos con los operadores de registros de gTLD. Los dominios territoriales tienen sus propios mecanismos de gestión. [ICANN](https://www.icann.org/en/contracted-parties/registry-operators/resources/listings).
 
 ---
 
 ## **Cómo registrar un nombre de dominio**
 
-Para obtener un nombre de dominio, utiliza un **[registrador acreditado por ICANN](/es/glossary/accredited-registrar/)**. Busca un dominio disponible, paga una tarifa de registro (generalmente anual), y "posee" los derechos de uso de ese dominio mientras lo siga renovando.
+Para registrar un gTLD, utiliza un registrador acreditado por ICANN o un revendedor asociado. Revisa la disponibilidad, los requisitos, el contrato y el precio de renovación. El contrato de registro determina los derechos de uso. [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 Así es como funciona:
 
@@ -69,7 +67,7 @@ Así es como funciona:
 3.  Si está disponible, puede registrarlo.
 4.  Ahora tiene control sobre a dónde apunta el dominio (por ejemplo, a su sitio web o correo electrónico).
 
-En comparación con otros registradores, [Namefi](https://namefi.io/es) ofrece características avanzadas como gestión de subdominios, herramientas de seguridad DNS e integración con sistemas descentralizados como los dominios [blockchain](/es/glossary/blockchain/).
+
 
 ---
 

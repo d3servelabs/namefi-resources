@@ -12,15 +12,15 @@ description: '.ai es la extensión de dominio de código de país de Anguila con
 keywords: ['dominio .ai', 'qué es .ai', '.ai TLD', 'ccTLD de Anguila', 'registrar dominio .ai', 'dominio para startup de IA', '.ai vs .io', 'quién posee .ai']
 faqs:
   - question: '¿Puede cualquiera registrar un dominio .ai?'
-    answer: 'Sí. El registro .ai está abierto a cualquier persona en el mundo sin requisitos de presencia local ni de acreditación. La principal diferencia respecto a la mayoría de los TLD es que .ai se vende con un plazo mínimo de dos años en lugar de incrementos anuales, lo que incrementa el costo inicial.'
+    answer: 'GoDaddy indica que cualquiera puede registrar un dominio .ai. Comprueba las condiciones del registrador elegido antes de comprar.'
   - question: '¿Afecta el dominio .ai al SEO?'
     answer: 'No. Google trata .ai como un dominio de nivel superior genérico en lugar de geolocalizar el contenido hacia Anguila, por lo que un sitio .ai puede posicionarse a nivel global. La extensión en sí no supone ni una ventaja ni una penalización en el ranking; el contenido, los enlaces y la experiencia del usuario siguen siendo los factores decisivos.'
   - question: '¿Quién debería registrar un dominio .ai?'
-    answer: 'Es adecuado para startups de inteligencia artificial, productos de aprendizaje automático, agentes de IA y herramientas para desarrolladores que quieran incorporar el significado de "IA" en el nombre. Es menos ideal para proyectos con presupuesto ajustado o empresas locales no tecnológicas, dado el precio más elevado y el plazo mínimo de dos años.'
+    answer: 'Las startups de inteligencia artificial, los productos de aprendizaje automático, los agentes de IA y las herramientas de desarrollo pueden considerar .ai. Valora el nombre según el presupuesto.'
   - question: '¿Quién posee y opera el registro .ai?'
     answer: 'El Gobierno de Anguila tiene la delegación IANA para .ai. Desde enero de 2025, el back-end técnico del registro es operado por Identity Digital. Sin embargo, cada dominio .ai individual que registres te pertenece a ti, el registrante.'
-  - question: '¿Por qué el registro mínimo de .ai es de dos años?'
-    answer: 'El registro de Anguila establece la política: los dominios .ai se registran y renuevan en plazos de dos a diez años, no en el ciclo anual habitual del .com. Esto incrementa el costo inicial, pero reduce el riesgo de perder un nombre por no renovar en el plazo de un año.'
+  - question: '¿Qué plazos ofrece GoDaddy para .ai?'
+    answer: 'GoDaddy ofrece plazos de 2, 4, 6, 8 y 10 años para registrar y renovar .ai. Comprueba los plazos del registrador elegido.'
 relatedArticles:
   - /es/blog/ai-vs-io-domain/
   - /es/blog/why-are-io-domains-expensive/
@@ -52,9 +52,9 @@ Esta página explica qué es realmente .ai, quién lo gestiona, las reglas de re
 | Tipo de TLD | ccTLD (código de país para Anguila); tratado como genérico por Google |
 | Operador del registro | Gobierno de Anguila; back-end técnico por Identity Digital (desde ene. 2025) |
 | Año de delegación | 1995 |
-| Soporte IDN | Limitado — principalmente ASCII a–z, 0–9 y guión |
+
 | DNSSEC | Compatible |
-| Restricciones de registro | Abierto a todos; plazo mínimo de registro de dos años |
+
 | Ideal para | Startups de IA/ML, productos de agentes, herramientas para desarrolladores, marcas tecnológicas premium |
 
 ## ¿Qué es .ai?
@@ -79,7 +79,6 @@ En enero de 2025, el Gobierno de Anguila trasladó las operaciones técnicas del
 - **Marca premium y nombres de redireccionamiento:** grandes empresas que aseguran un `marca.ai` corto y memorable aunque su sitio principal sea `.com`.
 - **Inversores en dominios:** nombres cortos y de diccionario en .ai tratados como una clase de activo de alto valor.
 
-**Para quién no es ideal:** proyectos secundarios con presupuesto limitado, empresas puramente locales no tecnológicas, o cualquiera que necesite el registro de un año más económico posible — el mínimo de dos años y los precios premium hacen de .ai una elección deliberada, no una opción por defecto.
 
 ## Sitios destacados que usan .ai
 
@@ -98,8 +97,6 @@ Estas son propiedades consolidadas con alto tráfico, lo que es parte de la raz�
 | Origen | ccTLD de Anguila | ccTLD del Océano Índico | gTLD genérico original |
 | Connotación | Inteligencia artificial | Entrada/salida, dev/SaaS | Universal, predeterminado |
 | Tratamiento de Google | Genérico (gccTLD) | Genérico (gccTLD) | Genérico |
-| Precio típico | Alto, premium | Medio-alto | Bajo, pero los nombres cortos escasean |
-| Plazo mínimo | Dos años | Un año | Un año |
 
 Elige **.ai** cuando la inteligencia artificial *es* tu producto y quieres que el significado esté incorporado en el nombre. Opta por **.io** para proyectos más amplios de desarrollo, SaaS o infraestructura donde se interpreta como "entrada/salida" y tiende a ser más económico — consulta [por qué los dominios .io son caros](/es/blog/why-are-io-domains-expensive/). Ten en cuenta **[.com](/es/tld/com/)** como la opción universal predeterminada; muchos equipos aseguran el .com de forma defensiva junto con su .ai. Para una comparación más detallada, lee [.ai vs .io: ¿qué dominio es el adecuado para tu startup?](/es/blog/ai-vs-io-domain/).
 
@@ -112,20 +109,20 @@ Elige **.ai** cuando la inteligencia artificial *es* tu producto y quieres que e
 
 ## Aspectos a considerar
 
-- **Plazo mínimo de dos años:** no puedes registrar ni renovar por un solo año, lo que incrementa el costo inicial.
-- **Precios premium:** .ai consistentemente cuesta más que .com o [.net](/es/tld/net/), tanto en el registro como en la renovación.
+- [GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220) ofrece plazos de 2, 4, 6, 8 y 10 años para registrar y renovar .ai. Comprueba los plazos del registrador elegido.
+
 - **Significado específico:** si tu producto no está realmente relacionado con la IA, la extensión puede confundir a los visitantes o parecer forzada.
 - **Riesgo del ciclo de moda:** vincular tu marca estrechamente a "IA" ata tu identidad a una tendencia en rápida evolución.
 
 ## ¿Quién puede registrar un dominio .ai?
 
-**Restricciones de registro: abierto a todos.** No hay requisitos de presencia local, ciudadanía ni acreditación para registrar un dominio .ai — cualquier persona en el mundo puede registrar uno a través de un [registrador](/es/glossary/registrar/) acreditado. La regla definitoria es el **plazo mínimo de dos años**: los nombres .ai se registran y renuevan en incrementos de dos a diez años en lugar del ciclo anual habitual.
+GoDaddy indica que cualquiera puede registrar un dominio .ai. Comprueba las condiciones del registrador elegido antes de comprar. GoDaddy ofrece plazos de 2, 4, 6, 8 y 10 años para registrar y renovar .ai. Comprueba los plazos del registrador elegido. [GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220). Fuente consultada el 2026-10-21.
 
-Los nombres usan caracteres ASCII estándar (a–z, 0–9 y guiones, no al principio ni al final), con soporte limitado para nombres de dominio internacionalizados. El registro admite [DNSSEC](/es/glossary/dnssec/) para integridad criptográfica, y las consultas modernas de WHOIS/RDAP están disponibles a través del registro. La política autorizada y las reglas de registro las publica el registro de Anguila en el sitio oficial, [nic.ai](https://nic.ai/). Dado que .ai es un ccTLD, no está regido por un acuerdo de registro de [ICANN](/es/glossary/icann/); Anguila establece su propia política.
+Las [preguntas frecuentes del registro](https://www.nic.ai/faq) prohíben el uso abusivo y permiten intervenciones del Gobierno de Anguila por los motivos indicados.
 
 ## Precios y valor de .ai
 
-.ai es una extensión premium, y varios factores impulsan su costo. Cada registro abarca un **mínimo de dos años**, por lo que el total inicial es inherentemente más alto que el de un .com anual. **El precio del primer año y el de renovación pueden diferir**, así que presupuesta para ambos. Y los nombres cortos, de diccionario o que definen una categoría suelen clasificarse como **premium** y se valoran muy por encima del registro estándar. La demanda del sector de la IA mantiene el precio mínimo elevado. Esta página no indica precios — consulta las tarifas actuales cuando realices tu registro.
+Compara el pago total, la cotización de renovación y los servicios incluidos antes de comprar. Esta página no ofrece precios mayoristas actuales ni clasificaciones premium del registro.
 
 ## Reputación y capacidad de entrega del correo electrónico
 
@@ -142,7 +139,7 @@ Ten en cuenta dos riesgos. Primero, las personas pueden escuchar mal "punto A-I"
 ## Cómo registrar un dominio .ai en Namefi
 
 1. **Busca** el nombre que deseas en Namefi para comprobar su disponibilidad.
-2. **Elige** el plazo de registro (recuerda el mínimo de dos años) y verifica si el nombre es estándar o premium.
+2. Compara el pago total, la cotización de renovación y los servicios incluidos antes de comprar. Esta página no ofrece precios mayoristas actuales ni clasificaciones premium del registro.
 3. **Regístrate** y completa el proceso de pago.
 
 [Namefi](https://namefi.io) es un registrador acreditado por ICANN que también admite dominios tokenizados [Web3](/es/glossary/web3/), por lo que tu .ai puede gestionarse como un [NFT](/es/glossary/nft/) en cadena para facilitar las transferencias y la propiedad verificable — consulta [qué son los dominios tokenizados](/es/blog/what-are-tokenized-domains/). Obtienes precios transparentes, DNS fiable y tokenización opcional en un solo lugar.
@@ -151,7 +148,7 @@ Ten en cuenta dos riesgos. Primero, las personas pueden escuchar mal "punto A-I"
 
 ### ¿Puede cualquiera registrar un dominio .ai?
 
-Sí. El registro .ai está abierto a cualquier persona en el mundo sin requisitos de presencia local ni de acreditación. La principal diferencia respecto a la mayoría de los TLD es que .ai se vende con un plazo mínimo de dos años en lugar de incrementos anuales, lo que incrementa el costo inicial.
+[GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220) indica que cualquiera puede registrar un dominio .ai. Comprueba las condiciones del registrador elegido antes de comprar.
 
 ### ¿Afecta el dominio .ai al SEO?
 
@@ -159,15 +156,15 @@ No. Google trata .ai como un dominio de nivel superior genérico en lugar de geo
 
 ### ¿Quién debería registrar un dominio .ai?
 
-Es adecuado para startups de inteligencia artificial, productos de aprendizaje automático, agentes de IA y herramientas para desarrolladores que quieran incorporar el significado de "IA" en el nombre. Es menos ideal para proyectos con presupuesto ajustado o empresas locales no tecnológicas, dado el precio más elevado y el plazo mínimo de dos años.
+Las startups de inteligencia artificial, los productos de aprendizaje automático, los agentes de IA y las herramientas de desarrollo pueden considerar .ai. Valora el nombre según el presupuesto.
 
 ### ¿Quién posee y opera el registro .ai?
 
 El Gobierno de Anguila tiene la delegación IANA para .ai. Desde enero de 2025, el back-end técnico del registro es operado por Identity Digital. Sin embargo, cada dominio .ai individual que registres te pertenece a ti, el registrante.
 
-### ¿Por qué el registro mínimo de .ai es de dos años?
+### ¿Qué plazos ofrece GoDaddy para .ai?
 
-El registro de Anguila establece la política: los dominios .ai se registran y renuevan en plazos de dos a diez años, no en el ciclo anual habitual del .com. Esto incrementa el costo inicial, pero reduce el riesgo de perder un nombre por no renovar en el plazo de un año.
+[GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220) ofrece plazos de 2, 4, 6, 8 y 10 años para registrar y renovar .ai. Comprueba los plazos del registrador elegido.
 
 ## Recursos relacionados
 
@@ -177,3 +174,5 @@ El registro de Anguila establece la política: los dominios .ai se registran y r
 - [¿Qué son los dominios tokenizados?](/es/blog/what-are-tokenized-domains/)
 - Dominio .io · Dominio .com · [Dominio .dev](/es/tld/dev/)
 - Glosario: registrador · ICANN · DNSSEC · [SEO](/es/glossary/seo/)
+
+- [GoDaddy](https://www.godaddy.com/help/about-ai-domains-32220) — Fuente consultada el 2026-10-21.
