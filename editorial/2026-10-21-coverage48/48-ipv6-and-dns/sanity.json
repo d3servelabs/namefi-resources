@@ -1,0 +1,55 @@
+{
+  "data_validate": "PASS",
+  "data_validation_warnings": 37,
+  "locale_scanned_files": 4057,
+  "locale_mismatches": 0,
+  "relationship_mismatches": 0,
+  "faq_checks": 1633,
+  "lint_mdx": "PASS",
+  "focused_links": {
+    "blocking": 0,
+    "accepted_missing_translation_warnings": 5
+  },
+  "translation_invariants": "Ordered code spans, citation URLs and image paths equal; no English locale links in German; all four section meanings retained.",
+  "images": [
+    {
+      "file": "content/assets/ipv6-and-dns-01-independent-choices.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 34073,
+      "sha256": "f6f8ed4eca37434ae6905a533b9f130c5353b420404349131115f5101785e105"
+    },
+    {
+      "file": "content/assets/ipv6-and-dns-02-resolver-endpoints.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 33117,
+      "sha256": "a309ccc209578de24766418740f576fe3bd669d33c84dd85592778a0a30f26b9"
+    },
+    {
+      "file": "content/assets/ipv6-and-dns-03-diagnose-path.jpg",
+      "dimensions": [
+        1200,
+        675
+      ],
+      "bytes": 33677,
+      "sha256": "5c71af7f9818899d1f7a1c8d89b6db7d40ad1f0fc6a16a59625a31eda59975ff"
+    },
+    {
+      "file": "content/assets/ipv6-and-dns-og.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "bytes": 105423,
+      "sha256": "7213910cbc5d4f6b41802a395b983dd91a4f5710f68885b5368279a9a9006cc0"
+    }
+  ],
+  "hosted_ci": "Not run",
+  "remote_writes": "None",
+  "independent_review": "Not run per creation-stage authorization"
+}
