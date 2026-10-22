@@ -101,7 +101,7 @@ Certificate warnings require attention because the browser could not establish t
 
 Two developments keep the CA system honest at scale. **Certificate Transparency** (RFC 6962) records issued certificates in public, append-only logs — a protocol [for publicly logging the existence](https://datatracker.ietf.org/doc/html/rfc6962#:~:text=for%20publicly%20logging%20the%20existence) of TLS certificates — so a domain owner can monitor the logs and detect a certificate issued for their name that they never requested.
 
-Public TLS certificate **lifetimes are shrinking**. [CA/Browser Forum Ballot SC-081v3](https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/) sets maximum validity periods by issuance date. The limit became 200 days on March 15, 2026. The schedule reduces the limit to 100 days on March 15, 2027, then 47 days on March 15, 2029. Shorter lifetimes increase the need for reliable renewal automation.
+Public TLS certificate **lifetimes are shrinking**. The [current CA/Browser Forum Baseline Requirements, section 6.3.2](https://github.com/cabforum/servercert/blob/main/docs/BR.md#632-certificate-operational-periods-and-key-pair-usage-periods), set maximum validity periods by issuance date. The limit became 200 days on March 15, 2026. The schedule reduces the limit to 100 days on March 15, 2027, then 47 days on March 15, 2029. Shorter lifetimes increase the need for reliable renewal automation.
 
 ## ACME: certificates on autopilot
 
@@ -140,6 +140,8 @@ Follow HTTPS all the way down and every guarantee bottoms out in the same place.
 That is why domain security is not adjacent to HTTPS — it is underneath it. Protecting the registrar account, locking transfers, controlling who can edit DNS records: these are certificate-security measures, whether or not they are labeled that way. Certificate automation also needs narrow DNS permissions, protected account credentials, and monitoring for unexpected issuance. Tokenized ownership alone does not secure a DNS provider account or an ACME credential.
 
 The padlock is the last link in the chain. The domain is the first.
+
+Choose [certificate validation and hostname coverage](/en/blog/ssl-certificate-types/) before deployment. Compare [free certificate options and renewal responsibilities](/en/blog/free-ssl-certificate/). Then follow the [certificate installation and verification guide](/en/blog/how-to-install-an-ssl-certificate/).
 
 ## Sources and further reading
 

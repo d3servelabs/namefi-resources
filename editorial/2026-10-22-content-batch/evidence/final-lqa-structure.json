@@ -1,0 +1,65 @@
+[
+  {
+    "locale": "de",
+    "slug": "ssl-certificate-types",
+    "external_urls_equal": true,
+    "missing_external_urls": [],
+    "images_equal": true,
+    "codeblocks_equal": true,
+    "english_body_copy": false
+  },
+  {
+    "locale": "de",
+    "slug": "free-ssl-certificate",
+    "external_urls_equal": true,
+    "missing_external_urls": [],
+    "images_equal": true,
+    "codeblocks_equal": true,
+    "english_body_copy": false
+  },
+  {
+    "locale": "de",
+    "slug": "dmarc-record-setup",
+    "external_urls_equal": true,
+    "missing_external_urls": [],
+    "images_equal": true,
+    "codeblocks_equal": true,
+    "english_body_copy": false
+  },
+  {
+    "locale": "de",
+    "slug": "dynamic-dns-setup",
+    "external_urls_equal": true,
+    "missing_external_urls": [],
+    "images_equal": true,
+    "codeblocks_equal": true,
+    "english_body_copy": false
+  },
+  {
+    "locale": "ja",
+    "slug": "flush-dns-cache",
+    "external_urls_equal": true,
+    "missing_external_urls": [],
+    "images_equal": true,
+    "codeblocks_equal": true,
+    "english_body_copy": false
+  },
+  {
+    "locale": "ja",
+    "slug": "fix-dns-probe-finished-nxdomain",
+    "external_urls_equal": true,
+    "missing_external_urls": [],
+    "images_equal": true,
+    "codeblocks_equal": true,
+    "english_body_copy": false
+  },
+  {
+    "locale": "es",
+    "slug": "how-to-install-an-ssl-certificate",
+    "external_urls_equal": true,
+    "missing_external_urls": [],
+    "images_equal": true,
+    "codeblocks_equal": true,
+    "english_body_copy": false
+  }
+]
