@@ -39,6 +39,16 @@ relatedGlossary:
 
 首年优惠不决定续期价格。买家应比较长期[持有成本](/zh-CN/glossary/holding-cost/)。
 
+## 同条件比较能帮助买家寻找便宜域名
+
+买家应比较同一个名称、后缀、币种和注册期限。买家应分别记录注册价和续期价。买家不应混比溢价名称和标准价名称。
+
+[Porkbun](https://porkbun.com/products/domains) 分列注册价、续期价和转入价。[Cloudflare](https://www.cloudflare.com/domains/) 表示注册和续期不加注册商利润。Cloudflare 要求使用 [Cloudflare 域名服务器](https://developers.cloudflare.com/registrar/get-started/register-domain/)。买家应把域名服务器要求纳入 DNS 灵活性比较。
+
+买家应先加上所需服务，再比较总价。买家应检查最终购物车的税费和可选产品。注册促销价不能单独证明长期费用最低。
+
+来源核查日期：2026年10月22日。价格和条款可能变化。
+
 ## 你最先看到的数字并不等于成本
 
 大多数人会问“域名多少钱？”，并期待得到一个答案。更好的问题是：“如果我持有这个域名三年，并且期间出一次问题，它总共会花多少钱？”

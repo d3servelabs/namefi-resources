@@ -1,0 +1,34 @@
+[
+  {
+    "agent_path": "/root/tls_choices",
+    "phase": "before-independent-arabic-final-qa",
+    "captured_utc": "2026-10-22T05:19:40.310495+00:00",
+    "basis": "Actual latest emitted cumulative session counter; token event timestamp identifies the boundary. Missing is unavailable, not zero. Cached input is included in input; reasoning output is included in output.",
+    "sessions": [
+      {
+        "session_id": "01a161f3-1b54-7c51-9f05-9ed0bc0b07d0",
+        "session_log_name": "rollout-2026-10-21T21-51-24-01a161f3-1b54-7c51-9f05-9ed0bc0b07d0.jsonl",
+        "model": "gpt-6.1-sol",
+        "latest_emitted_counter": {
+          "timestamp": "2026-10-22T05:15:38.556Z",
+          "total_token_usage": {
+            "input_tokens": 9946025,
+            "cached_input_tokens": 9797504,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 29039,
+            "reasoning_output_tokens": 4409,
+            "total_tokens": 9975064
+          },
+          "last_token_usage": {
+            "input_tokens": 177848,
+            "cached_input_tokens": 177536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 41,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 177889
+          }
+        }
+      }
+    ]
+  }
+]

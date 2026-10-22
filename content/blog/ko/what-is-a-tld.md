@@ -100,7 +100,9 @@ blog . namefi . io
 
 ### 3. 스폰서드 최상위 도메인(sTLD)
 
-**스폰서드 TLD**에는 특정 커뮤니티를 대표하는 후원 기관이 있습니다. [ICANN은 `.aero`, `.coop`, `.museum`을 예로 듭니다](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=The%20.aero%2C%20.coop%2C%20and%20.museum). 등록 요건은 확장자와 현행 정책에 따라 다릅니다. 등록 제한이 있다는 이유만으로 스폰서드 TLD가 되지는 않습니다.
+**스폰서드 TLD**에는 특정 커뮤니티를 대표하는 후원 기관이 있습니다. [ICANN은 현행 계약에서 `.aero`와 `.coop`를 스폰서드 TLD로 분류합니다](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type). 등록 요건은 확장자와 현행 정책에 따라 다릅니다. 등록 제한이 있다는 이유만으로 스폰서드 TLD가 되지는 않습니다.
+
+[ICANN — .coop](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type).
 
 ### 4. 신규 gTLD
 

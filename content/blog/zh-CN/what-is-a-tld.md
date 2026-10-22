@@ -98,7 +98,9 @@ blog . namefi . io
 
 ### 3. 赞助型顶级域名（sTLD）
 
-**赞助型 TLD** 由代表特定社群的赞助方支持。[ICANN 列出的赞助型示例包括 `.aero`、`.coop` 和 `.museum`](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=The%20.aero%2C%20.coop%2C%20and%20.museum)。注册要求取决于具体后缀的现行政策。注册限制本身不决定 TLD 是否属于赞助型。
+**赞助型 TLD** 由代表特定社群的赞助方支持。[ICANN 在现行协议中把 `.aero` 和 `.coop` 列为赞助型 TLD](https://www.icann.org/en/registry-agreements/details/aero#:~:text=Agreement%20Type)。注册要求取决于具体后缀的现行政策。注册限制本身不决定 TLD 是否属于赞助型。
+
+[ICANN — .coop](https://www.icann.org/en/registry-agreements/details/coop#:~:text=Agreement%20Type).
 
 ### 4. 新通用顶级域名（新 gTLD）
 

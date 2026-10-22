@@ -18,7 +18,7 @@ faqs:
   - question: '왜 좋은 .com 도메인을 찾기가 어렵나요?'
     answer: '1억 6,100만 개가 넘는 .com 이름이 등록된 상태에서, 짧고 사전에 있는 단어나 정확히 일치하는 브랜드명은 대부분 소진됐습니다. 대부분의 프리미엄 이름은 이미 소유자가 있어, 표준 등록 가격이 아닌 2차 시장에서만 구할 수 있는 경우가 많습니다.'
   - question: '.com 비용은 얼마이며, 가격이 계속 오르나요?'
-    answer: '등록 대행사마다 소매 가격을 자체적으로 책정하지만, 레지스트리 도매 가격은 규제됩니다. 2018년 미국 정부의 수정안으로 Verisign은 6년 중 4년 동안 최대 7%까지 가격을 인상할 수 있게 됐으며, $7.85에서 $10.97로 올랐습니다. 갱신 비용을 중심으로 예산을 계획하세요. 첫 해 가입 가격만 보지 마세요.'
+    answer: '2026년 10월 22일 기준 Verisign의 레지스트리 도매 요금은 등록 1년당 미화 10.26달러입니다. Verisign은 신규 등록과 갱신에 적용할 요금을 2026년 11월 1일부터 미화 10.97달러로 올린다고 발표했습니다. 등록 대행사는 소매 가격을 자체적으로 정합니다. 도매 요금을 최종 가격으로 가정하지 말고 갱신 견적을 확인하세요.'
   - question: '.com 도메인을 등록해야 하는 사람은 누구인가요?'
     answer: '세계적으로 가장 널리 인정받고 신뢰받는 주소를 원하는 거의 모든 비즈니스, 브랜드, 프로젝트에 적합합니다. 특히 글로벌 또는 일반 대중을 대상으로 서비스하는 기업, 그리고 장기적으로 브랜드를 보호하려는 모든 이에게 유용합니다.'
 relatedArticles:
@@ -53,7 +53,7 @@ relatedGlossary:
 | 레지스트리 운영자 | Verisign (VeriSign Global Registry Services) |
 | 위임 연도 | 1985년 |
 | 등록 수 | 1억 6,100만+ — 인터넷에서 가장 큰 TLD |
-| 도매 가격 | 규제 대상; $7.85(2012년)에서 $10.97(2026년)로 인상 |
+| 도매 가격 | USD 10.26/년 (2026-10-22); USD 10.97/년 (2026-11-01) |
 | IDN 지원 | 지원 |
 | DNSSEC | 지원 |
 | 등록 제한 | 모두에게 개방 — 현지 주소, 자격증명, 사업자 요건 없음 |
@@ -105,7 +105,7 @@ relatedGlossary:
 
 그 상황은 **2018년**에 바뀌었습니다. 트럼프 행정부의 NTIA는 "오바마 시대의 가격 통제를 철폐"하고 Verisign에게 **6년 중 4년 동안 최대 7%까지 도매 가격을 인상**할 수 있는 권리를 돌려준다는 내용의 [수정안 35](https://www.ntia.gov/program/verisign-cooperative-agreement)에 서명했습니다. 이후 며칠 동안 Verisign 주가는 약 18% 상승했습니다. 2020년 [ICANN은 Verisign이 6년 연장 기간 마지막 4년 동안 매년 7%씩 .com 도메인 가격을 인상할 수 있도록 합의했으며](https://domainnamewire.com/2020/03/27/breaking-icann-and-verisign-agree-to-com-extension-with-7-price-hikes/#:~:text=increase%20the%20price%20of%20.com%20domains%20by%207%25%20per%20year%20in%20the%20last%20four%20years%20of%20each%20six-year%20extension), 이와 함께 Verisign이 "DNS 보안"을 명목으로 5년간 연간 400만 달러를 ICANN에 지불하기로 했습니다. 공개 의견 수렴 기간에 약 9,000건의 의견이 제출됐고, 압도적 다수가 반대 의견이었습니다. ICANN은 해당 의견 분석을 공개한 다음 날 이를 승인했습니다.
 
-그 결과는 계약으로 보장된 꾸준한 상승입니다. 도매 가격은 $7.85 → $8.39 → $8.97 → $9.59 → $10.26으로 올랐으며, 2026년에는 [$10.26에서 $10.97로 인상됩니다](https://domainnamewire.com/2025/11/19/verisign-can-increase-com-prices-in-2026/#:~:text=increase%20from%20%2410.26%20to%20%2410.97).
+2026년 10월 22일 기준 Verisign의 레지스트리 도매 요금은 등록 1년당 미화 10.26달러입니다. [Verisign은 신규 등록과 갱신에 적용할 요금을 2026년 11월 1일부터 미화 10.97달러로 올린다고 발표했습니다](https://www.sec.gov/Archives/edgar/data/1014473/000101447326000019/q12026earningsrelease.htm#:~:text=effective%20Nov.). 등록 대행사는 소매 가격을 자체적으로 정합니다. 도매 요금을 최종 가격으로 가정하지 말고 갱신 견적을 확인하세요.
 
 이것이 왜 그토록 논쟁의 대상인지는 비즈니스 세계에서 좀처럼 보기 힘든 경제적 문제로 귀결됩니다. Verisign은 경쟁 입찰 없이 체결된 계약으로 .com을 운영합니다. 다른 나라들이 실제로 레지스트리를 공개 입찰에 부쳤을 때, 가격은 훨씬 낮게 나왔습니다. 인도 `.in`을 운영하는 [Neustar의 입찰가는 도메인당 연간 70센트에 불과했습니다](https://circleid.com/posts/20181112_verisigns_attempt_to_increase_fees_unjustified_despite#:~:text=Neustar%20at%20just%2070%20cents%20per%20domain%20name%20per%20year). Verisign의 약 $11에 비하면 아주 작은 금액입니다. 업계 분석가들은 Verisign의 실제 .com 운영 비용을 최대 몇 달러로 추산하며, 회사의 영업이익률은 매출의 3분의 2 수준입니다. American Economic Liberties Project는 2018년 이후 인상분만으로도 [Verisign 주주에게 연간 3억 8,300만 달러의 추가 횡재를 안겨준다고 추산했으며](https://www.economicliberties.us/our-work/a-call-for-com-petition-reining-in-verisigns-monopoly-over-the-internets-most-popular-top-level-domain/#:~:text=represents%20an%20additional%20%24383%20million%20annual%20windfall), 2024년에는 [Elizabeth Warren 상원의원과 Jerry Nadler 하원의원이 국가통신정보청과 법무부에 서한을 보내](https://www.warren.senate.gov/newsroom/press-releases/warren-nadler-urge-regulators-to-take-action-on-verisigns-monopoly-over-com-website-prices#:~:text=wrote%20to%20the%20National%20Telecommunications%20and%20Information%20Administration) Verisign의 가격 정책에 대한 조치를 촉구했습니다.
 
@@ -202,7 +202,7 @@ Google은 .com을 일반 최상위 도메인으로 취급하며, 순위 상 고�
 
 ### .com 비용은 얼마이며, 가격이 계속 오르나요?
 
-등록 대행사마다 소매 가격을 자체적으로 책정하지만, 레지스트리 도매 가격은 규제됩니다. 2018년 미국 정부의 수정안으로 Verisign은 6년 중 4년 동안 최대 7%까지 가격을 인상할 수 있게 됐으며, $7.85에서 $10.97로 올랐습니다. 갱신 비용을 중심으로 예산을 계획하세요. 첫 해 가입 가격만 보지 마세요.
+2026년 10월 22일 기준 Verisign의 레지스트리 도매 요금은 등록 1년당 미화 10.26달러입니다. Verisign은 신규 등록과 갱신에 적용할 요금을 2026년 11월 1일부터 미화 10.97달러로 올린다고 발표했습니다. 등록 대행사는 소매 가격을 자체적으로 정합니다. 도매 요금을 최종 가격으로 가정하지 말고 갱신 견적을 확인하세요.
 
 ### .com 도메인을 등록해야 하는 사람은 누구인가요?
 
