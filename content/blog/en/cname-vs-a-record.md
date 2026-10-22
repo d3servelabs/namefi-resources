@@ -63,6 +63,24 @@ For a hypothetical migration, imagine that `app.example.com` currently publishes
 
 Do not paste `https://tenant.example.net/start` into a CNAME value. The value needs a domain name, without a scheme or path. Likewise, an A value needs an IPv4 address. A DNS editor accepting text does not make the text valid for every record type.
 
+## The exact DNS name determines the valid record type
+
+![The apex needs SOA and NS records, while a separate www name can use a CNAME.](../../assets/cname-vs-a-record-05-apex-decision.jpg)
+
+Use this sequence before replacing an address record with an alias:
+
+1. Confirm the exact name and the zone that contains the name.
+2. Save the current record values and TTLs.
+3. Check the provider's required target for that exact hostname.
+4. List A, AAAA, MX, TXT, NS, and SOA records at the name.
+5. Identify the service owner before removing a conflicting record.
+6. Confirm that the hosting service accepts the custom hostname.
+7. Select a supported apex feature if the name is the zone apex.
+
+For example, `example.com` may have MX and TXT records for email. A `www.example.com` CNAME does not replace those apex records. Converting `example.com` itself to an ordinary CNAME conflicts with the apex authority records, even when the website only needs a hostname target. [RFC 2181 explains the same-name restriction.](https://www.rfc-editor.org/rfc/rfc2181.html#section-10.1)
+
+A provider's `@` field commonly represents the zone apex. Check the editor's help before entering a full hostname. Some editors append the zone name to relative names. The final saved name matters more than the text entered into the form. [RFC 1035 distinguishes relative and absolute names in zone files.](https://www.rfc-editor.org/rfc/rfc1035.html#section-5.1)
+
 ## Apex requirements prevent ordinary CNAME records from sharing the zone name
 
 ![Apex requirements prevent ordinary CNAME records from sharing the zone name.](../../assets/cname-vs-a-record-02-apex-rules.jpg)
@@ -119,6 +137,12 @@ Neither record type provides a universal performance advantage. A CNAME adds a n
 
 Start troubleshooting by writing down the exact hostname, requested record type, expected target, and active DNS provider. Compare those details with the saved configuration. Check the authoritative answer before treating a cached result as evidence that the saved change failed.
 
+Run separate queries for separate record types. With `dig` installed, use `dig www.example.com CNAME` to inspect the alias. Use `dig www.example.com A` and `dig www.example.com AAAA` to inspect address resolution. Replace the example name with the actual hostname.
+
+To query a specific authoritative server, use `dig @ns1.example.net www.example.com CNAME +norecurse`. Replace both example names with verified values. Repeat the relevant query against each authoritative server. Preserve the full output, including the response status, flags, answer section, and authority section. [The BIND manual documents server selection, query types, and recursion controls.](https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility)
+
+A `NOERROR` status without a CNAME answer does not by itself prove a broken website. The name may use A records or flattening. An `NXDOMAIN` status means the queried name does not exist in that response. A `SERVFAIL` status needs further diagnosis. Compare the result with the intended record type before changing DNS. [RFC 1035 defines the DNS response codes.](https://www.rfc-editor.org/rfc/rfc1035.html#section-4.1.1)
+
 For an A configuration, compare the returned address set with the hosting provider's instructions. For a CNAME configuration, inspect the target and then the target's address answers. For flattening, compare the response with the provider's documented behavior. A missing CNAME answer can be expected under flattening.
 
 Trace an unexpected target one step at a time. A hypothetical chain from `www.example.com` to `site.example.net` can continue to another name. A chain that returns to `www.example.com` creates a loop. [RFC 1034 requires DNS software to signal CNAME loops as errors.](https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6.2)
@@ -135,7 +159,7 @@ Keep the previous configuration available until the replacement passes the relev
 
 Choose the record from the provider's supported destination, the name's existing records, and the authoritative answer you need. Then verify the application behavior separately. Those checks distinguish a wrong address, an invalid alias, a provider feature, and a website configuration failure.
 
-## Sources and further reading
+## Primary sources explain the configuration rules
 
 - RFC Editor, [RFC 1035](https://www.rfc-editor.org/rfc/rfc1035.html#section-3.4.1), section 3.4.1, A record format. Fetched 2026-10-21.
 - RFC Editor, [RFC 3596](https://www.rfc-editor.org/rfc/rfc3596.html#section-2.1), sections 2.1–2.3, AAAA records. Fetched 2026-10-21.
@@ -148,3 +172,5 @@ Choose the record from the provider's supported destination, the name's existing
 - RFC Editor, [RFC 2308](https://www.rfc-editor.org/rfc/rfc2308.html#section-5), section 5, negative caching. Fetched 2026-10-21.
 - RFC Editor, [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html#section-15.4.2), sections 15.4.2 and 4.3.4, redirects and HTTPS identity. Fetched 2026-10-21.
 - RFC Editor, [RFC 5737](https://www.rfc-editor.org/rfc/rfc5737.html#section-3), section 3, documentation IPv4 ranges. Fetched 2026-10-21.
+
+- ISC, [BIND dig manual](https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility), server selection, query types, and recursion controls. Fetched 2026-10-21.

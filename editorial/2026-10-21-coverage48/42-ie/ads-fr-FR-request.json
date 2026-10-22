@@ -1,0 +1,18 @@
+{
+  "fetched_utc": "2026-10-22T02:03:43Z",
+  "language_criteria_source": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "request": {
+    "language": "languageConstants/1002",
+    "geoTargetConstants": [
+      "geoTargetConstants/2250"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "nom de domaine ie",
+      "domaine irlande",
+      "extension ie",
+      "acheter domaine ie"
+    ],
+    "includeAdultKeywords": false
+  }
+}

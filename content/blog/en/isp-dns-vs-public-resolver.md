@@ -8,7 +8,7 @@ authors: ['namefiteam']
 draft: false
 format: guide
 cluster: domain-basics
-keywords: ["ISP DNS vs public DNS", "ISP DNS", "public DNS resolver", "change ISP DNS", "DNS resolver comparison", "DNS privacy", "DNS speed test", "local DNS names", "encrypted DNS", "DNS troubleshooting"]
+keywords: ["ISP DNS vs public DNS", "ISP DNS", "public DNS resolver", "change ISP DNS", "DNS resolver comparison", "DNS privacy", "DNS speed test", "local DNS names", "encrypted DNS", "DNS troubleshooting", "Spectrum DNS servers", "Comcast DNS", "Xfinity DNS", "AT&T DNS servers"]
 relatedArticles:
   - /en/blog/choose-public-dns-resolver/
   - /en/blog/run-your-own-dns-resolver/
@@ -64,6 +64,32 @@ Use a small comparison worksheet:
 A resolver comparison differs from a list of famous addresses. For provider-selection criteria, see our [public DNS resolver guide](/en/blog/choose-public-dns-resolver/). The task here is to compare a specific replacement against the service your connection currently uses.
 
 Record the reason for the experiment in one sentence. “The current resolver times out on several ordinary names” gives the test a concrete target. “Public DNS must be better” does not.
+
+## ISP equipment determines where you can change the resolver
+
+A search for “Spectrum DNS servers,” “Comcast DNS,” “Xfinity DNS,” or “AT&T DNS servers” can hide two different tasks.
+Some readers need the current ISP addresses. Other readers want to replace the ISP resolver.
+Identify the task before copying addresses from a list.
+
+For the current ISP configuration, begin with automatic network settings and the provider's documentation for your equipment.
+Record the device, gateway model, and active connection.
+A router's local address can represent a forwarding service rather than the final recursive resolver.
+Do not treat an address from another subscriber's setup as a verified setting for your connection.
+
+For a replacement, check whether the gateway supports an editable DNS setting.
+Xfinity's [advanced-settings documentation](https://www.xfinity.com/support/articles/xfi-advanced-settings) describes its DNS Server entry as a way to view the home network's DNS configuration.
+A visible DNS page therefore does not establish that the gateway offers a replacement control.
+Check the exact model's supported controls before planning a router-wide change.
+
+Start with a device-level comparison when the operating system supports the change.
+Google's [setup guide](https://developers.google.com/speed/public-dns/docs/using) supplies separate device and router procedures.
+The guide lists `8.8.8.8` and `8.8.4.4` as Google's IPv4 resolver addresses.
+Those addresses belong to Google Public DNS. Those addresses are not Spectrum, Comcast, or AT&T resolver addresses.
+A manual address setting alone does not establish that the device uses encrypted DNS.
+
+Use the provider's current instructions if the task requires ISP-specific addresses or gateway controls.
+Keep a working automatic configuration until a test demonstrates a reason to change the configuration.
+This article compares resolver behavior. This article does not maintain an ISP address directory.
 
 ## Privacy depends on the operator and the actual transport
 
@@ -124,7 +150,7 @@ If both resolvers behave well and the observed timing difference is small, prefe
 
 ## A reversible rollout protects local services and future troubleshooting
 
-![A single-device rollout preserves a documented rollback path.](../../assets/isp-dns-vs-public-resolver-04-section.jpg)
+![Save the original settings, compare ISP and public DNS on one device, then keep or restore the settings.](../../assets/isp-dns-vs-public-resolver-05-device-test.jpg)
 
 Save the original DNS configuration before editing anything. Google's [setup instructions](https://developers.google.com/speed/public-dns/docs/using#important_before_you_start) explicitly recommend preserving the current settings so the user can revert. Record whether the original mode was automatic, rather than copying only a visible address.
 
@@ -159,6 +185,7 @@ Choose between ISP DNS and public DNS through a local, reversible comparison. Ch
 
 Sources checked on October 21, 2026. The article contains no measured resolver rankings or promised performance gains.
 
+- [Xfinity: Changing advanced WiFi settings](https://www.xfinity.com/support/articles/xfi-advanced-settings). The DNS Server entry documents viewing the current configuration.
 - [Google Public DNS: Get started](https://developers.google.com/speed/public-dns/docs/using#important_before_you_start). The instructions explain operator changes and rollback preparation.
 - [Google Public DNS: Privacy](https://developers.google.com/speed/public-dns/privacy). The policy describes Google's collection and retention practices.
 - [Google Public DNS: Performance benefits](https://developers.google.com/speed/public-dns/docs/performance). The explanation discusses network latency and caching.

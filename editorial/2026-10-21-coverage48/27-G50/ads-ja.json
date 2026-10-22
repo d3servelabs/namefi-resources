@@ -1,0 +1,242 @@
+{
+  "request": {
+    "language": "languageConstants/1005",
+    "geoTargetConstants": [
+      "geoTargetConstants/2392"
+    ],
+    "keywordPlanNetwork": "GOOGLE_SEARCH",
+    "keywords": [
+      "ドメイン 階層",
+      "トップレベルドメイン",
+      "セカンドレベルドメイン"
+    ],
+    "includeAdultKeywords": false
+  },
+  "fetched_utc": "2026-10-22T00:58:00.465666+00:00",
+  "response": {
+    "results": [
+      {
+        "text": "ドメイン 階層",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "50"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "40"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "70"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "30"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "40"
+            }
+          ],
+          "avgMonthlySearches": "50",
+          "competitionIndex": "9",
+          "lowTopOfPageBidMicros": "857939",
+          "highTopOfPageBidMicros": "4240744"
+        }
+      },
+      {
+        "text": "トップ レベル ドメイン",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "1900"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "1300"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "1000"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "720"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "720"
+            }
+          ],
+          "avgMonthlySearches": "1300",
+          "competitionIndex": "12",
+          "lowTopOfPageBidMicros": "815380",
+          "highTopOfPageBidMicros": "4446562"
+        },
+        "closeVariants": [
+          "トップレベルドメイン"
+        ]
+      },
+      {
+        "text": "セカンド レベル ドメイン",
+        "keywordMetrics": {
+          "competition": "LOW",
+          "monthlySearchVolumes": [
+            {
+              "month": "OCTOBER",
+              "year": "2025",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "NOVEMBER",
+              "year": "2025",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "DECEMBER",
+              "year": "2025",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "JANUARY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "FEBRUARY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "MARCH",
+              "year": "2026",
+              "monthlySearches": "140"
+            },
+            {
+              "month": "APRIL",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "MAY",
+              "year": "2026",
+              "monthlySearches": "210"
+            },
+            {
+              "month": "JUNE",
+              "year": "2026",
+              "monthlySearches": "110"
+            },
+            {
+              "month": "JULY",
+              "year": "2026",
+              "monthlySearches": "170"
+            },
+            {
+              "month": "AUGUST",
+              "year": "2026",
+              "monthlySearches": "90"
+            },
+            {
+              "month": "SEPTEMBER",
+              "year": "2026",
+              "monthlySearches": "170"
+            }
+          ],
+          "avgMonthlySearches": "170",
+          "competitionIndex": "9",
+          "lowTopOfPageBidMicros": "4161198",
+          "highTopOfPageBidMicros": "4983088"
+        },
+        "closeVariants": [
+          "セカンドレベルドメイン"
+        ]
+      }
+    ]
+  }
+}

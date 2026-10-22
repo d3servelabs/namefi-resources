@@ -1,0 +1,57 @@
+{
+  "data_validate": "PASS; 37 pre-existing warnings; 4064 files; 0 locale mismatch; 0 relationship mismatch",
+  "lint_mdx": "PASS",
+  "topic_links": "PASS; 0 broken, 0 missing-locale, 0 locale mismatch, 0 relationship mismatch, 3 intentional translation fallbacks",
+  "links_test": "18 pass, 0 fail, 95 expectations",
+  "translation_structure": {
+    "headings_en": 7,
+    "headings_ja": 7,
+    "table_lines_en": 33,
+    "table_lines_ja": 33,
+    "body_link_targets_each": 57,
+    "code_spans_each": 39,
+    "external_url_and_code_multisets": "identical",
+    "exact_english_body_copy": false
+  },
+  "preview": {
+    "method": "Local MDX evaluate with remark-gfm, React static HTML, isolated agent-browser session",
+    "desktop_viewport": [
+      1440,
+      1000
+    ],
+    "mobile_viewport": [
+      390,
+      844
+    ],
+    "mobile_page_width": 390,
+    "images_loaded": 5,
+    "screenshots_opened": true,
+    "limitation": "Static content preview, not the application shell. Deployed canonical, hreflang and final mobile layout remain pending the remote gate.",
+    "new_selection_screenshots_opened": true,
+    "new_selection_mobile_page_width": 390
+  },
+  "translation_provenance": "GPT-6.1-sol direct from revised English; complete block-by-block Japanese prose. Author checked semantic coverage and Japanese reading. No human native LQA or independent review requested or claimed.",
+  "expected_locale_urls": [
+    "https://namefi.io/r/en/blog/dns-record-types-guide/",
+    "https://namefi.io/r/ja/blog/dns-record-types-guide/"
+  ],
+  "canonical_contract": "Both real locales self-canonical; reciprocal en/ja alternates, English x-default through existing renderer; no unsupported frontmatter keys added.",
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "topic": {
+      "source_id": "G11",
+      "slug": "dns-record-types-guide",
+      "path_match": "/blog/dns-record-types-guide/",
+      "matched_rows": 0,
+      "observed_impressions": 0,
+      "observed_clicks": 0,
+      "countries": {}
+    },
+    "limitation": "GSC returns observed site data with top-row/anonymization limits; not total market demand. No matching row is not zero market demand."
+  },
+  "remote_actions": "None. No pushes, PR actions, reviews, hosted CI, merge or release.",
+  "image_followup": "Root requested one actual new selection illustration after the initial all-reused package. New image has the same bilingual reference and locale-native alt text."
+}
