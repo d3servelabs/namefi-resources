@@ -39,6 +39,16 @@ That is the first thing to understand before you register a name. The checkout p
 
 A promotional first year can be legitimate and still lead to a higher annual commitment. Compare both prices before checkout to understand the long-term [holding cost](/en/glossary/holding-cost/).
 
+## You can find a cheap domain by comparing the same purchase
+
+Compare the exact name, extension, currency, and registration term across registrars. Record registration and renewal separately. Reject a comparison that mixes a premium name with a standard name.
+
+[Porkbun](https://porkbun.com/products/domains) publishes separate registration, renewal, and transfer columns. [Cloudflare](https://www.cloudflare.com/domains/) states that registration and renewal have no registrar markup. Cloudflare requires [Cloudflare nameservers](https://developers.cloudflare.com/registrar/get-started/register-domain/). Include that requirement when comparing DNS flexibility.
+
+Add the services you need before choosing the lowest total. Check the final cart for taxes and optional products. A promotional registration price alone cannot identify the cheapest long-term option.
+
+Sources checked on October 22, 2026. Quotes and terms can change.
+
 ## The number you see first is not the cost
 
 ![Compare registration and renewal alongside transfer and recovery charges.](../../assets/how-much-is-a-domain-understanding-holding-cost-01-bills.jpg)

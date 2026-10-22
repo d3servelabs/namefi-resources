@@ -39,6 +39,16 @@ Eso es lo primero que conviene entender antes de registrar un nombre. El precio 
 
 El precio promocional del registro no determina el precio de renovación. Compara el [Costo de mantenimiento](/es/glossary/holding-cost/) a largo plazo.
 
+## Puedes encontrar un dominio barato comparando la misma compra
+
+Compara el nombre exacto, la extensión, la moneda y el plazo de registro entre registradores. Anota el registro y la renovación por separado. No compares un nombre premium con uno de precio estándar.
+
+[Porkbun](https://porkbun.com/products/domains) publica columnas separadas de registro, renovación y transferencia. [Cloudflare](https://www.cloudflare.com/domains/) afirma que no añade margen al registro ni a la renovación. Cloudflare exige [sus servidores de nombres](https://developers.cloudflare.com/registrar/get-started/register-domain/). Considera ese requisito al comparar la flexibilidad de DNS.
+
+Añade los servicios necesarios antes de elegir el total más bajo. Revisa los impuestos y productos opcionales del carrito final. Una promoción de registro no identifica por sí sola la opción más barata a largo plazo.
+
+Fuentes consultadas el 22 de octubre de 2026. Los precios y condiciones pueden cambiar.
+
 ## El primer número que ves no es el costo
 
 La mayoría de las personas pregunta «¿cuánto cuesta un dominio?» y espera una sola respuesta. Una pregunta mejor es: «¿Cuánto me costará este nombre si lo conservo durante tres años y algo sale mal una vez?»
