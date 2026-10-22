@@ -1,0 +1,380 @@
+{
+  "source_id": "G12",
+  "order": 31,
+  "official_language_ids_checked": "https://developers.google.com/google-ads/api/data/codes-formats",
+  "language_ids": {
+    "es": 1003,
+    "de": 1001
+  },
+  "markets": [
+    {
+      "fetched_utc": "2026-10-22T01:16:30Z",
+      "request": {
+        "language": "languageConstants/1003",
+        "geoTargetConstants": [
+          "geoTargetConstants/2484"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "cname vs registro a",
+          "diferencia cname y registro a",
+          "registro cname",
+          "cname dominio raiz"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "registro cname",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "40"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "50"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "590"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "320"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "170"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "480"
+                }
+              ],
+              "avgMonthlySearches": "210",
+              "competitionIndex": "3",
+              "lowTopOfPageBidMicros": "511172",
+              "highTopOfPageBidMicros": "2747198"
+            }
+          },
+          {
+            "text": "cname vs registro a"
+          },
+          {
+            "text": "diferencia cname y registro a"
+          },
+          {
+            "text": "cname dominio raiz"
+          }
+        ]
+      }
+    },
+    {
+      "fetched_utc": "2026-10-22T01:16:30Z",
+      "request": {
+        "language": "languageConstants/1001",
+        "geoTargetConstants": [
+          "geoTargetConstants/2276"
+        ],
+        "keywordPlanNetwork": "GOOGLE_SEARCH",
+        "keywords": [
+          "cname oder a record",
+          "unterschied cname a record",
+          "cname eintrag",
+          "cname hauptdomain"
+        ],
+        "includeAdultKeywords": false
+      },
+      "response": {
+        "results": [
+          {
+            "text": "cname oder a record",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                }
+              ],
+              "avgMonthlySearches": "10",
+              "competitionIndex": "20"
+            }
+          },
+          {
+            "text": "cname eintrag",
+            "keywordMetrics": {
+              "competition": "LOW",
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "70"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "110"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "260"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "140"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "210"
+                }
+              ],
+              "avgMonthlySearches": "140",
+              "competitionIndex": "13",
+              "lowTopOfPageBidMicros": "165870",
+              "highTopOfPageBidMicros": "2671772"
+            }
+          },
+          {
+            "text": "cname hauptdomain",
+            "keywordMetrics": {
+              "monthlySearchVolumes": [
+                {
+                  "month": "OCTOBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "NOVEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "DECEMBER",
+                  "year": "2025",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JANUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "FEBRUARY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MARCH",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "APRIL",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "MAY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JUNE",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "JULY",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "AUGUST",
+                  "year": "2026",
+                  "monthlySearches": "10"
+                },
+                {
+                  "month": "SEPTEMBER",
+                  "year": "2026",
+                  "monthlySearches": "0"
+                }
+              ],
+              "avgMonthlySearches": "10"
+            }
+          },
+          {
+            "text": "unterschied cname a record"
+          }
+        ]
+      }
+    }
+  ],
+  "gsc": {
+    "period": [
+      "2026-09-21",
+      "2026-10-18"
+    ],
+    "matched_rows": 0,
+    "interpretation": "No observed matching site rows. Total market demand remains UNKNOWN."
+  },
+  "selected_locales": [],
+  "deferred_locales": {
+    "de-DE": "Comparison query averages 10/month. Apex query averages 10/month. Generic CNAME entry query averages 140/month. Focused demand is small relative to maintaining this long provider-specific comparison. Defer rather than treating generic entry demand as comparison demand.",
+    "es-MX": "Generic registro cname averages 210/month; tested comparison and apex queries have UNKNOWN metrics. Search results fit educational DNS guidance, but do not establish measured comparison demand. Defer pending focused demand evidence."
+  },
+  "untested_locales": "UNKNOWN, not zero. No blanket locale decision.",
+  "close_variants": "The API returned no closeVariants fields. Preserve raw returned text and monthly series above.",
+  "locale_support": {
+    "supported": [
+      "en",
+      "es",
+      "de",
+      "fr",
+      "zh-CN",
+      "ar",
+      "hi",
+      "ko",
+      "ja",
+      "ta"
+    ],
+    "runtime": "Astra i18n-config.ts and app/[lang]/blog/[slug]/page.tsx read locally. The renderer uses self canonicals, actual translations only in alternates, English x-default.",
+    "expected_urls": [
+      "https://namefi.io/r/en/blog/cname-vs-a-record/"
+    ]
+  }
+}
