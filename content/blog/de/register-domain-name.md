@@ -38,6 +38,8 @@ Wenn ein KI-Agent die Domain kauft, verwenden Sie die [Namefi-Anleitung zur Regi
 
 ## Prüfen Sie den Namen, die Voraussetzungen und den Gesamtpreis vor der Zahlung
 
+Wenn eine Kaufanleitung Google empfiehlt, prüfen Sie vor der Bestellung den [aktuellen Registrierungsweg über Google](/de/blog/buy-domain-through-google/).
+
 ![Drei Prüfungen vor der Bestellung: Voraussetzungen, Gesamtkosten und Registrant](../../assets/register-domain-name-01-checkout.jpg)
 
 ### Suchen Sie nach der vollständigen gewünschten Adresse

@@ -76,3 +76,7 @@ The next October 21 batch adds twenty standalone English guides from the existin
 ## The eMudhra draft explains CA trust and DNSSEC limits
 
 The October 22, 2026 draft `emudhra-ca-compromise-dnssec.md` explains intermediate CA compromise, MITM requirements, DNSSEC, DANE, CAA, and CT. Six accompanying glossary concepts and nine translations remain drafts. The dated editorial record preserves evidence, model authorization, review limits, and proposed inbound links.
+
+## The October 28 guides address DNS timeouts and Google registration routes
+
+Two English guides distinguish Windows DNS timeouts from error replies and separate Google Domains from Cloud Domains and Workspace. The guides use opened official sources, reviewed house-style illustrations, and links from existing registration and DNS articles.

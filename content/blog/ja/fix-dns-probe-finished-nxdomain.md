@@ -53,6 +53,7 @@ SERVFAILはサーバー側の失敗を示します。
 タイムアウトは、ツールの待機期限までに応答を受け取れなかったという観測です。
 [RFC 1035の4.1.1節](https://www.rfc-editor.org/rfc/rfc1035.html#section-4.1.1)は、DNSの応答コードを定義しています。
 タイムアウトはNXDOMAIN応答とは異なります。
+サーバーから応答がない場合は、[WindowsでDNSタイムアウトを調べる手順](/ja/blog/fix-dns-server-not-responding/)を参照してください。
 
 名前が存在しても、特定の種類のレコードがない場合があります。
 一般にNODATAと呼ぶ結果は、`NOERROR` を使い、要求したデータを返しません。

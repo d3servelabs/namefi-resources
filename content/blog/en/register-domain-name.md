@@ -38,6 +38,8 @@ If an AI agent will complete the purchase, use the [Namefi agent registration gu
 
 ## Check the name, eligibility, and full price before payment
 
+If a buying guide recommends Google, identify the [current Google domain registration service](/en/blog/buy-domain-through-google/) before following its checkout instructions.
+
 ![Three checks before checkout: eligibility, total cost, and registrant details](../../assets/register-domain-name-01-checkout.jpg)
 
 ### Search for the exact address you intend to register

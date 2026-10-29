@@ -34,3 +34,7 @@ The next October 21 batch adds twenty covers at 1200 × 630 and eighty section i
 ## The next twenty articles add another reviewed image set
 
 The next-twenty batch adds twenty 1200 × 630 covers and eighty 1200 × 675 section illustrations. Every image uses the repository gpt-image-2 generators and the official Namefi logo. The dated editorial batch record preserves the article prefixes, visual corrections and final file hashes.
+
+## The October 28 guides share eight reviewed images
+
+The `fix-dns-server-not-responding` and `buy-domain-through-google` prefixes each include a 1200 × 630 cover and three 1200 × 675 section illustrations. The batch evidence preserves all generation attempts and visual checks.
