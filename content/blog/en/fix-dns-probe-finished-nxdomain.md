@@ -52,6 +52,7 @@ The response denies the existence of a name.
 SERVFAIL reports a server failure, while a timeout means the test received no response before the tool's deadline.
 [RFC 1035, Section 4.1.1](https://www.rfc-editor.org/rfc/rfc1035.html#section-4.1.1) defines the DNS response codes.
 A timeout is an observation about a query, rather than an NXDOMAIN response.
+Use the [Windows DNS timeout guide](/en/blog/fix-dns-server-not-responding/) when the server does not reply.
 
 An existing name can lack a particular record type.
 That result is commonly called NODATA and uses `NOERROR` without the requested data.
