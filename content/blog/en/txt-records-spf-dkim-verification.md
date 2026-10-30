@@ -76,6 +76,8 @@ A hosted email service commonly supplies an `include:` value instead of asking c
 
 Do not add `+all` to make a failing test pass. That policy authorizes every host through the all mechanism. Identify the missing legitimate sender and correct the policy deliberately.
 
+Inspect the published sending domain with [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Review its SPF findings and any incomplete dependency checks before editing the policy. The result inspects DNS configuration. A real SPF authentication result still needs the sender IP and the SMTP identity used for a message.
+
 ![Each sending identity needs one valid SPF policy.](../../assets/txt-records-spf-dkim-verification-02-section.jpg)
 
 ## One sending identity needs one selected SPF record

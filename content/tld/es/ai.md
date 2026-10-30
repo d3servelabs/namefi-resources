@@ -138,7 +138,7 @@ Ten en cuenta dos riesgos. Primero, las personas pueden escuchar mal "punto A-I"
 
 ## Cómo registrar un dominio .ai en Namefi
 
-1. **Busca** el nombre que deseas en Namefi para comprobar su disponibilidad.
+1. **Busca** el nombre que deseas en [Namefi](https://namefi.io/#register) para comprobar su disponibilidad.
 2. Compara el pago total, la cotización de renovación y los servicios incluidos antes de comprar. Esta página no ofrece precios mayoristas actuales ni clasificaciones premium del registro.
 3. **Regístrate** y completa el proceso de pago.
 

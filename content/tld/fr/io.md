@@ -148,7 +148,7 @@ Faites attention à deux écueils. Premièrement, prononcé à voix haute, « io
 
 ## Comment enregistrer un domaine .io chez Namefi
 
-1. **Recherchez** votre nom souhaité sur [Namefi](https://namefi.io) pour vérifier sa disponibilité.
+1. **Recherchez** votre nom souhaité sur [Namefi](https://namefi.io/#register) pour vérifier sa disponibilité.
 2. **Choisissez** le résultat .io (et les alternatives à sécuriser).
 3. **Enregistrez** et configurez le DNS.
 

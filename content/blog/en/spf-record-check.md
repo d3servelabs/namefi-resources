@@ -74,6 +74,8 @@ Two separately published SPF records do not combine into one policy. A single TX
 
 Before editing, save the existing DNS value. Compare the policy with every active sending service's current official instructions. Do not delete an unfamiliar include until the service owner identifies whether the include still supports legitimate mail.
 
+Run the sending domain through [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth) to inspect the published SPF policy and reachable include or redirect targets. Treat incomplete branches as incomplete. The result is a configuration inspection, not an SPF verdict for a particular sender IP and message.
+
 ![Each sending identity needs one valid SPF policy.](../../assets/txt-records-spf-dkim-verification-02-section.jpg)
 
 ## Policy evaluation needs the actual sender and its dependencies

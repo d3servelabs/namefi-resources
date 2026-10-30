@@ -87,6 +87,8 @@ Do not copy only the brand word. A candidate with a different extension is a dif
 
 As an editorial recommendation, ask a colleague to read the name aloud and type the name after hearing it. Record the actual mistakes. That exercise gives the team concrete feedback without pretending to predict conversion or search ranking.
 
+For another idea-generation route, open [Namefi's AI domain search](https://namefi.io/search/ai) with the same naming brief. Check any shortlisted name separately in [Namefi's domain search](https://namefi.io/#register) before reviewing purchase terms. An AI suggestion does not establish availability or complete registration.
+
 ## Verify registration rather than trusting an idea label
 
 Open the selected registrar's search and enter the exact candidate. Read whether the service offers new registration, a premium listing, or an aftermarket purchase. Check the final cart before paying.

@@ -102,6 +102,8 @@ Microsoft documents outbound firewall rules as one possible cause of DNS timeout
 
 Ask the administrator to inspect the applicable rule or packet evidence. Avoid broad inbound rules, unrestricted outbound changes, or disabling a firewall. A narrowly identified rule change belongs to the administrator who owns the network policy.
 
+Prepare a controlled local test with [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands). Keep the hostname and record type fixed, choose the system resolver or a listed public resolver, and run the generated command on the affected device. The generator itself makes no DNS request.
+
 ## A cache change needs evidence and a retest
 
 Use `ipconfig /displaydns` when the local cache matters. Microsoft states that the output includes cached records and entries preloaded from the Hosts file. The `/flushdns` option resets the DNS client cache. [The ipconfig documentation defines both operations](#microsoft-defines-adapter-and-cache-inspection).

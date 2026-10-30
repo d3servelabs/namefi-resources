@@ -110,6 +110,8 @@ Let’s Encrypt warns that full DNS API credentials on a web server increase the
 
 Keep the public TXT value separate from the secret used to update DNS. Publish only the challenge value that the client requests. Do not place the provider’s API token in the DNS record.
 
+Check the exact DNS-01 TXT owner name with [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) after the client publishes the challenge. Compare the selected resolver's answer with the client's requested value. This check does not inspect the installed certificate, private key, or TLS chain.
+
 ![A private scoped DNS API credential updates a separate public challenge TXT value.](../../assets/how-to-install-an-ssl-certificate-01-validation-boundaries.jpg)
 
 ## You should test the application and renewal after issuance

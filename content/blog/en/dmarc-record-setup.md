@@ -78,6 +78,8 @@ DNS interfaces differ in how they accept record names. Some interfaces append th
 
 Do not overwrite an existing enforcement policy with the monitoring example. An existing record needs investigation before revision. Use the [DMARC check guide](/en/blog/dmarc-record-check/) to inspect the current record and actual message results.
 
+Inspect the published author domain in [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Review the discovered DMARC record and any policy or compatibility findings before revising an existing policy. The checker does not establish message alignment, report delivery, or successful protection from a record's presence alone.
+
 ## A sender inventory comes before policy enforcement
 
 Write down every legitimate sending stream. Include employee mail, newsletters, billing, support systems, transactional messages, and website forms. Identify the responsible person and current provider for each stream.

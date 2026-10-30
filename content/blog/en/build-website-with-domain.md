@@ -118,6 +118,8 @@ If the provider requests a nameserver change, inventory the existing zone first.
 
 For a hypothetical `www.example.com` setup, copy the provider’s actual target. Do not use a placeholder target from another tutorial. Review the saved hostname to catch an accidentally repeated domain suffix.
 
+After saving the host's required record, query that exact hostname and type in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the public resolver's response with the host's instruction. Complete the platform's connection check and the browser test separately.
+
 ![The browser first looks up the address through DNS, then requests the page from the web host.](../../assets/domain-vs-hosting-02-request-path.jpg)
 
 ## HTTPS and application tests complete the launch

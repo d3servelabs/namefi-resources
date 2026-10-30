@@ -63,6 +63,8 @@ An FQDN also does not require `www`. `example.com.` and `mail.example.com.` can 
 
 Keep terminology tied to the task. An administrator might ask for the FQDN of a mail server, a database service, or a website. The answer should identify the exact service name rather than the organization's domain alone.
 
+Paste a DNS name, rather than a complete URL, into [Namefi's domain-name inspector](https://namefi.io/domain-tools/domain-name). Compare its absolute-name output and normalized ASCII and Unicode forms. Public-suffix information describes the parsed boundary when known, not whether the name can be registered.
+
 ![A complete DNS name includes the root and every label.](../../assets/fully-qualified-domain-name-01-root-label.jpg)
 
 ## A hostname field differs from a URL field

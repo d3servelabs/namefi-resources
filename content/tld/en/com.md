@@ -53,6 +53,8 @@ If the name already has a registrant, the [domain value guide](/en/blog/what-mak
 
 Keep alternatives concrete. Compare the same complete name where possible. When comparing different names, record the change explicitly. A lower quote for a different extension does not answer the cost of the desired .com registration.
 
+For the new-registration branch, enter the complete `.com` candidate in [Namefi's domain search](https://namefi.io/#register). Review the current result before checkout. An unavailable result does not provide an aftermarket purchase process, and a displayed offer is not a completed registration.
+
 ## The initial quote needs a matching renewal quote
 
 A useful comparison separates registration, renewal, transfer, taxes, and optional services. The [domain holding cost guide](/en/blog/how-much-is-a-domain-understanding-holding-cost/) explains why the later obligation matters.

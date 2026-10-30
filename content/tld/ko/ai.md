@@ -182,7 +182,7 @@ GoDaddy는 누구나 .ai 도메인을 등록할 수 있다고 안내합니다. �
 
 ## .ai를 장기 보유하기
 
-다른 도메인과 마찬가지로 .ai는 [DNS](/ko/glossary/dns/)를 통한 일반적인 방식으로, 또는 [토큰화된 도메인](/ko/blog/what-are-tokenized-domains/)으로 — 소유권을 검증 가능하게 하고 이전을 간단하게 만들면서 일반 해석을 유지하는 [온체인](/ko/glossary/on-chain/) [NFT](/ko/glossary/nft/) — 보유할 수 있습니다. Web2와 [Web3](/ko/glossary/web3/)를 연결하는 [ICANN 공인 레지스트라](/ko/glossary/accredited-registrar/)인 [Namefi](https://namefi.io)에서 .ai를 등록하고, 관리하고, 선택적으로 한 곳에서 토큰화할 수 있습니다. [Namefi](https://namefi.io)에서 이름을 검색하여 시작하세요.
+다른 도메인과 마찬가지로 .ai는 [DNS](/ko/glossary/dns/)를 통한 일반적인 방식으로, 또는 [토큰화된 도메인](/ko/blog/what-are-tokenized-domains/)으로 — 소유권을 검증 가능하게 하고 이전을 간단하게 만들면서 일반 해석을 유지하는 [온체인](/ko/glossary/on-chain/) [NFT](/ko/glossary/nft/) — 보유할 수 있습니다. Web2와 [Web3](/ko/glossary/web3/)를 연결하는 [ICANN 공인 레지스트라](/ko/glossary/accredited-registrar/)인 [Namefi](https://namefi.io)에서 .ai를 등록하고, 관리하고, 선택적으로 한 곳에서 토큰화할 수 있습니다. [Namefi](https://namefi.io/#register)에서 이름을 검색하여 시작하세요.
 
 ## 자주 묻는 질문
 

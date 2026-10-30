@@ -43,6 +43,8 @@ relatedGlossary:
 
 同じ名前、拡張子、通貨、登録期間でレジストラを比較してください。登録料金と更新料金を別々に記録してください。プレミアム名と標準価格の名前を混ぜて比較しないでください。
 
+新規登録を比較する場合は、[Namefiのドメイン検索](https://namefi.io/#register)で同じ完全な候補名を検索してください。現在提示されている取引と料金を記録し、適用される更新条件は別に確認してください。取得結果と、取引範囲が異なる別の提供元の見積もりを混ぜて比較しないでください。
+
 [Porkbun](https://porkbun.com/products/domains) は登録、更新、移管の料金を別々の列に掲載しています。[Cloudflare](https://www.cloudflare.com/domains/) は登録と更新にレジストラの利益を上乗せしないと説明しています。Cloudflare は [Cloudflare のネームサーバー](https://developers.cloudflare.com/registrar/get-started/register-domain/)の使用を求めます。DNS の自由度を比較する際は、この条件を考慮してください。
 
 必要なサービスを加えてから、最も低い合計額を選んでください。最終的なカートで税金と任意の製品を確認してください。登録時の割引だけでは、長期的に最も安い選択肢は分かりません。

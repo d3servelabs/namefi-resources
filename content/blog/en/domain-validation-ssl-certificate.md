@@ -96,6 +96,8 @@ For DNS-01, publish the exact token at the name supplied by the client. The norm
 
 As security advice, use narrowly scoped DNS automation credentials when the provider supports them. Keep credentials out of public DNS values, screenshots, and certificate request notes. A challenge response and an API credential serve different purposes.
 
+For a DNS-01 publication check, select TXT in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) and query the exact challenge owner name supplied by the client. The answer is one public resolver's observation. Certificate issuance and the certificate served by the website still require their own checks.
+
 ![HTTP validation serves a challenge file, while DNS validation publishes a TXT record and can support wildcard issuance.](../../assets/free-ssl-certificate-02-validation.jpg)
 
 ## Hostname coverage needs a separate review

@@ -81,6 +81,8 @@ As editorial advice, compare the response with the service provider’s current 
 
 The [DNS record guide](/en/blog/dns-record-types-guide/) explains the roles of address, alias, mail, and policy records. Use that guide when the tool offers more test choices than the symptom requires.
 
+For the narrow record check, [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) supports DNS records, MX, PTR, and a Google-versus-Cloudflare comparison. Use the task and record type that match the symptom. Namefi's tool does not reproduce MxToolbox's broader nameserver diagnostics or prove application delivery.
+
 ## MX records need careful interpretation
 
 SMTP uses MX preference values to choose destinations. Lower preference values take precedence over higher values. The mail transfer standard also specifies fallback behavior when no MX record exists. [RFC 5321 defines MX processing](#the-smtp-standard-defines-mx-processing).

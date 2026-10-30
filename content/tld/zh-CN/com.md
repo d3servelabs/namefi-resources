@@ -193,7 +193,7 @@ Verisign 的回应是：它运营着不可替代的基础设施，保持近乎�
 
 ## 长期持有 .com
 
-.com 是一项跨越数十年的资产，*如何持有*它和*买哪一个*同样重要。除了传统的 [DNS](/zh-CN/glossary/dns/) 注册，.com 还可以作为[代币化域名](/zh-CN/blog/what-are-tokenized-domains/)持有——一条[链上](/zh-CN/glossary/on-chain/)记录，使[所有权](/zh-CN/glossary/domain-ownership/)可验证，转让如同转移一枚 [NFT](/zh-CN/glossary/nft/) 一样简单，同时不放弃标准解析。作为连接 Web2 与 [Web3](/zh-CN/glossary/web3/) 的 [ICANN 认证](/zh-CN/glossary/icann/)[注册商](/zh-CN/glossary/registrar/)，[Namefi](https://namefi.io) 让你在一个地方注册 .com、管理 DNS、并可选择代币化。你可以在 [Namefi](https://namefi.io) 搜索域名开始。
+.com 是一项跨越数十年的资产，*如何持有*它和*买哪一个*同样重要。除了传统的 [DNS](/zh-CN/glossary/dns/) 注册，.com 还可以作为[代币化域名](/zh-CN/blog/what-are-tokenized-domains/)持有——一条[链上](/zh-CN/glossary/on-chain/)记录，使[所有权](/zh-CN/glossary/domain-ownership/)可验证，转让如同转移一枚 [NFT](/zh-CN/glossary/nft/) 一样简单，同时不放弃标准解析。作为连接 Web2 与 [Web3](/zh-CN/glossary/web3/) 的 [ICANN 认证](/zh-CN/glossary/icann/)[注册商](/zh-CN/glossary/registrar/)，[Namefi](https://namefi.io) 让你在一个地方注册 .com、管理 DNS、并可选择代币化。你可以在 [Namefi](https://namefi.io/#register) 搜索域名开始。
 
 ## 常见问题
 

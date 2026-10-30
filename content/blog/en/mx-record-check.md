@@ -64,6 +64,8 @@ You can also use a local command when the operating system supplies the tool. Th
 
 The command is an instruction, not a live lookup result. Do not treat an example hostname in an article as a provider-issued MX target.
 
+In [Namefi's DNS lookup](https://namefi.io/domain-tools/dns), choose Mail exchange (MX) and enter the domain after the recipient address's `@`. Save the selected resolver, complete answer, and timestamp. The tool distinguishes a missing MX answer from null MX, but it does not test whether a mailbox accepts a message.
+
 ## Read priority as a routing preference
 
 An MX record has a mail-server hostname and a preference value. Lower preference values receive priority when the sender selects among mail exchangers. [RFC 5321 defines MX selection](#rfc-5321-defines-mx-selection-and-fallback).

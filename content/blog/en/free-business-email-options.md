@@ -111,6 +111,8 @@ Follow the selected sending provider's authentication instructions. Our [SPF exp
 
 Do not delete unrelated TXT records while adding email authentication. Keep a record of the previous configuration and each consumer's purpose. The [DNS record guide](/en/blog/dns-record-types-guide/) explains the different record roles.
 
+If the chosen service sends from your own domain, inspect its published SPF, DMARC, and known DKIM selector with [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). This step checks configuration only. Continue the reply and external-message tests to verify the actual sending workflow.
+
 ![Incoming delivery and outgoing authentication need separate tests.](../../assets/free-business-email-options-03-section.jpg)
 
 ## Compare the continuing cost before printing the address

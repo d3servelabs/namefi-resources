@@ -43,6 +43,8 @@ ogImage: ../../assets/what-is-domain-og.jpg
 
 `blog.example.com.` を右から左へ読むと、階層を確認できます。ドットはラベルを区切り、末尾のドットはルートを表します。通常のウェブアドレスでは、末尾のドットを省略します。[RFC 1034 の第3.1節](https://www.rfc-editor.org/rfc/rfc1034#section-3.1) は、この階層構造を定義しています。
 
+別の名前を調べる場合は、URLのパスを含めずにホスト名を[Namefiのドメイン名確認ツール](https://namefi.io/domain-tools/domain-name)に入力してください。ローカルの結果には、正規化された形式と、判明している場合はパブリックサフィックスの境界が表示されます。結果は、登録の可否、登録上の権利、名前を管理する主体を証明しません。
+
 ![ルートから com、example.com、blog.example.com へと続く DNS の階層](../../assets/what-is-domain-01-hierarchy.jpg)
 
 | 階層 | 完全な名前 | 意味 |

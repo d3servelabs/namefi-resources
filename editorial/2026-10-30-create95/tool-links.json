@@ -1,0 +1,1292 @@
+{
+  "summary": {
+    "articles_reviewed": 95,
+    "matched_articles": 55,
+    "nomatch_articles": 40,
+    "paragraph_edits": 55
+  },
+  "scope": "All 95 integrated article bodies were scanned for scope headings and candidate task paragraphs; actual selected paragraphs were reviewed against the implementation. This is a tool-link fit review, not a new factual audit of every article.",
+  "routes": [
+    {
+      "url": "https://namefi.io/domain-tools/dns",
+      "source_url": "https://github.com/d3servelabs/namefi-astra/blob/ec0a85c84b0bea88a0be2afcae9498d6bab2dced/apps/frontend/src/features/tools/dns/README.md",
+      "source_sha256": "c352e50a7c3caf09afdaf40428c44f68578f4dadf30de63a67b68fcfbd17eded",
+      "scope": "DNS records, MX, PTR and Google/Cloudflare comparison; not active system DNS or an authoritative global propagation test."
+    },
+    {
+      "url": "https://namefi.io/domain-tools/email-auth",
+      "source_url": "https://github.com/d3servelabs/namefi-astra/blob/ec0a85c84b0bea88a0be2afcae9498d6bab2dced/apps/frontend/src/features/tools/email-auth/README.md",
+      "source_sha256": "73e00fe1307f6b91bb46ed45d5be3c171d81c378c17f9f260f6e08711e2f04f7",
+      "scope": "Public SPF/DMARC and selector-supplied DKIM configuration; not authentication of a message."
+    },
+    {
+      "url": "https://namefi.io/domain-tools/dnssec",
+      "source_url": "https://github.com/d3servelabs/namefi-astra/blob/ec0a85c84b0bea88a0be2afcae9498d6bab2dced/apps/frontend/src/features/tools/dnssec/README.md",
+      "source_sha256": "53ffdfec3b9623ad6d90d4038d9f84557b973226973980780e63c033875a66ef",
+      "scope": "Named resolver evidence; not independent signature-chain validation."
+    },
+    {
+      "url": "https://namefi.io/domain-tools/domain-name",
+      "source_url": "https://github.com/d3servelabs/namefi-astra/blob/ec0a85c84b0bea88a0be2afcae9498d6bab2dced/apps/frontend/src/features/tools/domain-name/inspect-domain-name.ts",
+      "source_sha256": "041d31c13f0d4ae22c86ca4690413a76f72129060bf35c8172486ebe054a86f2",
+      "scope": "Local spelling and bundled PSL structure; not availability, ownership, or legal clearance."
+    },
+    {
+      "url": "https://namefi.io/domain-tools/dns-commands",
+      "source_url": "https://github.com/d3servelabs/namefi-astra/blob/ec0a85c84b0bea88a0be2afcae9498d6bab2dced/apps/frontend/src/features/tools/dns-commands/README.md",
+      "source_sha256": "0a5268530a9dc532afd3b57b3fc4dc2f9b321cbe76a7f299c60b2982739f659e",
+      "scope": "Generates command text; does not execute commands or confirm a cache flush."
+    },
+    {
+      "url": "https://namefi.io/#register",
+      "source_url": "https://github.com/d3servelabs/namefi-astra/blob/ec0a85c84b0bea88a0be2afcae9498d6bab2dced/apps/frontend/src/features/public-tools/domain-tools-hub.tsx",
+      "source_sha256": "feecd9c5ff3680349da1c5ec4b3a780478bb8a736829c60a2c199f9803c2e20b",
+      "scope": "Existing new-registration search entry; not a completed registration or aftermarket purchase."
+    },
+    {
+      "url": "https://namefi.io/search/ai",
+      "source_url": "https://github.com/d3servelabs/namefi-astra/blob/ec0a85c84b0bea88a0be2afcae9498d6bab2dced/apps/frontend/src/features/public-tools/domain-tools-hub.tsx",
+      "source_sha256": "feecd9c5ff3680349da1c5ec4b3a780478bb8a736829c60a2c199f9803c2e20b",
+      "scope": "Existing AI naming entry; account/credit behavior remains in its workflow."
+    },
+    {
+      "url": "https://namefi.io/tlds",
+      "source_url": "https://github.com/d3servelabs/namefi-astra/blob/ec0a85c84b0bea88a0be2afcae9498d6bab2dced/apps/frontend/src/features/public-tools/domain-tools-hub.tsx",
+      "source_sha256": "feecd9c5ff3680349da1c5ec4b3a780478bb8a736829c60a2c199f9803c2e20b",
+      "scope": "Namefi-supported extensions directory; not all IANA-delegated strings."
+    }
+  ],
+  "coverage": [
+    {
+      "assignment_id": 1,
+      "path": "content/blog/en/what-is-port-443.md",
+      "status": "nomatch",
+      "reason": "The main checks are TCP reachability, TLS verification, firewall direction, and HTTP behavior. The available tools perform none of those checks.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 2,
+      "path": "content/blog/en/flush-dns-cache.md",
+      "status": "match",
+      "reason": "The article supplies a Windows local-cache command and a local retest procedure.",
+      "tool_ids": [
+        "commands"
+      ]
+    },
+    {
+      "assignment_id": 3,
+      "path": "content/blog/en/what-is-https.md",
+      "status": "nomatch",
+      "reason": "The article explains HTTPS and certificate trust. No TLS or certificate checker exists, and its incidental DNS discussion does not justify another CTA.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 4,
+      "path": "content/blog/en/flush-dns-mac.md",
+      "status": "match",
+      "reason": "The procedural section requires a version-appropriate local macOS cache command.",
+      "tool_ids": [
+        "commands"
+      ]
+    },
+    {
+      "assignment_id": 5,
+      "path": "content/blog/en/whois-and-rdap-public-data.md",
+      "status": "nomatch",
+      "reason": "The task is public registration data through WHOIS/RDAP. The domain parser is not an ownership or registration-data lookup.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 6,
+      "path": "content/blog/en/website-hosting-guide.md",
+      "status": "nomatch",
+      "reason": "The task compares hosting workload, maintenance, costs, and recovery. DNS lookup does not evaluate a hosting plan.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 7,
+      "path": "content/blog/en/what-is-dns.md",
+      "status": "match",
+      "reason": "The article explicitly teaches a name-and-record-type lookup.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 8,
+      "path": "content/blog/en/what-is-a-dns-server.md",
+      "status": "match",
+      "reason": "The article teaches a local query using the system resolver or a selected supported public resolver.",
+      "tool_ids": [
+        "commands"
+      ]
+    },
+    {
+      "assignment_id": 9,
+      "path": "content/blog/en/what-is-domain.md",
+      "status": "match",
+      "reason": "The hierarchy section distinguishes labels, public suffixes, and registrable boundaries.",
+      "tool_ids": [
+        "name"
+      ]
+    },
+    {
+      "assignment_id": 10,
+      "path": "content/blog/en/register-domain-name.md",
+      "status": "match",
+      "reason": "The prepayment checklist concerns an exact candidate for a new registration.",
+      "tool_ids": [
+        "search"
+      ]
+    },
+    {
+      "assignment_id": 11,
+      "path": "content/blog/en/fix-http-403.md",
+      "status": "nomatch",
+      "reason": "The task identifies HTTP authorization and security-layer refusals. No HTTP, login, WAF-log, or TLS diagnostic tool exists.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 12,
+      "path": "content/blog/en/ssl-certificate-types.md",
+      "status": "nomatch",
+      "reason": "The task selects validation and certificate hostname coverage. None of the tools checks an actual TLS certificate or certificate wildcard coverage.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 13,
+      "path": "content/blog/en/find-domain-registrar-dns-host.md",
+      "status": "match",
+      "reason": "The section needs a public NS observation to help identify the DNS service, separately from RDAP.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 14,
+      "path": "content/blog/en/fix-dns-server-not-responding.md",
+      "status": "match",
+      "reason": "The diagnosis requires reproducible commands from the affected device.",
+      "tool_ids": [
+        "commands"
+      ]
+    },
+    {
+      "assignment_id": 15,
+      "path": "content/blog/en/fix-chrome-secure-connection-error.md",
+      "status": "nomatch",
+      "reason": "The task diagnoses Chrome certificate and connection errors. No TLS or browser-connection checker exists.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 16,
+      "path": "content/blog/en/icann-domain-lookup.md",
+      "status": "nomatch",
+      "reason": "The article interprets ICANN registration data and statuses. No RDAP client is provided by these tools.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 17,
+      "path": "content/blog/en/email-domain-address-guide.md",
+      "status": "match",
+      "reason": "The section describes published SPF, DKIM, and DMARC configuration.",
+      "tool_ids": [
+        "email"
+      ]
+    },
+    {
+      "assignment_id": 18,
+      "path": "content/blog/en/nslookup-specific-dns-server.md",
+      "status": "match",
+      "reason": "The article teaches shell-specific nslookup requests with a named resolver.",
+      "tool_ids": [
+        "commands"
+      ]
+    },
+    {
+      "assignment_id": 19,
+      "path": "content/blog/en/dns-lookup-guide.md",
+      "status": "match",
+      "reason": "The core workflow is inspecting DNS records with source and timestamp context.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 20,
+      "path": "content/blog/en/dns-leak-test-guide.md",
+      "status": "nomatch",
+      "reason": "A DNS leak test must observe the browser or VPN DNS path. A fixed Google/Cloudflare web query cannot supply that observation.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 21,
+      "path": "content/blog/en/shared-hosting-guide.md",
+      "status": "nomatch",
+      "reason": "The article compares shared-hosting plans and operational responsibilities, which the domain tools do not evaluate.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 22,
+      "path": "content/blog/en/choose-public-dns-resolver.md",
+      "status": "nomatch",
+      "reason": "The article selects resolvers by filtering, privacy, reliability, and a reversible local trial. Fixed web-answer comparison is not that device trial or a latency benchmark.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 23,
+      "path": "content/blog/en/cloudflare-domain-buying-guide.md",
+      "status": "nomatch",
+      "reason": "The task compares Cloudflare registration terms and mandatory authoritative DNS. A different registrar search would derail the provider-specific choice; incidental DNS inventory is not a concrete tool task here.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 24,
+      "path": "content/blog/en/fully-qualified-domain-name.md",
+      "status": "match",
+      "reason": "The article directly teaches root dots, normalized names, and the distinction between hostnames and URLs.",
+      "tool_ids": [
+        "name"
+      ]
+    },
+    {
+      "assignment_id": 25,
+      "path": "content/blog/en/domain-appraisal-tools-compared.md",
+      "status": "nomatch",
+      "reason": "The task compares appraisal estimates and sales evidence. No appraisal or valuation tool exists.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 26,
+      "path": "content/blog/en/change-domain-nameservers.md",
+      "status": "match",
+      "reason": "The migration procedure verifies resolver-visible records and DNSSEC evidence after account-side activation.",
+      "tool_ids": [
+        "dns",
+        "dnssec"
+      ]
+    },
+    {
+      "assignment_id": 27,
+      "path": "content/blog/en/txt-records-spf-dkim-verification.md",
+      "status": "match",
+      "reason": "The article explains SPF record syntax and reachable dependencies.",
+      "tool_ids": [
+        "email"
+      ]
+    },
+    {
+      "assignment_id": 28,
+      "path": "content/blog/en/wordpress-hosting-guide.md",
+      "status": "nomatch",
+      "reason": "The task evaluates WordPress platform, backup, and hosting requirements. None of the tools evaluates hosting capability.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 29,
+      "path": "content/blog/en/cloudflare-dns-setup.md",
+      "status": "match",
+      "reason": "The Cloudflare setup needs a local system-versus-explicit-resolver lookup, not a browser-side proxy for the device.",
+      "tool_ids": [
+        "commands"
+      ]
+    },
+    {
+      "assignment_id": 30,
+      "path": "content/blog/en/domain-name-search.md",
+      "status": "match",
+      "reason": "The article is an exact-name new-registration search workflow.",
+      "tool_ids": [
+        "search"
+      ]
+    },
+    {
+      "assignment_id": 31,
+      "path": "content/blog/en/godaddy-auctions-guide.md",
+      "status": "nomatch",
+      "reason": "The task uses GoDaddy auction bids, payment, and delivery. New-registration search is not an aftermarket auction tool.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 32,
+      "path": "content/blog/en/quad9-dns-setup.md",
+      "status": "nomatch",
+      "reason": "The task configures and verifies Quad9 and its encrypted transport. The web tools query only Google/Cloudflare, and the command tool does not offer a Quad9-specific endpoint.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 33,
+      "path": "content/tld/en/ai.md",
+      "status": "match",
+      "reason": "The .ai article includes evaluating a new-registration candidate and its current offer.",
+      "tool_ids": [
+        "search"
+      ]
+    },
+    {
+      "assignment_id": 34,
+      "path": "content/blog/en/free-business-email-options.md",
+      "status": "match",
+      "reason": "The selected section tests the custom domain outgoing identity, for which published configuration is a concrete prerequisite.",
+      "tool_ids": [
+        "email"
+      ]
+    },
+    {
+      "assignment_id": 35,
+      "path": "content/blog/en/domain-validation-ssl-certificate.md",
+      "status": "match",
+      "reason": "The section explicitly publishes and checks a DNS-01 TXT challenge.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 36,
+      "path": "content/blog/en/mx-record-check.md",
+      "status": "match",
+      "reason": "The core task is querying and interpreting MX records.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 37,
+      "path": "content/blog/en/google-public-dns-setup.md",
+      "status": "match",
+      "reason": "The Google Public DNS guide compares local system resolution with an explicit Google query.",
+      "tool_ids": [
+        "commands"
+      ]
+    },
+    {
+      "assignment_id": 38,
+      "path": "content/blog/en/how-to-install-an-ssl-certificate.md",
+      "status": "match",
+      "reason": "The installation procedure has a DNS-01 TXT publication subtask, distinct from TLS installation.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 39,
+      "path": "content/blog/en/what-is-a-tld.md",
+      "status": "match",
+      "reason": "The next-step section shortlists purchasable extensions separately from the IANA root list.",
+      "tool_ids": [
+        "tlds"
+      ]
+    },
+    {
+      "assignment_id": 40,
+      "path": "content/blog/en/gmail-with-custom-domain.md",
+      "status": "match",
+      "reason": "The Gmail setup includes public outgoing-authentication records and a known DKIM selector.",
+      "tool_ids": [
+        "email"
+      ]
+    },
+    {
+      "assignment_id": 41,
+      "path": "content/tld/en/io.md",
+      "status": "match",
+      "reason": "The .io guide compares current new-registration offers and terms.",
+      "tool_ids": [
+        "search"
+      ]
+    },
+    {
+      "assignment_id": 42,
+      "path": "content/blog/en/build-website-with-domain.md",
+      "status": "match",
+      "reason": "The site-building procedure needs to inspect the exact provider-supplied DNS record.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 43,
+      "path": "content/blog/en/domain-extensions-list.md",
+      "status": "match",
+      "reason": "The article separates the worldwide root list from a registrar-supported extension shortlist.",
+      "tool_ids": [
+        "tlds"
+      ]
+    },
+    {
+      "assignment_id": 44,
+      "path": "content/blog/en/register-domain-squarespace.md",
+      "status": "nomatch",
+      "reason": "The article follows Squarespace-specific search, account, checkout, and verification. Linking a different registrar search would not perform that workflow.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 45,
+      "path": "content/blog/en/free-web-hosting-guide.md",
+      "status": "nomatch",
+      "reason": "The task evaluates free hosting limits and deployment requirements. A DNS lookup does not select or validate a free hosting plan.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 46,
+      "path": "content/tld/en/ch.md",
+      "status": "match",
+      "reason": "The .ch buying guide requires an exact candidate and registrar offer.",
+      "tool_ids": [
+        "search"
+      ]
+    },
+    {
+      "assignment_id": 47,
+      "path": "content/blog/en/subdomain-examples.md",
+      "status": "match",
+      "reason": "The article explicitly distinguishes hostname, parent boundary, subdomain, and URL path.",
+      "tool_ids": [
+        "name"
+      ]
+    },
+    {
+      "assignment_id": 48,
+      "path": "content/blog/en/cheap-web-hosting-guide.md",
+      "status": "nomatch",
+      "reason": "The task compares actual hosting bills, included services, backups, and exit terms. No hosting pricing or plan-comparison tool exists.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 49,
+      "path": "content/blog/en/cname-vs-a-record.md",
+      "status": "match",
+      "reason": "The CNAME/A comparison explicitly queries alias and address data before checking the site.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 50,
+      "path": "content/blog/en/how-much-is-a-domain-understanding-holding-cost.md",
+      "status": "match",
+      "reason": "The cost comparison starts with exact-name new-registration offers, not appraisals or resale.",
+      "tool_ids": [
+        "search"
+      ]
+    },
+    {
+      "assignment_id": 51,
+      "path": "content/blog/en/reverse-dns-lookup.md",
+      "status": "match",
+      "reason": "The core task is an IP-to-PTR public lookup.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 52,
+      "path": "content/blog/en/godaddy-account-domain-transfer.md",
+      "status": "nomatch",
+      "reason": "The task performs a GoDaddy account-to-account ownership handoff. None of the tools initiates or verifies that account operation.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 53,
+      "path": "content/blog/en/transfer-domain-to-godaddy.md",
+      "status": "match",
+      "reason": "The registrar-transfer procedure explicitly compares known service records after completion.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 54,
+      "path": "content/blog/en/how-to-value-a-domain-name.md",
+      "status": "nomatch",
+      "reason": "The task derives a domain valuation from comparable sales and intended use. None of the tools appraises domains.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 55,
+      "path": "content/blog/en/choose-domain-registrar.md",
+      "status": "nomatch",
+      "reason": "The task compares registrar pricing, DNS restrictions, recovery, and exit terms. An extra availability form would not answer that comparison, so no forced link is proposed.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 56,
+      "path": "content/blog/en/lets-encrypt-certificate-setup.md",
+      "status": "match",
+      "reason": "The Let's Encrypt setup contains an exact DNS-01 publication check.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 57,
+      "path": "content/blog/en/domain-vs-hosting.md",
+      "status": "match",
+      "reason": "The article explicitly compares public DNS answers after service connection.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 58,
+      "path": "content/blog/en/connect-domain-to-vercel.md",
+      "status": "match",
+      "reason": "The Vercel connection requires checking the project's exact DNS values.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 59,
+      "path": "content/blog/en/ttl-and-dns-propagation.md",
+      "status": "match",
+      "reason": "The TTL article compares selected recursive-resolver observations with authoritative evidence.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 60,
+      "path": "content/blog/en/mx-records-guide.md",
+      "status": "match",
+      "reason": "The MX setup guide verifies published mail routing separately from receiving mail.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 61,
+      "path": "content/blog/en/free-domain-offers.md",
+      "status": "nomatch",
+      "reason": "The task identifies contractual control in free-domain offers. A PSL-derived boundary cannot establish that an offer includes a transferable registration.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 62,
+      "path": "content/blog/en/free-website-and-domain.md",
+      "status": "match",
+      "reason": "The final section explicitly branches to a separately registered custom domain.",
+      "tool_ids": [
+        "search"
+      ]
+    },
+    {
+      "assignment_id": 63,
+      "path": "content/blog/en/spf-record-check.md",
+      "status": "match",
+      "reason": "The SPF diagnosis inspects a selected policy and reachable dependencies.",
+      "tool_ids": [
+        "email"
+      ]
+    },
+    {
+      "assignment_id": 64,
+      "path": "content/tld/en/com.md",
+      "status": "match",
+      "reason": "The .com guide starts by distinguishing new registration from an existing registered-domain transaction.",
+      "tool_ids": [
+        "search"
+      ]
+    },
+    {
+      "assignment_id": 65,
+      "path": "content/blog/en/dmarc-record-setup.md",
+      "status": "match",
+      "reason": "The DMARC setup publishes a policy and needs current DNS policy discovery.",
+      "tool_ids": [
+        "email"
+      ]
+    },
+    {
+      "assignment_id": 66,
+      "path": "content/blog/en/dns-propagation-checker-guide.md",
+      "status": "match",
+      "reason": "The core checker task compares named recursive resolvers rather than proving a global state.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 67,
+      "path": "content/blog/en/reverse-dns-ptr-records.md",
+      "status": "match",
+      "reason": "The PTR guide has a public reverse-answer verification step.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 68,
+      "path": "content/blog/en/adguard-dns-setup.md",
+      "status": "nomatch",
+      "reason": "The task configures AdGuard endpoints and verifies its active filtering path. Google/Cloudflare web queries cannot verify the AdGuard configuration.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 69,
+      "path": "content/blog/en/freedns-setup.md",
+      "status": "match",
+      "reason": "The FreeDNS procedure explicitly verifies the configured record after saving or an update.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 70,
+      "path": "content/blog/en/dmarc-record-check.md",
+      "status": "match",
+      "reason": "The DMARC diagnosis requires current policy discovery before live-message analysis.",
+      "tool_ids": [
+        "email"
+      ]
+    },
+    {
+      "assignment_id": 71,
+      "path": "content/blog/en/dynamic-dns-setup.md",
+      "status": "match",
+      "reason": "The dynamic DNS guide compares the updated public address with the DNS answer.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 72,
+      "path": "content/blog/en/dns-a-record-guide.md",
+      "status": "match",
+      "reason": "The A-record procedure explicitly verifies the saved hostname and IPv4 answer.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 73,
+      "path": "content/blog/en/ip-whois-lookup.md",
+      "status": "nomatch",
+      "reason": "The task reads IP registration allocation and abuse contacts. PTR lookup is a different task and must not masquerade as IP WHOIS.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 74,
+      "path": "content/blog/en/mxtoolbox-dns-guide.md",
+      "status": "match",
+      "reason": "The article distinguishes narrow DNS/MX queries from MxToolbox's broader DNS Check.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 75,
+      "path": "content/blog/en/vps-web-hosting-guide.md",
+      "status": "nomatch",
+      "reason": "The task evaluates VPS resource, operating, backup, and migration responsibilities. No server or hosting-plan diagnostic is provided.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 76,
+      "path": "content/blog/en/find-website-hosting-provider.md",
+      "status": "match",
+      "reason": "The hosting investigation first obtains the visible public address, without identifying a hidden origin.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 77,
+      "path": "content/blog/en/expired-domains-and-the-drop-cycle.md",
+      "status": "nomatch",
+      "reason": "The task restores an expired registration through the registrar. The tools cannot determine the account-specific recovery operation or restore the registration.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 78,
+      "path": "content/blog/en/buy-expired-domains.md",
+      "status": "nomatch",
+      "reason": "The task researches expired-domain listings, history, rights, and delivery. New-registration search is not an expired-domain or aftermarket buying tool.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 79,
+      "path": "content/blog/en/free-ssl-certificate.md",
+      "status": "match",
+      "reason": "The certificate workflow includes a DNS-01 TXT publication subtask.",
+      "tool_ids": [
+        "dns"
+      ]
+    },
+    {
+      "assignment_id": 80,
+      "path": "content/blog/en/cloudflare-domain-registration.md",
+      "status": "nomatch",
+      "reason": "The task completes registration inside Cloudflare. Namefi search cannot complete that workflow; the concluding DNS mention does not create a necessary standalone record-inspection step.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 81,
+      "path": "content/blog/en/check-dkim-records.md",
+      "status": "match",
+      "reason": "The DKIM article obtains the signing domain and known selector from a real message.",
+      "tool_ids": [
+        "email"
+      ]
+    },
+    {
+      "assignment_id": 82,
+      "path": "content/blog/en/benchmark-dns-for-gaming.md",
+      "status": "nomatch",
+      "reason": "The task measures lookup latency from the relevant device and network. The available DNS page is not a latency benchmark, and command generation does not execute or time queries.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 83,
+      "path": "content/blog/en/ssl-certificate-check.md",
+      "status": "nomatch",
+      "reason": "The task verifies a served TLS certificate, hostname, dates, and chain. No SSL/TLS checker exists.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 84,
+      "path": "content/blog/en/shopify-domain-buying-guide.md",
+      "status": "nomatch",
+      "reason": "The task chooses Shopify domain administration and performs Shopify-side connection checks. A generic DNS link would add little to that provider-specific purchase decision.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 85,
+      "path": "content/blog/en/cloud-hosting-guide.md",
+      "status": "nomatch",
+      "reason": "The article compares cloud and shared hosting workload, cost, management, and recovery. No matching hosting assessment tool exists.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 86,
+      "path": "content/blog/en/dnssec-for-domain-owners.md",
+      "status": "match",
+      "reason": "The DNSSEC guide needs conservative resolver evidence after signing and DS publication.",
+      "tool_ids": [
+        "dnssec"
+      ]
+    },
+    {
+      "assignment_id": 87,
+      "path": "content/blog/en/domain-with-free-email.md",
+      "status": "nomatch",
+      "reason": "The task compares email offers, mailbox access, replies, migration, and administration. The configuration checker cannot establish those product or delivery capabilities.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 88,
+      "path": "content/blog/en/set-up-email-with-your-own-domain.md",
+      "status": "match",
+      "reason": "The email setup explicitly configures SPF, selector-based DKIM, and DMARC before real-message tests.",
+      "tool_ids": [
+        "email"
+      ]
+    },
+    {
+      "assignment_id": 89,
+      "path": "content/blog/en/choose-web-hosting.md",
+      "status": "nomatch",
+      "reason": "The task compares exact hosting plans, budgets, backup restoration, and operating responsibility. The tools do not evaluate hosting providers.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 90,
+      "path": "content/blog/en/domain-owner-lookup.md",
+      "status": "nomatch",
+      "reason": "The task investigates a registrant through RDAP and supported contact routes. PSL inspection and public DNS do not establish owner identity.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 91,
+      "path": "content/blog/en/buy-domains-for-sale.md",
+      "status": "nomatch",
+      "reason": "The task buys registered domains through marketplaces or brokers. New-registration search is not an aftermarket purchase or escrow tool.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 92,
+      "path": "content/blog/en/domain-name-generator-guide.md",
+      "status": "match",
+      "reason": "The article's main task is generating ideas and then verifying candidates through a new-registration search.",
+      "tool_ids": [
+        "ideas",
+        "search"
+      ]
+    },
+    {
+      "assignment_id": 93,
+      "path": "content/blog/en/renew-domain-name.md",
+      "status": "nomatch",
+      "reason": "The task renews or restores a registration in the controlling account. The tools cannot perform renewal or verify the registrar-side expiration update.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 94,
+      "path": "content/blog/en/cloudflare-ssl-setup.md",
+      "status": "nomatch",
+      "reason": "The task configures Cloudflare edge/origin certificates, Full strict, and HTTPS redirects. No TLS or Cloudflare account checker exists.",
+      "tool_ids": []
+    },
+    {
+      "assignment_id": 95,
+      "path": "content/blog/en/ad-blocking-dns.md",
+      "status": "nomatch",
+      "reason": "The task verifies the active DNS filter and repairs false positives. Fixed Google/Cloudflare web queries do not observe the household filter or its query log.",
+      "tool_ids": []
+    }
+  ],
+  "additions": [
+    {
+      "assignment_id": 2,
+      "section": "Windows provides a short procedure for a local flush",
+      "text": "To prepare the command for your shell, open [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands), choose Windows and the cache-flush task, then copy the command. The page generates text only. Run the command locally with the required administrator access and repeat the original test.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns-commands"
+      ]
+    },
+    {
+      "assignment_id": 4,
+      "section": "Terminal runs the documented operation once",
+      "text": "After confirming that the documented procedure fits your macOS release, use [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands) to copy the macOS cache-flush command. The page does not run the command or confirm a successful flush. Keep the version checks above as the prerequisite.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns-commands"
+      ]
+    },
+    {
+      "assignment_id": 7,
+      "section": "A useful DNS check preserves the name and record type",
+      "text": "For a browser-based observation, open [Namefi's DNS lookup](https://namefi.io/domain-tools/dns), enter the full hostname, and select the required record type. Save the resolver and timestamp with the answer. The result describes the selected public resolver's response, rather than every cache or the website's behavior.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 8,
+      "section": "A direct query helps separate lookup errors",
+      "text": "Use [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands) to prepare a lookup for your operating system. Choose the system resolver or one of the listed public resolvers, then run the command on the affected device. Generating the command does not test the connection or change its settings.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns-commands"
+      ]
+    },
+    {
+      "assignment_id": 9,
+      "section": "A domain name identifies a place in the DNS hierarchy",
+      "text": "To inspect another name, enter the hostname without a URL path in [Namefi's domain-name inspector](https://namefi.io/domain-tools/domain-name). The local result shows normalized forms and the public-suffix boundary when known. The result does not establish availability, registration rights, or who controls the name.",
+      "urls": [
+        "https://namefi.io/domain-tools/domain-name"
+      ]
+    },
+    {
+      "assignment_id": 10,
+      "section": "Checkout begins with the exact name and actual terms",
+      "text": "For a new-registration candidate, enter the complete name in [Namefi's domain search](https://namefi.io/#register). Check the returned offer and its current purchase terms before paying. A search result is not a completed registration, and an already registered name needs a separate transfer or resale process.",
+      "urls": [
+        "https://namefi.io/#register"
+      ]
+    },
+    {
+      "assignment_id": 13,
+      "section": "Authoritative nameservers identify the active DNS service",
+      "text": "Use [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) with the domain and the NS record type to record a public resolver's nameserver answer. Compare the names with the provider and account records. This check does not identify the registrar account or independently confirm the website's origin host.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 14,
+      "section": "An explicit server separates configuration from server reachability",
+      "text": "Prepare a controlled local test with [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands). Keep the hostname and record type fixed, choose the system resolver or a listed public resolver, and run the generated command on the affected device. The generator itself makes no DNS request.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns-commands"
+      ]
+    },
+    {
+      "assignment_id": 17,
+      "section": "DNS separates incoming delivery from outgoing authentication",
+      "text": "After publishing the outgoing records, inspect the domain in [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Supply the known DKIM selector when checking its public key. Keep the result separate from the external-message test: the checker does not verify a message signature, alignment, or mailbox delivery.",
+      "urls": [
+        "https://namefi.io/domain-tools/email-auth"
+      ]
+    },
+    {
+      "assignment_id": 18,
+      "section": "An explicit server makes comparisons meaningful",
+      "text": "To avoid hand-editing shell quoting, use [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands). Choose your shell, select nslookup, and keep the name and type constant across the listed resolver choices. Copy and execute each command locally. The page generates commands rather than running the comparison.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns-commands"
+      ]
+    },
+    {
+      "assignment_id": 19,
+      "section": "The first result needs its complete context",
+      "text": "Open [Namefi's DNS lookup](https://namefi.io/domain-tools/dns), select DNS records, and enter the exact owner name and record type. Choose Google or Cloudflare and save the returned observation. Use a separate authoritative query when the question requires authoritative publication rather than a recursive resolver's view.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 24,
+      "section": "A complete DNS name includes the root",
+      "text": "Paste a DNS name, rather than a complete URL, into [Namefi's domain-name inspector](https://namefi.io/domain-tools/domain-name). Compare its absolute-name output and normalized ASCII and Unicode forms. Public-suffix information describes the parsed boundary when known, not whether the name can be registered.",
+      "urls": [
+        "https://namefi.io/domain-tools/domain-name"
+      ]
+    },
+    {
+      "assignment_id": 26,
+      "section": "Verify activation and test each service independently",
+      "text": "After the provider confirms activation, compare the known records with [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). If the domain uses DNSSEC, also record the [DNSSEC tool's resolver evidence](https://namefi.io/domain-tools/dnssec). Neither observation proves worldwide propagation, and the DNSSEC tool does not independently validate the complete chain.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns",
+        "https://namefi.io/domain-tools/dnssec"
+      ]
+    },
+    {
+      "assignment_id": 27,
+      "section": "A TXT record publishes the sending policy",
+      "text": "Inspect the published sending domain with [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Review its SPF findings and any incomplete dependency checks before editing the policy. The result inspects DNS configuration. A real SPF authentication result still needs the sender IP and the SMTP identity used for a message.",
+      "urls": [
+        "https://namefi.io/domain-tools/email-auth"
+      ]
+    },
+    {
+      "assignment_id": 29,
+      "section": "Verify the actual connection and keep a rollback route",
+      "text": "For a command-line comparison, use [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands) to prepare separate system-resolver and Cloudflare queries for the same name and type. Run the commands on the configured device. This comparison does not establish which resolver Chrome or an encrypted-DNS profile uses.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns-commands"
+      ]
+    },
+    {
+      "assignment_id": 30,
+      "section": "Search the complete domain instead of only a business phrase",
+      "text": "Search the complete candidate in [Namefi's domain search](https://namefi.io/#register), including the intended extension. Read the current result and transaction terms before adding a name to the cart. Keep a new-registration offer separate from a transfer request or an aftermarket sale.",
+      "urls": [
+        "https://namefi.io/#register"
+      ]
+    },
+    {
+      "assignment_id": 33,
+      "section": "Compare the full registration term and renewal commitment",
+      "text": "For a registrar-side candidate check, enter the complete `.ai` name in [Namefi's domain search](https://namefi.io/#register). Confirm whether the current result offers the name and review the stated registration terms. The search does not replace the registry rules or guarantee that a name remains available through checkout.",
+      "urls": [
+        "https://namefi.io/#register"
+      ]
+    },
+    {
+      "assignment_id": 34,
+      "section": "A free address should have a tested outgoing identity",
+      "text": "If the chosen service sends from your own domain, inspect its published SPF, DMARC, and known DKIM selector with [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). This step checks configuration only. Continue the reply and external-message tests to verify the actual sending workflow.",
+      "urls": [
+        "https://namefi.io/domain-tools/email-auth"
+      ]
+    },
+    {
+      "assignment_id": 35,
+      "section": "HTTP validation and DNS validation have different prerequisites",
+      "text": "For a DNS-01 publication check, select TXT in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) and query the exact challenge owner name supplied by the client. The answer is one public resolver's observation. Certificate issuance and the certificate served by the website still require their own checks.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 36,
+      "section": "Query the exact domain used by the recipient address",
+      "text": "In [Namefi's DNS lookup](https://namefi.io/domain-tools/dns), choose Mail exchange (MX) and enter the domain after the recipient address's `@`. Save the selected resolver, complete answer, and timestamp. The tool distinguishes a missing MX answer from null MX, but it does not test whether a mailbox accepts a message.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 37,
+      "section": "A direct query and a normal connection test answer different questions",
+      "text": "Use [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands) to prepare the system-resolver and Google versions of the same lookup. Run both commands on the device whose settings changed. A generated command or a successful explicit Google query does not prove that normal applications use Google.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns-commands"
+      ]
+    },
+    {
+      "assignment_id": 38,
+      "section": "DNS validation needs automation and limited credential access",
+      "text": "Check the exact DNS-01 TXT owner name with [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) after the client publishes the challenge. Compare the selected resolver's answer with the client's requested value. This check does not inspect the installed certificate, private key, or TLS chain.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 39,
+      "section": "A clear next step turns the definition into a choice",
+      "text": "Use [Namefi's supported-extension directory](https://namefi.io/tlds) to see which endings Namefi currently lists for its service. Keep IANA's root list for the broader delegation question. A listed extension does not establish the availability, eligibility, or current price of a particular name.",
+      "urls": [
+        "https://namefi.io/tlds"
+      ]
+    },
+    {
+      "assignment_id": 40,
+      "section": "Outgoing authentication needs its own configuration",
+      "text": "Before the live sending test, inspect the domain and the selector from your Admin console in [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Review the published SPF, DKIM-key, and DMARC findings. The checker does not enable Google signing or verify the authentication result of a delivered message.",
+      "urls": [
+        "https://namefi.io/domain-tools/email-auth"
+      ]
+    },
+    {
+      "assignment_id": 41,
+      "section": "The checkout quote should expose recurring obligations",
+      "text": "Enter the exact `.io` candidate in [Namefi's domain search](https://namefi.io/#register) for a current registrar-side result. Check the offered transaction and its terms rather than treating an unused website as evidence of availability. The result does not change the registry's registration or continuity rules.",
+      "urls": [
+        "https://namefi.io/#register"
+      ]
+    },
+    {
+      "assignment_id": 42,
+      "section": "Connecting the domain requires both hosting and DNS configuration",
+      "text": "After saving the host's required record, query that exact hostname and type in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the public resolver's response with the host's instruction. Complete the platform's connection check and the browser test separately.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 43,
+      "section": "Your shortlist should survive a practical buying review",
+      "text": "Narrow a buying shortlist with [Namefi's supported-extension directory](https://namefi.io/tlds). The directory describes Namefi's listed options, rather than every registry extension. Check the chosen ending's eligibility and an exact-name registration offer before making a purchase decision.",
+      "urls": [
+        "https://namefi.io/tlds"
+      ]
+    },
+    {
+      "assignment_id": 46,
+      "section": "Registrar prices determine the actual purchase budget",
+      "text": "For another current registrar-side check, search the complete `.ch` candidate in [Namefi's domain search](https://namefi.io/#register). Confirm what the result offers and review its actual terms. A search result does not establish eligibility or replace the holder and contact duties in the registry conditions.",
+      "urls": [
+        "https://namefi.io/#register"
+      ]
+    },
+    {
+      "assignment_id": 47,
+      "section": "A complete address separates the hostname from the path",
+      "text": "To inspect the hostname portion of another address, use [Namefi's domain-name inspector](https://namefi.io/domain-tools/domain-name). Enter the name without the scheme, path, or query. The local parser reports the public suffix and subdomain boundary when known, rather than checking site safety or account ownership.",
+      "urls": [
+        "https://namefi.io/domain-tools/domain-name"
+      ]
+    },
+    {
+      "assignment_id": 49,
+      "section": "DNS answers and website behavior need separate checks",
+      "text": "Inspect the alias with a CNAME query in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns), then query the returned target's A or AAAA records as needed. Keep each owner name with its result. These public-resolver observations do not prove that the destination application or certificate works.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 50,
+      "section": "The same name must appear in every comparison",
+      "text": "For a new-registration comparison, search the same complete candidate in [Namefi's domain search](https://namefi.io/#register). Record the current offered transaction and charge, then check the applicable renewal terms separately. Do not compare an acquisition result with another provider's differently scoped quote.",
+      "urls": [
+        "https://namefi.io/#register"
+      ]
+    },
+    {
+      "assignment_id": 51,
+      "section": "A useful lookup preserves the full response",
+      "text": "Choose Reverse DNS (PTR) in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) and enter the full IP address. Save the resolver, answer owner, PTR target, and timestamp. The result reports reverse-zone data observed through that resolver, not a verified legal owner or an inventory of every hosted domain.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 53,
+      "section": "Completion requires a domain check and a service check",
+      "text": "For a public record check after the transfer, enter each known hostname and record type in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the selected resolver's answers with the saved service inventory. Keep the registrar completion notice and the website and mail tests as separate evidence.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 56,
+      "section": "Domain validation chooses the challenge that fits the service",
+      "text": "If the client uses DNS-01, inspect the supplied TXT owner name in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the public resolver's answer with the challenge value. Keep the ACME client's issuance and renewal checks separate: this tool is a DNS lookup, not a certificate checker.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 57,
+      "section": "Website and email checks need separate results",
+      "text": "Use [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) to inspect the exact website or mail-routing record supplied by the provider. Keep the hostname, type, selected resolver, and observation time with the result. Then perform the separate website and email tests described above.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 58,
+      "section": "The final verification includes DNS and the actual site",
+      "text": "Query the exact A, AAAA, CNAME, or verification TXT name requested by Vercel in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the selected public resolver's answer with your project dashboard. A matching result supplements, rather than replaces, Vercel's verification and the final HTTPS test.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 59,
+      "section": "A resolver comparison identifies the cache you are waiting for",
+      "text": "Use Compare resolvers in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) for the same name and record type. The page compares Google and Cloudflare answers and can compare a supplied expected value. Agreement between those two resolvers does not establish authoritative publication or worldwide propagation.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 60,
+      "section": "A lookup verifies publication rather than mailbox delivery",
+      "text": "Select Mail exchange (MX) in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) and query the recipient domain. Compare the complete answer with the mail provider's instructions. The result distinguishes null MX from an absent MX answer, but it does not establish that a recipient mailbox exists or accepts mail.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 62,
+      "section": "The right next step depends on the address you need",
+      "text": "If the project needs a separately registered custom domain, check the complete candidate in [Namefi's domain search](https://namefi.io/#register). Review the current offer and continuing terms before buying. The search does not make the registration, hosting, or email service free.",
+      "urls": [
+        "https://namefi.io/#register"
+      ]
+    },
+    {
+      "assignment_id": 63,
+      "section": "The TXT answer must contain one selected SPF policy",
+      "text": "Run the sending domain through [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth) to inspect the published SPF policy and reachable include or redirect targets. Treat incomplete branches as incomplete. The result is a configuration inspection, not an SPF verdict for a particular sender IP and message.",
+      "urls": [
+        "https://namefi.io/domain-tools/email-auth"
+      ]
+    },
+    {
+      "assignment_id": 64,
+      "section": "Availability determines which buying process you need",
+      "text": "For the new-registration branch, enter the complete `.com` candidate in [Namefi's domain search](https://namefi.io/#register). Review the current result before checkout. An unavailable result does not provide an aftermarket purchase process, and a displayed offer is not a completed registration.",
+      "urls": [
+        "https://namefi.io/#register"
+      ]
+    },
+    {
+      "assignment_id": 65,
+      "section": "The domain owner publishes policy in a TXT record",
+      "text": "Inspect the published author domain in [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Review the discovered DMARC record and any policy or compatibility findings before revising an existing policy. The checker does not establish message alignment, report delivery, or successful protection from a record's presence alone.",
+      "urls": [
+        "https://namefi.io/domain-tools/email-auth"
+      ]
+    },
+    {
+      "assignment_id": 66,
+      "section": "Recursive comparisons reveal which answers users can still receive",
+      "text": "For a bounded comparison, choose Compare resolvers in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Enter the exact name, record type, and expected value when useful. The result covers Google and Cloudflare only. It does not demonstrate worldwide propagation or replace a direct authoritative check.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 67,
+      "section": "A reverse lookup gives you an answer to verify",
+      "text": "Use Reverse DNS (PTR) in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) to inspect the address after the provider publishes the change. Save the selected resolver's answer, then check the returned name in forward DNS. Neither observation establishes legal ownership of the address or its hosted services.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 69,
+      "section": "Verify the saved answer before testing the application",
+      "text": "After saving or updating the hostname, query its exact name and record type in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the public resolver's answer with the intended destination. The lookup does not execute a FreeDNS update or confirm that a private update token is valid.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 70,
+      "section": "The effective policy can differ from a simple parent lookup",
+      "text": "Inspect the author domain with [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth) and save the discovered DMARC configuration findings. Use the separate message test to establish SPF or DKIM alignment and the receiver's verdict. The checker does not authenticate a message from its DNS records alone.",
+      "urls": [
+        "https://namefi.io/domain-tools/email-auth"
+      ]
+    },
+    {
+      "assignment_id": 71,
+      "section": "DNS verification and application verification complete different checks",
+      "text": "After an updater reports success, query the exact hostname and A or AAAA type in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the selected resolver's response with the intended public address. This observation does not run the updater or prove that the application behind the address accepts connections.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 72,
+      "section": "A direct lookup verifies DNS before an application test",
+      "text": "In [Namefi's DNS lookup](https://namefi.io/domain-tools/dns), choose the A type and enter the exact owner name you edited. Compare the selected public resolver's address answer with the host's current instructions. Keep a separate authoritative query and application test when those questions remain unresolved.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 74,
+      "section": "An individual lookup answers a narrow question",
+      "text": "For the narrow record check, [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) supports DNS records, MX, PTR, and a Google-versus-Cloudflare comparison. Use the task and record type that match the symptom. Namefi's tool does not reproduce MxToolbox's broader nameserver diagnostics or prove application delivery.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 76,
+      "section": "An address lookup identifies the public network",
+      "text": "Query the hostname's A and AAAA records in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) to record the address visible through a selected public resolver. Continue with the network and account evidence described here. A proxy address does not identify the hidden origin host or the customer's hosting account.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 79,
+      "section": "Domain validation must match the deployment",
+      "text": "For DNS-01, use a TXT query in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) at the exact challenge name the client supplied. Compare that public resolver's answer with the required value. The lookup does not issue a certificate, inspect the served certificate, or test automatic renewal.",
+      "urls": [
+        "https://namefi.io/domain-tools/dns"
+      ]
+    },
+    {
+      "assignment_id": 81,
+      "section": "The DNS lookup must use the exact selector",
+      "text": "Enter the signing domain and selector from the message in [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Review the public-key findings and any unsupported or unavailable result. The tool does not discover selectors or verify the message signature; retain the receiver's verdict as a separate check.",
+      "urls": [
+        "https://namefi.io/domain-tools/email-auth"
+      ]
+    },
+    {
+      "assignment_id": 86,
+      "section": "Verify validation instead of counting visible records",
+      "text": "Collect a second observation with [Namefi's DNSSEC evidence tool](https://namefi.io/domain-tools/dnssec). The page reports Google and Cloudflare resolver evidence and the observed DS and DNSKEY data. The browser trusts those resolvers rather than independently validating signatures or the complete trust chain. An unknown result needs further investigation.",
+      "urls": [
+        "https://namefi.io/domain-tools/dnssec"
+      ]
+    },
+    {
+      "assignment_id": 88,
+      "section": "Authenticate every legitimate outgoing service",
+      "text": "Review the published records with [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth), using the domain and the selector supplied by the sending service. Keep the findings with the sender inventory. Continue the independent delivery and received-message tests because DNS configuration does not establish message authentication or alignment.",
+      "urls": [
+        "https://namefi.io/domain-tools/email-auth"
+      ]
+    },
+    {
+      "assignment_id": 92,
+      "section": "Use the tool's actual workflow and keep the shortlist small",
+      "text": "For another idea-generation route, open [Namefi's AI domain search](https://namefi.io/search/ai) with the same naming brief. Check any shortlisted name separately in [Namefi's domain search](https://namefi.io/#register) before reviewing purchase terms. An AI suggestion does not establish availability or complete registration.",
+      "urls": [
+        "https://namefi.io/search/ai",
+        "https://namefi.io/#register"
+      ]
+    }
+  ],
+  "deployment_status": "Tool routes verified in the code and tool preview only. Production publication remains dependent on the lower tool stack.",
+  "existing_translation_maintenance": {
+    "edited_files": 65,
+    "matched_articles_with_translations": 17,
+    "existing_link_changes": 27,
+    "localized_added_units": 38,
+    "new_translation_files": 0,
+    "full_article_retranslations": 0,
+    "native_LQA_performed": false
+  }
+}

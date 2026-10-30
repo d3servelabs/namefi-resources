@@ -102,6 +102,8 @@ This article does not quote a universal `.ch` price. The selected registrar’s 
 
 A low initial quote can still accompany a renewal obligation that does not fit the project. Record the ordinary renewal terms before buying. Keep optional services only when the project needs those services.
 
+For another current registrar-side check, search the complete `.ch` candidate in [Namefi's domain search](https://namefi.io/#register). Confirm what the result offers and review its actual terms. A search result does not establish eligibility or replace the holder and contact duties in the registry conditions.
+
 ## A registration can precede a working website
 
 Switch’s FAQ says a domain can be registered without active use. The General Terms and Conditions separately describe the nameserver requirements for using the domain. [Review the registry’s use provisions](#switch-defines-holder-and-naming-duties).

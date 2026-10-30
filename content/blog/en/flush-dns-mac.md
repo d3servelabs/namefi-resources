@@ -95,6 +95,8 @@ A spoken message or an added `echo` command only confirms that a shell reached t
 
 Apple's archived article also describes restarting a Mac to update cached information. [Apple explains that alternative](#apple-documents-the-historical-command-boundaries). Save work before a restart, and coordinate any restart of a shared or managed computer.
 
+After confirming that the documented procedure fits your macOS release, use [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands) to copy the macOS cache-flush command. The page does not run the command or confirm a successful flush. Keep the version checks above as the prerequisite.
+
 ## Local cache clearing leaves upstream answers intact
 
 DNS uses separate name servers and resolvers. A resolver can reuse a cached record until its lifetime expires. Negative answers also have defined cache lifetimes. [RFC 1034 defines these DNS roles](#the-dns-standard-separates-resolution-and-authority). [RFC 2308 explains negative caching](#the-dns-standard-gives-negative-answers-a-lifetime).

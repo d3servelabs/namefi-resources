@@ -94,6 +94,8 @@ Keep the purchase and ongoing registration costs separate when buying an existin
 
 For a project budget, compare the full period the project expects to use the name. A shorter spelling may be attractive, but the team still needs to accept the recurring obligation. Our [discussion of .io pricing](/en/blog/why-are-io-domains-expensive/) provides context without replacing a live quote.
 
+Enter the exact `.io` candidate in [Namefi's domain search](https://namefi.io/#register) for a current registrar-side result. Check the offered transaction and its terms rather than treating an unused website as evidence of availability. The result does not change the registry's registration or continuity rules.
+
 ![The ongoing bill separates registration, renewal, transfer and recovery.](../../assets/how-much-is-a-domain-understanding-holding-cost-01-bills.jpg)
 
 ## Google treats .io as generic for geographic targeting

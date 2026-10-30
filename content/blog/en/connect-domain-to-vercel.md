@@ -117,6 +117,8 @@ If email stopped after a nameserver change, compare the new zone with the saved 
 
 The next action is to open the exact project's Domains settings and save its requested records. Publish those values at the active DNS provider, verify the public route, and keep the service inventory with the deployment record.
 
+Query the exact A, AAAA, CNAME, or verification TXT name requested by Vercel in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the selected public resolver's answer with your project dashboard. A matching result supplements, rather than replaces, Vercel's verification and the final HTTPS test.
+
 ![DNS checks and HTTPS checks reveal different failures.](../../assets/cname-vs-a-record-04-separate-checks.jpg)
 
 ## Sources and further reading

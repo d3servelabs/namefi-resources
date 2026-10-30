@@ -123,6 +123,8 @@ Do not automatically apply `p=reject` to an ordinary employee email domain. RFC 
 
 If the domain already has a deliberate policy, evaluate the new sender against that policy. Avoid replacing a working configuration with a generic tutorial example.
 
+Review the published records with [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth), using the domain and the selector supplied by the sending service. Keep the findings with the sender inventory. Continue the independent delivery and received-message tests because DNS configuration does not establish message authentication or alignment.
+
 ![SPF, DKIM, and DMARC address separate authentication tasks.](../../assets/set-up-email-with-your-own-domain-02-authentication.jpg)
 
 ## Finish with independent delivery and authentication checks

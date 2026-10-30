@@ -47,6 +47,8 @@ ogImage: ../../assets/what-is-domain-og.jpg
 
 DNS 계층은 루트 `.`에서 시작합니다. 아래에는 최상위 도메인 `com`, 2단계 도메인 `example.com`, 서브도메인 `blog.example.com`이 있습니다. `example`만으로는 레이블입니다. `example.co.uk`에서는 `uk`가 최상위, `co.uk`가 2단계, `example.co.uk`가 3단계입니다. 등록 가능한 도메인의 경계는 항상 2단계와 일치하지 않습니다. [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-3.1).
 
+다른 이름을 검사하려면 URL 경로를 제외한 호스트 이름을 [Namefi 도메인 이름 검사기](https://namefi.io/domain-tools/domain-name)에 입력하세요. 로컬 결과는 정규화된 형식과 확인된 경우 공개 접미사의 경계를 보여 줍니다. 결과는 등록 가능 여부나 등록 권리, 이름을 통제하는 주체를 입증하지 않습니다.
+
 도메인은 한 시점에 한 명의 등록자를 가집니다. 등록자는 다른 사람이나 서비스에 사용을 허용할 수 있습니다. 등록은 다른 확장자의 같은 이름까지 확보하지 않습니다. [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 ---

@@ -120,6 +120,8 @@ After DNS returns the intended result, open the exact hostname and route. Verify
 
 The next action is to obtain the host's supported IPv4 value and save one focused record change. Confirm DNS first, then confirm that the website or service works through the intended name.
 
+In [Namefi's DNS lookup](https://namefi.io/domain-tools/dns), choose the A type and enter the exact owner name you edited. Compare the selected public resolver's address answer with the host's current instructions. Keep a separate authoritative query and application test when those questions remain unresolved.
+
 ![Direct queries turn propagation reports into actionable checks.](../../assets/ttl-and-dns-propagation-04-section.jpg)
 
 ## Sources and further reading

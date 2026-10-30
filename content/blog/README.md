@@ -14,5 +14,5 @@ The English inventory also tracks the Blockchain Concepts comparison batches and
 
 The October 30 batch adds 56 English pages and revises 35 English blog pages.
 Four additional revisions concern TLD references. The dated
-[editorial record](../../editorial/2026-10-30-create95/README.md) documents all95
+[editorial record](../../editorial/2026-10-30-create95/README.md) documents all 95
 assignments and preserves existing translated counterparts.

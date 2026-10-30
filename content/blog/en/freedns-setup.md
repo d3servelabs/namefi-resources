@@ -98,6 +98,8 @@ When a recent change shows different answers, use the [DNS propagation checker g
 
 Then test the application with the hostname. A correct DNS answer does not establish that the server listens on the intended port, accepts the connection, or presents a valid certificate. Diagnose the failed layer specifically.
 
+After saving or updating the hostname, query its exact name and record type in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the public resolver's answer with the intended destination. The lookup does not execute a FreeDNS update or confirm that a private update token is valid.
+
 ## Dynamic updates require a separate client configuration
 
 A changing public address can make a static record stale. FreeDNS supports automated address updates and links to supported clients. [Its FAQ describes the dynamic update route](#freedns-explains-shared-domain-control-and-configuration).

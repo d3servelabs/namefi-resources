@@ -92,6 +92,8 @@ Microsoft notes a difference between nslookup and the Windows DNS client in some
 
 Therefore, a failed command does not automatically prove that the browser's resolution path also failed. Browser DNS settings, system policy, and VPN context can require separate investigation. As practical guidance, preserve both the command result and the original application symptom.
 
+To avoid hand-editing shell quoting, use [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands). Choose your shell, select nslookup, and keep the name and type constant across the listed resolver choices. Copy and execute each command locally. The page generates commands rather than running the comparison.
+
 ## Reply categories distinguish absence from failure
 
 Read the complete result before changing a record. Microsoft documents separate messages for a timeout, missing records, a nonexistent domain, refusal, and server failure. [The nslookup reference explains those results](#microsoft-defines-nslookup-arguments).

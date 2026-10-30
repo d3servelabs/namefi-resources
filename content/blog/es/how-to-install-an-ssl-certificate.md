@@ -75,6 +75,8 @@ DNS-01 utiliza un registro TXT bajo `_acme-challenge`. DNS-01 permite certificad
 
 Utiliza credenciales DNS con permisos limitados cuando el proveedor lo permita. Let’s Encrypt advierte que guardar credenciales DNS completas en un servidor comprometido aumenta los daños. Delegar la zona de validación puede separar la validación de la zona DNS principal.
 
+Después de que el cliente publique el desafío, consulta el nombre exacto del registro TXT de DNS-01 con la [consulta DNS de Namefi](https://namefi.io/domain-tools/dns). Compara la respuesta del resolvedor seleccionado con el valor solicitado por el cliente. Esta consulta no inspecciona el certificado instalado, la clave privada ni la cadena TLS.
+
 ## Los proxies inversos también requieren comprobar el servidor de origen
 
 Una conexión correcta entre el navegador y el proxy no demuestra que el proxy valide el certificado del origen. En [Cloudflare](/es/blog/cloudflare-ssl-setup/), [Full (strict) valida la conexión al origen](#verifica-la-conexión-al-origen).

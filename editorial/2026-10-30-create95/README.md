@@ -46,3 +46,16 @@ must pass before push. A merge or workflow dispatch alone does not prove a
 production release. The publication ledger in the local research workspace
 records per-page HTTP, image, citation-anchor, indexing-control, and recorded
 headless-browser checks after the production deployment.
+
+## Relevant article tasks link directly to Namefi tools
+
+The [tool-link ledger](tool-links.json) records 55 matching articles and 40
+intentional omissions. Direct links identify the actual DNS, email, DNSSEC,
+name-inspection, command, search, naming, or supported-extension page.
+The added paragraphs preserve configuration and diagnostic limits.
+These tool routes depend on the lower Astra tool PRs before publication.
+
+The tool-link follow-up maintains 65 existing translated files. It refines 27
+existing search links and localizes 38 added operation paragraphs.
+The change creates no translation files and does not retranslate full articles.
+The review does not claim native-speaker language acceptance.

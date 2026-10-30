@@ -74,6 +74,8 @@ DNS automation needs appropriate provider access. Let’s Encrypt recommends nar
 
 Choose a challenge your environment can automate reliably. A one-time manual DNS edit may get past today's request while leaving the next renewal unfinished. Check the ACME client's documented renewal path before making that choice.
 
+If the client uses DNS-01, inspect the supplied TXT owner name in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the public resolver's answer with the challenge value. Keep the ACME client's issuance and renewal checks separate: this tool is a DNS lookup, not a certificate checker.
+
 ![HTTP validation serves a challenge file, while DNS validation publishes a TXT record and can support wildcard issuance.](../../assets/free-ssl-certificate-02-validation.jpg)
 
 ## The Nginx example requires a matching server environment

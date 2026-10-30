@@ -138,7 +138,7 @@ Faites attention à deux écueils. Premièrement, certaines personnes peuvent ma
 
 ## Comment enregistrer un domaine .ai sur Namefi
 
-1. **Recherchez** le nom souhaité sur Namefi pour vérifier sa disponibilité.
+1. **Recherchez** le nom souhaité sur [Namefi](https://namefi.io/#register) pour vérifier sa disponibilité.
 2. Comparez le paiement total, le devis de renouvellement et les services inclus avant de commander. Cette page ne donne aucun tarif de gros actuel ni classement premium du registre.
 3. **Enregistrez** et finalisez votre commande.
 

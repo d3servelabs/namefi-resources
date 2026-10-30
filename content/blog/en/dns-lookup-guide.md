@@ -75,6 +75,8 @@ A resolver can return information from a cache. The displayed answer therefore d
 
 As practical advice, preserve the full output before reducing a result to a screenshot or a single address. A terse answer can hide the response status or alias chain that explains the problem. Ask the administrator which fields matter when an online tool formats the result differently from a command-line tool.
 
+Open [Namefi's DNS lookup](https://namefi.io/domain-tools/dns), select DNS records, and enter the exact owner name and record type. Choose Google or Cloudflare and save the returned observation. Use a separate authoritative query when the question requires authoritative publication rather than a recursive resolver's view.
+
 ## Authoritative data and resolver data answer different questions
 
 An authoritative server supplies information for the zones it serves. A recursive resolver finds answers for clients and can reuse cached data. RFC 1034 separates authoritative data from cached information. [The standard defines both roles](#rfc-1034-defines-authority-and-caching).

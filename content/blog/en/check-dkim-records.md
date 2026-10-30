@@ -71,6 +71,8 @@ Read the queried name carefully. Some DNS interfaces append the zone automatical
 
 Compare the public result with the sending provider’s current configuration. A record for an old selector can remain published without serving the current message’s signature.
 
+Enter the signing domain and selector from the message in [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Review the public-key findings and any unsupported or unavailable result. The tool does not discover selectors or verify the message signature; retain the receiver's verdict as a separate check.
+
 ![A message selector connects the sender signing key with the published DNS public key.](../../assets/txt-records-spf-dkim-verification-03-section.jpg)
 
 ## The receiver supplies the live signature result

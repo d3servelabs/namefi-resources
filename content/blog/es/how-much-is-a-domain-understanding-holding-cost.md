@@ -43,6 +43,8 @@ El precio promocional del registro no determina el precio de renovación. Compar
 
 Compara el nombre exacto, la extensión, la moneda y el plazo de registro entre registradores. Anota el registro y la renovación por separado. No compares un nombre premium con uno de precio estándar.
 
+Para comparar un registro nuevo, busca el mismo nombre completo en el [buscador de dominios de Namefi](https://namefi.io/#register). Anota la operación ofrecida y el cargo actual, y revisa por separado las condiciones de renovación. No compares un resultado de adquisición con una oferta de otro proveedor que abarque una operación distinta.
+
 [Porkbun](https://porkbun.com/products/domains) publica columnas separadas de registro, renovación y transferencia. [Cloudflare](https://www.cloudflare.com/domains/) afirma que no añade margen al registro ni a la renovación. Cloudflare exige [sus servidores de nombres](https://developers.cloudflare.com/registrar/get-started/register-domain/). Considera ese requisito al comparar la flexibilidad de DNS.
 
 Añade los servicios necesarios antes de elegir el total más bajo. Revisa los impuestos y productos opcionales del carrito final. Una promoción de registro no identifica por sí sola la opción más barata a largo plazo.

@@ -89,6 +89,8 @@ A PTR answer can return a hostname that differs from a website brand. That obser
 
 If the result is missing or incorrect, send the IP provider the exact address and intended hostname. Include the current query result. A precise request is more useful than asking the domain registrar to fix unspecified DNS.
 
+Use Reverse DNS (PTR) in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) to inspect the address after the provider publishes the change. Save the selected resolver's answer, then check the returned name in forward DNS. Neither observation establishes legal ownership of the address or its hosted services.
+
 ## Forward confirmation checks consistency across both directions
 
 After receiving a PTR name, query that name for the appropriate address record. For the hypothetical IPv4 server, run `dig A mail.example.com`. Compare the returned address set with the original sending address.

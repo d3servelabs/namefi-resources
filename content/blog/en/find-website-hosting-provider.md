@@ -103,6 +103,8 @@ The resulting network organization can provide a useful hosting lead. The findin
 
 For example, a hypothetical site might use a registrar for the domain, a DNS provider for the zone, and a proxy for public traffic. The origin hosting account could belong to a fourth service. The example illustrates separate roles and reports no lookup result for a real website.
 
+Query the hostname's A and AAAA records in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) to record the address visible through a selected public resolver. Continue with the network and account evidence described here. A proxy address does not identify the hidden origin host or the customer's hosting account.
+
 ![The browser first looks up the address through DNS, then requests the page from the web host.](../../assets/domain-vs-hosting-02-request-path.jpg)
 
 ## A proxy can prevent a conclusive public answer

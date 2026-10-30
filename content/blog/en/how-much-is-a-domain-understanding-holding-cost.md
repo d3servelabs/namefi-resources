@@ -66,6 +66,8 @@ Use the search result as a lead. Recheck the name in checkout before paying. A g
 
 If another person already owns the name, separate the purchase price from the registrar's ongoing charges. A low renewal price does not determine what the current registrant will accept. The [domain valuation guide](/en/blog/how-to-value-a-domain-name/) covers that negotiation question.
 
+For a new-registration comparison, search the same complete candidate in [Namefi's domain search](https://namefi.io/#register). Record the current offered transaction and charge, then check the applicable renewal terms separately. Do not compare an acquisition result with another provider's differently scoped quote.
+
 ## Renewal charges determine the cost of keeping the domain
 
 For a hypothetical three-year comparison, use this worksheet. Enter real quoted amounts in one currency. The worksheet intentionally contains no invented market prices.

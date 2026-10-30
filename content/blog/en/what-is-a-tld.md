@@ -136,6 +136,8 @@ Then search the exact names with a registrar that supports the chosen extensions
 
 A TLD is one part of the address decision. Understanding the hierarchy helps you compare extensions without confusing a registration, a subdomain, and a website package.
 
+Use [Namefi's supported-extension directory](https://namefi.io/tlds) to see which endings Namefi currently lists for its service. Keep IANA's root list for the broader delegation question. A listed extension does not establish the availability, eligibility, or current price of a particular name.
+
 ## Sources and further reading
 
 ### The DNS standard defines top level domains

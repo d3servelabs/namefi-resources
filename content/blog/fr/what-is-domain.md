@@ -45,6 +45,8 @@ Un nom de domaine est composé de plusieurs parties:
 
 La hiérarchie DNS commence par la racine `.`. Viennent ensuite le domaine de premier niveau `com`, le domaine de deuxième niveau `example.com` et le sous-domaine `blog.example.com`. `example` seul constitue une étiquette. Dans `example.co.uk`, `uk` occupe le premier niveau, `co.uk` le deuxième et `example.co.uk` le troisième. La limite du domaine enregistrable ne correspond donc pas toujours au deuxième niveau. [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-3.1).
 
+Pour examiner un autre nom, saisissez le nom d’hôte sans chemin d’URL dans [l’inspecteur de noms de domaine de Namefi](https://namefi.io/domain-tools/domain-name). Le résultat local indique les formes normalisées et la limite du suffixe public lorsqu’elle est connue. Le résultat ne prouve ni la disponibilité, ni les droits d’enregistrement, ni qui contrôle le nom.
+
 Un domaine possède un seul titulaire à la fois. Le titulaire peut autoriser une autre personne ou un service à utiliser le domaine. Un enregistrement ne réserve pas la même étiquette sous les autres extensions. [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 ---

@@ -64,6 +64,8 @@ As editorial advice, save a small shortlist with the purpose of each name. Keep 
 
 If the name uses non-Latin characters, inspect the registrar's representation and ask the registrar to resolve any ambiguity. Do not purchase a name that you cannot confidently distinguish from the intended address.
 
+Search the complete candidate in [Namefi's domain search](https://namefi.io/#register), including the intended extension. Read the current result and transaction terms before adding a name to the cart. Keep a new-registration offer separate from a transfer request or an aftermarket sale.
+
 ## Interpret the transaction type before comparing the displayed amount
 
 A search interface can present more than one path to a domain. Keep the paths separate in your notes.

@@ -111,6 +111,8 @@ When a recent change appears inconsistent, compare authoritative data with the r
 
 After the DNS answer matches, send a message from an outside account to the intended mailbox. Confirm receipt and inspect any bounce message. A published MX answer establishes a routing instruction, rather than successful acceptance by a particular mailbox.
 
+Select Mail exchange (MX) in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) and query the recipient domain. Compare the complete answer with the mail provider's instructions. The result distinguishes null MX from an absent MX answer, but it does not establish that a recipient mailbox exists or accepts mail.
+
 ![A controlled change preserves records and tests dependencies.](../../assets/dns-record-types-guide-04-change-verification.jpg)
 
 ## Email failures need checks beyond the MX record

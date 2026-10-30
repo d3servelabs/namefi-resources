@@ -137,6 +137,8 @@ For an informational project with a strict free-service requirement, review the 
 
 Before sharing the launch URL, verify the published site and record the next renewal obligation. A useful free offer lets the project publish within its requirements and budget. The offer still needs a clear owner, an accessible account, and a realistic exit plan.
 
+If the project needs a separately registered custom domain, check the complete candidate in [Namefi's domain search](https://namefi.io/#register). Review the current offer and continuing terms before buying. The search does not make the registration, hosting, or email service free.
+
 ## Sources and further reading
 
 ### GitHub separates hosting from custom domains

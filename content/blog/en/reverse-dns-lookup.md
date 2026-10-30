@@ -75,6 +75,8 @@ Use a public browser tool if command-line tools are unavailable. The [Google Adm
 
 As practical advice, avoid pasting private logs or credentials into a public lookup service. A DNS query needs the address or query name, rather than the whole incident report. Use an approved internal resolver for internal-only address space.
 
+Choose Reverse DNS (PTR) in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) and enter the full IP address. Save the resolver, answer owner, PTR target, and timestamp. The result reports reverse-zone data observed through that resolver, not a verified legal owner or an inventory of every hosted domain.
+
 ## A missing answer and a failed query mean different things
 
 An answer containing a PTR hostname means DNS returned that published mapping. Record the hostname exactly. Do not assume that a friendly-looking label proves the server belongs to a particular business.

@@ -146,7 +146,7 @@ relatedGlossary:
 
 ## 如何在 Namefi 注册 .io 域名
 
-1. 在 [Namefi](https://namefi.io) **搜索**您心仪的名称以查看可用性。
+1. 在 [Namefi](https://namefi.io/#register) **搜索**您心仪的名称以查看可用性。
 2. **选择** .io 结果（以及任何值得保护的备选名称）。
 3. **注册**并配置 DNS。
 

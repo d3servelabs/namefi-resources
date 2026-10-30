@@ -90,6 +90,8 @@ Changing your computer's resolver can help identify a difference in answers. It 
 
 If DNS answers match but the page still looks old, investigate the browser, CDN, application, and deployment. The observation may concern cached content rather than DNS. Avoid replacing correct DNS records to solve a different layer's problem.
 
+Use Compare resolvers in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) for the same name and record type. The page compares Google and Cloudflare answers and can compare a supplied expected value. Agreement between those two resolvers does not establish authoritative publication or worldwide propagation.
+
 ## Negative caching can delay a newly created record
 
 A resolver can cache a negative answer as well as a positive one. A previous “name does not exist” response can therefore matter after you create the name. [RFC 2308 defines negative caching](#rfc-2308-defines-negative-caching).

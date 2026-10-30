@@ -86,6 +86,8 @@ A global checker samples a set of observations. Read the checker's description t
 
 If the authoritative value is correct while a recursive resolver returns the previous value, inspect the cache lifetime. The [TTL and propagation guide](/en/blog/ttl-and-dns-propagation/) explains the underlying behavior. Lowering the TTL after a resolver cached the old answer does not retroactively rewrite that cached answer.
 
+For a bounded comparison, choose Compare resolvers in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Enter the exact name, record type, and expected value when useful. The result covers Google and Cloudflare only. It does not demonstrate worldwide propagation or replace a direct authoritative check.
+
 ![TTL limits cache reuse rather than broadcasting an update.](../../assets/ttl-and-dns-propagation-01-section.jpg)
 
 ## Missing records and proxy addresses need separate explanations

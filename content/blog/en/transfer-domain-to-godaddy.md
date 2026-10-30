@@ -122,6 +122,8 @@ If a service fails, compare current DNS with the saved records and check whether
 
 The next action is to complete the provider inventory before unlocking the domain. That inventory makes a registrar transfer a controlled account change instead of an accidental website or email migration.
 
+For a public record check after the transfer, enter each known hostname and record type in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the selected resolver's answers with the saved service inventory. Keep the registrar completion notice and the website and mail tests as separate evidence.
+
 ![A registrar change leaves website and email as separate service responsibilities.](../../assets/transfer-domain-to-another-registrar-01-continuity.jpg)
 
 ## Sources and further reading

@@ -109,6 +109,8 @@ If normal lookups fail, restore the original DNS configuration. Repeat the norma
 
 A successful lookup also does not prove the website’s application or HTTPS certificate works. Our [HTTPS guide](/en/blog/what-is-https/) separates DNS resolution from connection and certificate checks.
 
+Use [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands) to prepare the system-resolver and Google versions of the same lookup. Run both commands on the device whose settings changed. A generated command or a successful explicit Google query does not prove that normal applications use Google.
+
 ## Public DNS changes involve privacy and policy choices
 
 Entering a resolver IP address does not by itself select an encrypted transport. Android Private DNS and other supported encrypted configurations require their own setup. [Google describes those options in its setup guidance](#google-publishes-the-resolver-addresses).

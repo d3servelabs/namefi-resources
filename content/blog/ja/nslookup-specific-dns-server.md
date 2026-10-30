@@ -36,6 +36,8 @@ relatedSeries:
 MicrosoftはWindows向けに、ISCはBINDのnslookup向けに、同じ引数の順序を説明しています。
 [Microsoftのコマンドリファレンス](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks)でWindowsの構文を確認できます。
 
+シェルの引用符を手作業で調整せずに済むよう、[NamefiのDNSコマンド生成ツール](https://namefi.io/domain-tools/dns-commands)を使ってください。シェルとnslookupを選び、一覧のリゾルバーを比較するときは名前と種類をそろえてください。各コマンドをコピーしてローカルで実行してください。ページはコマンドを生成し、比較そのものは実行しません。
+
 サーバーの指定によって、「特定の名前とレコードの種類に対して、特定のサーバーが何を返すか」という調査の目的が明確になります。
 検索が成功しても、すべての利用者が同じ応答を受け取るとは限りません。
 検索が失敗しても、ドメインが消失したと即断することはできません。

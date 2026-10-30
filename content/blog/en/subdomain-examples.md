@@ -68,6 +68,8 @@ Our [subdomain and subdirectory comparison](/en/blog/subdomain-vs-subdirectory/)
 
 A nested name also follows the hierarchy. `api.eu.example.com` sits beneath `eu.example.com`, which sits beneath `example.com`. The number of labels alone does not identify which part a registrar sells.
 
+To inspect the hostname portion of another address, use [Namefi's domain-name inspector](https://namefi.io/domain-tools/domain-name). Enter the name without the scheme, path, or query. The local parser reports the public suffix and subdomain boundary when known, rather than checking site safety or account ownership.
+
 ![A URL separates the subdomain label, parent domain, and page path.](../../assets/subdomain-examples-05-url-anatomy.jpg)
 
 ## Common examples describe intended services rather than automatic features

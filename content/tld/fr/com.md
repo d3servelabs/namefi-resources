@@ -142,7 +142,7 @@ Méfiez-vous de deux écueils. Premièrement, évitez les traits d'union gênant
 
 ## Comment enregistrer un domaine .com sur Namefi
 
-1. **Recherchez** le nom souhaité sur [Namefi](https://namefi.io) pour vérifier sa disponibilité.
+1. **Recherchez** le nom souhaité sur [Namefi](https://namefi.io/#register) pour vérifier sa disponibilité.
 2. **Choisissez** le résultat en .com (et toute alternative valant la peine d'être sécurisée).
 3. **Enregistrez** et configurez vos DNS.
 

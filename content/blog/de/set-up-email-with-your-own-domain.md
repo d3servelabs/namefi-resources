@@ -106,6 +106,8 @@ Eine Nachricht besteht **[DMARC](/de/blog/dmarc-record-setup/)**, wenn SPF samt 
 
 Erhalten Sie eine vorhandene durchgesetzte DMARC-Richtlinie während der Migrationsplanung. Ersetzen Sie die Richtlinie nicht automatisch durch ein Anleitungsbeispiel. Prüfen Sie zuerst den neuen Anbieter und alle weiteren Absender gegen die vorhandene Richtlinie. Ändern Sie die Richtlinie anschließend nur bewusst.
 
+Prüfen Sie die veröffentlichten Einträge mit dem [Namefi-Prüfwerkzeug für die E-Mail-Authentifizierungskonfiguration](https://namefi.io/domain-tools/email-auth). Verwenden Sie die Domain und den Selektor des Versanddienstes. Bewahren Sie die Ergebnisse mit der Absenderliste auf. Führen Sie weiterhin unabhängige Zustellungs- und Empfangstests durch, da die DNS-Konfiguration weder die Nachrichtenauthentifizierung noch den Domänenabgleich belegt.
+
 ## Testen Sie beide Richtungen vor dem Migrationsabschluss
 
 Verwenden Sie externe Konten unter Ihrer Kontrolle oder kooperierende Testpersonen. Senden Sie vom neuen Postfach an einen externen Posteingang. Antworten Sie auf die Nachricht. Senden Sie außerdem eine neue Nachricht an die eigene Domainadresse. Testen Sie Aliasse sowie die tatsächlichen Website- und Rechnungsdienste aus Ihrer Bestandsaufnahme.

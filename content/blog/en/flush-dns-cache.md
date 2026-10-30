@@ -73,6 +73,8 @@ Retry the original hostname in the application that failed. Compare the same pag
 
 Stop after a successful result. Repeating a flush without new evidence makes the troubleshooting history harder to interpret. The useful outcome is a working service or a clearer diagnosis, rather than a long list of reset commands.
 
+To prepare the command for your shell, open [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands), choose Windows and the cache-flush task, then copy the command. The page generates text only. Run the command locally with the required administrator access and repeat the original test.
+
 ![A Windows administrator runs ipconfig /flushdns and checks the completion message.](../../assets/flush-dns-cache-01-windows.jpg)
 
 ## The client cache contains successful and negative answers

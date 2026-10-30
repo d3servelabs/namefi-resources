@@ -86,6 +86,8 @@ If records disagree across resolvers, compare the active authoritative nameserve
 
 Avoid replacing an existing policy while the active DNS provider remains uncertain. Editing an inactive zone can create an apparent repair without changing the public answer.
 
+Inspect the author domain with [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth) and save the discovered DMARC configuration findings. Use the separate message test to establish SPF or DKIM alignment and the receiver's verdict. The checker does not authenticate a message from its DNS records alone.
+
 ![Direct queries turn propagation reports into actionable checks.](../../assets/ttl-and-dns-propagation-04-section.jpg)
 
 ## A real message establishes authentication and alignment

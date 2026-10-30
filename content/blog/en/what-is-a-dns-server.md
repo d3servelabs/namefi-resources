@@ -120,6 +120,8 @@ Do not send private organization hostnames to a public resolver during an unrela
 
 Microsoft documents these distinct `nslookup` error categories. [The error descriptions support different next checks](#microsoft-documents-server-selection-and-errors). Do not reduce every error to “change the DNS server.”
 
+Use [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands) to prepare a lookup for your operating system. Choose the system resolver or one of the listed public resolvers, then run the command on the affected device. Generating the command does not test the connection or change its settings.
+
 ![Direct queries turn propagation reports into actionable checks.](../../assets/ttl-and-dns-propagation-04-section.jpg)
 
 ## A browser can select another DNS provider

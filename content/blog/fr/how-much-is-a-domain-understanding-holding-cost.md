@@ -43,6 +43,8 @@ Le prix promotionnel du premier enregistrement ne détermine pas le prix du reno
 
 Comparez le même nom, la même extension, la même devise et la même durée chez chaque registrar. Notez séparément l’enregistrement et le renouvellement. Ne comparez pas un nom premium à un nom au tarif standard.
 
+Pour comparer un nouvel enregistrement, recherchez le même nom complet dans la [recherche de domaines de Namefi](https://namefi.io/#register). Notez l’opération proposée et le montant actuel, puis vérifiez séparément les conditions de renouvellement applicables. Ne comparez pas un résultat d’acquisition à une offre d’un autre prestataire dont le périmètre diffère.
+
 [Porkbun](https://porkbun.com/products/domains) publie des colonnes distinctes pour l’enregistrement, le renouvellement et le transfert. [Cloudflare](https://www.cloudflare.com/domains/) déclare ne pas ajouter de marge aux enregistrements et renouvellements. Cloudflare impose [ses serveurs de noms](https://developers.cloudflare.com/registrar/get-started/register-domain/). Tenez compte de cette exigence pour comparer la souplesse du DNS.
 
 Ajoutez les services nécessaires avant de choisir le total le plus bas. Vérifiez les taxes et produits facultatifs dans le panier final. Un tarif promotionnel ne suffit pas pour déterminer l’option la moins chère à long terme.

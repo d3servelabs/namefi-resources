@@ -70,6 +70,8 @@ Do not infer eligibility for every ending from a successful search result. ICANN
 
 Keep a copy of the final terms with the registration record. Record the charge due now and the renewal basis separately. ICANN's registrant-rights statement includes access to applicable registration and privacy-service pricing information. [The rights statement describes those disclosures](#icann-documents-registrant-rights-and-responsibilities).
 
+For a new-registration candidate, enter the complete name in [Namefi's domain search](https://namefi.io/#register). Check the returned offer and its current purchase terms before paying. A search result is not a completed registration, and an already registered name needs a separate transfer or resale process.
+
 ![A buyer checks the exact name, eligibility, and terms before payment.](../../assets/register-domain-name-01-checkout.jpg)
 
 ## The intended registrant needs an accurate record and a controlled account

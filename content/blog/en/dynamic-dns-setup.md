@@ -122,6 +122,8 @@ If the address matches but the service fails, investigate the server, router, ac
 
 Keep the hostname owner, updater location, credential owner, and recovery instructions with the project records. The next action is to choose one supported updater and verify the complete update-to-connection path during an authorized test.
 
+After an updater reports success, query the exact hostname and A or AAAA type in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the selected resolver's response with the intended public address. This observation does not run the updater or prove that the application behind the address accepts connections.
+
 ![Direct queries turn propagation reports into actionable checks.](../../assets/ttl-and-dns-propagation-04-section.jpg)
 
 ## Sources and further reading

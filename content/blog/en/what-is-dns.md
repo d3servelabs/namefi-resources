@@ -132,6 +132,8 @@ Record the hostname, record type, resolver, UTC test time, and exact result. If 
 
 For the device setting that selects a resolver, use the separate [DNS server guide](/en/blog/what-is-a-dns-server/). For a published-record change, work with the domain's authoritative DNS provider. Those actions affect different parts of the system.
 
+For a browser-based observation, open [Namefi's DNS lookup](https://namefi.io/domain-tools/dns), enter the full hostname, and select the required record type. Save the resolver and timestamp with the answer. The result describes the selected public resolver's response, rather than every cache or the website's behavior.
+
 ## Sources and further reading
 
 ### The DNS standard defines names records and servers

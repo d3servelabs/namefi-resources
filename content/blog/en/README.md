@@ -95,3 +95,7 @@ The batch adds 56 English pages and substantively revises 35 English blog pages
 and four TLD references. Each article answers its assigned intent with primary
 sources. The [dated ledger](../../../editorial/2026-10-30-create95/README.md)
 records the assignment scope, independent review, images, and translation limits.
+
+Relevant October 30 articles now link to specific Namefi tools in their operation
+sections. The [tool-link ledger](../../../editorial/2026-10-30-create95/tool-links.json)
+records matches, omissions, destinations, and capability limits.

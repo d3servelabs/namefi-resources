@@ -68,6 +68,8 @@ A subdomain describes a relationship to a parent domain. A subdomain can serve a
 
 Do not assume that the last two labels always define a registration boundary. Public suffixes and registration policies can use different boundaries. [Current DNS terminology explains public suffixes](#the-current-dns-terminology-explains-public-suffixes). Check the actual ending before applying a generic domain-splitting rule.
 
+To inspect another name, enter the hostname without a URL path in [Namefi's domain-name inspector](https://namefi.io/domain-tools/domain-name). The local result shows normalized forms and the public-suffix boundary when known. The result does not establish availability, registration rights, or who controls the name.
+
 ![The DNS hierarchy runs from the root through com and example.com to a specific hostname.](../../assets/what-is-domain-01-hierarchy.jpg)
 
 ## A URL includes the domain and the resource location

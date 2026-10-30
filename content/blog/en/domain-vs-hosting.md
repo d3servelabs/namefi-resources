@@ -115,6 +115,8 @@ Keep the old hosting account until the replacement service and data checks finis
 
 Your next action is to make the four-role inventory. Buy only the missing required service, connect the domain through the host's documented route, and verify website and email separately. The inventory then becomes the project's renewal and handover record.
 
+Use [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) to inspect the exact website or mail-routing record supplied by the provider. Keep the hostname, type, selected resolver, and observation time with the result. Then perform the separate website and email tests described above.
+
 ![Email records divide delivery from sender authentication.](../../assets/dns-record-types-guide-02-email-dependencies.jpg)
 
 ## Sources and further reading

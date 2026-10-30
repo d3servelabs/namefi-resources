@@ -135,6 +135,8 @@ Cloudflare warns that some public Wi-Fi login pages can conflict with manual con
 
 Keep the change only after the required applications work and the connection check matches your intended setup. The [public resolver comparison guide](/en/blog/choose-public-dns-resolver/) provides a broader framework if you still need to choose a provider.
 
+For a command-line comparison, use [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands) to prepare separate system-resolver and Cloudflare queries for the same name and type. Run the commands on the configured device. This comparison does not establish which resolver Chrome or an encrypted-DNS profile uses.
+
 ![A resolver choice changes who answers your device.](../../assets/choose-public-dns-resolver-01-resolver-boundaries.jpg)
 
 ## Sources and further reading

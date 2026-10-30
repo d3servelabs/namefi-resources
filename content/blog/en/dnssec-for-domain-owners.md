@@ -106,6 +106,8 @@ Treat a signature in the response as one observation. A copied signature does no
 
 Retest the services that depend on the domain. Include the website and mail delivery rather than checking only the registrar dashboard. Record a known working state before closing the change.
 
+Collect a second observation with [Namefi's DNSSEC evidence tool](https://namefi.io/domain-tools/dnssec). The page reports Google and Cloudflare resolver evidence and the observed DS and DNSKEY data. The browser trusts those resolvers rather than independently validating signatures or the complete trust chain. An unknown result needs further investigation.
+
 ## Coordinate DNSSEC before changing DNS providers
 
 A provider change can leave the parent authenticating an old key while the new provider serves different keys. Cloudflare documents connectivity failures when nameservers change without the corresponding DNSSEC preparation. [Read the migration warning.](#cloudflare-documents-dnssec-activation)

@@ -134,6 +134,8 @@ Les [consignes Google aux expéditeurs](https://support.google.com/mail/answer/8
 
 Notre [guide TXT, SPF et DKIM](/fr/blog/txt-records-spf-dkim-verification/) explique les rôles des enregistrements. Construisez la configuration à partir des services réellement autorisés. Une configuration copiée peut omettre une application qui envoie encore des messages légitimes.
 
+Si le service choisi envoie des messages depuis votre domaine, inspectez ses enregistrements SPF et DMARC ainsi que le sélecteur DKIM connu avec le [vérificateur de configuration d’authentification des e-mails de Namefi](https://namefi.io/domain-tools/email-auth). Cette étape vérifie uniquement la configuration. Poursuivez les tests de réponse et de messages externes pour vérifier le fonctionnement réel de l’envoi.
+
 Testez le parcours complet avant de publier l’adresse :
 
 1. Envoyez un message externe à l’adresse personnalisée.

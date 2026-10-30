@@ -184,7 +184,7 @@ Verisign의 반론은 거의 완벽한 가동률을 자랑하는 대체 불가�
 
 ## 장기적으로 .com 보유하기
 
-.com은 수십 년에 걸친 자산이며, *어떻게* 보유하느냐가 어떤 것을 선택하느냐만큼 중요합니다. 기존 [DNS](/ko/glossary/dns/) 등록 외에도, .com은 [토큰화된 도메인](/ko/blog/what-are-tokenized-domains/)으로 보유할 수 있습니다. [온체인](/ko/glossary/on-chain/) 기록으로 [소유권](/ko/glossary/domain-ownership/)을 검증 가능하게 하고, 표준 DNS 해석을 포기하지 않으면서 [NFT](/ko/glossary/nft/)를 이동하는 것처럼 간단하게 이전할 수 있습니다. Web2와 [Web3](/ko/glossary/web3/)를 연결하는 [ICANN 인증](/ko/glossary/icann/) [레지스트라](/ko/glossary/registrar/)인 [Namefi](https://namefi.io)에서는 .com을 등록하고, DNS를 관리하며, 선택적으로 한 곳에서 토큰화할 수 있습니다. [Namefi](https://namefi.io)에서 이름을 검색하고 시작하세요.
+.com은 수십 년에 걸친 자산이며, *어떻게* 보유하느냐가 어떤 것을 선택하느냐만큼 중요합니다. 기존 [DNS](/ko/glossary/dns/) 등록 외에도, .com은 [토큰화된 도메인](/ko/blog/what-are-tokenized-domains/)으로 보유할 수 있습니다. [온체인](/ko/glossary/on-chain/) 기록으로 [소유권](/ko/glossary/domain-ownership/)을 검증 가능하게 하고, 표준 DNS 해석을 포기하지 않으면서 [NFT](/ko/glossary/nft/)를 이동하는 것처럼 간단하게 이전할 수 있습니다. Web2와 [Web3](/ko/glossary/web3/)를 연결하는 [ICANN 인증](/ko/glossary/icann/) [레지스트라](/ko/glossary/registrar/)인 [Namefi](https://namefi.io)에서는 .com을 등록하고, DNS를 관리하며, 선택적으로 한 곳에서 토큰화할 수 있습니다. [Namefi](https://namefi.io/#register)에서 이름을 검색하고 시작하세요.
 
 ## 자주 묻는 질문
 

@@ -146,6 +146,8 @@ Read the complete name aloud and ask another person to type the name. Check whet
 
 Select the extension only after the complete address meets the project’s requirements. Then follow the [domain and website launch guide](/en/blog/build-website-with-domain/) to connect the registration with a working site.
 
+Narrow a buying shortlist with [Namefi's supported-extension directory](https://namefi.io/tlds). The directory describes Namefi's listed options, rather than every registry extension. Check the chosen ending's eligibility and an exact-name registration offer before making a purchase decision.
+
 ## Sources and further reading
 
 ### IANA publishes the official extension list

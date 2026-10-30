@@ -99,6 +99,8 @@ DMARC connects domain authentication with the visible author domain and publishe
 
 As practical advice, begin with observation and review real message flows. Avoid copying an old percentage-based enforcement recipe. RFC 9989 removed the `pct` tag from the current specification. A general business address can participate in indirect mail flows that need careful assessment.
 
+After publishing the outgoing records, inspect the domain in [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Supply the known DKIM selector when checking its public key. Keep the result separate from the external-message test: the checker does not verify a message signature, alignment, or mailbox delivery.
+
 ![SPF, DKIM, and DMARC address different parts of outgoing email authentication.](../../assets/set-up-email-with-your-own-domain-02-authentication.jpg)
 
 ## A business address needs a complete acceptance test

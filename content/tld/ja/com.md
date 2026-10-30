@@ -142,7 +142,7 @@ relatedGlossary:
 
 ## Namefiで.comドメインを登録する方法
 
-1. [Namefi](https://namefi.io)で希望の名前を**検索**し、空き状況を確認する。
+1. [Namefi](https://namefi.io/#register)で希望の名前を**検索**し、空き状況を確認する。
 2. .comの結果（および確保すべき代替名）を**選択**する。
 3. **登録**してDNSを設定する。
 

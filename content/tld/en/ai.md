@@ -98,6 +98,8 @@ Before paying, record the following details:
 
 This table is purchasing advice. The table does not assert a universal .ai price, minimum term, or registrar feature. Verify the terms with the provider before ordering.
 
+For a registrar-side candidate check, enter the complete `.ai` name in [Namefi's domain search](https://namefi.io/#register). Confirm whether the current result offers the name and review the stated registration terms. The search does not replace the registry rules or guarantee that a name remains available through checkout.
+
 ![Registration and renewal charges differ from transfer and recovery costs.](../../assets/how-much-is-a-domain-understanding-holding-cost-01-bills.jpg)
 
 ## Read the registry's use rules before building a dependency

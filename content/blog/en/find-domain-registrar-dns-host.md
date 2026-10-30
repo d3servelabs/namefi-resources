@@ -77,6 +77,8 @@ Also consider subdomain delegation. A team can delegate a subdomain to separate 
 
 For a delegated application, check the name relevant to that application. Ask the DNS administrator whether a child zone exists before adding records to the parent zone. This practical check prevents a parent-zone edit from becoming an unexplained no-op.
 
+Use [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) with the domain and the NS record type to record a public resolver's nameserver answer. Compare the names with the provider and account records. This check does not identify the registrar account or independently confirm the website's origin host.
+
 ![Authority and policy records control separate decisions.](../../assets/dns-record-types-guide-03-authority-policy.jpg)
 
 ## The website address does not establish the registration provider

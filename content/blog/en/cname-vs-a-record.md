@@ -118,6 +118,8 @@ Finally, compare old and new answers when a recent change appears inconsistent. 
 
 The useful next action is small: locate the hosting provider's requested record and compare the type, owner name, and target with public DNS. Change only the mismatch that the comparison reveals.
 
+Inspect the alias with a CNAME query in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns), then query the returned target's A or AAAA records as needed. Keep each owner name with its result. These public-resolver observations do not prove that the destination application or certificate works.
+
 ![DNS checks and HTTPS checks reveal different failures.](../../assets/cname-vs-a-record-04-separate-checks.jpg)
 
 ## Sources and further reading

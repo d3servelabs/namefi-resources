@@ -45,6 +45,8 @@ Un nombre de dominio se compone de varias partes:
 
 La jerarquía del DNS empieza en la raíz `.`. Debajo aparecen el dominio de nivel superior `com`, el dominio de segundo nivel `example.com` y el subdominio `blog.example.com`. `example` por sí solo es una etiqueta. En `example.co.uk`, `uk` ocupa el primer nivel, `co.uk` el segundo y `example.co.uk` el tercero. El límite de registro no siempre coincide con el segundo nivel. [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-3.1).
 
+Para examinar otro nombre, introduzca el nombre de host sin una ruta de URL en el [inspector de dominios de Namefi](https://namefi.io/domain-tools/domain-name). El resultado local muestra las formas normalizadas y el límite del sufijo público cuando se conoce. El resultado no demuestra disponibilidad, derechos de registro ni quién controla el nombre.
+
 Un dominio tiene un solo titular de registro a la vez. El titular puede autorizar su uso a otras personas o servicios. El registro no reserva la misma etiqueta bajo otras extensiones. [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 ---

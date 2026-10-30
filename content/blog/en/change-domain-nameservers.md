@@ -130,6 +130,8 @@ A successful nameserver check does not complete the service tests. Open the webs
 
 Follow the documented DNSSEC completion step after activation. Keep the previous DNS service available while you verify continuity and decide when to retire the old configuration.
 
+After the provider confirms activation, compare the known records with [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). If the domain uses DNSSEC, also record the [DNSSEC tool's resolver evidence](https://namefi.io/domain-tools/dnssec). Neither observation proves worldwide propagation, and the DNSSEC tool does not independently validate the complete chain.
+
 ![A controlled change preserves records and tests dependencies.](../../assets/dns-record-types-guide-04-change-verification.jpg)
 
 ## A successful migration has evidence beyond a saved form

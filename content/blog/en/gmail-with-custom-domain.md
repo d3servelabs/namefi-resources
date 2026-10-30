@@ -121,6 +121,8 @@ For DKIM, [Google documents generating a key, publishing the public key, and ena
 
 Review DMARC after confirming the sending inventory and authentication. The current [DMARC standard warns about strict rejection and indirect mail flows](#the-dmarc-standard-explains-interoperability). Do not copy an immediate rejection policy without checking forwarding, mailing lists, and reports. The standard also removes the old `pct` tag, so older percentage rollout recipes need review.
 
+Before the live sending test, inspect the domain and the selector from your Admin console in [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Review the published SPF, DKIM-key, and DMARC findings. The checker does not enable Google signing or verify the authentication result of a delivered message.
+
 ![SPF, DKIM, and DMARC address different parts of outgoing email authentication.](../../assets/set-up-email-with-your-own-domain-02-authentication.jpg)
 
 ## A delivery test should cover more than one direction

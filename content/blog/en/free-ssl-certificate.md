@@ -92,6 +92,8 @@ DNS automation also creates an access decision. Let’s Encrypt warns against pl
 
 As operating advice, grant the certificate system only the DNS access the workflow needs. Document who can change the challenge configuration and where renewal errors appear.
 
+For DNS-01, use a TXT query in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) at the exact challenge name the client supplied. Compare that public resolver's answer with the required value. The lookup does not issue a certificate, inspect the served certificate, or test automatic renewal.
+
 ![HTTP validation serves a challenge file, while DNS validation publishes a TXT record and can support wildcard issuance.](../../assets/free-ssl-certificate-02-validation.jpg)
 
 ## Issuance and a working HTTPS site require separate checks

@@ -148,7 +148,7 @@ Ten en cuenta dos escollos. Primero, al pronunciarse en voz alta, "io" puede esc
 
 ## Cómo registrar un dominio .io en Namefi
 
-1. **Busca** el nombre que deseas en [Namefi](https://namefi.io) para comprobar su disponibilidad.
+1. **Busca** el nombre que deseas en [Namefi](https://namefi.io/#register) para comprobar su disponibilidad.
 2. **Elige** el resultado .io (y cualquier alternativa que valga la pena asegurar).
 3. **Registra** y configura el DNS.
 

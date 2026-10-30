@@ -65,6 +65,8 @@ Der ACME-Client weist die Kontrolle durch eine Validierungsaufgabe nach. Bei [HT
 
 Die DNS-01-Automatisierung benötigt eine geeignete DNS-API. Folgen Sie der Empfehlung des Ausstellers: Begrenzen Sie DNS-Zugangsdaten oder trennen Sie die Validierung vom Webserver. Umfassende DNS-Zugangsdaten auf einem kompromittierten Server gefährden mehr als die Zertifikatserneuerung.
 
+Fragen Sie für DNS-01 den vom Client vorgegebenen genauen Namen mit dem Typ TXT in [Namefis DNS-Abfrage](https://namefi.io/domain-tools/dns) ab. Vergleichen Sie die Antwort dieses öffentlichen Resolvers mit dem erforderlichen Wert. Die Abfrage stellt kein Zertifikat aus, untersucht das ausgelieferte Zertifikat nicht und prüft keine automatische Erneuerung.
+
 Notieren Sie vor der Ausstellung die benötigten Hostnamen. Ein Zertifikat kann [mehrere Namen über Subject Alternative Name enthalten](https://letsencrypt.org/docs/faq/#can-i-get-a-certificate-for-multiple-domain-names-san-certificates-or-ucc-certificates). Eine Wildcard wie `*.example.com` passt zu einer Namensebene, etwa `shop.example.com`. Nach den [Vergleichsregeln von RFC 9525](https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3) deckt die Wildcard weder `example.com` noch `a.shop.example.com` ab. Beantragen Sie die Stammdomain bei Bedarf separat.
 
 Das Zertifikat bestätigt eine Verbindungsidentität und empfiehlt kein Vertrauen in das Unternehmen. Die [TLS-Spezifikation](https://www.rfc-editor.org/rfc/rfc8446.html#section-1) beschreibt den Schutz vor Abhören, Manipulation und Nachrichtenfälschung. Bewerten Sie Unternehmen und Anwendung gesondert.

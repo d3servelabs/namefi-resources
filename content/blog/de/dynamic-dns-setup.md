@@ -94,6 +94,8 @@ Halten Sie Aktualisierungsprotokolle frei von Zugangsdaten. Erfassen Sie Zielhos
 
 Prüfen Sie bei der Fehlersuche jede Grenze: Adressermittlung, Aktualisierungsberechtigung, autoritativer Eintrag, zwischengespeicherte Antwort und Dienstzugriff. Eine erfolgreiche Aktualisierungsanfrage beweist weder die sofortige Erneuerung von Zwischenspeichern noch die Verfügbarkeit der Anwendung.
 
+Fragen Sie nach einer Erfolgsmeldung des Aktualisierungsprogramms den genauen Hostnamen mit dem Typ A oder AAAA in [Namefis DNS-Abfrage](https://namefi.io/domain-tools/dns) ab. Vergleichen Sie die Antwort des ausgewählten Resolvers mit der vorgesehenen öffentlichen Adresse. Diese Beobachtung führt das Aktualisierungsprogramm nicht aus und beweist nicht, dass die Anwendung hinter der Adresse Verbindungen annimmt.
+
 ## Diese Quellen belegen die Einrichtungsentscheidungen
 
 ### Cloudflare beschreibt Möglichkeiten zur Adressaktualisierung
