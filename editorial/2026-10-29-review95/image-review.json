@@ -1,0 +1,30 @@
+[
+  {
+    "file": "content/assets/what-is-https-og.jpg",
+    "attempts": 2,
+    "review": "Rejected the first cover because contrasting HTTP and HTTPS scenes implied website safety. Accepted the replacement with separate connection and unknown-trust symbols.",
+    "sha256": "5d02739b61aaefb464f7599c69fabc44a1c63ae80b1efb6657d46a7c2a1ad8a3",
+    "reviewed_final": true
+  },
+  {
+    "file": "content/assets/what-is-https-04-port-checks.jpg",
+    "attempts": 1,
+    "review": "Accepted distinct TCP, TLS and HTTP checks without success guarantees.",
+    "sha256": "c52b6c0a8690376ad907306ef1725395064749c833ab038e1bf3991e934da794",
+    "reviewed_final": true
+  },
+  {
+    "file": "content/assets/dns-record-types-guide-06-mx-results.jpg",
+    "attempts": 1,
+    "review": "Accepted three distinct results; null MX has no fallback arrow.",
+    "sha256": "49e7a99434941b8ccc2eb65f173fee54f7400ce962b8cbab392ab1301d383840",
+    "reviewed_final": true
+  },
+  {
+    "file": "content/assets/whois-and-rdap-public-data-04-provider-roles.jpg",
+    "attempts": 2,
+    "review": "Rejected invented address labels. Accepted simple service roles without addresses or identity guarantees.",
+    "sha256": "0e85dc7390110bb324a0b0b020ea4e83c63e02728ea2f0fb5cfbe98f7688a8a2",
+    "reviewed_final": true
+  }
+]

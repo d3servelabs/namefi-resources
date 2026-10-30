@@ -84,3 +84,7 @@ Two English guides distinguish Windows DNS timeouts from error replies and separ
 ## The October 29 guide diagnoses Chrome connection errors
 
 The English guide `fix-chrome-secure-connection-error.md` separates exact browser error codes, visitor comparisons, and named-endpoint TLS checks. The guide links to opened primary documentation and uses one cover with three reviewed section illustrations. Existing HTTPS and certificate-installation articles supply curated inbound links; the existing Spanish installation article mirrors the link.
+
+## The October 29 review improves three existing answers
+
+The 95-candidate review updates HTTPS connection checks, missing versus null MX results, and registrar versus hosting identification. The review adds no duplicate article. The dated editorial record preserves all candidate decisions, changed-claim sources and image checks.

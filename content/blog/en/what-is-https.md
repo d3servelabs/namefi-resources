@@ -1,5 +1,5 @@
 ---
-title: "HTTP vs HTTPS: Encryption, Certificates, and How HTTPS Works"
+title: "What Is HTTPS? A Secure Connection Is Not a Safety Guarantee"
 date: '2026-08-25'
 updated: '2026-10-29'
 language: en
@@ -9,7 +9,7 @@ editors: ['victor-zhou']
 draft: false
 cluster: domain-security
 format: explainer
-description: "Compare HTTP and HTTPS, then learn how TLS encryption, certificates, ports, and automated certificate renewal protect web connections."
+description: "HTTPS protects the connection, not the honesty of a website. Learn what port 443, TCP tests, TLS verification, and HTTP responses actually prove."
 ogImage: ../../assets/what-is-https-og.jpg
 keywords: ["http vs https", "what is https", "https meaning", "TLS encryption", "HTTPS certificates", "HTTP port 80", "HTTPS port 443", "ACME certificate renewal", "certificate authorities", "DNS-01 challenge"]
 relatedArticles:
@@ -63,11 +63,33 @@ HTTPS wraps HTTP in TLS — Transport Layer Security — whose current version, 
 
 A useful way to remember the division of labor: encryption seals the envelope, integrity checks detect alterations, and authentication checks the recipient's certificate and proof of its private key against the requested hostname.
 
-## Ports: the internet's door numbers
+## Port 443 identifies the default HTTPS endpoint, not a security guarantee
 
-An IP address identifies a machine, but a machine runs many networked programs at once. A **port** is the number, from 1 to 65535, that identifies *which* program a connection is for — the apartment number after the street address. A web server, a mail server, and an SSH daemon can share one machine because each listens on its own port.
+![TCP reachability, TLS verification, and an HTTP response require separate checks.](../../assets/what-is-https-04-port-checks.jpg)
 
-The [IANA port registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=https) assigns well-known defaults so clients don't have to guess: port 80 for HTTP, and port 443 — registered as "http protocol over TLS/SSL" — for HTTPS. That is why URLs don't mention them; when a browser opens `https://example.com`, [the default port is 443](https://datatracker.ietf.org/doc/html/rfc2818#:~:text=the%20default%20port%20is%20443) unless the URL says otherwise.
+**Port 443 is the default port for an HTTPS URL that omits an explicit port.** A port number alone proves no encryption or certificate validity. [The HTTPS specification defines the default](#the-https-standard-defines-port-443).
+
+A visitor initiates a connection to the website. An operator configures the service that accepts the connection. Diagnose the relevant side before changing firewall rules. Opening an inbound port on a visitor's router does not configure the website's HTTPS service.
+
+| Check | What the observation supports | What the observation does not establish |
+| --- | --- | --- |
+| TCP connection to port 443 | The tested TCP endpoint accepted a connection from that test location | A valid certificate, a working HTTP application, or access from every network |
+| TLS certificate verification | The client accepted the certificate and requested hostname under its trust configuration | An honest business or a successful application request |
+| HTTP response over verified TLS | The endpoint returned an HTTP response through that connection | Permission to access every page or operation |
+
+These checks cover different protocol layers. TCP establishes a transport connection. TLS adds authentication and protection. HTTP supplies application responses. [The protocol and client documentation support those boundaries](#protocol-tests-answer-different-questions).
+
+With curl available, inspect the actual hostname:
+
+```bash
+curl --head --verbose https://www.example.com/
+```
+
+Replace `www.example.com` with the intended hostname. The command requests headers and diagnostic output. Keep certificate verification enabled. curl verifies certificates by default, including the requested server name. [The curl documentation defines the options and verification behavior](#curl-documents-the-named-host-check).
+
+A server can reject the HEAD method while accepting a normal page request. An HTTP error therefore needs application-level interpretation. For a browser failure, follow the [Chrome connection diagnosis guide](/en/blog/fix-chrome-secure-connection-error/).
+
+A TCP-only check also leaves HTTP/3 untested because HTTP/3 uses QUIC. The [HTTP/3 specification describes that transport](https://www.rfc-editor.org/rfc/rfc9114.html#section-2). Record the hostname, protocol, test location, and time before comparing results.
 
 One caveat worth knowing: encrypting traffic on port 443 does not make the connection invisible. An observer still sees which IP you connected to, and the TLS handshake has historically sent the server's hostname (the SNI field) unencrypted — [any intermediary can view which website you're visiting simply by checking the first packet for a connection](https://blog.cloudflare.com/announcing-encrypted-client-hello/#:~:text=any%20intermediary%20can%20view%20which%20website%20you%27re%20visiting), as Cloudflare puts it. Encrypted Client Hello (ECH) is the emerging fix, and encrypted DNS closes the parallel leak on the lookup side — a shift with its own consequences, which we cover in [DNS over HTTPS vs enterprise split-horizon DNS](/en/blog/dns-over-https-vs-enterprise-split-horizon-dns/).
 
@@ -166,3 +188,15 @@ Choose [certificate validation and hostname coverage](/en/blog/ssl-certificate-t
 - CA/Browser Forum — [Ballot SC-081v3: Introduce Schedule of Reducing Validity and Data Reuse Periods](https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/) (April 2025); schedule detail via DigiCert — [TLS Certificate Lifetimes Will Officially Reduce to 47 Days](https://www.digicert.com/blog/tls-certificate-lifetimes-will-officially-reduce-to-47-days).
 - Cloudflare — [Encrypted Client Hello: the last puzzle piece to privacy](https://blog.cloudflare.com/announcing-encrypted-client-hello/) (September 2023).
 - EFF — [Certbot](https://certbot.eff.org/), the ACME client.
+
+### The HTTPS standard defines port 443
+
+[RFC 9110, section 4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2) defines the HTTPS scheme and default port. The [IANA port registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=https) also warns that an assigned port does not establish the actual service. Sources checked 2026-10-29.
+
+### Protocol tests answer different questions
+
+[RFC 9293, section 3.5](https://www.rfc-editor.org/rfc/rfc9293.html#section-3.5) describes TCP connection establishment. [RFC 9110, sections 4.2.2 and 15](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2) distinguish HTTPS requirements and HTTP response semantics. Sources checked 2026-10-29.
+
+### curl documents the named-host check
+
+The curl manual defines [HEAD requests](https://curl.se/docs/manpage.html#-I) and [verbose diagnostics](https://curl.se/docs/manpage.html#-v). The [certificate verification guide](https://curl.se/docs/sslcerts.html) documents default verification and trust-store differences. Sources checked 2026-10-29.

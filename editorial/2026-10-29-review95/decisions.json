@@ -1,0 +1,2390 @@
+[
+  {
+    "queue_position": 1,
+    "original_rank": 1,
+    "query": "443 port",
+    "avg_monthly_searches": 8100,
+    "kd": 0,
+    "opportunity_score": "8100.00",
+    "inferred_intent": "了解443端口的用途及是否需要开放",
+    "decision": "qualified_update",
+    "reason": "The existing port section defines the default and privacy limits but lacks the requested inbound-versus-outbound and test-boundary answers. The opened competing guide treats a successful TCP probe as proof that the firewall, forwarding and server are all correct, and treats open-port HTTPS failures as almost certainly certificate-related. Add a bounded port-443 decision path to the existing HTTPS article rather than create a duplicate.",
+    "reviewed_utc": "2026-10-30T04:17:19.632788+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://openportcheckers.com/blog/what-is-port-443-https",
+        "final_url": "https://openportcheckers.com/blog/what-is-port-443-https",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:25.243626+00:00",
+        "text_file": "bodies/8bd16776afc7f7c81e0c.txt",
+        "text_sha256": "271b74d07de0a994cabacf4bd1def6b3f051d32b20ad7e6c24757d962fe72c10",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://www.ssldragon.com/blog/port-80-vs-port-443/",
+        "method": "web reader exposed article body; direct HTTP limitation remains in body-index.json"
+      },
+      {
+        "url": "https://security.stackexchange.com/questions/261439/what-is-the-security-impact-to-using-a-port-different-from-443-for-https-in-my-r",
+        "method": "web reader exposed article body; direct HTTP limitation remains in body-index.json"
+      }
+    ]
+  },
+  {
+    "queue_position": 2,
+    "original_rank": 2,
+    "query": "ipconfig flushdns",
+    "avg_monthly_searches": 6600,
+    "kd": 0,
+    "opportunity_score": "6600.00",
+    "inferred_intent": "找到Windows清除DNS缓存的具体命令",
+    "decision": "retain_existing",
+    "reason": "The existing body gives ipconfig /flushdns immediately, states cache scope, shows /displaydns and separates DHCP release/renew. Microsoft's opened parameter table directly answers the same command task. No new content gap established.",
+    "reviewed_utc": "2026-10-30T04:17:19.632899+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig",
+        "final_url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:46.772021+00:00",
+        "text_file": "bodies/09b8c21271809627b95f.txt",
+        "text_sha256": "55c3fce2bfe46963df5b334f45205bb35c220d2b3422f46cfe915ec7d1b63cf6",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 3,
+    "original_rank": 3,
+    "query": "https",
+    "avg_monthly_searches": 301000,
+    "kd": 47,
+    "opportunity_score": "6270.83",
+    "inferred_intent": "了解HTTPS的含义和实际保护范围",
+    "decision": "retain_existing",
+    "reason": "The opening body directly defines HTTPS, separates encryption, identity and business trust, and compares HTTP. Cloudflare also directly explains HTTPS and TLS. The generic definition query does not establish low supply; only the distinct port subsection qualified separately.",
+    "reviewed_utc": "2026-10-30T04:17:19.632903+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.cloudflare.com/learning/ssl/what-is-https/",
+        "final_url": "https://www.cloudflare.com/learning/ssl/what-is-https/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:46.773046+00:00",
+        "text_file": "bodies/603181317fec13081925.txt",
+        "text_sha256": "54f38603672707dcd536e1b4e6d937091904f02021a8cd3df599af90613ed5d1",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 4,
+    "original_rank": 4,
+    "query": "flush dns mac os",
+    "avg_monthly_searches": 3600,
+    "kd": 0,
+    "opportunity_score": "3600.00",
+    "inferred_intent": "找到适用于自己macOS版本的清缓存命令",
+    "decision": "defer_unverified_extension",
+    "reason": "The current Namefi body labels Apple's archived version-specific instructions as historical. The competing complete body supplies current-looking macOS commands but provides no current Apple compatibility proof and also offers broad service-reset advice. A modern-version expansion needs an appropriate primary source before publication; do not upgrade an unsupported command into a current guarantee.",
+    "reviewed_utc": "2026-10-30T04:17:19.632907+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://oneuptime.com/blog/post/2026-03-20-flush-dns-cache-linux-macos-windows/view",
+        "final_url": "https://oneuptime.com/blog/post/2026-03-20-flush-dns-cache-linux-macos-windows/view",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.980276+00:00",
+        "text_file": "bodies/dbd0547d3abc23557b83.txt",
+        "text_sha256": "05eff6360e6e90a76145c6611481e36d98a39f3cd9d54f3cfdc097f4d32b3976",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 5,
+    "original_rank": 5,
+    "query": "whois",
+    "avg_monthly_searches": 246000,
+    "kd": 100,
+    "opportunity_score": "2435.64",
+    "inferred_intent": "查询域名的公开注册信息",
+    "decision": "retain_existing_tool_intent",
+    "reason": "Opened DNSimple and Wix bodies supply domain input and lookup explanations; the Namefi body already distinguishes RDAP, public fields, redaction and contact routes. A generic additional article cannot replace the lookup task or justify duplicating the existing guide.",
+    "reviewed_utc": "2026-10-30T04:17:19.632911+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://dnsimple.com/whois",
+        "final_url": "https://dnsimple.com/whois",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.127962+00:00",
+        "text_file": "bodies/6b06c7dd08b4cf970309.txt",
+        "text_sha256": "6abfafec872c94166a95f6e91cc2648db80b2b4527f8d910c21d035d35dfaca9",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://www.wix.com/domains/whois",
+        "final_url": "https://www.wix.com/domains/whois",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:29.215315+00:00",
+        "text_file": "bodies/6afd6c4fec3a62df7750.txt",
+        "text_sha256": "adc0c5e1766b7c4c16ecb31387a1a50e019349f196d8c9ce3aaa6802b4857dd4",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 6,
+    "original_rank": 6,
+    "query": "web site hosting",
+    "avg_monthly_searches": 135000,
+    "kd": 57,
+    "opportunity_score": "2327.59",
+    "inferred_intent": "选择适合自己网站的托管服务",
+    "decision": "no_proven_gap",
+    "reason": "The query primarily seeks hosting offers. HostPapa's opened body supplies plan categories, resource and term information; Namefi already explains the domain-versus-hosting purchase boundary. The reviewed evidence does not establish an underserved informational subtask or support an invented best-provider ranking.",
+    "reviewed_utc": "2026-10-30T04:17:19.632915+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.hostpapa.com/",
+        "final_url": "https://www.hostpapa.com/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.854029+00:00",
+        "text_file": "bodies/e7d08d31884d80e6c59c.txt",
+        "text_sha256": "d342e66e93b4860437a2a99ecb5b87c599334d9ace9226a77112668085a8cddf",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 7,
+    "original_rank": 7,
+    "query": "domain name system",
+    "avg_monthly_searches": 110000,
+    "kd": 49,
+    "opportunity_score": "2200.00",
+    "inferred_intent": "了解DNS是什么及如何解析域名",
+    "decision": "retain_existing",
+    "reason": "The Namefi DNS body directly defines the system and resolution. Opened Palo Alto and CompTIA bodies provide the naming-to-address explanation and resolver flow. The definition task already has direct supply.",
+    "reviewed_utc": "2026-10-30T04:17:19.632919+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.paloaltonetworks.de/cyberpedia/what-is-dns",
+        "final_url": "https://www.paloaltonetworks.com/cyberpedia/what-is-dns",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:28.373177+00:00",
+        "text_file": "bodies/b610ebe34a74d324aaf8.txt",
+        "text_sha256": "c450890a0a5fc6da98f9e61201c10a778614909c520505b2e6aeec1a585c3504",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://www.comptia.org/en-us/blog/what-is-dns/",
+        "final_url": "https://www.comptia.org/en-us/blog/what-is-dns/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.295439+00:00",
+        "text_file": "bodies/8fcaf09a288b64a9373f.txt",
+        "text_sha256": "ebe8c41d48f342e35a46082d240dd3d3ab956e0e684500e45b850d6219b9d862",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 8,
+    "original_rank": 8,
+    "query": "dns server",
+    "avg_monthly_searches": 135000,
+    "kd": 63,
+    "opportunity_score": "2109.38",
+    "inferred_intent": "了解DNS服务器的作用",
+    "decision": "retain_existing",
+    "reason": "The resolver glossary directly answers the device's DNS-server role; the nameserver glossary and existing DNS guides distinguish publication and resolution. The Heimdal body explains the server role, and Cloudflare describes authoritative service. No sufficiently distinct missing answer identified.",
+    "reviewed_utc": "2026-10-30T04:17:19.632923+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://heimdalsecurity.com/blog/what-is-a-dns-server/",
+        "final_url": "https://heimdalsecurity.com/blog/what-is-a-dns-server/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.223354+00:00",
+        "text_file": "bodies/a47cffc97464e049f645.txt",
+        "text_sha256": "02bec413096fe31e67e6c8ad55ee65114fb20dced3c5baf7b63311fb085ff051",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://www.cloudflare.com/products/dns/",
+        "final_url": "https://www.cloudflare.com/products/dns/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.961006+00:00",
+        "text_file": "bodies/3b3757b092b3a7585f36.txt",
+        "text_sha256": "86671a05a8a3e27d1ded4dd379d1ca6b02b30a629b1a8b8f0e6cfb342b9c79e8",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 9,
+    "original_rank": 9,
+    "query": "domain",
+    "avg_monthly_searches": 135000,
+    "kd": 79,
+    "opportunity_score": "1687.50",
+    "inferred_intent": "查找并购买可用域名",
+    "decision": "hold_ambiguous_intent",
+    "reason": "The broad query mixes Domain.com navigation, purchase search and domain definitions. The opened Domain.com body provides search and offer terms; Cloudflare and Namefi provide definitions. The broad measured volume cannot be assigned to a narrow new article without resolving that mix.",
+    "reviewed_utc": "2026-10-30T04:17:19.632929+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.domain.com/",
+        "final_url": "https://www.domain.com/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.417484+00:00",
+        "text_file": "bodies/25deaae20b71ae14a6f6.txt",
+        "text_sha256": "3e49fa7deddf929186e9557fc26a445af326034f4835c2d8816e30f3b628a8e4",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://www.cloudflare.com/learning/dns/glossary/what-is-a-domain-name/",
+        "final_url": "https://www.cloudflare.com/learning/dns/glossary/what-is-a-domain-name/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.888974+00:00",
+        "text_file": "bodies/ab8984a6eff67707d3ca.txt",
+        "text_sha256": "5e0df8e8a530f21344f304ea8f4537cdd62572b015016b1b10988d9a2d148840",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 10,
+    "original_rank": 10,
+    "query": "domain registration",
+    "avg_monthly_searches": 165000,
+    "kd": 100,
+    "opportunity_score": "1633.66",
+    "inferred_intent": "完成域名注册",
+    "decision": "retain_existing",
+    "reason": "Namefi's registration body already distinguishes checkout, registration completion, ownership and service connection. OVHcloud supplies an actual search/purchase surface, and the opened Microsoft article supplies account-specific purchase steps. No missing general registration answer is established.",
+    "reviewed_utc": "2026-10-30T04:17:19.632936+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.ovhcloud.com/en/domains/",
+        "final_url": "https://www.ovhcloud.com/en/domains/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:28.224296+00:00",
+        "text_file": "bodies/274174490eecd698d68d.txt",
+        "text_sha256": "21bb4589fcca35b1147adfeaffb4518024b768db9f35cee7ff843c509c7ab1c2",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/microsoft-365/admin/get-help-with-domains/buy-a-domain-name?view=o365-worldwide",
+        "final_url": "https://learn.microsoft.com/en-us/microsoft-365/admin/get-help-with-domains/buy-a-domain-name?view=o365-worldwide",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.380299+00:00",
+        "text_file": "bodies/9db71372ec9fa5ea63c7.txt",
+        "text_sha256": "099a67dae14a93da7d445275af5d4fea5309cc56f8af91101c2efbead0498c4f",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 11,
+    "original_rank": 11,
+    "query": "https 403",
+    "avg_monthly_searches": 27100,
+    "kd": 16,
+    "opportunity_score": "1594.12",
+    "inferred_intent": "解释并排查403访问被拒绝错误",
+    "decision": "no_proven_gap",
+    "reason": "The opened MDN body defines refusal, contrasts 401, explains why repeating an unchanged request fails, and gives a permission example. Opened Cloudflare guidance separates origin rules, WAF/security causes and early SNI failures. A new generic 403 article lacks a demonstrated missing answer.",
+    "reviewed_utc": "2026-10-30T04:18:49.737141+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/403",
+        "final_url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/403",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:22.798500+00:00",
+        "text_file": "bodies/78102f4d0ce984fa8ad3.txt",
+        "text_sha256": "06412e12fde831216e92bc492b275b856b191ba693bd6820c5cdad2c8799cead",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://developers.cloudflare.com/support/troubleshooting/http-status-codes/4xx-client-error/error-403/",
+        "final_url": "https://developers.cloudflare.com/support/troubleshooting/http-status-codes/4xx-client-error/error-403/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:17:40.190228+00:00",
+        "text_file": "bodies/56c6e3f9b6177e9ebf31.txt",
+        "text_sha256": "bc7015a86f8ae3108b50806aa983b97caba10c98733e48aa121543262bc9399d",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 12,
+    "original_rank": 12,
+    "query": "ssl certificate",
+    "avg_monthly_searches": 135000,
+    "kd": 100,
+    "opportunity_score": "1336.63",
+    "inferred_intent": "了解SSL证书并判断网站需要哪种证书",
+    "decision": "retain_existing",
+    "reason": "Namefi's HTTPS and certificate-type bodies already separate TLS mechanics, identity validation and hostname coverage. Cloudflare's opened SSL body offers issuance and management information. A generic certificate explainer is already supplied; no new useful gap established.",
+    "reviewed_utc": "2026-10-30T04:18:49.737239+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.cloudflare.com/products/ssl/",
+        "final_url": "https://www.cloudflare.com/products/ssl/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.080780+00:00",
+        "text_file": "bodies/5ab2ccd25bceee7b11fd.txt",
+        "text_sha256": "6a90290edd1649ce9bdafbf45b6f97859488a210d93e26b4b58aecba4a269af4",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 13,
+    "original_rank": 13,
+    "query": "dns registrar",
+    "avg_monthly_searches": 90500,
+    "kd": 72,
+    "opportunity_score": "1239.73",
+    "inferred_intent": "查找域名注册商和DNS托管方",
+    "decision": "hold_ambiguous_intent",
+    "reason": "Opened results mix finding registrars and comparing registrar services; neither establishes that the whole measured query means identifying an existing DNS host. Verisign supplies a registrar directory and the comparison body discusses registrar choice. Preserve the broad demand without assigning it to a narrower assumed problem.",
+    "reviewed_utc": "2026-10-30T04:18:49.737244+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.verisign.com/resources/find-a-registrar/",
+        "final_url": "https://www.verisign.com/resources/find-a-registrar/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:29.125105+00:00",
+        "text_file": "bodies/6abc3a8e20b75be9c702.txt",
+        "text_sha256": "6e5cdeede202f2ca069f8d48bd28da45dd305222b7bcc15f311cffa6d8b14756",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://www.godaddy.com/resources/skills/best-domain-registrars-overview",
+        "final_url": "https://www.godaddy.com/resources/skills/best-domain-registrars-overview",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.677287+00:00",
+        "text_file": "bodies/570367fcce424689d953.txt",
+        "text_sha256": "a8def3c8e7faa185f06a26959738695156b51c390c7f6a5b60ed494230464c46",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 14,
+    "original_rank": 14,
+    "query": "dns not responding",
+    "avg_monthly_searches": 4400,
+    "kd": 3,
+    "opportunity_score": "1100.00",
+    "inferred_intent": "修复DNS服务器无响应故障",
+    "decision": "already_served",
+    "reason": "The exact Windows timeout guide is already in the fresh main baseline and is served live. The opened body starts with scope, configured resolver, negative response versus timeout, and controlled comparisons. Do not count another title as another new article.",
+    "reviewed_utc": "2026-10-30T04:18:49.737248+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://namefi.io/r/en/blog/fix-dns-server-not-responding",
+        "final_url": "https://namefi.io/r/en/blog/fix-dns-server-not-responding",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:17:40.190599+00:00",
+        "text_file": "bodies/28174a6f69f164985176.txt",
+        "text_sha256": "808ef3815e2e3208033a08657eb5168adf86306fd92d2bd0591a0c828c880c4b",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/troubleshoot/windows-client/networking/troubleshoot-dns-client-resolution-issues",
+        "final_url": "https://learn.microsoft.com/en-us/troubleshoot/windows-client/networking/troubleshoot-dns-client-resolution-issues",
+        "status": 200,
+        "fetched_utc": "2026-10-29T03:56:12.215419+00:00",
+        "text_file": "bodies/7974beed715b5b9b62d3.txt",
+        "text_sha256": "e92adcba7206ecf85a1c138657f7e94640fbdfd26727c0c934f931596bb96cb9",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 15,
+    "original_rank": 15,
+    "query": "this site can t provide secure connection",
+    "avg_monthly_searches": 4400,
+    "kd": 3,
+    "opportunity_score": "1100.00",
+    "inferred_intent": "修复浏览器无法建立安全连接错误",
+    "decision": "already_served",
+    "reason": "The exact Chrome secure-connection diagnosis guide is already in main and live. The body separates browser error codes, visitor and operator roles, and named-endpoint checks. Its prior gap has an existing published answer, so no duplicate publication.",
+    "reviewed_utc": "2026-10-30T04:18:49.737252+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://namefi.io/r/en/blog/fix-chrome-secure-connection-error",
+        "final_url": "https://namefi.io/r/en/blog/fix-chrome-secure-connection-error",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:17:40.190973+00:00",
+        "text_file": "bodies/5d400da14fb5ed732dbe.txt",
+        "text_sha256": "5810ddef2c7d438291a3b4a15e4775bc68a8792711d3ecac39b4b1450f3eece2",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://support.google.com/chrome/answer/95669?hl=en",
+        "final_url": "https://support.google.com/chrome/answer/95669?hl=en",
+        "status": 200,
+        "fetched_utc": "2026-10-30T01:27:36.296095+00:00",
+        "text_file": "bodies/7f3dfe03410135eb4170.txt",
+        "text_sha256": "91dbc50c45842bcf104ff6a3c065b4b72dc260f31a5d553bbeddf4f506842c46",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 16,
+    "original_rank": 17,
+    "query": "icann lookup",
+    "avg_monthly_searches": 22200,
+    "kd": 25,
+    "opportunity_score": "853.85",
+    "inferred_intent": "使用ICANN官方查询查域名注册资料",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The current Namefi ICANN guide immediately links the official lookup, explains registered-domain input and bounds the resulting claims. The competing body also describes public registration lookup. An additional explanatory title would duplicate a task already directly served; this review does not certify the competing author's factual claims.",
+    "reviewed_utc": "2026-10-30T04:18:49.737254+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://wordshell.net/icann-lookup-tool-registration-data-lookup-service-whois-explained-a-guide-for-domain-owners",
+        "final_url": "https://wordshell.net/icann-lookup-tool-registration-data-lookup-service-whois-explained-a-guide-for-domain-owners",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.044444+00:00",
+        "text_file": "bodies/9a5c4f5ee1c01a8cf562.txt",
+        "text_sha256": "38570a968053a8284387f51435886fbf7089207998ba98ee298f8dc2929cb3da",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 17,
+    "original_rank": 18,
+    "query": "domain email address",
+    "avg_monthly_searches": 12100,
+    "kd": 14,
+    "opportunity_score": "806.67",
+    "inferred_intent": "了解邮箱域名并获取自己的企业邮箱地址",
+    "decision": "retain_existing",
+    "reason": "The opened Google business-email page defines the email domain and describes setup. Mailbox.org directly discusses custom-domain addresses. Namefi already starts with domain control, mail service, DNS access and the mailbox-versus-forwarding distinction, then gives the setup sequence. No distinct missing task identified.",
+    "reviewed_utc": "2026-10-30T04:18:49.737258+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://workspace.google.com/intl/en_au/business/new-business/",
+        "final_url": "https://workspace.google.com/intl/en_au/business/new-business/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.044711+00:00",
+        "text_file": "bodies/e80681a1568493eead0c.txt",
+        "text_sha256": "840550170d166707f1904a336ed55ad0e0d2d37e3aefc97c2182a3269e9da5a2",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://mailbox.org/en/blog/email-adress-with-your-custom-domain/",
+        "final_url": "https://mailbox.org/en/blog/email-adress-with-your-custom-domain/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.507083+00:00",
+        "text_file": "bodies/0c976de13a278f291f57.txt",
+        "text_sha256": "36e9372aef30f3f8ab5fe8d47123fb6a4b1ab6940fb08499aea787313925df91",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 18,
+    "original_rank": 19,
+    "query": "nslookup",
+    "avg_monthly_searches": 22200,
+    "kd": 28,
+    "opportunity_score": "765.52",
+    "inferred_intent": "掌握nslookup的基本用法和常用命令",
+    "decision": "retain_existing",
+    "reason": "Namefi already provides explicit nslookup syntax and the server argument at the beginning. The Moxso body explains record queries and selected servers; HackerTarget describes records and command-line alternatives. Existing detailed Namefi diagnostics cover the useful differentiator, so another general guide would duplicate coverage.",
+    "reviewed_utc": "2026-10-30T04:18:49.737261+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://moxso.com/blog/glossary/nslookup",
+        "final_url": "https://moxso.com/blog/glossary/nslookup",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.789823+00:00",
+        "text_file": "bodies/1c1047711b82032daf94.txt",
+        "text_sha256": "1cbf096caae1a46e13f58070e8d7f7cd47587dcd3f4b8f58f3cf647e80ecd129",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://hackertarget.com/dns-lookup/",
+        "final_url": "https://hackertarget.com/dns-lookup/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.196736+00:00",
+        "text_file": "bodies/9d4e2cec85d39075bfc0.txt",
+        "text_sha256": "b873c47e15944a97cd6128712fb9ccac29543a908b3c0d825cd280d607ef875e",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 19,
+    "original_rank": 20,
+    "query": "dns lookup",
+    "avg_monthly_searches": 33100,
+    "kd": 43,
+    "opportunity_score": "752.27",
+    "inferred_intent": "查询当前域名正在返回的DNS记录",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The opened WebWiz body includes a hostname input and record-type choices with authoritative-query description. MXToolbox describes the domain-report operation. The primary task is live record inspection, while Namefi already explains record interpretation. No evidence supports replacing the tool task with another article.",
+    "reviewed_utc": "2026-10-30T04:18:49.737265+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://network-tools.webwiz.net/nslookup.htm",
+        "final_url": "https://network-tools.webwiz.net/nslookup.htm",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.952844+00:00",
+        "text_file": "bodies/80ef611c99d7d0918a39.txt",
+        "text_sha256": "5f8c0fc15f9b41073233c65f9934b8058c6448a28987611ef150eee970464952",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://mxtoolbox.com/DNSCheck.aspx",
+        "final_url": "https://mxtoolbox.com/DNSCheck.aspx",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.926145+00:00",
+        "text_file": "bodies/6fd2e6ec5242eee58759.txt",
+        "text_sha256": "934d6bff0f0dd3f8ec9409f263bdb24b2b2be288007200b67a5400ca8b78d272",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 20,
+    "original_rank": 21,
+    "query": "dnsleaktest",
+    "avg_monthly_searches": 33100,
+    "kd": 46,
+    "opportunity_score": "704.26",
+    "inferred_intent": "检测VPN是否泄漏DNS查询",
+    "decision": "retain_existing_tool_intent",
+    "reason": "BrowserLeaks' opened body describes the browser DNS test and exposes a results surface. The query primarily seeks a live leak test. Namefi's resolver guide already discusses testing the actual connection; no missing explanatory subtask was demonstrated. The external test itself was not functionally certified.",
+    "reviewed_utc": "2026-10-30T04:18:49.737267+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://browserleaks.com/dns",
+        "final_url": "https://browserleaks.com/dns",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:22.600268+00:00",
+        "text_file": "bodies/ae80be35166dbb3c53e4.txt",
+        "text_sha256": "66cb9f0307fdedd44c75bfe4201eaa13215963020054d50265922e7149c27ed5",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 21,
+    "original_rank": 22,
+    "query": "web hosting shared hosting",
+    "avg_monthly_searches": 27100,
+    "kd": 38,
+    "opportunity_score": "694.87",
+    "inferred_intent": "判断共享主机是否适合自己的网站",
+    "decision": "no_proven_gap",
+    "reason": "The opened Hostinger body directly defines shared CPU/RAM/storage/bandwidth, entry-level operation and trade-offs against VPS or dedicated hosting. The existing Namefi domain/hosting guide already handles purchase boundaries. No distinct low-supply comparison question established.",
+    "reviewed_utc": "2026-10-30T04:20:17.726765+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.hostinger.com/tutorials/what-is-shared-hosting",
+        "final_url": "https://www.hostinger.com/tutorials/what-is-shared-hosting/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:46.773246+00:00",
+        "text_file": "bodies/d5a823bcc6818278fe3b.txt",
+        "text_sha256": "06bb1da062e82799251182f609905740a9215edd239209c05ea45463be45151b",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 22,
+    "original_rank": 23,
+    "query": "best dns nameservers",
+    "avg_monthly_searches": 6600,
+    "kd": 10,
+    "opportunity_score": "600.00",
+    "inferred_intent": "选择合适的公共DNS服务器",
+    "decision": "retain_existing",
+    "reason": "The ranked comparison makes broad performance claims, while the opened discussion recommends benchmarking the user's own path. Namefi already uses policy-based conditional choices and complete-connection testing rather than a universal fastest claim. The useful differentiator is present in the existing guide.",
+    "reviewed_utc": "2026-10-30T04:20:17.726868+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://em360tech.com/top-10/top-10-best-public-dns-servers-2024",
+        "final_url": "https://em360tech.com/top-10/top-10-best-public-dns-servers-2024",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.832755+00:00",
+        "text_file": "bodies/8d777ed66c310e060abb.txt",
+        "text_sha256": "61b1dc49787cca9cf951670f545e5156235ead19dd3dcb75dcf8fe8e5a692aad",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://community.spiceworks.com/t/preferred-dns-servers-for-home-use/1113814",
+        "final_url": "https://community.spiceworks.com/t/preferred-dns-servers-for-home-use/1113814",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:22.753447+00:00",
+        "text_file": "bodies/cea13f47b9534616669e.txt",
+        "text_sha256": "a21b9f7dfc5bae6d86e061f2267d82e123e9fd9adb4ee969bfb9cc4db09a348c",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 23,
+    "original_rank": 24,
+    "query": "cloudflare domain name",
+    "avg_monthly_searches": 27100,
+    "kd": 45,
+    "opportunity_score": "589.13",
+    "inferred_intent": "判断是否应该通过Cloudflare购买域名",
+    "decision": "no_proven_gap",
+    "reason": "The opened Cloudflare Registrar body directly describes its pricing model, domain locking, DNSSEC and registration/renewal service. Namefi's existing comparison targets agent registration rather than this whole consumer decision, but a site-internal coverage mismatch alone does not establish low external supply.",
+    "reviewed_utc": "2026-10-30T04:20:17.726872+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.cloudflare.com/products/registrar/",
+        "final_url": "https://www.cloudflare.com/domains/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:46.773356+00:00",
+        "text_file": "bodies/30be95962b5600254dc2.txt",
+        "text_sha256": "924df39d094daa44a5a595e0c1ce672e7f1f5c01824f760e3033ecefafd86c62",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 24,
+    "original_rank": 25,
+    "query": "fully qualified domain name",
+    "avg_monthly_searches": 9900,
+    "kd": 16,
+    "opportunity_score": "582.35",
+    "inferred_intent": "理解FQDN的定义、结构和写法",
+    "decision": "retain_existing",
+    "reason": "Namefi already defines complete DNS names, root-label/trailing-dot conventions and diagnostic context. The opened external definition also directly answers the broad query. Repeating the topic would duplicate the existing Namefi guide rather than fill a missing answer.",
+    "reviewed_utc": "2026-10-30T04:20:17.726875+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Fully_qualified_domain_name",
+        "final_url": "https://en.wikipedia.org/wiki/Fully_qualified_domain_name",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.907557+00:00",
+        "text_file": "bodies/0bfada3fc382181e50ef.txt",
+        "text_sha256": "43925b3195b83cd8724339741558b9b45f851966107fbe2c247eba7bf0b2b68b",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 25,
+    "original_rank": 26,
+    "query": "godaddy domain appraisal",
+    "avg_monthly_searches": 3600,
+    "kd": 6,
+    "opportunity_score": "514.29",
+    "inferred_intent": "使用GoDaddy估价工具估算域名价值",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The alternative web reader exposes GoDaddy's official domain input, Get Value operation, appraisal explanation and limitations, including excluding developed websites. Namefi already compares automated estimates with actual sale context. The primary task has a named tool; do not invent another valuation result or infer UI pricing from API plan prices.",
+    "reviewed_utc": "2026-10-30T04:20:17.726879+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.godaddy.com/domain-value-appraisal",
+        "method": "web reader exposed article body; direct HTTP limitation remains in body-index.json"
+      },
+      {
+        "url": "https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool",
+        "method": "web reader exposed article body; direct HTTP limitation remains in body-index.json"
+      }
+    ]
+  },
+  {
+    "queue_position": 26,
+    "original_rank": 27,
+    "query": "cloudflare nameserver",
+    "avg_monthly_searches": 22200,
+    "kd": 44,
+    "opportunity_score": "493.33",
+    "inferred_intent": "找到Cloudflare分配的权威NS并完成更换",
+    "decision": "retain_existing",
+    "reason": "Namefi's nameserver guide already starts with zone preparation and delegation, rather than substituting a public resolver address. The opened Cloudflare ACNS body describes account-level custom nameservers. The ranked ACNS result addresses a different subtask and does not establish an unserved basic nameserver change task.",
+    "reviewed_utc": "2026-10-30T04:20:17.726882+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://developers.cloudflare.com/dns/nameservers/custom-nameservers/account-custom-nameservers/",
+        "final_url": "https://developers.cloudflare.com/dns/nameservers/custom-nameservers/account-custom-nameservers/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:22.886594+00:00",
+        "text_file": "bodies/f3d8766584e297f1e44b.txt",
+        "text_sha256": "5760758fd1cd28f5f493ea6f819fed1d24680c61d902787e877bce50f922d940",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 27,
+    "original_rank": 28,
+    "query": "sender policy framework",
+    "avg_monthly_searches": 22200,
+    "kd": 48,
+    "opportunity_score": "453.06",
+    "inferred_intent": "了解SPF的原理和记录作用",
+    "decision": "retain_existing",
+    "reason": "The competing body directly defines authorized sending servers and Office 365 SPF implementation. Namefi already has the one-policy rule, exact owner-name handling and sending-identity distinctions in its TXT/SPF guide. No novel missing task identified from the reviewed bodies.",
+    "reviewed_utc": "2026-10-30T04:20:17.726884+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://mesasecurity.com/sender-policy-framework/",
+        "final_url": "https://mesasecurity.com/sender-policy-framework/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.731739+00:00",
+        "text_file": "bodies/598c8fe3218f310c9b9d.txt",
+        "text_sha256": "e8e5615210ea7da2445bd5c6e8361782dd87dd4b53cdb8d1869ea9fab96d6c52",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 28,
+    "original_rank": 29,
+    "query": "web hosting wordpress",
+    "avg_monthly_searches": 22200,
+    "kd": 52,
+    "opportunity_score": "418.87",
+    "inferred_intent": "选择WordPress托管服务",
+    "decision": "no_proven_gap",
+    "reason": "The opened Wasmer body supplies a concrete managed WordPress hosting offer and management features. The query primarily compares or purchases hosting. The evidence does not establish a missing informational answer or justify naming a best provider without appropriate comparative testing.",
+    "reviewed_utc": "2026-10-30T04:20:17.726889+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://wasmer.io/wordpress-hosting",
+        "final_url": "https://wasmer.io/wordpress-hosting",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.001083+00:00",
+        "text_file": "bodies/7de739926bf0b16819b9.txt",
+        "text_sha256": "f7628062ce9745f1fd864bbf07d0d8dd118b414684fce61f48e3ccd69696d8da",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 29,
+    "original_rank": 30,
+    "query": "cloudflare dns",
+    "avg_monthly_searches": 40500,
+    "kd": 100,
+    "opportunity_score": "400.99",
+    "inferred_intent": "查找Cloudflare公共DNS并设置1.1.1.1",
+    "decision": "retain_existing",
+    "reason": "Cloudflare's opened bodies clearly distinguish authoritative DNS from the 1.1.1.1 public resolver. Namefi's existing guide already distinguishes service variants, policy, encrypted transports and testing. The large mixed query should not become another generic article beside that coverage.",
+    "reviewed_utc": "2026-10-30T04:20:17.726893+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.cloudflare.com/products/dns/",
+        "final_url": "https://www.cloudflare.com/products/dns/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.961006+00:00",
+        "text_file": "bodies/3b3757b092b3a7585f36.txt",
+        "text_sha256": "86671a05a8a3e27d1ded4dd379d1ca6b02b30a629b1a8b8f0e6cfb342b9c79e8",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      },
+      {
+        "url": "https://www.cloudflare.com/learning/dns/what-is-1.1.1.1/",
+        "final_url": "https://www.cloudflare.com/learning/dns/what-is-1.1.1.1/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.906376+00:00",
+        "text_file": "bodies/da7bf817646c0052258f.txt",
+        "text_sha256": "d7a43a937c4626438fabe8713929ba67c990380b0ad3f2db33359e848985f5df",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 30,
+    "original_rank": 31,
+    "query": "domain name search",
+    "avg_monthly_searches": 40500,
+    "kd": 100,
+    "opportunity_score": "400.99",
+    "inferred_intent": "检查想注册的域名是否可用",
+    "decision": "retain_existing_tool_intent",
+    "reason": "Namecheap's web-readable official page exposes a domain search field and registration/renewal comparison surface. Namefi already explains checking exact names and distinguishing payment, registration and working services. The primary task requires live availability; another article does not supply it. The fetched ICANN application shell was unusable and is not counted as answer evidence.",
+    "reviewed_utc": "2026-10-30T04:20:17.726895+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.namecheap.com/domains/",
+        "method": "web reader exposed article body; direct HTTP limitation remains in body-index.json"
+      }
+    ]
+  },
+  {
+    "queue_position": 31,
+    "original_rank": 32,
+    "query": "go daddy auction",
+    "avg_monthly_searches": 4400,
+    "kd": 10,
+    "opportunity_score": "400.00",
+    "inferred_intent": "访问GoDaddy拍卖并了解如何竞价购买",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The official auction body exposes inventory search, bid and time-left fields, and renewal-fee disclosure. Namefi already explains auction routes and bidding discipline. Another generic article cannot replace the named auction marketplace.",
+    "reviewed_utc": "2026-10-30T04:25:12.515568+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.godaddy.com/auctions",
+        "method": "web reader exposed article body; direct HTTP limitation remains in body-index.json"
+      }
+    ]
+  },
+  {
+    "queue_position": 32,
+    "original_rank": 33,
+    "query": "quad 9 dns",
+    "avg_monthly_searches": 4400,
+    "kd": 10,
+    "opportunity_score": "400.00",
+    "inferred_intent": "查找Quad9的DNS地址及设置步骤",
+    "decision": "retain_existing",
+    "reason": "The competing Quad9 body lists service variants and addresses. Namefi already supplies secure-service IPv4, IPv6, DoT and policy distinctions. The direct configuration answer exists.",
+    "reviewed_utc": "2026-10-30T04:25:12.515743+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://dnschecker.org/dns/Global/quad9",
+        "final_url": "https://dnschecker.org/dns/Global/quad9",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.078210+00:00",
+        "text_file": "bodies/192bce54bb42b04a66d6.txt",
+        "text_sha256": "70837e3c7bdc64a57b2486b354a9e4f640deb7610fa484d9f9798f368b48e8ae",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 33,
+    "original_rank": 34,
+    "query": "ai domain name",
+    "avg_monthly_searches": 5400,
+    "kd": 13,
+    "opportunity_score": "385.71",
+    "inferred_intent": "了解.ai后缀并判断是否购买",
+    "decision": "retain_existing",
+    "reason": "The official registry FAQ directly supplies RDAP, registrar-support and use-policy answers. Namefi already starts with country meaning and concrete purchase, renewal and registrar checks. The reviewed buying task has existing coverage.",
+    "reviewed_utc": "2026-10-30T04:25:12.515750+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.nic.ai/faq",
+        "final_url": "https://www.nic.ai/faq",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:24:12.145582+00:00",
+        "text_file": "bodies/e9d39f8a719f58e67a3f.txt",
+        "text_sha256": "62c10ce511737a3371145a1d8402ee12f32756d3f4078ac73faf9bc41527264f",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 34,
+    "original_rank": 35,
+    "query": "business email free",
+    "avg_monthly_searches": 9900,
+    "kd": 25,
+    "opportunity_score": "380.77",
+    "inferred_intent": "寻找可免费使用自有域名的企业邮箱",
+    "decision": "retain_existing",
+    "reason": "The competing body distinguishes free and nearly-free email and describes trade-offs. Namefi already distinguishes provider addresses, custom-domain mailboxes, forwarding and trials. A second list would duplicate the useful answer.",
+    "reviewed_utc": "2026-10-30T04:25:12.515758+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://mailtrap.io/blog/best-free-business-emails/",
+        "final_url": "https://mailtrap.io/blog/best-free-business-emails/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.694429+00:00",
+        "text_file": "bodies/21bc87f4329133e8c3ed.txt",
+        "text_sha256": "a508b617947331b0f8b8e9ae84af5cd841b1eb849e906f7c2892d5f7c28bf9e7",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 35,
+    "original_rank": 36,
+    "query": "domain validation ssl certificate",
+    "avg_monthly_searches": 6600,
+    "kd": 18,
+    "opportunity_score": "347.37",
+    "inferred_intent": "了解DV证书及是否满足网站需求",
+    "decision": "retain_existing",
+    "reason": "GlobalSign directly describes automated domain validation and certificate choices. Namefi already separates identity validation from hostname coverage, including DV wildcard certificates. The basic choice does not reveal a new gap.",
+    "reviewed_utc": "2026-10-30T04:25:12.515764+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://shop.globalsign.com/en/ssl/domain-ssl",
+        "final_url": "https://shop.globalsign.com/en/ssl/domain-ssl",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:25.586271+00:00",
+        "text_file": "bodies/00edd51e0f78113fa4ec.txt",
+        "text_sha256": "b15501288281e732c93a1ba2a204eae15e9b8b8cc810ceb0b7bdc5df04d7ddcb",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 36,
+    "original_rank": 37,
+    "query": "mx check",
+    "avg_monthly_searches": 9900,
+    "kd": 28,
+    "opportunity_score": "341.38",
+    "inferred_intent": "查询域名的MX邮件服务器记录",
+    "decision": "qualified_update",
+    "reason": "The reviewed Mailsoftly checker twice claims that no MX means email cannot be delivered. Namefi explains MX preference and exchanger dependencies but omits the distinction between absent MX and explicit null MX. Update the existing record guide with primary-standard-backed result interpretation; do not pretend to provide a live checker.",
+    "reviewed_utc": "2026-10-30T04:25:12.515770+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://mailsoftly.com/tools/mx-lookup/",
+        "final_url": "https://mailsoftly.com/tools/mx-lookup/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.571545+00:00",
+        "text_file": "bodies/7fa15e245ce8c860dcb7.txt",
+        "text_sha256": "0a99f84e2b1beae07fea124047dc2640700e95c9a589e56ad297ad0594c4aefe",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 37,
+    "original_rank": 38,
+    "query": "google public dns",
+    "avg_monthly_searches": 12100,
+    "kd": 35,
+    "opportunity_score": "336.11",
+    "inferred_intent": "查找Google公共DNS地址并完成设置",
+    "decision": "retain_existing",
+    "reason": "The official Google Public DNS body supplies resolver addresses and setup routes. Namefi already has the addresses, encrypted transports and reversible comparison method. No missing direct setup answer established.",
+    "reviewed_utc": "2026-10-30T04:25:12.515778+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://developers.google.com/speed/public-dns?hl=es-419",
+        "final_url": "https://developers.google.com/speed/public-dns?hl=es-419",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.032983+00:00",
+        "text_file": "bodies/47a6e91787a8ec4d21c4.txt",
+        "text_sha256": "be1ef4ca4b9e8c65fbbc7a8a14043dcec5fb810756c11eeb66b4041a4c862cc7",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 38,
+    "original_rank": 39,
+    "query": "ssl certificate installation",
+    "avg_monthly_searches": 9900,
+    "kd": 30,
+    "opportunity_score": "319.35",
+    "inferred_intent": "安装SSL证书并启用HTTPS",
+    "decision": "retain_existing",
+    "reason": "The external installation hub routes readers to server-specific instructions. Namefi already begins with managed hosting versus a self-managed server and covers validation, chain and renewal checks. The general installation task has adequate coverage.",
+    "reviewed_utc": "2026-10-30T04:25:12.515784+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://cheapsslsecurity.com/blog/ssl-certificate-installation-guides/",
+        "final_url": "https://cheapsslsecurity.com/blog/ssl-certificate-installation-guides/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:22.600329+00:00",
+        "text_file": "bodies/ecbdb54f70fd1bc0fa03.txt",
+        "text_sha256": "e2bb7b4ddf9e1091792c03a9470e67975c0a1544ae470f5e2c524a420f3ce902",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 39,
+    "original_rank": 40,
+    "query": "tld",
+    "avg_monthly_searches": 12100,
+    "kd": 37,
+    "opportunity_score": "318.42",
+    "inferred_intent": "了解TLD的含义及常见域名后缀",
+    "decision": "hold_ambiguous_intent",
+    "reason": "The results mix a clothing brand with the DNS abbreviation. Wix directly explains domain TLDs, while Namefi already covers the DNS meaning and types. Do not attribute the entire mixed-query demand to a new DNS article.",
+    "reviewed_utc": "2026-10-30T04:25:12.515791+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.wix.com/blog/what-is-tld",
+        "final_url": "https://www.wix.com/blog/what-is-tld",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:29.176419+00:00",
+        "text_file": "bodies/9492d82ab981219fb453.txt",
+        "text_sha256": "b015fa4575874a3f4e69c9cdfb12310719d5736af6f0d8b5e020aca1936f2768",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 40,
+    "original_rank": 41,
+    "query": "business email through gmail",
+    "avg_monthly_searches": 8100,
+    "kd": 26,
+    "opportunity_score": "300.00",
+    "inferred_intent": "用Gmail收发自有企业域名邮件",
+    "decision": "retain_existing",
+    "reason": "Google Workspace directly offers custom-domain Gmail and distinguishes the business product from personal Gmail. Namefi already supplies mailbox preparation, domain verification, MX migration and sending authentication. The direct intent is served.",
+    "reviewed_utc": "2026-10-30T04:25:12.515798+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://workspace.google.com/solutions/business-email/",
+        "final_url": "https://workspace.google.com/solutions/business-email/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.348515+00:00",
+        "text_file": "bodies/827f5dd166b1e73e3f15.txt",
+        "text_sha256": "1d2ee7f563edc04c59ff2b069de04136af0511c4589aa34f8e1729cfaa5c8f0f",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 41,
+    "original_rank": 43,
+    "query": "io domain name",
+    "avg_monthly_searches": 4400,
+    "kd": 17,
+    "opportunity_score": "244.44",
+    "inferred_intent": "查找可购买的.io域名并评估选择",
+    "decision": "retain_existing",
+    "reason": "Hostinger and InterNetX offer .io registration and directly explain its country-code and technology associations. Namefi already gives eligibility and purchase guidance. No unmet buying question established.",
+    "reviewed_utc": "2026-10-30T04:25:12.515809+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.hostinger.com/tld/io-domain",
+        "final_url": "https://www.hostinger.com/tld/io-domain",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.852540+00:00",
+        "text_file": "bodies/c6b9b31dbd9aae75acdb.txt",
+        "text_sha256": "289bf92dd17ae913851fee4c0ece8604730514a417315eddd715be14b09d9a54",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 42,
+    "original_rank": 44,
+    "query": "website and domain",
+    "avg_monthly_searches": 12100,
+    "kd": 49,
+    "opportunity_score": "242.00",
+    "inferred_intent": "购买域名并建立自己的网站",
+    "decision": "retain_existing",
+    "reason": "The opened registrar body explicitly distinguishes the domain address from hosting and offers connection management. Namefi already explains the same boundary and the next purchase decision. No new generic website-and-domain page warranted.",
+    "reviewed_utc": "2026-10-30T04:25:12.515815+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.hostinger.com/in/domain-name-search",
+        "final_url": "https://www.hostinger.com/in/domain-name-search",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.829387+00:00",
+        "text_file": "bodies/121e1c10c256f94ddee8.txt",
+        "text_sha256": "fac9e7a18e3c114aaab14717d1fba5e23efa45c03c870b60c455312d590c5642",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 43,
+    "original_rank": 45,
+    "query": "domain extensions list",
+    "avg_monthly_searches": 3600,
+    "kd": 14,
+    "opportunity_score": "240.00",
+    "inferred_intent": "查阅可选择的域名后缀列表",
+    "decision": "retain_existing",
+    "reason": "The external body contains a substantial categorized extension list and directs readers to IANA. Namefi already explains TLD categories and authoritative source selection. Maintaining another purportedly exhaustive list would add duplication without a demonstrated answer gap.",
+    "reviewed_utc": "2026-10-30T04:25:12.515827+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://en.wikipedia.org/wiki/List_of_English-language_generic_Internet_top-level_domains",
+        "final_url": "https://en.wikipedia.org/wiki/List_of_English-language_generic_Internet_top-level_domains",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.012650+00:00",
+        "text_file": "bodies/5b70176416b7697ff8c2.txt",
+        "text_sha256": "7d4e2f13d666801469da90ed10ac63b1e2790f983e5eb7b18b246e7aef65fddf",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 44,
+    "original_rank": 47,
+    "query": "squarespace register domain",
+    "avg_monthly_searches": 6600,
+    "kd": 27,
+    "opportunity_score": "235.71",
+    "inferred_intent": "在Squarespace注册新域名",
+    "decision": "no_proven_gap",
+    "reason": "The opened Squarespace domain body supplies domain search, registration and related extension choices. Namefi has a registrar selection guide; a brand-specific buying query already has a direct provider surface. No low-supply problem established.",
+    "reviewed_utc": "2026-10-30T04:25:12.515837+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://domains.squarespace.com/tlds/shop-domain",
+        "final_url": "https://domains.squarespace.com/tlds/shop-domain",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.564689+00:00",
+        "text_file": "bodies/5d2bb385b6e6640af0ea.txt",
+        "text_sha256": "fab435f0c84ae63d65d32ad86e4e80adabbb76feb4ae14a2af476e4a01b54df5",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 45,
+    "original_rank": 48,
+    "query": "free web hosting website",
+    "avg_monthly_searches": 12100,
+    "kd": 51,
+    "opportunity_score": "232.69",
+    "inferred_intent": "寻找可以实际建站的免费托管服务",
+    "decision": "no_proven_gap",
+    "reason": "InfinityFree explicitly describes permanent free hosting, supported services and separate premium offers. The primary task is finding an actual service. An untested comparative list would not establish a missing answer.",
+    "reviewed_utc": "2026-10-30T04:25:12.515843+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.infinityfree.com/",
+        "final_url": "https://www.infinityfree.com/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:46.773747+00:00",
+        "text_file": "bodies/048de0c9c180ce83c755.txt",
+        "text_sha256": "10488c82a0daf69da26543aebf6a2dd68c9b10644ee483bea6ca295db0965c48",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 46,
+    "original_rank": 49,
+    "query": "ch domain name",
+    "avg_monthly_searches": 2900,
+    "kd": 12,
+    "opportunity_score": "223.08",
+    "inferred_intent": "了解如何购买注册.ch域名",
+    "decision": "retain_existing",
+    "reason": "The competing .ch body explains the Swiss association and registration offer. Namefi already gives open eligibility, contact duties and registry-backed registration guidance. No distinct unserved question found.",
+    "reviewed_utc": "2026-10-30T04:25:12.515848+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://all-inkl.com/en/domains/ch-tld",
+        "final_url": "https://all-inkl.com/en/domains/ch-tld",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:22.599317+00:00",
+        "text_file": "bodies/4b2c1337951010267bc0.txt",
+        "text_sha256": "62f88c88c051e68d7d2e857c6c1f684cb50798d16ca8959a4caccfb46707b434",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 47,
+    "original_rank": 50,
+    "query": "subdomain example",
+    "avg_monthly_searches": 6600,
+    "kd": 29,
+    "opportunity_score": "220.00",
+    "inferred_intent": "通过例子理解子域名及其用途",
+    "decision": "retain_existing",
+    "reason": "The competing bodies supply concrete blog and landing-page subdomain examples. Namefi already explains label boundaries, URL anatomy, www and configuration prerequisites. The direct explanatory task is covered.",
+    "reviewed_utc": "2026-10-30T04:25:12.515854+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://themeisle.com/blog/what-are-subdomains/",
+        "final_url": "https://themeisle.com/blog/what-are-subdomains/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:25.710285+00:00",
+        "text_file": "bodies/8fa656564e3823999a68.txt",
+        "text_sha256": "4092665ae41f7bd74abc3dfc00b422862b518031db5f6e74a3e781ecdd81e8ed",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 48,
+    "original_rank": 51,
+    "query": "cheap web hosting",
+    "avg_monthly_searches": 6600,
+    "kd": 30,
+    "opportunity_score": "212.90",
+    "inferred_intent": "寻找低成本且适合需求的托管服务",
+    "decision": "no_proven_gap",
+    "reason": "The opened Namecheap body offers actual shared-hosting plans and describes trial limits. Namefi explains hosting purchase boundaries. A best-cheap claim would require comparative evidence not present in this review.",
+    "reviewed_utc": "2026-10-30T04:25:12.515859+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.namecheap.com/hosting/shared/",
+        "final_url": "https://www.namecheap.com/hosting/shared/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:46.901024+00:00",
+        "text_file": "bodies/da527495de6204b44c6b.txt",
+        "text_sha256": "ff0dec303217816a9745d88a05a9d8c7ddcb54c7557d3ac13fd6fb3ac53c4d1d",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 49,
+    "original_rank": 52,
+    "query": "cname",
+    "avg_monthly_searches": 5400,
+    "kd": 25,
+    "opportunity_score": "207.69",
+    "inferred_intent": "理解CNAME记录及其配置方式",
+    "decision": "retain_existing",
+    "reason": "Cloudflare and the reference body directly explain aliases and hostname targets. Namefi already explains ordinary-record coexistence, apex restrictions and provider flattening. The useful configuration distinctions already exist.",
+    "reviewed_utc": "2026-10-30T04:25:12.515865+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.cloudflare.com/learning/dns/dns-records/dns-cname-record/",
+        "final_url": "https://www.cloudflare.com/learning/dns/dns-records/dns-cname-record/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.757762+00:00",
+        "text_file": "bodies/fd7fd4b3a91bc2cad21d.txt",
+        "text_sha256": "aa861bdfc12b942e2408f6180a9ad3af70e84935d05b252278da2f25817c764b",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 50,
+    "original_rank": 53,
+    "query": "cheap domain",
+    "avg_monthly_searches": 9900,
+    "kd": 47,
+    "opportunity_score": "206.25",
+    "inferred_intent": "寻找便宜域名并比较实际注册续费成本",
+    "decision": "retain_existing",
+    "reason": "The opened Webflow body compares initial and renewal pricing, add-ons and privacy terms. Namefi already uses recurring cost and control requirements rather than a first-year headline. The .cheap extension result does not answer the broad low-cost query; do not count it as relevant supply.",
+    "reviewed_utc": "2026-10-30T04:25:12.515872+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://webflow.com/blog/cheap-domains",
+        "final_url": "https://webflow.com/blog/cheap-domains",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:24:12.145846+00:00",
+        "text_file": "bodies/434834341b2e55f23e5f.txt",
+        "text_sha256": "efa16f179714bd080282f5c25e8b6196e5f976e6965534a24ce69df0dbb5a77f",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 51,
+    "original_rank": 54,
+    "query": "reverse dns lookup",
+    "avg_monthly_searches": 6600,
+    "kd": 35,
+    "opportunity_score": "183.33",
+    "inferred_intent": "通过IP地址查对应的PTR主机名",
+    "decision": "retain_existing",
+    "reason": "The external body directly defines reverse lookup and PTR. Namefi already gives dig -x and the evidence limits of PTR and matching forward data. The query needs a lookup or interpretation already covered.",
+    "reviewed_utc": "2026-10-30T04:25:12.515888+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Reverse_DNS_lookup",
+        "final_url": "https://en.wikipedia.org/wiki/Reverse_DNS_lookup",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.021410+00:00",
+        "text_file": "bodies/f4a8c159ef313fcc47a7.txt",
+        "text_sha256": "0e1052f62153fba27999305245d53549bb63ecb087d84823f9fab7707988b63f",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 52,
+    "original_rank": 55,
+    "query": "godaddy to godaddy domain transfer",
+    "avg_monthly_searches": 2900,
+    "kd": 15,
+    "opportunity_score": "181.25",
+    "inferred_intent": "把域名转到另一个GoDaddy账号",
+    "decision": "retain_existing",
+    "reason": "The competing body explicitly separates account-to-account movement from a registrar transfer. Namefi already distinguishes an account push, recipient acceptance and ownership/payment steps. No distinct missing handoff task found.",
+    "reviewed_utc": "2026-10-30T04:25:12.515901+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.schulzecreativellc.com/blog/how-to-transfer-your-godaddy-domain-to-another-person-or-platform",
+        "final_url": "https://www.schulzecreativellc.com/blog/how-to-transfer-your-godaddy-domain-to-another-person-or-platform",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:29.086835+00:00",
+        "text_file": "bodies/8d3c492cad4d21094319.txt",
+        "text_sha256": "bcdd04db941ff9bad8d35bc3f32a3455e9c892c94c2d6794a5bf8c378ac03ba0",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 53,
+    "original_rank": 56,
+    "query": "godaddy transfer domain",
+    "avg_monthly_searches": 2900,
+    "kd": 15,
+    "opportunity_score": "181.25",
+    "inferred_intent": "把域名转入GoDaddy注册商",
+    "decision": "retain_existing",
+    "reason": "The ranked GoDaddy help result describes transferring away, which mismatches the inferred transfer-in intent. The opened transfer-in help body supplies unlock, authorization, receiving-account and confirmation steps. Namefi already provides the general cross-registrar workflow.",
+    "reviewed_utc": "2026-10-30T04:25:12.515906+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.godaddy.com/help/transfer-my-domain-to-godaddy-1592",
+        "final_url": "https://www.godaddy.com/help/transfer-my-domain-to-godaddy-1592",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:24:12.145692+00:00",
+        "text_file": "bodies/ae2474eb90f9261b44d6.txt",
+        "text_sha256": "2c9061a709001735f532dd7a79d4e9adaccafe3e44fcb677b6f4c160c7c8ebf4",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 54,
+    "original_rank": 57,
+    "query": "domain value",
+    "avg_monthly_searches": 3600,
+    "kd": 19,
+    "opportunity_score": "180.00",
+    "inferred_intent": "估算自己域名的市场价值",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The opened GoDaddy appraisal body exposes a domain input and model-based estimate. Namefi already explains estimates, comparable sales and actual buyer willingness. A second article cannot supply a reliable live valuation.",
+    "reviewed_utc": "2026-10-30T04:25:12.515913+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.godaddy.com/domain-value-appraisal",
+        "method": "web reader exposed article body; direct HTTP limitation remains in body-index.json"
+      }
+    ]
+  },
+  {
+    "queue_position": 55,
+    "original_rank": 58,
+    "query": "best domain name registrar",
+    "avg_monthly_searches": 3600,
+    "kd": 20,
+    "opportunity_score": "171.43",
+    "inferred_intent": "比较并选择域名注册商",
+    "decision": "retain_existing",
+    "reason": "Microsoft directly explains compatible registrar features and receiving-registrar transfer initiation. Namefi already compares recurring cost, recovery, DNS freedom and transfer controls. No evidence supports inventing a universal best registrar.",
+    "reviewed_utc": "2026-10-30T04:25:12.515920+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://learn.microsoft.com/en-us/microsoft-365/admin/get-help-with-domains/buy-a-domain-name?view=o365-worldwide",
+        "final_url": "https://learn.microsoft.com/en-us/microsoft-365/admin/get-help-with-domains/buy-a-domain-name?view=o365-worldwide",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.380299+00:00",
+        "text_file": "bodies/9db71372ec9fa5ea63c7.txt",
+        "text_sha256": "099a67dae14a93da7d445275af5d4fea5309cc56f8af91101c2efbead0498c4f",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 56,
+    "original_rank": 59,
+    "query": "let's encrypt ssl certificate",
+    "avg_monthly_searches": 6600,
+    "kd": 38,
+    "opportunity_score": "169.23",
+    "inferred_intent": "通过Let’s Encrypt获取并配置免费证书",
+    "decision": "retain_existing",
+    "reason": "The opened certificate-authority body directly provides free certificates and requires domain control. Namefi already distinguishes issuance fees, managed hosting and ACME renewal responsibilities. No new general certificate guide needed.",
+    "reviewed_utc": "2026-10-30T04:25:12.515926+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://letsencrypt.org/el/",
+        "final_url": "https://letsencrypt.org/el/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.399600+00:00",
+        "text_file": "bodies/683d01e1091cff9d8388.txt",
+        "text_sha256": "cd8d343e03507442a5d96511f4b9576698684579495e05e23af9cd2761bb8204",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 57,
+    "original_rank": 60,
+    "query": "domain and hosting",
+    "avg_monthly_searches": 4400,
+    "kd": 25,
+    "opportunity_score": "169.23",
+    "inferred_intent": "选择域名与主机方案并确认需要买什么",
+    "decision": "retain_existing",
+    "reason": "The opened domain explanation supplies names, registries and registrars. Namefi already explicitly separates registration, hosting, DNS and mailbox services with purchase decisions. The compound query has existing direct coverage.",
+    "reviewed_utc": "2026-10-30T04:25:12.515932+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.cloudflare.com/learning/dns/glossary/what-is-a-domain-name/",
+        "final_url": "https://www.cloudflare.com/learning/dns/glossary/what-is-a-domain-name/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.888974+00:00",
+        "text_file": "bodies/ab8984a6eff67707d3ca.txt",
+        "text_sha256": "5e0df8e8a530f21344f304ea8f4537cdd62572b015016b1b10988d9a2d148840",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 58,
+    "original_rank": 61,
+    "query": "vercel domains",
+    "avg_monthly_searches": 4400,
+    "kd": 25,
+    "opportunity_score": "169.23",
+    "inferred_intent": "把自有域名连接到Vercel项目",
+    "decision": "no_proven_gap",
+    "reason": "The opened Vercel domain body gives project Settings > Domains, apex versus subdomain DNS, ownership verification and troubleshooting. The generic getting-started result alone was insufficient; the specific official procedure establishes direct supply.",
+    "reviewed_utc": "2026-10-30T04:25:12.515937+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://vercel.com/docs/domains/working-with-domains/add-a-domain",
+        "final_url": "https://vercel.com/docs/domains/working-with-domains/add-a-domain",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:24:12.145781+00:00",
+        "text_file": "bodies/7f9d6cb470e5ec36f3c1.txt",
+        "text_sha256": "97743cea1a6679b3612cfe2a7c6cabdaf49dd8ebca3112b03a6001217df5ebe2",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 59,
+    "original_rank": 62,
+    "query": "dns propagation",
+    "avg_monthly_searches": 5400,
+    "kd": 32,
+    "opportunity_score": "163.64",
+    "inferred_intent": "了解DNS更改要等多久及为何尚未生效",
+    "decision": "retain_existing",
+    "reason": "The external body challenges a fixed 24–48-hour rule. Namefi already explains TTL, negative caching, stale answers and direct-query incident evidence. The distinguishing answer exists in the current guide.",
+    "reviewed_utc": "2026-10-30T04:25:12.515949+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.tiger-computing.co.uk/myth-dns-propagation/",
+        "final_url": "https://www.tiger-computing.co.uk/myth-dns-propagation/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:29.118116+00:00",
+        "text_file": "bodies/1e99453b5f0d429e1ba6.txt",
+        "text_sha256": "dcd9ff058a10e04c5b88ef6147ead48a2404bde4f131bd0da41be619447f5fe5",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 60,
+    "original_rank": 63,
+    "query": "mail exchange record",
+    "avg_monthly_searches": 3600,
+    "kd": 22,
+    "opportunity_score": "156.52",
+    "inferred_intent": "理解MX记录如何决定邮件投递目标",
+    "decision": "qualified_update_same_article",
+    "reason": "MXToolbox describes preference ordering and separate diagnostics. This meaning query shares the record-guide update identified at position 36: distinguish absent MX, explicit null MX and a complete mail-delivery test. Publish one update, not a second article.",
+    "reviewed_utc": "2026-10-30T04:25:12.515955+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://mxtoolbox.com/",
+        "final_url": "https://mxtoolbox.com/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.807536+00:00",
+        "text_file": "bodies/5b92e13f16490601fc51.txt",
+        "text_sha256": "292e57bdfa47f066627da81c0a9ed0c8c7d60e2b36594994ed71f5fd00408019",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 61,
+    "original_rank": 64,
+    "query": "free domain",
+    "avg_monthly_searches": 6600,
+    "kd": 42,
+    "opportunity_score": "153.49",
+    "inferred_intent": "寻找可以免费获得域名的方法或优惠",
+    "decision": "retain_existing",
+    "reason": "Squarespace explicitly limits the free-domain benefit to an eligible annual plan and one year, followed by renewal charges. Namefi already distinguishes registration promotions, subdomains and account control. The key caveats are present.",
+    "reviewed_utc": "2026-10-30T04:25:12.515963+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://domains.squarespace.com/free-domain-and-website",
+        "final_url": "https://domains.squarespace.com/free-domain-and-website",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.502694+00:00",
+        "text_file": "bodies/0f0f95ba9cb8baef1fca.txt",
+        "text_sha256": "e87743ef66e27624c3e989139db27be0cb6eb0417a70b275dc151567527d2229",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 62,
+    "original_rank": 65,
+    "query": "free domain name and website",
+    "avg_monthly_searches": 3600,
+    "kd": 24,
+    "opportunity_score": "144.00",
+    "inferred_intent": "寻找同时提供免费网站与域名的方案",
+    "decision": "retain_existing",
+    "reason": "Wix explicitly ties the free domain to a paid website plan. Namefi already separates a free provider address from a conditional domain voucher and explains continuing costs. No unsupported claim of a fully free independent domain is needed.",
+    "reviewed_utc": "2026-10-30T04:25:12.515969+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.wix.com/blog/how-to-get-a-free-domain-name",
+        "final_url": "https://www.wix.com/blog/how-to-get-a-free-domain-name",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:29.130623+00:00",
+        "text_file": "bodies/ed1d47c378cc81ea8bba.txt",
+        "text_sha256": "55d1d372b70b08c44df29a7824833afdafa7eaa4b89b5d8f4080b827365d28a1",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 63,
+    "original_rank": 66,
+    "query": "check an spf record",
+    "avg_monthly_searches": 8100,
+    "kd": 57,
+    "opportunity_score": "139.66",
+    "inferred_intent": "验证SPF记录及发现配置错误",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The opened livewatch body offers an actual domain-input SPF validator. Namefi already covers policy selection, multiple-record errors and identity scope. A static article must not pretend to run a live SPF test.",
+    "reviewed_utc": "2026-10-30T04:25:12.515976+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.livewatch.de/en/tools/spf/check",
+        "final_url": "https://www.livewatch.de/en/tools/spf/check",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:28.031749+00:00",
+        "text_file": "bodies/a859411bc9885cec128a.txt",
+        "text_sha256": "d874bea12e571499c0fba49c435aec2456344f533b582e0ce448f2487502202b",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 64,
+    "original_rank": 67,
+    "query": "com domains",
+    "avg_monthly_searches": 5400,
+    "kd": 38,
+    "opportunity_score": "138.46",
+    "inferred_intent": "寻找.com域名购买渠道并比较价格",
+    "decision": "retain_existing",
+    "reason": "The competing body explains .com recognition and comparison with other extensions. Namefi already has .com coverage and registrar purchase guidance. The broad buying query does not demonstrate a missing answer merely because a competitor markets registration.",
+    "reviewed_utc": "2026-10-30T04:25:12.515983+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.godaddy.com/resources/skills/what-is-a-com-domain",
+        "final_url": "https://www.godaddy.com/resources/skills/what-is-a-com-domain",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.692949+00:00",
+        "text_file": "bodies/3909642a2625e4230cad.txt",
+        "text_sha256": "76bbdb2acb8f1e91dc5f37a5765773103685eaa9cb22ede3cd5f38f1b7b79fa7",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 65,
+    "original_rank": 68,
+    "query": "dmarc",
+    "avg_monthly_searches": 9900,
+    "kd": 72,
+    "opportunity_score": "135.62",
+    "inferred_intent": "理解DMARC及如何用于自己的域名",
+    "decision": "retain_existing",
+    "reason": "The external guide supplies DMARC tag and publishing steps. Namefi already explains alignment, policy deployment and the difference between publication and authenticated sending. The main task is served.",
+    "reviewed_utc": "2026-10-30T04:25:12.515989+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://wpmailsmtp.com/how-to-create-dmarc-record/",
+        "final_url": "https://wpmailsmtp.com/how-to-create-dmarc-record/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.405742+00:00",
+        "text_file": "bodies/01c76d3ca86a7a50fe98.txt",
+        "text_sha256": "a482dd211ae6c1ad48697e6ccf9862b8b8c9489e753315a763697aeb90953000",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 66,
+    "original_rank": 69,
+    "query": "dns propagation checker",
+    "avg_monthly_searches": 5400,
+    "kd": 39,
+    "opportunity_score": "135.00",
+    "inferred_intent": "检查DNS变更在不同解析器是否可见",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The opened propagation explanation describes cache effects. Namefi already supplies direct-query checks, resolver/timestamp evidence and cache distinctions. The main checker intent needs live vantage-point results, not another article.",
+    "reviewed_utc": "2026-10-30T04:25:12.516099+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.namecheap.com/support/knowledgebase/article.aspx/9622/10/dns-propagation-explained/",
+        "final_url": "https://www.namecheap.com/support/knowledgebase/article.aspx/9622/10/dns-propagation-explained/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:28.106505+00:00",
+        "text_file": "bodies/32e15c32c0ecf3110b05.txt",
+        "text_sha256": "b008c73e97a6290a6c4d8666a73c58655de5035fc444b7dafc5335222eb94a8d",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 67,
+    "original_rank": 70,
+    "query": "reverse dns",
+    "avg_monthly_searches": 6600,
+    "kd": 48,
+    "opportunity_score": "134.69",
+    "inferred_intent": "理解反向DNS的作用及其与正向解析的区别",
+    "decision": "retain_existing",
+    "reason": "The competing PTR bodies explain reverse mapping but include broad anti-fraud language. Namefi already limits PTR conclusions and distinguishes address-space control from domain control. The stronger answer exists.",
+    "reviewed_utc": "2026-10-30T04:25:12.516108+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://easydmarc.com/tools/ptr-record-lookup",
+        "final_url": "https://easydmarc.com/tools/ptr-record-lookup",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.807088+00:00",
+        "text_file": "bodies/929a7fa6535d88b272a3.txt",
+        "text_sha256": "2a94ad9a7465322af8ed2a869617d194ef7435e8825b89c2682bc6a5ae33be29",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 68,
+    "original_rank": 71,
+    "query": "dns adguard",
+    "avg_monthly_searches": 4400,
+    "kd": 32,
+    "opportunity_score": "133.33",
+    "inferred_intent": "使用AdGuard DNS实现DNS层广告拦截",
+    "decision": "no_proven_gap",
+    "reason": "The official AdGuard app body directly describes configuring DNS filtering on iOS and Android and separates DNS protection from other AdGuard products. Missing this brand from Namefi resolver comparisons alone does not establish low external supply.",
+    "reviewed_utc": "2026-10-30T04:25:12.516116+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://adguard-dns.io/en/blog/adguard-dns-mobile-app-v1-0.html",
+        "final_url": "https://adguard-dns.io/en/blog/adguard-dns-mobile-app-v1-0.html",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:22.598920+00:00",
+        "text_file": "bodies/c5054b37a7c250e3447c.txt",
+        "text_sha256": "9754b0bc81c136b23ebfdbbcd8ee5230075c8b5fe8fe8c41e1b385141889569a",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 69,
+    "original_rank": 72,
+    "query": "freedns",
+    "avg_monthly_searches": 4400,
+    "kd": 33,
+    "opportunity_score": "129.41",
+    "inferred_intent": "使用FreeDNS获取免费子域名并设置解析",
+    "decision": "no_proven_gap",
+    "reason": "The official FreeDNS body explicitly offers shared subdomains, own-domain DNS and dynamic update interfaces. Namefi already distinguishes DDNS updates from reachability. The navigational service task has a direct source; no need to replace it with a generic guide.",
+    "reviewed_utc": "2026-10-30T04:25:12.516122+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://freedns.afraid.org/",
+        "final_url": "https://freedns.afraid.org/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:24:12.145006+00:00",
+        "text_file": "bodies/0358f37e52765a0f011e.txt",
+        "text_sha256": "f6f63227eaf0c1aa64b634a4b8583d9ead41f900db800d60c0c655f2e3e3acba",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 70,
+    "original_rank": 73,
+    "query": "dmarc check",
+    "avg_monthly_searches": 6600,
+    "kd": 52,
+    "opportunity_score": "124.53",
+    "inferred_intent": "检查DMARC记录及认证策略配置",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The external body offers a domain-input DMARC checker and describes tags. Namefi already explains alignment, policy and published-versus-working configuration. No live-check article substitute warranted.",
+    "reviewed_utc": "2026-10-30T04:25:12.516128+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://threatcop.com/dmarc-record-checker",
+        "final_url": "https://threatcop.com/dmarc-record-checker",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:25.781582+00:00",
+        "text_file": "bodies/3d704f6dde60b6975bdc.txt",
+        "text_sha256": "cab478de9c7c95792e4e3892649197eb181f90cb2ed2717234431add45dbba2e",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 71,
+    "original_rank": 74,
+    "query": "ddns",
+    "avg_monthly_searches": 3600,
+    "kd": 30,
+    "opportunity_score": "116.13",
+    "inferred_intent": "了解DDNS并在动态IP网络中使用域名",
+    "decision": "retain_existing",
+    "reason": "Cloudflare directly explains DNS updates when IP addresses change, and No-IP supplies a working service route. Namefi already separates update clients from resolvers and inbound connectivity. The meaningful distinctions are present.",
+    "reviewed_utc": "2026-10-30T04:25:12.516137+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.cloudflare.com/learning/dns/glossary/dynamic-dns/",
+        "final_url": "https://www.cloudflare.com/learning/dns/glossary/dynamic-dns/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.877687+00:00",
+        "text_file": "bodies/72b89cf22c3749e6ad1f.txt",
+        "text_sha256": "762e1f4715eda961ddd5ab6919c21e092cd7d1ff403045d145aee64510248246",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 72,
+    "original_rank": 75,
+    "query": "dns a record",
+    "avg_monthly_searches": 4400,
+    "kd": 38,
+    "opportunity_score": "112.82",
+    "inferred_intent": "理解A记录及如何指向IPv4地址",
+    "decision": "retain_existing",
+    "reason": "DNSimple directly distinguishes A and AAAA among common DNS record types. Namefi already explains address selection and example records. The ranked NS article answers another record type and does not establish an A-record gap.",
+    "reviewed_utc": "2026-10-30T04:25:12.516143+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://support.dnsimple.com/articles/common-dns-records/",
+        "final_url": "https://support.dnsimple.com/articles/common-dns-records/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:25.703541+00:00",
+        "text_file": "bodies/64aec78a56245f5221c2.txt",
+        "text_sha256": "e829fdb74e27b5ffd772cc4607fcac6c77e9e7d275d93d359ff373d1a0a8363b",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 73,
+    "original_rank": 76,
+    "query": "lookup whois ip",
+    "avg_monthly_searches": 8100,
+    "kd": 71,
+    "opportunity_score": "112.50",
+    "inferred_intent": "查询IP地址所属网络的注册信息",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The official IANA gateway explicitly accepts IP addresses and AS numbers. Namefi already explains protocol, source and presentation limits. The live registration lookup has a direct tool route; no identity inference should replace the returned registry data.",
+    "reviewed_utc": "2026-10-30T04:25:12.516150+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.iana.org/whois",
+        "final_url": "https://www.iana.org/whois",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.929520+00:00",
+        "text_file": "bodies/080262016972b0bb5aa0.txt",
+        "text_sha256": "84a8c6eaff0efeac3c4a2aff91c806765e93b3943b913d5890a1e490913a2d97",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 74,
+    "original_rank": 77,
+    "query": "mx toolbox dns lookup",
+    "avg_monthly_searches": 6600,
+    "kd": 59,
+    "opportunity_score": "110.00",
+    "inferred_intent": "使用MXToolbox查询域名DNS记录",
+    "decision": "retain_existing_tool_intent",
+    "reason": "Zoho and DNSChecker provide actual MX lookup surfaces and interpretation. The brand-specific navigational query should lead to the named tool. The shared MX interpretation update can cross-link to tools without pretending to run one.",
+    "reviewed_utc": "2026-10-30T04:25:12.516156+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.zoho.com/toolkit/mx-lookup.html",
+        "final_url": "https://www.zoho.com/toolkit/mx-lookup.html",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:30.542928+00:00",
+        "text_file": "bodies/d84b09dfc2ccd78e98eb.txt",
+        "text_sha256": "1dcfa8157842648771034135923fa148007ad079135ad1cf20f0f163618f9af3",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 75,
+    "original_rank": 78,
+    "query": "vps web hosting",
+    "avg_monthly_searches": 8100,
+    "kd": 73,
+    "opportunity_score": "109.46",
+    "inferred_intent": "比较并选择VPS主机方案",
+    "decision": "no_proven_gap",
+    "reason": "The opened OVHcloud body supplies concrete VPS options and scaling controls. Namefi already explains hosting boundaries. A new best-provider list would require performance and suitability evidence beyond this supply review.",
+    "reviewed_utc": "2026-10-30T04:25:12.516162+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.ovhcloud.com/en/vps/vps-usa/",
+        "final_url": "https://www.ovhcloud.com/en/vps/vps-usa/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:28.315967+00:00",
+        "text_file": "bodies/643888282dc5e7dc19e1.txt",
+        "text_sha256": "372eecc732076da0ea52449940c7774f9229a7ccf8144e913ca4a705eeb66572",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 76,
+    "original_rank": 79,
+    "query": "whois host",
+    "avg_monthly_searches": 5400,
+    "kd": 50,
+    "opportunity_score": "105.88",
+    "inferred_intent": "查询一个网站实际由谁提供托管",
+    "decision": "qualified_update",
+    "reason": "The reviewed host-identification results mix registrar identification with web-host identification. Namefi distinguishes registrant and operator but omits a direct hosting-identification workflow and CDN limit. Update the existing WHOIS/RDAP guide with role separation and bounded public-IP evidence, backed by primary Cloudflare documentation.",
+    "reviewed_utc": "2026-10-30T04:25:12.516174+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://docs.cloud.google.com/identity/docs/how-to/identify-host",
+        "final_url": "https://docs.cloud.google.com/identity/docs/how-to/identify-host",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.263075+00:00",
+        "text_file": "bodies/315dd9836ebe3a4d2378.txt",
+        "text_sha256": "7dd099a0b15558514b2e3e0542a120e8378ba894bdd6f7bf44c8e5e3922508e0",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 77,
+    "original_rank": 80,
+    "query": "domain expired",
+    "avg_monthly_searches": 3600,
+    "kd": 33,
+    "opportunity_score": "105.88",
+    "inferred_intent": "确认域名过期后的找回办法",
+    "decision": "retain_existing",
+    "reason": "Cloudflare explains renewal and auction possibilities. Namefi already distinguishes registrar deadlines from registry states and avoids a universal expiration countdown. The owner-recovery task is directly served.",
+    "reviewed_utc": "2026-10-30T04:25:12.516182+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.cloudflare.com/th-th/learning/dns/glossary/expired-domains/",
+        "final_url": "https://www.cloudflare.com/th-th/learning/dns/glossary/expired-domains/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.243969+00:00",
+        "text_file": "bodies/6f77837281d5abc179aa.txt",
+        "text_sha256": "2e224c4a4eb19d8651156d32edaa151f2f6a9474d4202fb6ccb26e80cb71c0d7",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 78,
+    "original_rank": 81,
+    "query": "expired domains",
+    "avg_monthly_searches": 3600,
+    "kd": 33,
+    "opportunity_score": "105.88",
+    "inferred_intent": "寻找值得购买的过期域名",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The opened marketplace body offers an expired-domain inventory. Namefi already distinguishes auctions, redemption and registry release. Shopping intent needs actual inventory; do not endorse unsupported SEO guarantees in the competing marketing.",
+    "reviewed_utc": "2026-10-30T04:25:12.516230+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://seo.domains/",
+        "final_url": "https://seo.domains/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:25.446048+00:00",
+        "text_file": "bodies/fd63b2c4b6c11d951f06.txt",
+        "text_sha256": "f36f65b2c60181e5e6a04644ba857412a6059e0f4456d8a8487f78dbe65106f9",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 79,
+    "original_rank": 82,
+    "query": "free https certificate",
+    "avg_monthly_searches": 8100,
+    "kd": 76,
+    "opportunity_score": "105.19",
+    "inferred_intent": "为自己的网站获得免费HTTPS证书",
+    "decision": "retain_existing",
+    "reason": "The Plesk body marks its old procedure and links its replacement; another service offers issuance and decoding. Namefi already routes readers to the actual hosting manager and covers renewal and key custody. The direct free-certificate task has adequate supply.",
+    "reviewed_utc": "2026-10-30T04:25:12.516268+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://docs.plesk.com/en-US/obsidian/customer-guide/websites-and-domains/securing-connections-with-ssltls-certificates/getting-free-ssltls-certificate-from-let%E2%80%99s-encrypt.77233/",
+        "final_url": "https://docs.plesk.com/en-US/obsidian/customer-guide/websites-and-domains/securing-connections-with-ssltls-certificates/getting-free-ssltls-certificate-from-let%E2%80%99s-encrypt.77233/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.375032+00:00",
+        "text_file": "bodies/30c9c5b67598870145c7.txt",
+        "text_sha256": "09dce394543a20e21e3843f61b5d22819ef0676878598151763930711ab9ab99",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 80,
+    "original_rank": 83,
+    "query": "cloudflare domain registration",
+    "avg_monthly_searches": 4400,
+    "kd": 41,
+    "opportunity_score": "104.76",
+    "inferred_intent": "通过Cloudflare注册域名",
+    "decision": "no_proven_gap",
+    "reason": "Cloudflare directly offers registration, transfer and renewal from its dashboard with price disclosures. Namefi agent-API coverage addresses a different audience, but that internal mismatch does not demonstrate weak consumer registration supply.",
+    "reviewed_utc": "2026-10-30T04:25:12.516278+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.cloudflare.com/domains/",
+        "final_url": "https://www.cloudflare.com/domains/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.705432+00:00",
+        "text_file": "bodies/5cebf7a119fef1bf0f08.txt",
+        "text_sha256": "924df39d094daa44a5a595e0c1ce672e7f1f5c01824f760e3033ecefafd86c62",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 81,
+    "original_rank": 84,
+    "query": "check for dkim",
+    "avg_monthly_searches": 5400,
+    "kd": 53,
+    "opportunity_score": "100.00",
+    "inferred_intent": "检查DKIM的DNS记录及邮件签名是否正确",
+    "decision": "retain_existing_tool_intent",
+    "reason": "Red Sift explicitly distinguishes a real sent-message authentication test from static DNS publication. Namefi already makes the record-versus-message distinction and gives selector location. No static checker article should promise live signing verification.",
+    "reviewed_utc": "2026-10-30T04:25:12.516286+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://redsift.com/tools/investigate",
+        "final_url": "https://redsift.com/tools/investigate",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:25.338651+00:00",
+        "text_file": "bodies/9415f4272737832e61b5.txt",
+        "text_sha256": "a0e0a915ed72139dd5607dd9bd409694fde97328cb43fcc1d98ab413da17758f",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 82,
+    "original_rank": 85,
+    "query": "dns speedtest",
+    "avg_monthly_searches": 2900,
+    "kd": 28,
+    "opportunity_score": "100.00",
+    "inferred_intent": "测试当前网络下哪个DNS解析器更快",
+    "decision": "retain_existing",
+    "reason": "The GRC body describes local and remote nameserver benchmarking and saved conclusions. Namefi already supplies controlled local comparisons and separates DNS lookup latency from game latency. A universal fastest result would contradict the task.",
+    "reviewed_utc": "2026-10-30T04:25:12.516293+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.grc.com/dns/benchmark.htm",
+        "final_url": "https://www.grc.com/dns/benchmark.htm",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:46.990345+00:00",
+        "text_file": "bodies/c44f4b4615e3ab3058d2.txt",
+        "text_sha256": "128f2ddcb7adeb7dfce6340e8419fb53eb858ced1b56bb8cb9014ae87a016514",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 83,
+    "original_rank": 86,
+    "query": "ssl validation",
+    "avg_monthly_searches": 9900,
+    "kd": 100,
+    "opportunity_score": "98.02",
+    "inferred_intent": "检查SSL证书有效期、可信度和安装情况",
+    "decision": "retain_existing_tool_intent",
+    "reason": "SSL Labs offers public-endpoint analysis; curl documents default certificate and hostname verification. Namefi already covers endpoint validation in its installation and Chrome diagnostic guides. The certificate-type page alone is not the correct intent match, but the site already serves the task.",
+    "reviewed_utc": "2026-10-30T04:25:12.516301+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.ssllabs.com/ssltest/",
+        "final_url": "https://www.ssllabs.com/ssltest/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:47.186544+00:00",
+        "text_file": "bodies/8e5072b97ca7865e345e.txt",
+        "text_sha256": "7889128bbc48f4fe0ba34c3ee9816dde9b8835d62032a233ad2741d131ec8d4e",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 84,
+    "original_rank": 87,
+    "query": "domains shopify",
+    "avg_monthly_searches": 2900,
+    "kd": 29,
+    "opportunity_score": "96.67",
+    "inferred_intent": "判断应该在Shopify还是其他注册商购买域名",
+    "decision": "no_proven_gap",
+    "reason": "The opened Shopify-focused body explicitly compares buying through Shopify with buying elsewhere and connecting the domain. The decision has direct supply. New provider claims would need current official verification and a distinct gap.",
+    "reviewed_utc": "2026-10-30T04:25:12.516308+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://sufio.com/blog/buying-domain-name-shopify/",
+        "final_url": "https://sufio.com/blog/buying-domain-name-shopify/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:25.629400+00:00",
+        "text_file": "bodies/e7c9c8f2d1da2f1dae43.txt",
+        "text_sha256": "13ea109b936b0ae433a53cc33bf16d6dc3e43395ccc4e989a8cd470f3b1a406e",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 85,
+    "original_rank": 88,
+    "query": "web hosting cloud",
+    "avg_monthly_searches": 4400,
+    "kd": 46,
+    "opportunity_score": "93.62",
+    "inferred_intent": "比较云托管并判断是否适合网站",
+    "decision": "no_proven_gap",
+    "reason": "The opened AWS cloud-hosting body directly distinguishes fixed virtual machines, self-managed infrastructure and managed serverless hosting, with architecture and responsibility trade-offs. Namefi has domain-versus-hosting guidance; a missing dedicated comparison on Namefi alone does not establish low external supply.",
+    "reviewed_utc": "2026-10-30T04:25:50.779624+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://aws.amazon.com/what-is/cloud-hosting/",
+        "method": "web reader exposed article body; direct HTTP limitation remains in body-index.json"
+      }
+    ]
+  },
+  {
+    "queue_position": 86,
+    "original_rank": 89,
+    "query": "dnssec",
+    "avg_monthly_searches": 3600,
+    "kd": 38,
+    "opportunity_score": "92.31",
+    "inferred_intent": "理解DNSSEC并了解如何安全启用",
+    "decision": "retain_existing",
+    "reason": "The external body explains signed data, key chains and parent delegation. Namefi already gives the complete-trust requirement and distinguishes DNSSEC from encryption and account security. No new generic DNSSEC page warranted.",
+    "reviewed_utc": "2026-10-30T04:25:12.516315+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.asperis.es/en/glossary/dnssec/",
+        "final_url": "https://www.asperis.es/en/glossary/dnssec/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:26.563950+00:00",
+        "text_file": "bodies/1b922dbc5e90d0d3d71c.txt",
+        "text_sha256": "85a3a1917ed933a7a4e29f4598e2b85b48d8942d77a2012dc07ba3a367714828",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 87,
+    "original_rank": 90,
+    "query": "domain name with free email",
+    "avg_monthly_searches": 2900,
+    "kd": 31,
+    "opportunity_score": "90.62",
+    "inferred_intent": "寻找包含免费邮箱的域名购买方案",
+    "decision": "retain_existing",
+    "reason": "Zoho directly describes its custom-domain free-plan conditions. Namefi already separates plan eligibility, domain renewal and forwarding from a mailbox. No duplicate free-email list needed.",
+    "reviewed_utc": "2026-10-30T04:25:12.516322+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.zoho.com/mail/custom-domain-email.html",
+        "final_url": "https://www.zoho.com/mail/custom-domain-email.html",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:47.198477+00:00",
+        "text_file": "bodies/bae9b58257ba7a501ca5.txt",
+        "text_sha256": "93ad7f0eca33362312da222d18c8d2b6429b7a388f6d99053907eff1ff5b1242",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 88,
+    "original_rank": 91,
+    "query": "custom email domain",
+    "avg_monthly_searches": 3600,
+    "kd": 40,
+    "opportunity_score": "87.80",
+    "inferred_intent": "用自己的域名创建自定义邮箱地址",
+    "decision": "retain_existing",
+    "reason": "The mailbox.org body explains personal custom-domain addresses. Namefi already supplies the complete account-before-MX setup and testing sequence. The direct creation task has existing coverage.",
+    "reviewed_utc": "2026-10-30T04:25:12.516334+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://mailbox.org/en/blog/email-adress-with-your-custom-domain/",
+        "final_url": "https://mailbox.org/en/blog/email-adress-with-your-custom-domain/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:24.507083+00:00",
+        "text_file": "bodies/0c976de13a278f291f57.txt",
+        "text_sha256": "36e9372aef30f3f8ab5fe8d47123fb6a4b1ab6940fb08499aea787313925df91",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 89,
+    "original_rank": 92,
+    "query": "good web hosting",
+    "avg_monthly_searches": 2900,
+    "kd": 36,
+    "opportunity_score": "78.38",
+    "inferred_intent": "选择可靠且符合预算的托管服务",
+    "decision": "no_proven_gap",
+    "reason": "The opened comparison body frames hosting choice around goals, experience and budget. Namefi explains service boundaries, but a reliable comparative recommendation requires provider testing. No defensible low-supply selection claim established.",
+    "reviewed_utc": "2026-10-30T04:25:12.516340+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.hostingadvice.com/best/",
+        "final_url": "https://www.hostingadvice.com/best/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:27.697751+00:00",
+        "text_file": "bodies/57fa0d068a08652e567f.txt",
+        "text_sha256": "0e47709fac0ba0767a2611514b233084929c89879fa32e852c1a8fecc43aa742",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 90,
+    "original_rank": 93,
+    "query": "domain owner lookup",
+    "avg_monthly_searches": 3600,
+    "kd": 52,
+    "opportunity_score": "67.92",
+    "inferred_intent": "查找域名注册人或可公开获取的持有者信息",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The reviewed official registry FAQ supplies an owner-lookup route and explicitly permits registration privacy. Namefi already explains RDAP redaction, registrant-versus-operator roles and contact routes. A lookup cannot guarantee public personal identity.",
+    "reviewed_utc": "2026-10-30T04:25:12.516347+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.nic.ai/faq",
+        "final_url": "https://www.nic.ai/faq",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:24:12.145582+00:00",
+        "text_file": "bodies/e9d39f8a719f58e67a3f.txt",
+        "text_sha256": "62c10ce511737a3371145a1d8402ee12f32756d3f4078ac73faf9bc41527264f",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 91,
+    "original_rank": 95,
+    "query": "domains for sale",
+    "avg_monthly_searches": 6600,
+    "kd": 100,
+    "opportunity_score": "65.35",
+    "inferred_intent": "寻找并购买已被注册的待售域名",
+    "decision": "retain_existing_tool_intent",
+    "reason": "The initial Microsoft result concerns new registrations rather than buying registered inventory. The opened Sedo body explicitly supplies search, buy-now, auction and negotiation paths for already registered domains. Namefi already explains aftermarket sourcing and buyer delivery. A static article cannot replace marketplace inventory.",
+    "reviewed_utc": "2026-10-30T04:25:50.779727+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://sedo.com/us/buy-domains/",
+        "method": "web reader exposed article body; direct HTTP limitation remains in body-index.json"
+      }
+    ]
+  },
+  {
+    "queue_position": 92,
+    "original_rank": 96,
+    "query": "domain name maker",
+    "avg_monthly_searches": 3600,
+    "kd": 62,
+    "opportunity_score": "57.14",
+    "inferred_intent": "生成域名点子并检查是否能够注册",
+    "decision": "retain_existing_tool_intent",
+    "reason": "Squarespace exposes a prompt-based domain generator and asks users to verify rights in generated examples. The primary task needs generated ideas and live availability. Namefi already discusses naming tools; another static list does not perform that task.",
+    "reviewed_utc": "2026-10-30T04:25:12.516354+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://domains.squarespace.com/tools/domain-name-generator",
+        "final_url": "https://domains.squarespace.com/tools/domain-name-generator",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:23.589449+00:00",
+        "text_file": "bodies/74f84c3442b827fb0775.txt",
+        "text_sha256": "416a2c4135bc9204c46dc311ad4cde4fdf95c9c335c805130253b84ead9aafb3",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 93,
+    "original_rank": 97,
+    "query": "domain renewal",
+    "avg_monthly_searches": 2900,
+    "kd": 54,
+    "opportunity_score": "52.73",
+    "inferred_intent": "为域名续费并处理已过期情况",
+    "decision": "retain_existing",
+    "reason": "ICANN directly supplies renewal reminders, auto-renewal conditions and expiration/transfer cautions. Namefi already begins with provider payment, updated registration and receipt verification. The direct owner task is covered.",
+    "reviewed_utc": "2026-10-30T04:25:12.516373+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en",
+        "final_url": "https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:47.215389+00:00",
+        "text_file": "bodies/1b969d774f144088290d.txt",
+        "text_sha256": "f047e037b89f36d6d3c644416ec165aaab8178a7ff88b534cb617da6712b9b54",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 94,
+    "original_rank": 99,
+    "query": "cloudflare ssl certificate",
+    "avg_monthly_searches": 2900,
+    "kd": 60,
+    "opportunity_score": "47.54",
+    "inferred_intent": "使用Cloudflare为网站获得SSL证书并开启HTTPS",
+    "decision": "retain_existing",
+    "reason": "Cloudflare documentation explicitly separates visitor-facing edge certificates and origin configuration. Namefi already covers Full strict and origin validation. No second Cloudflare SSL article needed.",
+    "reviewed_utc": "2026-10-30T04:25:12.516380+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://developers.cloudflare.com/ssl/get-started/",
+        "final_url": "https://developers.cloudflare.com/ssl/get-started/",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:13:22.994145+00:00",
+        "text_file": "bodies/86bcfb15e008b6140dc8.txt",
+        "text_sha256": "ad04d6d3973a7064478862be7d030c0fd6dc152585b5a5754e9d4a4d3ed0fe43",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  },
+  {
+    "queue_position": 95,
+    "original_rank": 100,
+    "query": "adblocking dns",
+    "avg_monthly_searches": 3600,
+    "kd": 78,
+    "opportunity_score": "45.57",
+    "inferred_intent": "选择能够拦截广告的DNS服务",
+    "decision": "no_proven_gap",
+    "reason": "The official AdGuard body supplies free public DNS setup and separates the installed blocker from DNS-only service. Namefi current comparison covers different policies. A missing brand mention alone does not demonstrate low external supply for ad blocking.",
+    "reviewed_utc": "2026-10-30T04:25:12.516386+00:00",
+    "scope": "Actual body passages relevant to the inferred query, not a full factual certification of every unchanged article claim.",
+    "external_body_receipts": [
+      {
+        "url": "https://adguard-dns.io/en/public-dns.html",
+        "final_url": "https://adguard-dns.io/en/public-dns.html",
+        "status": 200,
+        "fetched_utc": "2026-10-30T04:14:47.244816+00:00",
+        "text_file": "bodies/e9a352b0ed3270519a1d.txt",
+        "text_sha256": "bc3347952617d91fb704b5792e011051d369f21dab219ca72d94aafa6a5fc883",
+        "extraction": "Longest article, otherwise main, otherwise body; navigation and scripts removed; no length truncation"
+      }
+    ]
+  }
+]

@@ -2,6 +2,7 @@
 title: "DNS Record Types Connect Websites, Email, and Zone Authority"
 description: "Choose DNS records by their job, trace website and email dependencies, and verify changes without breaking unrelated services."
 date: '2026-10-21'
+updated: '2026-10-29'
 language: en
 tags: ['dns', 'domains', 'email', 'guide']
 authors: ['namefiteam']
@@ -124,6 +125,25 @@ Trace the exchanger's address records before declaring incoming mail ready. The 
 
 This dependency matters during a website migration. Suppose the existing MX points to `mail.example.com`, and that hostname has its own A record. Preserve the mail hostname's address when replacing the website address. If the MX instead points to the apex, an apex address change also changes the mail destination.
 
+### An MX lookup separates missing records from an explicit no-mail policy
+
+![An MX answer, an absent MX answer, and null MX describe different mail-routing situations.](../../assets/dns-record-types-guide-06-mx-results.jpg)
+
+**No MX answer does not automatically mean that a domain cannot receive email.** SMTP defines an implicit-MX fallback when the lookup returns no MX records. The sender then uses the domain's address records. That fallback still requires a reachable mail service. [The SMTP standard specifies the fallback and its limits](#smtp-defines-the-missing-mx-fallback).
+
+| DNS observation | Interpretation | Next check |
+| --- | --- | --- |
+| MX records name exchangers | The domain publishes mail destinations and preferences | Resolve each exchanger and inspect mail-service readiness |
+| The lookup returns no MX records | The implicit-MX rule may apply | Inspect the domain's address records and intended mail service |
+| A single MX record contains preference `0` and exchange `.` | Null MX explicitly announces that the domain accepts no mail | Do not treat the result as a missing-record fallback |
+| The lookup times out or returns a temporary error | The lookup has not established an empty MX answer | Diagnose the DNS failure before changing mail records |
+
+A null-MX domain must not publish other MX records. [RFC 7505 defines the explicit no-mail declaration](#null-mx-announces-that-a-domain-accepts-no-mail).
+
+A successful DNS lookup does not test message acceptance or delivery to a particular mailbox. Keep routing inspection separate from the [mailbox and sending-authentication tests](/en/blog/set-up-email-with-your-own-domain/).
+
+### TXT records publish distinct verification and sending data
+
 TXT carries text that another protocol interprets. The record type does not identify the text's purpose by itself. A provider verification token and a sending policy can occupy separate TXT records at the same name. The consuming service selects the relevant data. [RFC 1035, section 3.3.14](https://www.rfc-editor.org/rfc/rfc1035.html#section-3.3.14) defines the text container.
 
 SPF publishes sending authorization through TXT. The standard requires TXT, even when a DNS console still offers the legacy SPF record type. Adding a second SPF policy can make the authorization check fail because the standard prohibits selecting multiple SPF records. Combine authorized senders through the existing policy and review the resulting policy with the mail administrator. [RFC 7208, sections 3.1–3.2](https://www.rfc-editor.org/rfc/rfc7208.html#section-3.1) defines publication rules.
@@ -207,3 +227,11 @@ If the change fails, restore the specific saved records that caused the failure.
 - IETF — [RFC 2606](https://www.rfc-editor.org/rfc/rfc2606.html#section-3), section 3: reserved example domains. Fetched 2026-10-21.
 - IETF — [RFC 5737](https://www.rfc-editor.org/rfc/rfc5737.html#section-3), section 3: IPv4 documentation ranges. Fetched 2026-10-21.
 - IETF — [RFC 3849](https://www.rfc-editor.org/rfc/rfc3849.html#section-2), section 2: IPv6 documentation prefix. Fetched 2026-10-21.
+
+### SMTP defines the missing-MX fallback
+
+[RFC 5321, section 5.1](https://www.rfc-editor.org/rfc/rfc5321.html#section-5.1) defines implicit MX when no MX records exist. The section also distinguishes temporary lookup errors and unusable destinations. Source checked 2026-10-29.
+
+### Null MX announces that a domain accepts no mail
+
+[RFC 7505, sections 1 and 3](https://www.rfc-editor.org/rfc/rfc7505.html#section-3) defines null MX and explains why address-record fallback does not establish an available mail service. Source checked 2026-10-29.
