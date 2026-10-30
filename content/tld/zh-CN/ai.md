@@ -193,7 +193,7 @@ GoDaddy 表示，任何人都可以注册 .ai 域名。购买前，请核对所�
 
 ## 长期持有 .ai
 
-和任何域名一样，.ai 可以通过传统 [DNS](/zh-CN/glossary/dns/) 持有，也可以作为[代币化域名](/zh-CN/blog/what-are-tokenized-domains/)持有——一枚[链上](/zh-CN/glossary/on-chain/) [NFT](/zh-CN/glossary/nft/)，使[所有权](/zh-CN/glossary/domain-ownership/)可验证、转让简单，同时保持正常解析。作为连接 Web2 与 [Web3](/zh-CN/glossary/web3/) 的 [ICANN 认证注册商](/zh-CN/glossary/accredited-registrar/)，[Namefi](https://namefi.io) 让你注册 .ai、管理它，并可选择在一个平台上代币化。在 [Namefi](https://namefi.io) 搜索域名开始。
+和任何域名一样，.ai 可以通过传统 [DNS](/zh-CN/glossary/dns/) 持有，也可以作为[代币化域名](/zh-CN/blog/what-are-tokenized-domains/)持有——一枚[链上](/zh-CN/glossary/on-chain/) [NFT](/zh-CN/glossary/nft/)，使[所有权](/zh-CN/glossary/domain-ownership/)可验证、转让简单，同时保持正常解析。作为连接 Web2 与 [Web3](/zh-CN/glossary/web3/) 的 [ICANN 认证注册商](/zh-CN/glossary/accredited-registrar/)，[Namefi](https://namefi.io) 让你注册 .ai、管理它，并可选择在一个平台上代币化。在 [Namefi](https://namefi.io/#register) 搜索域名开始。
 
 ## 常见问题
 

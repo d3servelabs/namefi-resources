@@ -37,7 +37,7 @@ El nombre habitual es certificado SSL. HTTPS moderno utiliza TLS. Nuestra [expli
 
 ## Tu alojamiento determina el método de instalación
 
-[Let’s Encrypt recomienda consultar primero al proveedor de alojamiento](#tu-proveedor-puede-administrar-los-certificados). Un proveedor puede ejecutar el cliente ACME y renovar los certificados. Comprar un dominio no determina quién administra HTTPS.
+[Let’s Encrypt recomienda consultar primero al proveedor de alojamiento](#tu-proveedor-puede-administrar-los-certificados). Un proveedor puede ejecutar el [cliente ACME](/es/blog/lets-encrypt-certificate-setup/) y renovar los certificados. Comprar un dominio no determina quién administra HTTPS.
 
 | Tu configuración | Tu siguiente paso |
 | --- | --- |
@@ -75,9 +75,11 @@ DNS-01 utiliza un registro TXT bajo `_acme-challenge`. DNS-01 permite certificad
 
 Utiliza credenciales DNS con permisos limitados cuando el proveedor lo permita. Let’s Encrypt advierte que guardar credenciales DNS completas en un servidor comprometido aumenta los daños. Delegar la zona de validación puede separar la validación de la zona DNS principal.
 
+Después de que el cliente publique el desafío, consulta el nombre exacto del registro TXT de DNS-01 con la [consulta DNS de Namefi](https://namefi.io/domain-tools/dns). Compara la respuesta del resolvedor seleccionado con el valor solicitado por el cliente. Esta consulta no inspecciona el certificado instalado, la clave privada ni la cadena TLS.
+
 ## Los proxies inversos también requieren comprobar el servidor de origen
 
-Una conexión correcta entre el navegador y el proxy no demuestra que el proxy valide el certificado del origen. En Cloudflare, [Full (strict) valida la conexión al origen](#verifica-la-conexión-al-origen).
+Una conexión correcta entre el navegador y el proxy no demuestra que el proxy valide el certificado del origen. En [Cloudflare](/es/blog/cloudflare-ssl-setup/), [Full (strict) valida la conexión al origen](#verifica-la-conexión-al-origen).
 
 Cloudflare requiere un certificado vigente, un emisor aceptado y un nombre coincidente. El origen debe aceptar HTTPS en el puerto `443`. Configura el origen antes de activar el modo. Un certificado de origen no válido puede provocar el error `526`.
 

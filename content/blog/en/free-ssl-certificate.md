@@ -1,93 +1,139 @@
 ---
-title: "A Free SSL Certificate Still Needs Reliable Deployment and Renewal"
-description: "Get a free TLS certificate through managed hosting or Let's Encrypt. Check domain control, hostname coverage, deployment, and renewal responsibility."
+title: How to Get a Free HTTPS Certificate for Your Website
 date: '2026-10-22'
 language: en
-tags: ['https', 'tls', 'certificates', 'security']
-authors: ['namefiteam']
+authors:
+- namefiteam
 draft: false
-format: guide
+description: Get a free HTTPS certificate through managed hosting or an ACME client. Check domain validation, hostname coverage, deployment, and renewal.
+tags:
+- domains
+- guide
 cluster: domain-security
-keywords: ['free SSL certificate', 'free TLS certificate', 'Let’s Encrypt certificate', 'free HTTPS', 'managed SSL certificate', 'ACME client', 'Certbot certificate', 'free wildcard certificate', 'certificate validation', 'SSL certificate cost']
+format: guide
+keywords:
+- free HTTPS certificate
+- free SSL certificate
+- free TLS certificate
+- Let’s Encrypt
+- ACME client
+- Certbot
+- domain validation
+- DNS-01 challenge
+- HTTP-01 challenge
+- HTTPS deployment
+- certificate renewal
 ogImage: ../../assets/free-ssl-certificate-og.jpg
 relatedArticles:
-  - /en/blog/what-is-https/
-  - /en/blog/renew-ssl-certificate/
-  - /en/blog/custom-domain-github-pages/
-  - /en/blog/wildcard-dns-records/
-  - /en/blog/how-domain-hijacking-actually-happens/
+- /en/blog/what-is-https/
+- /en/blog/renew-ssl-certificate/
+- /en/blog/custom-domain-github-pages/
+- /en/blog/wildcard-dns-records/
+- /en/blog/how-domain-hijacking-actually-happens/
 relatedGlossary:
-  - /en/glossary/registrar/
-  - /en/glossary/dns/
-  - /en/glossary/private-key/
-  - /en/glossary/public-key/
-  - /en/glossary/subdomain/
+- /en/glossary/registrar/
+- /en/glossary/dns/
+- /en/glossary/private-key/
+- /en/glossary/public-key/
+- /en/glossary/subdomain/
 relatedTopics:
-  - /en/topics/domain-basics/
-  - /en/topics/domain-security/
+- /en/topics/domain-basics/
+- /en/topics/domain-security/
 relatedSeries:
-  - /en/series/domain-investor-field-guide/
-  - /en/series/domain-apocalypse/
+- /en/series/domain-investor-field-guide/
+- /en/series/domain-apocalypse/
+updated: '2026-10-30'
 ---
 
-**A free SSL certificate can provide HTTPS without a certificate issuance fee.** Start by checking whether the hosting provider manages certificates. If the server is self-managed, consider an ACME client connected to a certificate authority such as Let's Encrypt.
+You can get a free HTTPS certificate through a hosting provider that manages certificates or through an ACME client such as Certbot. Start with the hosting provider’s HTTPS settings. If the provider does not manage certificates, use the [official Let’s Encrypt getting-started guide](https://letsencrypt.org/getting-started/). [Let’s Encrypt explains both routes](#lets-encrypt-explains-the-two-setup-routes).
 
-The certificate fee and the work required to run HTTPS are separate. Let's Encrypt [charges no certificate fee](https://letsencrypt.org/docs/faq/#what-does-it-cost-to-use-lets-encrypt-is-it-really-free). Hosting providers can still charge for administration. The operator still needs a working deployment and a renewal plan.
+Let’s Encrypt charges no certificate fee, although a hosting provider may charge for administration. [The certificate authority explains the cost boundary](#lets-encrypt-explains-certificate-fees). Free issuance still needs correct validation, installation, and renewal.
 
-This guide covers the choice between managed certificates and self-managed issuance. The [HTTPS explanation](/en/blog/what-is-https/) covers encryption and authentication. The [renewal guide](/en/blog/renew-ssl-certificate/) covers an existing deployment.
+## Managed hosting provides the first route to check
 
-## The hosting arrangement determines the practical route
+Open the platform’s custom-domain or HTTPS settings. Confirm that the intended domain belongs to the correct project. Then follow the platform’s certificate instructions instead of installing a separate certificate manager without a reason.
+
+Let’s Encrypt says a hosting provider can operate the ACME client for the customer. The provider may automate the process or require a configuration option. [The official guide explains managed issuance](#lets-encrypt-explains-the-two-setup-routes).
+
+As practical guidance, ask the provider four questions: Does the plan include HTTPS? Which hostnames does the certificate cover? Who handles renewal? Where do failures appear?
+
+A free certificate offer does not answer all four questions. Check the actual plan and deployment. A site-builder certificate may cover the published site while leaving another separately hosted application outside that arrangement.
+
+Keep a record of the certificate manager. Two independent renewal systems can create confusing ownership of configuration files or deployment hooks. Choose a clear operating arrangement before enabling additional automation.
 
 ![Managed hosting handles certificates and renewal, while a self-managed server uses an ACME client.](../../assets/free-ssl-certificate-01-manager.jpg)
 
-Let's Encrypt advises website operators to [check whether the hosting provider supports Let's Encrypt](https://letsencrypt.org/getting-started/#without-shell-access). A managed service can handle the certificate workflow. For example, GitHub Pages supports [HTTPS for correctly configured custom domains](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https).
+## A self-managed server needs an ACME client
 
-| Situation | Start here | Confirm before proceeding |
-| --- | --- | --- |
-| A provider manages HTTPS | Provider's custom-domain and HTTPS settings | Included certificate, covered hostnames, renewal responsibility |
-| You administer the server | Supported ACME client | Server access, deployment integration, automated renewal |
-| You need a wildcard certificate | A managed wildcard feature or DNS-01-capable ACME client | DNS automation and restricted credentials |
-| You need organization identity checks | An issuer offering the required validation | Whether OV or EV is mandatory |
+Let’s Encrypt issues certificates through the ACME API. The authority’s website provides instructions rather than a manual certificate checkout. The official guide recommends Certbot for most operators who need to run an ACME client. [Let’s Encrypt explains client selection](#lets-encrypt-explains-the-two-setup-routes).
 
-The table provides selection guidance, rather than a promise about every hosting plan. Check the actual plan and platform before changing DNS or buying an add-on.
+Choose the instructions for the actual operating system and web server. Confirm the required administrative access. Avoid pasting an installation command intended for a different distribution or server layout.
 
-For a self-managed server, Let's Encrypt [recommends starting with Certbot](https://letsencrypt.org/getting-started/#with-shell-access). Choose the client instructions for the actual operating system and web server. Avoid copying a command for a different deployment.
+Before issuance, list the required hostnames. A hypothetical site might need `example.com` and `www.example.com`. Another application might require `app.example.com`. The examples describe coverage planning and do not report issued certificates.
 
-Keep the private key under the control of the certificate manager. Let's Encrypt states that [subscribers generate and manage their own private keys](https://letsencrypt.org/docs/faq/#does-lets-encrypt-generate-or-store-the-private-keys-for-my-certificates-on-lets-encrypts-servers). A certificate request does not require sending that private key to the issuer.
+Keep the private key within the authorized certificate-management system. Let’s Encrypt states that the subscriber generates and manages the private key rather than sending the key to the authority. [The FAQ describes private-key handling](#lets-encrypt-explains-private-key-control).
 
-## Free issuance still requires domain control and suitable coverage
+Do not paste a private key into a public checker. A checker needs a public hostname or certificate, depending on the task. The private key grants a different capability and requires restricted access.
+
+## Domain validation must match the deployment
+
+Let’s Encrypt validates control of the requested names through challenges. HTTP-01 places a token file at a defined web path and uses port 80. DNS-01 publishes a TXT value and supports wildcard issuance. [The challenge documentation explains the differences](#lets-encrypt-compares-validation-challenges).
+
+| Deployment need | Route to evaluate |
+| --- | --- |
+| Public web server with a supported client | HTTP-01 |
+| Wildcard certificate | DNS-01 |
+| Several web servers behind one name | A challenge arrangement that reaches every required endpoint |
+| Managed platform | The platform’s supported validation workflow |
+
+A wildcard request requires more than adding an asterisk to a DNS record. Let’s Encrypt’s DNS-01 workflow requires control of the challenge TXT record. Follow the issuer’s exact instructions for the requested names.
+
+DNS automation also creates an access decision. Let’s Encrypt warns against placing unrestricted DNS API credentials on the web server and recommends narrower credentials or separate validation. [The challenge guidance explains that risk](#lets-encrypt-compares-validation-challenges).
+
+As operating advice, grant the certificate system only the DNS access the workflow needs. Document who can change the challenge configuration and where renewal errors appear.
+
+For DNS-01, use a TXT query in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns) at the exact challenge name the client supplied. Compare that public resolver's answer with the required value. The lookup does not issue a certificate, inspect the served certificate, or test automatic renewal.
 
 ![HTTP validation serves a challenge file, while DNS validation publishes a TXT record and can support wildcard issuance.](../../assets/free-ssl-certificate-02-validation.jpg)
 
-Let's Encrypt issues [domain-validated certificates](https://letsencrypt.org/docs/faq/#what-services-does-lets-encrypt-offer). DV checks control of a domain. Let's Encrypt does not offer OV or EV. A free DV certificate therefore does not satisfy an explicit requirement for organization validation.
+## Issuance and a working HTTPS site require separate checks
 
-The ACME client proves control through a validation challenge. With [HTTP-01](https://letsencrypt.org/docs/challenge-types/#http-01-challenge), the client serves a challenge file through HTTP on port 80. With [DNS-01](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge), the client publishes a DNS TXT value. Let's Encrypt wildcard issuance requires DNS-01.
+A successfully issued certificate still needs deployment to the service that terminates TLS. Confirm the certificate manager installs the correct certificate and chain for the intended hostname.
 
-DNS-01 automation needs a suitable DNS API. Follow the issuer's recommendation to restrict DNS credentials or separate validation from the web server. A broad DNS credential on a compromised server can expose more than certificate renewal.
+Test the public URL from a separate client. Check the hostname, certificate validity, and trust result. If a proxy terminates TLS, identify whether the check concerns the browser-facing connection or the proxy’s connection to the origin.
 
-Write down the required hostnames before issuing a certificate. A certificate can include [multiple names through Subject Alternative Name](https://letsencrypt.org/docs/faq/#can-i-get-a-certificate-for-multiple-domain-names-san-certificates-or-ucc-certificates). A wildcard such as `*.example.com` matches one label, such as `shop.example.com`. The wildcard does not cover `example.com` or `a.shop.example.com`, under [RFC 9525's matching rules](https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3). Request the apex separately when needed.
+The [certificate checking guide](/en/blog/ssl-certificate-check/) provides a focused validation workflow. The [HTTPS explanation](/en/blog/what-is-https/) covers the broader connection model.
 
-The certificate establishes a connection identity, rather than a recommendation to trust the business. The [TLS specification](https://www.rfc-editor.org/rfc/rfc8446.html#section-1) describes protection against eavesdropping, tampering, and message forgery. Evaluate the business and the application separately.
+As practical guidance, check application assets after enabling HTTPS. A page can load while an embedded resource still uses an old URL. Test forms and application redirects through the canonical public address before declaring the deployment complete.
 
-## A deployment checklist prevents an unfinished HTTPS setup
+Do not disable certificate verification to hide a deployment error. Fix the hostname, chain, or deployment configuration that caused the failure.
 
-1. Identify the provider or ACME client that will manage the certificate.
-2. Confirm the required hostnames and validation method.
-3. Complete validation and deploy the certificate to the public TLS endpoint.
-4. Open each required hostname over HTTPS in a browser.
-5. Check hostname coverage, certificate validity, and browser trust.
-6. Confirm automated renewal and assign an owner to investigate failures.
-7. Check application resources for remaining HTTP requests before enforcing HTTPS.
+![Flat-vector illustration of a chain of trust: a browser window linking to a site certificate, linking upward to an intermediate and a root certificate authority seal](../../assets/what-is-https-02-chain-of-trust.jpg)
 
-At the October 22, 2026 check, [Let's Encrypt's FAQ](https://letsencrypt.org/docs/faq/#what-is-the-lifetime-for-lets-encrypt-certificates-for-how-long-are-they-valid) lists 90-day default certificates and optional six-day certificates. The FAQ recommends renewal every 60 days and every three days, respectively. These periods describe Let's Encrypt's current offerings, rather than every free certificate. Keep automated renewal enabled and monitor the certificate actually served by the public endpoint.
+## Renewal needs an owner before launch
 
-GitHub documents [mixed-content problems](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https#resolving-problems-with-mixed-content) when an HTTPS page requests resources through HTTP. A successfully issued certificate does not repair those application references.
+The certificate manager needs continuing access to the validation method. A revoked DNS API credential or a removed HTTP challenge route can break renewal automation. Treat those dependencies as part of the service configuration. Remove obsolete DNS-01 TXT challenge records through the client’s documented process. [Let’s Encrypt recommends cleaning up old TXT records](#lets-encrypt-compares-validation-challenges).
 
-Use the [certificate renewal guide](/en/blog/renew-ssl-certificate/) for public-endpoint inspection and replacement checks. A certificate dashboard can show a successful request while a different server still presents an old certificate. Verify the connection that visitors actually use.
+Let’s Encrypt emphasizes automated issuance and renewal in its challenge guidance. [The DNS-01 documentation explains the automation requirement](#lets-encrypt-compares-validation-challenges). As operating advice, test renewal through the chosen client’s supported procedure and confirm that deployment follows renewal.
 
-## The sources explain free issuance and operational requirements
+Assign a person or team to receive alerts. Monitor the certificate that the public service actually presents rather than relying only on a successful client log.
 
-- Let's Encrypt, [FAQ](https://letsencrypt.org/docs/faq/), fees, certificate types, private keys, and SAN support. Fetched 2026-10-22.
-- Let's Encrypt, [Getting Started](https://letsencrypt.org/getting-started/) and [Challenge Types](https://letsencrypt.org/docs/challenge-types/), managed hosting, ACME clients, and validation. Fetched 2026-10-22.
-- GitHub, [Securing your GitHub Pages site with HTTPS](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https), custom domains and mixed content. Fetched 2026-10-22.
-- IETF, [RFC 9525, section 6.3](https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3) and [RFC 8446, section 1](https://www.rfc-editor.org/rfc/rfc8446.html#section-1), name matching and TLS goals. Fetched 2026-10-22.
+The next action is concrete: check managed HTTPS first, or select the official client instructions for the server. Complete validation and deployment, then verify the public hostname and the renewal owner.
+
+## Sources and further reading
+
+### Lets Encrypt explains the two setup routes
+
+[Lets Encrypt explains the two setup routes](https://letsencrypt.org/getting-started/#:~:text=will%20my%20hosting%20provider%20get%20and%20manage%20certificates%20from%20Let%E2%80%99s%20Encrypt%20for%20me). Supporting passage: “will my hosting provider get and manage certificates from Let’s Encrypt for me” Checked 2026-10-30.
+
+### Lets Encrypt explains certificate fees
+
+[Lets Encrypt explains certificate fees](https://letsencrypt.org/docs/faq/#:~:text=We%20do%20not%20charge%20a%20fee%20for%20our%20certificates.). Supporting passage: “We do not charge a fee for our certificates.” Checked 2026-10-30.
+
+### Lets Encrypt explains private key control
+
+[Lets Encrypt explains private key control](https://letsencrypt.org/docs/faq/#:~:text=The%20private%20key%20is%20always%20generated%20and%20managed%20on%20your%20own%20servers). Supporting passage: “The private key is always generated and managed on your own servers” Checked 2026-10-30.
+
+### Lets Encrypt compares validation challenges
+
+[Lets Encrypt compares validation challenges](https://letsencrypt.org/docs/challenge-types/#:~:text=This%20challenge%20asks%20you%20to%20prove%20that%20you%20control%20the%20DNS%20for%20your%20domain%20name%20by%20putting%20a%20specific%20value%20in%20a%20TXT%20reco). Supporting passage: “This challenge asks you to prove that you control the DNS for your domain name by putting a specific value in a TXT record under that domain name. It is harder to configure than HTTP-01, but can work in scenarios that HTTP-01 can’t. It also allows you to issue wildcard certificates.” Checked 2026-10-30.

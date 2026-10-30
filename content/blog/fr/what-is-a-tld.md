@@ -191,6 +191,8 @@ Mais tous les TLD ne sont pas également prêts pour cela. Certains registres on
 
 **Namefi** a été la première plateforme à [tokeniser](/fr/glossary/tokenize/) de vrais domaines ICANN sur le mainnet [Ethereum](/fr/glossary/ethereum/) — et la première à le faire sur Base — pour de nombreux TLD ci-dessus, notamment [`.com`](/fr/tld/com/), [`.xyz`](/fr/tld/xyz/), [`.io`](/fr/tld/io/), et plus encore. Vous obtenez un vrai domaine résolvable dans le navigateur *et* une propriété native au portefeuille dans un seul produit.
 
+Consultez le [répertoire des extensions prises en charge par Namefi](https://namefi.io/tlds) pour voir les extensions actuellement proposées par son service. Gardez la liste racine de l’IANA pour la question plus large des délégations. La présence d’une extension ne prouve ni la disponibilité, ni l’éligibilité, ni le prix actuel d’un nom précis.
+
 > Curieux de savoir comment les deux couches s'articulent ? Lisez [Qu'est-ce que les domaines tokenisés ?](/fr/blog/what-are-tokenized-domains/) ou visitez [namefi.io](https://namefi.io) pour enregistrer ou tokeniser un domaine.
 
 ---

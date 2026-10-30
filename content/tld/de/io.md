@@ -148,7 +148,7 @@ Beachten Sie zwei Fallstricke. Erstens kann „io" in einem Telefonat falsch ver
 
 ## So registrieren Sie eine .io-Domain bei Namefi
 
-1. **Suchen** Sie nach Ihrem gewünschten Namen auf [Namefi](https://namefi.io), um die Verfügbarkeit zu prüfen.
+1. **Suchen** Sie nach Ihrem gewünschten Namen auf [Namefi](https://namefi.io/#register), um die Verfügbarkeit zu prüfen.
 2. **Wählen** Sie das .io-Ergebnis (und alle weiteren schützenswerten Alternativen).
 3. **Registrieren** Sie die Domain und konfigurieren Sie das DNS.
 

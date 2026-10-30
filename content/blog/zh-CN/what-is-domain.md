@@ -58,6 +58,8 @@ ogImage: ../../assets/what-is-domain-og.jpg
 
 DNS 层级从根域 `.` 开始。根域下方依次是顶级域名 `com`、二级域名 `example.com` 和子域名 `blog.example.com`。`example` 单独只是一个标签。在 `example.co.uk` 中，`uk` 是顶级域名，`co.uk` 是二级域名，`example.co.uk` 是三级域名。因此，可注册域名不一定处于第二级。 [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-3.1).
 
+若要检查另一个名称，请在 [Namefi 域名检查工具](https://namefi.io/domain-tools/domain-name)中输入不含 URL 路径的主机名。本地结果会显示规范化形式，以及已知的公共后缀边界。结果不证明名称可供注册、注册权利或名称由谁控制。
+
 一个域名在同一时间只有一个注册人。注册人可以授权其他人或服务使用域名。注册不会同时保留其他后缀下的同名域名。 [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 ---

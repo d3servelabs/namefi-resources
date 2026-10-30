@@ -60,6 +60,8 @@ In der autoritativen [DNS](/de/glossary/dns/)-Zone kann eine neue Einrichtung fo
 
 Prüfen Sie, ob der DNS-Editor einen relativen Namen oder den vollständigen Namen `_dmarc.example.com` erwartet. Ersetzen Sie das Beispielpostfach durch ein überwachtes Postfach unter Ihrer Kontrolle. Google veröffentlicht eine [Anleitung zur Einrichtung des Eintrags](#google-erklärt-die-veröffentlichung-des-eintrags).
 
+Prüfen Sie die Domäne des sichtbaren Absenders im [Namefi-Prüfwerkzeug für die E-Mail-Authentifizierungskonfiguration](https://namefi.io/domain-tools/email-auth). Prüfen Sie den gefundenen DMARC-Eintrag sowie Hinweise zur Richtlinie oder Kompatibilität, bevor Sie eine bestehende Richtlinie ändern. Das Prüfwerkzeug belegt weder den Domänenabgleich einer Nachricht noch die Zustellung von Berichten oder einen wirksamen Schutz allein durch das Vorhandensein eines Eintrags.
+
 `p=none` fordert Überwachung ohne DMARC-Durchsetzung an. `p=quarantine` fordert eine Behandlung fehlgeschlagener Nachrichten als verdächtig an. `p=reject` fordert die Ablehnung an. Empfänger treffen weiterhin eigene Entscheidungen über die Behandlung. [RFC 9989 legt die Richtlinienwerte fest](#der-standard-definiert-den-domänenabgleich-und-die-richtlinie).
 
 **Verlassen Sie sich nicht darauf, dass `pct` die Durchsetzung begrenzt.** RFC 9989 erschien im Mai 2026, ersetzt RFC 7489 und entfernt `pct`. Googles Einführungsanleitung zeigt weiterhin ein Prozentbeispiel. Der aktuelle Standard führt `t` für Tests ein. Die Unterstützung müssen Sie jedoch beim Anbieter prüfen. Verwenden Sie ein Prozentbeispiel nicht als verlässliche Sicherheitsbegrenzung. [Anhang A.6 erläutert die Änderung](#der-standard-definiert-den-domänenabgleich-und-die-richtlinie).

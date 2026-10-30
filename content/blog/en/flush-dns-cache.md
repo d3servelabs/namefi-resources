@@ -1,180 +1,184 @@
 ---
-title: 'A DNS Cache Flush Refreshes Local Answers on Windows, macOS, and Linux'
-description: 'Clear the right DNS cache, compare results, and distinguish local stale answers from upstream caching, missing records, and browser problems.'
+title: 'How to Flush DNS on Windows: The ipconfig Command to Run First'
+description: Run the Windows DNS flush command, check the result, and separate stale local answers from resolver, Hosts file, browser, and website problems.
 date: '2026-10-22'
 language: en
-tags: ['dns', 'networking', 'troubleshooting', 'guide']
-authors: ['namefiteam']
+tags:
+- dns
+- networking
+- troubleshooting
+- guide
+authors:
+- namefiteam
 draft: false
 format: guide
 cluster: domain-basics
-keywords: ['flush dns', 'clear DNS cache', 'ipconfig flushdns', 'flush dns Windows 11', 'flush dns Windows 10', 'flush DNS macOS', 'resolvectl flush-caches', 'Linux DNS cache', 'DNS cache troubleshooting', 'negative DNS cache']
+keywords:
+- ipconfig flushdns
+- ipconfig /flushdns
+- flush DNS Windows
+- clear DNS cache Windows 11
+- clear DNS cache Windows 10
+- Windows DNS client cache
+- ipconfig displaydns
+- DNS cache troubleshooting
+- negative DNS cache
+- DNS flush command
+- stale DNS answers
+- Windows DNS reset
 ogImage: ../../assets/flush-dns-cache-og.jpg
 relatedArticles:
-  - /en/blog/nslookup-specific-dns-server/
-  - /en/blog/ttl-and-dns-propagation/
-  - /en/blog/choose-public-dns-resolver/
-  - /en/blog/isp-dns-vs-public-resolver/
-  - /en/blog/dhcp-vs-dns/
+- /en/blog/nslookup-specific-dns-server/
+- /en/blog/ttl-and-dns-propagation/
+- /en/blog/choose-public-dns-resolver/
+- /en/blog/isp-dns-vs-public-resolver/
+- /en/blog/dhcp-vs-dns/
 relatedGlossary:
-  - /en/glossary/dns/
-  - /en/glossary/dns-resolver/
-  - /en/glossary/ttl/
-  - /en/glossary/nameserver/
-  - /en/glossary/dnssec/
+- /en/glossary/dns/
+- /en/glossary/dns-resolver/
+- /en/glossary/ttl/
+- /en/glossary/nameserver/
+- /en/glossary/dnssec/
 relatedTopics:
-  - /en/topics/domain-basics/
-  - /en/topics/domain-security/
+- /en/topics/domain-basics/
+- /en/topics/domain-security/
 relatedSeries:
-  - /en/series/domain-investor-field-guide/
-  - /en/series/domain-apocalypse/
+- /en/series/domain-investor-field-guide/
+- /en/series/domain-apocalypse/
+updated: '2026-10-30'
 ---
 
-On Windows, `ipconfig /flushdns` clears the local DNS client resolver cache.
-On Linux with systemd-resolved, `resolvectl flush-caches` clears that service's local caches.
-macOS requires guidance appropriate to the installed version.
-A local flush does not edit the domain's published records or clear every upstream resolver.
+**Run `ipconfig /flushdns` in an administrator Command Prompt to clear the Windows DNS client resolver cache.** Microsoft documents the command for Windows 10 and Windows 11. The command removes dynamically added cache entries, including cached negative answers. [Microsoft defines the cache operation](#microsoft-defines-the-windows-cache-commands).
 
-Use a flush when evidence points to a cached answer on the affected device.
-Record the failing hostname and error before changing the cache.
-An error that survives a flush needs a comparison, rather than another round of resets.
-The [specific-server lookup guide](/en/blog/nslookup-specific-dns-server/) explains those comparisons.
+Use the command when a Windows device might retain an outdated DNS answer. A successful flush confirms a local cache operation. The result does not confirm that a website works or that an upstream resolver has new information.
 
-## Windows clears its client cache with ipconfig
+## Windows provides a short procedure for a local flush
 
-![A Windows laptop clears one local DNS cache tray.](../../assets/flush-dns-cache-01-windows.jpg)
+On a computer that you manage, follow these steps:
 
-Open Command Prompt with administrator privileges on a device that you manage.
-Run:
+1. Open Start and search for **Command Prompt**.
+2. Select **Run as administrator**.
+3. Approve the Windows permission prompt if your account permits the action.
+4. Run the following command.
 
 ```text
 ipconfig /flushdns
 ```
 
-Microsoft documents the command for Windows 10 and Windows 11.
-The command discards dynamically added entries, including cached negative answers.
-[Microsoft's ipconfig reference](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig#parameters) defines the cache operation.
-The command does not publish a new address for a website.
+Windows normally reports that the DNS resolver cache was successfully flushed. UCSF's current Windows support procedure documents the administrator prompt and confirmation. [The support procedure covers Windows 10 and Windows 11](#ucsf-documents-the-administrator-procedure).
 
-Before flushing, this optional command displays the client cache:
+If Windows refuses the operation, read the exact message. A permission error needs an approved administrator account or help from the device administrator. Do not change service permissions to force a routine troubleshooting command through a managed computer.
+
+Retry the original hostname in the application that failed. Compare the same page or service with the earlier attempt. Record whether the error disappeared, changed, or remained the same.
+
+Stop after a successful result. Repeating a flush without new evidence makes the troubleshooting history harder to interpret. The useful outcome is a working service or a clearer diagnosis, rather than a long list of reset commands.
+
+To prepare the command for your shell, open [Namefi's DNS command generator](https://namefi.io/domain-tools/dns-commands), choose Windows and the cache-flush task, then copy the command. The page generates text only. Run the command locally with the required administrator access and repeat the original test.
+
+![A Windows administrator runs ipconfig /flushdns and checks the completion message.](../../assets/flush-dns-cache-01-windows.jpg)
+
+## The client cache contains successful and negative answers
+
+DNS lets an application request records associated with a name. Windows keeps recently resolved records in its client cache, which helps the computer reuse answers. Microsoft's cache display also includes information preloaded from the local Hosts file. [Microsoft describes the cache contents](#microsoft-defines-the-windows-cache-commands).
+
+A negative answer can matter after a new record appears. For example, imagine that an administrator creates `portal.example.com` after an earlier lookup found no such name. A local cached negative answer can outlast that publication change. DNS standards explicitly define negative-answer caching. [RFC 2308 explains its lifetime](#the-dns-standard-defines-negative-cache-lifetimes).
+
+The example is hypothetical. A flush can remove the Windows client's dynamic cache entry, but a resolver outside the computer can still return a cached negative answer. That is why a flush sometimes completes successfully without fixing the original symptom.
+
+To inspect the client cache before a flush, use:
 
 ```text
 ipconfig /displaydns
 ```
 
-Cache output can contain hostnames from browsing or internal services.
-Review saved output before sharing a support report.
-Microsoft notes that the displayed cache includes entries from the local Hosts file.
-A flush does not replace the need to inspect an incorrect Hosts entry.
+Microsoft documents `/displaydns` separately from `/flushdns`. The display can help an administrator compare names and cached answers. [The command reference explains both parameters](#microsoft-defines-the-windows-cache-commands).
 
-Retry the original application after the flush.
-Record whether the original error changed.
-Successful command execution confirms the requested cache operation, rather than successful website loading.
+Treat saved cache output as potentially sensitive. As practical advice, remove internal hostnames and unrelated browsing entries before sharing output in a public support forum.
 
-Do not add unrelated ipconfig commands to the procedure.
-`/release` discards DHCP address configuration, while `/renew` renews a DHCP lease.
-`/registerdns` requests dynamic registration of the computer's names and addresses.
-Microsoft documents those [separate operations](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig#parameters).
-None is a synonym for flushing the client cache.
+## A local flush does not publish or repair a domain record
 
-## macOS and Linux require the correct local resolver procedure
+The domain operator publishes DNS data through authoritative servers. A resolver retrieves or reuses answers for clients. These roles exist separately from the Windows cache. [RFC 1034 defines name servers, resolvers, and cached records](#the-dns-standard-separates-authority-from-resolution).
 
-![Windows, macOS, and Linux devices keep separate local cache trays.](../../assets/flush-dns-cache-02-platform.jpg)
+If the published address is wrong, the domain operator must correct the published record. If an upstream resolver retains an old answer, clearing the Windows cache does not directly clear that resolver. The [TTL and propagation guide](/en/blog/ttl-and-dns-propagation/) explains how cache lifetimes affect observations.
 
-On a Mac, identify the macOS version before copying a Terminal command.
-Apple's [DNS cache reset article](https://support.apple.com/en-us/101481) describes different commands for different OS X releases.
-Apple marks the article as archived and no longer updated.
-The archived article also describes restarting the Mac to refresh cached information.
-Save work before restarting a personal Mac.
+A flush also does not remove an incorrect Hosts file entry. Microsoft distinguishes entries preloaded from Hosts from dynamically added cache entries. [The client-cache documentation describes that distinction](#microsoft-defines-the-windows-cache-commands). Ask the administrator to inspect Hosts when evidence points to a local override.
 
-For historical context, Apple documents this command for OS X 10.10.4 and later in that archived article:
+Do not use a DNS flush to explain an HTTP permission error. If a browser reaches the site and displays a [403 response](/en/blog/fix-http-403/), investigate the site's access rules. The [HTTPS guide](/en/blog/what-is-https/) explains why a working connection and application permission are separate results.
+
+![Windows clears a local cache while authoritative DNS and upstream resolver caches remain separate.](../../assets/flush-dns-cache-03-boundaries.jpg)
+
+## A lookup comparison identifies the next investigation
+
+After the flush, query the intended hostname:
 
 ```text
-sudo killall -HUP mDNSResponder
+nslookup www.example.com.
 ```
 
-Treat the archived version range as historical documentation, rather than a current compatibility guarantee for every macOS release.
-Check the installed version's documentation or your administrator's procedure before using a privileged command.
-An unfamiliar command can affect a shared machine beyond the browser under investigation.
+The hostname uses a [reserved example domain](#the-ietf-reserves-example-domains-for-documentation). Replace the example hostname before running the command. Without a second argument, `nslookup` uses its default DNS server. A second argument selects a server by name or address. [Microsoft documents the argument order](#microsoft-documents-nslookup-server-selection).
 
-On Linux, first identify the active resolver.
-For a system that uses systemd-resolved, run:
+For an explicit-server comparison, use the following pattern:
 
 ```text
-resolvectl status
-resolvectl statistics
-sudo resolvectl flush-caches
+nslookup www.example.com. 192.0.2.53
 ```
 
-`status` shows global and per-link DNS settings.
-`statistics` shows resolver statistics.
-`flush-caches` clears the DNS resource-record caches maintained locally by systemd-resolved.
-The [systemd resolvectl manual](https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html#flush-caches) documents each operation.
+The address `192.0.2.53` is a [documentation placeholder](#the-ietf-reserves-documentation-address-ranges). Replace the address with a verified resolver that the network administrator permits. Do not send private organization names to an arbitrary public resolver.
 
-A missing `resolvectl` command does not prove that the machine has no DNS cache.
-Another service or application can maintain cached data.
-Identify that service and follow the installed service's documentation.
-Avoid restarting network services merely because a command intended for another distribution did not work.
+Interpret the comparison carefully:
 
-## A comparison identifies the cache that still matters
-
-![An eraser clears only the device cache while resolver and authority records remain separate.](../../assets/flush-dns-cache-03-boundaries.jpg)
-
-A [DNS resolver](/en/glossary/dns-resolver/) can keep an answer independently of the affected computer.
-A resolver can also cache a negative response.
-[RFC 2308, Section 5](https://www.rfc-editor.org/rfc/rfc2308.html#section-5) specifies negative-answer caching.
-Clearing a device cache therefore cannot guarantee that the next upstream answer will differ.
-
-For example, suppose an administrator creates a missing verification record.
-The authoritative server now returns the record, while the selected resolver still returns a cached negative answer.
-A device flush can request the record again and still receive the earlier negative answer.
-The [TTL and propagation guide](/en/blog/ttl-and-dns-propagation/) explains the relevant cache lifetimes.
-
-Keep the hostname and record type constant when comparing resolver answers.
-Use the configured resolver and another resolver permitted by the network administrator.
-The following addresses are documentation placeholders, not working DNS services:
-
-```text
-nslookup -type=A www.example.com. 192.0.2.53
-nslookup -type=A www.example.com. 192.0.2.54
-```
-
-Replace both addresses with verified resolver addresses before running the comparison.
-Microsoft documents the server address as [nslookup's second argument](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks).
-A different answer identifies a difference between those two observations.
-A different answer alone does not identify which answer is correct.
-
-Use the following observations to choose the next action:
-
-| Observation | Next action |
+| Observation | Useful next action |
 | --- | --- |
-| The application works after one local flush | Record the change and stop resetting settings |
-| The selected resolver still returns an old answer | Compare verified authoritative answers and cache timing |
-| Only the browser fails | Inspect the browser's resolver settings and restart the browser |
-| An internal name fails through a public resolver | Restore the approved internal DNS or VPN path |
-| Every checked authoritative server lacks the intended name | Ask the domain operator to inspect publication and delegation |
+| The application works after one flush | Record the result and end the cache investigation |
+| The default resolver returns an unexpected address | Compare the intended authoritative record and resolver path |
+| A permitted comparison resolver returns another answer | Investigate the difference before choosing which answer is correct |
+| An internal name fails outside the VPN | Restore the approved internal resolution path |
+| Only one browser fails | Inspect that browser's resolver configuration |
 
-Chrome can use Secure DNS, so an operating-system test may follow a different lookup path.
-Google explains the setting in [Chrome's security guidance](https://support.google.com/chrome/answer/10468685?hl=en).
-Google's [connection troubleshooting guide](https://support.google.com/chrome/answer/6098869?hl=en#zippy=%2Cstep-update-and-restart-chrome) also explains how to quit and reopen Chrome.
-Deleting cookies or resetting all browser settings should not substitute for identifying the failing DNS path.
+A different answer proves that the observations differ. The difference alone does not prove that either resolver is wrong. Keep the exact hostname, record type, and UTC test time in the support report.
 
-Public resolvers have their own cache controls.
-For example, Google's [Public DNS flush tool](https://developers.google.com/speed/public-dns/cache) targets Google's service.
-The tool does not clear every ISP or enterprise resolver.
-Use provider-specific cache tools only after confirming the published record is correct.
+Chrome can use a custom Secure DNS provider. The browser's configured provider can therefore differ from the resolver tested at the operating-system level. [Google documents provider selection for desktop Chrome](#google-documents-desktop-secure-dns-selection). Check the setting before assuming every application follows the same lookup path.
 
-A useful support report includes the exact hostname, record type, UTC timestamp, selected resolver, original error, and post-flush result.
-Keep internal hostnames in an approved support channel.
-The report gives an administrator enough context to investigate the remaining layer.
+![The same name and record type are queried through two selected servers.](../../assets/nslookup-specific-dns-server-03-controlled-comparison.jpg)
 
-## These sources document the cache operations
+## Other ipconfig parameters perform different jobs
 
-- [Microsoft: ipconfig](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig#parameters). Client-cache, DHCP, and registration operations. Fetched 2026-10-22.
-- [Apple: Reset the DNS cache in OS X](https://support.apple.com/en-us/101481). Archived version-specific commands and restart guidance. Fetched 2026-10-22.
-- [systemd: resolvectl](https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html#flush-caches). Local systemd-resolved operations. Fetched 2026-10-22.
-- [IETF: RFC 2308, Section 5](https://www.rfc-editor.org/rfc/rfc2308.html#section-5). Negative caching. Fetched 2026-10-22.
-- [Microsoft: nslookup](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks). Explicit-server lookups. Fetched 2026-10-22.
-- [Google: Manage Chrome safety and security](https://support.google.com/chrome/answer/10468685?hl=en). Secure DNS. Fetched 2026-10-22.
-- [Google: Fix connection and loading errors](https://support.google.com/chrome/answer/6098869?hl=en). Browser restart steps. Fetched 2026-10-22.
-- [Google Public DNS: Flush Cache](https://developers.google.com/speed/public-dns/cache). Provider-specific cache tool. Fetched 2026-10-22.
+Do not append unrelated commands to a DNS-only procedure. Microsoft documents `/release` as releasing DHCP configuration, `/renew` as renewing DHCP configuration, and `/registerdns` as initiating dynamic DNS registration. [The parameter descriptions separate these operations](#microsoft-defines-the-windows-cache-commands).
+
+A DHCP reset can interrupt a connection. A dynamic registration request concerns the computer's registered names. Neither operation means “clear the DNS client cache.” Choose another operation only when the observed problem calls for that operation.
+
+The Windows command does not apply to every operating system. For a Mac, follow the separate [Mac DNS cache guide](/en/blog/flush-dns-mac/). For unresolved Windows failures, provide the administrator with the exact error and the post-flush comparison. A focused report gives the next investigation a clear starting point.
+
+## Sources and further reading
+
+### The IETF reserves documentation address ranges
+
+[IETF RFC 5737, section 3, Documentation address blocks](https://www.rfc-editor.org/rfc/rfc5737.html#section-3). Fetched 2026-10-30.
+
+### The IETF reserves example domains for documentation
+
+[IETF RFC 2606, section 3, Reserved example second-level domain names](https://www.rfc-editor.org/rfc/rfc2606.html#section-3). Fetched 2026-10-30.
+
+### Microsoft defines the Windows cache commands
+
+[Microsoft, ipconfig parameter reference](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig#parameters). Fetched 2026-10-30.
+
+### UCSF documents the administrator procedure
+
+[UCSF IT, Windows 8, 10, and 11 procedure](https://it.ucsf.edu/how-to/how-flush-dns-cache#:~:text=Windows%208%2C%2010%2C%20and%2011). Fetched 2026-10-30.
+
+### The DNS standard defines negative cache lifetimes
+
+[IETF RFC 2308, section 5, Caching negative answers](https://www.rfc-editor.org/rfc/rfc2308.html#section-5). Fetched 2026-10-30.
+
+### The DNS standard separates authority from resolution
+
+[IETF RFC 1034, sections 2.4 and 3.6](https://www.rfc-editor.org/rfc/rfc1034.html#section-2.4). Fetched 2026-10-30.
+
+### Microsoft documents nslookup server selection
+
+[Microsoft, nslookup remarks and noninteractive examples](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks). Fetched 2026-10-30.
+
+### Google documents desktop Secure DNS selection
+
+[Google Chrome Help, Use a secure connection to look up sites](https://support.google.com/chrome/answer/10468685?hl=en&co=GENIE.Platform%3DDesktop#:~:text=Select%20your%20current%20service%20provider). Fetched 2026-10-30.

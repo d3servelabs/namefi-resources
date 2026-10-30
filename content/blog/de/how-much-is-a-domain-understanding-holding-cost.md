@@ -43,6 +43,8 @@ Ein günstiger Registrierungspreis bestimmt nicht den Verlängerungspreis. Vergl
 
 Vergleiche bei Registraren denselben Namen, dieselbe Endung, Währung und Registrierungsdauer. Notiere Registrierung und Verlängerung getrennt. Vergleiche keinen Premiumnamen mit einem Namen zum Standardpreis.
 
+Suche für einen Vergleich neuer Registrierungen denselben vollständigen Namen in [Namefis Domainsuche](https://namefi.io/#register). Notiere die aktuell angebotene Transaktion und den Preis und prüfe die geltenden Verlängerungsbedingungen getrennt. Vergleiche ein Kaufergebnis nicht mit einem anders abgegrenzten Angebot eines anderen Anbieters.
+
 [Porkbun](https://porkbun.com/products/domains) veröffentlicht getrennte Spalten für Registrierung, Verlängerung und Transfer. [Cloudflare](https://www.cloudflare.com/domains/) erklärt, Registrierung und Verlängerung ohne Registraraufschlag anzubieten. Cloudflare verlangt [Cloudflare-Nameserver](https://developers.cloudflare.com/registrar/get-started/register-domain/). Berücksichtige diese Vorgabe beim Vergleich der DNS-Flexibilität.
 
 Addiere die benötigten Dienste, bevor du die niedrigste Gesamtsumme auswählst. Prüfe Steuern und optionale Produkte im Warenkorb. Ein Registrierungsrabatt allein zeigt nicht die langfristig günstigste Option.

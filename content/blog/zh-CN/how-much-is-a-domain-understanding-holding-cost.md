@@ -43,6 +43,8 @@ relatedGlossary:
 
 买家应比较同一个名称、后缀、币种和注册期限。买家应分别记录注册价和续期价。买家不应混比溢价名称和标准价名称。
 
+比较新注册方案时，请在 [Namefi 域名搜索](https://namefi.io/#register)中搜索同一个完整候选名称。请记录当前提供的交易和收费，再单独核对适用的续期条款。请勿将获取名称的结果与其他提供商涵盖范围不同的报价混比。
+
 [Porkbun](https://porkbun.com/products/domains) 分列注册价、续期价和转入价。[Cloudflare](https://www.cloudflare.com/domains/) 表示注册和续期不加注册商利润。Cloudflare 要求使用 [Cloudflare 域名服务器](https://developers.cloudflare.com/registrar/get-started/register-domain/)。买家应把域名服务器要求纳入 DNS 灵活性比较。
 
 买家应先加上所需服务，再比较总价。买家应检查最终购物车的税费和可选产品。注册促销价不能单独证明长期费用最低。

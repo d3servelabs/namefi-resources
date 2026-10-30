@@ -191,6 +191,8 @@ Aber nicht jede TLD ist gleichermaßen dafür bereit. Einige Registrierungsstell
 
 **Namefi** war die erste Plattform, die echte ICANN-Domains auf dem [Ethereum](/de/glossary/ethereum/)-Mainnet tokenisierte — und die erste, die dies auf Base tat — für viele der oben genannten TLDs, einschließlich [`.com`](/de/tld/com/), [`.xyz`](/de/tld/xyz/), [`.io`](/de/tld/io/) und mehr. Sie behalten eine echte, im Browser auflösbare Domain *und* Wallet-natives Eigentum in einem Produkt.
 
+Im [Verzeichnis der von Namefi unterstützten Endungen](https://namefi.io/tlds) sehen Sie, welche Endungen Namefi derzeit für seinen Dienst aufführt. Nutzen Sie für die übergeordnete Delegationsfrage weiterhin die Root-Liste der IANA. Eine aufgeführte Endung belegt weder die Verfügbarkeit noch die Registrierungsberechtigung oder den aktuellen Preis eines bestimmten Namens.
+
 > Neugierig, wie die beiden Schichten zusammenpassen? Lesen Sie [Was sind tokenisierte Domains?](/de/blog/what-are-tokenized-domains/) oder besuchen Sie [namefi.io](https://namefi.io), um eine Domain zu registrieren oder zu tokenisieren.
 
 ---

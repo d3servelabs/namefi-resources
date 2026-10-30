@@ -1,0 +1,1611 @@
+{
+  "accepted_assets": [
+    {
+      "kind": "covers",
+      "filename": "what-is-port-443-og.jpg",
+      "sha256": "fffeef1d22ea6659a8f8f5bc64601881268b8b3f0ca58370a7b11202be5f9170",
+      "visual_review": {
+        "assignment_id": 1,
+        "sha256": "fffeef1d22ea6659a8f8f5bc64601881268b8b3f0ca58370a7b11202be5f9170",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982049+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "flush-dns-cache-og.jpg",
+      "sha256": "35c1262dbe2429169240b06c1a2fa3414f408ba074e54baddb87b45479234b36",
+      "visual_review": {
+        "assignment_id": 2,
+        "sha256": "35c1262dbe2429169240b06c1a2fa3414f408ba074e54baddb87b45479234b36",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982205+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "what-is-https-og.jpg",
+      "sha256": "ec92dad9371d5b601389a45ea5ae7b0c30629ecaf5509fead92a522ef7f95283",
+      "visual_review": {
+        "assignment_id": 3,
+        "sha256": "ec92dad9371d5b601389a45ea5ae7b0c30629ecaf5509fead92a522ef7f95283",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982294+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "find-domain-registrar-dns-host-og.jpg",
+      "sha256": "f20740806a6e4db37a82ec599536f1cf5bd0a7eb61d6a3aabe2984405c663a05",
+      "visual_review": {
+        "assignment_id": 13,
+        "sha256": "f20740806a6e4db37a82ec599536f1cf5bd0a7eb61d6a3aabe2984405c663a05",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982379+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "fix-dns-server-not-responding-og.jpg",
+      "sha256": "330883667ac113016b500437aba6a92d2aa877d8b35627172c9a838ece244264",
+      "visual_review": {
+        "assignment_id": 14,
+        "sha256": "330883667ac113016b500437aba6a92d2aa877d8b35627172c9a838ece244264",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982458+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "fix-chrome-secure-connection-error-og.jpg",
+      "sha256": "8b6026bdb18b6de26bf67096f74fcf11b6ccbb3da4b818bb1ae8f8635b016057",
+      "visual_review": {
+        "assignment_id": 15,
+        "sha256": "8b6026bdb18b6de26bf67096f74fcf11b6ccbb3da4b818bb1ae8f8635b016057",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982541+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "icann-domain-lookup-og.jpg",
+      "sha256": "bfc928624e379ff35080da4417037374d1749e06a36aa0c2da65111519f45247",
+      "visual_review": {
+        "assignment_id": 16,
+        "sha256": "bfc928624e379ff35080da4417037374d1749e06a36aa0c2da65111519f45247",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982622+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "email-domain-address-guide-og.jpg",
+      "sha256": "60d8a1c443e24bf2fb9929af4b90fb74732578ce3e7ce0956dd4981d571e19d3",
+      "visual_review": {
+        "assignment_id": 17,
+        "sha256": "60d8a1c443e24bf2fb9929af4b90fb74732578ce3e7ce0956dd4981d571e19d3",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982709+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "nslookup-specific-dns-server-og.jpg",
+      "sha256": "5e57c778baa6a46c5ddc4365beeb2b7f2baec7b6d44041ac9f790a267ac4a66f",
+      "visual_review": {
+        "assignment_id": 18,
+        "sha256": "5e57c778baa6a46c5ddc4365beeb2b7f2baec7b6d44041ac9f790a267ac4a66f",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982785+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "dns-lookup-guide-og.jpg",
+      "sha256": "c9d84ef55561bed44781619a977f7d0f69b9dd5f64e849296c77f22a53c5b713",
+      "visual_review": {
+        "assignment_id": 19,
+        "sha256": "c9d84ef55561bed44781619a977f7d0f69b9dd5f64e849296c77f22a53c5b713",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982862+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "dns-leak-test-guide-og.jpg",
+      "sha256": "7f2bddf90e54a3a60a65204044475d3e33a6ccbd81202ba30a39c8674f6d90cf",
+      "visual_review": {
+        "assignment_id": 20,
+        "sha256": "7f2bddf90e54a3a60a65204044475d3e33a6ccbd81202ba30a39c8674f6d90cf",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.982949+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "shared-hosting-guide-og.jpg",
+      "sha256": "286854c00634ec75c85d2ac6b1a32676143a3513b4e5cd2140d956379aa4e608",
+      "visual_review": {
+        "assignment_id": 21,
+        "sha256": "286854c00634ec75c85d2ac6b1a32676143a3513b4e5cd2140d956379aa4e608",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:40:56.983027+00:00",
+        "method": "Main agent visually inspected all four final covers in each contact sheet; headline, logo, margins, spelling and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "domain-appraisal-tools-compared-og.jpg",
+      "sha256": "3ae62fdeb392b13d84707370943b01de376b25064bcee4dbc21428d4aa7779d0",
+      "visual_review": {
+        "assignment_id": 25,
+        "sha256": "3ae62fdeb392b13d84707370943b01de376b25064bcee4dbc21428d4aa7779d0",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.886722+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "change-domain-nameservers-og.jpg",
+      "sha256": "2d9f180677bcc6e4e02ae13041d2a6b2000cce8a0e1f03a48361cc81b4114cf8",
+      "visual_review": {
+        "assignment_id": 26,
+        "sha256": "2d9f180677bcc6e4e02ae13041d2a6b2000cce8a0e1f03a48361cc81b4114cf8",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.886885+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "txt-records-spf-dkim-verification-og.jpg",
+      "sha256": "b391e24df71af9188800421e489b3f8e02b42021b835445a67781fcc6493a20b",
+      "visual_review": {
+        "assignment_id": 27,
+        "sha256": "b391e24df71af9188800421e489b3f8e02b42021b835445a67781fcc6493a20b",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.886974+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "wordpress-hosting-guide-og.jpg",
+      "sha256": "e343460fc2d0b5c86bbd397d785543ff9477683dd399ab20f8d610917248ae76",
+      "visual_review": {
+        "assignment_id": 28,
+        "sha256": "e343460fc2d0b5c86bbd397d785543ff9477683dd399ab20f8d610917248ae76",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.887059+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "cloudflare-dns-setup-og.jpg",
+      "sha256": "d14f2266fdce4ad64a1bad3d05a7b46b9ae1d1eba091272753d2844df41fea85",
+      "visual_review": {
+        "assignment_id": 29,
+        "sha256": "d14f2266fdce4ad64a1bad3d05a7b46b9ae1d1eba091272753d2844df41fea85",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.887146+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "domain-name-search-og.jpg",
+      "sha256": "42bf10599148e19897ae5975e8b2d438879d4fc2b64821194497dcae1520bbfc",
+      "visual_review": {
+        "assignment_id": 30,
+        "sha256": "42bf10599148e19897ae5975e8b2d438879d4fc2b64821194497dcae1520bbfc",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.887226+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "godaddy-auctions-guide-og.jpg",
+      "sha256": "1abdb807367de4a81a3d2f0817ed40a1c926462dedde9c9223b5c5c50c6bb293",
+      "visual_review": {
+        "assignment_id": 31,
+        "sha256": "1abdb807367de4a81a3d2f0817ed40a1c926462dedde9c9223b5c5c50c6bb293",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.887310+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "quad9-dns-setup-og.jpg",
+      "sha256": "152e00a6fabd6485b4a2b638725bbb07f8aee5317d2a35126a58b857ac9e333e",
+      "visual_review": {
+        "assignment_id": 32,
+        "sha256": "152e00a6fabd6485b4a2b638725bbb07f8aee5317d2a35126a58b857ac9e333e",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.887396+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "ai-og.jpg",
+      "sha256": "ca9be28fef9092efdb335c3a9fcd6f2ee34753f2c388db41c7a4b2cccda07fb1",
+      "visual_review": {
+        "assignment_id": 33,
+        "sha256": "ca9be28fef9092efdb335c3a9fcd6f2ee34753f2c388db41c7a4b2cccda07fb1",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.887483+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "google-public-dns-setup-og.jpg",
+      "sha256": "55900320c56ed303c09cbfa243c735525cffafcae486ac0eeb4be46080d62be9",
+      "visual_review": {
+        "assignment_id": 37,
+        "sha256": "55900320c56ed303c09cbfa243c735525cffafcae486ac0eeb4be46080d62be9",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.887572+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "how-to-install-an-ssl-certificate-og.jpg",
+      "sha256": "f0efa06147d5d770840dc8b13362e8d8c1b41c81db5d04cd475380ea295fd514",
+      "visual_review": {
+        "assignment_id": 38,
+        "sha256": "f0efa06147d5d770840dc8b13362e8d8c1b41c81db5d04cd475380ea295fd514",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.887658+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "what-is-a-tld-og.jpg",
+      "sha256": "a0ca892f2f4cc78f1fa05b4216e1e230f65b2b334632a06a3dbbae9b51613df1",
+      "visual_review": {
+        "assignment_id": 39,
+        "sha256": "a0ca892f2f4cc78f1fa05b4216e1e230f65b2b334632a06a3dbbae9b51613df1",
+        "status": "passed",
+        "checked_utc": "2026-10-30T06:43:42.887742+00:00",
+        "method": "Main agent inspected final title, spelling, logo, margins, meaning and empty bottom band in contact sheet."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "flush-dns-mac-og.jpg",
+      "sha256": "8439d29691d21aaf7a6ab75399dd4ab947cb341161691d16cf578f57b7785f7f",
+      "visual_review": {
+        "assignment_id": 4,
+        "sha256": "8439d29691d21aaf7a6ab75399dd4ab947cb341161691d16cf578f57b7785f7f",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.285118+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "whois-and-rdap-public-data-og.jpg",
+      "sha256": "e06a578b3f600855c40ef05e72cd8e2683882cae304808c34a2efe5d45a6032a",
+      "visual_review": {
+        "assignment_id": 5,
+        "sha256": "e06a578b3f600855c40ef05e72cd8e2683882cae304808c34a2efe5d45a6032a",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.285287+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "website-hosting-guide-og.jpg",
+      "sha256": "29566e1c995e23cc75bd7af62f3f94a412fcd251989599f10f3091c9ba239eda",
+      "visual_review": {
+        "assignment_id": 6,
+        "sha256": "29566e1c995e23cc75bd7af62f3f94a412fcd251989599f10f3091c9ba239eda",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.285371+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "what-is-dns-og.jpg",
+      "sha256": "54f5c4336d8611f3c59afe14015db9551150a855e550e912cd4982701fe25bd3",
+      "visual_review": {
+        "assignment_id": 7,
+        "sha256": "54f5c4336d8611f3c59afe14015db9551150a855e550e912cd4982701fe25bd3",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.285449+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "what-is-a-dns-server-og.jpg",
+      "sha256": "1cc39466f430ec61d75e421df2a7a9dc56ed4a7232211e3054f402c946226abb",
+      "visual_review": {
+        "assignment_id": 8,
+        "sha256": "1cc39466f430ec61d75e421df2a7a9dc56ed4a7232211e3054f402c946226abb",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.285535+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "what-is-domain-og.jpg",
+      "sha256": "6b049a54b34e77852fed315b67f649dacb46d2df29863c55eb124c98232538e8",
+      "visual_review": {
+        "assignment_id": 9,
+        "sha256": "6b049a54b34e77852fed315b67f649dacb46d2df29863c55eb124c98232538e8",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.285608+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "register-domain-name-og.jpg",
+      "sha256": "6f54f5644f5aaccec3ac3b77ab0fb854f65d3a6370333a03186e2dfa441a7af9",
+      "visual_review": {
+        "assignment_id": 10,
+        "sha256": "6f54f5644f5aaccec3ac3b77ab0fb854f65d3a6370333a03186e2dfa441a7af9",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.285695+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "fix-http-403-og.jpg",
+      "sha256": "87f289b8f21c3496c1d6e2f1bb259d32e6e78ec0f34048627c883a536ad02954",
+      "visual_review": {
+        "assignment_id": 11,
+        "sha256": "87f289b8f21c3496c1d6e2f1bb259d32e6e78ec0f34048627c883a536ad02954",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.285779+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "ssl-certificate-types-og.jpg",
+      "sha256": "e1334b2eb1f014033634a298cfc2c7b5373c555b38d8d83cdad5fb9ac7d4e14c",
+      "visual_review": {
+        "assignment_id": 12,
+        "sha256": "e1334b2eb1f014033634a298cfc2c7b5373c555b38d8d83cdad5fb9ac7d4e14c",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.285859+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "choose-public-dns-resolver-og.jpg",
+      "sha256": "b0f680e2c066976a27c655f5399a6a51a2b5d092557b79ee7c7b6c5e24309570",
+      "visual_review": {
+        "assignment_id": 22,
+        "sha256": "b0f680e2c066976a27c655f5399a6a51a2b5d092557b79ee7c7b6c5e24309570",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.285953+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "cloudflare-domain-buying-guide-og.jpg",
+      "sha256": "1b6296f3c90fda0953e5e01127a783403a817ec52cc38675c627916ec9738c24",
+      "visual_review": {
+        "assignment_id": 23,
+        "sha256": "1b6296f3c90fda0953e5e01127a783403a817ec52cc38675c627916ec9738c24",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286034+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "fully-qualified-domain-name-og.jpg",
+      "sha256": "6fbcf8d3f34ba1fa2df5c825c73898b794cec3ce11a21a128ecf96a86f7548a8",
+      "visual_review": {
+        "assignment_id": 24,
+        "sha256": "6fbcf8d3f34ba1fa2df5c825c73898b794cec3ce11a21a128ecf96a86f7548a8",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286120+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "free-business-email-options-og.jpg",
+      "sha256": "dbdc8568a335a02a70783ee3de2052b6b6e9e2d0f5500a127f04897c4c5aa6d6",
+      "visual_review": {
+        "assignment_id": 34,
+        "sha256": "dbdc8568a335a02a70783ee3de2052b6b6e9e2d0f5500a127f04897c4c5aa6d6",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286203+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "domain-validation-ssl-certificate-og.jpg",
+      "sha256": "1c6755459eb17a7d7d040f518e0048b07eb3047a83d40108e16a540de3fef5ac",
+      "visual_review": {
+        "assignment_id": 35,
+        "sha256": "1c6755459eb17a7d7d040f518e0048b07eb3047a83d40108e16a540de3fef5ac",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286282+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "mx-record-check-og.jpg",
+      "sha256": "b5f02fde97cf2cbe172b947ca1079412e7843e0a1b9c5c386d4d89410314e71a",
+      "visual_review": {
+        "assignment_id": 36,
+        "sha256": "b5f02fde97cf2cbe172b947ca1079412e7843e0a1b9c5c386d4d89410314e71a",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286353+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "gmail-with-custom-domain-og.jpg",
+      "sha256": "0bf7b4e237ca51dae98431420857574af11d51b52b93583dc789fd5b9dbeaaba",
+      "visual_review": {
+        "assignment_id": 40,
+        "sha256": "0bf7b4e237ca51dae98431420857574af11d51b52b93583dc789fd5b9dbeaaba",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286465+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "io-og.jpg",
+      "sha256": "c0fc281ede9b2c61dd392b4edda1d58e93aa49154cc0b0a452f36b3ee76e34af",
+      "visual_review": {
+        "assignment_id": 41,
+        "sha256": "c0fc281ede9b2c61dd392b4edda1d58e93aa49154cc0b0a452f36b3ee76e34af",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286542+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "build-website-with-domain-og.jpg",
+      "sha256": "12594d96471d81c7f82b87eb3f1b2e49d327f20ab0f2ce440afc48a961ff5446",
+      "visual_review": {
+        "assignment_id": 42,
+        "sha256": "12594d96471d81c7f82b87eb3f1b2e49d327f20ab0f2ce440afc48a961ff5446",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286629+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "domain-extensions-list-og.jpg",
+      "sha256": "bb88a1e3915a2b0469147294c702e8e28dded7f8defc9304450e252892eb9c09",
+      "visual_review": {
+        "assignment_id": 43,
+        "sha256": "bb88a1e3915a2b0469147294c702e8e28dded7f8defc9304450e252892eb9c09",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286711+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "register-domain-squarespace-og.jpg",
+      "sha256": "1eab7a84da2b0271a31f8e66b4d2895717e352f7f5fa57bf04124011896ffc35",
+      "visual_review": {
+        "assignment_id": 44,
+        "sha256": "1eab7a84da2b0271a31f8e66b4d2895717e352f7f5fa57bf04124011896ffc35",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286789+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "free-web-hosting-guide-og.jpg",
+      "sha256": "91d9b94f806560c06891ac52605e6570384a843054a9ca5a733e005a7bafa156",
+      "visual_review": {
+        "assignment_id": 45,
+        "sha256": "91d9b94f806560c06891ac52605e6570384a843054a9ca5a733e005a7bafa156",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286867+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "ch-og.jpg",
+      "sha256": "4b32df80d0d2fb30b5f6e6411ddbbb87ef6db560bfe3f917c6fd7fb978bc2f2c",
+      "visual_review": {
+        "assignment_id": 46,
+        "sha256": "4b32df80d0d2fb30b5f6e6411ddbbb87ef6db560bfe3f917c6fd7fb978bc2f2c",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.286944+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "subdomain-examples-og.jpg",
+      "sha256": "ccbaf2c1940f773b0ee23af3553955c42174dca714e9b62521434e98ce55de0b",
+      "visual_review": {
+        "assignment_id": 47,
+        "sha256": "ccbaf2c1940f773b0ee23af3553955c42174dca714e9b62521434e98ce55de0b",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.287032+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "cheap-web-hosting-guide-og.jpg",
+      "sha256": "1c33d8e23c1d84474d1502e1913b45f674fdd37eb4cc1915bf9c3a1b6adf9d1d",
+      "visual_review": {
+        "assignment_id": 48,
+        "sha256": "1c33d8e23c1d84474d1502e1913b45f674fdd37eb4cc1915bf9c3a1b6adf9d1d",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:15:27.287118+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "cname-vs-a-record-og.jpg",
+      "sha256": "bc3d9f8637b210146e50e206eab9261004a82602eeb74fdd9d4c2f3f0b51b487",
+      "visual_review": {
+        "assignment_id": 49,
+        "sha256": "bc3d9f8637b210146e50e206eab9261004a82602eeb74fdd9d4c2f3f0b51b487",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.854309+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "how-much-is-a-domain-understanding-holding-cost-og.jpg",
+      "sha256": "e5bf1e59f9d9a64a48161517b60b307d8dbc2f9ec574d295548db12026a32a5b",
+      "visual_review": {
+        "assignment_id": 50,
+        "sha256": "e5bf1e59f9d9a64a48161517b60b307d8dbc2f9ec574d295548db12026a32a5b",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.854481+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "reverse-dns-lookup-og.jpg",
+      "sha256": "de00dc187c89bfad6c66e6174f1932ed2c4cbef7cae94de77ae509fd4b1b83d6",
+      "visual_review": {
+        "assignment_id": 51,
+        "sha256": "de00dc187c89bfad6c66e6174f1932ed2c4cbef7cae94de77ae509fd4b1b83d6",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.854566+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "godaddy-account-domain-transfer-og.jpg",
+      "sha256": "e6f903958befe6c881b6f73348e957601a05ede0e35a592a544fd722c6500a31",
+      "visual_review": {
+        "assignment_id": 52,
+        "sha256": "e6f903958befe6c881b6f73348e957601a05ede0e35a592a544fd722c6500a31",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.854649+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "transfer-domain-to-godaddy-og.jpg",
+      "sha256": "4f904f524126e21c7a8c40e00a590ae3aabaee5e5b12f5603fc6264dca5178e9",
+      "visual_review": {
+        "assignment_id": 53,
+        "sha256": "4f904f524126e21c7a8c40e00a590ae3aabaee5e5b12f5603fc6264dca5178e9",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.854738+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "how-to-value-a-domain-name-og.jpg",
+      "sha256": "b9a25ff7a7bcc37cf479463733e554ef1928914c8a9566c78e6a8d80ac6bb38e",
+      "visual_review": {
+        "assignment_id": 54,
+        "sha256": "b9a25ff7a7bcc37cf479463733e554ef1928914c8a9566c78e6a8d80ac6bb38e",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.854820+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "choose-domain-registrar-og.jpg",
+      "sha256": "61ee6605e3a18a626b0ff3eb20c22691e1e9c9d549ce0f326d3753b9a6be9b9e",
+      "visual_review": {
+        "assignment_id": 55,
+        "sha256": "61ee6605e3a18a626b0ff3eb20c22691e1e9c9d549ce0f326d3753b9a6be9b9e",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.854909+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "lets-encrypt-certificate-setup-og.jpg",
+      "sha256": "b47bc53c5e8480af6ee74b42e6311c6804f93e3f6ee512a27fb521075cbd2b30",
+      "visual_review": {
+        "assignment_id": 56,
+        "sha256": "b47bc53c5e8480af6ee74b42e6311c6804f93e3f6ee512a27fb521075cbd2b30",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.854995+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "domain-vs-hosting-og.jpg",
+      "sha256": "493a3a3ed18c88ebcae4a2a655a1647b4794efc3f0d73f9bc290385e97ff622a",
+      "visual_review": {
+        "assignment_id": 57,
+        "sha256": "493a3a3ed18c88ebcae4a2a655a1647b4794efc3f0d73f9bc290385e97ff622a",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855082+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "connect-domain-to-vercel-og.jpg",
+      "sha256": "862ae5d33ac9c4ebc5ca2789792074d8c7097d368454347262eab68ec9c251a8",
+      "visual_review": {
+        "assignment_id": 58,
+        "sha256": "862ae5d33ac9c4ebc5ca2789792074d8c7097d368454347262eab68ec9c251a8",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855168+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "ttl-and-dns-propagation-og.jpg",
+      "sha256": "b7e044089006032b7edfa49c94ae665794410d51eb7038c7bd6034dcad5e043c",
+      "visual_review": {
+        "assignment_id": 59,
+        "sha256": "b7e044089006032b7edfa49c94ae665794410d51eb7038c7bd6034dcad5e043c",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855249+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "mx-records-guide-og.jpg",
+      "sha256": "712b39104d2c7fd9326bbf1c64b3eab0bde778f288c94b5999b7655915c456a4",
+      "visual_review": {
+        "assignment_id": 60,
+        "sha256": "712b39104d2c7fd9326bbf1c64b3eab0bde778f288c94b5999b7655915c456a4",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855338+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "free-domain-offers-og.jpg",
+      "sha256": "34de44f7a70c5abffefabd91e4cac1b4cc37a5a481ad02df102e323ddad7a7d7",
+      "visual_review": {
+        "assignment_id": 61,
+        "sha256": "34de44f7a70c5abffefabd91e4cac1b4cc37a5a481ad02df102e323ddad7a7d7",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855417+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "free-website-and-domain-og.jpg",
+      "sha256": "a7da680e49d5a55b07b76ed7c809540c71e634d9a31bd7fb9fffb139145d62d6",
+      "visual_review": {
+        "assignment_id": 62,
+        "sha256": "a7da680e49d5a55b07b76ed7c809540c71e634d9a31bd7fb9fffb139145d62d6",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855505+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "spf-record-check-og.jpg",
+      "sha256": "1a15a1732b9db64cd34f5d8c8652180829650836abf4e8fe274d916270661891",
+      "visual_review": {
+        "assignment_id": 63,
+        "sha256": "1a15a1732b9db64cd34f5d8c8652180829650836abf4e8fe274d916270661891",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855583+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "com-og.jpg",
+      "sha256": "3785df234d697dd845f8a8d92453c094d19e6f1bc196a9d7d50872dd649f48ba",
+      "visual_review": {
+        "assignment_id": 64,
+        "sha256": "3785df234d697dd845f8a8d92453c094d19e6f1bc196a9d7d50872dd649f48ba",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855667+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "dmarc-record-setup-og.jpg",
+      "sha256": "73b405a5f55aa2a4b25c43cdc6a56f51afd743206a9233f2213c05e61fa6d2ea",
+      "visual_review": {
+        "assignment_id": 65,
+        "sha256": "73b405a5f55aa2a4b25c43cdc6a56f51afd743206a9233f2213c05e61fa6d2ea",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855757+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "dns-propagation-checker-guide-og.jpg",
+      "sha256": "0fa8793e2c72650cd6ad680a061a54cb306b8f86fcf550afc89e9130bba5bfd5",
+      "visual_review": {
+        "assignment_id": 66,
+        "sha256": "0fa8793e2c72650cd6ad680a061a54cb306b8f86fcf550afc89e9130bba5bfd5",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855849+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "reverse-dns-ptr-records-og.jpg",
+      "sha256": "b840e5c9177e2c745047fc10d76a8c34df8ad34da93d5aa5e15fbc0b876c7c3c",
+      "visual_review": {
+        "assignment_id": 67,
+        "sha256": "b840e5c9177e2c745047fc10d76a8c34df8ad34da93d5aa5e15fbc0b876c7c3c",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.855936+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "adguard-dns-setup-og.jpg",
+      "sha256": "cec4140b9cfe6b3423fad1e4d6622f6aacadfcc70be8c4b3b67d00f3767bf032",
+      "visual_review": {
+        "assignment_id": 68,
+        "sha256": "cec4140b9cfe6b3423fad1e4d6622f6aacadfcc70be8c4b3b67d00f3767bf032",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856024+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "freedns-setup-og.jpg",
+      "sha256": "058d388d24575807d9ca9309284cac7f18abb0fdc7d68a0afcc9b48ea12bf234",
+      "visual_review": {
+        "assignment_id": 69,
+        "sha256": "058d388d24575807d9ca9309284cac7f18abb0fdc7d68a0afcc9b48ea12bf234",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856110+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "dmarc-record-check-og.jpg",
+      "sha256": "23f9fa8a2ce15ba7330e252d20deae3abf68469e15b1ebc8e9667edd11236061",
+      "visual_review": {
+        "assignment_id": 70,
+        "sha256": "23f9fa8a2ce15ba7330e252d20deae3abf68469e15b1ebc8e9667edd11236061",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856191+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "dynamic-dns-setup-og.jpg",
+      "sha256": "eacc342ea5a8e37584f565912efdb6c1ae588f9182242af85287241aa1e439c2",
+      "visual_review": {
+        "assignment_id": 71,
+        "sha256": "eacc342ea5a8e37584f565912efdb6c1ae588f9182242af85287241aa1e439c2",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856274+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "dns-a-record-guide-og.jpg",
+      "sha256": "59da0da49af389b77f8ce62fb5b339409ffbfc383041d4fa06e13a1648c9d183",
+      "visual_review": {
+        "assignment_id": 72,
+        "sha256": "59da0da49af389b77f8ce62fb5b339409ffbfc383041d4fa06e13a1648c9d183",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856378+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "ip-whois-lookup-og.jpg",
+      "sha256": "961de9608a78af6b16f6406c2342cd8d58445cd3da870427039346601e2d18a8",
+      "visual_review": {
+        "assignment_id": 73,
+        "sha256": "961de9608a78af6b16f6406c2342cd8d58445cd3da870427039346601e2d18a8",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856459+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "mxtoolbox-dns-guide-og.jpg",
+      "sha256": "fa20ef112a85ba2d0b207fd2117b1d8e9ac601d9c8ab2e4e4796a6b33bb6de56",
+      "visual_review": {
+        "assignment_id": 74,
+        "sha256": "fa20ef112a85ba2d0b207fd2117b1d8e9ac601d9c8ab2e4e4796a6b33bb6de56",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856542+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "vps-web-hosting-guide-og.jpg",
+      "sha256": "16f08566fba0b37b05f0101de94aeb263c7ccb9b7eeb5507c8365743266d266f",
+      "visual_review": {
+        "assignment_id": 75,
+        "sha256": "16f08566fba0b37b05f0101de94aeb263c7ccb9b7eeb5507c8365743266d266f",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856625+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "covers",
+      "filename": "find-website-hosting-provider-og.jpg",
+      "sha256": "e897079c530f9bfe93effebba62c36c463c9ff68d7c6fb76d18b144b49093dd5",
+      "visual_review": {
+        "assignment_id": 76,
+        "sha256": "e897079c530f9bfe93effebba62c36c463c9ff68d7c6fb76d18b144b49093dd5",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856708+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "expired-domains-and-the-drop-cycle-og.jpg",
+      "sha256": "bf0b0663399000cc5c6113e2724b0ea3251a839db5b6f349066cb28c27d968c7",
+      "visual_review": {
+        "assignment_id": 77,
+        "sha256": "bf0b0663399000cc5c6113e2724b0ea3251a839db5b6f349066cb28c27d968c7",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856801+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "buy-expired-domains-og.jpg",
+      "sha256": "578d9f01b7cddd853f00041ff8e3e82363e9d9b246e20c291e3ad5a3164ada01",
+      "visual_review": {
+        "assignment_id": 78,
+        "sha256": "578d9f01b7cddd853f00041ff8e3e82363e9d9b246e20c291e3ad5a3164ada01",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856882+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "free-ssl-certificate-og.jpg",
+      "sha256": "9f7ad8610f5096daa2ed5e7bd2daba01148f31431c2146cc613b836da5b1e5de",
+      "visual_review": {
+        "assignment_id": 79,
+        "sha256": "9f7ad8610f5096daa2ed5e7bd2daba01148f31431c2146cc613b836da5b1e5de",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.856968+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "cloudflare-domain-registration-og.jpg",
+      "sha256": "bc4fac8d6b337b6334c60f56afe45277c0fda53a7c3fdf7b4a2ab31613344abe",
+      "visual_review": {
+        "assignment_id": 80,
+        "sha256": "bc4fac8d6b337b6334c60f56afe45277c0fda53a7c3fdf7b4a2ab31613344abe",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857054+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "check-dkim-records-og.jpg",
+      "sha256": "9999a2bcfa7d26a764b507c13f5bd36383fcc4c6a94e3f8e79e3b70eba09d799",
+      "visual_review": {
+        "assignment_id": 81,
+        "sha256": "9999a2bcfa7d26a764b507c13f5bd36383fcc4c6a94e3f8e79e3b70eba09d799",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857138+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "benchmark-dns-for-gaming-og.jpg",
+      "sha256": "f87cfce85eb244775d1cb479d2a5b65e63c6754cec45a6282868911d45d5824c",
+      "visual_review": {
+        "assignment_id": 82,
+        "sha256": "f87cfce85eb244775d1cb479d2a5b65e63c6754cec45a6282868911d45d5824c",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857219+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "ssl-certificate-check-og.jpg",
+      "sha256": "d75ed6600df83b5cce101652a94db5ef82907e47226ed2b1dab784636383f798",
+      "visual_review": {
+        "assignment_id": 83,
+        "sha256": "d75ed6600df83b5cce101652a94db5ef82907e47226ed2b1dab784636383f798",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857299+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "shopify-domain-buying-guide-og.jpg",
+      "sha256": "b0cff733d8d66d7036ef0efcf497e6e38079aab5e4c42ba57a71d35d4076a25d",
+      "visual_review": {
+        "assignment_id": 84,
+        "sha256": "b0cff733d8d66d7036ef0efcf497e6e38079aab5e4c42ba57a71d35d4076a25d",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857370+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "cloud-hosting-guide-og.jpg",
+      "sha256": "db09c4fc5880d08a687bb2804af75930167782782f9199ea5df2e77fabc06051",
+      "visual_review": {
+        "assignment_id": 85,
+        "sha256": "db09c4fc5880d08a687bb2804af75930167782782f9199ea5df2e77fabc06051",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857450+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "dnssec-for-domain-owners-og.jpg",
+      "sha256": "e8b53f6a960b7602c9bcc26597b877db157ef6021ac8e8ba2fa25a1956cba0e0",
+      "visual_review": {
+        "assignment_id": 86,
+        "sha256": "e8b53f6a960b7602c9bcc26597b877db157ef6021ac8e8ba2fa25a1956cba0e0",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857525+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "domain-with-free-email-og.jpg",
+      "sha256": "c989d42b62d2d16b92be65e7b049be0e6eb1979b3fcac2a629eeaaf2641b441b",
+      "visual_review": {
+        "assignment_id": 87,
+        "sha256": "c989d42b62d2d16b92be65e7b049be0e6eb1979b3fcac2a629eeaaf2641b441b",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857619+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "set-up-email-with-your-own-domain-og.jpg",
+      "sha256": "2a445f675c1f413743d3bde89ec2fafd8925fdef88398c28278144b649d7fb69",
+      "visual_review": {
+        "assignment_id": 88,
+        "sha256": "2a445f675c1f413743d3bde89ec2fafd8925fdef88398c28278144b649d7fb69",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857708+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "choose-web-hosting-og.jpg",
+      "sha256": "6a5064d2dc0f03ee032a6326d1519f5a2c2ba153b6ad9abcb8d0e7880300171b",
+      "visual_review": {
+        "assignment_id": 89,
+        "sha256": "6a5064d2dc0f03ee032a6326d1519f5a2c2ba153b6ad9abcb8d0e7880300171b",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857795+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "domain-owner-lookup-og.jpg",
+      "sha256": "8e89a571fcfb3f88e22571f898502448f4e992d5e48db2f727287b9d1eceea56",
+      "visual_review": {
+        "assignment_id": 90,
+        "sha256": "8e89a571fcfb3f88e22571f898502448f4e992d5e48db2f727287b9d1eceea56",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857878+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "buy-domains-for-sale-og.jpg",
+      "sha256": "a00b142413953e03093c519e9f1c37e345729e04c11c2ecf2f9dc3d221e9a178",
+      "visual_review": {
+        "assignment_id": 91,
+        "sha256": "a00b142413953e03093c519e9f1c37e345729e04c11c2ecf2f9dc3d221e9a178",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.857957+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "domain-name-generator-guide-og.jpg",
+      "sha256": "7f5d3f8d5e55d4ff1081edf0913054bf80c8d82a80a90971312cc03072910b74",
+      "visual_review": {
+        "assignment_id": 92,
+        "sha256": "7f5d3f8d5e55d4ff1081edf0913054bf80c8d82a80a90971312cc03072910b74",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.858045+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "renew-domain-name-og.jpg",
+      "sha256": "d599bdc409e8fd03de1615243ee6b0e37790814aec84938bc5d63d8bae197693",
+      "visual_review": {
+        "assignment_id": 93,
+        "sha256": "d599bdc409e8fd03de1615243ee6b0e37790814aec84938bc5d63d8bae197693",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.858131+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "cloudflare-ssl-setup-og.jpg",
+      "sha256": "f1a6e1abc6d7ccfcd00a409c88bc87fefe794ad741685d31b95babff896e38d2",
+      "visual_review": {
+        "assignment_id": 94,
+        "sha256": "f1a6e1abc6d7ccfcd00a409c88bc87fefe794ad741685d31b95babff896e38d2",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.858208+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "covers",
+      "filename": "ad-blocking-dns-og.jpg",
+      "sha256": "f00c957eba2b58884c531bf9c823645707b05eac99603e43f373afa2f6e3abc9",
+      "visual_review": {
+        "assignment_id": 95,
+        "sha256": "f00c957eba2b58884c531bf9c823645707b05eac99603e43f373afa2f6e3abc9",
+        "status": "passed",
+        "checked_utc": "2026-10-30T07:17:42.858283+00:00",
+        "method": "Main agent personally viewed labeled final-cover contact sheet: exact title, spelling, margins, logo and empty bottom band pass."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "domain-extensions-list-01-official-checks.jpg",
+      "sha256": "34b2b37933ececb098d7b9dda4d28fbd783584a865e566960cadec13fd1df2af",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "34b2b37933ececb098d7b9dda4d28fbd783584a865e566960cadec13fd1df2af",
+        "checked_utc": "2026-10-30T13:16:54.545535+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "how-to-install-an-ssl-certificate-01-validation-boundaries.jpg",
+      "sha256": "d278a1f17bd598b446719f46344ad3a1c4cb9a54b9d87f413814dd21465a4a84",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "d278a1f17bd598b446719f46344ad3a1c4cb9a54b9d87f413814dd21465a4a84",
+        "checked_utc": "2026-10-30T13:16:54.545972+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "what-is-port-443-01-client-server-roles.jpg",
+      "sha256": "35b152af363cc7956b29823b5b02804ace817dd2306a5f078ab7eb43394480dc",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "35b152af363cc7956b29823b5b02804ace817dd2306a5f078ab7eb43394480dc",
+        "checked_utc": "2026-10-30T13:16:54.546193+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "website-hosting-guide-02-billing-checklist.jpg",
+      "sha256": "76507c64bf352cc1521b2d3f6f72a03226f9e6972f0baa43cd2309a87af29289",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "76507c64bf352cc1521b2d3f6f72a03226f9e6972f0baa43cd2309a87af29289",
+        "checked_utc": "2026-10-30T13:16:54.546407+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "ch-03-registration-roles.jpg",
+      "sha256": "dc682aa37fe848fa31b1257faf053ee3553820a462caa4b32c531761188e6649",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "dc682aa37fe848fa31b1257faf053ee3553820a462caa4b32c531761188e6649",
+        "checked_utc": "2026-10-30T13:16:54.546627+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "what-is-https-05-modern-tls-handshake.jpg",
+      "sha256": "3e7a692df71edca6b055b5a1b24facf651094e172f5ab509efdb037e0aee9dd1",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "3e7a692df71edca6b055b5a1b24facf651094e172f5ab509efdb037e0aee9dd1",
+        "checked_utc": "2026-10-30T13:16:54.547002+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "register-domain-squarespace-02-site-plan-choice.jpg",
+      "sha256": "00dd71a4489385fdc45cf89580923363e6befad656965d6bf0a75ba787b1844e",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "00dd71a4489385fdc45cf89580923363e6befad656965d6bf0a75ba787b1844e",
+        "checked_utc": "2026-10-30T13:16:54.547257+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "flush-dns-mac-01-version-before-flush.jpg",
+      "sha256": "f075ff017381133c7d5a5d350d1a7db66664034816ae586de2da2cf52c0ace4e",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "f075ff017381133c7d5a5d350d1a7db66664034816ae586de2da2cf52c0ace4e",
+        "checked_utc": "2026-10-30T13:16:54.547849+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "dmarc-record-setup-03-policy-review.jpg",
+      "sha256": "8e62d764db4db36d1bbf0d808156bae7907f6b466510e3ce9498a8b32ad62825",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "8e62d764db4db36d1bbf0d808156bae7907f6b466510e3ce9498a8b32ad62825",
+        "checked_utc": "2026-10-30T13:16:54.548047+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "io-03-registration-eligibility.jpg",
+      "sha256": "6ea7a61f2f523d0b70d5e8a483a7dbd4a696476b16adb9739c0d9680510c3463",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "6ea7a61f2f523d0b70d5e8a483a7dbd4a696476b16adb9739c0d9680510c3463",
+        "checked_utc": "2026-10-30T13:16:54.548230+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "free-web-hosting-guide-01-publishing-models.jpg",
+      "sha256": "fbfd11b2fd47bc4f951e4bf2f78a5921b8ba960bfd32707edc55f4d84f6276bf",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "fbfd11b2fd47bc4f951e4bf2f78a5921b8ba960bfd32707edc55f4d84f6276bf",
+        "checked_utc": "2026-10-30T13:16:54.548479+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "register-domain-squarespace-01-result-categories.jpg",
+      "sha256": "0408b2d48d23ad1663e4d36784b4a400e80e05477283b640d9f78687045c28d4",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "0408b2d48d23ad1663e4d36784b4a400e80e05477283b640d9f78687045c28d4",
+        "checked_utc": "2026-10-30T13:16:54.548913+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "ch-02-eligibility-and-authority.jpg",
+      "sha256": "da2896c5965e39014d79d288ee682a1929b25501752a641e35b75441176e494e",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "da2896c5965e39014d79d288ee682a1929b25501752a641e35b75441176e494e",
+        "checked_utc": "2026-10-30T13:16:54.549120+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "what-is-a-tld-01-classification-axes.jpg",
+      "sha256": "e36d203fc52f6b965023160bd347b4d96d9e7116e3091755d5756faeaf514785",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "e36d203fc52f6b965023160bd347b4d96d9e7116e3091755d5756faeaf514785",
+        "checked_utc": "2026-10-30T13:16:54.549346+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "website-hosting-guide-01-maintenance-responsibilities.jpg",
+      "sha256": "3e1d09a2eae2315df33db6c4f2d0de882ece474e5fc9a5e14e7e234130f8b6e4",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "3e1d09a2eae2315df33db6c4f2d0de882ece474e5fc9a5e14e7e234130f8b6e4",
+        "checked_utc": "2026-10-30T13:16:54.549553+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "reverse-dns-ptr-records-06-address-authority.jpg",
+      "sha256": "38e6cde1b0a00e9e2304f6a251f12ade4272942fb4a6efe1b4c0e7cb70039371",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "38e6cde1b0a00e9e2304f6a251f12ade4272942fb4a6efe1b4c0e7cb70039371",
+        "checked_utc": "2026-10-30T13:16:54.549736+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "ssl-certificate-check-01-verification-dimensions.jpg",
+      "sha256": "208161a308d9314d5984e619b7bd799118266eeff88ae9a00fe844feedc698a4",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "208161a308d9314d5984e619b7bd799118266eeff88ae9a00fe844feedc698a4",
+        "checked_utc": "2026-10-30T13:16:54.549940+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "adguard-dns-setup-87-modes.jpg",
+      "sha256": "6e6f1fc4e709c19aa2cf0f370591d21b0b8fc9308ad669f6a41aba83a7cb0aab",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "6e6f1fc4e709c19aa2cf0f370591d21b0b8fc9308ad669f6a41aba83a7cb0aab",
+        "checked_utc": "2026-10-30T13:16:54.545206+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "what-is-port-443-02-transport-paths.jpg",
+      "sha256": "df7e079fb782e89180da01a858876e74493623aa6ca73fd62871fb525fdbdadf",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "df7e079fb782e89180da01a858876e74493623aa6ca73fd62871fb525fdbdadf",
+        "checked_utc": "2026-10-30T13:16:54.545749+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "io-02-conditional-retirement.jpg",
+      "sha256": "219717b7b95908b5930e0a4b2b35786526d82bdb117d52bc39b4dd2cc0c3ea2f",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "219717b7b95908b5930e0a4b2b35786526d82bdb117d52bc39b4dd2cc0c3ea2f",
+        "checked_utc": "2026-10-30T13:16:54.546794+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "godaddy-auctions-guide-84-checklist.jpg",
+      "sha256": "99706187fcf9536fe38c307d1f2d9b5b467731917d2eaebbb05afe46836bdb11",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "99706187fcf9536fe38c307d1f2d9b5b467731917d2eaebbb05afe46836bdb11",
+        "checked_utc": "2026-10-30T13:16:54.547060+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "fix-http-403-01-denial-layers.jpg",
+      "sha256": "6249961fdb515d7c71af001d5e4e561d2d124b69cb220028e915449016e59dca",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "6249961fdb515d7c71af001d5e4e561d2d124b69cb220028e915449016e59dca",
+        "checked_utc": "2026-10-30T13:16:54.547442+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "godaddy-account-domain-transfer-83-acceptance.jpg",
+      "sha256": "29f5e5b20869ead3c88c15991da42d51e3334fde1e63755b718029368cebccb4",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "29f5e5b20869ead3c88c15991da42d51e3334fde1e63755b718029368cebccb4",
+        "checked_utc": "2026-10-30T13:16:54.547656+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 1
+    },
+    {
+      "kind": "inline",
+      "filename": "quad9-dns-setup-86-variants.jpg",
+      "sha256": "c691ca35ac19bdb0ef1c8be5d56da9f6868073a5e98b4744f2c65f31959e5e85",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "c691ca35ac19bdb0ef1c8be5d56da9f6868073a5e98b4744f2c65f31959e5e85",
+        "checked_utc": "2026-10-30T13:16:54.548287+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "godaddy-account-domain-transfer-81-recipient.jpg",
+      "sha256": "b188e51a8e1dbd3954d679878025780189f429f2d3356f08d3fe3bb56e307051",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "b188e51a8e1dbd3954d679878025780189f429f2d3356f08d3fe3bb56e307051",
+        "checked_utc": "2026-10-30T13:16:54.548567+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "how-much-is-a-domain-understanding-holding-cost-80-services.jpg",
+      "sha256": "fa71c42e729ad39f50ea195b8873b3fac12461320a0f226d11fd995daa7ade77",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "fa71c42e729ad39f50ea195b8873b3fac12461320a0f226d11fd995daa7ade77",
+        "checked_utc": "2026-10-30T13:16:54.548626+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "godaddy-auctions-guide-85-delivery.jpg",
+      "sha256": "6fe4c45c11820203704353ad7348b260b966a3679417060da6016e1e24c5d545",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "6fe4c45c11820203704353ad7348b260b966a3679417060da6016e1e24c5d545",
+        "checked_utc": "2026-10-30T13:16:54.548682+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "godaddy-account-domain-transfer-82-request.jpg",
+      "sha256": "b41b96b554b4d9de9bf36f21753392723628edc43a3ffdd5d23dbbe7a01b901e",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "b41b96b554b4d9de9bf36f21753392723628edc43a3ffdd5d23dbbe7a01b901e",
+        "checked_utc": "2026-10-30T13:16:54.549177+00:00",
+        "method": "Main agent personally opened final full-size image and read labels, technical relationships, example reservations, margins and official logo."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "adguard-dns-setup-88-limits.jpg",
+      "sha256": "b6cbc5e3bd833302472108da3f6561c8dfdd7da17c79200da21d32223120ff5f",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "b6cbc5e3bd833302472108da3f6561c8dfdd7da17c79200da21d32223120ff5f",
+        "checked_utc": "2026-10-30T13:18:19.113583+00:00",
+        "method": "Main agent personally viewed final full-size image; reserved examples, labels, block/exception boundaries, margins and official logo pass."
+      },
+      "attempts": 2
+    },
+    {
+      "kind": "inline",
+      "filename": "ad-blocking-dns-89-exception.jpg",
+      "sha256": "4a18b9235d90768cd7a8a334b5176b168bf992a29e2d669eeb3735ade12bc481",
+      "visual_review": {
+        "status": "passed",
+        "sha256": "4a18b9235d90768cd7a8a334b5176b168bf992a29e2d669eeb3735ade12bc481",
+        "checked_utc": "2026-10-30T13:18:19.113874+00:00",
+        "method": "Main agent personally viewed final full-size image; reserved examples, labels, block/exception boundaries, margins and official logo pass."
+      },
+      "attempts": 2
+    }
+  ],
+  "image_generation_calls": 155,
+  "reported_image_api_usage": {
+    "input_tokens": 111418,
+    "output_tokens": 618983,
+    "total_tokens": 730401
+  },
+  "cost": "UNKNOWN: no batch billing receipt retrieved",
+  "review_notes": [
+    "Sixteen initial covers used flattened writer titles; the coordinator regenerated those covers after freezing the approved intent-first titles.",
+    "Fourteen inline attempts were rejected for incorrect semantics, invented labels, unsafe examples, or crop issues; final images passed individual visual review.",
+    "Only accepted final JPEG files enter content/assets. Prompts and raw API responses stay outside Git."
+  ]
+}

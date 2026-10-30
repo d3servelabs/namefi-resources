@@ -63,7 +63,7 @@ relatedGlossary:
 ### **இரண்டாம் சந்தை (Aftermarket)**
 முன்பு வேறொருவர் வைத்திருந்த டொமைன் பெயர்கள் வாங்கப்பட்டும் விற்கப்பட்டும் இயங்கும் சந்தை. இதில் மதிப்புமிக்க டொமைன்கள், பழைய டொமைன்கள் மற்றும் இனி பயன்படுத்தப்படாத டொமைன்கள் இடம்பெறும்.
 
-**பிரபலமான தளங்கள்**: Sedo, GoDaddy Auctions, Flippa, NameJet
+**பிரபலமான தளங்கள்**: Sedo, [GoDaddy Auctions](/ta/blog/godaddy-auctions-guide/), Flippa, NameJet
 
 ---
 

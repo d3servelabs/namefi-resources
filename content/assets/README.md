@@ -46,3 +46,11 @@ The `fix-chrome-secure-connection-error` prefix includes one 1200 × 630 cover a
 ## The 95-candidate review replaces one cover and adds three illustrations
 
 The HTTPS cover separates connection security from website trust. Three inline images distinguish protocol tests, MX result types and service-provider roles. The dated editorial record preserves final hashes and two rejected generation attempts.
+
+## The October 30 batch supplies 95 exact-title covers
+
+The 95-article batch uses one new exact-title cover for each canonical page.
+The batch reuses appropriate existing diagrams and replaces inaccurate or
+unrelated diagrams. Each new image uses the repository house-style recipe.
+Visual review checks labels, technical meaning, framing, and the official logo.
+The dated editorial record distinguishes accepted assets from rejected attempts.

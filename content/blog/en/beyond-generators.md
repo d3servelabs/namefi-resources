@@ -30,7 +30,7 @@ relatedGlossary:
   - /en/glossary/transfer-lock/
 ---
 
-You typed one sentence into an AI name generator — "a subscription box for houseplants" or whatever your idea was — and thirty seconds later you had a shortlist of [brandable domains](/en/glossary/brandable-domain/), a logo, and maybe a starter website. That part felt like magic. Then the magic stopped, and you were back to doing what people have done since 1995: clicking through a checkout page, typing a card number, and hoping you remember to renew before the thing expires.
+You typed one sentence into an [AI name generator](/en/blog/domain-name-generator-guide/) — "a subscription box for houseplants" or whatever your idea was — and thirty seconds later you had a shortlist of [brandable domains](/en/glossary/brandable-domain/), a logo, and maybe a starter website. That part felt like magic. Then the magic stopped, and you were back to doing what people have done since 1995: clicking through a checkout page, typing a card number, and hoping you remember to renew before the thing expires.
 
 That gap — between "the AI picked a name" and "the name is actually a working, owned, renewed domain" — is where most of the AI-and-domains conversation quietly stops. This post is about what's on the other side of it: a capability ladder that runs from suggesting a name all the way to managing a domain's entire life, and why the tools everyone already knows only climb the first two rungs.
 

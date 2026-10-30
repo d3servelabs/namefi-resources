@@ -193,6 +193,8 @@ TLDはすべて同じではありません。ICANNと[IANA](/ja/glossary/iana/)�
 
 **Namefi** は、[Ethereum](/ja/glossary/ethereum/) メインネットでICANN認定の実在するドメインを最初に[トークン化](/ja/glossary/tokenize/)したプラットフォームであり、Base上でも最初に実現しました。上記の多くのTLD（[`.com`](/ja/tld/com/)、[`.xyz`](/ja/tld/xyz/)、[`.io`](/ja/tld/io/) など）が対象です。ブラウザで解決できる実在のドメインと、ウォレットネイティブな所有権を一つのプロダクトで実現しています。
 
+[Namefiの対応拡張子一覧](https://namefi.io/tlds)で、現在のサービスに掲載されている末尾を確認してください。より広い委任状況の確認には、IANAのルート一覧を使ってください。拡張子の掲載は、特定の名前の登録可否、登録資格、現在の価格を証明しません。
+
 > 二つのレイヤーがどのように組み合わさるのか気になる方は、[トークン化ドメインとは？](/ja/blog/what-are-tokenized-domains/)をご覧いただくか、[namefi.io](https://namefi.io) でドメインの登録またはトークン化を試してみてください。
 
 ---

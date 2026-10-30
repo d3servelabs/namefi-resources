@@ -30,9 +30,9 @@ relatedGlossary:
   - /de/glossary/subdomain/
 ---
 
-**Für eine Adresse wie `hello@example.com` brauchen Sie die Kontrolle über die Domain, einen E-Mail-Dienst und Zugriff auf die DNS-Einstellungen.** Legen Sie zuerst die Postfächer an. Bestätigen Sie danach die Domain, richten Sie den Empfang und die Absenderauthentifizierung ein und testen Sie beide Richtungen. Google verlangt in seiner Checkliste Benutzerkonten vor der MX-Umstellung, die eingehende Nachrichten zum neuen Dienst leitet. [Google beschreibt die Reihenfolge.](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company)
+**Für eine [Adresse wie `hello@example.com`](/de/blog/email-domain-address-guide/) brauchen Sie die Kontrolle über die Domain, einen E-Mail-Dienst und Zugriff auf die DNS-Einstellungen.** Legen Sie zuerst die Postfächer an. Bestätigen Sie danach die Domain, richten Sie den Empfang und die Absenderauthentifizierung ein und testen Sie beide Richtungen. Google verlangt in seiner Checkliste Benutzerkonten vor der MX-Umstellung, die eingehende Nachrichten zum neuen Dienst leitet. [Google beschreibt die Reihenfolge.](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company)
 
-Diese Anleitung verwendet Google Workspace als dokumentiertes Beispiel. Die grundlegenden Entscheidungen gelten auch für andere Anbieter. Übernehmen Sie die Eintragswerte immer aus dem Einrichtungsdialog Ihres eigenen Anbieters.
+Diese Anleitung verwendet [Google Workspace](/de/blog/gmail-with-custom-domain/) als dokumentiertes Beispiel. Die grundlegenden Entscheidungen gelten auch für andere Anbieter. Übernehmen Sie die Eintragswerte immer aus dem Einrichtungsdialog Ihres eigenen Anbieters.
 
 ## Wählen Sie einen Dienst für Ihren E-Mail-Versand
 
@@ -105,6 +105,8 @@ Befolgen Sie für **DKIM** die Reihenfolge Ihres Anbieters: Eintrag erzeugen ode
 Eine Nachricht besteht **[DMARC](/de/blog/dmarc-record-setup/)**, wenn SPF samt Domainabgleich oder DKIM samt Domainabgleich zur sichtbaren From-Domain erfolgreich ist. Google empfiehlt zu Beginn `p=none`, damit Sie Berichte prüfen können. Danach können Sie zu Quarantäne oder Ablehnung übergehen. Google verlangt außerdem mindestens 48 Stunden funktionierende SPF- und DKIM-Authentifizierung vor der DMARC-Aktivierung. [Google erklärt DMARC und die schrittweise Einführung.](https://knowledge.workspace.google.com/admin/security/set-up-dmarc#:~:text=When%20you%20start%20using%20DMARC)
 
 Erhalten Sie eine vorhandene durchgesetzte DMARC-Richtlinie während der Migrationsplanung. Ersetzen Sie die Richtlinie nicht automatisch durch ein Anleitungsbeispiel. Prüfen Sie zuerst den neuen Anbieter und alle weiteren Absender gegen die vorhandene Richtlinie. Ändern Sie die Richtlinie anschließend nur bewusst.
+
+Prüfen Sie die veröffentlichten Einträge mit dem [Namefi-Prüfwerkzeug für die E-Mail-Authentifizierungskonfiguration](https://namefi.io/domain-tools/email-auth). Verwenden Sie die Domain und den Selektor des Versanddienstes. Bewahren Sie die Ergebnisse mit der Absenderliste auf. Führen Sie weiterhin unabhängige Zustellungs- und Empfangstests durch, da die DNS-Konfiguration weder die Nachrichtenauthentifizierung noch den Domänenabgleich belegt.
 
 ## Testen Sie beide Richtungen vor dem Migrationsabschluss
 

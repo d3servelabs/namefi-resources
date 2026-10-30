@@ -142,7 +142,7 @@ Atención a dos errores frecuentes. Primero, evita hifenaciones incómodas o sus
 
 ## Cómo registrar un dominio .com en Namefi
 
-1. **Busca** el nombre que deseas en [Namefi](https://namefi.io) para comprobar la disponibilidad.
+1. **Busca** el nombre que deseas en [Namefi](https://namefi.io/#register) para comprobar la disponibilidad.
 2. **Elige** el resultado .com (y cualquier alternativa que valga la pena asegurar).
 3. **Registra** y configura el DNS.
 

@@ -89,7 +89,7 @@ Las reservas anticipadas son baratas de colocar y fáciles de colocar en exceso,
 
 **Vigila la línea de marcas registradas.** Capturar un nombre expirado no blanquea su historial. Si la cadena es la marca de alguien, el hecho de que haya caducado no la hace segura para hacerse con ella y revenderla. El marco de la [UDRP](/es/glossary/udrp/) sigue aplicándose, y un nombre con [marca registrada](/es/glossary/trademark/) que ha expirado es exactamente el tipo de cosa que desencadena una disputa, como cubrimos en [qué es la UDRP](/es/blog/what-is-udrp/). Captura nombres genéricos y aptos para marca, no marcas caducadas.
 
-Una nota de diligencia más, específica de los nombres capturados: un dominio expirado puede arrastrar un lastre que un registro nuevo nunca tendría, como un historial de spam o una penalización de Google. Antes de pujar fuerte, revisa su pasado en el registro [WHOIS](/es/glossary/whois/) y de archivo. El historial de un nombre se transfiere con él.
+Una nota de diligencia más, específica de los nombres capturados: un [dominio expirado](/es/blog/buy-expired-domains/) puede arrastrar un lastre que un registro nuevo nunca tendría, como un historial de spam o una penalización de Google. Antes de pujar fuerte, revisa su pasado en el registro [WHOIS](/es/glossary/whois/) y de archivo. El historial de un nombre se transfiere con él.
 
 ## Después de la captura: poseerlo de verdad
 

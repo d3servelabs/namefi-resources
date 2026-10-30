@@ -1,102 +1,170 @@
 ---
-title: "What Is a Domain Name? Examples, Structure, and URLs"
+title: 'Domain Names Explained: Find a Name You Can Actually Use'
 date: '2025-06-19'
 language: en
 priority: P0
-tags: ['faq']
-authors: ['fenwei-bian']
-editors: ['victor-zhou']
+tags:
+- faq
+authors:
+- fenwei-bian
+editors:
+- victor-zhou
 draft: false
 cluster: domain-basics
 format: explainer
-description: "Understand domain names, root, TLD, second-level domains, subdomains, registration boundaries, and the difference between a domain and a URL."
-keywords: ["what is a domain", "what is a domain name", "domain name examples", "domain vs url", "domain structure", "hostname", "second-level domain", "subdomain", "URL path", "URL query", "DNS"]
+description: Understand domain names and URLs, check an available name through a registrar, and plan registration, DNS, hosting, and renewal as separate tasks.
+keywords:
+- domain
+- domain names
+- what is a domain
+- buy a domain name
+- domain name examples
+- domain vs URL
+- domain registration
+- domain availability
+- subdomain
+- domain structure
+- domain registrar
+- choose a domain name
 relatedArticles:
-  - /en/blog/what-is-a-tld/
-  - /en/blog/what-are-tokenized-domains/
-  - /en/blog/what-is-udrp/
-  - /en/blog/domain-terminology-guide/
-  - /en/blog/how-to-sell-a-domain-name-you-own/
+- /en/blog/what-is-a-tld/
+- /en/blog/what-are-tokenized-domains/
+- /en/blog/what-is-udrp/
+- /en/blog/domain-terminology-guide/
+- /en/blog/how-to-sell-a-domain-name-you-own/
 relatedTopics:
-  - /en/topics/domain-basics/
-  - /en/topics/domain-tokenization/
+- /en/topics/domain-basics/
+- /en/topics/domain-tokenization/
 relatedSeries:
-  - /en/series/domain-investor-field-guide/
-  - /en/series/domain-apocalypse/
+- /en/series/domain-investor-field-guide/
+- /en/series/domain-apocalypse/
 relatedGlossary:
-  - /en/glossary/registrar/
-  - /en/glossary/dns/
-  - /en/glossary/tld/
-  - /en/glossary/icann/
-  - /en/glossary/registry/
+- /en/glossary/registrar/
+- /en/glossary/dns/
+- /en/glossary/tld/
+- /en/glossary/icann/
+- /en/glossary/registry/
 ogImage: ../../assets/what-is-domain-og.jpg
+updated: '2026-10-30'
 ---
 
-## A domain name identifies a place in DNS
+**A domain name is a name in DNS, such as `example.com`, that applications can use to find service records.** To get a name for a project, choose a registrar through an official route such as the [ICANN registrar directory](https://www.icann.org/en/contracted-parties/accredited-registrars/list-of-accredited-registrars), then check the exact name and registration terms. Registration alone does not create a website or mailbox. [The DNS standard defines the name space](#the-dns-standard-defines-domain-names). [ICANN explains the registration relationship](#icann-explains-registrars-and-registrants).
 
-A **domain name** is a name such as `example.com` or `namefi.io`. People use domain names to reach websites and email services. A domain name does not include `https://` or a page path.
+A useful name must pass more than a spelling check. The project needs an available registration offer, acceptable terms, an account the intended registrant controls, and a plan for connecting the required services.
 
-The **[Domain Name System](/en/glossary/dns/) (DNS)** associates names with records. Address records can supply [IP addresses](/en/glossary/ip-address/) for a website. Other records support services such as email. Registration alone does not supply website hosting or a mailbox. [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-2.4) describes names, records, name servers, and resolvers.
+## A domain name identifies a place in the DNS hierarchy
 
-## Domain levels run from the root to more specific names
+Read `shop.example.com.` from the specific label toward the root. `shop` sits below `example`, `example` sits below `com`, and the final dot represents the root. The DNS standard defines names as paths through this hierarchy. [RFC 1034 explains the labels and root](#the-dns-standard-defines-domain-names).
 
-Read the following example from right to left: `blog.example.com.`. Each dot separates labels, and the final dot represents the root. Ordinary web addresses usually omit the final dot. [RFC 1034, section 3.1](https://www.rfc-editor.org/rfc/rfc1034#section-3.1), defines the hierarchy.
+The example uses `example.com`, which the IETF reserves for documentation. [RFC 2606 records that reservation](#the-ietf-reserves-example-domains). The example does not report an available name for sale.
 
-![The DNS hierarchy runs from the root through com and example.com to blog.example.com](../../assets/what-is-domain-01-hierarchy.jpg)
+| Name | Role in the example |
+| --- | --- |
+| `com.` | Top-level domain |
+| `example.com.` | Domain below `com` |
+| `shop.example.com.` | More specific name below `example.com` |
 
-| Level | Complete name | Meaning |
-| --- | --- | --- |
-| Root | `.` | The common starting point above all TLDs |
-| Top level | `com.` | A domain directly below the root |
-| Second level | `example.com.` | A domain directly below `com.` |
-| Third level | `blog.example.com.` | A domain directly below `example.com.` |
+A subdomain describes a relationship to a parent domain. A subdomain can serve a website, identify another service, or hold DNS records without serving a website. DNS associates names with different record types, rather than requiring every name to display a page. [RFC 1034 defines names and their associated information](#the-dns-standard-defines-names-and-records).
 
-The label `example` selects a child under `com`. The complete second-level domain name is `example.com`, rather than the label alone. A fourth level could be `support.blog.example.com`.
+Do not assume that the last two labels always define a registration boundary. Public suffixes and registration policies can use different boundaries. [Current DNS terminology explains public suffixes](#the-current-dns-terminology-explains-public-suffixes). Check the actual ending before applying a generic domain-splitting rule.
 
-A **[subdomain](/en/glossary/subdomain/)** describes a relationship to a parent domain. `blog.example.com` is a subdomain of `example.com`. More broadly, `example.com` is also below `com`. A subdomain need not identify a separate website. [JPNIC explains domain hierarchy and DNS delegation](https://www.nic.ad.jp/ja/dom/system.html).
+To inspect another name, enter the hostname without a URL path in [Namefi's domain-name inspector](https://namefi.io/domain-tools/domain-name). The local result shows normalized forms and the public-suffix boundary when known. The result does not establish availability, registration rights, or who controls the name.
 
-## TLD categories do not add another domain level
+![The DNS hierarchy runs from the root through com and example.com to a specific hostname.](../../assets/what-is-domain-01-hierarchy.jpg)
 
-A **[top-level domain](/en/glossary/tld/)** sits directly below the root. Generic TLDs include `.com` and `.org`. Country-code TLDs include `.uk`, `.de`, and `.jp`. The [IANA root database](https://www.iana.org/domains/root/db) lists TLD types and operators.
+## A URL includes the domain and the resource location
 
-A country-code TLD is still a top-level domain. The word “country” describes the category, rather than a separate level. The [TLD guide](/en/blog/what-is-a-tld/) covers extension types and selection in more detail.
+Consider this illustrative URL:
 
-## The registrable domain can sit below the second level
+```text
+https://shop.example.com/products?view=full
+```
 
-DNS depth and registration boundaries answer different questions. In `example.com`, the registrable domain spans two labels. In `example.co.uk`, `uk` is the TLD, `co.uk` is second level, and `example.co.uk` is third level. [Nominet shows both `.uk` and `.co.uk` registration formats](https://nominet.uk/lookup/).
+The hostname is `shop.example.com`. The scheme is `https`. The path is `/products`, and the query is `view=full`. HTTP specifications distinguish the authority from the path and query. [RFC 9110 describes those URL components](#the-http-standard-separates-the-host-from-the-resource).
 
-Do not assume that the last two labels always identify the registrable domain. Registration policy determines the boundary. A **public suffix** can contain several labels. [RFC 9499](https://www.rfc-editor.org/rfc/rfc9499.html#section-9) explains why the name alone cannot identify a public suffix.
+Buying a registration does not purchase a particular page path. The website application manages paths and page behavior. The domain's DNS configuration manages the relevant service records.
 
-## A URL includes more than a domain name
+This distinction helps during setup. A wrong hostname points toward a name or DNS question. A missing page path can remain an application question after the browser reaches the correct website. Use the [domain terminology guide](/en/blog/domain-terminology-guide/) when labels in a provider's interface become confusing.
 
-Consider `https://blog.example.com/guides/domains?lang=en`:
+![A URL contains a scheme and hostname plus port and resource components.](../../assets/domain-terminology-guide-01-url-parts.jpg)
 
-| Component | Example | Purpose |
-| --- | --- | --- |
-| Scheme | `https` | Selects the connection scheme |
-| Hostname | `blog.example.com` | Identifies the host in this example |
-| Registrable domain | `example.com` | Identifies the registration boundary in this example |
-| Path | `/guides/domains` | Identifies a resource on the host |
-| Query | `lang=en` | Supplies a parameter for the website |
+## A registrar checks the exact registration offer
 
-The path and query do not change the DNS hierarchy. [MDN describes URL components](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL#scheme). For a site layout decision, compare [subdomains and subdirectories](/en/blog/subdomain-vs-subdirectory/).
+ICANN distinguishes registrars, resellers, registrants, and registry operators. A registrar provides registration services. A registry operator maintains the registry for a top-level domain. The registrant holds the registration rights. [ICANN explains these roles](#icann-explains-registrars-and-registrants).
 
-## Registries and registrars have different responsibilities
+Use this practical selection process:
 
-A **[registry](/en/glossary/registry/)** operates a domain registry. A **[registrar](/en/glossary/registrar/)** handles registrations for customers. ICANN accredits registrars and maintains [gTLD registry agreements](https://www.icann.org/en/contracted-parties/registry-operators/resources/listings). Country-code registries have their own arrangements.
+1. Write the full proposed name and ending.
+2. Open the chosen registrar's official search page.
+3. Check every character in the returned offer.
+4. Identify whether the offer is a new registration, transfer, or resale.
+5. Check eligibility and terms for the actual ending.
+6. Review the registration total and renewal terms before payment.
 
-For a gTLD registration, use an [ICANN-accredited registrar](https://www.icann.org/en/contracted-parties/accredited-registrars) or a reseller working through one. Check availability, eligibility, registration terms, and renewal costs before paying. Registration gives rights under the registration agreement. Keep the registration current and configure DNS for the required services.
+A public registration lookup can help identify an already registered name and its registrar. ICANN directs users to its [registration lookup](https://lookup.icann.org/en). [The RDAP announcement identifies that official route](#icann-identifies-the-official-registration-lookup). A lookup result is not a substitute for the registrar's purchase and availability process.
 
-A domain registration has one registrant at a time. The registrant can authorize another person or service to use the name. Registration does not reserve the same label under every TLD.
+Do not infer that a domain is available merely because no website appears. ICANN explains that registration and website hosting are separate services. [The registration FAQ makes that distinction](#icann-separates-registration-from-web-services).
 
-## These sources explain domain names and their boundaries
+For the purchase steps, follow the [registration guide](/en/blog/register-domain-name/). Keep the domain explanation and the checkout procedure separate so each task has a clear result.
 
-Sources checked on 2026-10-21:
+![A buyer checks the exact name, eligibility, price, and registration terms.](../../assets/register-domain-name-01-checkout.jpg)
 
-- IETF: [RFC 1034, sections 2.4 and 3.1](https://www.rfc-editor.org/rfc/rfc1034).
-- IETF: [RFC 9499, section 9](https://www.rfc-editor.org/rfc/rfc9499.html#section-9).
-- JPNIC: [Domain name structure](https://www.nic.ad.jp/ja/dom/system.html).
-- IANA: [Root zone database](https://www.iana.org/domains/root/db).
-- Nominet: [Domain lookup examples](https://nominet.uk/lookup/).
-- MDN: [What is a URL?](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL).
-- ICANN: [Accredited registrars](https://www.icann.org/en/contracted-parties/accredited-registrars) and [registry listings](https://www.icann.org/en/contracted-parties/registry-operators/resources/listings).
+## The intended registrant needs control of the account
+
+ICANN warns that a developer or other third party may register a domain using that third party's details, even when the customer pays. The resulting registrant record can therefore differ from the payer. [The registration FAQ describes that risk](#icann-explains-the-registrant-record-and-registration-term).
+
+As practical advice, identify the intended registrant before checkout. Use a working contact address and keep access under the person or organization that will maintain the registration. Give contractors only the access their work requires.
+
+Registration is not an indefinite purchase. ICANN explains that registration periods vary and that a registrant must renew to continue the registration. [The FAQ describes that ongoing relationship](#icann-explains-the-registrant-record-and-registration-term).
+
+Record the registrar, account owner, expiry date, renewal setting, and payment responsibility. Read the agreement before accepting the offer. A name that fits the launch budget still needs an acceptable maintenance commitment.
+
+## DNS and hosting make the registered name useful
+
+The registrar can also sell hosting or email, but ICANN does not require registrants to use hosting from the registrar. Registration alone does not supply those services. [ICANN explains the service choices](#icann-separates-registration-from-web-services).
+
+Choose the website or email provider, then copy the provider's exact DNS setup instructions. DNS record types serve different functions: address records support network destinations, MX supports mail routing, and nameserver records support authority. [RFC 1034 describes the record roles](#the-dns-standard-defines-names-and-records).
+
+Test the results separately. Confirm that the intended website opens, that HTTPS verifies for the intended hostname, and that any configured mailbox sends and receives mail. Do not treat a registration receipt as evidence that those services work.
+
+The [hosting selection guide](/en/blog/website-hosting-guide/) helps identify the next service. A usable domain project ends with a maintained registration and verified services, rather than an unchecked name in a shopping cart.
+
+![Domain registration and hosting provide separate services.](../../assets/domain-vs-hosting-01-comparison.jpg)
+
+## Sources and further reading
+
+### The DNS standard defines domain names
+
+[IETF RFC 1034, section 3.1](https://www.rfc-editor.org/rfc/rfc1034.html#section-3.1). Fetched 2026-10-30.
+
+### ICANN explains registrars and registrants
+
+[ICANN, Domain Name Registration Process](https://www.icann.org/resources/pages/domain-name-registration-process-2023-11-02-en#:~:text=The%20person%20or%20entity%20that%20holds). Fetched 2026-10-30.
+
+### The IETF reserves example domains
+
+[IETF RFC 2606, section 3](https://www.rfc-editor.org/rfc/rfc2606.html#section-3). Fetched 2026-10-30.
+
+### The DNS standard defines names and records
+
+[IETF RFC 1034, sections 2.4 and 3.6](https://www.rfc-editor.org/rfc/rfc1034.html#section-2.4). Fetched 2026-10-30.
+
+### The current DNS terminology explains public suffixes
+
+[IETF RFC 9499, section 9](https://www.rfc-editor.org/rfc/rfc9499.html#section-9). Fetched 2026-10-30.
+
+### The HTTP standard separates the host from the resource
+
+[IETF RFC 9110, section 4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2). Fetched 2026-10-30.
+
+### ICANN identifies the official registration lookup
+
+[ICANN, RDAP lookup announcement](https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en#:~:text=Users%20are%20encouraged). Fetched 2026-10-30.
+
+### ICANN separates registration from web services
+
+[ICANN registration FAQ, domain versus website and hosting options](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=Your%20domain%20name%20registration%20is%20not). Fetched 2026-10-30.
+
+### ICANN explains the registrant record and registration term
+
+[ICANN registration FAQ, registration rights and third-party registration](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=If%20you%20have%20outsourced). Fetched 2026-10-30.

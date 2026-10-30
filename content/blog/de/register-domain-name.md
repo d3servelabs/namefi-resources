@@ -51,6 +51,8 @@ Wenn eine Kaufanleitung Google empfiehlt, prüfen Sie vor der Bestellung den [ak
 
 Ein Verkaufsangebot, eine Auktion oder ein Transfer erfordert einen anderen Kaufablauf. Ersetzen Sie den Namen nicht ungeprüft durch eine ähnliche Adresse. Stimmen Sie die neue Schreibweise mit allen Beteiligten ab.
 
+Geben Sie für eine neue Registrierung den vollständigen Kandidatennamen in [Namefis Domainsuche](https://namefi.io/#register) ein. Prüfen Sie vor der Zahlung das angezeigte Angebot und die aktuellen Kaufbedingungen. Ein Suchergebnis ist keine abgeschlossene Registrierung; ein bereits registrierter Name benötigt einen gesonderten Transfer- oder Wiederverkaufsprozess.
+
 Prüfen Sie bei einem Namen mit nichtlateinischen Zeichen die angezeigte Darstellung vor der Zahlung. Lassen Sie unklare Zeichen oder Schreibweisen vom Registrar klären.
 
 ### Lesen Sie die Regeln für die gewählte Endung

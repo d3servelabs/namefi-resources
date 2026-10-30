@@ -89,7 +89,7 @@ Backorders sind günstig zu platzieren und leicht zu überplatzieren, und genau 
 
 **Achte auf die Markenrechtsgrenze.** Einen abgelaufenen Namen zu fangen wäscht seine Historie nicht rein. Wenn die Zeichenfolge die Marke von jemandem ist, macht die Tatsache, dass sie ausgelaufen ist, sie nicht sicher zum Greifen und Weiterverkaufen. Das [UDRP](/de/glossary/udrp/)-Rahmenwerk gilt weiterhin, und ein abgelaufener, [markenrechtlich geschützter](/de/glossary/trademark/) Name ist genau die Art von Sache, die einen Streitfall auslöst, wie wir in [Was ist UDRP](/de/blog/what-is-udrp/) behandeln. Fange generische und markenfähige Namen, keine ausgelaufenen Marken.
 
-Noch ein Sorgfaltshinweis speziell zu gefangenen Namen: Eine abgelaufene Domain kann Altlasten mit sich tragen, die eine frische Registrierung nie hätte, etwa eine Spam-Historie oder eine Google-Abstrafung. Bevor du hart bietest, prüfe ihre Vergangenheit im [WHOIS](/de/glossary/whois/) und im Archiv-Eintrag. Die Historie eines Namens geht mit ihm über.
+Noch ein Sorgfaltshinweis speziell zu gefangenen Namen: Eine [abgelaufene Domain](/de/blog/buy-expired-domains/) kann Altlasten mit sich tragen, die eine frische Registrierung nie hätte, etwa eine Spam-Historie oder eine Google-Abstrafung. Bevor du hart bietest, prüfe ihre Vergangenheit im [WHOIS](/de/glossary/whois/) und im Archiv-Eintrag. Die Historie eines Namens geht mit ihm über.
 
 ## Nach dem Fang: ihn tatsächlich besitzen
 

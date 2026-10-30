@@ -1,143 +1,145 @@
 ---
-title: 'Chrome Secure Connection Errors Need a Targeted Diagnosis'
-description: 'Diagnose Chrome secure connection errors by recording the exact code, comparing devices, and checking the real HTTPS endpoint before changing settings.'
+title: 'This Site Cannot Provide a Secure Connection: Fix the Error Behind the Message'
+description: Use the exact Chrome error, compare devices and networks, and check the HTTPS endpoint without bypassing certificate verification.
 ogImage: ../../assets/fix-chrome-secure-connection-error-og.jpg
 date: '2026-10-29'
 language: en
-tags: ['https', 'tls', 'security', 'troubleshooting']
-authors: ['namefiteam']
+tags:
+- https
+- tls
+- security
+- troubleshooting
+authors:
+- namefiteam
 draft: false
 cluster: domain-security
 format: guide
-keywords: ['this site cannot provide a secure connection', "this site can't provide a secure connection", 'ERR_SSL_PROTOCOL_ERROR', 'Chrome secure connection error', 'HTTPS troubleshooting', 'SSL protocol error', 'TLS handshake diagnosis', 'certificate hostname check', 'Chrome certificate error', 'HTTPS endpoint verification']
+keywords:
+- this site cannot provide a secure connection
+- this site can't provide a secure connection
+- ERR_SSL_PROTOCOL_ERROR
+- Chrome secure connection error
+- HTTPS troubleshooting
+- SSL protocol error
+- TLS handshake diagnosis
+- certificate hostname check
+- Chrome certificate error
+- HTTPS endpoint verification
 relatedArticles:
-  - /en/blog/how-to-install-an-ssl-certificate/
-  - /en/blog/what-is-https/
-  - /en/blog/renew-ssl-certificate/
-  - /en/blog/ssl-certificate-types/
-  - /en/blog/dns-record-types-guide/
+- /en/blog/how-to-install-an-ssl-certificate/
+- /en/blog/what-is-https/
+- /en/blog/renew-ssl-certificate/
+- /en/blog/ssl-certificate-types/
+- /en/blog/dns-record-types-guide/
 relatedGlossary:
-  - /en/glossary/certificate-authority/
-  - /en/glossary/public-key/
-  - /en/glossary/private-key/
-  - /en/glossary/dns/
-  - /en/glossary/registrar/
+- /en/glossary/certificate-authority/
+- /en/glossary/public-key/
+- /en/glossary/private-key/
+- /en/glossary/dns/
+- /en/glossary/registrar/
 relatedTopics:
-  - /en/topics/domain-security/
-  - /en/topics/domain-basics/
+- /en/topics/domain-security/
+- /en/topics/domain-basics/
 relatedSeries:
-  - /en/series/domain-apocalypse/
-  - /en/series/domain-investor-field-guide/
+- /en/series/domain-apocalypse/
+- /en/series/domain-investor-field-guide/
+updated: '2026-10-30'
 ---
 
-Chrome can show “This site can't provide a secure connection” when a secure connection fails. The accompanying code matters. Google separates [secure-connection errors from certificate and DNS resolution errors](#google-distinguishes-the-error-categories).
+When Chrome says “This site can't provide a secure connection,” record the accompanying error code before changing settings. Google separates secure connection errors, certificate errors, and ordinary page-loading failures. The correct next action depends on the exact category. [Chrome's error guide explains those differences](#google-distinguishes-secure-connection-error-categories).
 
-Start by recording the complete URL and the exact code. Then determine whether the failure follows one website, one device, or one network. Those observations help choose who can make the relevant correction: the visitor, a network administrator, or the website operator.
+Start with the full URL, error code, and failure time. Then compare another site, another device, and another authorized network. Visitors can correct device conditions. Website operators must correct the HTTPS service when the failure follows the site.
 
-This guide provides that diagnostic sequence. The existing [certificate installation guide](/en/blog/how-to-install-an-ssl-certificate/) covers deploying HTTPS after the operator identifies a server configuration requirement.
+This guide explains how to collect that evidence and choose the next check. The examples describe hypothetical endpoints. The guide does not claim to have tested a reader's website.
 
-## The exact Chrome code determines the first check
+## The error code identifies the first diagnostic question
+
+Copy the text below the main Chrome heading. Preserve a screenshot when sharing the code helps support staff. Remove private query parameters or personal information before sending the screenshot outside your organization.
+
+Google associates `NET::ERR_CERT_DATE_INVALID` with inaccurate device dates and times. Google also distinguishes certificate-authority errors from secure connection failures. A workplace HTTPS inspection proxy can require administrator help when the proxy's certificate is missing. [Google explains certificate and clock errors](#google-distinguishes-secure-connection-error-categories).
+
+Use those distinctions to select a starting question. Check device time for a date-related error. Ask the administrator about a managed inspection service for an authority-related error. For a protocol compatibility error, ask the website operator to check the HTTPS service.
+
+Avoid diagnosing every Chrome warning as an expired certificate. A short error heading cannot establish expiry, the identity of the responding server, or the state of the original website application.
 
 ![DNS, TLS, and certificate cards separate the initial error checks.](../../assets/fix-chrome-secure-connection-error-01-codes.jpg)
 
-A short heading does not identify one underlying failure. Chromium defines `ERR_SSL_PROTOCOL_ERROR` as a protocol error. Chromium separately defines `ERR_SSL_VERSION_OR_CIPHER_MISMATCH` for incompatible protocol versions or cipher suites. The [network error definitions](#chromium-defines-distinct-network-errors) preserve that distinction.
+## Controlled comparisons show who should investigate
 
-Use the displayed code to choose an initial investigation:
+Try another familiar HTTPS site on the same device. If several unrelated sites fail, inspect the device and network context first. If one site fails on several devices and connections, send the site operator the reproducible result.
 
-| Displayed code or message | Initial check |
-| --- | --- |
-| `ERR_SSL_PROTOCOL_ERROR` | Identify the affected hostname and the endpoint serving HTTPS |
-| `ERR_SSL_VERSION_OR_CIPHER_MISMATCH` | Ask the operator to check supported TLS settings |
-| `NET::ERR_CERT_DATE_INVALID` | Check the device clock and the certificate validity period |
-| `NET::ERR_CERT_AUTHORITY_INVALID` | Investigate the certificate trust path and any managed HTTPS inspection |
-| `ERR_NAME_NOT_RESOLVED` | Investigate the hostname and DNS resolution |
+Compare the same exact URL. `https://example.com/` and `https://www.example.com/` use different hostnames. Do not treat a successful comparison on one name as confirmation that the other name works.
 
-Google documents [clock, trust, network, and secure connection cases separately](#google-distinguishes-the-error-categories). Treat the table as a way to select checks. The table does not establish the root cause of an individual incident.
+Keep browser version, operating system, VPN state, and network type in the notes. Google recommends checking the URL, connection, and browser state when investigating loading errors. [The connection troubleshooting guide provides the general sequence](#google-explains-connection-comparisons).
 
-Record whether the address includes `www`, another subdomain, or an explicit port. Two names can reach different configurations. An [HTTPS](/en/blog/what-is-https/) investigation needs the actual failing address throughout the comparison.
+A private browsing window can help test some browser state, but the comparison does not isolate every extension or network policy. As practical advice, record which condition changed. A successful alternate browser does not prove that the original warning was harmless.
 
-Preserve the error before changing settings. Note the observation time in UTC and any recent hosting, DNS, proxy, or certificate change. The sequence gives the next administrator a reproducible starting point.
-
-## Visitors can compare failures before changing system settings
+For a managed device, request the approved repair through the administrator. Google specifically advises against installing certificates independently to solve an inspection-proxy issue. [Google's certificate guidance explains the concern](#google-distinguishes-secure-connection-error-categories).
 
 ![Compare one website, one device, and one network to narrow a connection problem.](../../assets/fix-chrome-secure-connection-error-02-scope.jpg)
 
-First, confirm the address and reload the page. Check whether other websites open. Google recommends [comparing the scope of the failure and checking the connection](#google-provides-a-bounded-browser-checklist).
+## The website operator must check the named HTTPS endpoint
 
-Update and restart Chrome through its normal controls. Then try an Incognito window. If the page works there, investigate extensions and the relevant browsing data. Google places these steps in its [connection troubleshooting checklist](#google-provides-a-bounded-browser-checklist).
+An operator should begin with the public hostname and the deployment that should serve that hostname. Check the configured DNS destination, edge proxy, load balancer, and certificate assignment. Keep each observation separate from the application health check.
 
-Change one relevant setting at a time and retry the original address. A changed result should remain attributable to a particular comparison. Clearing unrelated data repeatedly removes useful context without identifying the failing endpoint.
+A proxy changes which endpoint a browser reaches. Cloudflare states that proxied records return Cloudflare addresses instead of the configured origin address. [Cloudflare documents that behavior](#cloudflare-explains-the-proxy-endpoint). Therefore, a test against a public proxy address does not directly test the origin's TLS configuration.
 
-If permitted, compare the same address on another device or another network. Record the results rather than treating either comparison as proof. A website can behave differently across network paths, while a device can have its own browser settings.
+Use the [HTTPS guide](/en/blog/what-is-https/) to separate port reachability, TLS verification, and an HTTP result. A reachable port alone does not establish that the endpoint serves valid HTTPS. A valid certificate exchange also does not establish that every application route succeeds.
 
-On a managed work network, give the administrator the exact certificate or connection error. Google identifies missing proxy certificates as one cause of `NET::ERR_CERT_AUTHORITY_INVALID` and advises [contacting the administrator](#google-distinguishes-the-error-categories). Use the organization's certificate process.
-
-If the error reports an incorrect date, check the device clock. If the problem concerns a website certificate, the operator may need to inspect or [renew the certificate](/en/blog/renew-ssl-certificate/). Buying another certificate before identifying the failing hostname leaves that diagnosis unfinished.
-
-Keep certificate checks enabled. Avoid deleting the entire Hosts file or lowering security settings as a general repair procedure. When an entry or policy appears relevant, give the responsible administrator the specific evidence and preserve unrelated configuration.
-
-Report a persistent error that persists for one site to the website owner, as [Google advises](#google-distinguishes-the-error-categories).
-
-## Operators should verify the named HTTPS endpoint
+Check the root name and any required subdomains separately. Confirm that the hosting platform associates the exact hostname with the intended deployment. As operational advice, inspect recent DNS, certificate, proxy, and deployment changes before making unrelated edits.
 
 ![The named hostname leads to a TLS endpoint check and a browser retest.](../../assets/fix-chrome-secure-connection-error-03-endpoint.jpg)
 
-Confirm which service terminates TLS for the failing hostname. Check the hosting platform, load balancer, or reverse proxy that actually receives the connection. The [DNS record guide](/en/blog/dns-record-types-guide/) explains why an address record and the application behind that address require separate verification.
+## A command-line check must retain the requested hostname
 
-For a server that you administer, inspect the configured TLS listener and certificate chain. Nginx's documentation shows the [HTTPS listener, certificate files, and chain requirements](#nginx-documents-the-endpoint-configuration). A domain registration alone does not configure those components.
+On a system with curl, `curl -I https://example.com/` illustrates a header request to a named HTTPS endpoint. Replace the reserved example name with the hostname under investigation. Preserve the complete error or response for the operator.
 
-A terminal comparison can preserve additional evidence. Replace the example hostname with the authorized endpoint:
+Curl verifies certificates by default. The check includes the signature and the server name from the URL. Curl's TLS documentation explains why skipping verification changes the test. [The curl certificate guide defines verification](#curl-keeps-certificate-verification-enabled).
 
-```text
-curl -Iv https://www.example.com/
-```
+An operator who controls the destination can test a specific address with `curl --resolve example.com:443:192.0.2.10 -I https://example.com/`. Both the domain and address are hypothetical. Curl's `--resolve` option supplies an address for one hostname and port. [The command reference defines that override](#curl-defines-a-targeted-address-override).
 
-The `-I` option requests HTTP headers with HEAD. The `-v` option provides diagnostic output. Read the TLS result and application response separately. The command requests headers, so retest the actual page in Chrome after the correction. The [curl option reference](#curl-documents-the-diagnostic-options) explains these controls.
+This pattern retains the hostname in the URL while directing the connection to the chosen address. A bare IP URL asks a different certificate question. Only test an origin address when the operator has authorization and understands the hosting architecture.
 
-curl verifies certificates by default. Preserve that behavior during the comparison. curl's documentation [advises against skipping verification in production](#curl-explains-certificate-verification). curl builds can use different certificate stores, so record the tool version alongside the result.
+Do not add `--insecure` to make the error disappear. A successful request after disabling verification cannot demonstrate a successful verified connection. Avoid sharing verbose logs that contain authorization headers, cookies, or private request data.
 
-For an OpenSSL installation that supports the following options, an operator can also test the named TLS endpoint:
+## The repair needs the original browser test
 
-```text
-openssl s_client -connect www.example.com:443 -servername www.example.com -verify_hostname www.example.com -verify_return_error </dev/null
-```
+Choose the correction that matches the evidence. Correct an inaccurate device clock. Ask the administrator to repair a managed trust configuration. Ask the operator to fix the certificate assignment or TLS configuration on the actual responding endpoint.
 
-The `-servername` option sends the SNI name. Hostname verification checks the certificate name. `-verify_return_error` stops on certificate verification errors. OpenSSL documents the [connection and verification options](#openssl-documents-the-named-endpoint-check).
+Google identifies outdated security configuration as one cause of `ERR_SSL_VERSION_OR_CIPHER_MISMATCH`. The site operator should follow the hosting platform's supported TLS settings. [Google describes that compatibility error](#google-distinguishes-secure-connection-error-categories).
 
-Use the actual hostname rather than substituting only an IP address. Nginx explains how [SNI affects certificate selection](#nginx-documents-the-endpoint-configuration). Keep the browser address and the hostname in the command consistent.
+After the correction, reopen the original URL in Chrome and repeat the failing action. Check any required redirect destination separately. Record the final URL and whether the original error code disappeared.
 
-Compare the observations with the relevant server or platform logs. Correct the identified listener, certificate chain, hostname, or supported TLS configuration. Retest the original browser URL after the change, including every affected hostname.
+If the error persists, send support the exact code, hostname, time, comparison results, and authorized endpoint observations. The next useful action is a targeted configuration check, not a broad reset or a bypass of the browser's warning.
 
-Close the incident with the failing code, UTC observation times, relevant configuration change, and successful browser retest. Remove credentials and private hostnames before sharing diagnostic output outside the approved support channel.
+Example names use [reserved documentation domains](#rfc-2606-reserves-example-domain-names). [Example IPv4 addresses use the documentation range](#rfc-5737-reserves-example-ipv4-addresses).
 
-## These sources support the diagnostic sequence
+## Sources and further reading
 
-The retrieval dates below use America/Los_Angeles.
+### Google distinguishes secure connection error categories
 
-### Google distinguishes the error categories
+[Google Chrome Help: Common error messages](https://support.google.com/chrome/answer/95669?hl=en#:~:text=Secure%20connection%20errors). Checked 2026-10-30.
 
-Google Chrome Help — [Get help with common error messages](https://support.google.com/chrome/answer/95669?hl=en#:~:text=Secure%20connection%20errors), fetched 2026-10-29. The page separates certificate, clock, secure connection, and weak security errors. Its secure connection section contains the message quoted in the introduction.
+### Google explains connection comparisons
 
-### Chromium defines distinct network errors
+[Google Chrome Help: Connection and loading errors](https://support.google.com/chrome/answer/6098869?hl=en#:~:text=Step%201%3A%20Check%20website%20URL%20and%20reload%20page). Checked 2026-10-30.
 
-Chromium — [Network error definitions](https://chromium.googlesource.com/chromium/src/+/main/net/base/net_error_list.h#:~:text=NET_ERROR%28SSL_PROTOCOL_ERROR), fetched 2026-10-29. The definitions distinguish protocol errors, protocol or cipher mismatch, and DNS resolution errors.
+### Cloudflare explains the proxy endpoint
 
-### Google provides a bounded browser checklist
+[Cloudflare: Proxy status](https://developers.cloudflare.com/dns/proxy-status/#example). Checked 2026-10-30.
 
-Google Chrome Help — [Fix connection and loading errors](https://support.google.com/chrome/answer/6098869?hl=en#:~:text=Step%203%3A%20Update%20and%20restart%20Chrome), fetched 2026-10-29. The checklist covers the address, connection, browser update, restart, Incognito mode, extensions, and browsing data.
+### Curl keeps certificate verification enabled
 
-### curl documents the diagnostic options
+[curl: TLS certificate verification](https://curl.se/docs/sslcerts.html#verification). Checked 2026-10-30.
 
-curl — [HEAD](https://curl.se/docs/manpage.html#-I) and [verbose output](https://curl.se/docs/manpage.html#-v), fetched 2026-10-29. These sections define the two options used in the example.
+### Curl defines a targeted address override
 
-### curl explains certificate verification
+[curl: Command reference](https://curl.se/docs/manpage.html#--resolve). Checked 2026-10-30.
 
-curl — [TLS certificate verification](https://curl.se/docs/sslcerts.html#verification), fetched 2026-10-29. The page describes default verification, certificate stores, and the risks of skipping verification.
+### RFC 2606 reserves example domain names
 
-### OpenSSL documents the named endpoint check
+[RFC 2606: Reserved Example Domains](https://www.rfc-editor.org/rfc/rfc2606.html#section-3). Checked 2026-10-30.
 
-OpenSSL 3.5 — [s_client options](https://docs.openssl.org/3.5/man1/openssl-s_client/#options) and [verification options](https://docs.openssl.org/3.5/man1/openssl-verification-options/#verification-options), fetched 2026-10-29. The relevant options are `-connect`, `-servername`, `-verify_hostname`, and `-verify_return_error`.
+### RFC 5737 reserves example IPv4 addresses
 
-### Nginx documents the endpoint configuration
-
-Nginx — [HTTPS configuration](https://nginx.org/en/docs/http/configuring_https_servers.html), [certificate chains](https://nginx.org/en/docs/http/configuring_https_servers.html#chains), and [SNI](https://nginx.org/en/docs/http/configuring_https_servers.html#sni), fetched 2026-10-29. The certificate-chain and SNI sections explain chain delivery and certificate selection for named servers.
+[RFC 5737: Documentation IPv4 Addresses](https://www.rfc-editor.org/rfc/rfc5737.html#section-3). Checked 2026-10-30.

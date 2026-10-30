@@ -138,7 +138,7 @@ Beachten Sie zwei Fallstricke. Erstens könnten Leute „dot A-I" als „dot AI 
 
 ## So registrieren Sie eine .ai-Domain bei Namefi
 
-1. **Suchen** Sie Ihren gewünschten Namen auf Namefi, um die Verfügbarkeit zu prüfen.
+1. **Suchen** Sie Ihren gewünschten Namen auf [Namefi](https://namefi.io/#register), um die Verfügbarkeit zu prüfen.
 2. Vergleichen Sie vor der Bestellung den Gesamtpreis, den Verlängerungspreis und die enthaltenen Leistungen. Diese Seite nennt keine aktuellen Großhandelspreise oder Premiumstufen der Registry.
 3. **Registrieren** Sie und schließen Sie die Bestellung ab.
 

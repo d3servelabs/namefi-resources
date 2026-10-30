@@ -61,7 +61,7 @@ relatedGlossary:
 ### **आफ्टरमार्केट**
 वह बाजार जहाँ पहले से स्वामित्व वाले डोमेन नाम खरीदे और बेचे जाते हैं। इसमें प्रीमियम डोमेन, पुराने डोमेन, और वे डोमेन शामिल हैं जो अब उपयोग में नहीं हैं।
 
-**लोकप्रिय प्लेटफॉर्म**: Sedo, GoDaddy Auctions, Flippa, NameJet
+**लोकप्रिय प्लेटफॉर्म**: Sedo, [GoDaddy Auctions](/hi/blog/godaddy-auctions-guide/), Flippa, NameJet
 
 ---
 

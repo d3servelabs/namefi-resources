@@ -61,7 +61,7 @@ Une collection de noms de domaine possédés par un individu ou une entreprise. 
 ### **Marché Secondaire (Aftermarket)**
 Le marché où les noms de domaine précédemment possédés sont achetés et vendus. Cela inclut les domaines premium, les domaines anciens et les domaines qui ne sont plus utilisés.
 
-**Plateformes Populaires**: Sedo, GoDaddy Auctions, Flippa, NameJet
+**Plateformes Populaires**: Sedo, [GoDaddy Auctions](/fr/blog/godaddy-auctions-guide/), Flippa, NameJet
 
 ---
 

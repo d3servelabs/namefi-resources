@@ -1,131 +1,154 @@
 ---
-title: "TXT Records Serve SPF, DKIM, and Separate Verification Checks"
-description: "Publish SPF, DKIM, and service verification TXT records at the right names, preserve existing consumers, and test each change."
+title: What Is SPF? How Email Servers Check Who Can Send for Your Domain
+description: Learn how Sender Policy Framework checks sending hosts, reads a TXT policy, and works with DKIM and DMARC to authenticate email.
 date: '2026-10-21'
 language: en
-tags: ['domains', 'dns', 'guide', 'security']
-authors: ['namefiteam']
+tags:
+- domains
+- dns
+- guide
+- security
+authors:
+- namefiteam
 draft: false
 format: guide
 cluster: domain-basics
-keywords: ["TXT record setup", "SPF TXT record", "DKIM selector record", "domain verification TXT", "multiple SPF records", "TXT record strings", "email authentication DNS", "DKIM public key", "TXT record migration", "DNS challenge verification", "SPF policy maintenance", "verification record retention"]
+keywords:
+- sender policy framework
+- what is SPF
+- SPF email authentication
+- SPF TXT record
+- SPF mail from
+- SPF pass
+- SPF fail
+- SPF softfail
+- SPF lookup limit
+- multiple SPF records
+- SPF DKIM DMARC
+- email sender authorization
 relatedArticles:
-  - /en/blog/set-up-email-with-your-own-domain/
-  - /en/blog/free-business-email-options/
-  - /en/blog/ttl-and-dns-propagation/
-  - /en/blog/dns-records-for-ai-agent-authority/
-  - /en/blog/dns-record-types-guide/
+- /en/blog/set-up-email-with-your-own-domain/
+- /en/blog/free-business-email-options/
+- /en/blog/ttl-and-dns-propagation/
+- /en/blog/dns-records-for-ai-agent-authority/
+- /en/blog/dns-record-types-guide/
 relatedGlossary:
-  - /en/glossary/dns-record-types/
-  - /en/glossary/dns/
-  - /en/glossary/zone-file/
-  - /en/glossary/ttl/
-  - /en/glossary/subdomain/
+- /en/glossary/dns-record-types/
+- /en/glossary/dns/
+- /en/glossary/zone-file/
+- /en/glossary/ttl/
+- /en/glossary/subdomain/
 relatedTopics:
-  - /en/topics/domain-basics/
-  - /en/topics/domain-security/
+- /en/topics/domain-basics/
+- /en/topics/domain-security/
 relatedSeries:
-  - /en/series/domain-investor-field-guide/
-  - /en/series/domain-apocalypse/
+- /en/series/domain-investor-field-guide/
+- /en/series/domain-apocalypse/
 ogImage: ../../assets/txt-records-spf-dkim-verification-og.jpg
+updated: '2026-10-30'
 ---
 
-A TXT record can authorize an email sender, publish a signing key, or satisfy a service's verification challenge. The DNS type supplies a text container. The consuming service supplies the meaning.
+Sender Policy Framework, or SPF, lets a domain publish which hosts may use the domain in specified SMTP identities. A receiving server checks the connecting sender against that policy. SPF covers [SMTP sending identities, rather than every visible message detail](#rfc-7208-defines-spf-identities-and-results).
 
-That distinction matters during setup. Adding the right value under the wrong name can leave email authentication broken. Replacing an existing TXT record can remove an unrelated service's verification. A careful change preserves each consumer's separate instructions.
+SPF answers a narrow question: does this host have permission to send with this domain identity? SPF does not establish that the message is harmless, that a person approved the message, or that the visible display name is accurate.
 
-This guide explains how to manage SPF, DKIM, and verification TXT records together. The examples illustrate record relationships rather than production-ready policies. Use the exact values issued for the actual domain and account.
+Understanding that boundary makes SPF easier to configure. You need the right sending identity, a valid published policy, and a test message that follows the real sending path.
 
-## Each TXT record serves a named consumer
+## SPF checks an SMTP identity against a connecting host
 
-![Each TXT record serves a named consumer.](../../assets/txt-records-spf-dkim-verification-01-section.jpg)
+Email uses several identities during delivery. The address a recipient sees in the From field can differ from the domain used during the SMTP transaction. SPF examines the domain associated with **MAIL FROM** and can also check **HELO** under the protocol's rules. [RFC 7208 defines those identities](#rfc-7208-defines-spf-identities-and-results).
 
-[DNS record types](/en/glossary/dns-record-types/) define data formats. TXT holds one or more character strings, as [RFC 1035, section 3.3.14](https://www.rfc-editor.org/rfc/rfc1035.html#section-3.3.14) specifies. TXT alone does not identify an email policy, an ownership challenge, or an application configuration.
+A hypothetical example helps separate the roles. A person sees `billing@example.com` in the message's From field. The sending service might use a separate return-path domain during SMTP delivery.
 
-Start an inventory with the complete owner name, record type, value, purpose, and responsible account. Keep a separate row for each logical record. Add the service owner and a link to the service's current instructions so a future administrator can identify unfamiliar tokens.
+The SPF result applies to the identity that the receiver actually checked. An administrator should inspect the receiver's authentication results before deciding which DNS name needs attention. Changing the visible From domain's TXT record may not address the evaluated identity.
 
-For example, `example.com` can publish an SPF policy and a separate verification token as distinct TXT records. A DKIM key can appear at `selector1._domainkey.example.com`. Those names serve different consumers even though the DNS record type remains TXT.
+Treat an email provider's setup instructions as account-specific input. Ask which domain the provider uses for the return path and whether the provider supports a custom return-path domain. Keep that answer in the sending-service inventory.
 
-| Purpose | Typical location | Consumer |
-| --- | --- | --- |
-| SPF authorization | Sending identity domain | Receiving mail system |
-| DKIM public key | Selector below `_domainkey` | Signature verifier |
-| Service verification | Provider-specified name | Named service account |
-| Application data | Application-defined name | Compatible application |
+## A TXT record publishes the sending policy
 
-Do not combine unrelated values into one TXT record merely to reduce dashboard rows. An SPF parser expects SPF syntax. A verification checker expects its issued token. A readable string in DNS does not become valid for every service that reads text.
+SPF publishes its policy in a DNS TXT record. [RFC 7208 requires TXT for SPF publication](#rfc-7208-defines-spf-identities-and-results). The text begins with `v=spf1` and contains mechanisms or modifiers that control evaluation.
 
-Check how the DNS dashboard interprets the host field. Some interfaces append the zone name to a relative label. A full name entered into such a field can produce an unintended repeated suffix. Inspect the complete published name after saving rather than trusting the input display alone.
+Consider this hypothetical teaching example: `v=spf1 ip4:192.0.2.10 -all`. The [documentation address](#rfc-5737-reserves-ipv4-documentation-blocks) does not identify a real sender. Do not copy the example into production.
 
-Also distinguish multiple strings inside one TXT record from multiple TXT records. SPF joins the strings of one record without adding spaces. [RFC 7208, section 3.3](https://www.rfc-editor.org/rfc/rfc7208.html#section-3.3) defines that behavior. A visual line break in a dashboard does not necessarily create a separate record.
+In that example, `ip4:192.0.2.10` identifies an authorized IPv4 address. The final `-all` expresses a fail result for hosts that do not match an earlier mechanism. The protocol evaluates the policy according to [RFC 7208's mechanism and qualifier rules](#rfc-7208-defines-spf-identities-and-results).
 
-Treat public DNS content as public information. A verification token intended for DNS differs from an account password or API secret. Never publish secret credentials because a service requested “a token” without first confirming the documented field and purpose.
+A hosted email service commonly supplies an `include:` value instead of asking customers to list its individual sending addresses. The include mechanism evaluates the referenced SPF policy. Use the exact include value from the provider's current account instructions.
 
-## Each sending identity needs one valid SPF policy
+Do not add `+all` to make a failing test pass. That policy authorizes every host through the all mechanism. Identify the missing legitimate sender and correct the policy deliberately.
+
+Inspect the published sending domain with [Namefi's email-authentication configuration checker](https://namefi.io/domain-tools/email-auth). Review its SPF findings and any incomplete dependency checks before editing the policy. The result inspects DNS configuration. A real SPF authentication result still needs the sender IP and the SMTP identity used for a message.
 
 ![Each sending identity needs one valid SPF policy.](../../assets/txt-records-spf-dkim-verification-02-section.jpg)
 
-SPF lets a domain authorize hosts to use specified email identities. The check concerns the SMTP identities defined by the protocol. A passing SPF result alone does not establish that every visible message detail is trustworthy. [RFC 7208, sections 2 and 11.2](https://www.rfc-editor.org/rfc/rfc7208.html#section-2) explains the scope.
+## One sending identity needs one selected SPF record
 
-Before changing SPF, list the systems that send mail for the domain. Include the main mailbox service, transactional application, support platform, and newsletter service when those systems use the relevant sending identity. Ask each service owner for the current documented authorization requirements.
+A domain can publish several TXT records for unrelated purposes. A service-verification token and an SPF policy can coexist. The problem arises when an SPF check selects more than one SPF policy for the same name.
 
-Inspect the existing TXT answers before adding a new policy. SPF prohibits multiple records that cause a check to select more than one SPF policy. [RFC 7208, section 3.2](https://www.rfc-editor.org/rfc/rfc7208.html#section-3.2) establishes that rule. Multiple unrelated TXT records do not create that conflict by themselves.
+[RFC 7208 prohibits multiple records that cause that selection](#rfc-7208-defines-spf-identities-and-results). Adding a new provider's SPF string beside the old provider's SPF string does not safely combine authorization.
 
-A hypothetical no-sending domain might publish `v=spf1 -all` at the appropriate name. The example illustrates an explicit policy, not a recommendation for a domain that sends mail. Copying a restrictive policy into an active sending domain can exclude legitimate systems.
+As practical administration advice, inventory every legitimate sending service before editing the policy. Include employee mail, transactional applications, support software, and newsletters when those services use the relevant domain identity.
 
-When a second service asks for SPF authorization, update the existing policy through a reviewed change. Do not create another `v=spf1` record beside the first policy. Preserve the existing legitimate senders and remove obsolete authorization only after the service owner confirms retirement.
+Combine approved mechanisms into one policy according to the providers' instructions. Keep unrelated verification TXT records as separate records. Review the complete published name after saving.
 
-Review the complete policy, including referenced mechanisms, with a suitable validator. A policy can look short while references create additional DNS processing. SPF defines lookup limits, so blindly appending every vendor instruction can produce an invalid or unsuitable result. Follow the actual provider's integration guidance.
+Also distinguish one TXT record containing multiple quoted character strings from separate TXT records. RFC 7208 joins the strings within one record without adding spaces. A dashboard's line wrapping alone does not establish the actual DNS structure.
 
-Keep the previous value and the reason for every change. Test mail from each legitimate sending system after publication. Check authentication results at a receiving mailbox rather than assuming a syntactically valid policy proves delivery. Delivery involves additional receiver decisions outside the SPF record.
+![Email records divide delivery from sender authentication.](../../assets/dns-record-types-guide-02-email-dependencies.jpg)
 
-If SPF starts failing after a change, compare the actual sending identity and source with the policy. Investigate the specific failed sender before weakening the entire policy. A correction should authorize the intended system while preserving a clear record of the permission granted.
+## SPF results explain authorization and processing failures
 
-## DKIM retrieves the public key through a selector
+A result describes what the receiver learned during a particular check. [RFC 7208 defines the result meanings](#rfc-7208-defines-spf-identities-and-results).
 
-![DKIM retrieves the public key through a selector.](../../assets/txt-records-spf-dkim-verification-03-section.jpg)
+| Result | What the result means | Useful next check |
+| --- | --- | --- |
+| Pass | The host has authorization for the checked identity | Inspect alignment and the rest of authentication |
+| Fail | The host lacks authorization under the policy | Identify the actual sender and evaluated domain |
+| Softfail | The policy gives a weaker negative statement | Review the intended policy and sender inventory |
+| None | The check found no applicable SPF policy | Confirm the evaluated domain and published record |
+| Temperror | A transient problem interrupted evaluation | Inspect DNS and retry through the normal mail path |
+| Permerror | The receiver could not interpret the published policy correctly | Check syntax, record selection, and evaluation limits |
 
-DKIM associates a signing domain with a message through a cryptographic signature. The verifier retrieves a public key using the signing domain and selector. [RFC 6376](https://www.rfc-editor.org/rfc/rfc6376.html#section-3.6.2) defines the DNS lookup under `_domainkey`.
+A pass does not promise inbox placement. A fail does not identify a single universal repair. The actual sending route and receiver's policy determine the operational next step.
 
-For example, a signature with signing domain `example.com` and selector `selector1` directs the key lookup to `selector1._domainkey.example.com`. A public key placed only at the apex does not satisfy that lookup. The exact owner name matters as much as the key value.
+Avoid changing enforcement merely to remove a red indicator. Save the evaluated identity, connecting address, result, and sending application before making the correction.
 
-Obtain the key publication instructions from the actual sending provider. A provider may ask for TXT or for a provider-managed alias arrangement. Preserve the requested record type. Do not convert an alias instruction into a copied TXT key unless the provider documents that alternative.
+## The DNS lookup limit applies across the evaluation
 
-Keep public and private keys separate. The DNS record contains public verification material. The signing system retains the private key. A request to paste a private signing key into public DNS indicates the wrong material or a misunderstood procedure.
+SPF limits DNS-dependent evaluation work. RFC 7208 sets a limit of ten for the applicable mechanisms and modifiers during an evaluation. [Exceeding the limit produces permerror](#rfc-7208-defines-spf-identities-and-results).
 
-Check for accidental truncation when copying a long public key. Preserve the provider's content and required formatting. When the dashboard splits the value into strings, confirm that the resulting logical value matches the expected key. Avoid adding spaces or punctuation to make the dashboard display look neater.
+The limit does not mean a policy may contain ten arbitrary words. Includes can trigger further evaluation. Count the effective dependency path rather than only the top-level strings visible in the DNS dashboard.
 
-A provider's successful key check confirms one part of the setup. The sending system must also sign outgoing messages using the intended domain and selector. Send a new test message after enabling signing. Inspect the resulting signature and the receiver's authentication result.
+As maintenance advice, remove retired senders only after confirming that no legitimate workflow still depends on the sender. Keep provider change notices with the policy inventory. Do not replace managed includes with copied address lists without an explicit maintenance plan.
 
-During key rotation, coordinate DNS publication with the signing provider. Do not delete an old selector merely because a new selector appears. Messages signed earlier may still require the old key during the provider's transition procedure. Follow the documented retirement timing and keep the old record until the procedure permits removal.
+The [custom-domain email setup guide](/en/blog/set-up-email-with-your-own-domain/) explains where SPF fits alongside incoming delivery records.
 
-For multiple sending providers, assign ownership to each selector. Separate selectors help administrators identify which service generated a signature. Record the service, selector, publication date, and retirement status. The inventory reduces confusion when a provider changes or a sending account closes.
+## DMARC connects authentication to the visible From domain
 
-An SPF change does not repair a missing DKIM key. A DKIM key does not authorize every sending host. Test both mechanisms according to their separate jobs. The [custom-domain email guide](/en/blog/set-up-email-with-your-own-domain/) places those checks within the broader mail setup.
+SPF alone does not require the checked domain to match the visible From domain. DMARC uses the SPF-validated MAIL FROM identity, rather than a separate HELO pass. DMARC adds identifier alignment requirements. RFC 9989 explains [strict and relaxed SPF alignment](#rfc-9989-explains-spf-identifier-alignment).
 
-## Service verification requires deliberate publication and retirement
+Relaxed alignment allows the authenticated domain and visible From domain to share the same organizational domain. Strict alignment requires an exact domain match. A passing SPF result can therefore coexist with an alignment problem.
 
-![Service verification requires deliberate publication and retirement.](../../assets/txt-records-spf-dkim-verification-04-section.jpg)
+DKIM supplies a separate signature-based authentication path. Review SPF, DKIM, and DMARC together when configuring a real provider. Do not treat an [MX record](/en/blog/mx-records-guide/) as authorization for outgoing mail.
 
-A service verification TXT record usually proves that someone can publish a particular value at the requested name. The service then applies its own account and domain rules. The record does not create a universal ownership certificate that every application recognizes.
+![SPF, DKIM, and DMARC address different parts of outgoing email authentication.](../../assets/set-up-email-with-your-own-domain-02-authentication.jpg)
 
-GitHub Pages provides a concrete example. GitHub asks the account owner to publish a TXT challenge and complete verification in account settings. [GitHub's verification instructions](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages) also require keeping the record to retain verification. The requirement belongs to that service's procedure.
+## A real sending test should finish the configuration
 
-Create the challenge from the intended account before editing DNS. Match the target domain and account identifier with the request. A record issued for another account can complete a different relationship than the administrator intended. Check the service name and account owner in the change ticket.
+Send a message from each legitimate application to an external mailbox you control. Inspect the received message's authentication results. Record the checked identity and outcome for each route.
 
-After publishing, query the exact owner name and TXT type at the authoritative servers. Then compare a recursive answer. If the authoritative value is correct but a recursive answer remains old, [investigate caching](/en/blog/ttl-and-dns-propagation/). Avoid repeatedly replacing a correct token while a checker still sees an earlier answer.
+Compare failures with the sender inventory before editing DNS. Test again after the corrected record becomes visible to the receiver. Keep the previous record and the reason for the change in your operating notes.
 
-Complete the verification action in the service interface when required. Saving DNS does not necessarily trigger the service's final confirmation. Record the service's verified state and any continued-publication requirement. A screenshot of the DNS row alone does not establish that the service accepted the challenge.
+Use SPF to state who may send for the relevant SMTP identity. Use a real message test to verify that the intended sender receives the intended result.
 
-Before deleting a token, identify the service and account that depend on the token. Confirm whether the service requires continued publication. Remove retired records through an intentional decommissioning plan rather than deleting every unfamiliar string during a zone cleanup.
+## Sources and further reading
 
-The same rule applies during a DNS provider migration. Preserve SPF, DKIM selectors, and verification challenges in the exported inventory. Check the migrated values by purpose, not only by row count. Two zones can contain the same number of TXT records while serving different accounts.
+### RFC 7208 defines SPF identities and results
 
-Keep a concise change log with the old value, new value, expected consumer, and test result. Ask another administrator to review high-impact mail or account changes. The final state should let an administrator answer two questions: which service reads each TXT record, and what evidence confirms that the service still works?
+[RFC 7208 defines SPF identities and results](https://www.rfc-editor.org/rfc/rfc7208.html#section-2). Checked 2026-10-30.
 
-## These sources support the article
+### RFC 9989 explains SPF identifier alignment
 
-- IETF — [RFC 1035](https://www.rfc-editor.org/rfc/rfc1035.html#section-3.3.14), section 3.3.14: TXT data format. Fetched 2026-10-21.
-- IETF — [RFC 7208](https://www.rfc-editor.org/rfc/rfc7208.html#section-3), sections 2–3, 4.6.4, and 11.2: SPF scope, publication, processing limits, and false identities. Fetched 2026-10-21.
-- IETF — [RFC 6376](https://www.rfc-editor.org/rfc/rfc6376.html#section-3.6.2), section 3.6.2: selector-based DNS key retrieval. Fetched 2026-10-21.
-- GitHub — [Verify a custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages), TXT challenge and retention requirement. Fetched 2026-10-21.
+[RFC 9989 explains SPF identifier alignment](https://www.rfc-editor.org/rfc/rfc9989.html#section-4.4.2). Checked 2026-10-30.
+
+### RFC 5737 reserves IPv4 documentation blocks
+
+[RFC 5737 reserves IPv4 documentation blocks](https://www.rfc-editor.org/rfc/rfc5737.html#:~:text=The%20blocks%20192.0.2.0%2F24%20%28TEST-NET-1%29%2C%20198.51.100.0%2F24%20%28TEST-NET-2%29%2C%0A%20%20%20and%20203.0.113.0%2F24%20%28TEST-NET-). Checked 2026-10-30.

@@ -142,7 +142,7 @@ Achten Sie auf zwei Fallstricke. Erstens: Vermeiden Sie unangenehme Bindestriche
 
 ## So registrieren Sie eine .com-Domain bei Namefi
 
-1. **Suchen** Sie Ihren gewünschten Namen bei [Namefi](https://namefi.io), um die Verfügbarkeit zu prüfen.
+1. **Suchen** Sie Ihren gewünschten Namen bei [Namefi](https://namefi.io/#register), um die Verfügbarkeit zu prüfen.
 2. **Wählen** Sie das .com-Ergebnis (und alle Alternativen, die es wert sind, gesichert zu werden).
 3. **Registrieren** und DNS konfigurieren.
 

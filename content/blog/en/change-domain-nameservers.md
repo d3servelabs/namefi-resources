@@ -1,205 +1,149 @@
 ---
-title: "Nameserver Changes Require a Complete Zone and a DNSSEC Plan"
-description: "Move authoritative DNS with a complete record inventory, a DNSSEC migration plan, and checks for website and email continuity."
+title: How to Find Your Cloudflare Nameservers and Update Your Registrar
+description: Find the nameservers assigned to your Cloudflare zone, preserve website and email records, update the registrar, and verify activation.
 date: '2026-10-21'
 language: en
-tags: ['domains', 'dns', 'guide']
-authors: ['namefiteam']
+tags:
+- domains
+- dns
+- guide
+authors:
+- namefiteam
 draft: false
 format: guide
 cluster: domain-basics
-keywords: ['change domain nameservers', 'nameserver migration', 'authoritative DNS', 'registrar nameserver settings', 'DNS delegation', 'preserve email records', 'DNSSEC migration', 'DS record removal', 'nameserver propagation', 'DNS TTL', 'DNS migration checklist', 'change DNS provider']
+keywords:
+- Cloudflare nameserver
+- find Cloudflare nameservers
+- Cloudflare nameserver setup
+- change nameservers
+- registrar nameserver settings
+- Cloudflare DNS migration
+- authoritative DNS
+- DNSSEC migration
+- Cloudflare zone overview
+- nameserver verification
+- Cloudflare pending nameserver update
+- DNS record inventory
 ogImage: ../../assets/change-domain-nameservers-og.jpg
 relatedArticles:
-  - /en/blog/dns-record-types-guide/
-  - /en/blog/renew-ssl-certificate/
-  - /en/blog/primary-secondary-dns/
-  - /en/blog/transfer-domain-to-another-registrar/
-  - /en/blog/set-up-email-with-your-own-domain/
+- /en/blog/dns-record-types-guide/
+- /en/blog/renew-ssl-certificate/
+- /en/blog/primary-secondary-dns/
+- /en/blog/transfer-domain-to-another-registrar/
+- /en/blog/set-up-email-with-your-own-domain/
 relatedGlossary:
-  - /en/glossary/nameserver/
-  - /en/glossary/dns/
-  - /en/glossary/registrar/
-  - /en/glossary/dnssec/
-  - /en/glossary/ttl/
+- /en/glossary/nameserver/
+- /en/glossary/dns/
+- /en/glossary/registrar/
+- /en/glossary/dnssec/
+- /en/glossary/ttl/
 relatedTopics:
-  - /en/topics/domain-basics/
-  - /en/topics/domain-security/
+- /en/topics/domain-basics/
+- /en/topics/domain-security/
 relatedSeries:
-  - /en/series/domain-investor-field-guide/
-  - /en/series/domain-apocalypse/
+- /en/series/domain-investor-field-guide/
+- /en/series/domain-apocalypse/
+updated: '2026-10-30'
 ---
 
-**Changing domain nameservers changes which authoritative DNS service answers for the domain. Prepare the replacement zone before changing the delegation.** Your website and email need their records at the replacement service, even when their hosting stays unchanged.
+Find your assigned Cloudflare nameservers in the domain's **Overview** page in your Cloudflare account. Copy those exact names into your registrar's nameserver settings after preparing the replacement DNS records. Cloudflare's [full setup procedure documents the sequence](#cloudflare-documents-its-full-setup-procedure).
 
-The important work happens before the nameserver form. Copy the full configuration, test the replacement service, and plan DNSSEC separately. Then change the delegation and keep the previous DNS service available during the transition.
+Do not enter `1.1.1.1` into the registrar's nameserver form. The public resolver setting serves a different task. This guide covers moving a domain's authoritative DNS to Cloudflare through the usual full setup.
 
-This guide covers a move between authoritative DNS providers. A [registrar transfer](/en/blog/transfer-domain-to-another-registrar/) changes who manages the registration and requires a separate procedure. A website move can require only an address change.
+If you only want your device to use Cloudflare for DNS lookups, use the [Cloudflare DNS device setup guide](/en/blog/cloudflare-dns-setup/).
 
-## The registrar changes the delegation that resolvers follow
+## The correct Cloudflare account contains the assigned nameservers
 
-![The registrar changes the delegation that resolvers follow.](../../assets/change-domain-nameservers-01-delegation-boundary.jpg)
+Sign in to the Cloudflare account that will manage the domain. Select the exact domain, then open **Overview**. Cloudflare says the assigned nameservers appear during onboarding and remain available on the [zone Overview page](#cloudflare-documents-its-full-setup-procedure).
 
-A [nameserver](/en/glossary/nameserver/) stores and serves DNS information for a zone. A recursive resolver follows delegations to find the authoritative service. [RFC 1034 describes the parent and child zone relationship](https://www.rfc-editor.org/rfc/rfc1034#section-4.2.1).
+Copy every assigned nameserver exactly as Cloudflare displays the name. Do not copy a pair from a tutorial, another domain, or a different Cloudflare account. A recognizable Cloudflare suffix does not establish the correct assignment.
 
-For a hypothetical `example.com` migration, the `.com` parent directs resolvers toward the domain's authoritative nameservers. The replacement provider must already serve the `example.com` zone when resolvers arrive.
+Before changing anything, record the domain, the Cloudflare account owner, the current registrar, and the current nameservers. Save the old settings in your migration notes. Make sure an authorized administrator can access both accounts.
 
-The domain's [registrar](/en/glossary/registrar/) normally provides the controls that request this parent delegation change. A reseller might provide the controls instead. Cloudflare's [setup instructions distinguish these administrative locations](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/#32-log-in-to-your-registrar).
+If the domain already uses Cloudflare Registrar, the normal onboarding flow differs. Cloudflare states that domains purchased through Cloudflare Registrar already use Cloudflare authoritative DNS. Follow the domain's existing account configuration instead of repeating a registrar migration.
 
-A nameserver setting at the registrar differs from an NS record inside the domain's zone. Editing the child zone alone does not request a parent delegation change. Both sides should identify the intended authoritative service. [RFC 1034 requires consistency across the delegation boundary](https://www.rfc-editor.org/rfc/rfc1034#section-4.2.2).
+Our [registrar explanation](/en/glossary/registrar/) helps distinguish the registration account from the DNS account when different providers supply those services.
 
-An NS record can also delegate a subdomain. For example, `shop.example.com` might use different authoritative servers while the rest of `example.com` stays unchanged. Record the intended scope before editing any NS entry.
+![Authority and policy records control separate decisions.](../../assets/dns-record-types-guide-03-authority-policy.jpg)
 
-Use the following decision table before opening the registrar's nameserver form:
+## Review the complete DNS zone before changing the registrar
 
-| Intended change | Usual control | Preparation |
+Cloudflare asks administrators to review imported records. The setup guide specifically calls out the apex domain, subdomains, and email records. The [required email values depend on the email provider](#cloudflare-documents-its-full-setup-procedure).
+
+Use the old DNS dashboard or an available zone export as your inventory. Compare the inventory with Cloudflare's records. Do not treat an automatic discovery screen as proof that every service has a corresponding record.
+
+As practical migration advice, include less visible services. A website can work while a verification token, a support subdomain, or an email authentication record remains missing.
+
+| Service | Information to compare | Practical test after the change |
 | --- | --- | --- |
-| New website destination | Website DNS records | Follow the web host's instructions |
-| New authoritative DNS provider | Parent delegation | Prepare the complete replacement zone |
-| New registrar | Registration transfer | Check DNS service continuity separately |
-| Separate subdomain DNS | Parent zone's subdomain NS | Prepare the delegated child zone |
+| Main website | Apex and `www` records | Open the exact public addresses |
+| Email delivery | Provider's MX records | Receive an external test message |
+| Email authentication | SPF, DKIM, and DMARC records | Send a message and inspect authentication |
+| Service verification | Provider-issued TXT or CNAME values | Recheck the relevant service dashboard |
+| Other subdomains | Required targets and record types | Open the actual application route |
 
-Treat this table as a way to select the procedure, rather than a provider-specific instruction. Providers can bundle registration, DNS, and web hosting. The [domain versus hosting guide](/en/blog/domain-vs-hosting/) explains those separate responsibilities.
+Keep the website host's and email provider's instructions beside the inventory. A nameserver migration does not supply replacement values for those services.
 
-Copy the exact nameservers assigned to the correct replacement zone. Do not copy a nameserver pair from a tutorial or another account. Record the old delegation before saving the replacement.
+For record relationships, read the [DNS record guide](/en/blog/dns-record-types-guide/) before choosing a record type.
 
-If you operate nameservers under the migrating domain, check glue records as well. Glue supplies addresses needed to reach in-domain nameservers. [RFC 1034 explains why the parent sometimes needs these address records](https://www.rfc-editor.org/rfc/rfc1034#section-4.2.1).
+![Email records divide delivery from sender authentication.](../../assets/dns-record-types-guide-02-email-dependencies.jpg)
 
-A typical managed-provider migration uses the provider's assigned nameserver names. A move involving custom nameservers needs a separate glue review with the registrar. Avoid combining an unfamiliar custom-nameserver change with a routine DNS provider move.
+## Follow a DNSSEC migration plan before replacing nameservers
 
-## A complete replacement zone preserves website and email settings
+DNSSEC requires specific preparation. Cloudflare warns that replacing nameservers while the old DNSSEC configuration remains active can make the domain unreachable. The standard onboarding procedure tells administrators to [turn off DNSSEC at the registrar before replacement](#cloudflare-documents-its-full-setup-procedure).
 
-![A complete replacement zone preserves website and email settings.](../../assets/change-domain-nameservers-02-zone-inventory.jpg)
+Follow the registrar's documented process for the domain. Confirm the completed change before proceeding. Do not assume that clicking a control at the old DNS provider completed the registrar-side work.
 
-Start with an export from the current authoritative DNS service. Also save screenshots or a configuration report for features outside the exported zone. Keep a dated copy that someone else can understand during recovery.
+Some organizations require a migration that preserves validation continuously. Cloudflare links a separate DNSSEC migration tutorial for providers that support the necessary DNSKEY configuration. Use that documented procedure with the responsible DNS administrator.
 
-Do not use a new provider's automatic scan as your only inventory. Cloudflare explicitly warns that its [quick scan can miss existing records](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/#common-records). Compare the imported configuration with the current service and your service providers' requirements.
+Keep a written record of the chosen approach. Record who will re-enable DNSSEC and what evidence will confirm the final configuration. A migration plan should include the completion step, not only the temporary change.
 
-Organize the comparison by service. The website needs the apex name, `www`, and any application names. Email needs its delivery and authentication configuration. Other systems might depend on verification names or delegated subdomains.
+Avoid unrelated security changes during the migration. If you cannot identify the existing DNSSEC state, resolve that uncertainty with the registrar before replacing the nameservers.
 
-Google's [nameserver-change guidance](https://knowledge.workspace.google.com/admin/domains/connect-your-website-to-a-domain-registered-through-google#if-ns-changed-add-google-workspace-services-to-your-web-host) specifically requires copying mail, verification, and custom-service records. A successful homepage request does not test those records.
+## Replace the nameserver set at the registrar
 
-Build a service checklist before making the replacement zone active:
+Open the exact domain's settings at the registrar. Find the control for authoritative nameservers or custom nameservers. The wording varies by provider, so follow the registrar-specific route linked from Cloudflare's setup instructions.
 
-- Compare apex and `www` website records with the current configuration.
-- Compare application, support, and API names with their service owners.
-- Preserve MX destinations and priorities from the current mail configuration.
-- Preserve SPF, DKIM, DMARC, and mail-provider verification records.
-- Preserve delegated subdomains and their required supporting records.
-- Check certificate-related and other verification records with the relevant service owners.
+1. Confirm the domain name in the registrar account.
+2. Save the current nameserver set in your notes.
+3. Remove the old nameservers from the replacement form.
+4. Enter the exact nameservers assigned by Cloudflare.
+5. Review every character before saving the change.
+6. Save the registrar's confirmation in your migration notes.
 
-Use the current account configuration for exact values. A generic example cannot supply your DKIM selector, mailbox destination, or verification token. The [custom-domain email guide](/en/blog/set-up-email-with-your-own-domain/) covers the separate mail setup.
+Cloudflare instructs administrators to [remove the old authoritative nameservers and add the assigned Cloudflare nameservers](#cloudflare-documents-its-full-setup-procedure). Do not leave the old set in place as an improvised backup.
 
-Also review behavior that ordinary record exports cannot express. Amazon documents that imported zone files do not automatically recreate its [alias choices or complex routing policies](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/migrate-dns-domain-in-use.html#Step3CreateRecords). A visually similar record list can therefore represent a different operating configuration.
+Also avoid confusing the registrar's delegation controls with an ordinary NS record inside Cloudflare. Follow the full setup instructions at the account that controls the domain's delegation.
 
-For each provider feature, write a concrete migration decision. Recreate the feature with a supported equivalent, remove the dependency deliberately, or postpone the migration. Do not assume the replacement provider interprets a proprietary record identically.
+If a reseller manages the domain, the reseller may provide the relevant control. Cloudflare explicitly recognizes that some setups require the parent zone or reseller instead of the usual registrar interface.
 
-Keep the replacement provider's required apex NS and SOA configuration. For example, Route 53 creates those records automatically and [warns against deleting or duplicating them](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/migrate-dns-domain-in-use.html#Step2CreateHostedZone). Follow the replacement provider's import instructions rather than blindly importing every administrative record.
+## Verify activation and test each service independently
 
-Consider a hypothetical shop that keeps the same web host and mail provider. The migration should reproduce the existing service destinations at the new DNS provider. Changing the website platform or mail provider during the same window adds separate recovery decisions.
+Return to Cloudflare and check the domain's status. Cloudflare says the domain will show **Active** after successful activation. The setup guide also provides command-line [nameserver verification checks](#cloudflare-documents-its-full-setup-procedure).
 
-Assign someone to control DNS edits during the transition. If an urgent verification record arrives, add the approved record to both active copies. Record the change so the zone comparison remains meaningful.
+On a computer with `dig`, run `dig NS example.com` for a hypothetical domain. Replace `example.com` with your domain. Compare the returned names with the assigned set. The command is a procedure example, not a live result.
 
-Before proceeding, ask each service owner to confirm the inventory. An old campaign subdomain may look unimportant to the website team but still support a customer workflow. A named owner provides a better decision than guessing from a record label.
+If the status remains **Pending Nameserver Update**, compare the saved registrar settings with the assigned names. Check that the registrar accepted the change. Follow Cloudflare's pending-status troubleshooting route if the mismatch remains unclear.
 
-## The DNSSEC plan must account for parent DS records and caches
+A successful nameserver check does not complete the service tests. Open the website, send and receive email, and check important subdomains. Record the actual outcome for each service.
 
-![The DNSSEC plan must account for parent DS records and caches.](../../assets/change-domain-nameservers-03-dnssec-sequence.jpg)
+Follow the documented DNSSEC completion step after activation. Keep the previous DNS service available while you verify continuity and decide when to retire the old configuration.
 
-[DNSSEC](/en/glossary/dnssec/) adds a validation chain that needs its own migration sequence. Changing only nameserver names can leave validators using trust information for the previous provider. [RFC 6781 explains this operator-change problem](https://www.rfc-editor.org/rfc/rfc6781#section-4.3.5).
+After the provider confirms activation, compare the known records with [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). If the domain uses DNSSEC, also record the [DNSSEC tool's resolver evidence](https://namefi.io/domain-tools/dnssec). Neither observation proves worldwide propagation, and the DNSSEC tool does not independently validate the complete chain.
 
-First determine whether the parent currently publishes a DS record for the domain. Check the registrar's DNSSEC controls and the published parent data. Do not infer the parent state from a signing toggle at the DNS provider.
+![A controlled change preserves records and tests dependencies.](../../assets/dns-record-types-guide-04-change-verification.jpg)
 
-Select one supported migration method before changing the delegation. A coordinated signed migration can preserve validation through exchanged key material and carefully timed changes. [RFC 6781 describes cooperating operators](https://www.rfc-editor.org/rfc/rfc6781#section-4.3.5.1), but both providers must support the required procedure.
+## A successful migration has evidence beyond a saved form
 
-An ordinary migration between unrelated managed providers may instead use a temporary unsigned transition. Cloudflare's standard onboarding asks customers to [turn off DNSSEC at the registrar before replacing nameservers](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/#33-turn-off-dnssec). That procedure deliberately creates a period without DNSSEC validation protection.
+Your completion note should contain the assigned nameservers, the registrar confirmation, the Cloudflare activation status, and service-test results. Include the final DNSSEC state and the administrator responsible for future DNS changes.
 
-For a temporary unsigned transition, agree on the following checkpoints with the providers:
+If email fails while the website works, compare the email inventory first. If the entire domain fails, examine delegation and DNSSEC with the relevant providers. Repeatedly changing nameservers without identifying the failed layer makes recovery harder.
 
-1. Remove the old parent DS record through the supported registrar procedure.
-2. Confirm the parent publishes the removal.
-3. Wait for previously cached DS information to expire before changing signing or delegation incompatibly.
-4. Change the delegation after the replacement zone passes its checks.
-5. Keep the previous service available while cached delegations expire.
-6. Enable replacement signing and publish the matching DS through the supported procedure.
-7. Verify the restored validation chain before closing the migration.
-
-Keep the old zone correctly signed while resolvers can still rely on the old DS. Stopping signatures immediately after requesting DS removal can break validation for cached trust data. Do not treat a registrar's saved confirmation as evidence that every resolver has refreshed.
-
-A DS record is not an arbitrary value to copy between providers. The parent trust information must correspond to the replacement zone's key configuration. [RFC 6781 identifies a DS pointing to a nonexistent DNSKEY as a failure condition](https://www.rfc-editor.org/rfc/rfc6781#section-4.3.3).
-
-[TTL](/en/glossary/ttl/) also affects nameserver migration. Lowering a TTL changes future answers, rather than rewriting records already inside resolver caches. Inspect the previous TTLs before selecting the change window.
-
-Parent delegation TTLs and child-zone NS TTLs can differ. Lowering an A record's TTL does not lower either nameserver TTL. Amazon's [migration guidance explicitly notes parent NS caching](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/migrate-dns-domain-in-use.html#Step4LowerTTLSettings).
-
-Ask which TTLs the registrar or DNS provider actually lets you change. Plan around the values you observe, including DS caching where relevant. Do not promise a universal propagation window based on one website record.
-
-A newly restored missing record can also remain absent from cached answers. [RFC 2308 defines negative caching using SOA information](https://www.rfc-editor.org/rfc/rfc2308.html#section-3). Correct the authoritative zone first, then distinguish cached absence from a continuing configuration error.
-
-## Direct queries compare the replacement zone before delegation changes
-
-![The old and new DNS services need matching service records and a separate DNSSEC plan.](../../assets/change-domain-nameservers-05-compare-answers.jpg)
-
-Use `dig` when the replacement provider permits direct authoritative queries. Replace `ns1.provider.example` with an assigned server. Replace `example.com` with the domain under migration. These examples only read DNS data.
-
-| Check | Example command |
-| --- | --- |
-| Zone authority | `dig @ns1.provider.example example.com SOA +norecurse` |
-| Website address | `dig @ns1.provider.example www.example.com A +norecurse` |
-| IPv6 address | `dig @ns1.provider.example www.example.com AAAA +norecurse` |
-| Mail destinations | `dig @ns1.provider.example example.com MX +norecurse` |
-| Apex text records | `dig @ns1.provider.example example.com TXT +norecurse` |
-
-The `@server` argument selects the server. The `+norecurse` option clears the recursion request. [ISC documents the query syntax and recursion option](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility).
-
-Repeat each relevant query against every assigned server and the previous provider. Compare record values with the approved inventory. Preserve the full response, including status and flags. A timeout or refusal needs investigation before the change.
-
-Query DKIM selectors, `_dmarc`, and verification names separately. An apex TXT query does not enumerate text records at other names. Use the inventory to choose the exact owner name and record type.
-
-Check provider features before requiring identical wire answers. A proxy or alias can intentionally change returned addresses. Confirm that the replacement behavior matches the approved service plan.
-
-Keep the parent delegation check separate. A direct query proves what the selected server answers. A direct query does not prove that public resolvers will find the selected server through the parent.
-
-## Separate checks verify DNS, website and mail after the change
-
-![Separate checks verify DNS, website and mail after the change.](../../assets/change-domain-nameservers-04-migration-checks.jpg)
-
-Test the replacement authoritative nameservers before changing delegation, when the provider supports direct queries. Compare answers from every assigned server for the names on the inventory. A response from one server does not establish agreement across the set.
-
-Record the queried server, full hostname, record type, response status, and answer. An explicit query for `www.example.com` differs from checking only `example.com`. Likewise, an A answer cannot establish whether the expected AAAA or MX records exist.
-
-Use a short acceptance sheet with expected values from the approved inventory. Mark missing answers as failures that need investigation. Do not substitute a screenshot of the provider dashboard for a response from the authoritative service.
-
-Once the checks pass, save the assigned nameserver set through the registrar's delegation controls. Verify the parent delegation after the registrar processes the request. Keep the old DNS account and zone operational during the agreed overlap.
-
-Check recursive [DNS](/en/glossary/dns/) answers from more than one network during the transition. Record which server returned each answer. Different answers can reflect cached delegations, but the explanation needs evidence from the parent and authoritative services.
-
-Then test the services that depend on DNS. Open both apex and `www` addresses over HTTPS. Check a meaningful application operation, rather than only a cached landing page. Ask the mail owner to send and receive test messages through an external mailbox.
-
-For outgoing mail, inspect the receiving system's authentication results with the mail administrator. A delivered test message alone does not verify every sender configuration. Test important sending systems separately, including any transactional email service.
-
-Use symptoms to choose the next investigation:
-
-- If only new authoritative servers lack records, repair the replacement zone.
-- If parent delegation still lists old servers, check the registrar request.
-- If validators fail, inspect DS, DNSKEY, and signatures before changing service destinations.
-- If DNS answers match but HTTPS fails, inspect the web host and certificate configuration.
-- If web access succeeds but mail fails, inspect mail records and the mail service separately.
-
-Avoid repeatedly switching nameservers while investigating. Each switch can leave another set of cached information in use. Prefer a documented repair or a deliberate rollback decision with the provider.
-
-A rollback needs the saved delegation and a working previous zone. DNSSEC also needs a compatible trust state. Returning the nameserver names alone cannot repair a mismatched parent DS record.
-
-Finally, define the retirement condition in writing. Require matching authoritative data, the expected parent delegation, successful service checks, and the planned DNSSEC state. Review the relevant cache lifetimes before canceling the old DNS service.
-
-The useful completion test is operational: visitors reach the intended website, mail uses the intended service, and validation follows the intended trust chain. A saved nameserver form starts that verification.
+Start with the correct Cloudflare zone's Overview page. Finish with an active zone and working website, email, and subdomains. Those checks establish that the migration serves the domain's actual users.
 
 ## Sources and further reading
 
-- RFC Editor — [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-4.2.1), sections 4.2.1–4.2.2, zone boundaries, delegation, and glue. Fetched 2026-10-21.
-- RFC Editor — [RFC 6781](https://www.rfc-editor.org/rfc/rfc6781#section-4.3.5), sections 4.3.3–4.3.5.2, DNSSEC operator changes and trust continuity. Fetched 2026-10-21.
-- RFC Editor — [RFC 2308](https://www.rfc-editor.org/rfc/rfc2308.html#section-3), sections 3 and 5, negative responses and caching. Fetched 2026-10-21.
-- Cloudflare — [Set up a primary zone](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/), sections 2 and 3, scan limitations, assigned nameservers, and standard DNSSEC migration. Fetched 2026-10-21.
-- Amazon Web Services — [Migrate a domain in use to Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/migrate-dns-domain-in-use.html), steps 2–7, zone preparation, imports, TTLs, DS removal, and delegation. Fetched 2026-10-21.
-- Google Workspace — [Connect your website](https://knowledge.workspace.google.com/admin/domains/connect-your-website-to-a-domain-registered-through-google#if-ns-changed-add-google-workspace-services-to-your-web-host), “If NS changed,” mail and verification continuity. Fetched 2026-10-21.
-- ISC — [BIND 9 dig manual](https://bind9.readthedocs.io/en/stable/manpages.html#dig-dns-lookup-utility), query syntax, server selection, and recursion options. Fetched 2026-10-21.
+### Cloudflare documents its full setup procedure
+
+[Cloudflare documents its full setup procedure](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/#3-change-your-nameservers). Checked 2026-10-30.

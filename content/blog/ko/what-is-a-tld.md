@@ -193,6 +193,8 @@ blog . namefi . io
 
 **Namefi**는 [이더리움](/ko/glossary/ethereum/) 메인넷에서 실제 ICANN 도메인을 최초로 [토크나이즈](/ko/glossary/tokenize/)한 플랫폼이자, Base에서 최초로 이를 실현한 플랫폼으로, [`.com`](/ko/tld/com/), [`.xyz`](/ko/tld/xyz/), [`.io`](/ko/tld/io/) 등 위에서 언급한 수많은 TLD를 지원합니다. 실제 브라우저에서 접근 가능한 도메인과 지갑 기반 소유권을 하나의 제품으로 제공합니다.
 
+[Namefi 지원 확장자 목록](https://namefi.io/tlds)에서 현재 서비스에 나열된 확장자를 확인하세요. 더 넓은 위임 현황은 IANA 루트 목록에서 확인하세요. 확장자가 목록에 있다고 해서 특정 이름의 등록 가능 여부나 등록 자격, 현재 가격이 입증되지는 않습니다.
+
 > 두 레이어가 어떻게 결합되는지 궁금하신가요? [토크나이즈드 도메인이란?](/ko/blog/what-are-tokenized-domains/)을 읽거나, [namefi.io](https://namefi.io)에서 도메인을 등록하거나 토크나이즈해 보세요.
 
 ---

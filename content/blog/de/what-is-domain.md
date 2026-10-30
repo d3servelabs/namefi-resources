@@ -45,6 +45,8 @@ Ein Domainname besteht aus mehreren Teilen:
 
 Die DNS-Hierarchie beginnt bei der Wurzel `.`. Darunter liegen die Top-Level-Domain `com`, die Second-Level-Domain `example.com` und die Subdomain `blog.example.com`. `example` allein ist ein Label. Bei `example.co.uk` ist `uk` die Top-Level-Domain, `co.uk` die zweite Ebene und `example.co.uk` die dritte Ebene. Die Registrierungsgrenze entspricht deshalb nicht immer der zweiten Ebene. [RFC 1034](https://www.rfc-editor.org/rfc/rfc1034#section-3.1).
 
+Geben Sie zum Prüfen eines weiteren Namens den Hostnamen ohne URL-Pfad in [Namefis Domainnamenprüfung](https://namefi.io/domain-tools/domain-name) ein. Das lokale Ergebnis zeigt normalisierte Formen und, sofern bekannt, die Grenze des öffentlichen Suffixes. Das Ergebnis belegt weder Verfügbarkeit noch Registrierungsrechte oder die Kontrolle über den Namen.
+
 Ein Domainname hat jeweils einen Registranten. Der Registrant kann anderen Personen oder Diensten die Nutzung erlauben. Die Registrierung reserviert denselben Namen nicht unter anderen Endungen. [ICANN](https://www.icann.org/en/contracted-parties/accredited-registrars).
 
 ---

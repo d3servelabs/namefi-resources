@@ -1,202 +1,174 @@
 ---
-title: "What Is HTTPS? A Secure Connection Is Not a Safety Guarantee"
+title: What Is HTTPS? Why a Secure Connection Does Not Mean a Safe Website
 date: '2026-08-25'
-updated: '2026-10-29'
+updated: '2026-10-30'
 language: en
-tags: ['https', 'tls', 'certificates', 'security', 'networking']
-authors: ['aileen-wright']
-editors: ['victor-zhou']
+tags:
+- https
+- tls
+- certificates
+- security
+- networking
+authors:
+- aileen-wright
+editors:
+- victor-zhou
 draft: false
 cluster: domain-security
 format: explainer
-description: "HTTPS protects the connection, not the honesty of a website. Learn what port 443, TCP tests, TLS verification, and HTTP responses actually prove."
+description: Understand HTTPS encryption, certificate checks, and port 443. Learn what a secure connection proves and how visitors and operators should respond.
 ogImage: ../../assets/what-is-https-og.jpg
-keywords: ["http vs https", "what is https", "https meaning", "TLS encryption", "HTTPS certificates", "HTTP port 80", "HTTPS port 443", "ACME certificate renewal", "certificate authorities", "DNS-01 challenge"]
+keywords:
+- what is HTTPS
+- HTTPS meaning
+- HTTP vs HTTPS
+- HTTPS security
+- TLS encryption
+- HTTPS certificate
+- secure website connection
+- HTTPS port 443
+- website certificate warning
+- HTTPS phishing
+- HTTPS setup
+- TLS verification
 relatedArticles:
-  - /en/blog/the-myetherwallet-bgp-dns-attack/
-  - /en/blog/how-domain-hijacking-actually-happens/
-  - /en/blog/dns-over-https-vs-enterprise-split-horizon-dns/
-  - /en/blog/dns-is-the-control-plane/
-  - /en/blog/the-curve-finance-dns-hijack/
+- /en/blog/the-myetherwallet-bgp-dns-attack/
+- /en/blog/how-domain-hijacking-actually-happens/
+- /en/blog/dns-over-https-vs-enterprise-split-horizon-dns/
+- /en/blog/dns-is-the-control-plane/
+- /en/blog/the-curve-finance-dns-hijack/
 relatedTopics:
-  - /en/topics/domain-security/
-  - /en/topics/domain-basics/
+- /en/topics/domain-security/
+- /en/topics/domain-basics/
 relatedSeries:
-  - /en/series/domain-apocalypse/
-  - /en/series/blockchain-concepts/
+- /en/series/domain-apocalypse/
+- /en/series/blockchain-concepts/
 relatedGlossary:
-  - /en/glossary/dns/
-  - /en/glossary/public-key/
-  - /en/glossary/registrar/
-  - /en/glossary/phishing/
-  - /en/glossary/dnssec/
+- /en/glossary/dns/
+- /en/glossary/public-key/
+- /en/glossary/registrar/
+- /en/glossary/phishing/
+- /en/glossary/dnssec/
 ---
 
-**HTTPS is HTTP protected by TLS encryption and server authentication.** Plain HTTP provides no comparable protection for traffic in transit. With HTTPS, the browser checks the server's certificate and establishes an encrypted connection before exchanging protected web requests and responses. [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2) defines the two URL schemes and their security requirements.
+**HTTPS protects HTTP communication with authentication, confidentiality, and integrity.** A browser checks the service identity and exchanges protected requests and responses. HTTPS does not establish that the website's operator is honest or that an offer is legitimate. [The HTTPS standard defines connection protection](#the-https-standard-requires-a-protected-connection). [Chromium explains the separate website-safety question](#chromium-distinguishes-connection-security-from-site-safety).
 
-This article explains what HTTPS actually does, and walks through the concepts it is built from: encryption, ports, certificates, certificate authorities, and the ACME protocol that automates certificate issuance. It ends where every HTTPS chain ends if you follow it far enough down: at control of a domain name.
+For a visitor, the immediate task is to check the intended address and respect certificate warnings. For a website operator, the task includes configuring HTTPS for every intended hostname and keeping certificate management working.
 
-## What plain HTTP leaves exposed
+## HTTPS adds protection to web requests and responses
 
-| Connection property | HTTP | HTTPS |
-| --- | --- | --- |
-| URL scheme | `http://` | `https://` |
-| Default port | 80 | 443 |
-| Encryption in transit | None supplied by HTTP itself | TLS protects traffic on the connection |
-| Detection of changed traffic | No cryptographic integrity protection from HTTP itself | TLS detects tampering with protected traffic |
-| Server authentication | No certificate check from HTTP itself | The client validates the certificate for the requested host |
-| What it says about the business | No trust guarantee | Still no guarantee that the business or content is honest |
+HTTP defines how a client requests a resource and how a server responds. An HTTPS URL requires protected communication with the authority identified by that URL. The standard requires confidentiality and integrity acceptable to both endpoints. [RFC 9110 defines the HTTPS scheme](#the-https-standard-requires-a-protected-connection).
 
-These are [connection properties](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2), not a promise that a site is safe to buy from. HTTPS protects communication with the named host; a phishing site can also use HTTPS.
+TLS supplies the secure-channel properties behind ordinary HTTPS connections. Confidentiality protects established-channel data from outside readers. Integrity makes unauthorized changes detectable. Authentication connects the secure channel to the service identity the client expects. [RFC 8446 describes those properties](#the-tls-standard-defines-the-secure-channel).
 
-HTTP, the protocol browsers and web servers speak, was designed as cleartext. A request for a page, the cookies attached to it, the form data in it, and the page that comes back all travel across the network as readable bytes. Anyone positioned on the path — the operator of a coffee-shop Wi-Fi network, an ISP, a backbone carrier, a compromised router — can read all of it.
+Consider a hypothetical sign-in request to `https://accounts.example.com/`. HTTPS protects the request as the browser communicates with the authenticated service. The protected request can contain a password or session cookie. HTTPS does not decide whether the user should have entered that password at that address.
 
-Worse, they can change it. Cleartext HTTP has no integrity protection, so an intermediary can inject advertising into pages, rewrite a download link to point at malware, or swap the account number on a payment page, and neither side can tell. And because plain HTTP has no notion of server identity, the browser is simply trusting that whatever machine answered — usually whatever [IP address](/en/glossary/ip-address/) the [DNS](/en/glossary/dns/) lookup returned — really is the site it asked for. As our case studies of [DNS hijacking](/en/glossary/dns-hijacking/) incidents show, that assumption fails in practice, and it fails expensively.
+The sign-in example uses a [reserved documentation domain](#the-ietf-reserves-example-domains-for-documentation).
 
-## The three guarantees of HTTPS
+The distinction also applies to downloads and payments. A protected connection helps preserve the bytes exchanged with the named service. The visitor must still judge the source, intended recipient, and requested action. Encryption cannot replace that judgment.
 
-HTTPS wraps HTTP in TLS — Transport Layer Security — whose current version, TLS 1.3, was standardized in 2018 as RFC 8446. The specification states the goal directly: TLS lets applications communicate in a way [designed to prevent eavesdropping, tampering, and message forgery](https://datatracker.ietf.org/doc/html/rfc8446#:~:text=eavesdropping%2C%20tampering%2C%20and%20message%20forgery). Those three verbs map to three concrete guarantees:
+## A certificate connects a server identity to the requested name
 
-- **Confidentiality.** The traffic is encrypted, so an observer on the path sees only which server you connected to and roughly how much data moved — not the URLs, cookies, credentials, or content.
-- **Integrity.** TLS authenticates protected traffic with a cryptographic integrity check, so altered data is rejected rather than silently delivered. Modern TLS uses authenticated encryption; this is more specific than simply attaching a [hash](/en/glossary/hash-function/) to a message.
-- **Authentication.** The server proves possession of the [private key](/en/glossary/private-key/) for a certificate the browser trusts for the requested hostname. That is [authentication of the connection](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.3.3), not proof of rightful domain ownership or an honest business. Mandiant documented [DNS hijackers obtaining valid certificates](https://cloud.google.com/blog/topics/threat-intelligence/global-dns-hijacking-campaign-dns-record-manipulation-at-scale#:~:text=certbot%20is%20used) for redirected services, allowing browsers to connect without certificate errors.
+A browser needs more than encrypted bytes. The client must verify that the service identity matches the origin server it intended to reach. The HTTPS standard requires that verification and a configured set of trust anchors. [RFC 9110 explains certificate verification](#the-https-standard-requires-service-identity-verification).
 
-A useful way to remember the division of labor: encryption seals the envelope, integrity checks detect alterations, and authentication checks the recipient's certificate and proof of its private key against the requested hostname.
+A certificate authority participates in that trust system. The server presents a certificate, and the client verifies the certificate under the client's trust configuration. curl provides a concrete example: curl verifies the certificate signature and checks the server name supplied in the URL. [curl documents the default verification](#curl-explains-certificate-and-hostname-verification).
 
-## Port 443 identifies the default HTTPS endpoint, not a security guarantee
+The requested hostname therefore matters. `example.com` and `accounts.example.com` are different names to consider during certificate setup. Do not assume that installing a certificate for one name covers every other name. The [certificate selection guide](/en/blog/ssl-certificate-types/) explains coverage choices.
+
+A certificate warning means the client could not complete the expected verification. As practical advice, stop before submitting credentials or approving a payment. Record the displayed hostname and error. A visitor should contact the site operator or device administrator when the reason remains unclear.
+
+Do not follow advice that disables certificate verification to make a production request succeed. curl's documentation explicitly recommends keeping verification enabled in production. [The verification guidance states that boundary](#curl-explains-certificate-and-hostname-verification).
+
+![A browser checks a site certificate through a chain leading to a trusted certificate authority.](../../assets/what-is-https-02-chain-of-trust.jpg)
+
+## TLS establishes keys before protecting application traffic
+
+TLS uses a handshake to negotiate parameters and establish shared keying material. After the handshake, the peers use established keys to protect application traffic. Authentication forms part of that process. [RFC 8446 explains the protocol sequence](#the-tls-handshake-establishes-shared-keys).
+
+The certificate does not need to encrypt each page byte itself. The handshake combines identity verification with key establishment, and the connection uses the resulting traffic keys. This distinction helps explain why replacing a certificate and changing website content are separate administrative actions.
+
+The secure channel also has limits. TLS does not hide the length of transmitted data by default. Endpoints can still see the application data they exchange. [The TLS specification describes confidentiality and its limits](#the-tls-standard-defines-the-secure-channel).
+
+Treat claims that HTTPS makes browsing invisible as too broad. This article describes the protected connection, rather than every possible observation available to a network operator, application, or website. A privacy assessment must examine the actual services and configuration involved.
+
+![A simplified TLS 1.3 handshake establishes keys and authenticates the server before application data.](../../assets/what-is-https-05-modern-tls-handshake.jpg)
+
+## Port 443 is a default endpoint rather than a trust signal
+
+An HTTPS URL without an explicit port uses port 443 by default. A URL can explicitly select another port. [RFC 9110 defines the default](#the-https-standard-requires-a-protected-connection). The [port 443 guide](/en/blog/what-is-port-443/) explains visitor and server network checks.
+
+Keep three diagnostic results separate:
+
+| Result | What the result establishes |
+| --- | --- |
+| A TCP connection succeeds | The tested TCP endpoint accepts that connection |
+| Certificate verification succeeds | The client accepts the certificate and requested service identity |
+| The application returns the expected page | The tested request reaches the intended application behavior |
+
+HTTP/3 adds another transport distinction because HTTP/3 uses QUIC. A TCP-only test therefore does not test the HTTP/3 connection path. [RFC 9114 defines HTTP over QUIC](#http3-maps-http-onto-quic).
+
+An HTTP error can occur after HTTPS works. For example, a server can return 403 because the server refuses the request. A certificate change will not necessarily change that permission decision. [RFC 9110 defines 403](#the-http-standard-defines-a-forbidden-response).
 
 ![TCP reachability, TLS verification, and an HTTP response require separate checks.](../../assets/what-is-https-04-port-checks.jpg)
 
-**Port 443 is the default port for an HTTPS URL that omits an explicit port.** A port number alone proves no encryption or certificate validity. [The HTTPS specification defines the default](#the-https-standard-defines-port-443).
+## Website operators need a working certificate lifecycle
 
-A visitor initiates a connection to the website. An operator configures the service that accepts the connection. Diagnose the relevant side before changing firewall rules. Opening an inbound port on a visitor's router does not configure the website's HTTPS service.
+Certificate issuance requires a way to validate the requested names. Let's Encrypt documents automated challenges that test domain control. HTTP-01 retrieves a challenge file through port 80. DNS-01 checks a TXT record and supports wildcard issuance. [Let's Encrypt explains the challenge paths](#lets-encrypt-documents-domain-control-challenges).
 
-| Check | What the observation supports | What the observation does not establish |
-| --- | --- | --- |
-| TCP connection to port 443 | The tested TCP endpoint accepted a connection from that test location | A valid certificate, a working HTTP application, or access from every network |
-| TLS certificate verification | The client accepted the certificate and requested hostname under its trust configuration | An honest business or a successful application request |
-| HTTP response over verified TLS | The endpoint returned an HTTP response through that connection | Permission to access every page or operation |
+As operational advice, start by listing every public hostname that should work. Include redirect entry points as well as the final destination. Confirm the hosting platform's certificate workflow before changing DNS or network settings.
 
-These checks cover different protocol layers. TCP establishes a transport connection. TLS adds authentication and protection. HTTP supplies application responses. [The protocol and client documentation support those boundaries](#protocol-tests-answer-different-questions).
+Then check the actual visitor experience. Open the intended HTTPS URL, inspect any redirects, and test the actions the site supports. Confirm that the correct site appears, rather than treating certificate issuance as the end of setup.
 
-With curl available, inspect the actual hostname:
+Keep renewal automation and its validation permissions under review. A workflow that issued a certificate once still needs the required access when renewal runs. Restrict automation permissions to the operations the certificate workflow needs.
 
-```bash
-curl --head --verbose https://www.example.com/
-```
+![A certificate client proves control through an HTTP file or a DNS TXT record.](../../assets/what-is-https-03-acme.jpg)
 
-Replace `www.example.com` with the intended hostname. The command requests headers and diagnostic output. Keep certificate verification enabled. curl verifies certificates by default, including the requested server name. [The curl documentation defines the options and verification behavior](#curl-documents-the-named-host-check).
+## Visitors should judge the address and the request together
 
-A server can reject the HEAD method while accepting a normal page request. An HTTP error therefore needs application-level interpretation. For a browser failure, follow the [Chrome connection diagnosis guide](/en/blog/fix-chrome-secure-connection-error/).
+Chromium explains that a connection-security indicator does not mean a website is trustworthy. HTTPS can protect a connection to a phishing site. [The Chromium explanation addresses that misunderstanding](#chromium-distinguishes-connection-security-from-site-safety).
 
-A TCP-only check also leaves HTTP/3 untested because HTTP/3 uses QUIC. The [HTTP/3 specification describes that transport](https://www.rfc-editor.org/rfc/rfc9114.html#section-2). Record the hostname, protocol, test location, and time before comparing results.
+Before a sensitive action, inspect the full hostname and use a known route to the service. Treat unexpected requests for passwords, recovery codes, or payments as a separate question from encryption. For a website operator, keep the [domain account](/en/blog/harden-domain-registrar-account/) and DNS administration protected alongside HTTPS.
 
-One caveat worth knowing: encrypting traffic on port 443 does not make the connection invisible. An observer still sees which IP you connected to, and the TLS handshake has historically sent the server's hostname (the SNI field) unencrypted — [any intermediary can view which website you're visiting simply by checking the first packet for a connection](https://blog.cloudflare.com/announcing-encrypted-client-hello/#:~:text=any%20intermediary%20can%20view%20which%20website%20you%27re%20visiting), as Cloudflare puts it. Encrypted Client Hello (ECH) is the emerging fix, and encrypted DNS closes the parallel leak on the lookup side — a shift with its own consequences, which we cover in [DNS over HTTPS vs enterprise split-horizon DNS](/en/blog/dns-over-https-vs-enterprise-split-horizon-dns/).
-
-## The TLS handshake establishes authenticated keys
-
-![A simplified TLS 1.2 handshake places key exchange after the server certificate](../../assets/what-is-https-01-handshake.jpg)
-
-The illustration summarizes an older TLS 1.2 handshake. TLS 1.3 changes the message order, as the steps below explain.
-
-Encryption comes in two flavors, and HTTPS needs both. **Symmetric** encryption uses one shared key for both sealing and opening messages — fast, but it assumes the two sides already share a secret, which strangers on the internet do not. **Asymmetric** (public-key) cryptography solves that bootstrap problem: the server holds a private key, publishes the matching [public key](/en/glossary/public-key/), and anything encrypted to the public key can only be opened with the private one, while a [digital signature](/en/glossary/digital-signature/) made with the private key can be verified by anyone holding the public one.
-
-A typical certificate-based TLS 1.3 handshake combines key agreement and authentication. [RFC 8446, section 2](https://www.rfc-editor.org/rfc/rfc8446.html#section-2) shows the message order:
-
-1. The browser sends supported cryptographic parameters and a key share.
-2. The server selects parameters and sends its key share. Both sides derive handshake keys.
-3. The server sends an encrypted certificate and proves possession of its private key with a signature.
-4. The browser verifies the certificate, hostname, and handshake. Both sides use derived traffic keys to protect application data.
-
-HTTP/3 uses QUIC rather than TCP. [RFC 9114, section 2](https://www.rfc-editor.org/rfc/rfc9114.html#section-2) explains how QUIC integrates TLS 1.3 for HTTPS connections.
-
-A note on names: this protocol family began life as SSL (Secure Sockets Layer) in the 1990s, was renamed TLS when standardization moved to the IETF, and modern browsers now speak TLS 1.2 and 1.3 only. The old name survives in everyday phrases like "SSL certificate," which today always means a TLS certificate.
-
-## Certificates and certificate authorities
-
-![Flat-vector illustration of a chain of trust: a browser window linking to a site certificate, linking upward to an intermediate and a root certificate authority seal](../../assets/what-is-https-02-chain-of-trust.jpg)
-
-Encryption without identity would be a private conversation with a possible impostor. The identity half of HTTPS rests on **certificates**: signed digital documents that bind a domain name to a public key. The signer is a **certificate authority (CA)** — an organization whose own signing keys are pre-trusted by browsers and operating systems through their *root stores*. Trust flows down a chain: a root CA signs an intermediate, the intermediate signs the certificate for `example.com`, and the browser accepts the site's key because the chain terminates in a root it already trusts — [cryptographic security](/en/glossary/cryptographic-security/) by delegation.
-
-Before signing, the CA must validate that the requester actually controls the domain named in the certificate — that validation is the entire meaning of a standard (domain-validated) certificate. If a browser receives a certificate that doesn't chain to a trusted root, doesn't match the hostname, or has expired, the browser reports a certificate error. Browser indicators vary: Chrome announced a [replacement for its padlock icon](https://blog.chromium.org/2023/05/an-update-on-lock-icon.html) in 2023.
-
-For a connection failure, the [Chrome diagnosis guide](/en/blog/fix-chrome-secure-connection-error/) separates the displayed error code from the checks a visitor or operator can perform.
-
-Certificate warnings require attention because the browser could not establish the expected authenticated connection. Do not bypass a warning to enter credentials or approve a payment. Diagnose the hostname, certificate chain, validity dates, and local clock before continuing.
-
-Two developments keep the CA system honest at scale. **Certificate Transparency** (RFC 6962) records issued certificates in public, append-only logs — a protocol [for publicly logging the existence](https://datatracker.ietf.org/doc/html/rfc6962#:~:text=for%20publicly%20logging%20the%20existence) of TLS certificates — so a domain owner can monitor the logs and detect a certificate issued for their name that they never requested.
-
-Public TLS certificate **lifetimes are shrinking**. The [current CA/Browser Forum Baseline Requirements, section 6.3.2](https://github.com/cabforum/servercert/blob/main/docs/BR.md#632-certificate-operational-periods-and-key-pair-usage-periods), set maximum validity periods by issuance date. The limit became 200 days on March 15, 2026. The schedule reduces the limit to 100 days on March 15, 2027, then 47 days on March 15, 2029. Shorter lifetimes increase the need for reliable renewal automation.
-
-## ACME: certificates on autopilot
-
-![Flat-vector illustration of a friendly robot completing an ACME challenge by placing a token file on a web server and a TXT record into a DNS zone, receiving a certificate in return](../../assets/what-is-https-03-acme.jpg)
-
-For the web's first two decades, getting a certificate meant paying a CA, generating a signing request by hand, proving control of the domain over email, and repeating the ritual every year or two. The cost and friction showed: as late as February 2018, Google's telemetry put [Chrome traffic on Android and Windows at just over 68% protected](https://blog.chromium.org/2018/02/a-secure-web-is-here-to-stay.html#:~:text=Over%2068%25%20of%20Chrome%20traffic%20on%20both%20Android%20and%20Windows%20is%20now%20protected).
-
-**ACME** — the Automatic Certificate Management Environment, standardized in 2019 as RFC 8555 — automates certificate management. Let's Encrypt offers free certificates through ACME. The protocol itself does not set a CA's prices. [RFC 8555](https://datatracker.ietf.org/doc/html/rfc8555#section-1) defines the automated verification and issuance process. An ACME client (such as EFF's [Certbot](https://certbot.eff.org/)) proves control of a domain by completing a **challenge**, and Let's Encrypt's documentation describes the two that matter:
-
-- **HTTP-01:** the CA hands the client a token, and the client [puts a file on your web server](https://letsencrypt.org/docs/challenge-types/#:~:text=puts%20a%20file%20on%20your%20web%20server) at `http://<your-domain>/.well-known/acme-challenge/<token>`. The CA checks the expected response to validate the challenge. This challenge [cannot be used to issue wildcard certificates](https://letsencrypt.org/docs/challenge-types/#:~:text=cannot%20be%20used%20to%20issue%20wildcard%20certificates).
-- **DNS-01:** the client proves control of the domain's DNS by [putting a specific value in a TXT record](https://letsencrypt.org/docs/challenge-types/#:~:text=putting%20a%20specific%20value%20in%20a%20TXT%20record) at `_acme-challenge.<your-domain>`. Successful DNS-01 validation proves the applicant can answer that DNS challenge. DNS-01 supports wildcard issuance. A certificate for `*.example.com` matches `shop.example.com`, but not `example.com` or `a.shop.example.com`. [RFC 9525, section 6.3](https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3) limits wildcard matching to one label.
-
-Issuance and renewal then run on a timer with no human involved. In December 2025, Let's Encrypt reported it was [frequently issuing ten million certificates per day](https://letsencrypt.org/2025/12/09/10-years#:~:text=ten%20million%20certificates%20per%20day) and on track to serve [a billion active sites](https://letsencrypt.org/2025/12/09/10-years#:~:text=a%20billion%20active%20sites). Encryption went from a paid add-on to the default state of the web.
-
-Notice what both challenges have in common: the *only* identity being verified is control of a domain name — via its web server or via its DNS zone. In the HTTPS trust model, the domain is the identity.
-
-## Why HTTPS became non-negotiable
-
-The browsers did not wait politely for adoption. [Beginning in July 2018 with the release of Chrome 68](https://blog.chromium.org/2018/02/a-secure-web-is-here-to-stay.html#:~:text=Beginning%20in%20July%202018%20with%20the%20release%20of%20Chrome%2068), Chrome marked every plain-HTTP page "not secure" in the address bar, and other browsers followed the same arc. Google had already put a thumb on the scale years earlier, announcing in August 2014 that it was [starting to use HTTPS as a ranking signal](https://developers.google.com/search/blog/2014/08/https-as-ranking-signal#:~:text=starting%20to%20use%20HTTPS%20as%20a%20ranking%20signal) in search — [only a very lightweight signal](https://developers.google.com/search/blog/2014/08/https-as-ranking-signal#:~:text=only%20a%20very%20lightweight%20signal) at the time, but a clear statement of direction.
-
-Two more mechanisms lock the ratchet. **HSTS** (HTTP Strict Transport Security, RFC 6797) lets a site [declare itself accessible only via secure connections](https://datatracker.ietf.org/doc/html/rfc6797#:~:text=declare%20themselves%20accessible%20only%20via%20secure%20connections): once a browser has seen that header, it refuses to load the site over plain HTTP again for as long as the declared `max-age` policy stays cached — a first-ever visit, or one after the policy expires, isn't covered unless the domain is also on browsers' hardcoded HSTS preload list. And browser vendors gate modern web capabilities to secure pages — in Chrome's words, HTTPS [unlocks both performance improvements and powerful new features that are too sensitive for HTTP](https://blog.chromium.org/2018/02/a-secure-web-is-here-to-stay.html#:~:text=unlocks%20both%20performance%20improvements%20and%20powerful%20new%20features). For any domain that serves users, HTTPS stopped being a security upgrade and became the price of admission.
-
-## What HTTPS does not do
-
-Clarity about the guarantees requires clarity about the gaps:
-
-- **It does not vouch for the site's honesty.** A domain-validated certificate proves you reached the domain in the address bar — not that the domain is trustworthy. Phishing sites routinely serve valid HTTPS on lookalike domains they legitimately registered. The padlock means *private*, not *safe*.
-- **It does not hide that a connection happened.** Destination IPs, timing, traffic volume, and (until ECH is universal) the SNI hostname remain observable metadata.
-- **It does not protect data at rest.** TLS secures the pipe; a breached or malicious server exposes whatever you sent regardless of how well it was encrypted in transit.
-- **It is only as strong as control of the domain.** ACME's challenges are honest about the trust model: an attacker who controls validation responses may obtain a certificate, subject to the CA's issuance checks. A compromised [registrar](/en/glossary/registrar/) account can expose DNS control. A domain hijacker doesn't need to break TLS — they *become* the identity TLS attests to, as our breakdown of [how domain hijacking actually happens](/en/blog/how-domain-hijacking-actually-happens/) shows with real incidents.
-
-## The domain is the root of the chain
-
-Follow HTTPS all the way down and every guarantee bottoms out in the same place. The certificate names a domain. The CA validated control of that domain. The ACME challenge was answered by that domain's web server or [nameserver](/en/glossary/nameserver/)s. Encryption, integrity, authentication — all of it is anchored not in the server hardware or the company behind the site, but in the domain name and the [DNS that steers it](/en/blog/dns-is-the-control-plane/).
-
-That is why domain security is not adjacent to HTTPS — it is underneath it. Protecting the registrar account, locking transfers, controlling who can edit DNS records: these are certificate-security measures, whether or not they are labeled that way. Certificate automation also needs narrow DNS permissions, protected account credentials, and monitoring for unexpected issuance. Tokenized ownership alone does not secure a DNS provider account or an ACME credential.
-
-The padlock is the last link in the chain. The domain is the first.
-
-Choose [certificate validation and hostname coverage](/en/blog/ssl-certificate-types/) before deployment. Compare [free certificate options and renewal responsibilities](/en/blog/free-ssl-certificate/). Then follow the [certificate installation and verification guide](/en/blog/how-to-install-an-ssl-certificate/).
+The next useful step depends on the problem. A certificate warning needs connection diagnosis. A misleading website needs an identity and content assessment. A production site needs both a verified HTTPS connection and the intended application behavior.
 
 ## Sources and further reading
 
-- IETF — [RFC 9110, sections 4.2.1–4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2), HTTP/HTTPS schemes, default ports, confidentiality, integrity, and authentication. Fetched 2026-09-15.
-- IETF — [RFC 9110, section 4.3.3](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.3.3), HTTPS authority based on certificate trust and use of the corresponding private key. Fetched 2026-09-15.
-- Mandiant — [Global DNS Hijacking Campaign: DNS Record Manipulation at Scale](https://cloud.google.com/blog/topics/threat-intelligence/global-dns-hijacking-campaign-dns-record-manipulation-at-scale#:~:text=certbot%20is%20used), technique 1, steps 6–7: attackers obtaining certificates after changing DNS records. Fetched 2026-09-15.
+### The IETF reserves example domains for documentation
 
-- IETF — [RFC 9525: Service Identity in TLS](https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3) — wildcard matching limits. Fetched 2026-10-22.
-- IETF — [RFC 9114: HTTP/3](https://www.rfc-editor.org/rfc/rfc9114.html#section-2) — HTTPS over QUIC. Fetched 2026-10-22.
-- Chromium — [An Update on the Lock Icon](https://blog.chromium.org/2023/05/an-update-on-lock-icon.html) — connection indicators and website trust. Fetched 2026-10-22.
-- IETF — [RFC 2818: HTTP Over TLS](https://datatracker.ietf.org/doc/html/rfc2818) — defines HTTPS and the default port 443.
-- IETF — [RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3](https://datatracker.ietf.org/doc/html/rfc8446) (August 2018).
-- IETF — [RFC 8555: Automatic Certificate Management Environment (ACME)](https://datatracker.ietf.org/doc/html/rfc8555) (March 2019).
-- IETF — [RFC 6962: Certificate Transparency](https://datatracker.ietf.org/doc/html/rfc6962) and [RFC 6797: HTTP Strict Transport Security](https://datatracker.ietf.org/doc/html/rfc6797).
-- IANA — [Service Name and Transport Protocol Port Number Registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=https) — the port 443 registration.
-- Let's Encrypt — [Challenge Types](https://letsencrypt.org/docs/challenge-types/) and [10 Years of Let's Encrypt Certificates](https://letsencrypt.org/2025/12/09/10-years) (December 2025).
-- Chromium Blog — [A secure web is here to stay](https://blog.chromium.org/2018/02/a-secure-web-is-here-to-stay.html) (February 2018).
-- Google Search Central — [HTTPS as a ranking signal](https://developers.google.com/search/blog/2014/08/https-as-ranking-signal) (August 2014).
-- CA/Browser Forum — [Ballot SC-081v3: Introduce Schedule of Reducing Validity and Data Reuse Periods](https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/) (April 2025); schedule detail via DigiCert — [TLS Certificate Lifetimes Will Officially Reduce to 47 Days](https://www.digicert.com/blog/tls-certificate-lifetimes-will-officially-reduce-to-47-days).
-- Cloudflare — [Encrypted Client Hello: the last puzzle piece to privacy](https://blog.cloudflare.com/announcing-encrypted-client-hello/) (September 2023).
-- EFF — [Certbot](https://certbot.eff.org/), the ACME client.
+[IETF RFC 2606, section 3, Reserved example second-level domain names](https://www.rfc-editor.org/rfc/rfc2606.html#section-3). Fetched 2026-10-30.
 
-### The HTTPS standard defines port 443
+### The HTTPS standard requires a protected connection
 
-[RFC 9110, section 4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2) defines the HTTPS scheme and default port. The [IANA port registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=https) also warns that an assigned port does not establish the actual service. Sources checked 2026-10-29.
+[IETF RFC 9110, section 4.2.2, HTTPS URI scheme](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2). Fetched 2026-10-30.
 
-### Protocol tests answer different questions
+### Chromium distinguishes connection security from site safety
 
-[RFC 9293, section 3.5](https://www.rfc-editor.org/rfc/rfc9293.html#section-3.5) describes TCP connection establishment. [RFC 9110, sections 4.2.2 and 15](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2) distinguish HTTPS requirements and HTTP response semantics. Sources checked 2026-10-29.
+[Chromium Blog, An Update on the Lock Icon, website-safety discussion](https://blog.chromium.org/2023/05/an-update-on-lock-icon.html#:~:text=not%20an%20indicator%20of%20website%20safety). Fetched 2026-10-30.
 
-### curl documents the named-host check
+### The TLS standard defines the secure channel
 
-The curl manual defines [HEAD requests](https://curl.se/docs/manpage.html#-I) and [verbose diagnostics](https://curl.se/docs/manpage.html#-v). The [certificate verification guide](https://curl.se/docs/sslcerts.html) documents default verification and trust-store differences. Sources checked 2026-10-29.
+[IETF RFC 8446, section 1, Introduction](https://www.rfc-editor.org/rfc/rfc8446.html#section-1). Fetched 2026-10-30.
+
+### The HTTPS standard requires service identity verification
+
+[IETF RFC 9110, section 4.3.4, HTTPS certificate verification](https://www.rfc-editor.org/rfc/rfc9110.html#section-4.3.4). Fetched 2026-10-30.
+
+### curl explains certificate and hostname verification
+
+[curl, SSL certificate verification, Verification and Skip verification sections](https://curl.se/docs/sslcerts.html#:~:text=curl%20does%20certificate%20verification%20by%20default). Fetched 2026-10-30.
+
+### The TLS handshake establishes shared keys
+
+[IETF RFC 8446, section 2, Protocol overview](https://www.rfc-editor.org/rfc/rfc8446.html#section-2). Fetched 2026-10-30.
+
+### HTTP3 maps HTTP onto QUIC
+
+[IETF RFC 9114, section 2, HTTP/3 protocol overview](https://www.rfc-editor.org/rfc/rfc9114.html#section-2). Fetched 2026-10-30.
+
+### The HTTP standard defines a forbidden response
+
+[IETF RFC 9110, section 15.5.4, 403 Forbidden](https://www.rfc-editor.org/rfc/rfc9110.html#section-15.5.4). Fetched 2026-10-30.
+
+### Lets Encrypt documents domain control challenges
+
+[Let's Encrypt, Challenge Types, HTTP-01 and DNS-01 sections](https://letsencrypt.org/docs/challenge-types/#http-01-challenge). Fetched 2026-10-30.

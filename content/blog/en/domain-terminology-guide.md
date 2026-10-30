@@ -66,7 +66,7 @@ A hostname can include a subdomain. The bare domain `example.com` can also serve
 
 The **domain name space** means the naming structure, not a blank character inside a name. [RFC 1034 describes a tree](https://www.rfc-editor.org/rfc/rfc1034.html#section-3.1) with a root and labels. Read `shop.example.com` from right to left: root, `com`, `example`, then `shop`. The top-level domain is `com`; `example` is the second-level label; `shop.example.com` is a subdomain of `example.com`.
 
-A fully qualified domain name includes the complete route to the root. DNS presentation format makes the root explicit with a final dot: `shop.example.com.`. Everyday text usually omits the final dot. [RFC 9499 distinguishes those formats](https://www.rfc-editor.org/rfc/rfc9499.html#section-2).
+A [fully qualified domain name](/en/blog/fully-qualified-domain-name/) includes the complete route to the root. DNS presentation format makes the root explicit with a final dot: `shop.example.com.`. Everyday text usually omits the final dot. [RFC 9499 distinguishes those formats](https://www.rfc-editor.org/rfc/rfc9499.html#section-2).
 
 The registered domain is not always the last two labels. Some registration structures use a suffix with several labels. Use the [Public Suffix List](https://publicsuffix.org/list/) when software needs to identify a public suffix, rather than splitting every name at the second dot.
 
@@ -97,7 +97,7 @@ A collection of domain names owned by an individual or company. A portfolio may 
 ### **Aftermarket**
 The market where previously owned domain names are bought and sold. This includes premium domains, aged domains, and domains that are no longer in use.
 
-**Popular Platforms**: Sedo, GoDaddy Auctions, Flippa, NameJet
+**Popular Platforms**: Sedo, [GoDaddy Auctions](/en/blog/godaddy-auctions-guide/), Flippa, NameJet
 
 ---
 

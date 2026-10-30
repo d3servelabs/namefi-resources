@@ -1,172 +1,167 @@
 ---
-title: "Register a Domain Name and Connect Your Website"
+title: How to Register a Domain Name Without Losing Control of It
 date: '2026-10-21'
 language: en
-tags: ['domains', 'guide', 'domain-basics']
-authors: ['namefiteam']
+tags:
+- domains
+- guide
+- domain-basics
+authors:
+- namefiteam
 draft: false
 cluster: domain-basics
 format: guide
-description: "Register a domain with a practical checklist for eligibility, checkout, contact verification, DNS, website setup, and email."
+description: Register the exact domain, confirm the intended registrant, complete verification, connect services, and preserve account and renewal control.
 ogImage: ../../assets/register-domain-name-og.jpg
-keywords: ['register domain name', 'domain registration', 'how to register a domain', 'domain registration and email', 'register website domain', 'domain registration checklist', 'domain contact verification', 'domain registration process', 'connect domain to website', 'domain registration requirements']
+keywords:
+- domain registration
+- register domain name
+- how to register a domain
+- domain registration checklist
+- domain registrant
+- registrar account security
+- domain contact verification
+- domain renewal
+- connect domain to website
+- domain registration cost
+- domain account ownership
+- buy a domain name
 relatedArticles:
-  - /en/blog/ai-agent-register/
-  - /en/blog/cf-namecom-namefi/
-  - /en/blog/how-much-is-a-domain-understanding-holding-cost/
-  - /en/blog/harden-domain-registrar-account/
-  - /en/blog/ttl-and-dns-propagation/
+- /en/blog/ai-agent-register/
+- /en/blog/cf-namecom-namefi/
+- /en/blog/how-much-is-a-domain-understanding-holding-cost/
+- /en/blog/harden-domain-registrar-account/
+- /en/blog/ttl-and-dns-propagation/
 relatedTopics:
-  - /en/topics/domain-basics/
-  - /en/topics/choosing-a-tld/
+- /en/topics/domain-basics/
+- /en/topics/choosing-a-tld/
 relatedSeries:
-  - /en/series/domain-investor-field-guide/
-  - /en/series/tokenize-your-com/
+- /en/series/domain-investor-field-guide/
+- /en/series/tokenize-your-com/
 relatedGlossary:
-  - /en/glossary/registrar/
-  - /en/glossary/registrant/
-  - /en/glossary/dns/
-  - /en/glossary/nameserver/
-  - /en/glossary/tld/
+- /en/glossary/registrar/
+- /en/glossary/registrant/
+- /en/glossary/dns/
+- /en/glossary/nameserver/
+- /en/glossary/tld/
+updated: '2026-10-30'
 ---
 
-Registering a domain gives a person or organization registration rights for a limited period. Registration does not create a website or mailbox. ICANN explains [these separate responsibilities](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=Your%20domain%20name%20registration%20is%20not%20the%20same%20thing).
+**Register a domain through a registrar, enter the intended registrant's accurate details, and keep the account under the intended registrant's control.** For a generic top-level domain, start with the [official ICANN-accredited registrar list](https://www.icann.org/en/contracted-parties/accredited-registrars/list-of-accredited-registrars). Registration creates rights under an agreement, rather than a permanent purchase or an automatically working website. [ICANN describes the registration process](#icann-explains-the-registration-process). [ICANN separates registration rights from website services](#icann-explains-registration-rights-and-separate-services).
 
-Use this guide to take an available name through checkout, registration checks, and connection to a website. Keep three results separate: **payment accepted, registration completed, and services working**. Check each result before announcing the address.
+The completed task has several results: the exact name is registered, required checks are complete, the intended registrant controls the account, and the required services work. A payment receipt alone does not establish every result.
 
-If an AI agent will complete the purchase, use the [Namefi agent registration guide](/en/blog/ai-agent-register/) for client setup and API instructions. The checks below still help define the purchase you authorize.
+## Checkout begins with the exact name and actual terms
 
-## Check the name, eligibility, and full price before payment
+Choose the full name and ending before opening the cart. A registration offer, a resale listing, and a transfer offer require different transactions. As buying advice, verify which transaction the displayed offer represents before authorizing payment.
 
-If a buying guide recommends Google, identify the [current Google domain registration service](/en/blog/buy-domain-through-google/) before following its checkout instructions.
+Use this prepayment checklist:
 
-![Three checks before checkout: eligibility, total cost, and registrant details](../../assets/register-domain-name-01-checkout.jpg)
+1. Check every character and the domain ending.
+2. Confirm that the offer covers the intended transaction.
+3. Read eligibility rules for the actual ending.
+4. Check the registration period and total currency amount.
+5. Review renewal pricing and automatic-renewal terms.
+6. Remove optional services that the project does not require.
 
-### Search for the exact address you intend to register
+ICANN advises registrants to understand the registration agreement, including fees, personal-data use, and conditions for changing providers. [The registration FAQ explains that review](#icann-recommends-reviewing-the-registration-agreement).
 
-1. Write the complete name, including the ending, in your purchase notes.
-2. Search for the exact name at your chosen [registrar](/en/glossary/registrar/).
-3. Check every character and the ending in the returned result.
-4. Confirm that the offer covers a new registration.
+Do not infer eligibility for every ending from a successful search result. ICANN distinguishes generic-domain registration arrangements from country-code registration through the relevant operators. [The process guide identifies that distinction](#icann-explains-the-registration-process). Ask the selected registrar to resolve unclear eligibility requirements before payment.
 
-A seller listing, auction, or transfer offer needs a different purchase process. Do not substitute a similar name without checking the new spelling with everyone who needs the address.
+Keep a copy of the final terms with the registration record. Record the charge due now and the renewal basis separately. ICANN's registrant-rights statement includes access to applicable registration and privacy-service pricing information. [The rights statement describes those disclosures](#icann-documents-registrant-rights-and-responsibilities).
 
-For a name with non-Latin characters, inspect the registrar's displayed representation before payment. Ask the registrar to resolve any spelling or character ambiguity.
+For a new-registration candidate, enter the complete name in [Namefi's domain search](https://namefi.io/#register). Check the returned offer and its current purchase terms before paying. A search result is not a completed registration, and an already registered name needs a separate transfer or resale process.
 
-### Read the rules for the specific ending
+![A buyer checks the exact name, eligibility, and terms before payment.](../../assets/register-domain-name-01-checkout.jpg)
 
-Do not assume that every country-code domain accepts the same applicants, documents, or registration periods. Use the registry's current rules and your registrar's supported registration options.
+## The intended registrant needs an accurate record and a controlled account
 
-| Example | The source establishes this requirement | Your next action |
-| --- | --- | --- |
-| `.au` direct | auDA requires a [validated connection to Australia](https://www.auda.org.au/au-domain-names/the-different-au-domain-names/au-direct-domain-names/#:~:text=validated%20connection%20to%20Australia). | Check the accepted evidence for your circumstances. |
-| `com.au` | auDA specifies [commercial eligibility and a connection between the name and business](https://www.auda.org.au/au-domain-names/the-different-au-domain-names/com-au-domain-names/#:~:text=Who%20can%20get%20a%20com.au). | Check eligibility and the proposed name separately. |
-| `.cn` | CNNIC's registration procedure requires [accurate application data and identification materials](https://www.cnnic.com.cn/PublicS/fwzx/cnymfaq/201210/t20121008_36615.htm#:~:text=Submit%20authentic). | Ask the registrar for the current document and verification procedure. |
+The registrant holds the registration rights. ICANN warns that a contractor can enter the contractor's own details even when the customer pays for registration. [The FAQ describes the payer and registrant distinction](#icann-explains-registration-rights-and-separate-services).
 
-These examples demonstrate different checks. The table does not establish eligibility for `.ai`, `.cc`, `.gg`, `.ru`, `.rs`, `.cl`, or `.ro`. Read the relevant [TLD reference](/en/topics/choosing-a-tld/) and registry rules for the actual ending.
+Before checkout, identify the person or organization that should hold the registration. Enter that registrant's accurate details. Use a working contact mailbox that the responsible person can access immediately.
 
-Check the minimum term and permitted increments before comparing annual prices. A quoted annual rate does not establish the amount due at checkout.
+For a new domain, avoid making contact verification depend on a mailbox that still needs that new domain's DNS setup. This is practical setup advice: the verification contact should already work when the registrar sends a notice.
 
-### Record the bill you are agreeing to pay
+As account-security advice, enable supported multifactor authentication and save recovery information in an approved location. Assign contractor access according to the work required. Keep the account owner, recovery route, and billing responsibility with the organization that will maintain the domain.
 
-Compare the following fields in the final cart and terms:
+Privacy services do not justify false registration details. ICANN requires accurate information and current account data. [The responsibilities statement records those duties](#icann-documents-registrant-rights-and-responsibilities).
 
-| Field | Question to answer before payment |
+## Registration confirmation and contact verification are separate checks
+
+After payment, return to the registrar account directly. Check the exact domain, the order result, the registration status, and the expiry information. Save the receipt and support contact.
+
+If the order remains unclear, inspect the existing order before paying again. Ask support whether registration completed, whether the registrar needs more information, or whether the transaction failed. A second payment is not a reliable way to diagnose the first order.
+
+Complete the registrar's actual verification instructions. ICANN explains that registrars validate and verify specified registration data and must suspend or delete names that remain unverified under the applicable requirements. [The contact-verification explanation describes the process](#icann-explains-contact-verification).
+
+Read the deadline in the actual notice. Do not apply a generic deadline from a different provider or country-code registry. If a message requests sensitive documents unexpectedly, confirm the request through the registrar account's official support route.
+
+Public registration lookup can provide a separate observation. ICANN directs users to [ICANN Lookup](https://lookup.icann.org/en). [The RDAP announcement identifies that route](#icann-identifies-the-public-registration-lookup). Public personal fields can remain redacted under the publication rules. [ICANN defines that boundary](#icann-defines-registration-data-redaction). Use account records to confirm the intended registrant details.
+
+![Registration completion and contact verification require separate confirmation.](../../assets/register-domain-name-02-verify.jpg)
+
+## DNS connects the name to the selected services
+
+Registration alone does not create hosting or email. ICANN also explains that the registrar and hosting provider can differ. [The registration FAQ separates those purchases](#icann-explains-registration-rights-and-separate-services).
+
+Choose the provider for each required service. Obtain the provider's exact DNS records and account setup instructions. Decide which DNS provider will manage the authoritative records before copying values into an interface.
+
+For example, GitHub Pages requires a custom-domain setting and appropriate DNS configuration. GitHub warns users to add the custom domain to the site before configuring the provider-side DNS. [The official workflow explains the order](#github-documents-a-provider-specific-domain-connection).
+
+Use that example as a reason to follow the selected provider's instructions, rather than as universal DNS values. A different hosting or email provider needs its own records.
+
+If the domain already serves another project, preserve the existing records and dependencies before a change. Follow the DNS provider's documented migration procedure for any existing DNSSEC configuration. Give the change an owner and a reversal plan.
+
+![Nameservers connect the domain to website and email DNS records.](../../assets/register-domain-name-03-dns.jpg)
+
+## A working registration needs a maintenance record
+
+Test the required services independently. Confirm that the intended website opens through verified HTTPS. If email is configured, test sending and receiving through the intended mailbox. Do not infer email success from a working website.
+
+Maintain a record with the following information:
+
+| Item | Responsible record |
 | --- | --- |
-| Registration term | How many years does this payment cover? |
-| Registration total | What amount will the registrar charge now, in which currency? |
-| Renewal | What renewal price and term does the registrar currently show? |
-| Premium designation | Does the name carry different registration or renewal pricing? |
-| Additional services | Which hosting, email, privacy, or other services did you select? |
-| Taxes and fees | Which charges appear in the final total? |
+| Domain and registrar | Exact spelling and official support route |
+| Account control | Account owner, recovery responsibility, and approved administrators |
+| Registration | Intended registrant, status, and expiry information |
+| Renewal | Automatic-renewal setting, payment owner, and reviewed terms |
+| Service configuration | Authoritative DNS provider, host, and email provider |
 
-ICANN's [registrant rights](https://www.icann.org/resources/pages/benefits-2013-09-16-en#:~:text=pricing%20information) cover accessible registration and privacy pricing information. Ask the registrar to explain unclear charges before payment. Our [domain cost guide](/en/blog/how-much-is-a-domain-understanding-holding-cost/) explains the cost categories in more detail.
+ICANN specifically tells automatic-renewal users to keep payment information current. [The responsibilities statement includes that requirement](#icann-documents-registrant-rights-and-responsibilities).
 
-You can use separate providers for registration and hosting. ICANN confirms that [registrants do not have to buy hosting from their registrar](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=you%20are%20not%20required%20to%20use%20these%20services).
+The [registrar-account guide](/en/blog/harden-domain-registrar-account/) covers the next security review. The registration task ends when the intended person controls a maintained registration and the intended services pass their checks.
 
-## Submit accurate details and confirm the completed registration
+## Sources and further reading
 
-![Payment, registration, and contact verification appear as separate checks](../../assets/register-domain-name-02-verify.jpg)
+### ICANN explains the registration process
 
-### Identify the intended registrant before checkout
+[ICANN, Domain Name Registration Process](https://www.icann.org/resources/pages/domain-name-registration-process-2023-11-02-en#:~:text=ICANN-accredited%20registrars). Fetched 2026-10-30.
 
-The [registrant](/en/glossary/registrant/) is the person or organization that holds the registration rights. Check the registrant record, especially when a developer or agency handles the purchase. ICANN [warns that a third party may enter its own details](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=they%20may%20have%20registered%20the%20domain).
+### ICANN explains registration rights and separate services
 
-1. Enter the intended registrant's correct name and organization details.
-2. Enter accurate contact information that you can maintain.
-3. Use a working contact email address that you can access immediately.
-4. Check the registration agreement and privacy service terms.
-5. Save the final cart and submit payment once.
+[ICANN registration FAQ](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=Your%20domain%20name%20registration%20is%20not). Fetched 2026-10-30.
 
-For a new domain, use an existing working mailbox for contact verification. Avoid depending on a mailbox that still needs the new domain's DNS configuration.
+### ICANN recommends reviewing the registration agreement
 
-Privacy services do not justify false application details. ICANN requires registrants to [provide accurate information and keep account data current](https://www.icann.org/resources/pages/benefits-2013-09-16-en#:~:text=You%20must%20provide%20accurate%20information). Check which information the registrar publishes and which information any privacy service protects.
+[ICANN registration FAQ, Before You Register](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=Read%20and%20understand%20the%20terms). Fetched 2026-10-30.
 
-### Confirm registration and complete verification
+### ICANN documents registrant rights and responsibilities
 
-1. Save the receipt, order number, and registrar support address.
-2. Open the order and domain pages in the registrar account.
-3. Confirm the exact name, successful registration status, and expiry date.
-4. Complete the registrar's contact verification instructions.
-5. Save confirmation of any required identity or eligibility checks.
+[ICANN, Domain Name Registrants Rights and Responsibilities](https://www.icann.org/resources/pages/benefits-2013-09-16-en#:~:text=pricing%20information). Fetched 2026-10-30.
 
-An unclear order status needs investigation. Check the existing order before paying again. Ask support whether the registrar completed registration, requires documents, or needs to refund a failed order.
+### ICANN explains contact verification
 
-ICANN explains that registrars [verify contact information and can suspend or delete names that remain unverified](https://www.icann.org/resources/pages/contact-verification-2013-05-03-en#:~:text=Registrars%20must%20suspend%20or%20delete). Follow the actual notice and deadline. Do not apply a generic verification deadline to every country-code domain.
+[ICANN, Contact verification](https://www.icann.org/resources/pages/contact-verification-2013-05-03-en#:~:text=Registrars%20must%20suspend%20or%20delete). Fetched 2026-10-30.
 
-Open the registrar account directly if a message looks suspicious. Use the account's support channel to confirm an unexpected document request before sending identification.
+### ICANN identifies the public registration lookup
 
-## Connect the domain to website and email services
+[ICANN, RDAP announcement](https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en#:~:text=Users%20are%20encouraged). Fetched 2026-10-30.
 
-![A domain connects through nameservers to separate website and email records](../../assets/register-domain-name-03-dns.jpg)
+### ICANN defines registration data redaction
 
-[DNS](/en/glossary/dns/) configuration connects the registered name to services. Website and email providers supply the required record names and values. Copy those values from the provider's current setup instructions.
+[ICANN Registration Data Policy, section 9.2](https://www.icann.org/en/contracted-parties/consensus-policies/registration-data-policy#:~:text=9.2.%20Redaction%20Requirements). Fetched 2026-10-30.
 
-### Choose where you will manage DNS records
+### GitHub documents a provider specific domain connection
 
-1. Find the domain's assigned [nameservers](/en/glossary/nameserver/) in the registrar account.
-2. Decide whether to use the registrar's DNS service or another DNS provider.
-3. Open the DNS records page at that provider.
-
-For an external DNS provider, follow the provider's nameserver setup instructions. Changing nameservers and adding records are separate operations. Cloudflare's [full setup instructions](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/) show both operations and require checking the records before activation.
-
-If DNSSEC already exists, follow the DNS provider's migration instructions before replacing nameservers. Cloudflare warns that [changing nameservers with active DNSSEC can make the domain unreachable](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/#:~:text=Changing%20nameservers%20while%20DNSSEC%20is%20active).
-
-### Add the records your service provider supplies
-
-| Service | Information to obtain | Check after saving |
-| --- | --- | --- |
-| Website | Required A, AAAA, or CNAME records for the root name and `www` | Both intended addresses open the correct website. |
-| Email | MX records and provider-required authentication or verification records | A test mailbox sends and receives mail. |
-| Service verification | Exact TXT or CNAME record supplied by the service | The service confirms the domain. |
-
-Cloudflare documents [record type, required fields, TTL, and saving the record](https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/#:~:text=Create%20DNS%20records). TTL affects how long cached record data remains valid. Avoid promising immediate results everywhere.
-
-For email, obtain the exact settings from the email provider. Cloudflare's [email setup guidance](https://developers.cloudflare.com/dns/manage-dns-records/how-to/email-records/) distinguishes mail delivery from protection against spoofed mail. Buying a registration alone does not configure a working mailbox.
-
-If a website fails, check registration status, verification notices, nameserver delegation, and DNS values in that order. If only email fails, compare the saved mail records with the email provider's instructions.
-
-## Keep a registration record for the next renewal
-
-Save the domain, registrar, account owner, expiry date, current renewal price, DNS provider, and support contact in one place. Record the auto-renew setting and payment method. ICANN reminds registrants to [keep payment information current for automatic renewal](https://www.icann.org/resources/pages/benefits-2013-09-16-en#:~:text=keep%20your%20payment%20information%20current).
-
-Use this final checklist before sharing the new address:
-
-- The registrar confirms the exact domain registration.
-- The intended registrant holds the registration rights.
-- Required contact and eligibility checks are complete.
-- The website and email work independently.
-- The registration record includes the expiry date and renewal settings.
-
-Then apply the [registrar account security checklist](/en/blog/harden-domain-registrar-account/) to protect ongoing access.
-
-## These sources support the registration checks
-
-All sources below were accessed on 2026-10-22 UTC, which was 2026-10-21 in Los Angeles.
-
-- ICANN: [General Questions](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en), registration questions 1–4 and 14.
-- ICANN: [Registrants' Benefits and Responsibilities](https://www.icann.org/resources/pages/benefits-2013-09-16-en), pricing and registrant responsibilities.
-- ICANN: [About Verification of Contact Information](https://www.icann.org/resources/pages/contact-verification-2013-05-03-en), reasons for verification.
-- auDA: [.au direct](https://www.auda.org.au/au-domain-names/the-different-au-domain-names/au-direct-domain-names/) and [com.au](https://www.auda.org.au/au-domain-names/the-different-au-domain-names/com-au-domain-names/), eligibility sections.
-- CNNIC: [CN Domain Name FAQ](https://www.cnnic.com.cn/PublicS/fwzx/cnymfaq/201210/t20121008_36615.htm), registration procedure, steps 4–8. The page carries a 2012 date. Confirm current submission requirements with the registrar.
-- Cloudflare: [Manage DNS records](https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/), [full setup](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/), and [email records](https://developers.cloudflare.com/dns/manage-dns-records/how-to/email-records/).
+[GitHub Docs, Managing a custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#about-custom-domain-configuration). Fetched 2026-10-30.

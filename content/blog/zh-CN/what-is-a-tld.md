@@ -193,6 +193,8 @@ blog . namefi . io
 
 **Namefi** 是首个在[以太坊](/zh-CN/glossary/ethereum/)主网上[代币化](/zh-CN/glossary/tokenize/)真实 ICANN 域名的平台——也是首个在 Base 上实现这一功能的平台——覆盖上述众多 TLD，包括 [`.com`](/zh-CN/tld/com/)、[`.xyz`](/zh-CN/tld/xyz/)、[`.io`](/zh-CN/tld/io/) 等。你可以在一个产品中同时拥有一个真实的、浏览器可解析的域名*和*钱包原生所有权。
 
+请用 [Namefi 支持的后缀目录](https://namefi.io/tlds)查看服务当前列出的后缀。更广泛的委派问题仍应参考 IANA 根区列表。目录列出某个后缀，不能证明具体名称的可注册性、注册资格或当前价格。
+
 > 想了解两个层次如何配合？阅读[什么是代币化域名？](/zh-CN/blog/what-are-tokenized-domains/)，或访问 [namefi.io](https://namefi.io) 注册或代币化你的域名。
 
 ---

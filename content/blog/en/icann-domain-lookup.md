@@ -1,183 +1,140 @@
 ---
-title: "ICANN Domain Lookup Shows Registration Data and Its Limits"
-description: "Use ICANN Lookup to identify a registrar, read registration dates and status codes, and separate public records from ownership and availability claims."
+title: 'ICANN Lookup: Find a Domain’s Registrar and Registration Details'
+description: Read ICANN Lookup results, interpret dates and status codes, and understand what public registration data can establish.
 date: '2026-10-21'
 language: en
-tags: [domains, guide, research]
-authors: ['namefiteam']
+tags:
+- domains
+- guide
+- research
+authors:
+- namefiteam
 draft: false
 format: guide
 cluster: domain-basics
-keywords: ["ICANN domain lookup", "ICANN lookup", "domain registration lookup", "RDAP lookup", "find domain registrar", "domain status codes", "domain registration dates", "domain owner lookup", "ICANN WHOIS", "registered domain information"]
+keywords:
+- ICANN domain lookup
+- ICANN lookup
+- domain registration lookup
+- RDAP lookup
+- find domain registrar
+- domain status codes
+- domain registration dates
+- domain owner lookup
+- ICANN WHOIS
+- registered domain information
 relatedArticles:
-  - /en/blog/whois-and-rdap-public-data/
-  - /en/blog/check-domain-age/
-  - /en/blog/domain-privacy-vs-proxy/
-  - /en/blog/harden-domain-registrar-account/
-  - /en/blog/transfer-domain-to-another-registrar/
+- /en/blog/whois-and-rdap-public-data/
+- /en/blog/check-domain-age/
+- /en/blog/domain-privacy-vs-proxy/
+- /en/blog/harden-domain-registrar-account/
+- /en/blog/transfer-domain-to-another-registrar/
 relatedGlossary:
-  - /en/glossary/whois/
-  - /en/glossary/registrar/
-  - /en/glossary/registrant/
-  - /en/glossary/epp-status-codes/
-  - /en/glossary/registry/
+- /en/glossary/whois/
+- /en/glossary/registrar/
+- /en/glossary/registrant/
+- /en/glossary/epp-status-codes/
+- /en/glossary/registry/
 relatedTopics:
-  - /en/topics/domain-basics/
-  - /en/topics/domain-security/
+- /en/topics/domain-basics/
+- /en/topics/domain-security/
 relatedSeries:
-  - /en/series/domain-investor-field-guide/
-  - /en/series/domain-apocalypse/
+- /en/series/domain-investor-field-guide/
+- /en/series/domain-apocalypse/
 ogImage: ../../assets/icann-domain-lookup-og.jpg
+updated: '2026-10-30'
 ---
 
-ICANN Lookup helps you inspect [current domain registration data](/en/blog/whois-and-rdap-public-data/). The result can identify the registrar, show registration events, and explain registration restrictions. The result cannot guarantee the identity of a seller or the availability of a domain.
+Use [ICANN Lookup](https://lookup.icann.org/en) to inspect a domain's public registration data. Start with the registrar, registration events, status codes, and nameservers. Keep each field tied to its stated purpose. Public registration data does not establish a seller's authority or guarantee that a domain is available.
 
-Start at [ICANN Lookup](https://lookup.icann.org/en). Enter the registered domain, then read each field according to the question you need to answer. Keep the lookup date with your notes because the record can change.
+ICANN provides a free browser client that runs RDAP queries. RDAP supplies registration data in a structured format. [ICANN explains the lookup client](#icann-provides-a-browser-registration-client). This guide shows how to turn the result into useful administrative notes without claiming more than the fields support.
 
-A useful lookup separates three questions: who maintains the registration, what the registration record says, and what independent checks remain. Confusing those questions turns ordinary database fields into unsupported conclusions.
+The examples use reserved domains and hypothetical situations. The guide does not perform a live lookup or assess a particular domain.
 
-## A precise search starts with the registered domain
+## A useful lookup starts with the registered name
 
-![A URL example highlights the registered domain for a lookup.](../../assets/icann-domain-lookup-01-section.jpg)
+Open the official lookup tool and enter the domain you need to investigate. Remove `https://`, a page path, query parameters, and an email prefix. For the hypothetical address `https://shop.example.com/orders`, begin with `example.com`.
 
-Use the domain spelling from your browser or registrar account. Remove the protocol, page path, query string, and email address prefix. For the hypothetical address `https://shop.example.com/orders?id=42`, start with `example.com`.
+Keep the original hostname in a separate note. A website on a subdomain can require additional DNS investigation. The registration question concerns the registered name. The deployment question concerns the hostname that a browser actually requests.
 
-Keep `shop.example.com` separately if you need to investigate the website. A subdomain can identify a particular service, but the public registration normally concerns the registered domain. A registration lookup does not replace a DNS or website check.
+Check the spelling before reading any result. Similar-looking names and different extensions identify different registrations. If the tool presents an ASCII representation for an internationalized name, retain that representation with the displayed name. RDAP defines both LDH and Unicode name fields. [RFC 9083 describes domain response fields](#rfc-9083-defines-registration-response-fields).
 
-ICANN describes its tool as a [free browser-based RDAP client](https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en#:~:text=free%20to%20use). RDAP means Registration Data Access Protocol. Readers may still encounter the familiar [WHOIS](/en/glossary/whois/) label elsewhere, but the protocol name matters when comparing tools and troubleshooting missing results.
+Save the query and UTC lookup time. A later investigator needs to know which domain and which observation the notes describe. Avoid saving unrelated personal data from a result when the administrative task does not require that data.
 
-Use the original spelling throughout your investigation. If a name includes international characters, preserve both the displayed spelling and the encoded spelling that the lookup returns. Do not replace a character with a visually similar character to make the search work.
+## The registrar field answers an administration question
 
-Before pressing search, write one question. Examples include “Which registrar should receive the transfer request?” and “Which registration event supports the advertised age?” A focused question makes the output easier to interpret.
+Identify the registrar entry and any public identifier the result provides. Compare those details with your organization's purchase and renewal records. The public registrar entry helps locate registration administration. The entry does not grant account access.
 
-For your own domain, compare the result with your registrar dashboard. For another party's domain, treat the result as a public record, rather than proof of access to an account. A person can copy public registration data without controlling the domain.
+If a team bought the domain through a reseller, the billing relationship can require a separate check. As practical advice, ask the person responsible for procurement to confirm the account and recovery process. Do not infer private account control from a company name in a public result.
 
-If the tool returns no usable record, save the exact error or message. Repeat the search once after checking the spelling. Then investigate the relevant registry's public guidance, especially for a country-code extension.
+Keep the registrar separate from the registry and hosting provider. RDAP represents a domain, nameservers, and related entities as distinct parts of a response. [RFC 9083 defines that structure](#rfc-9083-defines-registration-response-fields).
 
-Do not translate a failed request into “unregistered.” A missing result can reflect a spelling error, service failure, unsupported workflow, or an actual absence of registration data. Only the observed message belongs in your notes until another check resolves the uncertainty.
+The [registrar and DNS host guide](/en/blog/find-domain-registrar-dns-host/) helps locate the active account for a DNS change. A registrar result alone cannot tell a colleague which hosting deployment contains the website files.
 
-Avoid entering passwords, transfer authorization codes, or account recovery information. A public registration lookup needs a domain name. The public search field does not need the credentials that control a domain.
+![Public operational fields and limited personal fields require different interpretations.](../../assets/whois-and-rdap-public-data-05-field-boundaries.jpg)
 
-## A missing or incomplete result needs a separate check
+## Registration dates describe events with specific labels
 
-![A domain lookup recovery sequence checks spelling, source, and the registrar.](../../assets/icann-domain-lookup-05-result-check.jpg)
+Read the event label together with its timestamp. A registration event, last-change event, and expiration event answer different questions. RFC 9083 separates an event's action from the event's date. The standard also allows future-dated events, including an object's expiration. [The event specification explains the model](#rfc-9083-defines-registration-response-fields).
 
-A successful response can omit a contact field. A failed request can return no registration record at all. Record the difference.
+Do not interpret a last-change date as the website's launch date. The field describes a registration-data event. The field does not describe the first public page, the current business's founding, or uninterrupted historical ownership.
 
-| Observed result | Next check | Conclusion to avoid |
-| --- | --- | --- |
-| Record with redacted contacts | Read the notice and available contact route | The domain has no registrant |
-| Error or timeout | Check spelling, preserve the message, and retry later | The domain is available |
-| Different timestamps | Compare event labels and the objects containing those events | One timestamp must be false |
-| Different registrar names | Check whether one name belongs to a reseller | An unfamiliar name proves an unauthorized transfer |
+Likewise, do not treat a public expiration event as a confirmed purchase opportunity. An acquisition decision needs the registrar's current availability result and applicable registration lifecycle information. As practical advice, verify availability immediately before a purchase instead of scheduling a purchase from one lookup timestamp.
 
-Treat the table as an investigation checklist, rather than a list of guaranteed causes. The public result alone may not explain the difference.
+For research about a domain's history, preserve separate evidence for registration history and website history. The [domain age guide](/en/blog/check-domain-age/) explains why one current record cannot establish an entire historical narrative.
 
-For missing nonpublic contact data, start with the [public lookup before requesting disclosure](https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en). ICANN identifies RDRS and direct contact with the sponsoring registrar as request routes. A request does not guarantee disclosure.
+![Hypothetical registration, change and expiration events describe different dates.](../../assets/check-domain-age-05-event-selection.jpg)
 
-## Registration fields answer different operational questions
+## Status codes describe restrictions and lifecycle conditions
 
-![Registration fields answer separate operational questions.](../../assets/icann-domain-lookup-02-section.jpg)
+Status codes require interpretation. ICANN publishes a reference that distinguishes registry and registrar status codes. Some codes describe protective restrictions. Other codes identify an urgent administrative problem. [ICANN explains EPP status codes](#icann-explains-registration-status-codes).
 
-Read the registrar field first when you need account help. The [registrar](/en/glossary/registrar/) manages the customer relationship for the registration. The [registry](/en/glossary/registry/) maintains the extension's registration infrastructure. Similar names in the result do not make the two roles interchangeable.
+For example, `clientTransferProhibited` tells the registry to reject an inter-registrar transfer request. That restriction can help prevent unauthorized transfers. The code does not, by itself, establish that the domain's website should fail.
 
-A reseller's brand may differ from the sponsoring registrar's name. Keep the name from the public record, then compare the billing emails and account records that you already trust. Do not move an account to an unfamiliar website merely because a search result displays a related company name.
+By contrast, ICANN describes `clientHold` as preventing activation in DNS. A domain administrator should contact the registrar about the cause and required correction. Do not guess that every hold comes from the same billing or verification issue. [ICANN's status reference provides the distinction](#icann-explains-registration-status-codes).
 
-Read dates together with their event labels. The [RDAP response standard](https://datatracker.ietf.org/doc/html/rfc9083#section-4.5) associates an event action with an event date. An update event and a registration event describe different actions.
+When a transfer or recovery matters, copy the complete status set and lookup time. Ask the registrar about the exact condition. Avoid removing protective restrictions solely because a third party asks for an unlocked domain.
 
-The following reading checklist keeps a screenshot from becoming an ambiguous note:
+## Nameservers and contact fields have separate limits
 
-| Field | Useful question | Conclusion to avoid |
-| --- | --- | --- |
-| Registrar | Which provider maintains the registration? | The provider also hosts the website |
-| Registration event | When did the reported registration begin? | The current business began on that date |
-| Last changed event | When did recorded information change? | The domain changed owners on that date |
-| Expiration event | Which expiry timestamp does the record expose? | The domain will become available at that moment |
-| Nameservers | Which servers appear in the registration? | Every DNS answer already matches the new configuration |
-| Contact information | Which information does the public result expose? | The visible contact proves the seller's identity |
+Nameserver fields help investigate delegation. A live DNS query remains a separate observation about current DNS answers. If a website fails, retain the queried hostname, DNS record type, selected server, and response time with the registration result.
 
-Use our [domain age guide](/en/blog/check-domain-age/) when a date affects a purchase decision. Registration history and website history answer separate questions. Save the event label before calculating an age.
+A registration lookup also cannot promise complete public contact details. RFC 9083 describes private, removed, and obscured registration data. A missing personal name does not establish that no registrant exists. [The privacy section explains those response conditions](#rfc-9083-describes-private-registration-data).
 
-Nameserver information also needs context. A registration result can help you identify a delegated DNS provider, but a website outage requires DNS queries and application checks. A nameserver label alone does not identify the cause of an outage.
+Use a listed public contact route only for the purpose the route supports. An abuse contact addresses abuse reports. A privacy or proxy contact does not establish the underlying person's identity. For a purchase, use an appropriate verification and transfer process rather than relying on one displayed name.
 
-If you recently changed providers, compare the registration result with the intended settings. Then follow a [nameserver change checklist](/en/blog/change-domain-nameservers/) to inspect the authoritative zone and live responses. Keep the lookup as one piece of evidence.
+The [privacy and proxy guide](/en/blog/domain-privacy-vs-proxy/) provides additional context. As practical due-diligence advice, independently verify the counterparty and transaction process before sending money or registration credentials.
 
-For a hypothetical handoff, record: “Lookup checked on October 21, 2026. The result lists Registrar A and two nameservers.” Add the actual provider names in your private operational record. Avoid writing “Registrar A owns the website.”
+![The registrar, DNS provider, and web host serve different roles, and a proxy can obscure the origin.](../../assets/whois-and-rdap-public-data-04-provider-roles.jpg)
 
-When an RDAP result includes nested contact or nameserver objects, check the object around a timestamp. The standard allows events on different objects. A contact object's update time should not become the domain's creation time.
+## A lookup note should end with a precise next action
 
-## Status codes guide the next troubleshooting action
+Create a short note with the exact domain, lookup time, registrar, relevant event labels, status codes, and nameservers. Add one sentence explaining the unresolved question. Keep conclusions narrower than the evidence.
 
-![A transfer lock and a DNS hold require different actions.](../../assets/icann-domain-lookup-03-section.jpg)
+For renewal, identify the authorized registrar account. For a DNS change, identify the active authoritative service. For a suspected registration problem, contact the registrar with the relevant status. For a purchase, confirm current availability or the seller's authority through the transaction process.
 
-A domain can have several status codes at once. Read each code before changing settings. A transfer restriction can provide expected account protection, while a hold can affect DNS operation.
+ICANN Lookup supplies an official starting point. The useful result is a supported next action, with clear limits on what public registration data can establish.
 
-The interface may show spaced RDAP labels instead of compact EPP codes. ICANN's [status table provides the mapping](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en#:~:text=RDAP%20Status%20Mapping).
+Example names use [reserved documentation domains](#rfc-2606-reserves-example-domain-names).
 
-| EPP code | RDAP label | Operation to investigate |
-| --- | --- | --- |
-| `clientTransferProhibited` | `client transfer prohibited` | Transfer to another registrar |
-| `clientHold` | `client hold` | Domain activation in DNS |
+## Sources and further reading
 
-Copy the displayed label exactly. Use the mapping to find the matching definition, rather than treating the spacing as a different restriction.
+### ICANN provides a browser registration client
 
-ICANN's [EPP status reference](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en#:~:text=clientTransferProhibited) explains that `clientTransferProhibited` prevents a transfer to another registrar. The code does not by itself establish a website outage. If you intend to transfer your own domain, use your registrar's documented unlocking process.
+[ICANN: Information for RDAP Users](https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en#:~:text=ICANN%20org%20maintains%20a%20publicly%20available%20RDAP%20client). Checked 2026-10-30.
 
-The same reference explains that [`clientHold` prevents DNS activation](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en#:~:text=clientHold). A hold calls for a registrar inquiry. Repeatedly changing an A record does not address a registration-level restriction.
+### RFC 9083 defines registration response fields
 
-Use a short sequence when the record and your intended action disagree:
+[RFC 9083: RDAP JSON Responses](https://www.rfc-editor.org/rfc/rfc9083.html#section-5.3). Checked 2026-10-30.
 
-1. Copy every displayed status code.
-2. Identify the operation that failed.
-3. Read the matching status definition.
-4. Open the registrar through a trusted address.
-5. Ask the registrar about the specific restriction.
-6. Preserve the support response with your lookup note.
+### ICANN explains registration status codes
 
-For example, a hypothetical owner wants to transfer a working domain. The result shows `clientTransferProhibited`. The practical question concerns transfer authorization, rather than web hosting. The owner should inspect the registrar's transfer controls.
+[ICANN: EPP Status Codes](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en#:~:text=clientTransferProhibited). Checked 2026-10-30.
 
-A different owner sees a domain-wide outage and `clientHold`. The owner should ask the registrar why the hold exists. The public code describes an effect, but the public code does not establish the account-specific reason.
+### RFC 9083 describes private registration data
 
-Avoid removing protections without a clear purpose. A restriction can prevent an unwanted account operation. If your website works and you do not intend to transfer, a transfer prohibition may require no action.
+[RFC 9083: RDAP JSON Responses](https://www.rfc-editor.org/rfc/rfc9083.html#section-13). Checked 2026-10-30.
 
-A status glossary also does not promise a purchase date. Domain deletion and restoration involve policy and account-specific circumstances. Ask the sponsoring registrar about an expiring domain that you already control. Treat aftermarket availability predictions separately.
+### RFC 2606 reserves example domain names
 
-Never pay an unsolicited “unlock fee” based solely on a lookup screenshot. Confirm the account, the provider, and the requested operation through a known channel. Public registration data gives scammers the same visible facts that you can read.
-
-## A useful lookup report states the evidence gaps
-
-![A lookup report separates observations from unresolved questions.](../../assets/icann-domain-lookup-04-section.jpg)
-
-A public lookup does not always expose a personal name, address, or direct email. Read any redaction notices and available contact mechanism. An absent contact field does not prove that the registrant has no identity or that the domain lacks an accountable registrar.
-
-If privacy or proxy services complicate the result, review the [difference between domain privacy and proxy services](/en/blog/domain-privacy-vs-proxy/). Describe the service you can observe. Do not turn a hidden public field into a claim about misconduct.
-
-For nonpublic registration information, consult ICANN's current [Registration Data Request Service guidance](https://www.icann.org/rdrs-en). Check eligibility, registrar participation, and the relevant request route before submitting anything. A public lookup and a nonpublic disclosure request serve different purposes.
-
-A buyer needs additional evidence before paying a seller. Ask for a transaction process that verifies control and documents the agreed transfer. A public name, an old registration date, and a working website do not replace that process.
-
-For an abuse investigation, preserve the suspicious URL separately from the registered domain. Record the time, relevant messages, and the exact conduct you observed. Then use the appropriate abuse contact or reporting channel. Avoid publishing personal information merely because a third-party search displays a field.
-
-A compact lookup report can use five lines:
-
-- Domain: the exact registered name you checked.
-- Checked: the date and time of the lookup.
-- Source: the tool and linked registration result, when available.
-- Observed: the registrar, relevant events, status codes, and notices.
-- Unresolved: identity, control, website history, or other unanswered questions.
-
-Keep observations and conclusions on separate lines. “The record shows a registration event” states an observation. “The seller controls the account” requires different evidence. A clear report prevents the next reviewer from inheriting a stronger claim than the record supports.
-
-For your own registration, retain the report alongside billing records and recovery instructions. Keep credentials in your approved password manager. Public registration data belongs in an operational note, while authorization codes and recovery secrets require separate protection.
-
-Use ICANN Lookup as a starting point for a specific question. Follow the registrar field for account issues, event labels for registration dates, and status definitions for restrictions. Stop where the evidence stops.
-
-## These sources support the article
-
-Sources checked on October 21, 2026. The examples describe hypothetical workflows, rather than observed domain records.
-
-- [ICANN: Information for RDAP Users](https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en). The lookup-client section documents the free browser tool.
-- [RFC 9083, sections 4.5 and 5.3](https://datatracker.ietf.org/doc/html/rfc9083#section-4.5). The standard defines events and domain objects.
-- [ICANN: EPP status codes](https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en). The client status table distinguishes transfer restrictions and holds.
-- [ICANN: RDAP transition announcement](https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en). The announcement separates public lookup from nonpublic data requests.
-- [ICANN: Registration Data Request Service](https://www.icann.org/rdrs-en). Consult the current request guidance for nonpublic data.
+[RFC 2606: Reserved Example Domains](https://www.rfc-editor.org/rfc/rfc2606.html#section-3). Checked 2026-10-30.

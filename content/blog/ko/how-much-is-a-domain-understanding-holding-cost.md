@@ -43,6 +43,8 @@ relatedGlossary:
 
 등록대행자마다 정확히 같은 이름, 확장자, 통화, 등록 기간을 비교하세요. 등록 가격과 갱신 가격을 따로 기록하세요. 프리미엄 이름과 일반 가격 이름을 섞어서 비교하지 마세요.
 
+신규 등록을 비교하려면 [Namefi 도메인 검색](https://namefi.io/#register)에서 같은 전체 후보 이름을 검색하세요. 현재 제시된 거래와 요금을 기록하고 적용되는 갱신 조건은 따로 확인하세요. 취득 결과를 거래 범위가 다른 다른 업체의 견적과 비교하지 마세요.
+
 [Porkbun](https://porkbun.com/products/domains)은 등록, 갱신, 이전 가격을 별도 열로 게시합니다. [Cloudflare](https://www.cloudflare.com/domains/)는 등록과 갱신에 등록대행자 마진을 더하지 않는다고 설명합니다. Cloudflare는 [Cloudflare 네임서버](https://developers.cloudflare.com/registrar/get-started/register-domain/) 사용을 요구합니다. DNS 선택의 자유를 비교할 때 이 조건을 고려하세요.
 
 필요한 서비스를 추가한 뒤 가장 낮은 총액을 선택하세요. 최종 장바구니에서 세금과 선택 상품을 확인하세요. 등록 프로모션 가격만으로 장기적으로 가장 저렴한 선택을 판단할 수는 없습니다.

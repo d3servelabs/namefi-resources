@@ -96,7 +96,7 @@ Erfragen Sie für eine geschäftskritische Domain vor dem Kauf den Eskalationswe
 
 Registrierung, [DNS](/de/glossary/dns/), Webhosting und E-Mail erfüllen unterschiedliche Aufgaben. Ein Anbieter kann mehrere Leistungen gemeinsam verkaufen. Der [Vergleich von Domain und Hosting](/de/blog/domain-vs-hosting/) erklärt die Zuständigkeiten.
 
-Fragen Sie nach der Nutzung Ihrer gewünschten autoritativen Nameserver. Beispielsweise [verlangt Cloudflare Registrar die Nutzung von Cloudflare als autoritativem DNS-Anbieter](https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare/). Die Vorgabe kann zu einem Projekt mit bestehender Cloudflare-DNS-Nutzung passen. Die Vorgabe passt nicht zu einem Projekt, das einen anderen autoritativen DNS-Anbieter behalten muss.
+Fragen Sie nach der Nutzung Ihrer gewünschten autoritativen Nameserver. Beispielsweise [verlangt Cloudflare Registrar die Nutzung von Cloudflare als autoritativem DNS-Anbieter](https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare/). Die Vorgabe kann zu einem Projekt mit bestehender [Cloudflare-DNS-Nutzung](/de/blog/cloudflare-domain-buying-guide/) passen. Die Vorgabe passt nicht zu einem Projekt, das einen anderen autoritativen DNS-Anbieter behalten muss.
 
 Prüfen Sie anschließend die konkreten Verwaltungsaufgaben. Kann der gewählte DNS-Dienst die benötigten Einträge für Hosting und E-Mail verwalten? Kann der Registrar bei externem DNS die erforderlichen DNSSEC-Delegationsdaten veröffentlichen? Können Sie die aktuellen DNS-Einträge vor einem Anbieterwechsel exportieren?
 

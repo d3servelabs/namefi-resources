@@ -1,125 +1,141 @@
 ---
-title: "Dynamic DNS Keeps a Hostname Pointed at a Changing Address"
-description: "Configure ddclient for changing IPv4 addresses, protect update credentials, and check DNS separately from network reachability."
+title: What Is DDNS? Keep a Domain Working When Your IP Address Changes
+description: Understand dynamic DNS, select an updater, protect update credentials, and verify DNS separately from secure remote access.
 date: '2026-10-22'
 language: en
-tags: ['dns', 'networking', 'domains', 'guide']
-authors: ['namefiteam']
+tags:
+- dns
+- networking
+- domains
+- guide
+authors:
+- namefiteam
 draft: false
 format: guide
 cluster: domain-basics
-keywords: ['dynamic DNS', 'DDNS setup', 'dynamic DNS client', 'DDNS custom domain', 'dynamic IP address', 'ddclient', 'Cloudflare dynamic DNS', 'DDNS CGNAT', 'DNS update', 'dynamic DNS security', 'DDNS troubleshooting']
+keywords:
+- DDNS
+- what is DDNS
+- dynamic DNS
+- dynamic DNS setup
+- DDNS client
+- dynamic IP address
+- DDNS custom domain
+- ddclient
+- Cloudflare DDNS
+- DDNS CGNAT
+- secure remote access
+- DDNS troubleshooting
 ogImage: ../../assets/dynamic-dns-setup-og.jpg
 relatedArticles:
-  - /en/blog/dhcp-vs-dns/
-  - /en/blog/run-your-own-dns-resolver/
-  - /en/blog/primary-secondary-dns/
-  - /en/blog/change-domain-nameservers/
-  - /en/blog/ipv6-and-dns/
+- /en/blog/dhcp-vs-dns/
+- /en/blog/run-your-own-dns-resolver/
+- /en/blog/primary-secondary-dns/
+- /en/blog/change-domain-nameservers/
+- /en/blog/ipv6-and-dns/
 relatedTopics:
-  - /en/topics/domain-basics/
-  - /en/topics/domain-security/
+- /en/topics/domain-basics/
+- /en/topics/domain-security/
 relatedSeries:
-  - /en/series/domain-investor-field-guide/
-  - /en/series/domain-apocalypse/
+- /en/series/domain-investor-field-guide/
+- /en/series/domain-apocalypse/
 relatedGlossary:
-  - /en/glossary/dns/
-  - /en/glossary/dns-record-types/
-  - /en/glossary/ttl/
-  - /en/glossary/ip-address/
-  - /en/glossary/nameserver/
+- /en/glossary/dns/
+- /en/glossary/dns-record-types/
+- /en/glossary/ttl/
+- /en/glossary/ip-address/
+- /en/glossary/nameserver/
+updated: '2026-10-30'
 ---
 
-**Dynamic DNS updates a DNS record when an address changes.** A client detects the address and sends an authorized update to the DNS provider. Cloudflare documents both an API approach and the existing `ddclient` utility. [Its guide describes the two options](#cloudflare-describes-address-update-options).
+DDNS, or dynamic DNS, updates a hostname's address record when the server's public IP address changes. An update client detects the change and sends an authorized update to the DNS provider. [No-IP describes that update cycle](#no-ip-explains-update-clients-and-network-access-limits). DDNS keeps the name useful without requiring someone to edit DNS after every address change.
 
-A home server can keep one hostname while an internet provider changes the connection's address. That convenience does not establish that the server accepts outside connections. Plan DNS updates and network access as separate tasks.
+DDNS does not automatically create a path through a router or make a server safe to expose. Plan the hostname update and the remote-access method as separate tasks.
 
-## An update client changes records rather than resolving names
+The examples are hypothetical. [IANA maintains example domains for documentation](#iana-maintains-example-domains-for-documentation).
+
+## An updater changes the record that a resolver reads
+
+A resolver answers questions about DNS records. A DDNS updater changes a record through a provider's supported interface. Running a resolver does not itself create an automatic update service.
+
+Consider a hypothetical home server at `home.example.com`. If the connection's public IPv4 address changes, the previous A record can point at the old address. An updater detects the new address and asks the DNS provider to revise that record.
+
+No-IP documents update clients on routers, servers, and other devices. [The client monitors the public address and reports changes](#no-ip-explains-update-clients-and-network-access-limits). Cloudflare documents both an API-based script and the existing `ddclient` utility. [The available integration depends on the provider](#cloudflare-documents-dynamic-address-update-options).
+
+Start with a supported client rather than building a new updater without need. Confirm that the client supports the actual DNS provider and the address family you intend to update.
 
 ![An address detector sends an authorized update through a client to DNS.](../../assets/dynamic-dns-setup-01-update.jpg)
 
-A [DNS resolver](/en/glossary/dns-resolver/) answers lookup requests. A DDNS client changes the records those lookups can return. Running a resolver does not automatically create an address update service. The [DHCP and DNS comparison](/en/blog/dhcp-vs-dns/) explains the separate client-configuration role.
+## A stable hostname still needs an access plan
 
-DDNS also does not mean every provider uses the same update protocol. RFC 2136 defines the DNS UPDATE operation for adding or deleting records. A hosted DNS provider can instead expose an HTTPS API. [The standard defines DNS UPDATE](#the-standard-defines-dns-update), while [Cloudflare describes API-driven updates](#cloudflare-describes-address-update-options). Use the method the authoritative provider and client support.
+Before setting up DDNS, decide who should reach the service. A private administration interface and a public website need different access arrangements. Choose the server's authentication and network exposure accordingly.
 
-Check existing software before writing a script. The `ddclient` documentation separates general settings, address detection, and provider protocols. Those settings answer three practical questions: how the client runs, where the address comes from, and which service receives updates. [The project explains its configuration model](#ddclient-separates-detection-from-provider-updates).
+Confirm which address belongs to the connection and which address the application uses internally. Ask the network provider about incoming-connection restrictions when the arrangement is unclear.
 
-For a custom hostname such as `home.example.com`, confirm that the client can update the provider hosting the relevant zone. Buying a domain from a registrar does not prove that the registrar also hosts its authoritative DNS. Check the domain's [nameservers](/en/glossary/nameserver/) before selecting the update method.
+Carrier-grade NAT can prevent ordinary incoming access to a subscriber's network. [No-IP explains the shared public-address limitation](#no-ip-explains-update-clients-and-network-access-limits). DDNS can update a name without removing that network limitation.
 
-## A correct DNS answer does not establish network access
+A supported authenticated tunnel or private remote-access service can fit some deployments. Evaluate the service's own access controls and instructions. Do not disable a firewall or expose an administrative port merely to make the DDNS test pass.
 
 ![A DNS check and a locked network access check remain separate.](../../assets/dynamic-dns-setup-02-reachability.jpg)
 
-Identify the address that outside clients must reach. A device's local address, a router's WAN address, and an externally observed address can differ. Carrier-grade NAT can place another translation layer in the provider's network. RFC 6598 reserves `100.64.0.0/10` as Shared Address Space for such networks. [The standard describes the allocation and use](#the-standard-describes-shared-address-space).
+## The provider choice determines your configuration route
 
-Publishing an address cannot create a port mapping through a provider's NAT. Confirm inbound connectivity with the internet provider before promising public access. A router address in Shared Address Space warrants investigation. An address outside that block alone does not prove inbound reachability.
+A hosted DDNS name can place the address under the provider's domain. A custom-domain arrangement lets the project use a name under its own registration. Choose the route based on continuity and account-control requirements.
 
-Decide who may access the service before opening any network path. A private administration service needs an authenticated access design. DNS records identify destinations. DNS records do not grant or enforce application permission. Keep firewall rules and application authentication in the deployment checklist.
+Check the provider's actual supported updater, account requirements, hostname rules, and update credentials. Read the current service conditions instead of assuming all free plans behave alike.
 
-[Time to live](/en/glossary/ttl/) also affects observations. An authoritative update and a cached answer can differ while caches retain older data. Lowering a TTL does not erase an answer already cached under its previous TTL. Cloudflare explains that TTL controls caching and that local caches can delay visible changes. [Its TTL documentation describes the distinction](#cloudflare-explains-caching-and-proxy-answers).
+If the project already uses Cloudflare DNS, review [Cloudflare's dynamic update instructions](https://developers.cloudflare.com/dns/manage-dns-records/how-to/managing-dynamic-ip-addresses/#ddclient). Cloudflare explicitly identifies `ddclient` as a third-party option. [Its documentation also describes an API-based route](#cloudflare-documents-dynamic-address-update-options).
 
-With Cloudflare proxying enabled, address lookups return Cloudflare addresses rather than the configured origin address. Verify the origin through the provider's record data. Do not interpret a proxy address as proof that the DDNS client failed. [Cloudflare distinguishes proxied and DNS-only records](#cloudflare-explains-proxy-answers).
+For FreeDNS, use the separate [FreeDNS setup guide](/en/blog/freedns-setup/). A provider-specific setup belongs in that provider's documented workflow rather than in a generic command copied across services.
 
-## A controlled deployment verifies updates and access separately
+## One supported updater should own the hostname
 
-1. Identify the authoritative provider for the intended hostname.
-2. Check the client's provider support and address-detection method.
-3. Create a credential with the smallest supported update scope.
-4. Keep the credential in a protected store accessible only to the updater.
-5. Configure the hostname and the intended IPv4 or IPv6 record type.
-6. Run an update and inspect the provider's result.
-7. Compare authoritative answers with cached resolver answers.
-8. Test the intended service from an outside network.
-9. Confirm that unauthorized users cannot access the service.
+Choose a router integration or an update client on a device that remains available. No-IP notes that a separate client can serve networks whose router lacks built-in support. [The provider describes those configuration choices](#no-ip-explains-update-clients-and-network-access-limits).
 
-For a concrete IPv4 example, suppose Cloudflare already hosts your zone and you use a current `ddclient` release. Create the intended A record first. The project's [Cloudflare example](https://github.com/ddclient/ddclient/blob/main/ddclient.conf.in#L168-L175) requires a token with `Zone:DNS:Edit` and `Zone:Zone:Read`. Limit the token's resources to the intended zone. The example below combines that provider configuration with the documented [IPv4 discovery and environment-variable settings](https://ddclient.net/#using-environment-variables):
+Set the exact hostname and relevant address family. Confirm that the client detects the intended public address rather than publishing an internal-only value. Follow the provider's instructions for any address-detection setting.
 
-```text
-ssl=yes
-usev4=webv4,webv4=ipify-ipv4
-usev6=disabled
-protocol=cloudflare
-zone=example.com
-password_env=CLOUDFLARE_DDNS_TOKEN
-home.example.com
-```
+Avoid running unrelated updaters against the same record. Two clients with different address-detection behavior can overwrite each other's values. Assign one active owner and document the fallback procedure.
 
-Replace `example.com` and `home.example.com` with names you administer. Use a release with the documented `_env` support. Save the non-secret configuration at the installed package's configuration path, normally `/etc/ddclient/ddclient.conf`. Have your service or secret manager supply `CLOUDFLARE_DDNS_TOKEN` only to the updater process. Do not substitute the token value into the configuration example or a shell argument.
+After setup, inspect the updater's status and the provider's saved DNS value. A program that starts successfully has not necessarily authenticated or changed the intended record.
 
-Run `ddclient -daemon 0 -noquiet` through that authorized launcher for an initial update. The zero-second daemon setting disables the background loop for this one run. Inspect the provider's record data and confirm the detected IPv4 address. Then enable the installed package's service or scheduler and confirm subsequent checks. Review the package's instructions before choosing a polling interval. This configuration does not configure an AAAA update or solve carrier-grade NAT.
+Do not force an address change that interrupts other users merely to test the system. Use an approved maintenance event or the provider's supported test process. Observe the updater during the next legitimate address change.
 
-Cloudflare lets tokens restrict permissions and resources. A zone-scoped token does not necessarily restrict writes to one hostname. Check the provider's available scope instead of assuming per-record isolation. Never put a token into a public repository, screenshot, or shared command. [Cloudflare documents token permissions and resource restrictions](#cloudflare-describes-token-permissions).
+## Update credentials deserve narrow permissions and private handling
 
-Keep update logs free of credentials. Record the target hostname, address family, result, and last successful update time with its timezone. Handle IPv4 and IPv6 separately. An IPv4 update does not verify the IPv6 path.
+An updater needs permission to change DNS. Choose the narrowest supported authorization for the intended zone or hostname. Keep the credential accessible only to the process or administrator that needs the credential.
 
-When troubleshooting, inspect each boundary: address detection, update authorization, authoritative record, cached answer, and service access. A successful update request proves neither immediate cache refresh nor application availability.
+Use the provider's supported secret configuration method. Avoid placing a token in a public repository, copied support message, browser screenshot, or shared command history. Treat a token-bearing update URL as a credential.
 
-## These sources support the deployment decisions
+Keep diagnostics useful without printing secrets. Record the hostname, detected address, update outcome, and time. Redact authorization headers and token-bearing paths before sharing logs.
 
-### Cloudflare describes address update options
+If a credential leaks, revoke or replace the credential through the provider. Then verify that the legitimate updater uses the replacement and that the DNS record remains correct. These are practical operational recommendations for maintaining update authority.
 
-Cloudflare — [Dynamically update DNS records](https://developers.cloudflare.com/dns/manage-dns-records/how-to/managing-dynamic-ip-addresses/#cloudflare-api), “Cloudflare API” and “ddclient.” Fetched 2026-10-22.
+## DNS verification and application verification complete different checks
 
-### The standard defines DNS UPDATE
+Query the exact hostname and record type after an update. Compare the answer with the intended public address. When a recent update returns an older value, compare authoritative DNS with the resolver's cache.
 
-IETF — [RFC 2136](https://www.rfc-editor.org/rfc/rfc2136.html#section-1), abstract and Section 8 on update security. Fetched 2026-10-22.
+The [DNS propagation checker guide](/en/blog/dns-propagation-checker-guide/) explains that distinction. A successful provider update and a cached old answer can describe different stages of the change.
 
-### ddclient separates detection from provider updates
+Next, test the service through the hostname from an appropriate external network. Confirm the intended authentication, route, and HTTPS behavior. The [HTTPS guide](/en/blog/what-is-https/) covers checks beyond name resolution.
 
-ddclient project — [Configuration introduction](https://ddclient.net/#configuration), environment-variable settings, and [Cloudflare configuration example](https://github.com/ddclient/ddclient/blob/main/ddclient.conf.in#L168-L175). Fetched 2026-10-22.
+If the address matches but the service fails, investigate the server, router, access policy, or provider restrictions. Changing the DDNS hostname repeatedly will not repair an unrelated application failure.
 
-### The standard describes shared address space
+Keep the hostname owner, updater location, credential owner, and recovery instructions with the project records. The next action is to choose one supported updater and verify the complete update-to-connection path during an authorized test.
 
-IETF — [RFC 6598](https://www.rfc-editor.org/rfc/rfc6598.html#section-1), Sections 1, 4, and 7. Fetched 2026-10-22.
+After an updater reports success, query the exact hostname and A or AAAA type in [Namefi's DNS lookup](https://namefi.io/domain-tools/dns). Compare the selected resolver's response with the intended public address. This observation does not run the updater or prove that the application behind the address accepts connections.
 
-### Cloudflare explains caching and proxy answers
+![Direct queries turn propagation reports into actionable checks.](../../assets/ttl-and-dns-propagation-04-section.jpg)
 
-Cloudflare — [Time to Live](https://developers.cloudflare.com/dns/manage-dns-records/reference/ttl/#proxied-records), introduction and “Proxied records.” Fetched 2026-10-22.
+## Sources and further reading
 
-### Cloudflare explains proxy answers
+### Cloudflare documents dynamic address update options
 
-Cloudflare — [Proxy status](https://developers.cloudflare.com/dns/proxy-status/#example), proxy and DNS-only response examples. Fetched 2026-10-22.
+[Cloudflare documents dynamic address update options](https://developers.cloudflare.com/dns/manage-dns-records/how-to/managing-dynamic-ip-addresses/#overview) — checked 2026-10-30.
 
-### Cloudflare describes token permissions
+### No-IP explains update clients and network access limits
 
-Cloudflare — [Create API token](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/#create-an-api-token), permissions and resource selection. Fetched 2026-10-22.
+[No-IP explains update clients and network access limits](https://www.noip.com/faqs#:~:text=How%20does%20Dynamic%20DNS%20work) — checked 2026-10-30. Checked passages: How does Dynamic DNS work?, router configuration, and the CGNAT and remote-access questions.
+
+### IANA maintains example domains for documentation
+
+[IANA maintains example domains for documentation](https://www.iana.org/help/example-domains#:~:text=for%20documentation%20purposes) — checked 2026-10-30.
