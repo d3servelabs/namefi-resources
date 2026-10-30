@@ -41,7 +41,8 @@ The image review replaced inaccurate symbols, invented status and renewal detail
 The final check results appear in `validation.json`.
 This task prepares reviewable articles. This task does not merge the pull request or deploy the articles.
 
-The CLI produced one usable draft and one output without the opening YAML delimiter.
+The CLI produced one usable draft. The coordinator rejected another response because the response failed the Markdown export check.
+The direct Booking response omitted the opening YAML delimiter. The coordinator restored the delimiter before reviewing the text.
 The coordinator stopped the remaining owned CLI writer processes after delays.
 The direct Anthropic interface produced the remaining drafts with the same Sonnet model.
 The record does not estimate tokens or costs for interrupted CLI requests.
