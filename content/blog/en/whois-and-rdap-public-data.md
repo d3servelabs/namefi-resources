@@ -2,6 +2,7 @@
 title: "WHOIS and RDAP Expose Different Views of Registration Data"
 description: "Understand the RDAP transition, public registration fields, redaction notices, and the limits of owner searches before interpreting a domain record."
 date: '2026-10-21'
+updated: '2026-10-29'
 language: en
 tags: [domains, privacy, guide]
 authors: ['namefiteam']
@@ -35,6 +36,22 @@ WHOIS and RDAP provide access to registration information. RDAP supplies a stand
 A useful domain investigation separates the access protocol, the information the provider holds, and the information the provider publishes. A change in protocol does not erase that distinction.
 
 The practical question is rarely “Which tool shows the most fields?” Ask which current source supports the specific conclusion you need. A blank contact field, a redaction notice, and a failed request require different interpretations.
+
+## A WHOIS result does not establish the website's hosting provider
+
+![The registrar, DNS provider, and web host serve different roles, and a proxy can obscure the origin.](../../assets/whois-and-rdap-public-data-04-provider-roles.jpg)
+
+**To identify a website's host, separate the registrar, DNS service, and web service first.** A registrar name in a domain lookup answers a registration question. The same company might supply several services, but the registration result alone does not establish that arrangement.
+
+For a site you administer, start with hosting invoices, deployment accounts, and the site's configuration. Compare those records with the [separate domain and hosting services](/en/blog/domain-vs-hosting/). Record which account controls each service before requesting a change.
+
+For a site you do not administer, preserve the exact hostname and observed public address. Treat the address as evidence about the visible endpoint. Avoid labeling the address provider as the confirmed origin host without independent evidence.
+
+Cloudflare provides a concrete limit: a proxied hostname returns Cloudflare addresses instead of the origin address. Cloudflare shares address ranges across proxied hostnames. [Cloudflare documents the proxy behavior](#cloudflare-documents-why-a-public-address-can-hide-the-origin).
+
+An IP registration lookup and a domain registration lookup also ask different questions. [IANA's WHOIS gateway accepts names, IP addresses, and AS numbers](#iana-documents-its-registration-lookup-inputs). Keep each result's query and source beside the finding.
+
+If the public evidence identifies only a proxy, report that limit. The useful conclusion can be: “The public endpoint uses Cloudflare; the origin host remains unverified.”
 
 ## RDAP changes the access method without promising a public identity directory
 
@@ -182,3 +199,11 @@ Sources checked on October 21, 2026. The policy page includes a May 12, 2026 rev
 - [ICANN: Registration Data Request Service](https://www.icann.org/rdrs-en). The page describes the request service and participating registrars.
 
 - [DomainTools: WHOIS History panel](https://docs.domaintools.com/iris/investigate/data-panels/whois-history/). The operator documents timestamped historical records and privacy filtering. Fetched October 21, 2026.
+
+### Cloudflare documents why a public address can hide the origin
+
+[Cloudflare's IP address documentation](https://developers.cloudflare.com/fundamentals/concepts/cloudflare-ip-addresses/) explains proxied DNS answers, shared address ranges, and the origin connection. Source checked 2026-10-29.
+
+### IANA documents its registration lookup inputs
+
+[IANA's WHOIS gateway](https://www.iana.org/whois) accepts domain names, IP addresses, and AS numbers. The gateway returns registration information rather than certifying a website's hosting arrangement. Source checked 2026-10-29.

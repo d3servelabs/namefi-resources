@@ -1,0 +1,47 @@
+{
+  "source_check_date": "2026-10-29",
+  "scope": "New and changed claims only; no blanket fact-audit certification of unchanged prose.",
+  "articles": [
+    {
+      "article": "what-is-https",
+      "new_claims": [
+        "Default HTTPS port is 443; assignment alone does not prove service security.",
+        "TCP connectivity, TLS verification and HTTP responses answer different questions.",
+        "curl head/verbose options retain default certificate and hostname verification."
+      ],
+      "sources": [
+        "https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2",
+        "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=https",
+        "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.5",
+        "https://curl.se/docs/manpage.html#-I",
+        "https://curl.se/docs/manpage.html#-v",
+        "https://curl.se/docs/sslcerts.html",
+        "https://www.rfc-editor.org/rfc/rfc9114.html#section-2"
+      ]
+    },
+    {
+      "article": "dns-record-types-guide",
+      "new_claims": [
+        "No MX can invoke implicit MX; temporary failure is not an empty answer.",
+        "Null MX uses a single 0 . exchange and must not coexist with other MX.",
+        "A DNS result does not establish mailbox delivery."
+      ],
+      "sources": [
+        "https://www.rfc-editor.org/rfc/rfc5321.html#section-5.1",
+        "https://www.rfc-editor.org/rfc/rfc7505.html#section-3"
+      ]
+    },
+    {
+      "article": "whois-and-rdap-public-data",
+      "new_claims": [
+        "Registrar information does not establish the web-hosting arrangement.",
+        "Cloudflare proxied names return shared Cloudflare addresses instead of origin addresses.",
+        "IANA accepts domain names, IP addresses and AS numbers."
+      ],
+      "sources": [
+        "https://developers.cloudflare.com/fundamentals/concepts/cloudflare-ip-addresses/",
+        "https://www.iana.org/whois"
+      ]
+    }
+  ]
+}

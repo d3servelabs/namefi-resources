@@ -42,3 +42,7 @@ The `fix-dns-server-not-responding` and `buy-domain-through-google` prefixes eac
 ## The October 29 diagnosis guide adds four reviewed images
 
 The `fix-chrome-secure-connection-error` prefix includes one 1200 × 630 cover and three 1200 × 675 section illustrations. The scenes distinguish error categories, comparison scope, and endpoint verification. The batch evidence records a rejected cover that invented a certificate date and its replacement.
+
+## The 95-candidate review replaces one cover and adds three illustrations
+
+The HTTPS cover separates connection security from website trust. Three inline images distinguish protocol tests, MX result types and service-provider roles. The dated editorial record preserves final hashes and two rejected generation attempts.
