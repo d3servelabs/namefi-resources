@@ -64,3 +64,7 @@ The audit preserves the original demand model and does not start another writing
 [The October 22 eMudhra draft record](2026-10-22-emudhra-draft.md) documents the incident evidence, nine requested translation locales, six glossary drafts, and the proposed inbound links. Every new content page remains a draft.
 
 The Chinese content draft uses the approved calm Namefi opening. The personal commentary and cartoons belong to a separate `xinbenlv/zThink` draft pull request.
+
+## The six rebrand case studies preserve their primary evidence
+
+[The October 29 record](2026-10-29-six-rebrands/README.md) links six approved search questions to verified primary facts and excluded claims. The record also explains the image process and validation.

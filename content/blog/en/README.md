@@ -80,3 +80,7 @@ The October 22, 2026 draft `emudhra-ca-compromise-dnssec.md` explains intermedia
 ## The October 28 guides address DNS timeouts and Google registration routes
 
 Two English guides distinguish Windows DNS timeouts from error replies and separate Google Domains from Cloud Domains and Workspace. The guides use opened official sources, reviewed house-style illustrations, and links from existing registration and DNS articles.
+
+## Six case studies explain brand and domain changes
+
+The October 29, 2026 batch adds Wise, Booking Holdings, Vrbo, Kit, Brevo, and Block at Name Change, Game Change orders 21–26. Each article answers a search question before explaining the history. Primary citations distinguish consumer brands, corporate identities, and domain changes. The editorial record preserves supported facts and exclusions.

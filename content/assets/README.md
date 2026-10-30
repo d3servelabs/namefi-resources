@@ -38,3 +38,7 @@ The next-twenty batch adds twenty 1200 × 630 covers and eighty 1200 × 675 sect
 ## The October 28 guides share eight reviewed images
 
 The `fix-dns-server-not-responding` and `buy-domain-through-google` prefixes each include a 1200 × 630 cover and three 1200 × 675 section illustrations. The batch evidence preserves all generation attempts and visual checks.
+
+## Six rebrand case studies add twenty-four illustrations
+
+The October 29, 2026 batch adds six 1200 × 630 covers and eighteen 1200 × 675 section illustrations. The prefixes match the six new rebrand article slugs. The images distinguish consumer-domain migrations from corporate name changes. The editorial record preserves the final visual checks.

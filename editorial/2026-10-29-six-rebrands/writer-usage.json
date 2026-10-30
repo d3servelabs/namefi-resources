@@ -1,0 +1,130 @@
+[
+  {
+    "slug": "from-transferwise-com-to-wise-com",
+    "model": "claude-sonnet-4-6",
+    "observedSuccessfulResponseUsage": {
+      "input_tokens": 907,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 18106,
+      "output_tokens_details": {
+        "thinking_tokens": 16587
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 907,
+          "output_tokens": 18106,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard"
+    },
+    "interruptedRequestsIncluded": false
+  },
+  {
+    "slug": "from-priceline-group-to-booking-holdings",
+    "model": "claude-sonnet-4-6",
+    "observedSuccessfulResponseUsage": {
+      "input_tokens": 907,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 1480,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "interruptedRequestsIncluded": false
+  },
+  {
+    "slug": "from-homeaway-com-to-vrbo-com",
+    "model": "claude-sonnet-4-6",
+    "observedSuccessfulResponseUsage": {
+      "input_tokens": 981,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 1810,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "interruptedRequestsIncluded": false
+  },
+  {
+    "slug": "from-convertkit-com-to-kit-com",
+    "model": "claude-sonnet-4-6",
+    "observedSuccessfulResponseUsage": {
+      "input_tokens": 850,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 1462,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "interruptedRequestsIncluded": false
+  },
+  {
+    "slug": "from-sendinblue-com-to-brevo-com",
+    "model": "claude-sonnet-4-6",
+    "observedSuccessfulResponseUsage": {
+      "input_tokens": 981,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 1475,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "interruptedRequestsIncluded": false
+  },
+  {
+    "slug": "from-square-inc-to-block-inc",
+    "model": "claude-sonnet-4-6",
+    "observedSuccessfulResponseUsage": {
+      "input_tokens": 871,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 1528,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "interruptedRequestsIncluded": false
+  }
+]
