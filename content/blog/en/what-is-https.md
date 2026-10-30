@@ -1,6 +1,7 @@
 ---
 title: "HTTP vs HTTPS: Encryption, Certificates, and How HTTPS Works"
 date: '2026-08-25'
+updated: '2026-10-29'
 language: en
 tags: ['https', 'tls', 'certificates', 'security', 'networking']
 authors: ['aileen-wright']
@@ -96,6 +97,8 @@ A note on names: this protocol family began life as SSL (Secure Sockets Layer) i
 Encryption without identity would be a private conversation with a possible impostor. The identity half of HTTPS rests on **certificates**: signed digital documents that bind a domain name to a public key. The signer is a **certificate authority (CA)** — an organization whose own signing keys are pre-trusted by browsers and operating systems through their *root stores*. Trust flows down a chain: a root CA signs an intermediate, the intermediate signs the certificate for `example.com`, and the browser accepts the site's key because the chain terminates in a root it already trusts — [cryptographic security](/en/glossary/cryptographic-security/) by delegation.
 
 Before signing, the CA must validate that the requester actually controls the domain named in the certificate — that validation is the entire meaning of a standard (domain-validated) certificate. If a browser receives a certificate that doesn't chain to a trusted root, doesn't match the hostname, or has expired, the browser reports a certificate error. Browser indicators vary: Chrome announced a [replacement for its padlock icon](https://blog.chromium.org/2023/05/an-update-on-lock-icon.html) in 2023.
+
+For a connection failure, the [Chrome diagnosis guide](/en/blog/fix-chrome-secure-connection-error/) separates the displayed error code from the checks a visitor or operator can perform.
 
 Certificate warnings require attention because the browser could not establish the expected authenticated connection. Do not bypass a warning to enter credentials or approve a payment. Diagnose the hostname, certificate chain, validity dates, and local clock before continuing.
 
